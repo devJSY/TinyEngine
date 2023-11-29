@@ -1,0 +1,10 @@
+﻿---
+BasedOnStyle: Microsoft
+AlwaysBreakTemplateDeclarations: 'Yes'
+BreakConstructorInitializers: BeforeComma
+IndentCaseLabels: 'false'
+NamespaceIndentation: All
+PointerAlignment: Left
+SortIncludes: 'false'
+
+...
