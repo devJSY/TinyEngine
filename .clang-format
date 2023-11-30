@@ -1,7 +1,7 @@
 ﻿---
 BasedOnStyle: Microsoft
 AlwaysBreakTemplateDeclarations: 'Yes'
-BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
 IndentCaseLabels: 'false'
 NamespaceIndentation: All
