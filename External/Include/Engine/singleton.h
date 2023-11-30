@@ -29,6 +29,7 @@ class CSingleton
   public:
     CSingleton()
     {
+        // 프로그램 종료시 Destroy 함수 호출 등록
         typedef void (*FUNC_TYPE)(void);
         atexit((FUNC_TYPE)(&CSingleton::Destroy));
     }
