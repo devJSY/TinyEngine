@@ -1,4 +1,7 @@
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CDevice.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\CDevice.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CEngine.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\CEngine.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CEntity.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\CEntity.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CLevel.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\CLevel.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\Engine.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\Engine.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\pch.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\pch.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\Test.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Debug\Test.obj

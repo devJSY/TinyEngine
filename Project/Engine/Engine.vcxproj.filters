@@ -25,6 +25,16 @@
     <ClInclude Include="CDevice.h">
       <Filter>03. Device</Filter>
     </ClInclude>
+    <ClInclude Include="CEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Module</Filter>
+    </ClInclude>
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="CLevel.h">
+      <Filter>04. Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -38,6 +48,13 @@
     </ClCompile>
     <ClCompile Include="CDevice.cpp">
       <Filter>03. Device</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="CLevel.cpp">
+      <Filter>04. Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,5 +70,27 @@
     <Filter Include="03. Device">
       <UniqueIdentifier>{6c64f738-8ed7-4905-9df2-05423b115338}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{747b2ddc-0400-4a02-a9c8-cd40eb8a5038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module">
+      <UniqueIdentifier>{69131e55-d5af-4bc4-9a21-6cba8ddc7aab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode">
+      <UniqueIdentifier>{e1ff1e33-ec98-4e56-a2c6-ebc360a24d52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Level">
+      <UniqueIdentifier>{bbcc4b52-f89c-4b90-8f98-ecbb79676c76}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Module</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="std2d.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
