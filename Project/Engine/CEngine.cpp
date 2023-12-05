@@ -4,6 +4,10 @@
 
 #include "Test.h"
 
+#include "CPathMgr.h"
+#include "CTimeMgr.h"
+#include "CKeyMgr.h"
+
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
@@ -30,6 +34,11 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
+    // Manager ÃÊ±âÈ­
+    CPathMgr::init();
+    CTimeMgr::GetInst()->init();
+    CKeyMgr::GetInst()->init();
+
     if (FAILED(TestInit()))
     {
         return E_FAIL;
@@ -40,5 +49,10 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 
 void CEngine::progress()
 {
+    // Manager Update
+    CTimeMgr::GetInst()->tick();
+    CKeyMgr::GetInst()->tick();
+
+    // Test Update
     TestProgress();
 }

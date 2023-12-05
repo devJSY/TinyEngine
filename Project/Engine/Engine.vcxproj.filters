@@ -33,7 +33,16 @@
     </ClInclude>
     <ClInclude Include="Test.h" />
     <ClInclude Include="CLevel.h">
-      <Filter>04. Level</Filter>
+      <Filter>05. Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>04. Manager\KeyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CPathMgr.h">
+      <Filter>04. Manager\PathMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>04. Manager\TimeMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +63,16 @@
     </ClCompile>
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="CLevel.cpp">
-      <Filter>04. Level</Filter>
+      <Filter>05. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>04. Manager\KeyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPathMgr.cpp">
+      <Filter>04. Manager\PathMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>04. Manager\TimeMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,8 +97,20 @@
     <Filter Include="ShaderCode">
       <UniqueIdentifier>{e1ff1e33-ec98-4e56-a2c6-ebc360a24d52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Level">
+    <Filter Include="05. Level">
       <UniqueIdentifier>{bbcc4b52-f89c-4b90-8f98-ecbb79676c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager">
+      <UniqueIdentifier>{eae498c6-6a7f-4f44-90c6-0ff013b91274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\KeyMgr">
+      <UniqueIdentifier>{a12fed08-2d50-493a-b886-da76dcf958e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\PathMgr">
+      <UniqueIdentifier>{d1cff104-c7e1-4342-a358-f4a83078678c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\TimeMgr">
+      <UniqueIdentifier>{bcd1f63b-3214-43a1-a499-914e398b7f09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

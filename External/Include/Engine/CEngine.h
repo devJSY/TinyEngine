@@ -9,6 +9,9 @@ private:
     Vec2 m_vResolution; // 해상도 정보
 
 public:
+    HWND GetMainWind() const { return m_hMainWnd; }
+
+public:
     int init(HWND _hWnd, Vec2 _vResolution);
     void progress();
 };
