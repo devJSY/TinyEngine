@@ -1,10 +1,17 @@
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CAsset.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CAsset.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CComponent.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CComponent.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CDevice.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CDevice.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CEngine.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CEngine.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CEntity.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CEntity.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CGameObject.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CGameObject.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CGraphicsShader.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CGraphicsShader.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CKeyMgr.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CKeyMgr.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CLevel.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CLevel.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CMesh.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CMesh.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CPathMgr.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CPathMgr.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CShader.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CShader.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\CTimeMgr.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CTimeMgr.obj
+D:\DirectX_Document\EnterTheGungeon\Project\Engine\CTransform.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\CTransform.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\Engine.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\Engine.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\pch.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\pch.obj
 D:\DirectX_Document\EnterTheGungeon\Project\Engine\Test.cpp;D:\DirectX_Document\EnterTheGungeon\Project\Engine\x64\Release\Test.obj
