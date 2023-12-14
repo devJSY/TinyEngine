@@ -6,6 +6,7 @@
 
 CGameObject::CGameObject()
     : m_arrCom{}
+    , m_RenderCom(nullptr)
 {
 }
 

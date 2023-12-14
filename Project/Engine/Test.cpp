@@ -123,7 +123,7 @@ int TestInit()
     pObj->Transform()->SetRelativePos(Vec3(0.5f, 0.25f, 0.f));
     pObj->Transform()->SetRelativeScale(Vec3(0.5f, 0.5f, 0.5f));
 
-    pObj->MeshRender()->SetMesh(g_RectMesh);
+    pObj->MeshRender()->SetMesh(g_CircleMesh);
     pObj->MeshRender()->SetShader(g_Shader);
 
     g_vecObj.push_back(pObj);

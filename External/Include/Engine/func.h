@@ -3,7 +3,7 @@
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])
 {
-    for (size_t i = 0; i < SIZE; i++)
+    for (size_t i = 0; i < SIZE; ++i)
     {
         if (nullptr != Arr[i])
         {
@@ -16,7 +16,7 @@ void Delete_Array(T* (&Arr)[SIZE])
 template <typename T>
 void Delete_Vec(vector<T>& _vec)
 {
-    for (size_t i = 0; i < _vec.size(); i++)
+    for (size_t i = 0; i < _vec.size(); ++i)
     {
         if (nullptr != _vec[i])
         {

@@ -20,7 +20,7 @@ int CConstBuffer::Create(UINT _ElementSize, UINT _ElementCount)
     m_ElementCount = _ElementCount;
 
     m_Desc.ByteWidth = m_ElementSize * m_ElementCount;
-    m_Desc.StructureByteStride = sizeof(m_ElementSize);
+    m_Desc.StructureByteStride = m_ElementSize;
     m_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
     // 버퍼에 데이터 쓰기 기능
@@ -30,7 +30,7 @@ int CConstBuffer::Create(UINT _ElementSize, UINT _ElementCount)
     // 상수 버퍼 생성
     if (FAILED(DEVICE->CreateBuffer(&m_Desc, nullptr, m_CB.GetAddressOf())))
     {
-        MessageBox(nullptr, L"상수 버퍼 생성 실패", L"CConstBuffer Create 오류!!", MB_OK);
+        MessageBox(nullptr, L"상수 버퍼 생성 실패", L"CConstBuffer Create 오류!", MB_OK);
         return E_FAIL;
     }
 
@@ -40,7 +40,9 @@ int CConstBuffer::Create(UINT _ElementSize, UINT _ElementCount)
 void CConstBuffer::SetData(void* _Src, UINT _ElementCount)
 {
     if (0 == _ElementCount)
+    {
         _ElementCount = m_ElementCount;
+    }
 
     // SystemMem -> GPUMem
     D3D11_MAPPED_SUBRESOURCE tSub = {};

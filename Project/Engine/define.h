@@ -58,7 +58,6 @@ enum class COMPONENT_TYPE
 	LANDSCAPE,
 
 	END,
-
 };
 
 enum class CB_TYPE
