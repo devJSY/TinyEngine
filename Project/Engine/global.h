@@ -44,3 +44,4 @@ typedef Vector4 Vec4;
 #include "singleton.h"
 #include "define.h"
 #include "struct.h"
+#include "func.h"

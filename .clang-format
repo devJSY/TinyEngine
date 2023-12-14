@@ -1,13 +1,17 @@
 ﻿---
 BasedOnStyle: Microsoft
+AccessModifierOffset: '-4'
+AllowShortFunctionsOnASingleLine: InlineOnly
 AlwaysBreakTemplateDeclarations: 'Yes'
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
+FixNamespaceComments: 'false'
 IndentCaseLabels: 'false'
+IndentPPDirectives: BeforeHash
 NamespaceIndentation: All
 PointerAlignment: Left
 SortIncludes: 'false'
-AllowShortFunctionsOnASingleLine: InlineOnly
-AccessModifierOffset : -4
+IndentCaseBlocks: true
+AlignConsecutiveMacros: true
 
 ...

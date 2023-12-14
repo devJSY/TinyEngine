@@ -65,6 +65,18 @@
     <ClInclude Include="CTransform.h">
       <Filter>08. Component\01. Transform</Filter>
     </ClInclude>
+    <ClInclude Include="func.h">
+      <Filter>01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CConstBuffer.h">
+      <Filter>03. Device\ConstBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderComponent.h">
+      <Filter>08. Component\RenderComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshRender.h">
+      <Filter>08. Component\RenderComponent\01. MeshRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -115,6 +127,15 @@
     </ClCompile>
     <ClCompile Include="CTransform.cpp">
       <Filter>08. Component\01. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="CConstBuffer.cpp">
+      <Filter>03. Device\ConstBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderComponent.cpp">
+      <Filter>08. Component\RenderComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshRender.cpp">
+      <Filter>08. Component\RenderComponent\01. MeshRender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +210,21 @@
     </Filter>
     <Filter Include="06. Asset\Shader\GraphicsShader">
       <UniqueIdentifier>{097303a2-0cd8-424a-801c-6a2fd3183b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Device\ConstBuffer">
+      <UniqueIdentifier>{452bbeee-1b03-4813-9bae-1d2e76aa321d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent">
+      <UniqueIdentifier>{ee6c54e3-3c7d-487d-80ab-c7e791ba4a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\01. MeshRender">
+      <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\02. TileMap">
+      <UniqueIdentifier>{e3652818-822e-4ad3-a1e6-2cc07871a700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\03. ParticleSystem">
+      <UniqueIdentifier>{465e7928-9a4b-492c-b047-376839804dc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
