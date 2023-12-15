@@ -10,11 +10,15 @@
 class CComponent;
 class CRenderComponent;
 
+class CScript;
+
 class CGameObject : public CEntity
 {
 private:
     CComponent* m_arrCom[(UINT)COMPONENT_TYPE::END];
     CRenderComponent* m_RenderCom;
+
+    vector<CScript*> m_vecScript;
 
 public:
     void begin();

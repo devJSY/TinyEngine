@@ -3,10 +3,10 @@
 template <typename T>
 class CSingleton
 {
-  private:
+private:
     static T* m_This;
 
-  public:
+public:
     static T* GetInst()
     {
         if (nullptr == m_This)
@@ -26,7 +26,7 @@ class CSingleton
         }
     }
 
-  public:
+public:
     CSingleton()
     {
         // 프로그램 종료시 Destroy 함수 호출 등록
@@ -34,9 +34,7 @@ class CSingleton
         atexit((FUNC_TYPE)(&CSingleton::Destroy));
     }
 
-    ~CSingleton()
-    {
-    }
+    ~CSingleton() {}
 };
 
 template <typename T>

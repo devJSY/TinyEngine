@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 #include <Windows.h>
+#include <typeinfo>
+
 #include <string>
 
 #include <vector>
