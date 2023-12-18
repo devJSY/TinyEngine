@@ -25,5 +25,5 @@ public:
 
 public:
     CMesh();
-    ~CMesh();
+    virtual ~CMesh();
 };

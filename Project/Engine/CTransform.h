@@ -30,5 +30,5 @@ public:
 
 public:
     CTransform();
-    ~CTransform();
+    virtual ~CTransform();
 };

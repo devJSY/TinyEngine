@@ -37,7 +37,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CPathMgr::init();
     CTimeMgr::GetInst()->init();
     CKeyMgr::GetInst()->init();
-    CAssetMgr::GetInst()->init();	
+    CAssetMgr::GetInst()->init();
     CLevelMgr::GetInst()->init();
 
     return S_OK;
@@ -49,7 +49,7 @@ void CEngine::progress()
     CTimeMgr::GetInst()->tick();
     CKeyMgr::GetInst()->tick();
 
-	// Level Update
+    // Level Update
     CLevelMgr::GetInst()->tick();
     CLevelMgr::GetInst()->render();
 }

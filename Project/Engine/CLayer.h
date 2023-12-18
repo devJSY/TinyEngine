@@ -16,7 +16,7 @@ public:
 
 public:
     CLayer();
-    ~CLayer();
+    virtual ~CLayer();
 
 private:
     void AddObject(CGameObject* _Object) { m_vecParent.push_back(_Object); }

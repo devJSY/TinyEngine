@@ -24,5 +24,5 @@ public:
 
 public:
     CRenderComponent(COMPONENT_TYPE _Type);
-    ~CRenderComponent();
+    virtual ~CRenderComponent();
 };

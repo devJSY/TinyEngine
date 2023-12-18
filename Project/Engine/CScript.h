@@ -18,5 +18,5 @@ public:
 
 public:
     CScript();
-    ~CScript();
+    virtual ~CScript();
 };

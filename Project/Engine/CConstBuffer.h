@@ -17,5 +17,5 @@ public:
 
 public:
     CConstBuffer();
-    ~CConstBuffer();
+    virtual ~CConstBuffer();
 };

@@ -19,5 +19,5 @@ public:
 
 public:
     CLevel();
-    ~CLevel();
+    virtual ~CLevel();
 };

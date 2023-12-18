@@ -81,7 +81,7 @@ void CAssetMgr::init()
     float fTheta = 0.f;
     float fRadius = 0.5f;
 
-    for (int i = 0; i <= iSlice; ++i)
+    for (UINT i = 0; i <= iSlice; ++i)
     {
         fTheta = (XM_2PI / iSlice) * i;
 
@@ -92,7 +92,7 @@ void CAssetMgr::init()
         vecVtx.push_back(v);
     }
 
-    for (int i = 0; i < iSlice; ++i)
+    for (UINT i = 0; i < iSlice; ++i)
     {
         vecIdx.push_back(0);
         vecIdx.push_back(i + 2);

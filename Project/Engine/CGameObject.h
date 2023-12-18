@@ -35,5 +35,5 @@ public:
 
 public:
     CGameObject();
-    ~CGameObject();
+    virtual ~CGameObject();
 };

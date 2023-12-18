@@ -15,6 +15,7 @@ CGameObject::CGameObject()
 CGameObject::~CGameObject()
 {
     Delete_Array(m_arrCom);
+    Delete_Vec(m_vecScript);
 }
 
 void CGameObject::begin()

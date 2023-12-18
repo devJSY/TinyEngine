@@ -5,21 +5,23 @@
 #include <Engine\CEngine.h>
 
 #ifdef _DEBUG
-#pragma comment(lib, "Engine\\Engine_d.lib")
+    #pragma comment(lib, "Engine\\Engine_d.lib")
 #else
-#pragma comment(lib, "Engine\\Engine.lib")
+    #pragma comment(lib, "Engine\\Engine.lib")
 #endif
-
-#define MAX_LOADSTRING 100
 
 // 디버그용 콘솔
 #ifdef _DEBUG
-#ifdef UNICODE
-#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
-#else
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+    #ifdef UNICODE
+        #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+    #else
+        #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+    #endif
 #endif
-#endif
+
+// 메모리 누수 체크
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
 
 HINSTANCE hInst;
 HWND hWnd;
@@ -32,6 +34,9 @@ INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine,
                       _In_ int nCmdShow)
 {
+    // 메모리 누수 체크
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //_CrtSetBreakAlloc();
 
     MyRegisterClass(hInstance);
 
@@ -115,7 +120,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
     hWnd = CreateWindowW(L"MyWindow", L"EnterTheGungeon", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
-                              nullptr, nullptr, hInstance, nullptr);
+                         nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
     {
@@ -142,29 +147,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_COMMAND: {
-        int wmId = LOWORD(wParam);
-        // 메뉴 선택을 구문 분석합니다:
-        switch (wmId)
+    case WM_COMMAND:
         {
-        case IDM_ABOUT:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-            break;
-        case IDM_EXIT:
-            DestroyWindow(hWnd);
-            break;
-        default:
-            return DefWindowProc(hWnd, message, wParam, lParam);
+            int wmId = LOWORD(wParam);
+            // 메뉴 선택을 구문 분석합니다:
+            switch (wmId)
+            {
+            case IDM_ABOUT:
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+                break;
+            case IDM_EXIT:
+                DestroyWindow(hWnd);
+                break;
+            default:
+                return DefWindowProc(hWnd, message, wParam, lParam);
+            }
         }
-    }
-    break;
-    case WM_PAINT: {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
-        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-        EndPaint(hWnd, &ps);
-    }
-    break;
+        break;
+    case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hWnd, &ps);
+            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+            EndPaint(hWnd, &ps);
+        }
+        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

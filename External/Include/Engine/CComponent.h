@@ -32,7 +32,7 @@ public:
 
 public:
     CComponent(COMPONENT_TYPE _Type);
-    ~CComponent();
+    virtual ~CComponent();
 
     friend class CGameObject;
 };

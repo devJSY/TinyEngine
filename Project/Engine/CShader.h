@@ -10,5 +10,5 @@ public:
 
 public:
     CShader(ASSET_TYPE _Type);
-    ~CShader();
+    virtual ~CShader();
 };

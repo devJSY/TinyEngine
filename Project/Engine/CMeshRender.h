@@ -9,5 +9,5 @@ public:
 
 public:
     CMeshRender();
-    ~CMeshRender();
+    virtual ~CMeshRender();
 };

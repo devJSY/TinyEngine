@@ -21,5 +21,5 @@ private:
 
 public:
     CCamera();
-    ~CCamera();
+    virtual ~CCamera();
 };

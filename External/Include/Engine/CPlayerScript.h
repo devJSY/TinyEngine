@@ -11,5 +11,5 @@ public:
 
 public:
     CPlayerScript();
-    ~CPlayerScript();
+    virtual ~CPlayerScript();
 };

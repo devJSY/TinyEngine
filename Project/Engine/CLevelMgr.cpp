@@ -16,6 +16,8 @@ CLevelMgr::CLevelMgr()
 
 CLevelMgr::~CLevelMgr()
 {
+    if (nullptr != m_CurLevel)
+        delete m_CurLevel;
 }
 
 void CLevelMgr::init()
