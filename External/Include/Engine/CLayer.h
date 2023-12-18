@@ -6,7 +6,7 @@ class CGameObject;
 class CLayer : public CEntity
 {
 private:
-    vector<CGameObject*> m_vecParents;
+    vector<CGameObject*> m_vecParent;
 
 public:
     void begin();
@@ -14,9 +14,11 @@ public:
     void finaltick();
     void render();
 
-    void AddObject(CGameObject* _Object) { m_vecParents.push_back(_Object); }
-
 public:
     CLayer();
     ~CLayer();
+
+private:
+    void AddObject(CGameObject* _Object) { m_vecParent.push_back(_Object); }
+    friend class CLevel;
 };

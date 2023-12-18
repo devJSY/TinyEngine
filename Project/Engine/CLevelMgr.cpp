@@ -45,20 +45,22 @@ void CLevelMgr::init()
 
 void CLevelMgr::tick()
 {
-    if (nullptr != m_CurLevel)
-        m_CurLevel->tick();
+    if (nullptr == m_CurLevel)
+        return;
 
-    if (nullptr != m_CurLevel)
-        m_CurLevel->finaltick();
+    m_CurLevel->tick();
+    m_CurLevel->finaltick();
 }
 
 void CLevelMgr::render()
 {
+    if (nullptr == m_CurLevel)
+        return;
+
     float ClearColor[4] = {0.3f, 0.3f, 0.3f, 1.f};
     CDevice::GetInst()->ClearRenderTarget(ClearColor);
 
-    if (nullptr != m_CurLevel)
-        m_CurLevel->render();
+    m_CurLevel->render();
 
     CDevice::GetInst()->Present();
 }
