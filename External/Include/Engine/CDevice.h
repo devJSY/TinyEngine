@@ -34,6 +34,7 @@ public:
     ID3D11DeviceContext* GetContext() const { return m_Context.Get(); }
 
     CConstBuffer* GetConstBuffer(CB_TYPE _type) const { return m_arrCB[(UINT)_type]; }
+    Vec2 GetRenderResolution() { return m_vRenderResolution; }
 
 private:
     int CreateSwapChain();

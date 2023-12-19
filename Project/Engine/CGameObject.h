@@ -11,6 +11,7 @@ class CComponent;
 class CRenderComponent;
 
 class CScript;
+class CCamera;
 
 class CGameObject : public CEntity
 {
@@ -32,6 +33,7 @@ public:
 
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(MeshRender, MESHRENDER);
+    GET_COMPONENT(Camera, CAMERA);
 
 public:
     CGameObject();
