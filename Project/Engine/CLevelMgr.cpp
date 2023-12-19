@@ -10,6 +10,7 @@
 #include "components.h"
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"
+#include "CEngine.h"
 
 CLevelMgr::CLevelMgr()
 {
@@ -71,10 +72,46 @@ void CLevelMgr::render()
     if (nullptr == m_CurLevel)
         return;
 
+    // ImGUI Render
+    bool UseImGui = CEngine::GetInst()->IsUseImGui();
+    if (UseImGui)
+    {
+        ImGUIRender();
+    }
+
     float ClearColor[4] = {0.3f, 0.3f, 0.3f, 1.f};
     CDevice::GetInst()->ClearRenderTarget(ClearColor);
-
     m_CurLevel->render();
 
+    if (UseImGui)
+    {
+        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+        //ImGuiIO& io = ImGui::GetIO();
+        //// Update and Render additional Platform Windows
+        //if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        //{
+        //    ImGui::UpdatePlatformWindows();
+        //    ImGui::RenderPlatformWindowsDefault();
+        //}
+    }
+
     CDevice::GetInst()->Present();
+}
+
+void CLevelMgr::ImGUIRender()
+{
+    bool show_demo_window = true;
+
+    // Start the Dear ImGui frame
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to
+    // learn more about Dear ImGui!).
+    if (show_demo_window)
+        ImGui::ShowDemoWindow(&show_demo_window);
+
+    // Rendering
+    ImGui::Render();
 }

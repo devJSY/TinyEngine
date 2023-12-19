@@ -14,4 +14,7 @@ public:
     void init();
     void tick();
     void render();
+
+private:
+    void ImGUIRender();
 };

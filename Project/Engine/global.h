@@ -10,13 +10,13 @@
 #include <list>
 #include <map>
 
-using std::vector;
 using std::list;
-using std::map;
 using std::make_pair;
+using std::map;
+using std::vector;
 
-using std::wstring;
 using std::string;
+using std::wstring;
 
 #include <wrl.h>
 using namespace Microsoft::WRL;
@@ -31,7 +31,6 @@ using namespace DirectX;
 #pragma comment(lib, "d3d11")
 #pragma comment(lib, "d3dcompiler")
 
-
 // SimpleMath
 #include "SimpleMath.h"
 using namespace DirectX::SimpleMath;
@@ -40,10 +39,16 @@ typedef Vector2 Vec2;
 typedef Vector3 Vec3;
 typedef Vector4 Vec4;
 
-
-
 // 엔진 헤더 참조
 #include "singleton.h"
 #include "define.h"
 #include "struct.h"
 #include "func.h"
+
+// imgui
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
+

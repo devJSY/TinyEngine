@@ -24,4 +24,11 @@ D:\EnterTheGungeon\Project\Engine\CTransform.cpp;D:\EnterTheGungeon\Project\Engi
 D:\EnterTheGungeon\Project\Engine\Engine.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\Engine.obj
 D:\EnterTheGungeon\Project\Engine\CLevelMgr.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CLevelMgr.obj
 D:\EnterTheGungeon\Project\Engine\extern.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\extern.obj
+D:\EnterTheGungeon\Project\Engine\imgui.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui.obj
+D:\EnterTheGungeon\Project\Engine\imgui_demo.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui_demo.obj
+D:\EnterTheGungeon\Project\Engine\imgui_draw.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui_draw.obj
+D:\EnterTheGungeon\Project\Engine\imgui_impl_dx11.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui_impl_dx11.obj
+D:\EnterTheGungeon\Project\Engine\imgui_impl_win32.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui_impl_win32.obj
+D:\EnterTheGungeon\Project\Engine\imgui_tables.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui_tables.obj
+D:\EnterTheGungeon\Project\Engine\imgui_widgets.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\imgui_widgets.obj
 D:\EnterTheGungeon\Project\Engine\pch.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\pch.obj
