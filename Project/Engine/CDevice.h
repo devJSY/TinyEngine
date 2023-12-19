@@ -25,6 +25,11 @@ private:
 
     CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];
 
+private:
+    // ImGui Viewport 
+    ComPtr<ID3D11Texture2D> m_ViewportRTTex;
+    ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
+
 public:
     int init(HWND _hWnd, Vec2 _vResolution);
     void ClearRenderTarget(float (&Color)[4]);
@@ -35,6 +40,12 @@ public:
 
     CConstBuffer* GetConstBuffer(CB_TYPE _type) const { return m_arrCB[(UINT)_type]; }
     Vec2 GetRenderResolution() { return m_vRenderResolution; }
+
+public:
+    ID3D11ShaderResourceView* GetViewportSRV() const { return m_ViewportSRView.Get(); }
+
+public:
+    void CopyToViewport();
 
 private:
     int CreateSwapChain();

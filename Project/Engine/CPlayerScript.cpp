@@ -17,12 +17,12 @@ void CPlayerScript::tick()
 
    	if (KEY_PRESSED(KEY::UP))
     {
-        vPos.z += DT * m_Speed;
+        vPos.y += DT * m_Speed;
     }
 
     if (KEY_PRESSED(KEY::DOWN))
     {
-        vPos.z -= DT * m_Speed;
+        vPos.y -= DT * m_Speed;
     }
 
     if (KEY_PRESSED(KEY::LEFT))

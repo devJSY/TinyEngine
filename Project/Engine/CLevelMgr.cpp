@@ -13,6 +13,7 @@
 #include "CEngine.h"
 
 CLevelMgr::CLevelMgr()
+    : m_CurLevel(nullptr)
 {
 }
 
@@ -84,8 +85,32 @@ void CLevelMgr::render()
 
     m_CurLevel->render();
 
+    // 씬에서 ImGUI 패널 추가
+    {
+        ImGui::Begin("Test");
+        ImGui::Text("Hello World!");
+        ImGui::End();
+    }
+
     if (UseImGui)
     {
+        // Level Rneder 이후 복사해야함
+        {
+            // Viewport
+            CDevice::GetInst()->CopyToViewport();
+            ID3D11ShaderResourceView* ViewportSRV = CDevice::GetInst()->GetViewportSRV();
+
+            Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
+            ImGui::Begin("Viewport");
+            ImGui::Text("pointer = %p", ViewportSRV);
+            ImGui::Text("size = %d x %d", (int)Resolution.x, (int)Resolution.y);
+            ImGui::Image((void*)ViewportSRV, ImVec2(Resolution.x, Resolution.y));
+            ImGui::End();
+        }
+
+        // Rendering
+        ImGui::Render();
+
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
         ImGuiIO& io = ImGui::GetIO();
         // Update and Render additional Platform Windows
@@ -101,8 +126,6 @@ void CLevelMgr::render()
 
 void CLevelMgr::ImGUIRender()
 {
-    bool show_demo_window = true;
-
     // Start the Dear ImGui frame
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -110,12 +133,7 @@ void CLevelMgr::ImGUIRender()
 
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to
-    // learn more about Dear ImGui!).
+    bool show_demo_window = true;
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
-
-
-    // Rendering
-    ImGui::Render();
 }

@@ -22,9 +22,17 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
     m_vRenderResolution = _vResolution;
 
     // 장치 초기화
-    D3D_FEATURE_LEVEL eLevel = D3D_FEATURE_LEVEL_11_0;
-    if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0,
-                                 D3D11_SDK_VERSION, m_Device.GetAddressOf(), &eLevel, m_Context.GetAddressOf())))
+    UINT createDeviceFlags = 0;
+#if defined(DEBUG) || defined(_DEBUG)
+    createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+    const D3D_FEATURE_LEVEL featureLevels[2] = {D3D_FEATURE_LEVEL_11_0, // 더 높은 버전이 먼저 오도록 설정
+                                                D3D_FEATURE_LEVEL_9_3};
+    D3D_FEATURE_LEVEL featureLevel;
+    if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, createDeviceFlags, featureLevels,
+                                 ARRAYSIZE(featureLevels), D3D11_SDK_VERSION, m_Device.GetAddressOf(), &featureLevel,
+                                 m_Context.GetAddressOf())))
     {
         MessageBox(nullptr, L"Device, Context 생성 실패", L"Device 초기화 실패", MB_OK);
         return E_FAIL;
@@ -68,12 +76,17 @@ void CDevice::ClearRenderTarget(float (&Color)[4])
     m_Context->ClearRenderTargetView(m_RTView.Get(), Color);
     m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
 
-    m_Context->ClearDepthStencilView(m_DSView.Get(), D3D11_CLEAR_DEPTH || D3D11_CLEAR_STENCIL, 1.f, 0);
+    m_Context->ClearDepthStencilView(m_DSView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
 void CDevice::Present()
 {
     m_SwapChain->Present(0, 0);
+}
+
+void CDevice::CopyToViewport()
+{
+    m_Context->CopyResource(m_ViewportRTTex.Get(), m_RTTex.Get());
 }
 
 int CDevice::CreateSwapChain()
@@ -83,7 +96,7 @@ int CDevice::CreateSwapChain()
 
     // SwapChain 이 관리하는 Buffer(RenderTarget)의 구성 정보
     tDesc.BufferCount = 1;
-    tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    tDesc.BufferUsage = DXGI_USAGE_SHADER_INPUT | DXGI_USAGE_RENDER_TARGET_OUTPUT;
     tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
     tDesc.BufferDesc.Height = (UINT)m_vRenderResolution.y;
     tDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -124,6 +137,17 @@ int CDevice::CreateTargetView()
 
     // RenderTargetView
     m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTView.GetAddressOf());
+
+    // Create texture.
+    D3D11_TEXTURE2D_DESC txtDesc = {};
+    m_RTTex->GetDesc(&txtDesc);
+
+    txtDesc.Usage = D3D11_USAGE_DYNAMIC;
+    txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    m_Device->CreateTexture2D(&txtDesc, nullptr, m_ViewportRTTex.GetAddressOf());
+    m_Device->CreateShaderResourceView(m_ViewportRTTex.Get(), nullptr, m_ViewportSRView.GetAddressOf());
 
     // DepthStencillTexture 생성
     D3D11_TEXTURE2D_DESC Desc = {};
