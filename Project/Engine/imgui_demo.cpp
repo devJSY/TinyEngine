@@ -275,7 +275,7 @@ void ImGui::ShowDemoWindow(bool* p_open)
     static bool show_app_main_menu_bar = false;
     static bool show_app_console = false;
     static bool show_app_custom_rendering = false;
-    static bool show_app_dockspace = false;
+    static bool show_app_dockspace = false; 
     static bool show_app_documents = false;
     static bool show_app_log = false;
     static bool show_app_layout = false;

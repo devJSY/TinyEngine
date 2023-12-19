@@ -66,6 +66,8 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 void CDevice::ClearRenderTarget(float (&Color)[4])
 {
     m_Context->ClearRenderTargetView(m_RTView.Get(), Color);
+    m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
+
     m_Context->ClearDepthStencilView(m_DSView.Get(), D3D11_CLEAR_DEPTH || D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 

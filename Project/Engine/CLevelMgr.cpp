@@ -49,7 +49,7 @@ void CLevelMgr::init()
     pObj->AddComponent(new CMeshRender);
     pObj->AddComponent(new CPlayerScript);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+    pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
     pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -79,20 +79,21 @@ void CLevelMgr::render()
         ImGUIRender();
     }
 
-    float ClearColor[4] = {0.3f, 0.3f, 0.3f, 1.f};
+    float ClearColor[4] = {0.3f, 0.8f, 0.3f, 1.f};
     CDevice::GetInst()->ClearRenderTarget(ClearColor);
+
     m_CurLevel->render();
 
     if (UseImGui)
     {
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-        //ImGuiIO& io = ImGui::GetIO();
-        //// Update and Render additional Platform Windows
-        //if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        //{
-        //    ImGui::UpdatePlatformWindows();
-        //    ImGui::RenderPlatformWindowsDefault();
-        //}
+        ImGuiIO& io = ImGui::GetIO();
+        // Update and Render additional Platform Windows
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+        }
     }
 
     CDevice::GetInst()->Present();
@@ -107,10 +108,13 @@ void CLevelMgr::ImGUIRender()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to
     // learn more about Dear ImGui!).
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
+
 
     // Rendering
     ImGui::Render();

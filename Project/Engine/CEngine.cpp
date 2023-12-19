@@ -8,6 +8,8 @@
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
 
+#include <iostream>
+
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
@@ -32,7 +34,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     m_vResolution = _vResolution;
 
     RECT rt = {0, 0, (int)m_vResolution.x, (int)m_vResolution.y};
-    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
+    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, SetMenu(m_hMainWnd, nullptr)); // ¸Þ´º¹Ù Off
     SetWindowPos(m_hMainWnd, nullptr, 10, 10, rt.right - rt.left, rt.bottom - rt.top, 0);
 
     if (FAILED(CDevice::GetInst()->init(m_hMainWnd, m_vResolution)))
@@ -47,7 +49,6 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
     CLevelMgr::GetInst()->init();
-
 
     if (m_UseImGui)
     {
@@ -79,7 +80,7 @@ int CEngine::InitImGui()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
-    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
     //  io.ConfigViewportsNoAutoMerge = true;
     //  io.ConfigViewportsNoTaskBarIcon = true;
     //  io.ConfigViewportsNoDefaultParent = true;
@@ -91,7 +92,6 @@ int CEngine::InitImGui()
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    // ImGui::StyleColorsLight();
 
     // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular
     // ones.
