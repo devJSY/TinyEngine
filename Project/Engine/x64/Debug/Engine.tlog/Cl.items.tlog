@@ -1,6 +1,7 @@
 D:\EnterTheGungeon\Project\Engine\CAsset.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CAsset.obj
 D:\EnterTheGungeon\Project\Engine\CAssetMgr.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CAssetMgr.obj
 D:\EnterTheGungeon\Project\Engine\CCamera.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CCamera.obj
+D:\EnterTheGungeon\Project\Engine\CCameraMoveScript.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CCameraMoveScript.obj
 D:\EnterTheGungeon\Project\Engine\CComponent.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CComponent.obj
 D:\EnterTheGungeon\Project\Engine\CConstBuffer.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CConstBuffer.obj
 D:\EnterTheGungeon\Project\Engine\CDevice.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CDevice.obj
@@ -22,4 +23,5 @@ D:\EnterTheGungeon\Project\Engine\CTimeMgr.cpp;D:\EnterTheGungeon\Project\Engine
 D:\EnterTheGungeon\Project\Engine\CTransform.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CTransform.obj
 D:\EnterTheGungeon\Project\Engine\Engine.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\Engine.obj
 D:\EnterTheGungeon\Project\Engine\CLevelMgr.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\CLevelMgr.obj
+D:\EnterTheGungeon\Project\Engine\extern.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\extern.obj
 D:\EnterTheGungeon\Project\Engine\pch.cpp;D:\EnterTheGungeon\Project\Engine\x64\Debug\pch.obj

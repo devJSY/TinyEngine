@@ -97,6 +97,9 @@
     <ClInclude Include="CLayer.h">
       <Filter>05. Level</Filter>
     </ClInclude>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -173,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="CLayer.cpp">
       <Filter>05. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="extern.cpp">
+      <Filter>01. Header</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

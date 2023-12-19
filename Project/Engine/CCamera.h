@@ -20,6 +20,9 @@ private:
     Matrix m_matProj;
 
 public:
+    virtual void finaltick() override;
+
+public:
     CCamera();
     virtual ~CCamera();
 };
