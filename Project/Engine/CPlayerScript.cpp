@@ -35,17 +35,17 @@ void CPlayerScript::tick()
         vPos.x += DT * m_Speed;
     }
 
-    if (KEY_PRESSED(KEY::X))
+    if (KEY_PRESSED(KEY::NUM1))
     {
         vRot.x += DT * XM_PI;
     }
 
-    if (KEY_PRESSED(KEY::Y))
+    if (KEY_PRESSED(KEY::NUM2))
     {
         vRot.y += DT * XM_PI;
     }
 
-    if (KEY_PRESSED(KEY::Z))
+    if (KEY_PRESSED(KEY::NUM3))
     {
         vRot.z += DT * XM_PI;
     }

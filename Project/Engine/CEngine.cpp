@@ -11,7 +11,7 @@
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
-    , m_UseImGui(false)
+    , m_UseImGui(true)
 {
 }
 
@@ -48,7 +48,11 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CAssetMgr::GetInst()->init();
     CLevelMgr::GetInst()->init();
 
-    InitImGui();
+
+    if (m_UseImGui)
+    {
+        InitImGui();
+    }
 
     return S_OK;
 }
@@ -67,8 +71,6 @@ void CEngine::progress()
 
 int CEngine::InitImGui()
 {
-    m_UseImGui = true;
-
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -78,14 +80,14 @@ int CEngine::InitImGui()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    // io.ConfigViewportsNoAutoMerge = true;
-    // io.ConfigViewportsNoTaskBarIcon = true;
-    // io.ConfigViewportsNoDefaultParent = true;
-    // io.ConfigDockingAlwaysTabBar = true;
-    // io.ConfigDockingTransparentPayload = true;
-    // io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
-    // WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
-    // FIXME-DPI: Experimental.
+    //  io.ConfigViewportsNoAutoMerge = true;
+    //  io.ConfigViewportsNoTaskBarIcon = true;
+    //  io.ConfigViewportsNoDefaultParent = true;
+    //  io.ConfigDockingAlwaysTabBar = true;
+    //  io.ConfigDockingTransparentPayload = true;
+    //  io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
+    //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
+    //  FIXME-DPI: Experimental.
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

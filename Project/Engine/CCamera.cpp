@@ -28,23 +28,28 @@ void CCamera::finaltick()
     Vec3 vCamPos = Transform()->GetRelativePos();
     Matrix matTrans = XMMatrixTranslation(-vCamPos.x, -vCamPos.y, -vCamPos.z);
 
-    // 카메라의 각 우, 상, 전 방 방향을 기저축이랑 일치시키도록 회전하는 회전행렬
-    Vec3 vRight = Transform()->GetDir(DIR_TYPE::RIGHT);
-    Vec3 vUp = Transform()->GetDir(DIR_TYPE::UP);
-    Vec3 vFront = Transform()->GetDir(DIR_TYPE::FRONT);
+    //// 카메라의 각 우, 상, 전 방 방향을 기저축이랑 일치시키도록 회전하는 회전행렬
+    // Vec3 vRight = Transform()->GetDir(DIR_TYPE::RIGHT);
+    // Vec3 vUp = Transform()->GetDir(DIR_TYPE::UP);
+    // Vec3 vFront = Transform()->GetDir(DIR_TYPE::FRONT);
 
-    Matrix matRotate = XMMatrixIdentity();
-    matRotate._11 = vRight.x;
-    matRotate._12 = vUp.x;
-    matRotate._13 = vFront.x;
+    // Matrix matRotate = XMMatrixIdentity();
+    // matRotate._11 = vRight.x;
+    // matRotate._12 = vUp.x;
+    // matRotate._13 = vFront.x;
 
-    matRotate._21 = vRight.y;
-    matRotate._22 = vUp.y;
-    matRotate._23 = vFront.y;
+    // matRotate._21 = vRight.y;
+    // matRotate._22 = vUp.y;
+    // matRotate._23 = vFront.y;
 
-    matRotate._31 = vRight.z;
-    matRotate._32 = vUp.z;
-    matRotate._33 = vFront.z;
+    // matRotate._31 = vRight.z;
+    // matRotate._32 = vUp.z;
+    // matRotate._33 = vFront.z;
+
+    Vec3 vCamRot = Transform()->GetRelativeRotation();
+    Matrix matRotate =
+        Matrix::CreateRotationX(vCamRot.x) * Matrix::CreateRotationY(vCamRot.y) * Matrix::CreateRotationZ(vCamRot.z);
+    matRotate = matRotate.Transpose(); // 직교행렬의 역행렬은 전치행렬
 
     // 이동 x 회전 = view 행렬
     m_matView = matTrans * matRotate;
