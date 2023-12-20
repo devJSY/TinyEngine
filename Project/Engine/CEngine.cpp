@@ -48,21 +48,30 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
 
 void CEngine::progress()
 {
+    // ===========================
+    // tick
+    // ===========================
+
     // Manager Update
     CTimeMgr::GetInst()->tick();
     CKeyMgr::GetInst()->tick();
+
+    // Level Update
+    CEditorMgr::GetInst()->tick(); // Editor tick 먼저 호출해야 Level에서 Imgui호출가능
+    CLevelMgr::GetInst()->tick();
+
+
+    // ===========================
+    // Rendering
+    // ===========================
 
     // Clear
     float ClearColor[4] = {0.3f, 0.8f, 0.3f, 1.f};
     CDevice::GetInst()->ClearRenderTarget(ClearColor);
 
-    // Level Update
-    CEditorMgr::GetInst()->tick();
-    CLevelMgr::GetInst()->tick();
-
     // Level Render
-    CEditorMgr::GetInst()->render();
     CLevelMgr::GetInst()->render();
+    CEditorMgr::GetInst()->render(); // Level Render 이후 호출
 
     // Present
     CDevice::GetInst()->Present();
