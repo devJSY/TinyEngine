@@ -124,6 +124,15 @@
     <ClInclude Include="imgui_internal.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="CEditorMgr.h">
+      <Filter>04. Manager\EditorMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CEditor.h">
+      <Filter>20. Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelEditor.h">
+      <Filter>20. Editor\LevelEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -228,6 +237,15 @@
     <ClCompile Include="imgui_impl_win32.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="CEditorMgr.cpp">
+      <Filter>04. Manager\EditorMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditor.cpp">
+      <Filter>20. Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelEditor.cpp">
+      <Filter>20. Editor\LevelEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -331,6 +349,15 @@
     </Filter>
     <Filter Include="imgui">
       <UniqueIdentifier>{18a059c4-7e85-4c7a-aadf-f1e5440c30c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\EditorMgr">
+      <UniqueIdentifier>{09b1b8a6-d707-4b61-9b04-c1b48e49d632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor">
+      <UniqueIdentifier>{3cff4e82-0f38-4e70-a8fe-8c48c982fdb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\LevelEditor">
+      <UniqueIdentifier>{9c4bd6e4-cb1e-4a94-abfd-2cf8fc04fe59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -76,3 +76,10 @@ enum class CB_TYPE
 
     END,
 };
+
+enum class EDITOR_TYPE
+{
+    LEVEL,
+
+    END,
+};

@@ -163,6 +163,8 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CDevice.h" />
+    <ClInclude Include="CEditor.h" />
+    <ClInclude Include="CEditorMgr.h" />
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CGameObject.h" />
@@ -170,6 +172,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLayer.h" />
     <ClInclude Include="CLevel.h" />
+    <ClInclude Include="CLevelEditor.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="components.h" />
@@ -206,6 +209,8 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CDevice.cpp" />
+    <ClCompile Include="CEditor.cpp" />
+    <ClCompile Include="CEditorMgr.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CGameObject.cpp" />
@@ -213,6 +218,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
+    <ClCompile Include="CLevelEditor.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CPathMgr.cpp" />

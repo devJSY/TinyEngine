@@ -7,25 +7,16 @@
 #include "CKeyMgr.h"
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
-
-#include <iostream>
+#include "CEditorMgr.h"
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
-    , m_UseImGui(true)
 {
 }
 
 CEngine::~CEngine()
 {
-    if (m_UseImGui)
-    {
-        // Cleanup
-        ImGui_ImplDX11_Shutdown();
-        ImGui_ImplWin32_Shutdown();
-        ImGui::DestroyContext();
-    }
 }
 
 int CEngine::init(HWND _hWnd, Vec2 _vResolution)
@@ -49,11 +40,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
     CLevelMgr::GetInst()->init();
-
-    if (m_UseImGui)
-    {
-        InitImGui();
-    }
+    CEditorMgr::GetInst()->init();
 
     return S_OK;
 }
@@ -64,47 +51,18 @@ void CEngine::progress()
     CTimeMgr::GetInst()->tick();
     CKeyMgr::GetInst()->tick();
 
+    // Clear
+    float ClearColor[4] = {0.3f, 0.8f, 0.3f, 1.f};
+    CDevice::GetInst()->ClearRenderTarget(ClearColor);
+
     // Level Update
+    CEditorMgr::GetInst()->tick();
     CLevelMgr::GetInst()->tick();
 
+    // Level Render
+    CEditorMgr::GetInst()->render();
     CLevelMgr::GetInst()->render();
-}
 
-int CEngine::InitImGui()
-{
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    //  io.ConfigViewportsNoAutoMerge = true;
-    //  io.ConfigViewportsNoTaskBarIcon = true;
-    //  io.ConfigViewportsNoDefaultParent = true;
-    //  io.ConfigDockingAlwaysTabBar = true;
-    //  io.ConfigDockingTransparentPayload = true;
-    //  io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
-    //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
-    //  FIXME-DPI: Experimental.
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular
-    // ones.
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplWin32_Init(m_hMainWnd);
-    ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
-
-    return S_OK;
+    // Present
+    CDevice::GetInst()->Present();
 }
