@@ -32,13 +32,13 @@ void CTaskMgr::tick()
             break;
         case WINDOW_RESIZE:
             {
-                UINT width = (UINT)m_vecTask[i].Param_1;
-                UINT height = (UINT)m_vecTask[i].Param_2;
-                Vec2 resolution = Vec2(width, height);
-                CEngine::GetInst()->SetResolution(resolution);
-                CDevice::GetInst()->ReSize(resolution);
+                //UINT width = (UINT)m_vecTask[i].Param_1;
+                //UINT height = (UINT)m_vecTask[i].Param_2;
+                //Vec2 resolution = Vec2(width, height);
+                //CEngine::GetInst()->SetResolution(resolution);
+                //CDevice::GetInst()->ReSize(resolution);
 
-                std::cout << "Window Size Changed !!" << std::endl;
+                //std::cout << "Window Size Changed !!" << std::endl;
             }
             break;
         }

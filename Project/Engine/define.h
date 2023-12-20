@@ -77,6 +77,48 @@ enum class CB_TYPE
     END,
 };
 
+// Rasterizer State Type
+enum class RS_TYPE
+{
+    CULL_BACK,
+    CULL_FRONT,
+    CULL_NONE,
+    WIRE_FRAME,
+
+    END,
+};
+
+// DepthStencil State Type
+enum class DS_TYPE
+{
+    LESS,       // 작은게 통과			깊이 기록 O
+    LESS_EQUAL, // 작거나 같으면 통과		깊이 기록 O
+
+    GREATER,       // 더 멀면 통과			깊이 기록 O
+    GREATER_EQUAL, // 더 멀거나 같으면 통과	깊이 기록 O
+
+    NO_TEST,  // 깊이 테스트 X			깊이 기록 O
+    NO_WRITE, // 깊이 테스트 O			깊이 기록 X
+
+    NO_TEST_NO_WRITE, // 깊이 테스트 X			깊이 기록 X
+
+    END,
+};
+
+// Blend State
+enum class BS_TYPE
+{
+    DEFAULT,
+
+    ALPHA_BLEND,
+
+    ONE_ONE,
+
+    END,
+};
+
+
+
 enum class EDITOR_TYPE
 {
     LEVEL,
