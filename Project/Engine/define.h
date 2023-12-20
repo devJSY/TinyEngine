@@ -83,3 +83,18 @@ enum class EDITOR_TYPE
 
     END,
 };
+
+enum TASK_TYPE
+{
+    // Param1 : Layer Type, Param2 : Object Adress
+    CREATE_OBJECT,
+
+    // Param1 : Object Adress
+    DELETE_OBJECT,
+
+    // Param1 : LEVEL_TYPE
+    LEVEL_CHANGE,
+
+    // Param1 : Width , Param2 : Height
+    WINDOW_RESIZE,
+};

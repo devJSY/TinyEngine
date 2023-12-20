@@ -9,6 +9,9 @@ public:
     virtual void finaltick() override;
     virtual void render() override;
 
+private:
+    void SetDarkThemeColors();
+
 public:
     CLevelEditor();
     virtual ~CLevelEditor();

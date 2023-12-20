@@ -8,6 +8,7 @@
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
 #include "CEditorMgr.h"
+#include "CTaskMgr.h"
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
@@ -65,4 +66,7 @@ void CEngine::progress()
 
     // Present
     CDevice::GetInst()->Present();
+
+    // task Execute
+    CTaskMgr::GetInst()->tick();
 }

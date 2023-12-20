@@ -133,6 +133,9 @@
     <ClInclude Include="CLevelEditor.h">
       <Filter>20. Editor\LevelEditor</Filter>
     </ClInclude>
+    <ClInclude Include="CTaskMgr.h">
+      <Filter>04. Manager\TaskMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -246,6 +249,9 @@
     <ClCompile Include="CLevelEditor.cpp">
       <Filter>20. Editor\LevelEditor</Filter>
     </ClCompile>
+    <ClCompile Include="CTaskMgr.cpp">
+      <Filter>04. Manager\TaskMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -358,6 +364,9 @@
     </Filter>
     <Filter Include="20. Editor\LevelEditor">
       <UniqueIdentifier>{9c4bd6e4-cb1e-4a94-abfd-2cf8fc04fe59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\TaskMgr">
+      <UniqueIdentifier>{71673e13-8b50-409a-b41e-f98964acc927}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
