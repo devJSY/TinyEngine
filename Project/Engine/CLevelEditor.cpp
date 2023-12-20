@@ -75,6 +75,10 @@ void CLevelEditor::finaltick()
     ImGui::Begin("Test");
     ImGui::Text("Hello World!");
     ImGui::End();
+
+    ImGui::Begin("Test2");
+    ImGui::Text("Hello World!!");
+    ImGui::End();
 }
 
 void CLevelEditor::render()
@@ -86,8 +90,8 @@ void CLevelEditor::render()
     Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
     ImGui::Begin("Viewport");
 
-    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    std::cout << viewportPanelSize.x << " " << viewportPanelSize.y << std::endl;  
+    //ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+    //std::cout << viewportPanelSize.x << " " << viewportPanelSize.y << std::endl;
 
     ImGui::Image((void*)ViewportSRV, ImVec2(Resolution.x, Resolution.y));
     ImGui::End();

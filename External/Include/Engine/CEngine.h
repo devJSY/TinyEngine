@@ -9,6 +9,7 @@ private:
     Vec2 m_vResolution; // 해상도 정보
 
 public:
+    void SetResolution(Vec2 resolution) { m_vResolution = resolution; }
     HWND GetMainWind() const { return m_hMainWnd; }
 
 public:

@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CTaskMgr.h"
 
+#include "CEngine.h"
+#include "CDevice.h"
+
 CTaskMgr::CTaskMgr()
 {
 }
@@ -29,6 +32,11 @@ void CTaskMgr::tick()
             break;
         case WINDOW_RESIZE:
             {
+                UINT width = (UINT)m_vecTask[i].Param_1;
+                UINT height = (UINT)m_vecTask[i].Param_2;
+                CEngine::GetInst()->SetResolution(Vec2(width, height));
+
+                std::cout << "Window Size Changed !!" << std::endl;
             }
             break;
         }
