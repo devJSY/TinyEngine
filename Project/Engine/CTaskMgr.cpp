@@ -34,7 +34,9 @@ void CTaskMgr::tick()
             {
                 UINT width = (UINT)m_vecTask[i].Param_1;
                 UINT height = (UINT)m_vecTask[i].Param_2;
-                CEngine::GetInst()->SetResolution(Vec2(width, height));
+                Vec2 resolution = Vec2(width, height);
+                CEngine::GetInst()->SetResolution(resolution);
+                CDevice::GetInst()->ReSize(resolution);
 
                 std::cout << "Window Size Changed !!" << std::endl;
             }

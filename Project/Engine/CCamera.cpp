@@ -23,6 +23,11 @@ CCamera::~CCamera()
 
 void CCamera::finaltick()
 {
+    // 매프레임 화면비 계산
+    Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
+    m_Width = vResol.x;
+    m_AspectRatio = vResol.x / vResol.y;
+
     // 뷰 행렬을 계산한다.
     // 카메라를 원점으로 이동시키는 이동 행렬
     Vec3 vCamPos = Transform()->GetRelativePos();

@@ -51,17 +51,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
-    D3D11_VIEWPORT ViewportDesc = {};
-
-    ViewportDesc.MinDepth = 0;
-    ViewportDesc.MaxDepth = 1.f;
-
-    ViewportDesc.TopLeftX = 0;
-    ViewportDesc.TopLeftY = 0;
-    ViewportDesc.Width = m_vRenderResolution.x;
-    ViewportDesc.Height = m_vRenderResolution.y;
-
-    CONTEXT->RSSetViewports(1, &ViewportDesc);
+    SetViewport();
 
     if (FAILED(CreateConstBuffer()))
     {
@@ -87,6 +77,89 @@ void CDevice::Present()
 void CDevice::CopyToViewport()
 {
     m_Context->CopyResource(m_ViewportRTTex.Get(), m_RTTex.Get());
+}
+
+int CDevice::ReSize(Vec2 resolution)
+{
+    m_vRenderResolution = resolution;
+
+    m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
+
+    if (FAILED(CreateBuffers()))
+    {
+        return E_FAIL;
+    }
+
+    SetViewport();
+}
+
+int CDevice::CreateBuffers()
+{
+    // Create texture.
+    D3D11_TEXTURE2D_DESC txtDesc = {};
+    m_RTTex->GetDesc(&txtDesc);
+
+    txtDesc.Usage = D3D11_USAGE_DYNAMIC;
+    txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    m_Device->CreateTexture2D(&txtDesc, nullptr, m_ViewportRTTex.GetAddressOf());
+    m_Device->CreateShaderResourceView(m_ViewportRTTex.Get(), nullptr, m_ViewportSRView.GetAddressOf());
+
+    // DepthStencillTexture 생성
+    D3D11_TEXTURE2D_DESC Desc = {};
+
+    // 픽셀 포맷은 Depth 3바이트 Stencil 1바이트
+    Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+    // DepthStencilState 텍스쳐 해상도는 반드시 RenderTargetTexture 와 동일해야한다.
+    Desc.Width = (UINT)m_vRenderResolution.x;
+    Desc.Height = (UINT)m_vRenderResolution.y;
+
+    // DepthStencil 용도의 텍스쳐
+    Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+    // CPU 접근 불가
+    Desc.CPUAccessFlags = 0;
+    Desc.Usage = D3D11_USAGE_DEFAULT;
+
+    // 샘플링
+    Desc.SampleDesc.Count = 1;
+    Desc.SampleDesc.Quality = 0;
+
+    // 저퀄리티 버전의 사본 생성여부
+    Desc.MipLevels = 1;
+    Desc.MiscFlags = 0;
+
+    Desc.ArraySize = 1;
+
+    if (FAILED(m_Device->CreateTexture2D(&Desc, nullptr, m_DSTex.GetAddressOf())))
+    {
+        return E_FAIL;
+    }
+
+    // DepthStencilView
+    m_Device->CreateDepthStencilView(m_DSTex.Get(), nullptr, m_DSView.GetAddressOf());
+
+    // OM(Output Merge State) 에 RenderTargetTexture 와 DepthStencilTexture 를 전달한다.
+    m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
+
+    return S_OK;
+}
+
+void CDevice::SetViewport()
+{
+    D3D11_VIEWPORT ViewportDesc = {};
+
+    ViewportDesc.MinDepth = 0;
+    ViewportDesc.MaxDepth = 1.f;
+
+    ViewportDesc.TopLeftX = 0;
+    ViewportDesc.TopLeftY = 0;
+    ViewportDesc.Width = m_vRenderResolution.x;
+    ViewportDesc.Height = m_vRenderResolution.y;
+
+    CONTEXT->RSSetViewports(1, &ViewportDesc);
 }
 
 int CDevice::CreateSwapChain()
@@ -138,54 +211,10 @@ int CDevice::CreateTargetView()
     // RenderTargetView
     m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTView.GetAddressOf());
 
-    // Create texture.
-    D3D11_TEXTURE2D_DESC txtDesc = {};
-    m_RTTex->GetDesc(&txtDesc);
-
-    txtDesc.Usage = D3D11_USAGE_DYNAMIC;
-    txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    m_Device->CreateTexture2D(&txtDesc, nullptr, m_ViewportRTTex.GetAddressOf());
-    m_Device->CreateShaderResourceView(m_ViewportRTTex.Get(), nullptr, m_ViewportSRView.GetAddressOf());
-
-    // DepthStencillTexture 생성
-    D3D11_TEXTURE2D_DESC Desc = {};
-
-    // 픽셀 포맷은 Depth 3바이트 Stencil 1바이트
-    Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-    // DepthStencilState 텍스쳐 해상도는 반드시 RenderTargetTexture 와 동일해야한다.
-    Desc.Width = (UINT)m_vRenderResolution.x;
-    Desc.Height = (UINT)m_vRenderResolution.y;
-
-    // DepthStencil 용도의 텍스쳐
-    Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-    // CPU 접근 불가
-    Desc.CPUAccessFlags = 0;
-    Desc.Usage = D3D11_USAGE_DEFAULT;
-
-    // 샘플링
-    Desc.SampleDesc.Count = 1;
-    Desc.SampleDesc.Quality = 0;
-
-    // 저퀄리티 버전의 사본 생성여부
-    Desc.MipLevels = 1;
-    Desc.MiscFlags = 0;
-
-    Desc.ArraySize = 1;
-
-    if (FAILED(m_Device->CreateTexture2D(&Desc, nullptr, m_DSTex.GetAddressOf())))
+    if (FAILED(CreateBuffers()))
     {
         return E_FAIL;
     }
-
-    // DepthStencilView
-    m_Device->CreateDepthStencilView(m_DSTex.Get(), nullptr, m_DSView.GetAddressOf());
-
-    // OM(Output Merge State) 에 RenderTargetTexture 와 DepthStencilTexture 를 전달한다.
-    m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
 
     return S_OK;
 }

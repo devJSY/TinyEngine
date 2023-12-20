@@ -26,7 +26,7 @@ private:
     CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];
 
 private:
-    // ImGui Viewport 
+    // ImGui Viewport
     ComPtr<ID3D11Texture2D> m_ViewportRTTex;
     ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
 
@@ -46,6 +46,11 @@ public:
 
 public:
     void CopyToViewport();
+    int ReSize(Vec2 resolution);
+
+private:
+    int CreateBuffers();
+    void SetViewport();
 
 private:
     int CreateSwapChain();
