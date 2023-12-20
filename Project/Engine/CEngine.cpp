@@ -84,7 +84,6 @@ void CEngine::progress()
 
         if (m_vResolution.x != width || m_vResolution.y != height)
         {
-            std::cout << width << " " << height << std::endl;
             FTask task;
             task.Type = TASK_TYPE::WINDOW_RESIZE;
             task.Param_1 = (INT_PTR)width;
