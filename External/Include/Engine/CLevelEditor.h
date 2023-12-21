@@ -8,6 +8,10 @@ private:
     ComPtr<ID3D11Texture2D> m_ViewportRTTex;
     ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
 
+    CEntity* m_SelectionEntity;
+
+    bool m_show_Viewport2;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
