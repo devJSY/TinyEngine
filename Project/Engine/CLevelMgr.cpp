@@ -13,6 +13,8 @@
 #include "CEngine.h"
 #include "CTaskMgr.h"
 
+#include "CTexture.h"
+
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
 {
@@ -26,6 +28,12 @@ CLevelMgr::~CLevelMgr()
 
 void CLevelMgr::init()
 {
+    CTexture* pTex = CAssetMgr::GetInst()->Load<CTexture>(L"PlayerTexture", L"texture\\Character.png");
+    if (nullptr != pTex)
+    {
+        pTex->UpdateData(0);
+    }
+
     m_CurLevel = new CLevel;
 
     m_CurLevel->begin();

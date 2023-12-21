@@ -24,7 +24,11 @@ private:
 
     ASSET_TYPE GetType() const { return m_Type; }
 
+    virtual int Load(const wstring& _strFilePath) { return E_FAIL; }
+
 public:
     CAsset(ASSET_TYPE _Type);
     virtual ~CAsset();
+
+    friend class CAssetMgr;
 };

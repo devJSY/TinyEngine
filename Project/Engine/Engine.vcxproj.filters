@@ -136,6 +136,9 @@
     <ClInclude Include="CTaskMgr.h">
       <Filter>04. Manager\TaskMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>06. Asset\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -252,6 +255,9 @@
     <ClCompile Include="CTaskMgr.cpp">
       <Filter>04. Manager\TaskMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>06. Asset\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -367,6 +373,18 @@
     </Filter>
     <Filter Include="04. Manager\TaskMgr">
       <UniqueIdentifier>{71673e13-8b50-409a-b41e-f98964acc927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\Material">
+      <UniqueIdentifier>{f621e868-f531-4089-b323-1959e05a63e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\MeshData">
+      <UniqueIdentifier>{e37f76e7-086b-48a7-8b13-ced27096ec30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\Sound">
+      <UniqueIdentifier>{c3573a7c-3e27-4c5c-8ab1-07b7b592d086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\Texture">
+      <UniqueIdentifier>{6ef43a2b-d46f-4f70-8436-e6e6158ae4b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

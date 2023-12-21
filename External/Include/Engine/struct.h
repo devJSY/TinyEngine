@@ -14,8 +14,16 @@ struct Vtx
 struct tTransform
 {
     Matrix matWorld;
+    Matrix matWorldInv;
+
     Matrix matView;
+    Matrix matViewInv;
+
     Matrix matProj;
+    Matrix matProjInv;
+
+    Matrix matWV;
+    Matrix matWVP;
 };
 
 extern tTransform g_Transform;

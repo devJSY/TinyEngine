@@ -1,9 +1,9 @@
 #pragma once
 #include "singleton.h"
 
-#include "CAsset.h"
+#include "CPathMgr.h"
 
-// 임시
+#include "CTexture.h"
 #include "CMesh.h"
 #include "CGraphicsShader.h"
 
@@ -26,6 +26,9 @@ public:
 
     template <typename T>
     T* FindAsset(const wstring& _strKey);
+
+    template <typename T>
+    T* Load(const wstring& _strKey, const wstring& _strRelativePath);
 };
 
 template <typename T>
@@ -37,6 +40,8 @@ ASSET_TYPE GetAssetType()
 
     if (&info == &typeid(CMesh))
         Type = ASSET_TYPE::MESH;
+    else if (&info == &typeid(CTexture))
+        Type = ASSET_TYPE::TEXTURE;
     else if (&info == &typeid(CGraphicsShader))
         Type = ASSET_TYPE::GRAPHICS_SHADER;
 
@@ -67,4 +72,33 @@ inline T* CAssetMgr::FindAsset(const wstring& _strKey)
     }
 
     return (T*)iter->second;
+}
+
+template <typename T>
+inline T* CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
+{
+    CAsset* pAsset = FindAsset<T>(_strKey);
+
+    // 로딩할 때 사용할 키로 이미 다른 에셋이 있다면
+    if (nullptr != pAsset)
+    {
+        return (T*)pAsset;
+    }
+
+    wstring strFilePath = CPathMgr::GetContentPath();
+    strFilePath += _strRelativePath;
+
+    pAsset = new T;
+    if (FAILED(pAsset->Load(strFilePath)))
+    {
+        MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 실패", MB_OK);
+        delete pAsset;
+        return nullptr;
+    }
+
+    pAsset->SetKey(_strKey);
+    pAsset->SetRelativePath(_strRelativePath);
+    AddAsset<T>(_strKey, (T*)pAsset);
+
+    return (T*)pAsset;
 }
