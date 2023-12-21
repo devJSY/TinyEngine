@@ -87,7 +87,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
     return S_OK;
 }
 
-void CDevice::ClearRenderTarget(float (&Color)[4])
+void CDevice::ClearRenderTarget(const Vec4& Color)
 {
     m_Context->ClearRenderTargetView(m_RTView.Get(), Color);
     m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
@@ -180,7 +180,7 @@ int CDevice::CreateBufferAndView()
 
     // RenderTargetView
     m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTView.GetAddressOf());
-  
+
     // =========================
     // DepthStencillTexture »ý¼º
     // =========================

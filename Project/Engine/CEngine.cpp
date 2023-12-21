@@ -13,7 +13,9 @@
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
+    , m_ClearColor{}
 {
+    m_ClearColor = Vec4(0.3f, 0.8f, 0.3f, 1.f);
 }
 
 CEngine::~CEngine()
@@ -65,8 +67,7 @@ void CEngine::progress()
     // ===========================
 
     // Clear
-    float ClearColor[4] = {0.3f, 0.8f, 0.3f, 1.f};
-    CDevice::GetInst()->ClearRenderTarget(ClearColor);
+    CDevice::GetInst()->ClearRenderTarget(m_ClearColor);
 
     // Level Render
     CLevelMgr::GetInst()->render();

@@ -81,7 +81,6 @@ void CLevelMgr::tick()
         }
     }
 
-
     if (nullptr == m_CurLevel)
         return;
 

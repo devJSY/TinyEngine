@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "CKeyMgr.h"
 #include "CEngine.h"
+#include "CDevice.h"
 
 int g_KeySync[KEY::KEY_END] = {
     '0',        '1',        '2',        '3',         '4',        '5',        '6',        '7',        '8',
@@ -26,6 +27,9 @@ int g_KeySync[KEY::KEY_END] = {
 };
 
 CKeyMgr::CKeyMgr()
+    : m_vMousePos{}
+    , m_vMousePrevPos{}
+    , m_vMouseDrag{}
 {
 }
 

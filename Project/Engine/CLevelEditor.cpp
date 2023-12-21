@@ -7,7 +7,6 @@
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
-    , m_SelectionEntity(nullptr)
     , m_show_Viewport2(false)
 {
 }
@@ -82,13 +81,9 @@ void CLevelEditor::finaltick()
     ImGui::Text("Hello World!");
     ImGui::End();
 
-    static Vec4 clear_color = Vec4(0.45f, 0.55f, 0.60f, 1.00f);
-    static float f = 0.0f;
-
     ImGui::Begin("Test2");
-    ImGui::Text("This is some useful text.");
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-    ImGui::ColorEdit3("clear color", (float*)&clear_color);
+    ImGui::Text("Choice Your Clear Color!");
+    ImGui::ColorEdit3("clear color", (float*)&CEngine::GetInst()->GetClearColor());
     ImGui::Checkbox("Another Viewport", &m_show_Viewport2);
     ImGui::End();
 }
@@ -99,8 +94,8 @@ void CLevelEditor::render()
     CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
 
     ImGui::Begin("Viewport");
-    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    ImGui::Image((void*)m_ViewportSRView.Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
+    ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+    ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
     ImGui::End();
 
     if (m_show_Viewport2)
