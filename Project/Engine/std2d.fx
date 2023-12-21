@@ -6,6 +6,7 @@ cbuffer TRANSFORM : register(b0)
 {
     row_major Matrix g_matWorld;
     row_major Matrix g_matWorldInv;
+    row_major Matrix g_matWorldInvTranspose;
 
     row_major Matrix g_matView;
     row_major Matrix g_matViewInv;

@@ -16,6 +16,7 @@ struct tTransform
 {
     Matrix matWorld;
     Matrix matWorldInv;
+    Matrix matWorldInvTranspose;
 
     Matrix matView;
     Matrix matViewInv;
