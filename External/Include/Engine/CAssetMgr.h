@@ -20,6 +20,11 @@ private:
 public:
     void init();
 
+private:
+    auto MakeSquare();
+    auto MakeBox();
+
+
 public:
     template <typename T>
     void AddAsset(const wstring& _strKey, T* _Asset);

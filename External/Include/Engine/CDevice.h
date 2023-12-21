@@ -47,7 +47,6 @@ public:
 public:
     void Resize(Vec2 resolution);
     ID3D11Texture2D* GetRenderTargetTexture() const { return m_RTTex.Get(); }
-    ID3D11Texture2D* GetDepthStencilTexture() const { return m_DSTex.Get(); }
 
 private:
     int CreateSwapChain();

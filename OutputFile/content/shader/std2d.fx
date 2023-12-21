@@ -24,8 +24,9 @@ SamplerState g_sam_0 : register(s0);
 
 struct VS_IN
 {
-    float4 vColor : COLOR;
     float3 vPos : POSITION; // Sementic
+    float3 vNormal : NORMAL;
+    float4 vColor : COLOR;
     float2 vUV : TEXCOORD;
 };
 
@@ -68,7 +69,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     //    clip(-1);
     //}
     
-    return vColor;
+    return _in.vColor;
 }
 
 #endif

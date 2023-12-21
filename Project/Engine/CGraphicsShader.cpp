@@ -39,7 +39,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     DEVICE->CreateVertexShader(m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), nullptr, m_VS.GetAddressOf());
 
     // 정점 구조정보(Layout) 생성
-    D3D11_INPUT_ELEMENT_DESC arrElement[3] = {}; // 정점하나안의 요소 갯수만큼 생성
+    D3D11_INPUT_ELEMENT_DESC arrElement[4] = {}; // 정점하나안의 요소 갯수만큼 생성
 
     arrElement[0].InputSlot = 0;
     arrElement[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -51,21 +51,29 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 
     arrElement[1].InputSlot = 0;
     arrElement[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    arrElement[1].SemanticName = "COLOR";
+    arrElement[1].SemanticName = "NORMAL";
     arrElement[1].SemanticIndex = 0;
     arrElement[1].InstanceDataStepRate = 0;
     arrElement[1].AlignedByteOffset = 12;
-    arrElement[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    arrElement[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
     arrElement[2].InputSlot = 0;
     arrElement[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    arrElement[2].SemanticName = "TEXCOORD";
+    arrElement[2].SemanticName = "COLOR";
     arrElement[2].SemanticIndex = 0;
     arrElement[2].InstanceDataStepRate = 0;
-    arrElement[2].AlignedByteOffset = 28;
-    arrElement[2].Format = DXGI_FORMAT_R32G32_FLOAT;
+    arrElement[2].AlignedByteOffset = 24;
+    arrElement[2].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
-    DEVICE->CreateInputLayout(arrElement, 3, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(),
+    arrElement[3].InputSlot = 0;
+    arrElement[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    arrElement[3].SemanticName = "TEXCOORD";
+    arrElement[3].SemanticIndex = 0;
+    arrElement[3].InstanceDataStepRate = 0;
+    arrElement[3].AlignedByteOffset = 40;
+    arrElement[3].Format = DXGI_FORMAT_R32G32_FLOAT;
+
+    DEVICE->CreateInputLayout(arrElement, 4, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(),
                               m_Layout.GetAddressOf());
 
     return S_OK;

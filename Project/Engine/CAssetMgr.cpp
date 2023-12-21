@@ -24,6 +24,194 @@ CAssetMgr::~CAssetMgr()
     }
 }
 
+auto CAssetMgr::MakeSquare()
+{
+    vector<Vec3> positions;
+    vector<Vec3> normals;
+    vector<Vec4> colors;
+    vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
+
+    const float scale = 1.0f;
+
+    // ¾Õ¸é
+    positions.push_back(Vec3(-1.0f, 1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(1.0f, 1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(1.0f, -1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(-1.0f, -1.0f, 0.0f) * scale);
+    colors.push_back(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+
+    // Texture Coordinates (Direct3D 9)
+    // https://learn.microsoft.com/en-us/windows/win32/direct3d9/texture-coordinates
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    vector<Vtx> vertices;
+    for (size_t i = 0; i < positions.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vColor = colors[i];
+        v.vNormal = normals[i];
+        v.vUV = texcoords[i];
+
+        vertices.push_back(v);
+    }
+
+    vector<UINT> indices = {
+        0, 1, 2, 0, 2, 3, // ¾Õ¸é
+    };
+
+    return tuple{vertices, indices};
+}
+
+auto CAssetMgr::MakeBox()
+{
+    vector<Vec3> positions;
+    vector<Vec3> normals;
+    vector<Vec4> colors;
+    vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
+
+    // À­¸é
+    positions.push_back(Vec3(-1.0f, 1.0f, -1.0f));
+    positions.push_back(Vec3(-1.0f, 1.0f, 1.0f));
+    positions.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    positions.push_back(Vec3(1.0f, 1.0f, -1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    normals.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    normals.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    normals.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    // ¾Æ·§¸é
+    positions.push_back(Vec3(-1.0f, -1.0f, -1.0f));
+    positions.push_back(Vec3(1.0f, -1.0f, -1.0f));
+    positions.push_back(Vec3(1.0f, -1.0f, 1.0f));
+    positions.push_back(Vec3(-1.0f, -1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    normals.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    normals.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    normals.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    // ¾Õ¸é
+    positions.push_back(Vec3(-1.0f, -1.0f, -1.0f));
+    positions.push_back(Vec3(-1.0f, 1.0f, -1.0f));
+    positions.push_back(Vec3(1.0f, 1.0f, -1.0f));
+    positions.push_back(Vec3(1.0f, -1.0f, -1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    // µÞ¸é
+    positions.push_back(Vec3(-1.0f, -1.0f, 1.0f));
+    positions.push_back(Vec3(1.0f, -1.0f, 1.0f));
+    positions.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    positions.push_back(Vec3(-1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(0.0f, 1.0f, 1.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    // ¿ÞÂÊ
+    positions.push_back(Vec3(-1.0f, -1.0f, 1.0f));
+    positions.push_back(Vec3(-1.0f, 1.0f, 1.0f));
+    positions.push_back(Vec3(-1.0f, 1.0f, -1.0f));
+    positions.push_back(Vec3(-1.0f, -1.0f, -1.0f));
+    colors.push_back(Vec4(1.0f, 1.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 1.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 1.0f, 0.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 1.0f, 0.0f, 1.0f));
+    normals.push_back(Vec3(-1.0f, 0.0f, 0.0f));
+    normals.push_back(Vec3(-1.0f, 0.0f, 0.0f));
+    normals.push_back(Vec3(-1.0f, 0.0f, 0.0f));
+    normals.push_back(Vec3(-1.0f, 0.0f, 0.0f));
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    // ¿À¸¥ÂÊ
+    positions.push_back(Vec3(1.0f, -1.0f, 1.0f));
+    positions.push_back(Vec3(1.0f, -1.0f, -1.0f));
+    positions.push_back(Vec3(1.0f, 1.0f, -1.0f));
+    positions.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 1.0f, 1.0f));
+    colors.push_back(Vec4(1.0f, 0.0f, 1.0f, 1.0f));
+    normals.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    normals.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    normals.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    normals.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    vector<Vtx> vertices;
+    for (size_t i = 0; i < positions.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vNormal = normals[i];
+        v.vColor = colors[i];
+        v.vUV = texcoords[i];
+
+        vertices.push_back(v);
+    }
+
+    vector<UINT> indices = {
+        0,  1,  2,  0,  2,  3,  // À­¸é
+        4,  5,  6,  4,  6,  7,  // ¾Æ·§¸é
+        8,  9,  10, 8,  10, 11, // ¾Õ¸é
+        12, 13, 14, 12, 14, 15, // µÞ¸é
+        16, 17, 18, 16, 18, 19, // ¿ÞÂÊ
+        20, 21, 22, 20, 22, 23  // ¿À¸¥ÂÊ
+    };
+
+    return tuple{vertices, indices};
+}
+
 void CAssetMgr::init()
 {
     CMesh* pMesh = nullptr;
@@ -120,5 +308,21 @@ void CAssetMgr::init()
     if (nullptr != pTex)
     {
         pTex->UpdateData(0);
+    }
+
+    {
+        auto [vertices, indices] = MakeSquare();
+
+        pMesh = new CMesh;
+        pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
+        AddAsset(L"SquareMesh", pMesh);
+    }
+
+    {
+        auto [vertices, indices] = MakeBox();
+
+        pMesh = new CMesh;
+        pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
+        AddAsset(L"BoxMesh", pMesh);
     }
 }
