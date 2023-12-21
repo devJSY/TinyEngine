@@ -57,10 +57,16 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     //    vColor.rgba = float4(1.f, 0.f, 0.f, 1.f);
     //}
     
-    // 회색 쉐이더이
+    // 회색 쉐이더
     //float Aver = (vColor.r + vColor.g + vColor.b) / 3.f;
-    //vColor.rgb = float3(Aver, Aver, Aver);    
+    //vColor.rgb = float3(Aver, Aver, Aver);
     //vColor.a = 1.f;
+    
+    //// 마젠타 색상 제거
+    //if (vColor.r >= 1.f && vColor.b >= 1.f)
+    //{
+    //    clip(-1);
+    //}
     
     return vColor;
 }

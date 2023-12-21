@@ -115,4 +115,10 @@ void CAssetMgr::init()
     pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
     AddAsset(L"Std2DShader", pShader);
+
+    CTexture* pTex = Load<CTexture>(L"PlayerTexture", L"texture//MAP//BigMap.bmp");
+    if (nullptr != pTex)
+    {
+        pTex->UpdateData(0);
+    }
 }

@@ -23,6 +23,7 @@ D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x
 D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Release\CScript.obj
 D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CShader.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTaskMgr.obj
+D:\TinyEngine\Project\Engine\CTexture.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTexture.obj
 D:\TinyEngine\Project\Engine\CTimeMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTimeMgr.obj
 D:\TinyEngine\Project\Engine\CTransform.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTransform.obj
 D:\TinyEngine\Project\Engine\Engine.cpp;D:\TinyEngine\Project\Engine\x64\Release\Engine.obj

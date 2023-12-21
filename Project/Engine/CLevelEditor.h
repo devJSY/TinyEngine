@@ -18,8 +18,8 @@ public:
     virtual void Resize() override;
 
 private:
-    void CreateViewport();
     void SetDarkThemeColors();
+    void CreateViewport();
 
 public:
     CLevelEditor();
