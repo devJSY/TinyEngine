@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\EnterTheGungeon\OutputFile\bin\Client.exe</FullPath>
+      <FullPath>D:\TinyEngine\OutputFile\bin\Client.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

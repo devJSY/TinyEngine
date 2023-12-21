@@ -34,6 +34,7 @@ private:
     ComPtr<ID3D11Texture2D> m_ViewportRTTex;
     ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
 
+
 public:
     int init(HWND _hWnd, Vec2 _vResolution);
     void ClearRenderTarget(float (&Color)[4]);

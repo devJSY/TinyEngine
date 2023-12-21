@@ -137,7 +137,7 @@ int CDevice::CreateSwapChain()
 
     // SwapChain 이 관리하는 Buffer(RenderTarget)의 구성 정보
     tDesc.BufferCount = 1;
-    tDesc.BufferUsage = DXGI_USAGE_SHADER_INPUT | DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
     tDesc.BufferDesc.Height = (UINT)m_vRenderResolution.y;
     tDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

@@ -75,24 +75,6 @@ void CEngine::progress()
     // Present
     CDevice::GetInst()->Present();
 
-    // 윈도우 사이즈 체크
-    RECT rect;
-    if (GetClientRect(m_hMainWnd, &rect))
-    {
-        int width = rect.right - rect.left;
-        int height = rect.bottom - rect.top;
-
-        if (m_vResolution.x != width || m_vResolution.y != height)
-        {
-            FTask task;
-            task.Type = TASK_TYPE::WINDOW_RESIZE;
-            task.Param_1 = (INT_PTR)width;
-            task.Param_2 = (INT_PTR)height;
-
-            CTaskMgr::GetInst()->AddTask(task);
-        }
-    }
-
     // task Execute
     CTaskMgr::GetInst()->tick();
 }

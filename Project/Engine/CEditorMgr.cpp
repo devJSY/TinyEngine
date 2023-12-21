@@ -38,6 +38,4 @@ void CEditorMgr::render()
         return;
 
     m_CurEditor->render();
-
-
 }

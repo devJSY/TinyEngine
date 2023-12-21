@@ -3,7 +3,7 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
-      <FullPath>D:\EnterTheGungeon\External\Library\Engine\std2d.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

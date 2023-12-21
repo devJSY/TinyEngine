@@ -10,6 +10,7 @@ private:
 
 public:
     void SetResolution(Vec2 resolution) { m_vResolution = resolution; }
+    Vec2 GetResolution() const { return m_vResolution; }
     HWND GetMainWind() const { return m_hMainWnd; }
 
 public:

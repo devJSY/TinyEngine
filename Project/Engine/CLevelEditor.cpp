@@ -3,6 +3,8 @@
 #include "CEngine.h"
 #include "CDevice.h"
 
+#include "CTaskMgr.h"
+
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
 {
@@ -87,13 +89,9 @@ void CLevelEditor::render()
     CDevice::GetInst()->CopyToViewport();
     ID3D11ShaderResourceView* ViewportSRV = CDevice::GetInst()->GetViewportSRV();
 
-    Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
     ImGui::Begin("Viewport");
-
-    //ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    //std::cout << viewportPanelSize.x << " " << viewportPanelSize.y << std::endl;
-
-    ImGui::Image((void*)ViewportSRV, ImVec2(Resolution.x, Resolution.y));
+    ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+    ImGui::Image((void*)ViewportSRV, ImVec2(viewportPanelSize.x, viewportPanelSize.y));
     ImGui::End();
 
     // Rendering
