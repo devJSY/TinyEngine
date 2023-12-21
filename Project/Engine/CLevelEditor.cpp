@@ -56,6 +56,8 @@ void CLevelEditor::begin()
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(CEngine::GetInst()->GetMainWind());
     ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
+
+    CreateViewport();
 }
 
 void CLevelEditor::tick()
@@ -86,12 +88,11 @@ void CLevelEditor::finaltick()
 void CLevelEditor::render()
 {
     // Viewport บนป็
-    CDevice::GetInst()->CopyToViewport();
-    ID3D11ShaderResourceView* ViewportSRV = CDevice::GetInst()->GetViewportSRV();
+    CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
 
     ImGui::Begin("Viewport");
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-    ImGui::Image((void*)ViewportSRV, ImVec2(viewportPanelSize.x, viewportPanelSize.y));
+    ImGui::Image((void*)m_ViewportSRView.Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
     ImGui::End();
 
     // Rendering
@@ -105,6 +106,32 @@ void CLevelEditor::render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
+}
+
+void CLevelEditor::Resize()
+{
+    CreateViewport();
+}
+
+void CLevelEditor::CreateViewport()
+{
+    m_ViewportRTTex.Reset();
+    m_ViewportSRView.Reset();
+    ID3D11Texture2D* tex = CDevice::GetInst()->GetRenderTargetTexture();
+    Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
+
+    // Create texture.
+    D3D11_TEXTURE2D_DESC txtDesc = {};
+    tex->GetDesc(&txtDesc);
+
+    txtDesc.Width = (UINT)Resolution.x;
+    txtDesc.Height = (UINT)Resolution.y;
+    txtDesc.Usage = D3D11_USAGE_DYNAMIC;
+    txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    DEVICE->CreateTexture2D(&txtDesc, nullptr, m_ViewportRTTex.GetAddressOf());
+    DEVICE->CreateShaderResourceView(m_ViewportRTTex.Get(), nullptr, m_ViewportSRView.GetAddressOf());
 }
 
 void CLevelEditor::SetDarkThemeColors()

@@ -3,6 +3,7 @@
 
 #include "CEngine.h"
 #include "CDevice.h"
+#include "CEditorMgr.h"
 
 CTaskMgr::CTaskMgr()
 {
@@ -36,7 +37,8 @@ void CTaskMgr::tick()
                 UINT height = (UINT)m_vecTask[i].Param_2;
                 Vec2 resolution = Vec2(width, height);
                 CEngine::GetInst()->SetResolution(resolution);
-                CDevice::GetInst()->ReSize(resolution);
+                CDevice::GetInst()->Resize(resolution);
+                CEditorMgr::GetInst()->Resize();
 
                 std::cout << "Window Size Changed !!" << std::endl;
             }

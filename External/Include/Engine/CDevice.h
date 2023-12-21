@@ -29,12 +29,6 @@ private:
 
     CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];
 
-private:
-    // ImGui Viewport
-    ComPtr<ID3D11Texture2D> m_ViewportRTTex;
-    ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
-
-
 public:
     int init(HWND _hWnd, Vec2 _vResolution);
     void ClearRenderTarget(float (&Color)[4]);
@@ -51,15 +45,12 @@ public:
     ComPtr<ID3D11BlendState> GetBSState(BS_TYPE _Type) const { return m_arrBS[(UINT)_Type]; }
 
 public:
-    ID3D11ShaderResourceView* GetViewportSRV() const { return m_ViewportSRView.Get(); }
-
-public:
-    void CopyToViewport();
-    void ReSize(Vec2 resolution);
+    void Resize(Vec2 resolution);
+    ID3D11Texture2D* GetRenderTargetTexture() const { return m_RTTex.Get(); }
 
 private:
     int CreateSwapChain();
-    int CreateTargetView();
+    int CreateBufferAndView();
     int CreateRasterizerState();
     int CreateDepthStencilState();
     int CreateBlendState();

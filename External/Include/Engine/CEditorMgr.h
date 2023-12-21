@@ -14,5 +14,6 @@ public:
     void init();
     void tick();
     void render();
+    void Resize();
 
 };

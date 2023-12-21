@@ -48,7 +48,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
-    if (FAILED(CreateTargetView()))
+    if (FAILED(CreateBufferAndView()))
     {
         MessageBox(nullptr, L"타겟 및 View 생성 실패", L"Device 초기화 실패", MB_OK);
         return E_FAIL;
@@ -100,16 +100,11 @@ void CDevice::Present()
     m_SwapChain->Present(0, 0);
 }
 
-void CDevice::CopyToViewport()
-{
-    m_Context->CopyResource(m_ViewportRTTex.Get(), m_RTTex.Get());
-}
-
-void CDevice::ReSize(Vec2 resolution)
+void CDevice::Resize(Vec2 resolution)
 {
     m_vRenderResolution = resolution;
 
-    CreateTargetView();
+    CreateBufferAndView();
     CreateViewport();
 }
 
@@ -171,7 +166,7 @@ int CDevice::CreateSwapChain()
     return S_OK;
 }
 
-int CDevice::CreateTargetView()
+int CDevice::CreateBufferAndView()
 {
     // ============
     // BackBuffer
@@ -185,26 +180,7 @@ int CDevice::CreateTargetView()
 
     // RenderTargetView
     m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTView.GetAddressOf());
-
-    // ===============
-    // ImGui Viewport
-    // ===============
-    m_ViewportRTTex.Reset();
-    m_ViewportSRView.Reset();
-
-    // Create texture.
-    D3D11_TEXTURE2D_DESC txtDesc = {};
-    m_RTTex->GetDesc(&txtDesc);
-
-    txtDesc.Width = (UINT)m_vRenderResolution.x;
-    txtDesc.Height = (UINT)m_vRenderResolution.y;
-    txtDesc.Usage = D3D11_USAGE_DYNAMIC;
-    txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    m_Device->CreateTexture2D(&txtDesc, nullptr, m_ViewportRTTex.GetAddressOf());
-    m_Device->CreateShaderResourceView(m_ViewportRTTex.Get(), nullptr, m_ViewportSRView.GetAddressOf());
-
+  
     // =========================
     // DepthStencillTexture 생성
     // =========================
