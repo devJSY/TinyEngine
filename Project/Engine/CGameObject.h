@@ -20,6 +20,9 @@ private:
     CRenderComponent* m_RenderCom;
 
     vector<CScript*> m_vecScript;
+    vector<CGameObject*> m_vecChild;
+
+    CGameObject* m_Parent;
 
 public:
     void begin();
@@ -34,6 +37,10 @@ public:
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(MeshRender, MESHRENDER);
     GET_COMPONENT(Camera, CAMERA);
+
+    CGameObject* GetParent() { return m_Parent; }
+    void DisconnectWithParent();
+    void AddChild(CGameObject* _Child);
 
 public:
     CGameObject();

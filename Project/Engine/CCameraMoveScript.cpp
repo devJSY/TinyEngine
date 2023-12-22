@@ -73,9 +73,9 @@ void CCameraMoveScript::MovePerspective()
     // Move
     Vec3 vPos = Transform()->GetRelativePos();
 
-    Vec3 vFront = Transform()->GetDir(DIR_TYPE::FRONT);
-    Vec3 vRight = Transform()->GetDir(DIR_TYPE::RIGHT);
-    Vec3 vUp = Transform()->GetDir(DIR_TYPE::UP);
+    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
 
     if (KEY_PRESSED(KEY::W))
         vPos += DT * m_CamSpeed * vFront;

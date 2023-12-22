@@ -111,6 +111,8 @@ enum class BS_TYPE
     DEFAULT,
 
     ALPHA_BLEND,
+    
+    ONE_ZERO,
 
     ONE_ONE,
 
