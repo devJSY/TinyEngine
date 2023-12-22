@@ -11,9 +11,11 @@ private:
     CEditor* m_CurEditor;
 
 public:
+    CEditor* GetCurEditor() const { return m_CurEditor; }
+
+public:
     void init();
     void tick();
     void render();
     void Resize();
-
 };

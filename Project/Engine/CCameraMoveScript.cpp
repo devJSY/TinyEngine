@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CCameraMoveScript.h"
+#include "CEditorMgr.h"
+#include "CLevelEditor.h"
 
 CCameraMoveScript::CCameraMoveScript()
     : m_CamSpeed(500.f)
@@ -22,6 +24,13 @@ void CCameraMoveScript::tick()
             Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
             Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
         }
+    }
+
+    CLevelEditor* LevelDditor = dynamic_cast<CLevelEditor*>(CEditorMgr::GetInst()->GetCurEditor());
+    if (nullptr != LevelDditor)
+    {
+        if (!LevelDditor->GetViewportHovered())
+            return;
     }
 
     // Move

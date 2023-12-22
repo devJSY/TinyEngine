@@ -89,13 +89,23 @@ void COutliner::DrawDetails(CGameObject* obj)
     CCamera* cam = obj->Camera();
     if (nullptr != cam)
     {
-        static bool b = false;
+        PROJ_TYPE type = cam->GetProjType();
+
+        bool b = false;
+        if (type == PROJ_TYPE::PERSPECTIVE)
+            b = true;
+        else
+            b = false;
+
         ImGui::Checkbox("Use Perspective Projection", &b);
 
         if (b)
             cam->SetProjType(PROJ_TYPE::PERSPECTIVE);
         else
+        {
             cam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+            tr->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+        }
     }
 }
 

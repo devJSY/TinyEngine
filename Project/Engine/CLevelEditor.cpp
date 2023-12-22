@@ -97,6 +97,10 @@ void CLevelEditor::render()
     CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
 
     ImGui::Begin("Level Viewport");
+
+    m_ViewportFocused = ImGui::IsWindowFocused();
+    m_ViewportHovered = ImGui::IsWindowHovered();
+
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
     ImGui::End();
@@ -104,6 +108,11 @@ void CLevelEditor::render()
     if (m_show_Viewport2)
     {
         ImGui::Begin("Viewport2");
+        if (!m_ViewportFocused)
+            m_ViewportFocused = ImGui::IsWindowFocused();
+        if (!m_ViewportHovered)
+            m_ViewportHovered = ImGui::IsWindowHovered();
+
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         ImGui::Image((void*)m_ViewportSRView.Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
         ImGui::End();

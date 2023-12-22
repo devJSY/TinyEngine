@@ -8,6 +8,10 @@ private:
     // Viewport
     ComPtr<ID3D11Texture2D> m_ViewportRTTex;
     ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
+
+    bool m_ViewportFocused;
+    bool m_ViewportHovered;
+
     bool m_show_Viewport2;
 
     COutliner m_Outliner;
@@ -22,6 +26,10 @@ public:
 private:
     void SetDarkThemeColors();
     void CreateViewport();
+
+public:
+    bool GetViewportFocused() const { return m_ViewportFocused; }
+    bool GetViewportHovered() const { return m_ViewportHovered; }
 
 public:
     CLevelEditor();
