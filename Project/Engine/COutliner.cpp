@@ -41,11 +41,15 @@ void COutliner::DrawNode(CGameObject* obj, UINT LayerNum)
 
     if (opened)
     {
-        ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-        str += " Test";
-        bool opened = ImGui::TreeNodeEx((void*)9817239, flags, str.c_str());
-        if (opened)
-            ImGui::TreePop();
+        // Do Someting!
+         
+         
+        //ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+        //str += " Test";
+        //bool opened = ImGui::TreeNodeEx((void*)9817239, flags, str.c_str());
+        //if (opened)
+        //    ImGui::TreePop();
+
         ImGui::TreePop();
     }
 }

@@ -82,10 +82,6 @@ void CLevelEditor::finaltick()
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
 
-    ImGui::Begin("Test");
-    ImGui::Text("Hello World!");
-    ImGui::End();
-
     ImGui::Begin("Option");
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorEdit3("clear color", (float*)&CEngine::GetInst()->GetClearColor());
@@ -109,7 +105,7 @@ void CLevelEditor::render()
 
     if (m_show_Viewport2)
     {
-        ImGui::Begin("Viewport2");
+        ImGui::Begin("Level Viewport2");
         if (!m_ViewportFocused)
             m_ViewportFocused = ImGui::IsWindowFocused();
         if (!m_ViewportHovered)
