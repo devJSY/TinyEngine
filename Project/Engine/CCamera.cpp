@@ -26,8 +26,11 @@ void CCamera::finaltick()
 {
     // 매프레임 화면비 계산
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
-    m_Width = vResol.x;
-    m_AspectRatio = vResol.x / vResol.y;
+    if (!(vResol.x <= 0.f || vResol.y <= 0.f)) // 창 최소화 예외처리
+    {
+        m_Width = vResol.x;
+        m_AspectRatio = vResol.x / vResol.y;
+    }
 
     // 뷰 행렬을 계산한다.
     // 카메라를 원점으로 이동시키는 이동 행렬
@@ -65,9 +68,12 @@ void CCamera::finaltick()
 
     if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
     {
+        // 최소 스케일 제한
+        if (m_Scale <= 0.f)
+            m_Scale = 0.001;
+
         // 직교투영
-        Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
-        m_matProj = XMMatrixOrthographicLH(vResol.x * m_Scale, (vResol.x / m_AspectRatio) * m_Scale, m_Near, m_Far);
+        m_matProj = XMMatrixOrthographicLH(m_Width * m_Scale, (m_Width / m_AspectRatio) * m_Scale, m_Near, m_Far);
     }
     else
     {

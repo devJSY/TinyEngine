@@ -159,6 +159,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                     {
                         currentProjectionTypeString = projectionTypeStrings[i];
                         cam->SetProjType((PROJ_TYPE)i);
+                        obj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
                     }
 
                     if (isSelected)
@@ -189,7 +190,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             if (cam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
             {
                 float scale = cam->GetScale();
-                if (ImGui::DragFloat("Scale", &scale, 0.01f, 1.f, 100.f))
+                if (ImGui::DragFloat("Scale", &scale, 0.01f, 0.001f, 100.f))
                     cam->SetScale(scale);
 
                 float Near = cam->GetNear();

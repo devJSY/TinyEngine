@@ -20,10 +20,9 @@ void CCameraMoveScript::tick()
         if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
             Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
         else
-        {
             Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-        }
+
+        Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
     }
 
     // Level 에디터일 경우 Viewport창에서만 카메라 이동 적용
@@ -60,12 +59,28 @@ void CCameraMoveScript::MoveOrthographic()
 
     Transform()->SetRelativePos(vPos);
 
-    // Zoom
-    if (KEY_PRESSED(KEY::Z))
-        Camera()->SetScale(Camera()->GetScale() + DT * 0.2f);
+    // Drag
+    if (KEY_PRESSED(KEY::RBTN))
+    {
+        Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
+        Vec3 vPos = Transform()->GetRelativePos();
+        float scale = Camera()->GetScale();
+        float Doffset = 4.f;
+        vPos.x -= vDrag.x * DT * m_CamSpeed * scale * Doffset;
+        vPos.y += vDrag.y * DT * m_CamSpeed * scale * Doffset;
+        Transform()->SetRelativePos(vPos);
+    }
 
-    if (KEY_PRESSED(KEY::C))
-        Camera()->SetScale(Camera()->GetScale() - DT * 0.2f);
+    // Zoom
+    short wheel = CKeyMgr::GetInst()->GetMouseWheel();
+    float Zoffset = 100.f;
+    if (wheel < 0)
+        Camera()->SetScale(Camera()->GetScale() + DT * Zoffset);
+    else if (wheel > 0)
+        Camera()->SetScale(Camera()->GetScale() - DT * Zoffset);
+
+    // Wheel 초기화
+    CKeyMgr::GetInst()->SetMouseWheel(0);
 }
 
 void CCameraMoveScript::MovePerspective()
@@ -102,15 +117,17 @@ void CCameraMoveScript::MovePerspective()
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
         Vec3 vRot = Transform()->GetRelativeRotation();
-        vRot.y += vDrag.x * DT * XM_PI * 4.f;
-        vRot.x += vDrag.y * DT * XM_PI * 4.f;
+        float Doffset = 4.f;
+        vRot.y += vDrag.x * DT * XM_PI * Doffset;
+        vRot.x += vDrag.y * DT * XM_PI * Doffset;
         Transform()->SetRelativeRotation(vRot);
     }
 
     // Zoom
+    float Zoffset = 2.f;
     if (KEY_PRESSED(KEY::Z))
-        Camera()->SetFOV(Camera()->GetFOV() + DT * 2.f);
+        Camera()->SetFOV(Camera()->GetFOV() + DT * Zoffset);
 
     if (KEY_PRESSED(KEY::C))
-        Camera()->SetFOV(Camera()->GetFOV() - DT * 2.f);
+        Camera()->SetFOV(Camera()->GetFOV() - DT * Zoffset);
 }

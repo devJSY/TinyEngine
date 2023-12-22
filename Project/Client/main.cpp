@@ -4,6 +4,8 @@
 #include <Engine\global.h>
 #include <Engine\CEngine.h>
 
+#include "../Engine/CKeyMgr.h"
+
 #ifdef _DEBUG
     #pragma comment(lib, "Engine\\Engine_d.lib")
 #else
@@ -152,6 +154,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_MOUSEWHEEL:
+        {
+            // ↑ : 120 , ↓ : -120
+            short zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+            CKeyMgr::GetInst()->SetMouseWheel(zDelta);
+        }
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);

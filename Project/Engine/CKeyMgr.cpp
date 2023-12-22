@@ -2,6 +2,7 @@
 #include "CKeyMgr.h"
 #include "CEngine.h"
 #include "CDevice.h"
+#include "CTaskMgr.h"
 
 int g_KeySync[KEY::KEY_END] = {
     '0',        '1',        '2',        '3',         '4',        '5',        '6',        '7',        '8',
@@ -30,6 +31,7 @@ CKeyMgr::CKeyMgr()
     : m_vMousePos{}
     , m_vMousePrevPos{}
     , m_vMouseDrag{}
+    , m_MouseWheel(0)
 {
 }
 
