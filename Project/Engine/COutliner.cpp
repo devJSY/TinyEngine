@@ -4,7 +4,9 @@
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
+
 #include "CGameObject.h"
+#include "CTransform.h"
 
 COutliner::COutliner()
     : m_SelectedObj(nullptr)
@@ -47,6 +49,43 @@ void COutliner::DrawNode(CGameObject* obj, UINT LayerNum)
     }
 }
 
+void COutliner::DrawDetails(CGameObject* obj)
+{
+    // Tag
+    {
+        string str;
+        str.assign(obj->GetName().begin(), obj->GetName().end());
+
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+        strcpy_s(buffer, sizeof(buffer), str.c_str());
+        ImGui::InputText("Tag", buffer, sizeof(buffer));
+    }
+
+
+    // Transform
+    CTransform* tr = obj->Transform();
+    if (nullptr != tr)
+    {
+        if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+        {
+            Vec3 pos = tr->GetRelativePos();
+            ImGui::DragFloat3("Location", pos, 100.f);
+            tr->SetRelativePos(pos);
+
+            Vec3 rot = tr->GetRelativeRotation();
+            ImGui::DragFloat3("Rotation", rot, XM_PI / 180.f);
+            tr->SetRelativeRotation(rot);
+
+            Vec3 scale = tr->GetRelativeScale();
+            ImGui::DragFloat3("Scale", scale, 1.f);
+            tr->SetRelativeScale(scale);
+
+            ImGui::TreePop();
+        }
+    }
+}
+
 void COutliner::begin()
 {
 }
@@ -54,7 +93,7 @@ void COutliner::begin()
 void COutliner::render()
 {
     // 유효성체크
-    //IsValid(m_SelectedObj);
+    // IsValid(m_SelectedObj);
 
     ImGui::Begin("Outliner");
 
@@ -67,5 +106,14 @@ void COutliner::render()
         std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj, i); });
     }
 
+    // Outliner 창내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
+    if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+        m_SelectedObj = nullptr;
+
+    ImGui::End();
+
+    ImGui::Begin("Details");
+    if (nullptr != m_SelectedObj)
+        DrawDetails(m_SelectedObj);
     ImGui::End();
 }

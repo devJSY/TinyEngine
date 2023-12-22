@@ -10,6 +10,7 @@ private:
 
 private:
     void DrawNode(CGameObject* obj, UINT LayerNum);
+    void DrawDetails(CGameObject* obj);
 
 public:
     void begin();
