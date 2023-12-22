@@ -7,6 +7,7 @@
 
 #include "CGameObject.h"
 #include "CTransform.h"
+#include "CCamera.h"
 
 COutliner::COutliner()
     : m_SelectedObj(nullptr)
@@ -62,7 +63,6 @@ void COutliner::DrawDetails(CGameObject* obj)
         ImGui::InputText("Tag", buffer, sizeof(buffer));
     }
 
-
     // Transform
     CTransform* tr = obj->Transform();
     if (nullptr != tr)
@@ -83,6 +83,19 @@ void COutliner::DrawDetails(CGameObject* obj)
 
             ImGui::TreePop();
         }
+    }
+
+    // Camera
+    CCamera* cam = obj->Camera();
+    if (nullptr != cam)
+    {
+        static bool b = false;
+        ImGui::Checkbox("Use Perspective Projection", &b);
+
+        if (b)
+            cam->SetProjType(PROJ_TYPE::PERSPECTIVE);
+        else
+            cam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
     }
 }
 
