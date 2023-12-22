@@ -78,7 +78,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             tr->SetRelativeRotation(rot);
 
             Vec3 scale = tr->GetRelativeScale();
-            ImGui::DragFloat3("Scale", scale, 1.f);
+            ImGui::DragFloat3("Scale", scale, 10.f, 1.f, 100000.0f);
             tr->SetRelativeScale(scale);
 
             ImGui::TreePop();
@@ -89,23 +89,65 @@ void COutliner::DrawDetails(CGameObject* obj)
     CCamera* cam = obj->Camera();
     if (nullptr != cam)
     {
-        PROJ_TYPE type = cam->GetProjType();
-
-        bool b = false;
-        if (type == PROJ_TYPE::PERSPECTIVE)
-            b = true;
-        else
-            b = false;
-
-        ImGui::Checkbox("Use Perspective Projection", &b);
-
-        if (b)
-            cam->SetProjType(PROJ_TYPE::PERSPECTIVE);
-        else
+        if (ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
         {
-            cam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-            tr->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+            const char* projectionTypeStrings[] = {"Orthographic", "Perspective"};
+            const char* currentProjectionTypeString = projectionTypeStrings[(int)cam->GetProjType()];
+            if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    bool isSelected = currentProjectionTypeString == projectionTypeStrings[i];
+                    if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
+                    {
+                        currentProjectionTypeString = projectionTypeStrings[i];
+                        cam->SetProjType((PROJ_TYPE)i);
+                    }
+
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+
+                ImGui::EndCombo();
+            }
+
+            if (cam->GetProjType() == PROJ_TYPE::PERSPECTIVE)
+            {
+                float fov = cam->GetFOV();
+                float Degree = XMConvertToDegrees(fov);
+                if (ImGui::DragFloat("FOV", &Degree, XM_PI / 18.f)) // 스피드 - 10도
+                    cam->SetFOV(XMConvertToRadians(Degree));
+
+                float Near = cam->GetNear();
+                float Far = cam->GetFar();
+                float offset = 1.f;
+
+                if (ImGui::DragFloat("Near", &Near, 10.f, 1.f, Far - offset))
+                    cam->SetNear(Near);
+
+                if (ImGui::DragFloat("Far", &Far, 10.f, Near + offset, 10000.f))
+                    cam->SetFar(Far);
+            }
+
+            if (cam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+            {
+                float scale = cam->GetScale();
+                if (ImGui::DragFloat("Scale", &scale, 0.01f, 1.f, 100.f))
+                    cam->SetScale(scale);
+
+                float Near = cam->GetNear();
+                float Far = cam->GetFar();
+                float offset = 1.f;
+
+                if (ImGui::DragFloat("Near", &Near, 10.f, 1.f, Far - offset))
+                    cam->SetNear(Near);
+
+                if (ImGui::DragFloat("Far", &Far, 10.f, Near + offset, 10000.f))
+                    cam->SetFar(Far);
+            }
         }
+
+        ImGui::TreePop();
     }
 }
 

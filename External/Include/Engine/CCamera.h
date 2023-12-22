@@ -21,6 +21,7 @@ private:
 
     // Both
     float m_AspectRatio; // 종횡비, 투영 가로세로 비율
+    float m_Near;        // 투영 최소 거리
     float m_Far;         // 투영 최대 거리
 
     // 변환 행렬
@@ -36,6 +37,12 @@ public:
 
     float GetFOV() const { return m_FOV; }
     void SetFOV(float _FOV) { m_FOV = _FOV; }
+
+    float GetNear() const { return m_Near; }
+    void SetNear(float _near) { m_Near = _near; }
+    
+    float GetFar() const { return m_Far; }
+    void SetFar(float _far) { m_Far = _far; }
 
 public:
     virtual void finaltick() override;

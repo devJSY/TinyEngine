@@ -11,6 +11,7 @@ CCamera::CCamera()
     , m_Width(0.f)
     , m_Scale(1.f)
     , m_AspectRatio(1.f)
+    , m_Near(1.f)
     , m_Far(10000.f)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
@@ -66,12 +67,12 @@ void CCamera::finaltick()
     {
         // 직교투영
         Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
-        m_matProj = XMMatrixOrthographicLH(vResol.x * m_Scale, (vResol.x / m_AspectRatio) * m_Scale, 1.f, m_Far);
+        m_matProj = XMMatrixOrthographicLH(vResol.x * m_Scale, (vResol.x / m_AspectRatio) * m_Scale, m_Near, m_Far);
     }
     else
     {
         // 원근투영
-        m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
+        m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, m_Near, m_Far);
     }
 
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.

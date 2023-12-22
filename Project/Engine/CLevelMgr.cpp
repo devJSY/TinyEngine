@@ -29,8 +29,9 @@ CLevelMgr::~CLevelMgr()
 void CLevelMgr::init()
 {
     m_CurLevel = new CLevel;
-
     m_CurLevel->begin();
+    m_CurLevel->SetName(L"Test Level");
+
 
     // Camera Object »ý¼º
     CGameObject* pCamObj = new CGameObject;

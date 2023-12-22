@@ -7,6 +7,8 @@
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
+    , m_ViewportFocused(false)
+    , m_ViewportHovered(false)
     , m_show_Viewport2(false)
     , m_Outliner()
 {
@@ -84,7 +86,7 @@ void CLevelEditor::finaltick()
     ImGui::Text("Hello World!");
     ImGui::End();
 
-    ImGui::Begin("Test2");
+    ImGui::Begin("Option");
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorEdit3("clear color", (float*)&CEngine::GetInst()->GetClearColor());
     ImGui::Checkbox("Another Viewport", &m_show_Viewport2);

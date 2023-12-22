@@ -26,6 +26,7 @@ void CCameraMoveScript::tick()
         }
     }
 
+    // Level 에디터일 경우 Viewport창에서만 카메라 이동 적용
     CLevelEditor* LevelDditor = dynamic_cast<CLevelEditor*>(CEditorMgr::GetInst()->GetCurEditor());
     if (nullptr != LevelDditor)
     {
