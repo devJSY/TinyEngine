@@ -139,6 +139,9 @@
     <ClInclude Include="CTexture.h">
       <Filter>06. Asset\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="COutliner.h">
+      <Filter>20. Editor\LevelEditor\Outliner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -257,6 +260,9 @@
     </ClCompile>
     <ClCompile Include="CTexture.cpp">
       <Filter>06. Asset\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="COutliner.cpp">
+      <Filter>20. Editor\LevelEditor\Outliner</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +391,9 @@
     </Filter>
     <Filter Include="06. Asset\Texture">
       <UniqueIdentifier>{6ef43a2b-d46f-4f70-8436-e6e6158ae4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\LevelEditor\Outliner">
+      <UniqueIdentifier>{13a45330-55a0-469f-8332-f154d870f5af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

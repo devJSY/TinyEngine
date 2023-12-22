@@ -1,7 +1,7 @@
 #pragma once
 #include "CEntity.h"
+#include "CLayer.h"
 
-class CLayer;
 class CGameObject;
 
 class CLevel : public CEntity
@@ -16,6 +16,9 @@ public:
     void render();
 
     void AddObject(CGameObject* _Object, int _LayerIdx);
+
+public:
+    CLayer* GetLayer(UINT _iLayerIdx) { return m_arrLayer[_iLayerIdx]; }
 
 public:
     CLevel();

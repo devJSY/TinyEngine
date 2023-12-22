@@ -17,6 +17,7 @@ D:\TinyEngine\Project\Engine\CLevel.cpp;D:\TinyEngine\Project\Engine\x64\Release
 D:\TinyEngine\Project\Engine\CLevelEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CLevelEditor.obj
 D:\TinyEngine\Project\Engine\CMesh.cpp;D:\TinyEngine\Project\Engine\x64\Release\CMesh.obj
 D:\TinyEngine\Project\Engine\CMeshRender.cpp;D:\TinyEngine\Project\Engine\x64\Release\CMeshRender.obj
+D:\TinyEngine\Project\Engine\COutliner.cpp;D:\TinyEngine\Project\Engine\x64\Release\COutliner.obj
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPathMgr.obj
 D:\TinyEngine\Project\Engine\CPlayerScript.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPlayerScript.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CRenderComponent.obj

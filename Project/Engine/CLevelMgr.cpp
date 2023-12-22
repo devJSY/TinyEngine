@@ -34,6 +34,7 @@ void CLevelMgr::init()
 
     // Camera Object »ý¼º
     CGameObject* pCamObj = new CGameObject;
+    pCamObj->SetName(L"Camera");
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
     pCamObj->AddComponent(new CCameraMoveScript);
@@ -59,7 +60,7 @@ void CLevelMgr::init()
     pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
 
-    m_CurLevel->AddObject(pObj, 0);
+    m_CurLevel->AddObject(pObj, 1);
 }
 
 void CLevelMgr::tick()

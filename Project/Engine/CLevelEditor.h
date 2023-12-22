@@ -1,5 +1,6 @@
 #pragma once
 #include "CEditor.h"
+#include "COutliner.h"
 
 class CLevelEditor : public CEditor
 {
@@ -7,8 +8,9 @@ private:
     // Viewport
     ComPtr<ID3D11Texture2D> m_ViewportRTTex;
     ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
-
     bool m_show_Viewport2;
+
+    COutliner m_Outliner;
 
 public:
     virtual void begin() override;

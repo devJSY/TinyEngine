@@ -9,6 +9,9 @@ private:
     vector<CGameObject*> m_vecParent;
 
 public:
+    const vector<CGameObject*>& GetParentObject() { return m_vecParent; }
+
+public:
     void begin();
     void tick();
     void finaltick();

@@ -8,6 +8,7 @@
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_show_Viewport2(false)
+    , m_Outliner()
 {
 }
 
@@ -59,6 +60,8 @@ void CLevelEditor::begin()
     ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
 
     CreateViewport();
+
+    m_Outliner.begin();
 }
 
 void CLevelEditor::tick()
@@ -93,7 +96,7 @@ void CLevelEditor::render()
     // Viewport บนป็
     CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
 
-    ImGui::Begin("Viewport");
+    ImGui::Begin("Level Viewport");
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
     ImGui::End();
@@ -105,6 +108,9 @@ void CLevelEditor::render()
         ImGui::Image((void*)m_ViewportSRView.Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
         ImGui::End();
     }
+
+    // Outliner Render
+    m_Outliner.render();
 
     // Rendering
     ImGui::Render();
