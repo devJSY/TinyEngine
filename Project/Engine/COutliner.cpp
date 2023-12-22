@@ -50,6 +50,64 @@ void COutliner::DrawNode(CGameObject* obj, UINT LayerNum)
     }
 }
 
+static void DrawVec3Control(const std::string& label, Vec3& values, float speed = 0.1f, float min = 0.f,
+                            float max = 0.f, float resetValue = 0.0f, float columnWidth = 100.0f)
+{
+    ImGui::PushID(label.c_str());
+
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, columnWidth);
+    ImGui::Text(label.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
+
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+    if (ImGui::Button("X", buttonSize))
+        values.x = resetValue;
+    ImGui::PopStyleColor(3);
+
+    ImGui::SameLine();
+    ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+    if (ImGui::Button("Y", buttonSize))
+        values.y = resetValue;
+    ImGui::PopStyleColor(3);
+
+    ImGui::SameLine();
+    ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.2f, 0.35f, 0.9f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
+    if (ImGui::Button("Z", buttonSize))
+        values.z = resetValue;
+    ImGui::PopStyleColor(3);
+
+    ImGui::SameLine();
+    ImGui::DragFloat("##Z", &values.z, speed, min, max, "%.2f");
+    ImGui::PopItemWidth();
+
+    ImGui::PopStyleVar();
+
+    ImGui::Columns(1);
+
+    ImGui::PopID();
+}
+
 void COutliner::DrawDetails(CGameObject* obj)
 {
     // Tag
@@ -70,15 +128,15 @@ void COutliner::DrawDetails(CGameObject* obj)
         if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
         {
             Vec3 pos = tr->GetRelativePos();
-            ImGui::DragFloat3("Location", pos, 100.f);
+            DrawVec3Control("Location", pos, 100.f);
             tr->SetRelativePos(pos);
 
             Vec3 rot = tr->GetRelativeRotation();
-            ImGui::DragFloat3("Rotation", rot, XM_PI / 180.f);
+            DrawVec3Control("Rotation", rot, XM_PI / 180.f);
             tr->SetRelativeRotation(rot);
 
             Vec3 scale = tr->GetRelativeScale();
-            ImGui::DragFloat3("Scale", scale, 10.f, 1.f, 100000.0f);
+            DrawVec3Control("Scale", scale, 10.f, 1.f, 100000.0f, 1.f);
             tr->SetRelativeScale(scale);
 
             ImGui::TreePop();
@@ -122,10 +180,10 @@ void COutliner::DrawDetails(CGameObject* obj)
                 float Far = cam->GetFar();
                 float offset = 1.f;
 
-                if (ImGui::DragFloat("Near", &Near, 10.f, 1.f, Far - offset))
+                if (ImGui::DragFloat("Near", &Near, 1.f, 1.f, Far - offset))
                     cam->SetNear(Near);
 
-                if (ImGui::DragFloat("Far", &Far, 10.f, Near + offset, 10000.f))
+                if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
                     cam->SetFar(Far);
             }
 
@@ -139,10 +197,10 @@ void COutliner::DrawDetails(CGameObject* obj)
                 float Far = cam->GetFar();
                 float offset = 1.f;
 
-                if (ImGui::DragFloat("Near", &Near, 10.f, 1.f, Far - offset))
+                if (ImGui::DragFloat("Near", &Near, 1.f, 1.f, Far - offset))
                     cam->SetNear(Near);
 
-                if (ImGui::DragFloat("Far", &Far, 10.f, Near + offset, 10000.f))
+                if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
                     cam->SetFar(Far);
             }
         }
