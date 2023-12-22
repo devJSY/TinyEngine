@@ -27,3 +27,20 @@ void Delete_Vec(vector<T>& _vec)
 
     _vec.clear();
 }
+
+//template <typename T>
+//bool IsValid(T*& _Entity)
+//{
+//    if (nullptr == _Entity)
+//    {
+//        return false;
+//    }
+//
+//    if (_Entity->IsDead())
+//    {
+//        _Entity = nullptr;
+//        return false;
+//    }
+//
+//    return true;
+//}
