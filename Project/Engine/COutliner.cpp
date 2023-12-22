@@ -42,13 +42,12 @@ void COutliner::DrawNode(CGameObject* obj, UINT LayerNum)
     if (opened)
     {
         // Do Someting!
-         
-         
-        //ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-        //str += " Test";
-        //bool opened = ImGui::TreeNodeEx((void*)9817239, flags, str.c_str());
-        //if (opened)
-        //    ImGui::TreePop();
+
+        // ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+        // str += " Test";
+        // bool opened = ImGui::TreeNodeEx((void*)9817239, flags, str.c_str());
+        // if (opened)
+        //     ImGui::TreePop();
 
         ImGui::TreePop();
     }
@@ -207,9 +206,9 @@ void COutliner::DrawDetails(CGameObject* obj)
                 if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
                     cam->SetFar(Far);
             }
-        }
 
-        ImGui::TreePop();
+            ImGui::TreePop();
+        }
     }
 }
 
