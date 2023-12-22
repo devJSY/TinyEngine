@@ -18,7 +18,7 @@ COutliner::~COutliner()
 {
 }
 
-void COutliner::DrawNode(CGameObject* obj, UINT LayerNum)
+void COutliner::DrawNode(CGameObject* obj)
 {
     UINT id = 2147000000;
 
@@ -41,13 +41,9 @@ void COutliner::DrawNode(CGameObject* obj, UINT LayerNum)
 
     if (opened)
     {
-        // Do Someting!
-
-        // ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-        // str += " Test";
-        // bool opened = ImGui::TreeNodeEx((void*)9817239, flags, str.c_str());
-        // if (opened)
-        //     ImGui::TreePop();
+        // 자식 오브젝트 DrawNode() 호출
+        const vector<CGameObject*>& objs = obj->GetChildObject();
+        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
 
         ImGui::TreePop();
     }
@@ -229,7 +225,7 @@ void COutliner::render()
         const vector<CGameObject*>& objs = layer->GetParentObject();
 
         // 각 오브젝트를 돌면서 오브젝트와 현재 레이어를 인자로 DrawNode() 호출
-        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj, i); });
+        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
     }
 
     // Outliner 창내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화

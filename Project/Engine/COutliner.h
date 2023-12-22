@@ -9,7 +9,7 @@ private:
     CGameObject* m_SelectedObj;
 
 private:
-    void DrawNode(CGameObject* obj, UINT LayerNum);
+    void DrawNode(CGameObject* obj);
     void DrawDetails(CGameObject* obj);
 
 public:

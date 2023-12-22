@@ -43,6 +43,9 @@ public:
     void AddChild(CGameObject* _Child);
 
 public:
+    const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
+
+public:
     CGameObject();
     virtual ~CGameObject();
 };
