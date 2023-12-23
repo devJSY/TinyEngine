@@ -421,7 +421,7 @@
     <None Include="struct.hlsli">
       <Filter>ShaderCode</Filter>
     </None>
-    <None Include="func.hlsli">
+    <None Include="Light.hlsli">
       <Filter>ShaderCode</Filter>
     </None>
   </ItemGroup>

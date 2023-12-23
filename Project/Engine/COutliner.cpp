@@ -250,7 +250,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                 light->SetSpotPower(spotPower);
                         
             Vec3 strength = light->GetStrength();
-            if (ImGui::SliderFloat3("Strength", &strength.x, 1.f, 100.f))
+            if (ImGui::SliderFloat3("Strength", &strength.x, 0.f, 1.f))
                 light->SetStrength(strength);
 
             ImGui::TreePop();

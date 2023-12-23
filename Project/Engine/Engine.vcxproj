@@ -262,7 +262,7 @@ call EngineCopy.bat</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="func.hlsli" />
+    <None Include="Light.hlsli" />
     <None Include="global.hlsli" />
     <None Include="SimpleMath.inl" />
     <None Include="struct.hlsli" />

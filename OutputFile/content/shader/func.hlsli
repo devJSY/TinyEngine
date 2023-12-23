@@ -4,14 +4,24 @@
 #include "global.hlsli"
 #include "struct.hlsli"
 
-
+// 기존 Phong 모델에서 halfway를 이용해서 속도를 올린 모델
 float3 BlinnPhong(float3 lightStrength, float3 lightVec, float3 normal, float3 toEye)
 {
-    float3 halfway = normalize(toEye + lightVec);
-    float hdotn = dot(halfway, normal);
-    float3 specular = g_specular * pow(max(hdotn, 0.0f), g_shininess);
+    bool useBlinnPhong = true;
+    if (useBlinnPhong)
+    {
+        float3 halfway = normalize(toEye + lightVec);
+        float hdotn = dot(halfway, normal);
+        float3 specular = g_specular * pow(max(hdotn, 0.0f), g_shininess * 2.0);
 
-    return g_ambient + (g_diffuse + specular) * lightStrength;
+        return g_ambient + (g_diffuse + specular) * lightStrength;
+    }
+    else
+    {
+        float3 r = -reflect(lightVec, normal);
+        float3 specular = g_specular * pow(max(dot(toEye, r), 0.0f), g_shininess);
+        return g_ambient + (g_diffuse + specular) * lightStrength;
+    }
 }
 
 float3 ComputeDirectionalLight(Light L, float3 normal, float3 toEye)

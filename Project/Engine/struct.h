@@ -38,29 +38,32 @@ struct FTask
 
 struct tMaterial
 {
-    Vec3 ambient;
-    float shininess;
-    Vec3 diffuse;   
+    Vec3 ambient;       // 조명과 상관없이 물체 자체가 갖고있는 색상
+    float shininess;    // 빛이 얼마나 집중 될지에 사용하는 값
+    Vec3 diffuse;       // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
     float dummy1;                     
-    Vec3 specular;
+    Vec3 specular;      // 시점으로부터 반사되는 빛이 얼마나 받느냐에 따라 결정되는 값
     float dummy2;                     
 };
 
 struct tLight
 {
     Vec3 strength;
-    float fallOffStart;
+    float fallOffStart;    
     Vec3 direction;
     float fallOffEnd;
     Vec3 position;
     float spotPower;
+
+    // 물체는 조명으로부터 거리에따라 빛을 받는양이 달라짐
+    // fallOffStart, fallOffEnd 옵션값으로 표현
 };
 
 struct tGlobal
-{
-    tLight DirLight;
-    tLight PointLight;
-    tLight SpotLight;
+{   
+    tLight DirLight;        // 태양과 같이 아주 멀리있는 광원
+    tLight PointLight;      // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
+    tLight SpotLight;       // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
 
     Vec4 eyeWorld;
 };

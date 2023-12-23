@@ -3,7 +3,13 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\BlinnPhongPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\BlinnPhongVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
