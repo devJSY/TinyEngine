@@ -15,7 +15,7 @@ CEngine::CEngine()
     , m_vResolution()
     , m_ClearColor{}
 {
-    m_ClearColor = Vec4(0.3f, 0.8f, 0.3f, 1.f);
+    m_ClearColor = Vec4(0.f, 0.f, 0.f, 1.f);
 }
 
 CEngine::~CEngine()

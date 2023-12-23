@@ -11,7 +11,9 @@ struct VS_IN
 
 struct VS_OUT
 {
-    float4 vPosition : SV_Position;
+    float4 vPosProj : SV_Position;
+    float3 vPosWorld : POSITION;
+    float3 normalWorld : NORMAL;
     float4 vColor : COLOR;
     float2 vUV : TEXCOORD;
 };

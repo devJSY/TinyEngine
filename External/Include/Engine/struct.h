@@ -1,3 +1,4 @@
+
 #pragma once
 
 // 3차원 공간에 배치되는 정점
@@ -61,9 +62,9 @@ struct tGlobal
     tLight PointLight;
     tLight SpotLight;
 
-    Vec3 eyeWorld;
-    bool useTexture;
+    Vec4 eyeWorld;
 };
 
 
 extern tTransform g_Transform;
+extern tGlobal g_Global;

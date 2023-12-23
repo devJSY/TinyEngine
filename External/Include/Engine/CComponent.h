@@ -31,6 +31,11 @@ public:
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(Camera);
 
+
+public:
+    GET_OTHER_COMPONENT(Light3D);
+
+
 public:
     CComponent(COMPONENT_TYPE _Type);
     virtual ~CComponent();

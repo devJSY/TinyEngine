@@ -24,3 +24,13 @@ void CMaterial::UpdateData()
     pCB->SetData(&m_material);
     pCB->UpdateData(1);
 }
+
+void CMaterial::Clear()
+{
+    ID3D11Buffer* pBuffer = nullptr;
+    CONTEXT->VSSetConstantBuffers(1, 1, &pBuffer);
+    CONTEXT->HSSetConstantBuffers(1, 1, &pBuffer);
+    CONTEXT->DSSetConstantBuffers(1, 1, &pBuffer);
+    CONTEXT->GSSetConstantBuffers(1, 1, &pBuffer);
+    CONTEXT->PSSetConstantBuffers(1, 1, &pBuffer);
+}

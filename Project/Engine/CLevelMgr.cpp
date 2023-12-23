@@ -15,6 +15,8 @@
 
 #include "CTexture.h"
 
+#include "CLight3D.h"
+
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
 {
@@ -44,6 +46,22 @@ void CLevelMgr::init()
 
     m_CurLevel->AddObject(pCamObj, 0);
 
+    // Light
+    CGameObject* DirLight = new CGameObject;
+    DirLight->SetName(L"Light");
+
+    DirLight->AddComponent(new CTransform);
+    DirLight->AddComponent(new CMeshRender);
+    DirLight->AddComponent(new CLight3D(LIGHT_TYPE::SPOT));
+
+    DirLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    DirLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+
+    DirLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    DirLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+
+    m_CurLevel->AddObject(DirLight, 1);
+
     // GameObject 생성
     CGameObject* pObj = nullptr;
 
@@ -58,7 +76,7 @@ void CLevelMgr::init()
     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    pObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"RedMaterial"));
 
     CGameObject* pChildObj = new CGameObject;
@@ -67,19 +85,17 @@ void CLevelMgr::init()
     pChildObj->AddComponent(new CTransform);
     pChildObj->AddComponent(new CMeshRender);
 
-    pChildObj->Transform()->SetRelativePos(Vec3(200.f, 0.f, 0.f));
-    pChildObj->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 1.f));
+    pChildObj->Transform()->SetRelativePos(Vec3(600.f, 0.f, 0.f));
+    pChildObj->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 150.f));
     pChildObj->Transform()->SetAbsolute(true);
 
     pChildObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    pChildObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pChildObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pChildObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"GreenMaterial"));
 
     pObj->AddChild(pChildObj);
 
-    m_CurLevel->AddObject(pObj, 1);
-
-
+    m_CurLevel->AddObject(pObj, 10);
 
     // Material 테스트
     CGameObject* MatObj = new CGameObject;
@@ -88,14 +104,14 @@ void CLevelMgr::init()
     MatObj->AddComponent(new CTransform);
     MatObj->AddComponent(new CMeshRender);
 
-    MatObj->Transform()->SetRelativePos(Vec3(0.f, 500.f, 0.f));
+    MatObj->Transform()->SetRelativePos(Vec3(-600.f, 0.f, 0.f));
     MatObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     MatObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    MatObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    MatObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     MatObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlueMaterial"));
 
-    m_CurLevel->AddObject(MatObj, 2);
+    m_CurLevel->AddObject(MatObj, 10);
 }
 
 void CLevelMgr::tick()

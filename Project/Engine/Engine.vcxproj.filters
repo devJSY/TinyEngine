@@ -145,6 +145,9 @@
     <ClInclude Include="CMaterial.h">
       <Filter>06. Asset\Material</Filter>
     </ClInclude>
+    <ClInclude Include="CLight3D.h">
+      <Filter>08. Component\07. Light3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -269,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="CMaterial.cpp">
       <Filter>06. Asset\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="CLight3D.cpp">
+      <Filter>08. Component\07. Light3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -415,9 +421,18 @@
     <None Include="struct.hlsli">
       <Filter>ShaderCode</Filter>
     </None>
+    <None Include="func.hlsli">
+      <Filter>ShaderCode</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="std2d.fx">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="BlinnPhongVS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="BlinnPhongPS.hlsl">
       <Filter>ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>

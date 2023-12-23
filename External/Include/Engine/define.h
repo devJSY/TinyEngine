@@ -140,3 +140,12 @@ enum TASK_TYPE
     // Param1 : Width , Param2 : Height
     WINDOW_RESIZE,
 };
+
+enum class LIGHT_TYPE
+{
+    DIRECTIONAL,
+    POINT,
+    SPOT,
+
+    END,
+};

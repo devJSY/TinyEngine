@@ -15,6 +15,7 @@ C:\Users\A\Desktop\TinyEngine\Project\Engine\CKeyMgr.cpp;C:\Users\A\Desktop\Tiny
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CLayer.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CLayer.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CLevel.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CLevel.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CLevelEditor.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CLevelEditor.obj
+C:\Users\A\Desktop\TinyEngine\Project\Engine\CLight3D.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CLight3D.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMaterial.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMaterial.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMesh.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMesh.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMeshRender.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMeshRender.obj

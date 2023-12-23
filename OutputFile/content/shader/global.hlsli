@@ -21,24 +21,22 @@ cbuffer TRANSFORM : register(b0)
 
 cbuffer MATERIAL_CONST : register(b1)
 {
-    float3 ambient;
-    float shininess;
-    float3 diffuse;
+    float3 g_ambient;
+    float g_shininess;
+    float3 g_diffuse;
     float dummy1; 
-    float3 specular;
+    float3 g_specular;
     float dummy2;
 }
 
 cbuffer GLOBAL : register(b2)
 {
-    Light DirLight;
-    Light PointLight;
-    Light SpotLight;
+    Light g_DirLight;
+    Light g_PointLight;
+    Light g_SpotLight;
     
-    float3 eyeWorld;
-    bool useTexture;
+    float4 g_eyeWorld;
 }
-
 
 Texture2D g_tex_0 : register(t0);
 

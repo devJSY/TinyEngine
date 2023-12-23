@@ -8,6 +8,7 @@
 #include "CGameObject.h"
 #include "CTransform.h"
 #include "CCamera.h"
+#include "CLight3D.h"
 
 COutliner::COutliner()
     : m_SelectedObj(nullptr)
@@ -127,7 +128,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
         {
             Vec3 pos = tr->GetRelativePos();
-            DrawVec3Control("Location", pos, 100.f);
+            DrawVec3Control("Location", pos, 10.f);
             tr->SetRelativePos(pos);
 
             Vec3 rot = tr->GetRelativeRotation();
@@ -135,7 +136,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             tr->SetRelativeRotation(rot);
 
             Vec3 scale = tr->GetRelativeScale();
-            DrawVec3Control("Scale", scale, 10.f, 1.f, 100000.0f, 1.f);
+            DrawVec3Control("Scale", scale, 1.f, 1.f, 100000.0f, 1.f);
             tr->SetRelativeScale(scale);
 
             ImGui::TreePop();
@@ -203,6 +204,54 @@ void COutliner::DrawDetails(CGameObject* obj)
                 if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
                     cam->SetFar(Far);
             }
+
+            ImGui::TreePop();
+        }
+    }
+
+    // Light3D
+    CLight3D* light = obj->Light3D();
+    if (nullptr != light)
+    {
+        if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Light3D"))
+        {
+            const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
+            const char* currentLightTypeStrings = LightTypeStrings[(int)light->GetLightType()];
+            if (ImGui::BeginCombo("Light Type", currentLightTypeStrings))
+            {
+                for (int i = 0; i < (UINT)LIGHT_TYPE::END; i++)
+                {
+                    bool isSelected = currentLightTypeStrings == LightTypeStrings[i];
+                    if (ImGui::Selectable(LightTypeStrings[i], isSelected))
+                    {
+                        currentLightTypeStrings = LightTypeStrings[i];
+                        light->SetLightType((LIGHT_TYPE)i);
+                    }
+
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+
+                ImGui::EndCombo();
+            }
+
+            float FallOffStart = light->GetFallOffStart();
+            float FallOffEnd = light->GetFallOffEnd();
+            float offset = 1.f;
+
+            if (ImGui::SliderFloat("FallOffStart ", &FallOffStart, 0.0f, FallOffEnd - offset))
+                light->SetFallOffStart(FallOffStart);
+
+            if (ImGui::SliderFloat("FallOffEnd", &FallOffEnd, FallOffStart + offset, 10000.f))
+                light->SetFallOffEnd(FallOffEnd);
+
+            float spotPower = light->GetSpotPower();
+            if (ImGui::SliderFloat("Spot Power", &spotPower, 1.f, 1000.f))
+                light->SetSpotPower(spotPower);
+                        
+            Vec3 strength = light->GetStrength();
+            if (ImGui::SliderFloat3("Strength", &strength.x, 1.f, 100.f))
+                light->SetStrength(strength);
 
             ImGui::TreePop();
         }

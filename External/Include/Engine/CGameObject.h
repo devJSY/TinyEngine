@@ -45,6 +45,8 @@ public:
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
 
+    GET_COMPONENT(Light3D, LIGHT3D);
+
 public:
     CGameObject();
     virtual ~CGameObject();

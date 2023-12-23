@@ -84,4 +84,11 @@ void CCamera::finaltick()
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
     g_Transform.matView = m_matView;
     g_Transform.matProj = m_matProj;
+
+
+
+
+
+    // eyePos 등록
+    g_Global.eyeWorld = Vec4(vCamPos, 1.f);
 }

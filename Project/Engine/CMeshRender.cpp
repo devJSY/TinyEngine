@@ -8,6 +8,9 @@
 #include "CGameObject.h"
 #include "CTransform.h"
 
+#include "CConstBuffer.h"
+#include "CDevice.h"
+
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
 {
@@ -30,12 +33,19 @@ void CMeshRender::UpdateData()
     }
 
     GetOwner()->Transform()->UpdateData();
+
+    CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    pCB->SetData(&g_Global);
+    pCB->UpdateData(2);
 }
 
 void CMeshRender::render()
 {
     if (nullptr == GetMesh() || nullptr == GetShader())
         return;
+
+    // Material √ ±‚»≠
+    CMaterial::Clear();
 
     UpdateData();
 
