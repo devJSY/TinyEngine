@@ -9,6 +9,8 @@
 #include "CTransform.h"
 #include "CCamera.h"
 #include "CLight3D.h"
+#include "CMeshRender.h"
+#include "CMaterial.h"
 
 COutliner::COutliner()
     : m_SelectedObj(nullptr)
@@ -248,12 +250,56 @@ void COutliner::DrawDetails(CGameObject* obj)
             float spotPower = light->GetSpotPower();
             if (ImGui::SliderFloat("Spot Power", &spotPower, 1.f, 1000.f))
                 light->SetSpotPower(spotPower);
-                        
+
             Vec3 strength = light->GetStrength();
             if (ImGui::SliderFloat3("Strength", &strength.x, 0.f, 1.f))
                 light->SetStrength(strength);
 
             ImGui::TreePop();
+        }
+    }
+
+    // Material
+    CMeshRender* pMeshRender = obj->MeshRender();
+    if (nullptr != pMeshRender)
+    {
+        CMaterial* pMaterial = pMeshRender->GetMaterial();
+        if (nullptr != pMaterial)
+        {
+            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+            {
+                tMaterialData materialData = pMaterial->GetMaterialData();
+
+                Vec3 ambient = materialData.ambient;
+                if (ImGui::SliderFloat3("Ambient", &ambient.x, 0.f, 1.f))
+                {
+                    materialData.ambient = ambient;
+                    pMaterial->SetMaterialData(materialData);
+                }
+
+                Vec3 diffuse = materialData.diffuse;
+                if (ImGui::SliderFloat3("Diffuse", &diffuse.x, 0.f, 1.f))
+                {
+                    materialData.diffuse = diffuse;
+                    pMaterial->SetMaterialData(materialData);
+                }
+
+                Vec3 specular = materialData.specular;
+                if (ImGui::SliderFloat3("Specular", &specular.x, 0.f, 1.f))
+                {
+                    materialData.specular = specular;
+                    pMaterial->SetMaterialData(materialData);
+                }
+
+                float shininess = materialData.shininess;
+                if (ImGui::SliderFloat("Shininess", &shininess, 1.f, 256.f))
+                {
+                    materialData.shininess = shininess;
+                    pMaterial->SetMaterialData(materialData);
+                }
+
+                ImGui::TreePop();
+            }
         }
     }
 }

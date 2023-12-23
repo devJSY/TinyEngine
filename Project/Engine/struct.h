@@ -36,7 +36,7 @@ struct FTask
     UINT_PTR Param_2;
 };
 
-struct tMaterial
+struct tMaterialData
 {
     Vec3 ambient;       // 조명과 상관없이 물체 자체가 갖고있는 색상
     float shininess;    // 빛이 얼마나 집중 될지에 사용하는 값
@@ -46,7 +46,7 @@ struct tMaterial
     float dummy2;                     
 };
 
-struct tLight
+struct tLightData
 {
     Vec3 strength;
     float fallOffStart;    
@@ -61,9 +61,9 @@ struct tLight
 
 struct tGlobal
 {   
-    tLight DirLight;        // 태양과 같이 아주 멀리있는 광원
-    tLight PointLight;      // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
-    tLight SpotLight;       // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
+    tLightData DirLight;        // 태양과 같이 아주 멀리있는 광원
+    tLightData PointLight;      // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
+    tLightData SpotLight;       // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
 
     Vec4 eyeWorld;
 };

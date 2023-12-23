@@ -12,16 +12,16 @@ CMaterial::~CMaterial()
 {
 }
 
-void CMaterial::Create(tMaterial& _material)
+void CMaterial::Create(tMaterialData& data)
 {
-    m_material = _material;
+    m_MaterialData = data;
 }
 
 void CMaterial::UpdateData()
 {
     // Constant Update
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
-    pCB->SetData(&m_material);
+    pCB->SetData(&m_MaterialData);
     pCB->UpdateData(1);
 }
 

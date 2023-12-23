@@ -365,7 +365,7 @@ void CAssetMgr::init()
     // ======================
     // Material
     // ======================
-    tMaterial material;
+    tMaterialData material;
     material.shininess = 1.f;
     material.ambient = Vec3(1.0f, 0.0f, 0.0f);
     material.diffuse = Vec3(0.5f);

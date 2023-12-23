@@ -4,10 +4,14 @@
 class CMaterial : public CAsset
 {
 private:
-    tMaterial m_material;
+    tMaterialData m_MaterialData;
 
 public:
-    void Create(tMaterial& _material);
+    tMaterialData GetMaterialData() const { return m_MaterialData; }
+    void SetMaterialData(tMaterialData data) { m_MaterialData = data; }
+
+public:
+    void Create(tMaterialData& data);
     void UpdateData();
 
     static void Clear();
