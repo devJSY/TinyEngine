@@ -70,7 +70,7 @@ void CCamera::finaltick()
     {
         // 최소 스케일 제한
         if (m_Scale <= 0.f)
-            m_Scale = 0.001;
+            m_Scale = 0.001f;
 
         // 직교투영
         m_matProj = XMMatrixOrthographicLH(m_Width * m_Scale, (m_Width / m_AspectRatio) * m_Scale, m_Near, m_Far);

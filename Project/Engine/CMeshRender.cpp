@@ -3,6 +3,7 @@
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
+#include "CMaterial.h"
 
 #include "CGameObject.h"
 #include "CTransform.h"
@@ -21,6 +22,11 @@ void CMeshRender::UpdateData()
     if (nullptr != GetShader())
     {
         GetShader()->UpdateData();
+    }
+
+    if (nullptr != GetMaterial())
+    {
+        GetMaterial()->UpdateData();
     }
 
     GetOwner()->Transform()->UpdateData();

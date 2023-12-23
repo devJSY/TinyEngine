@@ -142,6 +142,9 @@
     <ClInclude Include="COutliner.h">
       <Filter>20. Editor\LevelEditor\Outliner</Filter>
     </ClInclude>
+    <ClInclude Include="CMaterial.h">
+      <Filter>06. Asset\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -263,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="COutliner.cpp">
       <Filter>20. Editor\LevelEditor\Outliner</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>06. Asset\Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,10 +401,19 @@
     <Filter Include="20. Editor\LevelEditor\Outliner">
       <UniqueIdentifier>{13a45330-55a0-469f-8332-f154d870f5af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\07. Light3D">
+      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
       <Filter>Module</Filter>
+    </None>
+    <None Include="global.hlsli">
+      <Filter>ShaderCode</Filter>
+    </None>
+    <None Include="struct.hlsli">
+      <Filter>ShaderCode</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

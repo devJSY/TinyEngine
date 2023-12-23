@@ -57,8 +57,9 @@ void CLevelMgr::init()
     pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"RedMaterial"));
 
     CGameObject* pChildObj = new CGameObject;
     pChildObj->SetName(L"Player Child");
@@ -70,12 +71,31 @@ void CLevelMgr::init()
     pChildObj->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 1.f));
     pChildObj->Transform()->SetAbsolute(true);
 
-    pChildObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pChildObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pChildObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pChildObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"GreenMaterial"));
 
     pObj->AddChild(pChildObj);
 
     m_CurLevel->AddObject(pObj, 1);
+
+
+
+    // Material Å×½ºÆ®
+    CGameObject* MatObj = new CGameObject;
+    MatObj->SetName(L"Blue Material Object");
+
+    MatObj->AddComponent(new CTransform);
+    MatObj->AddComponent(new CMeshRender);
+
+    MatObj->Transform()->SetRelativePos(Vec3(0.f, 500.f, 0.f));
+    MatObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+    MatObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    MatObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    MatObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlueMaterial"));
+
+    m_CurLevel->AddObject(MatObj, 2);
 }
 
 void CLevelMgr::tick()

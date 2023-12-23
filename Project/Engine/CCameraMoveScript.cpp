@@ -63,6 +63,7 @@ void CCameraMoveScript::MoveOrthographic()
     if (KEY_PRESSED(KEY::RBTN))
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
+        vDrag.Normalize(); 
         Vec3 vPos = Transform()->GetRelativePos();
         float scale = Camera()->GetScale();
         float Doffset = 4.f;
@@ -116,6 +117,7 @@ void CCameraMoveScript::MovePerspective()
     if (KEY_PRESSED(KEY::RBTN))
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
+        vDrag.Normalize(); 
         Vec3 vRot = Transform()->GetRelativeRotation();
         float Doffset = 4.f;
         vRot.y += vDrag.x * DT * XM_PI * Doffset;

@@ -364,7 +364,13 @@ int CDevice::CreateBlendState()
 int CDevice::CreateConstBuffer()
 {
     m_arrCB[(UINT)CB_TYPE::TRANSFORM] = new CConstBuffer;
-    m_arrCB[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(tTransform), 1);
+    m_arrCB[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(tTransform), 1);    
+    
+    m_arrCB[(UINT)CB_TYPE::MATERIAL_CONST] = new CConstBuffer;
+    m_arrCB[(UINT)CB_TYPE::MATERIAL_CONST]->Create(sizeof(tMaterial), 1);
+
+    m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA] = new CConstBuffer;
+    m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA]->Create(sizeof(tGlobal), 1);
 
     return S_OK;
 }

@@ -3,8 +3,9 @@
 
 #include "CPathMgr.h"
 
-#include "CTexture.h"
 #include "CMesh.h"
+#include "CTexture.h"
+#include "CMaterial.h"
 #include "CGraphicsShader.h"
 
 class CMesh;
@@ -47,6 +48,8 @@ ASSET_TYPE GetAssetType()
         Type = ASSET_TYPE::MESH;
     else if (&info == &typeid(CTexture))
         Type = ASSET_TYPE::TEXTURE;
+    else if (&info == &typeid(CMaterial))
+        Type = ASSET_TYPE::MATERIAL;
     else if (&info == &typeid(CGraphicsShader))
         Type = ASSET_TYPE::GRAPHICS_SHADER;
 

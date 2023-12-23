@@ -40,7 +40,7 @@ public:
 
     float GetNear() const { return m_Near; }
     void SetNear(float _near) { m_Near = _near; }
-    
+
     float GetFar() const { return m_Far; }
     void SetFar(float _far) { m_Far = _far; }
 
