@@ -19,6 +19,7 @@ C:\Users\A\Desktop\TinyEngine\Project\Engine\CLight3D.cpp;C:\Users\A\Desktop\Tin
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMaterial.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMaterial.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMesh.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMesh.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMeshRender.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMeshRender.obj
+C:\Users\A\Desktop\TinyEngine\Project\Engine\CModleLoader.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CModleLoader.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\COutliner.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\COutliner.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CPathMgr.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CPlayerScript.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CPlayerScript.obj

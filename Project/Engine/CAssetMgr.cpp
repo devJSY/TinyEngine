@@ -3,6 +3,7 @@
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
+#include "CModleLoader.h"
 
 CAssetMgr::CAssetMgr()
 {
@@ -22,6 +23,21 @@ CAssetMgr::~CAssetMgr()
 
         m_mapAsset[i].clear();
     }
+
+    for (auto pair : m_mapModel)
+    {
+        for (size_t i = 0; i < pair.second.size(); i++)
+        {
+            if (nullptr != pair.second[i])
+            {
+                delete pair.second[i];
+            }
+        }
+
+        pair.second.clear();
+    }
+
+    m_mapModel.clear();
 }
 
 void CAssetMgr::init()
@@ -32,7 +48,7 @@ void CAssetMgr::init()
 
     // Circle
     {
-        auto mesh = MakeCircle(0.5f, 10);
+        auto mesh = MakeCircle(1.f, 40);
 
         CMesh* pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
@@ -107,6 +123,23 @@ void CAssetMgr::init()
         CMesh* pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"SubdivideSphereMesh", pMesh);
+    }
+
+    // Model
+    {
+        auto meshes = CAssetMgr::GetInst()->ReadFromFile("Assets\\Models\\zeldaPosed001\\zeldaPosed001.fbx");
+
+        vector<CMesh*> model;
+
+        for (auto& mesh : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(),
+                          (UINT)mesh.indices.size());
+            model.push_back(pMesh);
+        }
+
+        AddModel(L"Zelda", model);
     }
 
     // =========================
@@ -228,19 +261,19 @@ tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
 
     float fTheta = 0.f;
 
-    for (UINT i = 0; i <= numSlices; ++i)
+    for (int i = 0; i <= numSlices; ++i)
     {
         fTheta = (XM_2PI / numSlices) * i;
 
         v.vPos = Vec3(radius * cosf(fTheta), radius * sinf(fTheta), 0.f);
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-        v.vUV = Vec2(0.f, 0.f);
+        v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
 
         meshData.vertices.push_back(v);
     }
 
-    for (UINT i = 0; i < numSlices; ++i)
+    for (int i = 0; i < numSlices; ++i)
     {
         meshData.indices.push_back(0);
         meshData.indices.push_back(i + 2);
@@ -765,4 +798,68 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
     }
 
     return newMesh;
+}
+
+vector<tMeshData> CAssetMgr::ReadFromFile(std::string filename, bool revertNormals)
+{
+    // wstring To string
+    wstring strFilePath = CPathMgr::GetContentPath();
+    std::string basePath(strFilePath.length(), 0);
+    std::transform(strFilePath.begin(), strFilePath.end(), basePath.begin(), [](wchar_t c) { return (char)c; });
+
+    CModelLoader modelLoader;
+    modelLoader.Load(basePath, filename, revertNormals);
+    vector<tMeshData>& meshes = modelLoader.meshes;
+
+    // Normalize vertices
+    Vector3 vmin(1000, 1000, 1000);
+    Vector3 vmax(-1000, -1000, -1000);
+    for (auto& mesh : meshes)
+    {
+        for (auto& v : mesh.vertices)
+        {
+            vmin.x = XMMin(vmin.x, v.vPos.x);
+            vmin.y = XMMin(vmin.y, v.vPos.y);
+            vmin.z = XMMin(vmin.z, v.vPos.z);
+            vmax.x = XMMax(vmax.x, v.vPos.x);
+            vmax.y = XMMax(vmax.y, v.vPos.y);
+            vmax.z = XMMax(vmax.z, v.vPos.z);
+        }
+    }
+
+    float dx = vmax.x - vmin.x, dy = vmax.y - vmin.y, dz = vmax.z - vmin.z;
+    float dl = XMMax(XMMax(dx, dy), dz);
+    float cx = (vmax.x + vmin.x) * 0.5f, cy = (vmax.y + vmin.y) * 0.5f, cz = (vmax.z + vmin.z) * 0.5f;
+
+    for (auto& mesh : meshes)
+    {
+        for (auto& v : mesh.vertices)
+        {
+            v.vPos.x = (v.vPos.x - cx) / dl;
+            v.vPos.y = (v.vPos.y - cy) / dl;
+            v.vPos.z = (v.vPos.z - cz) / dl;
+        }
+    }
+
+    return meshes;
+}
+
+void CAssetMgr::AddModel(const wstring& _strKey, vector<CMesh*> _model)
+{
+    map<wstring, vector<CMesh*>>::iterator iter = m_mapModel.find(_strKey);
+    assert(iter == m_mapModel.end());
+
+    m_mapModel.insert(make_pair(_strKey, _model));
+}
+
+vector<CMesh*> CAssetMgr::FindModel(const wstring& _strKey)
+{
+    map<wstring, vector<CMesh*>>::iterator iter = m_mapModel.find(_strKey);
+
+    if (iter == m_mapModel.end())
+    {
+        return vector<CMesh*>();
+    }
+
+    return iter->second;
 }

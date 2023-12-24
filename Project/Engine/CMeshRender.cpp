@@ -50,7 +50,7 @@ void CMeshRender::UpdateData()
         g_Global.NormalLineScale = m_NormalLineScale;
 
     g_Global.UseTexture = m_bUseTexture;
-        
+
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);
     pCB->UpdateData(2);
@@ -58,7 +58,7 @@ void CMeshRender::UpdateData()
 
 void CMeshRender::render()
 {
-    if (nullptr == GetMesh() || nullptr == GetShader())
+    if (0 == GetMeshes().size() || nullptr == GetShader())
         return;
 
     // Material ÃÊ±âÈ­
@@ -66,12 +66,19 @@ void CMeshRender::render()
 
     UpdateData();
 
-    GetMesh()->render();
+    for (const auto& mesh : GetMeshes())
+    {
+        mesh->render();
+    }
 
     // Normal Line
     if (m_bDrawNormalLine && nullptr != m_NormalLineShader)
     {
         m_NormalLineShader->UpdateData();
-        GetMesh()->renderDraw();
+
+        for (const auto& mesh : GetMeshes())
+        {
+            mesh->renderDraw();
+        }
     }
 }

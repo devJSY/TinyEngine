@@ -61,12 +61,11 @@ typedef Vector4 Vec4;
 #include "imgui_impl_win32.h"
 #include "imgui_internal.h"
 
-// Assimp
-#define NOMINMAX
+// Assimp 5.0.0
 #ifdef _DEBUG
-    #pragma comment(lib, "Assimp\\assimp-vc143-mtd_debug")
+    #pragma comment(lib, "assimp\\assimp-vc143-mtd.lib")
 #else
-    #pragma comment(lib, "Assimp\\assimp-vc143-mt")
+    #pragma comment(lib, "assimp\\assimp-vc143-mt.lib")
 #endif
 #include <assimp\Importer.hpp>
 #include <assimp\postprocess.h>
@@ -75,5 +74,6 @@ typedef Vector4 Vec4;
 // ================
 #include <iostream>
 #include <algorithm>
+#include <filesystem>
 
 using std::tuple;

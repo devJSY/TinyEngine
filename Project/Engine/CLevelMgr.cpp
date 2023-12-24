@@ -57,7 +57,7 @@ void CLevelMgr::init()
     pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
     pLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
-    pLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pLight->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
 
@@ -74,7 +74,7 @@ void CLevelMgr::init()
     pMeshes->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     pMeshes->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
-    pMeshes->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pMeshes->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pMeshes->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlueMaterial"));
 
@@ -90,7 +90,7 @@ void CLevelMgr::init()
     pSquare->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pSquare->Transform()->SetAbsolute(true);
 
-    pSquare->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareMesh"));
+    pSquare->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareMesh"));
     pSquare->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pSquare->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSquare->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -109,7 +109,7 @@ void CLevelMgr::init()
     pSquareGrid->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pSquareGrid->Transform()->SetAbsolute(true);
 
-    pSquareGrid->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareGridMesh"));
+    pSquareGrid->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareGridMesh"));
     pSquareGrid->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pSquareGrid->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSquareGrid->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -128,7 +128,7 @@ void CLevelMgr::init()
     pBox->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pBox->Transform()->SetAbsolute(true);
 
-    pBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    pBox->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pBox->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pBox->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -147,7 +147,7 @@ void CLevelMgr::init()
     pCylinder->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pCylinder->Transform()->SetAbsolute(true);
 
-    pCylinder->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CylinderMesh"));
+    pCylinder->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CylinderMesh"));
     pCylinder->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pCylinder->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pCylinder->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -166,7 +166,7 @@ void CLevelMgr::init()
     pSphere->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pSphere->Transform()->SetAbsolute(true);
 
-    pSphere->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pSphere->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pSphere->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pSphere->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -185,7 +185,7 @@ void CLevelMgr::init()
     pTetrahedron->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pTetrahedron->Transform()->SetAbsolute(true);
 
-    pTetrahedron->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"TetrahedronMesh"));
+    pTetrahedron->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"TetrahedronMesh"));
     pTetrahedron->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pTetrahedron->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pTetrahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -204,7 +204,7 @@ void CLevelMgr::init()
     pIcosahedron->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pIcosahedron->Transform()->SetAbsolute(true);
 
-    pIcosahedron->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"IcosahedronMesh"));
+    pIcosahedron->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"IcosahedronMesh"));
     pIcosahedron->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pIcosahedron->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pIcosahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
@@ -223,14 +223,57 @@ void CLevelMgr::init()
     pSubdivideSphere->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pSubdivideSphere->Transform()->SetAbsolute(true);
 
-    pSubdivideSphere->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SubdivideSphereMesh"));
+    pSubdivideSphere->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SubdivideSphereMesh"));
     pSubdivideSphere->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pSubdivideSphere->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pSubdivideSphere->MeshRender()->SetNormalLineShader(
+        CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSubdivideSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
 
     pMeshes->AddChild(pSubdivideSphere);
 
+    // Circle SphereMesh
+    CGameObject* pCircle = new CGameObject;
+    pCircle->SetName(L"Circle");
+
+    pCircle->AddComponent(new CTransform);
+    pCircle->AddComponent(new CMeshRender);
+    pCircle->AddComponent(new CPlayerScript);
+
+    pCircle->Transform()->SetRelativePos(Vec3(1000.f, 0.f, 500.f));
+    pCircle->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pCircle->Transform()->SetAbsolute(true);
+
+    pCircle->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+    pCircle->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pCircle->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pCircle->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
+
+    pMeshes->AddChild(pCircle);
+
     m_CurLevel->AddObject(pMeshes, 10);
+
+    // Circle SphereMesh
+    CGameObject* pZelda = new CGameObject;
+    pZelda->SetName(L"Zelda");
+
+    pZelda->AddComponent(new CTransform);
+    pZelda->AddComponent(new CMeshRender);
+    pZelda->AddComponent(new CPlayerScript);
+
+    pZelda->Transform()->SetRelativePos(Vec3(1000.f, 0.f, 500.f));
+    pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pZelda->Transform()->SetAbsolute(true);
+
+    pZelda->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pZelda->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pZelda->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
+
+    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"Zelda"))
+    {
+        pZelda->MeshRender()->AddMesh(mesh);
+    }
+
+    m_CurLevel->AddObject(pZelda, 10);
 }
 
 void CLevelMgr::tick()

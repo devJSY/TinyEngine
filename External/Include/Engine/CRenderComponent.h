@@ -8,14 +8,14 @@ class CMaterial;
 class CRenderComponent : public CComponent
 {
 private:
-    CMesh* m_Mesh;
+    vector<CMesh*> m_Meshes;
     CGraphicsShader* m_Shader;
 
 public:
-    void SetMesh(CMesh* _Mesh) { m_Mesh = _Mesh; }
+    void AddMesh(CMesh* _Mesh) { m_Meshes.push_back(_Mesh); }
     void SetShader(CGraphicsShader* _Shader) { m_Shader = _Shader; }
 
-    CMesh* GetMesh() const { return m_Mesh; }
+    const vector<CMesh*>& GetMeshes() const { return m_Meshes; }
     CGraphicsShader* GetShader() const { return m_Shader; }
 
 private:

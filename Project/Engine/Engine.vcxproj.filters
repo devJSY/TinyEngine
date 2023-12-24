@@ -148,6 +148,9 @@
     <ClInclude Include="CLight3D.h">
       <Filter>08. Component\07. Light3D</Filter>
     </ClInclude>
+    <ClInclude Include="CModleLoader.h">
+      <Filter>ModleLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -275,6 +278,9 @@
     </ClCompile>
     <ClCompile Include="CLight3D.cpp">
       <Filter>08. Component\07. Light3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CModleLoader.cpp">
+      <Filter>ModleLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,6 +415,9 @@
     </Filter>
     <Filter Include="08. Component\07. Light3D">
       <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModleLoader">
+      <UniqueIdentifier>{217a6a91-fde4-4060-bdbf-96650c1d1c2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

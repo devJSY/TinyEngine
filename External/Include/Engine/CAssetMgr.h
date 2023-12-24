@@ -17,6 +17,7 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, CAsset*> m_mapAsset[(UINT)ASSET_TYPE::END];
+    map<wstring, vector<CMesh*>> m_mapModel;
 
 public:
     void init();
@@ -34,6 +35,13 @@ private:
     tMeshData MakeTetrahedron(); // 사면체
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
+
+private:
+    vector<tMeshData> ReadFromFile(std::string filename, bool revertNormals = false);
+
+public:
+    void AddModel(const wstring& _strKey, vector<CMesh*> _model);
+    vector<CMesh*> FindModel(const wstring& _strKey);
 
 public:
     template <typename T>

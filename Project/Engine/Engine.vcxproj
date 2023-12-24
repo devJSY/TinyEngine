@@ -183,6 +183,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
+    <ClInclude Include="CModleLoader.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="COutliner.h" />
     <ClInclude Include="CPathMgr.h" />
@@ -234,6 +235,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
+    <ClCompile Include="CModleLoader.cpp" />
     <ClCompile Include="COutliner.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
