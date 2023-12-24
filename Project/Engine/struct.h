@@ -1,4 +1,3 @@
-
 #pragma once
 
 // 3차원 공간에 배치되는 정점
@@ -38,18 +37,18 @@ struct FTask
 
 struct tMaterialData
 {
-    Vec3 ambient;       // 조명과 상관없이 물체 자체가 갖고있는 색상
-    float shininess;    // 빛이 얼마나 집중 될지에 사용하는 값
-    Vec3 diffuse;       // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
-    float dummy1;                     
-    Vec3 specular;      // 시점으로부터 반사되는 빛이 얼마나 받느냐에 따라 결정되는 값
-    float dummy2;                     
+    Vec3 ambient;    // 조명과 상관없이 물체 자체가 갖고있는 색상
+    float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
+    Vec3 diffuse;    // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
+    float dummy1;
+    Vec3 specular; // 시점으로부터 반사되는 빛이 얼마나 받느냐에 따라 결정되는 값
+    float dummy2;
 };
 
 struct tLightData
 {
     Vec3 strength;
-    float fallOffStart;    
+    float fallOffStart;
     Vec3 direction;
     float fallOffEnd;
     Vec3 position;
@@ -60,10 +59,10 @@ struct tLightData
 };
 
 struct tGlobal
-{   
-    tLightData DirLight;       // 태양과 같이 아주 멀리있는 광원
-    tLightData PointLight;     // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
-    tLightData SpotLight;      // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
+{
+    tLightData DirLight;   // 태양과 같이 아주 멀리있는 광원
+    tLightData PointLight; // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
+    tLightData SpotLight; // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
 
     Vec4 eyeWorld;
 
@@ -72,6 +71,12 @@ struct tGlobal
     Vec2 padd;
 };
 
+struct tMeshData
+{
+    std::vector<Vtx> vertices;
+    std::vector<UINT> indices;
+    std::string textureFilename;
+};
 
 extern tTransform g_Transform;
 extern tGlobal g_Global;

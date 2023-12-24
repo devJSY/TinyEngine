@@ -23,12 +23,17 @@ public:
 
 private:
     // Geometry
-    auto MakeSquare();
-    auto MakeBox();
-    auto MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
-    auto MakeSphere(const float radius, const int numSlices, const int numStacks);
-    auto MakeTetrahedron(); // 사면체
-    auto MakeIcosahedron(); // 이십면체
+    tMeshData MakeCircle(const float radius, const int numSlices);
+    tMeshData MakeSquare(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.0f,
+                             const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeBox(const float scale = 1.0f);
+    tMeshData MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
+    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks,
+                         const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeTetrahedron(); // 사면체
+    tMeshData MakeIcosahedron(); // 이십면체
+    tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
 
 public:
     template <typename T>
