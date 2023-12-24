@@ -17,6 +17,7 @@ CMeshRender::CMeshRender()
     , m_bDrawNormalLine(false)
     , m_bDrawAsWire(false)
     , m_NormalLineScale(1.0f)
+    , m_bUseTexture(false)
 {
 }
 
@@ -47,7 +48,9 @@ void CMeshRender::UpdateData()
     // Global Data ¹ÙÀÎµù
     if (m_bDrawNormalLine)
         g_Global.NormalLineScale = m_NormalLineScale;
-    
+
+    g_Global.UseTexture = m_bUseTexture;
+        
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);
     pCB->UpdateData(2);

@@ -28,7 +28,7 @@ void CCameraMoveScript::tick()
     CLevelEditor* LevelDditor = dynamic_cast<CLevelEditor*>(CEditorMgr::GetInst()->GetCurEditor());
     if (nullptr != LevelDditor)
     {
-        if (!LevelDditor->GetViewportHovered())
+        if (!LevelDditor->IsViewportHovered())
             return;
     }
 

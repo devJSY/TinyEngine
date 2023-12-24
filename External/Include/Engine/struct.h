@@ -68,7 +68,8 @@ struct tGlobal
     Vec4 eyeWorld;
 
     float NormalLineScale;
-    Vec3 padd;
+    float UseTexture;
+    Vec2 padd;
 };
 
 

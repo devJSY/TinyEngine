@@ -265,18 +265,22 @@ void COutliner::DrawDetails(CGameObject* obj)
         }
     }
 
-      // MeshRender
+    // MeshRender
     CMeshRender* pMeshRender = obj->MeshRender();
     if (nullptr != pMeshRender)
     {
         if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "MeshRender"))
         {
-            bool bWireFrame = pMeshRender->GetDrawAsWireFrame();
-            if (ImGui::Checkbox("Wireframe", &bWireFrame))
+            bool bUseTexture = pMeshRender->IsUseTexture();
+            if (ImGui::Checkbox("Use Texture", &bUseTexture))
+                pMeshRender->SetUseTexture(bUseTexture);
+
+            bool bWireFrame = pMeshRender->IsDrawAsWireFrame();
+            if (ImGui::Checkbox("Draw Wireframe", &bWireFrame))
                 pMeshRender->SetDrawAsWireFrame(bWireFrame);
 
-            bool bNormalLine = pMeshRender->GetDrawNormalLine();
-            if (ImGui::Checkbox("NormalLine", &bNormalLine))
+            bool bNormalLine = pMeshRender->IsDrawNormalLine();
+            if (ImGui::Checkbox("Draw NormalLine", &bNormalLine))
                 pMeshRender->SetDrawNormalLine(bNormalLine);
 
             float scale = pMeshRender->GetNormalLineScale();

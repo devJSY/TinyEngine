@@ -28,8 +28,8 @@ private:
     void CreateViewport();
 
 public:
-    bool GetViewportFocused() const { return m_ViewportFocused; }
-    bool GetViewportHovered() const { return m_ViewportHovered; }
+    bool IsViewportFocused() const { return m_ViewportFocused; }
+    bool IsViewportHovered() const { return m_ViewportHovered; }
 
 public:
     CLevelEditor();

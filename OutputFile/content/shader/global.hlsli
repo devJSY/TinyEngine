@@ -38,7 +38,8 @@ cbuffer GLOBAL : register(b2)
     float4 g_eyeWorld;
     
     float g_NormalLineScale;
-    float3 padd;
+    float g_UseTexture;
+    float2 padd;
 }
 
 Texture2D g_tex_0 : register(t0);

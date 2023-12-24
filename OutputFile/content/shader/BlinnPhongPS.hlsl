@@ -13,5 +13,5 @@ float4 main(VS_OUT input) : SV_TARGET
     color += ComputePointLight(g_PointLight, input.vPosWorld, input.normalWorld, toEye);
     color += ComputeSpotLight(g_SpotLight, input.vPosWorld, input.normalWorld, toEye);
 
-    return float4(color, 1.0);
+    return g_UseTexture ? float4(color, 1.0) * g_tex_0.Sample(g_LinearSampler, input.vUV) : float4(color, 1.0);
 }
