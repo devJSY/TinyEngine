@@ -5,12 +5,13 @@
 #include "CLevel.h"
 #include "CLayer.h"
 
+#include "CMaterial.h"
+
 #include "CGameObject.h"
 #include "CTransform.h"
-#include "CCamera.h"
 #include "CLight3D.h"
+#include "CCamera.h"
 #include "CMeshRender.h"
-#include "CMaterial.h"
 
 COutliner::COutliner()
     : m_SelectedObj(nullptr)
@@ -300,6 +301,19 @@ void COutliner::DrawDetails(CGameObject* obj)
 
                 ImGui::TreePop();
             }
+        }
+    }
+
+    // MeshRender
+    if (nullptr != pMeshRender)
+    {
+        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "MeshRender"))
+        {
+            bool b = pMeshRender->GetDrawAsWireFrame();
+            if (ImGui::Checkbox("Wireframe", &b))
+                pMeshRender->SetDrawAsWireFrame(b);
+
+            ImGui::TreePop();
         }
     }
 }

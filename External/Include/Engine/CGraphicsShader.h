@@ -42,8 +42,10 @@ public:
     void SetDSType(DS_TYPE _Type) { m_DSType = _Type; }
     void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
 
+    RS_TYPE GetRSType() const { return m_RSType; }
+
 public:
-    virtual void UpdateData();
+    virtual void UpdateData() override;
 
 public:
     CGraphicsShader();

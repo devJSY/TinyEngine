@@ -61,9 +61,9 @@ struct tLightData
 
 struct tGlobal
 {   
-    tLightData DirLight;        // 태양과 같이 아주 멀리있는 광원
-    tLightData PointLight;      // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
-    tLightData SpotLight;       // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
+    tLightData DirLight;       // 태양과 같이 아주 멀리있는 광원
+    tLightData PointLight;     // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
+    tLightData SpotLight;      // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
 
     Vec4 eyeWorld;
 };

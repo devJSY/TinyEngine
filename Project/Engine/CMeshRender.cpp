@@ -13,6 +13,7 @@
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
+    , m_DrawAsWire(false)
 {
 }
 
@@ -24,7 +25,13 @@ void CMeshRender::UpdateData()
 {
     if (nullptr != GetShader())
     {
+        RS_TYPE RStype = GetShader()->GetRSType();
+        if (m_DrawAsWire)
+            GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+
         GetShader()->UpdateData();
+
+        GetShader()->SetRSType(RStype);
     }
 
     if (nullptr != GetMaterial())

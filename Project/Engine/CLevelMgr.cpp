@@ -47,20 +47,20 @@ void CLevelMgr::init()
     m_CurLevel->AddObject(pCamObj, 0);
 
     // Light
-    CGameObject* DirLight = new CGameObject;
-    DirLight->SetName(L"Light");
+    CGameObject* pLight = new CGameObject;
+    pLight->SetName(L"Light");
 
-    DirLight->AddComponent(new CTransform);
-    DirLight->AddComponent(new CMeshRender);
-    DirLight->AddComponent(new CLight3D(LIGHT_TYPE::SPOT));
+    pLight->AddComponent(new CTransform);
+    pLight->AddComponent(new CMeshRender);
+    pLight->AddComponent(new CLight3D(LIGHT_TYPE::SPOT));
 
-    DirLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    DirLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+    pLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
-    DirLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    DirLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    pLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
 
-    m_CurLevel->AddObject(DirLight, 1);
+    m_CurLevel->AddObject(pLight, 1);
 
     // GameObject »ý¼º
     CGameObject* pObj = nullptr;
