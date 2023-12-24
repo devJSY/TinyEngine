@@ -16,8 +16,10 @@ public:
     void UpdateTangents();
 
 public:
-    std::string filePath;   // Load 에서 들어온 filePath 
-    std::string basePath;   // fileName을 제외한 전체 파일 경로
+    // 절대경로/상대경로/파일이름
+
+    std::string filePath;   // 상대경로
+    std::string basePath;   // 절대경로 + 상대경로
     std::vector<tMeshData> meshes;
     bool m_isGLTF = false; // gltf or fbx
     bool m_revertNormals = false;

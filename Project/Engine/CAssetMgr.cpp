@@ -125,7 +125,11 @@ void CAssetMgr::init()
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
 
-    // Model
+    // =========================
+    //  Model
+    // =========================
+
+    // Zelda
     {
         auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
 
@@ -139,17 +143,17 @@ void CAssetMgr::init()
             model.push_back(pMesh);
 
             // 텍스쳐 로딩
-            if (!meshData.textureName.empty() && !meshData.textureFilePath.empty())
+            if (!meshData.AlbedoTextureFilename.empty())
             {
-                std::cout << meshData.textureName << std::endl;
+                std::cout << meshData.AlbedoTextureFilename << std::endl;
                 std::wstring name;
-                name.assign(meshData.textureName.begin(), meshData.textureName.end());
+                name.assign(meshData.AlbedoTextureFilename.begin(), meshData.AlbedoTextureFilename.end());
 
                 std::wstring path;
-                path.assign(meshData.textureFilePath.begin(), meshData.textureFilePath.end());
+                path.assign(meshData.RelativeTextureFilePath.begin(), meshData.RelativeTextureFilePath.end());
 
                 // 텍스쳐 등록
-                Load<CTexture>(name, path);
+                Load<CTexture>(name, path + name);
                 pMesh->SetAlbedoTexture(name);
             }
         }

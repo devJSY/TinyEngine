@@ -99,7 +99,6 @@ void CModelLoader::UpdateTangents()
 
     for (auto& m : this->meshes)
     {
-
         vector<XMFLOAT3> positions(m.vertices.size());
         vector<XMFLOAT3> normals(m.vertices.size());
         vector<XMFLOAT2> texcoords(m.vertices.size());
@@ -142,7 +141,6 @@ void CModelLoader::ProcessNode(aiNode* node, const aiScene* scene, Matrix tr)
 
     for (UINT i = 0; i < node->mNumMeshes; i++)
     {
-
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         auto newMesh = this->ProcessMesh(mesh, scene);
 
@@ -167,10 +165,9 @@ string CModelLoader::ReadFilename(aiMaterial* material, aiTextureType type)
         aiString filepath;
         material->GetTexture(type, 0, &filepath);
 
-        std::string fullPath =
-            this->basePath + std::string(std::filesystem::path(filepath.C_Str()).filename().string());
+        std::string fileName = std::string(std::filesystem::path(filepath.C_Str()).filename().string());
 
-        return fullPath;
+        return fileName;
     }
     else
     {
@@ -232,49 +229,36 @@ tMeshData CModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     newMesh.vertices = vertices;
     newMesh.indices = indices;
 
-    // http://assimp.sourceforge.net/lib_html/materials.html
-    // if (mesh->mMaterialIndex >= 0)
-    //{
-
-    //    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-
-    //    newMesh.albedoTextureFilename = ReadFilename(material, aiTextureType_BASE_COLOR);
-    //    if (newMesh.aoTextureFilename.empty())
-    //    {
-    //        newMesh.aoTextureFilename = ReadFilename(material, aiTextureType_DIFFUSE);
-    //    }
-
-    //    newMesh.emissiveTextureFilename = ReadFilename(material, aiTextureType_EMISSIVE);
-    //    newMesh.heightTextureFilename = ReadFilename(material, aiTextureType_HEIGHT);
-    //    newMesh.normalTextureFilename = ReadFilename(material, aiTextureType_NORMALS);
-    //    newMesh.metallicTextureFilename = ReadFilename(material, aiTextureType_METALNESS);
-    //    newMesh.roughnessTextureFilename = ReadFilename(material, aiTextureType_DIFFUSE_ROUGHNESS);
-
-    //    newMesh.aoTextureFilename = ReadFilename(material, aiTextureType_AMBIENT_OCCLUSION);
-    //    if (newMesh.aoTextureFilename.empty())
-    //    {
-    //        newMesh.aoTextureFilename = ReadFilename(material, aiTextureType_LIGHTMAP);
-    //    }
-
-    //    // µð¹ö±ë¿ë
-    //    // for (size_t i = 0; i < 22; i++) {
-    //    //    cout << i << " " << ReadFilename(material, aiTextureType(i))
-    //    //         << endl;
-    //    //}
-    //}
+    newMesh.RelativeTextureFilePath = filePath;
 
     // http://assimp.sourceforge.net/lib_html/materials.html
     if (mesh->mMaterialIndex >= 0)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+        newMesh.AlbedoTextureFilename = ReadFilename(material, aiTextureType_BASE_COLOR);
+        if (newMesh.AlbedoTextureFilename.empty())
         {
-            aiString filepath;
-            material->GetTexture(aiTextureType_DIFFUSE, 0, &filepath);
-            newMesh.textureName = std::string(std::filesystem::path(filepath.C_Str()).filename().string());
-            newMesh.textureFilePath = filePath + newMesh.textureName;
+            newMesh.AlbedoTextureFilename = ReadFilename(material, aiTextureType_DIFFUSE);
         }
+
+        newMesh.EmissiveTextureFilename = ReadFilename(material, aiTextureType_EMISSIVE);
+        newMesh.HeightTextureFilename = ReadFilename(material, aiTextureType_HEIGHT);
+        newMesh.NormalTextureFilename = ReadFilename(material, aiTextureType_NORMALS);
+        newMesh.MetallicTextureFilename = ReadFilename(material, aiTextureType_METALNESS);
+        newMesh.RoughnessTextureFilename = ReadFilename(material, aiTextureType_DIFFUSE_ROUGHNESS);
+
+        newMesh.AoTextureFilename = ReadFilename(material, aiTextureType_AMBIENT_OCCLUSION);
+        if (newMesh.AoTextureFilename.empty())
+        {
+            newMesh.AoTextureFilename = ReadFilename(material, aiTextureType_LIGHTMAP);
+        }
+
+        // µð¹ö±ë¿ë
+        // for (size_t i = 0; i < 22; i++) {
+        //    cout << i << " " << ReadFilename(material, aiTextureType(i))
+        //         << endl;
+        //}
     }
 
     return newMesh;

@@ -252,7 +252,7 @@ void CLevelMgr::init()
 
     m_CurLevel->AddObject(pMeshes, 10);
 
-    // Circle SphereMesh
+    // Zelda Model
     CGameObject* pZelda = new CGameObject;
     pZelda->SetName(L"Zelda");
 

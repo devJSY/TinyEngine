@@ -14,6 +14,7 @@ CMesh::CMesh()
     , m_IdxCount(0)
     , m_VtxSysMem(nullptr)
     , m_IdxSysMem(nullptr)
+    , m_AlbedoTextureName()
 {
 }
 
