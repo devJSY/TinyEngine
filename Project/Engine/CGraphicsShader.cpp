@@ -79,18 +79,35 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     return S_OK;
 }
 
-int CGraphicsShader::CreateHullShader()
+int CGraphicsShader::CreateHullShader(const wstring& _strRelativePath, const string& _strFuncName)
 {
     return S_OK;
 }
 
-int CGraphicsShader::CreateDomainShader()
+int CGraphicsShader::CreateDomainShader(const wstring& _strRelativePath, const string& _strFuncName)
 {
     return S_OK;
 }
 
-int CGraphicsShader::CreateGeometryShader()
+int CGraphicsShader::CreateGeometryShader(const wstring& _strRelativePath, const string& _strFuncName)
 {
+    wstring strContentPath = CPathMgr::GetContentPath();
+    wstring strFilePath = strContentPath + _strRelativePath;
+
+    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
+                                  "gs_5_0", D3DCOMPILE_DEBUG, 0, m_GSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+    {
+        if (nullptr != m_ErrBlob)
+        {
+            char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
+            MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
+        }
+
+        return E_FAIL;
+    }
+
+    DEVICE->CreateGeometryShader(m_GSBlob->GetBufferPointer(), m_GSBlob->GetBufferSize(), nullptr, m_GS.GetAddressOf());
+
     return S_OK;
 }
 

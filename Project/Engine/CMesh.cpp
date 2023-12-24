@@ -93,3 +93,10 @@ void CMesh::render()
 
     CONTEXT->DrawIndexed(m_IdxCount, 0, 0);
 }
+
+void CMesh::renderDraw()
+{
+    UpdateData();
+
+    CONTEXT->Draw(m_VtxCount, 0);
+}

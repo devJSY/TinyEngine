@@ -21,11 +21,9 @@ public:
 private:
     CMaterial* m_Material;
 
-
 public:
     void SetMaterial(CMaterial* _Material) { m_Material = _Material; }
     CMaterial* GetMaterial() const { return m_Material; }
-
 
 public:
     virtual void finaltick(){};

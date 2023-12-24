@@ -13,6 +13,7 @@ CCamera::CCamera()
     , m_AspectRatio(1.f)
     , m_Near(1.f)
     , m_Far(10000.f)
+    , m_CamSpeed(500.f)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_AspectRatio = vResol.x / vResol.y;
@@ -31,6 +32,10 @@ void CCamera::finaltick()
         m_Width = vResol.x;
         m_AspectRatio = vResol.x / vResol.y;
     }
+
+    // 카메라 속도 제한
+    if (m_CamSpeed < 0.f)
+        m_CamSpeed = 0.f;
 
     // 뷰 행렬을 계산한다.
     // 카메라를 원점으로 이동시키는 이동 행렬
@@ -84,10 +89,6 @@ void CCamera::finaltick()
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
     g_Transform.matView = m_matView;
     g_Transform.matProj = m_matProj;
-
-
-
-
 
     // eyePos 등록
     g_Global.eyeWorld = Vec4(vCamPos, 1.f);

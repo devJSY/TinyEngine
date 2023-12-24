@@ -435,5 +435,14 @@
     <FxCompile Include="BlinnPhongPS.hlsl">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="NormalLineVS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="NormalLineGS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="NormalLinePS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

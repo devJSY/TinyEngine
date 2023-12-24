@@ -208,6 +208,10 @@ void COutliner::DrawDetails(CGameObject* obj)
                     cam->SetFar(Far);
             }
 
+            float speed = cam->GetCameraSpeed();
+            if (ImGui::DragFloat("Speed", &speed, 1.f, 0.f, 10000.f))
+                cam->SetCameraSpeed(speed);
+
             ImGui::TreePop();
         }
     }
@@ -309,9 +313,17 @@ void COutliner::DrawDetails(CGameObject* obj)
     {
         if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "MeshRender"))
         {
-            bool b = pMeshRender->GetDrawAsWireFrame();
-            if (ImGui::Checkbox("Wireframe", &b))
-                pMeshRender->SetDrawAsWireFrame(b);
+            bool bWireFrame = pMeshRender->GetDrawAsWireFrame();
+            if (ImGui::Checkbox("Wireframe", &bWireFrame))
+                pMeshRender->SetDrawAsWireFrame(bWireFrame);
+
+            bool bNormalLine = pMeshRender->GetDrawNormalLine();
+            if (ImGui::Checkbox("NormalLine", &bNormalLine))
+                pMeshRender->SetDrawNormalLine(bNormalLine);
+
+            float scale = pMeshRender->GetNormalLineScale();
+            if (ImGui::SliderFloat("NormalLineScale", &scale, 1.f, 100.f))
+                pMeshRender->SetNormalLineScale(scale);
 
             ImGui::TreePop();
         }

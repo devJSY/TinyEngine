@@ -1,0 +1,35 @@
+#include "global.hlsli"
+    
+struct GS_IN
+{
+    float4 posModel : SV_POSITION;
+    float3 normalWorld : NORMAL;
+};
+
+struct PS_IN
+{
+    float4 pos : SV_POSITION;
+    float3 color : COLOR;
+};
+
+[maxvertexcount(2)]
+void main(point GS_IN input[1], inout LineStream<PS_IN> outputStream)
+{
+    PS_IN output;
+    
+    float4 posWorld = mul(input[0].posModel, g_matWorld);
+    float4 normalModel = float4(input[0].normalWorld, 0.0);
+    float4 normalWorld = mul(normalModel, g_matWorldInvTranspose);
+    normalWorld = float4(normalize(normalWorld.xyz), 0.0);
+    
+    // 원본 정점
+    output.pos = mul(input[0].posModel, g_matWVP);
+    output.color = float3(1.0, 1.0, 0.0);
+    outputStream.Append(output);
+    
+    // 추가된 NormalLine 정점
+    output.pos = mul(posWorld + g_NormalLineScale * normalWorld, g_matView);
+    output.pos = mul(output.pos, g_matProj);
+    output.color = float3(1.0, 0.0, 0.0);
+    outputStream.Append(output);
+}

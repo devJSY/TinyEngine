@@ -13,7 +13,10 @@
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
-    , m_DrawAsWire(false)
+    , m_NormalLineShader(nullptr)
+    , m_bDrawNormalLine(false)
+    , m_bDrawAsWire(false)
+    , m_NormalLineScale(1.0f)
 {
 }
 
@@ -26,7 +29,7 @@ void CMeshRender::UpdateData()
     if (nullptr != GetShader())
     {
         RS_TYPE RStype = GetShader()->GetRSType();
-        if (m_DrawAsWire)
+        if (m_bDrawAsWire)
             GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
 
         GetShader()->UpdateData();
@@ -41,6 +44,10 @@ void CMeshRender::UpdateData()
 
     GetOwner()->Transform()->UpdateData();
 
+    // Global Data ¹ÙÀÎµù
+    if (m_bDrawNormalLine)
+        g_Global.NormalLineScale = m_NormalLineScale;
+    
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);
     pCB->UpdateData(2);
@@ -57,4 +64,11 @@ void CMeshRender::render()
     UpdateData();
 
     GetMesh()->render();
+
+    // Normal Line
+    if (m_bDrawNormalLine && nullptr != m_NormalLineShader)
+    {
+        m_NormalLineShader->UpdateData();
+        GetMesh()->renderDraw();
+    }
 }

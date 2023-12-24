@@ -352,6 +352,18 @@ void CAssetMgr::init()
         AddAsset(L"BlinnPhong", pShader);
     }
 
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\NormalLineVS.hlsl", "main");
+        pShader->CreateGeometryShader(L"shader\\NormalLineGS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\NormalLinePS.hlsl", "main");
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        AddAsset(L"NormalLine", pShader);
+    }
 
     // ======================
     // Texture
@@ -377,7 +389,6 @@ void CAssetMgr::init()
     material.ambient = Vec3(0.0f, 1.0f, 0.0f);
     CMaterial* Gmat = new CMaterial;
     Gmat->Create(material);
-
 
     material.ambient = Vec3(0.0f, 0.0f, 1.0f);
     CMaterial* Bmat = new CMaterial;

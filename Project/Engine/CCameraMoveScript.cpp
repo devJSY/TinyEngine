@@ -4,7 +4,6 @@
 #include "CLevelEditor.h"
 
 CCameraMoveScript::CCameraMoveScript()
-    : m_CamSpeed(500.f)
 {
 }
 
@@ -38,24 +37,29 @@ void CCameraMoveScript::tick()
         MoveOrthographic();
     else
         MovePerspective();
+
+    // Wheel 초기화
+    CKeyMgr::GetInst()->SetMouseWheel(0);
 }
 
 void CCameraMoveScript::MoveOrthographic()
 {
+    float CamSpeed = GetOwner()->Camera()->GetCameraSpeed();
+
     // Move
     Vec3 vPos = Transform()->GetRelativePos();
 
     if (KEY_PRESSED(KEY::W))
-        vPos.y += DT * m_CamSpeed;
+        vPos.y += DT * CamSpeed;
 
     if (KEY_PRESSED(KEY::S))
-        vPos.y -= DT * m_CamSpeed;
+        vPos.y -= DT * CamSpeed;
 
     if (KEY_PRESSED(KEY::A))
-        vPos.x -= DT * m_CamSpeed;
+        vPos.x -= DT * CamSpeed;
 
     if (KEY_PRESSED(KEY::D))
-        vPos.x += DT * m_CamSpeed;
+        vPos.x += DT * CamSpeed;
 
     Transform()->SetRelativePos(vPos);
 
@@ -63,12 +67,12 @@ void CCameraMoveScript::MoveOrthographic()
     if (KEY_PRESSED(KEY::RBTN))
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        vDrag.Normalize(); 
+        vDrag.Normalize();
         Vec3 vPos = Transform()->GetRelativePos();
         float scale = Camera()->GetScale();
         float Doffset = 4.f;
-        vPos.x -= vDrag.x * DT * m_CamSpeed * scale * Doffset;
-        vPos.y += vDrag.y * DT * m_CamSpeed * scale * Doffset;
+        vPos.x -= vDrag.x * DT * CamSpeed * scale * Doffset;
+        vPos.y += vDrag.y * DT * CamSpeed * scale * Doffset;
         Transform()->SetRelativePos(vPos);
     }
 
@@ -79,13 +83,12 @@ void CCameraMoveScript::MoveOrthographic()
         Camera()->SetScale(Camera()->GetScale() + DT * Zoffset);
     else if (wheel > 0)
         Camera()->SetScale(Camera()->GetScale() - DT * Zoffset);
-
-    // Wheel 초기화
-    CKeyMgr::GetInst()->SetMouseWheel(0);
 }
 
 void CCameraMoveScript::MovePerspective()
 {
+    float CamSpeed = GetOwner()->Camera()->GetCameraSpeed();
+
     // Move
     Vec3 vPos = Transform()->GetRelativePos();
 
@@ -94,22 +97,22 @@ void CCameraMoveScript::MovePerspective()
     Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
 
     if (KEY_PRESSED(KEY::W))
-        vPos += DT * m_CamSpeed * vFront;
+        vPos += DT * CamSpeed * vFront;
 
     if (KEY_PRESSED(KEY::S))
-        vPos += DT * m_CamSpeed * -vFront;
+        vPos += DT * CamSpeed * -vFront;
 
     if (KEY_PRESSED(KEY::A))
-        vPos += DT * m_CamSpeed * -vRight;
+        vPos += DT * CamSpeed * -vRight;
 
     if (KEY_PRESSED(KEY::D))
-        vPos += DT * m_CamSpeed * vRight;
+        vPos += DT * CamSpeed * vRight;
 
     if (KEY_PRESSED(KEY::E))
-        vPos += DT * m_CamSpeed * vUp;
+        vPos += DT * CamSpeed * vUp;
 
     if (KEY_PRESSED(KEY::Q))
-        vPos += DT * m_CamSpeed * -vUp;
+        vPos += DT * CamSpeed * -vUp;
 
     Transform()->SetRelativePos(vPos);
 
@@ -117,12 +120,20 @@ void CCameraMoveScript::MovePerspective()
     if (KEY_PRESSED(KEY::RBTN))
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        vDrag.Normalize(); 
+        vDrag.Normalize();
         Vec3 vRot = Transform()->GetRelativeRotation();
         float Doffset = 4.f;
         vRot.y += vDrag.x * DT * XM_PI * Doffset;
         vRot.x += vDrag.y * DT * XM_PI * Doffset;
         Transform()->SetRelativeRotation(vRot);
+
+        // Camera speed
+        short wheel = CKeyMgr::GetInst()->GetMouseWheel();
+        float CamSpeedOffset = 10000.f;
+        if (wheel < 0)
+            Camera()->SetCameraSpeed(CamSpeed - DT * CamSpeedOffset);
+        else if (wheel > 0)
+            Camera()->SetCameraSpeed(CamSpeed + DT * CamSpeedOffset);
     }
 
     // Zoom

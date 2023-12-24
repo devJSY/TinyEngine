@@ -4,11 +4,23 @@
 class CMeshRender : public CRenderComponent
 {
 private:
-    bool m_DrawAsWire;
+    CGraphicsShader* m_NormalLineShader;
+    bool m_bDrawNormalLine;
+    float m_NormalLineScale;
+
+    bool m_bDrawAsWire;
 
 public:
-    void SetDrawAsWireFrame(bool _b) { m_DrawAsWire = _b; }
-    bool GetDrawAsWireFrame() const { return m_DrawAsWire; }
+    void SetNormalLineShader(CGraphicsShader* shader) { m_NormalLineShader = shader; }
+
+    void SetDrawNormalLine(bool _b) { m_bDrawNormalLine = _b; }
+    bool GetDrawNormalLine() const { return m_bDrawNormalLine; }
+
+    void SetNormalLineScale(float scale) { m_NormalLineScale = scale; }
+    float GetNormalLineScale() const { return m_NormalLineScale; }
+
+    void SetDrawAsWireFrame(bool _b) { m_bDrawAsWire = _b; }
+    bool GetDrawAsWireFrame() const { return m_bDrawAsWire; }
 
 public:
     virtual void UpdateData() override;

@@ -36,6 +36,9 @@ cbuffer GLOBAL : register(b2)
     Light g_SpotLight;
     
     float4 g_eyeWorld;
+    
+    float g_NormalLineScale;
+    float3 padd;
 }
 
 Texture2D g_tex_0 : register(t0);

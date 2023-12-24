@@ -28,6 +28,9 @@ private:
     Matrix m_matView;
     Matrix m_matProj;
 
+private:
+    float m_CamSpeed;
+
 public:
     PROJ_TYPE GetProjType() const { return m_ProjType; }
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
@@ -43,6 +46,10 @@ public:
 
     float GetFar() const { return m_Far; }
     void SetFar(float _far) { m_Far = _far; }
+
+public:
+    float GetCameraSpeed() const { return m_CamSpeed; }
+    void SetCameraSpeed(float speed) { m_CamSpeed = speed; }
 
 public:
     virtual void finaltick() override;

@@ -9,6 +9,15 @@
       <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\BlinnPhongVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\NormalLineGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\NormalLinePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\NormalLineVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
   </ContentFiles>

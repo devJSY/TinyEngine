@@ -66,6 +66,9 @@ struct tGlobal
     tLightData SpotLight;      // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
 
     Vec4 eyeWorld;
+
+    float NormalLineScale;
+    Vec3 padd;
 };
 
 
