@@ -24,7 +24,10 @@ public:
 private:
     auto MakeSquare();
     auto MakeBox();
-
+    auto MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
+    auto MakeSphere(const float radius, const int numSlices, const int numStacks);
+    auto MakeTetrahedron(); // 사면체
+    auto MakeIcosahedron(); // 이십면체
 
 public:
     template <typename T>

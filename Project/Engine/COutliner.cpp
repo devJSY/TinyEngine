@@ -265,10 +265,28 @@ void COutliner::DrawDetails(CGameObject* obj)
         }
     }
 
-    // Material
+      // MeshRender
     CMeshRender* pMeshRender = obj->MeshRender();
     if (nullptr != pMeshRender)
     {
+        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "MeshRender"))
+        {
+            bool bWireFrame = pMeshRender->GetDrawAsWireFrame();
+            if (ImGui::Checkbox("Wireframe", &bWireFrame))
+                pMeshRender->SetDrawAsWireFrame(bWireFrame);
+
+            bool bNormalLine = pMeshRender->GetDrawNormalLine();
+            if (ImGui::Checkbox("NormalLine", &bNormalLine))
+                pMeshRender->SetDrawNormalLine(bNormalLine);
+
+            float scale = pMeshRender->GetNormalLineScale();
+            if (ImGui::SliderFloat("NormalLineScale", &scale, 1.f, 100.f))
+                pMeshRender->SetNormalLineScale(scale);
+
+            ImGui::TreePop();
+        }
+
+        // Material
         CMaterial* pMaterial = pMeshRender->GetMaterial();
         if (nullptr != pMaterial)
         {
@@ -306,27 +324,6 @@ void COutliner::DrawDetails(CGameObject* obj)
 
                 ImGui::TreePop();
             }
-        }
-    }
-
-    // MeshRender
-    if (nullptr != pMeshRender)
-    {
-        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "MeshRender"))
-        {
-            bool bWireFrame = pMeshRender->GetDrawAsWireFrame();
-            if (ImGui::Checkbox("Wireframe", &bWireFrame))
-                pMeshRender->SetDrawAsWireFrame(bWireFrame);
-
-            bool bNormalLine = pMeshRender->GetDrawNormalLine();
-            if (ImGui::Checkbox("NormalLine", &bNormalLine))
-                pMeshRender->SetDrawNormalLine(bNormalLine);
-
-            float scale = pMeshRender->GetNormalLineScale();
-            if (ImGui::SliderFloat("NormalLineScale", &scale, 1.f, 100.f))
-                pMeshRender->SetNormalLineScale(scale);
-
-            ImGui::TreePop();
         }
     }
 }

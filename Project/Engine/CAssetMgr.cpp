@@ -212,6 +212,253 @@ auto CAssetMgr::MakeBox()
     return tuple{vertices, indices};
 }
 
+auto CAssetMgr::MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices)
+{
+    // Texture 좌표계때문에 (numSlices + 1) x 2 개의 버텍스 사용
+    const float dTheta = -XM_2PI / float(numSlices);
+
+    vector<Vtx> vertices;
+
+    // 옆면의 바닥 버텍스들 (인덱스 0 이상 numSlices 미만)
+    for (int i = 0; i <= numSlices; i++)
+    {
+        Vtx v;
+        v.vPos = Vec3::Transform(Vec3(bottomRadius, -0.5f * height, 0.0f), Matrix::CreateRotationY(dTheta * float(i)));
+
+        v.vNormal = v.vPos - Vec3(0.0f, -0.5f * height, 0.0f);
+        v.vNormal.Normalize();
+        v.vUV = Vec2(float(i) / numSlices, 1.0f);
+
+        vertices.push_back(v);
+    }
+
+    // 옆면의 맨 위 버텍스들 (인덱스 numSlices 이상 2 * numSlices 미만)
+    for (int i = 0; i <= numSlices; i++)
+    {
+        Vtx v;
+        v.vPos = Vec3::Transform(Vec3(topRadius, 0.5f * height, 0.0f), Matrix::CreateRotationY(dTheta * float(i)));
+        v.vNormal = v.vPos - Vec3(0.0f, 0.5f * height, 0.0f);
+        v.vNormal.Normalize();
+        v.vUV = Vec2(float(i) / numSlices, 0.0f);
+
+        vertices.push_back(v);
+    }
+
+    vector<UINT> indices;
+
+    for (int i = 0; i < numSlices; i++)
+    {
+        indices.push_back(i);
+        indices.push_back(i + numSlices + 1);
+        indices.push_back(i + 1 + numSlices + 1);
+
+        indices.push_back(i);
+        indices.push_back(i + 1 + numSlices + 1);
+        indices.push_back(i + 1);
+    }
+
+    return tuple{vertices, indices};
+}
+
+auto CAssetMgr::MakeSphere(const float radius, const int numSlices, const int numStacks)
+{
+    // 참고: OpenGL Sphere
+    // http://www.songho.ca/opengl/gl_sphere.html
+    // Texture 좌표계때문에 (numSlices + 1) 개의 버텍스 사용 (마지막에 닫아주는
+    // 버텍스가 중복) Stack은 y 위쪽 방향으로 쌓아가는 방식
+
+    const float dTheta = -XM_2PI / float(numSlices);
+    const float dPhi = -XM_PI / float(numStacks);
+
+    vector<Vtx> vertices;
+
+    for (int j = 0; j <= numStacks; j++)
+    {
+        // 스택에 쌓일 수록 시작점을 x-y 평면에서 회전 시켜서 위로 올리는 구조
+        Vec3 stackStartPoint = Vec3::Transform(Vec3(0.0f, -radius, 0.0f), Matrix::CreateRotationZ(dPhi * j));
+
+        for (int i = 0; i <= numSlices; i++)
+        {
+            Vtx v;
+
+            // 시작점을 x-z 평면에서 회전시키면서 원을 만드는 구조
+            v.vPos = Vec3::Transform(stackStartPoint, Matrix::CreateRotationY(dTheta * float(i)));
+
+            v.vNormal = v.vPos; // 원점이 구의 중심
+            v.vNormal.Normalize();
+            v.vUV = Vec2(float(i) / numSlices, 1.0f - float(j) / numStacks);
+
+            vertices.push_back(v);
+        }
+    }
+
+    vector<UINT> indices;
+
+    for (int j = 0; j < numStacks; j++)
+    {
+        const int offset = (numSlices + 1) * j;
+
+        for (int i = 0; i < numSlices; i++)
+        {
+            indices.push_back(offset + i);
+            indices.push_back(offset + i + numSlices + 1);
+            indices.push_back(offset + i + 1 + numSlices + 1);
+
+            indices.push_back(offset + i);
+            indices.push_back(offset + i + 1 + numSlices + 1);
+            indices.push_back(offset + i + 1);
+        }
+    }
+
+    return tuple{vertices, indices};
+}
+
+auto CAssetMgr::MakeTetrahedron()
+{
+    // Regular Tetrahedron
+    // https://mathworld.wolfram.com/RegularTetrahedron.html
+
+    const float a = 1.0f;
+    const float x = sqrt(3.0f) / 3.0f * a;
+    const float d = sqrt(3.0f) / 6.0f * a; // = x / 2
+    const float h = sqrt(6.0f) / 3.0f * a;
+
+    vector<Vec3> points = {{0.0f, x, 0.0f}, {-0.5f * a, -d, 0.0f}, {+0.5f * a, -d, 0.0f}, {0.0f, 0.0f, h}};
+
+    Vec3 center = Vec3(0.0f);
+
+    for (int i = 0; i < 4; i++)
+    {
+        center += points[i];
+    }
+    center /= 4.0f;
+
+    for (int i = 0; i < 4; i++)
+    {
+        points[i] -= center;
+    }
+
+    vector<Vtx> vertices;
+
+    for (int i = 0; i < points.size(); i++)
+    {
+        Vtx v;
+        v.vPos = points[i];
+        v.vNormal = v.vPos; // 중심이 원점
+        v.vNormal.Normalize();
+
+        vertices.push_back(v);
+    }
+
+    vector<UINT> indices;
+
+    indices.push_back(0);
+    indices.push_back(1);
+    indices.push_back(2);
+    indices.push_back(3);
+    indices.push_back(2);
+    indices.push_back(1);
+    indices.push_back(0);
+    indices.push_back(3);
+    indices.push_back(1);
+    indices.push_back(0);
+    indices.push_back(2);
+    indices.push_back(3);
+
+    return tuple{vertices, indices};
+}
+
+auto CAssetMgr::MakeIcosahedron()
+{
+    // Luna DX12 교재 참고
+    // 등20면체
+    // https://mathworld.wolfram.com/Isohedron.html
+
+    const float X = 0.525731f;
+    const float Z = 0.850651f;
+
+    vector<Vec3> pos = {Vec3(-X, 0.0f, Z), Vec3(X, 0.0f, Z),  Vec3(-X, 0.0f, -Z), Vec3(X, 0.0f, -Z),
+                        Vec3(0.0f, Z, X),  Vec3(0.0f, Z, -X), Vec3(0.0f, -Z, X),  Vec3(0.0f, -Z, -X),
+                        Vec3(Z, X, 0.0f),  Vec3(-Z, X, 0.0f), Vec3(Z, -X, 0.0f),  Vec3(-Z, -X, 0.0f)};
+
+    vector<Vtx> vertices;
+
+    for (size_t i = 0; i < pos.size(); i++)
+    {
+        Vtx v;
+        v.vPos = pos[i];
+        v.vNormal = v.vPos;
+        v.vNormal.Normalize();
+
+        vertices.push_back(v);
+    }
+
+    vector<UINT> indices;
+
+    indices.push_back(1);
+    indices.push_back(4);
+    indices.push_back(0);
+    indices.push_back(4);
+    indices.push_back(9);
+    indices.push_back(0);
+    indices.push_back(4);
+    indices.push_back(5);
+    indices.push_back(9);
+    indices.push_back(8);
+    indices.push_back(5);
+    indices.push_back(4);
+    indices.push_back(1);
+    indices.push_back(8);
+    indices.push_back(4);
+    indices.push_back(1);
+    indices.push_back(10);
+    indices.push_back(8);
+    indices.push_back(10);
+    indices.push_back(3);
+    indices.push_back(8);
+    indices.push_back(8);
+    indices.push_back(3);
+    indices.push_back(5);
+    indices.push_back(3);
+    indices.push_back(2);
+    indices.push_back(5);
+    indices.push_back(3);
+    indices.push_back(7);
+    indices.push_back(2);
+    indices.push_back(3);
+    indices.push_back(10);
+    indices.push_back(7);
+    indices.push_back(10);
+    indices.push_back(6);
+    indices.push_back(7);
+    indices.push_back(6);
+    indices.push_back(11);
+    indices.push_back(7);
+    indices.push_back(6);
+    indices.push_back(0);
+    indices.push_back(11);
+    indices.push_back(6);
+    indices.push_back(1);
+    indices.push_back(0);
+    indices.push_back(10);
+    indices.push_back(1);
+    indices.push_back(6);
+    indices.push_back(11);
+    indices.push_back(0);
+    indices.push_back(9);
+    indices.push_back(2);
+    indices.push_back(11);
+    indices.push_back(9);
+    indices.push_back(5);
+    indices.push_back(2);
+    indices.push_back(9);
+    indices.push_back(11);
+    indices.push_back(2);
+    indices.push_back(7);
+
+    return tuple{vertices, indices};
+}
+
 void CAssetMgr::init()
 {
     // =========================
@@ -319,6 +566,39 @@ void CAssetMgr::init()
         CMesh* pMesh = new CMesh;
         pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
         AddAsset(L"BoxMesh", pMesh);
+    }
+
+    // Cylinder
+    {
+        auto [vertices, indices] = MakeCylinder(1, 1, 1, 100);
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
+        AddAsset(L"CylinderMesh", pMesh);
+    }
+
+    // Sphere
+    {
+        auto [vertices, indices] = MakeSphere(1, 25, 25);
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
+        AddAsset(L"SphereMesh", pMesh);
+    }
+
+    // Tetrahedron
+    {
+        auto [vertices, indices] = MakeTetrahedron();
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
+        AddAsset(L"TetrahedronMesh", pMesh);
+    }
+
+    // Icosahedron
+    {
+        auto [vertices, indices] = MakeIcosahedron();
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(vertices.data(), (UINT)vertices.size(), indices.data(), (UINT)indices.size());
+        AddAsset(L"IcosahedronMesh", pMesh);
     }
 
     // =========================

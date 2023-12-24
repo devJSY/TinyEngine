@@ -74,9 +74,9 @@ void CLevelMgr::init()
 
     pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-
-    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    pObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    
+    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
     pObj->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"RedMaterial"));
 
@@ -90,7 +90,7 @@ void CLevelMgr::init()
     pChildObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pChildObj->Transform()->SetAbsolute(true);
 
-    pChildObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    pChildObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pChildObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pChildObj->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pChildObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"GreenMaterial"));
@@ -109,7 +109,7 @@ void CLevelMgr::init()
     MatObj->Transform()->SetRelativePos(Vec3(-600.f, 0.f, 750.f));
     MatObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    MatObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    MatObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CylinderMesh"));
     MatObj->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
     MatObj->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     MatObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlueMaterial"));
