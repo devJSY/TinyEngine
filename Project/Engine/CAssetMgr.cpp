@@ -127,7 +127,7 @@ void CAssetMgr::init()
 
     // Model
     {
-        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\","zeldaPosed001.fbx");
+        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
 
         vector<CMesh*> model;
 
@@ -148,12 +148,9 @@ void CAssetMgr::init()
                 std::wstring path;
                 path.assign(meshData.textureFilePath.begin(), meshData.textureFilePath.end());
 
-                CTexture* pTex = Load<CTexture>(name, path);
-                pMesh->m_TextueName = name;
-                //if (nullptr != pTex)
-                //{
-                //    pTex->UpdateData(0);
-                //}
+                // 텍스쳐 등록
+                Load<CTexture>(name, path);
+                pMesh->SetAlbedoTexture(name);
             }
         }
 

@@ -13,7 +13,7 @@ CCamera::CCamera()
     , m_AspectRatio(1.f)
     , m_Near(1.f)
     , m_Far(10000.f)
-    , m_CamSpeed(500.f)
+    , m_CamSpeed(250.f)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_AspectRatio = vResol.x / vResol.y;

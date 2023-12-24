@@ -84,7 +84,8 @@ int CMesh::Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount)
 
 void CMesh::UpdateData()
 {
-    CTexture* pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_TextueName);
+    // 텍스춰 바인딩
+    CTexture* pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_AlbedoTextureName);
     if (nullptr != pTex)
     {
         pTex->UpdateData(0);

@@ -16,8 +16,16 @@ private:
     void* m_VtxSysMem;
     void* m_IdxSysMem;
 
+private:
+    std::wstring m_AlbedoTextureName;
+    // std::wstring m_EmissiveTextureName;
+    // std::wstring m_NormalTextureName;
+    // std::wstring m_HeightTextureName;
+    // std::wstring m_AoTextureName;
+    // std::wstring m_MetallicRoughnessTextureName;
+
 public:
-    std::wstring m_TextueName;
+    void SetAlbedoTexture(const std::wstring& name) { m_AlbedoTextureName = name; }
 
 private:
     void UpdateData();
