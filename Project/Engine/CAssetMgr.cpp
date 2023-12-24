@@ -654,6 +654,18 @@ void CAssetMgr::init()
         pTex->UpdateData(0);
     }
 
+    CTexture* pTex2 = Load<CTexture>(L"earth", L"texture//earth.jpg");
+    if (nullptr != pTex2)
+    {
+        pTex2->UpdateData(1);
+    }
+
+    CTexture* pTex3 = Load<CTexture>(L"wall", L"texture//wall.jpg");
+    if (nullptr != pTex3)
+    {
+        pTex3->UpdateData(2);
+    }
+
     // ======================
     // Material
     // ======================

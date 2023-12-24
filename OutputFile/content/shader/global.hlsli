@@ -38,11 +38,13 @@ cbuffer GLOBAL : register(b2)
     float4 g_eyeWorld;
     
     float g_NormalLineScale;
-    float g_UseTexture;
+    bool g_UseTexture;
     float2 padd;
 }
 
 Texture2D g_tex_0 : register(t0);
+Texture2D g_tex_1 : register(t1);
+Texture2D g_tex_2 : register(t2);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);

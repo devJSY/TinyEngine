@@ -57,7 +57,7 @@ void CLevelMgr::init()
     pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
     pLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
-    pLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    pLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
 
     m_CurLevel->AddObject(pLight, 1);
