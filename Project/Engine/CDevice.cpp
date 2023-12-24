@@ -84,6 +84,12 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
+    if (FAILED(CreateSampler()))
+    {
+        MessageBox(nullptr, L"샘플러 생성 실패", L"Device 초기화 실패", MB_OK);
+        return E_FAIL;
+    }
+
     return S_OK;
 }
 
@@ -121,6 +127,53 @@ int CDevice::CreateViewport()
     ViewportDesc.Height = m_vRenderResolution.y;
 
     CONTEXT->RSSetViewports(1, &ViewportDesc);
+
+    return S_OK;
+}
+
+int CDevice::CreateSampler()
+{
+    D3D11_SAMPLER_DESC tSamDesc = {};
+    ZeroMemory(&tSamDesc, sizeof(tSamDesc));
+
+    tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+
+    tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+
+    tSamDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+    tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
 
     return S_OK;
 }
@@ -364,8 +417,8 @@ int CDevice::CreateBlendState()
 int CDevice::CreateConstBuffer()
 {
     m_arrCB[(UINT)CB_TYPE::TRANSFORM] = new CConstBuffer;
-    m_arrCB[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(tTransform), 1);    
-    
+    m_arrCB[(UINT)CB_TYPE::TRANSFORM]->Create(sizeof(tTransform), 1);
+
     m_arrCB[(UINT)CB_TYPE::MATERIAL_CONST] = new CConstBuffer;
     m_arrCB[(UINT)CB_TYPE::MATERIAL_CONST]->Create(sizeof(tMaterialData), 1);
 

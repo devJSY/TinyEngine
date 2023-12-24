@@ -119,6 +119,15 @@ enum class BS_TYPE
     END,
 };
 
+// Sampler State
+enum class SS_TYPE
+{
+    LINEAR,
+    POINT,
+    ANISOTROPIC,
+    END,
+};
+
 enum class EDITOR_TYPE
 {
     LEVEL,

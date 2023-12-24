@@ -43,6 +43,8 @@ cbuffer GLOBAL : register(b2)
 
 Texture2D g_tex_0 : register(t0);
 
-SamplerState g_sam_0 : register(s0);
+SamplerState g_LinearSampler : register(s0);
+SamplerState g_PointSampler : register(s1);
+SamplerState g_AnisotropicSampler : register(s2);
 
 #endif

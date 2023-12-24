@@ -17,7 +17,7 @@ VS_OUT VS_Std2D(VS_IN _in)
 
 float4 PS_Std2D(VS_OUT _in) : SV_Target
 {
-    float4 vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+    float4 vColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
     
     // 알파값구분만 색상 변경
     //if (vColor.a <= 0.1f)
@@ -37,6 +37,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     //}
     
     //return _in.vColor;
+    
     return vColor;
 }
 
