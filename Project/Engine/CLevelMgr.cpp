@@ -260,7 +260,7 @@ void CLevelMgr::init()
     pZelda->AddComponent(new CMeshRender);
     pZelda->AddComponent(new CPlayerScript);
 
-    pZelda->Transform()->SetRelativePos(Vec3(1000.f, 0.f, 500.f));
+    pZelda->Transform()->SetRelativePos(Vec3(0.f, 250.f, 500.f));
     pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pZelda->Transform()->SetAbsolute(true);
 

@@ -61,13 +61,13 @@ typedef Vector4 Vec4;
 #include "imgui_impl_win32.h"
 #include "imgui_internal.h"
 
-// Assimp 5.0.0
-#pragma comment(lib, "assimp\\assimp-vc143-mtd.lib")
-//#ifdef _DEBUG
-//   
-//#else
-//    #pragma comment(lib, "assimp\\assimp-vc143-mt.lib")
-//#endif
+// Assimp 5.2.5
+//#define NOMINMAX
+#ifdef _DEBUG
+    #pragma comment(lib, "assimp\\assimp-vc143-mtd")
+#else
+    #pragma comment(lib, "assimp\\assimp-vc143-mt")
+#endif
 #include <assimp\Importer.hpp>
 #include <assimp\postprocess.h>
 #include <assimp\scene.h>

@@ -127,7 +127,7 @@ void CAssetMgr::init()
 
     // Model
     {
-        auto meshes = CAssetMgr::GetInst()->ReadFromFile("Assets\\Models\\zeldaPosed001\\zeldaPosed001.fbx");
+        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\zeldaPosed001.fbx");
 
         vector<CMesh*> model;
 
