@@ -686,7 +686,12 @@ void CAssetMgr::init()
     CMaterial* Bmat = new CMaterial;
     Bmat->Create(material);
 
+    material.ambient = Vec3(1.0f, 1.0f, 0.0f);
+    CMaterial* Ymat = new CMaterial;
+    Ymat->Create(material);
+
     AddAsset(L"RedMaterial", Rmat);
     AddAsset(L"GreenMaterial", Gmat);
     AddAsset(L"BlueMaterial", Bmat);
+    AddAsset(L"YellowMaterial", Ymat);
 }

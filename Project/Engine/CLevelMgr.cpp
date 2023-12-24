@@ -58,7 +58,8 @@ void CLevelMgr::init()
     pLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pLight->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pLight->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
 
     m_CurLevel->AddObject(pLight, 1);
 

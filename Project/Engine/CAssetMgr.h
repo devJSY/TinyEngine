@@ -22,6 +22,7 @@ public:
     void init();
 
 private:
+    // Geometry
     auto MakeSquare();
     auto MakeBox();
     auto MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);

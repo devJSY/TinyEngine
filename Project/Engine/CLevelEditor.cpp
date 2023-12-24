@@ -94,7 +94,7 @@ void CLevelEditor::render()
     // Viewport บนป็
     CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
 
-    ImGui::Begin("Level Viewport");
+    ImGui::Begin("Level ViewPort");
 
     m_ViewportFocused = ImGui::IsWindowFocused();
     m_ViewportHovered = ImGui::IsWindowHovered();
@@ -105,7 +105,7 @@ void CLevelEditor::render()
 
     if (m_show_Viewport2)
     {
-        ImGui::Begin("Level Viewport2");
+        ImGui::Begin("Level ViewPort2");
         if (!m_ViewportFocused)
             m_ViewportFocused = ImGui::IsWindowFocused();
         if (!m_ViewportHovered)
