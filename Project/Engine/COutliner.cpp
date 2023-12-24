@@ -33,8 +33,8 @@ void COutliner::DrawNode(CGameObject* obj)
         ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
     // wstring To string
-    string str;
-    str.assign(obj->GetName().begin(), obj->GetName().end());
+    std::string str(obj->GetName().length(), 0);
+    std::transform(obj->GetName().begin(), obj->GetName().end(), str.begin(), [](wchar_t c) { return (char)c; });
 
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, str.c_str());
 
@@ -115,8 +115,9 @@ void COutliner::DrawDetails(CGameObject* obj)
 {
     // Tag
     {
-        string str;
-        str.assign(obj->GetName().begin(), obj->GetName().end());
+        //  wstring To string
+        std::string str(obj->GetName().length(), 0);
+        std::transform(obj->GetName().begin(), obj->GetName().end(), str.begin(), [](wchar_t c) { return (char)c; });
 
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));

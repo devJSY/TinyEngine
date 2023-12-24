@@ -41,7 +41,7 @@ void CLevelMgr::init()
     pCamObj->AddComponent(new CCamera);
     pCamObj->AddComponent(new CCameraMoveScript);
 
-    pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
+    pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, -100.f));
     pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
     m_CurLevel->AddObject(pCamObj, 0);
@@ -86,8 +86,8 @@ void CLevelMgr::init()
     pChildObj->AddComponent(new CTransform);
     pChildObj->AddComponent(new CMeshRender);
 
-    pChildObj->Transform()->SetRelativePos(Vec3(600.f, 0.f, 0.f));
-    pChildObj->Transform()->SetRelativeScale(Vec3(150.f, 150.f, 150.f));
+    pChildObj->Transform()->SetRelativePos(Vec3(600.f, 0.f, -250.f));
+    pChildObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pChildObj->Transform()->SetAbsolute(true);
 
     pChildObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
@@ -106,7 +106,7 @@ void CLevelMgr::init()
     MatObj->AddComponent(new CTransform);
     MatObj->AddComponent(new CMeshRender);
 
-    MatObj->Transform()->SetRelativePos(Vec3(-600.f, 0.f, 0.f));
+    MatObj->Transform()->SetRelativePos(Vec3(-600.f, 0.f, 750.f));
     MatObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     MatObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
