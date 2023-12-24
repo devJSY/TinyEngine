@@ -75,7 +75,8 @@ struct tMeshData
 {
     std::vector<Vtx> vertices;
     std::vector<UINT> indices;
-    std::string textureFilename;
+    std::string textureName;
+    std::string textureFilePath;
 };
 
 extern tTransform g_Transform;

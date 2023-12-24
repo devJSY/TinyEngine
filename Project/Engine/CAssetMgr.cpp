@@ -127,16 +127,29 @@ void CAssetMgr::init()
 
     // Model
     {
-        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\zeldaPosed001.fbx");
+        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\","zeldaPosed001.fbx");
 
         vector<CMesh*> model;
 
-        for (auto& mesh : meshes)
+        for (auto& meshData : meshes)
         {
             CMesh* pMesh = new CMesh;
-            pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(),
-                          (UINT)mesh.indices.size());
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
             model.push_back(pMesh);
+
+            // 텍스쳐 로딩
+            if (!meshData.textureName.empty() && !meshData.textureFilePath.empty())
+            {
+                std::cout << meshData.textureName << std::endl;
+                std::wstring name;
+                name.assign(meshData.textureName.begin(), meshData.textureName.end());
+
+                std::wstring path;
+                path.assign(meshData.textureFilePath.begin(), meshData.textureFilePath.end());
+
+                CTexture* pTex = Load<CTexture>(name, path);
+            }
         }
 
         AddModel(L"Zelda", model);
@@ -800,13 +813,8 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
     return newMesh;
 }
 
-vector<tMeshData> CAssetMgr::ReadFromFile(std::string filename, bool revertNormals)
+vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string filename, bool revertNormals)
 {
-    // wstring To string
-    wstring strFilePath = CPathMgr::GetContentPath();
-    std::string basePath(strFilePath.length(), 0);
-    std::transform(strFilePath.begin(), strFilePath.end(), basePath.begin(), [](wchar_t c) { return (char)c; });
-
     CModelLoader modelLoader;
     modelLoader.Load(basePath, filename, revertNormals);
     vector<tMeshData>& meshes = modelLoader.meshes;

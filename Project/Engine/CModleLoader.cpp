@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CModleLoader.h"
+#include "CPathMgr.h"
 
 void UpdateNormals(vector<tMeshData>& meshes)
 {
@@ -53,24 +54,30 @@ string GetExtension(const string filename)
     return ext;
 }
 
-void CModelLoader::Load(std::string basePath, std::string filename, bool revertNormals)
+void CModelLoader::Load(std::string filePath, std::string fileName, bool revertNormals)
 {
-    if (GetExtension(filename) == ".gltf")
+    if (GetExtension(fileName) == ".gltf")
     {
         m_isGLTF = true;
         m_revertNormals = revertNormals;
     }
 
-    this->basePath = basePath;
+    // wstring To string
+    wstring strFilePath = CPathMgr::GetContentPath();
+    std::string ContentPath(strFilePath.length(), 0);
+    std::transform(strFilePath.begin(), strFilePath.end(), ContentPath.begin(), [](wchar_t c) { return (char)c; });
+
+    this->filePath = filePath;
+    this->basePath = ContentPath + filePath;
 
     Assimp::Importer importer;
 
     const aiScene* pScene =
-        importer.ReadFile(this->basePath + filename, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+        importer.ReadFile(this->basePath + fileName, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
     if (!pScene)
     {
-        std::cout << "Failed to read file: " << this->basePath + filename << std::endl;
+        std::cout << "Failed to read file: " << this->basePath + fileName << std::endl;
     }
     else
     {
@@ -255,6 +262,20 @@ tMeshData CModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     //    //         << endl;
     //    //}
     //}
+
+    // http://assimp.sourceforge.net/lib_html/materials.html
+    if (mesh->mMaterialIndex >= 0)
+    {
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
+        if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+        {
+            aiString filepath;
+            material->GetTexture(aiTextureType_DIFFUSE, 0, &filepath);
+            newMesh.textureName = std::string(std::filesystem::path(filepath.C_Str()).filename().string());
+            newMesh.textureFilePath = filePath + newMesh.textureName;
+        }
+    }
 
     return newMesh;
 }

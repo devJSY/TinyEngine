@@ -37,7 +37,7 @@ private:
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
 
 private:
-    vector<tMeshData> ReadFromFile(std::string filename, bool revertNormals = false);
+    vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals = false);
 
 public:
     void AddModel(const wstring& _strKey, vector<CMesh*> _model);
