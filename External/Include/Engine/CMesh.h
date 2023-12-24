@@ -16,6 +16,9 @@ private:
     void* m_VtxSysMem;
     void* m_IdxSysMem;
 
+public:
+    std::wstring m_TextueName;
+
 private:
     void UpdateData();
 

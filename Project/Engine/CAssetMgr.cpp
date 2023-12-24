@@ -149,6 +149,11 @@ void CAssetMgr::init()
                 path.assign(meshData.textureFilePath.begin(), meshData.textureFilePath.end());
 
                 CTexture* pTex = Load<CTexture>(name, path);
+                pMesh->m_TextueName = name;
+                //if (nullptr != pTex)
+                //{
+                //    pTex->UpdateData(0);
+                //}
             }
         }
 

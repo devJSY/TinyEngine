@@ -3,6 +3,9 @@
 
 #include "CDevice.h"
 
+#include "CAssetMgr.h"
+#include "CTexture.h"
+
 CMesh::CMesh()
     : CAsset(ASSET_TYPE::MESH)
     , m_VBDesc{}
@@ -81,6 +84,12 @@ int CMesh::Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount)
 
 void CMesh::UpdateData()
 {
+    CTexture* pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_TextueName);
+    if (nullptr != pTex)
+    {
+        pTex->UpdateData(0);
+    }
+
     UINT iStride = sizeof(Vtx);
     UINT iOffset = 0;
     CONTEXT->IASetVertexBuffers(0, 1, m_VB.GetAddressOf(), &iStride, &iOffset);
