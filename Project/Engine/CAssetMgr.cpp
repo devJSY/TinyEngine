@@ -125,109 +125,109 @@ void CAssetMgr::init()
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
 
-    //// =========================
-    ////  Model
-    //// =========================
+    // =========================
+    //  Model
+    // =========================
 
-    //// Zelda
-    //{
-    //    auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
+    // Zelda
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
 
-    //    vector<CMesh*> model;
+        vector<CMesh*> model;
 
-    //    for (auto& meshData : meshes)
-    //    {
-    //        CMesh* pMesh = new CMesh;
-    //        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-    //                      (UINT)meshData.indices.size());
-    //        model.push_back(pMesh);
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
 
-    //        pMesh->SetName(L"Zelda");
-    //        MeshTextureLoad(pMesh, meshData);
-    //    }
+            pMesh->SetName(L"Zelda");
+            MeshTextureLoad(pMesh, meshData);
+        }
 
-    //    AddModel(L"Zelda", model);
-    //}
+        AddModel(L"Zelda", model);
+    }
 
-    //// damaged helmet
-    //{
-    //    auto meshes = ReadFromFile("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+    // damaged helmet
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
 
-    //    vector<CMesh*> model;
+        vector<CMesh*> model;
 
-    //    for (auto& meshData : meshes)
-    //    {
-    //        CMesh* pMesh = new CMesh;
-    //        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-    //                      (UINT)meshData.indices.size());
-    //        model.push_back(pMesh);
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
 
-    //        pMesh->SetName(L"damaged_helmet");
-    //        MeshTextureLoad(pMesh, meshData);
-    //    }
+            pMesh->SetName(L"damaged_helmet");
+            MeshTextureLoad(pMesh, meshData);
+        }
 
-    //    AddModel(L"damaged_helmet", model);
-    //}
+        AddModel(L"damaged_helmet", model);
+    }
 
-    //// blue whale
-    //{
-    //    auto meshes = ReadFromFile("Assets\\Models\\blue_whale\\", "scene.gltf");
+    // blue whale
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\blue_whale\\", "scene.gltf");
 
-    //    vector<CMesh*> model;
+        vector<CMesh*> model;
 
-    //    for (auto& meshData : meshes)
-    //    {
-    //        CMesh* pMesh = new CMesh;
-    //        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-    //                      (UINT)meshData.indices.size());
-    //        model.push_back(pMesh);
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
 
-    //        pMesh->SetName(L"blue_whale");
-    //        MeshTextureLoad(pMesh, meshData);
-    //    }
+            pMesh->SetName(L"blue_whale");
+            MeshTextureLoad(pMesh, meshData);
+        }
 
-    //    AddModel(L"blue_whale", model);
-    //}
-    //
-    //// torii_gate
-    //{
-    //    auto meshes = ReadFromFile("Assets\\Models\\torii_gate\\", "scene.gltf");
+        AddModel(L"blue_whale", model);
+    }
+    
+    // torii_gate
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\torii_gate\\", "scene.gltf");
 
-    //    vector<CMesh*> model;
+        vector<CMesh*> model;
 
-    //    for (auto& meshData : meshes)
-    //    {
-    //        CMesh* pMesh = new CMesh;
-    //        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-    //                      (UINT)meshData.indices.size());
-    //        model.push_back(pMesh);
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
 
-    //        pMesh->SetName(L"torii_gate");
-    //        MeshTextureLoad(pMesh, meshData);
-    //    }
+            pMesh->SetName(L"torii_gate");
+            MeshTextureLoad(pMesh, meshData);
+        }
 
-    //    AddModel(L"torii_gate", model);
-    //}
+        AddModel(L"torii_gate", model);
+    }
 
-    //// dragon_warrior
-    //{
-    //    auto meshes = ReadFromFile("Assets\\Models\\dragon_warrior\\", "scene.gltf");
+    // dragon_warrior
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\dragon_warrior\\", "scene.gltf");
 
-    //    vector<CMesh*> model;
+        vector<CMesh*> model;
 
-    //    for (auto& meshData : meshes)
-    //    {
-    //        CMesh* pMesh = new CMesh;
-    //        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-    //                      (UINT)meshData.indices.size());
-    //        model.push_back(pMesh);
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
 
-    //        pMesh->SetName(L"dragon_warrior");
-    //        MeshTextureLoad(pMesh, meshData);
-    //    }
+            pMesh->SetName(L"dragon_warrior");
+            MeshTextureLoad(pMesh, meshData);
+        }
 
-    //    AddModel(L"dragon_warrior", model);
-    //}
+        AddModel(L"dragon_warrior", model);
+    }
 
 
 

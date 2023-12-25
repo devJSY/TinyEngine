@@ -24,7 +24,7 @@ COutliner::~COutliner()
 
 void COutliner::DrawNode(CGameObject* obj)
 {
-    UINT id = 2147000000;
+    int id = -1;
 
     if (nullptr != m_SelectedObj)
         id = m_SelectedObj->GetID();

@@ -33,11 +33,16 @@ D:\TinyEngine\Project\Engine\CTransform.cpp;D:\TinyEngine\Project\Engine\x64\Rel
 D:\TinyEngine\Project\Engine\Engine.cpp;D:\TinyEngine\Project\Engine\x64\Release\Engine.obj
 D:\TinyEngine\Project\Engine\CLevelMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CLevelMgr.obj
 D:\TinyEngine\Project\Engine\extern.cpp;D:\TinyEngine\Project\Engine\x64\Release\extern.obj
+D:\TinyEngine\Project\Engine\ImGui\GraphEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\GraphEditor.obj
+D:\TinyEngine\Project\Engine\ImGui\ImCurveEdit.cpp;D:\TinyEngine\Project\Engine\x64\Release\ImCurveEdit.obj
+D:\TinyEngine\Project\Engine\ImGui\ImGradient.cpp;D:\TinyEngine\Project\Engine\x64\Release\ImGradient.obj
 D:\TinyEngine\Project\Engine\imgui\imgui.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui.obj
+D:\TinyEngine\Project\Engine\ImGui\ImGuizmo.cpp;D:\TinyEngine\Project\Engine\x64\Release\ImGuizmo.obj
 D:\TinyEngine\Project\Engine\imgui\imgui_demo.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_demo.obj
 D:\TinyEngine\Project\Engine\imgui\imgui_draw.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_draw.obj
 D:\TinyEngine\Project\Engine\imgui\imgui_impl_dx11.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_impl_dx11.obj
 D:\TinyEngine\Project\Engine\imgui\imgui_impl_win32.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_impl_win32.obj
 D:\TinyEngine\Project\Engine\imgui\imgui_tables.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_tables.obj
 D:\TinyEngine\Project\Engine\imgui\imgui_widgets.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_widgets.obj
+D:\TinyEngine\Project\Engine\ImGui\ImSequencer.cpp;D:\TinyEngine\Project\Engine\x64\Release\ImSequencer.obj
 D:\TinyEngine\Project\Engine\pch.cpp;D:\TinyEngine\Project\Engine\x64\Release\pch.obj

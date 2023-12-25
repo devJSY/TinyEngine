@@ -137,11 +137,7 @@ void CLevelEditor::render()
 
             if (nullptr != pCam)
             {
-                PROJ_TYPE type = pCam->GetProjType();
-                if (type == PROJ_TYPE::ORTHOGRAPHIC)
-                    ImGuizmo::SetOrthographic(true);
-                else
-                    ImGuizmo::SetOrthographic(false);
+                ImGuizmo::SetOrthographic(pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC ? true : false);
 
                 ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
                 float windowWidth = (float)ImGui::GetWindowWidth();
@@ -168,21 +164,38 @@ void CLevelEditor::render()
 
                 float snapValues[3] = {snapValue, snapValue, snapValue};
 
-                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::WORLD, *transform.m, nullptr,
+                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *transform.m, nullptr,
                                      snap ? snapValues : nullptr);
 
                 if (ImGuizmo::IsUsing())
                 {
+                    // ImGuizmo변화량이 적용된 Matrix의 SRT 분해
                     float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},
                           Fscale[3] = {0.0f, 0.0f, 0.0f};
                     ImGuizmo::DecomposeMatrixToComponents(*transform.m, Ftranslation, Frotation, Fscale);
 
-                    pTr->SetRelativePos(Vec3(Ftranslation[0], Ftranslation[1], Ftranslation[2]));
-                    pTr->SetRelativeRotation(Vec3(DirectX::XMConvertToRadians(Frotation[0]),
-                                                  DirectX::XMConvertToRadians(Frotation[1]),
-                                                  DirectX::XMConvertToRadians(Frotation[2])));
+                    // 원본 WorldMatrix의 SRT 분해
+                    Matrix originMat = pTr->GetWorldMat();
+                    float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
+                          originFscale[3] = {0.0f, 0.0f, 0.0f};
+                    ImGuizmo::DecomposeMatrixToComponents(*originMat.m, originFtranslation, originFrotation,
+                                                          originFscale);
 
-                    pTr->SetRelativeScale(Vec3(Fscale[0], Fscale[1], Fscale[2]));
+                    // ImGuizmo로 조정한 변화량 추출
+                    Vec3 vPosOffset =
+                        Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1],
+                             originFtranslation[2] - Ftranslation[2]);
+                    Vec3 vRotOffset = Vec3(
+                        DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
+                        DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
+                        DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
+                    Vec3 vScaleOffset =
+                        Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
+
+                    // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
+                    pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+                    pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+                    pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
                 }
             }
         }

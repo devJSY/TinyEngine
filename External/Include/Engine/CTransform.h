@@ -26,7 +26,7 @@ public:
     Vec3 GetRelativePos() const { return m_vRelativePos; }
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
     Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
-        
+
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }
 
     const Matrix& GetWorldMat() const { return m_matWorld; }
