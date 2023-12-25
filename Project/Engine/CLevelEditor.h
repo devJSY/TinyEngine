@@ -16,6 +16,8 @@ private:
 
     COutliner m_Outliner;
 
+    ImGuizmo::OPERATION m_GizmoType;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

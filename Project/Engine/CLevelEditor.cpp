@@ -7,6 +7,7 @@
 #include "CCamera.h"
 #include "CTransform.h"
 #include "CLevelMgr.h"
+#include "CKeyMgr.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -14,6 +15,7 @@ CLevelEditor::CLevelEditor()
     , m_ViewportHovered(false)
     , m_show_Viewport2(false)
     , m_Outliner()
+    , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
 {
 }
 
@@ -76,7 +78,7 @@ void CLevelEditor::tick()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-    
+
     ImGuizmo::BeginFrame();
 }
 
@@ -99,6 +101,7 @@ void CLevelEditor::render()
     // Viewport 복사
     CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
 
+    // Viewport
     ImGui::Begin("Level ViewPort");
 
     m_ViewportFocused = ImGui::IsWindowFocused();
@@ -107,10 +110,25 @@ void CLevelEditor::render()
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
 
+    // ImGuizmo
     CGameObject* SelectedObj = m_Outliner.GetSelectedObj();
-
     if (nullptr != SelectedObj)
     {
+        // 매크로이기 때문에 변수로 체크
+        bool bRBtn = KEY_PRESSED(KEY::RBTN);
+        if (!bRBtn)
+        {
+            // 선택된 오브젝트가 있을때 키입력으로 Gizmo 타입설정
+            if (KEY_TAP(KEY::Q))
+                m_GizmoType = (ImGuizmo::OPERATION)0;
+            else if (KEY_TAP(KEY::W))
+                m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+            else if (KEY_TAP(KEY::E))
+                m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+            else if (KEY_TAP(KEY::R))
+                m_GizmoType = ImGuizmo::OPERATION::SCALE;
+        }
+
         // Editor Camera
         CGameObject* pCamObj = CLevelMgr::GetInst()->GetCameraObj();
         if (nullptr != pCamObj)
@@ -119,9 +137,12 @@ void CLevelEditor::render()
 
             if (nullptr != pCam)
             {
-                ImGuiIO& io = ImGui::GetIO();
+                PROJ_TYPE type = pCam->GetProjType();
+                if (type == PROJ_TYPE::ORTHOGRAPHIC)
+                    ImGuizmo::SetOrthographic(true);
+                else
+                    ImGuizmo::SetOrthographic(false);
 
-                ImGuizmo::SetOrthographic(false);
                 ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
                 float windowWidth = (float)ImGui::GetWindowWidth();
                 float windowHeight = (float)ImGui::GetWindowHeight();
@@ -134,8 +155,21 @@ void CLevelEditor::render()
                 CTransform* pTr = SelectedObj->Transform();
                 Matrix transform = pTr->GetWorldMat();
 
-                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL,
-                                     *transform.m);
+                // Snapping
+                bool snap = KEY_PRESSED(KEY::LCTRL);
+
+                float snapValue = 0.f;
+                if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+                    snapValue = 25.f;
+                else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+                    snapValue = 30.0f;
+                else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
+                    snapValue = 1.0f;
+
+                float snapValues[3] = {snapValue, snapValue, snapValue};
+
+                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::WORLD, *transform.m, nullptr,
+                                     snap ? snapValues : nullptr);
 
                 if (ImGuizmo::IsUsing())
                 {

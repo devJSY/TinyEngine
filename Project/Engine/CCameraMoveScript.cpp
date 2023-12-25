@@ -89,36 +89,36 @@ void CCameraMoveScript::MovePerspective()
 {
     float CamSpeed = GetOwner()->Camera()->GetCameraSpeed();
 
-    // Move
-    Vec3 vPos = Transform()->GetRelativePos();
-
-    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-    Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
-
-    if (KEY_PRESSED(KEY::W))
-        vPos += DT * CamSpeed * vFront;
-
-    if (KEY_PRESSED(KEY::S))
-        vPos += DT * CamSpeed * -vFront;
-
-    if (KEY_PRESSED(KEY::A))
-        vPos += DT * CamSpeed * -vRight;
-
-    if (KEY_PRESSED(KEY::D))
-        vPos += DT * CamSpeed * vRight;
-
-    if (KEY_PRESSED(KEY::E))
-        vPos += DT * CamSpeed * vUp;
-
-    if (KEY_PRESSED(KEY::Q))
-        vPos += DT * CamSpeed * -vUp;
-
-    Transform()->SetRelativePos(vPos);
-
-    // Drag
     if (KEY_PRESSED(KEY::RBTN))
     {
+        // Move
+        Vec3 vPos = Transform()->GetRelativePos();
+
+        Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+        Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
+
+        if (KEY_PRESSED(KEY::W))
+            vPos += DT * CamSpeed * vFront;
+
+        if (KEY_PRESSED(KEY::S))
+            vPos += DT * CamSpeed * -vFront;
+
+        if (KEY_PRESSED(KEY::A))
+            vPos += DT * CamSpeed * -vRight;
+
+        if (KEY_PRESSED(KEY::D))
+            vPos += DT * CamSpeed * vRight;
+
+        if (KEY_PRESSED(KEY::E))
+            vPos += DT * CamSpeed * vUp;
+
+        if (KEY_PRESSED(KEY::Q))
+            vPos += DT * CamSpeed * -vUp;
+
+        Transform()->SetRelativePos(vPos);
+
+        // Drag
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
         vDrag.Normalize();
         Vec3 vRot = Transform()->GetRelativeRotation();
