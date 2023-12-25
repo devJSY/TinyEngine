@@ -85,17 +85,40 @@ int CMesh::Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount)
 
 void CMesh::UpdateData()
 {
-    // 텍스춰 바인딩
-    CTexture* pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_AlbedoTextureName);
-    if (nullptr != pTex)
-    {
-        pTex->UpdateData(0);
-    }
+    // Mesh 가 보유한 텍스춰 바인딩
+    TextureBind();
 
     UINT iStride = sizeof(Vtx);
     UINT iOffset = 0;
     CONTEXT->IASetVertexBuffers(0, 1, m_VB.GetAddressOf(), &iStride, &iOffset);
     CONTEXT->IASetIndexBuffer(m_IB.Get(), DXGI_FORMAT_R32_UINT, 0);
+}
+
+void CMesh::TextureBind()
+{
+    CTexture* pAlbedoTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_AlbedoTextureName);
+    if (nullptr != pAlbedoTex)
+        pAlbedoTex->UpdateData(0);
+
+    CTexture* pAoTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_AoTextureName);
+    if (nullptr != pAoTex)
+        pAoTex->UpdateData(1);
+
+    CTexture* pNormalTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_NormalTextureName);
+    if (nullptr != pNormalTex)
+        pNormalTex->UpdateData(2);
+
+    CTexture* pHeightTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_HeightTextureName);
+    if (nullptr != pHeightTex)
+        pHeightTex->UpdateData(3);
+
+    CTexture* pMetallicRoughnessTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_MetallicRoughnessTextureName);
+    if (nullptr != pMetallicRoughnessTex)
+        pMetallicRoughnessTex->UpdateData(4);
+
+    CTexture* pEmissiveTex = CAssetMgr::GetInst()->FindAsset<CTexture>(m_EmissiveTextureName);
+    if (nullptr != pEmissiveTex)
+        pEmissiveTex->UpdateData(5);
 }
 
 void CMesh::render()

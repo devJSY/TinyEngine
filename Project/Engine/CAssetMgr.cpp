@@ -142,23 +142,31 @@ void CAssetMgr::init()
                           (UINT)meshData.indices.size());
             model.push_back(pMesh);
 
-            // 텍스쳐 로딩
-            if (!meshData.AlbedoTextureFilename.empty())
-            {
-                std::cout << meshData.AlbedoTextureFilename << std::endl;
-                std::wstring name;
-                name.assign(meshData.AlbedoTextureFilename.begin(), meshData.AlbedoTextureFilename.end());
-
-                std::wstring path;
-                path.assign(meshData.RelativeTextureFilePath.begin(), meshData.RelativeTextureFilePath.end());
-
-                // 텍스쳐 등록
-                Load<CTexture>(name, path + name);
-                pMesh->SetAlbedoTexture(name);
-            }
+            pMesh->SetName(L"Zelda");
+            ModelTextureLoad(pMesh, meshData);
         }
 
         AddModel(L"Zelda", model);
+    }
+
+    // damaged helmet
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"damaged_helmet");
+            ModelTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"damaged_helmet", model);
     }
 
     // =========================
@@ -208,23 +216,11 @@ void CAssetMgr::init()
     // ======================
     // Texture
     // ======================
-    CTexture* pTex = Load<CTexture>(L"PlayerTexture", L"texture//MAP//BigMap.bmp");
-    if (nullptr != pTex)
-    {
-        pTex->UpdateData(0);
-    }
-
-    CTexture* pTex2 = Load<CTexture>(L"earth", L"texture//earth.jpg");
-    if (nullptr != pTex2)
-    {
-        pTex2->UpdateData(1);
-    }
-
-    CTexture* pTex3 = Load<CTexture>(L"wall", L"texture//wall.jpg");
-    if (nullptr != pTex3)
-    {
-        pTex3->UpdateData(2);
-    }
+    // CTexture* pTex = Load<CTexture>(L"PlayerTexture", L"texture//MAP//BigMap.bmp");
+    // if (nullptr != pTex)
+    //{
+    //    pTex->UpdateData(0);
+    //}
 
     // ======================
     // Material
@@ -856,6 +852,103 @@ vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string file
     }
 
     return meshes;
+}
+
+void CAssetMgr::ModelTextureLoad(CMesh* pMesh, const tMeshData& meshData)
+{
+    // 텍스쳐 로딩
+    std::wstring path;
+    path.assign(meshData.RelativeTextureFilePath.begin(), meshData.RelativeTextureFilePath.end());
+
+    if (!meshData.AlbedoTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : "; 
+        std::cout << meshData.AlbedoTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.AlbedoTextureFilename.begin(), meshData.AlbedoTextureFilename.end());
+
+        Load<CTexture>(name, path + name);
+        pMesh->SetAlbedoTexture(name);
+    }
+
+    if (!meshData.AoTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : "; 
+        std::cout << meshData.AoTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.AoTextureFilename.begin(), meshData.AoTextureFilename.end());
+
+        Load<CTexture>(name, path + name);
+        pMesh->SetAmbientOcclusionTexture(name);
+    }
+
+    if (!meshData.NormalTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : "; 
+        std::cout << meshData.NormalTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.NormalTextureFilename.begin(), meshData.NormalTextureFilename.end());
+
+        Load<CTexture>(name, path + name);
+        pMesh->SetNormalTexture(name);
+    }
+
+    if (!meshData.HeightTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : "; 
+        std::cout << meshData.HeightTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.HeightTextureFilename.begin(), meshData.HeightTextureFilename.end());
+
+        Load<CTexture>(name, path + name);
+        pMesh->SetHeightTexture(name);
+    }
+
+    if (!meshData.MetallicTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : "; 
+        std::cout << meshData.MetallicTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.MetallicTextureFilename.begin(), meshData.MetallicTextureFilename.end());
+
+        Load<CTexture>(name, path + name);
+        pMesh->SetMetallicRoughnessTexture(name);
+    }
+
+    if (!meshData.RoughnessTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : "; 
+        std::cout << meshData.RoughnessTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.RoughnessTextureFilename.begin(), meshData.RoughnessTextureFilename.end());
+
+        // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
+        // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
+        CTexture* pTex = FindAsset<CTexture>(name);
+        if (nullptr == pTex)
+        {
+            Load<CTexture>(name, path + name);
+            pMesh->SetMetallicRoughnessTexture(name);
+        }
+    }
+
+    if (!meshData.EmissiveTextureFilename.empty())
+    {
+        std::wcout << pMesh->GetName() << " : ";
+        std::cout << meshData.EmissiveTextureFilename << std::endl;
+
+        std::wstring name;
+        name.assign(meshData.EmissiveTextureFilename.begin(), meshData.EmissiveTextureFilename.end());
+
+        Load<CTexture>(name, path + name);
+        pMesh->SetEmissiveTexture(name);
+    }
 }
 
 void CAssetMgr::AddModel(const wstring& _strKey, vector<CMesh*> _model)

@@ -274,6 +274,29 @@ void CLevelMgr::init()
     }
 
     m_CurLevel->AddObject(pZelda, 10);
+
+    // damaged helmet
+    CGameObject* pHelmet = new CGameObject;
+    pHelmet->SetName(L"Damaged Helmet");
+
+    pHelmet->AddComponent(new CTransform);
+    pHelmet->AddComponent(new CMeshRender);
+    pHelmet->AddComponent(new CPlayerScript);
+
+    pHelmet->Transform()->SetRelativePos(Vec3(250.f, 250.f, 500.f));
+    pHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pHelmet->Transform()->SetAbsolute(true);
+
+    pHelmet->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pHelmet->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pHelmet->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
+
+    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"damaged_helmet"))
+    {
+        pHelmet->MeshRender()->AddMesh(mesh);
+    }
+
+    m_CurLevel->AddObject(pHelmet, 10);
 }
 
 void CLevelMgr::tick()

@@ -42,9 +42,13 @@ cbuffer GLOBAL : register(b2)
     float2 padd;
 }
 
-Texture2D g_tex_0 : register(t0);
-Texture2D g_tex_1 : register(t1);
-Texture2D g_tex_2 : register(t2);
+// 메쉬 재질 텍스춰들 t0 부터 시작
+Texture2D g_AlbedoTex : register(t0);
+Texture2D g_AoTex : register(t1);
+Texture2D g_NormalTex : register(t2);
+Texture2D g_heightTexture : register(t3);
+Texture2D g_MetallicRoughnessTex : register(t4);
+Texture2D g_EmissiveTex : register(t5);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);

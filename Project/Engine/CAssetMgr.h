@@ -38,6 +38,7 @@ private:
 
 private:
     vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals = false);
+    void ModelTextureLoad(CMesh* pMesh, const tMeshData& meshData);
 
 public:
     void AddModel(const wstring& _strKey, vector<CMesh*> _model);
