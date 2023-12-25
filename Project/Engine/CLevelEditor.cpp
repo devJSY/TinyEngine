@@ -73,6 +73,8 @@ void CLevelEditor::tick()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+    
+    //ImGuizmo::BeginFrame();
 }
 
 void CLevelEditor::finaltick()
