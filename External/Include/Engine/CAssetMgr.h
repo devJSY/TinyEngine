@@ -36,9 +36,10 @@ private:
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
 
+    // 모델 로딩
 private:
     vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals = false);
-    void ModelTextureLoad(CMesh* pMesh, const tMeshData& meshData);
+    void MeshTextureLoad(CMesh* pMesh, const tMeshData& meshData);
 
 public:
     void AddModel(const wstring& _strKey, vector<CMesh*> _model);

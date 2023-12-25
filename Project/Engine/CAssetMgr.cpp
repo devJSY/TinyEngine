@@ -143,7 +143,7 @@ void CAssetMgr::init()
             model.push_back(pMesh);
 
             pMesh->SetName(L"Zelda");
-            ModelTextureLoad(pMesh, meshData);
+            MeshTextureLoad(pMesh, meshData);
         }
 
         AddModel(L"Zelda", model);
@@ -163,11 +163,73 @@ void CAssetMgr::init()
             model.push_back(pMesh);
 
             pMesh->SetName(L"damaged_helmet");
-            ModelTextureLoad(pMesh, meshData);
+            MeshTextureLoad(pMesh, meshData);
         }
 
         AddModel(L"damaged_helmet", model);
     }
+
+    // blue whale
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\blue_whale\\", "scene.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"blue_whale");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"blue_whale", model);
+    }
+    
+    // torii_gate
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\torii_gate\\", "scene.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"torii_gate");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"torii_gate", model);
+    }
+
+    // dragon_warrior
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\dragon_warrior\\", "scene.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"dragon_warrior");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"dragon_warrior", model);
+    }
+
+
 
     // =========================
     // Shader
@@ -854,7 +916,7 @@ vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string file
     return meshes;
 }
 
-void CAssetMgr::ModelTextureLoad(CMesh* pMesh, const tMeshData& meshData)
+void CAssetMgr::MeshTextureLoad(CMesh* pMesh, const tMeshData& meshData)
 {
     // 텍스쳐 로딩
     std::wstring path;

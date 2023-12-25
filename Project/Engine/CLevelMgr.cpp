@@ -52,7 +52,7 @@ void CLevelMgr::init()
 
     pLight->AddComponent(new CTransform);
     pLight->AddComponent(new CMeshRender);
-    pLight->AddComponent(new CLight3D(LIGHT_TYPE::SPOT));
+    pLight->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL));
 
     pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
     pLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
@@ -252,6 +252,21 @@ void CLevelMgr::init()
 
     m_CurLevel->AddObject(pMeshes, 10);
 
+    // Models
+    CGameObject* pModels = new CGameObject;
+    pModels->SetName(L"Models");
+
+    pModels->AddComponent(new CTransform);
+    pModels->AddComponent(new CMeshRender);
+    pModels->AddComponent(new CPlayerScript);
+
+    pModels->Transform()->SetRelativePos(Vec3(0.f, 500.f, 0.f));
+    pModels->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+
+    pModels->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pModels->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pModels->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"RedMaterial"));
+
     // Zelda Model
     CGameObject* pZelda = new CGameObject;
     pZelda->SetName(L"Zelda");
@@ -260,7 +275,7 @@ void CLevelMgr::init()
     pZelda->AddComponent(new CMeshRender);
     pZelda->AddComponent(new CPlayerScript);
 
-    pZelda->Transform()->SetRelativePos(Vec3(0.f, 250.f, 500.f));
+    pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
     pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pZelda->Transform()->SetAbsolute(true);
 
@@ -273,7 +288,7 @@ void CLevelMgr::init()
         pZelda->MeshRender()->AddMesh(mesh);
     }
 
-    m_CurLevel->AddObject(pZelda, 10);
+    pModels->AddChild(pZelda);
 
     // damaged helmet
     CGameObject* pHelmet = new CGameObject;
@@ -283,7 +298,7 @@ void CLevelMgr::init()
     pHelmet->AddComponent(new CMeshRender);
     pHelmet->AddComponent(new CPlayerScript);
 
-    pHelmet->Transform()->SetRelativePos(Vec3(250.f, 250.f, 500.f));
+    pHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
     pHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pHelmet->Transform()->SetAbsolute(true);
 
@@ -296,7 +311,78 @@ void CLevelMgr::init()
         pHelmet->MeshRender()->AddMesh(mesh);
     }
 
-    m_CurLevel->AddObject(pHelmet, 10);
+    pModels->AddChild(pHelmet);
+
+    // blue whale
+    CGameObject* pWhale = new CGameObject;
+    pWhale->SetName(L"blue whale");
+
+    pWhale->AddComponent(new CTransform);
+    pWhale->AddComponent(new CMeshRender);
+    pWhale->AddComponent(new CPlayerScript);
+
+    pWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
+    pWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pWhale->Transform()->SetAbsolute(true);
+
+    pWhale->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pWhale->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pWhale->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
+
+    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"blue_whale"))
+    {
+        pWhale->MeshRender()->AddMesh(mesh);
+    }
+
+    pModels->AddChild(pWhale);
+
+    // torii_gate
+    CGameObject* pGate = new CGameObject;
+    pGate->SetName(L"torii gate");
+
+    pGate->AddComponent(new CTransform);
+    pGate->AddComponent(new CMeshRender);
+    pGate->AddComponent(new CPlayerScript);
+
+    pGate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
+    pGate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pGate->Transform()->SetAbsolute(true);
+
+    pGate->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pGate->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pGate->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
+
+    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"torii_gate"))
+    {
+        pGate->MeshRender()->AddMesh(mesh);
+    }
+
+    pModels->AddChild(pGate);
+
+    // dragon_warrior
+    CGameObject* pDragon_warrior = new CGameObject;
+    pDragon_warrior->SetName(L"dragon_warrior");
+
+    pDragon_warrior->AddComponent(new CTransform);
+    pDragon_warrior->AddComponent(new CMeshRender);
+    pDragon_warrior->AddComponent(new CPlayerScript);
+
+    pDragon_warrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
+    pDragon_warrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pDragon_warrior->Transform()->SetAbsolute(true);
+
+    pDragon_warrior->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pDragon_warrior->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+    pDragon_warrior->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"WhiteMaterial"));
+
+    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"dragon_warrior"))
+    {
+        pDragon_warrior->MeshRender()->AddMesh(mesh);
+    }
+
+    pModels->AddChild(pDragon_warrior);
+
+    m_CurLevel->AddObject(pModels, 10);
 }
 
 void CLevelMgr::tick()

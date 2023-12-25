@@ -1,0 +1,11 @@
+Model Information:
+* title:	Blue Whale - Textured
+* source:	https://sketchfab.com/3d-models/blue-whale-textured-d24d19021c724c3a9134eebcb76b0e0f
+* author:	Bohdan Lvov (https://sketchfab.com/ostapblendercg)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Blue Whale - Textured" (https://sketchfab.com/3d-models/blue-whale-textured-d24d19021c724c3a9134eebcb76b0e0f) by Bohdan Lvov (https://sketchfab.com/ostapblendercg) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
