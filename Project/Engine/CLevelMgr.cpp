@@ -19,6 +19,7 @@
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
+    , m_CamObj(nullptr)
 {
 }
 
@@ -43,6 +44,8 @@ void CLevelMgr::init()
 
     pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, -100.f));
     pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+
+    m_CamObj = pCamObj;
 
     m_CurLevel->AddObject(pCamObj, 0);
 

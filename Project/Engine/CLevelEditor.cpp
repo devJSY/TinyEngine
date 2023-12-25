@@ -4,6 +4,9 @@
 #include "CDevice.h"
 
 #include "CTaskMgr.h"
+#include "CCamera.h"
+#include "CTransform.h"
+#include "CLevelMgr.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -74,7 +77,7 @@ void CLevelEditor::tick()
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
     
-    //ImGuizmo::BeginFrame();
+    ImGuizmo::BeginFrame();
 }
 
 void CLevelEditor::finaltick()
@@ -103,6 +106,54 @@ void CLevelEditor::render()
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
+
+    CGameObject* SelectedObj = m_Outliner.GetSelectedObj();
+
+    if (nullptr != SelectedObj)
+    {
+        // Editor Camera
+        CGameObject* pCamObj = CLevelMgr::GetInst()->GetCameraObj();
+        if (nullptr != pCamObj)
+        {
+            CCamera* pCam = pCamObj->Camera();
+
+            if (nullptr != pCam)
+            {
+                ImGuiIO& io = ImGui::GetIO();
+
+                ImGuizmo::SetOrthographic(false);
+                ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
+                float windowWidth = (float)ImGui::GetWindowWidth();
+                float windowHeight = (float)ImGui::GetWindowHeight();
+                ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+                Matrix CamView = pCam->GetViewMatrix();
+                Matrix CamProj = pCam->GetProjectionMatrix();
+
+                // transform
+                CTransform* pTr = SelectedObj->Transform();
+                Matrix transform = pTr->GetWorldMat();
+
+                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL,
+                                     *transform.m);
+
+                if (ImGuizmo::IsUsing())
+                {
+                    float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},
+                          Fscale[3] = {0.0f, 0.0f, 0.0f};
+                    ImGuizmo::DecomposeMatrixToComponents(*transform.m, Ftranslation, Frotation, Fscale);
+
+                    pTr->SetRelativePos(Vec3(Ftranslation[0], Ftranslation[1], Ftranslation[2]));
+                    pTr->SetRelativeRotation(Vec3(DirectX::XMConvertToRadians(Frotation[0]),
+                                                  DirectX::XMConvertToRadians(Frotation[1]),
+                                                  DirectX::XMConvertToRadians(Frotation[2])));
+
+                    pTr->SetRelativeScale(Vec3(Fscale[0], Fscale[1], Fscale[2]));
+                }
+            }
+        }
+    }
+
     ImGui::End();
 
     if (m_show_Viewport2)

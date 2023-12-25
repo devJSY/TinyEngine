@@ -13,6 +13,9 @@ private:
     void DrawDetails(CGameObject* obj);
 
 public:
+    CGameObject* GetSelectedObj() const { return m_SelectedObj; }
+
+public:
     void begin();
     void render();
 

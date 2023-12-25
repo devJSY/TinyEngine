@@ -56,18 +56,13 @@ typedef Vector4 Vec4;
 
 // ImGui
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include "imgui//imgui.h"
-#include "imgui//imgui_impl_dx11.h"
-#include "imgui//imgui_impl_win32.h"
-#include "imgui//imgui_internal.h"
+#include "ImGui//imgui.h"
+#include "ImGui//imgui_impl_dx11.h"
+#include "ImGui//imgui_impl_win32.h"
+#include "ImGui//imgui_internal.h"
 
 // ImGuizmo
-#ifdef _DEBUG
-    #pragma comment(lib, "ImGuizmo\\ImGuizmo_debug")
-#else
-    #pragma comment(lib, "ImGuizmo\\ImGuizmo")
-#endif
-#include "ImGuizmo\\ImGuizmo.h"
+#include "ImGui//ImGuizmo.h"
 
 // Assimp 5.2.5
 //#define NOMINMAX

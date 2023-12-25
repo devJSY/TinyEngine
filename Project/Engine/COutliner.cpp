@@ -361,5 +361,6 @@ void COutliner::render()
     ImGui::Begin("Details");
     if (nullptr != m_SelectedObj)
         DrawDetails(m_SelectedObj);
+
     ImGui::End();
 }

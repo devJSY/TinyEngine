@@ -2,6 +2,7 @@
 #include "CEntity.h"
 
 class CLevel;
+class CGameObject;
 
 class CLevelMgr : public CSingleton<CLevelMgr>
 {
@@ -12,6 +13,12 @@ private:
 
 public:
     CLevel* GetCurLevel() const { return m_CurLevel; }
+
+private:
+    CGameObject* m_CamObj;
+
+public:
+    CGameObject* GetCameraObj() const { return m_CamObj; }
 
 public:
     void init();

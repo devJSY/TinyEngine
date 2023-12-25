@@ -51,6 +51,9 @@ public:
     float GetCameraSpeed() const { return m_CamSpeed; }
     void SetCameraSpeed(float speed) { m_CamSpeed = speed; }
 
+    Matrix GetViewMatrix() const { return m_matView; }
+    Matrix GetProjectionMatrix() const { return m_matProj; }
+
 public:
     virtual void finaltick() override;
 
