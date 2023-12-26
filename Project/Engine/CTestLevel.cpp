@@ -131,7 +131,6 @@ void CTestLevel::begin()
 
     pSquare->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareMesh"));
     pSquare->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pSquare->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSquare->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pSquare);
@@ -150,7 +149,6 @@ void CTestLevel::begin()
 
     pSquareGrid->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareGridMesh"));
     pSquareGrid->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pSquareGrid->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSquareGrid->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pSquareGrid);
@@ -169,7 +167,6 @@ void CTestLevel::begin()
 
     pBox->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pBox->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pBox->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pBox);
@@ -188,7 +185,6 @@ void CTestLevel::begin()
 
     pCylinder->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CylinderMesh"));
     pCylinder->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pCylinder->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pCylinder->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pCylinder);
@@ -207,7 +203,6 @@ void CTestLevel::begin()
 
     pSphere->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pSphere->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pSphere->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pSphere);
@@ -226,7 +221,6 @@ void CTestLevel::begin()
 
     pTetrahedron->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"TetrahedronMesh"));
     pTetrahedron->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pTetrahedron->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pTetrahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pTetrahedron);
@@ -245,7 +239,6 @@ void CTestLevel::begin()
 
     pIcosahedron->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"IcosahedronMesh"));
     pIcosahedron->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pIcosahedron->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pIcosahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pIcosahedron);
@@ -264,8 +257,6 @@ void CTestLevel::begin()
 
     pSubdivideSphere->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SubdivideSphereMesh"));
     pSubdivideSphere->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pSubdivideSphere->MeshRender()->SetNormalLineShader(
-        CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pSubdivideSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pSubdivideSphere);
@@ -284,7 +275,6 @@ void CTestLevel::begin()
 
     pCircle->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
     pCircle->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pCircle->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     pCircle->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     pMeshes->AddChild(pCircle);
@@ -319,7 +309,6 @@ void CTestLevel::begin()
     // pZelda->Transform()->SetAbsolute(true);
 
     // pZelda->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    // pZelda->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     // pZelda->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     // for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"Zelda"))
@@ -342,7 +331,6 @@ void CTestLevel::begin()
     // pHelmet->Transform()->SetAbsolute(true);
 
     // pHelmet->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    // pHelmet->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     // pHelmet->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     // for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"damaged_helmet"))
@@ -365,7 +353,6 @@ void CTestLevel::begin()
     // pWhale->Transform()->SetAbsolute(true);
 
     // pWhale->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    // pWhale->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     // pWhale->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     // for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"blue_whale"))
@@ -388,7 +375,6 @@ void CTestLevel::begin()
     // pGate->Transform()->SetAbsolute(true);
 
     // pGate->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    // pGate->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     // pGate->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     // for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"torii_gate"))
@@ -411,7 +397,6 @@ void CTestLevel::begin()
     // pDragon_warrior->Transform()->SetAbsolute(true);
 
     // pDragon_warrior->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    // pDragon_warrior->MeshRender()->SetNormalLineShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
     // pDragon_warrior->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlackMaterial"));
 
     // for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"dragon_warrior"))

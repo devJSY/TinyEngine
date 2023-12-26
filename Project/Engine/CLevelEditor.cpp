@@ -9,6 +9,7 @@
 #include "CLevelMgr.h"
 #include "CKeyMgr.h"
 
+
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_ViewportFocused(false)
@@ -109,10 +110,11 @@ void CLevelEditor::render()
     m_ViewportHovered = ImGui::IsWindowHovered();
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+    g_Global.width = (int)viewportSize.x;
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
 
     // ImGuizmo
-    CGameObject* SelectedObj = m_Outliner.GetSelectedObj();
+    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
     if (nullptr != SelectedObj)
     {
         if (!KEY_PRESSED(KEY::RBTN))

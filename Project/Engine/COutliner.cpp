@@ -14,7 +14,6 @@
 #include "CMeshRender.h"
 
 COutliner::COutliner()
-    : m_SelectedObj(nullptr)
 {
 }
 
@@ -24,10 +23,12 @@ COutliner::~COutliner()
 
 void COutliner::DrawNode(CGameObject* obj)
 {
+    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+
     int id = -1;
 
-    if (nullptr != m_SelectedObj)
-        id = m_SelectedObj->GetID();
+    if (nullptr != SelectedObj)
+        id = SelectedObj->GetID();
 
     ImGuiTreeNodeFlags flags =
         ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
@@ -40,7 +41,7 @@ void COutliner::DrawNode(CGameObject* obj)
 
     if (ImGui::IsItemClicked())
     {
-        m_SelectedObj = obj;
+        CLevelMgr::GetInst()->SetSelectObj(obj);
     }
 
     if (opened)
@@ -369,15 +370,17 @@ void COutliner::render()
         std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
     }
 
+    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+
     // Outliner 창내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-        m_SelectedObj = nullptr;
+        CLevelMgr::GetInst()->SetSelectObj(nullptr);
 
     ImGui::End();
 
     ImGui::Begin("Details");
-    if (nullptr != m_SelectedObj)
-        DrawDetails(m_SelectedObj);
+    if (nullptr != SelectedObj)
+        DrawDetails(SelectedObj);
 
     ImGui::End();
 }

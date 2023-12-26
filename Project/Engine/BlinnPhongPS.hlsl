@@ -4,7 +4,7 @@
 
 float4 main(VS_OUT input) : SV_TARGET
 {
-    float3 toEye = normalize(g_eyeWorld.xyz - input.vPosWorld);
+    float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
 
     float3 color = float3(0.0, 0.0, 0.0);
  

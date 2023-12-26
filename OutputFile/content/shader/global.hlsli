@@ -40,15 +40,20 @@ cbuffer GLOBAL : register(b2)
 {
     Light Lights[MAX_LIGHTS];
     
-    float4 g_eyeWorld;
-
+    float3 g_eyeWorld;
+    float fov;
+    
     bool UseRim;
     float3 g_rimColor;
     float g_rimPower;
 
     float g_NormalLineScale;
     bool g_UseTexture;
-    float padd;
+    
+    int width;
+ 
+    float3 outlineColor;
+    float thickness;
 }
 
 // 메쉬 재질 텍스춰들 t0 부터 시작

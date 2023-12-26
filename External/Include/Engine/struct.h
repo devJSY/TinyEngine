@@ -58,7 +58,8 @@ struct tGlobal
 {
     tLightData Lights[MAX_LIGHTS];
 
-    Vec4 eyeWorld;
+    Vec3 eyeWorld;
+    float fov;
 
     bool UseRim;
     Vec3 rimColor;
@@ -66,7 +67,12 @@ struct tGlobal
 
     float NormalLineScale;
     bool UseTexture;
-    float padd;
+
+    int width;
+
+    // ÇÈ¼¿´ÜÀ§ÀÇ ¿Ü°û¼± µÎ²²
+    Vec3 outlineColor;
+    float thickness;
 };
 
 struct tMeshData

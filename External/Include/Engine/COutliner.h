@@ -6,14 +6,8 @@ class CGameObject;
 class COutliner : public CEntity
 {
 private:
-    CGameObject* m_SelectedObj;
-
-private:
     void DrawNode(CGameObject* obj);
     void DrawDetails(CGameObject* obj);
-
-public:
-    CGameObject* GetSelectedObj() const { return m_SelectedObj; }
 
 public:
     void begin();

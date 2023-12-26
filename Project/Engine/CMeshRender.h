@@ -4,7 +4,6 @@
 class CMeshRender : public CRenderComponent
 {
 private:
-    CGraphicsShader* m_NormalLineShader;
     bool m_bDrawNormalLine;
     float m_NormalLineScale;
     bool m_bDrawAsWire;
@@ -15,8 +14,6 @@ private:
     float m_RimPower;
 
 public:
-    void SetNormalLineShader(CGraphicsShader* shader) { m_NormalLineShader = shader; }
-
     void SetDrawNormalLine(bool _b) { m_bDrawNormalLine = _b; }
     bool IsDrawNormalLine() const { return m_bDrawNormalLine; }
 

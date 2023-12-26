@@ -16,10 +16,15 @@ public:
 
 private:
     CGameObject* m_CamObj;
+    CGameObject* m_SelectedObj;
 
 public:
     void SetCameraObj(CGameObject* cam) { m_CamObj = cam; }
     CGameObject* GetCameraObj() const { return m_CamObj; }
+
+public:
+    CGameObject* GetSelectedObj() const { return m_SelectedObj; }
+    void SetSelectObj(CGameObject* obj) { m_SelectedObj = obj; }
 
 public:
     void init();

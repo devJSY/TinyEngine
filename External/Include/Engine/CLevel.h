@@ -15,14 +15,12 @@ public:
     virtual void finaltick();
     virtual void render();
 
-    void AddObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove = true); // _bChildMove : 오브젝트의 자식오브젝트도 같은 레이어에 넣을지 여부
-    CLayer* GetLayer(int _iLayerIdx) { return m_arrLayer[_iLayerIdx]; }
+    void AddObject(CGameObject* _Object, int _LayerIdx,
+                   bool _bChildMove = true); // _bChildMove : 오브젝트의 자식오브젝트도 같은 레이어에 넣을지 여부
+    CLayer* GetLayer(int _iLayerIdx) const { return m_arrLayer[_iLayerIdx]; }
 
 private:
     void clear();
-
-public:
-    CLayer* GetLayer(UINT _iLayerIdx) { return m_arrLayer[_iLayerIdx]; }
 
 public:
     CLevel();

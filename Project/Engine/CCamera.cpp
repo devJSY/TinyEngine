@@ -91,5 +91,6 @@ void CCamera::finaltick()
     g_Transform.matProj = m_matProj;
 
     // eyePos µî·Ï
-    g_Global.eyeWorld = Vec4(vCamPos, 1.f);
+    g_Global.eyeWorld = vCamPos;
+    g_Global.fov = m_FOV;
 }

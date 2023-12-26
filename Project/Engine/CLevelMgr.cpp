@@ -4,10 +4,14 @@
 #include "CLevelMgr.h"
 #include "CTaskMgr.h"
 #include "CTestLevel.h"
+#include "CDevice.h"
+#include "CEditorMgr.h"
+#include "CEditor.h"
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
     , m_CamObj(nullptr)
+    , m_SelectedObj(nullptr)
 {
 }
 

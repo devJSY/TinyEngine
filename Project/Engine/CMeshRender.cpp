@@ -11,9 +11,12 @@
 #include "CConstBuffer.h"
 #include "CDevice.h"
 
+#include "CLevelMgr.h"
+
+#include "CAssetMgr.h"
+
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
-    , m_NormalLineShader(nullptr)
     , m_bDrawNormalLine(false)
     , m_bDrawAsWire(false)
     , m_NormalLineScale(1.0f)
@@ -79,11 +82,23 @@ void CMeshRender::render()
         mesh->render();
     }
 
-    // Normal Line Pass
-    if (m_bDrawNormalLine && nullptr != m_NormalLineShader)
+    // outline pass
+    if (CLevelMgr::GetInst()->GetSelectedObj() == GetOwner())
     {
-        m_NormalLineShader->UpdateData();
+        CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine")->UpdateData();
+        g_Global.thickness = 10; // 10ÇÈ¼¿
+        g_Global.width = CDevice::GetInst()->GetRenderResolution().x;
 
+        for (const auto& mesh : GetMeshes())
+        {
+            mesh->render();
+        }
+    }
+
+    // Normal Line Pass
+    if (m_bDrawNormalLine)
+    {
+        CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine")->UpdateData();
         for (const auto& mesh : GetMeshes())
         {
             mesh->renderDraw();

@@ -273,6 +273,19 @@ void CAssetMgr::init()
         AddAsset(L"NormalLine", pShader);
     }
 
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\OutLineVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\OutLinePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+
+        AddAsset(L"OutLine", pShader);
+    }
+
     // ======================
     // Texture
     // ======================
