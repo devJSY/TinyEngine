@@ -91,7 +91,8 @@ void CLevelEditor::finaltick()
 
     ImGui::Begin("World Settings");
     ImGui::Text("Choice Your Clear Color!");
-    ImGui::ColorEdit3("clear color", (float*)&CEngine::GetInst()->GetClearColor());
+    ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
+                        ImGuiColorEditFlags_PickerHueWheel);
     ImGui::Checkbox("Another Viewport", &m_show_Viewport2);
     ImGui::End();
 }

@@ -8,7 +8,7 @@ CLight3D::CLight3D(LIGHT_TYPE type, int idx)
     , m_Idx(idx)
 {
     m_LightData.fallOffStart = 0.f;
-    m_LightData.fallOffEnd = 10000.f;
+    m_LightData.fallOffEnd = 1000.f;
     m_LightData.spotPower = 100.f;
     m_LightData.strength = Vec3(1.f);
 
@@ -28,7 +28,8 @@ CLight3D::~CLight3D()
 
 void CLight3D::finaltick()
 {
-    m_LightData.position = GetOwner()->Transform()->GetRelativePos();
+    Matrix Worldmat = GetOwner()->Transform()->GetWorldMat();
+    m_LightData.position = Vec3(Worldmat._41, Worldmat._42, Worldmat._43);
     m_LightData.direction = GetOwner()->Transform()->GetLocalDir(DIR_TYPE::FRONT);
 
     if (m_Type == LIGHT_TYPE::DIRECTIONAL)

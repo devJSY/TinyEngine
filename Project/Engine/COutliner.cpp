@@ -258,7 +258,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                 light->SetSpotPower(spotPower);
 
             Vec3 strength = light->GetStrength();
-            if (ImGui::SliderFloat3("Strength", &strength.x, 0.f, 1.f))
+            if (ImGui::ColorEdit3("Strength", &strength.x))
                 light->SetStrength(strength);
 
             ImGui::TreePop();
@@ -299,7 +299,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                 tMaterialData materialData = pMaterial->GetMaterialData();
 
                 Vec3 ambient = materialData.ambient;
-                if (ImGui::SliderFloat3("Ambient", &ambient.x, 0.f, 1.f))
+                if (ImGui::ColorEdit3("Ambient", &ambient.x))
                 {
                     materialData.ambient = ambient;
                     pMaterial->SetMaterialData(materialData);
