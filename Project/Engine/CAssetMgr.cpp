@@ -42,298 +42,11 @@ CAssetMgr::~CAssetMgr()
 
 void CAssetMgr::init()
 {
-    // =========================
-    // Mesh
-    // =========================
-
-    // Circle
-    {
-        auto mesh = MakeCircle(1.f, 40);
-
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"CircleMesh", pMesh);
-    }
-
-    // Square
-    {
-        auto mesh = MakeSquare();
-
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"SquareMesh", pMesh);
-    }
-
-    // SquareGrid
-    {
-        auto mesh = MakeSquareGrid(10, 10);
-
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"SquareGridMesh", pMesh);
-    }
-
-    // Box
-    {
-        auto mesh = MakeBox();
-
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"BoxMesh", pMesh);
-    }
-
-    // Cylinder
-    {
-        auto mesh = MakeCylinder(1, 1, 1, 100);
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"CylinderMesh", pMesh);
-    }
-
-    // Sphere
-    {
-        auto mesh = MakeSphere(1, 25, 25);
-
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"SphereMesh", pMesh);
-    }
-
-    // Tetrahedron
-    {
-        auto mesh = MakeTetrahedron();
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"TetrahedronMesh", pMesh);
-    }
-
-    // Icosahedron
-    {
-        auto mesh = MakeIcosahedron();
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"IcosahedronMesh", pMesh);
-    }
-
-    // Sphere
-    {
-        auto mesh = MakeSphere(1, 25, 25);
-        mesh = SubdivideToSphere(1.f, mesh);
-
-        CMesh* pMesh = new CMesh;
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"SubdivideSphereMesh", pMesh);
-    }
-
-    // =========================
-    //  Model
-    // =========================
-
-    // Zelda
-    {
-        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
-
-        vector<CMesh*> model;
-
-        for (auto& meshData : meshes)
-        {
-            CMesh* pMesh = new CMesh;
-            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-                          (UINT)meshData.indices.size());
-            model.push_back(pMesh);
-
-            pMesh->SetName(L"Zelda");
-            MeshTextureLoad(pMesh, meshData);
-        }
-
-        AddModel(L"Zelda", model);
-    }
-
-    // damaged helmet
-    {
-        auto meshes = ReadFromFile("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
-
-        vector<CMesh*> model;
-
-        for (auto& meshData : meshes)
-        {
-            CMesh* pMesh = new CMesh;
-            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-                          (UINT)meshData.indices.size());
-            model.push_back(pMesh);
-
-            pMesh->SetName(L"damaged_helmet");
-            MeshTextureLoad(pMesh, meshData);
-        }
-
-        AddModel(L"damaged_helmet", model);
-    }
-
-    // blue whale
-    {
-        auto meshes = ReadFromFile("Assets\\Models\\blue_whale\\", "scene.gltf");
-
-        vector<CMesh*> model;
-
-        for (auto& meshData : meshes)
-        {
-            CMesh* pMesh = new CMesh;
-            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-                          (UINT)meshData.indices.size());
-            model.push_back(pMesh);
-
-            pMesh->SetName(L"blue_whale");
-            MeshTextureLoad(pMesh, meshData);
-        }
-
-        AddModel(L"blue_whale", model);
-    }
-    
-    // torii_gate
-    {
-        auto meshes = ReadFromFile("Assets\\Models\\torii_gate\\", "scene.gltf");
-
-        vector<CMesh*> model;
-
-        for (auto& meshData : meshes)
-        {
-            CMesh* pMesh = new CMesh;
-            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-                          (UINT)meshData.indices.size());
-            model.push_back(pMesh);
-
-            pMesh->SetName(L"torii_gate");
-            MeshTextureLoad(pMesh, meshData);
-        }
-
-        AddModel(L"torii_gate", model);
-    }
-
-    // dragon_warrior
-    {
-        auto meshes = ReadFromFile("Assets\\Models\\dragon_warrior\\", "scene.gltf");
-
-        vector<CMesh*> model;
-
-        for (auto& meshData : meshes)
-        {
-            CMesh* pMesh = new CMesh;
-            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-                          (UINT)meshData.indices.size());
-            model.push_back(pMesh);
-
-            pMesh->SetName(L"dragon_warrior");
-            MeshTextureLoad(pMesh, meshData);
-        }
-
-        AddModel(L"dragon_warrior", model);
-    }
-
-    // =========================
-    // Shader
-    // =========================
-    {
-        CGraphicsShader* pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
-        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
-
-        pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"Std2DShader", pShader);
-    }
-
-    {
-        CGraphicsShader* pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\BlinnPhongVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\BlinnPhongPS.hlsl", "main");
-
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
-        pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"BlinnPhong", pShader);
-    }
-
-    {
-        CGraphicsShader* pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\NormalLineVS.hlsl", "main");
-        pShader->CreateGeometryShader(L"shader\\NormalLineGS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\NormalLinePS.hlsl", "main");
-
-        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-
-        AddAsset(L"NormalLine", pShader);
-    }
-
-    {
-        CGraphicsShader* pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\OutLineVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\OutLinePS.hlsl", "main");
-
-        pShader->SetRSType(RS_TYPE::CULL_FRONT); // OutLineÀº µÞ¸é¸¸ ·»´õ¸µ
-        pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"OutLine", pShader);
-    }
-
-    // ======================
-    // Texture
-    // ======================
-    // CTexture* pTex = Load<CTexture>(L"PlayerTexture", L"texture//MAP//BigMap.bmp");
-    // if (nullptr != pTex)
-    //{
-    //    pTex->UpdateData(0);
-    //}
-
-    // ======================
-    // Material
-    // ======================
-    tMaterialData material;
-    material.shininess = 1.f;
-    material.ambient = Vec3(1.0f, 0.0f, 0.0f);
-    material.diffuse = Vec3(0.5f);
-    material.specular = Vec3(0.5f);
-
-    CMaterial* RedMaterial = new CMaterial;
-    RedMaterial->Create(material);
-
-    material.ambient = Vec3(0.0f, 1.0f, 0.0f);
-    CMaterial* GreenMaterial = new CMaterial;
-    GreenMaterial->Create(material);
-
-    material.ambient = Vec3(0.0f, 0.0f, 1.0f);
-    CMaterial* BlueMaterial = new CMaterial;
-    BlueMaterial->Create(material);
-
-    material.ambient = Vec3(1.0f, 1.0f, 0.0f);
-    CMaterial* YellowMaterial = new CMaterial;
-    YellowMaterial->Create(material);
-
-    material.ambient = Vec3(0.0f, 0.0f, 0.0f);
-    CMaterial* BlackMaterial = new CMaterial;
-    BlackMaterial->Create(material);
-
-    material.ambient = Vec3(1.0f, 1.0f, 1.0f);
-    CMaterial* WhiteMaterial = new CMaterial;
-    WhiteMaterial->Create(material);
-
-    AddAsset(L"RedMaterial", RedMaterial);
-    AddAsset(L"GreenMaterial", GreenMaterial);
-    AddAsset(L"BlueMaterial", BlueMaterial);
-    AddAsset(L"YellowMaterial", YellowMaterial);
-    AddAsset(L"BlackMaterial", BlackMaterial);
-    AddAsset(L"WhiteMaterial", WhiteMaterial);
+    LoadMesh();
+    // LoadModel();
+    LoadShader();
+    // LoadTexture();
+    LoadMaterial();
 }
 
 tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
@@ -1046,4 +759,295 @@ vector<CMesh*> CAssetMgr::FindModel(const wstring& _strKey)
     }
 
     return iter->second;
+}
+
+void CAssetMgr::LoadMesh()
+{
+    // Circle
+    {
+        auto mesh = MakeCircle(1.f, 40);
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"CircleMesh", pMesh);
+    }
+
+    // Square
+    {
+        auto mesh = MakeSquare();
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"SquareMesh", pMesh);
+    }
+
+    // SquareGrid
+    {
+        auto mesh = MakeSquareGrid(10, 10);
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"SquareGridMesh", pMesh);
+    }
+
+    // Box
+    {
+        auto mesh = MakeBox();
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"BoxMesh", pMesh);
+    }
+
+    // Cylinder
+    {
+        auto mesh = MakeCylinder(1, 1, 1, 100);
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"CylinderMesh", pMesh);
+    }
+
+    // Sphere
+    {
+        auto mesh = MakeSphere(1, 25, 25);
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"SphereMesh", pMesh);
+    }
+
+    // Tetrahedron
+    {
+        auto mesh = MakeTetrahedron();
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"TetrahedronMesh", pMesh);
+    }
+
+    // Icosahedron
+    {
+        auto mesh = MakeIcosahedron();
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"IcosahedronMesh", pMesh);
+    }
+
+    // Sphere
+    {
+        auto mesh = MakeSphere(1, 25, 25);
+        mesh = SubdivideToSphere(1.f, mesh);
+
+        CMesh* pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"SubdivideSphereMesh", pMesh);
+    }
+}
+
+void CAssetMgr::LoadModel()
+{
+    // Zelda
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"Zelda");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"Zelda", model);
+    }
+
+    // damaged helmet
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"damaged_helmet");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"damaged_helmet", model);
+    }
+
+    // blue whale
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\blue_whale\\", "scene.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"blue_whale");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"blue_whale", model);
+    }
+
+    // torii_gate
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\torii_gate\\", "scene.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"torii_gate");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"torii_gate", model);
+    }
+
+    // dragon_warrior
+    {
+        auto meshes = ReadFromFile("Assets\\Models\\dragon_warrior\\", "scene.gltf");
+
+        vector<CMesh*> model;
+
+        for (auto& meshData : meshes)
+        {
+            CMesh* pMesh = new CMesh;
+            pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
+                          (UINT)meshData.indices.size());
+            model.push_back(pMesh);
+
+            pMesh->SetName(L"dragon_warrior");
+            MeshTextureLoad(pMesh, meshData);
+        }
+
+        AddModel(L"dragon_warrior", model);
+    }
+}
+
+void CAssetMgr::LoadShader()
+{
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"Std2DShader", pShader);
+    }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\BlinnPhongVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BlinnPhongPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"BlinnPhong", pShader);
+    }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\NormalLineVS.hlsl", "main");
+        pShader->CreateGeometryShader(L"shader\\NormalLineGS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\NormalLinePS.hlsl", "main");
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        AddAsset(L"NormalLine", pShader);
+    }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\OutLineVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\OutLinePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT); // OutLineÀº µÞ¸é¸¸ ·»´õ¸µ
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"OutLine", pShader);
+    }
+}
+
+void CAssetMgr::LoadTexture()
+{
+    CTexture* pTex = Load<CTexture>(L"PlayerTexture", L"texture//MAP//BigMap.bmp");
+    if (nullptr != pTex)
+    {
+        pTex->UpdateData(0);
+    }
+}
+
+void CAssetMgr::LoadMaterial()
+{
+    tMaterialData material;
+    material.shininess = 1.f;
+    material.ambient = Vec3(1.0f, 0.0f, 0.0f);
+    material.diffuse = Vec3(0.5f);
+    material.specular = Vec3(0.5f);
+
+    CMaterial* RedMaterial = new CMaterial;
+    RedMaterial->Create(material);
+
+    material.ambient = Vec3(0.0f, 1.0f, 0.0f);
+    CMaterial* GreenMaterial = new CMaterial;
+    GreenMaterial->Create(material);
+
+    material.ambient = Vec3(0.0f, 0.0f, 1.0f);
+    CMaterial* BlueMaterial = new CMaterial;
+    BlueMaterial->Create(material);
+
+    material.ambient = Vec3(1.0f, 1.0f, 0.0f);
+    CMaterial* YellowMaterial = new CMaterial;
+    YellowMaterial->Create(material);
+
+    material.ambient = Vec3(0.0f, 0.0f, 0.0f);
+    CMaterial* BlackMaterial = new CMaterial;
+    BlackMaterial->Create(material);
+
+    material.ambient = Vec3(1.0f, 1.0f, 1.0f);
+    CMaterial* WhiteMaterial = new CMaterial;
+    WhiteMaterial->Create(material);
+
+    AddAsset(L"RedMaterial", RedMaterial);
+    AddAsset(L"GreenMaterial", GreenMaterial);
+    AddAsset(L"BlueMaterial", BlueMaterial);
+    AddAsset(L"YellowMaterial", YellowMaterial);
+    AddAsset(L"BlackMaterial", BlackMaterial);
+    AddAsset(L"WhiteMaterial", WhiteMaterial);
 }

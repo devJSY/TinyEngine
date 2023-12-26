@@ -102,6 +102,30 @@ void CTestLevel::begin()
 
     AddObject(pLights, 1);
 
+    AddMeshes();
+
+    // AddModels();
+
+    CLevel::begin();
+}
+
+void CTestLevel::tick()
+{
+    CLevel::tick();
+}
+
+void CTestLevel::finaltick()
+{
+    CLevel::finaltick();
+}
+
+void CTestLevel::render()
+{
+    CLevel::render();
+}
+
+void CTestLevel::AddMeshes()
+{
     // Meshes
     CGameObject* pMeshes = new CGameObject;
     pMeshes->SetName(L"Meshes");
@@ -280,7 +304,10 @@ void CTestLevel::begin()
     pMeshes->AddChild(pCircle);
 
     AddObject(pMeshes, 10);
+}
 
+void CTestLevel::AddModels()
+{
     // Models
     CGameObject* pModels = new CGameObject;
     pModels->SetName(L"Models");
@@ -407,21 +434,4 @@ void CTestLevel::begin()
     pModels->AddChild(pDragon_warrior);
 
     AddObject(pModels, 10);
-
-    CLevel::begin();
-}
-
-void CTestLevel::tick()
-{
-    CLevel::tick();
-}
-
-void CTestLevel::finaltick()
-{
-    CLevel::finaltick();
-}
-
-void CTestLevel::render()
-{
-    CLevel::render();
 }

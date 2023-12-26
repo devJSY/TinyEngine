@@ -23,6 +23,14 @@ public:
     void init();
 
 private:
+    // 에셋 로딩
+    void LoadMesh();
+    void LoadModel();
+    void LoadShader();
+    void LoadTexture();
+    void LoadMaterial();
+
+private:
     // Geometry
     tMeshData MakeCircle(const float radius, const int numSlices);
     tMeshData MakeSquare(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));

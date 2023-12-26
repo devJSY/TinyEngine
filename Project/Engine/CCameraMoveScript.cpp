@@ -2,6 +2,7 @@
 #include "CCameraMoveScript.h"
 #include "CEditorMgr.h"
 #include "CLevelEditor.h"
+#include "CDevice.h"
 
 CCameraMoveScript::CCameraMoveScript()
 {
@@ -44,34 +45,16 @@ void CCameraMoveScript::tick()
 
 void CCameraMoveScript::MoveOrthographic()
 {
-    float CamSpeed = GetOwner()->Camera()->GetCameraSpeed();
-
-    //// Move
-    //Vec3 vPos = Transform()->GetRelativePos();
-
-    //if (KEY_PRESSED(KEY::W))
-    //    vPos.y += DT * CamSpeed;
-
-    //if (KEY_PRESSED(KEY::S))
-    //    vPos.y -= DT * CamSpeed;
-
-    //if (KEY_PRESSED(KEY::A))
-    //    vPos.x -= DT * CamSpeed;
-
-    //if (KEY_PRESSED(KEY::D))
-    //    vPos.x += DT * CamSpeed;
-
-    //Transform()->SetRelativePos(vPos);
-
     // Drag
     if (KEY_PRESSED(KEY::RBTN))
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        Vec3 vPos = Transform()->GetRelativePos();
         float scale = Camera()->GetScale();
-        float Doffset = 7.5f;
-        vPos.x -= vDrag.x * CamSpeed * scale * Doffset * DT;
-        vPos.y += vDrag.y * CamSpeed * scale * Doffset * DT;
+        float Doffset = 1280.f;
+
+        Vec3 vPos = Transform()->GetRelativePos();
+        vPos.x -= vDrag.x * scale * DT * Doffset;
+        vPos.y += vDrag.y * scale * DT * Doffset;
         Transform()->SetRelativePos(vPos);
     }
 
