@@ -26,27 +26,11 @@ void CLevelMgr::init()
 
 void CLevelMgr::tick()
 {
-    // 윈도우 사이즈 체크
-    RECT rect;
-    if (GetClientRect(CEngine::GetInst()->GetMainWind(), &rect))
-    {
-        Vec2 Resolution = CEngine::GetInst()->GetResolution();
-        int width = rect.right - rect.left;
-        int height = rect.bottom - rect.top;
-
-        if (Resolution.x != width || Resolution.y != height)
-        {
-            FTask task;
-            task.Type = TASK_TYPE::WINDOW_RESIZE;
-            task.Param_1 = (INT_PTR)width;
-            task.Param_2 = (INT_PTR)height;
-
-            CTaskMgr::GetInst()->AddTask(task);
-        }
-    }
-
     if (nullptr == m_CurLevel)
         return;
+
+    // 이전 프레임에 등록된 오브젝트들 clear
+    m_CurLevel->clear();
 
     m_CurLevel->tick();
     m_CurLevel->finaltick();

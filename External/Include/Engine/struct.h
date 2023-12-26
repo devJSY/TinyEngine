@@ -28,13 +28,6 @@ struct tTransform
     Matrix matWVP;
 };
 
-struct FTask
-{
-    TASK_TYPE Type;
-    UINT_PTR Param_1;
-    UINT_PTR Param_2;
-};
-
 struct tMaterialData
 {
     Vec3 ambient;    // 조명과 상관없이 물체 자체가 갖고있는 색상

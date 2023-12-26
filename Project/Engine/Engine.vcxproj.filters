@@ -321,6 +321,9 @@
     <ClCompile Include="CTestLevel.cpp">
       <Filter>05. Level</Filter>
     </ClCompile>
+    <ClCompile Include="func.cpp">
+      <Filter>01. Header</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">

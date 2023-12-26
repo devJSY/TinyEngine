@@ -362,7 +362,7 @@ void COutliner::render()
 
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
-        CLayer* layer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(i);
+        CLayer* layer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
         const vector<CGameObject*>& objs = layer->GetParentObject();
 
         // 각 오브젝트를 돌면서 오브젝트와 현재 레이어를 인자로 DrawNode() 호출

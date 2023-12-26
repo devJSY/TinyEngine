@@ -12,7 +12,7 @@ private:
     CLevel* m_CurLevel;
 
 public:
-    CLevel* GetCurLevel() const { return m_CurLevel; }
+    CLevel* GetCurrentLevel() const { return m_CurLevel; }
 
 private:
     CGameObject* m_CamObj;

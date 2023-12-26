@@ -34,6 +34,7 @@ D:\TinyEngine\Project\Engine\CTransform.cpp;D:\TinyEngine\Project\Engine\x64\Deb
 D:\TinyEngine\Project\Engine\Engine.cpp;D:\TinyEngine\Project\Engine\x64\Debug\Engine.obj
 D:\TinyEngine\Project\Engine\CLevelMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CLevelMgr.obj
 D:\TinyEngine\Project\Engine\extern.cpp;D:\TinyEngine\Project\Engine\x64\Debug\extern.obj
+D:\TinyEngine\Project\Engine\func.cpp;D:\TinyEngine\Project\Engine\x64\Debug\func.obj
 D:\TinyEngine\Project\Engine\ImGui\GraphEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\GraphEditor.obj
 D:\TinyEngine\Project\Engine\ImGui\ImCurveEdit.cpp;D:\TinyEngine\Project\Engine\x64\Debug\ImCurveEdit.obj
 D:\TinyEngine\Project\Engine\ImGui\ImGradient.cpp;D:\TinyEngine\Project\Engine\x64\Debug\ImGradient.obj
