@@ -47,7 +47,7 @@ struct tMaterialData
 
 struct tLightData
 {
-    Vec3 strength;
+    Vec3 strength;      // Color
     float fallOffStart;
     Vec3 direction;
     float fallOffEnd;
@@ -56,16 +56,16 @@ struct tLightData
 
     // 물체는 조명으로부터 거리에따라 빛을 받는양이 달라짐
     // fallOffStart, fallOffEnd 옵션값으로 표현
+
+    UINT LightType;
+    Vec3 padd;
 };
 
 struct tGlobal
 {
-    tLightData DirLight;   // 태양과 같이 아주 멀리있는 광원
-    tLightData PointLight; // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
-    tLightData SpotLight; // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
+    tLightData Lights[MAX_LIGHTS];
 
     Vec4 eyeWorld;
-
     float NormalLineScale;
     bool UseTexture;
     Vec2 padd;

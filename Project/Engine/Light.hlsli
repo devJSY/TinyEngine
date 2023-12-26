@@ -1,8 +1,8 @@
-#ifndef _FUNC
-#define _FUNC
+#ifndef _LIGHT
+#define _LIGHT
 
-#include "global.hlsli"
 #include "struct.hlsli"
+#include "global.hlsli"
 
 // BlinnPhong : Phong 모델에서 halfway를 이용해서 속도를 올린 모델
 float3 BlinnPhong(float3 lightStrength, float3 lightVec, float3 normal, float3 toEye)

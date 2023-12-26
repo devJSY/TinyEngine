@@ -4,8 +4,9 @@
 class CLight3D : public CComponent
 {
 private:
-    LIGHT_TYPE m_Type;
-    tLightData m_LightData;
+    LIGHT_TYPE  m_Type;
+    tLightData  m_LightData;
+    int         m_Idx;
 
 public:
     LIGHT_TYPE GetLightType() const { return m_Type; }
@@ -27,6 +28,6 @@ public:
     virtual void finaltick() override;
 
 public:
-    CLight3D(LIGHT_TYPE type);
+    CLight3D(LIGHT_TYPE type, int idx);
     virtual ~CLight3D();
 };

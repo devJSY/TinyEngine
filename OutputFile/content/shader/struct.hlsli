@@ -27,6 +27,9 @@ struct Light
     float fallOffEnd;
     float3 position;
     float spotPower;
+    
+    uint LightType;
+    float3 padd;
 };
 
 #endif

@@ -29,14 +29,18 @@ cbuffer MATERIAL_CONST : register(b1)
     float dummy2;
 }
 
+#define MAX_LIGHTS        3
+#define LIGHT_OFF         0x00
+#define LIGHT_DIRECTIONAL 0x01  
+#define LIGHT_POINT       0x02  
+#define LIGHT_SPOT        0x04  
+//#define LIGHT_SHADOW      0x10
+
 cbuffer GLOBAL : register(b2)
 {
-    Light g_DirLight;
-    Light g_PointLight;
-    Light g_SpotLight;
+    Light Lights[MAX_LIGHTS];
     
-    float4 g_eyeWorld;
-    
+    float4 g_eyeWorld;    
     float g_NormalLineScale;
     bool g_UseTexture;
     float2 padd;

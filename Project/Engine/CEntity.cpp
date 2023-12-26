@@ -8,6 +8,12 @@ CEntity::CEntity()
 {
 }
 
+CEntity::CEntity(const CEntity& origin)
+    : m_ID(g_NextID++)
+    , m_strName(origin.m_strName)
+{
+}
+
 CEntity::~CEntity()
 {
 }

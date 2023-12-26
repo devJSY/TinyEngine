@@ -49,22 +49,72 @@ void CLevelMgr::init()
 
     m_CurLevel->AddObject(pCamObj, 0);
 
-    // Light
-    CGameObject* pLight = new CGameObject;
-    pLight->SetName(L"Light");
+    // Lights
+    CGameObject* pLights = new CGameObject;
+    pLights->SetName(L"Lights");
 
-    pLight->AddComponent(new CTransform);
-    pLight->AddComponent(new CMeshRender);
-    pLight->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL));
+    pLights->AddComponent(new CTransform);
+    pLights->AddComponent(new CMeshRender);
 
-    pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
-    pLight->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLights->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
-    pLight->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLight->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pLight->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
+    pLights->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLights->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
 
-    m_CurLevel->AddObject(pLight, 1);
+    CGameObject* pLight1 = new CGameObject;
+    pLight1->SetName(L"Light 1");
+
+    pLight1->AddComponent(new CTransform);
+    pLight1->AddComponent(new CMeshRender);
+    pLight1->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 0));
+    pLight1->Light3D()->SetStrength(Vec3(1.f, 0.f, 0.f));
+
+    pLight1->Transform()->SetRelativePos(Vec3(-250.f, 0.f, 100.f));
+    pLight1->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+
+    pLight1->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight1->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
+
+    pLights->AddChild(pLight1);
+
+    CGameObject* pLight2 = new CGameObject;
+    pLight2->SetName(L"Light 2");
+
+    pLight2->AddComponent(new CTransform);
+    pLight2->AddComponent(new CMeshRender);
+    pLight2->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 1));
+    pLight2->Light3D()->SetStrength(Vec3(0.f, 1.f, 0.f));
+
+    pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+    pLight2->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+
+    pLight2->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight2->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
+
+    pLights->AddChild(pLight2);
+
+    CGameObject* pLight3 = new CGameObject;
+    pLight3->SetName(L"Light 3");
+
+    pLight3->AddComponent(new CTransform);
+    pLight3->AddComponent(new CMeshRender);
+    pLight3->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 2));
+    pLight3->Light3D()->SetStrength(Vec3(0.f, 0.f, 1.f));
+
+    pLight3->Transform()->SetRelativePos(Vec3(250.f, 0.f, 100.f));
+    pLight3->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+
+    pLight3->MeshRender()->AddMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight3->MeshRender()->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"YellowMaterial"));
+
+    pLights->AddChild(pLight3);
+
+    m_CurLevel->AddObject(pLights, 1);
 
     // Meshes
     CGameObject* pMeshes = new CGameObject;
