@@ -9,6 +9,7 @@
 #include "CLevelMgr.h"
 #include "CKeyMgr.h"
 
+#include "CEditorMgr.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -110,6 +111,7 @@ void CLevelEditor::render()
     m_ViewportHovered = ImGui::IsWindowHovered();
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+    CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
 
     // ImGuizmo

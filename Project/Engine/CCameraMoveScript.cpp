@@ -50,11 +50,29 @@ void CCameraMoveScript::MoveOrthographic()
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
         float scale = Camera()->GetScale();
-        float Doffset = 1280.f;
 
+        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+        Vec2 GetRenderResolution = CDevice::GetInst()->GetRenderResolution();
+
+        float xRatio = 0.f;
+        float yRatio = 0.f;
+
+        if (ViewportSize.x == 0 || ViewportSize.y == 0 || nullptr == CEditorMgr::GetInst()->GetCurEditor())
+        {
+            xRatio = 1.f;
+            yRatio = 1.f;
+        }
+        else
+        {
+            xRatio = GetRenderResolution.x / ViewportSize.x;
+            yRatio = GetRenderResolution.y / ViewportSize.y;
+        }
+
+        // 드래그한 픽셀 위치값만큼 이동
+        // 뷰포트 비율 계산해서 적용
         Vec3 vPos = Transform()->GetRelativePos();
-        vPos.x -= vDrag.x * scale * DT * Doffset;
-        vPos.y += vDrag.y * scale * DT * Doffset;
+        vPos.x -= vDrag.x * scale * xRatio;
+        vPos.y += vDrag.y * scale * yRatio;
         Transform()->SetRelativePos(vPos);
     }
 
@@ -102,11 +120,9 @@ void CCameraMoveScript::MovePerspective()
 
         // Drag
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        vDrag.Normalize();
         Vec3 vRot = Transform()->GetRelativeRotation();
-        float Doffset = 4.f;
-        vRot.y += vDrag.x * DT * XM_PI * Doffset;
-        vRot.x += vDrag.y * DT * XM_PI * Doffset;
+        vRot.y += vDrag.x * XM_PI / 360.f;
+        vRot.x += vDrag.y * XM_PI / 360.f;
         Transform()->SetRelativeRotation(vRot);
 
         // Camera speed

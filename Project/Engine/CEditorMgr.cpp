@@ -6,6 +6,7 @@
 CEditorMgr::CEditorMgr()
     : m_vecEditor{}
     , m_CurEditor(nullptr)
+    , m_ViewportSize(Vec2())
 {
 }
 
