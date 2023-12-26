@@ -20,6 +20,6 @@ float4 main(VS_OUT input) : SV_TARGET
         if (Lights[i].LightType & LIGHT_SPOT)
             color += ComputeSpotLight(Lights[i], input.vPosWorld, input.normalWorld, toEye);
     }   
-   
+ 
     return g_UseTexture ? float4(color, 1.0) * g_AlbedoTex.Sample(g_LinearSampler, input.vUV) : float4(color, 1.0);
 }

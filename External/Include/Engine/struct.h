@@ -47,7 +47,7 @@ struct tMaterialData
 
 struct tLightData
 {
-    Vec3 strength;      // Color
+    Vec3 strength; // Color
     float fallOffStart;
     Vec3 direction;
     float fallOffEnd;
@@ -66,9 +66,14 @@ struct tGlobal
     tLightData Lights[MAX_LIGHTS];
 
     Vec4 eyeWorld;
+
+    Vec3 rimColor;
+    float rimPower;
+    float rimStrength;
+
     float NormalLineScale;
     bool UseTexture;
-    Vec2 padd;
+    float padd;
 };
 
 struct tMeshData

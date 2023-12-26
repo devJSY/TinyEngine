@@ -489,5 +489,11 @@
     <FxCompile Include="NormalLinePS.hlsl">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="RimVS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="RimPS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

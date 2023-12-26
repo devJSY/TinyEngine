@@ -329,6 +329,27 @@ void COutliner::DrawDetails(CGameObject* obj)
                 ImGui::TreePop();
             }
         }
+
+   /*     CGraphicsShader* pRimShader = pMeshRender->GetRimShdaer();
+        if (nullptr != pRimShader)
+        {*/
+            if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_DefaultOpen, "Rim Light"))
+            {
+                Vec3 color = pMeshRender->GetRimColor();
+                if (ImGui::ColorEdit3("Color", &color.x))
+                    pMeshRender->SetRimColor(color);
+
+                float power = pMeshRender->GetRimPower();
+                if (ImGui::SliderFloat("Power", &power, 0.f, 10.f))
+                    pMeshRender->SetRimPower(power);
+
+                float strength = pMeshRender->GetRimStrength();
+                if (ImGui::SliderFloat("Strength", &strength, 0.f, 10.f))
+                    pMeshRender->SetRimStrength(strength);
+
+                ImGui::TreePop();
+            /*}*/
+        }
     }
 }
 

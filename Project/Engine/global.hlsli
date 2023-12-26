@@ -24,7 +24,7 @@ cbuffer MATERIAL_CONST : register(b1)
     float3 g_ambient;
     float g_shininess;
     float3 g_diffuse;
-    float dummy1; 
+    float dummy1;
     float3 g_specular;
     float dummy2;
 }
@@ -40,10 +40,15 @@ cbuffer GLOBAL : register(b2)
 {
     Light Lights[MAX_LIGHTS];
     
-    float4 g_eyeWorld;    
+    float4 g_eyeWorld;
+
+    float3 g_rimColor;
+    float g_rimPower;
+    float g_rimStrength;
+
     float g_NormalLineScale;
     bool g_UseTexture;
-    float2 padd;
+    float padd;
 }
 
 // 메쉬 재질 텍스춰들 t0 부터 시작

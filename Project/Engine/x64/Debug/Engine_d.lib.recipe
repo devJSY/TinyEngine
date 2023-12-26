@@ -18,6 +18,12 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\NormalLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\RimPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\RimVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
   </ContentFiles>
