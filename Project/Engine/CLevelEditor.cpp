@@ -114,13 +114,11 @@ void CLevelEditor::render()
     CGameObject* SelectedObj = m_Outliner.GetSelectedObj();
     if (nullptr != SelectedObj)
     {
-        // 매크로이기 때문에 변수로 체크
-        bool bRBtn = KEY_PRESSED(KEY::RBTN);
-        if (!bRBtn)
+        if (!KEY_PRESSED(KEY::RBTN))
         {
             // 선택된 오브젝트가 있을때 키입력으로 Gizmo 타입설정
             if (KEY_TAP(KEY::Q))
-                m_GizmoType = (ImGuizmo::OPERATION)0;
+                m_GizmoType = ImGuizmo::OPERATION::UNIVERSAL;
             else if (KEY_TAP(KEY::W))
                 m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
             else if (KEY_TAP(KEY::E))
@@ -155,7 +153,9 @@ void CLevelEditor::render()
                 bool snap = KEY_PRESSED(KEY::LCTRL);
 
                 float snapValue = 0.f;
-                if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+                if (m_GizmoType == ImGuizmo::OPERATION::UNIVERSAL)
+                    snap = false;
+                else if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
                     snapValue = 25.f;
                 else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
                     snapValue = 30.0f;

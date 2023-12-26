@@ -77,7 +77,7 @@ void CCameraMoveScript::MoveOrthographic()
 
     // Zoom
     short wheel = CKeyMgr::GetInst()->GetMouseWheel();
-    float Zoffset = 100.f;
+    float Zoffset = 50.f;
     if (wheel < 0)
         Camera()->SetScale(Camera()->GetScale() + DT * Zoffset);
     else if (wheel > 0)

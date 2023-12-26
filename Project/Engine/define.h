@@ -9,7 +9,7 @@ private:                                                                        
 #define DEVICE  CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetContext()
 
-#define KEY_CHECK(Key, State) CKeyMgr::GetInst()->GetKeyState(Key) == State
+#define KEY_CHECK(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State)
 #define DT                    CTimeMgr::GetInst()->GetDeltaTime()
 
 #define KEY_TAP(Key)      KEY_CHECK(Key, TAP)
