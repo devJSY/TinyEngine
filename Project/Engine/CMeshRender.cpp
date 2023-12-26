@@ -83,12 +83,9 @@ void CMeshRender::render()
     }
 
     // outline pass
-    if (CLevelMgr::GetInst()->GetSelectedObj() == GetOwner())
+    if (CLevelMgr::GetInst()->GetSelectedObj() == GetOwner() && !m_bDrawAsWire) // 와이어 프레임일때는 outline Off
     {
         CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine")->UpdateData();
-        g_Global.thickness = 10; // 10픽셀
-        g_Global.width = CDevice::GetInst()->GetRenderResolution().x;
-
         for (const auto& mesh : GetMeshes())
         {
             mesh->render();

@@ -92,5 +92,4 @@ void CCamera::finaltick()
 
     // eyePos µî·Ï
     g_Global.eyeWorld = vCamPos;
-    g_Global.fov = m_FOV;
 }

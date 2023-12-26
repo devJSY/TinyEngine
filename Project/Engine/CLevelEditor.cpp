@@ -110,7 +110,6 @@ void CLevelEditor::render()
     m_ViewportHovered = ImGui::IsWindowHovered();
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-    g_Global.width = (int)viewportSize.x;
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
 
     // ImGuizmo

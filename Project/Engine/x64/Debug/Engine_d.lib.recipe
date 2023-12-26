@@ -3,28 +3,28 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\BlinnPhongPS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\BlinnPhongPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\BlinnPhongVS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\BlinnPhongVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\NormalLineGS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\NormalLineGS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\NormalLinePS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\NormalLinePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\NormalLineVS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\NormalLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\OutLinePS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\OutLinePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\OutLineVS.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\OutLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
+      <FullPath>C:\Users\A\Desktop\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

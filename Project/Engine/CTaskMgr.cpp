@@ -79,7 +79,6 @@ void CTaskMgr::tick()
                 CEngine::GetInst()->SetResolution(resolution);
                 CDevice::GetInst()->Resize(resolution);
                 CEditorMgr::GetInst()->Resize();
-                g_Global.width = width;
             }
             break;
         }

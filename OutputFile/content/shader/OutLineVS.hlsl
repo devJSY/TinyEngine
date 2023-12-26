@@ -13,16 +13,13 @@ VS_OUT main(VS_IN input)
     output.vPosProj = mul(pos, g_matWorld);
     output.vPosWorld = mul(pos, g_matWorld).xyz; // 월드 위치 따로 저장
     
+    // 카메라와의 거리와 thickness 값으로 외곽선 범위 만큼 크기 확장
     float dist = length(output.vPosWorld - g_eyeWorld);
-    float offset = thickness * dist * fov / width;
+    float thickness = 0.005;
     
-    output.vPosProj += float4(output.normalWorld * offset, 0.0);
-
+    output.vPosProj += float4(output.normalWorld * dist * thickness, 0.0);
     output.vPosProj = mul(output.vPosProj, g_matView);
     output.vPosProj = mul(output.vPosProj, g_matProj);
-    
-    output.vUV = input.vUV;
-    output.vColor = input.vColor;
-    
+
     return output;
 }
