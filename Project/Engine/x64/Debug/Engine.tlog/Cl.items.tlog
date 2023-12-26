@@ -27,6 +27,7 @@ D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x
 D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CScript.obj
 D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CShader.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTaskMgr.obj
+D:\TinyEngine\Project\Engine\CTestLevel.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTestLevel.obj
 D:\TinyEngine\Project\Engine\CTexture.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTexture.obj
 D:\TinyEngine\Project\Engine\CTimeMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTimeMgr.obj
 D:\TinyEngine\Project\Engine\CTransform.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTransform.obj

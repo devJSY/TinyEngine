@@ -18,6 +18,7 @@ private:
     CGameObject* m_CamObj;
 
 public:
+    void SetCameraObj(CGameObject* cam) { m_CamObj = cam; }
     CGameObject* GetCameraObj() const { return m_CamObj; }
 
 public:

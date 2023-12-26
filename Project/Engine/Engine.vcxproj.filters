@@ -169,6 +169,9 @@
     <ClInclude Include="ImGui\GraphEditor.h">
       <Filter>ImGui\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="CTestLevel.h">
+      <Filter>05. Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -314,6 +317,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\GraphEditor.cpp">
       <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestLevel.cpp">
+      <Filter>05. Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -487,12 +493,6 @@
       <Filter>ShaderCode</Filter>
     </FxCompile>
     <FxCompile Include="NormalLinePS.hlsl">
-      <Filter>ShaderCode</Filter>
-    </FxCompile>
-    <FxCompile Include="RimVS.hlsl">
-      <Filter>ShaderCode</Filter>
-    </FxCompile>
-    <FxCompile Include="RimPS.hlsl">
       <Filter>ShaderCode</Filter>
     </FxCompile>
   </ItemGroup>

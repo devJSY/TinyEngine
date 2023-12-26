@@ -13,5 +13,6 @@ float4 main(VS_OUT input) : SV_TARGET
     
     color += rim * g_rimColor * g_rimStrength;
 
-    return (color.r / 255.0, color.g / 255.0, color.g / 255.0, 1.0);
+    return float4(color, 0.0);
+
 }

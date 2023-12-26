@@ -96,4 +96,13 @@ float3 ComputeSpotLight(Light L, float3 pos, float3 normal, float3 toEye)
     }
 }
 
+float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPower)
+{
+    float rim = 1.0 - dot(NormalWorld, toEye); // Fresnel's formulas
+    rim = smoothstep(0.0, 1.0, rim);
+    rim = pow(abs(rim), g_rimPower);
+    float3 strength = float3(1, 1, 1);  // strength option
+    return rim * g_rimColor * strength;
+}
+
 #endif

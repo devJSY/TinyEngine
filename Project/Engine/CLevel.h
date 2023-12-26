@@ -10,10 +10,10 @@ private:
     CLayer* m_arrLayer[LAYER_MAX];
 
 public:
-    void begin();
-    void tick();
-    void finaltick();
-    void render();
+    virtual void begin();
+    virtual void tick();
+    virtual void finaltick();
+    virtual void render();
 
     void AddObject(CGameObject* _Object, int _LayerIdx);
 

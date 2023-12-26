@@ -67,9 +67,9 @@ struct tGlobal
 
     Vec4 eyeWorld;
 
+    bool UseRim;
     Vec3 rimColor;
     float rimPower;
-    float rimStrength;
 
     float NormalLineScale;
     bool UseTexture;

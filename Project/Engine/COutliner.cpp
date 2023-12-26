@@ -330,25 +330,21 @@ void COutliner::DrawDetails(CGameObject* obj)
             }
         }
 
-   /*     CGraphicsShader* pRimShader = pMeshRender->GetRimShdaer();
-        if (nullptr != pRimShader)
-        {*/
-            if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_DefaultOpen, "Rim Light"))
-            {
-                Vec3 color = pMeshRender->GetRimColor();
-                if (ImGui::ColorEdit3("Color", &color.x))
-                    pMeshRender->SetRimColor(color);
+        if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_DefaultOpen, "Rim Light"))
+        {
+            bool bUseRim = pMeshRender->IsUseRim();
+            if (ImGui::Checkbox("Use Rim", &bUseRim))
+                pMeshRender->SetUseRim(bUseRim);
 
-                float power = pMeshRender->GetRimPower();
-                if (ImGui::SliderFloat("Power", &power, 0.f, 10.f))
-                    pMeshRender->SetRimPower(power);
+            Vec3 color = pMeshRender->GetRimColor();
+            if (ImGui::ColorEdit3("Color", &color.x))
+                pMeshRender->SetRimColor(color);
 
-                float strength = pMeshRender->GetRimStrength();
-                if (ImGui::SliderFloat("Strength", &strength, 0.f, 10.f))
-                    pMeshRender->SetRimStrength(strength);
+            float power = pMeshRender->GetRimPower();
+            if (ImGui::SliderFloat("Power", &power, 0.f, 10.f))
+                pMeshRender->SetRimPower(power);
 
-                ImGui::TreePop();
-            /*}*/
+            ImGui::TreePop();
         }
     }
 }

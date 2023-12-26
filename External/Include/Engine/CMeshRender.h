@@ -10,10 +10,9 @@ private:
     bool m_bDrawAsWire;
     bool m_bUseTexture;
 
-    CGraphicsShader* m_RimShader;
+    bool m_bUseRim;
     Vec3 m_RimColor;
     float m_RimPower;
-    float m_RimStrength;
 
 public:
     void SetNormalLineShader(CGraphicsShader* shader) { m_NormalLineShader = shader; }
@@ -31,17 +30,14 @@ public:
     bool IsUseTexture() const { return m_bUseTexture; }
 
     // Rim
-    void SetRimShader(CGraphicsShader* shader) { m_RimShader = shader; }
-    CGraphicsShader* GetRimShdaer() const { return m_RimShader; }
+    void SetUseRim(bool _b) { m_bUseRim = _b; }
+    bool IsUseRim() const { return m_bUseRim; }
 
     void SetRimColor(Vec3 color) { m_RimColor = color; }
     Vec3 GetRimColor() const { return m_RimColor; }
 
     void SetRimPower(float _f) { m_RimPower = _f; }
     float GetRimPower() const { return m_RimPower; }
-
-    void SetRimStrength(float _f) { m_RimStrength = _f; }
-    float GetRimStrength() const { return m_RimStrength; }
 
 public:
     virtual void UpdateData() override;

@@ -241,7 +241,7 @@ void CAssetMgr::init()
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
 
         AddAsset(L"Std2DShader", pShader);
     }
@@ -271,20 +271,6 @@ void CAssetMgr::init()
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
         AddAsset(L"NormalLine", pShader);
-    }
-
-    {
-        CGraphicsShader* pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\RimVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\RimPS.hlsl", "main");
-
-        pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
-        pShader->SetBSType(BS_TYPE::ONE_ONE);
-
-        AddAsset(L"Rim", pShader);
     }
 
     // ======================
@@ -384,10 +370,10 @@ tMeshData CAssetMgr::MakeSquare(const float scale, const Vec2 texScale)
     positions.push_back(Vec3(1.0f, 1.0f, 0.0f) * scale);
     positions.push_back(Vec3(1.0f, -1.0f, 0.0f) * scale);
     positions.push_back(Vec3(-1.0f, -1.0f, 0.0f) * scale);
-    colors.push_back(Vec3(0.0f, 0.0f, 1.0f));
-    colors.push_back(Vec3(0.0f, 0.0f, 1.0f));
-    colors.push_back(Vec3(0.0f, 0.0f, 1.0f));
-    colors.push_back(Vec3(0.0f, 0.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
     normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
     normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
     normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
@@ -410,6 +396,7 @@ tMeshData CAssetMgr::MakeSquare(const float scale, const Vec2 texScale)
         v.vUV = texcoords[i] * texScale;
         // v.tangentModel = Vec3(1.0f, 0.0f, 0.0f);
         v.vColor = colors[i];
+        v.vColor.w = 1.f;
 
         meshData.vertices.push_back(v);
     }
@@ -584,6 +571,8 @@ tMeshData CAssetMgr::MakeBox(const float scale)
         v.vPos = positions[i];
         v.vNormal = normals[i];
         v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
         meshData.vertices.push_back(v);
     }
 

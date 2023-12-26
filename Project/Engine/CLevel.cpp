@@ -17,6 +17,7 @@ CLevel::~CLevel()
     Delete_Array(m_arrLayer);
 }
 
+
 void CLevel::begin()
 {
     for (int i = 0; i < LAYER_MAX; ++i)

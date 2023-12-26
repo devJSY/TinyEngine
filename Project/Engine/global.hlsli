@@ -42,9 +42,9 @@ cbuffer GLOBAL : register(b2)
     
     float4 g_eyeWorld;
 
+    bool UseRim;
     float3 g_rimColor;
     float g_rimPower;
-    float g_rimStrength;
 
     float g_NormalLineScale;
     bool g_UseTexture;
