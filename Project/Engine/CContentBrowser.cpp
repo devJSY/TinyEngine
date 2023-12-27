@@ -81,6 +81,9 @@ void CContentBrowser::render()
         // Drag & Drop
         if (ImGui::BeginDragDropSource())
         {
+            const char* str = filenameString.c_str();
+            ImGui::Text("%s", str, filenameString.size());
+
             const wchar_t* itemPath = relativePath.c_str();
             ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
             ImGui::EndDragDropSource();
