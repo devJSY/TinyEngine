@@ -25,16 +25,7 @@ void CContentBrowser::render()
 {
     ImGui::Begin("Content Browser");
 
-    // FileName
-    {
-        std::string name = m_CurrentDirectory.string();
-
-        char buffer[256];
-        memset(buffer, 0, sizeof(buffer));
-        strcpy_s(buffer, sizeof(buffer), name.c_str());
-        ImGui::InputText("Current Directory", buffer, sizeof(buffer));
-    }
-
+    // ก็
     if (m_CurrentDirectory != std::filesystem::path(CPathMgr::GetContentPath()))
     {
         if (ImGui::Button("<-"))
@@ -46,6 +37,16 @@ void CContentBrowser::render()
             m_CurrentDirectory = m_CurrentDirectory.parent_path();
             m_CurrentDirectory += L"\\";
         }
+    }
+
+    // FileName
+    {
+        std::string name = m_CurrentDirectory.string();
+
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+        strcpy_s(buffer, sizeof(buffer), name.c_str());
+        ImGui::InputText("Current Directory", buffer, sizeof(buffer));
     }
 
     static float padding = 16.0f;
@@ -71,7 +72,12 @@ void CContentBrowser::render()
         std::string filenameString = relativePath.filename().string();
 
         CTexture* icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
+
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         ImGui::ImageButton((void*)icon->GetSRV().Get(), {thumbnailSize, thumbnailSize});
+
+        ImGui::PopStyleColor();
+
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
         {
             if (directoryEntry.is_directory())
