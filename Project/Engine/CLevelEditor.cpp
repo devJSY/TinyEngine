@@ -110,6 +110,10 @@ void CLevelEditor::finaltick()
                         ImGuiColorEditFlags_PickerHueWheel);
     ImGui::Checkbox("Another Viewport", &m_show_Viewport2);
     ImGui::End();
+
+    ImGui::Begin("View Mode");
+    ImGui::Checkbox("WireFrame", &g_Global.DrawAsWireFrame);
+    ImGui::End();
 }
 
 void CLevelEditor::render()

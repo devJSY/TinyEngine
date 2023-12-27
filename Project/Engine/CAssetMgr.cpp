@@ -43,10 +43,10 @@ CAssetMgr::~CAssetMgr()
 void CAssetMgr::init()
 {
     LoadMesh();
-    LoadModel();
     LoadShader();
     LoadTexture();
     LoadMaterial();
+    // LoadModel();
 }
 
 tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
@@ -646,99 +646,99 @@ vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string file
 
 void CAssetMgr::MeshTextureLoad(CMesh* pMesh, const tMeshData& meshData)
 {
-    // 텍스쳐 로딩
-    std::wstring path;
-    path.assign(meshData.RelativeTextureFilePath.begin(), meshData.RelativeTextureFilePath.end());
+    //// 텍스쳐 로딩
+    // std::wstring path;
+    // path.assign(meshData.RelativeTextureFilePath.begin(), meshData.RelativeTextureFilePath.end());
 
-    if (!meshData.AlbedoTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.AlbedoTextureFilename << std::endl;
+    // if (!meshData.AlbedoTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.AlbedoTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.AlbedoTextureFilename.begin(), meshData.AlbedoTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.AlbedoTextureFilename.begin(), meshData.AlbedoTextureFilename.end());
 
-        Load<CTexture>(name, path + name);
-        pMesh->SetAlbedoTexture(name);
-    }
+    //    Load<CTexture>(name, path + name);
+    //    pMesh->SetAlbedoTexture(name);
+    //}
 
-    if (!meshData.AoTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.AoTextureFilename << std::endl;
+    // if (!meshData.AoTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.AoTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.AoTextureFilename.begin(), meshData.AoTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.AoTextureFilename.begin(), meshData.AoTextureFilename.end());
 
-        Load<CTexture>(name, path + name);
-        pMesh->SetAmbientOcclusionTexture(name);
-    }
+    //    Load<CTexture>(name, path + name);
+    //    pMesh->SetAmbientOcclusionTexture(name);
+    //}
 
-    if (!meshData.NormalTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.NormalTextureFilename << std::endl;
+    // if (!meshData.NormalTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.NormalTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.NormalTextureFilename.begin(), meshData.NormalTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.NormalTextureFilename.begin(), meshData.NormalTextureFilename.end());
 
-        Load<CTexture>(name, path + name);
-        pMesh->SetNormalTexture(name);
-    }
+    //    Load<CTexture>(name, path + name);
+    //    pMesh->SetNormalTexture(name);
+    //}
 
-    if (!meshData.HeightTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.HeightTextureFilename << std::endl;
+    // if (!meshData.HeightTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.HeightTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.HeightTextureFilename.begin(), meshData.HeightTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.HeightTextureFilename.begin(), meshData.HeightTextureFilename.end());
 
-        Load<CTexture>(name, path + name);
-        pMesh->SetHeightTexture(name);
-    }
+    //    Load<CTexture>(name, path + name);
+    //    pMesh->SetHeightTexture(name);
+    //}
 
-    if (!meshData.MetallicTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.MetallicTextureFilename << std::endl;
+    // if (!meshData.MetallicTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.MetallicTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.MetallicTextureFilename.begin(), meshData.MetallicTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.MetallicTextureFilename.begin(), meshData.MetallicTextureFilename.end());
 
-        Load<CTexture>(name, path + name);
-        pMesh->SetMetallicRoughnessTexture(name);
-    }
+    //    Load<CTexture>(name, path + name);
+    //    pMesh->SetMetallicRoughnessTexture(name);
+    //}
 
-    if (!meshData.RoughnessTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.RoughnessTextureFilename << std::endl;
+    // if (!meshData.RoughnessTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.RoughnessTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.RoughnessTextureFilename.begin(), meshData.RoughnessTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.RoughnessTextureFilename.begin(), meshData.RoughnessTextureFilename.end());
 
-        // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
-        // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
-        CTexture* pTex = FindAsset<CTexture>(name);
-        if (nullptr == pTex)
-        {
-            Load<CTexture>(name, path + name);
-            pMesh->SetMetallicRoughnessTexture(name);
-        }
-    }
+    //    // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
+    //    // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
+    //    CTexture* pTex = FindAsset<CTexture>(name);
+    //    if (nullptr == pTex)
+    //    {
+    //        Load<CTexture>(name, path + name);
+    //        pMesh->SetMetallicRoughnessTexture(name);
+    //    }
+    //}
 
-    if (!meshData.EmissiveTextureFilename.empty())
-    {
-        std::wcout << pMesh->GetName() << " : ";
-        std::cout << meshData.EmissiveTextureFilename << std::endl;
+    // if (!meshData.EmissiveTextureFilename.empty())
+    //{
+    //     std::wcout << pMesh->GetName() << " : ";
+    //     std::cout << meshData.EmissiveTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(meshData.EmissiveTextureFilename.begin(), meshData.EmissiveTextureFilename.end());
+    //    std::wstring name;
+    //    name.assign(meshData.EmissiveTextureFilename.begin(), meshData.EmissiveTextureFilename.end());
 
-        Load<CTexture>(name, path + name);
-        pMesh->SetEmissiveTexture(name);
-    }
+    //    Load<CTexture>(name, path + name);
+    //    pMesh->SetEmissiveTexture(name);
+    //}
 }
 
 void CAssetMgr::AddModel(const wstring& _strKey, vector<CMesh*> _model)
@@ -1006,51 +1006,23 @@ void CAssetMgr::LoadShader()
 
 void CAssetMgr::LoadTexture()
 {
-    //CTexture* pTex = Load<CTexture>(L"Player", L"texture//MAP//BigMap.bmp");
-    //if (nullptr != pTex)
-    //{
-    //    pTex->UpdateData(0);
-    //}
-
-     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
-     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
+    Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
+    Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
 }
 
 void CAssetMgr::LoadMaterial()
 {
-    tMaterialData material;
-    material.shininess = 1.f;
-    material.ambient = Vec3(1.0f, 0.0f, 0.0f);
-    material.diffuse = Vec3(0.5f);
-    material.specular = Vec3(0.5f);
+    // Std2DMtrl
+    CMaterial* pMtrl = nullptr;
+    pMtrl = new CMaterial;
+    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
+    AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
 
-    CMaterial* RedMaterial = new CMaterial;
-    RedMaterial->Create(material);
-
-    material.ambient = Vec3(0.0f, 1.0f, 0.0f);
-    CMaterial* GreenMaterial = new CMaterial;
-    GreenMaterial->Create(material);
-
-    material.ambient = Vec3(0.0f, 0.0f, 1.0f);
-    CMaterial* BlueMaterial = new CMaterial;
-    BlueMaterial->Create(material);
-
-    material.ambient = Vec3(1.0f, 1.0f, 0.0f);
-    CMaterial* YellowMaterial = new CMaterial;
-    YellowMaterial->Create(material);
-
-    material.ambient = Vec3(0.0f, 0.0f, 0.0f);
-    CMaterial* BlackMaterial = new CMaterial;
-    BlackMaterial->Create(material);
-
-    material.ambient = Vec3(1.0f, 1.0f, 1.0f);
-    CMaterial* WhiteMaterial = new CMaterial;
-    WhiteMaterial->Create(material);
-
-    AddAsset(L"RedMaterial", RedMaterial);
-    AddAsset(L"GreenMaterial", GreenMaterial);
-    AddAsset(L"BlueMaterial", BlueMaterial);
-    AddAsset(L"YellowMaterial", YellowMaterial);
-    AddAsset(L"BlackMaterial", BlackMaterial);
-    AddAsset(L"WhiteMaterial", WhiteMaterial);
+    // BlinnPhong
+    CMaterial* pBlinnPhongMtrl = nullptr;
+    pBlinnPhongMtrl = new CMaterial;
+    pBlinnPhongMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pBlinnPhongMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f),
+                                            Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
+    AddAsset<CMaterial>(L"BlinnPhong", pBlinnPhongMtrl);
 }

@@ -1,10 +1,17 @@
 #include "pch.h"
 #include "CMaterial.h"
-#include "CConstBuffer.h"
+
+#include "CGraphicsShader.h"
+
 #include "CDevice.h"
+#include "CConstBuffer.h"
+#include "CTexture.h"
 
 CMaterial::CMaterial()
     : CAsset(ASSET_TYPE::MATERIAL)
+    , m_Const{}
+    , m_arrTex{}
+    , m_pShader(nullptr)
 {
 }
 
@@ -12,25 +19,30 @@ CMaterial::~CMaterial()
 {
 }
 
-void CMaterial::Create(tMaterialData& data)
-{
-    m_MaterialData = data;
-}
-
 void CMaterial::UpdateData()
 {
-    // Constant Update
-    CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
-    pCB->SetData(&m_MaterialData);
-    pCB->UpdateData(1);
-}
+    if (nullptr != m_pShader)
+    {
+        m_pShader->UpdateData();
+    }
 
-void CMaterial::Clear()
-{
-    ID3D11Buffer* pBuffer = nullptr;
-    CONTEXT->VSSetConstantBuffers(1, 1, &pBuffer);
-    CONTEXT->HSSetConstantBuffers(1, 1, &pBuffer);
-    CONTEXT->DSSetConstantBuffers(1, 1, &pBuffer);
-    CONTEXT->GSSetConstantBuffers(1, 1, &pBuffer);
-    CONTEXT->PSSetConstantBuffers(1, 1, &pBuffer);
+    // Texture Update
+    for (UINT i = 0; i < TEX_PARAM::END; ++i)
+    {
+        if (nullptr == m_arrTex[i])
+        {
+            m_Const.arrTex[i] = 0;
+            CTexture::Clear(i);
+            continue;
+        }
+        else
+        {
+            m_Const.arrTex[i] = 1;
+            m_arrTex[i]->UpdateData(i);
+        }
+    }
+
+    static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
+    pCB->SetData(&m_Const);
+    pCB->UpdateData();
 }

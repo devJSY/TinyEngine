@@ -27,8 +27,8 @@ private:
     void LoadMesh();
     void LoadModel();
     void LoadShader();
-    void LoadTexture();
     void LoadMaterial();
+    void LoadTexture();
 
 private:
     // Geometry

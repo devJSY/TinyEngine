@@ -28,14 +28,28 @@ struct tTransform
     Matrix matWVP;
 };
 
-struct tMaterialData
+// Material 계수
+struct tMtrlData
 {
-    Vec3 ambient;    // 조명과 상관없이 물체 자체가 갖고있는 색상
-    float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
-    Vec3 diffuse;    // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
-    float dummy1;
-    Vec3 specular; // 시점으로부터 반사되는 빛이 얼마나 받느냐에 따라 결정되는 값
-    float dummy2;
+    Vec4 vAmb;  // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
+    Vec4 vDiff; // 조명과 상관없이 물체 자체가 갖고있는 색상
+    Vec4 vSpec; // 시점으로부터 반사되는 빛이 얼마나 받느냐에 따라 결정되는 값
+    Vec4 vEmv;
+};
+
+struct tMtrlConst
+{
+    tMtrlData mtrl;
+
+    int iArr[4];
+    float fArr[4]; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
+    Vec2 v2Arr[4];
+    Vec4 v4Arr[4];
+    Matrix matArr[4];
+
+    int arrTex[(UINT)TEX_PARAM::END];
+
+    int arrAnimData[2]; // 3D Animation 정보
 };
 
 struct tLightData
@@ -59,15 +73,16 @@ struct tGlobal
     tLightData Lights[MAX_LIGHTS];
 
     Vec3 eyeWorld;
-    bool UseTexture;
+    int UseTexture;
 
     Vec3 rimColor;
     float rimPower;
 
     float NormalLineScale;
 
-    bool UseRim;
-    Vec2 padd;
+    int UseRim;
+    bool DrawAsWireFrame;
+    int padd;
 };
 
 struct tMeshData

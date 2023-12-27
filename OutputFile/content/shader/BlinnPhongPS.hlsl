@@ -24,5 +24,5 @@ float4 main(VS_OUT input) : SV_TARGET
     if (UseRim)
         color += RimLight(input.normalWorld, toEye, g_rimColor, g_rimPower);
      
-    return g_UseTexture ? float4(color, 1.0) * g_AlbedoTex.Sample(g_LinearSampler, input.vUV) : float4(color, 1.0);
+    return g_UseTexture ? float4(color, 1.0) * g_tex_0.Sample(g_LinearSampler, input.vUV) : float4(color, 1.0);
 }

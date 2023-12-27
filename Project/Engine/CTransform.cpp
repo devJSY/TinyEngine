@@ -87,5 +87,5 @@ void CTransform::UpdateData()
     // 위치정보를 Transform 상수버퍼에 보내고, B0 레지스터에 바인딩 해둠
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
     pCB->SetData(&g_Transform);
-    pCB->UpdateData(0);
+    pCB->UpdateData();
 }

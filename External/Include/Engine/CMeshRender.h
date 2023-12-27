@@ -6,7 +6,6 @@ class CMeshRender : public CRenderComponent
 private:
     bool m_bDrawNormalLine;
     float m_NormalLineScale;
-    bool m_bDrawAsWire;
     bool m_bUseTexture;
 
     bool m_bUseRim;
@@ -19,9 +18,6 @@ public:
 
     void SetNormalLineScale(float scale) { m_NormalLineScale = scale; }
     float GetNormalLineScale() const { return m_NormalLineScale; }
-
-    void SetDrawAsWireFrame(bool _b) { m_bDrawAsWire = _b; }
-    bool IsDrawAsWireFrame() const { return m_bDrawAsWire; }
 
     void SetUseTexture(bool _b) { m_bUseTexture = _b; }
     bool IsUseTexture() const { return m_bUseTexture; }

@@ -1,22 +1,35 @@
 #pragma once
 #include "CAsset.h"
 
+class CGraphicsShader;
+class CTexture;
+
 class CMaterial : public CAsset
 {
-private:
-    tMaterialData m_MaterialData;
+public:
+    tMtrlConst m_Const;
+    CTexture* m_arrTex[(UINT)TEX_PARAM::END];
+
+    CGraphicsShader* m_pShader;
 
 public:
-    tMaterialData GetMaterialData() const { return m_MaterialData; }
-    void SetMaterialData(tMaterialData data) { m_MaterialData = data; }
+    void SetTexParam(TEX_PARAM _Param, CTexture* _Tex) { m_arrTex[(UINT)_Param] = _Tex; }
+    CTexture* GetTexParam(TEX_PARAM _param) const { return m_arrTex[(UINT)_param]; }
 
-public:
-    void Create(tMaterialData& data);
+    void SetShader(CGraphicsShader* _Shader) { m_pShader = _Shader; }
+    CGraphicsShader* GetShader() const { return m_pShader; }
+
+    void SetMaterialCoefficient(Vec4 _vAmb, Vec4 _vDiff, Vec4 _vSpec, Vec4 _vEmis)
+    {
+        m_Const.mtrl.vDiff = _vDiff;
+        m_Const.mtrl.vAmb = _vAmb;
+        m_Const.mtrl.vSpec = _vSpec;
+        m_Const.mtrl.vEmv = _vEmis;
+    }
+
     void UpdateData();
-
-    static void Clear();
 
 public:
     CMaterial();
-    virtual ~CMaterial();
+    ~CMaterial();
 };

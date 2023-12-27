@@ -18,7 +18,6 @@
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
     , m_bDrawNormalLine(false)
-    , m_bDrawAsWire(false)
     , m_NormalLineScale(1.0f)
     , m_bUseTexture(false)
     , m_bUseRim(false)
@@ -34,17 +33,6 @@ CMeshRender::~CMeshRender()
 
 void CMeshRender::UpdateData()
 {
-    if (nullptr != GetShader())
-    {
-        RS_TYPE RStype = GetShader()->GetRSType();
-        if (m_bDrawAsWire)
-            GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-
-        GetShader()->UpdateData();
-
-        GetShader()->SetRSType(RStype);
-    }
-
     if (nullptr != GetMaterial())
     {
         GetMaterial()->UpdateData();
@@ -61,44 +49,32 @@ void CMeshRender::UpdateData()
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
 
-    CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);
-    pCB->UpdateData(2);
+    pCB->UpdateData();
 }
 
 void CMeshRender::render()
 {
-    if (0 == GetMeshes().size() || nullptr == GetShader())
+    if (nullptr == GetMesh() || nullptr == GetMaterial())
         return;
-
-    // Material 초기화
-    CMaterial::Clear();
 
     UpdateData();
 
-    // Render Pass
-    for (const auto& mesh : GetMeshes())
-    {
-        mesh->render();
-    }
+    //Render Pass 
+    GetMesh()->render();
 
     // outline pass
-    if (CLevelMgr::GetInst()->GetSelectedObj() == GetOwner() && !m_bDrawAsWire) // 와이어 프레임일때는 outline Off
+    if (CLevelMgr::GetInst()->GetSelectedObj() == GetOwner() && !g_Global.DrawAsWireFrame) // 와이어 프레임일때는 outline Off
     {
         CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine")->UpdateData();
-        for (const auto& mesh : GetMeshes())
-        {
-            mesh->render();
-        }
+        GetMesh()->render();
     }
 
     // Normal Line Pass
     if (m_bDrawNormalLine)
     {
         CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine")->UpdateData();
-        for (const auto& mesh : GetMeshes())
-        {
-            mesh->renderDraw();
-        }
+        GetMesh()->render();
     }
 }

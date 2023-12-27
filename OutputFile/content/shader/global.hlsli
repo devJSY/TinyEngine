@@ -21,12 +21,52 @@ cbuffer TRANSFORM : register(b0)
 
 cbuffer MATERIAL_CONST : register(b1)
 {
-    float3 g_ambient;
-    float g_shininess;
-    float3 g_diffuse;
-    float dummy1;
-    float3 g_specular;
-    float dummy2;
+    float4 g_vAmb;
+    float4 g_vDiff;
+    float4 g_vSpec;
+    float4 g_vEmv;
+
+    int g_int_0;
+    int g_int_1;
+    int g_int_2;
+    int g_int_3;
+    
+    float g_float_0;
+    float g_float_1;
+    float g_float_2;
+    float g_float_3;
+    
+    float2 g_vec2_0;
+    float2 g_vec2_1;
+    float2 g_vec2_2;
+    float2 g_vec2_3;
+    
+    float4 g_vec4_0;
+    float4 g_vec4_1;
+    float4 g_vec4_2;
+    float4 g_vec4_3;
+    
+    row_major matrix g_mat_0;
+    row_major matrix g_mat_1;
+    row_major matrix g_mat_2;
+    row_major matrix g_mat_3;
+            
+    int g_btex_0;
+    int g_btex_1;
+    int g_btex_2;
+    int g_btex_3;
+    int g_btex_4;
+    int g_btex_5;
+    
+    int g_bcube_0;
+    int g_bcube_1;
+
+    int g_btexarr_0;
+    int g_btexarr_1;
+    
+    // 3D Animation 정보
+    int g_iAnim;
+    int g_iBoneCount;
 }
 
 #define MAX_LIGHTS        3
@@ -41,24 +81,30 @@ cbuffer GLOBAL : register(b2)
     Light Lights[MAX_LIGHTS];
     
     float3 g_eyeWorld;
-    bool g_UseTexture;
+    int g_UseTexture;
     
     float3 g_rimColor;
     float g_rimPower;
 
     float g_NormalLineScale;
     
-    bool UseRim;
-    float2 padd;
+    int UseRim;
+    bool DrawAsWireFrame;
+    int padd;
 }
 
-// 메쉬 재질 텍스춰들 t0 부터 시작
-Texture2D g_AlbedoTex : register(t0);
-Texture2D g_AoTex : register(t1);
-Texture2D g_NormalTex : register(t2);
-Texture2D g_heightTexture : register(t3);
-Texture2D g_MetallicRoughnessTex : register(t4);
-Texture2D g_EmissiveTex : register(t5);
+Texture2D g_tex_0 : register(t0);
+Texture2D g_tex_1 : register(t1);
+Texture2D g_tex_2 : register(t2);
+Texture2D g_tex_3 : register(t3);
+Texture2D g_tex_4 : register(t4);
+Texture2D g_tex_5 : register(t5);
+
+TextureCube g_cube_0 : register(t6);
+TextureCube g_cube_1 : register(t7);
+
+Texture2DArray g_texarr_0 : register(t8);
+Texture2DArray g_texarr_1 : register(t9);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);

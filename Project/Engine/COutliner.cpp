@@ -272,10 +272,6 @@ void COutliner::DrawDetails(CGameObject* obj)
             if (ImGui::Checkbox("Use Texture", &bUseTexture))
                 pMeshRender->SetUseTexture(bUseTexture);
 
-            bool bWireFrame = pMeshRender->IsDrawAsWireFrame();
-            if (ImGui::Checkbox("Draw Wireframe", &bWireFrame))
-                pMeshRender->SetDrawAsWireFrame(bWireFrame);
-
             bool bNormalLine = pMeshRender->IsDrawNormalLine();
             if (ImGui::Checkbox("Draw NormalLine", &bNormalLine))
                 pMeshRender->SetDrawNormalLine(bNormalLine);
@@ -287,45 +283,45 @@ void COutliner::DrawDetails(CGameObject* obj)
             ImGui::TreePop();
         }
 
-        // Material
-        CMaterial* pMaterial = pMeshRender->GetMaterial();
-        if (nullptr != pMaterial)
-        {
-            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
-            {
-                tMaterialData materialData = pMaterial->GetMaterialData();
+        //// Material
+        //CMaterial* pMaterial = pMeshRender->GetMaterial();
+        //if (nullptr != pMaterial)
+        //{
+        //    if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+        //    {
+        //        tMaterialData materialData = pMaterial->GetMaterialData();
 
-                Vec3 ambient = materialData.ambient;
-                if (ImGui::ColorEdit3("Ambient", &ambient.x))
-                {
-                    materialData.ambient = ambient;
-                    pMaterial->SetMaterialData(materialData);
-                }
+        //        Vec3 ambient = materialData.ambient;
+        //        if (ImGui::ColorEdit3("Ambient", &ambient.x))
+        //        {
+        //            materialData.ambient = ambient;
+        //            pMaterial->SetMaterialData(materialData);
+        //        }
 
-                Vec3 diffuse = materialData.diffuse;
-                if (ImGui::SliderFloat3("Diffuse", &diffuse.x, 0.f, 1.f))
-                {
-                    materialData.diffuse = diffuse;
-                    pMaterial->SetMaterialData(materialData);
-                }
+        //        Vec3 diffuse = materialData.diffuse;
+        //        if (ImGui::SliderFloat3("Diffuse", &diffuse.x, 0.f, 1.f))
+        //        {
+        //            materialData.diffuse = diffuse;
+        //            pMaterial->SetMaterialData(materialData);
+        //        }
 
-                Vec3 specular = materialData.specular;
-                if (ImGui::SliderFloat3("Specular", &specular.x, 0.f, 1.f))
-                {
-                    materialData.specular = specular;
-                    pMaterial->SetMaterialData(materialData);
-                }
+        //        Vec3 specular = materialData.specular;
+        //        if (ImGui::SliderFloat3("Specular", &specular.x, 0.f, 1.f))
+        //        {
+        //            materialData.specular = specular;
+        //            pMaterial->SetMaterialData(materialData);
+        //        }
 
-                float shininess = materialData.shininess;
-                if (ImGui::SliderFloat("Shininess", &shininess, 1.f, 256.f))
-                {
-                    materialData.shininess = shininess;
-                    pMaterial->SetMaterialData(materialData);
-                }
+        //        float shininess = materialData.shininess;
+        //        if (ImGui::SliderFloat("Shininess", &shininess, 1.f, 256.f))
+        //        {
+        //            materialData.shininess = shininess;
+        //            pMaterial->SetMaterialData(materialData);
+        //        }
 
-                ImGui::TreePop();
-            }
-        }
+        //        ImGui::TreePop();
+        //    }
+        //}
 
         if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_DefaultOpen, "Rim Light"))
         {

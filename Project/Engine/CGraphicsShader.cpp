@@ -140,7 +140,8 @@ void CGraphicsShader::UpdateData()
     CONTEXT->IASetInputLayout(m_Layout.Get());
     CONTEXT->IASetPrimitiveTopology(m_Topology);
 
-    CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
+    CONTEXT->RSSetState(
+        CDevice::GetInst()->GetRSState(g_Global.DrawAsWireFrame ? RS_TYPE::WIRE_FRAME : m_RSType).Get());
     CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 0);
     CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(m_BSType).Get(), nullptr, 0xffffffff);
 
