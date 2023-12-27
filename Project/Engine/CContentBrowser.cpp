@@ -71,10 +71,20 @@ void CContentBrowser::render()
         auto relativePath = std::filesystem::relative(path, CPathMgr::GetContentPath());
         std::string filenameString = relativePath.filename().string();
 
+        ImGui::PushID(filenameString.c_str());
+
         CTexture* icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         ImGui::ImageButton((void*)icon->GetSRV().Get(), {thumbnailSize, thumbnailSize});
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropSource())
+        {
+            const wchar_t* itemPath = relativePath.c_str();
+            ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+            ImGui::EndDragDropSource();
+        }
 
         ImGui::PopStyleColor();
 
@@ -86,6 +96,8 @@ void CContentBrowser::render()
         ImGui::TextWrapped(filenameString.c_str());
 
         ImGui::NextColumn();
+
+        ImGui::PopID();
     }
 
     // TODO: status bar

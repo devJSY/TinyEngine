@@ -50,7 +50,7 @@ void CLevelEditor::begin()
     //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
     //  FIXME-DPI: Experimental.
 
-    float fontSize = 18.0f; 
+    float fontSize = 18.0f;
     wstring wBold = CPathMgr::GetContentPath();
     wstring wRegular = CPathMgr::GetContentPath();
 
@@ -126,6 +126,17 @@ void CLevelEditor::render()
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
     ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
+
+    // Drag & Drop
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+        {
+            wstring path = (const wchar_t*)payload->Data;
+            std::wcout << path << std::endl;
+        }
+        ImGui::EndDragDropTarget();
+    }
 
     // ImGuizmo
     CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
