@@ -132,9 +132,11 @@ void CLevelEditor::render()
     {
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
         {
-            wstring path = (const wchar_t*)payload->Data;
-            std::wcout << path << std::endl;
+            string name = (char*)payload->Data;
+            name.resize(payload->DataSize);            
+            std::cout << name << std::endl;
         }
+
         ImGui::EndDragDropTarget();
     }
 
