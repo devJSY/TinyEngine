@@ -283,45 +283,39 @@ void COutliner::DrawDetails(CGameObject* obj)
             ImGui::TreePop();
         }
 
-        //// Material
-        //CMaterial* pMaterial = pMeshRender->GetMaterial();
-        //if (nullptr != pMaterial)
-        //{
-        //    if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
-        //    {
-        //        tMaterialData materialData = pMaterial->GetMaterialData();
+        // Material
+        CMaterial* pMaterial = pMeshRender->GetMaterial();
+        if (nullptr != pMaterial)
+        {
+            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+            {
+                const tMtrlConst& MtrlConst = pMaterial->GetMtrlConst();
 
-        //        Vec3 ambient = materialData.ambient;
-        //        if (ImGui::ColorEdit3("Ambient", &ambient.x))
-        //        {
-        //            materialData.ambient = ambient;
-        //            pMaterial->SetMaterialData(materialData);
-        //        }
+                Vec4 ambient = MtrlConst.mtrl.vAmb;
+                Vec4 diffuse = MtrlConst.mtrl.vDiff;
+                Vec4 specular = MtrlConst.mtrl.vSpec;
+                Vec4 environment = MtrlConst.mtrl.vEmv;
 
-        //        Vec3 diffuse = materialData.diffuse;
-        //        if (ImGui::SliderFloat3("Diffuse", &diffuse.x, 0.f, 1.f))
-        //        {
-        //            materialData.diffuse = diffuse;
-        //            pMaterial->SetMaterialData(materialData);
-        //        }
+                bool bDirty = false;
 
-        //        Vec3 specular = materialData.specular;
-        //        if (ImGui::SliderFloat3("Specular", &specular.x, 0.f, 1.f))
-        //        {
-        //            materialData.specular = specular;
-        //            pMaterial->SetMaterialData(materialData);
-        //        }
+                if (ImGui::ColorEdit3("Ambient", &ambient.x))
+                    bDirty = true;
 
-        //        float shininess = materialData.shininess;
-        //        if (ImGui::SliderFloat("Shininess", &shininess, 1.f, 256.f))
-        //        {
-        //            materialData.shininess = shininess;
-        //            pMaterial->SetMaterialData(materialData);
-        //        }
+                if (ImGui::SliderFloat3("Diffuse", &diffuse.x, 0.f, 1.f))
+                    bDirty = true;
 
-        //        ImGui::TreePop();
-        //    }
-        //}
+                if (ImGui::SliderFloat3("Specular", &specular.x, 0.f, 1.f))
+                    bDirty = true;
+
+                if (ImGui::SliderFloat3("environment", &environment.x, 0.f, 1.f))
+                    bDirty = true;
+
+                if (bDirty)
+                    pMaterial->SetMaterialCoefficient(ambient, diffuse, specular, environment);
+
+                ImGui::TreePop();
+            }
+        }
 
         if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_DefaultOpen, "Rim Light"))
         {
