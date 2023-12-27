@@ -33,11 +33,9 @@ void COutliner::DrawNode(CGameObject* obj)
     ImGuiTreeNodeFlags flags =
         ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
-    // wstring To string
-    std::string str(obj->GetName().length(), 0);
-    std::transform(obj->GetName().begin(), obj->GetName().end(), str.begin(), [](wchar_t c) { return (char)c; });
+    std::string name = WstringTostring(obj->GetName());
 
-    bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, str.c_str());
+    bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
 
     if (ImGui::IsItemClicked())
     {
@@ -116,13 +114,11 @@ void COutliner::DrawDetails(CGameObject* obj)
 {
     // Tag
     {
-        //  wstring To string
-        std::string str(obj->GetName().length(), 0);
-        std::transform(obj->GetName().begin(), obj->GetName().end(), str.begin(), [](wchar_t c) { return (char)c; });
+        std::string name = WstringTostring(obj->GetName());
 
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
-        strcpy_s(buffer, sizeof(buffer), str.c_str());
+        strcpy_s(buffer, sizeof(buffer), name.c_str());
         ImGui::InputText("Tag", buffer, sizeof(buffer));
     }
 

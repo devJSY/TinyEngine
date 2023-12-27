@@ -24,3 +24,10 @@ void GamePlayStatic::WindowResize(int width, int height)
 
     CTaskMgr::GetInst()->AddTask(task);
 }
+
+string WstringTostring(const wstring& wstr)
+{
+    std::string str(wstr.length(), 0);
+    std::transform(wstr.begin(), wstr.end(), str.begin(), [](wchar_t c) { return (char)c; });
+    return str;
+}

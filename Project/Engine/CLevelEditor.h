@@ -1,6 +1,7 @@
 #pragma once
 #include "CEditor.h"
 #include "COutliner.h"
+#include "CContentBrowser.h"
 
 class CLevelEditor : public CEditor
 {
@@ -17,6 +18,8 @@ private:
     COutliner m_Outliner;
 
     ImGuizmo::OPERATION m_GizmoType;
+
+    CContentBrowser m_ContentBrowser;
 
 public:
     virtual void begin() override;

@@ -78,11 +78,10 @@ void CCameraMoveScript::MoveOrthographic()
 
     // Zoom
     short wheel = CKeyMgr::GetInst()->GetMouseWheel();
-    float Zoffset = 50.f;
     if (wheel < 0)
-        Camera()->SetScale(Camera()->GetScale() + DT * Zoffset);
+        Camera()->SetScale(Camera()->GetScale() * 1.1f);
     else if (wheel > 0)
-        Camera()->SetScale(Camera()->GetScale() - DT * Zoffset);
+        Camera()->SetScale(Camera()->GetScale() * 0.9f);
 }
 
 void CCameraMoveScript::MovePerspective()
@@ -135,7 +134,7 @@ void CCameraMoveScript::MovePerspective()
     }
 
     // Zoom
-    float Zoffset = 2.f;
+    float Zoffset = 1.f;
     if (KEY_PRESSED(KEY::Z))
         Camera()->SetFOV(Camera()->GetFOV() + DT * Zoffset);
 

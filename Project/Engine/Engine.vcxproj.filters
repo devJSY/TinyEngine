@@ -172,6 +172,9 @@
     <ClInclude Include="CTestLevel.h">
       <Filter>05. Level</Filter>
     </ClInclude>
+    <ClInclude Include="CContentBrowser.h">
+      <Filter>20. Editor\LevelEditor\Content Browser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -324,6 +327,9 @@
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>
     </ClCompile>
+    <ClCompile Include="CContentBrowser.cpp">
+      <Filter>20. Editor\LevelEditor\Content Browser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -463,6 +469,9 @@
     </Filter>
     <Filter Include="ImGui\ImGuizmo">
       <UniqueIdentifier>{a6dc6aa6-5bf6-46a5-8157-67afa13db34e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\LevelEditor\Content Browser">
+      <UniqueIdentifier>{834d4261-0b1f-4dc9-b33d-93b4fd5dc98c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

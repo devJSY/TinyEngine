@@ -61,11 +61,9 @@ void CModelLoader::Load(std::string filePath, std::string fileName, bool revertN
         m_isGLTF = true;
         m_revertNormals = revertNormals;
     }
-
-    // wstring To string
-    wstring strFilePath = CPathMgr::GetContentPath();
-    std::string ContentPath(strFilePath.length(), 0);
-    std::transform(strFilePath.begin(), strFilePath.end(), ContentPath.begin(), [](wchar_t c) { return (char)c; });
+    
+    wstring temp = CPathMgr::GetContentPath();
+    std::string ContentPath = WstringTostring(temp);
 
     this->filePath = filePath;
     this->basePath = ContentPath + filePath;

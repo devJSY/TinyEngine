@@ -10,6 +10,7 @@
 #include "CKeyMgr.h"
 
 #include "CEditorMgr.h"
+#include "CPathMgr.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -49,6 +50,16 @@ void CLevelEditor::begin()
     //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
     //  FIXME-DPI: Experimental.
 
+    float fontSize = 18.0f; 
+    wstring wBold = CPathMgr::GetContentPath();
+    wstring wRegular = CPathMgr::GetContentPath();
+
+    wBold += L"fonts\\opensans\\OpenSans-Bold.ttf";
+    wRegular += L"fonts\\opensans\\OpenSans-Regular.ttf";
+
+    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), fontSize);
+    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), fontSize);
+
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
@@ -68,9 +79,11 @@ void CLevelEditor::begin()
     ImGui_ImplWin32_Init(CEngine::GetInst()->GetMainWind());
     ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
 
+    // Vieport ÅØ½ºÃç »ý¼º
     CreateViewport();
 
     m_Outliner.begin();
+    m_ContentBrowser.begin();
 }
 
 void CLevelEditor::tick()
@@ -220,6 +233,9 @@ void CLevelEditor::render()
 
     // Outliner Render
     m_Outliner.render();
+
+    // ContentBrowser Render
+    m_ContentBrowser.render();
 
     // Rendering
     ImGui::Render();

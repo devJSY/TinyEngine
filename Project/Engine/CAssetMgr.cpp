@@ -45,7 +45,7 @@ void CAssetMgr::init()
     LoadMesh();
     // LoadModel();
     LoadShader();
-    // LoadTexture();
+    LoadTexture();
     LoadMaterial();
 }
 
@@ -1006,11 +1006,14 @@ void CAssetMgr::LoadShader()
 
 void CAssetMgr::LoadTexture()
 {
-    CTexture* pTex = Load<CTexture>(L"PlayerTexture", L"texture//MAP//BigMap.bmp");
-    if (nullptr != pTex)
-    {
-        pTex->UpdateData(0);
-    }
+    //CTexture* pTex = Load<CTexture>(L"Player", L"texture//MAP//BigMap.bmp");
+    //if (nullptr != pTex)
+    //{
+    //    pTex->UpdateData(0);
+    //}
+
+     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
+     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
 }
 
 void CAssetMgr::LoadMaterial()

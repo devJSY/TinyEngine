@@ -3,7 +3,7 @@
 
 VS_OUT main(VS_IN input)
 {
-    VS_OUT output;
+    VS_OUT output = (VS_OUT)0;
     
     float4 normal = float4(input.vNormal, 0.0);
     output.normalWorld = mul(normal, g_matWorldInvTranspose).xyz;

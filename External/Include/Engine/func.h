@@ -37,6 +37,8 @@ void Delete_Vec(vector<T>& _vec)
     _vec.clear();
 }
 
+string WstringTostring(const wstring& wstr);
+
 //template <typename T>
 //bool IsValid(T*& _Entity)
 //{
