@@ -3,7 +3,7 @@
 class CCameraMoveScript : public CScript
 {
 private:
-
+    bool m_bFocus;
 
 public:
     virtual void tick();
@@ -11,6 +11,10 @@ public:
 private:
     void MoveOrthographic();
     void MovePerspective();
+
+private:
+    void MoveFocusOrthographic();
+    void MoveFocusPerspective();
 
 public:
     CCameraMoveScript();

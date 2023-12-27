@@ -3,8 +3,10 @@
 #include "CEditorMgr.h"
 #include "CLevelEditor.h"
 #include "CDevice.h"
+#include "CLevelMgr.h"
 
 CCameraMoveScript::CCameraMoveScript()
+    : m_bFocus(false)
 {
 }
 
@@ -23,6 +25,18 @@ void CCameraMoveScript::tick()
             Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 
         Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+    }
+
+    // Selected Obejct Focus
+    if (KEY_TAP(KEY::F))
+        m_bFocus = true;
+
+    if (m_bFocus)
+    {
+        if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+            MoveFocusOrthographic();
+        else
+            MoveFocusPerspective();
     }
 
     // Level 에디터일 경우 Viewport창에서만 카메라 이동 적용
@@ -140,4 +154,60 @@ void CCameraMoveScript::MovePerspective()
 
     if (KEY_PRESSED(KEY::C))
         Camera()->SetFOV(Camera()->GetFOV() - DT * Zoffset);
+}
+
+void CCameraMoveScript::MoveFocusOrthographic()
+{
+    if (nullptr == CLevelMgr::GetInst()->GetSelectedObj())
+    {
+        m_bFocus = false;
+        return;
+    }
+
+    Vec3 CamPos = Transform()->GetWorldPos();
+    Vec3 ObjPos = CLevelMgr::GetInst()->GetSelectedObj()->Transform()->GetWorldPos();
+
+    Vec2 dir = Vec2(ObjPos.x, ObjPos.y) - Vec2(CamPos.x, CamPos.y);
+
+    // 카메라 오브젝트가 선택되었거나 지정된 위치근처에 도달했다면 Stop
+    if (GetOwner() == CLevelMgr::GetInst()->GetSelectedObj() || (dir.Length() < 10.f))
+    {
+        m_bFocus = false;
+    }
+
+    if (m_bFocus)
+    {
+        Vec3 dir3 = Vec3(dir.x, dir.y, 0.f);
+        float CamMoveSpeed = 5000.f;
+        float scale = Camera()->GetScale();
+        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT * dir3.Normalize() * CamMoveSpeed * scale);
+    }
+}
+
+void CCameraMoveScript::MoveFocusPerspective()
+{
+    if (nullptr == CLevelMgr::GetInst()->GetSelectedObj())
+    {
+        m_bFocus = false;
+        return;
+    }
+
+    float focusDist = 200.f;
+    Vec3 CamDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 CamDistPos = Transform()->GetWorldPos() + CamDir * focusDist;
+
+    Vec3 ObjPos = CLevelMgr::GetInst()->GetSelectedObj()->Transform()->GetWorldPos();
+    Vec3 dir = ObjPos - CamDistPos;
+
+    // 카메라 오브젝트가 선택되었거나 지정된 위치근처에 도달했다면 Stop
+    if (GetOwner() == CLevelMgr::GetInst()->GetSelectedObj() || (dir.Length() < 10.f))
+    {
+        m_bFocus = false;
+    }
+
+    if (m_bFocus)
+    {
+        float CamMoveSpeed = 5000.f;
+        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT * dir.Normalize() * CamMoveSpeed);
+    }
 }

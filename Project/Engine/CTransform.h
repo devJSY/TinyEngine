@@ -35,6 +35,9 @@ public:
     Vec3 GetWorldDir(DIR_TYPE _type) { return m_arrWorldDir[(UINT)_type]; }
 
 public:
+    Vec3 GetWorldPos() const { return Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43); }
+
+public:
     CTransform();
     virtual ~CTransform();
 };
