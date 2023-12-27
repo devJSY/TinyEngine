@@ -43,7 +43,7 @@ CAssetMgr::~CAssetMgr()
 void CAssetMgr::init()
 {
     LoadMesh();
-    // LoadModel();
+    LoadModel();
     LoadShader();
     LoadTexture();
     LoadMaterial();

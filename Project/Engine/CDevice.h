@@ -27,7 +27,7 @@ private:
     ComPtr<ID3D11DepthStencilState> m_arrDS[(UINT)DS_TYPE::END]; // ±Ì¿ÃΩ∫≈ƒΩ«
     ComPtr<ID3D11BlendState> m_arrBS[(UINT)BS_TYPE::END];        // ∫Ì∑£µÂ
 
-    ComPtr<ID3D11SamplerState> m_Sampler[(UINT)SS_TYPE::END]; // Sampler
+    ComPtr<ID3D11SamplerState> m_arrSS[(UINT)SS_TYPE::END]; // Sampler
     
     CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];
 
@@ -58,5 +58,5 @@ private:
     int CreateBlendState();
     int CreateConstBuffer();
     int CreateViewport();
-    int CreateSampler();
+    int CreateSamplerState();
 };

@@ -2,6 +2,7 @@
 #include "CLayer.h"
 
 #include "CGameObject.h"
+#include "CGrabageCollector.h"
 
 CLayer::CLayer()
     : m_iLayerIdx(-1)
@@ -31,9 +32,22 @@ void CLayer::tick()
 
 void CLayer::finaltick()
 {
-    for (size_t i = 0; i < m_vecParent.size(); i++)
+    vector<CGameObject*>::iterator iter = m_vecParent.begin();
+
+    // Dead 상태인 오브젝트는 Grabage Collector로 보낸다.
+    for (; iter != m_vecParent.end();)
     {
-        m_vecParent[i]->finaltick();
+        (*iter)->finaltick();
+
+        if ((*iter)->IsDead())
+        {
+            CGrabageCollector::GetInst()->Add(*iter);
+            iter = m_vecParent.erase(iter);
+        }
+        else
+        {
+            ++iter;
+        }
     }
 }
 
@@ -49,7 +63,7 @@ void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 {
     // _bMove : true  - 레이어에 입력되는 Object가 자식이 있는 경우, 자식까지 모두 해당 레이어로 넘어온다.
     // _bMove : false - 레이어에 입력되는 Object의 자식은 해당 레이어로 같이 넘어오지 않는다. 단 자식오브젝트가 레이어
-    // 소속이 없는 경우(-1)에만 같이 변경한다.      
+    // 소속이 없는 경우(-1)에만 같이 변경한다.
 
     // 최상위 부모 오브젝트였다.
     if (nullptr == _Object->GetParent())

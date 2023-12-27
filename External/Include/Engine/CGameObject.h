@@ -26,6 +26,8 @@ private:
 
     int m_iLayerIdx; // 오브젝트가 소속되어있는 Layer 의 Index
 
+    bool m_bDead;
+
 public:
     void begin();
     void tick();
@@ -34,17 +36,18 @@ public:
 
 public:
     void AddComponent(CComponent* _Component);
-    CComponent* GetComponent(COMPONENT_TYPE _Type) { return m_arrCom[(UINT)_Type]; }
+    CComponent* GetComponent(COMPONENT_TYPE _Type) const { return m_arrCom[(UINT)_Type]; }
 
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(MeshRender, MESHRENDER);
     GET_COMPONENT(Camera, CAMERA);
 
-    CGameObject* GetParent() { return m_Parent; }
+    CGameObject* GetParent() const { return m_Parent; }
     void DisconnectWithParent();
     void DisconnectWithLayer();
 
     void AddChild(CGameObject* _Child);
+    bool IsDead() const { return m_bDead; }
 
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
@@ -56,4 +59,5 @@ public:
     virtual ~CGameObject();
 
     friend class CLayer;
+    friend class CTaskMgr;
 };

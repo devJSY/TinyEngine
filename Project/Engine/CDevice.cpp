@@ -9,6 +9,7 @@ CDevice::CDevice()
     , m_arrRS{}
     , m_arrDS{}
     , m_arrBS{}
+    , m_arrSS{}
 {
 }
 
@@ -84,7 +85,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
-    if (FAILED(CreateSampler()))
+    if (FAILED(CreateSamplerState()))
     {
         MessageBox(nullptr, L"샘플러 생성 실패", L"Device 초기화 실패", MB_OK);
         return E_FAIL;
@@ -131,7 +132,7 @@ int CDevice::CreateViewport()
     return S_OK;
 }
 
-int CDevice::CreateSampler()
+int CDevice::CreateSamplerState()
 {
     D3D11_SAMPLER_DESC tSamDesc = {};
     ZeroMemory(&tSamDesc, sizeof(tSamDesc));
@@ -140,40 +141,43 @@ int CDevice::CreateSampler()
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
 
     tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
 
     tSamDesc.Filter = D3D11_FILTER_ANISOTROPIC;
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    DEVICE->CreateSamplerState(&tSamDesc, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
 
-    CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->HSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->DSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->GSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->PSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_Sampler[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
 
-    CONTEXT->VSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
-    CONTEXT->HSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
-    CONTEXT->DSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
-    CONTEXT->GSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
-    CONTEXT->PSSetSamplers((UINT)SS_TYPE::POINT, 1, m_Sampler[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
 
-    CONTEXT->VSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
-    CONTEXT->HSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
-    CONTEXT->DSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
-    CONTEXT->GSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
-    CONTEXT->PSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_Sampler[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
 
     return S_OK;
 }

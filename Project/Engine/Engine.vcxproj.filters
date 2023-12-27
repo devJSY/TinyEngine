@@ -175,6 +175,9 @@
     <ClInclude Include="CContentBrowser.h">
       <Filter>20. Editor\LevelEditor\Content Browser</Filter>
     </ClInclude>
+    <ClInclude Include="CGrabageCollector.h">
+      <Filter>04. Manager\GrabageCollector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -330,6 +333,9 @@
     <ClCompile Include="CContentBrowser.cpp">
       <Filter>20. Editor\LevelEditor\Content Browser</Filter>
     </ClCompile>
+    <ClCompile Include="CGrabageCollector.cpp">
+      <Filter>04. Manager\GrabageCollector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -472,6 +478,9 @@
     </Filter>
     <Filter Include="20. Editor\LevelEditor\Content Browser">
       <UniqueIdentifier>{834d4261-0b1f-4dc9-b33d-93b4fd5dc98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\GrabageCollector">
+      <UniqueIdentifier>{16f1149d-3d02-4bba-803b-51a38dc2c467}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

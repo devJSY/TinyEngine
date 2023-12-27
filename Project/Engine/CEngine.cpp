@@ -9,6 +9,7 @@
 #include "CLevelMgr.h"
 #include "CEditorMgr.h"
 #include "CTaskMgr.h"
+#include "CGrabageCollector.h"
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
@@ -76,6 +77,9 @@ void CEngine::progress()
     // Present
     CDevice::GetInst()->Present();
 
-    // task Execute
+    // Grabage Collector
+    CGrabageCollector::GetInst()->tick();
+
+    // Task Execute
     CTaskMgr::GetInst()->tick();
 }
