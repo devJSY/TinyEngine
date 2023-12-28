@@ -9,7 +9,7 @@ struct VS_IN
     float2 vUV : TEXCOORD;
 };
 
-struct VS_OUT
+struct PS_IN
 {
     float4 vPosProj : SV_Position;
     float3 vPosWorld : POSITION;

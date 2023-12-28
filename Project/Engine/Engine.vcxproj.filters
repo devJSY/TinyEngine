@@ -522,5 +522,11 @@
     <FxCompile Include="OutLinePS.hlsl">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="SkyBoxVS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyboxPS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

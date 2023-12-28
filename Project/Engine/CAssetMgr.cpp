@@ -777,7 +777,7 @@ void CAssetMgr::LoadMesh()
 
     // Sphere
     {
-        auto mesh = MakeSphere(1, 25, 25);
+        auto mesh = MakeSphere(1, 10, 10);
 
         CMesh* pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
@@ -905,12 +905,28 @@ void CAssetMgr::LoadShader()
 
         AddAsset(L"OutLine", pShader);
     }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT); // SkyBox´Â µÞ¸é¸¸ ·»´õ¸µ
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"Skybox", pShader);
+    }
 }
 
 void CAssetMgr::LoadTexture()
 {
     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
+
+    Load<CTexture>(L"cubemap", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
 }
 
 void CAssetMgr::LoadMaterial()
@@ -927,4 +943,11 @@ void CAssetMgr::LoadMaterial()
     pBlinnPhongMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
     pBlinnPhongMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
     AddAsset<CMaterial>(L"BlinnPhong", pBlinnPhongMtrl);
+
+    // SkyBox
+    CMaterial* pSkyBox = nullptr;
+    pSkyBox = new CMaterial;
+    pSkyBox->SetShader(FindAsset<CGraphicsShader>(L"Skybox"));
+    pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
+    AddAsset<CMaterial>(L"Skybox", pSkyBox);
 }

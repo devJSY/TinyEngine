@@ -98,9 +98,25 @@ void CTestLevel::begin()
 
     AddObject(pLights, 1);
 
-    // AddMeshes();
+    AddMeshes();
 
-    AddModels();
+    // AddModels();
+
+    // Box
+    CGameObject* pSkyBox = new CGameObject;
+    pSkyBox->SetName(L"SkyBox");
+
+    pSkyBox->AddComponent(new CTransform);
+    pSkyBox->AddComponent(new CMeshRender);
+
+    pSkyBox->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
+    pSkyBox->Transform()->SetAbsolute(true);
+
+    pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Skybox"));
+
+    AddObject(pSkyBox, 31);
 
     CLevel::begin();
 }

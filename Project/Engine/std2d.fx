@@ -4,18 +4,18 @@
 #include "global.hlsli"
 #include "struct.hlsli"
 
-VS_OUT VS_Std2D(VS_IN _in)
+PS_IN VS_Std2D(VS_IN _in)
 {
-    VS_OUT output = (VS_OUT) 0.f;
+    PS_IN output = (PS_IN)0.0;
     
-    output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vPosProj = mul(float4(_in.vPos, 1.0), g_matWVP);
     output.vColor = _in.vColor;
     output.vUV = _in.vUV;
     
     return output;
 }
 
-float4 PS_Std2D(VS_OUT _in) : SV_Target
+float4 PS_Std2D(PS_IN _in) : SV_Target
 {
     float4 vColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
     

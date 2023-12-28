@@ -2,7 +2,7 @@
 #include "global.hlsli"
 #include "Light.hlsli"
 
-float4 main(VS_OUT input) : SV_TARGET
+float4 main(PS_IN input) : SV_TARGET
 {
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
 

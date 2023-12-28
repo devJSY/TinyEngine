@@ -1,21 +1,21 @@
 #include "global.hlsli"
     
-struct GS_IN
+struct GS_Input
 {
     float4 posModel : SV_POSITION;
     float3 normalWorld : NORMAL;
 };
 
-struct PS_IN
+struct PS_Input
 {
     float4 pos : SV_POSITION;
     float3 color : COLOR;
 };
 
 [maxvertexcount(2)]
-void main(point GS_IN input[1], inout LineStream<PS_IN> outputStream)
+void main(point GS_Input input[1], inout LineStream<PS_Input> outputStream)
 {
-    PS_IN output;
+    PS_Input output;
     
     float4 posWorld = mul(input[0].posModel, g_matWorld);
     float4 normalModel = float4(input[0].normalWorld, 0.0);
