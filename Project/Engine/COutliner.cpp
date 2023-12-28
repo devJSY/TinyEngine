@@ -284,7 +284,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         }
 
         // Material
-        CMaterial* pMaterial = pMeshRender->GetMaterial();
+        Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
         if (nullptr != pMaterial)
         {
             if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))

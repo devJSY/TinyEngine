@@ -73,7 +73,7 @@ void CContentBrowser::render()
 
         ImGui::PushID(filenameString.c_str());
 
-        CTexture* icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
+        Ptr<CTexture> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         ImGui::ImageButton((void*)icon->GetSRV().Get(), {thumbnailSize, thumbnailSize});

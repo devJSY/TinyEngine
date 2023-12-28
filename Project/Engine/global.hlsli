@@ -57,16 +57,10 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_btex_3;
     int g_btex_4;
     int g_btex_5;
-    
-    int g_bcube_0;
-    int g_bcube_1;
-
+    int g_btexcube_0;
+    int g_btexcube_1;
     int g_btexarr_0;
     int g_btexarr_1;
-    
-    // 3D Animation Á¤º¸
-    int g_iAnim;
-    int g_iBoneCount;
 }
 
 #define MAX_LIGHTS        3
@@ -100,11 +94,11 @@ Texture2D g_tex_3 : register(t3);
 Texture2D g_tex_4 : register(t4);
 Texture2D g_tex_5 : register(t5);
 
-TextureCube g_cube_0 : register(t6);
-TextureCube g_cube_1 : register(t7);
+TextureCube g_texCube_0 : register(t6);
+TextureCube g_texCube_1 : register(t7);
 
-Texture2DArray g_texarr_0 : register(t8);
-Texture2DArray g_texarr_1 : register(t9);
+Texture2DArray g_texArr_0 : register(t8);
+Texture2DArray g_texArr_1 : register(t9);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);

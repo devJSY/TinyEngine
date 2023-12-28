@@ -15,19 +15,6 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    {
-        for (auto pair : m_mapAsset[i])
-        {
-            if (nullptr != pair.second)
-            {
-                delete pair.second;
-                pair.second = nullptr;
-            }
-        }
-
-        m_mapAsset[i].clear();
-    }
 }
 
 void CAssetMgr::init()
@@ -633,7 +620,7 @@ vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string file
     return meshes;
 }
 
-CMaterial* CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData)
+Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData)
 {
     CMaterial* pMtrl = new CMaterial;
     pMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
@@ -708,7 +695,7 @@ CMaterial* CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData
 
         // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
         // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
-        CTexture* pTex = FindAsset<CTexture>(name);
+        Ptr<CTexture> pTex = FindAsset<CTexture>(name);
         if (nullptr == pTex)
         {
             pMtrl->SetTexParam(TEX_4, Load<CTexture>(name, path + name));
@@ -726,7 +713,7 @@ CMaterial* CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData
         pMtrl->SetTexParam(TEX_5, Load<CTexture>(name, path + name));
     }
 
-    return pMtrl;
+    return Ptr<CMaterial>(pMtrl);
 }
 
 void CAssetMgr::LoadMesh()
@@ -832,8 +819,8 @@ CGameObject* CAssetMgr::LoadModel(const std::string& _relativepath, const std::s
                       (UINT)meshData.indices.size());
         AddAsset<CMesh>(_name + L" Parts " + std::to_wstring(idx), pMesh);
 
-        CMaterial* material = LoadModelMaterial(pMesh, meshData);
-        AddAsset<CMaterial>(_name + L" Parts " + std::to_wstring(idx), material);
+        Ptr<CMaterial> material = LoadModelMaterial(pMesh, meshData);
+        AddAsset<CMaterial>(_name + L" Parts " + std::to_wstring(idx), material.Get());
 
         Parts->AddComponent(new CTransform);
         Parts->AddComponent(new CMeshRender);

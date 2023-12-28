@@ -20,13 +20,14 @@ private:
 public:
     void UpdateData(int _RegisterNum);
 
+    static void Clear(int _iRegisterNum);
+
 public:
     ComPtr<ID3D11ShaderResourceView> GetSRV() const { return m_SRV; }
 
 public:
-    static void Clear(int _iRegisterNum);
-
-public:
     CTexture();
     ~CTexture();
+
+    friend class CAssetMgr;
 };

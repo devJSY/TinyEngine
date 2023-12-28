@@ -218,6 +218,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="ImGui\ImZoomSlider.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Ptr.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="struct.h" />

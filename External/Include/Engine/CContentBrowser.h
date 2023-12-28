@@ -1,15 +1,14 @@
 #pragma once
 #include "CEntity.h"
-
-class CTexture;
+#include "CTexture.h"
 
 class CContentBrowser : public CEntity
 {
 private:
     std::filesystem::path m_CurrentDirectory;
 
-    CTexture* m_DirectoryIcon;
-    CTexture* m_FileIcon;
+    Ptr<CTexture> m_DirectoryIcon;
+    Ptr<CTexture> m_FileIcon;
 
 public:
     void begin();

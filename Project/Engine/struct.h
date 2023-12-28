@@ -47,9 +47,9 @@ struct tMtrlConst
     Vec4 v4Arr[4];
     Matrix matArr[4];
 
-    int arrTex[(UINT)TEX_PARAM::END];
+	int bTex[TEX_PARAM::END];
 
-    int arrAnimData[2]; // 3D Animation Á¤º¸
+    int iPadding[2];
 };
 
 struct tLightData
