@@ -329,7 +329,7 @@ void CTestLevel::AddModels()
 
     // torii gate
     CGameObject* ptoriigate =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\torii_gate\\", "scene.gltf", L"torii gate");
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\torii_gate\\", "scene.gltf", L"torii gate", true);
     if (nullptr != ptoriigate)
     {
         ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
@@ -340,7 +340,7 @@ void CTestLevel::AddModels()
 
     // dragon warrior
     CGameObject* pDragonWarrior =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\dragon_warrior\\", "scene.gltf", L"Dragon Warrior");
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\dragon_warrior\\", "scene.gltf", L"Dragon Warrior", true);
     if (nullptr != pDragonWarrior)
     {
         pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));

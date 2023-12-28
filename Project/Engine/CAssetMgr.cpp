@@ -812,9 +812,9 @@ void CAssetMgr::LoadMesh()
 }
 
 CGameObject* CAssetMgr::LoadModel(const std::string& _relativepath, const std::string& _filename,
-                                  const std::wstring& _name)
+                                  const std::wstring& _name, bool revertNormals)
 {
-    auto meshes = ReadFromFile(_relativepath, _filename);
+    auto meshes = ReadFromFile(_relativepath, _filename, revertNormals);
 
     CGameObject* model = new CGameObject;
     model->SetName(_name);

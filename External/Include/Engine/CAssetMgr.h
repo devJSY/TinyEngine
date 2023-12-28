@@ -47,10 +47,11 @@ private:
 
     // ¸ðµ¨ ·Îµù
 public:
-    CGameObject* LoadModel(const std::string& _relativepath, const std::string& _filename, const std::wstring& _name);
+    CGameObject* LoadModel(const std::string& _relativepath, const std::string& _filename, const std::wstring& _name,
+                           bool revertNormals = false);
 
 private:
-    vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals = false);
+    vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals);
     CMaterial* LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData);
 
 public:
