@@ -14,6 +14,8 @@ private:
     Matrix m_matWorld;
     bool m_bAbsolute;
 
+    Matrix m_matParentMat;
+
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
@@ -27,6 +29,7 @@ public:
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
     Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
 
+    bool IsAbsolute() const { return m_bAbsolute; }
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }
 
     const Matrix& GetWorldMat() const { return m_matWorld; }
@@ -36,6 +39,7 @@ public:
 
 public:
     Vec3 GetWorldPos() const { return Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43); }
+    const Matrix& GetParentMat() const { return m_matParentMat; }
 
 public:
     CTransform();

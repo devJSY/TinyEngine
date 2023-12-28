@@ -137,7 +137,7 @@ void CLevelEditor::render()
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
         {
             string name = (char*)payload->Data;
-            name.resize(payload->DataSize);            
+            name.resize(payload->DataSize);
             std::cout << name << std::endl;
         }
 
@@ -181,7 +181,7 @@ void CLevelEditor::render()
 
                 // transform
                 CTransform* pTr = SelectedObj->Transform();
-                Matrix transform = pTr->GetWorldMat();
+                Matrix WorldMat = pTr->GetWorldMat();
 
                 // Snapping
                 bool snap = KEY_PRESSED(KEY::LCTRL);
@@ -196,21 +196,25 @@ void CLevelEditor::render()
 
                 float snapValues[3] = {snapValue, snapValue, snapValue};
 
-                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *transform.m, nullptr,
+                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr,
                                      snap ? snapValues : nullptr);
 
                 if (ImGuizmo::IsUsing())
                 {
-                    // ImGuizmo변화량이 적용된 Matrix의 SRT 분해
+                    Matrix originWorldMat = pTr->GetWorldMat();
+
+                    // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
+                    WorldMat *= pTr->GetParentMat().Invert();
+                    originWorldMat *= pTr->GetParentMat().Invert();
+
+                    // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
                     float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},
                           Fscale[3] = {0.0f, 0.0f, 0.0f};
-                    ImGuizmo::DecomposeMatrixToComponents(*transform.m, Ftranslation, Frotation, Fscale);
-
-                    // 원본 WorldMatrix의 SRT 분해
-                    Matrix originMat = pTr->GetWorldMat();
+                    ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
+                    
                     float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
                           originFscale[3] = {0.0f, 0.0f, 0.0f};
-                    ImGuizmo::DecomposeMatrixToComponents(*originMat.m, originFtranslation, originFrotation,
+                    ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation,
                                                           originFscale);
 
                     // ImGuizmo로 조정한 변화량 추출
