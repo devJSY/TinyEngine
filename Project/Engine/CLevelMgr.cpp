@@ -18,14 +18,17 @@ CLevelMgr::CLevelMgr()
 CLevelMgr::~CLevelMgr()
 {
     if (nullptr != m_CurLevel)
+    {
         delete m_CurLevel;
+        m_CurLevel = nullptr;
+    }
 }
 
 void CLevelMgr::init()
 {
-     m_CurLevel = new CTestLevel;
-     m_CurLevel->begin();
-     m_CurLevel->SetName(L"Test Level 1");
+    m_CurLevel = new CTestLevel;
+    m_CurLevel->begin();
+    m_CurLevel->SetName(L"Test Level 1");
 }
 
 void CLevelMgr::tick()

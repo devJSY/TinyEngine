@@ -108,10 +108,10 @@ void CLevelEditor::finaltick()
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
                         ImGuiColorEditFlags_PickerHueWheel);
-    ImGui::Checkbox("Another Viewport", &m_show_Viewport2);
     ImGui::End();
 
     ImGui::Begin("View Mode");
+    ImGui::Checkbox("Another Viewport", &m_show_Viewport2);
     ImGui::Checkbox("WireFrame", &g_Global.DrawAsWireFrame);
     ImGui::End();
 }

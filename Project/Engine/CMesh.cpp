@@ -20,10 +20,16 @@ CMesh::CMesh()
 CMesh::~CMesh()
 {
     if (nullptr != m_VtxSysMem)
+    {
         delete m_VtxSysMem;
+        m_VtxSysMem = nullptr;
+    }
 
     if (nullptr != m_IdxSysMem)
+    {
         delete m_IdxSysMem;
+        m_IdxSysMem = nullptr;
+    }
 }
 
 int CMesh::Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount)

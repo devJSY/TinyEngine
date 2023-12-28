@@ -32,7 +32,6 @@ public:
 public:
     const tMtrlConst& GetMtrlConst() const { return m_Const; }
 
-
 public:
     CMaterial();
     ~CMaterial();

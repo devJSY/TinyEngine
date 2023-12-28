@@ -98,9 +98,9 @@ void CTestLevel::begin()
 
     AddObject(pLights, 1);
 
-    AddMeshes();
+    // AddMeshes();
 
-    //AddModels();
+    AddModels();
 
     CLevel::begin();
 }
@@ -294,124 +294,58 @@ void CTestLevel::AddMeshes()
 
 void CTestLevel::AddModels()
 {
-    // Models
-    CGameObject* pModels = new CGameObject;
-    pModels->SetName(L"Models");
-
-    pModels->AddComponent(new CTransform);
-    pModels->AddComponent(new CMeshRender);
-    pModels->AddComponent(new CPlayerScript);
-
-    pModels->Transform()->SetRelativePos(Vec3(0.f, 500.f, 0.f));
-    pModels->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
-
-    pModels->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pModels->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
     // Zelda Model
-    CGameObject* pZelda = new CGameObject;
-    pZelda->SetName(L"Zelda");
-
-    pZelda->AddComponent(new CTransform);
-    pZelda->AddComponent(new CMeshRender);
-    pZelda->AddComponent(new CPlayerScript);
-
-    pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
-    pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pZelda->Transform()->SetAbsolute(true);
-
-    pZelda->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
-    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"Zelda"))
+    CGameObject* pZelda =
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx", L"Zelda");
+    if (nullptr != pZelda)
     {
-        pZelda->MeshRender()->SetMesh(mesh);
+        pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
+        pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+        AddObject(pZelda, 10);
     }
 
-    pModels->AddChild(pZelda);
-
-    // damaged helmet
-    CGameObject* pHelmet = new CGameObject;
-    pHelmet->SetName(L"Damaged Helmet");
-
-    pHelmet->AddComponent(new CTransform);
-    pHelmet->AddComponent(new CMeshRender);
-    pHelmet->AddComponent(new CPlayerScript);
-
-    pHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
-    pHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pHelmet->Transform()->SetAbsolute(true);
-
-    pHelmet->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
-    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"damaged_helmet"))
+    // Damaged Helmet
+    CGameObject* pDamagedHelmet =
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf", L"Damaged Helmet");
+    if (nullptr != pDamagedHelmet)
     {
-        pHelmet->MeshRender()->SetMesh(mesh);
-    }
+        pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
+        pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    pModels->AddChild(pHelmet);
+        AddObject(pDamagedHelmet, 10);
+    }
 
     // blue whale
-    CGameObject* pWhale = new CGameObject;
-    pWhale->SetName(L"blue whale");
-
-    pWhale->AddComponent(new CTransform);
-    pWhale->AddComponent(new CMeshRender);
-    pWhale->AddComponent(new CPlayerScript);
-
-    pWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
-    pWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pWhale->Transform()->SetAbsolute(true);
-
-    pWhale->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
-    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"blue_whale"))
+    CGameObject* pblueWhale =
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\blue_whale\\", "scene.gltf", L"blue whale");
+    if (nullptr != pblueWhale)
     {
-        pWhale->MeshRender()->SetMesh(mesh);
+        pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
+        pblueWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+        AddObject(pblueWhale, 10);
     }
 
-    pModels->AddChild(pWhale);
-
-    // torii_gate
-    CGameObject* pGate = new CGameObject;
-    pGate->SetName(L"torii gate");
-
-    pGate->AddComponent(new CTransform);
-    pGate->AddComponent(new CMeshRender);
-    pGate->AddComponent(new CPlayerScript);
-
-    pGate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
-    pGate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pGate->Transform()->SetAbsolute(true);
-
-    pGate->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
-    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"torii_gate"))
+    // torii gate
+    CGameObject* ptoriigate =
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\torii_gate\\", "scene.gltf", L"torii gate");
+    if (nullptr != ptoriigate)
     {
-        pGate->MeshRender()->SetMesh(mesh);
+        ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
+        ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+        AddObject(ptoriigate, 10);
     }
 
-    pModels->AddChild(pGate);
-
-    // dragon_warrior
-    CGameObject* pDragon_warrior = new CGameObject;
-    pDragon_warrior->SetName(L"dragon_warrior");
-
-    pDragon_warrior->AddComponent(new CTransform);
-    pDragon_warrior->AddComponent(new CMeshRender);
-    pDragon_warrior->AddComponent(new CPlayerScript);
-
-    pDragon_warrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
-    pDragon_warrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pDragon_warrior->Transform()->SetAbsolute(true);
-
-    pDragon_warrior->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
-    for (auto& mesh : CAssetMgr::GetInst()->FindModel(L"dragon_warrior"))
+    // dragon warrior
+    CGameObject* pDragonWarrior =
+        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\dragon_warrior\\", "scene.gltf", L"Dragon Warrior");
+    if (nullptr != pDragonWarrior)
     {
-        pDragon_warrior->MeshRender()->SetMesh(mesh);
+        pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
+        pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+        AddObject(pDragonWarrior, 10);
     }
-
-    pModels->AddChild(pDragon_warrior);
-
-    AddObject(pModels, 10);
 }

@@ -1,4 +1,6 @@
 #pragma once
+#pragma once
+#pragma once
 #include "singleton.h"
 
 #include "CPathMgr.h"
@@ -8,6 +10,7 @@
 #include "CMaterial.h"
 #include "CGraphicsShader.h"
 
+class CGameObject;
 class CMesh;
 class CGraphicsShader;
 
@@ -17,7 +20,6 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, CAsset*> m_mapAsset[(UINT)ASSET_TYPE::END];
-    map<wstring, vector<CMesh*>> m_mapModel;
 
 public:
     void init();
@@ -25,7 +27,6 @@ public:
 private:
     // 에셋 로딩
     void LoadMesh();
-    void LoadModel();
     void LoadShader();
     void LoadMaterial();
     void LoadTexture();
@@ -45,13 +46,12 @@ private:
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
 
     // 모델 로딩
+public:
+    CGameObject* LoadModel(const std::string& _relativepath, const std::string& _filename, const std::wstring& _name);
+
 private:
     vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals = false);
-    void MeshTextureLoad(CMesh* pMesh, const tMeshData& meshData);
-
-public:
-    void AddModel(const wstring& _strKey, vector<CMesh*> _model);
-    vector<CMesh*> FindModel(const wstring& _strKey);
+    CMaterial* LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData);
 
 public:
     template <typename T>
@@ -128,6 +128,7 @@ inline T* CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePat
     {
         MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 실패", MB_OK);
         delete pAsset;
+        pAsset = nullptr;
         return nullptr;
     }
 
