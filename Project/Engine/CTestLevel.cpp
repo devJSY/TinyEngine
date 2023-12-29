@@ -42,7 +42,7 @@ void CTestLevel::begin()
     pLights->AddComponent(new CTransform);
     pLights->AddComponent(new CMeshRender);
 
-    pLights->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pLights->Transform()->SetRelativePos(Vec3(0.f, 300.f, 200.f));
     pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pLights->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
@@ -53,8 +53,8 @@ void CTestLevel::begin()
 
     pLight1->AddComponent(new CTransform);
     pLight1->AddComponent(new CMeshRender);
-    pLight1->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL, 0));
-    pLight1->Light3D()->SetStrength(Vec3(1.f, 0.f, 0.f));
+    pLight1->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 0));
+    pLight1->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
     pLight1->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
@@ -69,8 +69,8 @@ void CTestLevel::begin()
 
     pLight2->AddComponent(new CTransform);
     pLight2->AddComponent(new CMeshRender);
-    pLight2->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL, 1));
-    pLight2->Light3D()->SetStrength(Vec3(0.f, 1.f, 0.f));
+    pLight2->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 1));
+    pLight2->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
     pLight2->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
@@ -85,8 +85,8 @@ void CTestLevel::begin()
 
     pLight3->AddComponent(new CTransform);
     pLight3->AddComponent(new CMeshRender);
-    pLight3->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL, 2));
-    pLight3->Light3D()->SetStrength(Vec3(0.f, 0.f, 1.f));
+    pLight3->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 2));
+    pLight3->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight3->Transform()->SetRelativePos(Vec3(750.f, 0.f, 100.f));
     pLight3->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));

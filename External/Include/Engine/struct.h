@@ -54,7 +54,7 @@ struct tMtrlConst
 
 struct tLightData
 {
-    Vec3 strength; // Color
+    Vec3 color; // Color
     float fallOffStart;
     Vec3 direction;
     float fallOffEnd;

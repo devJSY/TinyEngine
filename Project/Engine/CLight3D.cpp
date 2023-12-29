@@ -10,7 +10,7 @@ CLight3D::CLight3D(LIGHT_TYPE type, int idx)
     m_LightData.fallOffStart = 0.f;
     m_LightData.fallOffEnd = 1000.f;
     m_LightData.spotPower = 100.f;
-    m_LightData.strength = Vec3(1.f);
+    m_LightData.color = Vec3(1.f);
 
     if (m_Type == LIGHT_TYPE::DIRECTIONAL)
         m_LightData.LightType = LIGHT_DIRECTIONAL;

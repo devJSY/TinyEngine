@@ -21,8 +21,8 @@ public:
     float GetSpotPower() const { return m_LightData.spotPower; }
     void SetSpotPower(float power) { m_LightData.spotPower = power; }
 
-    Vec3 GetStrength() const { return m_LightData.strength; }
-    void SetStrength(Vec3 strength) { m_LightData.strength = strength; }
+    Vec3 GetColor() const { return m_LightData.color; }
+    void SetColor(Vec3 color) { m_LightData.color = color; }
 
 public:
     virtual void finaltick() override;

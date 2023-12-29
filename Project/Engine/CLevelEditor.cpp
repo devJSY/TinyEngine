@@ -51,7 +51,7 @@ void CLevelEditor::begin()
     //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
     //  FIXME-DPI: Experimental.
 
-    float fontSize = 18.0f;
+    float fontSize = 25.0f;
     wstring wBold = CPathMgr::GetContentPath();
     wstring wRegular = CPathMgr::GetContentPath();
 

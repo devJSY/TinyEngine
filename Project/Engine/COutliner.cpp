@@ -254,9 +254,9 @@ void COutliner::DrawDetails(CGameObject* obj)
             if (ImGui::SliderFloat("Spot Power", &spotPower, 1.f, 1000.f))
                 light->SetSpotPower(spotPower);
 
-            Vec3 strength = light->GetStrength();
-            if (ImGui::ColorEdit3("Strength", &strength.x))
-                light->SetStrength(strength);
+            Vec3 color = light->GetColor();
+            if (ImGui::ColorEdit3("Strength", &color.x))
+                light->SetColor(color);
 
             ImGui::TreePop();
         }

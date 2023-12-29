@@ -918,6 +918,8 @@ void CAssetMgr::LoadTexture()
     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
 
     Load<CTexture>(L"cubemap", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
+    Load<CTexture>(L"cubemap_diffuse", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
+    Load<CTexture>(L"cubemap_specular", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
 }
 
 void CAssetMgr::LoadMaterial()
@@ -932,7 +934,9 @@ void CAssetMgr::LoadMaterial()
     CMaterial* pBlinnPhongMtrl = nullptr;
     pBlinnPhongMtrl = new CMaterial;
     pBlinnPhongMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pBlinnPhongMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
+    pBlinnPhongMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
+    pBlinnPhongMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap_diffuse"));
+    pBlinnPhongMtrl->SetTexParam(TEXCUBE_1, FindAsset<CTexture>(L"cubemap_specular"));
     AddAsset<CMaterial>(L"BlinnPhong", pBlinnPhongMtrl);
 
     // SkyBox

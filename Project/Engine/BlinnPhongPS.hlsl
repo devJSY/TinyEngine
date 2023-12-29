@@ -38,6 +38,12 @@ float4 main(PS_IN input) : SV_TARGET
         
         color = color * texColor;
     }
-     
-    return color;
+    
+    float4 diffuse = g_texCube_0.Sample(g_LinearSampler, input.normalWorld);
+    float4 specular = g_texCube_1.Sample(g_LinearSampler, reflect(-toEye, input.normalWorld));
+        
+    diffuse.xyz *= g_vDiff.xyz;
+    specular.xyz *= g_vSpec.xyz;
+    
+    return color + diffuse + specular;
 }
