@@ -332,7 +332,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                 if (bDirty)
                     pMaterial->SetMaterialCoefficient(ambient, diffuse, specular, environment);
 
-                constexpr float IMAGE_BASE_SIZE = 160.0f;
+                constexpr float IMAGE_BASE_SIZE = 300.0f;
 
                 // Texture
                 for (UINT i = TEX_PARAM::TEX_0; i <= TEX_PARAM::TEX_5; ++i)
@@ -341,7 +341,18 @@ void COutliner::DrawDetails(CGameObject* obj)
                     if (nullptr == pTex.Get())
                         continue;
 
-                    ImGui::Text("Texture %d", i);
+                    if (i == TEX_PARAM::TEX_0)
+                        ImGui::Text("Ambient Texture");
+                    else if (i == TEX_PARAM::TEX_1)
+                        ImGui::Text("Ambient Occlusion");
+                    else if (i == TEX_PARAM::TEX_2)
+                        ImGui::Text("Normal Texture");
+                    else if (i == TEX_PARAM::TEX_3)
+                        ImGui::Text("Height Texture");
+                    else if (i == TEX_PARAM::TEX_4)
+                        ImGui::Text("MetallicRoughness Texture");
+                    else if (i == TEX_PARAM::TEX_5)
+                        ImGui::Text("Emissive Texture");
 
                     ImGui::Image((void*)pTex->GetSRV().Get(), ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
                 }

@@ -631,12 +631,12 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
     // 텍스쳐 로딩
     std::wstring path = stringToWstring(_MeshData.RelativeTextureFilePath);
 
-    if (!_MeshData.AlbedoTextureFilename.empty())
+    if (!_MeshData.AmbientTextureFilename.empty())
     {
         std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.AlbedoTextureFilename << std::endl;
+        std::cout << _MeshData.AmbientTextureFilename << std::endl;
 
-        std::wstring name = stringToWstring(_MeshData.AlbedoTextureFilename);
+        std::wstring name = stringToWstring(_MeshData.AmbientTextureFilename);
 
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(name, path + name));
     }

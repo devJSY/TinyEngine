@@ -234,10 +234,10 @@ tMeshData CModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        newMesh.AlbedoTextureFilename = ReadFilename(material, aiTextureType_BASE_COLOR);
-        if (newMesh.AlbedoTextureFilename.empty())
+        newMesh.AmbientTextureFilename = ReadFilename(material, aiTextureType_BASE_COLOR);
+        if (newMesh.AmbientTextureFilename.empty())
         {
-            newMesh.AlbedoTextureFilename = ReadFilename(material, aiTextureType_DIFFUSE);
+            newMesh.AmbientTextureFilename = ReadFilename(material, aiTextureType_DIFFUSE);
         }
 
         newMesh.EmissiveTextureFilename = ReadFilename(material, aiTextureType_EMISSIVE);

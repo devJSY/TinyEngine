@@ -90,7 +90,7 @@ struct tMeshData
     std::vector<Vtx> vertices;
     std::vector<UINT> indices;
 
-    std::string AlbedoTextureFilename;
+    std::string AmbientTextureFilename;
     std::string AoTextureFilename; // Ambient Occlusion
     std::string NormalTextureFilename;
     std::string HeightTextureFilename;
