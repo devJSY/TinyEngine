@@ -12,10 +12,12 @@ private:
     float m_DeltaTime;
 
     UINT m_iCall;
+    UINT m_iFPS;
     float m_fTime;
 
 public:
     float GetDeltaTime() { return m_DeltaTime; }
+    UINT GetFPS() const { return m_iFPS; }
 
 public:
     void init();

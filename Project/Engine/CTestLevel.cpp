@@ -100,7 +100,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    AddModels();
+    //AddModels();
 
     // Box
     CGameObject* pSkyBox = new CGameObject;

@@ -7,6 +7,8 @@ CTimeMgr::CTimeMgr()
     : m_Frequency{}
     , m_PrevCount{}
     , m_CurCount{}
+    , m_iCall(0)
+    , m_iFPS(0)
     , m_fTime(0.f)
 {
 }
@@ -39,10 +41,10 @@ void CTimeMgr::tick()
     m_fTime += m_DeltaTime;
     if (1.f <= m_fTime)
     {
-        wchar_t szText[50] = {};
-        swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
-        SetWindowText(CEngine::GetInst()->GetMainWind(), szText);
-
+        //wchar_t szText[50] = {};
+        //swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
+        //SetWindowText(CEngine::GetInst()->GetMainWind(), szText);
+        m_iFPS = m_iCall;
         m_iCall = 0;
         m_fTime = 0.f;
     }

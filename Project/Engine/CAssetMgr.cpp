@@ -910,6 +910,10 @@ void CAssetMgr::LoadShader()
 
 void CAssetMgr::LoadTexture()
 {
+    Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"missing_texture.png");
+    assert(ptex.Get());
+    ptex->UpdateData(0);
+
     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
 

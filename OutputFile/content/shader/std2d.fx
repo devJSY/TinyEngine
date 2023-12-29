@@ -6,7 +6,7 @@
 
 PS_IN VS_Std2D(VS_IN _in)
 {
-    PS_IN output = (PS_IN)0.0;
+    PS_IN output = (PS_IN) 0.0;
     
     output.vPosProj = mul(float4(_in.vPos, 1.0), g_matWVP);
     output.vColor = _in.vColor;
@@ -17,8 +17,6 @@ PS_IN VS_Std2D(VS_IN _in)
 
 float4 PS_Std2D(PS_IN _in) : SV_Target
 {
-    float4 vColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
-    
     // 알파값구분만 색상 변경
     //if (vColor.a <= 0.1f)
     //{
@@ -56,9 +54,22 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     //    }
     //}
     
+    float4 texColor = g_Missing_tex.Sample(g_LinearSampler, _in.vUV);
+ 
+    if (g_UseTexture)
+    {
+        int width = 0;
+        int height = 0;
+        int numMips = 0;
+        
+        // 2중 예외처리
+        // 바인딩된 텍스춰가 실제로 존재할 경우에만 샘플링 
+        g_tex_0.GetDimensions(0, width, height, numMips);
+        if (!(0 == width || 0 == height))
+            texColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+    }
     
-    return _in.vColor;
-    //return vColor;
+    return texColor;
 }
 
 #endif

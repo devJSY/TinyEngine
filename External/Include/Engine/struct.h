@@ -41,13 +41,13 @@ struct tMtrlConst
 {
     tMtrlData mtrl; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
 
-    int iArr[4];
-    float fArr[4]; 
-    Vec2 v2Arr[4];
-    Vec4 v4Arr[4];
-    Matrix matArr[4];
+    int arrInt[4];
+    float arrFloat[4]; 
+    Vec2 arrVec2[4];
+    Vec4 arrVec4[4];
+    Matrix arrMat[4];
 
-	int bTex[TEX_PARAM::END];
+	int bTex[TEX_PARAM::END - TEX_PARAM::TEX_0];
 
     int iPadding[2];
 };
