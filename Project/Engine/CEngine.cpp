@@ -10,6 +10,7 @@
 #include "CEditorMgr.h"
 #include "CTaskMgr.h"
 #include "CGrabageCollector.h"
+#include "CRenderMgr.h"
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
@@ -43,6 +44,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CTimeMgr::GetInst()->init();
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
+    CRenderMgr::GetInst()->init();
     CLevelMgr::GetInst()->init();
     CEditorMgr::GetInst()->init();
 
@@ -71,8 +73,8 @@ void CEngine::progress()
     CDevice::GetInst()->ClearRenderTarget(m_ClearColor);
 
     // Level Render
-    CLevelMgr::GetInst()->render();
-    CEditorMgr::GetInst()->render(); // Level Render 이후 호출
+    CRenderMgr::GetInst()->tick();	
+    CEditorMgr::GetInst()->render(); // 렌더링 이후 호출
 
     // Present
     CDevice::GetInst()->Present();

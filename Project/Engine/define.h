@@ -197,3 +197,12 @@ enum class LIGHT_TYPE
 
     END,
 };
+
+enum class DEBUG_SHAPE
+{
+    RECT,
+    CIRCLE,
+
+    CUBE,
+    SPHERE,
+};

@@ -850,6 +850,19 @@ void CAssetMgr::LoadShader()
         CGraphicsShader* pShader = nullptr;
 
         pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
+        pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"DebugShapeShader", pShader);
+    }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BasicPS.hlsl", "main");
 
@@ -938,12 +951,12 @@ void CAssetMgr::LoadTexture()
     Load<CTexture>(L"cubemap_diffuse", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
     Load<CTexture>(L"cubemap_specular", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
 
-    //Ptr<CTexture> pTex = new CTexture;
-    //if (FAILED(pTex->Create(CDevice::GetInst()->GetRenderTargetTexture())))
+    // Ptr<CTexture> pTex = new CTexture;
+    // if (FAILED(pTex->Create(CDevice::GetInst()->GetRenderTargetTexture())))
     //{
-    //    assert(nullptr);
-    //}
-    //AddAsset<CTexture>(L"RenderTarget", pTex.Get());
+    //     assert(nullptr);
+    // }
+    // AddAsset<CTexture>(L"RenderTarget", pTex.Get());
 }
 
 void CAssetMgr::LoadMaterial()
@@ -953,6 +966,11 @@ void CAssetMgr::LoadMaterial()
     pMtrl = new CMaterial;
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
     AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+
+    // DebugShapeMtrl
+    CMaterial* pDebugMtrl = new CMaterial;
+    pDebugMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
+    AddAsset<CMaterial>(L"DebugShapeMtrl", pDebugMtrl);
 
     // Basic
     CMaterial* pBasic = nullptr;
@@ -979,9 +997,9 @@ void CAssetMgr::LoadMaterial()
     AddAsset<CMaterial>(L"Skybox", pSkyBox);
 
     //// PostProcess
-    //CMaterial* pPostProcess = nullptr;
-    //pPostProcess = new CMaterial;
-    //pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
-    //pPostProcess->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"RenderTarget"));
-    //AddAsset<CMaterial>(L"Postprocess", pPostProcess);
+    // CMaterial* pPostProcess = nullptr;
+    // pPostProcess = new CMaterial;
+    // pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
+    // pPostProcess->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"RenderTarget"));
+    // AddAsset<CMaterial>(L"Postprocess", pPostProcess);
 }

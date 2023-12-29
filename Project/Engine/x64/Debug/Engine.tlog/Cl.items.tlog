@@ -26,6 +26,7 @@ D:\TinyEngine\Project\Engine\COutliner.cpp;D:\TinyEngine\Project\Engine\x64\Debu
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
 D:\TinyEngine\Project\Engine\CPlayerScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPlayerScript.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderComponent.obj
+D:\TinyEngine\Project\Engine\CRenderMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderMgr.obj
 D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CScript.obj
 D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CShader.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTaskMgr.obj
@@ -50,3 +51,4 @@ D:\TinyEngine\Project\Engine\imgui\imgui_tables.cpp;D:\TinyEngine\Project\Engine
 D:\TinyEngine\Project\Engine\imgui\imgui_widgets.cpp;D:\TinyEngine\Project\Engine\x64\Debug\imgui_widgets.obj
 D:\TinyEngine\Project\Engine\ImGui\ImSequencer.cpp;D:\TinyEngine\Project\Engine\x64\Debug\ImSequencer.obj
 D:\TinyEngine\Project\Engine\pch.cpp;D:\TinyEngine\Project\Engine\x64\Debug\pch.obj
+D:\TinyEngine\Project\Engine\CRenderMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderMgr_init.obj

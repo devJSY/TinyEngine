@@ -181,6 +181,9 @@
     <ClInclude Include="Ptr.h">
       <Filter>06. Asset</Filter>
     </ClInclude>
+    <ClInclude Include="CRenderMgr.h">
+      <Filter>04. Manager\RenderMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -338,6 +341,12 @@
     </ClCompile>
     <ClCompile Include="CGrabageCollector.cpp">
       <Filter>04. Manager\GrabageCollector</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgr.cpp">
+      <Filter>04. Manager\RenderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgr_init.cpp">
+      <Filter>04. Manager\RenderMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +512,12 @@
     <Filter Include="ShaderCode\Postprocess">
       <UniqueIdentifier>{ecfecc17-a936-4349-ac5e-f423232cdd33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\fx">
+      <UniqueIdentifier>{a6646b60-92d7-4360-b676-e57cd91e10c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\RenderMgr">
+      <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -519,9 +534,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="std2d.fx">
-      <Filter>ShaderCode</Filter>
-    </FxCompile>
     <FxCompile Include="BasicPS.hlsl">
       <Filter>ShaderCode\Basic</Filter>
     </FxCompile>
@@ -560,6 +572,12 @@
     </FxCompile>
     <FxCompile Include="PostprocessPS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="std2d.fx">
+      <Filter>ShaderCode\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="debug.fx">
+      <Filter>ShaderCode\fx</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

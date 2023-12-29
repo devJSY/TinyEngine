@@ -9,6 +9,20 @@ struct Vtx
     Vec2 vUV;     // UV 좌표계 of Texture Coordinate
 };
 
+struct tDebugShapeInfo
+{
+    DEBUG_SHAPE eShape;
+
+    Vec3 vWorldPos;
+    Vec3 vWorldScale;
+    Vec3 vWorldRot;
+    Matrix matWorld;
+
+    Vec3 vColor;
+    float fDuration;
+    bool bDepthTest;
+};
+
 // ==================
 // 상수버퍼 대응 구조체
 // ==================
@@ -42,12 +56,12 @@ struct tMtrlConst
     tMtrlData mtrl; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
 
     int arrInt[4];
-    float arrFloat[4]; 
+    float arrFloat[4];
     Vec2 arrVec2[4];
     Vec4 arrVec4[4];
     Matrix arrMat[4];
 
-	int bTex[TEX_PARAM::END - TEX_PARAM::TEX_0];
+    int bTex[TEX_PARAM::END - TEX_PARAM::TEX_0];
 
     int iPadding[2];
 };

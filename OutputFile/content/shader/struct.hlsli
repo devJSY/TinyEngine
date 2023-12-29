@@ -18,18 +18,4 @@ struct PS_IN
     float2 vUV : TEXCOORD;
 };
 
-// Α¶Έν
-struct Light
-{
-    float3 strength;
-    float fallOffStart;
-    float3 direction;
-    float fallOffEnd;
-    float3 position;
-    float spotPower;
-    
-    uint LightType;
-    float3 padd;
-};
-
 #endif

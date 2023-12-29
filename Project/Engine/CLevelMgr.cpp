@@ -7,10 +7,10 @@
 #include "CDevice.h"
 #include "CEditorMgr.h"
 #include "CEditor.h"
+#include "CLayer.h"
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
-    , m_CamObj(nullptr)
     , m_SelectedObj(nullptr)
 {
 }
@@ -27,8 +27,15 @@ CLevelMgr::~CLevelMgr()
 void CLevelMgr::init()
 {
     m_CurLevel = new CTestLevel;
-    m_CurLevel->begin();
     m_CurLevel->SetName(L"Test Level 1");
+    m_CurLevel->GetLayer(0)->SetName(L"Default");
+    m_CurLevel->GetLayer(1)->SetName(L"Background");
+    m_CurLevel->GetLayer(2)->SetName(L"Tile");
+    m_CurLevel->GetLayer(3)->SetName(L"Player");
+    m_CurLevel->GetLayer(4)->SetName(L"Monster");
+    m_CurLevel->GetLayer(31)->SetName(L"UI");
+
+    m_CurLevel->begin();
 }
 
 void CLevelMgr::tick()
@@ -41,12 +48,4 @@ void CLevelMgr::tick()
 
     m_CurLevel->tick();
     m_CurLevel->finaltick();
-}
-
-void CLevelMgr::render()
-{
-    if (nullptr == m_CurLevel)
-        return;
-
-    m_CurLevel->render();
 }

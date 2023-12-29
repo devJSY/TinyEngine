@@ -12,6 +12,7 @@
 #include "CEditorMgr.h"
 #include "CPathMgr.h"
 #include "CTimeMgr.h"
+#include "CRenderMgr.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -166,77 +167,72 @@ void CLevelEditor::render()
         }
 
         // Editor Camera
-        CGameObject* pCamObj = CLevelMgr::GetInst()->GetCameraObj();
-        if (nullptr != pCamObj)
+        CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
+
+        if (nullptr != pCam)
         {
-            CCamera* pCam = pCamObj->Camera();
+            ImGuizmo::SetOrthographic(pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC ? true : false);
 
-            if (nullptr != pCam)
+            ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
+            float windowWidth = (float)ImGui::GetWindowWidth();
+            float windowHeight = (float)ImGui::GetWindowHeight();
+            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+            Matrix CamView = pCam->GetViewMat();
+            Matrix CamProj = pCam->GetProjMat();
+
+            // transform
+            CTransform* pTr = SelectedObj->Transform();
+            Matrix WorldMat = pTr->GetWorldMat();
+
+            // Snapping
+            bool snap = KEY_PRESSED(KEY::LCTRL);
+
+            float snapValue = 0.f;
+            if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+                snapValue = 25.f;
+            else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+                snapValue = 30.0f;
+            else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
+                snapValue = 1.0f;
+
+            float snapValues[3] = {snapValue, snapValue, snapValue};
+
+            ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr,
+                                 snap ? snapValues : nullptr);
+
+            if (ImGuizmo::IsUsing())
             {
-                ImGuizmo::SetOrthographic(pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC ? true : false);
+                Matrix originWorldMat = pTr->GetWorldMat();
 
-                ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
-                float windowWidth = (float)ImGui::GetWindowWidth();
-                float windowHeight = (float)ImGui::GetWindowHeight();
-                ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+                // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
+                WorldMat *= pTr->GetParentMat().Invert();
+                originWorldMat *= pTr->GetParentMat().Invert();
 
-                Matrix CamView = pCam->GetViewMatrix();
-                Matrix CamProj = pCam->GetProjectionMatrix();
+                // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
+                float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},
+                      Fscale[3] = {0.0f, 0.0f, 0.0f};
+                ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
 
-                // transform
-                CTransform* pTr = SelectedObj->Transform();
-                Matrix WorldMat = pTr->GetWorldMat();
+                float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
+                      originFscale[3] = {0.0f, 0.0f, 0.0f};
+                ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation,
+                                                      originFscale);
 
-                // Snapping
-                bool snap = KEY_PRESSED(KEY::LCTRL);
+                // ImGuizmo로 조정한 변화량 추출
+                Vec3 vPosOffset = Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1],
+                                       originFtranslation[2] - Ftranslation[2]);
+                Vec3 vRotOffset =
+                    Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
+                         DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
+                         DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
+                Vec3 vScaleOffset =
+                    Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
 
-                float snapValue = 0.f;
-                if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
-                    snapValue = 25.f;
-                else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
-                    snapValue = 30.0f;
-                else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
-                    snapValue = 1.0f;
-
-                float snapValues[3] = {snapValue, snapValue, snapValue};
-
-                ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr,
-                                     snap ? snapValues : nullptr);
-
-                if (ImGuizmo::IsUsing())
-                {
-                    Matrix originWorldMat = pTr->GetWorldMat();
-
-                    // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
-                    WorldMat *= pTr->GetParentMat().Invert();
-                    originWorldMat *= pTr->GetParentMat().Invert();
-
-                    // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
-                    float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},
-                          Fscale[3] = {0.0f, 0.0f, 0.0f};
-                    ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
-                    
-                    float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
-                          originFscale[3] = {0.0f, 0.0f, 0.0f};
-                    ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation,
-                                                          originFscale);
-
-                    // ImGuizmo로 조정한 변화량 추출
-                    Vec3 vPosOffset =
-                        Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1],
-                             originFtranslation[2] - Ftranslation[2]);
-                    Vec3 vRotOffset = Vec3(
-                        DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
-                        DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
-                        DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
-                    Vec3 vScaleOffset =
-                        Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
-
-                    // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
-                    pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
-                    pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
-                    pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
-                }
+                // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
+                pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+                pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+                pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
             }
         }
     }

@@ -15,12 +15,7 @@ public:
     CLevel* GetCurrentLevel() const { return m_CurLevel; }
 
 private:
-    CGameObject* m_CamObj;
     CGameObject* m_SelectedObj;
-
-public:
-    void SetCameraObj(CGameObject* cam) { m_CamObj = cam; }
-    CGameObject* GetCameraObj() const { return m_CamObj; }
 
 public:
     CGameObject* GetSelectedObj() const { return m_SelectedObj; }
@@ -29,5 +24,4 @@ public:
 public:
     void init();
     void tick();
-    void render();
 };

@@ -51,14 +51,6 @@ void CLayer::finaltick()
     }
 }
 
-void CLayer::render()
-{
-    for (size_t i = 0; i < m_vecObjects.size(); ++i)
-    {
-        m_vecObjects[i]->render();
-    }
-}
-
 void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 {
     // _bMove : true  - 레이어에 입력되는 Object가 자식이 있는 경우, 자식까지 모두 해당 레이어로 넘어온다.

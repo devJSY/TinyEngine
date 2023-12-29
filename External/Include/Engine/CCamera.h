@@ -28,6 +28,8 @@ private:
     Matrix m_matView;
     Matrix m_matProj;
 
+    UINT m_LayerCheck;
+
 private:
     float m_CamSpeed;
 
@@ -47,15 +49,21 @@ public:
     float GetFar() const { return m_Far; }
     void SetFar(float _far) { m_Far = _far; }
 
+    const Matrix& GetViewMat() { return m_matView; }
+    const Matrix& GetProjMat() { return m_matProj; }
+
+    void SetCameraPriority(int _Priority);
+    void LayerCheck(UINT _LayerIdx, bool _bCheck);
+    void LayerCheck(const wstring& _strLayerName, bool _bCheck);
+    void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
+
 public:
     float GetCameraSpeed() const { return m_CamSpeed; }
     void SetCameraSpeed(float speed) { m_CamSpeed = speed; }
 
-    Matrix GetViewMatrix() const { return m_matView; }
-    Matrix GetProjectionMatrix() const { return m_matProj; }
-
 public:
     virtual void finaltick() override;
+    void render();
 
 public:
     CCamera();

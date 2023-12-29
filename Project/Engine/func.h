@@ -7,6 +7,14 @@ namespace GamePlayStatic
     void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
     void DestroyGameObject(CGameObject* _Target);
     void WindowResize(int width, int height);
+
+    void DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+    void DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
+                       float _Duration = 0.f);
+
+    //void DrawDebugCircle();
+    //void DrawDebugCube();
+    //void DrawDebugSphere();
 }
 
 template <typename T, UINT SIZE>
@@ -40,19 +48,19 @@ void Delete_Vec(vector<T>& _vec)
 string WstringTostring(const wstring& wstr);
 wstring stringToWstring(const string& str);
 
-//template <typename T>
-//bool IsValid(T*& _Entity)
+// template <typename T>
+// bool IsValid(T*& _Entity)
 //{
-//    if (nullptr == _Entity)
-//    {
-//        return false;
-//    }
+//     if (nullptr == _Entity)
+//     {
+//         return false;
+//     }
 //
-//    if (_Entity->IsDead())
-//    {
-//        _Entity = nullptr;
-//        return false;
-//    }
+//     if (_Entity->IsDead())
+//     {
+//         _Entity = nullptr;
+//         return false;
+//     }
 //
-//    return true;
-//}
+//     return true;
+// }

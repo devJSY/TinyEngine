@@ -33,6 +33,7 @@ public:
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }
 
     const Matrix& GetWorldMat() const { return m_matWorld; }
+    void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
 
     Vec3 GetLocalDir(DIR_TYPE _type) { return m_arrLocalDir[(UINT)_type]; }
     Vec3 GetWorldDir(DIR_TYPE _type) { return m_arrWorldDir[(UINT)_type]; }

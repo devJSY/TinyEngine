@@ -1,8 +1,6 @@
 #ifndef _GLOBAL
 #define _GLOBAL
 
-#include "struct.hlsli"
-
 cbuffer TRANSFORM : register(b0)
 {
     row_major Matrix g_matWorld;
@@ -71,6 +69,20 @@ cbuffer MATERIAL_CONST : register(b1)
 #define LIGHT_POINT       0x02  
 #define LIGHT_SPOT        0x04  
 //#define LIGHT_SHADOW      0x10
+
+// Α¶Έν
+struct Light
+{
+    float3 strength;
+    float fallOffStart;
+    float3 direction;
+    float fallOffEnd;
+    float3 position;
+    float spotPower;
+    
+    uint LightType;
+    float3 padd;
+};
 
 cbuffer GLOBAL : register(b2)
 {
