@@ -856,6 +856,16 @@ void CAssetMgr::LoadShader()
         CGraphicsShader* pShader = nullptr;
 
         pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BasicPS.hlsl", "main");
+
+        AddAsset(L"Basic", pShader);
+    }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BlinnPhongVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BlinnPhongPS.hlsl", "main");
 
@@ -929,6 +939,14 @@ void CAssetMgr::LoadMaterial()
     pMtrl = new CMaterial;
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
     AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+
+    // Basic
+    CMaterial* pBasic = nullptr;
+    pBasic = new CMaterial;
+    pBasic->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pBasic->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f),
+                                   Vec4());
+    AddAsset<CMaterial>(L"Basic", pBasic);
 
     // BlinnPhong
     CMaterial* pBlinnPhongMtrl = nullptr;

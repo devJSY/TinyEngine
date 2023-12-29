@@ -45,9 +45,6 @@ void CTestLevel::begin()
     pLights->Transform()->SetRelativePos(Vec3(0.f, 300.f, 200.f));
     pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
-    pLights->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
     CGameObject* pLight1 = new CGameObject;
     pLight1->SetName(L"Light 1");
 
@@ -60,8 +57,7 @@ void CTestLevel::begin()
     pLight1->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
+    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
     pLights->AddChild(pLight1);
 
     CGameObject* pLight2 = new CGameObject;
@@ -76,8 +72,7 @@ void CTestLevel::begin()
     pLight2->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
+    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
     pLights->AddChild(pLight2);
 
     CGameObject* pLight3 = new CGameObject;
@@ -92,8 +87,7 @@ void CTestLevel::begin()
     pLight3->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-
+    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
     pLights->AddChild(pLight3);
 
     AddObject(pLights, 1);

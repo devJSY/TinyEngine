@@ -3,6 +3,12 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BasicPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BasicVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\BlinnPhongPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

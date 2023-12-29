@@ -39,11 +39,21 @@ float4 main(PS_IN input) : SV_TARGET
         color = color * texColor;
     }
     
-    float4 diffuse = g_texCube_0.Sample(g_LinearSampler, input.normalWorld);
-    float4 specular = g_texCube_1.Sample(g_LinearSampler, reflect(-toEye, input.normalWorld));
+    // IBL
+    float4 diffuse = float4(0.0, 0.0, 0.0, 0.0);
+    float4 specular = float4(0.0, 0.0, 0.0, 0.0);
         
-    diffuse.xyz *= g_vDiff.xyz;
-    specular.xyz *= g_vSpec.xyz;
-    
+    if (g_btexcube_0)
+    {
+        diffuse = g_texCube_0.Sample(g_LinearSampler, input.normalWorld);
+        diffuse.xyz *= g_vDiff.xyz;
+    }
+
+    if (g_btexcube_1)
+    {
+        specular = g_texCube_1.Sample(g_LinearSampler, reflect(-toEye, input.normalWorld));
+        specular.xyz *= g_vSpec.xyz;
+    }
+
     return color + diffuse + specular;
 }

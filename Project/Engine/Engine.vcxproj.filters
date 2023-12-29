@@ -531,5 +531,11 @@
     <FxCompile Include="SkyboxPS.hlsl">
       <Filter>ShaderCode</Filter>
     </FxCompile>
+    <FxCompile Include="BasicVS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicPS.hlsl">
+      <Filter>ShaderCode</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
