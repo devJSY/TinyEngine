@@ -51,14 +51,16 @@ cbuffer MATERIAL_CONST : register(b1)
     row_major matrix g_mat_2;
     row_major matrix g_mat_3;
             
-    int g_btex_0;
     int g_btex_1;
     int g_btex_2;
     int g_btex_3;
     int g_btex_4;
     int g_btex_5;
+    int g_btex_6;
+    
     int g_btexcube_0;
     int g_btexcube_1;
+    
     int g_btexarr_0;
     int g_btexarr_1;
 }
@@ -89,12 +91,12 @@ cbuffer GLOBAL : register(b2)
 
 Texture2D g_Missing_tex : register(t0);
 
-Texture2D g_tex_0 : register(t1);
-Texture2D g_tex_1 : register(t2);
-Texture2D g_tex_2 : register(t3);
-Texture2D g_tex_3 : register(t4);
-Texture2D g_tex_4 : register(t5);
-Texture2D g_tex_5 : register(t6);
+Texture2D g_tex_1 : register(t1);
+Texture2D g_tex_2 : register(t2);
+Texture2D g_tex_3 : register(t3);
+Texture2D g_tex_4 : register(t4);
+Texture2D g_tex_5 : register(t5);
+Texture2D g_tex_6 : register(t6);
 
 TextureCube g_texCube_0 : register(t7);
 TextureCube g_texCube_1 : register(t8);

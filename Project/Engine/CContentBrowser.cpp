@@ -84,6 +84,8 @@ void CContentBrowser::render()
             const char* filname = filenameString.c_str();
             ImGui::Text("%s", filname, filenameString.size());
 
+            std::string pathStr = relativePath.parent_path().string() + "\\";
+
             ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", filname, filenameString.size());
             ImGui::EndDragDropSource();
         }

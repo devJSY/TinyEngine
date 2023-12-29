@@ -26,8 +26,8 @@ private:
     // 에셋 로딩
     void LoadMesh();
     void LoadShader();
-    void LoadMaterial();
     void LoadTexture();
+    void LoadMaterial();
 
 private:
     // Geometry

@@ -23,6 +23,7 @@ public:
     static void Clear(int _iRegisterNum);
 
 public:
+    int Create(ComPtr<ID3D11Texture2D> _tex2D);
     ComPtr<ID3D11ShaderResourceView> GetSRV() const { return m_SRV; }
 
 public:

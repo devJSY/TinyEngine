@@ -30,6 +30,12 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\OutLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\PostprocessPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\PostprocessVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\SkyboxPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

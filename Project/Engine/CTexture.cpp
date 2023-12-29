@@ -75,3 +75,47 @@ void CTexture::Clear(int _iRegisterNum)
     CONTEXT->GSSetShaderResources(_iRegisterNum, 1, &pSRV);
     CONTEXT->PSSetShaderResources(_iRegisterNum, 1, &pSRV);
 }
+
+int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
+{
+    m_Tex2D = _tex2D;
+
+    m_Tex2D->GetDesc(&m_Desc);
+
+    // 바인드 플래그에 맞는 View 를 생성해준다.
+    if (m_Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
+    {
+        if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
+        {
+            return E_FAIL;
+        }
+    }
+    else
+    {
+        if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+        {
+            if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
+            {
+                return E_FAIL;
+            }
+        }
+
+        if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+        {
+            if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
+            {
+                return E_FAIL;
+            }
+        }
+
+        if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+        {
+            if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
+            {
+                return E_FAIL;
+            }
+        }
+    }
+
+    return S_OK;
+}

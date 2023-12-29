@@ -13,6 +13,9 @@
 #include "CCamera.h"
 #include "CMeshRender.h"
 
+#include "CAssetMgr.h"
+#include "CTexture.h"
+
 COutliner::COutliner()
 {
 }
@@ -108,6 +111,22 @@ static void DrawVec3Control(const std::string& label, Vec3& values, float speed 
     ImGui::Columns(1);
 
     ImGui::PopID();
+}
+
+static std::string _labelPrefix(const char* const label)
+{
+    float width = ImGui::CalcItemWidth();
+
+    float x = ImGui::GetCursorPosX();
+    ImGui::Text(label);
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(x + width * 0.5f + ImGui::GetStyle().ItemInnerSpacing.x);
+    ImGui::SetNextItemWidth(-1);
+
+    std::string labelID = "##";
+    labelID += label;
+
+    return labelID;
 }
 
 void COutliner::DrawDetails(CGameObject* obj)
@@ -266,7 +285,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     CMeshRender* pMeshRender = obj->MeshRender();
     if (nullptr != pMeshRender)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "MeshRender"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_None, "MeshRender"))
         {
             bool bUseTexture = pMeshRender->IsUseTexture();
             if (ImGui::Checkbox("Use Texture", &bUseTexture))
@@ -287,7 +306,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
         if (nullptr != pMaterial)
         {
-            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_None, "Material"))
             {
                 const tMtrlConst& MtrlConst = pMaterial->GetMtrlConst();
 
@@ -298,26 +317,40 @@ void COutliner::DrawDetails(CGameObject* obj)
 
                 bool bDirty = false;
 
-                if (ImGui::ColorEdit3("Ambient", &ambient.x))
+                if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
                     bDirty = true;
 
-                if (ImGui::SliderFloat3("Diffuse", &diffuse.x, 0.f, 1.f))
+                if (ImGui::SliderFloat3(_labelPrefix("diffuse").c_str(), &diffuse.x, 0.f, 1.f))
                     bDirty = true;
 
-                if (ImGui::SliderFloat3("Specular", &specular.x, 0.f, 1.f))
+                if (ImGui::SliderFloat3(_labelPrefix("specular").c_str(), &specular.x, 0.f, 1.f))
                     bDirty = true;
 
-                if (ImGui::SliderFloat3("environment", &environment.x, 0.f, 1.f))
+                if (ImGui::SliderFloat3(_labelPrefix("environment").c_str(), &environment.x, 0.f, 1.f))
                     bDirty = true;
 
                 if (bDirty)
                     pMaterial->SetMaterialCoefficient(ambient, diffuse, specular, environment);
 
+                constexpr float IMAGE_BASE_SIZE = 160.0f;
+
+                // Texture
+                for (UINT i = TEX_PARAM::TEX_0; i <= TEX_PARAM::TEX_5; ++i)
+                {
+                    Ptr<CTexture> pTex = pMaterial->GetTexParam((TEX_PARAM)i);
+                    if (nullptr == pTex.Get())
+                        continue;
+
+                    ImGui::Text("Texture %d", i);
+
+                    ImGui::Image((void*)pTex->GetSRV().Get(), ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
+                }
+
                 ImGui::TreePop();
             }
         }
 
-        if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_DefaultOpen, "Rim Light"))
+        if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_None, "Rim Light"))
         {
             bool bUseRim = pMeshRender->IsUseRim();
             if (ImGui::Checkbox("Use Rim", &bUseRim))

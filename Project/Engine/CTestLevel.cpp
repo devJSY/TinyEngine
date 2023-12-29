@@ -94,7 +94,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    //AddModels();
+    AddModels();
 
     // Box
     CGameObject* pSkyBox = new CGameObject;
@@ -304,49 +304,49 @@ void CTestLevel::AddMeshes()
 
 void CTestLevel::AddModels()
 {
-    // Zelda Model
-    CGameObject* pZelda =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx", L"Zelda");
-    if (nullptr != pZelda)
-    {
-        pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
-        pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //// Zelda Model
+    //CGameObject* pZelda =
+    //    CAssetMgr::GetInst()->LoadModel("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx", L"Zelda");
+    //if (nullptr != pZelda)
+    //{
+    //    pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
+    //    pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pZelda, 10);
-    }
+    //    AddObject(pZelda, 10);
+    //}
 
-    // Damaged Helmet
-    CGameObject* pDamagedHelmet =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf", L"Damaged Helmet");
-    if (nullptr != pDamagedHelmet)
-    {
-        pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
-        pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //// Damaged Helmet
+    //CGameObject* pDamagedHelmet =
+    //    CAssetMgr::GetInst()->LoadModel("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf", L"Damaged Helmet");
+    //if (nullptr != pDamagedHelmet)
+    //{
+    //    pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
+    //    pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pDamagedHelmet, 10);
-    }
+    //    AddObject(pDamagedHelmet, 10);
+    //}
 
-    // blue whale
-    CGameObject* pblueWhale =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\blue_whale\\", "scene.gltf", L"blue whale");
-    if (nullptr != pblueWhale)
-    {
-        pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
-        pblueWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //// blue whale
+    //CGameObject* pblueWhale =
+    //    CAssetMgr::GetInst()->LoadModel("Assets\\Models\\blue_whale\\", "scene.gltf", L"blue whale");
+    //if (nullptr != pblueWhale)
+    //{
+    //    pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
+    //    pblueWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pblueWhale, 10);
-    }
+    //    AddObject(pblueWhale, 10);
+    //}
 
-    // torii gate
-    CGameObject* ptoriigate =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\torii_gate\\", "scene.gltf", L"torii gate", true);
-    if (nullptr != ptoriigate)
-    {
-        ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
-        ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //// torii gate
+    //CGameObject* ptoriigate =
+    //    CAssetMgr::GetInst()->LoadModel("Assets\\Models\\torii_gate\\", "scene.gltf", L"torii gate", true);
+    //if (nullptr != ptoriigate)
+    //{
+    //    ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
+    //    ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(ptoriigate, 10);
-    }
+    //    AddObject(ptoriigate, 10);
+    //}
 
     // dragon warrior
     CGameObject* pDragonWarrior =

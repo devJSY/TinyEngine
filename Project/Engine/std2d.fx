@@ -64,9 +64,9 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         
         // 2중 예외처리
         // 바인딩된 텍스춰가 실제로 존재할 경우에만 샘플링 
-        g_tex_0.GetDimensions(0, width, height, numMips);
+        g_tex_1.GetDimensions(0, width, height, numMips);
         if (!(0 == width || 0 == height))
-            texColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+            texColor = g_tex_1.Sample(g_LinearSampler, _in.vUV);
     }
     
     return texColor;

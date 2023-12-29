@@ -9,6 +9,8 @@
 #include "CTransform.h"
 #include "CMeshRender.h"
 
+#include "CDevice.h"
+
 CAssetMgr::CAssetMgr()
 {
 }
@@ -627,16 +629,14 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
 
     // 텍스쳐 로딩
-    std::wstring path;
-    path.assign(_MeshData.RelativeTextureFilePath.begin(), _MeshData.RelativeTextureFilePath.end());
+    std::wstring path = stringToWstring(_MeshData.RelativeTextureFilePath);
 
     if (!_MeshData.AlbedoTextureFilename.empty())
     {
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.AlbedoTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.AlbedoTextureFilename.begin(), _MeshData.AlbedoTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.AlbedoTextureFilename);
 
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(name, path + name));
     }
@@ -646,8 +646,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.AoTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.AoTextureFilename.begin(), _MeshData.AoTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.AoTextureFilename);
 
         pMtrl->SetTexParam(TEX_1, Load<CTexture>(name, path + name));
     }
@@ -657,8 +656,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.NormalTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.NormalTextureFilename.begin(), _MeshData.NormalTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.NormalTextureFilename);
 
         pMtrl->SetTexParam(TEX_2, Load<CTexture>(name, path + name));
     }
@@ -668,8 +666,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.HeightTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.HeightTextureFilename.begin(), _MeshData.HeightTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.HeightTextureFilename);
 
         pMtrl->SetTexParam(TEX_3, Load<CTexture>(name, path + name));
     }
@@ -679,8 +676,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.MetallicTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.MetallicTextureFilename.begin(), _MeshData.MetallicTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.MetallicTextureFilename);
 
         pMtrl->SetTexParam(TEX_4, Load<CTexture>(name, path + name));
     }
@@ -690,8 +686,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.RoughnessTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.RoughnessTextureFilename.begin(), _MeshData.RoughnessTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.RoughnessTextureFilename);
 
         // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
         // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
@@ -707,8 +702,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
         std::wcout << _Mesh->GetName() << " : ";
         std::cout << _MeshData.EmissiveTextureFilename << std::endl;
 
-        std::wstring name;
-        name.assign(_MeshData.EmissiveTextureFilename.begin(), _MeshData.EmissiveTextureFilename.end());
+        std::wstring name = stringToWstring(_MeshData.EmissiveTextureFilename);
 
         pMtrl->SetTexParam(TEX_5, Load<CTexture>(name, path + name));
     }
@@ -916,6 +910,19 @@ void CAssetMgr::LoadShader()
 
         AddAsset(L"Skybox", pShader);
     }
+
+    {
+        CGraphicsShader* pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\PostprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\PostprocessPS.hlsl", "main");
+
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"Postprocess", pShader);
+    }
 }
 
 void CAssetMgr::LoadTexture()
@@ -930,6 +937,13 @@ void CAssetMgr::LoadTexture()
     Load<CTexture>(L"cubemap", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
     Load<CTexture>(L"cubemap_diffuse", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
     Load<CTexture>(L"cubemap_specular", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
+
+    //Ptr<CTexture> pTex = new CTexture;
+    //if (FAILED(pTex->Create(CDevice::GetInst()->GetRenderTargetTexture())))
+    //{
+    //    assert(nullptr);
+    //}
+    //AddAsset<CTexture>(L"RenderTarget", pTex.Get());
 }
 
 void CAssetMgr::LoadMaterial()
@@ -963,4 +977,11 @@ void CAssetMgr::LoadMaterial()
     pSkyBox->SetShader(FindAsset<CGraphicsShader>(L"Skybox"));
     pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
     AddAsset<CMaterial>(L"Skybox", pSkyBox);
+
+    //// PostProcess
+    //CMaterial* pPostProcess = nullptr;
+    //pPostProcess = new CMaterial;
+    //pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
+    //pPostProcess->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"RenderTarget"));
+    //AddAsset<CMaterial>(L"Postprocess", pPostProcess);
 }
