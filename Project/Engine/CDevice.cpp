@@ -2,6 +2,7 @@
 #include "CDevice.h"
 
 #include "CConstBuffer.h"
+#include "CAssetMgr.h"
 
 CDevice::CDevice()
     : m_hRenderWnd(nullptr)
@@ -49,7 +50,7 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
-    if (FAILED(CreateBufferAndView()))
+    if (FAILED(CreateView()))
     {
         MessageBox(nullptr, L"타겟 및 View 생성 실패", L"Device 초기화 실패", MB_OK);
         return E_FAIL;
@@ -96,10 +97,13 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 
 void CDevice::ClearRenderTarget(const Vec4& Color)
 {
-    m_Context->ClearRenderTargetView(m_RTView.Get(), Color);
-    m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
+    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
-    m_Context->ClearDepthStencilView(m_DSView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+    m_Context->ClearRenderTargetView(pTex->GetRTV().Get(), Color);
+    m_Context->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+
+    m_Context->ClearDepthStencilView(pDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
 void CDevice::Present()
@@ -110,8 +114,9 @@ void CDevice::Present()
 void CDevice::Resize(Vec2 resolution)
 {
     m_vRenderResolution = resolution;
-
-    CreateBufferAndView();
+    // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release 시켜야함
+    m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
+    CreateView();
     CreateViewport();
 }
 
@@ -223,62 +228,19 @@ int CDevice::CreateSwapChain()
     return S_OK;
 }
 
-int CDevice::CreateBufferAndView()
+int CDevice::CreateView()
 {
-    // ============
-    // BackBuffer
-    // ============
-    m_RTTex.Reset();
-    m_RTView.Reset();
-    m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
+    // RenderTarget 용 텍스쳐 등록
+    ComPtr<ID3D11Texture2D> tex2D;
+    m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
+    Ptr<CTexture> pTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
-    // 렌더타겟 텍스쳐를 스왚체인으로부터 얻어온다.
-    m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)m_RTTex.GetAddressOf());
+    // DepthStencil 용도 텍스쳐 생성
+    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->CreateTexture(
+        L"DepthStencilTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
+        D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 
-    // RenderTargetView
-    m_Device->CreateRenderTargetView(m_RTTex.Get(), nullptr, m_RTView.GetAddressOf());
-
-    // =========================
-    // DepthStencillTexture 생성
-    // =========================
-    m_DSTex.Reset();
-    m_DSView.Reset();
-    D3D11_TEXTURE2D_DESC Desc = {};
-
-    // 픽셀 포맷은 Depth 3바이트 Stencil 1바이트
-    Desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-    // DepthStencilState 텍스쳐 해상도는 반드시 RenderTargetTexture 와 동일해야한다.
-    Desc.Width = (UINT)m_vRenderResolution.x;
-    Desc.Height = (UINT)m_vRenderResolution.y;
-
-    // DepthStencil 용도의 텍스쳐
-    Desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-    // CPU 접근 불가
-    Desc.CPUAccessFlags = 0;
-    Desc.Usage = D3D11_USAGE_DEFAULT;
-
-    // 샘플링
-    Desc.SampleDesc.Count = 1;
-    Desc.SampleDesc.Quality = 0;
-
-    // 저퀄리티 버전의 사본 생성여부
-    Desc.MipLevels = 1;
-    Desc.MiscFlags = 0;
-
-    Desc.ArraySize = 1;
-
-    if (FAILED(m_Device->CreateTexture2D(&Desc, nullptr, m_DSTex.GetAddressOf())))
-    {
-        return E_FAIL;
-    }
-
-    // DepthStencilView
-    m_Device->CreateDepthStencilView(m_DSTex.Get(), nullptr, m_DSView.GetAddressOf());
-
-    // OM(Output Merge State) 에 RenderTargetTexture 와 DepthStencilTexture 를 전달한다.
-    m_Context->OMSetRenderTargets(1, m_RTView.GetAddressOf(), m_DSView.Get());
+    m_Context->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 
     return S_OK;
 }

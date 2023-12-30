@@ -145,7 +145,6 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _
 int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
 {
     m_Tex2D = _tex2D;
-
     m_Tex2D->GetDesc(&m_Desc);
 
     // 바인드 플래그에 맞는 View 를 생성해준다.
@@ -186,13 +185,3 @@ int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
     return S_OK;
 }
 
-void CTexture::Resize(Vec2 Resolution)
-{
-    m_Tex2D.Reset();
-    m_SRV.Reset();
-    m_RTV.Reset();
-    m_DSV.Reset();
-    m_UAV.Reset();
-   
-    Create((UINT)Resolution.x, (UINT)Resolution.y, m_Desc.Format, m_Desc.BindFlags, m_Desc.Usage);
-}

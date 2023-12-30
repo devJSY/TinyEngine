@@ -19,6 +19,9 @@ enum class TASK_TYPE
 
     // Param1 : Width , Param2 : Height
     WINDOW_RESIZE,
+    
+    // wParam : Asset_TYPE, lParam : Resource Adress
+	DELETE_ASSET, 
 };
 
 struct FTask

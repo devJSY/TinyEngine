@@ -1032,3 +1032,12 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
 
     return pTex;
 }
+
+void CAssetMgr::DeleteAsset(ASSET_TYPE _type, const wstring& _strKey)
+{
+    map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)_type].find(_strKey);
+
+    assert(!(iter == m_mapAsset[(UINT)_type].end()));
+
+    m_mapAsset[(UINT)_type].erase(iter);
+}

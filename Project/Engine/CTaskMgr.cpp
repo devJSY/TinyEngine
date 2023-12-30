@@ -10,6 +10,7 @@
 #include "CDevice.h"
 #include "CEditorMgr.h"
 #include "CRenderMgr.h"
+#include "CAssetMgr.h"
 
 CTaskMgr::CTaskMgr()
 {
@@ -92,8 +93,21 @@ void CTaskMgr::tick()
 
                 Vec2 resolution = Vec2(width, height);
                 CEngine::GetInst()->SetResolution(resolution);
+
+                // 즉시 삭제
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RenderTargetTex");
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthStencilTex");
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
+
                 CDevice::GetInst()->Resize(resolution);
                 CRenderMgr::GetInst()->Resize(resolution);
+            }
+            break;
+        case TASK_TYPE::DELETE_ASSET:
+            {
+                ASSET_TYPE type = (ASSET_TYPE)m_vecTask[i].Param_1;
+                CAsset* pAsset = (CAsset*)m_vecTask[i].Param_2;
+                CAssetMgr::GetInst()->DeleteAsset(type, pAsset->GetKey());
             }
             break;
         }

@@ -33,6 +33,7 @@ public:
 
 public:
     void CopyRenderTarget();
+    void CreateRTCopyTex(Vec2 Resolution);
     void Resize(Vec2 Resolution);
 
 private:

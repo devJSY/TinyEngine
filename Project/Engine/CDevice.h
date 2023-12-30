@@ -16,13 +16,6 @@ private:
 
     ComPtr<IDXGISwapChain> m_SwapChain; // 스왚체인(출력 버퍼 지정)
 
-    // OM(OutputMergeState)
-    ComPtr<ID3D11Texture2D> m_RTTex;         // 렌더타겟 텍스쳐
-    ComPtr<ID3D11RenderTargetView> m_RTView; // 렌더타겟 뷰
-
-    ComPtr<ID3D11Texture2D> m_DSTex;         // 뎊스 스텐실 텍스쳐
-    ComPtr<ID3D11DepthStencilView> m_DSView; // 뎊스 스텐실 뷰
-
     ComPtr<ID3D11RasterizerState> m_arrRS[(UINT)RS_TYPE::END];   // 레스터라이저
     ComPtr<ID3D11DepthStencilState> m_arrDS[(UINT)DS_TYPE::END]; // 깊이스탠실
     ComPtr<ID3D11BlendState> m_arrBS[(UINT)BS_TYPE::END];        // 블랜드
@@ -48,11 +41,10 @@ public:
 
 public:
     void Resize(Vec2 resolution);
-    ComPtr<ID3D11Texture2D> GetRenderTargetTexture() const { return m_RTTex; }
 
 private:
     int CreateSwapChain();
-    int CreateBufferAndView();
+    int CreateView();
     int CreateRasterizerState();
     int CreateDepthStencilState();
     int CreateBlendState();

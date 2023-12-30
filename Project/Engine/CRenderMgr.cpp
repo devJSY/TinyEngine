@@ -95,11 +95,22 @@ CCamera* CRenderMgr::GetCamera(int _Idx) const
 
 void CRenderMgr::CopyRenderTarget()
 {
+    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+
     // Viewport บนป็
-    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), CDevice::GetInst()->GetRenderTargetTexture().Get());
+    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
+}
+
+void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
+{
+    m_RTCopyTex = new CTexture;
+    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                      DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
+                                                      D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
 {
-    m_RTCopyTex->Resize(Resolution);
+    m_RTCopyTex = nullptr;
+    CreateRTCopyTex(Resolution);
 }
