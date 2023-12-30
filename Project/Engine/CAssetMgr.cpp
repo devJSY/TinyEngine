@@ -63,7 +63,7 @@ tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
     return meshData;
 }
 
-tMeshData CAssetMgr::MakeSquare(const float scale, const Vec2 texScale)
+tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
 {
     vector<Vec3> positions;
     vector<Vec3> colors;
@@ -721,13 +721,13 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"CircleMesh", pMesh);
     }
 
-    // Square
+    // Rect
     {
-        auto mesh = MakeSquare();
+        auto mesh = MakeRect();
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"SquareMesh", pMesh);
+        AddAsset(L"RectMesh", pMesh);
     }
 
     // SquareGrid
@@ -994,4 +994,39 @@ void CAssetMgr::CreateDefaultMaterial()
     // pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
     // pPostProcess->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"RenderTarget"));
     // AddAsset<CMaterial>(L"Postprocess", pPostProcess);
+}
+
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
+                                     UINT _BindFlag, D3D11_USAGE _Usage)
+{
+    Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
+
+    assert(nullptr == pTex);
+
+    pTex = new CTexture();
+    if (FAILED(pTex->Create(_Width, _Height, _pixelformat, _BindFlag, _Usage)))
+    {
+        assert(nullptr);
+    }
+
+    AddAsset<CTexture>(_strKey, pTex);
+
+    return pTex;
+}
+
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D)
+{
+    Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
+
+    assert(nullptr == pTex);
+
+    pTex = new CTexture();
+    if (FAILED(pTex->Create(_Tex2D)))
+    {
+        assert(nullptr);
+    }
+
+    AddAsset<CTexture>(_strKey, pTex);
+
+    return pTex;
 }

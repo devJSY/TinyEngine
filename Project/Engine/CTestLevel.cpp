@@ -49,7 +49,7 @@ void CTestLevel::begin()
     //pCamObj->Camera()->SetCameraPriority(1);
     //pCamObj->Camera()->LayerCheck(L"UI", true);
 
-    //AddObject(pCamObj,  L"Camera");
+    //AddObject(pCamObj, L"Camera");
 
     // Lights
     CGameObject* pLights = new CGameObject;
@@ -110,7 +110,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    //AddModels();
+    // AddModels();
 
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;
@@ -127,8 +127,6 @@ void CTestLevel::begin()
     pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Skybox"));
 
     AddObject(pSkyBox, L"SkyBox");
-
-
 
     CGameObject* pObj = new CGameObject;
     pObj->SetName(L"UI");

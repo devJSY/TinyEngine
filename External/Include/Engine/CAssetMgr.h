@@ -32,7 +32,7 @@ private:
 private:
     // Geometry
     tMeshData MakeCircle(const float radius, const int numSlices);
-    tMeshData MakeSquare(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.0f,
                              const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeBox(const float scale = 1.0f);

@@ -47,7 +47,7 @@ void CRenderMgr::render_debug()
         switch ((*iter).eShape)
         {
         case DEBUG_SHAPE::RECT:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareMesh"));
+            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
             break;
         case DEBUG_SHAPE::CIRCLE:
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
@@ -64,6 +64,7 @@ void CRenderMgr::render_debug()
 
         m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
         m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
+        m_pDebugObj->Transform()->UpdateData();
 
         m_pDebugObj->render();
     }

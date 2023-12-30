@@ -32,7 +32,7 @@ private:
 private:
     // Geometry
     tMeshData MakeCircle(const float radius, const int numSlices);
-    tMeshData MakeSquare(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.0f,
                              const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeBox(const float scale = 1.0f);
@@ -51,6 +51,11 @@ public:
 private:
     vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals);
     Ptr<CMaterial> LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData);
+
+public:
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
+                                UINT _BindFlag, D3D11_USAGE _Usage);
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D);
 
 public:
     template <typename T>
