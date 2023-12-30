@@ -31,6 +31,11 @@ CLevelEditor::~CLevelEditor()
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+
+    if (nullptr != m_RTCopyTex)
+    {
+        m_RTCopyTex = nullptr;
+    }
 }
 
 void CLevelEditor::begin()
@@ -124,7 +129,7 @@ void CLevelEditor::finaltick()
 void CLevelEditor::render()
 {
     // Viewport บนป็
-    CONTEXT->CopyResource(m_ViewportRTTex.Get(), CDevice::GetInst()->GetRenderTargetTexture());
+    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), CDevice::GetInst()->GetRenderTargetTexture().Get());
 
     // Viewport
     ImGui::Begin("Level ViewPort");
@@ -134,7 +139,7 @@ void CLevelEditor::render()
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-    ImGui::Image((void*)m_ViewportSRView.Get(), viewportSize);
+    ImGui::Image((void*)m_RTCopyTex->GetSRV().Get(), viewportSize);
 
     // Drag & Drop
     if (ImGui::BeginDragDropTarget())
@@ -248,7 +253,7 @@ void CLevelEditor::render()
             m_ViewportHovered = ImGui::IsWindowHovered();
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((void*)m_ViewportSRView.Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
+        ImGui::Image((void*)m_RTCopyTex->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
         ImGui::End();
     }
 
@@ -278,14 +283,15 @@ void CLevelEditor::Resize()
 
 void CLevelEditor::CreateViewport()
 {
-    m_ViewportRTTex.Reset();
-    m_ViewportSRView.Reset();
-    ID3D11Texture2D* tex = CDevice::GetInst()->GetRenderTargetTexture();
+    if (nullptr == m_RTCopyTex)
+        m_RTCopyTex = new CTexture;
+
+    ID3D11Texture2D* ptex = CDevice::GetInst()->GetRenderTargetTexture().Get();
     Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
 
     // Create texture.
     D3D11_TEXTURE2D_DESC txtDesc = {};
-    tex->GetDesc(&txtDesc);
+    ptex->GetDesc(&txtDesc);
 
     txtDesc.Width = (UINT)Resolution.x;
     txtDesc.Height = (UINT)Resolution.y;
@@ -293,8 +299,25 @@ void CLevelEditor::CreateViewport()
     txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
     txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-    DEVICE->CreateTexture2D(&txtDesc, nullptr, m_ViewportRTTex.GetAddressOf());
-    DEVICE->CreateShaderResourceView(m_ViewportRTTex.Get(), nullptr, m_ViewportSRView.GetAddressOf());
+    m_RTCopyTex->Create((UINT)Resolution.x, (UINT)Resolution.y, txtDesc.Format, txtDesc.BindFlags, txtDesc.Usage);
+
+    // m_RTCopyTex->GetTex2D().Reset();
+    // m_RTCopyTex->GetSRV().Reset();
+    // ID3D11Texture2D* tex = CDevice::GetInst()->GetRenderTargetTexture().Get();
+    // Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
+
+    //// Create texture.
+    // D3D11_TEXTURE2D_DESC txtDesc = {};
+    // tex->GetDesc(&txtDesc);
+
+    // txtDesc.Width = (UINT)Resolution.x;
+    // txtDesc.Height = (UINT)Resolution.y;
+    // txtDesc.Usage = D3D11_USAGE_DYNAMIC;
+    // txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    // txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    // DEVICE->CreateTexture2D(&txtDesc, nullptr, m_RTCopyTex->GetTex2D().GetAddressOf());
+    // DEVICE->CreateShaderResourceView(m_RTCopyTex->GetTex2D().Get(), nullptr, m_RTCopyTex->GetSRV().GetAddressOf());
 }
 
 void CLevelEditor::SetDarkThemeColors()

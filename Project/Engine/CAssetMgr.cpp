@@ -997,7 +997,7 @@ void CAssetMgr::CreateDefaultMaterial()
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
-                                     UINT _BindFlag, D3D11_USAGE _Usage)
+                                       UINT _BindFlag, D3D11_USAGE _Usage)
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 
@@ -1009,6 +1009,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT
         assert(nullptr);
     }
 
+    pTex->SetKey(_strKey);
     AddAsset<CTexture>(_strKey, pTex);
 
     return pTex;
@@ -1026,6 +1027,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
         assert(nullptr);
     }
 
+    pTex->SetKey(_strKey);
     AddAsset<CTexture>(_strKey, pTex);
 
     return pTex;

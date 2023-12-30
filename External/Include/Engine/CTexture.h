@@ -23,8 +23,16 @@ public:
     static void Clear(int _iRegisterNum);
 
 public:
+    int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage);
     int Create(ComPtr<ID3D11Texture2D> _tex2D);
+
+public:
+    const D3D11_TEXTURE2D_DESC& GetDesc() const { return m_Desc; }
+    ComPtr<ID3D11Texture2D> GetTex2D() const { return m_Tex2D; }
     ComPtr<ID3D11ShaderResourceView> GetSRV() const { return m_SRV; }
+    ComPtr<ID3D11RenderTargetView> GetRTV() const { return m_RTV; }
+    ComPtr<ID3D11DepthStencilView> GetDSV() const { return m_DSV; }
+    ComPtr<ID3D11UnorderedAccessView> GetUAV() const { return m_UAV; }
 
 public:
     CTexture();

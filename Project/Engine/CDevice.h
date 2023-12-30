@@ -48,7 +48,7 @@ public:
 
 public:
     void Resize(Vec2 resolution);
-    ID3D11Texture2D* GetRenderTargetTexture() const { return m_RTTex.Get(); }
+    ComPtr<ID3D11Texture2D> GetRenderTargetTexture() const { return m_RTTex; }
 
 private:
     int CreateSwapChain();

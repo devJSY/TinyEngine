@@ -2,13 +2,16 @@
 #include "CEditor.h"
 #include "COutliner.h"
 #include "CContentBrowser.h"
+#include "Ptr.h"
+#include "CTexture.h"
 
 class CLevelEditor : public CEditor
 {
 private:
-    // Viewport
-    ComPtr<ID3D11Texture2D> m_ViewportRTTex;
-    ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
+    Ptr<CTexture> m_RTCopyTex;
+    //// Viewport
+    //ComPtr<ID3D11Texture2D> m_ViewportRTTex;
+    //ComPtr<ID3D11ShaderResourceView> m_ViewportSRView;
 
     bool m_ViewportFocused;
     bool m_ViewportHovered;

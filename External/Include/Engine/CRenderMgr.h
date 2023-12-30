@@ -1,5 +1,7 @@
 #pragma once
 #include "singleton.h"
+#include "Ptr.h"
+#include "CTexture.h"
 
 class CCamera;
 class CGameObject;
@@ -14,6 +16,9 @@ private:
     list<tDebugShapeInfo> m_DbgShapeInfo;
 
     CGameObject* m_pDebugObj;
+
+private:
+    Ptr<CTexture> m_RTCopyTex;
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
