@@ -174,9 +174,9 @@ void CTestLevel::AddMeshes()
     pMeshes->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
-    // Square
+    // Rect
     CGameObject* pSquare = new CGameObject;
-    pSquare->SetName(L"Square");
+    pSquare->SetName(L"Rect");
 
     pSquare->AddComponent(new CTransform);
     pSquare->AddComponent(new CMeshRender);
@@ -186,7 +186,7 @@ void CTestLevel::AddMeshes()
     pSquare->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
     pSquare->Transform()->SetAbsolute(true);
 
-    pSquare->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareMesh"));
+    pSquare->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pSquare->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
     pMeshes->AddChild(pSquare);
