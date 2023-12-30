@@ -2,6 +2,7 @@
 #include "CTexture.h"
 
 #include "CDevice.h"
+#include "CAssetMgr.h"
 
 CTexture::CTexture()
     : CAsset(ASSET_TYPE::TEXTURE)
@@ -68,12 +69,12 @@ void CTexture::UpdateData(int _RegisterNum)
 
 void CTexture::Clear(int _iRegisterNum)
 {
-    ID3D11ShaderResourceView* pSRV = nullptr;
-    CONTEXT->VSSetShaderResources(_iRegisterNum, 1, &pSRV);
-    CONTEXT->HSSetShaderResources(_iRegisterNum, 1, &pSRV);
-    CONTEXT->DSSetShaderResources(_iRegisterNum, 1, &pSRV);
-    CONTEXT->GSSetShaderResources(_iRegisterNum, 1, &pSRV);
-    CONTEXT->PSSetShaderResources(_iRegisterNum, 1, &pSRV);
+    Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture");
+    CONTEXT->VSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
+    CONTEXT->HSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
+    CONTEXT->DSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
+    CONTEXT->GSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
+    CONTEXT->PSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
 }
 
 int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)

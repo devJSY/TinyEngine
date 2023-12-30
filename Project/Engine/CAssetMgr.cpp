@@ -942,7 +942,6 @@ void CAssetMgr::LoadTexture()
 {
     Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"missing_texture.png");
     assert(ptex.Get());
-    ptex->UpdateData(0);
 
     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
@@ -950,13 +949,6 @@ void CAssetMgr::LoadTexture()
     Load<CTexture>(L"cubemap", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
     Load<CTexture>(L"cubemap_diffuse", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
     Load<CTexture>(L"cubemap_specular", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
-
-    // Ptr<CTexture> pTex = new CTexture;
-    // if (FAILED(pTex->Create(CDevice::GetInst()->GetRenderTargetTexture())))
-    //{
-    //     assert(nullptr);
-    // }
-    // AddAsset<CTexture>(L"RenderTarget", pTex.Get());
 }
 
 void CAssetMgr::LoadMaterial()

@@ -159,7 +159,7 @@ enum SCALAR_PARAM
 
 enum TEX_PARAM
 {
-    TEX_0 = 1,
+    TEX_0,
     TEX_1,
     TEX_2,
     TEX_3,

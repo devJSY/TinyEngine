@@ -101,20 +101,18 @@ cbuffer GLOBAL : register(b2)
     int padd;
 }
 
-Texture2D g_Missing_tex : register(t0);
-
+Texture2D g_tex_0 : register(t0);
 Texture2D g_tex_1 : register(t1);
 Texture2D g_tex_2 : register(t2);
 Texture2D g_tex_3 : register(t3);
 Texture2D g_tex_4 : register(t4);
 Texture2D g_tex_5 : register(t5);
-Texture2D g_tex_6 : register(t6);
 
-TextureCube g_texCube_0 : register(t7);
-TextureCube g_texCube_1 : register(t8);
+TextureCube g_texCube_0 : register(t6);
+TextureCube g_texCube_1 : register(t7);
 
-Texture2DArray g_texArr_0 : register(t9);
-Texture2DArray g_texArr_1 : register(t10);
+Texture2DArray g_texArr_0 : register(t8);
+Texture2DArray g_texArr_1 : register(t9);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);
