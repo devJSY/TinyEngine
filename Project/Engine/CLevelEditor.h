@@ -21,6 +21,8 @@ private:
 
     CContentBrowser m_ContentBrowser;
 
+    float m_FontSize;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

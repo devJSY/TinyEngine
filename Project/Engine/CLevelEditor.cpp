@@ -21,6 +21,7 @@ CLevelEditor::CLevelEditor()
     , m_show_Viewport2(false)
     , m_Outliner()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
+    , m_FontSize(20.f)
 {
 }
 
@@ -52,15 +53,14 @@ void CLevelEditor::begin()
     //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
     //  FIXME-DPI: Experimental.
 
-    float fontSize = 25.0f;
     wstring wBold = CPathMgr::GetContentPath();
     wstring wRegular = CPathMgr::GetContentPath();
 
     wBold += L"fonts\\opensans\\OpenSans-Bold.ttf";
     wRegular += L"fonts\\opensans\\OpenSans-Regular.ttf";
 
-    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), fontSize);
-    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), fontSize);
+    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), m_FontSize);
+    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), m_FontSize);
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

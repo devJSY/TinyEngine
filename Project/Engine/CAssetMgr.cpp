@@ -21,10 +21,10 @@ CAssetMgr::~CAssetMgr()
 
 void CAssetMgr::init()
 {
-    LoadMesh();
-    LoadShader();
-    LoadTexture();
-    LoadMaterial();
+    CreateDefaultMesh();
+    CreateDefaultGraphicsShader();
+    CreateDefaultTexture();
+    CreateDefaultMaterial();
 }
 
 tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
@@ -622,7 +622,7 @@ vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string file
     return meshes;
 }
 
-Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData)
+Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData)
 {
     CMaterial* pMtrl = new CMaterial;
     pMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
@@ -710,13 +710,13 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(CMesh* _Mesh, const tMeshData& _Mesh
     return Ptr<CMaterial>(pMtrl);
 }
 
-void CAssetMgr::LoadMesh()
+void CAssetMgr::CreateDefaultMesh()
 {
     // Circle
     {
         auto mesh = MakeCircle(1.f, 40);
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"CircleMesh", pMesh);
     }
@@ -725,7 +725,7 @@ void CAssetMgr::LoadMesh()
     {
         auto mesh = MakeSquare();
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"SquareMesh", pMesh);
     }
@@ -734,7 +734,7 @@ void CAssetMgr::LoadMesh()
     {
         auto mesh = MakeSquareGrid(10, 10);
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"SquareGridMesh", pMesh);
     }
@@ -743,7 +743,7 @@ void CAssetMgr::LoadMesh()
     {
         auto mesh = MakeBox();
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"BoxMesh", pMesh);
     }
@@ -751,7 +751,7 @@ void CAssetMgr::LoadMesh()
     // Cylinder
     {
         auto mesh = MakeCylinder(1, 1, 1, 100);
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"CylinderMesh", pMesh);
     }
@@ -760,7 +760,7 @@ void CAssetMgr::LoadMesh()
     {
         auto mesh = MakeSphere(1, 10, 10);
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"SphereMesh", pMesh);
     }
@@ -768,7 +768,7 @@ void CAssetMgr::LoadMesh()
     // Tetrahedron
     {
         auto mesh = MakeTetrahedron();
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"TetrahedronMesh", pMesh);
     }
@@ -776,7 +776,7 @@ void CAssetMgr::LoadMesh()
     // Icosahedron
     {
         auto mesh = MakeIcosahedron();
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"IcosahedronMesh", pMesh);
     }
@@ -786,7 +786,7 @@ void CAssetMgr::LoadMesh()
         auto mesh = MakeSphere(1, 25, 25);
         mesh = SubdivideToSphere(1.f, mesh);
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
@@ -807,7 +807,7 @@ CGameObject* CAssetMgr::LoadModel(const std::string& _relativepath, const std::s
         CGameObject* Parts = new CGameObject;
         Parts->SetName(_name + L" Parts " + std::to_wstring(idx));
 
-        CMesh* pMesh = new CMesh;
+        Ptr<CMesh> pMesh = new CMesh;
         pMesh->SetName(_name + L" Parts " + std::to_wstring(idx));
         pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
                       (UINT)meshData.indices.size());
@@ -830,10 +830,10 @@ CGameObject* CAssetMgr::LoadModel(const std::string& _relativepath, const std::s
     return model;
 }
 
-void CAssetMgr::LoadShader()
+void CAssetMgr::CreateDefaultGraphicsShader()
 {
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
@@ -847,7 +847,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
@@ -860,7 +860,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
@@ -870,7 +870,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BlinnPhongVS.hlsl", "main");
@@ -884,7 +884,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\NormalLineVS.hlsl", "main");
@@ -897,7 +897,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\OutLineVS.hlsl", "main");
@@ -911,7 +911,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
@@ -925,7 +925,7 @@ void CAssetMgr::LoadShader()
     }
 
     {
-        CGraphicsShader* pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\PostprocessVS.hlsl", "main");
@@ -938,7 +938,7 @@ void CAssetMgr::LoadShader()
     }
 }
 
-void CAssetMgr::LoadTexture()
+void CAssetMgr::CreateDefaultTexture()
 {
     Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"missing_texture.png");
     assert(ptex.Get());
@@ -951,7 +951,7 @@ void CAssetMgr::LoadTexture()
     Load<CTexture>(L"cubemap_specular", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
 }
 
-void CAssetMgr::LoadMaterial()
+void CAssetMgr::CreateDefaultMaterial()
 {
     // Std2DMtrl
     CMaterial* pMtrl = nullptr;

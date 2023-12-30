@@ -24,10 +24,10 @@ public:
 
 private:
     // 에셋 로딩
-    void LoadMesh();
-    void LoadShader();
-    void LoadTexture();
-    void LoadMaterial();
+    void CreateDefaultMesh();
+    void CreateDefaultGraphicsShader();
+    void CreateDefaultTexture();
+    void CreateDefaultMaterial();
 
 private:
     // Geometry
@@ -50,11 +50,11 @@ public:
 
 private:
     vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals);
-    Ptr<CMaterial> LoadModelMaterial(CMesh* _Mesh, const tMeshData& _MeshData);
+    Ptr<CMaterial> LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData);
 
 public:
     template <typename T>
-    void AddAsset(const wstring& _strKey, T* _Asset);
+    void AddAsset(const wstring& _strKey, Ptr<T> _Asset);
 
     template <typename T>
     Ptr<T> FindAsset(const wstring& _strKey);
@@ -83,14 +83,14 @@ ASSET_TYPE GetAssetType()
 }
 
 template <typename T>
-inline void CAssetMgr::AddAsset(const wstring& _strKey, T* _Asset)
+inline void CAssetMgr::AddAsset(const wstring& _strKey, Ptr<T> _Asset)
 {
     ASSET_TYPE Type = GetAssetType<T>();
 
     map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_strKey);
     assert(iter == m_mapAsset[(UINT)Type].end());
 
-    m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset));
+    m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset.Get()));
 }
 
 template <typename T>
@@ -105,6 +105,7 @@ Ptr<T> CAssetMgr::FindAsset(const wstring& _strKey)
         return nullptr;
     }
 
+    // CAsset 타입을 요청한 타입으로 캐스팅해서 반환
     return (T*)iter->second.Get();
 }
 
@@ -134,5 +135,6 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
     pAsset->SetRelativePath(_strRelativePath);
     AddAsset<T>(_strKey, (T*)pAsset.Get());
 
+    // CAsset 타입을 요청한 타입으로 캐스팅해서 반환
     return (T*)pAsset.Get();
 }

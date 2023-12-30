@@ -35,21 +35,21 @@ void CTestLevel::begin()
     pCamObj->Camera()->LayerCheckAll();
     pCamObj->Camera()->LayerCheck(L"UI", false);
 
-    AddObject(pCamObj, 0);
+    AddObject(pCamObj, L"Camera");
 
-    // UI ¸¸ ·»´õ¸µ
-    pCamObj = new CGameObject;
-    pCamObj->SetName(L"UI Camera");
-    pCamObj->AddComponent(new CTransform);
-    pCamObj->AddComponent(new CCamera);
+    //// UI ¸¸ ·»´õ¸µ
+    //pCamObj = new CGameObject;
+    //pCamObj->SetName(L"UI Camera");
+    //pCamObj->AddComponent(new CTransform);
+    //pCamObj->AddComponent(new CCamera);
 
-    pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
-    pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+    //pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
+    //pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
-    pCamObj->Camera()->SetCameraPriority(1);
-    pCamObj->Camera()->LayerCheck(L"UI", true);
+    //pCamObj->Camera()->SetCameraPriority(1);
+    //pCamObj->Camera()->LayerCheck(L"UI", true);
 
-    AddObject(pCamObj, 0);
+    //AddObject(pCamObj,  L"Camera");
 
     // Lights
     CGameObject* pLights = new CGameObject;
@@ -106,13 +106,13 @@ void CTestLevel::begin()
     pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
     pLights->AddChild(pLight3);
 
-    AddObject(pLights, 1);
+    AddObject(pLights, L"Light");
 
     AddMeshes();
 
-    // AddModels();
+    //AddModels();
 
-    // Box
+    // SkyBox
     CGameObject* pSkyBox = new CGameObject;
     pSkyBox->SetName(L"SkyBox");
 
@@ -126,7 +126,7 @@ void CTestLevel::begin()
     pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Skybox"));
 
-    AddObject(pSkyBox, 31);
+    AddObject(pSkyBox, L"SkyBox");
 
 
 
@@ -329,7 +329,7 @@ void CTestLevel::AddMeshes()
 
     pMeshes->AddChild(pCircle);
 
-    AddObject(pMeshes, 10);
+    AddObject(pMeshes, L"Mesh");
 }
 
 void CTestLevel::AddModels()
@@ -342,7 +342,7 @@ void CTestLevel::AddModels()
     //     pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
     //     pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    //    AddObject(pZelda, 10);
+    //    AddObject(pZelda, L"Model");
     //}
 
     //// Damaged Helmet
@@ -353,7 +353,7 @@ void CTestLevel::AddModels()
     //     pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
     //     pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    //    AddObject(pDamagedHelmet, 10);
+    //    AddObject(pDamagedHelmet, L"Model");
     //}
 
     //// blue whale
@@ -364,7 +364,7 @@ void CTestLevel::AddModels()
     //     pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
     //     pblueWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    //    AddObject(pblueWhale, 10);
+    //    AddObject(pblueWhale, L"Model");
     //}
 
     //// torii gate
@@ -375,7 +375,7 @@ void CTestLevel::AddModels()
     //     ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
     //     ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-    //    AddObject(ptoriigate, 10);
+    //    AddObject(ptoriigate, L"Model");
     //}
 
     // dragon warrior
@@ -386,6 +386,6 @@ void CTestLevel::AddModels()
         pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
         pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pDragonWarrior, 10);
+        AddObject(pDragonWarrior, L"Model");
     }
 }
