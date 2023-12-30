@@ -133,19 +133,6 @@ void CLevelEditor::render()
     Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
-    // Drag & Drop
-    if (ImGui::BeginDragDropTarget())
-    {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-        {
-            string name = (char*)payload->Data;
-            name.resize(payload->DataSize);
-            std::cout << name << std::endl;
-        }
-
-        ImGui::EndDragDropTarget();
-    }
-
     // ImGuizmo
     CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
     if (nullptr != SelectedObj)

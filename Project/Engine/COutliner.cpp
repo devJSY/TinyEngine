@@ -332,14 +332,18 @@ void COutliner::DrawDetails(CGameObject* obj)
                 if (bDirty)
                     pMaterial->SetMaterialCoefficient(ambient, diffuse, specular, environment);
 
-                constexpr float IMAGE_BASE_SIZE = 300.0f;
+                constexpr float IMAGE_BASE_SIZE = 250.0f;
 
                 // Texture
                 for (UINT i = TEX_PARAM::TEX_0; i <= TEX_PARAM::TEX_5; ++i)
                 {
                     Ptr<CTexture> pTex = pMaterial->GetTexParam((TEX_PARAM)i);
-                    if (nullptr == pTex.Get())
-                        continue;
+                    ID3D11ShaderResourceView* pSRV = nullptr;
+
+                    if (nullptr != pTex.Get())
+                        pSRV = pTex->GetSRV().Get();
+                    else
+                        pSRV = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
 
                     if (i == TEX_PARAM::TEX_0)
                         ImGui::Text("Ambient Texture");
@@ -354,7 +358,21 @@ void COutliner::DrawDetails(CGameObject* obj)
                     else if (i == TEX_PARAM::TEX_5)
                         ImGui::Text("Emissive Texture");
 
-                    ImGui::Image((void*)pTex->GetSRV().Get(), ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
+                    ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
+
+                    // Drag & Drop
+                    if (ImGui::BeginDragDropTarget())
+                    {
+                        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                        {
+                            string name = (char*)payload->Data;
+                            name.resize(payload->DataSize);
+                            pMaterial->SetTexParam((TEX_PARAM)i,
+                                                   CAssetMgr::GetInst()->FindAsset<CTexture>(stringToWstring(name)));
+                        }
+
+                        ImGui::EndDragDropTarget();
+                    }
                 }
 
                 ImGui::TreePop();
