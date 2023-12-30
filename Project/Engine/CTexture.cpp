@@ -70,11 +70,16 @@ void CTexture::UpdateData(int _RegisterNum)
 void CTexture::Clear(int _iRegisterNum)
 {
     Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture");
-    CONTEXT->VSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
-    CONTEXT->HSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
-    CONTEXT->DSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
-    CONTEXT->GSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
-    CONTEXT->PSSetShaderResources(_iRegisterNum, 1, pMissingTex->GetSRV().GetAddressOf());
+    ID3D11ShaderResourceView* pSRV = nullptr;
+
+    if (TEX_0 <= _iRegisterNum && TEX_5 >= _iRegisterNum)
+        pSRV = pMissingTex->GetSRV().Get();
+
+    CONTEXT->VSSetShaderResources(_iRegisterNum, 1, &pSRV);
+    CONTEXT->HSSetShaderResources(_iRegisterNum, 1, &pSRV);
+    CONTEXT->DSSetShaderResources(_iRegisterNum, 1, &pSRV);
+    CONTEXT->GSSetShaderResources(_iRegisterNum, 1, &pSRV);
+    CONTEXT->PSSetShaderResources(_iRegisterNum, 1, &pSRV);
 }
 
 int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage)
@@ -184,4 +189,3 @@ int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
 
     return S_OK;
 }
-

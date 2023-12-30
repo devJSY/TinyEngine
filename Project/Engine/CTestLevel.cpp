@@ -37,19 +37,19 @@ void CTestLevel::begin()
 
     AddObject(pCamObj, L"Camera");
 
-    //// UI ¸¸ ·»´õ¸µ
-    //pCamObj = new CGameObject;
-    //pCamObj->SetName(L"UI Camera");
-    //pCamObj->AddComponent(new CTransform);
-    //pCamObj->AddComponent(new CCamera);
+    // UI ¸¸ ·»´õ¸µ
+    pCamObj = new CGameObject;
+    pCamObj->SetName(L"UI Camera");
+    pCamObj->AddComponent(new CTransform);
+    pCamObj->AddComponent(new CCamera);
 
-    //pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
-    //pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+    pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
+    pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
-    //pCamObj->Camera()->SetCameraPriority(1);
-    //pCamObj->Camera()->LayerCheck(L"UI", true);
+    pCamObj->Camera()->SetCameraPriority(1);
+    pCamObj->Camera()->LayerCheck(L"UI", true);
 
-    //AddObject(pCamObj, L"Camera");
+    AddObject(pCamObj, L"Camera");
 
     // Lights
     CGameObject* pLights = new CGameObject;
@@ -110,7 +110,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    // AddModels();
+    AddModels();
 
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;
