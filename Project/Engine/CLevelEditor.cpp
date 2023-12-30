@@ -13,6 +13,7 @@
 #include "CPathMgr.h"
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
+#include "CAssetMgr.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -278,46 +279,20 @@ void CLevelEditor::render()
 
 void CLevelEditor::Resize()
 {
-    CreateViewport();
+    Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
+    m_RTCopyTex->Resize(Resolution);
 }
 
 void CLevelEditor::CreateViewport()
 {
-    if (nullptr == m_RTCopyTex)
-        m_RTCopyTex = new CTexture;
-
     ID3D11Texture2D* ptex = CDevice::GetInst()->GetRenderTargetTexture().Get();
     Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
 
-    // Create texture.
-    D3D11_TEXTURE2D_DESC txtDesc = {};
-    ptex->GetDesc(&txtDesc);
+    m_RTCopyTex = new CTexture;
 
-    txtDesc.Width = (UINT)Resolution.x;
-    txtDesc.Height = (UINT)Resolution.y;
-    txtDesc.Usage = D3D11_USAGE_DYNAMIC;
-    txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    m_RTCopyTex->Create((UINT)Resolution.x, (UINT)Resolution.y, txtDesc.Format, txtDesc.BindFlags, txtDesc.Usage);
-
-    // m_RTCopyTex->GetTex2D().Reset();
-    // m_RTCopyTex->GetSRV().Reset();
-    // ID3D11Texture2D* tex = CDevice::GetInst()->GetRenderTargetTexture().Get();
-    // Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
-
-    //// Create texture.
-    // D3D11_TEXTURE2D_DESC txtDesc = {};
-    // tex->GetDesc(&txtDesc);
-
-    // txtDesc.Width = (UINT)Resolution.x;
-    // txtDesc.Height = (UINT)Resolution.y;
-    // txtDesc.Usage = D3D11_USAGE_DYNAMIC;
-    // txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    // txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    // DEVICE->CreateTexture2D(&txtDesc, nullptr, m_RTCopyTex->GetTex2D().GetAddressOf());
-    // DEVICE->CreateShaderResourceView(m_RTCopyTex->GetTex2D().Get(), nullptr, m_RTCopyTex->GetSRV().GetAddressOf());
+    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                      DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
+                                                      D3D11_USAGE_DEFAULT);
 }
 
 void CLevelEditor::SetDarkThemeColors()

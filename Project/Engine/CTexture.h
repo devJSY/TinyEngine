@@ -35,6 +35,9 @@ public:
     ComPtr<ID3D11UnorderedAccessView> GetUAV() const { return m_UAV; }
 
 public:
+    void Resize(Vec2 Resolution);
+
+public:
     CTexture();
     ~CTexture();
 
