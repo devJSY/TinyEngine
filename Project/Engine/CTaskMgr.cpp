@@ -9,6 +9,7 @@
 #include "CEngine.h"
 #include "CDevice.h"
 #include "CEditorMgr.h"
+#include "CRenderMgr.h"
 
 CTaskMgr::CTaskMgr()
 {
@@ -92,7 +93,7 @@ void CTaskMgr::tick()
                 Vec2 resolution = Vec2(width, height);
                 CEngine::GetInst()->SetResolution(resolution);
                 CDevice::GetInst()->Resize(resolution);
-                CEditorMgr::GetInst()->Resize();
+                CRenderMgr::GetInst()->Resize(resolution);
             }
             break;
         }

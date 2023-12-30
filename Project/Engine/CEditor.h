@@ -12,8 +12,6 @@ public:
     virtual void finaltick() = 0;
     virtual void render() = 0;
 
-    virtual void Resize(){};
-
 public:
     CEditor(EDITOR_TYPE type);
     virtual ~CEditor();

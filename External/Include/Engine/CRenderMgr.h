@@ -31,6 +31,10 @@ public:
     void init();
     void tick();
 
+public:
+    void CopyRenderTarget();
+    void Resize(Vec2 Resolution);
+
 private:
     void render();
     void render_debug();

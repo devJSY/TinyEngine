@@ -40,11 +40,3 @@ void CEditorMgr::render()
 
     m_CurEditor->render();
 }
-
-void CEditorMgr::Resize()
-{
-    if (nullptr == m_CurEditor)
-        return;
-
-    m_CurEditor->Resize();
-}

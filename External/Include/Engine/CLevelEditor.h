@@ -8,8 +8,6 @@
 class CLevelEditor : public CEditor
 {
 private:
-    Ptr<CTexture> m_RTCopyTex;
-
     bool m_ViewportFocused;
     bool m_ViewportHovered;
 
@@ -28,11 +26,9 @@ public:
     virtual void tick() override;
     virtual void finaltick() override;
     virtual void render() override;
-    virtual void Resize() override;
 
 private:
     void SetDarkThemeColors();
-    void CreateViewport();
 
 public:
     bool IsViewportFocused() const { return m_ViewportFocused; }

@@ -26,6 +26,8 @@ void CRenderMgr::tick()
     render();
 
     render_debug();
+
+    CopyRenderTarget();
 }
 
 void CRenderMgr::render()
@@ -89,4 +91,15 @@ CCamera* CRenderMgr::GetCamera(int _Idx) const
         return nullptr;
 
     return m_vecCam[_Idx];
+}
+
+void CRenderMgr::CopyRenderTarget()
+{
+    // Viewport บนป็
+    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), CDevice::GetInst()->GetRenderTargetTexture().Get());
+}
+
+void CRenderMgr::Resize(Vec2 Resolution)
+{
+    m_RTCopyTex->Resize(Resolution);
 }

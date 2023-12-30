@@ -32,11 +32,6 @@ CLevelEditor::~CLevelEditor()
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
-
-    if (nullptr != m_RTCopyTex)
-    {
-        m_RTCopyTex = nullptr;
-    }
 }
 
 void CLevelEditor::begin()
@@ -87,9 +82,6 @@ void CLevelEditor::begin()
     ImGui_ImplWin32_Init(CEngine::GetInst()->GetMainWind());
     ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
 
-    // Vieport 텍스춰 생성
-    CreateViewport();
-
     m_Outliner.begin();
     m_ContentBrowser.begin();
 }
@@ -129,9 +121,6 @@ void CLevelEditor::finaltick()
 
 void CLevelEditor::render()
 {
-    // Viewport 복사
-    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), CDevice::GetInst()->GetRenderTargetTexture().Get());
-
     // Viewport
     ImGui::Begin("Level ViewPort");
 
@@ -140,7 +129,9 @@ void CLevelEditor::render()
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-    ImGui::Image((void*)m_RTCopyTex->GetSRV().Get(), viewportSize);
+
+    Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
+    ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
     // Drag & Drop
     if (ImGui::BeginDragDropTarget())
@@ -254,7 +245,7 @@ void CLevelEditor::render()
             m_ViewportHovered = ImGui::IsWindowHovered();
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((void*)m_RTCopyTex->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
+        ImGui::Image((void*)pCopyTex->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
         ImGui::End();
     }
 
@@ -275,24 +266,6 @@ void CLevelEditor::render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
-}
-
-void CLevelEditor::Resize()
-{
-    Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
-    m_RTCopyTex->Resize(Resolution);
-}
-
-void CLevelEditor::CreateViewport()
-{
-    ID3D11Texture2D* ptex = CDevice::GetInst()->GetRenderTargetTexture().Get();
-    Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
-
-    m_RTCopyTex = new CTexture;
-
-    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                      DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
-                                                      D3D11_USAGE_DEFAULT);
 }
 
 void CLevelEditor::SetDarkThemeColors()
