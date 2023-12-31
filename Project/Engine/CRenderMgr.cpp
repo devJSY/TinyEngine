@@ -9,9 +9,6 @@
 
 CRenderMgr::CRenderMgr()
     : m_pDebugObj(nullptr)
-    , m_Sampling(nullptr)
-    , m_BlurX(nullptr)
-    , m_BlurY(nullptr)
 {
 }
 
@@ -21,30 +18,6 @@ CRenderMgr::~CRenderMgr()
     {
         delete m_pDebugObj;
         m_pDebugObj = nullptr;
-    }
-
-    if (nullptr != m_Sampling)
-    {
-        delete m_Sampling;
-        m_Sampling = nullptr;
-    }
-
-    if (nullptr != m_BlurX)
-    {
-        delete m_BlurX;
-        m_BlurX = nullptr;
-    }
-
-    if (nullptr != m_BlurY)
-    {
-        delete m_BlurY;
-        m_BlurY = nullptr;
-    }
-
-    if (nullptr != m_Combine)
-    {
-        delete m_Combine;
-        m_Combine = nullptr;
     }
 }
 
@@ -59,11 +32,7 @@ void CRenderMgr::tick()
 
 void CRenderMgr::render()
 {
-    m_vecCam[0]->render();
-
-    render_postprocess();
-
-    for (size_t i = 1; i < m_vecCam.size(); ++i)
+    for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
         m_vecCam[i]->render();
     }
@@ -103,45 +72,6 @@ void CRenderMgr::render_debug()
     }
 }
 
-void CRenderMgr::render_postprocess()
-{
-    // Postprocessing 전 원본 저장
-    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    CONTEXT->CopyResource(m_OriginRTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
-
-    for (size_t i = 0; i < 1; ++i)
-    {
-        if (nullptr != m_Sampling)
-        {
-            CopyRenderTarget();
-            m_Sampling->render();
-        }
-    }
-
-    for (size_t i = 0; i < 5; ++i)
-    {
-        if (nullptr != m_BlurX)
-        {
-            CopyRenderTarget();
-            m_BlurX->render();
-        }
-        if (nullptr != m_BlurY)
-        {
-            CopyRenderTarget();
-            m_BlurY->render();
-        }
-    }
-
-    for (size_t i = 0; i < 1; ++i)
-    {
-        if (nullptr != m_Combine)
-        {
-            CopyRenderTarget();
-            m_Combine->render();
-        }
-    }
-}
-
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 {
     if (m_vecCam.size() <= _Idx + 1)
@@ -172,27 +102,15 @@ void CRenderMgr::CopyRenderTarget()
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
-    assert(!(m_RTCopyTex.Get() || m_OriginRTCopyTex.Get()));
+    assert(!m_RTCopyTex.Get());
     m_RTCopyTex = new CTexture;
     m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
                                                       DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
                                                       D3D11_USAGE_DEFAULT);
-    m_OriginRTCopyTex = new CTexture;
-    m_OriginRTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"OriginRTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                            DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
-                                                            D3D11_USAGE_DEFAULT);
-
-    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Sampling")->SetTexParam(TEX_0, m_RTCopyTex);
-    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurX")->SetTexParam(TEX_0, m_RTCopyTex);
-    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurY")->SetTexParam(TEX_0, m_RTCopyTex);
-
-    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Combine")->SetTexParam(TEX_0, m_RTCopyTex);
-    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Combine")->SetTexParam(TEX_1, m_OriginRTCopyTex);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
 {
     m_RTCopyTex = nullptr;
-    m_OriginRTCopyTex = nullptr;
     CreateRTCopyTex(Resolution);
 }
