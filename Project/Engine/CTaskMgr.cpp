@@ -115,6 +115,7 @@ void CTaskMgr::tick()
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RenderTargetTex");
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthStencilTex");
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMap");
 
                 CDevice::GetInst()->Resize(resolution);
                 CRenderMgr::GetInst()->Resize(resolution);
@@ -132,7 +133,7 @@ void CTaskMgr::tick()
                 Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
                 Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
 
-                //// Texture2DMS ¡æ Texture2D
+                //// MSAA »ç¿ë½Ã Texture2DMS ¡æ Texture2D
                 // Ptr<CTexture> tempTex = CAssetMgr::GetInst()->CreateTexture(
                 //     L"tempTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                 //     D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);

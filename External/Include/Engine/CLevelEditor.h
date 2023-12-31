@@ -11,7 +11,7 @@ private:
     bool m_ViewportFocused;
     bool m_ViewportHovered;
 
-    bool m_show_Viewport2;
+    bool m_bShowIDMap;
 
     COutliner m_Outliner;
 

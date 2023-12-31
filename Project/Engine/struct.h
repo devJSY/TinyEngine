@@ -100,6 +100,8 @@ struct tGlobal
     float Bloom_Strength;
     bool DrawAsWireFrame;
     float padd;
+
+    Vec4 pickingColor;
 };
 
 struct tMeshData

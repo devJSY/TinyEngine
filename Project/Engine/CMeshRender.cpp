@@ -49,6 +49,7 @@ void CMeshRender::UpdateData()
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
     g_Global.resolution = CDevice::GetInst()->GetRenderResolution();
+    g_Global.pickingColor = HashIDToColor(this->GetID());
 
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);
@@ -62,7 +63,7 @@ void CMeshRender::render()
 
     UpdateData();
 
-    //Render Pass 
+    // Render Pass 
     GetMesh()->render();
 
     // outline pass

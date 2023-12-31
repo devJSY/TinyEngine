@@ -103,3 +103,12 @@ std::string currentDateTime()
 
     return buffer;
 }
+
+Vec4 HashIDToColor(int hash)
+{
+    int r = (hash >> 16) & 0xff;
+    int g = (hash >> 8) & 0xff;
+    int b = hash & 0xff;
+
+    return Vec4((float)r / 255.f, (float)g / 255.f, (float)b / 255.f, 1.f);
+}

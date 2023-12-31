@@ -19,7 +19,7 @@ CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_ViewportFocused(false)
     , m_ViewportHovered(false)
-    , m_show_Viewport2(false)
+    , m_bShowIDMap(false)
     , m_Outliner()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
     , m_FontSize(20.f)
@@ -116,7 +116,7 @@ void CLevelEditor::finaltick()
     ImGui::End();
 
     ImGui::Begin("View Mode");
-    ImGui::Checkbox("Another Viewport", &m_show_Viewport2);
+    ImGui::Checkbox("Picking Color ID Map", &m_bShowIDMap);
     ImGui::Checkbox("WireFrame", &g_Global.DrawAsWireFrame);
     ImGui::End();
 }
@@ -131,7 +131,7 @@ void CLevelEditor::render()
 
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-
+    
     Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
@@ -225,16 +225,13 @@ void CLevelEditor::render()
 
     ImGui::End();
 
-    if (m_show_Viewport2)
+    if (m_bShowIDMap)
     {
-        ImGui::Begin("Level ViewPort2");
-        if (!m_ViewportFocused)
-            m_ViewportFocused = ImGui::IsWindowFocused();
-        if (!m_ViewportHovered)
-            m_ViewportHovered = ImGui::IsWindowHovered();
+        Ptr<CTexture> pIDMap = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMap");
 
+        ImGui::Begin("Picking Color ID Map");
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((void*)pCopyTex->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
+        ImGui::Image((void*)pIDMap->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
         ImGui::End();
     }
 

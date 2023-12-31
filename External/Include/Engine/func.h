@@ -50,6 +50,7 @@ void Delete_Vec(vector<T>& _vec)
 string WstringTostring(const wstring& wstr);
 wstring stringToWstring(const string& str);
 std::string currentDateTime();
+Vec4 HashIDToColor(int hash);
 
 // template <typename T>
 // bool IsValid(T*& _Entity)

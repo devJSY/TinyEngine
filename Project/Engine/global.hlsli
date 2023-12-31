@@ -102,6 +102,8 @@ cbuffer GLOBAL : register(b2)
     float g_Bloom_Strength;
     bool g_DrawAsWireFrame;
     float padd;
+    
+    float4 g_pickingColor;
 }
 
 Texture2D g_tex_0 : register(t0);

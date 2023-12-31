@@ -23,6 +23,7 @@ enum class TASK_TYPE
     // wParam : Asset_TYPE, lParam : Resource Adress
 	DELETE_ASSET, 
 
+    // No Param
     SCREENSHOT,
 };
 
