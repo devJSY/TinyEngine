@@ -15,4 +15,11 @@ void CRenderMgr::init()
     m_pDebugObj->AddComponent(new CMeshRender);
 
     CreateRTCopyTex(CDevice::GetInst()->GetRenderResolution());
+
+    CGameObject* pPostProcess = new CGameObject;
+    pPostProcess->AddComponent(new CTransform);
+    pPostProcess->AddComponent(new CMeshRender);
+    pPostProcess->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pPostProcess->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Postprocess"));
+    m_vecPost.push_back(pPostProcess);
 }

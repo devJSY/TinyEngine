@@ -194,7 +194,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             {
                 float fov = cam->GetFOV();
                 float Degree = XMConvertToDegrees(fov);
-                if (ImGui::DragFloat("FOV", &Degree, XM_PI / 18.f)) // 스피드 - 10도
+                if (ImGui::DragFloat("FOV", &Degree, XM_PI / 18.f)) // 스피드 : 10도
                     cam->SetFOV(XMConvertToRadians(Degree));
 
                 float Near = cam->GetNear();
@@ -274,7 +274,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                 light->SetSpotPower(spotPower);
 
             Vec3 color = light->GetColor();
-            if (ImGui::ColorEdit3("Strength", &color.x))
+            if (ImGui::ColorEdit3("Color", &color.x))
                 light->SetColor(color);
 
             ImGui::TreePop();

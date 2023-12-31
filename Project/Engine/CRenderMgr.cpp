@@ -19,6 +19,8 @@ CRenderMgr::~CRenderMgr()
         delete m_pDebugObj;
         m_pDebugObj = nullptr;
     }
+
+    Delete_Vec(m_vecPost);
 }
 
 void CRenderMgr::tick()
@@ -26,6 +28,8 @@ void CRenderMgr::tick()
     render();
 
     render_debug();
+
+    render_postprocess();
 
     CopyRenderTarget();
 }
@@ -72,6 +76,15 @@ void CRenderMgr::render_debug()
     }
 }
 
+void CRenderMgr::render_postprocess()
+{
+    for (size_t i = 0; i < m_vecPost.size(); ++i)
+    {
+        CopyRenderTarget();
+        m_vecPost[i]->render();
+    }
+}
+
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 {
     if (m_vecCam.size() <= _Idx + 1)
@@ -95,18 +108,20 @@ CCamera* CRenderMgr::GetCamera(int _Idx) const
 
 void CRenderMgr::CopyRenderTarget()
 {
-    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-
     // Viewport บนป็
+    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
     CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
+    assert(!m_RTCopyTex.Get());
     m_RTCopyTex = new CTexture;
     m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
                                                       DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
                                                       D3D11_USAGE_DEFAULT);
+
+    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Postprocess")->SetTexParam(TEX_0, m_RTCopyTex);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)

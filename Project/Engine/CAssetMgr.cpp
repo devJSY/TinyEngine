@@ -988,12 +988,11 @@ void CAssetMgr::CreateDefaultMaterial()
     pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
     AddAsset<CMaterial>(L"Skybox", pSkyBox);
 
-    //// PostProcess
-    // CMaterial* pPostProcess = nullptr;
-    // pPostProcess = new CMaterial;
-    // pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
-    // pPostProcess->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"RenderTarget"));
-    // AddAsset<CMaterial>(L"Postprocess", pPostProcess);
+    // PostProcess
+    CMaterial* pPostProcess = nullptr;
+    pPostProcess = new CMaterial;
+    pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
+    AddAsset<CMaterial>(L"Postprocess", pPostProcess);
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,

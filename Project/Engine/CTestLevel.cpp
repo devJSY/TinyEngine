@@ -10,6 +10,7 @@
 #include "CCamera.h"
 #include "CCameraMoveScript.h"
 #include "CLevelMgr.h"
+#include "CRenderMgr.h"
 
 CTestLevel::CTestLevel()
 {
@@ -110,7 +111,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    //AddModels();
+    // AddModels();
 
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;

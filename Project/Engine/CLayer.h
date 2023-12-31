@@ -8,7 +8,6 @@ class CLayer : public CEntity
 private:
     vector<CGameObject*> m_vecParent;
     vector<CGameObject*> m_vecObjects;
-
     int m_iLayerIdx;
 
 public:

@@ -19,6 +19,7 @@ private:
 
 private:
     Ptr<CTexture> m_RTCopyTex;
+    vector<CGameObject*> m_vecPost;
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
@@ -39,4 +40,7 @@ public:
 private:
     void render();
     void render_debug();
+
+private:
+    void render_postprocess();
 };
