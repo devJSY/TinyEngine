@@ -928,13 +928,39 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         Ptr<CGraphicsShader> pShader = nullptr;
 
         pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\PostprocessVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\PostprocessPS.hlsl", "main");
+        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\SamplingPS.hlsl", "main");
 
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        AddAsset(L"Postprocess", pShader);
+        AddAsset(L"Sampling", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BlurXPS.hlsl", "main");
+
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"BlurX", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BlurYPS.hlsl", "main");
+
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"BlurY", pShader);
     }
 }
 
@@ -988,11 +1014,23 @@ void CAssetMgr::CreateDefaultMaterial()
     pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
     AddAsset<CMaterial>(L"Skybox", pSkyBox);
 
-    // PostProcess
+    // Sampling
     CMaterial* pPostProcess = nullptr;
     pPostProcess = new CMaterial;
-    pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Postprocess"));
-    AddAsset<CMaterial>(L"Postprocess", pPostProcess);
+    pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Sampling"));
+    AddAsset<CMaterial>(L"Sampling", pPostProcess);
+
+    // BlurX
+    CMaterial* pBlurX = nullptr;
+    pBlurX = new CMaterial;
+    pBlurX->SetShader(FindAsset<CGraphicsShader>(L"BlurX"));
+    AddAsset<CMaterial>(L"BlurX", pBlurX);
+
+    // BlurY
+    CMaterial* pBlurY = nullptr;
+    pBlurY = new CMaterial;
+    pBlurY->SetShader(FindAsset<CGraphicsShader>(L"BlurY"));
+    AddAsset<CMaterial>(L"BlurY", pBlurY);
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,

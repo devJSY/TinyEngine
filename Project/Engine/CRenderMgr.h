@@ -19,7 +19,10 @@ private:
 
 private:
     Ptr<CTexture> m_RTCopyTex;
-    vector<CGameObject*> m_vecPost;
+
+    CGameObject* m_Sampling;
+    CGameObject* m_BlurX;
+    CGameObject* m_BlurY;
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);

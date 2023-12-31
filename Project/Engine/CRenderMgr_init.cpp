@@ -16,10 +16,21 @@ void CRenderMgr::init()
 
     CreateRTCopyTex(CDevice::GetInst()->GetRenderResolution());
 
-    CGameObject* pPostProcess = new CGameObject;
-    pPostProcess->AddComponent(new CTransform);
-    pPostProcess->AddComponent(new CMeshRender);
-    pPostProcess->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pPostProcess->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Postprocess"));
-    m_vecPost.push_back(pPostProcess);
+    m_Sampling = new CGameObject;
+    m_Sampling->AddComponent(new CTransform);
+    m_Sampling->AddComponent(new CMeshRender);
+    m_Sampling->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_Sampling->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Sampling"));
+
+    m_BlurX = new CGameObject;
+    m_BlurX->AddComponent(new CTransform);
+    m_BlurX->AddComponent(new CMeshRender);
+    m_BlurX->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_BlurX->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurX"));
+
+    m_BlurY = new CGameObject;
+    m_BlurY->AddComponent(new CTransform);
+    m_BlurY->AddComponent(new CMeshRender);
+    m_BlurY->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_BlurY->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurY"));
 }

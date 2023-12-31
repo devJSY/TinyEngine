@@ -21,7 +21,7 @@ float4 main(PS_IN input) : SV_TARGET
     }
 
     // Rim
-    if (UseRim)
+    if (g_UseRim)
         color.rgb += RimLight(input.normalWorld, toEye, g_rimColor, g_rimPower);
     
     // Texture

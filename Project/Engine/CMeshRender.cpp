@@ -48,6 +48,7 @@ void CMeshRender::UpdateData()
     g_Global.UseRim = m_bUseRim;
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
+    g_Global.resolution = CDevice::GetInst()->GetRenderResolution();
 
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);

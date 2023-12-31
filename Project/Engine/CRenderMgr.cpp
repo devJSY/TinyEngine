@@ -20,7 +20,23 @@ CRenderMgr::~CRenderMgr()
         m_pDebugObj = nullptr;
     }
 
-    Delete_Vec(m_vecPost);
+    if (nullptr != m_Sampling)
+    {
+        delete m_Sampling;
+        m_Sampling = nullptr;
+    }
+
+    if (nullptr != m_BlurX)
+    {
+        delete m_BlurX;
+        m_BlurX = nullptr;
+    }
+
+    if (nullptr != m_BlurY)
+    {
+        delete m_BlurY;
+        m_BlurY = nullptr;
+    }
 }
 
 void CRenderMgr::tick()
@@ -29,14 +45,16 @@ void CRenderMgr::tick()
 
     render_debug();
 
-    render_postprocess();
-
     CopyRenderTarget();
 }
 
 void CRenderMgr::render()
 {
-    for (size_t i = 0; i < m_vecCam.size(); ++i)
+    m_vecCam[0]->render();
+
+    render_postprocess();
+
+    for (size_t i = 1; i < m_vecCam.size(); ++i)
     {
         m_vecCam[i]->render();
     }
@@ -78,10 +96,18 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_postprocess()
 {
-    for (size_t i = 0; i < m_vecPost.size(); ++i)
+    for (size_t i = 0; i < 1; ++i)
     {
         CopyRenderTarget();
-        m_vecPost[i]->render();
+        m_Sampling->render();
+    }
+
+    for (size_t i = 0; i < 10; ++i)
+    {
+        CopyRenderTarget();
+        m_BlurX->render();
+        CopyRenderTarget();
+        m_BlurY->render();
     }
 }
 
@@ -121,7 +147,9 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
                                                       DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
                                                       D3D11_USAGE_DEFAULT);
 
-    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Postprocess")->SetTexParam(TEX_0, m_RTCopyTex);
+    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Sampling")->SetTexParam(TEX_0, m_RTCopyTex);
+    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurX")->SetTexParam(TEX_0, m_RTCopyTex);
+    CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurY")->SetTexParam(TEX_0, m_RTCopyTex);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)

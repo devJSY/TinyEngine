@@ -89,16 +89,17 @@ cbuffer GLOBAL : register(b2)
     Light Lights[MAX_LIGHTS];
     
     float3 g_eyeWorld;
-    int g_UseTexture;
+    bool g_UseTexture;
     
     float3 g_rimColor;
     float g_rimPower;
 
+    float2 g_Resolution;
     float g_NormalLineScale;
-    
-    int UseRim;
-    bool DrawAsWireFrame;
-    int padd;
+    bool g_UseRim;
+
+    float3 padd;
+    bool g_DrawAsWireFrame;
 }
 
 Texture2D g_tex_0 : register(t0);

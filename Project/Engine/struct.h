@@ -87,16 +87,17 @@ struct tGlobal
     tLightData Lights[MAX_LIGHTS];
 
     Vec3 eyeWorld;
-    int UseTexture;
+    bool UseTexture;
 
     Vec3 rimColor;
     float rimPower;
 
+    Vec2 resolution;
     float NormalLineScale;
+    bool UseRim;
 
-    int UseRim;
+    Vec3 padd;
     bool DrawAsWireFrame;
-    int padd;
 };
 
 struct tMeshData

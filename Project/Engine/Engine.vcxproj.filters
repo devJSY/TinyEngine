@@ -567,10 +567,10 @@
     <FxCompile Include="SkyBoxVS.hlsl">
       <Filter>ShaderCode\SkyBox</Filter>
     </FxCompile>
-    <FxCompile Include="PostprocessVS.hlsl">
+    <FxCompile Include="SamplingVS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="PostprocessPS.hlsl">
+    <FxCompile Include="SamplingPS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="std2d.fx">
@@ -578,6 +578,12 @@
     </FxCompile>
     <FxCompile Include="debug.fx">
       <Filter>ShaderCode\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurYPS.hlsl">
+      <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurXPS.hlsl">
+      <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
