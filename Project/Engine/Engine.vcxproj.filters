@@ -585,5 +585,8 @@
     <FxCompile Include="BlurXPS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="CombinePS.hlsl">
+      <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

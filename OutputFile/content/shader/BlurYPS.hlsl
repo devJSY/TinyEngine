@@ -9,7 +9,7 @@ float4 main(PS_IN input) : SV_TARGET
     float dx = 1.0 / g_Resolution.x;
     float dy = 1.0 / g_Resolution.y;
 
-    if (g_btex_1)
+    if (g_btex_0)
     {
         for (int i = 0; i < 5; i++)
         {

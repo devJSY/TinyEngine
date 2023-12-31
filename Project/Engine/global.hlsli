@@ -49,12 +49,12 @@ cbuffer MATERIAL_CONST : register(b1)
     row_major matrix g_mat_2;
     row_major matrix g_mat_3;
             
+    int g_btex_0;
     int g_btex_1;
     int g_btex_2;
     int g_btex_3;
     int g_btex_4;
     int g_btex_5;
-    int g_btex_6;
     
     int g_btexcube_0;
     int g_btexcube_1;
@@ -98,8 +98,10 @@ cbuffer GLOBAL : register(b2)
     float g_NormalLineScale;
     bool g_UseRim;
 
-    float3 padd;
+    float g_Bloom_threshold;
+    float g_Bloom_Strength;
     bool g_DrawAsWireFrame;
+    float padd;
 }
 
 Texture2D g_tex_0 : register(t0);

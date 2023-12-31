@@ -96,8 +96,10 @@ struct tGlobal
     float NormalLineScale;
     bool UseRim;
 
-    Vec3 padd;
+    float Bloom_Threshold;
+    float Bloom_Strength;
     bool DrawAsWireFrame;
+    float padd;
 };
 
 struct tMeshData

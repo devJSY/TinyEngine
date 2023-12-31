@@ -98,6 +98,7 @@ void CTaskMgr::tick()
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RenderTargetTex");
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthStencilTex");
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"OriginRTCopyTex");
 
                 CDevice::GetInst()->Resize(resolution);
                 CRenderMgr::GetInst()->Resize(resolution);

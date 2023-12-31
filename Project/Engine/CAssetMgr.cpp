@@ -962,6 +962,19 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         AddAsset(L"BlurY", pShader);
     }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\CombinePS.hlsl", "main");
+
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"Combine", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultTexture()
@@ -1031,6 +1044,12 @@ void CAssetMgr::CreateDefaultMaterial()
     pBlurY = new CMaterial;
     pBlurY->SetShader(FindAsset<CGraphicsShader>(L"BlurY"));
     AddAsset<CMaterial>(L"BlurY", pBlurY);
+
+    // Combine
+    CMaterial* pCombine = nullptr;
+    pCombine = new CMaterial;
+    pCombine->SetShader(FindAsset<CGraphicsShader>(L"Combine"));
+    AddAsset<CMaterial>(L"Combine", pCombine);
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
