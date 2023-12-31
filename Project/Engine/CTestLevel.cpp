@@ -61,6 +61,8 @@ void CTestLevel::begin()
 
     pLights->Transform()->SetRelativePos(Vec3(0.f, 300.f, 200.f));
     pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLights->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
 
     CGameObject* pLight1 = new CGameObject;
     pLight1->SetName(L"Light 1");
@@ -71,10 +73,11 @@ void CTestLevel::begin()
     pLight1->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
-    pLight1->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLight1->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLight1->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight1);
 
     CGameObject* pLight2 = new CGameObject;
@@ -86,10 +89,11 @@ void CTestLevel::begin()
     pLight2->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
-    pLight2->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLight2->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLight2->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight2);
 
     CGameObject* pLight3 = new CGameObject;
@@ -101,10 +105,11 @@ void CTestLevel::begin()
     pLight3->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight3->Transform()->SetRelativePos(Vec3(750.f, 0.f, 100.f));
-    pLight3->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLight3->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLight3->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight3);
 
     AddObject(pLights, L"Light");
@@ -173,7 +178,7 @@ void CTestLevel::AddMeshes()
     pMeshes->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pMeshes->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
 
     // Rect
     CGameObject* pSquare = new CGameObject;

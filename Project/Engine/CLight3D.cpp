@@ -2,6 +2,9 @@
 #include "CLight3D.h"
 #include "CTransform.h"
 
+#include "CMeshRender.h"
+#include "CAssetMgr.h"
+
 CLight3D::CLight3D(LIGHT_TYPE type, int idx)
     : CComponent(COMPONENT_TYPE::LIGHT3D)
     , m_Type(type)
@@ -33,11 +36,20 @@ void CLight3D::finaltick()
     m_LightData.direction = GetOwner()->Transform()->GetLocalDir(DIR_TYPE::FRONT);
 
     if (m_Type == LIGHT_TYPE::DIRECTIONAL)
+    {
         m_LightData.LightType = LIGHT_DIRECTIONAL;
+        GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLight"));
+    }
     else if (m_Type == LIGHT_TYPE::POINT)
+    {
         m_LightData.LightType = LIGHT_POINT;
+        GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    }
     else if (m_Type == LIGHT_TYPE::SPOT)
+    {
         m_LightData.LightType = LIGHT_SPOT;
+        GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight"));
+    }
     else
         m_LightData.LightType = LIGHT_OFF;
 

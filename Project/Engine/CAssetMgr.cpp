@@ -923,58 +923,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         AddAsset(L"Skybox", pShader);
     }
-
-    {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\SamplingPS.hlsl", "main");
-
-        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"Sampling", pShader);
-    }
-
-    {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\BlurXPS.hlsl", "main");
-
-        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"BlurX", pShader);
-    }
-
-    {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\BlurYPS.hlsl", "main");
-
-        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"BlurY", pShader);
-    }
-
-    {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\SamplingVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\CombinePS.hlsl", "main");
-
-        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
-
-        AddAsset(L"Combine", pShader);
-    }
 }
 
 void CAssetMgr::CreateDefaultTexture()
@@ -984,6 +932,10 @@ void CAssetMgr::CreateDefaultTexture()
 
     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
+
+    Load<CTexture>(L"DirectionalLight", L"Icons//DirectionalLight.png");
+    Load<CTexture>(L"PointLight", L"Icons//PointLight.png");
+    Load<CTexture>(L"SpotLight", L"Icons//SpotLight.png");
 
     Load<CTexture>(L"cubemap", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
     Load<CTexture>(L"cubemap_diffuse", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
@@ -1027,29 +979,26 @@ void CAssetMgr::CreateDefaultMaterial()
     pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
     AddAsset<CMaterial>(L"Skybox", pSkyBox);
 
-    // Sampling
-    CMaterial* pPostProcess = nullptr;
-    pPostProcess = new CMaterial;
-    pPostProcess->SetShader(FindAsset<CGraphicsShader>(L"Sampling"));
-    AddAsset<CMaterial>(L"Sampling", pPostProcess);
+    // Directional Light
+    CMaterial* pDirLigth = nullptr;
+    pDirLigth = new CMaterial;
+    pDirLigth->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pDirLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"DirectionalLight"));
+    AddAsset<CMaterial>(L"DirectionalLight", pDirLigth);
 
-    // BlurX
-    CMaterial* pBlurX = nullptr;
-    pBlurX = new CMaterial;
-    pBlurX->SetShader(FindAsset<CGraphicsShader>(L"BlurX"));
-    AddAsset<CMaterial>(L"BlurX", pBlurX);
+    // Point Light
+    CMaterial* pPointLigth = nullptr;
+    pPointLigth = new CMaterial;
+    pPointLigth->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pPointLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"PointLight"));
+    AddAsset<CMaterial>(L"PointLight", pPointLigth);
 
-    // BlurY
-    CMaterial* pBlurY = nullptr;
-    pBlurY = new CMaterial;
-    pBlurY->SetShader(FindAsset<CGraphicsShader>(L"BlurY"));
-    AddAsset<CMaterial>(L"BlurY", pBlurY);
-
-    // Combine
-    CMaterial* pCombine = nullptr;
-    pCombine = new CMaterial;
-    pCombine->SetShader(FindAsset<CGraphicsShader>(L"Combine"));
-    AddAsset<CMaterial>(L"Combine", pCombine);
+    // Spot Light
+    CMaterial* pSpotLigth = nullptr;
+    pSpotLigth = new CMaterial;
+    pSpotLigth->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pSpotLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLight"));
+    AddAsset<CMaterial>(L"SpotLight", pSpotLigth);
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
