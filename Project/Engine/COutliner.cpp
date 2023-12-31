@@ -346,17 +346,17 @@ void COutliner::DrawDetails(CGameObject* obj)
                         pSRV = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
 
                     if (i == TEX_PARAM::TEX_0)
-                        ImGui::Text("Ambient Texture");
+                        ImGui::Text("Texture 0");
                     else if (i == TEX_PARAM::TEX_1)
-                        ImGui::Text("Ambient Occlusion");
+                        ImGui::Text("Texture 1");
                     else if (i == TEX_PARAM::TEX_2)
-                        ImGui::Text("Normal Texture");
+                        ImGui::Text("Texture 2");
                     else if (i == TEX_PARAM::TEX_3)
-                        ImGui::Text("Height Texture");
+                        ImGui::Text("Texture 3");
                     else if (i == TEX_PARAM::TEX_4)
-                        ImGui::Text("MetallicRoughness Texture");
+                        ImGui::Text("Texture 4");
                     else if (i == TEX_PARAM::TEX_5)
-                        ImGui::Text("Emissive Texture");
+                        ImGui::Text("Texture 5");
 
                     ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
 

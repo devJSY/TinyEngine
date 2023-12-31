@@ -15,6 +15,8 @@ namespace GamePlayStatic
     //void DrawDebugCircle();
     //void DrawDebugCube();
     //void DrawDebugSphere();
+
+    void ScreenShot();
 }
 
 template <typename T, UINT SIZE>
@@ -47,6 +49,7 @@ void Delete_Vec(vector<T>& _vec)
 
 string WstringTostring(const wstring& wstr);
 wstring stringToWstring(const string& str);
+std::string currentDateTime();
 
 // template <typename T>
 // bool IsValid(T*& _Entity)

@@ -64,6 +64,13 @@ void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::ScreenShot()
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::SCREENSHOT;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 string WstringTostring(const wstring& wstr)
 {
     std::string str(wstr.length(), 0);
@@ -74,4 +81,25 @@ string WstringTostring(const wstring& wstr)
 wstring stringToWstring(const string& str)
 {
     return wstring().assign(str.begin(), str.end());
+}
+
+std::string currentDateTime()
+{
+    // 현재 시간을 구하기
+    std::time_t currentTime = std::time(nullptr);
+
+    // 지역 시간 구조체
+    std::tm localTime;
+
+    // localtime_s 함수를 사용하여 안전하게 지역 시간 얻기
+    localtime_s(&localTime, &currentTime);
+
+    // 포맷 문자열
+    const char* format = "%Y-%m-%d_%H-%M-%S";
+
+    // 포맷에 맞게 문자열로 변환
+    char buffer[80];
+    std::strftime(buffer, sizeof(buffer), format, &localTime);
+
+    return buffer;
 }

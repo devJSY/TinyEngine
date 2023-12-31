@@ -72,6 +72,8 @@ enum KEY
     LBTN,
     RBTN,
 
+    PRINT,
+
     KEY_END,
 };
 
@@ -102,7 +104,7 @@ private:
 
     Vec2 m_vMouseDrag;
 
-    short m_MouseWheel;   // ↑ : 120 , ↓ : -120
+    short m_MouseWheel; // ↑ : 120 , ↓ : -120
 
 public:
     KEY_STATE GetKeyState(KEY _Key) const { return m_vecKeyData[_Key].eState; }

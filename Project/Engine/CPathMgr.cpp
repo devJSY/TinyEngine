@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "CPathMgr.h"
 
+wchar_t CPathMgr::g_szOutput[255] = {};
 wchar_t CPathMgr::g_szContent[255] = {};
 
 void CPathMgr::init()
@@ -19,5 +20,6 @@ void CPathMgr::init()
         }
     }
 
+    wcscpy_s(g_szOutput, g_szContent);
     wcscat_s(g_szContent, 255, L"content\\");
 }
