@@ -7,6 +7,7 @@ CEditorMgr::CEditorMgr()
     : m_vecEditor{}
     , m_CurEditor(nullptr)
     , m_ViewportSize(Vec2())
+    , m_ViewportMousePos(Vec2())
 {
 }
 
@@ -22,6 +23,7 @@ void CEditorMgr::init()
     m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]->begin();
 
     m_CurEditor = m_vecEditor[(UINT)EDITOR_TYPE::LEVEL];
+    //m_CurEditor = nullptr;
 }
 
 void CEditorMgr::tick()

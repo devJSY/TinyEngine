@@ -71,6 +71,15 @@ void GamePlayStatic::ScreenShot()
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::MouseColorPicking(Vec2 MousePos)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::MOUSE_COLOR_PICKING;
+    task.Param_1 = (INT_PTR)MousePos.x;
+    task.Param_2 = (INT_PTR)MousePos.y;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 string WstringTostring(const wstring& wstr)
 {
     std::string str(wstr.length(), 0);
@@ -110,5 +119,5 @@ Vec4 HashIDToColor(int hash)
     int g = (hash >> 8) & 0xff;
     int b = hash & 0xff;
 
-    return Vec4((float)r / 255.f, (float)g / 255.f, (float)b / 255.f, 1.f);
+    return Vec4(static_cast<float>(r / 255.f), static_cast<float>(g / 255.f), static_cast<float>(b / 255.f), 1.f);
 }

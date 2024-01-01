@@ -25,6 +25,9 @@ enum class TASK_TYPE
 
     // No Param
     SCREENSHOT,
+
+    // Param1 : MouseX , Param2 : MouseY
+    MOUSE_COLOR_PICKING,
 };
 
 struct FTask

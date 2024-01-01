@@ -79,5 +79,6 @@ typedef Vector4 Vec4;
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
+#include <unordered_map>
 
 using std::tuple;

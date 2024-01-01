@@ -51,6 +51,18 @@ void CTaskMgr::tick()
         {
             GamePlayStatic::ScreenShot();
         }
+
+        // Mouse color Picking
+        if (KEY_TAP(KEY::LBTN))
+        {
+            Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+            if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+            {
+                MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+            }
+
+            GamePlayStatic::MouseColorPicking(MousePos);
+        }
     }
 
     for (size_t i = 0; i < m_vecTask.size(); ++i)
@@ -188,10 +200,90 @@ void CTaskMgr::tick()
                 filename += ".png";
                 if (stbi_write_png(filename.c_str(), desc.Width, desc.Height, 4, pixels.data(), desc.Width * 4))
                 {
-                    std::cout << "Screen Shot is Successful! FileName : " << filename << std::endl;
+                    std::cout << "Screenshot! FileName : " << filename << std::endl;
                 }
             }
             break;
+        case TASK_TYPE::MOUSE_COLOR_PICKING:
+            {
+                int MouseX = (int)m_vecTask[i].Param_1;
+                int MouseY = (int)m_vecTask[i].Param_2;
+
+                Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+
+                if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+                {
+                    Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+
+                    float NdcMouseX = MouseX / ViewportSize.x;
+                    float NdcMouseY = MouseY / ViewportSize.y;
+
+                    MouseX = NdcMouseX * WindowSize.x;
+                    MouseY = NdcMouseY * WindowSize.y;
+                }
+
+                if (MouseX < 0 || MouseY < 0 || MouseX > WindowSize.x || MouseY > WindowSize.y)
+                    break;
+
+                Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMap");
+
+                // Texture2D → StagingTexture
+                D3D11_TEXTURE2D_DESC desc;
+                pIDMapTex->GetTex2D()->GetDesc(&desc);
+                desc.SampleDesc.Count = 1;
+                desc.SampleDesc.Quality = 0;
+                desc.BindFlags = 0;
+                desc.MiscFlags = 0;
+                desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ; // CPU에서 읽기 가능
+                desc.Usage = D3D11_USAGE_STAGING;            // GPU에서 CPU로 보낼 데이터를 임시 보관
+
+                ComPtr<ID3D11Texture2D> stagingTexture;
+                DEVICE->CreateTexture2D(&desc, nullptr, stagingTexture.GetAddressOf());
+
+                // 마우스위치의 1픽셀만 복사
+                D3D11_BOX box;
+                box.left = MouseX;
+                box.right = MouseX + 1;
+                box.top = MouseY;
+                box.bottom = MouseY + 1;
+                box.front = 0;
+                box.back = 1;
+                CONTEXT->CopySubresourceRegion(stagingTexture.Get(), 0, 0, 0, 0, pIDMapTex->GetTex2D().Get(), 0, &box);
+
+                // R8G8B8A8 이라고 가정
+                D3D11_MAPPED_SUBRESOURCE ms;
+                CONTEXT->Map(stagingTexture.Get(), NULL, D3D11_MAP_READ, NULL, &ms);
+                uint8_t* pData = (uint8_t*)ms.pData;
+                uint8_t m_pickColor[4] = {};
+                memcpy(m_pickColor, pData, sizeof(uint8_t) * 4);
+                CONTEXT->Unmap(stagingTexture.Get(), NULL);
+
+                std::cout << (float)m_pickColor[0] << " " << (float)m_pickColor[1] << " " << (float)m_pickColor[2]
+                          << " " << (float)m_pickColor[3] << std::endl;
+
+                CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+                for (int i = 0; i < LAYER_MAX; ++i)
+                {
+                    CLayer* pLayer = pCurLevel->GetLayer(i);
+                    const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
+                    for (size_t i = 0; i < vecObjects.size(); ++i)
+                    {
+                        std::hash<std::wstring> hasher;
+                        int HashID = (int)hasher(vecObjects[i]->GetName());
+                        Vec4 colorID = HashIDToColor(HashID);
+                        uint8_t colorIDInt[4] = {
+                            static_cast<int>(colorID[0] * 255.f), static_cast<int>(colorID[1] * 255.f),
+                            static_cast<int>(colorID[2] * 255.f), static_cast<int>(colorID[3] * 255.f)};
+
+                        if (abs(m_pickColor[0] - colorIDInt[0]) < 1e-5 && abs(m_pickColor[1] - colorIDInt[1]) < 1e-5 &&
+                            abs(m_pickColor[2] - colorIDInt[2]) < 1e-5 && abs(m_pickColor[3] - colorIDInt[3]) < 1e-5)
+                        {
+                            CLevelMgr::GetInst()->SetSelectObj(vecObjects[i]);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 

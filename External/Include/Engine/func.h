@@ -12,11 +12,12 @@ namespace GamePlayStatic
     void DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
                        float _Duration = 0.f);
 
-    //void DrawDebugCircle();
-    //void DrawDebugCube();
-    //void DrawDebugSphere();
+    // void DrawDebugCircle();
+    // void DrawDebugCube();
+    // void DrawDebugSphere();
 
     void ScreenShot();
+    void MouseColorPicking(Vec2 MousePos);
 }
 
 template <typename T, UINT SIZE>

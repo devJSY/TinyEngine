@@ -49,7 +49,11 @@ void CMeshRender::UpdateData()
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
     g_Global.resolution = CDevice::GetInst()->GetRenderResolution();
-    g_Global.pickingColor = HashIDToColor(this->GetID());
+
+    // 오브젝트 이름으로 HashID 설정
+    std::hash<std::wstring> hasher;
+    int HashID = (int)hasher(GetOwner()->GetName());
+    g_Global.pickingColor = HashIDToColor(HashID);
 
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);

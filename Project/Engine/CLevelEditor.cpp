@@ -111,8 +111,8 @@ void CLevelEditor::finaltick()
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
                         ImGuiColorEditFlags_PickerHueWheel);
-    //ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
-    //ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
+    // ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
+    // ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
     ImGui::End();
 
     ImGui::Begin("View Mode");
@@ -126,12 +126,20 @@ void CLevelEditor::render()
     // Viewport
     ImGui::Begin("Level ViewPort");
 
+    // Viewport에서의 마우스 위치 등록
+    ImVec2 viewportPos = ImGui::GetCursorScreenPos();
+    CEditorMgr::GetInst()->SetViewportMousePos(
+        Vec2(ImGui::GetIO().MousePos.x - viewportPos.x, ImGui::GetIO().MousePos.y - viewportPos.y));
+
+    // Viewport 상태 확인
     m_ViewportFocused = ImGui::IsWindowFocused();
     m_ViewportHovered = ImGui::IsWindowHovered();
 
+    // Viewport 크기 등록
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-    
+
+    // Viewport 렌더링
     Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
