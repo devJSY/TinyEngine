@@ -9,6 +9,15 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\BasicVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BillBoardPointGS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BillBoardPointPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BillBoardPointVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\BlinnPhongPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

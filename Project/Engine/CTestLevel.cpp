@@ -75,8 +75,8 @@ void CTestLevel::begin()
     pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
     pLight1->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     pLight1->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight1);
 
@@ -91,8 +91,8 @@ void CTestLevel::begin()
     pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
     pLight2->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     pLight2->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight2);
 
@@ -107,8 +107,8 @@ void CTestLevel::begin()
     pLight3->Transform()->SetRelativePos(Vec3(750.f, 0.f, 100.f));
     pLight3->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     pLight3->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight3);
 
@@ -116,7 +116,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    AddModels();
+    //AddModels();
 
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;

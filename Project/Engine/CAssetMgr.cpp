@@ -27,6 +27,19 @@ void CAssetMgr::init()
     CreateDefaultMaterial();
 }
 
+tMeshData CAssetMgr::MakePoint()
+{
+    tMeshData meshData;
+    Vtx v;
+    v.vPos = Vec3(0.f, 0.f, 0.f);
+    v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    v.vUV = Vec2(0.5f, 0.5f);
+    meshData.vertices.push_back(v);
+    meshData.indices.push_back(0);
+
+    return meshData;
+}
+
 tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
 {
     tMeshData meshData;
@@ -712,6 +725,15 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
 void CAssetMgr::CreateDefaultMesh()
 {
+    // Point
+    {
+        auto mesh = MakePoint();
+
+        Ptr<CMesh> pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"PointMesh", pMesh);
+    }
+
     // Circle
     {
         auto mesh = MakeCircle(1.f, 40);
@@ -918,10 +940,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_FRONT); // SkyBox´Â µÞ¸é¸¸ ·»´õ¸µ
-        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);  
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         AddAsset(L"Skybox", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\BillBoardPointVS.hlsl", "main");
+        pShader->CreateGeometryShader(L"shader\\BillBoardPointGS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BillBoardPointPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        AddAsset(L"BillBoardPoint", pShader);
     }
 }
 
@@ -982,21 +1021,21 @@ void CAssetMgr::CreateDefaultMaterial()
     // Directional Light
     CMaterial* pDirLigth = nullptr;
     pDirLigth = new CMaterial;
-    pDirLigth->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pDirLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pDirLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"DirectionalLight"));
     AddAsset<CMaterial>(L"DirectionalLight", pDirLigth);
 
     // Point Light
     CMaterial* pPointLigth = nullptr;
     pPointLigth = new CMaterial;
-    pPointLigth->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pPointLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pPointLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"PointLight"));
     AddAsset<CMaterial>(L"PointLight", pPointLigth);
 
     // Spot Light
     CMaterial* pSpotLigth = nullptr;
     pSpotLigth = new CMaterial;
-    pSpotLigth->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+    pSpotLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pSpotLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLight"));
     AddAsset<CMaterial>(L"SpotLight", pSpotLigth);
 }

@@ -518,6 +518,9 @@
     <Filter Include="04. Manager\RenderMgr">
       <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\BillBoardPoint">
+      <UniqueIdentifier>{4096e577-a00c-4054-bce3-b41c1e5d5bf8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -587,6 +590,15 @@
     </FxCompile>
     <FxCompile Include="CombinePS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="BillBoardPointGS.hlsl">
+      <Filter>ShaderCode\BillBoardPoint</Filter>
+    </FxCompile>
+    <FxCompile Include="BillBoardPointPS.hlsl">
+      <Filter>ShaderCode\BillBoardPoint</Filter>
+    </FxCompile>
+    <FxCompile Include="BillBoardPointVS.hlsl">
+      <Filter>ShaderCode\BillBoardPoint</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
