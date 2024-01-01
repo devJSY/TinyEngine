@@ -22,7 +22,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowIDMap(false)
     , m_Outliner()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
-    , m_FontSize(20.f)
+    , m_FontSize(30.f)
 {
 }
 

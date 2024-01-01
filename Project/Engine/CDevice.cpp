@@ -204,7 +204,7 @@ int CDevice::CreateSwapChain()
     tDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     tDesc.BufferDesc.RefreshRate.Denominator = 1;
     tDesc.BufferDesc.RefreshRate.Numerator = 60;
-    tDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+    tDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
     tDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     tDesc.Flags = DXGI_SWAP_EFFECT_DISCARD;
 

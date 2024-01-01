@@ -30,7 +30,8 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     m_vResolution = _vResolution;
 
     RECT rt = {0, 0, (int)m_vResolution.x, (int)m_vResolution.y};
-    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, SetMenu(m_hMainWnd, nullptr)); // 메뉴바 Off
+    SetMenu(m_hMainWnd, nullptr);
+    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false); // 메뉴바 Off
     SetWindowPos(m_hMainWnd, nullptr, 10, 10, rt.right - rt.left, rt.bottom - rt.top, 0);
 
     if (FAILED(CDevice::GetInst()->init(m_hMainWnd, m_vResolution)))
