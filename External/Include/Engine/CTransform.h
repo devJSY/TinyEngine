@@ -16,6 +16,9 @@ private:
 
     Matrix m_matParentMat;
 
+private:
+    BoundingSphere m_BoundingSphere;
+
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
@@ -42,6 +45,7 @@ public:
     Vec3 GetWorldPos() const { return Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43); }
     const Matrix& GetParentMat() const { return m_matParentMat; }
 
+    const BoundingSphere& GetBoundingSphere() const { return m_BoundingSphere; }
 public:
     CTransform();
     virtual ~CTransform();

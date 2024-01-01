@@ -9,6 +9,7 @@ CTransform::CTransform()
     , m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
     , m_bAbsolute(true)
 {
+    m_BoundingSphere = BoundingSphere();
 }
 
 CTransform::~CTransform()
@@ -70,6 +71,9 @@ void CTransform::finaltick()
             m_arrWorldDir[i].Normalize();
         }
     }
+
+    m_BoundingSphere.Center = Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
+    m_BoundingSphere.Radius = m_matWorld._22;
 }
 
 void CTransform::UpdateData()

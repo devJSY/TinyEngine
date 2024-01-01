@@ -23,7 +23,6 @@ void CEditorMgr::init()
     m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]->begin();
 
     m_CurEditor = m_vecEditor[(UINT)EDITOR_TYPE::LEVEL];
-    //m_CurEditor = nullptr;
 }
 
 void CEditorMgr::tick()

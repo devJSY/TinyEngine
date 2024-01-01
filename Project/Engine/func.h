@@ -18,6 +18,7 @@ namespace GamePlayStatic
 
     void ScreenShot();
     void MouseColorPicking(Vec2 MousePos);
+    void MouseRayPicking(Vec2 MousePos);
 }
 
 template <typename T, UINT SIZE>
@@ -53,7 +54,7 @@ wstring stringToWstring(const string& str);
 std::string currentDateTime();
 Vec4 HashIDToColor(int hash);
 
-// template <typename T>
+    // template <typename T>
 // bool IsValid(T*& _Entity)
 //{
 //     if (nullptr == _Entity)

@@ -6,6 +6,7 @@
 #include "CMeshRender.h"
 #include "CAssetMgr.h"
 #include "CTransform.h"
+#include "CLevelMgr.h"
 
 CRenderMgr::CRenderMgr()
     : m_pDebugObj(nullptr)
@@ -108,8 +109,7 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
                                                       DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
                                                       D3D11_USAGE_DEFAULT);
 
-    CAssetMgr::GetInst()->CreateTexture(L"IDMap", (UINT)Resolution.x, (UINT)Resolution.y,
-                                        DXGI_FORMAT_R8G8B8A8_UNORM,
+    CAssetMgr::GetInst()->CreateTexture(L"IDMap", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                         D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
 }
 

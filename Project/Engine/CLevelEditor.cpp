@@ -22,7 +22,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowIDMap(false)
     , m_Outliner()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
-    , m_FontSize(30.f)
+    , m_FontSize(25.f)
 {
 }
 
@@ -200,8 +200,9 @@ void CLevelEditor::render()
                 Matrix originWorldMat = pTr->GetWorldMat();
 
                 // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
-                WorldMat *= pTr->GetParentMat().Invert();
-                originWorldMat *= pTr->GetParentMat().Invert();
+                Matrix ParentInvMat = pTr->GetParentMat().Invert();
+                WorldMat *= ParentInvMat;
+                originWorldMat *= ParentInvMat;
 
                 // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
                 float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},

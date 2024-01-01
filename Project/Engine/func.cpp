@@ -80,6 +80,15 @@ void GamePlayStatic::MouseColorPicking(Vec2 MousePos)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::MouseRayPicking(Vec2 MousePos)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::MOUSE_RAY_PICKING;
+    task.Param_1 = (INT_PTR)MousePos.x;
+    task.Param_2 = (INT_PTR)MousePos.y;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 string WstringTostring(const wstring& wstr)
 {
     std::string str(wstr.length(), 0);

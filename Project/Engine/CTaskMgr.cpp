@@ -13,6 +13,8 @@
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
 
+#include "CCamera.h"
+#include "CTransform.h"
 // stb
 #define _CRT_SECURE_NO_WARNINGS // stb_image_write compile error fix
 #define STB_IMAGE_IMPLEMENTATION
@@ -52,16 +54,30 @@ void CTaskMgr::tick()
             GamePlayStatic::ScreenShot();
         }
 
-        // Mouse color Picking
+        // Mouse Picking
         if (KEY_TAP(KEY::LBTN))
         {
-            Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+            //// Color Picking
+            //{
+            //    Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
-            // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
-            if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
-                MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+            //    // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
+            //    if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+            //        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-            GamePlayStatic::MouseColorPicking(MousePos);
+            //    GamePlayStatic::MouseColorPicking(MousePos);
+            //}
+
+            // Ray Picking
+            {
+                Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+
+                // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
+                if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+                    MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+
+                GamePlayStatic::MouseRayPicking(MousePos);
+            }
         }
     }
 
@@ -216,11 +232,11 @@ void CTaskMgr::tick()
                     if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
                         break;
 
-                    // Viewport Screen → NDC
+                    // Viewport Screen → 0 ~ 1
                     float NdcMouseX = MouseX / ViewportSize.x;
                     float NdcMouseY = MouseY / ViewportSize.y;
 
-                    // NDC → Window Screen
+                    // 0 ~ 1 → Window Screen
                     MouseX = int(NdcMouseX * WindowSize.x);
                     MouseY = int(NdcMouseY * WindowSize.y);
                 }
@@ -298,6 +314,84 @@ void CTaskMgr::tick()
                 if (!ImGuizmo::IsUsing())
                     CLevelMgr::GetInst()->SetSelectObj(pSelectedObj);
             }
+            break;
+        case TASK_TYPE::MOUSE_RAY_PICKING:
+            {
+                int MouseX = (int)m_vecTask[i].Param_1;
+                int MouseY = (int)m_vecTask[i].Param_2;
+
+                float NdcMouseX = 0.0f;
+                float NdcMouseY = 0.0f;
+
+                // 마우스 커서의 위치를 NDC로 변환
+                // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
+                // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
+                if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+                {
+                    Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+                    if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
+                        break;
+
+                    NdcMouseX = MouseX * 2.0f / ViewportSize.x - 1.0f;
+                    NdcMouseY = -MouseY * 2.0f / ViewportSize.y + 1.0f;
+                }
+                else
+                {
+                    Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+                    NdcMouseX = MouseX * 2.0f / WindowSize.x - 1.0f;
+                    NdcMouseY = -MouseY * 2.0f / WindowSize.y + 1.0f;
+                }
+
+                if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
+                    break;
+
+                Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
+                Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
+
+                // 메인 카메라
+                CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
+
+                Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
+
+                // ViewFrustum 안에서 PickingRay의 방향 구하기
+                Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
+                Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
+
+                Vector3 dir = FarWorld - NearWorld;
+                dir.Normalize();
+
+                CGameObject* pSelectedObj = nullptr;
+
+                // 광선을 만들고 충돌 감지
+                SimpleMath::Ray curRay = SimpleMath::Ray(NearWorld, dir);
+                float dist = 0.0f;
+
+                CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+                for (int i = 0; i < LAYER_MAX; ++i)
+                {
+                    CLayer* pLayer = pCurLevel->GetLayer(i);
+                    const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
+                    for (size_t i = 0; i < vecObjects.size(); ++i)
+                    {
+                        float dist = 0.0f;
+                        bool bSelected = curRay.Intersects(vecObjects[i]->Transform()->GetBoundingSphere(), dist);
+
+                        if (bSelected)
+                        {
+                            pSelectedObj = vecObjects[i];
+                            break;
+                        }
+                    }
+
+                    // 선택된 오브젝트가 있다면 탈출
+                    if (nullptr != pSelectedObj)
+                        break;
+                }
+
+                if (!ImGuizmo::IsUsing())
+                    CLevelMgr::GetInst()->SetSelectObj(pSelectedObj);
+            }
+            break;
         }
     }
 
