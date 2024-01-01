@@ -29,6 +29,11 @@ void CRenderMgr::tick()
     render_debug();
 
     CopyRenderTarget();
+
+    // ∑ª¥ı≈∏∞Ÿ IDMap ¡¶ø‹
+    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+    CONTEXT->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 }
 
 void CRenderMgr::render()
