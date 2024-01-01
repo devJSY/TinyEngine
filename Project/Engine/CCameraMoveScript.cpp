@@ -158,19 +158,21 @@ void CCameraMoveScript::MovePerspective()
 
 void CCameraMoveScript::MoveFocusOrthographic()
 {
-    if (nullptr == CLevelMgr::GetInst()->GetSelectedObj())
+    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+
+    if (nullptr == pSelectedObj)
     {
         m_bFocus = false;
         return;
     }
 
     Vec3 CamPos = Transform()->GetWorldPos();
-    Vec3 ObjPos = CLevelMgr::GetInst()->GetSelectedObj()->Transform()->GetWorldPos();
+    Vec3 ObjPos = pSelectedObj->Transform()->GetWorldPos();
 
     Vec2 dir = Vec2(ObjPos.x, ObjPos.y) - Vec2(CamPos.x, CamPos.y);
 
     // 카메라 오브젝트가 선택되었거나 지정된 위치근처에 도달했다면 Stop
-    if (GetOwner() == CLevelMgr::GetInst()->GetSelectedObj() || (dir.Length() < 10.f))
+    if (GetOwner() == pSelectedObj || (dir.Length() < 10.f))
     {
         m_bFocus = false;
     }
@@ -178,7 +180,7 @@ void CCameraMoveScript::MoveFocusOrthographic()
     if (m_bFocus)
     {
         Vec3 dir3 = Vec3(dir.x, dir.y, 0.f);
-        float CamMoveSpeed = 5000.f;
+        float CamMoveSpeed = dir.Length() * 25.f;
         float scale = Camera()->GetScale();
         Transform()->SetRelativePos(Transform()->GetRelativePos() + DT * dir3.Normalize() * CamMoveSpeed * scale);
     }
@@ -186,7 +188,9 @@ void CCameraMoveScript::MoveFocusOrthographic()
 
 void CCameraMoveScript::MoveFocusPerspective()
 {
-    if (nullptr == CLevelMgr::GetInst()->GetSelectedObj())
+    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+
+    if (nullptr == pSelectedObj)
     {
         m_bFocus = false;
         return;
@@ -196,18 +200,18 @@ void CCameraMoveScript::MoveFocusPerspective()
     Vec3 CamDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 CamDistPos = Transform()->GetWorldPos() + CamDir * focusDist;
 
-    Vec3 ObjPos = CLevelMgr::GetInst()->GetSelectedObj()->Transform()->GetWorldPos();
+    Vec3 ObjPos = pSelectedObj->Transform()->GetWorldPos();
     Vec3 dir = ObjPos - CamDistPos;
 
     // 카메라 오브젝트가 선택되었거나 지정된 위치근처에 도달했다면 Stop
-    if (GetOwner() == CLevelMgr::GetInst()->GetSelectedObj() || (dir.Length() < 10.f))
+    if (GetOwner() == pSelectedObj || (dir.Length() < 10.f))
     {
         m_bFocus = false;
     }
 
     if (m_bFocus)
     {
-        float CamMoveSpeed = 5000.f;
+        float CamMoveSpeed = dir.Length() * 25.f;
         Transform()->SetRelativePos(Transform()->GetRelativePos() + DT * dir.Normalize() * CamMoveSpeed);
     }
 }

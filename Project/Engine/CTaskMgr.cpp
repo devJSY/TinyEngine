@@ -56,10 +56,10 @@ void CTaskMgr::tick()
         if (KEY_TAP(KEY::LBTN))
         {
             Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+
+            // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
             if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
-            {
                 MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
-            }
 
             GamePlayStatic::MouseColorPicking(MousePos);
         }
@@ -208,21 +208,24 @@ void CTaskMgr::tick()
             {
                 int MouseX = (int)m_vecTask[i].Param_1;
                 int MouseY = (int)m_vecTask[i].Param_2;
-
                 Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
 
                 if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
                 {
                     Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+                    if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
+                        break;
 
+                    // Viewport Screen → NDC
                     float NdcMouseX = MouseX / ViewportSize.x;
                     float NdcMouseY = MouseY / ViewportSize.y;
 
-                    MouseX = NdcMouseX * WindowSize.x;
-                    MouseY = NdcMouseY * WindowSize.y;
+                    // NDC → Window Screen
+                    MouseX = int(NdcMouseX * WindowSize.x);
+                    MouseY = int(NdcMouseY * WindowSize.y);
                 }
 
-                if (MouseX < 0 || MouseY < 0 || MouseX > WindowSize.x || MouseY > WindowSize.y)
+                if (MouseX < 0 || MouseY < 0 || MouseX >= WindowSize.x || MouseY >= WindowSize.y)
                     break;
 
                 Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMap");
@@ -250,7 +253,7 @@ void CTaskMgr::tick()
                 box.back = 1;
                 CONTEXT->CopySubresourceRegion(stagingTexture.Get(), 0, 0, 0, 0, pIDMapTex->GetTex2D().Get(), 0, &box);
 
-                // R8G8B8A8 이라고 가정
+                // R8G8B8A8
                 D3D11_MAPPED_SUBRESOURCE ms;
                 CONTEXT->Map(stagingTexture.Get(), NULL, D3D11_MAP_READ, NULL, &ms);
                 uint8_t* pData = (uint8_t*)ms.pData;
@@ -258,9 +261,9 @@ void CTaskMgr::tick()
                 memcpy(m_pickColor, pData, sizeof(uint8_t) * 4);
                 CONTEXT->Unmap(stagingTexture.Get(), NULL);
 
-                std::cout << (float)m_pickColor[0] << " " << (float)m_pickColor[1] << " " << (float)m_pickColor[2]
-                          << " " << (float)m_pickColor[3] << std::endl;
+                CGameObject* pSelectedObj = nullptr;
 
+                // 현재 레벨의 오브젝트와 ID값 비교
                 CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
                 for (int i = 0; i < LAYER_MAX; ++i)
                 {
@@ -268,21 +271,32 @@ void CTaskMgr::tick()
                     const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
                     for (size_t i = 0; i < vecObjects.size(); ++i)
                     {
+                        // 오브젝트 이름으로 HashID 설정
                         std::hash<std::wstring> hasher;
                         int HashID = (int)hasher(vecObjects[i]->GetName());
                         Vec4 colorID = HashIDToColor(HashID);
-                        uint8_t colorIDInt[4] = {
-                            static_cast<int>(colorID[0] * 255.f), static_cast<int>(colorID[1] * 255.f),
-                            static_cast<int>(colorID[2] * 255.f), static_cast<int>(colorID[3] * 255.f)};
 
-                        if (abs(m_pickColor[0] - colorIDInt[0]) < 1e-5 && abs(m_pickColor[1] - colorIDInt[1]) < 1e-5 &&
-                            abs(m_pickColor[2] - colorIDInt[2]) < 1e-5 && abs(m_pickColor[3] - colorIDInt[3]) < 1e-5)
+                        // 0 ~ 1 → 0 ~ 255 범위확장
+                        uint8_t colorIDInt[4] = {
+                            static_cast<uint8_t>(colorID[0] * 255.f), static_cast<uint8_t>(colorID[1] * 255.f),
+                            static_cast<uint8_t>(colorID[2] * 255.f), static_cast<uint8_t>(colorID[3] * 255.f)};
+
+                        // Picking Color 비교
+                        if (m_pickColor[0] == colorIDInt[0] && m_pickColor[1] == colorIDInt[1] &&
+                            m_pickColor[2] == colorIDInt[2] && m_pickColor[3] == colorIDInt[3])
                         {
-                            CLevelMgr::GetInst()->SetSelectObj(vecObjects[i]);
+                            pSelectedObj = vecObjects[i];
                             break;
                         }
                     }
+
+                    // 선택된 오브젝트가 있다면 탈출
+                    if (nullptr != pSelectedObj)
+                        break;
                 }
+
+                if (!ImGuizmo::IsUsing())
+                    CLevelMgr::GetInst()->SetSelectObj(pSelectedObj);
             }
         }
     }
