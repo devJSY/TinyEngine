@@ -72,8 +72,15 @@ void CTransform::finaltick()
         }
     }
 
+    // Bounding Sphere
+    float AverScale = (m_vRelativeScale.x + m_vRelativeScale.y + m_vRelativeScale.z) / 3.f;
     m_BoundingSphere.Center = Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
-    m_BoundingSphere.Radius = m_matWorld._22;
+    m_BoundingSphere.Radius = AverScale;
+    if (GetOwner()->GetParent() && !m_bAbsolute)
+    {
+        Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
+        m_BoundingSphere.Radius *= (vParentScale.x + vParentScale.y + vParentScale.z) / 3.f;
+    }
 }
 
 void CTransform::UpdateData()
