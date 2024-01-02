@@ -521,6 +521,9 @@
     <Filter Include="ShaderCode\BillBoardPoint">
       <UniqueIdentifier>{4096e577-a00c-4054-bce3-b41c1e5d5bf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\IDMap">
+      <UniqueIdentifier>{2bab43c2-94f4-4c1f-a401-d373c38f6ab0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -599,6 +602,12 @@
     </FxCompile>
     <FxCompile Include="BillBoardPointVS.hlsl">
       <Filter>ShaderCode\BillBoardPoint</Filter>
+    </FxCompile>
+    <FxCompile Include="IDMapVS.hlsl">
+      <Filter>ShaderCode\IDMap</Filter>
+    </FxCompile>
+    <FxCompile Include="IDMapPS.hlsl">
+      <Filter>ShaderCode\IDMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

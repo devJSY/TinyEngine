@@ -236,7 +236,7 @@ void CLevelEditor::render()
 
     if (m_bShowIDMap)
     {
-        Ptr<CTexture> pIDMap = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMap");
+        Ptr<CTexture> pIDMap = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
         ImGui::Begin("Picking Color ID Map");
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         ImGui::Image((void*)pIDMap->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));

@@ -68,19 +68,4 @@ void CMeshRender::render()
     UpdateData();
 
     GetMesh()->render();
-
-    // outline pass
-    if (CLevelMgr::GetInst()->GetSelectedObj() == GetOwner() &&
-        !g_Global.DrawAsWireFrame) // 와이어 프레임일때는 outline Off
-    {
-        CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine")->UpdateData();
-        GetMesh()->render();
-    }
-
-    // Normal Line Pass
-    if (m_bDrawNormalLine)
-    {
-        CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine")->UpdateData();
-        GetMesh()->renderDraw();
-    }
 }

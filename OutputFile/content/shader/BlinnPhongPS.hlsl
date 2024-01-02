@@ -2,16 +2,8 @@
 #include "global.hlsli"
 #include "Light.hlsli"
 
-struct PixelShaderOutput
+float4 main(PS_IN input) : SV_Target
 {
-    float4 pixelColor : SV_Target0;
-    float4 PickingColor : SV_Target1;
-};
-
-PixelShaderOutput main(PS_IN input)
-{
-    PixelShaderOutput output = (PixelShaderOutput) 0;
-    
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
     float4 color = float4(0.0, 0.0, 0.0, 1.0);
 
@@ -51,9 +43,6 @@ PixelShaderOutput main(PS_IN input)
         specular = g_texCube_1.Sample(g_LinearSampler, reflect(-toEye, input.normalWorld));
         specular.xyz *= g_vSpec.xyz;
     }
-    
-    output.pixelColor = color + diffuse + specular;
-    output.PickingColor = g_pickingColor;
-    
-    return output;
+
+    return color + diffuse + specular;
 }

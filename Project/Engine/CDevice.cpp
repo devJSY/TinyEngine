@@ -97,17 +97,22 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 
 void CDevice::ClearRenderTarget(const Vec4& Color)
 {
+
+    // IDMap
+    Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
+    Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
+
+    m_Context->ClearRenderTargetView(pIDMapTex->GetRTV().Get(), Color);
+    m_Context->ClearDepthStencilView(pIDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    // Render Target
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    Ptr<CTexture> pIDTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMap");
     Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
-    ID3D11RenderTargetView* targets[] = {pTex->GetRTV().Get(), pIDTex->GetRTV().Get()};
-
     m_Context->ClearRenderTargetView(pTex->GetRTV().Get(), Color);
-    m_Context->ClearRenderTargetView(pIDTex->GetRTV().Get(), Color);
-    m_Context->OMSetRenderTargets(2, targets, pDSTex->GetDSV().Get());
-
     m_Context->ClearDepthStencilView(pDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    m_Context->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 }
 
 void CDevice::Present()

@@ -940,7 +940,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_FRONT); // SkyBox´Â µÞ¸é¸¸ ·»´õ¸µ
-        pShader->SetDSType(DS_TYPE::NO_WRITE);  
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         AddAsset(L"Skybox", pShader);
@@ -961,6 +961,34 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
         AddAsset(L"BillBoardPoint", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\IDMapVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\IDMapPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"IDMap", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\IDMapVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\IDMapPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        AddAsset(L"SkyBox_IDMap", pShader);
     }
 }
 

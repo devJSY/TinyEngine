@@ -10,6 +10,10 @@
 #include "CLayer.h"
 #include "CGameObject.h"
 
+#include "CMeshRender.h"
+#include "CMaterial.h"
+#include "CAssetMgr.h"
+
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
     , m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
@@ -144,7 +148,59 @@ void CCamera::render()
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
         for (size_t i = 0; i < vecObjects.size(); ++i)
         {
+            wstring LayerName = pLayer->GetName();
+
+            // Render Pass
             vecObjects[i]->render();
+
+            CMeshRender* meshRender = vecObjects[i]->MeshRender();
+            if (nullptr != meshRender)
+            {
+                Ptr<CMaterial> mtrl = meshRender->GetMaterial();
+                if (nullptr != mtrl)
+                {
+                    Ptr<CGraphicsShader> shader = mtrl->GetShader();
+
+                    // Normal Line Pass
+                    if (meshRender->IsDrawNormalLine())
+                    {
+                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+                        vecObjects[i]->render();
+                    }
+
+                    // outline pass
+                    // 와이어 프레임일때는 Off
+                    // SkyBox 일때는 Off
+                    if (CLevelMgr::GetInst()->GetSelectedObj() == vecObjects[i] && !g_Global.DrawAsWireFrame &&
+                        LayerName != L"SkyBox")
+                    {
+                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine"));
+                        vecObjects[i]->render();
+                    }
+
+                    // IDMap
+                    Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
+                    Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
+
+                    CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
+
+                    Ptr<CGraphicsShader> IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"IDMap");
+
+                    if (LayerName == L"SkyBox")
+                        IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkyBox_IDMap");
+
+                    mtrl->SetShader(IDShader);
+                    vecObjects[i]->render();
+
+                    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+                    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+                    CONTEXT->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+
+                    // 원래 쉐이더로 설정
+                    mtrl->SetShader(shader);
+                }
+            }
         }
     }
 }

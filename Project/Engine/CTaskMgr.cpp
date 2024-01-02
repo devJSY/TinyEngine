@@ -143,7 +143,8 @@ void CTaskMgr::tick()
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RenderTargetTex");
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthStencilTex");
                 CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
-                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMap");
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
 
                 CDevice::GetInst()->Resize(resolution);
                 CRenderMgr::GetInst()->Resize(resolution);
@@ -244,7 +245,7 @@ void CTaskMgr::tick()
                 if (MouseX < 0 || MouseY < 0 || MouseX >= WindowSize.x || MouseY >= WindowSize.y)
                     break;
 
-                Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMap");
+                Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
 
                 // Texture2D ¡æ StagingTexture
                 D3D11_TEXTURE2D_DESC desc;

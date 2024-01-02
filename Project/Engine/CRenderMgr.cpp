@@ -29,11 +29,6 @@ void CRenderMgr::tick()
     render_debug();
 
     CopyRenderTarget();
-
-    // ∑ª¥ı≈∏∞Ÿ IDMap ¡¶ø‹
-    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-    CONTEXT->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 }
 
 void CRenderMgr::render()
@@ -114,8 +109,12 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
                                                       DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
                                                       D3D11_USAGE_DEFAULT);
 
-    CAssetMgr::GetInst()->CreateTexture(L"IDMap", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+    CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                         D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
+
+    CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                              DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL,
+                                                              D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
