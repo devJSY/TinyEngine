@@ -322,10 +322,10 @@ void CTestLevel::AddMeshes()
     pCircle->AddComponent(new CTransform);
     pCircle->AddComponent(new CMeshRender);
     pCircle->AddComponent(new CPlayerScript);
+    pCircle->AddComponent(new CCollider2D);
 
     pCircle->Transform()->SetRelativePos(Vec3(1000.f, 0.f, 500.f));
     pCircle->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pCircle->Transform()->SetAbsolute(true);
 
     pCircle->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
     pCircle->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));

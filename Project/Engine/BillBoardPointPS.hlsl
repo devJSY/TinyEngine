@@ -12,7 +12,7 @@ float4 main(PS_IN input) : SV_TARGET
 {
     float4 color = g_vAmb;
     
-    if (g_UseTexture)
+    if (g_UseTexture && g_btex_0)
         color = g_tex_0.Sample(g_LinearSampler, input.texCoord);
     
     if (color.a < 0.1)

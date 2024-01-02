@@ -23,14 +23,15 @@ void main(point GS_IN input[1], uint primID : SV_PrimitiveID,
     float4 up = float4(0.0, 1.0, 0.0, 0.0);
     float4 front = float4(g_eyeWorld, 1.0) - input[0].pos;
     front.w = 0.0;
-    float4 right = float4(cross(up.xyz, normalize(front.xyz)), 0.0);
+    float4 right = normalize(float4(cross(up.xyz, normalize(front.xyz)), 0.0));
     
     PS_IN output;
+    
+    output.center = input[0].pos;
 
     // LB
     output.pos = input[0].pos - hw * right - hw * up;
     output.posWolrd = output.pos;
-    output.center = input[0].pos;
     output.pos = mul(output.pos, g_matView);
     output.pos = mul(output.pos, g_matProj);
     output.texCoord = float2(0.0, 1.0);
@@ -39,7 +40,6 @@ void main(point GS_IN input[1], uint primID : SV_PrimitiveID,
     // LT
     output.pos = input[0].pos - hw * right + hw * up;
     output.posWolrd = output.pos;
-    output.center = input[0].pos;
     output.pos = mul(output.pos, g_matView);
     output.pos = mul(output.pos, g_matProj);
     output.texCoord = float2(0.0, 0.0);
@@ -48,7 +48,6 @@ void main(point GS_IN input[1], uint primID : SV_PrimitiveID,
     // RB
     output.pos = input[0].pos + hw * right - hw * up;
     output.posWolrd = output.pos;
-    output.center = input[0].pos;
     output.pos = mul(output.pos, g_matView);
     output.pos = mul(output.pos, g_matProj);
     output.texCoord = float2(1.0, 1.0);
@@ -57,7 +56,6 @@ void main(point GS_IN input[1], uint primID : SV_PrimitiveID,
     // RT
     output.pos = input[0].pos + hw * right + hw * up;
     output.posWolrd = output.pos;
-    output.center = input[0].pos;
     output.pos = mul(output.pos, g_matView);
     output.pos = mul(output.pos, g_matProj);
     output.texCoord = float2(1.0, 0.0);

@@ -134,7 +134,7 @@ void CCamera::render()
     g_Transform.matProj = m_matProj;
 
     // eyePos µî·Ï
-    g_Global.eyeWorld = Transform()->GetRelativePos();
+    g_Global.eyeWorld = Transform()->GetWorldPos();
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 

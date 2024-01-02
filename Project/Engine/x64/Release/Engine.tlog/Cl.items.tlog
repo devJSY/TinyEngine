@@ -22,6 +22,7 @@ D:\TinyEngine\Project\Engine\CMaterial.cpp;D:\TinyEngine\Project\Engine\x64\Rele
 D:\TinyEngine\Project\Engine\CMesh.cpp;D:\TinyEngine\Project\Engine\x64\Release\CMesh.obj
 D:\TinyEngine\Project\Engine\CMeshRender.cpp;D:\TinyEngine\Project\Engine\x64\Release\CMeshRender.obj
 D:\TinyEngine\Project\Engine\CModleLoader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CModleLoader.obj
+D:\TinyEngine\Project\Engine\CCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCollider2D.obj
 D:\TinyEngine\Project\Engine\COutliner.cpp;D:\TinyEngine\Project\Engine\x64\Release\COutliner.obj
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPathMgr.obj
 D:\TinyEngine\Project\Engine\CPlayerScript.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPlayerScript.obj

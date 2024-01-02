@@ -32,9 +32,9 @@ public:
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
     Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
 
-    Vec3 GetWorldPos() { return m_matWorld.Translation(); }
-    Vec3 GetWorldScale();
-    // Vec3 GetWorldRot();
+    Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
+    Vec3 GetWorldScale() const;
+    // Vec3 GetWorldRot() const;
 
     bool IsAbsolute() const { return m_bAbsolute; }
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }

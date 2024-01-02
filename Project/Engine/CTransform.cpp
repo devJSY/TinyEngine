@@ -99,7 +99,7 @@ void CTransform::UpdateData()
     pCB->UpdateData();
 }
 
-Vec3 CTransform::GetWorldScale()
+Vec3 CTransform::GetWorldScale() const
 {
     CGameObject* pParent = GetOwner()->GetParent();
     Vec3 vWorldScale = m_vRelativeScale;
