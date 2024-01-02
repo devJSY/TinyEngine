@@ -524,6 +524,9 @@
     <Filter Include="ShaderCode\IDMap">
       <UniqueIdentifier>{2bab43c2-94f4-4c1f-a401-d373c38f6ab0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\BillBoardPoint\FireBall">
+      <UniqueIdentifier>{bf673712-93a6-4566-b3a6-4c589d3e82d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -608,6 +611,9 @@
     </FxCompile>
     <FxCompile Include="IDMapPS.hlsl">
       <Filter>ShaderCode\IDMap</Filter>
+    </FxCompile>
+    <FxCompile Include="FireBallPS.hlsl">
+      <Filter>ShaderCode\BillBoardPoint\FireBall</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

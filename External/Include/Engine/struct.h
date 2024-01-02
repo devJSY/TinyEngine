@@ -99,7 +99,7 @@ struct tGlobal
     float Bloom_Threshold;
     float Bloom_Strength;
     bool DrawAsWireFrame;
-    float padd;
+    float CurTime;
 
     Vec4 pickingColor;
 };

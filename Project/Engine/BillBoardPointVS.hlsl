@@ -3,7 +3,7 @@
 
 struct GS_IN
 {
-    float4 pos : POSITION;
+    float4 pos : SV_POSITION;
 };
 
 GS_IN main(VS_IN input)

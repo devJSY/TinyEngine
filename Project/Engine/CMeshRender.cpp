@@ -14,6 +14,7 @@
 #include "CLevelMgr.h"
 
 #include "CAssetMgr.h"
+#include "CTimeMgr.h"
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
@@ -49,6 +50,7 @@ void CMeshRender::UpdateData()
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
     g_Global.resolution = CDevice::GetInst()->GetRenderResolution();
+    g_Global.CurTime += CTimeMgr::GetInst()->GetDeltaTime();
 
     // 오브젝트 이름으로 HashID 설정
     std::hash<std::wstring> hasher;

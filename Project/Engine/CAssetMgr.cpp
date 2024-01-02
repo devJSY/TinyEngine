@@ -990,6 +990,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         AddAsset(L"SkyBox_IDMap", pShader);
     }
+
+    {
+        Ptr<CGraphicsShader> pShader = nullptr;
+
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\BillBoardPointVS.hlsl", "main");
+        pShader->CreateGeometryShader(L"shader\\BillBoardPointGS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\FireBallPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        AddAsset(L"BillBoard_FireBall", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultTexture()
@@ -1007,6 +1024,8 @@ void CAssetMgr::CreateDefaultTexture()
     Load<CTexture>(L"cubemap", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
     Load<CTexture>(L"cubemap_diffuse", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
     Load<CTexture>(L"cubemap_specular", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
+
+    Load<CTexture>(L"shadertoy_fireball", L"Assets//Textures//shadertoy_fireball.jpg");
 }
 
 void CAssetMgr::CreateDefaultMaterial()
@@ -1066,6 +1085,13 @@ void CAssetMgr::CreateDefaultMaterial()
     pSpotLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pSpotLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLight"));
     AddAsset<CMaterial>(L"SpotLight", pSpotLigth);
+
+    // Billboard FireBall
+    CMaterial* pFireBall = nullptr;
+    pFireBall = new CMaterial;
+    pFireBall->SetShader(FindAsset<CGraphicsShader>(L"BillBoard_FireBall"));
+    pFireBall->SetTexParam(TEX_0, FindAsset<CTexture>(L"shadertoy_fireball"));
+    AddAsset<CMaterial>(L"Billboard_FireBall", pFireBall);
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,

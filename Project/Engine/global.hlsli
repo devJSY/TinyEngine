@@ -101,7 +101,7 @@ cbuffer GLOBAL : register(b2)
     float g_Bloom_threshold;
     float g_Bloom_Strength;
     bool g_DrawAsWireFrame;
-    float padd;
+    float g_CurTime;
     
     float4 g_pickingColor;
 }

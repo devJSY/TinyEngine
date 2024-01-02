@@ -7,6 +7,7 @@ CTimeMgr::CTimeMgr()
     : m_Frequency{}
     , m_PrevCount{}
     , m_CurCount{}
+    , m_DeltaTime(0.f)
     , m_iCall(0)
     , m_iFPS(0)
     , m_fTime(0.f)

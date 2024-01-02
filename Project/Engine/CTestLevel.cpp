@@ -116,7 +116,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    //AddModels();
+    // AddModels();
 
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;
@@ -150,6 +150,19 @@ void CTestLevel::begin()
 
     GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f),
                                   Vec3(1.f, 1.f, 1.f), true, 20);
+
+    CGameObject* pFireBall = new CGameObject;
+    pFireBall->SetName(L"FireBall");
+
+    pFireBall->AddComponent(new CTransform);
+    pFireBall->AddComponent(new CMeshRender);
+
+    pFireBall->Transform()->SetRelativePos(Vec3(0.f, 750.f, 0.f));
+
+    pFireBall->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pFireBall->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Billboard_FireBall"));
+    pFireBall->MeshRender()->SetUseTexture(true);
+    AddObject(pFireBall, L"Mesh");
 
     CLevel::begin();
 }
