@@ -184,6 +184,9 @@
     <ClInclude Include="CRenderMgr.h">
       <Filter>04. Manager\RenderMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CCollider2D.h">
+      <Filter>08. Component\02. Collider2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -347,6 +350,9 @@
     </ClCompile>
     <ClCompile Include="CRenderMgr_init.cpp">
       <Filter>04. Manager\RenderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider2D.cpp">
+      <Filter>08. Component\02. Collider2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

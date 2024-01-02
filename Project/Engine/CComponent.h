@@ -30,11 +30,10 @@ public:
     GET_OTHER_COMPONENT(Transform);
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(Camera);
-
+    GET_OTHER_COMPONENT(Collider2D);
 
 public:
     GET_OTHER_COMPONENT(Light3D);
-
 
 public:
     CComponent(COMPONENT_TYPE _Type);

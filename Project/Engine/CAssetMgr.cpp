@@ -125,6 +125,88 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
     return meshData;
 }
 
+tMeshData CAssetMgr::MakeDebugCircle(const float radius, const int numSlices)
+{
+    tMeshData meshData;
+
+    Vtx v;
+
+    // Áß½É Á¡
+    v.vPos = Vec3(0.f, 0.f, 0.f);
+    v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    v.vUV = Vec2(0.5f, 0.5f);
+    meshData.vertices.push_back(v);
+
+    float fTheta = 0.f;
+
+    for (int i = 0; i <= numSlices; ++i)
+    {
+        fTheta = (XM_2PI / numSlices) * i;
+
+        v.vPos = Vec3(radius * cosf(fTheta), radius * sinf(fTheta), 0.f);
+        v.vNormal = Vec3(0.f, 0.f, -1.f);
+        v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+        v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+
+        meshData.vertices.push_back(v);
+    }
+
+    for (int i = 1; i < meshData.vertices.size(); ++i)
+    {
+        meshData.indices.push_back(i);
+    }
+
+    return meshData;
+}
+
+tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
+{
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec3> normals;
+    vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
+
+    // ¾Õ¸é
+    positions.push_back(Vec3(-1.0f, 1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(1.0f, 1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(1.0f, -1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(-1.0f, -1.0f, 0.0f) * scale);
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+    normals.push_back(Vec3(0.0f, 0.0f, -1.0f));
+
+    // Texture Coordinates (Direct3D 9)
+    // https://learn.microsoft.com/en-us/windows/win32/direct3d9/texture-coordinates
+    texcoords.push_back(Vec2(0.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 0.0f));
+    texcoords.push_back(Vec2(1.0f, 1.0f));
+    texcoords.push_back(Vec2(0.0f, 1.0f));
+
+    tMeshData meshData;
+
+    for (size_t i = 0; i < positions.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vNormal = normals[i];
+        v.vUV = texcoords[i] * texScale;
+        // v.tangentModel = Vec3(1.0f, 0.0f, 0.0f);
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
+
+        meshData.vertices.push_back(v);
+    }
+
+    meshData.indices = {0, 1, 2, 3, 0};
+
+    return meshData;
+}
+
 tMeshData CAssetMgr::MakeSquareGrid(const int numSlices, const int numStacks, const float scale, const Vec2 texScale)
 {
     tMeshData meshData;
@@ -752,6 +834,24 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"RectMesh", pMesh);
     }
 
+    // Debug Circle
+    {
+        auto mesh = MakeDebugCircle(1.f, 40);
+
+        Ptr<CMesh> pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"CircleMesh_Debug", pMesh);
+    }
+
+    // Debug Rect
+    {
+        auto mesh = MakeDebugRect();
+
+        Ptr<CMesh> pMesh = new CMesh;
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        AddAsset(L"RectMesh_Debug", pMesh);
+    }
+
     // SquareGrid
     {
         auto mesh = MakeSquareGrid(10, 10);
@@ -875,8 +975,10 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
         pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
 
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
         AddAsset(L"DebugShapeShader", pShader);
     }

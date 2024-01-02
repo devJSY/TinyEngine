@@ -19,6 +19,7 @@ struct tDebugShapeInfo
     Matrix matWorld;
 
     Vec3 vColor;
+    float fLifeTime;
     float fDuration;
     bool bDepthTest;
 };

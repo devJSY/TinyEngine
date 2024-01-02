@@ -70,6 +70,7 @@ void CTestLevel::begin()
     pLight1->AddComponent(new CTransform);
     pLight1->AddComponent(new CMeshRender);
     pLight1->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 0));
+
     pLight1->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
 
     pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
@@ -78,6 +79,7 @@ void CTestLevel::begin()
     pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
     pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     pLight1->MeshRender()->SetUseTexture(true);
+
     pLights->AddChild(pLight1);
 
     CGameObject* pLight2 = new CGameObject;
@@ -147,22 +149,6 @@ void CTestLevel::begin()
     pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
     AddObject(pObj, L"UI", false);
-
-    GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f),
-                                  Vec3(1.f, 1.f, 1.f), true, 20);
-
-    CGameObject* pFireBall = new CGameObject;
-    pFireBall->SetName(L"FireBall");
-
-    pFireBall->AddComponent(new CTransform);
-    pFireBall->AddComponent(new CMeshRender);
-
-    pFireBall->Transform()->SetRelativePos(Vec3(0.f, 750.f, 0.f));
-
-    pFireBall->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pFireBall->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Billboard_FireBall"));
-    pFireBall->MeshRender()->SetUseTexture(true);
-    AddObject(pFireBall, L"Mesh");
 
     CLevel::begin();
 }

@@ -32,6 +32,10 @@ public:
     Vec3 GetRelativeScale() const { return m_vRelativeScale; }
     Vec3 GetRelativeRotation() const { return m_vRelativeRotation; }
 
+    Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
+    Vec3 GetWorldScale() const;
+    // Vec3 GetWorldRot() const;
+
     bool IsAbsolute() const { return m_bAbsolute; }
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }
 
@@ -42,10 +46,10 @@ public:
     Vec3 GetWorldDir(DIR_TYPE _type) { return m_arrWorldDir[(UINT)_type]; }
 
 public:
-    Vec3 GetWorldPos() const { return Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43); }
     const Matrix& GetParentMat() const { return m_matParentMat; }
 
     const BoundingSphere& GetBoundingSphere() const { return m_BoundingSphere; }
+
 public:
     CTransform();
     virtual ~CTransform();
