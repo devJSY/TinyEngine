@@ -180,21 +180,21 @@ void CTestLevel::AddMeshes()
     pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
 
     // Rect
-    CGameObject* pSquare = new CGameObject;
-    pSquare->SetName(L"Rect");
+    CGameObject* pRect = new CGameObject;
+    pRect->SetName(L"Rect");
 
-    pSquare->AddComponent(new CTransform);
-    pSquare->AddComponent(new CMeshRender);
-    pSquare->AddComponent(new CPlayerScript);
+    pRect->AddComponent(new CTransform);
+    pRect->AddComponent(new CMeshRender);
+    pRect->AddComponent(new CPlayerScript);
 
-    pSquare->Transform()->SetRelativePos(Vec3(-1000.f, 0.f, 500.f));
-    pSquare->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pSquare->Transform()->SetAbsolute(true);
+    pRect->Transform()->SetRelativePos(Vec3(-1000.f, 0.f, 500.f));
+    pRect->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pRect->Transform()->SetAbsolute(true);
 
-    pSquare->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pSquare->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pRect->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pRect->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
-    pMeshes->AddChild(pSquare);
+    pMeshes->AddChild(pRect);
 
     // SquareGrid
     CGameObject* pSquareGrid = new CGameObject;

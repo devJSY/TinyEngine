@@ -74,6 +74,18 @@
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\TessellatedQuadDS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\TessellatedQuadHS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\TessellatedQuadPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\TessellatedQuadVS.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

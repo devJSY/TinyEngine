@@ -533,6 +533,9 @@
     <Filter Include="ShaderCode\BillBoardPoint\FireBall">
       <UniqueIdentifier>{bf673712-93a6-4566-b3a6-4c589d3e82d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\TessellatedQuad">
+      <UniqueIdentifier>{096e3691-6d9a-4fe8-8f74-4a1b42ffd3c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -620,6 +623,18 @@
     </FxCompile>
     <FxCompile Include="FireBallPS.hlsl">
       <Filter>ShaderCode\BillBoardPoint\FireBall</Filter>
+    </FxCompile>
+    <FxCompile Include="TessellatedQuadDS.hlsl">
+      <Filter>ShaderCode\TessellatedQuad</Filter>
+    </FxCompile>
+    <FxCompile Include="TessellatedQuadHS.hlsl">
+      <Filter>ShaderCode\TessellatedQuad</Filter>
+    </FxCompile>
+    <FxCompile Include="TessellatedQuadPS.hlsl">
+      <Filter>ShaderCode\TessellatedQuad</Filter>
+    </FxCompile>
+    <FxCompile Include="TessellatedQuadVS.hlsl">
+      <Filter>ShaderCode\TessellatedQuad</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
