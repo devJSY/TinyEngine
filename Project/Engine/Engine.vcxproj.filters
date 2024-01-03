@@ -187,6 +187,9 @@
     <ClInclude Include="CCollider2D.h">
       <Filter>08. Component\02. Collider2D</Filter>
     </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>04. Manager\CollisionMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -353,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="CCollider2D.cpp">
       <Filter>08. Component\02. Collider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>04. Manager\CollisionMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -535,6 +541,9 @@
     </Filter>
     <Filter Include="ShaderCode\TessellatedQuad">
       <UniqueIdentifier>{096e3691-6d9a-4fe8-8f74-4a1b42ffd3c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\CollisionMgr">
+      <UniqueIdentifier>{51cb9da8-2ab5-4e89-ae24-98a0524a7f6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

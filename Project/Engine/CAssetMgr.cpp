@@ -84,10 +84,10 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
     vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
 
     // ¾Õ¸é
-    positions.push_back(Vec3(-1.0f, 1.0f, 0.0f) * scale);
-    positions.push_back(Vec3(1.0f, 1.0f, 0.0f) * scale);
-    positions.push_back(Vec3(1.0f, -1.0f, 0.0f) * scale);
-    positions.push_back(Vec3(-1.0f, -1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(-0.5f, 0.5f, 0.0f) * scale);
+    positions.push_back(Vec3(0.5f, 0.5f, 0.0f) * scale);
+    positions.push_back(Vec3(0.5f, -0.5f, 0.0f) * scale);
+    positions.push_back(Vec3(-0.5f, -0.5f, 0.0f) * scale);
     colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
     colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
     colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
@@ -167,10 +167,10 @@ tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
     vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
 
     // ¾Õ¸é
-    positions.push_back(Vec3(-1.0f, 1.0f, 0.0f) * scale);
-    positions.push_back(Vec3(1.0f, 1.0f, 0.0f) * scale);
-    positions.push_back(Vec3(1.0f, -1.0f, 0.0f) * scale);
-    positions.push_back(Vec3(-1.0f, -1.0f, 0.0f) * scale);
+    positions.push_back(Vec3(-0.5f, 0.5f, 0.0f) * scale);
+    positions.push_back(Vec3(0.5f, 0.5f, 0.0f) * scale);
+    positions.push_back(Vec3(0.5f, -0.5f, 0.0f) * scale);
+    positions.push_back(Vec3(-0.5f, -0.5f, 0.0f) * scale);
     colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
     colors.push_back(Vec3(1.0f, 1.0f, 1.0f));
     colors.push_back(Vec3(1.0f, 1.0f, 1.0f));

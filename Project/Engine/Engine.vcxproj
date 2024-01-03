@@ -166,6 +166,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CContentBrowser.h" />
@@ -230,6 +231,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CContentBrowser.cpp" />

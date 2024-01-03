@@ -39,7 +39,7 @@ void CMeshRender::UpdateData()
         GetMaterial()->UpdateData();
     }
 
-    GetOwner()->Transform()->UpdateData();
+    Transform()->UpdateData();
 
     // Global Data ¹ÙÀÎµù
     if (m_bDrawNormalLine)

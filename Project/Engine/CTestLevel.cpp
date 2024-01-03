@@ -1,16 +1,18 @@
 #include "pch.h"
 #include "CTestLevel.h"
 
+#include "CAssetMgr.h"
+#include "CLevelMgr.h"
+#include "CRenderMgr.h"
+#include "CCollisionMgr.h"
+
 #include "CGameObject.h"
 #include "CTransform.h"
 #include "CMeshRender.h"
-#include "CAssetMgr.h"
 #include "CPlayerScript.h"
 #include "CLight3D.h"
 #include "CCamera.h"
 #include "CCameraMoveScript.h"
-#include "CLevelMgr.h"
-#include "CRenderMgr.h"
 
 CTestLevel::CTestLevel()
 {
@@ -150,6 +152,52 @@ void CTestLevel::begin()
 
     AddObject(pObj, L"UI", false);
 
+    // Player
+    CGameObject* pPlayer = new CGameObject;
+    pPlayer->SetName(L"Player");
+
+    pPlayer->AddComponent(new CTransform);
+    pPlayer->AddComponent(new CMeshRender);
+    pPlayer->AddComponent(new CPlayerScript);
+    pPlayer->AddComponent(new CCollider2D);
+
+    pPlayer->Transform()->SetAbsolute(true);
+    pPlayer->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+    pPlayer->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+    pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+    pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    
+    pPlayer->Collider2D()->SetAbsolute(true);
+    pPlayer->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+    pPlayer->Collider2D()->SetOffsetScale(Vec2(50.f, 50.f));
+
+    AddObject(pPlayer, L"Mesh");
+
+    // Monster
+    CGameObject* pMonster = new CGameObject;
+    pMonster->SetName(L"Monster");
+
+    pMonster->AddComponent(new CTransform);
+    pMonster->AddComponent(new CMeshRender);
+    pMonster->AddComponent(new CCollider2D);
+
+    pMonster->Transform()->SetAbsolute(true);
+    pMonster->Transform()->SetRelativePos(Vec3(500.f, 500.f, 500.f));
+    pMonster->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+    pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+    pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+
+    pMonster->Collider2D()->SetAbsolute(true);
+    pMonster->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+    pMonster->Collider2D()->SetOffsetScale(Vec2(50.f, 50.f));
+
+    AddObject(pMonster, L"Mesh");
+
+    // 충돌 설정
+    CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
+
     CLevel::begin();
 }
 
@@ -171,7 +219,6 @@ void CTestLevel::AddMeshes()
 
     pMeshes->AddComponent(new CTransform);
     pMeshes->AddComponent(new CMeshRender);
-    pMeshes->AddComponent(new CPlayerScript);
 
     pMeshes->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     pMeshes->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
@@ -185,7 +232,6 @@ void CTestLevel::AddMeshes()
 
     pRect->AddComponent(new CTransform);
     pRect->AddComponent(new CMeshRender);
-    pRect->AddComponent(new CPlayerScript);
 
     pRect->Transform()->SetRelativePos(Vec3(-1000.f, 0.f, 500.f));
     pRect->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -202,7 +248,6 @@ void CTestLevel::AddMeshes()
 
     pSquareGrid->AddComponent(new CTransform);
     pSquareGrid->AddComponent(new CMeshRender);
-    pSquareGrid->AddComponent(new CPlayerScript);
 
     pSquareGrid->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 500.f));
     pSquareGrid->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -219,7 +264,6 @@ void CTestLevel::AddMeshes()
 
     pBox->AddComponent(new CTransform);
     pBox->AddComponent(new CMeshRender);
-    pBox->AddComponent(new CPlayerScript);
 
     pBox->Transform()->SetRelativePos(Vec3(-500.f, 0.f, 500.f));
     pBox->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -236,7 +280,6 @@ void CTestLevel::AddMeshes()
 
     pCylinder->AddComponent(new CTransform);
     pCylinder->AddComponent(new CMeshRender);
-    pCylinder->AddComponent(new CPlayerScript);
 
     pCylinder->Transform()->SetRelativePos(Vec3(-250.f, 0.f, 500.f));
     pCylinder->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -253,7 +296,6 @@ void CTestLevel::AddMeshes()
 
     pSphere->AddComponent(new CTransform);
     pSphere->AddComponent(new CMeshRender);
-    pSphere->AddComponent(new CPlayerScript);
 
     pSphere->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
     pSphere->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -270,7 +312,6 @@ void CTestLevel::AddMeshes()
 
     pTetrahedron->AddComponent(new CTransform);
     pTetrahedron->AddComponent(new CMeshRender);
-    pTetrahedron->AddComponent(new CPlayerScript);
 
     pTetrahedron->Transform()->SetRelativePos(Vec3(250.f, 0.f, 500.f));
     pTetrahedron->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -287,7 +328,6 @@ void CTestLevel::AddMeshes()
 
     pIcosahedron->AddComponent(new CTransform);
     pIcosahedron->AddComponent(new CMeshRender);
-    pIcosahedron->AddComponent(new CPlayerScript);
 
     pIcosahedron->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
     pIcosahedron->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -304,7 +344,6 @@ void CTestLevel::AddMeshes()
 
     pSubdivideSphere->AddComponent(new CTransform);
     pSubdivideSphere->AddComponent(new CMeshRender);
-    pSubdivideSphere->AddComponent(new CPlayerScript);
 
     pSubdivideSphere->Transform()->SetRelativePos(Vec3(750.f, 0.f, 500.f));
     pSubdivideSphere->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
@@ -321,8 +360,6 @@ void CTestLevel::AddMeshes()
 
     pCircle->AddComponent(new CTransform);
     pCircle->AddComponent(new CMeshRender);
-    pCircle->AddComponent(new CPlayerScript);
-    pCircle->AddComponent(new CCollider2D);
 
     pCircle->Transform()->SetRelativePos(Vec3(1000.f, 0.f, 500.f));
     pCircle->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));

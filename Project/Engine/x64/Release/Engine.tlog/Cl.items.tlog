@@ -2,6 +2,7 @@ D:\TinyEngine\Project\Engine\CAsset.cpp;D:\TinyEngine\Project\Engine\x64\Release
 D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CAssetMgr.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCamera.obj
 D:\TinyEngine\Project\Engine\CCameraMoveScript.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCameraMoveScript.obj
+D:\TinyEngine\Project\Engine\CCollisionMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCollisionMgr.obj
 D:\TinyEngine\Project\Engine\CComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComponent.obj
 D:\TinyEngine\Project\Engine\CConstBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Release\CConstBuffer.obj
 D:\TinyEngine\Project\Engine\CContentBrowser.cpp;D:\TinyEngine\Project\Engine\x64\Release\CContentBrowser.obj

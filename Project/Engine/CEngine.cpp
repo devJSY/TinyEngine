@@ -11,6 +11,7 @@
 #include "CTaskMgr.h"
 #include "CGrabageCollector.h"
 #include "CRenderMgr.h"
+#include "CCollisionMgr.h"
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
@@ -63,8 +64,9 @@ void CEngine::progress()
     CKeyMgr::GetInst()->tick();
 
     // Level Update
-    CEditorMgr::GetInst()->tick(); // Editor tick 먼저 호출해야 Level에서 Imgui호출가능
+    CEditorMgr::GetInst()->tick(); 
     CLevelMgr::GetInst()->tick();
+    CCollisionMgr::GetInst()->tick();
 
     // ===========================
     // Rendering
@@ -75,7 +77,7 @@ void CEngine::progress()
 
     // Level Render
     CRenderMgr::GetInst()->tick();
-    CEditorMgr::GetInst()->render(); // 렌더링 이후 호출
+    CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
 
     // Present
     CDevice::GetInst()->Present();
