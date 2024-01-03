@@ -9,7 +9,6 @@ CTransform::CTransform()
     , m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
     , m_bAbsolute(true)
 {
-    m_BoundingSphere = BoundingSphere();
 }
 
 CTransform::~CTransform()
@@ -70,16 +69,6 @@ void CTransform::finaltick()
             m_arrWorldDir[i] = XMVector3TransformNormal(m_arrWorldDir[i], m_matWorld);
             m_arrWorldDir[i].Normalize();
         }
-    }
-
-    // Bounding Sphere
-    float AverScale = (m_vRelativeScale.x + m_vRelativeScale.y + m_vRelativeScale.z) / 3.f;
-    m_BoundingSphere.Center = Vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
-    m_BoundingSphere.Radius = AverScale;
-    if (GetOwner()->GetParent() && !m_bAbsolute)
-    {
-        Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
-        m_BoundingSphere.Radius *= (vParentScale.x + vParentScale.y + vParentScale.z) / 3.f;
     }
 }
 

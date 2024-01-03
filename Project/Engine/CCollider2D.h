@@ -39,6 +39,12 @@ public:
     void Overlap(CCollider2D* _OtherCollider);
     void EndOverlap(CCollider2D* _OtherCollider);
 
+private:
+    BoundingSphere m_BoundingSphere;
+
+public:
+    const BoundingSphere& GetBoundingSphere() const { return m_BoundingSphere; }
+
 public:
     CCollider2D();
     ~CCollider2D();

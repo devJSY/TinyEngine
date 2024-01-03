@@ -32,12 +32,12 @@ void CCollisionMgr::tick()
     }
 }
 
-void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
+void CCollisionMgr::CollisionBtwLayer(UINT _leftCol, UINT _rightCol)
 {
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-    CLayer* pLeftLayer = pCurLevel->GetLayer(_left);
-    CLayer* pRightLayer = pCurLevel->GetLayer(_right);
+    CLayer* pLeftLayer = pCurLevel->GetLayer(_leftCol);
+    CLayer* pRightLayer = pCurLevel->GetLayer(_rightCol);
 
     const vector<CGameObject*>& vecLeft = pLeftLayer->GetLayerObjects();
     const vector<CGameObject*>& vecRight = pRightLayer->GetLayerObjects();
@@ -49,7 +49,7 @@ void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
             continue;
 
         size_t j = 0;
-        if (_left == _right) // Left, Right 동일 레이어인 경우, 이중 검사를 피하기 위함
+        if (_leftCol == _rightCol) // Left, Right 동일 레이어인 경우, 이중 검사를 피하기 위함
         {
             j = i + 1;
         }
@@ -121,10 +121,10 @@ void CCollisionMgr::CollisionBtwLayer(UINT _left, UINT _right)
     }
 }
 
-bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRight)
+bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _pRightCol)
 {
-    const Matrix& matLeft = _pLeft->GetColliderWorldMat();
-    const Matrix& matRight = _pRight->GetColliderWorldMat();
+    const Matrix& matLeft = _pLeftCol->GetColliderWorldMat();
+    const Matrix& matRight = _pRightCol->GetColliderWorldMat();
 
     // Rect Local
     // 0 -- 1
@@ -180,10 +180,10 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
     return true;
 }
 
-void CCollisionMgr::LayerCheck(UINT _left, UINT _right)
+void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer)
 {
-    UINT iRow = (UINT)_left;
-    UINT iCol = (UINT)_right;
+    UINT iRow = (UINT)_LeftLayer;
+    UINT iCol = (UINT)_RightLayer;
 
     if (iRow > iCol)
     {

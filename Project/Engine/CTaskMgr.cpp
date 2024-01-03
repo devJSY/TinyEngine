@@ -2,19 +2,22 @@
 
 #include "CTaskMgr.h"
 #include "CLevelMgr.h"
-#include "CLevel.h"
-#include "CGameObject.h"
-#include "CComponent.h"
-
-#include "CEngine.h"
-#include "CDevice.h"
 #include "CEditorMgr.h"
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
 
+#include "CEngine.h"
+#include "CDevice.h"
+
+#include "CGameObject.h"
+#include "CComponent.h"
 #include "CCamera.h"
 #include "CTransform.h"
+#include "CCollider2D.h"
+
+#include "CLevel.h"
+
 // stb
 #define _CRT_SECURE_NO_WARNINGS // stb_image_write compile error fix
 #define STB_IMAGE_IMPLEMENTATION
@@ -57,18 +60,7 @@ void CTaskMgr::tick()
         // Mouse Picking
         if (KEY_TAP(KEY::LBTN))
         {
-            // Color Picking
-            {
-                Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
-
-                // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
-                if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
-                    MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
-
-                GamePlayStatic::MouseColorPicking(MousePos);
-            }
-
-            //// Ray Picking
+            //// Color Picking
             //{
             //    Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
@@ -76,8 +68,19 @@ void CTaskMgr::tick()
             //    if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
             //        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-            //    GamePlayStatic::MouseRayPicking(MousePos);
+            //    GamePlayStatic::MouseColorPicking(MousePos);
             //}
+
+            // Ray Picking
+            {
+                Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+
+                // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
+                if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+                    MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+
+                GamePlayStatic::MouseRayPicking(MousePos);
+            }
         }
     }
 
@@ -375,7 +378,11 @@ void CTaskMgr::tick()
                     for (size_t i = 0; i < vecObjects.size(); ++i)
                     {
                         float dist = 0.0f;
-                        bool bSelected = curRay.Intersects(vecObjects[i]->Transform()->GetBoundingSphere(), dist);
+                        CCollider2D* col = vecObjects[i]->Collider2D();
+                        if (nullptr == col)
+                            continue;
+
+                        bool bSelected = curRay.Intersects(col->GetBoundingSphere(), dist);
 
                         if (bSelected)
                         {

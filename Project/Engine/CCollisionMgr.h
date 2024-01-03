@@ -21,7 +21,7 @@ private:
     map<UINT_PTR, bool> m_mapPrevInfo; // 이전 프레임에 두 충돌체의 충돌여부
 
 public:
-    void LayerCheck(UINT _left, UINT _right);
+    void LayerCheck(UINT _LeftLayer, UINT _RightLayer);
     void LayerCheck(const wstring& _LeftLayer, const wstring& _RightLayer);
 
     void Clear()
@@ -36,6 +36,6 @@ public:
     void tick();
 
 private:
-    void CollisionBtwLayer(UINT _left, UINT _right);
-    bool CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRight);
+    void CollisionBtwLayer(UINT _leftCol, UINT _rightCol);
+    bool CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _pRightCol);
 };

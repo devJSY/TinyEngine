@@ -16,9 +16,6 @@ private:
 
     Matrix m_matParentMat;
 
-private:
-    BoundingSphere m_BoundingSphere;
-
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
@@ -47,8 +44,6 @@ public:
 
 public:
     const Matrix& GetParentMat() const { return m_matParentMat; }
-
-    const BoundingSphere& GetBoundingSphere() const { return m_BoundingSphere; }
 
 public:
     CTransform();
