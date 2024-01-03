@@ -18,6 +18,9 @@ private:
     Matrix m_matColWorld;
     COLLIDER2D_TYPE m_Type;
 
+private:
+    float m_fRadius;
+
 public:
     void SetAbsolute(bool _bAbsol) { m_bAbsolute = _bAbsol; }
     void SetOffsetPos(Vec2 _vOffset) { m_vOffsetPos = Vec3(_vOffset.x, _vOffset.y, 0.f); }
@@ -44,6 +47,10 @@ private:
 
 public:
     const BoundingSphere& GetBoundingSphere() const { return m_BoundingSphere; }
+
+public:
+    float GetRadius() const { return m_fRadius; }
+    void SetRadius(float radius) { m_fRadius = radius; }
 
 public:
     CCollider2D();

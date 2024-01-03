@@ -123,6 +123,30 @@ void CCollisionMgr::CollisionBtwLayer(UINT _leftCol, UINT _rightCol)
 
 bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _pRightCol)
 {
+    if (_pLeftCol->GetType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetType() == COLLIDER2D_TYPE::RECT)
+    {
+        return CollisionRectRect(_pLeftCol, _pRightCol);
+    }
+    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+    {
+        return CollisionCircleCircle(_pLeftCol, _pRightCol);
+    }
+    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+    {
+        return CollisionRectCircle(_pLeftCol, _pRightCol);
+    }
+    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetType() == COLLIDER2D_TYPE::RECT)
+    {
+        return CollisionRectCircle(_pRightCol, _pLeftCol);
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool CCollisionMgr::CollisionRectRect(CCollider2D* _pLeftCol, CCollider2D* _pRightCol)
+{
     const Matrix& matLeft = _pLeftCol->GetColliderWorldMat();
     const Matrix& matRight = _pRightCol->GetColliderWorldMat();
 
@@ -177,6 +201,46 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _p
     }
 
     // 4번의 테스트동안 분리할 수 없었다.
+    return true;
+}
+
+bool CCollisionMgr::CollisionCircleCircle(CCollider2D* _pLeftCol, CCollider2D* _pRightCol)
+{
+    const Matrix& matLeft = _pLeftCol->GetColliderWorldMat();
+    const Matrix& matRight = _pRightCol->GetColliderWorldMat();
+
+    Vec3 RightColCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRight);
+    Vec3 LeftColCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matLeft);
+
+    // 두 원의 충돌 판단 (피타고라스)
+    float distance =
+        (float)sqrt(pow(RightColCenter.x - LeftColCenter.x, 2) + pow(RightColCenter.y - LeftColCenter.y, 2));
+
+    if (distance <= _pLeftCol->GetRadius() + _pRightCol->GetRadius())
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pCircleCol)
+{
+    return false;
+}
+
+bool CCollisionMgr::IsPointInCircle(float cx, float cy, float cr, float px, float py)
+{
+    // x 변위량
+    float deltaX = cx - px;
+    float deltaY = cy - py;
+
+    // 원의 중심과 점과의 거리
+    float length = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+
+    if (length > cr)
+        return false;
+
     return true;
 }
 

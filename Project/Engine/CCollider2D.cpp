@@ -10,6 +10,7 @@ CCollider2D::CCollider2D()
     , m_CollisionCount(0)
     , m_bAbsolute(false)
     , m_Type(COLLIDER2D_TYPE::RECT)
+    , m_fRadius(0.f)
 {
     m_BoundingSphere = BoundingSphere();
 }
@@ -43,27 +44,40 @@ void CCollider2D::finaltick()
     }
 
     // 충돌중이면 Red, 충돌하고 있지 않으면 Green
-    if (0 == m_CollisionCount)
+    if (m_Type == COLLIDER2D_TYPE::RECT)
     {
-        GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+        if (0 == m_CollisionCount)
+            GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+        else
+            GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
     }
-    else
+    else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
     {
-        GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
+        if (0 == m_CollisionCount)
+            GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
+        else
+            GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
     }
-
-    // 행렬 분해
-    XMVECTOR XMscale;
-    XMVECTOR XMrot;
-    XMVECTOR XMTr;
-
-    XMMatrixDecompose(&XMscale, &XMrot, &XMTr, m_matColWorld);
-
-    Vec3 scale = XMscale;
 
     // Bounding Sphere
     m_BoundingSphere.Center = m_matColWorld.Translation();
-    m_BoundingSphere.Radius = (scale.x + scale.y + scale.z) / 3.f;
+    if (m_Type == COLLIDER2D_TYPE::RECT)
+    {
+        // 행렬 분해
+        XMVECTOR XMscale;
+        XMVECTOR XMrot;
+        XMVECTOR XMTr;
+
+        XMMatrixDecompose(&XMscale, &XMrot, &XMTr, m_matColWorld);
+
+        Vec3 scale = XMscale;
+
+        m_BoundingSphere.Radius = (scale.x + scale.y + scale.z) / 3.f;
+    }
+    else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
+    {
+        m_BoundingSphere.Radius = m_fRadius;
+    }
 }
 
 void CCollider2D::BeginOverlap(CCollider2D* _OtherCollider)

@@ -167,10 +167,9 @@ void CTestLevel::begin()
 
     pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
     pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
-    
-    pPlayer->Collider2D()->SetAbsolute(true);
-    pPlayer->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
-    pPlayer->Collider2D()->SetOffsetScale(Vec2(50.f, 50.f));
+
+    pPlayer->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
+    pPlayer->Collider2D()->SetRadius(50.f);
 
     AddObject(pPlayer, L"Mesh");
 
@@ -189,9 +188,8 @@ void CTestLevel::begin()
     pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
     pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
-    pMonster->Collider2D()->SetAbsolute(true);
-    pMonster->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
-    pMonster->Collider2D()->SetOffsetScale(Vec2(50.f, 50.f));
+    pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
+    pMonster->Collider2D()->SetRadius(100.f);
 
     AddObject(pMonster, L"Mesh");
 
