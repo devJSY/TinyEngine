@@ -7,7 +7,7 @@ private:
     EDITOR_TYPE m_EditorType;
 
 public:
-    virtual void begin() = 0;
+    virtual void init() = 0;
     virtual void tick() = 0;
     virtual void finaltick() = 0;
     virtual void render() = 0;

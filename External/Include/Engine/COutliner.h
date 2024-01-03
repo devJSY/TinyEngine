@@ -10,7 +10,7 @@ private:
     void DrawDetails(CGameObject* obj);
 
 public:
-    void begin();
+    void init();
     void render();
 
 private:

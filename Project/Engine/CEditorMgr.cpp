@@ -20,7 +20,7 @@ void CEditorMgr::init()
 {
     m_vecEditor.resize((UINT)EDITOR_TYPE::END);
     m_vecEditor[(UINT)EDITOR_TYPE::LEVEL] = new CLevelEditor;
-    m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]->begin();
+    m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]->init();
 
     m_CurEditor = m_vecEditor[(UINT)EDITOR_TYPE::LEVEL];
 }

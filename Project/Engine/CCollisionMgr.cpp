@@ -159,8 +159,7 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
         // 반복문 돌면서 4개의 표면벡터를 지정된 투영축으로 투영시켜서 길이를 누적받는다.
         for (int j = 0; j < 4; ++j)
         {
-            float temp = abs(vProj.Dot(arrProj[j]));
-            ProjAcc += temp;
+            ProjAcc += abs(vProj.Dot(arrProj[j]));
         }
 
         // 투영된 길이의 절반씩 합친 길이가 필요하기 때문에 전체 합친길이를 2 로 나눈다

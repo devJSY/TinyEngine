@@ -34,7 +34,7 @@ CLevelEditor::~CLevelEditor()
     ImGui::DestroyContext();
 }
 
-void CLevelEditor::begin()
+void CLevelEditor::init()
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -82,8 +82,8 @@ void CLevelEditor::begin()
     ImGui_ImplWin32_Init(CEngine::GetInst()->GetMainWind());
     ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
 
-    m_Outliner.begin();
-    m_ContentBrowser.begin();
+    m_Outliner.init();
+    m_ContentBrowser.init();
 }
 
 void CLevelEditor::tick()

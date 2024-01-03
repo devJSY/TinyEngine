@@ -398,7 +398,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     }
 }
 
-void COutliner::begin()
+void COutliner::init()
 {
 }
 

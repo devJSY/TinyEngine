@@ -11,7 +11,7 @@ private:
     Ptr<CTexture> m_FileIcon;
 
 public:
-    void begin();
+    void init();
     void render();
 
 private:

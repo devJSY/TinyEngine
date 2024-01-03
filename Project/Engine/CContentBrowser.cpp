@@ -14,7 +14,7 @@ CContentBrowser::~CContentBrowser()
 {
 }
 
-void CContentBrowser::begin()
+void CContentBrowser::init()
 {
     m_CurrentDirectory = CPathMgr::GetContentPath();
     m_DirectoryIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DirectoryIcon");
