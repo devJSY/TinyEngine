@@ -229,47 +229,71 @@ bool CCollisionMgr::CollisionCircleCircle(CCollider2D* _pLeftCol, CCollider2D* _
 
 bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pCircleCol)
 {
+    float radius = _pCircleCol->GetRadius();
     const Matrix& matRect = _pRectCol->GetColliderWorldMat();
     const Matrix& matCircle = _pCircleCol->GetColliderWorldMat();
     static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f),
                               Vec3(-0.5f, -0.5f, 0.f)};
 
-    Vec3 arrProj[4] = {};
+    Vec3 arrWorld[4] = {};
 
     for (size_t i = 0; i < 4; i++)
     {
-        arrProj[i] = XMVector3TransformCoord(arrRect[i], matRect);
+        arrWorld[i] = XMVector3TransformCoord(arrRect[i], matRect);
     }
 
     Vec3 RectCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRect);
     Vec3 CircleCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matCircle);
 
-    // 꼭짓점 체크
+    Vec3 arrProj[4] = {};
+
+    arrProj[0] = XMVector3TransformCoord(arrRect[1], matRect) - XMVector3TransformCoord(arrRect[0], matRect);
+    arrProj[1] = XMVector3TransformCoord(arrRect[3], matRect) - XMVector3TransformCoord(arrRect[0], matRect);
+
+    // 제일 가까운 코너 찾기
+    Vec3 corner = {};
+    float min = 2147000000;
     for (size_t i = 0; i < 4; i++)
     {
-        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, _pCircleCol->GetRadius(), arrProj[i].x, arrProj[i].y))
-            return true;
+        float dist = (CircleCenter - arrWorld[i]).Length();
+        if (min > dist)
+        {
+            corner = arrWorld[i];
+            min = dist;
+        }
     }
 
-    float width = (arrProj[1] - arrProj[0]).Length();
+    Vec3 ToCorner = corner - CircleCenter;
+    ToCorner.Normalize();
+    ToCorner *= radius;
 
-    for (size_t i = 0; i < 4; i++)
+    arrProj[2] = ToCorner;
+    arrProj[3] = ToCorner;
+
+    for (int i = 0; i < 2; ++i)
     {
-        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, _pCircleCol->GetRadius() + (width / 2.f), RectCenter.x,
-                                 RectCenter.y))
-            return true;
+        Vec3 vProj = arrProj[i];
+
+        vProj.Normalize();
+
+        float ProjAcc = 0.f;
+
+        for (int j = 0; j < 4; ++j)
+        {
+            ProjAcc += abs(vProj.Dot(arrProj[j]));
+        }
+
+        ProjAcc /= 2.f;
+
+        float fCenterDist = abs(vProj.Dot(RectCenter - CircleCenter));
+
+        if (ProjAcc < fCenterDist)
+        {
+            return false;
+        }
     }
 
-    float height = (arrProj[3] - arrProj[0]).Length();
-
-    for (size_t i = 0; i < 4; i++)
-    {
-        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, _pCircleCol->GetRadius() + (height / 2.f),
-                                 RectCenter.x, RectCenter.y))
-            return true;
-    }
-
-    return false;
+    return true;
 }
 
 bool CCollisionMgr::CollisionPointCircle(float cx, float cy, float cr, float px, float py)
