@@ -205,10 +205,13 @@ bool CCollisionMgr::CollisionCircleCircle(CCollider2D* _pLeftCol, CCollider2D* _
     Vec3 LeftColCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matLeft);
 
     // 두 원의 충돌 판단 (피타고라스)
-    float distance =
-        (float)sqrt(pow(RightColCenter.x - LeftColCenter.x, 2) + pow(RightColCenter.y - LeftColCenter.y, 2));
+    float a = float(RightColCenter.x - LeftColCenter.x);
+    float b = float(RightColCenter.y - LeftColCenter.y);
 
-    if (distance <= _pLeftCol->GetRadius() + _pRightCol->GetRadius())
+    float c = (a * a) + (b * b);
+    float radius = _pLeftCol->GetRadius() + _pRightCol->GetRadius();
+
+    if (c <= radius * radius)
     {
         return true;
     }
