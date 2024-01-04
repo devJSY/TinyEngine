@@ -179,7 +179,7 @@ void CCamera::render()
                     }
 
                     // IDMap
-                    if (LayerName == L"SkyBox" || LayerName == L"Mesh")
+                    if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
                     {
                         Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
                         Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
