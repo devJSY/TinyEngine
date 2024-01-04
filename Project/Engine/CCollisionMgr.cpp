@@ -226,10 +226,62 @@ bool CCollisionMgr::CollisionCircleCircle(CCollider2D* _pLeftCol, CCollider2D* _
 
 bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pCircleCol)
 {
-    return false;
+    const Matrix& matRect = _pRectCol->GetColliderWorldMat();
+    const Matrix& matCircle = _pCircleCol->GetColliderWorldMat();
+    float circleRadius = _pCircleCol->GetRadius();
+
+    static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f),
+                              Vec3(-0.5f, -0.5f, 0.f)};
+
+    Vec3 RectWorld[4] = {};
+
+    for (size_t i = 0; i < 4; i++)
+    {
+        RectWorld[i] = XMVector3TransformCoord(arrRect[i], matRect);
+    }
+
+    Vec3 CircleCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matCircle);
+    Vec3 RectCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRect);
+
+    // 예외상황 사각형 꼭지점이 원안에 들어오면 충돌
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, circleRadius, RectWorld[i].x, RectWorld[i].y))
+            return true;
+    }
+
+    Vec3 arrProj[2] = {};
+
+    arrProj[0] = RectWorld[1] - RectWorld[0];
+    arrProj[1] = RectWorld[3] - RectWorld[0];
+
+    for (int i = 0; i < 2; ++i)
+    {
+        Vec3 vProj = arrProj[i];
+
+        vProj.Normalize();
+
+        float ProjAcc = 0.f;
+
+        for (int j = 0; j < 2; ++j)
+        {
+            ProjAcc += abs(vProj.Dot(arrProj[j]));
+        }
+
+        ProjAcc /= 2.f;
+
+        float fCenterDist = abs(vProj.Dot(CircleCenter - RectCenter));
+
+        if (ProjAcc < fCenterDist)
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-bool CCollisionMgr::IsPointInCircle(float cx, float cy, float cr, float px, float py)
+bool CCollisionMgr::CollisionPointCircle(float cx, float cy, float cr, float px, float py)
 {
     // x 변위량
     float deltaX = cx - px;

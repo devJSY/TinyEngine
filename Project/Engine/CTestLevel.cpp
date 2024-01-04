@@ -188,8 +188,8 @@ void CTestLevel::begin()
     pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
     pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
-    pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
-    pMonster->Collider2D()->SetRadius(100.f);
+    //pMonster->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
+    //pMonster->Collider2D()->SetRadius(100.f);
 
     AddObject(pMonster, L"Mesh");
 

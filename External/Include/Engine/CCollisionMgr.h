@@ -43,6 +43,6 @@ private:
     bool CollisionRectRect(CCollider2D* _pLeftCol, CCollider2D* _pRightCol);
     bool CollisionCircleCircle(CCollider2D* _pLeftCol, CCollider2D* _pRightCol);
     bool CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pCircleCol);
-    bool IsPointInCircle(float cx, float cy, float cr, float px, float py);
+    bool CollisionPointCircle(float cx, float cy, float cr, float px, float py);
 
 };
