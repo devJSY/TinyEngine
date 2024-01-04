@@ -123,6 +123,8 @@ void CLevelEditor::finaltick()
 
 void CLevelEditor::render()
 {
+    CRenderMgr::GetInst()->CopyRenderTarget();
+
     // Viewport
     ImGui::Begin("Level ViewPort");
 

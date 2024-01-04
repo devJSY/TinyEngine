@@ -29,8 +29,6 @@ void CRenderMgr::tick()
     render();
 
     render_debug();
-
-    CopyRenderTarget();
 }
 
 void CRenderMgr::render()
