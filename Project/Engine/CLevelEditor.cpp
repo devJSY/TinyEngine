@@ -251,6 +251,9 @@ void CLevelEditor::render()
     // ContentBrowser Render
     m_ContentBrowser.render();
 
+    // UI Toolbar
+    UI_Toolbar();
+
     // Rendering
     ImGui::Render();
 
@@ -262,6 +265,88 @@ void CLevelEditor::render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
+}
+
+void CLevelEditor::UI_Toolbar()
+{
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+    auto& colors = ImGui::GetStyle().Colors;
+    const auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
+    const auto& buttonActive = colors[ImGuiCol_ButtonActive];
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+
+    ImGui::Begin("##toolbar", nullptr,
+                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+    bool m_ActiveScene = true; // temp
+    bool toolbarEnabled = (bool)m_ActiveScene;
+
+    ImVec4 tintColor = ImVec4(1, 1, 1, 1);
+    if (!toolbarEnabled)
+        tintColor.w = 0.5f;
+
+    float size = ImGui::GetWindowHeight() - 4.0f;
+    ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+
+    bool hasPlayButton = true;
+    bool hasSimulateButton = true;
+    bool hasPauseButton = true;
+
+    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PauseButton");
+    Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PlayButton");
+    Ptr<CTexture> pSimulateButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"SimulateButton");
+    Ptr<CTexture> pStepButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StepButton");
+    Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StopButton");
+
+    if (hasPlayButton)
+    {
+        if (ImGui::ImageButton((void*)pPlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            toolbarEnabled)
+        {
+        }
+    }
+
+    if (hasSimulateButton)
+    {
+        if (hasPlayButton)
+            ImGui::SameLine();
+
+        if (ImGui::ImageButton((void*)pSimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
+                               ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            toolbarEnabled)
+        {
+        }
+    }
+
+    if (hasPauseButton)
+    {
+        ImGui::SameLine();
+        {
+            if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
+                                   ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+                toolbarEnabled)
+            {
+            }
+        }
+
+        // Step button
+        ImGui::SameLine();
+        {
+            if (ImGui::ImageButton((void*)pStepButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
+                                   ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+                toolbarEnabled)
+            {
+            }
+        }
+    }
+
+    ImGui::PopStyleVar(2);
+    ImGui::PopStyleColor(3);
+    ImGui::End();
 }
 
 void CLevelEditor::SetDarkThemeColors()

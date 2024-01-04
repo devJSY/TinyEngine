@@ -34,6 +34,10 @@ public:
     bool IsViewportFocused() const { return m_ViewportFocused; }
     bool IsViewportHovered() const { return m_ViewportHovered; }
 
+private:
+    // UI Panels
+    void UI_Toolbar();
+
 public:
     CLevelEditor();
     virtual ~CLevelEditor();

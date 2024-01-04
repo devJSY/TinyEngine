@@ -1102,6 +1102,12 @@ void CAssetMgr::CreateDefaultTexture()
     Load<CTexture>(L"DirectoryIcon", L"Icons//ContentBrowser//DirectoryIcon.png");
     Load<CTexture>(L"FileIcon", L"Icons//ContentBrowser//FileIcon.png");
 
+    Load<CTexture>(L"PauseButton", L"Icons//PauseButton.png");
+    Load<CTexture>(L"PlayButton", L"Icons//PlayButton.png");
+    Load<CTexture>(L"SimulateButton", L"Icons//SimulateButton.png");
+    Load<CTexture>(L"StepButton", L"Icons//StepButton.png");
+    Load<CTexture>(L"StopButton", L"Icons//StopButton.png");
+
     Load<CTexture>(L"DirectionalLight", L"Icons//DirectionalLight.png");
     Load<CTexture>(L"PointLight", L"Icons//PointLight.png");
     Load<CTexture>(L"SpotLight", L"Icons//SpotLight.png");
