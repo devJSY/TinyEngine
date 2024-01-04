@@ -131,6 +131,14 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _p
     {
         return CollisionCircleCircle(_pLeftCol, _pRightCol);
     }
+    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+    {
+        return CollisionRectCircle(_pLeftCol, _pRightCol);
+    }
+    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetType() == COLLIDER2D_TYPE::RECT)
+    {
+        return CollisionRectCircle(_pRightCol, _pLeftCol);
+    }
     else
     {
         return false;
@@ -217,6 +225,67 @@ bool CCollisionMgr::CollisionCircleCircle(CCollider2D* _pLeftCol, CCollider2D* _
     }
 
     return false;
+}
+
+bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pCircleCol)
+{
+    const Matrix& matRect = _pRectCol->GetColliderWorldMat();
+    const Matrix& matCircle = _pCircleCol->GetColliderWorldMat();
+    static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f),
+                              Vec3(-0.5f, -0.5f, 0.f)};
+
+    Vec3 arrProj[4] = {};
+
+    for (size_t i = 0; i < 4; i++)
+    {
+        arrProj[i] = XMVector3TransformCoord(arrRect[i], matRect);
+    }
+
+    Vec3 RectCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRect);
+    Vec3 CircleCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matCircle);
+
+    // 꼭짓점 체크
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, _pCircleCol->GetRadius(), arrProj[i].x, arrProj[i].y))
+            return true;
+    }
+
+    float width = (arrProj[1] - arrProj[0]).Length();
+
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, _pCircleCol->GetRadius() + (width / 2.f), RectCenter.x,
+                                 RectCenter.y))
+            return true;
+    }
+
+    float height = (arrProj[3] - arrProj[0]).Length();
+
+    for (size_t i = 0; i < 4; i++)
+    {
+        if (CollisionPointCircle(CircleCenter.x, CircleCenter.y, _pCircleCol->GetRadius() + (height / 2.f),
+                                 RectCenter.x, RectCenter.y))
+            return true;
+    }
+
+    return false;
+}
+
+bool CCollisionMgr::CollisionPointCircle(float cx, float cy, float cr, float px, float py)
+{
+    // x 변위량
+    float deltaX = cx - px;
+
+    float deltaY = cy - py;
+
+    // 원의 중심과 점과의 거리
+    float length = (deltaX * deltaX) + (deltaY * deltaY);
+
+    if (length > cr * cr)
+        return false;
+
+    return true;
 }
 
 void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer)
