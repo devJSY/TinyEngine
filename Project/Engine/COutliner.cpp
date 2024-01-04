@@ -2,6 +2,8 @@
 #include "COutliner.h"
 
 #include "CLevelMgr.h"
+#include "CAssetMgr.h"
+
 #include "CLevel.h"
 #include "CLayer.h"
 
@@ -13,8 +15,8 @@
 #include "CCamera.h"
 #include "CMeshRender.h"
 
-#include "CAssetMgr.h"
 #include "CTexture.h"
+#include "CCollider2D.h"
 
 COutliner::COutliner()
 {
@@ -113,6 +115,53 @@ static void DrawVec3Control(const std::string& label, Vec3& values, float speed 
     ImGui::PopID();
 }
 
+static void DrawVec2Control(const std::string& label, Vec2& values, float speed = 0.1f, float min = 0.f,
+                            float max = 0.f, float resetValue = 0.0f, float columnWidth = 100.0f)
+{
+    ImGui::PushID(label.c_str());
+
+    ImGui::Columns(2);
+    ImGui::SetColumnWidth(0, columnWidth);
+    ImGui::Text(label.c_str());
+    ImGui::NextColumn();
+
+    ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
+
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+    if (ImGui::Button("X", buttonSize))
+        values.x = resetValue;
+    ImGui::PopStyleColor(3);
+
+    ImGui::SameLine();
+    ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
+    if (ImGui::Button("Y", buttonSize))
+        values.y = resetValue;
+    ImGui::PopStyleColor(3);
+
+    ImGui::SameLine();
+    ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
+    ImGui::PopItemWidth();
+    ImGui::SameLine();
+
+    ImGui::PopStyleVar();
+
+    ImGui::Columns(1);
+
+    ImGui::PopID();
+}
+
 static std::string _labelPrefix(const char* const label)
 {
     float width = ImGui::CalcItemWidth();
@@ -142,35 +191,86 @@ void COutliner::DrawDetails(CGameObject* obj)
     }
 
     // Transform
-    CTransform* tr = obj->Transform();
-    if (nullptr != tr)
+    CTransform* pTr = obj->Transform();
+    if (nullptr != pTr)
     {
         if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
         {
-            Vec3 pos = tr->GetRelativePos();
+            Vec3 pos = pTr->GetRelativePos();
             DrawVec3Control("Location", pos, 10.f);
-            tr->SetRelativePos(pos);
+            pTr->SetRelativePos(pos);
 
-            Vec3 rot = tr->GetRelativeRotation();
+            Vec3 rot = pTr->GetRelativeRotation();
             DrawVec3Control("Rotation", rot, XM_PI / 180.f);
-            tr->SetRelativeRotation(rot);
+            pTr->SetRelativeRotation(rot);
 
-            Vec3 scale = tr->GetRelativeScale();
+            Vec3 scale = pTr->GetRelativeScale();
             DrawVec3Control("Scale", scale, 1.f, 1.f, 100000.0f, 1.f);
-            tr->SetRelativeScale(scale);
+            pTr->SetRelativeScale(scale);
+
+            ImGui::TreePop();
+        }
+    }
+
+    // Collider2D
+    CCollider2D* pCol = obj->Collider2D();
+    if (nullptr != pCol)
+    {
+        if (ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Collider2D"))
+        {
+            const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
+            const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetType()];
+            if (ImGui::BeginCombo("Collider2DType", currentCollider2DTypeString))
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    bool isSelected = currentCollider2DTypeString == Collider2DTypeStrings[i];
+                    if (ImGui::Selectable(Collider2DTypeStrings[i], isSelected))
+                    {
+                        currentCollider2DTypeString = Collider2DTypeStrings[i];
+                        pCol->SetColliderType((COLLIDER2D_TYPE)i);
+                    }
+
+                    if (isSelected)
+                        ImGui::SetItemDefaultFocus();
+                }
+
+                ImGui::EndCombo();
+            }
+
+            if (pCol->GetType() == COLLIDER2D_TYPE::RECT)
+            {
+                bool bAbsolute = pCol->IsAbsolute();
+                ImGui::Checkbox("Absolute", &bAbsolute);
+                pCol->SetAbsolute(bAbsolute);
+            }
+            else if (pCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+            {
+                float fRadius = pCol->GetRadius();
+                if (ImGui::DragFloat("Radius", &fRadius))
+                    pCol->SetRadius(fRadius);
+            }
+
+            Vec2 offsetPos = pCol->GetOffsetPos();
+            ImGui::DragFloat2(_labelPrefix("Offset Pos").c_str(), &offsetPos.x, 0.1f);
+            pCol->SetOffsetPos(offsetPos);
+
+            Vec2 offsetScale = pCol->GetOffsetScale();
+            ImGui::DragFloat2(_labelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f);
+            pCol->SetOffsetScale(offsetScale);
 
             ImGui::TreePop();
         }
     }
 
     // Camera
-    CCamera* cam = obj->Camera();
-    if (nullptr != cam)
+    CCamera* pCam = obj->Camera();
+    if (nullptr != pCam)
     {
         if (ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
         {
             const char* projectionTypeStrings[] = {"Orthographic", "Perspective"};
-            const char* currentProjectionTypeString = projectionTypeStrings[(int)cam->GetProjType()];
+            const char* currentProjectionTypeString = projectionTypeStrings[(int)pCam->GetProjType()];
             if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
             {
                 for (int i = 0; i < 2; i++)
@@ -179,7 +279,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                     if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
                     {
                         currentProjectionTypeString = projectionTypeStrings[i];
-                        cam->SetProjType((PROJ_TYPE)i);
+                        pCam->SetProjType((PROJ_TYPE)i);
                         obj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
                     }
 
@@ -190,57 +290,57 @@ void COutliner::DrawDetails(CGameObject* obj)
                 ImGui::EndCombo();
             }
 
-            if (cam->GetProjType() == PROJ_TYPE::PERSPECTIVE)
+            if (pCam->GetProjType() == PROJ_TYPE::PERSPECTIVE)
             {
-                float fov = cam->GetFOV();
+                float fov = pCam->GetFOV();
                 float Degree = XMConvertToDegrees(fov);
                 if (ImGui::DragFloat("FOV", &Degree, XM_PI / 18.f)) // 스피드 : 10도
-                    cam->SetFOV(XMConvertToRadians(Degree));
+                    pCam->SetFOV(XMConvertToRadians(Degree));
 
-                float Near = cam->GetNear();
-                float Far = cam->GetFar();
+                float Near = pCam->GetNear();
+                float Far = pCam->GetFar();
                 float offset = 1.f;
 
                 if (ImGui::DragFloat("Near", &Near, 1.f, 1.f, Far - offset))
-                    cam->SetNear(Near);
+                    pCam->SetNear(Near);
 
                 if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
-                    cam->SetFar(Far);
+                    pCam->SetFar(Far);
             }
 
-            if (cam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+            if (pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
             {
-                float scale = cam->GetScale();
+                float scale = pCam->GetScale();
                 if (ImGui::DragFloat("Scale", &scale, 0.01f, 0.001f, 100.f))
-                    cam->SetScale(scale);
+                    pCam->SetScale(scale);
 
-                float Near = cam->GetNear();
-                float Far = cam->GetFar();
+                float Near = pCam->GetNear();
+                float Far = pCam->GetFar();
                 float offset = 1.f;
 
                 if (ImGui::DragFloat("Near", &Near, 1.f, 1.f, Far - offset))
-                    cam->SetNear(Near);
+                    pCam->SetNear(Near);
 
                 if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
-                    cam->SetFar(Far);
+                    pCam->SetFar(Far);
             }
 
-            float speed = cam->GetCameraSpeed();
+            float speed = pCam->GetCameraSpeed();
             if (ImGui::DragFloat("Speed", &speed, 1.f, 0.f, 10000.f))
-                cam->SetCameraSpeed(speed);
+                pCam->SetCameraSpeed(speed);
 
             ImGui::TreePop();
         }
     }
 
     // Light3D
-    CLight3D* light = obj->Light3D();
-    if (nullptr != light)
+    CLight3D* pLight = obj->Light3D();
+    if (nullptr != pLight)
     {
         if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Light3D"))
         {
             const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
-            const char* currentLightTypeStrings = LightTypeStrings[(int)light->GetLightType()];
+            const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
             if (ImGui::BeginCombo("Light Type", currentLightTypeStrings))
             {
                 for (int i = 0; i < (UINT)LIGHT_TYPE::END; i++)
@@ -249,7 +349,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                     if (ImGui::Selectable(LightTypeStrings[i], isSelected))
                     {
                         currentLightTypeStrings = LightTypeStrings[i];
-                        light->SetLightType((LIGHT_TYPE)i);
+                        pLight->SetLightType((LIGHT_TYPE)i);
                     }
 
                     if (isSelected)
@@ -259,23 +359,23 @@ void COutliner::DrawDetails(CGameObject* obj)
                 ImGui::EndCombo();
             }
 
-            float FallOffStart = light->GetFallOffStart();
-            float FallOffEnd = light->GetFallOffEnd();
+            float FallOffStart = pLight->GetFallOffStart();
+            float FallOffEnd = pLight->GetFallOffEnd();
             float offset = 1.f;
 
             if (ImGui::SliderFloat("FallOffStart ", &FallOffStart, 0.0f, FallOffEnd - offset))
-                light->SetFallOffStart(FallOffStart);
+                pLight->SetFallOffStart(FallOffStart);
 
             if (ImGui::SliderFloat("FallOffEnd", &FallOffEnd, FallOffStart + offset, 10000.f))
-                light->SetFallOffEnd(FallOffEnd);
+                pLight->SetFallOffEnd(FallOffEnd);
 
-            float spotPower = light->GetSpotPower();
+            float spotPower = pLight->GetSpotPower();
             if (ImGui::SliderFloat("Spot Power", &spotPower, 1.f, 1000.f))
-                light->SetSpotPower(spotPower);
+                pLight->SetSpotPower(spotPower);
 
-            Vec3 color = light->GetColor();
+            Vec3 color = pLight->GetColor();
             if (ImGui::ColorEdit3("Color", &color.x))
-                light->SetColor(color);
+                pLight->SetColor(color);
 
             ImGui::TreePop();
         }
