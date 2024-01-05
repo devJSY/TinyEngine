@@ -148,7 +148,7 @@ void CCameraMoveScript::MovePerspective()
     }
 
     // Zoom
-    float Zoffset = 1.f;
+    float Zoffset = 1.5f;
     if (KEY_PRESSED(KEY::Z))
         Camera()->SetFOV(Camera()->GetFOV() + DT * Zoffset);
 

@@ -48,6 +48,13 @@ void CCamera::finaltick()
     if (m_CamSpeed < 0.f)
         m_CamSpeed = 0.f;
 
+    float offset = XM_1DIV2PI; // 1/2π 1도 제한
+    // FOV 제한
+    if (m_FOV < XM_1DIV2PI)
+        m_FOV = offset;
+    else if (m_FOV > XM_PI - offset)
+        m_FOV = XM_PI - offset;
+
     // 뷰 행렬을 계산한다.
     // 카메라를 원점으로 이동시키는 이동 행렬
     Vec3 vCamPos = Transform()->GetRelativePos();

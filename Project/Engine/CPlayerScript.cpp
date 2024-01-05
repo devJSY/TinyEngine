@@ -35,7 +35,7 @@ void CPlayerScript::tick()
         vPos.x += DT * m_Speed;
     }
 
-    if (KEY_PRESSED(KEY::NUM1))
+   /* if (KEY_PRESSED(KEY::NUM1))
     {
         vRot.x += DT * XM_PI;
     }
@@ -48,7 +48,7 @@ void CPlayerScript::tick()
     if (KEY_PRESSED(KEY::NUM3))
     {
         vRot.z += DT * XM_PI;
-    }
+    }*/
 
     Transform()->SetRelativePos(vPos);
     Transform()->SetRelativeRotation(vRot);
