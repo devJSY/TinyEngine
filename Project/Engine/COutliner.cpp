@@ -224,7 +224,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             else if (pCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
             {
                 float fRadius = pCol->GetRadius();
-                if (ImGui::DragFloat("Radius", &fRadius))
+                if (ImGui::DragFloat("Radius", &fRadius, 1.f, 0.0f, 10000.f))
                     pCol->SetRadius(fRadius);
             }
 

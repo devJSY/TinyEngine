@@ -194,7 +194,6 @@ void CTestLevel::begin()
 
     pTestObj->AddComponent(new CTransform);
     pTestObj->AddComponent(new CMeshRender);
-    pTestObj->AddComponent(new CCollider2D);
     pTestObj->AddComponent(new CAnimator2D);
 
     pTestObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));

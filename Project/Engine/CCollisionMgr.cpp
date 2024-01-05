@@ -267,8 +267,9 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pC
     // OBB와 점 사이에 가장 가까운 거리 = Rect 중점 + 0번 축 투영 벡터 + 1번 축 투영 벡터
     Vec3 ClosestPoint = RectCenter + (proj1 * NormalAxis[1]) + (proj0 * NormalAxis[0]);
 
+    // Z축 무시
     // OBB와 점 사이에 가장 가까운 거리 <= 반지름 == 충돌!
-    if ((ClosestPoint - CircleCenter).Length() <= _pCircleCol->GetRadius())
+    if (Vec2(ClosestPoint.x - CircleCenter.x, ClosestPoint.y - CircleCenter.y).Length() <= _pCircleCol->GetRadius())
     {
         return true;
     }

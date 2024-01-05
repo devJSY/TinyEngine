@@ -111,13 +111,20 @@ void CLevelEditor::finaltick()
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
                         ImGuiColorEditFlags_PickerHueWheel);
-    // ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
-    // ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
     ImGui::End();
 
     ImGui::Begin("View Mode");
     ImGui::Checkbox("Picking Color ID Map", &m_bShowIDMap);
-    ImGui::Checkbox("WireFrame", &g_Global.DrawAsWireFrame);
+    ImGui::Checkbox("Draw WireFrame", &g_Global.DrawAsWireFrame);
+
+    bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
+    ImGui::Checkbox("Show DebugRender", &bDebugRender);
+    CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
+
+    bool bCollider = CRenderMgr::GetInst()->IsShowCollider();
+    ImGui::Checkbox("Show Collider", &bCollider);
+    CRenderMgr::GetInst()->SetShowCollider(bCollider);
+
     ImGui::End();
 }
 
