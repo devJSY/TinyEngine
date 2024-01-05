@@ -115,53 +115,6 @@ static void DrawVec3Control(const std::string& label, Vec3& values, float speed 
     ImGui::PopID();
 }
 
-static void DrawVec2Control(const std::string& label, Vec2& values, float speed = 0.1f, float min = 0.f,
-                            float max = 0.f, float resetValue = 0.0f, float columnWidth = 100.0f)
-{
-    ImGui::PushID(label.c_str());
-
-    ImGui::Columns(2);
-    ImGui::SetColumnWidth(0, columnWidth);
-    ImGui::Text(label.c_str());
-    ImGui::NextColumn();
-
-    ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
-
-    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-    ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
-
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
-    if (ImGui::Button("X", buttonSize))
-        values.x = resetValue;
-    ImGui::PopStyleColor(3);
-
-    ImGui::SameLine();
-    ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f");
-    ImGui::PopItemWidth();
-    ImGui::SameLine();
-
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
-    if (ImGui::Button("Y", buttonSize))
-        values.y = resetValue;
-    ImGui::PopStyleColor(3);
-
-    ImGui::SameLine();
-    ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
-    ImGui::PopItemWidth();
-    ImGui::SameLine();
-
-    ImGui::PopStyleVar();
-
-    ImGui::Columns(1);
-
-    ImGui::PopID();
-}
-
 static std::string _labelPrefix(const char* const label)
 {
     float width = ImGui::CalcItemWidth();
@@ -187,8 +140,32 @@ void COutliner::DrawDetails(CGameObject* obj)
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
         strcpy_s(buffer, sizeof(buffer), name.c_str());
-        ImGui::InputText("Tag", buffer, sizeof(buffer));
+        ImGui::InputText("##Tag", buffer, sizeof(buffer));
     }
+
+    // AddComponent
+
+    ImGui::SameLine();
+    ImGui::PushItemWidth(-1);
+
+    if (ImGui::Button("Add Component"))
+        ImGui::OpenPopup("AddComponent");
+
+    if (ImGui::BeginPopup("AddComponent"))
+    {
+        for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; i++)
+        {
+            if (ImGui::MenuItem(GetComponentName((COMPONENT_TYPE)i).c_str()))
+            {
+                GamePlayStatic::AddComponent(CLevelMgr::GetInst()->GetSelectedObj(), (COMPONENT_TYPE)i);
+                ImGui::CloseCurrentPopup();
+            }
+        }
+
+        ImGui::EndPopup();
+    }
+
+    ImGui::PopItemWidth();
 
     // Transform
     CTransform* pTr = obj->Transform();
@@ -216,7 +193,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     CCollider2D* pCol = obj->Collider2D();
     if (nullptr != pCol)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Collider2D"))
+        if (ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), ImGuiTreeNodeFlags_None, "Collider2D"))
         {
             const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
             const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetType()];

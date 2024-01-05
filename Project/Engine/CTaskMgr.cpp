@@ -15,6 +15,8 @@
 #include "CCamera.h"
 #include "CTransform.h"
 #include "CCollider2D.h"
+#include "CLight3D.h"
+#include "CMeshRender.h"
 
 #include "CLevel.h"
 
@@ -398,6 +400,46 @@ void CTaskMgr::tick()
 
                 if (!ImGuizmo::IsUsing())
                     CLevelMgr::GetInst()->SetSelectObj(pSelectedObj);
+            }
+            break;
+        case TASK_TYPE::ADD_COMPONENT:
+            {
+                CGameObject* pObj = (CGameObject*)m_vecTask[i].Param_1;
+                COMPONENT_TYPE type = (COMPONENT_TYPE)m_vecTask[i].Param_2;
+
+                CComponent* pCom = pObj->GetComponent(type);
+                // 이미 해당 컴포넌트를 보유한 경우
+                if (nullptr != pCom)
+                    break;
+
+                if (type == COMPONENT_TYPE::TRANSFORM)
+                    pObj->AddComponent(new CTransform);
+                else if (type == COMPONENT_TYPE::COLLIDER2D)
+                    pObj->AddComponent(new CCollider2D);
+                // else if (type == COMPONENT_TYPE::COLLIDER3D)
+                //     pObj->AddComponent(new CCollider3D);
+                // else if (type == COMPONENT_TYPE::ANIMATOR2D)
+                //     pObj->AddComponent(new CAnimation2D);
+                //  else if (type == COMPONENT_TYPE::ANIMATOR3D)
+                //      pObj->AddComponent(new CAnimation3D);
+                // else if (type == COMPONENT_TYPE::LIGHT2D)
+                //     pObj->AddComponent(new CLight2D);
+                else if (type == COMPONENT_TYPE::LIGHT3D)
+                    pObj->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL, 0));
+                else if (type == COMPONENT_TYPE::CAMERA)
+                    pObj->AddComponent(new CCamera);
+                else if (type == COMPONENT_TYPE::MESHRENDER)
+                    pObj->AddComponent(new CMeshRender);
+                // else if (type == COMPONENT_TYPE::TILEMAP)
+                //     pObj->AddComponent(new CTileMap);
+                // else if (type == COMPONENT_TYPE::PARTICLESYSTEM)
+                //     pObj->AddComponent(new CParticlesystme);
+                // else if (type == COMPONENT_TYPE::SKYBOX)
+                //     pObj->AddComponent(new CSkyBox);
+                // else if (type == COMPONENT_TYPE::DECAL)
+                //     pObj->AddComponent(new CDecal);
+                // else if (type == COMPONENT_TYPE::LANDSCAPE)
+                //     pObj->AddComponent(new CLandscape);
             }
             break;
         }

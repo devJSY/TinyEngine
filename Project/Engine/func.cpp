@@ -110,6 +110,15 @@ void GamePlayStatic::MouseRayPicking(Vec2 MousePos)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::ADD_COMPONENT;
+    task.Param_1 = (INT_PTR)_pObj;
+    task.Param_2 = (INT_PTR)_type;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 string WstringTostring(const wstring& wstr)
 {
     std::string str(wstr.length(), 0);
@@ -150,4 +159,27 @@ Vec4 HashIDToColor(int hash)
     int b = hash & 0xff;
 
     return Vec4(static_cast<float>(r / 255.f), static_cast<float>(g / 255.f), static_cast<float>(b / 255.f), 1.f);
+}
+
+std::string GetComponentName(COMPONENT_TYPE type)
+{
+    static const std::map<COMPONENT_TYPE, std::string> MyEnumStrings{
+        {COMPONENT_TYPE::TRANSFORM, "Transform"},
+        {COMPONENT_TYPE::COLLIDER2D, "Collider2D"},
+        {COMPONENT_TYPE::COLLIDER3D, "Collider3D"},
+        {COMPONENT_TYPE::ANIMATOR2D, "Animation2D"},
+        {COMPONENT_TYPE::ANIMATOR3D, "Animation3D"},
+        {COMPONENT_TYPE::LIGHT2D, "Light2D"},
+        {COMPONENT_TYPE::LIGHT3D, "Light3D"},
+        {COMPONENT_TYPE::CAMERA, "Camera"},
+        {COMPONENT_TYPE::MESHRENDER, "MeshRender"},
+        {COMPONENT_TYPE::TILEMAP, "TileMap"},
+        {COMPONENT_TYPE::PARTICLESYSTEM, "ParticleSystem"},
+        {COMPONENT_TYPE::SKYBOX, "Skybox"},
+        {COMPONENT_TYPE::DECAL, "Decal"},
+        {COMPONENT_TYPE::LANDSCAPE, "Landscape"},
+    };
+
+    auto it = MyEnumStrings.find(type);
+    return it == MyEnumStrings.end() ? "Out of range" : it->second;
 }

@@ -31,6 +31,9 @@ enum class TASK_TYPE
 
     // Param1 : MouseX , Param2 : MouseY
     MOUSE_RAY_PICKING,
+
+    // Param1 : Parent Object, Param2 : Component Name
+    ADD_COMPONENT,
 };
 
 struct FTask
