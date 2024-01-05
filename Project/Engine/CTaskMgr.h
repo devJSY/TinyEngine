@@ -19,9 +19,9 @@ enum class TASK_TYPE
 
     // Param1 : Width , Param2 : Height
     WINDOW_RESIZE,
-    
+
     // wParam : Asset_TYPE, lParam : Resource Adress
-	DELETE_ASSET, 
+    DELETE_ASSET,
 
     // No Param
     SCREENSHOT,
@@ -54,4 +54,17 @@ public:
     void tick();
 
     void AddTask(const FTask& _Task) { m_vecTask.push_back(_Task); }
+
+private:
+    void CREATE_OBJECT(const FTask& _Task);
+    void DELETE_OBJECT(const FTask& _Task);
+    void LEVEL_CHANGE(const FTask& _Task);
+    void ADD_CHILD(const FTask& _Task);
+    void DISCONNECT_PARENT(const FTask& _Task);
+    void WINDOW_RESIZE(const FTask& _Task);
+    void DELETE_ASSET(const FTask& _Task);
+    void SCREENSHOT(const FTask& _Task);
+    void MOUSE_COLOR_PICKING(const FTask& _Task);
+    void MOUSE_RAY_PICKING(const FTask& _Task);
+    void ADD_COMPONENT(const FTask& _Task);
 };
