@@ -22,6 +22,9 @@ public:
 
     static void Clear(int _iRegisterNum);
 
+    UINT GetWidth() const { return m_Desc.Width; }
+    UINT GetHeight() const { return m_Desc.Height; }
+
 public:
     int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage);
     int Create(ComPtr<ID3D11Texture2D> _tex2D);

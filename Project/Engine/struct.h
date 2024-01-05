@@ -105,6 +105,15 @@ struct tGlobal
     Vec4 pickingColor;
 };
 
+struct tAnimData2D
+{
+    Vec2 vLeftTop;
+    Vec2 vSlizeSize;
+    Vec2 vOffset;
+    int UseAnim2D;
+    int iPadding;
+};
+
 struct tMeshData
 {
     std::vector<Vtx> vertices;

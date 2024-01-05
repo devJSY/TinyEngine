@@ -54,7 +54,34 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     //    }
     //}
   
-    return g_UseTexture ? g_tex_0.Sample(g_LinearSampler, _in.vUV) : _in.vColor;
+    float4 vColor = float4(1.f, 0.f, 1.f, 1.f);
+    
+    if (g_UseAnim2D)
+    {
+        //g_vLeftTop;
+        //g_vSlizeSize;
+        
+        float2 vUV = g_vLeftTop + (g_vSlizeSize * _in.vUV);
+        vColor = g_anim2d_tex.Sample(g_LinearSampler, vUV);
+    }
+    else
+    {
+        if (g_btex_0)
+        {
+            vColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+        
+            //saturate 0 ~ 1 을 넘지 않게 보정
+            float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);
+        
+            if (fAlpha < 0.1f)
+            {
+            // 픽셀 쉐이더를 중간에 폐기처리
+                discard; //clip(-1);            
+            }
+        }
+    }
+    
+    return vColor;
 }
 
 #endif

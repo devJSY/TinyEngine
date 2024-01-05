@@ -24,6 +24,7 @@ void CCameraMoveScript::tick()
         else
             Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 
+        // Rotation ÃÊ±âÈ­
         Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
     }
 

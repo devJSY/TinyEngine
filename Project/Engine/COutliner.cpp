@@ -3,6 +3,7 @@
 
 #include "CLevelMgr.h"
 #include "CAssetMgr.h"
+#include "CRenderMgr.h"
 
 #include "CLevel.h"
 #include "CLayer.h"
@@ -256,6 +257,8 @@ void COutliner::DrawDetails(CGameObject* obj)
                     {
                         currentProjectionTypeString = projectionTypeStrings[i];
                         pCam->SetProjType((PROJ_TYPE)i);
+
+                        // Rotation 초기화
                         obj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
                     }
 
@@ -494,8 +497,6 @@ void COutliner::render()
         std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
     }
 
-    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
-
     // Outliner 창내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
         CLevelMgr::GetInst()->SetSelectObj(nullptr);
@@ -508,6 +509,15 @@ void COutliner::render()
             CGameObject* pObj = new CGameObject;
             pObj->SetName(L"Object");
             pObj->AddComponent(new CTransform);
+
+            // 카메라위치 기준 생성
+            CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
+            Vec3 pos = pCam->Transform()->GetWorldPos();
+            Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            pos += dir.Normalize() * 500.f;
+            pObj->Transform()->SetRelativePos(pos);
+
+            CLevelMgr::GetInst()->SetSelectObj(pObj);
             GamePlayStatic::SpawnGameObject(pObj, 0);
         }
 
@@ -517,8 +527,8 @@ void COutliner::render()
     ImGui::End();
 
     ImGui::Begin("Details");
-    if (nullptr != SelectedObj)
-        DrawDetails(SelectedObj);
+    if (nullptr != CLevelMgr::GetInst()->GetSelectedObj())
+        DrawDetails(CLevelMgr::GetInst()->GetSelectedObj());
 
     ImGui::End();
 }

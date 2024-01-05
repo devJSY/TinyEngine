@@ -3,14 +3,10 @@
 
 CScript::CScript()
     : CComponent(COMPONENT_TYPE::SCRIPT)
+    , m_iScriptType(0)
 {
 }
 
 CScript::~CScript()
 {
-}
-
-void CScript::Destroy()
-{
-    GamePlayStatic::DestroyGameObject(GetOwner());
 }

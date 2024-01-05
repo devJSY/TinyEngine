@@ -106,6 +106,15 @@ cbuffer GLOBAL : register(b2)
     float4 g_pickingColor;
 }
 
+cbuffer ANIM_DATA2D : register(b3)
+{
+    float2 g_vLeftTop;
+    float2 g_vSlizeSize;
+    float2 g_vOffset;
+    int g_UseAnim2D;
+    int padding;
+}
+
 Texture2D g_tex_0 : register(t0);
 Texture2D g_tex_1 : register(t1);
 Texture2D g_tex_2 : register(t2);
@@ -118,6 +127,8 @@ TextureCube g_texCube_1 : register(t7);
 
 Texture2DArray g_texArr_0 : register(t8);
 Texture2DArray g_texArr_1 : register(t9);
+
+Texture2D g_anim2d_tex : register(t10);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);

@@ -31,7 +31,7 @@ void CTestLevel::begin()
     pCamObj->AddComponent(new CCamera);
     pCamObj->AddComponent(new CCameraMoveScript);
 
-    pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, -100.f));
+    pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
     pCamObj->Camera()->SetCameraPriority(0);
@@ -120,7 +120,7 @@ void CTestLevel::begin()
 
     AddMeshes();
 
-    //AddModels();
+    // AddModels();
 
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;

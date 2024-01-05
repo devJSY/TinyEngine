@@ -72,6 +72,7 @@ enum class CB_TYPE
     TRANSFORM,
     MATERIAL_CONST,
     GLOBAL_DATA,
+    ANIM2D_DATA,
     ANIMATION,
 
     END,
