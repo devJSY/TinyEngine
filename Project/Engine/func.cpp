@@ -163,7 +163,7 @@ Vec4 HashIDToColor(int hash)
 
 std::string GetComponentName(COMPONENT_TYPE type)
 {
-    static const std::map<COMPONENT_TYPE, std::string> MyEnumStrings{
+    static const std::map<COMPONENT_TYPE, std::string> ComponentStrings{
         {COMPONENT_TYPE::TRANSFORM, "Transform"},
         {COMPONENT_TYPE::COLLIDER2D, "Collider2D"},
         {COMPONENT_TYPE::COLLIDER3D, "Collider3D"},
@@ -180,6 +180,6 @@ std::string GetComponentName(COMPONENT_TYPE type)
         {COMPONENT_TYPE::LANDSCAPE, "Landscape"},
     };
 
-    auto it = MyEnumStrings.find(type);
-    return it == MyEnumStrings.end() ? "Out of range" : it->second;
+    auto it = ComponentStrings.find(type);
+    return it == ComponentStrings.end() ? "Out of range" : it->second;
 }

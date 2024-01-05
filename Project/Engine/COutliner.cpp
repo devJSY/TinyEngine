@@ -144,7 +144,6 @@ void COutliner::DrawDetails(CGameObject* obj)
     }
 
     // AddComponent
-
     ImGui::SameLine();
     ImGui::PushItemWidth(-1);
 
@@ -500,6 +499,20 @@ void COutliner::render()
     // Outliner 창내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
         CLevelMgr::GetInst()->SetSelectObj(nullptr);
+
+    // Right-click on blank space
+    if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight))
+    {
+        if (ImGui::MenuItem("Spawn GameObject"))
+        {
+            CGameObject* pObj = new CGameObject;
+            pObj->SetName(L"Object");
+            pObj->AddComponent(new CTransform);
+            GamePlayStatic::SpawnGameObject(pObj, 0);
+        }
+
+        ImGui::EndPopup();
+    }
 
     ImGui::End();
 
