@@ -205,7 +205,8 @@ void CTestLevel::begin()
     Ptr<CTexture> pTestTex =
         CAssetMgr::GetInst()->Load<CTexture>(L"Player_DownTex", L"texture\\Player\\Pilot\\Player_Down.bmp");
 
-    pTestObj->Animator2D()->Create(L"Test", pTestTex, Vec2(0.f, 120.f), Vec2(60.f, 60.f), Vec2(0.f, 0.f), 8, 24);
+    pTestObj->Animator2D()->Create(L"Test", pTestTex, Vec2(0.f, 120.f), Vec2(60.f, 60.f), Vec2(0.f, 0.f),
+                                   Vec2(200.f, 200.f), 8, 24);
 
     pTestObj->Animator2D()->Play(L"Test");
 

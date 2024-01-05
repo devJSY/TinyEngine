@@ -33,6 +33,7 @@ public:
     float GetRimPower() const { return m_RimPower; }
 
 public:
+    virtual void finaltick() override;
     virtual void UpdateData() override;
     virtual void render() override;
 

@@ -43,6 +43,7 @@ public:
     void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
 
     RS_TYPE GetRSType() const { return m_RSType; }
+    D3D11_PRIMITIVE_TOPOLOGY GetTopology() const { return m_Topology; }
 
 public:
     virtual void UpdateData() override;

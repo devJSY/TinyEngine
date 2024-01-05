@@ -12,8 +12,10 @@ namespace GamePlayStatic
     void DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
                        float _Duration = 0.f);
 
-	void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
-	
+    void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+
+    void DrawDebugCross(Vec3 _vWorldPos, float _fScale, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+
     // void DrawDebugCube();
     // void DrawDebugSphere();
 
@@ -69,7 +71,7 @@ Vec4 HashIDToColor(int hash);
 
 std::string GetComponentName(COMPONENT_TYPE type);
 
-    // template <typename T>
+// template <typename T>
 // bool IsValid(T*& _Entity)
 //{
 //     if (nullptr == _Entity)

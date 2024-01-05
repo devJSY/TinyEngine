@@ -109,10 +109,11 @@ cbuffer GLOBAL : register(b2)
 cbuffer ANIM_DATA2D : register(b3)
 {
     float2 g_vLeftTop;
-    float2 g_vSlizeSize;
+    float2 g_vSliceSize;
+    float2 g_vBackGround;
     float2 g_vOffset;
     int g_UseAnim2D;
-    int padding;
+    float3 padding;
 }
 
 Texture2D g_tex_0 : register(t0);

@@ -4,6 +4,8 @@
 #include "CTransform.h"
 #include "CScript.h"
 
+#include "CRenderMgr.h"
+
 CCollider2D::CCollider2D()
     : CComponent(COMPONENT_TYPE::COLLIDER2D)
     , m_vOffsetPos(Vec3())
@@ -44,20 +46,23 @@ void CCollider2D::finaltick()
         m_matColWorld *= matObjWorld;
     }
 
-    // 충돌중이면 Red, 충돌하고 있지 않으면 Green
-    if (m_Type == COLLIDER2D_TYPE::RECT)
+    if (CRenderMgr::GetInst()->IsShowCollider())
     {
-        if (0 == m_CollisionCount)
-            GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
-        else
-            GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
-    }
-    else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
-    {
-        if (0 == m_CollisionCount)
-            GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
-        else
-            GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
+        // 충돌중이면 Red, 충돌하고 있지 않으면 Green
+        if (m_Type == COLLIDER2D_TYPE::RECT)
+        {
+            if (0 == m_CollisionCount)
+                GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+            else
+                GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
+        }
+        else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
+        {
+            if (0 == m_CollisionCount)
+                GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
+            else
+                GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
+        }
     }
 
     // Bounding Sphere

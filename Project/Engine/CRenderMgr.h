@@ -17,12 +17,21 @@ private:
 
     CGameObject* m_pDebugObj;
 
+    bool m_bShowDebugRender;
+    bool m_bShowCollider;
+
 private:
     Ptr<CTexture> m_RTCopyTex;
-    
+
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
+
+    void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
+    bool IsShowDebugRender() const { return m_bShowDebugRender; }
+
+    void SetShowCollider(bool _OnOff) { m_bShowCollider = _OnOff; }
+    bool IsShowCollider() const { return m_bShowCollider; }
 
 public:
     CCamera* GetCamera(int _Idx) const;

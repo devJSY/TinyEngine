@@ -16,6 +16,7 @@
 
 #include "CAssetMgr.h"
 #include "CTimeMgr.h"
+#include "CRenderMgr.h"
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
@@ -60,6 +61,14 @@ void CMeshRender::UpdateData()
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pCB->SetData(&g_Global);
     pCB->UpdateData();
+}
+
+void CMeshRender::finaltick()
+{
+    if (CRenderMgr::GetInst()->IsShowDebugRender())
+    {
+        GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
+    }
 }
 
 void CMeshRender::render()

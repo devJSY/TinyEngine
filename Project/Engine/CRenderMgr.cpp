@@ -12,6 +12,8 @@
 
 CRenderMgr::CRenderMgr()
     : m_pDebugObj(nullptr)
+    , m_bShowDebugRender(false)
+    , m_bShowCollider(false)
 {
 }
 
@@ -55,6 +57,9 @@ void CRenderMgr::render_debug()
         case DEBUG_SHAPE::CIRCLE:
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh_Debug"));
             break;
+        case DEBUG_SHAPE::CROSS:
+            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CrossMesh"));
+            break;
         case DEBUG_SHAPE::CUBE:
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh_Debug"));
             break;
@@ -68,10 +73,18 @@ void CRenderMgr::render_debug()
         m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
         m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, (*iter).vColor);
 
+        D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
+        if (DEBUG_SHAPE::CROSS == (*iter).eShape)
+        {
+            m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+        }
+
         m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
         m_pDebugObj->Transform()->UpdateData();
 
         m_pDebugObj->render();
+
+        m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(PrevTopology);
 
         (*iter).fLifeTime += DT;
         if ((*iter).fDuration <= (*iter).fLifeTime)
@@ -125,8 +138,7 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
                                         D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
 
     CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                              DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL,
-                                                              D3D11_USAGE_DEFAULT);
+                                        DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)

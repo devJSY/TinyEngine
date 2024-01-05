@@ -85,6 +85,27 @@ void GamePlayStatic::DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::DrawDebugCross(Vec3 _vWorldPos, float _fScale, Vec3 _Color, bool _bDepthTest, float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::CROSS;
+
+    info.vWorldPos = _vWorldPos;
+    info.vWorldScale = Vec3(_fScale, _fScale, _fScale);
+    info.vWorldRot = Vec3(0.f, 0.f, 0.f);
+
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
+                    XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
+                    XMMatrixRotationZ(info.vWorldRot.z) *
+                    XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
+
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
 void GamePlayStatic::ScreenShot()
 {
     FTask task = {};
