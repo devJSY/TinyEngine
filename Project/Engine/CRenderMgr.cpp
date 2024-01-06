@@ -58,7 +58,7 @@ void CRenderMgr::render_debug()
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh_Debug"));
             break;
         case DEBUG_SHAPE::CROSS:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CrossMesh"));
+            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CrosshairMesh"));
             break;
         case DEBUG_SHAPE::CUBE:
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh_Debug"));
@@ -124,16 +124,14 @@ void CRenderMgr::CopyRenderTarget()
 {
     // Viewport บนป็
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
+    Ptr<CTexture> pRTCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
+    CONTEXT->CopyResource(pRTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
-    assert(!m_RTCopyTex.Get());
-    m_RTCopyTex = new CTexture;
-    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                      DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
-                                                      D3D11_USAGE_DEFAULT);
+    CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                        DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 
     CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                         D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
@@ -144,6 +142,5 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 
 void CRenderMgr::Resize(Vec2 Resolution)
 {
-    m_RTCopyTex = nullptr;
     CreateRTCopyTex(Resolution);
 }

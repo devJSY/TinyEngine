@@ -19,8 +19,6 @@ private:
 
     CContentBrowser m_ContentBrowser;
 
-    float m_FontSize;
-
 public:
     virtual void init() override;
     virtual void tick() override;
@@ -37,6 +35,7 @@ public:
 private:
     // UI Panels
     void UI_Toolbar();
+    void ImGuizmoRender();
 
 public:
     CLevelEditor();

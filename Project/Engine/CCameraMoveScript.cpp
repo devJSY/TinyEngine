@@ -40,13 +40,10 @@ void CCameraMoveScript::tick()
             MoveFocusPerspective();
     }
 
-    // Level 에디터일 경우 Viewport창에서만 카메라 이동 적용
-    CLevelEditor* LevelDditor = dynamic_cast<CLevelEditor*>(CEditorMgr::GetInst()->GetCurEditor());
-    if (nullptr != LevelDditor)
-    {
-        if (!LevelDditor->IsViewportHovered())
-            return;
-    }
+    // Level 에디터에서는 Viewport창에서만 카메라 이동 적용
+    CLevelEditor* LevelEditor = dynamic_cast<CLevelEditor*>(CEditorMgr::GetInst()->GetCurEditor());
+    if (nullptr != LevelEditor && !LevelEditor->IsViewportHovered())
+        return;
 
     // Move
     if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)

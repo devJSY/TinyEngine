@@ -26,6 +26,9 @@ CTestLevel::~CTestLevel()
 
 void CTestLevel::begin()
 {
+    AddMeshes();
+    //AddModels();
+
     // Camera Object 생성
     CGameObject* pCamObj = new CGameObject;
     pCamObj->SetName(L"Main Camera");
@@ -120,10 +123,6 @@ void CTestLevel::begin()
 
     AddObject(pLights, L"Light");
 
-    AddMeshes();
-
-    // AddModels();
-
     // SkyBox
     CGameObject* pSkyBox = new CGameObject;
     pSkyBox->SetName(L"SkyBox");
@@ -140,13 +139,14 @@ void CTestLevel::begin()
 
     AddObject(pSkyBox, L"SkyBox");
 
+    // UI
     CGameObject* pObj = new CGameObject;
     pObj->SetName(L"UI");
 
     pObj->AddComponent(new CTransform);
     pObj->AddComponent(new CMeshRender);
 
-    pObj->Transform()->SetRelativePos(Vec3(-590, 310.f, 500.f));
+    pObj->Transform()->SetRelativePos(Vec3(-590, 310.f, 0.f));
     pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
     pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -213,7 +213,6 @@ void CTestLevel::begin()
 
     // 충돌 설정
     // CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
-
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
         for (UINT j = 0; j <= i; j++)

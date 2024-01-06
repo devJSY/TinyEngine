@@ -854,7 +854,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        AddAsset(L"Crosshair", pMesh);
+        AddAsset(L"CrosshairMesh", pMesh);
     }
 
     // Point

@@ -4,6 +4,14 @@
 
 class CModelLoader : public CEntity
 {
+private:
+    // 절대경로/상대경로/파일이름
+    std::string filePath; // 상대경로
+    std::string basePath; // 절대경로 + 상대경로
+    std::vector<tMeshData> meshes;
+    bool m_isGLTF = false; // gltf or fbx
+    bool m_revertNormals = false;
+
 public:
     void Load(std::string filePath, std::string fileName, bool revertNormals);
 
@@ -15,12 +23,5 @@ public:
 
     void UpdateTangents();
 
-public:
-    // 절대경로/상대경로/파일이름
-
-    std::string filePath;   // 상대경로
-    std::string basePath;   // 절대경로 + 상대경로
-    std::vector<tMeshData> meshes;
-    bool m_isGLTF = false; // gltf or fbx
-    bool m_revertNormals = false;
+    friend class CAssetMgr;
 };

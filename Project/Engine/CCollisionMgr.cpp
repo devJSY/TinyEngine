@@ -279,9 +279,8 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pC
 
 bool CCollisionMgr::CollisionPointCircle(float cx, float cy, float cr, float px, float py)
 {
-    // x 변위량
+    // 변위량
     float deltaX = cx - px;
-
     float deltaY = cy - py;
 
     // 원의 중심과 점과의 거리

@@ -22,7 +22,6 @@ public:
     void SetUseTexture(bool _b) { m_bUseTexture = _b; }
     bool IsUseTexture() const { return m_bUseTexture; }
 
-    // Rim
     void SetUseRim(bool _b) { m_bUseRim = _b; }
     bool IsUseRim() const { return m_bUseRim; }
 

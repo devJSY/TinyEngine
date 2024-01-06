@@ -48,36 +48,14 @@ void CCamera::finaltick()
     if (m_CamSpeed < 0.f)
         m_CamSpeed = 0.f;
 
-    float offset = XM_1DIV2PI; // 1/2π 1도 제한
-    // FOV 제한
-    if (m_FOV < XM_1DIV2PI)
-        m_FOV = offset;
-    else if (m_FOV > XM_PI - offset)
-        m_FOV = XM_PI - offset;
-
-    // 뷰 행렬을 계산한다.
+    // =====================
+    // 뷰 행렬 계산
+    // =====================
     // 카메라를 원점으로 이동시키는 이동 행렬
     Vec3 vCamPos = Transform()->GetRelativePos();
     Matrix matTrans = XMMatrixTranslation(-vCamPos.x, -vCamPos.y, -vCamPos.z);
 
     //// 카메라의 각 우, 상, 전 방 방향을 기저축이랑 일치시키도록 회전하는 회전행렬
-    // Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-    // Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
-    // Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-    // Matrix matRotate = XMMatrixIdentity();
-    // matRotate._11 = vRight.x;
-    // matRotate._12 = vUp.x;
-    // matRotate._13 = vFront.x;
-
-    // matRotate._21 = vRight.y;
-    // matRotate._22 = vUp.y;
-    // matRotate._23 = vFront.y;
-
-    // matRotate._31 = vRight.z;
-    // matRotate._32 = vUp.z;
-    // matRotate._33 = vFront.z;
-
     Vec3 vCamRot = Transform()->GetRelativeRotation();
     Matrix matRotate =
         Matrix::CreateRotationX(vCamRot.x) * Matrix::CreateRotationY(vCamRot.y) * Matrix::CreateRotationZ(vCamRot.z);
@@ -86,20 +64,29 @@ void CCamera::finaltick()
     // 이동 x 회전 = view 행렬
     m_matView = matTrans * matRotate;
 
-    // 투영 방식에 따른 투영 행렬을 계산한다.
+    // ===============================
+    // 투영 방식에 따른 투영 행렬 계산
+    // ===============================
     m_matProj = XMMatrixIdentity();
 
     if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
     {
         // 최소 스케일 제한
         if (m_Scale <= 0.f)
-            m_Scale = 0.001f;
+            m_Scale = 1e-5f;
 
         // 직교투영
         m_matProj = XMMatrixOrthographicLH(m_Width * m_Scale, (m_Width / m_AspectRatio) * m_Scale, m_Near, m_Far);
     }
     else
     {
+        // FOV 제한
+        float offset = XM_1DIV2PI; // 1/2π 1도 제한
+        if (m_FOV < XM_1DIV2PI)
+            m_FOV = offset;
+        else if (m_FOV > XM_PI - offset)
+            m_FOV = XM_PI - offset;
+
         // 원근투영
         m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, m_Near, m_Far);
     }

@@ -122,8 +122,10 @@ void CDevice::Present()
 void CDevice::Resize(Vec2 resolution)
 {
     m_vRenderResolution = resolution;
+
     // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release 시켜야함
     m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
+
     CreateView();
     CreateViewport();
 }

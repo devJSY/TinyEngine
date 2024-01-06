@@ -104,6 +104,5 @@ void CContentBrowser::render()
         ImGui::PopID();
     }
 
-    // TODO: status bar
     ImGui::End();
 }

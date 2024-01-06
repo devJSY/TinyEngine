@@ -49,8 +49,8 @@ public:
     float GetFar() const { return m_Far; }
     void SetFar(float _far) { m_Far = _far; }
 
-    const Matrix& GetViewMat() { return m_matView; }
-    const Matrix& GetProjMat() { return m_matProj; }
+    const Matrix& GetViewMat() const { return m_matView; }
+    const Matrix& GetProjMat() const { return m_matProj; }
 
     void SetCameraPriority(int _Priority);
     void LayerCheck(UINT _LayerIdx, bool _bCheck);

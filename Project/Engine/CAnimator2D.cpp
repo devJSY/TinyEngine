@@ -5,6 +5,8 @@
 
 CAnimator2D::CAnimator2D()
     : CComponent(COMPONENT_TYPE::ANIMATOR2D)
+    , m_CurAnim(nullptr)
+    , m_bRepeat(false)
 {
 }
 

@@ -22,7 +22,6 @@ CLevelEditor::CLevelEditor()
     , m_bShowIDMap(false)
     , m_Outliner()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
-    , m_FontSize(25.f)
 {
 }
 
@@ -54,14 +53,15 @@ void CLevelEditor::init()
     //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
     //  FIXME-DPI: Experimental.
 
+    float fFontSize = 25.f;
     wstring wBold = CPathMgr::GetContentPath();
     wstring wRegular = CPathMgr::GetContentPath();
 
     wBold += L"fonts\\opensans\\OpenSans-Bold.ttf";
     wRegular += L"fonts\\opensans\\OpenSans-Regular.ttf";
 
-    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), m_FontSize);
-    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), m_FontSize);
+    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), fFontSize);
+    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), fFontSize);
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -153,93 +153,7 @@ void CLevelEditor::render()
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
     // ImGuizmo
-    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
-    if (nullptr != SelectedObj)
-    {
-        if (!KEY_PRESSED(KEY::RBTN))
-        {
-            // 선택된 오브젝트가 있을때 키입력으로 Gizmo 타입설정
-            if (KEY_TAP(KEY::Q))
-                m_GizmoType = (ImGuizmo::OPERATION)0;
-            else if (KEY_TAP(KEY::W))
-                m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-            else if (KEY_TAP(KEY::E))
-                m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-            else if (KEY_TAP(KEY::R))
-                m_GizmoType = ImGuizmo::OPERATION::SCALE;
-        }
-
-        // Editor Camera
-        CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
-
-        if (nullptr != pCam)
-        {
-            ImGuizmo::SetOrthographic(pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC ? true : false);
-
-            ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
-            float windowWidth = (float)ImGui::GetWindowWidth();
-            float windowHeight = (float)ImGui::GetWindowHeight();
-            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-
-            Matrix CamView = pCam->GetViewMat();
-            Matrix CamProj = pCam->GetProjMat();
-
-            // transform
-            CTransform* pTr = SelectedObj->Transform();
-            Matrix WorldMat = pTr->GetWorldMat();
-
-            // Snapping
-            bool snap = KEY_PRESSED(KEY::LCTRL);
-
-            float snapValue = 0.f;
-            if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
-                snapValue = 25.f;
-            else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
-                snapValue = 30.0f;
-            else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
-                snapValue = 1.0f;
-
-            float snapValues[3] = {snapValue, snapValue, snapValue};
-
-            ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr,
-                                 snap ? snapValues : nullptr);
-
-            if (ImGuizmo::IsUsing())
-            {
-                Matrix originWorldMat = pTr->GetWorldMat();
-
-                // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
-                Matrix ParentInvMat = pTr->GetParentMat().Invert();
-                WorldMat *= ParentInvMat;
-                originWorldMat *= ParentInvMat;
-
-                // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
-                float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f},
-                      Fscale[3] = {0.0f, 0.0f, 0.0f};
-                ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
-
-                float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
-                      originFscale[3] = {0.0f, 0.0f, 0.0f};
-                ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation,
-                                                      originFscale);
-
-                // ImGuizmo로 조정한 변화량 추출
-                Vec3 vPosOffset = Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1],
-                                       originFtranslation[2] - Ftranslation[2]);
-                Vec3 vRotOffset =
-                    Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
-                         DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
-                         DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
-                Vec3 vScaleOffset =
-                    Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
-
-                // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
-                pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
-                pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
-                pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
-            }
-        }
-    }
+    ImGuizmoRender();
 
     ImGui::End();
 
@@ -354,6 +268,89 @@ void CLevelEditor::UI_Toolbar()
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);
     ImGui::End();
+}
+
+void CLevelEditor::ImGuizmoRender()
+{
+    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+    CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0); // Main Camera
+    if (nullptr == SelectedObj || nullptr == pCam)
+        return;
+
+    if (!KEY_PRESSED(KEY::RBTN))
+    {
+        // 선택된 오브젝트가 있을때 키입력으로 Gizmo 타입설정
+        if (KEY_TAP(KEY::Q))
+            m_GizmoType = (ImGuizmo::OPERATION)0;
+        else if (KEY_TAP(KEY::W))
+            m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+        else if (KEY_TAP(KEY::E))
+            m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+        else if (KEY_TAP(KEY::R))
+            m_GizmoType = ImGuizmo::OPERATION::SCALE;
+    }
+
+    ImGuizmo::SetOrthographic(pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC ? true : false);
+
+    ImGuizmo::SetDrawlist(ImGui::GetCurrentWindow()->DrawList);
+    float windowWidth = (float)ImGui::GetWindowWidth();
+    float windowHeight = (float)ImGui::GetWindowHeight();
+    ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+    Matrix CamView = pCam->GetViewMat();
+    Matrix CamProj = pCam->GetProjMat();
+
+    // transform
+    CTransform* pTr = SelectedObj->Transform();
+    Matrix WorldMat = pTr->GetWorldMat();
+
+    // Snapping
+    bool snap = KEY_PRESSED(KEY::LCTRL);
+
+    float snapValue = 0.f;
+    if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
+        snapValue = 25.f;
+    else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+        snapValue = 30.0f;
+    else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
+        snapValue = 1.0f;
+
+    float snapValues[3] = {snapValue, snapValue, snapValue};
+
+    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr,
+                         snap ? snapValues : nullptr);
+
+    if (ImGuizmo::IsUsing())
+    {
+        Matrix originWorldMat = pTr->GetWorldMat();
+
+        // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
+        Matrix ParentInvMat = pTr->GetParentMat().Invert();
+        WorldMat *= ParentInvMat;
+        originWorldMat *= ParentInvMat;
+
+        // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
+        float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
+        ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
+
+        float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
+              originFscale[3] = {0.0f, 0.0f, 0.0f};
+        ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation, originFscale);
+
+        // ImGuizmo로 조정한 변화량 추출
+        Vec3 vPosOffset = Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1],
+                               originFtranslation[2] - Ftranslation[2]);
+        Vec3 vRotOffset =
+            Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
+                 DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
+                 DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
+        Vec3 vScaleOffset = Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
+
+        // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
+        pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+        pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+        pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
+    }
 }
 
 void CLevelEditor::SetDarkThemeColors()

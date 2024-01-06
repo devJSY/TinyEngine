@@ -10,7 +10,7 @@ CTimeMgr::CTimeMgr()
     , m_DeltaTime(0.f)
     , m_iCall(0)
     , m_iFPS(0)
-    , m_fTime(0.f)
+    , m_fAccTime(0.f)
 {
 }
 
@@ -39,15 +39,15 @@ void CTimeMgr::tick()
         m_DeltaTime = (1.f / 60.f);
 
     // 시간 누적 ==> 1초마다 if 구문 실행
-    m_fTime += m_DeltaTime;
-    if (1.f <= m_fTime)
+    m_fAccTime += m_DeltaTime;
+    if (1.f <= m_fAccTime)
     {
         //wchar_t szText[50] = {};
         //swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
         //SetWindowText(CEngine::GetInst()->GetMainWind(), szText);
         m_iFPS = m_iCall;
         m_iCall = 0;
-        m_fTime = 0.f;
+        m_fAccTime = 0.f;
     }
 
     ++m_iCall;

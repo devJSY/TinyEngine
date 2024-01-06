@@ -25,7 +25,7 @@ private:
 
     Ptr<CTexture> m_AtlasTex;
 
-    float m_AccTime;
+    float m_fAccTime;
 
 public:
     void finaltick();

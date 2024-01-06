@@ -43,9 +43,6 @@ void CKeyMgr::init()
     // Capaticy 를 미리 확보
     m_vecKeyData.reserve(KEY::KEY_END);
 
-    // 데이터 개수를 늘림
-    // m_vecKeyData.resize(KEY::KEY_END);
-
     for (UINT i = 0; i < KEY_END; ++i)
     {
         m_vecKeyData.push_back(FKeyData{(KEY)i, NONE, false});

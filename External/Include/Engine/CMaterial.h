@@ -18,7 +18,7 @@ public:
     void SetTexParam(TEX_PARAM _Param, Ptr<CTexture> _Tex) { m_arrTex[(UINT)_Param] = _Tex; }
     Ptr<CTexture> GetTexParam(TEX_PARAM _param) const { return m_arrTex[(UINT)_param]; }
 
-    void GetScalarParam(SCALAR_PARAM _param, void* _pData);
+    void GetScalarParam(SCALAR_PARAM _param, void* _pData) const;
     void SetScalarParam(SCALAR_PARAM _Param, const void* _Src);
 
     void SetMaterialCoefficient(Vec4 _vAmb, Vec4 _vDiff, Vec4 _vSpec, Vec4 _vEmis)

@@ -10,7 +10,7 @@ CAnim::CAnim()
     : m_Animator(nullptr)
     , m_CurFrmIdx(0)
     , m_bFinish(false)
-    , m_AccTime(0.f)
+    , m_fAccTime(0.f)
 {
 }
 
@@ -20,16 +20,16 @@ CAnim::~CAnim()
 
 void CAnim::finaltick()
 {
-    m_AccTime += DT;
+    m_fAccTime += DT;
 
-    if (m_vecFrm[m_CurFrmIdx].Duration < m_AccTime)
+    if (m_vecFrm[m_CurFrmIdx].Duration < m_fAccTime)
     {
         ++m_CurFrmIdx;
         if (m_vecFrm.size() <= m_CurFrmIdx)
         {
             m_CurFrmIdx = 0;
         }
-        m_AccTime = 0.f;
+        m_fAccTime = 0.f;
     }
 }
 
@@ -40,9 +40,9 @@ void CAnim::UpdateData()
     tAnimData2D data = {};
     data.UseAnim2D = 1;
     data.vLeftTop = m_vecFrm[m_CurFrmIdx].vLeftTop;
-    data.vOffset = m_vecFrm[m_CurFrmIdx].vOffset;
     data.vSliceSize = m_vecFrm[m_CurFrmIdx].vSlice;
     data.vBackGround = m_vecFrm[m_CurFrmIdx].vBackground;
+    data.vOffset = m_vecFrm[m_CurFrmIdx].vOffset;
 
     pCB->SetData(&data);
     pCB->UpdateData();
@@ -67,11 +67,11 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop,
     m_Animator = _Animator;
     m_AtlasTex = _Atlas;
 
+    Vec2 AtlasSize = Vec2((float)_Atlas->GetWidth(), (float)_Atlas->GetHeight());
+
     for (int i = 0; i < _FrmCount; ++i)
     {
         tAnimFrm frm = {};
-
-        Vec2 AtlasSize = Vec2((float)_Atlas->GetWidth(), (float)_Atlas->GetHeight());
 
         frm.vSlice = Vec2(_vSliceSize.x, _vSliceSize.y) / AtlasSize;
 

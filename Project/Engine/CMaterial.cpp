@@ -48,7 +48,7 @@ void CMaterial::UpdateData()
     pCB->UpdateData();
 }
 
-void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData) 
+void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData) const
 {
     switch (_param)
     {

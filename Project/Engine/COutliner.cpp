@@ -497,7 +497,7 @@ void COutliner::render()
         std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
     }
 
-    // Outliner 창내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
+    // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
         CLevelMgr::GetInst()->SetSelectObj(nullptr);
 
