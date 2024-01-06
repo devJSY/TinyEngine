@@ -371,39 +371,52 @@ void CLevelEditor::CollisionResponses()
     }
 
     const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
-    const int rows_count = LAYER_MAX;
+
+    static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
+    for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
+    {
+        for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
+        {
+            if (CCollisionMgr::GetInst()->GetCollisionMatrixLayer(iRow) & (1 << iCol))
+            {
+                bools[iRow * columns_count + iCol + 1] = true;
+            }
+            else
+            {
+                bools[iRow * columns_count + iCol + 1] = false;
+            }
+        }
+    }
 
     static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX |
                                          ImGuiTableFlags_ScrollY | ImGuiTableFlags_BordersOuter |
                                          ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
                                          ImGuiTableFlags_Reorderable | ImGuiTableFlags_HighlightHoveredColumn;
-    static bool bools[columns_count * rows_count] = {}; // Dummy storage selection storage
 
     if (ImGui::BeginTable("table_angled_headers", columns_count, table_flags, ImGui::GetContentRegionAvail()))
     {
         ImGui::TableSetupColumn(column_names[0].c_str(),
                                 ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
-        for (int n = 1; n < columns_count; n++)
-            ImGui::TableSetupColumn(column_names[columns_count - n].c_str(),
+        for (int n = columns_count - 1; n >= 1; n--)
+            ImGui::TableSetupColumn(column_names[n].c_str(),
                                     ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 
         ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
                                         // ImGuiTableColumnFlags_AngledHeader flag.
         ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other functions.
-        for (int row = 0; row < rows_count; row++)
+        for (int row = 0; row < LAYER_MAX; row++)
         {
             ImGui::PushID(row);
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
             ImGui::AlignTextToFramePadding();
             ImGui::Text(column_names[row + 1].c_str());
-            for (int column = 1; column < columns_count - row; column++)
-                if (ImGui::TableSetColumnIndex(column))
+            for (int column = columns_count - 1; column > row; column--)
+                if (ImGui::TableSetColumnIndex(columns_count - column))
                 {
                     ImGui::PushID(column);
-                    ImGui::Checkbox("", &bools[row * columns_count + columns_count - column]);
-                    CCollisionMgr::GetInst()->LayerCheck(row, columns_count - column - 1,
-                                                         bools[row * columns_count + columns_count - column]);
+                    if (ImGui::Checkbox("", &bools[row * columns_count + column]))
+                        CCollisionMgr::GetInst()->LayerCheck(row, column - 1, bools[row * columns_count + column]);
                     ImGui::PopID();
                 }
             ImGui::PopID();
