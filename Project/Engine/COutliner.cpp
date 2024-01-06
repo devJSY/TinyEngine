@@ -134,6 +134,20 @@ static std::string _labelPrefix(const char* const label)
 
 void COutliner::DrawDetails(CGameObject* obj)
 {
+    // Layer
+    {
+        std::string name = "Layer ";
+        name += std::to_string(obj->GetLayerIdx());
+
+        string LayerName =
+            WstringTostring(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(obj->GetLayerIdx())->GetName());
+
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+        strcpy_s(buffer, sizeof(buffer), LayerName.c_str());
+        ImGui::InputText(_labelPrefix(name.c_str()).c_str(), buffer, sizeof(buffer));
+    }
+
     // Tag
     {
         std::string name = WstringTostring(obj->GetName());
@@ -197,7 +211,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         {
             const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
             const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetType()];
-            if (ImGui::BeginCombo("Collider2DType", currentCollider2DTypeString))
+            if (ImGui::BeginCombo(_labelPrefix("Collider2DType").c_str(), currentCollider2DTypeString))
             {
                 for (int i = 0; i < 2; i++)
                 {
@@ -218,13 +232,13 @@ void COutliner::DrawDetails(CGameObject* obj)
             if (pCol->GetType() == COLLIDER2D_TYPE::RECT)
             {
                 bool bAbsolute = pCol->IsAbsolute();
-                ImGui::Checkbox("Absolute", &bAbsolute);
+                ImGui::Checkbox(_labelPrefix("Absolute").c_str(), &bAbsolute);
                 pCol->SetAbsolute(bAbsolute);
             }
             else if (pCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
             {
                 float fRadius = pCol->GetRadius();
-                if (ImGui::DragFloat("Radius", &fRadius, 1.f, 0.0f, 10000.f))
+                if (ImGui::DragFloat(_labelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
                     pCol->SetRadius(fRadius);
             }
 
@@ -516,8 +530,7 @@ void COutliner::render()
             Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
             pos += dir.Normalize() * 500.f;
             pObj->Transform()->SetRelativePos(pos);
-
-            CLevelMgr::GetInst()->SetSelectObj(pObj);
+                        
             GamePlayStatic::SpawnGameObject(pObj, 0);
         }
 

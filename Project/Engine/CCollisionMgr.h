@@ -36,7 +36,7 @@ public:
     void tick();
 
 public:
-    UINT GetCollisionMatrixLayer(UINT idx) const { return m_matrix[idx]; }
+    UINT GetCollisionLayer(UINT idx) const { return m_matrix[idx]; }
 
 private:
     void CollisionBtwLayer(UINT _leftCol, UINT _rightCol);

@@ -363,8 +363,8 @@ void CLevelEditor::CollisionResponses()
 {
     ImGui::Begin("Collision Responses");
 
-    string column_names[LAYER_MAX + 1] = {"Layer Name"};
-    for (size_t i = 1; i <= LAYER_MAX; i++)
+    string column_names[LAYER_MAX + 1] = {"Layers"};
+    for (int i = 1; i <= LAYER_MAX; i++)
     {
         const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
         column_names[i] = WstringTostring(LayerName);
@@ -377,7 +377,7 @@ void CLevelEditor::CollisionResponses()
     {
         for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
         {
-            if (CCollisionMgr::GetInst()->GetCollisionMatrixLayer(iRow) & (1 << iCol))
+            if (CCollisionMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
             {
                 bools[iRow * columns_count + iCol + 1] = true;
             }

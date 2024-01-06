@@ -70,6 +70,7 @@ public:
 
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
+    int GetLayerIdx() const { return m_iLayerIdx; }
 
     GET_COMPONENT(Light3D, LIGHT3D);
 

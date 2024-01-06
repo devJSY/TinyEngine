@@ -136,6 +136,7 @@ void CTaskMgr::CREATE_OBJECT(const FTask& _Task)
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     pCurLevel->AddObject(Object, LayerIdx, true);
+    CLevelMgr::GetInst()->SetSelectObj(Object);
 
     /*if (LEVEL_STATE::PLAY == pCurLevel->GetState())
     {

@@ -28,6 +28,14 @@ void CLevelMgr::init()
 {
     m_CurLevel = new CTestLevel;
     m_CurLevel->SetName(L"Test Level 1");
+
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        wstring Name = L"Layer ";
+        Name += std::to_wstring(i);
+        m_CurLevel->GetLayer(i)->SetName(Name);
+    }
+
     m_CurLevel->GetLayer(0)->SetName(L"Default");
     m_CurLevel->GetLayer(1)->SetName(L"Camera");
     m_CurLevel->GetLayer(2)->SetName(L"Light");
