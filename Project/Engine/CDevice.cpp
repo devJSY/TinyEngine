@@ -97,7 +97,6 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 
 void CDevice::ClearRenderTarget(const Vec4& Color)
 {
-
     // IDMap
     Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
     Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
@@ -352,6 +351,23 @@ int CDevice::CreateBlendState()
     m_arrBS[(UINT)BS_TYPE::DEFAULT] = nullptr;
 
     D3D11_BLEND_DESC tDesc = {};
+    
+    // Mask
+    tDesc.AlphaToCoverageEnable = true;
+    tDesc.IndependentBlendEnable = false;
+
+    tDesc.RenderTarget[0].BlendEnable = true;
+    tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
+
+    tDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    tDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+
+    tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::MASK].GetAddressOf());
 
     // AlphaBlend
     tDesc.AlphaToCoverageEnable = false;
@@ -370,6 +386,7 @@ int CDevice::CreateBlendState()
 
     DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::ALPHA_BLEND].GetAddressOf());
 
+    // One One
     tDesc.AlphaToCoverageEnable = false;
     tDesc.IndependentBlendEnable = false;
 

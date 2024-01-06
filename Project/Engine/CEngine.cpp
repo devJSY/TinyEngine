@@ -16,9 +16,8 @@
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
-    , m_ClearColor{}
+    , m_ClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 {
-    m_ClearColor = Vec4(0.f, 0.f, 0.f, 1.f);
 }
 
 CEngine::~CEngine()

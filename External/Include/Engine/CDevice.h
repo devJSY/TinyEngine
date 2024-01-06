@@ -22,7 +22,7 @@ private:
 
     ComPtr<ID3D11SamplerState> m_arrSS[(UINT)SS_TYPE::END]; // Sampler
     
-    CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];
+    CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];  // Constant Buffer
 
 public:
     int init(HWND _hWnd, Vec2 _vResolution);

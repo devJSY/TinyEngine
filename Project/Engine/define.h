@@ -109,14 +109,10 @@ enum class DS_TYPE
 // Blend State
 enum class BS_TYPE
 {
-    DEFAULT,
-
-    ALPHA_BLEND,
-
-    ONE_ZERO,
-
-    ONE_ONE,
-
+    DEFAULT,     // No Blending
+    MASK,        // Alpha Coverage
+    ALPHA_BLEND, // Alpha °è¼ö
+    ONE_ONE,     // 1:1 È¥ÇÕ
     END,
 };
 

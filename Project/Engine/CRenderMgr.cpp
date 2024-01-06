@@ -86,6 +86,7 @@ void CRenderMgr::render_debug()
 
         m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(PrevTopology);
 
+        // Duration Check
         (*iter).fLifeTime += DT;
         if ((*iter).fDuration <= (*iter).fLifeTime)
         {

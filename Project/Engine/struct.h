@@ -64,7 +64,7 @@ struct tMtrlConst
 
     int bTex[TEX_PARAM::END - TEX_PARAM::TEX_0];
 
-    int iPadding[2];
+    int padding[2];
 };
 
 struct tLightData
@@ -80,7 +80,7 @@ struct tLightData
     // fallOffStart, fallOffEnd 옵션값으로 표현
 
     UINT LightType;
-    Vec3 padd;
+    Vec3 padding;
 };
 
 struct tGlobal
@@ -112,7 +112,7 @@ struct tAnimData2D
     Vec2 vBackGround;
     Vec2 vOffset;
     int UseAnim2D;
-    Vec3 vPadding;
+    Vec3 padding;
 };
 
 struct tMeshData

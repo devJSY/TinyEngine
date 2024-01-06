@@ -182,7 +182,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             pTr->SetRelativeRotation(rot);
 
             Vec3 scale = pTr->GetRelativeScale();
-            DrawVec3Control("Scale", scale, 1.f, 1.f, 3.40282e+38, 1.f);
+            DrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
             pTr->SetRelativeScale(scale);
 
             ImGui::TreePop();
@@ -233,7 +233,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             pCol->SetOffsetPos(offsetPos);
 
             Vec2 offsetScale = pCol->GetOffsetScale();
-            ImGui::DragFloat2(_labelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f, 0.f, 3.40282e+38);
+            ImGui::DragFloat2(_labelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f, 0.f, D3D11_FLOAT32_MAX);
             pCol->SetOffsetScale(offsetScale);
 
             ImGui::TreePop();

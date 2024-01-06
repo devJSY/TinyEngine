@@ -26,6 +26,12 @@ namespace GamePlayStatic
     void AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
 }
 
+string WstringTostring(const wstring& wstr);
+wstring stringToWstring(const string& str);
+std::string currentDateTime();
+Vec4 HashIDToColor(int hash);
+std::string GetComponentName(COMPONENT_TYPE type);
+
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])
 {
@@ -63,13 +69,6 @@ void Delete_Map(map<T1, T2>& _map)
     }
     _map.clear();
 }
-
-string WstringTostring(const wstring& wstr);
-wstring stringToWstring(const string& str);
-std::string currentDateTime();
-Vec4 HashIDToColor(int hash);
-
-std::string GetComponentName(COMPONENT_TYPE type);
 
 // template <typename T>
 // bool IsValid(T*& _Entity)
