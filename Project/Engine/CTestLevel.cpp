@@ -189,37 +189,15 @@ void CTestLevel::begin()
 
     AddObject(pMonster, L"Mesh");
 
-    CGameObject* pTestObj = new CGameObject;
-    pTestObj->SetName(L"TestObj");
-
-    pTestObj->AddComponent(new CTransform);
-    pTestObj->AddComponent(new CMeshRender);
-    pTestObj->AddComponent(new CAnimator2D);
-
-    pTestObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-
-    pTestObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pTestObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-
-    Ptr<CTexture> pTestTex =
-        CAssetMgr::GetInst()->Load<CTexture>(L"Player_DownTex", L"texture\\Player\\Pilot\\Player_Down.bmp");
-
-    pTestObj->Animator2D()->Create(L"Test", pTestTex, Vec2(0.f, 120.f), Vec2(60.f, 60.f), Vec2(0.f, 0.f),
-                                   Vec2(200.f, 200.f), 8, 24);
-
-    pTestObj->Animator2D()->Play(L"Test");
-
-    AddObject(pTestObj, L"Default");
-
     // 충돌 설정
-    // CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
-    for (UINT i = 0; i < LAYER_MAX; i++)
-    {
-        for (UINT j = 0; j <= i; j++)
-        {
-            CCollisionMgr::GetInst()->LayerCheck(i, j);
-        }
-    }
+    CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
+    //for (UINT i = 0; i < LAYER_MAX; i++)
+    //{
+    //    for (UINT j = 0; j <= i; j++)
+    //    {
+    //        CCollisionMgr::GetInst()->LayerCheck(i, j);
+    //    }
+    //}
 
     CLevel::begin();
 }

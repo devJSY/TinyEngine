@@ -6,14 +6,18 @@
 #include "CTaskMgr.h"
 #include "CCamera.h"
 #include "CTransform.h"
+
 #include "CLevelMgr.h"
 #include "CKeyMgr.h"
-
 #include "CEditorMgr.h"
 #include "CPathMgr.h"
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
+#include "CCollisionMgr.h"
+
+#include "CLevel.h"
+#include "CLayer.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
@@ -126,6 +130,8 @@ void CLevelEditor::finaltick()
     CRenderMgr::GetInst()->SetShowCollider(bCollider);
 
     ImGui::End();
+
+    CollisionResponses();
 }
 
 void CLevelEditor::render()
@@ -351,6 +357,61 @@ void CLevelEditor::ImGuizmoRender()
         pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
         pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
     }
+}
+
+void CLevelEditor::CollisionResponses()
+{
+    ImGui::Begin("Collision Responses");
+
+    string column_names[LAYER_MAX + 1] = {"Layer Name"};
+    for (size_t i = 1; i <= LAYER_MAX; i++)
+    {
+        const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
+        column_names[i] = WstringTostring(LayerName);
+    }
+
+    const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
+    const int rows_count = LAYER_MAX;
+
+    static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX |
+                                         ImGuiTableFlags_ScrollY | ImGuiTableFlags_BordersOuter |
+                                         ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
+                                         ImGuiTableFlags_Reorderable | ImGuiTableFlags_HighlightHoveredColumn;
+    static bool bools[columns_count * rows_count] = {}; // Dummy storage selection storage
+
+    if (ImGui::BeginTable("table_angled_headers", columns_count, table_flags, ImGui::GetContentRegionAvail()))
+    {
+        ImGui::TableSetupColumn(column_names[0].c_str(),
+                                ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
+        for (int n = 1; n < columns_count; n++)
+            ImGui::TableSetupColumn(column_names[columns_count - n].c_str(),
+                                    ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
+
+        ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
+                                        // ImGuiTableColumnFlags_AngledHeader flag.
+        ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other functions.
+        for (int row = 0; row < rows_count; row++)
+        {
+            ImGui::PushID(row);
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGui::Text(column_names[row + 1].c_str());
+            for (int column = 1; column < columns_count - row; column++)
+                if (ImGui::TableSetColumnIndex(column))
+                {
+                    ImGui::PushID(column);
+                    ImGui::Checkbox("", &bools[row * columns_count + columns_count - column]);
+                    CCollisionMgr::GetInst()->LayerCheck(row, columns_count - column - 1,
+                                                         bools[row * columns_count + columns_count - column]);
+                    ImGui::PopID();
+                }
+            ImGui::PopID();
+        }
+        ImGui::EndTable();
+    }
+
+    ImGui::End();
 }
 
 void CLevelEditor::SetDarkThemeColors()

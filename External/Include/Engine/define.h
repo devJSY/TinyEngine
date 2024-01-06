@@ -17,7 +17,7 @@ private:                                                                        
 #define KEY_RELEASED(Key) KEY_CHECK(Key, RELEASED)
 #define KEY_NONE(Key)     KEY_CHECK(Key, NONE)
 
-#define LAYER_MAX 32
+#define LAYER_MAX 16
 
 enum class DIR_TYPE
 {

@@ -292,7 +292,7 @@ bool CCollisionMgr::CollisionPointCircle(float cx, float cy, float cr, float px,
     return true;
 }
 
-void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer)
+void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)
 {
     UINT iRow = (UINT)_LeftLayer;
     UINT iCol = (UINT)_RightLayer;
@@ -304,7 +304,14 @@ void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer)
         iRow = iTemp;
     }
 
-    m_matrix[iRow] |= (1 << iCol);
+    if (_bCheck)
+    {
+        m_matrix[iRow] |= (1 << iCol);
+    }
+    else
+    {
+        m_matrix[iRow] &= ~(1 << iCol);
+    }
 }
 
 void CCollisionMgr::LayerCheck(const wstring& _LeftLayer, const wstring& _RightLayer)

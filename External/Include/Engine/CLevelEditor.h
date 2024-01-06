@@ -36,6 +36,7 @@ private:
     // UI Panels
     void UI_Toolbar();
     void ImGuizmoRender();
+    void CollisionResponses();
 
 public:
     CLevelEditor();

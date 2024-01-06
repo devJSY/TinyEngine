@@ -33,8 +33,8 @@ void CLevelMgr::init()
     m_CurLevel->GetLayer(2)->SetName(L"Light");
     m_CurLevel->GetLayer(3)->SetName(L"Mesh");
     m_CurLevel->GetLayer(4)->SetName(L"Model");
-    m_CurLevel->GetLayer(30)->SetName(L"SkyBox");
-    m_CurLevel->GetLayer(31)->SetName(L"UI");
+    m_CurLevel->GetLayer(14)->SetName(L"SkyBox");
+    m_CurLevel->GetLayer(15)->SetName(L"UI");
 
     m_CurLevel->begin();
 }
