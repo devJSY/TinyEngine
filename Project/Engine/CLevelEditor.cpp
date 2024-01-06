@@ -393,7 +393,7 @@ void CLevelEditor::CollisionResponses()
                                          ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
                                          ImGuiTableFlags_Reorderable | ImGuiTableFlags_HighlightHoveredColumn;
 
-    if (ImGui::BeginTable("table_angled_headers", columns_count, table_flags, ImGui::GetContentRegionAvail()))
+    if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
     {
         ImGui::TableSetupColumn(column_names[0].c_str(),
                                 ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);

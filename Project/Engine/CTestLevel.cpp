@@ -190,14 +190,14 @@ void CTestLevel::begin()
     AddObject(pMonster, L"Mesh");
 
     // 충돌 설정
-    CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
-    //for (UINT i = 0; i < LAYER_MAX; i++)
-    //{
-    //    for (UINT j = 0; j <= i; j++)
-    //    {
-    //        CCollisionMgr::GetInst()->LayerCheck(i, j);
-    //    }
-    //}
+    //CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        for (UINT j = 0; j <= i; j++)
+        {
+            CCollisionMgr::GetInst()->LayerCheck(i, j);
+        }
+    }
 
     CLevel::begin();
 }

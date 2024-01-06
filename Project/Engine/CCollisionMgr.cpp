@@ -145,6 +145,50 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _p
     }
 }
 
+void CCollisionMgr::CollisionRelease(UINT _LeftLayer, UINT _RightLayer)
+{
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    CLayer* pLeftLayer = pCurLevel->GetLayer(_LeftLayer);
+    CLayer* pRightLayer = pCurLevel->GetLayer(_RightLayer);
+
+    const vector<CGameObject*>& vecLeft = pLeftLayer->GetLayerObjects();
+    const vector<CGameObject*>& vecRight = pRightLayer->GetLayerObjects();
+
+    for (size_t i = 0; i < vecLeft.size(); ++i)
+    {
+        // 충돌체가 없는 경우
+        if (nullptr == vecLeft[i]->Collider2D())
+            continue;
+
+        size_t j = 0;
+        if (_LeftLayer == _RightLayer) // Left, Right 동일 레이어인 경우, 이중 검사를 피하기 위함
+        {
+            j = i + 1;
+        }
+
+        for (; j < vecRight.size(); ++j)
+        {
+            if (nullptr == vecRight[j]->Collider2D())
+                continue;
+
+            // 두 충돌체의 아이디를 조합
+            CollisionID ID = {};
+            ID.LeftID = vecLeft[i]->Collider2D()->GetID();
+            ID.RightID = vecRight[j]->Collider2D()->GetID();
+
+            // 이전 프레임 충돌중이 었다면 EndOverlap 호출
+            map<UINT_PTR, bool>::iterator iter = m_mapPrevInfo.find(ID.id);
+            if (iter != m_mapPrevInfo.end() && iter->second)
+            {
+                vecLeft[i]->Collider2D()->EndOverlap(vecRight[j]->Collider2D());
+                vecRight[j]->Collider2D()->EndOverlap(vecLeft[i]->Collider2D());
+                iter->second = false;
+            }
+        }
+    }
+}
+
 bool CCollisionMgr::CollisionRectRect(CCollider2D* _pLeftCol, CCollider2D* _pRightCol)
 {
     const Matrix& matLeft = _pLeftCol->GetColliderWorldMat();
@@ -311,6 +355,7 @@ void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)
     else
     {
         m_matrix[iRow] &= ~(1 << iCol);
+        CollisionRelease(iRow, iCol);
     }
 }
 
