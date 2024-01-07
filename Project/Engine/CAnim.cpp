@@ -21,6 +21,9 @@ CAnim::~CAnim()
 
 void CAnim::finaltick()
 {
+    if (m_bFinish)
+        return;
+
     m_fAccTime += DT;
 
     if (m_vecFrm[m_CurFrmIdx].Duration < m_fAccTime)
@@ -29,6 +32,7 @@ void CAnim::finaltick()
         if (m_vecFrm.size() <= m_CurFrmIdx)
         {
             m_CurFrmIdx = 0;
+            m_bFinish = true;
         }
         m_fAccTime = 0.f;
     }

@@ -17,6 +17,7 @@
 #include "CCollider2D.h"
 #include "CLight3D.h"
 #include "CMeshRender.h"
+#include "CAnimator2D.h"
 
 #include "CLevel.h"
 
@@ -462,8 +463,8 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
         pObj->AddComponent(new CCollider2D);
     // else if (type == COMPONENT_TYPE::COLLIDER3D)
     //     pObj->AddComponent(new CCollider3D);
-    // else if (type == COMPONENT_TYPE::ANIMATOR2D)
-    //     pObj->AddComponent(new CAnimation2D);
+    else if (type == COMPONENT_TYPE::ANIMATOR2D)
+        pObj->AddComponent(new CAnimator2D);
     //  else if (type == COMPONENT_TYPE::ANIMATOR3D)
     //      pObj->AddComponent(new CAnimation3D);
     // else if (type == COMPONENT_TYPE::LIGHT2D)

@@ -74,7 +74,7 @@ void CTestLevel2::begin()
                                              L"texture//Player//Character//Convict//dodge_forward//dodge_forward.png"),
         Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
 
-    pPlayer->Animator2D()->Play(L"dodge_back");
+    pPlayer->Animator2D()->Play(L"dodge_back", true);
 
     AddObject(pPlayer, L"Player");
 

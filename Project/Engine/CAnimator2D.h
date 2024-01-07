@@ -23,7 +23,7 @@ public:
                 Vec2 _Background, int _FrmCount, float _FPS, bool _UseBackGround = false);
 
     CAnim* FindAnim(const wstring& _strAnimName);
-    void Play(const wstring& _strAnimName);
+    void Play(const wstring& _strAnimName, bool _bRepeat);
 
 public:
     const map<wstring, CAnim*>& GetmapAnim() const { return m_mapAnim; }

@@ -17,7 +17,15 @@ CAnimator2D::~CAnimator2D()
 
 void CAnimator2D::finaltick()
 {
-    m_CurAnim->finaltick();
+    if (nullptr != m_CurAnim)
+    {
+        if (m_bRepeat && m_CurAnim->IsFinish())
+        {
+            m_CurAnim->Reset();
+        }
+
+        m_CurAnim->finaltick();
+    }
 }
 
 void CAnimator2D::UpdateData()
@@ -52,11 +60,12 @@ CAnim* CAnimator2D::FindAnim(const wstring& _strKey)
     return iter->second;
 }
 
-void CAnimator2D::Play(const wstring& _strAnimName)
+void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 {
     CAnim* pAnim = FindAnim(_strAnimName);
     if (nullptr == pAnim)
         return;
 
     m_CurAnim = pAnim;
+    m_bRepeat = _bRepeat;
 }

@@ -41,6 +41,12 @@ public:
     const vector<tAnimFrm>& GetVecFrm() const { return m_vecFrm; }
     int GetCurFrmIdx() const { return m_CurFrmIdx; }
     bool IsFinish() const { return m_bFinish; }
+    void Reset()
+    {
+        m_CurFrmIdx = 0;
+        m_fAccTime = 0.f;
+        m_bFinish = false;
+    }
     bool IsUseBackGround() const { return m_bUseBackGround; }
 
 public:

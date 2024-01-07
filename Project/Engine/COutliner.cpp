@@ -293,41 +293,40 @@ void COutliner::DrawDetails(CGameObject* obj)
             const map<wstring, CAnim*>& mapAnim = pAni->GetmapAnim();
             CAnim* pCurAnim = pAni->GetCurAnim();
 
-            vector<string> names;
-
-            for (const auto& iter : mapAnim)
-            {
-                names.push_back(WstringTostring(iter.first));
-            }
-
-            string curAnimName = WstringTostring(pCurAnim->GetName());
-
-            ImGui::Text("Animation Name");
-            if (ImGuiComboUI("##Anim", curAnimName, names))
-            {
-                pAni->Play(stringToWstring(curAnimName));
-            }
-
-            pCurAnim = pAni->GetCurAnim();
-
             if (nullptr != pCurAnim)
             {
+                // Animation Names
+                vector<string> names;
+
+                for (const auto& iter : mapAnim)
+                {
+                    names.push_back(WstringTostring(iter.first));
+                }
+
+                string curAnimName = WstringTostring(pCurAnim->GetName());
+
+                ImGui::Text("Animation Name");
+                if (ImGuiComboUI("##Anim", curAnimName, names))
+                {
+                    pAni->Play(stringToWstring(curAnimName), true);
+                }
+
+                pCurAnim = pAni->GetCurAnim();
+
+                // Atlas Texture
                 Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();
                 Vec2 TexSize = Vec2((float)pTex->GetWidth(), (float)pTex->GetHeight());
 
                 ID3D11ShaderResourceView* pSRV = nullptr;
                 pSRV = pTex->GetSRV().Get();
-
-                // Atlas Texture
+                
                 ImGui::Text("Atlas Texture");
                 ImGui::Image((void*)pSRV, ImVec2(TexSize.x, TexSize.y));
 
                 const vector<tAnimFrm>& vecFrm = pCurAnim->GetVecFrm();
-                int Frmidx = pCurAnim->GetCurFrmIdx();
-                bool bFinish = pCurAnim->IsFinish();
-                bool bBG = pCurAnim->IsUseBackGround();
 
                 // Frame Index
+                int Frmidx = pCurAnim->GetCurFrmIdx();
                 ImGui::Text("Frame Index");
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::SliderInt("##FrmIdx", &Frmidx, 0, (int)vecFrm.size());
