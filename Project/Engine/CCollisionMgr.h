@@ -41,7 +41,10 @@ public:
 private:
     void CollisionBtwLayer(UINT _leftCol, UINT _rightCol);
     bool CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _pRightCol);
+
+public:
     void CollisionRelease(UINT _LeftLayer, UINT _RightLayer);
+    void CollisionRelease(CGameObject* _obj);
 
 private:
     bool CollisionRectRect(CCollider2D* _pLeftCol, CCollider2D* _pRightCol);

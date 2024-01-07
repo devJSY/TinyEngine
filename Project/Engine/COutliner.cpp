@@ -21,6 +21,8 @@
 #include "CAnimator2D.h"
 #include "CAnim.h"
 
+#include "CCollisionMgr.h"
+
 COutliner::COutliner()
 {
 }
@@ -202,16 +204,22 @@ void COutliner::DrawDetails(CGameObject* obj)
 
     // Layer
     {
-        std::string name = "Layer ";
-        name += std::to_string(obj->GetLayerIdx());
+        CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-        string LayerName =
-            WstringTostring(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(obj->GetLayerIdx())->GetName());
+        vector<string> LayerNames;
 
-        char buffer[256];
-        memset(buffer, 0, sizeof(buffer));
-        strcpy_s(buffer, sizeof(buffer), LayerName.c_str());
-        ImGui::InputText(_labelPrefix(name.c_str()).c_str(), buffer, sizeof(buffer));
+        for (int i = 0; i < LAYER_MAX; i++)
+        {
+            LayerNames.push_back(WstringTostring(pCurLevel->GetLayer(i)->GetName()));
+        }
+
+        int LayerIdx = obj->GetLayerIdx();
+        std::string name = LayerNames[LayerIdx];
+
+        if (ImGuiComboUI(_labelPrefix("Layer").c_str(), name, LayerNames))
+        {
+            GamePlayStatic::ChangeLayer(obj, pCurLevel->GetLayer(stringToWstring(name))->GetLayerIdx());
+        }
     }
 
     // Transform
@@ -322,7 +330,7 @@ void COutliner::DrawDetails(CGameObject* obj)
 
                 ID3D11ShaderResourceView* pSRV = nullptr;
                 pSRV = pTex->GetSRV().Get();
-                
+
                 ImGui::Text("Atlas Texture");
                 ImGui::Image((void*)pSRV, ImVec2(TexSize.x, TexSize.y));
 

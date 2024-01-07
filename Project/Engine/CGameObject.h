@@ -70,7 +70,10 @@ public:
 
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
+
     int GetLayerIdx() const { return m_iLayerIdx; }
+    void SetLayer(int _idx) { m_iLayerIdx = _idx; }
+    void SetLayer(const wstring& _strLayerName);
 
     GET_COMPONENT(Light3D, LIGHT3D);
 

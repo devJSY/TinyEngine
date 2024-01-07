@@ -34,6 +34,9 @@ enum class TASK_TYPE
 
     // Param1 : Parent Object, Param2 : Component Name
     ADD_COMPONENT,
+
+    // Param1 : Object, Param2 : Layer Index
+    CHANGE_LAYER,
 };
 
 struct FTask
@@ -67,4 +70,5 @@ private:
     void MOUSE_COLOR_PICKING(const FTask& _Task);
     void MOUSE_RAY_PICKING(const FTask& _Task);
     void ADD_COMPONENT(const FTask& _Task);
+    void CHANGE_LAYER(const FTask& _Task);
 };

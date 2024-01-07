@@ -24,6 +24,7 @@ namespace GamePlayStatic
     void MouseRayPicking(Vec2 MousePos);
 
     void AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
+    void ChangeLayer(CGameObject* _pObj, int LayerIdx);
 }
 
 string WstringTostring(const wstring& wstr);

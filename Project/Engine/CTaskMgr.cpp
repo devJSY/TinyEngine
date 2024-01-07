@@ -6,6 +6,7 @@
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
+#include "CCollisionMgr.h"
 
 #include "CEngine.h"
 #include "CDevice.h"
@@ -123,6 +124,9 @@ void CTaskMgr::tick()
             break;
         case TASK_TYPE::ADD_COMPONENT:
             ADD_COMPONENT(m_vecTask[i]);
+            break;
+        case TASK_TYPE::CHANGE_LAYER:
+            CHANGE_LAYER(m_vecTask[i]);
             break;
         }
     }
@@ -485,4 +489,13 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     //     pObj->AddComponent(new CDecal);
     // else if (type == COMPONENT_TYPE::LANDSCAPE)
     //     pObj->AddComponent(new CLandscape);
+}
+
+void CTaskMgr::CHANGE_LAYER(const FTask& _Task)
+{
+    CGameObject* Object = (CGameObject*)_Task.Param_1;
+    int LayerIdx = (int)_Task.Param_2;
+
+    CCollisionMgr::GetInst()->CollisionRelease(Object);
+    Object->SetLayer(LayerIdx);
 }

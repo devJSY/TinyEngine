@@ -140,6 +140,15 @@ void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::ChangeLayer(CGameObject* _pObj, int LayerIdx)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::CHANGE_LAYER;
+    task.Param_1 = (DWORD_PTR)_pObj;
+    task.Param_2 = (INT_PTR)LayerIdx;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 string WstringTostring(const wstring& wstr)
 {
     std::string str(wstr.length(), 0);
