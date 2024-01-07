@@ -34,6 +34,7 @@ public:
 
 private:
     // UI Panels
+    void MenuBar();
     void UI_Toolbar();
     void ImGuizmoRender();
     void CollisionResponses();

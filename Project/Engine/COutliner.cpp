@@ -171,7 +171,10 @@ void COutliner::DrawDetails(CGameObject* obj)
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
         strcpy_s(buffer, sizeof(buffer), name.c_str());
-        ImGui::InputText("##Tag", buffer, sizeof(buffer));
+        if (ImGui::InputText("##Tag", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            obj->SetName(stringToWstring(buffer));
+        }
     }
 
     // AddComponent

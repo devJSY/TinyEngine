@@ -172,6 +172,9 @@ void CLevelEditor::render()
         ImGui::End();
     }
 
+    // Menu Bar
+    MenuBar();
+
     // Outliner Render
     m_Outliner.render();
 
@@ -191,6 +194,37 @@ void CLevelEditor::render()
     {
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
+    }
+}
+
+void CLevelEditor::MenuBar()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Save Level"))
+            {
+                // Level 저장
+                //CLevelSaveLoad::SaveLevel(L"Level\\TestLevel.lv", CLevelMgr::GetInst()->GetCurLevel());
+            }
+
+            if (ImGui::MenuItem("Load Level"))
+            {
+                //// Level 불러오기
+                //CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.lv");
+
+                //tEvent evn = {};
+                //evn.Type = EVENT_TYPE::LEVEL_CHANGE;
+                //evn.wParam = (DWORD_PTR)pLoadedLevel;
+
+                //CEventMgr::GetInst()->AddEvent(evn);
+            }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMainMenuBar();
     }
 }
 
