@@ -37,6 +37,7 @@ void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _
     assert(!pAnim);
 
     pAnim = new CAnim;
+    pAnim->SetName(_strKey);
     pAnim->Create(this, _AltasTex, _LeftTop, _vSliceSize, _OffsetPos, _Background, _FrmCount, _FPS, _UseBackGround);
     m_mapAnim.insert(make_pair(_strKey, pAnim));
 }

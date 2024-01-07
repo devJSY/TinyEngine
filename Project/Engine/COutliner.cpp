@@ -18,6 +18,8 @@
 
 #include "CTexture.h"
 #include "CCollider2D.h"
+#include "CAnimator2D.h"
+#include "CAnim.h"
 
 COutliner::COutliner()
 {
@@ -130,6 +132,34 @@ static std::string _labelPrefix(const char* const label)
     labelID += label;
 
     return labelID;
+}
+
+//
+// Combo with std::vector<std::string>
+//
+static bool ImGuiComboUI(const std::string& caption, std::string& current_item, const std::vector<std::string>& items)
+{
+    bool changed = false;
+
+    if (ImGui::BeginCombo(caption.c_str(), current_item.c_str()))
+    {
+        for (int n = 0; n < items.size(); n++)
+        {
+            bool is_selected = (current_item == items[n]);
+            if (ImGui::Selectable(items[n].c_str(), is_selected))
+            {
+                current_item = items[n];
+                changed = true;
+            }
+            if (is_selected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+
+    return changed;
 }
 
 void COutliner::DrawDetails(CGameObject* obj)
@@ -249,6 +279,123 @@ void COutliner::DrawDetails(CGameObject* obj)
             Vec2 offsetScale = pCol->GetOffsetScale();
             ImGui::DragFloat2(_labelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f, 0.f, D3D11_FLOAT32_MAX);
             pCol->SetOffsetScale(offsetScale);
+
+            ImGui::TreePop();
+        }
+    }
+
+    // Animator2D
+    CAnimator2D* pAni = obj->Animator2D();
+    if (nullptr != pAni)
+    {
+        if (ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), ImGuiTreeNodeFlags_None, "Animator2D"))
+        {
+            const map<wstring, CAnim*>& mapAnim = pAni->GetmapAnim();
+            CAnim* pCurAnim = pAni->GetCurAnim();
+
+            vector<string> names;
+
+            for (const auto& iter : mapAnim)
+            {
+                names.push_back(WstringTostring(iter.first));
+            }
+
+            string curAnimName = WstringTostring(pCurAnim->GetName());
+
+            ImGui::Text("Animation Name");
+            if (ImGuiComboUI("##Anim", curAnimName, names))
+            {
+                pAni->Play(stringToWstring(curAnimName));
+            }
+
+            pCurAnim = pAni->GetCurAnim();
+
+            if (nullptr != pCurAnim)
+            {
+                Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();
+                Vec2 TexSize = Vec2((float)pTex->GetWidth(), (float)pTex->GetHeight());
+
+                ID3D11ShaderResourceView* pSRV = nullptr;
+                pSRV = pTex->GetSRV().Get();
+
+                // Atlas Texture
+                ImGui::Text("Atlas Texture");
+                ImGui::Image((void*)pSRV, ImVec2(TexSize.x, TexSize.y));
+
+                const vector<tAnimFrm>& vecFrm = pCurAnim->GetVecFrm();
+                int Frmidx = pCurAnim->GetCurFrmIdx();
+                bool bFinish = pCurAnim->IsFinish();
+                bool bBG = pCurAnim->IsUseBackGround();
+
+                // Frame Index
+                ImGui::Text("Frame Index");
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::SliderInt("##FrmIdx", &Frmidx, 0, (int)vecFrm.size());
+                ImGui::PopItemFlag();
+
+                // Frame Infomation
+                ImGui::Text("Frame Infomation");
+                static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter |
+                                               ImGuiTableFlags_BordersV | ImGuiTableFlags_Reorderable |
+                                               ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
+
+                const tAnimFrm& frm = vecFrm[Frmidx];
+
+                if (ImGui::BeginTable("##AnimFrame", 3, flags, ImVec2(450.f, 200.f)))
+                {
+                    ImGui::TableSetupScrollFreeze(0, 1);
+                    ImGui::TableSetupColumn("Frame", ImGuiTableColumnFlags_None);
+                    ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_None);
+                    ImGui::TableSetupColumn("Y", ImGuiTableColumnFlags_None);
+                    ImGui::TableHeadersRow();
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Count");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", vecFrm.size());
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("LeftTop");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", frm.vLeftTop.x * TexSize.x);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%.3f", frm.vLeftTop.y * TexSize.y);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Slice");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", frm.vSlice.x * TexSize.x);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%.3f", frm.vSlice.y * TexSize.y);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Offset");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", frm.vOffset.x * TexSize.x);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%.3f", frm.vOffset.y * TexSize.y);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Background Size");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", frm.vBackground.x * TexSize.x);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%.3f", frm.vBackground.y * TexSize.y);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Duration");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", frm.Duration);
+
+                    ImGui::EndTable();
+                }
+            }
 
             ImGui::TreePop();
         }

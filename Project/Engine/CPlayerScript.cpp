@@ -10,6 +10,9 @@ CPlayerScript::~CPlayerScript()
 {
 }
 
+void CPlayerScript::begin()
+{
+}
 void CPlayerScript::tick()
 {
     Vec3 vPos = Transform()->GetRelativePos();

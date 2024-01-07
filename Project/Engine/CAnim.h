@@ -37,6 +37,13 @@ public:
                 Vec2 _vBackground, int _FrmCount, float _FPS, bool _UseBackGround);
 
 public:
+    Ptr<CTexture> GetAtlasTex() const { return m_AtlasTex; }
+    const vector<tAnimFrm>& GetVecFrm() const { return m_vecFrm; }
+    int GetCurFrmIdx() const { return m_CurFrmIdx; }
+    bool IsFinish() const { return m_bFinish; }
+    bool IsUseBackGround() const { return m_bUseBackGround; }
+
+public:
     CAnim();
     ~CAnim();
 };

@@ -26,6 +26,10 @@ public:
     void Play(const wstring& _strAnimName);
 
 public:
+    const map<wstring, CAnim*>& GetmapAnim() const { return m_mapAnim; }
+    CAnim* GetCurAnim() const { return m_CurAnim; }
+
+public:
     CAnimator2D();
     ~CAnimator2D();
 };

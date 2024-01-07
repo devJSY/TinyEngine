@@ -62,10 +62,19 @@ void CTestLevel2::begin()
     pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
-    pPlayer->Animator2D()->Create(L"dodge_forward", CAssetMgr::GetInst()->Load<CTexture>(L"dodge_forward", L"dodge_forward.png"),
-                                  Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
+    pPlayer->Animator2D()->Create(
+        L"dodge_back",
+        CAssetMgr::GetInst()->Load<CTexture>(L"dodge_back",
+                                             L"texture//Player//Character//Convict//dodge_back//dodge_back.png"),
+        Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
 
-    pPlayer->Animator2D()->Play(L"dodge_forward");
+    pPlayer->Animator2D()->Create(
+        L"dodge_forward",
+        CAssetMgr::GetInst()->Load<CTexture>(L"dodge_forward",
+                                             L"texture//Player//Character//Convict//dodge_forward//dodge_forward.png"),
+        Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
+
+    pPlayer->Animator2D()->Play(L"dodge_back");
 
     AddObject(pPlayer, L"Player");
 
