@@ -62,17 +62,86 @@ void CTestLevel2::begin()
     pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
-    pPlayer->Animator2D()->Create(
-        L"dodge_back",
-        CAssetMgr::GetInst()->Load<CTexture>(L"dodge_back",
-                                             L"texture//Player//Character//Convict//dodge_back//dodge_back.png"),
-        Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
+    Ptr<CTexture> dodge_back_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"dodge_back", L"texture//Player//Character//Convict//dodge_back//dodge_back.png");
+    Ptr<CTexture> dodge_backward_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"dodge_backward", L"texture//Player//Character//Convict//dodge_backward//dodge_backward.png");
+    Ptr<CTexture> dodge_forward_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"dodge_forward", L"texture//Player//Character//Convict//dodge_forward//dodge_forward.png");
+    Ptr<CTexture> dodge_front_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"dodge_front", L"texture//Player//Character//Convict//dodge_front//dodge_front.png");
+    Ptr<CTexture> idle_back_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_back", L"texture//Player//Character//Convict//idle_back//idle_back.png");
+    Ptr<CTexture> idle_back_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_back_hands", L"texture//Player//Character//Convict//idle_back_hands//idle_back_hands.png");
+    Ptr<CTexture> idle_backward_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_backward", L"texture//Player//Character//Convict//idle_backward//idle_backward.png");
+    Ptr<CTexture> idle_forward_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_forward", L"texture//Player//Character//Convict//idle_forward//idle_forward.png");
+    Ptr<CTexture> idle_forward_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_forward_hands", L"texture//Player//Character//Convict//idle_forward_hands//idle_forward_hands.png");
+    Ptr<CTexture> idle_front_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_front", L"texture//Player//Character//Convict//idle_front//idle_front.png");
+    Ptr<CTexture> idle_front_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"idle_front_hands", L"texture//Player//Character//Convict//idle_front_hands//idle_front_hands.png");
+    Ptr<CTexture> run_back_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_back", L"texture//Player//Character//Convict//run_back//run_back.png");
+    Ptr<CTexture> run_back_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_back_hands", L"texture//Player//Character//Convict//run_back_hands//run_back_hands.png");
+    Ptr<CTexture> run_backward_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_backward", L"texture//Player//Character//Convict//run_backward//run_backward.png");
+    Ptr<CTexture> run_backward_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_backward_hands", L"texture//Player//Character//Convict//run_backward_hands//run_backward_hands.png");
+    Ptr<CTexture> run_doorway_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_doorway", L"texture//Player//Character//Convict//run_doorway//run_doorway.png");
+    Ptr<CTexture> run_forward_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_forward", L"texture//Player//Character//Convict//run_forward//run_forward.png");
+    Ptr<CTexture> run_forward_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_forward_hands", L"texture//Player//Character//Convict//run_forward_hands//run_forward_hands.png");
+    Ptr<CTexture> run_front_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_front", L"texture//Player//Character//Convict//run_front//run_front.png");
+    Ptr<CTexture> run_front_hands_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"run_front_hands", L"texture//Player//Character//Convict//run_front_hands//run_front_hands.png");
+    Ptr<CTexture> select_choose_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"select_choose", L"texture//Player//Character//Convict//select_choose//select_choose.png");
+    Ptr<CTexture> select_idle_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"select_idle", L"texture//Player//Character//Convict//select_idle//select_idle.png");
+    Ptr<CTexture> select_smoking_idle_Tex = CAssetMgr::GetInst()->Load<CTexture>(
+        L"select_smoking_idle", L"texture//Player//Character//Convict//select_smoking_idle//select_smoking_idle.png");
 
-    pPlayer->Animator2D()->Create(
-        L"dodge_forward",
-        CAssetMgr::GetInst()->Load<CTexture>(L"dodge_forward",
-                                             L"texture//Player//Character//Convict//dodge_forward//dodge_forward.png"),
-        Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
+    Vec2 vLT = Vec2(0.f, 0.f);
+    Vec2 vSlice = Vec2(32.f, 32.f);
+    Vec2 vOffset = Vec2(0.f, 0.f);
+    Vec2 vBG = Vec2(64.f, 64.f);
+    float fFPS = 12.f;
+
+    pPlayer->Animator2D()->Create(L"dodge_back", dodge_back_Tex, vLT, vSlice, vOffset, vBG, 9, fFPS, false);
+    pPlayer->Animator2D()->Create(L"dodge_backward", dodge_backward_Tex, vLT, vSlice, vOffset, vBG, 9, fFPS, false);
+    pPlayer->Animator2D()->Create(L"dodge_forward", dodge_forward_Tex, vLT, vSlice, vOffset, vBG, 9, fFPS, false);
+    pPlayer->Animator2D()->Create(L"dodge_front", dodge_front_Tex, vLT, vSlice, vOffset, vBG, 9, fFPS, false);
+    pPlayer->Animator2D()->Create(L"idle_back", idle_back_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS, false);
+    pPlayer->Animator2D()->Create(L"idle_back_hands", idle_back_hands_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS, false);
+    pPlayer->Animator2D()->Create(L"idle_backward", idle_backward_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS, false);
+    pPlayer->Animator2D()->Create(L"idle_forward", idle_forward_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS, false);
+    pPlayer->Animator2D()->Create(L"idle_forward_hands", idle_forward_hands_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS,
+                                  false);
+    pPlayer->Animator2D()->Create(L"idle_front", idle_front_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS, false);
+    pPlayer->Animator2D()->Create(L"idle_front_hands", idle_front_hands_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_back", run_back_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_back_hands", run_back_hands_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_backward", run_backward_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_backward_hands", run_backward_hands_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS,
+                                  false);
+    pPlayer->Animator2D()->Create(L"run_doorway", run_doorway_Tex, vLT, vSlice, vOffset, vBG, 7, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_forward", run_forward_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_forward_hands", run_forward_hands_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS,
+                                  false);
+    pPlayer->Animator2D()->Create(L"run_front", run_front_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS, false);
+    pPlayer->Animator2D()->Create(L"run_front_hands", run_front_hands_Tex, vLT, vSlice, vOffset, vBG, 6, fFPS, false);
+    pPlayer->Animator2D()->Create(L"select_choose", select_choose_Tex, vLT, vSlice, vOffset, vBG, 9, fFPS, false);
+    pPlayer->Animator2D()->Create(L"select_idle", select_idle_Tex, vLT, vSlice, vOffset, vBG, 5, fFPS, false);
+    pPlayer->Animator2D()->Create(L"select_smoking_idle", select_smoking_idle_Tex, vLT, vSlice, vOffset, vBG, 4, fFPS,
+                                  false);
 
     pPlayer->Animator2D()->Play(L"dodge_back", true);
 
