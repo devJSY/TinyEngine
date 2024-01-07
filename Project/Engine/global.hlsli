@@ -113,7 +113,8 @@ cbuffer ANIM_DATA2D : register(b3)
     float2 g_vBackGround;
     float2 g_vOffset;
     int g_UseAnim2D;
-    float3 padding;
+    int g_UseBackGround;
+    float2 padding;
 }
 
 Texture2D g_tex_0 : register(t0);

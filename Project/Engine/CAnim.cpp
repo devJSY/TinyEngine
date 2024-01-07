@@ -11,6 +11,7 @@ CAnim::CAnim()
     , m_CurFrmIdx(0)
     , m_bFinish(false)
     , m_fAccTime(0.f)
+    , m_bUseBackGround(false)
 {
 }
 
@@ -43,6 +44,7 @@ void CAnim::UpdateData()
     data.vSliceSize = m_vecFrm[m_CurFrmIdx].vSlice;
     data.vBackGround = m_vecFrm[m_CurFrmIdx].vBackground;
     data.vOffset = m_vecFrm[m_CurFrmIdx].vOffset;
+    data.UseBackGround = m_bUseBackGround;
 
     pCB->SetData(&data);
     pCB->UpdateData();
@@ -56,16 +58,18 @@ void CAnim::Clear()
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
     tAnimData2D data = {};
     data.UseAnim2D = 0;
+    data.UseBackGround = 0;
 
     pCB->SetData(&data);
     pCB->UpdateData();
 }
 
 void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset,
-                   Vec2 _vBackground, int _FrmCount, float _FPS)
+                   Vec2 _vBackground, int _FrmCount, float _FPS, bool _UseBackGround)
 {
     m_Animator = _Animator;
     m_AtlasTex = _Atlas;
+    m_bUseBackGround = _UseBackGround;
 
     Vec2 AtlasSize = Vec2((float)_Atlas->GetWidth(), (float)_Atlas->GetHeight());
 

@@ -112,7 +112,8 @@ struct tAnimData2D
     Vec2 vBackGround;
     Vec2 vOffset;
     int UseAnim2D;
-    Vec3 padding;
+    int UseBackGround;
+    Vec2 padding;
 };
 
 struct tMeshData

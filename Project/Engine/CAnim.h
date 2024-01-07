@@ -27,12 +27,14 @@ private:
 
     float m_fAccTime;
 
+    bool m_bUseBackGround;
+
 public:
     void finaltick();
     void UpdateData();
     static void Clear();
     void Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset,
-                Vec2 _vBackground, int _FrmCount, float _FPS);
+                Vec2 _vBackground, int _FrmCount, float _FPS, bool _UseBackGround);
 
 public:
     CAnim();

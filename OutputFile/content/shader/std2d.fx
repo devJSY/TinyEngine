@@ -17,13 +17,23 @@ PS_IN VS_Std2D(VS_IN _in)
 
 float4 PS_Std2D(PS_IN _in) : SV_Target
 {
-    float4 vColor = float4(1.f, 0.f, 1.f, 1.f);
+    float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
     
     if (g_UseAnim2D)
     {
-        float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
-        vBackgroundLeftTop -= g_vOffset;
-        float2 vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+        float2 vUV = float2(0.0, 0.0);
+        
+        if (g_UseBackGround)
+        {
+            float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
+            vBackgroundLeftTop -= g_vOffset;
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+        }
+        else
+        {
+            float2 LT = g_vLeftTop - g_vOffset;
+            vUV = LT + (g_vSliceSize * _in.vUV);
+        }
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
             || vUV.y < g_vLeftTop.y || (g_vLeftTop.y + g_vSliceSize.y) < vUV.y)

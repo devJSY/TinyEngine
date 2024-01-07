@@ -134,20 +134,6 @@ static std::string _labelPrefix(const char* const label)
 
 void COutliner::DrawDetails(CGameObject* obj)
 {
-    // Layer
-    {
-        std::string name = "Layer ";
-        name += std::to_string(obj->GetLayerIdx());
-
-        string LayerName =
-            WstringTostring(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(obj->GetLayerIdx())->GetName());
-
-        char buffer[256];
-        memset(buffer, 0, sizeof(buffer));
-        strcpy_s(buffer, sizeof(buffer), LayerName.c_str());
-        ImGui::InputText(_labelPrefix(name.c_str()).c_str(), buffer, sizeof(buffer));
-    }
-
     // Tag
     {
         std::string name = WstringTostring(obj->GetName());
@@ -180,6 +166,20 @@ void COutliner::DrawDetails(CGameObject* obj)
     }
 
     ImGui::PopItemWidth();
+
+    // Layer
+    {
+        std::string name = "Layer ";
+        name += std::to_string(obj->GetLayerIdx());
+
+        string LayerName =
+            WstringTostring(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(obj->GetLayerIdx())->GetName());
+
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+        strcpy_s(buffer, sizeof(buffer), LayerName.c_str());
+        ImGui::InputText(_labelPrefix(name.c_str()).c_str(), buffer, sizeof(buffer));
+    }
 
     // Transform
     CTransform* pTr = obj->Transform();
@@ -530,7 +530,7 @@ void COutliner::render()
             Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
             pos += dir.Normalize() * 500.f;
             pObj->Transform()->SetRelativePos(pos);
-                        
+
             GamePlayStatic::SpawnGameObject(pObj, 0);
         }
 

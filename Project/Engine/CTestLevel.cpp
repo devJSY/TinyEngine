@@ -27,7 +27,7 @@ CTestLevel::~CTestLevel()
 void CTestLevel::begin()
 {
     AddMeshes();
-    //AddModels();
+    // AddModels();
 
     // Camera Object 생성
     CGameObject* pCamObj = new CGameObject;
@@ -160,7 +160,6 @@ void CTestLevel::begin()
 
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
-    pPlayer->AddComponent(new CPlayerScript);
     pPlayer->AddComponent(new CCollider2D);
 
     pPlayer->Transform()->SetAbsolute(true);
@@ -189,8 +188,33 @@ void CTestLevel::begin()
 
     AddObject(pMonster, L"Mesh");
 
+    // AnimObj
+    CGameObject* pAnimObj = new CGameObject;
+    pAnimObj->SetName(L"AnimObj");
+
+    pAnimObj->AddComponent(new CTransform);
+    pAnimObj->AddComponent(new CMeshRender);
+    pAnimObj->AddComponent(new CCollider2D);
+    pAnimObj->AddComponent(new CPlayerScript);
+    pAnimObj->AddComponent(new CAnimator2D);
+
+    pAnimObj->Transform()->SetAbsolute(true);
+    pAnimObj->Transform()->SetRelativePos(Vec3(250.f, 500.f, 500.f));
+    pAnimObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+    pAnimObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pAnimObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+
+    Ptr<CTexture> pAnimTex = CAssetMgr::GetInst()->Load<CTexture>(L"Test", L"fall_h.bmp");
+
+    pAnimObj->Animator2D()->Create(L"TestAnim", pAnimTex, Vec2(0.f, 0.f), Vec2(51.f, 54.f), Vec2(0.f, 0.f),
+                                   Vec2(100.f, 100.f), 5, 12, false);
+    pAnimObj->Animator2D()->Play(L"TestAnim");
+
+    AddObject(pAnimObj, L"Mesh");
+
     // 충돌 설정
-    //CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
+    // CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
         for (UINT j = 0; j <= i; j++)
