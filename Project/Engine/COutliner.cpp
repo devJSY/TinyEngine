@@ -166,6 +166,9 @@ static bool ImGuiComboUI(const std::string& caption, std::string& current_item, 
 
 void COutliner::DrawDetails(CGameObject* obj)
 {
+    const ImGuiTreeNodeFlags treeNodeOpenFlags = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                                                 ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
     // Tag
     {
         std::string name = WstringTostring(obj->GetName());
@@ -226,7 +229,8 @@ void COutliner::DrawDetails(CGameObject* obj)
     CTransform* pTr = obj->Transform();
     if (nullptr != pTr)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+        if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), treeNodeOpenFlags | ImGuiTreeNodeFlags_DefaultOpen,
+                              "Transform"))
         {
             Vec3 pos = pTr->GetRelativePos();
             DrawVec3Control("Location", pos, 10.f);
@@ -248,7 +252,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     CCollider2D* pCol = obj->Collider2D();
     if (nullptr != pCol)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), ImGuiTreeNodeFlags_None, "Collider2D"))
+        if (ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), treeNodeOpenFlags, "Collider2D"))
         {
             const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
             const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetType()];
@@ -299,7 +303,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     CAnimator2D* pAni = obj->Animator2D();
     if (nullptr != pAni)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), ImGuiTreeNodeFlags_None, "Animator2D"))
+        if (ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), treeNodeOpenFlags, "Animator2D"))
         {
             const map<wstring, CAnim*>& mapAnim = pAni->GetmapAnim();
             CAnim* pCurAnim = pAni->GetCurAnim();
@@ -415,7 +419,8 @@ void COutliner::DrawDetails(CGameObject* obj)
     CCamera* pCam = obj->Camera();
     if (nullptr != pCam)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
+        if (ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), treeNodeOpenFlags | ImGuiTreeNodeFlags_DefaultOpen,
+                              "Camera"))
         {
             const char* projectionTypeStrings[] = {"Orthographic", "Perspective"};
             const char* currentProjectionTypeString = projectionTypeStrings[(int)pCam->GetProjType()];
@@ -487,7 +492,8 @@ void COutliner::DrawDetails(CGameObject* obj)
     CLight3D* pLight = obj->Light3D();
     if (nullptr != pLight)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Light3D"))
+        if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), treeNodeOpenFlags | ImGuiTreeNodeFlags_DefaultOpen,
+                              "Light3D"))
         {
             const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
             const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
@@ -535,7 +541,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     CMeshRender* pMeshRender = obj->MeshRender();
     if (nullptr != pMeshRender)
     {
-        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), ImGuiTreeNodeFlags_None, "MeshRender"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), treeNodeOpenFlags, "MeshRender"))
         {
             bool bUseTexture = pMeshRender->IsUseTexture();
             if (ImGui::Checkbox("Use Texture", &bUseTexture))
@@ -550,7 +556,7 @@ void COutliner::DrawDetails(CGameObject* obj)
                 pMeshRender->SetNormalLineScale(scale);
 
             // Rim
-            if (ImGui::TreeNodeEx("Rim", ImGuiTreeNodeFlags_None, "Rim Light"))
+            if (ImGui::TreeNodeEx("Rim", treeNodeOpenFlags, "Rim Light"))
             {
                 bool bUseRim = pMeshRender->IsUseRim();
                 if (ImGui::Checkbox("Use Rim", &bUseRim))
@@ -571,7 +577,7 @@ void COutliner::DrawDetails(CGameObject* obj)
             Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
             if (nullptr != pMaterial)
             {
-                if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), ImGuiTreeNodeFlags_None, "Material"))
+                if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), treeNodeOpenFlags, "Material"))
                 {
                     const tMtrlConst& MtrlConst = pMaterial->GetMtrlConst();
 
