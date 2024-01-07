@@ -196,6 +196,9 @@
     <ClInclude Include="CAnim.h">
       <Filter>08. Component\04. Animator2D\Anim</Filter>
     </ClInclude>
+    <ClInclude Include="CTestLevel2.h">
+      <Filter>05. Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -371,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="CAnim.cpp">
       <Filter>08. Component\04. Animator2D\Anim</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestLevel2.cpp">
+      <Filter>05. Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

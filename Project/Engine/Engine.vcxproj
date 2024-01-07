@@ -200,6 +200,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CTaskMgr.h" />
     <ClInclude Include="CTestLevel.h" />
+    <ClInclude Include="CTestLevel2.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CTransform.h" />
@@ -266,6 +267,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTestLevel.cpp" />
+    <ClCompile Include="CTestLevel2.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />

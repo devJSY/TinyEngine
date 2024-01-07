@@ -3,11 +3,13 @@
 #include "CLevel.h"
 #include "CLevelMgr.h"
 #include "CTaskMgr.h"
-#include "CTestLevel.h"
 #include "CDevice.h"
 #include "CEditorMgr.h"
 #include "CEditor.h"
 #include "CLayer.h"
+
+#include "CTestLevel.h"
+#include "CTestLevel2.h"
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
@@ -26,7 +28,7 @@ CLevelMgr::~CLevelMgr()
 
 void CLevelMgr::init()
 {
-    m_CurLevel = new CTestLevel;
+    /*m_CurLevel = new CTestLevel;
     m_CurLevel->SetName(L"Test Level 1");
 
     for (int i = 0; i < LAYER_MAX; i++)
@@ -42,6 +44,22 @@ void CLevelMgr::init()
     m_CurLevel->GetLayer(3)->SetName(L"Mesh");
     m_CurLevel->GetLayer(4)->SetName(L"Model");
     m_CurLevel->GetLayer(14)->SetName(L"SkyBox");
+    m_CurLevel->GetLayer(15)->SetName(L"UI");*/
+
+    m_CurLevel = new CTestLevel2;
+    m_CurLevel->SetName(L"Test Level 2");
+
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        wstring Name = L"Layer ";
+        Name += std::to_wstring(i);
+        m_CurLevel->GetLayer(i)->SetName(Name);
+    }
+
+    m_CurLevel->GetLayer(0)->SetName(L"Default");
+    m_CurLevel->GetLayer(1)->SetName(L"Camera");
+    m_CurLevel->GetLayer(2)->SetName(L"Player");
+    m_CurLevel->GetLayer(3)->SetName(L"Monster");
     m_CurLevel->GetLayer(15)->SetName(L"UI");
 
     m_CurLevel->begin();
