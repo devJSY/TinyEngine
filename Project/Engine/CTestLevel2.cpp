@@ -63,7 +63,7 @@ void CTestLevel2::begin()
     pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
     pPlayer->Animator2D()->Create(L"dodge_forward", CAssetMgr::GetInst()->Load<CTexture>(L"dodge_forward", L"dodge_forward.png"),
-                                  Vec2(0.f, 0.f), Vec2(64.f, 64.f), Vec2(0.f, 0.f), Vec2(128.f, 128.f), 9, 12, false);
+                                  Vec2(0.f, 0.f), Vec2(32.f, 32.f), Vec2(0.f, 0.f), Vec2(64.f, 64.f), 9, 12, false);
 
     pPlayer->Animator2D()->Play(L"dodge_forward");
 
