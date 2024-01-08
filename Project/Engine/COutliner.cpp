@@ -328,16 +328,8 @@ void COutliner::DrawDetails(CGameObject* obj)
 
                 pCurAnim = pAni->GetCurAnim();
 
-                // Atlas Texture
                 Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();
                 Vec2 TexSize = Vec2((float)pTex->GetWidth(), (float)pTex->GetHeight());
-
-                ID3D11ShaderResourceView* pSRV = nullptr;
-                pSRV = pTex->GetSRV().Get();
-
-                ImGui::Text("Atlas Texture");
-                ImGui::Image((void*)pSRV, ImVec2(TexSize.x, TexSize.y));
-
                 const vector<tAnimFrm>& vecFrm = pCurAnim->GetVecFrm();
 
                 // Frame Index
@@ -352,11 +344,10 @@ void COutliner::DrawDetails(CGameObject* obj)
                 static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter |
                                                ImGuiTableFlags_BordersV | ImGuiTableFlags_Reorderable |
                                                ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
-
-                const tAnimFrm& frm = vecFrm[Frmidx];
-
                 if (ImGui::BeginTable("##AnimFrame", 3, flags, ImVec2(450.f, 200.f)))
                 {
+                    const tAnimFrm& frm = vecFrm[Frmidx];
+
                     ImGui::TableSetupScrollFreeze(0, 1);
                     ImGui::TableSetupColumn("Frame", ImGuiTableColumnFlags_None);
                     ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_None);
@@ -409,6 +400,13 @@ void COutliner::DrawDetails(CGameObject* obj)
 
                     ImGui::EndTable();
                 }
+
+                // Atlas Texture
+                ID3D11ShaderResourceView* pSRV = nullptr;
+                pSRV = pTex->GetSRV().Get();
+
+                ImGui::Text("Atlas Texture");
+                ImGui::Image((void*)pSRV, ImVec2(TexSize.x, TexSize.y));
             }
 
             ImGui::TreePop();
