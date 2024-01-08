@@ -50,6 +50,10 @@ public:
     bool IsUseBackGround() const { return m_bUseBackGround; }
 
 public:
+    void SaveToLevelFile(FILE* _File);
+    void LoadFromLevelFile(FILE* _File);
+
+public:
     CAnim();
     ~CAnim();
 };

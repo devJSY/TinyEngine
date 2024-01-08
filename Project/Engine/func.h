@@ -1,6 +1,7 @@
 #pragma once
 
 class CGameObject;
+class CLevel;
 
 namespace GamePlayStatic
 {
@@ -25,6 +26,9 @@ namespace GamePlayStatic
 
     void AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
     void ChangeLayer(CGameObject* _pObj, int LayerIdx);
+
+    void SaveLevel(CLevel* _Level, const wstring& _LevelPath);
+    void LoadLevel(CLevel* _Level, const wstring& _LevelPath);
 }
 
 string WstringTostring(const wstring& wstr);
@@ -32,6 +36,9 @@ wstring stringToWstring(const string& str);
 std::string currentDateTime();
 Vec4 HashIDToColor(int hash);
 std::string GetComponentName(COMPONENT_TYPE type);
+
+void SaveWString(const wstring& _str, FILE* _File);
+void LoadWString(wstring& _str, FILE* _File);
 
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])

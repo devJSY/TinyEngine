@@ -22,6 +22,10 @@ public:
     virtual void render() = 0;
 
 public:
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+public:
     CRenderComponent(COMPONENT_TYPE _Type);
     virtual ~CRenderComponent();
 };

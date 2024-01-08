@@ -14,6 +14,7 @@ class CScript;
 class CCamera;
 class CCollider2D;
 class CAnimator2D;
+class Light3D;
 
 class CGameObject : public CEntity
 {

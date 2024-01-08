@@ -69,3 +69,11 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
     m_CurAnim = pAnim;
     m_bRepeat = _bRepeat;
 }
+
+void CAnimator2D::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CAnimator2D::LoadFromLevelFile(FILE* _File)
+{
+}

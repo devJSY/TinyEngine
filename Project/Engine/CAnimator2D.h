@@ -30,6 +30,10 @@ public:
     CAnim* GetCurAnim() const { return m_CurAnim; }
 
 public:
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+public:
     CAnimator2D();
     ~CAnimator2D();
 };

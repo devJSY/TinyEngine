@@ -93,3 +93,11 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop,
         m_vecFrm.push_back(frm);
     }
 }
+
+void CAnim::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CAnim::LoadFromLevelFile(FILE* _File)
+{
+}

@@ -46,6 +46,10 @@ public:
     const Matrix& GetParentMat() const { return m_matParentMat; }
 
 public:
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+public:
     CTransform();
     virtual ~CTransform();
 };

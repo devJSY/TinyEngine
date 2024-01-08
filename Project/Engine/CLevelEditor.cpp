@@ -19,6 +19,8 @@
 #include "CLevel.h"
 #include "CLayer.h"
 
+#include "CLevelSaveLoad.h"
+
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_ViewportFocused(false)
@@ -206,13 +208,13 @@ void CLevelEditor::MenuBar()
             if (ImGui::MenuItem("Save Level"))
             {
                 // Level 저장
-                //CLevelSaveLoad::SaveLevel(L"Level\\TestLevel.lv", CLevelMgr::GetInst()->GetCurLevel());
+                CLevelSaveLoad::SaveLevel(L"Level\\TestLevel.tmap", CLevelMgr::GetInst()->GetCurrentLevel());
             }
 
             if (ImGui::MenuItem("Load Level"))
             {
                 //// Level 불러오기
-                //CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.lv");
+                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.tmap");
 
                 //tEvent evn = {};
                 //evn.Type = EVENT_TYPE::LEVEL_CHANGE;

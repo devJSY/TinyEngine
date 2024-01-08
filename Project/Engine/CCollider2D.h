@@ -53,6 +53,10 @@ public:
     void SetRadius(float radius) { m_fRadius = radius; }
 
 public:
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+public:
     CCollider2D();
     ~CCollider2D();
 };

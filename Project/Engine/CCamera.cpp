@@ -201,3 +201,11 @@ void CCamera::render()
         }
     }
 }
+
+void CCamera::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CCamera::LoadFromLevelFile(FILE* _File)
+{
+}

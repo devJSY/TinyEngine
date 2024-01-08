@@ -11,3 +11,11 @@ CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
 CRenderComponent::~CRenderComponent()
 {
 }
+
+void CRenderComponent::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CRenderComponent::LoadFromLevelFile(FILE* _File)
+{
+}

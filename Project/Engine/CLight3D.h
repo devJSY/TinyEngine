@@ -28,6 +28,10 @@ public:
     virtual void finaltick() override;
 
 public:
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+public:
     CLight3D(LIGHT_TYPE type, int idx);
     virtual ~CLight3D();
 };

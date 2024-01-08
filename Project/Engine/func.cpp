@@ -213,3 +213,21 @@ std::string GetComponentName(COMPONENT_TYPE type)
     auto it = ComponentStrings.find(type);
     return it == ComponentStrings.end() ? "Out of range" : it->second;
 }
+
+void SaveWString(const wstring& _str, FILE* _File)
+{
+    UINT iLen = (UINT)_str.length();
+    fwrite(&iLen, sizeof(UINT), 1, _File);
+    fwrite(_str.c_str(), sizeof(wchar_t), _str.length(), _File);
+}
+
+void LoadWString(wstring& _str, FILE* _File)
+{
+    wchar_t szBuffer[256] = {};
+
+    UINT iLen = 0;
+    fread(&iLen, sizeof(UINT), 1, _File);
+    fread(szBuffer, sizeof(wchar_t), iLen, _File);
+
+    _str = szBuffer;
+}

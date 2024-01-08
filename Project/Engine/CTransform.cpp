@@ -101,3 +101,11 @@ Vec3 CTransform::GetWorldScale() const
 
     return vWorldScale;
 }
+
+void CTransform::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CTransform::LoadFromLevelFile(FILE* _File)
+{
+}

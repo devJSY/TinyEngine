@@ -116,3 +116,11 @@ void CCollider2D::EndOverlap(CCollider2D* _OtherCollider)
         vecScript[i]->EndOverlap(this, _OtherCollider->GetOwner(), _OtherCollider);
     }
 }
+
+void CCollider2D::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CCollider2D::LoadFromLevelFile(FILE* _File)
+{
+}

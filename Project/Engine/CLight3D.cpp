@@ -55,3 +55,11 @@ void CLight3D::finaltick()
 
     g_Global.Lights[m_Idx] = m_LightData;
 }
+
+void CLight3D::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CLight3D::LoadFromLevelFile(FILE* _File)
+{
+}

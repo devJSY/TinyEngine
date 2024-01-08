@@ -461,34 +461,47 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     if (nullptr != pCom)
         return;
 
-    if (type == COMPONENT_TYPE::TRANSFORM)
+    switch (type)
+    {
+    case COMPONENT_TYPE::TRANSFORM:
         pObj->AddComponent(new CTransform);
-    else if (type == COMPONENT_TYPE::COLLIDER2D)
+        break;
+    case COMPONENT_TYPE::COLLIDER2D:
         pObj->AddComponent(new CCollider2D);
-    // else if (type == COMPONENT_TYPE::COLLIDER3D)
-    //     pObj->AddComponent(new CCollider3D);
-    else if (type == COMPONENT_TYPE::ANIMATOR2D)
+        break;
+    case COMPONENT_TYPE::COLLIDER3D:
+        break;
+    case COMPONENT_TYPE::ANIMATOR2D:
         pObj->AddComponent(new CAnimator2D);
-    //  else if (type == COMPONENT_TYPE::ANIMATOR3D)
-    //      pObj->AddComponent(new CAnimation3D);
-    // else if (type == COMPONENT_TYPE::LIGHT2D)
-    //     pObj->AddComponent(new CLight2D);
-    else if (type == COMPONENT_TYPE::LIGHT3D)
+        break;
+    case COMPONENT_TYPE::ANIMATOR3D:
+        break;
+    case COMPONENT_TYPE::LIGHT2D:
+        break;
+    case COMPONENT_TYPE::LIGHT3D:
         pObj->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL, 0));
-    else if (type == COMPONENT_TYPE::CAMERA)
+        break;
+    case COMPONENT_TYPE::CAMERA:
         pObj->AddComponent(new CCamera);
-    else if (type == COMPONENT_TYPE::MESHRENDER)
+        break;
+    case COMPONENT_TYPE::MESHRENDER:
         pObj->AddComponent(new CMeshRender);
-    // else if (type == COMPONENT_TYPE::TILEMAP)
-    //     pObj->AddComponent(new CTileMap);
-    // else if (type == COMPONENT_TYPE::PARTICLESYSTEM)
-    //     pObj->AddComponent(new CParticlesystme);
-    // else if (type == COMPONENT_TYPE::SKYBOX)
-    //     pObj->AddComponent(new CSkyBox);
-    // else if (type == COMPONENT_TYPE::DECAL)
-    //     pObj->AddComponent(new CDecal);
-    // else if (type == COMPONENT_TYPE::LANDSCAPE)
-    //     pObj->AddComponent(new CLandscape);
+        break;
+    case COMPONENT_TYPE::TILEMAP:
+        break;
+    case COMPONENT_TYPE::PARTICLESYSTEM:
+        break;
+    case COMPONENT_TYPE::SKYBOX:
+        break;
+    case COMPONENT_TYPE::DECAL:
+        break;
+    case COMPONENT_TYPE::LANDSCAPE:
+        break;
+    case COMPONENT_TYPE::END:
+        break;
+    case COMPONENT_TYPE::SCRIPT:
+        break;
+    }
 }
 
 void CTaskMgr::CHANGE_LAYER(const FTask& _Task)

@@ -199,6 +199,9 @@
     <ClInclude Include="CTestLevel2.h">
       <Filter>05. Level</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelSaveLoad.h">
+      <Filter>LevelSaveLoad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -377,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="CTestLevel2.cpp">
       <Filter>05. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelSaveLoad.cpp">
+      <Filter>LevelSaveLoad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -565,6 +571,9 @@
     </Filter>
     <Filter Include="08. Component\04. Animator2D\Anim">
       <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LevelSaveLoad">
+      <UniqueIdentifier>{bdf3eee3-1a1e-45c1-a45a-a0f2fd4d8952}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
