@@ -215,12 +215,7 @@ void CLevelEditor::MenuBar()
             {
                 //// Level 불러오기
                 CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.tmap");
-
-                //tEvent evn = {};
-                //evn.Type = EVENT_TYPE::LEVEL_CHANGE;
-                //evn.wParam = (DWORD_PTR)pLoadedLevel;
-
-                //CEventMgr::GetInst()->AddEvent(evn);
+                GamePlayStatic::LevelChange(pLoadedLevel);
             }
 
             ImGui::EndMenu();

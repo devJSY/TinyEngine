@@ -8,7 +8,7 @@ enum class TASK_TYPE
     // Param1 : Object Adress
     DELETE_OBJECT,
 
-    // Param1 : LEVEL_TYPE
+    // Param1 : Level Adress
     LEVEL_CHANGE,
 
     // Param1 : Parent Object, Param2 : Child Object
@@ -36,7 +36,7 @@ enum class TASK_TYPE
     ADD_COMPONENT,
 
     // Param1 : Object, Param2 : Layer Index
-    CHANGE_LAYER,
+    LAYER_CHANGE,
 };
 
 struct FTask
@@ -70,5 +70,5 @@ private:
     void MOUSE_COLOR_PICKING(const FTask& _Task);
     void MOUSE_RAY_PICKING(const FTask& _Task);
     void ADD_COMPONENT(const FTask& _Task);
-    void CHANGE_LAYER(const FTask& _Task);
+    void LAYER_CHANGE(const FTask& _Task);
 };

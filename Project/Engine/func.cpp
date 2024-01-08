@@ -140,12 +140,20 @@ void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
-void GamePlayStatic::ChangeLayer(CGameObject* _pObj, int LayerIdx)
+void GamePlayStatic::LayerChange(CGameObject* _pObj, int LayerIdx)
 {
     FTask task = {};
-    task.Type = TASK_TYPE::CHANGE_LAYER;
+    task.Type = TASK_TYPE::LAYER_CHANGE;
     task.Param_1 = (DWORD_PTR)_pObj;
     task.Param_2 = (INT_PTR)LayerIdx;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
+void GamePlayStatic::LevelChange(CLevel* _Level)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::LEVEL_CHANGE;
+    task.Param_1 = (DWORD_PTR)_Level;
     CTaskMgr::GetInst()->AddTask(task);
 }
 

@@ -115,9 +115,6 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
         m_vecCam.resize(_Idx + 1);
     }
 
-    // 동일한 우선순위의 카메라가 이미 존재하면 assert
-    assert(nullptr == m_vecCam[_Idx]);
-
     m_vecCam[_Idx] = _Cam;
 }
 

@@ -26,6 +26,17 @@ CLevelMgr::~CLevelMgr()
     }
 }
 
+void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
+{
+    if (nullptr != m_CurLevel)
+    {
+        delete m_CurLevel;
+        m_CurLevel = nullptr;
+    }
+
+    m_CurLevel = _NextLevel;
+}
+
 void CLevelMgr::init()
 {
     /*m_CurLevel = new CTestLevel;

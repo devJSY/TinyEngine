@@ -35,6 +35,7 @@ public:
 
 public:
     CCamera* GetCamera(int _Idx) const;
+    void ClearCamera() { m_vecCam.clear(); }
 
 public:
     void init();

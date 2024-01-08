@@ -221,7 +221,7 @@ void COutliner::DrawDetails(CGameObject* obj)
 
         if (ImGuiComboUI(_labelPrefix("Layer").c_str(), name, LayerNames))
         {
-            GamePlayStatic::ChangeLayer(obj, pCurLevel->GetLayer(stringToWstring(name))->GetLayerIdx());
+            GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(stringToWstring(name))->GetLayerIdx());
         }
     }
 

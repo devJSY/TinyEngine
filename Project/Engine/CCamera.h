@@ -33,6 +33,8 @@ private:
 private:
     float m_CamSpeed;
 
+    int m_iCamPriority; // 카메라 우선순위
+
 public:
     PROJ_TYPE GetProjType() const { return m_ProjType; }
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
@@ -62,6 +64,7 @@ public:
     void SetCameraSpeed(float speed) { m_CamSpeed = speed; }
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
     void render();
 

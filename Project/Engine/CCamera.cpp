@@ -25,6 +25,7 @@ CCamera::CCamera()
     , m_Far(10000.f)
     , m_CamSpeed(250.f)
     , m_LayerCheck(0)
+    , m_iCamPriority(-1)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_AspectRatio = vResol.x / vResol.y;
@@ -32,6 +33,14 @@ CCamera::CCamera()
 
 CCamera::~CCamera()
 {
+}
+
+void CCamera::begin()
+{
+    if (-1 != m_iCamPriority)
+    {
+        CRenderMgr::GetInst()->RegisterCamera(this, m_iCamPriority);
+    }
 }
 
 void CCamera::finaltick()
@@ -94,7 +103,8 @@ void CCamera::finaltick()
 
 void CCamera::SetCameraPriority(int _Priority)
 {
-    CRenderMgr::GetInst()->RegisterCamera(this, _Priority);
+    m_iCamPriority = _Priority;
+    CRenderMgr::GetInst()->RegisterCamera(this, m_iCamPriority);
 }
 
 void CCamera::LayerCheck(UINT _LayerIdx, bool _bCheck)

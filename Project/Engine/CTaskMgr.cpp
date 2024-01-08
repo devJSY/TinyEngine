@@ -125,8 +125,8 @@ void CTaskMgr::tick()
         case TASK_TYPE::ADD_COMPONENT:
             ADD_COMPONENT(m_vecTask[i]);
             break;
-        case TASK_TYPE::CHANGE_LAYER:
-            CHANGE_LAYER(m_vecTask[i]);
+        case TASK_TYPE::LAYER_CHANGE:
+            LAYER_CHANGE(m_vecTask[i]);
             break;
         }
     }
@@ -173,6 +173,10 @@ void CTaskMgr::DELETE_OBJECT(const FTask& _Task)
 
 void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
 {
+    CLevel* Level = (CLevel*)_Task.Param_1;
+    CLevelMgr::GetInst()->ChangeLevel(Level);
+    CRenderMgr::GetInst()->ClearCamera();
+    Level->begin();
 }
 
 void CTaskMgr::ADD_CHILD(const FTask& _Task)
@@ -504,7 +508,7 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     }
 }
 
-void CTaskMgr::CHANGE_LAYER(const FTask& _Task)
+void CTaskMgr::LAYER_CHANGE(const FTask& _Task)
 {
     CGameObject* Object = (CGameObject*)_Task.Param_1;
     int LayerIdx = (int)_Task.Param_2;

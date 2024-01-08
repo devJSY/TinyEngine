@@ -21,6 +21,8 @@ public:
     CGameObject* GetSelectedObj() const { return m_SelectedObj; }
     void SetSelectObj(CGameObject* obj) { m_SelectedObj = obj; }
 
+    void ChangeLevel(CLevel* _NextLevel);
+
 public:
     void init();
     void tick();
