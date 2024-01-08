@@ -13,5 +13,5 @@ public:
 
 public:
     CTestLevel();
-    ~CTestLevel();
+    virtual ~CTestLevel();
 };

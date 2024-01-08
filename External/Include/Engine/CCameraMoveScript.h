@@ -19,5 +19,5 @@ private:
 
 public:
     CCameraMoveScript();
-    ~CCameraMoveScript();
+    virtual ~CCameraMoveScript();
 };

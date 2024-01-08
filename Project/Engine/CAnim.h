@@ -55,5 +55,5 @@ public:
 
 public:
     CAnim();
-    ~CAnim();
+    virtual ~CAnim();
 };

@@ -58,5 +58,5 @@ public:
 
 public:
     CCollider2D();
-    ~CCollider2D();
+    virtual ~CCollider2D();
 };

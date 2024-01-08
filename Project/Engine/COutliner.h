@@ -16,7 +16,7 @@ public:
 
 private:
     COutliner();
-    ~COutliner();
+    virtual ~COutliner();
 
     friend class CLevelEditor; // CLevelEditor 에서만 생성가능하도록 제한
 };

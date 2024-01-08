@@ -35,5 +35,5 @@ public:
 
 public:
     CAnimator2D();
-    ~CAnimator2D();
+    virtual ~CAnimator2D();
 };
