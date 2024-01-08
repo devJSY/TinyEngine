@@ -132,6 +132,8 @@ Texture2DArray g_texArr_1 : register(t9);
 
 Texture2D g_anim2d_tex : register(t10);
 
+StructuredBuffer<float4> g_Data : register(t14);
+
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);
 SamplerState g_AnisotropicSampler : register(s2);

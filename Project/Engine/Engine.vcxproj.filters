@@ -202,6 +202,9 @@
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>LevelSaveLoad</Filter>
     </ClInclude>
+    <ClInclude Include="CStructuredBuffer.h">
+      <Filter>03. Device\StructuredBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -383,6 +386,9 @@
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>LevelSaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="CStructuredBuffer.cpp">
+      <Filter>03. Device\StructuredBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -574,6 +580,9 @@
     </Filter>
     <Filter Include="LevelSaveLoad">
       <UniqueIdentifier>{bdf3eee3-1a1e-45c1-a45a-a0f2fd4d8952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Device\StructuredBuffer">
+      <UniqueIdentifier>{9bc152a0-79ed-40d7-8633-be0834c741d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

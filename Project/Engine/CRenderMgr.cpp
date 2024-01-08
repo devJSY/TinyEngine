@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CRenderMgr.h"
 
+#include "CStructuredBuffer.h"
+
 #include "CTimeMgr.h"
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
@@ -11,7 +13,8 @@
 #include "CTransform.h"
 
 CRenderMgr::CRenderMgr()
-    : m_pDebugObj(nullptr)
+    : m_Light2DBuffer(nullptr)
+    , m_pDebugObj(nullptr)
     , m_bShowDebugRender(false)
     , m_bShowCollider(true)
 {
@@ -23,6 +26,12 @@ CRenderMgr::~CRenderMgr()
     {
         delete m_pDebugObj;
         m_pDebugObj = nullptr;
+    }
+
+    if (nullptr != m_Light2DBuffer)
+    {
+        delete m_Light2DBuffer;
+        m_Light2DBuffer = nullptr;
     }
 }
 

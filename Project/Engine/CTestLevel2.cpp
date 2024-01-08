@@ -142,6 +142,19 @@ void CTestLevel2::begin()
 
     AddObject(pPlayer, L"Player");
 
+    CGameObject* pTest = new CGameObject;
+    pTest->SetName(L"Test");
+
+    pTest->AddComponent(new CTransform);
+    pTest->AddComponent(new CMeshRender);
+
+    pTest->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pTest->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+    pTest->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture"));
+
+    AddObject(pTest, L"Default");
+
+
     // 충돌 설정
     for (UINT i = 0; i < LAYER_MAX; i++)
     {

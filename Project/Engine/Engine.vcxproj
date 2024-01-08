@@ -199,6 +199,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CRenderMgr.h" />
     <ClInclude Include="CScript.h" />
     <ClInclude Include="CShader.h" />
+    <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
     <ClInclude Include="CTestLevel.h" />
     <ClInclude Include="CTestLevel2.h" />
@@ -267,6 +268,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CRenderMgr.cpp" />
     <ClCompile Include="CScript.cpp" />
     <ClCompile Include="CShader.cpp" />
+    <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTestLevel.cpp" />
     <ClCompile Include="CTestLevel2.cpp" />
