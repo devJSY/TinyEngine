@@ -32,6 +32,13 @@ private:
 public:
     void finaltick();
     void UpdateData();
+    bool IsFinish() const { return m_bFinish; }
+    void Reset()
+    {
+        m_bFinish = false;
+        m_CurFrmIdx = 0;
+        m_fAccTime = 0.f;
+    }
     static void Clear();
     void Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset,
                 Vec2 _vBackground, int _FrmCount, float _FPS, bool _UseBackGround);
@@ -40,13 +47,6 @@ public:
     Ptr<CTexture> GetAtlasTex() const { return m_AtlasTex; }
     const vector<tAnimFrm>& GetVecFrm() const { return m_vecFrm; }
     int GetCurFrmIdx() const { return m_CurFrmIdx; }
-    bool IsFinish() const { return m_bFinish; }
-    void Reset()
-    {
-        m_CurFrmIdx = 0;
-        m_fAccTime = 0.f;
-        m_bFinish = false;
-    }
     bool IsUseBackGround() const { return m_bUseBackGround; }
 
 public:

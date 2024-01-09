@@ -3,21 +3,21 @@
 
 #include "global.hlsli"
 
-struct VS_IN
+struct VS_Input
 {
     float3 vPos : POSITION;
     float2 vUV : TEXCOORD;
 };
 
-struct VS_OUT
+struct VS_Output
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
 };
 
-VS_OUT VS_DebugShape(VS_IN _in)
+VS_Output VS_DebugShape(VS_Input _in)
 {
-    VS_OUT output = (VS_OUT) 0.f;
+    VS_Output output = (VS_Output) 0.f;
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
@@ -27,7 +27,7 @@ VS_OUT VS_DebugShape(VS_IN _in)
 
 static float g_Thickness = 0.1f;
 
-float4 PS_DebugShape(VS_OUT _in) : SV_Target
+float4 PS_DebugShape(VS_Output _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
     

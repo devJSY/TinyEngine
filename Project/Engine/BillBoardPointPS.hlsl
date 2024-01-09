@@ -1,6 +1,6 @@
 #include "global.hlsli"
 
-struct PS_IN
+struct PS_Input
 {
     float4 pos : SV_POSITION;
     float4 posWolrd : POSITION0;
@@ -8,7 +8,7 @@ struct PS_IN
     float2 texCoord : TEXCOORD;
 };
 
-float4 main(PS_IN input) : SV_TARGET
+float4 main(PS_Input input) : SV_TARGET
 {
     float4 color = g_vAmb;
     

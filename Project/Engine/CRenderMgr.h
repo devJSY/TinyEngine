@@ -3,8 +3,10 @@
 #include "Ptr.h"
 #include "CTexture.h"
 
-class CCamera;
 class CGameObject;
+class CCamera;
+class CLight2D;
+
 class CStructuredBuffer;
 
 class CRenderMgr : public CSingleton<CRenderMgr>
@@ -15,6 +17,7 @@ private:
     vector<CCamera*> m_vecCam;
 
     CStructuredBuffer* m_Light2DBuffer;
+    vector<CLight2D*> m_vecLight2D;
 
     list<tDebugShapeInfo> m_DbgShapeInfo;
 
@@ -33,6 +36,8 @@ public:
     void SetShowCollider(bool _OnOff) { m_bShowCollider = _OnOff; }
     bool IsShowCollider() const { return m_bShowCollider; }
 
+    void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
+
 public:
     CCamera* GetCamera(int _Idx) const;
     void ClearCamera() { m_vecCam.clear(); }
@@ -49,4 +54,10 @@ public:
 private:
     void render();
     void render_debug();
+
+    // 리소스 바인딩
+    void UpdateData();
+
+    // 리소스 클리어
+    void Clear();
 };

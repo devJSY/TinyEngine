@@ -21,6 +21,7 @@ D:\TinyEngine\Project\Engine\CLayer.cpp;D:\TinyEngine\Project\Engine\x64\Debug\C
 D:\TinyEngine\Project\Engine\CLevel.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CLevel.obj
 D:\TinyEngine\Project\Engine\CLevelEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CLevelEditor.obj
 D:\TinyEngine\Project\Engine\CLevelSaveLoad.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CLevelSaveLoad.obj
+D:\TinyEngine\Project\Engine\CLight2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CLight2D.obj
 D:\TinyEngine\Project\Engine\CLight3D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CLight3D.obj
 D:\TinyEngine\Project\Engine\CMaterial.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CMaterial.obj
 D:\TinyEngine\Project\Engine\CMesh.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CMesh.obj

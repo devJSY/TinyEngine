@@ -2,7 +2,7 @@
 
 // https://www.shadertoy.com/view/wdVXWR
 
-struct PS_IN
+struct PS_Input
 {
     float4 pos : SV_POSITION;
     float4 posWolrd : POSITION0;
@@ -57,7 +57,7 @@ float intersect_ray_sphere(float3 origin, float3 direction, float3 center, float
     }
 }
 
-float4 main(PS_IN input) : SV_TARGET
+float4 main(PS_Input input) : SV_TARGET
 {
     float3 eye = g_eyeWorld;
     float3 dir = normalize(input.posWolrd.xyz - eye);

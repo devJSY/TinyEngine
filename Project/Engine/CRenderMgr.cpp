@@ -8,9 +8,7 @@
 #include "CLevelMgr.h"
 
 #include "CDevice.h"
-#include "CCamera.h"
-#include "CMeshRender.h"
-#include "CTransform.h"
+#include "components.h"
 
 CRenderMgr::CRenderMgr()
     : m_Light2DBuffer(nullptr)
@@ -37,9 +35,13 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::tick()
 {
+    UpdateData();
+
     render();
 
     render_debug();
+
+    Clear();
 }
 
 void CRenderMgr::render()
@@ -106,6 +108,27 @@ void CRenderMgr::render_debug()
             ++iter;
         }
     }
+}
+
+void CRenderMgr::UpdateData()
+{
+    static vector<tLightInfo> vecLight2DInfo;
+
+    for (size_t i = 0; i < m_vecLight2D.size(); ++i)
+    {
+        const tLightInfo& info = m_vecLight2D[i]->GetLightInfo();
+        vecLight2DInfo.push_back(info);
+    }
+
+    m_Light2DBuffer->SetData(vecLight2DInfo.data(), (UINT)vecLight2DInfo.size());
+    m_Light2DBuffer->UpdateData(11);
+
+    vecLight2DInfo.clear();
+}
+
+void CRenderMgr::Clear()
+{
+    m_vecLight2D.clear();
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)

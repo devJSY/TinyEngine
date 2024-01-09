@@ -1,6 +1,8 @@
 #ifndef _GLOBAL
 #define _GLOBAL
 
+#include "struct.hlsli"
+
 cbuffer TRANSFORM : register(b0)
 {
     row_major Matrix g_matWorld;
@@ -70,24 +72,8 @@ cbuffer MATERIAL_CONST : register(b1)
 #define LIGHT_SPOT        0x04  
 //#define LIGHT_SHADOW      0x10
 
-// Α¶Έν
-struct Light
-{
-    float3 strength;
-    float fallOffStart;
-    float3 direction;
-    float fallOffEnd;
-    float3 position;
-    float spotPower;
-    
-    uint LightType;
-    float3 padd;
-};
-
 cbuffer GLOBAL : register(b2)
 {
-    Light Lights[MAX_LIGHTS];
-    
     float3 g_eyeWorld;
     bool g_UseTexture;
     
@@ -131,6 +117,9 @@ Texture2DArray g_texArr_0 : register(t8);
 Texture2DArray g_texArr_1 : register(t9);
 
 Texture2D g_anim2d_tex : register(t10);
+
+StructuredBuffer<tLightInfo> g_Light2D : register(t11);
+StructuredBuffer<tLightInfo> g_Light3D : register(t12);
 
 StructuredBuffer<float4> g_Data : register(t14);
 

@@ -226,9 +226,10 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::ANIMATOR3D:
             break;
         case COMPONENT_TYPE::LIGHT2D:
+            Component = new CLight2D();
             break;
         case COMPONENT_TYPE::LIGHT3D:
-            Component = new CLight3D(LIGHT_TYPE::DIRECTIONAL, 0);
+            Component = new CLight3D();
             break;
         case COMPONENT_TYPE::CAMERA:
             Component = new CCamera;

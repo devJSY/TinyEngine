@@ -74,9 +74,10 @@ void CTestLevel::begin()
 
     pLight1->AddComponent(new CTransform);
     pLight1->AddComponent(new CMeshRender);
-    pLight1->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 0));
+    pLight1->AddComponent(new CLight3D());
 
-    pLight1->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
+    pLight1->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
+    pLight1->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 
     pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
     pLight1->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
@@ -92,8 +93,10 @@ void CTestLevel::begin()
 
     pLight2->AddComponent(new CTransform);
     pLight2->AddComponent(new CMeshRender);
-    pLight2->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 1));
-    pLight2->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
+    pLight2->AddComponent(new CLight3D());
+
+    pLight2->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
+    pLight2->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 
     pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
     pLight2->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
@@ -108,8 +111,10 @@ void CTestLevel::begin()
 
     pLight3->AddComponent(new CTransform);
     pLight3->AddComponent(new CMeshRender);
-    pLight3->AddComponent(new CLight3D(LIGHT_TYPE::POINT, 2));
-    pLight3->Light3D()->SetColor(Vec3(1.f, 1.f, 1.f));
+    pLight3->AddComponent(new CLight3D());
+
+    pLight3->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
+    pLight3->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 
     pLight3->Transform()->SetRelativePos(Vec3(750.f, 0.f, 100.f));
     pLight3->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));

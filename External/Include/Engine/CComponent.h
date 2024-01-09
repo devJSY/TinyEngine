@@ -29,7 +29,7 @@ public:
 
 public:
     virtual void SaveToLevelFile(FILE* _File) = 0;
-    virtual void LoadFromLevelFile(FILE* _FILE) = 0;
+    virtual void LoadFromLevelFile(FILE* _File) = 0;
 
 public:
     GET_OTHER_COMPONENT(Transform);
@@ -37,6 +37,7 @@ public:
     GET_OTHER_COMPONENT(Camera);
     GET_OTHER_COMPONENT(Collider2D);
     GET_OTHER_COMPONENT(Animator2D);
+    GET_OTHER_COMPONENT(Light2D);
 
 public:
     GET_OTHER_COMPONENT(Light3D);

@@ -7,18 +7,18 @@ float4 main(PS_IN input) : SV_Target
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
     float4 color = float4(0.0, 0.0, 0.0, 1.0);
 
-    [unroll] // warning X3550: sampler array index must be a literal expression, forcing loop to unroll
-    for (int i = 0; i < MAX_LIGHTS; ++i)
-    {
-        if (Lights[i].LightType & LIGHT_DIRECTIONAL)
-            color.rgb += ComputeDirectionalLight(Lights[i], input.normalWorld, toEye);
+    //[unroll] // warning X3550: sampler array index must be a literal expression, forcing loop to unroll
+    //for (int i = 0; i < MAX_LIGHTS; ++i)
+    //{
+    //    if (Lights[i].LightType & LIGHT_DIRECTIONAL)
+    //        color.rgb += ComputeDirectionalLight(Lights[i], input.normalWorld, toEye);
         
-        if (Lights[i].LightType & LIGHT_POINT)
-            color.rgb += ComputePointLight(Lights[i], input.vPosWorld, input.normalWorld, toEye);
+    //    if (Lights[i].LightType & LIGHT_POINT)
+    //        color.rgb += ComputePointLight(Lights[i], input.vPosWorld, input.normalWorld, toEye);
   
-        if (Lights[i].LightType & LIGHT_SPOT)
-            color.rgb += ComputeSpotLight(Lights[i], input.vPosWorld, input.normalWorld, toEye);
-    }
+    //    if (Lights[i].LightType & LIGHT_SPOT)
+    //        color.rgb += ComputeSpotLight(Lights[i], input.vPosWorld, input.normalWorld, toEye);
+    //}
 
     // Rim
     if (g_UseRim)

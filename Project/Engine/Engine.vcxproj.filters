@@ -208,6 +208,9 @@
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CLight2D.h">
+      <Filter>08. Component\06. Light2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -395,6 +398,9 @@
     </ClCompile>
     <ClCompile Include="CScriptMgr.cpp">
       <Filter>ScriptMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLight2D.cpp">
+      <Filter>08. Component\06. Light2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

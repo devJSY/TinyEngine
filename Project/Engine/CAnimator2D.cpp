@@ -18,19 +18,22 @@ CAnimator2D::~CAnimator2D()
 
 void CAnimator2D::finaltick()
 {
-    if (nullptr != m_CurAnim)
-    {
-        if (m_bRepeat && m_CurAnim->IsFinish())
-        {
-            m_CurAnim->Reset();
-        }
+    if (nullptr == m_CurAnim)
+        return;
 
-        m_CurAnim->finaltick();
+    if (m_CurAnim->IsFinish() && m_bRepeat)
+    {
+        m_CurAnim->Reset();
     }
+
+    m_CurAnim->finaltick();
 }
 
 void CAnimator2D::UpdateData()
 {
+    if (nullptr == m_CurAnim)
+        return;
+
     m_CurAnim->UpdateData();
 }
 
@@ -67,8 +70,9 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
     if (nullptr == pAnim)
         return;
 
-    m_CurAnim = pAnim;
     m_bRepeat = _bRepeat;
+    m_CurAnim = pAnim;
+    m_CurAnim->Reset();
 }
 
 void CAnimator2D::SaveToLevelFile(FILE* _File)

@@ -13,7 +13,33 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_backward.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_forward.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_front.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_back.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_back_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_backward.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_forward.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_forward_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_front.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_front_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_back.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_back_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_backward.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_backward_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_doorway.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_forward.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_forward_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_front.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_front_hands.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_choose.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_idle.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_smoking_idle.anim");
+
+    Animator2D()->Play(L"dodge_back", true);
 }
+
 void CPlayerScript::tick()
 {
     Vec3 vPos = Transform()->GetRelativePos();

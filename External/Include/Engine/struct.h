@@ -24,6 +24,26 @@ struct tDebugShapeInfo
     bool bDepthTest;
 };
 
+struct tLightInfo
+{
+    Vec4 vColor;    // 빛의 색상	- 광원의 순수 색상
+    Vec4 vSpecular; // 반사광	- 광원이 물체 표변에 반사된 색상
+    Vec4 vAmbient;  // 환경광(주변광) - 광원에 의해서 보장되는 최소한의 빛
+
+    Vec3 vWorldPos; // 광원의 위치
+    Vec3 vWorldDir; // 광원이 향하는 방향
+    float fRadius;  // 광원의 영향 반경, 거리 정보
+    float fAngle;   // 광원의 범위 각도
+
+    int LightType; // 광원 타입
+
+    // 물체는 조명으로부터 거리에따라 빛을 받는양이 달라짐
+    // fallOffStart, fallOffEnd 옵션값으로 표현
+    float fallOffStart;
+    float fallOffEnd;
+    float spotPower;
+};
+
 // ==================
 // 상수버퍼 대응 구조체
 // ==================
@@ -67,26 +87,8 @@ struct tMtrlConst
     int padding[2];
 };
 
-struct tLightData
-{
-    Vec3 color; // Color
-    float fallOffStart;
-    Vec3 direction;
-    float fallOffEnd;
-    Vec3 position;
-    float spotPower;
-
-    // 물체는 조명으로부터 거리에따라 빛을 받는양이 달라짐
-    // fallOffStart, fallOffEnd 옵션값으로 표현
-
-    UINT LightType;
-    Vec3 padding;
-};
-
 struct tGlobal
 {
-    tLightData Lights[MAX_LIGHTS];
-
     Vec3 eyeWorld;
     bool UseTexture;
 

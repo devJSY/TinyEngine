@@ -1,11 +1,11 @@
 #include "global.hlsli"
 
-struct GS_IN
+struct GS_Input
 {
     float4 pos : SV_POSITION;
 };
 
-struct PS_IN
+struct PS_Input
 {
     float4 pos : SV_POSITION;
     float4 posWolrd : POSITION0;
@@ -14,8 +14,8 @@ struct PS_IN
 };
 
 [maxvertexcount(4)]
-void main(point GS_IN input[1], uint primID : SV_PrimitiveID,
-                              inout TriangleStream<PS_IN> outputStream)
+void main(point GS_Input input[1], uint primID : SV_PrimitiveID,
+                              inout TriangleStream<PS_Input> outputStream)
 {
     // 가로세로 100
     float hw = 0.5 * 100.f;
@@ -25,7 +25,7 @@ void main(point GS_IN input[1], uint primID : SV_PrimitiveID,
     front.w = 0.0;
     float4 right = normalize(float4(cross(up.xyz, normalize(front.xyz)), 0.0));
     
-    PS_IN output;
+    PS_Input output;
     
     output.center = input[0].pos;
 

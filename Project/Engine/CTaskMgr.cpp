@@ -476,9 +476,10 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     case COMPONENT_TYPE::ANIMATOR3D:
         break;
     case COMPONENT_TYPE::LIGHT2D:
+        pObj->AddComponent(new CLight2D());
         break;
     case COMPONENT_TYPE::LIGHT3D:
-        pObj->AddComponent(new CLight3D(LIGHT_TYPE::DIRECTIONAL, 0));
+        pObj->AddComponent(new CLight3D());
         break;
     case COMPONENT_TYPE::CAMERA:
         pObj->AddComponent(new CCamera);

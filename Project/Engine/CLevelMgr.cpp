@@ -71,6 +71,7 @@ void CLevelMgr::init()
     m_CurLevel->GetLayer(1)->SetName(L"Camera");
     m_CurLevel->GetLayer(2)->SetName(L"Player");
     m_CurLevel->GetLayer(3)->SetName(L"Monster");
+    m_CurLevel->GetLayer(4)->SetName(L"Light");
     m_CurLevel->GetLayer(15)->SetName(L"UI");
 
     m_CurLevel->begin();

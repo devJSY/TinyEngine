@@ -4,25 +4,35 @@
 class CLight3D : public CComponent
 {
 private:
-    LIGHT_TYPE  m_Type;
-    tLightData  m_LightData;
-    int         m_Idx;
+    tLightInfo m_Info;
 
 public:
-    LIGHT_TYPE GetLightType() const { return m_Type; }
-    void SetLightType(LIGHT_TYPE type) { m_Type = type; }
+    const tLightInfo& GetLightInfo() const { return m_Info; }
 
-    float GetFallOffStart() const { return m_LightData.fallOffStart; }
-    void SetFallOffStart(float start) { m_LightData.fallOffStart = start; }
+    void SetLightColor(Vec3 _vColor) { m_Info.vColor = _vColor; }
+    void SetSpecular(Vec3 _vSpec) { m_Info.vSpecular = _vSpec; }
+    void SetAmbient(Vec3 _vAmb) { m_Info.vAmbient = _vAmb; }
 
-    float GetFallOffEnd() const { return m_LightData.fallOffEnd; }
-    void SetFallOffEnd(float end) { m_LightData.fallOffEnd = end; }
+    Vec4 GetLightColor() const { return m_Info.vColor; }
+    Vec4 GetSpecular() const { return m_Info.vSpecular; }
+    Vec4 GetAmbient() const { return m_Info.vAmbient; }
 
-    float GetSpotPower() const { return m_LightData.spotPower; }
-    void SetSpotPower(float power) { m_LightData.spotPower = power; }
+    void SetLightType(LIGHT_TYPE _type) { m_Info.LightType = (int)_type; }
+    void SetRadius(float _Radius) { m_Info.fRadius = _Radius; }
+    void SetAngle(float _Angle) { m_Info.fAngle = _Angle; }
 
-    Vec3 GetColor() const { return m_LightData.color; }
-    void SetColor(Vec3 color) { m_LightData.color = color; }
+    LIGHT_TYPE GetLightType() const { return (LIGHT_TYPE)m_Info.LightType; }
+    float GetRadius() const { return m_Info.fRadius; }
+    float GetAngle() const { return m_Info.fAngle; }
+
+    float GetFallOffStart() const { return m_Info.fallOffStart; }
+    void SetFallOffStart(float start) { m_Info.fallOffStart = start; }
+
+    float GetFallOffEnd() const { return m_Info.fallOffEnd; }
+    void SetFallOffEnd(float end) { m_Info.fallOffEnd = end; }
+
+    float GetSpotPower() const { return m_Info.spotPower; }
+    void SetSpotPower(float power) { m_Info.spotPower = power; }
 
 public:
     virtual void finaltick() override;
@@ -32,6 +42,6 @@ public:
     virtual void LoadFromLevelFile(FILE* _File) override;
 
 public:
-    CLight3D(LIGHT_TYPE type, int idx);
+    CLight3D();
     virtual ~CLight3D();
 };

@@ -5,24 +5,22 @@
 #include "CMeshRender.h"
 #include "CAssetMgr.h"
 
-CLight3D::CLight3D(LIGHT_TYPE type, int idx)
+CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
-    , m_Type(type)
-    , m_Idx(idx)
+    , m_Info{}
 {
-    m_LightData.fallOffStart = 0.f;
-    m_LightData.fallOffEnd = 1000.f;
-    m_LightData.spotPower = 100.f;
-    m_LightData.color = Vec3(1.f);
+    m_Info.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_Info.vAmbient = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_Info.vSpecular = Vec4(1.f, 1.f, 1.f, 1.f);
 
-    if (m_Type == LIGHT_TYPE::DIRECTIONAL)
-        m_LightData.LightType = LIGHT_DIRECTIONAL;
-    else if (m_Type == LIGHT_TYPE::POINT)
-        m_LightData.LightType = LIGHT_POINT;
-    else if (m_Type == LIGHT_TYPE::SPOT)
-        m_LightData.LightType = LIGHT_SPOT;
-    else
-        m_LightData.LightType = LIGHT_OFF;
+    m_Info.fRadius = 0.f;
+    m_Info.fAngle = 0.f;
+
+    m_Info.LightType = -1;
+
+    m_Info.fallOffStart = 0.f;
+    m_Info.fallOffEnd = 1000.f;
+    m_Info.spotPower = 100.f;
 }
 
 CLight3D::~CLight3D()
@@ -31,41 +29,32 @@ CLight3D::~CLight3D()
 
 void CLight3D::finaltick()
 {
-    Matrix Worldmat = GetOwner()->Transform()->GetWorldMat();
-    m_LightData.position = Vec3(Worldmat._41, Worldmat._42, Worldmat._43);
-    m_LightData.direction = GetOwner()->Transform()->GetLocalDir(DIR_TYPE::FRONT);
+    m_Info.vWorldPos = Transform()->GetWorldPos();
+    m_Info.vWorldDir = Transform()->GetLocalDir(DIR_TYPE::FRONT);
 
-    if (m_Type == LIGHT_TYPE::DIRECTIONAL)
+    if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_LightData.LightType = LIGHT_DIRECTIONAL;
+        m_Info.LightType = LIGHT_DIRECTIONAL;
         GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLight"));
     }
-    else if (m_Type == LIGHT_TYPE::POINT)
+    else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_LightData.LightType = LIGHT_POINT;
+        m_Info.LightType = LIGHT_POINT;
         GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     }
-    else if (m_Type == LIGHT_TYPE::SPOT)
+    else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_LightData.LightType = LIGHT_SPOT;
+        m_Info.LightType = LIGHT_SPOT;
         GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight"));
     }
-    else
-        m_LightData.LightType = LIGHT_OFF;
-
-    g_Global.Lights[m_Idx] = m_LightData;
 }
 
 void CLight3D::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_Type, sizeof(LIGHT_TYPE), 1, _File);
-    fwrite(&m_LightData, sizeof(tLightData), 1, _File);
-    fwrite(&m_Idx, sizeof(int), 1, _File);
+    fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
 }
 
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_Type, sizeof(LIGHT_TYPE), 1, _File);
-    fread(&m_LightData, sizeof(tLightData), 1, _File);
-    fread(&m_Idx, sizeof(int), 1, _File);
+    fread(&m_Info, sizeof(tLightInfo), 1, _File);
 }
