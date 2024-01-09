@@ -104,8 +104,16 @@ Vec3 CTransform::GetWorldScale() const
 
 void CTransform::SaveToLevelFile(FILE* _File)
 {
+    fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
+    fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
+    fwrite(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
+    fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
 }
 
 void CTransform::LoadFromLevelFile(FILE* _File)
 {
+    fread(&m_vRelativePos, sizeof(Vec3), 1, _File);
+    fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
+    fread(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
+    fread(&m_bAbsolute, sizeof(bool), 1, _File);
 }

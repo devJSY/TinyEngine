@@ -105,6 +105,7 @@ inline void CAssetMgr::AddAsset(const wstring& _strKey, Ptr<T> _Asset)
     assert(iter == m_mapAsset[(UINT)Type].end());
 
     m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset.Get()));
+    _Asset->SetKey(_strKey);
 }
 
 template <typename T>

@@ -119,8 +119,18 @@ void CCollider2D::EndOverlap(CCollider2D* _OtherCollider)
 
 void CCollider2D::SaveToLevelFile(FILE* _File)
 {
+    fwrite(&m_vOffsetPos, sizeof(Vec3), 1, _File);
+    fwrite(&m_vOffsetScale, sizeof(Vec3), 1, _File);
+    fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
+    fwrite(&m_Type, sizeof(COLLIDER2D_TYPE), 1, _File);
+    fwrite(&m_fRadius, sizeof(float), 1, _File);
 }
 
 void CCollider2D::LoadFromLevelFile(FILE* _File)
 {
+    fread(&m_vOffsetPos, sizeof(Vec3), 1, _File);
+    fread(&m_vOffsetScale, sizeof(Vec3), 1, _File);
+    fread(&m_bAbsolute, sizeof(bool), 1, _File);
+    fread(&m_Type, sizeof(COLLIDER2D_TYPE), 1, _File);
+    fread(&m_fRadius, sizeof(float), 1, _File);
 }

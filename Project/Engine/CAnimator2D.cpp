@@ -73,12 +73,44 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 
 void CAnimator2D::SaveToLevelFile(FILE* _File)
 {
-    SaveAnimations(L"AnimData\\Player\\Convict");
+    fwrite(&m_bRepeat, sizeof(bool), 1, _File);
+
+    size_t AnimCount = m_mapAnim.size();
+    fwrite(&AnimCount, sizeof(size_t), 1, _File);
+
+    for (const auto& pair : m_mapAnim)
+    {
+        pair.second->SaveToLevelFile(_File);
+    }
+
+    wstring strCurAnimName;
+    if (nullptr != m_CurAnim)
+    {
+        strCurAnimName = m_CurAnim->GetName();
+    }
+    SaveWString(strCurAnimName, _File);
 }
 
 void CAnimator2D::LoadFromLevelFile(FILE* _File)
 {
+    fread(&m_bRepeat, sizeof(bool), 1, _File);
 
+    size_t AnimCount = 0;
+    fread(&AnimCount, sizeof(size_t), 1, _File);
+
+    for (size_t i = 0; i < AnimCount; ++i)
+    {
+        CAnim* pNewAnim = new CAnim;
+        pNewAnim->LoadFromLevelFile(_File);
+
+        m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
+        pNewAnim->m_Animator = this;
+    }
+
+    wstring strCurAnimName;
+    LoadWString(strCurAnimName, _File);
+
+    m_CurAnim = FindAnim(strCurAnimName);
 }
 
 void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)
