@@ -12,13 +12,29 @@
 #include "CComponent.h"
 #include "components.h"
 
-int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
+wstring CLevelSaveLoad::Level_extension = L".tmap";
+
+int CLevelSaveLoad::SaveLevel(const wstring& _FileName, CLevel* _Level)
 {
     // if (_Level->GetState() != LEVEL_STATE::STOP)
     //     return E_FAIL;
 
     wstring strPath = CPathMgr::GetContentPath();
-    strPath += _LevelPath;
+    strPath += L"Level\\";
+    strPath += _FileName;
+
+    std::filesystem::path filePath = strPath;
+
+    if ("" == filePath.extension())
+    {
+        // 확장자가 입력되지 않은 경운
+        strPath += Level_extension;
+    }
+    else if (Level_extension != filePath.extension())
+    {
+        // 확장자가 잘못 입력된 경우
+        strPath = filePath.replace_extension(Level_extension);
+    }
 
     FILE* pFile = nullptr;
 
@@ -115,10 +131,11 @@ int CLevelSaveLoad::SaveGameObject(CGameObject* _Object, FILE* _File)
     return 0;
 }
 
-CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelPath)
+CLevel* CLevelSaveLoad::LoadLevel(const wstring& _FileName)
 {
     wstring strPath = CPathMgr::GetContentPath();
-    strPath += _LevelPath;
+    strPath += L"Level\\";
+    strPath += _FileName;
 
     FILE* pFile = nullptr;
 
