@@ -6,6 +6,7 @@
 class CGameObject;
 class CCamera;
 class CLight2D;
+class CLight3D;
 
 class CStructuredBuffer;
 
@@ -18,6 +19,9 @@ private:
 
     CStructuredBuffer* m_Light2DBuffer;
     vector<CLight2D*> m_vecLight2D;
+
+    CStructuredBuffer* m_Light3DBuffer;
+    vector<CLight3D*> m_vecLight3D;
 
     list<tDebugShapeInfo> m_DbgShapeInfo;
 
@@ -37,6 +41,7 @@ public:
     bool IsShowCollider() const { return m_bShowCollider; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
+    void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
 
 public:
     CCamera* GetCamera(int _Idx) const;

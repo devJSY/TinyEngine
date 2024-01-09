@@ -30,7 +30,7 @@ float3 ComputeDirectionalLight(tLightInfo L, float3 normal, float3 toEye)
     float3 lightVec = -L.vWorldDir;
 
     float ndotl = max(dot(lightVec, normal), 0.0f);
-    float3 lightStrength = L.vAmbient.rgb * ndotl;
+    float3 lightStrength = L.vColor.rgb * ndotl;
 
     return BlinnPhong(lightStrength, lightVec, normal, toEye);
 }
@@ -59,7 +59,7 @@ float3 ComputePointLight(tLightInfo L, float3 pos, float3 normal, float3 toEye)
         lightVec /= d;
 
         float ndotl = max(dot(lightVec, normal), 0.0f);
-        float3 lightStrength = L.vAmbient.rgb * ndotl;
+        float3 lightStrength = L.vColor.rgb * ndotl;
 
         float att = CalcAttenuation(d, L.fallOffStart, L.fallOffEnd);
         lightStrength *= att;
@@ -86,7 +86,7 @@ float3 ComputeSpotLight(tLightInfo L, float3 pos, float3 normal, float3 toEye)
         lightVec /= d;
 
         float ndotl = max(dot(lightVec, normal), 0.0f);
-        float3 lightStrength = L.vAmbient.rgb * ndotl;
+        float3 lightStrength = L.vColor.rgb * ndotl;
 
         float att = CalcAttenuation(d, L.fallOffStart, L.fallOffEnd);
         lightStrength *= att;

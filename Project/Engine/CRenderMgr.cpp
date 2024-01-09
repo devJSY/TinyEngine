@@ -10,8 +10,11 @@
 #include "CDevice.h"
 #include "components.h"
 
+#include "CConstBuffer.h"
+
 CRenderMgr::CRenderMgr()
     : m_Light2DBuffer(nullptr)
+    , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
     , m_bShowDebugRender(false)
     , m_bShowCollider(true)
@@ -30,6 +33,12 @@ CRenderMgr::~CRenderMgr()
     {
         delete m_Light2DBuffer;
         m_Light2DBuffer = nullptr;
+    }
+
+    if (nullptr != m_Light3DBuffer)
+    {
+        delete m_Light3DBuffer;
+        m_Light3DBuffer = nullptr;
     }
 }
 
@@ -112,6 +121,11 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::UpdateData()
 {
+    // GlobalData 에 광원 개수정보 세팅
+    g_Global.Light2DCount = (UINT)m_vecLight2D.size();
+    g_Global.Light3DCount = (UINT)m_vecLight3D.size();
+
+    // Light2D
     static vector<tLightInfo> vecLight2DInfo;
 
     for (size_t i = 0; i < m_vecLight2D.size(); ++i)
@@ -124,11 +138,31 @@ void CRenderMgr::UpdateData()
     m_Light2DBuffer->UpdateData(11);
 
     vecLight2DInfo.clear();
+
+    // Light3D
+    static vector<tLightInfo> vecLight3DInfo;
+
+    for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+    {
+        const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
+        vecLight3DInfo.push_back(info);
+    }
+
+    m_Light3DBuffer->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
+    m_Light3DBuffer->UpdateData(12);
+
+    vecLight3DInfo.clear();
+
+    // 전역 상수 데이터 바인딩
+    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    pGlobalBuffer->SetData(&g_Global);
+    pGlobalBuffer->UpdateData();
 }
 
 void CRenderMgr::Clear()
 {
     m_vecLight2D.clear();
+    m_vecLight3D.clear();
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)

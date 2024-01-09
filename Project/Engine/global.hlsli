@@ -65,11 +65,10 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_btexarr_1;
 }
 
-#define MAX_LIGHTS        3
-#define LIGHT_OFF         0x00
-#define LIGHT_DIRECTIONAL 0x01  
-#define LIGHT_POINT       0x02  
-#define LIGHT_SPOT        0x04  
+//#define LIGHT_OFF         0x00
+#define LIGHT_DIRECTIONAL 0 //0x01  
+#define LIGHT_POINT       1 //0x02  
+#define LIGHT_SPOT        2 //0x04  
 //#define LIGHT_SHADOW      0x10
 
 cbuffer GLOBAL : register(b2)
@@ -90,6 +89,10 @@ cbuffer GLOBAL : register(b2)
     float g_CurTime;
     
     float4 g_pickingColor;
+    
+    uint Light2DCount;
+    uint Light3DCount;
+    float2 g_padding;
 }
 
 cbuffer ANIM_DATA2D : register(b3)
@@ -100,7 +103,7 @@ cbuffer ANIM_DATA2D : register(b3)
     float2 g_vOffset;
     int g_UseAnim2D;
     int g_UseBackGround;
-    float2 padding;
+    float2 Anim_padding;
 }
 
 Texture2D g_tex_0 : register(t0);

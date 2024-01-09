@@ -90,6 +90,9 @@ void CStructuredBuffer::UpdateData(UINT _RegisterNum)
 
 void CStructuredBuffer::SetData(void* _SysMem, UINT _ElementCount)
 {
+    if (nullptr == _SysMem)
+        return;	
+
     assert(m_bSysMemMove);
 
     if (0 == _ElementCount)

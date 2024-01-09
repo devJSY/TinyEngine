@@ -2,8 +2,10 @@
 #include "CLight3D.h"
 #include "CTransform.h"
 
-#include "CMeshRender.h"
 #include "CAssetMgr.h"
+#include "CRenderMgr.h"
+
+#include "CMeshRender.h"
 
 CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
@@ -30,23 +32,17 @@ CLight3D::~CLight3D()
 void CLight3D::finaltick()
 {
     m_Info.vWorldPos = Transform()->GetWorldPos();
-    m_Info.vWorldDir = Transform()->GetLocalDir(DIR_TYPE::FRONT);
+    m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
     if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
-    {
-        m_Info.LightType = LIGHT_DIRECTIONAL;
-        GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLight"));
-    }
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLight"));
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
-    {
-        m_Info.LightType = LIGHT_POINT;
-        GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
-    }
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
-    {
-        m_Info.LightType = LIGHT_SPOT;
-        GetOwner()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight"));
-    }
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight"));
+
+    // ±¤¿ø µî·Ï
+    CRenderMgr::GetInst()->RegisterLight3D(this);
 }
 
 void CLight3D::SaveToLevelFile(FILE* _File)

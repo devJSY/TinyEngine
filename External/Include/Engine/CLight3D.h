@@ -7,6 +7,9 @@ private:
     tLightInfo m_Info;
 
 public:
+    virtual void finaltick() override;
+
+public:
     const tLightInfo& GetLightInfo() const { return m_Info; }
 
     void SetLightColor(Vec3 _vColor) { m_Info.vColor = _vColor; }
@@ -33,9 +36,6 @@ public:
 
     float GetSpotPower() const { return m_Info.spotPower; }
     void SetSpotPower(float power) { m_Info.spotPower = power; }
-
-public:
-    virtual void finaltick() override;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -105,6 +105,10 @@ struct tGlobal
     float CurTime;
 
     Vec4 pickingColor;
+
+    UINT Light2DCount;
+    UINT Light3DCount;
+    Vec2 padding;
 };
 
 struct tAnimData2D
