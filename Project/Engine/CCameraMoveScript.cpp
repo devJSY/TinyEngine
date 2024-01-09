@@ -6,7 +6,8 @@
 #include "CLevelMgr.h"
 
 CCameraMoveScript::CCameraMoveScript()
-    : m_bFocus(false)
+    : CScript(SCRIPT_TYPE::CAMERAMOVESCRIPT)
+    , m_bFocus(false)
 {
 }
 

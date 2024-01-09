@@ -89,7 +89,7 @@
       <Filter>08. Component\09. Camera</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>ScriptMgr\Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CLevelMgr.h">
       <Filter>04. Manager\LevelMgr</Filter>
@@ -98,7 +98,7 @@
       <Filter>05. Level</Filter>
     </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>ScriptMgr\Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CEditorMgr.h">
       <Filter>04. Manager\EditorMgr</Filter>
@@ -205,6 +205,9 @@
     <ClInclude Include="CStructuredBuffer.h">
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="CScriptMgr.h">
+      <Filter>ScriptMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -274,7 +277,7 @@
       <Filter>08. Component\09. Camera</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>ScriptMgr\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CLevelMgr.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
@@ -286,7 +289,7 @@
       <Filter>01. Header</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>ScriptMgr\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CEditorMgr.cpp">
       <Filter>04. Manager\EditorMgr</Filter>
@@ -390,6 +393,9 @@
     <ClCompile Include="CStructuredBuffer.cpp">
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="CScriptMgr.cpp">
+      <Filter>ScriptMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -484,9 +490,6 @@
     </Filter>
     <Filter Include="04. Manager\LevelMgr">
       <UniqueIdentifier>{76b77282-f8da-483d-9b08-c092636426ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{4534e01f-3ea9-4615-8c70-e43b15fe89e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="08. Component\Script">
       <UniqueIdentifier>{21850e1c-1906-43b3-b65e-868bb3418669}</UniqueIdentifier>
@@ -583,6 +586,12 @@
     </Filter>
     <Filter Include="03. Device\StructuredBuffer">
       <UniqueIdentifier>{9bc152a0-79ed-40d7-8633-be0834c741d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptMgr">
+      <UniqueIdentifier>{f5da2d7c-b511-43ee-933e-dc822734429a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptMgr\Scripts">
+      <UniqueIdentifier>{4534e01f-3ea9-4615-8c70-e43b15fe89e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

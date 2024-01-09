@@ -12,6 +12,8 @@
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"
 
+#include "CScriptMgr.h"
+
 CTestLevel2::CTestLevel2()
 {
 }
@@ -26,7 +28,7 @@ void CTestLevel2::begin()
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
-    pCamObj->AddComponent(new CCameraMoveScript);
+    pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
 
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerCheckAll();
@@ -52,8 +54,8 @@ void CTestLevel2::begin()
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
     pPlayer->AddComponent(new CCollider2D);
-    pPlayer->AddComponent(new CPlayerScript);
     pPlayer->AddComponent(new CAnimator2D);
+    pPlayer->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::PLAYERSCRIPT));
 
     pPlayer->Transform()->SetAbsolute(true);
     pPlayer->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));

@@ -16,6 +16,8 @@
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"
 
+#include "CScriptMgr.h"
+
 CTestLevel::CTestLevel()
 {
 }
@@ -34,7 +36,7 @@ void CTestLevel::begin()
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
-    pCamObj->AddComponent(new CCameraMoveScript);
+    pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
 
     pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));

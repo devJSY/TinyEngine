@@ -37,6 +37,7 @@ public:
 
 public:
     UINT GetCollisionLayer(UINT idx) const { return m_matrix[idx]; }
+    void SetCollisionLayer(UINT idx, UINT row) { m_matrix[idx] = row; }
 
 private:
     void CollisionBtwLayer(UINT _leftCol, UINT _rightCol);

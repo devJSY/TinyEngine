@@ -7,10 +7,12 @@
 #include "CGameObject.h"
 #include "components.h"
 
+#include "CScriptMgr.h"
+
 class CScript : public CComponent
 {
 private:
-    UINT m_iScriptType;
+    SCRIPT_TYPE m_iScriptType;
 
 public:
     virtual void finaltick() final {}
@@ -24,6 +26,9 @@ public:
     virtual void LoadFromLevelFile(FILE* _FILE) override {}
 
 public:
-    CScript();
+    SCRIPT_TYPE GetScriptType() const { return m_iScriptType; }
+
+public:
+    CScript(SCRIPT_TYPE _type);
     virtual ~CScript();
 };

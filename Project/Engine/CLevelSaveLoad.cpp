@@ -15,6 +15,8 @@
 #include "CMeshRender.h"
 #include "CAnimator2D.h"
 
+#include "CCollisionMgr.h"
+
 int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
 {
     // if (_Level->GetState() != LEVEL_STATE::STOP)
@@ -55,6 +57,13 @@ int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
         }
     }
 
+    // Collision Layer
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        UINT row = CCollisionMgr::GetInst()->GetCollisionLayer(i);
+        fwrite(&row, sizeof(UINT), 1, pFile);
+    }
+
     fclose(pFile);
 
     return S_OK;
@@ -93,7 +102,7 @@ int CLevelSaveLoad::SaveGameObject(CGameObject* _Object, FILE* _File)
 
     for (size_t i = 0; i < vecScript.size(); ++i)
     {
-        wstring ScriptName = vecScript[i]->GetName();
+        wstring ScriptName = CScriptMgr::GetScriptName(vecScript[i]);
         SaveWString(ScriptName, _File);
         vecScript[i]->SaveToLevelFile(_File);
     }
@@ -149,6 +158,14 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelPath)
             CGameObject* pNewObj = LoadGameObject(pFile);
             NewLevel->AddObject(pNewObj, i, false);
         }
+    }
+
+    // Collision Layer
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        UINT row = -1;
+        fread(&row, sizeof(UINT), 1, pFile);
+        CCollisionMgr::GetInst()->SetCollisionLayer(i, row);
     }
 
     fclose(pFile);
@@ -233,8 +250,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
     {
         wstring ScriptName;
         LoadWString(ScriptName, _File);
-        /*CScript* pScript = CScriptMgr::GetScript(ScriptName);*/
-        CScript* pScript = new CScript;
+        CScript* pScript = CScriptMgr::GetScript(ScriptName);
         pObject->AddComponent(pScript);
         pScript->LoadFromLevelFile(_File);
     }

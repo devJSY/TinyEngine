@@ -2,7 +2,8 @@
 #include "CPlayerScript.h"
 
 CPlayerScript::CPlayerScript()
-    : m_Speed(1000.f)
+    : CScript(SCRIPT_TYPE::PLAYERSCRIPT)
+    , m_Speed(1000.f)
 {
 }
 
