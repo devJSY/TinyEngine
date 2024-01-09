@@ -2,6 +2,8 @@
 #include "CLevelSaveLoad.h"
 
 #include "CPathMgr.h"
+#include "CCollisionMgr.h"
+#include "CLevelMgr.h"
 
 #include "CLevel.h"
 
@@ -15,7 +17,6 @@
 #include "CMeshRender.h"
 #include "CAnimator2D.h"
 
-#include "CCollisionMgr.h"
 
 int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
 {
@@ -169,6 +170,8 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelPath)
     }
 
     fclose(pFile);
+
+    CLevelMgr::GetInst()->SetSelectObj(nullptr);
 
     /*NewLevel->ChangeState(LEVEL_STATE::STOP);*/
 
