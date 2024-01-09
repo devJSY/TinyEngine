@@ -257,7 +257,7 @@ void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
     }
 }
 
-std::wstring OpenFile(const wstring& strRelativePath)
+std::wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
 {
     wchar_t szName[256] = {};
     OPENFILENAME ofn = {};
@@ -266,7 +266,7 @@ std::wstring OpenFile(const wstring& strRelativePath)
     ofn.hwndOwner = CEngine::GetInst()->GetMainWind();
     ofn.lpstrFile = szName;
     ofn.nMaxFile = sizeof(szName);
-    ofn.lpstrFilter = L"All\0*.*";
+    ofn.lpstrFilter = filter;
     ofn.nFilterIndex = 0;
     ofn.lpstrFileTitle = nullptr;
     ofn.nMaxFileTitle = 0;
@@ -277,15 +277,14 @@ std::wstring OpenFile(const wstring& strRelativePath)
     ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
     if (GetOpenFileName(&ofn) == TRUE)
     {
-        wstring fileName = ofn.lpstrFile;
-        fileName = fileName.substr(ofn.nFileOffset, fileName.length());
-        return fileName;
+        std::filesystem::path filePath = ofn.lpstrFile;
+        return filePath.filename();
     }
 
     return std::wstring();
 }
 
-std::wstring SaveFile(const wstring& strRelativePath)
+std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
 {
     wchar_t szName[256] = {};
     OPENFILENAME ofn = {};
@@ -294,7 +293,7 @@ std::wstring SaveFile(const wstring& strRelativePath)
     ofn.hwndOwner = CEngine::GetInst()->GetMainWind();
     ofn.lpstrFile = szName;
     ofn.nMaxFile = sizeof(szName);
-    ofn.lpstrFilter = L"All\0*.*";
+    ofn.lpstrFilter = filter;
     ofn.nFilterIndex = 0;
     ofn.lpstrFileTitle = nullptr;
     ofn.nMaxFileTitle = 0;
@@ -306,9 +305,8 @@ std::wstring SaveFile(const wstring& strRelativePath)
 
     if (GetSaveFileName(&ofn) == TRUE)
     {
-        wstring fileName = ofn.lpstrFile;
-        fileName = fileName.substr(ofn.nFileOffset, fileName.length());
-        return fileName;
+        std::filesystem::path filePath = ofn.lpstrFile;
+        return filePath.filename();
     }
 
     return std::wstring();

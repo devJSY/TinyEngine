@@ -207,7 +207,7 @@ void CLevelEditor::MenuBar()
         {
             if (ImGui::MenuItem("Save Level"))
             {
-                wstring fileName = SaveFile(L"Level\\");
+                wstring fileName = SaveFile(L"Level\\", TEXT("레벨 파일\0*.tmap\0모든 파일(*.*)\0*.*\0"));
                 if (!fileName.empty())
                 {
                     // Level 저장
@@ -217,7 +217,7 @@ void CLevelEditor::MenuBar()
 
             if (ImGui::MenuItem("Load Level"))
             {
-                wstring fileName = OpenFile(L"Level\\");
+                wstring fileName = OpenFile(L"Level\\", TEXT("레벨 파일\0*.tmap\0모든 파일(*.*)\0*.*\0"));
                 if (!fileName.empty())
                 {
                     // Level 불러오기
