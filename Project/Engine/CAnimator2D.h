@@ -34,6 +34,10 @@ public:
     virtual void LoadFromLevelFile(FILE* _File) override;
 
 public:
+    void SaveAnimations(const wstring& _strRelativePath);
+    void LoadAnimation(const wstring& _strRelativePath);
+
+public:
     CAnimator2D();
     virtual ~CAnimator2D();
 };

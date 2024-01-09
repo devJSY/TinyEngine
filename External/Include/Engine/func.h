@@ -36,8 +36,32 @@ std::string currentDateTime();
 Vec4 HashIDToColor(int hash);
 std::string GetComponentName(COMPONENT_TYPE type);
 
+// Save / Load
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _File);
+
+class CAsset;
+template <typename T>
+class Ptr;
+
+void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File);
+
+#include "CAssetMgr.h"
+template <typename T>
+void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
+{
+    int i = 0;
+    fread(&i, sizeof(i), 1, _File);
+
+    if (i)
+    {
+        wstring strKey, strRelativePath;
+        LoadWString(strKey, _File);
+        LoadWString(strRelativePath, _File);
+
+        _Asset = CAssetMgr::GetInst()->Load<T>(strKey, strRelativePath);
+    }
+}
 
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])

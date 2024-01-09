@@ -2,7 +2,6 @@
 
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
-
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
     FTask task = {};
@@ -238,4 +237,20 @@ void LoadWString(wstring& _str, FILE* _File)
     fread(szBuffer, sizeof(wchar_t), iLen, _File);
 
     _str = szBuffer;
+}
+
+void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
+{
+    int i = 0;
+    if (nullptr == _Asset)
+    {
+        fwrite(&i, sizeof(i), 1, _File);
+    }
+    else
+    {
+        i = 1;
+        fwrite(&i, sizeof(i), 1, _File);
+        SaveWString(_Asset->GetKey(), _File);
+        SaveWString(_Asset->GetRelativePath(), _File);
+    }
 }

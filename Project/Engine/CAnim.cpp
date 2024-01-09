@@ -101,3 +101,175 @@ void CAnim::SaveToLevelFile(FILE* _File)
 void CAnim::LoadFromLevelFile(FILE* _File)
 {
 }
+
+bool CAnim::SaveAnim(const wstring& _FilePath)
+{
+    FILE* pFile = nullptr;
+
+    _wfopen_s(&pFile, _FilePath.c_str(), L"w");
+
+    if (nullptr == pFile)
+    {
+        std::cout << "파일 열기 실패" << std::endl;
+        return false;
+    }
+
+    // Animation 이름 저장
+    fwprintf_s(pFile, L"[ANIM_NAME]\n");
+
+    wstring strName = GetName();
+    fwprintf_s(pFile, strName.c_str());
+    fwprintf_s(pFile, L"\n\n");
+
+    // Atlas Texture
+    fwprintf_s(pFile, L"[ATLAS_TEXTURE]\n");
+
+    wstring strKey;
+    wstring strRelativePath;
+
+    if (nullptr != m_AtlasTex.Get())
+    {
+        strKey = m_AtlasTex->GetKey();
+        strRelativePath = m_AtlasTex->GetRelativePath();
+    }
+
+    fwprintf_s(pFile, strKey.c_str());
+    fwprintf_s(pFile, L"\n");
+    fwprintf_s(pFile, strRelativePath.c_str());
+    fwprintf_s(pFile, L"\n\n");
+
+    // 프레임 데이터
+    // 프레임 숫자
+    fwprintf_s(pFile, L"[FRAME_COUNT]\n");
+    fwprintf_s(pFile, L"%d\n\n", (int)m_vecFrm.size());
+
+    for (int i = 0; i < (int)m_vecFrm.size(); ++i)
+    {
+        fwprintf_s(pFile, L"[FRAME_INDEX]\n");
+        fwprintf_s(pFile, L"%d\n", i);
+
+        fwprintf_s(pFile, L"[LEFT_TOP]\n");
+        fwprintf_s(pFile, L"%f %f\n", m_vecFrm[i].vLeftTop.x, m_vecFrm[i].vLeftTop.y);
+
+        fwprintf_s(pFile, L"[SLICE_SIZE]\n");
+        fwprintf_s(pFile, L"%f %f\n", m_vecFrm[i].vSlice.x, m_vecFrm[i].vSlice.y);
+
+        fwprintf_s(pFile, L"[OFFSET]\n");
+        fwprintf_s(pFile, L"%f %f\n", m_vecFrm[i].vOffset.x, m_vecFrm[i].vOffset.y);
+
+        fwprintf_s(pFile, L"[BACKGROUND]\n");
+        fwprintf_s(pFile, L"%f %f\n", m_vecFrm[i].vBackground.x, m_vecFrm[i].vBackground.y);
+
+        fwprintf_s(pFile, L"[DURATION]\n");
+        fwprintf_s(pFile, L"%f\n\n", m_vecFrm[i].Duration);
+    }
+
+    // Use BackGround
+    fwprintf_s(pFile, L"[USE_BACKGROUND]\n");
+    fwprintf_s(pFile, L"%s", m_bUseBackGround ? L"true" : L"false");
+
+    fclose(pFile);
+
+    return true;
+}
+
+bool CAnim::LoadAnim(const wstring& _FilePath)
+{
+    FILE* pFile = nullptr;
+
+    _wfopen_s(&pFile, _FilePath.c_str(), L"r");
+
+    if (nullptr == pFile)
+    {
+        std::cout << "파일 열기 실패" << std::endl;
+        return false;
+    }
+
+    // Animation 이름 로드
+    while (true)
+    {
+        wchar_t szRead[256] = {};
+        if (EOF == fwscanf_s(pFile, L"%s", szRead, 256))
+        {
+            break;
+        }
+
+        if (!wcscmp(szRead, L"[ANIM_NAME]"))
+        {
+            fwscanf_s(pFile, L"%s", szRead, 256);
+            SetName(szRead);
+        }
+        else if (!wcscmp(szRead, L"[ATLAS_TEXTURE]"))
+        {
+            wstring strKey, strRelativePath;
+
+            fwscanf_s(pFile, L"%s", szRead, 256);
+            strKey = szRead;
+
+            fwscanf_s(pFile, L"%s", szRead, 256);
+            strRelativePath = szRead;
+
+            m_AtlasTex = CAssetMgr::GetInst()->Load<CTexture>(strKey, strRelativePath);
+        }
+        else if (!wcscmp(szRead, L"[FRAME_COUNT]"))
+        {
+            int iFrameCount = 0;
+            fwscanf_s(pFile, L"%d", &iFrameCount);
+            m_vecFrm.resize(iFrameCount);
+
+            int iCurFrame = 0;
+            while (true)
+            {
+                fwscanf_s(pFile, L"%s", szRead, 256);
+
+                if (!wcscmp(szRead, L"[FRAME_INDEX]"))
+                {
+                    fwscanf_s(pFile, L"%d", &iCurFrame);
+                }
+                else if (!wcscmp(szRead, L"[LEFT_TOP]"))
+                {
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vLeftTop.x);
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vLeftTop.y);
+                }
+                else if (!wcscmp(szRead, L"[SLICE_SIZE]"))
+                {
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vSlice.x);
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vSlice.y);
+                }
+                else if (!wcscmp(szRead, L"[OFFSET]"))
+                {
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vOffset.x);
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vOffset.y);
+                }
+                else if (!wcscmp(szRead, L"[BACKGROUND]"))
+                {
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vBackground.x);
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].vBackground.y);
+                }
+                else if (!wcscmp(szRead, L"[DURATION]"))
+                {
+                    fwscanf_s(pFile, L"%f", &m_vecFrm[iCurFrame].Duration);
+                }
+                else if (!wcscmp(szRead, L"[USE_BACKGROUND]"))
+                {
+                    fwscanf_s(pFile, L"%s", szRead, 256);
+                    if (!wcscmp(szRead, L"true"))
+                    {
+                        m_bUseBackGround = true;
+                    }
+                    else if (!wcscmp(szRead, L"false"))
+                    {
+                        m_bUseBackGround = false;
+                    }
+
+                    if (iFrameCount - 1 <= iCurFrame)
+                        break;
+                }
+            }
+        }
+    }
+
+    fclose(pFile);
+
+    return true;
+}

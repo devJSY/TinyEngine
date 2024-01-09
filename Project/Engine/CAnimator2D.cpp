@@ -2,6 +2,7 @@
 #include "CAnimator2D.h"
 
 #include "CAnim.h"
+#include "CPathMgr.h"
 
 CAnimator2D::CAnimator2D()
     : CComponent(COMPONENT_TYPE::ANIMATOR2D)
@@ -72,8 +73,43 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 
 void CAnimator2D::SaveToLevelFile(FILE* _File)
 {
+    SaveAnimations(L"AnimData\\Player\\Convict");
 }
 
 void CAnimator2D::LoadFromLevelFile(FILE* _File)
 {
+
+}
+
+void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)
+{
+    wstring strFolderPath = CPathMgr::GetContentPath();
+    strFolderPath += _strRelativePath;
+
+    for (const auto& pair : m_mapAnim)
+    {
+        wstring strFilePath = strFolderPath + L"\\" + pair.first + L".anim";
+        if (!pair.second->SaveAnim(strFilePath))
+        {
+            std::cout << "Animation Save 실패" << std::endl;
+        }
+    }
+}
+
+void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
+{
+    wstring strFilePath = CPathMgr::GetContentPath();
+    strFilePath += _strRelativePath;
+
+    CAnim* pNewAnim = new CAnim;
+
+    if (!pNewAnim->LoadAnim(strFilePath))
+    {
+        std::cout << "Animation Load 실패" << std::endl;
+        delete pNewAnim;
+        return;
+    }
+
+    pNewAnim->m_Animator = this;
+    m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
 }

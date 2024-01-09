@@ -53,7 +53,12 @@ public:
     void SaveToLevelFile(FILE* _File);
     void LoadFromLevelFile(FILE* _File);
 
+    bool SaveAnim(const wstring& _FilePath);
+    bool LoadAnim(const wstring& _FilePath);
+
 public:
     CAnim();
     virtual ~CAnim();
+
+    friend class CAnimator2D;
 };
