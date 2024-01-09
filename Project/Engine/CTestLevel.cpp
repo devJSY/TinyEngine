@@ -7,11 +7,7 @@
 #include "CCollisionMgr.h"
 
 #include "CGameObject.h"
-#include "CTransform.h"
-#include "CMeshRender.h"
-#include "CLight3D.h"
-#include "CCamera.h"
-#include "CAnimator2D.h"
+#include "components.h"
 
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"

@@ -5,9 +5,7 @@
 #include "CAssetMgr.h"
 
 #include "CGameObject.h"
-#include "CTransform.h"
-#include "CMeshRender.h"
-#include "CAnimator2D.h"
+#include "components.h"
 
 #include "CPlayerScript.h"
 #include "CCameraMoveScript.h"

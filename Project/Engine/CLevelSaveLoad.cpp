@@ -10,13 +10,7 @@
 #include "CScript.h"
 #include "CGameObject.h"
 #include "CComponent.h"
-#include "CCamera.h"
-#include "CTransform.h"
-#include "CCollider2D.h"
-#include "CLight3D.h"
-#include "CMeshRender.h"
-#include "CAnimator2D.h"
-
+#include "components.h"
 
 int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
 {

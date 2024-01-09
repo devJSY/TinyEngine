@@ -275,14 +275,11 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
                 else if (!wcscmp(szRead, L"[USE_BACKGROUND]"))
                 {
                     fwscanf_s(pFile, L"%s", szRead, 256);
+
                     if (!wcscmp(szRead, L"true"))
-                    {
                         m_bUseBackGround = true;
-                    }
-                    else if (!wcscmp(szRead, L"false"))
-                    {
+                    else
                         m_bUseBackGround = false;
-                    }
 
                     if (iFrameCount - 1 <= iCurFrame)
                         break;
