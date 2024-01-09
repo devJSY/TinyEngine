@@ -2,6 +2,8 @@
 
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
+#include "CEngine.h"
+
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
     FTask task = {};
@@ -253,4 +255,61 @@ void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
         SaveWString(_Asset->GetKey(), _File);
         SaveWString(_Asset->GetRelativePath(), _File);
     }
+}
+
+std::wstring OpenFile(const wstring& strRelativePath)
+{
+    wchar_t szName[256] = {};
+    OPENFILENAME ofn = {};
+
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = CEngine::GetInst()->GetMainWind();
+    ofn.lpstrFile = szName;
+    ofn.nMaxFile = sizeof(szName);
+    ofn.lpstrFilter = L"All\0*.*";
+    ofn.nFilterIndex = 0;
+    ofn.lpstrFileTitle = nullptr;
+    ofn.nMaxFileTitle = 0;
+
+    wstring Path = CPathMgr::GetContentPath();
+    Path += strRelativePath;
+    ofn.lpstrInitialDir = Path.c_str();
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+    if (GetOpenFileName(&ofn) == TRUE)
+    {
+        wstring fileName = ofn.lpstrFile;
+        fileName = fileName.substr(ofn.nFileOffset, fileName.length());
+        return fileName;
+    }
+
+    return std::wstring();
+}
+
+std::wstring SaveFile(const wstring& strRelativePath)
+{
+    wchar_t szName[256] = {};
+    OPENFILENAME ofn = {};
+
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = CEngine::GetInst()->GetMainWind();
+    ofn.lpstrFile = szName;
+    ofn.nMaxFile = sizeof(szName);
+    ofn.lpstrFilter = L"All\0*.*";
+    ofn.nFilterIndex = 0;
+    ofn.lpstrFileTitle = nullptr;
+    ofn.nMaxFileTitle = 0;
+
+    wstring Path = CPathMgr::GetContentPath();
+    Path += strRelativePath;
+    ofn.lpstrInitialDir = Path.c_str();
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    if (GetSaveFileName(&ofn) == TRUE)
+    {
+        wstring fileName = ofn.lpstrFile;
+        fileName = fileName.substr(ofn.nFileOffset, fileName.length());
+        return fileName;
+    }
+
+    return std::wstring();
 }

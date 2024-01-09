@@ -207,14 +207,22 @@ void CLevelEditor::MenuBar()
         {
             if (ImGui::MenuItem("Save Level"))
             {
+                wstring fileName = SaveFile(L"Level\\");
+                if (fileName.empty())
+                    return;
+
                 // Level 저장
-                CLevelSaveLoad::SaveLevel(L"Level\\TestLevel.tmap", CLevelMgr::GetInst()->GetCurrentLevel());
+                CLevelSaveLoad::SaveLevel(L"Level\\" + fileName, CLevelMgr::GetInst()->GetCurrentLevel());
             }
 
             if (ImGui::MenuItem("Load Level"))
             {
-                //// Level 불러오기
-                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\TestLevel.tmap");
+                wstring fileName = OpenFile(L"Level\\");
+                if (fileName.empty())
+                    return;
+
+                // Level 불러오기
+                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(L"Level\\" + fileName);
                 GamePlayStatic::LevelChange(pLoadedLevel);
             }
 

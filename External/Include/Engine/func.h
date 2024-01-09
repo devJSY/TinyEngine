@@ -63,6 +63,9 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
     }
 }
 
+std::wstring OpenFile(const wstring& strRelativePath); // 파일명 반환
+std::wstring SaveFile(const wstring& strRelativePath); // 파일명 반환
+
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])
 {
