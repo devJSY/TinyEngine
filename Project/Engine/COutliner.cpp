@@ -495,20 +495,13 @@ void COutliner::DrawLight2D(CGameObject* obj)
     CLight2D* pLight = obj->Light2D();
     if (nullptr == pLight)
         return;
-}
 
-void COutliner::DrawLight3D(CGameObject* obj)
-{
-    CLight3D* pLight = obj->Light3D();
-    if (nullptr == pLight)
-        return;
-
-    if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                          "Light3D"))
+    if (ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
+                          "Light2D"))
     {
         const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
         const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
-        if (ImGui::BeginCombo("Light Type", currentLightTypeStrings))
+        if (ImGui::BeginCombo(_labelPrefix("Light Type").c_str(), currentLightTypeStrings))
         {
             for (int i = 0; i < (UINT)LIGHT_TYPE::END; i++)
             {
@@ -525,24 +518,107 @@ void COutliner::DrawLight3D(CGameObject* obj)
 
             ImGui::EndCombo();
         }
+        Vec4 color = pLight->GetLightColor();
+        if (ImGui::ColorEdit3(_labelPrefix("Color").c_str(), &color.x))
+            pLight->SetLightColor(color);
+
+        Vec4 specular = pLight->GetSpecular();
+        if (ImGui::ColorEdit3(_labelPrefix("Specular").c_str(), &specular.x))
+            pLight->SetSpecular(specular);
+
+        Vec4 ambient = pLight->GetAmbient();
+        if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
+            pLight->SetAmbient(ambient);
+
+        float fRadius = pLight->GetRadius();
+        float fangle = pLight->GetAngle();
+
+        if (ImGui::DragFloat(_labelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+            pLight->SetRadius(fRadius);
+
+        if (ImGui::SliderFloat(_labelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
+            pLight->SetAngle(fangle);
 
         float FallOffStart = pLight->GetFallOffStart();
         float FallOffEnd = pLight->GetFallOffEnd();
         float offset = 1.f;
 
-        if (ImGui::SliderFloat("FallOffStart ", &FallOffStart, 0.0f, FallOffEnd - offset))
+        if (ImGui::SliderFloat(_labelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat("FallOffEnd", &FallOffEnd, FallOffStart + offset, 10000.f))
+        if (ImGui::SliderFloat(_labelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
-        if (ImGui::SliderFloat("Spot Power", &spotPower, 1.f, 1000.f))
+        if (ImGui::SliderFloat(_labelPrefix("Spot Power").c_str(), &spotPower, 1.f, 10000.f))
             pLight->SetSpotPower(spotPower);
 
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawLight3D(CGameObject* obj)
+{
+    CLight3D* pLight = obj->Light3D();
+    if (nullptr == pLight)
+        return;
+
+    if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
+                          "Light3D"))
+    {
+        const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
+        const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
+        if (ImGui::BeginCombo(_labelPrefix("Light Type").c_str(), currentLightTypeStrings))
+        {
+            for (int i = 0; i < (UINT)LIGHT_TYPE::END; i++)
+            {
+                bool isSelected = currentLightTypeStrings == LightTypeStrings[i];
+                if (ImGui::Selectable(LightTypeStrings[i], isSelected))
+                {
+                    currentLightTypeStrings = LightTypeStrings[i];
+                    pLight->SetLightType((LIGHT_TYPE)i);
+                }
+
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGui::EndCombo();
+        }
         Vec4 color = pLight->GetLightColor();
-        if (ImGui::ColorEdit3("Color", &color.x))
+        if (ImGui::ColorEdit3(_labelPrefix("Color").c_str(), &color.x))
             pLight->SetLightColor(color);
+
+        Vec4 specular = pLight->GetSpecular();
+        if (ImGui::ColorEdit3(_labelPrefix("Specular").c_str(), &specular.x))
+            pLight->SetSpecular(specular);
+
+        Vec4 ambient = pLight->GetAmbient();
+        if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
+            pLight->SetAmbient(ambient);
+
+        float fRadius = pLight->GetRadius();
+        float fangle = pLight->GetAngle();
+
+        if (ImGui::DragFloat(_labelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+            pLight->SetRadius(fRadius);
+
+        if (ImGui::SliderFloat(_labelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
+            pLight->SetAngle(fangle);
+
+        float FallOffStart = pLight->GetFallOffStart();
+        float FallOffEnd = pLight->GetFallOffEnd();
+        float offset = 1.f;
+
+        if (ImGui::SliderFloat(_labelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
+            pLight->SetFallOffStart(FallOffStart);
+
+        if (ImGui::SliderFloat(_labelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
+            pLight->SetFallOffEnd(FallOffEnd);
+
+        float spotPower = pLight->GetSpotPower();
+        if (ImGui::SliderFloat(_labelPrefix("Spot Power").c_str(), &spotPower, 1.f, 10000.f))
+            pLight->SetSpotPower(spotPower);
 
         ImGui::TreePop();
     }
