@@ -77,6 +77,7 @@ void CTestLevel2::begin()
 
     // ±¤¿ø Ãß°¡
     CGameObject* pLight = new CGameObject;
+    pLight->SetName(L"Light Test");
     pLight->AddComponent(new CTransform);
     pLight->AddComponent(new CMeshRender);
     pLight->AddComponent(new CLight2D);
