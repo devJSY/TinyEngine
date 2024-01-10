@@ -550,7 +550,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
-        if (ImGui::SliderFloat(_labelPrefix("Spot Power").c_str(), &spotPower, 1.f, 10000.f))
+        if (ImGui::SliderFloat(_labelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
 
         ImGui::TreePop();
@@ -617,7 +617,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
-        if (ImGui::SliderFloat(_labelPrefix("Spot Power").c_str(), &spotPower, 1.f, 10000.f))
+        if (ImGui::SliderFloat(_labelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
 
         ImGui::TreePop();
@@ -738,13 +738,13 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
                     bDirty = true;
 
-                if (ImGui::SliderFloat3(_labelPrefix("diffuse").c_str(), &diffuse.x, 0.f, 1.f))
+                if (ImGui::ColorEdit3(_labelPrefix("diffuse").c_str(), &diffuse.x))
                     bDirty = true;
 
-                if (ImGui::SliderFloat3(_labelPrefix("specular").c_str(), &specular.x, 0.f, 1.f))
+                if (ImGui::ColorEdit3(_labelPrefix("specular").c_str(), &specular.x))
                     bDirty = true;
 
-                if (ImGui::SliderFloat3(_labelPrefix("environment").c_str(), &environment.x, 0.f, 1.f))
+                if (ImGui::ColorEdit3(_labelPrefix("environment").c_str(), &environment.x))
                     bDirty = true;
 
                 if (bDirty)

@@ -99,7 +99,8 @@ void Delete_Map(map<T1, T2>& _map)
 {
     for (const auto& pair : _map)
     {
-        delete pair.second;
+        if (nullptr != pair.second)
+            delete pair.second;
     }
     _map.clear();
 }

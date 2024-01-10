@@ -3,9 +3,9 @@
 
 #include <Engine\global.h>
 #include <Engine\CEngine.h>
+#include <Engine\\CKeyMgr.h>
 
-#include "Engine\\CKeyMgr.h"
-
+// Engine
 #ifdef _DEBUG
     #pragma comment(lib, "Engine\\Engine_d.lib")
 #else
@@ -105,7 +105,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-    hInst = hInstance; 
+    hInst = hInstance;
 
     hWnd = CreateWindowW(L"TinyEngine", L"Tiny Engine", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
                          nullptr, nullptr, hInstance, nullptr);

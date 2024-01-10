@@ -40,7 +40,7 @@ public:
     virtual ~CAsset();
 
     friend class CAssetMgr;
-    
+
     template <typename T>
     friend class Ptr;
 };
