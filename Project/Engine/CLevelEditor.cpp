@@ -324,6 +324,27 @@ void CLevelEditor::ViewportRender()
     // ImGuizmo
     ImGuizmoRender();
 
+    // Drag & Drop
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+        {
+            string name = (char*)payload->Data;
+            name.resize(payload->DataSize);
+            std::filesystem::path fileNameStr = name;
+            if (fileNameStr.extension() == CLevelSaveLoad::GetLevelExtension())
+            {
+                // Level 불러오기
+                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(stringToWstring(name));
+
+                if (nullptr != pLoadedLevel)
+                    GamePlayStatic::LevelChange(pLoadedLevel);
+            }
+        }
+
+        ImGui::EndDragDropTarget();
+    }
+
     ImGui::End();
 }
 

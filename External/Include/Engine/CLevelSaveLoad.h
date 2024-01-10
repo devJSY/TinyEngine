@@ -13,5 +13,8 @@ public:
     static CLevel* LoadLevel(const wstring& _FileName);
     static CGameObject* LoadGameObject(FILE* _File);
 
+    static const wstring& GetLevelExtension() { return Level_extension; }
+
+private:
     static wstring Level_extension;
 };

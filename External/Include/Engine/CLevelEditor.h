@@ -34,11 +34,11 @@ public:
 
 private:
     // UI Panels
-    void MenuBarRender();
-    void UI_ToolbarRender();
     void ViewportRender();
     void ImGuizmoRender();
+    void MenuBarRender();
     void CollisionResponsesRender();
+    void UI_ToolbarRender();
 
 public:
     CLevelEditor();

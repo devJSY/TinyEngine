@@ -81,12 +81,20 @@ void CContentBrowser::render()
         // Drag & Drop
         if (ImGui::BeginDragDropSource())
         {
-            const char* filname = filenameString.c_str();
-            ImGui::Text("%s", filname, filenameString.size());
+            ImGui::Text("%s", filenameString.c_str(), filenameString.size());
 
-            CAssetMgr::GetInst()->Load<CTexture>(relativePath.filename().wstring(), relativePath);
+            std::filesystem::path fileNamePath = filenameString;
 
-            ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", filname, filenameString.size());
+            // 텍스춰 포맷이면 로딩
+            if (fileNamePath.extension() == ".png" || fileNamePath.extension() == ".PNG" ||
+                fileNamePath.extension() == ".bmp" || fileNamePath.extension() == ".BMP" ||
+                fileNamePath.extension() == ".jpg" || fileNamePath.extension() == ".JPG" ||
+                fileNamePath.extension() == ".jpeg" || fileNamePath.extension() == ".JPEG")
+            {
+                CAssetMgr::GetInst()->Load<CTexture>(relativePath.filename().wstring(), relativePath);
+            }
+
+            ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", filenameString.c_str(), filenameString.size());
             ImGui::EndDragDropSource();
         }
 
