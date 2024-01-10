@@ -155,6 +155,34 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
         // 내적을 활용, 각도 체크
         // 간단한 영상 찍어서 올리기
         // 광원을 회전시키기
+        
+        float2 dir = info.vWorldPos.xy - _WorldPos.xy;
+        dir = -normalize(dir);
+        
+        float Theta = dot(info.vWorldDir.xy, dir);
+        
+        float radian = radians(info.fAngle / 2.f);
+        
+        if (Theta > radian)
+        {
+            float fAttenu = 1.f;
+        
+            float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
+            if (fDist < info.fRadius)
+            {
+                if (g_int_0)
+                {
+                    float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+                    fAttenu = saturate(cos(fTheta));
+                }
+                else
+                {
+                    fAttenu = saturate(1.f - fDist / g_Light2D[0].fRadius);
+                }
+            
+                _output.vColor += info.ColorInfo.vColor * fAttenu;
+            }
+        }
     }
 }
 

@@ -6,7 +6,7 @@
 
 class CMaterial : public CAsset
 {
-public:
+private:
     tMtrlConst m_Const;
     Ptr<CTexture> m_arrTex[(UINT)TEX_PARAM::END];
     Ptr<CGraphicsShader> m_pShader;

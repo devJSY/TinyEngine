@@ -45,14 +45,13 @@ void CTestLevel2::begin()
 
     AddObject(pCamObj, L"Camera");
 
-    // AnimObj
+    // Player
     CGameObject* pPlayer = new CGameObject;
     pPlayer->SetName(L"Player");
 
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
     pPlayer->AddComponent(new CCollider2D);
-    pPlayer->AddComponent(new CAnimator2D);
     pPlayer->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::PLAYERSCRIPT));
 
     pPlayer->Transform()->SetAbsolute(true);
@@ -64,29 +63,17 @@ void CTestLevel2::begin()
 
     AddObject(pPlayer, L"Player");
 
-    CGameObject* pTest = new CGameObject;
-    pTest->SetName(L"Test");
-
-    pTest->AddComponent(new CTransform);
-    pTest->AddComponent(new CMeshRender);
-
-    pTest->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pTest->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-
-    AddObject(pTest, L"Default");
-
     // 광원 추가
     CGameObject* pLight = new CGameObject;
-    pLight->SetName(L"Light Test");
+    pLight->SetName(L"Light 1");
     pLight->AddComponent(new CTransform);
     pLight->AddComponent(new CMeshRender);
     pLight->AddComponent(new CLight2D);
 
-    pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-    pLight->Light2D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
-    pLight->Light2D()->SetAmbient(Vec3(0.8f, 0.3f, 0.4f));
-
     pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 200.f));
+
+    pLight->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+
     AddObject(pLight, L"Light");
 
     // 충돌 설정

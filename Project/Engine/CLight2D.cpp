@@ -3,6 +3,7 @@
 
 #include "CRenderMgr.h"
 #include "CTransform.h"
+#include "CMeshRender.h"
 
 CLight2D::CLight2D()
     : CComponent(COMPONENT_TYPE::LIGHT2D)

@@ -536,7 +536,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
         if (ImGui::DragFloat(_labelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
             pLight->SetRadius(fRadius);
 
-        if (ImGui::SliderFloat(_labelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
+        if (ImGui::SliderFloat(_labelPrefix("Angle").c_str(), &fangle, 0.0f, 180.f))
             pLight->SetAngle(fangle);
 
         float FallOffStart = pLight->GetFallOffStart();
