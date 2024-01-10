@@ -22,7 +22,7 @@ private:
 public:
     virtual void init() override;
     virtual void tick() override;
-    virtual void finaltick() override;
+    virtual void finaltick() override {};
     virtual void render() override;
 
 private:
@@ -34,10 +34,11 @@ public:
 
 private:
     // UI Panels
-    void MenuBar();
-    void UI_Toolbar();
+    void MenuBarRender();
+    void UI_ToolbarRender();
+    void ViewportRender();
     void ImGuizmoRender();
-    void CollisionResponses();
+    void CollisionResponsesRender();
 
 public:
     CLevelEditor();

@@ -276,10 +276,7 @@ std::wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
     ofn.lpstrInitialDir = Path.c_str();
     ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
     if (GetOpenFileName(&ofn) == TRUE)
-    {
-        std::filesystem::path filePath = ofn.lpstrFile;
-        return filePath.filename();
-    }
+        return ofn.lpstrFile;
 
     return std::wstring();
 }
@@ -304,10 +301,7 @@ std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
     ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
     if (GetSaveFileName(&ofn) == TRUE)
-    {
-        std::filesystem::path filePath = ofn.lpstrFile;
-        return filePath.filename();
-    }
+        return ofn.lpstrFile;
 
     return std::wstring();
 }

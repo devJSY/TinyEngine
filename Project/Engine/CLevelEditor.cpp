@@ -103,13 +103,42 @@ void CLevelEditor::tick()
     ImGuizmo::BeginFrame();
 }
 
-void CLevelEditor::finaltick()
+void CLevelEditor::render()
 {
-    // ImGUI Rendering
+    // Viewport
+    ViewportRender();
+
+    // ID Map
+    if (m_bShowIDMap)
+    {
+        Ptr<CTexture> pIDMap = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
+        ImGui::Begin("Picking Color ID Map");
+        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+        ImGui::Image((void*)pIDMap->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
+        ImGui::End();
+    }
+
+    // Menu Bar
+    MenuBarRender();
+
+    // Collision Responses
+    CollisionResponsesRender();
+
+    // Outliner Render
+    m_Outliner.render();
+
+    // ContentBrowser Render
+    m_ContentBrowser.render();
+
+    // UI Toolbar
+    UI_ToolbarRender();
+
+    // Demo ImGUI Rendering
     bool show_demo_window = true;
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
 
+    // World Settings
     ImGui::Begin("World Settings");
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
     ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
@@ -119,6 +148,7 @@ void CLevelEditor::finaltick()
                         ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
+    // View Mode
     ImGui::Begin("View Mode");
     ImGui::Checkbox("Picking Color ID Map", &m_bShowIDMap);
     ImGui::Checkbox("Draw WireFrame", &g_Global.DrawAsWireFrame);
@@ -130,61 +160,7 @@ void CLevelEditor::finaltick()
     bool bCollider = CRenderMgr::GetInst()->IsShowCollider();
     ImGui::Checkbox("Show Collider", &bCollider);
     CRenderMgr::GetInst()->SetShowCollider(bCollider);
-
     ImGui::End();
-
-    CollisionResponses();
-}
-
-void CLevelEditor::render()
-{
-    CRenderMgr::GetInst()->CopyRenderTarget();
-
-    // Viewport
-    ImGui::Begin("Level ViewPort");
-
-    // Viewport에서의 마우스 위치 등록
-    ImVec2 viewportPos = ImGui::GetCursorScreenPos();
-    CEditorMgr::GetInst()->SetViewportMousePos(
-        Vec2(ImGui::GetIO().MousePos.x - viewportPos.x, ImGui::GetIO().MousePos.y - viewportPos.y));
-
-    // Viewport 상태 확인
-    m_ViewportFocused = ImGui::IsWindowFocused();
-    m_ViewportHovered = ImGui::IsWindowHovered();
-
-    // Viewport 크기 등록
-    ImVec2 viewportSize = ImGui::GetContentRegionAvail();
-    CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-
-    // Viewport 렌더링
-    Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
-    ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
-
-    // ImGuizmo
-    ImGuizmoRender();
-
-    ImGui::End();
-
-    if (m_bShowIDMap)
-    {
-        Ptr<CTexture> pIDMap = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
-        ImGui::Begin("Picking Color ID Map");
-        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((void*)pIDMap->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
-        ImGui::End();
-    }
-
-    // Menu Bar
-    MenuBar();
-
-    // Outliner Render
-    m_Outliner.render();
-
-    // ContentBrowser Render
-    m_ContentBrowser.render();
-
-    // UI Toolbar
-    UI_Toolbar();
 
     // Rendering
     ImGui::Render();
@@ -199,7 +175,7 @@ void CLevelEditor::render()
     }
 }
 
-void CLevelEditor::MenuBar()
+void CLevelEditor::MenuBarRender()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -207,22 +183,28 @@ void CLevelEditor::MenuBar()
         {
             if (ImGui::MenuItem("Save Level"))
             {
-                wstring fileName = SaveFile(L"Level\\", TEXT("레벨 파일\0*.tmap\0모든 파일(*.*)\0*.*\0"));
-                if (!fileName.empty())
+                std::filesystem::path filePath = SaveFile(L"Level\\", TEXT("레벨 파일\0*.tmap\0모든 파일(*.*)\0*.*\0"));
+
+                wstring FileName = filePath.filename();
+                if (!FileName.empty())
                 {
                     // Level 저장
-                    CLevelSaveLoad::SaveLevel(fileName, CLevelMgr::GetInst()->GetCurrentLevel());
+                    CLevelSaveLoad::SaveLevel(FileName, CLevelMgr::GetInst()->GetCurrentLevel());
                 }
             }
 
             if (ImGui::MenuItem("Load Level"))
             {
-                wstring fileName = OpenFile(L"Level\\", TEXT("레벨 파일\0*.tmap\0모든 파일(*.*)\0*.*\0"));
-                if (!fileName.empty())
+                std::filesystem::path filePath = OpenFile(L"Level\\", TEXT("레벨 파일\0*.tmap\0모든 파일(*.*)\0*.*\0"));
+
+                wstring FileName = filePath.filename();
+                if (!FileName.empty())
                 {
                     // Level 불러오기
-                    CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(fileName);
-                    GamePlayStatic::LevelChange(pLoadedLevel);
+                    CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(FileName);
+
+                    if (nullptr != pLoadedLevel)
+                        GamePlayStatic::LevelChange(pLoadedLevel);
                 }
             }
 
@@ -233,7 +215,7 @@ void CLevelEditor::MenuBar()
     }
 }
 
-void CLevelEditor::UI_Toolbar()
+void CLevelEditor::UI_ToolbarRender()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
     ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
@@ -312,6 +294,36 @@ void CLevelEditor::UI_Toolbar()
 
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);
+    ImGui::End();
+}
+
+void CLevelEditor::ViewportRender()
+{
+    // RT Copy
+    CRenderMgr::GetInst()->CopyRenderTarget();
+
+    ImGui::Begin("Level ViewPort");
+
+    // Viewport에서의 마우스 위치 등록
+    ImVec2 viewportPos = ImGui::GetCursorScreenPos();
+    CEditorMgr::GetInst()->SetViewportMousePos(
+        Vec2(ImGui::GetIO().MousePos.x - viewportPos.x, ImGui::GetIO().MousePos.y - viewportPos.y));
+
+    // 상태 확인
+    m_ViewportFocused = ImGui::IsWindowFocused();
+    m_ViewportHovered = ImGui::IsWindowHovered();
+
+    // 크기 등록
+    ImVec2 viewportSize = ImGui::GetContentRegionAvail();
+    CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
+
+    // 렌더링
+    Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
+    ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
+
+    // ImGuizmo
+    ImGuizmoRender();
+
     ImGui::End();
 }
 
@@ -398,7 +410,7 @@ void CLevelEditor::ImGuizmoRender()
     }
 }
 
-void CLevelEditor::CollisionResponses()
+void CLevelEditor::CollisionResponsesRender()
 {
     ImGui::Begin("Collision Responses");
 
