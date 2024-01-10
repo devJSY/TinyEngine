@@ -160,25 +160,17 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
         dir = -normalize(dir);
         
         float Theta = dot(info.vWorldDir.xy, dir);
+        float Angle = acos(Theta);
         
-        float radian = radians(info.fAngle / 2.f);
-        
-        if (Theta > radian)
+        if (Angle < radians(info.fAngle / 2.f))
         {
             float fAttenu = 1.f;
         
             float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
             if (fDist < info.fRadius)
             {
-                if (g_int_0)
-                {
-                    float fTheta = (fDist / info.fRadius) * (PI / 2.f);
-                    fAttenu = saturate(cos(fTheta));
-                }
-                else
-                {
-                    fAttenu = saturate(1.f - fDist / g_Light2D[0].fRadius);
-                }
+                float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+                fAttenu = saturate(cos(fTheta));
             
                 _output.vColor += info.ColorInfo.vColor * fAttenu;
             }
