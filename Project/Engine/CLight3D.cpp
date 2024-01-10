@@ -18,7 +18,7 @@ CLight3D::CLight3D()
     m_Info.fRadius = 0.f;
     m_Info.fAngle = 0.f;
 
-    m_Info.LightType = -1;
+    m_Info.LightType = (int)LIGHT_TYPE::POINT;
 
     m_Info.fallOffStart = 0.f;
     m_Info.fallOffEnd = 1000.f;
@@ -31,8 +31,17 @@ CLight3D::~CLight3D()
 
 void CLight3D::finaltick()
 {
+    // ±¤¿ø µî·Ï
+    CRenderMgr::GetInst()->RegisterLight3D(this);
+
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+    // Mesh ¼³Á¤
+    if (nullptr == MeshRender())
+        return;
+
+    MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
 
     if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLight"));
@@ -40,9 +49,6 @@ void CLight3D::finaltick()
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight"));
-
-    // ±¤¿ø µî·Ï
-    CRenderMgr::GetInst()->RegisterLight3D(this);
 }
 
 void CLight3D::SaveToLevelFile(FILE* _File)

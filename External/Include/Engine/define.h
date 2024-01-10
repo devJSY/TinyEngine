@@ -179,12 +179,6 @@ enum class EDITOR_TYPE
     END,
 };
 
-//#define LIGHT_OFF         0x00
-#define LIGHT_DIRECTIONAL 0 //0x01 // 태양과 같이 아주 멀리있는 광원
-#define LIGHT_POINT       1 //0x02 // 한 점으로 부터 여러방향으로 퍼져 나가는 광원
-#define LIGHT_SPOT        2 //0x04 // 빛이 방향을 갖고있어 빛의 중심으로부터 가장자리로 갈수록 어두워지는 광원
-// #define LIGHT_SHADOW      0x10
-
 enum class DEBUG_SHAPE
 {
     RECT,
@@ -197,8 +191,8 @@ enum class DEBUG_SHAPE
 
 enum class LIGHT_TYPE
 {
-    DIRECTIONAL = LIGHT_DIRECTIONAL,
-    POINT = LIGHT_POINT,
-    SPOT = LIGHT_SPOT,
+    DIRECTIONAL = 0,
+    POINT = 1,
+    SPOT = 2,
     END
 };

@@ -9,13 +9,13 @@ float4 main(PS_IN input) : SV_Target
 
     for (uint i = 0; i < Light3DCount; ++i)
     {
-        if (g_Light3D[i].LightType & LIGHT_DIRECTIONAL)
+        if (LIGHT_DIRECTIONAL == g_Light3D[i].LightType)
             color.rgb += ComputeDirectionalLight(g_Light3D[i], input.normalWorld, toEye);
         
-        if (g_Light3D[i].LightType & LIGHT_POINT)
+        if (LIGHT_POINT == g_Light3D[i].LightType)
             color.rgb += ComputePointLight(g_Light3D[i], input.vPosWorld, input.normalWorld, toEye);
   
-        if (g_Light3D[i].LightType & LIGHT_SPOT)
+        if (LIGHT_SPOT == g_Light3D[i].LightType)
             color.rgb += ComputeSpotLight(g_Light3D[i], input.vPosWorld, input.normalWorld, toEye);
     }
 

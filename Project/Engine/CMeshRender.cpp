@@ -89,3 +89,27 @@ void CMeshRender::render()
 
     GetMesh()->render();
 }
+
+void CMeshRender::SaveToLevelFile(FILE* _File)
+{
+    CRenderComponent::SaveToLevelFile(_File);
+
+    fwrite(&m_bDrawNormalLine, sizeof(bool), 1, _File);
+    fwrite(&m_NormalLineScale, sizeof(float), 1, _File);
+    fwrite(&m_bUseTexture, sizeof(bool), 1, _File);
+    fwrite(&m_bUseRim, sizeof(bool), 1, _File);
+    fwrite(&m_RimColor, sizeof(Vec3), 1, _File);
+    fwrite(&m_RimPower, sizeof(float), 1, _File);
+}
+
+void CMeshRender::LoadFromLevelFile(FILE* _File)
+{
+    CRenderComponent::LoadFromLevelFile(_File);
+
+    fread(&m_bDrawNormalLine, sizeof(bool), 1, _File);
+    fread(&m_NormalLineScale, sizeof(float), 1, _File);
+    fread(&m_bUseTexture, sizeof(bool), 1, _File);
+    fread(&m_bUseRim, sizeof(bool), 1, _File);
+    fread(&m_RimColor, sizeof(Vec3), 1, _File);
+    fread(&m_RimPower, sizeof(float), 1, _File);
+}

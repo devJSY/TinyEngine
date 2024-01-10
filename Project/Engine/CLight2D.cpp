@@ -14,7 +14,7 @@ CLight2D::CLight2D()
     m_Info.fRadius = 0.f;
     m_Info.fAngle = 0.f;
 
-    m_Info.LightType = -1;
+    m_Info.LightType = (int)LIGHT_TYPE::POINT;
 
     m_Info.fallOffStart = 0.f;
     m_Info.fallOffEnd = 1000.f;

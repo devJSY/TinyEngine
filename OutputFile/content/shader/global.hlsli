@@ -65,7 +65,7 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_btexarr_1;
 }
 
-//#define LIGHT_OFF         0x00
+//#define LIGHT_OFF          0x00
 #define LIGHT_DIRECTIONAL 0 //0x01  
 #define LIGHT_POINT       1 //0x02  
 #define LIGHT_SPOT        2 //0x04  
