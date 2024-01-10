@@ -22,8 +22,15 @@ private:
 public:
     virtual void init() override;
     virtual void tick() override;
-    virtual void finaltick() override {};
+    virtual void finaltick() override{};
     virtual void render() override;
+
+private:
+    void render_Viewport();
+    void render_ImGuizmo();
+    void render_MenuBar();
+    void render_CollisionResponses();
+    void render_UI_Toolbar();
 
 private:
     void SetDarkThemeColors();
@@ -31,14 +38,6 @@ private:
 public:
     bool IsViewportFocused() const { return m_ViewportFocused; }
     bool IsViewportHovered() const { return m_ViewportHovered; }
-
-private:
-    // UI Panels
-    void ViewportRender();
-    void ImGuizmoRender();
-    void MenuBarRender();
-    void CollisionResponsesRender();
-    void UI_ToolbarRender();
 
 public:
     CLevelEditor();

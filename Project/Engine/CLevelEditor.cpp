@@ -106,7 +106,7 @@ void CLevelEditor::tick()
 void CLevelEditor::render()
 {
     // Viewport
-    ViewportRender();
+    render_Viewport();
 
     // ID Map
     if (m_bShowIDMap)
@@ -119,10 +119,10 @@ void CLevelEditor::render()
     }
 
     // Menu Bar
-    MenuBarRender();
+    render_MenuBar();
 
     // Collision Responses
-    CollisionResponsesRender();
+    render_CollisionResponses();
 
     // Outliner Render
     m_Outliner.render();
@@ -131,7 +131,7 @@ void CLevelEditor::render()
     m_ContentBrowser.render();
 
     // UI Toolbar
-    UI_ToolbarRender();
+    render_UI_Toolbar();
 
     // Demo ImGUI Rendering
     bool show_demo_window = true;
@@ -175,7 +175,7 @@ void CLevelEditor::render()
     }
 }
 
-void CLevelEditor::MenuBarRender()
+void CLevelEditor::render_MenuBar()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -215,7 +215,7 @@ void CLevelEditor::MenuBarRender()
     }
 }
 
-void CLevelEditor::UI_ToolbarRender()
+void CLevelEditor::render_UI_Toolbar()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
     ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
@@ -297,7 +297,7 @@ void CLevelEditor::UI_ToolbarRender()
     ImGui::End();
 }
 
-void CLevelEditor::ViewportRender()
+void CLevelEditor::render_Viewport()
 {
     // RT Copy
     CRenderMgr::GetInst()->CopyRenderTarget();
@@ -322,7 +322,7 @@ void CLevelEditor::ViewportRender()
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
     // ImGuizmo
-    ImGuizmoRender();
+    render_ImGuizmo();
 
     // Drag & Drop
     if (ImGui::BeginDragDropTarget())
@@ -348,7 +348,7 @@ void CLevelEditor::ViewportRender()
     ImGui::End();
 }
 
-void CLevelEditor::ImGuizmoRender()
+void CLevelEditor::render_ImGuizmo()
 {
     CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
     CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0); // Main Camera
@@ -431,9 +431,15 @@ void CLevelEditor::ImGuizmoRender()
     }
 }
 
-void CLevelEditor::CollisionResponsesRender()
+void CLevelEditor::render_CollisionResponses()
 {
     ImGui::Begin("Collision Responses");
+
+    if (ImGui::Button("All Layer Enable"))
+        CCollisionMgr::GetInst()->EnableAllLayer();
+
+    if (ImGui::Button("All Layer Disable"))
+        CCollisionMgr::GetInst()->DisableAllLayer();
 
     string column_names[LAYER_MAX + 1] = {"Layers"};
     for (int i = 1; i <= LAYER_MAX; i++)

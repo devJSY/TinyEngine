@@ -24,13 +24,8 @@ public:
     void LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck = true);
     void LayerCheck(const wstring& _LeftLayer, const wstring& _RightLayer);
 
-    void Clear()
-    {
-        for (int i = 0; i < LAYER_MAX; ++i)
-        {
-            m_matrix[i] = 0;
-        }
-    }
+    void EnableAllLayer();
+    void DisableAllLayer();
 
 public:
     void tick();

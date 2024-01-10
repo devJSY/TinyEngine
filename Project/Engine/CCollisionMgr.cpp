@@ -405,3 +405,25 @@ void CCollisionMgr::LayerCheck(const wstring& _LeftLayer, const wstring& _RightL
 
     LayerCheck(pLeftLayer->GetLayerIdx(), pRightLayer->GetLayerIdx());
 }
+
+void CCollisionMgr::EnableAllLayer()
+{
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        m_matrix[i] = 0xFFFFFFFF;
+    }
+}
+
+void CCollisionMgr::DisableAllLayer()
+{
+    for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
+    {
+        for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
+        {
+            if (!(m_matrix[iRow] & (1 << iCol)))
+                continue;
+
+            LayerCheck(iRow, iCol, false);
+        }
+    }
+}
