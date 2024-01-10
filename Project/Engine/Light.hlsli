@@ -151,15 +151,8 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     // Spot Light
     else
     {
-        // Point Light 거의 유사
-        // 내적을 활용, 각도 체크
-        // 간단한 영상 찍어서 올리기
-        // 광원을 회전시키기
-        
-        float2 dir = info.vWorldPos.xy - _WorldPos.xy;
-        dir = -normalize(dir);
-        
-        float Theta = dot(info.vWorldDir.xy, dir);
+        float2 LightTo = normalize(_WorldPos.xy - info.vWorldPos.xy);
+        float Theta = dot(info.vWorldDir.xy, LightTo);
         float Angle = acos(Theta);
         
         if (Angle < radians(info.fAngle / 2.f))

@@ -156,10 +156,9 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
         // 간단한 영상 찍어서 올리기
         // 광원을 회전시키기
         
-        float2 dir = info.vWorldPos.xy - _WorldPos.xy;
-        dir = -normalize(dir);
+        float2 LightToPixel = normalize(_WorldPos.xy - info.vWorldPos.xy);
         
-        float Theta = dot(info.vWorldDir.xy, dir);
+        float Theta = dot(info.vWorldDir.xy, LightToPixel);
         float Angle = acos(Theta);
         
         if (Angle < radians(info.fAngle / 2.f))
