@@ -24,7 +24,7 @@ CTestLevel::~CTestLevel()
 
 void CTestLevel::begin()
 {
-    //AddMeshes();
+    AddMeshes();
     // AddModels();
 
     // Camera Object 생성
@@ -32,7 +32,7 @@ void CTestLevel::begin()
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
-    //pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
+    pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
 
     pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
@@ -57,139 +57,139 @@ void CTestLevel::begin()
 
     AddObject(pCamObj, L"Camera");
 
-    //// Lights
-    //CGameObject* pLights = new CGameObject;
-    //pLights->SetName(L"Lights");
+    // Lights
+    CGameObject* pLights = new CGameObject;
+    pLights->SetName(L"Lights");
 
-    //pLights->AddComponent(new CTransform);
-    //pLights->AddComponent(new CMeshRender);
+    pLights->AddComponent(new CTransform);
+    pLights->AddComponent(new CMeshRender);
 
-    //pLights->Transform()->SetRelativePos(Vec3(0.f, 300.f, 200.f));
-    //pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
-    //pLights->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    //pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLights->Transform()->SetRelativePos(Vec3(0.f, 300.f, 200.f));
+    pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
+    pLights->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
 
-    //CGameObject* pLight1 = new CGameObject;
-    //pLight1->SetName(L"Light 1");
+    CGameObject* pLight1 = new CGameObject;
+    pLight1->SetName(L"Light 1");
 
-    //pLight1->AddComponent(new CTransform);
-    //pLight1->AddComponent(new CMeshRender);
-    //pLight1->AddComponent(new CLight3D());
+    pLight1->AddComponent(new CTransform);
+    pLight1->AddComponent(new CMeshRender);
+    pLight1->AddComponent(new CLight3D());
 
-    //pLight1->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
-    //pLight1->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+    pLight1->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
+    pLight1->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 
-    //pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
-    //pLight1->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
+    pLight1->Transform()->SetRelativePos(Vec3(-750.f, 0.f, 100.f));
+    pLight1->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    //pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    //pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
-    //pLight1->MeshRender()->SetUseTexture(true);
+    pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    pLight1->MeshRender()->SetUseTexture(true);
 
-    //pLights->AddChild(pLight1);
+    pLights->AddChild(pLight1);
 
-    //CGameObject* pLight2 = new CGameObject;
-    //pLight2->SetName(L"Light 2");
+    CGameObject* pLight2 = new CGameObject;
+    pLight2->SetName(L"Light 2");
 
-    //pLight2->AddComponent(new CTransform);
-    //pLight2->AddComponent(new CMeshRender);
-    //pLight2->AddComponent(new CLight3D());
+    pLight2->AddComponent(new CTransform);
+    pLight2->AddComponent(new CMeshRender);
+    pLight2->AddComponent(new CLight3D());
 
-    //pLight2->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
-    //pLight2->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+    pLight2->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
+    pLight2->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 
-    //pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
-    //pLight2->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
+    pLight2->Transform()->SetRelativePos(Vec3(0.f, 0.f, 100.f));
+    pLight2->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    //pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    //pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
-    //pLight2->MeshRender()->SetUseTexture(true);
-    //pLights->AddChild(pLight2);
+    pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    pLight2->MeshRender()->SetUseTexture(true);
+    pLights->AddChild(pLight2);
 
-    //CGameObject* pLight3 = new CGameObject;
-    //pLight3->SetName(L"Light 3");
+    CGameObject* pLight3 = new CGameObject;
+    pLight3->SetName(L"Light 3");
 
-    //pLight3->AddComponent(new CTransform);
-    //pLight3->AddComponent(new CMeshRender);
-    //pLight3->AddComponent(new CLight3D());
+    pLight3->AddComponent(new CTransform);
+    pLight3->AddComponent(new CMeshRender);
+    pLight3->AddComponent(new CLight3D());
 
-    //pLight3->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
-    //pLight3->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+    pLight3->Light3D()->SetLightColor(Vec4(1.f, 1.f, 1.f, 1.f));
+    pLight3->Light3D()->SetLightType(LIGHT_TYPE::POINT);
 
-    //pLight3->Transform()->SetRelativePos(Vec3(750.f, 0.f, 100.f));
-    //pLight3->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
+    pLight3->Transform()->SetRelativePos(Vec3(750.f, 0.f, 100.f));
+    pLight3->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    //pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    //pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
-    //pLight3->MeshRender()->SetUseTexture(true);
-    //pLights->AddChild(pLight3);
+    pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    pLight3->MeshRender()->SetUseTexture(true);
+    pLights->AddChild(pLight3);
 
-    //AddObject(pLights, L"Light");
+    AddObject(pLights, L"Light");
 
-    //// SkyBox
-    //CGameObject* pSkyBox = new CGameObject;
-    //pSkyBox->SetName(L"SkyBox");
+    // SkyBox
+    CGameObject* pSkyBox = new CGameObject;
+    pSkyBox->SetName(L"SkyBox");
 
-    //pSkyBox->AddComponent(new CTransform);
-    //pSkyBox->AddComponent(new CMeshRender);
+    pSkyBox->AddComponent(new CTransform);
+    pSkyBox->AddComponent(new CMeshRender);
 
-    //pSkyBox->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    //pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
-    //pSkyBox->Transform()->SetAbsolute(true);
+    pSkyBox->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
+    pSkyBox->Transform()->SetAbsolute(true);
 
-    //pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    //pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Skybox"));
+    pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Skybox"));
 
-    //AddObject(pSkyBox, L"SkyBox");
+    AddObject(pSkyBox, L"SkyBox");
 
-    //// UI
-    //CGameObject* pObj = new CGameObject;
-    //pObj->SetName(L"UI");
+    // UI
+    CGameObject* pObj = new CGameObject;
+    pObj->SetName(L"UI");
 
-    //pObj->AddComponent(new CTransform);
-    //pObj->AddComponent(new CMeshRender);
+    pObj->AddComponent(new CTransform);
+    pObj->AddComponent(new CMeshRender);
 
-    //pObj->Transform()->SetRelativePos(Vec3(-590, 310.f, 0.f));
-    //pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
+    pObj->Transform()->SetRelativePos(Vec3(-590, 310.f, 0.f));
+    pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
-    //pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    //pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
-    //AddObject(pObj, L"UI", false);
+    AddObject(pObj, L"UI", false);
 
-    //// Player
-    //CGameObject* pPlayer = new CGameObject;
-    //pPlayer->SetName(L"Player");
+    // Player
+    CGameObject* pPlayer = new CGameObject;
+    pPlayer->SetName(L"Player");
 
-    //pPlayer->AddComponent(new CTransform);
-    //pPlayer->AddComponent(new CMeshRender);
-    //pPlayer->AddComponent(new CCollider2D);
+    pPlayer->AddComponent(new CTransform);
+    pPlayer->AddComponent(new CMeshRender);
+    pPlayer->AddComponent(new CCollider2D);
 
-    //pPlayer->Transform()->SetAbsolute(true);
-    //pPlayer->Transform()->SetRelativePos(Vec3(0.f, 500.f, 500.f));
-    //pPlayer->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+    pPlayer->Transform()->SetAbsolute(true);
+    pPlayer->Transform()->SetRelativePos(Vec3(0.f, 500.f, 500.f));
+    pPlayer->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-    //pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-    //pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+    pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
-    //AddObject(pPlayer, L"Mesh");
+    AddObject(pPlayer, L"Mesh");
 
-    //// Monster
-    //CGameObject* pMonster = new CGameObject;
-    //pMonster->SetName(L"Monster");
+    // Monster
+    CGameObject* pMonster = new CGameObject;
+    pMonster->SetName(L"Monster");
 
-    //pMonster->AddComponent(new CTransform);
-    //pMonster->AddComponent(new CMeshRender);
-    //pMonster->AddComponent(new CCollider2D);
+    pMonster->AddComponent(new CTransform);
+    pMonster->AddComponent(new CMeshRender);
+    pMonster->AddComponent(new CCollider2D);
 
-    //pMonster->Transform()->SetAbsolute(true);
-    //pMonster->Transform()->SetRelativePos(Vec3(500.f, 500.f, 500.f));
-    //pMonster->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+    pMonster->Transform()->SetAbsolute(true);
+    pMonster->Transform()->SetRelativePos(Vec3(500.f, 500.f, 500.f));
+    pMonster->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
-    //pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-    //pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+    pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
 
-    //AddObject(pMonster, L"Mesh");
+    AddObject(pMonster, L"Mesh");
 
     // 충돌 설정
     // CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");

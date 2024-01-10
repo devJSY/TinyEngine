@@ -146,6 +146,14 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
         return;
     }
 
+    // 이미 로드된 애니메이션이 있는지 예외처리 
+    if (FindAnim(pNewAnim->GetName()))
+    {
+        std::cout << "Animation Already Exists" << std::endl;
+        delete pNewAnim;
+        return;
+    }
+
     pNewAnim->m_Animator = this;
     m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
 }
