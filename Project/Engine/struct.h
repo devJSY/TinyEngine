@@ -87,28 +87,31 @@ struct tMtrlConst
     int padding[2];
 };
 
-struct tGlobal
+struct tGlobalData
 {
+    Vec2 g_RenderResolution;
+    float g_dt;
+    float g_time;
+
+    UINT Light2DCount;
+    UINT Light3DCount;
+
     Vec3 eyeWorld;
     bool UseTexture;
 
     Vec3 rimColor;
     float rimPower;
 
-    Vec2 resolution;
     float NormalLineScale;
     bool UseRim;
 
     float Bloom_Threshold;
     float Bloom_Strength;
     bool DrawAsWireFrame;
-    float CurTime;
 
     Vec4 pickingColor;
 
-    UINT Light2DCount;
-    UINT Light3DCount;
-    Vec2 padding;
+    float padding;
 };
 
 struct tAnimData2D
@@ -139,4 +142,4 @@ struct tMeshData
 };
 
 extern tTransform g_Transform;
-extern tGlobal g_Global;
+extern tGlobalData g_Global;

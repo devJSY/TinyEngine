@@ -51,7 +51,6 @@ void CMeshRender::UpdateData()
     g_Global.UseRim = m_bUseRim;
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
-    g_Global.resolution = CDevice::GetInst()->GetRenderResolution();
 
     // 오브젝트 이름으로 HashID 설정
     std::hash<std::wstring> hasher;

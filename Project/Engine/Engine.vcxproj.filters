@@ -410,9 +410,6 @@
     <Filter Include="Default">
       <UniqueIdentifier>{d0f2f8a5-bdb0-47ff-9b99-9f800e34f2af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Engine">
-      <UniqueIdentifier>{9f111e3a-05f2-4f21-9949-7619719dc3b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Device">
       <UniqueIdentifier>{6c64f738-8ed7-4905-9df2-05423b115338}</UniqueIdentifier>
     </Filter>
@@ -598,6 +595,9 @@
     </Filter>
     <Filter Include="ScriptMgr\Scripts">
       <UniqueIdentifier>{4534e01f-3ea9-4615-8c70-e43b15fe89e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Engine">
+      <UniqueIdentifier>{9f111e3a-05f2-4f21-9949-7619719dc3b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

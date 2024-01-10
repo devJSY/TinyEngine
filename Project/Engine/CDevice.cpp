@@ -122,6 +122,7 @@ void CDevice::Present()
 void CDevice::Resize(Vec2 resolution)
 {
     m_vRenderResolution = resolution;
+    g_Global.g_RenderResolution = m_vRenderResolution;
 
     // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release 시켜야함
     m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
@@ -234,6 +235,8 @@ int CDevice::CreateSwapChain()
     {
         return E_FAIL;
     }
+
+    g_Global.g_RenderResolution = m_vRenderResolution;
 
     return S_OK;
 }
@@ -353,7 +356,7 @@ int CDevice::CreateBlendState()
     m_arrBS[(UINT)BS_TYPE::DEFAULT] = nullptr;
 
     D3D11_BLEND_DESC tDesc = {};
-    
+
     // Mask
     tDesc.AlphaToCoverageEnable = true;
     tDesc.IndependentBlendEnable = false;
@@ -417,7 +420,7 @@ int CDevice::CreateConstBuffer()
     m_arrCB[(UINT)CB_TYPE::MATERIAL_CONST]->Create(sizeof(tMtrlConst), 1);
 
     m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA] = new CConstBuffer(CB_TYPE::GLOBAL_DATA);
-    m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA]->Create(sizeof(tGlobal), 1);
+    m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA]->Create(sizeof(tGlobalData), 1);
 
     m_arrCB[(UINT)CB_TYPE::ANIM2D_DATA] = new CConstBuffer(CB_TYPE::ANIM2D_DATA);
     m_arrCB[(UINT)CB_TYPE::ANIM2D_DATA]->Create(sizeof(tAnimData2D), 1);

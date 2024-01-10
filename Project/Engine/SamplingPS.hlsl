@@ -10,7 +10,7 @@ float4 main(PS_IN input) : SV_TARGET
     
     float RelativeLuminance = ((0.2126 * color.r) + (0.7152 * color.g) + (0.0722 * color.b));
     
-    if (RelativeLuminance < g_Bloom_threshold)
+    if (RelativeLuminance < g_Bloom_Threshold)
         color = float3(0.0, 0.0, 0.0);
     
     return float4(color, 1.0);

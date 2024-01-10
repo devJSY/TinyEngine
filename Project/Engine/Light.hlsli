@@ -4,6 +4,10 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+// =======================================================================================
+// 3D LIGHT
+// =======================================================================================
+
 // BlinnPhong : Phong 모델에서 halfway를 이용해서 속도를 올린 모델
 float3 BlinnPhong(float3 lightStrength, float3 lightVec, float3 normal, float3 toEye)
 {
@@ -30,7 +34,7 @@ float3 ComputeDirectionalLight(tLightInfo L, float3 normal, float3 toEye)
     float3 lightVec = -L.vWorldDir;
 
     float ndotl = max(dot(lightVec, normal), 0.0f);
-    float3 lightStrength = L.vColor.rgb * ndotl;
+    float3 lightStrength = L.ColorInfo.vColor.rgb * ndotl;
 
     return BlinnPhong(lightStrength, lightVec, normal, toEye);
 }
@@ -59,7 +63,7 @@ float3 ComputePointLight(tLightInfo L, float3 pos, float3 normal, float3 toEye)
         lightVec /= d;
 
         float ndotl = max(dot(lightVec, normal), 0.0f);
-        float3 lightStrength = L.vColor.rgb * ndotl;
+        float3 lightStrength = L.ColorInfo.vColor.rgb * ndotl;
 
         float att = CalcAttenuation(d, L.fallOffStart, L.fallOffEnd);
         lightStrength *= att;
@@ -86,7 +90,7 @@ float3 ComputeSpotLight(tLightInfo L, float3 pos, float3 normal, float3 toEye)
         lightVec /= d;
 
         float ndotl = max(dot(lightVec, normal), 0.0f);
-        float3 lightStrength = L.vColor.rgb * ndotl;
+        float3 lightStrength = L.ColorInfo.vColor.rgb * ndotl;
 
         float att = CalcAttenuation(d, L.fallOffStart, L.fallOffEnd);
         lightStrength *= att;
@@ -105,6 +109,53 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
     rim = pow(abs(rim), g_rimPower);
     float3 strength = float3(1, 1, 1); // strength option
     return rim * g_rimColor * strength;
+}
+
+// =======================================================================================
+// 2D LIGHT
+// =======================================================================================
+
+void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
+{
+    // 빛을 적용시킬 광원의 정보
+    tLightInfo info = g_Light2D[_LightIdx];
+    
+    // Directional Light
+    if (0 == info.LightType)
+    {
+        _output.vAmbient += info.ColorInfo.vAmbient;
+    }
+    
+    // Point Light
+    else if (1 == info.LightType)
+    {
+        float fAttenu = 1.f;
+        
+        float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
+        if (fDist < info.fRadius)
+        {
+            if (g_int_0)
+            {
+                float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+                fAttenu = saturate(cos(fTheta));
+            }
+            else
+            {
+                fAttenu = saturate(1.f - fDist / g_Light2D[0].fRadius);
+            }
+            
+            _output.vColor += info.ColorInfo.vColor * fAttenu;
+        }
+    }
+    
+    // Spot Light
+    else
+    {
+        // Point Light 거의 유사
+        // 내적을 활용, 각도 체크
+        // 간단한 영상 찍어서 올리기
+        // 광원을 회전시키기
+    }
 }
 
 #endif

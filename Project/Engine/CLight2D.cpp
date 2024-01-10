@@ -2,6 +2,7 @@
 #include "CLight2D.h"
 
 #include "CRenderMgr.h"
+#include "CTransform.h"
 
 CLight2D::CLight2D()
     : CComponent(COMPONENT_TYPE::LIGHT2D)
@@ -29,6 +30,9 @@ void CLight2D::finaltick()
 {
     // ±¤¿ø µî·Ï
     CRenderMgr::GetInst()->RegisterLight2D(this);
+
+    m_Info.vWorldPos = Transform()->GetWorldPos();
+    m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 }
 
 void CLight2D::SaveToLevelFile(FILE* _File)

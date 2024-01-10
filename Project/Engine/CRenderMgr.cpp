@@ -125,6 +125,11 @@ void CRenderMgr::UpdateData()
     g_Global.Light2DCount = (UINT)m_vecLight2D.size();
     g_Global.Light3DCount = (UINT)m_vecLight3D.size();
 
+    // 전역 상수 데이터 바인딩
+    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    pGlobalBuffer->SetData(&g_Global);
+    pGlobalBuffer->UpdateData();
+
     // Light2D
     static vector<tLightInfo> vecLight2DInfo;
 
@@ -152,11 +157,6 @@ void CRenderMgr::UpdateData()
     m_Light3DBuffer->UpdateData(12);
 
     vecLight3DInfo.clear();
-
-    // 전역 상수 데이터 바인딩
-    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
-    pGlobalBuffer->SetData(&g_Global);
-    pGlobalBuffer->UpdateData();
 }
 
 void CRenderMgr::Clear()

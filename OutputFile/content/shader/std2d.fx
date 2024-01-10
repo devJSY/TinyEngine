@@ -3,19 +3,38 @@
 
 #include "global.hlsli"
 #include "struct.hlsli"
+#include "Light.hlsli"
 
-PS_IN VS_Std2D(VS_IN _in)
+struct VS_Input
 {
-    PS_IN output = (PS_IN) 0.0;
+    float4 vColor : COLOR;
+    float3 vPos : POSITION; // Sementic
+    float2 vUV : TEXCOORD;
+};
+
+struct VS_Output
+{
+    float4 vPosition : SV_Position;
+    float4 vColor : COLOR;
+    float2 vUV : TEXCOORD;
     
-    output.vPosProj = mul(float4(_in.vPos, 1.0), g_matWVP);
+    float3 vWorldPos : POSITION;
+};
+
+VS_Output VS_Std2D(VS_Input _in)
+{
+    VS_Output output = (VS_Output) 0.0;
+    
+    output.vPosition = mul(float4(_in.vPos, 1.0), g_matWVP);
     output.vColor = _in.vColor;
     output.vUV = _in.vUV;
+    
+    output.vWorldPos = mul(float4(_in.vPos, 1.0), g_matWorld);
     
     return output;
 }
 
-float4 PS_Std2D(PS_IN _in) : SV_Target
+float4 PS_Std2D(VS_Output _in) : SV_Target
 {
     float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
     
@@ -68,8 +87,15 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     // 광원 처리
     // 광원의 타입별 처리
     // 광원이 여러개일 때 처리
-    //vColor.rgb *= g_Light2D[0].vAmbient.rgb;
-        
+    tLightColor LightColor = (tLightColor) 0.f;
+    
+    for (int i = 0; i < g_Light2DCount; ++i)
+    {
+        CalLight2D(_in.vWorldPos, i, LightColor);
+    }
+    
+    vColor.rgb *= (LightColor.vColor.rgb + LightColor.vAmbient.rgb);
+    
     return vColor;
 }
 

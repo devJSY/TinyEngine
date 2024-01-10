@@ -3,6 +3,8 @@
 
 #include "struct.hlsli"
 
+#define PI 3.1415926535f
+
 cbuffer TRANSFORM : register(b0)
 {
     row_major Matrix g_matWorld;
@@ -71,31 +73,7 @@ cbuffer MATERIAL_CONST : register(b1)
 #define LIGHT_SPOT        2 //0x04  
 //#define LIGHT_SHADOW      0x10
 
-cbuffer GLOBAL : register(b2)
-{
-    float3 g_eyeWorld;
-    bool g_UseTexture;
-    
-    float3 g_rimColor;
-    float g_rimPower;
-
-    float2 g_Resolution;
-    float g_NormalLineScale;
-    bool g_UseRim;
-
-    float g_Bloom_threshold;
-    float g_Bloom_Strength;
-    bool g_DrawAsWireFrame;
-    float g_CurTime;
-    
-    float4 g_pickingColor;
-    
-    uint Light2DCount;
-    uint Light3DCount;
-    float2 g_padding;
-}
-
-cbuffer ANIM_DATA2D : register(b3)
+cbuffer ANIM_DATA2D : register(b2)
 {
     float2 g_vLeftTop;
     float2 g_vSliceSize;
@@ -104,6 +82,33 @@ cbuffer ANIM_DATA2D : register(b3)
     int g_UseAnim2D;
     int g_UseBackGround;
     float2 Anim_padding;
+}
+
+cbuffer GLOBAL_DATA : register(b3)
+{
+    float2 g_RenderResolution;
+    float g_dt;
+    float g_time;
+
+    uint g_Light2DCount;
+    uint g_Light3DCount;
+
+    float3 g_eyeWorld;
+    bool g_UseTexture;
+
+    float3 g_rimColor;
+    float g_rimPower;
+
+    float g_NormalLineScale;
+    bool g_UseRim;
+
+    float g_Bloom_Threshold;
+    float g_Bloom_Strength;
+    bool g_DrawAsWireFrame;
+
+    float4 g_pickingColor;
+
+    float globalpadding;
 }
 
 Texture2D g_tex_0 : register(t0);

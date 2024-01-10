@@ -7,7 +7,7 @@ float4 main(PS_IN input) : SV_Target
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
     float4 color = float4(0.0, 0.0, 0.0, 1.0);
 
-    for (uint i = 0; i < Light3DCount; ++i)
+    for (uint i = 0; i < g_Light3DCount; ++i)
     {
         if (LIGHT_DIRECTIONAL == g_Light3D[i].LightType)
             color.rgb += ComputeDirectionalLight(g_Light3D[i], input.normalWorld, toEye);
