@@ -25,10 +25,10 @@ void CContentBrowser::render()
 {
     ImGui::Begin("Content Browser");
 
-    // ←
+    // 뒤로가기 버튼
     if (m_CurrentDirectory != std::filesystem::path(CPathMgr::GetContentPath()))
     {
-        if (ImGui::Button("<-"))
+        if (ImGui::ArrowButton("##left", ImGuiDir_Left))
         {
             // 예외처리 - L"\\" 가 붙어있는 경로라면 L"\\" 를 제거
             if (!m_CurrentDirectory.has_stem())
