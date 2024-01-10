@@ -708,6 +708,29 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), m_DefaultTreeNodeFlag, "MeshRender"))
     {
+        Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
+        Ptr<CMesh> pMesh = pMeshRender->GetMesh();
+
+        if (nullptr != pMesh)
+        {
+            std::string name = WstringTostring(pMesh->GetName());
+
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            strcpy_s(buffer, sizeof(buffer), name.c_str());
+            ImGui::InputText(_labelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+        }
+
+        if (nullptr != pMaterial)
+        {
+            std::string name = WstringTostring(pMaterial->GetName());
+
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            strcpy_s(buffer, sizeof(buffer), name.c_str());
+            ImGui::InputText(_labelPrefix("Material").c_str(), buffer, sizeof(buffer));
+        }
+
         bool bUseTexture = pMeshRender->IsUseTexture();
         if (ImGui::Checkbox("Use Texture", &bUseTexture))
             pMeshRender->SetUseTexture(bUseTexture);
@@ -721,7 +744,6 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             pMeshRender->SetNormalLineScale(scale);
 
         // Material
-        Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
         if (nullptr != pMaterial)
         {
             if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))

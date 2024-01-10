@@ -854,6 +854,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"CrosshairMesh");
         AddAsset(L"CrosshairMesh", pMesh);
     }
 
@@ -863,6 +864,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"PointMesh");
         AddAsset(L"PointMesh", pMesh);
     }
 
@@ -872,6 +874,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"CircleMesh");
         AddAsset(L"CircleMesh", pMesh);
     }
 
@@ -881,6 +884,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"RectMesh");
         AddAsset(L"RectMesh", pMesh);
     }
 
@@ -890,6 +894,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"CircleMesh_Debug");
         AddAsset(L"CircleMesh_Debug", pMesh);
     }
 
@@ -899,6 +904,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"RectMesh_Debug");
         AddAsset(L"RectMesh_Debug", pMesh);
     }
 
@@ -908,6 +914,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"SquareGridMesh");
         AddAsset(L"SquareGridMesh", pMesh);
     }
 
@@ -917,6 +924,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"BoxMesh");
         AddAsset(L"BoxMesh", pMesh);
     }
 
@@ -925,6 +933,7 @@ void CAssetMgr::CreateDefaultMesh()
         auto mesh = MakeCylinder(1, 1, 1, 100);
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"CylinderMesh");
         AddAsset(L"CylinderMesh", pMesh);
     }
 
@@ -934,6 +943,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"SphereMesh");
         AddAsset(L"SphereMesh", pMesh);
     }
 
@@ -942,6 +952,7 @@ void CAssetMgr::CreateDefaultMesh()
         auto mesh = MakeTetrahedron();
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"TetrahedronMesh");
         AddAsset(L"TetrahedronMesh", pMesh);
     }
 
@@ -950,6 +961,7 @@ void CAssetMgr::CreateDefaultMesh()
         auto mesh = MakeIcosahedron();
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"IcosahedronMesh");
         AddAsset(L"IcosahedronMesh", pMesh);
     }
 
@@ -960,6 +972,7 @@ void CAssetMgr::CreateDefaultMesh()
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"SubdivideSphereMesh");
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
 }
@@ -1015,6 +1028,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
+        pShader->SetName(L"Std2DShader");
         AddAsset(L"Std2DShader", pShader);
     }
 
@@ -1030,6 +1044,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
+        pShader->SetName(L"DebugShapeShader");
         AddAsset(L"DebugShapeShader", pShader);
     }
 
@@ -1040,6 +1055,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BasicPS.hlsl", "main");
 
+        pShader->SetName(L"Basic");
         AddAsset(L"Basic", pShader);
     }
 
@@ -1054,6 +1070,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
+        pShader->SetName(L"BlinnPhong");
         AddAsset(L"BlinnPhong", pShader);
     }
 
@@ -1067,6 +1084,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
+        pShader->SetName(L"NormalLine");
         AddAsset(L"NormalLine", pShader);
     }
 
@@ -1081,6 +1099,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
+        pShader->SetName(L"OutLine");
         AddAsset(L"OutLine", pShader);
     }
 
@@ -1095,6 +1114,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
+        pShader->SetName(L"Skybox");
         AddAsset(L"Skybox", pShader);
     }
 
@@ -1112,6 +1132,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
+        pShader->SetName(L"BillBoardPoint");
         AddAsset(L"BillBoardPoint", pShader);
     }
 
@@ -1126,6 +1147,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS_EQUAL);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
+        pShader->SetName(L"IDMap");
         AddAsset(L"IDMap", pShader);
     }
 
@@ -1140,6 +1162,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
+        pShader->SetName(L"SkyBox_IDMap");
         AddAsset(L"SkyBox_IDMap", pShader);
     }
 }
@@ -1173,11 +1196,13 @@ void CAssetMgr::CreateDefaultMaterial()
     CMaterial* pMtrl = nullptr;
     pMtrl = new CMaterial;
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
+    pMtrl->SetName(L"Std2DMtrl");
     AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
 
     // DebugShapeMtrl
     CMaterial* pDebugMtrl = new CMaterial;
     pDebugMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
+    pDebugMtrl->SetName(L"DebugShapeMtrl");
     AddAsset<CMaterial>(L"DebugShapeMtrl", pDebugMtrl);
 
     // Basic
@@ -1186,6 +1211,7 @@ void CAssetMgr::CreateDefaultMaterial()
     pBasic->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
     pBasic->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f),
                                    Vec4());
+    pBasic->SetName(L"Basic");
     AddAsset<CMaterial>(L"Basic", pBasic);
 
     // BlinnPhong
@@ -1195,6 +1221,7 @@ void CAssetMgr::CreateDefaultMaterial()
     pBlinnPhongMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
     pBlinnPhongMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap_diffuse"));
     pBlinnPhongMtrl->SetTexParam(TEXCUBE_1, FindAsset<CTexture>(L"cubemap_specular"));
+    pBlinnPhongMtrl->SetName(L"BlinnPhong");
     AddAsset<CMaterial>(L"BlinnPhong", pBlinnPhongMtrl);
 
     // SkyBox
@@ -1202,6 +1229,7 @@ void CAssetMgr::CreateDefaultMaterial()
     pSkyBox = new CMaterial;
     pSkyBox->SetShader(FindAsset<CGraphicsShader>(L"Skybox"));
     pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
+    pSkyBox->SetName(L"Skybox");
     AddAsset<CMaterial>(L"Skybox", pSkyBox);
 
     // Directional Light
@@ -1209,6 +1237,7 @@ void CAssetMgr::CreateDefaultMaterial()
     pDirLigth = new CMaterial;
     pDirLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pDirLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"DirectionalLight"));
+    pDirLigth->SetName(L"DirectionalLight");
     AddAsset<CMaterial>(L"DirectionalLight", pDirLigth);
 
     // Point Light
@@ -1216,6 +1245,7 @@ void CAssetMgr::CreateDefaultMaterial()
     pPointLigth = new CMaterial;
     pPointLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pPointLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"PointLight"));
+    pPointLigth->SetName(L"PointLight");
     AddAsset<CMaterial>(L"PointLight", pPointLigth);
 
     // Spot Light
@@ -1223,6 +1253,7 @@ void CAssetMgr::CreateDefaultMaterial()
     pSpotLigth = new CMaterial;
     pSpotLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
     pSpotLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLight"));
+    pSpotLigth->SetName(L"SpotLight");
     AddAsset<CMaterial>(L"SpotLight", pSpotLigth);
 }
 
