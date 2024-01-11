@@ -66,8 +66,8 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         }
     }
     
-    //if (vColor.a < 0.1f)
-    //    discard;
+    if (vColor.a < 0.1f)
+        discard;
             
     // 광원 처리
     // 광원의 타입별 처리

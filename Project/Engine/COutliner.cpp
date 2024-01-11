@@ -293,8 +293,12 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (nullptr == pTr)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                          "Transform"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(),
+                                  m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Transform");
+
+    ComponentSettingsButton(pTr);
+
+    if (open)
     {
         Vec3 pos = pTr->GetRelativePos();
         DrawVec3Control("Location", pos, 10.f);
@@ -318,7 +322,11 @@ void COutliner::DrawCollider2D(CGameObject* obj)
     if (nullptr == pCol)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Collider2D"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Collider2D");
+
+    ComponentSettingsButton(pCol);
+
+    if (open)
     {
         const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
         const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetType()];
@@ -376,7 +384,11 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
     if (nullptr == pAni)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, "Animator2D"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, "Animator2D");
+
+    ComponentSettingsButton(pAni);
+
+    if (open)
     {
         const map<wstring, CAnim*>& mapAnim = pAni->GetmapAnim();
         CAnim* pCurAnim = pAni->GetCurAnim();
@@ -496,8 +508,11 @@ void COutliner::DrawLight2D(CGameObject* obj)
     if (nullptr == pLight)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                          "Light2D"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag, "Light2D");
+
+    ComponentSettingsButton(pLight);
+
+    if (open)
     {
         const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
         const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
@@ -563,8 +578,11 @@ void COutliner::DrawLight3D(CGameObject* obj)
     if (nullptr == pLight)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                          "Light3D"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, "Light3D");
+
+    ComponentSettingsButton(pLight);
+
+    if (open)
     {
         const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
         const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
@@ -630,8 +648,11 @@ void COutliner::DrawCamera(CGameObject* obj)
     if (nullptr == pCam)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                          "Camera"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), m_DefaultTreeNodeFlag, "Camera");
+
+    ComponentSettingsButton(pCam);
+
+    if (open)
     {
         const char* projectionTypeStrings[] = {"Orthographic", "Perspective"};
         const char* currentProjectionTypeString = projectionTypeStrings[(int)pCam->GetProjType()];
@@ -677,7 +698,7 @@ void COutliner::DrawCamera(CGameObject* obj)
         if (pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
         {
             float scale = pCam->GetScale();
-            if (ImGui::DragFloat("Scale", &scale, 0.01f, 0.001f, 100.f))
+            if (ImGui::DragFloat("Scale", &scale, 0.01f, 1e-5f, 1000.f))
                 pCam->SetScale(scale);
 
             float Near = pCam->GetNear();
@@ -706,7 +727,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
     if (nullptr == pMeshRender)
         return;
 
-    if (ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), m_DefaultTreeNodeFlag, "MeshRender"))
+    bool open = ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), m_DefaultTreeNodeFlag, "MeshRender");
+
+    ComponentSettingsButton(pMeshRender);
+
+    if (open)
     {
         Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();

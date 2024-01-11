@@ -3,6 +3,7 @@
 #include "CEntity.h"
 
 class CGameObject;
+class CComponent;
 
 class COutliner : public CEntity
 {
@@ -33,8 +34,39 @@ private:
     void DrawLandscape(CGameObject* obj);
 
 private:
+    template<typename T>
+    void ComponentSettingsButton(T* comp);
+
+private:
     COutliner();
     virtual ~COutliner();
 
     friend class CLevelEditor; // CLevelEditor 에서만 생성가능하도록 제한
 };
+
+
+template <typename T>
+void COutliner::ComponentSettingsButton(T* comp)
+{
+    ImVec2 contentRegion = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+
+    ImGui::SameLine(contentRegion.x - lineHeight * 0.5f);
+    string id = "+";
+    id += "##";
+    id += typeid(T).name();
+    if (ImGui::Button(id.c_str(), ImVec2{lineHeight, lineHeight}))
+    {
+        ImGui::OpenPopup(typeid(T).name());
+    }
+
+    if (ImGui::BeginPopup(typeid(T).name()))
+    {
+        if (ImGui::MenuItem("Remove component"))
+        {
+            std::cout << typeid(comp).name() << std::endl;
+        }
+
+        ImGui::EndPopup();
+    }
+}

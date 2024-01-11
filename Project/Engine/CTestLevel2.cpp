@@ -51,6 +51,7 @@ void CTestLevel2::begin()
 
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
+    pPlayer->AddComponent(new CAnimator2D);
     pPlayer->AddComponent(new CCollider2D);
     pPlayer->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::PLAYERSCRIPT));
 

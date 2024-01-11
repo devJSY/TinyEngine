@@ -13,7 +13,7 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
-    /*Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_backward.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_forward.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_front.anim");
@@ -37,7 +37,7 @@ void CPlayerScript::begin()
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_idle.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_smoking_idle.anim");
 
-    Animator2D()->Play(L"dodge_back", true);*/
+    Animator2D()->Play(L"dodge_back", true);
 }
 
 void CPlayerScript::tick()
