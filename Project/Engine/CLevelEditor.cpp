@@ -314,7 +314,18 @@ void CLevelEditor::render_Assets()
         {
             for (const auto& iter : mapAsset)
             {
-                ImGui::BulletText(WstringTostring(iter.first).c_str());
+                string key = WstringTostring(iter.first);
+
+                ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_Bullet);
+
+                // Drag & Drop
+                if (ImGui::BeginDragDropSource())
+                {
+                    ImGui::Text("%s", key.c_str(), key.size());
+
+                    ImGui::SetDragDropPayload("ASSETS", key.c_str(), key.size());
+                    ImGui::EndDragDropSource();
+                }
             }
 
             ImGui::TreePop();
