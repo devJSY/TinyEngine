@@ -1017,10 +1017,11 @@ CGameObject* CAssetMgr::LoadModel(const std::string& _relativepath, const std::s
 
 void CAssetMgr::CreateDefaultGraphicsShader()
 {
+    // =================================
+    // Std2DShader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
         pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
 
@@ -1034,10 +1035,10 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Std2DShader", pShader);
     }
 
+    // =================================
+    // EffectShader
+    // =================================
     {
-        // =================================
-        // EffectShader
-        // =================================
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
         pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Effect");
@@ -1051,10 +1052,31 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"EffectShader", pShader);
     }
 
+    // =================================
+    // GrayFilter Shader
+    // Mesh			: RectMesh
+    // RS_TYPE		: CULL_BACK
+    // DS_TYPE		: NO_TEST_NO_WRITE
+    // BS_TYPE		: Default
+    // Domain		: DOMAIN_POSTPROCESS
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayFilter");
+        pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_GrayFilter");
 
-        pShader = new CGraphicsShader;
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        AddAsset(L"GrayFilterShader", pShader);
+    }
+
+    // =================================
+    // DebugShape Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
         pShader->CreatePixelShader(L"shader\\debug.fx", "PS_DebugShape");
 
@@ -1069,10 +1091,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"DebugShapeShader", pShader);
     }
 
+    // =================================
+    // Basic Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BasicPS.hlsl", "main");
 
@@ -1082,10 +1105,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Basic", pShader);
     }
 
+    // =================================
+    // BlinnPhong Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BlinnPhongVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BlinnPhongPS.hlsl", "main");
 
@@ -1099,10 +1123,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"BlinnPhong", pShader);
     }
 
+    // =================================
+    // NormalLine Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\NormalLineVS.hlsl", "main");
         pShader->CreateGeometryShader(L"shader\\NormalLineGS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\NormalLinePS.hlsl", "main");
@@ -1115,10 +1140,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"NormalLine", pShader);
     }
 
+    // =================================
+    // OutLine Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\OutLineVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\OutLinePS.hlsl", "main");
 
@@ -1132,10 +1158,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"OutLine", pShader);
     }
 
+    // =================================
+    // SkyBox Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
 
@@ -1149,10 +1176,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Skybox", pShader);
     }
 
+    // =================================
+    // BillBoardPoint Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BillBoardPointVS.hlsl", "main");
         pShader->CreateGeometryShader(L"shader\\BillBoardPointGS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BillBoardPointPS.hlsl", "main");
@@ -1169,10 +1197,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"BillBoardPoint", pShader);
     }
 
+    // =================================
+    // IDMap Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\IDMapVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\IDMapPS.hlsl", "main");
 
@@ -1186,10 +1215,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"IDMap", pShader);
     }
 
+    // =================================
+    // SkyBox IDMap Shader
+    // =================================
     {
-        Ptr<CGraphicsShader> pShader = nullptr;
-
-        pShader = new CGraphicsShader;
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\IDMapVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\IDMapPS.hlsl", "main");
 
@@ -1230,68 +1260,85 @@ void CAssetMgr::CreateDefaultTexture()
 void CAssetMgr::CreateDefaultMaterial()
 {
     // Std2DMtrl
-    CMaterial* pMtrl = nullptr;
-    pMtrl = new CMaterial;
-    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
-    pMtrl->SetName(L"Std2DMtrl");
-    AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
+        pMtrl->SetName(L"Std2DMtrl");
+        AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+    }
+
+    // GrayFilterMtrl
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"GrayFilterShader"));
+        AddAsset<CMaterial>(L"GrayFilterMtrl", pMtrl);
+    }
 
     // DebugShapeMtrl
-    CMaterial* pDebugMtrl = new CMaterial;
-    pDebugMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
-    pDebugMtrl->SetName(L"DebugShapeMtrl");
-    AddAsset<CMaterial>(L"DebugShapeMtrl", pDebugMtrl);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
+        pMtrl->SetName(L"DebugShapeMtrl");
+        AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
+    }
 
     // Basic
-    CMaterial* pBasic = nullptr;
-    pBasic = new CMaterial;
-    pBasic->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
-    pBasic->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f),
-                                   Vec4());
-    pBasic->SetName(L"Basic");
-    AddAsset<CMaterial>(L"Basic", pBasic);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Basic"));
+        pMtrl->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f),
+                                      Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
+        pMtrl->SetName(L"Basic");
+        AddAsset<CMaterial>(L"Basic", pMtrl);
+    }
 
     // BlinnPhong
-    CMaterial* pBlinnPhongMtrl = nullptr;
-    pBlinnPhongMtrl = new CMaterial;
-    pBlinnPhongMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
-    pBlinnPhongMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
-    pBlinnPhongMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap_diffuse"));
-    pBlinnPhongMtrl->SetTexParam(TEXCUBE_1, FindAsset<CTexture>(L"cubemap_specular"));
-    pBlinnPhongMtrl->SetName(L"BlinnPhong");
-    AddAsset<CMaterial>(L"BlinnPhong", pBlinnPhongMtrl);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
+        pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
+        pMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap_diffuse"));
+        pMtrl->SetTexParam(TEXCUBE_1, FindAsset<CTexture>(L"cubemap_specular"));
+        pMtrl->SetName(L"BlinnPhong");
+        AddAsset<CMaterial>(L"BlinnPhong", pMtrl);
+    }
 
     // SkyBox
-    CMaterial* pSkyBox = nullptr;
-    pSkyBox = new CMaterial;
-    pSkyBox->SetShader(FindAsset<CGraphicsShader>(L"Skybox"));
-    pSkyBox->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
-    pSkyBox->SetName(L"Skybox");
-    AddAsset<CMaterial>(L"Skybox", pSkyBox);
+    {
+        CMaterial* pMtrl = nullptr;
+        pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Skybox"));
+        pMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap"));
+        pMtrl->SetName(L"Skybox");
+        AddAsset<CMaterial>(L"Skybox", pMtrl);
+    }
 
     // Directional Light
-    CMaterial* pDirLigth = nullptr;
-    pDirLigth = new CMaterial;
-    pDirLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
-    pDirLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"DirectionalLight"));
-    pDirLigth->SetName(L"DirectionalLight");
-    AddAsset<CMaterial>(L"DirectionalLight", pDirLigth);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
+        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"DirectionalLight"));
+        pMtrl->SetName(L"DirectionalLight");
+        AddAsset<CMaterial>(L"DirectionalLight", pMtrl);
+    }
 
     // Point Light
-    CMaterial* pPointLigth = nullptr;
-    pPointLigth = new CMaterial;
-    pPointLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
-    pPointLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"PointLight"));
-    pPointLigth->SetName(L"PointLight");
-    AddAsset<CMaterial>(L"PointLight", pPointLigth);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
+        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"PointLight"));
+        pMtrl->SetName(L"PointLight");
+        AddAsset<CMaterial>(L"PointLight", pMtrl);
+    }
 
     // Spot Light
-    CMaterial* pSpotLigth = nullptr;
-    pSpotLigth = new CMaterial;
-    pSpotLigth->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
-    pSpotLigth->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLight"));
-    pSpotLigth->SetName(L"SpotLight");
-    AddAsset<CMaterial>(L"SpotLight", pSpotLigth);
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPoint"));
+        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLight"));
+        pMtrl->SetName(L"SpotLight");
+        AddAsset<CMaterial>(L"SpotLight", pMtrl);
+    }
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
@@ -1307,7 +1354,6 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT
         assert(nullptr);
     }
 
-    pTex->SetKey(_strKey);
     AddAsset<CTexture>(_strKey, pTex);
 
     return pTex;

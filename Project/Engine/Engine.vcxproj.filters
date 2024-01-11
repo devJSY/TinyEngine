@@ -699,5 +699,8 @@
     <FxCompile Include="TessellatedQuadVS.hlsl">
       <Filter>ShaderCode\TessellatedQuad</Filter>
     </FxCompile>
+    <FxCompile Include="postprocess.fx">
+      <Filter>ShaderCode\fx</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

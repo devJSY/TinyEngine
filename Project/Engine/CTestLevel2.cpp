@@ -77,6 +77,18 @@ void CTestLevel2::begin()
 
     AddObject(pLight, L"Light");
 
+    // PostProcess 오브젝트 추가
+    CGameObject* pPostObj = new CGameObject;
+    pPostObj->SetName(L"GrayFilter");
+
+    pPostObj->AddComponent(new CTransform);
+    pPostObj->AddComponent(new CMeshRender);
+
+    pPostObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pPostObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"GrayFilterMtrl"));
+
+    AddObject(pPostObj, L"Default", false);
+
     // 충돌 설정
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
