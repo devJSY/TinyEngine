@@ -134,6 +134,9 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
         float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
         if (fDist < info.fRadius)
         {
+            float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+            fAttenu = saturate(cos(fTheta));
+            
             if (g_int_0)
             {
                 float fTheta = (fDist / info.fRadius) * (PI / 2.f);
@@ -141,7 +144,7 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
             }
             else
             {
-                fAttenu = saturate(1.f - fDist / g_Light2D[0].fRadius);
+                fAttenu = saturate(1.f - fDist / g_Light2D[_LightIdx].fRadius);
             }
             
             _output.vColor += info.ColorInfo.vColor * fAttenu;
@@ -151,17 +154,11 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     // Spot Light
     else
     {
-        // Point Light 거의 유사
-        // 내적을 활용, 각도 체크
-        // 간단한 영상 찍어서 올리기
-        // 광원을 회전시키기
-        
         float2 LightToPixel = normalize(_WorldPos.xy - info.vWorldPos.xy);
-        
         float Theta = dot(info.vWorldDir.xy, LightToPixel);
-        float Angle = acos(Theta);
+        float Degree = acos(Theta);
         
-        if (Angle < radians(info.fAngle / 2.f))
+        if (Degree < radians(info.fAngle / 2.f))
         {
             float fAttenu = 1.f;
         

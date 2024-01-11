@@ -134,15 +134,18 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
         float fDist = distance(info.vWorldPos.xy, _WorldPos.xy);
         if (fDist < info.fRadius)
         {
-            if (g_int_0)
-            {
-                float fTheta = (fDist / info.fRadius) * (PI / 2.f);
-                fAttenu = saturate(cos(fTheta));
-            }
-            else
-            {
-                fAttenu = saturate(1.f - fDist / g_Light2D[0].fRadius);
-            }
+            float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+            fAttenu = saturate(cos(fTheta));
+            
+            //if (g_int_0)
+            //{
+            //    float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+            //    fAttenu = saturate(cos(fTheta));
+            //}
+            //else
+            //{
+            //    fAttenu = saturate(1.f - fDist / g_Light2D[_LightIdx].fRadius);
+            //}
             
             _output.vColor += info.ColorInfo.vColor * fAttenu;
         }
@@ -151,11 +154,11 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
     // Spot Light
     else
     {
-        float2 LightTo = normalize(_WorldPos.xy - info.vWorldPos.xy);
-        float Theta = dot(info.vWorldDir.xy, LightTo);
-        float Angle = acos(Theta);
+        float2 LightToPixel = normalize(_WorldPos.xy - info.vWorldPos.xy);
+        float Theta = dot(info.vWorldDir.xy, LightToPixel);
+        float Degree = acos(Theta);
         
-        if (Angle < radians(info.fAngle / 2.f))
+        if (Degree < radians(info.fAngle / 2.f))
         {
             float fAttenu = 1.f;
         
