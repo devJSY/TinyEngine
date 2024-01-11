@@ -64,7 +64,7 @@ void COutliner::ComponentSettingsButton(T* comp)
     {
         if (ImGui::MenuItem("Remove component"))
         {
-            std::cout << typeid(comp).name() << std::endl;
+            GamePlayStatic::RemoveComponent(comp->GetOwner(), comp->GetComponentType());
         }
 
         ImGui::EndPopup();

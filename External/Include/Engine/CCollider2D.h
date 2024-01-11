@@ -30,7 +30,7 @@ public:
     bool IsAbsolute() const { return m_bAbsolute; }
     Vec2 GetOffsetPos() const { return Vec2(m_vOffsetPos.x, m_vOffsetPos.y); }
     Vec2 GetOffsetScale() const { return Vec2(m_vOffsetScale.x, m_vOffsetScale.y); }
-    COLLIDER2D_TYPE GetType() const { return m_Type; }
+    COLLIDER2D_TYPE GetColliderType() const { return m_Type; }
 
     const Matrix& GetColliderWorldMat() const { return m_matColWorld; }
 

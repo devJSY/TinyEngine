@@ -31,7 +31,7 @@ private:
 
     int GetRefCount() const { return m_RefCount; }
 
-    ASSET_TYPE GetType() const { return m_Type; }
+    ASSET_TYPE GetComponentType() const { return m_Type; }
 
     virtual int Load(const wstring& _strFilePath) { return E_FAIL; }
 

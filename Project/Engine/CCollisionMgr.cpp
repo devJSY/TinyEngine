@@ -123,19 +123,22 @@ void CCollisionMgr::CollisionBtwLayer(UINT _leftCol, UINT _rightCol)
 
 bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _pRightCol)
 {
-    if (_pLeftCol->GetType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetType() == COLLIDER2D_TYPE::RECT)
+    if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
     {
         return CollisionRectRect(_pLeftCol, _pRightCol);
     }
-    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE &&
+             _pRightCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
     {
         return CollisionCircleCircle(_pLeftCol, _pRightCol);
     }
-    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::RECT &&
+             _pRightCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
     {
         return CollisionRectCircle(_pLeftCol, _pRightCol);
     }
-    else if (_pLeftCol->GetType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetType() == COLLIDER2D_TYPE::RECT)
+    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE &&
+             _pRightCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
     {
         return CollisionRectCircle(_pRightCol, _pLeftCol);
     }

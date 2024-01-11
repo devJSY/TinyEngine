@@ -40,6 +40,7 @@ public:
 
 public:
     void AddComponent(CComponent* _Component);
+    void RemoveComponent(COMPONENT_TYPE _Type);
     CComponent* GetComponent(COMPONENT_TYPE _Type) const { return m_arrCom[(UINT)_Type]; }
 
     GET_COMPONENT(Transform, TRANSFORM);

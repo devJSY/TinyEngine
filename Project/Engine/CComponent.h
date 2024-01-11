@@ -24,7 +24,7 @@ public:
     virtual void UpdateData(){};
 
 public:
-    COMPONENT_TYPE GetType() const { return m_Type; }
+    COMPONENT_TYPE GetComponentType() const { return m_Type; }
     CGameObject* GetOwner() const { return m_Owner; }
 
 public:

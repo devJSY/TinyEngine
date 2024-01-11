@@ -329,7 +329,7 @@ void COutliner::DrawCollider2D(CGameObject* obj)
     if (open)
     {
         const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
-        const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetType()];
+        const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetColliderType()];
         if (ImGui::BeginCombo(_labelPrefix("Collider2DType").c_str(), currentCollider2DTypeString))
         {
             for (int i = 0; i < 2; i++)
@@ -348,13 +348,13 @@ void COutliner::DrawCollider2D(CGameObject* obj)
             ImGui::EndCombo();
         }
 
-        if (pCol->GetType() == COLLIDER2D_TYPE::RECT)
+        if (pCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
         {
             bool bAbsolute = pCol->IsAbsolute();
             ImGui::Checkbox(_labelPrefix("Absolute").c_str(), &bAbsolute);
             pCol->SetAbsolute(bAbsolute);
         }
-        else if (pCol->GetType() == COLLIDER2D_TYPE::CIRCLE)
+        else if (pCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
         {
             float fRadius = pCol->GetRadius();
             if (ImGui::DragFloat(_labelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))

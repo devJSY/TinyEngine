@@ -120,6 +120,9 @@ void CTaskMgr::tick()
         case TASK_TYPE::ADD_COMPONENT:
             ADD_COMPONENT(m_vecTask[i]);
             break;
+        case TASK_TYPE::REMOVE_COMPONENT:
+            REMOVE_COMPONENT(m_vecTask[i]);
+            break;
         case TASK_TYPE::LAYER_CHANGE:
             LAYER_CHANGE(m_vecTask[i]);
             break;
@@ -502,6 +505,13 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     case COMPONENT_TYPE::SCRIPT:
         break;
     }
+}
+
+void CTaskMgr::REMOVE_COMPONENT(const FTask& _Task)
+{
+    CGameObject* pObj = (CGameObject*)_Task.Param_1;
+    COMPONENT_TYPE type = (COMPONENT_TYPE)_Task.Param_2;
+    pObj->RemoveComponent(type);
 }
 
 void CTaskMgr::LAYER_CHANGE(const FTask& _Task)

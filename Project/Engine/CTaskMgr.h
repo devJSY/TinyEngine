@@ -32,8 +32,11 @@ enum class TASK_TYPE
     // Param1 : MouseX , Param2 : MouseY
     MOUSE_RAY_PICKING,
 
-    // Param1 : Parent Object, Param2 : Component Name
+    // Param1 : Object, Param2 : COMPONENT_TYPE
     ADD_COMPONENT,
+
+    // Param1 : Object, Param2 : COMPONENT_TYPE
+    REMOVE_COMPONENT,
 
     // Param1 : Object, Param2 : Layer Index
     LAYER_CHANGE,
@@ -70,5 +73,6 @@ private:
     void MOUSE_COLOR_PICKING(const FTask& _Task);
     void MOUSE_RAY_PICKING(const FTask& _Task);
     void ADD_COMPONENT(const FTask& _Task);
+    void REMOVE_COMPONENT(const FTask& _Task);
     void LAYER_CHANGE(const FTask& _Task);
 };

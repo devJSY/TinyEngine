@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "CGameObject.h"
 
+#include "CLevelMgr.h"
+#include "CCollisionMgr.h"
+
 #include "CComponent.h"
 #include "CRenderComponent.h"
 
 #include "CScript.h"
 
-#include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
 
@@ -117,7 +119,7 @@ void CGameObject::render()
 
 void CGameObject::AddComponent(CComponent* _Component)
 {
-    COMPONENT_TYPE type = _Component->GetType();
+    COMPONENT_TYPE type = _Component->GetComponentType();
 
     if (type == COMPONENT_TYPE::SCRIPT)
     {
@@ -144,6 +146,34 @@ void CGameObject::AddComponent(CComponent* _Component)
             m_RenderCom = pRenderCom;
         }
     }
+}
+
+void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
+{
+    // 해당 타입의 컴포넌트가 존재하지 않은 경우
+    if (nullptr == m_arrCom[(UINT)_Type])
+        return;
+
+    // Transform 은 삭제 불가
+    if (COMPONENT_TYPE::TRANSFORM == _Type)
+        return;
+
+    // 충돌 해제 처리
+    if (COMPONENT_TYPE::COLLIDER2D == _Type)
+    {
+        CCollisionMgr::GetInst()->CollisionRelease(this);
+    }
+
+    // Render Component
+    if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type ||
+        COMPONENT_TYPE::PARTICLESYSTEM == _Type || COMPONENT_TYPE::SKYBOX == _Type || COMPONENT_TYPE::DECAL == _Type ||
+        COMPONENT_TYPE::LANDSCAPE == _Type)
+    {
+        m_RenderCom = nullptr;
+    }
+
+    delete m_arrCom[(UINT)_Type];
+    m_arrCom[(UINT)_Type] = nullptr;
 }
 
 void CGameObject::DisconnectWithParent()

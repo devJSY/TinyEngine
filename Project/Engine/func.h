@@ -25,6 +25,7 @@ namespace GamePlayStatic
     void MouseRayPicking(Vec2 MousePos);
 
     void AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
+    void RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
     void LayerChange(CGameObject* _pObj, int LayerIdx);
 
     void LevelChange(CLevel* _Level);

@@ -141,6 +141,15 @@ void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::REMOVE_COMPONENT;
+    task.Param_1 = (INT_PTR)_pObj;
+    task.Param_2 = (INT_PTR)_type;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::LayerChange(CGameObject* _pObj, int LayerIdx)
 {
     FTask task = {};
