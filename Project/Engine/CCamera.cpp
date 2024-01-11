@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CCamera.h"
 
+#include "CAssetMgr.h"
+#include "CLevelMgr.h"
+
 #include "CDevice.h"
 #include "CTransform.h"
 
@@ -12,7 +15,8 @@
 
 #include "CMeshRender.h"
 #include "CMaterial.h"
-#include "CAssetMgr.h"
+
+#include "CRenderComponent.h"
 
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
@@ -131,15 +135,8 @@ void CCamera::LayerCheck(const wstring& _strLayerName, bool _bCheck)
     LayerCheck(idx, _bCheck);
 }
 
-void CCamera::render()
+void CCamera::SortObject()
 {
-    // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
-    g_Transform.matView = m_matView;
-    g_Transform.matProj = m_matProj;
-
-    // eyePos 등록
-    g_Global.eyeWorld = Transform()->GetWorldPos();
-
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
     for (int i = 0; i < LAYER_MAX; ++i)
@@ -150,66 +147,118 @@ void CCamera::render()
 
         CLayer* pLayer = pCurLevel->GetLayer(i);
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
-        for (size_t i = 0; i < vecObjects.size(); ++i)
+        for (size_t j = 0; j < vecObjects.size(); ++j)
         {
-            wstring LayerName = pLayer->GetName();
-
-            // Render Pass
-            vecObjects[i]->render();
-
-            CMeshRender* meshRender = vecObjects[i]->MeshRender();
-            if (nullptr != meshRender)
+            // 메쉬, 재질, 쉐이더 확인
+            if (!(vecObjects[j]->GetRenderComopnent() && vecObjects[j]->GetRenderComopnent()->GetMesh().Get() &&
+                  vecObjects[j]->GetRenderComopnent()->GetMaterial().Get() &&
+                  vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader().Get()))
             {
-                Ptr<CMaterial> mtrl = meshRender->GetMaterial();
-                if (nullptr != mtrl)
-                {
-                    Ptr<CGraphicsShader> shader = mtrl->GetShader();
+                continue;
+            }
 
-                    // Normal Line Pass
-                    if (meshRender->IsDrawNormalLine())
-                    {
-                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
-                        vecObjects[i]->render();
-                    }
+            SHADER_DOMAIN domain = vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader()->GetDomain();
 
-                    // outline pass
-                    // 와이어 프레임일때는 Off
-                    // SkyBox 일때는 Off
-                    if (CLevelMgr::GetInst()->GetSelectedObj() == vecObjects[i] && !g_Global.DrawAsWireFrame &&
-                        LayerName != L"SkyBox")
-                    {
-                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine"));
-                        vecObjects[i]->render();
-                    }
-
-                    // IDMap
-                    if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
-                    {
-                        Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
-                        Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
-
-                        CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
-
-                        Ptr<CGraphicsShader> IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"IDMap");
-
-                        if (LayerName == L"SkyBox")
-                            IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkyBox_IDMap");
-
-                        mtrl->SetShader(IDShader);
-                        vecObjects[i]->render();
-
-                        Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-                        Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-
-                        CONTEXT->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
-                    }
-
-                    // 원래 쉐이더로 설정
-                    mtrl->SetShader(shader);
-                }
+            switch (domain)
+            {
+            case SHADER_DOMAIN::DOMAIN_OPAQUE:
+                m_vecOpaque.push_back(vecObjects[j]);
+                break;
+            case SHADER_DOMAIN::DOMAIN_MASKED:
+                m_vecMaked.push_back(vecObjects[j]);
+                break;
+            case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
+                m_vecTransparent.push_back(vecObjects[j]);
+                break;
+            case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
+                m_vecPostProcess.push_back(vecObjects[j]);
+                break;
+            case SHADER_DOMAIN::DOMAIN_DEBUG:
+                break;
             }
         }
     }
+}
+
+void CCamera::render()
+{
+    // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
+    g_Transform.matView = m_matView;
+    g_Transform.matProj = m_matProj;
+
+    // eyePos 등록
+    g_Global.eyeWorld = Transform()->GetWorldPos();
+
+    // Domain 순서대로 렌더링
+    render(m_vecOpaque);
+    render(m_vecMaked);
+    render(m_vecTransparent);
+    render(m_vecPostProcess);
+}
+
+void CCamera::render(vector<CGameObject*>& _vecObj)
+{
+    for (size_t i = 0; i < _vecObj.size(); ++i)
+    {
+        wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
+
+        // Render Pass
+        _vecObj[i]->render();
+
+        CMeshRender* meshRender = _vecObj[i]->MeshRender();
+        if (nullptr != meshRender)
+        {
+            Ptr<CMaterial> mtrl = meshRender->GetMaterial();
+            if (nullptr != mtrl)
+            {
+                Ptr<CGraphicsShader> shader = mtrl->GetShader();
+
+                // Normal Line Pass
+                if (meshRender->IsDrawNormalLine())
+                {
+                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+                    _vecObj[i]->render();
+                }
+
+                // outline pass
+                // 와이어 프레임일때는 Off
+                // SkyBox 일때는 Off
+                if (CLevelMgr::GetInst()->GetSelectedObj() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
+                    LayerName != L"SkyBox")
+                {
+                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine"));
+                    _vecObj[i]->render();
+                }
+
+                // IDMap
+                if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
+                {
+                    Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
+                    Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
+
+                    CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
+
+                    Ptr<CGraphicsShader> IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"IDMap");
+
+                    if (LayerName == L"SkyBox")
+                        IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkyBox_IDMap");
+
+                    mtrl->SetShader(IDShader);
+                    _vecObj[i]->render();
+
+                    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+                    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+                    CONTEXT->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+                }
+
+                // 원래 쉐이더로 설정
+                mtrl->SetShader(shader);
+            }
+        }
+    }
+
+    _vecObj.clear();
 }
 
 void CCamera::SaveToLevelFile(FILE* _File)

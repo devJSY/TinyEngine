@@ -57,6 +57,7 @@ void CRenderMgr::render()
 {
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
+        m_vecCam[i]->SortObject();
         m_vecCam[i]->render();
     }
 }

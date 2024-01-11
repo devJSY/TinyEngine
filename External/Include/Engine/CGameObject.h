@@ -52,6 +52,7 @@ public:
 
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CScript*>& GetScripts() const { return m_vecScript; }
+    CRenderComponent* GetRenderComopnent() const { return m_RenderCom; }
 
     template <typename T>
     T* GetScript()

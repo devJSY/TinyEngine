@@ -30,6 +30,12 @@ private:
 
     UINT m_LayerCheck;
 
+    // 물체 분류
+    vector<CGameObject*> m_vecOpaque;
+    vector<CGameObject*> m_vecMaked;
+    vector<CGameObject*> m_vecTransparent;
+    vector<CGameObject*> m_vecPostProcess;
+
 private:
     float m_CamSpeed;
 
@@ -66,7 +72,12 @@ public:
 public:
     virtual void begin() override;
     virtual void finaltick() override;
+
+    void SortObject();
     void render();
+
+private:
+    void render(vector<CGameObject*>& _vecObj);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

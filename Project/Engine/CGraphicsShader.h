@@ -30,6 +30,9 @@ private:
     // BlendState
     BS_TYPE m_BSType;
 
+    // Shader Domain
+    SHADER_DOMAIN m_Domain;
+
 public:
     int CreateVertexShader(const wstring& _strRelativePath, const string& _strFuncName);
     int CreateHullShader(const wstring& _strRelativePath, const string& _strFuncName);
@@ -41,6 +44,9 @@ public:
     void SetRSType(RS_TYPE _Type) { m_RSType = _Type; }
     void SetDSType(DS_TYPE _Type) { m_DSType = _Type; }
     void SetBSType(BS_TYPE _Type) { m_BSType = _Type; }
+    void SetDomain(SHADER_DOMAIN _domain) { m_Domain = _domain; }
+
+    SHADER_DOMAIN GetDomain() const { return m_Domain; }
 
     RS_TYPE GetRSType() const { return m_RSType; }
     D3D11_PRIMITIVE_TOPOLOGY GetTopology() const { return m_Topology; }
