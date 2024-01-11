@@ -20,6 +20,9 @@ private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
 
 public:
+    const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
+
+public:
     void init();
 
 private:

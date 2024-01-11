@@ -31,6 +31,7 @@ private:
     void render_MenuBar();
     void render_CollisionResponses();
     void render_UI_Toolbar();
+    void render_Assets();
 
 private:
     void SetDarkThemeColors();

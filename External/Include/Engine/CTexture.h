@@ -15,6 +15,9 @@ private:
         m_UAV; // GPGPU(General Purpose GPU) - ComputeShader, 읽기 쓰기 동시가능, (Unordered Register(u) 에 바인딩 가능)
 
 private:
+    int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage);
+    int Create(ComPtr<ID3D11Texture2D> _tex2D);
+
     virtual int Load(const wstring& _strFilePath) override;
 
 public:
@@ -25,11 +28,6 @@ public:
     UINT GetWidth() const { return m_Desc.Width; }
     UINT GetHeight() const { return m_Desc.Height; }
 
-public:
-    int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage);
-    int Create(ComPtr<ID3D11Texture2D> _tex2D);
-
-public:
     const D3D11_TEXTURE2D_DESC& GetDesc() const { return m_Desc; }
     ComPtr<ID3D11Texture2D> GetTex2D() const { return m_Tex2D; }
     ComPtr<ID3D11ShaderResourceView> GetSRV() const { return m_SRV; }

@@ -232,6 +232,22 @@ std::string GetComponentName(COMPONENT_TYPE type)
     return it == ComponentStrings.end() ? "Out of range" : it->second;
 }
 
+std::string GetAssetTypeName(ASSET_TYPE type)
+{
+    static const std::map<ASSET_TYPE, std::string> AssetStrings{
+        {ASSET_TYPE::MESH, "Mesh"},
+        {ASSET_TYPE::MESHDATA, "MeshData"},
+        {ASSET_TYPE::TEXTURE, "Texture"},
+        {ASSET_TYPE::MATERIAL, "Material"},
+        {ASSET_TYPE::SOUND, "Sound"},
+        {ASSET_TYPE::COMPUTE_SHADER, "ComputeShader"},
+        {ASSET_TYPE::GRAPHICS_SHADER, "GraphicsShader"},
+    };
+
+    auto it = AssetStrings.find(type);
+    return it == AssetStrings.end() ? "Out of range" : it->second;
+}
+
 void SaveWString(const wstring& _str, FILE* _File)
 {
     UINT iLen = (UINT)_str.length();

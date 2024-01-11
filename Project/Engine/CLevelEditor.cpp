@@ -133,6 +133,9 @@ void CLevelEditor::render()
     // UI Toolbar
     render_UI_Toolbar();
 
+    // Assets
+    render_Assets();
+
     // Demo ImGUI Rendering
     bool show_demo_window = true;
     if (show_demo_window)
@@ -294,6 +297,30 @@ void CLevelEditor::render_UI_Toolbar()
 
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);
+    ImGui::End();
+}
+
+void CLevelEditor::render_Assets()
+{
+    ImGui::Begin("Assets");
+
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
+    {
+        const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset((ASSET_TYPE)i);
+
+        if (ImGui::TreeNodeEx(GetAssetTypeName((ASSET_TYPE)i).c_str(),
+                              ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                                  ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding))
+        {
+            for (const auto& iter : mapAsset)
+            {
+                ImGui::BulletText(WstringTostring(iter.first).c_str());
+            }
+
+            ImGui::TreePop();
+        }
+    }
+
     ImGui::End();
 }
 

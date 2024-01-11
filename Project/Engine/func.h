@@ -36,6 +36,7 @@ wstring stringToWstring(const string& str);
 std::string currentDateTime();
 Vec4 HashIDToColor(int hash);
 std::string GetComponentName(COMPONENT_TYPE type);
+std::string GetAssetTypeName(ASSET_TYPE type);
 
 // Save / Load
 void SaveWString(const wstring& _str, FILE* _File);
