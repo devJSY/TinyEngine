@@ -92,22 +92,20 @@ cbuffer GLOBAL_DATA : register(b3)
 
     uint g_Light2DCount;
     uint g_Light3DCount;
-
+    float g_Bloom_Threshold;
+    float g_Bloom_Strength;
+    
+    float4 g_pickingColor;
+    
     float3 g_eyeWorld;
     bool g_UseTexture;
 
+    bool g_UseRim;
     float3 g_rimColor;
     float g_rimPower;
 
     float g_NormalLineScale;
-    bool g_UseRim;
-
-    float g_Bloom_Threshold;
-    float g_Bloom_Strength;
     bool g_DrawAsWireFrame;
-
-    float4 g_pickingColor;
-
     float globalpadding;
 }
 

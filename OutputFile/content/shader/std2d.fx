@@ -74,7 +74,7 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     // 광원이 여러개일 때 처리
     tLightColor LightColor = (tLightColor) 0.f;
     
-    for (int i = 0; i < g_Light2DCount; ++i)
+    for (uint i = 0; i < g_Light2DCount; ++i)
     {
         CalLight2D(_in.vPosWorld, i, LightColor);
     }

@@ -95,21 +95,20 @@ struct tGlobalData
 
     UINT Light2DCount;
     UINT Light3DCount;
+    float Bloom_Threshold;
+    float Bloom_Strength;
+
+    Vec4 pickingColor;
 
     Vec3 eyeWorld;
-    bool UseTexture;
+    int UseTexture;
 
+    int UseRim;
     Vec3 rimColor;
     float rimPower;
 
     float NormalLineScale;
-    bool UseRim;
-
-    float Bloom_Threshold;
-    float Bloom_Strength;
-    bool DrawAsWireFrame;
-
-    Vec4 pickingColor;
+    int DrawAsWireFrame;
 
     float padding;
 };

@@ -151,7 +151,7 @@ void CLevelEditor::render()
     // View Mode
     ImGui::Begin("View Mode");
     ImGui::Checkbox("Picking Color ID Map", &m_bShowIDMap);
-    ImGui::Checkbox("Draw WireFrame", &g_Global.DrawAsWireFrame);
+    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.DrawAsWireFrame);
 
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     ImGui::Checkbox("Show DebugRender", &bDebugRender);

@@ -115,7 +115,7 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
 // 2D LIGHT
 // =======================================================================================
 
-void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
+void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightColor _output)
 {
     // 빛을 적용시킬 광원의 정보
     tLightInfo info = g_Light2D[_LightIdx];
@@ -137,15 +137,15 @@ void CalLight2D(float3 _WorldPos, int _LightIdx, inout tLightColor _output)
             float fTheta = (fDist / info.fRadius) * (PI / 2.f);
             fAttenu = saturate(cos(fTheta));
             
-            if (g_int_0)
-            {
-                float fTheta = (fDist / info.fRadius) * (PI / 2.f);
-                fAttenu = saturate(cos(fTheta));
-            }
-            else
-            {
-                fAttenu = saturate(1.f - fDist / g_Light2D[_LightIdx].fRadius);
-            }
+            //if (g_int_0)
+            //{
+            //    float fTheta = (fDist / info.fRadius) * (PI / 2.f);
+            //    fAttenu = saturate(cos(fTheta));
+            //}
+            //else
+            //{
+            //    fAttenu = saturate(1.f - fDist / g_Light2D[_LightIdx].fRadius);
+            //}
             
             _output.vColor += info.ColorInfo.vColor * fAttenu;
         }
