@@ -73,6 +73,7 @@ enum KEY
     RBTN,
 
     PRINT,
+    DEL,
 
     KEY_END,
 };

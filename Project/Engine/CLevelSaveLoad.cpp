@@ -182,7 +182,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _FileName)
 
     fclose(pFile);
 
-    CLevelMgr::GetInst()->SetSelectObj(nullptr);
+    CLevelMgr::GetInst()->SetSelectedObject(nullptr);
 
     /*NewLevel->ChangeState(LEVEL_STATE::STOP);*/
 

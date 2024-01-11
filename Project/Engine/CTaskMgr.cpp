@@ -81,6 +81,14 @@ void CTaskMgr::tick()
                 GamePlayStatic::MouseRayPicking(MousePos);
             }
         }
+
+        // Destroy Object
+        CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
+        if (nullptr != pSelectedObj && KEY_TAP(KEY::DEL))
+        {
+            GamePlayStatic::DestroyGameObject(pSelectedObj);
+            CLevelMgr::GetInst()->SetSelectedObject(nullptr);
+        }
     }
 
     for (size_t i = 0; i < m_vecTask.size(); ++i)
@@ -139,7 +147,7 @@ void CTaskMgr::CREATE_OBJECT(const FTask& _Task)
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     pCurLevel->AddObject(Object, LayerIdx, true);
-    CLevelMgr::GetInst()->SetSelectObj(Object);
+    CLevelMgr::GetInst()->SetSelectedObject(Object);
 
     /*if (LEVEL_STATE::PLAY == pCurLevel->GetState())
     {
@@ -369,7 +377,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
     }
 
     if (!ImGuizmo::IsUsing())
-        CLevelMgr::GetInst()->SetSelectObj(pSelectedObj);
+        CLevelMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
@@ -450,7 +458,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
     }
 
     if (!ImGuizmo::IsUsing())
-        CLevelMgr::GetInst()->SetSelectObj(pSelectedObj);
+        CLevelMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::ADD_COMPONENT(const FTask& _Task)

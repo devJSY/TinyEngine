@@ -350,9 +350,9 @@ void CLevelEditor::render_Viewport()
 
 void CLevelEditor::render_ImGuizmo()
 {
-    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
     CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0); // Main Camera
-    if (nullptr == SelectedObj || nullptr == pCam)
+    if (nullptr == pSelectedObj || nullptr == pCam)
         return;
 
     if (!KEY_PRESSED(KEY::RBTN))
@@ -379,7 +379,7 @@ void CLevelEditor::render_ImGuizmo()
     Matrix CamProj = pCam->GetProjMat();
 
     // transform
-    CTransform* pTr = SelectedObj->Transform();
+    CTransform* pTr = pSelectedObj->Transform();
     Matrix WorldMat = pTr->GetWorldMat();
 
     // Snapping

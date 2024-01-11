@@ -24,7 +24,7 @@ int g_KeySync[KEY::KEY_END] = {'0',        '1',        '2',        '3',         
 
                                VK_LEFT,    VK_RIGHT,   VK_UP,      VK_DOWN,
 
-                               VK_LBUTTON, VK_RBUTTON, VK_SNAPSHOT};
+                               VK_LBUTTON, VK_RBUTTON, VK_SNAPSHOT, VK_DELETE};
 
 CKeyMgr::CKeyMgr()
     : m_vMousePos{}

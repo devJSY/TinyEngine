@@ -18,8 +18,8 @@ private:
     CGameObject* m_SelectedObj;
 
 public:
-    CGameObject* GetSelectedObj() const { return m_SelectedObj; }
-    void SetSelectObj(CGameObject* obj) { m_SelectedObj = obj; }
+    CGameObject* GetSelectedObject() const { return m_SelectedObj; }
+    void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }
 
     void ChangeLevel(CLevel* _NextLevel);
 

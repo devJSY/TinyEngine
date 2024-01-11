@@ -223,7 +223,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 // outline pass
                 // 와이어 프레임일때는 Off
                 // SkyBox 일때는 Off
-                if (CLevelMgr::GetInst()->GetSelectedObj() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
+                if (CLevelMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
                     LayerName != L"SkyBox")
                 {
                     mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine"));

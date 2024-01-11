@@ -26,12 +26,12 @@ COutliner::~COutliner()
 
 void COutliner::DrawNode(CGameObject* obj)
 {
-    CGameObject* SelectedObj = CLevelMgr::GetInst()->GetSelectedObj();
+    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
 
     int id = -1;
 
-    if (nullptr != SelectedObj)
-        id = SelectedObj->GetID();
+    if (nullptr != pSelectedObj)
+        id = pSelectedObj->GetID();
 
     ImGuiTreeNodeFlags flags =
         ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
@@ -40,9 +40,9 @@ void COutliner::DrawNode(CGameObject* obj)
 
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
 
-    if (ImGui::IsItemClicked())
+    if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
-        CLevelMgr::GetInst()->SetSelectObj(obj);
+        CLevelMgr::GetInst()->SetSelectedObject(obj);
     }
 
     if (opened)
@@ -185,7 +185,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         {
             if (ImGui::MenuItem(GetComponentName((COMPONENT_TYPE)i).c_str()))
             {
-                GamePlayStatic::AddComponent(CLevelMgr::GetInst()->GetSelectedObj(), (COMPONENT_TYPE)i);
+                GamePlayStatic::AddComponent(CLevelMgr::GetInst()->GetSelectedObject(), (COMPONENT_TYPE)i);
                 ImGui::CloseCurrentPopup();
             }
         }
@@ -254,10 +254,10 @@ void COutliner::render()
 
     // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-        CLevelMgr::GetInst()->SetSelectObj(nullptr);
+        CLevelMgr::GetInst()->SetSelectedObject(nullptr);
 
     // Right-click on blank space
-    if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight))
+    if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems))
     {
         if (ImGui::MenuItem("Spawn GameObject"))
         {
@@ -281,8 +281,8 @@ void COutliner::render()
     ImGui::End();
 
     ImGui::Begin("Details");
-    if (nullptr != CLevelMgr::GetInst()->GetSelectedObj())
-        DrawDetails(CLevelMgr::GetInst()->GetSelectedObj());
+    if (nullptr != CLevelMgr::GetInst()->GetSelectedObject())
+        DrawDetails(CLevelMgr::GetInst()->GetSelectedObject());
 
     ImGui::End();
 }

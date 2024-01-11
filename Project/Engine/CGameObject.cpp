@@ -158,6 +158,9 @@ void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
     if (COMPONENT_TYPE::TRANSFORM == _Type)
         return;
 
+    if (COMPONENT_TYPE::CAMERA == _Type)
+        return;
+
     // 面倒 秦力 贸府
     if (COMPONENT_TYPE::COLLIDER2D == _Type)
     {
