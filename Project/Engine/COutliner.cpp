@@ -533,6 +533,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
 
             ImGui::EndCombo();
         }
+
         Vec4 color = pLight->GetLightColor();
         if (ImGui::ColorEdit3(_labelPrefix("Color").c_str(), &color.x))
             pLight->SetLightColor(color);
@@ -603,6 +604,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
 
             ImGui::EndCombo();
         }
+
         Vec4 color = pLight->GetLightColor();
         if (ImGui::ColorEdit3(_labelPrefix("Color").c_str(), &color.x))
             pLight->SetLightColor(color);
@@ -736,42 +738,60 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
-        if (nullptr != pMesh)
+        // Mesh
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
         {
-            std::string name = WstringTostring(pMesh->GetName());
-
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
-            strcpy_s(buffer, sizeof(buffer), name.c_str());
+            if (nullptr != pMesh)
+            {
+                std::string name = WstringTostring(pMesh->GetName());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+            }
             ImGui::InputText(_labelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(stringToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            ImGui::TreePop();
         }
-
-        if (nullptr != pMaterial)
-        {
-            std::string name = WstringTostring(pMaterial->GetName());
-
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
-            strcpy_s(buffer, sizeof(buffer), name.c_str());
-            ImGui::InputText(_labelPrefix("Material").c_str(), buffer, sizeof(buffer));
-        }
-
-        bool bUseTexture = pMeshRender->IsUseTexture();
-        if (ImGui::Checkbox("Use Texture", &bUseTexture))
-            pMeshRender->SetUseTexture(bUseTexture);
-
-        bool bNormalLine = pMeshRender->IsDrawNormalLine();
-        if (ImGui::Checkbox("Draw NormalLine", &bNormalLine))
-            pMeshRender->SetDrawNormalLine(bNormalLine);
-
-        float scale = pMeshRender->GetNormalLineScale();
-        if (ImGui::SliderFloat("NormalLineScale", &scale, 1.f, 100.f))
-            pMeshRender->SetNormalLineScale(scale);
 
         // Material
-        if (nullptr != pMaterial)
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
         {
-            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            if (nullptr != pMaterial)
+            {
+                std::string name = WstringTostring(pMaterial->GetName());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+            }
+            ImGui::InputText(_labelPrefix("Material").c_str(), buffer, sizeof(buffer));
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(stringToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            if (nullptr != pMaterial)
             {
                 const tMtrlConst& MtrlConst = pMaterial->GetMtrlConst();
 
@@ -839,27 +859,39 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                         ImGui::EndDragDropTarget();
                     }
                 }
-
-                ImGui::TreePop();
             }
 
-            // Rim
-            if (ImGui::TreeNodeEx("Rim", m_DefaultTreeNodeFlag, "Rim Light"))
-            {
-                bool bUseRim = pMeshRender->IsUseRim();
-                if (ImGui::Checkbox("Use Rim", &bUseRim))
-                    pMeshRender->SetUseRim(bUseRim);
+            ImGui::TreePop();
+        }
 
-                Vec3 color = pMeshRender->GetRimColor();
-                if (ImGui::ColorEdit3("Color", &color.x))
-                    pMeshRender->SetRimColor(color);
+        // Option
+        if (ImGui::TreeNodeEx("##MeshRenderOption", m_DefaultTreeNodeFlag, "Option"))
+        {
+            bool bUseTexture = pMeshRender->IsUseTexture();
+            if (ImGui::Checkbox("Use Texture", &bUseTexture))
+                pMeshRender->SetUseTexture(bUseTexture);
 
-                float power = pMeshRender->GetRimPower();
-                if (ImGui::SliderFloat("Power", &power, 0.f, 10.f))
-                    pMeshRender->SetRimPower(power);
+            bool bNormalLine = pMeshRender->IsDrawNormalLine();
+            if (ImGui::Checkbox("Draw NormalLine", &bNormalLine))
+                pMeshRender->SetDrawNormalLine(bNormalLine);
 
-                ImGui::TreePop();
-            }
+            float scale = pMeshRender->GetNormalLineScale();
+            if (ImGui::SliderFloat("NormalLineScale", &scale, 1.f, 100.f))
+                pMeshRender->SetNormalLineScale(scale);
+
+            bool bUseRim = pMeshRender->IsUseRim();
+            if (ImGui::Checkbox("Use Rim", &bUseRim))
+                pMeshRender->SetUseRim(bUseRim);
+
+            Vec3 color = pMeshRender->GetRimColor();
+            if (ImGui::ColorEdit3("Color", &color.x))
+                pMeshRender->SetRimColor(color);
+
+            float power = pMeshRender->GetRimPower();
+            if (ImGui::SliderFloat("Power", &power, 0.f, 10.f))
+                pMeshRender->SetRimPower(power);
+
+            ImGui::TreePop();
         }
 
         ImGui::TreePop();
