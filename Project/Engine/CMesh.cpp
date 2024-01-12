@@ -109,3 +109,13 @@ void CMesh::renderDraw()
 
     CONTEXT->Draw(m_VtxCount, 0);
 }
+
+int CMesh::Load(const wstring& _strFilePath)
+{
+    return 0;
+}
+
+int CMesh::Save(const wstring& _strFilePath)
+{
+    return 0;
+}

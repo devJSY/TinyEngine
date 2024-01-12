@@ -48,6 +48,16 @@ void CMaterial::UpdateData()
     pCB->UpdateData();
 }
 
+int CMaterial::Load(const wstring& _strFilePath)
+{
+    return 0;
+}
+
+int CMaterial::Save(const wstring& _strFilePath)
+{
+    return 0;
+}
+
 void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData) const
 {
     switch (_param)

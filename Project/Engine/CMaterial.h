@@ -35,6 +35,12 @@ public:
 public:
     const tMtrlConst& GetMtrlConst() const { return m_Const; }
 
+private:
+    virtual int Load(const wstring& _strFilePath) override;
+
+public:
+    virtual int Save(const wstring& _strFilePath) override;
+
 public:
     CMaterial();
     virtual ~CMaterial();

@@ -8,6 +8,12 @@ protected:
 public:
     virtual void UpdateData() = 0;
 
+private:
+    virtual int Load(const wstring& _strFilePath) override { return S_OK; };
+
+public:
+    virtual int Save(const wstring& _strFilePath) override { return S_OK; };
+
 public:
     CShader(ASSET_TYPE _Type);
     virtual ~CShader();

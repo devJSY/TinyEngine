@@ -33,7 +33,12 @@ private:
 
     ASSET_TYPE GetComponentType() const { return m_Type; }
 
-    virtual int Load(const wstring& _strFilePath) { return E_FAIL; }
+    // 파일로 부터 로딩
+    virtual int Load(const wstring& _strFilePath) = 0;
+
+public:
+    // 파일로 저장
+    virtual int Save(const wstring& _strFilePath) = 0;
 
 public:
     CAsset(ASSET_TYPE _Type);

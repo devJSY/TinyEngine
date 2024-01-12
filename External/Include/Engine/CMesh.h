@@ -24,6 +24,12 @@ public:
     void render();
     void renderDraw();
 
+private:
+    virtual int Load(const wstring& _strFilePath) override;
+
+public:
+    virtual int Save(const wstring& _strFilePath) override;
+
 public:
     CMesh();
     virtual ~CMesh();
