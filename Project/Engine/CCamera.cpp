@@ -150,14 +150,14 @@ void CCamera::SortObject()
         for (size_t j = 0; j < vecObjects.size(); ++j)
         {
             // 메쉬, 재질, 쉐이더 확인
-            if (!(vecObjects[j]->GetRenderComopnent() && vecObjects[j]->GetRenderComopnent()->GetMesh().Get() &&
-                  vecObjects[j]->GetRenderComopnent()->GetMaterial().Get() &&
-                  vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader().Get()))
+            if (!(vecObjects[j]->GetRenderComponent() && vecObjects[j]->GetRenderComponent()->GetMesh().Get() &&
+                  vecObjects[j]->GetRenderComponent()->GetMaterial().Get() &&
+                  vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
             {
                 continue;
             }
 
-            SHADER_DOMAIN domain = vecObjects[j]->GetRenderComopnent()->GetMaterial()->GetShader()->GetDomain();
+            SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
 
             switch (domain)
             {
