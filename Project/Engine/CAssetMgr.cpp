@@ -1236,7 +1236,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 void CAssetMgr::CreateDefaultTexture()
 {
-    Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"missing_texture.png");
+    Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Textures//missing_texture.png");
     assert(ptex.Get());
 
     Load<CTexture>(L"DirectoryIconTex", L"Icons//ContentBrowser//DirectoryIcon.png");
