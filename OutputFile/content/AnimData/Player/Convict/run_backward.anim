@@ -3,7 +3,7 @@ run_backward
 
 [ATLAS_TEXTURE]
 Convict
-texture//Player//Character//Convict//Convict.png
+EnterTherGungeon//Player//Character//Convict//Convict.png
 
 [FRAME_COUNT]
 6

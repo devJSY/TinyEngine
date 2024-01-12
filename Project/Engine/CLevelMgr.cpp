@@ -39,7 +39,7 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 void CLevelMgr::init()
 {
-    /*m_CurLevel = new CTestLevel;
+    m_CurLevel = new CTestLevel;
     m_CurLevel->SetName(L"Test Level 1");
 
     for (int i = 0; i < LAYER_MAX; i++)
@@ -55,24 +55,24 @@ void CLevelMgr::init()
     m_CurLevel->GetLayer(3)->SetName(L"Mesh");
     m_CurLevel->GetLayer(4)->SetName(L"Model");
     m_CurLevel->GetLayer(14)->SetName(L"SkyBox");
-    m_CurLevel->GetLayer(15)->SetName(L"UI");*/
-
-    m_CurLevel = new CTestLevel2;
-    m_CurLevel->SetName(L"Test Level 2");
-
-    for (int i = 0; i < LAYER_MAX; i++)
-    {
-        wstring Name = L"Layer ";
-        Name += std::to_wstring(i);
-        m_CurLevel->GetLayer(i)->SetName(Name);
-    }
-
-    m_CurLevel->GetLayer(0)->SetName(L"Default");
-    m_CurLevel->GetLayer(1)->SetName(L"Camera");
-    m_CurLevel->GetLayer(2)->SetName(L"Player");
-    m_CurLevel->GetLayer(3)->SetName(L"Monster");
-    m_CurLevel->GetLayer(4)->SetName(L"Light");
     m_CurLevel->GetLayer(15)->SetName(L"UI");
+
+    //m_CurLevel = new CTestLevel2;
+    //m_CurLevel->SetName(L"Test Level 2");
+
+    //for (int i = 0; i < LAYER_MAX; i++)
+    //{
+    //    wstring Name = L"Layer ";
+    //    Name += std::to_wstring(i);
+    //    m_CurLevel->GetLayer(i)->SetName(Name);
+    //}
+
+    //m_CurLevel->GetLayer(0)->SetName(L"Default");
+    //m_CurLevel->GetLayer(1)->SetName(L"Camera");
+    //m_CurLevel->GetLayer(2)->SetName(L"Player");
+    //m_CurLevel->GetLayer(3)->SetName(L"Monster");
+    //m_CurLevel->GetLayer(4)->SetName(L"Light");
+    //m_CurLevel->GetLayer(15)->SetName(L"UI");
 
     m_CurLevel->begin();
 }

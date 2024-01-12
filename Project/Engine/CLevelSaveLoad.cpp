@@ -20,7 +20,7 @@ int CLevelSaveLoad::SaveLevel(const wstring& _FileName, CLevel* _Level)
     //     return E_FAIL;
 
     wstring strPath = CPathMgr::GetContentPath();
-    strPath += L"Level\\";
+    strPath += L"Maps\\";
     strPath += _FileName;
 
     std::filesystem::path filePath = strPath;
@@ -134,7 +134,7 @@ int CLevelSaveLoad::SaveGameObject(CGameObject* _Object, FILE* _File)
 CLevel* CLevelSaveLoad::LoadLevel(const wstring& _FileName)
 {
     wstring strPath = CPathMgr::GetContentPath();
-    strPath += L"Level\\";
+    strPath += L"Maps\\";
     strPath += _FileName;
 
     FILE* pFile = nullptr;

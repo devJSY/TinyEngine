@@ -379,7 +379,7 @@ void CTestLevel::AddModels()
 {
     // Zelda Model
     CGameObject* pZelda =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx", L"Zelda");
+        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx", L"Zelda");
     if (nullptr != pZelda)
     {
         pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
@@ -390,7 +390,7 @@ void CTestLevel::AddModels()
 
     // Damaged Helmet
     CGameObject* pDamagedHelmet =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\damaged-helmet\\", "DamagedHelmet.gltf", L"Damaged Helmet");
+        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf", L"Damaged Helmet");
     if (nullptr != pDamagedHelmet)
     {
         pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
@@ -401,7 +401,7 @@ void CTestLevel::AddModels()
 
     // blue whale
     CGameObject* pblueWhale =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\blue_whale\\", "scene.gltf", L"blue whale");
+        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\blue_whale\\", "scene.gltf", L"blue whale");
     if (nullptr != pblueWhale)
     {
         pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
@@ -412,7 +412,7 @@ void CTestLevel::AddModels()
 
     // torii gate
     CGameObject* ptoriigate =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\torii_gate\\", "scene.gltf", L"torii gate", true);
+        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\torii_gate\\", "scene.gltf", L"torii gate", true);
     if (nullptr != ptoriigate)
     {
         ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
@@ -423,7 +423,7 @@ void CTestLevel::AddModels()
 
     // dragon warrior
     CGameObject* pDragonWarrior =
-        CAssetMgr::GetInst()->LoadModel("Assets\\Models\\dragon_warrior\\", "scene.gltf", L"Dragon Warrior", true);
+        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\dragon_warrior\\", "scene.gltf", L"Dragon Warrior", true);
     if (nullptr != pDragonWarrior)
     {
         pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));

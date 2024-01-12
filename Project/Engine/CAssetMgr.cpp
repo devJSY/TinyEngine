@@ -1252,9 +1252,9 @@ void CAssetMgr::CreateDefaultTexture()
     Load<CTexture>(L"PointLightTex", L"Icons//PointLight.png");
     Load<CTexture>(L"SpotLightTex", L"Icons//SpotLight.png");
 
-    Load<CTexture>(L"cubemapTex", L"Assets//Textures//Cubemaps//skybox//cubemap_bgra.dds");
-    Load<CTexture>(L"cubemap_diffuseTex", L"Assets//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
-    Load<CTexture>(L"cubemap_specularTex", L"Assets//Textures//Cubemaps//skybox//cubemap_specular.dds");
+    Load<CTexture>(L"cubemapTex", L"Developers//Textures//Cubemaps//skybox//cubemap_bgra.dds");
+    Load<CTexture>(L"cubemap_diffuseTex", L"Developers//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
+    Load<CTexture>(L"cubemap_specularTex", L"Developers//Textures//Cubemaps//skybox//cubemap_specular.dds");
 }
 
 void CAssetMgr::CreateDefaultMaterial()
