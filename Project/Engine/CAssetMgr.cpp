@@ -762,7 +762,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 {
     CMaterial* pMtrl = new CMaterial;
     pMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
-    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhong"));
+    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
 
     // 텍스쳐 로딩
     std::wstring path = stringToWstring(_MeshData.RelativeTextureFilePath);
@@ -999,7 +999,7 @@ CGameObject* CAssetMgr::LoadModel(const std::string& _relativepath, const std::s
         AddAsset<CMesh>(_name + L" Parts " + std::to_wstring(idx), pMesh);
 
         Ptr<CMaterial> material = LoadModelMaterial(pMesh, meshData);
-        AddAsset<CMaterial>(_name + L" Parts " + std::to_wstring(idx), material.Get());
+        AddAsset<CMaterial>(_name + L" Parts " + std::to_wstring(idx) + L"Mtrl", material.Get());
 
         Parts->AddComponent(new CTransform);
         Parts->AddComponent(new CMeshRender);
