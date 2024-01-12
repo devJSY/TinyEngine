@@ -60,6 +60,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\OutLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\postprocess.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\SamplingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

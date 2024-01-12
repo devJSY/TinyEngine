@@ -67,7 +67,7 @@ void CTestLevel::begin()
     pLights->Transform()->SetRelativePos(Vec3(0.f, 300.f, 200.f));
     pLights->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
     pLights->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pLights->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BasicMtrl"));
 
     CGameObject* pLight1 = new CGameObject;
     pLight1->SetName(L"Light 1");
@@ -83,7 +83,7 @@ void CTestLevel::begin()
     pLight1->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
     pLight1->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    pLight1->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
     pLight1->MeshRender()->SetUseTexture(true);
 
     pLights->AddChild(pLight1);
@@ -102,7 +102,7 @@ void CTestLevel::begin()
     pLight2->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
     pLight2->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    pLight2->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
     pLight2->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight2);
 
@@ -120,7 +120,7 @@ void CTestLevel::begin()
     pLight3->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 1.f));
 
     pLight3->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight"));
+    pLight3->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
     pLight3->MeshRender()->SetUseTexture(true);
     pLights->AddChild(pLight3);
 
@@ -138,7 +138,7 @@ void CTestLevel::begin()
     pSkyBox->Transform()->SetAbsolute(true);
 
     pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Skybox"));
+    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyboxMtrl"));
 
     AddObject(pSkyBox, L"SkyBox");
 
@@ -170,7 +170,7 @@ void CTestLevel::begin()
     pPlayer->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
     pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-    pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     AddObject(pPlayer, L"Mesh");
 
@@ -187,7 +187,7 @@ void CTestLevel::begin()
     pMonster->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
 
     pMonster->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-    pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     AddObject(pMonster, L"Mesh");
 
@@ -227,7 +227,7 @@ void CTestLevel::AddMeshes()
     pMeshes->Transform()->SetRelativeScale(Vec3(10.f, 10.f, 10.f));
 
     pMeshes->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Basic"));
+    pMeshes->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BasicMtrl"));
 
     // Rect
     CGameObject* pRect = new CGameObject;
@@ -241,7 +241,7 @@ void CTestLevel::AddMeshes()
     pRect->Transform()->SetAbsolute(true);
 
     pRect->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pRect->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pRect->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pRect);
 
@@ -257,7 +257,7 @@ void CTestLevel::AddMeshes()
     pSquareGrid->Transform()->SetAbsolute(true);
 
     pSquareGrid->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SquareGridMesh"));
-    pSquareGrid->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pSquareGrid->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pSquareGrid);
 
@@ -273,7 +273,7 @@ void CTestLevel::AddMeshes()
     pBox->Transform()->SetAbsolute(true);
 
     pBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    pBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pBox);
 
@@ -289,7 +289,7 @@ void CTestLevel::AddMeshes()
     pCylinder->Transform()->SetAbsolute(true);
 
     pCylinder->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CylinderMesh"));
-    pCylinder->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pCylinder->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pCylinder);
 
@@ -305,7 +305,7 @@ void CTestLevel::AddMeshes()
     pSphere->Transform()->SetAbsolute(true);
 
     pSphere->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pSphere);
 
@@ -321,7 +321,7 @@ void CTestLevel::AddMeshes()
     pTetrahedron->Transform()->SetAbsolute(true);
 
     pTetrahedron->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"TetrahedronMesh"));
-    pTetrahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pTetrahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pTetrahedron);
 
@@ -337,7 +337,7 @@ void CTestLevel::AddMeshes()
     pIcosahedron->Transform()->SetAbsolute(true);
 
     pIcosahedron->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"IcosahedronMesh"));
-    pIcosahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pIcosahedron->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pIcosahedron);
 
@@ -353,7 +353,7 @@ void CTestLevel::AddMeshes()
     pSubdivideSphere->Transform()->SetAbsolute(true);
 
     pSubdivideSphere->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SubdivideSphereMesh"));
-    pSubdivideSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pSubdivideSphere->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pSubdivideSphere);
 
@@ -368,7 +368,7 @@ void CTestLevel::AddMeshes()
     pCircle->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     pCircle->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-    pCircle->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhong"));
+    pCircle->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     pMeshes->AddChild(pCircle);
 

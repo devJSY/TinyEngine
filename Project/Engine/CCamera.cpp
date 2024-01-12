@@ -216,7 +216,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 // Normal Line Pass
                 if (meshRender->IsDrawNormalLine())
                 {
-                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLine"));
+                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLineShader"));
                     _vecObj[i]->render();
                 }
 
@@ -226,7 +226,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 if (CLevelMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
                     LayerName != L"SkyBox")
                 {
-                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLine"));
+                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"OutLineShader"));
                     _vecObj[i]->render();
                 }
 
@@ -238,10 +238,10 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
                     CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
 
-                    Ptr<CGraphicsShader> IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"IDMap");
+                    Ptr<CGraphicsShader> IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"IDMapShader");
 
                     if (LayerName == L"SkyBox")
-                        IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkyBox_IDMap");
+                        IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkyBox_IDMapShader");
 
                     mtrl->SetShader(IDShader);
                     _vecObj[i]->render();

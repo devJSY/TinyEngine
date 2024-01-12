@@ -17,8 +17,8 @@ CContentBrowser::~CContentBrowser()
 void CContentBrowser::init()
 {
     m_CurrentDirectory = CPathMgr::GetContentPath();
-    m_DirectoryIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DirectoryIcon");
-    m_FileIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FileIcon");
+    m_DirectoryIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DirectoryIconTex");
+    m_FileIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FileIconTex");
 }
 
 void CContentBrowser::render()

@@ -246,11 +246,11 @@ void CLevelEditor::render_UI_Toolbar()
     bool hasSimulateButton = true;
     bool hasPauseButton = true;
 
-    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PauseButton");
-    Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PlayButton");
-    Ptr<CTexture> pSimulateButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"SimulateButton");
-    Ptr<CTexture> pStepButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StepButton");
-    Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StopButton");
+    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PauseButtonTex");
+    Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PlayButtonTex");
+    Ptr<CTexture> pSimulateButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"SimulateButtonTex");
+    Ptr<CTexture> pStepButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StepButtonTex");
+    Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StopButtonTex");
 
     if (hasPlayButton)
     {
@@ -316,7 +316,7 @@ void CLevelEditor::render_Assets()
             {
                 string key = WstringTostring(iter.first);
 
-                ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_Bullet);
+                ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 
                 // Drag & Drop
                 if (ImGui::BeginDragDropSource())
