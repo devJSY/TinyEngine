@@ -2,9 +2,9 @@
 #include "CMaterialEditor.h"
 #include "CEditorMgr.h"
 
-CMaterialEditor::CMaterialEditor(Ptr<CMaterial> pMtrl)
+CMaterialEditor::CMaterialEditor()
     : CEditor(EDITOR_TYPE::MATERIAL)
-    , m_Mtrl(pMtrl)
+    , m_Mtrl()
 {
 }
 
@@ -14,13 +14,20 @@ CMaterialEditor::~CMaterialEditor()
 
 void CMaterialEditor::render()
 {
-    bool bOpen = true;
+    bool bOpen = CEditorMgr::GetInst()->IsShowMtrlEditor();
+
+    // Material 이 존재하지 않거나 Open 플래그가 false 인경우
+    if (nullptr == m_Mtrl.Get() || !bOpen)
+        return;
+
     ImGui::Begin("Material Editor", &bOpen);
 
+    // Close 버튼
     if (!bOpen)
     {
         ImGui::End();
-        CEditorMgr::GetInst()->DeleteEditor(this);
+        CEditorMgr::GetInst()->SetShowMtrlEditor(bOpen);
+        m_Mtrl = nullptr;
         return;
     }
 

@@ -318,12 +318,8 @@ void CLevelEditor::render_Assets()
                         Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(iter.second.Get());
                         assert(pMtrl.Get());
 
-                        CMaterialEditor* MtrlEditor = new CMaterialEditor(pMtrl);
-                        if (FAILED(CEditorMgr::GetInst()->AddEditor(MtrlEditor)))
-                        {
-                            std::cout << "Material Editor 생성 실패" << std::endl;
-                            delete MtrlEditor;
-                        }
+                        CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMtrl);
+                        CEditorMgr::GetInst()->SetShowMtrlEditor(true);
                     }
                 }
 
