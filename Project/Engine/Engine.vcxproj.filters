@@ -211,6 +211,9 @@
     <ClInclude Include="CLight2D.h">
       <Filter>08. Component\06. Light2D</Filter>
     </ClInclude>
+    <ClInclude Include="CMaterialEditor.h">
+      <Filter>20. Editor\MaterialEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -404,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="CAssetMgr_init.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterialEditor.cpp">
+      <Filter>20. Editor\MaterialEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -601,6 +607,9 @@
     </Filter>
     <Filter Include="02. Engine">
       <UniqueIdentifier>{9f111e3a-05f2-4f21-9949-7619719dc3b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\MaterialEditor">
+      <UniqueIdentifier>{8ad859a0-383c-4701-9fe0-f4cdcef4694f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

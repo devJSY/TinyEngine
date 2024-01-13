@@ -19,12 +19,14 @@
 #include "CLayer.h"
 
 #include "CLevelSaveLoad.h"
+#include "CMaterialEditor.h"
 
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_ViewportFocused(false)
     , m_ViewportHovered(false)
     , m_Outliner()
+    , m_ContentBrowser()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
     , m_bShowViewport(true)
     , m_bShowIDMap(false)
@@ -59,7 +61,7 @@ void CLevelEditor::render()
     if (m_bShowIDMap)
     {
         Ptr<CTexture> pIDMap = CRenderMgr::GetInst()->GetIDMapTex();
-        ImGui::Begin("Picking Color ID Map");
+        ImGui::Begin("Picking Color ID Map", &m_bShowIDMap);
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         ImGui::Image((void*)pIDMap->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
         ImGui::End();
@@ -292,7 +294,7 @@ void CLevelEditor::render_Toolbar()
 
 void CLevelEditor::render_Assets()
 {
-    ImGui::Begin("Assets");
+    ImGui::Begin("Assets", &m_bShowAssets);
 
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
     {
@@ -310,7 +312,19 @@ void CLevelEditor::render_Assets()
 
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
                 {
-                    // Draw Asset Editor
+                    // Material Editor
+                    if ((UINT)ASSET_TYPE::MATERIAL == i)
+                    {
+                        Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(iter.second.Get());
+                        assert(pMtrl.Get());
+
+                        CMaterialEditor* MtrlEditor = new CMaterialEditor(pMtrl);
+                        if (FAILED(CEditorMgr::GetInst()->AddEditor(MtrlEditor)))
+                        {
+                            std::cout << "Material Editor 생성 실패" << std::endl;
+                            delete MtrlEditor;
+                        }
+                    }
                 }
 
                 // Drag & Drop
@@ -329,136 +343,6 @@ void CLevelEditor::render_Assets()
 
     ImGui::End();
 }
-//
-//void CLevelEditor::render_AssetEditor()
-//{
-//    Ptr<CAsset> pAsset = nullptr;
-//
-//    // vector<string> AssetTypeNames;
-//
-//    //// Asset Select
-//    // for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
-//    //{
-//    //     AssetTypeNames.push_back(GetAssetTypeName((ASSET_TYPE)i));
-//    // }
-//
-//    // static string CurAssetTypeName = "";
-//
-//    // if (ImGuiComboUI("Asset Type", CurAssetTypeName, AssetTypeNames))
-//    //{
-//    //     ASSET_TYPE AssetType = ASSET_TYPE::MATERIAL;
-//
-//    //    const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset(AssetType);
-//
-//    //    vector<string> AssetNames;
-//    //    static string CurAssetName = "";
-//
-//    //    for (const auto& iter : mapAsset)
-//    //    {
-//    //        AssetNames.push_back(WstringTostring(iter.first));
-//    //    }
-//
-//    //    if (ImGuiComboUI("Asset", CurAssetName, AssetNames))
-//    //    {
-//    //        pAsset = CAssetMgr::GetInst()->FindAsset
-//    //    }
-//    //}
-//
-//    ImGui::Begin("Asset Editor");
-//
-//    ASSET_TYPE type = pAsset->GetAssetType();
-//
-//    switch (type)
-//    {
-//    case ASSET_TYPE::MESH:
-//        break;
-//    case ASSET_TYPE::MESHDATA:
-//        break;
-//    case ASSET_TYPE::TEXTURE:
-//        break;
-//    case ASSET_TYPE::MATERIAL:
-//        {
-//            Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(pAsset.Get());
-//            assert(pMtrl.Get());
-//
-//            const tMtrlConst& MtrlConst = pMtrl->GetMtrlConst();
-//
-//            Vec4 ambient = MtrlConst.mtrl.vAmb;
-//            Vec4 diffuse = MtrlConst.mtrl.vDiff;
-//            Vec4 specular = MtrlConst.mtrl.vSpec;
-//            Vec4 environment = MtrlConst.mtrl.vEmv;
-//
-//            bool bDirty = false;
-//
-//            if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
-//                bDirty = true;
-//
-//            if (ImGui::ColorEdit3(_labelPrefix("diffuse").c_str(), &diffuse.x))
-//                bDirty = true;
-//
-//            if (ImGui::ColorEdit3(_labelPrefix("specular").c_str(), &specular.x))
-//                bDirty = true;
-//
-//            if (ImGui::ColorEdit3(_labelPrefix("environment").c_str(), &environment.x))
-//                bDirty = true;
-//
-//            if (bDirty)
-//                pMtrl->SetMaterialCoefficient(ambient, diffuse, specular, environment);
-//
-//            constexpr float IMAGE_BASE_SIZE = 250.0f;
-//
-//            // Texture
-//            for (UINT i = TEX_PARAM::TEX_0; i <= TEX_PARAM::TEX_5; ++i)
-//            {
-//                Ptr<CTexture> pTex = pMtrl->GetTexParam((TEX_PARAM)i);
-//                ID3D11ShaderResourceView* pSRV = nullptr;
-//
-//                if (nullptr != pTex.Get())
-//                    pSRV = pTex->GetSRV().Get();
-//                else
-//                    pSRV = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
-//
-//                if (i == TEX_PARAM::TEX_0)
-//                    ImGui::Text("Texture 0");
-//                else if (i == TEX_PARAM::TEX_1)
-//                    ImGui::Text("Texture 1");
-//                else if (i == TEX_PARAM::TEX_2)
-//                    ImGui::Text("Texture 2");
-//                else if (i == TEX_PARAM::TEX_3)
-//                    ImGui::Text("Texture 3");
-//                else if (i == TEX_PARAM::TEX_4)
-//                    ImGui::Text("Texture 4");
-//                else if (i == TEX_PARAM::TEX_5)
-//                    ImGui::Text("Texture 5");
-//
-//                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
-//
-//                // Drag & Drop
-//                if (ImGui::BeginDragDropTarget())
-//                {
-//                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-//                    {
-//                        string name = (char*)payload->Data;
-//                        name.resize(payload->DataSize);
-//                        pMtrl->SetTexParam((TEX_PARAM)i,
-//                                           CAssetMgr::GetInst()->FindAsset<CTexture>(stringToWstring(name)));
-//                    }
-//
-//                    ImGui::EndDragDropTarget();
-//                }
-//            }
-//        }
-//        break;
-//    case ASSET_TYPE::SOUND:
-//        break;
-//    case ASSET_TYPE::COMPUTE_SHADER:
-//        break;
-//    case ASSET_TYPE::GRAPHICS_SHADER:
-//        break;
-//    }
-//
-//    ImGui::End();
-//}
 
 void CLevelEditor::render_Viewport()
 {

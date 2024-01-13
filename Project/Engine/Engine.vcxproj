@@ -188,6 +188,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CLight2D.h" />
     <ClInclude Include="CLight3D.h" />
     <ClInclude Include="CMaterial.h" />
+    <ClInclude Include="CMaterialEditor.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CModleLoader.h" />
@@ -261,6 +262,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CLight2D.cpp" />
     <ClCompile Include="CLight3D.cpp" />
     <ClCompile Include="CMaterial.cpp" />
+    <ClCompile Include="CMaterialEditor.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CModleLoader.cpp" />

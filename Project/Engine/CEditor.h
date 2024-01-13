@@ -13,6 +13,9 @@ public:
     virtual void render() = 0;
 
 public:
+    EDITOR_TYPE GetEditorType() const { return m_EditorType; }
+
+public:
     CEditor(EDITOR_TYPE type);
     virtual ~CEditor();
 };

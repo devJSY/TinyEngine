@@ -14,6 +14,8 @@ private:
 
 public:
     CLevelEditor* GetLevelEditor() const { return static_cast<CLevelEditor*>(m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]); }
+    int AddEditor(CEditor* _Editor);
+    int DeleteEditor(CEditor* _Editor);
 
     void SetViewportSize(Vec2 size) { m_ViewportSize = size; }
     Vec2 GetViewportSize() const { return m_ViewportSize; }

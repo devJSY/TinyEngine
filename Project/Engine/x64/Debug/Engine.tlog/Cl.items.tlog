@@ -25,6 +25,7 @@ C:\Users\A\Desktop\TinyEngine\Project\Engine\CLevelSaveLoad.cpp;C:\Users\A\Deskt
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CLight2D.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CLight2D.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CLight3D.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CLight3D.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMaterial.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMaterial.obj
+C:\Users\A\Desktop\TinyEngine\Project\Engine\CMaterialEditor.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMaterialEditor.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMesh.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMesh.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CMeshRender.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CMeshRender.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CModleLoader.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CModleLoader.obj

@@ -12,10 +12,9 @@ private:
     bool m_ViewportHovered;
 
     COutliner m_Outliner;
+    CContentBrowser m_ContentBrowser;
 
     ImGuizmo::OPERATION m_GizmoType;
-
-    CContentBrowser m_ContentBrowser;
 
     bool m_bShowViewport;
     bool m_bShowIDMap;

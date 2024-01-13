@@ -2,6 +2,7 @@
 #include "CEditorMgr.h"
 #include "CEditor.h"
 #include "CLevelEditor.h"
+#include "CMaterialEditor.h"
 
 #include "CEngine.h"
 #include "CDevice.h"
@@ -125,6 +126,33 @@ void CEditorMgr::render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
+}
+
+int CEditorMgr::AddEditor(CEditor* _Editor)
+{
+    // 해당 타입의 에디터가 이미 존재하는 경우
+    EDITOR_TYPE type = _Editor->GetEditorType();
+    if (nullptr != m_vecEditor[(UINT)type])
+    {
+        return E_FAIL;
+    }
+
+    m_vecEditor[(UINT)type] = _Editor;
+    m_vecEditor[(UINT)type]->init();
+
+    return S_OK;
+}
+
+int CEditorMgr::DeleteEditor(CEditor* _Editor)
+{
+    // 인자로 들어온 에디터가 현재 EditorMgr이 보유하고있는 에디터가 아닌경우
+    EDITOR_TYPE type = _Editor->GetEditorType();
+    assert(!(_Editor != m_vecEditor[(UINT)type]));
+
+    delete _Editor;
+    m_vecEditor[(UINT)type] = nullptr;
+
+    return S_OK;
 }
 
 void CEditorMgr::SetDarkThemeColors()
