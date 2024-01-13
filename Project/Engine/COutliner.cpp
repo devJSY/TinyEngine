@@ -4,6 +4,7 @@
 #include "CLevelMgr.h"
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
+#include "CEditorMgr.h"
 
 #include "CLevel.h"
 #include "CLayer.h"
@@ -689,6 +690,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 }
 
                 ImGui::EndDragDropTarget();
+            }
+
+            if (ImGui::Button("Material Editor"))
+            {
+                CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMaterial);
             }
 
             ImGui::TreePop();
