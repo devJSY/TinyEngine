@@ -25,7 +25,7 @@ CTestLevel::~CTestLevel()
 void CTestLevel::begin()
 {
     AddMeshes();
-    //AddModels();
+    // AddModels();
 
     // Camera Object 생성
     CGameObject* pCamObj = new CGameObject;
@@ -190,6 +190,33 @@ void CTestLevel::begin()
     pMonster->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     AddObject(pMonster, L"Mesh");
+
+    for (size_t i = 0; i <= 100; i++)
+    {
+        // BlurX
+        CGameObject* pBlurX = new CGameObject;
+        pBlurX->SetName(L"BlurX");
+
+        pBlurX->AddComponent(new CTransform);
+        pBlurX->AddComponent(new CMeshRender);
+
+        pBlurX->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pBlurX->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl"));
+
+        AddObject(pBlurX, L"Postprocess");
+
+        // BlurY
+        CGameObject* pBlurY = new CGameObject;
+        pBlurY->SetName(L"BlurY");
+
+        pBlurY->AddComponent(new CTransform);
+        pBlurY->AddComponent(new CMeshRender);
+
+        pBlurY->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pBlurY->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl"));
+
+        AddObject(pBlurY, L"Postprocess");
+    }
 
     // 충돌 설정
     // CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
@@ -389,8 +416,8 @@ void CTestLevel::AddModels()
     }
 
     // Damaged Helmet
-    CGameObject* pDamagedHelmet =
-        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf", L"Damaged Helmet");
+    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel("Developers\\Models\\damaged-helmet\\",
+                                                                  "DamagedHelmet.gltf", L"Damaged Helmet");
     if (nullptr != pDamagedHelmet)
     {
         pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
