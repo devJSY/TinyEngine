@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CLevelEditor.h"
 #include "CEngine.h"
-#include "CDevice.h"
 
 #include "CTaskMgr.h"
 #include "CCamera.h"
@@ -39,74 +38,12 @@ CLevelEditor::CLevelEditor()
 
 CLevelEditor::~CLevelEditor()
 {
-    // Cleanup
-    ImGui_ImplDX11_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
 }
 
 void CLevelEditor::init()
 {
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    //  io.ConfigViewportsNoAutoMerge = true;
-    //  io.ConfigViewportsNoTaskBarIcon = true;
-    //  io.ConfigViewportsNoDefaultParent = true;
-    //  io.ConfigDockingAlwaysTabBar = true;
-    //  io.ConfigDockingTransparentPayload = true;
-    //  io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
-    //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
-    //  FIXME-DPI: Experimental.
-
-    float fFontSize = 25.f;
-    wstring wBold = CPathMgr::GetContentPath();
-    wstring wRegular = CPathMgr::GetContentPath();
-
-    wBold += L"fonts\\opensans\\OpenSans-Bold.ttf";
-    wRegular += L"fonts\\opensans\\OpenSans-Regular.ttf";
-
-    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), fFontSize);
-    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), fFontSize);
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular
-    // ones.
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
-
-    // 테마 설정
-    SetDarkThemeColors();
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplWin32_Init(CEngine::GetInst()->GetMainWind());
-    ImGui_ImplDX11_Init(CDevice::GetInst()->GetDevice(), CDevice::GetInst()->GetContext());
-
     m_Outliner.init();
     m_ContentBrowser.init();
-}
-
-void CLevelEditor::tick()
-{
-    // ImGUI Render Start
-    ImGui_ImplDX11_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-
-    ImGuizmo::BeginFrame();
 }
 
 void CLevelEditor::render()
@@ -176,18 +113,6 @@ void CLevelEditor::render()
     ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
 
     ImGui::End();
-
-    // Rendering
-    ImGui::Render();
-
-    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-    ImGuiIO& io = ImGui::GetIO();
-    // Update and Render additional Platform Windows
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-    }
 }
 
 void CLevelEditor::render_MenuBar()
@@ -404,136 +329,136 @@ void CLevelEditor::render_Assets()
 
     ImGui::End();
 }
-
-void CLevelEditor::render_AssetEditor()
-{
-    Ptr<CAsset> pAsset = nullptr;
-
-    // vector<string> AssetTypeNames;
-
-    //// Asset Select
-    // for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
-    //{
-    //     AssetTypeNames.push_back(GetAssetTypeName((ASSET_TYPE)i));
-    // }
-
-    // static string CurAssetTypeName = "";
-
-    // if (ImGuiComboUI("Asset Type", CurAssetTypeName, AssetTypeNames))
-    //{
-    //     ASSET_TYPE AssetType = ASSET_TYPE::MATERIAL;
-
-    //    const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset(AssetType);
-
-    //    vector<string> AssetNames;
-    //    static string CurAssetName = "";
-
-    //    for (const auto& iter : mapAsset)
-    //    {
-    //        AssetNames.push_back(WstringTostring(iter.first));
-    //    }
-
-    //    if (ImGuiComboUI("Asset", CurAssetName, AssetNames))
-    //    {
-    //        pAsset = CAssetMgr::GetInst()->FindAsset
-    //    }
-    //}
-
-    ImGui::Begin("Asset Editor");
-
-    ASSET_TYPE type = pAsset->GetAssetType();
-
-    switch (type)
-    {
-    case ASSET_TYPE::MESH:
-        break;
-    case ASSET_TYPE::MESHDATA:
-        break;
-    case ASSET_TYPE::TEXTURE:
-        break;
-    case ASSET_TYPE::MATERIAL:
-        {
-            Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(pAsset.Get());
-            assert(pMtrl.Get());
-
-            const tMtrlConst& MtrlConst = pMtrl->GetMtrlConst();
-
-            Vec4 ambient = MtrlConst.mtrl.vAmb;
-            Vec4 diffuse = MtrlConst.mtrl.vDiff;
-            Vec4 specular = MtrlConst.mtrl.vSpec;
-            Vec4 environment = MtrlConst.mtrl.vEmv;
-
-            bool bDirty = false;
-
-            if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
-                bDirty = true;
-
-            if (ImGui::ColorEdit3(_labelPrefix("diffuse").c_str(), &diffuse.x))
-                bDirty = true;
-
-            if (ImGui::ColorEdit3(_labelPrefix("specular").c_str(), &specular.x))
-                bDirty = true;
-
-            if (ImGui::ColorEdit3(_labelPrefix("environment").c_str(), &environment.x))
-                bDirty = true;
-
-            if (bDirty)
-                pMtrl->SetMaterialCoefficient(ambient, diffuse, specular, environment);
-
-            constexpr float IMAGE_BASE_SIZE = 250.0f;
-
-            // Texture
-            for (UINT i = TEX_PARAM::TEX_0; i <= TEX_PARAM::TEX_5; ++i)
-            {
-                Ptr<CTexture> pTex = pMtrl->GetTexParam((TEX_PARAM)i);
-                ID3D11ShaderResourceView* pSRV = nullptr;
-
-                if (nullptr != pTex.Get())
-                    pSRV = pTex->GetSRV().Get();
-                else
-                    pSRV = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
-
-                if (i == TEX_PARAM::TEX_0)
-                    ImGui::Text("Texture 0");
-                else if (i == TEX_PARAM::TEX_1)
-                    ImGui::Text("Texture 1");
-                else if (i == TEX_PARAM::TEX_2)
-                    ImGui::Text("Texture 2");
-                else if (i == TEX_PARAM::TEX_3)
-                    ImGui::Text("Texture 3");
-                else if (i == TEX_PARAM::TEX_4)
-                    ImGui::Text("Texture 4");
-                else if (i == TEX_PARAM::TEX_5)
-                    ImGui::Text("Texture 5");
-
-                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
-
-                // Drag & Drop
-                if (ImGui::BeginDragDropTarget())
-                {
-                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-                    {
-                        string name = (char*)payload->Data;
-                        name.resize(payload->DataSize);
-                        pMtrl->SetTexParam((TEX_PARAM)i,
-                                           CAssetMgr::GetInst()->FindAsset<CTexture>(stringToWstring(name)));
-                    }
-
-                    ImGui::EndDragDropTarget();
-                }
-            }
-        }
-        break;
-    case ASSET_TYPE::SOUND:
-        break;
-    case ASSET_TYPE::COMPUTE_SHADER:
-        break;
-    case ASSET_TYPE::GRAPHICS_SHADER:
-        break;
-    }
-
-    ImGui::End();
-}
+//
+//void CLevelEditor::render_AssetEditor()
+//{
+//    Ptr<CAsset> pAsset = nullptr;
+//
+//    // vector<string> AssetTypeNames;
+//
+//    //// Asset Select
+//    // for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
+//    //{
+//    //     AssetTypeNames.push_back(GetAssetTypeName((ASSET_TYPE)i));
+//    // }
+//
+//    // static string CurAssetTypeName = "";
+//
+//    // if (ImGuiComboUI("Asset Type", CurAssetTypeName, AssetTypeNames))
+//    //{
+//    //     ASSET_TYPE AssetType = ASSET_TYPE::MATERIAL;
+//
+//    //    const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset(AssetType);
+//
+//    //    vector<string> AssetNames;
+//    //    static string CurAssetName = "";
+//
+//    //    for (const auto& iter : mapAsset)
+//    //    {
+//    //        AssetNames.push_back(WstringTostring(iter.first));
+//    //    }
+//
+//    //    if (ImGuiComboUI("Asset", CurAssetName, AssetNames))
+//    //    {
+//    //        pAsset = CAssetMgr::GetInst()->FindAsset
+//    //    }
+//    //}
+//
+//    ImGui::Begin("Asset Editor");
+//
+//    ASSET_TYPE type = pAsset->GetAssetType();
+//
+//    switch (type)
+//    {
+//    case ASSET_TYPE::MESH:
+//        break;
+//    case ASSET_TYPE::MESHDATA:
+//        break;
+//    case ASSET_TYPE::TEXTURE:
+//        break;
+//    case ASSET_TYPE::MATERIAL:
+//        {
+//            Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(pAsset.Get());
+//            assert(pMtrl.Get());
+//
+//            const tMtrlConst& MtrlConst = pMtrl->GetMtrlConst();
+//
+//            Vec4 ambient = MtrlConst.mtrl.vAmb;
+//            Vec4 diffuse = MtrlConst.mtrl.vDiff;
+//            Vec4 specular = MtrlConst.mtrl.vSpec;
+//            Vec4 environment = MtrlConst.mtrl.vEmv;
+//
+//            bool bDirty = false;
+//
+//            if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
+//                bDirty = true;
+//
+//            if (ImGui::ColorEdit3(_labelPrefix("diffuse").c_str(), &diffuse.x))
+//                bDirty = true;
+//
+//            if (ImGui::ColorEdit3(_labelPrefix("specular").c_str(), &specular.x))
+//                bDirty = true;
+//
+//            if (ImGui::ColorEdit3(_labelPrefix("environment").c_str(), &environment.x))
+//                bDirty = true;
+//
+//            if (bDirty)
+//                pMtrl->SetMaterialCoefficient(ambient, diffuse, specular, environment);
+//
+//            constexpr float IMAGE_BASE_SIZE = 250.0f;
+//
+//            // Texture
+//            for (UINT i = TEX_PARAM::TEX_0; i <= TEX_PARAM::TEX_5; ++i)
+//            {
+//                Ptr<CTexture> pTex = pMtrl->GetTexParam((TEX_PARAM)i);
+//                ID3D11ShaderResourceView* pSRV = nullptr;
+//
+//                if (nullptr != pTex.Get())
+//                    pSRV = pTex->GetSRV().Get();
+//                else
+//                    pSRV = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
+//
+//                if (i == TEX_PARAM::TEX_0)
+//                    ImGui::Text("Texture 0");
+//                else if (i == TEX_PARAM::TEX_1)
+//                    ImGui::Text("Texture 1");
+//                else if (i == TEX_PARAM::TEX_2)
+//                    ImGui::Text("Texture 2");
+//                else if (i == TEX_PARAM::TEX_3)
+//                    ImGui::Text("Texture 3");
+//                else if (i == TEX_PARAM::TEX_4)
+//                    ImGui::Text("Texture 4");
+//                else if (i == TEX_PARAM::TEX_5)
+//                    ImGui::Text("Texture 5");
+//
+//                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
+//
+//                // Drag & Drop
+//                if (ImGui::BeginDragDropTarget())
+//                {
+//                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+//                    {
+//                        string name = (char*)payload->Data;
+//                        name.resize(payload->DataSize);
+//                        pMtrl->SetTexParam((TEX_PARAM)i,
+//                                           CAssetMgr::GetInst()->FindAsset<CTexture>(stringToWstring(name)));
+//                    }
+//
+//                    ImGui::EndDragDropTarget();
+//                }
+//            }
+//        }
+//        break;
+//    case ASSET_TYPE::SOUND:
+//        break;
+//    case ASSET_TYPE::COMPUTE_SHADER:
+//        break;
+//    case ASSET_TYPE::GRAPHICS_SHADER:
+//        break;
+//    }
+//
+//    ImGui::End();
+//}
 
 void CLevelEditor::render_Viewport()
 {
@@ -741,37 +666,4 @@ void CLevelEditor::render_CollisionResponses()
     }
 
     ImGui::End();
-}
-
-void CLevelEditor::SetDarkThemeColors()
-{
-    auto& colors = ImGui::GetStyle().Colors;
-    colors[ImGuiCol_WindowBg] = ImVec4{0.1f, 0.105f, 0.11f, 1.0f};
-
-    // Headers
-    colors[ImGuiCol_Header] = ImVec4{0.2f, 0.205f, 0.21f, 1.0f};
-    colors[ImGuiCol_HeaderHovered] = ImVec4{0.3f, 0.305f, 0.31f, 1.0f};
-    colors[ImGuiCol_HeaderActive] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-
-    // Buttons
-    colors[ImGuiCol_Button] = ImVec4{0.2f, 0.205f, 0.21f, 1.0f};
-    colors[ImGuiCol_ButtonHovered] = ImVec4{0.3f, 0.305f, 0.31f, 1.0f};
-    colors[ImGuiCol_ButtonActive] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-
-    // Frame BG
-    colors[ImGuiCol_FrameBg] = ImVec4{0.2f, 0.205f, 0.21f, 1.0f};
-    colors[ImGuiCol_FrameBgHovered] = ImVec4{0.3f, 0.305f, 0.31f, 1.0f};
-    colors[ImGuiCol_FrameBgActive] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-
-    // Tabs
-    colors[ImGuiCol_Tab] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-    colors[ImGuiCol_TabHovered] = ImVec4{0.38f, 0.3805f, 0.381f, 1.0f};
-    colors[ImGuiCol_TabActive] = ImVec4{0.28f, 0.2805f, 0.281f, 1.0f};
-    colors[ImGuiCol_TabUnfocused] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-    colors[ImGuiCol_TabUnfocusedActive] = ImVec4{0.2f, 0.205f, 0.21f, 1.0f};
-
-    // Title
-    colors[ImGuiCol_TitleBg] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-    colors[ImGuiCol_TitleBgActive] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
-    colors[ImGuiCol_TitleBgCollapsed] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
 }

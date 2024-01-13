@@ -42,7 +42,7 @@ void CCameraMoveScript::tick()
     }
 
     // Level 에디터에서는 Viewport창에서만 카메라 이동 적용
-    CLevelEditor* LevelEditor = dynamic_cast<CLevelEditor*>(CEditorMgr::GetInst()->GetCurEditor());
+    CLevelEditor* LevelEditor = CEditorMgr::GetInst()->GetLevelEditor();
     if (nullptr != LevelEditor && !LevelEditor->IsViewportHovered())
         return;
 
@@ -70,7 +70,7 @@ void CCameraMoveScript::MoveOrthographic()
         float xRatio = 0.f;
         float yRatio = 0.f;
 
-        if (ViewportSize.x == 0 || ViewportSize.y == 0 || nullptr == CEditorMgr::GetInst()->GetCurEditor())
+        if (ViewportSize.x == 0 || ViewportSize.y == 0 || nullptr == CEditorMgr::GetInst()->GetLevelEditor())
         {
             xRatio = 1.f;
             yRatio = 1.f;

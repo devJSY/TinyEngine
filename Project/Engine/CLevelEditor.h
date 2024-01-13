@@ -27,7 +27,7 @@ private:
 
 public:
     virtual void init() override;
-    virtual void tick() override;
+    virtual void tick() override{};
     virtual void finaltick() override{};
     virtual void render() override;
 
@@ -38,10 +38,6 @@ private:
     void render_CollisionResponses();
     void render_Toolbar();
     void render_Assets();
-    void render_AssetEditor();
-
-private:
-    void SetDarkThemeColors();
 
 public:
     bool IsViewportFocused() const { return m_ViewportFocused; }

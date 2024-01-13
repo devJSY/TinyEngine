@@ -637,7 +637,8 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
         // Mesh
-        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
+                              "Mesh"))
         {
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
@@ -665,7 +666,8 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         }
 
         // Material
-        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(),
+                              m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
         {
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));

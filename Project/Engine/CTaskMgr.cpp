@@ -74,8 +74,8 @@ void CTaskMgr::tick()
             {
                 Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
-                // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
-                if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+                // Level Editor 였다면 Viewport 에서의 마우스위치로 설정
+                if (nullptr != CEditorMgr::GetInst()->GetLevelEditor())
                     MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
                 GamePlayStatic::MouseRayPicking(MousePos);
@@ -292,7 +292,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
     int MouseY = (int)_Task.Param_2;
     Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
 
-    if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+    if (nullptr != CEditorMgr::GetInst()->GetLevelEditor())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -392,7 +392,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
     // 마우스 커서의 위치를 NDC로 변환
     // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
     // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-    if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
+    if (nullptr != CEditorMgr::GetInst()->GetLevelEditor())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)

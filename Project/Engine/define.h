@@ -175,6 +175,7 @@ enum TEX_PARAM
 enum class EDITOR_TYPE
 {
     LEVEL,
+    MATERIAL,
 
     END,
 };
