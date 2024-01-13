@@ -127,9 +127,8 @@ Texture2D g_anim2d_tex : register(t10);
 StructuredBuffer<tLightInfo> g_Light2D : register(t11);
 StructuredBuffer<tLightInfo> g_Light3D : register(t12);
 
-Texture2D g_postprocess_Tex : register(t13);
-
-StructuredBuffer<float4> g_Data : register(t14);
+Texture2D g_RTCopy_Tex : register(t13);
+Texture2D g_postprocess_Tex : register(t14);
 
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);
