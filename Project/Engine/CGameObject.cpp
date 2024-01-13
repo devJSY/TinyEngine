@@ -224,8 +224,3 @@ void CGameObject::Destroy()
 {
     GamePlayStatic::DestroyGameObject(this);
 }
-
-void CGameObject::SetLayer(const wstring& _strLayerName)
-{
-    SetLayer(CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_strLayerName)->GetLayerIdx());
-}

@@ -2,6 +2,7 @@ D:\TinyEngine\Project\Engine\CAnim.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CA
 D:\TinyEngine\Project\Engine\CAnimator2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAnimator2D.obj
 D:\TinyEngine\Project\Engine\CAsset.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAsset.obj
 D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr.obj
+D:\TinyEngine\Project\Engine\CAssetMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr_init.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCamera.obj
 D:\TinyEngine\Project\Engine\CCameraMoveScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCameraMoveScript.obj
 D:\TinyEngine\Project\Engine\CCollisionMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCollisionMgr.obj

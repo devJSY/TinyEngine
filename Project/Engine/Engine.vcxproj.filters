@@ -402,6 +402,9 @@
     <ClCompile Include="CLight2D.cpp">
       <Filter>08. Component\06. Light2D</Filter>
     </ClCompile>
+    <ClCompile Include="CAssetMgr_init.cpp">
+      <Filter>04. Manager\AssetMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">

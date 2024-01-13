@@ -25,5 +25,5 @@ void CRenderMgr::init()
     Vec2 vRenderResolution = CDevice::GetInst()->GetRenderResolution();
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
-    CreatePostProcessingTex(vRenderResolution);
+    CreatePostProcessTex(vRenderResolution);
 }

@@ -154,6 +154,8 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _
 
 int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
 {
+    assert(_tex2D.Get());
+
     m_Tex2D = _tex2D;
     m_Tex2D->GetDesc(&m_Desc);
 

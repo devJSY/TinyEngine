@@ -184,11 +184,16 @@ CCamera* CRenderMgr::GetCamera(int _Idx) const
     return m_vecCam[_Idx];
 }
 
-void CRenderMgr::CopyRenderTarget()
+void CRenderMgr::CopyRTTexToRTCopyTex()
 {
-    // Viewport บนป็
-    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
+    Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+}
+
+void CRenderMgr::CopyRTTexToPostProcessTex()
+{
+    Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
@@ -198,7 +203,7 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
                                                       D3D11_USAGE_DEFAULT);
 }
 
-void CRenderMgr::CreatePostProcessingTex(Vec2 Resolution)
+void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
 {
     m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y,
                                                            DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
@@ -225,5 +230,5 @@ void CRenderMgr::Resize(Vec2 Resolution)
 
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
-    CreatePostProcessingTex(Resolution);
+    CreatePostProcessTex(Resolution);
 }

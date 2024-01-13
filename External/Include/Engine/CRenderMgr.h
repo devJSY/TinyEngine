@@ -57,17 +57,19 @@ public:
     void tick();
 
 public:
-    void CopyRenderTarget();
+    void CopyRTTexToRTCopyTex();
+    void CopyRTTexToPostProcessTex();
     void Resize(Vec2 Resolution);
 
     Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
     Ptr<CTexture> GetIDMapTex() const { return m_IDMapTex; }
     Ptr<CTexture> GetIDMapDSTex() const { return m_IDMapDSTex; }
+    Ptr<CTexture> GetPostProcessTex() const { return m_PostProcessTex; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);
     void CreateIDMapTex(Vec2 Resolution);
-    void CreatePostProcessingTex(Vec2 Resolution);
+    void CreatePostProcessTex(Vec2 Resolution);
 
 private:
     void render();

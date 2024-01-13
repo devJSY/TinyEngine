@@ -526,8 +526,10 @@ void CTaskMgr::REMOVE_COMPONENT(const FTask& _Task)
 void CTaskMgr::LAYER_CHANGE(const FTask& _Task)
 {
     CGameObject* Object = (CGameObject*)_Task.Param_1;
-    int LayerIdx = (int)_Task.Param_2;
+    int NextLayerIdx = (int)_Task.Param_2;
+    int OriginLayerIdx = Object->GetLayerIdx();
 
     CCollisionMgr::GetInst()->CollisionRelease(Object);
-    Object->SetLayer(LayerIdx);
+    CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(OriginLayerIdx)->DetachGameObject(Object);
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx);
 }

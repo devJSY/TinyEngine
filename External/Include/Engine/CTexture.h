@@ -31,11 +31,11 @@ public:
     UINT GetWidth() const { return m_Desc.Width; }
     UINT GetHeight() const { return m_Desc.Height; }
 
-    const D3D11_TEXTURE2D_DESC& GetDesc() const { return m_Desc; }
     ComPtr<ID3D11Texture2D> GetTex2D() const { return m_Tex2D; }
-    ComPtr<ID3D11ShaderResourceView> GetSRV() const { return m_SRV; }
+    const D3D11_TEXTURE2D_DESC& GetDesc() const { return m_Desc; }
     ComPtr<ID3D11RenderTargetView> GetRTV() const { return m_RTV; }
     ComPtr<ID3D11DepthStencilView> GetDSV() const { return m_DSV; }
+    ComPtr<ID3D11ShaderResourceView> GetSRV() const { return m_SRV; }
     ComPtr<ID3D11UnorderedAccessView> GetUAV() const { return m_UAV; }
 
 public:

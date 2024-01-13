@@ -338,7 +338,7 @@ void CLevelEditor::render_Assets()
 void CLevelEditor::render_Viewport()
 {
     // RT Copy
-    CRenderMgr::GetInst()->CopyRenderTarget();
+    CRenderMgr::GetInst()->CopyRTTexToRTCopyTex();
 
     ImGui::Begin("Level ViewPort");
 
