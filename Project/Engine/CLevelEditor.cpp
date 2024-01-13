@@ -319,7 +319,6 @@ void CLevelEditor::render_Assets()
                         assert(pMtrl.Get());
 
                         CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMtrl);
-                        CEditorMgr::GetInst()->SetShowMtrlEditor(true);
                     }
                 }
 

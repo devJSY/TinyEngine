@@ -14,11 +14,10 @@ CMaterialEditor::~CMaterialEditor()
 
 void CMaterialEditor::render()
 {
-    bool bOpen = CEditorMgr::GetInst()->IsShowMtrlEditor();
-
-    // Material 이 존재하지 않거나 Open 플래그가 false 인경우
-    if (nullptr == m_Mtrl.Get() || !bOpen)
+    if (nullptr == m_Mtrl.Get())
         return;
+
+    bool bOpen = true;
 
     ImGui::Begin("Material Editor", &bOpen);
 
@@ -26,7 +25,6 @@ void CMaterialEditor::render()
     if (!bOpen)
     {
         ImGui::End();
-        CEditorMgr::GetInst()->SetShowMtrlEditor(bOpen);
         m_Mtrl = nullptr;
         return;
     }

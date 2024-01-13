@@ -11,7 +11,6 @@ CEditorMgr::CEditorMgr()
     : m_vecEditor{}
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
-    , m_bShowMtrlEditor(false)
 {
 }
 
