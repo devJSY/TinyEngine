@@ -38,7 +38,9 @@ Vec4 HashIDToColor(int hash);
 std::string GetComponentName(COMPONENT_TYPE type);
 std::string GetAssetTypeName(ASSET_TYPE type);
 
+// =====================================
 // Save / Load
+// =====================================
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _File);
 
@@ -76,6 +78,9 @@ void DrawVec3Control(const std::string& label, Vec3& values, float speed = 0.1f,
 std::string _labelPrefix(const char* const label);
 bool ImGuiComboUI(const std::string& caption, std::string& current_item, const std::vector<std::string>& items);
 
+// =====================================
+// template
+// =====================================
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])
 {

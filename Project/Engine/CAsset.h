@@ -17,6 +17,10 @@ public:
     const wstring& GetKey() const { return m_Key; }
     const wstring& GetRelativePath() const { return m_RelativePath; }
 
+public:
+    ASSET_TYPE GetAssetType() const { return m_Type; }
+    int GetRefCount() const { return m_RefCount; }
+
 protected:
     void SetKey(const wstring& _Key) { m_Key = _Key; }
     void SetRelativePath(const wstring& _RelativePath) { m_RelativePath = _RelativePath; }
@@ -31,10 +35,6 @@ private:
             delete this;
         }
     }
-
-    int GetRefCount() const { return m_RefCount; }
-
-    ASSET_TYPE GetComponentType() const { return m_Type; }
 
 public:
     // 파일로 저장

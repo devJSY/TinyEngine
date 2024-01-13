@@ -11,13 +11,19 @@ private:
     bool m_ViewportFocused;
     bool m_ViewportHovered;
 
-    bool m_bShowIDMap;
-
     COutliner m_Outliner;
 
     ImGuizmo::OPERATION m_GizmoType;
 
     CContentBrowser m_ContentBrowser;
+
+    bool m_bShowViewport;
+    bool m_bShowIDMap;
+    bool m_bShowOutliner;
+    bool m_bShowContentBrowser;
+    bool m_bShowCollisionResponses;
+    bool m_bShowToolbar;
+    bool m_bShowAssets;
 
 public:
     virtual void init() override;
@@ -26,12 +32,13 @@ public:
     virtual void render() override;
 
 private:
+    void render_MenuBar();
     void render_Viewport();
     void render_ImGuizmo();
-    void render_MenuBar();
     void render_CollisionResponses();
-    void render_UI_Toolbar();
+    void render_Toolbar();
     void render_Assets();
+    void render_AssetEditor();
 
 private:
     void SetDarkThemeColors();
