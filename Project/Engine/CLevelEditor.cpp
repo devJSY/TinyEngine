@@ -307,6 +307,24 @@ void CLevelEditor::render_Assets()
 {
     ImGui::Begin("Assets");
 
+    if (ImGui::Button("Save All Assets"))
+    {
+        for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
+        {
+            const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset((ASSET_TYPE)i);
+
+            std::wstring folderName = L"";
+
+            if ((ASSET_TYPE)i == ASSET_TYPE::MATERIAL)
+                folderName = L"Materials\\";
+
+            for (const auto& iter : mapAsset)
+            {
+                iter.second->Save(folderName + iter.first + L".tasset");
+            }
+        }
+    }
+
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
     {
         const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset((ASSET_TYPE)i);
@@ -320,11 +338,6 @@ void CLevelEditor::render_Assets()
                 string key = WstringTostring(iter.first);
 
                 ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
-
-                if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-                {
-                    iter.second->Save(L"Materials\\" + iter.first + L".tasset");
-                }
 
                 // Drag & Drop
                 if (ImGui::BeginDragDropSource())

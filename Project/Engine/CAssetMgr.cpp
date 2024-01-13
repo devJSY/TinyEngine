@@ -24,7 +24,7 @@ void CAssetMgr::init()
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
     CreateDefaultTexture();
-    // CreateDefaultMaterial();
+    //CreateDefaultMaterial();
 
     Load<CMaterial>(L"BasicMtrl", L"Materials\\BasicMtrl.tasset");
     Load<CMaterial>(L"BlinnPhongMtrl", L"Materials\\BlinnPhongMtrl.tasset");
