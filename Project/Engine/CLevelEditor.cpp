@@ -321,6 +321,11 @@ void CLevelEditor::render_Assets()
 
                 ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 
+                if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+                {
+                    iter.second->Save(L"Materials\\" + iter.first + L".tasset");
+                }
+
                 // Drag & Drop
                 if (ImGui::BeginDragDropSource())
                 {

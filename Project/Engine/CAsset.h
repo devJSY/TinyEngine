@@ -6,19 +6,22 @@
 class CAsset : public CEntity
 {
 private:
+    const ASSET_TYPE m_Type;
+
     wstring m_Key;
     wstring m_RelativePath;
+
     int m_RefCount;
-    const ASSET_TYPE m_Type;
 
 public:
     const wstring& GetKey() const { return m_Key; }
     const wstring& GetRelativePath() const { return m_RelativePath; }
 
-private:
+protected:
     void SetKey(const wstring& _Key) { m_Key = _Key; }
     void SetRelativePath(const wstring& _RelativePath) { m_RelativePath = _RelativePath; }
 
+private:
     void AddRef() { ++m_RefCount; }
     void Release()
     {
@@ -33,12 +36,13 @@ private:
 
     ASSET_TYPE GetComponentType() const { return m_Type; }
 
-    // 파일로 부터 로딩
-    virtual int Load(const wstring& _strFilePath) = 0;
-
 public:
     // 파일로 저장
     virtual int Save(const wstring& _strFilePath) = 0;
+
+private:
+    // 파일로 부터 로딩
+    virtual int Load(const wstring& _strFilePath) = 0;
 
 public:
     CAsset(ASSET_TYPE _Type);

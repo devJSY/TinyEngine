@@ -18,10 +18,11 @@ private:
     int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage);
     int Create(ComPtr<ID3D11Texture2D> _tex2D);
 
-    virtual int Load(const wstring& _strFilePath) override;
-
 public:
     virtual int Save(const wstring& _strFilePath) override;
+
+private:
+    virtual int Load(const wstring& _strFilePath) override;
 
 public:
     void UpdateData(int _RegisterNum);

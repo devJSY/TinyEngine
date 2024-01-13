@@ -30,9 +30,6 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\BlurYPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\CombinePS.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\debug.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -63,10 +60,10 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocess.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\SamplingPS.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BloomPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\SamplingVS.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\postprocessVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\SkyboxPS.cso</FullPath>

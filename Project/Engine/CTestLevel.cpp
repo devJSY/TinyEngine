@@ -191,33 +191,6 @@ void CTestLevel::begin()
 
     AddObject(pMonster, L"Mesh");
 
-    for (size_t i = 0; i <= 100; i++)
-    {
-        // BlurX
-        CGameObject* pBlurX = new CGameObject;
-        pBlurX->SetName(L"BlurX");
-
-        pBlurX->AddComponent(new CTransform);
-        pBlurX->AddComponent(new CMeshRender);
-
-        pBlurX->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        pBlurX->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl"));
-
-        AddObject(pBlurX, L"Postprocess");
-
-        // BlurY
-        CGameObject* pBlurY = new CGameObject;
-        pBlurY->SetName(L"BlurY");
-
-        pBlurY->AddComponent(new CTransform);
-        pBlurY->AddComponent(new CMeshRender);
-
-        pBlurY->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        pBlurY->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl"));
-
-        AddObject(pBlurY, L"Postprocess");
-    }
-
     // 충돌 설정
     // CCollisionMgr::GetInst()->LayerCheck(L"Mesh", L"Mesh");
     for (UINT i = 0; i < LAYER_MAX; i++)

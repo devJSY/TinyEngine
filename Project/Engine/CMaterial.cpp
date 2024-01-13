@@ -48,14 +48,78 @@ void CMaterial::UpdateData()
     pCB->UpdateData();
 }
 
-int CMaterial::Load(const wstring& _strFilePath)
-{
-    return 0;
-}
-
 int CMaterial::Save(const wstring& _strFilePath)
 {
-    return 0;
+    wstring strFilePath = CPathMgr::GetContentPath();
+    strFilePath += _strFilePath;
+
+    FILE* pFile = nullptr;
+    _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+
+    if (nullptr == pFile)
+    {
+        std::cout << "파일 열기 실패" << std::endl;
+        return false;
+    }
+
+    // Entity
+    SaveWString(GetName(), pFile);
+
+    // Res
+    SaveWString(GetKey(), pFile);
+
+    // Shader
+    SaveAssetRef(m_pShader.Get(), pFile);
+
+    // Constant
+    fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);
+
+    // Texture
+    for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+    {
+        SaveAssetRef(m_arrTex[i].Get(), pFile);
+    }
+
+    fclose(pFile);
+
+    return S_OK;
+}
+
+int CMaterial::Load(const wstring& _strFilePath)
+{
+    FILE* pFile = nullptr;
+    _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
+
+    if (nullptr == pFile)
+    {
+        std::cout << "파일 열기 실패" << std::endl;
+        return false;
+    }
+
+    // Entity
+    wstring strName;
+    LoadWString(strName, pFile);
+    SetName(strName);
+
+    // Res
+    wstring strKey;
+    LoadWString(strKey, pFile);
+
+    // Shader
+    LoadAssetRef(m_pShader, pFile);
+
+    // Constant
+    fread(&m_Const, sizeof(tMtrlConst), 1, pFile);
+
+    // Texture
+    for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+    {
+        LoadAssetRef(m_arrTex[i], pFile);
+    }
+
+    fclose(pFile);
+
+    return S_OK;
 }
 
 void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData) const

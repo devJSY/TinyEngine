@@ -24,7 +24,21 @@ void CAssetMgr::init()
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
     CreateDefaultTexture();
-    CreateDefaultMaterial();
+    // CreateDefaultMaterial();
+
+    Load<CMaterial>(L"BasicMtrl", L"Materials\\BasicMtrl.tasset");
+    Load<CMaterial>(L"BlinnPhongMtrl", L"Materials\\BlinnPhongMtrl.tasset");
+    Load<CMaterial>(L"BloomMtrl", L"Materials\\BloomMtrl.tasset");
+    Load<CMaterial>(L"BlurXMtrl", L"Materials\\BlurXMtrl.tasset");
+    Load<CMaterial>(L"BlurYMtrl", L"Materials\\BlurYMtrl.tasset");
+    Load<CMaterial>(L"DebugShapeMtrl", L"Materials\\DebugShapeMtrl.tasset");
+    Load<CMaterial>(L"DirectionalLightMtrl", L"Materials\\DirectionalLightMtrl.tasset");
+    Load<CMaterial>(L"DistortionMtrl", L"Materials\\DistortionMtrl.tasset");
+    Load<CMaterial>(L"GrayFilterMtrl", L"Materials\\GrayFilterMtrl.tasset");
+    Load<CMaterial>(L"PointLightMtrl", L"Materials\\PointLightMtrl.tasset");
+    Load<CMaterial>(L"SkyboxMtrl", L"Materials\\SkyboxMtrl.tasset");
+    Load<CMaterial>(L"SpotLightMtrl", L"Materials\\SpotLightMtrl.tasset");
+    Load<CMaterial>(L"Std2DMtrl", L"Materials\\Std2DMtrl.tasset");
 }
 
 vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string filename, bool revertNormals)
