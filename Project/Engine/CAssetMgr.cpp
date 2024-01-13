@@ -17,6 +17,42 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
+    // 모든 에셋 파일로 저장
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    {
+        std::wstring basePath = L"";
+
+        switch ((ASSET_TYPE)i)
+        {
+        case ASSET_TYPE::MESH:
+            break;
+        case ASSET_TYPE::MESHDATA:
+            break;
+        case ASSET_TYPE::TEXTURE:
+            basePath = L"Textures\\";
+            break;
+        case ASSET_TYPE::MATERIAL:
+            basePath = L"Materials\\";
+            break;
+        case ASSET_TYPE::SOUND:
+            break;
+        case ASSET_TYPE::COMPUTE_SHADER:
+            break;
+        case ASSET_TYPE::GRAPHICS_SHADER:
+            break;
+        }
+
+        if (basePath.empty())
+            continue;
+
+        for (const auto& iter : m_mapAsset[i])
+        {
+            std::wstring filePath = basePath;
+            filePath += iter.first;
+            filePath += L".tasset";
+            iter.second->Save(filePath);
+        }
+    }
 }
 
 void CAssetMgr::init()
@@ -24,21 +60,21 @@ void CAssetMgr::init()
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
     CreateDefaultTexture();
-    //CreateDefaultMaterial();
+    CreateDefaultMaterial();
 
-    Load<CMaterial>(L"BasicMtrl", L"Materials\\BasicMtrl.tasset");
-    Load<CMaterial>(L"BlinnPhongMtrl", L"Materials\\BlinnPhongMtrl.tasset");
-    Load<CMaterial>(L"BloomMtrl", L"Materials\\BloomMtrl.tasset");
-    Load<CMaterial>(L"BlurXMtrl", L"Materials\\BlurXMtrl.tasset");
-    Load<CMaterial>(L"BlurYMtrl", L"Materials\\BlurYMtrl.tasset");
-    Load<CMaterial>(L"DebugShapeMtrl", L"Materials\\DebugShapeMtrl.tasset");
-    Load<CMaterial>(L"DirectionalLightMtrl", L"Materials\\DirectionalLightMtrl.tasset");
-    Load<CMaterial>(L"DistortionMtrl", L"Materials\\DistortionMtrl.tasset");
-    Load<CMaterial>(L"GrayFilterMtrl", L"Materials\\GrayFilterMtrl.tasset");
-    Load<CMaterial>(L"PointLightMtrl", L"Materials\\PointLightMtrl.tasset");
-    Load<CMaterial>(L"SkyboxMtrl", L"Materials\\SkyboxMtrl.tasset");
-    Load<CMaterial>(L"SpotLightMtrl", L"Materials\\SpotLightMtrl.tasset");
-    Load<CMaterial>(L"Std2DMtrl", L"Materials\\Std2DMtrl.tasset");
+    // Load<CMaterial>(L"BasicMtrl", L"Materials\\BasicMtrl.tasset");
+    // Load<CMaterial>(L"BlinnPhongMtrl", L"Materials\\BlinnPhongMtrl.tasset");
+    // Load<CMaterial>(L"BloomMtrl", L"Materials\\BloomMtrl.tasset");
+    // Load<CMaterial>(L"BlurXMtrl", L"Materials\\BlurXMtrl.tasset");
+    // Load<CMaterial>(L"BlurYMtrl", L"Materials\\BlurYMtrl.tasset");
+    // Load<CMaterial>(L"DebugShapeMtrl", L"Materials\\DebugShapeMtrl.tasset");
+    // Load<CMaterial>(L"DirectionalLightMtrl", L"Materials\\DirectionalLightMtrl.tasset");
+    // Load<CMaterial>(L"DistortionMtrl", L"Materials\\DistortionMtrl.tasset");
+    // Load<CMaterial>(L"GrayFilterMtrl", L"Materials\\GrayFilterMtrl.tasset");
+    // Load<CMaterial>(L"PointLightMtrl", L"Materials\\PointLightMtrl.tasset");
+    // Load<CMaterial>(L"SkyboxMtrl", L"Materials\\SkyboxMtrl.tasset");
+    // Load<CMaterial>(L"SpotLightMtrl", L"Materials\\SpotLightMtrl.tasset");
+    // Load<CMaterial>(L"Std2DMtrl", L"Materials\\Std2DMtrl.tasset");
 }
 
 vector<tMeshData> CAssetMgr::ReadFromFile(std::string basePath, std::string filename, bool revertNormals)

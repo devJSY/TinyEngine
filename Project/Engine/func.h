@@ -68,6 +68,14 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 std::wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 
+// =====================================
+// ImGui Utility
+// =====================================
+void DrawVec3Control(const std::string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f,
+                     float resetValue = 0.0f, float columnWidth = 100.0f);
+std::string _labelPrefix(const char* const label);
+bool ImGuiComboUI(const std::string& caption, std::string& current_item, const std::vector<std::string>& items);
+
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])
 {
