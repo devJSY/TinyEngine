@@ -24,8 +24,6 @@ void CRenderMgr::init()
 
     Vec2 vRenderResolution = CDevice::GetInst()->GetRenderResolution();
     CreateRTCopyTex(vRenderResolution);
-
-    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)vRenderResolution.x,
-                                                           (UINT)vRenderResolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-                                                           D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    CreateIDMapTex(vRenderResolution);
+    CreatePostProcessingTex(vRenderResolution);
 }

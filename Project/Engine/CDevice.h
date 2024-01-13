@@ -16,13 +16,16 @@ private:
 
     ComPtr<IDXGISwapChain> m_SwapChain; // 스왚체인(출력 버퍼 지정)
 
+    Ptr<CTexture> m_RTTex;
+    Ptr<CTexture> m_DSTex;
+
     ComPtr<ID3D11RasterizerState> m_arrRS[(UINT)RS_TYPE::END];   // 레스터라이저
     ComPtr<ID3D11DepthStencilState> m_arrDS[(UINT)DS_TYPE::END]; // 깊이스탠실
     ComPtr<ID3D11BlendState> m_arrBS[(UINT)BS_TYPE::END];        // 블랜드
 
     ComPtr<ID3D11SamplerState> m_arrSS[(UINT)SS_TYPE::END]; // Sampler
-    
-    CConstBuffer* m_arrCB[(UINT)CB_TYPE::END];  // Constant Buffer
+
+    CConstBuffer* m_arrCB[(UINT)CB_TYPE::END]; // Constant Buffer
 
 public:
     int init(HWND _hWnd, Vec2 _vResolution);

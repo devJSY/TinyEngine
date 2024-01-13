@@ -188,23 +188,42 @@ void CRenderMgr::CopyRenderTarget()
 {
     // Viewport บนป็
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    Ptr<CTexture> pRTCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
-    CONTEXT->CopyResource(pRTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
+    CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
-    CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                        DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                      DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
+                                                      D3D11_USAGE_DEFAULT);
+}
 
-    CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-                                        D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
+void CRenderMgr::CreatePostProcessingTex(Vec2 Resolution)
+{
+    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                           DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
+                                                           D3D11_USAGE_DEFAULT);
+}
 
-    CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                        DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
+{
+    m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(
+        L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+        D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
+
+    m_IDMapDSTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                       DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL,
+                                                       D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
 {
+    m_RTCopyTex = nullptr;
+    m_IDMapTex = nullptr;
+    m_IDMapDSTex = nullptr;
+    m_PostProcessTex = nullptr;
+
     CreateRTCopyTex(Resolution);
+    CreateIDMapTex(Resolution);
+    CreatePostProcessingTex(Resolution);
 }

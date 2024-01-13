@@ -233,8 +233,8 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 // IDMap
                 if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
                 {
-                    Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
-                    Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
+                    Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
+                    Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
 
                     CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
 

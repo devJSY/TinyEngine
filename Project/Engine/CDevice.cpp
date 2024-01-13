@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "CDevice.h"
 
-#include "CConstBuffer.h"
 #include "CAssetMgr.h"
+#include "CRenderMgr.h"
+
+#include "CConstBuffer.h"
 
 CDevice::CDevice()
     : m_hRenderWnd(nullptr)
@@ -98,20 +100,17 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
 void CDevice::ClearRenderTarget(const Vec4& Color)
 {
     // IDMap
-    Ptr<CTexture> pIDMapTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
-    Ptr<CTexture> pIDMapDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapDSTex");
+    Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
+    Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
 
     m_Context->ClearRenderTargetView(pIDMapTex->GetRTV().Get(), Color);
     m_Context->ClearDepthStencilView(pIDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
     // Render Target
-    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+    m_Context->ClearRenderTargetView(m_RTTex->GetRTV().Get(), Color);
+    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
-    m_Context->ClearRenderTargetView(pTex->GetRTV().Get(), Color);
-    m_Context->ClearDepthStencilView(pDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-
-    m_Context->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+    m_Context->OMSetRenderTargets(1, m_RTTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
 }
 
 void CDevice::Present()
@@ -125,6 +124,9 @@ void CDevice::Resize(Vec2 resolution)
     g_Global.g_RenderResolution = m_vRenderResolution;
 
     // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release 시켜야함
+    m_RTTex = nullptr;
+    m_DSTex = nullptr;
+
     m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
 
     CreateView();
@@ -246,14 +248,14 @@ int CDevice::CreateView()
     // RenderTarget 용 텍스쳐 등록
     ComPtr<ID3D11Texture2D> tex2D;
     m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
-    Ptr<CTexture> pTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
+    m_RTTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
     // DepthStencil 용도 텍스쳐 생성
-    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->CreateTexture(
-        L"DepthStencilTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
-        D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+    m_DSTex = CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", (UINT)m_vRenderResolution.x,
+                                                  (UINT)m_vRenderResolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
+                                                  D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 
-    m_Context->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+    m_Context->OMSetRenderTargets(1, m_RTTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
 
     return S_OK;
 }

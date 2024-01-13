@@ -111,7 +111,7 @@ void CLevelEditor::render()
     // ID Map
     if (m_bShowIDMap)
     {
-        Ptr<CTexture> pIDMap = CAssetMgr::GetInst()->FindAsset<CTexture>(L"IDMapTex");
+        Ptr<CTexture> pIDMap = CRenderMgr::GetInst()->GetIDMapTex();
         ImGui::Begin("Picking Color ID Map");
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         ImGui::Image((void*)pIDMap->GetSRV().Get(), ImVec2(viewportPanelSize.x, viewportPanelSize.y));
@@ -356,7 +356,7 @@ void CLevelEditor::render_Viewport()
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
 
     // ·»´õ¸µ
-    Ptr<CTexture> pCopyTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RTCopyTex");
+    Ptr<CTexture> pCopyTex = CRenderMgr::GetInst()->GetRTCopyTex();
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
     // ImGuizmo

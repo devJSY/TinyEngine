@@ -17,6 +17,9 @@ class CRenderMgr : public CSingleton<CRenderMgr>
 private:
     vector<CCamera*> m_vecCam;
 
+    Ptr<CTexture> m_RTCopyTex;
+    Ptr<CTexture> m_IDMapTex;
+    Ptr<CTexture> m_IDMapDSTex;
     Ptr<CTexture> m_PostProcessTex;
 
     CStructuredBuffer* m_Light2DBuffer;
@@ -55,8 +58,16 @@ public:
 
 public:
     void CopyRenderTarget();
-    void CreateRTCopyTex(Vec2 Resolution);
     void Resize(Vec2 Resolution);
+
+    Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
+    Ptr<CTexture> GetIDMapTex() const { return m_IDMapTex; }
+    Ptr<CTexture> GetIDMapDSTex() const { return m_IDMapDSTex; }
+
+private:
+    void CreateRTCopyTex(Vec2 Resolution);
+    void CreateIDMapTex(Vec2 Resolution);
+    void CreatePostProcessingTex(Vec2 Resolution);
 
 private:
     void render();
