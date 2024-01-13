@@ -651,10 +651,10 @@
     <FxCompile Include="SkyBoxVS.hlsl">
       <Filter>ShaderCode\SkyBox</Filter>
     </FxCompile>
-    <FxCompile Include="SamplingVS.hlsl">
+    <FxCompile Include="postprocessVS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="SamplingPS.hlsl">
+    <FxCompile Include="BloomPS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="std2d.fx">
@@ -667,9 +667,6 @@
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="BlurXPS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
-    </FxCompile>
-    <FxCompile Include="CombinePS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="BillBoardPointGS.hlsl">

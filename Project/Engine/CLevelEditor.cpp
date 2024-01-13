@@ -156,6 +156,9 @@ void CLevelEditor::render()
     ImGui::Checkbox("Picking Color ID Map", &m_bShowIDMap);
     ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.DrawAsWireFrame);
 
+    ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
+    ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
+
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     ImGui::Checkbox("Show DebugRender", &bDebugRender);
     CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);

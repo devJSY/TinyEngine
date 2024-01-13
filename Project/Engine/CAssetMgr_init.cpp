@@ -382,6 +382,57 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"SkyBox_IDMapShader");
         AddAsset(L"SkyBox_IDMapShader", pShader);
     }
+
+    // =================================
+    // Bloom Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BloomPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"BloomShader");
+        AddAsset(L"BloomShader", pShader);
+    }
+
+    // =================================
+    // BlurX Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BlurXPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"BlurXShader");
+        AddAsset(L"BlurXShader", pShader);
+    }
+
+    // =================================
+    // BlurY Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BlurYPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"BlurYShader");
+        AddAsset(L"BlurYShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultTexture()
@@ -500,6 +551,30 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"SpotLightTex"));
         pMtrl->SetName(L"SpotLightMtrl");
         AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
+    }
+
+    // Bloom
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomShader"));
+        pMtrl->SetName(L"BloomMtrl");
+        AddAsset<CMaterial>(L"BloomMtrl", pMtrl);
+    }
+
+    // BlurX
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurXShader"));
+        pMtrl->SetName(L"BlurXMtrl");
+        AddAsset<CMaterial>(L"BlurXMtrl", pMtrl);
+    }
+
+    // BlurY
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurYShader"));
+        pMtrl->SetName(L"BlurYMtrl");
+        AddAsset<CMaterial>(L"BlurYMtrl", pMtrl);
     }
 }
 
