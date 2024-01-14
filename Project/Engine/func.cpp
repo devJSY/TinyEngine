@@ -331,8 +331,8 @@ std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
     return std::wstring();
 }
 
-void DrawVec3Control(const std::string& label, Vec3& values, float speed, float min, float max, float resetValue,
-                     float columnWidth)
+void ImGuiDrawVec3Control(const std::string& label, Vec3& values, float speed, float min, float max, float resetValue,
+                          float columnWidth)
 {
     ImGui::PushID(label.c_str());
 
@@ -389,7 +389,7 @@ void DrawVec3Control(const std::string& label, Vec3& values, float speed, float 
     ImGui::PopID();
 }
 
-std::string _labelPrefix(const char* const label)
+std::string ImGuiLabelPrefix(const char* const label)
 {
     float width = ImGui::CalcItemWidth();
 
@@ -431,4 +431,20 @@ bool ImGuiComboUI(const std::string& caption, std::string& current_item, const s
     }
 
     return changed;
+}
+
+bool ImGuiAlignButton(const char* label, float alignment)
+{
+    alignment = std::clamp(alignment, 0.f, 1.f);
+
+    ImGuiStyle& style = ImGui::GetStyle();
+
+    float size = ImGui::CalcTextSize(label).x + style.FramePadding.x * 2.0f;
+    float avail = ImGui::GetContentRegionAvail().x;
+
+    float off = (avail - size) * alignment;
+    if (off > 0.0f)
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
+
+    return ImGui::Button(label);
 }

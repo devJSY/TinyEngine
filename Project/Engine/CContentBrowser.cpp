@@ -46,15 +46,15 @@ void CContentBrowser::render()
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
         strcpy_s(buffer, sizeof(buffer), name.c_str());
-        ImGui::InputText(_labelPrefix("Current Directory").c_str(), buffer, sizeof(buffer));
+        ImGui::InputText(ImGuiLabelPrefix("Current Directory").c_str(), buffer, sizeof(buffer));
     }
 
     static float padding = 16.0f;
     static float thumbnailSize = 110.0f;
 
     ImGui::Columns(1);
-    ImGui::SliderFloat(_labelPrefix("Thumbnail Size").c_str(), &thumbnailSize, 16, 256);
-    ImGui::SliderFloat(_labelPrefix("Padding").c_str(), &padding, 0, 32);
+    ImGui::SliderFloat(ImGuiLabelPrefix("Thumbnail Size").c_str(), &thumbnailSize, 16, 256);
+    ImGui::SliderFloat(ImGuiLabelPrefix("Padding").c_str(), &padding, 0, 32);
 
     float cellSize = thumbnailSize + padding;
 

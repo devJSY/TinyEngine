@@ -33,7 +33,7 @@ void CMaterialEditor::render()
     memset(buffer, 0, sizeof(buffer));
     std::string name = WstringTostring(m_Mtrl->GetName());
     strcpy_s(buffer, sizeof(buffer), name.c_str());
-    ImGui::InputText(_labelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
+    ImGui::InputText(ImGuiLabelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
 
     const tMtrlConst& MtrlConst = m_Mtrl->GetMtrlConst();
 
@@ -44,16 +44,16 @@ void CMaterialEditor::render()
 
     bool bDirty = false;
 
-    if (ImGui::ColorEdit3(_labelPrefix("Ambient").c_str(), &ambient.x))
+    if (ImGui::ColorEdit3(ImGuiLabelPrefix("Ambient").c_str(), &ambient.x))
         bDirty = true;
 
-    if (ImGui::ColorEdit3(_labelPrefix("diffuse").c_str(), &diffuse.x))
+    if (ImGui::ColorEdit3(ImGuiLabelPrefix("diffuse").c_str(), &diffuse.x))
         bDirty = true;
 
-    if (ImGui::ColorEdit3(_labelPrefix("specular").c_str(), &specular.x))
+    if (ImGui::ColorEdit3(ImGuiLabelPrefix("specular").c_str(), &specular.x))
         bDirty = true;
 
-    if (ImGui::ColorEdit3(_labelPrefix("environment").c_str(), &environment.x))
+    if (ImGui::ColorEdit3(ImGuiLabelPrefix("environment").c_str(), &environment.x))
         bDirty = true;
 
     if (bDirty)
