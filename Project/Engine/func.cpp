@@ -238,10 +238,10 @@ std::string GetAssetTypeName(ASSET_TYPE type)
         {ASSET_TYPE::MESH, "Mesh"},
         {ASSET_TYPE::MESHDATA, "MeshData"},
         {ASSET_TYPE::TEXTURE, "Texture"},
-        {ASSET_TYPE::MATERIAL, "Material"},
-        {ASSET_TYPE::SOUND, "Sound"},
         {ASSET_TYPE::COMPUTE_SHADER, "ComputeShader"},
         {ASSET_TYPE::GRAPHICS_SHADER, "GraphicsShader"},
+        {ASSET_TYPE::MATERIAL, "Material"},
+        {ASSET_TYPE::SOUND, "Sound"},
     };
 
     auto it = AssetStrings.find(type);

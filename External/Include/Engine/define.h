@@ -31,10 +31,10 @@ enum class ASSET_TYPE
     MESH,
     MESHDATA,
     TEXTURE,
-    MATERIAL,
-    SOUND,
     COMPUTE_SHADER,
     GRAPHICS_SHADER,
+    MATERIAL,
+    SOUND,
     END,
 };
 

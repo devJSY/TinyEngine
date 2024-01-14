@@ -19,6 +19,7 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
+    std::wstring m_AssetExtension;
 
 public:
     const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
@@ -27,11 +28,13 @@ public:
     void init();
 
 private:
-    // 에셋 로딩
+    // 에셋 생성
     void CreateDefaultMesh();
     void CreateDefaultGraphicsShader();
     void CreateDefaultTexture();
     void CreateDefaultMaterial();
+
+    void LoadFromAssetFile();
 
 private:
     // Geometry
@@ -92,10 +95,10 @@ ASSET_TYPE GetAssetType()
         Type = ASSET_TYPE::MESH;
     else if (&info == &typeid(CTexture))
         Type = ASSET_TYPE::TEXTURE;
-    else if (&info == &typeid(CMaterial))
-        Type = ASSET_TYPE::MATERIAL;
     else if (&info == &typeid(CGraphicsShader))
         Type = ASSET_TYPE::GRAPHICS_SHADER;
+    else if (&info == &typeid(CMaterial))
+        Type = ASSET_TYPE::MATERIAL;
 
     return Type;
 }
