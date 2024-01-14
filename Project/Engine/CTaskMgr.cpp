@@ -59,27 +59,27 @@ void CTaskMgr::tick()
         // Mouse Picking
         if (KEY_TAP(KEY::LBTN))
         {
-            //// Color Picking
-            //{
-            //    Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
-
-            //    // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
-            //    if (nullptr != CEditorMgr::GetInst()->GetCurEditor())
-            //        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
-
-            //    GamePlayStatic::MouseColorPicking(MousePos);
-            //}
-
-            // Ray Picking
+            // Color Picking
             {
                 Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
-                // Level Editor 였다면 Viewport 에서의 마우스위치로 설정
+                // Level Editor 모드였다면 Viewport 에서의 마우스위치로 설정
                 if (nullptr != CEditorMgr::GetInst()->GetLevelEditor())
                     MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-                GamePlayStatic::MouseRayPicking(MousePos);
+                GamePlayStatic::MouseColorPicking(MousePos);
             }
+
+            //// Ray Picking
+            //{
+            //    Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+
+            //    // Level Editor 였다면 Viewport 에서의 마우스위치로 설정
+            //    if (nullptr != CEditorMgr::GetInst()->GetLevelEditor())
+            //        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+
+            //    GamePlayStatic::MouseRayPicking(MousePos);
+            //}
         }
 
         // Destroy Object

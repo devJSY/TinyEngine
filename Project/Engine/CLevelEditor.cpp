@@ -393,8 +393,16 @@ void CLevelEditor::render_Viewport()
 void CLevelEditor::render_ImGuizmo()
 {
     CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
+    if (nullptr == pSelectedObj)
+        return;
+
     CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0); // Main Camera
-    if (nullptr == pSelectedObj || nullptr == pCam)
+
+    // UI 오브젝트는 UI 카메라 기준행렬로 렌더링
+    if (L"UI" == CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(pSelectedObj->GetLayerIdx())->GetName())
+        pCam = CRenderMgr::GetInst()->GetCamera(1); // UI Camera 
+
+    if (nullptr == pCam)
         return;
 
     if (!KEY_PRESSED(KEY::RBTN))
