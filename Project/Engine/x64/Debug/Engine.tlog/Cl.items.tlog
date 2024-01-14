@@ -31,6 +31,7 @@ C:\Users\A\Desktop\TinyEngine\Project\Engine\CMeshRender.cpp;C:\Users\A\Desktop\
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CModleLoader.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CModleLoader.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CCollider2D.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CCollider2D.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\COutliner.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\COutliner.obj
+C:\Users\A\Desktop\TinyEngine\Project\Engine\COutputLog.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\COutputLog.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CPathMgr.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CPlayerScript.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CPlayerScript.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CRenderComponent.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CRenderComponent.obj

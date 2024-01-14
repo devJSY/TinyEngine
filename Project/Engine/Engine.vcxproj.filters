@@ -214,6 +214,9 @@
     <ClInclude Include="CMaterialEditor.h">
       <Filter>20. Editor\MaterialEditor</Filter>
     </ClInclude>
+    <ClInclude Include="COutputLog.h">
+      <Filter>20. Editor\LevelEditor\COutputLog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -410,6 +413,9 @@
     </ClCompile>
     <ClCompile Include="CMaterialEditor.cpp">
       <Filter>20. Editor\MaterialEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="COutputLog.cpp">
+      <Filter>20. Editor\LevelEditor\COutputLog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -610,6 +616,9 @@
     </Filter>
     <Filter Include="20. Editor\MaterialEditor">
       <UniqueIdentifier>{8ad859a0-383c-4701-9fe0-f4cdcef4694f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\LevelEditor\COutputLog">
+      <UniqueIdentifier>{98af686a-47c3-4b4b-8c44-25c760f20bbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

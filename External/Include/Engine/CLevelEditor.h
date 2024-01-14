@@ -23,6 +23,7 @@ private:
     bool m_bShowCollisionResponses;
     bool m_bShowToolbar;
     bool m_bShowAssets;
+    bool m_bShowOutputLog;
 
 public:
     virtual void init() override;

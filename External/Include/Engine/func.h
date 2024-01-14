@@ -75,7 +75,7 @@ std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"
 // =====================================
 void ImGuiDrawVec3Control(const std::string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f,
                      float resetValue = 0.0f, float columnWidth = 100.0f);
-std::string ImGuiLabelPrefix(const char* const label);
+std::string ImGuiLabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGuiComboUI(const std::string& caption, std::string& current_item, const std::vector<std::string>& items);
 bool ImGuiAlignButton(const char* label, float alignment = 0.5f);
 

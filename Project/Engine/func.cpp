@@ -389,14 +389,14 @@ void ImGuiDrawVec3Control(const std::string& label, Vec3& values, float speed, f
     ImGui::PopID();
 }
 
-std::string ImGuiLabelPrefix(const char* const label)
+std::string ImGuiLabelPrefix(const char* const label, float alignment)
 {
     float width = ImGui::CalcItemWidth();
 
     float x = ImGui::GetCursorPosX();
     ImGui::Text(label);
     ImGui::SameLine();
-    ImGui::SetCursorPosX(x + width * 0.5f + ImGui::GetStyle().ItemInnerSpacing.x);
+    ImGui::SetCursorPosX(x + width * alignment + ImGui::GetStyle().ItemInnerSpacing.x);
     ImGui::SetNextItemWidth(-1);
 
     std::string labelID = "##";

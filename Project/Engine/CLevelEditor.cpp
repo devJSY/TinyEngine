@@ -21,6 +21,8 @@
 #include "CLevelSaveLoad.h"
 #include "CMaterialEditor.h"
 
+#include "COutputLog.h"
+
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_ViewportFocused(false)
@@ -35,6 +37,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowCollisionResponses(true)
     , m_bShowToolbar(true)
     , m_bShowAssets(true)
+    , m_bShowOutputLog(true)
 {
 }
 
@@ -46,6 +49,8 @@ void CLevelEditor::init()
 {
     m_Outliner.init();
     m_ContentBrowser.init();
+
+    COutputLog::GetInst()->init();
 }
 
 void CLevelEditor::render()
@@ -86,6 +91,10 @@ void CLevelEditor::render()
     // Assets
     if (m_bShowAssets)
         render_Assets();
+
+    // OutputLog
+    if (m_bShowOutputLog)
+        COutputLog::GetInst()->render(&m_bShowOutputLog);
 
     // Demo ImGUI Rendering
     bool show_demo_window = true;
@@ -175,6 +184,9 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Assets", NULL, m_bShowAssets))
                 m_bShowAssets = !m_bShowAssets;
+
+            if (ImGui::MenuItem("Output Log", NULL, m_bShowOutputLog))
+                m_bShowOutputLog = !m_bShowOutputLog;
 
             ImGui::EndMenu();
         }
@@ -400,7 +412,7 @@ void CLevelEditor::render_ImGuizmo()
 
     // UI 오브젝트는 UI 카메라 기준행렬로 렌더링
     if (L"UI" == CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(pSelectedObj->GetLayerIdx())->GetName())
-        pCam = CRenderMgr::GetInst()->GetCamera(1); // UI Camera 
+        pCam = CRenderMgr::GetInst()->GetCamera(1); // UI Camera
 
     if (nullptr == pCam)
         return;
