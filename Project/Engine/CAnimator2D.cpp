@@ -3,6 +3,7 @@
 
 #include "CAnim.h"
 #include "CPathMgr.h"
+#include "COutputLog.h"
 
 CAnimator2D::CAnimator2D()
     : CComponent(COMPONENT_TYPE::ANIMATOR2D)
@@ -127,7 +128,7 @@ void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)
         wstring strFilePath = strFolderPath + L"\\" + pair.first + L".anim";
         if (!pair.second->SaveAnim(strFilePath))
         {
-            std::cout << "Animation Save 실패" << std::endl;
+            LOG(Warning, "Animation Save 실패");
         }
     }
 }
@@ -141,7 +142,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
 
     if (!pNewAnim->LoadAnim(strFilePath))
     {
-        std::cout << "Animation Load 실패" << std::endl;
+        LOG(Warning, "Animation Load 실패");
         delete pNewAnim;
         return;
     }
@@ -149,7 +150,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
     // 이미 로드된 애니메이션이 있는지 예외처리 
     if (FindAnim(pNewAnim->GetName()))
     {
-        std::cout << "Animation Already Exists" << std::endl;
+        LOG(Warning, "Animation Already Exists");
         delete pNewAnim;
         return;
     }

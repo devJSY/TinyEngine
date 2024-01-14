@@ -48,18 +48,6 @@ void COutputLog::render(bool* open)
     //     ImGui::EndPopup();
     // }
 
-    if (ImGui::SmallButton("Add Debug Text"))
-    {
-        AddLog("%d some text", Items.Size);
-        AddLog("some more text");
-        AddLog("display very important message here!");
-    }
-    ImGui::SameLine();
-    if (ImGui::SmallButton("Add Debug Error"))
-    {
-        AddLog("[error] something went wrong");
-    }
-    ImGui::SameLine();
     if (ImGui::SmallButton("Clear"))
     {
         ClearLog();
@@ -110,9 +98,25 @@ void COutputLog::render(bool* open)
             // (e.g. make Items[] an array of structure, store color/type etc.)
             ImVec4 color;
             bool has_color = false;
-            if (strstr(item, "[error]"))
+
+            if (strstr(item, "[Log]"))
             {
-                color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
+                color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+                has_color = true;
+            }
+            else if (strstr(item, "[Warning]"))
+            {
+                color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
+                has_color = true;
+            }
+            else if (strstr(item, "[Error]"))
+            {
+                color = ImVec4(1.0f, 0.f, 0.f, 1.0f);
+                has_color = true;
+            }
+            else if (strstr(item, "[Fatal]"))
+            {
+                color = ImVec4(1.0f, 0.f, 0.f, 1.0f);
                 has_color = true;
             }
             else if (strncmp(item, "# ", 2) == 0)
@@ -120,6 +124,7 @@ void COutputLog::render(bool* open)
                 color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f);
                 has_color = true;
             }
+
             if (has_color)
                 ImGui::PushStyleColor(ImGuiCol_Text, color);
             ImGui::TextUnformatted(item);

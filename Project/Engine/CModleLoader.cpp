@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CModleLoader.h"
 #include "CPathMgr.h"
+#include "COutputLog.h"
 
 void UpdateNormals(vector<tMeshData>& meshes)
 {
@@ -75,7 +76,7 @@ void CModelLoader::Load(std::string filePath, std::string fileName, bool revertN
 
     if (!pScene)
     {
-        std::cout << "Failed to read file: " << this->basePath + fileName << std::endl;
+        LOG(Error, "Failed to read file: " + this->basePath + fileName);
     }
     else
     {

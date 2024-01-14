@@ -16,6 +16,7 @@ private:
 
     ImGuizmo::OPERATION m_GizmoType;
 
+    bool m_bShowWorldSettings;
     bool m_bShowViewport;
     bool m_bShowIDMap;
     bool m_bShowOutliner;
@@ -33,6 +34,7 @@ public:
 
 private:
     void render_MenuBar();
+    void render_WorldSettings();
     void render_Viewport();
     void render_ImGuizmo();
     void render_CollisionResponses();

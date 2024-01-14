@@ -25,7 +25,7 @@ CTestLevel::~CTestLevel()
 void CTestLevel::begin()
 {
     AddMeshes();
-    // AddModels();
+    AddModels();
 
     // Camera Object »ý¼º
     CGameObject* pCamObj = new CGameObject;

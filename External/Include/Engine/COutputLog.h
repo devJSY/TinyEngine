@@ -1,6 +1,14 @@
 #pragma once
 #include "singleton.h"
 
+enum LOG_LEVEL
+{
+    Log,     // 파일 및 에디터 로그에 출력
+    Warning, // 파일 및 에디터 로그에 노란색으로 출력
+    Error,   // 파일 및 에디터 로그에 빨간색으로 출력
+    Fatal,   // 파일 및 에디터 로그에 빨간색으로 출력, 프로그램 종료
+};
+
 class COutputLog : public CSingleton<COutputLog>
 {
 public:
@@ -32,3 +40,27 @@ public:
     void init();
     void render(bool* open);
 };
+
+#define LOG(level, Message)                                                                                            \
+    {                                                                                                                  \
+        {                                                                                                              \
+            string log = "[Log] ";                                                                                     \
+            switch (level)                                                                                             \
+            {                                                                                                          \
+            case Log:                                                                                                  \
+                log = "[Log] ";                                                                                        \
+                break;                                                                                                 \
+            case Warning:                                                                                              \
+                log = "[Warning] ";                                                                                    \
+                break;                                                                                                 \
+            case Error:                                                                                                \
+                log = "[Error] ";                                                                                      \
+                break;                                                                                                 \
+            case Fatal:                                                                                                \
+                log = "[Fatal] ";                                                                                      \
+                break;                                                                                                 \
+            }                                                                                                          \
+            log += Message;                                                                                            \
+            COutputLog::GetInst()->AddLog(log.c_str());                                                                \
+        }                                                                                                              \
+    }

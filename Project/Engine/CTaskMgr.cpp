@@ -17,6 +17,8 @@
 
 #include "CLevel.h"
 
+#include "COutputLog.h"
+
 // stb
 #define _CRT_SECURE_NO_WARNINGS // stb_image_write compile error fix
 #define STB_IMAGE_IMPLEMENTATION
@@ -282,7 +284,7 @@ void CTaskMgr::SCREENSHOT(const FTask& _Task)
     filename += ".png";
     if (stbi_write_png(filename.c_str(), desc.Width, desc.Height, 4, pixels.data(), desc.Width * 4))
     {
-        std::cout << "Screenshot! FileName : " << filename << std::endl;
+        LOG(Log, "Screenshot! FileName : " + filename);
     }
 }
 

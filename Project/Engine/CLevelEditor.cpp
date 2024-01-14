@@ -30,6 +30,7 @@ CLevelEditor::CLevelEditor()
     , m_Outliner()
     , m_ContentBrowser()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
+    , m_bShowWorldSettings(true)
     , m_bShowViewport(true)
     , m_bShowIDMap(false)
     , m_bShowOutliner(true)
@@ -57,6 +58,10 @@ void CLevelEditor::render()
 {
     // Menu Bar
     render_MenuBar();
+
+    // World Settings
+    if (m_bShowWorldSettings)
+        render_WorldSettings();
 
     // Viewport
     if (m_bShowViewport)
@@ -100,30 +105,6 @@ void CLevelEditor::render()
     bool show_demo_window = true;
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
-
-    // World Settings
-    ImGui::Begin("World Settings");
-    ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
-    ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
-
-    ImGui::Text("Choice Your Clear Color!");
-    ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
-                        ImGuiColorEditFlags_PickerHueWheel);
-
-    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.DrawAsWireFrame);
-
-    bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
-    ImGui::Checkbox("Show DebugRender", &bDebugRender);
-    CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
-
-    bool bCollider = CRenderMgr::GetInst()->IsShowCollider();
-    ImGui::Checkbox("Show Collider", &bCollider);
-    CRenderMgr::GetInst()->SetShowCollider(bCollider);
-
-    ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
-    ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
-
-    ImGui::End();
 }
 
 void CLevelEditor::render_MenuBar()
@@ -164,6 +145,9 @@ void CLevelEditor::render_MenuBar()
 
         if (ImGui::BeginMenu("View"))
         {
+            if (ImGui::MenuItem("World Settings", NULL, m_bShowWorldSettings))
+                m_bShowWorldSettings = !m_bShowWorldSettings;
+
             if (ImGui::MenuItem("Viewport", NULL, m_bShowViewport))
                 m_bShowViewport = !m_bShowViewport;
 
@@ -220,6 +204,32 @@ void CLevelEditor::render_MenuBar()
 
         ImGui::EndMainMenuBar();
     }
+}
+
+void CLevelEditor::render_WorldSettings()
+{
+    ImGui::Begin("World Settings", &m_bShowWorldSettings);
+    ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
+    ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
+
+    ImGui::Text("Choice Your Clear Color!");
+    ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
+                        ImGuiColorEditFlags_PickerHueWheel);
+
+    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.DrawAsWireFrame);
+
+    bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
+    ImGui::Checkbox("Show DebugRender", &bDebugRender);
+    CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
+
+    bool bCollider = CRenderMgr::GetInst()->IsShowCollider();
+    ImGui::Checkbox("Show Collider", &bCollider);
+    CRenderMgr::GetInst()->SetShowCollider(bCollider);
+
+    ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
+    ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
+
+    ImGui::End();
 }
 
 void CLevelEditor::render_Toolbar()

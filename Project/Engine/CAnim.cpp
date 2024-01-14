@@ -5,6 +5,7 @@
 
 #include "CDevice.h"
 #include "CConstBuffer.h"
+#include "COutputLog.h"
 
 CAnim::CAnim()
     : m_Animator(nullptr)
@@ -132,7 +133,7 @@ bool CAnim::SaveAnim(const wstring& _FilePath)
 
     if (nullptr == pFile)
     {
-        std::cout << "파일 열기 실패" << std::endl;
+        LOG(Warning, "파일 열기 실패");
         return false;
     }
 
@@ -203,7 +204,7 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
 
     if (nullptr == pFile)
     {
-        std::cout << "파일 열기 실패" << std::endl;
+        LOG(Warning, "파일 열기 실패");
         return false;
     }
 

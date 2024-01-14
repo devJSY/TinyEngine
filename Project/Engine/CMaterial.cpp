@@ -6,6 +6,7 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 #include "CTexture.h"
+#include "COutputLog.h"
 
 CMaterial::CMaterial()
     : CAsset(ASSET_TYPE::MATERIAL)
@@ -58,7 +59,7 @@ int CMaterial::Save(const wstring& _strFilePath)
 
     if (nullptr == pFile)
     {
-        std::cout << "파일 열기 실패" << std::endl;
+        LOG(Warning, "파일 열기 실패");
         return false;
     }
 
@@ -92,7 +93,7 @@ int CMaterial::Load(const wstring& _strFilePath)
 
     if (nullptr == pFile)
     {
-        std::cout << "파일 열기 실패" << std::endl;
+        LOG(Warning, "파일 열기 실패");
         return false;
     }
 

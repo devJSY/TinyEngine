@@ -10,6 +10,7 @@
 #include "CMeshRender.h"
 
 #include "CDevice.h"
+#include "COutputLog.h"
 
 CAssetMgr::CAssetMgr()
 {
@@ -171,8 +172,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.AmbientTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.AmbientTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.AmbientTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.AmbientTextureFilename);
 
@@ -181,8 +181,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.AoTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.AoTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.AoTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.AoTextureFilename);
 
@@ -191,8 +190,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.NormalTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.NormalTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.NormalTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.NormalTextureFilename);
 
@@ -201,8 +199,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.HeightTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.HeightTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.HeightTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.HeightTextureFilename);
 
@@ -211,8 +208,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.MetallicTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.MetallicTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.MetallicTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.MetallicTextureFilename);
 
@@ -221,8 +217,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.RoughnessTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.RoughnessTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.RoughnessTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.RoughnessTextureFilename);
 
@@ -237,8 +232,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.EmissiveTextureFilename.empty())
     {
-        std::wcout << _Mesh->GetName() << " : ";
-        std::cout << _MeshData.EmissiveTextureFilename << std::endl;
+        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.EmissiveTextureFilename);
 
         std::wstring name = stringToWstring(_MeshData.EmissiveTextureFilename);
 
