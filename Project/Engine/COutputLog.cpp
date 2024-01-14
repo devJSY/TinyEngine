@@ -70,7 +70,20 @@ void COutputLog::render(bool* open)
 
     ImGui::Separator();
 
+    // Filters
     Filter.Draw("Filters", 180);
+
+    // Settings
+    ImGui::SameLine();
+    if (ImGui::BeginPopup("Settings"))
+    {
+        ImGui::Checkbox("Auto-scroll", &AutoScroll);
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::Button("Settings"))
+        ImGui::OpenPopup("Settings");
+
     ImGui::Separator();
 
     // Reserve enough left-over height for 1 separator + 1 input text

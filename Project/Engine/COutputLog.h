@@ -22,7 +22,7 @@ public:
     void ExecCommand(const char* command_line);
     int TextEditCallback(ImGuiInputTextCallbackData* data);
 
-public:
+private:
     int Stricmp(const char* s1, const char* s2);
     int Strnicmp(const char* s1, const char* s2, int n);
     char* Strdup(const char* s);
