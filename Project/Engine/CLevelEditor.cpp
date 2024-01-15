@@ -510,6 +510,8 @@ void CLevelEditor::render_CollisionResponses()
     if (ImGui::Button("All Layer Enable"))
         CCollisionMgr::GetInst()->EnableAllLayer();
 
+    ImGui::SameLine();
+
     if (ImGui::Button("All Layer Disable"))
         CCollisionMgr::GetInst()->DisableAllLayer();
 

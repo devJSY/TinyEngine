@@ -41,10 +41,13 @@ void CCameraMoveScript::tick()
             MoveFocusPerspective();
     }
 
-    // Level 에디터에서는 Viewport창에서만 카메라 이동 적용
-    CLevelEditor* LevelEditor = CEditorMgr::GetInst()->GetLevelEditor();
-    if (nullptr != LevelEditor && !LevelEditor->IsViewportHovered())
-        return;
+    // 에디터모드 에서는 Viewport창에서만 카메라 이동 적용
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        CLevelEditor* LevelEditor = CEditorMgr::GetInst()->GetLevelEditor();
+        if (nullptr != LevelEditor && !LevelEditor->IsViewportHovered())
+            return;
+    }
 
     // Move
     if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
@@ -65,20 +68,20 @@ void CCameraMoveScript::MoveOrthographic()
         float scale = Camera()->GetScale();
 
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
-        Vec2 GetRenderResolution = CDevice::GetInst()->GetRenderResolution();
+        Vec2 RenderResolution = CDevice::GetInst()->GetRenderResolution();
 
         float xRatio = 0.f;
         float yRatio = 0.f;
 
-        if (ViewportSize.x == 0 || ViewportSize.y == 0 || nullptr == CEditorMgr::GetInst()->GetLevelEditor())
+        if (ViewportSize.x == 0 || ViewportSize.y == 0 || !CEditorMgr::GetInst()->IsEnable())
         {
             xRatio = 1.f;
             yRatio = 1.f;
         }
         else
         {
-            xRatio = GetRenderResolution.x / ViewportSize.x;
-            yRatio = GetRenderResolution.y / ViewportSize.y;
+            xRatio = RenderResolution.x / ViewportSize.x;
+            yRatio = RenderResolution.y / ViewportSize.y;
         }
 
         // 드래그한 픽셀 위치값만큼 이동

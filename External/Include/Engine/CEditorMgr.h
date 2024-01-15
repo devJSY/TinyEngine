@@ -9,11 +9,13 @@ class CEditorMgr : public CSingleton<CEditorMgr>
     SINGLE(CEditorMgr);
 
 private:
+    bool m_bEnable; // 에디터 활성화/비활성화
     vector<CEditor*> m_vecEditor;
     Vec2 m_ViewportSize;
     Vec2 m_ViewportMousePos;
 
 public:
+    bool IsEnable() const { return m_bEnable; }
     CLevelEditor* GetLevelEditor() const { return static_cast<CLevelEditor*>(m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]); }
     CMaterialEditor* GetMaterialEditor() const
     {

@@ -68,7 +68,7 @@ void COutputLog::render(bool* open)
         ImGui::EndPopup();
     }
 
-    if (ImGui::Button("Settings"))
+    if (ImGuiAlignButton("Settings", 1.f))
         ImGui::OpenPopup("Settings");
 
     ImGui::Separator();
@@ -105,22 +105,22 @@ void COutputLog::render(bool* open)
             }
             else if (strstr(item, "[Warning]"))
             {
-                color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);
+                color = ImVec4(1.0f, 1.0f, 0.0f, 1.f);
                 has_color = true;
             }
             else if (strstr(item, "[Error]"))
             {
-                color = ImVec4(1.0f, 0.f, 0.f, 1.0f);
+                color = ImVec4(1.0f, 0.f, 0.f, 1.f);
                 has_color = true;
             }
             else if (strstr(item, "[Fatal]"))
             {
-                color = ImVec4(1.0f, 0.f, 0.f, 1.0f);
+                color = ImVec4(1.0f, 0.f, 0.f, 1.f);
                 has_color = true;
             }
-            else if (strncmp(item, "# ", 2) == 0)
+            else if (strncmp(item, "Cmd: ", 2) == 0)
             {
-                color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f);
+                color = ImVec4(132.f / 255.f, 183.f / 255.f, 71.f / 255.f, 1.f);
                 has_color = true;
             }
 
@@ -192,7 +192,7 @@ void COutputLog::AddLog(const char* fmt, ...)
 
 void COutputLog::ExecCommand(const char* command_line)
 {
-    AddLog("# %s\n", command_line);
+    AddLog("Cmd: %s\n", command_line);
 
     // Insert into history. First find match and delete it so it can be pushed to the back.
     // This isn't trying to be smart or optimal.
@@ -223,10 +223,10 @@ void COutputLog::ExecCommand(const char* command_line)
         for (int i = first > 0 ? first : 0; i < History.Size; i++)
             AddLog("%3d: %s\n", i, History[i]);
     }
-    else
-    {
-        AddLog("Unknown command: '%s'\n", command_line);
-    }
+    //else
+    //{
+    //    AddLog("Unknown command: '%s'\n", command_line);
+    //}
 
     // On command input, we scroll to bottom even if AutoScroll==false
     ScrollToBottom = true;

@@ -8,7 +8,8 @@
 #include "CDevice.h"
 
 CEditorMgr::CEditorMgr()
-    : m_vecEditor{}
+    : m_bEnable(true)
+    , m_vecEditor{}
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
 {
@@ -16,6 +17,9 @@ CEditorMgr::CEditorMgr()
 
 CEditorMgr::~CEditorMgr()
 {
+    if (!m_bEnable)
+        return;
+
     Delete_Vec(m_vecEditor);
 
     // Cleanup
@@ -26,6 +30,9 @@ CEditorMgr::~CEditorMgr()
 
 void CEditorMgr::init()
 {
+    if (!m_bEnable)
+        return;
+
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -86,6 +93,9 @@ void CEditorMgr::init()
 
 void CEditorMgr::tick()
 {
+    if (!m_bEnable)
+        return;
+
     for (size_t i = 0; i < m_vecEditor.size(); i++)
     {
         if (nullptr == m_vecEditor[i])
@@ -98,6 +108,9 @@ void CEditorMgr::tick()
 
 void CEditorMgr::render()
 {
+    if (!m_bEnable)
+        return;
+
     // ====================
     // ImGUI Render Start
     // ====================
