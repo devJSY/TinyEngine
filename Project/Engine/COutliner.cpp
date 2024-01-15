@@ -37,7 +37,7 @@ void COutliner::DrawNode(CGameObject* obj)
     ImGuiTreeNodeFlags flags =
         ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
-    std::string name = WstringTostring(obj->GetName());
+    string name = WstringTostring(obj->GetName());
 
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
 
@@ -60,7 +60,7 @@ void COutliner::DrawDetails(CGameObject* obj)
 {
     // Tag
     {
-        std::string name = WstringTostring(obj->GetName());
+        string name = WstringTostring(obj->GetName());
 
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
@@ -106,7 +106,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         }
 
         int LayerIdx = obj->GetLayerIdx();
-        std::string name = LayerNames[LayerIdx];
+        string name = LayerNames[LayerIdx];
 
         if (ImGuiComboUI(ImGuiLabelPrefix("Layer").c_str(), name, LayerNames))
         {
@@ -645,7 +645,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             memset(buffer, 0, sizeof(buffer));
             if (nullptr != pMesh)
             {
-                std::string name = WstringTostring(pMesh->GetName());
+                string name = WstringTostring(pMesh->GetName());
                 strcpy_s(buffer, sizeof(buffer), name.c_str());
             }
             ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
@@ -674,7 +674,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             memset(buffer, 0, sizeof(buffer));
             if (nullptr != pMaterial)
             {
-                std::string name = WstringTostring(pMaterial->GetName());
+                string name = WstringTostring(pMaterial->GetName());
                 strcpy_s(buffer, sizeof(buffer), name.c_str());
             }
             ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));

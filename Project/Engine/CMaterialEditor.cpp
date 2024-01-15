@@ -31,7 +31,7 @@ void CMaterialEditor::render()
 
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
-    std::string name = WstringTostring(m_Mtrl->GetName());
+    string name = WstringTostring(m_Mtrl->GetName());
     strcpy_s(buffer, sizeof(buffer), name.c_str());
     ImGui::InputText(ImGuiLabelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
 

@@ -81,6 +81,7 @@ typedef Vector4 Vec4;
 #include <filesystem>
 #include <unordered_map>
 
+using std::hash;
 using std::tuple;
 
 #include <commdlg.h> // OPENFILENAME

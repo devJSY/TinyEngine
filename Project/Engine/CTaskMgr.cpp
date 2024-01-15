@@ -356,7 +356,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
         for (size_t i = 0; i < vecObjects.size(); ++i)
         {
             // 오브젝트 이름으로 HashID 설정
-            std::hash<std::wstring> hasher;
+            hash<wstring> hasher;
             int HashID = (int)hasher(vecObjects[i]->GetName());
             Vec4 colorID = HashIDToColor(HashID);
 

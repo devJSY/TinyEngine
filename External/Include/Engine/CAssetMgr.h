@@ -19,7 +19,7 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
-    std::wstring m_AssetExtension;
+    wstring m_AssetExtension;
 
 public:
     const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
@@ -56,11 +56,11 @@ private:
 
     // ¸ðµ¨ ·Îµù
 public:
-    CGameObject* LoadModel(const std::string& _relativepath, const std::string& _filename, const std::wstring& _name,
+    CGameObject* LoadModel(const string& _relativepath, const string& _filename, const wstring& _name,
                            bool revertNormals = false);
 
 private:
-    vector<tMeshData> ReadFromFile(std::string basePath, std::string filename, bool revertNormals);
+    vector<tMeshData> ReadFromFile(string basePath, string filename, bool revertNormals);
     Ptr<CMaterial> LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData);
 
 public:

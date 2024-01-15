@@ -41,7 +41,7 @@ void CContentBrowser::render()
 
     // FileName
     {
-        std::string name = m_CurrentDirectory.string();
+        string name = m_CurrentDirectory.string();
 
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
@@ -69,7 +69,7 @@ void CContentBrowser::render()
     {
         const auto& path = directoryEntry.path();
         auto relativePath = std::filesystem::relative(path, CPathMgr::GetContentPath());
-        std::string filenameString = relativePath.filename().string();
+        string filenameString = relativePath.filename().string();
 
         ImGui::PushID(filenameString.c_str());
 

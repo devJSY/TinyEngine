@@ -129,15 +129,15 @@ struct tMeshData
     std::vector<Vtx> vertices;
     std::vector<UINT> indices;
 
-    std::string AmbientTextureFilename;
-    std::string AoTextureFilename; // Ambient Occlusion
-    std::string NormalTextureFilename;
-    std::string HeightTextureFilename;
-    std::string MetallicTextureFilename;
-    std::string RoughnessTextureFilename;
-    std::string EmissiveTextureFilename;
+    string AmbientTextureFilename;
+    string AoTextureFilename; // Ambient Occlusion
+    string NormalTextureFilename;
+    string HeightTextureFilename;
+    string MetallicTextureFilename;
+    string RoughnessTextureFilename;
+    string EmissiveTextureFilename;
 
-    std::string RelativeTextureFilePath; // 전체경로 = 절대경로/상대경로/파일이름 - 상대경로에 해당되는 문자열
+    string RelativeTextureFilePath; // 전체경로 = 절대경로/상대경로/파일이름 - 상대경로에 해당되는 문자열
 };
 
 extern tTransform g_Transform;

@@ -33,10 +33,10 @@ namespace GamePlayStatic
 
 string WstringTostring(const wstring& wstr);
 wstring stringToWstring(const string& str);
-std::string currentDateTime();
+string currentDateTime();
 Vec4 HashIDToColor(int hash);
-std::string GetComponentName(COMPONENT_TYPE type);
-std::string GetAssetTypeName(ASSET_TYPE type);
+string GetComponentName(COMPONENT_TYPE type);
+string GetAssetTypeName(ASSET_TYPE type);
 
 // =====================================
 // Save / Load
@@ -67,16 +67,16 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
     }
 }
 
-std::wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
-std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
+wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
+wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 
 // =====================================
 // ImGui Utility
 // =====================================
-void ImGuiDrawVec3Control(const std::string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f,
+void ImGuiDrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f,
                      float resetValue = 0.0f, float columnWidth = 100.0f);
-std::string ImGuiLabelPrefix(const char* const label, float alignment = 0.5f);
-bool ImGuiComboUI(const std::string& caption, std::string& current_item, const std::vector<std::string>& items);
+string ImGuiLabelPrefix(const char* const label, float alignment = 0.5f);
+bool ImGuiComboUI(const string& caption, string& current_item, const std::vector<string>& items);
 bool ImGuiAlignButton(const char* label, float alignment = 0.5f);
 
 // =====================================

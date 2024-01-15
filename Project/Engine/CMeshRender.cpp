@@ -53,7 +53,7 @@ void CMeshRender::UpdateData()
     g_Global.rimPower = m_RimPower;
 
     // 오브젝트 이름으로 HashID 설정
-    std::hash<std::wstring> hasher;
+    hash<wstring> hasher;
     int HashID = (int)hasher(GetOwner()->GetName());
     g_Global.pickingColor = HashIDToColor(HashID);
 

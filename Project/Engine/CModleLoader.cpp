@@ -55,7 +55,7 @@ string GetExtension(const string filename)
     return ext;
 }
 
-void CModelLoader::Load(std::string filePath, std::string fileName, bool revertNormals)
+void CModelLoader::Load(string filePath, string fileName, bool revertNormals)
 {
     if (GetExtension(fileName) == ".gltf")
     {
@@ -64,7 +64,7 @@ void CModelLoader::Load(std::string filePath, std::string fileName, bool revertN
     }
     
     wstring temp = CPathMgr::GetContentPath();
-    std::string ContentPath = WstringTostring(temp);
+    string ContentPath = WstringTostring(temp);
 
     this->filePath = filePath;
     this->basePath = ContentPath + filePath;
@@ -164,7 +164,7 @@ string CModelLoader::ReadFilename(aiMaterial* material, aiTextureType type)
         aiString filepath;
         material->GetTexture(type, 0, &filepath);
 
-        std::string fileName = std::string(std::filesystem::path(filepath.C_Str()).filename().string());
+        string fileName = string(std::filesystem::path(filepath.C_Str()).filename().string());
 
         return fileName;
     }

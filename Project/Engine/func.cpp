@@ -169,7 +169,7 @@ void GamePlayStatic::LevelChange(CLevel* _Level)
 
 string WstringTostring(const wstring& wstr)
 {
-    std::string str(wstr.length(), 0);
+    string str(wstr.length(), 0);
     std::transform(wstr.begin(), wstr.end(), str.begin(), [](wchar_t c) { return (char)c; });
     return str;
 }
@@ -179,7 +179,7 @@ wstring stringToWstring(const string& str)
     return wstring().assign(str.begin(), str.end());
 }
 
-std::string currentDateTime()
+string currentDateTime()
 {
     // 현재 시간을 구하기
     std::time_t currentTime = std::time(nullptr);
@@ -209,9 +209,9 @@ Vec4 HashIDToColor(int hash)
     return Vec4(static_cast<float>(r / 255.f), static_cast<float>(g / 255.f), static_cast<float>(b / 255.f), 1.f);
 }
 
-std::string GetComponentName(COMPONENT_TYPE type)
+string GetComponentName(COMPONENT_TYPE type)
 {
-    static const std::map<COMPONENT_TYPE, std::string> ComponentStrings{
+    static const std::map<COMPONENT_TYPE, string> ComponentStrings{
         {COMPONENT_TYPE::TRANSFORM, "Transform"},
         {COMPONENT_TYPE::COLLIDER2D, "Collider2D"},
         {COMPONENT_TYPE::COLLIDER3D, "Collider3D"},
@@ -232,9 +232,9 @@ std::string GetComponentName(COMPONENT_TYPE type)
     return it == ComponentStrings.end() ? "Out of range" : it->second;
 }
 
-std::string GetAssetTypeName(ASSET_TYPE type)
+string GetAssetTypeName(ASSET_TYPE type)
 {
-    static const std::map<ASSET_TYPE, std::string> AssetStrings{
+    static const std::map<ASSET_TYPE, string> AssetStrings{
         {ASSET_TYPE::MESH, "Mesh"},
         {ASSET_TYPE::MESHDATA, "MeshData"},
         {ASSET_TYPE::TEXTURE, "Texture"},
@@ -282,7 +282,7 @@ void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
     }
 }
 
-std::wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
+wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
 {
     wchar_t szName[256] = {};
     OPENFILENAME ofn = {};
@@ -303,10 +303,10 @@ std::wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
     if (GetOpenFileName(&ofn) == TRUE)
         return ofn.lpstrFile;
 
-    return std::wstring();
+    return wstring();
 }
 
-std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
+wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
 {
     wchar_t szName[256] = {};
     OPENFILENAME ofn = {};
@@ -328,10 +328,10 @@ std::wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
     if (GetSaveFileName(&ofn) == TRUE)
         return ofn.lpstrFile;
 
-    return std::wstring();
+    return wstring();
 }
 
-void ImGuiDrawVec3Control(const std::string& label, Vec3& values, float speed, float min, float max, float resetValue,
+void ImGuiDrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue,
                           float columnWidth)
 {
     ImGui::PushID(label.c_str());
@@ -389,7 +389,7 @@ void ImGuiDrawVec3Control(const std::string& label, Vec3& values, float speed, f
     ImGui::PopID();
 }
 
-std::string ImGuiLabelPrefix(const char* const label, float alignment)
+string ImGuiLabelPrefix(const char* const label, float alignment)
 {
     float width = ImGui::CalcItemWidth();
 
@@ -399,16 +399,16 @@ std::string ImGuiLabelPrefix(const char* const label, float alignment)
     ImGui::SetCursorPosX(x + width * alignment + ImGui::GetStyle().ItemInnerSpacing.x);
     ImGui::SetNextItemWidth(-1);
 
-    std::string labelID = "##";
+    string labelID = "##";
     labelID += label;
 
     return labelID;
 }
 
 //
-// Combo with std::vector<std::string>
+// Combo with std::vector<string>
 //
-bool ImGuiComboUI(const std::string& caption, std::string& current_item, const std::vector<std::string>& items)
+bool ImGuiComboUI(const string& caption, string& current_item, const std::vector<string>& items)
 {
     bool changed = false;
 
