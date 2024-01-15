@@ -110,7 +110,7 @@ struct tGlobalData
     float NormalLineScale;
     int DrawAsWireFrame;
 
-    int OutLineSize_2D;
+    int OutLineThickness_2D;
     Vec4 OutLineColor_2D;
 };
 
