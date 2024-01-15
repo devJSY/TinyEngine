@@ -110,7 +110,8 @@ struct tGlobalData
     float NormalLineScale;
     int DrawAsWireFrame;
 
-    float padding;
+    int OutLineSize_2D;
+    Vec4 OutLineColor_2D;
 };
 
 struct tAnimData2D

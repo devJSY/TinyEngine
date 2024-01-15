@@ -657,10 +657,10 @@
     <FxCompile Include="NormalLinePS.hlsl">
       <Filter>ShaderCode\Normal</Filter>
     </FxCompile>
-    <FxCompile Include="OutLinePS.hlsl">
+    <FxCompile Include="3D_OutLinePS.hlsl">
       <Filter>ShaderCode\OutLine</Filter>
     </FxCompile>
-    <FxCompile Include="OutLineVS.hlsl">
+    <FxCompile Include="3D_OutLineVS.hlsl">
       <Filter>ShaderCode\OutLine</Filter>
     </FxCompile>
     <FxCompile Include="SkyboxPS.hlsl">
@@ -719,6 +719,12 @@
     </FxCompile>
     <FxCompile Include="postprocess.fx">
       <Filter>ShaderCode\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="2D_OutLinePS.hlsl">
+      <Filter>ShaderCode\OutLine</Filter>
+    </FxCompile>
+    <FxCompile Include="2D_OutLineVS.hlsl">
+      <Filter>ShaderCode\OutLine</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

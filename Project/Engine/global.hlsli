@@ -106,7 +106,9 @@ cbuffer GLOBAL_DATA : register(b3)
 
     float g_NormalLineScale;
     bool g_DrawAsWireFrame;
-    float globalpadding;
+    
+    int g_OutLineSize_2D;
+    float4 g_OutLineColor_2D;
 }
 
 Texture2D g_tex_0 : register(t0);

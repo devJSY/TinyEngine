@@ -291,12 +291,30 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
-    // OutLine Shader
+    // 2D OutLine Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\OutLineVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\OutLinePS.hlsl", "main");
+        pShader->CreateVertexShader(L"shader\\2D_OutLineVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\2D_OutLinePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE); 
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->SetName(L"2D_OutLineShader");
+        AddAsset(L"2D_OutLineShader", pShader);
+    }
+
+    // =================================
+    // 3D OutLine Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\3D_OutLineVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\3D_OutLinePS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_FRONT); // OutLineÀº µÞ¸é¸¸ ·»´õ¸µ
         pShader->SetDSType(DS_TYPE::LESS);
@@ -304,8 +322,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
-        pShader->SetName(L"OutLineShader");
-        AddAsset(L"OutLineShader", pShader);
+        pShader->SetName(L"3D_OutLineShader");
+        AddAsset(L"3D_OutLineShader", pShader);
     }
 
     // =================================

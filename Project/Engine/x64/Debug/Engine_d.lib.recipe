@@ -3,6 +3,12 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\2D_OutLinePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\2D_OutLineVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\BasicPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -51,10 +57,10 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\NormalLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\OutLinePS.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\3D_OutLinePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\OutLineVS.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\3D_OutLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocess.cso</FullPath>

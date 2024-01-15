@@ -229,6 +229,9 @@ void CLevelEditor::render_WorldSettings()
     ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
     ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
 
+    ImGui::SliderInt("2D OutLine Size", &g_Global.OutLineSize_2D, 0, 100);
+    ImGui::ColorEdit3("2D OutLine Color", &g_Global.OutLineColor_2D.x);
+
     ImGui::End();
 }
 

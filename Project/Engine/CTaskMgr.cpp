@@ -215,6 +215,8 @@ void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
 
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
+
+    LOG(Log, "Window Resized!")
 }
 
 void CTaskMgr::DELETE_ASSET(const FTask& _Task)
