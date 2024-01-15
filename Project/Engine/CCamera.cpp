@@ -226,8 +226,15 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 if (CLevelMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
                     LayerName != L"SkyBox")
                 {
-                    //mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"3D_OutLineShader"));
-                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"2D_OutLineShader"));
+                    if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                    {
+                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"2D_OutLineShader"));
+                    }
+                    else
+                    {
+                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"3D_OutLineShader"));
+                    }
+
                     _vecObj[i]->render();
                 }
 
