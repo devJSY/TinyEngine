@@ -451,6 +451,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"BlurYShader");
         AddAsset(L"BlurYShader", pShader);
     }
+
+    // =================================
+    // Shock Wave Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ShockWavePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"ShockWaveShader");
+        AddAsset(L"ShockWaveShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultTexture()
@@ -593,6 +610,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurYShader"));
         pMtrl->SetName(L"BlurYMtrl");
         AddAsset<CMaterial>(L"BlurYMtrl", pMtrl);
+    }
+
+    // ShockWave
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShockWaveShader"));
+        pMtrl->SetName(L"ShockWaveMtrl");
+        AddAsset<CMaterial>(L"ShockWaveMtrl", pMtrl);
     }
 }
 

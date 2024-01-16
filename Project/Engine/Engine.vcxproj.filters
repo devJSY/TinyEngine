@@ -726,5 +726,8 @@
     <FxCompile Include="2D_OutLineVS.hlsl">
       <Filter>ShaderCode\OutLine</Filter>
     </FxCompile>
+    <FxCompile Include="ShockWavePS.hlsl">
+      <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

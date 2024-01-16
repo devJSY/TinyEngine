@@ -37,7 +37,7 @@ void CPlayerScript::begin()
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_idle.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_smoking_idle.anim");
 
-    Animator2D()->Play(L"dodge_back", true);
+    Animator2D()->Play(L"select_idle", true);
 }
 
 void CPlayerScript::tick()

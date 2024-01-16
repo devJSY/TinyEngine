@@ -63,7 +63,7 @@ void CAssetMgr::init()
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
     CreateDefaultTexture();
-    // CreateDefaultMaterial();
+    //CreateDefaultMaterial();
 
     LoadFromAssetFile();
 }
