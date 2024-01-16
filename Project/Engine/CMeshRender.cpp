@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "CMeshRender.h"
 
+#include "CAssetMgr.h"
+#include "CTimeMgr.h"
+#include "CRenderMgr.h"
+#include "CEditorMgr.h"
+
 #include "CMesh.h"
 #include "CGraphicsShader.h"
 #include "CMaterial.h"
@@ -13,10 +18,6 @@
 #include "CDevice.h"
 
 #include "CLevelMgr.h"
-
-#include "CAssetMgr.h"
-#include "CTimeMgr.h"
-#include "CRenderMgr.h"
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)

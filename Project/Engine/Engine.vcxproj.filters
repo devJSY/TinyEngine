@@ -729,5 +729,8 @@
     <FxCompile Include="ShockWavePS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="ShockWaveVS.hlsl">
+      <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
