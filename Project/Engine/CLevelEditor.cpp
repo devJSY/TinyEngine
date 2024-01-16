@@ -216,6 +216,8 @@ void CLevelEditor::render_WorldSettings()
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
                         ImGuiColorEditFlags_PickerHueWheel);
 
+    ImGui::SliderFloat("Circle Size", &g_Global.TestSize, 0, 5.f);
+
     ImGui::SliderInt("2D OutLine Thickness", &g_Global.OutLineThickness_2D, 0, 50);
     ImGui::ColorEdit3("2D OutLine Color", &g_Global.OutLineColor_2D.x);
 
