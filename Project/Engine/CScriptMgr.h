@@ -4,6 +4,7 @@ enum class SCRIPT_TYPE
 {
     CAMERAMOVESCRIPT,
     PLAYERSCRIPT,
+    SHOCKWAVESCRIPT,
     END,
 };
 

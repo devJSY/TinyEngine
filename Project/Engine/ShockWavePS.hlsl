@@ -10,20 +10,19 @@ struct PS_Input
 float4 main(PS_Input input) : SV_TARGET
 {
     float force = 0.125f; // 왜곡 효과 강도
-    float size = 0.5; // 원 전체 사이즈
-    float thickness = 0.125; // 원 두께
+    float size = g_float_0; // 원 전체 사이즈
+    float thickness = 0.05; // 원 두께  // Scale 3000 standard
     float4 color = (float4) 0.f;
-    
-    size = g_TestSize;
 
-    float ratio = g_RenderResolution.x / g_RenderResolution.y;
+    //float ratio = g_RenderResolution.x / g_RenderResolution.y;
     float2 vScreenUV = input.vPosProj.xy / g_RenderResolution.xy;
-    float2 centerUV = float2(0.5f, 0.5f); 
+    float2 centerUV = float2(0.5f, 0.5f);
     
     //float2 scaledUV = (input.vUV - float2(centerUV.x, 0.0)) * float2(ratio, 1.0) + float2(centerUV.x, 0.0f); // aspect ratio 적용 버전
-    float2 scaledUV = input.vUV; 
+    float2 scaledUV = input.vUV;
 
     float OuterCircle = 1.f - smoothstep(size - 0.1f, size, length(scaledUV - centerUV));
+    
     float InnerCircle = smoothstep(size - thickness - 0.1f, size - thickness, length(scaledUV - centerUV));
     
     float mask = OuterCircle * InnerCircle; // 해당 영역만 왜곡 처리

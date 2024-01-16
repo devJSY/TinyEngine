@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "CScriptMgr.h"
 #include "CPlayerScript.h"
 
 CPlayerScript::CPlayerScript()
@@ -79,6 +80,24 @@ void CPlayerScript::tick()
      {
          vRot.z += DT * XM_PI;
      }*/
+
+    // °øÆ÷Åº »ý¼º
+    if (KEY_TAP(KEY::Q))
+    {
+        CGameObject* pShockWave = new CGameObject;
+        pShockWave->SetName(L"Shock Wave");
+        pShockWave->AddComponent(new CTransform);
+        pShockWave->AddComponent(new CMeshRender);
+        pShockWave->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::SHOCKWAVESCRIPT));
+
+        Vec3 pos = Transform()->GetRelativePos();
+        pShockWave->Transform()->SetRelativePos(pos);
+        pShockWave->Transform()->SetRelativeScale(Vec3(3000.f, 3000.f, 1.f));
+        pShockWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pShockWave->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ShockWaveMtrl"));
+
+        GamePlayStatic::SpawnGameObject(pShockWave, 14);
+    }
 
     Transform()->SetRelativePos(vPos);
     Transform()->SetRelativeRotation(vRot);

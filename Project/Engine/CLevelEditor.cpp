@@ -216,8 +216,6 @@ void CLevelEditor::render_WorldSettings()
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
                         ImGuiColorEditFlags_PickerHueWheel);
 
-    ImGui::SliderFloat("Circle Size", &g_Global.TestSize, 0, 5.f);
-
     ImGui::SliderInt("2D OutLine Thickness", &g_Global.OutLineThickness_2D, 0, 50);
     ImGui::ColorEdit3("2D OutLine Color", &g_Global.OutLineColor_2D.x);
 
@@ -385,7 +383,6 @@ void CLevelEditor::render_Viewport()
     // 크기 등록
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-    g_Global.g_ViewportResolution = Vec2(viewportSize.x, viewportSize.y);
 
     // 렌더링
     Ptr<CTexture> pCopyTex = CRenderMgr::GetInst()->GetRTCopyTex();

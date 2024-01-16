@@ -217,6 +217,9 @@
     <ClInclude Include="COutputLog.h">
       <Filter>20. Editor\LevelEditor\COutputLog</Filter>
     </ClInclude>
+    <ClInclude Include="CShockWaveScript.h">
+      <Filter>ScriptMgr\Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -416,6 +419,9 @@
     </ClCompile>
     <ClCompile Include="COutputLog.cpp">
       <Filter>20. Editor\LevelEditor\COutputLog</Filter>
+    </ClCompile>
+    <ClCompile Include="CShockWaveScript.cpp">
+      <Filter>ScriptMgr\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

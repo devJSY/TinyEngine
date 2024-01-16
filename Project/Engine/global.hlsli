@@ -109,10 +109,6 @@ cbuffer GLOBAL_DATA : register(b3)
     
     int g_OutLineThickness_2D;
     float4 g_OutLineColor_2D;
-    
-    float g_TestSize;
-    float2 g_ViewportResolution;
-    float g_padding;
 }
 
 Texture2D g_tex_0 : register(t0);

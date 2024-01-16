@@ -112,10 +112,6 @@ struct tGlobalData
 
     int OutLineThickness_2D;
     Vec4 OutLineColor_2D;
-
-    float TestSize;
-    Vec2 g_ViewportResolution;
-    float padding;
 };
 
 struct tAnimData2D
