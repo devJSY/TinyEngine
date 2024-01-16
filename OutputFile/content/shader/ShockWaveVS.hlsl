@@ -1,11 +1,18 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
-PS_IN main(VS_IN input)
+struct PS_Input
 {
-    PS_IN output = (PS_IN) 0;
-    output.vPosWorld = mul(float4(input.vPos, 1.f), g_matWorld);
+    float4 vPosProj : SV_POSITION0;
+    float4 vCenterProj : POSITION;
+    float2 vUV : TEXCOORD;
+};
+
+PS_Input main(VS_IN input)
+{
+    PS_Input output = (PS_Input) 0;
     output.vPosProj = mul(float4(input.vPos, 1.f), g_matWVP);
+    output.vCenterProj = mul(float4(0.f, 0.f, 0.f, 1.f), g_matWVP);
     output.vUV = input.vUV;
 
     return output;

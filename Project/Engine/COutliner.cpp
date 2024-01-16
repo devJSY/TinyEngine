@@ -204,7 +204,9 @@ void COutliner::DrawTransform(CGameObject* obj)
         pTr->SetRelativePos(pos);
 
         Vec3 rot = pTr->GetRelativeRotation();
-        ImGuiDrawVec3Control("Rotation", rot, XM_PI / 180.f);
+        rot.ToDegree();
+        ImGuiDrawVec3Control("Rotation", rot, 1.f);
+        rot.ToRadian();
         pTr->SetRelativeRotation(rot);
 
         Vec3 scale = pTr->GetRelativeScale();
