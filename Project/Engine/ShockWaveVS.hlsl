@@ -3,7 +3,7 @@
 
 struct PS_Input
 {
-    float4 vPosProj : SV_POSITION0;
+    float4 vPosProj : SV_POSITION;
     float4 vCenterProj : POSITION;
     float2 vUV : TEXCOORD;
 };

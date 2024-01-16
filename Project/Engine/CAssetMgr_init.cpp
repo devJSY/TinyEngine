@@ -457,7 +457,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\ShockWaveVS.hlsl", "main");
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\ShockWavePS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
