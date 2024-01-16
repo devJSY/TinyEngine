@@ -385,7 +385,7 @@ void CLevelEditor::render_Viewport()
     // 크기 등록
     ImVec2 viewportSize = ImGui::GetContentRegionAvail();
     CEditorMgr::GetInst()->SetViewportSize(Vec2(viewportSize.x, viewportSize.y));
-    g_Global.g_RenderResolution = Vec2(viewportSize.x, viewportSize.y);
+    g_Global.g_ViewportResolution = Vec2(viewportSize.x, viewportSize.y);
 
     // 렌더링
     Ptr<CTexture> pCopyTex = CRenderMgr::GetInst()->GetRTCopyTex();

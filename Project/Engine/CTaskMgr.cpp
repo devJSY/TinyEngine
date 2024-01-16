@@ -216,11 +216,6 @@ void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
 
-    if (CEditorMgr::GetInst()->IsEnable())
-        g_Global.g_RenderResolution = CEditorMgr::GetInst()->GetViewportSize();
-    else
-        g_Global.g_RenderResolution = CDevice::GetInst()->GetRenderResolution();
-
     LOG(Log, "Window Resized!")
 }
 
