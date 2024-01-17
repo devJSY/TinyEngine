@@ -223,24 +223,6 @@
     <ClInclude Include="CBulletScript.h">
       <Filter>ScriptMgr\Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\imgui_bezier_math.h">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_canvas.h">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_extra_math.h">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor.h">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor_internal.h">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\crude_json.h">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -447,18 +429,6 @@
     <ClCompile Include="CBulletScript.cpp">
       <Filter>ScriptMgr\Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_canvas.cpp">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor.cpp">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor_api.cpp">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\crude_json.cpp">
-      <Filter>ImGui\NodeEditor</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -662,12 +632,6 @@
     <Filter Include="20. Editor\LevelEditor\COutputLog">
       <UniqueIdentifier>{98af686a-47c3-4b4b-8c44-25c760f20bbe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="20. Editor\NodeEditor">
-      <UniqueIdentifier>{1ca9d9a9-f5d4-4686-b308-73b3e6aea7bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\NodeEditor">
-      <UniqueIdentifier>{3bbfca09-9b25-4a3c-bc22-cee8c80bed94}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -681,18 +645,6 @@
     </None>
     <None Include="Light.hlsli">
       <Filter>ShaderCode</Filter>
-    </None>
-    <None Include="ImGui\imgui_bezier_math.inl">
-      <Filter>ImGui\NodeEditor</Filter>
-    </None>
-    <None Include="ImGui\imgui_extra_math.inl">
-      <Filter>ImGui\NodeEditor</Filter>
-    </None>
-    <None Include="ImGui\imgui_node_editor_internal.inl">
-      <Filter>ImGui\NodeEditor</Filter>
-    </None>
-    <None Include="ImGui\LICENSE">
-      <Filter>ImGui\NodeEditor</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
