@@ -331,7 +331,7 @@ void CLevelEditor::render_Assets()
         {
             for (const auto& iter : mapAsset)
             {
-                string key = WstringTostring(iter.first);
+                string key = ToString(iter.first);
 
                 ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 
@@ -402,7 +402,7 @@ void CLevelEditor::render_Viewport()
             if (fileNameStr.extension() == CLevelSaveLoad::GetLevelExtension())
             {
                 // Level 불러오기
-                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(stringToWstring(name));
+                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(ToWstring(name));
 
                 if (nullptr != pLoadedLevel)
                     GamePlayStatic::LevelChange(pLoadedLevel);

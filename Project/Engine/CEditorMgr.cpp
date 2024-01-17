@@ -59,8 +59,8 @@ void CEditorMgr::init()
     wBold += L"fonts\\opensans\\OpenSans-Bold.ttf";
     wRegular += L"fonts\\opensans\\OpenSans-Regular.ttf";
 
-    io.Fonts->AddFontFromFileTTF(WstringTostring(wBold).c_str(), fFontSize);
-    io.FontDefault = io.Fonts->AddFontFromFileTTF(WstringTostring(wRegular).c_str(), fFontSize);
+    io.Fonts->AddFontFromFileTTF(ToString(wBold).c_str(), fFontSize);
+    io.FontDefault = io.Fonts->AddFontFromFileTTF(ToString(wRegular).c_str(), fFontSize);
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

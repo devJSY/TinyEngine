@@ -37,7 +37,7 @@ void COutliner::DrawNode(CGameObject* obj)
     ImGuiTreeNodeFlags flags =
         ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
-    string name = WstringTostring(obj->GetName());
+    string name = ToString(obj->GetName());
 
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
 
@@ -60,14 +60,14 @@ void COutliner::DrawDetails(CGameObject* obj)
 {
     // Tag
     {
-        string name = WstringTostring(obj->GetName());
+        string name = ToString(obj->GetName());
 
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
         strcpy_s(buffer, sizeof(buffer), name.c_str());
         if (ImGui::InputText("##Tag", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
         {
-            obj->SetName(stringToWstring(buffer));
+            obj->SetName(ToWstring(buffer));
         }
     }
 
@@ -102,7 +102,7 @@ void COutliner::DrawDetails(CGameObject* obj)
 
         for (int i = 0; i < LAYER_MAX; i++)
         {
-            LayerNames.push_back(WstringTostring(pCurLevel->GetLayer(i)->GetName()));
+            LayerNames.push_back(ToString(pCurLevel->GetLayer(i)->GetName()));
         }
 
         int LayerIdx = obj->GetLayerIdx();
@@ -110,7 +110,7 @@ void COutliner::DrawDetails(CGameObject* obj)
 
         if (ImGuiComboUI(ImGuiLabelPrefix("Layer").c_str(), name, LayerNames))
         {
-            GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(stringToWstring(name))->GetLayerIdx());
+            GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(ToWstring(name))->GetLayerIdx());
         }
     }
 
@@ -301,15 +301,15 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
             for (const auto& iter : mapAnim)
             {
-                names.push_back(WstringTostring(iter.first));
+                names.push_back(ToString(iter.first));
             }
 
-            string curAnimName = WstringTostring(pCurAnim->GetName());
+            string curAnimName = ToString(pCurAnim->GetName());
 
             ImGui::Text("Animation Name");
             if (ImGuiComboUI("##Anim", curAnimName, names))
             {
-                pAni->Play(stringToWstring(curAnimName), true);
+                pAni->Play(ToWstring(curAnimName), true);
             }
 
             pCurAnim = pAni->GetCurAnim();
@@ -647,7 +647,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             memset(buffer, 0, sizeof(buffer));
             if (nullptr != pMesh)
             {
-                string name = WstringTostring(pMesh->GetName());
+                string name = ToString(pMesh->GetName());
                 strcpy_s(buffer, sizeof(buffer), name.c_str());
             }
             ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
@@ -659,7 +659,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
-                    pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(stringToWstring(name)));
+                    pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
                 }
 
                 ImGui::EndDragDropTarget();
@@ -676,7 +676,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             memset(buffer, 0, sizeof(buffer));
             if (nullptr != pMaterial)
             {
-                string name = WstringTostring(pMaterial->GetName());
+                string name = ToString(pMaterial->GetName());
                 strcpy_s(buffer, sizeof(buffer), name.c_str());
             }
             ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));
@@ -688,7 +688,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
-                    pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(stringToWstring(name)));
+                    pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)));
                 }
 
                 ImGui::EndDragDropTarget();

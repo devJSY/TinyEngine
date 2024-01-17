@@ -168,58 +168,58 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
 
     // 텍스쳐 로딩
-    wstring path = stringToWstring(_MeshData.RelativeTextureFilePath);
+    wstring path = ToWstring(_MeshData.RelativeTextureFilePath);
 
     if (!_MeshData.AmbientTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.AmbientTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.AmbientTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.AmbientTextureFilename);
+        wstring name = ToWstring(_MeshData.AmbientTextureFilename);
 
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(name, path + name));
     }
 
     if (!_MeshData.AoTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.AoTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.AoTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.AoTextureFilename);
+        wstring name = ToWstring(_MeshData.AoTextureFilename);
 
         pMtrl->SetTexParam(TEX_1, Load<CTexture>(name, path + name));
     }
 
     if (!_MeshData.NormalTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.NormalTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.NormalTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.NormalTextureFilename);
+        wstring name = ToWstring(_MeshData.NormalTextureFilename);
 
         pMtrl->SetTexParam(TEX_2, Load<CTexture>(name, path + name));
     }
 
     if (!_MeshData.HeightTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.HeightTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.HeightTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.HeightTextureFilename);
+        wstring name = ToWstring(_MeshData.HeightTextureFilename);
 
         pMtrl->SetTexParam(TEX_3, Load<CTexture>(name, path + name));
     }
 
     if (!_MeshData.MetallicTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.MetallicTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.MetallicTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.MetallicTextureFilename);
+        wstring name = ToWstring(_MeshData.MetallicTextureFilename);
 
         pMtrl->SetTexParam(TEX_4, Load<CTexture>(name, path + name));
     }
 
     if (!_MeshData.RoughnessTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.RoughnessTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.RoughnessTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.RoughnessTextureFilename);
+        wstring name = ToWstring(_MeshData.RoughnessTextureFilename);
 
         // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
         // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
@@ -232,9 +232,9 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.EmissiveTextureFilename.empty())
     {
-        LOG(Log, WstringTostring(_Mesh->GetName()) + " : " + _MeshData.EmissiveTextureFilename);
+        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.EmissiveTextureFilename);
 
-        wstring name = stringToWstring(_MeshData.EmissiveTextureFilename);
+        wstring name = ToWstring(_MeshData.EmissiveTextureFilename);
 
         pMtrl->SetTexParam(TEX_5, Load<CTexture>(name, path + name));
     }

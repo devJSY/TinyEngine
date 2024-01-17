@@ -64,7 +64,7 @@ void CModelLoader::Load(string filePath, string fileName, bool revertNormals)
     }
     
     wstring temp = CPathMgr::GetContentPath();
-    string ContentPath = WstringTostring(temp);
+    string ContentPath = ToString(temp);
 
     this->filePath = filePath;
     this->basePath = ContentPath + filePath;

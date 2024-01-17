@@ -31,7 +31,7 @@ void CMaterialEditor::render()
 
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
-    string name = WstringTostring(m_Mtrl->GetName());
+    string name = ToString(m_Mtrl->GetName());
     strcpy_s(buffer, sizeof(buffer), name.c_str());
     ImGui::InputText(ImGuiLabelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
 
@@ -94,7 +94,7 @@ void CMaterialEditor::render()
             {
                 string name = (char*)payload->Data;
                 name.resize(payload->DataSize);
-                m_Mtrl->SetTexParam((TEX_PARAM)i, CAssetMgr::GetInst()->FindAsset<CTexture>(stringToWstring(name)));
+                m_Mtrl->SetTexParam((TEX_PARAM)i, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
             }
 
             ImGui::EndDragDropTarget();

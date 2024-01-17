@@ -31,8 +31,8 @@ namespace GamePlayStatic
     void LevelChange(CLevel* _Level);
 }
 
-string WstringTostring(const wstring& wstr);
-wstring stringToWstring(const string& str);
+string ToString(const wstring& wstr);
+wstring ToWstring(const string& str);
 string currentDateTime();
 Vec4 HashIDToColor(int hash);
 string GetComponentName(COMPONENT_TYPE type);

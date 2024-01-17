@@ -20,12 +20,15 @@
 #include "COutputLog.h"
 
 // stb
+extern "C"
+{
 #define _CRT_SECURE_NO_WARNINGS // stb_image_write compile error fix
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 
 #include <stb/stb_image.h>
 #include <stb/stb_image_write.h>
+}
 
 CTaskMgr::CTaskMgr()
 {
@@ -273,7 +276,7 @@ void CTaskMgr::SCREENSHOT(const FTask& _Task)
     }
 
     CONTEXT->Unmap(stagingTexture.Get(), NULL);
-    string filename = WstringTostring(CPathMgr::GetOutputPath());
+    string filename = ToString(CPathMgr::GetOutputPath());
     filename += "screenshot\\";
 
     // Check if the folder exists, if not, create it

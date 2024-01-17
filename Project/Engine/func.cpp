@@ -167,14 +167,14 @@ void GamePlayStatic::LevelChange(CLevel* _Level)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
-string WstringTostring(const wstring& wstr)
+string ToString(const wstring& wstr)
 {
     string str(wstr.length(), 0);
     std::transform(wstr.begin(), wstr.end(), str.begin(), [](wchar_t c) { return (char)c; });
     return str;
 }
 
-wstring stringToWstring(const string& str)
+wstring ToWstring(const string& str)
 {
     return wstring().assign(str.begin(), str.end());
 }
