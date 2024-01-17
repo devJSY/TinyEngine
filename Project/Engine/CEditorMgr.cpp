@@ -9,7 +9,7 @@
 
 CEditorMgr::CEditorMgr()
     : m_bEnable(true)
-    , m_vecEditor{}
+    , m_arrEditor{}
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
 {
@@ -20,7 +20,7 @@ CEditorMgr::~CEditorMgr()
     if (!m_bEnable)
         return;
 
-    Delete_Vec(m_vecEditor);
+    Delete_Array(m_arrEditor);
 
     // Cleanup
     ImGui_ImplDX11_Shutdown();
@@ -83,12 +83,11 @@ void CEditorMgr::init()
     // ==================================
     // Editor »ý¼º
     // ==================================
-    m_vecEditor.resize((UINT)EDITOR_TYPE::END);
-    m_vecEditor[(UINT)EDITOR_TYPE::LEVEL] = new CLevelEditor;
-    m_vecEditor[(UINT)EDITOR_TYPE::LEVEL]->init();
+    m_arrEditor[(UINT)EDITOR_TYPE::LEVEL] = new CLevelEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]->init();
 
-    m_vecEditor[(UINT)EDITOR_TYPE::MATERIAL] = new CMaterialEditor;
-    m_vecEditor[(UINT)EDITOR_TYPE::MATERIAL]->init();
+    m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL] = new CMaterialEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->init();
 }
 
 void CEditorMgr::tick()
@@ -96,13 +95,13 @@ void CEditorMgr::tick()
     if (!m_bEnable)
         return;
 
-    for (size_t i = 0; i < m_vecEditor.size(); i++)
+    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
     {
-        if (nullptr == m_vecEditor[i])
+        if (nullptr == m_arrEditor[i])
             continue;
 
-        m_vecEditor[i]->tick();
-        m_vecEditor[i]->finaltick();
+        m_arrEditor[i]->tick();
+        m_arrEditor[i]->finaltick();
     }
 }
 
@@ -124,12 +123,12 @@ void CEditorMgr::render()
     // ======================
     // Editor Render
     // ======================
-    for (size_t i = 0; i < m_vecEditor.size(); i++)
+    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
     {
-        if (nullptr == m_vecEditor[i])
+        if (nullptr == m_arrEditor[i])
             continue;
 
-        m_vecEditor[i]->render();
+        m_arrEditor[i]->render();
     }
 
     // ====================

@@ -225,15 +225,21 @@ call EngineCopy.bat</Command>
     <ClInclude Include="func.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="CLevelMgr.h" />
+    <ClInclude Include="ImGui\crude_json.h" />
     <ClInclude Include="ImGui\GraphEditor.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="ImGui\ImCurveEdit.h" />
     <ClInclude Include="ImGui\ImGradient.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="ImGui\ImGuizmo.h" />
+    <ClInclude Include="ImGui\imgui_bezier_math.h" />
+    <ClInclude Include="ImGui\imgui_canvas.h" />
+    <ClInclude Include="ImGui\imgui_extra_math.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
     <ClInclude Include="imgui\imgui_impl_win32.h" />
     <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imgui_node_editor.h" />
+    <ClInclude Include="ImGui\imgui_node_editor_internal.h" />
     <ClInclude Include="ImGui\ImSequencer.h" />
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
@@ -300,6 +306,10 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CLevelMgr.cpp" />
     <ClCompile Include="extern.cpp" />
     <ClCompile Include="func.cpp" />
+    <ClCompile Include="ImGui\crude_json.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ImGui\GraphEditor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -320,6 +330,10 @@ call EngineCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui_canvas.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="imgui\imgui_demo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -333,6 +347,14 @@ call EngineCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor_api.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -357,6 +379,10 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CRenderMgr_init.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ImGui\imgui_bezier_math.inl" />
+    <None Include="ImGui\imgui_extra_math.inl" />
+    <None Include="ImGui\imgui_node_editor_internal.inl" />
+    <None Include="ImGui\LICENSE" />
     <None Include="Light.hlsli" />
     <None Include="global.hlsli" />
     <None Include="SimpleMath.inl" />

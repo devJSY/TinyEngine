@@ -223,6 +223,24 @@
     <ClInclude Include="CBulletScript.h">
       <Filter>ScriptMgr\Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\imgui_bezier_math.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_canvas.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_extra_math.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor_internal.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\crude_json.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -429,6 +447,18 @@
     <ClCompile Include="CBulletScript.cpp">
       <Filter>ScriptMgr\Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui_canvas.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor_api.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\crude_json.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -632,6 +662,9 @@
     <Filter Include="20. Editor\LevelEditor\COutputLog">
       <UniqueIdentifier>{98af686a-47c3-4b4b-8c44-25c760f20bbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui\imgui_node_editor">
+      <UniqueIdentifier>{dd42f278-2230-4591-b0ee-4661945d707b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -645,6 +678,18 @@
     </None>
     <None Include="Light.hlsli">
       <Filter>ShaderCode</Filter>
+    </None>
+    <None Include="ImGui\imgui_bezier_math.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\imgui_extra_math.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\imgui_node_editor_internal.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\LICENSE">
+      <Filter>ImGui\imgui_node_editor</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

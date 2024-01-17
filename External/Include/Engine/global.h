@@ -64,6 +64,9 @@ typedef Vector4 Vec4;
 // ImGuizmo
 #include "ImGui//ImGuizmo.h"
 
+// ImGui Node Editor
+#include "ImGui\\imgui_node_editor.h"
+
 // Assimp 5.2.5
 //#define NOMINMAX
 #ifdef _DEBUG

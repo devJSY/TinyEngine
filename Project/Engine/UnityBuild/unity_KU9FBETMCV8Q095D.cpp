@@ -1,4 +1,7 @@
 
+#include "D:\TinyEngine\Project\Engine\ImGui\crude_json.cpp"
+
+
 #include "D:\TinyEngine\Project\Engine\ImGui\GraphEditor.cpp"
 
 
@@ -14,6 +17,9 @@
 #include "D:\TinyEngine\Project\Engine\ImGui\ImGuizmo.cpp"
 
 
+#include "D:\TinyEngine\Project\Engine\ImGui\imgui_canvas.cpp"
+
+
 #include "D:\TinyEngine\Project\Engine\imgui\imgui_demo.cpp"
 
 
@@ -24,6 +30,12 @@
 
 
 #include "D:\TinyEngine\Project\Engine\imgui\imgui_impl_win32.cpp"
+
+
+#include "D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor.cpp"
+
+
+#include "D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor_api.cpp"
 
 
 #include "D:\TinyEngine\Project\Engine\imgui\imgui_tables.cpp"
