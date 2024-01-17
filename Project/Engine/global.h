@@ -32,7 +32,7 @@ using namespace DirectX;
 #pragma comment(lib, "d3dcompiler")
 
 // DirectxTex
-#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex\\DirectXTex.h>
 
 #ifdef _DEBUG
     #pragma comment(lib, "DirectXTex\\DirectXTex_debug")
@@ -56,24 +56,27 @@ typedef Vector4 Vec4;
 
 // ImGui
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include "ImGui//imgui.h"
-#include "ImGui//imgui_impl_dx11.h"
-#include "ImGui//imgui_impl_win32.h"
-#include "ImGui//imgui_internal.h"
+#include "ImGui\\imgui.h"
+#include "ImGui\\imgui_impl_dx11.h"
+#include "ImGui\\imgui_impl_win32.h"
+#include "ImGui\\imgui_internal.h"
 
 // ImGuizmo
-#include "ImGui//ImGuizmo.h"
+#include "ImGui\\ImGuizmo.h"
+
+// ImGui Node Editor
+#include "ImGui\\imgui_node_editor.h"
 
 // Assimp 5.2.5
-//#define NOMINMAX
+// #define NOMINMAX
 #ifdef _DEBUG
     #pragma comment(lib, "assimp\\assimp-vc143-mtd")
 #else
     #pragma comment(lib, "assimp\\assimp-vc143-mt")
 #endif
-#include <assimp\Importer.hpp>
-#include <assimp\postprocess.h>
-#include <assimp\scene.h>
+#include <assimp\\Importer.hpp>
+#include <assimp\\postprocess.h>
+#include <assimp\\scene.h>
 
 // ================
 #include <iostream>
