@@ -25,7 +25,7 @@ void CShockWaveScript::tick()
 
     Collider2D()->SetRadius(Radius);
 
-    float CircleSize = Radius / 3000.f;
+    float CircleSize = Radius / 10000.f;
 
     MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, &CircleSize);
 }

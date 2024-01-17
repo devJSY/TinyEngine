@@ -85,7 +85,7 @@ void CPlayerScript::tick()
     // °øÆ÷Åº »ý¼º
     if (KEY_TAP(KEY::Q))
     {
-        CGameObject* pBullet = new CGameObject;
+        /*CGameObject* pBullet = new CGameObject;
         pBullet->SetName(L"Bullet");
 
         pBullet->AddComponent(new CTransform);
@@ -103,7 +103,25 @@ void CPlayerScript::tick()
 
         pBullet->GetScript<CBulletScript>()->SetDir(Transform()->GetWorldDir(DIR_TYPE::RIGHT));
 
-        GamePlayStatic::SpawnGameObject(pBullet, 4);
+        GamePlayStatic::SpawnGameObject(pBullet, 4);*/
+
+        // °øÆ÷Åº
+        CGameObject* pShockWave = new CGameObject;
+        pShockWave->SetName(L"Shock Wave");
+        pShockWave->AddComponent(new CTransform);
+        pShockWave->AddComponent(new CMeshRender);
+        pShockWave->AddComponent(new CCollider2D);
+        pShockWave->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::SHOCKWAVESCRIPT));
+
+        Vec3 pos = Transform()->GetRelativePos();
+        pShockWave->Transform()->SetRelativePos(pos);
+        pShockWave->Transform()->SetRelativeScale(Vec3(10000.f, 10000.f, 1.f));
+        pShockWave->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
+        pShockWave->Collider2D()->SetRadius(1.f);
+        pShockWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pShockWave->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ShockWaveMtrl"));
+
+        GamePlayStatic::SpawnGameObject(pShockWave, 14);
     }
 
     Transform()->SetRelativePos(vPos);

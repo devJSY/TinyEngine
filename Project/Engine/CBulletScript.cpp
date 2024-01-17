@@ -36,7 +36,7 @@ void CBulletScript::tick()
 
         Vec3 pos = Transform()->GetRelativePos();
         pShockWave->Transform()->SetRelativePos(pos);
-        pShockWave->Transform()->SetRelativeScale(Vec3(3000.f, 3000.f, 1.f));
+        pShockWave->Transform()->SetRelativeScale(Vec3(10000.f, 10000.f, 1.f)); // 10000 사이즈 고정
         pShockWave->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
         pShockWave->Collider2D()->SetRadius(1.f);
         pShockWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
