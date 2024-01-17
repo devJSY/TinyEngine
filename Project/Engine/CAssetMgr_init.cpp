@@ -472,27 +472,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 void CAssetMgr::CreateDefaultTexture()
 {
-    Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Textures//missing_texture.png");
+    Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Textures\\missing_texture.png");
     assert(ptex.Get());
 
-    Load<CTexture>(L"DirectoryIconTex", L"Icons//ContentBrowser//DirectoryIcon.png");
-    Load<CTexture>(L"FileIconTex", L"Icons//ContentBrowser//FileIcon.png");
+    Load<CTexture>(L"DirectoryIconTex", L"Icons\\ContentBrowser\\DirectoryIcon.png");
+    Load<CTexture>(L"FileIconTex", L"Icons\\ContentBrowser\\FileIcon.png");
 
-    Load<CTexture>(L"PauseButtonTex", L"Icons//PauseButton.png");
-    Load<CTexture>(L"PlayButtonTex", L"Icons//PlayButton.png");
-    Load<CTexture>(L"SimulateButtonTex", L"Icons//SimulateButton.png");
-    Load<CTexture>(L"StepButtonTex", L"Icons//StepButton.png");
-    Load<CTexture>(L"StopButtonTex", L"Icons//StopButton.png");
+    Load<CTexture>(L"PauseButtonTex", L"Icons\\PauseButton.png");
+    Load<CTexture>(L"PlayButtonTex", L"Icons\\PlayButton.png");
+    Load<CTexture>(L"SimulateButtonTex", L"Icons\\SimulateButton.png");
+    Load<CTexture>(L"StepButtonTex", L"Icons\\StepButton.png");
+    Load<CTexture>(L"StopButtonTex", L"Icons\\StopButton.png");
 
-    Load<CTexture>(L"DirectionalLightTex", L"Icons//DirectionalLight.png");
-    Load<CTexture>(L"PointLightTex", L"Icons//PointLight.png");
-    Load<CTexture>(L"SpotLightTex", L"Icons//SpotLight.png");
+    Load<CTexture>(L"DirectionalLightTex", L"Icons\\DirectionalLight.png");
+    Load<CTexture>(L"PointLightTex", L"Icons\\PointLight.png");
+    Load<CTexture>(L"SpotLightTex", L"Icons\\SpotLight.png");
 
-    Load<CTexture>(L"cubemapTex", L"Developers//Textures//Cubemaps//skybox//cubemap_bgra.dds");
-    Load<CTexture>(L"cubemap_diffuseTex", L"Developers//Textures//Cubemaps//skybox//cubemap_diffuse.dds");
-    Load<CTexture>(L"cubemap_specularTex", L"Developers//Textures//Cubemaps//skybox//cubemap_specular.dds");
+    Load<CTexture>(L"cubemapTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_bgra.dds");
+    Load<CTexture>(L"cubemap_diffuseTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_diffuse.dds");
+    Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
 
-    Load<CTexture>(L"noise_03Tex", L"Developers//noise//noise_03.jpg");
+    Load<CTexture>(L"noise_03Tex", L"Developers\\noise\\noise_03.jpg");
 }
 
 void CAssetMgr::CreateDefaultMaterial()
