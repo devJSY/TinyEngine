@@ -10,10 +10,10 @@ public:
     void SetMaterial(Ptr<CMaterial> _Mtrl) { m_Mtrl = _Mtrl; }
 
 public:
-    virtual void init(){};
-    virtual void tick(){};
-    virtual void finaltick(){};
-    virtual void render();
+    virtual void init() override{};
+    virtual void tick() override{};
+    virtual void finaltick() override{};
+    virtual void render() override;
 
 public:
     CMaterialEditor();

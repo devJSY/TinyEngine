@@ -3,6 +3,7 @@
 #include "CEditor.h"
 #include "CLevelEditor.h"
 #include "CMaterialEditor.h"
+#include "CBlueprintEditor.h"
 
 #include "CEngine.h"
 #include "CDevice.h"
@@ -88,6 +89,9 @@ void CEditorMgr::init()
 
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL] = new CMaterialEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->init();
+
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
 }
 
 void CEditorMgr::tick()

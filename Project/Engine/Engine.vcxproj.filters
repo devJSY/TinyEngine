@@ -241,6 +241,9 @@
     <ClInclude Include="ImGui\crude_json.h">
       <Filter>ImGui\imgui_node_editor</Filter>
     </ClInclude>
+    <ClInclude Include="CBlueprintEditor.h">
+      <Filter>20. Editor\Blueprint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -459,6 +462,9 @@
     <ClCompile Include="ImGui\crude_json.cpp">
       <Filter>ImGui\imgui_node_editor</Filter>
     </ClCompile>
+    <ClCompile Include="CBlueprintEditor.cpp">
+      <Filter>20. Editor\Blueprint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -664,6 +670,9 @@
     </Filter>
     <Filter Include="ImGui\imgui_node_editor">
       <UniqueIdentifier>{dd42f278-2230-4591-b0ee-4661945d707b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\Blueprint">
+      <UniqueIdentifier>{d4a92038-91e8-4b2e-9d45-0e4019d95d8d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

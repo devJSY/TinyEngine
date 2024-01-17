@@ -176,7 +176,7 @@ enum class EDITOR_TYPE
 {
     LEVEL,
     MATERIAL,
-    BLUEPRINTS,
+    BLUEPRINT,
 
     END,
 };
