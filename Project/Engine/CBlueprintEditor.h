@@ -4,13 +4,10 @@
 #include "ImGui//widgets.h"
 #include "ImGui//imgui_node_editor.h"
 #include "ImGui//imgui_internal.h"
+#include "CTexture.h"
 
 namespace ed = ax::NodeEditor;
 namespace util = ax::NodeEditor::Utilities;
-
-using namespace ax;
-
-using ax::Widgets::IconType;
 
 enum class PinType
 {
@@ -113,9 +110,9 @@ private:
     int m_PinIconSize;
     std::vector<Node> m_Nodes;
     std::vector<Link> m_Links;
-    ImTextureID m_HeaderBackground;
-    ImTextureID m_SaveIcon;
-    ImTextureID m_RestoreIcon;
+    Ptr<CTexture> m_HeaderBackground;
+    Ptr<CTexture> m_SaveIcon;
+    Ptr<CTexture> m_RestoreIcon;
     float m_TouchTime;
     std::map<ed::NodeId, float, NodeIdLess> m_NodeTouchTime;
     bool m_ShowOrdinals;
@@ -125,13 +122,6 @@ public:
     virtual void tick() override{};
     virtual void finaltick() override{};
     virtual void render() override;
-
-private:
-    //ImTextureID LoadTexture(const char* path);
-    //ImTextureID CreateTexture(const void* data, int width, int height);
-    //void DestroyTexture(ImTextureID texture);
-    //int GetTextureWidth(ImTextureID texture);
-    //int GetTextureHeight(ImTextureID texture);
 
 private:
     // imgui_node_editor features

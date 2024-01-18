@@ -493,6 +493,10 @@ void CAssetMgr::CreateDefaultTexture()
     Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
 
     Load<CTexture>(L"noise_03Tex", L"Developers\\noise\\noise_03.jpg");
+
+    Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");
+    Load<CTexture>(L"ic_restore_white_24dpTex", L"Icons\\Blueprint\\ic_restore_white_24dp.png");
+    Load<CTexture>(L"ic_save_white_24dpTex", L"Icons\\Blueprint\\ic_save_white_24dp.png");
 }
 
 void CAssetMgr::CreateDefaultMaterial()
