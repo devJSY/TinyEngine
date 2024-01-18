@@ -180,6 +180,10 @@ void CTaskMgr::DELETE_OBJECT(const FTask& _Task)
             queue.push_back(pObject->m_vecChild[i]);
         }
     }
+
+    // Selected Obj ÇØÁ¦
+    if (pDeadObj == CLevelMgr::GetInst()->GetSelectedObject())
+        CLevelMgr::GetInst()->SetSelectedObject(nullptr);
 }
 
 void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
