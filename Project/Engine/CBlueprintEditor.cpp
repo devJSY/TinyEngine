@@ -78,56 +78,78 @@ void CBlueprintEditor::init()
         return true;
     };
 
+    config.SaveSettings;
+
     m_EditorContext = ed::CreateEditor(&config);
     ed::SetCurrentEditor(m_EditorContext);
 
     Node* node;
     node = SpawnBegin();
-    ed::SetNodePosition(node->ID, ImVec2(-200, 220));
     node = SpawnTick();
-    ed::SetNodePosition(node->ID, ImVec2(-220, 220));
     node = SpawnInputActionNode();
-    ed::SetNodePosition(node->ID, ImVec2(-252, 220));
     node = SpawnBranchNode();
-    ed::SetNodePosition(node->ID, ImVec2(-300, 351));
     node = SpawnDoNNode();
-    ed::SetNodePosition(node->ID, ImVec2(-238, 504));
     node = SpawnOutputActionNode();
-    ed::SetNodePosition(node->ID, ImVec2(71, 80));
     node = SpawnSetTimerNode();
-    ed::SetNodePosition(node->ID, ImVec2(168, 316));
-
     node = SpawnTreeSequenceNode();
-    ed::SetNodePosition(node->ID, ImVec2(1028, 329));
     node = SpawnTreeTaskNode();
-    ed::SetNodePosition(node->ID, ImVec2(1204, 458));
     node = SpawnTreeTask2Node();
-    ed::SetNodePosition(node->ID, ImVec2(868, 538));
-
     node = SpawnComment();
-    ed::SetNodePosition(node->ID, ImVec2(112, 576));
-    ed::SetGroupSize(node->ID, ImVec2(384, 154));
     node = SpawnComment();
-    ed::SetNodePosition(node->ID, ImVec2(800, 224));
-    ed::SetGroupSize(node->ID, ImVec2(640, 400));
-
     node = SpawnLessNode();
-    ed::SetNodePosition(node->ID, ImVec2(366, 652));
     node = SpawnWeirdNode();
-    ed::SetNodePosition(node->ID, ImVec2(144, 652));
     node = SpawnMessageNode();
-    ed::SetNodePosition(node->ID, ImVec2(-348, 698));
     node = SpawnPrintStringNode();
-    ed::SetNodePosition(node->ID, ImVec2(-69, 652));
-
     node = SpawnHoudiniTransformNode();
-    ed::SetNodePosition(node->ID, ImVec2(500, -70));
     node = SpawnHoudiniGroupNode();
-    ed::SetNodePosition(node->ID, ImVec2(500, 42));
 
-    ed::NavigateToContent();
+    /* Node* node;
+     node = SpawnBegin();
+     ed::SetNodePosition(node->ID, ImVec2(-200, 220));
+     node = SpawnTick();
+     ed::SetNodePosition(node->ID, ImVec2(-220, 220));
+     node = SpawnInputActionNode();
+     ed::SetNodePosition(node->ID, ImVec2(-252, 220));
+     node = SpawnBranchNode();
+     ed::SetNodePosition(node->ID, ImVec2(-300, 351));
+     node = SpawnDoNNode();
+     ed::SetNodePosition(node->ID, ImVec2(-238, 504));
+     node = SpawnOutputActionNode();
+     ed::SetNodePosition(node->ID, ImVec2(71, 80));
+     node = SpawnSetTimerNode();
+     ed::SetNodePosition(node->ID, ImVec2(168, 316));
 
-    BuildNodes();
+     node = SpawnTreeSequenceNode();
+     ed::SetNodePosition(node->ID, ImVec2(1028, 329));
+     node = SpawnTreeTaskNode();
+     ed::SetNodePosition(node->ID, ImVec2(1204, 458));
+     node = SpawnTreeTask2Node();
+     ed::SetNodePosition(node->ID, ImVec2(868, 538));
+
+     node = SpawnComment();
+     ed::SetNodePosition(node->ID, ImVec2(112, 576));
+     ed::SetGroupSize(node->ID, ImVec2(384, 154));
+     node = SpawnComment();
+     ed::SetNodePosition(node->ID, ImVec2(800, 224));
+     ed::SetGroupSize(node->ID, ImVec2(640, 400));
+
+     node = SpawnLessNode();
+     ed::SetNodePosition(node->ID, ImVec2(366, 652));
+     node = SpawnWeirdNode();
+     ed::SetNodePosition(node->ID, ImVec2(144, 652));
+     node = SpawnMessageNode();
+     ed::SetNodePosition(node->ID, ImVec2(-348, 698));
+     node = SpawnPrintStringNode();
+     ed::SetNodePosition(node->ID, ImVec2(-69, 652));
+
+     node = SpawnHoudiniTransformNode();
+     ed::SetNodePosition(node->ID, ImVec2(500, -70));
+     node = SpawnHoudiniGroupNode();
+     ed::SetNodePosition(node->ID, ImVec2(500, 42));
+
+     ed::NavigateToContent();
+
+     BuildNodes();*/
 
     m_Links.push_back(Link(GetNextLinkId(), m_Nodes[5].Outputs[0].ID, m_Nodes[6].Inputs[0].ID));
     m_Links.push_back(Link(GetNextLinkId(), m_Nodes[5].Outputs[0].ID, m_Nodes[7].Inputs[0].ID));
