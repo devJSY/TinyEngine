@@ -1,9 +1,10 @@
 #pragma once
 #include "CEditor.h"
-#include "ImGui//builders.h"
-#include "ImGui//widgets.h"
-#include "ImGui//imgui_node_editor.h"
-#include "ImGui//imgui_internal.h"
+#include "ImGui\\builders.h"
+#include "ImGui\\widgets.h"
+#include "ImGui\\imgui_node_editor.h"
+#include "ImGui\\imgui_node_editor_internal.h"
+
 #include "CTexture.h"
 
 namespace ed = ax::NodeEditor;
@@ -173,6 +174,8 @@ private:
     // };
 
     void BuildNode(Node* node);
+    Node* SpawnBegin();
+    Node* SpawnTick();
     Node* SpawnInputActionNode();
     Node* SpawnBranchNode();
     Node* SpawnDoNNode();

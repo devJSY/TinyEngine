@@ -45,7 +45,9 @@ void CBlueprintEditor::init()
 {
     ed::Config config;
 
-    config.SettingsFile = "Blueprints.json";
+    static string Path = ToString(CPathMgr::GetContentPath());
+    Path += "Blueprints\\Blueprints.json";
+    config.SettingsFile = Path.c_str();
 
     config.UserPointer = this;
 
@@ -80,6 +82,10 @@ void CBlueprintEditor::init()
     ed::SetCurrentEditor(m_EditorContext);
 
     Node* node;
+    node = SpawnBegin();
+    ed::SetNodePosition(node->ID, ImVec2(-200, 220));
+    node = SpawnTick();
+    ed::SetNodePosition(node->ID, ImVec2(-220, 220));
     node = SpawnInputActionNode();
     ed::SetNodePosition(node->ID, ImVec2(-252, 220));
     node = SpawnBranchNode();
@@ -128,9 +134,6 @@ void CBlueprintEditor::init()
 
     m_Links.push_back(Link(GetNextLinkId(), m_Nodes[14].Outputs[0].ID, m_Nodes[15].Inputs[0].ID));
 
-    string path = ToString(CPathMgr::GetContentPath());
-
-    path += "icons\\Blueprint\\";
     m_HeaderBackground = CAssetMgr::GetInst()->FindAsset<CTexture>(L"BlueprintBackgroundTex");
     m_SaveIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ic_restore_white_24dpTex");
     m_RestoreIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ic_save_white_24dpTex");
@@ -1184,6 +1187,29 @@ void CBlueprintEditor::BuildNode(Node* node)
         output.Node = node;
         output.Kind = PinKind::Output;
     }
+}
+
+Node* CBlueprintEditor::SpawnBegin()
+{
+    m_Nodes.emplace_back(GetNextId(), "Event BeginPlay", ImColor(255, 128, 128));
+    m_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Delegate);
+    m_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Flow);
+
+    BuildNode(&m_Nodes.back());
+
+    return &m_Nodes.back();
+}
+
+Node* CBlueprintEditor::SpawnTick()
+{
+    m_Nodes.emplace_back(GetNextId(), "Event Tick", ImColor(255, 128, 128));
+    m_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Delegate);
+    m_Nodes.back().Outputs.emplace_back(GetNextId(), "", PinType::Flow);
+    m_Nodes.back().Outputs.emplace_back(GetNextId(), "Delta Seconds", PinType::Float);
+
+    BuildNode(&m_Nodes.back());
+
+    return &m_Nodes.back();
 }
 
 Node* CBlueprintEditor::SpawnInputActionNode()

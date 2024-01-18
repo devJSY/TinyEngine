@@ -36,7 +36,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowOutliner(true)
     , m_bShowContentBrowser(true)
     , m_bShowCollisionResponses(false)
-    , m_bShowToolbar(true)
+    , m_bShowToolbar(false)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
 {
