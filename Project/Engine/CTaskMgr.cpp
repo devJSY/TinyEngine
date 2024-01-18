@@ -68,23 +68,26 @@ void CTaskMgr::tick()
             {
                 Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
-                // Editor 모드였다면 Viewport 에서의 마우스위치로 설정
-                if (CEditorMgr::GetInst()->IsEnable() && nullptr != CEditorMgr::GetInst()->GetLevelEditor())
-                    MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+                // Editor 모드
+                if (CEditorMgr::GetInst()->IsEnable())
+                {
+                    // Viewport 에서만 마우스 피킹 적용
+                    // Viewport 기준 마우스위치로 설정
+                    if (nullptr != CEditorMgr::GetInst()->GetLevelEditor() &&
+                        CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
+                    {
+                        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-                GamePlayStatic::MouseColorPicking(MousePos);
+                        GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
+                        // GamePlayStatic::MouseRayPicking(MousePos); // Ray Picking
+                    }
+                }
+                else
+                {
+                    GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
+                    // GamePlayStatic::MouseRayPicking(MousePos); // Ray Picking
+                }
             }
-
-            //// Ray Picking
-            //{
-            //    Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
-
-            //    // Level Editor 였다면 Viewport 에서의 마우스위치로 설정
-            //    if (nullptr != CEditorMgr::GetInst()->GetLevelEditor())
-            //        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
-
-            //    GamePlayStatic::MouseRayPicking(MousePos);
-            //}
         }
 
         // Destroy Object
@@ -92,7 +95,6 @@ void CTaskMgr::tick()
         if (nullptr != pSelectedObj && KEY_TAP(KEY::DEL))
         {
             GamePlayStatic::DestroyGameObject(pSelectedObj);
-            CLevelMgr::GetInst()->SetSelectedObject(nullptr);
         }
     }
 

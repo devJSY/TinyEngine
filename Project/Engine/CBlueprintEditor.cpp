@@ -34,18 +34,6 @@ CBlueprintEditor::CBlueprintEditor()
 
 CBlueprintEditor::~CBlueprintEditor()
 {
-    /*auto releaseTexture = [this](ImTextureID& id) {
-        if (id)
-        {
-            DestroyTexture(id);
-            id = nullptr;
-        }
-    };
-
-    releaseTexture(m_RestoreIcon);
-    releaseTexture(m_SaveIcon);
-    releaseTexture(m_HeaderBackground);*/
-
     if (m_EditorContext)
     {
         ed::DestroyEditor(m_EditorContext);
@@ -146,12 +134,12 @@ void CBlueprintEditor::init()
     m_HeaderBackground = CAssetMgr::GetInst()->FindAsset<CTexture>(L"BlueprintBackgroundTex");
     m_SaveIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ic_restore_white_24dpTex");
     m_RestoreIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ic_save_white_24dpTex");
-
-    // auto& io = ImGui::GetIO();
 }
 
 void CBlueprintEditor::render()
 {
+    ImGui::Begin("Blueprint Editor");
+
     UpdateTouch();
 
     auto& io = ImGui::GetIO();
@@ -1087,6 +1075,8 @@ void CBlueprintEditor::render()
 
     // ImGui::ShowTestWindow();
     // ImGui::ShowMetricsWindow();
+
+    ImGui::End();
 }
 
 bool CBlueprintEditor::Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1,
