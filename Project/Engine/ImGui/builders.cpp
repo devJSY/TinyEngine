@@ -7,7 +7,9 @@
 // CREDITS
 //   Written by Michal Cichon
 //------------------------------------------------------------------------------
-# define IMGUI_DEFINE_MATH_OPERATORS
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+    #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 # include "builders.h"
 # include "imgui_internal.h"
 

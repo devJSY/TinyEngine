@@ -55,17 +55,19 @@ typedef Vector4 Vec4;
 #include "func.h"
 
 // ImGui
-#define IMGUI_DEFINE_MATH_OPERATORS
-#include "ImGui\\imgui.h"
-#include "ImGui\\imgui_impl_dx11.h"
-#include "ImGui\\imgui_impl_win32.h"
-#include "ImGui\\imgui_internal.h"
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+    #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <imgui_impl_win32.h>
+#include <imgui_impl_dx11.h>
 
 // ImGuizmo
-#include "ImGui\\ImGuizmo.h"
+#include <ImGuizmo\\ImGuizmo.h>
 
 // ImGui Node Editor
-#include "ImGui\\imgui_node_editor.h"
+#include <imgui_node_editor.h>
 
 // Assimp 5.2.5
 //#define NOMINMAX

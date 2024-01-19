@@ -127,24 +127,6 @@
     <ClInclude Include="CModleLoader.h">
       <Filter>ModleLoader</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\ImCurveEdit.h">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\ImGradient.h">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\ImGuizmo.h">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\ImSequencer.h">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\ImZoomSlider.h">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\GraphEditor.h">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClInclude>
     <ClInclude Include="CTestLevel.h">
       <Filter>05. Level</Filter>
     </ClInclude>
@@ -256,6 +238,24 @@
     <ClInclude Include="ImGui\imgui_impl_win32.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImGradient.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImSequencer.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImZoomSlider.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImGuizmo.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\GraphEditor.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -366,21 +366,6 @@
     <ClCompile Include="CModleLoader.cpp">
       <Filter>ModleLoader</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\ImCurveEdit.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGradient.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuizmo.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImSequencer.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\GraphEditor.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
-    </ClCompile>
     <ClCompile Include="CTestLevel.cpp">
       <Filter>05. Level</Filter>
     </ClCompile>
@@ -485,6 +470,21 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_impl_win32.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImGradient.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\GraphEditor.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
