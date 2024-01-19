@@ -11,8 +11,7 @@
     #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
 # include "builders.h"
-# include "imgui_internal.h"
-
+# include <imgui_internal.h>
 
 //------------------------------------------------------------------------------
 namespace ed   = ax::NodeEditor;

@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+
 #include "CEntity.h"
 
 #define GET_COMPONENT(Type, TYPE)                                                                                      \
