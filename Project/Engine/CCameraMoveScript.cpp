@@ -160,7 +160,7 @@ void CCameraMoveScript::MovePerspective()
 
 void CCameraMoveScript::MoveFocusOrthographic()
 {
-    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
 
     if (nullptr == pSelectedObj)
     {
@@ -190,9 +190,9 @@ void CCameraMoveScript::MoveFocusOrthographic()
 
 void CCameraMoveScript::MoveFocusPerspective()
 {
-    CGameObject* pFocusObj = CLevelMgr::GetInst()->GetSelectedObject();
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
 
-    if (nullptr == pFocusObj)
+    if (nullptr == pSelectedObj)
     {
         m_bFocus = false;
         return;
@@ -202,11 +202,11 @@ void CCameraMoveScript::MoveFocusPerspective()
     Vec3 CamDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 CamDistPos = Transform()->GetWorldPos() + CamDir * focusDist;
 
-    Vec3 ObjPos = pFocusObj->Transform()->GetWorldPos();
+    Vec3 ObjPos = pSelectedObj->Transform()->GetWorldPos();
     Vec3 dir = ObjPos - CamDistPos;
 
     // 카메라 오브젝트가 선택되었거나 지정된 위치근처에 도달했다면 Stop
-    if (GetOwner() == pFocusObj || (dir.Length() < 10.f))
+    if (GetOwner() == pSelectedObj || (dir.Length() < 10.f))
     {
         m_bFocus = false;
     }

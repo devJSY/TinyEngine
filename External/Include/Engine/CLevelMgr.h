@@ -2,7 +2,6 @@
 #include "CEntity.h"
 
 class CLevel;
-class CGameObject;
 
 class CLevelMgr : public CSingleton<CLevelMgr>
 {
@@ -14,13 +13,7 @@ private:
 public:
     CLevel* GetCurrentLevel() const { return m_CurLevel; }
 
-private:
-    CGameObject* m_SelectedObj;
-
 public:
-    CGameObject* GetSelectedObject() const { return m_SelectedObj; }
-    void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }
-
     void ChangeLevel(CLevel* _NextLevel);
 
 public:

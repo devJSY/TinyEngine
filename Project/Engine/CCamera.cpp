@@ -2,7 +2,7 @@
 #include "CCamera.h"
 
 #include "CAssetMgr.h"
-#include "CLevelMgr.h"
+#include "CEditorMgr.h"
 
 #include "CDevice.h"
 #include "CTransform.h"
@@ -223,7 +223,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 // outline pass
                 // 와이어 프레임일때는 Off
                 // SkyBox 일때는 Off
-                if (CLevelMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
+                if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
                     LayerName != L"SkyBox")
                 {
                     if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)

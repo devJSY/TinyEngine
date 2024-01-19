@@ -15,7 +15,6 @@
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
-    , m_SelectedObj(nullptr)
 {
 }
 

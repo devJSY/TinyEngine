@@ -417,7 +417,7 @@ void CLevelEditor::render_Viewport()
 
 void CLevelEditor::render_ImGuizmo()
 {
-    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
     if (nullptr == pSelectedObj)
         return;
 

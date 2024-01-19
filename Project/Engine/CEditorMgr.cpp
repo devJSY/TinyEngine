@@ -11,6 +11,7 @@
 CEditorMgr::CEditorMgr()
     : m_bEnable(true)
     , m_arrEditor{}
+    , m_SelectedObj(nullptr)
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
 {

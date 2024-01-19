@@ -91,7 +91,7 @@ void CTaskMgr::tick()
         }
 
         // Destroy Object
-        CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
+        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
         if (nullptr != pSelectedObj && KEY_TAP(KEY::DEL))
         {
             GamePlayStatic::DestroyGameObject(pSelectedObj);
@@ -154,7 +154,7 @@ void CTaskMgr::CREATE_OBJECT(const FTask& _Task)
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     pCurLevel->AddObject(Object, LayerIdx, true);
-    CLevelMgr::GetInst()->SetSelectedObject(Object);
+    CEditorMgr::GetInst()->SetSelectedObject(Object);
 
     /*if (LEVEL_STATE::PLAY == pCurLevel->GetState())
     {
@@ -184,8 +184,8 @@ void CTaskMgr::DELETE_OBJECT(const FTask& _Task)
     }
 
     // Selected Obj ÇØÁ¦
-    if (pDeadObj == CLevelMgr::GetInst()->GetSelectedObject())
-        CLevelMgr::GetInst()->SetSelectedObject(nullptr);
+    if (pDeadObj == CEditorMgr::GetInst()->GetSelectedObject())
+        CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 }
 
 void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
@@ -391,7 +391,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
     }
 
     if (!ImGuizmo::IsUsing())
-        CLevelMgr::GetInst()->SetSelectedObject(pSelectedObj);
+        CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
@@ -472,7 +472,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
     }
 
     if (!ImGuizmo::IsUsing())
-        CLevelMgr::GetInst()->SetSelectedObject(pSelectedObj);
+        CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::ADD_COMPONENT(const FTask& _Task)

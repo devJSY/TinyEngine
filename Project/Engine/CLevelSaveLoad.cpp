@@ -4,6 +4,7 @@
 #include "CPathMgr.h"
 #include "CCollisionMgr.h"
 #include "CLevelMgr.h"
+#include "CEditorMgr.h"
 
 #include "CLevel.h"
 
@@ -182,7 +183,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _FileName)
 
     fclose(pFile);
 
-    CLevelMgr::GetInst()->SetSelectedObject(nullptr);
+    CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 
     /*NewLevel->ChangeState(LEVEL_STATE::STOP);*/
 

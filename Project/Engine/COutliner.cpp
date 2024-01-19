@@ -27,7 +27,7 @@ COutliner::~COutliner()
 
 void COutliner::DrawNode(CGameObject* obj)
 {
-    CGameObject* pSelectedObj = CLevelMgr::GetInst()->GetSelectedObject();
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
 
     int id = -1;
 
@@ -43,7 +43,7 @@ void COutliner::DrawNode(CGameObject* obj)
 
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
-        CLevelMgr::GetInst()->SetSelectedObject(obj);
+        CEditorMgr::GetInst()->SetSelectedObject(obj);
     }
 
     if (opened)
@@ -84,7 +84,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         {
             if (ImGui::MenuItem(GetComponentName((COMPONENT_TYPE)i).c_str()))
             {
-                GamePlayStatic::AddComponent(CLevelMgr::GetInst()->GetSelectedObject(), (COMPONENT_TYPE)i);
+                GamePlayStatic::AddComponent(CEditorMgr::GetInst()->GetSelectedObject(), (COMPONENT_TYPE)i);
                 ImGui::CloseCurrentPopup();
             }
         }
@@ -153,7 +153,7 @@ void COutliner::render()
 
     // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-        CLevelMgr::GetInst()->SetSelectedObject(nullptr);
+        CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 
     // Right-click on blank space
     if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems))
@@ -180,8 +180,8 @@ void COutliner::render()
     ImGui::End();
 
     ImGui::Begin("Details");
-    if (nullptr != CLevelMgr::GetInst()->GetSelectedObject())
-        DrawDetails(CLevelMgr::GetInst()->GetSelectedObject());
+    if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
+        DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());
 
     ImGui::End();
 }
