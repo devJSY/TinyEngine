@@ -238,6 +238,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             Component = new CMeshRender;
             break;
         case COMPONENT_TYPE::TILEMAP:
+            Component = new CTileMap;
             break;
         case COMPONENT_TYPE::PARTICLESYSTEM:
             break;
@@ -246,10 +247,6 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::DECAL:
             break;
         case COMPONENT_TYPE::LANDSCAPE:
-            break;
-        case COMPONENT_TYPE::END:
-            break;
-        case COMPONENT_TYPE::SCRIPT:
             break;
         }
 

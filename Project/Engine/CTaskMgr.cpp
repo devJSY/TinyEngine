@@ -513,6 +513,12 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
         pObj->AddComponent(new CMeshRender);
         break;
     case COMPONENT_TYPE::TILEMAP:
+        {
+            if (nullptr == pObj->GetRenderComponent())
+                pObj->AddComponent(new CTileMap);
+            else
+                LOG(Error, ToString(pObj->GetName()) + " Already Has a RenderComponent!!");
+        }
         break;
     case COMPONENT_TYPE::PARTICLESYSTEM:
         break;
@@ -521,10 +527,6 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     case COMPONENT_TYPE::DECAL:
         break;
     case COMPONENT_TYPE::LANDSCAPE:
-        break;
-    case COMPONENT_TYPE::END:
-        break;
-    case COMPONENT_TYPE::SCRIPT:
         break;
     }
 }

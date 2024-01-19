@@ -180,6 +180,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"EffectShader", pShader);
     }
 
+    // =============
+    // TileMapShader
+    // =============
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\Tilemap.fx", "VS_TileMap");
+        pShader->CreatePixelShader(L"shader\\Tilemap.fx", "PS_TileMap");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->SetName(L"TileMapShader");
+        AddAsset(L"TileMapShader", pShader);
+    }
+
     // =================================
     // GrayFilter Shader
     // Mesh			: RectMesh
@@ -298,7 +316,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\2D_OutLineVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\2D_OutLinePS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_NONE); 
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
@@ -497,6 +515,9 @@ void CAssetMgr::CreateDefaultTexture()
     Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");
     Load<CTexture>(L"ic_restore_white_24dpTex", L"Icons\\Blueprint\\ic_restore_white_24dp.png");
     Load<CTexture>(L"ic_save_white_24dpTex", L"Icons\\Blueprint\\ic_save_white_24dp.png");
+
+    Load<CTexture>(L"MapTileTex", L"EnterTheGungeon\\Map\\MapTile.bmp");
+    Load<CTexture>(L"MapTileSmallTex", L"EnterTheGungeon\\Map\\MapTileSmall.bmp");
 }
 
 void CAssetMgr::CreateDefaultMaterial()
@@ -507,6 +528,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
         pMtrl->SetName(L"Std2DMtrl");
         AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+    }
+
+    // TileMapMtrl
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TileMapShader"));
+        pMtrl->SetName(L"TileMapMtrl");
+        AddAsset<CMaterial>(L"TileMapMtrl", pMtrl);
     }
 
     // GrayFilterMtrl

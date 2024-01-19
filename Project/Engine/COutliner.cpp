@@ -636,8 +636,8 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
-        Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
+        Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
 
         // Mesh
         if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
@@ -738,6 +738,53 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
 void COutliner::DrawTileMap(CGameObject* obj)
 {
+    CTileMap* pTilemap = obj->TileMap();
+    if (nullptr == pTilemap)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CTileMap).hash_code(), m_DefaultTreeNodeFlag, "TileMap");
+
+    ComponentSettingsButton(pTilemap);
+
+    if (open)
+    {
+        Ptr<CMesh> pMesh = pTilemap->GetMesh();
+        Ptr<CMaterial> pMaterial = pTilemap->GetMaterial();
+
+        // Mesh
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
+                              "Mesh"))
+        {
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            if (nullptr != pMesh)
+            {
+                string name = ToString(pMesh->GetName());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+            }
+            ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+
+            ImGui::TreePop();
+        }
+
+        // Material
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(),
+                              m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+        {
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            if (nullptr != pMaterial)
+            {
+                string name = ToString(pMaterial->GetName());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+            }
+            ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));
+
+            ImGui::TreePop();
+        }
+
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawParticlesystem(CGameObject* obj)

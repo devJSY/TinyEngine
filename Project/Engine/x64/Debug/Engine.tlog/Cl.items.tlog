@@ -47,6 +47,7 @@ D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug
 D:\TinyEngine\Project\Engine\CTestLevel.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTestLevel.obj
 D:\TinyEngine\Project\Engine\CTestLevel2.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTestLevel2.obj
 D:\TinyEngine\Project\Engine\CTexture.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTexture.obj
+D:\TinyEngine\Project\Engine\CTileMap.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTileMap.obj
 D:\TinyEngine\Project\Engine\CTimeMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTimeMgr.obj
 D:\TinyEngine\Project\Engine\CTransform.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTransform.obj
 D:\TinyEngine\Project\Engine\Engine.cpp;D:\TinyEngine\Project\Engine\x64\Debug\Engine.obj

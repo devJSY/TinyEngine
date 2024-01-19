@@ -98,6 +98,9 @@
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\TessellatedQuadVS.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\Tilemap.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

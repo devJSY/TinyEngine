@@ -9,8 +9,6 @@
         return m_Owner->Type();                                                                                        \
     }
 
-class CGameObject;
-
 class CComponent : public CEntity
 {
 private:
@@ -38,6 +36,7 @@ public:
     GET_OTHER_COMPONENT(Collider2D);
     GET_OTHER_COMPONENT(Animator2D);
     GET_OTHER_COMPONENT(Light2D);
+    GET_OTHER_COMPONENT(TileMap);
 
 public:
     GET_OTHER_COMPONENT(Light3D);

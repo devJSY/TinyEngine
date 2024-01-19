@@ -242,8 +242,8 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
     return Ptr<CMaterial>(pMtrl);
 }
 
-CGameObject* CAssetMgr::LoadModel(const string& _relativepath, const string& _filename,
-                                  const wstring& _name, bool revertNormals)
+CGameObject* CAssetMgr::LoadModel(const string& _relativepath, const string& _filename, const wstring& _name,
+                                  bool revertNormals)
 {
     auto meshes = ReadFromFile(_relativepath, _filename, revertNormals);
 

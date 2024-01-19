@@ -256,6 +256,9 @@
     <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
+    <ClInclude Include="CTileMap.h">
+      <Filter>08. Component\RenderComponent\02. TileMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -485,6 +488,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMap.cpp">
+      <Filter>08. Component\RenderComponent\02. TileMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -821,6 +827,9 @@
     </FxCompile>
     <FxCompile Include="ShockWaveVS.hlsl">
       <Filter>ShaderCode\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="Tilemap.fx">
+      <Filter>ShaderCode\fx</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
