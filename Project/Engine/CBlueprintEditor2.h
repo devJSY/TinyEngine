@@ -23,24 +23,6 @@ using namespace crude_blueprint;
 using namespace blueprint_editor;
 using namespace blueprint_editor_utilities;
 
-static ImEx::MostRecentlyUsedList Application_GetMostRecentlyOpenFileList()
-{
-    return ImEx::MostRecentlyUsedList("MostRecentlyOpenList");
-}
-
-static EntryPointNode* FindEntryPointNode(Blueprint& blueprint)
-{
-    for (auto& node : blueprint.GetNodes())
-    {
-        if (node->GetTypeInfo().m_Id == EntryPointNode::GetStaticTypeInfo().m_Id)
-        {
-            return static_cast<EntryPointNode*>(node);
-        }
-    }
-
-    return nullptr;
-}
-
 using std::function;
 
 enum class EventHandle : uint64_t
@@ -91,8 +73,6 @@ private:
     EventHandleType m_LastHandleId = 0;
 };
 
-#pragma region Action
-
 struct Action
 {
     using OnChangeEvent = Event<Action*>;
@@ -117,50 +97,6 @@ private:
     bool m_IsEnabled = true;
 };
 
-Action::Action(string_view name, OnTriggeredEvent::Delegate delegate)
-    : m_Name(to_string(name))
-{
-    if (delegate)
-        OnTriggered += std::move(delegate);
-}
-
-void Action::SetName(string_view name)
-{
-    if (m_Name == name)
-        return;
-
-    m_Name = to_string(name);
-
-    OnChange(this);
-}
-
-const crude_blueprint::string& Action::GetName() const
-{
-    return m_Name;
-}
-
-void Action::SetEnabled(bool set)
-{
-    if (m_IsEnabled == set)
-        return;
-
-    m_IsEnabled = set;
-
-    OnChange(this);
-}
-
-bool Action::IsEnabled() const
-{
-    return m_IsEnabled;
-}
-
-void Action::Execute()
-{
-    LOGV("Action: %s", m_Name.c_str());
-    OnTriggered();
-}
-#pragma endregion
-
 class CBlueprintEditor2 : public CEditor
 {
 private:
@@ -168,36 +104,36 @@ private:
     crude_logger::OverlayLogger m_OverlayLogger;
 
     unique_ptr<Document> m_Document;
-    Blueprint* m_Blueprint = nullptr;
+    Blueprint* m_Blueprint;
 
     CreateNodeDialog m_CreateNodeDailog;
     NodeContextMenu m_NodeContextMenu;
     PinContextMenu m_PinContextMenu;
     LinkContextMenu m_LinkContextMenu;
 
-    Action m_File_New = {"New", [this] { File_New(); }};
-    Action m_File_Open = {"Open...", [this] { File_Open(); }};
-    Action m_File_SaveAs = {"Save As...", [this] { File_SaveAs(); }};
-    Action m_File_Save = {"Save", [this] { File_Save(); }};
-    Action m_File_Close = {"Close", [this] { File_Close(); }};
-    Action m_File_Exit = {"Exit", [this] { File_Exit(); }};
+    Action m_File_New;
+    Action m_File_Open;
+    Action m_File_SaveAs;
+    Action m_File_Save;
+    Action m_File_Close;
+    Action m_File_Exit;
 
-    Action m_Edit_Undo = {"Undo", [this] { Edit_Undo(); }};
-    Action m_Edit_Redo = {"Redo", [this] { Edit_Redo(); }};
-    Action m_Edit_Cut = {"Cut", [this] { Edit_Cut(); }};
-    Action m_Edit_Copy = {"Copy", [this] { Edit_Copy(); }};
-    Action m_Edit_Paste = {"Paste", [this] { Edit_Paste(); }};
-    Action m_Edit_Duplicate = {"Duplicate", [this] { Edit_Duplicate(); }};
-    Action m_Edit_Delete = {"Delete", [this] { Edit_Delete(); }};
-    Action m_Edit_SelectAll = {"Select All", [this] { Edit_SelectAll(); }};
+    Action m_Edit_Undo;
+    Action m_Edit_Redo;
+    Action m_Edit_Cut;
+    Action m_Edit_Copy;
+    Action m_Edit_Paste;
+    Action m_Edit_Duplicate;
+    Action m_Edit_Delete;
+    Action m_Edit_SelectAll;
 
-    Action m_View_NavigateBackward = {"Navigate Backward", [this] { View_NavigateBackward(); }};
-    Action m_View_NavigateForward = {"Navigate Forward", [this] { View_NavigateForward(); }};
+    Action m_View_NavigateBackward;
+    Action m_View_NavigateForward;
 
-    Action m_Blueprint_Start = {"Start", [this] { Blueprint_Start(); }};
-    Action m_Blueprint_Step = {"Step", [this] { Blueprint_Step(); }};
-    Action m_Blueprint_Stop = {"Stop", [this] { Blueprint_Stop(); }};
-    Action m_Blueprint_Run = {"Run", [this] { Blueprint_Run(); }};
+    Action m_Blueprint_Start;
+    Action m_Blueprint_Step;
+    Action m_Blueprint_Stop;
+    Action m_Blueprint_Run;
 
 public:
     virtual void init() override;

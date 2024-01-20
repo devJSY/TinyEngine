@@ -2,9 +2,95 @@
 #include "CBlueprintEditor2.h"
 #include "CEngine.h"
 
+static ImEx::MostRecentlyUsedList Application_GetMostRecentlyOpenFileList()
+{
+    return ImEx::MostRecentlyUsedList("MostRecentlyOpenList");
+}
+
+static EntryPointNode* FindEntryPointNode(Blueprint& blueprint)
+{
+    for (auto& node : blueprint.GetNodes())
+    {
+        if (node->GetTypeInfo().m_Id == EntryPointNode::GetStaticTypeInfo().m_Id)
+        {
+            return static_cast<EntryPointNode*>(node);
+        }
+    }
+
+    return nullptr;
+}
+
+Action::Action(string_view name, OnTriggeredEvent::Delegate delegate)
+    : m_Name(to_string(name))
+{
+    if (delegate)
+        OnTriggered += std::move(delegate);
+}
+
+void Action::SetName(string_view name)
+{
+    if (m_Name == name)
+        return;
+
+    m_Name = to_string(name);
+
+    OnChange(this);
+}
+
+const crude_blueprint::string& Action::GetName() const
+{
+    return m_Name;
+}
+
+void Action::SetEnabled(bool set)
+{
+    if (m_IsEnabled == set)
+        return;
+
+    m_IsEnabled = set;
+
+    OnChange(this);
+}
+
+bool Action::IsEnabled() const
+{
+    return m_IsEnabled;
+}
+
+void Action::Execute()
+{
+    LOGV("Action: %s", m_Name.c_str());
+    OnTriggered();
+}
+
 CBlueprintEditor2::CBlueprintEditor2()
     : CEditor(EDITOR_TYPE::BLUEPRINT)
+    , m_Editor(nullptr)
+    , m_Blueprint(nullptr)
 {
+    m_File_New = {"New", [this] { File_New(); }};
+    m_File_Open = {"Open...", [this] { File_Open(); }};
+    m_File_SaveAs = {"Save As...", [this] { File_SaveAs(); }};
+    m_File_Save = {"Save", [this] { File_Save(); }};
+    m_File_Close = {"Close", [this] { File_Close(); }};
+    m_File_Exit = {"Exit", [this] { File_Exit(); }};
+
+    m_Edit_Undo = {"Undo", [this] { Edit_Undo(); }};
+    m_Edit_Redo = {"Redo", [this] { Edit_Redo(); }};
+    m_Edit_Cut = {"Cut", [this] { Edit_Cut(); }};
+    m_Edit_Copy = {"Copy", [this] { Edit_Copy(); }};
+    m_Edit_Paste = {"Paste", [this] { Edit_Paste(); }};
+    m_Edit_Duplicate = {"Duplicate", [this] { Edit_Duplicate(); }};
+    m_Edit_Delete = {"Delete", [this] { Edit_Delete(); }};
+    m_Edit_SelectAll = {"Select All", [this] { Edit_SelectAll(); }};
+
+    m_View_NavigateBackward = {"Navigate Backward", [this] { View_NavigateBackward(); }};
+    m_View_NavigateForward = {"Navigate Forward", [this] { View_NavigateForward(); }};
+
+    m_Blueprint_Start = {"Start", [this] { Blueprint_Start(); }};
+    m_Blueprint_Step = {"Step", [this] { Blueprint_Step(); }};
+    m_Blueprint_Stop = {"Stop", [this] { Blueprint_Stop(); }};
+    m_Blueprint_Run = {"Run", [this] { Blueprint_Run(); }};
 }
 
 CBlueprintEditor2::~CBlueprintEditor2()
@@ -45,6 +131,8 @@ void CBlueprintEditor2::init()
 
 void CBlueprintEditor2::render()
 {
+    ImGui::Begin("Blueprint Editor2");
+
     ed::SetCurrentEditor(m_Editor);
 
     UpdateActions();
@@ -83,6 +171,8 @@ void CBlueprintEditor2::render()
     ed::SetCurrentEditor(nullptr);
 
     // ImGui::ShowMetricsWindow();
+
+    ImGui::End();
 }
 
 void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
@@ -90,14 +180,14 @@ void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
     config.UserPointer = this;
     // config.BeginSaveSession = [](void* userPointer)
     //{
-    //     auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+    //     auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
 
     //    if (self->m_Document)
     //        self->m_Document->OnSaveBegin();
     //};
     // config.EndSaveSession = [](void* userPointer)
     //{
-    //    auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+    //    auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
 
     //    if (self->m_Document)
     //        self->m_Document->OnSaveEnd();
@@ -105,7 +195,7 @@ void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
     // config.SaveSettingsJson = [](const crude_json::value& state, ed::SaveReasonFlags reason, void* userPointer)
     // -> bool
     //{
-    //    auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+    //    auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
 
     //    if (self->m_Document)
     //        return self->m_Document->OnSaveState(state, reason);
@@ -114,7 +204,7 @@ void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
     //};
     // config.LoadSettingsJson = [](void* userPointer) -> crude_json::value
     //{
-    //    auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+    //    auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
 
     //    if (self->m_Document)
     //        return self->m_Document->OnLoadState();
@@ -124,7 +214,7 @@ void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
     // config.SaveNodeSettingsJson = [](ed::NodeId nodeId, const crude_json::value& value, ed::SaveReasonFlags
     // reason, void* userPointer) -> bool
     //{
-    //    auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+    //    auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
 
     //    if (self->m_Document)
     //        return self->m_Document->OnSaveNodeState(static_cast<uint32_t>(nodeId.Get()), value, reason);
@@ -133,7 +223,7 @@ void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
     //};
     // config.LoadNodeSettingsJson = [](ed::NodeId nodeId, void* userPointer) -> crude_json::value
     //{
-    //    auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+    //    auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
 
     //    if (self->m_Document)
     //        return self->m_Document->OnLoadNodeState(static_cast<uint32_t>(nodeId.Get()));
@@ -207,7 +297,7 @@ void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)
     };
 
     config.TransactionInterface.Constructor = [](const char* name, void* userPointer) -> ed::ITransaction* {
-        auto self = reinterpret_cast<BlueprintEditorExample*>(userPointer);
+        auto self = reinterpret_cast<CBlueprintEditor2*>(userPointer);
         return new TransactionWrapper(self->m_Document->BeginUndoTransaction(name));
     };
 
@@ -490,9 +580,9 @@ void CBlueprintEditor2::CommitBlueprintNodes(Blueprint& blueprint, DebugOverlay&
                 // ImDrawFlags_RoundCornersTop);
             });
 
-            //ImGui::PushFont(HeaderFont());
-            //ImGui::TextUnformatted(nodeName.data(), nodeName.data() + nodeName.size());
-            //ImGui::PopFont();
+            // ImGui::PushFont(HeaderFont());
+            // ImGui::TextUnformatted(nodeName.data(), nodeName.data() + nodeName.size());
+            // ImGui::PopFont();
 
             ImGui::TextUnformatted(nodeName.data(), nodeName.data() + nodeName.size());
 
@@ -1010,9 +1100,9 @@ bool CBlueprintEditor2::File_Close()
 
     if (File_IsModified())
     {
-        auto dialogResult =
-            tinyfd_messageBox(ToString(GetName()).c_str(), "Do you want to save changes to this blueprint before closing?",
-                              "yesnocancel", "question", 1);
+        auto dialogResult = tinyfd_messageBox(ToString(GetName()).c_str(),
+                                              "Do you want to save changes to this blueprint before closing?",
+                                              "yesnocancel", "question", 1);
         if (dialogResult == 1) // yes
         {
             if (!File_Save())
@@ -1080,12 +1170,12 @@ bool CBlueprintEditor2::File_Save()
 
 void CBlueprintEditor2::File_Exit()
 {
-    //if (!Close())
-    //    return;
+    // if (!Close())
+    //     return;
 
     LOGI("[File] Quit");
 
-    //Quit();
+    // Quit();
 }
 
 void CBlueprintEditor2::Blueprint_Start()

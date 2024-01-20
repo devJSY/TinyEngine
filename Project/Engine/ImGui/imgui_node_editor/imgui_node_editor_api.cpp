@@ -429,6 +429,231 @@ void ax::NodeEditor::RestoreNodeState(NodeId nodeId)
         s_Editor->MarkNodeToRestoreState(node);
 }
 
+
+bool ax::NodeEditor::HasStateChanged(StateType stateType, const crude_json::value& state)
+{
+    switch (stateType)
+    {
+    case StateType::All:
+        {
+            Detail::EditorState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->HasStateChanged(value);
+        }
+
+    case StateType::Node:
+        break;
+
+    case StateType::Nodes:
+        {
+            Detail::NodesState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->HasStateChanged(value);
+        }
+
+    case StateType::Selection:
+        {
+            Detail::SelectionState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->HasStateChanged(value);
+        }
+
+    case StateType::View:
+        {
+            Detail::ViewState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->HasStateChanged(value);
+        }
+    }
+
+    return false;
+}
+
+bool ax::NodeEditor::HasStateChanged(StateType stateType, NodeId nodeId, const crude_json::value& state)
+{
+    switch (stateType)
+    {
+    case StateType::All:
+        break;
+
+    case StateType::Node:
+        {
+            Detail::NodeState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->ApplyState(nodeId, value);
+        }
+
+    case StateType::Nodes:
+        break;
+
+    case StateType::Selection:
+        break;
+
+    case StateType::View:
+        break;
+    }
+
+    return false;
+}
+
+crude_json::value ax::NodeEditor::GetState(StateType stateType)
+{
+    switch (stateType)
+    {
+    case StateType::All:
+        {
+            Detail::EditorState state;
+            s_Editor->RecordState(state);
+            return Detail::Serialization::ToJson(state);
+        }
+
+    case StateType::Node:
+        break;
+
+    case StateType::Nodes:
+        {
+            Detail::NodesState state;
+            s_Editor->RecordState(state);
+            return Detail::Serialization::ToJson(state);
+        }
+
+    case StateType::Selection:
+        {
+            Detail::SelectionState state;
+            s_Editor->RecordState(state);
+            return Detail::Serialization::ToJson(state);
+        }
+
+    case StateType::View:
+        {
+            Detail::ViewState state;
+            s_Editor->RecordState(state);
+            return Detail::Serialization::ToJson(state);
+        }
+    }
+
+    return {};
+}
+
+crude_json::value ax::NodeEditor::GetState(StateType stateType, NodeId nodeId)
+{
+    switch (stateType)
+    {
+    case StateType::All:
+        break;
+
+    case StateType::Node:
+        {
+            Detail::NodeState state;
+            s_Editor->RecordState(nodeId, state);
+            return Detail::Serialization::ToJson(state);
+        }
+
+    case StateType::Nodes:
+        break;
+
+    case StateType::Selection:
+        break;
+
+    case StateType::View:
+        break;
+    }
+
+    return {};
+}
+
+bool ax::NodeEditor::ApplyState(StateType stateType, const crude_json::value& state)
+{
+    switch (stateType)
+    {
+    case StateType::All:
+        {
+            Detail::EditorState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->ApplyState(value);
+        }
+
+    case StateType::Node:
+        break;
+
+    case StateType::Nodes:
+        {
+            Detail::NodesState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->ApplyState(value);
+        }
+
+    case StateType::Selection:
+        {
+            Detail::SelectionState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->ApplyState(value);
+        }
+
+    case StateType::View:
+        {
+            Detail::ViewState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->ApplyState(value);
+        }
+    }
+
+    return false;
+}
+
+bool ax::NodeEditor::ApplyState(StateType stateType, NodeId nodeId, const crude_json::value& state)
+{
+    switch (stateType)
+    {
+    case StateType::All:
+        break;
+
+    case StateType::Node:
+        {
+            Detail::NodeState value;
+            return Detail::Serialization::Parse(state, value) && s_Editor->ApplyState(nodeId, value);
+        }
+
+    case StateType::Nodes:
+        break;
+
+    case StateType::Selection:
+        break;
+
+    case StateType::View:
+        break;
+    }
+
+    return false;
+}
+
+bool ax::NodeEditor::HasStateChangedString(StateType stateType, const char* state)
+{
+    crude_json::value value;
+    return Detail::Serialization::Parse(state, value) && HasStateChanged(stateType, value);
+}
+
+bool ax::NodeEditor::HasStateChangedString(StateType stateType, NodeId nodeId, const char* state)
+{
+    crude_json::value value;
+    return Detail::Serialization::Parse(state, value) && HasStateChanged(stateType, nodeId, value);
+}
+
+const char* ax::NodeEditor::GetStateString(StateType stateType)
+{
+    s_Editor->m_CachedStateStringForPublicAPI = Detail::Serialization::ToString(GetState(stateType));
+    return s_Editor->m_CachedStateStringForPublicAPI.c_str();
+}
+
+const char* ax::NodeEditor::GetStateString(StateType stateType, NodeId nodeId)
+{
+    s_Editor->m_CachedStateStringForPublicAPI = Detail::Serialization::ToString(GetState(stateType, nodeId));
+    return s_Editor->m_CachedStateStringForPublicAPI.c_str();
+}
+
+bool ax::NodeEditor::ApplyStateString(StateType stateType, const char* state)
+{
+    crude_json::value value;
+    return Detail::Serialization::Parse(state, value) && ApplyState(stateType, value);
+}
+
+bool ax::NodeEditor::ApplyStateString(StateType stateType, NodeId nodeId, const char* state)
+{
+    crude_json::value value;
+    return Detail::Serialization::Parse(state, value) && ApplyState(stateType, nodeId, value);
+}
+
 void ax::NodeEditor::Suspend()
 {
     s_Editor->Suspend();
@@ -759,4 +984,19 @@ int ax::NodeEditor::GetNodeCount()
 int ax::NodeEditor::GetOrderedNodeIds(NodeId* nodes, int size)
 {
     return s_Editor->GetNodeIds(nodes, size);
+}
+
+ImVector<ax::NodeEditor::LinkId> ax::NodeEditor::FindLinksForNode(NodeId nodeId)
+{
+    ImVector<LinkId> result;
+
+    std::vector<ax::NodeEditor::Detail::Link*> links;
+    s_Editor->FindLinksForNode(nodeId, links, false);
+
+    result.reserve(static_cast<int>(links.size()));
+
+    for (auto link : links)
+        result.push_back(link->m_ID);
+
+    return result;
 }
