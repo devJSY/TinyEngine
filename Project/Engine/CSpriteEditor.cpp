@@ -23,7 +23,6 @@ void CSpriteEditor::render(bool* open)
 {
     if (!ImGui::Begin("Sprite Editor", open))
     {
-        *open = false;
         ImGui::End();
         return;
     }

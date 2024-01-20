@@ -165,7 +165,6 @@ void CBlueprintEditor::render(bool* open)
 {
     if (!ImGui::Begin("Blueprint Editor", open))
     {
-        *open = false;
         ImGui::End();
         return;
     }

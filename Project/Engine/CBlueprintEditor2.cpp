@@ -133,7 +133,6 @@ void CBlueprintEditor2::render(bool* open)
 {
     if (!ImGui::Begin("Blueprint Editor2", open))
     {
-        *open = false;
         ImGui::End();
         return;
     }

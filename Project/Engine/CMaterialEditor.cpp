@@ -94,8 +94,6 @@ void CMaterialEditor::render(bool* open)
 {
     if (!ImGui::Begin("Material Editor", open))
     {
-        *open = false;
-        m_Mtrl = nullptr;
         ImGui::End();
         return;
     }
