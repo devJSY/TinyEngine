@@ -26,6 +26,10 @@ private:
     bool m_bShowAssets;
     bool m_bShowOutputLog;
 
+    bool m_bShowMaterialEditor;
+    bool m_bShowBlueprintEditor;
+    bool m_bShowSpriteEditor;
+
 public:
     virtual void init() override;
     virtual void tick() override{};
@@ -44,6 +48,11 @@ private:
 public:
     bool IsViewportFocused() const { return m_ViewportFocused; }
     bool IsViewportHovered() const { return m_ViewportHovered; }
+
+public:
+    void ShowMaterialEditor(bool _show) { m_bShowMaterialEditor = _show; }
+    void ShowBlueprintEditor(bool _show) { m_bShowBlueprintEditor = _show; }
+    void ShowSpriteEditor(bool _show) { m_bShowSpriteEditor = _show; }
 
 public:
     CLevelEditor();

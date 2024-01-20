@@ -177,6 +177,7 @@ enum class EDITOR_TYPE
     LEVEL,
     MATERIAL,
     BLUEPRINT,
+    SPRITE,
 
     END,
 };

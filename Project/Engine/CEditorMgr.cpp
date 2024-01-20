@@ -2,9 +2,6 @@
 #include "CEditorMgr.h"
 #include "CEditor.h"
 #include "CLevelEditor.h"
-#include "CMaterialEditor.h"
-// #include "CBlueprintEditor.h"
-#include "CBlueprintEditor2.h"
 
 #include "CEngine.h"
 #include "CDevice.h"
@@ -92,11 +89,14 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL] = new CMaterialEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->init();
 
-    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
+
+    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor2;
     // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
 
-    //m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor2;
-    //m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
+    m_arrEditor[(UINT)EDITOR_TYPE::SPRITE] = new CSpriteEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]->init();
 }
 
 void CEditorMgr::tick()
@@ -132,13 +132,7 @@ void CEditorMgr::render()
     // ======================
     // Editor Render
     // ======================
-    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
-    {
-        if (nullptr == m_arrEditor[i])
-            continue;
-
-        m_arrEditor[i]->render();
-    }
+    m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]->render();
 
     // ====================
     // ImGUI Rendering

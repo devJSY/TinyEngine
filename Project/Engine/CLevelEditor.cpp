@@ -39,6 +39,9 @@ CLevelEditor::CLevelEditor()
     , m_bShowToolbar(false)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
+    , m_bShowMaterialEditor(false)
+    , m_bShowBlueprintEditor(false)
+    , m_bShowSpriteEditor(false)
 {
 }
 
@@ -105,6 +108,18 @@ void CLevelEditor::render()
     bool show_demo_window = true;
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
+
+    // =========================
+    // Editor Render
+    // =========================
+    if (m_bShowMaterialEditor)
+        CEditorMgr::GetInst()->GetMaterialEditor()->render(&m_bShowMaterialEditor);
+
+    if (m_bShowBlueprintEditor)
+        CEditorMgr::GetInst()->GetBlueprintEditor()->render(&m_bShowBlueprintEditor);
+
+    if (m_bShowSpriteEditor)
+        CEditorMgr::GetInst()->GetSpriteEditor()->render(&m_bShowSpriteEditor);
 }
 
 void CLevelEditor::render_MenuBar()
@@ -143,7 +158,21 @@ void CLevelEditor::render_MenuBar()
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("View"))
+        if (ImGui::BeginMenu("Editor"))
+        {
+            if (ImGui::MenuItem("Material Editor", NULL, m_bShowMaterialEditor))
+                m_bShowMaterialEditor = !m_bShowMaterialEditor;
+
+            if (ImGui::MenuItem("Blueprint Editor", NULL, m_bShowBlueprintEditor))
+                m_bShowBlueprintEditor = !m_bShowBlueprintEditor;
+
+            if (ImGui::MenuItem("Sprite Editor", NULL, m_bShowSpriteEditor))
+                m_bShowSpriteEditor = !m_bShowSpriteEditor;
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Window"))
         {
             if (ImGui::MenuItem("World Settings", NULL, m_bShowWorldSettings))
                 m_bShowWorldSettings = !m_bShowWorldSettings;
@@ -343,6 +372,7 @@ void CLevelEditor::render_Assets()
                         Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(iter.second.Get());
                         assert(pMtrl.Get());
 
+                        ShowMaterialEditor(true);
                         CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMtrl);
                     }
                 }

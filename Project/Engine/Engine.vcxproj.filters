@@ -298,6 +298,9 @@
     <ClInclude Include="CBlueprintEditor2.h">
       <Filter>20. Editor\Blueprint</Filter>
     </ClInclude>
+    <ClInclude Include="CSpriteEditor.h">
+      <Filter>20. Editor\SpriteEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -561,6 +564,9 @@
     <ClCompile Include="CBlueprintEditor2.cpp">
       <Filter>20. Editor\Blueprint</Filter>
     </ClCompile>
+    <ClCompile Include="CSpriteEditor.cpp">
+      <Filter>20. Editor\SpriteEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -781,6 +787,9 @@
     </Filter>
     <Filter Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs">
       <UniqueIdentifier>{00a0f53e-1772-4e93-858a-c3ee41d2c182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\SpriteEditor">
+      <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

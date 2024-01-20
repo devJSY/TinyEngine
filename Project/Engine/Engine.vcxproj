@@ -174,11 +174,11 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAnimator2D.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
-    <ClInclude Include="CBlueprintEditor.h">
+    <ClInclude Include="CBlueprintEditor.h" />
+    <ClInclude Include="CBlueprintEditor2.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="CBlueprintEditor2.h" />
     <ClInclude Include="CBulletScript.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -218,6 +218,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CShockWaveScript.h" />
+    <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
     <ClInclude Include="CTestLevel.h" />
@@ -282,11 +283,11 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_init.cpp" />
-    <ClCompile Include="CBlueprintEditor.cpp">
+    <ClCompile Include="CBlueprintEditor.cpp" />
+    <ClCompile Include="CBlueprintEditor2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="CBlueprintEditor2.cpp" />
     <ClCompile Include="CBulletScript.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -325,6 +326,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CShockWaveScript.cpp" />
+    <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTestLevel.cpp" />

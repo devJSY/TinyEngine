@@ -129,10 +129,22 @@ void CBlueprintEditor2::init()
     ed::SetCurrentEditor(nullptr);
 }
 
+void CBlueprintEditor2::render(bool* open)
+{
+    if (!ImGui::Begin("Blueprint Editor2", open))
+    {
+        *open = false;
+        ImGui::End();
+        return;
+    }
+
+    render();
+
+    ImGui::End();
+}
+
 void CBlueprintEditor2::render()
 {
-    ImGui::Begin("Blueprint Editor2");
-
     ed::SetCurrentEditor(m_Editor);
 
     UpdateActions();
@@ -171,8 +183,6 @@ void CBlueprintEditor2::render()
     ed::SetCurrentEditor(nullptr);
 
     // ImGui::ShowMetricsWindow();
-
-    ImGui::End();
 }
 
 void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)

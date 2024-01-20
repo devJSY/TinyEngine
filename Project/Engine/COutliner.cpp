@@ -696,6 +696,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
             if (ImGuiAlignButton("Material Editor", 1.f))
             {
+                CEditorMgr::GetInst()->GetLevelEditor()->ShowMaterialEditor(true);
                 CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMaterial);
             }
 

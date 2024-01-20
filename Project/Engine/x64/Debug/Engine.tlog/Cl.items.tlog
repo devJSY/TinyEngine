@@ -3,7 +3,7 @@ D:\TinyEngine\Project\Engine\CAnimator2D.cpp;D:\TinyEngine\Project\Engine\x64\De
 D:\TinyEngine\Project\Engine\CAsset.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAsset.obj
 D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr.obj
 D:\TinyEngine\Project\Engine\CAssetMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr_init.obj
-D:\TinyEngine\Project\Engine\CBlueprintEditor2.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBlueprintEditor2.obj
+D:\TinyEngine\Project\Engine\CBlueprintEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBlueprintEditor.obj
 D:\TinyEngine\Project\Engine\CBulletScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBulletScript.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCamera.obj
 D:\TinyEngine\Project\Engine\CCameraMoveScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCameraMoveScript.obj
@@ -42,6 +42,7 @@ D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\
 D:\TinyEngine\Project\Engine\CScriptMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CScriptMgr.obj
 D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CShader.obj
 D:\TinyEngine\Project\Engine\CShockWaveScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CShockWaveScript.obj
+D:\TinyEngine\Project\Engine\CSpriteEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSpriteEditor.obj
 D:\TinyEngine\Project\Engine\CStructuredBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CStructuredBuffer.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTaskMgr.obj
 D:\TinyEngine\Project\Engine\CTestLevel.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTestLevel.obj

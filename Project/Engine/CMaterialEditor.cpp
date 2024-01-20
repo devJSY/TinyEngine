@@ -17,18 +17,6 @@ void CMaterialEditor::render()
     if (nullptr == m_Mtrl.Get())
         return;
 
-    bool bOpen = true;
-
-    ImGui::Begin("Material Editor", &bOpen);
-
-    // Close ¹öÆ°
-    if (!bOpen)
-    {
-        ImGui::End();
-        m_Mtrl = nullptr;
-        return;
-    }
-
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     string name = ToString(m_Mtrl->GetName());
@@ -100,6 +88,19 @@ void CMaterialEditor::render()
             ImGui::EndDragDropTarget();
         }
     }
+}
+
+void CMaterialEditor::render(bool* open)
+{
+    if (!ImGui::Begin("Material Editor", open))
+    {
+        *open = false;
+        m_Mtrl = nullptr;
+        ImGui::End();
+        return;
+    }
+
+    render();
 
     ImGui::End();
 }

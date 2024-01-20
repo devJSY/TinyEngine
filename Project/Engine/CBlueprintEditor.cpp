@@ -161,10 +161,22 @@ void CBlueprintEditor::init()
     m_RestoreIcon = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ic_save_white_24dpTex");
 }
 
+void CBlueprintEditor::render(bool* open)
+{
+    if (!ImGui::Begin("Blueprint Editor", open))
+    {
+        *open = false;
+        ImGui::End();
+        return;
+    }
+
+    render();
+
+    ImGui::End();
+}
+
 void CBlueprintEditor::render()
 {
-    ImGui::Begin("Blueprint Editor");
-
     UpdateTouch();
 
     auto& io = ImGui::GetIO();
@@ -1100,8 +1112,6 @@ void CBlueprintEditor::render()
 
     // ImGui::ShowTestWindow();
     // ImGui::ShowMetricsWindow();
-
-    ImGui::End();
 }
 
 bool CBlueprintEditor::Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1,
