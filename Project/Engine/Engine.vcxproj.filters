@@ -259,6 +259,42 @@
     <ClInclude Include="CTileMap.h">
       <Filter>08. Component\RenderComponent\02. TileMap</Filter>
     </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_layout.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_logger.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\imgui_extras.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\string_view.hpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint\nonstd</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\variant.hpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint\nonstd</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\span.hpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint\nonstd</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.h">
+      <Filter>ImGui\imgui_node_editor\Blueprint\tinyfiledialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -492,6 +528,33 @@
     <ClCompile Include="CTileMap.cpp">
       <Filter>08. Component\RenderComponent\02. TileMap</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_layout.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_logger.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\imgui_extras.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.cpp">
+      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.c">
+      <Filter>ImGui\imgui_node_editor\Blueprint\tinyfiledialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -703,6 +766,15 @@
     </Filter>
     <Filter Include="ImGui\imgui_node_editor\utilities">
       <UniqueIdentifier>{ec005d42-f592-4647-81c6-08317595e1c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\imgui_node_editor\Blueprint">
+      <UniqueIdentifier>{af00de7e-1b6b-4a70-8aae-89a02f198df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\imgui_node_editor\Blueprint\nonstd">
+      <UniqueIdentifier>{6743aba0-1227-447d-abee-6e273ce2d85d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs">
+      <UniqueIdentifier>{00a0f53e-1772-4e93-858a-c3ee41d2c182}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -64,6 +64,15 @@ D:\TinyEngine\Project\Engine\ImGui\imgui_demo.cpp;D:\TinyEngine\Project\Engine\x
 D:\TinyEngine\Project\Engine\ImGui\imgui_draw.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_draw.obj
 D:\TinyEngine\Project\Engine\ImGui\imgui_impl_dx11.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_impl_dx11.obj
 D:\TinyEngine\Project\Engine\ImGui\imgui_impl_win32.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_impl_win32.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.cpp;D:\TinyEngine\Project\Engine\x64\Release\blueprint_editor_document.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.cpp;D:\TinyEngine\Project\Engine\x64\Release\blueprint_editor_icons.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.cpp;D:\TinyEngine\Project\Engine\x64\Release\blueprint_editor_utilities.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_blueprint.cpp;D:\TinyEngine\Project\Engine\x64\Release\crude_blueprint.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.cpp;D:\TinyEngine\Project\Engine\x64\Release\crude_blueprint_library.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_layout.cpp;D:\TinyEngine\Project\Engine\x64\Release\crude_layout.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_logger.cpp;D:\TinyEngine\Project\Engine\x64\Release\crude_logger.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\imgui_extras.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_extras.obj
+D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.c;D:\TinyEngine\Project\Engine\x64\Release\tinyfiledialogs.obj
 D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\crude_json.cpp;D:\TinyEngine\Project\Engine\x64\Release\crude_json.obj
 D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\imgui_canvas.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_canvas.obj
 D:\TinyEngine\Project\Engine\ImGui\imgui_node_editor\imgui_node_editor.cpp;D:\TinyEngine\Project\Engine\x64\Release\imgui_node_editor.obj
