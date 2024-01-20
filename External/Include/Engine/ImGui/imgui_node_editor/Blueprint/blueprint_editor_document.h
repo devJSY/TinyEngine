@@ -15,6 +15,8 @@ namespace blueprint_editor {
 namespace ed = ax::NodeEditor;
 
 using nonstd::string_view;
+using nonstd::to_string;
+using nonstd::to_string_view;
 using std::shared_ptr;
 using std::weak_ptr;
 using std::map;
