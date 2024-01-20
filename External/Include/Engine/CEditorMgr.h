@@ -2,7 +2,7 @@
 #include "CLevelEditor.h"
 #include "CMaterialEditor.h"
 #include "CBlueprintEditor.h"
-//#include "CBlueprintEditor2.h"
+// #include "CBlueprintEditor2.h"
 #include "CSpriteEditor.h"
 
 class CEditor;
@@ -32,10 +32,10 @@ public:
     {
         return static_cast<CBlueprintEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]);
     }
-    //CBlueprintEditor2* GetBlueprintEditor() const
+    // CBlueprintEditor2* GetBlueprintEditor() const
     //{
-    //    return static_cast<CBlueprintEditor2*>(m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]);
-    //}
+    //     return static_cast<CBlueprintEditor2*>(m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]);
+    // }
     CSpriteEditor* GetSpriteEditor() const
     {
         return static_cast<CSpriteEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]);

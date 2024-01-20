@@ -137,9 +137,7 @@ void COutliner::init()
 
 void COutliner::render()
 {
-    // 유효성체크
-    // IsValid(m_SelectedObj);
-
+    ImGuiSetWindowClass_LevelEditor();
     ImGui::Begin("Outliner");
 
     for (UINT i = 0; i < LAYER_MAX; i++)
@@ -179,7 +177,8 @@ void COutliner::render()
 
     ImGui::End();
 
-    ImGui::Begin("Details");
+    ImGuiSetWindowClass_LevelEditor();
+    ImGui::Begin("Details##Outliner");
     if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
         DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());
 

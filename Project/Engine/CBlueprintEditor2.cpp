@@ -131,12 +131,27 @@ void CBlueprintEditor2::init()
 
 void CBlueprintEditor2::render(bool* open)
 {
-    if (!ImGui::Begin("Blueprint Editor2", open))
+    // =====================================
+    // DockSpace
+    // =====================================
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetMainViewport()->ID;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther;
+    window_class.DockingAllowUnclassed = true;
+    ImGui::SetNextWindowClass(&window_class);
+
+    if (!ImGui::Begin(ToString(GetName()).c_str(), open))
     {
         ImGui::End();
         return;
     }
 
+    ImGuiID dockSpace = ImGui::GetID("Blueprint Editor DockSpace");
+    ImGui::DockSpace(dockSpace);
+
+    // =====================================
+    // Blueprint Editor Render
+    // =====================================
     render();
 
     ImGui::End();
@@ -144,6 +159,9 @@ void CBlueprintEditor2::render(bool* open)
 
 void CBlueprintEditor2::render()
 {
+    ImGuiSetWindowClass_Blueprint();
+    ImGui::Begin("Event Graph");
+
     ed::SetCurrentEditor(m_Editor);
 
     UpdateActions();
@@ -182,6 +200,8 @@ void CBlueprintEditor2::render()
     ed::SetCurrentEditor(nullptr);
 
     // ImGui::ShowMetricsWindow();
+
+    ImGui::End();
 }
 
 void CBlueprintEditor2::InstallDocumentCallbacks(ed::Config& config)

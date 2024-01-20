@@ -2,6 +2,7 @@
 
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
+#include "CEditorMgr.h"
 #include "CEngine.h"
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
@@ -447,4 +448,44 @@ bool ImGuiAlignButton(const char* label, float alignment)
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
 
     return ImGui::Button(label);
+}
+
+void ImGuiSetWindowClass_LevelEditor()
+{
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetLevelEditor()->GetName()).c_str());
+    window_class.DockNodeFlagsOverrideSet = 0;
+    window_class.DockingAllowUnclassed = true;
+
+    ImGui::SetNextWindowClass(&window_class);
+}
+
+void ImGuiSetWindowClass_MaterialEditor()
+{
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetMaterialEditor()->GetName()).c_str());
+    window_class.DockNodeFlagsOverrideSet = 0;
+    window_class.DockingAllowUnclassed = true;
+
+    ImGui::SetNextWindowClass(&window_class);
+}
+
+void ImGuiSetWindowClass_Blueprint()
+{
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetBlueprintEditor()->GetName()).c_str());
+    window_class.DockNodeFlagsOverrideSet = 0;
+    window_class.DockingAllowUnclassed = true;
+
+    ImGui::SetNextWindowClass(&window_class);
+}
+
+void ImGuiSetWindowClass_SpriteEditor()
+{
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetSpriteEditor()->GetName()).c_str());
+    window_class.DockNodeFlagsOverrideSet = 0;
+    window_class.DockingAllowUnclassed = true;
+
+    ImGui::SetNextWindowClass(&window_class);
 }

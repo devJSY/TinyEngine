@@ -17,6 +17,9 @@ void CMaterialEditor::render()
     if (nullptr == m_Mtrl.Get())
         return;
 
+    ImGuiSetWindowClass_MaterialEditor();
+    ImGui::Begin("Details##MaterialEditor");
+
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     string name = ToString(m_Mtrl->GetName());
@@ -88,16 +91,33 @@ void CMaterialEditor::render()
             ImGui::EndDragDropTarget();
         }
     }
+
+    ImGui::End();
 }
 
 void CMaterialEditor::render(bool* open)
 {
-    if (!ImGui::Begin("Material Editor", open))
+    // =====================================
+    // DockSpace
+    // =====================================
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetMainViewport()->ID;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther;
+    window_class.DockingAllowUnclassed = true;
+    ImGui::SetNextWindowClass(&window_class);
+
+    if (!ImGui::Begin(ToString(GetName()).c_str(), open))
     {
         ImGui::End();
         return;
     }
 
+    ImGuiID dockSpace = ImGui::GetID("Material Editor DockSpace");
+    ImGui::DockSpace(dockSpace);
+
+    // =====================================
+    // Material Editor Render
+    // =====================================
     render();
 
     ImGui::End();

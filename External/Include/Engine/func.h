@@ -74,10 +74,15 @@ wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0
 // ImGui Utility
 // =====================================
 void ImGuiDrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f,
-                     float resetValue = 0.0f, float columnWidth = 100.0f);
+                          float resetValue = 0.0f, float columnWidth = 100.0f);
 string ImGuiLabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGuiComboUI(const string& caption, string& current_item, const std::vector<string>& items);
 bool ImGuiAlignButton(const char* label, float alignment = 0.5f);
+
+void ImGuiSetWindowClass_LevelEditor();
+void ImGuiSetWindowClass_MaterialEditor();
+void ImGuiSetWindowClass_Blueprint();
+void ImGuiSetWindowClass_SpriteEditor();
 
 // =====================================
 // template

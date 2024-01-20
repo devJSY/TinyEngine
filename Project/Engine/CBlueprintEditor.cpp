@@ -163,12 +163,27 @@ void CBlueprintEditor::init()
 
 void CBlueprintEditor::render(bool* open)
 {
-    if (!ImGui::Begin("Blueprint Editor", open))
+    // =====================================
+    // DockSpace
+    // =====================================
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetMainViewport()->ID;
+    window_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther;
+    window_class.DockingAllowUnclassed = true;
+    ImGui::SetNextWindowClass(&window_class);
+
+    if (!ImGui::Begin(ToString(GetName()).c_str(), open))
     {
         ImGui::End();
         return;
     }
 
+    ImGuiID dockSpace = ImGui::GetID("Blueprint Editor DockSpace");
+    ImGui::DockSpace(dockSpace);
+
+    // =====================================
+    // Blueprint Editor Render
+    // =====================================
     render();
 
     ImGui::End();
@@ -176,6 +191,9 @@ void CBlueprintEditor::render(bool* open)
 
 void CBlueprintEditor::render()
 {
+    ImGuiSetWindowClass_Blueprint();
+    ImGui::Begin("Event Graph");
+
     UpdateTouch();
 
     auto& io = ImGui::GetIO();
@@ -1111,6 +1129,8 @@ void CBlueprintEditor::render()
 
     // ImGui::ShowTestWindow();
     // ImGui::ShowMetricsWindow();
+
+    ImGui::End();
 }
 
 bool CBlueprintEditor::Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1,
