@@ -295,6 +295,9 @@
     <ClInclude Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.h">
       <Filter>ImGui\imgui_node_editor\Blueprint\tinyfiledialogs</Filter>
     </ClInclude>
+    <ClInclude Include="CBlueprintEditor2.h">
+      <Filter>20. Editor\Blueprint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -554,6 +557,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.c">
       <Filter>ImGui\imgui_node_editor\Blueprint\tinyfiledialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlueprintEditor2.cpp">
+      <Filter>20. Editor\Blueprint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
