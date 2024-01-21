@@ -73,8 +73,7 @@ void CTaskMgr::tick()
                 {
                     // Viewport 에서만 마우스 피킹 적용
                     // Viewport 기준 마우스위치로 설정
-                    if (nullptr != CEditorMgr::GetInst()->GetLevelEditor() &&
-                        CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
+                    if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
                     {
                         MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
@@ -305,7 +304,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
     int MouseY = (int)_Task.Param_2;
     Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
 
-    if (CEditorMgr::GetInst()->IsEnable() && nullptr != CEditorMgr::GetInst()->GetLevelEditor())
+    if (CEditorMgr::GetInst()->IsEnable())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -405,7 +404,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
     // 마우스 커서의 위치를 NDC로 변환
     // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
     // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-    if (CEditorMgr::GetInst()->IsEnable() && nullptr != CEditorMgr::GetInst()->GetLevelEditor())
+    if (CEditorMgr::GetInst()->IsEnable())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)

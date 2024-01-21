@@ -17,46 +17,74 @@ CCameraMoveScript::~CCameraMoveScript()
 
 void CCameraMoveScript::tick()
 {
-    // Projection Change
-    if (KEY_TAP(KEY::P))
-    {
-        if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-            Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-        else
-            Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-
-        // Rotation 초기화
-        Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-    }
-
-    // Selected Obejct Focus
-    if (KEY_TAP(KEY::F))
-        m_bFocus = true;
-
-    if (m_bFocus)
-    {
-        if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-            MoveFocusOrthographic();
-        else
-            MoveFocusPerspective();
-    }
-
-    // 에디터모드 에서는 Viewport창에서만 카메라 이동 적용
+    // 에디터 모드
     if (CEditorMgr::GetInst()->IsEnable())
     {
-        CLevelEditor* LevelEditor = CEditorMgr::GetInst()->GetLevelEditor();
-        if (nullptr != LevelEditor && !LevelEditor->IsViewportHovered())
+        // Projection Change
+        if (KEY_TAP(KEY::P))
+        {
+            if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportFocused())
+            {
+                if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+                    Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+                else
+                    Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+
+                // Rotation 초기화
+                Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+            }
+        }
+
+        // Selected Obejct Focus
+        if (KEY_TAP(KEY::F))
+            m_bFocus = true;
+
+        if (m_bFocus)
+        {
+            if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+                MoveFocusOrthographic();
+            else
+                MoveFocusPerspective();
+        }
+
+        // 레벨 에디터 에서는 Viewport창에서만 카메라 이동 적용
+        if (!CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
             return;
+
+        // Move
+        if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+            MoveOrthographic();
+        else
+            MovePerspective();
+
+        // Wheel 초기화
+        CKeyMgr::GetInst()->SetMouseWheel(0);
     }
-
-    // Move
-    if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-        MoveOrthographic();
     else
-        MovePerspective();
+    {
+        // 플레이 모드
 
-    // Wheel 초기화
-    CKeyMgr::GetInst()->SetMouseWheel(0);
+        // Projection Change
+        if (KEY_TAP(KEY::P))
+        {
+            if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+                Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+            else
+                Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+
+            // Rotation 초기화
+            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+        }
+
+        // Move
+        if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+            MoveOrthographic();
+        else
+            MovePerspective();
+
+        // Wheel 초기화
+        CKeyMgr::GetInst()->SetMouseWheel(0);
+    }
 }
 
 void CCameraMoveScript::MoveOrthographic()
