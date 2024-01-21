@@ -40,7 +40,7 @@ void CSpriteEditor::DrawViewprot()
 
     static bool opt_enable_grid = true;
     static bool opt_enable_context_menu = true;
-    static bool adding_line = false;
+    static bool Adding_Rect = false;
 
     ImGui::Checkbox("Enable grid", &opt_enable_grid);
     ImGui::Checkbox("Enable context menu", &opt_enable_context_menu);
@@ -60,26 +60,25 @@ void CSpriteEditor::DrawViewprot()
     draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
 
     // This will catch our interactions
-    ImGui::InvisibleButton("canvas", canvas_sz, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
-    const bool is_hovered = ImGui::IsItemHovered();                                          // Hovered
-    const bool is_active = ImGui::IsItemActive();                                            // Held
+    ImGui::InvisibleButton("canvas", canvas_sz,
+                           ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight); // Held
     const ImVec2 origin(canvas_p0.x + m_ViewportOffset.x, canvas_p0.y + m_ViewportOffset.y); // Lock scrolled origin
     const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
 
     // Add first and second point
-    if (is_hovered && !adding_line && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    if (ImGui::IsItemHovered() && !Adding_Rect && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
         m_DragRect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
         m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
 
-        adding_line = true;
+        Adding_Rect = true;
     }
-    if (adding_line)
+    if (Adding_Rect)
     {
         m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
         if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
         {
-            adding_line = false;
+            Adding_Rect = false;
 
             // Min Max 확인
             if (m_DragRect.Max.x < m_DragRect.Min.x)
@@ -92,7 +91,7 @@ void CSpriteEditor::DrawViewprot()
     }
 
     const float mouse_threshold_for_pan = opt_enable_context_menu ? -1.0f : 0.0f;
-    if (is_active && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
+    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
     {
         m_ViewportOffset.x += io.MouseDelta.x;
         m_ViewportOffset.y += io.MouseDelta.y;
@@ -104,9 +103,9 @@ void CSpriteEditor::DrawViewprot()
         ImGui::OpenPopupOnItemClick("context", ImGuiPopupFlags_MouseButtonRight);
     if (ImGui::BeginPopup("context"))
     {
-        if (adding_line)
+        if (Adding_Rect)
             m_Sprites.resize(m_Sprites.size() - 1);
-        adding_line = false;
+        Adding_Rect = false;
         if (ImGui::MenuItem("Remove one", NULL, false, m_Sprites.Size > 0))
         {
             m_Sprites.resize(m_Sprites.size() - 1);
@@ -118,32 +117,9 @@ void CSpriteEditor::DrawViewprot()
         ImGui::EndPopup();
     }
 
-    // Scale
-    if (ImGui::IsWindowHovered())
-    {
-        float wheel = ImGui::GetIO().MouseWheel;
-
-        // 마우스의 현재 위치를 캔버스 기준으로 계산
-        ImVec2 mouse_pos_in_canvas_relative =
-            ImVec2((io.MousePos.x - canvas_p0.x - m_ViewportOffset.x) / m_ViewportScale,
-                   (io.MousePos.y - canvas_p0.y - m_ViewportOffset.y) / m_ViewportScale);
-
-        if (wheel > 0)
-            m_ViewportScale *= 1.1f;
-        else if (wheel < 0)
-            m_ViewportScale *= 0.9f;
-
-        // Scale Limit
-        if (m_ViewportScale < 0.1f)
-            m_ViewportScale = 0.1f;
-
-        if (m_ViewportScale > 100.f)
-            m_ViewportScale = 100.f;
-
-        // 마우스의 위치를 기준으로 확대/축소 후 뷰포트 오프셋 조정
-        m_ViewportOffset.x = io.MousePos.x - mouse_pos_in_canvas_relative.x * m_ViewportScale - canvas_p0.x;
-        m_ViewportOffset.y = io.MousePos.y - mouse_pos_in_canvas_relative.y * m_ViewportScale - canvas_p0.y;
-    }
+    // =================================
+    // Rendering
+    // =================================
 
     // Draw grid + all lines in the canvas
     draw_list->PushClipRect(canvas_p0, canvas_p1, true);
@@ -182,7 +158,7 @@ void CSpriteEditor::DrawViewprot()
     }
 
     // Rect Render
-    if (adding_line)
+    if (Adding_Rect)
     {
         ImVec2 min =
             ImVec2(origin.x + m_DragRect.Min.x * m_ViewportScale, origin.y + m_DragRect.Min.y * m_ViewportScale);
@@ -193,6 +169,33 @@ void CSpriteEditor::DrawViewprot()
     }
 
     draw_list->PopClipRect();
+
+    // Scale
+    if (ImGui::IsWindowHovered())
+    {
+        float wheel = ImGui::GetIO().MouseWheel;
+
+        // 마우스의 현재 위치를 캔버스 기준으로 계산
+        ImVec2 mouse_pos_in_canvas_relative =
+            ImVec2((io.MousePos.x - canvas_p0.x - m_ViewportOffset.x) / m_ViewportScale,
+                   (io.MousePos.y - canvas_p0.y - m_ViewportOffset.y) / m_ViewportScale);
+
+        if (wheel > 0)
+            m_ViewportScale *= 1.1f; // Zoom In
+        else if (wheel < 0)
+            m_ViewportScale *= 0.9f; // Zoom Out
+
+        // Scale Limit
+        if (m_ViewportScale < 0.1f)
+            m_ViewportScale = 0.1f;
+
+        if (m_ViewportScale > 100.f)
+            m_ViewportScale = 100.f;
+
+        // 마우스의 위치를 기준으로 확대/축소 후 뷰포트 오프셋 조정
+        m_ViewportOffset.x = io.MousePos.x - mouse_pos_in_canvas_relative.x * m_ViewportScale - canvas_p0.x;
+        m_ViewportOffset.y = io.MousePos.y - mouse_pos_in_canvas_relative.y * m_ViewportScale - canvas_p0.y;
+    }
 
     ImGui::End();
 }
@@ -226,26 +229,26 @@ void CSpriteEditor::DrawDetails()
 
 void CSpriteEditor::DrawSpriteList()
 {
-    if (nullptr == m_pTex.Get())
-        return;
-
     ImGui::Begin("Sprite List##SpriteEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
 
-    for (int i = 1; i <= m_Sprites.Size; i++)
+    if (nullptr != m_pTex.Get())
     {
-        int idx = i - 1;
-        ImVec2 TextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
+        for (int i = 1; i <= m_Sprites.Size; i++)
+        {
+            int idx = i - 1;
+            ImVec2 TextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
 
-        ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Min / TextureSize,
-                     m_Sprites[idx].Max / TextureSize, ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f));
+            ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Min / TextureSize,
+                         m_Sprites[idx].Max / TextureSize, ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f));
 
-        float Widht = ImGui::GetContentRegionAvail().x;
-        int col = (int)Widht / 100;
-        if (col <= 0)
-            col = 1;
+            float Widht = ImGui::GetContentRegionAvail().x;
+            int col = (int)Widht / 100;
+            if (col <= 0)
+                col = 1;
 
-        if (i % col != 0)
-            ImGui::SameLine();
+            if (i % col != 0)
+                ImGui::SameLine();
+        }
     }
 
     ImGui::End();
