@@ -148,9 +148,8 @@ void CLevelEditor::render_MenuBar()
     if (ImGui::BeginMainMenuBar())
     {
         // FPS
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(108, 172, 150, 255));
-        ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
-        ImGui::PopStyleColor();
+        ImGui::TextColored(ImVec4(108.f / 255.f, 172.f / 255.f, 150.f / 255.f, 1.0f), "FPS : %d",
+                           CTimeMgr::GetInst()->GetFPS());
 
         if (ImGui::BeginMenu("File"))
         {
