@@ -41,7 +41,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowOutputLog(true)
     , m_bShowMaterialEditor(false)
     , m_bShowBlueprintEditor(false)
-    , m_bShowSpriteEditor(false)
+    , m_bShowSpriteEditor(true)
 {
 }
 
@@ -147,6 +147,11 @@ void CLevelEditor::render_MenuBar()
 {
     if (ImGui::BeginMainMenuBar())
     {
+        // FPS
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(108, 172, 150, 255));
+        ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
+        ImGui::PopStyleColor();
+
         if (ImGui::BeginMenu("File"))
         {
             if (ImGui::MenuItem("Save Level"))

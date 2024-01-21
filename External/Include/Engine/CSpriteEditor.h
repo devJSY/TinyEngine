@@ -4,7 +4,7 @@
 class CSpriteEditor : public CEditor
 {
 private:
-    Ptr<CTexture> m_pAtlas;
+    Ptr<CTexture> m_pTex;
 
 public:
     virtual void init() override;
@@ -14,6 +14,11 @@ public:
 
 private:
     virtual void render() override;
+
+private:
+    void DrawViewprot();
+    void DrawDetails();
+    void DrawSpriteList();
 
 public:
     CSpriteEditor();

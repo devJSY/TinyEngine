@@ -9,13 +9,13 @@ class COutliner : public CEntity
 private:
     ImGuiTreeNodeFlags m_DefaultTreeNodeFlag;
 
-private:
-    void DrawNode(CGameObject* obj);
-    void DrawDetails(CGameObject* obj);
-
 public:
     void init();
     void render();
+
+private:
+    void DrawNode(CGameObject* obj);
+    void DrawDetails(CGameObject* obj);
 
 private:
     void DrawTransform(CGameObject* obj);

@@ -25,6 +25,62 @@ COutliner::~COutliner()
 {
 }
 
+void COutliner::init()
+{
+    m_DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                            ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+}
+
+void COutliner::render()
+{
+    ImGuiSetWindowClass_LevelEditor();
+    ImGui::Begin("Outliner");
+
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        CLayer* layer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
+        const vector<CGameObject*>& objs = layer->GetParentObject();
+
+        // 각 오브젝트를 돌면서 오브젝트와 현재 레이어를 인자로 DrawNode() 호출
+        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
+    }
+
+    // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
+    if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+        CEditorMgr::GetInst()->SetSelectedObject(nullptr);
+
+    // Right-click on blank space
+    if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems))
+    {
+        if (ImGui::MenuItem("Spawn GameObject"))
+        {
+            CGameObject* pObj = new CGameObject;
+            pObj->SetName(L"Object");
+            pObj->AddComponent(new CTransform);
+
+            // 카메라위치 기준 생성
+            CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
+            Vec3 pos = pCam->Transform()->GetWorldPos();
+            Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            pos += dir.Normalize() * 500.f;
+            pObj->Transform()->SetRelativePos(pos);
+
+            GamePlayStatic::SpawnGameObject(pObj, 0);
+        }
+
+        ImGui::EndPopup();
+    }
+
+    ImGui::End();
+
+    ImGuiSetWindowClass_LevelEditor();
+    ImGui::Begin("Details##Outliner");
+    if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
+        DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());
+
+    ImGui::End();
+}
+
 void COutliner::DrawNode(CGameObject* obj)
 {
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
@@ -127,62 +183,6 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawParticlesystem(obj);
     DrawSkybox(obj);
     DrawLandscape(obj);
-}
-
-void COutliner::init()
-{
-    m_DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
-                            ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-}
-
-void COutliner::render()
-{
-    ImGuiSetWindowClass_LevelEditor();
-    ImGui::Begin("Outliner");
-
-    for (UINT i = 0; i < LAYER_MAX; i++)
-    {
-        CLayer* layer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
-        const vector<CGameObject*>& objs = layer->GetParentObject();
-
-        // 각 오브젝트를 돌면서 오브젝트와 현재 레이어를 인자로 DrawNode() 호출
-        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
-    }
-
-    // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
-    if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-        CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-
-    // Right-click on blank space
-    if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems))
-    {
-        if (ImGui::MenuItem("Spawn GameObject"))
-        {
-            CGameObject* pObj = new CGameObject;
-            pObj->SetName(L"Object");
-            pObj->AddComponent(new CTransform);
-
-            // 카메라위치 기준 생성
-            CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
-            Vec3 pos = pCam->Transform()->GetWorldPos();
-            Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            pos += dir.Normalize() * 500.f;
-            pObj->Transform()->SetRelativePos(pos);
-
-            GamePlayStatic::SpawnGameObject(pObj, 0);
-        }
-
-        ImGui::EndPopup();
-    }
-
-    ImGui::End();
-
-    ImGuiSetWindowClass_LevelEditor();
-    ImGui::Begin("Details##Outliner");
-    if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
-        DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());
-
-    ImGui::End();
 }
 
 void COutliner::DrawTransform(CGameObject* obj)
