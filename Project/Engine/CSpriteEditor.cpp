@@ -2,6 +2,8 @@
 #include "CSpriteEditor.h"
 #include "CAssetMgr.h"
 
+#include "CKeyMgr.h"
+
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
     , m_pTex()
@@ -34,7 +36,7 @@ void CSpriteEditor::DrawViewprot()
 
     if (ImGui::Begin("Canvas"))
     {
-        static ImVector<ImVec2> points;
+        static ImVector<ImVec2> Rects;
         static ImVec2 scrolling(0.0f, 0.0f);
         static bool opt_enable_grid = true;
         static bool opt_enable_context_menu = true;
@@ -71,13 +73,13 @@ void CSpriteEditor::DrawViewprot()
         // Add first and second point
         if (is_hovered && !adding_line && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
-            points.push_back(mouse_pos_in_canvas);
-            points.push_back(mouse_pos_in_canvas);
+            Rects.push_back(mouse_pos_in_canvas);
+            Rects.push_back(mouse_pos_in_canvas);
             adding_line = true;
         }
         if (adding_line)
         {
-            points.back() = mouse_pos_in_canvas;
+            Rects.back() = mouse_pos_in_canvas;
             if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
                 adding_line = false;
         }
@@ -98,43 +100,49 @@ void CSpriteEditor::DrawViewprot()
         if (ImGui::BeginPopup("context"))
         {
             if (adding_line)
-                points.resize(points.size() - 2);
+                Rects.resize(Rects.size() - 2);
             adding_line = false;
-            if (ImGui::MenuItem("Remove one", NULL, false, points.Size > 0))
+            if (ImGui::MenuItem("Remove one", NULL, false, Rects.Size > 0))
             {
-                points.resize(points.size() - 2);
+                Rects.resize(Rects.size() - 2);
             }
-            if (ImGui::MenuItem("Remove all", NULL, false, points.Size > 0))
+            if (ImGui::MenuItem("Remove all", NULL, false, Rects.Size > 0))
             {
-                points.clear();
+                Rects.clear();
             }
             ImGui::EndPopup();
         }
+
+        static float OffsetScale = 1.f;
+        float wheel = ImGui::GetIO().MouseWheel;
+        if (wheel > 0)
+            OffsetScale *= 1.1f;
+        else if (wheel < 0)
+            OffsetScale *= 0.9f;
 
         // Draw grid + all lines in the canvas
         draw_list->PushClipRect(canvas_p0, canvas_p1, true);
         if (opt_enable_grid)
         {
             const float GRID_STEP = 64.0f;
-            for (float x = fmodf(scrolling.x, GRID_STEP); x < canvas_sz.x; x += GRID_STEP)
+
+            for (float x = fmodf(scrolling.x, GRID_STEP * OffsetScale); x < canvas_sz.x; x += GRID_STEP * OffsetScale)
                 draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y),
                                    IM_COL32(200, 200, 200, 40));
-            for (float y = fmodf(scrolling.y, GRID_STEP); y < canvas_sz.y; y += GRID_STEP)
+            for (float y = fmodf(scrolling.y, GRID_STEP * OffsetScale); y < canvas_sz.y; y += GRID_STEP * OffsetScale)
                 draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y),
                                    IM_COL32(200, 200, 200, 40));
         }
-        for (int n = 0; n < points.Size; n += 2)
-            draw_list->AddRect(ImVec2(origin.x + points[n].x, origin.y + points[n].y),
-                               ImVec2(origin.x + points[n + 1].x, origin.y + points[n + 1].y),
-                               IM_COL32(255, 0, 0, 255));
-
-        // if (nullptr != m_pTex.Get())
-        //     ImGui::Image((void*)m_pTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
 
         if (nullptr != m_pTex.Get())
-            draw_list->AddImage((void*)m_pTex->GetSRV().Get(), origin, origin + ImVec2(500.f, 500.f));
+            draw_list->AddImage((void*)m_pTex->GetSRV().Get(), origin, origin + ImVec2(500.f, 500.f) * OffsetScale);
+
+        for (int n = 0; n < Rects.Size; n += 2)
+            draw_list->AddRect(ImVec2(origin.x + Rects[n].x, origin.y + Rects[n].y),
+                               ImVec2(origin.x + Rects[n + 1].x, origin.y + Rects[n + 1].y), IM_COL32(255, 0, 0, 255));
 
         draw_list->PopClipRect();
+
         ImGui::End();
     }
 

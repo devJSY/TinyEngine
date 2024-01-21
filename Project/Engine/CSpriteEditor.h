@@ -1,5 +1,6 @@
 #pragma once
 #include "CEditor.h"
+#include <imgui_node_editor\\imgui_canvas.h>
 
 class CSpriteEditor : public CEditor
 {
