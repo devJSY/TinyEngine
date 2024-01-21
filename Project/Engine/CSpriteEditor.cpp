@@ -122,6 +122,12 @@ void CSpriteEditor::DrawViewprot()
     if (ImGui::IsWindowHovered())
     {
         float wheel = ImGui::GetIO().MouseWheel;
+
+        // 마우스의 현재 위치를 캔버스 기준으로 계산
+        ImVec2 mouse_pos_in_canvas_relative =
+            ImVec2((io.MousePos.x - canvas_p0.x - m_ViewportOffset.x) / m_ViewportScale,
+                   (io.MousePos.y - canvas_p0.y - m_ViewportOffset.y) / m_ViewportScale);
+
         if (wheel > 0)
             m_ViewportScale *= 1.1f;
         else if (wheel < 0)
@@ -133,6 +139,10 @@ void CSpriteEditor::DrawViewprot()
 
         if (m_ViewportScale > 100.f)
             m_ViewportScale = 100.f;
+
+        // 마우스의 위치를 기준으로 확대/축소 후 뷰포트 오프셋 조정
+        m_ViewportOffset.x = io.MousePos.x - mouse_pos_in_canvas_relative.x * m_ViewportScale - canvas_p0.x;
+        m_ViewportOffset.y = io.MousePos.y - mouse_pos_in_canvas_relative.y * m_ViewportScale - canvas_p0.y;
     }
 
     // Draw grid + all lines in the canvas
