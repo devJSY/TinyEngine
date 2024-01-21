@@ -8,6 +8,8 @@ private:
     Ptr<CTexture> m_pTex;
 
     ImVector<ImRect> m_Sprites; 
+    ImRect m_DragRect;
+    ImVec2 m_ViewportOffset;
     float m_ViewportScale;
 
 public:

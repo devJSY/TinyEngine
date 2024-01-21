@@ -7,6 +7,9 @@
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
     , m_pTex()
+    , m_Sprites{}
+    , m_DragRect()
+    , m_ViewportOffset()
     , m_ViewportScale(1.f)
 {
 }
@@ -35,19 +38,15 @@ void CSpriteEditor::DrawViewprot()
 {
     ImGui::Begin("Viewprot##SpriteEditor");
 
-    static ImVec2 scrolling(0.0f, 0.0f);
     static bool opt_enable_grid = true;
     static bool opt_enable_context_menu = true;
     static bool adding_line = false;
 
     ImGui::Checkbox("Enable grid", &opt_enable_grid);
     ImGui::Checkbox("Enable context menu", &opt_enable_context_menu);
-    ImGui::Text("Mouse Left: drag to add lines,\nMouse Right: drag to scroll, click for context menu.");
 
-    // Using InvisibleButton() as a convenience 1) it will advance the layout cursor and 2) allows us to use
-    // IsItemHovered()/IsItemActive()
-    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();    // ImDrawList API uses screen coordinates!
-    ImVec2 canvas_sz = ImGui::GetContentRegionAvail(); // Resize canvas to what's available
+    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
+    ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
     if (canvas_sz.x < 50.0f)
         canvas_sz.x = 50.0f;
     if (canvas_sz.y < 50.0f)
@@ -62,36 +61,41 @@ void CSpriteEditor::DrawViewprot()
 
     // This will catch our interactions
     ImGui::InvisibleButton("canvas", canvas_sz, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
-    const bool is_hovered = ImGui::IsItemHovered();                            // Hovered
-    const bool is_active = ImGui::IsItemActive();                              // Held
-    const ImVec2 origin(canvas_p0.x + scrolling.x, canvas_p0.y + scrolling.y); // Lock scrolled origin
+    const bool is_hovered = ImGui::IsItemHovered();                                          // Hovered
+    const bool is_active = ImGui::IsItemActive();                                            // Held
+    const ImVec2 origin(canvas_p0.x + m_ViewportOffset.x, canvas_p0.y + m_ViewportOffset.y); // Lock scrolled origin
     const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
 
     // Add first and second point
     if (is_hovered && !adding_line && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
-        ImRect rect;
+        m_DragRect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+        m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
 
-        rect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
-        rect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
-
-        m_Sprites.push_back(rect);
         adding_line = true;
     }
     if (adding_line)
     {
-        m_Sprites.back().Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+        m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
         if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
+        {
             adding_line = false;
+
+            // Min Max 확인
+            if (m_DragRect.Max.x < m_DragRect.Min.x)
+                std::swap(m_DragRect.Min.x, m_DragRect.Max.x);
+            if (m_DragRect.Max.y < m_DragRect.Min.y)
+                std::swap(m_DragRect.Min.y, m_DragRect.Max.y);
+
+            m_Sprites.push_back(m_DragRect);
+        }
     }
 
-    // Pan (we use a zero mouse threshold when there's no context menu)
-    // You may decide to make that threshold dynamic based on whether the mouse is hovering something etc.
     const float mouse_threshold_for_pan = opt_enable_context_menu ? -1.0f : 0.0f;
     if (is_active && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
     {
-        scrolling.x += io.MouseDelta.x;
-        scrolling.y += io.MouseDelta.y;
+        m_ViewportOffset.x += io.MouseDelta.x;
+        m_ViewportOffset.y += io.MouseDelta.y;
     }
 
     // Context menu (under default mouse threshold)
@@ -122,6 +126,13 @@ void CSpriteEditor::DrawViewprot()
             m_ViewportScale *= 1.1f;
         else if (wheel < 0)
             m_ViewportScale *= 0.9f;
+
+        // Scale Limit
+        if (m_ViewportScale < 0.1f)
+            m_ViewportScale = 0.1f;
+
+        if (m_ViewportScale > 100.f)
+            m_ViewportScale = 100.f;
     }
 
     // Draw grid + all lines in the canvas
@@ -130,11 +141,11 @@ void CSpriteEditor::DrawViewprot()
     {
         const float GRID_STEP = 32.0f;
 
-        for (float x = fmodf(scrolling.x, GRID_STEP * m_ViewportScale); x < canvas_sz.x;
+        for (float x = fmodf(m_ViewportOffset.x, GRID_STEP * m_ViewportScale); x < canvas_sz.x;
              x += GRID_STEP * m_ViewportScale)
             draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y),
                                IM_COL32(200, 200, 200, 40));
-        for (float y = fmodf(scrolling.y, GRID_STEP * m_ViewportScale); y < canvas_sz.y;
+        for (float y = fmodf(m_ViewportOffset.y, GRID_STEP * m_ViewportScale); y < canvas_sz.y;
              y += GRID_STEP * m_ViewportScale)
             draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y),
                                IM_COL32(200, 200, 200, 40));
@@ -142,16 +153,31 @@ void CSpriteEditor::DrawViewprot()
 
     // Texture Render
     if (nullptr != m_pTex.Get())
-        draw_list->AddImage((void*)m_pTex->GetSRV().Get(), origin,
-                            origin + ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight()) * m_ViewportScale);
+    {
+        ImVec2 TexSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
 
+        draw_list->AddImage((void*)m_pTex->GetSRV().Get(), origin, origin + TexSize * m_ViewportScale);
+        draw_list->AddRect(origin, origin + TexSize * m_ViewportScale, IM_COL32(255, 255, 255, 255));
+    }
+
+    // Sprites Render
     for (int n = 0; n < m_Sprites.Size; n++)
     {
-        // 각 점에 m_ViewprotScale을 곱하여 위치를 이동시킴
         ImVec2 min =
             ImVec2(origin.x + m_Sprites[n].Min.x * m_ViewportScale, origin.y + m_Sprites[n].Min.y * m_ViewportScale);
         ImVec2 max =
             ImVec2(origin.x + m_Sprites[n].Max.x * m_ViewportScale, origin.y + m_Sprites[n].Max.y * m_ViewportScale);
+
+        draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
+    }
+
+    // Rect Render
+    if (adding_line)
+    {
+        ImVec2 min =
+            ImVec2(origin.x + m_DragRect.Min.x * m_ViewportScale, origin.y + m_DragRect.Min.y * m_ViewportScale);
+        ImVec2 max =
+            ImVec2(origin.x + m_DragRect.Max.x * m_ViewportScale, origin.y + m_DragRect.Max.y * m_ViewportScale);
 
         draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
     }
@@ -193,7 +219,7 @@ void CSpriteEditor::DrawSpriteList()
     if (nullptr == m_pTex.Get())
         return;
 
-    ImGui::Begin("Sprite List##SpriteEditor");
+    ImGui::Begin("Sprite List##SpriteEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
 
     for (int i = 1; i <= m_Sprites.Size; i++)
     {
@@ -203,7 +229,12 @@ void CSpriteEditor::DrawSpriteList()
         ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Min / TextureSize,
                      m_Sprites[idx].Max / TextureSize, ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f));
 
-        if (i % 5 != 0)
+        float Widht = ImGui::GetContentRegionAvail().x;
+        int col = (int)Widht / 100;
+        if (col <= 0)
+            col = 1;
+
+        if (i % col != 0)
             ImGui::SameLine();
     }
 
