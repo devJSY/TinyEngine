@@ -7,6 +7,9 @@ class CSpriteEditor : public CEditor
 private:
     Ptr<CTexture> m_pTex;
 
+    ImVector<ImRect> m_Sprites; 
+    float m_ViewportScale;
+
 public:
     virtual void init() override;
     virtual void tick() override{};
