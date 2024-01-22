@@ -13,6 +13,8 @@ private:
     float m_ViewportScale;
 
     int m_SelectedSpriteIdx;
+    bool m_RectMoveFlag;
+    int m_LineCheckFlag;
 
 public:
     virtual void init() override;

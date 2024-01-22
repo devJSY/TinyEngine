@@ -14,6 +14,8 @@ CSpriteEditor::CSpriteEditor()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
     , m_SelectedSpriteIdx(-1)
+    , m_RectMoveFlag(0)
+    , m_LineCheckFlag(0)
 {
 }
 
@@ -95,19 +97,73 @@ void CSpriteEditor::DrawViewprot()
     //     m_Sprites[m_SelectedSpriteIdx].Translate(io.MouseDelta);
     // }
 
-    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    /// -----------1------------
+    /// |                      |
+    /// |                      |
+    /// |                      |
+    /// |                      |
+    /// |                      |
+    /// 4      Line Check      2
+    /// |                      |
+    /// |                      |
+    /// |                      |
+    /// |                      |
+    /// |                      |
+    /// -----------3------------
+
+    for (int i = 0; i < m_Sprites.Size; i++)
     {
-        for (int i = 0; i < m_Sprites.Size; i++)
+        // Sprite Line Check
+        if (!m_RectMoveFlag && ImGui::IsItemHovered())
+        {
+            ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
+            ImVec2 LeftDistVec = ImLineClosestPoint(m_Sprites[i].GetTL(), m_Sprites[i].GetBL(), mouse_pos) - mouse_pos;
+            ImVec2 RightDistVec = ImLineClosestPoint(m_Sprites[i].GetTR(), m_Sprites[i].GetBR(), mouse_pos) - mouse_pos;
+            ImVec2 TopDistVec = ImLineClosestPoint(m_Sprites[i].GetTL(), m_Sprites[i].GetTR(), mouse_pos) - mouse_pos;
+            ImVec2 BottomDistVec =
+                ImLineClosestPoint(m_Sprites[i].GetBL(), m_Sprites[i].GetBR(), mouse_pos) - mouse_pos;
+
+            float LeftDistSquare = (LeftDistVec.x * LeftDistVec.x) + (LeftDistVec.y * LeftDistVec.y);
+            float RightDist = (RightDistVec.x * RightDistVec.x) + (RightDistVec.y * RightDistVec.y);
+            float TopDist = (TopDistVec.x * TopDistVec.x) + (TopDistVec.y * TopDistVec.y);
+            float BottomDist = (BottomDistVec.x * BottomDistVec.x) + (BottomDistVec.y * BottomDistVec.y);
+
+            float fDetectRange = 2.f;
+
+            if (TopDist <= fDetectRange * fDetectRange)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+                m_LineCheckFlag = 1;
+            }
+            if (RightDist <= fDetectRange * fDetectRange)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+                m_LineCheckFlag = 2;
+            }
+            if (BottomDist <= fDetectRange * fDetectRange)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+                m_LineCheckFlag = 3;
+            }
+            if (LeftDistSquare <= fDetectRange * fDetectRange)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+                m_LineCheckFlag = 4;
+            }
+
+            if (0 != m_LineCheckFlag && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                m_SelectedSpriteIdx = i;
+        }
+
+        // Sprite Click
+        if (0 == m_LineCheckFlag && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
         {
             ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
 
             if (m_Sprites[i].Contains(mouse_pos))
             {
                 m_SelectedSpriteIdx = i;
-
-
-                // 사각형 내의 라인에 걸쳐있는지 체크
-
+                m_RectMoveFlag = true;
                 break;
             }
         }
@@ -116,16 +172,39 @@ void CSpriteEditor::DrawViewprot()
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
     {
         m_SelectedSpriteIdx = -1;
+        m_RectMoveFlag = 0;
+        m_LineCheckFlag = 0;
     }
 
-    // 라인에 걸쳐있는 경우 전체 이동말고 해당 라인만 이동하도록 수정해야함
     if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_SelectedSpriteIdx != -1)
     {
-        m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
-        m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
+        if (m_LineCheckFlag != 0)
+        {
+            if (1 == m_LineCheckFlag) // Top
+            {
+                m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
+            }
+            else if (2 == m_LineCheckFlag) // Right
+            {
+                m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
+            }
+            else if (3 == m_LineCheckFlag) // Bottom
+            {
+                m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
+            }
+            else if (4 == m_LineCheckFlag) // Left
+            {
+                m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
+            }
+        }
+        else if (m_RectMoveFlag)
+        {
+            m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
+            m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
 
-        m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
-        m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
+            m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
+            m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
+        }
     }
 
     // Add first and second point
