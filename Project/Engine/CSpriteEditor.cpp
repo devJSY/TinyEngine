@@ -4,6 +4,8 @@
 
 #include "CKeyMgr.h"
 
+#include "COutputLog.h"
+
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
     , m_pTex()
@@ -11,6 +13,7 @@ CSpriteEditor::CSpriteEditor()
     , m_DragRect()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
+    , m_SelectedSpriteIdx(-1)
 {
 }
 
@@ -65,14 +68,72 @@ void CSpriteEditor::DrawViewprot()
     const ImVec2 origin(canvas_p0.x + m_ViewportOffset.x, canvas_p0.y + m_ViewportOffset.y); // Lock scrolled origin
     const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
 
+    // bool ResizeFlag = false;
+
+    //// Sprite Resize Check
+    // for (int i = 0; i < m_Sprites.Size; i++)
+    //{
+    //     ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
+
+    //    // Bottom
+    //    ImVec2 ClosestPos = ImLineClosestPoint(m_Sprites[i].GetBL(), m_Sprites[i].GetBR(), mouse_pos);
+    //    ImVec2 distVec = ClosestPos - mouse_pos;
+    //    float dist = sqrtf((distVec.x * distVec.x) + (distVec.y * distVec.y));
+    //    if (dist < 2.f)
+    //    {
+    //        ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+    //        ResizeFlag = true;
+    //        m_SelectedSpriteIdx = i;
+    //        break;
+    //    }
+
+    //    LOG(Log, std::to_string(dist).c_str());
+    //}
+
+    // if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && ResizeFlag)
+    //{
+    //     m_Sprites[m_SelectedSpriteIdx].Translate(io.MouseDelta);
+    // }
+
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        // Rect Resize Check
+        for (int i = 0; i < m_Sprites.Size; i++)
+        {
+            ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
+
+            if (m_Sprites[i].Contains(mouse_pos))
+            {
+                m_SelectedSpriteIdx = i;
+                break;
+            }
+        }
+    }
+
+    if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+    {
+        m_SelectedSpriteIdx = -1;
+    }
+
+    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_SelectedSpriteIdx != -1)
+    {
+        m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
+        m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
+
+        m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
+        m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
+    }
+
     // Add first and second point
-    if (ImGui::IsItemHovered() && !Adding_Rect && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    if (ImGui::IsItemHovered() && !Adding_Rect && ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
+        m_SelectedSpriteIdx == -1)
     {
         m_DragRect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
         m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
 
         Adding_Rect = true;
     }
+
     if (Adding_Rect)
     {
         m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
@@ -154,7 +215,10 @@ void CSpriteEditor::DrawViewprot()
         ImVec2 max =
             ImVec2(origin.x + m_Sprites[n].Max.x * m_ViewportScale, origin.y + m_Sprites[n].Max.y * m_ViewportScale);
 
-        draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
+        if (m_SelectedSpriteIdx == n)
+            draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
+        else
+            draw_list->AddRect(min, max, IM_COL32(0, 255, 0, 255));
     }
 
     // Rect Render

@@ -7,10 +7,12 @@ class CSpriteEditor : public CEditor
 private:
     Ptr<CTexture> m_pTex;
 
-    ImVector<ImRect> m_Sprites; 
+    ImVector<ImRect> m_Sprites;
     ImRect m_DragRect;
     ImVec2 m_ViewportOffset;
     float m_ViewportScale;
+
+    int m_SelectedSpriteIdx;
 
 public:
     virtual void init() override;
