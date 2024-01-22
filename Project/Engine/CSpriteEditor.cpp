@@ -1,10 +1,8 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "CSpriteEditor.h"
 #include "CAssetMgr.h"
 
 #include "CKeyMgr.h"
-
-#include "COutputLog.h"
 
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
@@ -14,7 +12,6 @@ CSpriteEditor::CSpriteEditor()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
     , m_SelectedSpriteIdx(-1)
-    , m_RectMoveFlag(0)
     , m_LineCheckFlag(0)
 {
 }
@@ -70,51 +67,24 @@ void CSpriteEditor::DrawViewprot()
     const ImVec2 origin(canvas_p0.x + m_ViewportOffset.x, canvas_p0.y + m_ViewportOffset.y); // Lock scrolled origin
     const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
 
-    // bool ResizeFlag = false;
-
-    //// Sprite Resize Check
-    // for (int i = 0; i < m_Sprites.Size; i++)
-    //{
-    //     ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
-
-    //    // Bottom
-    //    ImVec2 ClosestPos = ImLineClosestPoint(m_Sprites[i].GetBL(), m_Sprites[i].GetBR(), mouse_pos);
-    //    ImVec2 distVec = ClosestPos - mouse_pos;
-    //    float dist = sqrtf((distVec.x * distVec.x) + (distVec.y * distVec.y));
-    //    if (dist < 2.f)
-    //    {
-    //        ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
-    //        ResizeFlag = true;
-    //        m_SelectedSpriteIdx = i;
-    //        break;
-    //    }
-
-    //    LOG(Log, std::to_string(dist).c_str());
-    //}
-
-    // if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && ResizeFlag)
-    //{
-    //     m_Sprites[m_SelectedSpriteIdx].Translate(io.MouseDelta);
-    // }
-
     /// -----------1------------
     /// |                      |
     /// |                      |
     /// |                      |
     /// |                      |
     /// |                      |
-    /// 4      Line Check      2
+    /// 8      Line Check      2
     /// |                      |
     /// |                      |
     /// |                      |
     /// |                      |
     /// |                      |
-    /// -----------3------------
+    /// -----------4------------
 
     for (int i = 0; i < m_Sprites.Size; i++)
     {
         // Sprite Line Check
-        if (!m_RectMoveFlag && ImGui::IsItemHovered())
+        if (ImGui::IsItemHovered())
         {
             ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
             ImVec2 LeftDistVec = ImLineClosestPoint(m_Sprites[i].GetTL(), m_Sprites[i].GetBL(), mouse_pos) - mouse_pos;
@@ -130,40 +100,58 @@ void CSpriteEditor::DrawViewprot()
 
             float fDetectRange = 2.f;
 
-            if (TopDist <= fDetectRange * fDetectRange)
+            // ì„ íƒìƒíƒœê°€ ì•„ë‹Œê²½ìš°ì—ë§Œ ë¼ì¸ ì²´í¬
+            if (-1 == m_SelectedSpriteIdx)
             {
-                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
-                m_LineCheckFlag = 1;
-            }
-            if (RightDist <= fDetectRange * fDetectRange)
-            {
-                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
-                m_LineCheckFlag = 2;
-            }
-            if (BottomDist <= fDetectRange * fDetectRange)
-            {
-                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
-                m_LineCheckFlag = 3;
-            }
-            if (LeftDistSquare <= fDetectRange * fDetectRange)
-            {
-                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
-                m_LineCheckFlag = 4;
+                // Reset
+                m_LineCheckFlag = 0;
+
+                if (TopDist <= fDetectRange * fDetectRange)
+                {
+                    m_LineCheckFlag |= 1 << 0; // 1
+                }
+                if (RightDist <= fDetectRange * fDetectRange)
+                {
+                    m_LineCheckFlag |= 1 << 1; // 2
+                }
+                if (BottomDist <= fDetectRange * fDetectRange)
+                {
+                    m_LineCheckFlag |= 1 << 2; // 4
+                }
+                if (LeftDistSquare <= fDetectRange * fDetectRange)
+                {
+                    m_LineCheckFlag |= 1 << 3; // 8
+                }
             }
 
-            if (0 != m_LineCheckFlag && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+            int Top = 1;
+            int Right = 2;
+            int Bottom = 4;
+            int Left = 8;
+
+            // Mouse Cursor
+            if (Left + Bottom == m_LineCheckFlag || Right + Top == m_LineCheckFlag)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNESW); // â¤¢
+            }
+            else if (Left + Top == m_LineCheckFlag || Right + Bottom == m_LineCheckFlag)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNWSE); // â¤¡
+            }
+            else if (Top == m_LineCheckFlag || Bottom == m_LineCheckFlag)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS); // â­¥
+            }
+            else if (Left == m_LineCheckFlag || Right == m_LineCheckFlag)
+            {
+                ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW); // â†”
+            }
+
+            // ì¢Œí´ë¦­ì‹œ ë¼ì¸ì„ í´ë¦­í–ˆê±°ë‚˜ í´ë¦­í•œì§€ì ì— Sprite ë‚´ë¶€ì— ì¡´ì¬í•œê²½ìš°
+            if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
+                (0 != m_LineCheckFlag || m_Sprites[i].Contains(mouse_pos)))
+            {
                 m_SelectedSpriteIdx = i;
-        }
-
-        // Sprite Click
-        if (0 == m_LineCheckFlag && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-        {
-            ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
-
-            if (m_Sprites[i].Contains(mouse_pos))
-            {
-                m_SelectedSpriteIdx = i;
-                m_RectMoveFlag = true;
                 break;
             }
         }
@@ -171,33 +159,43 @@ void CSpriteEditor::DrawViewprot()
 
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
     {
+        if (0 <= m_SelectedSpriteIdx)
+        {
+            // Min Max í™•ì¸
+            if (m_Sprites[m_SelectedSpriteIdx].Max.x < m_Sprites[m_SelectedSpriteIdx].Min.x)
+                std::swap(m_Sprites[m_SelectedSpriteIdx].Min.x, m_Sprites[m_SelectedSpriteIdx].Max.x);
+            if (m_Sprites[m_SelectedSpriteIdx].Max.y < m_Sprites[m_SelectedSpriteIdx].Min.y)
+                std::swap(m_Sprites[m_SelectedSpriteIdx].Min.y, m_Sprites[m_SelectedSpriteIdx].Max.y);
+        }
+
         m_SelectedSpriteIdx = -1;
-        m_RectMoveFlag = 0;
         m_LineCheckFlag = 0;
     }
 
     if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_SelectedSpriteIdx != -1)
     {
+        // ì‚¬ê°í˜• ë¼ì¸ì„ í´ë¦­í•œê²½ìš° í¬ê¸° í™•ì¥/ ì¶•ì†Œ
         if (m_LineCheckFlag != 0)
         {
-            if (1 == m_LineCheckFlag) // Top
+            if ((1 << 0) & m_LineCheckFlag) // Top 1
             {
                 m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
             }
-            else if (2 == m_LineCheckFlag) // Right
+            if ((1 << 1) & m_LineCheckFlag) // Right 2
             {
                 m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
             }
-            else if (3 == m_LineCheckFlag) // Bottom
+            if ((1 << 2) & m_LineCheckFlag) // Bottom 4
             {
                 m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
             }
-            else if (4 == m_LineCheckFlag) // Left
+            if ((1 << 3) & m_LineCheckFlag) // Left 8
             {
                 m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
             }
         }
-        else if (m_RectMoveFlag)
+        // ì‚¬ê°í˜• ë‚´ë¶€ë¥¼ í´ë¦­í•œ ê²½ìš° ì „ì²´ ì´ë™
+        else
         {
             m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
             m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
@@ -224,7 +222,7 @@ void CSpriteEditor::DrawViewprot()
         {
             Adding_Rect = false;
 
-            // Min Max È®ÀÎ
+            // Min Max í™•ì¸
             if (m_DragRect.Max.x < m_DragRect.Min.x)
                 std::swap(m_DragRect.Min.x, m_DragRect.Max.x);
             if (m_DragRect.Max.y < m_DragRect.Min.y)
@@ -322,7 +320,7 @@ void CSpriteEditor::DrawViewprot()
     {
         float wheel = ImGui::GetIO().MouseWheel;
 
-        // ¸¶¿ì½ºÀÇ ÇöÀç À§Ä¡¸¦ Äµ¹ö½º ±âÁØÀ¸·Î °è»ê
+        // ë§ˆìš°ìŠ¤ì˜ í˜„ì¬ ìœ„ì¹˜ë¥¼ ìº”ë²„ìŠ¤ ê¸°ì¤€ìœ¼ë¡œ ê³„ì‚°
         ImVec2 mouse_pos_in_canvas_relative =
             ImVec2((io.MousePos.x - canvas_p0.x - m_ViewportOffset.x) / m_ViewportScale,
                    (io.MousePos.y - canvas_p0.y - m_ViewportOffset.y) / m_ViewportScale);
@@ -339,7 +337,7 @@ void CSpriteEditor::DrawViewprot()
         if (m_ViewportScale > 100.f)
             m_ViewportScale = 100.f;
 
-        // ¸¶¿ì½ºÀÇ À§Ä¡¸¦ ±âÁØÀ¸·Î È®´ë/Ãà¼Ò ÈÄ ºäÆ÷Æ® ¿ÀÇÁ¼Â Á¶Á¤
+        // ë§ˆìš°ìŠ¤ì˜ ìœ„ì¹˜ë¥¼ ê¸°ì¤€ìœ¼ë¡œ í™•ëŒ€/ì¶•ì†Œ í›„ ë·°í¬íŠ¸ ì˜¤í”„ì…‹ ì¡°ì •
         m_ViewportOffset.x = io.MousePos.x - mouse_pos_in_canvas_relative.x * m_ViewportScale - canvas_p0.x;
         m_ViewportOffset.y = io.MousePos.y - mouse_pos_in_canvas_relative.y * m_ViewportScale - canvas_p0.y;
     }
