@@ -89,6 +89,27 @@ void CTestLevel2::begin()
 
     //AddObject(pPostObj, L"Default", false);
 
+    //// 타일앱
+    //CGameObject* pTileMap = new CGameObject;
+    //pTileMap->SetName(L"TileMap");
+    //pTileMap->AddComponent(new CTransform);
+    //pTileMap->AddComponent(new CTileMap);
+
+    //pTileMap->TileMap()->SetTileAtlas(CAssetMgr::GetInst()->FindAsset<CTexture>(L"MapTileTex"), Vec2(64.f, 64.f));
+    //pTileMap->TileMap()->SetTileCount(32, 2);
+
+    //for (UINT i = 0; i < 32; i++)
+    //{
+    //    pTileMap->TileMap()->SetTileIndex(0, i, i);
+    //}
+
+    //for (m_vecTileInfo i = 0; i < 32; i++)
+    //{
+    //    pTileMap->TileMap()->SetTileIndex(1, i, 31 - i);
+    //}
+
+    //AddObject(pTileMap, L"Tile");
+
     // 충돌 설정
     for (UINT i = 0; i < LAYER_MAX; i++)
     {

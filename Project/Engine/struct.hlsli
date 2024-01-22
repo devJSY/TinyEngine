@@ -43,4 +43,11 @@ struct tLightInfo
     float spotPower;
 };
 
+struct tTileInfo
+{
+    float2 vLeftTopUV;
+    int bRender;
+    int padding;
+};
+
 #endif

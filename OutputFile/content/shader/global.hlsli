@@ -132,6 +132,8 @@ StructuredBuffer<tLightInfo> g_Light3D : register(t12);
 Texture2D g_RTCopy_Tex : register(t13);
 Texture2D g_postprocess_Tex : register(t14);
 
+StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
+
 SamplerState g_LinearSampler : register(s0);
 SamplerState g_PointSampler : register(s1);
 SamplerState g_AnisotropicSampler : register(s2);

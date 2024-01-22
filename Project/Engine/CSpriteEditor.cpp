@@ -97,7 +97,6 @@ void CSpriteEditor::DrawViewprot()
 
     if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
     {
-        // Rect Resize Check
         for (int i = 0; i < m_Sprites.Size; i++)
         {
             ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
@@ -105,6 +104,10 @@ void CSpriteEditor::DrawViewprot()
             if (m_Sprites[i].Contains(mouse_pos))
             {
                 m_SelectedSpriteIdx = i;
+
+
+                // 사각형 내의 라인에 걸쳐있는지 체크
+
                 break;
             }
         }
@@ -115,6 +118,7 @@ void CSpriteEditor::DrawViewprot()
         m_SelectedSpriteIdx = -1;
     }
 
+    // 라인에 걸쳐있는 경우 전체 이동말고 해당 라인만 이동하도록 수정해야함
     if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_SelectedSpriteIdx != -1)
     {
         m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
