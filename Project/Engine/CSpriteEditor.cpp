@@ -3,6 +3,7 @@
 #include "CAssetMgr.h"
 
 #include "CKeyMgr.h"
+#include "CTimeMgr.h"
 
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
@@ -12,24 +13,30 @@ CSpriteEditor::CSpriteEditor()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
     , m_LineCheckFlag(0)
-    , m_vecFrm{}
-    , m_CurAnimIdx(0)
-    , m_AnimFPS(24)
+    , m_pAnim(nullptr)
+    , m_AnimFPS(12)
+
 {
 }
 
 CSpriteEditor::~CSpriteEditor()
 {
+    if (nullptr != m_pAnim)
+    {
+        delete m_pAnim;
+        m_pAnim = nullptr;
+    }
 }
 
 void CSpriteEditor::init()
 {
+    m_pAnim = new CAnim;
 }
 
 void CSpriteEditor::render()
 {
     ImGuiSetWindowClass_SpriteEditor();
-    DrawViewprot();
+    DrawViewport();
 
     ImGuiSetWindowClass_SpriteEditor();
     DrawDetails();
@@ -38,13 +45,13 @@ void CSpriteEditor::render()
     DrawSpriteList();
 
     ImGuiSetWindowClass_SpriteEditor();
-    DrawAnimationEdit();
+    DrawAnimationViewport();
 
     ImGuiSetWindowClass_SpriteEditor();
     DrawAnimationList();
 }
 
-void CSpriteEditor::DrawViewprot()
+void CSpriteEditor::DrawViewport()
 {
     ImGui::Begin("Viewprot##SpriteEditor");
 
@@ -441,6 +448,17 @@ void CSpriteEditor::DrawDetails()
     if (nullptr != m_pTex.Get())
         ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(250.f, 250.f));
 
+    ImGui::Separator();
+
+    // ImGui::InputText();
+
+    // Frame Index
+    ImGui::Text("Frame Index");
+    ImGui::SameLine();
+    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+    ImGui::SliderInt("##FrmIdx", &m_pAnim->m_CurFrmIdx, 0, (int)m_pAnim->m_vecFrm.size() - 1);
+    ImGui::PopItemFlag();
+
     ImGui::End();
 }
 
@@ -495,19 +513,29 @@ void CSpriteEditor::DrawSpriteList()
     {
         if (ImGui::MenuItem("Create Animation##SpriteList", NULL, false, m_Sprites.Size > 0))
         {
-            m_vecFrm.clear();
+            m_pAnim->m_Animator = nullptr;
+            m_pAnim->m_vecFrm.clear();
+            m_pAnim->m_AtlasTex = m_pTex;
+            m_pAnim->m_CurFrmIdx = 0;
+            m_pAnim->m_fAccTime = 0.f;
+
             for (int i = 0; i < m_Sprites.Size; i++)
             {
+                ImVec2 vTextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
+
                 if (m_Sprites[i].bSpriteList_Selected)
                 {
-                    tAnimData2D AnimData;
+                    tAnimFrm AnimData;
 
-                    AnimData.vLeftTop = Vec2(m_Sprites[i].Rect.Min.x, m_Sprites[i].Rect.Min.y);
-                    AnimData.vSliceSize = Vec2(m_Sprites[i].Rect.GetSize().x, m_Sprites[i].Rect.GetSize().y);
-                    AnimData.vBackGround = Vec2();
-                    AnimData.vOffset = Vec2();
+                    AnimData.vLeftTop = Vec2(m_Sprites[i].Rect.GetTL().x / vTextureSize.x,
+                                             m_Sprites[i].Rect.GetTL().y / vTextureSize.y);
+                    AnimData.vSlice = Vec2(m_Sprites[i].Rect.GetSize().x / vTextureSize.x,
+                                           m_Sprites[i].Rect.GetSize().y / vTextureSize.y);
+                    AnimData.vOffset = Vec2(0.f, 0.f);
+                    AnimData.vBackground = Vec2(0.f, 0.f);
+                    AnimData.Duration = 1.f / m_AnimFPS;
 
-                    m_vecFrm.push_back(AnimData);
+                    m_pAnim->m_vecFrm.push_back(AnimData);
                 }
 
                 m_Sprites[i].bSpriteList_Selected = false;
@@ -519,9 +547,9 @@ void CSpriteEditor::DrawSpriteList()
     ImGui::End();
 }
 
-void CSpriteEditor::DrawAnimationEdit()
+void CSpriteEditor::DrawAnimationViewport()
 {
-    ImGui::Begin("Animation Edit##SpriteEditor");
+    ImGui::Begin("Animation Viewport##SpriteEditor");
 
     ImVec2 canvas_LT = ImGui::GetCursorScreenPos();
     ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
@@ -542,18 +570,16 @@ void CSpriteEditor::DrawAnimationEdit()
     draw_list->AddLine(ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_LT.y),
                        ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_RB.y), IM_COL32(0, 0, 255, 255)); // 세로 축
 
-    if (nullptr != m_pTex.Get() && m_vecFrm.size() > 0)
+    if (nullptr != m_pTex.Get() && !m_pAnim->m_vecFrm.empty())
     {
-        ImVec2 vTextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
-
-        ImVec2 RenderSize = ImVec2(500.f, 500.f);
+        ImVec2 RenderSize = ImVec2(350.f, 350.f);
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
 
-        ImVec2 uv0 = ImVec2(m_vecFrm[m_CurAnimIdx].vLeftTop.x / vTextureSize.x,
-                            m_vecFrm[m_CurAnimIdx].vLeftTop.y / vTextureSize.y);
-
-        ImVec2 uv1 = ImVec2((m_vecFrm[m_CurAnimIdx].vLeftTop.x + m_vecFrm[m_CurAnimIdx].vSliceSize.x) / vTextureSize.x,
-                            (m_vecFrm[m_CurAnimIdx].vLeftTop.y + m_vecFrm[m_CurAnimIdx].vSliceSize.y) / vTextureSize.y);
+        ImVec2 uv0 = ImVec2(m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.x,
+                            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.y);
+        ImVec2 uv1 = ImVec2(
+            (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.x + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.x),
+            (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.y + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.y));
         draw_list->AddImage((void*)m_pTex->GetSRV().Get(), vLT, vLT + RenderSize, uv0, uv1);
     }
 
@@ -566,21 +592,41 @@ void CSpriteEditor::DrawAnimationList()
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-    for (UINT i = 0; i < m_vecFrm.size(); i++)
+    for (UINT i = 0; i < m_pAnim->m_vecFrm.size(); i++)
     {
-        Vec2 TextureSize = Vec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
-
         ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f),
-                     ImVec2((m_vecFrm[i].vLeftTop / TextureSize).x, (m_vecFrm[i].vLeftTop / TextureSize).y),
-                     ImVec2(((m_vecFrm[i].vLeftTop + m_vecFrm[i].vSliceSize) / TextureSize).x,
-                            ((m_vecFrm[i].vLeftTop + m_vecFrm[i].vSliceSize) / TextureSize).y));
+                     ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
+                     ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
+                            (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
 
-        draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 255, 255));
+        ImU32 borderColor = IM_COL32(255, 255, 255, 255);
+        if (i == m_pAnim->m_CurFrmIdx)
+            borderColor = IM_COL32(255, 0, 0, 255);
+
+        draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), borderColor);
 
         ImGui::SameLine();
     }
 
     ImGui::End();
+}
+
+void CSpriteEditor::finaltick()
+{
+    if (m_pAnim->m_vecFrm.empty())
+        return;
+
+    m_pAnim->m_fAccTime += DT;
+
+    if (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].Duration < m_pAnim->m_fAccTime)
+    {
+        ++m_pAnim->m_CurFrmIdx;
+        if (m_pAnim->m_vecFrm.size() <= m_pAnim->m_CurFrmIdx)
+        {
+            m_pAnim->m_CurFrmIdx = 0;
+        }
+        m_pAnim->m_fAccTime = 0.f;
+    }
 }
 
 void CSpriteEditor::render(bool* open)

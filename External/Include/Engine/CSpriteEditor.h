@@ -22,25 +22,24 @@ private:
     int m_LineCheckFlag;
 
     // Animation Data
-    vector<tAnimData2D> m_vecFrm;
-    int m_CurAnimIdx;
+    CAnim* m_pAnim;
     int m_AnimFPS;
 
 public:
     virtual void init() override;
     virtual void tick() override{};
-    virtual void finaltick() override{};
+    virtual void finaltick() override;
     void render(bool* open);
 
 private:
     virtual void render() override;
 
 private:
-    void DrawViewprot();
+    void DrawViewport();
     void DrawDetails();
     void DrawSpriteList();
 
-    void DrawAnimationEdit();
+    void DrawAnimationViewport();
     void DrawAnimationList();
 
 public:

@@ -61,4 +61,5 @@ public:
     virtual ~CAnim();
 
     friend class CAnimator2D;
+    friend class CSpriteEditor;
 };
