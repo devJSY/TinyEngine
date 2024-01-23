@@ -21,7 +21,6 @@ private:
 
     int m_LineCheckFlag;
 
-
 public:
     virtual void init() override;
     virtual void tick() override{};

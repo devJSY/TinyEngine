@@ -525,6 +525,23 @@ void CSpriteEditor::DrawSpriteList()
     }
 
     draw_list->PopClipRect();
+
+    // Create Animation
+    if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+        ImGui::OpenPopup("CreateAnimation_popup");
+
+    if (ImGui::BeginPopup("CreateAnimation_popup"))
+    {
+        if (ImGui::MenuItem("Create Animation##SpriteList", NULL, false, m_Sprites.Size > 0))
+        {
+            for (int i = 0; i < m_Sprites.Size; i++)
+            {
+                m_Sprites[i].bSpriteList_Selected = false;
+            }
+        }
+
+        ImGui::EndPopup();
+    }
     ImGui::End();
 }
 
