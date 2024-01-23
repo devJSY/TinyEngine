@@ -21,7 +21,6 @@ private:
 
     int m_LineCheckFlag;
 
-    // Animation Data
     CAnim* m_pAnim;
     int m_AnimFPS;
 

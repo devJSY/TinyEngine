@@ -30,10 +30,6 @@ CSpriteEditor::~CSpriteEditor()
 
 void CSpriteEditor::init()
 {
-    m_pAnim = new CAnim;
-    wstring path = CPathMgr::GetContentPath();
-    path += L"AnimData\\Player\\Convict\\idle_front_hands.anim";
-    m_pAnim->LoadAnim(path);
 }
 
 void CSpriteEditor::render()
@@ -451,16 +447,50 @@ void CSpriteEditor::DrawDetails()
     if (nullptr != m_pTex.Get())
         ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(250.f, 250.f));
 
+    // Animation Data
     ImGui::Separator();
 
-    // ImGui::InputText();
+    if (ImGui::Button("Load Animation"))
+    {
+        if (nullptr != m_pAnim)
+            delete m_pAnim;
 
-    // Frame Index
-    ImGui::Text("Frame Index");
+        m_pAnim = new CAnim;
+        m_pAnim->LoadAnim(OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0")));
+    }
+
     ImGui::SameLine();
-    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-    ImGui::SliderInt("##FrmIdx", &m_pAnim->m_CurFrmIdx, 0, (int)m_pAnim->m_vecFrm.size() - 1);
-    ImGui::PopItemFlag();
+
+    if (ImGui::Button("Save Animation"))
+    {
+        std::filesystem::path filePath =
+            SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+
+        if (".anim" != filePath.extension())
+            filePath.replace_extension(".anim");
+
+        if (nullptr != m_pAnim)
+            m_pAnim->SaveAnim(filePath);
+    }
+
+    if (nullptr != m_pAnim)
+    {
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+
+        string name = ToString(m_pAnim->GetName());
+        strcpy_s(buffer, sizeof(buffer), name.c_str());
+        if (ImGui::InputText(ImGuiLabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
+        {
+            m_pAnim->SetName(ToWstring(buffer));
+        }
+
+        // Frame Index
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::SliderInt(ImGuiLabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0,
+                         (int)m_pAnim->m_vecFrm.size() - 1);
+        ImGui::PopItemFlag();
+    }
 
     ImGui::End();
 }
@@ -516,11 +546,11 @@ void CSpriteEditor::DrawSpriteList()
     {
         if (ImGui::MenuItem("Create Animation##SpriteList", NULL, false, m_Sprites.Size > 0))
         {
-            m_pAnim->m_Animator = nullptr;
-            m_pAnim->m_vecFrm.clear();
+            if (nullptr != m_pAnim)
+                delete m_pAnim;
+
+            m_pAnim = new CAnim;
             m_pAnim->m_AtlasTex = m_pTex;
-            m_pAnim->m_CurFrmIdx = 0;
-            m_pAnim->m_fAccTime = 0.f;
 
             for (int i = 0; i < m_Sprites.Size; i++)
             {
@@ -530,6 +560,7 @@ void CSpriteEditor::DrawSpriteList()
                 {
                     tAnimFrm AnimData;
 
+                    // UV 좌표로 변환
                     AnimData.vLeftTop = Vec2(m_Sprites[i].Rect.GetTL().x / vTextureSize.x,
                                              m_Sprites[i].Rect.GetTL().y / vTextureSize.y);
                     AnimData.vSlice = Vec2(m_Sprites[i].Rect.GetSize().x / vTextureSize.x,
@@ -573,7 +604,7 @@ void CSpriteEditor::DrawAnimationViewport()
     draw_list->AddLine(ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_LT.y),
                        ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_RB.y), IM_COL32(0, 0, 255, 255)); // 세로 축
 
-    if (nullptr != m_pAnim->GetAtlasTex().Get() && !m_pAnim->m_vecFrm.empty())
+    if (nullptr != m_pAnim)
     {
         ImVec2 RenderSize = ImVec2(350.f, 350.f);
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
@@ -593,22 +624,25 @@ void CSpriteEditor::DrawAnimationList()
 {
     ImGui::Begin("Animation List##SpriteEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
 
-    ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-    for (UINT i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+    if (nullptr != m_pAnim)
     {
-        ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
-                     ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
-                     ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
-                            (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
+        ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-        ImU32 borderColor = IM_COL32(255, 255, 255, 255);
-        if (i == m_pAnim->m_CurFrmIdx)
-            borderColor = IM_COL32(255, 0, 0, 255);
+        for (UINT i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+        {
+            ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
+                         ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
+                         ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
+                                (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
 
-        draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), borderColor);
+            ImU32 borderColor = IM_COL32(255, 255, 255, 255);
+            if (i == m_pAnim->m_CurFrmIdx)
+                borderColor = IM_COL32(255, 0, 0, 255);
 
-        ImGui::SameLine();
+            draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), borderColor);
+
+            ImGui::SameLine();
+        }
     }
 
     ImGui::End();
@@ -616,7 +650,7 @@ void CSpriteEditor::DrawAnimationList()
 
 void CSpriteEditor::finaltick()
 {
-    if (m_pAnim->m_vecFrm.empty())
+    if (nullptr == m_pAnim)
         return;
 
     m_pAnim->m_fAccTime += DT;
