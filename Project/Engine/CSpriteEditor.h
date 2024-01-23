@@ -2,6 +2,13 @@
 #include "CEditor.h"
 #include <imgui_node_editor\\imgui_canvas.h>
 
+struct tSprtie
+{
+    ImRect Rect;
+    bool bViewport_Selected;
+    bool bSpriteList_Selected;
+};
+
 class CSpriteEditor : public CEditor
 {
 private:
@@ -26,6 +33,7 @@ private:
 
 private:
     void DrawViewprot();
+    void DrawAnimationEdit();
     void DrawDetails();
     void DrawSpriteList();
 

@@ -30,6 +30,9 @@ void CSpriteEditor::render()
     DrawViewprot();
 
     ImGuiSetWindowClass_SpriteEditor();
+    DrawAnimationEdit();
+
+    ImGuiSetWindowClass_SpriteEditor();
     DrawDetails();
 
     ImGuiSetWindowClass_SpriteEditor();
@@ -354,6 +357,41 @@ void CSpriteEditor::DrawViewprot()
     ImGui::End();
 }
 
+void CSpriteEditor::DrawAnimationEdit()
+{
+    ImGui::Begin("Animation Edit##SpriteEditor");
+
+    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
+    ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
+    if (canvas_sz.x < 50.0f)
+        canvas_sz.x = 50.0f;
+    if (canvas_sz.y < 50.0f)
+        canvas_sz.y = 50.0f;
+    ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
+
+    // Draw border and background color
+    ImGuiIO& io = ImGui::GetIO();
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255));
+    draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
+
+    // =================================
+    // Rendering
+    // =================================
+
+    // Draw grid + all lines in the canvas
+    draw_list->PushClipRect(canvas_p0, canvas_p1, true);
+    const float GRID_STEP = 32.0f;
+    for (float x = 0; x < canvas_sz.x; x += GRID_STEP)
+        draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y),
+                           IM_COL32(200, 200, 200, 40));
+    for (float y = 0; y < canvas_sz.y; y += GRID_STEP)
+        draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y),
+                           IM_COL32(200, 200, 200, 40));
+
+    ImGui::End();
+}
+
 void CSpriteEditor::DrawDetails()
 {
     ImGui::Begin("Details##SpriteEditor");
@@ -392,8 +430,8 @@ void CSpriteEditor::DrawSpriteList()
             int idx = i - 1;
             ImVec2 TextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
 
-            ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Min / TextureSize,
-                         m_Sprites[idx].Max / TextureSize, ImVec4(1.f, 1.f, 1.f, 1.f), ImVec4(1.f, 1.f, 1.f, 1.f));
+            ImGui::ImageButton((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Min / TextureSize,
+                               m_Sprites[idx].Max / TextureSize);
 
             float Widht = ImGui::GetContentRegionAvail().x;
             int col = (int)Widht / 100;
