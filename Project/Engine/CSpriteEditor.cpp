@@ -248,9 +248,18 @@ void CSpriteEditor::DrawViewprot()
         if (Adding_Rect)
             m_Sprites.resize(m_Sprites.size() - 1);
         Adding_Rect = false;
-        if (ImGui::MenuItem("Remove one", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Remove This Sprite", NULL, false, m_Sprites.Size > 0))
         {
-            m_Sprites.resize(m_Sprites.size() - 1);
+            ImVector<ImRect>::iterator iter = m_Sprites.begin();
+
+            for (; iter != m_Sprites.end(); iter++)
+            {
+                if ((*iter).Contains(mouse_pos_in_canvas / m_ViewportScale))
+                {
+                    m_Sprites.erase(iter);
+                    break;
+                }
+            }
         }
         if (ImGui::MenuItem("Remove all", NULL, false, m_Sprites.Size > 0))
         {
