@@ -11,7 +11,6 @@ CSpriteEditor::CSpriteEditor()
     , m_DragRect()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
-    , m_SelectedSpriteIdx(-1)
     , m_LineCheckFlag(0)
 {
 }
@@ -29,8 +28,8 @@ void CSpriteEditor::render()
     ImGuiSetWindowClass_SpriteEditor();
     DrawViewprot();
 
-    ImGuiSetWindowClass_SpriteEditor();
-    DrawAnimationEdit();
+    // ImGuiSetWindowClass_SpriteEditor();
+    // DrawAnimationEdit();
 
     ImGuiSetWindowClass_SpriteEditor();
     DrawDetails();
@@ -90,11 +89,14 @@ void CSpriteEditor::DrawViewprot()
         if (ImGui::IsItemHovered())
         {
             ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
-            ImVec2 LeftDistVec = ImLineClosestPoint(m_Sprites[i].GetTL(), m_Sprites[i].GetBL(), mouse_pos) - mouse_pos;
-            ImVec2 RightDistVec = ImLineClosestPoint(m_Sprites[i].GetTR(), m_Sprites[i].GetBR(), mouse_pos) - mouse_pos;
-            ImVec2 TopDistVec = ImLineClosestPoint(m_Sprites[i].GetTL(), m_Sprites[i].GetTR(), mouse_pos) - mouse_pos;
+            ImVec2 LeftDistVec =
+                ImLineClosestPoint(m_Sprites[i].Rect.GetTL(), m_Sprites[i].Rect.GetBL(), mouse_pos) - mouse_pos;
+            ImVec2 RightDistVec =
+                ImLineClosestPoint(m_Sprites[i].Rect.GetTR(), m_Sprites[i].Rect.GetBR(), mouse_pos) - mouse_pos;
+            ImVec2 TopDistVec =
+                ImLineClosestPoint(m_Sprites[i].Rect.GetTL(), m_Sprites[i].Rect.GetTR(), mouse_pos) - mouse_pos;
             ImVec2 BottomDistVec =
-                ImLineClosestPoint(m_Sprites[i].GetBL(), m_Sprites[i].GetBR(), mouse_pos) - mouse_pos;
+                ImLineClosestPoint(m_Sprites[i].Rect.GetBL(), m_Sprites[i].Rect.GetBR(), mouse_pos) - mouse_pos;
 
             float LeftDistSquare = (LeftDistVec.x * LeftDistVec.x) + (LeftDistVec.y * LeftDistVec.y);
             float RightDist = (RightDistVec.x * RightDistVec.x) + (RightDistVec.y * RightDistVec.y);
@@ -103,28 +105,23 @@ void CSpriteEditor::DrawViewprot()
 
             float fDetectRange = 2.f;
 
-            // 선택상태가 아닌경우에만 라인 체크
-            if (-1 == m_SelectedSpriteIdx)
-            {
-                // Reset
-                m_LineCheckFlag = 0;
+            int LineFlag = 0;
 
-                if (TopDist <= fDetectRange * fDetectRange)
-                {
-                    m_LineCheckFlag |= 1 << 0; // 1
-                }
-                if (RightDist <= fDetectRange * fDetectRange)
-                {
-                    m_LineCheckFlag |= 1 << 1; // 2
-                }
-                if (BottomDist <= fDetectRange * fDetectRange)
-                {
-                    m_LineCheckFlag |= 1 << 2; // 4
-                }
-                if (LeftDistSquare <= fDetectRange * fDetectRange)
-                {
-                    m_LineCheckFlag |= 1 << 3; // 8
-                }
+            if (TopDist <= fDetectRange * fDetectRange)
+            {
+                LineFlag |= 1 << 0; // 1
+            }
+            if (RightDist <= fDetectRange * fDetectRange)
+            {
+                LineFlag |= 1 << 1; // 2
+            }
+            if (BottomDist <= fDetectRange * fDetectRange)
+            {
+                LineFlag |= 1 << 2; // 4
+            }
+            if (LeftDistSquare <= fDetectRange * fDetectRange)
+            {
+                LineFlag |= 1 << 3; // 8
             }
 
             int Top = 1;
@@ -133,28 +130,49 @@ void CSpriteEditor::DrawViewprot()
             int Left = 8;
 
             // Mouse Cursor
-            if (Left + Bottom == m_LineCheckFlag || Right + Top == m_LineCheckFlag)
+            if (Left + Bottom == LineFlag || Right + Top == LineFlag)
             {
                 ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNESW); // ⤢
             }
-            else if (Left + Top == m_LineCheckFlag || Right + Bottom == m_LineCheckFlag)
+            else if (Left + Top == LineFlag || Right + Bottom == LineFlag)
             {
                 ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNWSE); // ⤡
             }
-            else if (Top == m_LineCheckFlag || Bottom == m_LineCheckFlag)
+            else if (Top == LineFlag || Bottom == LineFlag)
             {
                 ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS); // ⭥
             }
-            else if (Left == m_LineCheckFlag || Right == m_LineCheckFlag)
+            else if (Left == LineFlag || Right == LineFlag)
             {
                 ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW); // ↔
             }
 
-            // 좌클릭시 라인을 클릭했거나 클릭한지점에 Sprite 내부에 존재한경우
-            if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
-                (0 != m_LineCheckFlag || m_Sprites[i].Contains(mouse_pos)))
+            // 경계선을 좌클릭한 경우
+            if (0 != LineFlag && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
             {
-                m_SelectedSpriteIdx = i;
+                m_LineCheckFlag = LineFlag;
+
+                for (int j = 0; j < m_Sprites.Size; j++)
+                    m_Sprites[j].bViewport_Selected = false;
+
+                m_Sprites[i].bViewport_Selected = true;
+                break;
+            }
+
+            // 좌클릭시 클릭한지점이 Sprite 내부에 존재한경우
+            if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && m_Sprites[i].Rect.Contains(mouse_pos))
+            {
+                // 컨트롤키 누른상태만 다중선택
+                if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
+                    m_Sprites[i].bViewport_Selected = true;
+                else
+                {
+                    for (int j = 0; j < m_Sprites.Size; j++)
+                        m_Sprites[j].bViewport_Selected = false;
+
+                    m_Sprites[i].bViewport_Selected = true;
+                }
+
                 break;
             }
         }
@@ -162,60 +180,88 @@ void CSpriteEditor::DrawViewprot()
 
     if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
     {
-        if (0 <= m_SelectedSpriteIdx)
+        for (int i = 0; i < m_Sprites.Size; i++)
         {
+            if (!m_Sprites[i].bViewport_Selected)
+                continue;
+
             // Min Max 확인
-            if (m_Sprites[m_SelectedSpriteIdx].Max.x < m_Sprites[m_SelectedSpriteIdx].Min.x)
-                std::swap(m_Sprites[m_SelectedSpriteIdx].Min.x, m_Sprites[m_SelectedSpriteIdx].Max.x);
-            if (m_Sprites[m_SelectedSpriteIdx].Max.y < m_Sprites[m_SelectedSpriteIdx].Min.y)
-                std::swap(m_Sprites[m_SelectedSpriteIdx].Min.y, m_Sprites[m_SelectedSpriteIdx].Max.y);
+            if (m_Sprites[i].Rect.Max.x < m_Sprites[i].Rect.Min.x)
+                std::swap(m_Sprites[i].Rect.Min.x, m_Sprites[i].Rect.Max.x);
+            if (m_Sprites[i].Rect.Max.y < m_Sprites[i].Rect.Min.y)
+                std::swap(m_Sprites[i].Rect.Min.y, m_Sprites[i].Rect.Max.y);
+
+            break;
         }
 
-        m_SelectedSpriteIdx = -1;
         m_LineCheckFlag = 0;
     }
 
-    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left) && m_SelectedSpriteIdx != -1)
+    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
     {
-        // 사각형 라인을 클릭한경우 크기 확장/ 축소
-        if (m_LineCheckFlag != 0)
+        for (int i = 0; i < m_Sprites.Size; i++)
         {
-            if ((1 << 0) & m_LineCheckFlag) // Top 1
+            // 사각형 라인을 클릭한경우 크기 확장/ 축소
+            if (0 != m_Sprites[i].bViewport_Selected && 0 != m_LineCheckFlag)
             {
-                m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
+                if ((1 << 0) & m_LineCheckFlag) // Top 1
+                {
+                    m_Sprites[i].Rect.Min.y += io.MouseDelta.y / m_ViewportScale;
+                }
+                if ((1 << 1) & m_LineCheckFlag) // Right 2
+                {
+                    m_Sprites[i].Rect.Max.x += io.MouseDelta.x / m_ViewportScale;
+                }
+                if ((1 << 2) & m_LineCheckFlag) // Bottom 4
+                {
+                    m_Sprites[i].Rect.Max.y += io.MouseDelta.y / m_ViewportScale;
+                }
+                if ((1 << 3) & m_LineCheckFlag) // Left 8
+                {
+                    m_Sprites[i].Rect.Min.x += io.MouseDelta.x / m_ViewportScale;
+                }
             }
-            if ((1 << 1) & m_LineCheckFlag) // Right 2
+            // 사각형 내부를 클릭한 경우 전체 이동
+            else if (0 != m_Sprites[i].bViewport_Selected)
             {
-                m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
-            }
-            if ((1 << 2) & m_LineCheckFlag) // Bottom 4
-            {
-                m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
-            }
-            if ((1 << 3) & m_LineCheckFlag) // Left 8
-            {
-                m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
-            }
-        }
-        // 사각형 내부를 클릭한 경우 전체 이동
-        else
-        {
-            m_Sprites[m_SelectedSpriteIdx].Min.x += io.MouseDelta.x / m_ViewportScale;
-            m_Sprites[m_SelectedSpriteIdx].Min.y += io.MouseDelta.y / m_ViewportScale;
+                m_Sprites[i].Rect.Min.x += io.MouseDelta.x / m_ViewportScale;
+                m_Sprites[i].Rect.Min.y += io.MouseDelta.y / m_ViewportScale;
 
-            m_Sprites[m_SelectedSpriteIdx].Max.x += io.MouseDelta.x / m_ViewportScale;
-            m_Sprites[m_SelectedSpriteIdx].Max.y += io.MouseDelta.y / m_ViewportScale;
+                m_Sprites[i].Rect.Max.x += io.MouseDelta.x / m_ViewportScale;
+                m_Sprites[i].Rect.Max.y += io.MouseDelta.y / m_ViewportScale;
+            }
         }
     }
 
     // Add first and second point
-    if (ImGui::IsItemHovered() && !Adding_Rect && ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
-        m_SelectedSpriteIdx == -1)
+    if (ImGui::IsItemHovered() && !Adding_Rect && ImGui::IsMouseClicked(ImGuiMouseButton_Left) && 0 == m_LineCheckFlag)
     {
-        m_DragRect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
-        m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+        bool bDirtyFlag = false;
 
-        Adding_Rect = true;
+        // 선택중인 스프라이트 영역내를 클릭했는지 체크
+        // 그 외의경우에만 Sprtie 새로 생성
+        for (int i = 0; i < m_Sprites.Size; i++)
+        {
+            if (m_Sprites[i].bViewport_Selected && m_Sprites[i].Rect.Contains(mouse_pos_in_canvas / m_ViewportScale))
+            {
+                bDirtyFlag = true;
+                break;
+            }
+        }
+
+        if (!bDirtyFlag)
+        {
+            // 선택했던 스프라이트 해제
+            for (int i = 0; i < m_Sprites.Size; i++)
+            {
+                m_Sprites[i].bViewport_Selected = false;
+            }
+
+            m_DragRect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+            m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+
+            Adding_Rect = true;
+        }
     }
 
     if (Adding_Rect)
@@ -231,7 +277,9 @@ void CSpriteEditor::DrawViewprot()
             if (m_DragRect.Max.y < m_DragRect.Min.y)
                 std::swap(m_DragRect.Min.y, m_DragRect.Max.y);
 
-            m_Sprites.push_back(m_DragRect);
+            tSprite sprite;
+            sprite.Rect = m_DragRect;
+            m_Sprites.push_back(sprite);
         }
     }
 
@@ -251,16 +299,19 @@ void CSpriteEditor::DrawViewprot()
         if (Adding_Rect)
             m_Sprites.resize(m_Sprites.size() - 1);
         Adding_Rect = false;
-        if (ImGui::MenuItem("Remove This Sprite", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Remove Selected Sprite", NULL, false, m_Sprites.Size > 0))
         {
-            ImVector<ImRect>::iterator iter = m_Sprites.begin();
+            ImVector<tSprite>::iterator iter = m_Sprites.begin();
 
-            for (; iter != m_Sprites.end(); iter++)
+            for (; iter != m_Sprites.end();)
             {
-                if ((*iter).Contains(mouse_pos_in_canvas / m_ViewportScale))
+                if ((*iter).bViewport_Selected)
                 {
-                    m_Sprites.erase(iter);
-                    break;
+                    iter = m_Sprites.erase(iter);
+                }
+                else
+                {
+                    iter++;
                 }
             }
         }
@@ -303,12 +354,12 @@ void CSpriteEditor::DrawViewprot()
     // Sprites Render
     for (int n = 0; n < m_Sprites.Size; n++)
     {
-        ImVec2 min =
-            ImVec2(origin.x + m_Sprites[n].Min.x * m_ViewportScale, origin.y + m_Sprites[n].Min.y * m_ViewportScale);
-        ImVec2 max =
-            ImVec2(origin.x + m_Sprites[n].Max.x * m_ViewportScale, origin.y + m_Sprites[n].Max.y * m_ViewportScale);
+        ImVec2 min = ImVec2(origin.x + m_Sprites[n].Rect.Min.x * m_ViewportScale,
+                            origin.y + m_Sprites[n].Rect.Min.y * m_ViewportScale);
+        ImVec2 max = ImVec2(origin.x + m_Sprites[n].Rect.Max.x * m_ViewportScale,
+                            origin.y + m_Sprites[n].Rect.Max.y * m_ViewportScale);
 
-        if (m_SelectedSpriteIdx == n)
+        if (m_Sprites[n].bViewport_Selected)
             draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
         else
             draw_list->AddRect(min, max, IM_COL32(0, 255, 0, 255));
@@ -430,8 +481,8 @@ void CSpriteEditor::DrawSpriteList()
             int idx = i - 1;
             ImVec2 TextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
 
-            ImGui::ImageButton((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Min / TextureSize,
-                               m_Sprites[idx].Max / TextureSize);
+            ImGui::ImageButton((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f),
+                               m_Sprites[idx].Rect.Min / TextureSize, m_Sprites[idx].Rect.Max / TextureSize);
 
             float Widht = ImGui::GetContentRegionAvail().x;
             int col = (int)Widht / 100;
