@@ -24,6 +24,7 @@ private:
     CAnim* m_pAnim;
     int m_AnimFPS;
     bool m_bAnimPlay;
+    Vec2 m_vAnimBackGround;
 
 public:
     virtual void init() override;

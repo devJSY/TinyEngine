@@ -458,9 +458,12 @@ void CSpriteEditor::DrawDetails()
 
         m_pAnim = new CAnim;
         m_pAnim->LoadAnim(OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0")));
+
         for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
         {
             m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+            m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
+            m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
         }
     }
 
@@ -475,21 +478,22 @@ void CSpriteEditor::DrawDetails()
             filePath.replace_extension(".anim");
 
         if (nullptr != m_pAnim)
+        {
+            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            {
+                m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                m_pAnim->m_vecFrm[i].vBackground.x = m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
+                m_pAnim->m_vecFrm[i].vBackground.y = m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+            }
+
             m_pAnim->SaveAnim(filePath);
+        }
     }
+
+    ImGui::Separator();
 
     if (nullptr != m_pAnim)
     {
-        char buffer[256];
-        memset(buffer, 0, sizeof(buffer));
-
-        string name = ToString(m_pAnim->GetName());
-        strcpy_s(buffer, sizeof(buffer), name.c_str());
-        if (ImGui::InputText(ImGuiLabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
-        {
-            m_pAnim->SetName(ToWstring(buffer));
-        }
-
         string StopPlay;
 
         if (m_bAnimPlay)
@@ -500,6 +504,16 @@ void CSpriteEditor::DrawDetails()
         if (ImGui::Button(StopPlay.c_str()))
         {
             m_bAnimPlay = !m_bAnimPlay;
+        }
+
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+
+        string name = ToString(m_pAnim->GetName());
+        strcpy_s(buffer, sizeof(buffer), name.c_str());
+        if (ImGui::InputText(ImGuiLabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
+        {
+            m_pAnim->SetName(ToWstring(buffer));
         }
 
         if (ImGui::InputInt(ImGuiLabelPrefix("FPS").c_str(), &m_AnimFPS))
@@ -540,6 +554,16 @@ void CSpriteEditor::DrawDetails()
         ImGui::SameLine();
         if (ImGui::ArrowButton("##Down", ImGuiDir_Down))
             m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y += 1.f / m_pAnim->GetAtlasTex()->GetHeight();
+
+        if (ImGui::DragFloat2(ImGuiLabelPrefix("Animation BackGround").c_str(), &m_vAnimBackGround.x, 1.f))
+        {
+            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            {
+                m_pAnim->m_vecFrm[i].vBackground = m_vAnimBackGround;
+            }
+        }
+
+        ImGui::Checkbox(ImGuiLabelPrefix("Use BackGround").c_str(), &m_pAnim->m_bUseBackGround);
     }
 
     ImGui::End();
