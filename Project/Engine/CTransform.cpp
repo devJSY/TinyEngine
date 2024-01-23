@@ -82,7 +82,7 @@ void CTransform::UpdateData()
     g_Transform.matWV = g_Transform.matWorld * g_Transform.matView;
     g_Transform.matWVP = g_Transform.matWV * g_Transform.matProj;
 
-    // 위치정보를 Transform 상수버퍼에 보내고, B0 레지스터에 바인딩 
+    // 위치정보를 Transform 상수버퍼에 보내고, B0 레지스터에 바인딩
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
     pCB->SetData(&g_Transform);
     pCB->UpdateData();

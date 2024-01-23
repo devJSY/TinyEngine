@@ -480,6 +480,12 @@ void CSpriteEditor::DrawSpriteList()
 {
     ImGui::Begin("Sprite List##SpriteEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
 
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
+    ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
+    draw_list->PushClipRect(canvas_p0, canvas_p0 + canvas_sz);
+
     if (nullptr != m_pTex.Get())
     {
         for (int i = 1; i <= m_Sprites.Size; i++)
@@ -487,8 +493,26 @@ void CSpriteEditor::DrawSpriteList()
             int idx = i - 1;
             ImVec2 TextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
 
+            ImU32 borderColor = IM_COL32(255, 255, 255, 255);
+
+            if (m_Sprites[idx].bSpriteList_Selected)
+                borderColor = IM_COL32(255, 0, 0, 255);
+
             ImGui::ImageButton((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f),
                                m_Sprites[idx].Rect.Min / TextureSize, m_Sprites[idx].Rect.Max / TextureSize);
+
+            draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), borderColor);
+
+            if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+            {
+                ImRect rect;
+                rect.Min = ImGui::GetItemRectMin();
+                rect.Max = ImGui::GetItemRectMax();
+                if (rect.Contains(ImGui::GetIO().MousePos))
+                {
+                    m_Sprites[idx].bSpriteList_Selected = !m_Sprites[idx].bSpriteList_Selected;
+                }
+            }
 
             float Widht = ImGui::GetContentRegionAvail().x;
             int col = (int)Widht / 100;
@@ -500,6 +524,7 @@ void CSpriteEditor::DrawSpriteList()
         }
     }
 
+    draw_list->PopClipRect();
     ImGui::End();
 }
 
