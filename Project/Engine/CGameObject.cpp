@@ -110,11 +110,6 @@ void CGameObject::render()
     {
         m_RenderCom->render();
     }
-
-    for (size_t i = 0; i < m_vecChild.size(); ++i)
-    {
-        m_vecChild[i]->render();
-    }
 }
 
 void CGameObject::AddComponent(CComponent* _Component)

@@ -450,6 +450,8 @@ void CSpriteEditor::DrawDetails()
     // Animation Data
     ImGui::Separator();
 
+    ImGui::Text("Animation");
+
     if (ImGui::Button("Load Animation"))
     {
         if (nullptr != m_pAnim)
