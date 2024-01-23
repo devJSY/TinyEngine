@@ -21,7 +21,10 @@ private:
 
     int m_LineCheckFlag;
 
-    vector<tAnimData2D> vecFrm;
+    // Animation Data
+    vector<tAnimData2D> m_vecFrm;
+    int m_CurAnimIdx;
+    int m_AnimFPS;
 
 public:
     virtual void init() override;
@@ -34,9 +37,11 @@ private:
 
 private:
     void DrawViewprot();
-    void DrawAnimationEdit();
     void DrawDetails();
     void DrawSpriteList();
+
+    void DrawAnimationEdit();
+    void DrawAnimationList();
 
 public:
     CSpriteEditor();

@@ -12,6 +12,9 @@ CSpriteEditor::CSpriteEditor()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
     , m_LineCheckFlag(0)
+    , m_vecFrm{}
+    , m_CurAnimIdx(0)
+    , m_AnimFPS(24)
 {
 }
 
@@ -28,14 +31,17 @@ void CSpriteEditor::render()
     ImGuiSetWindowClass_SpriteEditor();
     DrawViewprot();
 
-    // ImGuiSetWindowClass_SpriteEditor();
-    // DrawAnimationEdit();
-
     ImGuiSetWindowClass_SpriteEditor();
     DrawDetails();
 
     ImGuiSetWindowClass_SpriteEditor();
     DrawSpriteList();
+
+    ImGuiSetWindowClass_SpriteEditor();
+    DrawAnimationEdit();
+
+    ImGuiSetWindowClass_SpriteEditor();
+    DrawAnimationList();
 }
 
 void CSpriteEditor::DrawViewprot()
@@ -43,11 +49,9 @@ void CSpriteEditor::DrawViewprot()
     ImGui::Begin("Viewprot##SpriteEditor");
 
     static bool opt_enable_grid = true;
-    static bool opt_enable_context_menu = true;
     static bool Adding_Rect = false;
 
     ImGui::Checkbox("Enable grid", &opt_enable_grid);
-    ImGui::Checkbox("Enable context menu", &opt_enable_context_menu);
 
     ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
     ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
@@ -285,8 +289,7 @@ void CSpriteEditor::DrawViewprot()
         }
     }
 
-    const float mouse_threshold_for_pan = opt_enable_context_menu ? -1.0f : 0.0f;
-    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
+    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
     {
         m_ViewportOffset.x += io.MouseDelta.x;
         m_ViewportOffset.y += io.MouseDelta.y;
@@ -294,7 +297,7 @@ void CSpriteEditor::DrawViewprot()
 
     // Context menu (under default mouse threshold)
     ImVec2 drag_delta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
-    if (opt_enable_context_menu && drag_delta.x == 0.0f && drag_delta.y == 0.0f)
+    if (drag_delta.x == 0.0f && drag_delta.y == 0.0f)
         ImGui::OpenPopupOnItemClick("context", ImGuiPopupFlags_MouseButtonRight);
     if (ImGui::BeginPopup("context"))
     {
@@ -414,41 +417,6 @@ void CSpriteEditor::DrawViewprot()
     ImGui::End();
 }
 
-void CSpriteEditor::DrawAnimationEdit()
-{
-    ImGui::Begin("Animation Edit##SpriteEditor");
-
-    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
-    ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
-    if (canvas_sz.x < 50.0f)
-        canvas_sz.x = 50.0f;
-    if (canvas_sz.y < 50.0f)
-        canvas_sz.y = 50.0f;
-    ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
-
-    // Draw border and background color
-    ImGuiIO& io = ImGui::GetIO();
-    ImDrawList* draw_list = ImGui::GetWindowDrawList();
-    draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255));
-    draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
-
-    // =================================
-    // Rendering
-    // =================================
-
-    // Draw grid + all lines in the canvas
-    draw_list->PushClipRect(canvas_p0, canvas_p1, true);
-    const float GRID_STEP = 32.0f;
-    for (float x = 0; x < canvas_sz.x; x += GRID_STEP)
-        draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y),
-                           IM_COL32(200, 200, 200, 40));
-    for (float y = 0; y < canvas_sz.y; y += GRID_STEP)
-        draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y),
-                           IM_COL32(200, 200, 200, 40));
-
-    ImGui::End();
-}
-
 void CSpriteEditor::DrawDetails()
 {
     ImGui::Begin("Details##SpriteEditor");
@@ -527,14 +495,91 @@ void CSpriteEditor::DrawSpriteList()
     {
         if (ImGui::MenuItem("Create Animation##SpriteList", NULL, false, m_Sprites.Size > 0))
         {
+            m_vecFrm.clear();
             for (int i = 0; i < m_Sprites.Size; i++)
             {
+                if (m_Sprites[i].bSpriteList_Selected)
+                {
+                    tAnimData2D AnimData;
+
+                    AnimData.vLeftTop = Vec2(m_Sprites[i].Rect.Min.x, m_Sprites[i].Rect.Min.y);
+                    AnimData.vSliceSize = Vec2(m_Sprites[i].Rect.GetSize().x, m_Sprites[i].Rect.GetSize().y);
+                    AnimData.vBackGround = Vec2();
+                    AnimData.vOffset = Vec2();
+
+                    m_vecFrm.push_back(AnimData);
+                }
+
                 m_Sprites[i].bSpriteList_Selected = false;
             }
         }
 
         ImGui::EndPopup();
     }
+    ImGui::End();
+}
+
+void CSpriteEditor::DrawAnimationEdit()
+{
+    ImGui::Begin("Animation Edit##SpriteEditor");
+
+    ImVec2 canvas_LT = ImGui::GetCursorScreenPos();
+    ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
+    if (canvas_sz.x < 50.0f)
+        canvas_sz.x = 50.0f;
+    if (canvas_sz.y < 50.0f)
+        canvas_sz.y = 50.0f;
+    ImVec2 canvas_RB = ImVec2(canvas_LT.x + canvas_sz.x, canvas_LT.y + canvas_sz.y);
+
+    // Draw border and background color
+    ImGuiIO& io = ImGui::GetIO();
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    draw_list->AddRectFilled(canvas_LT, canvas_RB, IM_COL32(50, 50, 50, 255));
+    draw_list->AddRect(canvas_LT, canvas_RB, IM_COL32(255, 255, 255, 255));
+
+    draw_list->AddLine(ImVec2(canvas_LT.x, canvas_LT.y + (canvas_sz.y / 2.f)),
+                       ImVec2(canvas_RB.x, canvas_LT.y + (canvas_sz.y / 2.f)), IM_COL32(255, 0, 0, 255)); // 가로 축
+    draw_list->AddLine(ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_LT.y),
+                       ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_RB.y), IM_COL32(0, 0, 255, 255)); // 세로 축
+
+    if (nullptr != m_pTex.Get() && m_vecFrm.size() > 0)
+    {
+        ImVec2 vTextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
+
+        ImVec2 RenderSize = ImVec2(500.f, 500.f);
+        ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
+
+        ImVec2 uv0 = ImVec2(m_vecFrm[m_CurAnimIdx].vLeftTop.x / vTextureSize.x,
+                            m_vecFrm[m_CurAnimIdx].vLeftTop.y / vTextureSize.y);
+
+        ImVec2 uv1 = ImVec2((m_vecFrm[m_CurAnimIdx].vLeftTop.x + m_vecFrm[m_CurAnimIdx].vSliceSize.x) / vTextureSize.x,
+                            (m_vecFrm[m_CurAnimIdx].vLeftTop.y + m_vecFrm[m_CurAnimIdx].vSliceSize.y) / vTextureSize.y);
+        draw_list->AddImage((void*)m_pTex->GetSRV().Get(), vLT, vLT + RenderSize, uv0, uv1);
+    }
+
+    ImGui::End();
+}
+
+void CSpriteEditor::DrawAnimationList()
+{
+    ImGui::Begin("Animation List##SpriteEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
+
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    for (UINT i = 0; i < m_vecFrm.size(); i++)
+    {
+        Vec2 TextureSize = Vec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
+
+        ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f),
+                     ImVec2((m_vecFrm[i].vLeftTop / TextureSize).x, (m_vecFrm[i].vLeftTop / TextureSize).y),
+                     ImVec2(((m_vecFrm[i].vLeftTop + m_vecFrm[i].vSliceSize) / TextureSize).x,
+                            ((m_vecFrm[i].vLeftTop + m_vecFrm[i].vSliceSize) / TextureSize).y));
+
+        draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 255, 255, 255));
+
+        ImGui::SameLine();
+    }
+
     ImGui::End();
 }
 
