@@ -486,6 +486,9 @@ void CSpriteEditor::DrawDetails()
                 m_pAnim->m_vecFrm[i].vBackground.y = m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
             }
 
+            if (m_pAnim->GetName().empty())
+                m_pAnim->SetName(filePath.stem());
+
             m_pAnim->SaveAnim(filePath);
         }
     }

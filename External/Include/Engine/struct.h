@@ -141,5 +141,10 @@ struct tMeshData
     string RelativeTextureFilePath; // 전체경로 = 절대경로/상대경로/파일이름 - 상대경로에 해당되는 문자열
 };
 
+struct tPixel
+{
+    BYTE r, g, b, a;
+};
+
 extern tTransform g_Transform;
 extern tGlobalData g_Global;

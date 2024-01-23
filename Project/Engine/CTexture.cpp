@@ -196,3 +196,13 @@ int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
 
     return S_OK;
 }
+
+tPixel* CTexture::GetPixels()
+{
+    if (nullptr == m_Image.GetPixels())
+    {
+        CaptureTexture(DEVICE, CONTEXT, m_Tex2D.Get(), m_Image);
+    }
+
+    return (tPixel*)m_Image.GetPixels();
+}
