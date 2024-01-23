@@ -23,6 +23,7 @@ private:
 
     CAnim* m_pAnim;
     int m_AnimFPS;
+    bool m_bAnimPlay;
 
 public:
     virtual void init() override;
