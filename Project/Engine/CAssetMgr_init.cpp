@@ -14,6 +14,7 @@
 void CAssetMgr::CreateDefaultMesh()
 {
     // Crosshair
+    if (nullptr == FindAsset<CMesh>(L"CrosshairMesh"))
     {
         auto mesh = MakeCrosshair();
 
@@ -24,6 +25,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Point
+    if (nullptr == FindAsset<CMesh>(L"PointMesh"))
     {
         auto mesh = MakePoint();
 
@@ -34,6 +36,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Circle
+    if (nullptr == FindAsset<CMesh>(L"CircleMesh"))
     {
         auto mesh = MakeCircle(1.f, 40);
 
@@ -44,6 +47,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Rect
+    if (nullptr == FindAsset<CMesh>(L"RectMesh"))
     {
         auto mesh = MakeRect();
 
@@ -54,6 +58,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Debug Circle
+    if (nullptr == FindAsset<CMesh>(L"CircleMesh_Debug"))
     {
         auto mesh = MakeDebugCircle(1.f, 40);
 
@@ -64,6 +69,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Debug Rect
+    if (nullptr == FindAsset<CMesh>(L"RectMesh_Debug"))
     {
         auto mesh = MakeDebugRect();
 
@@ -74,6 +80,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // SquareGrid
+    if (nullptr == FindAsset<CMesh>(L"SquareGridMesh"))
     {
         auto mesh = MakeSquareGrid(10, 10);
 
@@ -84,6 +91,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Box
+    if (nullptr == FindAsset<CMesh>(L"BoxMesh"))
     {
         auto mesh = MakeBox();
 
@@ -94,6 +102,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Cylinder
+    if (nullptr == FindAsset<CMesh>(L"CylinderMesh"))
     {
         auto mesh = MakeCylinder(1, 1, 1, 100);
         Ptr<CMesh> pMesh = new CMesh;
@@ -103,6 +112,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Sphere
+    if (nullptr == FindAsset<CMesh>(L"SphereMesh"))
     {
         auto mesh = MakeSphere(1, 10, 10);
 
@@ -113,6 +123,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Tetrahedron
+    if (nullptr == FindAsset<CMesh>(L"TetrahedronMesh"))
     {
         auto mesh = MakeTetrahedron();
         Ptr<CMesh> pMesh = new CMesh;
@@ -122,6 +133,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Icosahedron
+    if (nullptr == FindAsset<CMesh>(L"IcosahedronMesh"))
     {
         auto mesh = MakeIcosahedron();
         Ptr<CMesh> pMesh = new CMesh;
@@ -131,6 +143,7 @@ void CAssetMgr::CreateDefaultMesh()
     }
 
     // Sphere
+    if (nullptr == FindAsset<CMesh>(L"SubdivideSphereMesh"))
     {
         auto mesh = MakeSphere(1, 25, 25);
         mesh = SubdivideToSphere(1.f, mesh);
@@ -147,6 +160,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // Std2DShader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"Std2DShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
@@ -165,6 +179,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // EffectShader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"EffectShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
@@ -183,6 +198,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =============
     // TileMapShader
     // =============
+    if (nullptr == FindAsset<CGraphicsShader>(L"TileMapShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\Tilemap.fx", "VS_TileMap");
@@ -206,6 +222,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // BS_TYPE		: Default
     // Domain		: DOMAIN_POSTPROCESS
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"GrayFilterShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayFilter");
@@ -226,6 +243,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // BS_TYPE		: Default
     // Domain		: DOMAIN_POSTPROCESS
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"DistortionShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader = new CGraphicsShader;
@@ -243,6 +261,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // DebugShape Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"DebugShapeShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\debug.fx", "VS_DebugShape");
@@ -262,6 +281,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // Basic Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BasicShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
@@ -276,6 +296,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // BlinnPhong Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BlinnPhongShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BlinnPhongVS.hlsl", "main");
@@ -294,6 +315,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // NormalLine Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"NormalLineShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\NormalLineVS.hlsl", "main");
@@ -311,6 +333,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // 2D OutLine Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"2D_OutLineShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\2D_OutLineVS.hlsl", "main");
@@ -329,6 +352,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // 3D OutLine Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"3D_OutLineShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\3D_OutLineVS.hlsl", "main");
@@ -347,6 +371,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // SkyBox Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"SkyboxShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
@@ -365,6 +390,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // BillBoardPoint Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BillBoardPointShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\BillBoardPointVS.hlsl", "main");
@@ -386,6 +412,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // IDMap Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"IDMapShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\IDMapVS.hlsl", "main");
@@ -404,6 +431,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // SkyBox IDMap Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"SkyBox_IDMapShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\IDMapVS.hlsl", "main");
@@ -422,6 +450,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // Bloom Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BloomShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
@@ -439,6 +468,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // BlurX Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BlurXShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
@@ -456,6 +486,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // BlurY Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BlurYShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
@@ -473,6 +504,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     // Shock Wave Shader
     // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"ShockWaveShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\ShockWaveVS.hlsl", "main");
@@ -490,39 +522,63 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
 void CAssetMgr::CreateDefaultTexture()
 {
-    Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Textures\\missing_texture.png");
-    assert(ptex.Get());
+    if (nullptr == FindAsset<CTexture>(L"missing_texture"))
+    {
+        Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Textures\\missing_texture.png");
+        assert(ptex.Get());
+    }
 
-    Load<CTexture>(L"DirectoryIconTex", L"Icons\\ContentBrowser\\DirectoryIcon.png");
-    Load<CTexture>(L"FileIconTex", L"Icons\\ContentBrowser\\FileIcon.png");
+    if (nullptr == FindAsset<CTexture>(L"DirectoryIconTex"))
+        Load<CTexture>(L"DirectoryIconTex", L"Icons\\ContentBrowser\\DirectoryIcon.png");
 
-    Load<CTexture>(L"PauseButtonTex", L"Icons\\PauseButton.png");
-    Load<CTexture>(L"PlayButtonTex", L"Icons\\PlayButton.png");
-    Load<CTexture>(L"SimulateButtonTex", L"Icons\\SimulateButton.png");
-    Load<CTexture>(L"StepButtonTex", L"Icons\\StepButton.png");
-    Load<CTexture>(L"StopButtonTex", L"Icons\\StopButton.png");
+    if (nullptr == FindAsset<CTexture>(L"FileIconTex"))
+        Load<CTexture>(L"FileIconTex", L"Icons\\ContentBrowser\\FileIcon.png");
 
-    Load<CTexture>(L"DirectionalLightTex", L"Icons\\DirectionalLight.png");
-    Load<CTexture>(L"PointLightTex", L"Icons\\PointLight.png");
-    Load<CTexture>(L"SpotLightTex", L"Icons\\SpotLight.png");
+    if (nullptr == FindAsset<CTexture>(L"PauseButtonTex"))
+        Load<CTexture>(L"PauseButtonTex", L"Icons\\PauseButton.png");
+    if (nullptr == FindAsset<CTexture>(L"PlayButtonTex"))
+        Load<CTexture>(L"PlayButtonTex", L"Icons\\PlayButton.png");
+    if (nullptr == FindAsset<CTexture>(L"SimulateButtonTex"))
+        Load<CTexture>(L"SimulateButtonTex", L"Icons\\SimulateButton.png");
+    if (nullptr == FindAsset<CTexture>(L"StepButtonTex"))
+        Load<CTexture>(L"StepButtonTex", L"Icons\\StepButton.png");
+    if (nullptr == FindAsset<CTexture>(L"StopButtonTex"))
+        Load<CTexture>(L"StopButtonTex", L"Icons\\StopButton.png");
 
-    Load<CTexture>(L"cubemapTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_bgra.dds");
-    Load<CTexture>(L"cubemap_diffuseTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_diffuse.dds");
-    Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
+    if (nullptr == FindAsset<CTexture>(L"DirectionalLightTex"))
+        Load<CTexture>(L"DirectionalLightTex", L"Icons\\DirectionalLight.png");
+    if (nullptr == FindAsset<CTexture>(L"PointLightTex"))
+        Load<CTexture>(L"PointLightTex", L"Icons\\PointLight.png");
+    if (nullptr == FindAsset<CTexture>(L"SpotLightTex"))
+        Load<CTexture>(L"SpotLightTex", L"Icons\\SpotLight.png");
 
-    Load<CTexture>(L"noise_03Tex", L"Developers\\noise\\noise_03.jpg");
+    if (nullptr == FindAsset<CTexture>(L"cubemapTex"))
+        Load<CTexture>(L"cubemapTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_bgra.dds");
+    if (nullptr == FindAsset<CTexture>(L"cubemap_diffuseTex"))
+        Load<CTexture>(L"cubemap_diffuseTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_diffuse.dds");
+    if (nullptr == FindAsset<CTexture>(L"cubemap_specularTex"))
+        Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
 
-    Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");
-    Load<CTexture>(L"ic_restore_white_24dpTex", L"Icons\\Blueprint\\ic_restore_white_24dp.png");
-    Load<CTexture>(L"ic_save_white_24dpTex", L"Icons\\Blueprint\\ic_save_white_24dp.png");
+    if (nullptr == FindAsset<CTexture>(L"noise_03Tex"))
+        Load<CTexture>(L"noise_03Tex", L"Developers\\noise\\noise_03.jpg");
 
-    Load<CTexture>(L"MapTileTex", L"EnterTheGungeon\\Map\\MapTile.bmp");
-    Load<CTexture>(L"MapTileSmallTex", L"EnterTheGungeon\\Map\\MapTileSmall.bmp");
+    if (nullptr == FindAsset<CTexture>(L"BlueprintBackgroundTex"))
+        Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");
+    if (nullptr == FindAsset<CTexture>(L"ic_restore_white_24dpTex"))
+        Load<CTexture>(L"ic_restore_white_24dpTex", L"Icons\\Blueprint\\ic_restore_white_24dp.png");
+    if (nullptr == FindAsset<CTexture>(L"ic_save_white_24dpTex"))
+        Load<CTexture>(L"ic_save_white_24dpTex", L"Icons\\Blueprint\\ic_save_white_24dp.png");
+
+    if (nullptr == FindAsset<CTexture>(L"MapTileTex"))
+        Load<CTexture>(L"MapTileTex", L"EnterTheGungeon\\Map\\MapTile.bmp");
+    if (nullptr == FindAsset<CTexture>(L"MapTileSmallTex"))
+        Load<CTexture>(L"MapTileSmallTex", L"EnterTheGungeon\\Map\\MapTileSmall.bmp");
 }
 
 void CAssetMgr::CreateDefaultMaterial()
 {
     // Std2DMtrl
+    if (nullptr == FindAsset<CMaterial>(L"Std2DMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
@@ -531,6 +587,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // TileMapMtrl
+    if (nullptr == FindAsset<CMaterial>(L"TileMapMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TileMapShader"));
@@ -539,6 +596,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // GrayFilterMtrl
+    if (nullptr == FindAsset<CMaterial>(L"GrayFilterMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"GrayFilterShader"));
@@ -547,6 +605,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // DistortionMtrl
+    if (nullptr == FindAsset<CMaterial>(L"DistortionMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DistortionShader"));
@@ -556,6 +615,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // DebugShapeMtrl
+    if (nullptr == FindAsset<CMaterial>(L"DebugShapeMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
@@ -564,6 +624,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // Basic
+    if (nullptr == FindAsset<CMaterial>(L"BasicMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BasicShader"));
@@ -574,6 +635,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // BlinnPhong
+    if (nullptr == FindAsset<CMaterial>(L"BlinnPhongMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
@@ -585,6 +647,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // SkyBox
+    if (nullptr == FindAsset<CMaterial>(L"SkyboxMtrl"))
     {
         CMaterial* pMtrl = nullptr;
         pMtrl = new CMaterial;
@@ -595,6 +658,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // Directional Light
+    if (nullptr == FindAsset<CMaterial>(L"DirectionalLightMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
@@ -604,6 +668,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // Point Light
+    if (nullptr == FindAsset<CMaterial>(L"PointLightMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
@@ -613,6 +678,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // Spot Light
+    if (nullptr == FindAsset<CMaterial>(L"SpotLightMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
@@ -622,6 +688,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // Bloom
+    if (nullptr == FindAsset<CMaterial>(L"BloomMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomShader"));
@@ -630,6 +697,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // BlurX
+    if (nullptr == FindAsset<CMaterial>(L"BlurXMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurXShader"));
@@ -638,6 +706,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // BlurY
+    if (nullptr == FindAsset<CMaterial>(L"BlurYMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurYShader"));
@@ -646,6 +715,7 @@ void CAssetMgr::CreateDefaultMaterial()
     }
 
     // ShockWave
+    if (nullptr == FindAsset<CMaterial>(L"ShockWaveMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShockWaveShader"));
