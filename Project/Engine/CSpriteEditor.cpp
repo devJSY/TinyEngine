@@ -31,6 +31,9 @@ CSpriteEditor::~CSpriteEditor()
 void CSpriteEditor::init()
 {
     m_pAnim = new CAnim;
+    wstring path = CPathMgr::GetContentPath();
+    path += L"AnimData\\Player\\Convict\\idle_front_hands.anim";
+    m_pAnim->LoadAnim(path);
 }
 
 void CSpriteEditor::render()
@@ -570,7 +573,7 @@ void CSpriteEditor::DrawAnimationViewport()
     draw_list->AddLine(ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_LT.y),
                        ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_RB.y), IM_COL32(0, 0, 255, 255)); // 세로 축
 
-    if (nullptr != m_pTex.Get() && !m_pAnim->m_vecFrm.empty())
+    if (nullptr != m_pAnim->GetAtlasTex().Get() && !m_pAnim->m_vecFrm.empty())
     {
         ImVec2 RenderSize = ImVec2(350.f, 350.f);
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
@@ -580,7 +583,7 @@ void CSpriteEditor::DrawAnimationViewport()
         ImVec2 uv1 = ImVec2(
             (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.x + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.x),
             (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.y + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.y));
-        draw_list->AddImage((void*)m_pTex->GetSRV().Get(), vLT, vLT + RenderSize, uv0, uv1);
+        draw_list->AddImage((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), vLT, vLT + RenderSize, uv0, uv1);
     }
 
     ImGui::End();
@@ -594,7 +597,7 @@ void CSpriteEditor::DrawAnimationList()
 
     for (UINT i = 0; i < m_pAnim->m_vecFrm.size(); i++)
     {
-        ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f),
+        ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
                      ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
                      ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
                             (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
