@@ -480,14 +480,9 @@ void CSpriteEditor::DrawSpriteList()
 {
     ImGui::Begin("Sprite List##SpriteEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
 
-    ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-    ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
-    ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
-    draw_list->PushClipRect(canvas_p0, canvas_p0 + canvas_sz);
-
     if (nullptr != m_pTex.Get())
     {
+        ImDrawList* draw_list = ImGui::GetWindowDrawList();
         for (int i = 1; i <= m_Sprites.Size; i++)
         {
             int idx = i - 1;
@@ -523,8 +518,6 @@ void CSpriteEditor::DrawSpriteList()
                 ImGui::SameLine();
         }
     }
-
-    draw_list->PopClipRect();
 
     // Create Animation
     if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))

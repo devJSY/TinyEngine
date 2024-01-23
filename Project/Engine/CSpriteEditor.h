@@ -1,6 +1,6 @@
 #pragma once
 #include "CEditor.h"
-#include <imgui_node_editor\\imgui_canvas.h>
+#include "CAnim.h"
 
 struct tSprite
 {
@@ -20,6 +20,8 @@ private:
     float m_ViewportScale;
 
     int m_LineCheckFlag;
+
+    vector<tAnimData2D> vecFrm;
 
 public:
     virtual void init() override;
