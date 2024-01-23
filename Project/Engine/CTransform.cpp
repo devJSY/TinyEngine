@@ -66,7 +66,7 @@ void CTransform::finaltick()
         for (int i = 0; i < 3; ++i)
         {
             // m_matWorld 행렬에 크기정보가 있을 수 있기 때문에 다시 길이를 1로 정규화 시킨다.
-            m_arrWorldDir[i] = XMVector3TransformNormal(m_arrWorldDir[i], m_matWorld);
+            m_arrWorldDir[i] = XMVector3TransformNormal(m_arrLocalDir[i], m_matWorld);
             m_arrWorldDir[i].Normalize();
         }
     }
