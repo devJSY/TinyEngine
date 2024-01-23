@@ -279,6 +279,8 @@ void CSpriteEditor::DrawViewprot()
 
             tSprite sprite;
             sprite.Rect = m_DragRect;
+            sprite.bViewport_Selected = false;
+            sprite.bSpriteList_Selected = false;
             m_Sprites.push_back(sprite);
         }
     }
@@ -314,6 +316,10 @@ void CSpriteEditor::DrawViewprot()
                     iter++;
                 }
             }
+        }
+        if (ImGui::MenuItem("Remove Previous Sprite", NULL, false, m_Sprites.Size > 0))
+        {
+            m_Sprites.resize(m_Sprites.Size - 1);
         }
         if (ImGui::MenuItem("Remove all", NULL, false, m_Sprites.Size > 0))
         {
