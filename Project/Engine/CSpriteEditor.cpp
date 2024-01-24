@@ -445,6 +445,7 @@ void CSpriteEditor::DrawDetails()
     if (ImGuiComboUI(ImGuiLabelPrefix("Source Texture").c_str(), CurTextureName, names))
     {
         m_pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName));
+        m_Sprites.clear();
     }
 
     if (nullptr != m_pTex.Get())
@@ -746,6 +747,31 @@ void CSpriteEditor::DrawAnimationList()
                          ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
                                 (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
 
+            // Drag & Drop
+            if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
+            {
+                ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
+                             ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
+                             ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
+                                    (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
+
+                ImGui::SetDragDropPayload("ANIMATION_LIST_SPRITE", &i, sizeof(int));
+                ImGui::EndDragDropSource();
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ANIMATION_LIST_SPRITE"))
+                {
+                    int idx = *(const int*)payload->Data;
+                    if (idx >= 0 && idx < m_pAnim->m_vecFrm.size())
+                        std::swap(m_pAnim->m_vecFrm[i], m_pAnim->m_vecFrm[idx]);
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
             ImU32 borderColor = IM_COL32(255, 255, 255, 255);
             if (i == m_pAnim->m_CurFrmIdx)
                 borderColor = IM_COL32(255, 0, 0, 255);
@@ -832,6 +858,7 @@ void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, in
             int nx = pos.first + dx[dir];
             int ny = pos.second + dy[dir];
 
+            // 범위 체크
             if (nx >= 0 && nx < _width && ny >= 0 && ny < _height)
             {
                 int newIdx = ny * _width + nx;
