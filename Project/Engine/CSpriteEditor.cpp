@@ -504,17 +504,23 @@ void CSpriteEditor::DrawDetails()
 
     if (ImGui::Button("Load Animation"))
     {
-        if (nullptr != m_pAnim)
-            delete m_pAnim;
+        std::filesystem::path filePath =
+            OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
-        m_pAnim = new CAnim;
-        m_pAnim->LoadAnim(OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0")));
-
-        for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+        if (!filePath.empty()) // 취소, 닫기 버튼 체크
         {
-            m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-            m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
-            m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
+            if (nullptr != m_pAnim)
+                delete m_pAnim;
+
+            m_pAnim = new CAnim;
+            m_pAnim->LoadAnim(filePath);
+
+            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            {
+                m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
+                m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
+            }
         }
     }
 
@@ -525,22 +531,27 @@ void CSpriteEditor::DrawDetails()
         std::filesystem::path filePath =
             SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
-        if (".anim" != filePath.extension())
-            filePath.replace_extension(".anim");
-
-        if (nullptr != m_pAnim)
+        if (!filePath.empty()) // 취소, 닫기 버튼 체크
         {
-            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            if (".anim" != filePath.extension())
+                filePath.replace_extension(".anim");
+
+            if (nullptr != m_pAnim)
             {
-                m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-                m_pAnim->m_vecFrm[i].vBackground.x = m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
-                m_pAnim->m_vecFrm[i].vBackground.y = m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+                for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                {
+                    m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                    m_pAnim->m_vecFrm[i].vBackground.x =
+                        m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_pAnim->m_vecFrm[i].vBackground.y =
+                        m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+                }
+
+                if (m_pAnim->GetName().empty())
+                    m_pAnim->SetName(filePath.stem());
+
+                m_pAnim->SaveAnim(filePath);
             }
-
-            if (m_pAnim->GetName().empty())
-                m_pAnim->SetName(filePath.stem());
-
-            m_pAnim->SaveAnim(filePath);
         }
     }
 
