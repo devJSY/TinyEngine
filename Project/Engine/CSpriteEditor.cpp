@@ -464,7 +464,7 @@ void CSpriteEditor::DrawDetails()
                     if (pPixel[idx].a == 0)
                         continue;
 
-                    ExtractSprite(pPixel, x, y, m_pTex->GetWidth());
+                    ExtractSprite(pPixel, x, y, m_pTex->GetWidth(), m_pTex->GetHeight());
                 }
             }
 
@@ -805,7 +805,7 @@ void CSpriteEditor::render(bool* open)
     ImGui::End();
 }
 
-void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width)
+void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int _height)
 {
     // Right → Bottom → Left → Top
     int dx[4] = {1, 0, -1, 0};
@@ -832,26 +832,30 @@ void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width)
             int nx = pos.first + dx[dir];
             int ny = pos.second + dy[dir];
 
-            int newIdx = ny * _width + nx;
+            if (nx >= 0 && nx < _width && ny >= 0 && ny < _height)
+            {
+                int newIdx = ny * _width + nx;
 
-            if (0 == pPixel[newIdx].a)
-                continue;
+                if (0 == pPixel[newIdx].a)
+                    continue;
 
-            if (rect.Min.x >= nx)
-                rect.Min.x = (float)nx;
-            if (rect.Min.y >= ny)
-                rect.Min.y = (float)ny;
-            if (rect.Max.x <= nx)
-                rect.Max.x = (float)nx;
-            if (rect.Max.y <= ny)
-                rect.Max.y = (float)ny;
+                if (rect.Min.x >= nx)
+                    rect.Min.x = (float)nx;
+                if (rect.Min.y >= ny)
+                    rect.Min.y = (float)ny;
+                if (rect.Max.x <= nx)
+                    rect.Max.x = (float)nx;
+                if (rect.Max.y <= ny)
+                    rect.Max.y = (float)ny;
 
-            Q.push({nx, ny});
-            pPixel[newIdx].a = 0;
+                Q.push({nx, ny});
+                pPixel[newIdx].a = 0;
+            }
         }
     }
 
-    if (rect.GetArea() > 5.f)
+    // 최소 크기 제한
+    if (rect.GetArea() > 3.f)
     {
         float padding = 1.f;
 
