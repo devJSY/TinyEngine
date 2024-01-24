@@ -321,9 +321,16 @@ void CSpriteEditor::DrawViewport()
             for (; iter != m_Sprites.end();)
             {
                 // 선택된 Sprite 중에서 정렬 성공한 경우 기존 Sprite 삭제
-                if ((*iter).bViewport_Selected && SUCCEEDED(AlignSprite(*iter)))
+                if ((*iter).bViewport_Selected)
                 {
-                    iter = m_Sprites.erase(iter);
+                    if (AlignSprite(*iter))
+                    {
+                        iter = m_Sprites.erase(iter);
+                    }
+                    else
+                    {
+                        iter++;
+                    }
                 }
                 else
                 {
@@ -915,10 +922,10 @@ int CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int
         sprite.bSpriteList_Selected = false;
 
         m_Sprites.push_back(sprite);
-        return S_OK;
+        return true;
     }
 
-    return E_FAIL;
+    return false;
 }
 
 int CSpriteEditor::AlignSprite(tSprite& _sprite)
@@ -931,10 +938,10 @@ int CSpriteEditor::AlignSprite(tSprite& _sprite)
     {
         for (int x = (int)_sprite.Rect.Min.x; x <= (int)_sprite.Rect.Max.x; x++)
         {
-            // 텍스춰의 범위를 벗어나는 경운
+            // 텍스춰의 범위를 벗어나는 경우
             if (x < 0 || x >= texWidth || y < 0 || y >= texHeight)
             {
-                return E_FAIL;
+                return false;
             }
 
             int idx = (m_pTex->GetWidth() * y) + x;
@@ -942,22 +949,15 @@ int CSpriteEditor::AlignSprite(tSprite& _sprite)
             if (pPixel[idx].a == 0)
                 continue;
 
-            HRESULT result = ExtractSprite(pPixel, x, y, texWidth, texHeight);
+            int result = ExtractSprite(pPixel, x, y, texWidth, texHeight);
+            m_pTex->CaptureTex(); // 원본 이미지 GPU에서 불러와서 데이터 재설정
 
-            // 성공적으로 추출했을 때
-            if (SUCCEEDED(result))
-            {
-                m_pTex->CaptureTex();
-                return S_OK;
-            }
-            // 추출 실패 시
+            if (result)
+                return true;
             else
-            {
-                m_pTex->CaptureTex();
-                return E_FAIL;
-            }
+                return false;
         }
     }
 
-    return E_FAIL;
+    return false;
 }

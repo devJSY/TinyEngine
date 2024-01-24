@@ -201,16 +201,13 @@ tPixel* CTexture::GetPixels()
 {
     if (nullptr == m_Image.GetPixels())
     {
-        if (FAILED(CaptureTex()))
-        {
-            return nullptr;
-        }
+        CaptureTex();
     }
 
     return (tPixel*)m_Image.GetPixels();
 }
 
-HRESULT CTexture::CaptureTex()
+void CTexture::CaptureTex()
 {
-    return CaptureTexture(DEVICE, CONTEXT, m_Tex2D.Get(), m_Image);
+    CaptureTexture(DEVICE, CONTEXT, m_Tex2D.Get(), m_Image);
 }

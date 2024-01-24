@@ -40,7 +40,7 @@ public:
     ComPtr<ID3D11UnorderedAccessView> GetUAV() const { return m_UAV; }
 
     tPixel* GetPixels();
-    HRESULT CaptureTex();
+    void CaptureTex();
 
 public:
     CTexture();
