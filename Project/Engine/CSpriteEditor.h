@@ -43,6 +43,9 @@ private:
     void DrawAnimationViewport();
     void DrawAnimationList();
 
+private:
+    void ExtractSprite(tPixel* pPixel, int _x, int _y, int _width);
+
 public:
     CSpriteEditor();
     virtual ~CSpriteEditor();

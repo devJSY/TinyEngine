@@ -5,6 +5,8 @@
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
 
+#include <queue>
+
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
     , m_pTex()
@@ -446,7 +448,30 @@ void CSpriteEditor::DrawDetails()
     }
 
     if (nullptr != m_pTex.Get())
+    {
         ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(250.f, 250.f));
+
+        if (ImGui::Button("Extract Sprites"))
+        {
+            tPixel* pPixel = m_pTex->GetPixels();
+
+            for (int y = 0; y < (int)m_pTex->GetHeight(); y++)
+            {
+                for (int x = 0; x < (int)m_pTex->GetWidth(); x++)
+                {
+                    int idx = (m_pTex->GetWidth() * y) + x;
+
+                    if (pPixel[idx].a == 0)
+                        continue;
+
+                    ExtractSprite(pPixel, x, y, m_pTex->GetWidth());
+                }
+            }
+
+            // 원본 이미지 GPU에서 불러와서 데이터 재설정
+            m_pTex->CaptureTex();
+        }
+    }
 
     // Animation Data
     ImGui::Separator();
@@ -778,4 +803,68 @@ void CSpriteEditor::render(bool* open)
     render();
 
     ImGui::End();
+}
+
+void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width)
+{
+    // Right → Bottom → Left → Top
+    int dx[4] = {1, 0, -1, 0};
+    int dy[4] = {0, 1, 0, -1};
+
+    ImRect rect;
+    rect.Min.x = (float)_x;
+    rect.Min.y = (float)_y;
+    rect.Max.x = (float)_x;
+    rect.Max.y = (float)_y;
+
+    std::queue<std::pair<int, int>> Q;
+
+    Q.push({_x, _y});
+    pPixel[_y * _width + _x].a = 0;
+
+    while (!Q.empty())
+    {
+        auto pos = Q.front();
+        Q.pop();
+
+        for (int dir = 0; dir < 4; dir++)
+        {
+            int nx = pos.first + dx[dir];
+            int ny = pos.second + dy[dir];
+
+            int newIdx = ny * _width + nx;
+
+            if (0 == pPixel[newIdx].a)
+                continue;
+
+            if (rect.Min.x >= nx)
+                rect.Min.x = (float)nx;
+            if (rect.Min.y >= ny)
+                rect.Min.y = (float)ny;
+            if (rect.Max.x <= nx)
+                rect.Max.x = (float)nx;
+            if (rect.Max.y <= ny)
+                rect.Max.y = (float)ny;
+
+            Q.push({nx, ny});
+            pPixel[newIdx].a = 0;
+        }
+    }
+
+    if (rect.GetArea() > 5.f)
+    {
+        float padding = 1.f;
+
+        rect.Min.x -= padding;
+        rect.Min.y -= padding;
+        rect.Max.x += padding;
+        rect.Max.y += padding;
+
+        tSprite sprite;
+        sprite.Rect = rect;
+        sprite.bViewport_Selected = false;
+        sprite.bSpriteList_Selected = false;
+
+        m_Sprites.push_back(sprite);
+    }
 }
