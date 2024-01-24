@@ -313,6 +313,24 @@ void CSpriteEditor::DrawViewport()
         if (Adding_Rect)
             m_Sprites.resize(m_Sprites.size() - 1);
         Adding_Rect = false;
+
+        if (ImGui::MenuItem("Align Selected Sprite", NULL, false, m_Sprites.Size > 0))
+        {
+            ImVector<tSprite>::iterator iter = m_Sprites.begin();
+
+            for (; iter != m_Sprites.end();)
+            {
+                // 선택된 Sprite 중에서 정렬 성공한 경우 기존 Sprite 삭제
+                if ((*iter).bViewport_Selected && SUCCEEDED(AlignSprite(*iter)))
+                {
+                    iter = m_Sprites.erase(iter);
+                }
+                else
+                {
+                    iter++;
+                }
+            }
+        }
         if (ImGui::MenuItem("Remove Selected Sprite", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
@@ -831,7 +849,7 @@ void CSpriteEditor::render(bool* open)
     ImGui::End();
 }
 
-void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int _height)
+int CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int _height)
 {
     // Right → Bottom → Left → Top
     int dx[4] = {1, 0, -1, 0};
@@ -897,5 +915,49 @@ void CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, in
         sprite.bSpriteList_Selected = false;
 
         m_Sprites.push_back(sprite);
+        return S_OK;
     }
+
+    return E_FAIL;
+}
+
+int CSpriteEditor::AlignSprite(tSprite& _sprite)
+{
+    tPixel* pPixel = m_pTex->GetPixels();
+    int texWidth = m_pTex->GetWidth();
+    int texHeight = m_pTex->GetHeight();
+
+    for (int y = (int)_sprite.Rect.Min.y; y <= (int)_sprite.Rect.Max.y; y++)
+    {
+        for (int x = (int)_sprite.Rect.Min.x; x <= (int)_sprite.Rect.Max.x; x++)
+        {
+            // 텍스춰의 범위를 벗어나는 경운
+            if (x < 0 || x >= texWidth || y < 0 || y >= texHeight)
+            {
+                return E_FAIL;
+            }
+
+            int idx = (m_pTex->GetWidth() * y) + x;
+
+            if (pPixel[idx].a == 0)
+                continue;
+
+            HRESULT result = ExtractSprite(pPixel, x, y, texWidth, texHeight);
+
+            // 성공적으로 추출했을 때
+            if (SUCCEEDED(result))
+            {
+                m_pTex->CaptureTex();
+                return S_OK;
+            }
+            // 추출 실패 시
+            else
+            {
+                m_pTex->CaptureTex();
+                return E_FAIL;
+            }
+        }
+    }
+
+    return E_FAIL;
 }

@@ -44,7 +44,8 @@ private:
     void DrawAnimationList();
 
 private:
-    void ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int _height);
+    int ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int _height);
+    int AlignSprite(tSprite& _sprite);
 
 public:
     CSpriteEditor();
