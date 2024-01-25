@@ -803,8 +803,8 @@ void CSpriteEditor::DrawAnimationList()
                 if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ANIMATION_LIST_SPRITE"))
                 {
                     int idx = *(const int*)payload->Data;
-                    if (idx >= 0 && idx < m_pAnim->m_vecFrm.size())
-                        std::swap(m_pAnim->m_vecFrm[i], m_pAnim->m_vecFrm[idx]);
+                    std::swap(m_pAnim->m_vecFrm[i], m_pAnim->m_vecFrm[idx]);
+                    m_pAnim->m_CurFrmIdx = i;
                 }
 
                 ImGui::EndDragDropTarget();
@@ -815,6 +815,11 @@ void CSpriteEditor::DrawAnimationList()
                 borderColor = IM_COL32(255, 0, 0, 255);
 
             draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), borderColor);
+
+            if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+            {
+                m_pAnim->m_CurFrmIdx = i;
+            }
 
             ImGui::SameLine();
         }
