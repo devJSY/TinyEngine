@@ -7,6 +7,7 @@
 #include "CTexture.h"
 #include "CMaterial.h"
 #include "CGraphicsShader.h"
+#include "CComputeShader.h"
 
 class CGameObject;
 class CAsset;
@@ -31,6 +32,7 @@ private:
     // 에셋 생성
     void CreateDefaultMesh();
     void CreateDefaultGraphicsShader();
+    void CreateDefaultComputeShader();
     void CreateDefaultTexture();
     void CreateDefaultMaterial();
 
@@ -97,6 +99,8 @@ ASSET_TYPE GetAssetType()
         Type = ASSET_TYPE::TEXTURE;
     else if (&info == &typeid(CGraphicsShader))
         Type = ASSET_TYPE::GRAPHICS_SHADER;
+    else if (&info == &typeid(CComputeShader))
+        Type = ASSET_TYPE::COMPUTE_SHADER;
     else if (&info == &typeid(CMaterial))
         Type = ASSET_TYPE::MATERIAL;
 

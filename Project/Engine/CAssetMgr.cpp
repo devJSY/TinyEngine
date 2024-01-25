@@ -62,6 +62,7 @@ void CAssetMgr::init()
 
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
+    CreateDefaultComputeShader();
     CreateDefaultTexture();
 
     LoadFromAssetFile(); // 추후에 Mesh, Graphics Shader, Texture Save,Load 구현시 CreateDefault 위로 이동

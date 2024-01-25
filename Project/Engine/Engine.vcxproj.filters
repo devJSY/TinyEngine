@@ -301,6 +301,15 @@
     <ClInclude Include="CSpriteEditor.h">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClInclude>
+    <ClInclude Include="CParticleSystem.h">
+      <Filter>08. Component\RenderComponent\03. ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CSetColorShader.h">
+      <Filter>ShaderCode\Compute\SetColor</Filter>
+    </ClInclude>
+    <ClInclude Include="CComputeShader.h">
+      <Filter>06. Asset\Shader\ComputeShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -567,6 +576,15 @@
     <ClCompile Include="CSpriteEditor.cpp">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClCompile>
+    <ClCompile Include="CParticleSystem.cpp">
+      <Filter>08. Component\RenderComponent\03. ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CSetColorShader.cpp">
+      <Filter>ShaderCode\Compute\SetColor</Filter>
+    </ClCompile>
+    <ClCompile Include="CComputeShader.cpp">
+      <Filter>06. Asset\Shader\ComputeShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -707,41 +725,8 @@
     <Filter Include="04. Manager\GrabageCollector">
       <UniqueIdentifier>{16f1149d-3d02-4bba-803b-51a38dc2c467}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Basic">
-      <UniqueIdentifier>{a291ae40-b082-4c98-a07b-b88c20838d6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\BlinnPhong">
-      <UniqueIdentifier>{1a59fa21-719c-47cd-b3d2-c235a63bf234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Normal">
-      <UniqueIdentifier>{1948534b-e8a0-4304-9cb5-d3065c96d43a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\OutLine">
-      <UniqueIdentifier>{32794d67-0e3f-4d28-9f08-b34493e1a0bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\SkyBox">
-      <UniqueIdentifier>{b9305f22-f69a-4c67-8c77-8f7328de9be8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Postprocess">
-      <UniqueIdentifier>{ecfecc17-a936-4349-ac5e-f423232cdd33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\fx">
-      <UniqueIdentifier>{a6646b60-92d7-4360-b676-e57cd91e10c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\RenderMgr">
       <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\BillBoardPoint">
-      <UniqueIdentifier>{4096e577-a00c-4054-bce3-b41c1e5d5bf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\IDMap">
-      <UniqueIdentifier>{2bab43c2-94f4-4c1f-a401-d373c38f6ab0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\BillBoardPoint\FireBall">
-      <UniqueIdentifier>{bf673712-93a6-4566-b3a6-4c589d3e82d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\TessellatedQuad">
-      <UniqueIdentifier>{096e3691-6d9a-4fe8-8f74-4a1b42ffd3c7}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Manager\CollisionMgr">
       <UniqueIdentifier>{51cb9da8-2ab5-4e89-ae24-98a0524a7f6b}</UniqueIdentifier>
@@ -791,19 +776,55 @@
     <Filter Include="20. Editor\SpriteEditor">
       <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Compute">
+      <UniqueIdentifier>{6c7f0ee5-cd8f-4221-9b4e-ac369a818409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render">
+      <UniqueIdentifier>{a52180d5-2c05-46d6-9f76-d663569c9560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Basic">
+      <UniqueIdentifier>{a291ae40-b082-4c98-a07b-b88c20838d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\BillBoardPoint">
+      <UniqueIdentifier>{4096e577-a00c-4054-bce3-b41c1e5d5bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\BillBoardPoint\FireBall">
+      <UniqueIdentifier>{bf673712-93a6-4566-b3a6-4c589d3e82d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\BlinnPhong">
+      <UniqueIdentifier>{1a59fa21-719c-47cd-b3d2-c235a63bf234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\fx">
+      <UniqueIdentifier>{a6646b60-92d7-4360-b676-e57cd91e10c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\IDMap">
+      <UniqueIdentifier>{2bab43c2-94f4-4c1f-a401-d373c38f6ab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Normal">
+      <UniqueIdentifier>{1948534b-e8a0-4304-9cb5-d3065c96d43a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\OutLine">
+      <UniqueIdentifier>{32794d67-0e3f-4d28-9f08-b34493e1a0bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Postprocess">
+      <UniqueIdentifier>{ecfecc17-a936-4349-ac5e-f423232cdd33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\SkyBox">
+      <UniqueIdentifier>{b9305f22-f69a-4c67-8c77-8f7328de9be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\TessellatedQuad">
+      <UniqueIdentifier>{096e3691-6d9a-4fe8-8f74-4a1b42ffd3c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Utilities">
+      <UniqueIdentifier>{3dad39af-abd7-4a98-862b-1933c05559f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Compute\SetColor">
+      <UniqueIdentifier>{6e2d6bf9-74fa-4635-9090-30a81ef4d10c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
       <Filter>Module</Filter>
-    </None>
-    <None Include="global.hlsli">
-      <Filter>ShaderCode</Filter>
-    </None>
-    <None Include="struct.hlsli">
-      <Filter>ShaderCode</Filter>
-    </None>
-    <None Include="Light.hlsli">
-      <Filter>ShaderCode</Filter>
     </None>
     <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl">
       <Filter>ImGui\imgui_node_editor</Filter>
@@ -817,106 +838,118 @@
     <None Include="ImGui\imgui_node_editor\LICENSE">
       <Filter>ImGui\imgui_node_editor</Filter>
     </None>
+    <None Include="global.hlsli">
+      <Filter>ShaderCode\Utilities</Filter>
+    </None>
+    <None Include="Light.hlsli">
+      <Filter>ShaderCode\Utilities</Filter>
+    </None>
+    <None Include="struct.hlsli">
+      <Filter>ShaderCode\Utilities</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
-      <Filter>ShaderCode\Basic</Filter>
+      <Filter>ShaderCode\Render\Basic</Filter>
     </FxCompile>
     <FxCompile Include="BasicVS.hlsl">
-      <Filter>ShaderCode\Basic</Filter>
+      <Filter>ShaderCode\Render\Basic</Filter>
     </FxCompile>
     <FxCompile Include="BlinnPhongPS.hlsl">
-      <Filter>ShaderCode\BlinnPhong</Filter>
+      <Filter>ShaderCode\Render\BlinnPhong</Filter>
     </FxCompile>
     <FxCompile Include="BlinnPhongVS.hlsl">
-      <Filter>ShaderCode\BlinnPhong</Filter>
+      <Filter>ShaderCode\Render\BlinnPhong</Filter>
     </FxCompile>
     <FxCompile Include="NormalLineVS.hlsl">
-      <Filter>ShaderCode\Normal</Filter>
+      <Filter>ShaderCode\Render\Normal</Filter>
     </FxCompile>
     <FxCompile Include="NormalLineGS.hlsl">
-      <Filter>ShaderCode\Normal</Filter>
+      <Filter>ShaderCode\Render\Normal</Filter>
     </FxCompile>
     <FxCompile Include="NormalLinePS.hlsl">
-      <Filter>ShaderCode\Normal</Filter>
+      <Filter>ShaderCode\Render\Normal</Filter>
     </FxCompile>
     <FxCompile Include="3D_OutLinePS.hlsl">
-      <Filter>ShaderCode\OutLine</Filter>
+      <Filter>ShaderCode\Render\OutLine</Filter>
     </FxCompile>
     <FxCompile Include="3D_OutLineVS.hlsl">
-      <Filter>ShaderCode\OutLine</Filter>
+      <Filter>ShaderCode\Render\OutLine</Filter>
     </FxCompile>
     <FxCompile Include="SkyboxPS.hlsl">
-      <Filter>ShaderCode\SkyBox</Filter>
+      <Filter>ShaderCode\Render\SkyBox</Filter>
     </FxCompile>
     <FxCompile Include="SkyBoxVS.hlsl">
-      <Filter>ShaderCode\SkyBox</Filter>
+      <Filter>ShaderCode\Render\SkyBox</Filter>
     </FxCompile>
     <FxCompile Include="postprocessVS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="BloomPS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="std2d.fx">
-      <Filter>ShaderCode\fx</Filter>
+      <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
     <FxCompile Include="debug.fx">
-      <Filter>ShaderCode\fx</Filter>
+      <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
     <FxCompile Include="BlurYPS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="BlurXPS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="BillBoardPointGS.hlsl">
-      <Filter>ShaderCode\BillBoardPoint</Filter>
+      <Filter>ShaderCode\Render\BillBoardPoint</Filter>
     </FxCompile>
     <FxCompile Include="BillBoardPointPS.hlsl">
-      <Filter>ShaderCode\BillBoardPoint</Filter>
+      <Filter>ShaderCode\Render\BillBoardPoint</Filter>
     </FxCompile>
     <FxCompile Include="BillBoardPointVS.hlsl">
-      <Filter>ShaderCode\BillBoardPoint</Filter>
+      <Filter>ShaderCode\Render\BillBoardPoint</Filter>
     </FxCompile>
     <FxCompile Include="IDMapVS.hlsl">
-      <Filter>ShaderCode\IDMap</Filter>
+      <Filter>ShaderCode\Render\IDMap</Filter>
     </FxCompile>
     <FxCompile Include="IDMapPS.hlsl">
-      <Filter>ShaderCode\IDMap</Filter>
+      <Filter>ShaderCode\Render\IDMap</Filter>
     </FxCompile>
     <FxCompile Include="FireBallPS.hlsl">
-      <Filter>ShaderCode\BillBoardPoint\FireBall</Filter>
+      <Filter>ShaderCode\Render\BillBoardPoint\FireBall</Filter>
     </FxCompile>
     <FxCompile Include="TessellatedQuadDS.hlsl">
-      <Filter>ShaderCode\TessellatedQuad</Filter>
+      <Filter>ShaderCode\Render\TessellatedQuad</Filter>
     </FxCompile>
     <FxCompile Include="TessellatedQuadHS.hlsl">
-      <Filter>ShaderCode\TessellatedQuad</Filter>
+      <Filter>ShaderCode\Render\TessellatedQuad</Filter>
     </FxCompile>
     <FxCompile Include="TessellatedQuadPS.hlsl">
-      <Filter>ShaderCode\TessellatedQuad</Filter>
+      <Filter>ShaderCode\Render\TessellatedQuad</Filter>
     </FxCompile>
     <FxCompile Include="TessellatedQuadVS.hlsl">
-      <Filter>ShaderCode\TessellatedQuad</Filter>
+      <Filter>ShaderCode\Render\TessellatedQuad</Filter>
     </FxCompile>
     <FxCompile Include="postprocess.fx">
-      <Filter>ShaderCode\fx</Filter>
+      <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
     <FxCompile Include="2D_OutLinePS.hlsl">
-      <Filter>ShaderCode\OutLine</Filter>
+      <Filter>ShaderCode\Render\OutLine</Filter>
     </FxCompile>
     <FxCompile Include="2D_OutLineVS.hlsl">
-      <Filter>ShaderCode\OutLine</Filter>
+      <Filter>ShaderCode\Render\OutLine</Filter>
     </FxCompile>
     <FxCompile Include="ShockWavePS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="ShockWaveVS.hlsl">
-      <Filter>ShaderCode\Postprocess</Filter>
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="Tilemap.fx">
-      <Filter>ShaderCode\fx</Filter>
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="SetColor.fx">
+      <Filter>ShaderCode\Compute\SetColor</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

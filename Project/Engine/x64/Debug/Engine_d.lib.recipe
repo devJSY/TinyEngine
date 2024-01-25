@@ -72,6 +72,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocessVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\SetColor.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\ShockWavePS.cso</FullPath>
     </ContentFile>
     <ContentFile>

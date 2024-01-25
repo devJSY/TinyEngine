@@ -12,6 +12,8 @@
 
 #include "CScriptMgr.h"
 
+#include "CSetColorShader.h"
+
 CTestLevel2::CTestLevel2()
 {
 }
@@ -71,44 +73,33 @@ void CTestLevel2::begin()
     pLight->AddComponent(new CMeshRender);
     pLight->AddComponent(new CLight2D);
 
-    pLight->Transform()->SetRelativePos(Vec3(0.f, 0.f, 200.f));
-
-    pLight->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+    pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 
     AddObject(pLight, L"Light");
 
-    //// PostProcess 오브젝트 추가
-    //CGameObject* pPostObj = new CGameObject;
-    //pPostObj->SetName(L"GrayFilter");
+    // ComputeShader 테스트
+    // 사용할 텍스쳐 생성
+    Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(
+        L"TestTex", 1024, 1024, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+        D3D11_USAGE_DEFAULT);
 
-    //pPostObj->AddComponent(new CTransform);
-    //pPostObj->AddComponent(new CMeshRender);
+    Ptr<CSetColorShader> pCS =
+        (CSetColorShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"SetColorShader").Get();
+    pCS->SetColor(Vec3(1.f, 0.f, 0.f));
+    pCS->SetTargetTexture(pTestTex);
+    pCS->Execute();
 
-    //pPostObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    //pPostObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"GrayFilterMtrl"));
+    //CGameObject* pTestObj = new CGameObject;
+    //pTestObj->SetName(L"TestObj");
+    //pTestObj->AddComponent(new CTransform);
+    //pTestObj->AddComponent(new CMeshRender);
 
-    //AddObject(pPostObj, L"Default", false);
+ 
+    //pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    //pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
-    //// 타일앱
-    //CGameObject* pTileMap = new CGameObject;
-    //pTileMap->SetName(L"TileMap");
-    //pTileMap->AddComponent(new CTransform);
-    //pTileMap->AddComponent(new CTileMap);
 
-    //pTileMap->TileMap()->SetTileAtlas(CAssetMgr::GetInst()->FindAsset<CTexture>(L"MapTileTex"), Vec2(64.f, 64.f));
-    //pTileMap->TileMap()->SetTileCount(32, 2);
 
-    //for (UINT i = 0; i < 32; i++)
-    //{
-    //    pTileMap->TileMap()->SetTileIndex(0, i, i);
-    //}
-
-    //for (m_vecTileInfo i = 0; i < 32; i++)
-    //{
-    //    pTileMap->TileMap()->SetTileIndex(1, i, 31 - i);
-    //}
-
-    //AddObject(pTileMap, L"Tile");
 
     // 충돌 설정
     for (UINT i = 0; i < LAYER_MAX; i++)

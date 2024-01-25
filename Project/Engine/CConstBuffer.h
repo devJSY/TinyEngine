@@ -16,6 +16,7 @@ public:
     int Create(UINT _ElementSize, UINT _ElementCount);
     void SetData(void* _Src, UINT _ElementCount = 0);
     void UpdateData();
+    void UpdateData_CS();
 
 public:
     CConstBuffer(CB_TYPE _Type);

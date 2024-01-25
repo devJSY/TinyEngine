@@ -11,6 +11,8 @@
 
 #include "CDevice.h"
 
+#include "CSetColorShader.h"
+
 void CAssetMgr::CreateDefaultMesh()
 {
     // Crosshair
@@ -520,6 +522,18 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 }
 
+void CAssetMgr::CreateDefaultComputeShader()
+{
+    // =================================
+    // SetColor Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"SetColorShader"))
+    {
+        Ptr<CComputeShader> pShader = new CSetColorShader;
+        pShader->Create(L"SetColor.fx", "CS_SetColor");
+        AddAsset(L"SetColorShader", pShader);
+    }
+}
 void CAssetMgr::CreateDefaultTexture()
 {
     if (nullptr == FindAsset<CTexture>(L"missing_texture"))
