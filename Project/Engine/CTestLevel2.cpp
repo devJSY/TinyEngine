@@ -77,29 +77,33 @@ void CTestLevel2::begin()
 
     AddObject(pLight, L"Light");
 
-    // ComputeShader 테스트
-    // 사용할 텍스쳐 생성
-    Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(
-        L"TestTex", 1024, 1024, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
-        D3D11_USAGE_DEFAULT);
+    //// ComputeShader 테스트
+    //// 사용할 텍스쳐 생성
+    // Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(
+    //     L"TestTex", 1024, 1024, DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS,
+    //     D3D11_USAGE_DEFAULT);
 
-    Ptr<CSetColorShader> pCS =
-        (CSetColorShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"SetColorShader").Get();
-    pCS->SetColor(Vec3(1.f, 0.f, 0.f));
-    pCS->SetTargetTexture(pTestTex);
-    pCS->Execute();
+    // Ptr<CSetColorShader> pCS =
+    //     (CSetColorShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"SetColorShader").Get();
+    // pCS->SetColor(Vec3(1.f, 0.f, 0.f));
+    // pCS->SetTargetTexture(pTestTex);
+    // pCS->Execute();
 
-    //CGameObject* pTestObj = new CGameObject;
-    //pTestObj->SetName(L"TestObj");
-    //pTestObj->AddComponent(new CTransform);
-    //pTestObj->AddComponent(new CMeshRender);
+    //// CGameObject* pTestObj = new CGameObject;
+    //// pTestObj->SetName(L"TestObj");
+    //// pTestObj->AddComponent(new CTransform);
+    //// pTestObj->AddComponent(new CMeshRender);
 
- 
-    //pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    //pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+    //// pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    //// pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
+    CGameObject* pObj = new CGameObject;
+    pObj->SetName(L"Particle");
 
+    pObj->AddComponent(new CTransform);
+    pObj->AddComponent(new CParticleSystem);
 
+    AddObject(pObj, L"Default", false);
 
     // 충돌 설정
     for (UINT i = 0; i < LAYER_MAX; i++)

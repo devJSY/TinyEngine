@@ -22,7 +22,8 @@ private:
 public:
     int Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount);
     void render();
-    void renderDraw();
+    void render_draw();
+    void render_particle(UINT _ParticleCount);
 
 public:
     virtual int Save(const wstring& _strFilePath) override;

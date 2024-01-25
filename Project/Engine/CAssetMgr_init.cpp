@@ -12,6 +12,7 @@
 #include "CDevice.h"
 
 #include "CSetColorShader.h"
+#include "CParticleUpdate.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -549,8 +550,18 @@ void CAssetMgr::CreateDefaultComputeShader()
     if (nullptr == FindAsset<CGraphicsShader>(L"SetColorShader"))
     {
         Ptr<CComputeShader> pShader = new CSetColorShader;
-        pShader->Create(L"shader\\SetColor.fx", "CS_SetColor");
+        pShader->SetName(L"SetColorShader");
         AddAsset(L"SetColorShader", pShader);
+    }
+
+    // =================================
+    // SetColor Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"ParticleUpdateShader"))
+    {
+        Ptr<CComputeShader> pShader = new CParticleUpdate;
+        pShader->SetName(L"ParticleUpdateShader");
+        AddAsset(L"ParticleUpdateShader", pShader);
     }
 }
 void CAssetMgr::CreateDefaultTexture()

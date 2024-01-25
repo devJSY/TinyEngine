@@ -36,6 +36,7 @@ D:\TinyEngine\Project\Engine\CCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\De
 D:\TinyEngine\Project\Engine\COutliner.cpp;D:\TinyEngine\Project\Engine\x64\Debug\COutliner.obj
 D:\TinyEngine\Project\Engine\COutputLog.cpp;D:\TinyEngine\Project\Engine\x64\Debug\COutputLog.obj
 D:\TinyEngine\Project\Engine\CParticleSystem.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CParticleSystem.obj
+D:\TinyEngine\Project\Engine\CParticleUpdate.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CParticleUpdate.obj
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
 D:\TinyEngine\Project\Engine\CPlayerScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPlayerScript.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderComponent.obj

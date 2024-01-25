@@ -4,6 +4,7 @@
 CSetColorShader::CSetColorShader()
     : CComputeShader(32, 32, 1)
 {
+    Create(L"shader\\setcolor.fx", "CS_SetColor");
 }
 
 CSetColorShader::~CSetColorShader()
@@ -26,6 +27,11 @@ int CSetColorShader::UpdateData()
         return E_FAIL;
     }
 
+    return S_OK;
+}
+
+void CSetColorShader::UpdateGroupCount()
+{
     // 스레드 그룹 수 체크
     UINT width = m_TargetTex->GetWidth();
     UINT height = m_TargetTex->GetHeight();
@@ -33,8 +39,6 @@ int CSetColorShader::UpdateData()
     SetGroupX(1 + width / m_ThreadX);
     SetGroupY(1 + height / m_ThreadY);
     SetGroupZ(1);
-
-    return S_OK;
 }
 
 void CSetColorShader::Clear()

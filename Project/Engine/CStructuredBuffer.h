@@ -23,10 +23,20 @@ private:
     SB_TYPE m_Type;
     bool m_bSysMemMove;
 
+    UINT m_RegentSRV; // 최근에 바인딩한 t레지스터 번호
+    UINT m_RegentUAV; // 최근에 바인딩한 u레지스터 번호
+
 public:
     int Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Type, bool _bSysMemMove = false,
                void* _pSysMem = nullptr);
     void UpdateData(UINT _RegisterNum);
+    int UpdateData_CS_SRV(UINT _RegisterNum);
+    int UpdateData_CS_UAV(UINT _RegisterNum);
+
+    void Clear(UINT _RegisterNum);
+    void Clear_CS_SRV();
+    void Clear_CS_UAV();
+
     void SetData(void* _SysMem, UINT _ElementCount = 0);
     void GetData(void* _Dest, UINT _ElementCount = 0);
 

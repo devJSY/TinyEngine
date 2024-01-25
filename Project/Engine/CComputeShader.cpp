@@ -54,10 +54,17 @@ void CComputeShader::Execute()
     if (FAILED(UpdateData()))
         return;
 
+    UpdateGroupCount();
+
     // 상수 데이터 바인딩
-    static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
-    pCB->SetData(&m_Const);
-    pCB->UpdateData_CS();
+    static CConstBuffer* pMtrlCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
+    pMtrlCB->SetData(&m_Const);
+    pMtrlCB->UpdateData_CS();
+
+    // 상수 데이터 바인딩
+    static CConstBuffer* pGlobalCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    pGlobalCB->SetData(&g_Global);
+    pGlobalCB->UpdateData_CS();
 
     // 컴퓨트 쉐이더 실행
     CONTEXT->CSSetShader(m_CS.Get(), 0, 0);

@@ -38,8 +38,16 @@ protected:
     void SetGroupY(UINT _Group) { m_GroupY = _Group; }
     void SetGroupZ(UINT _Group) { m_GroupZ = _Group; }
 
+    void SetGroup(UINT _X, UINT _Y, UINT _Z)
+    {
+        m_GroupX = _X;
+        m_GroupY = _Y;
+        m_GroupZ = _Z;
+    }
+
 private:
     virtual int UpdateData() = 0;
+    virtual void UpdateGroupCount() = 0;
     virtual void Clear() = 0;
 
 public:

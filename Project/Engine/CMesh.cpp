@@ -99,15 +99,19 @@ void CMesh::UpdateData()
 void CMesh::render()
 {
     UpdateData();
-
     CONTEXT->DrawIndexed(m_IdxCount, 0, 0);
 }
 
-void CMesh::renderDraw()
+void CMesh::render_draw()
 {
     UpdateData();
-
     CONTEXT->Draw(m_VtxCount, 0);
+}
+
+void CMesh::render_particle(UINT _ParticleCount)
+{
+    UpdateData();
+    CONTEXT->DrawIndexedInstanced(m_IdxCount, _ParticleCount, 0, 0, 0);
 }
 
 int CMesh::Load(const wstring& _strFilePath)
