@@ -314,7 +314,7 @@ void CSpriteEditor::DrawViewport()
             m_Sprites.resize(m_Sprites.size() - 1);
         Adding_Rect = false;
 
-        if (ImGui::MenuItem("Align Selected Sprite", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Align Selected Sprites", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
 
@@ -338,7 +338,7 @@ void CSpriteEditor::DrawViewport()
                 }
             }
         }
-        if (ImGui::MenuItem("Remove Selected Sprite", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Remove Selected Sprites", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
 
@@ -358,7 +358,7 @@ void CSpriteEditor::DrawViewport()
         {
             m_Sprites.resize(m_Sprites.Size - 1);
         }
-        if (ImGui::MenuItem("Remove all", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Remove all Sprites", NULL, false, m_Sprites.Size > 0))
         {
             m_Sprites.clear();
         }
@@ -518,6 +518,8 @@ void CSpriteEditor::DrawDetails()
             for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
             {
                 m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
                 m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
                 m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
             }
@@ -541,6 +543,8 @@ void CSpriteEditor::DrawDetails()
                 for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                 {
                     m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                    m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
                     m_pAnim->m_vecFrm[i].vBackground.x =
                         m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
                     m_pAnim->m_vecFrm[i].vBackground.y =
@@ -596,29 +600,29 @@ void CSpriteEditor::DrawDetails()
                          (int)m_pAnim->m_vecFrm.size() - 1);
 
         ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset X").c_str(),
-                         &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x, 1.f / m_pAnim->GetAtlasTex()->GetWidth());
+                         &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
 
         ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset Y").c_str(),
-                         &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y, 1.f / m_pAnim->GetAtlasTex()->GetHeight());
+                         &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
 
         ImGui::Text("Animation Offset");
         ImGui::SameLine();
 
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 125);
         if (ImGui::ArrowButton("##left", ImGuiDir_Left))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x -= 1.f / m_pAnim->GetAtlasTex()->GetWidth();
+            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x -= 1.f;
 
         ImGui::SameLine();
         if (ImGui::ArrowButton("##Right", ImGuiDir_Right))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x += 1.f / m_pAnim->GetAtlasTex()->GetWidth();
+            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x += 1.f;
 
         ImGui::SameLine();
         if (ImGui::ArrowButton("##Up", ImGuiDir_Up))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y -= 1.f / m_pAnim->GetAtlasTex()->GetHeight();
+            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y += 1.f;
 
         ImGui::SameLine();
         if (ImGui::ArrowButton("##Down", ImGuiDir_Down))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y += 1.f / m_pAnim->GetAtlasTex()->GetHeight();
+            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y -= 1.f;
 
         if (ImGui::DragFloat2(ImGuiLabelPrefix("Animation BackGround").c_str(), &m_vAnimBackGround.x, 1.f))
         {
@@ -752,10 +756,8 @@ void CSpriteEditor::DrawAnimationViewport()
         ImVec2 vOffset = ImVec2(m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x,
                                 m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
 
-        ImVec2 vTextureSize =
-            ImVec2((float)m_pAnim->GetAtlasTex()->GetWidth(), (float)m_pAnim->GetAtlasTex()->GetHeight());
-
-        vLT += vOffset * vTextureSize;
+        vLT.x += vOffset.x;
+        vLT.y -= vOffset.y;
 
         ImVec2 uv0 = ImVec2(m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.x,
                             m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.y);
