@@ -3,8 +3,8 @@
 
 enum class SB_TYPE
 {
-    READ_ONLY,
-    READ_WRITE,
+    READ_ONLY,  // SRV
+    READ_WRITE, // SRV + UAV
 };
 
 class CStructuredBuffer : public CEntity
@@ -12,6 +12,7 @@ class CStructuredBuffer : public CEntity
 private:
     ComPtr<ID3D11Buffer> m_SB;
     ComPtr<ID3D11ShaderResourceView> m_SRV;
+    ComPtr<ID3D11UnorderedAccessView> m_UAV;
 
     ComPtr<ID3D11Buffer> m_SB_Read;
     ComPtr<ID3D11Buffer> m_SB_Write;

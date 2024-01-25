@@ -146,5 +146,19 @@ struct tPixel
     BYTE r, g, b, a;
 };
 
+struct tParticle
+{
+    Vec4 vWorldPos;      // 위치
+    Vec4 vWorldScale;    // 크기
+    Vec4 vWorldRotation; // 회전값
+    Vec4 vVelocity;      // 속도
+    Vec4 vColor;         // 색상
+
+    float Mass; // 질량
+    float Age;  // 현재 나이
+    float Life; // 수명
+    int Active; // 활성화, 비활성화 여부
+};
+
 extern tTransform g_Transform;
 extern tGlobalData g_Global;

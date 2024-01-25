@@ -7,6 +7,8 @@
 CTexture::CTexture()
     : CAsset(ASSET_TYPE::TEXTURE)
     , m_Desc{}
+    , m_RecentNum_SRV(0)
+    , m_RecentNum_UAV(0)
 {
 }
 
