@@ -75,7 +75,7 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Ty
     {
         D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
         UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-        UAVDesc.Buffer.NumElements = m_ElementCount;
+        UAVDesc.Buffer.NumElements = m_ElementCount; 
 
         hr = DEVICE->CreateUnorderedAccessView(m_SB.Get(), &UAVDesc, m_UAV.GetAddressOf());
         if (FAILED(hr))

@@ -789,6 +789,19 @@ void COutliner::DrawTileMap(CGameObject* obj)
 
 void COutliner::DrawParticlesystem(CGameObject* obj)
 {
+    CParticleSystem* pParticleSystem = obj->ParticleSystem();
+    if (nullptr == pParticleSystem)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CParticleSystem).hash_code(), m_DefaultTreeNodeFlag, "ParticleSystem");
+
+    ComponentSettingsButton(pParticleSystem);
+
+    if (open)
+    {
+
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawSkybox(CGameObject* obj)

@@ -41,7 +41,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowOutputLog(true)
     , m_bShowMaterialEditor(false)
     , m_bShowBlueprintEditor(false)
-    , m_bShowSpriteEditor(true)
+    , m_bShowSpriteEditor(false)
 {
 }
 

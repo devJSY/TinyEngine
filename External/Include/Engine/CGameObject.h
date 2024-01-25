@@ -18,6 +18,7 @@ class CAnimator2D;
 class Light2D;
 class Light3D;
 class CTileMap;
+class CParticleSystem;
 
 class CGameObject : public CEntity
 {
@@ -52,6 +53,7 @@ public:
     GET_COMPONENT(Animator2D, ANIMATOR2D);
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(TileMap, TILEMAP);
+    GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
 
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CScript*>& GetScripts() const { return m_vecScript; }

@@ -520,6 +520,12 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
         }
         break;
     case COMPONENT_TYPE::PARTICLESYSTEM:
+        {
+            if (nullptr == pObj->GetRenderComponent())
+                pObj->AddComponent(new CParticleSystem);
+            else
+                LOG(Error, ToString(pObj->GetName()) + " Already Has a RenderComponent!!");
+        }
         break;
     case COMPONENT_TYPE::SKYBOX:
         break;
