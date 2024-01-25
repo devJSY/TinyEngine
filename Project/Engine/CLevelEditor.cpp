@@ -410,7 +410,7 @@ void CLevelEditor::render_Assets()
                 {
                     ImGui::Text("%s", key.c_str(), key.size());
 
-                    ImGui::SetDragDropPayload("ASSETS", key.c_str(), key.size());
+                    ImGui::SetDragDropPayload("LEVEL_EDITOR_ASSETS", key.c_str(), key.size());
                     ImGui::EndDragDropSource();
                 }
             }

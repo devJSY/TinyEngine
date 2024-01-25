@@ -33,6 +33,10 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
             char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
             MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
         }
+        else
+        {
+            MessageBoxA(nullptr, "Shader File No Exist", "Shader Compile Failed!!", MB_OK);
+        }
 
         return E_FAIL;
     }
@@ -93,6 +97,10 @@ int CGraphicsShader::CreateHullShader(const wstring& _strRelativePath, const str
             char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
             MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
         }
+        else
+        {
+            MessageBoxA(nullptr, "Shader File No Exist", "Shader Compile Failed!!", MB_OK);
+        }
 
         return E_FAIL;
     }
@@ -115,6 +123,10 @@ int CGraphicsShader::CreateDomainShader(const wstring& _strRelativePath, const s
             char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
             MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
         }
+        else
+        {
+            MessageBoxA(nullptr, "Shader File No Exist", "Shader Compile Failed!!", MB_OK);
+        }
 
         return E_FAIL;
     }
@@ -136,6 +148,10 @@ int CGraphicsShader::CreateGeometryShader(const wstring& _strRelativePath, const
         {
             char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
             MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
+        }
+        else
+        {
+            MessageBoxA(nullptr, "Shader File No Exist", "Shader Compile Failed!!", MB_OK);
         }
 
         return E_FAIL;
@@ -161,6 +177,10 @@ int CGraphicsShader::CreatePixelShader(const wstring& _strRelativePath, const st
             char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
             MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
         }
+        else
+        {
+            MessageBoxA(nullptr, "Shader File No Exist", "Shader Compile Failed!!", MB_OK);
+        }
 
         return E_FAIL;
     }
@@ -170,7 +190,7 @@ int CGraphicsShader::CreatePixelShader(const wstring& _strRelativePath, const st
     return S_OK;
 }
 
-void CGraphicsShader::UpdateData()
+int CGraphicsShader::UpdateData()
 {
     CONTEXT->IASetInputLayout(m_Layout.Get());
     CONTEXT->IASetPrimitiveTopology(m_Topology);
@@ -185,4 +205,6 @@ void CGraphicsShader::UpdateData()
     CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0);
     CONTEXT->GSSetShader(m_GS.Get(), nullptr, 0);
     CONTEXT->PSSetShader(m_PS.Get(), nullptr, 0);
+
+    return S_OK;
 }

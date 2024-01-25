@@ -72,6 +72,29 @@ void CTexture::UpdateData(int _RegisterNum)
     CONTEXT->PSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());
 }
 
+int CTexture::UpdateData_CS_SRV(int _RegisterNum)
+{
+    if (nullptr == m_SRV)
+        return E_FAIL;
+
+    m_RecentNum_SRV = _RegisterNum;
+
+    CONTEXT->CSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());
+    return S_OK;
+}
+
+int CTexture::UpdateData_CS_UAV(int _RegisterNum)
+{
+    if (nullptr == m_UAV)
+        return E_FAIL;
+
+    m_RecentNum_UAV = _RegisterNum;
+
+    UINT i = -1;
+    CONTEXT->CSSetUnorderedAccessViews(_RegisterNum, 1, m_UAV.GetAddressOf(), &i);
+    return S_OK;
+}
+
 void CTexture::Clear(int _iRegisterNum)
 {
     Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture");
@@ -85,6 +108,19 @@ void CTexture::Clear(int _iRegisterNum)
     CONTEXT->DSSetShaderResources(_iRegisterNum, 1, &pSRV);
     CONTEXT->GSSetShaderResources(_iRegisterNum, 1, &pSRV);
     CONTEXT->PSSetShaderResources(_iRegisterNum, 1, &pSRV);
+}
+
+void CTexture::Clear_CS_SRV()
+{
+    ID3D11ShaderResourceView* pSRV = nullptr;
+    CONTEXT->CSSetShaderResources(m_RecentNum_SRV, 1, &pSRV);
+}
+
+void CTexture::Clear_CS_UAV()
+{
+    ID3D11UnorderedAccessView* pUAV = nullptr;
+    UINT i = -1;
+    CONTEXT->CSSetUnorderedAccessViews(m_RecentNum_UAV, 1, &pUAV, &i);
 }
 
 int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage)

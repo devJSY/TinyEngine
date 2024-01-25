@@ -36,6 +36,10 @@ int CComputeShader::Create(const wstring& _strRelativePath, const string& _strFu
             char* pErrMsg = (char*)m_ErrBlob->GetBufferPointer();
             MessageBoxA(nullptr, pErrMsg, "Shader Compile Failed!!", MB_OK);
         }
+        else
+        {
+            MessageBoxA(nullptr, "Shader File No Exist", "Shader Compile Failed!!", MB_OK);
+        }
 
         return E_FAIL;
     }
@@ -47,7 +51,8 @@ int CComputeShader::Create(const wstring& _strRelativePath, const string& _strFu
 
 void CComputeShader::Execute()
 {
-    UpdateData();
+    if (FAILED(UpdateData()))
+        return;
 
     // 상수 데이터 바인딩
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL_CONST);
@@ -55,6 +60,7 @@ void CComputeShader::Execute()
     pCB->UpdateData_CS();
 
     // 컴퓨트 쉐이더 실행
+    CONTEXT->CSSetShader(m_CS.Get(), 0, 0);
     CONTEXT->Dispatch(m_GroupX, m_GroupY, m_GroupZ);
 
     Clear();

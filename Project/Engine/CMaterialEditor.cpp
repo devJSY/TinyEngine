@@ -81,6 +81,13 @@ void CMaterialEditor::render()
         // Drag & Drop
         if (ImGui::BeginDragDropTarget())
         {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                m_Mtrl->SetTexParam((TEX_PARAM)i, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+            }
+
             if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
             {
                 string name = (char*)payload->Data;

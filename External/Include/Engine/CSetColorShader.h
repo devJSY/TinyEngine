@@ -12,7 +12,7 @@ public:
     void SetColor(Vec3 _Color) { m_Color = _Color; }
 
 public:
-    virtual void UpdateData() override;
+    virtual int UpdateData() override;
     virtual void Clear() override;
 
 public:

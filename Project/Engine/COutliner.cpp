@@ -654,7 +654,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             // Drag & Drop
             if (ImGui::BeginDragDropTarget())
             {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSETS"))
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
@@ -683,7 +683,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             // Drag & Drop
             if (ImGui::BeginDragDropTarget())
             {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSETS"))
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);

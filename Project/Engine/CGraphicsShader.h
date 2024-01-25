@@ -52,7 +52,7 @@ public:
     D3D11_PRIMITIVE_TOPOLOGY GetTopology() const { return m_Topology; }
 
 public:
-    virtual void UpdateData() override;
+    virtual int UpdateData() override;
 
 public:
     CGraphicsShader();

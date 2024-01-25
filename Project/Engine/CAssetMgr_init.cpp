@@ -530,7 +530,7 @@ void CAssetMgr::CreateDefaultComputeShader()
     if (nullptr == FindAsset<CGraphicsShader>(L"SetColorShader"))
     {
         Ptr<CComputeShader> pShader = new CSetColorShader;
-        pShader->Create(L"SetColor.fx", "CS_SetColor");
+        pShader->Create(L"shader\\SetColor.fx", "CS_SetColor");
         AddAsset(L"SetColorShader", pShader);
     }
 }

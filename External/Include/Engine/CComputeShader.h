@@ -15,12 +15,12 @@ private:
     UINT m_GroupY;
     UINT m_GroupZ;
 
+protected:
     // 스레드 개수
     const UINT m_ThreadX;
     const UINT m_ThreadY;
     const UINT m_ThreadZ;
 
-protected:
     tMtrlConst m_Const;
 
 public:
@@ -39,7 +39,7 @@ protected:
     void SetGroupZ(UINT _Group) { m_GroupZ = _Group; }
 
 private:
-    virtual void UpdateData() = 0;
+    virtual int UpdateData() = 0;
     virtual void Clear() = 0;
 
 public:
