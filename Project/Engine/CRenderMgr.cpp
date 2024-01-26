@@ -130,6 +130,7 @@ void CRenderMgr::UpdateData()
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pGlobalBuffer->SetData(&g_Global);
     pGlobalBuffer->UpdateData();
+    pGlobalBuffer->UpdateData_CS();
 
     // Light2D
     static vector<tLightInfo> vecLight2DInfo;
