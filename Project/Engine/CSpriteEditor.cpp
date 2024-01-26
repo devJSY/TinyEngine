@@ -423,7 +423,9 @@ void CSpriteEditor::DrawViewport()
 
     draw_list->PopClipRect();
 
-    // Scale
+    // =================================
+    // Scale Set
+    // =================================
     if (ImGui::IsWindowHovered())
     {
         float wheel = ImGui::GetIO().MouseWheel;

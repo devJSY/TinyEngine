@@ -76,15 +76,15 @@ void CParticleSystem::finaltick()
     m_Module.vSpawnMaxScale = Vec4(20.f, 20.f, 1.f, 1.f);
     m_Module.MinLife = 5.f;
     m_Module.MaxLife = 5.f;
-    m_Module.SpawnRate = 100;
+    m_Module.SpawnRate = 1;
 
     m_AccTime += DT;
     if ((1.f / m_Module.SpawnRate) < m_AccTime)
     {
         m_AccTime = 0.f;
-        tSpawnCount count = tSpawnCount{
-            100,
-        };
+        tSpawnCount count = {};
+        count.SpawnCount = 4;
+        
         m_RWBuffer->SetData(&count);
     }
     else

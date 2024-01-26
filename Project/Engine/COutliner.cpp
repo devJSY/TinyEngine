@@ -783,6 +783,12 @@ void COutliner::DrawTileMap(CGameObject* obj)
             ImGui::TreePop();
         }
 
+        if (ImGuiAlignButton("TileMap Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowTileMapEditor(true);
+            CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMapObj(obj);
+        }
+
         ImGui::TreePop();
     }
 }

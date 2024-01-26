@@ -54,6 +54,7 @@ public:
     void ShowMaterialEditor(bool _show) { m_bShowMaterialEditor = _show; }
     void ShowBlueprintEditor(bool _show) { m_bShowBlueprintEditor = _show; }
     void ShowSpriteEditor(bool _show) { m_bShowSpriteEditor = _show; }
+    void ShowTileMapEditor(bool _show) { m_bShowTileMapEditor = _show; }
 
 public:
     CLevelEditor();

@@ -23,12 +23,17 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             // Atomic ÇÔ¼ö 
             int AliveCount = SpawnCount;
             int Exchange = SpawnCount - 1;
-            int Origin = 1;
+            int Origin = 0;
                         
-            InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
-            //InterlockedExchange(SpawnCount, Exchange, Origin);
+            //InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
+            //if (AliveCount == Origin)
+            //{
+            //    Particle.Active = 1;
+            //}
+            
+            InterlockedExchange(SpawnCount, Exchange, Origin);
         
-            if (AliveCount == Origin)
+            if (SpawnCount < Origin)
             {
                 Particle.Active = 1;
             }

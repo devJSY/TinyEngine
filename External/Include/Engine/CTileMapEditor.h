@@ -5,7 +5,11 @@
 class CTileMapEditor : public CEditor
 {
 private:
-    CTileMap* m_TileMap;
+    CGameObject* m_TileMapObj;
+    
+    ImVec2 m_ViewportOffset;
+    float m_ViewportScale;
+
 
 public:
     virtual void init() override{};
@@ -17,7 +21,7 @@ private:
     virtual void render() override;
 
 public:
-    void SetTileMap(CTileMap* _TileMap) { m_TileMap = _TileMap; }
+    void SetTileMapObj(CGameObject* _obj) { m_TileMapObj = _obj; }
 
     void DrawViewport();
     void DrawDetails();
