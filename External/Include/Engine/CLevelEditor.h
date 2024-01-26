@@ -29,6 +29,7 @@ private:
     bool m_bShowMaterialEditor;
     bool m_bShowBlueprintEditor;
     bool m_bShowSpriteEditor;
+    bool m_bShowTileMapEditor;
 
 public:
     virtual void init() override;

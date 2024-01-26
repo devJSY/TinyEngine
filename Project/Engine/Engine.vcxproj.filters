@@ -313,6 +313,9 @@
     <ClInclude Include="CParticleUpdate.h">
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </ClInclude>
+    <ClInclude Include="CTileMapEditor.h">
+      <Filter>20. Editor\TileMapEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -591,6 +594,9 @@
     <ClCompile Include="CParticleUpdate.cpp">
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </ClCompile>
+    <ClCompile Include="CTileMapEditor.cpp">
+      <Filter>20. Editor\TileMapEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -829,6 +835,9 @@
     </Filter>
     <Filter Include="ShaderCode\Compute\ParticleUpdate">
       <UniqueIdentifier>{ca4b92ac-f16e-406a-9387-403008e51038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\TileMapEditor">
+      <UniqueIdentifier>{79706b21-6959-4ba5-81f1-4e2d11bf09f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -102,6 +102,10 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE] = new CSpriteEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]->SetName(L"Sprite Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]->init();
+
+    m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP] = new CTileMapEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->SetName(L"TileMap Editor");
+    m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->init();
 }
 
 void CEditorMgr::tick()

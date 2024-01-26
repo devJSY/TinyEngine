@@ -232,6 +232,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CTestLevel2.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTileMap.h" />
+    <ClInclude Include="CTileMapEditor.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="define.h" />
@@ -347,6 +348,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CTestLevel2.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTileMap.cpp" />
+    <ClCompile Include="CTileMapEditor.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Engine.cpp" />

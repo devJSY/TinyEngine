@@ -509,7 +509,12 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
         pObj->AddComponent(new CCamera);
         break;
     case COMPONENT_TYPE::MESHRENDER:
-        pObj->AddComponent(new CMeshRender);
+        {
+            if (nullptr == pObj->GetRenderComponent())
+                pObj->AddComponent(new CMeshRender);
+            else
+                LOG(Error, ToString(pObj->GetName()) + " Already Has a RenderComponent!!");
+        }
         break;
     case COMPONENT_TYPE::TILEMAP:
         {

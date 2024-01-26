@@ -178,6 +178,7 @@ enum class EDITOR_TYPE
     MATERIAL,
     BLUEPRINT,
     SPRITE,
+    TILEMAP,
 
     END,
 };

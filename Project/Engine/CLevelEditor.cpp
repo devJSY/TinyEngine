@@ -20,6 +20,7 @@
 
 #include "CLevelSaveLoad.h"
 #include "CMaterialEditor.h"
+#include "CTileMapEditor.h"
 
 #include "COutputLog.h"
 
@@ -41,7 +42,8 @@ CLevelEditor::CLevelEditor()
     , m_bShowOutputLog(true)
     , m_bShowMaterialEditor(false)
     , m_bShowBlueprintEditor(false)
-    , m_bShowSpriteEditor(true)
+    , m_bShowSpriteEditor(false)
+    , m_bShowTileMapEditor(false)
 {
 }
 
@@ -141,6 +143,9 @@ void CLevelEditor::render()
 
     if (m_bShowSpriteEditor)
         CEditorMgr::GetInst()->GetSpriteEditor()->render(&m_bShowSpriteEditor);
+
+    if (m_bShowTileMapEditor)
+        CEditorMgr::GetInst()->GetTileMapEditor()->render(&m_bShowTileMapEditor);
 }
 
 void CLevelEditor::render_MenuBar()
@@ -193,6 +198,9 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Sprite Editor", NULL, m_bShowSpriteEditor))
                 m_bShowSpriteEditor = !m_bShowSpriteEditor;
+
+            if (ImGui::MenuItem("TileMap Editor", NULL, m_bShowTileMapEditor))
+                m_bShowTileMapEditor = !m_bShowTileMapEditor;
 
             ImGui::EndMenu();
         }

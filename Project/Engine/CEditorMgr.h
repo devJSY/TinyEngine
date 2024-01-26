@@ -4,6 +4,7 @@
 #include "CBlueprintEditor.h"
 // #include "CBlueprintEditor2.h"
 #include "CSpriteEditor.h"
+#include "CTileMapEditor.h"
 
 class CEditor;
 class CGameObject;
@@ -39,6 +40,10 @@ public:
     CSpriteEditor* GetSpriteEditor() const
     {
         return static_cast<CSpriteEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]);
+    }
+    CTileMapEditor* GetTileMapEditor() const
+    {
+        return static_cast<CTileMapEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]);
     }
 
     CGameObject* GetSelectedObject() const { return m_SelectedObj; }

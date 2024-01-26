@@ -63,6 +63,12 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\3D_OutLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\particle.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\particle_update.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocess.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -70,6 +76,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocessVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\setcolor.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\ShockWavePS.cso</FullPath>
