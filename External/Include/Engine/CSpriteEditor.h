@@ -26,6 +26,9 @@ private:
     bool m_bAnimPlay;
     Vec2 m_vAnimBackGround;
 
+    int m_CellWidth;
+    int m_CellHeight;
+
 public:
     virtual void init() override;
     virtual void tick() override{};

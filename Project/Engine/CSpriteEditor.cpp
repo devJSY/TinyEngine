@@ -18,6 +18,8 @@ CSpriteEditor::CSpriteEditor()
     , m_pAnim(nullptr)
     , m_AnimFPS(12)
     , m_bAnimPlay(true)
+    , m_CellWidth(0)
+    , m_CellHeight(0)
 
 {
 }
@@ -455,184 +457,282 @@ void CSpriteEditor::DrawDetails()
 {
     ImGui::Begin("Details##SpriteEditor");
 
-    const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
-    vector<string> names;
-    for (const auto& iter : mapTextures)
+    ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                                             ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+    // ==========================
+    // Sprites
+    // ==========================
+    if (ImGui::TreeNodeEx("Sprites##SpriteEditorDetails", DefaultTreeNodeFlag))
     {
-        names.push_back(ToString(iter.first));
-    }
-
-    std::string CurTextureName;
-
-    if (nullptr != m_pTex.Get())
-        CurTextureName = ToString(m_pTex->GetKey());
-
-    if (ImGuiComboUI(ImGuiLabelPrefix("Source Texture").c_str(), CurTextureName, names))
-    {
-        m_pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName));
-        m_Sprites.clear();
-    }
-
-    if (nullptr != m_pTex.Get())
-    {
-        ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(250.f, 250.f));
-
-        if (ImGui::Button("Extract Sprites"))
+        const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
+        vector<string> names;
+        for (const auto& iter : mapTextures)
         {
-            tPixel* pPixel = m_pTex->GetPixels();
+            names.push_back(ToString(iter.first));
+        }
 
-            for (int y = 0; y < (int)m_pTex->GetHeight(); y++)
+        std::string CurTextureName;
+
+        if (nullptr != m_pTex.Get())
+            CurTextureName = ToString(m_pTex->GetKey());
+
+        if (ImGuiComboUI(ImGuiLabelPrefix("Source Texture").c_str(), CurTextureName, names))
+        {
+            m_pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName));
+            m_CellWidth = m_pTex->GetWidth();
+            m_CellHeight = m_pTex->GetHeight();
+            m_Sprites.clear();
+        }
+
+        if (nullptr != m_pTex.Get())
+        {
+            ImGui::Image((void*)m_pTex->GetSRV().Get(), ImVec2(250.f, 250.f));
+        }
+
+        ImGui::TreePop();
+    }
+
+    // ==========================
+    // Extract sprites
+    // ==========================
+    if (nullptr != m_pTex.Get())
+    {
+        if (ImGui::TreeNodeEx("Extract sprites##SpriteEditorDetails", DefaultTreeNodeFlag))
+        {
+            vector<string> spriteExtractModes = {"Auto", "Grid"};
+            static string CurMode = spriteExtractModes[0];
+
+            ImGuiComboUI(ImGuiLabelPrefix("Sprite Extract Mode").c_str(), CurMode, spriteExtractModes);
+
+            // Grid option
+            if (spriteExtractModes[1] == CurMode)
             {
-                for (int x = 0; x < (int)m_pTex->GetWidth(); x++)
+                ImGui::DragInt(ImGuiLabelPrefix("Cell Width").c_str(), &m_CellWidth, 1.f, 0, m_pTex->GetWidth());
+                ImGui::DragInt(ImGuiLabelPrefix("Cell Height").c_str(), &m_CellHeight, 1.f, 0, m_pTex->GetHeight());
+            }
+
+            if (ImGui::Button("Extract..."))
+            {
+                // Auto
+                if (spriteExtractModes[0] == CurMode)
                 {
-                    int idx = (m_pTex->GetWidth() * y) + x;
+                    tPixel* pPixel = m_pTex->GetPixels();
 
-                    if (pPixel[idx].a == 0)
-                        continue;
+                    for (int y = 0; y < (int)m_pTex->GetHeight(); y++)
+                    {
+                        for (int x = 0; x < (int)m_pTex->GetWidth(); x++)
+                        {
+                            int idx = (m_pTex->GetWidth() * y) + x;
 
-                    ExtractSprite(pPixel, x, y, m_pTex->GetWidth(), m_pTex->GetHeight());
+                            if (pPixel[idx].a == 0)
+                                continue;
+
+                            ExtractSprite(pPixel, x, y, m_pTex->GetWidth(), m_pTex->GetHeight());
+                        }
+                    }
+
+                    // 원본 이미지 GPU에서 불러와서 데이터 재설정
+                    m_pTex->CaptureTex();
+                }
+                // Grid
+                else
+                {
+                    int WidhtCount = m_pTex->GetWidth() / m_CellWidth;
+                    int HeightCount = m_pTex->GetHeight() / m_CellHeight;
+
+                    for (int y = 0; y < HeightCount; y++)
+                    {
+                        for (int x = 0; x < WidhtCount; x++)
+                        {
+                            ImRect rect;
+
+                            rect.Min.x = float(m_CellWidth * x);
+                            rect.Min.y = float(m_CellHeight * y);
+                            rect.Max.x = float(m_CellWidth * x + m_CellWidth);
+                            rect.Max.y = float(m_CellHeight * y + m_CellHeight);
+
+                            // 비어있는 영역인지 체크
+                            bool bEmpty = true;
+                            tPixel* pPixel = m_pTex->GetPixels();
+
+                            for (int y = (int)rect.Min.y; y <= (int)rect.Max.y; y++)
+                            {
+                                for (int x = (int)rect.Min.x; x <= (int)rect.Max.x; x++)
+                                {
+                                    int idx = (m_pTex->GetWidth() * y) + x;
+
+                                    if (pPixel[idx].a != 0)
+                                    {
+                                        bEmpty = false;
+                                        break;
+                                    }
+                                }
+
+                                if (!bEmpty)
+                                    break;
+                            }
+
+                            // 비어있지 않는 영역만 생성
+                            if (!bEmpty)
+                            {
+                                tSprite sprite;
+                                sprite.Rect = rect;
+                                sprite.bViewport_Selected = false;
+                                sprite.bSpriteList_Selected = false;
+
+                                m_Sprites.push_back(sprite);
+                            }
+                        }
+                    }
                 }
             }
 
-            // 원본 이미지 GPU에서 불러와서 데이터 재설정
-            m_pTex->CaptureTex();
+            ImGui::TreePop();
         }
     }
 
-    // Animation Data
-    ImGui::Separator();
-
-    if (ImGui::Button("Load Animation"))
+    // ==========================
+    // Animation
+    // ==========================
+    if (ImGui::TreeNodeEx("Animation##SpriteEditorDetails", DefaultTreeNodeFlag))
     {
-        std::filesystem::path filePath =
-            OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
-
-        if (!filePath.empty()) // 취소, 닫기 버튼 체크
+        if (ImGui::Button("Load Animation"))
         {
-            if (nullptr != m_pAnim)
-                delete m_pAnim;
+            std::filesystem::path filePath =
+                OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
-            m_pAnim = new CAnim;
-            m_pAnim->LoadAnim(filePath);
-
-            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            if (!filePath.empty()) // 취소, 닫기 버튼 체크
             {
-                m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-                m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
-                m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
-                m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
-            }
-        }
-    }
+                if (nullptr != m_pAnim)
+                    delete m_pAnim;
 
-    ImGui::SameLine();
+                m_pAnim = new CAnim;
+                m_pAnim->LoadAnim(filePath);
 
-    if (ImGui::Button("Save Animation"))
-    {
-        std::filesystem::path filePath =
-            SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
-
-        if (!filePath.empty()) // 취소, 닫기 버튼 체크
-        {
-            if (".anim" != filePath.extension())
-                filePath.replace_extension(".anim");
-
-            if (nullptr != m_pAnim)
-            {
                 for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                 {
                     m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-                    m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                    m_pAnim->m_vecFrm[i].vBackground.x =
-                        m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_pAnim->m_vecFrm[i].vBackground.y =
-                        m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    m_vAnimBackGround.x =
+                        m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_vAnimBackGround.y =
+                        m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
                 }
-
-                if (m_pAnim->GetName().empty())
-                    m_pAnim->SetName(filePath.stem());
-
-                m_pAnim->SaveAnim(filePath);
             }
         }
-    }
 
-    ImGui::Separator();
+        ImGui::SameLine();
 
-    if (nullptr != m_pAnim)
-    {
-        string StopPlay;
-
-        if (m_bAnimPlay)
-            StopPlay = "Animation Stop";
-        else
-            StopPlay = "Animation Play";
-
-        if (ImGui::Button(StopPlay.c_str()))
+        if (ImGui::Button("Save Animation"))
         {
-            m_bAnimPlay = !m_bAnimPlay;
-        }
+            std::filesystem::path filePath =
+                SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
-        char buffer[256];
-        memset(buffer, 0, sizeof(buffer));
-
-        string name = ToString(m_pAnim->GetName());
-        strcpy_s(buffer, sizeof(buffer), name.c_str());
-        if (ImGui::InputText(ImGuiLabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
-        {
-            m_pAnim->SetName(ToWstring(buffer));
-        }
-
-        if (ImGui::InputInt(ImGuiLabelPrefix("FPS").c_str(), &m_AnimFPS))
-        {
-            if (m_AnimFPS < 1)
-                m_AnimFPS = 1;
-
-            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            if (!filePath.empty()) // 취소, 닫기 버튼 체크
             {
-                m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                if (".anim" != filePath.extension())
+                    filePath.replace_extension(".anim");
+
+                if (nullptr != m_pAnim)
+                {
+                    for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                    {
+                        m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                        m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                        m_pAnim->m_vecFrm[i].vBackground.x =
+                            m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vBackground.y =
+                            m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    }
+
+                    if (m_pAnim->GetName().empty())
+                        m_pAnim->SetName(filePath.stem());
+
+                    m_pAnim->SaveAnim(filePath);
+                }
             }
         }
 
-        ImGui::SliderInt(ImGuiLabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0,
-                         (int)m_pAnim->m_vecFrm.size() - 1);
+        ImGui::Separator();
 
-        ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset X").c_str(),
-                         &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
-
-        ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset Y").c_str(),
-                         &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
-
-        ImGui::Text("Animation Offset");
-        ImGui::SameLine();
-
-        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 125);
-        if (ImGui::ArrowButton("##left", ImGuiDir_Left))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x -= 1.f;
-
-        ImGui::SameLine();
-        if (ImGui::ArrowButton("##Right", ImGuiDir_Right))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x += 1.f;
-
-        ImGui::SameLine();
-        if (ImGui::ArrowButton("##Up", ImGuiDir_Up))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y += 1.f;
-
-        ImGui::SameLine();
-        if (ImGui::ArrowButton("##Down", ImGuiDir_Down))
-            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y -= 1.f;
-
-        if (ImGui::DragFloat2(ImGuiLabelPrefix("Animation BackGround").c_str(), &m_vAnimBackGround.x, 1.f))
+        if (nullptr != m_pAnim)
         {
-            for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+            string StopPlay;
+
+            if (m_bAnimPlay)
+                StopPlay = "Animation Stop";
+            else
+                StopPlay = "Animation Play";
+
+            if (ImGui::Button(StopPlay.c_str()))
             {
-                m_pAnim->m_vecFrm[i].vBackground = m_vAnimBackGround;
+                m_bAnimPlay = !m_bAnimPlay;
             }
+
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+
+            string name = ToString(m_pAnim->GetName());
+            strcpy_s(buffer, sizeof(buffer), name.c_str());
+            if (ImGui::InputText(ImGuiLabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
+            {
+                m_pAnim->SetName(ToWstring(buffer));
+            }
+
+            if (ImGui::InputInt(ImGuiLabelPrefix("FPS").c_str(), &m_AnimFPS))
+            {
+                if (m_AnimFPS < 1)
+                    m_AnimFPS = 1;
+
+                for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                {
+                    m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                }
+            }
+
+            ImGui::SliderInt(ImGuiLabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0,
+                             (int)m_pAnim->m_vecFrm.size() - 1);
+
+            ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset X").c_str(),
+                             &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
+
+            ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset Y").c_str(),
+                             &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
+
+            ImGui::Text("Animation Offset");
+            ImGui::SameLine();
+
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 125);
+            if (ImGui::ArrowButton("##left", ImGuiDir_Left))
+                m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x -= 1.f;
+
+            ImGui::SameLine();
+            if (ImGui::ArrowButton("##Right", ImGuiDir_Right))
+                m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x += 1.f;
+
+            ImGui::SameLine();
+            if (ImGui::ArrowButton("##Up", ImGuiDir_Up))
+                m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y += 1.f;
+
+            ImGui::SameLine();
+            if (ImGui::ArrowButton("##Down", ImGuiDir_Down))
+                m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y -= 1.f;
+
+            if (ImGui::DragFloat2(ImGuiLabelPrefix("Animation BackGround").c_str(), &m_vAnimBackGround.x, 1.f))
+            {
+                for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                {
+                    m_pAnim->m_vecFrm[i].vBackground = m_vAnimBackGround;
+                }
+            }
+
+            ImGui::Checkbox(ImGuiLabelPrefix("Use BackGround").c_str(), &m_pAnim->m_bUseBackGround);
         }
 
-        ImGui::Checkbox(ImGuiLabelPrefix("Use BackGround").c_str(), &m_pAnim->m_bUseBackGround);
+        ImGui::TreePop();
     }
 
     ImGui::End();
