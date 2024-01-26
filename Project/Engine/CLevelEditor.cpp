@@ -43,7 +43,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowMaterialEditor(false)
     , m_bShowBlueprintEditor(false)
     , m_bShowSpriteEditor(false)
-    , m_bShowTileMapEditor(false)
+    , m_bShowTileMapEditor(true)
 {
 }
 

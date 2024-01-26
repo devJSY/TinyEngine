@@ -785,9 +785,6 @@
     <Filter Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs">
       <UniqueIdentifier>{00a0f53e-1772-4e93-858a-c3ee41d2c182}</UniqueIdentifier>
     </Filter>
-    <Filter Include="20. Editor\SpriteEditor">
-      <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Compute">
       <UniqueIdentifier>{6c7f0ee5-cd8f-4221-9b4e-ac369a818409}</UniqueIdentifier>
     </Filter>
@@ -838,6 +835,9 @@
     </Filter>
     <Filter Include="20. Editor\TileMapEditor">
       <UniqueIdentifier>{79706b21-6959-4ba5-81f1-4e2d11bf09f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\SpriteEditor">
+      <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

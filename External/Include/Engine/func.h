@@ -83,6 +83,7 @@ void ImGuiSetWindowClass_LevelEditor();
 void ImGuiSetWindowClass_MaterialEditor();
 void ImGuiSetWindowClass_Blueprint();
 void ImGuiSetWindowClass_SpriteEditor();
+void ImGuiSetWindowClass_TileMapEditor();
 
 // =====================================
 // template

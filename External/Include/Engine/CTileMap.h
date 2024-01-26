@@ -49,4 +49,6 @@ public:
 public:
     CTileMap();
     virtual ~CTileMap();
+
+    friend class CTileMapEditor;
 };

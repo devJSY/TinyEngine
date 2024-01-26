@@ -705,7 +705,7 @@ void CSpriteEditor::DrawDetails()
             ImGui::Text("Animation Offset");
             ImGui::SameLine();
 
-            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 125);
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 150);
             if (ImGui::ArrowButton("##left", ImGuiDir_Left))
                 m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x -= 1.f;
 

@@ -3,6 +3,7 @@
 
 CTileMapEditor::CTileMapEditor()
     : CEditor(EDITOR_TYPE::TILEMAP)
+    , m_TileMap(nullptr)
 {
 }
 
@@ -40,6 +41,23 @@ void CTileMapEditor::render(bool* open)
 
 void CTileMapEditor::render()
 {
+    ImGuiSetWindowClass_TileMapEditor();
+    DrawViewport();
+
+    ImGuiSetWindowClass_TileMapEditor();
+    DrawDetails();
+}
+
+void CTileMapEditor::DrawViewport()
+{
     ImGui::Begin("Viewport##TileMapEditor");
+    ImGui::End();
+}
+
+void CTileMapEditor::DrawDetails()
+{
+    ImGui::Begin("Details##TileMapEditor");
+
+
     ImGui::End();
 }

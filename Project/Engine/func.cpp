@@ -489,3 +489,13 @@ void ImGuiSetWindowClass_SpriteEditor()
 
     ImGui::SetNextWindowClass(&window_class);
 }
+
+void ImGuiSetWindowClass_TileMapEditor()
+{
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetTileMapEditor()->GetName()).c_str());
+    window_class.DockNodeFlagsOverrideSet = 0;
+    window_class.DockingAllowUnclassed = true;
+
+    ImGui::SetNextWindowClass(&window_class);
+}
