@@ -9,11 +9,11 @@ struct PS_Input
 
 float4 main(PS_Input input) : SV_TARGET
 {
-    float offsetSize = 0.1f;
+    float offsetSize = 0.125f;
     
     float force = 0.125f; // 왜곡 효과 강도
     float size = offsetSize + g_float_0; // 원 전체 사이즈
-    float thickness = 0.001; // 원 두께  // Scale 10000 standard
+    float thickness = 0.01; // 원 두께  
     float4 color = (float4) 0.f;
 
     //float ratio = g_RenderResolution.x / g_RenderResolution.y;

@@ -227,8 +227,12 @@ void CTileMapEditor::DrawTileSet()
 
     if (nullptr != m_TileMap)
     {
-        ImGui::DragFloat2(ImGuiLabelPrefix("Tile Pixel Size").c_str(), &m_TileMap->m_vTilePixelSize.x, 1.f, 0,
-                          D3D11_FLOAT32_MAX);
+        if (ImGui::DragFloat2(ImGuiLabelPrefix("Tile Pixel Size").c_str(), &m_TileMap->m_vTilePixelSize.x, 1.f, 0,
+                              D3D11_FLOAT32_MAX))
+        {
+            if (nullptr != m_TileMap->m_TileAtlas)
+                m_TileMap->SetTileAtlas(m_TileMap->m_TileAtlas, m_TileMap->m_vTilePixelSize);
+        }
 
         const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
         vector<string> names;
@@ -260,7 +264,7 @@ void CTileMapEditor::DrawTileSet()
 
             int TileCount = 0;
             float Widht = ImGui::GetContentRegionAvail().x;
-            int NextLineCount = int(Widht / m_TileMap->m_vTilePixelSize.x);
+            int NextLineCount = int(Widht / 64.f);
 
             for (int y = 0; y < row; y++)
             {
@@ -269,8 +273,7 @@ void CTileMapEditor::DrawTileSet()
                     ImVec2 uv0 = ImVec2(m_TileMap->m_vSliceSizeUV.x * x, m_TileMap->m_vSliceSizeUV.y * y);
                     ImVec2 uv1 = uv0 + m_TileMap->m_vSliceSizeUV;
 
-                    ImGui::Image((void*)m_TileMap->GetTileAtlas()->GetSRV().Get(), m_TileMap->m_vTilePixelSize, uv0,
-                                 uv1);
+                    ImGui::Image((void*)m_TileMap->GetTileAtlas()->GetSRV().Get(), ImVec2(64.f, 64.f), uv0, uv1);
 
                     int ImageIdx = col * y + x;
 

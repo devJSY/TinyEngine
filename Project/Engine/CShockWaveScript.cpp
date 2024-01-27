@@ -18,14 +18,14 @@ void CShockWaveScript::begin()
 void CShockWaveScript::tick()
 {
     float Radius = Collider2D()->GetRadius();
-    Radius += DT * 3000.f * 2.f;
+    Radius += DT * 500.f;
 
-    if (Radius >= 3000.f)
+    if (Radius >= 500.f)
         GamePlayStatic::DestroyGameObject(GetOwner());
 
     Collider2D()->SetRadius(Radius);
 
-    float CircleSize = Radius / 10000.f;
+    float CircleSize = Radius / 1000.f;
 
     MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, &CircleSize);
 }
