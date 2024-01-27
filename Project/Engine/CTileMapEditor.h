@@ -25,6 +25,7 @@ public:
 
     void DrawViewport();
     void DrawDetails();
+    void DrawTileSet();
 
 public:
     CTileMapEditor();

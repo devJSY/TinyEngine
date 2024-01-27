@@ -48,6 +48,9 @@ void CTileMapEditor::render()
 
     ImGuiSetWindowClass_TileMapEditor();
     DrawDetails();
+
+    ImGuiSetWindowClass_TileMapEditor();
+    DrawTileSet();
 }
 
 void CTileMapEditor::DrawViewport()
@@ -103,12 +106,15 @@ void CTileMapEditor::DrawViewport()
 
                 draw_list->AddRect(origin + LT, origin + RB, IM_COL32(0, 255, 0, 255));
 
-                if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
-                {
-                    m_TileMapObj->TileMap()->SetTileIndex(y, x, 0);
-                }
+                /*               if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                               {
+                                   m_TileMapObj->TileMap()->SetTileIndex(y, x, 0);
+                               }*/
             }
         }
+
+        draw_list->AddRect(mouse_pos_in_canvas, mouse_pos_in_canvas + (RenderSize * m_ViewportScale),
+                           IM_COL32(255, 0, 0, 255));
     }
 
     // =================================
@@ -173,7 +179,17 @@ void CTileMapEditor::DrawDetails()
 
         ImGui::DragFloat2(ImGuiLabelPrefix("Tile Pixel Size").c_str(), &m_TileMapObj->TileMap()->m_vTilePixelSize.x,
                           1.f, 0, D3D11_FLOAT32_MAX);
+    }
 
+    ImGui::End();
+}
+
+void CTileMapEditor::DrawTileSet()
+{
+    ImGui::Begin("TileSet##TileMapEditor");
+
+    if (nullptr != m_TileMapObj && nullptr != m_TileMapObj->TileMap())
+    {
         const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
         vector<string> names;
         for (const auto& iter : mapTextures)

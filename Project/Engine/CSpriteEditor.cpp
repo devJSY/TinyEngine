@@ -70,7 +70,7 @@ void CSpriteEditor::DrawViewport()
         canvas_sz.x = 50.0f;
     if (canvas_sz.y < 50.0f)
         canvas_sz.y = 50.0f;
-    ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
+    ImVec2 canvas_p1 = canvas_p0 + canvas_sz;
 
     // Draw border and background color
     ImGuiIO& io = ImGui::GetIO();
@@ -81,8 +81,8 @@ void CSpriteEditor::DrawViewport()
     // This will catch our interactions
     ImGui::InvisibleButton("canvas", canvas_sz,
                            ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight); // Held
-    const ImVec2 origin(canvas_p0.x + m_ViewportOffset.x, canvas_p0.y + m_ViewportOffset.y); // Lock scrolled origin
-    const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
+    const ImVec2 origin = canvas_p0 + m_ViewportOffset;
+    const ImVec2 mouse_pos_in_canvas = io.MousePos - origin;
 
     /// -----------1------------
     /// |                      |
@@ -239,11 +239,8 @@ void CSpriteEditor::DrawViewport()
             // 사각형 내부를 클릭한 경우 전체 이동
             else if (0 != m_Sprites[i].bViewport_Selected)
             {
-                m_Sprites[i].Rect.Min.x += io.MouseDelta.x / m_ViewportScale;
-                m_Sprites[i].Rect.Min.y += io.MouseDelta.y / m_ViewportScale;
-
-                m_Sprites[i].Rect.Max.x += io.MouseDelta.x / m_ViewportScale;
-                m_Sprites[i].Rect.Max.y += io.MouseDelta.y / m_ViewportScale;
+                m_Sprites[i].Rect.Min += io.MouseDelta / m_ViewportScale;
+                m_Sprites[i].Rect.Max += io.MouseDelta / m_ViewportScale;
             }
         }
     }
@@ -272,8 +269,8 @@ void CSpriteEditor::DrawViewport()
                 m_Sprites[i].bViewport_Selected = false;
             }
 
-            m_DragRect.Min = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
-            m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+            m_DragRect.Min = mouse_pos_in_canvas / m_ViewportScale;
+            m_DragRect.Max = mouse_pos_in_canvas / m_ViewportScale;
 
             Adding_Rect = true;
         }
@@ -281,7 +278,7 @@ void CSpriteEditor::DrawViewport()
 
     if (Adding_Rect)
     {
-        m_DragRect.Max = ImVec2(mouse_pos_in_canvas.x, mouse_pos_in_canvas.y) / m_ViewportScale;
+        m_DragRect.Max = mouse_pos_in_canvas / m_ViewportScale;
         if (!ImGui::IsMouseDown(ImGuiMouseButton_Left))
         {
             Adding_Rect = false;
@@ -300,6 +297,7 @@ void CSpriteEditor::DrawViewport()
         }
     }
 
+    // 우클릭 화면 이동
     if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
     {
         m_ViewportOffset.x += io.MouseDelta.x;
@@ -310,6 +308,7 @@ void CSpriteEditor::DrawViewport()
     ImVec2 drag_delta = ImGui::GetMouseDragDelta(ImGuiMouseButton_Right);
     if (drag_delta.x == 0.0f && drag_delta.y == 0.0f)
         ImGui::OpenPopupOnItemClick("context", ImGuiPopupFlags_MouseButtonRight);
+
     if (ImGui::BeginPopup("context"))
     {
         if (Adding_Rect)
@@ -399,10 +398,8 @@ void CSpriteEditor::DrawViewport()
     // Sprites Render
     for (int n = 0; n < m_Sprites.Size; n++)
     {
-        ImVec2 min = ImVec2(origin.x + m_Sprites[n].Rect.Min.x * m_ViewportScale,
-                            origin.y + m_Sprites[n].Rect.Min.y * m_ViewportScale);
-        ImVec2 max = ImVec2(origin.x + m_Sprites[n].Rect.Max.x * m_ViewportScale,
-                            origin.y + m_Sprites[n].Rect.Max.y * m_ViewportScale);
+        ImVec2 min = origin + (m_Sprites[n].Rect.Min * m_ViewportScale);
+        ImVec2 max = origin + (m_Sprites[n].Rect.Max * m_ViewportScale);
 
         if (m_Sprites[n].bViewport_Selected)
             draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
@@ -413,10 +410,8 @@ void CSpriteEditor::DrawViewport()
     // Rect Render
     if (Adding_Rect)
     {
-        ImVec2 min =
-            ImVec2(origin.x + m_DragRect.Min.x * m_ViewportScale, origin.y + m_DragRect.Min.y * m_ViewportScale);
-        ImVec2 max =
-            ImVec2(origin.x + m_DragRect.Max.x * m_ViewportScale, origin.y + m_DragRect.Max.y * m_ViewportScale);
+        ImVec2 min = origin + (m_DragRect.Min * m_ViewportScale);
+        ImVec2 max = origin + (m_DragRect.Max * m_ViewportScale);
 
         draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
     }
@@ -431,9 +426,7 @@ void CSpriteEditor::DrawViewport()
         float wheel = ImGui::GetIO().MouseWheel;
 
         // 마우스의 현재 위치를 캔버스 기준으로 계산
-        ImVec2 mouse_pos_in_canvas_relative =
-            ImVec2((io.MousePos.x - canvas_p0.x - m_ViewportOffset.x) / m_ViewportScale,
-                   (io.MousePos.y - canvas_p0.y - m_ViewportOffset.y) / m_ViewportScale);
+        ImVec2 mouse_pos_in_canvas_relative = (io.MousePos - canvas_p0 - m_ViewportOffset) / m_ViewportScale;
 
         if (wheel > 0)
             m_ViewportScale *= 1.1f; // Zoom In
@@ -448,8 +441,7 @@ void CSpriteEditor::DrawViewport()
             m_ViewportScale = 100.f;
 
         // 마우스의 위치를 기준으로 확대/축소 후 뷰포트 오프셋 조정
-        m_ViewportOffset.x = io.MousePos.x - mouse_pos_in_canvas_relative.x * m_ViewportScale - canvas_p0.x;
-        m_ViewportOffset.y = io.MousePos.y - mouse_pos_in_canvas_relative.y * m_ViewportScale - canvas_p0.y;
+        m_ViewportOffset = io.MousePos - mouse_pos_in_canvas_relative * m_ViewportScale - canvas_p0;
     }
 
     ImGui::End();
