@@ -10,8 +10,8 @@
 
 CTileMap::CTileMap()
     : CRenderComponent(COMPONENT_TYPE::TILEMAP)
-    , m_iTileCountX(0)
-    , m_iTileCountY(0)
+    , m_iTileCountX(1)
+    , m_iTileCountY(1)
     , m_vTileRenderSize(Vec2(64.f, 64.f))
     , m_TileAtlas()
     , m_vTilePixelSize()
