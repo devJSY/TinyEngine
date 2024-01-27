@@ -126,20 +126,3 @@ void Delete_Map(map<T1, T2>& _map)
     }
     _map.clear();
 }
-
-// template <typename T>
-// bool IsValid(T*& _Entity)
-//{
-//     if (nullptr == _Entity)
-//     {
-//         return false;
-//     }
-//
-//     if (_Entity->IsDead())
-//     {
-//         _Entity = nullptr;
-//         return false;
-//     }
-//
-//     return true;
-// }

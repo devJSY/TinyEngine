@@ -15,6 +15,15 @@ CTileMapEditor::~CTileMapEditor()
 {
 }
 
+void CTileMapEditor::finaltick()
+{
+    if (nullptr != m_TileMap)
+    {
+        if (m_TileMap->GetOwner()->IsDead())
+            m_TileMap = nullptr;
+    }
+}
+
 void CTileMapEditor::render(bool* open)
 {
     // =====================================
@@ -230,6 +239,7 @@ void CTileMapEditor::DrawTileSet()
         if (ImGui::DragFloat2(ImGuiLabelPrefix("Tile Pixel Size").c_str(), &m_TileMap->m_vTilePixelSize.x, 1.f, 0,
                               D3D11_FLOAT32_MAX))
         {
+            // Slice Size Àç¼³Á¤
             if (nullptr != m_TileMap->m_TileAtlas)
                 m_TileMap->SetTileAtlas(m_TileMap->m_TileAtlas, m_TileMap->m_vTilePixelSize);
         }
