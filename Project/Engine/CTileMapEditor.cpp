@@ -98,7 +98,32 @@ void CTileMapEditor::DrawViewport()
                 ImVec2 LT = ImVec2((float)x, (float)y) * RenderSize * m_ViewportScale;
                 ImVec2 RB = LT + RenderSize * m_ViewportScale;
 
-                draw_list->AddRect(origin + LT, origin + RB, IM_COL32(0, 255, 0, 255));
+                // Image Render
+                if (nullptr != m_TileMap->m_TileAtlas)
+                {
+                    int idx = m_TileMap->m_iTileCountX * y + x;
+                    draw_list->AddImage((void*)m_TileMap->m_TileAtlas->GetSRV().Get(), origin + LT, origin + RB,
+                                        m_TileMap->m_vecTileInfo[idx].vLeftTopUV,
+                                        m_TileMap->m_vecTileInfo[idx].vLeftTopUV + m_TileMap->m_vSliceSizeUV);
+                }
+
+                draw_list->AddRect(origin + LT, origin + RB, IM_COL32(255, 255, 255, 255));
+
+                ImRect rect;
+                rect.Min = origin + LT;
+                rect.Max = origin + RB;
+
+                if (rect.Contains(io.MousePos))
+                {
+                    draw_list->AddRect(origin + LT, origin + RB, IM_COL32(255, 0, 0, 255));
+
+                    if ((ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
+                         ImGui::IsMouseDragging(ImGuiMouseButton_Left)) &&
+                        m_SelectedImgIdx != -1)
+                    {
+                        m_TileMap->SetTileIndex(y, x, m_SelectedImgIdx);
+                    }
+                }
             }
         }
     }
