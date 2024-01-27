@@ -199,7 +199,8 @@ void CTileMapEditor::DrawDetails()
         int TileCountX = m_TileMap->m_iTileCountX;
         int TileCountY = m_TileMap->m_iTileCountY;
 
-        if (ImGui::InputInt(ImGuiLabelPrefix("Tile Count X").c_str(), &TileCountX, 1))
+        if (ImGui::InputInt(ImGuiLabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100,
+                            ImGuiInputTextFlags_EnterReturnsTrue))
         {
             if (TileCountX < 1)
                 TileCountX = 1;
@@ -207,7 +208,8 @@ void CTileMapEditor::DrawDetails()
             m_TileMap->SetTileCount(TileCountX, TileCountY);
         }
 
-        if (ImGui::InputInt(ImGuiLabelPrefix("Tile Count Y").c_str(), &TileCountY, 1))
+        if (ImGui::InputInt(ImGuiLabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100,
+                            ImGuiInputTextFlags_EnterReturnsTrue))
         {
             if (TileCountY < 1)
                 TileCountY = 1;

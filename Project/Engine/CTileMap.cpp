@@ -80,12 +80,41 @@ void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 
 void CTileMap::SetTileCount(UINT _TileCountX, UINT _TileCountY)
 {
+    int originX = m_iTileCountX;
+    int originY = m_iTileCountY;
+
     m_iTileCountX = _TileCountX;
     m_iTileCountY = _TileCountY;
 
     vector<tTileInfo> vecTemp;
     m_vecTileInfo.swap(vecTemp);
     m_vecTileInfo.resize(m_iTileCountX * m_iTileCountY);
+
+    if (!vecTemp.empty())
+    {
+        // 타일맵의 크기가 확장된 경우
+        if ((int)m_iTileCountX > originX || (int)m_iTileCountY > originY)
+        {
+            for (int y = 0; y < originY; y++)
+            {
+                for (int x = 0; x < originX; x++)
+                {
+                    m_vecTileInfo[y * m_iTileCountX + x] = vecTemp[y * originX + x];
+                }
+            }
+        }
+        else
+        {
+            // 타일맵의 크기가 축소된 경우
+            for (UINT y = 0; y < m_iTileCountY; y++)
+            {
+                for (UINT x = 0; x < m_iTileCountX; x++)
+                {
+                    m_vecTileInfo[y * m_iTileCountX + x] = vecTemp[y * originX + x];
+                }
+            }
+        }
+    }
 
     m_TileInfoBuffer->Create(sizeof(tTileInfo), m_iTileCountX * m_iTileCountY, SB_TYPE::READ_ONLY, true);
 }
