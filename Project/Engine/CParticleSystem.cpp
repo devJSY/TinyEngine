@@ -31,7 +31,7 @@ CParticleSystem::CParticleSystem()
 
     // 임시로 5개의 파티클이 초기 데이터를 입력하면서 구조화 버퍼 생성
     tParticle arrParticle[1000] = {};
-    for (int i = 0; i < m_MaxParticleCount; ++i)
+    for (int i = 0; i < (int)m_MaxParticleCount; ++i)
     {
         arrParticle[i].vWorldPos = Vec3((vResol.x / -2.f) + (i + 1) * vResol.x / (m_MaxParticleCount + 1), 0.f, 200.f);
         arrParticle[i].vWorldScale = Vec3(10.f, 10.f, 1.f);

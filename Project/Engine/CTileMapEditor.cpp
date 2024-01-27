@@ -63,7 +63,7 @@ void CTileMapEditor::DrawViewport()
         canvas_sz.x = 50.0f;
     if (canvas_sz.y < 50.0f)
         canvas_sz.y = 50.0f;
-    ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
+    ImVec2 canvas_p1 = canvas_p0 + canvas_sz;
 
     // Draw border and background color
     ImGuiIO& io = ImGui::GetIO();
@@ -74,13 +74,12 @@ void CTileMapEditor::DrawViewport()
     // This will catch our interactions
     ImGui::InvisibleButton("canvas", canvas_sz,
                            ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight); // Held
-    const ImVec2 origin(canvas_p0.x + m_ViewportOffset.x, canvas_p0.y + m_ViewportOffset.y); // Lock scrolled origin
-    const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
+    const ImVec2 origin = canvas_p0 + m_ViewportOffset;
+    const ImVec2 mouse_pos_in_canvas = io.MousePos - origin;
 
     if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
     {
-        m_ViewportOffset.x += io.MouseDelta.x;
-        m_ViewportOffset.y += io.MouseDelta.y;
+        m_ViewportOffset += io.MouseDelta;
     }
 
     // =================================
@@ -89,8 +88,7 @@ void CTileMapEditor::DrawViewport()
 
     if (nullptr != m_TileMapObj && nullptr != m_TileMapObj->TileMap())
     {
-        ImVec2 RenderSize =
-            ImVec2(m_TileMapObj->TileMap()->m_vTileRenderSize.x, m_TileMapObj->TileMap()->m_vTileRenderSize.y);
+        ImVec2 RenderSize = m_TileMapObj->TileMap()->m_vTileRenderSize;
 
         for (int y = 0; y < (int)m_TileMapObj->TileMap()->m_iTileCountY; y++)
         {
@@ -125,9 +123,7 @@ void CTileMapEditor::DrawViewport()
         float wheel = ImGui::GetIO().MouseWheel;
 
         // 마우스의 현재 위치를 캔버스 기준으로 계산
-        ImVec2 mouse_pos_in_canvas_relative =
-            ImVec2((io.MousePos.x - canvas_p0.x - m_ViewportOffset.x) / m_ViewportScale,
-                   (io.MousePos.y - canvas_p0.y - m_ViewportOffset.y) / m_ViewportScale);
+        ImVec2 mouse_pos_in_canvas_relative = (io.MousePos - canvas_p0 - m_ViewportOffset) / m_ViewportScale;
 
         if (wheel > 0)
             m_ViewportScale *= 1.1f; // Zoom In
@@ -142,8 +138,7 @@ void CTileMapEditor::DrawViewport()
             m_ViewportScale = 100.f;
 
         // 마우스의 위치를 기준으로 확대/축소 후 뷰포트 오프셋 조정
-        m_ViewportOffset.x = io.MousePos.x - mouse_pos_in_canvas_relative.x * m_ViewportScale - canvas_p0.x;
-        m_ViewportOffset.y = io.MousePos.y - mouse_pos_in_canvas_relative.y * m_ViewportScale - canvas_p0.y;
+        m_ViewportOffset = io.MousePos - mouse_pos_in_canvas_relative * m_ViewportScale - canvas_p0;
     }
 
     ImGui::End();

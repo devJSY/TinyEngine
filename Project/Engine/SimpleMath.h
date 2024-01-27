@@ -29,6 +29,11 @@
 #define XM_CONSTEXPR
 #endif
 
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+    #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
+#include "imgui_internal.h"
+
 struct ImVec2;
 struct ImVec4;
 
@@ -120,7 +125,7 @@ namespace DirectX
             Vector2(const Vector2&) = default;
             Vector2& operator=(const Vector2&) = default;
             Vector2& operator =(FXMVECTOR V) { XMStoreFloat2(this, V); return *this; }
-            Vector2& operator = (const ImVec2& _imv2);
+            Vector2& operator=(const ImVec2& _imv2) { x = _imv2.x; y = _imv2.y; return *this; }
 
             Vector2(Vector2&&) = default;
             Vector2& operator=(Vector2&&) = default;
@@ -129,7 +134,7 @@ namespace DirectX
 
             
             // Conversion
-            operator ImVec2() const;
+            operator ImVec2() const { return ImVec2(x, y); }
 
             // Comparison operators
             bool operator == (const Vector2& V) const;

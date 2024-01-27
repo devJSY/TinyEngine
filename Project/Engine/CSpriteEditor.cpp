@@ -5,8 +5,6 @@
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
 
-#include <queue>
-
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)
     , m_pTex()
@@ -798,10 +796,8 @@ void CSpriteEditor::DrawSpriteList()
                     tAnimFrm AnimData;
 
                     // UV 좌표로 변환
-                    AnimData.vLeftTop = Vec2(m_Sprites[i].Rect.GetTL().x / vTextureSize.x,
-                                             m_Sprites[i].Rect.GetTL().y / vTextureSize.y);
-                    AnimData.vSlice = Vec2(m_Sprites[i].Rect.GetSize().x / vTextureSize.x,
-                                           m_Sprites[i].Rect.GetSize().y / vTextureSize.y);
+                    AnimData.vLeftTop = m_Sprites[i].Rect.GetTL() / vTextureSize;
+                    AnimData.vSlice = m_Sprites[i].Rect.GetSize() / vTextureSize;
                     AnimData.vOffset = Vec2(0.f, 0.f);
                     AnimData.vBackground = Vec2(0.f, 0.f);
                     AnimData.Duration = 1.f / m_AnimFPS;
@@ -828,7 +824,7 @@ void CSpriteEditor::DrawAnimationViewport()
         canvas_sz.x = 50.0f;
     if (canvas_sz.y < 50.0f)
         canvas_sz.y = 50.0f;
-    ImVec2 canvas_RB = ImVec2(canvas_LT.x + canvas_sz.x, canvas_LT.y + canvas_sz.y);
+    ImVec2 canvas_RB = canvas_LT + canvas_sz;
 
     // Draw border and background color
     ImGuiIO& io = ImGui::GetIO();
@@ -843,21 +839,14 @@ void CSpriteEditor::DrawAnimationViewport()
 
     if (nullptr != m_pAnim)
     {
-
         ImVec2 RenderSize = ImVec2(350.f, 350.f);
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
-
-        ImVec2 vOffset = ImVec2(m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x,
-                                m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
-
+        ImVec2 vOffset = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset;
         vLT.x += vOffset.x;
         vLT.y -= vOffset.y;
+        ImVec2 uv0 = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop;
+        ImVec2 uv1 = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice;
 
-        ImVec2 uv0 = ImVec2(m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.x,
-                            m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.y);
-        ImVec2 uv1 = ImVec2(
-            (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.x + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.x),
-            (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop.y + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.y));
         draw_list->AddImage((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), vLT, vLT + RenderSize, uv0, uv1);
     }
 
@@ -875,17 +864,14 @@ void CSpriteEditor::DrawAnimationList()
         for (UINT i = 0; i < m_pAnim->m_vecFrm.size(); i++)
         {
             ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
-                         ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
-                         ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
-                                (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
+                         m_pAnim->m_vecFrm[i].vLeftTop, m_pAnim->m_vecFrm[i].vLeftTop + m_pAnim->m_vecFrm[i].vSlice);
 
             // Drag & Drop
             if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
             {
                 ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
-                             ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x, m_pAnim->m_vecFrm[i].vLeftTop.y),
-                             ImVec2(m_pAnim->m_vecFrm[i].vLeftTop.x + m_pAnim->m_vecFrm[i].vSlice.x,
-                                    (m_pAnim->m_vecFrm[i].vLeftTop.y + m_pAnim->m_vecFrm[i].vSlice.y)));
+                             m_pAnim->m_vecFrm[i].vLeftTop,
+                             m_pAnim->m_vecFrm[i].vLeftTop + m_pAnim->m_vecFrm[i].vSlice);
 
                 ImGui::SetDragDropPayload("ANIMATION_LIST_SPRITE", &i, sizeof(int));
                 ImGui::EndDragDropSource();

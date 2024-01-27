@@ -90,3 +90,5 @@ using std::hash;
 using std::tuple;
 
 #include <commdlg.h> // OPENFILENAME
+
+#include <queue>
