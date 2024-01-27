@@ -105,6 +105,7 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
                                          (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
 
     m_vecTileInfo[idx].bRender = 1;
+    m_vecTileInfo[idx].ImageIndex = _ImgIdx;
 }
 
 void CTileMap::SaveToLevelFile(FILE* _File)

@@ -6,9 +6,9 @@ class CStructuredBuffer;
 
 struct tTileInfo
 {
-    Vec2 vLeftTopUV;
-    int bRender;
-    int padding;
+    Vec2 vLeftTopUV = Vec2();
+    int bRender = false;
+    int ImageIndex = -1;
 };
 
 class CTileMap : public CRenderComponent
@@ -20,7 +20,7 @@ private:
 
     Ptr<CTexture> m_TileAtlas;
     Vec2 m_vTilePixelSize; // 파일 내에서의 타일 사이즈
-    Vec2 m_vSliceSizeUV;   
+    Vec2 m_vSliceSizeUV;
 
     vector<tTileInfo> m_vecTileInfo;
     CStructuredBuffer* m_TileInfoBuffer;

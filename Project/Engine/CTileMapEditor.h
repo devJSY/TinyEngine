@@ -2,6 +2,13 @@
 #include "CEditor.h"
 #include "CTileMap.h"
 
+enum class DRAW_MODE
+{
+    PAINT,
+    ERASER,
+    FILL
+};
+
 class CTileMapEditor : public CEditor
 {
 private:
@@ -11,6 +18,7 @@ private:
     float m_ViewportScale;
 
     int m_SelectedImgIdx;
+    DRAW_MODE m_DrawMode;
 
 public:
     virtual void init() override{};
@@ -27,6 +35,9 @@ public:
     void DrawViewport();
     void DrawDetails();
     void DrawTileSet();
+
+private:
+    void FillTileMap(int _startX, int _startY, int _TargetIdx);
 
 public:
     CTileMapEditor();

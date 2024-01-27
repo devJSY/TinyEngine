@@ -7,6 +7,7 @@ CTileMapEditor::CTileMapEditor()
     , m_ViewportOffset()
     , m_ViewportScale(1.f)
     , m_SelectedImgIdx(-1)
+    , m_DrawMode(DRAW_MODE::PAINT)
 {
 }
 
@@ -83,10 +84,6 @@ void CTileMapEditor::DrawViewport()
         m_ViewportOffset += io.MouseDelta;
     }
 
-    // =================================
-    // Rendering
-    // =================================
-
     if (nullptr != m_TileMap)
     {
         ImVec2 RenderSize = m_TileMap->m_vTileRenderSize;
@@ -98,15 +95,20 @@ void CTileMapEditor::DrawViewport()
                 ImVec2 LT = ImVec2((float)x, (float)y) * RenderSize * m_ViewportScale;
                 ImVec2 RB = LT + RenderSize * m_ViewportScale;
 
+                int idx = m_TileMap->m_iTileCountX * y + x;
+
                 // Image Render
                 if (nullptr != m_TileMap->m_TileAtlas)
                 {
-                    int idx = m_TileMap->m_iTileCountX * y + x;
-                    draw_list->AddImage((void*)m_TileMap->m_TileAtlas->GetSRV().Get(), origin + LT, origin + RB,
-                                        m_TileMap->m_vecTileInfo[idx].vLeftTopUV,
-                                        m_TileMap->m_vecTileInfo[idx].vLeftTopUV + m_TileMap->m_vSliceSizeUV);
+                    if (m_TileMap->m_vecTileInfo[idx].bRender)
+                    {
+                        draw_list->AddImage((void*)m_TileMap->m_TileAtlas->GetSRV().Get(), origin + LT, origin + RB,
+                                            m_TileMap->m_vecTileInfo[idx].vLeftTopUV,
+                                            m_TileMap->m_vecTileInfo[idx].vLeftTopUV + m_TileMap->m_vSliceSizeUV);
+                    }
                 }
 
+                // Border Render
                 draw_list->AddRect(origin + LT, origin + RB, IM_COL32(255, 255, 255, 255));
 
                 ImRect rect;
@@ -115,13 +117,35 @@ void CTileMapEditor::DrawViewport()
 
                 if (rect.Contains(io.MousePos))
                 {
+                    // Hovering Border Render
                     draw_list->AddRect(origin + LT, origin + RB, IM_COL32(255, 0, 0, 255));
 
-                    if ((ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
-                         ImGui::IsMouseDragging(ImGuiMouseButton_Left)) &&
-                        m_SelectedImgIdx != -1)
+                    // Draw
+                    if (m_DrawMode == DRAW_MODE::PAINT)
                     {
-                        m_TileMap->SetTileIndex(y, x, m_SelectedImgIdx);
+                        if ((ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
+                             ImGui::IsMouseDragging(ImGuiMouseButton_Left)) &&
+                            m_SelectedImgIdx != -1)
+                        {
+                            m_TileMap->SetTileIndex(y, x, m_SelectedImgIdx);
+                        }
+                    }
+                    else if (m_DrawMode == DRAW_MODE::ERASER)
+                    {
+                        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
+                            ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+                        {
+                            m_TileMap->m_vecTileInfo[idx].vLeftTopUV = Vec2();
+                            m_TileMap->m_vecTileInfo[idx].bRender = false;
+                            m_TileMap->m_vecTileInfo[idx].ImageIndex = -1;
+                        }
+                    }
+                    else if (m_DrawMode == DRAW_MODE::FILL)
+                    {
+                        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                        {
+                            FillTileMap(x, y, m_TileMap->m_vecTileInfo[idx].ImageIndex);
+                        }
                     }
                 }
             }
@@ -184,6 +208,14 @@ void CTileMapEditor::DrawDetails()
 
         ImGui::DragFloat2(ImGuiLabelPrefix("Tile Render Size").c_str(), &m_TileMap->m_vTileRenderSize.x, 1.f, 0,
                           D3D11_FLOAT32_MAX);
+
+        ImGui::Text("Draw Mode");
+        ImGui::SameLine();
+        ImGui::RadioButton("Paint", (int*)&m_DrawMode, (int)DRAW_MODE::PAINT);
+        ImGui::SameLine();
+        ImGui::RadioButton("Eraser", (int*)&m_DrawMode, (int)DRAW_MODE::ERASER);
+        ImGui::SameLine();
+        ImGui::RadioButton("Fill", (int*)&m_DrawMode, (int)DRAW_MODE::FILL);
     }
 
     ImGui::End();
@@ -191,7 +223,7 @@ void CTileMapEditor::DrawDetails()
 
 void CTileMapEditor::DrawTileSet()
 {
-    ImGui::Begin("TileSet##TileMapEditor");
+    ImGui::Begin("TileSet##TileMapEditor", 0, ImGuiWindowFlags_HorizontalScrollbar);
 
     if (nullptr != m_TileMap)
     {
@@ -276,4 +308,42 @@ void CTileMapEditor::DrawTileSet()
     }
 
     ImGui::End();
+}
+
+void CTileMapEditor::FillTileMap(int _startX, int _startY, int _TargetIdx)
+{
+    vector<vector<int>> visited(m_TileMap->m_iTileCountY, vector<int>(m_TileMap->m_iTileCountX));
+
+    int dx[4] = {1, 0, -1, 0};
+    int dy[4] = {0, 1, 0, -1};
+
+    m_TileMap->SetTileIndex(_startY, _startX, m_SelectedImgIdx);
+
+    std::queue<std::pair<int, int>> Q;
+
+    Q.push({_startX, _startY});
+    visited[_startY][_startX] = true;
+
+    while (!Q.empty())
+    {
+        auto pos = Q.front();
+        Q.pop();
+
+        for (int dir = 0; dir < 4; dir++)
+        {
+            int nx = pos.first + dx[dir];
+            int ny = pos.second + dy[dir];
+
+            if (nx < 0 || nx >= (int)m_TileMap->m_iTileCountX || ny < 0 || ny >= (int)m_TileMap->m_iTileCountY)
+                continue;
+
+            int idx = ny * m_TileMap->m_iTileCountX + nx;
+            if (m_TileMap->m_vecTileInfo[idx].ImageIndex == _TargetIdx && !visited[ny][nx])
+            {
+                m_TileMap->SetTileIndex(ny, nx, m_SelectedImgIdx);
+                Q.push({nx, ny});
+                visited[ny][nx] = true;
+            }
+        }
+    }
 }
