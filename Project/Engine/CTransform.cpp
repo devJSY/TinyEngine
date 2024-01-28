@@ -49,18 +49,22 @@ void CTransform::finaltick()
     // 부모 오브젝트가 있다면
     if (GetOwner()->GetParent())
     {
-        m_matParentMat = GetOwner()->GetParent()->Transform()->GetWorldMat();
+        m_matTransformation = GetOwner()->GetParent()->Transform()->GetWorldMat();
 
         if (m_bAbsolute)
         {
             Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
             Matrix matParentScaleInv =
                 XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
-            m_matWorld = m_matWorld * matParentScaleInv * m_matParentMat;
+
+            // 부모의 크기 행렬 상쇄
+            m_matTransformation = matParentScaleInv * m_matTransformation;
+
+            m_matWorld *= m_matTransformation;
         }
         else
         {
-            m_matWorld *= m_matParentMat;
+            m_matWorld *= m_matTransformation;
         }
 
         for (int i = 0; i < 3; ++i)

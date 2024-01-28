@@ -14,7 +14,7 @@ private:
     Matrix m_matWorld;
     bool m_bAbsolute;
 
-    Matrix m_matParentMat;
+    Matrix m_matTransformation;
 
 public:
     virtual void finaltick() override;
@@ -43,7 +43,7 @@ public:
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
 
 public:
-    const Matrix& GetParentMat() const { return m_matParentMat; }
+    const Matrix& GetTransformationMat() const { return m_matTransformation; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
