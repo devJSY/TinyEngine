@@ -546,9 +546,27 @@ void CLevelEditor::render_ImGuizmo()
         Matrix originWorldMat = pTr->GetWorldMat();
 
         // 부모행렬을 상쇄시켜 로컬 좌표계로 변경
-        Matrix ParentInvMat = pTr->GetParentMat().Invert();
-        WorldMat *= ParentInvMat;
-        originWorldMat *= ParentInvMat;
+        if (nullptr != pTr->GetOwner()->GetParent())
+        {
+            Matrix ParentInvMat = pTr->GetParentMat().Invert();
+
+            if (pTr->IsAbsolute())
+            {
+                Vec3 vParentScale = pTr->GetOwner()->GetParent()->Transform()->GetRelativeScale();
+                Matrix matParentScaleInv =
+                    XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
+                Matrix ConvertMat = matParentScaleInv * pTr->GetParentMat();
+                ConvertMat = ConvertMat.Invert();
+
+                WorldMat *= ConvertMat;
+                originWorldMat *= ConvertMat;
+            }
+            else
+            {
+                WorldMat *= ParentInvMat;
+                originWorldMat *= ParentInvMat;
+            }
+        }
 
         // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
         float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
