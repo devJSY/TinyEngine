@@ -80,7 +80,6 @@ void CTileMapEditor::DrawViewport()
     ImGuiIO& io = ImGui::GetIO();
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255));
-    draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
 
     // This will catch our interactions
     ImGui::InvisibleButton("canvas", canvas_sz,
@@ -93,6 +92,8 @@ void CTileMapEditor::DrawViewport()
         m_ViewportOffset += io.MouseDelta;
     }
 
+    // 캔버스 영역내 렌더링 제한
+    draw_list->PushClipRect(canvas_p0, canvas_p1, true);
     if (nullptr != m_TileMap)
     {
         ImVec2 RenderSize = m_TileMap->m_vTileRenderSize;
@@ -160,6 +161,9 @@ void CTileMapEditor::DrawViewport()
             }
         }
     }
+
+    draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255)); // canvas 테두리
+    draw_list->PopClipRect();
 
     // =================================
     // Scale Set

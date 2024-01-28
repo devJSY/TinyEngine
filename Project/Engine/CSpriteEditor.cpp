@@ -74,7 +74,6 @@ void CSpriteEditor::DrawViewport()
     ImGuiIO& io = ImGui::GetIO();
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255));
-    draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
 
     // This will catch our interactions
     ImGui::InvisibleButton("canvas", canvas_sz,
@@ -369,7 +368,7 @@ void CSpriteEditor::DrawViewport()
     // =================================
 
     // Draw grid + all lines in the canvas
-    draw_list->PushClipRect(canvas_p0, canvas_p1, true);
+    draw_list->PushClipRect(canvas_p0, canvas_p1, true);     // 캔버스 영역내 렌더링 제한
     if (opt_enable_grid)
     {
         const float GRID_STEP = 32.0f;
@@ -414,6 +413,7 @@ void CSpriteEditor::DrawViewport()
         draw_list->AddRect(min, max, IM_COL32(255, 0, 0, 255));
     }
 
+    draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255)); // canvas 테두리
     draw_list->PopClipRect();
 
     // =================================
