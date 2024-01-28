@@ -151,7 +151,7 @@ void CTileMapEditor::DrawViewport()
                     }
                     else if (m_DrawMode == DRAW_MODE::FILL)
                     {
-                        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+                        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) && m_SelectedImgIdx != -1)
                         {
                             FillTileMap(x, y, m_TileMap->m_vecTileInfo[idx].ImageIndex);
                         }
