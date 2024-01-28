@@ -197,6 +197,30 @@ void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
 
 void CTaskMgr::ADD_CHILD(const FTask& _Task)
 {
+    CGameObject* pDestObj = (CGameObject*)_Task.Param_1;
+    CGameObject* pSrcObj = (CGameObject*)_Task.Param_2;
+
+    // 부모로 지정된 오브젝트가 없으면, Child 오브젝트가 최상위 부모 오브젝트가 된다.
+    if (nullptr == pDestObj)
+    {
+        if (pSrcObj->GetParent())
+        {
+            // 기존 부모와의 연결 해제
+            pSrcObj->DisconnectWithParent();
+
+            // 최상위 부모 오브젝트로, 소속 레이어에 등록
+            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+            pCurLevel->AddObject(pSrcObj, pSrcObj->m_iLayerIdx, true);
+        }
+    }
+    else
+    {
+        // 레이어가 설정되지않은 자식이라면 부모의 레이어로 설정
+        if (-1 == pSrcObj->m_iLayerIdx)
+            pSrcObj->m_iLayerIdx = pDestObj->m_iLayerIdx;
+
+        pDestObj->AddChild(pSrcObj);
+    }
 }
 
 void CTaskMgr::DISCONNECT_PARENT(const FTask& _Task)
@@ -556,5 +580,5 @@ void CTaskMgr::LAYER_CHANGE(const FTask& _Task)
 
     CCollisionMgr::GetInst()->CollisionRelease(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(OriginLayerIdx)->DetachGameObject(Object);
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx);
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx, false);
 }

@@ -111,6 +111,7 @@ void CLayer::DetachGameObject(CGameObject* _Object)
     if (nullptr != _Object->GetParent())
     {
         _Object->m_iLayerIdx = -1;
+        return;
     }
 
     // 최상위 부모 오브젝트인 경우

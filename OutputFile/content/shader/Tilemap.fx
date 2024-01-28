@@ -46,9 +46,9 @@ float4 PS_TileMap(VS_Output _in) : SV_Target
         // 면 개수만큼 _in.vUV 를 배율을 늘림
         float2 vUV = _in.vUV * float2(COUNT_X, COUNT_Y);
         int2 Integer = (int2) floor(vUV);
-        vUV = vUV - Integer;
+        vUV = vUV - Integer; // 소수점 부분만 취하여 0 ~ 1 범위로 제한
                 
-        int bufferidx = Integer.y * COUNT_X + Integer.x;
+        int bufferidx = Integer.y * COUNT_X + Integer.x; // 정수부분을 사용하여 인덱스 계산
         
         if (!g_TileInfo[bufferidx].bRender)
             discard;

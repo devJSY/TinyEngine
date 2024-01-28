@@ -6,6 +6,7 @@ class CLevel;
 namespace GamePlayStatic
 {
     void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
+    void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject);
     void DestroyGameObject(CGameObject* _Target);
     void WindowResize(int width, int height);
 

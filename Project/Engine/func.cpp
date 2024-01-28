@@ -4,6 +4,7 @@
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
 #include "CEngine.h"
+#include "func.h"
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
@@ -11,6 +12,15 @@ void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
     task.Type = TASK_TYPE::CREATE_OBJECT;
     task.Param_1 = (DWORD_PTR)_LayerIdx;
     task.Param_2 = (DWORD_PTR)_Target;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
+void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject)
+{
+    FTask task = {};
+    task.Type = TASK_TYPE::ADD_CHILD;
+    task.Param_1 = (DWORD_PTR)_ParentObject;
+    task.Param_2 = (DWORD_PTR)_ChildObject;
     CTaskMgr::GetInst()->AddTask(task);
 }
 

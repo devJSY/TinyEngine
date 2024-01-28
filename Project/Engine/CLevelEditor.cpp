@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CLevelEditor.h"
 #include "CEngine.h"
+#include "CDevice.h"
 
 #include "CTaskMgr.h"
 #include "CCamera.h"

@@ -102,6 +102,26 @@ void COutliner::DrawNode(CGameObject* obj)
         CEditorMgr::GetInst()->SetSelectedObject(obj);
     }
 
+    // Add Child PopUp
+    string PopUpID = "Add Child Object##";
+    PopUpID += name;
+
+    ImGui::OpenPopupOnItemClick(PopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
+
+    if (ImGui::BeginPopup(PopUpID.c_str()))
+    {
+        if (ImGui::MenuItem("Add Child Object"))
+        {
+            CGameObject* pObj = new CGameObject;
+            pObj->SetName(L"Child Object");
+            pObj->AddComponent(new CTransform);
+            
+            GamePlayStatic::AddChildObject(obj, pObj);
+        }
+
+        ImGui::EndPopup();
+    }
+
     if (opened)
     {
         // 자식 오브젝트 DrawNode() 호출
