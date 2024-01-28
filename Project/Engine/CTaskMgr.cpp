@@ -189,6 +189,10 @@ void CTaskMgr::DELETE_OBJECT(const FTask& _Task)
 
 void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
 {
+    // Editor ÃÊ±âÈ­
+    CEditorMgr::GetInst()->SetSelectedObject(nullptr);
+    CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
+
     CLevel* Level = (CLevel*)_Task.Param_1;
     CLevelMgr::GetInst()->ChangeLevel(Level);
     CRenderMgr::GetInst()->ClearCamera();

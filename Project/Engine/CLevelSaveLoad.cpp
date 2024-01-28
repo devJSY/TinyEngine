@@ -183,8 +183,6 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _FileName)
 
     fclose(pFile);
 
-    CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-
     /*NewLevel->ChangeState(LEVEL_STATE::STOP);*/
 
     return NewLevel;
