@@ -115,7 +115,7 @@ void COutliner::DrawNode(CGameObject* obj)
             CGameObject* pObj = new CGameObject;
             pObj->SetName(L"Child Object");
             pObj->AddComponent(new CTransform);
-            
+
             GamePlayStatic::AddChildObject(obj, pObj);
         }
 
@@ -802,6 +802,40 @@ void COutliner::DrawTileMap(CGameObject* obj)
 
             ImGui::TreePop();
         }
+
+        // TileMap
+        if (ImGui::TreeNodeEx("TileMap Info", m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "TileMap Info"))
+        {
+            int TileCountX = pTilemap->GetTileCountX();
+            int TileCountY = pTilemap->GetTileCountY();
+            Vec2 TileRenderSize = pTilemap->GetTileRenderSize();
+            Ptr<CTexture> pTileAtlas = pTilemap->GetTileAtlas();
+            Vec2 TilePixelSize = pTilemap->GetTilePixelSize();
+
+            ImGui::InputInt(ImGuiLabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100,
+                            ImGuiInputTextFlags_ReadOnly);
+            ImGui::InputInt(ImGuiLabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100,
+                            ImGuiInputTextFlags_ReadOnly);
+            ImGui::DragFloat2(ImGuiLabelPrefix("Tile Render Size").c_str(), &TileRenderSize.x, 0.f, 0.f, 0.f, "%.3f",
+                              ImGuiInputTextFlags_ReadOnly);
+
+            if (nullptr != pTileAtlas)
+            {
+                char buffer[256];
+                memset(buffer, 0, sizeof(buffer));
+                string name = ToString(pTileAtlas->GetKey());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+                ImGui::InputText(ImGuiLabelPrefix("Tile Atlas Name").c_str(), buffer, sizeof(buffer),
+                                 ImGuiInputTextFlags_ReadOnly);
+
+                ImGui::DragFloat2(ImGuiLabelPrefix("Tile Pixel Size").c_str(), &TilePixelSize.x, 0.f, 0.f, 0.f, "%.3f",
+                                  ImGuiInputTextFlags_ReadOnly);
+            }
+
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
 
         if (ImGuiAlignButton("TileMap Editor", 1.f))
         {

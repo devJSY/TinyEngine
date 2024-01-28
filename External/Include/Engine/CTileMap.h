@@ -26,17 +26,19 @@ private:
     CStructuredBuffer* m_TileInfoBuffer;
 
 public:
-    void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
-    Ptr<CTexture> GetTileAtlas() const { return m_TileAtlas; }
-
-    void SetTileCount(UINT _TileCountX, UINT _TileCountY);
     UINT GetTileCountX() const { return m_iTileCountX; }
     UINT GetTileCountY() const { return m_iTileCountY; }
+    void SetTileCount(UINT _TileCountX, UINT _TileCountY);
+
     Vec2 GetTileRenderSize() const { return m_vTileRenderSize; }
     void SetTileRenderSize(Vec2 _size) { m_vTileRenderSize = _size; }
 
-    void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx); // row,col 위치의 타일에 ImgIdx를 배정
+    void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
+    Ptr<CTexture> GetTileAtlas() const { return m_TileAtlas; }
 
+    Vec2 GetTilePixelSize() const { return m_vTilePixelSize; }
+
+    void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx); // row,col 위치의 타일에 ImgIdx를 배정
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;

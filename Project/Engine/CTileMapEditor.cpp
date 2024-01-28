@@ -217,7 +217,7 @@ void CTileMapEditor::DrawDetails()
             m_TileMap->SetTileCount(TileCountX, TileCountY);
         }
 
-        ImGui::DragFloat2(ImGuiLabelPrefix("Tile Render Size").c_str(), &m_TileMap->m_vTileRenderSize.x, 1.f, 0,
+        ImGui::DragFloat2(ImGuiLabelPrefix("Tile Render Size").c_str(), &m_TileMap->m_vTileRenderSize.x, 1.f, 0.f,
                           D3D11_FLOAT32_MAX);
 
         ImGui::Text("Draw Mode");
