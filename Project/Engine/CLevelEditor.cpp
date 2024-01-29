@@ -617,17 +617,21 @@ void CLevelEditor::render_CollisionResponses()
 
     static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX |
                                          ImGuiTableFlags_ScrollY | ImGuiTableFlags_BordersOuter |
-                                         ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable;
+                                         ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
+                                         ImGuiTableFlags_HighlightHoveredColumn;
 
     if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
     {
         ImGui::TableSetupColumn(column_names[0].c_str(),
                                 ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
         for (int n = columns_count - 1; n >= 1; n--)
-            ImGui::TableSetupColumn(/*column_names[n].c_str()*/ std::to_string(n - 1).c_str(),
-                                    ImGuiTableColumnFlags_WidthFixed);
+            ImGui::TableSetupColumn(column_names[n].c_str(),
+                                    ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 
-        ImGui::TableHeadersRow(); // Draw remaining headers and allow access to context-menu and other functions.
+        ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
+                                        // ImGuiTableColumnFlags_AngledHeader flag.
+        ImGui::TableHeadersRow(); // Draw remaining headers and allow access to context-menu and other   functions.
+
         for (int row = 0; row < LAYER_MAX; row++)
         {
             ImGui::PushID(row);
@@ -649,81 +653,4 @@ void CLevelEditor::render_CollisionResponses()
     }
 
     ImGui::End();
-
-    // ====================================
-    // supported ImGui Version 1.90.1
-    // ====================================
-
-    // ImGui::Begin("Collision Responses");
-
-    // if (ImGui::Button("All Layer Enable"))
-    //     CCollisionMgr::GetInst()->EnableAllLayer();
-
-    // ImGui::SameLine();
-
-    // if (ImGui::Button("All Layer Disable"))
-    //     CCollisionMgr::GetInst()->DisableAllLayer();
-
-    // string column_names[LAYER_MAX + 1] = {"Layers"};
-    // for (int i = 1; i <= LAYER_MAX; i++)
-    //{
-    //     const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
-    //     column_names[i] = ToString(LayerName);
-    // }
-
-    // const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
-
-    // static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
-    // for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
-    //{
-    //     for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
-    //     {
-    //         if (CCollisionMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
-    //         {
-    //             bools[iRow * columns_count + iCol + 1] = true;
-    //         }
-    //         else
-    //         {
-    //             bools[iRow * columns_count + iCol + 1] = false;
-    //         }
-    //     }
-    // }
-
-    // static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX |
-    //                                      ImGuiTableFlags_ScrollY | ImGuiTableFlags_BordersOuter |
-    //                                      ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
-    //                                      ImGuiTableFlags_HighlightHoveredColumn;
-
-    // if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
-    //{
-    //     ImGui::TableSetupColumn(column_names[0].c_str(),
-    //                             ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
-    //     for (int n = columns_count - 1; n >= 1; n--)
-    //         ImGui::TableSetupColumn(column_names[n].c_str(),
-    //                                 ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
-
-    //    ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
-    //                                    // ImGuiTableColumnFlags_AngledHeader flag.
-    //    ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other
-    //    functions. for (int row = 0; row < LAYER_MAX; row++)
-    //    {
-    //        ImGui::PushID(row);
-    //        ImGui::TableNextRow();
-    //        ImGui::TableSetColumnIndex(0);
-    //        ImGui::AlignTextToFramePadding();
-    //        ImGui::Text(column_names[row + 1].c_str());
-    //        for (int column = columns_count - 1; column > row; column--)
-    //            if (ImGui::TableSetColumnIndex(columns_count - column))
-    //            {
-    //                ImGui::PushID(column);
-    //                if (ImGui::Checkbox("", &bools[row * columns_count + column]))
-    //                    CCollisionMgr::GetInst()->LayerCheck(row, column - 1, bools[row * columns_count + column]);
-    //                ImGui::PopID();
-    //            }
-    //        ImGui::PopID();
-    //    }
-    //    ImGui::EndTable();
-    //}
-
-    // ImGui::End();
 }

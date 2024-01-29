@@ -91,13 +91,13 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->SetName(L"Material Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->init();
 
-    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
-    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->SetName(L"Blueprint Editor");
-    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
-
-    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor2;
+    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
     // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->SetName(L"Blueprint Editor");
     // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
+
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor2;
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->SetName(L"Blueprint Editor");
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
 
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE] = new CSpriteEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]->SetName(L"Sprite Editor");
