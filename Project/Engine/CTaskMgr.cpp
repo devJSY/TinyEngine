@@ -328,6 +328,9 @@ void CTaskMgr::SCREENSHOT(const FTask& _Task)
 
 void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
 {
+    if (ImGuizmo::IsOver() || ImGuizmo::IsUsing())
+        return;
+
     int MouseX = (int)_Task.Param_1;
     int MouseY = (int)_Task.Param_2;
     Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
@@ -417,12 +420,14 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
             break;
     }
 
-    if (!ImGuizmo::IsUsing())
-        CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
+    CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
 {
+    if (ImGuizmo::IsOver() || ImGuizmo::IsUsing())
+        return;
+
     int MouseX = (int)_Task.Param_1;
     int MouseY = (int)_Task.Param_2;
 
@@ -498,8 +503,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
             break;
     }
 
-    if (!ImGuizmo::IsUsing())
-        CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
+    CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::ADD_COMPONENT(const FTask& _Task)

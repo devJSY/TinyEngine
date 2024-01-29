@@ -38,6 +38,8 @@ void CContentBrowser::render()
             m_CurrentDirectory = m_CurrentDirectory.parent_path();
             m_CurrentDirectory += L"\\";
         }
+
+        ImGui::Separator();
     }
 
     // FileName
@@ -56,6 +58,8 @@ void CContentBrowser::render()
     ImGui::Columns(1);
     ImGui::SliderFloat(ImGuiLabelPrefix("Thumbnail Size").c_str(), &thumbnailSize, 16, 256);
     ImGui::SliderFloat(ImGuiLabelPrefix("Padding").c_str(), &padding, 0, 32);
+
+    ImGui::Separator();
 
     float cellSize = thumbnailSize + padding;
 
