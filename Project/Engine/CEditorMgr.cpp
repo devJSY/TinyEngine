@@ -42,15 +42,8 @@ void CEditorMgr::init()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    //  io.ConfigViewportsNoAutoMerge = true;
-    //  io.ConfigViewportsNoTaskBarIcon = true;
-    //  io.ConfigViewportsNoDefaultParent = true;
-    //  io.ConfigDockingAlwaysTabBar = true;
-    //  io.ConfigDockingTransparentPayload = true;
-    //  io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T
-    //  WORK AS EXPECTED. DON'T USE IN USER APP! io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; //
-    //  FIXME-DPI: Experimental.
 
+    // Font Set
     float fFontSize = 25.f;
     wstring wBold = CPathMgr::GetContentPath();
     wstring wRegular = CPathMgr::GetContentPath();
@@ -91,11 +84,7 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->SetName(L"Material Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]->init();
 
-    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
-    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->SetName(L"Blueprint Editor");
-    // m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
-
-    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor2;
+    m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT] = new CBlueprintEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->SetName(L"Blueprint Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]->init();
 

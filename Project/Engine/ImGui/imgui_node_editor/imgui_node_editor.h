@@ -24,11 +24,6 @@
 # define IMGUI_NODE_EDITOR_VERSION      "0.9.4"
 # define IMGUI_NODE_EDITOR_VERSION_NUM  000904
 
-//------------------------------------------------------------------------------
-namespace crude_json
-{
-    struct value;
-} // crude_json
 
 //------------------------------------------------------------------------------
 #ifndef IMGUI_NODE_EDITOR_API
@@ -46,43 +41,6 @@ struct NodeId;
 struct LinkId;
 struct PinId;
 
-
-//------------------------------------------------------------------------------
-enum class TransactionAction: int32_t
-{
-    Unknown,
-    Navigation,
-    Drag,
-    ClearSelection,
-    Select,
-    Deselect,
-    ToggleSelect
-};
-
-const char* ToString(TransactionAction action);
-
-struct ITransaction
-{
-    virtual ~ITransaction() { }
-
-    virtual void AddAction(TransactionAction action, const char* name) {}
-    virtual void Commit() {}
-    virtual void Discard() {}
-
-    // Adds action that act on specific node
-    virtual void AddAction(TransactionAction action, LinkId linkId, const char* name); // implemented defaults to 'AddAction(action, name)'
-    virtual void AddAction(TransactionAction action, NodeId nodeId, const char* name); // implemented defaults to 'AddAction(action, name)'
-};
-
-using TransactionConstructor = ITransaction*(*)(const char* name, void* userPointer);  // Create new instance of the transaction
-using TransactionDestructor  = void(*)(ITransaction*, void* userPointer);              // Destroys instance if the transaction
-
-struct TransactionInterface
-{
-    TransactionConstructor  Constructor = nullptr;
-    TransactionDestructor   Destructor  = nullptr;
-    void*                   UserPointer = nullptr;
-};
 
 //------------------------------------------------------------------------------
 enum class PinKind
@@ -127,40 +85,28 @@ using ConfigLoadSettings     = size_t (*)(char* data, void* userPointer);
 using ConfigSaveNodeSettings = bool   (*)(NodeId nodeId, const char* data, size_t size, SaveReasonFlags reason, void* userPointer);
 using ConfigLoadNodeSettings = size_t (*)(NodeId nodeId, char* data, void* userPointer);
 
-using ConfigSaveSettingsJson = bool (*)(const crude_json::value&, SaveReasonFlags reason, void* userPointer);
-using ConfigLoadSettingsJson = crude_json::value (*)(void* userPointer);
-
-using ConfigSaveNodeSettingsJson = bool (*)(NodeId nodeId, const crude_json::value& value, SaveReasonFlags reason,
-                                            void* userPointer);
-using ConfigLoadNodeSettingsJson = crude_json::value (*)(NodeId nodeId, void* userPointer);
-
 using ConfigSession          = void   (*)(void* userPointer);
 
 struct Config
 {
     using CanvasSizeModeAlias = ax::NodeEditor::CanvasSizeMode;
 
-    const char*                 SettingsFile;
-    ConfigSession               BeginSaveSession;
-    ConfigSession               EndSaveSession;
-    ConfigSaveSettings          SaveSettings;
-    ConfigLoadSettings          LoadSettings;
-    ConfigSaveNodeSettings      SaveNodeSettings;
-    ConfigLoadNodeSettings      LoadNodeSettings;
-    ConfigSaveSettingsJson      SaveSettingsJson;
-    ConfigLoadSettingsJson      LoadSettingsJson;
-    ConfigSaveNodeSettingsJson  SaveNodeSettingsJson;
-    ConfigLoadNodeSettingsJson  LoadNodeSettingsJson;
-    void*                       UserPointer;
-    TransactionInterface        TransactionInterface;
-    ImVector<float>             CustomZoomLevels;
-    CanvasSizeModeAlias         CanvasSizeMode;
-    int                         DragButtonIndex;        // Mouse button index drag action will react to (0-left, 1-right, 2-middle)
-    int                         SelectButtonIndex;      // Mouse button index select action will react to (0-left, 1-right, 2-middle)
-    int                         NavigateButtonIndex;    // Mouse button index navigate action will react to (0-left, 1-right, 2-middle)
-    int                         ContextMenuButtonIndex; // Mouse button index context menu action will react to (0-left, 1-right, 2-middle)
-    bool                        EnableSmoothZoom;
-    float                       SmoothZoomPower;
+    const char*             SettingsFile;
+    ConfigSession           BeginSaveSession;
+    ConfigSession           EndSaveSession;
+    ConfigSaveSettings      SaveSettings;
+    ConfigLoadSettings      LoadSettings;
+    ConfigSaveNodeSettings  SaveNodeSettings;
+    ConfigLoadNodeSettings  LoadNodeSettings;
+    void*                   UserPointer;
+    ImVector<float>         CustomZoomLevels;
+    CanvasSizeModeAlias     CanvasSizeMode;
+    int                     DragButtonIndex;        // Mouse button index drag action will react to (0-left, 1-right, 2-middle)
+    int                     SelectButtonIndex;      // Mouse button index select action will react to (0-left, 1-right, 2-middle)
+    int                     NavigateButtonIndex;    // Mouse button index navigate action will react to (0-left, 1-right, 2-middle)
+    int                     ContextMenuButtonIndex; // Mouse button index context menu action will react to (0-left, 1-right, 2-middle)
+    bool                    EnableSmoothZoom;
+    float                   SmoothZoomPower;
 
     Config()
         : SettingsFile("NodeEditor.json")
@@ -170,10 +116,6 @@ struct Config
         , LoadSettings(nullptr)
         , SaveNodeSettings(nullptr)
         , LoadNodeSettings(nullptr)
-        , SaveSettingsJson(nullptr)
-        , LoadSettingsJson(nullptr)
-        , SaveNodeSettingsJson(nullptr)
-        , LoadNodeSettingsJson(nullptr)
         , UserPointer(nullptr)
         , CustomZoomLevels()
         , CanvasSizeMode(CanvasSizeModeAlias::FitVerticalView)
@@ -417,29 +359,6 @@ IMGUI_NODE_EDITOR_API float GetNodeZPosition(NodeId nodeId); // Returns node z p
 
 IMGUI_NODE_EDITOR_API void RestoreNodeState(NodeId nodeId);
 
-enum class StateType : int32_t
-{
-    All,
-    Node,
-    Nodes,
-    Selection,
-    View
-};
-
-bool              HasStateChanged(StateType stateType, const crude_json::value& state); // Returns true if state changed since last call to GetState()/GetStateString()
-bool              HasStateChanged(StateType stateType, NodeId nodeId, const crude_json::value& state);
-crude_json::value GetState(StateType stateType); // Return state serialized to json value.
-crude_json::value GetState(StateType stateType, NodeId nodeId);
-bool              ApplyState(StateType stateType, const crude_json::value& state); // Applies state serialized to json value.
-bool              ApplyState(StateType stateType, NodeId nodeId, const crude_json::value& state);
-
-bool        HasStateChangedString(StateType stateType, const char* state); // Returns true if state changed since last call to GetState()/GetStateString()
-bool        HasStateChangedString(StateType stateType, NodeId nodeId, const char* state);
-const char* GetStateString(StateType stateType); // Returns state serialized to string. String is valid until next call to GetStateString()
-const char* GetStateString(StateType stateType, NodeId nodeId);
-bool        ApplyStateString(StateType stateType, const char* state); // Applies serialized state string to the editor.
-bool        ApplyStateString(StateType stateType, NodeId nodeId, const char* state);
-
 IMGUI_NODE_EDITOR_API void Suspend();
 IMGUI_NODE_EDITOR_API void Resume();
 IMGUI_NODE_EDITOR_API bool IsSuspended();
@@ -511,8 +430,6 @@ IMGUI_NODE_EDITOR_API ImVec2 CanvasToScreen(const ImVec2& pos);
 
 IMGUI_NODE_EDITOR_API int GetNodeCount();                                // Returns number of submitted nodes since Begin() call
 IMGUI_NODE_EDITOR_API int GetOrderedNodeIds(NodeId* nodes, int size);    // Fills an array with node id's in order they're drawn; up to 'size` elements are set. Returns actual size of filled id's.
-
-ImVector<LinkId> FindLinksForNode(NodeId nodeId);
 
 
 

@@ -174,11 +174,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAnimator2D.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
-    <ClInclude Include="CBlueprintEditor.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="CBlueprintEditor2.h" />
+    <ClInclude Include="CBlueprintEditor.h" />
     <ClInclude Include="CBulletScript.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -248,21 +244,6 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ImGui\imgui_impl_dx11.h" />
     <ClInclude Include="ImGui\imgui_impl_win32.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_layout.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_logger.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\imgui_extras.h" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\span.hpp" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\string_view.hpp" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\variant.hpp" />
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.h" />
     <ClInclude Include="ImGui\imgui_node_editor\crude_json.h" />
     <ClInclude Include="ImGui\imgui_node_editor\imgui_bezier_math.h" />
     <ClInclude Include="ImGui\imgui_node_editor\imgui_canvas.h" />
@@ -289,11 +270,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_init.cpp" />
-    <ClCompile Include="CBlueprintEditor.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="CBlueprintEditor2.cpp" />
+    <ClCompile Include="CBlueprintEditor.cpp" />
     <ClCompile Include="CBulletScript.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -390,44 +367,6 @@ call EngineCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_layout.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_logger.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\imgui_extras.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\crude_json.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -480,7 +419,6 @@ call EngineCopy.bat</Command>
     <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl" />
     <None Include="ImGui\imgui_node_editor\imgui_extra_math.inl" />
     <None Include="ImGui\imgui_node_editor\imgui_node_editor_internal.inl" />
-    <None Include="ImGui\imgui_node_editor\LICENSE" />
     <None Include="Light.hlsli" />
     <None Include="global.hlsli" />
     <None Include="SimpleMath.inl" />

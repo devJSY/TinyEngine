@@ -202,74 +202,8 @@
     <ClInclude Include="ImGui\ImGuizmo\GraphEditor.h">
       <Filter>ImGui\ImGuizmo</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\crude_json.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\imgui_bezier_math.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\imgui_canvas.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\imgui_extra_math.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor_internal.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\utilities\builders.h">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\utilities\drawing.h">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClInclude>
     <ClInclude Include="CTileMap.h">
       <Filter>08. Component\RenderComponent\02. TileMap</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_layout.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\crude_logger.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\imgui_extras.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\string_view.hpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint\nonstd</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\variant.hpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint\nonstd</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\nonstd\span.hpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint\nonstd</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.h">
-      <Filter>ImGui\imgui_node_editor\Blueprint\tinyfiledialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="CBlueprintEditor2.h">
-      <Filter>20. Editor\Blueprint</Filter>
     </ClInclude>
     <ClInclude Include="CSpriteEditor.h">
       <Filter>20. Editor\SpriteEditor</Filter>
@@ -318,6 +252,33 @@
     </ClInclude>
     <ClInclude Include="ImGui\imstb_truetype.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\crude_json.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_bezier_math.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_canvas.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_extra_math.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor_internal.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\builders.h">
+      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\drawing.h">
+      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
+      <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -507,59 +468,8 @@
     <ClCompile Include="ImGui\ImGuizmo\ImCurveEdit.cpp">
       <Filter>ImGui\ImGuizmo</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\imgui_canvas.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor_api.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\crude_json.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\utilities\drawing.cpp">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\utilities\widgets.cpp">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClCompile>
     <ClCompile Include="CTileMap.cpp">
       <Filter>08. Component\RenderComponent\02. TileMap</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_layout.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\crude_logger.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\imgui_extras.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.cpp">
-      <Filter>ImGui\imgui_node_editor\Blueprint</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.c">
-      <Filter>ImGui\imgui_node_editor\Blueprint\tinyfiledialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="CBlueprintEditor2.cpp">
-      <Filter>20. Editor\Blueprint</Filter>
     </ClCompile>
     <ClCompile Include="CSpriteEditor.cpp">
       <Filter>20. Editor\SpriteEditor</Filter>
@@ -602,6 +512,27 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\crude_json.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_canvas.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor_api.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\drawing.cpp">
+      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\widgets.cpp">
+      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
+      <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -779,18 +710,6 @@
     <Filter Include="20. Editor\Blueprint">
       <UniqueIdentifier>{d4a92038-91e8-4b2e-9d45-0e4019d95d8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui\imgui_node_editor\utilities">
-      <UniqueIdentifier>{ec005d42-f592-4647-81c6-08317595e1c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\imgui_node_editor\Blueprint">
-      <UniqueIdentifier>{af00de7e-1b6b-4a70-8aae-89a02f198df0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\imgui_node_editor\Blueprint\nonstd">
-      <UniqueIdentifier>{6743aba0-1227-447d-abee-6e273ce2d85d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\imgui_node_editor\Blueprint\tinyfiledialogs">
-      <UniqueIdentifier>{00a0f53e-1772-4e93-858a-c3ee41d2c182}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Compute">
       <UniqueIdentifier>{6c7f0ee5-cd8f-4221-9b4e-ac369a818409}</UniqueIdentifier>
     </Filter>
@@ -845,22 +764,13 @@
     <Filter Include="20. Editor\SpriteEditor">
       <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui\imgui_node_editor\utilities">
+      <UniqueIdentifier>{754f8c1a-5c96-4c5d-bf3c-e2515c59e080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
       <Filter>Module</Filter>
-    </None>
-    <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </None>
-    <None Include="ImGui\imgui_node_editor\imgui_extra_math.inl">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </None>
-    <None Include="ImGui\imgui_node_editor\imgui_node_editor_internal.inl">
-      <Filter>ImGui\imgui_node_editor</Filter>
-    </None>
-    <None Include="ImGui\imgui_node_editor\LICENSE">
-      <Filter>ImGui\imgui_node_editor</Filter>
     </None>
     <None Include="global.hlsli">
       <Filter>ShaderCode\Utilities</Filter>
@@ -870,6 +780,15 @@
     </None>
     <None Include="struct.hlsli">
       <Filter>ShaderCode\Utilities</Filter>
+    </None>
+    <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\imgui_node_editor\imgui_extra_math.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\imgui_node_editor\imgui_node_editor_internal.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

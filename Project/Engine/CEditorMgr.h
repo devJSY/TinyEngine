@@ -1,8 +1,7 @@
 #pragma once
 #include "CLevelEditor.h"
 #include "CMaterialEditor.h"
-// #include "CBlueprintEditor.h"
-#include "CBlueprintEditor2.h"
+#include "CBlueprintEditor.h"
 #include "CSpriteEditor.h"
 #include "CTileMapEditor.h"
 
@@ -24,27 +23,15 @@ private:
 
 public:
     bool IsEnable() const { return m_bEnable; }
-    CLevelEditor* GetLevelEditor() const { return static_cast<CLevelEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]); }
-    CMaterialEditor* GetMaterialEditor() const
+
+    CLevelEditor* GetLevelEditor() const { return (CLevelEditor*)m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]; }
+    CMaterialEditor* GetMaterialEditor() const { return (CMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]; }
+    CBlueprintEditor* GetBlueprintEditor() const
     {
-        return static_cast<CMaterialEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]);
+        return (CBlueprintEditor*)m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT];
     }
-    // CBlueprintEditor* GetBlueprintEditor() const
-    //{
-    //     return static_cast<CBlueprintEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]);
-    // }
-    CBlueprintEditor2* GetBlueprintEditor() const
-    {
-        return static_cast<CBlueprintEditor2*>(m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]);
-    }
-    CSpriteEditor* GetSpriteEditor() const
-    {
-        return static_cast<CSpriteEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]);
-    }
-    CTileMapEditor* GetTileMapEditor() const
-    {
-        return static_cast<CTileMapEditor*>(m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]);
-    }
+    CSpriteEditor* GetSpriteEditor() const { return (CSpriteEditor*)m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]; }
+    CTileMapEditor* GetTileMapEditor() const { return (CTileMapEditor*)m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]; }
 
     CGameObject* GetSelectedObject() const { return m_SelectedObj; }
     void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }

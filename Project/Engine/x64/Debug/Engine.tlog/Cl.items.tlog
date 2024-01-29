@@ -3,7 +3,7 @@ C:\Users\A\Desktop\TinyEngine\Project\Engine\CAnimator2D.cpp;C:\Users\A\Desktop\
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CAsset.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CAsset.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CAssetMgr.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CAssetMgr.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CAssetMgr_init.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CAssetMgr_init.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\CBlueprintEditor2.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CBlueprintEditor2.obj
+C:\Users\A\Desktop\TinyEngine\Project\Engine\CBlueprintEditor.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CBlueprintEditor.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CBulletScript.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CBulletScript.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CCamera.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CCamera.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\CCameraMoveScript.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\CCameraMoveScript.obj
@@ -70,15 +70,6 @@ C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_demo.cpp;C:\Users\A\Des
 C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_draw.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\imgui_draw.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_impl_dx11.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\imgui_impl_dx11.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_impl_win32.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\imgui_impl_win32.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\blueprint_editor_document.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\blueprint_editor_document.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\blueprint_editor_icons.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\blueprint_editor_icons.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\blueprint_editor_utilities.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\blueprint_editor_utilities.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_blueprint.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\crude_blueprint.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_blueprint_library.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\crude_blueprint_library.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_layout.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\crude_layout.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\crude_logger.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\crude_logger.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\imgui_extras.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\imgui_extras.obj
-C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\Blueprint\tinyfiledialogs\tinyfiledialogs.c;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\tinyfiledialogs.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\crude_json.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\crude_json.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\imgui_canvas.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\imgui_canvas.obj
 C:\Users\A\Desktop\TinyEngine\Project\Engine\ImGui\imgui_node_editor\imgui_node_editor.cpp;C:\Users\A\Desktop\TinyEngine\Project\Engine\x64\Debug\imgui_node_editor.obj

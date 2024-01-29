@@ -166,47 +166,6 @@ void ed::Log(const char* fmt, ...)
 # endif
 }
 
-//------------------------------------------------------------------------------
-const char* ax::NodeEditor::ToString(TransactionAction action)
-{
-    switch (action)
-    {
-    case TransactionAction::Unknown:
-return "Unknown";
-    case TransactionAction::Navigation:
-return "Navigation";
-    case TransactionAction::Drag:
-return "Drag";
-    case TransactionAction::ClearSelection:
-return "ClearSelection";
-    case TransactionAction::Select:
-return "Select";
-    case TransactionAction::Deselect:
-return "Deselect";
-    case TransactionAction::ToggleSelect:
-return "ToggleSelect";
-    }
-
-    return "";
-}
-
-
-//------------------------------------------------------------------------------
-void ax::NodeEditor::ITransaction::AddAction(TransactionAction action, LinkId linkId, const char* name)
-{
-    if (strlen(name) == 0)
-        AddAction(action, (std::string(ToString(action)) + " " + ed::Serialization::ToString(linkId)).c_str());
-    else
-        AddAction(action, name);
-}
-
-void ax::NodeEditor::ITransaction::AddAction(TransactionAction action, NodeId nodeId, const char* name)
-{
-    if (strlen(name) == 0)
-        AddAction(action, (std::string(ToString(action)) + " " + ed::Serialization::ToString(nodeId)).c_str());
-    else
-        AddAction(action, name);
-}
 
 //------------------------------------------------------------------------------
 static bool IsGroup(const ed::Node* node)
@@ -311,7 +270,7 @@ static void ImDrawList_SwapSplitter(ImDrawList* drawList, ImDrawListSplitter& sp
 //        for (auto i = 1u; i < idxCount; ++i)
 //        {
 //            auto idx = idxRead[indexOffset + i];
-//            minIndex = ImMin(minIndex, idx);
+//            minIndex = std::min(minIndex, idx);
 //            maxIndex = ImMax(maxIndex, idx);
 //        }
 //
@@ -355,8 +314,8 @@ static void ImDrawList_SwapSplitter(ImDrawList* drawList, ImDrawListSplitter& sp
 //    {
 //        cmd.ClipRect.x = ImMax(cmd.ClipRect.x + offset.x, clipRect.x);
 //        cmd.ClipRect.y = ImMax(cmd.ClipRect.y + offset.y, clipRect.y);
-//        cmd.ClipRect.z = ImMin(cmd.ClipRect.z + offset.x, clipRect.z);
-//        cmd.ClipRect.w = ImMin(cmd.ClipRect.w + offset.y, clipRect.w);
+//        cmd.ClipRect.z = std::min(cmd.ClipRect.z + offset.x, clipRect.z);
+//        cmd.ClipRect.w = std::min(cmd.ClipRect.w + offset.y, clipRect.w);
 //    }
 //}
 
@@ -2152,11 +2111,6 @@ ed::Node* ed::EditorContext::FindNode(NodeId id)
     return FindItemInLinear(m_Nodes, id);
 }
 
-const ed::Node* ed::EditorContext::FindNode(NodeId id) const
-{
-    return FindItemInLinear(m_Nodes, id);
-}
-
 ed::Pin* ed::EditorContext::FindPin(PinId id)
 {
     return FindItemIn(m_Pins, id);
@@ -2206,289 +2160,19 @@ ed::Link* ed::EditorContext::GetLink(LinkId id)
         return CreateLink(id);
 }
 
-
-bool ed::EditorContext::HasStateChanged(const Node* node, const NodeState& state) const
+void ed::EditorContext::LoadSettings()
 {
-    if (!node)
-        return false;
+    ed::Settings::Parse(m_Config.Load(), m_Settings);
 
-    NodeState currentState;
-    RecordState(node, currentState);
-
-    return currentState != state;
-}
-
-bool ed::EditorContext::ApplyState(Node* node, const NodeState& state)
-{
-    if (!node)
-        return false;
-
-    bool modified = false;
-
-    const auto lastNodeLocation = node->m_Bounds.Min;
-
-    ImRect newBounds;
-    newBounds.Min = state.m_Location;
-    newBounds.Max = state.m_Location + node->m_Bounds.GetSize(); // state.m_Size;
-
-    modified |= (node->m_Bounds.Min != newBounds.Min || node->m_Bounds.Max != newBounds.Max);
-
-    node->m_Bounds = newBounds;
-    node->m_Bounds.Floor();
-
-    if (IsGroup(node))
+    if (ImRect_IsEmpty(m_Settings.m_VisibleRect))
     {
-        auto groupLocation = node->m_GroupBounds.Min + state.m_Location - lastNodeLocation;
-
-        ImRect newGroupBounds;
-        newGroupBounds.Min = groupLocation;
-        newGroupBounds.Max = groupLocation + state.m_GroupSize;
-
-        modified |= (node->m_GroupBounds.Min != newGroupBounds.Min || node->m_GroupBounds.Max != newGroupBounds.Max);
-
-        node->m_GroupBounds = newGroupBounds;
-        node->m_GroupBounds.Floor();
-    }
-
-    return modified;
-}
-
-void ed::EditorContext::RecordState(const Node* node, NodeState& state) const
-{
-    if (!node)
-        return;
-
-    NodeState result;
-
-    result.m_Location = node->m_Bounds.Min;
-    result.m_Size = node->m_Bounds.GetSize();
-    if (IsGroup(node))
-        result.m_GroupSize = node->m_GroupBounds.GetSize();
-
-    state = std::move(result);
-}
-
-bool ed::EditorContext::HasStateChanged(NodeId nodeId, const NodeState& state) const
-{
-    auto node = FindNode(nodeId);
-    if (!node)
-        return false;
-
-    return HasStateChanged(node, state);
-}
-
-bool ed::EditorContext::ApplyState(NodeId nodeId, const NodeState& state)
-{
-    auto node = FindNode(nodeId);
-    if (!node)
-    {
-        node = CreateNode(nodeId);
-        node->m_IsLive = false;
-    }
-
-    return ApplyState(node, state);
-}
-
-void ed::EditorContext::RecordState(NodeId nodeId, NodeState& state) const
-{
-    RecordState(FindNode(nodeId), state);
-}
-
-bool ed::EditorContext::HasStateChanged(const NodesState& state) const
-{
-    NodesState currentState;
-    RecordState(currentState);
-
-    return currentState != state;
-}
-
-bool ed::EditorContext::ApplyState(const NodesState& state)
-{
-    bool modified = false;
-
-    for (const auto& entry : state.m_Nodes)
-    {
-        auto& nodeState = entry.second;
-
-        if (auto node = FindNode(entry.first))
-            modified |= ApplyState(node, nodeState);
-    }
-
-    m_State.m_NodesState = state;
-
-    return true;
-}
-
-void ed::EditorContext::RecordState(NodesState& state) const
-{
-    NodesState result;
-
-    for (const auto& node : m_Nodes)
-    {
-        if (!node->m_IsLive)
-            continue;
-
-        RecordState(node, result.m_Nodes[node->m_ID]);
-    }
-
-    state = std::move(result);
-}
-
-bool ed::EditorContext::HasStateChanged(const SelectionState& state) const
-{
-    SelectionState currentState;
-    RecordState(currentState);
-
-    return currentState != state;
-}
-
-bool ed::EditorContext::ApplyState(const SelectionState& state)
-{
-    if (m_State.m_SelectionState.m_Selection == state.m_Selection)
-        return false;
-
-    m_State.m_SelectionState = state;
-
-    ClearSelection();
-    for (auto id : state.m_Selection)
-        if (auto object = FindObject(id))
-            SelectObject(object);
-
-    return true;
-}
-
-void ed::EditorContext::RecordState(SelectionState& state) const
-{
-    SelectionState result;
-
-    result.m_Selection.reserve(m_SelectedObjects.size());
-    for (auto object : m_SelectedObjects)
-        result.m_Selection.push_back(object->ID());
-
-    state = std::move(result);
-}
-
-bool ed::EditorContext::HasStateChanged(const ViewState& state) const
-{
-    ViewState currentState;
-    RecordState(currentState);
-
-    return currentState != state;
-}
-
-bool ed::EditorContext::ApplyState(const ViewState& state)
-{
-    auto lastSatete = m_State.m_ViewState;
-
-    m_State.m_ViewState = state;
-
-    if (ImRect_IsEmpty(state.m_VisibleRect))
-    {
-        m_NavigateAction.m_Scroll = state.m_ViewScroll;
-        m_NavigateAction.m_Zoom = state.m_ViewZoom;
-
-        return lastSatete.m_ViewScroll != state.m_ViewScroll || lastSatete.m_ViewZoom != state.m_ViewZoom;
+        m_NavigateAction.m_Scroll = m_Settings.m_ViewScroll;
+        m_NavigateAction.m_Zoom   = m_Settings.m_ViewZoom;
     }
     else
     {
-        m_NavigateAction.NavigateTo(state.m_VisibleRect, NavigateAction::ZoomMode::Exact, 0.0f);
-
-        return lastSatete.m_VisibleRect.Min != state.m_VisibleRect.Min ||
-               lastSatete.m_VisibleRect.Max != state.m_VisibleRect.Max;
+        m_NavigateAction.NavigateTo(m_Settings.m_VisibleRect, NavigateAction::ZoomMode::Exact, 0.0f);
     }
-}
-
-void ed::EditorContext::RecordState(ViewState& state) const
-{
-    ViewState result;
-
-    result.m_ViewScroll = m_NavigateAction.m_Scroll;
-    result.m_ViewZoom = m_NavigateAction.m_Zoom;
-    result.m_VisibleRect = m_NavigateAction.m_VisibleRect;
-
-    state = std::move(result);
-}
-
-bool ed::EditorContext::HasStateChanged(const EditorState& state) const
-{
-    EditorState currentState;
-    RecordState(currentState);
-
-    return currentState != state;
-}
-
-bool ed::EditorContext::ApplyState(const EditorState& state)
-{
-    bool result = false;
-    result |= ApplyState(state.m_NodesState);
-    result |= ApplyState(state.m_SelectionState);
-    result |= ApplyState(state.m_ViewState);
-    return result;
-}
-
-void ed::EditorContext::RecordState(EditorState& state) const
-{
-    EditorState result;
-
-    RecordState(result.m_NodesState);
-    RecordState(result.m_SelectionState);
-    RecordState(result.m_ViewState);
-
-    state = std::move(result);
-}
-
-// void ed::EditorContext::SaveState()
-//{
-//     SaveSettings();
-// }
-//
-// void ed::EditorContext::RestoreState()
-//{
-//     m_Settings.ClearDirty();
-//     //m_Settings.m_Nodes.clear();
-//     LoadSettings();
-//     for (auto& node : m_Nodes)
-//         RestoreNodeState(node);
-// }
-
-ed::Transaction ed::EditorContext::MakeTransaction(const char* name)
-{
-    ITransaction* transactionInterface = nullptr;
-
-    if (m_Config.TransactionInterface.Constructor)
-        transactionInterface =
-            m_Config.TransactionInterface.Constructor(name, m_Config.TransactionInterface.UserPointer);
-
-    return Transaction(this, transactionInterface);
-}
-
-void ed::EditorContext::DestroyTransaction(ITransaction* transaction)
-{
-    if (m_Config.TransactionInterface.Destructor)
-        m_Config.TransactionInterface.Destructor(transaction, m_Config.TransactionInterface.UserPointer);
-}
-
-void ed::EditorContext::LoadSettings()
-{
-    //ed::Settings::Parse(m_Config.Load(), m_Settings);
-
-    //if (ImRect_IsEmpty(m_Settings.m_VisibleRect))
-    //{
-    //    m_NavigateAction.m_Scroll = m_Settings.m_ViewScroll;
-    //    m_NavigateAction.m_Zoom   = m_Settings.m_ViewZoom;
-    //}
-    //else
-    //{
-    //    m_NavigateAction.NavigateTo(m_Settings.m_VisibleRect, NavigateAction::ZoomMode::Exact, 0.0f);
-    //}
-
-    EditorState state;
-
-    string error;
-    if (!Serialization::Parse(m_Config.Load(), state, &error))
-        return;
-
-    ApplyState(state);
 }
 
 void ed::EditorContext::SaveSettings()
@@ -3494,7 +3178,7 @@ void ed::FlowAnimation::ClearPath()
 
 ImVec2 ed::FlowAnimation::SamplePath(float distance) const
 {
-    //distance = ImMax(0.0f, ImMin(distance, PathLength));
+    //distance = ImMax(0.0f, std::min(distance, PathLength));
 
     auto endPointIt = std::find_if(m_Path.begin(), m_Path.end(), [distance](const CurvePoint& p) { return distance < p.Distance; });
     if (endPointIt == m_Path.end())
@@ -3939,35 +3623,6 @@ void ed::NavigateAction::SetViewRect(const ImRect& rect)
 ImRect ed::NavigateAction::GetViewRect() const
 {
     return m_Canvas.CalcViewRect(GetView());
-}
-
-const char* ax::NodeEditor::Detail::NavigateAction::Describe() const
-{
-   switch (m_Reason)
-    {
-        default:
-        case NavigateAction::NavigationReason::Unknown:
-            return "Navigate";
-        case NavigateAction::NavigationReason::MouseZoom:
-            {
-                auto startArea = ImRect_Area(m_Animation.m_Start);
-                auto targetArea = ImRect_Area(m_Animation.m_Target);
-                if (startArea > targetArea)
-                    return "Zoom In";
-                else if (startArea < targetArea)
-                    return "Zoom Out";
-                else
-                    return "Zoom";
-            }
-        case NavigateAction::NavigationReason::Selection:
-            return "Navigate To Selection";
-        case NavigateAction::NavigationReason::Object:
-            return "Navigate To Object";
-        case NavigateAction::NavigationReason::Content:
-            return "Navigate To Content";
-        case NavigateAction::NavigationReason::Edge:
-            return "Scroll On Edge";
-    }
 }
 
 float ed::NavigateAction::GetNextZoom(float steps)
@@ -4489,7 +4144,7 @@ bool ed::SelectAction::Process(const Control& control)
     {
         m_EndPoint = ImGui::GetMousePos();
 
-        auto topLeft     = ImVec2(ImMin(m_StartPoint.x, m_EndPoint.x), ImMin(m_StartPoint.y, m_EndPoint.y));
+        auto topLeft     = ImVec2(std::min(m_StartPoint.x, m_EndPoint.x), std::min(m_StartPoint.y, m_EndPoint.y));
         auto bottomRight = ImVec2(ImMax(m_StartPoint.x, m_EndPoint.x), ImMax(m_StartPoint.y, m_EndPoint.y));
         auto rect        = ImRect(topLeft, bottomRight);
         if (rect.GetWidth() <= 0)
@@ -4560,7 +4215,7 @@ void ed::SelectAction::Draw(ImDrawList* drawList)
 
     drawList->ChannelsSetCurrent(c_BackgroundChannel_SelectionRect);
 
-    auto min  = ImVec2(ImMin(m_StartPoint.x, m_EndPoint.x), ImMin(m_StartPoint.y, m_EndPoint.y));
+    auto min  = ImVec2(std::min(m_StartPoint.x, m_EndPoint.x), std::min(m_StartPoint.y, m_EndPoint.y));
     auto max  = ImVec2(ImMax(m_StartPoint.x, m_EndPoint.x), ImMax(m_StartPoint.y, m_EndPoint.y));
 
     drawList->AddRectFilled(min, max, fillColor);
@@ -5870,7 +5525,7 @@ bool ed::HintBuilder::Begin(NodeId nodeId)
 
     Editor->Suspend(SuspendFlags::KeepSplitter);
 
-    const auto alpha = ImMax(0.0f, ImMin(1.0f, (view.Scale - c_min_zoom) / (c_max_zoom - c_min_zoom)));
+    const auto alpha = ImMax(0.0f, std::min(1.0f, (view.Scale - c_min_zoom) / (c_max_zoom - c_min_zoom)));
 
     Editor->GetDrawList()->ChannelsSetCurrent(c_UserChannel_HintsBackground);
     ImGui::PushClipRect(rect.Min + ImVec2(1, 1), rect.Max - ImVec2(1, 1), false);
@@ -6114,29 +5769,21 @@ ed::Config::Config(const ax::NodeEditor::Config* config)
         *static_cast<ax::NodeEditor::Config*>(this) = *config;
 }
 
-ed::json::value ed::Config::Load()
+std::string ed::Config::Load()
 {
-    if (LoadSettingsJson)
-    {
-        return LoadSettingsJson(UserPointer);
-    }
-    else if (LoadSettings)
-    {
-        std::string data;
+    std::string data;
 
+    if (LoadSettings)
+    {
         const auto size = LoadSettings(nullptr, UserPointer);
         if (size > 0)
         {
             data.resize(size);
             LoadSettings(const_cast<char*>(data.data()), UserPointer);
         }
-
-        return json::value::parse(data);
     }
     else if (SettingsFile)
     {
-        std::string data;
-
         std::ifstream file(SettingsFile);
         if (file)
         {
@@ -6147,34 +5794,26 @@ ed::json::value ed::Config::Load()
             data.reserve(size);
             data.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
         }
-
-        return json::value::parse(data);
     }
-    else
-        return json::value(json::type_t::null);
+
+    return data;
 }
 
-ed::json::value ed::Config::LoadNode(NodeId nodeId)
+std::string ed::Config::LoadNode(NodeId nodeId)
 {
-    if (LoadNodeSettingsJson)
-    {
-        return LoadNodeSettingsJson(nodeId, UserPointer);
-    }
-    else if (LoadNodeSettings)
-    {
-        std::string data;
+    std::string data;
 
+    if (LoadNodeSettings)
+    {
         const auto size = LoadNodeSettings(nodeId, nullptr, UserPointer);
         if (size > 0)
         {
             data.resize(size);
             LoadNodeSettings(nodeId, const_cast<char*>(data.data()), UserPointer);
         }
-
-        return json::value::parse(data);
     }
-    else
-        return json::value(json::type_t::null);
+
+    return data;
 }
 
 void ed::Config::BeginSave()
@@ -6183,22 +5822,17 @@ void ed::Config::BeginSave()
         BeginSaveSession(UserPointer);
 }
 
-bool ed::Config::Save(const json::value& data, SaveReasonFlags flags)
+bool ed::Config::Save(const std::string& data, SaveReasonFlags flags)
 {
-    if (SaveSettingsJson)
+    if (SaveSettings)
     {
-        return SaveSettingsJson(data, flags, UserPointer);
-    }
-    else if (SaveSettings)
-    {
-        auto serializedData = data.dump();
-        return SaveSettings(serializedData.c_str(), serializedData.size(), flags, UserPointer);
+        return SaveSettings(data.c_str(), data.size(), flags, UserPointer);
     }
     else if (SettingsFile)
     {
         std::ofstream settingsFile(SettingsFile);
         if (settingsFile)
-            settingsFile << data.dump();
+            settingsFile << data;
 
         return !!settingsFile;
     }
@@ -6206,17 +5840,10 @@ bool ed::Config::Save(const json::value& data, SaveReasonFlags flags)
     return false;
 }
 
-bool ed::Config::SaveNode(NodeId nodeId, const json::value& data, SaveReasonFlags flags)
+bool ed::Config::SaveNode(NodeId nodeId, const std::string& data, SaveReasonFlags flags)
 {
-    if (SaveNodeSettingsJson)
-    {
-        return SaveNodeSettingsJson(nodeId, data, flags, UserPointer);
-    }
-    else if (SaveNodeSettings)
-    {
-        auto serializedData = data.dump();
-        return SaveNodeSettings(nodeId, serializedData.c_str(), serializedData.size(), flags, UserPointer);
-    }
+    if (SaveNodeSettings)
+        return SaveNodeSettings(nodeId, data.c_str(), data.size(), flags, UserPointer);
 
     return false;
 }
@@ -6226,99 +5853,3 @@ void ed::Config::EndSave()
     if (EndSaveSession)
         EndSaveSession(UserPointer);
 }
-//
-////------------------------------------------------------------------------------
-////
-//// Config
-////
-////------------------------------------------------------------------------------
-//ed::Config::Config(const ax::NodeEditor::Config* config)
-//{
-//    if (config)
-//        *static_cast<ax::NodeEditor::Config*>(this) = *config;
-//}
-//
-//std::string ed::Config::Load()
-//{
-//    std::string data;
-//
-//    if (LoadSettings)
-//    {
-//        const auto size = LoadSettings(nullptr, UserPointer);
-//        if (size > 0)
-//        {
-//            data.resize(size);
-//            LoadSettings(const_cast<char*>(data.data()), UserPointer);
-//        }
-//    }
-//    else if (SettingsFile)
-//    {
-//        std::ifstream file(SettingsFile);
-//        if (file)
-//        {
-//            file.seekg(0, std::ios_base::end);
-//            auto size = static_cast<size_t>(file.tellg());
-//            file.seekg(0, std::ios_base::beg);
-//
-//            data.reserve(size);
-//            data.assign(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-//        }
-//    }
-//
-//    return data;
-//}
-//
-//std::string ed::Config::LoadNode(NodeId nodeId)
-//{
-//    std::string data;
-//
-//    if (LoadNodeSettings)
-//    {
-//        const auto size = LoadNodeSettings(nodeId, nullptr, UserPointer);
-//        if (size > 0)
-//        {
-//            data.resize(size);
-//            LoadNodeSettings(nodeId, const_cast<char*>(data.data()), UserPointer);
-//        }
-//    }
-//
-//    return data;
-//}
-//
-//void ed::Config::BeginSave()
-//{
-//    if (BeginSaveSession)
-//        BeginSaveSession(UserPointer);
-//}
-//
-//bool ed::Config::Save(const std::string& data, SaveReasonFlags flags)
-//{
-//    if (SaveSettings)
-//    {
-//        return SaveSettings(data.c_str(), data.size(), flags, UserPointer);
-//    }
-//    else if (SettingsFile)
-//    {
-//        std::ofstream settingsFile(SettingsFile);
-//        if (settingsFile)
-//            settingsFile << data;
-//
-//        return !!settingsFile;
-//    }
-//
-//    return false;
-//}
-//
-//bool ed::Config::SaveNode(NodeId nodeId, const std::string& data, SaveReasonFlags flags)
-//{
-//    if (SaveNodeSettings)
-//        return SaveNodeSettings(nodeId, data.c_str(), data.size(), flags, UserPointer);
-//
-//    return false;
-//}
-//
-//void ed::Config::EndSave()
-//{
-//    if (EndSaveSession)
-//        EndSaveSession(UserPointer);
-//}
