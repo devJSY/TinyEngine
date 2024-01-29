@@ -53,6 +53,21 @@ CParticleSystem::CParticleSystem()
     // 데이터 읽기/쓰기 용 구조화버퍼
     m_RWBuffer = new CStructuredBuffer;
     m_RWBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::READ_WRITE, true);
+
+    
+	// 초기 모듈 세팅
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
+
+    m_Module.SpaceType = 1;
+    m_Module.vSpawnColor = Vec4(1.f, 0.f, 0.f, 1.f);
+    m_Module.vSpawnMinScale = Vec4(20.f, 20.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(20.f, 20.f, 1.f, 1.f);
+    m_Module.MinLife = 5.f;
+    m_Module.MaxLife = 5.f;
+    m_Module.SpawnShape = 0; // 0 : Sphere
+    m_Module.Radius = 100.f;
+
+    m_Module.SpawnRate = 100;
 }
 
 CParticleSystem::~CParticleSystem()
@@ -69,22 +84,17 @@ CParticleSystem::~CParticleSystem()
 
 void CParticleSystem::finaltick()
 {
-    // 파티클 모듈값 세팅
-    m_Module.SpaceType = 1;
-    m_Module.vSpawnColor = Vec4(1.f, 0.f, 0.f, 1.f);
-    m_Module.vSpawnMinScale = Vec4(20.f, 20.f, 1.f, 1.f);
-    m_Module.vSpawnMaxScale = Vec4(20.f, 20.f, 1.f, 1.f);
-    m_Module.MinLife = 5.f;
-    m_Module.MaxLife = 5.f;
-    m_Module.SpawnRate = 1;
-
     m_AccTime += DT;
+
     if ((1.f / m_Module.SpawnRate) < m_AccTime)
     {
-        m_AccTime = 0.f;
-        tSpawnCount count = {};
-        count.SpawnCount = 4;
-        
+        // 누적 시간을 스폰 간격으로 나눈 값
+        float fSpawnCount = m_AccTime / (1.f / m_Module.SpawnRate);
+
+        // 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
+        m_AccTime -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
+
+        tSpawnCount count = tSpawnCount{(int)fSpawnCount, 0, 0, 0};
         m_RWBuffer->SetData(&count);
     }
     else
@@ -103,6 +113,7 @@ void CParticleSystem::finaltick()
     m_CSParticleUpdate->SetParticleBuffer(m_ParticleBuffer);
     m_CSParticleUpdate->SetModuleBuffer(m_ModuleBuffer);
     m_CSParticleUpdate->SetRWBuffer(m_RWBuffer);
+    // m_CSParticleUpdate->SetParticleWorldPos();
 
     m_CSParticleUpdate->Execute();
 }

@@ -167,10 +167,21 @@ struct tParticleModule
     Vec4 vSpawnMinScale; // 초기 최소 크기
     Vec4 vSpawnMaxScale; // 초기 최대 크기
 
-    float MinLife; // 최소 수명
-    float MaxLife; // 최대 수명
-    int SpawnRate; // 초당 생성 개수
-    int SpaceType; // 좌표계(0 : LocalSpace, 1 : WorldSpace)
+    float MinLife;       // 최소 수명
+    float MaxLife;       // 최대 수명
+    int SpawnRate;       // 초당 생성 개수
+    int SpaceType;       // 좌표계(0 : LocalSpace, 1 : WorldSpace)
+    int SpawnShape;      // 스폰 범위(0 : Sphere, 1 : Box)
+    float Radius;        // SpawnShape 가 Sphere 인 경우, 반지름 길이
+    Vec4 vSpawnBoxScale; // SpawnShape 가 Box 인 경우, Box 의 크기
+    Vec2 padding;
+
+    //
+
+    //
+
+    //
+    int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
 };
 
 struct tSpawnCount

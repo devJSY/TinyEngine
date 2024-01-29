@@ -18,6 +18,7 @@ CRenderMgr::CRenderMgr()
     , m_pDebugObj(nullptr)
     , m_bShowDebugRender(false)
     , m_bShowCollider(true)
+    , m_vecNoiseTex{}
 {
 }
 

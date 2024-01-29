@@ -603,8 +603,13 @@ void CAssetMgr::CreateDefaultTexture()
     if (nullptr == FindAsset<CTexture>(L"cubemap_specularTex"))
         Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
 
-    if (nullptr == FindAsset<CTexture>(L"noise_03Tex"))
-        Load<CTexture>(L"noise_03Tex", L"Developers\\noise\\noise_03.jpg");
+    // Noise Texture Load
+    if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_01.png"))
+        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_01.png", L"Textures\\noise\\noise_01.png");
+    if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_02.png"))
+        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_02.png", L"Textures\\noise\\noise_02.png");
+    if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_03.png"))
+        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_03.jpg", L"Textures\\noise\\noise_03.jpg");
 
     if (nullptr == FindAsset<CTexture>(L"BlueprintBackgroundTex"))
         Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");

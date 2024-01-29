@@ -26,4 +26,15 @@ void CRenderMgr::init()
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
+
+    // Noise Texture Load
+    m_vecNoiseTex.push_back(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_01.png", L"Textures\\noise\\noise_01.png"));
+    m_vecNoiseTex.push_back(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_02.png", L"Textures\\noise\\noise_02.png"));
+    m_vecNoiseTex.push_back(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_03.jpg", L"Textures\\noise\\noise_03.jpg"));
+
+    m_vecNoiseTex[0]->UpdateData(15);
+    m_vecNoiseTex[0]->UpdateData_CS_SRV(15);
 }

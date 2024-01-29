@@ -2,7 +2,7 @@
 #include "CParticleUpdate.h"
 
 CParticleUpdate::CParticleUpdate()
-    : CComputeShader(1024, 1, 1)
+    : CComputeShader(32, 1, 1)
     , m_ParticleBuffer(nullptr)
     , m_ModuleBuffer(nullptr)
     , m_RWBuffer(nullptr)
