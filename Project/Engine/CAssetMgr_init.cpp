@@ -233,6 +233,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
+        pShader->SetName(L"ParticleRenderShader");
         AddAsset(L"ParticleRenderShader", pShader);
     }
 
@@ -644,12 +645,13 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"TileMapMtrl", pMtrl);
     }
 
-    // ParticleMtrl
-    if (nullptr == FindAsset<CMaterial>(L"ParticleMtrl"))
+    // ParticleRenderMtrl
+    if (nullptr == FindAsset<CMaterial>(L"ParticleRenderMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ParticleRenderShader"));
-        AddAsset<CMaterial>(L"ParticleMtrl", pMtrl);
+        pMtrl->SetName(L"ParticleRenderMtrl");
+        AddAsset<CMaterial>(L"ParticleRenderMtrl", pMtrl);
     }
 
     // GrayFilterMtrl

@@ -56,7 +56,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                                 
                 float4 vRand = g_NoiseTex.SampleLevel(g_LinearSampler, vUV, 0);
                 
-                // SpawnShape 가 Sphere 타입이라면
+                // SpawnShape - Sphere 
                 if (0 == Module.SpawnShape)
                 {
                     float RandomRadius = vRand[0] * Module.Radius;
@@ -66,7 +66,8 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                     // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
                     Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), 0.f) * RandomRadius;
                 }
-                else
+                // SpawnShape - Box
+                else if (1 == Module.SpawnShape)
                 {
                     Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
                     Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
@@ -83,7 +84,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 
                 // 스폰 Life 설정
                 Particle.Age = 0.f;
-                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
+                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MinLife;
                          
                 // Add VelocityModule
                 if (Module.arrModuleCheck[3])
@@ -117,14 +118,17 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         }
         
         // 
-        if (0 == Module.SpaceType)
+        if (Module.arrModuleCheck[3])
         {
+            if (0 == Module.SpaceType)
+            {
             Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_dt;
             Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
-        }
-        else if (1 == Module.SpaceType)
-        {
+            }
+            else if (1 == Module.SpaceType)
+            {
             Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_dt;
+            }
         }
     }
 }

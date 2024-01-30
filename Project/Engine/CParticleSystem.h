@@ -30,4 +30,6 @@ public:
 public:
     CParticleSystem();
     virtual ~CParticleSystem();
+
+    friend class COutliner;
 };

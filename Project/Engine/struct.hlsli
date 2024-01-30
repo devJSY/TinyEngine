@@ -54,8 +54,8 @@ struct tParticle
 {
     float4 vLocalPos; // 로컬 위치
     float4 vWorldPos; // 윌드 위치
-    float4 vWorldScale; // 크기
     float4 vWorldRotation; // 회전값
+    float4 vWorldScale; // 크기
     float4 vVelocity; // 속도
     float4 vColor; // 색상
 

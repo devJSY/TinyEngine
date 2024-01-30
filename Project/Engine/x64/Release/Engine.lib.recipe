@@ -63,7 +63,7 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\3D_OutLineVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\particle.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\particle_render.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\particle_update.cso</FullPath>

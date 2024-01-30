@@ -15,7 +15,7 @@
 CParticleSystem::CParticleSystem()
     : CRenderComponent(COMPONENT_TYPE::PARTICLESYSTEM)
     , m_ParticleBuffer(nullptr)
-    , m_MaxParticleCount(2000)
+    , m_MaxParticleCount(1000)
     , m_Module{}
     , m_ModuleBuffer(nullptr)
     , m_RWBuffer(nullptr)
@@ -25,10 +25,7 @@ CParticleSystem::CParticleSystem()
 {
     // 전용 메쉬와 전용 재질 사용
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"));
-
-    // 렌더링 해상도
-    Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"));
 
     // 파티클을 저장하는 구조화 버퍼
     m_ParticleBuffer = new CStructuredBuffer;
@@ -50,23 +47,23 @@ CParticleSystem::CParticleSystem()
     m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
     m_Module.SpaceType = 1;
-    m_Module.vSpawnColor = Vec4(0.2f, 0.4f, 0.9f, 1.f);
-    m_Module.vSpawnMinScale = Vec4(50.f, 50.f, 1.f, 1.f);
-    m_Module.vSpawnMaxScale = Vec4(200.f, 200.f, 1.f, 1.f);
-    m_Module.MinLife = 0.4f;
-    m_Module.MaxLife = 1.f;
-    m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
-    m_Module.Radius = 100.f;
-    m_Module.vSpawnBoxScale = Vec4(500.f, 500.f, 0.f, 0.f);
-    m_Module.SpawnRate = 50;
+    m_Module.vSpawnColor = Vec4(0.f, 0.f, 0.f, 1.f);
+    m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_Module.MinLife = 0.f;
+    m_Module.MaxLife = 0.f;
+    m_Module.SpawnShape = 0; // 0 : Sphere, 1 : Box
+    m_Module.Radius = 0.f;
+    m_Module.vSpawnBoxScale = Vec4(0.f, 0.f, 0.f, 1.f);
+    m_Module.SpawnRate = 0;
 
-    // Add Velocity Module
-    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
-    m_Module.AddVelocityType = 0;
-    m_Module.MinSpeed = 100;
-    m_Module.MaxSpeed = 200;
-    m_Module.FixedDirection;
-    m_Module.FixedAngle;
+    //// Add Velocity Module
+    //m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
+    //m_Module.AddVelocityType = 0;
+    //m_Module.MinSpeed = 100;
+    //m_Module.MaxSpeed = 200;
+    //m_Module.FixedDirection;
+    //m_Module.FixedAngle;
 
     m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\particle\\Bubbles50px.png",
                                                          L"Textures\\particle\\Bubbles50px.png");

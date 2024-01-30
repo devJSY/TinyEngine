@@ -772,8 +772,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
         Ptr<CMaterial> pMaterial = pTilemap->GetMaterial();
 
         // Mesh
-        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                              "Mesh"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
         {
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
@@ -788,8 +787,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
         }
 
         // Material
-        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(),
-                              m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
         {
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
@@ -859,6 +857,221 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
     if (open)
     {
+        Ptr<CMesh> pMesh = pParticleSystem->GetMesh();
+        Ptr<CMaterial> pMaterial = pParticleSystem->GetMaterial();
+
+        // Mesh
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
+        {
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            if (nullptr != pMesh)
+            {
+                string name = ToString(pMesh->GetName());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+            }
+            ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+
+            ImGui::TreePop();
+        }
+
+        // Material
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
+        {
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            if (nullptr != pMaterial)
+            {
+                string name = ToString(pMaterial->GetName());
+                strcpy_s(buffer, sizeof(buffer), name.c_str());
+            }
+            ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));
+
+            ImGui::TreePop();
+        }
+
+        // Particle Module
+        if (ImGui::TreeNodeEx((void*)typeid(tParticleModule).hash_code(),
+                              m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Particle Module"))
+        {
+            int MaxParticleCount = pParticleSystem->m_MaxParticleCount;
+            if (ImGui::InputInt(ImGuiLabelPrefix("Max Particle Count").c_str(), &MaxParticleCount), 1, 100,
+                ImGuiInputTextFlags_EnterReturnsTrue)
+            {
+                if (MaxParticleCount < 0)
+                    MaxParticleCount = 0;
+
+                // 파티클 최대 갯수 제한
+                if (MaxParticleCount > 1'000'000)
+                    MaxParticleCount = 1'000'000;
+
+                // 크기가 더 커진 경우 버퍼 재생성
+                if ((int)pParticleSystem->m_MaxParticleCount < MaxParticleCount)
+                {
+                    pParticleSystem->m_ParticleBuffer->Create(sizeof(tParticle), MaxParticleCount, SB_TYPE::READ_WRITE,
+                                                              true);
+                }
+
+                pParticleSystem->m_MaxParticleCount = MaxParticleCount;
+            };
+
+            tParticleModule& Module = pParticleSystem->m_Module;
+
+            if (ImGui::RadioButton("Spawn", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
+            }
+            ImGui::SameLine();
+            if (ImGui::RadioButton("Drag", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
+            }
+            ImGui::SameLine();
+            if (ImGui::RadioButton("Scale", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 1;
+            }
+            ImGui::SameLine();
+            if (ImGui::RadioButton("Add Veclocity", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
+            }
+
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN])
+            {
+                if (ImGui::TreeNodeEx("Spawn Module", m_DefaultTreeNodeFlag, "Spawn Module"))
+                {
+                    ImGui::Text("Space Type");
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Local Space", (int*)&Module.SpaceType, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("World Space", (int*)&Module.SpaceType, 1);
+
+                    ImGui::ColorEdit3(ImGuiLabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
+                    ImGui::DragFloat3(ImGuiLabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f,
+                                      D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat3(ImGuiLabelPrefix("Max Scale").c_str(), &Module.vSpawnMaxScale.x, 1.f, 0.f,
+                                      D3D11_FLOAT32_MAX);
+
+                    ImGui::DragFloat(ImGuiLabelPrefix("Min Life").c_str(), &Module.MinLife, 0.1f, 0.f, Module.MaxLife);
+                    ImGui::DragFloat(ImGuiLabelPrefix("Max Life").c_str(), &Module.MaxLife, 0.1f, Module.MinLife,
+                                     D3D11_FLOAT32_MAX);
+
+                    ImGui::DragInt(ImGuiLabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1.f, 0, INT_MAX);
+
+                    ImGui::Separator();
+
+                    ImGui::Text("Spawn Shape");
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Sphere", (int*)&Module.SpawnShape, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Box", (int*)&Module.SpawnShape, 1);
+
+                    // Spawn Shape - Sphere
+                    if (0 == Module.SpawnShape)
+                    {
+                        ImGui::DragFloat(ImGuiLabelPrefix("Radius").c_str(), &Module.Radius, 1.f, 0.f,
+                                         D3D11_FLOAT32_MAX);
+                    }
+                    // Spawn Shape - Box
+                    else if (1 == Module.SpawnShape)
+                    {
+                        ImGui::DragFloat3(ImGuiLabelPrefix("Spawn Box Scale").c_str(), &Module.vSpawnBoxScale.x, 1.f,
+                                          0.f, D3D11_FLOAT32_MAX);
+                    }
+
+                    ImGui::TreePop();
+                }
+            }
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG])
+            {
+                if (ImGui::TreeNodeEx("Drag Module", m_DefaultTreeNodeFlag, "Drag Module"))
+                {
+
+                    ImGui::TreePop();
+                }
+            }
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE])
+            {
+                if (ImGui::TreeNodeEx("Scale Module", m_DefaultTreeNodeFlag, "Scale Module"))
+                {
+
+                    ImGui::TreePop();
+                }
+            }
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY])
+            {
+                if (ImGui::TreeNodeEx("Add Velocity Module", m_DefaultTreeNodeFlag, "Add Velocity Module"))
+                {
+                    ImGui::Text("Velocity Type");
+                    ImGui::SameLine();
+                    ImGui::RadioButton("From Center", (int*)&Module.AddVelocityType, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("To Center", (int*)&Module.AddVelocityType, 1);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Fix Direction", (int*)&Module.AddVelocityType, 2);
+
+                    ImGui::DragFloat(ImGuiLabelPrefix("Min Speed").c_str(), &Module.MinSpeed, 0.1f, 0.f,
+                                     Module.MaxSpeed);
+                    ImGui::DragFloat(ImGuiLabelPrefix("Max Speed").c_str(), &Module.MaxSpeed, 0.1f, Module.MinSpeed,
+                                     D3D11_FLOAT32_MAX);
+
+                    if (2 == Module.AddVelocityType)
+                    {
+                        ImGui::DragFloat(ImGuiLabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 360.f);
+                        ImGui::DragFloat3(ImGuiLabelPrefix("Fixed Direction").c_str(), &Module.FixedDirection.x, 1.f,
+                                          0.f, 1.f);
+                    }
+
+                    ImGui::TreePop();
+                }
+            }
+
+            // Texture
+            ImGui::Separator();
+            ImGui::Text("Particle Texture");
+            ImGui::Image((void*)pParticleSystem->m_ParticleTex->GetSRV().Get(), ImVec2(256.f, 256.f));
+
+            if (ImGui::BeginItemTooltip())
+            {
+                ImGui::Text("%s", ToString(pParticleSystem->m_ParticleTex->GetKey()).c_str());
+                ImGui::EndTooltip();
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pParticleSystem->m_ParticleTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pParticleSystem->m_ParticleTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            ImGui::TreePop();
+        }
 
         ImGui::TreePop();
     }
