@@ -224,8 +224,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\particle.fx", "VS_Particle");
-        pShader->CreatePixelShader(L"shader\\particle.fx", "PS_Particle");
+        pShader->CreateVertexShader(L"shader\\particle_render.fx", "VS_ParticleRender");
+        pShader->CreatePixelShader(L"shader\\particle_render.fx", "PS_ParticleRender");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X

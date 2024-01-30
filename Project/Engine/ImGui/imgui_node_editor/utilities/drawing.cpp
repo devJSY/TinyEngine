@@ -1,4 +1,6 @@
-# define IMGUI_DEFINE_MATH_OPERATORS
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
+    #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 # include "drawing.h"
 # include <imgui_internal.h>
 

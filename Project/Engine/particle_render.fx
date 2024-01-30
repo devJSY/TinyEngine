@@ -1,5 +1,5 @@
-#ifndef _PARTICLE
-#define _PARTICLE
+#ifndef _PARTICLE_RENDER
+#define _PARTICLE_RENDER
 
 #include "global.hlsli"
 #include "struct.hlsli"
@@ -22,7 +22,7 @@ struct PS_Input
     uint iInstID : SV_InstanceID;
 };
 
-PS_Input VS_Particle(VS_Input _in)
+PS_Input VS_ParticleRender(VS_Input _in)
 {
     PS_Input output = (PS_Input) 0.f;
     
@@ -37,14 +37,21 @@ PS_Input VS_Particle(VS_Input _in)
     return output;
 }
 
-float4 PS_Particle(PS_Input _in) : SV_Target
+float4 PS_ParticleRender(PS_Input _in) : SV_Target
 {
     if (!Particle.Active)
     {
         discard;
     }
     
-    return float4(1.f, 0.f, 0.f, 1.f);
+    float4 vOutColor = Particle.vColor;
+    
+    if (g_btex_0)
+    {
+        vOutColor *= g_tex_0.Sample(g_LinearSampler, _in.vUV);
+    }
+    
+    return vOutColor;
 }
 
 #endif

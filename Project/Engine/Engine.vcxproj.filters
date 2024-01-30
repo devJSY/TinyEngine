@@ -894,7 +894,7 @@
     <FxCompile Include="setcolor.fx">
       <Filter>ShaderCode\Compute\SetColor</Filter>
     </FxCompile>
-    <FxCompile Include="particle.fx">
+    <FxCompile Include="particle_render.fx">
       <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
     <FxCompile Include="particle_update.fx">

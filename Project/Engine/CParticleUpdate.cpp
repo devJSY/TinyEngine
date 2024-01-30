@@ -21,6 +21,7 @@ int CParticleUpdate::UpdateData()
         return E_FAIL;
 
     m_Const.arrInt[0] = m_ParticleBuffer->GetElementCount();
+    m_Const.arrVec4[0] = m_vParticleWorldPos;
 
     m_ParticleBuffer->UpdateData_CS_UAV(0);
     m_RWBuffer->UpdateData_CS_UAV(1);

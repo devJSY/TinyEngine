@@ -18,6 +18,8 @@ private:
 
     Ptr<CParticleUpdate> m_CSParticleUpdate;
 
+    Ptr<CTexture> m_ParticleTex;
+
     float m_AccTime;
 
 public:
