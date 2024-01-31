@@ -74,8 +74,8 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // SpawnShape - Box
                 else if (1 == Module.SpawnShape)
                 {
-                    Particle.vLocalPos.x = clamp(vRand[0], -(Module.vSpawnBoxScale.x / 2.f), (Module.vSpawnBoxScale.x / 2.f));
-                    Particle.vLocalPos.y = clamp(vRand[1], -(Module.vSpawnBoxScale.y / 2.f), (Module.vSpawnBoxScale.y / 2.f));
+                    Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
+                    Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
                     Particle.vLocalPos.z = 0.f;
                 }
                 
@@ -85,14 +85,14 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 Particle.vColor = Module.vSpawnColor;
                 
                 // 스폰 크기 설정                
-                Particle.vWorldInitScale = Particle.vWorldScale = clamp(vRand[2], Module.vSpawnMinScale, Module.vSpawnMaxScale) + Module.vSpawnMinScale;
+                Particle.vWorldScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
                 
                 // 스폰 Life 설정
                 Particle.Age = 0.f;
-                Particle.Life = clamp(vRand[0], Module.MinLife, Module.MaxLife) + Module.MinLife;
-                                         
+                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
+                                   
                 // 스폰 Mass 설정
-                Particle.Mass = clamp(vRand1[0], Module.MinMass, Module.MaxMass);
+                Particle.Mass = (Module.MaxMass - Module.MinMass) * vRand1[0] + Module.MinMass;
                               
                 // Add VelocityModule
                 if (Module.arrModuleCheck[3])
@@ -101,12 +101,13 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                     if (0 == Module.AddVelocityType)
                     {
                         float3 vDir = normalize(Particle.vLocalPos.xyz);
-                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                        
+                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand[2] + Module.MinSpeed);
                     }
                     if (1 == Module.AddVelocityType)
                     {
                         float3 vDir = -normalize(Particle.vLocalPos.xyz);
-                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand[2] + Module.MinSpeed);
                     }
                 }
                 else
