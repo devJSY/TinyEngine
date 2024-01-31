@@ -31,7 +31,7 @@ void COutputLog::render(bool* open)
 {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
 
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     if (!ImGui::Begin("Output Log", open))
     {
         ImGui::End();
@@ -69,7 +69,7 @@ void COutputLog::render(bool* open)
         ImGui::EndPopup();
     }
 
-    if (ImGuiAlignButton("Settings", 1.f))
+    if (ImGui_AlignButton("Settings", 1.f))
         ImGui::OpenPopup("Settings");
 
     ImGui::Separator();
@@ -150,7 +150,7 @@ void COutputLog::render(bool* open)
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll |
                                            ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
     if (ImGui::InputText(
-            ImGuiLabelPrefix("Cmd", 0.1f).c_str(), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags,
+            ImGui_LabelPrefix("Cmd", 0.1f).c_str(), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags,
             [](ImGuiInputTextCallbackData* data) {
                 return static_cast<COutputLog*>(data->UserData)->TextEditCallback(data);
             },

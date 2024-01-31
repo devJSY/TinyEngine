@@ -191,7 +191,7 @@ void CBlueprintEditor::render(bool* open)
 
 void CBlueprintEditor::render()
 {
-    ImGuiSetWindowClass_Blueprint();
+    ImGui_SetWindowClass_Blueprint();
     ImGui::Begin("Event Graph");
 
     UpdateTouch();

@@ -17,14 +17,10 @@ void CMaterialEditor::render()
     if (nullptr == m_Mtrl.Get())
         return;
 
-    ImGuiSetWindowClass_MaterialEditor();
+    ImGui_SetWindowClass_MaterialEditor();
     ImGui::Begin("Details##MaterialEditor");
 
-    char buffer[256];
-    memset(buffer, 0, sizeof(buffer));
-    string name = ToString(m_Mtrl->GetName());
-    strcpy_s(buffer, sizeof(buffer), name.c_str());
-    ImGui::InputText(ImGuiLabelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
+    ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));
 
     const tMtrlConst& MtrlConst = m_Mtrl->GetMtrlConst();
 
@@ -35,16 +31,16 @@ void CMaterialEditor::render()
 
     bool bDirty = false;
 
-    if (ImGui::ColorEdit3(ImGuiLabelPrefix("Ambient").c_str(), &ambient.x))
+    if (ImGui::ColorEdit3(ImGui_LabelPrefix("Ambient").c_str(), &ambient.x))
         bDirty = true;
 
-    if (ImGui::ColorEdit3(ImGuiLabelPrefix("diffuse").c_str(), &diffuse.x))
+    if (ImGui::ColorEdit3(ImGui_LabelPrefix("diffuse").c_str(), &diffuse.x))
         bDirty = true;
 
-    if (ImGui::ColorEdit3(ImGuiLabelPrefix("specular").c_str(), &specular.x))
+    if (ImGui::ColorEdit3(ImGui_LabelPrefix("specular").c_str(), &specular.x))
         bDirty = true;
 
-    if (ImGui::ColorEdit3(ImGuiLabelPrefix("environment").c_str(), &environment.x))
+    if (ImGui::ColorEdit3(ImGui_LabelPrefix("environment").c_str(), &environment.x))
         bDirty = true;
 
     if (bDirty)

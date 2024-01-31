@@ -23,7 +23,7 @@ void CContentBrowser::init()
 
 void CContentBrowser::render()
 {
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Content Browser");
 
     // 뒤로가기 버튼
@@ -43,21 +43,14 @@ void CContentBrowser::render()
     }
 
     // FileName
-    {
-        string name = m_CurrentDirectory.string();
-
-        char buffer[256];
-        memset(buffer, 0, sizeof(buffer));
-        strcpy_s(buffer, sizeof(buffer), name.c_str());
-        ImGui::InputText(ImGuiLabelPrefix("Current Directory").c_str(), buffer, sizeof(buffer));
-    }
+    ImGui_InputText("Current Directory", m_CurrentDirectory.string());
 
     static float padding = 16.0f;
     static float thumbnailSize = 110.0f;
 
     ImGui::Columns(1);
-    ImGui::SliderFloat(ImGuiLabelPrefix("Thumbnail Size").c_str(), &thumbnailSize, 16, 256);
-    ImGui::SliderFloat(ImGuiLabelPrefix("Padding").c_str(), &padding, 0, 32);
+    ImGui::SliderFloat(ImGui_LabelPrefix("Thumbnail Size").c_str(), &thumbnailSize, 16, 256);
+    ImGui::SliderFloat(ImGui_LabelPrefix("Padding").c_str(), &padding, 0, 32);
 
     ImGui::Separator();
 

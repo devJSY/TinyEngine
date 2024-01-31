@@ -342,8 +342,8 @@ wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
     return wstring();
 }
 
-void ImGuiDrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue,
-                          float columnWidth)
+void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue,
+                           float columnWidth)
 {
     ImGui::PushID(label.c_str());
 
@@ -400,7 +400,7 @@ void ImGuiDrawVec3Control(const string& label, Vec3& values, float speed, float 
     ImGui::PopID();
 }
 
-string ImGuiLabelPrefix(const char* const label, float alignment)
+string ImGui_LabelPrefix(const char* const label, float alignment)
 {
     float width = ImGui::CalcItemWidth();
 
@@ -419,7 +419,7 @@ string ImGuiLabelPrefix(const char* const label, float alignment)
 //
 // Combo with std::vector<string>
 //
-bool ImGuiComboUI(const string& caption, string& current_item, const std::vector<string>& items)
+bool ImGui_ComboUI(const string& caption, string& current_item, const std::vector<string>& items)
 {
     bool changed = false;
 
@@ -444,7 +444,7 @@ bool ImGuiComboUI(const string& caption, string& current_item, const std::vector
     return changed;
 }
 
-bool ImGuiAlignButton(const char* label, float alignment)
+bool ImGui_AlignButton(const char* label, float alignment)
 {
     alignment = std::clamp(alignment, 0.f, 1.f);
 
@@ -460,7 +460,18 @@ bool ImGuiAlignButton(const char* label, float alignment)
     return ImGui::Button(label);
 }
 
-void ImGuiSetWindowClass_LevelEditor()
+void ImGui_InputText(const char* label, const string& Text, float alignment)
+{
+    char buffer[256];
+    memset(buffer, 0, sizeof(buffer));
+
+    if (!Text.empty())
+        strcpy_s(buffer, sizeof(buffer), Text.c_str());
+
+    ImGui::InputText(ImGui_LabelPrefix(label, alignment).c_str(), buffer, sizeof(buffer));
+}
+
+void ImGui_SetWindowClass_LevelEditor()
 {
     ImGuiWindowClass window_class;
     window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetLevelEditor()->GetName()).c_str());
@@ -470,7 +481,7 @@ void ImGuiSetWindowClass_LevelEditor()
     ImGui::SetNextWindowClass(&window_class);
 }
 
-void ImGuiSetWindowClass_MaterialEditor()
+void ImGui_SetWindowClass_MaterialEditor()
 {
     ImGuiWindowClass window_class;
     window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetMaterialEditor()->GetName()).c_str());
@@ -480,7 +491,7 @@ void ImGuiSetWindowClass_MaterialEditor()
     ImGui::SetNextWindowClass(&window_class);
 }
 
-void ImGuiSetWindowClass_Blueprint()
+void ImGui_SetWindowClass_Blueprint()
 {
     ImGuiWindowClass window_class;
     window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetBlueprintEditor()->GetName()).c_str());

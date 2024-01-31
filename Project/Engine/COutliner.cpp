@@ -33,7 +33,7 @@ void COutliner::init()
 
 void COutliner::render()
 {
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Outliner");
 
     for (UINT i = 0; i < LAYER_MAX; i++)
@@ -73,7 +73,7 @@ void COutliner::render()
 
     ImGui::End();
 
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Details##Outliner");
     if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
         DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());
@@ -137,7 +137,6 @@ void COutliner::DrawDetails(CGameObject* obj)
     // Tag
     {
         string name = ToString(obj->GetName());
-
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
         strcpy_s(buffer, sizeof(buffer), name.c_str());
@@ -184,7 +183,7 @@ void COutliner::DrawDetails(CGameObject* obj)
         int LayerIdx = obj->GetLayerIdx();
         string name = LayerNames[LayerIdx];
 
-        if (ImGuiComboUI(ImGuiLabelPrefix("Layer").c_str(), name, LayerNames))
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Layer").c_str(), name, LayerNames))
         {
             GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(ToWstring(name))->GetLayerIdx());
         }
@@ -219,17 +218,17 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (open)
     {
         Vec3 pos = pTr->GetRelativePos();
-        ImGuiDrawVec3Control("Location", pos, 10.f);
+        ImGui_DrawVec3Control("Location", pos, 10.f);
         pTr->SetRelativePos(pos);
 
         Vec3 rot = pTr->GetRelativeRotation();
         rot.ToDegree();
-        ImGuiDrawVec3Control("Rotation", rot, 1.f);
+        ImGui_DrawVec3Control("Rotation", rot, 1.f);
         rot.ToRadian();
         pTr->SetRelativeRotation(rot);
 
         Vec3 scale = pTr->GetRelativeScale();
-        ImGuiDrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
+        ImGui_DrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
         pTr->SetRelativeScale(scale);
 
         ImGui::TreePop();
@@ -250,7 +249,7 @@ void COutliner::DrawCollider2D(CGameObject* obj)
     {
         const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
         const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetColliderType()];
-        if (ImGui::BeginCombo(ImGuiLabelPrefix("Collider2DType").c_str(), currentCollider2DTypeString))
+        if (ImGui::BeginCombo(ImGui_LabelPrefix("Collider2DType").c_str(), currentCollider2DTypeString))
         {
             for (int i = 0; i < 2; i++)
             {
@@ -271,22 +270,22 @@ void COutliner::DrawCollider2D(CGameObject* obj)
         if (pCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
         {
             bool bAbsolute = pCol->IsAbsolute();
-            ImGui::Checkbox(ImGuiLabelPrefix("Absolute").c_str(), &bAbsolute);
+            ImGui::Checkbox(ImGui_LabelPrefix("Absolute").c_str(), &bAbsolute);
             pCol->SetAbsolute(bAbsolute);
         }
         else if (pCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
         {
             float fRadius = pCol->GetRadius();
-            if (ImGui::DragFloat(ImGuiLabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+            if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
                 pCol->SetRadius(fRadius);
         }
 
         Vec2 offsetPos = pCol->GetOffsetPos();
-        ImGui::DragFloat2(ImGuiLabelPrefix("Offset Pos").c_str(), &offsetPos.x, 0.1f);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Offset Pos").c_str(), &offsetPos.x, 0.1f);
         pCol->SetOffsetPos(offsetPos);
 
         Vec2 offsetScale = pCol->GetOffsetScale();
-        ImGui::DragFloat2(ImGuiLabelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f, 0.f, D3D11_FLOAT32_MAX);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f, 0.f, D3D11_FLOAT32_MAX);
         pCol->SetOffsetScale(offsetScale);
 
         ImGui::TreePop();
@@ -326,7 +325,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
             string curAnimName = ToString(pCurAnim->GetName());
 
             ImGui::Text("Animation Name");
-            if (ImGuiComboUI("##Anim", curAnimName, names))
+            if (ImGui_ComboUI("##Anim", curAnimName, names))
             {
                 pAni->Play(ToWstring(curAnimName), true);
             }
@@ -436,7 +435,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
     {
         const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
         const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
-        if (ImGui::BeginCombo(ImGuiLabelPrefix("Light Type").c_str(), currentLightTypeStrings))
+        if (ImGui::BeginCombo(ImGui_LabelPrefix("Light Type").c_str(), currentLightTypeStrings))
         {
             for (int i = 0; i < (UINT)LIGHT_TYPE::END; i++)
             {
@@ -455,38 +454,38 @@ void COutliner::DrawLight2D(CGameObject* obj)
         }
 
         Vec4 color = pLight->GetLightColor();
-        if (ImGui::ColorEdit3(ImGuiLabelPrefix("Color").c_str(), &color.x))
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Color").c_str(), &color.x))
             pLight->SetLightColor(color);
 
         Vec4 specular = pLight->GetSpecular();
-        if (ImGui::ColorEdit3(ImGuiLabelPrefix("Specular").c_str(), &specular.x))
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Specular").c_str(), &specular.x))
             pLight->SetSpecular(specular);
 
         Vec4 ambient = pLight->GetAmbient();
-        if (ImGui::ColorEdit3(ImGuiLabelPrefix("Ambient").c_str(), &ambient.x))
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Ambient").c_str(), &ambient.x))
             pLight->SetAmbient(ambient);
 
         float fRadius = pLight->GetRadius();
         float fangle = pLight->GetAngle();
 
-        if (ImGui::DragFloat(ImGuiLabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
             pLight->SetRadius(fRadius);
 
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("Angle").c_str(), &fangle, 0.0f, 180.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Angle").c_str(), &fangle, 0.0f, 180.f))
             pLight->SetAngle(fangle);
 
         float FallOffStart = pLight->GetFallOffStart();
         float FallOffEnd = pLight->GetFallOffEnd();
         float offset = 1.f;
 
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
 
         ImGui::TreePop();
@@ -507,7 +506,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
     {
         const char* LightTypeStrings[] = {"Directional Light", "Point Light", "Spot Light"};
         const char* currentLightTypeStrings = LightTypeStrings[(int)pLight->GetLightType()];
-        if (ImGui::BeginCombo(ImGuiLabelPrefix("Light Type").c_str(), currentLightTypeStrings))
+        if (ImGui::BeginCombo(ImGui_LabelPrefix("Light Type").c_str(), currentLightTypeStrings))
         {
             for (int i = 0; i < (UINT)LIGHT_TYPE::END; i++)
             {
@@ -526,38 +525,38 @@ void COutliner::DrawLight3D(CGameObject* obj)
         }
 
         Vec4 color = pLight->GetLightColor();
-        if (ImGui::ColorEdit3(ImGuiLabelPrefix("Color").c_str(), &color.x))
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Color").c_str(), &color.x))
             pLight->SetLightColor(color);
 
         Vec4 specular = pLight->GetSpecular();
-        if (ImGui::ColorEdit3(ImGuiLabelPrefix("Specular").c_str(), &specular.x))
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Specular").c_str(), &specular.x))
             pLight->SetSpecular(specular);
 
         Vec4 ambient = pLight->GetAmbient();
-        if (ImGui::ColorEdit3(ImGuiLabelPrefix("Ambient").c_str(), &ambient.x))
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Ambient").c_str(), &ambient.x))
             pLight->SetAmbient(ambient);
 
         float fRadius = pLight->GetRadius();
         float fangle = pLight->GetAngle();
 
-        if (ImGui::DragFloat(ImGuiLabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
             pLight->SetRadius(fRadius);
 
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
             pLight->SetAngle(fangle);
 
         float FallOffStart = pLight->GetFallOffStart();
         float FallOffEnd = pLight->GetFallOffEnd();
         float offset = 1.f;
 
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
-        if (ImGui::SliderFloat(ImGuiLabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
 
         ImGui::TreePop();
@@ -662,14 +661,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
                               "Mesh"))
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
+            string name;
             if (nullptr != pMesh)
-            {
-                string name = ToString(pMesh->GetName());
-                strcpy_s(buffer, sizeof(buffer), name.c_str());
-            }
-            ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+                name = ToString(pMesh->GetName());
+
+            ImGui_InputText("Mesh", name);
 
             // Drag & Drop
             if (ImGui::BeginDragDropTarget())
@@ -691,14 +687,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(),
                               m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
+            string name;
             if (nullptr != pMaterial)
-            {
-                string name = ToString(pMaterial->GetName());
-                strcpy_s(buffer, sizeof(buffer), name.c_str());
-            }
-            ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));
+                name = ToString(pMaterial->GetName());
+
+            ImGui_InputText("Material", name);
 
             // Drag & Drop
             if (ImGui::BeginDragDropTarget())
@@ -713,7 +706,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 ImGui::EndDragDropTarget();
             }
 
-            if (ImGuiAlignButton("Material Editor", 1.f))
+            if (ImGui_AlignButton("Material Editor", 1.f))
             {
                 CEditorMgr::GetInst()->GetLevelEditor()->ShowMaterialEditor(true);
                 CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMaterial);
@@ -774,14 +767,11 @@ void COutliner::DrawTileMap(CGameObject* obj)
         // Mesh
         if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
+            string name;
             if (nullptr != pMesh)
-            {
-                string name = ToString(pMesh->GetName());
-                strcpy_s(buffer, sizeof(buffer), name.c_str());
-            }
-            ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+                name = ToString(pMesh->GetName());
+
+            ImGui_InputText("Mesh", name);
 
             ImGui::TreePop();
         }
@@ -789,14 +779,11 @@ void COutliner::DrawTileMap(CGameObject* obj)
         // Material
         if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
+            string name;
             if (nullptr != pMaterial)
-            {
-                string name = ToString(pMaterial->GetName());
-                strcpy_s(buffer, sizeof(buffer), name.c_str());
-            }
-            ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));
+                name = ToString(pMaterial->GetName());
+
+            ImGui_InputText("Material", name);
 
             ImGui::TreePop();
         }
@@ -810,11 +797,11 @@ void COutliner::DrawTileMap(CGameObject* obj)
             Ptr<CTexture> pTileAtlas = pTilemap->GetTileAtlas();
             Vec2 TilePixelSize = pTilemap->GetTilePixelSize();
 
-            ImGui::InputInt(ImGuiLabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100,
+            ImGui::InputInt(ImGui_LabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100,
                             ImGuiInputTextFlags_ReadOnly);
-            ImGui::InputInt(ImGuiLabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100,
+            ImGui::InputInt(ImGui_LabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100,
                             ImGuiInputTextFlags_ReadOnly);
-            ImGui::DragFloat2(ImGuiLabelPrefix("Tile Render Size").c_str(), &TileRenderSize.x, 0.f, 0.f, 0.f, "%.3f",
+            ImGui::DragFloat2(ImGui_LabelPrefix("Tile Render Size").c_str(), &TileRenderSize.x, 0.f, 0.f, 0.f, "%.3f",
                               ImGuiInputTextFlags_ReadOnly);
 
             if (nullptr != pTileAtlas)
@@ -823,10 +810,10 @@ void COutliner::DrawTileMap(CGameObject* obj)
                 memset(buffer, 0, sizeof(buffer));
                 string name = ToString(pTileAtlas->GetKey());
                 strcpy_s(buffer, sizeof(buffer), name.c_str());
-                ImGui::InputText(ImGuiLabelPrefix("Tile Atlas Name").c_str(), buffer, sizeof(buffer),
+                ImGui::InputText(ImGui_LabelPrefix("Tile Atlas Name").c_str(), buffer, sizeof(buffer),
                                  ImGuiInputTextFlags_ReadOnly);
 
-                ImGui::DragFloat2(ImGuiLabelPrefix("Tile Pixel Size").c_str(), &TilePixelSize.x, 0.f, 0.f, 0.f, "%.3f",
+                ImGui::DragFloat2(ImGui_LabelPrefix("Tile Pixel Size").c_str(), &TilePixelSize.x, 0.f, 0.f, 0.f, "%.3f",
                                   ImGuiInputTextFlags_ReadOnly);
             }
 
@@ -835,7 +822,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
 
         ImGui::Separator();
 
-        if (ImGuiAlignButton("TileMap Editor", 1.f))
+        if (ImGui_AlignButton("TileMap Editor", 1.f))
         {
             CEditorMgr::GetInst()->GetLevelEditor()->ShowTileMapEditor(true);
             CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(pTilemap);
@@ -863,14 +850,11 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         // Mesh
         if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
+            string name;
             if (nullptr != pMesh)
-            {
-                string name = ToString(pMesh->GetName());
-                strcpy_s(buffer, sizeof(buffer), name.c_str());
-            }
-            ImGui::InputText(ImGuiLabelPrefix("Mesh").c_str(), buffer, sizeof(buffer));
+                name = ToString(pMesh->GetName());
+
+            ImGui_InputText("Mesh", name);
 
             ImGui::TreePop();
         }
@@ -878,14 +862,11 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         // Material
         if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
         {
-            char buffer[256];
-            memset(buffer, 0, sizeof(buffer));
+            string name;
             if (nullptr != pMaterial)
-            {
-                string name = ToString(pMaterial->GetName());
-                strcpy_s(buffer, sizeof(buffer), name.c_str());
-            }
-            ImGui::InputText(ImGuiLabelPrefix("Material").c_str(), buffer, sizeof(buffer));
+                name = ToString(pMaterial->GetName());
+
+            ImGui_InputText("Material", name);
 
             ImGui::TreePop();
         }
@@ -895,7 +876,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                               m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Particle Module"))
         {
             int MaxParticleCount = pParticleSystem->m_MaxParticleCount;
-            if (ImGui::InputInt(ImGuiLabelPrefix("Max Particle Count").c_str(), &MaxParticleCount), 1, 100,
+            if (ImGui::InputInt(ImGui_LabelPrefix("Max Particle Count").c_str(), &MaxParticleCount), 1, 100,
                 ImGuiInputTextFlags_EnterReturnsTrue)
             {
                 if (MaxParticleCount < 0)
@@ -959,17 +940,17 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::SameLine();
                     ImGui::RadioButton("World Space", (int*)&Module.SpaceType, 1);
 
-                    ImGui::ColorEdit3(ImGuiLabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
-                    ImGui::DragFloat3(ImGuiLabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f,
+                    ImGui::ColorEdit3(ImGui_LabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
+                    ImGui::DragFloat3(ImGui_LabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f,
                                       D3D11_FLOAT32_MAX);
-                    ImGui::DragFloat3(ImGuiLabelPrefix("Max Scale").c_str(), &Module.vSpawnMaxScale.x, 1.f, 0.f,
+                    ImGui::DragFloat3(ImGui_LabelPrefix("Max Scale").c_str(), &Module.vSpawnMaxScale.x, 1.f, 0.f,
                                       D3D11_FLOAT32_MAX);
 
-                    ImGui::DragFloat(ImGuiLabelPrefix("Min Life").c_str(), &Module.MinLife, 0.1f, 0.f, Module.MaxLife);
-                    ImGui::DragFloat(ImGuiLabelPrefix("Max Life").c_str(), &Module.MaxLife, 0.1f, Module.MinLife,
+                    ImGui::DragFloat(ImGui_LabelPrefix("Min Life").c_str(), &Module.MinLife, 0.1f, 0.f, Module.MaxLife);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Max Life").c_str(), &Module.MaxLife, 0.1f, Module.MinLife,
                                      D3D11_FLOAT32_MAX);
 
-                    ImGui::DragInt(ImGuiLabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1.f, 0, INT_MAX);
+                    ImGui::DragInt(ImGui_LabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1.f, 0, INT_MAX);
 
                     ImGui::Separator();
 
@@ -982,13 +963,13 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     // Spawn Shape - Sphere
                     if (0 == Module.SpawnShape)
                     {
-                        ImGui::DragFloat(ImGuiLabelPrefix("Radius").c_str(), &Module.Radius, 1.f, 0.f,
+                        ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Module.Radius, 1.f, 0.f,
                                          D3D11_FLOAT32_MAX);
                     }
                     // Spawn Shape - Box
                     else if (1 == Module.SpawnShape)
                     {
-                        ImGui::DragFloat3(ImGuiLabelPrefix("Spawn Box Scale").c_str(), &Module.vSpawnBoxScale.x, 1.f,
+                        ImGui::DragFloat3(ImGui_LabelPrefix("Spawn Box Scale").c_str(), &Module.vSpawnBoxScale.x, 1.f,
                                           0.f, D3D11_FLOAT32_MAX);
                     }
 
@@ -1023,15 +1004,15 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::SameLine();
                     ImGui::RadioButton("Fix Direction", (int*)&Module.AddVelocityType, 2);
 
-                    ImGui::DragFloat(ImGuiLabelPrefix("Min Speed").c_str(), &Module.MinSpeed, 0.1f, 0.f,
+                    ImGui::DragFloat(ImGui_LabelPrefix("Min Speed").c_str(), &Module.MinSpeed, 0.1f, 0.f,
                                      Module.MaxSpeed);
-                    ImGui::DragFloat(ImGuiLabelPrefix("Max Speed").c_str(), &Module.MaxSpeed, 0.1f, Module.MinSpeed,
+                    ImGui::DragFloat(ImGui_LabelPrefix("Max Speed").c_str(), &Module.MaxSpeed, 0.1f, Module.MinSpeed,
                                      D3D11_FLOAT32_MAX);
 
                     if (2 == Module.AddVelocityType)
                     {
-                        ImGui::DragFloat(ImGuiLabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 360.f);
-                        ImGui::DragFloat3(ImGuiLabelPrefix("Fixed Direction").c_str(), &Module.FixedDirection.x, 1.f,
+                        ImGui::DragFloat(ImGui_LabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 360.f);
+                        ImGui::DragFloat3(ImGui_LabelPrefix("Fixed Direction").c_str(), &Module.FixedDirection.x, 1.f,
                                           0.f, 1.f);
                     }
 

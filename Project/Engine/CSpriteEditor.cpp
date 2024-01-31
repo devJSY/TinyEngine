@@ -469,7 +469,7 @@ void CSpriteEditor::DrawDetails()
         if (nullptr != m_pTex.Get())
             CurTextureName = ToString(m_pTex->GetKey());
 
-        if (ImGuiComboUI(ImGuiLabelPrefix("Source Texture").c_str(), CurTextureName, names))
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Source Texture").c_str(), CurTextureName, names))
         {
             m_pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName));
             m_CellWidth = m_pTex->GetWidth();
@@ -495,13 +495,13 @@ void CSpriteEditor::DrawDetails()
             vector<string> spriteExtractModes = {"Auto", "Grid"};
             static string CurMode = spriteExtractModes[0];
 
-            ImGuiComboUI(ImGuiLabelPrefix("Sprite Extract Mode").c_str(), CurMode, spriteExtractModes);
+            ImGui_ComboUI(ImGui_LabelPrefix("Sprite Extract Mode").c_str(), CurMode, spriteExtractModes);
 
             // Grid option
             if (spriteExtractModes[1] == CurMode)
             {
-                ImGui::DragInt(ImGuiLabelPrefix("Cell Width").c_str(), &m_CellWidth, 1.f, 0, m_pTex->GetWidth());
-                ImGui::DragInt(ImGuiLabelPrefix("Cell Height").c_str(), &m_CellHeight, 1.f, 0, m_pTex->GetHeight());
+                ImGui::DragInt(ImGui_LabelPrefix("Cell Width").c_str(), &m_CellWidth, 1.f, 0, m_pTex->GetWidth());
+                ImGui::DragInt(ImGui_LabelPrefix("Cell Height").c_str(), &m_CellHeight, 1.f, 0, m_pTex->GetHeight());
             }
 
             if (ImGui::Button("Extract..."))
@@ -669,12 +669,12 @@ void CSpriteEditor::DrawDetails()
 
             string name = ToString(m_pAnim->GetName());
             strcpy_s(buffer, sizeof(buffer), name.c_str());
-            if (ImGui::InputText(ImGuiLabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
+            if (ImGui::InputText(ImGui_LabelPrefix("Animation Name").c_str(), buffer, sizeof(buffer)))
             {
                 m_pAnim->SetName(ToWstring(buffer));
             }
 
-            if (ImGui::InputInt(ImGuiLabelPrefix("FPS").c_str(), &m_AnimFPS))
+            if (ImGui::InputInt(ImGui_LabelPrefix("FPS").c_str(), &m_AnimFPS))
             {
                 if (m_AnimFPS < 1)
                     m_AnimFPS = 1;
@@ -685,13 +685,13 @@ void CSpriteEditor::DrawDetails()
                 }
             }
 
-            ImGui::SliderInt(ImGuiLabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0,
+            ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0,
                              (int)m_pAnim->m_vecFrm.size() - 1);
 
-            ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset X").c_str(),
+            ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset X").c_str(),
                              &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
 
-            ImGui::DragFloat(ImGuiLabelPrefix("Animation Offset Y").c_str(),
+            ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset Y").c_str(),
                              &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
 
             ImGui::Text("Animation Offset");
@@ -713,7 +713,7 @@ void CSpriteEditor::DrawDetails()
             if (ImGui::ArrowButton("##Down", ImGuiDir_Down))
                 m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y -= 1.f;
 
-            if (ImGui::DragFloat2(ImGuiLabelPrefix("Animation BackGround").c_str(), &m_vAnimBackGround.x, 1.f))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Animation BackGround").c_str(), &m_vAnimBackGround.x, 1.f))
             {
                 for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                 {
@@ -721,7 +721,7 @@ void CSpriteEditor::DrawDetails()
                 }
             }
 
-            ImGui::Checkbox(ImGuiLabelPrefix("Use BackGround").c_str(), &m_pAnim->m_bUseBackGround);
+            ImGui::Checkbox(ImGui_LabelPrefix("Use BackGround").c_str(), &m_pAnim->m_bUseBackGround);
         }
 
         ImGui::TreePop();

@@ -93,7 +93,7 @@ void CLevelEditor::render()
     // ID Map
     if (m_bShowIDMap)
     {
-        ImGuiSetWindowClass_LevelEditor();
+        ImGui_SetWindowClass_LevelEditor();
         ImGui::Begin("Picking Color ID Map", &m_bShowIDMap);
         Ptr<CTexture> pIDMap = CRenderMgr::GetInst()->GetIDMapTex();
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
@@ -270,7 +270,7 @@ void CLevelEditor::render_MenuBar()
 
 void CLevelEditor::render_WorldSettings()
 {
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("World Settings", &m_bShowWorldSettings);
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
     ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
@@ -309,7 +309,7 @@ void CLevelEditor::render_Toolbar()
     const auto& buttonActive = colors[ImGuiCol_ButtonActive];
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
 
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("##toolbar", nullptr,
                  ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
@@ -383,7 +383,7 @@ void CLevelEditor::render_Toolbar()
 
 void CLevelEditor::render_Assets()
 {
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Assets", &m_bShowAssets);
 
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
@@ -432,7 +432,7 @@ void CLevelEditor::render_Assets()
 
 void CLevelEditor::render_Viewport()
 {
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Level ViewPort");
 
     // RT Copy
@@ -579,7 +579,7 @@ void CLevelEditor::render_ImGuizmo()
 
 void CLevelEditor::render_CollisionResponses()
 {
-    ImGuiSetWindowClass_LevelEditor();
+    ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Collision Responses");
 
     if (ImGui::Button("All Layer Enable"))
