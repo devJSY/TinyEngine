@@ -43,19 +43,19 @@ CParticleSystem::CParticleSystem()
     m_RWBuffer = new CStructuredBuffer;
     m_RWBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::READ_WRITE, true);
 
-    // 초기 모듈 세팅
-    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
+    //// 초기 모듈 세팅
+    //m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
-    m_Module.SpaceType = 1;
-    m_Module.vSpawnColor = Vec4(0.f, 0.f, 0.f, 1.f);
-    m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
-    m_Module.vSpawnMaxScale = Vec4(1.f, 1.f, 1.f, 1.f);
-    m_Module.MinLife = 0.f;
-    m_Module.MaxLife = 0.f;
-    m_Module.SpawnShape = 0; // 0 : Sphere, 1 : Box
-    m_Module.Radius = 0.f;
-    m_Module.vSpawnBoxScale = Vec4(0.f, 0.f, 0.f, 1.f);
-    m_Module.SpawnRate = 0;
+    //m_Module.SpaceType = 1;
+    //m_Module.vSpawnColor = Vec4(0.f, 0.f, 0.f, 1.f);
+    //m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
+    //m_Module.vSpawnMaxScale = Vec4(1.f, 1.f, 1.f, 1.f);
+    //m_Module.MinLife = 0.f;
+    //m_Module.MaxLife = 0.f;
+    //m_Module.SpawnShape = 0; // 0 : Sphere, 1 : Box
+    //m_Module.Radius = 0.f;
+    //m_Module.vSpawnBoxScale = Vec4(0.f, 0.f, 0.f, 1.f);
+    //m_Module.SpawnRate = 0;
 
     //// Add Velocity Module
     //m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;

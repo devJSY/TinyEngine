@@ -45,6 +45,7 @@ float4 PS_ParticleRender(PS_Input _in) : SV_Target
     }
     
     float4 vOutColor = Particle.vColor;
+    vOutColor.a = 1.f;
     
     if (g_btex_0)
     {

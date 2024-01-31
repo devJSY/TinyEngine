@@ -101,6 +101,10 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                         Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
                     }
                 }
+                else
+                {
+                    Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
+                }
                 
                 break;
             }
@@ -116,19 +120,15 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             Particle.Active = 0;
             return;
         }
-        
-        // 
-        if (Module.arrModuleCheck[3])
+                
+        if (0 == Module.SpaceType)
         {
-            if (0 == Module.SpaceType)
-            {
             Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_dt;
             Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
-            }
-            else if (1 == Module.SpaceType)
-            {
+        }
+        else if (1 == Module.SpaceType)
+        {
             Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_dt;
-            }
         }
     }
 }
