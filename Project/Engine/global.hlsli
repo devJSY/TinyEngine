@@ -81,12 +81,12 @@ cbuffer ANIM_DATA2D : register(b2)
     float2 g_vOffset;
     int g_UseAnim2D;
     int g_UseBackGround;
-    float2 Anim_padding;
 }
 
 cbuffer GLOBAL_DATA : register(b3)
 {
     float2 g_RenderResolution;
+    float2 g_NoiseTexResolution; 
     float g_dt;
     float g_time;
 

@@ -43,6 +43,43 @@ CParticleSystem::CParticleSystem()
     m_CSParticleUpdate =
         (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleUpdateShader").Get();
 
+    // 초기 모듈 세팅
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
+
+    m_Module.SpaceType = 1;
+    m_Module.vSpawnColor = Vec4(0.2f, 0.4f, 0.9f, 1.f);
+    m_Module.vSpawnMinScale = Vec4(30.f, 30.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(30.f, 30.f, 1.f, 1.f);
+    m_Module.MinLife = 5.f;
+    m_Module.MaxLife = 5.f;
+    m_Module.MinMass = 1.f;
+    m_Module.MaxMass = 1.f;
+    m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
+    m_Module.Radius = 100.f;
+    m_Module.vSpawnBoxScale = Vec4(500.f, 500.f, 0.f, 0.f);
+    m_Module.SpawnRate = 50;
+
+    // Add Velocity Module
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 0;
+    m_Module.AddVelocityType = 0;
+    m_Module.MinSpeed = 100;
+    m_Module.MaxSpeed = 150;
+    m_Module.vFixedDirection;
+    m_Module.FixedAngle;
+
+    // Scale
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 0;
+    m_Module.vScaleRatio = Vec3(2.f, 2.f, 2.f);
+
+    // Noise Force
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 1;
+    m_Module.NoiseForceScale = 50.f;
+    m_Module.NoiseForceTerm = 0.3f;
+
+    // Calculate Force
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
+
+
     m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\particle\\Bubbles50px.png",
                                                          L"Textures\\particle\\Bubbles50px.png");
 }
@@ -71,7 +108,8 @@ void CParticleSystem::finaltick()
         // 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
         m_AccTime -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
 
-        tSpawnCount count = tSpawnCount{(int)fSpawnCount, 0, 0, 0};
+        tSpawnCount count = {};
+        count.SpawnCount = (int)fSpawnCount; 
         m_RWBuffer->SetData(&count);
     }
     else

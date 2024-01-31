@@ -213,10 +213,12 @@ enum class SHADER_DOMAIN
 
 enum class PARTICLE_MODULE
 {
-    SPAWN, // 파티클 생성 관련
-    DRAG,  // 감속 관련 모듈
-    SCALE,
-    ADD_VELOCITY,
+    SPAWN,        // 파티클 생성 관련
+    DRAG,         // 감속 관련 모듈
+    SCALE,        // 크기 변화 모듈
+    ADD_VELOCITY, // 초기 속도 지정 모듈
+    NOISE_FORCE,
+    CALCULATE_FORCE, // 주어진 힘을 계산하는 모듈
 
     END,
 };

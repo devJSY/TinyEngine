@@ -59,29 +59,29 @@ void CLevelMgr::init()
     m_CurLevel->GetLayer(14)->SetName(L"Postprocess");
     m_CurLevel->GetLayer(15)->SetName(L"UI");*/
 
-    // m_CurLevel = new CTestLevel2;
-    // m_CurLevel->SetName(L"Test Level 2");
+    m_CurLevel = new CTestLevel2;
+    m_CurLevel->SetName(L"Test Level 2");
 
-    // for (int i = 0; i < LAYER_MAX; i++)
-    //{
-    //     wstring Name = L"Layer ";
-    //     Name += std::to_wstring(i);
-    //     m_CurLevel->GetLayer(i)->SetName(Name);
-    // }
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        wstring Name = L"Layer ";
+        Name += std::to_wstring(i);
+        m_CurLevel->GetLayer(i)->SetName(Name);
+    }
 
-    // m_CurLevel->GetLayer(0)->SetName(L"Default");
-    // m_CurLevel->GetLayer(1)->SetName(L"Camera");
-    // m_CurLevel->GetLayer(2)->SetName(L"Light");
-    // m_CurLevel->GetLayer(3)->SetName(L"Player");
-    // m_CurLevel->GetLayer(4)->SetName(L"Monster");
-    // m_CurLevel->GetLayer(5)->SetName(L"Bullet");
-    // m_CurLevel->GetLayer(6)->SetName(L"Effect");
-    // m_CurLevel->GetLayer(7)->SetName(L"Tile");
-    // m_CurLevel->GetLayer(13)->SetName(L"BackGround");
-    // m_CurLevel->GetLayer(14)->SetName(L"PostProcess");
-    // m_CurLevel->GetLayer(15)->SetName(L"UI");
+    m_CurLevel->GetLayer(0)->SetName(L"Default");
+    m_CurLevel->GetLayer(1)->SetName(L"Camera");
+    m_CurLevel->GetLayer(2)->SetName(L"Light");
+    m_CurLevel->GetLayer(3)->SetName(L"Player");
+    m_CurLevel->GetLayer(4)->SetName(L"Monster");
+    m_CurLevel->GetLayer(5)->SetName(L"Bullet");
+    m_CurLevel->GetLayer(6)->SetName(L"Effect");
+    m_CurLevel->GetLayer(7)->SetName(L"Tile");
+    m_CurLevel->GetLayer(13)->SetName(L"BackGround");
+    m_CurLevel->GetLayer(14)->SetName(L"PostProcess");
+    m_CurLevel->GetLayer(15)->SetName(L"UI");
 
-    m_CurLevel = CLevelSaveLoad::LoadLevel(L"TestLevel2.tmap");
+    //m_CurLevel = CLevelSaveLoad::LoadLevel(L"TestLevel2.tmap");
 
     m_CurLevel->begin();
 }

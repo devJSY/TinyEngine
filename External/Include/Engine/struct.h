@@ -47,7 +47,7 @@ struct tLightInfo
 // ==================
 // 상수버퍼 대응 구조체
 // ==================
-struct tTransform
+__declspec(align(16)) struct tTransform
 {
     Matrix matWorld;
     Matrix matWorldInv;
@@ -64,7 +64,7 @@ struct tTransform
 };
 
 // Material 계수
-struct tMtrlData
+__declspec(align(16)) struct tMtrlData
 {
     Vec4 vAmb;  // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
     Vec4 vDiff; // 조명과 상관없이 물체 자체가 갖고있는 색상
@@ -72,7 +72,7 @@ struct tMtrlData
     Vec4 vEmv;
 };
 
-struct tMtrlConst
+__declspec(align(16)) struct tMtrlConst
 {
     tMtrlData mtrl; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
 
@@ -82,14 +82,13 @@ struct tMtrlConst
     Vec4 arrVec4[4];
     Matrix arrMat[4];
 
-    int bTex[TEX_PARAM::END - TEX_PARAM::TEX_0];
-
-    int padding[2];
+    int bTex[TEX_PARAM::END];
 };
 
-struct tGlobalData
+__declspec(align(16)) struct tGlobalData
 {
     Vec2 g_RenderResolution;
+    Vec2 g_NoiseTexResolution; 
     float g_dt;
     float g_time;
 
@@ -114,7 +113,7 @@ struct tGlobalData
     Vec4 OutLineColor_2D;
 };
 
-struct tAnimData2D
+__declspec(align(16)) struct tAnimData2D
 {
     Vec2 vLeftTop;
     Vec2 vSliceSize;
@@ -122,7 +121,6 @@ struct tAnimData2D
     Vec2 vOffset;
     int UseAnim2D;
     int UseBackGround;
-    Vec2 padding;
 };
 
 struct tMeshData
@@ -146,22 +144,27 @@ struct tPixel
     BYTE r, g, b, a;
 };
 
-struct tParticle
+__declspec(align(16)) struct tParticle
 {
-    Vec4 vLocalPos;      // 로컬 위치
-    Vec4 vWorldPos;      // 윌드 위치
-    Vec4 vWorldRotation; // 회전값
-    Vec4 vWorldScale;    // 크기
-    Vec4 vVelocity;      // 속도
-    Vec4 vColor;         // 색상
+    Vec4 vLocalPos;       // 로컬 위치
+    Vec4 vWorldPos;       // 윌드 위치
+    Vec4 vWorldRotation;  // 회전값
+    Vec4 vWorldInitScale; // 초기 크기
+    Vec4 vWorldScale;     // 크기
+    Vec4 vVelocity;       // 속도
+    Vec4 vColor;          // 색상
+    Vec4 vForce;          // 입자에 적용된 누적 힘 총량
+    Vec4 vNoiseForce;     // NoiseForce 모듈로 인한 랜덤 힘
 
-    float Mass; // 질량
-    float Age;  // 현재 나이
-    float Life; // 수명
-    int Active; // 활성화, 비활성화 여부
+    float NoiseForceTime; // NoiseForce 를 세팅받은 시간
+    float NormalizeAge; // Age 를 Life 기준으로 정규화한 값
+    float Mass;         // 질량
+    float Age;          // 현재 나이
+    float Life;         // 수명
+    int Active;         // 활성화, 비활성화 여부
 };
 
-struct tParticleModule
+__declspec(align(16)) struct tParticleModule
 {
     // Sapwn 모듈
     Vec4 vSpawnColor;    // 초기 컬러
@@ -170,30 +173,35 @@ struct tParticleModule
 
     float MinLife;       // 최소 수명
     float MaxLife;       // 최대 수명
+    float MinMass;       // 최소 질량
+    float MaxMass;       // 최대 질량
     int SpawnRate;       // 초당 생성 개수
     int SpaceType;       // 좌표계(0 : LocalSpace, 1 : WorldSpace)
     int SpawnShape;      // 스폰 범위(0 : Sphere, 1 : Box)
     float Radius;        // SpawnShape 가 Sphere 인 경우, 반지름 길이
     Vec4 vSpawnBoxScale; // SpawnShape 가 Box 인 경우, Box 의 크기
-    Vec2 padding;
 
     // Add Velocity
     int AddVelocityType; // 0 : From Center, 1: To Center, 2: Fix Direction
     float MinSpeed;
     float MaxSpeed;
-    float FixedAngle;    // 해당 방향에서 랜덤범위 각도
-    Vec4 FixedDirection; // 지정 방향
+    float FixedAngle;     // 해당 방향에서 랜덤범위 각도
+    Vec4 vFixedDirection; // 지정 방향
 
-    //
+    // Scale
+    Vec4 vScaleRatio;
 
-    //
+    // Noise Force
+    float NoiseForceScale;
+    float NoiseForceTerm;
+
+    // Module On / Off
     int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
 };
 
-struct tSpawnCount
+__declspec(align(16)) struct tSpawnCount
 {
     int SpawnCount;
-    int padding[3];
 };
 
 extern tTransform g_Transform;
