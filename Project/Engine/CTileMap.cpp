@@ -40,7 +40,7 @@ void CTileMap::finaltick()
     Transform()->SetRelativeScale(vTileMapSize);
 }
 
-void CTileMap::render()
+void CTileMap::UpdateData()
 {
     // 재질에 아틀라스 텍스쳐 전달.
     GetMaterial()->SetTexParam(TEX_0, m_TileAtlas);
@@ -62,12 +62,13 @@ void CTileMap::render()
     GetMaterial()->UpdateData();
 
     Transform()->UpdateData();
-
-    GetMesh()->render();
 }
 
-void CTileMap::UpdateData()
+void CTileMap::render()
 {
+    UpdateData();
+
+    GetMesh()->render();
 }
 
 void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)

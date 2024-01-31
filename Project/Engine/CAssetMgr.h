@@ -13,6 +13,7 @@ class CGameObject;
 class CAsset;
 class CMesh;
 class CGraphicsShader;
+class CComputeShader;
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
