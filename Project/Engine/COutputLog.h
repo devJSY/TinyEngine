@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "singleton.h"
 
 enum LOG_LEVEL
@@ -26,7 +27,7 @@ private:
 
 public:
     void ClearLog();
-    void AddLog(const char* fmt, ...);
+    void AddLog(LOG_LEVEL level, const char* fmt, ...);
     void ExecCommand(const char* command_line);
     int TextEditCallback(ImGuiInputTextCallbackData* data);
 
@@ -41,26 +42,4 @@ public:
     void render(bool* open);
 };
 
-#define LOG(level, Message)                                                                                            \
-    {                                                                                                                  \
-        {                                                                                                              \
-            string log = "[Log] ";                                                                                     \
-            switch (level)                                                                                             \
-            {                                                                                                          \
-            case Log:                                                                                                  \
-                log = "[Log] ";                                                                                        \
-                break;                                                                                                 \
-            case Warning:                                                                                              \
-                log = "[Warning] ";                                                                                    \
-                break;                                                                                                 \
-            case Error:                                                                                                \
-                log = "[Error] ";                                                                                      \
-                break;                                                                                                 \
-            case Fatal:                                                                                                \
-                log = "[Fatal] ";                                                                                      \
-                break;                                                                                                 \
-            }                                                                                                          \
-            log += Message;                                                                                            \
-            COutputLog::GetInst()->AddLog(log.c_str());                                                                \
-        }                                                                                                              \
-    }
+#define LOG(level, fmt, ...) COutputLog::GetInst()->AddLog(level, fmt, __VA_ARGS__);

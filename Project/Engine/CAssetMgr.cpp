@@ -173,7 +173,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.AmbientTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.AmbientTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.AmbientTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.AmbientTextureFilename);
 
@@ -182,7 +182,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.AoTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.AoTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.AoTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.AoTextureFilename);
 
@@ -191,7 +191,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.NormalTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.NormalTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.NormalTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.NormalTextureFilename);
 
@@ -200,7 +200,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.HeightTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.HeightTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.HeightTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.HeightTextureFilename);
 
@@ -209,7 +209,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.MetallicTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.MetallicTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.MetallicTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.MetallicTextureFilename);
 
@@ -218,7 +218,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.RoughnessTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.RoughnessTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.RoughnessTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.RoughnessTextureFilename);
 
@@ -233,7 +233,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
     if (!_MeshData.EmissiveTextureFilename.empty())
     {
-        LOG(Log, ToString(_Mesh->GetName()) + " : " + _MeshData.EmissiveTextureFilename);
+        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.EmissiveTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.EmissiveTextureFilename);
 

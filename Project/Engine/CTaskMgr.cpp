@@ -252,7 +252,7 @@ void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
 
-    LOG(Log, "Window Resized!")
+    LOG(Log, "Window Resized!");
 }
 
 void CTaskMgr::DELETE_ASSET(const FTask& _Task)
@@ -322,7 +322,7 @@ void CTaskMgr::SCREENSHOT(const FTask& _Task)
     filename += ".png";
     if (stbi_write_png(filename.c_str(), desc.Width, desc.Height, 4, pixels.data(), desc.Width * 4))
     {
-        LOG(Log, "Screenshot! FileName : " + filename);
+        LOG(Log, "%s %s", "Screenshot! FileName :",  filename.c_str());
     }
 }
 
@@ -545,7 +545,7 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
             if (nullptr == pObj->GetRenderComponent())
                 pObj->AddComponent(new CMeshRender);
             else
-                LOG(Error, ToString(pObj->GetName()) + " Already Has a RenderComponent!!");
+                LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
         }
         break;
     case COMPONENT_TYPE::TILEMAP:
@@ -553,7 +553,7 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
             if (nullptr == pObj->GetRenderComponent())
                 pObj->AddComponent(new CTileMap);
             else
-                LOG(Error, ToString(pObj->GetName()) + " Already Has a RenderComponent!!");
+                LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
         }
         break;
     case COMPONENT_TYPE::PARTICLESYSTEM:
@@ -561,7 +561,7 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
             if (nullptr == pObj->GetRenderComponent())
                 pObj->AddComponent(new CParticleSystem);
             else
-                LOG(Error, ToString(pObj->GetName()) + " Already Has a RenderComponent!!");
+                LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
         }
         break;
     case COMPONENT_TYPE::SKYBOX:

@@ -62,7 +62,7 @@ void CModelLoader::Load(string filePath, string fileName, bool revertNormals)
         m_isGLTF = true;
         m_revertNormals = revertNormals;
     }
-    
+
     wstring temp = CPathMgr::GetContentPath();
     string ContentPath = ToString(temp);
 
@@ -76,7 +76,7 @@ void CModelLoader::Load(string filePath, string fileName, bool revertNormals)
 
     if (!pScene)
     {
-        LOG(Error, "Failed to read file: " + this->basePath + fileName);
+        LOG(Error, "%s %s", "Failed to read file:", (this->basePath + fileName).c_str());
     }
     else
     {

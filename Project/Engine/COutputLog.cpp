@@ -76,7 +76,7 @@ void COutputLog::render(bool* open)
 
     // Reserve enough left-over height for 1 separator + 1 input text
     const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-    if (ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), /*ImGuiChildFlags_None*/0,
+    if (ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), /*ImGuiChildFlags_None*/ 0,
                           ImGuiWindowFlags_HorizontalScrollbar))
     {
         if (ImGui::BeginPopupContextWindow())
@@ -179,7 +179,7 @@ void COutputLog::ClearLog()
     Items.clear();
 }
 
-void COutputLog::AddLog(const char* fmt, ...)
+void COutputLog::AddLog(LOG_LEVEL level, const char* fmt, ...)
 {
     // FIXME-OPT
     char buf[1024];
@@ -188,12 +188,32 @@ void COutputLog::AddLog(const char* fmt, ...)
     vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
     buf[IM_ARRAYSIZE(buf) - 1] = 0;
     va_end(args);
-    Items.push_back(Strdup(buf));
+
+    string logLevel;
+    switch (level)
+    {
+    case Log:
+        logLevel = "[Log] ";
+        break;
+    case Warning:
+        logLevel = "[Warning] ";
+        break;
+    case Error:
+        logLevel = "[Error] ";
+        break;
+    case Fatal:
+        logLevel = "[Fatal] ";
+        break;
+    }
+
+    // Add log level prefix
+    string logMessage = logLevel + buf;
+    Items.push_back(Strdup(logMessage.c_str()));
 }
 
 void COutputLog::ExecCommand(const char* command_line)
 {
-    AddLog("Cmd: %s\n", command_line);
+    AddLog(Log, "Cmd: %s\n", command_line);
 
     // Insert into history. First find match and delete it so it can be pushed to the back.
     // This isn't trying to be smart or optimal.
@@ -214,20 +234,20 @@ void COutputLog::ExecCommand(const char* command_line)
     }
     else if (Stricmp(command_line, "HELP") == 0)
     {
-        AddLog("Commands:");
+        AddLog(Log, "Commands:");
         for (int i = 0; i < Commands.Size; i++)
-            AddLog("- %s", Commands[i]);
+            AddLog(Log, "- %s", Commands[i]);
     }
     else if (Stricmp(command_line, "HISTORY") == 0)
     {
         int first = History.Size - 10;
         for (int i = first > 0 ? first : 0; i < History.Size; i++)
-            AddLog("%3d: %s\n", i, History[i]);
+            AddLog(Log, "%3d: %s\n", i, History[i]);
     }
-    //else
+    // else
     //{
-    //    AddLog("Unknown command: '%s'\n", command_line);
-    //}
+    //     AddLog("Unknown command: '%s'\n", command_line);
+    // }
 
     // On command input, we scroll to bottom even if AutoScroll==false
     ScrollToBottom = true;
@@ -262,7 +282,7 @@ int COutputLog::TextEditCallback(ImGuiInputTextCallbackData* data)
             if (candidates.Size == 0)
             {
                 // No match
-                AddLog("No match for \"%.*s\"!\n", (int)(word_end - word_start), word_start);
+                AddLog(Error, "No match for \"%.*s\"!\n", (int)(word_end - word_start), word_start);
             }
             else if (candidates.Size == 1)
             {
@@ -297,9 +317,9 @@ int COutputLog::TextEditCallback(ImGuiInputTextCallbackData* data)
                 }
 
                 // List matches
-                AddLog("Possible matches:\n");
+                AddLog(Log, "Possible matches:\n");
                 for (int i = 0; i < candidates.Size; i++)
-                    AddLog("- %s\n", candidates[i]);
+                    AddLog(Log, "- %s\n", candidates[i]);
             }
 
             break;
