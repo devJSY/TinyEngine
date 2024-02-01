@@ -29,7 +29,7 @@ int CComputeShader::Create(const wstring& _strRelativePath, const string& _strFu
     // ÇÈ¼¿ ½¦ÀÌ´õ »ý¼º
     // ÇÈ¼¿ ½¦ÀÌ´õ ÄÄÆÄÀÏ
     if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "cs_5_0", D3DCOMPILE_DEBUG, 0, m_CSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+                                  "cs_5_0", m_CompileFlags, 0, m_CSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {

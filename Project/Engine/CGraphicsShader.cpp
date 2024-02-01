@@ -26,7 +26,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     wstring strFilePath = strContentPath + _strRelativePath;
 
     if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "vs_5_0", D3DCOMPILE_DEBUG, 0, m_VSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+                                  "vs_5_0", m_CompileFlags, 0, m_VSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -90,7 +90,7 @@ int CGraphicsShader::CreateHullShader(const wstring& _strRelativePath, const str
     wstring strFilePath = strContentPath + _strRelativePath;
 
     if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "hs_5_0", D3DCOMPILE_DEBUG, 0, m_HSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+                                  "hs_5_0", m_CompileFlags, 0, m_HSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -116,7 +116,7 @@ int CGraphicsShader::CreateDomainShader(const wstring& _strRelativePath, const s
     wstring strFilePath = strContentPath + _strRelativePath;
 
     if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "ds_5_0", D3DCOMPILE_DEBUG, 0, m_DSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+                                  "ds_5_0", m_CompileFlags, 0, m_DSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -142,7 +142,7 @@ int CGraphicsShader::CreateGeometryShader(const wstring& _strRelativePath, const
     wstring strFilePath = strContentPath + _strRelativePath;
 
     if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "gs_5_0", D3DCOMPILE_DEBUG, 0, m_GSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+                                  "gs_5_0", m_CompileFlags, 0, m_GSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -170,7 +170,7 @@ int CGraphicsShader::CreatePixelShader(const wstring& _strRelativePath, const st
     // ÇÈ¼¿ ½¦ÀÌ´õ »ý¼º
     // ÇÈ¼¿ ½¦ÀÌ´õ ÄÄÆÄÀÏ
     if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "ps_5_0", D3DCOMPILE_DEBUG, 0, m_PSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+                                  "ps_5_0", m_CompileFlags, 0, m_PSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {

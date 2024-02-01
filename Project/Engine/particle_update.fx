@@ -57,9 +57,9 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 //                 ( 주파수 )    (진폭)  (V 축 offset)
                 vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
                                 
-                float4 vRand = g_NoiseTex.SampleLevel(g_LinearSampler, vUV, 0);
-                float4 vRand1 = g_NoiseTex.SampleLevel(g_LinearSampler, vUV - float2(0.1f, 0.1f), 0);
-                float4 vRand2 = g_NoiseTex.SampleLevel(g_LinearSampler, vUV - float2(0.2f, 0.2f), 0);
+                float4 vRand = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
+                float4 vRand1 = g_NoiseTex.SampleLevel(g_PointSampler, vUV - float2(0.1f, 0.1f), 0);
+                float4 vRand2 = g_NoiseTex.SampleLevel(g_PointSampler, vUV - float2(0.2f, 0.2f), 0);
                 
                 // SpawnShape - Sphere 
                 if (0 == Module.SpawnShape)
@@ -134,6 +134,11 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         float fNormalizeThreadID = (float) id.x / (float) MAX_COUNT;
         float3 Rand = float3(0.f, 0.f, 0.f);
         GaussianSample(g_NoiseTex, g_NoiseTexResolution, fNormalizeThreadID, Rand);
+        
+        //float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);
+        //vUV.x += g_time * 0.2f;
+        //vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
+        //float4 Rand = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
         
         Particle.vForce.xyz = float3(0.f, 0.f, 0.f);
         
