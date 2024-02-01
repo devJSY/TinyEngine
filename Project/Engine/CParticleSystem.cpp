@@ -24,7 +24,7 @@ CParticleSystem::CParticleSystem()
     , m_AccTime(0)
 {
     // 전용 메쉬와 전용 재질 사용
-    SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"));
 
     // 파티클을 저장하는 구조화 버퍼
@@ -48,8 +48,8 @@ CParticleSystem::CParticleSystem()
 
     m_Module.SpaceType = 1;
     m_Module.vSpawnColor = Vec4(0.2f, 0.4f, 0.9f, 1.f);
-    m_Module.vSpawnMinScale = Vec4(30.f, 30.f, 1.f, 1.f);
-    m_Module.vSpawnMaxScale = Vec4(30.f, 30.f, 1.f, 1.f);
+    m_Module.vSpawnMinScale = Vec4(100.f, 30.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(100.f, 30.f, 1.f, 1.f);
     m_Module.MinLife = 5.f;
     m_Module.MaxLife = 5.f;
     m_Module.MinMass = 1.f;
@@ -76,8 +76,53 @@ CParticleSystem::CParticleSystem()
     m_Module.NoiseForceScale = 50.f;
     m_Module.NoiseForceTerm = 0.3f;
 
+    // Render
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
+    m_Module.VelocityAlignment = 1; // 속도에 따른 방향 정렬
+
     // Calculate Force
     m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
+
+    
+	// 초기 모듈 세팅
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
+
+    m_Module.SpaceType = 1;
+    m_Module.vSpawnColor = Vec4(0.2f, 0.4f, 0.9f, 1.f);
+    m_Module.vSpawnMinScale = Vec4(100.f, 30.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(100.f, 30.f, 1.f, 1.f);
+    m_Module.MinLife = 3.f;
+    m_Module.MaxLife = 5.f;
+    m_Module.MinMass = 1.f;
+    m_Module.MaxMass = 1.f;
+    m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
+    m_Module.Radius = 100.f;
+    m_Module.vSpawnBoxScale = Vec4(500.f, 500.f, 0.f, 0.f);
+    m_Module.SpawnRate = 50;
+
+    // Add Velocity Module
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 0;
+    m_Module.AddVelocityType = 0;
+    m_Module.MinSpeed = 100;
+    m_Module.MaxSpeed = 150;
+    m_Module.vFixedDirection;
+    m_Module.FixedAngle;
+
+    // Scale
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 0;
+    m_Module.vScaleRatio = Vec3(0.1f, 0.1f, 0.1f);
+
+    // Noise Force
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 0;
+    m_Module.NoiseForceScale = 50.f;
+    m_Module.NoiseForceTerm = 0.3f;
+
+    // Calculate Forec
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
+
+    // Render
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
+    m_Module.VelocityAlignment = 1; // 속도에 따른 방향 정렬
 
 
     m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\particle\\Bubbles50px.png",
@@ -123,6 +168,7 @@ void CParticleSystem::finaltick()
     // 파티클 모듈정보 업데이트
     m_ModuleBuffer->SetData(&m_Module);
     m_ModuleBuffer->UpdateData_CS_SRV(20);
+    m_ModuleBuffer->UpdateData(21);
 
     // 파티클 업데이트 컴퓨트 쉐이더
     m_CSParticleUpdate->SetParticleBuffer(m_ParticleBuffer);
@@ -155,6 +201,7 @@ void CParticleSystem::render()
 
     // 렌더링때 사용한 리소스 바인딩 Clear
     m_ParticleBuffer->Clear(20);
+    m_ModuleBuffer->Clear(21);
 }
 
 void CParticleSystem::SaveToLevelFile(FILE* _File)
