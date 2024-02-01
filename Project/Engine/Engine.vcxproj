@@ -83,6 +83,9 @@
     <ExternalIncludePath>$(ProjectDir)ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
