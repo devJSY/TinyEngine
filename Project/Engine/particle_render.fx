@@ -45,13 +45,14 @@ struct GS_Output
     uint iInstID : SV_InstanceID;
 };
 
-[maxvertexcount(6)]
+[maxvertexcount(12)]
 void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _OutStream)
 {
     GS_Output output[4] = { (GS_Output) 0.f, (GS_Output) 0.f, (GS_Output) 0.f, (GS_Output) 0.f };
-    
-    // GS 가 담당하는 파티클 정보를 가져온다.
-    tParticle particle = g_ParticleBuffer[(int) _in[0].iInstID];
+    GS_Output output_cross[4] = { (GS_Output) 0.f, (GS_Output) 0.f, (GS_Output) 0.f, (GS_Output) 0.f };
+        
+    // GS 가 담당하는 파티클 정보를 가져온다.    
+    tParticle particle = g_ParticleBuffer[_in[0].iInstID];
     if (0 == particle.Active)
     {
         return;
@@ -70,59 +71,56 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
     output[1].vPosition = float4((particle.vWorldScale.x * 0.5f), (particle.vWorldScale.y * 0.5f), 0.f, 1.f);
     output[2].vPosition = float4((particle.vWorldScale.x * 0.5f), (particle.vWorldScale.y * -0.5f), 0.f, 1.f);
     output[3].vPosition = float4((particle.vWorldScale.x * -0.5f), (particle.vWorldScale.y * -0.5f), 0.f, 1.f);
+          
+    output_cross[0].vPosition = float4((particle.vWorldScale.x * -0.5f), 0.f, (particle.vWorldScale.y * 0.5f), 1.f);
+    output_cross[1].vPosition = float4((particle.vWorldScale.x * 0.5f), 0.f, (particle.vWorldScale.y * 0.5f), 1.f);
+    output_cross[2].vPosition = float4((particle.vWorldScale.x * 0.5f), 0.f, (particle.vWorldScale.y * -0.5f), 1.f);
+    output_cross[3].vPosition = float4((particle.vWorldScale.x * -0.5f), 0.f, (particle.vWorldScale.y * -0.5f), 1.f);
+    
+    output_cross[0].vUV = output[0].vUV = float2(0.f, 0.f);
+    output_cross[1].vUV = output[1].vUV = float2(1.f, 0.f);
+    output_cross[2].vUV = output[2].vUV = float2(1.f, 1.f);
+    output_cross[3].vUV = output[3].vUV = float2(0.f, 1.f);
         
+    
     // 렌더모듈 기능
     if (g_ParticleModule[0].arrModuleCheck[6])
     {
         // 속도에 따른 정렬 기능
         if (g_ParticleModule[0].VelocityAlignment)
         {
-            // 파티클 월드 기준 속도를 View 공간으로 변환
-            float3 vVelocity = normalize(particle.vVelocity);
-            vVelocity = mul(float4(vVelocity, 0.f), g_matView).xyz;
-                       
-            // 파티클 Right 방향과 이동 방향을 내적해서 둘 사이의 각도를 구한다.
-            float3 vRight = float3(1.f, 0.f, 0.f);
-            float fTheta = acos(dot(vRight, vVelocity));
+            float3 vR = normalize(mul(float4(particle.vVelocity.xyz, 0.f), g_matView).xyz);
+            float3 vF = normalize(cross(vR, float3(0.f, 1.f, 0.f)));
+            float3 vU = normalize(cross(vF, vR));
             
-            // 내적의 결과가 코사인 예각을 기준으로 하기 때문에, 2파이 에서 반대로 뒤집어 준다.
-            if (vVelocity.y < vRight.y)
+            float3x3 vRot =
             {
-                fTheta = (2.f * PI) - fTheta;
-            }
-            
-            // 구한 각도로 Z 축 회전 행렬을 만든다.
-            float3x3 matRotZ =
-            {
-                cos(fTheta), sin(fTheta),  0,
-                -sin(fTheta), cos(fTheta), 0,
-                      0,           0,      1.f,
+                vR,
+                vU,
+                vF
             };
             
-            // 4개의 정점을 회전시킨다.
             for (int i = 0; i < 4; ++i)
             {
-                output[i].vPosition.xyz = mul(output[i].vPosition.xyz, matRotZ);
+                output[i].vPosition.xyz = mul(output[i].vPosition.xyz, vRot);
+                output_cross[i].vPosition.xyz = mul(output_cross[i].vPosition.xyz, vRot);
             }
         }
     }
-        
+    
+    // View 좌표로 이동, 투영행렬 적용
     for (int i = 0; i < 4; ++i)
     {
         output[i].vPosition.xyz += vViewPos.xyz;
+        output[i].vPosition = mul(output[i].vPosition, g_matProj);
+        
+        output_cross[i].vPosition.xyz += vViewPos.xyz;
+        output_cross[i].vPosition = mul(output_cross[i].vPosition, g_matProj);
+        
+        output[i].iInstID = _in[0].iInstID;
+        output_cross[i].iInstID = _in[0].iInstID;
     }
-    
-    // 투영행렬 적용
-    output[0].vPosition = mul(output[0].vPosition, g_matProj);
-    output[1].vPosition = mul(output[1].vPosition, g_matProj);
-    output[2].vPosition = mul(output[2].vPosition, g_matProj);
-    output[3].vPosition = mul(output[3].vPosition, g_matProj);
-    
-    output[0].vUV = float2(0.f, 0.f);
-    output[1].vUV = float2(1.f, 0.f);
-    output[2].vUV = float2(1.f, 1.f);
-    output[3].vUV = float2(0.f, 1.f);
-    
+      
     _OutStream.Append(output[0]);
     _OutStream.Append(output[2]);
     _OutStream.Append(output[3]);
@@ -132,18 +130,58 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
     _OutStream.Append(output[1]);
     _OutStream.Append(output[2]);
     _OutStream.RestartStrip();
+        
+    if (g_ParticleModule[0].arrModuleCheck[6])
+    {
+        // 속도에 따른 정렬 기능
+        if (g_ParticleModule[0].VelocityAlignment)
+        {
+            _OutStream.Append(output_cross[0]);
+            _OutStream.Append(output_cross[2]);
+            _OutStream.Append(output_cross[3]);
+            _OutStream.RestartStrip();
+    
+            _OutStream.Append(output_cross[0]);
+            _OutStream.Append(output_cross[1]);
+            _OutStream.Append(output_cross[2]);
+            _OutStream.RestartStrip();
+        }
+    }
 }
 
 float4 PS_ParticleRender(GS_Output _in) : SV_Target
 {
-    float4 vOutColor = g_ParticleBuffer[(uint) _in.iInstID].vColor;
+    tParticle particle = g_ParticleBuffer[_in.iInstID];
+    tParticleModule module = g_ParticleModule[0];
+    
+    // 출력 색상
+    float4 vOutColor = particle.vColor;
     
     if (g_btex_0)
     {
-        vOutColor *= g_tex_0.Sample(g_LinearSampler, _in.vUV);
+        float4 vSampleColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+        vOutColor.rgb *= vSampleColor.rgb;
+        vOutColor.a = vSampleColor.a;
+    }
+    
+    // 렌더모듈이 켜져 있으면
+    if (module.arrModuleCheck[6])
+    {
+        if (1 == module.AlphaBasedLife)
+        {
+            vOutColor.a = saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
+        }
+        else if (2 == module.AlphaBasedLife)
+        {
+            float fRatio = particle.Age / module.AlphaMaxAge;
+            vOutColor.a = saturate(1.f - clamp(fRatio, 0.f, 1.f));
+        }
     }
     
     return vOutColor;
 }
+
+
+
 
 #endif

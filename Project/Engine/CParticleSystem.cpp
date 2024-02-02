@@ -83,28 +83,27 @@ CParticleSystem::CParticleSystem()
     // Calculate Force
     m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
 
-    
-	// 초기 모듈 세팅
+    // 초기 모듈 세팅
     m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
     m_Module.SpaceType = 1;
     m_Module.vSpawnColor = Vec4(0.2f, 0.4f, 0.9f, 1.f);
-    m_Module.vSpawnMinScale = Vec4(100.f, 30.f, 1.f, 1.f);
-    m_Module.vSpawnMaxScale = Vec4(100.f, 30.f, 1.f, 1.f);
-    m_Module.MinLife = 3.f;
+    m_Module.vSpawnMinScale = Vec4(10.f, 5.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(20.f, 10.f, 1.f, 1.f);
+    m_Module.MinLife = 1.f;
     m_Module.MaxLife = 5.f;
     m_Module.MinMass = 1.f;
     m_Module.MaxMass = 1.f;
     m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
     m_Module.Radius = 100.f;
-    m_Module.vSpawnBoxScale = Vec4(500.f, 500.f, 0.f, 0.f);
+    m_Module.vSpawnBoxScale = Vec4(10.f, 10.f, 0.f, 0.f);
     m_Module.SpawnRate = 50;
 
     // Add Velocity Module
-    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 0;
-    m_Module.AddVelocityType = 0;
-    m_Module.MinSpeed = 100;
-    m_Module.MaxSpeed = 150;
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
+    m_Module.AddVelocityType = 0; // 0 : From Center, 1: To Center, 2: Fix Direction
+    m_Module.MinSpeed = 10;
+    m_Module.MaxSpeed = 10;
     m_Module.vFixedDirection;
     m_Module.FixedAngle;
 
@@ -113,8 +112,8 @@ CParticleSystem::CParticleSystem()
     m_Module.vScaleRatio = Vec3(0.1f, 0.1f, 0.1f);
 
     // Noise Force
-    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 0;
-    m_Module.NoiseForceScale = 50.f;
+    m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 1;
+    m_Module.NoiseForceScale = 10.f;
     m_Module.NoiseForceTerm = 0.3f;
 
     // Calculate Forec
@@ -123,7 +122,8 @@ CParticleSystem::CParticleSystem()
     // Render
     m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
     m_Module.VelocityAlignment = 1; // 속도에 따른 방향 정렬
-
+    m_Module.AlphaBasedLife = 1;    // 0 : off, 1 : NomrlizedAge, 2: Age
+    m_Module.AlphaMaxAge = 2.f;
 
     m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\particle\\Bubbles50px.png",
                                                          L"Textures\\particle\\Bubbles50px.png");
@@ -154,7 +154,7 @@ void CParticleSystem::finaltick()
         m_AccTime -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
 
         tSpawnCount count = {};
-        count.SpawnCount = (int)fSpawnCount; 
+        count.SpawnCount = (int)fSpawnCount;
         m_RWBuffer->SetData(&count);
     }
     else
