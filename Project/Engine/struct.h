@@ -72,7 +72,7 @@ __declspec(align(16)) struct tMtrlData
     Vec4 vEmv;
 };
 
-__declspec(align(16)) struct tMtrlConst
+/*__declspec(align(16))*/ struct tMtrlConst
 {
     tMtrlData mtrl; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
 
@@ -88,7 +88,7 @@ __declspec(align(16)) struct tMtrlConst
 __declspec(align(16)) struct tGlobalData
 {
     Vec2 g_RenderResolution;
-    Vec2 g_NoiseTexResolution; 
+    Vec2 g_NoiseTexResolution;
     float g_dt;
     float g_time;
 
@@ -157,11 +157,11 @@ __declspec(align(16)) struct tParticle
     Vec4 vNoiseForce;     // NoiseForce 모듈로 인한 랜덤 힘
 
     float NoiseForceTime; // NoiseForce 를 세팅받은 시간
-    float NormalizeAge; // Age 를 Life 기준으로 정규화한 값
-    float Mass;         // 질량
-    float Age;          // 현재 나이
-    float Life;         // 수명
-    int Active;         // 활성화, 비활성화 여부
+    float NormalizeAge;   // Age 를 Life 기준으로 정규화한 값
+    float Mass;           // 질량
+    float Age;            // 현재 나이
+    float Life;           // 수명
+    int Active;           // 활성화, 비활성화 여부
 };
 
 __declspec(align(16)) struct tParticleModule
@@ -181,6 +181,9 @@ __declspec(align(16)) struct tParticleModule
     float Radius;        // SpawnShape 가 Sphere 인 경우, 반지름 길이
     Vec4 vSpawnBoxScale; // SpawnShape 가 Box 인 경우, Box 의 크기
 
+    // Scale
+    Vec4 vScaleRatio;
+
     // Add Velocity
     int AddVelocityType; // 0 : From Center, 1: To Center, 2: Fix Direction
     float MinSpeed;
@@ -188,16 +191,13 @@ __declspec(align(16)) struct tParticleModule
     float FixedAngle;     // 해당 방향에서 랜덤범위 각도
     Vec4 vFixedDirection; // 지정 방향
 
-    // Scale
-    Vec4 vScaleRatio;
-
     // Noise Force
     float NoiseForceScale;
     float NoiseForceTerm;
 
-	// Render
+    // Render
     int VelocityAlignment; // 1 : On, 0 : Off
-    int AlphaBasedLife;    // 0 : off, 1 : NomrlizedAge, 2: Age
+    int AlphaBasedLife;    // 0 : off, 1 : NormalizedAge, 2: Max Age
     float AlphaMaxAge;
 
     // Module On / Off

@@ -1,5 +1,5 @@
-#ifndef _PARTICLE
-#define _PARTICLe
+#ifndef _PARTICLE_RENDER
+#define _PARTICLE_RENDER
 
 #include "global.hlsli"
 #include "struct.hlsli"
@@ -81,7 +81,7 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
     output_cross[1].vUV = output[1].vUV = float2(1.f, 0.f);
     output_cross[2].vUV = output[2].vUV = float2(1.f, 1.f);
     output_cross[3].vUV = output[3].vUV = float2(0.f, 1.f);
-        
+       
     
     // 렌더모듈 기능
     if (g_ParticleModule[0].arrModuleCheck[6])
@@ -164,24 +164,25 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
         vOutColor.a = vSampleColor.a;
     }
     
+    if (0.f >= vOutColor.a)
+        discard;
+    
     // 렌더모듈이 켜져 있으면
     if (module.arrModuleCheck[6])
     {
-        if (1 == module.AlphaBasedLife)
+        if (1 == module.AlphaBasedLife) // Normalize Age
         {
             vOutColor.a = saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
         }
-        else if (2 == module.AlphaBasedLife)
+        else if (2 == module.AlphaBasedLife) // Max Age
         {
             float fRatio = particle.Age / module.AlphaMaxAge;
             vOutColor.a = saturate(1.f - clamp(fRatio, 0.f, 1.f));
+            
         }
     }
     
     return vOutColor;
 }
-
-
-
 
 #endif

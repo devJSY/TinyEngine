@@ -15,7 +15,6 @@ RWStructuredBuffer<int4> g_SpawnCount : register(u1);
 #define Module      g_Module[0]
 #define CenterPos   g_vec4_0.xyz
 
-
 [numthreads(32, 1, 1)]
 void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
 {
@@ -32,19 +31,13 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         while (0 < SpawnCount)
         {
             // Atomic 함수 
-            int AliveCount = SpawnCount;
-            int Exchange = SpawnCount - 1;
-            int Origin = 0;
+            int originValue = SpawnCount;
+            int outputValue = 0;
            
-            // InterlockedExchange 함수를 써서 SpawnCount 를 교체, 수정하면
-            // 초기 시도인 스드가 여러 스레드가 성공한 이후에 진입하는 경우가 있다. 
-            // 이때 SpawnCount 를 오히려 늘려버리는 현상이 발생할 수 있다. 
-            // InterlockedCompareExchange 를 통해서 예상한 값과 일치할 경우에만 
-            // 교체를 하도록 하는 함수를 사용한다.
-            //InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
-            InterlockedExchange(SpawnCount, Exchange, Origin);
+            // 예상한 값과 일치할 경우에만 교체
+            InterlockedCompareExchange(SpawnCount, originValue, SpawnCount - 1, outputValue);
             
-            if (AliveCount == Origin)
+            if (originValue == outputValue)
             {
                 Particle.Active = 1;
                 Particle.vNoiseForce = float4(0.f, 0.f, 0.f, 1.f);
@@ -134,12 +127,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         float fNormalizeThreadID = (float) id.x / (float) MAX_COUNT;
         float3 Rand = float3(0.f, 0.f, 0.f);
         GaussianSample(g_NoiseTex, g_NoiseTexResolution, fNormalizeThreadID, Rand);
-        
-        //float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);
-        //vUV.x += g_time * 0.2f;
-        //vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
-        //float4 Rand = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
-        
+
         Particle.vForce.xyz = float3(0.f, 0.f, 0.f);
         
         // Normalize Age 계산

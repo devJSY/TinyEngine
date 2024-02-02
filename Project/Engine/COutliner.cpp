@@ -875,9 +875,12 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         if (ImGui::TreeNodeEx((void*)typeid(tParticleModule).hash_code(),
                               m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Particle Module"))
         {
+            // ============================================
+            // Max Count
+            // ============================================
             int MaxParticleCount = pParticleSystem->m_MaxParticleCount;
-            if (ImGui::InputInt(ImGui_LabelPrefix("Max Particle Count").c_str(), &MaxParticleCount), 1, 100,
-                ImGuiInputTextFlags_EnterReturnsTrue)
+            if (ImGui::InputInt(ImGui_LabelPrefix("Max Particle Count").c_str(), &MaxParticleCount, 1, 100,
+                                ImGuiInputTextFlags_EnterReturnsTrue))
             {
                 if (MaxParticleCount < 0)
                     MaxParticleCount = 0;
@@ -896,6 +899,9 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 pParticleSystem->m_MaxParticleCount = MaxParticleCount;
             };
 
+            // ============================================
+            // RadioButton
+            // ============================================
             tParticleModule& Module = pParticleSystem->m_Module;
 
             if (ImGui::RadioButton("Spawn", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] == 1))
@@ -930,9 +936,37 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
             }
 
+            if (ImGui::RadioButton("Noise Force", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 1;
+            }
+            ImGui::SameLine();
+            if (ImGui::RadioButton("Calculate Force",
+                                   Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
+            }
+            ImGui::SameLine();
+            if (ImGui::RadioButton("Render", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
+            }
+
+            // ============================================
+            // Tree Node
+            // ============================================
             if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN])
             {
-                if (ImGui::TreeNodeEx("Spawn Module", m_DefaultTreeNodeFlag, "Spawn Module"))
+                if (ImGui::TreeNodeEx("Spawn Module##Particlesystem", m_DefaultTreeNodeFlag, "Spawn Module"))
                 {
                     ImGui::Text("Space Type");
                     ImGui::SameLine();
@@ -940,7 +974,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::SameLine();
                     ImGui::RadioButton("World Space", (int*)&Module.SpaceType, 1);
 
-                    ImGui::ColorEdit3(ImGui_LabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
+                    ImGui::ColorEdit4(ImGui_LabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
                     ImGui::DragFloat3(ImGui_LabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f,
                                       D3D11_FLOAT32_MAX);
                     ImGui::DragFloat3(ImGui_LabelPrefix("Max Scale").c_str(), &Module.vSpawnMaxScale.x, 1.f, 0.f,
@@ -948,6 +982,9 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
                     ImGui::DragFloat(ImGui_LabelPrefix("Min Life").c_str(), &Module.MinLife, 0.1f, 0.f, Module.MaxLife);
                     ImGui::DragFloat(ImGui_LabelPrefix("Max Life").c_str(), &Module.MaxLife, 0.1f, Module.MinLife,
+                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Min Mass").c_str(), &Module.MinMass, 0.1f, 0.f, Module.MaxMass);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Max Mass").c_str(), &Module.MaxMass, 0.1f, Module.MinMass,
                                      D3D11_FLOAT32_MAX);
 
                     ImGui::DragInt(ImGui_LabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1.f, 0, INT_MAX);
@@ -976,25 +1013,30 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::TreePop();
                 }
             }
+
             if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG])
             {
-                if (ImGui::TreeNodeEx("Drag Module", m_DefaultTreeNodeFlag, "Drag Module"))
+                if (ImGui::TreeNodeEx("Drag Module##Particlesystem", m_DefaultTreeNodeFlag, "Drag Module"))
                 {
 
                     ImGui::TreePop();
                 }
             }
+
             if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE])
             {
-                if (ImGui::TreeNodeEx("Scale Module", m_DefaultTreeNodeFlag, "Scale Module"))
+                if (ImGui::TreeNodeEx("Scale Module##Particlesystem", m_DefaultTreeNodeFlag, "Scale Module"))
                 {
-
+                    ImGui::DragFloat3(ImGui_LabelPrefix("Scale Ratio").c_str(), &Module.vScaleRatio.x, 1.f, 0.f,
+                                      D3D11_FLOAT32_MAX);
                     ImGui::TreePop();
                 }
             }
+
             if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY])
             {
-                if (ImGui::TreeNodeEx("Add Velocity Module", m_DefaultTreeNodeFlag, "Add Velocity Module"))
+                if (ImGui::TreeNodeEx("Add Velocity Module##Particlesystem", m_DefaultTreeNodeFlag,
+                                      "Add Velocity Module"))
                 {
                     ImGui::Text("Velocity Type");
                     ImGui::SameLine();
@@ -1020,15 +1062,68 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 }
             }
 
-            // Texture
-            ImGui::Separator();
-            ImGui::Text("Particle Texture");
-            ImGui::Image((void*)pParticleSystem->m_ParticleTex->GetSRV().Get(), ImVec2(256.f, 256.f));
-
-            if (ImGui::BeginItemTooltip())
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE])
             {
-                ImGui::Text("%s", ToString(pParticleSystem->m_ParticleTex->GetKey()).c_str());
-                ImGui::EndTooltip();
+                if (ImGui::TreeNodeEx("Noise Force##Particlesystem", m_DefaultTreeNodeFlag, "Noise Force"))
+                {
+                    ImGui::DragFloat(ImGui_LabelPrefix("Noise Force Scale").c_str(), &Module.NoiseForceScale, 1.f, 0.f,
+                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Noise Force Term").c_str(), &Module.NoiseForceTerm, 0.1f, 0.f,
+                                     D3D11_FLOAT32_MAX);
+                    ImGui::TreePop();
+                }
+            }
+
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER])
+            {
+                if (ImGui::TreeNodeEx("Render##Particlesystem", m_DefaultTreeNodeFlag, "Render"))
+                {
+                    if (ImGui::RadioButton(ImGui_LabelPrefix("Velocity Alignment").c_str(), Module.VelocityAlignment))
+                    {
+                        if (0 == Module.VelocityAlignment)
+                            Module.VelocityAlignment = 1;
+                        else if (1 == Module.VelocityAlignment)
+                            Module.VelocityAlignment = 0;
+                    }
+
+                    ImGui::Text("Velocity Type");
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Off", (int*)&Module.AlphaBasedLife, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Normalized Age", (int*)&Module.AlphaBasedLife, 1);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Max Age", (int*)&Module.AlphaBasedLife, 2);
+
+                    if (2 == Module.AlphaBasedLife)
+                    {
+                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f,
+                                         Module.MaxLife);
+                    }
+
+                    ImGui::TreePop();
+                }
+            }
+
+            // ============================================
+            // Texture
+            // ============================================
+            ImGui::Separator();
+
+            ImGui::Text("Particle Texture");
+            void* TextureID = nullptr;
+
+            if (nullptr != pParticleSystem->m_ParticleTex)
+                TextureID = pParticleSystem->m_ParticleTex->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pParticleSystem->m_ParticleTex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pParticleSystem->m_ParticleTex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
             }
 
             // Drag & Drop

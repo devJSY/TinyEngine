@@ -68,6 +68,8 @@ struct tParticle
     float Age; // 현재 나이
     float Life; // 수명
     int Active; // 활성화, 비활성화 여부
+    
+    int2 particlepadding;
 };
 
 struct tParticleModule
@@ -86,6 +88,9 @@ struct tParticleModule
     int SpawnShape; // 스폰 범위(0 : Sphere, 1 : Box)
     float Radius; // SpawnShape 가 Sphere 인 경우, 반지름 길이
     float4 vSpawnBoxScale; // SpawnShape 가 Box 인 경우, Box 의 크기
+    
+    // Scale
+    float4 vScaleRatio;
 
     // Add Velocity
     int AddVelocityType; // 0 : From Center, 1: To Center, 2: Fix Direction
@@ -93,9 +98,6 @@ struct tParticleModule
     float MaxSpeed;
     float FixedAngle; // 해당 방향에서 랜덤범위 각도
     float4 vFixedDirection; // 지정 방향
-
-    // Scale
-    float4 vScaleRatio;
 
     // Noise Force
     float NoiseForceScale;

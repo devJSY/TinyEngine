@@ -86,7 +86,7 @@ cbuffer ANIM_DATA2D : register(b2)
 cbuffer GLOBAL_DATA : register(b3)
 {
     float2 g_RenderResolution;
-    float2 g_NoiseTexResolution; 
+    float2 g_NoiseTexResolution;
     float g_dt;
     float g_time;
 
