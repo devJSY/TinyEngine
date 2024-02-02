@@ -46,16 +46,16 @@ CParticleSystem::CParticleSystem()
     // 모듈 초기화
     // Spawn 모듈
     m_Module.vSpawnColor = Vec4(0.f, 0.f, 0.f, 1.f);
-    m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
-    m_Module.vSpawnMaxScale = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_Module.vSpawnMinScale = Vec4(50.f, 50.f, 1.f, 1.f);
+    m_Module.vSpawnMaxScale = Vec4(50.f, 50.f, 1.f, 1.f);
 
-    m_Module.MinLife = 1.f;
-    m_Module.MaxLife = 1.f;
+    m_Module.MinLife = 5.f;
+    m_Module.MaxLife = 10.f;
 
     m_Module.MinMass = 1.f;
     m_Module.MaxMass = 1.f;
 
-    m_Module.SpawnRate = 1; // 초당 1개
+    m_Module.SpawnRate = 100; 
     m_Module.SpaceType = 0;   // Local Space
 
     m_Module.SpawnShape = 0; // Sphere

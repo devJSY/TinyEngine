@@ -90,14 +90,13 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // Add VelocityModule
                 if (Module.arrModuleCheck[3])
                 {
-                    // 0 : From Center
-                    if (0 == Module.AddVelocityType)
+                    if (0 == Module.AddVelocityType)  // 0 : From Center
                     {
                         float3 vDir = normalize(Particle.vLocalPos.xyz);
                         
                         Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand[2] + Module.MinSpeed);
                     }
-                    if (1 == Module.AddVelocityType)
+                    if (1 == Module.AddVelocityType)  // 0 :To Center
                     {
                         float3 vDir = -normalize(Particle.vLocalPos.xyz);
                         Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand[2] + Module.MinSpeed);
@@ -122,6 +121,17 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             Particle.Active = 0;
             return;
         }
+        
+        // Add VelocityModule - To Center 타입 일경우
+        if (Module.arrModuleCheck[3] && 1 == Module.AddVelocityType)
+        {
+            float len = length(CenterPos - Particle.vWorldPos.xyz);
+            if (len < 10)
+            {
+                Particle.Active = 0;
+                return;
+            }
+        }
             
         // 랜덤값 추출
         float fNormalizeThreadID = (float) id.x / (float) MAX_COUNT;
@@ -142,12 +152,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         // Noise Force
         if (Module.arrModuleCheck[4])
         {
-            if (Particle.NoiseForceTime == 0.f)
+            if (Particle.NoiseForceTime == 0.f) // 초기 Force
             {
                 Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
                 Particle.NoiseForceTime = g_time;
             }
-            else if (Module.NoiseForceTerm < g_time - Particle.NoiseForceTime)
+            else if (Module.NoiseForceTerm < g_time - Particle.NoiseForceTime) // Term 마다 Force 업데이트
             {
                 Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
                 Particle.NoiseForceTime = g_time;
@@ -167,12 +177,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             Particle.vVelocity.xyz += vAccel * g_dt;
             
             // Velocity 연산
-            if (0 == Module.SpaceType)
+            if (0 == Module.SpaceType) // Local
             {
                 Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_dt;
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
             }
-            else if (1 == Module.SpaceType)
+            else if (1 == Module.SpaceType) // World
             {
                 Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_dt;
             }
