@@ -59,9 +59,7 @@ void CRenderMgr::tick()
     render_debug();
 
     // ToneMapping
-    Ptr<CTexture> RTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-    CONTEXT->OMSetRenderTargets(1, RTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+    CDevice::GetInst()->SetRenderTarget();
     m_ToneMappingObj->render();
 
     Clear();

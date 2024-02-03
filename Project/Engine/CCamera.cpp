@@ -255,10 +255,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                     mtrl->SetShader(IDShader);
                     _vecObj[i]->render();
 
-                    Ptr<CTexture> pFloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatTexture");
-                    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-
-                    CONTEXT->OMSetRenderTargets(1, pFloatTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+                    CDevice::GetInst()->SetFloatRenderTarget();
                 }
 
                 // 원래 쉐이더로 설정

@@ -109,7 +109,7 @@ void CDevice::ClearRenderTarget(const Vec4& Color)
     m_Context->ClearRenderTargetView(m_FloatTex->GetRTV().Get(), Color);
     m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
-    m_Context->OMSetRenderTargets(1, m_FloatTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
+    SetFloatRenderTarget();
 }
 
 void CDevice::Present()
@@ -123,13 +123,24 @@ void CDevice::Resize(Vec2 resolution)
     g_Global.g_RenderResolution = m_vRenderResolution;
 
     // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release 시켜야함
-    m_DSTex = nullptr;
+    m_RenderTargetTex = nullptr;
     m_FloatTex = nullptr;
+    m_DSTex = nullptr;
 
     m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
 
     CreateBuffer();
     CreateViewport();
+}
+
+void CDevice::SetRenderTarget()
+{
+    m_Context->OMSetRenderTargets(1, m_RenderTargetTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
+}
+
+void CDevice::SetFloatRenderTarget()
+{
+    m_Context->OMSetRenderTargets(1, m_FloatTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
 }
 
 int CDevice::CreateViewport()
@@ -251,7 +262,7 @@ int CDevice::CreateBuffer()
     // RenderTarget 용 텍스쳐 등록
     ComPtr<ID3D11Texture2D> tex2D;
     m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
-    CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
+    m_RenderTargetTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
     // FLOAT MSAA RenderTargetView/ShaderResourceView
     bool useMSAA = false;
@@ -289,7 +300,7 @@ int CDevice::CreateBuffer()
     CAssetMgr::GetInst()->CreateTexture(L"ResolvedFloatTexture", ResolvedfloatTexture);
 
     // DepthStencil 용도 텍스쳐 생성
-    ComPtr<ID3D11Texture2D> DStex2D;    
+    ComPtr<ID3D11Texture2D> DStex2D;
     D3D11_TEXTURE2D_DESC depthStencilBufferDesc;
     depthStencilBufferDesc.Width = (UINT)m_vRenderResolution.x;
     depthStencilBufferDesc.Height = (UINT)m_vRenderResolution.y;
@@ -314,7 +325,7 @@ int CDevice::CreateBuffer()
     m_Device->CreateTexture2D(&depthStencilBufferDesc, 0, DStex2D.GetAddressOf());
     m_DSTex = CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", DStex2D);
 
-    m_Context->OMSetRenderTargets(1, m_FloatTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
+    SetFloatRenderTarget();
 
     return S_OK;
 }

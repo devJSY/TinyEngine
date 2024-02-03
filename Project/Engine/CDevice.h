@@ -16,6 +16,7 @@ private:
 
     ComPtr<IDXGISwapChain> m_SwapChain; // 스왚체인(출력 버퍼 지정)
 
+    Ptr<CTexture> m_RenderTargetTex;
     Ptr<CTexture> m_FloatTex;
     Ptr<CTexture> m_DSTex;
 
@@ -44,6 +45,8 @@ public:
 
 public:
     void Resize(Vec2 resolution);
+    void SetRenderTarget();
+    void SetFloatRenderTarget();
 
 private:
     int CreateSwapChain();
