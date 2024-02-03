@@ -247,10 +247,16 @@ void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"FloatTexture");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"ResolvedFloatTexture");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex");
 
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
+
+    Ptr<CMaterial> pToneMappingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl");
+    if (nullptr != pToneMappingMtrl)
+        pToneMappingMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ResolvedFloatTexture"));
 
     LOG(Log, "Window Resized!");
 }
@@ -322,13 +328,13 @@ void CTaskMgr::SCREENSHOT(const FTask& _Task)
     filename += ".png";
     if (stbi_write_png(filename.c_str(), desc.Width, desc.Height, 4, pixels.data(), desc.Width * 4))
     {
-        LOG(Log, "%s %s", "Screenshot! FileName :",  filename.c_str());
+        LOG(Log, "%s %s", "Screenshot! FileName :", filename.c_str());
     }
 }
 
 void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
 {
-    if (ImGuizmo::IsOver() || ImGuizmo::IsUsing())
+    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
 
     int MouseX = (int)_Task.Param_1;
@@ -425,7 +431,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
 
 void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
 {
-    if (ImGuizmo::IsOver() || ImGuizmo::IsUsing())
+    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
 
     int MouseX = (int)_Task.Param_1;

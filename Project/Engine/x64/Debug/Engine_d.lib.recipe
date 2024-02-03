@@ -110,6 +110,9 @@
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\Tilemap.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\ToneMappingPS.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

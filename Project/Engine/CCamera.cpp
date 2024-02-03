@@ -193,6 +193,7 @@ void CCamera::render()
     render(m_vecOpaque);
     render(m_vecMaked);
     render(m_vecTransparent);
+    CRenderMgr::GetInst()->ResolveFloatTexture();
     render_postprocess();
 }
 
@@ -254,10 +255,10 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                     mtrl->SetShader(IDShader);
                     _vecObj[i]->render();
 
-                    Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+                    Ptr<CTexture> pFloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatTexture");
                     Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
-                    CONTEXT->OMSetRenderTargets(1, pTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+                    CONTEXT->OMSetRenderTargets(1, pFloatTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
                 }
 
                 // 원래 쉐이더로 설정
@@ -271,15 +272,10 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
 void CCamera::render_postprocess()
 {
-    // PostProcess전 원본 텍스춰 복사
-    CRenderMgr::GetInst()->CopyRTTexToRTCopyTex();
-    Ptr<CTexture> pRTCopyTex = CRenderMgr::GetInst()->GetRTCopyTex();
-    pRTCopyTex->UpdateData(13);
-
     for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사
-        CRenderMgr::GetInst()->CopyRTTexToPostProcessTex();
+        CRenderMgr::GetInst()->CopyToPostProcessTex();
 
         // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
         Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex();

@@ -909,5 +909,8 @@
     <FxCompile Include="particle_update.fx">
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </FxCompile>
+    <FxCompile Include="ToneMappingPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

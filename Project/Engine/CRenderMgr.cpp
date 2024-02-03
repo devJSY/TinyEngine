@@ -19,6 +19,7 @@ CRenderMgr::CRenderMgr()
     , m_bShowDebugRender(false)
     , m_bShowCollider(true)
     , m_vecNoiseTex{}
+    , m_ToneMappingObj(nullptr)
 {
 }
 
@@ -41,6 +42,12 @@ CRenderMgr::~CRenderMgr()
         delete m_Light3DBuffer;
         m_Light3DBuffer = nullptr;
     }
+
+    if (nullptr != m_ToneMappingObj)
+    {
+        delete m_ToneMappingObj;
+        m_ToneMappingObj = nullptr;
+    }
 }
 
 void CRenderMgr::tick()
@@ -50,6 +57,12 @@ void CRenderMgr::tick()
     render();
 
     render_debug();
+
+    // ToneMapping
+    Ptr<CTexture> RTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+    CONTEXT->OMSetRenderTargets(1, RTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
+    m_ToneMappingObj->render();
 
     Clear();
 }
@@ -192,10 +205,9 @@ void CRenderMgr::CopyRTTexToRTCopyTex()
     CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 }
 
-void CRenderMgr::CopyRTTexToPostProcessTex()
+void CRenderMgr::CopyToPostProcessTex()
 {
-    Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+    CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), m_ResolvedFloatTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
@@ -208,7 +220,7 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
 {
     m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                           DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
+                                                           DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_SHADER_RESOURCE,
                                                            D3D11_USAGE_DEFAULT);
 }
 
@@ -233,4 +245,13 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreatePostProcessTex(Resolution);
+
+    m_FloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatTexture");
+    m_ResolvedFloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ResolvedFloatTexture");
+}
+
+void CRenderMgr::ResolveFloatTexture()
+{
+    CONTEXT->ResolveSubresource(m_ResolvedFloatTex->GetTex2D().Get(), 0, m_FloatTex->GetTex2D().Get(), 0,
+                                DXGI_FORMAT_R16G16B16A16_FLOAT);
 }

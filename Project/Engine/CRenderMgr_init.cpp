@@ -26,6 +26,8 @@ void CRenderMgr::init()
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
+    m_FloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatTexture");
+    m_ResolvedFloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ResolvedFloatTexture");
 
     // Noise Texture Load
     m_vecNoiseTex.push_back(
@@ -38,4 +40,11 @@ void CRenderMgr::init()
     m_vecNoiseTex[1]->UpdateData(15);
     m_vecNoiseTex[1]->UpdateData_CS_SRV(15);
     g_Global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[1]->GetWidth(), m_vecNoiseTex[1]->GetHeight());
+
+    m_ToneMappingObj = new CGameObject;
+    m_ToneMappingObj->AddComponent(new CTransform);
+    m_ToneMappingObj->AddComponent(new CMeshRender);
+
+    m_ToneMappingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_ToneMappingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl"));
 }

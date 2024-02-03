@@ -26,7 +26,10 @@ protected:
     void SetRelativePath(const wstring& _RelativePath) { m_RelativePath = _RelativePath; }
 
 private:
-    void AddRef() { ++m_RefCount; }
+    void AddRef() 
+    { 
+        ++m_RefCount;
+    }
     void Release()
     {
         --m_RefCount;
