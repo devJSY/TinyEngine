@@ -671,7 +671,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DistortionShader"));
-        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"noise_03Tex"));
+        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"Textures\\noise\\noise_01.jpg"));
         pMtrl->SetName(L"DistortionMtrl");
         AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
     }

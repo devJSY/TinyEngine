@@ -987,7 +987,12 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::DragFloat(ImGui_LabelPrefix("Max Mass").c_str(), &Module.MaxMass, 0.1f, Module.MinMass,
                                      D3D11_FLOAT32_MAX);
 
-                    ImGui::DragInt(ImGui_LabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1.f, 0, INT_MAX);
+                    if (ImGui::InputInt(ImGui_LabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1, 100,
+                                        ImGuiInputTextFlags_EnterReturnsTrue))
+                    {
+                        if (Module.SpawnRate < 0)
+                            Module.SpawnRate = 0;
+                    }
 
                     ImGui::Separator();
 
