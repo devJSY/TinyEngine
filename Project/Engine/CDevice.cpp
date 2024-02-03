@@ -209,7 +209,7 @@ int CDevice::CreateSwapChain()
     DXGI_SWAP_CHAIN_DESC tDesc = {};
 
     // SwapChain 이 관리하는 Buffer(RenderTarget)의 구성 정보
-    tDesc.BufferCount = 1;
+    tDesc.BufferCount = 2;
     tDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     tDesc.BufferDesc.Width = (UINT)m_vRenderResolution.x;
     tDesc.BufferDesc.Height = (UINT)m_vRenderResolution.y;
@@ -219,7 +219,7 @@ int CDevice::CreateSwapChain()
     tDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
     tDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     tDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-    tDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+    tDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
