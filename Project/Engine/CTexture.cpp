@@ -28,12 +28,10 @@ int CTexture::Load(const wstring& _strFilePath)
     {
         hr = LoadFromDDSFile(_strFilePath.c_str(), DDS_FLAGS_NONE, nullptr, m_Image);
     }
-
     else if (!wcscmp(szExt, L".tga") || !wcscmp(szExt, L".TGA"))
     {
         hr = LoadFromTGAFile(_strFilePath.c_str(), nullptr, m_Image);
     }
-
     else
     {
         // png, bmp, jpg, jpeg

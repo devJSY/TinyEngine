@@ -280,6 +280,9 @@
     <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
+    <ClInclude Include="CPBRLevel.h">
+      <Filter>05. Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -533,6 +536,9 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="CPBRLevel.cpp">
+      <Filter>05. Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

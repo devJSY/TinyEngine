@@ -138,7 +138,7 @@ void CTestLevel::begin()
     pSkyBox->Transform()->SetAbsolute(true);
 
     pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyboxMtrl"));
+    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PureSkyMtrl"));
 
     AddObject(pSkyBox, L"SkyBox");
 

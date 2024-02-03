@@ -38,6 +38,7 @@ D:\TinyEngine\Project\Engine\COutputLog.cpp;D:\TinyEngine\Project\Engine\x64\Deb
 D:\TinyEngine\Project\Engine\CParticleSystem.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CParticleSystem.obj
 D:\TinyEngine\Project\Engine\CParticleUpdate.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CParticleUpdate.obj
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
+D:\TinyEngine\Project\Engine\CPBRLevel.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPBRLevel.obj
 D:\TinyEngine\Project\Engine\CPlayerScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPlayerScript.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderComponent.obj
 D:\TinyEngine\Project\Engine\CRenderMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderMgr.obj

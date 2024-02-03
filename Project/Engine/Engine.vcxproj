@@ -213,6 +213,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CParticleUpdate.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CPBRLevel.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CRenderComponent.h" />
     <ClInclude Include="CRenderMgr.h" />
@@ -308,6 +309,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPBRLevel.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />

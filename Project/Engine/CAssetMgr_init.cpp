@@ -600,12 +600,23 @@ void CAssetMgr::CreateDefaultTexture()
     if (nullptr == FindAsset<CTexture>(L"SpotLightTex"))
         Load<CTexture>(L"SpotLightTex", L"Icons\\SpotLight.png");
 
+    // SkyBox
     if (nullptr == FindAsset<CTexture>(L"cubemapTex"))
         Load<CTexture>(L"cubemapTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_bgra.dds");
     if (nullptr == FindAsset<CTexture>(L"cubemap_diffuseTex"))
         Load<CTexture>(L"cubemap_diffuseTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_diffuse.dds");
     if (nullptr == FindAsset<CTexture>(L"cubemap_specularTex"))
         Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
+
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds",
+                       L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds",
+                       L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds",
+                       L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds");
 
     // Noise Texture Load
     if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_01.jpg"))
@@ -708,7 +719,7 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"BlinnPhongMtrl", pMtrl);
     }
 
-    // SkyBox
+    // SkyBox CubeMap
     if (nullptr == FindAsset<CMaterial>(L"SkyboxMtrl"))
     {
         CMaterial* pMtrl = nullptr;
@@ -717,6 +728,18 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemapTex"));
         pMtrl->SetName(L"SkyboxMtrl");
         AddAsset<CMaterial>(L"SkyboxMtrl", pMtrl);
+    }
+
+    // PureSky CubeMap
+    if (nullptr == FindAsset<CMaterial>(L"PureSkyBoxMtrl"))
+    {
+        CMaterial* pMtrl = nullptr;
+        pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyboxShader"));
+        pMtrl->SetTexParam(TEXCUBE_0,
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"));
+        pMtrl->SetName(L"PureSkyBoxMtrl");
+        AddAsset<CMaterial>(L"PureSkyBoxMtrl", pMtrl);
     }
 
     // Directional Light
