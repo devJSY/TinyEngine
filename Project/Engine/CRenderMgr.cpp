@@ -13,7 +13,8 @@
 #include "CConstBuffer.h"
 
 CRenderMgr::CRenderMgr()
-    : m_Light2DBuffer(nullptr)
+    : m_CamUI(nullptr)
+    , m_Light2DBuffer(nullptr)
     , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
     , m_bShowDebugRender(false)
@@ -59,9 +60,14 @@ void CRenderMgr::tick()
     render_debug();
 
     // ToneMapping
-    CDevice::GetInst()->SetRenderTarget();
-    m_ToneMappingObj->render();
-    CTexture::Clear(0);
+    if (m_vecCam[0]->IsHDRRender())
+    {
+        CDevice::GetInst()->SetRenderTarget();
+        m_ToneMappingObj->render();
+        CTexture::Clear(0);
+    }
+
+    render_ui();
 
     Clear();
 }
@@ -133,6 +139,15 @@ void CRenderMgr::render_debug()
     }
 }
 
+void CRenderMgr::render_ui()
+{
+    if (nullptr == m_CamUI)
+        return;
+
+    m_CamUI->SortObject();
+    m_CamUI->render();
+}
+
 void CRenderMgr::UpdateData()
 {
     // GlobalData 에 광원 개수정보 세팅
@@ -188,6 +203,11 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
     }
 
     m_vecCam[_Idx] = _Cam;
+}
+
+void CRenderMgr::RegisterUICamera(CCamera* _Cam)
+{
+    m_CamUI = _Cam;
 }
 
 CCamera* CRenderMgr::GetCamera(int _Idx) const

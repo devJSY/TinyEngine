@@ -35,8 +35,7 @@ void CPBRLevel::begin()
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
 
-    pCamObj->Camera()->SetCameraPriority(1);
-    pCamObj->Camera()->LayerCheck(L"UI", true);
+    pCamObj->Camera()->SetUICamera();
 
     AddObject(pCamObj, L"Camera");
 

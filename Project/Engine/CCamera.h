@@ -36,6 +36,8 @@ private:
     vector<CGameObject*> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;
 
+    bool m_bHDRRender;
+
 private:
     float m_CamSpeed;
 
@@ -61,9 +63,12 @@ public:
     const Matrix& GetProjMat() const { return m_matProj; }
 
     void SetCameraPriority(int _Priority);
+    void SetUICamera();
     void LayerCheck(UINT _LayerIdx, bool _bCheck);
     void LayerCheck(const wstring& _strLayerName, bool _bCheck);
     void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
+
+    bool IsHDRRender() const { return m_bHDRRender; }
 
 public:
     float GetCameraSpeed() const { return m_CamSpeed; }

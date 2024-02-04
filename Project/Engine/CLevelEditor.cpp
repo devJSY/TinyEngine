@@ -495,7 +495,7 @@ void CLevelEditor::render_ImGuizmo()
 
     // UI 오브젝트는 UI 카메라 기준행렬로 렌더링
     if (L"UI" == CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(pSelectedObj->GetLayerIdx())->GetName())
-        pCam = CRenderMgr::GetInst()->GetCamera(1); // UI Camera
+        pCam = CRenderMgr::GetInst()->GetUICamera(); // UI Camera
 
     if (nullptr == pCam)
         return;

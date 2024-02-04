@@ -16,6 +16,7 @@ class CRenderMgr : public CSingleton<CRenderMgr>
 
 private:
     vector<CCamera*> m_vecCam;
+    CCamera* m_CamUI;
 
     Ptr<CTexture> m_RTCopyTex;
     Ptr<CTexture> m_IDMapTex;
@@ -43,6 +44,7 @@ private:
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
+    void RegisterUICamera(CCamera* _Cam);
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
 
     void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
@@ -56,7 +58,12 @@ public:
 
 public:
     CCamera* GetCamera(int _Idx) const;
-    void ClearCamera() { m_vecCam.clear(); }
+    CCamera* GetUICamera() const { return m_CamUI; }
+    void ClearCamera()
+    {
+        m_vecCam.clear();
+        m_CamUI = nullptr;
+    }
 
 public:
     void init();
@@ -81,6 +88,7 @@ private:
 private:
     void render();
     void render_debug();
+    void render_ui();
 
     // 리소스 바인딩
     void UpdateData();
