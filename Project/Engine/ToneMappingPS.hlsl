@@ -54,7 +54,7 @@ float4 main(PS_IN input) : SV_TARGET
     
     if (g_btex_0)
     {
-        color = g_tex_0.Sample(g_LinearSampler, input.vUV).rgb;
+        color = g_tex_0.Sample(g_LinearWrapSampler, input.vUV).rgb;
     }
     
     color = LinearToneMapping(color);

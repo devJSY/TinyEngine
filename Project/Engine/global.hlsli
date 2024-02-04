@@ -129,10 +129,13 @@ Texture2D g_postprocess_Tex : register(t14);
 
 Texture2D g_NoiseTex : register(t15);
 
+Texture2D g_BRDFTex : register(t19);
+
 StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
 
-SamplerState g_LinearSampler : register(s0);
-SamplerState g_PointSampler : register(s1);
-SamplerState g_AnisotropicSampler : register(s2);
+SamplerState g_LinearWrapSampler : register(s0);
+SamplerState g_LinearClampSampler : register(s1);
+SamplerState g_PointSampler : register(s2);
+SamplerState g_AnisotropicSampler : register(s3);
 
 #endif

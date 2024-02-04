@@ -119,7 +119,8 @@ enum class BS_TYPE
 // Sampler State
 enum class SS_TYPE
 {
-    LINEAR,
+    LINEAR_WRAP,
+    LINEAR_CLAMP,
     POINT,
     ANISOTROPIC,
     END,

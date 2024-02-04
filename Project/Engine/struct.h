@@ -42,6 +42,8 @@ struct tLightInfo
     float fallOffStart;
     float fallOffEnd;
     float spotPower;
+
+    Vec4 vRadiance; // Strength
 };
 
 // ==================

@@ -159,7 +159,7 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
     
     if (g_btex_0)
     {
-        float4 vSampleColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+        float4 vSampleColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
         vOutColor.rgb *= vSampleColor.rgb;
         vOutColor.a = vSampleColor.a;
     }

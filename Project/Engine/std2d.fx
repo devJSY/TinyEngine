@@ -46,14 +46,14 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         }
         else
         {
-            vColor = g_anim2d_tex.Sample(g_LinearSampler, vUV);
+            vColor = g_anim2d_tex.Sample(g_LinearWrapSampler, vUV);
         }
     }
     else
     {
         if (g_btex_0)
         {
-            vColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
             
             //saturate 0 ~ 1 을 넘지 않게 보정
             float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);
@@ -113,14 +113,14 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
         }
         else
         {
-            vColor = g_anim2d_tex.Sample(g_LinearSampler, vUV);
+            vColor = g_anim2d_tex.Sample(g_LinearWrapSampler, vUV);
         }
     }
     else
     {
         if (g_btex_0)
         {
-            vColor = g_tex_0.Sample(g_LinearSampler, _in.vUV);
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
             
             //saturate 0 ~ 1 을 넘지 않게 보정
             float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);

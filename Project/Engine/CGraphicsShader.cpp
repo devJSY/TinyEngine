@@ -44,7 +44,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     DEVICE->CreateVertexShader(m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), nullptr, m_VS.GetAddressOf());
 
     // 정점 구조정보(Layout) 생성
-    D3D11_INPUT_ELEMENT_DESC arrElement[4] = {}; // 정점하나안의 요소 갯수만큼 생성
+    D3D11_INPUT_ELEMENT_DESC arrElement[5] = {}; // 정점하나안의 요소 갯수만큼 생성
 
     arrElement[0].InputSlot = 0;
     arrElement[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -78,7 +78,15 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[3].AlignedByteOffset = 40;
     arrElement[3].Format = DXGI_FORMAT_R32G32_FLOAT;
 
-    DEVICE->CreateInputLayout(arrElement, 4, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(),
+    arrElement[4].InputSlot = 0;
+    arrElement[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    arrElement[4].SemanticName = "TANGENT";
+    arrElement[4].SemanticIndex = 0;
+    arrElement[4].InstanceDataStepRate = 0;
+    arrElement[4].AlignedByteOffset = 48;
+    arrElement[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+
+    DEVICE->CreateInputLayout(arrElement, 5, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(),
                               m_Layout.GetAddressOf());
 
     return S_OK;

@@ -18,42 +18,42 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-    // 모든 에셋 파일로 저장
-    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    {
-        wstring basePath = L"";
+    //// 모든 에셋 파일로 저장
+    //for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    //{
+    //    wstring basePath = L"";
 
-        switch ((ASSET_TYPE)i)
-        {
-        case ASSET_TYPE::MESH:
-            break;
-        case ASSET_TYPE::MESHDATA:
-            break;
-        case ASSET_TYPE::TEXTURE:
-            basePath = L"Textures\\";
-            break;
-        case ASSET_TYPE::COMPUTE_SHADER:
-            break;
-        case ASSET_TYPE::GRAPHICS_SHADER:
-            break;
-        case ASSET_TYPE::MATERIAL:
-            basePath = L"Materials\\";
-            break;
-        case ASSET_TYPE::SOUND:
-            break;
-        }
+    //    switch ((ASSET_TYPE)i)
+    //    {
+    //    case ASSET_TYPE::MESH:
+    //        break;
+    //    case ASSET_TYPE::MESHDATA:
+    //        break;
+    //    case ASSET_TYPE::TEXTURE:
+    //        basePath = L"Textures\\";
+    //        break;
+    //    case ASSET_TYPE::COMPUTE_SHADER:
+    //        break;
+    //    case ASSET_TYPE::GRAPHICS_SHADER:
+    //        break;
+    //    case ASSET_TYPE::MATERIAL:
+    //        basePath = L"Materials\\";
+    //        break;
+    //    case ASSET_TYPE::SOUND:
+    //        break;
+    //    }
 
-        if (basePath.empty())
-            continue;
+    //    if (basePath.empty())
+    //        continue;
 
-        for (const auto& iter : m_mapAsset[i])
-        {
-            wstring filePath = basePath;
-            filePath += iter.first;
-            filePath += m_AssetExtension;
-            iter.second->Save(filePath);
-        }
-    }
+    //    for (const auto& iter : m_mapAsset[i])
+    //    {
+    //        wstring filePath = basePath;
+    //        filePath += iter.first;
+    //        filePath += m_AssetExtension;
+    //        iter.second->Save(filePath);
+    //    }
+    //}
 }
 
 void CAssetMgr::init()

@@ -60,11 +60,12 @@ void CRenderMgr::tick()
     render();
     render_debug();
 
-    // LDR Rendering
+    // Tone Mapping
     CDevice::GetInst()->SetRenderTarget();
     m_ToneMappingObj->render();
     CTexture::Clear(0);
 
+    // LDR Rendering
     render_ui();
 
     Clear();

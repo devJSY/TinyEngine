@@ -743,9 +743,6 @@
     <Filter Include="ShaderCode\Render\Normal">
       <UniqueIdentifier>{1948534b-e8a0-4304-9cb5-d3065c96d43a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Render\OutLine">
-      <UniqueIdentifier>{32794d67-0e3f-4d28-9f08-b34493e1a0bb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Render\Postprocess">
       <UniqueIdentifier>{ecfecc17-a936-4349-ac5e-f423232cdd33}</UniqueIdentifier>
     </Filter>
@@ -772,6 +769,12 @@
     </Filter>
     <Filter Include="ImGui\imgui_node_editor\utilities">
       <UniqueIdentifier>{754f8c1a-5c96-4c5d-bf3c-e2515c59e080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\OutLine">
+      <UniqueIdentifier>{32794d67-0e3f-4d28-9f08-b34493e1a0bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\UnrealPBR">
+      <UniqueIdentifier>{f68944f3-5d62-46df-a0bc-eee34ca61828}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -917,6 +920,12 @@
     </FxCompile>
     <FxCompile Include="BloomUpPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRVS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRPS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

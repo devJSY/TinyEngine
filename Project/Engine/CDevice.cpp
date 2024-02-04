@@ -170,7 +170,15 @@ int CDevice::CreateSamplerState()
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+
+    tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    tSamDesc.MinLOD = 0;
+    tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
 
     tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -188,12 +196,19 @@ int CDevice::CreateSamplerState()
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
     DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
 
-    CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->HSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->DSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->GSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->PSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
-    CONTEXT->CSSetSamplers((UINT)SS_TYPE::LINEAR, 1, m_arrSS[(UINT)SS_TYPE::LINEAR].GetAddressOf());
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+    CONTEXT->CSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
+
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR_CLAMP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::LINEAR_CLAMP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::LINEAR_CLAMP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::LINEAR_CLAMP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::LINEAR_CLAMP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
+    CONTEXT->CSSetSamplers((UINT)SS_TYPE::LINEAR_CLAMP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_CLAMP].GetAddressOf());
 
     CONTEXT->VSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());
     CONTEXT->HSSetSamplers((UINT)SS_TYPE::POINT, 1, m_arrSS[(UINT)SS_TYPE::POINT].GetAddressOf());

@@ -30,7 +30,7 @@ float4 main(PS_Input input) : SV_TARGET
     float mask = OuterCircle * InnerCircle; // 해당 영역만 왜곡 처리
     float2 disp = normalize(scaledUV - centerUV) * force * mask;
     
-    color = g_postprocess_Tex.Sample(g_LinearSampler, vScreenUV - disp);
+    color = g_postprocess_Tex.Sample(g_LinearWrapSampler, vScreenUV - disp);
     //color.rgb = mask;
     
     return color;

@@ -25,7 +25,7 @@ float4 main(PS_IN input) : SV_Target
     
     // Texture
     if (g_UseTexture)
-        color = color * g_tex_0.Sample(g_LinearSampler, input.vUV);
+        color = color * g_tex_0.Sample(g_LinearWrapSampler, input.vUV);
     
     // IBL
     float4 diffuse = float4(0.0, 0.0, 0.0, 0.0);
@@ -33,13 +33,13 @@ float4 main(PS_IN input) : SV_Target
         
     if (g_btexcube_0)
     {
-        diffuse = g_texCube_0.Sample(g_LinearSampler, input.normalWorld);
+        diffuse = g_texCube_0.Sample(g_LinearWrapSampler, input.normalWorld);
         diffuse.xyz *= g_vDiff.xyz;
     }
 
     if (g_btexcube_1)
     {
-        specular = g_texCube_1.Sample(g_LinearSampler, reflect(-toEye, input.normalWorld));
+        specular = g_texCube_1.Sample(g_LinearWrapSampler, reflect(-toEye, input.normalWorld));
         specular.xyz *= g_vSpec.xyz;
     }
 

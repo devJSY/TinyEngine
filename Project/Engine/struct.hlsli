@@ -7,6 +7,7 @@ struct VS_IN
     float3 vNormal : NORMAL;
     float4 vColor : COLOR;
     float2 vUV : TEXCOORD;
+    float3 vTangent : TANGENT;
 };
 
 struct PS_IN
@@ -16,6 +17,7 @@ struct PS_IN
     float3 normalWorld : NORMAL;
     float4 vColor : COLOR;
     float2 vUV : TEXCOORD;
+    float3 vTangentWorld : TANGENT;
 };
 
 struct tLightColor
@@ -41,6 +43,8 @@ struct tLightInfo
     float fallOffStart;
     float fallOffEnd;
     float spotPower;
+    
+    float4 vRadiance;
 };
 
 struct tTileInfo
