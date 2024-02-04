@@ -320,6 +320,25 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Unreal PBR Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"UnrealPBRShader"))
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->SetName(L"UnrealPBRShader");
+        AddAsset(L"UnrealPBRShader", pShader);
+    }
+
+    // =================================
     // BlinnPhong Shader
     // =================================
     if (nullptr == FindAsset<CGraphicsShader>(L"BlinnPhongShader"))
@@ -663,6 +682,13 @@ void CAssetMgr::CreateDefaultTexture()
     if (nullptr == FindAsset<CTexture>(L"cubemap_specularTex"))
         Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
 
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds"))
+    {
+        Ptr<CTexture> pBrdf = Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds",
+                                             L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds");
+        pBrdf->UpdateData(19);
+    }
+
     if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"))
         Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds",
                        L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds");
@@ -760,6 +786,28 @@ void CAssetMgr::CreateDefaultMaterial()
                                       Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
         pMtrl->SetName(L"BasicMtrl");
         AddAsset<CMaterial>(L"BasicMtrl", pMtrl);
+    }
+
+    // Unreal PBR
+    if (nullptr == FindAsset<CMaterial>(L"UnrealPBRMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
+        pMtrl->SetTexParam(TEXCUBE_0,
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
+        pMtrl->SetTexParam(TEXCUBE_1,
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
+
+        pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f)); // Mtrl Albedo
+
+        pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
+        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Mtrl Metallic
+        pMtrl->SetScalarParam(FLOAT_2, 1.f); // Mtrl Roughness
+
+        pMtrl->SetScalarParam(INT_0, 0); // Invert NormalMap Y
+
+        pMtrl->SetName(L"UnrealPBRMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRMtrl", pMtrl);
     }
 
     // BlinnPhong

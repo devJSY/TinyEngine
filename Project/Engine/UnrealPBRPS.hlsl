@@ -11,9 +11,10 @@
 #define MetallicRoughnessTex g_tex_4
 #define EmissiveTex g_tex_5
 
-#define MtrlAlbedo g_float_1
-#define MtrlMetallic g_float_2
-#define MtrlRoughness g_float_3
+#define MtrlAlbedo g_vec4_0
+
+#define MtrlMetallic g_float_1
+#define MtrlRoughness g_float_2
 
 #define InvertNormalMapY g_int_0
 
@@ -112,11 +113,11 @@ float4 main(PS_IN input) : SV_TARGET
     float3 normalWorld = GetNormal(input);
     
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb 
-                                 : MtrlAlbedo;
+                                 : MtrlAlbedo.rgb;
     float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, input.vUV).r : 1.0;
-    float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b 
+    float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).r 
                                     : MtrlMetallic;
-    float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g 
+    float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).r 
                                       : MtrlRoughness;
     float3 emission = g_btex_5 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb
                                      : float3(0, 0, 0);
@@ -151,7 +152,7 @@ float4 main(PS_IN input) : SV_TARGET
             float3 specularBRDF = (F * D * G) / max(1e-5, 4.0 * NdotI * NdotO);
 
             float3 radiance = g_Light3D[i].vRadiance.rgb * saturate((g_Light3D[i].fallOffEnd - length(lightVec)) / (g_Light3D[i].fallOffEnd - g_Light3D[i].fallOffStart));
-
+            
             directLighting += (diffuseBRDF + specularBRDF) * radiance * NdotI;
         }
     }

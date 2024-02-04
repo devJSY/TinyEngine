@@ -37,7 +37,7 @@ void CPBRLevel::begin()
     GetLayer(14)->SetName(L"PostProcess");
     GetLayer(15)->SetName(L"UI");
 
-    AddModels();
+    //AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -77,6 +77,22 @@ void CPBRLevel::begin()
     pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PureSkyBoxMtrl"));
 
     AddObject(pSkyBox, L"SkyBox");
+
+    // Rect Mesh
+    CGameObject* pRectMesh = new CGameObject;
+    pRectMesh->SetName(L"Test Mesh");
+
+    pRectMesh->AddComponent(new CTransform);
+    pRectMesh->AddComponent(new CMeshRender);
+
+    pRectMesh->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pRectMesh->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pRectMesh->Transform()->SetAbsolute(true);
+
+    pRectMesh->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pRectMesh->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+
+    AddObject(pRectMesh, 0);
 }
 
 void CPBRLevel::tick()

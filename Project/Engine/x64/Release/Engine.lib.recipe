@@ -30,6 +30,12 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\BlinnPhongVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BloomDownPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\BloomUpPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\BlurXPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -72,7 +78,7 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocess.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\BloomPS.cso</FullPath>
+      <FullPath>D:\TinyEngine\External\Library\Engine\Combine.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocessVS.cso</FullPath>
@@ -112,6 +118,12 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\ToneMappingPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRVS.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

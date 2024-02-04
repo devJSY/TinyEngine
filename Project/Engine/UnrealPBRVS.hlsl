@@ -26,7 +26,7 @@ PS_IN main(VS_IN input)
         // Heightmap은 보통 흑백이라서 마지막에 .r로 float 하나만 사용
         float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV, 0).r;
         height = height * 2.0 - 1.0;
-        pos += float4(output.normalWorld * height *  HeightScale, 0.0);
+        pos += float4(output.normalWorld * height * HeightScale, 0.0);
     }
 
     output.vPosWorld = pos.xyz; // 월드 위치 따로 저장

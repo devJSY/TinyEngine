@@ -67,7 +67,7 @@ __declspec(align(16)) struct tTransform
 };
 
 // Material 계수
-__declspec(align(16)) struct tMtrlData
+struct tMtrlData
 {
     Vec4 vAmb;  // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
     Vec4 vDiff; // 조명과 상관없이 물체 자체가 갖고있는 색상
@@ -77,7 +77,7 @@ __declspec(align(16)) struct tMtrlData
 
 __declspec(align(16)) struct tMtrlConst
 {
-    tMtrlData mtrl; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
+    tMtrlData mtrl;
 
     int arrInt[4];
     float arrFloat[4];

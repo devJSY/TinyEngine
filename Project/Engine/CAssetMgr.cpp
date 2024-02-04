@@ -19,9 +19,9 @@ CAssetMgr::CAssetMgr()
 CAssetMgr::~CAssetMgr()
 {
     //// 모든 에셋 파일로 저장
-    //for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    // for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
     //{
-    //    wstring basePath = L"";
+    //     wstring basePath = L"";
 
     //    switch ((ASSET_TYPE)i)
     //    {
@@ -165,8 +165,20 @@ vector<tMeshData> CAssetMgr::ReadFromFile(string basePath, string filename, bool
 Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData)
 {
     CMaterial* pMtrl = new CMaterial;
-    pMtrl->SetMaterialCoefficient(Vec4(), Vec4(1.f, 1.f, 1.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f), Vec4());
-    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
+    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
+
+    pMtrl->SetTexParam(TEXCUBE_0,
+                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
+    pMtrl->SetTexParam(TEXCUBE_1,
+                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
+
+    pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f)); // Mtrl Albedo
+
+    pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
+    pMtrl->SetScalarParam(FLOAT_1, 1.f); // Mtrl Metallic
+    pMtrl->SetScalarParam(FLOAT_2, 1.f); // Mtrl Roughness
+
+    pMtrl->SetScalarParam(INT_0, 0); // Invert NormalMap Y
 
     // 텍스쳐 로딩
     wstring path = ToWstring(_MeshData.RelativeTextureFilePath);
