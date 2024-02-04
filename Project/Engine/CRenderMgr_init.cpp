@@ -26,8 +26,7 @@ void CRenderMgr::init()
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
-    m_FloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatTexture");
-    m_ResolvedFloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ResolvedFloatTexture");
+    m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
     // Noise Texture Load
     m_vecNoiseTex.push_back(

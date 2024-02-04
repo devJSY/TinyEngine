@@ -61,6 +61,7 @@ void CRenderMgr::tick()
     // ToneMapping
     CDevice::GetInst()->SetRenderTarget();
     m_ToneMappingObj->render();
+    CTexture::Clear(0);
 
     Clear();
 }
@@ -205,7 +206,7 @@ void CRenderMgr::CopyRTTexToRTCopyTex()
 
 void CRenderMgr::CopyToPostProcessTex()
 {
-    CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), m_ResolvedFloatTex->GetTex2D().Get());
+    CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
@@ -244,12 +245,5 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateIDMapTex(Resolution);
     CreatePostProcessTex(Resolution);
 
-    m_FloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatTexture");
-    m_ResolvedFloatTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"ResolvedFloatTexture");
-}
-
-void CRenderMgr::ResolveFloatTexture()
-{
-    CONTEXT->ResolveSubresource(m_ResolvedFloatTex->GetTex2D().Get(), 0, m_FloatTex->GetTex2D().Get(), 0,
-                                DXGI_FORMAT_R16G16B16A16_FLOAT);
+    m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 }

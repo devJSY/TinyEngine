@@ -21,8 +21,7 @@ private:
     Ptr<CTexture> m_IDMapTex;
     Ptr<CTexture> m_IDMapDSTex;
     Ptr<CTexture> m_PostProcessTex;
-    Ptr<CTexture> m_FloatTex;
-    Ptr<CTexture> m_ResolvedFloatTex;
+    Ptr<CTexture> m_FloatRTTex;
 
     CStructuredBuffer* m_Light2DBuffer;
     vector<CLight2D*> m_vecLight2D;
@@ -67,14 +66,12 @@ public:
     void CopyRTTexToRTCopyTex();
     void CopyToPostProcessTex();
     void Resize(Vec2 Resolution);
-    void ResolveFloatTexture();
 
     Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
     Ptr<CTexture> GetIDMapTex() const { return m_IDMapTex; }
     Ptr<CTexture> GetIDMapDSTex() const { return m_IDMapDSTex; }
     Ptr<CTexture> GetPostProcessTex() const { return m_PostProcessTex; }
-    Ptr<CTexture> GetFloatTex() const { return m_FloatTex; }
-    Ptr<CTexture> GetResolvedFloatTex() const { return m_ResolvedFloatTex; }
+    Ptr<CTexture> GetFloatTex() const { return m_FloatRTTex; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);

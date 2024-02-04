@@ -831,7 +831,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ToneMappingShader"));
-        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"ResolvedFloatTexture"));
+        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"FloatRenderTargetTexture"));
         pMtrl->SetName(L"ToneMappingMtrl");
         AddAsset<CMaterial>(L"ToneMappingMtrl", pMtrl);
     }

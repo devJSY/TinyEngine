@@ -189,11 +189,12 @@ void CCamera::render()
     // eyePos 등록
     g_Global.eyeWorld = Transform()->GetWorldPos();
 
+    CDevice::GetInst()->SetFloatRenderTarget();
+
     // Domain 순서대로 렌더링
     render(m_vecOpaque);
     render(m_vecMaked);
     render(m_vecTransparent);
-    CRenderMgr::GetInst()->ResolveFloatTexture();
     render_postprocess();
 }
 

@@ -17,7 +17,7 @@ private:
     ComPtr<IDXGISwapChain> m_SwapChain; // 스왚체인(출력 버퍼 지정)
 
     Ptr<CTexture> m_RenderTargetTex;
-    Ptr<CTexture> m_FloatTex;
+    Ptr<CTexture> m_FloatRTTex;
     Ptr<CTexture> m_DSTex;
 
     ComPtr<ID3D11RasterizerState> m_arrRS[(UINT)RS_TYPE::END];   // 레스터라이저
