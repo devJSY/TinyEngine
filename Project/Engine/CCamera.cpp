@@ -33,6 +33,7 @@ CCamera::CCamera()
     , m_bHDRRender(true)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
+    m_Width = vResol.x;
     m_AspectRatio = vResol.x / vResol.y;
 }
 
@@ -54,14 +55,6 @@ void CCamera::begin()
 
 void CCamera::finaltick()
 {
-    // 매프레임 화면비 계산
-    Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
-    if (!(vResol.x <= 0.f || vResol.y <= 0.f)) // 창 최소화 예외처리
-    {
-        m_Width = vResol.x;
-        m_AspectRatio = vResol.x / vResol.y;
-    }
-
     // 카메라 속도 제한
     if (m_CamSpeed < 0.f)
         m_CamSpeed = 0.f;
@@ -299,6 +292,15 @@ void CCamera::render_postprocess()
     }
 
     m_vecPostProcess.clear();
+}
+
+void CCamera::Resize(Vec2 Resolution)
+{
+    if (Resolution.x <= 0.f || Resolution.y <= 0.f) // 창 최소화 예외처리
+        return;
+
+    m_Width = Resolution.x;
+    m_AspectRatio = Resolution.x / Resolution.y;
 }
 
 void CCamera::SaveToLevelFile(FILE* _File)

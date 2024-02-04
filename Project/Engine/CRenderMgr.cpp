@@ -266,4 +266,12 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreatePostProcessTex(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
+
+    for (size_t i = 0; i < m_vecCam.size(); i++)
+    {
+        m_vecCam[i]->Resize(Resolution);
+    }
+
+    if (nullptr != m_CamUI)
+        m_CamUI->Resize(Resolution);
 }
