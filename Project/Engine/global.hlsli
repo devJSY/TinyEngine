@@ -86,13 +86,12 @@ cbuffer ANIM_DATA2D : register(b2)
 cbuffer GLOBAL_DATA : register(b3)
 {
     float2 g_RenderResolution;
+    float2 g_NoiseTexResolution;
     float g_dt;
     float g_time;
 
     uint g_Light2DCount;
     uint g_Light3DCount;
-    float g_Bloom_Threshold;
-    float g_Bloom_Strength;
     
     float4 g_pickingColor;
     
@@ -108,8 +107,6 @@ cbuffer GLOBAL_DATA : register(b3)
     
     int g_OutLineThickness_2D;
     float4 g_OutLineColor_2D;
-    
-    float2 g_NoiseTexResolution;
 }
 
 Texture2D g_tex_0 : register(t0);
@@ -130,7 +127,7 @@ Texture2D g_anim2d_tex : register(t10);
 StructuredBuffer<tLightInfo> g_Light2D : register(t11);
 StructuredBuffer<tLightInfo> g_Light3D : register(t12);
 
-//Texture2D g_RTCopy_Tex : register(t13);
+Texture2D g_Bloom_Tex : register(t13);
 Texture2D g_postprocess_Tex : register(t14);
 
 Texture2D g_NoiseTex : register(t15);

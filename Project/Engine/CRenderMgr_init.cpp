@@ -26,6 +26,7 @@ void CRenderMgr::init()
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
+    CreateBloomTex(vRenderResolution);
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
     // Noise Texture Load

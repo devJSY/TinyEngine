@@ -59,7 +59,7 @@ void CRenderMgr::tick()
     CDevice::GetInst()->SetFloatRenderTarget();
     render();
     render_debug();
-    
+
     // LDR Rendering
     CDevice::GetInst()->SetRenderTarget();
     m_ToneMappingObj->render();
@@ -229,6 +229,11 @@ void CRenderMgr::CopyToPostProcessTex()
     CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
 }
 
+void CRenderMgr::CopyToBloomTex()
+{
+    CONTEXT->CopyResource(m_BloomTex->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
+}
+
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
     m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
@@ -241,6 +246,13 @@ void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
     m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y,
                                                            DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_SHADER_RESOURCE,
                                                            D3D11_USAGE_DEFAULT);
+}
+
+void CRenderMgr::CreateBloomTex(Vec2 Resolution)
+{
+    m_BloomTex = CAssetMgr::GetInst()->CreateTexture(L"BloomTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                     DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_SHADER_RESOURCE,
+                                                     D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
@@ -261,10 +273,12 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_IDMapDSTex = nullptr;
     m_PostProcessTex = nullptr;
     m_FloatRTTex = nullptr;
+    m_BloomTex = nullptr;
 
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreatePostProcessTex(Resolution);
+    CreateBloomTex(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 

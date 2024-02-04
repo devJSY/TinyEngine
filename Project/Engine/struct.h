@@ -88,13 +88,12 @@ __declspec(align(16)) struct tMtrlConst
 __declspec(align(16)) struct tGlobalData
 {
     Vec2 g_RenderResolution;
+    Vec2 g_NoiseTexResolution;
     float g_dt;
     float g_time;
 
     UINT Light2DCount;
     UINT Light3DCount;
-    float Bloom_Threshold;
-    float Bloom_Strength;
 
     Vec4 pickingColor;
 
@@ -110,8 +109,6 @@ __declspec(align(16)) struct tGlobalData
 
     int OutLineThickness_2D;
     Vec4 OutLineColor_2D;
-
-    Vec2 g_NoiseTexResolution;
 };
 
 __declspec(align(16)) struct tAnimData2D

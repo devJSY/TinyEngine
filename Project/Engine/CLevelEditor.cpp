@@ -292,9 +292,6 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Checkbox("Show Collider", &bCollider);
     CRenderMgr::GetInst()->SetShowCollider(bCollider);
 
-    ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
-    ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
-
     ImGui::End();
 }
 

@@ -795,6 +795,8 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomShader"));
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Strength
+        pMtrl->SetScalarParam(FLOAT_1, 0.5f); // Threshold
         pMtrl->SetName(L"BloomMtrl");
         AddAsset<CMaterial>(L"BloomMtrl", pMtrl);
     }
