@@ -37,7 +37,7 @@ void CPBRLevel::begin()
     GetLayer(14)->SetName(L"PostProcess");
     GetLayer(15)->SetName(L"UI");
 
-    //AddModels();
+    AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
