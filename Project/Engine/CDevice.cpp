@@ -229,7 +229,6 @@ int CDevice::CreateSwapChain()
     tDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     tDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
     tDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
 

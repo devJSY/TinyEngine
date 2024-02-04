@@ -30,7 +30,6 @@ CCamera::CCamera()
     , m_CamSpeed(250.f)
     , m_LayerCheck(0)
     , m_iCamPriority(-1)
-    , m_bHDRRender(true)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
@@ -111,7 +110,6 @@ void CCamera::SetCameraPriority(int _Priority)
 
 void CCamera::SetUICamera()
 {
-    m_bHDRRender = false;
     LayerCheck(L"UI", true);
     CRenderMgr::GetInst()->RegisterUICamera(this);
 }
@@ -193,11 +191,6 @@ void CCamera::render()
 
     // eyePos 등록
     g_Global.eyeWorld = Transform()->GetWorldPos();
-
-    if (m_bHDRRender)
-        CDevice::GetInst()->SetFloatRenderTarget();
-    else
-        CDevice::GetInst()->SetRenderTarget();
 
     // Domain 순서대로 렌더링
     render(m_vecOpaque);
@@ -313,7 +306,6 @@ void CCamera::SaveToLevelFile(FILE* _File)
     fwrite(&m_Near, sizeof(float), 1, _File);
     fwrite(&m_Far, sizeof(float), 1, _File);
     fwrite(&m_LayerCheck, sizeof(UINT), 1, _File);
-    fwrite(&m_bHDRRender, sizeof(bool), 1, _File);
     fwrite(&m_CamSpeed, sizeof(float), 1, _File);
     fwrite(&m_iCamPriority, sizeof(int), 1, _File);
 }
@@ -328,7 +320,6 @@ void CCamera::LoadFromLevelFile(FILE* _File)
     fread(&m_Near, sizeof(float), 1, _File);
     fread(&m_Far, sizeof(float), 1, _File);
     fread(&m_LayerCheck, sizeof(UINT), 1, _File);
-    fread(&m_bHDRRender, sizeof(bool), 1, _File);
     fread(&m_CamSpeed, sizeof(float), 1, _File);
     fread(&m_iCamPriority, sizeof(int), 1, _File);
 }

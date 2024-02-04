@@ -55,17 +55,15 @@ void CRenderMgr::tick()
 {
     UpdateData();
 
+    // HDR Rendering
+    CDevice::GetInst()->SetFloatRenderTarget();
     render();
-
     render_debug();
-
-    // ToneMapping
-    if (m_vecCam[0]->IsHDRRender())
-    {
-        CDevice::GetInst()->SetRenderTarget();
-        m_ToneMappingObj->render();
-        CTexture::Clear(0);
-    }
+    
+    // LDR Rendering
+    CDevice::GetInst()->SetRenderTarget();
+    m_ToneMappingObj->render();
+    CTexture::Clear(0);
 
     render_ui();
 
@@ -143,6 +141,8 @@ void CRenderMgr::render_ui()
 {
     if (nullptr == m_CamUI)
         return;
+
+    CDevice::GetInst()->SetRenderTarget();
 
     m_CamUI->SortObject();
     m_CamUI->render();
@@ -260,6 +260,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_IDMapTex = nullptr;
     m_IDMapDSTex = nullptr;
     m_PostProcessTex = nullptr;
+    m_FloatRTTex = nullptr;
 
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
@@ -273,5 +274,9 @@ void CRenderMgr::Resize(Vec2 Resolution)
     }
 
     if (nullptr != m_CamUI)
+    {
         m_CamUI->Resize(Resolution);
+    }
+
+    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
 }

@@ -36,8 +36,6 @@ private:
     vector<CGameObject*> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;
 
-    bool m_bHDRRender;
-
 private:
     float m_CamSpeed;
 
@@ -71,7 +69,6 @@ public:
 public:
     float GetCameraSpeed() const { return m_CamSpeed; }
     void SetCameraSpeed(float speed) { m_CamSpeed = speed; }
-    bool IsHDRRender() const { return m_bHDRRender; }
     void Resize(Vec2 Resolution);
 
 public:

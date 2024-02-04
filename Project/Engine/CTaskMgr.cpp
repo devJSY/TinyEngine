@@ -253,9 +253,6 @@ void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
 
-    Ptr<CMaterial> pToneMappingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl");
-    pToneMappingMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture"));
-
     LOG(Log, "Window Resized!");
 }
 
