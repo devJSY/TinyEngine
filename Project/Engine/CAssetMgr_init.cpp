@@ -474,21 +474,57 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
-    // Bloom Shader
+    // Combine Shader
     // =================================
-    if (nullptr == FindAsset<CGraphicsShader>(L"BloomShader"))
+    if (nullptr == FindAsset<CGraphicsShader>(L"CombineShader"))
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\BloomPS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\Combine.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->SetName(L"BloomShader");
-        AddAsset(L"BloomShader", pShader);
+        pShader->SetName(L"CombineShader");
+        AddAsset(L"CombineShader", pShader);
+    }
+
+    // =================================
+    // BloomDown Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BloomDownShader"))
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BloomDownPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"BloomDownShader");
+        AddAsset(L"BloomDownShader", pShader);
+    }
+
+    // =================================
+    // BloomUp Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"BloomUpShader"))
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BloomUpPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"BloomUpShader");
+        AddAsset(L"BloomUpShader", pShader);
     }
 
     // =================================
@@ -840,15 +876,33 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
     }
 
-    // Bloom
-    if (nullptr == FindAsset<CMaterial>(L"BloomMtrl"))
+    // Combine
+    if (nullptr == FindAsset<CMaterial>(L"CombineMtrl"))
     {
         CMaterial* pMtrl = new CMaterial;
-        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomShader"));
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CombineShader"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Strength
         pMtrl->SetScalarParam(FLOAT_1, 0.5f); // Threshold
-        pMtrl->SetName(L"BloomMtrl");
-        AddAsset<CMaterial>(L"BloomMtrl", pMtrl);
+        pMtrl->SetName(L"CombineMtrl");
+        AddAsset<CMaterial>(L"CombineMtrl", pMtrl);
+    }
+
+    // Bloom Down
+    if (nullptr == FindAsset<CMaterial>(L"BloomDownMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomDownShader"));
+        pMtrl->SetName(L"BloomDownMtrl");
+        AddAsset<CMaterial>(L"BloomDownMtrl", pMtrl);
+    }
+
+    // Bloom Up
+    if (nullptr == FindAsset<CMaterial>(L"BloomUpMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomUpShader"));
+        pMtrl->SetName(L"BloomUpMtrl");
+        AddAsset<CMaterial>(L"BloomUpMtrl", pMtrl);
     }
 
     // BlurX

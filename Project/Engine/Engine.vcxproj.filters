@@ -837,7 +837,7 @@
     <FxCompile Include="postprocessVS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="BloomPS.hlsl">
+    <FxCompile Include="Combine.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="std2d.fx">
@@ -910,6 +910,12 @@
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </FxCompile>
     <FxCompile Include="ToneMappingPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomDownPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomUpPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
