@@ -203,66 +203,58 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 {
     for (size_t i = 0; i < _vecObj.size(); ++i)
     {
-        wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
-
         // Render Pass
         _vecObj[i]->render();
 
+        wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
+
         CMeshRender* meshRender = _vecObj[i]->MeshRender();
-        if (nullptr != meshRender)
+        Ptr<CMaterial> mtrl = meshRender->GetMaterial();
+
+        // Normal Line Pass
+        if (meshRender->IsDrawNormalLine())
         {
-            Ptr<CMaterial> mtrl = meshRender->GetMaterial();
-            if (nullptr != mtrl)
+            meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
+            _vecObj[i]->render();
+        }
+
+        // outline pass
+        // 와이어 프레임일때는 Off
+        // SkyBox 일때는 Off
+        if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
+            LayerName != L"SkyBox")
+        {
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
             {
-                Ptr<CGraphicsShader> shader = mtrl->GetShader();
-
-                // Normal Line Pass
-                if (meshRender->IsDrawNormalLine())
-                {
-                    mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalLineShader"));
-                    _vecObj[i]->render();
-                }
-
-                // outline pass
-                // 와이어 프레임일때는 Off
-                // SkyBox 일때는 Off
-                if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
-                    LayerName != L"SkyBox")
-                {
-                    if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                    {
-                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"2D_OutLineShader"));
-                    }
-                    else
-                    {
-                        mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"3D_OutLineShader"));
-                    }
-
-                    _vecObj[i]->render();
-                }
-
-                // IDMap
-                if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
-                {
-                    Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
-                    Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
-
-                    CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
-
-                    Ptr<CGraphicsShader> IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"IDMapShader");
-
-                    if (LayerName == L"SkyBox")
-                        IDShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"SkyBox_IDMapShader");
-
-                    mtrl->SetShader(IDShader);
-                    _vecObj[i]->render();
-
-                    CDevice::GetInst()->SetFloatRenderTarget();
-                }
-
-                // 원래 쉐이더로 설정
-                mtrl->SetShader(shader);
+                meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
             }
+            else
+            {
+                meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+            }
+
+            _vecObj[i]->render();
+        }
+
+        // IDMap
+        if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
+        {
+            Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
+            Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
+
+            CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
+
+            meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl"));
+
+            if (LayerName == L"SkyBox")
+                meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBox_IDMapMtrl"));
+
+            _vecObj[i]->render();
+
+            CDevice::GetInst()->SetFloatRenderTarget();
+
+            // 원래 재질로 설정
+            meshRender->SetMaterial(mtrl);
         }
     }
 

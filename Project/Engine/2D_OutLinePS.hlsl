@@ -1,6 +1,9 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+#define Thickness g_int_0
+#define OutLineColor g_vec4_0
+
 float4 main(PS_IN input) : SV_TARGET
 {
     float4 color = float4(0.f, 0.f, 0.f, 1.f);
@@ -34,7 +37,7 @@ float4 main(PS_IN input) : SV_TARGET
         
             // 8방향 탐색 * Thickness
             [unroll(50)] // 최대 50픽셀 제한
-            for (int i = 1; i <= g_OutLineThickness_2D; ++i)
+            for (int i = 1; i <= Thickness; ++i)
             {
                 float4 pixelTop = g_anim2d_tex.Sample(g_LinearSampler, vUV + float2(0.f, -dy * i));
                 float4 pixelBottom = g_anim2d_tex.Sample(g_LinearSampler, vUV + float2(0.f, dy * i));
@@ -53,7 +56,7 @@ float4 main(PS_IN input) : SV_TARGET
             if (0.f >= totalAlpha)
                 discard;
     
-            color = g_OutLineColor_2D;
+            color = OutLineColor;
         }
         else
         {
@@ -72,7 +75,7 @@ float4 main(PS_IN input) : SV_TARGET
     
             // 8방향 탐색 * Thickness
             [unroll(50)] // 최대 50픽셀 제한
-            for (int i = 1; i <= g_OutLineThickness_2D; ++i)
+            for (int i = 1; i <= Thickness; ++i)
             {
                 float4 pixelTop = g_tex_0.Sample(g_LinearSampler, input.vUV + float2(0.f, -dy * i));
                 float4 pixelBottom = g_tex_0.Sample(g_LinearSampler, input.vUV + float2(0.f, dy * i));
@@ -91,7 +94,7 @@ float4 main(PS_IN input) : SV_TARGET
             if (0.f >= totalAlpha)
                 discard;
     
-            color = g_OutLineColor_2D;
+            color = OutLineColor;
         }
         else
         {

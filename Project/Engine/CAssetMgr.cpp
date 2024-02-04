@@ -259,13 +259,14 @@ CGameObject* CAssetMgr::LoadModel(const string& _relativepath, const string& _fi
         Parts->SetName(_name + L" Parts " + std::to_wstring(idx));
 
         Ptr<CMesh> pMesh = new CMesh;
-        pMesh->SetName(_name + L" Parts " + std::to_wstring(idx));
+        pMesh->SetName(_name + L" Parts " + std::to_wstring(idx) + L" Mesh");
         pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
                       (UINT)meshData.indices.size());
-        AddAsset<CMesh>(_name + L" Parts " + std::to_wstring(idx), pMesh);
+        AddAsset<CMesh>(pMesh->GetName(), pMesh);
 
         Ptr<CMaterial> material = LoadModelMaterial(pMesh, meshData);
-        AddAsset<CMaterial>(_name + L" Parts " + std::to_wstring(idx) + L"Mtrl", material.Get());
+        material->SetName(_name + L" Parts " + std::to_wstring(idx) + L" Mtrl");
+        AddAsset<CMaterial>(material->GetName(), material.Get());
 
         Parts->AddComponent(new CTransform);
         Parts->AddComponent(new CMeshRender);

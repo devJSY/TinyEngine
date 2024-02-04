@@ -586,6 +586,7 @@ void CAssetMgr::CreateDefaultComputeShader()
         AddAsset(L"ParticleUpdateShader", pShader);
     }
 }
+
 void CAssetMgr::CreateDefaultTexture()
 {
     if (nullptr == FindAsset<CTexture>(L"missing_texture"))
@@ -731,10 +732,59 @@ void CAssetMgr::CreateDefaultMaterial()
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
         pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
-        pMtrl->SetTexParam(TEXCUBE_0, FindAsset<CTexture>(L"cubemap_diffuseTex"));
-        pMtrl->SetTexParam(TEXCUBE_1, FindAsset<CTexture>(L"cubemap_specularTex"));
+        pMtrl->SetTexParam(TEXCUBE_0,
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
+        pMtrl->SetTexParam(TEXCUBE_1,
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
         pMtrl->SetName(L"BlinnPhongMtrl");
         AddAsset<CMaterial>(L"BlinnPhongMtrl", pMtrl);
+    }
+
+    // NormalLine
+    if (nullptr == FindAsset<CMaterial>(L"NormalLineMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"NormalLineShader"));
+        pMtrl->SetName(L"NormalLineMtrl");
+        AddAsset<CMaterial>(L"NormalLineMtrl", pMtrl);
+    }
+
+    // 2D OutLine
+    if (nullptr == FindAsset<CMaterial>(L"2D_OutLineMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"2D_OutLineShader"));
+        pMtrl->SetScalarParam(INT_0, 25);                                                     // Thickness
+        pMtrl->SetScalarParam(VEC4_0, Vec4(235.f / 255.f, 162.f / 255.f, 10.f / 255.f, 1.f)); // Color
+        pMtrl->SetName(L"2D_OutLineMtrl");
+        AddAsset<CMaterial>(L"2D_OutLineMtrl", pMtrl);
+    }
+
+    // 3D OutLine
+    if (nullptr == FindAsset<CMaterial>(L"3D_OutLineMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"3D_OutLineShader"));
+        pMtrl->SetName(L"3D_OutLineMtrl");
+        AddAsset<CMaterial>(L"3D_OutLineMtrl", pMtrl);
+    }
+
+    // IDMap
+    if (nullptr == FindAsset<CMaterial>(L"IDMapMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"IDMapShader"));
+        pMtrl->SetName(L"IDMapMtrl");
+        AddAsset<CMaterial>(L"IDMapMtrl", pMtrl);
+    }
+
+    // SkyBox IDMap
+    if (nullptr == FindAsset<CMaterial>(L"SkyBox_IDMapMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyBox_IDMapShader"));
+        pMtrl->SetName(L"SkyBox_IDMapMtrl");
+        AddAsset<CMaterial>(L"SkyBox_IDMapMtrl", pMtrl);
     }
 
     // SkyBox CubeMap
@@ -834,7 +884,7 @@ void CAssetMgr::CreateDefaultMaterial()
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ToneMappingShader"));
         pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"FloatRenderTargetTexture"));
-        pMtrl->SetScalarParam(FLOAT_0, 1.f); // Exposure
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Exposure
         pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
         pMtrl->SetName(L"ToneMappingMtrl");
         AddAsset<CMaterial>(L"ToneMappingMtrl", pMtrl);

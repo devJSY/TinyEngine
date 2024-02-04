@@ -106,9 +106,6 @@ __declspec(align(16)) struct tGlobalData
 
     float NormalLineScale;
     int DrawAsWireFrame;
-
-    int OutLineThickness_2D;
-    Vec4 OutLineColor_2D;
 };
 
 __declspec(align(16)) struct tAnimData2D
