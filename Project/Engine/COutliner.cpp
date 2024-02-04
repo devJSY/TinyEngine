@@ -1119,6 +1119,8 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
             if (nullptr != pParticleSystem->m_ParticleTex)
                 TextureID = pParticleSystem->m_ParticleTex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
 
             ImGui::Image(TextureID, ImVec2(256.f, 256.f));
 

@@ -44,4 +44,6 @@ private:
 public:
     CMaterial();
     virtual ~CMaterial();
+
+    friend class CMaterialEditor;
 };

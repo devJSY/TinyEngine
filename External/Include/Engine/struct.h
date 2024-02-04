@@ -72,7 +72,7 @@ __declspec(align(16)) struct tMtrlData
     Vec4 vEmv;
 };
 
-/*__declspec(align(16))*/ struct tMtrlConst
+__declspec(align(16)) struct tMtrlConst
 {
     tMtrlData mtrl; // float shininess; // 빛이 얼마나 집중 될지에 사용하는 값
 
@@ -113,7 +113,7 @@ __declspec(align(16)) struct tGlobalData
 
     Vec2 g_NoiseTexResolution;
     float g_exposure = 1.0f; // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
-    float g_gamma = 2.2f;    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
+    float g_gamma = 2.2f; // 어떤 영역의 색을 더 넓게 보여줄지 의미함
 };
 
 __declspec(align(16)) struct tAnimData2D

@@ -84,8 +84,8 @@ void ImGui_InputText(const char* label, const string& Text, float alignment = 0.
 void ImGui_SetWindowClass_LevelEditor();
 void ImGui_SetWindowClass_MaterialEditor();
 void ImGui_SetWindowClass_Blueprint();
-void ImGuiSetWindowClass_SpriteEditor();
-void ImGuiSetWindowClass_TileMapEditor();
+void ImGui_SetWindowClass_SpriteEditor();
+void ImGui_SetWindowClass_TileMapEditor();
 
 // =====================================
 // template

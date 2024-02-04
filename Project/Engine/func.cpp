@@ -501,7 +501,7 @@ void ImGui_SetWindowClass_Blueprint()
     ImGui::SetNextWindowClass(&window_class);
 }
 
-void ImGuiSetWindowClass_SpriteEditor()
+void ImGui_SetWindowClass_SpriteEditor()
 {
     ImGuiWindowClass window_class;
     window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetSpriteEditor()->GetName()).c_str());
@@ -511,7 +511,7 @@ void ImGuiSetWindowClass_SpriteEditor()
     ImGui::SetNextWindowClass(&window_class);
 }
 
-void ImGuiSetWindowClass_TileMapEditor()
+void ImGui_SetWindowClass_TileMapEditor()
 {
     ImGuiWindowClass window_class;
     window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetTileMapEditor()->GetName()).c_str());

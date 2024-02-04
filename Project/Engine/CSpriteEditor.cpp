@@ -37,19 +37,19 @@ void CSpriteEditor::init()
 
 void CSpriteEditor::render()
 {
-    ImGuiSetWindowClass_SpriteEditor();
+    ImGui_SetWindowClass_SpriteEditor();
     DrawViewport();
 
-    ImGuiSetWindowClass_SpriteEditor();
+    ImGui_SetWindowClass_SpriteEditor();
     DrawDetails();
 
-    ImGuiSetWindowClass_SpriteEditor();
+    ImGui_SetWindowClass_SpriteEditor();
     DrawSpriteList();
 
-    ImGuiSetWindowClass_SpriteEditor();
+    ImGui_SetWindowClass_SpriteEditor();
     DrawAnimationViewport();
 
-    ImGuiSetWindowClass_SpriteEditor();
+    ImGui_SetWindowClass_SpriteEditor();
     DrawAnimationList();
 }
 

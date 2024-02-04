@@ -54,13 +54,13 @@ void CTileMapEditor::render(bool* open)
 
 void CTileMapEditor::render()
 {
-    ImGuiSetWindowClass_TileMapEditor();
+    ImGui_SetWindowClass_TileMapEditor();
     DrawViewport();
 
-    ImGuiSetWindowClass_TileMapEditor();
+    ImGui_SetWindowClass_TileMapEditor();
     DrawDetails();
 
-    ImGuiSetWindowClass_TileMapEditor();
+    ImGui_SetWindowClass_TileMapEditor();
     DrawTileSet();
 }
 
