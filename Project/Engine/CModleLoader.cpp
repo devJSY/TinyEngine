@@ -113,14 +113,13 @@ void CModelLoader::UpdateTangents()
         }
 
         // DirectXMesh
-        // ComputeTangentFrame(m.indices.data(), m.indices.size() / 3, positions.data(), normals.data(),
-        // texcoords.data(),
-        //                    m.vertices.size(), tangents.data(), bitangents.data());
+        ComputeTangentFrame(m.indices.data(), m.indices.size() / 3, positions.data(), normals.data(), texcoords.data(),
+                            m.vertices.size(), tangents.data(), bitangents.data());
 
-        // for (size_t i = 0; i < m.vertices.size(); i++)
-        //{
-        //     m.vertices[i].tangentModel = tangents[i];
-        // }
+        for (size_t i = 0; i < m.vertices.size(); i++)
+        {
+            m.vertices[i].vTangent = tangents[i];
+        }
     }
 }
 

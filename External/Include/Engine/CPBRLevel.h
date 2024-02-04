@@ -3,6 +3,9 @@
 
 class CPBRLevel : public CLevel
 {
+private:
+    void AddModels();
+
 public:
     virtual void begin() override;
     virtual void tick() override;

@@ -40,6 +40,15 @@ using namespace DirectX;
     #pragma comment(lib, "DirectXTex\\DirectXTex")
 #endif
 
+// Directx Mesh
+#include <DirectXMesh\\DirectXMesh.h>
+
+#ifdef _DEBUG
+    #pragma comment(lib, "DirectXMesh\\DirectXMesh_debug")
+#else
+    #pragma comment(lib, "DirectXMesh\\DirectXMesh")
+#endif
+
 // SimpleMath
 #include "SimpleMath.h"
 using namespace DirectX::SimpleMath;

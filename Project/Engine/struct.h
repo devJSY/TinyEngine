@@ -7,6 +7,7 @@ struct Vtx
     Vec3 vNormal; // Á¤Á¡ÀÇ ÁÂÇ¥
     Vec4 vColor;  // Á¤Á¡ÀÇ »ö»ó Á¤º¸
     Vec2 vUV;     // UV ÁÂÇ¥°è of Texture Coordinate
+    Vec3 vTangent; // Á¤Á¡ÀÇ ÁÂÇ¥
 };
 
 struct tDebugShapeInfo
