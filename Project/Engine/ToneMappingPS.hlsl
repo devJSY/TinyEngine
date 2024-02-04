@@ -1,6 +1,9 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+#define Exposure g_float_0 // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
+#define Gamma g_float_1    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
+
 float3 FilmicToneMapping(float3 color)
 {
     color = max(float3(0, 0, 0), color);
@@ -10,9 +13,9 @@ float3 FilmicToneMapping(float3 color)
 
 float3 LinearToneMapping(float3 color)
 {
-    float3 invGamma = float3(1, 1, 1) / g_gamma;
+    float3 invGamma = float3(1, 1, 1) / Gamma;
 
-    color = clamp(g_exposure * color, 0., 1.);
+    color = clamp(Exposure * color, 0., 1.);
     color = pow(color, invGamma);
     return color;
 }
@@ -27,17 +30,17 @@ float3 Uncharted2ToneMapping(float3 color)
     float F = 0.30;
     float W = 11.2;
     
-    color *= g_exposure;
+    color *= Exposure;
     color = ((color * (A * color + C * B) + D * E) / (color * (A * color + B) + D * F)) - E / F;
     float white = ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F;
     color /= white;
-    color = pow(color, float3(1.0, 1.0, 1.0) / g_gamma);
+    color = pow(color, float3(1.0, 1.0, 1.0) / Gamma);
     return color;
 }
 
 float3 lumaBasedReinhardToneMapping(float3 color)
 {
-    float3 invGamma = float3(1, 1, 1) / g_gamma;
+    float3 invGamma = float3(1, 1, 1) / Gamma;
     float luma = dot(color, float3(0.2126, 0.7152, 0.0722));
     float toneMappedLuma = luma / (1. + luma);
     color *= toneMappedLuma / luma;

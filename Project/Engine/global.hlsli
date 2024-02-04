@@ -110,8 +110,6 @@ cbuffer GLOBAL_DATA : register(b3)
     float4 g_OutLineColor_2D;
     
     float2 g_NoiseTexResolution;
-    float g_exposure;
-    float g_gamma;
 }
 
 Texture2D g_tex_0 : register(t0);

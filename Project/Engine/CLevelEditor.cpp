@@ -295,9 +295,6 @@ void CLevelEditor::render_WorldSettings()
     ImGui::SliderFloat("Bloom Threshold", &g_Global.Bloom_Threshold, 0.f, 1.f);
     ImGui::SliderFloat("Bloom Strength", &g_Global.Bloom_Strength, 0.f, 3.f);
 
-    ImGui::SliderFloat("ToneMapping Exposure", &g_Global.g_exposure, 0.f, 3.f);
-    ImGui::SliderFloat("ToneMapping Gamma", &g_Global.g_gamma, 0.f, 5.f);
-
     ImGui::End();
 }
 

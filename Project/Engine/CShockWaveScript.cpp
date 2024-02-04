@@ -25,9 +25,7 @@ void CShockWaveScript::tick()
 
     Collider2D()->SetRadius(Radius);
 
-    float CircleSize = Radius / 1000.f;
-
-    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, &CircleSize);
+    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, Radius / 1000.f);
 }
 
 void CShockWaveScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

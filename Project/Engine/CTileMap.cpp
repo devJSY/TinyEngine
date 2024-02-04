@@ -46,11 +46,11 @@ void CTileMap::UpdateData()
     GetMaterial()->SetTexParam(TEX_0, m_TileAtlas);
 
     // 타일의 가로 세로 개수
-    GetMaterial()->SetScalarParam(INT_0, &m_iTileCountX);
-    GetMaterial()->SetScalarParam(INT_1, &m_iTileCountY);
+    GetMaterial()->SetScalarParam(INT_0, m_iTileCountX);
+    GetMaterial()->SetScalarParam(INT_1, m_iTileCountY);
 
     // 아틀라스 이미지에서 타일 1개의 자르는 사이즈(UV 기준)
-    GetMaterial()->SetScalarParam(VEC2_0, &m_vSliceSizeUV);
+    GetMaterial()->SetScalarParam(VEC2_0, m_vSliceSizeUV);
 
     // 각 타일 정보를 구조화 버퍼로 이동
     m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (UINT)m_vecTileInfo.size());
