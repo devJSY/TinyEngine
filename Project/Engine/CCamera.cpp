@@ -204,7 +204,17 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
     for (size_t i = 0; i < _vecObj.size(); ++i)
     {
         // Render Pass
-        _vecObj[i]->render();
+        if (g_Global.DrawAsWireFrame)
+        {
+            RS_TYPE originRSType = _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->GetRSType();
+            _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            _vecObj[i]->render();
+            _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->SetRSType(originRSType);
+        }
+        else
+        {
+            _vecObj[i]->render();
+        }
 
         wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
 
