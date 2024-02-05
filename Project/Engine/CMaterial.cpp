@@ -59,8 +59,8 @@ int CMaterial::Save(const wstring& _strFilePath)
 
     if (nullptr == pFile)
     {
-        LOG(Warning, "파일 열기 실패");
-        return false;
+        LOG(Error, "파일 열기 실패");
+        return E_FAIL;
     }
 
     // Entity
@@ -93,8 +93,8 @@ int CMaterial::Load(const wstring& _strFilePath)
 
     if (nullptr == pFile)
     {
-        LOG(Warning, "파일 열기 실패");
-        return false;
+        LOG(Error, "파일 열기 실패");
+        return E_FAIL;
     }
 
     // Entity

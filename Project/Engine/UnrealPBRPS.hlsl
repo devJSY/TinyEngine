@@ -1,7 +1,7 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
-#define BRDFTex g_BRDFTex
+#define BRDFTex g_BRDFTex // SpecularIBL Look-up Table
 #define SpecularIBLTex g_texCube_0
 #define IrradianceIBLTex g_texCube_1 
 

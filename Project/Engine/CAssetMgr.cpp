@@ -19,13 +19,14 @@ CAssetMgr::CAssetMgr()
 CAssetMgr::~CAssetMgr()
 {
     //// 모든 에셋 파일로 저장
-    // for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    //for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
     //{
-    //     wstring basePath = L"";
+    //    wstring basePath = L"";
 
     //    switch ((ASSET_TYPE)i)
     //    {
     //    case ASSET_TYPE::MESH:
+    //        basePath = L"Meshes\\";
     //        break;
     //    case ASSET_TYPE::MESHDATA:
     //        break;
@@ -78,6 +79,7 @@ void CAssetMgr::LoadFromAssetFile()
         switch ((ASSET_TYPE)i)
         {
         case ASSET_TYPE::MESH:
+            basePath += L"Meshes\\";
             break;
         case ASSET_TYPE::MESHDATA:
             break;
@@ -104,13 +106,14 @@ void CAssetMgr::LoadFromAssetFile()
             switch ((ASSET_TYPE)i)
             {
             case ASSET_TYPE::MESH:
+                Load<CMesh>(L"Meshes\\" + wstring(path.filename()), L"Meshes\\" + wstring(path.filename()));
                 break;
             case ASSET_TYPE::MESHDATA:
                 break;
             case ASSET_TYPE::TEXTURE:
                 break;
             case ASSET_TYPE::MATERIAL:
-                Load<CMaterial>(path.stem(), L"Materials\\" + wstring(path.filename()));
+                Load<CMaterial>(L"Materials\\" + wstring(path.filename()), L"Materials\\" + wstring(path.filename()));
                 break;
             case ASSET_TYPE::SOUND:
                 break;
