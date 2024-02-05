@@ -27,7 +27,7 @@ struct tDebugShapeInfo
 
 struct tLightInfo
 {
-    Vec4 vColor;    // 빛의 색상	- 광원의 순수 색상
+    Vec4 vRadiance; // 빛이 나가는 강도 
     Vec4 vSpecular; // 반사광	- 광원이 물체 표변에 반사된 색상
     Vec4 vAmbient;  // 환경광(주변광) - 광원에 의해서 보장되는 최소한의 빛
 
@@ -43,8 +43,6 @@ struct tLightInfo
     float fallOffStart;
     float fallOffEnd;
     float spotPower;
-
-    Vec4 vRadiance; // Strength
 };
 
 // ==================

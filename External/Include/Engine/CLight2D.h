@@ -12,11 +12,11 @@ public:
 public:
     const tLightInfo& GetLightInfo() const { return m_Info; }
 
-    void SetLightColor(Vec3 _vColor) { m_Info.vColor = _vColor; }
+    void SetLightRadiance(Vec3 _vRadiance) { m_Info.vRadiance = _vRadiance; }
     void SetSpecular(Vec3 _vSpec) { m_Info.vSpecular = _vSpec; }
     void SetAmbient(Vec3 _vAmb) { m_Info.vAmbient = _vAmb; }
 
-    Vec4 GetLightColor() const { return m_Info.vColor; }
+    Vec4 GetLightRadiance() const { return m_Info.vRadiance; }
     Vec4 GetSpecular() const { return m_Info.vSpecular; }
     Vec4 GetAmbient() const { return m_Info.vAmbient; }
 

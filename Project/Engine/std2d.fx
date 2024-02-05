@@ -68,14 +68,14 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     // 광원 처리
     // 광원의 타입별 처리
     // 광원이 여러개일 때 처리
-    tLightColor LightColor = (tLightColor) 0.f;
+    tLightInfo LightColor = (tLightInfo) 0.f;
     
     for (uint i = 0; i < g_Light2DCount; ++i)
     {
         CalLight2D(_in.vPosWorld, i, LightColor);
     }
     
-    vColor.rgb *= (LightColor.vColor.rgb + LightColor.vAmbient.rgb);
+    vColor.rgb *= (LightColor.vRadiance.rgb + LightColor.vAmbient.rgb);
     
     if (0.f >= vColor.a)
         discard;
@@ -135,13 +135,13 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
     // 광원 처리
     // 광원의 타입별 처리
     // 광원이 여러개일 때 처리
-    tLightColor LightColor = (tLightColor) 0.f;    
+    tLightInfo LightColor = (tLightInfo) 0.f;
     for (uint i = 0; i < g_Light2DCount; ++i)
     {
         CalLight2D(_in.vPosWorld, i, LightColor);
     }
     
-    vColor.rgb *= (LightColor.vColor.rgb + LightColor.vAmbient.rgb);
+    vColor.rgb *= (LightColor.vRadiance.rgb + LightColor.vAmbient.rgb);
 
     return vColor;
 }

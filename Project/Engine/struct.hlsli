@@ -20,16 +20,11 @@ struct PS_IN
     float3 vTangentWorld : TANGENT;
 };
 
-struct tLightColor
-{
-    float4 vColor; // 빛의 색상	- 광원의 순수 색상
-    float4 vSpecular; // 반사광	- 광원이 물체 표변에 반사된 색상
-    float4 vAmbient; // 환경광(주변광) - 광원에 의해서 보장되는 최소한의 빛
-};
-
 struct tLightInfo
 {
-    tLightColor ColorInfo;
+    float4 vRadiance; // 빛이 나가는 강도 
+    float4 vSpecular; // 반사광	- 광원이 물체 표변에 반사된 색상
+    float4 vAmbient; // 환경광(주변광) - 광원에 의해서 보장되는 최소한의 빛
     
     float3 vWorldPos; // 광원의 위치
     float3 vWorldDir; // 광원이 향하는 방향
@@ -43,8 +38,6 @@ struct tLightInfo
     float fallOffStart;
     float fallOffEnd;
     float spotPower;
-    
-    float4 vRadiance;
 };
 
 struct tTileInfo

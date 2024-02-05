@@ -453,9 +453,9 @@ void COutliner::DrawLight2D(CGameObject* obj)
             ImGui::EndCombo();
         }
 
-        Vec4 color = pLight->GetLightColor();
-        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Color").c_str(), &color.x))
-            pLight->SetLightColor(color);
+        Vec4 radiance = pLight->GetLightRadiance();
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Radiance").c_str(), &radiance.x))
+            pLight->SetLightRadiance(radiance);
 
         Vec4 specular = pLight->GetSpecular();
         if (ImGui::ColorEdit3(ImGui_LabelPrefix("Specular").c_str(), &specular.x))
@@ -524,9 +524,9 @@ void COutliner::DrawLight3D(CGameObject* obj)
             ImGui::EndCombo();
         }
 
-        Vec4 color = pLight->GetLightColor();
-        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Color").c_str(), &color.x))
-            pLight->SetLightColor(color);
+        Vec4 radiance = pLight->GetLightRadiance();
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Radiance").c_str(), &radiance.x, ImGuiColorEditFlags_HDR))
+            pLight->SetLightRadiance(radiance);
 
         Vec4 specular = pLight->GetSpecular();
         if (ImGui::ColorEdit3(ImGui_LabelPrefix("Specular").c_str(), &specular.x))

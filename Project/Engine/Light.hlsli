@@ -34,7 +34,7 @@ float3 ComputeDirectionalLight(tLightInfo L, float3 normal, float3 toEye)
     float3 lightVec = -L.vWorldDir;
 
     float ndotl = max(dot(lightVec, normal), 0.0f);
-    float3 lightStrength = L.ColorInfo.vColor.rgb * ndotl;
+    float3 lightStrength = L.vRadiance.rgb * ndotl;
 
     return BlinnPhong(lightStrength, lightVec, normal, toEye);
 }
@@ -63,7 +63,7 @@ float3 ComputePointLight(tLightInfo L, float3 pos, float3 normal, float3 toEye)
         lightVec /= d;
 
         float ndotl = max(dot(lightVec, normal), 0.0f);
-        float3 lightStrength = L.ColorInfo.vColor.rgb * ndotl;
+        float3 lightStrength = L.vRadiance.rgb * ndotl;
 
         float att = CalcAttenuation(d, L.fallOffStart, L.fallOffEnd);
         lightStrength *= att;
@@ -90,7 +90,7 @@ float3 ComputeSpotLight(tLightInfo L, float3 pos, float3 normal, float3 toEye)
         lightVec /= d;
 
         float ndotl = max(dot(lightVec, normal), 0.0f);
-        float3 lightStrength = L.ColorInfo.vColor.rgb * ndotl;
+        float3 lightStrength = L.vRadiance.rgb * ndotl;
 
         float att = CalcAttenuation(d, L.fallOffStart, L.fallOffEnd);
         lightStrength *= att;
@@ -115,7 +115,7 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
 // 2D LIGHT
 // =======================================================================================
 
-void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightColor _output)
+void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightInfo _output)
 {
     // 빛을 적용시킬 광원의 정보
     tLightInfo info = g_Light2D[_LightIdx];
@@ -123,7 +123,7 @@ void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightColor _output)
     // Directional Light
     if (0 == info.LightType)
     {
-        _output.vAmbient += info.ColorInfo.vAmbient;
+        _output.vAmbient += info.vAmbient;
     }
     
     // Point Light
@@ -147,7 +147,7 @@ void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightColor _output)
             //    fAttenu = saturate(1.f - fDist / g_Light2D[_LightIdx].fRadius);
             //}
             
-            _output.vColor += info.ColorInfo.vColor * fAttenu;
+            _output.vRadiance += info.vRadiance * fAttenu;
         }
     }
     
@@ -168,7 +168,7 @@ void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightColor _output)
                 float fTheta = (fDist / info.fRadius) * (PI / 2.f);
                 fAttenu = saturate(cos(fTheta));
             
-                _output.vColor += info.ColorInfo.vColor * fAttenu;
+                _output.vRadiance += info.vRadiance * fAttenu;
             }
         }
     }

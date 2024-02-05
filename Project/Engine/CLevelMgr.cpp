@@ -45,10 +45,10 @@ void CLevelMgr::init()
     // m_CurLevel->SetName(L"Test Level 2");
 
     // PBR Level
-    //m_CurLevel = new CPBRLevel;
-    //m_CurLevel->SetName(L"PBR Level");
+    m_CurLevel = new CPBRLevel;
+    m_CurLevel->SetName(L"PBR Level");
 
-    m_CurLevel = CLevelSaveLoad::LoadLevel(L"Test.tmap");
+    // m_CurLevel = CLevelSaveLoad::LoadLevel(L"PBRLevel.tmap");
 
     m_CurLevel->begin();
 }

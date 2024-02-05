@@ -11,7 +11,7 @@ CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
     , m_Info{}
 {
-    m_Info.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_Info.vRadiance = Vec4(1.f, 1.f, 1.f, 1.f);
     m_Info.vAmbient = Vec4(1.f, 1.f, 1.f, 1.f);
     m_Info.vSpecular = Vec4(1.f, 1.f, 1.f, 1.f);
 
