@@ -168,9 +168,9 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
 
     pMtrl->SetTexParam(TEXCUBE_0,
-                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
+                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds"));
     pMtrl->SetTexParam(TEXCUBE_1,
-                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
+                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds"));
 
     pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f)); // Mtrl Albedo
 

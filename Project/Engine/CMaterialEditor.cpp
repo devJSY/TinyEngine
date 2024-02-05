@@ -103,6 +103,18 @@ void CMaterialEditor::render()
 
         ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
 
+        ImGui::OpenPopupOnItemClick("Delete Texture##MaterialEditor", ImGuiPopupFlags_MouseButtonRight);
+
+        if (ImGui::BeginPopup("Delete Texture##MaterialEditor"))
+        {
+            if (ImGui::MenuItem("Delete Texture"))
+            {
+                m_Mtrl->SetTexParam((TEX_PARAM)TextureIdx, nullptr);
+            }
+
+            ImGui::EndPopup();
+        }
+
         // Drag & Drop
         if (ImGui::BeginDragDropTarget())
         {

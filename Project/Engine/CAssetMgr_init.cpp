@@ -85,7 +85,7 @@ void CAssetMgr::CreateDefaultMesh()
     // SquareGrid
     if (nullptr == FindAsset<CMesh>(L"SquareGridMesh"))
     {
-        auto mesh = MakeSquareGrid(10, 10);
+        auto mesh = MakeSquareGrid(100, 100);
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
@@ -117,7 +117,7 @@ void CAssetMgr::CreateDefaultMesh()
     // Sphere
     if (nullptr == FindAsset<CMesh>(L"SphereMesh"))
     {
-        auto mesh = MakeSphere(1, 10, 10);
+        auto mesh = MakeSphere(1, 50, 50);
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
@@ -674,7 +674,9 @@ void CAssetMgr::CreateDefaultTexture()
     if (nullptr == FindAsset<CTexture>(L"SpotLightTex"))
         Load<CTexture>(L"SpotLightTex", L"Icons\\SpotLight.png");
 
+    // ====================
     // SkyBox
+    // ====================
     if (nullptr == FindAsset<CTexture>(L"cubemapTex"))
         Load<CTexture>(L"cubemapTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_bgra.dds");
     if (nullptr == FindAsset<CTexture>(L"cubemap_diffuseTex"))
@@ -683,12 +685,8 @@ void CAssetMgr::CreateDefaultTexture()
         Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
 
     if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds"))
-    {
-        Ptr<CTexture> pBrdf = Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds",
-                                             L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds");
-        pBrdf->UpdateData(19);
-    }
-
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds",
+                       L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds");
     if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"))
         Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds",
                        L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds");
@@ -698,6 +696,20 @@ void CAssetMgr::CreateDefaultTexture()
     if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"))
         Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds",
                        L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds");
+
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds",
+                       L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds")
+            ->UpdateData(19);
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds",
+                       L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds",
+                       L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds",
+                       L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds");
 
     // Noise Texture Load
     if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_01.jpg"))
@@ -794,9 +806,9 @@ void CAssetMgr::CreateDefaultMaterial()
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
         pMtrl->SetTexParam(TEXCUBE_0,
-                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds"));
         pMtrl->SetTexParam(TEXCUBE_1,
-                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds"));
 
         pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f)); // Mtrl Albedo
 
@@ -892,6 +904,18 @@ void CAssetMgr::CreateDefaultMaterial()
                            FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"));
         pMtrl->SetName(L"PureSkyBoxMtrl");
         AddAsset<CMaterial>(L"PureSkyBoxMtrl", pMtrl);
+    }
+
+    // IBLBaker CubeMap
+    if (nullptr == FindAsset<CMaterial>(L"IBLBakerSkyBoxMtrl"))
+    {
+        CMaterial* pMtrl = nullptr;
+        pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyboxShader"));
+        pMtrl->SetTexParam(TEXCUBE_0,
+                           FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds"));
+        pMtrl->SetName(L"IBLBakerSkyBoxMtrl");
+        AddAsset<CMaterial>(L"IBLBakerSkyBoxMtrl", pMtrl);
     }
 
     // Directional Light

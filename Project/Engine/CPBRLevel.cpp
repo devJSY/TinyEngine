@@ -37,7 +37,7 @@ void CPBRLevel::begin()
     GetLayer(14)->SetName(L"PostProcess");
     GetLayer(15)->SetName(L"UI");
 
-    AddModels();
+    // AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -74,7 +74,7 @@ void CPBRLevel::begin()
     pSkyBox->Transform()->SetAbsolute(true);
 
     pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PureSkyBoxMtrl"));
+    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IBLBakerSkyBoxMtrl"));
 
     AddObject(pSkyBox, L"SkyBox");
 
@@ -162,7 +162,9 @@ void CPBRLevel::AddModels()
         AddObject(pDragonWarrior, L"Model");
     }
 
-    // .fbx 포맷
+    // ==========================
+    // PBR .fbx 포맷
+    // ==========================
     std::string path = "Developers\\Models\\armored-female-future-soldier\\";
     meshes = CAssetMgr::GetInst()->ReadFromFile(path, "angel_armor.fbx", false);
     meshes[0].AmbientTextureFilename = "angel_armor_albedo.jpg";
