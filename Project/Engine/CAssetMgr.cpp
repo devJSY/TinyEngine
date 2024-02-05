@@ -123,10 +123,10 @@ void CAssetMgr::LoadFromAssetFile()
     }
 }
 
-vector<tMeshData> CAssetMgr::ReadFromFile(string basePath, string filename, bool revertNormals)
+vector<tMeshData> CAssetMgr::ReadFromFile(string _basePath, string _filename, bool _revertNormals)
 {
     CModelLoader modelLoader;
-    modelLoader.Load(basePath, filename, revertNormals);
+    modelLoader.Load(_basePath, _filename, _revertNormals);
     vector<tMeshData>& meshes = modelLoader.meshes;
 
     // Normalize vertices
@@ -311,7 +311,45 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
     return Ptr<CMaterial>(pMtrl);
 }
 
-CGameObject* CAssetMgr::LoadModel(vector<tMeshData>& meshes, const wstring& _name)
+CGameObject* CAssetMgr::LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals,
+                                  tMeshData _TexturesName)
+{
+    // 매쉬 로딩
+    auto meshes = ReadFromFile(_basePath, _filename, _revertNormals);
+
+    // .FBX 포맷일때는 텍스춰/경로 설정
+    std::filesystem::path format = _filename;
+    if (format.extension() == ".FBX" || format.extension() == ".fbx")
+    {
+        if (meshes[0].AmbientTextureFilename.empty())
+            meshes[0].AmbientTextureFilename = _TexturesName.AmbientTextureFilename;
+
+        if (meshes[0].AoTextureFilename.empty())
+            meshes[0].AoTextureFilename = _TexturesName.AoTextureFilename;
+
+        if (meshes[0].NormalTextureFilename.empty())
+            meshes[0].NormalTextureFilename = _TexturesName.NormalTextureFilename;
+
+        if (meshes[0].HeightTextureFilename.empty())
+            meshes[0].HeightTextureFilename = _TexturesName.HeightTextureFilename;
+
+        if (meshes[0].MetallicTextureFilename.empty())
+            meshes[0].MetallicTextureFilename = _TexturesName.MetallicTextureFilename;
+
+        if (meshes[0].RoughnessTextureFilename.empty())
+            meshes[0].RoughnessTextureFilename = _TexturesName.RoughnessTextureFilename;
+
+        if (meshes[0].EmissiveTextureFilename.empty())
+            meshes[0].EmissiveTextureFilename = _TexturesName.EmissiveTextureFilename;
+
+        if (meshes[0].RelativeTextureFilePath.empty())
+            meshes[0].RelativeTextureFilePath = _TexturesName.RelativeTextureFilePath;
+    }
+
+    return LoadModel(_name, meshes);
+}
+
+CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes)
 {
     CGameObject* model = new CGameObject;
     model->SetName(_name);

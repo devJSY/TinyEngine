@@ -39,6 +39,11 @@ void CMaterialEditor::render()
 
         ImGui::Separator();
 
+        static float fDragSpeed = 1.0f;
+        ImGui::SliderFloat(ImGui_LabelPrefix("Drag Speed").c_str(), &fDragSpeed, 0.f, 1.f);
+
+        ImGui::Separator();
+
         ImGui::DragInt(ImGui_LabelPrefix("Int_0").c_str(), &MtrlConst.arrInt[0]);
         ImGui::DragInt(ImGui_LabelPrefix("Int_1").c_str(), &MtrlConst.arrInt[1]);
         ImGui::DragInt(ImGui_LabelPrefix("Int_2").c_str(), &MtrlConst.arrInt[2]);
@@ -46,24 +51,24 @@ void CMaterialEditor::render()
 
         ImGui::Separator();
 
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_0").c_str(), &MtrlConst.arrFloat[0], 0.1f);
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_1").c_str(), &MtrlConst.arrFloat[1], 0.1f);
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_2").c_str(), &MtrlConst.arrFloat[2], 0.1f);
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_3").c_str(), &MtrlConst.arrFloat[3], 0.1f);
+        ImGui::DragFloat(ImGui_LabelPrefix("Float_0").c_str(), &MtrlConst.arrFloat[0], fDragSpeed);
+        ImGui::DragFloat(ImGui_LabelPrefix("Float_1").c_str(), &MtrlConst.arrFloat[1], fDragSpeed);
+        ImGui::DragFloat(ImGui_LabelPrefix("Float_2").c_str(), &MtrlConst.arrFloat[2], fDragSpeed);
+        ImGui::DragFloat(ImGui_LabelPrefix("Float_3").c_str(), &MtrlConst.arrFloat[3], fDragSpeed);
 
         ImGui::Separator();
 
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_0").c_str(), &MtrlConst.arrVec2[0].x, 0.1f);
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_1").c_str(), &MtrlConst.arrVec2[1].x, 0.1f);
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_2").c_str(), &MtrlConst.arrVec2[2].x, 0.1f);
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_3").c_str(), &MtrlConst.arrVec2[3].x, 0.1f);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_0").c_str(), &MtrlConst.arrVec2[0].x, fDragSpeed);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_1").c_str(), &MtrlConst.arrVec2[1].x, fDragSpeed);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_2").c_str(), &MtrlConst.arrVec2[2].x, fDragSpeed);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_3").c_str(), &MtrlConst.arrVec2[3].x, fDragSpeed);
 
         ImGui::Separator();
 
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_0").c_str(), &MtrlConst.arrVec4[0].x, 0.1f);
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_1").c_str(), &MtrlConst.arrVec4[1].x, 0.1f);
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_2").c_str(), &MtrlConst.arrVec4[2].x, 0.1f);
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_3").c_str(), &MtrlConst.arrVec4[3].x, 0.1f);
+        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_0").c_str(), &MtrlConst.arrVec4[0].x, fDragSpeed);
+        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_1").c_str(), &MtrlConst.arrVec4[1].x, fDragSpeed);
+        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_2").c_str(), &MtrlConst.arrVec4[2].x, fDragSpeed);
+        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_3").c_str(), &MtrlConst.arrVec4[3].x, fDragSpeed);
 
         ImGui::TreePop();
     }

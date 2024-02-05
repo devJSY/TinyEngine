@@ -39,7 +39,7 @@ private:
 
     void LoadFromAssetFile();
 
-private:
+public:
     // Geometry
     tMeshData MakeCrosshair();
     tMeshData MakePoint();
@@ -59,10 +59,12 @@ private:
 
     // ¸ðµ¨ ·Îµù
 public:
-    vector<tMeshData> ReadFromFile(string basePath, string filename, bool revertNormals = false);
-    CGameObject* LoadModel(vector<tMeshData>& meshes, const wstring& _name);
+    CGameObject* LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals = false,
+                           tMeshData _TexturesName = {});
+    CGameObject* LoadModel(const wstring& _name, vector<tMeshData> meshes);
 
 private:
+    vector<tMeshData> ReadFromFile(string _basePath, string _filename, bool _revertNormals);
     Ptr<CMaterial> LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData);
 
 public:

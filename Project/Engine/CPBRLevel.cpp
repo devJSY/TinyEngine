@@ -3,8 +3,10 @@
 
 #include "CGameObject.h"
 #include "components.h"
-#include "CScriptMgr.h"
 #include "CCameraMoveScript.h"
+
+#include "CScriptMgr.h"
+#include "CPathMgr.h"
 
 CPBRLevel::CPBRLevel()
 {
@@ -37,7 +39,7 @@ void CPBRLevel::begin()
     GetLayer(14)->SetName(L"PostProcess");
     GetLayer(15)->SetName(L"UI");
 
-    // AddModels();
+    AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -78,21 +80,41 @@ void CPBRLevel::begin()
 
     AddObject(pSkyBox, L"SkyBox");
 
-    // Test Obj
-    CGameObject* pObj = new CGameObject;
-    pObj->SetName(L"Sphere");
+    //// Test Obj
+    // CGameObject* pObj = new CGameObject;
+    // pObj->SetName(L"Sphere");
 
-    pObj->AddComponent(new CTransform);
-    pObj->AddComponent(new CMeshRender);
+    // pObj->AddComponent(new CTransform);
+    // pObj->AddComponent(new CMeshRender);
 
-    pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pObj->Transform()->SetAbsolute(true);
+    // pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    // pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    // pObj->Transform()->SetAbsolute(true);
 
-    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+    // pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    // pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
-    AddObject(pObj, 0);
+    // AddObject(pObj, 0);
+
+    // ==========================
+    // PBR worn-painted-metal-ue
+    // ==========================
+    vector<tMeshData> meshes;
+    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+    meshes[0].AmbientTextureFilename = "worn-painted-metal_albedo.png";
+    meshes[0].AoTextureFilename = "worn-painted-metal_ao.png";
+    meshes[0].NormalTextureFilename = "worn-painted-metal_normal-dx.png";
+    meshes[0].HeightTextureFilename = "worn-painted-metal_height.png";
+    meshes[0].MetallicTextureFilename = "worn-painted-metal_metallic.png";
+    meshes[0].RoughnessTextureFilename = "worn-painted-metal_roughness.png";
+    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
+
+    CGameObject* pWornPainted = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
+    pWornPainted->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pWornPainted->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pWornPainted->Transform()->SetAbsolute(true);
+
+    AddObject(pWornPainted, 0);
 }
 
 void CPBRLevel::tick()
@@ -108,8 +130,8 @@ void CPBRLevel::finaltick()
 void CPBRLevel::AddModels()
 {
     // Zelda Model
-    auto meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
-    CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(meshes, L"Zelda");
+    CGameObject* pZelda =
+        CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
     if (nullptr != pZelda)
     {
         pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
@@ -119,8 +141,8 @@ void CPBRLevel::AddModels()
     }
 
     // Damaged Helmet
-    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
-    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(meshes, L"Damaged Helmet");
+    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(
+        L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
     if (nullptr != pDamagedHelmet)
     {
         pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
@@ -130,8 +152,8 @@ void CPBRLevel::AddModels()
     }
 
     // blue whale
-    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\blue_whale\\", "scene.gltf");
-    CGameObject* pblueWhale = CAssetMgr::GetInst()->LoadModel(meshes, L"blue whale");
+    CGameObject* pblueWhale =
+        CAssetMgr::GetInst()->LoadModel(L"blue whale", "Developers\\Models\\blue_whale\\", "scene.gltf");
     if (nullptr != pblueWhale)
     {
         pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
@@ -141,8 +163,8 @@ void CPBRLevel::AddModels()
     }
 
     // torii gate
-    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\torii_gate\\", "scene.gltf", true);
-    CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(meshes, L"torii gate");
+    CGameObject* ptoriigate =
+        CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
     if (nullptr != ptoriigate)
     {
         ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
@@ -152,8 +174,8 @@ void CPBRLevel::AddModels()
     }
 
     // dragon warrior
-    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
-    CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(meshes, L"Dragon Warrior");
+    CGameObject* pDragonWarrior =
+        CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
     if (nullptr != pDragonWarrior)
     {
         pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
@@ -165,15 +187,16 @@ void CPBRLevel::AddModels()
     // ==========================
     // PBR .fbx Æ÷¸Ë
     // ==========================
-    std::string path = "Developers\\Models\\armored-female-future-soldier\\";
-    meshes = CAssetMgr::GetInst()->ReadFromFile(path, "angel_armor.fbx", false);
-    meshes[0].AmbientTextureFilename = "angel_armor_albedo.jpg";
-    meshes[0].NormalTextureFilename = "angel_armor_normal.jpg";
-    meshes[0].MetallicTextureFilename = "angel_armor_metalness.jpg";
-    meshes[0].RoughnessTextureFilename = "angel_armor_roughness.jpg";
-    meshes[0].EmissiveTextureFilename = "angel_armor_e.jpg";
+    tMeshData meshData = {};
+    meshData.AmbientTextureFilename = "angel_armor_albedo.jpg";
+    meshData.NormalTextureFilename = "angel_armor_normal.jpg";
+    meshData.MetallicTextureFilename = "angel_armor_metalness.jpg";
+    meshData.RoughnessTextureFilename = "angel_armor_roughness.jpg";
+    meshData.EmissiveTextureFilename = "angel_armor_e.jpg";
+    meshData.RelativeTextureFilePath = "Developers\\Models\\armored-female-future-soldier\\";
 
-    CGameObject* pArmoredFemale = CAssetMgr::GetInst()->LoadModel(meshes, L"angel_armor");
+    CGameObject* pArmoredFemale = CAssetMgr::GetInst()->LoadModel(
+        L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
     if (nullptr != pArmoredFemale)
     {
         pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
