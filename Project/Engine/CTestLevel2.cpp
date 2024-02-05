@@ -24,6 +24,25 @@ CTestLevel2::~CTestLevel2()
 
 void CTestLevel2::begin()
 {
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        wstring Name = L"Layer ";
+        Name += std::to_wstring(i);
+        GetLayer(i)->SetName(Name);
+    }
+
+    GetLayer(0)->SetName(L"Default");
+    GetLayer(1)->SetName(L"Camera");
+    GetLayer(2)->SetName(L"Light");
+    GetLayer(3)->SetName(L"Player");
+    GetLayer(4)->SetName(L"Monster");
+    GetLayer(5)->SetName(L"Bullet");
+    GetLayer(6)->SetName(L"Effect");
+    GetLayer(7)->SetName(L"Tile");
+    GetLayer(13)->SetName(L"BackGround");
+    GetLayer(14)->SetName(L"PostProcess");
+    GetLayer(15)->SetName(L"UI");
+
     CGameObject* pCamObj = new CGameObject;
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
