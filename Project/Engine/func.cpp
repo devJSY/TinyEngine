@@ -1,10 +1,20 @@
 #include "pch.h"
 
+#include "CDevice.h"
+
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
 #include "CEngine.h"
 #include "func.h"
+#include "COutputLog.h"
+
+// stb
+extern "C"
+{
+#include <stb/stb_image.h>
+#include <stb/stb_image_write.h>
+}
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
@@ -257,6 +267,108 @@ string GetAssetTypeName(ASSET_TYPE type)
 
     auto it = AssetStrings.find(type);
     return it == AssetStrings.end() ? "Out of range" : it->second;
+}
+
+void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& width, int& height)
+{
+    int channels;
+
+    unsigned char* img =
+        stbi_load((ToString(CPathMgr::GetContentPath()) + filename).c_str(), &width, &height, &channels, 0);
+
+    // 4채널로 만들어서 복사
+    image.resize(width * height * 4);
+
+    if (channels == 1)
+    {
+        for (size_t i = 0; i < width * height; i++)
+        {
+            uint8_t g = img[i * channels + 0];
+            for (size_t c = 0; c < 4; c++)
+            {
+                image[4 * i + c] = g;
+            }
+        }
+    }
+    else if (channels == 2)
+    {
+        for (size_t i = 0; i < width * height; i++)
+        {
+            for (size_t c = 0; c < 2; c++)
+            {
+                image[4 * i + c] = img[i * channels + c];
+            }
+            image[4 * i + 2] = 255;
+            image[4 * i + 3] = 255;
+        }
+    }
+    else if (channels == 3)
+    {
+        for (size_t i = 0; i < width * height; i++)
+        {
+            for (size_t c = 0; c < 3; c++)
+            {
+                image[4 * i + c] = img[i * channels + c];
+            }
+            image[4 * i + 3] = 255;
+        }
+    }
+    else if (channels == 4)
+    {
+        for (size_t i = 0; i < width * height; i++)
+        {
+            for (size_t c = 0; c < 4; c++)
+            {
+                image[4 * i + c] = img[i * channels + c];
+            }
+        }
+    }
+    else
+    {
+        LOG(Error, "Cannot read %d channels", channels);
+    }
+
+    delete[] img;
+}
+
+ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, const std::vector<uint8_t>& image,
+                                             const DXGI_FORMAT pixelFormat, const int mipLevels, const int arraySize)
+{
+    // 스테이징 텍스춰 만들기
+    D3D11_TEXTURE2D_DESC txtDesc;
+    ZeroMemory(&txtDesc, sizeof(txtDesc));
+    txtDesc.Width = width;
+    txtDesc.Height = height;
+    txtDesc.MipLevels = mipLevels;
+    txtDesc.ArraySize = arraySize;
+    txtDesc.Format = pixelFormat;
+    txtDesc.SampleDesc.Count = 1;
+    txtDesc.Usage = D3D11_USAGE_STAGING;
+    txtDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+
+    ComPtr<ID3D11Texture2D> stagingTexture;
+    if (FAILED(DEVICE->CreateTexture2D(&txtDesc, NULL, stagingTexture.GetAddressOf())))
+    {
+        LOG(Error, "Create Failed Staging Texture");
+    }
+
+    // CPU에서 이미지 데이터 복사
+    size_t pixelSize = sizeof(uint8_t) * 4;
+    if (pixelFormat == DXGI_FORMAT_R16G16B16A16_FLOAT)
+    {
+        pixelSize = sizeof(uint16_t) * 4;
+    }
+
+    D3D11_MAPPED_SUBRESOURCE ms;
+    CONTEXT->Map(stagingTexture.Get(), NULL, D3D11_MAP_WRITE, NULL, &ms);
+    uint8_t* pData = (uint8_t*)ms.pData;
+    for (UINT h = 0; h < UINT(height); h++)
+    { // 가로줄 한 줄씩 복사
+        memcpy(&pData[h * ms.RowPitch], &image[h * width * pixelSize], width * pixelSize);
+    }
+    CONTEXT->Unmap(stagingTexture.Get(), NULL);
+
+    return stagingTexture;
 }
 
 void SaveWString(const wstring& _str, FILE* _File)

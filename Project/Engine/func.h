@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 class CGameObject;
 class CLevel;
@@ -38,6 +39,10 @@ string currentDateTime();
 Vec4 HashIDToColor(int hash);
 string GetComponentName(COMPONENT_TYPE type);
 string GetAssetTypeName(ASSET_TYPE type);
+void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& width, int& height);
+ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, const std::vector<uint8_t>& image,
+                                             const DXGI_FORMAT pixelFormat = DXGI_FORMAT_R8G8B8A8_UNORM,
+                                             const int mipLevels = 1, const int arraySize = 1);
 
 // =====================================
 // Save / Load

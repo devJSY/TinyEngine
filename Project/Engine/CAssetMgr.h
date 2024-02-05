@@ -59,11 +59,10 @@ private:
 
     // ¸ðµ¨ ·Îµù
 public:
-    CGameObject* LoadModel(const string& _relativepath, const string& _filename, const wstring& _name,
-                           bool revertNormals = false);
+    vector<tMeshData> ReadFromFile(string basePath, string filename, bool revertNormals = false);
+    CGameObject* LoadModel(vector<tMeshData>& meshes, const wstring& _name);
 
 private:
-    vector<tMeshData> ReadFromFile(string basePath, string filename, bool revertNormals);
     Ptr<CMaterial> LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData);
 
 public:

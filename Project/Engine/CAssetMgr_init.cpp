@@ -1486,8 +1486,8 @@ tMeshData CAssetMgr::MakeSphere(const float radius, const int numSlices, const i
             Vec3 normalOrth = v.vNormal - biTangent.Dot(v.vNormal) * v.vNormal;
             normalOrth.Normalize();
 
-            // v.tangentModel = biTangent.Cross(normalOrth);
-            // v.tangentModel.Normalize();
+            v.vTangent = biTangent.Cross(normalOrth);
+            v.vTangent.Normalize();
 
             /*    Vec3::Transform(Vec3(0.0f, 0.0f, 1.0f),
                                    Matrix::CreateRotationY(dTheta *

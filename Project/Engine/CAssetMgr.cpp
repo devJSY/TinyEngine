@@ -189,7 +189,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
         wstring name = ToWstring(_MeshData.AmbientTextureFilename);
 
-        pMtrl->SetTexParam(TEX_0, Load<CTexture>(name, path + name));
+        pMtrl->SetTexParam(TEX_0, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.AoTextureFilename.empty())
@@ -198,7 +198,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
         wstring name = ToWstring(_MeshData.AoTextureFilename);
 
-        pMtrl->SetTexParam(TEX_1, Load<CTexture>(name, path + name));
+        pMtrl->SetTexParam(TEX_1, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.NormalTextureFilename.empty())
@@ -207,7 +207,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
         wstring name = ToWstring(_MeshData.NormalTextureFilename);
 
-        pMtrl->SetTexParam(TEX_2, Load<CTexture>(name, path + name));
+        pMtrl->SetTexParam(TEX_2, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.HeightTextureFilename.empty())
@@ -216,30 +216,86 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
         wstring name = ToWstring(_MeshData.HeightTextureFilename);
 
-        pMtrl->SetTexParam(TEX_3, Load<CTexture>(name, path + name));
+        pMtrl->SetTexParam(TEX_3, Load<CTexture>(path + name, path + name));
     }
 
-    if (!_MeshData.MetallicTextureFilename.empty())
+    if (!_MeshData.MetallicTextureFilename.empty() || !_MeshData.RoughnessTextureFilename.empty())
     {
         LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.MetallicTextureFilename.c_str());
-
-        wstring name = ToWstring(_MeshData.MetallicTextureFilename);
-
-        pMtrl->SetTexParam(TEX_4, Load<CTexture>(name, path + name));
-    }
-
-    if (!_MeshData.RoughnessTextureFilename.empty())
-    {
         LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.RoughnessTextureFilename.c_str());
+        wstring name = ToWstring(_MeshData.MetallicTextureFilename); // Metallic 이름으로 설정
 
-        wstring name = ToWstring(_MeshData.RoughnessTextureFilename);
-
-        // gLTF 포맷은 Metallic과 Roghness 를 한이미지에 같이 넣어사용함
-        // 앞에서 Load한 MetallicTexture가 Roghness가 다른 텍스춰인경우에만 Load
-        Ptr<CTexture> pTex = FindAsset<CTexture>(name);
-        if (nullptr == pTex)
+        // GLTF 방식은 이미 합쳐져있음
+        if (!_MeshData.MetallicTextureFilename.empty() &&
+            (_MeshData.MetallicTextureFilename == _MeshData.RoughnessTextureFilename))
         {
-            pMtrl->SetTexParam(TEX_4, Load<CTexture>(name, path + name));
+            pMtrl->SetTexParam(TEX_4, Load<CTexture>(path + name, path + name));
+        }
+        else
+        {
+            // 별도 파일일 경우 따로 읽어서 합쳐줍니다.
+
+            // ReadImage()를 활용하기 위해서 두 이미지들을 각각 4채널로 변환 후 다시
+            // 3채널로 합치는 방식으로 구현
+            int mWidth = 0, mHeight = 0;
+            int rWidth = 0, rHeight = 0;
+            std::vector<uint8_t> mImage;
+            std::vector<uint8_t> rImage;
+
+            // 둘 중 하나만 있을 경우도 고려하기 위해 각각 파일명 확인
+            if (!_MeshData.MetallicTextureFilename.empty())
+            {
+                ReadImage(ToString(path) + _MeshData.MetallicTextureFilename, mImage, mWidth, mHeight);
+            }
+
+            if (!_MeshData.RoughnessTextureFilename.empty())
+            {
+                ReadImage(ToString(path) + _MeshData.RoughnessTextureFilename, rImage, rWidth, rHeight);
+            }
+
+            // 두 이미지의 해상도가 같다고 가정
+            if (!_MeshData.MetallicTextureFilename.empty() && !_MeshData.RoughnessTextureFilename.empty())
+            {
+                assert(mWidth == rWidth);
+                assert(mHeight == rHeight);
+            }
+
+            vector<uint8_t> combinedImage(size_t(mWidth * mHeight) * 4);
+            fill(combinedImage.begin(), combinedImage.end(), 0);
+
+            for (size_t i = 0; i < size_t(mWidth * mHeight); i++)
+            {
+                if (rImage.size())
+                    combinedImage[4 * i + 1] = rImage[4 * i]; // Green = Roughness
+                if (mImage.size())
+                    combinedImage[4 * i + 2] = mImage[4 * i]; // Blue = Metalness
+            }
+
+            // 스테이징 텍스춰 만들고 CPU에서 이미지를 복사합니다.
+            ComPtr<ID3D11Texture2D> stagingTexture =
+                CreateStagingTexture(mWidth, mHeight, combinedImage, DXGI_FORMAT_R8G8B8A8_UNORM);
+
+            // 실제로 사용할 텍스춰 설정
+            ComPtr<ID3D11Texture2D> metallicRoughnessTexture;
+            D3D11_TEXTURE2D_DESC txtDesc;
+            ZeroMemory(&txtDesc, sizeof(txtDesc));
+            txtDesc.Width = mWidth;
+            txtDesc.Height = mHeight;
+            txtDesc.MipLevels = 0; // 밉맵 레벨 최대
+            txtDesc.ArraySize = 1;
+            txtDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+            txtDesc.SampleDesc.Count = 1;
+            txtDesc.Usage = D3D11_USAGE_DEFAULT; // 스테이징 텍스춰로부터 복사 가능
+            txtDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+            txtDesc.CPUAccessFlags = 0;
+
+            // 초기 데이터 없이 텍스춰 생성 (전부 검은색)
+            DEVICE->CreateTexture2D(&txtDesc, NULL, metallicRoughnessTexture.GetAddressOf());
+
+            // 전체 복사
+            CONTEXT->CopyResource(metallicRoughnessTexture.Get(), stagingTexture.Get());
+
+            pMtrl->SetTexParam(TEX_4, CreateTexture(path + name, metallicRoughnessTexture));
         }
     }
 
@@ -255,11 +311,8 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
     return Ptr<CMaterial>(pMtrl);
 }
 
-CGameObject* CAssetMgr::LoadModel(const string& _relativepath, const string& _filename, const wstring& _name,
-                                  bool revertNormals)
+CGameObject* CAssetMgr::LoadModel(vector<tMeshData>& meshes, const wstring& _name)
 {
-    auto meshes = ReadFromFile(_relativepath, _filename, revertNormals);
-
     CGameObject* model = new CGameObject;
     model->SetName(_name);
     model->AddComponent(new CTransform);

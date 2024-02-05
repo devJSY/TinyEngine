@@ -225,7 +225,6 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
-    <ClInclude Include="CTestLevel.h" />
     <ClInclude Include="CTestLevel2.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTileMap.h" />
@@ -321,7 +320,6 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
-    <ClCompile Include="CTestLevel.cpp" />
     <ClCompile Include="CTestLevel2.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTileMap.cpp" />

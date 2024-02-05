@@ -127,9 +127,6 @@
     <ClInclude Include="CModleLoader.h">
       <Filter>ModleLoader</Filter>
     </ClInclude>
-    <ClInclude Include="CTestLevel.h">
-      <Filter>05. Level</Filter>
-    </ClInclude>
     <ClInclude Include="CContentBrowser.h">
       <Filter>20. Editor\LevelEditor\Content Browser</Filter>
     </ClInclude>
@@ -392,9 +389,6 @@
     </ClCompile>
     <ClCompile Include="CModleLoader.cpp">
       <Filter>ModleLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestLevel.cpp">
-      <Filter>05. Level</Filter>
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>

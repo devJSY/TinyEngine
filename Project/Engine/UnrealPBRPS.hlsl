@@ -67,7 +67,6 @@ float3 SpecularIBL(float3 albedo, float3 normalWorld, float3 pixelToEye,
     float2 specularBRDF = BRDFTex.SampleLevel(g_LinearClampSampler, float2(dot(normalWorld, pixelToEye), 1.0 - roughness), 0.0f).rg;
     float3 specularIrradiance = SpecularIBLTex.SampleLevel(g_LinearWrapSampler, reflect(-pixelToEye, normalWorld),
                                                             2 + roughness * 5.0f).rgb;
-    const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
     float3 F0 = lerp(Fdielectric, albedo, metallic);
 
     return (F0 * specularBRDF.x + specularBRDF.y) * specularIrradiance;
@@ -140,8 +139,7 @@ float4 main(PS_IN input) : SV_TARGET
             float NdotI = max(0.0, dot(normalWorld, lightVec));
             float NdotH = max(0.0, dot(normalWorld, halfway));
             float NdotO = max(0.0, dot(normalWorld, pixelToEye));
-        
-            const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
+
             float3 F0 = lerp(Fdielectric, albedo, metallic);
             float3 F = SchlickFresnel(F0, max(0.0, dot(halfway, pixelToEye)));
             float3 kd = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), metallic);

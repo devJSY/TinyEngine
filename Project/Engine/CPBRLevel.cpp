@@ -78,21 +78,21 @@ void CPBRLevel::begin()
 
     AddObject(pSkyBox, L"SkyBox");
 
-    // Rect Mesh
-    CGameObject* pRectMesh = new CGameObject;
-    pRectMesh->SetName(L"Test Mesh");
+    // Test Obj
+    CGameObject* pObj = new CGameObject;
+    pObj->SetName(L"Sphere");
 
-    pRectMesh->AddComponent(new CTransform);
-    pRectMesh->AddComponent(new CMeshRender);
+    pObj->AddComponent(new CTransform);
+    pObj->AddComponent(new CMeshRender);
 
-    pRectMesh->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pRectMesh->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pRectMesh->Transform()->SetAbsolute(true);
+    pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pObj->Transform()->SetAbsolute(true);
 
-    pRectMesh->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pRectMesh->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+    pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
-    AddObject(pRectMesh, 0);
+    AddObject(pObj, 0);
 }
 
 void CPBRLevel::tick()
@@ -108,8 +108,8 @@ void CPBRLevel::finaltick()
 void CPBRLevel::AddModels()
 {
     // Zelda Model
-    CGameObject* pZelda =
-        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx", L"Zelda");
+    auto meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
+    CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(meshes, L"Zelda");
     if (nullptr != pZelda)
     {
         pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
@@ -119,8 +119,8 @@ void CPBRLevel::AddModels()
     }
 
     // Damaged Helmet
-    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel("Developers\\Models\\damaged-helmet\\",
-                                                                  "DamagedHelmet.gltf", L"Damaged Helmet");
+    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(meshes, L"Damaged Helmet");
     if (nullptr != pDamagedHelmet)
     {
         pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
@@ -130,8 +130,8 @@ void CPBRLevel::AddModels()
     }
 
     // blue whale
-    CGameObject* pblueWhale =
-        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\blue_whale\\", "scene.gltf", L"blue whale");
+    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\blue_whale\\", "scene.gltf");
+    CGameObject* pblueWhale = CAssetMgr::GetInst()->LoadModel(meshes, L"blue whale");
     if (nullptr != pblueWhale)
     {
         pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
@@ -141,8 +141,8 @@ void CPBRLevel::AddModels()
     }
 
     // torii gate
-    CGameObject* ptoriigate =
-        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\torii_gate\\", "scene.gltf", L"torii gate", true);
+    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\torii_gate\\", "scene.gltf", true);
+    CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(meshes, L"torii gate");
     if (nullptr != ptoriigate)
     {
         ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
@@ -152,13 +152,29 @@ void CPBRLevel::AddModels()
     }
 
     // dragon warrior
-    CGameObject* pDragonWarrior =
-        CAssetMgr::GetInst()->LoadModel("Developers\\Models\\dragon_warrior\\", "scene.gltf", L"Dragon Warrior", true);
+    meshes = CAssetMgr::GetInst()->ReadFromFile("Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
+    CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(meshes, L"Dragon Warrior");
     if (nullptr != pDragonWarrior)
     {
         pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
         pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(pDragonWarrior, L"Model");
+    }
+
+    // .fbx Æ÷¸Ë
+    std::string path = "Developers\\Models\\armored-female-future-soldier\\";
+    meshes = CAssetMgr::GetInst()->ReadFromFile(path, "angel_armor.fbx", false);
+    meshes[0].AmbientTextureFilename = "angel_armor_albedo.jpg";
+    meshes[0].NormalTextureFilename = "angel_armor_normal.jpg";
+    meshes[0].MetallicTextureFilename = "angel_armor_metalness.jpg";
+    meshes[0].RoughnessTextureFilename = "angel_armor_roughness.jpg";
+    meshes[0].EmissiveTextureFilename = "angel_armor_e.jpg";
+
+    CGameObject* pArmoredFemale = CAssetMgr::GetInst()->LoadModel(meshes, L"angel_armor");
+    if (nullptr != pArmoredFemale)
+    {
+        pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+        AddObject(pArmoredFemale, L"Model");
     }
 }
