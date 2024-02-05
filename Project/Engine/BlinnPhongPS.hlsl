@@ -24,7 +24,7 @@ float4 main(PS_IN input) : SV_Target
         color.rgb += RimLight(input.normalWorld, toEye, g_rimColor, g_rimPower);
     
     // Texture
-    if (g_UseTexture)
+    if (g_btex_0)
         color = color * g_tex_0.Sample(g_LinearWrapSampler, input.vUV);
     
     // IBL

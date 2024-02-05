@@ -85,7 +85,7 @@ float4 main(PS_Input input) : SV_TARGET
             
             float2 uv = float2(1.0 / float(i) * float2(atan2(normal.x, normal.z) / radians(90.0), normal.y));
             float alpha = 0.0;
-            if (g_UseTexture && g_btex_0)
+            if (g_btex_0)
                 alpha = g_tex_0.Sample(g_LinearWrapSampler, input.texCoord).r;
  
             intensity += step(1.0 - float(i) / 6.0, alpha) * 0.6 * alpha * max(0., dot(float3(0, 0, 1.), normal) + 1.0);

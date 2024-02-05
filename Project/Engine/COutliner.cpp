@@ -718,10 +718,6 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         // Option
         if (ImGui::TreeNodeEx("##MeshRenderOption", m_DefaultTreeNodeFlag, "Option"))
         {
-            bool bUseTexture = pMeshRender->IsUseTexture();
-            if (ImGui::Checkbox("Use Texture", &bUseTexture))
-                pMeshRender->SetUseTexture(bUseTexture);
-
             bool bNormalLine = pMeshRender->IsDrawNormalLine();
             if (ImGui::Checkbox("Draw NormalLine", &bNormalLine))
                 pMeshRender->SetDrawNormalLine(bNormalLine);

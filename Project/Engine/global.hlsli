@@ -67,10 +67,9 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_btexarr_1;
 }
 
-//#define LIGHT_OFF          0x00
-#define LIGHT_DIRECTIONAL 0 //0x01  
-#define LIGHT_POINT       1 //0x02  
-#define LIGHT_SPOT        2 //0x04  
+#define LIGHT_DIRECTIONAL   0  
+#define LIGHT_POINT         1  
+#define LIGHT_SPOT          2  
 //#define LIGHT_SHADOW      0x10
 
 cbuffer ANIM_DATA2D : register(b2)
@@ -92,18 +91,17 @@ cbuffer GLOBAL_DATA : register(b3)
 
     uint g_Light2DCount;
     uint g_Light3DCount;
+        
+    float3 g_eyeWorld;
+    bool g_DrawAsWireFrame;
     
     float4 g_pickingColor;
-    
-    float3 g_eyeWorld;
-    bool g_UseTexture;
 
     bool g_UseRim;
     float3 g_rimColor;
     float g_rimPower;
 
     float g_NormalLineScale;
-    bool g_DrawAsWireFrame;
 }
 
 Texture2D g_tex_0 : register(t0);

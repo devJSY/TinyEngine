@@ -106,6 +106,32 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
     return SchlickG1(NdotI, k) * SchlickG1(NdotO, k);
 }
 
+float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
+{
+    // Directional light
+    float3 lightVec = light.LightType == LIGHT_DIRECTIONAL
+                      ? -light.vWorldDir
+                      : light.vWorldPos - posWorld;
+
+    float lightDist = length(lightVec);
+    lightVec /= lightDist;
+
+    // Spot light
+    float spotFator = light.LightType == LIGHT_SPOT
+                      ? pow(max(-dot(lightVec, light.vWorldDir), 0.0f), light.spotPower)
+                      : 1.0f;
+        
+    // Distance attenuation
+    float att = saturate((light.fallOffEnd - lightDist)
+                         / (light.fallOffEnd - light.fallOffStart));
+
+    
+    // Default Point Light
+    float3 radiance = light.vRadiance.rgb * spotFator * att;
+
+    return radiance;
+}
+
 float4 main(PS_IN input) : SV_TARGET
 {
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
@@ -125,34 +151,30 @@ float4 main(PS_IN input) : SV_TARGET
     
     float3 directLighting = float3(0, 0, 0);
 
-   // 포인트 라이트만 먼저 구현
     for (uint i = 0; i < g_Light3DCount; ++i)
     {
-        if (LIGHT_POINT == g_Light3D[i].LightType)
-        {
-            float3 lightVec = g_Light3D[i].vWorldPos - input.vPosWorld;
+        float3 lightVec = g_Light3D[i].vWorldPos - input.vPosWorld;
 
-            float lightDist = length(lightVec);
-            lightVec /= lightDist;
-            float3 halfway = normalize(pixelToEye + lightVec);
+        float lightDist = length(lightVec);
+        lightVec /= lightDist;
+        float3 halfway = normalize(pixelToEye + lightVec);
         
-            float NdotI = max(0.0, dot(normalWorld, lightVec));
-            float NdotH = max(0.0, dot(normalWorld, halfway));
-            float NdotO = max(0.0, dot(normalWorld, pixelToEye));
+        float NdotI = max(0.0, dot(normalWorld, lightVec));
+        float NdotH = max(0.0, dot(normalWorld, halfway));
+        float NdotO = max(0.0, dot(normalWorld, pixelToEye));
 
-            float3 F0 = lerp(Fdielectric, albedo, metallic);
-            float3 F = SchlickFresnel(F0, max(0.0, dot(halfway, pixelToEye)));
-            float3 kd = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), metallic);
-            float3 diffuseBRDF = kd * albedo;
+        float3 F0 = lerp(Fdielectric, albedo, metallic);
+        float3 F = SchlickFresnel(F0, max(0.0, dot(halfway, pixelToEye)));
+        float3 kd = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), metallic);
+        float3 diffuseBRDF = kd * albedo;
 
-            float D = NdfGGX(NdotH, roughness);
-            float3 G = SchlickGGX(NdotI, NdotO, roughness);
-            float3 specularBRDF = (F * D * G) / max(1e-5, 4.0 * NdotI * NdotO);
+        float D = NdfGGX(NdotH, roughness);
+        float3 G = SchlickGGX(NdotI, NdotO, roughness);
+        float3 specularBRDF = (F * D * G) / max(1e-5, 4.0 * NdotI * NdotO);
 
-            float3 radiance = g_Light3D[i].vRadiance.rgb * saturate((g_Light3D[i].fallOffEnd - length(lightVec)) / (g_Light3D[i].fallOffEnd - g_Light3D[i].fallOffStart));
+        float3 radiance = LightRadiance(g_Light3D[i], input.vPosWorld, normalWorld);
             
-            directLighting += (diffuseBRDF + specularBRDF) * radiance * NdotI;
-        }
+        directLighting += (diffuseBRDF + specularBRDF) * radiance * NdotI;
     }
     
     float4 output = float4(0.f, 0.f, 0.f, 1.f);

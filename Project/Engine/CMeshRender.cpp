@@ -23,7 +23,6 @@ CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
     , m_bDrawNormalLine(false)
     , m_NormalLineScale(1.0f)
-    , m_bUseTexture(false)
     , m_bUseRim(false)
     , m_RimColor(Vec3())
     , m_RimPower(1.f)
@@ -48,7 +47,6 @@ void CMeshRender::UpdateData()
     if (m_bDrawNormalLine)
         g_Global.NormalLineScale = m_NormalLineScale;
 
-    g_Global.UseTexture = m_bUseTexture;
     g_Global.UseRim = m_bUseRim;
     g_Global.rimColor = m_RimColor;
     g_Global.rimPower = m_RimPower;
@@ -96,7 +94,6 @@ void CMeshRender::SaveToLevelFile(FILE* _File)
 
     fwrite(&m_bDrawNormalLine, sizeof(bool), 1, _File);
     fwrite(&m_NormalLineScale, sizeof(float), 1, _File);
-    fwrite(&m_bUseTexture, sizeof(bool), 1, _File);
     fwrite(&m_bUseRim, sizeof(bool), 1, _File);
     fwrite(&m_RimColor, sizeof(Vec3), 1, _File);
     fwrite(&m_RimPower, sizeof(float), 1, _File);
@@ -108,7 +105,6 @@ void CMeshRender::LoadFromLevelFile(FILE* _File)
 
     fread(&m_bDrawNormalLine, sizeof(bool), 1, _File);
     fread(&m_NormalLineScale, sizeof(float), 1, _File);
-    fread(&m_bUseTexture, sizeof(bool), 1, _File);
     fread(&m_bUseRim, sizeof(bool), 1, _File);
     fread(&m_RimColor, sizeof(Vec3), 1, _File);
     fread(&m_RimPower, sizeof(float), 1, _File);

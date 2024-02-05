@@ -6,7 +6,6 @@ class CMeshRender : public CRenderComponent
 private:
     bool m_bDrawNormalLine;
     float m_NormalLineScale;
-    bool m_bUseTexture;
 
     bool m_bUseRim;
     Vec3 m_RimColor;
@@ -18,9 +17,6 @@ public:
 
     void SetNormalLineScale(float scale) { m_NormalLineScale = scale; }
     float GetNormalLineScale() const { return m_NormalLineScale; }
-
-    void SetUseTexture(bool _b) { m_bUseTexture = _b; }
-    bool IsUseTexture() const { return m_bUseTexture; }
 
     void SetUseRim(bool _b) { m_bUseRim = _b; }
     bool IsUseRim() const { return m_bUseRim; }

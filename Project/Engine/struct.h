@@ -3,10 +3,10 @@
 // 3차원 공간에 배치되는 정점
 struct Vtx
 {
-    Vec3 vPos;    // 정점의 좌표
-    Vec3 vNormal; // 정점의 좌표
-    Vec4 vColor;  // 정점의 색상 정보
-    Vec2 vUV;     // UV 좌표계 of Texture Coordinate
+    Vec3 vPos;     // 정점의 좌표
+    Vec3 vNormal;  // 정점의 좌표
+    Vec4 vColor;   // 정점의 색상 정보
+    Vec2 vUV;      // UV 좌표계 of Texture Coordinate
     Vec3 vTangent; // 정점의 좌표
 };
 
@@ -27,7 +27,7 @@ struct tDebugShapeInfo
 
 struct tLightInfo
 {
-    Vec4 vRadiance; // 빛이 나가는 강도 
+    Vec4 vRadiance; // 빛이 나가는 강도
     Vec4 vSpecular; // 반사광	- 광원이 물체 표변에 반사된 색상
     Vec4 vAmbient;  // 환경광(주변광) - 광원에 의해서 보장되는 최소한의 빛
 
@@ -96,17 +96,16 @@ __declspec(align(16)) struct tGlobalData
     UINT Light2DCount;
     UINT Light3DCount;
 
-    Vec4 pickingColor;
-
     Vec3 eyeWorld;
-    int UseTexture;
+    int DrawAsWireFrame;
+
+    Vec4 pickingColor;
 
     int UseRim;
     Vec3 rimColor;
     float rimPower;
 
     float NormalLineScale;
-    int DrawAsWireFrame;
 };
 
 __declspec(align(16)) struct tAnimData2D
