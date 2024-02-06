@@ -123,7 +123,7 @@ void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightInfo _output)
     // Directional Light
     if (0 == info.LightType)
     {
-        _output.vAmbient += info.vAmbient;
+        _output.vRadiance += info.vRadiance;
     }
     
     // Point Light

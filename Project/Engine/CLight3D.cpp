@@ -12,8 +12,6 @@ CLight3D::CLight3D()
     , m_Info{}
 {
     m_Info.vRadiance = Vec4(1.f, 1.f, 1.f, 1.f);
-    m_Info.vAmbient = Vec4(1.f, 1.f, 1.f, 1.f);
-    m_Info.vSpecular = Vec4(1.f, 1.f, 1.f, 1.f);
 
     m_Info.fRadius = 0.f;
     m_Info.fAngle = 0.f;

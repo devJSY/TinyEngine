@@ -75,7 +75,7 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         CalLight2D(_in.vPosWorld, i, LightColor);
     }
     
-    vColor.rgb *= (LightColor.vRadiance.rgb + LightColor.vAmbient.rgb);
+    vColor.rgb *= LightColor.vRadiance.rgb;
     
     if (0.f >= vColor.a)
         discard;
@@ -141,7 +141,7 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
         CalLight2D(_in.vPosWorld, i, LightColor);
     }
     
-    vColor.rgb *= (LightColor.vRadiance.rgb + LightColor.vAmbient.rgb);
+    vColor.rgb *= LightColor.vRadiance.rgb;
 
     return vColor;
 }

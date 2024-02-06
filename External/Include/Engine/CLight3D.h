@@ -13,12 +13,7 @@ public:
     const tLightInfo& GetLightInfo() const { return m_Info; }
 
     void SetLightRadiance(Vec3 _vRadiance) { m_Info.vRadiance = _vRadiance; }
-    void SetSpecular(Vec3 _vSpec) { m_Info.vSpecular = _vSpec; }
-    void SetAmbient(Vec3 _vAmb) { m_Info.vAmbient = _vAmb; }
-
     Vec4 GetLightRadiance() const { return m_Info.vRadiance; }
-    Vec4 GetSpecular() const { return m_Info.vSpecular; }
-    Vec4 GetAmbient() const { return m_Info.vAmbient; }
 
     void SetLightType(LIGHT_TYPE _type) { m_Info.LightType = (int)_type; }
     void SetRadius(float _Radius) { m_Info.fRadius = _Radius; }

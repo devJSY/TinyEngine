@@ -457,14 +457,6 @@ void COutliner::DrawLight2D(CGameObject* obj)
         if (ImGui::ColorEdit3(ImGui_LabelPrefix("Radiance").c_str(), &radiance.x))
             pLight->SetLightRadiance(radiance);
 
-        Vec4 specular = pLight->GetSpecular();
-        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Specular").c_str(), &specular.x))
-            pLight->SetSpecular(specular);
-
-        Vec4 ambient = pLight->GetAmbient();
-        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Ambient").c_str(), &ambient.x))
-            pLight->SetAmbient(ambient);
-
         float fRadius = pLight->GetRadius();
         float fangle = pLight->GetAngle();
 
@@ -527,14 +519,6 @@ void COutliner::DrawLight3D(CGameObject* obj)
         Vec4 radiance = pLight->GetLightRadiance();
         if (ImGui::ColorEdit3(ImGui_LabelPrefix("Radiance").c_str(), &radiance.x, ImGuiColorEditFlags_HDR))
             pLight->SetLightRadiance(radiance);
-
-        Vec4 specular = pLight->GetSpecular();
-        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Specular").c_str(), &specular.x))
-            pLight->SetSpecular(specular);
-
-        Vec4 ambient = pLight->GetAmbient();
-        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Ambient").c_str(), &ambient.x))
-            pLight->SetAmbient(ambient);
 
         float fRadius = pLight->GetRadius();
         float fangle = pLight->GetAngle();
