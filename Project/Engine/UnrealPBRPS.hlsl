@@ -23,7 +23,7 @@ static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 float3 SchlickFresnel(float3 F0, float NdotH)
 {
     return F0 + (1.0 - F0) * pow(2.0, (-5.55473 * NdotH - 6.98316) * NdotH);
-    //return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+    //return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0); 
 }
 
 float3 GetNormal(PS_IN input)
@@ -153,8 +153,10 @@ float4 main(PS_IN input) : SV_TARGET
 
     for (uint i = 0; i < g_Light3DCount; ++i)
     {
-        float3 lightVec = g_Light3D[i].vWorldPos - input.vPosWorld;
-
+        float3 lightVec = g_Light3D[i].LightType == LIGHT_DIRECTIONAL
+                      ? -g_Light3D[i].vWorldDir
+                      : g_Light3D[i].vWorldPos - input.vPosWorld;
+        
         float lightDist = length(lightVec);
         lightVec /= lightDist;
         float3 halfway = normalize(pixelToEye + lightVec);

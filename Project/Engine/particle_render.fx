@@ -177,8 +177,7 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
         else if (2 == module.AlphaBasedLife) // Max Age
         {
             float fRatio = particle.Age / module.AlphaMaxAge;
-            vOutColor.a = saturate(1.f - clamp(fRatio, 0.f, 1.f));
-            
+            vOutColor.a = saturate(1.f - clamp(fRatio, 0.f, 1.f));            
         }
     }
     
