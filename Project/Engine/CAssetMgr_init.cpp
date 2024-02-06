@@ -646,7 +646,7 @@ void CAssetMgr::CreateDefaultTexture()
 {
     if (nullptr == FindAsset<CTexture>(L"missing_texture"))
     {
-        Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Textures\\missing_texture.png");
+        Ptr<CTexture> ptex = Load<CTexture>(L"missing_texture", L"Texture\\missing_texture.png");
         assert(ptex.Get());
     }
 
@@ -712,12 +712,12 @@ void CAssetMgr::CreateDefaultTexture()
                        L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds");
 
     // Noise Texture Load
-    if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_01.jpg"))
-        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_01.jpg", L"Textures\\noise\\noise_01.jpg");
-    if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_02.jpg"))
-        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_02.jpg", L"Textures\\noise\\noise_02.jpg");
-    if (nullptr == FindAsset<CTexture>(L"Textures\\noise\\noise_03.jpg"))
-        CAssetMgr::GetInst()->Load<CTexture>(L"Textures\\noise\\noise_03.jpg", L"Textures\\noise\\noise_03.jpg");
+    if (nullptr == FindAsset<CTexture>(L"Texture\\noise\\noise_01.jpg"))
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_01.jpg", L"Texture\\noise\\noise_01.jpg");
+    if (nullptr == FindAsset<CTexture>(L"Texture\\noise\\noise_02.jpg"))
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_02.jpg", L"Texture\\noise\\noise_02.jpg");
+    if (nullptr == FindAsset<CTexture>(L"Texture\\noise\\noise_03.jpg"))
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_03.jpg", L"Texture\\noise\\noise_03.jpg");
 
     if (nullptr == FindAsset<CTexture>(L"BlueprintBackgroundTex"))
         Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");
@@ -775,7 +775,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DistortionShader"));
-        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"Textures\\noise\\noise_01.jpg"));
+        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"Texture\\noise\\noise_01.jpg"));
         pMtrl->SetName(L"DistortionMtrl");
         AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
     }

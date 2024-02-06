@@ -81,7 +81,7 @@ public:
 
     template <typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
-
+  
 private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
 

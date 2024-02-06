@@ -157,7 +157,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     {
         for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; i++)
         {
-            if (ImGui::MenuItem(GetComponentName((COMPONENT_TYPE)i).c_str()))
+            if (ImGui::MenuItem(COMPONENT_TYPE_STRING[i]))
             {
                 GamePlayStatic::AddComponent(CEditorMgr::GetInst()->GetSelectedObject(), (COMPONENT_TYPE)i);
                 ImGui::CloseCurrentPopup();

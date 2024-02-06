@@ -18,55 +18,45 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-    //// 모든 에셋 파일로 저장
-    //for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    //{
-    //    wstring basePath = L"";
+    string FilePath = ToString(CPathMgr::GetContentPath());
+    FilePath += "Asset\\";
 
-    //    switch ((ASSET_TYPE)i)
-    //    {
-    //    case ASSET_TYPE::MESH:
-    //        basePath = L"Meshes\\";
-    //        break;
-    //    case ASSET_TYPE::MESHDATA:
-    //        break;
-    //    case ASSET_TYPE::TEXTURE:
-    //        basePath = L"Textures\\";
-    //        break;
-    //    case ASSET_TYPE::COMPUTE_SHADER:
-    //        break;
-    //    case ASSET_TYPE::GRAPHICS_SHADER:
-    //        break;
-    //    case ASSET_TYPE::MATERIAL:
-    //        basePath = L"Materials\\";
-    //        break;
-    //    case ASSET_TYPE::SOUND:
-    //        break;
-    //    }
+    if (!std::filesystem::exists(FilePath))
+    {
+        std::filesystem::create_directory(FilePath);
 
-    //    if (basePath.empty())
-    //        continue;
+        for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+        {
+            std::filesystem::create_directory(FilePath + ASSET_TYPE_STRING[i]);
+        }
+    }
 
-    //    for (const auto& iter : m_mapAsset[i])
-    //    {
-    //        wstring filePath = basePath;
-    //        filePath += iter.first;
-    //        filePath += m_AssetExtension;
-    //        iter.second->Save(filePath);
-    //    }
-    //}
+    // 모든 에셋 파일로 저장
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    {
+        wstring basePath = L"Asset\\";
+        basePath += ToWstring(ASSET_TYPE_STRING[i]);
+
+        for (const auto& iter : m_mapAsset[i])
+        {
+            wstring filePath = basePath;
+            filePath += L"\\";
+            filePath += iter.first;
+            filePath += m_AssetExtension;
+            iter.second->Save(filePath);
+        }
+    }
 }
 
 void CAssetMgr::init()
 {
     m_AssetExtension = L".tasset";
+    //LoadFromAssetFile(); 
 
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultTexture();
-
-    LoadFromAssetFile(); // 추후에 Mesh, Graphics Shader, Texture Save,Load 구현시 CreateDefault 위로 이동
     CreateDefaultMaterial();
 }
 
@@ -74,28 +64,12 @@ void CAssetMgr::LoadFromAssetFile()
 {
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
     {
-        std::filesystem::path basePath = CPathMgr::GetContentPath();
+        wstring AssetName = L"Asset\\" + ToWstring(ASSET_TYPE_STRING[i]);
+        std::filesystem::path basePath = CPathMgr::GetContentPath() + AssetName;
 
-        switch ((ASSET_TYPE)i)
-        {
-        case ASSET_TYPE::MESH:
-            basePath += L"Meshes\\";
-            break;
-        case ASSET_TYPE::MESHDATA:
-            break;
-        case ASSET_TYPE::COMPUTE_SHADER:
-            break;
-        case ASSET_TYPE::GRAPHICS_SHADER:
-            break;
-        case ASSET_TYPE::TEXTURE:
-            basePath += L"Textures\\";
-            break;
-        case ASSET_TYPE::MATERIAL:
-            basePath += L"Materials\\";
-            break;
-        case ASSET_TYPE::SOUND:
-            break;
-        }
+        // 폴더가 존재하지않는경우
+        if (!std::filesystem::exists(basePath))
+            continue;
 
         for (auto& directoryEntry : std::filesystem::directory_iterator(basePath))
         {
@@ -106,20 +80,19 @@ void CAssetMgr::LoadFromAssetFile()
             switch ((ASSET_TYPE)i)
             {
             case ASSET_TYPE::MESH:
-                Load<CMesh>(L"Meshes\\" + wstring(path.filename()), L"Meshes\\" + wstring(path.filename()));
                 break;
             case ASSET_TYPE::MESHDATA:
                 break;
             case ASSET_TYPE::TEXTURE:
                 break;
-            case ASSET_TYPE::MATERIAL:
-                Load<CMaterial>(L"Materials\\" + wstring(path.filename()), L"Materials\\" + wstring(path.filename()));
-                break;
-            case ASSET_TYPE::SOUND:
-                break;
             case ASSET_TYPE::COMPUTE_SHADER:
                 break;
             case ASSET_TYPE::GRAPHICS_SHADER:
+                break;
+            case ASSET_TYPE::MATERIAL:
+                Load<CMaterial>(AssetName + L"\\" + wstring(path.filename()), AssetName + L"\\" + wstring(path.filename()));
+                break;
+            case ASSET_TYPE::SOUND:
                 break;
             }
         }

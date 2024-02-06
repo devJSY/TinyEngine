@@ -230,45 +230,6 @@ Vec4 HashIDToColor(int hash)
     return Vec4(static_cast<float>(r / 255.f), static_cast<float>(g / 255.f), static_cast<float>(b / 255.f), 1.f);
 }
 
-string GetComponentName(COMPONENT_TYPE type)
-{
-    static const std::map<COMPONENT_TYPE, string> ComponentStrings{
-        {COMPONENT_TYPE::TRANSFORM, "Transform"},
-        {COMPONENT_TYPE::COLLIDER2D, "Collider2D"},
-        {COMPONENT_TYPE::COLLIDER3D, "Collider3D"},
-        {COMPONENT_TYPE::ANIMATOR2D, "Animation2D"},
-        {COMPONENT_TYPE::ANIMATOR3D, "Animation3D"},
-        {COMPONENT_TYPE::LIGHT2D, "Light2D"},
-        {COMPONENT_TYPE::LIGHT3D, "Light3D"},
-        {COMPONENT_TYPE::CAMERA, "Camera"},
-        {COMPONENT_TYPE::MESHRENDER, "MeshRender"},
-        {COMPONENT_TYPE::TILEMAP, "TileMap"},
-        {COMPONENT_TYPE::PARTICLESYSTEM, "ParticleSystem"},
-        {COMPONENT_TYPE::SKYBOX, "Skybox"},
-        {COMPONENT_TYPE::DECAL, "Decal"},
-        {COMPONENT_TYPE::LANDSCAPE, "Landscape"},
-    };
-
-    auto it = ComponentStrings.find(type);
-    return it == ComponentStrings.end() ? "Out of range" : it->second;
-}
-
-string GetAssetTypeName(ASSET_TYPE type)
-{
-    static const std::map<ASSET_TYPE, string> AssetStrings{
-        {ASSET_TYPE::MESH, "Mesh"},
-        {ASSET_TYPE::MESHDATA, "MeshData"},
-        {ASSET_TYPE::TEXTURE, "Texture"},
-        {ASSET_TYPE::COMPUTE_SHADER, "ComputeShader"},
-        {ASSET_TYPE::GRAPHICS_SHADER, "GraphicsShader"},
-        {ASSET_TYPE::MATERIAL, "Material"},
-        {ASSET_TYPE::SOUND, "Sound"},
-    };
-
-    auto it = AssetStrings.find(type);
-    return it == AssetStrings.end() ? "Out of range" : it->second;
-}
-
 void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& width, int& height)
 {
     int channels;
