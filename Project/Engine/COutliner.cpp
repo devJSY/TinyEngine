@@ -1019,7 +1019,8 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             {
                 if (ImGui::TreeNodeEx("Drag Module##Particlesystem", m_DefaultTreeNodeFlag, "Drag Module"))
                 {
-
+                    ImGui::DragFloat(ImGui_LabelPrefix("Drag Time").c_str(), &Module.DragTime, 1.f, 0.f,
+                                     D3D11_FLOAT32_MAX);
                     ImGui::TreePop();
                 }
             }

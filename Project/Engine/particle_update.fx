@@ -172,9 +172,31 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             // Force 연산
             // F = M x A
             float3 vAccel = Particle.vForce.xyz / Particle.Mass;
-            
+                  
             // Accel 연산
             Particle.vVelocity.xyz += vAccel * g_dt;
+            
+            float4 DragForce = float4(0.f, 0.f, 0.f, 0.f);
+            // Drag 모듈
+            if (Module.arrModuleCheck[1])
+            {
+                float LimitTime = Module.DragTime - Particle.Age;
+            
+                if (LimitTime <= 0.f)
+                {
+                    DragForce = float4(0.f, 0.f, 0.f, 0.f);
+                }
+                else
+                {
+                    float DT = g_dt / LimitTime;
+                    DragForce = Particle.vVelocity * DT;
+                }
+            }
+
+            if (length(Particle.vVelocity) > length(DragForce))
+            {
+                Particle.vVelocity -= DragForce;
+            }
             
             // Velocity 연산
             if (0 == Module.SpaceType) // Local
@@ -186,6 +208,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             {
                 Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_dt;
             }
+            
         }
     }
 }

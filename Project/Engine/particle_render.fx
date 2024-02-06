@@ -156,6 +156,7 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
     
     // 출력 색상
     float4 vOutColor = particle.vColor;
+    vOutColor.a = 1.f;
     
     if (g_btex_0)
     {
@@ -164,20 +165,17 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
         vOutColor.a = vSampleColor.a;
     }
     
-    if (0.f >= vOutColor.a)
-        discard;
-    
     // 렌더모듈이 켜져 있으면
     if (module.arrModuleCheck[6])
     {
         if (1 == module.AlphaBasedLife) // Normalize Age
         {
-            vOutColor.a = saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
+            vOutColor.a *= saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
         }
         else if (2 == module.AlphaBasedLife) // Max Age
         {
             float fRatio = particle.Age / module.AlphaMaxAge;
-            vOutColor.a = saturate(1.f - clamp(fRatio, 0.f, 1.f));            
+            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));            
         }
     }
     

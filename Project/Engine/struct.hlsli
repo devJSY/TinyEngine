@@ -85,6 +85,9 @@ struct tParticleModule
     int SpawnShape; // 스폰 범위(0 : Sphere, 1 : Box)
     float Radius; // SpawnShape 가 Sphere 인 경우, 반지름 길이
     float4 vSpawnBoxScale; // SpawnShape 가 Box 인 경우, Box 의 크기
+        
+    // Drag
+    float DragTime; // 감속시키는데 걸리는 시간
     
     // Scale
     float4 vScaleRatio;

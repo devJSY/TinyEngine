@@ -176,6 +176,9 @@ __declspec(align(16)) struct tParticleModule
     float Radius;        // SpawnShape 가 Sphere 인 경우, 반지름 길이
     Vec4 vSpawnBoxScale; // SpawnShape 가 Box 인 경우, Box 의 크기
 
+    // Drag
+    float DragTime; // 감속시키는데 걸리는 시간
+
     // Scale
     Vec4 vScaleRatio;
 
