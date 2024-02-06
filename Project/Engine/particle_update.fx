@@ -78,7 +78,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 Particle.vColor = Module.vSpawnColor;
                 
                 // 스폰 크기 설정                
-                Particle.vWorldScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
+                Particle.vWorldScale = Particle.vWorldInitScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
                 
                 // 스폰 Life 설정
                 Particle.Age = 0.f;
