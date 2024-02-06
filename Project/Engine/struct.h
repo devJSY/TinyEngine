@@ -65,10 +65,13 @@ __declspec(align(16)) struct tTransform
 // Material 계수
 struct tMtrlData
 {
-    Vec4 vAmb;  // 표면이 빛을 얼마나 받으냐에 따라 색을 결정하는 값
-    Vec4 vDiff; // 조명과 상관없이 물체 자체가 갖고있는 색상
-    Vec4 vSpec; // 시점으로부터 반사되는 빛이 얼마나 받느냐에 따라 결정되는 값
-    Vec4 vEmv;
+    Vec4 vAlbedo;
+    Vec4 vDiffuse;
+    Vec4 vSpecular;
+    float vMetallic;
+    float vRoughness;
+    Vec2 mtrlpadd;
+    Vec4 vEmission;
 };
 
 __declspec(align(16)) struct tMtrlConst

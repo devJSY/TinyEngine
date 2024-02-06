@@ -12,12 +12,14 @@ private:
     Ptr<CGraphicsShader> m_pShader;
 
 public:
-    void SetMaterialCoefficient(Vec4 _vAmb, Vec4 _vDiff, Vec4 _vSpec, Vec4 _vEmis)
+    void SetMaterialCoefficient(Vec4 _vAlbe, Vec4 _vDiff, Vec4 _vSpec, float _vMetal, float _vRough, Vec4 _vEmis)
     {
-        m_Const.mtrl.vDiff = _vDiff;
-        m_Const.mtrl.vAmb = _vAmb;
-        m_Const.mtrl.vSpec = _vSpec;
-        m_Const.mtrl.vEmv = _vEmis;
+        m_Const.mtrl.vAlbedo = _vAlbe;
+        m_Const.mtrl.vDiffuse = _vDiff;
+        m_Const.mtrl.vSpecular = _vSpec;
+        m_Const.mtrl.vMetallic = _vMetal;
+        m_Const.mtrl.vRoughness = _vRough;
+        m_Const.mtrl.vEmission = _vEmis;
     }
 
     template <typename T>

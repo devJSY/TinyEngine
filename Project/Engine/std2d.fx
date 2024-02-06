@@ -5,6 +5,8 @@
 #include "struct.hlsli"
 #include "Light.hlsli"
 
+#define MtrlAlbedo g_vAlbedo
+
 PS_IN VS_Std2D(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.0;
@@ -21,7 +23,7 @@ PS_IN VS_Std2D(VS_IN _in)
 float4 PS_Std2D(PS_IN _in) : SV_Target
 {
     float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
-    vColor = float4(g_vAmb.rgb, 1.0);
+    vColor = float4(MtrlAlbedo.rgb, 1.0);
     
     if (g_UseAnim2D)
     {
@@ -88,7 +90,7 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
 float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
 {
     float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
-    vColor = float4(g_vAmb.rgb, 1.0);
+    vColor = float4(MtrlAlbedo.rgb, 1.0);
     
     if (g_UseAnim2D)
     {

@@ -10,7 +10,7 @@ struct PS_Input
 
 float4 main(PS_Input input) : SV_TARGET
 {
-    float4 color = g_vAmb;
+    float4 color = g_vAlbedo;
     
     if (g_btex_0)
         color = g_tex_0.Sample(g_LinearWrapSampler, input.texCoord);

@@ -11,10 +11,10 @@
 #define MetallicRoughnessTex g_tex_4
 #define EmissiveTex g_tex_5
 
-#define MtrlAlbedo g_vec4_0
-
-#define MtrlMetallic g_float_1
-#define MtrlRoughness g_float_2
+#define MtrlAlbedo g_vAlbedo
+#define MtrlMetallic g_vMetallic
+#define MtrlRoughness g_vRoughness
+#define MtrlEmission g_vEmission
 
 #define InvertNormalMapY g_int_0
 
@@ -145,7 +145,7 @@ float4 main(PS_IN input) : SV_TARGET
     float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g 
                                       : MtrlRoughness;
     float3 emission = g_btex_5 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb
-                                     : float3(0, 0, 0);
+                                     : MtrlEmission.rgb;
 
     float3 ambientLighting = AmbientLightingByIBL(albedo, normalWorld, pixelToEye, ao, metallic, roughness);
     

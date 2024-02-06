@@ -32,10 +32,12 @@ void CMaterialEditor::render()
     {
         tMtrlConst& MtrlConst = m_Mtrl->m_Const;
 
-        ImGui::ColorEdit4(ImGui_LabelPrefix("Ambient").c_str(), &MtrlConst.mtrl.vAmb.x);
-        ImGui::ColorEdit4(ImGui_LabelPrefix("diffuse").c_str(), &MtrlConst.mtrl.vDiff.x);
-        ImGui::ColorEdit4(ImGui_LabelPrefix("specular").c_str(), &MtrlConst.mtrl.vSpec.x);
-        ImGui::ColorEdit4(ImGui_LabelPrefix("environment").c_str(), &MtrlConst.mtrl.vEmv.x);
+        ImGui::ColorEdit4(ImGui_LabelPrefix("Albedo").c_str(), &MtrlConst.mtrl.vAlbedo.x);
+        ImGui::ColorEdit4(ImGui_LabelPrefix("Diffuse").c_str(), &MtrlConst.mtrl.vDiffuse.x);
+        ImGui::ColorEdit4(ImGui_LabelPrefix("Specular").c_str(), &MtrlConst.mtrl.vSpecular.x);
+        ImGui::SliderFloat(ImGui_LabelPrefix("Metallic").c_str(), &MtrlConst.mtrl.vMetallic, 0.f, 1.f);
+        ImGui::SliderFloat(ImGui_LabelPrefix("Roughness").c_str(), &MtrlConst.mtrl.vRoughness, 0.f, 1.f);
+        ImGui::ColorEdit4(ImGui_LabelPrefix("Emission").c_str(), &MtrlConst.mtrl.vEmission.x);
 
         ImGui::Separator();
 

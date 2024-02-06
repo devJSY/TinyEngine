@@ -23,10 +23,13 @@ cbuffer TRANSFORM : register(b0)
 
 cbuffer MATERIAL_CONST : register(b1)
 {
-    float4 g_vAmb;
-    float4 g_vDiff;
-    float4 g_vSpec;
-    float4 g_vEmv;
+    float4 g_vAlbedo;
+    float4 g_vDiffuse;
+    float4 g_vSpecular;
+    float g_vMetallic;
+    float g_vRoughness;
+    float2 mtrlpadd;
+    float4 g_vEmission;
 
     int g_int_0;
     int g_int_1;

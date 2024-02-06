@@ -795,7 +795,7 @@ void CAssetMgr::CreateDefaultMaterial()
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BasicShader"));
         pMtrl->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f),
-                                      Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
+                                      Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
         pMtrl->SetName(L"BasicMtrl");
         AddAsset<CMaterial>(L"BasicMtrl", pMtrl);
     }
@@ -827,7 +827,8 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
-        pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4());
+        pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f,
+                                      Vec4());
         pMtrl->SetTexParam(TEXCUBE_0,
                            FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
         pMtrl->SetTexParam(TEXCUBE_1,

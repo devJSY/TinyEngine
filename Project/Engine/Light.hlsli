@@ -4,6 +4,10 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+#define MtrlAlbedo g_vAlbedo
+#define MtrlDiffuse g_vDiffuse
+#define MtrlSpecular g_vSpecular
+
 // =======================================================================================
 // 3D LIGHT
 // =======================================================================================
@@ -14,9 +18,9 @@ float3 BlinnPhong(float3 lightStrength, float3 lightVec, float3 normal, float3 t
     float3 halfway = normalize(toEye + lightVec);
     float hdotn = dot(halfway, normal);
     float shininess = 1.f;
-    float3 specular = g_vSpec.rgb * pow(max(hdotn, 0.0f), shininess * 2.0);
+    float3 specular = MtrlSpecular.rgb * pow(max(hdotn, 0.0f), shininess * 2.0);
 
-    return g_vAmb.rgb + (g_vDiff.rgb + specular) * lightStrength;
+    return MtrlAlbedo.rgb + (MtrlDiffuse.rgb + specular) * lightStrength;
 }
 
 // Ambient + Lambert's law 계산한 diffuse + 눈으로 들어오는 빛의 강도 Specular
@@ -24,8 +28,8 @@ float3 Phong(float3 lightStrength, float3 lightVec, float3 normal, float3 toEye)
 {
     float shininess = 1.f;
     float3 r = -reflect(lightVec, normal);
-    float3 specular = g_vSpec.rgb * pow(max(dot(toEye, r), 0.0f), shininess);
-    return g_vAmb.rgb + (g_vDiff.rgb + specular) * lightStrength;
+    float3 specular = MtrlSpecular.rgb * pow(max(dot(toEye, r), 0.0f), shininess);
+    return MtrlAlbedo.rgb + (MtrlDiffuse.rgb + specular) * lightStrength;
 }
 
 // 태양과 같이 아주 멀리있는 광원

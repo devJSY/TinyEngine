@@ -2,6 +2,9 @@
 #include "global.hlsli"
 #include "Light.hlsli"
 
+#define MtrlDiffuse g_vDiffuse
+#define MtrlSpecular g_vSpecular
+
 float4 main(PS_IN input) : SV_Target
 {
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
@@ -34,13 +37,13 @@ float4 main(PS_IN input) : SV_Target
     if (g_btexcube_0)
     {
         diffuse = g_texCube_0.Sample(g_LinearWrapSampler, input.normalWorld);
-        diffuse.xyz *= g_vDiff.xyz;
+        diffuse.xyz *= MtrlDiffuse.xyz;
     }
 
     if (g_btexcube_1)
     {
         specular = g_texCube_1.Sample(g_LinearWrapSampler, reflect(-toEye, input.normalWorld));
-        specular.xyz *= g_vSpec.xyz;
+        specular.xyz *= MtrlSpecular.xyz;
     }
 
     return color + diffuse + specular;
