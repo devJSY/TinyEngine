@@ -50,15 +50,15 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 //                 ( 주파수 )    (진폭)  (V 축 offset)
                 vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
                                 
-                float4 vRand = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
+                float4 vRand0 = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
                 float4 vRand1 = g_NoiseTex.SampleLevel(g_PointSampler, vUV - float2(0.1f, 0.1f), 0);
                 float4 vRand2 = g_NoiseTex.SampleLevel(g_PointSampler, vUV - float2(0.2f, 0.2f), 0);
                 
                 // SpawnShape - Sphere 
                 if (0 == Module.SpawnShape)
                 {
-                    float RandomRadius = vRand[0] * Module.Radius;
-                    float RandomAngle = vRand[1] * 2 * PI;
+                    float RandomRadius = vRand0.r * Module.Radius;
+                    float RandomAngle = vRand0.g * 2 * PI;
                    
                     // Particle 컴포넌트(본체) 의 중심위치(월드) 에서
                     // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
@@ -67,8 +67,8 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // SpawnShape - Box
                 else if (1 == Module.SpawnShape)
                 {
-                    Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
-                    Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
+                    Particle.vLocalPos.x = vRand0.r * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
+                    Particle.vLocalPos.y = vRand0.g * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
                     Particle.vLocalPos.z = 0.f;
                 }
                 
@@ -78,14 +78,14 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 Particle.vColor = Module.vSpawnColor;
                 
                 // 스폰 크기 설정                
-                Particle.vWorldScale = Particle.vWorldInitScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
+                Particle.vWorldScale = Particle.vWorldInitScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand1.r + Module.vSpawnMinScale;
                 
                 // 스폰 Life 설정
                 Particle.Age = 0.f;
-                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
+                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand1.g + Module.MaxLife;
                                    
                 // 스폰 Mass 설정
-                Particle.Mass = (Module.MaxMass - Module.MinMass) * vRand1[0] + Module.MinMass;
+                Particle.Mass = (Module.MaxMass - Module.MinMass) * vRand1.b + Module.MinMass;
                               
                 // Add VelocityModule
                 if (Module.arrModuleCheck[3])
@@ -94,12 +94,31 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                     {
                         float3 vDir = normalize(Particle.vLocalPos.xyz);
                         
-                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand[2] + Module.MinSpeed);
+                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.r + Module.MinSpeed);
                     }
-                    if (1 == Module.AddVelocityType)  // 0 :To Center
+                    else if (1 == Module.AddVelocityType)  // 1 : To Center
                     {
                         float3 vDir = -normalize(Particle.vLocalPos.xyz);
-                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand[2] + Module.MinSpeed);
+                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.g + Module.MinSpeed);
+                    }
+                    else if (2 == Module.AddVelocityType)  // 2 : Fixed Angle
+                    {
+                        float radian = radians(Module.FixedAngle);
+                        float RandomRadian = vRand2.b * radian - (radian / 2.f);
+                        float3 RandomDir = float3(cos(RandomRadian), sin(RandomRadian), 0.f);
+                        
+                        //float fTheta = acos(dot(Module.vFixedDirection.xyz, float3(1.f, 0.f, 0.f)));
+                        float fTheta = dot(Module.vFixedDirection.xyz, float3(1.f, 0.f, 0.f));
+                        
+                        float3x3 matRotZ =
+                        {
+                            cos(fTheta), sin(fTheta), 0,
+                            -sin(fTheta), cos(fTheta), 0,
+                            0, 0, 1.f,
+                        };
+                        
+                        float3 vDir = normalize(mul(RandomDir, matRotZ));
+                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.b + Module.MinSpeed);
                     }
                 }
                 else

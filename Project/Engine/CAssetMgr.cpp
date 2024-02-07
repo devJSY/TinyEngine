@@ -51,7 +51,7 @@ CAssetMgr::~CAssetMgr()
 void CAssetMgr::init()
 {
     m_AssetExtension = L".tasset";
-    //LoadFromAssetFile(); 
+    // LoadFromAssetFile();
 
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
@@ -77,24 +77,7 @@ void CAssetMgr::LoadFromAssetFile()
             if (m_AssetExtension != path.extension())
                 continue;
 
-            switch ((ASSET_TYPE)i)
-            {
-            case ASSET_TYPE::MESH:
-                break;
-            case ASSET_TYPE::MESHDATA:
-                break;
-            case ASSET_TYPE::TEXTURE:
-                break;
-            case ASSET_TYPE::COMPUTE_SHADER:
-                break;
-            case ASSET_TYPE::GRAPHICS_SHADER:
-                break;
-            case ASSET_TYPE::MATERIAL:
-                Load<CMaterial>(AssetName + L"\\" + wstring(path.filename()), AssetName + L"\\" + wstring(path.filename()));
-                break;
-            case ASSET_TYPE::SOUND:
-                break;
-            }
+            //Load<>(AssetName + L"\\" + wstring(path.filename()), AssetName + L"\\" + wstring(path.filename()));
         }
     }
 }
