@@ -50,12 +50,12 @@ CParticleSystem::CParticleSystem()
     m_Module.vSpawnMaxScale = Vec4(50.f, 50.f, 1.f, 1.f);
 
     m_Module.MinLife = 5.f;
-    m_Module.MaxLife = 10.f;
+    m_Module.MaxLife = 5.f;
 
     m_Module.MinMass = 1.f;
     m_Module.MaxMass = 1.f;
 
-    m_Module.SpawnRate = 100; 
+    m_Module.SpawnRate = 10; 
     m_Module.SpaceType = 0;   // Local Space
 
     m_Module.SpawnShape = 0; // Sphere

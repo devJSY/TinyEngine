@@ -58,11 +58,15 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 if (0 == Module.SpawnShape)
                 {
                     float RandomRadius = vRand0.r * Module.Radius;
-                    float RandomAngle = vRand0.g * 2 * PI;
+                    float RandomAngleX = vRand0.g * 2 * PI;
+                    
+                    float randomX = vRand0.r * 2.f - 1.f;
+                    float randomY = vRand1.g * 2.f - 1.f;
                    
                     // Particle 컴포넌트(본체) 의 중심위치(월드) 에서
                     // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
-                    Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), 0.f) * RandomRadius;
+                    //Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), 0.f) * RandomRadius;
+                    Particle.vLocalPos.xyz = float3(randomX, randomY, 0) * RandomRadius;
                 }
                 // SpawnShape - Box
                 else if (1 == Module.SpawnShape)
@@ -102,23 +106,16 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                         Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.g + Module.MinSpeed);
                     }
                     else if (2 == Module.AddVelocityType)  // 2 : Fixed Angle
-                    {
-                        float radian = radians(Module.FixedAngle);
-                        float RandomRadian = vRand2.b * radian - (radian / 2.f);
-                        float3 RandomDir = float3(cos(RandomRadian), sin(RandomRadian), 0.f);
+                    {                       
+                        float randomRatio = Module.FixedAngle / 180.f;
                         
-                        //float fTheta = acos(dot(Module.vFixedDirection.xyz, float3(1.f, 0.f, 0.f)));
-                        float fTheta = dot(Module.vFixedDirection.xyz, float3(1.f, 0.f, 0.f));
+                        // 단위원 기준 범위 -1 ~ 1 에 비율값을 곱해서 랜덤값을 결정 한다.
+                        float randomX = (vRand0.r * 2.f - 1.f) * randomRatio;
+                        float randomY = (vRand1.g * 2.f - 1.f) * randomRatio;
+                        float randomZ = (vRand2.b * 2.f - 1.f) * randomRatio;                        
                         
-                        float3x3 matRotZ =
-                        {
-                            cos(fTheta), sin(fTheta), 0,
-                            -sin(fTheta), cos(fTheta), 0,
-                            0, 0, 1.f,
-                        };
-                        
-                        float3 vDir = normalize(mul(RandomDir, matRotZ));
-                        Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.b + Module.MinSpeed);
+                        // 고정 방향 + 랜덤 범위 방향으로 방향으로 설정
+                        Particle.vVelocity.xyz = normalize(Module.vFixedDirection.xyz + float3(randomX, randomY, randomZ)) * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.b + Module.MinSpeed);
                     }
                 }
                 else

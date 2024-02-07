@@ -1039,9 +1039,9 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
                     if (2 == Module.AddVelocityType)
                     {
-                        ImGui::DragFloat(ImGui_LabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 360.f);
-                        ImGui::DragFloat3(ImGui_LabelPrefix("Fixed Direction").c_str(), &Module.vFixedDirection.x, 1.f,
-                                          0.f, 1.f);
+                        ImGui::DragFloat(ImGui_LabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 180.f);
+                        ImGui::DragFloat3(ImGui_LabelPrefix("Fixed Direction").c_str(), &Module.vFixedDirection.x, 0.1f,
+                                          -1.f, 1.f);
                     }
 
                     ImGui::TreePop();
