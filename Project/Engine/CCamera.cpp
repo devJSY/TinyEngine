@@ -287,6 +287,7 @@ void CCamera::render_postprocess()
     }
 
     m_vecPostProcess.clear();
+    CTexture::Clear(14);
 }
 
 void CCamera::Resize(Vec2 Resolution)
