@@ -19,6 +19,7 @@ class Light2D;
 class Light3D;
 class CTileMap;
 class CParticleSystem;
+class CSkyBox;
 
 class CGameObject : public CEntity
 {
@@ -52,8 +53,10 @@ public:
     GET_COMPONENT(Collider2D, COLLIDER2D);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
     GET_COMPONENT(Light2D, LIGHT2D);
+    GET_COMPONENT(Light3D, LIGHT3D);
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
+    GET_COMPONENT(SkyBox, SKYBOX);
 
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CScript*>& GetScripts() const { return m_vecScript; }
@@ -82,8 +85,6 @@ public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
 
     int GetLayerIdx() const { return m_iLayerIdx; }
-
-    GET_COMPONENT(Light3D, LIGHT3D);
 
 public:
     CGameObject();

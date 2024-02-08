@@ -231,8 +231,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             }
 
             // outline pass
-            // 와이어 프레임일때는 Off
-            // SkyBox 일때는 Off
+            // 와이어 프레임, SkyBox - Off
             if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
                 LayerName != L"SkyBox")
             {
@@ -249,7 +248,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             }
 
             // IDMap
-            if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera")
+            if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera" && LayerName != L"SkyBox")
             {
                 Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
                 Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
@@ -258,16 +257,13 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
                 meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl"));
 
-                if (LayerName == L"SkyBox")
-                    meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBox_IDMapMtrl"));
-
                 _vecObj[i]->render();
 
                 CDevice::GetInst()->SetFloatRenderTarget();
-
-                // 원래 재질로 설정
-                meshRender->SetMaterial(mtrl);
             }
+
+            // 원래 재질로 설정
+            meshRender->SetMaterial(mtrl);
         }
     }
 

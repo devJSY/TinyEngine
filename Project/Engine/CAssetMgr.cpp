@@ -77,7 +77,7 @@ void CAssetMgr::LoadFromAssetFile()
             if (m_AssetExtension != path.extension())
                 continue;
 
-            //Load<>(AssetName + L"\\" + wstring(path.filename()), AssetName + L"\\" + wstring(path.filename()));
+            // Load<>(AssetName + L"\\" + wstring(path.filename()), AssetName + L"\\" + wstring(path.filename()));
         }
     }
 }
@@ -125,18 +125,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 {
     CMaterial* pMtrl = new CMaterial;
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
-
-    pMtrl->SetTexParam(TEXCUBE_0,
-                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds"));
-    pMtrl->SetTexParam(TEXCUBE_1,
-                       FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds"));
-
-    pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f)); // Mtrl Albedo
-
     pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
-    pMtrl->SetScalarParam(FLOAT_1, 1.f); // Mtrl Metallic
-    pMtrl->SetScalarParam(FLOAT_2, 1.f); // Mtrl Roughness
-
     pMtrl->SetScalarParam(INT_0, 0); // Invert NormalMap Y
 
     // 텍스쳐 로딩

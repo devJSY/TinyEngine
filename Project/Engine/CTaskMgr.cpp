@@ -506,7 +506,22 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     CComponent* pCom = pObj->GetComponent(type);
     // 이미 해당 컴포넌트를 보유한 경우
     if (nullptr != pCom)
+    {
+        LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a Component!!");
         return;
+    }
+
+    // RenderComponent 예외처리
+    if (pObj->GetRenderComponent())
+    {
+        if (COMPONENT_TYPE::MESHRENDER == type || COMPONENT_TYPE::TILEMAP == type ||
+            COMPONENT_TYPE::PARTICLESYSTEM == type || COMPONENT_TYPE::SKYBOX == type || COMPONENT_TYPE::DECAL == type ||
+            COMPONENT_TYPE::LANDSCAPE == type)
+        {
+            LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
+            return;
+        }
+    }
 
     switch (type)
     {
@@ -533,30 +548,16 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
         pObj->AddComponent(new CCamera);
         break;
     case COMPONENT_TYPE::MESHRENDER:
-        {
-            if (nullptr == pObj->GetRenderComponent())
-                pObj->AddComponent(new CMeshRender);
-            else
-                LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
-        }
+        pObj->AddComponent(new CMeshRender);
         break;
     case COMPONENT_TYPE::TILEMAP:
-        {
-            if (nullptr == pObj->GetRenderComponent())
-                pObj->AddComponent(new CTileMap);
-            else
-                LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
-        }
+        pObj->AddComponent(new CTileMap);
         break;
     case COMPONENT_TYPE::PARTICLESYSTEM:
-        {
-            if (nullptr == pObj->GetRenderComponent())
-                pObj->AddComponent(new CParticleSystem);
-            else
-                LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
-        }
+        pObj->AddComponent(new CParticleSystem);
         break;
     case COMPONENT_TYPE::SKYBOX:
+        pObj->AddComponent(new CSkyBox);
         break;
     case COMPONENT_TYPE::DECAL:
         break;

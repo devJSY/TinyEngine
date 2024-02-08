@@ -129,7 +129,9 @@ Texture2D g_postprocess_Tex : register(t14);
 
 Texture2D g_NoiseTex : register(t15);
 
-Texture2D g_BRDFTex : register(t19);
+Texture2D g_BRDFTex : register(t17);
+TextureCube g_DiffuseCube : register(t18);
+TextureCube g_SpecularCube : register(t19);
 
 StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
 

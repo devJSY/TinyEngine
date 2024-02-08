@@ -2,6 +2,9 @@
 #include "global.hlsli"
 #include "Light.hlsli"
 
+#define SpecularIBLTex g_SpecularCube
+#define IrradianceIBLTex g_DiffuseCube 
+
 #define MtrlDiffuse g_vDiffuse
 #define MtrlSpecular g_vSpecular
 
@@ -33,18 +36,12 @@ float4 main(PS_IN input) : SV_Target
     // IBL
     float4 diffuse = float4(0.0, 0.0, 0.0, 0.0);
     float4 specular = float4(0.0, 0.0, 0.0, 0.0);
-        
-    if (g_btexcube_0)
-    {
-        diffuse = g_texCube_0.Sample(g_LinearWrapSampler, input.normalWorld);
-        diffuse.xyz *= MtrlDiffuse.xyz;
-    }
-
-    if (g_btexcube_1)
-    {
-        specular = g_texCube_1.Sample(g_LinearWrapSampler, reflect(-toEye, input.normalWorld));
-        specular.xyz *= MtrlSpecular.xyz;
-    }
+    
+    diffuse = IrradianceIBLTex.Sample(g_LinearWrapSampler, input.normalWorld);
+    diffuse.xyz *= MtrlDiffuse.xyz;
+    
+    specular = SpecularIBLTex.Sample(g_LinearWrapSampler, reflect(-toEye, input.normalWorld));
+    specular.xyz *= MtrlSpecular.xyz;
 
     return color + diffuse + specular;
 }

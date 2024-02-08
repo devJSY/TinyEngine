@@ -86,7 +86,7 @@
       <Filter>08. Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
-      <Filter>08. Component\09. Camera</Filter>
+      <Filter>08. Component\08. Camera</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerScript.h">
       <Filter>ScriptMgr\Scripts</Filter>
@@ -280,6 +280,9 @@
     <ClInclude Include="CPBRLevel.h">
       <Filter>05. Level</Filter>
     </ClInclude>
+    <ClInclude Include="CSkyBox.h">
+      <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -346,7 +349,7 @@
       <Filter>08. Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
-      <Filter>08. Component\09. Camera</Filter>
+      <Filter>08. Component\08. Camera</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
       <Filter>ScriptMgr\Scripts</Filter>
@@ -534,6 +537,9 @@
     <ClCompile Include="CPBRLevel.cpp">
       <Filter>05. Level</Filter>
     </ClCompile>
+    <ClCompile Include="CSkyBox.cpp">
+      <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -589,9 +595,6 @@
     </Filter>
     <Filter Include="08. Component\06. Light2D">
       <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\09. Camera">
-      <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. Asset\Mesh">
       <UniqueIdentifier>{8f54ffc6-a3b6-40d3-abfa-204909ad4b43}</UniqueIdentifier>
@@ -770,6 +773,12 @@
     <Filter Include="ShaderCode\Render\UnrealPBR">
       <UniqueIdentifier>{f68944f3-5d62-46df-a0bc-eee34ca61828}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\08. Camera">
+      <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\04. SkyBox">
+      <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -825,7 +834,7 @@
     <FxCompile Include="3D_OutLineVS.hlsl">
       <Filter>ShaderCode\Render\OutLine</Filter>
     </FxCompile>
-    <FxCompile Include="SkyboxPS.hlsl">
+    <FxCompile Include="SkyBoxPS.hlsl">
       <Filter>ShaderCode\Render\SkyBox</Filter>
     </FxCompile>
     <FxCompile Include="SkyBoxVS.hlsl">

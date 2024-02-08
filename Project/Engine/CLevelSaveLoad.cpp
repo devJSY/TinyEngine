@@ -243,6 +243,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             Component = new CParticleSystem;
             break;
         case COMPONENT_TYPE::SKYBOX:
+            Component = new CSkyBox;
             break;
         case COMPONENT_TYPE::DECAL:
             break;

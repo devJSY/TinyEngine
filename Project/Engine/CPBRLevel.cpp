@@ -69,32 +69,31 @@ void CPBRLevel::begin()
     pSkyBox->SetName(L"SkyBox");
 
     pSkyBox->AddComponent(new CTransform);
-    pSkyBox->AddComponent(new CMeshRender);
+    pSkyBox->AddComponent(new CSkyBox);
 
     pSkyBox->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
     pSkyBox->Transform()->SetAbsolute(true);
 
-    pSkyBox->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pSkyBox->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IBLBakerSkyBoxMtrl"));
+    pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::SPHERE);
+    // pSkyBox->SkyBox()->SetBrdfTexture(
+    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds"));
+    // pSkyBox->SkyBox()->SetEnvTexture(
+    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"));
+    // pSkyBox->SkyBox()->SetDiffuseTexture(
+    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
+    // pSkyBox->SkyBox()->SetSpecularTexture(
+    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
+    pSkyBox->SkyBox()->SetBrdfTexture(
+        CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessBrdf.dds"));
+    pSkyBox->SkyBox()->SetEnvTexture(
+        CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessEnvHDR.dds"));
+    pSkyBox->SkyBox()->SetDiffuseTexture(
+        CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessDiffuseHDR.dds"));
+    pSkyBox->SkyBox()->SetSpecularTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(
+        L"Developers\\Textures\\Cubemaps\\moonless\\moonlessSpecularHDR.dds"));
 
     AddObject(pSkyBox, L"SkyBox");
-
-    //// Test Obj
-    // CGameObject* pObj = new CGameObject;
-    // pObj->SetName(L"Sphere");
-
-    // pObj->AddComponent(new CTransform);
-    // pObj->AddComponent(new CMeshRender);
-
-    // pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    // pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    // pObj->Transform()->SetAbsolute(true);
-
-    // pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    // pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
-
-    // AddObject(pObj, 0);
 
     // ==========================
     // PBR worn-painted-metal-ue
@@ -115,6 +114,19 @@ void CPBRLevel::begin()
     pWornPainted->Transform()->SetAbsolute(true);
 
     AddObject(pWornPainted, 0);
+
+    // BlinnPhong Obj
+    CGameObject* pPhongObj = new CGameObject;
+    pPhongObj->SetName(L"BlinnPhong Object");
+    pPhongObj->AddComponent(new CTransform);
+    pPhongObj->AddComponent(new CMeshRender);
+
+    pPhongObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+    pPhongObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
+
+    AddObject(pPhongObj, 0);
+
+    CLevel::begin();
 }
 
 void CPBRLevel::tick()
