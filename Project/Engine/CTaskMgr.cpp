@@ -210,19 +210,16 @@ void CTaskMgr::ADD_CHILD(const FTask& _Task)
         if (pSrcObj->GetParent())
         {
             // 기존 부모와의 연결 해제
+            int layerIdx = pSrcObj->m_iLayerIdx;
             pSrcObj->DisconnectWithParent();
 
             // 최상위 부모 오브젝트로, 소속 레이어에 등록
             CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-            pCurLevel->AddObject(pSrcObj, pSrcObj->m_iLayerIdx, true);
+            pCurLevel->AddObject(pSrcObj, layerIdx, true);
         }
     }
     else
     {
-        // 레이어가 설정되지않은 자식이라면 부모의 레이어로 설정
-        if (-1 == pSrcObj->m_iLayerIdx)
-            pSrcObj->m_iLayerIdx = pDestObj->m_iLayerIdx;
-
         pDestObj->AddChild(pSrcObj);
     }
 }

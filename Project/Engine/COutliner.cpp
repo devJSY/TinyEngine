@@ -16,6 +16,8 @@
 #include "CAnim.h"
 #include "CMaterial.h"
 
+#include "CKeyMgr.h"
+
 COutliner::COutliner()
     : m_DefaultTreeNodeFlag(ImGuiTreeNodeFlags_None)
 {
@@ -71,6 +73,20 @@ void COutliner::render()
         ImGui::EndPopup();
     }
 
+    // Drag & Drop
+    ImRect inner_rect = ImGui::GetCurrentWindow()->InnerRect;
+    if (ImGui::BeginDragDropTargetCustom(inner_rect, ImGui::GetID("Outliner")))
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_COUTLINER"))
+        {
+            DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+            CGameObject* pChild = (CGameObject*)data;
+            GamePlayStatic::AddChildObject(nullptr, pChild);
+        }
+
+        ImGui::EndDragDropTarget();
+    }
+
     ImGui::End();
 
     ImGui_SetWindowClass_LevelEditor();
@@ -96,6 +112,27 @@ void COutliner::DrawNode(CGameObject* obj)
     string name = ToString(obj->GetName());
 
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
+
+    // Drag & Drop
+    if (ImGui::BeginDragDropSource())
+    {
+        ImGui::Text("%s", ToString(obj->GetName()).c_str());
+
+        ImGui::SetDragDropPayload("LEVEL_EDITOR_COUTLINER", &obj, sizeof(DWORD_PTR));
+        ImGui::EndDragDropSource();
+    }
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_COUTLINER"))
+        {
+            DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+            CGameObject* pChild = (CGameObject*)data;
+            GamePlayStatic::AddChildObject(obj, pChild);
+        }
+
+        ImGui::EndDragDropTarget();
+    }
 
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
     {
