@@ -215,7 +215,7 @@ void CTaskMgr::ADD_CHILD(const FTask& _Task)
 
             // 최상위 부모 오브젝트로, 소속 레이어에 등록
             CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-            pCurLevel->AddObject(pSrcObj, layerIdx, true);
+            pCurLevel->AddObject(pSrcObj, layerIdx, false);
         }
     }
     else

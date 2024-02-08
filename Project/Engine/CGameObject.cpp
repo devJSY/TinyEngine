@@ -213,6 +213,8 @@ void CGameObject::DisconnectWithLayer()
 
 void CGameObject::AddChild(CGameObject* _Child)
 {
+    int LayerIdx = _Child->m_iLayerIdx;
+
     if (_Child->m_Parent)
     {
         // 이전 부모 오브젝트랑 연결 해제
@@ -222,10 +224,10 @@ void CGameObject::AddChild(CGameObject* _Child)
     {
         // 자식으로 들어오는 오브젝트가 최상위 부모타입이면,
         // 소속 레이어의 Parent 오브젝트 목록에서 제거한다.
-        int LayerIdx = _Child->m_iLayerIdx;
         _Child->DisconnectWithLayer();
-        _Child->m_iLayerIdx = LayerIdx;
     }
+
+    _Child->m_iLayerIdx = LayerIdx;
 
     // 부모 자식 연결
     _Child->m_Parent = this;
