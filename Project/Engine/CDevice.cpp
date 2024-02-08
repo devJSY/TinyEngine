@@ -13,6 +13,7 @@ CDevice::CDevice()
     , m_arrBS{}
     , m_arrSS{}
     , m_arrCB{}
+    , m_Viewport{}
 {
 }
 
@@ -121,7 +122,11 @@ void CDevice::Resize(Vec2 resolution)
     m_vRenderResolution = resolution;
     g_Global.g_RenderResolution = m_vRenderResolution;
 
-    // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release 시켜야함
+    // ReSize 전 백버퍼가 참조하고있던 리소스 전부 Release
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RenderTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthStencilTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"FloatRenderTargetTexture");
+
     m_RenderTargetTex = nullptr;
     m_FloatRTTex = nullptr;
     m_DSTex = nullptr;
@@ -142,19 +147,39 @@ void CDevice::SetFloatRenderTarget()
     m_Context->OMSetRenderTargets(1, m_FloatRTTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
 }
 
+void CDevice::SetViewport(float _Width, float _Height)
+{
+    if (0 == _Width && 0 == _Height)
+    {
+        CONTEXT->RSSetViewports(1, &m_Viewport);
+    }
+    else
+    {
+        D3D11_VIEWPORT ViewportDesc = {};
+
+        ViewportDesc.MinDepth = 0;
+        ViewportDesc.MaxDepth = 1.f;
+
+        ViewportDesc.TopLeftX = 0;
+        ViewportDesc.TopLeftY = 0;
+        ViewportDesc.Width = _Width;
+        ViewportDesc.Height = _Height;
+
+        CONTEXT->RSSetViewports(1, &ViewportDesc);
+    }
+}
+
 int CDevice::CreateViewport()
 {
-    D3D11_VIEWPORT ViewportDesc = {};
+    m_Viewport.MinDepth = 0;
+    m_Viewport.MaxDepth = 1.f;
 
-    ViewportDesc.MinDepth = 0;
-    ViewportDesc.MaxDepth = 1.f;
+    m_Viewport.TopLeftX = 0;
+    m_Viewport.TopLeftY = 0;
+    m_Viewport.Width = m_vRenderResolution.x;
+    m_Viewport.Height = m_vRenderResolution.y;
 
-    ViewportDesc.TopLeftX = 0;
-    ViewportDesc.TopLeftY = 0;
-    ViewportDesc.Width = m_vRenderResolution.x;
-    ViewportDesc.Height = m_vRenderResolution.y;
-
-    CONTEXT->RSSetViewports(1, &ViewportDesc);
+    CONTEXT->RSSetViewports(1, &m_Viewport);
 
     return S_OK;
 }

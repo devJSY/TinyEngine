@@ -28,6 +28,8 @@ private:
 
     CConstBuffer* m_arrCB[(UINT)CB_TYPE::END]; // Constant Buffer
 
+    D3D11_VIEWPORT m_Viewport;
+
 public:
     int init(HWND _hWnd, Vec2 _vResolution);
     void ClearRenderTarget(const Vec4& Color);
@@ -47,6 +49,7 @@ public:
     void Resize(Vec2 resolution);
     void SetRenderTarget();
     void SetFloatRenderTarget();
+    void SetViewport(float _Width = 0, float _Height = 0);
 
 private:
     int CreateSwapChain();

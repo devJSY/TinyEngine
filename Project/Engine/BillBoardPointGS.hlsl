@@ -17,8 +17,8 @@ struct PS_Input
 void main(point GS_Input input[1], uint primID : SV_PrimitiveID,
                               inout TriangleStream<PS_Input> outputStream)
 {
-    // 가로세로 100
-    float hw = 0.5 * 100.f;
+    // 가로세로 50
+    float hw = 0.5 * 50.f;
     
     float4 up = float4(0.0, 1.0, 0.0, 0.0);
     float4 front = float4(g_eyeWorld, 1.0) - input[0].pos;

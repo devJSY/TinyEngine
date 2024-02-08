@@ -1010,7 +1010,6 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ToneMappingShader"));
-        pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"FloatRenderTargetTexture"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Exposure
         pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
         pMtrl->SetName(L"ToneMappingMtrl");

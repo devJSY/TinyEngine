@@ -4,6 +4,8 @@
 #define Exposure g_float_0 // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
 #define Gamma g_float_1    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
 
+#define Strength g_float_2 // Bloom Strength
+
 float3 FilmicToneMapping(float3 color)
 {
     color = max(float3(0, 0, 0), color);
@@ -50,14 +52,14 @@ float3 lumaBasedReinhardToneMapping(float3 color)
 
 float4 main(PS_IN input) : SV_TARGET
 {
-    float3 color = float3(0.f, 0.f, 0.f);
+    // Bloom
+    float3 color0 = g_tex_0.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    float3 color1 = g_tex_1.Sample(g_LinearWrapSampler, input.vUV).rgb;
     
-    if (g_btex_0)
-    {
-        color = g_tex_0.Sample(g_LinearWrapSampler, input.vUV).rgb;
-    }
+    float3 combined = (1.0 - Strength) * color0 + Strength * color1;
+
+    // ToneMapping
+    combined = LinearToneMapping(combined);
     
-    color = LinearToneMapping(color);
-    
-    return float4(color, 1.0f);
+    return float4(combined, 1.0f);
 }

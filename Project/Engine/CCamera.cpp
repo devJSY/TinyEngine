@@ -276,10 +276,6 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
 void CCamera::render_postprocess()
 {
-    CRenderMgr::GetInst()->CopyToBloomTex();
-    Ptr<CTexture> pBloomTex = CRenderMgr::GetInst()->GetBloomTex();
-    pBloomTex->UpdateData(13);
-
     for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사

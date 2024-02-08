@@ -21,6 +21,7 @@ CRenderMgr::CRenderMgr()
     , m_bShowCollider(true)
     , m_vecNoiseTex{}
     , m_ToneMappingObj(nullptr)
+    , bloomLevels(5)
 {
 }
 
@@ -44,6 +45,9 @@ CRenderMgr::~CRenderMgr()
         m_Light3DBuffer = nullptr;
     }
 
+    Delete_Vec(m_BloomDownFilters);
+    Delete_Vec(m_BloomUpFilters);
+
     if (nullptr != m_ToneMappingObj)
     {
         delete m_ToneMappingObj;
@@ -60,10 +64,8 @@ void CRenderMgr::tick()
     render();
     render_debug();
 
-    // Tone Mapping
-    CDevice::GetInst()->SetRenderTarget();
-    m_ToneMappingObj->render();
-    CTexture::Clear(0);
+    // 후처리
+    render_postprocess();
 
     // LDR Rendering
     render_ui();
@@ -149,6 +151,49 @@ void CRenderMgr::render_ui()
     m_CamUI->render();
 }
 
+void CRenderMgr::render_postprocess()
+{
+    // Bloom
+    CopyToPostProcessTex();
+    for (int i = 0; i < m_BloomDownFilters.size(); i++)
+    {
+        if (i == 0)
+            m_BloomDownFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex);
+        else
+            m_BloomDownFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures[i - 1]);
+
+        CDevice::GetInst()->SetViewport((float)m_BloomTextures[i]->GetWidth(), (float)m_BloomTextures[i]->GetHeight());
+        CONTEXT->OMSetRenderTargets(1, m_BloomTextures[i]->GetRTV().GetAddressOf(), NULL);
+        m_BloomDownFilters[i]->render();
+        CTexture::Clear(0);
+    }
+    for (int i = 0; i < m_BloomUpFilters.size(); i++)
+    {
+        int level = bloomLevels - 2 - i;
+        m_BloomUpFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures[level]);
+        if (i == bloomLevels - 2)
+        {
+            CDevice::GetInst()->SetViewport((float)m_PostProcessTex->GetWidth(), (float)m_PostProcessTex->GetHeight());
+            CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), NULL);
+        }
+        else
+        {
+            CDevice::GetInst()->SetViewport((float)m_BloomTextures[level - 1]->GetWidth(),
+                                            (float)m_BloomTextures[level - 1]->GetHeight());
+            CONTEXT->OMSetRenderTargets(1, m_BloomTextures[level - 1]->GetRTV().GetAddressOf(), NULL);
+        }
+        m_BloomUpFilters[i]->render();
+        CTexture::Clear(0);
+    }
+
+    // Tone Mapping + Bloom Combine
+    CDevice::GetInst()->SetViewport();
+    CDevice::GetInst()->SetRenderTarget();
+    m_ToneMappingObj->render();
+    CTexture::Clear(0);
+    CTexture::Clear(1);
+}
+
 void CRenderMgr::UpdateData()
 {
     // GlobalData 에 광원 개수정보 세팅
@@ -230,11 +275,6 @@ void CRenderMgr::CopyToPostProcessTex()
     CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
 }
 
-void CRenderMgr::CopyToBloomTex()
-{
-    CONTEXT->CopyResource(m_BloomTex->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
-}
-
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
     m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
@@ -244,16 +284,9 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 
 void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
 {
-    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                           DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_SHADER_RESOURCE,
-                                                           D3D11_USAGE_DEFAULT);
-}
-
-void CRenderMgr::CreateBloomTex(Vec2 Resolution)
-{
-    m_BloomTex = CAssetMgr::GetInst()->CreateTexture(L"BloomTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                     DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_SHADER_RESOURCE,
-                                                     D3D11_USAGE_DEFAULT);
+    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(
+        L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R16G16B16A16_FLOAT,
+        D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
@@ -269,17 +302,20 @@ void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 
 void CRenderMgr::Resize(Vec2 Resolution)
 {
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex");
+
     m_RTCopyTex = nullptr;
     m_IDMapTex = nullptr;
     m_IDMapDSTex = nullptr;
     m_PostProcessTex = nullptr;
     m_FloatRTTex = nullptr;
-    m_BloomTex = nullptr;
 
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreatePostProcessTex(Resolution);
-    CreateBloomTex(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 

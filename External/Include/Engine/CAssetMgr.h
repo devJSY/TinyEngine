@@ -86,6 +86,8 @@ private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
 
     friend class CTaskMgr;
+    friend class CDevice;
+    friend class CRenderMgr;
 };
 
 template <typename T>

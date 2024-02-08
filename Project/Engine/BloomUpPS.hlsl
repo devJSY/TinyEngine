@@ -16,17 +16,17 @@ float4 main(PS_IN input) : SV_TARGET
     // - l - m -
     // g - h - i
     // === ('e' is the current texel) ===
-    float3 a = g_postprocess_Tex.Sample(g_PointSampler, float2(x - dx, y + dy)).rgb;
-    float3 b = g_postprocess_Tex.Sample(g_PointSampler, float2(x, y + dy)).rgb;
-    float3 c = g_postprocess_Tex.Sample(g_PointSampler, float2(x + dx, y + dy)).rgb;
+    float3 a = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y + dy)).rgb;
+    float3 b = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y + dy)).rgb;
+    float3 c = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y + dy)).rgb;
     
-    float3 d = g_postprocess_Tex.Sample(g_PointSampler, float2(x - dx, y)).rgb;
-    float3 e = g_postprocess_Tex.Sample(g_PointSampler, float2(x, y)).rgb;
-    float3 f = g_postprocess_Tex.Sample(g_PointSampler, float2(x + dx, y)).rgb;
+    float3 d = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y)).rgb;
+    float3 e = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y)).rgb;
+    float3 f = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y)).rgb;
     
-    float3 g = g_postprocess_Tex.Sample(g_PointSampler, float2(x - dx, y - dy)).rgb;
-    float3 h = g_postprocess_Tex.Sample(g_PointSampler, float2(x, y - dy)).rgb;
-    float3 i = g_postprocess_Tex.Sample(g_PointSampler, float2(x + dx, y - dy)).rgb;
+    float3 g = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y - dy)).rgb;
+    float3 h = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y - dy)).rgb;
+    float3 i = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y - dy)).rgb;
 
     // Apply weighted distribution:
     // 0.5 + 0.125 + 0.125 + 0.125 + 0.125 = 1

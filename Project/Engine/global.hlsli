@@ -125,7 +125,6 @@ Texture2D g_anim2d_tex : register(t10);
 StructuredBuffer<tLightInfo> g_Light2D : register(t11);
 StructuredBuffer<tLightInfo> g_Light3D : register(t12);
 
-Texture2D g_Bloom_Tex : register(t13);
 Texture2D g_postprocess_Tex : register(t14);
 
 Texture2D g_NoiseTex : register(t15);

@@ -232,7 +232,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
 
             // 스테이징 텍스춰 만들고 CPU에서 이미지를 복사합니다.
             ComPtr<ID3D11Texture2D> stagingTexture =
-                CreateStagingTexture(mWidth, mHeight, combinedImage, DXGI_FORMAT_R8G8B8A8_UNORM);
+                CreateStagingTexture(mWidth, mHeight, combinedImage, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 
             // 실제로 사용할 텍스춰 설정
             ComPtr<ID3D11Texture2D> metallicRoughnessTexture;

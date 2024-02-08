@@ -23,7 +23,6 @@ private:
     Ptr<CTexture> m_IDMapDSTex;
     Ptr<CTexture> m_PostProcessTex;
     Ptr<CTexture> m_FloatRTTex;
-    Ptr<CTexture> m_BloomTex;
 
     CStructuredBuffer* m_Light2DBuffer;
     vector<CLight2D*> m_vecLight2D;
@@ -40,6 +39,12 @@ private:
 
     // NoiseTexture
     vector<Ptr<CTexture>> m_vecNoiseTex;
+
+    // Post Process
+    int bloomLevels;
+    vector<Ptr<CTexture>> m_BloomTextures;
+    vector<CGameObject*> m_BloomDownFilters;
+    vector<CGameObject*> m_BloomUpFilters;
 
     CGameObject* m_ToneMappingObj;
 
@@ -73,7 +78,6 @@ public:
 public:
     void CopyRTTexToRTCopyTex();
     void CopyToPostProcessTex();
-    void CopyToBloomTex();
     void Resize(Vec2 Resolution);
 
     Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
@@ -81,18 +85,17 @@ public:
     Ptr<CTexture> GetIDMapDSTex() const { return m_IDMapDSTex; }
     Ptr<CTexture> GetPostProcessTex() const { return m_PostProcessTex; }
     Ptr<CTexture> GetFloatTex() const { return m_FloatRTTex; }
-    Ptr<CTexture> GetBloomTex() const { return m_BloomTex; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);
     void CreateIDMapTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
-    void CreateBloomTex(Vec2 Resolution);
 
 private:
     void render();
     void render_debug();
     void render_ui();
+    void render_postprocess();
 
     // 리소스 바인딩
     void UpdateData();
