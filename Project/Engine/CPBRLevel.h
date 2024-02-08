@@ -5,6 +5,7 @@
 class CPBRLevel : public CLevel
 {
 private:
+    void AddSample();
     void AddModels();
 
 public:

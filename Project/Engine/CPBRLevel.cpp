@@ -39,6 +39,7 @@ void CPBRLevel::begin()
     GetLayer(14)->SetName(L"PostProcess");
     GetLayer(15)->SetName(L"UI");
 
+    //AddSample();
     AddModels();
 
     // Main Camera
@@ -95,31 +96,14 @@ void CPBRLevel::begin()
 
     AddObject(pSkyBox, L"SkyBox");
 
-    // ==========================
-    // PBR worn-painted-metal-ue
-    // ==========================
-    vector<tMeshData> meshes;
-    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
-    meshes[0].AmbientTextureFilename = "worn-painted-metal_albedo.png";
-    meshes[0].AoTextureFilename = "worn-painted-metal_ao.png";
-    meshes[0].NormalTextureFilename = "worn-painted-metal_normal-dx.png";
-    meshes[0].HeightTextureFilename = "worn-painted-metal_height.png";
-    meshes[0].MetallicTextureFilename = "worn-painted-metal_metallic.png";
-    meshes[0].RoughnessTextureFilename = "worn-painted-metal_roughness.png";
-    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
-
-    CGameObject* pWornPainted = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
-    pWornPainted->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pWornPainted->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pWornPainted->Transform()->SetAbsolute(true);
-
-    AddObject(pWornPainted, 0);
-
     // BlinnPhong Obj
     CGameObject* pPhongObj = new CGameObject;
     pPhongObj->SetName(L"BlinnPhong Object");
     pPhongObj->AddComponent(new CTransform);
     pPhongObj->AddComponent(new CMeshRender);
+
+    pPhongObj->Transform()->SetRelativePos(Vec3(-250.f, 0.f, 0.f));
+    pPhongObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     pPhongObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pPhongObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
@@ -137,6 +121,90 @@ void CPBRLevel::tick()
 void CPBRLevel::finaltick()
 {
     CLevel::finaltick();
+}
+
+void CPBRLevel::AddSample()
+{
+    // ==========================
+    // worn-painted-metal-ue
+    // ==========================
+    vector<tMeshData> meshes;
+    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+    meshes[0].AmbientTextureFilename = "worn-painted-metal_albedo.png";
+    meshes[0].AoTextureFilename = "worn-painted-metal_ao.png";
+    meshes[0].NormalTextureFilename = "worn-painted-metal_normal-dx.png";
+    meshes[0].HeightTextureFilename = "worn-painted-metal_height.png";
+    meshes[0].MetallicTextureFilename = "worn-painted-metal_metallic.png";
+    meshes[0].RoughnessTextureFilename = "worn-painted-metal_roughness.png";
+    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
+
+    CGameObject* pObj = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pObj->Transform()->SetAbsolute(true);
+
+    AddObject(pObj, 0);
+
+    // ==========================
+    // brick-wall
+    // ==========================
+    meshes.clear();
+    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+    meshes[0].AmbientTextureFilename = "brick-wall_albedo.png";
+    meshes[0].AoTextureFilename = "brick-wall_ao.png";
+    meshes[0].NormalTextureFilename = "brick-wall_normal-dx.png";
+    meshes[0].HeightTextureFilename = "brick-wall_height.png";
+    meshes[0].MetallicTextureFilename = "brick-wall_metallic.png";
+    meshes[0].RoughnessTextureFilename = "brick-wall_roughness.png";
+    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\brick-wall-ue\\";
+
+    pObj = CAssetMgr::GetInst()->LoadModel(L"brick-wall", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(250.f, 0.f, 0.f));
+    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pObj->Transform()->SetAbsolute(true);
+
+    AddObject(pObj, 0);
+
+    // ==========================
+    // columned-lava-rock-ue
+    // ==========================
+    meshes.clear();
+    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+    meshes[0].AmbientTextureFilename = "columned-lava-rock_albedo.png";
+    meshes[0].AoTextureFilename = "columned-lava-rock_ao.png";
+    meshes[0].NormalTextureFilename = "columned-lava-rock_normal-dx.png";
+    meshes[0].HeightTextureFilename = "columned-lava-rock_height.png";
+    meshes[0].MetallicTextureFilename = "columned-lava-rock_metallic.png";
+    meshes[0].RoughnessTextureFilename = "columned-lava-rock_roughness.png";
+    meshes[0].EmissiveTextureFilename = "columned-lava-rock_emissive.png";
+    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\columned-lava-rock-ue\\";
+
+    pObj = CAssetMgr::GetInst()->LoadModel(L"columned-lava-rock", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 0.f));
+    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pObj->Transform()->SetAbsolute(true);
+
+    AddObject(pObj, 0);
+
+    // ==========================
+    // wrinkled-paper-ue
+    // ==========================
+    meshes.clear();
+    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+    meshes[0].AmbientTextureFilename = "wrinkled-paper-albedo.png";
+    meshes[0].AoTextureFilename = "wrinkled-paper-ao.png";
+    meshes[0].NormalTextureFilename = "wrinkled-paper-normal-dx.png";
+    meshes[0].HeightTextureFilename = "wrinkled-paper-height.png";
+    meshes[0].MetallicTextureFilename = "wrinkled-paper-metalness.png";
+    meshes[0].RoughnessTextureFilename = "wrinkled-paper-roughness.png";
+    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\wrinkled-paper-ue\\";
+
+    pObj = CAssetMgr::GetInst()->LoadModel(L"wrinkled-paper", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(750.f, 0.f, 0.f));
+    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pObj->Transform()->SetAbsolute(true);
+
+    AddObject(pObj, 0);
 }
 
 void CPBRLevel::AddModels()
@@ -163,23 +231,12 @@ void CPBRLevel::AddModels()
         AddObject(pDamagedHelmet, L"Model");
     }
 
-    // blue whale
-    CGameObject* pblueWhale =
-        CAssetMgr::GetInst()->LoadModel(L"blue whale", "Developers\\Models\\blue_whale\\", "scene.gltf");
-    if (nullptr != pblueWhale)
-    {
-        pblueWhale->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
-        pblueWhale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-
-        AddObject(pblueWhale, L"Model");
-    }
-
     // torii gate
     CGameObject* ptoriigate =
         CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
     if (nullptr != ptoriigate)
     {
-        ptoriigate->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
+        ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
         ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(ptoriigate, L"Model");
@@ -190,7 +247,7 @@ void CPBRLevel::AddModels()
         CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
     if (nullptr != pDragonWarrior)
     {
-        pDragonWarrior->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
+        pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
         pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(pDragonWarrior, L"Model");
@@ -211,6 +268,7 @@ void CPBRLevel::AddModels()
         L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
     if (nullptr != pArmoredFemale)
     {
+        pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
         pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
         AddObject(pArmoredFemale, L"Model");
     }
