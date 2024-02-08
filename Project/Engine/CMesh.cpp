@@ -110,10 +110,10 @@ void CMesh::render_draw()
     CONTEXT->Draw(m_VtxCount, 0);
 }
 
-void CMesh::render_particle(UINT _ParticleCount)
+void CMesh::render_IndexedInstanced(UINT _InstanceCount)
 {
     UpdateData();
-    CONTEXT->DrawIndexedInstanced(m_IdxCount, _ParticleCount, 0, 0, 0);
+    CONTEXT->DrawIndexedInstanced(m_IdxCount, _InstanceCount, 0, 0, 0);
 }
 
 int CMesh::Save(const wstring& _strFilePath)

@@ -227,7 +227,8 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             if (meshRender->IsDrawNormalLine())
             {
                 meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
-                _vecObj[i]->render();
+                meshRender->UpdateData();
+                meshRender->GetMesh()->render_draw();
             }
 
             // outline pass

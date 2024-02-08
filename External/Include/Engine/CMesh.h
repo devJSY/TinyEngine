@@ -23,7 +23,7 @@ public:
     int Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount);
     void render();
     void render_draw();
-    void render_particle(UINT _ParticleCount);
+    void render_IndexedInstanced(UINT _InstanceCount);
 
 public:
     virtual int Save(const wstring& _strFilePath) override;

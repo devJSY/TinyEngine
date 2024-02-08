@@ -150,7 +150,7 @@ void CParticleSystem::render()
 {
     UpdateData();
 
-    GetMesh()->render_particle(m_MaxParticleCount);
+    GetMesh()->render_IndexedInstanced(m_MaxParticleCount);
 
     // 렌더링때 사용한 리소스 바인딩 Clear
     m_ParticleBuffer->Clear(20);
