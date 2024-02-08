@@ -229,6 +229,10 @@ void CGameObject::AddChild(CGameObject* _Child)
 
     _Child->m_iLayerIdx = LayerIdx;
 
+    // 자식이 지정된 레이어가 존재하지 않을경우 부모 레이어로 설정
+    if (-1 == _Child->m_iLayerIdx)
+        _Child->m_iLayerIdx = m_iLayerIdx;
+
     // 부모 자식 연결
     _Child->m_Parent = this;
     m_vecChild.push_back(_Child);

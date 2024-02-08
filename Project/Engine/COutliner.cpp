@@ -141,7 +141,7 @@ void COutliner::DrawNode(CGameObject* obj)
 
     // Add Child PopUp
     string PopUpID = "Add Child Object##";
-    PopUpID += name;
+    PopUpID += std::to_string(obj->GetID());
 
     ImGui::OpenPopupOnItemClick(PopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
 
