@@ -41,14 +41,7 @@ void CRenderMgr::init()
     g_Global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[1]->GetWidth(), m_vecNoiseTex[1]->GetHeight());
 
     // Post Processing
-    for (int i = 0; i < bloomLevels - 1; i++)
-    {
-        int div = int(pow(2, 1 + i));
-        m_BloomTextures.push_back(CAssetMgr::GetInst()->CreateTexture(
-            L"BloomTexture " + std::to_wstring(i), UINT(vRenderResolution.x / div), UINT(vRenderResolution.y / div),
-            DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
-            D3D11_USAGE_DEFAULT));
-    }
+    CreateBloomTextures(vRenderResolution);
 
     for (int i = 0; i < bloomLevels - 1; i++)
     {

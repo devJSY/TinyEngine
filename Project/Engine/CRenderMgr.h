@@ -90,6 +90,7 @@ private:
     void CreateRTCopyTex(Vec2 Resolution);
     void CreateIDMapTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
+    void CreateBloomTextures(Vec2 Resolution);
 
 private:
     void render();

@@ -289,6 +289,20 @@ void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
         D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 }
 
+void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
+{
+    m_BloomTextures.clear();
+
+    for (int i = 0; i < bloomLevels - 1; i++)
+    {
+        int div = int(pow(2, 1 + i));
+        m_BloomTextures.push_back(CAssetMgr::GetInst()->CreateTexture(
+            L"BloomTexture " + std::to_wstring(i), UINT(Resolution.x / div), UINT(Resolution.y / div),
+            DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
+            D3D11_USAGE_DEFAULT));
+    }
+}
+
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 {
     m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(
@@ -307,6 +321,11 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex");
 
+    for (int i = 0; i < bloomLevels - 1; i++)
+    {
+        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BloomTexture " + std::to_wstring(i));
+    }
+
     m_RTCopyTex = nullptr;
     m_IDMapTex = nullptr;
     m_IDMapDSTex = nullptr;
@@ -316,6 +335,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreatePostProcessTex(Resolution);
+    CreateBloomTextures(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
@@ -330,4 +350,5 @@ void CRenderMgr::Resize(Vec2 Resolution)
     }
 
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
+    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex);
 }
