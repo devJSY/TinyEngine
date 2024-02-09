@@ -94,6 +94,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
+#include <dwmapi.h> // TitleBar Drak Mode
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance;
@@ -105,6 +107,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     {
         return FALSE;
     }
+
+    // TitleBar Drak Mode
+    BOOL USE_DARK_MODE = true;
+    DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE, &USE_DARK_MODE,
+                          sizeof(USE_DARK_MODE));
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
