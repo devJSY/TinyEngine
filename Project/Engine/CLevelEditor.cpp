@@ -239,33 +239,6 @@ void CLevelEditor::render_MenuBar()
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Asset"))
-        {
-            if (ImGui::MenuItem("Create Mesh"))
-            {
-            }
-            if (ImGui::MenuItem("Create Mesh Data"))
-            {
-            }
-            if (ImGui::MenuItem("Create Texture"))
-            {
-            }
-            if (ImGui::MenuItem("Create Material"))
-            {
-            }
-            if (ImGui::MenuItem("Create Sound"))
-            {
-            }
-            if (ImGui::MenuItem("Create Compute Shader"))
-            {
-            }
-            if (ImGui::MenuItem("Create Graphics Shader"))
-            {
-            }
-
-            ImGui::EndMenu();
-        }
-
         ImGui::EndMainMenuBar();
     }
 }

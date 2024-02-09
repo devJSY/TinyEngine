@@ -108,6 +108,8 @@ struct tParticleModule
 
     // Module On / Off
     int arrModuleCheck[7];
+    
+    float3 modulepadd;
 };
 
 #endif
