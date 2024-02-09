@@ -91,22 +91,14 @@ __declspec(align(16)) struct tGlobalData
 {
     Vec2 g_RenderResolution;
     Vec2 g_NoiseTexResolution;
+
     float g_dt;
     float g_time;
-
     UINT Light2DCount;
     UINT Light3DCount;
 
     Vec3 eyeWorld;
     int DrawAsWireFrame;
-
-    Vec4 pickingColor;
-
-    int UseRim;
-    Vec3 rimColor;
-    float rimPower;
-
-    float NormalLineScale;
 };
 
 __declspec(align(16)) struct tAnimData2D

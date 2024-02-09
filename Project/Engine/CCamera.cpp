@@ -17,6 +17,7 @@
 #include "CMaterial.h"
 
 #include "CRenderComponent.h"
+#include "CConstBuffer.h"
 
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
@@ -192,6 +193,12 @@ void CCamera::render()
     // eyePos 등록
     g_Global.eyeWorld = Transform()->GetWorldPos();
 
+    // 전역 상수 데이터 바인딩
+    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    pGlobalBuffer->SetData(&g_Global);
+    pGlobalBuffer->UpdateData();
+    pGlobalBuffer->UpdateData_CS();
+
     // Domain 순서대로 렌더링
     render(m_vecOpaque);
     render(m_vecMaked);
@@ -224,12 +231,9 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             Ptr<CMaterial> mtrl = meshRender->GetMaterial();
 
             // Normal Line Pass
-            if (meshRender->IsDrawNormalLine())
-            {
-                meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
-                meshRender->UpdateData();
-                meshRender->GetMesh()->render_draw();
-            }
+            meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
+            meshRender->UpdateData();
+            meshRender->GetMesh()->render_draw();
 
             // outline pass
             // 와이어 프레임, SkyBox - Off
@@ -256,7 +260,12 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
                 CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
 
+                // 오브젝트 이름으로 HashID 설정
+                hash<wstring> hasher;
+                int HashID = (int)hasher(_vecObj[i]->GetName());
+
                 meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl"));
+                meshRender->GetMaterial()->SetScalarParam(VEC4_0, HashIDToColor(HashID));
 
                 _vecObj[i]->render();
 

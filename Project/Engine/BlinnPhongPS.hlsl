@@ -7,6 +7,9 @@
 
 #define MtrlDiffuse g_vDiffuse
 #define MtrlSpecular g_vSpecular
+ 
+#define RIM_COLOR g_vec4_0
+#define RIM_POWER g_float_0
 
 float4 main(PS_IN input) : SV_Target
 {
@@ -26,8 +29,7 @@ float4 main(PS_IN input) : SV_Target
     }
 
     // Rim
-    if (g_UseRim)
-        color.rgb += RimLight(input.normalWorld, toEye, g_rimColor, g_rimPower);
+    color.rgb += RimLight(input.normalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
     
     // Texture
     if (g_btex_0)

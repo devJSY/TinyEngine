@@ -1,5 +1,7 @@
 #include "global.hlsli"
     
+#define NORMALLINE_SCALE g_float_0
+
 struct GS_Input
 {
     float4 posModel : SV_POSITION;
@@ -28,7 +30,7 @@ void main(point GS_Input input[1], inout LineStream<PS_Input> outputStream)
     outputStream.Append(output);
     
     // 추가된 NormalLine 정점
-    output.pos = mul(posWorld + g_NormalLineScale * normalWorld, g_matView);
+    output.pos = mul(posWorld + NORMALLINE_SCALE * normalWorld, g_matView);
     output.pos = mul(output.pos, g_matProj);
     output.color = float3(1.f, 0.f, 0.f);
     outputStream.Append(output);

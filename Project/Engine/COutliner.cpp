@@ -736,32 +736,6 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             ImGui::TreePop();
         }
 
-        // Option
-        if (ImGui::TreeNodeEx("##MeshRenderOption", m_DefaultTreeNodeFlag, "Option"))
-        {
-            bool bNormalLine = pMeshRender->IsDrawNormalLine();
-            if (ImGui::Checkbox("Draw NormalLine", &bNormalLine))
-                pMeshRender->SetDrawNormalLine(bNormalLine);
-
-            float scale = pMeshRender->GetNormalLineScale();
-            if (ImGui::SliderFloat("NormalLineScale", &scale, 1.f, 100.f))
-                pMeshRender->SetNormalLineScale(scale);
-
-            bool bUseRim = pMeshRender->IsUseRim();
-            if (ImGui::Checkbox("Use Rim", &bUseRim))
-                pMeshRender->SetUseRim(bUseRim);
-
-            Vec3 color = pMeshRender->GetRimColor();
-            if (ImGui::ColorEdit3("Color", &color.x))
-                pMeshRender->SetRimColor(color);
-
-            float power = pMeshRender->GetRimPower();
-            if (ImGui::SliderFloat("Power", &power, 0.f, 10.f))
-                pMeshRender->SetRimPower(power);
-
-            ImGui::TreePop();
-        }
-
         ImGui::TreePop();
     }
 }

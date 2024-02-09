@@ -89,22 +89,14 @@ cbuffer GLOBAL_DATA : register(b3)
 {
     float2 g_RenderResolution;
     float2 g_NoiseTexResolution;
+    
     float g_dt;
     float g_time;
-
     uint g_Light2DCount;
     uint g_Light3DCount;
         
     float3 g_eyeWorld;
     bool g_DrawAsWireFrame;
-    
-    float4 g_pickingColor;
-
-    bool g_UseRim;
-    float3 g_rimColor;
-    float g_rimPower;
-
-    float g_NormalLineScale;
 }
 
 Texture2D g_tex_0 : register(t0);

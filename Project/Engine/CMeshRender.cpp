@@ -21,12 +21,6 @@
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
-    , m_bDrawNormalLine(false)
-    , m_NormalLineScale(1.0f)
-    , m_bUseRim(false)
-    , m_RimColor(Vec3())
-    , m_RimPower(1.f)
-
 {
 }
 
@@ -42,23 +36,6 @@ void CMeshRender::UpdateData()
     }
 
     Transform()->UpdateData();
-
-    // Global Data 바인딩
-    if (m_bDrawNormalLine)
-        g_Global.NormalLineScale = m_NormalLineScale;
-
-    g_Global.UseRim = m_bUseRim;
-    g_Global.rimColor = m_RimColor;
-    g_Global.rimPower = m_RimPower;
-
-    // 오브젝트 이름으로 HashID 설정
-    hash<wstring> hasher;
-    int HashID = (int)hasher(GetOwner()->GetName());
-    g_Global.pickingColor = HashIDToColor(HashID);
-
-    static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
-    pCB->SetData(&g_Global);
-    pCB->UpdateData();
 }
 
 void CMeshRender::finaltick()
@@ -86,26 +63,4 @@ void CMeshRender::render()
     UpdateData();
 
     GetMesh()->render();
-}
-
-void CMeshRender::SaveToLevelFile(FILE* _File)
-{
-    CRenderComponent::SaveToLevelFile(_File);
-
-    fwrite(&m_bDrawNormalLine, sizeof(bool), 1, _File);
-    fwrite(&m_NormalLineScale, sizeof(float), 1, _File);
-    fwrite(&m_bUseRim, sizeof(bool), 1, _File);
-    fwrite(&m_RimColor, sizeof(Vec3), 1, _File);
-    fwrite(&m_RimPower, sizeof(float), 1, _File);
-}
-
-void CMeshRender::LoadFromLevelFile(FILE* _File)
-{
-    CRenderComponent::LoadFromLevelFile(_File);
-
-    fread(&m_bDrawNormalLine, sizeof(bool), 1, _File);
-    fread(&m_NormalLineScale, sizeof(float), 1, _File);
-    fread(&m_bUseRim, sizeof(bool), 1, _File);
-    fread(&m_RimColor, sizeof(Vec3), 1, _File);
-    fread(&m_RimPower, sizeof(float), 1, _File);
 }
