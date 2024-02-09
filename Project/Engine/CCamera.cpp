@@ -232,8 +232,11 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
             // Normal Line Pass
             meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
-            meshRender->UpdateData();
-            meshRender->GetMesh()->render_draw();
+            if (meshRender->GetMaterial()->GetMtrlConst().arrInt[0])
+            {
+                meshRender->UpdateData();
+                meshRender->GetMesh()->render_draw();
+            }
 
             // outline pass
             // 와이어 프레임, SkyBox - Off
