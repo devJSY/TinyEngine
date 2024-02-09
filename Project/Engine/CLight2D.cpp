@@ -32,6 +32,8 @@ void CLight2D::finaltick()
 
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+    GamePlayStatic::DrawDebugCircle(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
 }
 
 void CLight2D::SaveToLevelFile(FILE* _File)

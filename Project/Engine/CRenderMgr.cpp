@@ -101,11 +101,11 @@ void CRenderMgr::render_debug()
         case DEBUG_SHAPE::CROSS:
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CrosshairMesh"));
             break;
-        case DEBUG_SHAPE::CUBE:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CubeMesh_Debug"));
+        case DEBUG_SHAPE::BOX:
+            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireBox"));
             break;
         case DEBUG_SHAPE::SPHERE:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh_Debug"));
+            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere"));
             break;
         default:
             break;
@@ -115,7 +115,8 @@ void CRenderMgr::render_debug()
         m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, (*iter).vColor);
 
         D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
-        if (DEBUG_SHAPE::CROSS == (*iter).eShape)
+        if (DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape ||
+            DEBUG_SHAPE::SPHERE == (*iter).eShape)
         {
             m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }

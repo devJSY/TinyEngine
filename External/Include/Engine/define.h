@@ -192,7 +192,7 @@ enum class DEBUG_SHAPE
     CIRCLE,
     CROSS,
 
-    CUBE,
+    BOX,
     SPHERE,
 };
 

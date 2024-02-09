@@ -15,7 +15,7 @@ CCollider2D::CCollider2D()
     , m_Type(COLLIDER2D_TYPE::RECT)
     , m_fRadius(0.f)
 {
-    m_BoundingSphere = BoundingSphere();
+    SetColliderType(m_Type);
 }
 
 CCollider2D::~CCollider2D()
@@ -55,6 +55,12 @@ void CCollider2D::finaltick()
                 GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
             else
                 GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
+
+            // 3D
+            // if (0 == m_CollisionCount)
+            //     GamePlayStatic::DrawDebugBox(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+            // else
+            //     GamePlayStatic::DrawDebugBox(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
         }
         else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
         {
@@ -62,10 +68,16 @@ void CCollider2D::finaltick()
                 GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
             else
                 GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
+
+            // 3D
+            // if (0 == m_CollisionCount)
+            //     GamePlayStatic::DrawDebugSphere(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
+            // else
+            //     GamePlayStatic::DrawDebugSphere(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
         }
     }
 
-    // Bounding Sphere
+    // Bounding Area
     m_BoundingSphere.Center = m_matColWorld.Translation();
     if (m_Type == COLLIDER2D_TYPE::RECT)
     {
@@ -76,13 +88,32 @@ void CCollider2D::finaltick()
 
         XMMatrixDecompose(&XMscale, &XMrot, &XMTr, m_matColWorld);
 
-        Vec3 scale = XMscale;
-
-        m_BoundingSphere.Radius = (scale.x + scale.y + scale.z) / 3.f;
+        m_BoundingBox.Extents = Vec3(XMscale);
     }
     else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
     {
         m_BoundingSphere.Radius = m_fRadius;
+    }
+}
+
+void CCollider2D::SetColliderType(COLLIDER2D_TYPE _Type)
+{
+    m_Type = _Type;
+
+    if (m_Type == COLLIDER2D_TYPE::RECT)
+    {
+        // 행렬 분해
+        XMVECTOR XMscale;
+        XMVECTOR XMrot;
+        XMVECTOR XMTr;
+
+        XMMatrixDecompose(&XMscale, &XMrot, &XMTr, m_matColWorld);
+
+        m_BoundingBox = BoundingBox(Vec3(XMTr), Vec3(XMscale));
+    }
+    else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
+    {
+        m_BoundingSphere = BoundingSphere(m_matColWorld.Translation(), m_fRadius);
     }
 }
 
@@ -124,6 +155,8 @@ void CCollider2D::SaveToLevelFile(FILE* _File)
     fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
     fwrite(&m_Type, sizeof(COLLIDER2D_TYPE), 1, _File);
     fwrite(&m_fRadius, sizeof(float), 1, _File);
+    fwrite(&m_BoundingBox, sizeof(BoundingBox), 1, _File);
+    fwrite(&m_BoundingSphere, sizeof(BoundingSphere), 1, _File);
 }
 
 void CCollider2D::LoadFromLevelFile(FILE* _File)
@@ -133,4 +166,6 @@ void CCollider2D::LoadFromLevelFile(FILE* _File)
     fread(&m_bAbsolute, sizeof(bool), 1, _File);
     fread(&m_Type, sizeof(COLLIDER2D_TYPE), 1, _File);
     fread(&m_fRadius, sizeof(float), 1, _File);
+    fread(&m_BoundingBox, sizeof(BoundingBox), 1, _File);
+    fread(&m_BoundingSphere, sizeof(BoundingSphere), 1, _File);
 }

@@ -478,7 +478,11 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
             if (nullptr == col)
                 continue;
 
-            bool bSelected = curRay.Intersects(col->GetBoundingSphere(), dist);
+            bool bSelected = false;
+            if (COLLIDER2D_TYPE::RECT == col->GetColliderType())
+                bSelected = curRay.Intersects(col->GetBoundingBox(), dist);
+            else
+                bSelected = curRay.Intersects(col->GetBoundingSphere(), dist);
 
             if (bSelected)
             {
@@ -504,7 +508,8 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     // 이미 해당 컴포넌트를 보유한 경우
     if (nullptr != pCom)
     {
-        LOG(Error, "%s Already Has a %s Component!!", ToString(pObj->GetName()).c_str(), COMPONENT_TYPE_STRING[(UINT)type]);
+        LOG(Error, "%s Already Has a %s Component!!", ToString(pObj->GetName()).c_str(),
+            COMPONENT_TYPE_STRING[(UINT)type]);
         return;
     }
 

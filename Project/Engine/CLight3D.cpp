@@ -35,6 +35,8 @@ void CLight3D::finaltick()
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
+    GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
+
     // Mesh ¼³Á¤
     if (nullptr == MeshRender())
         return;

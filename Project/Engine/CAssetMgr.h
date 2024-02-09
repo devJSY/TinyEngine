@@ -57,6 +57,9 @@ public:
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
 
+    tMeshData MakeWireBox(const Vector3 center, const Vector3 extents);
+    tMeshData MakeWireSphere(const Vector3 center, const float radius);
+
     // 모델 로딩
 public:
     CGameObject* LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals = false,
