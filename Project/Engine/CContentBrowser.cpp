@@ -42,17 +42,10 @@ void CContentBrowser::render()
         ImGui::Separator();
     }
 
-    // FileName
-    ImGui_InputText("Current Directory", m_CurrentDirectory.string());
-
     static float padding = 16.0f;
     static float thumbnailSize = 110.0f;
 
     ImGui::Columns(1);
-    ImGui::SliderFloat(ImGui_LabelPrefix("Thumbnail Size").c_str(), &thumbnailSize, 16, 256);
-    ImGui::SliderFloat(ImGui_LabelPrefix("Padding").c_str(), &padding, 0, 32);
-
-    ImGui::Separator();
 
     float cellSize = thumbnailSize + padding;
 
@@ -68,6 +61,7 @@ void CContentBrowser::render()
         const auto& path = directoryEntry.path();
         auto relativePath = std::filesystem::relative(path, CPathMgr::GetContentPath());
         string filenameString = relativePath.filename().string();
+        std::filesystem::path fileNamePath = filenameString;
 
         ImGui::PushID(filenameString.c_str());
 
@@ -80,8 +74,6 @@ void CContentBrowser::render()
         if (ImGui::BeginDragDropSource())
         {
             ImGui::Text("%s", filenameString.c_str(), filenameString.size());
-
-            std::filesystem::path fileNamePath = filenameString;
 
             // 텍스춰 포맷이면 로딩
             if (fileNamePath.extension() == ".png" || fileNamePath.extension() == ".PNG" ||

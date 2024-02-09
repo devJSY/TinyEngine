@@ -637,14 +637,10 @@ void CAssetMgr::CreateDefaultTexture()
     if (nullptr == FindAsset<CTexture>(L"FileIconTex"))
         Load<CTexture>(L"FileIconTex", L"Icons\\ContentBrowser\\FileIcon.png");
 
-    if (nullptr == FindAsset<CTexture>(L"PauseButtonTex"))
-        Load<CTexture>(L"PauseButtonTex", L"Icons\\PauseButton.png");
     if (nullptr == FindAsset<CTexture>(L"PlayButtonTex"))
         Load<CTexture>(L"PlayButtonTex", L"Icons\\PlayButton.png");
-    if (nullptr == FindAsset<CTexture>(L"SimulateButtonTex"))
-        Load<CTexture>(L"SimulateButtonTex", L"Icons\\SimulateButton.png");
-    if (nullptr == FindAsset<CTexture>(L"StepButtonTex"))
-        Load<CTexture>(L"StepButtonTex", L"Icons\\StepButton.png");
+    if (nullptr == FindAsset<CTexture>(L"PauseButtonTex"))
+        Load<CTexture>(L"PauseButtonTex", L"Icons\\PauseButton.png");
     if (nullptr == FindAsset<CTexture>(L"StopButtonTex"))
         Load<CTexture>(L"StopButtonTex", L"Icons\\StopButton.png");
 
@@ -799,7 +795,7 @@ void CAssetMgr::CreateDefaultMaterial()
         CMaterial* pMtrl = new CMaterial;
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
-        pMtrl->SetScalarParam(INT_0, 0); // Invert NormalMap Y
+        pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
 
         pMtrl->SetName(L"UnrealPBRMtrl");
         AddAsset<CMaterial>(L"UnrealPBRMtrl", pMtrl);

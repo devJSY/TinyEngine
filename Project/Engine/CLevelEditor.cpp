@@ -323,10 +323,8 @@ void CLevelEditor::render_Toolbar()
     bool hasSimulateButton = true;
     bool hasPauseButton = true;
 
-    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PauseButtonTex");
     Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PlayButtonTex");
-    Ptr<CTexture> pSimulateButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"SimulateButtonTex");
-    Ptr<CTexture> pStepButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StepButtonTex");
+    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PauseButtonTex");
     Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StopButtonTex");
 
     if (hasPlayButton)
@@ -342,12 +340,6 @@ void CLevelEditor::render_Toolbar()
     {
         if (hasPlayButton)
             ImGui::SameLine();
-
-        if (ImGui::ImageButton((void*)pSimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
-                               ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-            toolbarEnabled)
-        {
-        }
     }
 
     if (hasPauseButton)
@@ -355,16 +347,6 @@ void CLevelEditor::render_Toolbar()
         ImGui::SameLine();
         {
             if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
-                                   ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-                toolbarEnabled)
-            {
-            }
-        }
-
-        // Step button
-        ImGui::SameLine();
-        {
-            if (ImGui::ImageButton((void*)pStepButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
                                    ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
                 toolbarEnabled)
             {

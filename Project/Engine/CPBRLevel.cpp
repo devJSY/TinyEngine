@@ -76,7 +76,7 @@ void CPBRLevel::begin()
     pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
     pSkyBox->Transform()->SetAbsolute(true);
 
-    pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::SPHERE);
+    pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::BOX);
     // pSkyBox->SkyBox()->SetBrdfTexture(
     //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds"));
     // pSkyBox->SkyBox()->SetEnvTexture(

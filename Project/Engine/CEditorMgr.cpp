@@ -68,6 +68,7 @@ void CEditorMgr::init()
 
     // 테마 설정
     SetDarkThemeColors();
+    SetImGuizmoStyle();
 
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(CEngine::GetInst()->GetMainWind());
@@ -178,4 +179,18 @@ void CEditorMgr::SetDarkThemeColors()
     colors[ImGuiCol_TitleBg] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
     colors[ImGuiCol_TitleBgActive] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4{0.15f, 0.1505f, 0.151f, 1.0f};
+}
+
+void CEditorMgr::SetImGuizmoStyle()
+{
+    ImGuizmo::Style* style = &ImGuizmo::GetStyle(); // get a pointer to the global style context
+    ImVec4* colors = style->Colors;                 // get access to the colors array
+
+    style->TranslationLineThickness = 3.0f;
+    style->TranslationLineArrowSize = 8.0f;
+
+    // lighter r/g/b colours
+    colors[ImGuizmo::DIRECTION_X] = ImVec4(0.858f, 0.243f, 0.113f, 0.929f);
+    colors[ImGuizmo::DIRECTION_Y] = ImVec4(0.603f, 0.952f, 0.282f, 0.929f);
+    colors[ImGuizmo::DIRECTION_Z] = ImVec4(0.227f, 0.478f, 0.972f, 0.929f);
 }

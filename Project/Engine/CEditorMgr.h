@@ -44,6 +44,7 @@ public:
 
 private:
     void SetDarkThemeColors();
+    void SetImGuizmoStyle();
 
 public:
     void init();
