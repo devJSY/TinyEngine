@@ -20,6 +20,7 @@
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 
+// 보는 각도에 따라서 색이나 밝기가 달라 짐
 float3 SchlickFresnel(float3 F0, float NdotH)
 {
     return F0 + (1.0 - F0) * pow(2.0, (-5.55473 * NdotH - 6.98316) * NdotH);
@@ -35,7 +36,7 @@ float3 GetNormal(PS_IN input)
         float3 normal = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
         normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
 
-        // OpenGL 용 노멀맵일 경우에는 y 방향을 뒤집어줍니다.
+        // OpenGL 용 노멀맵일 경우에는 y 방향 반전
         normal.y = InvertNormalMapY ? -normal.y : normal.y;
         
         float3 N = normalWorld;
@@ -55,7 +56,7 @@ float3 DiffuseIBL(float3 albedo, float3 normalWorld, float3 pixelToEye,
 {
     float3 F0 = lerp(Fdielectric, albedo, metallic);
     float3 F = SchlickFresnel(F0, max(0.0, dot(normalWorld, pixelToEye)));
-    float3 kd = lerp(1.0 - F, 0.0, metallic);
+    float3 kd = lerp(1.0 - F, 0.0, metallic); // metallic가 커질수록 Diffuse가 감소됨 - 에너지 보존 법칙
     float3 irradiance = IrradianceIBLTex.SampleLevel(g_LinearWrapSampler, normalWorld, 0).rgb;
     
     return kd * albedo * irradiance;
@@ -64,14 +65,14 @@ float3 DiffuseIBL(float3 albedo, float3 normalWorld, float3 pixelToEye,
 float3 SpecularIBL(float3 albedo, float3 normalWorld, float3 pixelToEye,
                    float metallic, float roughness)
 {
-    float IBLRange = 5.f;
+    float IBLRange = 5.f; // SpecularIBLTex.GetDimensions() Lod
     float IBLBias = 0.f;
     float lod = roughness * IBLRange + IBLBias;
-    
+
     float2 specularBRDF = BRDFTex.SampleLevel(g_LinearClampSampler, float2(dot(normalWorld, pixelToEye), 1.0 - roughness), 0.0f).rg;
     float3 specularIrradiance = SpecularIBLTex.SampleLevel(g_LinearWrapSampler, reflect(-pixelToEye, normalWorld), lod).rgb;
 
-    float3 F0 = lerp(Fdielectric, albedo, metallic);
+    float3 F0 = lerp(Fdielectric, albedo, metallic); // metallic가 커질수록 albedo값에 가까워짐 - 에너지 보존 법칙
 
     return (F0 * specularBRDF.x + specularBRDF.y) * specularIrradiance;
 }
@@ -85,7 +86,7 @@ float3 AmbientLightingByIBL(float3 albedo, float3 normalW, float3 pixelToEye, fl
     return (diffuseIBL + specularIBL) * ao;
 }
 
-// GGX/Towbridge-Reitz normal distribution function.
+// GGX/Towbridge-Reitz normal distribution function. // 미세 표면중 보는 방향이 노말인 표면의 비율
 // Uses Disney's reparametrization of alpha = roughness^2.
 float NdfGGX(float NdotH, float roughness)
 {
@@ -103,6 +104,7 @@ float SchlickG1(float NdotV, float k)
 }
 
 // Schlick-GGX approximation of geometric attenuation function using Smith's method.
+// 미세표면중 울퉁불퉁한 부분의 경우 빛이 들어오더라도 나가다가 막히는 Masking 을 표현하는 기하학적인 형태의 함수
 float SchlickGGX(float NdotI, float NdotO, float roughness)
 {
     float r = roughness + 1.0;
@@ -136,6 +138,10 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
     return radiance;
 }
 
+// PBR 원칙
+// 1. microfacet 표면 모델을 기반으로 한다
+// 2. 에너지를 보존한다.
+// 3. 물리적 기반 BRDF를 사용한다. // BRDF - Bidirectional reflectance distribution function
 float4 main(PS_IN input) : SV_TARGET
 {
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
