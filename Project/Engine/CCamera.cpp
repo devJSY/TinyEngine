@@ -190,15 +190,6 @@ void CCamera::render()
     g_Transform.matView = m_matView;
     g_Transform.matProj = m_matProj;
 
-    // eyePos 등록
-    g_Global.eyeWorld = Transform()->GetWorldPos();
-
-    // 전역 상수 데이터 바인딩
-    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
-    pGlobalBuffer->SetData(&g_Global);
-    pGlobalBuffer->UpdateData();
-    pGlobalBuffer->UpdateData_CS();
-
     // Domain 순서대로 렌더링
     render(m_vecOpaque);
     render(m_vecMaked);
