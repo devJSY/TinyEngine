@@ -84,9 +84,16 @@ enum class CB_TYPE
 enum class RS_TYPE
 {
     CULL_BACK,
+    CULL_BACK_CCW,
+
     CULL_FRONT,
+    CULL_FRONT_CCW,
+
     CULL_NONE,
+    CULL_NONE_CCW,
+
     WIRE_FRAME,
+    WIRE_FRAME_CCW,
 
     END,
 };
@@ -104,6 +111,9 @@ enum class DS_TYPE
     NO_WRITE, // 깊이 테스트 O			깊이 기록 X
 
     NO_TEST_NO_WRITE, // 깊이 테스트 X			깊이 기록 X
+
+    MASK,        // Stencil Buffer Masking 용
+    DRAW_MASKED, // Stencil Buffer Masking 되어있는 부분만 렌더링
 
     END,
 };
@@ -223,7 +233,7 @@ enum class PARTICLE_MODULE
     NOISE_FORCE,
     CALCULATE_FORCE, // 주어진 힘을 계산하는 모듈
 
-    RENDER,          // 렌더링 때의 옵션 관련
+    RENDER, // 렌더링 때의 옵션 관련
 
     END,
 };

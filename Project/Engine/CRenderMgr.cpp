@@ -22,6 +22,7 @@ CRenderMgr::CRenderMgr()
     , m_vecNoiseTex{}
     , m_ToneMappingObj(nullptr)
     , bloomLevels(5)
+    , m_mirror(nullptr)
 {
 }
 
@@ -53,16 +54,50 @@ CRenderMgr::~CRenderMgr()
         delete m_ToneMappingObj;
         m_ToneMappingObj = nullptr;
     }
+
+    if (nullptr != m_mirror)
+    {
+        delete m_mirror;
+        m_mirror = nullptr;
+    }
 }
 
 void CRenderMgr::tick()
 {
+    m_mirror->Transform()->finaltick();
+
     UpdateData();
 
     // HDR Rendering
+    g_Global.render_mask = 0;
+    g_Global.render_DrawMasked = 0;
+    g_Global.ReflectionRowMat = Matrix();
     CDevice::GetInst()->SetFloatRenderTarget();
     render();
     render_debug();
+
+    // Mirror
+    m_mirrorPlane = SimpleMath::Plane(m_mirror->Transform()->GetWorldPos(), Vector3(0.0f, 0.0f, -1.0f));
+
+    // 거울부분 masking
+    g_Global.render_mask = 1;
+    g_Global.render_DrawMasked = 0;
+    g_Global.ReflectionRowMat = Matrix();
+    m_mirror->render(); // mask
+
+    // masking 부분 렌더
+    CDevice::GetInst()->ClearDepth();
+    g_Global.render_mask = 0;
+    g_Global.render_DrawMasked = 1;
+    g_Global.ReflectionRowMat = Matrix::CreateReflection(m_mirrorPlane);
+    render();
+    render_debug();
+
+    // 거울 렌더링
+    g_Global.render_mask = 0;
+    g_Global.render_DrawMasked = 0;
+    g_Global.ReflectionRowMat = Matrix();
+    m_mirror->render(); 
 
     // 후처리
     render_postprocess();
@@ -202,7 +237,7 @@ void CRenderMgr::UpdateData()
     g_Global.Light3DCount = (UINT)m_vecLight3D.size();
 
     // 메인 카메라 위치 등록
-    g_Global.eyeWorld = m_vecCam[0]->Transform()->GetWorldPos(); 
+    g_Global.eyeWorld = m_vecCam[0]->Transform()->GetWorldPos();
 
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);

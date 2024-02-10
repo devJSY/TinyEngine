@@ -169,6 +169,16 @@ void CDevice::SetViewport(float _Width, float _Height)
     }
 }
 
+void CDevice::ClearDepth(FLOAT _depth)
+{
+    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, _depth, 0);
+}
+
+void CDevice::ClearStencil(UINT8 _stencil)
+{
+    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_STENCIL, 1.f, _stencil);
+}
+
 int CDevice::CreateViewport()
 {
     m_Viewport.MinDepth = 0;
@@ -319,27 +329,55 @@ int CDevice::CreateBuffer()
 
 int CDevice::CreateRasterizerState()
 {
-    m_arrRS[(UINT)RS_TYPE::CULL_BACK] = nullptr;
-
     HRESULT result = S_OK;
 
     D3D11_RASTERIZER_DESC tDesc = {};
 
+    tDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+    tDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
+    tDesc.FrontCounterClockwise = false;
+    result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_BACK].GetAddressOf());
+    if (FAILED(result))
+        return E_FAIL;
+
+    tDesc.FrontCounterClockwise = true;
+    result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_BACK_CCW].GetAddressOf());
+    if (FAILED(result))
+        return E_FAIL;
+
     tDesc.CullMode = D3D11_CULL_FRONT;
     tDesc.FillMode = D3D11_FILL_SOLID;
+    tDesc.FrontCounterClockwise = false;
     result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_FRONT].GetAddressOf());
+    if (FAILED(result))
+        return E_FAIL;
+
+    tDesc.FrontCounterClockwise = true;
+    result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_FRONT_CCW].GetAddressOf());
     if (FAILED(result))
         return E_FAIL;
 
     tDesc.CullMode = D3D11_CULL_NONE;
     tDesc.FillMode = D3D11_FILL_SOLID;
+    tDesc.FrontCounterClockwise = false;
     result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_NONE].GetAddressOf());
+    if (FAILED(result))
+        return E_FAIL;
+
+    tDesc.FrontCounterClockwise = true;
+    result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::CULL_NONE_CCW].GetAddressOf());
     if (FAILED(result))
         return E_FAIL;
 
     tDesc.CullMode = D3D11_CULL_NONE;
     tDesc.FillMode = D3D11_FILL_WIREFRAME;
+    tDesc.FrontCounterClockwise = false;
     result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::WIRE_FRAME].GetAddressOf());
+    if (FAILED(result))
+        return E_FAIL;
+
+    tDesc.FrontCounterClockwise = true;
+    result = DEVICE->CreateRasterizerState(&tDesc, m_arrRS[(UINT)RS_TYPE::WIRE_FRAME_CCW].GetAddressOf());
     if (FAILED(result))
         return E_FAIL;
 
@@ -404,6 +442,47 @@ int CDevice::CreateDepthStencilState()
     tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
     tDesc.StencilEnable = false;
     hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST_NO_WRITE].GetAddressOf());
+    if (FAILED(hr))
+        return E_FAIL;
+
+    tDesc.DepthEnable = true; // 이미 그려진 물체 유지
+    tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    tDesc.DepthFunc = D3D11_COMPARISON_LESS;
+    tDesc.StencilEnable = true;    // Stencil 필수
+    tDesc.StencilReadMask = 0xFF;  // 모든 비트 다 사용
+    tDesc.StencilWriteMask = 0xFF; // 모든 비트 다 사용
+    // 앞면에 대해서 어떻게 작동할지 설정
+    tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+    tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    // 뒷면에 대해 어떻게 작동할지 설정 (뒷면도 그릴 경우)
+    tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+    tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::MASK].GetAddressOf());
+    if (FAILED(hr))
+        return E_FAIL;
+
+    // Stencil에 표기된 경우에"만" 그리는 DSS
+    // DepthBuffer는 초기화된 상태로 가정
+    // D3D11_COMPARISON_EQUAL 이미 1로 표기된 경우에만 그리기
+    tDesc.DepthEnable = true;   // 거울 속을 다시 그릴때 필요
+    tDesc.StencilEnable = true; // Stencil 사용
+    tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    tDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL; // <- 주의
+    tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+    tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+
+    hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::DRAW_MASKED].GetAddressOf());
     if (FAILED(hr))
         return E_FAIL;
 

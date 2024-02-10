@@ -48,6 +48,9 @@ private:
 
     CGameObject* m_ToneMappingObj;
 
+    CGameObject* m_mirror;
+    DirectX::SimpleMath::Plane m_mirrorPlane;
+
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
     void RegisterUICamera(CCamera* _Cam);

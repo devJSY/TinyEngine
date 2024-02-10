@@ -50,6 +50,8 @@ public:
     void SetRenderTarget();
     void SetFloatRenderTarget();
     void SetViewport(float _Width = 0, float _Height = 0);
+    void ClearDepth(FLOAT _depth = 1.f);
+    void ClearStencil(UINT8 _stencil = 0);
 
 private:
     int CreateSwapChain();

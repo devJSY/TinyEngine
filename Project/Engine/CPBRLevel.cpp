@@ -40,7 +40,7 @@ void CPBRLevel::begin()
     GetLayer(15)->SetName(L"UI");
 
     AddSample();
-    AddModels();
+    // AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;

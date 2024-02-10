@@ -99,6 +99,12 @@ __declspec(align(16)) struct tGlobalData
 
     Vec3 eyeWorld;
     int DrawAsWireFrame;
+
+    int render_mask;
+    int render_DrawMasked;
+    Vec2 padd;
+
+    Matrix ReflectionRowMat;
 };
 
 __declspec(align(16)) struct tAnimData2D
