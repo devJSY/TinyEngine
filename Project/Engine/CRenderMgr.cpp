@@ -201,6 +201,9 @@ void CRenderMgr::UpdateData()
     g_Global.Light2DCount = (UINT)m_vecLight2D.size();
     g_Global.Light3DCount = (UINT)m_vecLight3D.size();
 
+    // 메인 카메라 위치 등록
+    g_Global.eyeWorld = m_vecCam[0]->Transform()->GetWorldPos(); 
+
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
     pGlobalBuffer->SetData(&g_Global);
