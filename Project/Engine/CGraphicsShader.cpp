@@ -204,7 +204,7 @@ int CGraphicsShader::UpdateData()
     CONTEXT->IASetPrimitiveTopology(m_Topology);
 
     CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
-    CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 0);
+    CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 1);
     CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(m_BSType).Get(), nullptr, 0xffffffff);
 
     if (1 == g_Global.render_Mode)

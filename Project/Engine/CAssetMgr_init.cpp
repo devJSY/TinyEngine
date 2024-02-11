@@ -631,7 +631,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\MirrorVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\MirrorPS.hlsl", "main");
 
+        pShader->SetDSType(DS_TYPE::DRAW_MASKED);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MIRROR);
 
         pShader->SetName(L"MirrorShader");
