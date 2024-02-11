@@ -189,6 +189,21 @@ void CRenderMgr::render_ui()
 
 void CRenderMgr::render_postprocess()
 {
+    for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
+    {
+        // 최종 렌더링 이미지를 후처리 타겟에 복사
+        CopyToPostProcessTex();
+
+        // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
+        m_PostProcessTex->UpdateData(14);
+
+        // 후처리 오브젝트 렌더링
+        m_vecPostProcess[i]->render();
+    }
+
+    m_vecPostProcess.clear();
+    CTexture::Clear(14);
+
     // Bloom
     CopyToPostProcessTex();
     for (int i = 0; i < m_BloomDownFilters.size(); i++)

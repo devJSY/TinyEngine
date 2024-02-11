@@ -34,7 +34,6 @@ private:
     vector<CGameObject*> m_vecOpaque;
     vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
-    vector<CGameObject*> m_vecPostProcess;
 
 private:
     float m_CamSpeed;
@@ -80,7 +79,6 @@ public:
 
 private:
     void render(vector<CGameObject*>& _vecObj);
-    void render_postprocess();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

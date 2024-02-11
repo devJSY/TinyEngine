@@ -41,6 +41,7 @@ private:
     vector<Ptr<CTexture>> m_vecNoiseTex;
 
     // Post Process
+    vector<CGameObject*> m_vecPostProcess;
     int bloomLevels;
     vector<Ptr<CTexture>> m_BloomTextures;
     vector<CGameObject*> m_BloomDownFilters;
@@ -64,6 +65,8 @@ public:
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
+
+    void RegisterPostProcess(CGameObject* _PostProcessObj) { m_vecPostProcess.push_back(_PostProcessObj); }
 
 public:
     CCamera* GetCamera(int _Idx) const;
