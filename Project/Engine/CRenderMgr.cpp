@@ -67,10 +67,12 @@ void CRenderMgr::tick()
     // HDR Rendering
     CDevice::GetInst()->SetFloatRenderTarget();
     render();
-    render_debug();
 
     // Mirror
     render_mirror();
+
+    // Debug
+    render_debug();
 
     // Postprocess
     render_postprocess();
