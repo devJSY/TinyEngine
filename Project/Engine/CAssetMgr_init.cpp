@@ -445,7 +445,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_FRONT); // SkyBox´Â µÞ¸é¸¸ ·»´õ¸µ
+        pShader->SetRSType(RS_TYPE::CULL_FRONT); 
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 

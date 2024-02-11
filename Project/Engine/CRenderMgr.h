@@ -49,7 +49,7 @@ private:
 
     CGameObject* m_ToneMappingObj;
 
-    // mirror
+    // Mirror
     CGameObject* m_mirror;
 
 public:

@@ -3,6 +3,8 @@
 
 #include "CTransform.h"
 
+#include "CDevice.h"
+
 CSkyBox::CSkyBox()
     : CRenderComponent(COMPONENT_TYPE::SKYBOX)
     , m_Type(SKYBOX_TYPE::SPHERE)

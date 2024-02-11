@@ -397,7 +397,6 @@ int CDevice::CreateDepthStencilState()
     tDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
     tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     tDesc.StencilEnable = false;
-
     hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::LESS_EQUAL].GetAddressOf());
     if (FAILED(hr))
         return E_FAIL;
@@ -451,16 +450,11 @@ int CDevice::CreateDepthStencilState()
     tDesc.StencilEnable = true;    // Stencil 필수
     tDesc.StencilReadMask = 0xFF;  // 모든 비트 다 사용
     tDesc.StencilWriteMask = 0xFF; // 모든 비트 다 사용
-    // 앞면에 대해서 어떻게 작동할지 설정
-    tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-    tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-    // 뒷면에 대해 어떻게 작동할지 설정 (뒷면도 그릴 경우)
-    tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-    tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    tDesc.FrontFace.StencilFailOp = tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilDepthFailOp = tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilPassOp = tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+    tDesc.FrontFace.StencilFunc = tDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
     hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::MASK].GetAddressOf());
     if (FAILED(hr))
@@ -473,14 +467,10 @@ int CDevice::CreateDepthStencilState()
     tDesc.StencilEnable = true; // Stencil 사용
     tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     tDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL; // <- 주의
-    tDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-    tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    tDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+    tDesc.FrontFace.StencilFailOp = tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilDepthFailOp = tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilPassOp = tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    tDesc.FrontFace.StencilFunc = tDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
     hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::DRAW_MASKED].GetAddressOf());
     if (FAILED(hr))

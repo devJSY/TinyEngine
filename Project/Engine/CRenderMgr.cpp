@@ -151,24 +151,19 @@ void CRenderMgr::render_mirror()
         return;
 
     // 거울부분 masking
-    g_Global.render_mask = 1;
-    g_Global.render_DrawMasked = 0;
-    g_Global.ReflectionRowMat = Matrix();
+    CDevice::GetInst()->ClearStencil();
+    g_Global.render_Mode = 1;
     m_mirror->render(); // mask
 
     // masking 부분 렌더
     CDevice::GetInst()->ClearDepth();
-    g_Global.render_mask = 0;
-    g_Global.render_DrawMasked = 1;
     g_Global.ReflectionRowMat = Matrix::CreateReflection(
         SimpleMath::Plane(m_mirror->Transform()->GetWorldPos(), m_mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
+    g_Global.render_Mode = 2;
     render();
-    render_debug();
 
     // 거울 렌더링
-    g_Global.render_mask = 0;
-    g_Global.render_DrawMasked = 0;
-    g_Global.ReflectionRowMat = Matrix();
+    g_Global.render_Mode = 0;
     m_mirror->render();
 
     m_mirror = nullptr;

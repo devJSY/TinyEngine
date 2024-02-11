@@ -179,7 +179,7 @@ void CCamera::SortObject()
                 break;
             case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                 {
-                    if (!g_Global.render_DrawMasked)
+                    if (0 == g_Global.render_Mode)
                     {
                         CRenderMgr::GetInst()->RegisterPostProcess(vecObjects[j]); // 후처리는 RenderMgr 에서 관리
                     }
@@ -196,6 +196,10 @@ void CCamera::render()
 {
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
     g_Transform.matView = m_matView;
+    if (2 == g_Global.render_Mode)
+    {
+        g_Transform.matView = g_Global.ReflectionRowMat * g_Transform.matView;
+    }
     g_Transform.matProj = m_matProj;
 
     // Domain 순서대로 렌더링

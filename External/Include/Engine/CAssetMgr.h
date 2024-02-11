@@ -51,8 +51,7 @@ public:
                              const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeBox(const float scale = 1.0f);
     tMeshData MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
-    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks,
-                         const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeTetrahedron(); // 사면체
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);

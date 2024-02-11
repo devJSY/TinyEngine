@@ -85,14 +85,22 @@ void CPBRLevel::begin()
     //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
     // pSkyBox->SkyBox()->SetSpecularTexture(
     //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
-    pSkyBox->SkyBox()->SetBrdfTexture(
+     pSkyBox->SkyBox()->SetBrdfTexture(
         CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessBrdf.dds"));
-    pSkyBox->SkyBox()->SetEnvTexture(
+     pSkyBox->SkyBox()->SetEnvTexture(
         CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessEnvHDR.dds"));
-    pSkyBox->SkyBox()->SetDiffuseTexture(
+     pSkyBox->SkyBox()->SetDiffuseTexture(
         CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessDiffuseHDR.dds"));
-    pSkyBox->SkyBox()->SetSpecularTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(
+     pSkyBox->SkyBox()->SetSpecularTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(
         L"Developers\\Textures\\Cubemaps\\moonless\\moonlessSpecularHDR.dds"));
+    //pSkyBox->SkyBox()->SetBrdfTexture(
+    //    CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds"));
+    //pSkyBox->SkyBox()->SetEnvTexture(
+    //    CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds"));
+    //pSkyBox->SkyBox()->SetDiffuseTexture(
+    //    CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds"));
+    //pSkyBox->SkyBox()->SetSpecularTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(
+    //    L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds"));
 
     AddObject(pSkyBox, L"SkyBox");
 
@@ -116,8 +124,8 @@ void CPBRLevel::begin()
     pMirrorObj->AddComponent(new CTransform);
     pMirrorObj->AddComponent(new CMeshRender);
 
-    pMirrorObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
-    pMirrorObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+    pMirrorObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+    pMirrorObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 1.f));
 
     pMirrorObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pMirrorObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MirrorMtrl"));
@@ -129,161 +137,161 @@ void CPBRLevel::begin()
 
 void CPBRLevel::tick()
 {
-    CLevel::tick();
+     CLevel::tick();
 }
 
 void CPBRLevel::finaltick()
 {
-    CLevel::finaltick();
+     CLevel::finaltick();
 }
 
 void CPBRLevel::AddSample()
 {
-    // ==========================
-    // worn-painted-metal-ue
-    // ==========================
-    vector<tMeshData> meshes;
-    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
-    meshes[0].AmbientTextureFilename = "worn-painted-metal_albedo.png";
-    meshes[0].AoTextureFilename = "worn-painted-metal_ao.png";
-    meshes[0].NormalTextureFilename = "worn-painted-metal_normal-dx.png";
-    meshes[0].HeightTextureFilename = "worn-painted-metal_height.png";
-    meshes[0].MetallicTextureFilename = "worn-painted-metal_metallic.png";
-    meshes[0].RoughnessTextureFilename = "worn-painted-metal_roughness.png";
-    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
+     // ==========================
+     // worn-painted-metal-ue
+     // ==========================
+     vector<tMeshData> meshes;
+     meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+     meshes[0].AmbientTextureFilename = "worn-painted-metal_albedo.png";
+     meshes[0].AoTextureFilename = "worn-painted-metal_ao.png";
+     meshes[0].NormalTextureFilename = "worn-painted-metal_normal-dx.png";
+     meshes[0].HeightTextureFilename = "worn-painted-metal_height.png";
+     meshes[0].MetallicTextureFilename = "worn-painted-metal_metallic.png";
+     meshes[0].RoughnessTextureFilename = "worn-painted-metal_roughness.png";
+     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
 
-    CGameObject* pObj = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
-    pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pObj->Transform()->SetAbsolute(true);
+     CGameObject* pObj = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
+     pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     pObj->Transform()->SetAbsolute(true);
 
-    AddObject(pObj, 0);
+     AddObject(pObj, 0);
 
-    // ==========================
-    // brick-wall
-    // ==========================
-    meshes.clear();
-    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
-    meshes[0].AmbientTextureFilename = "brick-wall_albedo.png";
-    meshes[0].AoTextureFilename = "brick-wall_ao.png";
-    meshes[0].NormalTextureFilename = "brick-wall_normal-dx.png";
-    meshes[0].HeightTextureFilename = "brick-wall_height.png";
-    meshes[0].MetallicTextureFilename = "brick-wall_metallic.png";
-    meshes[0].RoughnessTextureFilename = "brick-wall_roughness.png";
-    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\brick-wall-ue\\";
+     // ==========================
+     // brick-wall
+     // ==========================
+     meshes.clear();
+     meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+     meshes[0].AmbientTextureFilename = "brick-wall_albedo.png";
+     meshes[0].AoTextureFilename = "brick-wall_ao.png";
+     meshes[0].NormalTextureFilename = "brick-wall_normal-dx.png";
+     meshes[0].HeightTextureFilename = "brick-wall_height.png";
+     meshes[0].MetallicTextureFilename = "brick-wall_metallic.png";
+     meshes[0].RoughnessTextureFilename = "brick-wall_roughness.png";
+     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\brick-wall-ue\\";
 
-    pObj = CAssetMgr::GetInst()->LoadModel(L"brick-wall", meshes);
-    pObj->Transform()->SetRelativePos(Vec3(250.f, 0.f, 0.f));
-    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pObj->Transform()->SetAbsolute(true);
+     pObj = CAssetMgr::GetInst()->LoadModel(L"brick-wall", meshes);
+     pObj->Transform()->SetRelativePos(Vec3(250.f, 0.f, 0.f));
+     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     pObj->Transform()->SetAbsolute(true);
 
-    AddObject(pObj, 0);
+     AddObject(pObj, 0);
 
-    // ==========================
-    // columned-lava-rock-ue
-    // ==========================
-    meshes.clear();
-    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
-    meshes[0].AmbientTextureFilename = "columned-lava-rock_albedo.png";
-    meshes[0].AoTextureFilename = "columned-lava-rock_ao.png";
-    meshes[0].NormalTextureFilename = "columned-lava-rock_normal-dx.png";
-    meshes[0].HeightTextureFilename = "columned-lava-rock_height.png";
-    meshes[0].MetallicTextureFilename = "columned-lava-rock_metallic.png";
-    meshes[0].RoughnessTextureFilename = "columned-lava-rock_roughness.png";
-    meshes[0].EmissiveTextureFilename = "columned-lava-rock_emissive.png";
-    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\columned-lava-rock-ue\\";
+     // ==========================
+     // columned-lava-rock-ue
+     // ==========================
+     meshes.clear();
+     meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+     meshes[0].AmbientTextureFilename = "columned-lava-rock_albedo.png";
+     meshes[0].AoTextureFilename = "columned-lava-rock_ao.png";
+     meshes[0].NormalTextureFilename = "columned-lava-rock_normal-dx.png";
+     meshes[0].HeightTextureFilename = "columned-lava-rock_height.png";
+     meshes[0].MetallicTextureFilename = "columned-lava-rock_metallic.png";
+     meshes[0].RoughnessTextureFilename = "columned-lava-rock_roughness.png";
+     meshes[0].EmissiveTextureFilename = "columned-lava-rock_emissive.png";
+     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\columned-lava-rock-ue\\";
 
-    pObj = CAssetMgr::GetInst()->LoadModel(L"columned-lava-rock", meshes);
-    pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 0.f));
-    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pObj->Transform()->SetAbsolute(true);
+     pObj = CAssetMgr::GetInst()->LoadModel(L"columned-lava-rock", meshes);
+     pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 0.f));
+     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     pObj->Transform()->SetAbsolute(true);
 
-    AddObject(pObj, 0);
+     AddObject(pObj, 0);
 
-    // ==========================
-    // wrinkled-paper-ue
-    // ==========================
-    meshes.clear();
-    meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
-    meshes[0].AmbientTextureFilename = "wrinkled-paper-albedo.png";
-    meshes[0].AoTextureFilename = "wrinkled-paper-ao.png";
-    meshes[0].NormalTextureFilename = "wrinkled-paper-normal-dx.png";
-    meshes[0].HeightTextureFilename = "wrinkled-paper-height.png";
-    meshes[0].MetallicTextureFilename = "wrinkled-paper-metalness.png";
-    meshes[0].RoughnessTextureFilename = "wrinkled-paper-roughness.png";
-    meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\wrinkled-paper-ue\\";
+     // ==========================
+     // wrinkled-paper-ue
+     // ==========================
+     meshes.clear();
+     meshes.push_back(CAssetMgr::GetInst()->MakeSphere(1, 50, 50));
+     meshes[0].AmbientTextureFilename = "wrinkled-paper-albedo.png";
+     meshes[0].AoTextureFilename = "wrinkled-paper-ao.png";
+     meshes[0].NormalTextureFilename = "wrinkled-paper-normal-dx.png";
+     meshes[0].HeightTextureFilename = "wrinkled-paper-height.png";
+     meshes[0].MetallicTextureFilename = "wrinkled-paper-metalness.png";
+     meshes[0].RoughnessTextureFilename = "wrinkled-paper-roughness.png";
+     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\wrinkled-paper-ue\\";
 
-    pObj = CAssetMgr::GetInst()->LoadModel(L"wrinkled-paper", meshes);
-    pObj->Transform()->SetRelativePos(Vec3(750.f, 0.f, 0.f));
-    pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-    pObj->Transform()->SetAbsolute(true);
+     pObj = CAssetMgr::GetInst()->LoadModel(L"wrinkled-paper", meshes);
+     pObj->Transform()->SetRelativePos(Vec3(750.f, 0.f, 0.f));
+     pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     pObj->Transform()->SetAbsolute(true);
 
-    AddObject(pObj, 0);
+     AddObject(pObj, 0);
 }
 
 void CPBRLevel::AddModels()
 {
-    // Zelda Model
-    CGameObject* pZelda =
-        CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
-    if (nullptr != pZelda)
-    {
-        pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
-        pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     // Zelda Model
+     CGameObject* pZelda =
+         CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
+     if (nullptr != pZelda)
+     {
+         pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
+         pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pZelda, L"Model");
-    }
+         AddObject(pZelda, L"Model");
+     }
 
-    // Damaged Helmet
-    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(
-        L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
-    if (nullptr != pDamagedHelmet)
-    {
-        pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
-        pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     // Damaged Helmet
+     CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(
+         L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+     if (nullptr != pDamagedHelmet)
+     {
+         pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
+         pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pDamagedHelmet, L"Model");
-    }
+         AddObject(pDamagedHelmet, L"Model");
+     }
 
-    // torii gate
-    CGameObject* ptoriigate =
-        CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
-    if (nullptr != ptoriigate)
-    {
-        ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
-        ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     // torii gate
+     CGameObject* ptoriigate =
+         CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
+     if (nullptr != ptoriigate)
+     {
+         ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
+         ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(ptoriigate, L"Model");
-    }
+         AddObject(ptoriigate, L"Model");
+     }
 
-    // dragon warrior
-    CGameObject* pDragonWarrior =
-        CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
-    if (nullptr != pDragonWarrior)
-    {
-        pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
-        pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+     // dragon warrior
+     CGameObject* pDragonWarrior =
+         CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
+     if (nullptr != pDragonWarrior)
+     {
+         pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
+         pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
-        AddObject(pDragonWarrior, L"Model");
-    }
+         AddObject(pDragonWarrior, L"Model");
+     }
 
-    // ==========================
-    // PBR .fbx 포맷
-    // ==========================
-    tMeshData meshData = {};
-    meshData.AmbientTextureFilename = "angel_armor_albedo.jpg";
-    meshData.NormalTextureFilename = "angel_armor_normal.jpg";
-    meshData.MetallicTextureFilename = "angel_armor_metalness.jpg";
-    meshData.RoughnessTextureFilename = "angel_armor_roughness.jpg";
-    meshData.EmissiveTextureFilename = "angel_armor_e.jpg";
-    meshData.RelativeTextureFilePath = "Developers\\Models\\armored-female-future-soldier\\";
+     // ==========================
+     // PBR .fbx 포맷
+     // ==========================
+     tMeshData meshData = {};
+     meshData.AmbientTextureFilename = "angel_armor_albedo.jpg";
+     meshData.NormalTextureFilename = "angel_armor_normal.jpg";
+     meshData.MetallicTextureFilename = "angel_armor_metalness.jpg";
+     meshData.RoughnessTextureFilename = "angel_armor_roughness.jpg";
+     meshData.EmissiveTextureFilename = "angel_armor_e.jpg";
+     meshData.RelativeTextureFilePath = "Developers\\Models\\armored-female-future-soldier\\";
 
-    CGameObject* pArmoredFemale = CAssetMgr::GetInst()->LoadModel(
-        L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
-    if (nullptr != pArmoredFemale)
-    {
-        pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
-        pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-        AddObject(pArmoredFemale, L"Model");
-    }
+     CGameObject* pArmoredFemale = CAssetMgr::GetInst()->LoadModel(
+         L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
+     if (nullptr != pArmoredFemale)
+     {
+         pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));
+         pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+         AddObject(pArmoredFemale, L"Model");
+     }
 }

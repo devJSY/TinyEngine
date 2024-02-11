@@ -203,20 +203,20 @@ int CGraphicsShader::UpdateData()
     CONTEXT->IASetInputLayout(m_Layout.Get());
     CONTEXT->IASetPrimitiveTopology(m_Topology);
 
-    if (g_Global.render_mask)
+    if (0 == g_Global.render_Mode)
+    {
+        CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
+        CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 0);
+    }
+    else if (1 == g_Global.render_Mode)
     {
         CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
         CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::MASK).Get(), 1);
     }
-    else if (g_Global.render_DrawMasked)
+    else if (2 == g_Global.render_Mode)
     {
-        CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(RS_TYPE(int(m_RSType) + 1)).Get()); // 반시계 방향
+        CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(RS_TYPE(int(m_RSType) + 1)).Get());         // 반시계 방향
         CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::DRAW_MASKED).Get(), 1);
-    }
-    else
-    {
-        CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(m_RSType).Get());
-        CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 0);
     }
 
     CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(m_BSType).Get(), nullptr, 0xffffffff);

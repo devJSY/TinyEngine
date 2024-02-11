@@ -84,11 +84,6 @@ void CTransform::UpdateData()
     g_Transform.matWorldInvTranspose.Translation(Vec3(0.0f));
     g_Transform.matWorldInvTranspose = g_Transform.matWorldInvTranspose.Transpose().Invert();
 
-    if (g_Global.render_DrawMasked)
-    {
-        g_Transform.matView = g_Global.ReflectionRowMat * g_Transform.matView;
-    }
-
     g_Transform.matWV = g_Transform.matWorld * g_Transform.matView;
     g_Transform.matWVP = g_Transform.matWV * g_Transform.matProj;
 
