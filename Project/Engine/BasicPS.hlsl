@@ -8,8 +8,8 @@ float4 main(PS_IN input) : SV_TARGET
     if (g_btex_0)
         color = g_tex_0.Sample(g_LinearWrapSampler, input.vUV);
     
-    //if (color.a < 0.1)
-    //    discard;
+    if (color.a < 0.1)
+        discard;
 
     return color;
 }

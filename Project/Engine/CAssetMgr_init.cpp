@@ -621,6 +621,22 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"ToneMappingShader");
         AddAsset(L"ToneMappingShader", pShader);
     }
+
+    // =================================
+    // Mirror Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"MirrorShader"))
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\MirrorVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MirrorPS.hlsl", "main");
+
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MIRROR);
+
+        pShader->SetName(L"MirrorShader");
+        AddAsset(L"MirrorShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -978,6 +994,15 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
         pMtrl->SetName(L"ToneMappingMtrl");
         AddAsset<CMaterial>(L"ToneMappingMtrl", pMtrl);
+    }
+
+    // Mirror
+    if (nullptr == FindAsset<CMaterial>(L"MirrorMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MirrorShader"));
+        pMtrl->SetName(L"MirrorMtrl");
+        AddAsset<CMaterial>(L"MirrorMtrl", pMtrl);
     }
 }
 

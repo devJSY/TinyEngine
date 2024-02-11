@@ -219,6 +219,7 @@ enum class SHADER_DOMAIN
     DOMAIN_OPAQUE,      // 불투명
     DOMAIN_MASKED,      // 불투명 or 투명
     DOMAIN_TRANSPARENT, // 반투명
+    DOMAIN_MIRROR,      // 거울
     DOMAIN_POSTPROCESS, // 후처리
 
     DOMAIN_DEBUG,

@@ -779,6 +779,9 @@
     <Filter Include="08. Component\RenderComponent\04. SkyBox">
       <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\Mirror">
+      <UniqueIdentifier>{f02bee5b-14f4-4604-bc94-255ecf65739c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -929,6 +932,12 @@
     </FxCompile>
     <FxCompile Include="UnrealPBRPS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="MirrorPS.hlsl">
+      <Filter>ShaderCode\Render\Mirror</Filter>
+    </FxCompile>
+    <FxCompile Include="MirrorVS.hlsl">
+      <Filter>ShaderCode\Render\Mirror</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

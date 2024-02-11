@@ -110,6 +110,20 @@ void CPBRLevel::begin()
 
     AddObject(pPhongObj, 0);
 
+    // Mirror
+    CGameObject* pMirrorObj = new CGameObject;
+    pMirrorObj->SetName(L"Mirror");
+    pMirrorObj->AddComponent(new CTransform);
+    pMirrorObj->AddComponent(new CMeshRender);
+
+    pMirrorObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
+    pMirrorObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+
+    pMirrorObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    pMirrorObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MirrorMtrl"));
+
+    AddObject(pMirrorObj, 0);
+
     CLevel::begin();
 }
 

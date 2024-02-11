@@ -75,17 +75,4 @@ void CRenderMgr::init()
     m_ToneMappingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl"));
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex);
-
-    m_mirror = new CGameObject;
-    m_mirror->AddComponent(new CTransform);
-    m_mirror->AddComponent(new CMeshRender);
-
-    m_mirror->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_mirror->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BasicMtrl"));
-    m_mirror->MeshRender()->GetMaterial()->SetMaterialCoefficient(
-        Vec4(0.f, 1.f, 0.f, 0.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
-    m_mirror->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-    m_mirror->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 1.f));
-
-    m_mirrorPlane = SimpleMath::Plane(m_mirror->Transform()->GetWorldPos(), Vector3(0.0f, 0.0f, -1.0f));
 }

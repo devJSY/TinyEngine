@@ -49,8 +49,8 @@ private:
 
     CGameObject* m_ToneMappingObj;
 
+    // mirror
     CGameObject* m_mirror;
-    DirectX::SimpleMath::Plane m_mirrorPlane;
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
@@ -65,6 +65,8 @@ public:
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
+
+    void RegisterMirror(CGameObject* _mirror) { m_mirror = _mirror; }
 
     void RegisterPostProcess(CGameObject* _PostProcessObj) { m_vecPostProcess.push_back(_PostProcessObj); }
 
@@ -101,8 +103,9 @@ private:
 private:
     void render();
     void render_debug();
-    void render_ui();
+    void render_mirror();
     void render_postprocess();
+    void render_ui();
 
     // 리소스 바인딩
     void UpdateData();

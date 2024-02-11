@@ -54,50 +54,19 @@ CRenderMgr::~CRenderMgr()
         delete m_ToneMappingObj;
         m_ToneMappingObj = nullptr;
     }
-
-    if (nullptr != m_mirror)
-    {
-        delete m_mirror;
-        m_mirror = nullptr;
-    }
 }
 
 void CRenderMgr::tick()
 {
-    m_mirror->Transform()->finaltick();
-
     UpdateData();
 
     // HDR Rendering
-    g_Global.render_mask = 0;
-    g_Global.render_DrawMasked = 0;
-    g_Global.ReflectionRowMat = Matrix();
     CDevice::GetInst()->SetFloatRenderTarget();
     render();
     render_debug();
 
     // Mirror
-    m_mirrorPlane = SimpleMath::Plane(m_mirror->Transform()->GetWorldPos(), Vector3(0.0f, 0.0f, -1.0f));
-
-    // 거울부분 masking
-    g_Global.render_mask = 1;
-    g_Global.render_DrawMasked = 0;
-    g_Global.ReflectionRowMat = Matrix();
-    m_mirror->render(); // mask
-
-    // masking 부분 렌더
-    CDevice::GetInst()->ClearDepth();
-    g_Global.render_mask = 0;
-    g_Global.render_DrawMasked = 1;
-    g_Global.ReflectionRowMat = Matrix::CreateReflection(m_mirrorPlane);
-    render();
-    render_debug();
-
-    // 거울 렌더링
-    g_Global.render_mask = 0;
-    g_Global.render_DrawMasked = 0;
-    g_Global.ReflectionRowMat = Matrix();
-    m_mirror->render(); 
+    render_mirror();
 
     // 후처리
     render_postprocess();
@@ -174,6 +143,35 @@ void CRenderMgr::render_debug()
             ++iter;
         }
     }
+}
+
+void CRenderMgr::render_mirror()
+{
+    if (nullptr == m_mirror)
+        return;
+
+    // 거울부분 masking
+    g_Global.render_mask = 1;
+    g_Global.render_DrawMasked = 0;
+    g_Global.ReflectionRowMat = Matrix();
+    m_mirror->render(); // mask
+
+    // masking 부분 렌더
+    CDevice::GetInst()->ClearDepth();
+    g_Global.render_mask = 0;
+    g_Global.render_DrawMasked = 1;
+    g_Global.ReflectionRowMat = Matrix::CreateReflection(
+        SimpleMath::Plane(m_mirror->Transform()->GetWorldPos(), m_mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
+    render();
+    render_debug();
+
+    // 거울 렌더링
+    g_Global.render_mask = 0;
+    g_Global.render_DrawMasked = 0;
+    g_Global.ReflectionRowMat = Matrix();
+    m_mirror->render();
+
+    m_mirror = nullptr;
 }
 
 void CRenderMgr::render_ui()
