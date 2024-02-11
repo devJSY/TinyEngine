@@ -230,6 +230,9 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             _vecObj[i]->render();
         }
 
+        if (g_Global.render_Mode > 0)
+            continue;
+
         wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
 
         CMeshRender* meshRender = _vecObj[i]->MeshRender();
