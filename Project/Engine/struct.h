@@ -100,10 +100,9 @@ __declspec(align(16)) struct tGlobalData
     Vec3 eyeWorld;
     int DrawAsWireFrame;
 
-    int render_Mode; // 0 : render, 1 : Stencil Mask, 2 : Masked Render
-    Vec3 g_padd;
-
     Matrix ReflectionRowMat;
+
+    int render_Mode; // 0 : render, 1 : Stencil Mask, 2 : Masked Render
 };
 
 __declspec(align(16)) struct tAnimData2D

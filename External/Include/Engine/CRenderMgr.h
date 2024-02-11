@@ -46,11 +46,10 @@ private:
     vector<Ptr<CTexture>> m_BloomTextures;
     vector<CGameObject*> m_BloomDownFilters;
     vector<CGameObject*> m_BloomUpFilters;
-
     CGameObject* m_ToneMappingObj;
 
     // Mirror
-    CGameObject* m_mirror;
+    CGameObject* m_Mirror;
 
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
@@ -66,7 +65,7 @@ public:
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
 
-    void RegisterMirror(CGameObject* _mirror) { m_mirror = _mirror; }
+    void RegisterMirror(CGameObject* _mirror) { m_Mirror = _mirror; }
 
     void RegisterPostProcess(CGameObject* _PostProcessObj) { m_vecPostProcess.push_back(_PostProcessObj); }
 

@@ -175,7 +175,12 @@ void CCamera::SortObject()
                 m_vecTransparent.push_back(vecObjects[j]);
                 break;
             case SHADER_DOMAIN::DOMAIN_MIRROR:
-                CRenderMgr::GetInst()->RegisterMirror(vecObjects[j]); // Mirror 는 RenderMgr 에서 관리
+                {
+                    if (0 == g_Global.render_Mode)
+                    {
+                        CRenderMgr::GetInst()->RegisterMirror(vecObjects[j]); // Mirror 는 RenderMgr 에서 관리
+                    }
+                }
                 break;
             case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                 {

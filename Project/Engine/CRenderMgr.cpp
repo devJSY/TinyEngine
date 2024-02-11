@@ -20,9 +20,13 @@ CRenderMgr::CRenderMgr()
     , m_bShowDebugRender(false)
     , m_bShowCollider(true)
     , m_vecNoiseTex{}
-    , m_ToneMappingObj(nullptr)
+    , m_vecPostProcess{}
     , bloomLevels(5)
-    , m_mirror(nullptr)
+    , m_BloomTextures{}
+    , m_BloomDownFilters{}
+    , m_BloomUpFilters{}
+    , m_ToneMappingObj(nullptr)
+    , m_Mirror(nullptr)
 {
 }
 
@@ -68,7 +72,7 @@ void CRenderMgr::tick()
     // Mirror
     render_mirror();
 
-    // 후처리
+    // Postprocess
     render_postprocess();
 
     // LDR Rendering
@@ -147,26 +151,27 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_mirror()
 {
-    if (nullptr == m_mirror)
+    if (nullptr == m_Mirror)
         return;
 
     // 거울부분 masking
     CDevice::GetInst()->ClearStencil();
-    g_Global.render_Mode = 1;
-    m_mirror->render(); // mask
+    g_Global.render_Mode = 1; //  Stencil Mask
+    m_Mirror->render(); 
 
     // masking 부분 렌더
     CDevice::GetInst()->ClearDepth();
     g_Global.ReflectionRowMat = Matrix::CreateReflection(
-        SimpleMath::Plane(m_mirror->Transform()->GetWorldPos(), m_mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
-    g_Global.render_Mode = 2;
+        SimpleMath::Plane(m_Mirror->Transform()->GetWorldPos(), m_Mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
+    g_Global.render_Mode = 2; // Masked Render
     render();
 
     // 거울 렌더링
-    g_Global.render_Mode = 0;
-    m_mirror->render();
+    g_Global.render_Mode = 0; // Render
+    m_Mirror->render();
 
-    m_mirror = nullptr;
+    // Reset
+    m_Mirror = nullptr;
 }
 
 void CRenderMgr::render_ui()
@@ -182,6 +187,7 @@ void CRenderMgr::render_ui()
 
 void CRenderMgr::render_postprocess()
 {
+    // 후처리
     for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사
