@@ -71,6 +71,32 @@ void CTileMap::render()
     GetMesh()->render();
 }
 
+void CTileMap::render(Ptr<CMaterial> _mtrl)
+{
+    // 재질에 아틀라스 텍스쳐 전달.
+    _mtrl->SetTexParam(TEX_0, m_TileAtlas);
+
+    // 타일의 가로 세로 개수
+    _mtrl->SetScalarParam(INT_0, m_iTileCountX);
+    _mtrl->SetScalarParam(INT_1, m_iTileCountY);
+
+    // 아틀라스 이미지에서 타일 1개의 자르는 사이즈(UV 기준)
+    _mtrl->SetScalarParam(VEC2_0, m_vSliceSizeUV);
+
+    // 각 타일 정보를 구조화 버퍼로 이동
+    m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (UINT)m_vecTileInfo.size());
+
+    // 타일 구조화 버퍼를 t20 에 바인딩
+    m_TileInfoBuffer->UpdateData(20);
+
+    // 재질 업데이트
+    _mtrl->UpdateData();
+
+    Transform()->UpdateData();
+
+    GetMesh()->render();
+}
+
 void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 {
     m_TileAtlas = _Atlas;

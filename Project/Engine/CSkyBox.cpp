@@ -40,6 +40,20 @@ void CSkyBox::render()
     GetMesh()->render();
 }
 
+void CSkyBox::render(Ptr<CMaterial> _mtrl)
+{
+    if (nullptr == GetMesh() || nullptr == _mtrl)
+        return;
+
+    Transform()->UpdateData();
+
+    _mtrl->SetTexParam(TEXCUBE_0, m_EnvTex);
+
+    _mtrl->UpdateData();
+
+    GetMesh()->render();
+}
+
 void CSkyBox::SetType(SKYBOX_TYPE _Type)
 {
     m_Type = _Type;

@@ -64,3 +64,23 @@ void CMeshRender::render()
 
     GetMesh()->render();
 }
+
+void CMeshRender::render(Ptr<CMaterial> _mtrl)
+{
+    if (nullptr == GetMesh() || nullptr == _mtrl)
+        return;
+
+    if (Animator2D())
+    {
+        Animator2D()->UpdateData();
+    }
+    else
+    {
+        Animator2D()->Clear();
+    }
+
+    _mtrl->UpdateData();
+    Transform()->UpdateData();
+
+    GetMesh()->render();
+}

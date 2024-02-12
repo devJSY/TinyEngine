@@ -43,6 +43,7 @@ public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
     virtual void render() override;
+    virtual void render(Ptr<CMaterial> _mtrl) override;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

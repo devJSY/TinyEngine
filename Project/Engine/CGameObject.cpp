@@ -106,10 +106,18 @@ void CGameObject::finaltick()
 
 void CGameObject::render()
 {
-    if (nullptr != m_RenderCom)
-    {
-        m_RenderCom->render();
-    }
+    if (nullptr == m_RenderCom)
+        return;
+
+    m_RenderCom->render();
+}
+
+void CGameObject::render(Ptr<CMaterial> _mtrl)
+{
+    if (nullptr == m_RenderCom)
+        return;
+
+    m_RenderCom->render(_mtrl);
 }
 
 void CGameObject::AddComponent(CComponent* _Component)

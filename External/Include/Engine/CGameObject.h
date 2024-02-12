@@ -41,6 +41,7 @@ public:
     void tick();
     void finaltick();
     void render();
+    void render(Ptr<CMaterial> _mtrl);
 
 public:
     void AddComponent(CComponent* _Component);

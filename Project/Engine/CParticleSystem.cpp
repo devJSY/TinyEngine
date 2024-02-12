@@ -157,6 +157,26 @@ void CParticleSystem::render()
     m_ModuleBuffer->Clear(21);
 }
 
+void CParticleSystem::render(Ptr<CMaterial> _mtrl)
+{
+    // View, Proj 행렬 전달
+    Transform()->UpdateData();
+
+    // ParticleBuffer 바인딩
+    m_ParticleBuffer->UpdateData(20);
+
+    // 모든 파티클 렌더링
+    // 파티클 개별 랜더링 -> 인스턴싱
+    _mtrl->UpdateData();
+    _mtrl->SetTexParam(TEX_0, m_ParticleTex);
+
+    GetMesh()->render_IndexedInstanced(m_MaxParticleCount);
+
+    // 렌더링때 사용한 리소스 바인딩 Clear
+    m_ParticleBuffer->Clear(20);
+    m_ModuleBuffer->Clear(21);
+}
+
 void CParticleSystem::SaveToLevelFile(FILE* _File)
 {
     CRenderComponent::SaveToLevelFile(_File);

@@ -20,6 +20,7 @@ public:
     virtual void finaltick(){};
     virtual void UpdateData() = 0;
     virtual void render() = 0;
+    virtual void render(Ptr<CMaterial> _mtrl) = 0;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

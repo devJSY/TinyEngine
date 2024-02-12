@@ -236,67 +236,52 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         // DepthOnlyPass
         Ptr<CTexture> pDummyTex = CRenderMgr::GetInst()->GetIDMapTex();
         Ptr<CTexture> pDepthOnlyTex = CRenderMgr::GetInst()->GetDepthOnlyTex();
+
         CONTEXT->OMSetRenderTargets(1, pDummyTex->GetRTV().GetAddressOf(), pDepthOnlyTex->GetDSV().Get());
-        Ptr<CMaterial> OriginMtrl = _vecObj[i]->GetRenderComponent()->GetMaterial();
-        _vecObj[i]->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl"));
-        _vecObj[i]->render();
-        _vecObj[i]->GetRenderComponent()->SetMaterial(OriginMtrl);
+        _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl"));
         CDevice::GetInst()->SetFloatRenderTarget();
 
         wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
 
-        CMeshRender* meshRender = _vecObj[i]->MeshRender();
-        if (nullptr != meshRender)
+        // Normal Line Pass
+        Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
         {
-            Ptr<CMaterial> mtrl = meshRender->GetMaterial();
+            _vecObj[i]->render(NormalLineMtrl);
+        }
 
-            // Normal Line Pass
-            meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
-            if (meshRender->GetMaterial()->GetMtrlConst().arrInt[0])
+        // outline pass
+        // 와이어 프레임, SkyBox - Off
+        if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
+            LayerName != L"SkyBox")
+        {
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
             {
-                meshRender->UpdateData();
-                meshRender->GetMesh()->render_draw();
+                _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
             }
-
-            // outline pass
-            // 와이어 프레임, SkyBox - Off
-            if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
-                LayerName != L"SkyBox")
+            else
             {
-                if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                {
-                    meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-                }
-                else
-                {
-                    meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-                }
-
-                _vecObj[i]->render();
+                _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
             }
+        }
 
-            // IDMap
-            if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera" && LayerName != L"SkyBox")
-            {
-                Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
-                Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
+        // IDMap
+        if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera" && LayerName != L"SkyBox")
+        {
+            Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
+            Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
 
-                CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
+            CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
 
-                // 오브젝트 이름으로 HashID 설정
-                hash<wstring> hasher;
-                int HashID = (int)hasher(_vecObj[i]->GetName());
+            // 오브젝트 이름으로 HashID 설정
+            hash<wstring> hasher;
+            int HashID = (int)hasher(_vecObj[i]->GetName());
 
-                meshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl"));
-                meshRender->GetMaterial()->SetScalarParam(VEC4_0, HashIDToColor(HashID));
+            Ptr<CMaterial> IDMapMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl");
+            IDMapMtrl->SetScalarParam(VEC4_0, HashIDToColor(HashID));
+            _vecObj[i]->render(IDMapMtrl);
 
-                _vecObj[i]->render();
-
-                CDevice::GetInst()->SetFloatRenderTarget();
-            }
-
-            // 원래 재질로 설정
-            meshRender->SetMaterial(mtrl);
+            CDevice::GetInst()->SetFloatRenderTarget();
         }
     }
 
