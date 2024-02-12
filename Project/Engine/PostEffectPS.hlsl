@@ -7,8 +7,6 @@
 #define RenderTex g_tex_0
 #define DepthOnlyTex g_tex_1
 
-#define FarZ 10000.f
-
 float4 TexcoordToView(float2 texcoord)
 {
     float4 posProj;
@@ -30,7 +28,7 @@ float4 main(PS_IN input) : SV_TARGET
 {
     float3 fogColor = float3(1, 1, 1);
     float fogMin = 100.0;
-    float fogMax = 10000.0;
+    float fogMax = 1000.0;
         
     float4 posView = TexcoordToView(input.vUV);
         
@@ -46,6 +44,7 @@ float4 main(PS_IN input) : SV_TARGET
 
     //// DepthOnly Mode
     //float z = TexcoordToView(input.vUV).z * DepthScale;
+    //float FarZ = 10000.f;
     //z /= FarZ;
     //return float4(z, z, z, 1);
 }

@@ -170,11 +170,10 @@ void CCameraMoveScript::MovePerspective()
 
         // Camera speed
         short wheel = CKeyMgr::GetInst()->GetMouseWheel();
-        float CamSpeedOffset = 10000.f;
-        if (wheel < 0)
-            Camera()->SetCameraSpeed(CamSpeed - DT * CamSpeedOffset);
-        else if (wheel > 0)
-            Camera()->SetCameraSpeed(CamSpeed + DT * CamSpeedOffset);
+        if (wheel > 0)
+            Camera()->SetCameraSpeed(CamSpeed * 1.1f);
+        else if (wheel < 0)
+            Camera()->SetCameraSpeed(CamSpeed * 0.9f);
     }
 
     // Zoom
