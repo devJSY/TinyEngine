@@ -202,10 +202,10 @@ void CCamera::render()
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
     g_Transform.matView = m_matView;
     if (2 == g_Global.render_Mode)
-    {
         g_Transform.matView = g_Global.ReflectionRowMat * g_Transform.matView;
-    }
+    g_Transform.matViewInv = m_matView.Invert();
     g_Transform.matProj = m_matProj;
+    g_Transform.matProjInv = m_matProj.Invert();
 
     // Domain 순서대로 렌더링
     render(m_vecOpaque);
@@ -233,8 +233,10 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         if (g_Global.render_Mode > 0)
             continue;
 
+        // =====================
         // DepthOnlyPass
-        Ptr<CTexture> pDummyTex = CRenderMgr::GetInst()->GetIDMapTex();
+        // =====================
+        Ptr<CTexture> pDummyTex = CRenderMgr::GetInst()->GetPostProcessTex();
         Ptr<CTexture> pDepthOnlyTex = CRenderMgr::GetInst()->GetDepthOnlyTex();
 
         CONTEXT->OMSetRenderTargets(1, pDummyTex->GetRTV().GetAddressOf(), pDepthOnlyTex->GetDSV().Get());
@@ -243,29 +245,30 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
         wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
 
+        // =====================
         // Normal Line Pass
+        // =====================
         Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
         if (NormalLineMtrl->GetMtrlConst().arrInt[0])
         {
             _vecObj[i]->render(NormalLineMtrl);
         }
 
-        // outline pass
-        // 와이어 프레임, SkyBox - Off
+        // =====================
+        // OutLine Pass             // 와이어 프레임, SkyBox - Off
+        // =====================
         if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame &&
             LayerName != L"SkyBox")
         {
             if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-            {
                 _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            }
             else
-            {
                 _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-            }
         }
 
-        // IDMap
+        // =====================
+        // IDMap Pass
+        // =====================
         if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera" && LayerName != L"SkyBox")
         {
             Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();

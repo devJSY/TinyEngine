@@ -785,6 +785,9 @@
     <Filter Include="ShaderCode\Render\DepthOnly">
       <UniqueIdentifier>{14a833ff-5417-4210-a8ef-6f63706cce7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\PostEffect">
+      <UniqueIdentifier>{8ebe4286-8179-4680-a989-24bc71c23203}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -947,6 +950,9 @@
     </FxCompile>
     <FxCompile Include="DepthOnlyPS.hlsl">
       <Filter>ShaderCode\Render\DepthOnly</Filter>
+    </FxCompile>
+    <FxCompile Include="PostEffectPS.hlsl">
+      <Filter>ShaderCode\Render\PostEffect</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

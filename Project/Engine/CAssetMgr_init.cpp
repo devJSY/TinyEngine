@@ -649,10 +649,25 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\DepthOnlyVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\DepthOnlyPS.hlsl", "main");
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->SetName(L"DepthOnlyShader");
         AddAsset(L"DepthOnlyShader", pShader);
+    }
+
+    // =================================
+    // Post Effect Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"PostEffectShader"))
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\PostEffectPS.hlsl", "main");
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"PostEffectShader");
+        AddAsset(L"PostEffectShader", pShader);
     }
 }
 
@@ -1029,6 +1044,15 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DepthOnlyShader"));
         pMtrl->SetName(L"DepthOnlyMtrl");
         AddAsset<CMaterial>(L"DepthOnlyMtrl", pMtrl);
+    }
+
+    // Post Effect
+    if (nullptr == FindAsset<CMaterial>(L"PostEffectMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PostEffectShader"));
+        pMtrl->SetName(L"PostEffectMtrl");
+        AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
     }
 }
 

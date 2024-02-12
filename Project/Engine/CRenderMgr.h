@@ -97,6 +97,7 @@ public:
     Ptr<CTexture> GetIDMapTex() const { return m_IDMapTex; }
     Ptr<CTexture> GetIDMapDSTex() const { return m_IDMapDSTex; }
     Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
+    Ptr<CTexture> GetPostProcessTex() const { return m_PostProcessTex; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);
@@ -109,6 +110,7 @@ private:
     void render();
     void render_debug();
     void render_mirror();
+    void render_posteffect();
     void render_postprocess();
     void render_ui();
 

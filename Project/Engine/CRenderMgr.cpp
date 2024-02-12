@@ -60,6 +60,12 @@ CRenderMgr::~CRenderMgr()
         delete m_ToneMappingObj;
         m_ToneMappingObj = nullptr;
     }
+
+    if (nullptr != m_PostEffectObj)
+    {
+        delete m_PostEffectObj;
+        m_PostEffectObj = nullptr;
+    }
 }
 
 void CRenderMgr::tick()
@@ -76,8 +82,8 @@ void CRenderMgr::tick()
     // Debug
     render_debug();
 
-    // postEffect
-    // RTV(PostProcess) , SRV(floatRTTex DepthOnlyTex)
+    // PostEffect
+    render_posteffect();
 
     // Postprocess
     render_postprocess();
@@ -181,6 +187,20 @@ void CRenderMgr::render_mirror()
     m_Mirror = nullptr;
 }
 
+void CRenderMgr::render_posteffect()
+{
+    if (nullptr == m_PostEffectObj)
+        return;
+
+    // RTV(PostProcess) , SRV(floatRTTex DepthOnlyTex)
+    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), NULL);
+    m_PostEffectObj->render();
+    CTexture::Clear(0);
+    CTexture::Clear(1);
+    CDevice::GetInst()->SetFloatRenderTarget();
+    CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex->GetTex2D().Get());
+}
+
 void CRenderMgr::render_ui()
 {
     if (nullptr == m_CamUI)
@@ -195,15 +215,10 @@ void CRenderMgr::render_ui()
 void CRenderMgr::render_postprocess()
 {
     // 후처리
-    for (size_t i = 0; i < m_vecPostProcess.size(); ++i)
+    for (int i = 0; i < m_vecPostProcess.size(); ++i)
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사
         CopyToPostProcessTex();
-        // 맨 처음 PostEffect의 결과가 PostProcess Texture에 저장되어있으므로 복사 필요 X
-        // if (0 != i)
-        //{
-        //    CopyToPostProcessTex();
-        //}
 
         // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
         m_PostProcessTex->UpdateData(14);
@@ -448,4 +463,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
 
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex);
+
+    m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
+    m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_DepthOnlyTex);
 }
