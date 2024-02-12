@@ -72,7 +72,7 @@ void CEngine::progress()
     // ===========================
 
     // Clear
-    CDevice::GetInst()->ClearRenderTarget(m_ClearColor);
+    CDevice::GetInst()->Clear_Buffers(m_ClearColor);
 
     // Level Render
     CRenderMgr::GetInst()->tick();

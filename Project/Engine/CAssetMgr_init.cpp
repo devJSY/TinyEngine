@@ -639,6 +639,21 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"MirrorShader");
         AddAsset(L"MirrorShader", pShader);
     }
+
+    // =================================
+    // Depth Only Shader
+    // =================================
+    if (nullptr == FindAsset<CGraphicsShader>(L"DepthOnlyShader"))
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\DepthOnlyVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\DepthOnlyPS.hlsl", "main");
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->SetName(L"DepthOnlyShader");
+        AddAsset(L"DepthOnlyShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1005,6 +1020,15 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MirrorShader"));
         pMtrl->SetName(L"MirrorMtrl");
         AddAsset<CMaterial>(L"MirrorMtrl", pMtrl);
+    }
+
+    // DepthOnly
+    if (nullptr == FindAsset<CMaterial>(L"DepthOnlyMtrl"))
+    {
+        CMaterial* pMtrl = new CMaterial;
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DepthOnlyShader"));
+        pMtrl->SetName(L"DepthOnlyMtrl");
+        AddAsset<CMaterial>(L"DepthOnlyMtrl", pMtrl);
     }
 }
 

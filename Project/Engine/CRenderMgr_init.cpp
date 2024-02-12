@@ -25,6 +25,7 @@ void CRenderMgr::init()
     Vec2 vRenderResolution = CDevice::GetInst()->GetRenderResolution();
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
+    CreateDepthOnlyTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 

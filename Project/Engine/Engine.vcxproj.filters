@@ -782,6 +782,9 @@
     <Filter Include="ShaderCode\Render\Mirror">
       <UniqueIdentifier>{f02bee5b-14f4-4604-bc94-255ecf65739c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\DepthOnly">
+      <UniqueIdentifier>{14a833ff-5417-4210-a8ef-6f63706cce7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -938,6 +941,12 @@
     </FxCompile>
     <FxCompile Include="MirrorVS.hlsl">
       <Filter>ShaderCode\Render\Mirror</Filter>
+    </FxCompile>
+    <FxCompile Include="DepthOnlyVS.hlsl">
+      <Filter>ShaderCode\Render\DepthOnly</Filter>
+    </FxCompile>
+    <FxCompile Include="DepthOnlyPS.hlsl">
+      <Filter>ShaderCode\Render\DepthOnly</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

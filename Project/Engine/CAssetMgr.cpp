@@ -126,7 +126,7 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
     CMaterial* pMtrl = new CMaterial;
     pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
     pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
-    pMtrl->SetScalarParam(INT_0, 0); // Invert NormalMap Y
+    pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
 
     // 텍스쳐 로딩
     wstring path = ToWstring(_MeshData.RelativeTextureFilePath);
@@ -334,14 +334,18 @@ CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes
 }
 
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
-                                       UINT _BindFlag, D3D11_USAGE _Usage)
+                                       UINT _BindFlag, D3D11_USAGE _Usage,
+                                       const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
+                                       const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
+                                       const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
+                                       const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 
     assert(nullptr == pTex);
 
     pTex = new CTexture();
-    if (FAILED(pTex->Create(_Width, _Height, _pixelformat, _BindFlag, _Usage)))
+    if (FAILED(pTex->Create(_Width, _Height, _pixelformat, _BindFlag, _Usage, _dsvDesc, _rtvDesc, _srvDesc, _uavDesc)))
     {
         assert(nullptr);
     }
@@ -351,14 +355,18 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT
     return pTex;
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D)
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D,
+                                       const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
+                                       const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
+                                       const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
+                                       const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 
     assert(nullptr == pTex);
 
     pTex = new CTexture();
-    if (FAILED(pTex->Create(_Tex2D)))
+    if (FAILED(pTex->Create(_Tex2D, _dsvDesc, _rtvDesc, _srvDesc, _uavDesc)))
     {
         assert(nullptr);
     }

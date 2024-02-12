@@ -123,7 +123,9 @@ void CTexture::Clear_CS_UAV()
     CONTEXT->CSSetUnorderedAccessViews(m_RecentNum_UAV, 1, &pUAV, &i);
 }
 
-int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage)
+int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage,
+                     const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
+                     const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc, const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     // ID3D11Texture2D 생성
     m_Desc.Format = _pixelformat;
@@ -153,42 +155,42 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _
     // 바인드 플래그에 맞는 View 를 생성해준다.
     if (m_Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
     {
-        if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
+        if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), _dsvDesc, m_DSV.GetAddressOf())))
         {
             return E_FAIL;
         }
     }
-    else
+
+    if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
     {
-        if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+        if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), _rtvDesc, m_RTV.GetAddressOf())))
         {
-            if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
-            {
-                return E_FAIL;
-            }
+            return E_FAIL;
         }
+    }
 
-        if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+    if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+    {
+        if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), _srvDesc, m_SRV.GetAddressOf())))
         {
-            if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
-            {
-                return E_FAIL;
-            }
+            return E_FAIL;
         }
+    }
 
-        if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+    if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+    {
+        if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), _uavDesc, m_UAV.GetAddressOf())))
         {
-            if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
-            {
-                return E_FAIL;
-            }
+            return E_FAIL;
         }
     }
 
     return S_OK;
 }
 
-int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
+int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
+                     const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
+                     const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     assert(_tex2D.Get());
 
@@ -198,35 +200,33 @@ int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
     // 바인드 플래그에 맞는 View 를 생성해준다.
     if (m_Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
     {
-        if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
+        if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), _dsvDesc, m_DSV.GetAddressOf())))
         {
             return E_FAIL;
         }
     }
-    else
+
+    if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
     {
-        if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+        if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), _rtvDesc, m_RTV.GetAddressOf())))
         {
-            if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
-            {
-                return E_FAIL;
-            }
+            return E_FAIL;
         }
+    }
 
-        if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+    if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+    {
+        if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), _srvDesc, m_SRV.GetAddressOf())))
         {
-            if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
-            {
-                return E_FAIL;
-            }
+            return E_FAIL;
         }
+    }
 
-        if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+    if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+    {
+        if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), _uavDesc, m_UAV.GetAddressOf())))
         {
-            if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
-            {
-                return E_FAIL;
-            }
+            return E_FAIL;
         }
     }
 

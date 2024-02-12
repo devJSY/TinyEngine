@@ -97,19 +97,14 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
     return S_OK;
 }
 
-void CDevice::ClearRenderTarget(const Vec4& Color)
+void CDevice::Clear_Buffers(const Vec4& Color)
 {
-    // IDMap
-    Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
-    Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
-
-    m_Context->ClearRenderTargetView(pIDMapTex->GetRTV().Get(), Color);
-    m_Context->ClearDepthStencilView(pIDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-
     // Render Target
     m_Context->ClearRenderTargetView(m_RenderTargetTex->GetRTV().Get(), Color);
     m_Context->ClearRenderTargetView(m_FloatRTTex->GetRTV().Get(), Color);
     m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    CRenderMgr::GetInst()->Clear_Buffers(Color);
 }
 
 void CDevice::Present()

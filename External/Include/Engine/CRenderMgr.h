@@ -40,6 +40,10 @@ private:
     // NoiseTexture
     vector<Ptr<CTexture>> m_vecNoiseTex;
 
+    // Post Effect
+    Ptr<CTexture> m_DepthOnlyTex;
+    CGameObject* m_PostEffectObj;
+
     // Post Process
     vector<CGameObject*> m_vecPostProcess;
     int bloomLevels;
@@ -83,6 +87,8 @@ public:
     void tick();
 
 public:
+    void Clear_Buffers(const Vec4& Color);
+
     void CopyRTTexToRTCopyTex();
     void CopyToPostProcessTex();
     void Resize(Vec2 Resolution);
@@ -90,12 +96,12 @@ public:
     Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
     Ptr<CTexture> GetIDMapTex() const { return m_IDMapTex; }
     Ptr<CTexture> GetIDMapDSTex() const { return m_IDMapDSTex; }
-    Ptr<CTexture> GetPostProcessTex() const { return m_PostProcessTex; }
-    Ptr<CTexture> GetFloatTex() const { return m_FloatRTTex; }
+    Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);
     void CreateIDMapTex(Vec2 Resolution);
+    void CreateDepthOnlyTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
     void CreateBloomTextures(Vec2 Resolution);
 

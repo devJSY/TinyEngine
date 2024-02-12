@@ -233,6 +233,16 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         if (g_Global.render_Mode > 0)
             continue;
 
+        // DepthOnlyPass
+        Ptr<CTexture> pDummyTex = CRenderMgr::GetInst()->GetIDMapTex();
+        Ptr<CTexture> pDepthOnlyTex = CRenderMgr::GetInst()->GetDepthOnlyTex();
+        CONTEXT->OMSetRenderTargets(1, pDummyTex->GetRTV().GetAddressOf(), pDepthOnlyTex->GetDSV().Get());
+        Ptr<CMaterial> OriginMtrl = _vecObj[i]->GetRenderComponent()->GetMaterial();
+        _vecObj[i]->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl"));
+        _vecObj[i]->render();
+        _vecObj[i]->GetRenderComponent()->SetMaterial(OriginMtrl);
+        CDevice::GetInst()->SetFloatRenderTarget();
+
         wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
 
         CMeshRender* meshRender = _vecObj[i]->MeshRender();

@@ -51,7 +51,8 @@ public:
                              const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeBox(const float scale = 1.0f);
     tMeshData MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
-    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks, const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks,
+                         const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeTetrahedron(); // 사면체
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
@@ -71,8 +72,16 @@ private:
 
 public:
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
-                                UINT _BindFlag, D3D11_USAGE _Usage);
-    Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D);
+                                UINT _BindFlag, D3D11_USAGE _Usage,
+                                const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr,
+                                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr,
+                                const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc = nullptr,
+                                const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc = nullptr);
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D,
+                                const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr,
+                                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr,
+                                const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc = nullptr,
+                                const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc = nullptr);
 
 public:
     template <typename T>
@@ -83,7 +92,7 @@ public:
 
     template <typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
-  
+
 private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
 

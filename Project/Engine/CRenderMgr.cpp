@@ -20,6 +20,8 @@ CRenderMgr::CRenderMgr()
     , m_bShowDebugRender(false)
     , m_bShowCollider(true)
     , m_vecNoiseTex{}
+    , m_DepthOnlyTex{}
+    , m_PostEffectObj(nullptr)
     , m_vecPostProcess{}
     , bloomLevels(5)
     , m_BloomTextures{}
@@ -198,7 +200,7 @@ void CRenderMgr::render_postprocess()
         // 최종 렌더링 이미지를 후처리 타겟에 복사
         CopyToPostProcessTex();
         // 맨 처음 PostEffect의 결과가 PostProcess Texture에 저장되어있으므로 복사 필요 X
-        //if (0 != i)
+        // if (0 != i)
         //{
         //    CopyToPostProcessTex();
         //}
@@ -327,6 +329,16 @@ CCamera* CRenderMgr::GetCamera(int _Idx) const
     return m_vecCam[_Idx];
 }
 
+void CRenderMgr::Clear_Buffers(const Vec4& Color)
+{
+    CONTEXT->ClearRenderTargetView(m_IDMapTex->GetRTV().Get(), Color);
+    CONTEXT->ClearDepthStencilView(m_IDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    CONTEXT->ClearRenderTargetView(m_PostProcessTex->GetRTV().Get(), Color);
+
+    CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
 void CRenderMgr::CopyRTTexToRTCopyTex()
 {
     Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
@@ -377,11 +389,31 @@ void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
                                                        D3D11_USAGE_DEFAULT);
 }
 
+void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
+{
+
+    D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+    ZeroMemory(&dsvDesc, sizeof(dsvDesc));
+    dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+    ZeroMemory(&srvDesc, sizeof(srvDesc));
+    srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Texture2D.MipLevels = 1;
+
+    m_DepthOnlyTex = CAssetMgr::GetInst()->CreateTexture(
+        L"DepthOnlyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
+        D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
+}
+
 void CRenderMgr::Resize(Vec2 Resolution)
 {
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthOnlyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex");
 
     for (int i = 0; i < bloomLevels - 1; i++)
@@ -392,11 +424,13 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_RTCopyTex = nullptr;
     m_IDMapTex = nullptr;
     m_IDMapDSTex = nullptr;
+    m_DepthOnlyTex = nullptr;
     m_PostProcessTex = nullptr;
     m_FloatRTTex = nullptr;
 
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
+    CreateDepthOnlyTex(Resolution);
     CreatePostProcessTex(Resolution);
     CreateBloomTextures(Resolution);
 

@@ -32,7 +32,7 @@ private:
 
 public:
     int init(HWND _hWnd, Vec2 _vResolution);
-    void ClearRenderTarget(const Vec4& Color);
+    void Clear_Buffers(const Vec4& Color);
     void Present();
 
     ID3D11Device* GetDevice() const { return m_Device.Get(); }
