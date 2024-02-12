@@ -337,6 +337,10 @@ void CLevelEditor::render_Assets()
     ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Assets", &m_bShowAssets);
 
+    static ImGuiTextFilter filter;
+    filter.Draw(ImGui_LabelPrefix("Filter").c_str());
+    ImGui::Separator();
+
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
     {
         const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset((ASSET_TYPE)i);
@@ -348,6 +352,9 @@ void CLevelEditor::render_Assets()
             for (const auto& iter : mapAsset)
             {
                 string key = ToString(iter.first);
+
+                if (!filter.PassFilter(key.c_str()))
+                    continue;
 
                 ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 

@@ -74,6 +74,9 @@ void CRenderMgr::tick()
     // Debug
     render_debug();
 
+    // postEffect
+    // RTV(PostProcess) , SRV(floatRTTex DepthOnlyTex)
+
     // Postprocess
     render_postprocess();
 
@@ -159,7 +162,7 @@ void CRenderMgr::render_mirror()
     // 거울부분 masking
     CDevice::GetInst()->ClearStencil();
     g_Global.render_Mode = 1; //  Stencil Mask
-    m_Mirror->render(); 
+    m_Mirror->render();
 
     // masking 부분 렌더
     CDevice::GetInst()->ClearDepth();
@@ -194,6 +197,11 @@ void CRenderMgr::render_postprocess()
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사
         CopyToPostProcessTex();
+        // 맨 처음 PostEffect의 결과가 PostProcess Texture에 저장되어있으므로 복사 필요 X
+        //if (0 != i)
+        //{
+        //    CopyToPostProcessTex();
+        //}
 
         // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
         m_PostProcessTex->UpdateData(14);

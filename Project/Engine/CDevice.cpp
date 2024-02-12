@@ -465,7 +465,7 @@ int CDevice::CreateDepthStencilState()
     tDesc.DepthEnable = true;   // 거울 속을 다시 그릴때 필요
     tDesc.StencilEnable = true; // Stencil 사용
     tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    tDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL; 
+    tDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
     tDesc.FrontFace.StencilFailOp = tDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
     tDesc.FrontFace.StencilDepthFailOp = tDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
     tDesc.FrontFace.StencilPassOp = tDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
