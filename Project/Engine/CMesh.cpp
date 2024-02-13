@@ -8,8 +8,8 @@
 
 #include "COutputLog.h"
 
-CMesh::CMesh()
-    : CAsset(ASSET_TYPE::MESH)
+CMesh::CMesh(bool _bEngineAsset)
+    : CAsset(ASSET_TYPE::MESH, _bEngineAsset)
     , m_VBDesc{}
     , m_IBDesc{}
     , m_VtxCount(0)

@@ -44,7 +44,7 @@ private:
     virtual int Load(const wstring& _strFilePath) override;
 
 public:
-    CMaterial();
+    CMaterial(bool _bEngineAsset = false);
     virtual ~CMaterial();
 
     friend class CMaterialEditor;

@@ -82,6 +82,8 @@ public:
 
     void Destroy();
 
+     bool IsAncestor(CGameObject* _Other);
+
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
 

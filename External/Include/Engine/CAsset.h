@@ -6,12 +6,11 @@
 class CAsset : public CEntity
 {
 private:
-    const ASSET_TYPE m_Type;
-
     wstring m_Key;
     wstring m_RelativePath;
-
+    const ASSET_TYPE m_Type;
     int m_RefCount;
+    const bool m_bEngineAsset;
 
 public:
     const wstring& GetKey() const { return m_Key; }
@@ -48,7 +47,7 @@ private:
     virtual int Load(const wstring& _strFilePath) = 0;
 
 public:
-    CAsset(ASSET_TYPE _Type);
+    CAsset(ASSET_TYPE _Type, bool _bEngineAsset = false);
     virtual ~CAsset();
 
     friend class CAssetMgr;

@@ -32,6 +32,6 @@ private:
     virtual int Load(const wstring& _strFilePath) override;
 
 public:
-    CMesh();
+    CMesh(bool _bEngineAsset = false);
     virtual ~CMesh();
 };

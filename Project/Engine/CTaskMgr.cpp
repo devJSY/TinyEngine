@@ -204,6 +204,10 @@ void CTaskMgr::ADD_CHILD(const FTask& _Task)
     CGameObject* pDestObj = (CGameObject*)_Task.Param_1;
     CGameObject* pSrcObj = (CGameObject*)_Task.Param_2;
 
+    // 부모 오브젝트가 자신의 자식오브젝트의 자식으로 들어가려는 경우는 방지
+    if (pDestObj != nullptr && pDestObj->IsAncestor(pSrcObj))
+        return;
+
     // 부모로 지정된 오브젝트가 없으면, Child 오브젝트가 최상위 부모 오브젝트가 된다.
     if (nullptr == pDestObj)
     {
@@ -392,8 +396,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
 
             // 0 ~ 1 → 0 ~ 255 범위확장
             uint8_t colorIDInt[4] = {static_cast<uint8_t>(colorID[0] * 255.f), static_cast<uint8_t>(colorID[1] * 255.f),
-                                     static_cast<uint8_t>(colorID[2] * 255.f),
-                                     static_cast<uint8_t>(colorID[3] * 255.f)};
+                                     static_cast<uint8_t>(colorID[2] * 255.f), static_cast<uint8_t>(colorID[3] * 255.f)};
 
             // Picking Color 비교
             if (m_pickColor[0] == colorIDInt[0] && m_pickColor[1] == colorIDInt[1] && m_pickColor[2] == colorIDInt[2] &&
@@ -508,17 +511,15 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     // 이미 해당 컴포넌트를 보유한 경우
     if (nullptr != pCom)
     {
-        LOG(Error, "%s Already Has a %s Component!!", ToString(pObj->GetName()).c_str(),
-            COMPONENT_TYPE_STRING[(UINT)type]);
+        LOG(Error, "%s Already Has a %s Component!!", ToString(pObj->GetName()).c_str(), COMPONENT_TYPE_STRING[(UINT)type]);
         return;
     }
 
     // RenderComponent 예외처리
     if (pObj->GetRenderComponent())
     {
-        if (COMPONENT_TYPE::MESHRENDER == type || COMPONENT_TYPE::TILEMAP == type ||
-            COMPONENT_TYPE::PARTICLESYSTEM == type || COMPONENT_TYPE::SKYBOX == type || COMPONENT_TYPE::DECAL == type ||
-            COMPONENT_TYPE::LANDSCAPE == type)
+        if (COMPONENT_TYPE::MESHRENDER == type || COMPONENT_TYPE::TILEMAP == type || COMPONENT_TYPE::PARTICLESYSTEM == type ||
+            COMPONENT_TYPE::SKYBOX == type || COMPONENT_TYPE::DECAL == type || COMPONENT_TYPE::LANDSCAPE == type)
         {
             LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
             return;

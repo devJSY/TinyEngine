@@ -171,9 +171,8 @@ void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
     }
 
     // Render Component
-    if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type ||
-        COMPONENT_TYPE::PARTICLESYSTEM == _Type || COMPONENT_TYPE::SKYBOX == _Type || COMPONENT_TYPE::DECAL == _Type ||
-        COMPONENT_TYPE::LANDSCAPE == _Type)
+    if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type || COMPONENT_TYPE::PARTICLESYSTEM == _Type ||
+        COMPONENT_TYPE::SKYBOX == _Type || COMPONENT_TYPE::DECAL == _Type || COMPONENT_TYPE::LANDSCAPE == _Type)
     {
         m_RenderCom = nullptr;
     }
@@ -249,4 +248,19 @@ void CGameObject::AddChild(CGameObject* _Child)
 void CGameObject::Destroy()
 {
     GamePlayStatic::DestroyGameObject(this);
+}
+
+bool CGameObject::IsAncestor(CGameObject* _Other)
+{
+    CGameObject* pParent = m_Parent;
+
+    while (pParent)
+    {
+        if (pParent == _Other)
+            return true;
+
+        pParent = pParent->m_Parent;
+    }
+
+    return false;
 }

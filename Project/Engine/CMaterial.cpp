@@ -8,8 +8,8 @@
 #include "CTexture.h"
 #include "COutputLog.h"
 
-CMaterial::CMaterial()
-    : CAsset(ASSET_TYPE::MATERIAL)
+CMaterial::CMaterial(bool _bEngineAsset)
+    : CAsset(ASSET_TYPE::MATERIAL, _bEngineAsset)
     , m_Const{}
     , m_arrTex{}
     , m_pShader(nullptr)
