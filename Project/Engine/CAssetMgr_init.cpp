@@ -169,6 +169,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
+        pShader->AddTexParam(TEX_0, "Texture");
+
         pShader->SetName(L"Std2DShader");
         AddAsset(L"Std2DShader", pShader);
     }
@@ -187,6 +189,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
+        pShader->AddTexParam(TEX_0, "Effect Texture");
+
         pShader->SetName(L"EffectShader");
         AddAsset(L"EffectShader", pShader);
     }
@@ -204,6 +208,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(INT_0, "COUNT X");
+        pShader->AddScalarParam(INT_1, "COUNT Y");
+        pShader->AddScalarParam(VEC2_0, "Slice UV");
+        pShader->AddTexParam(TEX_0, "Atlas Texture");
 
         pShader->SetName(L"TileMapShader");
         AddAsset(L"TileMapShader", pShader);
@@ -226,6 +235,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        pShader->AddTexParam(TEX_0, "Texture");
 
         pShader->SetName(L"ParticleRenderShader");
         AddAsset(L"ParticleRenderShader", pShader);
@@ -269,6 +280,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
+        pShader->AddTexParam(TEX_0, "Noise Texture");
+
         pShader->SetName(L"DistortionShader");
         AddAsset(L"DistortionShader", pShader);
     }
@@ -288,6 +301,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEBUG);
 
+        pShader->AddScalarParam(VEC4_0, "Color");
+
         pShader->SetName(L"DebugShapeShader");
         AddAsset(L"DebugShapeShader", pShader);
     }
@@ -302,6 +317,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->AddTexParam(TEX_0, "Texture");
 
         pShader->SetName(L"BasicShader");
         AddAsset(L"BasicShader", pShader);
@@ -321,6 +338,16 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
+        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
+        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale");
+
+        pShader->AddTexParam(TEX_0, "Ambient Texture");
+        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_2, "Normal Texture");
+        pShader->AddTexParam(TEX_3, "Height Texture");
+        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
+        pShader->AddTexParam(TEX_5, "Emissive Texture");
+
         pShader->SetName(L"UnrealPBRShader");
         AddAsset(L"UnrealPBRShader", pShader);
     }
@@ -339,6 +366,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_0, "Rim Power");
+
         pShader->SetName(L"BlinnPhongShader");
         AddAsset(L"BlinnPhongShader", pShader);
     }
@@ -355,6 +385,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(FLOAT_0, "Normal Line Scale");
 
         pShader->SetName(L"NormalLineShader");
         AddAsset(L"NormalLineShader", pShader);
@@ -373,6 +405,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddScalarParam(INT_0, "Thickness");
+        pShader->AddScalarParam(VEC4_0, "OutLine Color");
 
         pShader->SetName(L"2D_OutLineShader");
         AddAsset(L"2D_OutLineShader", pShader);
@@ -410,6 +445,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
+        pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
+
         pShader->SetName(L"SkyBoxShader");
         AddAsset(L"SkyBoxShader", pShader);
     }
@@ -431,6 +468,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
+        pShader->AddTexParam(TEX_0, "Texture");
+
         pShader->SetName(L"BillBoardPointShader");
         AddAsset(L"BillBoardPointShader", pShader);
     }
@@ -449,6 +488,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
+        pShader->AddScalarParam(VEC4_0, "Picking Color");
+
         pShader->SetName(L"IDMapShader");
         AddAsset(L"IDMapShader", pShader);
     }
@@ -465,6 +506,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Strength");
+        pShader->AddScalarParam(FLOAT_1, "Threshold");
+
+        pShader->AddTexParam(TEX_0, "Render Texture");
+        pShader->AddTexParam(TEX_1, "Bloom Texture");
 
         pShader->SetName(L"CombineShader");
         AddAsset(L"CombineShader", pShader);
@@ -483,6 +530,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
+        pShader->AddTexParam(TEX_0, "Bloom Texture");
+
         pShader->SetName(L"BloomDownShader");
         AddAsset(L"BloomDownShader", pShader);
     }
@@ -499,6 +548,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Bloom Texture");
 
         pShader->SetName(L"BloomUpShader");
         AddAsset(L"BloomUpShader", pShader);
@@ -551,6 +602,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
+        pShader->AddScalarParam(FLOAT_0, "Circle Size");
+
         pShader->SetName(L"ShockWaveShader");
         AddAsset(L"ShockWaveShader", pShader);
     }
@@ -567,6 +620,13 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Exposure"); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
+        pShader->AddScalarParam(FLOAT_1, "Gamma");    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
+        pShader->AddScalarParam(FLOAT_2, "Strength"); // Bloom Strength
+
+        pShader->AddTexParam(TEX_0, "Render Texture");
+        pShader->AddTexParam(TEX_1, "Bloom Texture");
 
         pShader->SetName(L"ToneMappingShader");
         AddAsset(L"ToneMappingShader", pShader);
@@ -613,6 +673,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
+        pShader->AddScalarParam(FLOAT_0, "FogStrength");
+        pShader->AddScalarParam(FLOAT_1, "DepthScale");
+
+        pShader->AddTexParam(TEX_0, "Render Texture");
+        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
+
         pShader->SetName(L"PostEffectShader");
         AddAsset(L"PostEffectShader", pShader);
     }
@@ -643,7 +709,7 @@ void CAssetMgr::CreateDefaultMaterial()
 {
     // Std2DMtrl
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
         pMtrl->SetName(L"Std2DMtrl");
         AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
@@ -651,7 +717,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // TileMapMtrl
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TileMapShader"));
         pMtrl->SetName(L"TileMapMtrl");
         AddAsset<CMaterial>(L"TileMapMtrl", pMtrl);
@@ -659,7 +725,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // ParticleRenderMtrl
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ParticleRenderShader"));
         pMtrl->SetName(L"ParticleRenderMtrl");
         AddAsset<CMaterial>(L"ParticleRenderMtrl", pMtrl);
@@ -667,7 +733,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // GrayFilterMtrl
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"GrayFilterShader"));
         pMtrl->SetName(L"GrayFilterMtrl");
         AddAsset<CMaterial>(L"GrayFilterMtrl", pMtrl);
@@ -675,7 +741,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // DistortionMtrl
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DistortionShader"));
         pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"Texture\\noise\\noise_01.jpg"));
         pMtrl->SetName(L"DistortionMtrl");
@@ -684,7 +750,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // DebugShapeMtrl
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
         pMtrl->SetName(L"DebugShapeMtrl");
         AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
@@ -692,7 +758,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Basic
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BasicShader"));
         pMtrl->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
         pMtrl->SetName(L"BasicMtrl");
@@ -701,7 +767,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Unreal PBR
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
         pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
@@ -712,7 +778,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // BlinnPhong
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlinnPhongShader"));
         pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
         pMtrl->SetName(L"BlinnPhongMtrl");
@@ -721,7 +787,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // NormalLine
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"NormalLineShader"));
         pMtrl->SetName(L"NormalLineMtrl");
         AddAsset<CMaterial>(L"NormalLineMtrl", pMtrl);
@@ -729,7 +795,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // 2D OutLine
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"2D_OutLineShader"));
         pMtrl->SetScalarParam(INT_0, 25);                                                     // Thickness
         pMtrl->SetScalarParam(VEC4_0, Vec4(235.f / 255.f, 162.f / 255.f, 10.f / 255.f, 1.f)); // Color
@@ -739,7 +805,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // 3D OutLine
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"3D_OutLineShader"));
         pMtrl->SetName(L"3D_OutLineMtrl");
         AddAsset<CMaterial>(L"3D_OutLineMtrl", pMtrl);
@@ -747,7 +813,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // IDMap
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"IDMapShader"));
         pMtrl->SetName(L"IDMapMtrl");
         AddAsset<CMaterial>(L"IDMapMtrl", pMtrl);
@@ -755,7 +821,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // SkyBox CubeMap
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyBoxShader"));
         pMtrl->SetName(L"SkyBoxMtrl");
         AddAsset<CMaterial>(L"SkyBoxMtrl", pMtrl);
@@ -763,7 +829,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Directional Light
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\DirectionalLight.png", L"Icons\\DirectionalLight.png"));
         pMtrl->SetName(L"DirectionalLightMtrl");
@@ -772,7 +838,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Point Light
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\PointLight.png", L"Icons\\PointLight.png"));
         pMtrl->SetName(L"PointLightMtrl");
@@ -781,7 +847,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Spot Light
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\SpotLight.png", L"Icons\\SpotLight.png"));
         pMtrl->SetName(L"SpotLightMtrl");
@@ -790,7 +856,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Combine
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CombineShader"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Strength
         pMtrl->SetScalarParam(FLOAT_1, 0.5f); // Threshold
@@ -800,7 +866,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Bloom Down
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomDownShader"));
         pMtrl->SetName(L"BloomDownMtrl");
         AddAsset<CMaterial>(L"BloomDownMtrl", pMtrl);
@@ -808,7 +874,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Bloom Up
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BloomUpShader"));
         pMtrl->SetName(L"BloomUpMtrl");
         AddAsset<CMaterial>(L"BloomUpMtrl", pMtrl);
@@ -816,7 +882,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // BlurX
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurXShader"));
         pMtrl->SetName(L"BlurXMtrl");
         AddAsset<CMaterial>(L"BlurXMtrl", pMtrl);
@@ -824,7 +890,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // BlurY
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlurYShader"));
         pMtrl->SetName(L"BlurYMtrl");
         AddAsset<CMaterial>(L"BlurYMtrl", pMtrl);
@@ -832,7 +898,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // ShockWave
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShockWaveShader"));
         pMtrl->SetName(L"ShockWaveMtrl");
         AddAsset<CMaterial>(L"ShockWaveMtrl", pMtrl);
@@ -840,7 +906,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // ToneMapping
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ToneMappingShader"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Exposure
         pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
@@ -850,7 +916,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Mirror
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MirrorShader"));
         pMtrl->SetName(L"MirrorMtrl");
         AddAsset<CMaterial>(L"MirrorMtrl", pMtrl);
@@ -858,7 +924,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // DepthOnly
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DepthOnlyShader"));
         pMtrl->SetName(L"DepthOnlyMtrl");
         AddAsset<CMaterial>(L"DepthOnlyMtrl", pMtrl);
@@ -866,7 +932,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
     // Post Effect
     {
-        CMaterial* pMtrl = new CMaterial(true);
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PostEffectShader"));
         pMtrl->SetName(L"PostEffectMtrl");
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);

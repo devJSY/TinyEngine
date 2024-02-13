@@ -2,7 +2,7 @@
 #include "CShader.h"
 
 CShader::CShader(ASSET_TYPE _Type)
-    : CAsset(_Type)
+    : CAsset(_Type, true)
     , m_CompileFlags(0)
 {
 #if defined(DEBUG) || defined(_DEBUG)
