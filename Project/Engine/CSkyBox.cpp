@@ -21,6 +21,11 @@ CSkyBox::~CSkyBox()
 
 void CSkyBox::begin()
 {
+    UpdateData();
+}
+
+void CSkyBox::UpdateData()
+{
     if (nullptr != m_BrdfTex)
         m_BrdfTex->UpdateData(17);
     if (nullptr != m_DiffuseTex)
@@ -102,6 +107,8 @@ void CSkyBox::SetType(SKYBOX_TYPE _type)
         m_SpecularTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
             L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds");
     }
+
+    UpdateData();
 }
 
 void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)
