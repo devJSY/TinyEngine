@@ -3,6 +3,15 @@
 
 enum class SKYBOX_TYPE
 {
+    IBLBaker,
+    LearnOpenGL,
+    moonless,
+    PureSky,
+    END
+};
+
+enum class SKYBOX_SHAPE
+{
     SPHERE,
     BOX,
 };
@@ -11,17 +20,19 @@ class CSkyBox : public CRenderComponent
 {
 private:
     SKYBOX_TYPE m_Type;
+    SKYBOX_SHAPE m_Shape;
+
     Ptr<CTexture> m_BrdfTex;
     Ptr<CTexture> m_EnvTex;
     Ptr<CTexture> m_DiffuseTex;
     Ptr<CTexture> m_SpecularTex;
 
 public:
-    void SetType(SKYBOX_TYPE _Type);
-    void SetBrdfTexture(Ptr<CTexture> _tex) { m_BrdfTex = _tex; }
-    void SetEnvTexture(Ptr<CTexture> _tex) { m_EnvTex = _tex; }
-    void SetDiffuseTexture(Ptr<CTexture> _tex) { m_DiffuseTex = _tex; }
-    void SetSpecularTexture(Ptr<CTexture> _tex) { m_SpecularTex = _tex; }
+    void SetType(SKYBOX_TYPE _type);
+    void SetShape(SKYBOX_SHAPE _shape);
+
+    SKYBOX_TYPE GetSkyBoxType() { return m_Type; };
+    SKYBOX_SHAPE GetSkyBoxShape() { return m_Shape; };
 
 public:
     virtual void begin() override;

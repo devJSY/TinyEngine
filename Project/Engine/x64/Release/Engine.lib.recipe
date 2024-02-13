@@ -45,6 +45,12 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\debug.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\DepthOnlyPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\DepthOnlyVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\FireBallPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -79,6 +85,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\particle_update.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\PostEffectPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocess.cso</FullPath>

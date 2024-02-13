@@ -1154,6 +1154,58 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
 void COutliner::DrawSkybox(CGameObject* obj)
 {
+    CSkyBox* pSkyBox = obj->SkyBox();
+    if (nullptr == pSkyBox)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CSkyBox).hash_code(), m_DefaultTreeNodeFlag, "SkyBox");
+
+    ComponentSettingsButton(pSkyBox);
+
+    if (open)
+    {
+        // =======================
+        // Type
+        // =======================
+        vector<string> SkyBoxTypes = {
+            "IBLBaker",
+            "LearnOpenGL",
+            "moonless",
+            "PureSky",
+        };
+
+        static string CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+        if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Type").c_str(), CurType, SkyBoxTypes))
+        {
+            if (SkyBoxTypes[0] == CurType)
+                pSkyBox->SetType(SKYBOX_TYPE::IBLBaker);
+            else if (SkyBoxTypes[1] == CurType)
+                pSkyBox->SetType(SKYBOX_TYPE::LearnOpenGL);
+            else if (SkyBoxTypes[2] == CurType)
+                pSkyBox->SetType(SKYBOX_TYPE::moonless);
+            else if (SkyBoxTypes[3] == CurType)
+                pSkyBox->SetType(SKYBOX_TYPE::PureSky);
+        }
+
+        // =======================
+        // Shape
+        // =======================
+        vector<string> SkyBoxShapes = {
+            "Sphere",
+            "Box",
+        };
+
+        static string CurShape = SkyBoxShapes[(UINT)pSkyBox->GetSkyBoxShape()];
+        if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Shape").c_str(), CurShape, SkyBoxShapes))
+        {
+            if (SkyBoxShapes[0] == CurShape)
+                pSkyBox->SetShape(SKYBOX_SHAPE::SPHERE);
+            else if (SkyBoxShapes[1] == CurShape)
+                pSkyBox->SetShape(SKYBOX_SHAPE::BOX);
+        }
+
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawLandscape(CGameObject* obj)

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "global.h"
+#include "CSkyBox.h"
 
 tTransform g_Transform = {};
 tGlobalData g_Global = {};

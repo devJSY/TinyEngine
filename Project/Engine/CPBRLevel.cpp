@@ -76,32 +76,9 @@ void CPBRLevel::begin()
     pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
     pSkyBox->Transform()->SetAbsolute(true);
 
-    pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::BOX);
-    // pSkyBox->SkyBox()->SetBrdfTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds"));
-    // pSkyBox->SkyBox()->SetEnvTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds"));
-    // pSkyBox->SkyBox()->SetDiffuseTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds"));
-    // pSkyBox->SkyBox()->SetSpecularTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds"));
-    pSkyBox->SkyBox()->SetBrdfTexture(
-        CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessBrdf.dds"));
-    pSkyBox->SkyBox()->SetEnvTexture(
-        CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessEnvHDR.dds"));
-    pSkyBox->SkyBox()->SetDiffuseTexture(
-        CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessDiffuseHDR.dds"));
-    pSkyBox->SkyBox()->SetSpecularTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(
-        L"Developers\\Textures\\Cubemaps\\moonless\\moonlessSpecularHDR.dds"));
-    // pSkyBox->SkyBox()->SetBrdfTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds"));
-    // pSkyBox->SkyBox()->SetEnvTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds"));
-    // pSkyBox->SkyBox()->SetDiffuseTexture(
-    //     CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds"));
-    // pSkyBox->SkyBox()->SetSpecularTexture(CAssetMgr::GetInst()->FindAsset<CTexture>(
-    //     L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds"));
-
+    pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::moonless);
+    pSkyBox->SkyBox()->SetShape(SKYBOX_SHAPE::BOX);
+ 
     AddObject(pSkyBox, L"SkyBox");
 
     // BlinnPhong Obj

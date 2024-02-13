@@ -445,7 +445,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_FRONT); 
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
@@ -725,12 +725,15 @@ void CAssetMgr::CreateDefaultTexture()
     // ====================
     // SkyBox
     // ====================
-    if (nullptr == FindAsset<CTexture>(L"cubemapTex"))
-        Load<CTexture>(L"cubemapTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_bgra.dds");
-    if (nullptr == FindAsset<CTexture>(L"cubemap_diffuseTex"))
-        Load<CTexture>(L"cubemap_diffuseTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_diffuse.dds");
-    if (nullptr == FindAsset<CTexture>(L"cubemap_specularTex"))
-        Load<CTexture>(L"cubemap_specularTex", L"Developers\\Textures\\Cubemaps\\skybox\\cubemap_specular.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_bgra.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_bgra.dds",
+                       L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_bgra.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_diffuse.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_diffuse.dds",
+                       L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_diffuse.dds");
+    if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_specular.dds"))
+        Load<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_specular.dds",
+                       L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_specular.dds");
 
     if (nullptr == FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds"))
         Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds",
