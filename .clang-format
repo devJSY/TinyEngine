@@ -5,13 +5,12 @@ AllowShortFunctionsOnASingleLine: InlineOnly
 AlwaysBreakTemplateDeclarations: 'Yes'
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
+ColumnLimit: '150'
 FixNamespaceComments: 'false'
 IndentCaseLabels: 'false'
 IndentPPDirectives: BeforeHash
 NamespaceIndentation: All
 PointerAlignment: Left
 SortIncludes: 'false'
-IndentCaseBlocks: true
-AlignConsecutiveMacros: true
 
 ...

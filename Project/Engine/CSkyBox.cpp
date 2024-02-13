@@ -66,46 +66,46 @@ void CSkyBox::SetType(SKYBOX_TYPE _type)
 {
     if (SKYBOX_TYPE::IBLBaker == _type)
     {
-        m_BrdfTex =
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds");
-        m_EnvTex =
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds");
-        m_DiffuseTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds");
-        m_SpecularTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds");
+        m_BrdfTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds",
+                                                         L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds");
+        m_EnvTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds",
+                                                        L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerEnvHDR.dds");
+        m_DiffuseTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds",
+                                                            L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerDiffuseHDR.dds");
+        m_SpecularTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds",
+                                                             L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerSpecularHDR.dds");
     }
     else if (SKYBOX_TYPE::LearnOpenGL == _type)
     {
         m_BrdfTex = nullptr;
-        m_EnvTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_bgra.dds");
-        m_DiffuseTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_diffuse.dds");
-        m_SpecularTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_specular.dds");
+        m_EnvTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_bgra.dds",
+                                                        L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_bgra.dds");
+        m_DiffuseTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_diffuse.dds",
+                                                            L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_diffuse.dds");
+        m_SpecularTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_specular.dds",
+                                                             L"Developers\\Textures\\Cubemaps\\LearnOpenGL\\LearnOpenGL_specular.dds");
     }
     else if (SKYBOX_TYPE::moonless == _type)
     {
-        m_BrdfTex =
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessBrdf.dds");
-        m_EnvTex =
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessEnvHDR.dds");
-        m_DiffuseTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\moonless\\moonlessDiffuseHDR.dds");
-        m_SpecularTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\moonless\\moonlessSpecularHDR.dds");
+        m_BrdfTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessBrdf.dds",
+                                                         L"Developers\\Textures\\Cubemaps\\moonless\\moonlessBrdf.dds");
+        m_EnvTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessEnvHDR.dds",
+                                                        L"Developers\\Textures\\Cubemaps\\moonless\\moonlessEnvHDR.dds");
+        m_DiffuseTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessDiffuseHDR.dds",
+                                                            L"Developers\\Textures\\Cubemaps\\moonless\\moonlessDiffuseHDR.dds");
+        m_SpecularTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\moonless\\moonlessSpecularHDR.dds",
+                                                             L"Developers\\Textures\\Cubemaps\\moonless\\moonlessSpecularHDR.dds");
     }
     else if (SKYBOX_TYPE::PureSky == _type)
     {
-        m_BrdfTex =
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds");
-        m_EnvTex =
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds");
-        m_DiffuseTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds");
-        m_SpecularTex = CAssetMgr::GetInst()->FindAsset<CTexture>(
-            L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds");
+        m_BrdfTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds",
+                                                         L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyBrdf.dds");
+        m_EnvTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds",
+                                                        L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyEnvHDR.dds");
+        m_DiffuseTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds",
+                                                            L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkyDiffuseHDR.dds");
+        m_SpecularTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds",
+                                                             L"Developers\\Textures\\Cubemaps\\PureSky\\PureSkySpecularHDR.dds");
     }
 
     UpdateData();

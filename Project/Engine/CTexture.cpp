@@ -46,8 +46,7 @@ int CTexture::Load(const wstring& _strFilePath)
     // 1. ID3D11Texture2D 객체 생성
     // 2. ScratchImage 에 있는 데이터를 ID3D11Texture2D 객체 로 전달
     // 3. ID3D11Texture2D 를 이용한 ShaderResourceView 만들기
-    CreateShaderResourceView(DEVICE, m_Image.GetImages(), m_Image.GetImageCount(), m_Image.GetMetadata(),
-                             m_SRV.GetAddressOf());
+    CreateShaderResourceView(DEVICE, m_Image.GetImages(), m_Image.GetImageCount(), m_Image.GetMetadata(), m_SRV.GetAddressOf());
 
     // 만들어진 ShaderResourceView 를 이용해서 생성된 ID3D11Texture2D 객체를 알아낸다.
     m_SRV->GetResource((ID3D11Resource**)m_Tex2D.GetAddressOf());
@@ -97,7 +96,7 @@ int CTexture::UpdateData_CS_UAV(int _RegisterNum)
 
 void CTexture::Clear(int _iRegisterNum)
 {
-    Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture");
+    Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png");
     ID3D11ShaderResourceView* pSRV = nullptr;
 
     if (TEX_0 <= _iRegisterNum && TEX_5 >= _iRegisterNum)
@@ -188,9 +187,8 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _
     return S_OK;
 }
 
-int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
-                     const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
-                     const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
+int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
+                     const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc, const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     assert(_tex2D.Get());
 

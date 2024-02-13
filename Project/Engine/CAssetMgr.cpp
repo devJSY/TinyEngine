@@ -17,69 +17,15 @@ CAssetMgr::CAssetMgr()
 }
 
 CAssetMgr::~CAssetMgr()
-{
-    string FilePath = ToString(CPathMgr::GetContentPath());
-    FilePath += "Asset\\";
-
-    if (!std::filesystem::exists(FilePath))
-    {
-        std::filesystem::create_directory(FilePath);
-
-        for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-        {
-            std::filesystem::create_directory(FilePath + ASSET_TYPE_STRING[i]);
-        }
-    }
-
-    // 모든 에셋 파일로 저장
-    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    {
-        wstring basePath = L"Asset\\";
-        basePath += ToWstring(ASSET_TYPE_STRING[i]);
-
-        for (const auto& iter : m_mapAsset[i])
-        {
-            wstring filePath = basePath;
-            filePath += L"\\";
-            filePath += iter.first;
-            filePath += m_AssetExtension;
-            iter.second->Save(filePath);
-        }
-    }
+{   
 }
 
 void CAssetMgr::init()
 {
-    m_AssetExtension = L".tasset";
-    // LoadFromAssetFile();
-
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
-    CreateDefaultTexture();
     CreateDefaultMaterial();
-}
-
-void CAssetMgr::LoadFromAssetFile()
-{
-    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    {
-        wstring AssetName = L"Asset\\" + ToWstring(ASSET_TYPE_STRING[i]);
-        std::filesystem::path basePath = CPathMgr::GetContentPath() + AssetName;
-
-        // 폴더가 존재하지않는경우
-        if (!std::filesystem::exists(basePath))
-            continue;
-
-        for (auto& directoryEntry : std::filesystem::directory_iterator(basePath))
-        {
-            const auto& path = directoryEntry.path();
-            if (m_AssetExtension != path.extension())
-                continue;
-
-            // Load<>(AssetName + L"\\" + wstring(path.filename()), AssetName + L"\\" + wstring(path.filename()));
-        }
-    }
 }
 
 vector<tMeshData> CAssetMgr::ReadFromFile(string _basePath, string _filename, bool _revertNormals)

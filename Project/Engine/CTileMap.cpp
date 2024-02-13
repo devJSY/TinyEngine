@@ -19,6 +19,9 @@ CTileMap::CTileMap()
     , m_vecTileInfo{}
     , m_TileInfoBuffer(nullptr)
 {
+    CAssetMgr::GetInst()->Load<CTexture>(L"EnterTheGungeon\\Map\\MapTile.bmp", L"EnterTheGungeon\\Map\\MapTile.bmp");
+    CAssetMgr::GetInst()->Load<CTexture>(L"EnterTheGungeon\\Map\\MapTileSmall.bmp", L"EnterTheGungeon\\Map\\MapTileSmall.bmp");
+
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));
 
@@ -157,8 +160,8 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
     UINT iRow = _ImgIdx / UINT(m_vTilePixelSize.x * m_iTileCountX);
     UINT iCol = _ImgIdx % UINT(m_vTilePixelSize.y * m_iTileCountX);
 
-    m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth(),
-                                         (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
+    m_vecTileInfo[idx].vLeftTopUV =
+        Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth(), (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
 
     m_vecTileInfo[idx].bRender = 1;
     m_vecTileInfo[idx].ImageIndex = _ImgIdx;

@@ -30,12 +30,9 @@ void CRenderMgr::init()
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
     // Noise Texture Load
-    m_vecNoiseTex.push_back(
-        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_01.jpg", L"Texture\\noise\\noise_01.jpg"));
-    m_vecNoiseTex.push_back(
-        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_02.jpg", L"Texture\\noise\\noise_02.jpg"));
-    m_vecNoiseTex.push_back(
-        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_03.jpg", L"Texture\\noise\\noise_03.jpg"));
+    m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_01.jpg", L"Texture\\noise\\noise_01.jpg"));
+    m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_02.jpg", L"Texture\\noise\\noise_02.jpg"));
+    m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_03.jpg", L"Texture\\noise\\noise_03.jpg"));
 
     m_vecNoiseTex[1]->UpdateData(15);
     m_vecNoiseTex[1]->UpdateData_CS_SRV(15);

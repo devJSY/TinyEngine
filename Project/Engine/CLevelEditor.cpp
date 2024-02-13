@@ -307,9 +307,12 @@ void CLevelEditor::render_Toolbar()
     bool hasSimulateButton = true;
     bool hasPauseButton = true;
 
-    Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PlayButtonTex");
-    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"PauseButtonTex");
-    Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"StopButtonTex");
+    Ptr<CTexture> pPlayButtonTex =
+        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
+    Ptr<CTexture> pPauseButtonTex =
+        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
+    Ptr<CTexture> pStopButtonTex =
+        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
 
     if (hasPlayButton)
     {

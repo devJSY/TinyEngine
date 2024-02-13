@@ -23,9 +23,8 @@ void CMaterialEditor::render()
     ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));
     ImGui_InputText("Shader Name", ToString(m_Mtrl->GetShader()->GetName()));
 
-    ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
-                                             ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding |
-                                             ImGuiTreeNodeFlags_DefaultOpen;
+    ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap |
+                                             ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_DefaultOpen;
 
     // Material Const
     if (ImGui::TreeNodeEx("Material Const##MaterialEditor", DefaultTreeNodeFlag, "Material Const"))
@@ -106,7 +105,7 @@ void CMaterialEditor::render()
         if (nullptr != pTex.Get())
             pSRV = pTex->GetSRV().Get();
         else
-            pSRV = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
+            pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
         ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
 

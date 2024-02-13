@@ -29,8 +29,8 @@ COutliner::~COutliner()
 
 void COutliner::init()
 {
-    m_DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
-                            ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+    m_DefaultTreeNodeFlag =
+        ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 }
 
 void COutliner::render()
@@ -106,8 +106,7 @@ void COutliner::DrawNode(CGameObject* obj)
     if (nullptr != pSelectedObj)
         id = pSelectedObj->GetID();
 
-    ImGuiTreeNodeFlags flags =
-        ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+    ImGuiTreeNodeFlags flags = ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
     string name = ToString(obj->GetName());
 
@@ -247,8 +246,7 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (nullptr == pTr)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(),
-                                  m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Transform");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Transform");
 
     ComponentSettingsButton(pTr);
 
@@ -382,9 +380,8 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
             // Frame Infomation
             ImGui::Text("Frame Infomation");
-            static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter |
-                                           ImGuiTableFlags_BordersV | ImGuiTableFlags_Reorderable |
-                                           ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
+            static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV |
+                                           ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
             if (ImGui::BeginTable("##AnimFrame", 3, flags, ImVec2(450.f, 200.f)))
             {
                 const tAnimFrm& frm = vecFrm[Frmidx];
@@ -679,8 +676,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
 
         // Mesh
-        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen,
-                              "Mesh"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Mesh"))
         {
             string name;
             if (nullptr != pMesh)
@@ -705,8 +701,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         }
 
         // Material
-        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(),
-                              m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
         {
             string name;
             if (nullptr != pMaterial)
@@ -788,12 +783,9 @@ void COutliner::DrawTileMap(CGameObject* obj)
             Ptr<CTexture> pTileAtlas = pTilemap->GetTileAtlas();
             Vec2 TilePixelSize = pTilemap->GetTilePixelSize();
 
-            ImGui::InputInt(ImGui_LabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100,
-                            ImGuiInputTextFlags_ReadOnly);
-            ImGui::InputInt(ImGui_LabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100,
-                            ImGuiInputTextFlags_ReadOnly);
-            ImGui::DragFloat2(ImGui_LabelPrefix("Tile Render Size").c_str(), &TileRenderSize.x, 0.f, 0.f, 0.f, "%.3f",
-                              ImGuiInputTextFlags_ReadOnly);
+            ImGui::InputInt(ImGui_LabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100, ImGuiInputTextFlags_ReadOnly);
+            ImGui::InputInt(ImGui_LabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100, ImGuiInputTextFlags_ReadOnly);
+            ImGui::DragFloat2(ImGui_LabelPrefix("Tile Render Size").c_str(), &TileRenderSize.x, 0.f, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_ReadOnly);
 
             if (nullptr != pTileAtlas)
             {
@@ -801,8 +793,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
                 memset(buffer, 0, sizeof(buffer));
                 string name = ToString(pTileAtlas->GetKey());
                 strcpy_s(buffer, sizeof(buffer), name.c_str());
-                ImGui::InputText(ImGui_LabelPrefix("Tile Atlas Name").c_str(), buffer, sizeof(buffer),
-                                 ImGuiInputTextFlags_ReadOnly);
+                ImGui::InputText(ImGui_LabelPrefix("Tile Atlas Name").c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_ReadOnly);
 
                 ImGui::DragFloat2(ImGui_LabelPrefix("Tile Pixel Size").c_str(), &TilePixelSize.x, 0.f, 0.f, 0.f, "%.3f",
                                   ImGuiInputTextFlags_ReadOnly);
@@ -863,15 +854,13 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         }
 
         // Particle Module
-        if (ImGui::TreeNodeEx((void*)typeid(tParticleModule).hash_code(),
-                              m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Particle Module"))
+        if (ImGui::TreeNodeEx((void*)typeid(tParticleModule).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Particle Module"))
         {
             // ============================================
             // Max Count
             // ============================================
             int MaxParticleCount = pParticleSystem->m_MaxParticleCount;
-            if (ImGui::InputInt(ImGui_LabelPrefix("Max Particle Count").c_str(), &MaxParticleCount, 1, 100,
-                                ImGuiInputTextFlags_EnterReturnsTrue))
+            if (ImGui::InputInt(ImGui_LabelPrefix("Max Particle Count").c_str(), &MaxParticleCount, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
             {
                 if (MaxParticleCount < 0)
                     MaxParticleCount = 0;
@@ -883,8 +872,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 // 크기가 더 커진 경우 버퍼 재생성
                 if ((int)pParticleSystem->m_MaxParticleCount < MaxParticleCount)
                 {
-                    pParticleSystem->m_ParticleBuffer->Create(sizeof(tParticle), MaxParticleCount, SB_TYPE::READ_WRITE,
-                                                              true);
+                    pParticleSystem->m_ParticleBuffer->Create(sizeof(tParticle), MaxParticleCount, SB_TYPE::READ_WRITE, true);
                 }
 
                 pParticleSystem->m_MaxParticleCount = MaxParticleCount;
@@ -935,8 +923,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 1;
             }
             ImGui::SameLine();
-            if (ImGui::RadioButton("Calculate Force",
-                                   Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] == 1))
+            if (ImGui::RadioButton("Calculate Force", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] == 1))
             {
                 if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] > 0)
                     Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 0;
@@ -966,20 +953,15 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::RadioButton("World Space", (int*)&Module.SpaceType, 1);
 
                     ImGui::ColorEdit4(ImGui_LabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
-                    ImGui::DragFloat3(ImGui_LabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f,
-                                      D3D11_FLOAT32_MAX);
-                    ImGui::DragFloat3(ImGui_LabelPrefix("Max Scale").c_str(), &Module.vSpawnMaxScale.x, 1.f, 0.f,
-                                      D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat3(ImGui_LabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f, D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat3(ImGui_LabelPrefix("Max Scale").c_str(), &Module.vSpawnMaxScale.x, 1.f, 0.f, D3D11_FLOAT32_MAX);
 
                     ImGui::DragFloat(ImGui_LabelPrefix("Min Life").c_str(), &Module.MinLife, 0.1f, 0.f, Module.MaxLife);
-                    ImGui::DragFloat(ImGui_LabelPrefix("Max Life").c_str(), &Module.MaxLife, 0.1f, Module.MinLife,
-                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Max Life").c_str(), &Module.MaxLife, 0.1f, Module.MinLife, D3D11_FLOAT32_MAX);
                     ImGui::DragFloat(ImGui_LabelPrefix("Min Mass").c_str(), &Module.MinMass, 0.1f, 0.f, Module.MaxMass);
-                    ImGui::DragFloat(ImGui_LabelPrefix("Max Mass").c_str(), &Module.MaxMass, 0.1f, Module.MinMass,
-                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Max Mass").c_str(), &Module.MaxMass, 0.1f, Module.MinMass, D3D11_FLOAT32_MAX);
 
-                    if (ImGui::InputInt(ImGui_LabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1, 100,
-                                        ImGuiInputTextFlags_EnterReturnsTrue))
+                    if (ImGui::InputInt(ImGui_LabelPrefix("Spawn Rate").c_str(), &Module.SpawnRate, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
                     {
                         if (Module.SpawnRate < 0)
                             Module.SpawnRate = 0;
@@ -996,14 +978,12 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     // Spawn Shape - Sphere
                     if (0 == Module.SpawnShape)
                     {
-                        ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Module.Radius, 1.f, 0.f,
-                                         D3D11_FLOAT32_MAX);
+                        ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Module.Radius, 1.f, 0.f, D3D11_FLOAT32_MAX);
                     }
                     // Spawn Shape - Box
                     else if (1 == Module.SpawnShape)
                     {
-                        ImGui::DragFloat3(ImGui_LabelPrefix("Spawn Box Scale").c_str(), &Module.vSpawnBoxScale.x, 1.f,
-                                          0.f, D3D11_FLOAT32_MAX);
+                        ImGui::DragFloat3(ImGui_LabelPrefix("Spawn Box Scale").c_str(), &Module.vSpawnBoxScale.x, 1.f, 0.f, D3D11_FLOAT32_MAX);
                     }
 
                     ImGui::TreePop();
@@ -1014,8 +994,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             {
                 if (ImGui::TreeNodeEx("Drag Module##Particlesystem", m_DefaultTreeNodeFlag, "Drag Module"))
                 {
-                    ImGui::DragFloat(ImGui_LabelPrefix("Drag Time").c_str(), &Module.DragTime, 1.f, 0.f,
-                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Drag Time").c_str(), &Module.DragTime, 1.f, 0.f, D3D11_FLOAT32_MAX);
                     ImGui::TreePop();
                 }
             }
@@ -1024,16 +1003,14 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             {
                 if (ImGui::TreeNodeEx("Scale Module##Particlesystem", m_DefaultTreeNodeFlag, "Scale Module"))
                 {
-                    ImGui::DragFloat3(ImGui_LabelPrefix("Scale Ratio").c_str(), &Module.vScaleRatio.x, 1.f, 0.f,
-                                      D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat3(ImGui_LabelPrefix("Scale Ratio").c_str(), &Module.vScaleRatio.x, 1.f, 0.f, D3D11_FLOAT32_MAX);
                     ImGui::TreePop();
                 }
             }
 
             if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY])
             {
-                if (ImGui::TreeNodeEx("Add Velocity Module##Particlesystem", m_DefaultTreeNodeFlag,
-                                      "Add Velocity Module"))
+                if (ImGui::TreeNodeEx("Add Velocity Module##Particlesystem", m_DefaultTreeNodeFlag, "Add Velocity Module"))
                 {
                     ImGui::Text("Velocity Type");
                     ImGui::SameLine();
@@ -1043,16 +1020,13 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::SameLine();
                     ImGui::RadioButton("Fix Direction", (int*)&Module.AddVelocityType, 2);
 
-                    ImGui::DragFloat(ImGui_LabelPrefix("Min Speed").c_str(), &Module.MinSpeed, 0.1f, 0.f,
-                                     Module.MaxSpeed);
-                    ImGui::DragFloat(ImGui_LabelPrefix("Max Speed").c_str(), &Module.MaxSpeed, 0.1f, Module.MinSpeed,
-                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Min Speed").c_str(), &Module.MinSpeed, 0.1f, 0.f, Module.MaxSpeed);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Max Speed").c_str(), &Module.MaxSpeed, 0.1f, Module.MinSpeed, D3D11_FLOAT32_MAX);
 
                     if (2 == Module.AddVelocityType)
                     {
                         ImGui::DragFloat(ImGui_LabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 180.f);
-                        ImGui::DragFloat3(ImGui_LabelPrefix("Fixed Direction").c_str(), &Module.vFixedDirection.x, 0.1f,
-                                          -1.f, 1.f);
+                        ImGui::DragFloat3(ImGui_LabelPrefix("Fixed Direction").c_str(), &Module.vFixedDirection.x, 0.1f, -1.f, 1.f);
                     }
 
                     ImGui::TreePop();
@@ -1063,10 +1037,8 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             {
                 if (ImGui::TreeNodeEx("Noise Force##Particlesystem", m_DefaultTreeNodeFlag, "Noise Force"))
                 {
-                    ImGui::DragFloat(ImGui_LabelPrefix("Noise Force Scale").c_str(), &Module.NoiseForceScale, 1.f, 0.f,
-                                     D3D11_FLOAT32_MAX);
-                    ImGui::DragFloat(ImGui_LabelPrefix("Noise Force Term").c_str(), &Module.NoiseForceTerm, 0.1f, 0.f,
-                                     D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Noise Force Scale").c_str(), &Module.NoiseForceScale, 1.f, 0.f, D3D11_FLOAT32_MAX);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Noise Force Term").c_str(), &Module.NoiseForceTerm, 0.1f, 0.f, D3D11_FLOAT32_MAX);
                     ImGui::TreePop();
                 }
             }
@@ -1093,8 +1065,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
                     if (2 == Module.AlphaBasedLife)
                     {
-                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f,
-                                         Module.MaxLife);
+                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f, Module.MaxLife);
                     }
 
                     ImGui::TreePop();
@@ -1112,7 +1083,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             if (nullptr != pParticleSystem->m_ParticleTex)
                 TextureID = pParticleSystem->m_ParticleTex->GetSRV().Get();
             else
-                TextureID = CAssetMgr::GetInst()->FindAsset<CTexture>(L"missing_texture")->GetSRV().Get();
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
             ImGui::Image(TextureID, ImVec2(256.f, 256.f));
 

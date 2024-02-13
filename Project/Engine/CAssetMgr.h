@@ -21,7 +21,6 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
-    wstring m_AssetExtension;
 
 public:
     const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
@@ -34,10 +33,7 @@ private:
     void CreateDefaultMesh();
     void CreateDefaultGraphicsShader();
     void CreateDefaultComputeShader();
-    void CreateDefaultTexture();
     void CreateDefaultMaterial();
-
-    void LoadFromAssetFile();
 
 public:
     // Geometry

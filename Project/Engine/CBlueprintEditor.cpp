@@ -63,8 +63,7 @@ void CBlueprintEditor::init()
         return node->State.size();
     };
 
-    config.SaveNodeSettings = [](ed::NodeId nodeId, const char* data, size_t size, ed::SaveReasonFlags reason,
-                                 void* userPointer) -> bool {
+    config.SaveNodeSettings = [](ed::NodeId nodeId, const char* data, size_t size, ed::SaveReasonFlags reason, void* userPointer) -> bool {
         auto self = static_cast<CBlueprintEditor*>(userPointer);
 
         auto node = self->FindNode(nodeId);
@@ -154,11 +153,9 @@ void CBlueprintEditor::init()
     m_Links.push_back(Link(GetNextLinkId(), m_Nodes[14].Outputs[0].ID, m_Nodes[15].Inputs[0].ID));
 
     m_HeaderBackground =
-        CAssetMgr::GetInst()->Load<CTexture>(L"BlueprintBackgroundTex", L"Icons\\Blueprint\\BlueprintBackground.png");
-    m_SaveIcon = CAssetMgr::GetInst()->Load<CTexture>(L"ic_restore_white_24dpTex",
-                                                      L"Icons\\Blueprint\\ic_restore_white_24dp.png");
-    m_RestoreIcon =
-        CAssetMgr::GetInst()->Load<CTexture>(L"ic_save_white_24dpTex", L"Icons\\Blueprint\\ic_save_white_24dp.png");
+        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\Blueprint\\BlueprintBackground.png", L"Icons\\Blueprint\\BlueprintBackground.png");
+    m_SaveIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\Blueprint\\ic_restore_white_24dp.png", L"Icons\\Blueprint\\ic_restore_white_24dp.png");
+    m_RestoreIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\Blueprint\\ic_save_white_24dp.png", L"Icons\\Blueprint\\ic_save_white_24dp.png");
 }
 
 void CBlueprintEditor::render(bool* open)
@@ -508,24 +505,20 @@ void CBlueprintEditor::render()
 #endif
 
             drawList->AddRectFilled(inputsRect.GetTL() + ImVec2(0, 1), inputsRect.GetBR(),
-                                    IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                             (int)(255 * pinBackground.z), inputAlpha),
+                                    IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha),
                                     4.0f, bottomRoundCornersFlags);
             // ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
             drawList->AddRect(inputsRect.GetTL() + ImVec2(0, 1), inputsRect.GetBR(),
-                              IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                       (int)(255 * pinBackground.z), inputAlpha),
-                              4.0f, bottomRoundCornersFlags);
+                              IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha), 4.0f,
+                              bottomRoundCornersFlags);
             // ImGui::PopStyleVar();
             drawList->AddRectFilled(outputsRect.GetTL(), outputsRect.GetBR() - ImVec2(0, 1),
-                                    IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                             (int)(255 * pinBackground.z), outputAlpha),
+                                    IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha),
                                     4.0f, topRoundCornersFlags);
             // ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
             drawList->AddRect(outputsRect.GetTL(), outputsRect.GetBR() - ImVec2(0, 1),
-                              IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                       (int)(255 * pinBackground.z), outputAlpha),
-                              4.0f, topRoundCornersFlags);
+                              IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f,
+                              topRoundCornersFlags);
             // ImGui::PopStyleVar();
             drawList->AddRectFilled(contentRect.GetTL(), contentRect.GetBR(), IM_COL32(24, 64, 128, 200), 0.0f);
             // ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
@@ -590,13 +583,12 @@ void CBlueprintEditor::render()
                     ed::PopStyleVar(1);
 
                     auto drawList = ImGui::GetWindowDrawList();
-                    drawList->AddRectFilled(inputsRect.GetTL(), inputsRect.GetBR(),
-                                            IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                                     (int)(255 * pinBackground.z), inputAlpha),
-                                            4.0f, allRoundCornersFlags);
+                    drawList->AddRectFilled(
+                        inputsRect.GetTL(), inputsRect.GetBR(),
+                        IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha), 4.0f,
+                        allRoundCornersFlags);
                     drawList->AddRect(inputsRect.GetTL(), inputsRect.GetBR(),
-                                      IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                               (int)(255 * pinBackground.z), inputAlpha),
+                                      IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha),
                                       4.0f, allRoundCornersFlags);
 
                     if (newLinkPin && !CanCreateLink(newLinkPin, &pin) && &pin != newLinkPin)
@@ -654,13 +646,12 @@ void CBlueprintEditor::render()
                     ed::PopStyleVar();
 
                     auto drawList = ImGui::GetWindowDrawList();
-                    drawList->AddRectFilled(outputsRect.GetTL(), outputsRect.GetBR(),
-                                            IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                                     (int)(255 * pinBackground.z), outputAlpha),
-                                            4.0f, allRoundCornersFlags);
+                    drawList->AddRectFilled(
+                        outputsRect.GetTL(), outputsRect.GetBR(),
+                        IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f,
+                        allRoundCornersFlags);
                     drawList->AddRect(outputsRect.GetTL(), outputsRect.GetBR(),
-                                      IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y),
-                                               (int)(255 * pinBackground.z), outputAlpha),
+                                      IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha),
                                       4.0f, allRoundCornersFlags);
 
                     if (newLinkPin && !CanCreateLink(newLinkPin, &pin) && &pin != newLinkPin)
@@ -760,11 +751,9 @@ void CBlueprintEditor::render()
                 auto hintBounds = ImGui_GetItemRect();
                 auto hintFrameBounds = ImRect_Expanded(hintBounds, 8, 4);
 
-                drawList->AddRectFilled(hintFrameBounds.GetTL(), hintFrameBounds.GetBR(),
-                                        IM_COL32(255, 255, 255, 64 * bgAlpha / 255), 4.0f);
+                drawList->AddRectFilled(hintFrameBounds.GetTL(), hintFrameBounds.GetBR(), IM_COL32(255, 255, 255, 64 * bgAlpha / 255), 4.0f);
 
-                drawList->AddRect(hintFrameBounds.GetTL(), hintFrameBounds.GetBR(),
-                                  IM_COL32(255, 255, 255, 128 * bgAlpha / 255), 4.0f);
+                drawList->AddRect(hintFrameBounds.GetTL(), hintFrameBounds.GetBR(), IM_COL32(255, 255, 255, 128 * bgAlpha / 255), 4.0f);
 
                 // ImGui::PopStyleVar();
             }
@@ -872,8 +861,7 @@ void CBlueprintEditor::render()
                 {
                     if (ed::AcceptDeletedItem())
                     {
-                        auto id = std::find_if(m_Nodes.begin(), m_Nodes.end(),
-                                               [nodeId](auto& node) { return node.ID == nodeId; });
+                        auto id = std::find_if(m_Nodes.begin(), m_Nodes.end(), [nodeId](auto& node) { return node.ID == nodeId; });
                         if (id != m_Nodes.end())
                             m_Nodes.erase(id);
                     }
@@ -884,8 +872,7 @@ void CBlueprintEditor::render()
                 {
                     if (ed::AcceptDeletedItem())
                     {
-                        auto id = std::find_if(m_Links.begin(), m_Links.end(),
-                                               [linkId](auto& link) { return link.ID == linkId; });
+                        auto id = std::find_if(m_Links.begin(), m_Links.end(), [linkId](auto& link) { return link.ID == linkId; });
                         if (id != m_Links.end())
                             m_Links.erase(id);
                     }
@@ -924,9 +911,7 @@ void CBlueprintEditor::render()
         if (node)
         {
             ImGui::Text("ID: %p", node->ID.AsPointer());
-            ImGui::Text("Type: %s", node->Type == NodeType::Blueprint
-                                        ? "Blueprint"
-                                        : (node->Type == NodeType::Tree ? "Tree" : "Comment"));
+            ImGui::Text("Type: %s", node->Type == NodeType::Blueprint ? "Blueprint" : (node->Type == NodeType::Tree ? "Tree" : "Comment"));
             ImGui::Text("Inputs: %d", (int)node->Inputs.size());
             ImGui::Text("Outputs: %d", (int)node->Outputs.size());
         }
@@ -1117,10 +1102,8 @@ void CBlueprintEditor::render()
 
             auto widgetPosition = ImVec2(p1.x, p0.y) + ImVec2(0.0f, -widgetSize.y);
 
-            drawList->AddRectFilled(widgetPosition, widgetPosition + widgetSize, IM_COL32(100, 80, 80, 190), 3.0f,
-                                    ImDrawFlags_RoundCornersAll);
-            drawList->AddRect(widgetPosition, widgetPosition + widgetSize, IM_COL32(200, 160, 160, 190), 3.0f,
-                              ImDrawFlags_RoundCornersAll);
+            drawList->AddRectFilled(widgetPosition, widgetPosition + widgetSize, IM_COL32(100, 80, 80, 190), 3.0f, ImDrawFlags_RoundCornersAll);
+            drawList->AddRect(widgetPosition, widgetPosition + widgetSize, IM_COL32(200, 160, 160, 190), 3.0f, ImDrawFlags_RoundCornersAll);
             drawList->AddText(widgetPosition + padding, IM_COL32(255, 255, 255, 255), builder.c_str());
         }
 
@@ -1133,8 +1116,8 @@ void CBlueprintEditor::render()
     ImGui::End();
 }
 
-bool CBlueprintEditor::Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1,
-                                float min_size2, float splitter_long_axis_size)
+bool CBlueprintEditor::Splitter(bool split_vertically, float thickness, float* size1, float* size2, float min_size1, float min_size2,
+                                float splitter_long_axis_size)
 {
     using namespace ImGui;
     ImGuiContext& g = *GImGui;
@@ -1142,11 +1125,9 @@ bool CBlueprintEditor::Splitter(bool split_vertically, float thickness, float* s
     ImGuiID id = window->GetID("##Splitter");
     ImRect bb;
     bb.Min = window->DC.CursorPos + (split_vertically ? ImVec2(*size1, 0.0f) : ImVec2(0.0f, *size1));
-    bb.Max = bb.Min + CalcItemSize(split_vertically ? ImVec2(thickness, splitter_long_axis_size)
-                                                    : ImVec2(splitter_long_axis_size, thickness),
-                                   0.0f, 0.0f);
-    return SplitterBehavior(bb, id, split_vertically ? ImGuiAxis_X : ImGuiAxis_Y, size1, size2, min_size1, min_size2,
-                            0.0f);
+    bb.Max =
+        bb.Min + CalcItemSize(split_vertically ? ImVec2(thickness, splitter_long_axis_size) : ImVec2(splitter_long_axis_size, thickness), 0.0f, 0.0f);
+    return SplitterBehavior(bb, id, split_vertically ? ImGuiAxis_X : ImGuiAxis_Y, size1, size2, min_size1, min_size2, 0.0f);
 }
 
 float CBlueprintEditor::GetTouchProgress(ed::NodeId id)
@@ -1531,8 +1512,8 @@ void CBlueprintEditor::DrawPinIcon(const Pin& pin, bool connected, int alpha)
         return;
     }
 
-    ax::Widgets::Icon(ImVec2(static_cast<float>(m_PinIconSize), static_cast<float>(m_PinIconSize)), iconType, connected,
-                      color, ImColor(32, 32, 32, alpha));
+    ax::Widgets::Icon(ImVec2(static_cast<float>(m_PinIconSize), static_cast<float>(m_PinIconSize)), iconType, connected, color,
+                      ImColor(32, 32, 32, alpha));
 }
 
 void CBlueprintEditor::ShowStyleEditor(bool* show)
@@ -1655,9 +1636,9 @@ void CBlueprintEditor::ShowLeftPane(float paneWidth)
     int restoreIconWidth = m_RestoreIcon->GetWidth();
     int restoreIconHeight = m_RestoreIcon->GetHeight();
 
-    ImGui::GetWindowDrawList()->AddRectFilled(
-        ImGui::GetCursorScreenPos(), ImGui::GetCursorScreenPos() + ImVec2(paneWidth, ImGui::GetTextLineHeight()),
-        ImColor(ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]), ImGui::GetTextLineHeight() * 0.25f);
+    ImGui::GetWindowDrawList()->AddRectFilled(ImGui::GetCursorScreenPos(),
+                                              ImGui::GetCursorScreenPos() + ImVec2(paneWidth, ImGui::GetTextLineHeight()),
+                                              ImColor(ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]), ImGui::GetTextLineHeight() * 0.25f);
     ImGui::Spacing();
     ImGui::SameLine();
     ImGui::TextUnformatted("Nodes");
@@ -1677,9 +1658,7 @@ void CBlueprintEditor::ShowLeftPane(float paneWidth)
 #if IMGUI_VERSION_NUM >= 18967
         ImGui::SetNextItemAllowOverlap();
 #endif
-        if (ImGui::Selectable(
-                (node.Name + "##" + std::to_string(reinterpret_cast<uintptr_t>(node.ID.AsPointer()))).c_str(),
-                &isSelected))
+        if (ImGui::Selectable((node.Name + "##" + std::to_string(reinterpret_cast<uintptr_t>(node.ID.AsPointer()))).c_str(), &isSelected))
         {
             if (io.KeyCtrl)
             {
@@ -1698,13 +1677,11 @@ void CBlueprintEditor::ShowLeftPane(float paneWidth)
 
         auto id = std::string("(") + std::to_string(reinterpret_cast<uintptr_t>(node.ID.AsPointer())) + ")";
         auto textSize = ImGui::CalcTextSize(id.c_str(), nullptr);
-        auto iconPanelPos =
-            start + ImVec2(paneWidth - ImGui::GetStyle().FramePadding.x - ImGui::GetStyle().IndentSpacing -
-                               saveIconWidth - restoreIconWidth - ImGui::GetStyle().ItemInnerSpacing.x * 1,
-                           (ImGui::GetTextLineHeight() - saveIconHeight) / 2);
-        ImGui::GetWindowDrawList()->AddText(
-            ImVec2(iconPanelPos.x - textSize.x - ImGui::GetStyle().ItemInnerSpacing.x, start.y),
-            IM_COL32(255, 255, 255, 255), id.c_str(), nullptr);
+        auto iconPanelPos = start + ImVec2(paneWidth - ImGui::GetStyle().FramePadding.x - ImGui::GetStyle().IndentSpacing - saveIconWidth -
+                                               restoreIconWidth - ImGui::GetStyle().ItemInnerSpacing.x * 1,
+                                           (ImGui::GetTextLineHeight() - saveIconHeight) / 2);
+        ImGui::GetWindowDrawList()->AddText(ImVec2(iconPanelPos.x - textSize.x - ImGui::GetStyle().ItemInnerSpacing.x, start.y),
+                                            IM_COL32(255, 255, 255, 255), id.c_str(), nullptr);
 
         auto drawList = ImGui::GetWindowDrawList();
         ImGui::SetCursorScreenPos(iconPanelPos);
@@ -1719,20 +1696,20 @@ void CBlueprintEditor::ShowLeftPane(float paneWidth)
                 node.SavedState = node.State;
 
             if (ImGui::IsItemActive())
-                drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(),
-                                   ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 96));
+                drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                                   IM_COL32(255, 255, 255, 96));
             else if (ImGui::IsItemHovered())
-                drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(),
-                                   ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 255));
+                drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                                   IM_COL32(255, 255, 255, 255));
             else
-                drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(),
-                                   ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 160));
+                drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                                   IM_COL32(255, 255, 255, 160));
         }
         else
         {
             ImGui::Dummy(ImVec2((float)saveIconWidth, (float)saveIconHeight));
-            drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(),
-                               ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 32));
+            drawList->AddImage((void*)m_SaveIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                               IM_COL32(255, 255, 255, 32));
         }
 
         ImGui::SameLine(0, ImGui::GetStyle().ItemInnerSpacing.x);
@@ -1751,20 +1728,20 @@ void CBlueprintEditor::ShowLeftPane(float paneWidth)
             }
 
             if (ImGui::IsItemActive())
-                drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(),
-                                   ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 96));
+                drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                                   IM_COL32(255, 255, 255, 96));
             else if (ImGui::IsItemHovered())
-                drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(),
-                                   ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 255));
+                drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                                   IM_COL32(255, 255, 255, 255));
             else
-                drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(),
-                                   ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 160));
+                drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                                   IM_COL32(255, 255, 255, 160));
         }
         else
         {
             ImGui::Dummy(ImVec2((float)restoreIconWidth, (float)restoreIconHeight));
-            drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(),
-                               ImVec2(0, 0), ImVec2(1, 1), IM_COL32(255, 255, 255, 32));
+            drawList->AddImage((void*)m_RestoreIcon->GetSRV().Get(), ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImVec2(0, 0), ImVec2(1, 1),
+                               IM_COL32(255, 255, 255, 32));
         }
 
         ImGui::SameLine(0, 0);
@@ -1779,9 +1756,9 @@ void CBlueprintEditor::ShowLeftPane(float paneWidth)
 
     static int changeCount = 0;
 
-    ImGui::GetWindowDrawList()->AddRectFilled(
-        ImGui::GetCursorScreenPos(), ImGui::GetCursorScreenPos() + ImVec2(paneWidth, ImGui::GetTextLineHeight()),
-        ImColor(ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]), ImGui::GetTextLineHeight() * 0.25f);
+    ImGui::GetWindowDrawList()->AddRectFilled(ImGui::GetCursorScreenPos(),
+                                              ImGui::GetCursorScreenPos() + ImVec2(paneWidth, ImGui::GetTextLineHeight()),
+                                              ImColor(ImGui::GetStyle().Colors[ImGuiCol_HeaderActive]), ImGui::GetTextLineHeight() * 0.25f);
     ImGui::Spacing();
     ImGui::SameLine();
     ImGui::TextUnformatted("Selection");
