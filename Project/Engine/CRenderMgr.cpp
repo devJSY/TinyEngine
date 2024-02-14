@@ -6,6 +6,7 @@
 #include "CTimeMgr.h"
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
+#include "CEditorMgr.h"
 
 #include "CDevice.h"
 #include "components.h"
@@ -109,7 +110,7 @@ void CRenderMgr::render()
         m_vecCam[i]->render();
 
         // Depth Map Pass
-        CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), m_DepthOnlyTex->GetDSV().Get());
+        CONTEXT->OMSetRenderTargets(0, NULL, m_DepthOnlyTex->GetDSV().Get());
         m_vecCam[i]->render_DepthMap();
         CDevice::GetInst()->SetFloatRenderTarget();
 
@@ -117,7 +118,14 @@ void CRenderMgr::render()
         m_vecCam[i]->render_NormalLine();
 
         // OutLine Pass
-        m_vecCam[i]->render_OutLine();
+        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+        if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+        {
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_vecCam[i]->GetProjType())
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+            else
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+        }
 
         // IDMap Pass
         CONTEXT->OMSetRenderTargets(1, m_IDMapTex->GetRTV().GetAddressOf(), m_IDMapDSTex->GetDSV().Get());
@@ -260,7 +268,7 @@ void CRenderMgr::render_LightDepth()
         g_Transform.matProjInv = g_Transform.matProj.Invert();
 
         CONTEXT->ClearDepthStencilView(m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-        CONTEXT->OMSetRenderTargets(0, NULL, m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get()); // RTV Is Dummy
+        CONTEXT->OMSetRenderTargets(0, NULL, m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get()); 
 
         for (size_t i = 0; i < m_vecCam.size(); ++i)
         {

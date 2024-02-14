@@ -80,7 +80,6 @@ public:
     // Render pass
     void render_DepthMap();
     void render_NormalLine();
-    void render_OutLine();
     void render_IDMap();
 
     void clear();
@@ -89,7 +88,6 @@ private:
     void render(vector<CGameObject*>& _vecObj);
     void render_DepthMap(vector<CGameObject*>& _vecObj);
     void render_NormalLine(vector<CGameObject*>& _vecObj);
-    void render_OutLine(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
 
 public:

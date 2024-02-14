@@ -230,13 +230,6 @@ void CCamera::render_NormalLine()
     render_NormalLine(m_vecTransparent);
 }
 
-void CCamera::render_OutLine()
-{
-    render_OutLine(m_vecOpaque);
-    render_OutLine(m_vecMaked);
-    render_OutLine(m_vecTransparent);
-}
-
 void CCamera::render_IDMap()
 {
     render_IDMap(m_vecOpaque);
@@ -283,28 +276,13 @@ void CCamera::render_NormalLine(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_OutLine(vector<CGameObject*>& _vecObj)
-{
-    // 와이어 프레임, SkyBox - Off
-    for (size_t i = 0; i < _vecObj.size(); i++)
-    {
-        wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
-        if (CEditorMgr::GetInst()->GetSelectedObject() == _vecObj[i] && !g_Global.DrawAsWireFrame && LayerName != L"SkyBox")
-        {
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            else
-                _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-        }
-    }
-}
-
 void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
 {
     for (size_t i = 0; i < _vecObj.size(); i++)
     {
         wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
-        if (LayerName != L"UI" && LayerName != L"Light" && LayerName != L"Camera" && LayerName != L"SkyBox")
+        // 특정 레이어는 IDMap 에서 제외
+        if (LayerName != L"UI" && LayerName != L"Camera" && LayerName != L"SkyBox")
         {
             // 오브젝트 이름으로 HashID 설정
             hash<wstring> hasher;

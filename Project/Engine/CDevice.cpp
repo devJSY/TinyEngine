@@ -38,9 +38,8 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
     const D3D_FEATURE_LEVEL featureLevels[2] = {D3D_FEATURE_LEVEL_11_0, // 더 높은 버전이 먼저 오도록 설정
                                                 D3D_FEATURE_LEVEL_9_3};
     D3D_FEATURE_LEVEL featureLevel;
-    if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, createDeviceFlags, featureLevels,
-                                 ARRAYSIZE(featureLevels), D3D11_SDK_VERSION, m_Device.GetAddressOf(), &featureLevel,
-                                 m_Context.GetAddressOf())))
+    if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, createDeviceFlags, featureLevels, ARRAYSIZE(featureLevels),
+                                 D3D11_SDK_VERSION, m_Device.GetAddressOf(), &featureLevel, m_Context.GetAddressOf())))
     {
         MessageBox(nullptr, L"Device, Context 생성 실패", L"Device 초기화 실패", MB_OK);
         return E_FAIL;
@@ -92,6 +91,26 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
     {
         MessageBox(nullptr, L"샘플러 생성 실패", L"Device 초기화 실패", MB_OK);
         return E_FAIL;
+    }
+
+    // Ignore D3D11 Warning
+    ComPtr<ID3D11Debug> d3dDebug;
+    HRESULT hr = m_Device.As(&d3dDebug);
+    if (SUCCEEDED(hr))
+    {
+        ComPtr<ID3D11InfoQueue> d3dInfoQueue;
+        hr = d3dDebug.As(&d3dInfoQueue);
+        if (SUCCEEDED(hr))
+        {
+            D3D11_MESSAGE_ID hide[] = {
+                D3D11_MESSAGE_ID_DEVICE_DRAW_RENDERTARGETVIEW_NOT_SET,
+            };
+            D3D11_INFO_QUEUE_FILTER filter;
+            memset(&filter, 0, sizeof(filter));
+            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.pIDList = hide;
+            d3dInfoQueue->AddStorageFilterEntries(&filter);
+        }
     }
 
     return S_OK;
@@ -308,14 +327,13 @@ int CDevice::CreateBuffer()
     m_RenderTargetTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
     // FLOAT RenderTarget
-    m_FloatRTTex = CAssetMgr::GetInst()->CreateTexture(
-        L"FloatRenderTargetTexture", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
-        DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    m_FloatRTTex = CAssetMgr::GetInst()->CreateTexture(L"FloatRenderTargetTexture", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
+                                                       DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
+                                                       D3D11_USAGE_DEFAULT);
 
     // DepthStencil 용도 텍스쳐 생성
-    m_DSTex = CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", (UINT)m_vRenderResolution.x,
-                                                  (UINT)m_vRenderResolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
-                                                  D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+    m_DSTex = CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
+                                                  DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 
     SetFloatRenderTarget();
 
