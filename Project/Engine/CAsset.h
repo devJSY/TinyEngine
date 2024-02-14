@@ -49,6 +49,7 @@ public:
 
 public:
     CAsset(ASSET_TYPE _Type, bool _bEngineAsset = false);
+    CAsset(const CAsset& _Other);
     virtual ~CAsset();
 
     friend class CAssetMgr;

@@ -64,7 +64,7 @@ public:
 
 private:
     vector<tMeshData> ReadFromFile(string _basePath, string _filename, bool _revertNormals);
-    Ptr<CMaterial> LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData);
+    void SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _MeshData);
 
 public:
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,

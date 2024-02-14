@@ -67,63 +67,58 @@ vector<tMeshData> CAssetMgr::ReadFromFile(string _basePath, string _filename, bo
     return meshes;
 }
 
-Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _MeshData)
+void CAssetMgr::SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _MeshData)
 {
-    CMaterial* pMtrl = new CMaterial;
-    pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
-    pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
-    pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
-
     // 텍스쳐 로딩
     wstring path = ToWstring(_MeshData.RelativeTextureFilePath);
 
     if (!_MeshData.AmbientTextureFilename.empty())
     {
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.AmbientTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.AmbientTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.AmbientTextureFilename);
 
-        pMtrl->SetTexParam(TEX_0, Load<CTexture>(path + name, path + name));
+        _Mtrl->SetTexParam(TEX_0, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.AoTextureFilename.empty())
     {
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.AoTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.AoTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.AoTextureFilename);
 
-        pMtrl->SetTexParam(TEX_1, Load<CTexture>(path + name, path + name));
+        _Mtrl->SetTexParam(TEX_1, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.NormalTextureFilename.empty())
     {
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.NormalTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.NormalTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.NormalTextureFilename);
 
-        pMtrl->SetTexParam(TEX_2, Load<CTexture>(path + name, path + name));
+        _Mtrl->SetTexParam(TEX_2, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.HeightTextureFilename.empty())
     {
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.HeightTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.HeightTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.HeightTextureFilename);
 
-        pMtrl->SetTexParam(TEX_3, Load<CTexture>(path + name, path + name));
+        _Mtrl->SetTexParam(TEX_3, Load<CTexture>(path + name, path + name));
     }
 
     if (!_MeshData.MetallicTextureFilename.empty() || !_MeshData.RoughnessTextureFilename.empty())
     {
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.MetallicTextureFilename.c_str());
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.RoughnessTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.MetallicTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.RoughnessTextureFilename.c_str());
         wstring name = ToWstring(_MeshData.MetallicTextureFilename); // Metallic 이름으로 설정
 
         // GLTF 방식은 이미 합쳐져있음
         if (!_MeshData.MetallicTextureFilename.empty() &&
             (_MeshData.MetallicTextureFilename == _MeshData.RoughnessTextureFilename))
         {
-            pMtrl->SetTexParam(TEX_4, Load<CTexture>(path + name, path + name));
+            _Mtrl->SetTexParam(TEX_4, Load<CTexture>(path + name, path + name));
         }
         else
         {
@@ -189,20 +184,18 @@ Ptr<CMaterial> CAssetMgr::LoadModelMaterial(Ptr<CMesh> _Mesh, const tMeshData& _
             // 전체 복사
             CONTEXT->CopyResource(metallicRoughnessTexture.Get(), stagingTexture.Get());
 
-            pMtrl->SetTexParam(TEX_4, CreateTexture(path + name, metallicRoughnessTexture));
+            _Mtrl->SetTexParam(TEX_4, CreateTexture(path + name, metallicRoughnessTexture));
         }
     }
 
     if (!_MeshData.EmissiveTextureFilename.empty())
     {
-        LOG(Log, "%s : %s", ToString(_Mesh->GetName()).c_str(), _MeshData.EmissiveTextureFilename.c_str());
+        LOG(Log, "%s", _MeshData.EmissiveTextureFilename.c_str());
 
         wstring name = ToWstring(_MeshData.EmissiveTextureFilename);
 
-        pMtrl->SetTexParam(TEX_5, Load<CTexture>(name, path + name));
+        _Mtrl->SetTexParam(TEX_5, Load<CTexture>(name, path + name));
     }
-
-    return Ptr<CMaterial>(pMtrl);
 }
 
 CGameObject* CAssetMgr::LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals,
@@ -261,16 +254,14 @@ CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes
                       (UINT)meshData.indices.size());
         AddAsset<CMesh>(pMesh->GetName(), pMesh);
 
-        Ptr<CMaterial> material = LoadModelMaterial(pMesh, meshData);
-        material->SetName(_name + L" Parts " + std::to_wstring(idx) + L" Mtrl");
-        AddAsset<CMaterial>(material->GetName(), material.Get());
-
         Parts->AddComponent(new CTransform);
         Parts->AddComponent(new CMeshRender);
 
         Parts->Transform()->SetAbsolute(false);
         Parts->MeshRender()->SetMesh(pMesh);
-        Parts->MeshRender()->SetMaterial(material);
+        Parts->MeshRender()->SetMaterial(FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+
+        SetModelMaterial(Parts->GetRenderComponent()->GetDynamicMaterial(), meshData);
 
         model->AddChild(Parts);
         ++idx;
