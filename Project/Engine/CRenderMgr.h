@@ -113,6 +113,7 @@ private:
     void render_posteffect();
     void render_postprocess();
     void render_ui();
+    void render_LightDepth();
 
     // 리소스 바인딩
     void UpdateData();

@@ -76,9 +76,19 @@ public:
 
     void SortObject();
     void render();
+    void clear();
+
+    void render_DepthMap();
+    void render_NormalLine();
+    void render_OutLine();
+    void render_IDMap();
 
 private:
     void render(vector<CGameObject*>& _vecObj);
+    void render_DepthMap(vector<CGameObject*>& _vecObj);
+    void render_NormalLine(vector<CGameObject*>& _vecObj);
+    void render_OutLine(vector<CGameObject*>& _vecObj);
+    void render_IDMap(vector<CGameObject*>& _vecObj);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

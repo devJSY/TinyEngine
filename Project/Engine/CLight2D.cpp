@@ -19,6 +19,8 @@ CLight2D::CLight2D()
     m_Info.fallOffStart = 0.f;
     m_Info.fallOffEnd = 1000.f;
     m_Info.spotPower = 100.f;
+
+    m_Info.CastShadow = 0;
 }
 
 CLight2D::~CLight2D()

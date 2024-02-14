@@ -73,8 +73,10 @@ void CRenderMgr::tick()
     UpdateData();
 
     // HDR Rendering
-    CDevice::GetInst()->SetFloatRenderTarget();
     render();
+
+    // Light Depth Map 생성
+    render_LightDepth();
 
     // Mirror
     render_mirror();
@@ -96,10 +98,16 @@ void CRenderMgr::tick()
 
 void CRenderMgr::render()
 {
+    CDevice::GetInst()->SetFloatRenderTarget();
+
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
         m_vecCam[i]->SortObject();
         m_vecCam[i]->render();
+        m_vecCam[i]->render_DepthMap();
+        m_vecCam[i]->render_NormalLine();
+        m_vecCam[i]->render_OutLine();
+        m_vecCam[i]->render_IDMap();
     }
 }
 
@@ -166,6 +174,9 @@ void CRenderMgr::render_mirror()
     if (nullptr == m_Mirror)
         return;
 
+    g_Transform.matView = m_vecCam[0]->GetViewMat();
+    g_Transform.matProj = m_vecCam[0]->GetProjMat();
+
     // 거울부분 masking
     CDevice::GetInst()->ClearStencil();
     g_Global.render_Mode = 1; //  Stencil Mask
@@ -214,6 +225,25 @@ void CRenderMgr::render_ui()
 
     m_CamUI->SortObject();
     m_CamUI->render();
+}
+
+void CRenderMgr::render_LightDepth()
+{
+    for (int i = 0; i < m_vecLight3D.size(); i++)
+    {
+        // 그림자를 사용하지않는 광원이면 DepthMap 업데이트 X
+        if (!m_vecLight3D[i]->GetLightInfo().CastShadow)
+            continue;
+
+        CONTEXT->ClearDepthStencilView(m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+        CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get()); // RTV Is Dummy
+        for (size_t i = 0; i < m_vecCam.size(); ++i)
+        {
+            m_vecCam[i]->render_DepthMap();
+        }
+    }
+
+    CDevice::GetInst()->SetFloatRenderTarget();
 }
 
 void CRenderMgr::render_postprocess()
@@ -320,6 +350,14 @@ void CRenderMgr::UpdateData()
 
 void CRenderMgr::Clear()
 {
+    for (int i = 0; i < m_vecCam.size(); i++)
+    {
+        m_vecCam[i]->clear();
+    }
+
+    if (nullptr != m_CamUI)
+        m_CamUI->clear();
+
     m_vecLight2D.clear();
     m_vecLight3D.clear();
 }
@@ -404,7 +442,6 @@ void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 
 void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
 {
-
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
     ZeroMemory(&dsvDesc, sizeof(dsvDesc));
     dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;

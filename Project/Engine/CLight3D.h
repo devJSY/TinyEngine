@@ -5,6 +5,7 @@ class CLight3D : public CComponent
 {
 private:
     tLightInfo m_Info;
+    Ptr<CTexture> m_DepthMapTex;
 
 public:
     virtual void finaltick() override;
@@ -31,6 +32,8 @@ public:
 
     float GetSpotPower() const { return m_Info.spotPower; }
     void SetSpotPower(float power) { m_Info.spotPower = power; }
+
+    Ptr<CTexture> GetDepthMapTex() const { return m_DepthMapTex; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
