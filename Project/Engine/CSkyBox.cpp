@@ -74,6 +74,8 @@ void CSkyBox::render(Ptr<CMaterial> _mtrl)
 
 void CSkyBox::SetType(SKYBOX_TYPE _type)
 {
+    m_Type = _type;
+
     if (SKYBOX_TYPE::IBLBaker == _type)
     {
         m_BrdfTex = CAssetMgr::GetInst()->Load<CTexture>(L"Developers\\Textures\\Cubemaps\\IBLBaker\\IBLBakerBrdf.dds",

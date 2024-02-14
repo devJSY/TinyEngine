@@ -192,6 +192,6 @@ float4 main(PS_IN input) : SV_TARGET
     float4 output = float4(0.f, 0.f, 0.f, 1.f);
     output = float4(ambientLighting + directLighting + emission, 1.0);
     output = clamp(output, 0.0, 1000.0);
-    
+
     return output;
 }

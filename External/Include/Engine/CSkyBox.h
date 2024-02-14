@@ -31,8 +31,8 @@ public:
     void SetType(SKYBOX_TYPE _type);
     void SetShape(SKYBOX_SHAPE _shape);
 
-    SKYBOX_TYPE GetSkyBoxType() { return m_Type; };
-    SKYBOX_SHAPE GetSkyBoxShape() { return m_Shape; };
+    SKYBOX_TYPE GetSkyBoxType() const { return m_Type; };
+    SKYBOX_SHAPE GetSkyBoxShape() const { return m_Shape; };
 
 public:
     virtual void begin() override;

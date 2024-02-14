@@ -119,7 +119,7 @@ void CRenderMgr::render()
 
         // OutLine Pass
         CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-        if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+        if (nullptr != pSelectedObj && pSelectedObj != m_Mirror && !g_Global.DrawAsWireFrame)
         {
             if (PROJ_TYPE::ORTHOGRAPHIC == m_vecCam[i]->GetProjType())
                 pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
@@ -268,7 +268,7 @@ void CRenderMgr::render_LightDepth()
         g_Transform.matProjInv = g_Transform.matProj.Invert();
 
         CONTEXT->ClearDepthStencilView(m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-        CONTEXT->OMSetRenderTargets(0, NULL, m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get()); 
+        CONTEXT->OMSetRenderTargets(0, NULL, m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get());
 
         for (size_t i = 0; i < m_vecCam.size(); ++i)
         {
