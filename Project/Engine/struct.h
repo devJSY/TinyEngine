@@ -42,8 +42,10 @@ struct tLightInfo
     float fallOffEnd;
     float spotPower;
 
-    Matrix viewProj; // 그림자 렌더링에 필요
-    Matrix invProj;  // 그림자 렌더링 디버깅용
+    // 그림자 렌더링 
+    Matrix viewMat; 
+    Matrix projMat; 
+    Matrix invProj; // 그림자 렌더링 디버깅용
 
     int CastShadow;  // 그림자를 사용하는 광원
     Vec3 padd;

@@ -25,10 +25,7 @@ protected:
     void SetRelativePath(const wstring& _RelativePath) { m_RelativePath = _RelativePath; }
 
 private:
-    void AddRef() 
-    { 
-        ++m_RefCount;
-    }
+    void AddRef() { ++m_RefCount; }
     void Release()
     {
         --m_RefCount;
@@ -45,6 +42,10 @@ public:
 private:
     // 파일로 부터 로딩
     virtual int Load(const wstring& _strFilePath) = 0;
+
+public:
+    // 에셋은 Clone X
+    virtual CAsset* Clone() override { return nullptr; }
 
 public:
     CAsset(ASSET_TYPE _Type, bool _bEngineAsset = false);

@@ -76,12 +76,14 @@ public:
 
     void SortObject();
     void render();
-    void clear();
 
+    // Render pass
     void render_DepthMap();
     void render_NormalLine();
     void render_OutLine();
     void render_IDMap();
+
+    void clear();
 
 private:
     void render(vector<CGameObject*>& _vecObj);

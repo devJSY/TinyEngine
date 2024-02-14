@@ -218,16 +218,9 @@ void CCamera::clear()
 
 void CCamera::render_DepthMap()
 {
-    Ptr<CTexture> pDummyTex = CRenderMgr::GetInst()->GetPostProcessTex();
-    Ptr<CTexture> pDepthOnlyTex = CRenderMgr::GetInst()->GetDepthOnlyTex();
-
-    CONTEXT->OMSetRenderTargets(1, pDummyTex->GetRTV().GetAddressOf(), pDepthOnlyTex->GetDSV().Get());
-
     render_DepthMap(m_vecOpaque);
     render_DepthMap(m_vecMaked);
     render_DepthMap(m_vecTransparent);
-
-    CDevice::GetInst()->SetFloatRenderTarget();
 }
 
 void CCamera::render_NormalLine()
@@ -235,8 +228,6 @@ void CCamera::render_NormalLine()
     render_NormalLine(m_vecOpaque);
     render_NormalLine(m_vecMaked);
     render_NormalLine(m_vecTransparent);
-
-    CDevice::GetInst()->SetFloatRenderTarget();
 }
 
 void CCamera::render_OutLine()
@@ -244,22 +235,13 @@ void CCamera::render_OutLine()
     render_OutLine(m_vecOpaque);
     render_OutLine(m_vecMaked);
     render_OutLine(m_vecTransparent);
-
-    CDevice::GetInst()->SetFloatRenderTarget();
 }
 
 void CCamera::render_IDMap()
 {
-    Ptr<CTexture> pIDMapTex = CRenderMgr::GetInst()->GetIDMapTex();
-    Ptr<CTexture> pIDMapDSTex = CRenderMgr::GetInst()->GetIDMapDSTex();
-
-    CONTEXT->OMSetRenderTargets(1, pIDMapTex->GetRTV().GetAddressOf(), pIDMapDSTex->GetDSV().Get());
-
     render_IDMap(m_vecOpaque);
     render_IDMap(m_vecMaked);
     render_IDMap(m_vecTransparent);
-
-    CDevice::GetInst()->SetFloatRenderTarget();
 }
 
 void CCamera::render(vector<CGameObject*>& _vecObj)

@@ -44,6 +44,8 @@ public:
 private:
     virtual int Load(const wstring& _strFilePath) override;
 
+    CLONE(CMaterial);
+
 public:
     CMaterial(bool _bEngineAsset = false);
     virtual ~CMaterial();

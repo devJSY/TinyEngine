@@ -75,7 +75,7 @@ void CRenderMgr::tick()
     // HDR Rendering
     render();
 
-    // Light Depth Map 생성
+    // Light Depth Map
     render_LightDepth();
 
     // Mirror
@@ -99,15 +99,30 @@ void CRenderMgr::tick()
 void CRenderMgr::render()
 {
     CDevice::GetInst()->SetFloatRenderTarget();
+    CDevice::GetInst()->SetFloatRenderTarget();
 
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
         m_vecCam[i]->SortObject();
+
+        // Main Render
         m_vecCam[i]->render();
+
+        // Depth Map Pass
+        CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), m_DepthOnlyTex->GetDSV().Get());
         m_vecCam[i]->render_DepthMap();
+        CDevice::GetInst()->SetFloatRenderTarget();
+
+        // NormalLine Pass
         m_vecCam[i]->render_NormalLine();
+
+        // OutLine Pass
         m_vecCam[i]->render_OutLine();
+
+        // IDMap Pass
+        CONTEXT->OMSetRenderTargets(1, m_IDMapTex->GetRTV().GetAddressOf(), m_IDMapDSTex->GetDSV().Get());
         m_vecCam[i]->render_IDMap();
+        CDevice::GetInst()->SetFloatRenderTarget();
     }
 }
 
@@ -229,20 +244,31 @@ void CRenderMgr::render_ui()
 
 void CRenderMgr::render_LightDepth()
 {
+    tTransform originTr = g_Transform;
+
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
+        const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
         // 그림자를 사용하지않는 광원이면 DepthMap 업데이트 X
-        if (!m_vecLight3D[i]->GetLightInfo().CastShadow)
+        if (!info.CastShadow)
             continue;
 
+        // 광원 시점 렌더링
+        g_Transform.matView = info.viewMat;
+        g_Transform.matViewInv = g_Transform.matView.Invert();
+        g_Transform.matProj = info.projMat;
+        g_Transform.matProjInv = g_Transform.matProj.Invert();
+
         CONTEXT->ClearDepthStencilView(m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-        CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get()); // RTV Is Dummy
+        CONTEXT->OMSetRenderTargets(0, NULL, m_vecLight3D[i]->GetDepthMapTex()->GetDSV().Get()); // RTV Is Dummy
+
         for (size_t i = 0; i < m_vecCam.size(); ++i)
         {
             m_vecCam[i]->render_DepthMap();
         }
     }
 
+    g_Transform = originTr;
     CDevice::GetInst()->SetFloatRenderTarget();
 }
 

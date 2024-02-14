@@ -61,8 +61,9 @@ void CLight3D::finaltick()
     CCamera* mainCam = CRenderMgr::GetInst()->GetCamera(0);
     Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.0f), 1.0f, mainCam->GetNear(), mainCam->GetFar());
 
-    m_Info.viewProj = ViewRow * ProjRow;
-    m_Info.invProj = m_Info.viewProj.Invert();
+    m_Info.viewMat = ViewRow;
+    m_Info.projMat = ProjRow;
+    m_Info.invProj = m_Info.projMat.Invert();
 
     GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
 
