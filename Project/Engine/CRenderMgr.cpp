@@ -136,8 +136,7 @@ void CRenderMgr::render_debug()
         m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, (*iter).vColor);
 
         D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
-        if (DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape ||
-            DEBUG_SHAPE::SPHERE == (*iter).eShape)
+        if (DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape || DEBUG_SHAPE::SPHERE == (*iter).eShape)
         {
             m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }
@@ -174,14 +173,19 @@ void CRenderMgr::render_mirror()
 
     // masking ºÎºÐ ·»´õ
     CDevice::GetInst()->ClearDepth();
-    g_Global.ReflectionRowMat = Matrix::CreateReflection(
-        SimpleMath::Plane(m_Mirror->Transform()->GetWorldPos(), m_Mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
+    g_Global.ReflectionRowMat =
+        Matrix::CreateReflection(SimpleMath::Plane(m_Mirror->Transform()->GetWorldPos(), m_Mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
     g_Global.render_Mode = 2; // Masked Render
     render();
 
     // °Å¿ï ·»´õ¸µ
     g_Global.render_Mode = 0; // Render
     m_Mirror->render();
+
+    // Mirror DepthOnlyPass
+    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), m_DepthOnlyTex->GetDSV().Get());
+    m_Mirror->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl"));
+    CDevice::GetInst()->SetFloatRenderTarget();
 
     // Reset
     m_Mirror = nullptr;
@@ -255,8 +259,7 @@ void CRenderMgr::render_postprocess()
         }
         else
         {
-            CDevice::GetInst()->SetViewport((float)m_BloomTextures[level - 1]->GetWidth(),
-                                            (float)m_BloomTextures[level - 1]->GetHeight());
+            CDevice::GetInst()->SetViewport((float)m_BloomTextures[level - 1]->GetWidth(), (float)m_BloomTextures[level - 1]->GetHeight());
             CONTEXT->OMSetRenderTargets(1, m_BloomTextures[level - 1]->GetRTV().GetAddressOf(), NULL);
         }
         m_BloomUpFilters[i]->render();
@@ -367,16 +370,14 @@ void CRenderMgr::CopyToPostProcessTex()
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
-    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                      DXGI_FORMAT_R8G8B8A8_UNORM, D3D11_BIND_SHADER_RESOURCE,
-                                                      D3D11_USAGE_DEFAULT);
+    m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                      D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
 {
-    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(
-        L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R16G16B16A16_FLOAT,
-        D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R16G16B16A16_FLOAT,
+                                                           D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
@@ -386,22 +387,19 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
     for (int i = 0; i < bloomLevels - 1; i++)
     {
         int div = int(pow(2, 1 + i));
-        m_BloomTextures.push_back(CAssetMgr::GetInst()->CreateTexture(
-            L"BloomTexture " + std::to_wstring(i), UINT(Resolution.x / div), UINT(Resolution.y / div),
-            DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
-            D3D11_USAGE_DEFAULT));
+        m_BloomTextures.push_back(CAssetMgr::GetInst()->CreateTexture(L"BloomTexture " + std::to_wstring(i), UINT(Resolution.x / div),
+                                                                      UINT(Resolution.y / div), DXGI_FORMAT_R16G16B16A16_FLOAT,
+                                                                      D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT));
     }
 }
 
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 {
-    m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(
-        L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-        D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
+    m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                     D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
 
-    m_IDMapDSTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y,
-                                                       DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL,
-                                                       D3D11_USAGE_DEFAULT);
+    m_IDMapDSTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
+                                                       D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
@@ -418,9 +416,9 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
     srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
     srvDesc.Texture2D.MipLevels = 1;
 
-    m_DepthOnlyTex = CAssetMgr::GetInst()->CreateTexture(
-        L"DepthOnlyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
-        D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
+    m_DepthOnlyTex =
+        CAssetMgr::GetInst()->CreateTexture(L"DepthOnlyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
+                                            D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)

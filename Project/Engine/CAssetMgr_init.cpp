@@ -673,8 +673,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
+        pShader->AddScalarParam(INT_0, "Render Mode");
+
         pShader->AddScalarParam(FLOAT_0, "FogStrength");
         pShader->AddScalarParam(FLOAT_1, "DepthScale");
+
+        pShader->AddScalarParam(VEC4_0, "Fog Color");
 
         pShader->AddTexParam(TEX_0, "Render Texture");
         pShader->AddTexParam(TEX_1, "DepthOnly Texture");
@@ -935,6 +939,8 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PostEffectShader"));
         pMtrl->SetName(L"PostEffectMtrl");
+        pMtrl->SetScalarParam(FLOAT_1, 1.f);
+        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
     }
 }
