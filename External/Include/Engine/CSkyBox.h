@@ -36,7 +36,7 @@ public:
 
 public:
     virtual void begin() override;
-    virtual void finaltick() override{};
+    virtual void finaltick() override;
     virtual void UpdateData();
     virtual void render() override;
     virtual void render(Ptr<CMaterial> _mtrl) override;

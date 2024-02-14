@@ -24,6 +24,16 @@ void CSkyBox::begin()
     UpdateData();
 }
 
+void CSkyBox::finaltick()
+{
+    if (GetOwner()->IsDead())
+    {
+        CTexture::Clear(17);
+        CTexture::Clear(18);
+        CTexture::Clear(19);
+    }
+}
+
 void CSkyBox::UpdateData()
 {
     if (nullptr != m_BrdfTex)
