@@ -24,6 +24,7 @@ public:
 
     template <typename T>
     void SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value);
+    void* GetScalarParam(SCALAR_PARAM _ParamType);
 
     void SetTexParam(TEX_PARAM _Param, Ptr<CTexture> _Tex) { m_arrTex[(UINT)_Param] = _Tex; }
     Ptr<CTexture> GetTexParam(TEX_PARAM _param) const { return m_arrTex[(UINT)_param]; }

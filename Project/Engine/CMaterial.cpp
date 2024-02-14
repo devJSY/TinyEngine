@@ -49,6 +49,55 @@ void CMaterial::UpdateData()
     pCB->UpdateData();
 }
 
+void* CMaterial::GetScalarParam(SCALAR_PARAM _ParamType)
+{
+    switch (_ParamType)
+    {
+    case INT_0:
+    case INT_1:
+    case INT_2:
+    case INT_3: {
+        int idx = _ParamType - INT_0;
+        return m_Const.arrInt + idx;
+    }
+    break;
+    case FLOAT_0:
+    case FLOAT_1:
+    case FLOAT_2:
+    case FLOAT_3: {
+        int idx = _ParamType - FLOAT_0;
+        return m_Const.arrFloat + idx;
+    }
+    break;
+    case VEC2_0:
+    case VEC2_1:
+    case VEC2_2:
+    case VEC2_3: {
+        int idx = _ParamType - VEC2_0;
+        return m_Const.arrVec2 + idx;
+    }
+    break;
+    case VEC4_0:
+    case VEC4_1:
+    case VEC4_2:
+    case VEC4_3: {
+        int idx = _ParamType - VEC4_0;
+        return m_Const.arrVec4 + idx;
+    }
+    break;
+    case MAT_0:
+    case MAT_1:
+    case MAT_2:
+    case MAT_3: {
+        int idx = _ParamType - MAT_0;
+        return m_Const.arrMat + idx;
+    }
+    break;
+    }
+
+    return nullptr;
+}
+
 int CMaterial::Save(const wstring& _strFilePath)
 {
     wstring strFilePath = CPathMgr::GetContentPath();

@@ -21,13 +21,12 @@ void CMaterialEditor::render()
     ImGui::Begin("Details##MaterialEditor");
 
     ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));
-    ImGui_InputText("Shader Name", ToString(m_Mtrl->GetShader()->GetName()));
 
     ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap |
                                              ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_DefaultOpen;
 
-    // Material Const
-    if (ImGui::TreeNodeEx("Material Const##MaterialEditor", DefaultTreeNodeFlag, "Material Const"))
+    // Material Coefficient
+    if (ImGui::TreeNodeEx("Material Coefficient##MaterialEditor", DefaultTreeNodeFlag, "Material Coefficient"))
     {
         tMtrlConst& MtrlConst = m_Mtrl->m_Const;
 
@@ -38,107 +37,123 @@ void CMaterialEditor::render()
         ImGui::SliderFloat(ImGui_LabelPrefix("Roughness").c_str(), &MtrlConst.mtrl.vRoughness, 0.f, 1.f);
         ImGui::ColorEdit4(ImGui_LabelPrefix("Emission").c_str(), &MtrlConst.mtrl.vEmission.x);
 
-        ImGui::Separator();
-
-        static float fDragSpeed = 1.0f;
-        ImGui::SliderFloat(ImGui_LabelPrefix("Drag Speed").c_str(), &fDragSpeed, 0.f, 1.f);
-
-        ImGui::Separator();
-
-        ImGui::DragInt(ImGui_LabelPrefix("Int_0").c_str(), &MtrlConst.arrInt[0]);
-        ImGui::DragInt(ImGui_LabelPrefix("Int_1").c_str(), &MtrlConst.arrInt[1]);
-        ImGui::DragInt(ImGui_LabelPrefix("Int_2").c_str(), &MtrlConst.arrInt[2]);
-        ImGui::DragInt(ImGui_LabelPrefix("Int_3").c_str(), &MtrlConst.arrInt[3]);
-
-        ImGui::Separator();
-
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_0").c_str(), &MtrlConst.arrFloat[0], fDragSpeed);
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_1").c_str(), &MtrlConst.arrFloat[1], fDragSpeed);
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_2").c_str(), &MtrlConst.arrFloat[2], fDragSpeed);
-        ImGui::DragFloat(ImGui_LabelPrefix("Float_3").c_str(), &MtrlConst.arrFloat[3], fDragSpeed);
-
-        ImGui::Separator();
-
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_0").c_str(), &MtrlConst.arrVec2[0].x, fDragSpeed);
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_1").c_str(), &MtrlConst.arrVec2[1].x, fDragSpeed);
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_2").c_str(), &MtrlConst.arrVec2[2].x, fDragSpeed);
-        ImGui::DragFloat2(ImGui_LabelPrefix("Vector2_3").c_str(), &MtrlConst.arrVec2[3].x, fDragSpeed);
-
-        ImGui::Separator();
-
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_0").c_str(), &MtrlConst.arrVec4[0].x, fDragSpeed);
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_1").c_str(), &MtrlConst.arrVec4[1].x, fDragSpeed);
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_2").c_str(), &MtrlConst.arrVec4[2].x, fDragSpeed);
-        ImGui::DragFloat4(ImGui_LabelPrefix("Vector4_3").c_str(), &MtrlConst.arrVec4[3].x, fDragSpeed);
-
         ImGui::TreePop();
     }
 
-    // Texture
-    if (ImGui::TreeNodeEx("Texture##MaterialEditor", DefaultTreeNodeFlag, "Texture"))
+    Ptr<CGraphicsShader> pShader = m_Mtrl->GetShader();
+    if (nullptr == pShader)
+        return;
+
+    // Shader
+    if (ImGui::TreeNodeEx("Shader##MaterialEditor", DefaultTreeNodeFlag, "Shader"))
     {
+        ImGui_InputText("Shader Name", ToString(pShader->GetName()));
+
+        ImGui::Separator();
+
+        // Scaler
+        static float fDragSpeed = 1.0f;
+        ImGui::SliderFloat(ImGui_LabelPrefix("Drag Speed").c_str(), &fDragSpeed, 0.f, 1.f);
+
+        const vector<tScalarParam>& ScalerParams = pShader->GetScalarParam();
+
+        for (int i = 0; i < ScalerParams.size(); i++)
+        {
+            switch (ScalerParams[i].Type)
+            {
+            case INT_0:
+            case INT_1:
+            case INT_2:
+            case INT_3: {
+                ImGui::DragInt(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (int*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
+                               fDragSpeed);
+            }
+            break;
+            case FLOAT_0:
+            case FLOAT_1:
+            case FLOAT_2:
+            case FLOAT_3: {
+                ImGui::DragFloat(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
+                                 fDragSpeed);
+            }
+            break;
+            case VEC2_0:
+            case VEC2_1:
+            case VEC2_2:
+            case VEC2_3: {
+                ImGui::DragFloat2(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
+                                  fDragSpeed);
+            }
+            break;
+            case VEC4_0:
+            case VEC4_1:
+            case VEC4_2:
+            case VEC4_3: {
+                ImGui::DragFloat4(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
+                                  fDragSpeed);
+            }
+            break;
+            case MAT_0:
+            case MAT_1:
+            case MAT_2:
+            case MAT_3: {
+            }
+            break;
+            }
+        }
+
+        ImGui::Separator();
+
+        // Texture
+        const vector<tTexParam>& TexParams = pShader->GetTexParam();
         constexpr float IMAGE_BASE_SIZE = 250.0f;
 
-        vector<string> vecTexture = {"Texture 0", "Texture 1", "Texture 2", "Texture 3", "Texture 4", "Texture 5"};
-        static string CurTexture = vecTexture[0];
-        static int TextureIdx = 0;
-
-        if (ImGui_ComboUI(ImGui_LabelPrefix("Textures").c_str(), CurTexture, vecTexture))
+        for (int i = 0; i < TexParams.size(); i++)
         {
-            if (CurTexture == vecTexture[0])
-                TextureIdx = 0;
-            else if (CurTexture == vecTexture[1])
-                TextureIdx = 1;
-            else if (CurTexture == vecTexture[2])
-                TextureIdx = 2;
-            else if (CurTexture == vecTexture[3])
-                TextureIdx = 3;
-            else if (CurTexture == vecTexture[4])
-                TextureIdx = 4;
-            else if (CurTexture == vecTexture[5])
-                TextureIdx = 5;
-        }
+            Ptr<CTexture> pTex = m_Mtrl->GetTexParam(TexParams[i].Type);
+            ID3D11ShaderResourceView* pSRV = nullptr;
 
-        Ptr<CTexture> pTex = m_Mtrl->GetTexParam((TEX_PARAM)TextureIdx);
-        ID3D11ShaderResourceView* pSRV = nullptr;
+            if (nullptr != pTex.Get())
+                pSRV = pTex->GetSRV().Get();
+            else
+                pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
-        if (nullptr != pTex.Get())
-            pSRV = pTex->GetSRV().Get();
-        else
-            pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+            ImGui::Text(TexParams[i].Desc.c_str());
+            ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
 
-        ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
+            string PopupID = "Delete Texture##MaterialEditor";
+            PopupID += TexParams[i].Desc;
+            ImGui::OpenPopupOnItemClick(PopupID.c_str(), ImGuiPopupFlags_MouseButtonRight);
 
-        ImGui::OpenPopupOnItemClick("Delete Texture##MaterialEditor", ImGuiPopupFlags_MouseButtonRight);
-
-        if (ImGui::BeginPopup("Delete Texture##MaterialEditor"))
-        {
-            if (ImGui::MenuItem("Delete Texture"))
+            if (ImGui::BeginPopup(PopupID.c_str()))
             {
-                m_Mtrl->SetTexParam((TEX_PARAM)TextureIdx, nullptr);
+                if (ImGui::MenuItem("Delete Texture"))
+                {
+                    m_Mtrl->SetTexParam(TexParams[i].Type, nullptr);
+                }
+
+                ImGui::EndPopup();
             }
 
-            ImGui::EndPopup();
-        }
-
-        // Drag & Drop
-        if (ImGui::BeginDragDropTarget())
-        {
-            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
             {
-                string name = (char*)payload->Data;
-                name.resize(payload->DataSize);
-                m_Mtrl->SetTexParam((TEX_PARAM)TextureIdx, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-            }
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    m_Mtrl->SetTexParam(TexParams[i].Type, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
 
-            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-            {
-                string name = (char*)payload->Data;
-                name.resize(payload->DataSize);
-                m_Mtrl->SetTexParam((TEX_PARAM)TextureIdx, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-            }
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    m_Mtrl->SetTexParam(TexParams[i].Type, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
 
-            ImGui::EndDragDropTarget();
+                ImGui::EndDragDropTarget();
+            }
         }
 
         ImGui::TreePop();
