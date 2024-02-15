@@ -175,7 +175,7 @@ void CTileMap::SaveToLevelFile(FILE* _File)
     fwrite(&m_iTileCountY, sizeof(UINT), 1, _File);
     fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
-    SaveAssetRef(m_TileAtlas.Get(), _File);
+    SaveAssetRef<CTexture>(m_TileAtlas.Get(), _File);
 
     fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
     fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);

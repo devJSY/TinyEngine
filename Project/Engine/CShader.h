@@ -10,13 +10,6 @@ public:
     virtual int UpdateData() = 0;
 
 public:
-    virtual int Save(const wstring& _strFilePath) override { return S_OK; };
-
-private:
-    virtual int Load(const wstring& _strFilePath) override { return S_OK; };
-
-
-public:
     CShader(ASSET_TYPE _Type);
     virtual ~CShader();
 };

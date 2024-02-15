@@ -26,12 +26,6 @@ public:
     void render_IndexedInstanced(UINT _InstanceCount);
 
 public:
-    virtual int Save(const wstring& _strFilePath) override;
-
-private:
-    virtual int Load(const wstring& _strFilePath) override;
-
-public:
     CMesh(bool _bEngineAsset = false);
     virtual ~CMesh();
 };

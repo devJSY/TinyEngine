@@ -53,20 +53,33 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _File);
 
-class CAsset;
 template <typename T>
 class Ptr;
 
-void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File);
-
 #include "CAssetMgr.h"
+
+template <typename T>
+void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
+{
+    bool bAssetExist = false;
+    _Asset == nullptr ? bAssetExist = false : bAssetExist = true;
+
+    fwrite(&bAssetExist, sizeof(bool), 1, _File);
+
+    if (bAssetExist)
+    {
+        SaveWString(_Asset->GetKey(), _File);
+        SaveWString(_Asset->GetRelativePath(), _File);
+    }
+}
+
 template <typename T>
 void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 {
-    int i = 0;
-    fread(&i, sizeof(i), 1, _File);
+    bool bAssetExist = false;
+    fread(&bAssetExist, sizeof(bool), 1, _File);
 
-    if (i)
+    if (bAssetExist)
     {
         wstring strKey, strRelativePath;
         LoadWString(strKey, _File);
@@ -75,6 +88,7 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
         _Asset = CAssetMgr::GetInst()->Load<T>(strKey, strRelativePath);
     }
 }
+
 
 wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환

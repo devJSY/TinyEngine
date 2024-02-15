@@ -98,39 +98,28 @@ void* CMaterial::GetScalarParam(SCALAR_PARAM _ParamType)
     return nullptr;
 }
 
-int CMaterial::Save(const wstring& _strFilePath)
+int CMaterial::Save(const wstring& _strRelativePath)
 {
     wstring strFilePath = CPathMgr::GetContentPath();
-    strFilePath += _strFilePath;
+    strFilePath += _strRelativePath;
 
     FILE* pFile = nullptr;
     _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
 
     if (nullptr == pFile)
-    {
-        LOG(Error, "파일 열기 실패");
         return E_FAIL;
-    }
 
-    // Entity
-    SaveWString(GetName(), pFile);
-
-    // Res
-    SaveWString(GetKey(), pFile);
-
-    // Shader
-    SaveAssetRef(m_pShader.Get(), pFile);
-
-    // Constant
+    // 재질 상수값 저장
     fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
-    // Texture
+    // 재질이 참조하는 텍스쳐 정보를 저장
     for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
     {
-        SaveAssetRef(m_arrTex[i].Get(), pFile);
+        SaveAssetRef<CTexture>(m_arrTex[i], pFile);
     }
 
-    fclose(pFile);
+    // 재질이 참조하는 쉐이더 정보를 저장
+    SaveAssetRef<CGraphicsShader>(m_pShader, pFile);
 
     return S_OK;
 }
@@ -141,33 +130,19 @@ int CMaterial::Load(const wstring& _strFilePath)
     _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
 
     if (nullptr == pFile)
-    {
-        LOG(Error, "파일 열기 실패");
         return E_FAIL;
-    }
 
-    // Entity
-    wstring strName;
-    LoadWString(strName, pFile);
-    SetName(strName);
-
-    // Res
-    wstring strKey;
-    LoadWString(strKey, pFile);
-
-    // Shader
-    LoadAssetRef(m_pShader, pFile);
-
-    // Constant
+    // 재질 상수값 저장
     fread(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
-    // Texture
+    // 재질이 참조하는 텍스쳐 정보를 로드
     for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
     {
-        LoadAssetRef(m_arrTex[i], pFile);
+        LoadAssetRef<CTexture>(m_arrTex[i], pFile);
     }
 
-    fclose(pFile);
+    // 재질이 참조하는 쉐이더 정보를 저장
+    LoadAssetRef<CGraphicsShader>(m_pShader, pFile);
 
     return S_OK;
 }

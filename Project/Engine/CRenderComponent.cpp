@@ -45,10 +45,10 @@ void CRenderComponent::RestoreMaterial()
 
 void CRenderComponent::SaveToLevelFile(FILE* _File)
 {
-    SaveAssetRef(m_Mesh.Get(), _File);
-    SaveAssetRef(m_SharedMtrl.Get(), _File);
-    SaveAssetRef(m_DynamicMtrl.Get(), _File);
-    SaveAssetRef(m_CurMtrl.Get(), _File);
+    SaveAssetRef<CMesh>(m_Mesh.Get(), _File);
+    SaveAssetRef<CMaterial>(m_SharedMtrl.Get(), _File);
+    SaveAssetRef<CMaterial>(m_DynamicMtrl.Get(), _File);
+    SaveAssetRef<CMaterial>(m_CurMtrl.Get(), _File);
 }
 
 void CRenderComponent::LoadFromLevelFile(FILE* _File)

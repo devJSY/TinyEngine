@@ -17,7 +17,14 @@ CAssetMgr::CAssetMgr()
 }
 
 CAssetMgr::~CAssetMgr()
-{   
+{
+    for (size_t i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    {
+        for (auto& pair : m_mapAsset[i])
+        {
+            pair.second->Save(L"Asset\\" + pair.first);
+        }
+    }
 }
 
 void CAssetMgr::init()
@@ -26,6 +33,7 @@ void CAssetMgr::init()
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
+    Ptr<CMaterial> temp = Load<CMaterial>(L"Test", L"Asset\\UnrealPBRMtrl");
 }
 
 vector<tMeshData> CAssetMgr::ReadFromFile(string _basePath, string _filename, bool _revertNormals)
@@ -115,8 +123,7 @@ void CAssetMgr::SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _
         wstring name = ToWstring(_MeshData.MetallicTextureFilename); // Metallic 이름으로 설정
 
         // GLTF 방식은 이미 합쳐져있음
-        if (!_MeshData.MetallicTextureFilename.empty() &&
-            (_MeshData.MetallicTextureFilename == _MeshData.RoughnessTextureFilename))
+        if (!_MeshData.MetallicTextureFilename.empty() && (_MeshData.MetallicTextureFilename == _MeshData.RoughnessTextureFilename))
         {
             _Mtrl->SetTexParam(TEX_4, Load<CTexture>(path + name, path + name));
         }
@@ -161,8 +168,7 @@ void CAssetMgr::SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _
             }
 
             // 스테이징 텍스춰 만들고 CPU에서 이미지를 복사합니다.
-            ComPtr<ID3D11Texture2D> stagingTexture =
-                CreateStagingTexture(mWidth, mHeight, combinedImage, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+            ComPtr<ID3D11Texture2D> stagingTexture = CreateStagingTexture(mWidth, mHeight, combinedImage, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 
             // 실제로 사용할 텍스춰 설정
             ComPtr<ID3D11Texture2D> metallicRoughnessTexture;
@@ -198,8 +204,7 @@ void CAssetMgr::SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _
     }
 }
 
-CGameObject* CAssetMgr::LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals,
-                                  tMeshData _TexturesName)
+CGameObject* CAssetMgr::LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals, tMeshData _TexturesName)
 {
     // 매쉬 로딩
     auto meshes = ReadFromFile(_basePath, _filename, _revertNormals);
@@ -250,8 +255,7 @@ CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes
 
         Ptr<CMesh> pMesh = new CMesh;
         pMesh->SetName(_name + L" Parts " + std::to_wstring(idx) + L" Mesh");
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(),
-                      (UINT)meshData.indices.size());
+        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
         AddAsset<CMesh>(pMesh->GetName(), pMesh);
 
         Parts->AddComponent(new CTransform);
@@ -270,11 +274,9 @@ CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes
     return model;
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
-                                       UINT _BindFlag, D3D11_USAGE _Usage,
-                                       const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
-                                       const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
-                                       const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag,
+                                       D3D11_USAGE _Usage, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
+                                       const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
                                        const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
@@ -292,10 +294,8 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT
     return pTex;
 }
 
-Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D,
-                                       const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
-                                       const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
-                                       const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
+Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
+                                       const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
                                        const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc)
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);

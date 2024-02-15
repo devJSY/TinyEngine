@@ -39,7 +39,7 @@ public:
     const tMtrlConst& GetMtrlConst() const { return m_Const; }
 
 public:
-    virtual int Save(const wstring& _strFilePath) override;
+    virtual int Save(const wstring& _strRelativePath) override;
 
 private:
     virtual int Load(const wstring& _strFilePath) override;

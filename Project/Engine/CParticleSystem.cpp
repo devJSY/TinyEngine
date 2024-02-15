@@ -184,8 +184,8 @@ void CParticleSystem::SaveToLevelFile(FILE* _File)
     fwrite(&m_MaxParticleCount, sizeof(UINT), 1, _File);
     fwrite(&m_Module, sizeof(tParticleModule), 1, _File);
 
-    SaveAssetRef(m_CSParticleUpdate.Get(), _File);
-    SaveAssetRef(m_ParticleTex.Get(), _File);
+    SaveAssetRef<CComputeShader>(m_CSParticleUpdate.Get(), _File);
+    SaveAssetRef<CTexture>(m_ParticleTex.Get(), _File);
 }
 
 void CParticleSystem::LoadFromLevelFile(FILE* _File)
@@ -196,7 +196,7 @@ void CParticleSystem::LoadFromLevelFile(FILE* _File)
     m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
     fread(&m_Module, sizeof(tParticleModule), 1, _File);
 
-    int i = 0;
+    bool i = 0;
     fread(&i, sizeof(i), 1, _File);
 
     if (i)

@@ -25,9 +25,6 @@ private:
                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
                const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc);
 
-public:
-    virtual int Save(const wstring& _strFilePath) override;
-
 private:
     virtual int Load(const wstring& _strFilePath) override;
 

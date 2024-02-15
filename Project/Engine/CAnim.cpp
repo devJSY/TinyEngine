@@ -103,7 +103,7 @@ void CAnim::SaveToLevelFile(FILE* _File)
     fwrite(&FrameCount, sizeof(size_t), 1, _File);
     fwrite(m_vecFrm.data(), sizeof(tAnimFrm), FrameCount, _File);
     fwrite(&m_bUseBackGround, sizeof(bool), 1, _File);
-    SaveAssetRef(m_AtlasTex.Get(), _File);
+    SaveAssetRef<CTexture>(m_AtlasTex.Get(), _File);
 }
 
 void CAnim::LoadFromLevelFile(FILE* _File)
@@ -122,7 +122,7 @@ void CAnim::LoadFromLevelFile(FILE* _File)
         m_vecFrm.push_back(frm);
     }
     fread(&m_bUseBackGround, sizeof(bool), 1, _File);
-    LoadAssetRef(m_AtlasTex, _File);
+    LoadAssetRef<CTexture>(m_AtlasTex, _File);
 }
 
 bool CAnim::SaveAnim(const wstring& _FilePath)

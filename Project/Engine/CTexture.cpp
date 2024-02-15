@@ -57,11 +57,6 @@ int CTexture::Load(const wstring& _strFilePath)
     return S_OK;
 }
 
-int CTexture::Save(const wstring& _strFilePath)
-{
-    return 0;
-}
-
 void CTexture::UpdateData(int _RegisterNum)
 {
     CONTEXT->VSSetShaderResources(_RegisterNum, 1, m_SRV.GetAddressOf());

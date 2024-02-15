@@ -36,12 +36,10 @@ private:
     }
 
 public:
-    // 파일로 저장
-    virtual int Save(const wstring& _strFilePath) = 0;
+    virtual int Save(const wstring& _strRelativePath) { return E_FAIL; };
 
 private:
-    // 파일로 부터 로딩
-    virtual int Load(const wstring& _strFilePath) = 0;
+    virtual int Load(const wstring& _strFilePath) { return E_FAIL; };
 
 public:
     // 에셋은 Clone X
