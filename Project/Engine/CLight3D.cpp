@@ -23,7 +23,9 @@ CLight3D::CLight3D()
     m_Info.fallOffEnd = 1000.f;
     m_Info.spotPower = 100.f;
 
-    m_Info.CastShadow = 1;
+    m_Info.ShadowType = 1; // Dynamic Shadow
+
+    SetLightType((LIGHT_TYPE)m_Info.LightType);
 
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
     ZeroMemory(&dsvDesc, sizeof(dsvDesc));
@@ -56,14 +58,17 @@ void CLight3D::finaltick()
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
     // ±×¸²ÀÚ¸Ê
-    Matrix ViewRow =
-        XMMatrixLookAtLH(m_Info.vWorldPos, m_Info.vWorldPos + Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldDir(DIR_TYPE::UP));
-    CCamera* mainCam = CRenderMgr::GetInst()->GetCamera(0);
-    Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.0f), 1.0f, mainCam->GetNear(), mainCam->GetFar());
+    if (1 == m_Info.ShadowType)
+    {
+        Matrix ViewRow =
+            XMMatrixLookAtLH(m_Info.vWorldPos, m_Info.vWorldPos + Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldDir(DIR_TYPE::UP));
+        CCamera* mainCam = CRenderMgr::GetInst()->GetCamera(0);
+        Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.0f), 1.0f, mainCam->GetNear(), mainCam->GetFar());
 
-    m_Info.viewMat = ViewRow;
-    m_Info.projMat = ProjRow;
-    m_Info.invProj = m_Info.projMat.Invert();
+        m_Info.viewMat = ViewRow;
+        m_Info.projMat = ProjRow;
+        m_Info.invProj = m_Info.projMat.Invert();
+    }
 
     GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
 

@@ -47,7 +47,7 @@ struct tLightInfo
     Matrix projMat; 
     Matrix invProj; // 그림자 렌더링 디버깅용
 
-    int CastShadow;  // 그림자를 사용하는 광원
+    int ShadowType; // 0 : Static , 1 : Dynamic
     Vec3 padd;
 };
 

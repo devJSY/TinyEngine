@@ -131,6 +131,10 @@ TextureCube g_SpecularCube : register(t19);
 
 StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
 
+Texture2D g_LightDepthMapTex1 : register(t21);
+Texture2D g_LightDepthMapTex2 : register(t22);
+Texture2D g_LightDepthMapTex3 : register(t23);
+
 SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);
 SamplerState g_PointSampler : register(s2);

@@ -20,7 +20,9 @@ CLight2D::CLight2D()
     m_Info.fallOffEnd = 1000.f;
     m_Info.spotPower = 100.f;
 
-    m_Info.CastShadow = 0;
+    m_Info.ShadowType = 0;
+
+    SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
 CLight2D::~CLight2D()
@@ -37,6 +39,7 @@ void CLight2D::finaltick()
 
     GamePlayStatic::DrawDebugCircle(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
 }
+
 
 void CLight2D::SaveToLevelFile(FILE* _File)
 {

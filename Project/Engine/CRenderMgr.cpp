@@ -254,11 +254,17 @@ void CRenderMgr::render_LightDepth()
 {
     tTransform originTr = g_Transform;
 
+    // 그림자 적용 광원 최대갯수설정
+    int dynamicShadowMaxCount = 3;
+    vector<Ptr<CTexture>> DepthMapTextures;
+
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
+        if (dynamicShadowMaxCount <= 0)
+            break;
+
         const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
-        // 그림자를 사용하지않는 광원이면 DepthMap 업데이트 X
-        if (!info.CastShadow)
+        if (!info.ShadowType)
             continue;
 
         // 광원 시점 렌더링
@@ -274,10 +280,23 @@ void CRenderMgr::render_LightDepth()
         {
             m_vecCam[i]->render_DepthMap();
         }
+
+        DepthMapTextures.push_back(m_vecLight3D[i]->GetDepthMapTex());
+        dynamicShadowMaxCount--;
     }
 
     g_Transform = originTr;
     CDevice::GetInst()->SetFloatRenderTarget();
+
+    for (size_t i = 0; i < DepthMapTextures.size(); i++)
+    {
+        if (0 == i)
+            DepthMapTextures[i]->UpdateData(21);
+        else if (1 == i)
+            DepthMapTextures[i]->UpdateData(22);
+        else if (2 == i)
+            DepthMapTextures[i]->UpdateData(23);
+    }
 }
 
 void CRenderMgr::render_postprocess()
@@ -394,6 +413,11 @@ void CRenderMgr::Clear()
 
     m_vecLight2D.clear();
     m_vecLight3D.clear();
+
+    // Light DepthMap bind Reset
+    CTexture::Clear(21);
+    CTexture::Clear(22);
+    CTexture::Clear(23);
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
