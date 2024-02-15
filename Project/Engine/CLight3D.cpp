@@ -25,24 +25,7 @@ CLight3D::CLight3D()
 
     m_Info.ShadowType = 1; // Dynamic Shadow
 
-    SetLightType((LIGHT_TYPE)m_Info.LightType);
-
-    D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
-    ZeroMemory(&dsvDesc, sizeof(dsvDesc));
-    dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-
-    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-    ZeroMemory(&srvDesc, sizeof(srvDesc));
-    srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
-    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    srvDesc.Texture2D.MipLevels = 1;
-
-    wstring name = L"LightDepthTex";
-    name += std::to_wstring(GetID());
-    m_DepthMapTex =
-        CAssetMgr::GetInst()->CreateTexture(name, 1280, 1280, DXGI_FORMAT_R32_TYPELESS, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
-                                            D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
+    CreateDepthMapTex();
 }
 
 CLight3D::~CLight3D()
@@ -85,14 +68,35 @@ void CLight3D::finaltick()
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl"));
 }
 
+void CLight3D::CreateDepthMapTex()
+{
+    D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+    ZeroMemory(&dsvDesc, sizeof(dsvDesc));
+    dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+    dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+    ZeroMemory(&srvDesc, sizeof(srvDesc));
+    srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Texture2D.MipLevels = 1;
+
+    wstring name = L"LightDepthTex";
+    name += std::to_wstring(GetID());
+    m_DepthMapTex =
+        CAssetMgr::GetInst()->CreateTexture(name, 1280, 1280, DXGI_FORMAT_R32_TYPELESS, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
+                                            D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
+}
+
 void CLight3D::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
-    SaveAssetRef(m_DepthMapTex.Get(), _File);
 }
 
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
-    LoadAssetRef<CTexture>(m_DepthMapTex, _File);
+
+    if (nullptr == m_DepthMapTex)
+        CreateDepthMapTex();
 }

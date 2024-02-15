@@ -21,8 +21,6 @@ CLight2D::CLight2D()
     m_Info.spotPower = 100.f;
 
     m_Info.ShadowType = 0;
-
-    SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
 CLight2D::~CLight2D()

@@ -35,6 +35,9 @@ public:
 
     Ptr<CTexture> GetDepthMapTex() const { return m_DepthMapTex; }
 
+private:
+    void CreateDepthMapTex();
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

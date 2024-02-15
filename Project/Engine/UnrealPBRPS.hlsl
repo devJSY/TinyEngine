@@ -169,7 +169,7 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
         if (depth + bias < lightScreen.z)
             shadowFactor = 0.0; 
         
-        ShadowLightCount =- 1;
+        ShadowLightCount -= 1;
     }
 
     float3 radiance = light.vRadiance.rgb * spotFator * att * shadowFactor;
