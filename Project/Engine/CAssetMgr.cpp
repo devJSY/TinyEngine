@@ -18,13 +18,6 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-    for (size_t i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    {
-        for (auto& pair : m_mapAsset[i])
-        {
-            pair.second->Save(L"Asset\\" + pair.first);
-        }
-    }
 }
 
 void CAssetMgr::init()
@@ -33,7 +26,6 @@ void CAssetMgr::init()
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
-    Ptr<CMaterial> temp = Load<CMaterial>(L"Test", L"Asset\\UnrealPBRMtrl");
 }
 
 vector<tMeshData> CAssetMgr::ReadFromFile(string _basePath, string _filename, bool _revertNormals)

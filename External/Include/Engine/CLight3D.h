@@ -35,6 +35,9 @@ public:
 
     Ptr<CTexture> GetDepthMapTex() const { return m_DepthMapTex; }
 
+    int GetShadowType() const { return m_Info.ShadowType; }
+    void SetShadowType(int _type) { m_Info.ShadowType = _type; }
+
 private:
     void CreateDepthMapTex();
 

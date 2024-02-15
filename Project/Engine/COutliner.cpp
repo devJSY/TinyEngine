@@ -577,6 +577,21 @@ void COutliner::DrawLight3D(CGameObject* obj)
         if (ImGui::SliderFloat(ImGui_LabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
 
+        int shadowType = pLight->GetShadowType();
+        if (ImGui::InputInt(ImGui_LabelPrefix("Shadow Type").c_str(), &shadowType))
+            pLight->SetShadowType(shadowType);
+
+        Ptr<CTexture> pDepthMapTex = pLight->GetDepthMapTex();
+        void* TextureID = nullptr;
+
+        if (nullptr != pDepthMapTex)
+            TextureID = pDepthMapTex->GetSRV().Get();
+        else
+            TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+        ImGui::Text("ShadowMap Texture");
+        ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
         ImGui::TreePop();
     }
 }
