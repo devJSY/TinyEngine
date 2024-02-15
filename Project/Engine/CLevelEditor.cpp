@@ -133,10 +133,10 @@ void CLevelEditor::render()
     if (m_bShowOutputLog)
         COutputLog::GetInst()->render(&m_bShowOutputLog);
 
-    // Demo ImGUI Rendering
-    bool show_demo_window = true;
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+    //// ImGUI Demo
+    // bool show_demo_window = true;
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 
     ImGui::End(); // dockspace End
 
@@ -161,15 +161,13 @@ void CLevelEditor::render_MenuBar()
     if (ImGui::BeginMainMenuBar())
     {
         // FPS
-        ImGui::TextColored(ImVec4(108.f / 255.f, 172.f / 255.f, 150.f / 255.f, 1.0f), "FPS : %d",
-                           CTimeMgr::GetInst()->GetFPS());
+        ImGui::TextColored(ImVec4(108.f / 255.f, 172.f / 255.f, 150.f / 255.f, 1.0f), "FPS : %d", CTimeMgr::GetInst()->GetFPS());
 
         if (ImGui::BeginMenu("File"))
         {
             if (ImGui::MenuItem("Save Level"))
             {
-                std::filesystem::path filePath =
-                    SaveFile(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
+                std::filesystem::path filePath = SaveFile(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
 
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
@@ -181,8 +179,7 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Load Level"))
             {
-                std::filesystem::path filePath =
-                    OpenFile(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
+                std::filesystem::path filePath = OpenFile(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
 
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
@@ -262,8 +259,7 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
 
     ImGui::Text("Choice Your Clear Color!");
-    ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(),
-                        ImGuiColorEditFlags_PickerHueWheel);
+    ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(), ImGuiColorEditFlags_PickerHueWheel);
 
     ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.DrawAsWireFrame);
 
@@ -290,8 +286,7 @@ void CLevelEditor::render_Toolbar()
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
 
     ImGui_SetWindowClass_LevelEditor();
-    ImGui::Begin("##toolbar", nullptr,
-                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+    ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
     bool m_ActiveScene = true; // temp
     bool toolbarEnabled = (bool)m_ActiveScene;
@@ -307,12 +302,9 @@ void CLevelEditor::render_Toolbar()
     bool hasSimulateButton = true;
     bool hasPauseButton = true;
 
-    Ptr<CTexture> pPlayButtonTex =
-        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
-    Ptr<CTexture> pPauseButtonTex =
-        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
-    Ptr<CTexture> pStopButtonTex =
-        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
+    Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
+    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
+    Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
 
     if (hasPlayButton)
     {
@@ -333,8 +325,8 @@ void CLevelEditor::render_Toolbar()
     {
         ImGui::SameLine();
         {
-            if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0),
-                                   ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                                   ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
                 toolbarEnabled)
             {
             }
@@ -360,8 +352,7 @@ void CLevelEditor::render_Assets()
         const map<wstring, Ptr<CAsset>>& mapAsset = CAssetMgr::GetInst()->GetMapAsset((ASSET_TYPE)i);
 
         if (ImGui::TreeNodeEx(ASSET_TYPE_STRING[i], ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
-                                                        ImGuiTreeNodeFlags_AllowItemOverlap |
-                                                        ImGuiTreeNodeFlags_FramePadding))
+                                                        ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding))
         {
             for (const auto& iter : mapAsset)
             {
@@ -412,8 +403,7 @@ void CLevelEditor::render_Viewport()
 
     // Viewport에서의 마우스 위치 등록
     ImVec2 viewportPos = ImGui::GetCursorScreenPos();
-    CEditorMgr::GetInst()->SetViewportMousePos(
-        Vec2(ImGui::GetIO().MousePos.x - viewportPos.x, ImGui::GetIO().MousePos.y - viewportPos.y));
+    CEditorMgr::GetInst()->SetViewportMousePos(Vec2(ImGui::GetIO().MousePos.x - viewportPos.x, ImGui::GetIO().MousePos.y - viewportPos.y));
 
     // 상태 확인
     m_ViewportFocused = ImGui::IsWindowFocused();
@@ -509,8 +499,7 @@ void CLevelEditor::render_ImGuizmo()
 
     float snapValues[3] = {snapValue, snapValue, snapValue};
 
-    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr,
-                         snap ? snapValues : nullptr);
+    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr, snap ? snapValues : nullptr);
 
     if (ImGuizmo::IsUsing())
     {
@@ -529,17 +518,15 @@ void CLevelEditor::render_ImGuizmo()
         float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
         ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
 
-        float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f},
-              originFscale[3] = {0.0f, 0.0f, 0.0f};
+        float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f}, originFscale[3] = {0.0f, 0.0f, 0.0f};
         ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation, originFscale);
 
         // ImGuizmo로 조정한 변화량 추출
-        Vec3 vPosOffset = Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1],
-                               originFtranslation[2] - Ftranslation[2]);
-        Vec3 vRotOffset =
-            Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
-                 DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
-                 DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
+        Vec3 vPosOffset =
+            Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1], originFtranslation[2] - Ftranslation[2]);
+        Vec3 vRotOffset = Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
+                               DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
+                               DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
         Vec3 vScaleOffset = Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
 
         // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
@@ -587,22 +574,19 @@ void CLevelEditor::render_CollisionResponses()
         }
     }
 
-    static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX |
-                                         ImGuiTableFlags_ScrollY | ImGuiTableFlags_BordersOuter |
-                                         ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
+    static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
+                                         ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
                                          ImGuiTableFlags_HighlightHoveredColumn;
 
     if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
     {
-        ImGui::TableSetupColumn(column_names[0].c_str(),
-                                ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
+        ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
         for (int n = columns_count - 1; n >= 1; n--)
-            ImGui::TableSetupColumn(column_names[n].c_str(),
-                                    ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
+            ImGui::TableSetupColumn(column_names[n].c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 
         ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
                                         // ImGuiTableColumnFlags_AngledHeader flag.
-        ImGui::TableHeadersRow(); // Draw remaining headers and allow access to context-menu and other   functions.
+        ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other   functions.
 
         for (int row = 0; row < LAYER_MAX; row++)
         {

@@ -37,9 +37,9 @@ struct tLightInfo
     float fallOffEnd;
     float spotPower;
     
-    Matrix viewMat;
-    Matrix projMat;
-    Matrix invProj; // 그림자 렌더링 디버깅용
+    row_major Matrix viewMat;
+    row_major Matrix projMat;
+    row_major Matrix invProj; // 그림자 렌더링 디버깅용
     
     int ShadowType; // 0 : Static , 1 : Dynamic
     float3 Lightpadd;

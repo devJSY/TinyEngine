@@ -73,7 +73,6 @@ cbuffer MATERIAL_CONST : register(b1)
 #define LIGHT_DIRECTIONAL   0  
 #define LIGHT_POINT         1  
 #define LIGHT_SPOT          2  
-//#define LIGHT_SHADOW      0x10
 
 cbuffer ANIM_DATA2D : register(b2)
 {
@@ -98,7 +97,7 @@ cbuffer GLOBAL_DATA : register(b3)
     float3 g_eyeWorld;
     bool g_DrawAsWireFrame;
     
-    Matrix g_ReflectionRowMat;
+    row_major Matrix g_ReflectionRowMat;
     
     int g_render_Mode;
 }
@@ -139,5 +138,6 @@ SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);
 SamplerState g_PointSampler : register(s2);
 SamplerState g_AnisotropicSampler : register(s3);
+SamplerState g_ShadowPointSampler : register(s4);
 
 #endif

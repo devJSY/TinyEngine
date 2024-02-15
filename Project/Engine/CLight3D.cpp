@@ -60,8 +60,7 @@ void CLight3D::finaltick()
     // ±×¸²ÀÚ¸Ê
     if (1 == m_Info.ShadowType)
     {
-        Matrix ViewRow =
-            XMMatrixLookAtLH(m_Info.vWorldPos, m_Info.vWorldPos + Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldDir(DIR_TYPE::UP));
+        Matrix ViewRow = XMMatrixLookAtLH(m_Info.vWorldPos, m_Info.vWorldPos + m_Info.vWorldDir, Transform()->GetWorldDir(DIR_TYPE::UP));
         CCamera* mainCam = CRenderMgr::GetInst()->GetCamera(0);
         Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.0f), 1.0f, mainCam->GetNear(), mainCam->GetFar());
 
@@ -89,9 +88,11 @@ void CLight3D::finaltick()
 void CLight3D::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
+    SaveAssetRef(m_DepthMapTex.Get(), _File);
 }
 
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
+    LoadAssetRef<CTexture>(m_DepthMapTex, _File);
 }

@@ -137,6 +137,7 @@ enum class SS_TYPE
     LINEAR_CLAMP,
     POINT,
     ANISOTROPIC,
+    SHADOW_POINT,
     END,
 };
 
