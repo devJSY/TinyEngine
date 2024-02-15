@@ -11,6 +11,7 @@
 CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
     , m_Info{}
+    , m_ShadowIdx(-1)
 {
     m_Info.vRadiance = Vec4(1.f, 1.f, 1.f, 1.f);
 
@@ -50,6 +51,10 @@ void CLight3D::finaltick()
         m_Info.viewMat = ViewRow;
         m_Info.projMat = ProjRow;
         m_Info.invProj = m_Info.projMat.Invert();
+    }
+    else
+    {
+        m_ShadowIdx = -1;
     }
 
     GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);

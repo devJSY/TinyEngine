@@ -260,6 +260,8 @@ void CRenderMgr::render_LightDepth()
 
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
+        m_vecLight3D[i]->SetShadowIdx(-1); // √ ±‚»≠
+
         if (dynamicShadowMaxCount <= 0)
             break;
 
@@ -273,6 +275,7 @@ void CRenderMgr::render_LightDepth()
         g_Transform.matProj = info.projMat;
         g_Transform.matProjInv = g_Transform.matProj.Invert();
 
+        m_vecLight3D[i]->SetShadowIdx(3 - dynamicShadowMaxCount);
         Ptr<CTexture> DepthMapTex = m_vecLight3D[i]->GetDepthMapTex();
 
         CONTEXT->ClearDepthStencilView(DepthMapTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);

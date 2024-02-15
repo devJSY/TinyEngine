@@ -581,6 +581,10 @@ void COutliner::DrawLight3D(CGameObject* obj)
         if (ImGui::InputInt(ImGui_LabelPrefix("Shadow Type").c_str(), &shadowType))
             pLight->SetShadowType(shadowType);
 
+        int ShadowIdx = pLight->GetShadowIdx();
+        if (ImGui::InputInt(ImGui_LabelPrefix("Shadow Index").c_str(), &ShadowIdx, 1, 100, ImGuiInputTextFlags_ReadOnly))
+            pLight->SetShadowIdx(ShadowIdx);
+
         Ptr<CTexture> pDepthMapTex = pLight->GetDepthMapTex();
         void* TextureID = nullptr;
 

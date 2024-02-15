@@ -6,6 +6,7 @@ class CLight3D : public CComponent
 private:
     tLightInfo m_Info;
     Ptr<CTexture> m_DepthMapTex;
+    int m_ShadowIdx; // Dynamic Light의 경우 그림자가 적용되는 광원의 번호 
 
 public:
     virtual void finaltick() override;
@@ -37,6 +38,9 @@ public:
 
     int GetShadowType() const { return m_Info.ShadowType; }
     void SetShadowType(int _type) { m_Info.ShadowType = _type; }
+    
+    int GetShadowIdx() const { return m_ShadowIdx; }
+    void SetShadowIdx(int _Idx) { m_ShadowIdx = _Idx; } 
 
 private:
     void CreateDepthMapTex();
