@@ -40,8 +40,7 @@ CParticleSystem::CParticleSystem()
     m_RWBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::READ_WRITE, true);
 
     // 파티클 업데이트용 컴퓨트 쉐이더 참조
-    m_CSParticleUpdate =
-        (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleUpdateShader").Get();
+    m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleUpdateShader").Get();
 
     // 모듈 초기화
     // Spawn 모듈
@@ -55,8 +54,8 @@ CParticleSystem::CParticleSystem()
     m_Module.MinMass = 1.f;
     m_Module.MaxMass = 1.f;
 
-    m_Module.SpawnRate = 10; 
-    m_Module.SpaceType = 0;   // Local Space
+    m_Module.SpawnRate = 10;
+    m_Module.SpaceType = 0; // Local Space
 
     m_Module.SpawnShape = 0; // Sphere
     m_Module.Radius = 1.f;
@@ -80,6 +79,27 @@ CParticleSystem::CParticleSystem()
     m_Module.VelocityAlignment = 0; // Off
     m_Module.AlphaBasedLife = 0;    // Off
     m_Module.AlphaMaxAge = 1.f;
+}
+
+CParticleSystem::CParticleSystem(const CParticleSystem& origin)
+    : CRenderComponent(origin)
+    , m_ParticleBuffer(nullptr)
+    , m_ModuleBuffer(nullptr)
+    , m_RWBuffer(nullptr)
+    , m_MaxParticleCount(origin.m_MaxParticleCount)
+    , m_Module(origin.m_Module)
+    , m_CSParticleUpdate(origin.m_CSParticleUpdate)
+    , m_ParticleTex(origin.m_ParticleTex)
+    , m_AccTime(origin.m_AccTime)
+{
+    if (nullptr != origin.m_ParticleBuffer)
+        m_ParticleBuffer = origin.m_ParticleBuffer->Clone();
+
+    if (nullptr != origin.m_ModuleBuffer)
+        m_ModuleBuffer = origin.m_ModuleBuffer->Clone();
+
+    if (nullptr != origin.m_RWBuffer)
+        m_RWBuffer = origin.m_RWBuffer->Clone();
 }
 
 CParticleSystem::~CParticleSystem()

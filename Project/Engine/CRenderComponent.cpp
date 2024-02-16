@@ -10,6 +10,24 @@ CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
 {
 }
 
+CRenderComponent::CRenderComponent(const CRenderComponent& origin)
+    : CComponent(origin)
+    , m_Mesh(origin.m_Mesh)
+    , m_SharedMtrl(origin.m_SharedMtrl)
+{
+    // 원본 오브젝트가 공유재질을 참조하고 있고, 현재 사용재질은 공유재질이 아닌경우
+    if (origin.m_SharedMtrl != origin.m_CurMtrl)
+    {
+        assert(origin.m_DynamicMtrl.Get());
+
+        m_CurMtrl = m_DynamicMtrl = origin.m_DynamicMtrl->Clone();
+    }
+    else
+    {
+        m_CurMtrl = m_SharedMtrl;
+    }
+}
+
 CRenderComponent::~CRenderComponent()
 {
 }

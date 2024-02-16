@@ -25,6 +25,8 @@ public:
     void render_draw();
     void render_IndexedInstanced(UINT _InstanceCount);
 
+    CLONE_DISABLE(CMesh);
+
 public:
     CMesh(bool _bEngineAsset = false);
     virtual ~CMesh();

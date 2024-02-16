@@ -49,8 +49,11 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
+    CLONE(CTileMap);
+
 public:
     CTileMap();
+    CTileMap(const CTileMap& origin);
     virtual ~CTileMap();
 
     friend class CTileMapEditor;

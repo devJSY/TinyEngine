@@ -23,6 +23,33 @@ CGameObject::CGameObject()
 {
 }
 
+CGameObject::CGameObject(const CGameObject& origin)
+    : CEntity(origin)
+    , m_arrCom{}
+    , m_RenderCom(nullptr)
+    , m_Parent(nullptr)
+    , m_iLayerIdx(-1)
+    , m_bDead(false)
+{
+    for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+    {
+        if (nullptr == origin.m_arrCom[i])
+            continue;
+
+        AddComponent(origin.m_arrCom[i]->Clone());
+    }
+
+    for (size_t i = 0; i < origin.m_vecScript.size(); ++i)
+    {
+        AddComponent(origin.m_vecScript[i]->Clone());
+    }
+
+    for (size_t i = 0; i < origin.m_vecChild.size(); ++i)
+    {
+        AddChild(origin.m_vecChild[i]->Clone());
+    }
+}
+
 CGameObject::~CGameObject()
 {
     Delete_Array(m_arrCom);

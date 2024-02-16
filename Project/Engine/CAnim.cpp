@@ -16,6 +16,17 @@ CAnim::CAnim()
 {
 }
 
+CAnim::CAnim(const CAnim& origin)
+    : m_Animator(nullptr)
+    , m_vecFrm(origin.m_vecFrm)
+    , m_CurFrmIdx(origin.m_CurFrmIdx)
+    , m_bFinish(origin.m_bFinish)
+    , m_AtlasTex(origin.m_AtlasTex)
+    , m_fAccTime(origin.m_fAccTime)
+    , m_bUseBackGround(origin.m_bUseBackGround)
+{
+}
+
 CAnim::~CAnim()
 {
 }

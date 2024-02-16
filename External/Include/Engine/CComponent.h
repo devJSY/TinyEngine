@@ -3,10 +3,10 @@
 
 #include "CGameObject.h"
 
-#define GET_OTHER_COMPONENT(Type)                                                                                      \
-    C##Type* Type()                                                                                                    \
-    {                                                                                                                  \
-        return m_Owner->Type();                                                                                        \
+#define GET_OTHER_COMPONENT(Type)                                                                                                                    \
+    C##Type* Type()                                                                                                                                  \
+    {                                                                                                                                                \
+        return m_Owner->Type();                                                                                                                      \
     }
 
 class CComponent : public CEntity
@@ -42,7 +42,11 @@ public:
     GET_OTHER_COMPONENT(SkyBox);
 
 public:
+    virtual CComponent* Clone() = 0;
+
+public:
     CComponent(COMPONENT_TYPE _Type);
+    CComponent(const CComponent& origin);
     virtual ~CComponent();
 
     friend class CGameObject;

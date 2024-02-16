@@ -35,6 +35,10 @@ public:
     virtual void LoadFromLevelFile(FILE* _File) override;
 
 public:
+    virtual CRenderComponent* Clone() = 0;
+
+public:
     CRenderComponent(COMPONENT_TYPE _Type);
+    CRenderComponent(const CRenderComponent& origin);
     virtual ~CRenderComponent();
 };

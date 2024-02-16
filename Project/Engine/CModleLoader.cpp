@@ -3,6 +3,14 @@
 #include "CPathMgr.h"
 #include "COutputLog.h"
 
+CModelLoader::CModelLoader()
+{
+}
+
+CModelLoader::~CModelLoader()
+{
+}
+
 void UpdateNormals(vector<tMeshData>& meshes)
 {
     // 노멀 벡터가 없는 경우를 대비하여 다시 계산
@@ -71,8 +79,7 @@ void CModelLoader::Load(string filePath, string fileName, bool revertNormals)
 
     Assimp::Importer importer;
 
-    const aiScene* pScene =
-        importer.ReadFile(this->basePath + fileName, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+    const aiScene* pScene = importer.ReadFile(this->basePath + fileName, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
     if (!pScene)
     {
@@ -113,8 +120,8 @@ void CModelLoader::UpdateTangents()
         }
 
         // DirectXMesh
-        ComputeTangentFrame(m.indices.data(), m.indices.size() / 3, positions.data(), normals.data(), texcoords.data(),
-                            m.vertices.size(), tangents.data(), bitangents.data());
+        ComputeTangentFrame(m.indices.data(), m.indices.size() / 3, positions.data(), normals.data(), texcoords.data(), m.vertices.size(),
+                            tangents.data(), bitangents.data());
 
         for (size_t i = 0; i < m.vertices.size(); i++)
         {

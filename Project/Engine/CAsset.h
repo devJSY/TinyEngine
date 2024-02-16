@@ -42,8 +42,7 @@ private:
     virtual int Load(const wstring& _strFilePath) { return E_FAIL; };
 
 public:
-    // ¿¡¼ÂÀº Clone X
-    virtual CAsset* Clone() override { return nullptr; }
+    virtual CAsset* Clone() = 0;
 
 public:
     CAsset(ASSET_TYPE _Type, bool _bEngineAsset = false);

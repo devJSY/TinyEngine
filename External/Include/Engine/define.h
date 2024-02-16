@@ -1,25 +1,46 @@
 #pragma once
 
-#define SINGLE(classtype)                                                                                              \
-private:                                                                                                               \
-    classtype();                                                                                                       \
-    ~classtype();                                                                                                      \
+#define SINGLE(classtype)                                                                                                                            \
+private:                                                                                                                                             \
+    classtype();                                                                                                                                     \
+    ~classtype();                                                                                                                                    \
     friend class CSingleton<classtype>;
 
-#define DEVICE  CDevice::GetInst()->GetDevice()
+#define DEVICE CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetContext()
 
-#define CLONE(type) public: virtual type* Clone() { return new type(*this); }
+#define CLONE(type)                                                                                                                                  \
+public:                                                                                                                                              \
+    virtual type* Clone()                                                                                                                            \
+    {                                                                                                                                                \
+        return new type(*this);                                                                                                                      \
+    }
 
 #define KEY_CHECK(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State)
-#define DT                    CTimeMgr::GetInst()->GetDeltaTime()
+#define DT CTimeMgr::GetInst()->GetDeltaTime()
 
-#define KEY_TAP(Key)      KEY_CHECK(Key, TAP)
-#define KEY_PRESSED(Key)  KEY_CHECK(Key, PRESSED)
+#define KEY_TAP(Key) KEY_CHECK(Key, TAP)
+#define KEY_PRESSED(Key) KEY_CHECK(Key, PRESSED)
 #define KEY_RELEASED(Key) KEY_CHECK(Key, RELEASED)
-#define KEY_NONE(Key)     KEY_CHECK(Key, NONE)
+#define KEY_NONE(Key) KEY_CHECK(Key, NONE)
 
 #define LAYER_MAX 16
+
+#define CLONE(type)                                                                                                                                  \
+public:                                                                                                                                              \
+    virtual type* Clone()                                                                                                                            \
+    {                                                                                                                                                \
+        return new type(*this);                                                                                                                      \
+    }
+
+#define CLONE_DISABLE(type)                                                                                                                          \
+public:                                                                                                                                              \
+    virtual type* Clone()                                                                                                                                    \
+    {                                                                                                                                                \
+        return nullptr;                                                                                                                              \
+        assert(nullptr);                                                                                                                             \
+    }                                                                                                                                                \
+    type(const type& origin) = delete;
 
 enum class DIR_TYPE
 {

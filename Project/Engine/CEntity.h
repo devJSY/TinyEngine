@@ -15,7 +15,7 @@ public:
     UINT GetID() const { return m_ID; }
 
 public:
-    virtual CEntity* Clone() { return nullptr; };
+    virtual CEntity* Clone() = 0;
 
 public:
     CEntity();

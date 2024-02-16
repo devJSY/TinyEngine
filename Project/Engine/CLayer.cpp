@@ -9,6 +9,16 @@ CLayer::CLayer()
 {
 }
 
+CLayer::CLayer(const CLayer& origin)
+    : CEntity(origin)
+    , m_iLayerIdx(origin.m_iLayerIdx)
+{
+    for (size_t i = 0; i < origin.m_vecParent.size(); i++)
+    {
+        m_vecParent.push_back(origin.m_vecParent[i]->Clone());
+    }
+}
+
 CLayer::~CLayer()
 {
     Delete_Vec(m_vecParent);

@@ -23,8 +23,8 @@ private:
     SB_TYPE m_Type;
     bool m_bSysMemMove;
 
-    UINT m_RegentSRV; // 최근에 바인딩한 t레지스터 번호
-    UINT m_RegentUAV; // 최근에 바인딩한 u레지스터 번호
+    UINT m_RecentSRV; // 최근에 바인딩한 t레지스터 번호
+    UINT m_RecentUAV; // 최근에 바인딩한 u레지스터 번호
 
 public:
     int Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Type, bool _bSysMemMove = false,
@@ -43,7 +43,10 @@ public:
     UINT GetElementSize() const { return m_ElementSize; }
     UINT GetElementCount() const { return m_ElementCount; }
 
+    CLONE(CStructuredBuffer);
+
 public:
     CStructuredBuffer();
+    CStructuredBuffer(const CStructuredBuffer& origin);
     virtual ~CStructuredBuffer();
 };

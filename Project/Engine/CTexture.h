@@ -11,19 +11,17 @@ private:
     ComPtr<ID3D11RenderTargetView> m_RTV;   // 렌더타겟 용도
     ComPtr<ID3D11DepthStencilView> m_DSV;   // 뎊스 스텐실 용도
     ComPtr<ID3D11ShaderResourceView> m_SRV; // 쉐이더에서 사용하는 용도(텍스쳐 레지스터(t) 바인딩)
-    ComPtr<ID3D11UnorderedAccessView>
-        m_UAV; // GPGPU(General Purpose GPU) - ComputeShader, 읽기 쓰기 동시가능, (Unordered Register(u) 에 바인딩 가능)
+    ComPtr<ID3D11UnorderedAccessView> m_UAV; // GPGPU(General Purpose GPU) - ComputeShader, 읽기 쓰기 동시가능, (Unordered Register(u) 에 바인딩 가능)
 
     UINT m_RecentNum_SRV;
     UINT m_RecentNum_UAV;
 
 private:
-    int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage,
-               const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
-               const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc, const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc);
-    int Create(ComPtr<ID3D11Texture2D> _tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
+    int Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc,
                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc,
                const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc);
+    int Create(ComPtr<ID3D11Texture2D> _tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
+               const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc, const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc);
 
 private:
     virtual int Load(const wstring& _strFilePath) override;
@@ -50,6 +48,8 @@ public:
 
     tPixel* GetPixels();
     void CaptureTex();
+
+    CLONE_DISABLE(CTexture);
 
 public:
     CTexture();

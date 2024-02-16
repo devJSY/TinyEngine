@@ -89,8 +89,11 @@ public:
 
     int GetLayerIdx() const { return m_iLayerIdx; }
 
+    CLONE(CGameObject);
+
 public:
     CGameObject();
+    CGameObject(const CGameObject& origin);
     virtual ~CGameObject();
 
     friend class CLayer;

@@ -12,6 +12,26 @@ CAnimator2D::CAnimator2D()
 {
 }
 
+CAnimator2D::CAnimator2D(const CAnimator2D& origin)
+    : CComponent(origin)
+    , m_CurAnim(nullptr)
+    , m_bRepeat(origin.m_bRepeat)
+{
+    map<wstring, CAnim*>::const_iterator iter = origin.m_mapAnim.begin();
+    for (; iter != origin.m_mapAnim.end(); ++iter)
+    {
+        CAnim* pCloneAnim = iter->second->Clone();
+
+        pCloneAnim->m_Animator = this;
+        m_mapAnim.insert(make_pair(iter->first, pCloneAnim));
+    }
+
+    if (nullptr != origin.m_CurAnim)
+    {
+        m_CurAnim = FindAnim(origin.m_CurAnim->GetName());
+    }
+}
+
 CAnimator2D::~CAnimator2D()
 {
     Delete_Map(m_mapAnim);
@@ -43,8 +63,8 @@ void CAnimator2D::Clear()
     CAnim::Clear();
 }
 
-void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop, Vec2 _vSliceSize,
-                         Vec2 _OffsetPos, Vec2 _Background, int _FrmCount, float _FPS, bool _UseBackGround)
+void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop, Vec2 _vSliceSize, Vec2 _OffsetPos, Vec2 _Background,
+                         int _FrmCount, float _FPS, bool _UseBackGround)
 {
     CAnim* pAnim = FindAnim(_strKey);
     assert(!pAnim);
@@ -147,7 +167,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
         return;
     }
 
-    // 이미 로드된 애니메이션이 있는지 예외처리 
+    // 이미 로드된 애니메이션이 있는지 예외처리
     if (FindAnim(pNewAnim->GetName()))
     {
         LOG(Warning, "Animation Already Exists");

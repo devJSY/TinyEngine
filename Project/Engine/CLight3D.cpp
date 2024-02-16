@@ -29,6 +29,15 @@ CLight3D::CLight3D()
     CreateDepthMapTex();
 }
 
+CLight3D::CLight3D(const CLight3D& origin)
+    : CComponent(origin)
+    , m_Info(origin.m_Info)
+    , m_DepthMapTex(nullptr)
+    , m_ShadowIdx(-1)
+{
+    CreateDepthMapTex();
+}
+
 CLight3D::~CLight3D()
 {
 }

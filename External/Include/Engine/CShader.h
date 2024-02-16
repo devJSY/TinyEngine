@@ -9,6 +9,8 @@ protected:
 public:
     virtual int UpdateData() = 0;
 
+    CLONE_DISABLE(CShader);
+
 public:
     CShader(ASSET_TYPE _Type);
     virtual ~CShader();

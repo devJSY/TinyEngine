@@ -18,6 +18,20 @@ CCollider2D::CCollider2D()
     SetColliderType(m_Type);
 }
 
+CCollider2D::CCollider2D(const CCollider2D& origin)
+    : CComponent(origin)
+    , m_vOffsetPos(origin.m_vOffsetPos)
+    , m_vOffsetScale(origin.m_vOffsetScale)
+    , m_bAbsolute(origin.m_bAbsolute)
+    , m_CollisionCount(0)
+    , m_Type(origin.m_Type)
+    , m_fRadius(origin.m_fRadius)
+    , m_BoundingBox(origin.m_BoundingBox)
+    , m_BoundingSphere(origin.m_BoundingSphere)
+{
+}
+
+
 CCollider2D::~CCollider2D()
 {
 }

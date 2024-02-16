@@ -29,6 +29,9 @@ public:
     SCRIPT_TYPE GetScriptType() const { return m_iScriptType; }
 
 public:
+    CScript* Clone() = 0;
+
+public:
     CScript(SCRIPT_TYPE _type);
     virtual ~CScript();
 };

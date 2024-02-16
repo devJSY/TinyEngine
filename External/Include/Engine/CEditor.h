@@ -15,6 +15,8 @@ public:
 public:
     EDITOR_TYPE GetEditorType() const { return m_EditorType; }
 
+    CLONE_DISABLE(CEditor);
+
 public:
     CEditor(EDITOR_TYPE type);
     virtual ~CEditor();

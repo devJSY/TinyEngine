@@ -23,5 +23,11 @@ public:
 
     void UpdateTangents();
 
+    CLONE_DISABLE(CModelLoader);
+
+private:
+    CModelLoader();
+    virtual ~CModelLoader();
+
     friend class CAssetMgr;
 };

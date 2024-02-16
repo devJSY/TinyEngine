@@ -11,6 +11,19 @@ CTransform::CTransform()
 {
 }
 
+CTransform::CTransform(const CTransform& origin)
+    : CComponent(origin)
+    , m_vRelativePos(origin.m_vRelativePos)
+    , m_vRelativeScale(origin.m_vRelativeScale)
+    , m_vRelativeRotation(origin.m_vRelativeRotation)
+    , m_arrLocalDir{origin.m_arrLocalDir[0], origin.m_arrLocalDir[1], origin.m_arrLocalDir[2]}
+    , m_arrWorldDir{origin.m_arrWorldDir[0], origin.m_arrWorldDir[1], origin.m_arrWorldDir[2]}
+    , m_matWorld()
+    , m_bAbsolute(origin.m_bAbsolute)
+    , m_matTransformation()
+{
+}
+
 CTransform::~CTransform()
 {
 }
@@ -54,8 +67,7 @@ void CTransform::finaltick()
         if (m_bAbsolute)
         {
             Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
-            Matrix matParentScaleInv =
-                XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
+            Matrix matParentScaleInv = XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
 
             // 부모의 크기 행렬 상쇄
             m_matTransformation = matParentScaleInv * m_matTransformation;

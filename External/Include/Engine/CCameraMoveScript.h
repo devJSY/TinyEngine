@@ -17,6 +17,8 @@ private:
     void MoveFocusOrthographic();
     void MoveFocusPerspective();
 
+    CLONE(CCameraMoveScript);
+
 public:
     CCameraMoveScript();
     virtual ~CCameraMoveScript();

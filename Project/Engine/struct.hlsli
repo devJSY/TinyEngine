@@ -39,7 +39,7 @@ struct tLightInfo
     
     row_major Matrix viewMat;
     row_major Matrix projMat;
-    row_major Matrix invProj; // ±×¸²ÀÚ ·»´õ¸µ µð¹ö±ë¿ë
+    row_major Matrix invProj; 
     
     int ShadowType; // 0 : Static , 1 : Dynamic
     float3 Lightpadd;

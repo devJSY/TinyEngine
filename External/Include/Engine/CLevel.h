@@ -24,8 +24,10 @@ public:
 private:
     void clear();
 
+    CLONE(CLevel);
 public:
     CLevel();
+    CLevel(const CLevel& origin);
     virtual ~CLevel();
 
     friend class CLevelMgr;

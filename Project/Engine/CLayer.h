@@ -27,12 +27,14 @@ public:
     const vector<CGameObject*>& GetParentObjects() const { return m_vecParent; }
     const vector<CGameObject*>& GetLayerObjects() const { return m_vecObjects; }
 
-public:
-    CLayer();
-    virtual ~CLayer();
-
 private:
     void AddObject(CGameObject* _Object, bool _bMove);
+
+    CLONE(CLayer);
+public:
+    CLayer();
+    CLayer(const CLayer& origin);
+    virtual ~CLayer();
 
     friend class CLevel;
 };

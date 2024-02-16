@@ -40,7 +40,7 @@ void CPBRLevel::begin()
     GetLayer(15)->SetName(L"UI");
 
     AddSample();
-    //AddModels();
+    // AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -78,7 +78,7 @@ void CPBRLevel::begin()
 
     pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::moonless);
     pSkyBox->SkyBox()->SetShape(SKYBOX_SHAPE::BOX);
- 
+
     AddObject(pSkyBox, L"SkyBox");
 
     // BlinnPhong Obj
@@ -122,7 +122,7 @@ void CPBRLevel::begin()
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
     AddObject(pFloor, 0);
-
+   
     CLevel::begin();
 }
 
@@ -223,8 +223,7 @@ void CPBRLevel::AddSample()
 void CPBRLevel::AddModels()
 {
     // Zelda Model
-    CGameObject* pZelda =
-        CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
+    CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
     if (nullptr != pZelda)
     {
         pZelda->Transform()->SetRelativePos(Vec3(-500.f, 250.f, 0.f));
@@ -234,8 +233,7 @@ void CPBRLevel::AddModels()
     }
 
     // Damaged Helmet
-    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(
-        L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
     if (nullptr != pDamagedHelmet)
     {
         pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
@@ -245,8 +243,7 @@ void CPBRLevel::AddModels()
     }
 
     // torii gate
-    CGameObject* ptoriigate =
-        CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
+    CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
     if (nullptr != ptoriigate)
     {
         ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 250.f, 0.f));
@@ -256,8 +253,7 @@ void CPBRLevel::AddModels()
     }
 
     // dragon warrior
-    CGameObject* pDragonWarrior =
-        CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
+    CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
     if (nullptr != pDragonWarrior)
     {
         pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 250.f, 0.f));
@@ -277,8 +273,8 @@ void CPBRLevel::AddModels()
     meshData.EmissiveTextureFilename = "angel_armor_e.jpg";
     meshData.RelativeTextureFilePath = "Developers\\Models\\armored-female-future-soldier\\";
 
-    CGameObject* pArmoredFemale = CAssetMgr::GetInst()->LoadModel(
-        L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
+    CGameObject* pArmoredFemale =
+        CAssetMgr::GetInst()->LoadModel(L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
     if (nullptr != pArmoredFemale)
     {
         pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 250.f, 0.f));

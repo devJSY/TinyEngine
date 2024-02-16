@@ -49,7 +49,10 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
+    CLONE(CLight3D);
+
 public:
     CLight3D();
+    CLight3D(const CLight3D& origin);
     virtual ~CLight3D();
 };

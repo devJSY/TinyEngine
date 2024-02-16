@@ -37,7 +37,10 @@ public:
     void SaveAnimations(const wstring& _strRelativePath);
     void LoadAnimation(const wstring& _strRelativePath);
 
+    CLONE(CAnimator2D);
+
 public:
     CAnimator2D();
+    CAnimator2D(const CAnimator2D& origin);
     virtual ~CAnimator2D();
 };

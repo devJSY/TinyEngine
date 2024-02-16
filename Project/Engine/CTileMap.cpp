@@ -30,6 +30,23 @@ CTileMap::CTileMap()
     SetTileCount(m_iTileCountX, m_iTileCountY);
 }
 
+CTileMap::CTileMap(const CTileMap& origin)
+    : CRenderComponent(origin)
+    , m_iTileCountX(origin.m_iTileCountX)
+    , m_iTileCountY(origin.m_iTileCountY)
+    , m_vTileRenderSize(origin.m_vTileRenderSize)
+    , m_TileAtlas(origin.m_TileAtlas)
+    , m_vTilePixelSize(origin.m_vTilePixelSize)
+    , m_vSliceSizeUV(origin.m_vSliceSizeUV)
+    , m_vecTileInfo(origin.m_vecTileInfo)
+    , m_TileInfoBuffer(nullptr)
+{
+    if (nullptr != origin.m_TileInfoBuffer)
+    {
+        m_TileInfoBuffer = origin.m_TileInfoBuffer->Clone();
+    }
+}
+
 CTileMap::~CTileMap()
 {
     if (nullptr != m_TileInfoBuffer)

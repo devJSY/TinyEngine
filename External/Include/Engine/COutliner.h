@@ -38,6 +38,8 @@ private:
     template<typename T>
     void ComponentSettingsButton(T* comp);
 
+    CLONE_DISABLE(COutliner);
+
 private:
     COutliner();
     virtual ~COutliner();

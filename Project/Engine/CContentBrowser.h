@@ -14,6 +14,8 @@ public:
     void init();
     void render();
 
+    CLONE_DISABLE(CContentBrowser);
+
 private:
     CContentBrowser();
     virtual ~CContentBrowser();
