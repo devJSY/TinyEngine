@@ -141,34 +141,29 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
     {
         const float nearZ = 1.f; // 카메라 설정과 동일
         
-        // 1. Project posWorld to light screen
+        // Project posWorld to light screen
         // light.viewProj 사용
         float4 pos = float4(posWorld, 1.0);
         float4 lightScreen = mul(pos, light.viewMat);
         lightScreen = mul(lightScreen, light.projMat);
         lightScreen.xyz /= lightScreen.w;
         
-        // 2. 카메라(광원)에서 볼 때의 텍스춰 좌표 계산
+        // 카메라(광원)에서 볼 때의 텍스춰 좌표 계산
         // [-1, 1]x[-1, 1] -> [0, 1]x[0, 1]
         // 주의: 텍스춰 좌표와 NDC는 y가 반대
         float2 lightTexcoord = float2(lightScreen.x, -lightScreen.y);
         lightTexcoord += 1.0;
         lightTexcoord *= 0.5;
-
-        // 3. 쉐도우맵에서 값 가져오기
-        float depth = 0.f;
-        if (3 == ShadowLightCount)
-            depth = g_LightDepthMapTex1.Sample(g_ShadowPointSampler, lightTexcoord).r;
-        else if (2 == ShadowLightCount)
-            depth = g_LightDepthMapTex2.Sample(g_ShadowPointSampler, lightTexcoord).r;
-        else if (1 == ShadowLightCount)
-            depth = g_LightDepthMapTex3.Sample(g_ShadowPointSampler, lightTexcoord).r;
         
-        // 4. 가려져 있다면 그림자로 표시
+        // 쉐도우 맵에서 깊이값을 가져와서 light screen Z값과 비교
         float bias = 0.001f;
-        if (depth + bias < lightScreen.z)
-            shadowFactor = 0.0; 
-        
+        if (3 == ShadowLightCount)
+            shadowFactor = g_LightDepthMapTex1.SampleCmpLevelZero(g_shadowCompareSampler, lightTexcoord.xy, lightScreen.z - bias).r;
+        else if (2 == ShadowLightCount)
+            shadowFactor = g_LightDepthMapTex1.SampleCmpLevelZero(g_shadowCompareSampler, lightTexcoord.xy, lightScreen.z - bias).r;
+        else if (1 == ShadowLightCount)
+            shadowFactor = g_LightDepthMapTex1.SampleCmpLevelZero(g_shadowCompareSampler, lightTexcoord.xy, lightScreen.z - bias).r;
+                
         ShadowLightCount -= 1;
     }
 

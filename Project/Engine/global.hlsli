@@ -138,6 +138,6 @@ SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);
 SamplerState g_PointSampler : register(s2);
 SamplerState g_AnisotropicSampler : register(s3);
-SamplerState g_ShadowPointSampler : register(s4);
+SamplerComparisonState g_shadowCompareSampler : register(s4);
 
 #endif
