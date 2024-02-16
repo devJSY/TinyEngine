@@ -49,4 +49,12 @@ void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _Nomalize
     _vOut = vOut;
 }
 
+// Âü°í: https://github.com/opengl-tutorials/ogl/blob/master/tutorial16_shadowmaps/ShadowMapping.fragmentshader
+float random(float3 seed, int i)
+{
+    float4 seed4 = float4(seed, i);
+    float dot_product = dot(seed4, float4(12.9898, 78.233, 45.164, 94.673));
+    return frac(sin(dot_product) * 43758.5453);
+}
+
 #endif

@@ -54,12 +54,22 @@ void CLight3D::finaltick()
     if (1 == m_Info.ShadowType)
     {
         Matrix ViewRow = XMMatrixLookAtLH(m_Info.vWorldPos, m_Info.vWorldPos + m_Info.vWorldDir, Transform()->GetWorldDir(DIR_TYPE::UP));
-        CCamera* mainCam = CRenderMgr::GetInst()->GetCamera(0);
-        Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.0f), 1.0f, mainCam->GetNear(), mainCam->GetFar());
+        Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.f), 1.f, 1.f, 10000.f); // 쉐이더에서도 동일하게 설정
 
         m_Info.viewMat = ViewRow;
         m_Info.projMat = ProjRow;
         m_Info.invProj = m_Info.projMat.Invert();
+
+        // LIGHT_FRUSTUM_WIDTH 확인
+        // Vector4 eye(0.0f, 0.0f, 0.0f, 1.0f);
+        // Vector4 xLeft(-1.0f, -1.0f, 0.0f, 1.0f);
+        // Vector4 xRight(1.0f, 1.0f, 0.0f, 1.0f);
+        // eye = Vector4::Transform(eye, lightProjRow);
+        // xLeft = Vector4::Transform(xLeft, lightProjRow.Invert());
+        // xRight = Vector4::Transform(xRight, lightProjRow.Invert());
+        // xLeft /= xLeft.w;
+        // xRight /= xRight.w;
+        // cout << "LIGHT_FRUSTUM_WIDTH = " << xRight.x - xLeft.x << endl;
     }
     else
     {
@@ -67,9 +77,13 @@ void CLight3D::finaltick()
     }
 
     GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
+}
 
-    // Mesh 설정
-    if (nullptr == MeshRender())
+void CLight3D::SetLightType(LIGHT_TYPE _type)
+{
+    m_Info.LightType = (int)_type;
+
+    if (nullptr == GetOwner() || nullptr == MeshRender())
         return;
 
     MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));

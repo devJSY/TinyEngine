@@ -245,6 +245,15 @@ int CDevice::CreateSamplerState()
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
     DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
 
+    tSamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+    tSamDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+    tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+    tSamDesc.MinLOD = 0;
+    tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    tSamDesc.BorderColor[0] = 10000.0f; // Å« Z°ª
+    DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
+
     tSamDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
     tSamDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
     tSamDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
@@ -282,6 +291,13 @@ int CDevice::CreateSamplerState()
     CONTEXT->GSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
     CONTEXT->PSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
     CONTEXT->CSSetSamplers((UINT)SS_TYPE::ANISOTROPIC, 1, m_arrSS[(UINT)SS_TYPE::ANISOTROPIC].GetAddressOf());
+
+    CONTEXT->VSSetSamplers((UINT)SS_TYPE::SHADOW_POINT, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
+    CONTEXT->HSSetSamplers((UINT)SS_TYPE::SHADOW_POINT, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
+    CONTEXT->DSSetSamplers((UINT)SS_TYPE::SHADOW_POINT, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
+    CONTEXT->GSSetSamplers((UINT)SS_TYPE::SHADOW_POINT, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
+    CONTEXT->PSSetSamplers((UINT)SS_TYPE::SHADOW_POINT, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
+    CONTEXT->CSSetSamplers((UINT)SS_TYPE::SHADOW_POINT, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
 
     CONTEXT->VSSetSamplers((UINT)SS_TYPE::SHADOW_COMPARISION, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_COMPARISION].GetAddressOf());
     CONTEXT->HSSetSamplers((UINT)SS_TYPE::SHADOW_COMPARISION, 1, m_arrSS[(UINT)SS_TYPE::SHADOW_COMPARISION].GetAddressOf());

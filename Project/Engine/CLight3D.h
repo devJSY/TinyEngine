@@ -17,7 +17,7 @@ public:
     void SetLightRadiance(Vec3 _vRadiance) { m_Info.vRadiance = _vRadiance; }
     Vec4 GetLightRadiance() const { return m_Info.vRadiance; }
 
-    void SetLightType(LIGHT_TYPE _type) { m_Info.LightType = (int)_type; }
+    void SetLightType(LIGHT_TYPE _type);
     void SetRadius(float _Radius) { m_Info.fRadius = _Radius; }
     void SetAngle(float _Angle) { m_Info.fAngle = _Angle; }
 

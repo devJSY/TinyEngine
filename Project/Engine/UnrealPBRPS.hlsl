@@ -114,19 +114,82 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
     return SchlickG1(NdotI, k) * SchlickG1(NdotO, k);
 }
 
+#define NEAR_PLANE 1.f
+#define LIGHT_FRUSTUM_WIDTH 3.4614f // Near 1.f Far 10000.f 기준 
+
+// NdcDepthToViewDepth
+float N2V(float ndcDepth, matrix invProj)
+{
+    float4 pointView = mul(float4(0, 0, ndcDepth, 1), invProj);
+    return pointView.z / pointView.w;
+}
+
 float PCF_Filter(float2 uv, float zReceiverNdc, float filterRadiusUV, Texture2D shadowMap)
 {
     float sum = 0.0f;
-    for (int i = 0; i < 16; ++i)
+    for (int i = 0; i < 64; ++i)
     {
-        float2 offset = diskSamples16[i] * filterRadiusUV;
+        float2 offset = diskSamples64[i] * filterRadiusUV;
         sum += shadowMap.SampleCmpLevelZero(
-            g_shadowCompareSampler, uv + offset, zReceiverNdc);
+            g_ShadowCompareSampler, uv + offset, zReceiverNdc);
     }
     
-    return sum / 16;
+    return sum / 64;
 }
 
+void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv,
+                 float zReceiverView, Texture2D shadowMap, matrix invProj, float lightRadiusWorld)
+{
+    float lightRadiusUV = lightRadiusWorld / LIGHT_FRUSTUM_WIDTH;
+    
+    float searchRadius = lightRadiusUV * (zReceiverView - NEAR_PLANE) / zReceiverView;
+
+    float blockerSum = 0;
+    numBlockers = 0;
+    for (int i = 0; i < 64; ++i)
+    {
+        float shadowMapDepth =
+            shadowMap.SampleLevel(g_ShadowPointSampler, float2(uv + diskSamples64[i] * searchRadius), 0).r;
+
+        shadowMapDepth = N2V(shadowMapDepth, invProj);
+        
+        if (shadowMapDepth < zReceiverView)
+        {
+            blockerSum += shadowMapDepth;
+            numBlockers++;
+        }
+    }
+    
+    avgBlockerDepthView = blockerSum / numBlockers;
+}
+
+float PCSS(float2 uv, float zReceiverNdc, Texture2D shadowMap, matrix invProj, float lightRadiusWorld)
+{
+    float lightRadiusUV = lightRadiusWorld / LIGHT_FRUSTUM_WIDTH;
+    
+    float zReceiverView = N2V(zReceiverNdc, invProj);
+    
+    // STEP 1: blocker search
+    float avgBlockerDepthView = 0;
+    float numBlockers = 0;
+
+    FindBlocker(avgBlockerDepthView, numBlockers, uv, zReceiverView, shadowMap, invProj, lightRadiusWorld);
+
+    if (numBlockers < 1)
+    {
+        // There are no occluders so early out(this saves filtering)
+        return 1.0f;
+    }
+    else
+    {
+        // STEP 2: penumbra size
+        float penumbraRatio = (zReceiverView - avgBlockerDepthView) / avgBlockerDepthView;
+        float filterRadiusUV = penumbraRatio * lightRadiusUV * NEAR_PLANE / zReceiverView;
+
+        // STEP 3: filtering
+        return PCF_Filter(uv, zReceiverNdc, filterRadiusUV, shadowMap);
+    }
+}
 
 float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
 {
@@ -170,17 +233,27 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
         lightTexcoord += 1.0;
         lightTexcoord *= 0.5;
         
-        // 쉐도우 맵에서 깊이값을 가져와서 light screen Z값과 비교
-        float width = 1280.f;
-        float dx = 5.0 / width;
-        float bias = 0.001f;        
+        //// PCF
+        //float width = 1280.f;
+        //float dx = 5.0 / width;
+        //float bias = 0.001f;        
+        //if (3 == ShadowLightCount)
+        //    shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex1);
+        //else if (2 == ShadowLightCount)
+        //    shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex2);
+        //else if (1 == ShadowLightCount)
+        //    shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex3);
+        
+        // PCSS
+        float bias = 0.001f;
+        float radiusScale = 0.01f; 
         if (3 == ShadowLightCount)
-            shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex1);
+            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * radiusScale);
         else if (2 == ShadowLightCount)
-            shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex2);
+            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * radiusScale);
         else if (1 == ShadowLightCount)
-            shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex3);
-                
+            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * radiusScale);
+        
         ShadowLightCount -= 1;
     }
 
