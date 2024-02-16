@@ -8,9 +8,9 @@ class CRenderComponent : public CComponent
 private:
     Ptr<CMesh> m_Mesh;
 
+    Ptr<CMaterial> m_CurMtrl;
     Ptr<CMaterial> m_SharedMtrl;
     Ptr<CMaterial> m_DynamicMtrl;
-    Ptr<CMaterial> m_CurMtrl;
 
 public:
     Ptr<CMesh> GetMesh() const { return m_Mesh; }
@@ -18,7 +18,8 @@ public:
 
     Ptr<CMaterial> GetMaterial() const { return m_CurMtrl; }
     Ptr<CMaterial> GetSharedMaterial() const { return m_SharedMtrl; }
-    Ptr<CMaterial> GetDynamicMaterial();
+    Ptr<CMaterial> GetDynamicMaterial() const { return m_DynamicMtrl; };
+    Ptr<CMaterial> CreateDynamicMaterial();
     void SetMaterial(Ptr<CMaterial> _Mtrl);
 
     void RestoreMaterial();

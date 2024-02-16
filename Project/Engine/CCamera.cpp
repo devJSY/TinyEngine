@@ -284,9 +284,9 @@ void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
         // 특정 레이어는 IDMap 에서 제외
         if (LayerName != L"UI" && LayerName != L"Camera" && LayerName != L"SkyBox")
         {
-            // 오브젝트 이름으로 HashID 설정
+            // 오브젝트 이름 + ID값으로 HashID Find
             hash<wstring> hasher;
-            int HashID = (int)hasher(_vecObj[i]->GetName());
+            int HashID = (int)hasher(_vecObj[i]->GetName()) + _vecObj[i]->GetID();
 
             Ptr<CMaterial> IDMapMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl");
             IDMapMtrl->SetScalarParam(VEC4_0, HashIDToColor(HashID));

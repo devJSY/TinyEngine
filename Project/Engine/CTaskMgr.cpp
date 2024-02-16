@@ -389,9 +389,9 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
         for (size_t i = 0; i < vecObjects.size(); ++i)
         {
-            // 오브젝트 이름으로 HashID 설정
+            // 오브젝트 이름 + ID값으로 HashID Find
             hash<wstring> hasher;
-            int HashID = (int)hasher(vecObjects[i]->GetName());
+            int HashID = (int)hasher(vecObjects[i]->GetName()) + vecObjects[i]->GetID();
             Vec4 colorID = HashIDToColor(HashID);
 
             // 0 ~ 1 → 0 ~ 255 범위확장

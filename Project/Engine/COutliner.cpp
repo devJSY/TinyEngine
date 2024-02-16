@@ -29,8 +29,8 @@ COutliner::~COutliner()
 
 void COutliner::init()
 {
-    m_DefaultTreeNodeFlag =
-        ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+    m_DefaultTreeNodeFlag = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                            ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 }
 
 void COutliner::render()
@@ -246,7 +246,7 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (nullptr == pTr)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Transform");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), m_DefaultTreeNodeFlag, "Transform");
 
     ComponentSettingsButton(pTr);
 
@@ -265,6 +265,13 @@ void COutliner::DrawTransform(CGameObject* obj)
         Vec3 scale = pTr->GetRelativeScale();
         ImGui_DrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
         pTr->SetRelativeScale(scale);
+
+        ImGui::Spacing();
+        ImGui::Separator();
+
+        bool bAbsolute = pTr->IsAbsolute();
+        ImGui::Checkbox(ImGui_LabelPrefix("Absolute Scale").c_str(), &bAbsolute);
+        pTr->SetAbsolute(bAbsolute);
 
         ImGui::TreePop();
     }
@@ -692,10 +699,9 @@ void COutliner::DrawMeshRender(CGameObject* obj)
     if (open)
     {
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
-        Ptr<CMaterial> pMaterial = pMeshRender->GetMaterial();
 
         // Mesh
-        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Mesh"))
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
         {
             string name;
             if (nullptr != pMesh)
@@ -719,14 +725,22 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             ImGui::TreePop();
         }
 
-        // Material
-        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Material"))
-        {
-            string name;
-            if (nullptr != pMaterial)
-                name = ToString(pMaterial->GetName());
+        Ptr<CMaterial> pCurMtrl = pMeshRender->GetMaterial();
+        Ptr<CMaterial> pSharedMtrl = pMeshRender->GetSharedMaterial();
+        Ptr<CMaterial> pDynamicMtrl = pMeshRender->GetDynamicMaterial();
 
-            ImGui_InputText("Material", name);
+        // Material
+        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
+        {
+            string CurMtrlname, SharedMtrlname, DynamicMtrlname;
+            if (nullptr != pCurMtrl)
+                CurMtrlname = ToString(pCurMtrl->GetName());
+            if (nullptr != pSharedMtrl)
+                SharedMtrlname = ToString(pSharedMtrl->GetName());
+            if (nullptr != pDynamicMtrl)
+                DynamicMtrlname = ToString(pDynamicMtrl->GetName());
+
+            ImGui_InputText("Material", CurMtrlname);
 
             // Drag & Drop
             if (ImGui::BeginDragDropTarget())
@@ -741,10 +755,22 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 ImGui::EndDragDropTarget();
             }
 
+            ImGui_InputText("Shared Material", SharedMtrlname);
+            ImGui_InputText("Dynamic Material", DynamicMtrlname);
+
+            ImGui::Separator();
+
+            if (ImGui_AlignButton("Create Dynamic Material", 0.35f))
+            {
+                pMeshRender->CreateDynamicMaterial();
+            }
+
+            ImGui::SameLine();
+
             if (ImGui_AlignButton("Material Editor", 1.f))
             {
                 CEditorMgr::GetInst()->GetLevelEditor()->ShowMaterialEditor(true);
-                CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMaterial);
+                CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
             }
 
             ImGui::TreePop();
@@ -794,7 +820,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
         }
 
         // TileMap
-        if (ImGui::TreeNodeEx("TileMap Info", m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "TileMap Info"))
+        if (ImGui::TreeNodeEx("TileMap Info", m_DefaultTreeNodeFlag, "TileMap Info"))
         {
             int TileCountX = pTilemap->GetTileCountX();
             int TileCountY = pTilemap->GetTileCountY();
@@ -873,7 +899,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         }
 
         // Particle Module
-        if (ImGui::TreeNodeEx((void*)typeid(tParticleModule).hash_code(), m_DefaultTreeNodeFlag | ImGuiTreeNodeFlags_DefaultOpen, "Particle Module"))
+        if (ImGui::TreeNodeEx((void*)typeid(tParticleModule).hash_code(), m_DefaultTreeNodeFlag, "Particle Module"))
         {
             // ============================================
             // Max Count
