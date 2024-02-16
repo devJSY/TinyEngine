@@ -814,6 +814,9 @@
     <None Include="func.hlsli">
       <Filter>ShaderCode\Utilities</Filter>
     </None>
+    <None Include="disksample.hlsli">
+      <Filter>ShaderCode\Utilities</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">

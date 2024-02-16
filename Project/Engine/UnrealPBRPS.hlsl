@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "disksample.hlsli"
 
 #define BRDFTex g_BRDFTex // SpecularIBL Look-up Table
 #define SpecularIBLTex g_SpecularCube
@@ -113,6 +114,20 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
     return SchlickG1(NdotI, k) * SchlickG1(NdotO, k);
 }
 
+float PCF_Filter(float2 uv, float zReceiverNdc, float filterRadiusUV, Texture2D shadowMap)
+{
+    float sum = 0.0f;
+    for (int i = 0; i < 16; ++i)
+    {
+        float2 offset = diskSamples16[i] * filterRadiusUV;
+        sum += shadowMap.SampleCmpLevelZero(
+            g_shadowCompareSampler, uv + offset, zReceiverNdc);
+    }
+    
+    return sum / 16;
+}
+
+
 float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
 {
     // Default Point Light
@@ -156,13 +171,15 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
         lightTexcoord *= 0.5;
         
         // 쉐도우 맵에서 깊이값을 가져와서 light screen Z값과 비교
-        float bias = 0.001f;
+        float width = 1280.f;
+        float dx = 5.0 / width;
+        float bias = 0.001f;        
         if (3 == ShadowLightCount)
-            shadowFactor = g_LightDepthMapTex1.SampleCmpLevelZero(g_shadowCompareSampler, lightTexcoord.xy, lightScreen.z - bias).r;
+            shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex1);
         else if (2 == ShadowLightCount)
-            shadowFactor = g_LightDepthMapTex1.SampleCmpLevelZero(g_shadowCompareSampler, lightTexcoord.xy, lightScreen.z - bias).r;
+            shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex2);
         else if (1 == ShadowLightCount)
-            shadowFactor = g_LightDepthMapTex1.SampleCmpLevelZero(g_shadowCompareSampler, lightTexcoord.xy, lightScreen.z - bias).r;
+            shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex3);
                 
         ShadowLightCount -= 1;
     }
