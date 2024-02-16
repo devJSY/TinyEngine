@@ -40,6 +40,9 @@ enum class TASK_TYPE
 
     // Param1 : Object, Param2 : Layer Index
     LAYER_CHANGE,
+
+    // Param1 : Object
+    CLONE_OBJECT
 };
 
 struct FTask
@@ -75,4 +78,5 @@ private:
     void ADD_COMPONENT(const FTask& _Task);
     void REMOVE_COMPONENT(const FTask& _Task);
     void LAYER_CHANGE(const FTask& _Task);
+    void CLONE_OBJECT(const FTask& _Task);
 };

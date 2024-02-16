@@ -138,14 +138,19 @@ void COutliner::DrawNode(CGameObject* obj)
         CEditorMgr::GetInst()->SetSelectedObject(obj);
     }
 
-    // Add Child PopUp
-    string PopUpID = "Add Child Object##";
+    // Outliner_PopUp
+    string PopUpID = "Outliner_PopUp##";
     PopUpID += std::to_string(obj->GetID());
 
     ImGui::OpenPopupOnItemClick(PopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
 
     if (ImGui::BeginPopup(PopUpID.c_str()))
     {
+        if (ImGui::MenuItem("Clone Object"))
+        {
+            GamePlayStatic::CloneGameObject(obj);
+        }
+
         if (ImGui::MenuItem("Add Child Object"))
         {
             CGameObject* pObj = new CGameObject;

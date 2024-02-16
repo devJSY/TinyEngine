@@ -122,7 +122,17 @@ void CPBRLevel::begin()
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
     AddObject(pFloor, 0);
-   
+
+    // Damaged Helmet
+    CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+    if (nullptr != pDamagedHelmet)
+    {
+        pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 250.f, 0.f));
+        pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+        AddObject(pDamagedHelmet, L"Model");
+    }
+
     CLevel::begin();
 }
 

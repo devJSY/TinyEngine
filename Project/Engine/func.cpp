@@ -52,6 +52,15 @@ void GamePlayStatic::WindowResize(int width, int height)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::CloneGameObject(CGameObject* _OriginObj)
+{
+    FTask task;
+    task.Type = TASK_TYPE::CLONE_OBJECT;
+    task.Param_1 = (DWORD_PTR)_OriginObj;
+
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
     tDebugShapeInfo info = {};

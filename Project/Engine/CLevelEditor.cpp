@@ -60,6 +60,22 @@ void CLevelEditor::init()
     COutputLog::GetInst()->init();
 }
 
+void CLevelEditor::finaltick()
+{
+    static bool prevUsingGuizmo = false;
+
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+
+    // Alt 키 누른상태로 기즈모 이동시 오브젝트 복사
+    if (nullptr != pSelectedObj && !prevUsingGuizmo && ImGuizmo::IsUsing() && (ImGuizmo::OPERATION::TRANSLATE & m_GizmoType) &&
+        (KEY_TAP(KEY::LALT) || KEY_PRESSED(KEY::LALT)))
+    {
+        GamePlayStatic::CloneGameObject(pSelectedObj);
+    }
+
+    prevUsingGuizmo = ImGuizmo::IsUsing();
+}
+
 void CLevelEditor::render()
 {
     // Menu Bar

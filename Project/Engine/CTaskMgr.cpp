@@ -140,6 +140,9 @@ void CTaskMgr::tick()
         case TASK_TYPE::LAYER_CHANGE:
             LAYER_CHANGE(m_vecTask[i]);
             break;
+        case TASK_TYPE::CLONE_OBJECT:
+            CLONE_OBJECT(m_vecTask[i]);
+            break;
         }
     }
 
@@ -585,4 +588,13 @@ void CTaskMgr::LAYER_CHANGE(const FTask& _Task)
     CCollisionMgr::GetInst()->CollisionRelease(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(OriginLayerIdx)->DetachGameObject(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx, false);
+}
+
+void CTaskMgr::CLONE_OBJECT(const FTask& _Task)
+{
+    CGameObject* OriginObject = (CGameObject*)_Task.Param_1;
+    CGameObject* CloneObj = OriginObject->Clone();
+
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, OriginObject->m_iLayerIdx, false);
+    CEditorMgr::GetInst()->SetSelectedObject(CloneObj);
 }
