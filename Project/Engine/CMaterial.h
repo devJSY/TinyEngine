@@ -12,7 +12,8 @@ private:
     Ptr<CGraphicsShader> m_pShader;
 
 public:
-    void SetMaterialCoefficient(Vec4 _vAlbe, Vec4 _vDiff, Vec4 _vSpec, float _vMetal, float _vRough, Vec4 _vEmis)
+    void SetMaterialCoefficient(Vec4 _vAlbe = Vec4(), Vec4 _vDiff = Vec4(), Vec4 _vSpec = Vec4(), float _vMetal = 0.f, float _vRough = 0.f,
+                                Vec4 _vEmis = Vec4())
     {
         m_Const.mtrl.vAlbedo = _vAlbe;
         m_Const.mtrl.vDiffuse = _vDiff;

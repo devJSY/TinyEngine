@@ -20,7 +20,7 @@
 #define InvertNormalMapY g_int_0
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
-static int ShadowLightCount = 3;
+static int ShadowLightCount = 3; // 그림자가 적용될 광원의 최대갯수
 
 // 보는 각도에 따라서 색이나 밝기가 달라 짐
 float3 SchlickFresnel(float3 F0, float NdotH)
@@ -114,7 +114,7 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
     return SchlickG1(NdotI, k) * SchlickG1(NdotO, k);
 }
 
-#define NEAR_PLANE 1.f
+#define LIGHT_NEAR_PLANE 1.f
 #define LIGHT_FRUSTUM_WIDTH 3.4614f // Near 1.f Far 10000.f 기준 
 
 // NdcDepthToViewDepth
@@ -142,7 +142,9 @@ void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv
 {
     float lightRadiusUV = lightRadiusWorld / LIGHT_FRUSTUM_WIDTH;
     
-    float searchRadius = lightRadiusUV * (zReceiverView - NEAR_PLANE) / zReceiverView;
+    // 광원 Near Plane 위에서의 탐색 범위
+    // UV 좌표 범위
+    float searchRadius = lightRadiusUV * (zReceiverView - LIGHT_NEAR_PLANE) / zReceiverView; 
 
     float blockerSum = 0;
     numBlockers = 0;
@@ -184,7 +186,7 @@ float PCSS(float2 uv, float zReceiverNdc, Texture2D shadowMap, matrix invProj, f
         // STEP 2: penumbra size
         float penumbraRatio = (zReceiverView - avgBlockerDepthView) / avgBlockerDepthView; // FindBlocker에서 찾은 penumbra의 영역
         float lightRadiusUV = lightRadiusWorld / LIGHT_FRUSTUM_WIDTH; // Near Plane 위에서의 Light의 반지름
-        float filterRadiusUV = penumbraRatio * lightRadiusUV * NEAR_PLANE / zReceiverView;
+        float filterRadiusUV = penumbraRatio * lightRadiusUV * LIGHT_NEAR_PLANE / zReceiverView;
 
         // STEP 3: filtering
         return PCF_Filter(uv, zReceiverNdc, filterRadiusUV, shadowMap);

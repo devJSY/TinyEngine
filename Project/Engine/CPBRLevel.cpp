@@ -101,8 +101,8 @@ void CPBRLevel::begin()
     pMirrorObj->AddComponent(new CTransform);
     pMirrorObj->AddComponent(new CMeshRender);
 
-    pMirrorObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 1000.f));
-    pMirrorObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+    pMirrorObj->Transform()->SetRelativePos(Vec3(0.f, 500.f, 1000.f));
+    pMirrorObj->Transform()->SetRelativeRotation(Vec3(-(XM_PI / 12), 0.f, 0.f));
     pMirrorObj->Transform()->SetRelativeScale(Vec3(2500.f, 500.f, 1.f));
 
     pMirrorObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -116,10 +116,11 @@ void CPBRLevel::begin()
     pFloor->AddComponent(new CMeshRender);
 
     pFloor->Transform()->SetRelativePos(Vec3(0.f, -250.f, 0.f));
-    pFloor->Transform()->SetRelativeScale(Vec3(500.f, 100.f, 500.f));
+    pFloor->Transform()->SetRelativeScale(Vec3(2500.f, 100.f, 2500.f));
 
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+    pFloor->MeshRender()->CreateDynamicMaterial()->SetMaterialCoefficient(Vec4(1.f, 1.f, 1.f, 1.f));
 
     AddObject(pFloor, 0);
 

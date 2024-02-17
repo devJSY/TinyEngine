@@ -48,7 +48,9 @@ struct tLightInfo
     Matrix invProj; // ±×¸²ÀÚ ·»´õ¸µ µð¹ö±ë¿ë
 
     int ShadowType; // 0 : Static , 1 : Dynamic
-    Vec3 padd;
+    float HaloRadius;
+    float HaloStrength;
+    float Lightpadd;
 };
 
 // ==================

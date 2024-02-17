@@ -567,11 +567,10 @@ void COutliner::DrawLight3D(CGameObject* obj)
             pLight->SetLightRadiance(radiance);
 
         float fRadius = pLight->GetRadius();
-        float fangle = pLight->GetAngle();
-
         if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
             pLight->SetRadius(fRadius);
 
+        float fangle = pLight->GetAngle();
         if (ImGui::SliderFloat(ImGui_LabelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
             pLight->SetAngle(fangle);
 
@@ -598,6 +597,14 @@ void COutliner::DrawLight3D(CGameObject* obj)
         ImGui::SameLine();
         ImGui::RadioButton("Dynamic Shadow", &shadowType, 1);
         pLight->SetShadowType(shadowType);
+
+        float HaloRadius = pLight->GetHaloRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+            pLight->SetHaloRadius(HaloRadius);
+
+        float HaloStrength = pLight->GetHaloStrength();
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Halo Strength").c_str(), &HaloStrength, 0.f, 1.f))
+            pLight->SetHaloStrength(HaloStrength);
 
         int ShadowIdx = pLight->GetShadowIdx();
         if (ImGui::InputInt(ImGui_LabelPrefix("Shadow Index").c_str(), &ShadowIdx, 1, 100, ImGuiInputTextFlags_ReadOnly))

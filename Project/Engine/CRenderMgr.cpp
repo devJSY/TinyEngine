@@ -237,7 +237,10 @@ void CRenderMgr::render_posteffect()
     if (nullptr == m_PostEffectObj)
         return;
 
-    // RTV(PostProcess) , SRV(floatRTTex DepthOnlyTex)
+    g_Transform.matView = m_vecCam[0]->GetViewMat();
+    g_Transform.matProj = m_vecCam[0]->GetProjMat();
+
+    // RTV(PostProcess), SRV(floatRTTex DepthOnlyTex)
     CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), NULL);
     m_PostEffectObj->render();
     CTexture::Clear(0);
