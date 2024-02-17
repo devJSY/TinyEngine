@@ -21,7 +21,7 @@
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 static int ShadowLightCount = 3; // 그림자가 적용될 광원의 최대갯수
-static float LightRadiusScale = 0.01f; 
+static float LightRadiusScale = 0.01f;
 
 // 보는 각도에 따라서 색이나 밝기가 달라 짐
 float3 SchlickFresnel(float3 F0, float NdotH)
@@ -276,18 +276,32 @@ float4 main(PS_IN input) : SV_TARGET
     float3 directLighting = float3(0, 0, 0);
 
     for (uint i = 0; i < g_Light3DCount; ++i)
-    {
-         // SphereLight 
-        float3 L = g_Light3D[i].vWorldPos - input.vPosWorld;
-        float3 r = normalize(reflect(g_eyeWorld - input.vPosWorld, normalWorld));
-        float3 centerToRay = dot(L, r) * r - L;
-        float LightRadius = g_Light3D[i].fRadius * LightRadiusScale;
-        float3 representativePoint = L + centerToRay * clamp(LightRadius / length(centerToRay), 0.0, 1.0);
-        representativePoint += input.vPosWorld;
+    {      
+        float3 lightVec = float3(0.f, 0.f, 0.f);
+        float3 representativePoint = float3(0.f, 0.f, 0.f);
+        
+        if (g_Light3D[i].LightType == LIGHT_DIRECTIONAL)
+        {
+            lightVec = -g_Light3D[i].vWorldDir;
+            representativePoint = g_Light3D[i].vWorldPos;
+        }
+        else if (g_Light3D[i].LightType == LIGHT_POINT)
+        {
+            // SphereLight 
+            float3 L = g_Light3D[i].vWorldPos - input.vPosWorld;
+            float3 r = normalize(reflect(g_eyeWorld - input.vPosWorld, normalWorld));
+            float3 centerToRay = dot(L, r) * r - L;
+            float LightRadius = g_Light3D[i].fRadius * LightRadiusScale;
             
-        float3 lightVec = g_Light3D[i].LightType == LIGHT_DIRECTIONAL
-                      ? -g_Light3D[i].vWorldDir
-                      : representativePoint - input.vPosWorld;
+            representativePoint = L + centerToRay * clamp(LightRadius / length(centerToRay), 0.0, 1.0);            
+            representativePoint += input.vPosWorld;
+            lightVec = representativePoint - input.vPosWorld;
+        }
+        else if (g_Light3D[i].LightType == LIGHT_SPOT)
+        {
+            lightVec = g_Light3D[i].vWorldPos - input.vPosWorld;
+            representativePoint = g_Light3D[i].vWorldPos;
+        }
         
         float lightDist = length(lightVec);
         lightVec /= lightDist;
@@ -304,8 +318,12 @@ float4 main(PS_IN input) : SV_TARGET
 
         // Sphere Normalization
         float alpha = roughness * roughness;
-        float alphaPrime = saturate(alpha + g_Light3D[i].fRadius / (2.0 * lightDist));
-
+        float alphaPrime = roughness;
+        if (g_Light3D[i].LightType == LIGHT_POINT) // Point Light의 경우에만 Sphere Light 적용
+        {
+            alphaPrime = saturate(alpha + g_Light3D[i].fRadius / (2.0 * lightDist));
+        }
+                
         float D = NdfGGX(NdotH, roughness, alphaPrime);
         float3 G = SchlickGGX(NdotI, NdotO, roughness);
         float3 specularBRDF = (F * D * G) / max(1e-5, 4.0 * NdotI * NdotO);
