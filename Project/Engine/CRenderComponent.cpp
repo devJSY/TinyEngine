@@ -60,6 +60,7 @@ Ptr<CMaterial> CRenderComponent::CreateDynamicMaterial()
 void CRenderComponent::RestoreMaterial()
 {
     m_CurMtrl = m_SharedMtrl;
+    m_DynamicMtrl = nullptr;
 }
 
 void CRenderComponent::SaveToLevelFile(FILE* _File)

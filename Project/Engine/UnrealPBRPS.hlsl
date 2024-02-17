@@ -127,14 +127,14 @@ float N2V(float ndcDepth, matrix invProj)
 float PCF_Filter(float2 uv, float zReceiverNdc, float filterRadiusUV, Texture2D shadowMap)
 {
     float sum = 0.0f;
-    for (int i = 0; i < 64; ++i)
+    for (int i = 0; i < 16; ++i)
     {
-        float2 offset = diskSamples64[i] * filterRadiusUV;
+        float2 offset = diskSamples16[i] * filterRadiusUV;
         sum += shadowMap.SampleCmpLevelZero(
             g_ShadowCompareSampler, uv + offset, zReceiverNdc);
     }
     
-    return sum / 64;
+    return sum / 16;
 }
 
 void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv,

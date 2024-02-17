@@ -765,7 +765,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
             ImGui::Separator();
 
-            if (ImGui_AlignButton("Create Dynamic Material", 0.35f))
+            if (ImGui_AlignButton("Create Dynamic Material", 0.f))
             {
                 pMeshRender->CreateDynamicMaterial();
             }
@@ -776,6 +776,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             {
                 CEditorMgr::GetInst()->GetLevelEditor()->ShowMaterialEditor(true);
                 CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
+            }
+
+            if (ImGui_AlignButton("Restore Material", 0.f))
+            {
+                pMeshRender->RestoreMaterial();
             }
 
             ImGui::TreePop();
@@ -1196,6 +1201,9 @@ void COutliner::DrawSkybox(CGameObject* obj)
         };
 
         static string CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+
+        CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+
         if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Type").c_str(), CurType, SkyBoxTypes))
         {
             if (SkyBoxTypes[0] == CurType)
