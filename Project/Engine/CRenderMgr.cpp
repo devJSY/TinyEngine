@@ -83,11 +83,11 @@ void CRenderMgr::tick()
     // HDR Rendering
     render();
 
-    // Mirror
-    render_mirror();
-
     // Debug
     render_debug();
+
+    // Mirror
+    render_mirror();
 
     // PostEffect
     render_posteffect();
@@ -164,21 +164,27 @@ void CRenderMgr::render_debug()
             break;
         }
 
-        m_pDebugObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"));
-        m_pDebugObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, (*iter).vColor);
+        Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl");
+        pMtrl->SetScalarParam(VEC4_0, (*iter).vColor);
 
-        D3D11_PRIMITIVE_TOPOLOGY PrevTopology = m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->GetTopology();
+        DS_TYPE PrevDSType = pMtrl->GetShader()->GetDSType();
+        if ((*iter).bDepthTest)
+        {
+            pMtrl->GetShader()->SetDSType(DS_TYPE::LESS);
+        }
+
+        D3D11_PRIMITIVE_TOPOLOGY PrevTopology = pMtrl->GetShader()->GetTopology();
         if (DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape || DEBUG_SHAPE::SPHERE == (*iter).eShape)
         {
-            m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+            pMtrl->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }
 
         m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
-        m_pDebugObj->Transform()->UpdateData();
 
-        m_pDebugObj->render();
+        m_pDebugObj->render(pMtrl);
 
-        m_pDebugObj->MeshRender()->GetMaterial()->GetShader()->SetTopology(PrevTopology);
+        pMtrl->GetShader()->SetDSType(PrevDSType);
+        pMtrl->GetShader()->SetTopology(PrevTopology);
 
         // Duration Check
         (*iter).fLifeTime += DT;

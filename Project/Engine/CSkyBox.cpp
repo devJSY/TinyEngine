@@ -17,6 +17,9 @@ CSkyBox::CSkyBox()
 
 CSkyBox::~CSkyBox()
 {
+    CTexture::Clear(17);
+    CTexture::Clear(18);
+    CTexture::Clear(19);
 }
 
 void CSkyBox::begin()

@@ -76,7 +76,7 @@ void CLight3D::finaltick()
         m_ShadowIdx = -1;
     }
 
-    GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
+    GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), true);
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)

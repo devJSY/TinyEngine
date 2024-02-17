@@ -466,8 +466,8 @@ int CDevice::CreateDepthStencilState()
         return E_FAIL;
 
     // No Test
-    tDesc.DepthEnable = false;
-    tDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+    tDesc.DepthEnable = true;
+    tDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
     tDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     tDesc.StencilEnable = false;
     hr = DEVICE->CreateDepthStencilState(&tDesc, m_arrDS[(UINT)DS_TYPE::NO_TEST].GetAddressOf());
