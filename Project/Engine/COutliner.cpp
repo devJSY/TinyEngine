@@ -590,8 +590,14 @@ void COutliner::DrawLight3D(CGameObject* obj)
             pLight->SetSpotPower(spotPower);
 
         int shadowType = pLight->GetShadowType();
-        if (ImGui::InputInt(ImGui_LabelPrefix("Shadow Type").c_str(), &shadowType))
-            pLight->SetShadowType(shadowType);
+        ImGui::Text("Shadow Type");
+        ImGui::SameLine();
+        ImGui::Dummy(ImVec2(50.f, 0.f));
+        ImGui::SameLine();
+        ImGui::RadioButton("Static Shadow", &shadowType, 0);
+        ImGui::SameLine();
+        ImGui::RadioButton("Dynamic Shadow", &shadowType, 1);
+        pLight->SetShadowType(shadowType);
 
         int ShadowIdx = pLight->GetShadowIdx();
         if (ImGui::InputInt(ImGui_LabelPrefix("Shadow Index").c_str(), &ShadowIdx, 1, 100, ImGuiInputTextFlags_ReadOnly))
@@ -1003,6 +1009,8 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 {
                     ImGui::Text("Space Type");
                     ImGui::SameLine();
+                    ImGui::Dummy(ImVec2(70.f, 0.f));
+                    ImGui::SameLine();
                     ImGui::RadioButton("Local Space", (int*)&Module.SpaceType, 0);
                     ImGui::SameLine();
                     ImGui::RadioButton("World Space", (int*)&Module.SpaceType, 1);
@@ -1025,6 +1033,8 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::Separator();
 
                     ImGui::Text("Spawn Shape");
+                    ImGui::SameLine();
+                    ImGui::Dummy(ImVec2(50.f, 0.f));
                     ImGui::SameLine();
                     ImGui::RadioButton("Sphere", (int*)&Module.SpawnShape, 0);
                     ImGui::SameLine();

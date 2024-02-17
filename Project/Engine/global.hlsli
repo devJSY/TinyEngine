@@ -128,11 +128,13 @@ Texture2D g_BRDFTex : register(t17);
 TextureCube g_DiffuseCube : register(t18);
 TextureCube g_SpecularCube : register(t19);
 
-StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
+// 파티클 20, 21 번레지스터 사용
 
-Texture2D g_LightDepthMapTex1 : register(t21);
-Texture2D g_LightDepthMapTex2 : register(t22);
-Texture2D g_LightDepthMapTex3 : register(t23);
+StructuredBuffer<tTileInfo> g_TileInfo : register(t22);
+
+Texture2D g_LightDepthMapTex1 : register(t23);
+Texture2D g_LightDepthMapTex2 : register(t24);
+Texture2D g_LightDepthMapTex3 : register(t25);
 
 SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);

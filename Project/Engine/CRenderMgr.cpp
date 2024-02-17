@@ -297,11 +297,11 @@ void CRenderMgr::render_LightDepth()
         CDevice::GetInst()->SetViewport();
 
         if (3 == dynamicShadowMaxCount)
-            DepthMapTex->UpdateData(21);
-        else if (2 == dynamicShadowMaxCount)
-            DepthMapTex->UpdateData(22);
-        else if (1 == dynamicShadowMaxCount)
             DepthMapTex->UpdateData(23);
+        else if (2 == dynamicShadowMaxCount)
+            DepthMapTex->UpdateData(24);
+        else if (1 == dynamicShadowMaxCount)
+            DepthMapTex->UpdateData(25);
 
         dynamicShadowMaxCount--;
     }
@@ -425,9 +425,9 @@ void CRenderMgr::Clear()
     m_vecLight3D.clear();
 
     // Light DepthMap bind Reset
-    CTexture::Clear(21);
-    CTexture::Clear(22);
     CTexture::Clear(23);
+    CTexture::Clear(24);
+    CTexture::Clear(25);
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)

@@ -10,8 +10,8 @@
 
 CTileMap::CTileMap()
     : CRenderComponent(COMPONENT_TYPE::TILEMAP)
-    , m_iTileCountX(0)
-    , m_iTileCountY(0)
+    , m_iTileCountX(1)
+    , m_iTileCountY(1)
     , m_vTileRenderSize()
     , m_TileAtlas()
     , m_vTilePixelSize()
@@ -75,8 +75,8 @@ void CTileMap::UpdateData()
     // 각 타일 정보를 구조화 버퍼로 이동
     m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (UINT)m_vecTileInfo.size());
 
-    // 타일 구조화 버퍼를 t20 에 바인딩
-    m_TileInfoBuffer->UpdateData(20);
+    // 타일 구조화 버퍼를 t22 에 바인딩
+    m_TileInfoBuffer->UpdateData(22);
 
     // 재질 업데이트
     GetMaterial()->UpdateData();
@@ -106,8 +106,8 @@ void CTileMap::render(Ptr<CMaterial> _mtrl)
     // 각 타일 정보를 구조화 버퍼로 이동
     m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (UINT)m_vecTileInfo.size());
 
-    // 타일 구조화 버퍼를 t20 에 바인딩
-    m_TileInfoBuffer->UpdateData(20);
+    // 타일 구조화 버퍼를 t22 에 바인딩
+    m_TileInfoBuffer->UpdateData(22);
 
     // 재질 업데이트
     _mtrl->UpdateData();

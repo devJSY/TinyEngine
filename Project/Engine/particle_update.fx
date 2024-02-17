@@ -61,12 +61,13 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                     float RandomAngleX = vRand0.g * 2 * PI;
                     
                     float randomX = vRand0.r * 2.f - 1.f;
-                    float randomY = vRand1.g * 2.f - 1.f;
+                    float randomY = vRand0.g * 2.f - 1.f;
+                    float randomZ = vRand0.b * 2.f - 1.f;
                    
                     // Particle 컴포넌트(본체) 의 중심위치(월드) 에서
                     // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
                     //Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), 0.f) * RandomRadius;
-                    Particle.vLocalPos.xyz = float3(randomX, randomY, 0) * RandomRadius;
+                    Particle.vLocalPos.xyz = float3(randomX, randomY, randomZ) * RandomRadius;
                 }
                 // SpawnShape - Box
                 else if (1 == Module.SpawnShape)
@@ -110,12 +111,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                         float randomRatio = Module.FixedAngle / 180.f;
                         
                         // 단위원 기준 범위 -1 ~ 1 에 비율값을 곱해서 랜덤값을 결정 한다.
-                        float randomX = (vRand0.r * 2.f - 1.f) * randomRatio;
-                        float randomY = (vRand1.g * 2.f - 1.f) * randomRatio;
+                        float randomX = (vRand2.r * 2.f - 1.f) * randomRatio;
+                        float randomY = (vRand2.g * 2.f - 1.f) * randomRatio;
                         float randomZ = (vRand2.b * 2.f - 1.f) * randomRatio;                        
                         
                         // 고정 방향 + 랜덤 범위 방향으로 방향으로 설정
-                        Particle.vVelocity.xyz = normalize(Module.vFixedDirection.xyz + float3(randomX, randomY, randomZ)) * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.b + Module.MinSpeed);
+                        Particle.vVelocity.xyz = normalize(Module.vFixedDirection.xyz + float3(randomX, randomY, randomZ)) * ((Module.MaxSpeed - Module.MinSpeed) * vRand0.r + Module.MinSpeed);
                     }
                 }
                 else

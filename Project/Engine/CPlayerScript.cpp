@@ -99,7 +99,7 @@ void CPlayerScript::tick()
         pBullet->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
         pBullet->Collider2D()->SetRadius(100.f);
         pBullet->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        pBullet->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BasicMtrl"));
+        pBullet->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
         pBullet->GetScript<CBulletScript>()->SetDir(Transform()->GetWorldDir(DIR_TYPE::RIGHT));
 

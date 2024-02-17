@@ -308,23 +308,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
-    // Basic Shader
-    // =================================
-    {
-        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\BasicVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\BasicPS.hlsl", "main");
-
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
-
-        pShader->AddTexParam(TEX_0, "Texture");
-
-        pShader->SetName(L"BasicShader");
-        AddAsset(L"BasicShader", pShader);
-    }
-
-    // =================================
     // Unreal PBR Shader
     // =================================
     {
@@ -758,15 +741,6 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DebugShapeShader"));
         pMtrl->SetName(L"DebugShapeMtrl");
         AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
-    }
-
-    // Basic
-    {
-        Ptr<CMaterial> pMtrl = new CMaterial(true);
-        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BasicShader"));
-        pMtrl->SetMaterialCoefficient(Vec4(1.f, 1.f, 0.f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
-        pMtrl->SetName(L"BasicMtrl");
-        AddAsset<CMaterial>(L"BasicMtrl", pMtrl);
     }
 
     // Unreal PBR

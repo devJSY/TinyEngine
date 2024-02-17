@@ -127,14 +127,14 @@ float N2V(float ndcDepth, matrix invProj)
 float PCF_Filter(float2 uv, float zReceiverNdc, float filterRadiusUV, Texture2D shadowMap)
 {
     float sum = 0.0f;
-    for (int i = 0; i < 16; ++i)
+    for (int i = 0; i < 64; ++i)
     {
-        float2 offset = diskSamples16[i] * filterRadiusUV;
+        float2 offset = diskSamples64[i] * filterRadiusUV;
         sum += shadowMap.SampleCmpLevelZero(
             g_ShadowCompareSampler, uv + offset, zReceiverNdc);
     }
     
-    return sum / 16;
+    return sum / 64;
 }
 
 void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv,
@@ -165,11 +165,10 @@ void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv
 
 float PCSS(float2 uv, float zReceiverNdc, Texture2D shadowMap, matrix invProj, float lightRadiusWorld)
 {
-    float lightRadiusUV = lightRadiusWorld / LIGHT_FRUSTUM_WIDTH;
-    
-    float zReceiverView = N2V(zReceiverNdc, invProj);
+    float zReceiverView = N2V(zReceiverNdc, invProj); // Light 관점에서 View 좌표계에서의 Z값
     
     // STEP 1: blocker search
+    // 그림자가 지는 영역인지 아닌지 판별
     float avgBlockerDepthView = 0;
     float numBlockers = 0;
 
@@ -177,13 +176,14 @@ float PCSS(float2 uv, float zReceiverNdc, Texture2D shadowMap, matrix invProj, f
 
     if (numBlockers < 1)
     {
-        // There are no occluders so early out(this saves filtering)
-        return 1.0f;
+        // 그림자가 지지않는 영역이다
+        return 1.f;
     }
     else
     {
         // STEP 2: penumbra size
-        float penumbraRatio = (zReceiverView - avgBlockerDepthView) / avgBlockerDepthView;
+        float penumbraRatio = (zReceiverView - avgBlockerDepthView) / avgBlockerDepthView; // FindBlocker에서 찾은 penumbra의 영역
+        float lightRadiusUV = lightRadiusWorld / LIGHT_FRUSTUM_WIDTH; // Near Plane 위에서의 Light의 반지름
         float filterRadiusUV = penumbraRatio * lightRadiusUV * NEAR_PLANE / zReceiverView;
 
         // STEP 3: filtering
@@ -228,21 +228,9 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
         
         // 카메라(광원)에서 볼 때의 텍스춰 좌표 계산
         // [-1, 1]x[-1, 1] -> [0, 1]x[0, 1]
-        // 주의: 텍스춰 좌표와 NDC는 y가 반대
-        float2 lightTexcoord = float2(lightScreen.x, -lightScreen.y);
+        float2 lightTexcoord = float2(lightScreen.x, -lightScreen.y); // 텍스춰 좌표와 NDC는 y가 반대
         lightTexcoord += 1.0;
         lightTexcoord *= 0.5;
-        
-        //// PCF
-        //float width = 1280.f;
-        //float dx = 5.0 / width;
-        //float bias = 0.001f;        
-        //if (3 == ShadowLightCount)
-        //    shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex1);
-        //else if (2 == ShadowLightCount)
-        //    shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex2);
-        //else if (1 == ShadowLightCount)
-        //    shadowFactor = PCF_Filter(lightTexcoord.xy, lightScreen.z - bias, dx, g_LightDepthMapTex3);
         
         // PCSS
         float bias = 0.001f;
