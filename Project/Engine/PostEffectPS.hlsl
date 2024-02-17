@@ -64,7 +64,7 @@ float HaloEmission(tLightInfo light, float3 posView)
     float t1 = 0.f;
     float t2 = 0.f;
     // Halo 범위에 들어오면서 눈앞에 물체가 없는경우에만 적용
-    if (RaySphereIntersection(rayStart, dir, center, light.HaloRadius, t1, t2) && t1 < posView.z) 
+    if (RaySphereIntersection(rayStart, dir, center, light.HaloRadius, t1, t2) && t1 < posView.z && t1 >= 0.f) 
     {
         t2 = min(posView.z, t2); // 물체가 가로막고있는 경우에 범위 축소
             
