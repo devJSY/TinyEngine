@@ -21,6 +21,7 @@
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 static int ShadowLightCount = 3; // 그림자가 적용될 광원의 최대갯수
+static float LightRadiusScale = 0.01f; 
 
 // 보는 각도에 따라서 색이나 밝기가 달라 짐
 float3 SchlickFresnel(float3 F0, float NdotH)
@@ -90,13 +91,13 @@ float3 AmbientLightingByIBL(float3 albedo, float3 normalW, float3 pixelToEye, fl
 
 // GGX/Towbridge-Reitz normal distribution function. // 미세 표면중 보는 방향이 노말인 표면의 비율
 // Uses Disney's reparametrization of alpha = roughness^2.
-float NdfGGX(float NdotH, float roughness)
+float NdfGGX(float NdotH, float roughness, float alphaPrime)
 {
     float alpha = roughness * roughness;
     float alphaSq = alpha * alpha;
     float denom = (NdotH * NdotH) * (alphaSq - 1.0) + 1.0;
 
-    return alphaSq / (PI * denom * denom);
+    return alphaPrime * alphaPrime / (3.141592 * denom * denom);
 }
 
 // Single term for separable Schlick-GGX below.
@@ -144,7 +145,7 @@ void FindBlocker(out float avgBlockerDepthView, out float numBlockers, float2 uv
     
     // 광원 Near Plane 위에서의 탐색 범위
     // UV 좌표 범위
-    float searchRadius = lightRadiusUV * (zReceiverView - LIGHT_NEAR_PLANE) / zReceiverView; 
+    float searchRadius = lightRadiusUV * (zReceiverView - LIGHT_NEAR_PLANE) / zReceiverView;
 
     float blockerSum = 0;
     numBlockers = 0;
@@ -193,14 +194,14 @@ float PCSS(float2 uv, float zReceiverNdc, Texture2D shadowMap, matrix invProj, f
     }
 }
 
-float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
+float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWorld, float3 normalWorld)
 {
     // Default Point Light
     
     // Directional light
     float3 lightVec = light.LightType == LIGHT_DIRECTIONAL
                       ? -light.vWorldDir
-                      : light.vWorldPos - posWorld;
+                      : representativePoint - posWorld;
 
     float lightDist = length(lightVec);
     lightVec /= lightDist;
@@ -236,13 +237,12 @@ float3 LightRadiance(tLightInfo light, float3 posWorld, float3 normalWorld)
         
         // PCSS
         float bias = 0.001f;
-        float radiusScale = 0.01f; 
         if (3 == ShadowLightCount)
-            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * radiusScale);
+            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
         else if (2 == ShadowLightCount)
-            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * radiusScale);
+            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * LightRadiusScale);
         else if (1 == ShadowLightCount)
-            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * radiusScale);
+            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
         
         ShadowLightCount -= 1;
     }
@@ -277,9 +277,17 @@ float4 main(PS_IN input) : SV_TARGET
 
     for (uint i = 0; i < g_Light3DCount; ++i)
     {
+         // SphereLight 
+        float3 L = g_Light3D[i].vWorldPos - input.vPosWorld;
+        float3 r = normalize(reflect(g_eyeWorld - input.vPosWorld, normalWorld));
+        float3 centerToRay = dot(L, r) * r - L;
+        float LightRadius = g_Light3D[i].fRadius * LightRadiusScale;
+        float3 representativePoint = L + centerToRay * clamp(LightRadius / length(centerToRay), 0.0, 1.0);
+        representativePoint += input.vPosWorld;
+            
         float3 lightVec = g_Light3D[i].LightType == LIGHT_DIRECTIONAL
                       ? -g_Light3D[i].vWorldDir
-                      : g_Light3D[i].vWorldPos - input.vPosWorld;
+                      : representativePoint - input.vPosWorld;
         
         float lightDist = length(lightVec);
         lightVec /= lightDist;
@@ -294,11 +302,15 @@ float4 main(PS_IN input) : SV_TARGET
         float3 kd = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), metallic);
         float3 diffuseBRDF = kd * albedo;
 
-        float D = NdfGGX(NdotH, roughness);
+        // Sphere Normalization
+        float alpha = roughness * roughness;
+        float alphaPrime = saturate(alpha + g_Light3D[i].fRadius / (2.0 * lightDist));
+
+        float D = NdfGGX(NdotH, roughness, alphaPrime);
         float3 G = SchlickGGX(NdotI, NdotO, roughness);
         float3 specularBRDF = (F * D * G) / max(1e-5, 4.0 * NdotI * NdotO);
 
-        float3 radiance = LightRadiance(g_Light3D[i], input.vPosWorld, normalWorld);
+        float3 radiance = LightRadiance(g_Light3D[i], representativePoint, input.vPosWorld, normalWorld);
             
         directLighting += (diffuseBRDF + specularBRDF) * radiance * NdotI;
     }
