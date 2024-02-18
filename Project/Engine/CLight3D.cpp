@@ -76,7 +76,7 @@ void CLight3D::finaltick()
         m_ShadowIdx = -1;
     }
 
-    //GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), true);
+    // GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), true);
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)
@@ -112,13 +112,14 @@ void CLight3D::CreateDepthMapTex()
     wstring name = L"LightDepthTex";
     name += std::to_wstring(GetID());
     m_DepthMapTex =
-        CAssetMgr::GetInst()->CreateTexture(name, 1280, 1280, DXGI_FORMAT_R32_TYPELESS, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
+        CAssetMgr::GetInst()->CreateTexture(name, 2048, 2048, DXGI_FORMAT_R32_TYPELESS, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
                                             D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
 void CLight3D::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
+    fwrite(&m_ShadowIdx, sizeof(int), 1, _File);
 }
 
 void CLight3D::LoadFromLevelFile(FILE* _File)
@@ -127,4 +128,6 @@ void CLight3D::LoadFromLevelFile(FILE* _File)
 
     if (nullptr == m_DepthMapTex)
         CreateDepthMapTex();
+
+    fread(&m_ShadowIdx, sizeof(int), 1, _File);
 }

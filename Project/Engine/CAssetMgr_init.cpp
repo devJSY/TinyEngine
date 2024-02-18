@@ -323,6 +323,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddScalarParam(INT_0, "Invert NormalMapY");
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
         pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
@@ -369,6 +371,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
+        pShader->AddScalarParam(INT_0, "Enable Normal Line");
         pShader->AddScalarParam(FLOAT_0, "Normal Line Scale");
 
         pShader->SetName(L"NormalLineShader");

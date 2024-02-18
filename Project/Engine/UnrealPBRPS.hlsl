@@ -1,6 +1,7 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 #include "disksample.hlsli"
+#include "Light.hlsli"
 
 #define BRDFTex g_BRDFTex // SpecularIBL Look-up Table
 #define SpecularIBLTex g_SpecularCube
@@ -18,6 +19,9 @@
 #define MtrlEmission g_vEmission
 
 #define InvertNormalMapY g_int_0
+
+#define RIM_POWER g_float_1
+#define RIM_COLOR g_vec4_0
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 static int ShadowLightCount = 3; // 그림자가 적용될 광원의 최대갯수
@@ -276,7 +280,7 @@ float4 main(PS_IN input) : SV_TARGET
     float3 directLighting = float3(0, 0, 0);
 
     for (uint i = 0; i < g_Light3DCount; ++i)
-    {      
+    {
         float3 lightVec = float3(0.f, 0.f, 0.f);
         float3 representativePoint = float3(0.f, 0.f, 0.f);
         
@@ -293,7 +297,7 @@ float4 main(PS_IN input) : SV_TARGET
             float3 centerToRay = dot(L, r) * r - L;
             float LightRadius = g_Light3D[i].fRadius * LightRadiusScale;
             
-            representativePoint = L + centerToRay * clamp(LightRadius / length(centerToRay), 0.0, 1.0);            
+            representativePoint = L + centerToRay * clamp(LightRadius / length(centerToRay), 0.0, 1.0);
             representativePoint += input.vPosWorld;
             lightVec = representativePoint - input.vPosWorld;
         }
@@ -333,8 +337,12 @@ float4 main(PS_IN input) : SV_TARGET
         directLighting += (diffuseBRDF + specularBRDF) * radiance * NdotI;
     }
     
+    // Rim
+    float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
+    float3 RimColor = RimLight(input.normalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
+    
     float4 output = float4(0.f, 0.f, 0.f, 1.f);
-    output = float4(ambientLighting + directLighting + emission, 1.0);
+    output = float4(ambientLighting + directLighting + emission + RimColor, 1.0);
     output = clamp(output, 0.0, 1000.0);
 
     return output;
