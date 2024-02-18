@@ -116,22 +116,27 @@ void CRenderMgr::render()
         CDevice::GetInst()->SetFloatRenderTarget();
 
         // NormalLine Pass
-        m_vecCam[i]->render_NormalLine();
-
-        // OutLine Pass
-        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-        if (nullptr != pSelectedObj && pSelectedObj != m_Mirror && !g_Global.DrawAsWireFrame)
-        {
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_vecCam[i]->GetProjType())
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            else
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-        }
+        Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+            m_vecCam[i]->render_NormalLine();
 
         // IDMap Pass
         CONTEXT->OMSetRenderTargets(1, m_IDMapTex->GetRTV().GetAddressOf(), m_IDMapDSTex->GetDSV().Get());
         m_vecCam[i]->render_IDMap();
         CDevice::GetInst()->SetFloatRenderTarget();
+    }
+
+    // OutLine Pass
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr != pSelectedObj && pSelectedObj != m_Mirror && !g_Global.DrawAsWireFrame)
+    {
+        g_Transform.matView = m_vecCam[0]->GetViewMat();
+        g_Transform.matProj = m_vecCam[0]->GetProjMat();
+
+        if (PROJ_TYPE::ORTHOGRAPHIC == m_vecCam[0]->GetProjType())
+            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+        else
+            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
     }
 }
 

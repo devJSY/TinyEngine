@@ -227,7 +227,7 @@ void CPBRLevel::AddModels()
     CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
     if (nullptr != pZelda)
     {
-        pZelda->Transform()->SetRelativePos(Vec3(-500.f, 0.f, 250.f));
+        pZelda->Transform()->SetRelativePos(Vec3(-500.f, 0.f, -250.f));
         pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(pZelda, L"Model");
@@ -237,7 +237,7 @@ void CPBRLevel::AddModels()
     CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
     if (nullptr != pDamagedHelmet)
     {
-        pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 0.f, 250.f));
+        pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 0.f, -250.f));
         pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(pDamagedHelmet, L"Model");
@@ -247,7 +247,7 @@ void CPBRLevel::AddModels()
     CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
     if (nullptr != ptoriigate)
     {
-        ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
+        ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 0.f, -250.f));
         ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(ptoriigate, L"Model");
@@ -257,7 +257,7 @@ void CPBRLevel::AddModels()
     CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
     if (nullptr != pDragonWarrior)
     {
-        pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 0.f, 250.f));
+        pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 0.f, -250.f));
         pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
         AddObject(pDragonWarrior, L"Model");
@@ -278,7 +278,7 @@ void CPBRLevel::AddModels()
         CAssetMgr::GetInst()->LoadModel(L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
     if (nullptr != pArmoredFemale)
     {
-        pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 0.f, 250.f));
+        pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 0.f, -250.f));
         pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
         AddObject(pArmoredFemale, L"Model");
     }

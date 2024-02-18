@@ -268,11 +268,7 @@ void CCamera::render_NormalLine(vector<CGameObject*>& _vecObj)
 {
     for (size_t i = 0; i < _vecObj.size(); i++)
     {
-        Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-        {
-            _vecObj[i]->render(NormalLineMtrl);
-        }
+        _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
     }
 }
 

@@ -31,7 +31,6 @@ CCollider2D::CCollider2D(const CCollider2D& origin)
 {
 }
 
-
 CCollider2D::~CCollider2D()
 {
 }
@@ -66,28 +65,28 @@ void CCollider2D::finaltick()
         if (m_Type == COLLIDER2D_TYPE::RECT)
         {
             if (0 == m_CollisionCount)
-                GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+                GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(0.f, 1.f, 0.f), true);
             else
-                GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
+                GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), true);
 
             // 3D
             // if (0 == m_CollisionCount)
-            //     GamePlayStatic::DrawDebugBox(m_matColWorld, Vec3(0.f, 1.f, 0.f), false);
+            //    GamePlayStatic::DrawDebugBox(m_matColWorld, Vec3(0.f, 1.f, 0.f), true);
             // else
-            //     GamePlayStatic::DrawDebugBox(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
+            //    GamePlayStatic::DrawDebugBox(m_matColWorld, Vec3(1.f, 0.f, 0.f), true);
         }
         else if (m_Type == COLLIDER2D_TYPE::CIRCLE)
         {
             if (0 == m_CollisionCount)
-                GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
+                GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), true);
             else
-                GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
+                GamePlayStatic::DrawDebugCircle(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), true);
 
             // 3D
             // if (0 == m_CollisionCount)
-            //     GamePlayStatic::DrawDebugSphere(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), false);
+            //    GamePlayStatic::DrawDebugSphere(m_matColWorld.Translation(), m_fRadius, Vec3(0.f, 1.f, 0.f), true);
             // else
-            //     GamePlayStatic::DrawDebugSphere(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), false);
+            //    GamePlayStatic::DrawDebugSphere(m_matColWorld.Translation(), m_fRadius, Vec3(1.f, 0.f, 0.f), true);
         }
     }
 

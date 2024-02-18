@@ -17,7 +17,8 @@ CAnim::CAnim()
 }
 
 CAnim::CAnim(const CAnim& origin)
-    : m_Animator(nullptr)
+    : CEntity(origin)
+    , m_Animator(nullptr)
     , m_vecFrm(origin.m_vecFrm)
     , m_CurFrmIdx(origin.m_CurFrmIdx)
     , m_bFinish(origin.m_bFinish)
@@ -80,8 +81,8 @@ void CAnim::Clear()
     pCB->UpdateData();
 }
 
-void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset,
-                   Vec2 _vBackground, int _FrmCount, float _FPS, bool _UseBackGround)
+void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount,
+                   float _FPS, bool _UseBackGround)
 {
     m_Animator = _Animator;
     m_AtlasTex = _Atlas;

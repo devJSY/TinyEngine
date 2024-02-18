@@ -4,16 +4,25 @@
 #include <Windows.h>
 #include <typeinfo>
 
-#include <string>
+#include <iostream>
+#include <algorithm>
+#include <filesystem>
 
 #include <vector>
 #include <list>
+#include <queue>
 #include <map>
+#include <unordered_map>
+#include <string>
+
+#include <commdlg.h> // OPENFILENAME
 
 using std::list;
 using std::make_pair;
 using std::map;
 using std::vector;
+using std::hash;
+using std::tuple;
 
 using std::string;
 using std::wstring;
@@ -88,16 +97,3 @@ typedef Vector4 Vec4;
 #include <assimp\\Importer.hpp>
 #include <assimp\\postprocess.h>
 #include <assimp\\scene.h>
-
-// ================
-#include <iostream>
-#include <algorithm>
-#include <filesystem>
-#include <unordered_map>
-
-using std::hash;
-using std::tuple;
-
-#include <commdlg.h> // OPENFILENAME
-
-#include <queue>
