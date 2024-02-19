@@ -10,14 +10,6 @@
 
 CPBRLevel::CPBRLevel()
 {
-}
-
-CPBRLevel::~CPBRLevel()
-{
-}
-
-void CPBRLevel::begin()
-{
     for (int i = 0; i < LAYER_MAX; i++)
     {
         wstring Name = L"Layer ";
@@ -40,7 +32,7 @@ void CPBRLevel::begin()
     GetLayer(15)->SetName(L"UI");
 
     AddSample();
-    AddModels();
+    // AddModels();
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -51,17 +43,17 @@ void CPBRLevel::begin()
 
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerCheckAll();
-    pCamObj->Camera()->LayerCheck(L"UI", false);
+    pCamObj->Camera()->LayerCheck(this, L"UI", false);
 
     AddObject(pCamObj, L"Camera");
 
-    // UI ¸¸ ·»´õ¸µ
+    // UI Camera
     pCamObj = new CGameObject;
     pCamObj->SetName(L"UI Camera");
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
 
-    pCamObj->Camera()->SetUICamera();
+    pCamObj->Camera()->LayerCheck(this, L"UI", true);
 
     AddObject(pCamObj, L"Camera");
 
@@ -123,18 +115,10 @@ void CPBRLevel::begin()
     pFloor->MeshRender()->CreateDynamicMaterial()->SetMaterialCoefficient(Vec4(1.f, 1.f, 1.f, 1.f));
 
     AddObject(pFloor, 0);
-
-    CLevel::begin();
 }
 
-void CPBRLevel::tick()
+CPBRLevel::~CPBRLevel()
 {
-    CLevel::tick();
-}
-
-void CPBRLevel::finaltick()
-{
-    CLevel::finaltick();
 }
 
 void CPBRLevel::AddSample()

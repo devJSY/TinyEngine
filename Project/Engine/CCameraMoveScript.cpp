@@ -7,6 +7,7 @@
 
 CCameraMoveScript::CCameraMoveScript()
     : CScript(SCRIPT_TYPE::CAMERAMOVESCRIPT)
+    , m_CamSpeed(250.f)
     , m_bFocus(false)
 {
 }
@@ -56,9 +57,6 @@ void CCameraMoveScript::tick()
             MoveOrthographic();
         else
             MovePerspective();
-
-        // Wheel 초기화
-        CKeyMgr::GetInst()->SetMouseWheel(0);
     }
     else
     {
@@ -81,10 +79,14 @@ void CCameraMoveScript::tick()
             MoveOrthographic();
         else
             MovePerspective();
-
-        // Wheel 초기화
-        CKeyMgr::GetInst()->SetMouseWheel(0);
     }
+
+    // Wheel 초기화
+    CKeyMgr::GetInst()->SetMouseWheel(0);
+
+    // 카메라 속도 제한
+    if (m_CamSpeed < 0.f)
+        m_CamSpeed = 0.f;
 }
 
 void CCameraMoveScript::MoveOrthographic()
@@ -130,8 +132,6 @@ void CCameraMoveScript::MoveOrthographic()
 
 void CCameraMoveScript::MovePerspective()
 {
-    float CamSpeed = GetOwner()->Camera()->GetCameraSpeed();
-
     if (KEY_PRESSED(KEY::RBTN))
     {
         // Move
@@ -142,22 +142,22 @@ void CCameraMoveScript::MovePerspective()
         Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
 
         if (KEY_PRESSED(KEY::W))
-            vPos += DT * CamSpeed * vFront;
+            vPos += DT * m_CamSpeed * vFront;
 
         if (KEY_PRESSED(KEY::S))
-            vPos += DT * CamSpeed * -vFront;
+            vPos += DT * m_CamSpeed * -vFront;
 
         if (KEY_PRESSED(KEY::A))
-            vPos += DT * CamSpeed * -vRight;
+            vPos += DT * m_CamSpeed * -vRight;
 
         if (KEY_PRESSED(KEY::D))
-            vPos += DT * CamSpeed * vRight;
+            vPos += DT * m_CamSpeed * vRight;
 
         if (KEY_PRESSED(KEY::E))
-            vPos += DT * CamSpeed * vUp;
+            vPos += DT * m_CamSpeed * vUp;
 
         if (KEY_PRESSED(KEY::Q))
-            vPos += DT * CamSpeed * -vUp;
+            vPos += DT * m_CamSpeed * -vUp;
 
         Transform()->SetRelativePos(vPos);
 
@@ -171,9 +171,9 @@ void CCameraMoveScript::MovePerspective()
         // Camera speed
         short wheel = CKeyMgr::GetInst()->GetMouseWheel();
         if (wheel > 0)
-            Camera()->SetCameraSpeed(CamSpeed * 1.1f);
+            m_CamSpeed *= 1.1f;
         else if (wheel < 0)
-            Camera()->SetCameraSpeed(CamSpeed * 0.9f);
+            m_CamSpeed *= 0.9f;
     }
 
     // Zoom

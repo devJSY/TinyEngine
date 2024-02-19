@@ -39,7 +39,7 @@ private:
 public:
     void begin();
     void tick();
-    void finaltick();
+    virtual void finaltick();
     void render();
     void render(Ptr<CMaterial> _mtrl);
 

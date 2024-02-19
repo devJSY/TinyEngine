@@ -15,7 +15,7 @@ CLayer::CLayer(const CLayer& origin)
 {
     for (size_t i = 0; i < origin.m_vecParent.size(); i++)
     {
-        m_vecParent.push_back(origin.m_vecParent[i]->Clone());
+        AddObject(origin.m_vecParent[i]->Clone(), false);
     }
 }
 

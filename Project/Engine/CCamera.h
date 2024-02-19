@@ -30,15 +30,12 @@ private:
 
     UINT m_LayerCheck;
 
+    int m_iCamPriority;
+
     // 물체 분류
     vector<CGameObject*> m_vecOpaque;
     vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
-
-private:
-    float m_CamSpeed;
-
-    int m_iCamPriority; // 카메라 우선순위
 
 public:
     PROJ_TYPE GetProjType() const { return m_ProjType; }
@@ -59,15 +56,12 @@ public:
     const Matrix& GetViewMat() const { return m_matView; }
     const Matrix& GetProjMat() const { return m_matProj; }
 
-    void SetCameraPriority(int _Priority);
-    void SetUICamera();
+    void SetCameraPriority(int _Priority) { m_iCamPriority = _Priority; }
     void LayerCheck(UINT _LayerIdx, bool _bCheck);
-    void LayerCheck(const wstring& _strLayerName, bool _bCheck);
+    void LayerCheck(CLevel* _CurLevel, const wstring& _strLayerName, bool _bCheck);
     void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
 
 public:
-    float GetCameraSpeed() const { return m_CamSpeed; }
-    void SetCameraSpeed(float speed) { m_CamSpeed = speed; }
     void Resize(Vec2 Resolution);
 
 public:

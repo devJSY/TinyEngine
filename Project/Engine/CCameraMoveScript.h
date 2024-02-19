@@ -4,6 +4,7 @@
 class CCameraMoveScript : public CScript
 {
 private:
+    float m_CamSpeed;
     bool m_bFocus;
 
 public:

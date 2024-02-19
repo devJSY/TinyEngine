@@ -695,10 +695,6 @@ void COutliner::DrawCamera(CGameObject* obj)
                 pCam->SetFar(Far);
         }
 
-        float speed = pCam->GetCameraSpeed();
-        if (ImGui::DragFloat("Speed", &speed, 1.f, 0.f, 10000.f))
-            pCam->SetCameraSpeed(speed);
-
         ImGui::TreePop();
     }
 }

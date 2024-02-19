@@ -44,9 +44,14 @@ CGameObject::CGameObject(const CGameObject& origin)
         AddComponent(origin.m_vecScript[i]->Clone());
     }
 
+	// 복사되는 GameObject 는 부모만 레이어소속을 -1 로 하고,
+    // 자식들은 원본객체랑 동일한 레이어소속을 유지한다.
     for (size_t i = 0; i < origin.m_vecChild.size(); ++i)
     {
-        AddChild(origin.m_vecChild[i]->Clone());
+        CGameObject* ChildClone = origin.m_vecChild[i]->Clone();
+        ChildClone->m_iLayerIdx = origin.m_vecChild[i]->m_iLayerIdx;
+        ChildClone->m_Parent = this;
+        m_vecChild.push_back(ChildClone);
     }
 }
 

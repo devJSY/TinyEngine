@@ -10,7 +10,7 @@
 
 #include "CLevelSaveLoad.h"
 
-#include "CTestLevel2.h"
+#include "CTestLevel.h"
 #include "CPBRLevel.h"
 
 CLevelMgr::CLevelMgr()
@@ -40,15 +40,13 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 void CLevelMgr::init()
 {
-    // Level 2
-    m_CurLevel = new CTestLevel2;
-    m_CurLevel->SetName(L"Test Level 2");
+    // Level 
+    m_CurLevel = new CTestLevel;
+    m_CurLevel->SetName(L"Test Level");
 
     // PBR Level
-    // m_CurLevel = new CPBRLevel;
-    // m_CurLevel->SetName(L"PBR Level");
-
-    // m_CurLevel = CLevelSaveLoad::LoadLevel(L"PBRLevel.tLevel");
+    //m_CurLevel = new CPBRLevel;
+    //m_CurLevel->SetName(L"PBR Level");
 
     m_CurLevel->begin();
 }

@@ -28,7 +28,6 @@ CCamera::CCamera()
     , m_AspectRatio(1.f)
     , m_Near(1.f)
     , m_Far(10000.f)
-    , m_CamSpeed(250.f)
     , m_LayerCheck(0)
     , m_iCamPriority(-1)
 {
@@ -45,20 +44,16 @@ void CCamera::begin()
 {
     if (-1 == m_iCamPriority)
     {
-        SetUICamera();
+        CRenderMgr::GetInst()->RegisterUICamera(this);
     }
     else
     {
-        SetCameraPriority(m_iCamPriority);
+        CRenderMgr::GetInst()->RegisterCamera(this, m_iCamPriority);
     }
 }
 
 void CCamera::finaltick()
 {
-    // 카메라 속도 제한
-    if (m_CamSpeed < 0.f)
-        m_CamSpeed = 0.f;
-
     // =====================
     // 뷰 행렬 계산
     // =====================
@@ -102,18 +97,6 @@ void CCamera::finaltick()
     }
 }
 
-void CCamera::SetCameraPriority(int _Priority)
-{
-    m_iCamPriority = _Priority;
-    CRenderMgr::GetInst()->RegisterCamera(this, m_iCamPriority);
-}
-
-void CCamera::SetUICamera()
-{
-    LayerCheck(L"UI", true);
-    CRenderMgr::GetInst()->RegisterUICamera(this);
-}
-
 void CCamera::LayerCheck(UINT _LayerIdx, bool _bCheck)
 {
     if (_bCheck)
@@ -126,10 +109,9 @@ void CCamera::LayerCheck(UINT _LayerIdx, bool _bCheck)
     }
 }
 
-void CCamera::LayerCheck(const wstring& _strLayerName, bool _bCheck)
+void CCamera::LayerCheck(CLevel* _CurLevel, const wstring& _strLayerName, bool _bCheck)
 {
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    CLayer* pLayer = pCurLevel->GetLayer(_strLayerName);
+    CLayer* pLayer = _CurLevel->GetLayer(_strLayerName);
 
     if (nullptr == pLayer)
         return;
@@ -310,7 +292,6 @@ void CCamera::SaveToLevelFile(FILE* _File)
     fwrite(&m_Near, sizeof(float), 1, _File);
     fwrite(&m_Far, sizeof(float), 1, _File);
     fwrite(&m_LayerCheck, sizeof(UINT), 1, _File);
-    fwrite(&m_CamSpeed, sizeof(float), 1, _File);
     fwrite(&m_iCamPriority, sizeof(int), 1, _File);
 }
 
@@ -324,6 +305,5 @@ void CCamera::LoadFromLevelFile(FILE* _File)
     fread(&m_Near, sizeof(float), 1, _File);
     fread(&m_Far, sizeof(float), 1, _File);
     fread(&m_LayerCheck, sizeof(UINT), 1, _File);
-    fread(&m_CamSpeed, sizeof(float), 1, _File);
     fread(&m_iCamPriority, sizeof(int), 1, _File);
 }

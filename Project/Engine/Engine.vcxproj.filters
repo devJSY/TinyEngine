@@ -151,7 +151,7 @@
     <ClInclude Include="CAnim.h">
       <Filter>08. Component\04. Animator2D\Anim</Filter>
     </ClInclude>
-    <ClInclude Include="CTestLevel2.h">
+    <ClInclude Include="CTestLevel.h">
       <Filter>05. Level</Filter>
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
@@ -420,7 +420,7 @@
     <ClCompile Include="CAnim.cpp">
       <Filter>08. Component\04. Animator2D\Anim</Filter>
     </ClCompile>
-    <ClCompile Include="CTestLevel2.cpp">
+    <ClCompile Include="CTestLevel.cpp">
       <Filter>05. Level</Filter>
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">

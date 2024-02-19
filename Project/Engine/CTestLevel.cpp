@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "CTestLevel2.h"
+#include "CTestLevel.h"
 
 #include "CCollisionMgr.h"
 #include "CAssetMgr.h"
@@ -14,15 +14,7 @@
 
 #include "CSetColorShader.h"
 
-CTestLevel2::CTestLevel2()
-{
-}
-
-CTestLevel2::~CTestLevel2()
-{
-}
-
-void CTestLevel2::begin()
+CTestLevel::CTestLevel()
 {
     for (int i = 0; i < LAYER_MAX; i++)
     {
@@ -51,7 +43,7 @@ void CTestLevel2::begin()
 
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerCheckAll();
-    pCamObj->Camera()->LayerCheck(L"UI", false);
+    pCamObj->Camera()->LayerCheck(this, L"UI", false);
 
     AddObject(pCamObj, L"Camera");
 
@@ -62,7 +54,7 @@ void CTestLevel2::begin()
     pCamObj->AddComponent(new CCamera);
 
     pCamObj->Camera()->SetCameraPriority(1);
-    pCamObj->Camera()->LayerCheck(L"UI", true);
+    pCamObj->Camera()->LayerCheck(this, L"UI", true);
 
     AddObject(pCamObj, L"Camera");
 
@@ -104,16 +96,8 @@ void CTestLevel2::begin()
             CCollisionMgr::GetInst()->LayerCheck(i, j);
         }
     }
-
-    CLevel::begin();
 }
 
-void CTestLevel2::tick()
+CTestLevel::~CTestLevel()
 {
-    CLevel::tick();
-}
-
-void CTestLevel2::finaltick()
-{
-    CLevel::finaltick();
 }
