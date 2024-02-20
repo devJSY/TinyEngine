@@ -40,7 +40,6 @@ CLevelEditor::CLevelEditor()
     , m_bShowToolbar(false)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
-    , m_bShowDepthMap(false)
     , m_bShowMaterialEditor(false)
     , m_bShowBlueprintEditor(false)
     , m_bShowSpriteEditor(false)
@@ -113,15 +112,6 @@ void CLevelEditor::render()
         ImGui_SetWindowClass_LevelEditor();
         ImGui::Begin("Picking Color ID Map", &m_bShowIDMap);
         ImGui::Image((void*)CRenderMgr::GetInst()->GetIDMapTex()->GetSRV().Get(), ImGui::GetContentRegionAvail());
-        ImGui::End();
-    }
-
-    // Depth Map
-    if (m_bShowDepthMap)
-    {
-        ImGui_SetWindowClass_LevelEditor();
-        ImGui::Begin("Depth Map", &m_bShowDepthMap);
-        ImGui::Image((void*)CRenderMgr::GetInst()->GetDepthOnlyTex()->GetSRV().Get(), ImGui::GetContentRegionAvail());
         ImGui::End();
     }
 
@@ -238,9 +228,6 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("IDMap", NULL, m_bShowIDMap))
                 m_bShowIDMap = !m_bShowIDMap;
-
-            if (ImGui::MenuItem("DepthMap", NULL, m_bShowDepthMap))
-                m_bShowDepthMap = !m_bShowDepthMap;
 
             if (ImGui::MenuItem("Outliner", NULL, m_bShowOutliner))
                 m_bShowOutliner = !m_bShowOutliner;

@@ -45,6 +45,8 @@ public:
     ComPtr<ID3D11DepthStencilState> GetDSState(DS_TYPE _Type) const { return m_arrDS[(UINT)_Type]; }
     ComPtr<ID3D11BlendState> GetBSState(BS_TYPE _Type) const { return m_arrBS[(UINT)_Type]; }
 
+    Ptr<CTexture> GetRenderTargetTex() const { return m_RenderTargetTex; }
+
 public:
     void Resize(Vec2 resolution);
     void SetRenderTarget();

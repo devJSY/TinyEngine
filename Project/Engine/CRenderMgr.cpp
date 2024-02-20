@@ -14,7 +14,8 @@
 #include "CConstBuffer.h"
 
 CRenderMgr::CRenderMgr()
-    : m_CamUI(nullptr)
+    : m_bHDRI(true)
+    , m_CamUI(nullptr)
     , m_Light2DBuffer(nullptr)
     , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
@@ -77,53 +78,65 @@ void CRenderMgr::tick()
     for (size_t i = 0; i < m_vecCam.size(); ++i)
         m_vecCam[i]->SortObject();
 
-    // Light Depth Map
-    render_LightDepth();
+    if (m_bHDRI)
+    {
+        // Light Depth Map
+        render_LightDepth();
 
-    // HDR Rendering
-    render();
+        // HDR Rendering
+        render_HDRI();
 
-    // Debug
-    render_debug();
+        // Debug
+        CDevice::GetInst()->SetFloatRenderTarget();
+        render_debug();
 
-    // Mirror
-    render_mirror();
+        // Mirror
+        render_mirror();
 
-    // PostEffect
-    render_posteffect();
+        // PostEffect
+        render_posteffect();
 
-    // Postprocess
-    render_postprocess();
+        // Postprocess
+        render_postprocess_HDRI();
+    }
+    else
+    {
+        // LDR Rendering
+        render_LDRI();
 
-    // LDR Rendering
+        // Debug
+        CDevice::GetInst()->SetRenderTarget();
+        render_debug();
+
+        // Postprocess
+        render_postprocess_LDRI();
+    }
+
     render_ui();
 
     Clear();
 }
 
-void CRenderMgr::render()
+void CRenderMgr::render_HDRI()
 {
-    CDevice::GetInst()->SetFloatRenderTarget();
-
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
         // Main Render
-        m_vecCam[i]->render();
-
-        // Depth Map Pass
-        CONTEXT->OMSetRenderTargets(0, NULL, m_DepthOnlyTex->GetDSV().Get());
-        m_vecCam[i]->render_DepthMap();
         CDevice::GetInst()->SetFloatRenderTarget();
+        m_vecCam[i]->render();
 
         // NormalLine Pass
         Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
         if (NormalLineMtrl->GetMtrlConst().arrInt[0])
             m_vecCam[i]->render_NormalLine();
 
+        // Depth Map Pass
+        CONTEXT->OMSetRenderTargets(0, NULL, m_DepthOnlyTex->GetDSV().Get());
+        m_vecCam[i]->render_DepthMap();
+
         // IDMap Pass
         CONTEXT->OMSetRenderTargets(1, m_IDMapTex->GetRTV().GetAddressOf(), m_IDMapDSTex->GetDSV().Get());
         m_vecCam[i]->render_IDMap();
-        CDevice::GetInst()->SetFloatRenderTarget();
     }
 
     // OutLine Pass
@@ -133,6 +146,35 @@ void CRenderMgr::render()
         g_Transform.matView = m_vecCam[0]->GetViewMat();
         g_Transform.matProj = m_vecCam[0]->GetProjMat();
 
+        CDevice::GetInst()->SetFloatRenderTarget();
+        if (PROJ_TYPE::ORTHOGRAPHIC == m_vecCam[0]->GetProjType())
+            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+        else
+            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+    }
+}
+
+void CRenderMgr::render_LDRI()
+{
+    for (size_t i = 0; i < m_vecCam.size(); ++i)
+    {
+        // Main Render
+        CDevice::GetInst()->SetRenderTarget();
+        m_vecCam[i]->render();
+
+        // IDMap Pass
+        CONTEXT->OMSetRenderTargets(1, m_IDMapTex->GetRTV().GetAddressOf(), m_IDMapDSTex->GetDSV().Get());
+        m_vecCam[i]->render_IDMap();
+    }
+
+    // OutLine Pass
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr != pSelectedObj && pSelectedObj != m_Mirror && !g_Global.DrawAsWireFrame)
+    {
+        g_Transform.matView = m_vecCam[0]->GetViewMat();
+        g_Transform.matProj = m_vecCam[0]->GetProjMat();
+
+        CDevice::GetInst()->SetRenderTarget();
         if (PROJ_TYPE::ORTHOGRAPHIC == m_vecCam[0]->GetProjType())
             pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
         else
@@ -209,6 +251,8 @@ void CRenderMgr::render_mirror()
     if (nullptr == m_Mirror)
         return;
 
+    CDevice::GetInst()->SetFloatRenderTarget();
+
     g_Transform.matView = m_vecCam[0]->GetViewMat();
     g_Transform.matProj = m_vecCam[0]->GetProjMat();
 
@@ -222,16 +266,15 @@ void CRenderMgr::render_mirror()
     g_Global.ReflectionRowMat =
         Matrix::CreateReflection(SimpleMath::Plane(m_Mirror->Transform()->GetWorldPos(), m_Mirror->Transform()->GetWorldDir(DIR_TYPE::FRONT)));
     g_Global.render_Mode = 2; // Masked Render
-    render();
+    render_HDRI();
 
     // 거울 렌더링
     g_Global.render_Mode = 0; // Render
     m_Mirror->render();
 
     // Mirror DepthOnlyPass
-    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), m_DepthOnlyTex->GetDSV().Get());
+    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), m_DepthOnlyTex->GetDSV().Get());
     m_Mirror->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl"));
-    CDevice::GetInst()->SetFloatRenderTarget();
 
     // Reset
     m_Mirror = nullptr;
@@ -246,12 +289,12 @@ void CRenderMgr::render_posteffect()
     g_Transform.matProj = m_vecCam[0]->GetProjMat();
 
     // RTV(PostProcess), SRV(floatRTTex DepthOnlyTex)
-    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), NULL);
+    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
     m_PostEffectObj->render();
     CTexture::Clear(0);
     CTexture::Clear(1);
     CDevice::GetInst()->SetFloatRenderTarget();
-    CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex->GetTex2D().Get());
+    CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex_HDRI->GetTex2D().Get());
 }
 
 void CRenderMgr::render_ui()
@@ -317,16 +360,16 @@ void CRenderMgr::render_LightDepth()
     g_Transform = originTr;
 }
 
-void CRenderMgr::render_postprocess()
+void CRenderMgr::render_postprocess_HDRI()
 {
-    // 후처리
+    CDevice::GetInst()->SetFloatRenderTarget();
     for (int i = 0; i < m_vecPostProcess.size(); ++i)
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사
-        CopyToPostProcessTex();
+        CopyToPostProcessTex_HDRI();
 
         // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
-        m_PostProcessTex->UpdateData(14);
+        m_PostProcessTex_HDRI->UpdateData(14);
 
         // 후처리 오브젝트 렌더링
         m_vecPostProcess[i]->render();
@@ -336,11 +379,11 @@ void CRenderMgr::render_postprocess()
     CTexture::Clear(14);
 
     // Bloom
-    CopyToPostProcessTex();
+    CopyToPostProcessTex_HDRI();
     for (int i = 0; i < m_BloomDownFilters.size(); i++)
     {
         if (i == 0)
-            m_BloomDownFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex);
+            m_BloomDownFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
         else
             m_BloomDownFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures[i - 1]);
 
@@ -355,8 +398,8 @@ void CRenderMgr::render_postprocess()
         m_BloomUpFilters[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures[level]);
         if (i == bloomLevels - 2)
         {
-            CDevice::GetInst()->SetViewport((float)m_PostProcessTex->GetWidth(), (float)m_PostProcessTex->GetHeight());
-            CONTEXT->OMSetRenderTargets(1, m_PostProcessTex->GetRTV().GetAddressOf(), NULL);
+            CDevice::GetInst()->SetViewport((float)m_PostProcessTex_HDRI->GetWidth(), (float)m_PostProcessTex_HDRI->GetHeight());
+            CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
         }
         else
         {
@@ -373,6 +416,25 @@ void CRenderMgr::render_postprocess()
     m_ToneMappingObj->render();
     CTexture::Clear(0);
     CTexture::Clear(1);
+}
+
+void CRenderMgr::render_postprocess_LDRI()
+{
+    CDevice::GetInst()->SetRenderTarget();
+    for (int i = 0; i < m_vecPostProcess.size(); ++i)
+    {
+        // 최종 렌더링 이미지를 후처리 타겟에 복사
+        CopyToPostProcessTex_LDRI();
+
+        // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
+        m_PostProcessTex_LDRI->UpdateData(14);
+
+        // 후처리 오브젝트 렌더링
+        m_vecPostProcess[i]->render();
+    }
+
+    m_vecPostProcess.clear();
+    CTexture::Clear(14);
 }
 
 void CRenderMgr::UpdateData()
@@ -466,7 +528,8 @@ void CRenderMgr::Clear_Buffers(const Vec4& Color)
     CONTEXT->ClearRenderTargetView(m_IDMapTex->GetRTV().Get(), Color);
     CONTEXT->ClearDepthStencilView(m_IDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
-    CONTEXT->ClearRenderTargetView(m_PostProcessTex->GetRTV().Get(), Color);
+    CONTEXT->ClearRenderTargetView(m_PostProcessTex_HDRI->GetRTV().Get(), Color);
+    CONTEXT->ClearRenderTargetView(m_PostProcessTex_LDRI->GetRTV().Get(), Color);
 
     CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
@@ -477,9 +540,14 @@ void CRenderMgr::CopyRTTexToRTCopyTex()
     CONTEXT->CopyResource(m_RTCopyTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 }
 
-void CRenderMgr::CopyToPostProcessTex()
+void CRenderMgr::CopyToPostProcessTex_HDRI()
 {
-    CONTEXT->CopyResource(m_PostProcessTex->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
+    CONTEXT->CopyResource(m_PostProcessTex_HDRI->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
+}
+
+void CRenderMgr::CopyToPostProcessTex_LDRI()
+{
+    CONTEXT->CopyResource(m_PostProcessTex_LDRI->GetTex2D().Get(), CDevice::GetInst()->GetRenderTargetTex()->GetTex2D().Get());
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
@@ -490,8 +558,12 @@ void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 
 void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
 {
-    m_PostProcessTex = CAssetMgr::GetInst()->CreateTexture(L"PostProessTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R16G16B16A16_FLOAT,
-                                                           D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    m_PostProcessTex_HDRI =
+        CAssetMgr::GetInst()->CreateTexture(L"PostProessTex_HDRI", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R16G16B16A16_FLOAT,
+                                            D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    m_PostProcessTex_LDRI =
+        CAssetMgr::GetInst()->CreateTexture(L"PostProessTex_LDRI", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                            D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 }
 
 void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
@@ -540,7 +612,8 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthOnlyTex");
-    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_LDRI");
 
     for (int i = 0; i < bloomLevels - 1; i++)
     {
@@ -551,7 +624,8 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_IDMapTex = nullptr;
     m_IDMapDSTex = nullptr;
     m_DepthOnlyTex = nullptr;
-    m_PostProcessTex = nullptr;
+    m_PostProcessTex_HDRI = nullptr;
+    m_PostProcessTex_LDRI = nullptr;
     m_FloatRTTex = nullptr;
 
     CreateRTCopyTex(Resolution);
@@ -573,7 +647,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
     }
 
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
-    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex);
+    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
 
     m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_DepthOnlyTex);

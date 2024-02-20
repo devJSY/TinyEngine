@@ -18,6 +18,7 @@ D:\TinyEngine\Project\Engine\CEditorMgr.cpp;D:\TinyEngine\Project\Engine\x64\Deb
 D:\TinyEngine\Project\Engine\CEngine.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEngine.obj
 D:\TinyEngine\Project\Engine\CEntity.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEntity.obj
 D:\TinyEngine\Project\Engine\CGameObject.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGameObject.obj
+D:\TinyEngine\Project\Engine\CGameObjectEx.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGameObjectEx.obj
 D:\TinyEngine\Project\Engine\CGrabageCollector.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGrabageCollector.obj
 D:\TinyEngine\Project\Engine\CGraphicsShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGraphicsShader.obj
 D:\TinyEngine\Project\Engine\CKeyMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CKeyMgr.obj

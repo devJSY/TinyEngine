@@ -41,7 +41,7 @@ int RaySphereIntersection(in float3 start, in float3 dir, in float3 center, in f
     {
         t1 = 0;
         t2 = 0;
-        return 0; 
+        return 0;
     }
     else
     {
@@ -64,7 +64,7 @@ float HaloEmission(tLightInfo light, float3 posView)
     float t1 = 0.f;
     float t2 = 0.f;
     // Halo 범위에 들어오면서 눈앞에 물체가 없는경우에만 적용
-    if (RaySphereIntersection(rayStart, dir, center, light.HaloRadius, t1, t2) && t1 < posView.z && t1 >= 0.f) 
+    if (RaySphereIntersection(rayStart, dir, center, light.HaloRadius, t1, t2) && t1 < posView.z && t1 >= 0.f)
     {
         t2 = min(posView.z, t2); // 물체가 가로막고있는 경우에 범위 축소
             
@@ -97,6 +97,9 @@ float4 main(PS_IN input) : SV_TARGET
         float3 HaloColor = float3(0.96, 0.94, 0.82);
         for (uint i = 0; i < g_Light3DCount; ++i)
         {
+            if (0.f >= g_Light3D[i].HaloRadius)
+                continue;
+            
             color += HaloEmission(g_Light3D[i], posView.xyz) * HaloColor * g_Light3D[i].HaloStrength;
         }
 

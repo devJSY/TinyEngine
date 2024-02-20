@@ -283,6 +283,9 @@
     <ClInclude Include="CSkyBox.h">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="CGameObjectEx.h">
+      <Filter>07. GameObject\Ex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -540,6 +543,9 @@
     <ClCompile Include="CSkyBox.cpp">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
     </ClCompile>
+    <ClCompile Include="CGameObjectEx.cpp">
+      <Filter>07. GameObject\Ex</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -784,6 +790,9 @@
     </Filter>
     <Filter Include="ShaderCode\Render\PostEffect">
       <UniqueIdentifier>{8ebe4286-8179-4680-a989-24bc71c23203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. GameObject\Ex">
+      <UniqueIdentifier>{6794881a-b62a-4735-885c-e53729e92edc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

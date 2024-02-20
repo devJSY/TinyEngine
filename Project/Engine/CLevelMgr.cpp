@@ -7,6 +7,7 @@
 #include "CEditorMgr.h"
 #include "CEditor.h"
 #include "CLayer.h"
+#include "CRenderMgr.h"
 
 #include "CLevelSaveLoad.h"
 
@@ -40,13 +41,15 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
 
 void CLevelMgr::init()
 {
-    // Level 
+    // Level
     m_CurLevel = new CTestLevel;
     m_CurLevel->SetName(L"Test Level");
+    CRenderMgr::GetInst()->SetHDRIRender(false);
 
     // PBR Level
-    //m_CurLevel = new CPBRLevel;
-    //m_CurLevel->SetName(L"PBR Level");
+    // m_CurLevel = new CPBRLevel;
+    // m_CurLevel->SetName(L"PBR Level");
+    // CRenderMgr::GetInst()->SetHDRIRender(true);
 
     m_CurLevel->begin();
 }

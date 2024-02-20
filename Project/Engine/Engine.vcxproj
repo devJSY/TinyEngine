@@ -192,6 +192,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CGrabageCollector.h" />
     <ClInclude Include="CGraphicsShader.h" />
     <ClInclude Include="CKeyMgr.h" />
@@ -289,6 +290,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CGrabageCollector.cpp" />
     <ClCompile Include="CGraphicsShader.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />

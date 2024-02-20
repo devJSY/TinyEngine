@@ -19,7 +19,6 @@ private:
     bool m_bShowWorldSettings;
     bool m_bShowViewport;
     bool m_bShowIDMap;
-    bool m_bShowDepthMap;
     bool m_bShowOutliner;
     bool m_bShowContentBrowser;
     bool m_bShowCollisionResponses;
