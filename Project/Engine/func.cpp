@@ -496,6 +496,12 @@ wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
 
 void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue, float columnWidth)
 {
+    ImGui::PushStyleVar(ImGuiStyleVar_TabRounding, 4.f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
+    ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 0.f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
+    ImGui::PushStyleVar(ImGuiStyleVar_PopupRounding, 0.f);
+
     ImGui::PushID(label.c_str());
 
     ImGui::Columns(2);
@@ -549,6 +555,12 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float
     ImGui::Columns(1);
 
     ImGui::PopID();
+
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
 }
 
 string ImGui_LabelPrefix(const char* const label, float alignment)

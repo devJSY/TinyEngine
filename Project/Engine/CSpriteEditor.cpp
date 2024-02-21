@@ -1028,6 +1028,9 @@ int CSpriteEditor::ExtractSprite(tPixel* pPixel, int _x, int _y, int _width, int
 
 int CSpriteEditor::AlignSprite(tSprite& _sprite)
 {
+    if (nullptr == m_pTex)
+        return false;
+
     tPixel* pPixel = m_pTex->GetPixels();
     int texWidth = m_pTex->GetWidth();
     int texHeight = m_pTex->GetHeight();

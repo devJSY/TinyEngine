@@ -61,9 +61,6 @@ void CEditorMgr::init()
     io.Fonts->AddFontFromFileTTF(ToString(wBold).c_str(), fFontSize);
     io.FontDefault = io.Fonts->AddFontFromFileTTF(ToString(wRegular).c_str(), fFontSize);
 
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-
     // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular
     // ones.
     ImGuiStyle& style = ImGui::GetStyle();
@@ -72,6 +69,13 @@ void CEditorMgr::init()
         style.WindowRounding = 0.0f;
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
+
+    // Rounding
+    style.TabRounding = 5.f;
+    style.FrameRounding = 8.f;
+    style.GrabRounding = 8.f;
+    style.WindowRounding = 8.f;
+    style.PopupRounding = 8.f;
 
     // 테마 설정
     SetDarkThemeColors();
