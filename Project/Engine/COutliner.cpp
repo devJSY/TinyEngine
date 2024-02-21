@@ -639,7 +639,7 @@ void COutliner::DrawCamera(CGameObject* obj)
     {
         const char* projectionTypeStrings[] = {"Orthographic", "Perspective"};
         const char* currentProjectionTypeString = projectionTypeStrings[(int)pCam->GetProjType()];
-        if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+        if (ImGui::BeginCombo(ImGui_LabelPrefix("Projection").c_str(), currentProjectionTypeString))
         {
             for (int i = 0; i < 2; i++)
             {
@@ -664,36 +664,56 @@ void COutliner::DrawCamera(CGameObject* obj)
         {
             float fov = pCam->GetFOV();
             float Degree = XMConvertToDegrees(fov);
-            if (ImGui::DragFloat("FOV", &Degree, XM_PI / 18.f)) // 스피드 : 10도
+            if (ImGui::DragFloat(ImGui_LabelPrefix("FOV").c_str(), &Degree, XM_PI / 18.f)) // 스피드 : 10도
                 pCam->SetFOV(XMConvertToRadians(Degree));
-
-            float Near = pCam->GetNear();
-            float Far = pCam->GetFar();
-            float offset = 1.f;
-
-            if (ImGui::DragFloat("Near", &Near, 1.f, 1.f, Far - offset))
-                pCam->SetNear(Near);
-
-            if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
-                pCam->SetFar(Far);
         }
 
         if (pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
         {
             float scale = pCam->GetScale();
-            if (ImGui::DragFloat("Scale", &scale, 0.01f, 1e-5f, 1000.f))
+            if (ImGui::DragFloat(ImGui_LabelPrefix("Scale").c_str(), &scale, 0.01f, 1e-5f, 1000.f))
                 pCam->SetScale(scale);
-
-            float Near = pCam->GetNear();
-            float Far = pCam->GetFar();
-            float offset = 1.f;
-
-            if (ImGui::DragFloat("Near", &Near, 1.f, 1.f, Far - offset))
-                pCam->SetNear(Near);
-
-            if (ImGui::DragFloat("Far", &Far, 1.f, Near + offset, 10000.f))
-                pCam->SetFar(Far);
         }
+
+        // Near Far
+        float Near = pCam->GetNear();
+        float Far = pCam->GetFar();
+        float offset = 1.f;
+
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Near").c_str(), &Near, 1.f, 1.f, Far - offset))
+            pCam->SetNear(Near);
+
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Far").c_str(), &Far, 1.f, Near + offset, 10000.f))
+            pCam->SetFar(Far);
+
+        // Layer Check
+        UINT LayerMask = pCam->GetLayerMask();
+        if (ImGui::BeginCombo(ImGui_LabelPrefix("Layer Mask").c_str(), "Select"))
+        {
+            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+            for (int i = 0; i < LAYER_MAX; i++)
+            {
+                bool bCheck = LayerMask & (1 << i);
+
+                if (ImGui::Checkbox(ToString(pCurLevel->GetLayer(i)->GetName()).c_str(), &bCheck))
+                {
+                    pCam->LayerMask(i, bCheck);
+                }
+            }
+
+            ImGui::EndCombo();
+        }
+
+        // priority
+        int priority = pCam->GetCameraPriority();
+        if (ImGui::InputInt(ImGui_LabelPrefix("Camera Pritority").c_str(), &priority))
+            pCam->SetCameraPriority(priority);
+
+        // HDRI
+        bool bHDRI = pCam->IsHDRI();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("HDRI").c_str(), &bHDRI))
+            pCam->SetHDRI(bHDRI);
 
         ImGui::TreePop();
     }

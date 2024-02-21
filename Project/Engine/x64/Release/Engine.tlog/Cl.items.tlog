@@ -18,6 +18,7 @@ D:\TinyEngine\Project\Engine\CEditorMgr.cpp;D:\TinyEngine\Project\Engine\x64\Rel
 D:\TinyEngine\Project\Engine\CEngine.cpp;D:\TinyEngine\Project\Engine\x64\Release\CEngine.obj
 D:\TinyEngine\Project\Engine\CEntity.cpp;D:\TinyEngine\Project\Engine\x64\Release\CEntity.obj
 D:\TinyEngine\Project\Engine\CGameObject.cpp;D:\TinyEngine\Project\Engine\x64\Release\CGameObject.obj
+D:\TinyEngine\Project\Engine\CGameObjectEx.cpp;D:\TinyEngine\Project\Engine\x64\Release\CGameObjectEx.obj
 D:\TinyEngine\Project\Engine\CGrabageCollector.cpp;D:\TinyEngine\Project\Engine\x64\Release\CGrabageCollector.obj
 D:\TinyEngine\Project\Engine\CGraphicsShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CGraphicsShader.obj
 D:\TinyEngine\Project\Engine\CKeyMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CKeyMgr.obj
@@ -51,7 +52,7 @@ D:\TinyEngine\Project\Engine\CSkyBox.cpp;D:\TinyEngine\Project\Engine\x64\Releas
 D:\TinyEngine\Project\Engine\CSpriteEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSpriteEditor.obj
 D:\TinyEngine\Project\Engine\CStructuredBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Release\CStructuredBuffer.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTaskMgr.obj
-D:\TinyEngine\Project\Engine\CTestLevel2.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTestLevel2.obj
+D:\TinyEngine\Project\Engine\CTestLevel.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTestLevel.obj
 D:\TinyEngine\Project\Engine\CTexture.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTexture.obj
 D:\TinyEngine\Project\Engine\CTileMap.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTileMap.obj
 D:\TinyEngine\Project\Engine\CTileMapEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTileMapEditor.obj

@@ -88,6 +88,11 @@ void CRenderMgr::render()
 
 void CRenderMgr::render_play()
 {
+    if (m_vecCam.empty())
+        return;
+
+    m_mainCam = m_vecCam[0];
+
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
         m_vecCam[i]->SortObject();
@@ -99,6 +104,8 @@ void CRenderMgr::render_editor()
 {
     if (nullptr == m_EditorCam)
         return;
+
+    m_mainCam = m_EditorCam;
 
     m_EditorCam->SortObject();
     m_EditorCam->render();
@@ -265,6 +272,8 @@ void CRenderMgr::UpdateData()
     // 메인 카메라 위치 등록
     if (nullptr != m_mainCam)
         g_Global.eyeWorld = m_mainCam->Transform()->GetWorldPos();
+    else
+        g_Global.eyeWorld = Vec3();
 
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
@@ -325,16 +334,9 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 void CRenderMgr::ActiveEditorMode(bool _bActive)
 {
     if (_bActive)
-    {
         RENDER_FUNC = &CRenderMgr::render_editor;
-        m_mainCam = m_EditorCam;
-    }
     else
-    {
         RENDER_FUNC = &CRenderMgr::render_play;
-        if (!m_vecCam.empty())
-            m_mainCam = m_vecCam[0];
-    }
 }
 
 CCamera* CRenderMgr::GetCamera(int _Idx) const

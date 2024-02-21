@@ -24,15 +24,15 @@ private:
     float m_Near;        // 투영 최소 거리
     float m_Far;         // 투영 최대 거리
 
-    // 변환 행렬
-    Matrix m_matView;
-    Matrix m_matProj;
-
-    UINT m_LayerCheck;
+    UINT m_LayerMask;
 
     int m_iCamPriority;
 
     bool m_bHDRI;
+
+    // 변환 행렬
+    Matrix m_matView;
+    Matrix m_matProj;
 
     // 물체 분류
     vector<CGameObject*> m_vecOpaque;
@@ -56,18 +56,20 @@ public:
     float GetFar() const { return m_Far; }
     void SetFar(float _far) { m_Far = _far; }
 
-    const Matrix& GetViewMat() const { return m_matView; }
-    const Matrix& GetProjMat() const { return m_matProj; }
+    UINT GetLayerMask() const { return m_LayerMask; }
+    void LayerMask(UINT _LayerIdx, bool _bMask);
+    void LayerMask(CLevel* _CurLevel, const wstring& _strLayerName, bool _bMask);
+    void LayerMaskAll() { m_LayerMask = 0xffffffff; }
 
+    int GetCameraPriority() const { return m_iCamPriority; }
     void SetCameraPriority(int _Priority) { m_iCamPriority = _Priority; }
-    void LayerCheck(UINT _LayerIdx, bool _bCheck);
-    void LayerCheck(CLevel* _CurLevel, const wstring& _strLayerName, bool _bCheck);
-    void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
 
     bool IsHDRI() const { return m_bHDRI; }
     void SetHDRI(bool _Enable) { m_bHDRI = _Enable; }
 
-public:
+    const Matrix& GetViewMat() const { return m_matView; }
+    const Matrix& GetProjMat() const { return m_matProj; }
+
     void Resize(Vec2 Resolution);
 
 public:

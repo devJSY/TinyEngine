@@ -32,14 +32,14 @@ CLevelMgr::~CLevelMgr()
 void CLevelMgr::init()
 {
     // Level
-    m_CurLevel = new CTestLevel;
-    m_CurLevel->SetName(L"Test Level");
+    // m_CurLevel = new CTestLevel;
+    // m_CurLevel->SetName(L"Test Level");
 
     // PBR Level
-    // m_CurLevel = new CPBRLevel;
-    // m_CurLevel->SetName(L"PBR Level");
+    m_CurLevel = new CPBRLevel;
+    m_CurLevel->SetName(L"PBR Level");
 
-    m_CurLevel->ChangeState(LEVEL_STATE::PLAY);
+    m_CurLevel->ChangeState(LEVEL_STATE::STOP);
 }
 
 void CLevelMgr::tick()

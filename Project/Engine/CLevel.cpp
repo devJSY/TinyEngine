@@ -8,7 +8,7 @@
 
 CLevel::CLevel()
     : m_arrLayer{}
-    , m_State(LEVEL_STATE::NONE)
+    , m_State(LEVEL_STATE::STOP)
 {
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
@@ -85,25 +85,34 @@ CLayer* CLevel::GetLayer(const wstring& _strLayerName) const
 void CLevel::ChangeState(LEVEL_STATE _NextState)
 {
     if (m_State == _NextState)
-        return;
-
+    {
+        if (LEVEL_STATE::PLAY == m_State)
+        {
+            CTimeMgr::GetInst()->LockDeltaTime(false);
+            CRenderMgr::GetInst()->ActiveEditorMode(false);
+        }
+        else if (LEVEL_STATE::STOP == m_State || LEVEL_STATE::PAUSE == m_State)
+        {
+            CTimeMgr::GetInst()->LockDeltaTime(true);
+            CRenderMgr::GetInst()->ActiveEditorMode(true);
+        }
+    }
     // 정지 -> 플레이
-    if ((LEVEL_STATE::STOP == m_State || LEVEL_STATE::PAUSE == m_State || LEVEL_STATE::NONE == m_State) && LEVEL_STATE::PLAY == _NextState)
+    else if ((LEVEL_STATE::STOP == m_State || LEVEL_STATE::PAUSE == m_State) && LEVEL_STATE::PLAY == _NextState)
     {
         CTimeMgr::GetInst()->LockDeltaTime(false);
 
         // 레벨 카메라 모드
         CRenderMgr::GetInst()->ActiveEditorMode(false);
 
-        if (LEVEL_STATE::STOP == m_State || LEVEL_STATE::NONE == m_State)
+        if (LEVEL_STATE::STOP == m_State)
         {
             begin();
         }
     }
 
     // 플레이 -> 정지 or 일시정지
-    else if ((LEVEL_STATE::PLAY == m_State || LEVEL_STATE::NONE == m_State) &&
-             (LEVEL_STATE::STOP == _NextState || LEVEL_STATE::PAUSE == _NextState || LEVEL_STATE::NONE == _NextState))
+    else if (LEVEL_STATE::PLAY == m_State && (LEVEL_STATE::STOP == _NextState || LEVEL_STATE::PAUSE == _NextState))
     {
         CTimeMgr::GetInst()->LockDeltaTime(true);
 

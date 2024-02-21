@@ -73,8 +73,7 @@ void GamePlayStatic::DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _b
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-                                   float _Duration)
+void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
     tDebugShapeInfo info = {};
     info.eShape = DEBUG_SHAPE::RECT;
@@ -83,9 +82,8 @@ void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
     info.vWorldScale = _vWorldScale;
     info.vWorldRot = _vWorldRot;
 
-    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
-                    XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
-                    XMMatrixRotationZ(info.vWorldRot.z) *
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
+                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
                     XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
     info.vColor = _Color;
@@ -116,9 +114,8 @@ void GamePlayStatic::DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
     info.vWorldScale = Vec3(_fRadius, _fRadius, 1.f);
     info.vWorldRot = Vec3(0.f, 0.f, 0.f);
 
-    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
-                    XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
-                    XMMatrixRotationZ(info.vWorldRot.z) *
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
+                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
                     XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
     info.vColor = _Color;
@@ -137,9 +134,8 @@ void GamePlayStatic::DrawDebugCross(Vec3 _vWorldPos, float _fScale, Vec3 _Color,
     info.vWorldScale = Vec3(_fScale, _fScale, _fScale);
     info.vWorldRot = Vec3(0.f, 0.f, 0.f);
 
-    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
-                    XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
-                    XMMatrixRotationZ(info.vWorldRot.z) *
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
+                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
                     XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
     info.vColor = _Color;
@@ -161,8 +157,7 @@ void GamePlayStatic::DrawDebugBox(const Matrix& _WorldMat, Vec3 _Color, bool _bD
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void GamePlayStatic::DrawDebugBox(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-                                  float _Duration)
+void GamePlayStatic::DrawDebugBox(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
     tDebugShapeInfo info = {};
     info.eShape = DEBUG_SHAPE::BOX;
@@ -170,9 +165,8 @@ void GamePlayStatic::DrawDebugBox(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWor
     info.vWorldPos = _vWorldPos;
     info.vWorldScale = _vWorldScale;
     info.vWorldRot = _vWorldRot;
-    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
-                    XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
-                    XMMatrixRotationZ(info.vWorldRot.z) *
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
+                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
                     XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
     info.vColor = _Color;
@@ -203,9 +197,8 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
     info.vWorldScale = Vec3(_fRadius, _fRadius, _fRadius);
     info.vWorldRot = Vec3(0.f, 0.f, 0.f);
 
-    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
-                    XMMatrixRotationX(info.vWorldRot.x) * XMMatrixRotationY(info.vWorldRot.y) *
-                    XMMatrixRotationZ(info.vWorldRot.z) *
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
+                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
                     XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
     info.vColor = _Color;
@@ -321,8 +314,7 @@ void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& wid
 {
     int channels;
 
-    unsigned char* img =
-        stbi_load((ToString(CPathMgr::GetContentPath()) + filename).c_str(), &width, &height, &channels, 0);
+    unsigned char* img = stbi_load((ToString(CPathMgr::GetContentPath()) + filename).c_str(), &width, &height, &channels, 0);
 
     // 4채널로 만들어서 복사
     image.resize(width * height * 4);
@@ -379,8 +371,8 @@ void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& wid
     delete[] img;
 }
 
-ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, const std::vector<uint8_t>& image,
-                                             const DXGI_FORMAT pixelFormat, const int mipLevels, const int arraySize)
+ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, const std::vector<uint8_t>& image, const DXGI_FORMAT pixelFormat,
+                                             const int mipLevels, const int arraySize)
 {
     // 스테이징 텍스춰 만들기
     D3D11_TEXTURE2D_DESC txtDesc;
@@ -502,8 +494,7 @@ wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
     return wstring();
 }
 
-void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue,
-                           float columnWidth)
+void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue, float columnWidth)
 {
     ImGui::PushID(label.c_str());
 

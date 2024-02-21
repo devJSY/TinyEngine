@@ -53,7 +53,7 @@ private:
     vector<CGameObject*> m_BloomUpFilters;
     CGameObject* m_ToneMappingObj;
 
-    // render function pointer
+    // Render function pointer
     void (CRenderMgr::*RENDER_FUNC)(void);
 
 public:

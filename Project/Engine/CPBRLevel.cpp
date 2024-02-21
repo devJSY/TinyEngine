@@ -41,8 +41,8 @@ CPBRLevel::CPBRLevel()
     pCamObj->AddComponent(new CCamera);
  
     pCamObj->Camera()->SetCameraPriority(0);
-    pCamObj->Camera()->LayerCheckAll();
-    pCamObj->Camera()->LayerCheck(this, L"UI", false);
+    pCamObj->Camera()->LayerMaskAll();
+    pCamObj->Camera()->LayerMask(this, L"UI", false);
     pCamObj->Camera()->SetHDRI(true);
 
     AddObject(pCamObj, L"Camera");
@@ -54,7 +54,7 @@ CPBRLevel::CPBRLevel()
     pCamObj->AddComponent(new CCamera);
 
     pCamObj->Camera()->SetCameraPriority(1);
-    pCamObj->Camera()->LayerCheck(this, L"UI", true);
+    pCamObj->Camera()->LayerMask(this, L"UI", true);
 
     AddObject(pCamObj, L"Camera");
 
@@ -87,21 +87,6 @@ CPBRLevel::CPBRLevel()
     pPhongObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
 
     AddObject(pPhongObj, 0);
-
-    // Mirror
-    CGameObject* pMirrorObj = new CGameObject;
-    pMirrorObj->SetName(L"Mirror");
-    pMirrorObj->AddComponent(new CTransform);
-    pMirrorObj->AddComponent(new CMeshRender);
-
-    pMirrorObj->Transform()->SetRelativePos(Vec3(0.f, 500.f, 1000.f));
-    pMirrorObj->Transform()->SetRelativeRotation(Vec3(-(XM_PI / 12), 0.f, 0.f));
-    pMirrorObj->Transform()->SetRelativeScale(Vec3(2500.f, 500.f, 1.f));
-
-    pMirrorObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pMirrorObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MirrorMtrl"));
-
-    AddObject(pMirrorObj, 0);
 
     CGameObject* pFloor = new CGameObject;
     pFloor->SetName(L"Floor");

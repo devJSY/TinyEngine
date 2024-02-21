@@ -36,7 +36,7 @@ CLight3D::CLight3D()
 
     // 쉐이더와 동일하게 설정
     m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    m_pLightCam->Camera()->LayerCheckAll();
+    m_pLightCam->Camera()->LayerMaskAll();
     m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
     m_pLightCam->Camera()->SetNear(1.f);
     m_pLightCam->Camera()->SetFar(10000.f);
@@ -147,7 +147,7 @@ void CLight3D::LoadFromLevelFile(FILE* _File)
 
     // 쉐이더와 동일하게 설정
     m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    m_pLightCam->Camera()->LayerCheckAll();
+    m_pLightCam->Camera()->LayerMaskAll();
     m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
     m_pLightCam->Camera()->SetNear(1.f);
     m_pLightCam->Camera()->SetFar(10000.f);

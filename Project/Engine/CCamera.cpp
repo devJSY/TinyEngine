@@ -28,7 +28,7 @@ CCamera::CCamera()
     , m_AspectRatio(1.f)
     , m_Near(1.f)
     , m_Far(10000.f)
-    , m_LayerCheck(0)
+    , m_LayerMask(0)
     , m_iCamPriority(-1)
     , m_bHDRI(false)
 {
@@ -91,19 +91,19 @@ void CCamera::finaltick()
     }
 }
 
-void CCamera::LayerCheck(UINT _LayerIdx, bool _bCheck)
+void CCamera::LayerMask(UINT _LayerIdx, bool _bMask)
 {
-    if (_bCheck)
+    if (_bMask)
     {
-        m_LayerCheck |= (1 << _LayerIdx);
+        m_LayerMask |= (1 << _LayerIdx);
     }
     else
     {
-        m_LayerCheck &= ~(1 << _LayerIdx);
+        m_LayerMask &= ~(1 << _LayerIdx);
     }
 }
 
-void CCamera::LayerCheck(CLevel* _CurLevel, const wstring& _strLayerName, bool _bCheck)
+void CCamera::LayerMask(CLevel* _CurLevel, const wstring& _strLayerName, bool _bMask)
 {
     CLayer* pLayer = _CurLevel->GetLayer(_strLayerName);
 
@@ -111,7 +111,7 @@ void CCamera::LayerCheck(CLevel* _CurLevel, const wstring& _strLayerName, bool _
         return;
 
     int idx = pLayer->GetLayerIdx();
-    LayerCheck(idx, _bCheck);
+    LayerMask(idx, _bMask);
 }
 
 void CCamera::SortObject()
@@ -121,7 +121,7 @@ void CCamera::SortObject()
     for (int i = 0; i < LAYER_MAX; ++i)
     {
         // 카메라가 찍도록 설정된 Layer 가 아니면 무시
-        if (false == (m_LayerCheck & (1 << i)))
+        if (false == (m_LayerMask & (1 << i)))
             continue;
 
         CLayer* pLayer = pCurLevel->GetLayer(i);
@@ -354,7 +354,7 @@ void CCamera::SaveToLevelFile(FILE* _File)
     fwrite(&m_AspectRatio, sizeof(float), 1, _File);
     fwrite(&m_Near, sizeof(float), 1, _File);
     fwrite(&m_Far, sizeof(float), 1, _File);
-    fwrite(&m_LayerCheck, sizeof(UINT), 1, _File);
+    fwrite(&m_LayerMask, sizeof(UINT), 1, _File);
     fwrite(&m_iCamPriority, sizeof(int), 1, _File);
     fwrite(&m_bHDRI, sizeof(bool), 1, _File);
 }
@@ -368,7 +368,7 @@ void CCamera::LoadFromLevelFile(FILE* _File)
     fread(&m_AspectRatio, sizeof(float), 1, _File);
     fread(&m_Near, sizeof(float), 1, _File);
     fread(&m_Far, sizeof(float), 1, _File);
-    fread(&m_LayerCheck, sizeof(UINT), 1, _File);
+    fread(&m_LayerMask, sizeof(UINT), 1, _File);
     fread(&m_iCamPriority, sizeof(int), 1, _File);
     fread(&m_bHDRI, sizeof(bool), 1, _File);
 }

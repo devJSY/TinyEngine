@@ -41,8 +41,8 @@ CTestLevel::CTestLevel()
     pCamObj->AddComponent(new CCamera);
 
     pCamObj->Camera()->SetCameraPriority(0);
-    pCamObj->Camera()->LayerCheckAll();
-    pCamObj->Camera()->LayerCheck(this, L"UI", false);
+    pCamObj->Camera()->LayerMaskAll();
+    pCamObj->Camera()->LayerMask(this, L"UI", false);
     pCamObj->Camera()->SetHDRI(false);
 
     AddObject(pCamObj, L"Camera");
@@ -54,7 +54,7 @@ CTestLevel::CTestLevel()
     pCamObj->AddComponent(new CCamera);
 
     pCamObj->Camera()->SetCameraPriority(1);
-    pCamObj->Camera()->LayerCheck(this, L"UI", true);
+    pCamObj->Camera()->LayerMask(this, L"UI", true);
 
     AddObject(pCamObj, L"Camera");
 

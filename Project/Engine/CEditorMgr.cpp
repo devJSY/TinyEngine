@@ -110,11 +110,13 @@ void CEditorMgr::init()
     pEditorCam->AddComponent(new CCamera);
     pEditorCam->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
 
-    pEditorCam->Camera()->LayerCheckAll();
-    pEditorCam->Camera()->LayerCheck(31, false);
+    pEditorCam->Camera()->LayerMaskAll();
+    pEditorCam->Camera()->LayerMask(31, false);
     pEditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
     pEditorCam->Camera()->SetFOV(XM_PI / 2.f);
     pEditorCam->Camera()->SetFar(100000.f);
+    pEditorCam->Camera()->SetHDRI(true);
+    pEditorCam->Camera()->SetCameraPriority(0);
 
     m_vecEditorObj.push_back(pEditorCam);
 
