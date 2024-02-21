@@ -37,7 +37,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowOutliner(true)
     , m_bShowContentBrowser(true)
     , m_bShowCollisionResponses(false)
-    , m_bShowToolbar(false)
+    , m_bShowToolbar(true)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
     , m_bShowMaterialEditor(false)
@@ -140,9 +140,9 @@ void CLevelEditor::render()
         COutputLog::GetInst()->render(&m_bShowOutputLog);
 
     //// ImGUI Demo
-    //bool show_demo_window = true;
-    //if (show_demo_window)
-    //    ImGui::ShowDemoWindow(&show_demo_window);
+    // bool show_demo_window = true;
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 
     ImGui::End(); // dockspace End
 
@@ -301,39 +301,36 @@ void CLevelEditor::render_Toolbar()
     float size = ImGui::GetWindowHeight() - 4.0f;
     ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
 
-    bool hasPlayButton = true;
-    bool hasSimulateButton = true;
-    bool hasPauseButton = true;
-
     Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
     Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
     Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
 
-    if (hasPlayButton)
+    if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+    {
+        if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            toolbarEnabled)
+        {
+            CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PAUSE);
+        }
+    }
+    else
     {
         if (ImGui::ImageButton((void*)pPlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
             toolbarEnabled)
         {
+            CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PLAY);
         }
     }
 
-    if (hasSimulateButton)
-    {
-        if (hasPlayButton)
-            ImGui::SameLine();
-    }
+    ImGui::SameLine();
 
-    if (hasPauseButton)
+    if (ImGui::ImageButton((void*)pStopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f),
+                           tintColor) &&
+        toolbarEnabled)
     {
-        ImGui::SameLine();
-        {
-            if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
-                                   ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-                toolbarEnabled)
-            {
-            }
-        }
+        CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::STOP);
     }
 
     ImGui::PopStyleVar(2);

@@ -20,6 +20,7 @@ CLevel::CLevel()
 CLevel::CLevel(const CLevel& origin)
     : CEntity(origin)
     , m_arrLayer{}
+    , m_State(LEVEL_STATE::STOP)
 {
     for (size_t i = 0; i < LAYER_MAX; i++)
     {
