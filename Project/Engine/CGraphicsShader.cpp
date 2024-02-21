@@ -207,18 +207,6 @@ int CGraphicsShader::UpdateData()
     CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(m_DSType).Get(), 1);
     CONTEXT->OMSetBlendState(CDevice::GetInst()->GetBSState(m_BSType).Get(), nullptr, 0xffffffff);
 
-    if (1 == g_Global.render_Mode)
-    {
-        CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::MASK).Get(),
-                                        1); // 스탠실 버퍼에 1로 체크
-    }
-    else if (2 == g_Global.render_Mode)
-    {
-        CONTEXT->RSSetState(CDevice::GetInst()->GetRSState(RS_TYPE(int(m_RSType) + 1)).Get()); // 반시계 방향
-        CONTEXT->OMSetDepthStencilState(CDevice::GetInst()->GetDSState(DS_TYPE::DRAW_MASKED).Get(),
-                                        1); // 스탠실 버퍼에 1로 체크 된 부분만 렌더
-    }
-
     CONTEXT->VSSetShader(m_VS.Get(), nullptr, 0);
     CONTEXT->HSSetShader(m_HS.Get(), nullptr, 0);
     CONTEXT->DSSetShader(m_DS.Get(), nullptr, 0);

@@ -44,6 +44,7 @@ CPBRLevel::CPBRLevel()
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerCheckAll();
     pCamObj->Camera()->LayerCheck(this, L"UI", false);
+    pCamObj->Camera()->SetHDRI(true);
 
     AddObject(pCamObj, L"Camera");
 
@@ -53,6 +54,7 @@ CPBRLevel::CPBRLevel()
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
 
+    pCamObj->Camera()->SetCameraPriority(1);
     pCamObj->Camera()->LayerCheck(this, L"UI", true);
 
     AddObject(pCamObj, L"Camera");

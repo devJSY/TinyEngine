@@ -75,7 +75,7 @@ void CEngine::progress()
     CDevice::GetInst()->Clear_Buffers(m_ClearColor);
 
     // Level Render
-    CRenderMgr::GetInst()->tick();
+    CRenderMgr::GetInst()->render();
     CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
 
     // Present

@@ -96,10 +96,6 @@ cbuffer GLOBAL_DATA : register(b3)
         
     float3 g_eyeWorld;
     bool g_DrawAsWireFrame;
-    
-    row_major Matrix g_ReflectionRowMat;
-    
-    int g_render_Mode;
 }
 
 Texture2D g_tex_0 : register(t0);

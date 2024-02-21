@@ -609,30 +609,13 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddScalarParam(FLOAT_0, "Exposure"); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
         pShader->AddScalarParam(FLOAT_1, "Gamma");    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
-        pShader->AddScalarParam(FLOAT_2, "Strength"); // Bloom Strength
+        pShader->AddScalarParam(FLOAT_2, "Bloom Strength"); // Bloom Strength
 
         pShader->AddTexParam(TEX_0, "Render Texture");
         pShader->AddTexParam(TEX_1, "Bloom Texture");
 
         pShader->SetName(L"ToneMappingShader");
         AddAsset(L"ToneMappingShader", pShader);
-    }
-
-    // =================================
-    // Mirror Shader
-    // =================================
-    {
-        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\MirrorVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\MirrorPS.hlsl", "main");
-
-        pShader->SetDSType(DS_TYPE::DRAW_MASKED);
-        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
-
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MIRROR);
-
-        pShader->SetName(L"MirrorShader");
-        AddAsset(L"MirrorShader", pShader);
     }
 
     // =================================
@@ -893,14 +876,6 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
         pMtrl->SetName(L"ToneMappingMtrl");
         AddAsset<CMaterial>(L"ToneMappingMtrl", pMtrl);
-    }
-
-    // Mirror
-    {
-        Ptr<CMaterial> pMtrl = new CMaterial(true);
-        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MirrorShader"));
-        pMtrl->SetName(L"MirrorMtrl");
-        AddAsset<CMaterial>(L"MirrorMtrl", pMtrl);
     }
 
     // DepthOnly

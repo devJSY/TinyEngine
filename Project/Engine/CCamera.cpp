@@ -30,6 +30,7 @@ CCamera::CCamera()
     , m_Far(10000.f)
     , m_LayerCheck(0)
     , m_iCamPriority(-1)
+    , m_bHDRI(false)
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
@@ -42,14 +43,7 @@ CCamera::~CCamera()
 
 void CCamera::begin()
 {
-    if (-1 == m_iCamPriority)
-    {
-        CRenderMgr::GetInst()->RegisterUICamera(this);
-    }
-    else
-    {
-        CRenderMgr::GetInst()->RegisterCamera(this, m_iCamPriority);
-    }
+    CRenderMgr::GetInst()->RegisterCamera(this, m_iCamPriority);
 }
 
 void CCamera::finaltick()
@@ -154,20 +148,9 @@ void CCamera::SortObject()
             case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
                 m_vecTransparent.push_back(vecObjects[j]);
                 break;
-            case SHADER_DOMAIN::DOMAIN_MIRROR: {
-                if (0 == g_Global.render_Mode)
-                {
-                    CRenderMgr::GetInst()->RegisterMirror(vecObjects[j]); // Mirror 는 RenderMgr 에서 관리
-                }
-            }
-            break;
-            case SHADER_DOMAIN::DOMAIN_POSTPROCESS: {
-                if (0 == g_Global.render_Mode)
-                {
-                    CRenderMgr::GetInst()->RegisterPostProcess(vecObjects[j]); // 후처리는 RenderMgr 에서 관리
-                }
-            }
-            break;
+            case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
+                m_vecPostProcess.push_back(vecObjects[j]);
+                break;
             case SHADER_DOMAIN::DOMAIN_DEBUG:
                 break;
             }
@@ -179,44 +162,98 @@ void CCamera::render()
 {
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
     g_Transform.matView = m_matView;
-    if (2 == g_Global.render_Mode)
-        g_Transform.matView = g_Global.ReflectionRowMat * g_Transform.matView;
     g_Transform.matViewInv = m_matView.Invert();
     g_Transform.matProj = m_matProj;
     g_Transform.matProjInv = m_matProj.Invert();
 
-    // Domain 순서대로 렌더링
-    render(m_vecOpaque);
-    render(m_vecMaked);
-    render(m_vecTransparent);
-}
+    if (m_bHDRI)
+    {
+        CDevice::GetInst()->SetFloatRenderTarget();
 
-void CCamera::clear()
-{
+        // Main Render
+        render(m_vecOpaque);
+        render(m_vecMaked);
+        render(m_vecTransparent);
+
+        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+        if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+        {
+            // NormalLine Pass
+            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+                pSelectedObj->render(NormalLineMtrl);
+
+            // OutLine Pass
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+            else
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+        }
+
+        // Depth Map Pass
+        CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
+        render_DepthMap(m_vecOpaque);
+        render_DepthMap(m_vecMaked);
+        render_DepthMap(m_vecTransparent);
+
+        // IDMap Pass
+        CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
+                                    CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
+        render_IDMap(m_vecOpaque);
+        render_IDMap(m_vecMaked);
+        render_IDMap(m_vecTransparent);
+
+        // 후처리
+        CDevice::GetInst()->SetFloatRenderTarget();
+        render_postprocess_HDRI();
+        CRenderMgr::GetInst()->render_postprocess();
+    }
+    else
+    {
+        CDevice::GetInst()->SetRenderTarget();
+
+        // Main Render
+        render(m_vecOpaque);
+        render(m_vecMaked);
+        render(m_vecTransparent);
+
+        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+        if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+        {
+            // NormalLine Pass
+            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+                pSelectedObj->render(NormalLineMtrl);
+
+            // OutLine Pass
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+            else
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+        }
+
+        // Depth Map Pass
+        CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
+        render_DepthMap(m_vecOpaque);
+        render_DepthMap(m_vecMaked);
+        render_DepthMap(m_vecTransparent);
+
+        // IDMap Pass
+        CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
+                                    CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
+        render_IDMap(m_vecOpaque);
+        render_IDMap(m_vecMaked);
+        render_IDMap(m_vecTransparent);
+
+        CDevice::GetInst()->SetRenderTarget();
+        render_postprocess_LDRI();
+    }
+
+    // Clear
     m_vecOpaque.clear();
     m_vecMaked.clear();
     m_vecTransparent.clear();
-}
-
-void CCamera::render_DepthMap()
-{
-    render_DepthMap(m_vecOpaque);
-    render_DepthMap(m_vecMaked);
-    render_DepthMap(m_vecTransparent);
-}
-
-void CCamera::render_NormalLine()
-{
-    render_NormalLine(m_vecOpaque);
-    render_NormalLine(m_vecMaked);
-    render_NormalLine(m_vecTransparent);
-}
-
-void CCamera::render_IDMap()
-{
-    render_IDMap(m_vecOpaque);
-    render_IDMap(m_vecMaked);
-    render_IDMap(m_vecTransparent);
+    m_vecPostProcess.clear();
 }
 
 void CCamera::render(vector<CGameObject*>& _vecObj)
@@ -246,14 +283,6 @@ void CCamera::render_DepthMap(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_NormalLine(vector<CGameObject*>& _vecObj)
-{
-    for (size_t i = 0; i < _vecObj.size(); i++)
-    {
-        _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl"));
-    }
-}
-
 void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
 {
     for (size_t i = 0; i < _vecObj.size(); i++)
@@ -271,6 +300,40 @@ void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
             _vecObj[i]->render(IDMapMtrl);
         }
     }
+}
+
+void CCamera::render_postprocess_LDRI()
+{
+    for (int i = 0; i < m_vecPostProcess.size(); ++i)
+    {
+        // 최종 렌더링 이미지를 후처리 타겟에 복사
+        CRenderMgr::GetInst()->CopyToPostProcessTex_LDRI();
+
+        // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
+        CRenderMgr::GetInst()->GetPostProcessTex_LDRI()->UpdateData(14);
+
+        // 후처리 오브젝트 렌더링
+        m_vecPostProcess[i]->render();
+    }
+
+    CTexture::Clear(14);
+}
+
+void CCamera::render_postprocess_HDRI()
+{
+    for (int i = 0; i < m_vecPostProcess.size(); ++i)
+    {
+        // 최종 렌더링 이미지를 후처리 타겟에 복사
+        CRenderMgr::GetInst()->CopyToPostProcessTex_HDRI();
+
+        // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
+        CRenderMgr::GetInst()->GetPostProcessTex_HDRI()->UpdateData(14);
+
+        // 후처리 오브젝트 렌더링
+        m_vecPostProcess[i]->render();
+    }
+
+    CTexture::Clear(14);
 }
 
 void CCamera::Resize(Vec2 Resolution)

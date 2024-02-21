@@ -32,10 +32,13 @@ private:
 
     int m_iCamPriority;
 
+    bool m_bHDRI;
+
     // 물체 분류
     vector<CGameObject*> m_vecOpaque;
     vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
+    vector<CGameObject*> m_vecPostProcess;
 
 public:
     PROJ_TYPE GetProjType() const { return m_ProjType; }
@@ -61,6 +64,9 @@ public:
     void LayerCheck(CLevel* _CurLevel, const wstring& _strLayerName, bool _bCheck);
     void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
 
+    bool IsHDRI() const { return m_bHDRI; }
+    void SetHDRI(bool _Enable) { m_bHDRI = _Enable; }
+
 public:
     void Resize(Vec2 Resolution);
 
@@ -71,18 +77,12 @@ public:
     void SortObject();
     void render();
 
-    // Render pass
-    void render_DepthMap();
-    void render_NormalLine();
-    void render_IDMap();
-
-    void clear();
-
 private:
     void render(vector<CGameObject*>& _vecObj);
     void render_DepthMap(vector<CGameObject*>& _vecObj);
-    void render_NormalLine(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
+    void render_postprocess_LDRI();
+    void render_postprocess_HDRI();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
