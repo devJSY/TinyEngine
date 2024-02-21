@@ -7,6 +7,7 @@
 
 #include "CMeshRender.h"
 #include "CCamera.h"
+#include "CGameObjectEx.h"
 
 CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
@@ -27,6 +28,18 @@ CLight3D::CLight3D()
     m_Info.ShadowType = 1; // Dynamic Shadow
 
     CreateDepthMapTex();
+
+    m_pLightCam = new CGameObjectEx;
+    m_pLightCam->AddComponent(new CTransform);
+    m_pLightCam->AddComponent(new CCamera);
+
+    // 쉐이더와 동일하게 설정
+    m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    m_pLightCam->Camera()->LayerCheckAll();
+    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
+    m_pLightCam->Camera()->SetNear(1.f);
+    m_pLightCam->Camera()->SetFar(10000.f);
+    m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
 }
 
 CLight3D::CLight3D(const CLight3D& origin)
@@ -34,12 +47,19 @@ CLight3D::CLight3D(const CLight3D& origin)
     , m_Info(origin.m_Info)
     , m_DepthMapTex(nullptr)
     , m_ShadowIdx(-1)
+    , m_pLightCam(nullptr)
 {
     CreateDepthMapTex();
+    m_pLightCam = origin.m_pLightCam->Clone();
 }
 
 CLight3D::~CLight3D()
 {
+    if (nullptr != m_pLightCam)
+    {
+        delete m_pLightCam;
+        m_pLightCam = nullptr;
+    }
 }
 
 void CLight3D::finaltick()
@@ -50,31 +70,15 @@ void CLight3D::finaltick()
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-    // 그림자맵
-    if (1 == m_Info.ShadowType)
-    {
-        Matrix ViewRow = XMMatrixLookAtLH(m_Info.vWorldPos, m_Info.vWorldPos + m_Info.vWorldDir, Transform()->GetWorldDir(DIR_TYPE::UP));
-        Matrix ProjRow = XMMatrixPerspectiveFovLH(XMConvertToRadians(120.f), 1.f, 1.f, 10000.f); // 쉐이더에서도 동일하게 설정
+    // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트 한다.
+    m_pLightCam->Transform()->SetRelativePos(Transform()->GetRelativePos());
+    m_pLightCam->Transform()->SetRelativeRotation(Transform()->GetRelativeRotation());
+    m_pLightCam->finaltick();
 
-        m_Info.viewMat = ViewRow;
-        m_Info.projMat = ProjRow;
-        m_Info.invProj = m_Info.projMat.Invert();
-
-        // LIGHT_FRUSTUM_WIDTH 확인
-        // Vector4 eye(0.0f, 0.0f, 0.0f, 1.0f);
-        // Vector4 xLeft(-1.0f, -1.0f, 0.0f, 1.0f);
-        // Vector4 xRight(1.0f, 1.0f, 0.0f, 1.0f);
-        // eye = Vector4::Transform(eye, lightProjRow);
-        // xLeft = Vector4::Transform(xLeft, lightProjRow.Invert());
-        // xRight = Vector4::Transform(xRight, lightProjRow.Invert());
-        // xLeft /= xLeft.w;
-        // xRight /= xRight.w;
-        // cout << "LIGHT_FRUSTUM_WIDTH = " << xRight.x - xLeft.x << endl;
-    }
-    else
-    {
-        m_ShadowIdx = -1;
-    }
+    // 쉐이더에서 사용할 광원의 행렬 설정
+    m_Info.viewMat = m_pLightCam->Camera()->GetViewMat();
+    m_Info.projMat = m_pLightCam->Camera()->GetProjMat();
+    m_Info.invProj = m_Info.projMat.Invert();
 
     // GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), true);
 }
@@ -94,6 +98,12 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl"));
+}
+
+void CLight3D::render_LightDepth()
+{
+    m_pLightCam->Camera()->SortObject();
+    m_pLightCam->Camera()->render_LightDepth(m_DepthMapTex);
 }
 
 void CLight3D::CreateDepthMapTex()

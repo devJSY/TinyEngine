@@ -31,7 +31,7 @@ public:
 
     Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
     Vec3 GetWorldScale() const;
-    // Vec3 GetWorldRot() const;
+    // Vec3 GetWorldR ot() const;
 
     bool IsAbsolute() const { return m_bAbsolute; }
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }

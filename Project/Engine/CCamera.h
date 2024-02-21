@@ -76,10 +76,11 @@ public:
 
     void SortObject();
     void render();
+    void render_LightDepth(Ptr<CTexture> _DepthMapTex);
 
 private:
     void render(vector<CGameObject*>& _vecObj);
-    void render_DepthMap(vector<CGameObject*>& _vecObj);
+    void render_DepthOnly(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
     void render_postprocess_LDRI();
     void render_postprocess_HDRI();

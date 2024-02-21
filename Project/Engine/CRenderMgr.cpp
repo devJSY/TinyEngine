@@ -71,8 +71,8 @@ void CRenderMgr::render()
 {
     UpdateData();
 
-    //// Light Depth Map
-    // render_LightDepth();
+    // Light Depth Map
+    render_LightDepth();
 
     // Rendering
     render_play();
@@ -158,9 +158,6 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_postprocess()
 {
-    if (nullptr == m_PostEffectObj)
-        return;
-
     // RTV(PostProcess), SRV(floatRTTex DepthOnlyTex)
     CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
     m_PostEffectObj->render();
@@ -211,54 +208,37 @@ void CRenderMgr::render_postprocess()
 
 void CRenderMgr::render_LightDepth()
 {
-    // tTransform originTr = g_Transform;
+    // 그림자 적용 광원 최대갯수설정
+    int dynamicShadowMaxCount = 3;
 
-    //// 그림자 적용 광원 최대갯수설정
-    // int dynamicShadowMaxCount = 3;
+    for (int i = 0; i < m_vecLight3D.size(); i++)
+    {
+        m_vecLight3D[i]->SetShadowIdx(-1); // 초기화
 
-    // for (int i = 0; i < m_vecLight3D.size(); i++)
-    //{
-    //     m_vecLight3D[i]->SetShadowIdx(-1); // 초기화
+        if (dynamicShadowMaxCount <= 0)
+            break;
 
-    //    if (dynamicShadowMaxCount <= 0)
-    //        break;
+        const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
+        if (!info.ShadowType)
+            continue;
 
-    //    const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
-    //    if (!info.ShadowType)
-    //        continue;
+        // Rendering
+        m_vecLight3D[i]->SetShadowIdx(3 - dynamicShadowMaxCount);
+        m_vecLight3D[i]->render_LightDepth();
 
-    //    // 광원 시점 렌더링
-    //    g_Transform.matView = info.viewMat;
-    //    g_Transform.matViewInv = g_Transform.matView.Invert();
-    //    g_Transform.matProj = info.projMat;
-    //    g_Transform.matProjInv = g_Transform.matProj.Invert();
+        // Output 에 설정된 DepthMap 리셋
+        CONTEXT->OMSetRenderTargets(0, NULL, NULL);
 
-    //    m_vecLight3D[i]->SetShadowIdx(3 - dynamicShadowMaxCount);
-    //    Ptr<CTexture> DepthMapTex = m_vecLight3D[i]->GetDepthMapTex();
+        // Binding
+        if (3 == dynamicShadowMaxCount)
+            m_vecLight3D[i]->GetDepthMapTex()->UpdateData(23);
+        else if (2 == dynamicShadowMaxCount)
+            m_vecLight3D[i]->GetDepthMapTex()->UpdateData(24);
+        else if (1 == dynamicShadowMaxCount)
+            m_vecLight3D[i]->GetDepthMapTex()->UpdateData(25);
 
-    //    CONTEXT->ClearDepthStencilView(DepthMapTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-    //    CONTEXT->OMSetRenderTargets(0, NULL, DepthMapTex->GetDSV().Get());
-    //    CDevice::GetInst()->SetViewport((float)DepthMapTex->GetWidth(), (float)DepthMapTex->GetHeight());
-
-    //    for (size_t i = 0; i < m_vecCam.size(); ++i)
-    //    {
-    //        m_vecCam[i]->render_DepthMap();
-    //    }
-
-    //    CDevice::GetInst()->SetFloatRenderTarget();
-    //    CDevice::GetInst()->SetViewport();
-
-    //    if (3 == dynamicShadowMaxCount)
-    //        DepthMapTex->UpdateData(23);
-    //    else if (2 == dynamicShadowMaxCount)
-    //        DepthMapTex->UpdateData(24);
-    //    else if (1 == dynamicShadowMaxCount)
-    //        DepthMapTex->UpdateData(25);
-
-    //    dynamicShadowMaxCount--;
-    //}
-
-    // g_Transform = originTr;
+        dynamicShadowMaxCount--;
+    }
 }
 
 void CRenderMgr::UpdateData()
@@ -310,7 +290,7 @@ void CRenderMgr::Clear()
     m_vecLight2D.clear();
     m_vecLight3D.clear();
 
-    // Light DepthMap bind Reset
+    // Light DepthMap Clear
     CTexture::Clear(23);
     CTexture::Clear(24);
     CTexture::Clear(25);

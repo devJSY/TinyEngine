@@ -169,40 +169,54 @@ void CCamera::render()
     if (m_bHDRI)
     {
         CDevice::GetInst()->SetFloatRenderTarget();
+        CDevice::GetInst()->SetViewport();
 
         // Main Render
         render(m_vecOpaque);
         render(m_vecMaked);
         render(m_vecTransparent);
+    }
+    else
+    {
+        CDevice::GetInst()->SetRenderTarget();
+        CDevice::GetInst()->SetViewport();
 
-        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-        if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
-        {
-            // NormalLine Pass
-            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-                pSelectedObj->render(NormalLineMtrl);
+        // Main Render
+        render(m_vecOpaque);
+        render(m_vecMaked);
+        render(m_vecTransparent);
+    }
 
-            // OutLine Pass
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            else
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-        }
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+    {
+        // NormalLine Pass
+        Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+            pSelectedObj->render(NormalLineMtrl);
 
-        // Depth Map Pass
-        CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
-        render_DepthMap(m_vecOpaque);
-        render_DepthMap(m_vecMaked);
-        render_DepthMap(m_vecTransparent);
+        // OutLine Pass
+        if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+        else
+            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+    }
 
-        // IDMap Pass
-        CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
-                                    CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
-        render_IDMap(m_vecOpaque);
-        render_IDMap(m_vecMaked);
-        render_IDMap(m_vecTransparent);
+    // Depth Only Pass
+    CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
+    render_DepthOnly(m_vecOpaque);
+    render_DepthOnly(m_vecMaked);
+    render_DepthOnly(m_vecTransparent);
 
+    // IDMap Pass
+    CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
+                                CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
+    render_IDMap(m_vecOpaque);
+    render_IDMap(m_vecMaked);
+    render_IDMap(m_vecTransparent);
+
+    if (m_bHDRI)
+    {
         // ÈÄÃ³¸®
         CDevice::GetInst()->SetFloatRenderTarget();
         render_postprocess_HDRI();
@@ -210,41 +224,6 @@ void CCamera::render()
     }
     else
     {
-        CDevice::GetInst()->SetRenderTarget();
-
-        // Main Render
-        render(m_vecOpaque);
-        render(m_vecMaked);
-        render(m_vecTransparent);
-
-        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-        if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
-        {
-            // NormalLine Pass
-            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-                pSelectedObj->render(NormalLineMtrl);
-
-            // OutLine Pass
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            else
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-        }
-
-        // Depth Map Pass
-        CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
-        render_DepthMap(m_vecOpaque);
-        render_DepthMap(m_vecMaked);
-        render_DepthMap(m_vecTransparent);
-
-        // IDMap Pass
-        CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
-                                    CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
-        render_IDMap(m_vecOpaque);
-        render_IDMap(m_vecMaked);
-        render_IDMap(m_vecTransparent);
-
         CDevice::GetInst()->SetRenderTarget();
         render_postprocess_LDRI();
     }
@@ -254,6 +233,27 @@ void CCamera::render()
     m_vecMaked.clear();
     m_vecTransparent.clear();
     m_vecPostProcess.clear();
+}
+
+void CCamera::render_LightDepth(Ptr<CTexture> _DepthMapTex)
+{
+    // ±¤¿ø ½ÃÁ¡ ·»´õ¸µ
+    g_Transform.matView = m_matView;
+    g_Transform.matViewInv = m_matView.Invert();
+    g_Transform.matProj = m_matProj;
+    g_Transform.matProjInv = m_matProj.Invert();
+
+    CONTEXT->ClearDepthStencilView(_DepthMapTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+    CONTEXT->OMSetRenderTargets(0, NULL, _DepthMapTex->GetDSV().Get());
+    CDevice::GetInst()->SetViewport((float)_DepthMapTex->GetWidth(), (float)_DepthMapTex->GetHeight());
+
+    render_DepthOnly(m_vecOpaque);
+    render_DepthOnly(m_vecMaked);
+    render_DepthOnly(m_vecTransparent);
+
+    m_vecOpaque.clear();
+    m_vecMaked.clear();
+    m_vecTransparent.clear();
 }
 
 void CCamera::render(vector<CGameObject*>& _vecObj)
@@ -275,7 +275,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_DepthMap(vector<CGameObject*>& _vecObj)
+void CCamera::render_DepthOnly(vector<CGameObject*>& _vecObj)
 {
     for (size_t i = 0; i < _vecObj.size(); i++)
     {
@@ -356,6 +356,7 @@ void CCamera::SaveToLevelFile(FILE* _File)
     fwrite(&m_Far, sizeof(float), 1, _File);
     fwrite(&m_LayerCheck, sizeof(UINT), 1, _File);
     fwrite(&m_iCamPriority, sizeof(int), 1, _File);
+    fwrite(&m_bHDRI, sizeof(bool), 1, _File);
 }
 
 void CCamera::LoadFromLevelFile(FILE* _File)
@@ -369,4 +370,5 @@ void CCamera::LoadFromLevelFile(FILE* _File)
     fread(&m_Far, sizeof(float), 1, _File);
     fread(&m_LayerCheck, sizeof(UINT), 1, _File);
     fread(&m_iCamPriority, sizeof(int), 1, _File);
+    fread(&m_bHDRI, sizeof(bool), 1, _File);
 }
