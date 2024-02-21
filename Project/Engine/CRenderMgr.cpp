@@ -14,7 +14,9 @@
 #include "CConstBuffer.h"
 
 CRenderMgr::CRenderMgr()
-    : m_Light2DBuffer(nullptr)
+    : m_mainCam(nullptr)
+    , m_EditorCam(nullptr)
+    , m_Light2DBuffer(nullptr)
     , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
     , m_bShowDebugRender(false)
@@ -29,6 +31,7 @@ CRenderMgr::CRenderMgr()
     , m_ToneMappingObj(nullptr)
 
 {
+    RENDER_FUNC = &CRenderMgr::render_play;
 }
 
 CRenderMgr::~CRenderMgr()
@@ -75,7 +78,7 @@ void CRenderMgr::render()
     render_LightDepth();
 
     // Rendering
-    render_play();
+    (this->*RENDER_FUNC)();
 
     // Debug
     render_debug();
@@ -92,8 +95,20 @@ void CRenderMgr::render_play()
     }
 }
 
+void CRenderMgr::render_editor()
+{
+    if (nullptr == m_EditorCam)
+        return;
+
+    m_EditorCam->SortObject();
+    m_EditorCam->render();
+}
+
 void CRenderMgr::render_debug()
 {
+    if (m_vecCam.empty())
+        return;
+
     g_Transform.matView = m_vecCam[0]->GetViewMat();
     g_Transform.matProj = m_vecCam[0]->GetProjMat();
 
@@ -248,7 +263,8 @@ void CRenderMgr::UpdateData()
     g_Global.Light3DCount = (UINT)m_vecLight3D.size();
 
     // 메인 카메라 위치 등록
-    g_Global.eyeWorld = m_vecCam[0]->Transform()->GetWorldPos();
+    if (nullptr != m_mainCam)
+        g_Global.eyeWorld = m_mainCam->Transform()->GetWorldPos();
 
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
@@ -304,6 +320,21 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
     }
 
     m_vecCam[_Idx] = _Cam;
+}
+
+void CRenderMgr::ActiveEditorMode(bool _bActive)
+{
+    if (_bActive)
+    {
+        RENDER_FUNC = &CRenderMgr::render_editor;
+        m_mainCam = m_EditorCam;
+    }
+    else
+    {
+        RENDER_FUNC = &CRenderMgr::render_play;
+        if (!m_vecCam.empty())
+            m_mainCam = m_vecCam[0];
+    }
 }
 
 CCamera* CRenderMgr::GetCamera(int _Idx) const

@@ -18,7 +18,7 @@ extern "C"
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::CREATE_OBJECT;
     task.Param_1 = (DWORD_PTR)_LayerIdx;
     task.Param_2 = (DWORD_PTR)_Target;
@@ -27,7 +27,7 @@ void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 
 void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::ADD_CHILD;
     task.Param_1 = (DWORD_PTR)_ParentObject;
     task.Param_2 = (DWORD_PTR)_ChildObject;
@@ -36,7 +36,7 @@ void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _Ch
 
 void GamePlayStatic::DestroyGameObject(CGameObject* _Target)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::DELETE_OBJECT;
     task.Param_1 = (DWORD_PTR)_Target;
     CTaskMgr::GetInst()->AddTask(task);
@@ -44,7 +44,7 @@ void GamePlayStatic::DestroyGameObject(CGameObject* _Target)
 
 void GamePlayStatic::WindowResize(int width, int height)
 {
-    FTask task;
+    tTask task;
     task.Type = TASK_TYPE::WINDOW_RESIZE;
     task.Param_1 = (INT_PTR)width;
     task.Param_2 = (INT_PTR)height;
@@ -54,7 +54,7 @@ void GamePlayStatic::WindowResize(int width, int height)
 
 void GamePlayStatic::CloneGameObject(CGameObject* _OriginObj)
 {
-    FTask task;
+    tTask task;
     task.Type = TASK_TYPE::CLONE_OBJECT;
     task.Param_1 = (DWORD_PTR)_OriginObj;
 
@@ -217,14 +217,14 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
 
 void GamePlayStatic::ScreenShot()
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::SCREENSHOT;
     CTaskMgr::GetInst()->AddTask(task);
 }
 
 void GamePlayStatic::MouseColorPicking(Vec2 MousePos)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::MOUSE_COLOR_PICKING;
     task.Param_1 = (INT_PTR)MousePos.x;
     task.Param_2 = (INT_PTR)MousePos.y;
@@ -233,7 +233,7 @@ void GamePlayStatic::MouseColorPicking(Vec2 MousePos)
 
 void GamePlayStatic::MouseRayPicking(Vec2 MousePos)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::MOUSE_RAY_PICKING;
     task.Param_1 = (INT_PTR)MousePos.x;
     task.Param_2 = (INT_PTR)MousePos.y;
@@ -242,7 +242,7 @@ void GamePlayStatic::MouseRayPicking(Vec2 MousePos)
 
 void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::ADD_COMPONENT;
     task.Param_1 = (INT_PTR)_pObj;
     task.Param_2 = (INT_PTR)_type;
@@ -251,7 +251,7 @@ void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
 
 void GamePlayStatic::RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::REMOVE_COMPONENT;
     task.Param_1 = (INT_PTR)_pObj;
     task.Param_2 = (INT_PTR)_type;
@@ -260,7 +260,7 @@ void GamePlayStatic::RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
 
 void GamePlayStatic::LayerChange(CGameObject* _pObj, int LayerIdx)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::LAYER_CHANGE;
     task.Param_1 = (DWORD_PTR)_pObj;
     task.Param_2 = (INT_PTR)LayerIdx;
@@ -269,7 +269,7 @@ void GamePlayStatic::LayerChange(CGameObject* _pObj, int LayerIdx)
 
 void GamePlayStatic::LevelChange(CLevel* _Level)
 {
-    FTask task = {};
+    tTask task = {};
     task.Type = TASK_TYPE::LEVEL_CHANGE;
     task.Param_1 = (DWORD_PTR)_Level;
     CTaskMgr::GetInst()->AddTask(task);

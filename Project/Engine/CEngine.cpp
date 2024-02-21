@@ -46,8 +46,8 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
     CRenderMgr::GetInst()->init();
-    CLevelMgr::GetInst()->init();
     CEditorMgr::GetInst()->init();
+    CLevelMgr::GetInst()->init();
 
     return S_OK;
 }

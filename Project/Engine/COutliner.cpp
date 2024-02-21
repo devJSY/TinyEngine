@@ -61,7 +61,7 @@ void COutliner::render()
             pObj->AddComponent(new CTransform);
 
             // 카메라위치 기준 생성
-            CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
+            CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
             Vec3 pos = pCam->Transform()->GetWorldPos();
             Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
             pos += dir.Normalize() * 500.f;

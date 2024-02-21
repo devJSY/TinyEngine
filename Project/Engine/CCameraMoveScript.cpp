@@ -142,22 +142,22 @@ void CCameraMoveScript::MovePerspective()
         Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
 
         if (KEY_PRESSED(KEY::W))
-            vPos += DT * m_CamSpeed * vFront;
+            vPos += DT_ENGINE * m_CamSpeed * vFront;
 
         if (KEY_PRESSED(KEY::S))
-            vPos += DT * m_CamSpeed * -vFront;
+            vPos += DT_ENGINE * m_CamSpeed * -vFront;
 
         if (KEY_PRESSED(KEY::A))
-            vPos += DT * m_CamSpeed * -vRight;
+            vPos += DT_ENGINE * m_CamSpeed * -vRight;
 
         if (KEY_PRESSED(KEY::D))
-            vPos += DT * m_CamSpeed * vRight;
+            vPos += DT_ENGINE * m_CamSpeed * vRight;
 
         if (KEY_PRESSED(KEY::E))
-            vPos += DT * m_CamSpeed * vUp;
+            vPos += DT_ENGINE * m_CamSpeed * vUp;
 
         if (KEY_PRESSED(KEY::Q))
-            vPos += DT * m_CamSpeed * -vUp;
+            vPos += DT_ENGINE * m_CamSpeed * -vUp;
 
         Transform()->SetRelativePos(vPos);
 
@@ -179,10 +179,10 @@ void CCameraMoveScript::MovePerspective()
     // Zoom
     float Zoffset = 1.5f;
     if (KEY_PRESSED(KEY::Z))
-        Camera()->SetFOV(Camera()->GetFOV() + DT * Zoffset);
+        Camera()->SetFOV(Camera()->GetFOV() + DT_ENGINE * Zoffset);
 
     if (KEY_PRESSED(KEY::C))
-        Camera()->SetFOV(Camera()->GetFOV() - DT * Zoffset);
+        Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * Zoffset);
 }
 
 void CCameraMoveScript::MoveFocusOrthographic()
@@ -211,7 +211,7 @@ void CCameraMoveScript::MoveFocusOrthographic()
         Vec3 dir3 = Vec3(dir.x, dir.y, 0.f);
         float CamMoveSpeed = dir.Length() * 25.f;
         float scale = Camera()->GetScale();
-        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT * dir3.Normalize() * CamMoveSpeed * scale);
+        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT_ENGINE * dir3.Normalize() * CamMoveSpeed * scale);
     }
 }
 
@@ -241,6 +241,6 @@ void CCameraMoveScript::MoveFocusPerspective()
     if (m_bFocus)
     {
         float CamMoveSpeed = dir.Length() * 25.f;
-        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT * dir.Normalize() * CamMoveSpeed);
+        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT_ENGINE * dir.Normalize() * CamMoveSpeed);
     }
 }

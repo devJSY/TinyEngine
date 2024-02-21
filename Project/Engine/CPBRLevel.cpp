@@ -39,8 +39,7 @@ CPBRLevel::CPBRLevel()
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
-    pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
-
+ 
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerCheckAll();
     pCamObj->Camera()->LayerCheck(this, L"UI", false);

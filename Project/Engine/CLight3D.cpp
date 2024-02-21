@@ -13,6 +13,7 @@ CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
     , m_Info{}
     , m_ShadowIdx(-1)
+    , m_pLightCam(nullptr)
 {
     m_Info.vRadiance = Vec4(1.f, 1.f, 1.f, 1.f);
 
@@ -135,9 +136,20 @@ void CLight3D::SaveToLevelFile(FILE* _File)
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
+    fread(&m_ShadowIdx, sizeof(int), 1, _File);
 
     if (nullptr == m_DepthMapTex)
         CreateDepthMapTex();
 
-    fread(&m_ShadowIdx, sizeof(int), 1, _File);
+    m_pLightCam = new CGameObjectEx;
+    m_pLightCam->AddComponent(new CTransform);
+    m_pLightCam->AddComponent(new CCamera);
+
+    // 쉐이더와 동일하게 설정
+    m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    m_pLightCam->Camera()->LayerCheckAll();
+    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
+    m_pLightCam->Camera()->SetNear(1.f);
+    m_pLightCam->Camera()->SetFar(10000.f);
+    m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
 }

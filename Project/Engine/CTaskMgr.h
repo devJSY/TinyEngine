@@ -11,6 +11,9 @@ enum class TASK_TYPE
     // Param1 : Level Adress
     LEVEL_CHANGE,
 
+    // Param1 : Level, Param2 : LEVEL_STATE
+    CHANGE_LEVELSTATE,
+
     // Param1 : Parent Object, Param2 : Child Object
     ADD_CHILD,
 
@@ -45,7 +48,7 @@ enum class TASK_TYPE
     CLONE_OBJECT
 };
 
-struct FTask
+struct tTask
 {
     TASK_TYPE Type;
     UINT_PTR Param_1;
@@ -57,26 +60,27 @@ class CTaskMgr : public CSingleton<CTaskMgr>
     SINGLE(CTaskMgr);
 
 private:
-    vector<FTask> m_vecTask;
+    vector<tTask> m_vecTask;
 
 public:
     void tick();
 
-    void AddTask(const FTask& _Task) { m_vecTask.push_back(_Task); }
+    void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }
 
 private:
-    void CREATE_OBJECT(const FTask& _Task);
-    void DELETE_OBJECT(const FTask& _Task);
-    void LEVEL_CHANGE(const FTask& _Task);
-    void ADD_CHILD(const FTask& _Task);
-    void DISCONNECT_PARENT(const FTask& _Task);
-    void WINDOW_RESIZE(const FTask& _Task);
-    void DELETE_ASSET(const FTask& _Task);
-    void SCREENSHOT(const FTask& _Task);
-    void MOUSE_COLOR_PICKING(const FTask& _Task);
-    void MOUSE_RAY_PICKING(const FTask& _Task);
-    void ADD_COMPONENT(const FTask& _Task);
-    void REMOVE_COMPONENT(const FTask& _Task);
-    void LAYER_CHANGE(const FTask& _Task);
-    void CLONE_OBJECT(const FTask& _Task);
+    void CREATE_OBJECT(const tTask& _Task);
+    void DELETE_OBJECT(const tTask& _Task);
+    void LEVEL_CHANGE(const tTask& _Task);
+    void CHANGE_LEVELSTATE(const tTask& _Task);
+    void ADD_CHILD(const tTask& _Task);
+    void DISCONNECT_PARENT(const tTask& _Task);
+    void WINDOW_RESIZE(const tTask& _Task);
+    void DELETE_ASSET(const tTask& _Task);
+    void SCREENSHOT(const tTask& _Task);
+    void MOUSE_COLOR_PICKING(const tTask& _Task);
+    void MOUSE_RAY_PICKING(const tTask& _Task);
+    void ADD_COMPONENT(const tTask& _Task);
+    void REMOVE_COMPONENT(const tTask& _Task);
+    void LAYER_CHANGE(const tTask& _Task);
+    void CLONE_OBJECT(const tTask& _Task);
 };

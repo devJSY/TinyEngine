@@ -18,6 +18,7 @@ public:                                                                         
 
 #define KEY_CHECK(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State)
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
+#define DT_ENGINE CTimeMgr::GetInst()->GetEngineDeltaTime()
 
 #define KEY_TAP(Key) KEY_CHECK(Key, TAP)
 #define KEY_PRESSED(Key) KEY_CHECK(Key, PRESSED)
@@ -261,4 +262,13 @@ enum class PARTICLE_MODULE
     RENDER, // 렌더링 때의 옵션 관련
 
     END,
+};
+
+
+enum class LEVEL_STATE
+{
+    PLAY,
+    PAUSE,
+    STOP,
+    NONE,
 };

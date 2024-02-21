@@ -22,6 +22,8 @@ private:
     Vec2 m_ViewportSize;
     Vec2 m_ViewportMousePos;
 
+    vector<CGameObjectEx*> m_vecEditorObj;
+
 public:
     bool IsEnable() const { return m_bEnable; }
 

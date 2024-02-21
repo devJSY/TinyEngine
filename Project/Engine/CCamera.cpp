@@ -188,7 +188,7 @@ void CCamera::render()
     }
 
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-    if (nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+    if (0 == m_iCamPriority && nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
     {
         // NormalLine Pass
         Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");

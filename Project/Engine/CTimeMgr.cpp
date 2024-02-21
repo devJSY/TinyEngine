@@ -8,9 +8,11 @@ CTimeMgr::CTimeMgr()
     , m_PrevCount{}
     , m_CurCount{}
     , m_DeltaTime(0.f)
+    , m_EngineDeltaTime(0.f)
     , m_iCall(0)
     , m_iFPS(0)
     , m_fAccTime(0.f)
+    , m_bLock(true)
 {
 }
 
@@ -30,13 +32,16 @@ void CTimeMgr::tick()
 {
     QueryPerformanceCounter(&m_CurCount);
 
-    m_DeltaTime = float(m_CurCount.QuadPart - m_PrevCount.QuadPart) / float(m_Frequency.QuadPart);
+    m_EngineDeltaTime = m_DeltaTime = float(m_CurCount.QuadPart - m_PrevCount.QuadPart) / float(m_Frequency.QuadPart);
+
+    if (m_bLock)
+        m_DeltaTime = 0.f;
 
     m_PrevCount = m_CurCount;
 
-    //// DT 보정
-    //if ((1.f / 60.f) < m_DeltaTime)
-    //    m_DeltaTime = (1.f / 60.f);
+    // DT 보정
+    if ((1.f / 60.f) < m_DeltaTime)
+        m_DeltaTime = (1.f / 60.f);
 
     // 시간 누적 ==> 1초마다 if 구문 실행
     m_fAccTime += m_DeltaTime;

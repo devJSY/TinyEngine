@@ -15,7 +15,9 @@ class CRenderMgr : public CSingleton<CRenderMgr>
     SINGLE(CRenderMgr);
 
 private:
+    CCamera* m_mainCam;
     vector<CCamera*> m_vecCam;
+    CCamera* m_EditorCam;
 
     Ptr<CTexture> m_RTCopyTex;
     Ptr<CTexture> m_IDMapTex;
@@ -51,8 +53,13 @@ private:
     vector<CGameObject*> m_BloomUpFilters;
     CGameObject* m_ToneMappingObj;
 
+    // render function pointer
+    void (CRenderMgr::*RENDER_FUNC)(void);
+
 public:
     void RegisterCamera(CCamera* _Cam, int _Idx);
+    void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
+
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
 
     void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
@@ -64,7 +71,10 @@ public:
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
 
+    void ActiveEditorMode(bool _bActive);
+
 public:
+    CCamera* GetMainCamera() const { return m_mainCam; };
     CCamera* GetCamera(int _Idx) const;
     void ClearCamera() { m_vecCam.clear(); }
 
@@ -99,6 +109,7 @@ public:
 
 private:
     void render_play();
+    void render_editor();
 
     void render_debug();
     void render_LightDepth();

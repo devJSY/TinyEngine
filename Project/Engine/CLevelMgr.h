@@ -11,12 +11,14 @@ private:
     CLevel* m_CurLevel;
 
 public:
+    void init();
+    void tick();
+
+public:
     CLevel* GetCurrentLevel() const { return m_CurLevel; }
 
 public:
     void ChangeLevel(CLevel* _NextLevel);
+    void ChangeLevelState(LEVEL_STATE _State);
 
-public:
-    void init();
-    void tick();
 };

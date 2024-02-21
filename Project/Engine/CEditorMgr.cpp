@@ -1,10 +1,15 @@
 #include "pch.h"
 #include "CEditorMgr.h"
 #include "CEditor.h"
+#include "CRenderMgr.h"
+
 #include "CLevelEditor.h"
 
 #include "CEngine.h"
 #include "CDevice.h"
+#include "CGameObjectEx.h"
+#include "components.h"
+#include "CCameraMoveScript.h"
 
 CEditorMgr::CEditorMgr()
     : m_bEnable(true)
@@ -26,6 +31,8 @@ CEditorMgr::~CEditorMgr()
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+
+    Delete_Vec(m_vecEditorObj);
 }
 
 void CEditorMgr::init()
@@ -96,6 +103,23 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP] = new CTileMapEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->SetName(L"TileMap Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->init();
+
+    // 에디터용 카메라 오브젝트 생성
+    CGameObjectEx* pEditorCam = new CGameObjectEx;
+    pEditorCam->AddComponent(new CTransform);
+    pEditorCam->AddComponent(new CCamera);
+    pEditorCam->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERAMOVESCRIPT));
+
+    pEditorCam->Camera()->LayerCheckAll();
+    pEditorCam->Camera()->LayerCheck(31, false);
+    pEditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    pEditorCam->Camera()->SetFOV(XM_PI / 2.f);
+    pEditorCam->Camera()->SetFar(100000.f);
+
+    m_vecEditorObj.push_back(pEditorCam);
+
+    // Editor 용 카메라로서 렌더매니저에 등록
+    CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
 }
 
 void CEditorMgr::tick()
@@ -109,7 +133,24 @@ void CEditorMgr::tick()
             continue;
 
         m_arrEditor[i]->tick();
+    }
+
+    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
+    {
+        if (nullptr == m_arrEditor[i])
+            continue;
+
         m_arrEditor[i]->finaltick();
+    }
+
+    for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
+    {
+        m_vecEditorObj[i]->tick();
+    }
+
+    for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
+    {
+        m_vecEditorObj[i]->finaltick();
     }
 }
 

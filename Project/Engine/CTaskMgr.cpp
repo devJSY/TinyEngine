@@ -110,6 +110,9 @@ void CTaskMgr::tick()
         case TASK_TYPE::LEVEL_CHANGE:
             LEVEL_CHANGE(m_vecTask[i]);
             break;
+        case TASK_TYPE::CHANGE_LEVELSTATE:
+            CHANGE_LEVELSTATE(m_vecTask[i]);
+            break;
         case TASK_TYPE::ADD_CHILD:
             ADD_CHILD(m_vecTask[i]);
             break;
@@ -149,7 +152,7 @@ void CTaskMgr::tick()
     m_vecTask.clear();
 }
 
-void CTaskMgr::CREATE_OBJECT(const FTask& _Task)
+void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
 {
     int LayerIdx = (int)_Task.Param_1;
     CGameObject* Object = (CGameObject*)_Task.Param_2;
@@ -164,7 +167,7 @@ void CTaskMgr::CREATE_OBJECT(const FTask& _Task)
     }*/
 }
 
-void CTaskMgr::DELETE_OBJECT(const FTask& _Task)
+void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
 {
     CGameObject* pDeadObj = (CGameObject*)_Task.Param_1;
 
@@ -190,7 +193,7 @@ void CTaskMgr::DELETE_OBJECT(const FTask& _Task)
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 }
 
-void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
+void CTaskMgr::LEVEL_CHANGE(const tTask& _Task)
 {
     // Editor 초기화
     CEditorMgr::GetInst()->SetSelectedObject(nullptr);
@@ -202,7 +205,15 @@ void CTaskMgr::LEVEL_CHANGE(const FTask& _Task)
     Level->begin();
 }
 
-void CTaskMgr::ADD_CHILD(const FTask& _Task)
+void CTaskMgr::CHANGE_LEVELSTATE(const tTask& _Task)
+{
+    CLevel* pLevel = (CLevel*)_Task.Param_1;
+    LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
+
+    pLevel->ChangeState(NextState);
+}
+
+void CTaskMgr::ADD_CHILD(const tTask& _Task)
 {
     CGameObject* pDestObj = (CGameObject*)_Task.Param_1;
     CGameObject* pSrcObj = (CGameObject*)_Task.Param_2;
@@ -231,11 +242,11 @@ void CTaskMgr::ADD_CHILD(const FTask& _Task)
     }
 }
 
-void CTaskMgr::DISCONNECT_PARENT(const FTask& _Task)
+void CTaskMgr::DISCONNECT_PARENT(const tTask& _Task)
 {
 }
 
-void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
+void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
 {
     UINT width = (UINT)_Task.Param_1;
     UINT height = (UINT)_Task.Param_2;
@@ -251,14 +262,14 @@ void CTaskMgr::WINDOW_RESIZE(const FTask& _Task)
     LOG(Log, "Window Resized!");
 }
 
-void CTaskMgr::DELETE_ASSET(const FTask& _Task)
+void CTaskMgr::DELETE_ASSET(const tTask& _Task)
 {
     ASSET_TYPE type = (ASSET_TYPE)_Task.Param_1;
     CAsset* pAsset = (CAsset*)_Task.Param_2;
     CAssetMgr::GetInst()->DeleteAsset(type, pAsset->GetKey());
 }
 
-void CTaskMgr::SCREENSHOT(const FTask& _Task)
+void CTaskMgr::SCREENSHOT(const tTask& _Task)
 {
     Vec2 Resolution = CDevice::GetInst()->GetRenderResolution();
     Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
@@ -322,7 +333,7 @@ void CTaskMgr::SCREENSHOT(const FTask& _Task)
     }
 }
 
-void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
+void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 {
     if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
@@ -418,7 +429,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const FTask& _Task)
     CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
-void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
+void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
 {
     if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
@@ -455,7 +466,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
     Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
 
     // 메인 카메라
-    CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0);
+    CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
 
     Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
 
@@ -505,7 +516,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const FTask& _Task)
     CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
-void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
+void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
 {
     CGameObject* pObj = (CGameObject*)_Task.Param_1;
     COMPONENT_TYPE type = (COMPONENT_TYPE)_Task.Param_2;
@@ -572,14 +583,14 @@ void CTaskMgr::ADD_COMPONENT(const FTask& _Task)
     }
 }
 
-void CTaskMgr::REMOVE_COMPONENT(const FTask& _Task)
+void CTaskMgr::REMOVE_COMPONENT(const tTask& _Task)
 {
     CGameObject* pObj = (CGameObject*)_Task.Param_1;
     COMPONENT_TYPE type = (COMPONENT_TYPE)_Task.Param_2;
     pObj->RemoveComponent(type);
 }
 
-void CTaskMgr::LAYER_CHANGE(const FTask& _Task)
+void CTaskMgr::LAYER_CHANGE(const tTask& _Task)
 {
     CGameObject* Object = (CGameObject*)_Task.Param_1;
     int NextLayerIdx = (int)_Task.Param_2;
@@ -590,7 +601,7 @@ void CTaskMgr::LAYER_CHANGE(const FTask& _Task)
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx, false);
 }
 
-void CTaskMgr::CLONE_OBJECT(const FTask& _Task)
+void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
 {
     CGameObject* OriginObject = (CGameObject*)_Task.Param_1;
     CGameObject* CloneObj = OriginObject->Clone();

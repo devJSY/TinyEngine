@@ -49,9 +49,8 @@ CGameObject::CGameObject(const CGameObject& origin)
     for (size_t i = 0; i < origin.m_vecChild.size(); ++i)
     {
         CGameObject* ChildClone = origin.m_vecChild[i]->Clone();
+        AddChild(ChildClone);
         ChildClone->m_iLayerIdx = origin.m_vecChild[i]->m_iLayerIdx;
-        ChildClone->m_Parent = this;
-        m_vecChild.push_back(ChildClone);
     }
 }
 

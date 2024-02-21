@@ -54,7 +54,7 @@ public:
     void SetShadowIdx(int _Idx) { m_ShadowIdx = _Idx; }
 
 public:
-    void render_DepthMap();
+    void render_LightDepth();
 
 private:
     void CreateDepthMapTex();

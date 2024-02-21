@@ -453,7 +453,7 @@ void CLevelEditor::render_ImGuizmo()
     if (nullptr == pSelectedObj)
         return;
 
-    CCamera* pCam = CRenderMgr::GetInst()->GetCamera(0); // Main Camera
+    CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera(); 
 
     if (nullptr == pCam)
         return;

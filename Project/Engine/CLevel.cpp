@@ -1,10 +1,14 @@
 #include "pch.h"
 #include "CLevel.h"
 
+#include "CTimeMgr.h"
+#include "CRenderMgr.h"
+
 #include "CLayer.h"
 
 CLevel::CLevel()
     : m_arrLayer{}
+    , m_State(LEVEL_STATE::NONE)
 {
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
@@ -76,6 +80,39 @@ CLayer* CLevel::GetLayer(const wstring& _strLayerName) const
         }
     }
     return nullptr;
+}
+
+void CLevel::ChangeState(LEVEL_STATE _NextState)
+{
+    if (m_State == _NextState)
+        return;
+
+    // 정지 -> 플레이
+    if ((LEVEL_STATE::STOP == m_State || LEVEL_STATE::PAUSE == m_State || LEVEL_STATE::NONE == m_State) && LEVEL_STATE::PLAY == _NextState)
+    {
+        CTimeMgr::GetInst()->LockDeltaTime(false);
+
+        // 레벨 카메라 모드
+        CRenderMgr::GetInst()->ActiveEditorMode(false);
+
+        if (LEVEL_STATE::STOP == m_State || LEVEL_STATE::NONE == m_State)
+        {
+            begin();
+        }
+    }
+
+    // 플레이 -> 정지 or 일시정지
+    else if ((LEVEL_STATE::PLAY == m_State || LEVEL_STATE::NONE == m_State) &&
+             (LEVEL_STATE::STOP == _NextState || LEVEL_STATE::PAUSE == _NextState || LEVEL_STATE::NONE == _NextState))
+    {
+        CTimeMgr::GetInst()->LockDeltaTime(true);
+
+        // 에디터 카메라 모드
+        CRenderMgr::GetInst()->ActiveEditorMode(true);
+    }
+
+    // 레벨 스테이트 변경
+    m_State = _NextState;
 }
 
 void CLevel::clear()
