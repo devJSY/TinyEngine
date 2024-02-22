@@ -41,6 +41,11 @@ void COutliner::render()
     ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Outliner");
 
+    static ImGuiTextFilter Filter;
+    Filter.Draw("##OutlinerFilter", ImGui::GetContentRegionAvail().x);
+
+    ImGui::Separator();
+
     // Editor Camera
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
     CGameObject* pEditorCam = CRenderMgr::GetInst()->GetEditorCamera()->GetOwner();
@@ -59,8 +64,13 @@ void COutliner::render()
         CLayer* layer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
         const vector<CGameObject*>& objs = layer->GetParentObject();
 
-        // 각 오브젝트를 돌면서 오브젝트와 현재 레이어를 인자로 DrawNode() 호출
-        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
+        for (size_t i = 0; i < objs.size(); i++)
+        {
+            if (!Filter.PassFilter(ToString(objs[i]->GetName()).c_str()))
+                continue;
+
+            DrawNode(objs[i]);
+        }
     }
 
     // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
