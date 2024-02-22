@@ -550,7 +550,11 @@ void CLevelEditor::render_ImGuizmo()
 void CLevelEditor::render_CollisionResponses()
 {
     ImGui_SetWindowClass_LevelEditor();
-    ImGui::Begin("Collision Responses");
+    if (!ImGui::Begin("Collision Responses", &m_bShowCollisionResponses))
+    {
+        ImGui::End();
+        return;
+    }
 
     if (ImGui::Button("All Layer Enable"))
         CCollisionMgr::GetInst()->EnableAllLayer();
