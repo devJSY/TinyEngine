@@ -250,6 +250,20 @@ void CLevelEditor::render_MenuBar()
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Assets"))
+        {
+            if (ImGui::MenuItem("Create Material"))
+            {
+                Ptr<CMaterial> pMtrl = new CMaterial;
+                wstring name = L"material\\New Material_";
+                name += std::to_wstring(pMtrl->GetID());
+                pMtrl->SetName(name);
+                CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+            }
+
+            ImGui::EndMenu();
+        }
+
         ImGui::EndMainMenuBar();
     }
 }
@@ -356,12 +370,13 @@ void CLevelEditor::render_Assets()
         {
             for (const auto& iter : mapAsset)
             {
+                string name = ToString(iter.second->GetName());
                 string key = ToString(iter.first);
 
-                if (!filter.PassFilter(key.c_str()))
+                if (!filter.PassFilter(name.c_str()))
                     continue;
 
-                ImGui::TreeNodeEx(key.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
+                ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
                 {
