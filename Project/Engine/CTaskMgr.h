@@ -9,7 +9,7 @@ enum class TASK_TYPE
     DELETE_OBJECT,
 
     // Param1 : Level Adress
-    LEVEL_CHANGE,
+    CHANGE_LEVEL,
 
     // Param1 : Level, Param2 : LEVEL_STATE
     CHANGE_LEVELSTATE,
@@ -70,7 +70,7 @@ public:
 private:
     void CREATE_OBJECT(const tTask& _Task);
     void DELETE_OBJECT(const tTask& _Task);
-    void LEVEL_CHANGE(const tTask& _Task);
+    void CHANGE_LEVEL(const tTask& _Task);
     void CHANGE_LEVELSTATE(const tTask& _Task);
     void ADD_CHILD(const tTask& _Task);
     void DISCONNECT_PARENT(const tTask& _Task);

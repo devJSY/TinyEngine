@@ -12,9 +12,6 @@
 
 #include "CLevelSaveLoad.h"
 
-#include "CTestLevel.h"
-#include "CPBRLevel.h"
-
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
 {
@@ -31,14 +28,7 @@ CLevelMgr::~CLevelMgr()
 
 void CLevelMgr::init()
 {
-    // Level
-    // m_CurLevel = new CTestLevel;
-    // m_CurLevel->SetName(L"Test Level");
-
-    // PBR Level
-    m_CurLevel = new CPBRLevel;
-    m_CurLevel->SetName(L"PBR Level");
-
+    m_CurLevel = new CLevel;
     m_CurLevel->ChangeState(LEVEL_STATE::STOP);
 }
 
@@ -54,24 +44,16 @@ void CLevelMgr::tick()
     m_CurLevel->finaltick();
 }
 
-void CLevelMgr::ChangeLevel(CLevel* _NextLevel)
+void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState)
 {
+    if (m_CurLevel == _NextLevel)
+        return;
+
     if (nullptr != m_CurLevel)
-    {
         delete m_CurLevel;
-        m_CurLevel = nullptr;
-    }
 
     m_CurLevel = _NextLevel;
-}
 
-void CLevelMgr::ChangeLevelState(LEVEL_STATE _State)
-{
-    tTask task = {};
-
-    task.Type = TASK_TYPE::CHANGE_LEVELSTATE;
-    task.Param_1 = (DWORD_PTR)m_CurLevel;
-    task.Param_2 = (DWORD_PTR)_State;
-
-    CTaskMgr::GetInst()->AddTask(task);
+    if (nullptr != m_CurLevel)
+        m_CurLevel->ChangeState(_StartState);
 }

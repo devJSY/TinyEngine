@@ -88,9 +88,6 @@
     <ClInclude Include="CCamera.h">
       <Filter>08. Component\08. Camera</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>ScriptMgr\Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CLevelMgr.h">
       <Filter>04. Manager\LevelMgr</Filter>
     </ClInclude>
@@ -98,7 +95,7 @@
       <Filter>05. Level</Filter>
     </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
-      <Filter>ScriptMgr\Scripts</Filter>
+      <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CEditorMgr.h">
       <Filter>04. Manager\EditorMgr</Filter>
@@ -151,17 +148,11 @@
     <ClInclude Include="CAnim.h">
       <Filter>08. Component\04. Animator2D\Anim</Filter>
     </ClInclude>
-    <ClInclude Include="CTestLevel.h">
-      <Filter>05. Level</Filter>
-    </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>LevelSaveLoad</Filter>
     </ClInclude>
     <ClInclude Include="CStructuredBuffer.h">
       <Filter>03. Device\StructuredBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="CScriptMgr.h">
-      <Filter>ScriptMgr</Filter>
     </ClInclude>
     <ClInclude Include="CLight2D.h">
       <Filter>08. Component\06. Light2D</Filter>
@@ -171,12 +162,6 @@
     </ClInclude>
     <ClInclude Include="COutputLog.h">
       <Filter>20. Editor\LevelEditor\COutputLog</Filter>
-    </ClInclude>
-    <ClInclude Include="CShockWaveScript.h">
-      <Filter>ScriptMgr\Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CBulletScript.h">
-      <Filter>ScriptMgr\Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CBlueprintEditor.h">
       <Filter>20. Editor\Blueprint</Filter>
@@ -277,9 +262,6 @@
     <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
-    <ClInclude Include="CPBRLevel.h">
-      <Filter>05. Level</Filter>
-    </ClInclude>
     <ClInclude Include="CSkyBox.h">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
     </ClInclude>
@@ -354,9 +336,6 @@
     <ClCompile Include="CCamera.cpp">
       <Filter>08. Component\08. Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>ScriptMgr\Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CLevelMgr.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
     </ClCompile>
@@ -367,7 +346,7 @@
       <Filter>01. Header</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>ScriptMgr\Scripts</Filter>
+      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CEditorMgr.cpp">
       <Filter>04. Manager\EditorMgr</Filter>
@@ -423,17 +402,11 @@
     <ClCompile Include="CAnim.cpp">
       <Filter>08. Component\04. Animator2D\Anim</Filter>
     </ClCompile>
-    <ClCompile Include="CTestLevel.cpp">
-      <Filter>05. Level</Filter>
-    </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>LevelSaveLoad</Filter>
     </ClCompile>
     <ClCompile Include="CStructuredBuffer.cpp">
       <Filter>03. Device\StructuredBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="CScriptMgr.cpp">
-      <Filter>ScriptMgr</Filter>
     </ClCompile>
     <ClCompile Include="CLight2D.cpp">
       <Filter>08. Component\06. Light2D</Filter>
@@ -446,12 +419,6 @@
     </ClCompile>
     <ClCompile Include="COutputLog.cpp">
       <Filter>20. Editor\LevelEditor\COutputLog</Filter>
-    </ClCompile>
-    <ClCompile Include="CShockWaveScript.cpp">
-      <Filter>ScriptMgr\Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletScript.cpp">
-      <Filter>ScriptMgr\Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CBlueprintEditor.cpp">
       <Filter>20. Editor\Blueprint</Filter>
@@ -536,9 +503,6 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="CPBRLevel.cpp">
-      <Filter>05. Level</Filter>
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
       <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
@@ -698,12 +662,6 @@
     <Filter Include="03. Device\StructuredBuffer">
       <UniqueIdentifier>{9bc152a0-79ed-40d7-8633-be0834c741d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ScriptMgr">
-      <UniqueIdentifier>{f5da2d7c-b511-43ee-933e-dc822734429a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ScriptMgr\Scripts">
-      <UniqueIdentifier>{4534e01f-3ea9-4615-8c70-e43b15fe89e7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Engine">
       <UniqueIdentifier>{9f111e3a-05f2-4f21-9949-7619719dc3b4}</UniqueIdentifier>
     </Filter>
@@ -793,6 +751,9 @@
     </Filter>
     <Filter Include="07. GameObject\Ex">
       <UniqueIdentifier>{6794881a-b62a-4735-885c-e53729e92edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{4534e01f-3ea9-4615-8c70-e43b15fe89e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

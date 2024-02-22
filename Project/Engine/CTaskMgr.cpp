@@ -107,8 +107,8 @@ void CTaskMgr::tick()
         case TASK_TYPE::DELETE_OBJECT:
             DELETE_OBJECT(m_vecTask[i]);
             break;
-        case TASK_TYPE::LEVEL_CHANGE:
-            LEVEL_CHANGE(m_vecTask[i]);
+        case TASK_TYPE::CHANGE_LEVEL:
+            CHANGE_LEVEL(m_vecTask[i]);
             break;
         case TASK_TYPE::CHANGE_LEVELSTATE:
             CHANGE_LEVELSTATE(m_vecTask[i]);
@@ -193,24 +193,25 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 }
 
-void CTaskMgr::LEVEL_CHANGE(const tTask& _Task)
+void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
 {
     // Editor ÃÊ±âÈ­
     CEditorMgr::GetInst()->SetSelectedObject(nullptr);
     CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
 
-    CLevel* Level = (CLevel*)_Task.Param_1;
-    CLevelMgr::GetInst()->ChangeLevel(Level);
+    CLevel* pNexLevel = (CLevel*)_Task.Param_1;
+    LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
+
+    CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
     CRenderMgr::GetInst()->ClearCamera();
-    Level->begin();
 }
 
 void CTaskMgr::CHANGE_LEVELSTATE(const tTask& _Task)
 {
-    CLevel* pLevel = (CLevel*)_Task.Param_1;
+    CLevel* pNexLevel = (CLevel*)_Task.Param_1;
     LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
 
-    pLevel->ChangeState(NextState);
+    pNexLevel->ChangeState(NextState);
 }
 
 void CTaskMgr::ADD_CHILD(const tTask& _Task)

@@ -15,6 +15,9 @@ public:
 private:
     virtual void render() override;
 
+private:
+    void DrawDetails();
+
 public:
     void SetMaterial(Ptr<CMaterial> _Mtrl) { m_Mtrl = _Mtrl; }
 

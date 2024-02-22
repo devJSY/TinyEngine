@@ -3,16 +3,13 @@
 
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
-
 #include "CGameObject.h"
 #include "components.h"
-
-#include "CScriptMgr.h"
 
 class CScript : public CComponent
 {
 private:
-    SCRIPT_TYPE m_iScriptType;
+    UINT m_ScriptType;
 
 public:
     virtual void finaltick() final {}
@@ -22,16 +19,10 @@ public:
     virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override {}
-    virtual void LoadFromLevelFile(FILE* _FILE) override {}
+    virtual void SaveToLevelFile(FILE* _File){};
+    virtual void LoadFromLevelFile(FILE* _File){};
 
 public:
-    SCRIPT_TYPE GetScriptType() const { return m_iScriptType; }
-
-public:
-    CScript* Clone() = 0;
-
-public:
-    CScript(SCRIPT_TYPE _type);
+    CScript();
     virtual ~CScript();
 };

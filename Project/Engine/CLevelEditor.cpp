@@ -194,7 +194,7 @@ void CLevelEditor::render_MenuBar()
                     CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(FileName);
 
                     if (nullptr != pLoadedLevel)
-                        GamePlayStatic::LevelChange(pLoadedLevel);
+                        GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
                 }
             }
 
@@ -311,7 +311,7 @@ void CLevelEditor::render_Toolbar()
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
             toolbarEnabled)
         {
-            CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PAUSE);
+            GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::STOP);
         }
     }
     else
@@ -320,7 +320,7 @@ void CLevelEditor::render_Toolbar()
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
             toolbarEnabled)
         {
-            CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::PLAY);
+            GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::PLAY);
         }
     }
 
@@ -330,7 +330,7 @@ void CLevelEditor::render_Toolbar()
                            tintColor) &&
         toolbarEnabled)
     {
-        CLevelMgr::GetInst()->ChangeLevelState(LEVEL_STATE::STOP);
+        GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::STOP);
     }
 
     ImGui::PopStyleVar(2);
@@ -434,7 +434,7 @@ void CLevelEditor::render_Viewport()
                 CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(ToWstring(name));
 
                 if (nullptr != pLoadedLevel)
-                    GamePlayStatic::LevelChange(pLoadedLevel);
+                    GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
             }
         }
 

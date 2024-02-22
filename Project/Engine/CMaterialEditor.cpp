@@ -18,6 +18,11 @@ void CMaterialEditor::render()
         return;
 
     ImGui_SetWindowClass_MaterialEditor();
+    DrawDetails();
+}
+
+void CMaterialEditor::DrawDetails()
+{
     ImGui::Begin("Details##MaterialEditor");
 
     ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));

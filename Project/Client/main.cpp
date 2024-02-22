@@ -12,6 +12,16 @@
     #pragma comment(lib, "Engine\\Engine.lib")
 #endif
 
+// Scripts
+#ifdef _DEBUG
+    #pragma comment(lib, "Scripts\\Scripts_d.lib")
+#else
+    #pragma comment(lib, "Scripts\\Scripts.lib")
+#endif
+
+#include "CCreateTestLevel.h"
+#include "CCreatePBRLevel.h"
+
 // 메모리 누수 체크
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -27,8 +37,7 @@ BOOL InitInstance(HINSTANCE, int);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine,
-                      _In_ int nCmdShow)
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
     // 메모리 누수 체크
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -50,6 +59,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
         return 0;
     }
+
+    CCreateTestLevel::CreateTestLevel();
+    //CCreatePBRLevel::CreatePBRLevel();
 
     while (true)
     {
@@ -100,8 +112,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance;
 
-    hWnd = CreateWindowW(L"TinyEngine", L"Tiny Engine", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
-                         nullptr, nullptr, hInstance, nullptr);
+    hWnd =
+        CreateWindowW(L"TinyEngine", L"Tiny Engine", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
     {
@@ -110,8 +122,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     // TitleBar Drak Mode
     BOOL USE_DARK_MODE = true;
-    DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE, &USE_DARK_MODE,
-                          sizeof(USE_DARK_MODE));
+    DwmSetWindowAttribute(hWnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE, &USE_DARK_MODE, sizeof(USE_DARK_MODE));
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
@@ -126,30 +137,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
-    case WM_MOUSEWHEEL:
+    case WM_MOUSEWHEEL: {
+        // ↑ : 120 , ↓ : -120
+        short zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+        CKeyMgr::GetInst()->SetMouseWheel(zDelta);
+    }
+    break;
+    case WM_COMMAND: {
+        int wmId = LOWORD(wParam);
+        // 메뉴 선택을 구문 분석합니다:
+        switch (wmId)
         {
-            // ↑ : 120 , ↓ : -120
-            short zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
-            CKeyMgr::GetInst()->SetMouseWheel(zDelta);
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
-        break;
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
+    }
+    break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

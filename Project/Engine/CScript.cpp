@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "CScript.h"
 
-CScript::CScript(SCRIPT_TYPE _type)
+CScript::CScript()
     : CComponent(COMPONENT_TYPE::SCRIPT)
-    , m_iScriptType(_type)
+    , m_ScriptType(0)
 {
 }
 

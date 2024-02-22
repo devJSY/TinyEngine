@@ -36,7 +36,8 @@ namespace GamePlayStatic
     void RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
     void LayerChange(CGameObject* _pObj, int LayerIdx);
 
-    void LevelChange(CLevel* _Level);
+    void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState);
+    void ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState);
 }
 
 string ToString(const wstring& wstr);

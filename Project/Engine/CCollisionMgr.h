@@ -22,7 +22,7 @@ private:
 
 public:
     void LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck = true);
-    void LayerCheck(const wstring& _LeftLayer, const wstring& _RightLayer);
+    void LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, const wstring& _RightLayer);
 
     void EnableAllLayer();
     void DisableAllLayer();

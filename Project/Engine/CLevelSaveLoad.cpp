@@ -107,17 +107,17 @@ int CLevelSaveLoad::SaveGameObject(CGameObject* _Object, FILE* _File)
         Com->SaveToLevelFile(_File);
     }
 
-    // 스크립트
-    const vector<CScript*>& vecScript = _Object->GetScripts();
-    size_t ScriptCount = vecScript.size();
-    fwrite(&ScriptCount, sizeof(size_t), 1, _File);
+    //// 스크립트
+    //const vector<CScript*>& vecScript = _Object->GetScripts();
+    //size_t ScriptCount = vecScript.size();
+    //fwrite(&ScriptCount, sizeof(size_t), 1, _File);
 
-    for (size_t i = 0; i < vecScript.size(); ++i)
-    {
-        wstring ScriptName = CScriptMgr::GetScriptName(vecScript[i]);
-        SaveWString(ScriptName, _File);
-        vecScript[i]->SaveToLevelFile(_File);
-    }
+    //for (size_t i = 0; i < vecScript.size(); ++i)
+    //{
+    //    wstring ScriptName = CScriptMgr::GetScriptName(vecScript[i]);
+    //    SaveWString(ScriptName, _File);
+    //    vecScript[i]->SaveToLevelFile(_File);
+    //}
 
     // 자식 오브젝트
     const vector<CGameObject*>& vecChild = _Object->GetChildObject();
@@ -255,18 +255,18 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         pObject->AddComponent(Component);
     }
 
-    // 스크립트
-    size_t ScriptCount = 0;
-    fread(&ScriptCount, sizeof(size_t), 1, _File);
+    //// 스크립트
+    //size_t ScriptCount = 0;
+    //fread(&ScriptCount, sizeof(size_t), 1, _File);
 
-    for (size_t i = 0; i < ScriptCount; ++i)
-    {
-        wstring ScriptName;
-        LoadWString(ScriptName, _File);
-        CScript* pScript = CScriptMgr::GetScript(ScriptName);
-        pObject->AddComponent(pScript);
-        pScript->LoadFromLevelFile(_File);
-    }
+    //for (size_t i = 0; i < ScriptCount; ++i)
+    //{
+    //    wstring ScriptName;
+    //    LoadWString(ScriptName, _File);
+    //    CScript* pScript = CScriptMgr::GetScript(ScriptName);
+    //    pObject->AddComponent(pScript);
+    //    pScript->LoadFromLevelFile(_File);
+    //}
 
     // 자식 오브젝트
     size_t ChildCount = 0;

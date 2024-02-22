@@ -101,14 +101,10 @@ void CSpriteEditor::DrawViewport()
         if (ImGui::IsItemHovered())
         {
             ImVec2 mouse_pos = mouse_pos_in_canvas / m_ViewportScale;
-            ImVec2 LeftDistVec =
-                ImLineClosestPoint(m_Sprites[i].Rect.GetTL(), m_Sprites[i].Rect.GetBL(), mouse_pos) - mouse_pos;
-            ImVec2 RightDistVec =
-                ImLineClosestPoint(m_Sprites[i].Rect.GetTR(), m_Sprites[i].Rect.GetBR(), mouse_pos) - mouse_pos;
-            ImVec2 TopDistVec =
-                ImLineClosestPoint(m_Sprites[i].Rect.GetTL(), m_Sprites[i].Rect.GetTR(), mouse_pos) - mouse_pos;
-            ImVec2 BottomDistVec =
-                ImLineClosestPoint(m_Sprites[i].Rect.GetBL(), m_Sprites[i].Rect.GetBR(), mouse_pos) - mouse_pos;
+            ImVec2 LeftDistVec = ImLineClosestPoint(m_Sprites[i].Rect.GetTL(), m_Sprites[i].Rect.GetBL(), mouse_pos) - mouse_pos;
+            ImVec2 RightDistVec = ImLineClosestPoint(m_Sprites[i].Rect.GetTR(), m_Sprites[i].Rect.GetBR(), mouse_pos) - mouse_pos;
+            ImVec2 TopDistVec = ImLineClosestPoint(m_Sprites[i].Rect.GetTL(), m_Sprites[i].Rect.GetTR(), mouse_pos) - mouse_pos;
+            ImVec2 BottomDistVec = ImLineClosestPoint(m_Sprites[i].Rect.GetBL(), m_Sprites[i].Rect.GetBR(), mouse_pos) - mouse_pos;
 
             float LeftDistSquare = (LeftDistVec.x * LeftDistVec.x) + (LeftDistVec.y * LeftDistVec.y);
             float RightDist = (RightDistVec.x * RightDistVec.x) + (RightDistVec.y * RightDistVec.y);
@@ -368,19 +364,15 @@ void CSpriteEditor::DrawViewport()
     // =================================
 
     // Draw grid + all lines in the canvas
-    draw_list->PushClipRect(canvas_p0, canvas_p1, true);     // 캔버스 영역내 렌더링 제한
+    draw_list->PushClipRect(canvas_p0, canvas_p1, true); // 캔버스 영역내 렌더링 제한
     if (opt_enable_grid)
     {
         const float GRID_STEP = 32.0f;
 
-        for (float x = fmodf(m_ViewportOffset.x, GRID_STEP * m_ViewportScale); x < canvas_sz.x;
-             x += GRID_STEP * m_ViewportScale)
-            draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y),
-                               IM_COL32(200, 200, 200, 40));
-        for (float y = fmodf(m_ViewportOffset.y, GRID_STEP * m_ViewportScale); y < canvas_sz.y;
-             y += GRID_STEP * m_ViewportScale)
-            draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y),
-                               IM_COL32(200, 200, 200, 40));
+        for (float x = fmodf(m_ViewportOffset.x, GRID_STEP * m_ViewportScale); x < canvas_sz.x; x += GRID_STEP * m_ViewportScale)
+            draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y), IM_COL32(200, 200, 200, 40));
+        for (float y = fmodf(m_ViewportOffset.y, GRID_STEP * m_ViewportScale); y < canvas_sz.y; y += GRID_STEP * m_ViewportScale)
+            draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y), IM_COL32(200, 200, 200, 40));
     }
 
     // Texture Render
@@ -449,8 +441,8 @@ void CSpriteEditor::DrawDetails()
 {
     ImGui::Begin("Details##SpriteEditor");
 
-    ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
-                                             ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+    ImGuiTreeNodeFlags DefaultTreeNodeFlag =
+        ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
     // ==========================
     // Sprites
@@ -591,8 +583,7 @@ void CSpriteEditor::DrawDetails()
     {
         if (ImGui::Button("Load Animation"))
         {
-            std::filesystem::path filePath =
-                OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+            std::filesystem::path filePath = OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
             if (!filePath.empty()) // 취소, 닫기 버튼 체크
             {
@@ -607,10 +598,8 @@ void CSpriteEditor::DrawDetails()
                     m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
                     m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
                     m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                    m_vAnimBackGround.x =
-                        m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_vAnimBackGround.y =
-                        m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
                 }
             }
         }
@@ -619,8 +608,7 @@ void CSpriteEditor::DrawDetails()
 
         if (ImGui::Button("Save Animation"))
         {
-            std::filesystem::path filePath =
-                SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+            std::filesystem::path filePath = SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
             if (!filePath.empty()) // 취소, 닫기 버튼 체크
             {
@@ -634,10 +622,8 @@ void CSpriteEditor::DrawDetails()
                         m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
                         m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
                         m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                        m_pAnim->m_vecFrm[i].vBackground.x =
-                            m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
-                        m_pAnim->m_vecFrm[i].vBackground.y =
-                            m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+                        m_pAnim->m_vecFrm[i].vBackground.x = m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vBackground.y = m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
                     }
 
                     if (m_pAnim->GetName().empty())
@@ -685,14 +671,11 @@ void CSpriteEditor::DrawDetails()
                 }
             }
 
-            ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0,
-                             (int)m_pAnim->m_vecFrm.size() - 1);
+            ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0, (int)m_pAnim->m_vecFrm.size() - 1);
 
-            ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset X").c_str(),
-                             &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
+            ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset X").c_str(), &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
 
-            ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset Y").c_str(),
-                             &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
+            ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset Y").c_str(), &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
 
             ImGui::Text("Animation Offset");
             ImGui::SameLine();
@@ -747,8 +730,8 @@ void CSpriteEditor::DrawSpriteList()
             if (m_Sprites[idx].bSpriteList_Selected)
                 borderColor = IM_COL32(255, 0, 0, 255);
 
-            ImGui::ImageButton((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f),
-                               m_Sprites[idx].Rect.Min / TextureSize, m_Sprites[idx].Rect.Max / TextureSize);
+            ImGui::ImageButton((void*)m_pTex->GetSRV().Get(), ImVec2(100.f, 100.f), m_Sprites[idx].Rect.Min / TextureSize,
+                               m_Sprites[idx].Rect.Max / TextureSize);
 
             draw_list->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), borderColor);
 
@@ -807,6 +790,13 @@ void CSpriteEditor::DrawSpriteList()
 
                 m_Sprites[i].bSpriteList_Selected = false;
             }
+
+            // 선택된 Sprite가 없는 상태에서 애니메이션 생성요청했을경우
+            if (m_pAnim->m_vecFrm.empty())
+            {
+                delete m_pAnim;
+                m_pAnim = nullptr;
+            }
         }
 
         ImGui::EndPopup();
@@ -832,10 +822,10 @@ void CSpriteEditor::DrawAnimationViewport()
     draw_list->AddRectFilled(canvas_LT, canvas_RB, IM_COL32(50, 50, 50, 255));
     draw_list->AddRect(canvas_LT, canvas_RB, IM_COL32(255, 255, 255, 255));
 
-    draw_list->AddLine(ImVec2(canvas_LT.x, canvas_LT.y + (canvas_sz.y / 2.f)),
-                       ImVec2(canvas_RB.x, canvas_LT.y + (canvas_sz.y / 2.f)), IM_COL32(255, 0, 0, 255)); // 가로 축
-    draw_list->AddLine(ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_LT.y),
-                       ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_RB.y), IM_COL32(0, 0, 255, 255)); // 세로 축
+    draw_list->AddLine(ImVec2(canvas_LT.x, canvas_LT.y + (canvas_sz.y / 2.f)), ImVec2(canvas_RB.x, canvas_LT.y + (canvas_sz.y / 2.f)),
+                       IM_COL32(255, 0, 0, 255)); // 가로 축
+    draw_list->AddLine(ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_LT.y), ImVec2(canvas_LT.x + (canvas_sz.x / 2.f), canvas_RB.y),
+                       IM_COL32(0, 0, 255, 255)); // 세로 축
 
     if (nullptr != m_pAnim)
     {
@@ -863,14 +853,13 @@ void CSpriteEditor::DrawAnimationList()
 
         for (UINT i = 0; i < m_pAnim->m_vecFrm.size(); i++)
         {
-            ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
-                         m_pAnim->m_vecFrm[i].vLeftTop, m_pAnim->m_vecFrm[i].vLeftTop + m_pAnim->m_vecFrm[i].vSlice);
+            ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f), m_pAnim->m_vecFrm[i].vLeftTop,
+                         m_pAnim->m_vecFrm[i].vLeftTop + m_pAnim->m_vecFrm[i].vSlice);
 
             // Drag & Drop
             if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
             {
-                ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f),
-                             m_pAnim->m_vecFrm[i].vLeftTop,
+                ImGui::Image((void*)m_pAnim->GetAtlasTex()->GetSRV().Get(), ImVec2(100.f, 100.f), m_pAnim->m_vecFrm[i].vLeftTop,
                              m_pAnim->m_vecFrm[i].vLeftTop + m_pAnim->m_vecFrm[i].vSlice);
 
                 ImGui::SetDragDropPayload("ANIMATION_LIST_SPRITE", &i, sizeof(int));

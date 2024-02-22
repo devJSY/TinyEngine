@@ -75,12 +75,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(ProjectDir)ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
-    <ExternalIncludePath>$(ProjectDir)ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -178,7 +178,6 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CBlueprintEditor.h" />
-    <ClInclude Include="CBulletScript.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCollisionMgr.h" />
@@ -214,20 +213,15 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CParticleUpdate.h" />
     <ClInclude Include="CPathMgr.h" />
-    <ClInclude Include="CPBRLevel.h" />
-    <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CRenderComponent.h" />
     <ClInclude Include="CRenderMgr.h" />
     <ClInclude Include="CScript.h" />
-    <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSetColorShader.h" />
     <ClInclude Include="CShader.h" />
-    <ClInclude Include="CShockWaveScript.h" />
     <ClInclude Include="CSkyBox.h" />
     <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
-    <ClInclude Include="CTestLevel.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTileMap.h" />
     <ClInclude Include="CTileMapEditor.h" />
@@ -276,7 +270,6 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_init.cpp" />
     <ClCompile Include="CBlueprintEditor.cpp" />
-    <ClCompile Include="CBulletScript.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
@@ -311,20 +304,15 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
-    <ClCompile Include="CPBRLevel.cpp" />
-    <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
     <ClCompile Include="CScript.cpp" />
-    <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSetColorShader.cpp" />
     <ClCompile Include="CShader.cpp" />
-    <ClCompile Include="CShockWaveScript.cpp" />
     <ClCompile Include="CSkyBox.cpp" />
     <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
-    <ClCompile Include="CTestLevel.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTileMap.cpp" />
     <ClCompile Include="CTileMapEditor.cpp" />

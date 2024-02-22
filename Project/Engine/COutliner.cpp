@@ -359,24 +359,31 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         const map<wstring, CAnim*>& mapAnim = pAni->GetmapAnim();
         CAnim* pCurAnim = pAni->GetCurAnim();
 
+        // =====================
+        // Animation Select
+        // =====================
+        vector<string> names;
+
+        for (const auto& iter : mapAnim)
+        {
+            names.push_back(ToString(iter.first));
+        }
+
+        string curAnimName = string();
+        if (nullptr != pCurAnim)
+            curAnimName = ToString(pCurAnim->GetName());
+
+        ImGui::Text("Animation Name");
+        if (ImGui_ComboUI("##Anim", curAnimName, names))
+        {
+            pAni->Play(ToWstring(curAnimName), true);
+        }
+
+        // =====================
+        // Animation Info
+        // =====================
         if (nullptr != pCurAnim)
         {
-            // Animation Names
-            vector<string> names;
-
-            for (const auto& iter : mapAnim)
-            {
-                names.push_back(ToString(iter.first));
-            }
-
-            string curAnimName = ToString(pCurAnim->GetName());
-
-            ImGui::Text("Animation Name");
-            if (ImGui_ComboUI("##Anim", curAnimName, names))
-            {
-                pAni->Play(ToWstring(curAnimName), true);
-            }
-
             pCurAnim = pAni->GetCurAnim();
 
             Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();

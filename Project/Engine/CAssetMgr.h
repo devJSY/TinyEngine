@@ -43,12 +43,10 @@ public:
     tMeshData MakeRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeDebugCircle(const float radius, const int numSlices);
     tMeshData MakeDebugRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
-    tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.0f,
-                             const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeBox(const float scale = 1.0f);
     tMeshData MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
-    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks,
-                         const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeTetrahedron(); // 사면체
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
@@ -58,8 +56,7 @@ public:
 
     // 모델 로딩
 public:
-    CGameObject* LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals = false,
-                           tMeshData _TexturesName = {});
+    CGameObject* LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals = false, tMeshData _TexturesName = {});
     CGameObject* LoadModel(const wstring& _name, vector<tMeshData> meshes);
 
 private:
@@ -67,16 +64,12 @@ private:
     void SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _MeshData);
 
 public:
-    Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat,
-                                UINT _BindFlag, D3D11_USAGE _Usage,
-                                const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr,
-                                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr,
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage,
+                                const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr,
                                 const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc = nullptr,
                                 const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc = nullptr);
-    Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D,
-                                const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr,
-                                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr,
-                                const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc = nullptr,
+    Ptr<CTexture> CreateTexture(const wstring& _strKey, ComPtr<ID3D11Texture2D> _Tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr,
+                                const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr, const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc = nullptr,
                                 const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc = nullptr);
 
 public:
@@ -100,19 +93,17 @@ private:
 template <typename T>
 ASSET_TYPE GetAssetType()
 {
-    const type_info& info = typeid(T);
-
     ASSET_TYPE Type = ASSET_TYPE::END;
 
-    if (&info == &typeid(CMesh))
+    if constexpr (std::is_same_v<CMesh, T>)
         Type = ASSET_TYPE::MESH;
-    else if (&info == &typeid(CTexture))
+    if constexpr (std::is_same_v<CTexture, T>)
         Type = ASSET_TYPE::TEXTURE;
-    else if (&info == &typeid(CGraphicsShader))
+    if constexpr (std::is_same_v<CGraphicsShader, T>)
         Type = ASSET_TYPE::GRAPHICS_SHADER;
-    else if (&info == &typeid(CComputeShader))
+    if constexpr (std::is_same_v<CComputeShader, T>)
         Type = ASSET_TYPE::COMPUTE_SHADER;
-    else if (&info == &typeid(CMaterial))
+    if constexpr (std::is_same_v<CMaterial, T>)
         Type = ASSET_TYPE::MATERIAL;
 
     return Type;

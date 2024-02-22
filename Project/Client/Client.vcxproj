@@ -161,12 +161,16 @@ call LibraryCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCreateTestLevel.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="CCreatePBRLevel.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCreatePBRLevel.cpp" />
+    <ClCompile Include="CCreateTestLevel.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

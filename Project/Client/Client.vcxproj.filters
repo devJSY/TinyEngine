@@ -8,6 +8,15 @@
     <Filter Include="Default">
       <UniqueIdentifier>{39a3a5a6-e1bf-4527-8679-3fd7b49602db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{cf2bc9db-4ccc-4e1f-bbf7-e727c9bcf171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\PBR">
+      <UniqueIdentifier>{0f193bb0-c288-4bca-b0b6-40670f009aaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Test">
+      <UniqueIdentifier>{77b4d3f1-3349-4b7b-ac67-cd1f05a726ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -21,6 +30,12 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CCreatePBRLevel.h">
+      <Filter>Level\PBR</Filter>
+    </ClInclude>
+    <ClInclude Include="CCreateTestLevel.h">
+      <Filter>Level\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -38,5 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="CCreatePBRLevel.cpp">
+      <Filter>Level\PBR</Filter>
+    </ClCompile>
+    <ClCompile Include="CCreateTestLevel.cpp">
+      <Filter>Level\Test</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

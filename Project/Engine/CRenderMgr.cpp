@@ -113,11 +113,11 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
-    if (m_vecCam.empty())
+    if (nullptr == m_mainCam)
         return;
 
-    g_Transform.matView = m_vecCam[0]->GetViewMat();
-    g_Transform.matProj = m_vecCam[0]->GetProjMat();
+    g_Transform.matView = m_mainCam->GetViewMat();
+    g_Transform.matProj = m_mainCam->GetProjMat();
 
     list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
     for (; iter != m_DbgShapeInfo.end();)
@@ -180,14 +180,18 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_postprocess()
 {
-    // RTV(PostProcess), SRV(floatRTTex DepthOnlyTex)
+    // =================
+    // PostEffect        RTV(PostProcess), SRV(floatRTTex DepthOnlyTex)
+    // =================
     CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
     m_PostEffectObj->render();
     CTexture::Clear(0);
     CTexture::Clear(1);
     CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex_HDRI->GetTex2D().Get());
 
+    // =================
     // Bloom
+    // =================
     CDevice::GetInst()->SetFloatRenderTarget();
     CopyToPostProcessTex_HDRI();
     for (int i = 0; i < m_BloomDownFilters.size(); i++)
@@ -220,7 +224,9 @@ void CRenderMgr::render_postprocess()
         CTexture::Clear(0);
     }
 
+    // =================
     // Tone Mapping + Bloom Combine
+    // =================
     CDevice::GetInst()->SetViewport();
     CDevice::GetInst()->SetRenderTarget();
     m_ToneMappingObj->render();

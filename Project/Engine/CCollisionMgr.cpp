@@ -409,11 +409,10 @@ void CCollisionMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)
     }
 }
 
-void CCollisionMgr::LayerCheck(const wstring& _LeftLayer, const wstring& _RightLayer)
+void CCollisionMgr::LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, const wstring& _RightLayer)
 {
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    CLayer* pLeftLayer = pCurLevel->GetLayer(_LeftLayer);
-    CLayer* pRightLayer = pCurLevel->GetLayer(_RightLayer);
+    CLayer* pLeftLayer = _CurLevel->GetLayer(_LeftLayer);
+    CLayer* pRightLayer = _CurLevel->GetLayer(_RightLayer);
 
     // 이름에 해당하는 Layer 가 존재하지 않으면
     assert(pLeftLayer && pRightLayer);
