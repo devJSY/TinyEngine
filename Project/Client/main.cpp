@@ -60,8 +60,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         return 0;
     }
 
-    CCreateTestLevel::CreateTestLevel();
-    //CCreatePBRLevel::CreatePBRLevel();
+    //CCreateTestLevel::CreateTestLevel();
+    CCreatePBRLevel::CreatePBRLevel();
 
     while (true)
     {

@@ -110,6 +110,7 @@ void CEditorMgr::init()
 
     // 에디터용 카메라 오브젝트 생성
     CGameObjectEx* pEditorCam = new CGameObjectEx;
+    pEditorCam->SetName(L"Editor Camera");
     pEditorCam->AddComponent(new CTransform);
     pEditorCam->AddComponent(new CCamera);
     pEditorCam->AddComponent(new CCameraMoveScript);
@@ -119,7 +120,7 @@ void CEditorMgr::init()
     pEditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
     pEditorCam->Camera()->SetFOV(XM_PI / 2.f);
     pEditorCam->Camera()->SetFar(100000.f);
-    pEditorCam->Camera()->SetHDRI(false);
+    pEditorCam->Camera()->SetHDRI(true);
     pEditorCam->Camera()->SetCameraPriority(0);
 
     m_vecEditorObj.push_back(pEditorCam);

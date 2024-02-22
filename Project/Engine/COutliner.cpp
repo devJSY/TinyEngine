@@ -35,8 +35,24 @@ void COutliner::init()
 
 void COutliner::render()
 {
+    // ===================
+    // Outliner
+    // ===================
     ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Outliner");
+
+    // Editor Camera
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    CGameObject* pEditorCam = CRenderMgr::GetInst()->GetEditorCamera()->GetOwner();
+    ImGuiTreeNodeFlags EditCamflags =
+        ((pSelectedObj == pEditorCam) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_Bullet | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+
+    ImGui::TreeNodeEx((void*)(intptr_t)pEditorCam->GetID(), EditCamflags, ToString(pEditorCam->GetName()).c_str());
+
+    if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+        CEditorMgr::GetInst()->SetSelectedObject(pEditorCam);
+
+    ImGui::Separator();
 
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
@@ -89,11 +105,13 @@ void COutliner::render()
 
     ImGui::End();
 
+    // ===================
+    // Details
+    // ===================
     ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("Details##Outliner");
     if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
         DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());
-
     ImGui::End();
 }
 
@@ -101,12 +119,7 @@ void COutliner::DrawNode(CGameObject* obj)
 {
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
 
-    int id = -1;
-
-    if (nullptr != pSelectedObj)
-        id = pSelectedObj->GetID();
-
-    ImGuiTreeNodeFlags flags = ((id == obj->GetID()) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+    ImGuiTreeNodeFlags flags = ((pSelectedObj == obj) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
     string name = ToString(obj->GetName());
 
@@ -222,11 +235,14 @@ void COutliner::DrawDetails(CGameObject* obj)
         }
 
         int LayerIdx = obj->GetLayerIdx();
-        string name = LayerNames[LayerIdx];
-
-        if (ImGui_ComboUI(ImGui_LabelPrefix("Layer").c_str(), name, LayerNames))
+        if (LayerIdx >= 0)
         {
-            GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(ToWstring(name))->GetLayerIdx());
+            string name = LayerNames[LayerIdx];
+
+            if (ImGui_ComboUI(ImGui_LabelPrefix("Layer").c_str(), name, LayerNames))
+            {
+                GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(ToWstring(name))->GetLayerIdx());
+            }
         }
     }
 
