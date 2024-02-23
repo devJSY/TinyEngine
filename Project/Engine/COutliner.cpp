@@ -389,7 +389,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         // Animation Select
         // =====================
         vector<string> names;
-
+        names.reserve(mapAnim.size());
         for (const auto& iter : mapAnim)
         {
             names.push_back(ToString(iter.first));
