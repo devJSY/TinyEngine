@@ -118,7 +118,9 @@ inline void CAssetMgr::AddAsset(const wstring& _strKey, Ptr<T> _Asset)
     assert(iter == m_mapAsset[(UINT)Type].end());
 
     m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset.Get()));
+    _Asset->SetName(_strKey);
     _Asset->SetKey(_strKey);
+    _Asset->SetRelativePath(_strKey);
 }
 
 template <typename T>
@@ -159,8 +161,6 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
         return nullptr;
     }
 
-    pAsset->SetKey(_strKey);
-    pAsset->SetRelativePath(_strRelativePath);
     AddAsset<T>(_strKey, (T*)pAsset.Get());
 
     // CAsset 타입을 요청한 타입으로 캐스팅해서 반환

@@ -370,13 +370,14 @@ void CLevelEditor::render_Assets()
         {
             for (const auto& iter : mapAsset)
             {
-                string name = ToString(iter.second->GetName());
+                std::filesystem::path name = ToString(iter.second->GetName());
+                string StringName = name.filename().string();
                 string key = ToString(iter.first);
 
-                if (!filter.PassFilter(name.c_str()))
+                if (!filter.PassFilter(StringName.c_str()))
                     continue;
 
-                ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
+                ImGui::TreeNodeEx(StringName.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
                 {
