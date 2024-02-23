@@ -294,7 +294,9 @@ void CMaterialEditor::DrawDetails()
                         pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
                     ImGui::Columns(2);
-                    ImGui::SetColumnWidth(0, 300);
+                    ImGui::SetColumnWidth(0, 250);
+                    ImGui::Spacing();
+                    ImGui::Dummy(ImVec2(0.f, 30.f));
                     ImGui::Text(TexParams[i].Desc.c_str());
                     ImGui::NextColumn();
 
@@ -371,6 +373,7 @@ void CMaterialEditor::tick()
 {
     m_ViewportCam->GetOwner()->tick();
     m_ViewportObj->tick();
+
     m_LightObj->Transform()->tick();
 }
 
