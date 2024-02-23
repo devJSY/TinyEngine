@@ -2,6 +2,7 @@
 #include "CMaterialEditor.h"
 #include "CEditorMgr.h"
 #include "CLevelMgr.h"
+#include "CKeyMgr.h"
 
 #include "CLevel.h"
 #include "components.h"
@@ -110,6 +111,16 @@ void CMaterialEditor::DrawViewport()
 {
     ImGui::Begin("Viewport##MaterialEditor");
 
+    // Object Drag Rotation
+    if (ImGui::IsWindowHovered() && KEY_PRESSED(KEY::LBTN))
+    {
+        Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
+        Vec3 vRot = m_ViewportObj->Transform()->GetRelativeRotation();
+        vRot.y -= vDrag.x * XM_PI / 720.f;
+        vRot.x -= vDrag.y * XM_PI / 720.f;
+        m_ViewportObj->Transform()->SetRelativeRotation(vRot);
+    }
+
     // ·»´õÅ¸°Ù ¼³Á¤
     CONTEXT->ClearRenderTargetView(m_ViewportRTTex->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
     CONTEXT->ClearDepthStencilView(m_ViewportDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -196,22 +207,25 @@ void CMaterialEditor::DrawDetails()
 
     if (ImGui::TreeNodeEx("Shader##MaterialEditor", DefaultTreeNodeFlag, "Shader"))
     {
-        string ShaderName = string();
-        if (nullptr != pShader)
-            ShaderName += ToString(pShader->GetName());
-
-        const map<wstring, Ptr<CAsset>>& ShadersMap = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::GRAPHICS_SHADER);
-
-        if (ImGui_ComboUI(ImGui_LabelPrefix("Shader Name").c_str(), ShaderName, ShadersMap))
+        // Shader Name Combobox
         {
-            m_Mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(ToWstring(ShaderName)));
+            string ShaderName = string();
+            if (nullptr != pShader)
+                ShaderName += ToString(pShader->GetName());
+
+            const map<wstring, Ptr<CAsset>>& ShadersMap = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::GRAPHICS_SHADER);
+
+            if (ImGui_ComboUI(ImGui_LabelPrefix("Shader Name").c_str(), ShaderName, ShadersMap))
+            {
+                m_Mtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(ToWstring(ShaderName)));
+            }
         }
 
         ImGui::Separator();
 
+        // Scaler Parameter
         if (nullptr != pShader)
         {
-            // Scaler
             static float fDragSpeed = 1.0f;
             ImGui::SliderFloat(ImGui_LabelPrefix("Drag Speed").c_str(), &fDragSpeed, 0.f, 1.f);
 
