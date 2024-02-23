@@ -13,8 +13,7 @@ namespace GamePlayStatic
     void CloneGameObject(CGameObject* _OriginObj);
 
     void DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
-    void DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-                       float _Duration = 0.f);
+    void DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
@@ -22,8 +21,7 @@ namespace GamePlayStatic
     void DrawDebugCross(Vec3 _vWorldPos, float _fScale, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void DrawDebugBox(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
-    void DrawDebugBox(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest,
-                      float _Duration = 0.f);
+    void DrawDebugBox(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
@@ -46,8 +44,8 @@ string currentDateTime();
 Vec4 HashIDToColor(int hash);
 void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& width, int& height);
 ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, const std::vector<uint8_t>& image,
-                                             const DXGI_FORMAT pixelFormat = DXGI_FORMAT_R8G8B8A8_UNORM,
-                                             const int mipLevels = 1, const int arraySize = 1);
+                                             const DXGI_FORMAT pixelFormat = DXGI_FORMAT_R8G8B8A8_UNORM, const int mipLevels = 1,
+                                             const int arraySize = 1);
 
 // =====================================
 // Save / Load
@@ -91,17 +89,18 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
     }
 }
 
-
 wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 
 // =====================================
 // ImGui Utility
 // =====================================
-void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f,
-                           float resetValue = 0.0f, float columnWidth = 100.0f);
+void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f, float resetValue = 0.0f,
+                           float columnWidth = 100.0f);
 string ImGui_LabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::vector<string>& items);
+template <typename T>
+bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items);
 bool ImGui_AlignButton(const char* label, float alignment = 0.5f);
 void ImGui_InputText(const char* label, const string& Text, float alignment = 0.5f);
 
@@ -151,4 +150,32 @@ void Delete_Map(map<T1, T2>& _map)
             delete pair.second;
     }
     _map.clear();
+}
+
+template <typename T>
+inline bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items)
+{
+    bool changed = false;
+
+    if (ImGui::BeginCombo(caption.c_str(), current_item.c_str()))
+    {
+        for (const auto& iter : items)
+        {
+            std::string strKey = ToString(iter.first);
+            bool is_selected = (current_item == strKey);
+            if (ImGui::Selectable(strKey.c_str(), is_selected))
+            {
+                current_item = strKey;
+                changed = true;
+            }
+            if (is_selected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+
+    return changed;
 }

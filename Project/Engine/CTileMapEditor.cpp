@@ -251,18 +251,12 @@ void CTileMapEditor::DrawTileSet()
         }
 
         const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
-        vector<string> names;
-        for (const auto& iter : mapTextures)
-        {
-            names.push_back(ToString(iter.first));
-        }
-
-        std::string CurTextureName;
+        string CurTextureName = string();
 
         if (nullptr != m_TileMap->GetTileAtlas())
             CurTextureName = ToString(m_TileMap->GetTileAtlas()->GetKey());
 
-        if (ImGui_ComboUI(ImGui_LabelPrefix("Tile Sheet Texture").c_str(), CurTextureName, names))
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Tile Sheet Texture").c_str(), CurTextureName, mapTextures))
         {
             m_TileMap->SetTileAtlas(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName)),
                                     m_TileMap->m_vTilePixelSize);

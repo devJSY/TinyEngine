@@ -388,19 +388,12 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         // =====================
         // Animation Select
         // =====================
-        vector<string> names;
-        names.reserve(mapAnim.size());
-        for (const auto& iter : mapAnim)
-        {
-            names.push_back(ToString(iter.first));
-        }
-
         string curAnimName = string();
         if (nullptr != pCurAnim)
             curAnimName = ToString(pCurAnim->GetName());
 
         ImGui::Text("Animation Name");
-        if (ImGui_ComboUI("##Anim", curAnimName, names))
+        if (ImGui_ComboUI("##Anim", curAnimName, mapAnim))
         {
             pAni->Play(ToWstring(curAnimName), true);
         }
