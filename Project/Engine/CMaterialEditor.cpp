@@ -14,7 +14,6 @@ CMaterialEditor::CMaterialEditor()
     : CEditor(EDITOR_TYPE::MATERIAL)
     , m_Mtrl()
     , m_ViewportRTTex(nullptr)
-    , m_ViewportDSTex(nullptr)
     , m_ViewportCam(nullptr)
     , m_ViewportObj(nullptr)
     , m_LightObj(nullptr)
@@ -23,10 +22,6 @@ CMaterialEditor::CMaterialEditor()
     // RenderTarget
     m_ViewportRTTex = CAssetMgr::GetInst()->CreateTexture(L"MtrlEditorViewportTex", 1280, 1280, DXGI_FORMAT_R16G16B16A16_FLOAT,
                                                           D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
-
-    // DepthStencil 용도 텍스쳐 생성
-    m_ViewportDSTex = CAssetMgr::GetInst()->CreateTexture(L"MtrlEditorViewportDSTex", 1280, 1280, DXGI_FORMAT_D24_UNORM_S8_UINT,
-                                                          D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 
     // Camera
     CGameObjectEx* pCam = new CGameObjectEx;
@@ -123,9 +118,7 @@ void CMaterialEditor::DrawViewport()
 
     // 렌더타겟 설정
     CONTEXT->ClearRenderTargetView(m_ViewportRTTex->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
-    CONTEXT->ClearDepthStencilView(m_ViewportDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-    CONTEXT->OMSetRenderTargets(1, m_ViewportRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
+    CONTEXT->OMSetRenderTargets(1, m_ViewportRTTex->GetRTV().GetAddressOf(), NULL);
     CDevice::GetInst()->SetViewport(1280.f, 1280.f);
 
     // 카메라 정보 설정

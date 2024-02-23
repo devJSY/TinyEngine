@@ -11,7 +11,6 @@ private:
 
     // Viewport
     Ptr<CTexture> m_ViewportRTTex;
-    Ptr<CTexture> m_ViewportDSTex;
     CCamera* m_ViewportCam;
     CGameObjectEx* m_ViewportObj;
     CGameObjectEx* m_LightObj;
