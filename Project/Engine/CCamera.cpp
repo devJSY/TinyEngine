@@ -177,26 +177,6 @@ void CCamera::render()
     render(m_vecMaked);
     render(m_vecTransparent);
 
-    // NormalLine & OutLine Pass
-    if (this == CRenderMgr::GetInst()->GetMainCamera() && !g_Global.DrawAsWireFrame)
-    {
-        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-        if (nullptr != pSelectedObj && nullptr != pSelectedObj->GetRenderComponent() &&
-            SHADER_DOMAIN::DOMAIN_POSTPROCESS != pSelectedObj->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain())
-        {
-            // NormalLine Pass
-            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-                pSelectedObj->render(NormalLineMtrl);
-
-            // OutLine Pass
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            else
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-        }
-    }
-
     // Depth Only Pass
     CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
     render_DepthOnly(m_vecOpaque);
@@ -253,6 +233,8 @@ void CCamera::render_LightDepth(Ptr<CTexture> _DepthMapTex)
 
 void CCamera::render(vector<CGameObject*>& _vecObj)
 {
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+
     for (size_t i = 0; i < _vecObj.size(); ++i)
     {
         // Render Pass
@@ -266,6 +248,21 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         else
         {
             _vecObj[i]->render();
+        }
+
+        // NormalLine & OutLine Pass
+        if (pSelectedObj == _vecObj[i] && this == CRenderMgr::GetInst()->GetMainCamera() && !g_Global.DrawAsWireFrame)
+        {
+            // NormalLine Pass
+            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+                pSelectedObj->render(NormalLineMtrl);
+
+            // OutLine Pass
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+            else
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
         }
     }
 }
