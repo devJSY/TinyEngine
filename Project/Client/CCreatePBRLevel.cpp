@@ -35,7 +35,7 @@ void CCreatePBRLevel::CreatePBRLevel()
     pCurLevel->GetLayer(15)->SetName(L"UI");
 
     AddSample(pCurLevel);
-    AddModels(pCurLevel);
+    //AddModels(pCurLevel);
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;

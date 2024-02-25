@@ -133,6 +133,11 @@ void COutliner::DrawNode(CGameObject* obj)
 
     string name = ToString(obj->GetName());
 
+    if (nullptr != pSelectedObj && pSelectedObj->IsAncestor(obj))
+    {
+        ImGui::SetNextItemOpen(true);
+    }
+
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
 
     // Drag & Drop

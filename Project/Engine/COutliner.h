@@ -35,7 +35,7 @@ private:
     void DrawLandscape(CGameObject* obj);
 
 private:
-    template<typename T>
+    template <typename T>
     void ComponentSettingsButton(T* comp);
 
     CLONE_DISABLE(COutliner);
@@ -46,7 +46,6 @@ private:
 
     friend class CLevelEditor; // CLevelEditor 에서만 생성가능하도록 제한
 };
-
 
 template <typename T>
 void COutliner::ComponentSettingsButton(T* comp)
