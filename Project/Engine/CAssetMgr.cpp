@@ -10,7 +10,6 @@
 #include "CMeshRender.h"
 
 #include "CDevice.h"
-#include "COutputLog.h"
 
 CAssetMgr::CAssetMgr()
 {

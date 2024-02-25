@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CModleLoader.h"
 #include "CPathMgr.h"
-#include "COutputLog.h"
 
 CModelLoader::CModelLoader()
 {

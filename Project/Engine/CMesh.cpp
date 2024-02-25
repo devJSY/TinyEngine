@@ -6,8 +6,6 @@
 #include "CAssetMgr.h"
 #include "CTexture.h"
 
-#include "COutputLog.h"
-
 CMesh::CMesh(bool _bEngineAsset)
     : CAsset(ASSET_TYPE::MESH, _bEngineAsset)
     , m_VBDesc{}

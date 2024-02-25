@@ -3,7 +3,6 @@
 
 #include "CAnim.h"
 #include "CPathMgr.h"
-#include "COutputLog.h"
 
 CAnimator2D::CAnimator2D()
     : CComponent(COMPONENT_TYPE::ANIMATOR2D)

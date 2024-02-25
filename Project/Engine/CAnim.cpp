@@ -5,7 +5,6 @@
 
 #include "CDevice.h"
 #include "CConstBuffer.h"
-#include "COutputLog.h"
 
 CAnim::CAnim()
     : m_Animator(nullptr)

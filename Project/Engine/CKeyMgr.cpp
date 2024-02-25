@@ -52,10 +52,7 @@ void CKeyMgr::init()
 
 void CKeyMgr::tick()
 {
-    HWND hMainHwnd = CEngine::GetInst()->GetMainWind();
-    HWND hFocusHwnd = GetFocus();
-
-    if (hMainHwnd != hFocusHwnd)
+    if (nullptr == GetFocus())
     {
         for (size_t i = 0; i < m_vecKeyData.size(); ++i)
         {

@@ -17,12 +17,12 @@
 
 #include <commdlg.h> // OPENFILENAME
 
+using std::hash;
 using std::list;
 using std::make_pair;
 using std::map;
-using std::vector;
-using std::hash;
 using std::tuple;
+using std::vector;
 
 using std::string;
 using std::wstring;
@@ -88,7 +88,7 @@ typedef Vector4 Vec4;
 #include <imgui_node_editor\\imgui_node_editor.h>
 
 // Assimp 5.2.5
-//#define NOMINMAX
+// #define NOMINMAX
 #ifdef _DEBUG
     #pragma comment(lib, "assimp\\assimp-vc143-mtd")
 #else
@@ -97,3 +97,5 @@ typedef Vector4 Vec4;
 #include <assimp\\Importer.hpp>
 #include <assimp\\postprocess.h>
 #include <assimp\\scene.h>
+
+#include "COutputLog.h"

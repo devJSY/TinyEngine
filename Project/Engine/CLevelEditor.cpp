@@ -22,8 +22,6 @@
 #include "CMaterialEditor.h"
 #include "CTileMapEditor.h"
 
-#include "COutputLog.h"
-
 CLevelEditor::CLevelEditor()
     : CEditor(EDITOR_TYPE::LEVEL)
     , m_ViewportFocused(false)
@@ -126,6 +124,13 @@ void CLevelEditor::render()
 
     ImGuiID dockSpace = ImGui::GetID("Level Editor DockSpace");
     ImGui::DockSpace(dockSpace);
+
+    // Destroy Object
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (ImGui::IsItemHovered() && nullptr != pSelectedObj && KEY_TAP(KEY::DEL))
+    {
+        GamePlayStatic::DestroyGameObject(pSelectedObj);
+    }
 
     // =====================================
     // Level Editor Render

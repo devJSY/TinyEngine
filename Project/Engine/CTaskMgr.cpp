@@ -17,8 +17,6 @@
 
 #include "CLevel.h"
 
-#include "COutputLog.h"
-
 // stb
 extern "C"
 {
@@ -87,13 +85,6 @@ void CTaskMgr::tick()
                     // GamePlayStatic::MouseRayPicking(MousePos); // Ray Picking
                 }
             }
-        }
-
-        // Destroy Object
-        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-        if (nullptr != pSelectedObj && KEY_TAP(KEY::DEL))
-        {
-            GamePlayStatic::DestroyGameObject(pSelectedObj);
         }
     }
 

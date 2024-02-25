@@ -6,7 +6,6 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 #include "CTexture.h"
-#include "COutputLog.h"
 
 CMaterial::CMaterial(bool _bEngineAsset)
     : CAsset(ASSET_TYPE::MATERIAL, _bEngineAsset)

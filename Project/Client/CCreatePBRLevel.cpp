@@ -35,7 +35,7 @@ void CCreatePBRLevel::CreatePBRLevel()
     pCurLevel->GetLayer(15)->SetName(L"UI");
 
     AddSample(pCurLevel);
-    //AddModels(pCurLevel);
+    AddModels(pCurLevel);
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -124,9 +124,9 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
 
     CGameObject* pObj = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     for (const auto& child : pObj->GetChildObject())
     {
-        child->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
         child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
         child->Transform()->SetAbsolute(true);
     }
@@ -146,9 +146,9 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\brick-wall-ue\\";
 
     pObj = CAssetMgr::GetInst()->LoadModel(L"brick-wall", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(250.f, 0.f, 0.f));
     for (const auto& child : pObj->GetChildObject())
     {
-        child->Transform()->SetRelativePos(Vec3(250.f, 0.f, 0.f));
         child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
         child->Transform()->SetAbsolute(true);
     }
@@ -169,9 +169,9 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\columned-lava-rock-ue\\";
 
     pObj = CAssetMgr::GetInst()->LoadModel(L"columned-lava-rock", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 0.f));
     for (const auto& child : pObj->GetChildObject())
     {
-        child->Transform()->SetRelativePos(Vec3(500.f, 0.f, 0.f));
         child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
         child->Transform()->SetAbsolute(true);
     }
@@ -191,9 +191,9 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\wrinkled-paper-ue\\";
 
     pObj = CAssetMgr::GetInst()->LoadModel(L"wrinkled-paper", meshes);
+    pObj->Transform()->SetRelativePos(Vec3(750.f, 0.f, 0.f));
     for (const auto& child : pObj->GetChildObject())
     {
-        child->Transform()->SetRelativePos(Vec3(750.f, 0.f, 0.f));
         child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
         child->Transform()->SetAbsolute(true);
     }
