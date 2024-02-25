@@ -134,22 +134,15 @@ void CEditorMgr::tick()
     if (!m_bEnable)
         return;
 
-    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
-    {
-        if (nullptr == m_arrEditor[i])
-            continue;
+    // ======================
+    // Editor Tick
+    // ======================
+    m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]->tick();
+    m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]->finaltick();
 
-        m_arrEditor[i]->tick();
-    }
-
-    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
-    {
-        if (nullptr == m_arrEditor[i])
-            continue;
-
-        m_arrEditor[i]->finaltick();
-    }
-
+    // ======================
+    // Editor Object Tick
+    // ======================
     for (size_t i = 0; i < m_vecEditorObj.size(); ++i)
     {
         m_vecEditorObj[i]->tick();

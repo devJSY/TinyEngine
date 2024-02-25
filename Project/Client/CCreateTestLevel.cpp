@@ -97,5 +97,5 @@ void CCreateTestLevel::CreateTestLevel()
         }
     }
 
-    GamePlayStatic::ChangeLevel(pCurLevel, LEVEL_STATE::STOP);
+    GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::STOP);
 }

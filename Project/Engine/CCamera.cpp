@@ -151,8 +151,6 @@ void CCamera::SortObject()
             case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                 m_vecPostProcess.push_back(vecObjects[j]);
                 break;
-            case SHADER_DOMAIN::DOMAIN_DEBUG:
-                break;
             }
         }
     }
@@ -166,40 +164,37 @@ void CCamera::render()
     g_Transform.matProj = m_matProj;
     g_Transform.matProjInv = m_matProj.Invert();
 
+    // RenderTarget ¼³Á¤
     if (m_bHDRI)
-    {
         CDevice::GetInst()->SetFloatRenderTarget();
-        CDevice::GetInst()->SetViewport();
-
-        // Main Render
-        render(m_vecOpaque);
-        render(m_vecMaked);
-        render(m_vecTransparent);
-    }
     else
-    {
         CDevice::GetInst()->SetRenderTarget();
-        CDevice::GetInst()->SetViewport();
 
-        // Main Render
-        render(m_vecOpaque);
-        render(m_vecMaked);
-        render(m_vecTransparent);
-    }
+    CDevice::GetInst()->SetViewport();
 
-    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-    if (0 == m_iCamPriority && nullptr != pSelectedObj && !g_Global.DrawAsWireFrame)
+    // Main Render Pass
+    render(m_vecOpaque);
+    render(m_vecMaked);
+    render(m_vecTransparent);
+
+    // NormalLine & OutLine Pass
+    if (this == CRenderMgr::GetInst()->GetMainCamera() && !g_Global.DrawAsWireFrame)
     {
-        // NormalLine Pass
-        Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-            pSelectedObj->render(NormalLineMtrl);
+        CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+        if (nullptr != pSelectedObj && nullptr != pSelectedObj->GetRenderComponent() &&
+            SHADER_DOMAIN::DOMAIN_POSTPROCESS != pSelectedObj->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain())
+        {
+            // NormalLine Pass
+            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+                pSelectedObj->render(NormalLineMtrl);
 
-        // OutLine Pass
-        if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-        else
-            pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+            // OutLine Pass
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+            else
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+        }
     }
 
     // Depth Only Pass

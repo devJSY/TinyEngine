@@ -197,13 +197,16 @@ void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
 {
     // Editor ÃÊ±âÈ­
     CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-    CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
+    }
 
     CLevel* pNexLevel = (CLevel*)_Task.Param_1;
     LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
 
-    CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
     CRenderMgr::GetInst()->ClearCamera();
+    CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
 }
 
 void CTaskMgr::CHANGE_LEVELSTATE(const tTask& _Task)

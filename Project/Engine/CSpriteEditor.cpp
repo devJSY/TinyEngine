@@ -902,7 +902,7 @@ void CSpriteEditor::finaltick()
     if (nullptr == m_pAnim || !m_bAnimPlay)
         return;
 
-    m_pAnim->m_fAccTime += DT;
+    m_pAnim->m_fAccTime += DT_ENGINE;
 
     if (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].Duration < m_pAnim->m_fAccTime)
     {

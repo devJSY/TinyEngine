@@ -59,6 +59,24 @@ void CLevelEditor::init()
     COutputLog::GetInst()->init();
 }
 
+void CLevelEditor::tick()
+{
+    // =========================
+    // Editor Tick
+    // =========================
+    if (m_bShowMaterialEditor)
+        CEditorMgr::GetInst()->GetMaterialEditor()->tick();
+
+    if (m_bShowBlueprintEditor)
+        CEditorMgr::GetInst()->GetBlueprintEditor()->tick();
+
+    if (m_bShowSpriteEditor)
+        CEditorMgr::GetInst()->GetSpriteEditor()->tick();
+
+    if (m_bShowTileMapEditor)
+        CEditorMgr::GetInst()->GetTileMapEditor()->tick();
+}
+
 void CLevelEditor::finaltick()
 {
     static bool prevUsingGuizmo = false;
@@ -73,6 +91,21 @@ void CLevelEditor::finaltick()
     }
 
     prevUsingGuizmo = ImGuizmo::IsUsing();
+
+    // =========================
+    // Editor Final Tick
+    // =========================
+    if (m_bShowMaterialEditor)
+        CEditorMgr::GetInst()->GetMaterialEditor()->finaltick();
+
+    if (m_bShowBlueprintEditor)
+        CEditorMgr::GetInst()->GetBlueprintEditor()->finaltick();
+
+    if (m_bShowSpriteEditor)
+        CEditorMgr::GetInst()->GetSpriteEditor()->finaltick();
+
+    if (m_bShowTileMapEditor)
+        CEditorMgr::GetInst()->GetTileMapEditor()->finaltick();
 }
 
 void CLevelEditor::render()
@@ -140,9 +173,9 @@ void CLevelEditor::render()
         COutputLog::GetInst()->render(&m_bShowOutputLog);
 
     //// ImGUI Demo
-    //bool show_demo_window = true;
-    //if (show_demo_window)
-    //    ImGui::ShowDemoWindow(&show_demo_window);
+    // bool show_demo_window = true;
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 
     ImGui::End(); // dockspace End
 
