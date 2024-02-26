@@ -99,3 +99,4 @@ typedef Vector4 Vec4;
 #include <assimp\\scene.h>
 
 #include "COutputLog.h"
+

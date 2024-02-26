@@ -2,6 +2,7 @@
 #include "CEditorMgr.h"
 #include "CEditor.h"
 #include "CRenderMgr.h"
+#include <Scripts\\CScriptMgr.h>
 
 #include "CLevelEditor.h"
 
@@ -10,8 +11,6 @@
 #include "CGameObjectEx.h"
 #include "components.h"
 #include "CScript.h"
-
-#include <Scripts\\CScriptMgr.h>
 
 CEditorMgr::CEditorMgr()
     : m_bEnable(true)

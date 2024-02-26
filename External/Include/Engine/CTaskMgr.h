@@ -2,13 +2,13 @@
 
 enum class TASK_TYPE
 {
-    // Param1 : Layer Index, Param2 : Object Adress
+    // Param1 : Layer Index, Param2 : Object Address
     CREATE_OBJECT,
 
-    // Param1 : Object Adress
+    // Param1 : Object Address
     DELETE_OBJECT,
 
-    // Param1 : Level Adress
+    // Param1 : Level Address
     CHANGE_LEVEL,
 
     // Param1 : Level, Param2 : LEVEL_STATE
@@ -23,7 +23,7 @@ enum class TASK_TYPE
     // Param1 : Width , Param2 : Height
     WINDOW_RESIZE,
 
-    // wParam : Asset_TYPE, lParam : Resource Adress
+    // wParam : Asset_TYPE, lParam : Resource Address
     DELETE_ASSET,
 
     // No Param
@@ -40,6 +40,9 @@ enum class TASK_TYPE
 
     // Param1 : Object, Param2 : COMPONENT_TYPE
     REMOVE_COMPONENT,
+
+    // Param1 : Object, Param2 : Script Address
+    REMOVE_SCRIPT,
 
     // Param1 : Object, Param2 : Layer Index
     LAYER_CHANGE,
@@ -81,6 +84,7 @@ private:
     void MOUSE_RAY_PICKING(const tTask& _Task);
     void ADD_COMPONENT(const tTask& _Task);
     void REMOVE_COMPONENT(const tTask& _Task);
+    void REMOVE_SCRIPT(const tTask& _Task);
     void LAYER_CHANGE(const tTask& _Task);
     void CLONE_OBJECT(const tTask& _Task);
 };

@@ -44,7 +44,7 @@ CGameObject::CGameObject(const CGameObject& origin)
         AddComponent(origin.m_vecScript[i]->Clone());
     }
 
-	// 복사되는 GameObject 는 부모만 레이어소속을 -1 로 하고,
+    // 복사되는 GameObject 는 부모만 레이어소속을 -1 로 하고,
     // 자식들은 원본객체랑 동일한 레이어소속을 유지한다.
     for (size_t i = 0; i < origin.m_vecChild.size(); ++i)
     {
@@ -207,6 +207,22 @@ void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
 
     delete m_arrCom[(UINT)_Type];
     m_arrCom[(UINT)_Type] = nullptr;
+}
+
+void CGameObject::RemoveScript(CScript* _script)
+{
+    std::vector<CScript*>::iterator iter = m_vecScript.begin();
+
+    for (; iter != m_vecScript.end(); iter++)
+    {
+        if ((*iter) == _script)
+        {
+            m_vecScript.erase(iter);
+            delete _script;
+            _script = nullptr;
+            break;
+        }
+    }
 }
 
 void CGameObject::DisconnectWithParent()

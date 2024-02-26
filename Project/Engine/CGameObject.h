@@ -46,6 +46,7 @@ public:
 public:
     void AddComponent(CComponent* _Component);
     void RemoveComponent(COMPONENT_TYPE _Type);
+    void RemoveScript(CScript* _script);
     CComponent* GetComponent(COMPONENT_TYPE _Type) const { return m_arrCom[(UINT)_Type]; }
 
     GET_COMPONENT(Transform, TRANSFORM);

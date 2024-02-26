@@ -5,6 +5,7 @@
 
 class CGameObject;
 class CComponent;
+class CScript;
 
 class COutliner : public CEntity
 {
@@ -33,10 +34,13 @@ private:
     void DrawParticlesystem(CGameObject* obj);
     void DrawSkybox(CGameObject* obj);
     void DrawLandscape(CGameObject* obj);
+    void DrawScript(CGameObject* obj);
 
 private:
     template <typename T>
     void ComponentSettingsButton(T* comp);
+
+    void ScriptSettingsButton(CScript* script);
 
     CLONE_DISABLE(COutliner);
 

@@ -5,12 +5,14 @@
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
+#include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
 #include "CLayer.h"
 
 #include "CGameObject.h"
 #include "components.h"
+#include "CScript.h"
 
 #include "CTexture.h"
 #include "CAnim.h"
@@ -274,6 +276,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawParticlesystem(obj);
     DrawSkybox(obj);
     DrawLandscape(obj);
+    DrawScript(obj);
 }
 
 void COutliner::DrawTransform(CGameObject* obj)
@@ -1303,4 +1306,51 @@ void COutliner::DrawSkybox(CGameObject* obj)
 
 void COutliner::DrawLandscape(CGameObject* obj)
 {
+}
+
+void COutliner::DrawScript(CGameObject* obj)
+{
+    const vector<CScript*>& vecScript = obj->GetScripts();
+    if (vecScript.empty())
+        return;
+
+    for (size_t i = 0; i < vecScript.size(); i++)
+    {
+        bool open = ImGui::TreeNodeEx((void*)(typeid(CScript).hash_code() + vecScript[i]->GetID()), m_DefaultTreeNodeFlag, "Script");
+
+        ScriptSettingsButton(vecScript[i]);
+
+        if (open)
+        {
+            ImGui_InputText("Name", ToString(CScriptMgr::GetScriptName(vecScript[i])));
+
+            ImGui::TreePop();
+        }
+    }
+}
+
+void COutliner::ScriptSettingsButton(CScript* script)
+{
+    ImVec2 contentRegion = ImGui::GetWindowContentRegionMax() - ImGui::GetWindowContentRegionMin();
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+
+    ImGui::SameLine(contentRegion.x - lineHeight * 0.5f);
+    string id = "+";
+    id += "##";
+    id += typeid(CScript).name();
+    id += script->GetID();
+    if (ImGui::Button(id.c_str(), ImVec2{lineHeight, lineHeight}))
+    {
+        ImGui::OpenPopup(typeid(CScript).name());
+    }
+
+    if (ImGui::BeginPopup(typeid(CScript).name()))
+    {
+        if (ImGui::MenuItem("Remove Script"))
+        {
+            GamePlayStatic::RemoveScript(script->GetOwner(), script);
+        }
+
+        ImGui::EndPopup();
+    }
 }

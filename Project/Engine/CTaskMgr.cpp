@@ -7,6 +7,7 @@
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
 #include "CCollisionMgr.h"
+#include <Scripts\\CScriptMgr.h>
 
 #include "CEngine.h"
 #include "CDevice.h"
@@ -130,6 +131,9 @@ void CTaskMgr::tick()
             break;
         case TASK_TYPE::REMOVE_COMPONENT:
             REMOVE_COMPONENT(m_vecTask[i]);
+            break;
+        case TASK_TYPE::REMOVE_SCRIPT:
+            REMOVE_SCRIPT(m_vecTask[i]);
             break;
         case TASK_TYPE::LAYER_CHANGE:
             LAYER_CHANGE(m_vecTask[i]);
@@ -583,6 +587,13 @@ void CTaskMgr::REMOVE_COMPONENT(const tTask& _Task)
     CGameObject* pObj = (CGameObject*)_Task.Param_1;
     COMPONENT_TYPE type = (COMPONENT_TYPE)_Task.Param_2;
     pObj->RemoveComponent(type);
+}
+
+void CTaskMgr::REMOVE_SCRIPT(const tTask& _Task)
+{
+    CGameObject* pObj = (CGameObject*)_Task.Param_1;
+    CScript* script = (CScript*)_Task.Param_2;
+    pObj->RemoveScript(script);
 }
 
 void CTaskMgr::LAYER_CHANGE(const tTask& _Task)

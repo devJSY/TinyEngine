@@ -1,8 +1,8 @@
 #pragma once
-#pragma once
 
 class CGameObject;
 class CLevel;
+class CScript;
 
 namespace GamePlayStatic
 {
@@ -32,6 +32,7 @@ namespace GamePlayStatic
 
     void AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
     void RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
+    void RemoveScript(CGameObject* _pObj, CScript* _script);
     void LayerChange(CGameObject* _pObj, int LayerIdx);
 
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState);
