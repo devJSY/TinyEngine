@@ -5,7 +5,6 @@ D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Rele
 D:\TinyEngine\Project\Engine\CAssetMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Release\CAssetMgr_init.obj
 D:\TinyEngine\Project\Engine\CBlueprintEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CBlueprintEditor.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCamera.obj
-D:\TinyEngine\Project\Engine\CCameraMoveScript.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCameraMoveScript.obj
 D:\TinyEngine\Project\Engine\CCollisionMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCollisionMgr.obj
 D:\TinyEngine\Project\Engine\CComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComponent.obj
 D:\TinyEngine\Project\Engine\CComputeShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComputeShader.obj

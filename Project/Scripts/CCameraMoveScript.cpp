@@ -19,6 +19,9 @@ CCameraMoveScript::~CCameraMoveScript()
 
 void CCameraMoveScript::tick()
 {
+    if (nullptr == Camera())
+        return;
+
     // 에디터 모드
     if (CEditorMgr::GetInst()->IsEnable())
     {
