@@ -124,6 +124,10 @@ void CDevice::Clear_Buffers(const Vec4& Color)
     m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
     CRenderMgr::GetInst()->Clear_Buffers(Color);
+
+    // ±‚∫ª ∑ª¥ı≈∏∞Ÿ º≥¡§
+    SetRenderTarget();
+    SetViewport();
 }
 
 void CDevice::Present()

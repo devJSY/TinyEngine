@@ -74,7 +74,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)OutputFile\bin\</OutDir>
-    <TargetName>$(ProjectName)_d</TargetName>
+    <TargetName>TinyEngin_d</TargetName>
     <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\Engine\ImGui\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -82,6 +82,7 @@
     <OutDir>$(SolutionDir)OutputFile\bin\</OutDir>
     <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\Engine\ImGui\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
+    <TargetName>TinyEngin</TargetName>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnabled>false</VcpkgEnabled>
