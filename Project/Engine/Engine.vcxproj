@@ -179,7 +179,6 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CBlueprintEditor.h" />
     <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CComputeShader.h" />
@@ -271,7 +270,6 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAssetMgr_init.cpp" />
     <ClCompile Include="CBlueprintEditor.cpp" />
     <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComputeShader.cpp" />

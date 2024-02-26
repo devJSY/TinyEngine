@@ -94,7 +94,7 @@ __declspec(align(16)) struct tMtrlConst
     Vec4 arrVec4[4];
     Matrix arrMat[4];
 
-    int bTex[TEX_PARAM::END];
+    int bTex[TEX_PARAM::TEX_END];
 };
 
 __declspec(align(16)) struct tGlobalData

@@ -3,7 +3,7 @@
 #include "CShockWaveScript.h"
 
 CBulletScript::CBulletScript()
-    : CScript()
+    : CScript(BULLETSCRIPT)
     , m_Speed(2500.f)
     , m_Duration(1.f)
 {

@@ -94,9 +94,6 @@
     <ClInclude Include="CLayer.h">
       <Filter>05. Level</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraMoveScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CEditorMgr.h">
       <Filter>04. Manager\EditorMgr</Filter>
     </ClInclude>
@@ -344,9 +341,6 @@
     </ClCompile>
     <ClCompile Include="extern.cpp">
       <Filter>01. Header</Filter>
-    </ClCompile>
-    <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CEditorMgr.cpp">
       <Filter>04. Manager\EditorMgr</Filter>
@@ -751,9 +745,6 @@
     </Filter>
     <Filter Include="07. GameObject\Ex">
       <UniqueIdentifier>{6794881a-b62a-4735-885c-e53729e92edc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{4534e01f-3ea9-4615-8c70-e43b15fe89e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

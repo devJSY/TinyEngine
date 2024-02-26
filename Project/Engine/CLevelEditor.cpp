@@ -14,9 +14,11 @@
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
 #include "CCollisionMgr.h"
+#include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
 #include "CLayer.h"
+#include "CScript.h"
 
 #include "CLevelSaveLoad.h"
 #include "CMaterialEditor.h"
@@ -297,6 +299,27 @@ void CLevelEditor::render_MenuBar()
                 name += std::to_wstring(pMtrl->GetID());
                 pMtrl->SetName(name);
                 CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+            }
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Script"))
+        {
+            vector<wstring> vecScriptName;
+            CScriptMgr::GetScriptInfo(vecScriptName);
+
+            for (size_t i = 0; i < vecScriptName.size(); i++)
+            {
+                if (ImGui::MenuItem(ToString(vecScriptName[i]).c_str()))
+                {
+                    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+
+                    if (nullptr != pSelectedObj)
+                    {
+                        pSelectedObj->AddComponent(CScriptMgr::GetScript(vecScriptName[i]));
+                    }
+                }
             }
 
             ImGui::EndMenu();

@@ -28,7 +28,7 @@ void CMaterial::UpdateData()
     m_pShader->UpdateData();
 
     // Texture Update(Register Binding)
-    for (UINT i = TEX_PARAM::TEX_0; i < TEX_PARAM::END; ++i)
+    for (UINT i = TEX_PARAM::TEX_0; i < TEX_PARAM::TEX_END; ++i)
     {
         if (nullptr != m_arrTex[i].Get())
         {
@@ -112,7 +112,7 @@ int CMaterial::Save(const wstring& _strRelativePath)
     fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
     // 재질이 참조하는 텍스쳐 정보를 저장
-    for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+    for (UINT i = 0; i < (UINT)TEX_PARAM::TEX_END; ++i)
     {
         SaveAssetRef<CTexture>(m_arrTex[i], pFile);
     }
@@ -135,7 +135,7 @@ int CMaterial::Load(const wstring& _strFilePath)
     fread(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
     // 재질이 참조하는 텍스쳐 정보를 로드
-    for (UINT i = 0; i < (UINT)TEX_PARAM::END; ++i)
+    for (UINT i = 0; i < (UINT)TEX_PARAM::TEX_END; ++i)
     {
         LoadAssetRef<CTexture>(m_arrTex[i], pFile);
     }

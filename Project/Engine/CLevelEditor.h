@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "CEditor.h"
 #include "COutliner.h"
 #include "CContentBrowser.h"

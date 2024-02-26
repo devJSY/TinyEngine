@@ -4,7 +4,7 @@
 #include "CShockWaveScript.h"
 
 CPlayerScript::CPlayerScript()
-    : CScript()
+    : CScript(PLAYERSCRIPT)
     , m_Speed(100.f)
 {
 }
@@ -15,6 +15,9 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
+    if (nullptr == Animator2D())
+        return;
+
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_backward.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_forward.anim");

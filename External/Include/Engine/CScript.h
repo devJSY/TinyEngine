@@ -9,7 +9,10 @@
 class CScript : public CComponent
 {
 private:
-    UINT m_ScriptType;
+    const UINT m_ScriptType;
+
+public:
+    UINT GetScriptType() const { return m_ScriptType; }
 
 public:
     virtual void finaltick() final {}
@@ -23,6 +26,6 @@ public:
     virtual void LoadFromLevelFile(FILE* _File){};
 
 public:
-    CScript();
+    CScript(UINT _ScriptType);
     virtual ~CScript();
 };

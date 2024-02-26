@@ -1,0 +1,1 @@
+CScriptMgr.h

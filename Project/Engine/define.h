@@ -208,7 +208,7 @@ enum TEX_PARAM
     TEXARR_0,
     TEXARR_1,
 
-    END,
+    TEX_END,
 };
 
 enum class EDITOR_TYPE

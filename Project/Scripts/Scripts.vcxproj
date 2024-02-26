@@ -136,7 +136,9 @@
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call ScriptsCopy.bat</Command>
+call ScriptsCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -161,19 +163,25 @@ call ScriptsCopy.bat</Command>
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)
-call ScriptsCopy.bat</Command>
+call ScriptsCopy.bat
+cd $(SolutionDir)CodeGen\
+call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CBulletScript.h" />
+    <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CShockWaveScript.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBulletScript.cpp" />
+    <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CShockWaveScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

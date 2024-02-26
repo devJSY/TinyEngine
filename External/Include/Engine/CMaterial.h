@@ -8,7 +8,7 @@ class CMaterial : public CAsset
 {
 private:
     tMtrlConst m_Const;
-    Ptr<CTexture> m_arrTex[(UINT)TEX_PARAM::END];
+    Ptr<CTexture> m_arrTex[(UINT)TEX_PARAM::TEX_END];
     Ptr<CGraphicsShader> m_pShader;
 
 public:

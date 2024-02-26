@@ -16,6 +16,12 @@
     <ClInclude Include="CShockWaveScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CScriptMgr.h">
+      <Filter>ScriptMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -33,6 +39,12 @@
     <ClCompile Include="CShockWaveScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CScriptMgr.cpp">
+      <Filter>ScriptMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -40,6 +52,9 @@
     </Filter>
     <Filter Include="Scripts">
       <UniqueIdentifier>{dd8ce5b2-b3fe-4dcc-b49a-2d791733985e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptMgr">
+      <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

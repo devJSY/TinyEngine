@@ -9,7 +9,9 @@
 #include "CDevice.h"
 #include "CGameObjectEx.h"
 #include "components.h"
-#include "CCameraMoveScript.h"
+#include "CScript.h"
+
+#include <Scripts\\CScriptMgr.h>
 
 CEditorMgr::CEditorMgr()
     : m_bEnable(true)
@@ -113,7 +115,7 @@ void CEditorMgr::init()
     pEditorCam->SetName(L"Editor Camera");
     pEditorCam->AddComponent(new CTransform);
     pEditorCam->AddComponent(new CCamera);
-    pEditorCam->AddComponent(new CCameraMoveScript);
+    pEditorCam->AddComponent(CScriptMgr::GetScript(CAMERAMOVESCRIPT));
 
     pEditorCam->Camera()->LayerMaskAll();
     pEditorCam->Camera()->LayerMask(31, false);

@@ -2,7 +2,7 @@
 #include "CShockWaveScript.h"
 
 CShockWaveScript::CShockWaveScript()
-    : CScript()
+    : CScript(SHOCKWAVESCRIPT)
     , m_Time(0.f)
 {
 }
@@ -17,6 +17,9 @@ void CShockWaveScript::begin()
 
 void CShockWaveScript::tick()
 {
+    if (nullptr == Collider2D())
+        return;
+
     float Radius = Collider2D()->GetRadius();
     Radius += DT * 500.f;
 
