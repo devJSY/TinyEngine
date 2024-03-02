@@ -1341,10 +1341,10 @@ void COutliner::ScriptSettingsButton(CScript* script)
     id += script->GetID();
     if (ImGui::Button(id.c_str(), ImVec2{lineHeight, lineHeight}))
     {
-        ImGui::OpenPopup(typeid(CScript).name());
+        ImGui::OpenPopup(typeid(CScript).name() + script->GetID());
     }
 
-    if (ImGui::BeginPopup(typeid(CScript).name()))
+    if (ImGui::BeginPopup(typeid(CScript).name() + script->GetID()))
     {
         if (ImGui::MenuItem("Remove Script"))
         {
