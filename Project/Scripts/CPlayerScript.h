@@ -4,6 +4,7 @@
 class CPlayerScript : public CScript
 {
 private:
+    Ptr<CPrefab> m_ShockWave;
     float m_Speed;
 
 public:

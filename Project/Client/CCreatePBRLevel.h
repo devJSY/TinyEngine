@@ -5,6 +5,7 @@ class CLevel;
 class CCreatePBRLevel
 {
 public:
+    static void Init();
     static void CreatePBRLevel();
 
 private:

@@ -7,6 +7,31 @@
 #include <Engine\\CGameObject.h>
 #include <Engine\\components.h>
 #include <Engine\\CLevelMgr.h>
+#include <Engine\\CScript.h>
+
+#include <Scripts\\CScriptMgr.h>
+
+void CCreatePBRLevel::Init()
+{
+    //// °øÆ÷Åº
+    //CGameObject* pShockWave = new CGameObject;
+    //pShockWave->SetName(L"Shock Wave");
+    //pShockWave->AddComponent(new CTransform);
+    //pShockWave->AddComponent(new CMeshRender);
+    //pShockWave->AddComponent(new CCollider2D);
+    //pShockWave->AddComponent(CScriptMgr::GetScript(SHOCKWAVESCRIPT));
+
+    //pShockWave->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
+    //pShockWave->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
+    //pShockWave->Collider2D()->SetRadius(1.f);
+    //pShockWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    //pShockWave->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ShockWaveMtrl"));
+
+    //Ptr<CPrefab> pMissilePrefab = new CPrefab(pShockWave);
+    //CAssetMgr::GetInst()->AddAsset<CPrefab>(L"ShockWavePrefab", pMissilePrefab.Get());
+
+    //pMissilePrefab->Save(L"prefab\\ShockWavePrefab.pref");
+}
 
 void CCreatePBRLevel::CreatePBRLevel()
 {
@@ -35,7 +60,7 @@ void CCreatePBRLevel::CreatePBRLevel()
     pCurLevel->GetLayer(15)->SetName(L"UI");
 
     AddSample(pCurLevel);
-    //AddModels(pCurLevel);
+    // AddModels(pCurLevel);
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;

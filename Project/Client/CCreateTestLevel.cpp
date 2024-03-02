@@ -11,6 +11,10 @@
 
 #include <Scripts\\CPlayerScript.h>
 
+void CCreateTestLevel::Init()
+{
+}
+
 void CCreateTestLevel::CreateTestLevel()
 {
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();

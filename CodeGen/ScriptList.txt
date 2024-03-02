@@ -1,4 +1,3 @@
-CBulletScript
 CCameraMoveScript
 CPlayerScript
 CShockWaveScript

@@ -7,9 +7,6 @@
     <ClInclude Include="pch.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CPlayerScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
@@ -29,9 +26,6 @@
     </ClCompile>
     <ClCompile Include="Scripts.cpp">
       <Filter>Default</Filter>
-    </ClCompile>
-    <ClCompile Include="CBulletScript.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp">
       <Filter>Scripts</Filter>
