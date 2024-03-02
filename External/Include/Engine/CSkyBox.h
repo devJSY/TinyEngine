@@ -35,7 +35,6 @@ public:
     SKYBOX_SHAPE GetSkyBoxShape() const { return m_Shape; };
 
 public:
-    virtual void begin() override;
     virtual void finaltick() override;
     virtual void UpdateData();
     virtual void render() override;

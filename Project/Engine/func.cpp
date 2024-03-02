@@ -273,13 +273,14 @@ void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState)
     tTask task = {};
     task.Type = TASK_TYPE::CHANGE_LEVEL;
     task.Param_1 = (DWORD_PTR)_NextLevel;
+    task.Param_2 = (DWORD_PTR)_NextState;
+
     CTaskMgr::GetInst()->AddTask(task);
 }
 
 void GamePlayStatic::ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState)
 {
     tTask task = {};
-
     task.Type = TASK_TYPE::CHANGE_LEVELSTATE;
     task.Param_1 = (DWORD_PTR)_NextLevel;
     task.Param_2 = (DWORD_PTR)_NextState;

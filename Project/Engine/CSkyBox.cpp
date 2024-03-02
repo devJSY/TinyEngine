@@ -22,11 +22,6 @@ CSkyBox::~CSkyBox()
     CTexture::Clear(19);
 }
 
-void CSkyBox::begin()
-{
-    UpdateData();
-}
-
 void CSkyBox::finaltick()
 {
     if (GetOwner()->IsDead())
@@ -51,6 +46,8 @@ void CSkyBox::render()
 {
     if (nullptr == GetMesh() || nullptr == GetMaterial())
         return;
+    
+    UpdateData();
 
     Transform()->UpdateData();
 
