@@ -101,7 +101,6 @@ void CCreatePBRLevel::CreatePBRLevel()
 
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
-    pFloor->MeshRender()->CreateDynamicMaterial()->SetMaterialCoefficient(Vec4(1.f, 1.f, 1.f, 1.f));
 
     pCurLevel->AddObject(pFloor, 0);
 

@@ -27,7 +27,6 @@ public:
     const vector<CGameObject*>& GetParentObjects() const { return m_vecParent; }
     const vector<CGameObject*>& GetLayerObjects() const { return m_vecObjects; }
 
-private:
     void AddObject(CGameObject* _Object, bool _bMove);
 
     CLONE(CLayer);

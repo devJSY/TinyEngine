@@ -106,36 +106,6 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop,
     }
 }
 
-void CAnim::SaveToLevelFile(FILE* _File)
-{
-    SaveWString(GetName(), _File);
-
-    size_t FrameCount = m_vecFrm.size();
-    fwrite(&FrameCount, sizeof(size_t), 1, _File);
-    fwrite(m_vecFrm.data(), sizeof(tAnimFrm), FrameCount, _File);
-    fwrite(&m_bUseBackGround, sizeof(bool), 1, _File);
-    SaveAssetRef<CTexture>(m_AtlasTex.Get(), _File);
-}
-
-void CAnim::LoadFromLevelFile(FILE* _File)
-{
-    wstring name;
-    LoadWString(name, _File);
-    SetName(name);
-
-    size_t FrameCount = 0;
-    fread(&FrameCount, sizeof(size_t), 1, _File);
-
-    for (size_t i = 0; i < FrameCount; ++i)
-    {
-        tAnimFrm frm = {};
-        fread(&frm, sizeof(tAnimFrm), 1, _File);
-        m_vecFrm.push_back(frm);
-    }
-    fread(&m_bUseBackGround, sizeof(bool), 1, _File);
-    LoadAssetRef<CTexture>(m_AtlasTex, _File);
-}
-
 bool CAnim::SaveAnim(const wstring& _FilePath)
 {
     FILE* pFile = nullptr;
@@ -303,4 +273,41 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
     fclose(pFile);
 
     return true;
+}
+
+void CAnim::SaveToLevelFile(FILE* _File)
+{
+    // 애니메이션 이름 저장
+    SaveWString(GetName(), _File);
+
+    // 모든 프레임 정보 저장
+    size_t FrameCount = m_vecFrm.size();
+    fwrite(&FrameCount, sizeof(size_t), 1, _File);
+    fwrite(m_vecFrm.data(), sizeof(tAnimFrm), FrameCount, _File);
+
+    // 백그라운드 사용여부 저장
+    fwrite(&m_bUseBackGround, sizeof(bool), 1, _File);
+
+    // 참조하던 텍스쳐 정보 저장
+    SaveAssetRef(m_AtlasTex, _File);
+}
+
+void CAnim::LoadFromLevelFile(FILE* _File)
+{
+    // 애니메이션 이름 로드
+    wstring name;
+    LoadWString(name, _File);
+    SetName(name);
+
+    // 모든 프레임 정보 로드
+    size_t FrameCount = 0;
+    fread(&FrameCount, sizeof(size_t), 1, _File);
+    m_vecFrm.resize(FrameCount);
+    fread(m_vecFrm.data(), sizeof(tAnimFrm), m_vecFrm.size(), _File);
+
+    // 백그라운드 사용여부 로드
+    fread(&m_bUseBackGround, sizeof(bool), 1, _File);
+
+    // 참조하던 텍스쳐 정보 로드
+    LoadAssetRef(m_AtlasTex, _File);
 }

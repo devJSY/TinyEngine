@@ -248,3 +248,13 @@ void CCameraMoveScript::MoveFocusPerspective()
         Transform()->SetRelativePos(Transform()->GetRelativePos() + DT_ENGINE * dir.Normalize() * CamMoveSpeed);
     }
 }
+
+void CCameraMoveScript::SaveToLevelFile(FILE* _File)
+{
+    fwrite(&m_CamSpeed, sizeof(float), 1, _File);
+}
+
+void CCameraMoveScript::LoadFromLevelFile(FILE* _File)
+{
+    fread(&m_CamSpeed, sizeof(float), 1, _File);
+}

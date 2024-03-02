@@ -22,8 +22,10 @@ public:
     virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider) {}
 
 public:
-    virtual void SaveToLevelFile(FILE* _File){};
-    virtual void LoadFromLevelFile(FILE* _File){};
+    virtual void SaveToLevelFile(FILE* _File) override = 0;
+    virtual void LoadFromLevelFile(FILE* _File) override = 0;
+
+    CScript* Clone() = 0;
 
 public:
     CScript(UINT _ScriptType);

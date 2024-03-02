@@ -192,12 +192,14 @@ void CTileMap::SaveToLevelFile(FILE* _File)
     fwrite(&m_iTileCountY, sizeof(UINT), 1, _File);
     fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
-    SaveAssetRef<CTexture>(m_TileAtlas.Get(), _File);
+    SaveAssetRef(m_TileAtlas, _File);
 
     fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
     fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
 
-    fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), m_vecTileInfo.size(), _File);
+    size_t InfoCount = m_vecTileInfo.size();
+    fwrite(&InfoCount, sizeof(size_t), 1, _File);
+    fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }
 
 void CTileMap::LoadFromLevelFile(FILE* _File)
@@ -208,11 +210,15 @@ void CTileMap::LoadFromLevelFile(FILE* _File)
     fread(&m_iTileCountY, sizeof(UINT), 1, _File);
     fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
-    LoadAssetRef<CTexture>(m_TileAtlas, _File);
+    LoadAssetRef(m_TileAtlas, _File);
 
     fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
     fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
 
     SetTileCount(m_iTileCountX, m_iTileCountY);
-    fread(m_vecTileInfo.data(), sizeof(tTileInfo), m_iTileCountX * m_iTileCountY, _File);
+
+    size_t InfoCount = 0;
+    fread(&InfoCount, sizeof(size_t), 1, _File);
+    m_vecTileInfo.resize(InfoCount);
+    fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }

@@ -37,7 +37,7 @@ void CBulletScript::tick()
 
         Vec3 pos = Transform()->GetRelativePos();
         pShockWave->Transform()->SetRelativePos(pos);
-        pShockWave->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f)); 
+        pShockWave->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1.f));
         pShockWave->Collider2D()->SetColliderType(COLLIDER2D_TYPE::CIRCLE);
         pShockWave->Collider2D()->SetRadius(1.f);
         pShockWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -59,4 +59,18 @@ void CBulletScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCol
 
 void CBulletScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
+}
+
+void CBulletScript::SaveToLevelFile(FILE* _File)
+{
+    fwrite(&m_Dir, sizeof(Vec3), 1, _File);
+    fwrite(&m_Speed, sizeof(float), 1, _File);
+    fwrite(&m_Duration, sizeof(float), 1, _File);
+}
+
+void CBulletScript::LoadFromLevelFile(FILE* _File)
+{
+    fread(&m_Dir, sizeof(Vec3), 1, _File);
+    fread(&m_Speed, sizeof(float), 1, _File);
+    fread(&m_Duration, sizeof(float), 1, _File);
 }

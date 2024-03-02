@@ -50,11 +50,11 @@ public:
     bool IsUseBackGround() const { return m_bUseBackGround; }
 
 public:
-    void SaveToLevelFile(FILE* _File);
-    void LoadFromLevelFile(FILE* _File);
-
     bool SaveAnim(const wstring& _FilePath);
     bool LoadAnim(const wstring& _FilePath);
+
+    void SaveToLevelFile(FILE* _File);
+    void LoadFromLevelFile(FILE* _File);
 
     CLONE(CAnim);
 

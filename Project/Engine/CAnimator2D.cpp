@@ -97,8 +97,6 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 
 void CAnimator2D::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_bRepeat, sizeof(bool), 1, _File);
-
     size_t AnimCount = m_mapAnim.size();
     fwrite(&AnimCount, sizeof(size_t), 1, _File);
 
@@ -113,12 +111,12 @@ void CAnimator2D::SaveToLevelFile(FILE* _File)
         strCurAnimName = m_CurAnim->GetName();
     }
     SaveWString(strCurAnimName, _File);
+
+    fwrite(&m_bRepeat, sizeof(bool), 1, _File);
 }
 
 void CAnimator2D::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_bRepeat, sizeof(bool), 1, _File);
-
     size_t AnimCount = 0;
     fread(&AnimCount, sizeof(size_t), 1, _File);
 
@@ -135,6 +133,8 @@ void CAnimator2D::LoadFromLevelFile(FILE* _File)
     LoadWString(strCurAnimName, _File);
 
     m_CurAnim = FindAnim(strCurAnimName);
+
+    fread(&m_bRepeat, sizeof(bool), 1, _File);
 }
 
 void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)

@@ -142,3 +142,13 @@ void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCol
 void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
 }
+
+void CPlayerScript::SaveToLevelFile(FILE* _File)
+{
+    fwrite(&m_Speed, sizeof(float), 1, _File);
+}
+
+void CPlayerScript::LoadFromLevelFile(FILE* _File)
+{
+    fread(&m_Speed, sizeof(float), 1, _File);
+}

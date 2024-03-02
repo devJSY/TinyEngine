@@ -137,19 +137,4 @@ void CLight3D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
     fread(&m_ShadowIdx, sizeof(int), 1, _File);
-
-    if (nullptr == m_DepthMapTex)
-        CreateDepthMapTex();
-
-    m_pLightCam = new CGameObjectEx;
-    m_pLightCam->AddComponent(new CTransform);
-    m_pLightCam->AddComponent(new CCamera);
-
-    // 쉐이더와 동일하게 설정
-    m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    m_pLightCam->Camera()->LayerMaskAll();
-    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
-    m_pLightCam->Camera()->SetNear(1.f);
-    m_pLightCam->Camera()->SetFar(10000.f);
-    m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
 }

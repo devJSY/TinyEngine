@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "CRenderComponent.h"
 
+#include "CLevelMgr.h"
+
+#include "CLevel.h"
+
 CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
     : CComponent(_Type)
     , m_Mesh(nullptr)
@@ -41,6 +45,11 @@ void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl)
 
 Ptr<CMaterial> CRenderComponent::CreateDynamicMaterial()
 {
+    // Play 모드에서만 동적 재질 생성
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
+        return nullptr;
+
     // 이미 동적재질을 보유한경우 리턴
     if (nullptr != m_DynamicMtrl)
         return m_DynamicMtrl;
@@ -67,14 +76,12 @@ void CRenderComponent::SaveToLevelFile(FILE* _File)
 {
     SaveAssetRef<CMesh>(m_Mesh.Get(), _File);
     SaveAssetRef<CMaterial>(m_SharedMtrl.Get(), _File);
-    SaveAssetRef<CMaterial>(m_DynamicMtrl.Get(), _File);
-    SaveAssetRef<CMaterial>(m_CurMtrl.Get(), _File);
 }
 
 void CRenderComponent::LoadFromLevelFile(FILE* _File)
 {
     LoadAssetRef<CMesh>(m_Mesh, _File);
     LoadAssetRef<CMaterial>(m_SharedMtrl, _File);
-    LoadAssetRef<CMaterial>(m_DynamicMtrl, _File);
-    LoadAssetRef<CMaterial>(m_CurMtrl, _File);
+
+    SetMaterial(m_SharedMtrl);
 }

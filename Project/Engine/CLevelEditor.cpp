@@ -219,7 +219,7 @@ void CLevelEditor::render_MenuBar()
                 if (!FileName.empty())
                 {
                     // Level ÀúÀå
-                    CLevelSaveLoad::SaveLevel(FileName, CLevelMgr::GetInst()->GetCurrentLevel());
+                    CLevelSaveLoad::SaveLevel(CLevelMgr::GetInst()->GetCurrentLevel(), FileName);
                 }
             }
 

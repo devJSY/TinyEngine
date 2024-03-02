@@ -149,11 +149,6 @@ void CSkyBox::SaveToLevelFile(FILE* _File)
 
     fwrite(&m_Type, sizeof(SKYBOX_TYPE), 1, _File);
     fwrite(&m_Shape, sizeof(SKYBOX_SHAPE), 1, _File);
-
-    SaveAssetRef<CTexture>(m_BrdfTex.Get(), _File);
-    SaveAssetRef<CTexture>(m_EnvTex.Get(), _File);
-    SaveAssetRef<CTexture>(m_DiffuseTex.Get(), _File);
-    SaveAssetRef<CTexture>(m_SpecularTex.Get(), _File);
 }
 
 void CSkyBox::LoadFromLevelFile(FILE* _File)
@@ -162,11 +157,7 @@ void CSkyBox::LoadFromLevelFile(FILE* _File)
 
     fread(&m_Type, sizeof(SKYBOX_TYPE), 1, _File);
     fread(&m_Shape, sizeof(SKYBOX_SHAPE), 1, _File);
+
     SetType(m_Type);
     SetShape(m_Shape);
-
-    LoadAssetRef<CTexture>(m_BrdfTex, _File);
-    LoadAssetRef<CTexture>(m_EnvTex, _File);
-    LoadAssetRef<CTexture>(m_DiffuseTex, _File);
-    LoadAssetRef<CTexture>(m_SpecularTex, _File);
 }
