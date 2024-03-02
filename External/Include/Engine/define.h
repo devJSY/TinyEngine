@@ -54,6 +54,7 @@ enum class ASSET_TYPE
 {
     MESH,
     MESHDATA,
+    PREFAB,
     TEXTURE,
     COMPUTE_SHADER,
     GRAPHICS_SHADER,

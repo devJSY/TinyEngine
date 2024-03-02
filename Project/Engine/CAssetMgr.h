@@ -4,16 +4,11 @@
 #include "CPathMgr.h"
 
 #include "CMesh.h"
+#include "CPrefab.h"
 #include "CTexture.h"
-#include "CMaterial.h"
 #include "CGraphicsShader.h"
 #include "CComputeShader.h"
-
-class CGameObject;
-class CAsset;
-class CMesh;
-class CGraphicsShader;
-class CComputeShader;
+#include "CMaterial.h"
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
@@ -97,6 +92,8 @@ ASSET_TYPE GetAssetType()
 
     if constexpr (std::is_same_v<CMesh, T>)
         Type = ASSET_TYPE::MESH;
+    if constexpr (std::is_same_v<CPrefab, T>)
+        Type = ASSET_TYPE::PREFAB;
     if constexpr (std::is_same_v<CTexture, T>)
         Type = ASSET_TYPE::TEXTURE;
     if constexpr (std::is_same_v<CGraphicsShader, T>)

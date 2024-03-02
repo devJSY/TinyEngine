@@ -265,6 +265,9 @@
     <ClInclude Include="CGameObjectEx.h">
       <Filter>07. GameObject\Ex</Filter>
     </ClInclude>
+    <ClInclude Include="CPrefab.h">
+      <Filter>06. Asset\Prefab</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -503,6 +506,9 @@
     </ClCompile>
     <ClCompile Include="CGameObjectEx.cpp">
       <Filter>07. GameObject\Ex</Filter>
+    </ClCompile>
+    <ClCompile Include="CPrefab.cpp">
+      <Filter>06. Asset\Prefab</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -745,6 +751,9 @@
     </Filter>
     <Filter Include="07. GameObject\Ex">
       <UniqueIdentifier>{6794881a-b62a-4735-885c-e53729e92edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\Prefab">
+      <UniqueIdentifier>{e32e0f18-5fbe-4a54-be48-ad276488f2d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

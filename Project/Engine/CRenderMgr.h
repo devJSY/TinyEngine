@@ -77,7 +77,11 @@ public:
     CCamera* GetMainCamera() const { return m_mainCam; };
     CCamera* GetCamera(int _Idx) const;
     CCamera* GetEditorCamera() const { return m_EditorCam; };
-    void ClearCamera() { m_vecCam.clear(); }
+    void ClearCamera()
+    {
+        m_mainCam = nullptr;
+        m_vecCam.clear();
+    }
 
 public:
     void init();
