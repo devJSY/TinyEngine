@@ -690,6 +690,7 @@ void CSpriteEditor::DrawDetails()
                 m_pAnim = new CAnim;
                 m_pAnim->LoadAnim(filePath);
 
+                // UV to Pixel
                 for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                 {
                     m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
@@ -714,6 +715,7 @@ void CSpriteEditor::DrawDetails()
 
                 if (nullptr != m_pAnim)
                 {
+                    // Pixel to UV
                     for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                     {
                         m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
@@ -727,6 +729,15 @@ void CSpriteEditor::DrawDetails()
                         m_pAnim->SetName(filePath.stem());
 
                     m_pAnim->SaveAnim(filePath);
+
+                    // UV to Pixel
+                    for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                    {
+                        m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                        m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    }
                 }
             }
         }
@@ -857,7 +868,7 @@ void CSpriteEditor::DrawAnimationViewport()
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
         ImVec2 vOffset = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset;
         vLT.x += vOffset.x;
-        vLT.y -= vOffset.y;
+        vLT.y += vOffset.y;
         ImVec2 uv0 = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop;
         ImVec2 uv1 = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop + m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice;
 

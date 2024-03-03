@@ -60,8 +60,8 @@ float4 main(PS_IN input) : SV_TARGET
         }
         else
         {
-            // 샘플링해온 지점이 색상이 있었다면 해당 색상으로 렌더링 
-            color = AnimColor;
+            // 샘플링해온 지점이 색상이 있었다면 폐기처리
+            discard;
         }
     }
     else if (g_btex_0)
@@ -98,8 +98,8 @@ float4 main(PS_IN input) : SV_TARGET
         }
         else
         {
-            // 샘플링해온 지점이 색상이 있었다면 해당 색상으로 렌더링 
-            color = TexColor;
+            // 샘플링해온 지점이 색상이 있었다면 폐기처리
+            discard;
         }
     }
     else
@@ -108,6 +108,5 @@ float4 main(PS_IN input) : SV_TARGET
     }
     
     color.a = 1.f;
-    return
-color;
+    return color;
 }

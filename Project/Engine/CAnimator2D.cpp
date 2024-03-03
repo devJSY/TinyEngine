@@ -84,6 +84,23 @@ CAnim* CAnimator2D::FindAnim(const wstring& _strKey)
     return iter->second;
 }
 
+bool CAnimator2D::DeleteAnim(const wstring& _strAnimName)
+{
+    CAnim* deleteAnim = FindAnim(_strAnimName);
+    if (nullptr == deleteAnim)
+        return false;
+
+    m_mapAnim.erase(_strAnimName);
+
+    if (deleteAnim == m_CurAnim)
+        m_CurAnim = nullptr;
+
+    delete deleteAnim;
+    deleteAnim = nullptr;
+
+    return true;
+}
+
 void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 {
     CAnim* pAnim = FindAnim(_strAnimName);
@@ -166,12 +183,11 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
         return;
     }
 
-    // 이미 로드된 애니메이션이 있는지 예외처리
+    // 이미 로드된 애니메이션이 있는지 체크
     if (FindAnim(pNewAnim->GetName()))
     {
         LOG(Warning, "Animation Already Exists");
-        delete pNewAnim;
-        return;
+        DeleteAnim(pNewAnim->GetName()); // 기존 애니메이션 삭제
     }
 
     pNewAnim->m_Animator = this;
