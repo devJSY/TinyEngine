@@ -38,7 +38,7 @@ CEditorMgr::~CEditorMgr()
     // Editor Objects
     Delete_Vec(m_vecEditorObj);
 
-    // 디렉터리 변경 감시 종료
+    // 디렉터리 변경사항 확인 종료
     FindCloseChangeNotification(m_hObserver);
 }
 

@@ -22,6 +22,8 @@
 #include "CCreateTestLevel.h"
 #include "CCreatePBRLevel.h"
 
+#include <Engine\\CLevelSaveLoad.h>
+
 // 메모리 누수 체크
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -64,6 +66,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     CCreateTestLevel::CreateTestLevel();
     // CCreatePBRLevel::Init();
     // CCreatePBRLevel::CreatePBRLevel();
+
+    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Test.tLevel"), LEVEL_STATE::PLAY);
 
     while (true)
     {

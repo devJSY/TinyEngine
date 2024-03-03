@@ -228,6 +228,27 @@ void CSpriteEditor::DrawViewport()
                 {
                     m_Sprites[i].Rect.Min.x += io.MouseDelta.x / m_ViewportScale;
                 }
+
+                // 우클릭 화면 이동 Offset
+                if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Right))
+                {
+                    if ((1 << 0) & m_LineCheckFlag) // Top 1
+                    {
+                        m_Sprites[i].Rect.Min.y -= io.MouseDelta.y / m_ViewportScale;
+                    }
+                    if ((1 << 1) & m_LineCheckFlag) // Right 2
+                    {
+                        m_Sprites[i].Rect.Max.x -= io.MouseDelta.x / m_ViewportScale;
+                    }
+                    if ((1 << 2) & m_LineCheckFlag) // Bottom 4
+                    {
+                        m_Sprites[i].Rect.Max.y -= io.MouseDelta.y / m_ViewportScale;
+                    }
+                    if ((1 << 3) & m_LineCheckFlag) // Left 8
+                    {
+                        m_Sprites[i].Rect.Min.x -= io.MouseDelta.x / m_ViewportScale;
+                    }
+                }
             }
             // 사각형 내부를 클릭한 경우 전체 이동
             else if (0 != m_Sprites[i].bViewport_Selected)
@@ -332,7 +353,7 @@ void CSpriteEditor::DrawViewport()
                 }
             }
         }
-        if (ImGui::MenuItem("Remove Selected Sprites", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Delete Selected Sprites", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
 
@@ -348,11 +369,11 @@ void CSpriteEditor::DrawViewport()
                 }
             }
         }
-        if (ImGui::MenuItem("Remove Previous Sprite", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Delete Previous Sprite", NULL, false, m_Sprites.Size > 0))
         {
             m_Sprites.resize(m_Sprites.Size - 1);
         }
-        if (ImGui::MenuItem("Remove all Sprites", NULL, false, m_Sprites.Size > 0))
+        if (ImGui::MenuItem("Delete all Sprites", NULL, false, m_Sprites.Size > 0))
         {
             m_Sprites.clear();
         }
