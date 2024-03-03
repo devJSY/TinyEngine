@@ -14,7 +14,7 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
-    m_ShockWave = CAssetMgr::GetInst()->Load<CPrefab>(L"ShockWavePrefab", L"prefab\\ShockWavePrefab.pref");
+    m_ShockWave = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ShockWavePrefab.pref", L"prefab\\ShockWavePrefab.pref");
 
     if (nullptr == Animator2D())
         return;

@@ -52,7 +52,7 @@ public:
     CLONE_DISABLE(CTexture);
 
 public:
-    CTexture();
+    CTexture(bool _bEngineAsset = false);
     virtual ~CTexture();
 
     friend class CAssetMgr;

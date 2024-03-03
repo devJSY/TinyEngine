@@ -1,5 +1,6 @@
 #pragma once
 #include "CAsset.h"
+
 class CShader : public CAsset
 {
 protected:

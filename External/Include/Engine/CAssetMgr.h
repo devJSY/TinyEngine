@@ -22,6 +22,9 @@ public:
 
 public:
     void init();
+    void ReloadContent();
+
+private:
     void LoadAssetsFromFile(std::filesystem::path _EntryPath);
 
 private:

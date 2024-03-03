@@ -131,13 +131,18 @@ void CEditorMgr::init()
     CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
 
     // Editor 모드에선 컨텐츠 폴더에 존재하는 모든 에셋 로딩
-    CAssetMgr::GetInst()->LoadAssetsFromFile(CPathMgr::GetContentPath());
+    CAssetMgr::GetInst()->ReloadContent();
 }
 
 void CEditorMgr::tick()
 {
     if (!m_bEnable)
         return;
+
+    if (KEY_TAP(KEY::R))
+    {
+        CAssetMgr::GetInst()->ReloadContent();
+    }
 
     // ======================
     // Editor Tick

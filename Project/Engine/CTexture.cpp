@@ -4,8 +4,8 @@
 #include "CDevice.h"
 #include "CAssetMgr.h"
 
-CTexture::CTexture()
-    : CAsset(ASSET_TYPE::TEXTURE)
+CTexture::CTexture(bool _bEngineAsset)
+    : CAsset(ASSET_TYPE::TEXTURE, _bEngineAsset)
     , m_Desc{}
     , m_RecentNum_SRV(0)
     , m_RecentNum_UAV(0)

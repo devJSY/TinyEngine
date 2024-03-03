@@ -262,7 +262,7 @@ void GamePlayStatic::RemoveScript(CGameObject* _pObj, CScript* _script)
 void GamePlayStatic::LayerChange(CGameObject* _pObj, int LayerIdx)
 {
     tTask task = {};
-    task.Type = TASK_TYPE::LAYER_CHANGE;
+    task.Type = TASK_TYPE::CHANGE_LAYER;
     task.Param_1 = (DWORD_PTR)_pObj;
     task.Param_2 = (INT_PTR)LayerIdx;
     CTaskMgr::GetInst()->AddTask(task);

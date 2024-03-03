@@ -19,6 +19,7 @@ public:
 public:
     ASSET_TYPE GetAssetType() const { return m_Type; }
     int GetRefCount() const { return m_RefCount; }
+    bool IsEngineAsset() const { return m_bEngineAsset; }
 
 protected:
     void SetKey(const wstring& _Key) { m_Key = _Key; }

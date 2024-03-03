@@ -45,7 +45,7 @@ enum class TASK_TYPE
     REMOVE_SCRIPT,
 
     // Param1 : Object, Param2 : Layer Index
-    LAYER_CHANGE,
+    CHANGE_LAYER,
 
     // Param1 : Object
     CLONE_OBJECT
@@ -85,6 +85,6 @@ private:
     void ADD_COMPONENT(const tTask& _Task);
     void REMOVE_COMPONENT(const tTask& _Task);
     void REMOVE_SCRIPT(const tTask& _Task);
-    void LAYER_CHANGE(const tTask& _Task);
+    void CHANGE_LAYER(const tTask& _Task);
     void CLONE_OBJECT(const tTask& _Task);
 };

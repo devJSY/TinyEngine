@@ -135,8 +135,8 @@ void CTaskMgr::tick()
         case TASK_TYPE::REMOVE_SCRIPT:
             REMOVE_SCRIPT(m_vecTask[i]);
             break;
-        case TASK_TYPE::LAYER_CHANGE:
-            LAYER_CHANGE(m_vecTask[i]);
+        case TASK_TYPE::CHANGE_LAYER:
+            CHANGE_LAYER(m_vecTask[i]);
             break;
         case TASK_TYPE::CLONE_OBJECT:
             CLONE_OBJECT(m_vecTask[i]);
@@ -596,7 +596,7 @@ void CTaskMgr::REMOVE_SCRIPT(const tTask& _Task)
     pObj->RemoveScript(script);
 }
 
-void CTaskMgr::LAYER_CHANGE(const tTask& _Task)
+void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
 {
     CGameObject* Object = (CGameObject*)_Task.Param_1;
     int NextLayerIdx = (int)_Task.Param_2;

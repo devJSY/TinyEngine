@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CAssetMgr.h"
 #include "CPathMgr.h"
+#include "CTaskMgr.h"
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
@@ -26,6 +27,31 @@ void CAssetMgr::init()
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
+}
+
+void CAssetMgr::ReloadContent()
+{
+    LoadAssetsFromFile(CPathMgr::GetContentPath());
+    
+    // 원본 파일이 삭제된 에셋은 메모리에서 제거
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    {
+        for (const auto& pair : m_mapAsset[i])
+        {
+            if (pair.second->IsEngineAsset())
+                continue;
+
+            wstring strFilePath = CPathMgr::GetContentPath() + pair.first;
+            if (!std::filesystem::exists(strFilePath))
+            {
+                tTask task = {};
+                task.Type = TASK_TYPE::DELETE_ASSET;
+                task.Param_1 = (DWORD_PTR)i;
+                task.Param_2 = (DWORD_PTR)pair.second.Get();
+                CTaskMgr::GetInst()->AddTask(task);
+            }
+        }
+    }
 }
 
 void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
@@ -310,7 +336,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT
 
     assert(nullptr == pTex);
 
-    pTex = new CTexture();
+    pTex = new CTexture(true);
     if (FAILED(pTex->Create(_Width, _Height, _pixelformat, _BindFlag, _Usage, _dsvDesc, _rtvDesc, _srvDesc, _uavDesc)))
     {
         assert(nullptr);
@@ -329,7 +355,7 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
 
     assert(nullptr == pTex);
 
-    pTex = new CTexture();
+    pTex = new CTexture(true);
     if (FAILED(pTex->Create(_Tex2D, _dsvDesc, _rtvDesc, _srvDesc, _uavDesc)))
     {
         assert(nullptr);
