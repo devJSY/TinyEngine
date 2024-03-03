@@ -19,6 +19,7 @@ CEditorMgr::CEditorMgr()
     , m_SelectedObj(nullptr)
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
+    , m_hObserver(nullptr)
 {
 }
 
@@ -34,7 +35,11 @@ CEditorMgr::~CEditorMgr()
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
 
+    // Editor Objects
     Delete_Vec(m_vecEditorObj);
+
+    // 디렉터리 변경 감시 종료
+    FindCloseChangeNotification(m_hObserver);
 }
 
 void CEditorMgr::init()
@@ -132,17 +137,17 @@ void CEditorMgr::init()
 
     // Editor 모드에선 컨텐츠 폴더에 존재하는 모든 에셋 로딩
     CAssetMgr::GetInst()->ReloadContent();
+
+    // Content 폴더 변경사항 확인용 핸들 초기화
+    wstring strContentPath = CPathMgr::GetContentPath();
+    m_hObserver = FindFirstChangeNotification(strContentPath.c_str(), true,
+                                              FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_ACTION_ADDED | FILE_ACTION_REMOVED);
 }
 
 void CEditorMgr::tick()
 {
     if (!m_bEnable)
         return;
-
-    if (KEY_TAP(KEY::R))
-    {
-        CAssetMgr::GetInst()->ReloadContent();
-    }
 
     // ======================
     // Editor Tick
@@ -162,6 +167,9 @@ void CEditorMgr::tick()
     {
         m_vecEditorObj[i]->finaltick();
     }
+
+    // Content 폴더 변경사항 확인
+    ObserveContent();
 }
 
 void CEditorMgr::render()
@@ -244,4 +252,16 @@ void CEditorMgr::SetImGuizmoStyle()
     colors[ImGuizmo::DIRECTION_X] = ImVec4(0.858f, 0.243f, 0.113f, 0.929f);
     colors[ImGuizmo::DIRECTION_Y] = ImVec4(0.603f, 0.952f, 0.282f, 0.929f);
     colors[ImGuizmo::DIRECTION_Z] = ImVec4(0.227f, 0.478f, 0.972f, 0.929f);
+}
+
+void CEditorMgr::ObserveContent()
+{
+    DWORD dwWaitStatus = WaitForSingleObject(m_hObserver, 0);
+
+    if (dwWaitStatus == WAIT_OBJECT_0)
+    {
+        CAssetMgr::GetInst()->ReloadContent();
+        LOG(Log, "Assets Reloaded!!");
+        FindNextChangeNotification(m_hObserver);
+    }
 }

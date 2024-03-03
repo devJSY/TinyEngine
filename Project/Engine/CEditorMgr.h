@@ -24,6 +24,8 @@ private:
 
     vector<CGameObjectEx*> m_vecEditorObj;
 
+    HANDLE m_hObserver;
+
 public:
     bool IsEnable() const { return m_bEnable; }
 
@@ -50,4 +52,7 @@ public:
     void init();
     void tick();
     void render();
+
+private:
+    void ObserveContent();
 };
