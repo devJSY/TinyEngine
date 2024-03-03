@@ -508,7 +508,7 @@ void CLevelEditor::render_Viewport()
             if (fileNameStr.extension() == CLevelSaveLoad::GetLevelExtension())
             {
                 // Level 불러오기
-                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(ToWstring(name));
+                CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(fileNameStr.filename().wstring());
 
                 if (nullptr != pLoadedLevel)
                     GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);

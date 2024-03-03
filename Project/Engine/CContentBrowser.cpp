@@ -17,10 +17,8 @@ CContentBrowser::~CContentBrowser()
 void CContentBrowser::init()
 {
     m_CurrentDirectory = CPathMgr::GetContentPath();
-    m_DirectoryIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\ContentBrowser\\DirectoryIcon.png",
-                                                           L"Icons\\ContentBrowser\\DirectoryIcon.png");
-    m_FileIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\ContentBrowser\\FileIcon.png",
-                                                      L"Icons\\ContentBrowser\\FileIcon.png");
+    m_DirectoryIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\ContentBrowser\\DirectoryIcon.png", L"Icons\\ContentBrowser\\DirectoryIcon.png");
+    m_FileIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\ContentBrowser\\FileIcon.png", L"Icons\\ContentBrowser\\FileIcon.png");
 }
 
 void CContentBrowser::render()
@@ -62,10 +60,9 @@ void CContentBrowser::render()
     {
         const auto& path = directoryEntry.path();
         auto relativePath = std::filesystem::relative(path, CPathMgr::GetContentPath());
-        string filenameString = relativePath.filename().string();
-        std::filesystem::path fileNamePath = filenameString;
+        string relativePathString = relativePath.string();
 
-        ImGui::PushID(filenameString.c_str());
+        ImGui::PushID(relativePath.filename().string().c_str());
 
         Ptr<CTexture> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 
@@ -75,18 +72,17 @@ void CContentBrowser::render()
         // Drag & Drop
         if (ImGui::BeginDragDropSource())
         {
-            ImGui::Text("%s", filenameString.c_str(), filenameString.size());
+            ImGui::Text("%s", relativePathString.c_str(), relativePathString.size());
 
             // 텍스춰 포맷이면 로딩
-            if (fileNamePath.extension() == ".png" || fileNamePath.extension() == ".PNG" ||
-                fileNamePath.extension() == ".bmp" || fileNamePath.extension() == ".BMP" ||
-                fileNamePath.extension() == ".jpg" || fileNamePath.extension() == ".JPG" ||
-                fileNamePath.extension() == ".jpeg" || fileNamePath.extension() == ".JPEG")
+            if (relativePath.extension() == ".png" || relativePath.extension() == ".PNG" || relativePath.extension() == ".bmp" ||
+                relativePath.extension() == ".BMP" || relativePath.extension() == ".jpg" || relativePath.extension() == ".JPG" ||
+                relativePath.extension() == ".jpeg" || relativePath.extension() == ".JPEG")
             {
-                CAssetMgr::GetInst()->Load<CTexture>(relativePath.filename().wstring(), relativePath);
+                CAssetMgr::GetInst()->Load<CTexture>(relativePath, relativePath);
             }
 
-            ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", filenameString.c_str(), filenameString.size());
+            ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", relativePathString.c_str(), relativePathString.size());
             ImGui::EndDragDropSource();
         }
 
@@ -97,7 +93,7 @@ void CContentBrowser::render()
             if (directoryEntry.is_directory())
                 m_CurrentDirectory /= path.filename();
         }
-        ImGui::TextWrapped(filenameString.c_str());
+        ImGui::TextWrapped(relativePath.filename().string().c_str());
 
         ImGui::NextColumn();
 
