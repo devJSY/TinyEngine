@@ -279,7 +279,7 @@ void CMaterialEditor::DrawDetails()
             for (int i = 0; i < TexParams.size(); i++)
             {
                 Ptr<CTexture> pTex = m_Mtrl->GetTexParam(TexParams[i].Type);
-                std::filesystem::path TextureName = std::filesystem::path();
+                string CurTextureName = string();
                 ID3D11ShaderResourceView* pSRV = nullptr;
 
                 // Texture Render
@@ -287,8 +287,7 @@ void CMaterialEditor::DrawDetails()
                     if (nullptr != pTex.Get())
                     {
                         pSRV = pTex->GetSRV().Get();
-                        TextureName = pTex->GetName();
-                        TextureName = TextureName.filename();
+                        CurTextureName = ToString(pTex->GetName());
                     }
                     else
                         pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
@@ -323,40 +322,9 @@ void CMaterialEditor::DrawDetails()
                 ImGui::SameLine();
 
                 // Textures Combobox
+                if (ImGui_TexturesComboUI(string("##MaterialEditorTextures" + TexParams[i].Desc).c_str(), CurTextureName))
                 {
-                    if (ImGui::BeginCombo(string("##MaterialEditorTextures" + TexParams[i].Desc).c_str(), TextureName.string().c_str()))
-                    {
-                        for (const auto& iter : TexturesMap)
-                        {
-                            std::filesystem::path Key = iter.first;
-                            Key = Key.filename();
-                            bool is_selected = (TextureName == Key);
-                            if (ImGui::Selectable(Key.string().c_str(), is_selected))
-                            {
-                                Ptr<CAsset> tex = iter.second;
-                                m_Mtrl->SetTexParam(TexParams[i].Type, (CTexture*)tex.Get());
-                            }
-
-                            if (is_selected)
-                            {
-                                ImGui::SetItemDefaultFocus();
-                            }
-
-                            // Tooltip
-                            if (ImGui::IsItemHovered())
-                            {
-                                if (ImGui::BeginItemTooltip())
-                                {
-                                    Ptr<CAsset> HoveredTex = iter.second;
-                                    ImGui::Text(ToString(HoveredTex->GetName()).c_str());
-                                    ImGui::Image(((CTexture*)HoveredTex.Get())->GetSRV().Get(), ImVec2(100, 100));
-                                    ImGui::EndTooltip();
-                                }
-                            }
-                        }
-
-                        ImGui::EndCombo();
-                    }
+                    m_Mtrl->SetTexParam(TexParams[i].Type, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName)));
                 }
 
                 ImGui::Columns(1);

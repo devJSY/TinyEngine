@@ -627,6 +627,55 @@ bool ImGui_ComboUI(const string& caption, string& current_item, const std::vecto
     return changed;
 }
 
+bool ImGui_TexturesComboUI(const string& caption, string& current_item)
+{
+    static ImGuiTextFilter filter;
+    const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
+
+    bool changed = false;
+
+    if (ImGui::BeginCombo(caption.c_str(), current_item.c_str()))
+    {
+        filter.Draw(ImGui_LabelPrefix("Filter").c_str());
+        ImGui::Separator();
+
+        for (const auto& iter : mapTextures)
+        {
+            string key = ToString(iter.first);
+            bool is_selected = (current_item == key);
+
+            if (!filter.PassFilter(key.c_str()))
+                continue;
+
+            if (ImGui::Selectable(key.c_str(), is_selected))
+            {
+                current_item = key;
+                changed = true;
+            }
+            if (is_selected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+
+            // Tooltip
+            if (ImGui::IsItemHovered())
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    Ptr<CAsset> HoveredTex = iter.second;
+                    ImGui::Text(ToString(HoveredTex->GetName()).c_str());
+                    ImGui::Image(((CTexture*)HoveredTex.Get())->GetSRV().Get(), ImVec2(100, 100));
+                    ImGui::EndTooltip();
+                }
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+
+    return changed;
+}
+
 bool ImGui_AlignButton(const char* label, float alignment)
 {
     alignment = std::clamp(alignment, 0.f, 1.f);

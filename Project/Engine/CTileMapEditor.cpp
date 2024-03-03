@@ -250,13 +250,12 @@ void CTileMapEditor::DrawTileSet()
                 m_TileMap->SetTileAtlas(m_TileMap->m_TileAtlas, m_TileMap->m_vTilePixelSize);
         }
 
-        const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
         string CurTextureName = string();
 
         if (nullptr != m_TileMap->GetTileAtlas())
             CurTextureName = ToString(m_TileMap->GetTileAtlas()->GetKey());
 
-        if (ImGui_ComboUI(ImGui_LabelPrefix("Tile Sheet Texture").c_str(), CurTextureName, mapTextures))
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Tile Sheet Texture").c_str(), CurTextureName))
         {
             m_TileMap->SetTileAtlas(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName)),
                                     m_TileMap->m_vTilePixelSize);

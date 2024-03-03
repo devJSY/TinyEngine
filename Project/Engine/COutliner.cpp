@@ -380,18 +380,18 @@ void COutliner::DrawCollider3D(CGameObject* obj)
 void COutliner::DrawAnimator2D(CGameObject* obj)
 {
     // Animator2D
-    CAnimator2D* pAni = obj->Animator2D();
-    if (nullptr == pAni)
+    CAnimator2D* pAnimator = obj->Animator2D();
+    if (nullptr == pAnimator)
         return;
 
     bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, "Animator2D");
 
-    ComponentSettingsButton(pAni);
+    ComponentSettingsButton(pAnimator);
 
     if (open)
     {
-        const map<wstring, CAnim*>& mapAnim = pAni->GetmapAnim();
-        CAnim* pCurAnim = pAni->GetCurAnim();
+        const map<wstring, CAnim*>& mapAnim = pAnimator->GetmapAnim();
+        CAnim* pCurAnim = pAnimator->GetCurAnim();
 
         // =====================
         // Animation Select
@@ -403,7 +403,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         ImGui::Text("Animation Name");
         if (ImGui_ComboUI("##Anim", curAnimName, mapAnim))
         {
-            pAni->Play(ToWstring(curAnimName), true);
+            pAnimator->Play(ToWstring(curAnimName), true);
         }
 
         // =====================
@@ -411,7 +411,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         // =====================
         if (nullptr != pCurAnim)
         {
-            pCurAnim = pAni->GetCurAnim();
+            pCurAnim = pAnimator->GetCurAnim();
 
             Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();
             Vec2 TexSize = Vec2((float)pTex->GetWidth(), (float)pTex->GetHeight());
@@ -488,9 +488,27 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
             // Atlas Texture
             ID3D11ShaderResourceView* pSRV = nullptr;
             pSRV = pTex->GetSRV().Get();
-
-            ImGui::Text("Atlas Texture");
+            ImGui_InputText("Atlas Texture", ToString(pTex->GetKey()));
             ImGui::Image((void*)pSRV, ImVec2(TexSize.x, TexSize.y));
+        }
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Load Animation", 0.f))
+        {
+            std::filesystem::path filePath = OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+
+            if (!filePath.empty()) // 취소, 닫기 버튼 체크
+            {
+                pAnimator->LoadAnimation(filePath.lexically_relative(CPathMgr::GetContentPath()));
+            }
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui_AlignButton("Sprite Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowSpriteEditor(true);
         }
 
         ImGui::TreePop();

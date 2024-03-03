@@ -470,19 +470,12 @@ void CSpriteEditor::DrawDetails()
     // ==========================
     if (ImGui::TreeNodeEx("Sprites##SpriteEditorDetails", DefaultTreeNodeFlag))
     {
-        const map<wstring, Ptr<CAsset>>& mapTextures = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
-        vector<string> names;
-        for (const auto& iter : mapTextures)
-        {
-            names.push_back(ToString(iter.first));
-        }
-
         std::string CurTextureName;
 
         if (nullptr != m_pTex.Get())
             CurTextureName = ToString(m_pTex->GetKey());
 
-        if (ImGui_ComboUI(ImGui_LabelPrefix("Source Texture").c_str(), CurTextureName, names))
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Source Texture").c_str(), CurTextureName))
         {
             m_pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName));
             m_CellWidth = m_pTex->GetWidth();
@@ -602,61 +595,6 @@ void CSpriteEditor::DrawDetails()
     // ==========================
     if (ImGui::TreeNodeEx("Animation##SpriteEditorDetails", DefaultTreeNodeFlag))
     {
-        if (ImGui::Button("Load Animation"))
-        {
-            std::filesystem::path filePath = OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
-
-            if (!filePath.empty()) // 취소, 닫기 버튼 체크
-            {
-                if (nullptr != m_pAnim)
-                    delete m_pAnim;
-
-                m_pAnim = new CAnim;
-                m_pAnim->LoadAnim(filePath);
-
-                for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
-                {
-                    m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-                    m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                    m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
-                }
-            }
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Save Animation"))
-        {
-            std::filesystem::path filePath = SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
-
-            if (!filePath.empty()) // 취소, 닫기 버튼 체크
-            {
-                if (".anim" != filePath.extension())
-                    filePath.replace_extension(".anim");
-
-                if (nullptr != m_pAnim)
-                {
-                    for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
-                    {
-                        m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-                        m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
-                        m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                        m_pAnim->m_vecFrm[i].vBackground.x = m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
-                        m_pAnim->m_vecFrm[i].vBackground.y = m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
-                    }
-
-                    if (m_pAnim->GetName().empty())
-                        m_pAnim->SetName(filePath.stem());
-
-                    m_pAnim->SaveAnim(filePath);
-                }
-            }
-        }
-
-        ImGui::Separator();
-
         if (nullptr != m_pAnim)
         {
             string StopPlay;
@@ -726,6 +664,71 @@ void CSpriteEditor::DrawDetails()
             }
 
             ImGui::Checkbox(ImGui_LabelPrefix("Use BackGround").c_str(), &m_pAnim->m_bUseBackGround);
+
+            // Atlas Texture
+            Ptr<CTexture> pAtlas = m_pAnim->GetAtlasTex();
+            if (nullptr != pAtlas)
+            {
+                ID3D11ShaderResourceView* pSRV = nullptr;
+                pSRV = pAtlas->GetSRV().Get();
+                ImGui_InputText("Atlas Texture", ToString(pAtlas->GetKey()));
+                ImGui::Image((void*)pSRV, ImVec2((float)pAtlas->GetWidth(), (float)pAtlas->GetHeight()));
+            }
+
+            ImGui::Separator();
+        }
+
+        if (ImGui::Button("Load Animation"))
+        {
+            std::filesystem::path filePath = OpenFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+
+            if (!filePath.empty()) // 취소, 닫기 버튼 체크
+            {
+                if (nullptr != m_pAnim)
+                    delete m_pAnim;
+
+                m_pAnim = new CAnim;
+                m_pAnim->LoadAnim(filePath);
+
+                for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                {
+                    m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                    m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
+                    m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
+                }
+            }
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Save Animation"))
+        {
+            std::filesystem::path filePath = SaveFile(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+
+            if (!filePath.empty()) // 취소, 닫기 버튼 체크
+            {
+                if (".anim" != filePath.extension())
+                    filePath.replace_extension(".anim");
+
+                if (nullptr != m_pAnim)
+                {
+                    for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                    {
+                        m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                        m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                        m_pAnim->m_vecFrm[i].vBackground.x = m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vBackground.y = m_vAnimBackGround.y / (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    }
+
+                    if (m_pAnim->GetName().empty())
+                        m_pAnim->SetName(filePath.stem());
+
+                    m_pAnim->SaveAnim(filePath);
+                }
+            }
         }
 
         ImGui::TreePop();

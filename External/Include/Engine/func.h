@@ -100,6 +100,7 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f
                            float columnWidth = 100.0f);
 string ImGui_LabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::vector<string>& items);
+bool ImGui_TexturesComboUI(const string& caption, string& current_item);
 template <typename T>
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items);
 bool ImGui_AlignButton(const char* label, float alignment = 0.5f);
@@ -180,3 +181,4 @@ inline bool ImGui_ComboUI(const string& caption, string& current_item, const std
 
     return changed;
 }
+

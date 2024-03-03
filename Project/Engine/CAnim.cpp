@@ -207,11 +207,15 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
         {
             wstring strKey, strRelativePath;
 
-            fwscanf_s(pFile, L"%s", szRead, 256);
+            // 공백포함 문자열 읽기
+            fgetws(szRead, sizeof(szRead), pFile); // '\n' 제거
+            fgetws(szRead, sizeof(szRead), pFile);
             strKey = szRead;
+            strKey.erase(remove(strKey.begin(), strKey.end(), '\n'), strKey.end()); // '\n' 제거
 
-            fwscanf_s(pFile, L"%s", szRead, 256);
+            fgetws(szRead, sizeof(szRead), pFile);
             strRelativePath = szRead;
+            strRelativePath.erase(remove(strRelativePath.begin(), strRelativePath.end(), '\n'), strRelativePath.end()); // '\n' 제거
 
             m_AtlasTex = CAssetMgr::GetInst()->Load<CTexture>(strKey, strRelativePath);
         }
