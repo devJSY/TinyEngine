@@ -215,8 +215,6 @@ void CTileMap::LoadFromLevelFile(FILE* _File)
     fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
     fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
 
-    SetTileCount(m_iTileCountX, m_iTileCountY);
-
     size_t InfoCount = 0;
     fread(&InfoCount, sizeof(size_t), 1, _File);
     m_vecTileInfo.resize(InfoCount);

@@ -41,8 +41,6 @@ public:
 
 public:
     virtual int Save(const wstring& _strRelativePath) override;
-
-private:
     virtual int Load(const wstring& _strFilePath) override;
 
     CLONE(CMaterial);

@@ -37,8 +37,6 @@ private:
 
 public:
     virtual int Save(const wstring& _strRelativePath) { return E_FAIL; };
-
-private:
     virtual int Load(const wstring& _strFilePath) { return E_FAIL; };
 
 public:

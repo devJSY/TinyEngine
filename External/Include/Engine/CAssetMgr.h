@@ -22,6 +22,7 @@ public:
 
 public:
     void init();
+    void LoadAssetsFromFile(std::filesystem::path _EntryPath);
 
 private:
     // 에셋 생성

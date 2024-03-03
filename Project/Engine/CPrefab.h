@@ -17,11 +17,11 @@ public:
     void SetGameObject(CGameObject* _Object);
     CGameObject* Instantiate();
 
-    CLONE_DISABLE(CPrefab);
-
 public:
     virtual int Save(const wstring& _strRelativePath);
     virtual int Load(const wstring& _strFilePath);
+
+    CLONE_DISABLE(CPrefab);
 
 public:
     CPrefab();

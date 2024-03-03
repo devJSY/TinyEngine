@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAssetMgr.h"
+#include "CPathMgr.h"
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
@@ -25,6 +26,41 @@ void CAssetMgr::init()
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
+}
+
+void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
+{
+    using namespace std::filesystem;
+
+    for (auto& directoryEntry : directory_iterator(_EntryPath))
+    {
+        // 디렉토리 인경우 하위 디렉토리 순회
+        if (directoryEntry.is_directory())
+        {
+            LoadAssetsFromFile(directoryEntry);
+        }
+        else
+        {
+            path FilePath = directoryEntry.path();
+            path FileRelativePath = FilePath.lexically_relative(CPathMgr::GetContentPath());
+            path FileExtension = FilePath.extension();
+
+            if (FileExtension == L".mesh")
+                Load<CMesh>(FileRelativePath, FileRelativePath);
+            // if (FileExtension == L".mdat")
+            //     Load<CMeshData>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".pref")
+                Load<CPrefab>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".dds" || FileExtension == L".DDS" || FileExtension == L".tga" || FileExtension == L".TGA" ||
+                FileExtension == L".png" || FileExtension == L".PNG" || FileExtension == L".bmp" || FileExtension == L".BMP" ||
+                FileExtension == L".jpg" || FileExtension == L".JPG" || FileExtension == L".jpeg" || FileExtension == L".JPEG")
+                Load<CTexture>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".mtrl")
+                Load<CMaterial>(FileRelativePath, FileRelativePath);
+            // if (FileExtension == L".wav" || FileExtension == L".mp3" || FileExtension == L".ogg")
+            //     Load<CSound>(FileRelativePath, FileRelativePath);
+        }
+    }
 }
 
 vector<tMeshData> CAssetMgr::ReadFromFile(string _basePath, string _filename, bool _revertNormals)
@@ -256,7 +292,7 @@ CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes
         Parts->MeshRender()->SetMesh(pMesh);
         Parts->MeshRender()->SetMaterial(FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
-        //SetModelMaterial(Parts->GetRenderComponent()->CreateDynamicMaterial(), meshData);
+        // SetModelMaterial(Parts->GetRenderComponent()->CreateDynamicMaterial(), meshData);
 
         model->AddChild(Parts);
         ++idx;

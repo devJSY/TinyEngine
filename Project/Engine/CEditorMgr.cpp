@@ -3,6 +3,7 @@
 #include "CEditor.h"
 #include "CRenderMgr.h"
 #include <Scripts\\CScriptMgr.h>
+#include "CAssetMgr.h"
 
 #include "CLevelEditor.h"
 
@@ -128,6 +129,9 @@ void CEditorMgr::init()
 
     // Editor 용 카메라로서 렌더매니저에 등록
     CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
+
+    // Editor 모드에선 컨텐츠 폴더에 존재하는 모든 에셋 로딩
+    CAssetMgr::GetInst()->LoadAssetsFromFile(CPathMgr::GetContentPath());
 }
 
 void CEditorMgr::tick()
