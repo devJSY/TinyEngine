@@ -377,6 +377,41 @@ void CSpriteEditor::DrawViewport()
         {
             m_Sprites.clear();
         }
+        if (ImGui::MenuItem("Create Animation", NULL, false, m_Sprites.Size > 0))
+        {
+            if (nullptr != m_pAnim)
+                delete m_pAnim;
+
+            m_pAnim = new CAnim;
+            m_pAnim->m_AtlasTex = m_pTex;
+
+            for (int i = 0; i < m_Sprites.Size; i++)
+            {
+                ImVec2 vTextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
+
+                if (m_Sprites[i].bViewport_Selected)
+                {
+                    tAnimFrm AnimData;
+
+                    // UV 좌표로 변환
+                    AnimData.vLeftTop = m_Sprites[i].Rect.GetTL() / vTextureSize;
+                    AnimData.vSlice = m_Sprites[i].Rect.GetSize() / vTextureSize;
+                    AnimData.vOffset = Vec2(0.f, 0.f);
+                    AnimData.vBackground = Vec2(0.f, 0.f);
+                    AnimData.Duration = 1.f / m_AnimFPS;
+
+                    m_pAnim->m_vecFrm.push_back(AnimData);
+                }
+            }
+
+            // 선택된 Sprite가 없는 상태에서 애니메이션 생성요청했을경우
+            if (m_pAnim->m_vecFrm.empty())
+            {
+                delete m_pAnim;
+                m_pAnim = nullptr;
+            }
+        }
+
         ImGui::EndPopup();
     }
 
@@ -462,15 +497,15 @@ void CSpriteEditor::DrawDetails()
 {
     ImGui::Begin("Details##SpriteEditor");
 
-    ImGuiTreeNodeFlags DefaultTreeNodeFlag =
-        ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+    ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                                             ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 
     // ==========================
     // Sprites
     // ==========================
     if (ImGui::TreeNodeEx("Sprites##SpriteEditorDetails", DefaultTreeNodeFlag))
     {
-        std::string CurTextureName;
+        static std::string CurTextureName;
 
         if (nullptr != m_pTex.Get())
             CurTextureName = ToString(m_pTex->GetKey());
@@ -498,7 +533,7 @@ void CSpriteEditor::DrawDetails()
     {
         if (ImGui::TreeNodeEx("Extract sprites##SpriteEditorDetails", DefaultTreeNodeFlag))
         {
-            vector<string> spriteExtractModes = {"Auto", "Grid"};
+            static vector<string> spriteExtractModes = {"Auto", "Grid"};
             static string CurMode = spriteExtractModes[0];
 
             ImGui_ComboUI(ImGui_LabelPrefix("Sprite Extract Mode").c_str(), CurMode, spriteExtractModes);
