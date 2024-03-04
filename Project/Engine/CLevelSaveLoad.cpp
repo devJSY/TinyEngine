@@ -84,6 +84,10 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     // GameObject 의 이름을 저장
     SaveWString(_Obj->GetName(), _File);
 
+    // 레이어 인덱스 저장
+    int layerIdx = _Obj->GetLayerIdx();
+    fwrite(&layerIdx, sizeof(int), 1, _File);
+
     // 컴포넌트 정보를 저장
     for (UINT i = 0; i <= (UINT)COMPONENT_TYPE::END; ++i)
     {
@@ -184,6 +188,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
     for (size_t i = 0; i < ObjCount; ++i)
     {
         CGameObject* pObject = LoadGameObject(_File);
+        pObject->m_iLayerIdx = -1; // 부모 오브젝트는 레이어 설정 X
         _Layer->AddObject(pObject, false);
     }
 }
@@ -196,6 +201,11 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
     wstring strName;
     LoadWString(strName, _File);
     pObject->SetName(strName);
+
+    // 레이어 인덱스 설정
+    int layerIdx = 0;
+    fread(&layerIdx, sizeof(int), 1, _File);
+    pObject->m_iLayerIdx = layerIdx;
 
     // 컴포넌트 정보를 불러오기
     COMPONENT_TYPE type = COMPONENT_TYPE::END;
@@ -278,7 +288,12 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 
     for (size_t i = 0; i < childcount; ++i)
     {
-        pObject->AddChild(LoadGameObject(_File));
+        CGameObject* pChild = LoadGameObject(_File);
+        int childLayerIdx = pChild->m_iLayerIdx;
+        
+        pChild->m_iLayerIdx = -1;
+        pObject->AddChild(pChild);
+        pChild->m_iLayerIdx = childLayerIdx;
     }
 
     return pObject;

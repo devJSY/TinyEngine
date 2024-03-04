@@ -610,6 +610,11 @@ void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
 void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
 {
     CGameObject* OriginObject = (CGameObject*)_Task.Param_1;
+
+    // 레이어에 속해있지않은 오브젝트는 복사하지 않음
+    if (-1 == OriginObject->m_iLayerIdx)
+        return;
+
     CGameObject* CloneObj = OriginObject->Clone();
 
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, OriginObject->m_iLayerIdx, false);
