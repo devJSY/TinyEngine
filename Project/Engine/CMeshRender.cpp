@@ -51,18 +51,17 @@ void CMeshRender::render()
     if (nullptr == GetMesh() || nullptr == GetMaterial())
         return;
 
+    // Animatio2D 보유한 경우
     if (Animator2D())
-    {
         Animator2D()->UpdateData();
-    }
-    else
-    {
-        Animator2D()->Clear();
-    }
 
     UpdateData();
 
     GetMesh()->render();
+
+    // Animation 관련 정보 제거
+    if (Animator2D())
+        Animator2D()->Clear();
 }
 
 void CMeshRender::render(Ptr<CMaterial> _mtrl)
@@ -70,17 +69,16 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
     if (nullptr == GetMesh() || nullptr == _mtrl)
         return;
 
+    // Animatio2D 보유한 경우
     if (Animator2D())
-    {
         Animator2D()->UpdateData();
-    }
-    else
-    {
-        Animator2D()->Clear();
-    }
 
     _mtrl->UpdateData();
     Transform()->UpdateData();
 
     GetMesh()->render();
+
+    // Animation 관련 정보 제거
+    if (Animator2D())
+        Animator2D()->Clear();
 }

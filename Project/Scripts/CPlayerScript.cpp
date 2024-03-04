@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CPlayerScript.h"
 #include "CShockWaveScript.h"
+#include <Engine\\CAnim.h>
 
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
@@ -18,6 +19,11 @@ void CPlayerScript::begin()
 
     if (nullptr == Animator2D())
         return;
+
+    CAnim* CurAnim = Animator2D()->GetCurAnim();
+    wstring CurAnimName = wstring();
+    if (nullptr != CurAnim)
+        CurAnimName = CurAnim->GetName();
 
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_backward.anim");
@@ -43,7 +49,7 @@ void CPlayerScript::begin()
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_idle.anim");
     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_smoking_idle.anim");
 
-    // Animator2D()->Play(L"select_idle", true);
+    Animator2D()->Play(CurAnimName, true);
 }
 
 void CPlayerScript::tick()
