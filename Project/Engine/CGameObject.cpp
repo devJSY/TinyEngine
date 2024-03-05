@@ -28,7 +28,7 @@ CGameObject::CGameObject(const CGameObject& origin)
     , m_arrCom{}
     , m_RenderCom(nullptr)
     , m_Parent(nullptr)
-    , m_iLayerIdx(-1)
+    , m_iLayerIdx(origin.m_iLayerIdx)
     , m_bDead(false)
 {
     for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -44,13 +44,9 @@ CGameObject::CGameObject(const CGameObject& origin)
         AddComponent(origin.m_vecScript[i]->Clone());
     }
 
-    // 복사되는 GameObject 는 부모만 레이어소속을 -1 로 하고,
-    // 자식들은 원본객체랑 동일한 레이어소속을 유지한다.
     for (size_t i = 0; i < origin.m_vecChild.size(); ++i)
     {
-        CGameObject* ChildClone = origin.m_vecChild[i]->Clone();
-        AddChild(ChildClone);
-        ChildClone->m_iLayerIdx = origin.m_vecChild[i]->m_iLayerIdx;
+        AddChild(origin.m_vecChild[i]->Clone());
     }
 }
 
@@ -248,8 +244,6 @@ void CGameObject::DisconnectWithParent()
     {
         assert(nullptr);
     }
-
-    m_iLayerIdx = -1;
 }
 
 void CGameObject::DisconnectWithLayer()
@@ -264,8 +258,6 @@ void CGameObject::DisconnectWithLayer()
 
 void CGameObject::AddChild(CGameObject* _Child)
 {
-    int LayerIdx = _Child->m_iLayerIdx;
-
     if (_Child->m_Parent)
     {
         // 이전 부모 오브젝트랑 연결 해제
@@ -275,10 +267,10 @@ void CGameObject::AddChild(CGameObject* _Child)
     {
         // 자식으로 들어오는 오브젝트가 최상위 부모타입이면,
         // 소속 레이어의 Parent 오브젝트 목록에서 제거한다.
+        int iLayerIdx = _Child->m_iLayerIdx;
         _Child->DisconnectWithLayer();
+        _Child->m_iLayerIdx = iLayerIdx;
     }
-
-    _Child->m_iLayerIdx = LayerIdx;
 
     // 자식이 지정된 레이어가 존재하지 않을경우 부모 레이어로 설정
     if (-1 == _Child->m_iLayerIdx)

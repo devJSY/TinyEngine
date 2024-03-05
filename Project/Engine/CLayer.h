@@ -20,7 +20,7 @@ public:
 
 public:
     // 특정 오브젝트를 레이어에서 제거
-    void DetachGameObject(CGameObject* _Object);
+    bool DetachGameObject(CGameObject* _Object);
     void RegisterGameObject(CGameObject* _Object) { m_vecObjects.push_back(_Object); }
     int GetLayerIdx() const { return m_iLayerIdx; }
 

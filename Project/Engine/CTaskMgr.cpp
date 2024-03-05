@@ -617,6 +617,6 @@ void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
 
     CGameObject* CloneObj = OriginObject->Clone();
 
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, OriginObject->m_iLayerIdx, false);
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);
 }

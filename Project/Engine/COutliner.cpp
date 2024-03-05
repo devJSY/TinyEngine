@@ -120,7 +120,8 @@ void COutliner::render()
             if (L".pref" == AssetPath.extension())
             {
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
-                GamePlayStatic::SpawnGameObject(pPrefab->Instantiate(), 0);
+                CGameObject* pObj = pPrefab->Instantiate();
+                GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
             }
         }
 

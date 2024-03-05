@@ -112,7 +112,7 @@ void CLayer::AddObject(CGameObject* _Object, bool _bMove)
     }
 }
 
-void CLayer::DetachGameObject(CGameObject* _Object)
+bool CLayer::DetachGameObject(CGameObject* _Object)
 {
     // 레이어에 소속이 되어있지 않거나, 이 레이어가 아니라면 assert
     assert(!(-1 == _Object->m_iLayerIdx || _Object->m_iLayerIdx != m_iLayerIdx));
@@ -121,7 +121,7 @@ void CLayer::DetachGameObject(CGameObject* _Object)
     if (nullptr != _Object->GetParent())
     {
         _Object->m_iLayerIdx = -1;
-        return;
+        return true;
     }
 
     // 최상위 부모 오브젝트인 경우
@@ -134,10 +134,11 @@ void CLayer::DetachGameObject(CGameObject* _Object)
             {
                 m_vecParent.erase(iter);
                 _Object->m_iLayerIdx = -1;
-                return;
+                return true;
             }
         }
     }
 
-    assert(nullptr);
+    // 해당 레이어에 소속되어있는 오브젝트가 아닌경우
+    return false;
 }

@@ -187,9 +187,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 
     for (size_t i = 0; i < ObjCount; ++i)
     {
-        CGameObject* pObject = LoadGameObject(_File);
-        pObject->m_iLayerIdx = -1; // 부모 오브젝트는 레이어 설정 X
-        _Layer->AddObject(pObject, false);
+        _Layer->AddObject(LoadGameObject(_File), false);
     }
 }
 
@@ -288,12 +286,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 
     for (size_t i = 0; i < childcount; ++i)
     {
-        CGameObject* pChild = LoadGameObject(_File);
-        int childLayerIdx = pChild->m_iLayerIdx;
-        
-        pChild->m_iLayerIdx = -1;
-        pObject->AddChild(pChild);
-        pChild->m_iLayerIdx = childLayerIdx;
+        pObject->AddChild(LoadGameObject(_File));
     }
 
     return pObject;

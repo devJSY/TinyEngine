@@ -41,13 +41,13 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     }
 
     // Manager ÃÊ±âÈ­
+    CLevelMgr::GetInst()->init();
     CPathMgr::init();
     CTimeMgr::GetInst()->init();
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
     CRenderMgr::GetInst()->init();
     CEditorMgr::GetInst()->init();
-    CLevelMgr::GetInst()->init();
 
     return S_OK;
 }
