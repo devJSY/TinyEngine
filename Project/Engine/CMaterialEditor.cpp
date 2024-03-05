@@ -154,8 +154,11 @@ void CMaterialEditor::DrawViewport()
     m_LightBuffer->UpdateData(12);
 
     // ·»´õ¸µ
-    m_ViewportObj->MeshRender()->SetMaterial(m_Mtrl);
-    m_ViewportObj->render();
+    if (nullptr != m_Mtrl->GetShader())
+    {
+        m_ViewportObj->MeshRender()->SetMaterial(m_Mtrl);
+        m_ViewportObj->render();
+    }
 
     ImGui::Image((void*)m_ViewportRTTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
 

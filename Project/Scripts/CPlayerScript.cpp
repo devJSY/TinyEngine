@@ -81,7 +81,11 @@ void CPlayerScript::tick()
     if (KEY_TAP(KEY::Q))
     {
         if (nullptr != m_ShockWave)
-            Instantiate(m_ShockWave, Transform()->GetRelativePos(), 14);
+        {
+            CGameObject* pShockWave = m_ShockWave->Instantiate();
+            pShockWave->Transform()->SetRelativePos(Transform()->GetRelativePos());
+            GamePlayStatic::SpawnGameObject(pShockWave, 14);
+        }
     }
 
     Transform()->SetRelativePos(vPos);

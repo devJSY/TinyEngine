@@ -7,6 +7,7 @@
 #include "CEditorMgr.h"
 #include "CEngine.h"
 #include "func.h"
+#include "components.h"
 
 // stb
 extern "C"

@@ -524,7 +524,7 @@ void CLevelEditor::render_Viewport()
 void CLevelEditor::render_ImGuizmo()
 {
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-    if (nullptr == pSelectedObj)
+    if (nullptr == pSelectedObj || -1 == pSelectedObj->GetLayerIdx())
         return;
 
     CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();

@@ -11,9 +11,6 @@ class CScript : public CComponent
 private:
     const UINT m_ScriptType;
 
-protected:
-    void Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _LayerIdx);
-
 public:
     UINT GetScriptType() const { return m_ScriptType; }
 

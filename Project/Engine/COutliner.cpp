@@ -112,6 +112,18 @@ void COutliner::render()
             GamePlayStatic::AddChildObject(nullptr, pChild);
         }
 
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+        {
+            string AssetStr = (char*)payload->Data;
+            AssetStr.resize(payload->DataSize);
+            std::filesystem::path AssetPath = AssetStr;
+            if (L".pref" == AssetPath.extension())
+            {
+                Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
+                GamePlayStatic::SpawnGameObject(pPrefab->Instantiate(), 0);
+            }
+        }
+
         ImGui::EndDragDropTarget();
     }
 
@@ -160,6 +172,18 @@ void COutliner::DrawNode(CGameObject* obj)
             GamePlayStatic::AddChildObject(obj, pChild);
         }
 
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+        {
+            string AssetStr = (char*)payload->Data;
+            AssetStr.resize(payload->DataSize);
+            std::filesystem::path AssetPath = AssetStr;
+            if (L".pref" == AssetPath.extension())
+            {
+                Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
+                GamePlayStatic::AddChildObject(obj, pPrefab->Instantiate());
+            }
+        }
+
         ImGui::EndDragDropTarget();
     }
 
@@ -183,11 +207,25 @@ void COutliner::DrawNode(CGameObject* obj)
 
         if (ImGui::MenuItem("Add Child Object"))
         {
-            CGameObject* pObj = new CGameObject;
-            pObj->SetName(L"Child Object");
-            pObj->AddComponent(new CTransform);
+            CGameObject* pChild = new CGameObject;
+            pChild->SetName(L"Child Object");
+            pChild->AddComponent(new CTransform);
 
-            GamePlayStatic::AddChildObject(obj, pObj);
+            GamePlayStatic::AddChildObject(obj, pChild);
+        }
+
+        if (ImGui::MenuItem("Create Prefab"))
+        {
+            Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
+            wstring path = L"prefab\\" + obj->GetName() + L".pref";
+            if (!filesystem::exists(CPathMgr::GetContentPath() + path))
+            {
+                pPrefab->Save(path);
+            }
+            else
+            {
+                MessageBox(nullptr, L"경로에 동일한 이름의 파일이 존재합니다!", L"Prefab 저장 실패", MB_OK);
+            }
         }
 
         ImGui::EndPopup();

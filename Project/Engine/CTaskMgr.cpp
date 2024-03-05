@@ -153,7 +153,7 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     CGameObject* Object = (CGameObject*)_Task.Param_2;
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    pCurLevel->AddObject(Object, LayerIdx, true);
+    pCurLevel->AddObject(Object, LayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(Object);
 
     /*if (LEVEL_STATE::PLAY == pCurLevel->GetState())

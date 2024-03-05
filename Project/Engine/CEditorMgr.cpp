@@ -122,12 +122,14 @@ void CEditorMgr::init()
     pEditorCam->AddComponent(new CCamera);
     pEditorCam->AddComponent(CScriptMgr::GetScript(CAMERAMOVESCRIPT));
 
+    pEditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, -500.f));
+
     pEditorCam->Camera()->LayerMaskAll();
     pEditorCam->Camera()->LayerMask(31, false);
-    pEditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    pEditorCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
     pEditorCam->Camera()->SetFOV(XM_PI / 2.f);
     pEditorCam->Camera()->SetFar(10000.f);
-    pEditorCam->Camera()->SetHDRI(true);
+    pEditorCam->Camera()->SetHDRI(false);
     pEditorCam->Camera()->SetCameraPriority(0);
 
     m_vecEditorObj.push_back(pEditorCam);

@@ -48,6 +48,12 @@ int CPrefab::Save(const wstring& _strRelativePath)
     FILE* pFile = nullptr;
     _wfopen_s(&pFile, strContentPath.c_str(), L"wb");
 
+    if (nullptr == pFile)
+    {
+        MessageBox(nullptr, L"Prefab 저장 실패", L"Prefab 저장 실패", MB_OK);
+        return E_FAIL;
+    }
+
     GAMEOBJECT_SAVE(m_ProtoObj, pFile);
 
     fclose(pFile);
@@ -62,7 +68,10 @@ int CPrefab::Load(const wstring& _strFilePath)
     _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
 
     if (nullptr == pFile)
+    {
+        MessageBox(nullptr, L"Prefab 로딩 실패", L"Prefab 로딩 실패", MB_OK);
         return E_FAIL;
+    }
 
     m_ProtoObj = GAMEOBJECT_LOAD(pFile);
 

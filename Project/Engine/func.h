@@ -3,6 +3,9 @@
 class CGameObject;
 class CLevel;
 class CScript;
+class CPrefab;
+template <typename T>
+class Ptr;
 
 namespace GamePlayStatic
 {
@@ -53,9 +56,6 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
 // =====================================
 void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _File);
-
-template <typename T>
-class Ptr;
 
 #include "CAssetMgr.h"
 
@@ -181,4 +181,3 @@ inline bool ImGui_ComboUI(const string& caption, string& current_item, const std
 
     return changed;
 }
-

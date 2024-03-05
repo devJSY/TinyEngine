@@ -10,12 +10,3 @@ CScript::CScript(UINT _ScriptType)
 CScript::~CScript()
 {
 }
-
-void CScript::Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _LayerIdx)
-{
-    CGameObject* pNewObj = _Prefab->Instantiate();
-
-    pNewObj->Transform()->SetRelativePos(_vWorldPos);
-
-    GamePlayStatic::SpawnGameObject(pNewObj, _LayerIdx);
-}
