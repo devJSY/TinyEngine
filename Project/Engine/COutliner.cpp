@@ -325,6 +325,9 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawLight2D(obj);
     DrawLight3D(obj);
     DrawCamera(obj);
+    DrawRigidbody2D(obj);
+    DrawBoxCollider2D(obj);
+    DrawCircleCollider2D(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
     DrawParticlesystem(obj);
@@ -377,7 +380,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
     if (nullptr == pAnimator)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, "Animator2D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, "Animator 2D");
 
     ComponentSettingsButton(pAnimator);
 
@@ -518,7 +521,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag, "Light2D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag, "Light 2D");
 
     ComponentSettingsButton(pLight);
 
@@ -581,7 +584,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, "Light3D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, "Light 3D");
 
     ComponentSettingsButton(pLight);
 
@@ -759,6 +762,57 @@ void COutliner::DrawCamera(CGameObject* obj)
         bool bHDRI = pCam->IsHDRI();
         if (ImGui::Checkbox(ImGui_LabelPrefix("HDRI").c_str(), &bHDRI))
             pCam->SetHDRI(bHDRI);
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawRigidbody2D(CGameObject* obj)
+{
+    CRigidbody2D* pRigidbody = obj->Rigidbody2D();
+    if (nullptr == pRigidbody)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CRigidbody2D).hash_code(), m_DefaultTreeNodeFlag, "Rigidbody 2D");
+
+    ComponentSettingsButton(pRigidbody);
+
+    if (open)
+    {
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawBoxCollider2D(CGameObject* obj)
+{
+    CBoxCollider2D* pBoxCol = obj->BoxCollider2D();
+    if (nullptr == pBoxCol)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CBoxCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Box Collider 2D");
+
+    ComponentSettingsButton(pBoxCol);
+
+    if (open)
+    {
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawCircleCollider2D(CGameObject* obj)
+{
+    CCircleCollider2D* pCircleCol = obj->CircleCollider2D();
+    if (nullptr == pCircleCol)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCircleCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Circle Collider 2D");
+
+    ComponentSettingsButton(pCircleCol);
+
+    if (open)
+    {
 
         ImGui::TreePop();
     }

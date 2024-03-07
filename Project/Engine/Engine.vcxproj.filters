@@ -86,7 +86,7 @@
       <Filter>08. Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
-      <Filter>08. Component\08. Camera</Filter>
+      <Filter>08. Component\06. Camera</Filter>
     </ClInclude>
     <ClInclude Include="CLevelMgr.h">
       <Filter>04. Manager\LevelMgr</Filter>
@@ -116,7 +116,7 @@
       <Filter>06. Asset\Material</Filter>
     </ClInclude>
     <ClInclude Include="CLight3D.h">
-      <Filter>08. Component\07. Light3D</Filter>
+      <Filter>08. Component\05. Light3D</Filter>
     </ClInclude>
     <ClInclude Include="CModleLoader.h">
       <Filter>ModleLoader</Filter>
@@ -134,10 +134,10 @@
       <Filter>04. Manager\RenderMgr</Filter>
     </ClInclude>
     <ClInclude Include="CAnimator2D.h">
-      <Filter>08. Component\04. Animator2D</Filter>
+      <Filter>08. Component\02. Animator2D</Filter>
     </ClInclude>
     <ClInclude Include="CAnim.h">
-      <Filter>08. Component\04. Animator2D\Anim</Filter>
+      <Filter>08. Component\02. Animator2D\Anim</Filter>
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>LevelSaveLoad</Filter>
@@ -146,7 +146,7 @@
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClInclude>
     <ClInclude Include="CLight2D.h">
-      <Filter>08. Component\06. Light2D</Filter>
+      <Filter>08. Component\04. Light2D</Filter>
     </ClInclude>
     <ClInclude Include="CMaterialEditor.h">
       <Filter>20. Editor\MaterialEditor</Filter>
@@ -262,6 +262,18 @@
     <ClInclude Include="CPrefab.h">
       <Filter>06. Asset\Prefab</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysics2DMgr.h">
+      <Filter>04. Manager\Physics2DMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidbody2D.h">
+      <Filter>08. Component\07. Rigidbody2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollider2D.h">
+      <Filter>08. Component\08. BoxCollider2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CCircleCollider2D.h">
+      <Filter>08. Component\09. CircleCollider2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -328,7 +340,7 @@
       <Filter>08. Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
-      <Filter>08. Component\08. Camera</Filter>
+      <Filter>08. Component\06. Camera</Filter>
     </ClCompile>
     <ClCompile Include="CLevelMgr.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
@@ -361,7 +373,7 @@
       <Filter>06. Asset\Material</Filter>
     </ClCompile>
     <ClCompile Include="CLight3D.cpp">
-      <Filter>08. Component\07. Light3D</Filter>
+      <Filter>08. Component\05. Light3D</Filter>
     </ClCompile>
     <ClCompile Include="CModleLoader.cpp">
       <Filter>ModleLoader</Filter>
@@ -382,10 +394,10 @@
       <Filter>04. Manager\RenderMgr</Filter>
     </ClCompile>
     <ClCompile Include="CAnimator2D.cpp">
-      <Filter>08. Component\04. Animator2D</Filter>
+      <Filter>08. Component\02. Animator2D</Filter>
     </ClCompile>
     <ClCompile Include="CAnim.cpp">
-      <Filter>08. Component\04. Animator2D\Anim</Filter>
+      <Filter>08. Component\02. Animator2D\Anim</Filter>
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>LevelSaveLoad</Filter>
@@ -394,7 +406,7 @@
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClCompile>
     <ClCompile Include="CLight2D.cpp">
-      <Filter>08. Component\06. Light2D</Filter>
+      <Filter>08. Component\04. Light2D</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr_init.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -498,6 +510,18 @@
     <ClCompile Include="CPrefab.cpp">
       <Filter>06. Asset\Prefab</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysics2DMgr.cpp">
+      <Filter>04. Manager\Physics2DMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidbody2D.cpp">
+      <Filter>08. Component\07. Rigidbody2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoxCollider2D.cpp">
+      <Filter>08. Component\08. BoxCollider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CCircleCollider2D.cpp">
+      <Filter>08. Component\09. CircleCollider2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -544,12 +568,6 @@
     </Filter>
     <Filter Include="08. Component\01. Transform">
       <UniqueIdentifier>{7263119e-ba22-4cb5-9446-0ecb37b4016e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\04. Animator2D">
-      <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\06. Light2D">
-      <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. Asset\Mesh">
       <UniqueIdentifier>{8f54ffc6-a3b6-40d3-abfa-204909ad4b43}</UniqueIdentifier>
@@ -614,9 +632,6 @@
     <Filter Include="20. Editor\LevelEditor\Outliner">
       <UniqueIdentifier>{13a45330-55a0-469f-8332-f154d870f5af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\07. Light3D">
-      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ModleLoader">
       <UniqueIdentifier>{217a6a91-fde4-4060-bdbf-96650c1d1c2e}</UniqueIdentifier>
     </Filter>
@@ -634,9 +649,6 @@
     </Filter>
     <Filter Include="04. Manager\RenderMgr">
       <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\04. Animator2D\Anim">
-      <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>
     </Filter>
     <Filter Include="LevelSaveLoad">
       <UniqueIdentifier>{bdf3eee3-1a1e-45c1-a45a-a0f2fd4d8952}</UniqueIdentifier>
@@ -716,9 +728,6 @@
     <Filter Include="ShaderCode\Render\UnrealPBR">
       <UniqueIdentifier>{f68944f3-5d62-46df-a0bc-eee34ca61828}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\08. Camera">
-      <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\RenderComponent\04. SkyBox">
       <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
     </Filter>
@@ -736,6 +745,33 @@
     </Filter>
     <Filter Include="06. Asset\Prefab">
       <UniqueIdentifier>{e32e0f18-5fbe-4a54-be48-ad276488f2d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Physics2DMgr">
+      <UniqueIdentifier>{5bb8f90a-95b9-4d0b-b08d-71aa6c7386ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\02. Animator2D">
+      <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\02. Animator2D\Anim">
+      <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\04. Light2D">
+      <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\05. Light3D">
+      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\06. Camera">
+      <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\07. Rigidbody2D">
+      <UniqueIdentifier>{3fb86466-781f-4b82-9e0f-bfd1ade7b13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\08. BoxCollider2D">
+      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\09. CircleCollider2D">
+      <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

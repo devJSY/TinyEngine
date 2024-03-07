@@ -207,9 +207,8 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::ANIMATOR2D:
             pComponent = new CAnimator2D;
             break;
-        // case COMPONENT_TYPE::ANIMATOR3D:
-        //     pComponent = new CAnimator3D;
-        //     break;
+        case COMPONENT_TYPE::ANIMATOR3D:
+            break;
         case COMPONENT_TYPE::LIGHT2D:
             pComponent = new CLight2D;
             break;
@@ -218,6 +217,15 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             break;
         case COMPONENT_TYPE::CAMERA:
             pComponent = new CCamera;
+            break;
+        case COMPONENT_TYPE::RIGIDBODY2D:
+            pComponent = new CRigidbody2D;
+            break;
+        case COMPONENT_TYPE::BOXCOLLIDER2D:
+            pComponent = new CBoxCollider2D;
+            break;
+        case COMPONENT_TYPE::CIRCLECOLLIDER2D:
+            pComponent = new CCircleCollider2D;
             break;
         case COMPONENT_TYPE::MESHRENDER:
             pComponent = new CMeshRender;
@@ -231,12 +239,10 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::SKYBOX:
             pComponent = new CSkyBox;
             break;
-            // case COMPONENT_TYPE::DECAL:
-            //     pComponent = new CDecal;
-            //     break;
-            // case COMPONENT_TYPE::LANDSCAPE:
-            //     pComponent = new CLandScape;
-            //     break;
+        case COMPONENT_TYPE::DECAL:
+            break;
+        case COMPONENT_TYPE::LANDSCAPE:
+            break;
         }
 
         // 해당 컴포넌트가 저장한 데이터를 로드

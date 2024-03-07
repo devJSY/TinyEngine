@@ -432,69 +432,69 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 
 void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
 {
-    //if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
-    //    return;
+    // if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+    //     return;
 
-    //int MouseX = (int)_Task.Param_1;
-    //int MouseY = (int)_Task.Param_2;
+    // int MouseX = (int)_Task.Param_1;
+    // int MouseY = (int)_Task.Param_2;
 
-    //float NdcMouseX = 0.0f;
-    //float NdcMouseY = 0.0f;
+    // float NdcMouseX = 0.0f;
+    // float NdcMouseY = 0.0f;
 
     //// 마우스 커서의 위치를 NDC로 변환
     //// 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
     //// NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-    //if (CEditorMgr::GetInst()->IsEnable())
+    // if (CEditorMgr::GetInst()->IsEnable())
     //{
-    //    Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
-    //    if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
-    //        return;
+    //     Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+    //     if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
+    //         return;
 
     //    NdcMouseX = MouseX * 2.0f / ViewportSize.x - 1.0f;
     //    NdcMouseY = -MouseY * 2.0f / ViewportSize.y + 1.0f;
     //}
-    //else
+    // else
     //{
     //    Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
     //    NdcMouseX = MouseX * 2.0f / WindowSize.x - 1.0f;
     //    NdcMouseY = -MouseY * 2.0f / WindowSize.y + 1.0f;
     //}
 
-    //if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
-    //    return;
+    // if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
+    //     return;
 
-    //Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
-    //Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
+    // Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
+    // Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
 
     //// 메인 카메라
-    //CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
+    // CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
 
-    //Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
+    // Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
 
     //// ViewFrustum 안에서 PickingRay의 방향 구하기
-    //Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
-    //Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
+    // Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
+    // Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
 
-    //Vector3 dir = FarWorld - NearWorld;
-    //dir.Normalize();
+    // Vector3 dir = FarWorld - NearWorld;
+    // dir.Normalize();
 
-    //CGameObject* pSelectedObj = nullptr;
+    // CGameObject* pSelectedObj = nullptr;
 
     //// 광선을 만들고 충돌 감지
-    //SimpleMath::Ray curRay = SimpleMath::Ray(NearWorld, dir);
-    //float dist = 0.0f;
+    // SimpleMath::Ray curRay = SimpleMath::Ray(NearWorld, dir);
+    // float dist = 0.0f;
 
-    //CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    //for (int i = 0; i < LAYER_MAX; ++i)
+    // CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    // for (int i = 0; i < LAYER_MAX; ++i)
     //{
-    //    CLayer* pLayer = pCurLevel->GetLayer(i);
-    //    const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
-    //    for (size_t i = 0; i < vecObjects.size(); ++i)
-    //    {
-    //        float dist = 0.0f;
-    //        CCollider2D* col = vecObjects[i]->Collider2D();
-    //        if (nullptr == col)
-    //            continue;
+    //     CLayer* pLayer = pCurLevel->GetLayer(i);
+    //     const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
+    //     for (size_t i = 0; i < vecObjects.size(); ++i)
+    //     {
+    //         float dist = 0.0f;
+    //         CCollider2D* col = vecObjects[i]->Collider2D();
+    //         if (nullptr == col)
+    //             continue;
 
     //        bool bSelected = false;
     //        if (COLLIDER2D_TYPE::RECT == col->GetColliderType())
@@ -514,7 +514,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
     //        break;
     //}
 
-    //CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
+    // CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
@@ -552,13 +552,22 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::ANIMATOR3D:
         break;
     case COMPONENT_TYPE::LIGHT2D:
-        pObj->AddComponent(new CLight2D());
+        pObj->AddComponent(new CLight2D);
         break;
     case COMPONENT_TYPE::LIGHT3D:
-        pObj->AddComponent(new CLight3D());
+        pObj->AddComponent(new CLight3D);
         break;
     case COMPONENT_TYPE::CAMERA:
         pObj->AddComponent(new CCamera);
+        break;
+    case COMPONENT_TYPE::RIGIDBODY2D:
+        pObj->AddComponent(new CRigidbody2D);
+        break;
+    case COMPONENT_TYPE::BOXCOLLIDER2D:
+        pObj->AddComponent(new CBoxCollider2D);
+        break;
+    case COMPONENT_TYPE::CIRCLECOLLIDER2D:
+        pObj->AddComponent(new CCircleCollider2D);
         break;
     case COMPONENT_TYPE::MESHRENDER:
         pObj->AddComponent(new CMeshRender);
@@ -599,7 +608,7 @@ void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
     int NextLayerIdx = (int)_Task.Param_2;
     int OriginLayerIdx = Object->GetLayerIdx();
 
-    //CCollisionMgr::GetInst()->CollisionRelease(Object);
+    // CCollisionMgr::GetInst()->CollisionRelease(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(OriginLayerIdx)->DetachGameObject(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx, false);
 }

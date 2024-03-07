@@ -27,6 +27,9 @@ private:
     void DrawLight2D(CGameObject* obj);
     void DrawLight3D(CGameObject* obj);
     void DrawCamera(CGameObject* obj);
+    void DrawRigidbody2D(CGameObject* obj);
+    void DrawBoxCollider2D(CGameObject* obj);
+    void DrawCircleCollider2D(CGameObject* obj);
     void DrawMeshRender(CGameObject* obj);
     void DrawTileMap(CGameObject* obj);
     void DrawParticlesystem(CGameObject* obj);
