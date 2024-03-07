@@ -357,11 +357,20 @@ void CLevelEditor::render_Toolbar()
         if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
             toolbarEnabled)
-        {         
+        {
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PAUSE);
         }
+
+        ImGui::SameLine();
+
+        if (ImGui::ImageButton((void*)pStopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            toolbarEnabled)
+        {
+            GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
+        }
     }
-    else
+    else if (LEVEL_STATE::PAUSE == pCurLevel->GetState())
     {
         if (ImGui::ImageButton((void*)pPlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
@@ -370,15 +379,25 @@ void CLevelEditor::render_Toolbar()
             CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
         }
+
+        ImGui::SameLine();
+
+        if (ImGui::ImageButton((void*)pStopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            toolbarEnabled)
+        {
+            GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
+        }
     }
-
-    ImGui::SameLine();
-
-    if (ImGui::ImageButton((void*)pStopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f),
-                           tintColor) &&
-        toolbarEnabled)
+    else if (LEVEL_STATE::STOP == pCurLevel->GetState())
     {
-        GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
+        if (ImGui::ImageButton((void*)pPlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
+            toolbarEnabled)
+        {
+            CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
+        }
     }
 
     ImGui::PopStyleVar(2);
@@ -584,55 +603,55 @@ void CLevelEditor::render_ImGuizmo()
 
 void CLevelEditor::render_CollisionResponses()
 {
-    //ImGui_SetWindowClass_LevelEditor();
-    //if (!ImGui::Begin("Collision Responses", &m_bShowCollisionResponses))
+    // ImGui_SetWindowClass_LevelEditor();
+    // if (!ImGui::Begin("Collision Responses", &m_bShowCollisionResponses))
     //{
-    //    ImGui::End();
-    //    return;
-    //}
+    //     ImGui::End();
+    //     return;
+    // }
 
-    //if (ImGui::Button("All Layer Enable"))
-    //    CCollisionMgr::GetInst()->EnableAllLayer();
+    // if (ImGui::Button("All Layer Enable"))
+    //     CCollisionMgr::GetInst()->EnableAllLayer();
 
-    //ImGui::SameLine();
+    // ImGui::SameLine();
 
-    //if (ImGui::Button("All Layer Disable"))
-    //    CCollisionMgr::GetInst()->DisableAllLayer();
+    // if (ImGui::Button("All Layer Disable"))
+    //     CCollisionMgr::GetInst()->DisableAllLayer();
 
-    //string column_names[LAYER_MAX + 1] = {"Layers"};
-    //for (int i = 1; i <= LAYER_MAX; i++)
+    // string column_names[LAYER_MAX + 1] = {"Layers"};
+    // for (int i = 1; i <= LAYER_MAX; i++)
     //{
-    //    const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
-    //    column_names[i] = ToString(LayerName);
-    //}
+    //     const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
+    //     column_names[i] = ToString(LayerName);
+    // }
 
-    //const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
+    // const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
 
-    //static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
-    //for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
+    // static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
+    // for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
     //{
-    //    for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
-    //    {
-    //        if (CCollisionMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
-    //        {
-    //            bools[iRow * columns_count + iCol + 1] = true;
-    //        }
-    //        else
-    //        {
-    //            bools[iRow * columns_count + iCol + 1] = false;
-    //        }
-    //    }
-    //}
+    //     for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
+    //     {
+    //         if (CCollisionMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
+    //         {
+    //             bools[iRow * columns_count + iCol + 1] = true;
+    //         }
+    //         else
+    //         {
+    //             bools[iRow * columns_count + iCol + 1] = false;
+    //         }
+    //     }
+    // }
 
-    //static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
-    //                                     ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
-    //                                     ImGuiTableFlags_HighlightHoveredColumn;
+    // static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
+    //                                      ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
+    //                                      ImGuiTableFlags_HighlightHoveredColumn;
 
-    //if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
+    // if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
     //{
-    //    ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
-    //    for (int n = columns_count - 1; n >= 1; n--)
-    //        ImGui::TableSetupColumn(column_names[n].c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
+    //     ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
+    //     for (int n = columns_count - 1; n >= 1; n--)
+    //         ImGui::TableSetupColumn(column_names[n].c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 
     //    ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
     //                                    // ImGuiTableColumnFlags_AngledHeader flag.
@@ -658,5 +677,5 @@ void CLevelEditor::render_CollisionResponses()
     //    ImGui::EndTable();
     //}
 
-    //ImGui::End();
+    // ImGui::End();
 }
