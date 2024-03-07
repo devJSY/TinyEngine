@@ -779,6 +779,35 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
 
     if (open)
     {
+        // =======================
+        // Type
+        // =======================
+        vector<string> bodyTypes = {
+            "Dynamic",
+            "Kinematic",
+            "Static",
+        };
+
+        static string CurbodyType = bodyTypes[(UINT)pRigidbody->GetBodyType()];
+
+        CurbodyType = bodyTypes[(UINT)pRigidbody->GetBodyType()];
+
+        if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Type").c_str(), CurbodyType, bodyTypes))
+        {
+            if (bodyTypes[0] == CurbodyType)
+                pRigidbody->SetBodyType(BODY_TYPE::Dynamic);
+            else if (bodyTypes[1] == CurbodyType)
+                pRigidbody->SetBodyType(BODY_TYPE::Kinematic);
+            else if (bodyTypes[2] == CurbodyType)
+                pRigidbody->SetBodyType(BODY_TYPE::Static);
+        }
+
+        // =======================
+        // Freeze Rotation
+        // =======================
+        bool bFreezeRotation = pRigidbody->IsFreezeRotation();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Freeze Rotation Z").c_str(), &bFreezeRotation))
+            pRigidbody->SetFreezeRotation(bFreezeRotation);
 
         ImGui::TreePop();
     }
@@ -796,6 +825,29 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
 
     if (open)
     {
+        Vec2 Offset = pBoxCol->GetOffset();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+            pBoxCol->SetOffset(Offset);
+
+        Vec2 Size = pBoxCol->GetSize();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x))
+            pBoxCol->SetSize(Size);
+
+        float Density = pBoxCol->GetDensity();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.01f, 0.0f, 1.0f))
+            pBoxCol->SetDensity(Density);
+
+        float Friction = pBoxCol->GetFriction();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
+            pBoxCol->SetFriction(Friction);
+
+        float Restitution = pBoxCol->GetRestitution();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution").c_str(), &Restitution, 0.01f, 0.0f, 1.0f))
+            pBoxCol->SetRestitution(Restitution);
+
+        float RestitutionThreshold = pBoxCol->GetRestitutionThreshold();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution Threshold").c_str(), &RestitutionThreshold, 0.01f, 0.0f, 1.0f))
+            pBoxCol->SetRestitutionThreshold(RestitutionThreshold);
 
         ImGui::TreePop();
     }

@@ -16,4 +16,6 @@ public:
 public:
     CCircleCollider2D();
     virtual ~CCircleCollider2D();
+
+    friend class CPhysics2DMgr;
 };

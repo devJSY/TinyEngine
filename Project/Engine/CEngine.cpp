@@ -11,6 +11,7 @@
 #include "CTaskMgr.h"
 #include "CGrabageCollector.h"
 #include "CRenderMgr.h"
+#include "CPhysics2DMgr.h";
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
@@ -62,7 +63,8 @@ void CEngine::progress()
     CKeyMgr::GetInst()->tick();
 
     // Level Update
-    CEditorMgr::GetInst()->tick(); 
+    CEditorMgr::GetInst()->tick();
+    CPhysics2DMgr::GetInst()->tick();
     CLevelMgr::GetInst()->tick();
 
     // ===========================

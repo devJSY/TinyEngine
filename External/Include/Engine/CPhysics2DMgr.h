@@ -10,7 +10,6 @@ private:
     b2World* m_PhysicsWorld;
 
 public:
-    void init();
     void tick();
 
     void OnPhysics2DStart();
