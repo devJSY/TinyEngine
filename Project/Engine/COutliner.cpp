@@ -269,9 +269,26 @@ void COutliner::DrawDetails(CGameObject* obj)
         {
             if (ImGui::MenuItem(COMPONENT_TYPE_STRING[i]))
             {
-                GamePlayStatic::AddComponent(CEditorMgr::GetInst()->GetSelectedObject(), (COMPONENT_TYPE)i);
+                GamePlayStatic::AddComponent(obj, (COMPONENT_TYPE)i);
                 ImGui::CloseCurrentPopup();
             }
+        }
+
+        if (ImGui::BeginMenu("Script"))
+        {
+            vector<wstring> vecScriptName;
+            CScriptMgr::GetScriptInfo(vecScriptName);
+
+            for (size_t i = 0; i < vecScriptName.size(); i++)
+            {
+                if (ImGui::MenuItem(ToString(vecScriptName[i]).c_str()))
+                {
+                    obj->AddComponent(CScriptMgr::GetScript(vecScriptName[i]));
+                    ImGui::CloseCurrentPopup();
+                }
+            }
+
+            ImGui::EndMenu();
         }
 
         ImGui::EndPopup();

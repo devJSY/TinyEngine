@@ -304,27 +304,6 @@ void CLevelEditor::render_MenuBar()
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Script"))
-        {
-            vector<wstring> vecScriptName;
-            CScriptMgr::GetScriptInfo(vecScriptName);
-
-            for (size_t i = 0; i < vecScriptName.size(); i++)
-            {
-                if (ImGui::MenuItem(ToString(vecScriptName[i]).c_str()))
-                {
-                    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-
-                    if (nullptr != pSelectedObj)
-                    {
-                        pSelectedObj->AddComponent(CScriptMgr::GetScript(vecScriptName[i]));
-                    }
-                }
-            }
-
-            ImGui::EndMenu();
-        }
-
         ImGui::EndMainMenuBar();
     }
 }
