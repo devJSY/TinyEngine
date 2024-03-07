@@ -13,7 +13,6 @@
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
-#include "CCollisionMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
@@ -36,7 +35,6 @@ CLevelEditor::CLevelEditor()
     , m_bShowIDMap(false)
     , m_bShowOutliner(true)
     , m_bShowContentBrowser(true)
-    , m_bShowCollisionResponses(false)
     , m_bShowToolbar(true)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
@@ -155,10 +153,6 @@ void CLevelEditor::render()
         ImGui::End();
     }
 
-    // Collision Responses
-    if (m_bShowCollisionResponses)
-        render_CollisionResponses();
-
     // Outliner Render
     if (m_bShowOutliner)
         m_Outliner.render();
@@ -274,9 +268,6 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("ContentBrowser", NULL, m_bShowContentBrowser))
                 m_bShowContentBrowser = !m_bShowContentBrowser;
-
-            if (ImGui::MenuItem("CollisionResponses", NULL, m_bShowCollisionResponses))
-                m_bShowCollisionResponses = !m_bShowCollisionResponses;
 
             if (ImGui::MenuItem("Toolbar", NULL, m_bShowToolbar))
                 m_bShowToolbar = !m_bShowToolbar;
@@ -590,79 +581,79 @@ void CLevelEditor::render_ImGuizmo()
 
 void CLevelEditor::render_CollisionResponses()
 {
-    ImGui_SetWindowClass_LevelEditor();
-    if (!ImGui::Begin("Collision Responses", &m_bShowCollisionResponses))
-    {
-        ImGui::End();
-        return;
-    }
+    //ImGui_SetWindowClass_LevelEditor();
+    //if (!ImGui::Begin("Collision Responses", &m_bShowCollisionResponses))
+    //{
+    //    ImGui::End();
+    //    return;
+    //}
 
-    if (ImGui::Button("All Layer Enable"))
-        CCollisionMgr::GetInst()->EnableAllLayer();
+    //if (ImGui::Button("All Layer Enable"))
+    //    CCollisionMgr::GetInst()->EnableAllLayer();
 
-    ImGui::SameLine();
+    //ImGui::SameLine();
 
-    if (ImGui::Button("All Layer Disable"))
-        CCollisionMgr::GetInst()->DisableAllLayer();
+    //if (ImGui::Button("All Layer Disable"))
+    //    CCollisionMgr::GetInst()->DisableAllLayer();
 
-    string column_names[LAYER_MAX + 1] = {"Layers"};
-    for (int i = 1; i <= LAYER_MAX; i++)
-    {
-        const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
-        column_names[i] = ToString(LayerName);
-    }
+    //string column_names[LAYER_MAX + 1] = {"Layers"};
+    //for (int i = 1; i <= LAYER_MAX; i++)
+    //{
+    //    const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
+    //    column_names[i] = ToString(LayerName);
+    //}
 
-    const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
+    //const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
 
-    static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
-    for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
-    {
-        for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
-        {
-            if (CCollisionMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
-            {
-                bools[iRow * columns_count + iCol + 1] = true;
-            }
-            else
-            {
-                bools[iRow * columns_count + iCol + 1] = false;
-            }
-        }
-    }
+    //static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
+    //for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
+    //{
+    //    for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
+    //    {
+    //        if (CCollisionMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
+    //        {
+    //            bools[iRow * columns_count + iCol + 1] = true;
+    //        }
+    //        else
+    //        {
+    //            bools[iRow * columns_count + iCol + 1] = false;
+    //        }
+    //    }
+    //}
 
-    static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
-                                         ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
-                                         ImGuiTableFlags_HighlightHoveredColumn;
+    //static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
+    //                                     ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
+    //                                     ImGuiTableFlags_HighlightHoveredColumn;
 
-    if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
-    {
-        ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
-        for (int n = columns_count - 1; n >= 1; n--)
-            ImGui::TableSetupColumn(column_names[n].c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
+    //if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
+    //{
+    //    ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
+    //    for (int n = columns_count - 1; n >= 1; n--)
+    //        ImGui::TableSetupColumn(column_names[n].c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
 
-        ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
-                                        // ImGuiTableColumnFlags_AngledHeader flag.
-        ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other   functions.
+    //    ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
+    //                                    // ImGuiTableColumnFlags_AngledHeader flag.
+    //    ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other   functions.
 
-        for (int row = 0; row < LAYER_MAX; row++)
-        {
-            ImGui::PushID(row);
-            ImGui::TableNextRow();
-            ImGui::TableSetColumnIndex(0);
-            ImGui::AlignTextToFramePadding();
-            ImGui::Text(column_names[row + 1].c_str());
-            for (int column = columns_count - 1; column > row; column--)
-                if (ImGui::TableSetColumnIndex(columns_count - column))
-                {
-                    ImGui::PushID(column);
-                    if (ImGui::Checkbox("", &bools[row * columns_count + column]))
-                        CCollisionMgr::GetInst()->LayerCheck(row, column - 1, bools[row * columns_count + column]);
-                    ImGui::PopID();
-                }
-            ImGui::PopID();
-        }
-        ImGui::EndTable();
-    }
+    //    for (int row = 0; row < LAYER_MAX; row++)
+    //    {
+    //        ImGui::PushID(row);
+    //        ImGui::TableNextRow();
+    //        ImGui::TableSetColumnIndex(0);
+    //        ImGui::AlignTextToFramePadding();
+    //        ImGui::Text(column_names[row + 1].c_str());
+    //        for (int column = columns_count - 1; column > row; column--)
+    //            if (ImGui::TableSetColumnIndex(columns_count - column))
+    //            {
+    //                ImGui::PushID(column);
+    //                if (ImGui::Checkbox("", &bools[row * columns_count + column]))
+    //                    CCollisionMgr::GetInst()->LayerCheck(row, column - 1, bools[row * columns_count + column]);
+    //                ImGui::PopID();
+    //            }
+    //        ImGui::PopID();
+    //    }
+    //    ImGui::EndTable();
+    //}
 
-    ImGui::End();
+    //ImGui::End();
 }

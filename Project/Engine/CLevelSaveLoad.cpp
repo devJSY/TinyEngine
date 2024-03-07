@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CLevelSaveLoad.h"
 
-#include "CCollisionMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
@@ -50,13 +49,6 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
         SaveLayer(_Level->GetLayer(i), pFile);
-    }
-
-    // Collision Layer
-    for (UINT i = 0; i < LAYER_MAX; i++)
-    {
-        UINT row = CCollisionMgr::GetInst()->GetCollisionLayer(i);
-        fwrite(&row, sizeof(UINT), 1, pFile);
     }
 
     fclose(pFile);
@@ -161,14 +153,6 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
         LoadLayer(pLevel->GetLayer(i), pFile);
     }
 
-    // Collision Layer
-    for (UINT i = 0; i < LAYER_MAX; i++)
-    {
-        UINT row = 0;
-        fread(&row, sizeof(UINT), 1, pFile);
-        CCollisionMgr::GetInst()->SetCollisionLayer(i, row);
-    }
-
     fclose(pFile);
 
     return pLevel;
@@ -220,12 +204,6 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::TRANSFORM:
             pComponent = new CTransform;
             break;
-        case COMPONENT_TYPE::COLLIDER2D:
-            pComponent = new CCollider2D;
-            break;
-        // case COMPONENT_TYPE::COLLIDER3D:
-        //     pComponent = new CCollider3D;
-        //     break;
         case COMPONENT_TYPE::ANIMATOR2D:
             pComponent = new CAnimator2D;
             break;

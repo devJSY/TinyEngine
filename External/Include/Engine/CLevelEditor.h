@@ -22,7 +22,6 @@ private:
     bool m_bShowIDMap;
     bool m_bShowOutliner;
     bool m_bShowContentBrowser;
-    bool m_bShowCollisionResponses;
     bool m_bShowToolbar;
     bool m_bShowAssets;
     bool m_bShowOutputLog;

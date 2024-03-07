@@ -68,9 +68,6 @@ enum class COMPONENT_TYPE
 {
     TRANSFORM, // 오브젝트의 위치, 크기, 회전
 
-    COLLIDER2D, // 2차원 충돌체
-    COLLIDER3D, // 3차원 충돌체
-
     ANIMATOR2D, // 스프라이트 Animation
     ANIMATOR3D, // Bone Skinning Animation
 

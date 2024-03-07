@@ -133,12 +133,6 @@
     <ClInclude Include="CRenderMgr.h">
       <Filter>04. Manager\RenderMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CCollider2D.h">
-      <Filter>08. Component\02. Collider2D</Filter>
-    </ClInclude>
-    <ClInclude Include="CCollisionMgr.h">
-      <Filter>04. Manager\CollisionMgr</Filter>
-    </ClInclude>
     <ClInclude Include="CAnimator2D.h">
       <Filter>08. Component\04. Animator2D</Filter>
     </ClInclude>
@@ -387,12 +381,6 @@
     <ClCompile Include="CRenderMgr_init.cpp">
       <Filter>04. Manager\RenderMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CCollider2D.cpp">
-      <Filter>08. Component\02. Collider2D</Filter>
-    </ClCompile>
-    <ClCompile Include="CCollisionMgr.cpp">
-      <Filter>04. Manager\CollisionMgr</Filter>
-    </ClCompile>
     <ClCompile Include="CAnimator2D.cpp">
       <Filter>08. Component\04. Animator2D</Filter>
     </ClCompile>
@@ -557,9 +545,6 @@
     <Filter Include="08. Component\01. Transform">
       <UniqueIdentifier>{7263119e-ba22-4cb5-9446-0ecb37b4016e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\02. Collider2D">
-      <UniqueIdentifier>{737e7bdf-bf5f-4e15-bb6a-cc11cc447925}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\04. Animator2D">
       <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
     </Filter>
@@ -649,9 +634,6 @@
     </Filter>
     <Filter Include="04. Manager\RenderMgr">
       <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\CollisionMgr">
-      <UniqueIdentifier>{51cb9da8-2ab5-4e89-ae24-98a0524a7f6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="08. Component\04. Animator2D\Anim">
       <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>

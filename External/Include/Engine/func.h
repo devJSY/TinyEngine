@@ -90,8 +90,8 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
     }
 }
 
-wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
-wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
+wstring OpenFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
+wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 
 // =====================================
 // ImGui Utility

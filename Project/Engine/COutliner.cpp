@@ -320,8 +320,6 @@ void COutliner::DrawDetails(CGameObject* obj)
     }
 
     DrawTransform(obj);
-    DrawCollider2D(obj);
-    DrawCollider3D(obj);
     DrawAnimator2D(obj);
     DrawAnimator3D(obj);
     DrawLight2D(obj);
@@ -370,67 +368,6 @@ void COutliner::DrawTransform(CGameObject* obj)
 
         ImGui::TreePop();
     }
-}
-
-void COutliner::DrawCollider2D(CGameObject* obj)
-{
-    CCollider2D* pCol = obj->Collider2D();
-    if (nullptr == pCol)
-        return;
-
-    bool open = ImGui::TreeNodeEx((void*)typeid(CCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Collider2D");
-
-    ComponentSettingsButton(pCol);
-
-    if (open)
-    {
-        const char* Collider2DTypeStrings[] = {"Rect", "Circle"};
-        const char* currentCollider2DTypeString = Collider2DTypeStrings[(int)pCol->GetColliderType()];
-        if (ImGui::BeginCombo(ImGui_LabelPrefix("Collider2DType").c_str(), currentCollider2DTypeString))
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                bool isSelected = currentCollider2DTypeString == Collider2DTypeStrings[i];
-                if (ImGui::Selectable(Collider2DTypeStrings[i], isSelected))
-                {
-                    currentCollider2DTypeString = Collider2DTypeStrings[i];
-                    pCol->SetColliderType((COLLIDER2D_TYPE)i);
-                }
-
-                if (isSelected)
-                    ImGui::SetItemDefaultFocus();
-            }
-
-            ImGui::EndCombo();
-        }
-
-        if (pCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
-        {
-            bool bAbsolute = pCol->IsAbsolute();
-            ImGui::Checkbox(ImGui_LabelPrefix("Absolute").c_str(), &bAbsolute);
-            pCol->SetAbsolute(bAbsolute);
-        }
-        else if (pCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
-        {
-            float fRadius = pCol->GetRadius();
-            if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
-                pCol->SetRadius(fRadius);
-        }
-
-        Vec2 offsetPos = pCol->GetOffsetPos();
-        ImGui::DragFloat2(ImGui_LabelPrefix("Offset Pos").c_str(), &offsetPos.x, 0.1f);
-        pCol->SetOffsetPos(offsetPos);
-
-        Vec2 offsetScale = pCol->GetOffsetScale();
-        ImGui::DragFloat2(ImGui_LabelPrefix("Offset Scale").c_str(), &offsetScale.x, 0.1f, 0.f, D3D11_FLOAT32_MAX);
-        pCol->SetOffsetScale(offsetScale);
-
-        ImGui::TreePop();
-    }
-}
-
-void COutliner::DrawCollider3D(CGameObject* obj)
-{
 }
 
 void COutliner::DrawAnimator2D(CGameObject* obj)

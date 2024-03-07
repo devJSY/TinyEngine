@@ -17,18 +17,18 @@ void CShockWaveScript::begin()
 
 void CShockWaveScript::tick()
 {
-    if (nullptr == Collider2D())
-        return;
+    //if (nullptr == Collider2D())
+    //    return;
 
-    float Radius = Collider2D()->GetRadius();
-    Radius += DT * 500.f;
+    //float Radius = Collider2D()->GetRadius();
+    //Radius += DT * 500.f;
 
-    if (Radius >= 500.f)
-        GamePlayStatic::DestroyGameObject(GetOwner());
+    //if (Radius >= 500.f)
+    //    GamePlayStatic::DestroyGameObject(GetOwner());
 
-    Collider2D()->SetRadius(Radius);
+    //Collider2D()->SetRadius(Radius);
 
-    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, Radius / 1000.f);
+    //MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, Radius / 1000.f);
 }
 
 void CShockWaveScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

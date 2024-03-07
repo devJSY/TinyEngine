@@ -179,7 +179,6 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CBlueprintEditor.h" />
     <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CComputeShader.h" />
     <ClInclude Include="CConstBuffer.h" />
@@ -205,7 +204,6 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CModleLoader.h" />
-    <ClInclude Include="CCollider2D.h" />
     <ClInclude Include="components.h" />
     <ClInclude Include="COutliner.h" />
     <ClInclude Include="COutputLog.h" />
@@ -271,7 +269,6 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAssetMgr_init.cpp" />
     <ClCompile Include="CBlueprintEditor.cpp" />
     <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
@@ -297,7 +294,6 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CModleLoader.cpp" />
-    <ClCompile Include="CCollider2D.cpp" />
     <ClCompile Include="COutliner.cpp" />
     <ClCompile Include="COutputLog.cpp" />
     <ClCompile Include="CParticleSystem.cpp" />

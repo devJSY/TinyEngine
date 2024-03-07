@@ -8,7 +8,6 @@
 #include <Engine\\components.h>
 #include <Engine\\CScript.h>
 
-#include <Engine\\CCollisionMgr.h>
 #include <Engine\\CLevelMgr.h>
 #include <Scripts\\CScriptMgr.h>
 
@@ -88,7 +87,6 @@ void CCreateTestLevel::CreateTestLevel()
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
     pPlayer->AddComponent(new CAnimator2D);
-    pPlayer->AddComponent(new CCollider2D);
     pPlayer->AddComponent(CScriptMgr::GetScript(PLAYERSCRIPT));
 
     pPlayer->Transform()->SetAbsolute(true);
@@ -110,15 +108,6 @@ void CCreateTestLevel::CreateTestLevel()
     pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 
     pCurLevel->AddObject(pLight, L"Light");
-
-    // 충돌 설정
-    for (UINT i = 0; i < LAYER_MAX; i++)
-    {
-        for (UINT j = 0; j <= i; j++)
-        {
-            CCollisionMgr::GetInst()->LayerCheck(i, j);
-        }
-    }
 
     GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::STOP);
 }
