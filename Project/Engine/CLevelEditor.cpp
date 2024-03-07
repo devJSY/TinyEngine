@@ -350,13 +350,15 @@ void CLevelEditor::render_Toolbar()
     Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
     Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
 
-    if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    if (LEVEL_STATE::PLAY == pCurLevel->GetState())
     {
         if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
             toolbarEnabled)
-        {
-            GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::STOP);
+        {         
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PAUSE);
         }
     }
     else
@@ -365,7 +367,8 @@ void CLevelEditor::render_Toolbar()
                                ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
             toolbarEnabled)
         {
-            GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::PLAY);
+            CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
         }
     }
 
@@ -375,7 +378,7 @@ void CLevelEditor::render_Toolbar()
                            tintColor) &&
         toolbarEnabled)
     {
-        GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::STOP);
+        GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
     }
 
     ImGui::PopStyleVar(2);

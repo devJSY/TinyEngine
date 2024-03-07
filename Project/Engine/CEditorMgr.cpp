@@ -276,8 +276,9 @@ void CEditorMgr::ObserveContent()
 
     if (dwWaitStatus == WAIT_OBJECT_0)
     {
+        FindNextChangeNotification(m_hObserver);
+
         CAssetMgr::GetInst()->ReloadContent();
         LOG(Log, "Assets Reloaded!!");
-        FindNextChangeNotification(m_hObserver);
     }
 }

@@ -36,13 +36,18 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
         strLevelPath = filePath.replace_extension(Level_extension);
     }
 
+    // 해당 경로에 레벨 파일이 저장한경우 삭제한뒤 재생성
+    if (std::filesystem::exists(strLevelPath))
+        std::filesystem::remove(strLevelPath);
+
     FILE* pFile = nullptr;
     _wfopen_s(&pFile, strLevelPath.c_str(), L"wb");
 
     if (nullptr == pFile)
         return;
 
-    // 레벨의 이름
+    // 레벨 이름
+    _Level->SetName(_LevelFileName);
     SaveWString(_Level->GetName(), pFile);
 
     // 레벨의 레이어 저장
@@ -131,6 +136,19 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
     wstring strLevelPath = CPathMgr::GetContentPath();
     strLevelPath += L"Levels\\";
     strLevelPath += _LevelFileName;
+
+    std::filesystem::path filePath = strLevelPath;
+
+    // 확장자가 입력되지 않은 경우
+    if ("" == filePath.extension())
+    {
+        strLevelPath += Level_extension;
+    }
+    // 확장자가 잘못 입력된 경우
+    else if (Level_extension != filePath.extension())
+    {
+        strLevelPath = filePath.replace_extension(Level_extension);
+    }
 
     FILE* pFile = nullptr;
     _wfopen_s(&pFile, strLevelPath.c_str(), L"rb");

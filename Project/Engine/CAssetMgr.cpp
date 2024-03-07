@@ -32,7 +32,7 @@ void CAssetMgr::init()
 void CAssetMgr::ReloadContent()
 {
     LoadAssetsFromFile(CPathMgr::GetContentPath());
-    
+
     // 원본 파일이 삭제된 에셋은 메모리에서 제거
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
     {
@@ -44,6 +44,8 @@ void CAssetMgr::ReloadContent()
             wstring strFilePath = CPathMgr::GetContentPath() + pair.first;
             if (!std::filesystem::exists(strFilePath))
             {
+                MessageBox(nullptr, L"원본파일이 삭제되었습니다.", L"Asset 싱크", MB_OK);
+
                 tTask task = {};
                 task.Type = TASK_TYPE::DELETE_ASSET;
                 task.Param_1 = (DWORD_PTR)i;

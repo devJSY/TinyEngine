@@ -7,14 +7,14 @@
 SAVE_TYPE CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
 LOAD_TYPE CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
 
-CPrefab::CPrefab()
-    : CAsset(ASSET_TYPE::PREFAB)
+CPrefab::CPrefab(bool _bEngineAsset)
+    : CAsset(ASSET_TYPE::PREFAB, _bEngineAsset)
     , m_ProtoObj(nullptr)
 {
 }
 
-CPrefab::CPrefab(CGameObject* _Proto)
-    : CAsset(ASSET_TYPE::PREFAB)
+CPrefab::CPrefab(CGameObject* _Proto, bool _bEngineAsset)
+    : CAsset(ASSET_TYPE::PREFAB, _bEngineAsset)
     , m_ProtoObj(_Proto)
 {
 }

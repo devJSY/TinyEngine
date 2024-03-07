@@ -663,8 +663,10 @@ bool ImGui_TexturesComboUI(const string& caption, string& current_item)
             {
                 if (ImGui::BeginItemTooltip())
                 {
-                    Ptr<CAsset> HoveredTex = iter.second;
+                    Ptr<CTexture> HoveredTex = (CTexture*)iter.second.Get();
                     ImGui::Text(ToString(HoveredTex->GetName()).c_str());
+                    ImGui::Text("Texture Width : %d", HoveredTex->GetWidth());
+                    ImGui::Text("Texture Height : %d", HoveredTex->GetHeight());
                     ImGui::Image(((CTexture*)HoveredTex.Get())->GetSRV().Get(), ImVec2(100, 100));
                     ImGui::EndTooltip();
                 }

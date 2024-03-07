@@ -24,7 +24,7 @@ public:
     CLONE_DISABLE(CPrefab);
 
 public:
-    CPrefab();
-    CPrefab(CGameObject* _Proto);
+    CPrefab(bool _bEngineAsset = false);
+    CPrefab(CGameObject* _Proto, bool _bEngineAsset = false);
     virtual ~CPrefab();
 };
