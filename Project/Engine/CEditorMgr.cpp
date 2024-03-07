@@ -247,13 +247,27 @@ void CEditorMgr::SetImGuizmoStyle()
     ImGuizmo::Style* style = &ImGuizmo::GetStyle(); // get a pointer to the global style context
     ImVec4* colors = style->Colors;                 // get access to the colors array
 
-    style->TranslationLineThickness = 3.0f;
-    style->TranslationLineArrowSize = 8.0f;
+    style->TranslationLineThickness = 6.0f;
+    style->TranslationLineArrowSize = 12.0f;
+    style->RotationLineThickness = 4.0f;
+    style->RotationOuterLineThickness = 4.0f;
+    style->ScaleLineThickness = 6.0f;
+    style->ScaleLineCircleSize = 10.0f;
+    style->HatchedAxisLineThickness = 6.0f;
+    style->CenterCircleSize = 6.0f;
 
-    // lighter r/g/b colours
-    colors[ImGuizmo::DIRECTION_X] = ImVec4(0.858f, 0.243f, 0.113f, 0.929f);
-    colors[ImGuizmo::DIRECTION_Y] = ImVec4(0.603f, 0.952f, 0.282f, 0.929f);
-    colors[ImGuizmo::DIRECTION_Z] = ImVec4(0.227f, 0.478f, 0.972f, 0.929f);
+    style->Colors[ImGuizmo::DIRECTION_X] = ImGui::ColorConvertU32ToFloat4(0xFF715ED8);
+    style->Colors[ImGuizmo::DIRECTION_Y] = ImGui::ColorConvertU32ToFloat4(0xFF25AA25);
+    style->Colors[ImGuizmo::DIRECTION_Z] = ImGui::ColorConvertU32ToFloat4(0xFFCC532C);
+
+    style->Colors[ImGuizmo::PLANE_X] = ImGui::ColorConvertU32ToFloat4(0xFF7A68D8);
+    style->Colors[ImGuizmo::PLANE_Y] = ImGui::ColorConvertU32ToFloat4(0xFF55AB55);
+    style->Colors[ImGuizmo::PLANE_Z] = ImGui::ColorConvertU32ToFloat4(0xFFD96742);
+
+    style->Colors[ImGuizmo::SELECTION] = ImGui::ColorConvertU32ToFloat4(0xFF20AACC);
+    style->Colors[ImGuizmo::INACTIVE] = ImGui::ColorConvertU32ToFloat4(0x99999999);
+    style->Colors[ImGuizmo::TRANSLATION_LINE] = ImGui::ColorConvertU32ToFloat4(0xAAAAAAAA);
+    style->Colors[ImGuizmo::SCALE_LINE] = ImGui::ColorConvertU32ToFloat4(0xFF404040);
 }
 
 void CEditorMgr::ObserveContent()
