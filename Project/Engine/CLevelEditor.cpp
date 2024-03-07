@@ -213,7 +213,7 @@ void CLevelEditor::render_MenuBar()
         {
             if (ImGui::MenuItem("Save Level"))
             {
-                std::filesystem::path filePath = SaveFile(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
+                std::filesystem::path filePath = SaveFileDialog(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
 
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
@@ -225,7 +225,7 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Load Level"))
             {
-                std::filesystem::path filePath = OpenFile(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
+                std::filesystem::path filePath = OpenFileDialog(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
 
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())

@@ -466,7 +466,7 @@ void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
     }
 }
 
-wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
+wstring OpenFileDialog(const wstring& strRelativePath, const wchar_t* filter)
 {
     wchar_t szName[256] = {};
     OPENFILENAME ofn = {};
@@ -490,7 +490,7 @@ wstring OpenFile(const wstring& strRelativePath, const wchar_t* filter)
     return wstring();
 }
 
-wstring SaveFile(const wstring& strRelativePath, const wchar_t* filter)
+wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter)
 {
     wchar_t szName[256] = {};
     OPENFILENAME ofn = {};
