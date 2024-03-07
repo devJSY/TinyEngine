@@ -31,18 +31,6 @@ void CShockWaveScript::tick()
     //MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, Radius / 1000.f);
 }
 
-void CShockWaveScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-}
-
-void CShockWaveScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-}
-
-void CShockWaveScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-}
-
 void CShockWaveScript::SaveToLevelFile(FILE* _File)
 {
     fread(&m_Time, sizeof(float), 1, _File);
