@@ -98,5 +98,12 @@ typedef Vector4 Vec4;
 #include <assimp\\postprocess.h>
 #include <assimp\\scene.h>
 
+// Box2D
+#ifdef _DEBUG
+    #pragma comment(lib, "box2d\\box2d_debug")
+#else
+    #pragma comment(lib, "box2d\\box2d")
+#endif
+
 #include "COutputLog.h"
 

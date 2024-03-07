@@ -8,6 +8,8 @@
 #include "CGameObject.h"
 #include "CCollider2D.h"
 
+#include <box2d\\b2_world.h>
+
 CCollisionMgr::CCollisionMgr()
     : m_matrix{}
 {
@@ -127,18 +129,15 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeftCol, CCollider2D* _p
     {
         return CollisionRectRect(_pLeftCol, _pRightCol);
     }
-    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE &&
-             _pRightCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
+    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
     {
         return CollisionCircleCircle(_pLeftCol, _pRightCol);
     }
-    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::RECT &&
-             _pRightCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
+    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::RECT && _pRightCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE)
     {
         return CollisionRectCircle(_pLeftCol, _pRightCol);
     }
-    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE &&
-             _pRightCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
+    else if (_pLeftCol->GetColliderType() == COLLIDER2D_TYPE::CIRCLE && _pRightCol->GetColliderType() == COLLIDER2D_TYPE::RECT)
     {
         return CollisionRectCircle(_pRightCol, _pLeftCol);
     }
@@ -210,7 +209,7 @@ void CCollisionMgr::CollisionRelease(CGameObject* _obj)
             if (nullptr == vecObjs[j]->Collider2D() || _obj == vecObjs[j])
                 continue;
 
-            // 두 충돌체의 아이디를 조합 
+            // 두 충돌체의 아이디를 조합
             // 2가지 조합 체크
             CollisionID ID = {};
             ID.LeftID = _obj->Collider2D()->GetID();
@@ -248,8 +247,7 @@ bool CCollisionMgr::CollisionRectRect(CCollider2D* _pLeftCol, CCollider2D* _pRig
     // 0 -- 1
     // |    |
     // 3 -- 2
-    static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f),
-                              Vec3(-0.5f, -0.5f, 0.f)};
+    static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f), Vec3(-0.5f, -0.5f, 0.f)};
 
     Vec3 arrProj[4] = {};
 
@@ -259,8 +257,7 @@ bool CCollisionMgr::CollisionRectRect(CCollider2D* _pLeftCol, CCollider2D* _pRig
     arrProj[2] = XMVector3TransformCoord(arrRect[1], matRight) - XMVector3TransformCoord(arrRect[0], matRight);
     arrProj[3] = XMVector3TransformCoord(arrRect[3], matRight) - XMVector3TransformCoord(arrRect[0], matRight);
 
-    Vec3 vCenter =
-        XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRight) - XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matLeft);
+    Vec3 vCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRight) - XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matLeft);
 
     // i 번째 투영축으로 4개의 표면벡터를 투영시킨다.
     for (int i = 0; i < 4; ++i)
@@ -327,8 +324,7 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pC
     const Matrix& matRect = _pRectCol->GetColliderWorldMat();
     const Matrix& matCircle = _pCircleCol->GetColliderWorldMat();
 
-    static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f),
-                              Vec3(-0.5f, -0.5f, 0.f)};
+    static Vec3 arrRect[4] = {Vec3(-0.5f, 0.5f, 0.f), Vec3(0.5f, 0.5f, 0.f), Vec3(0.5f, -0.5f, 0.f), Vec3(-0.5f, -0.5f, 0.f)};
 
     // Rect의 각축의 정규화된 벡터
     Vec3 NormalAxis[2] = {};
@@ -338,12 +334,8 @@ bool CCollisionMgr::CollisionRectCircle(CCollider2D* _pRectCol, CCollider2D* _pC
     NormalAxis[0].Normalize();
     NormalAxis[1].Normalize();
 
-    float RectHalfWidth =
-        Vec3(XMVector3TransformCoord(arrRect[1], matRect) - XMVector3TransformCoord(arrRect[0], matRect)).Length() /
-        2.f;
-    float RectHalfHeight =
-        Vec3(XMVector3TransformCoord(arrRect[1], matRect) - XMVector3TransformCoord(arrRect[2], matRect)).Length() /
-        2.f;
+    float RectHalfWidth = Vec3(XMVector3TransformCoord(arrRect[1], matRect) - XMVector3TransformCoord(arrRect[0], matRect)).Length() / 2.f;
+    float RectHalfHeight = Vec3(XMVector3TransformCoord(arrRect[1], matRect) - XMVector3TransformCoord(arrRect[2], matRect)).Length() / 2.f;
 
     Vec3 CircleCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matCircle);
     Vec3 RectCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), matRect);
