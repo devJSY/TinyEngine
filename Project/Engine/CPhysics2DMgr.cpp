@@ -11,6 +11,7 @@
 #include <box2d\\b2_body.h>
 #include <box2d\\b2_fixture.h>
 #include <box2d\\b2_polygon_shape.h>
+#include <box2d\\b2_circle_shape.h>
 
 static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
 {
@@ -147,6 +148,23 @@ void CPhysics2DMgr::OnPhysics2DStart()
                         fixtureDef.friction = bc2d->m_Friction;
                         fixtureDef.restitution = bc2d->m_Restitution;
                         fixtureDef.restitutionThreshold = bc2d->m_RestitutionThreshold;
+                        body->CreateFixture(&fixtureDef);
+                    }
+
+                    // Circle Collider 2D 를 보유한 오브젝트
+                    CCircleCollider2D* cc2d = pObject->CircleCollider2D();
+                    if (nullptr != cc2d)
+                    {
+                        b2CircleShape circleShape;
+                        circleShape.m_p.Set(cc2d->m_Offset.x, cc2d->m_Offset.y);
+                        circleShape.m_radius = cc2d->m_Radius;
+
+                        b2FixtureDef fixtureDef;
+                        fixtureDef.shape = &circleShape;
+                        fixtureDef.density = cc2d->m_Density;
+                        fixtureDef.friction = cc2d->m_Friction;
+                        fixtureDef.restitution = cc2d->m_Restitution;
+                        fixtureDef.restitutionThreshold = cc2d->m_RestitutionThreshold;
                         body->CreateFixture(&fixtureDef);
                     }
                 }

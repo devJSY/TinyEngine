@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CBoxCollider2D.h"
 
+#include "components.h"
+
 CBoxCollider2D::CBoxCollider2D()
     : CComponent(COMPONENT_TYPE::BOXCOLLIDER2D)
     , m_RuntimeFixture(nullptr)

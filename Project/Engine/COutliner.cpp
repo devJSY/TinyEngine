@@ -865,6 +865,29 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
 
     if (open)
     {
+        Vec2 Offset = pCircleCol->GetOffset();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+            pCircleCol->SetOffset(Offset);
+
+        float Radius = pCircleCol->GetRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.0f, 1.0f))
+            pCircleCol->SetRadius(Radius);
+
+        float Density = pCircleCol->GetDensity();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.01f, 0.0f, 1.0f))
+            pCircleCol->SetDensity(Density);
+
+        float Friction = pCircleCol->GetFriction();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
+            pCircleCol->SetFriction(Friction);
+
+        float Restitution = pCircleCol->GetRestitution();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution").c_str(), &Restitution, 0.01f, 0.0f, 1.0f))
+            pCircleCol->SetRestitution(Restitution);
+
+        float RestitutionThreshold = pCircleCol->GetRestitutionThreshold();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution Threshold").c_str(), &RestitutionThreshold, 0.01f, 0.0f, 1.0f))
+            pCircleCol->SetRestitutionThreshold(RestitutionThreshold);
 
         ImGui::TreePop();
     }
