@@ -56,47 +56,23 @@ void CPhysics2DMgr::tick()
     const int32_t positionIterations = 2;
     m_PhysicsWorld->Step(DT, velocityIterations, positionIterations);
 
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    for (UINT i = 0; i < LAYER_MAX; i++)
+    for (b2Body* body = m_PhysicsWorld->GetBodyList(); body; body = body->GetNext())
     {
-        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+        uintptr_t UserData = body->GetUserData().pointer;
+        CGameObject* pObj = (CGameObject*)UserData;
 
-        for (const auto& ParentObj : vecParentObj)
-        {
-            list<CGameObject*> queue;
-            queue.push_back(ParentObj);
+        CTransform* pTr = pObj->Transform();
+        CRigidbody2D* rb2d = pObj->Rigidbody2D();
 
-            while (!queue.empty())
-            {
-                CGameObject* pObject = queue.front();
-                queue.pop_front();
-
-                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
-
-                for (size_t i = 0; i < vecChildObj.size(); ++i)
-                {
-                    queue.push_back(vecChildObj[i]);
-                }
-
-                CTransform* pTr = pObject->Transform();
-
-                // Rigidbody2D 를 보유한 오브젝트
-                CRigidbody2D* rb2d = pObject->Rigidbody2D();
-                if (nullptr != rb2d)
-                {
-                    b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
-                    const auto& position = body->GetPosition();
-                    pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
-                    pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
-                }
-            }
-        }
+        const auto& position = body->GetPosition();
+        pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
+        pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
     }
 }
 
 void CPhysics2DMgr::OnPhysics2DStart()
 {
-    m_PhysicsWorld = new b2World({0.0f, -9.8f});
+    m_PhysicsWorld = new b2World({0.0f, -10.f});
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     for (UINT i = 0; i < LAYER_MAX; i++)
@@ -130,6 +106,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
                     bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
                     bodyDef.angle = pTr->GetRelativeRotation().z;
+                    bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pObject);
 
                     b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
                     body->SetFixedRotation(rb2d->m_bFreezeRotation);
@@ -140,7 +117,8 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     if (nullptr != bc2d)
                     {
                         b2PolygonShape boxShape;
-                        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x, bc2d->m_Size.y * pTr->GetRelativeScale().y);
+                        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x, bc2d->m_Size.y * pTr->GetRelativeScale().y,
+                                          b2Vec2(bc2d->GetOffset().x, bc2d->GetOffset().y), 0.f);
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &boxShape;
@@ -148,7 +126,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                         fixtureDef.friction = bc2d->m_Friction;
                         fixtureDef.restitution = bc2d->m_Restitution;
                         fixtureDef.restitutionThreshold = bc2d->m_RestitutionThreshold;
-                        body->CreateFixture(&fixtureDef);
+                        bc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
                     }
 
                     // Circle Collider 2D 를 보유한 오브젝트
@@ -156,8 +134,8 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     if (nullptr != cc2d)
                     {
                         b2CircleShape circleShape;
-                        circleShape.m_p.Set(cc2d->m_Offset.x, cc2d->m_Offset.y);
-                        circleShape.m_radius = cc2d->m_Radius;
+                        circleShape.m_p.Set(cc2d->GetOffset().x, cc2d->GetOffset().y);
+                        circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius;
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &circleShape;
@@ -165,7 +143,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                         fixtureDef.friction = cc2d->m_Friction;
                         fixtureDef.restitution = cc2d->m_Restitution;
                         fixtureDef.restitutionThreshold = cc2d->m_RestitutionThreshold;
-                        body->CreateFixture(&fixtureDef);
+                        cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
                     }
                 }
             }

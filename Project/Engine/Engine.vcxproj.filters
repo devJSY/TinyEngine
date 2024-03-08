@@ -269,10 +269,13 @@
       <Filter>08. Component\07. Rigidbody2D</Filter>
     </ClInclude>
     <ClInclude Include="CBoxCollider2D.h">
-      <Filter>08. Component\08. BoxCollider2D</Filter>
+      <Filter>08. Component\Collider2D\08. BoxCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CCircleCollider2D.h">
-      <Filter>08. Component\09. CircleCollider2D</Filter>
+      <Filter>08. Component\Collider2D\09. CircleCollider2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollider2D.h">
+      <Filter>08. Component\Collider2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -517,10 +520,13 @@
       <Filter>08. Component\07. Rigidbody2D</Filter>
     </ClCompile>
     <ClCompile Include="CBoxCollider2D.cpp">
-      <Filter>08. Component\08. BoxCollider2D</Filter>
+      <Filter>08. Component\Collider2D\08. BoxCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CCircleCollider2D.cpp">
-      <Filter>08. Component\09. CircleCollider2D</Filter>
+      <Filter>08. Component\Collider2D\09. CircleCollider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider2D.cpp">
+      <Filter>08. Component\Collider2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -767,10 +773,13 @@
     <Filter Include="08. Component\07. Rigidbody2D">
       <UniqueIdentifier>{3fb86466-781f-4b82-9e0f-bfd1ade7b13c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\08. BoxCollider2D">
+    <Filter Include="08. Component\Collider2D">
+      <UniqueIdentifier>{79f67d4c-e983-44c5-8bc6-cbee0063c40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\08. BoxCollider2D">
       <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\09. CircleCollider2D">
+    <Filter Include="08. Component\Collider2D\09. CircleCollider2D">
       <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
