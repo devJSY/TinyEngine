@@ -118,7 +118,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     {
                         b2PolygonShape boxShape;
                         boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x, bc2d->m_Size.y * pTr->GetRelativeScale().y,
-                                          b2Vec2(bc2d->GetOffset().x, bc2d->GetOffset().y), 0.f);
+                                          b2Vec2(bc2d->m_Offset.x, bc2d->m_Offset.y), 0.f);
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &boxShape;
@@ -134,7 +134,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     if (nullptr != cc2d)
                     {
                         b2CircleShape circleShape;
-                        circleShape.m_p.Set(cc2d->GetOffset().x, cc2d->GetOffset().y);
+                        circleShape.m_p.Set(cc2d->m_Offset.x, cc2d->m_Offset.y);
                         circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius;
 
                         b2FixtureDef fixtureDef;

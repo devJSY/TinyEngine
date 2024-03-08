@@ -16,10 +16,15 @@ CCircleCollider2D::~CCircleCollider2D()
 
 void CCircleCollider2D::finaltick()
 {
-    Vec3 pos = Transform()->GetWorldPos();
-    pos.x += m_Offset.x;
-    pos.y += m_Offset.y;
-    GamePlayStatic::DrawDebugCircle(pos, Transform()->GetRelativeScale().x * m_Radius, Vec3(0.f, 1.f, 0.f), false);
+    Vec3 sacle = Transform()->GetRelativeScale();
+
+    Matrix matWorld = Transform()->GetWorldMat();
+    Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
+    Matrix matScale = XMMatrixScaling(m_Radius * sacle.x, m_Radius * sacle.x, 0.f);
+
+    Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
+
+    GamePlayStatic::DrawDebugCircle(matScale * matTranslation * matInvScale * matWorld, Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CCircleCollider2D::SaveToLevelFile(FILE* _File)

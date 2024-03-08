@@ -834,7 +834,7 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             pBoxCol->SetSize(Size);
 
         float Density = pBoxCol->GetDensity();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.01f, 0.0f, 1.0f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.1f))
             pBoxCol->SetDensity(Density);
 
         float Friction = pBoxCol->GetFriction();
@@ -874,7 +874,7 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             pCircleCol->SetRadius(Radius);
 
         float Density = pCircleCol->GetDensity();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.01f, 0.0f, 1.0f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.1f))
             pCircleCol->SetDensity(Density);
 
         float Friction = pCircleCol->GetFriction();

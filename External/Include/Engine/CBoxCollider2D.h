@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "CCollider2D.h"
 
 class CBoxCollider2D : public CCollider2D
