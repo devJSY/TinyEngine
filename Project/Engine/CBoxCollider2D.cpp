@@ -15,10 +15,15 @@ CBoxCollider2D::~CBoxCollider2D()
 
 void CBoxCollider2D::finaltick()
 {
+    Vec3 sacle = Transform()->GetRelativeScale();
+
     Matrix matWorld = Transform()->GetWorldMat();
     Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
+    Matrix matScale = XMMatrixScaling(2.f * m_Size.x * sacle.x, 2.f * m_Size.y * sacle.y, 0.f);
 
-    GamePlayStatic::DrawDebugRect(matTranslation * matWorld, Vec3(0.f, 1.f, 0.f), false);
+    Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
+
+    GamePlayStatic::DrawDebugRect(matScale * matTranslation * matInvScale * matWorld, Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CBoxCollider2D::SaveToLevelFile(FILE* _File)

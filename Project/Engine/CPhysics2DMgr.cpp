@@ -56,16 +56,20 @@ void CPhysics2DMgr::tick()
     const int32_t positionIterations = 2;
     m_PhysicsWorld->Step(DT, velocityIterations, positionIterations);
 
-    for (b2Body* body = m_PhysicsWorld->GetBodyList(); body; body = body->GetNext())
+    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
-        uintptr_t UserData = body->GetUserData().pointer;
-        CGameObject* pObj = (CGameObject*)UserData;
+        CTransform* pTr = m_vecPhysicsObj[i]->Transform();
+        CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
 
-        CTransform* pTr = pObj->Transform();
-        CRigidbody2D* rb2d = pObj->Rigidbody2D();
+        b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
+        const auto& worldpos = body->GetPosition();
 
-        const auto& position = body->GetPosition();
-        pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
+        Vec3 offset = pTr->GetWorldPos();
+        offset.x -= worldpos.x;
+        offset.y -= worldpos.y;
+        offset.z = 0;
+
+        pTr->SetRelativePos(pTr->GetRelativePos() - offset);
         pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
     }
 }
@@ -104,7 +108,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                 {
                     b2BodyDef bodyDef;
                     bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
-                    bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
+                    bodyDef.position.Set(pTr->GetWorldPos().x, pTr->GetWorldPos().y);
                     bodyDef.angle = pTr->GetRelativeRotation().z;
                     bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pObject);
 
@@ -145,6 +149,8 @@ void CPhysics2DMgr::OnPhysics2DStart()
                         fixtureDef.restitutionThreshold = cc2d->m_RestitutionThreshold;
                         cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
                     }
+
+                    m_vecPhysicsObj.push_back(pObject);
                 }
             }
         }
@@ -155,4 +161,6 @@ void CPhysics2DMgr::OnPhysics2DStop()
 {
     delete m_PhysicsWorld;
     m_PhysicsWorld = nullptr;
+
+    m_vecPhysicsObj.clear();
 }

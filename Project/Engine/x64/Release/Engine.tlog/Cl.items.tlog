@@ -7,6 +7,7 @@ D:\TinyEngine\Project\Engine\CBlueprintEditor.cpp;D:\TinyEngine\Project\Engine\x
 D:\TinyEngine\Project\Engine\CBoxCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CBoxCollider2D.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCamera.obj
 D:\TinyEngine\Project\Engine\CCircleCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCircleCollider2D.obj
+D:\TinyEngine\Project\Engine\CCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCollider2D.obj
 D:\TinyEngine\Project\Engine\CComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComponent.obj
 D:\TinyEngine\Project\Engine\CComputeShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComputeShader.obj
 D:\TinyEngine\Project\Engine\CConstBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Release\CConstBuffer.obj

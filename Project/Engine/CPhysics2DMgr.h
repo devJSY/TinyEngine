@@ -1,6 +1,7 @@
 #pragma once
 
 class b2World;
+class CGameObject;
 
 class CPhysics2DMgr : public CSingleton<CPhysics2DMgr>
 {
@@ -8,6 +9,7 @@ class CPhysics2DMgr : public CSingleton<CPhysics2DMgr>
 
 private:
     b2World* m_PhysicsWorld;
+    vector<CGameObject*> m_vecPhysicsObj;
 
 public:
     void tick();
