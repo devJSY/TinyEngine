@@ -19,7 +19,7 @@ void CBoxCollider2D::finaltick()
 
     Matrix matWorld = Transform()->GetWorldMat();
     Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
-    Matrix matScale = XMMatrixScaling(2.f * m_Size.x * sacle.x, 2.f * m_Size.y * sacle.y, 0.f);
+    Matrix matScale = XMMatrixScaling(2.f * m_Size.x * sacle.x, 2.f * m_Size.y * sacle.y, 1.f);
 
     Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
 

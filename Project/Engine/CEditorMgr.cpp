@@ -122,7 +122,7 @@ void CEditorMgr::init()
     pEditorCam->AddComponent(new CCamera);
     pEditorCam->AddComponent(CScriptMgr::GetScript(CAMERAMOVESCRIPT));
 
-    pEditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, -500.f));
+    pEditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, -10.f));
 
     pEditorCam->Camera()->LayerMaskAll();
     pEditorCam->Camera()->LayerMask(31, false);

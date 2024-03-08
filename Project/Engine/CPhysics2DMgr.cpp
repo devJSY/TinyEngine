@@ -31,6 +31,8 @@ static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
 
 CPhysics2DMgr::CPhysics2DMgr()
     : m_PhysicsWorld(nullptr)
+    , m_vecPhysicsObj{}
+    , m_Matrix{}
 {
 }
 
@@ -62,14 +64,8 @@ void CPhysics2DMgr::tick()
         CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
 
         b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
-        const auto& worldpos = body->GetPosition();
-
-        Vec3 offset = pTr->GetWorldPos();
-        offset.x -= worldpos.x;
-        offset.y -= worldpos.y;
-        offset.z = 0;
-
-        pTr->SetRelativePos(pTr->GetRelativePos() - offset);
+        const auto& position = body->GetPosition();
+        pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
         pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
     }
 }
@@ -108,9 +104,9 @@ void CPhysics2DMgr::OnPhysics2DStart()
                 {
                     b2BodyDef bodyDef;
                     bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
-                    bodyDef.position.Set(pTr->GetWorldPos().x, pTr->GetWorldPos().y);
+                    bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
+                    bodyDef.gravityScale = rb2d->m_GravityScale;
                     bodyDef.angle = pTr->GetRelativeRotation().z;
-                    bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(pObject);
 
                     b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
                     body->SetFixedRotation(rb2d->m_bFreezeRotation);
@@ -128,8 +124,11 @@ void CPhysics2DMgr::OnPhysics2DStart()
                         fixtureDef.shape = &boxShape;
                         fixtureDef.density = bc2d->m_Density;
                         fixtureDef.friction = bc2d->m_Friction;
-                        fixtureDef.restitution = bc2d->m_Restitution;
-                        fixtureDef.restitutionThreshold = bc2d->m_RestitutionThreshold;
+                        fixtureDef.restitution = bc2d->m_Bounciness;
+
+                        fixtureDef.filter.categoryBits = (1 << pObject->GetLayerIdx());
+                        fixtureDef.filter.maskBits = m_Matrix[pObject->GetLayerIdx()];
+
                         bc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
                     }
 
@@ -145,8 +144,11 @@ void CPhysics2DMgr::OnPhysics2DStart()
                         fixtureDef.shape = &circleShape;
                         fixtureDef.density = cc2d->m_Density;
                         fixtureDef.friction = cc2d->m_Friction;
-                        fixtureDef.restitution = cc2d->m_Restitution;
-                        fixtureDef.restitutionThreshold = cc2d->m_RestitutionThreshold;
+                        fixtureDef.restitution = cc2d->m_Bounciness;
+
+                        fixtureDef.filter.categoryBits = (1 << pObject->GetLayerIdx());
+                        fixtureDef.filter.maskBits = m_Matrix[pObject->GetLayerIdx()];
+
                         cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
                     }
 
@@ -163,4 +165,48 @@ void CPhysics2DMgr::OnPhysics2DStop()
     m_PhysicsWorld = nullptr;
 
     m_vecPhysicsObj.clear();
+}
+
+void CPhysics2DMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)
+{
+    UINT iRow = (UINT)_LeftLayer;
+    UINT iCol = (UINT)_RightLayer;
+
+    if (_bCheck)
+    {
+        m_Matrix[iRow] |= (1 << iCol);
+        m_Matrix[iCol] |= (1 << iRow);
+    }
+    else
+    {
+        m_Matrix[iRow] &= ~(1 << iCol);
+        m_Matrix[iCol] &= ~(1 << iRow);
+    }
+}
+
+void CPhysics2DMgr::LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, const wstring& _RightLayer)
+{
+    CLayer* pLeftLayer = _CurLevel->GetLayer(_LeftLayer);
+    CLayer* pRightLayer = _CurLevel->GetLayer(_RightLayer);
+
+    // 이름에 해당하는 Layer 가 존재하지 않으면
+    assert(pLeftLayer && pRightLayer);
+
+    LayerCheck(pLeftLayer->GetLayerIdx(), pRightLayer->GetLayerIdx());
+}
+
+void CPhysics2DMgr::EnableAllLayer()
+{
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        m_Matrix[i] = 0xFFFF;
+    }
+}
+
+void CPhysics2DMgr::DisableAllLayer()
+{
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        m_Matrix[i] = 0;
+    }
 }

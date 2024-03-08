@@ -84,11 +84,10 @@ void CCreateTestLevel::CreateTestLevel()
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
     pPlayer->AddComponent(new CAnimator2D);
-    pPlayer->AddComponent(CScriptMgr::GetScript(PLAYERSCRIPT));
 
     pPlayer->Transform()->SetAbsolute(true);
     pPlayer->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pPlayer->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+    pPlayer->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
     pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));

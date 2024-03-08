@@ -13,6 +13,7 @@ class CRigidbody2D : public CComponent
 private:
     void* m_RuntimeBody;
     BODY_TYPE m_BodyType;
+    float m_GravityScale;
     bool m_bFreezeRotation;
 
 public:
@@ -21,6 +22,9 @@ public:
 public:
     BODY_TYPE GetBodyType() const { return m_BodyType; }
     void SetBodyType(BODY_TYPE _type) { m_BodyType = _type; }
+
+    float GetGravityScale() const { return m_GravityScale; }
+    void SetGravityScale(float _scale) { m_GravityScale = _scale; }
 
     bool IsFreezeRotation() const { return m_bFreezeRotation; }
     void SetFreezeRotation(bool _bFreeze) { m_bFreezeRotation = _bFreeze; }

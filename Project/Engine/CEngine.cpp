@@ -11,7 +11,7 @@
 #include "CTaskMgr.h"
 #include "CGrabageCollector.h"
 #include "CRenderMgr.h"
-#include "CPhysics2DMgr.h";
+#include "CPhysics2DMgr.h"
 
 CEngine::CEngine()
     : m_hMainWnd(nullptr)

@@ -9,8 +9,7 @@ protected:
     Vec2 m_Offset;
     float m_Density;
     float m_Friction;
-    float m_Restitution;
-    float m_RestitutionThreshold;
+    float m_Bounciness;
 
 public:
     Vec2 GetOffset() const { return m_Offset; }
@@ -22,12 +21,9 @@ public:
     float GetFriction() const { return m_Friction; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
 
-    float GetRestitution() const { return m_Restitution; }
-    void SetRestitution(float _Restitution) { m_Restitution = _Restitution; }
-
-    float GetRestitutionThreshold() const { return m_RestitutionThreshold; }
-    void SetRestitutionThreshold(float _RestitutionThreshold) { m_RestitutionThreshold = _RestitutionThreshold; }
-
+    float GetBounciness() const { return m_Bounciness; }
+    void SetBounciness(float _Bounciness) { m_Bounciness = _Bounciness; }
+      
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

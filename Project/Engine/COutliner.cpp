@@ -802,9 +802,10 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
                 pRigidbody->SetBodyType(BODY_TYPE::Static);
         }
 
-        // =======================
-        // Freeze Rotation
-        // =======================
+        float GravityScale = pRigidbody->GetGravityScale();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Gravity Scale").c_str(), &GravityScale, 0.1f))
+            pRigidbody->SetGravityScale(GravityScale);
+
         bool bFreezeRotation = pRigidbody->IsFreezeRotation();
         if (ImGui::Checkbox(ImGui_LabelPrefix("Freeze Rotation Z").c_str(), &bFreezeRotation))
             pRigidbody->SetFreezeRotation(bFreezeRotation);
@@ -841,13 +842,9 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
             pBoxCol->SetFriction(Friction);
 
-        float Restitution = pBoxCol->GetRestitution();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution").c_str(), &Restitution, 0.01f, 0.0f, 1.0f))
-            pBoxCol->SetRestitution(Restitution);
-
-        float RestitutionThreshold = pBoxCol->GetRestitutionThreshold();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution Threshold").c_str(), &RestitutionThreshold, 0.01f, 0.0f, 1.0f))
-            pBoxCol->SetRestitutionThreshold(RestitutionThreshold);
+        float Bounciness = pBoxCol->GetBounciness();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Bounciness").c_str(), &Bounciness, 0.01f, 0.0f, 1.0f))
+            pBoxCol->SetBounciness(Bounciness);
 
         ImGui::TreePop();
     }
@@ -881,13 +878,9 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
             pCircleCol->SetFriction(Friction);
 
-        float Restitution = pCircleCol->GetRestitution();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution").c_str(), &Restitution, 0.01f, 0.0f, 1.0f))
-            pCircleCol->SetRestitution(Restitution);
-
-        float RestitutionThreshold = pCircleCol->GetRestitutionThreshold();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Restitution Threshold").c_str(), &RestitutionThreshold, 0.01f, 0.0f, 1.0f))
-            pCircleCol->SetRestitutionThreshold(RestitutionThreshold);
+        float Bounciness = pCircleCol->GetBounciness();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Bounciness").c_str(), &Bounciness, 0.01f, 0.0f, 1.0f))
+            pCircleCol->SetBounciness(Bounciness);
 
         ImGui::TreePop();
     }

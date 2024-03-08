@@ -25,6 +25,7 @@ private:
     bool m_bShowToolbar;
     bool m_bShowAssets;
     bool m_bShowOutputLog;
+    bool m_bShowCollisionMatrix;
 
     bool m_bShowMaterialEditor;
     bool m_bShowBlueprintEditor;
@@ -42,7 +43,7 @@ private:
     void render_WorldSettings();
     void render_Viewport();
     void render_ImGuizmo();
-    void render_CollisionResponses();
+    void render_CollisionMatrix();
     void render_Toolbar();
     void render_Assets();
 
