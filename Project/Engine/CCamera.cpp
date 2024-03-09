@@ -238,7 +238,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
     for (size_t i = 0; i < _vecObj.size(); ++i)
     {
         // Render Pass
-        if (g_Global.DrawAsWireFrame)
+        if (g_Global.g_DrawAsWireFrame)
         {
             RS_TYPE originRSType = _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->GetRSType();
             _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
@@ -251,7 +251,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         }
 
         // NormalLine & OutLine Pass
-        if (pSelectedObj == _vecObj[i] && this == CRenderMgr::GetInst()->GetMainCamera() && !g_Global.DrawAsWireFrame)
+        if (pSelectedObj == _vecObj[i] && this == CRenderMgr::GetInst()->GetMainCamera() && !g_Global.g_DrawAsWireFrame)
         {
             // NormalLine Pass
             Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");

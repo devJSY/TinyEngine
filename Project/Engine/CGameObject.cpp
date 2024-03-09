@@ -2,6 +2,7 @@
 #include "CGameObject.h"
 
 #include "CLevelMgr.h"
+#include "CPhysics2DMgr.h"
 
 #include "CComponent.h"
 #include "CRenderComponent.h"
@@ -187,11 +188,8 @@ void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
     if (COMPONENT_TYPE::TRANSFORM == _Type)
         return;
 
-    //// 面倒 秦力 贸府
-    //if (COMPONENT_TYPE::COLLIDER2D == _Type)
-    //{
-    //    CCollisionMgr::GetInst()->CollisionRelease(this);
-    //}
+    // 面倒 秦力 贸府
+    CPhysics2DMgr::GetInst()->RemoveGameObject(this);
 
     // Render Component
     if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type || COMPONENT_TYPE::PARTICLESYSTEM == _Type ||

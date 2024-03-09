@@ -37,7 +37,6 @@ private:
     CGameObject* m_pDebugObj;
 
     bool m_bShowDebugRender;
-    bool m_bShowCollider;
 
     // NoiseTexture
     vector<Ptr<CTexture>> m_vecNoiseTex;
@@ -64,9 +63,6 @@ public:
 
     void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
     bool IsShowDebugRender() const { return m_bShowDebugRender; }
-
-    void SetShowCollider(bool _OnOff) { m_bShowCollider = _OnOff; }
-    bool IsShowCollider() const { return m_bShowCollider; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }

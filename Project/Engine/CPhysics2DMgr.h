@@ -30,6 +30,9 @@ public:
     void OnPhysics2DStart();
     void OnPhysics2DStop();
 
+    void AddGameObject(CGameObject* _GameObject);
+    void RemoveGameObject(CGameObject* _GameObject);
+
 public:
     void LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck = true);
     void LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, const wstring& _RightLayer);

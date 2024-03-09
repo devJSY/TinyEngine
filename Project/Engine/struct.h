@@ -104,11 +104,13 @@ __declspec(align(16)) struct tGlobalData
 
     float g_dt;
     float g_time;
-    UINT Light2DCount;
-    UINT Light3DCount;
+    UINT g_Light2DCount;
+    UINT g_Light3DCount;
 
-    Vec3 eyeWorld;
-    int DrawAsWireFrame;
+    Vec3 g_eyeWorld;
+    int g_DrawAsWireFrame;
+
+    int g_ColliderRender = true;
 };
 
 __declspec(align(16)) struct tAnimData2D

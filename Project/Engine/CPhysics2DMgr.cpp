@@ -138,6 +138,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
     m_PhysicsWorld = new b2World({0.0f, -9.8f});
     m_PhysicsWorld->SetContactListener(&m_CallbackInst);
 
+    // 레벨의 모든 오브젝트를 순회하여 World 에 추가할 오브젝트를 등록
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
@@ -160,71 +161,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     queue.push_back(vecChildObj[i]);
                 }
 
-                CTransform* pTr = pObject->Transform();
-
-                // Rigidbody2D 를 보유한 오브젝트
-                CRigidbody2D* rb2d = pObject->Rigidbody2D();
-                if (nullptr != rb2d)
-                {
-                    b2BodyDef bodyDef;
-                    bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
-                    bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
-                    bodyDef.linearDamping = rb2d->m_LinearDrag;
-                    bodyDef.angularDamping = rb2d->m_AngularDrag;
-                    bodyDef.gravityScale = rb2d->m_GravityScale;
-                    bodyDef.angle = pTr->GetRelativeRotation().z;
-                    bodyDef.enabled = rb2d->m_bSimulated;
-
-                    b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
-                    body->SetFixedRotation(rb2d->m_bFreezeRotation);
-                    rb2d->m_RuntimeBody = body;
-
-                    // Box Collider 2D 를 보유한 오브젝트
-                    CBoxCollider2D* bc2d = pObject->BoxCollider2D();
-                    if (nullptr != bc2d)
-                    {
-                        b2PolygonShape boxShape;
-                        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x, bc2d->m_Size.y * pTr->GetRelativeScale().y,
-                                          b2Vec2(bc2d->m_Offset.x, bc2d->m_Offset.y), 0.f);
-
-                        b2FixtureDef fixtureDef;
-                        fixtureDef.shape = &boxShape;
-                        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(bc2d);
-                        fixtureDef.friction = bc2d->m_Friction;
-                        fixtureDef.restitution = bc2d->m_Bounciness;
-                        fixtureDef.density = bc2d->m_Density;
-                        fixtureDef.isSensor = bc2d->m_bTrigger;
-
-                        fixtureDef.filter.categoryBits = (1 << pObject->GetLayerIdx());
-                        fixtureDef.filter.maskBits = m_Matrix[pObject->GetLayerIdx()];
-
-                        bc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
-                    }
-
-                    // Circle Collider 2D 를 보유한 오브젝트
-                    CCircleCollider2D* cc2d = pObject->CircleCollider2D();
-                    if (nullptr != cc2d)
-                    {
-                        b2CircleShape circleShape;
-                        circleShape.m_p.Set(cc2d->m_Offset.x, cc2d->m_Offset.y);
-                        circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius;
-
-                        b2FixtureDef fixtureDef;
-                        fixtureDef.shape = &circleShape;
-                        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(cc2d);
-                        fixtureDef.friction = cc2d->m_Friction;
-                        fixtureDef.restitution = cc2d->m_Bounciness;
-                        fixtureDef.density = cc2d->m_Density;
-                        fixtureDef.isSensor = cc2d->m_bTrigger;
-
-                        fixtureDef.filter.categoryBits = (1 << pObject->GetLayerIdx());
-                        fixtureDef.filter.maskBits = m_Matrix[pObject->GetLayerIdx()];
-
-                        cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
-                    }
-
-                    m_vecPhysicsObj.push_back(pObject);
-                }
+                AddGameObject(pObject);
             }
         }
     }
@@ -236,6 +173,84 @@ void CPhysics2DMgr::OnPhysics2DStop()
     m_PhysicsWorld = nullptr;
 
     m_vecPhysicsObj.clear();
+}
+
+void CPhysics2DMgr::AddGameObject(CGameObject* _GameObject)
+{
+    CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
+    if (nullptr == m_PhysicsWorld || nullptr == rb2d)
+        return;
+
+    CTransform* pTr = _GameObject->Transform();
+
+    b2BodyDef bodyDef;
+    bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
+    bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
+    bodyDef.linearDamping = rb2d->m_LinearDrag;
+    bodyDef.angularDamping = rb2d->m_AngularDrag;
+    bodyDef.gravityScale = rb2d->m_GravityScale;
+    bodyDef.angle = pTr->GetRelativeRotation().z;
+    bodyDef.enabled = rb2d->m_bSimulated;
+
+    b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
+    body->SetFixedRotation(rb2d->m_bFreezeRotation);
+    rb2d->m_RuntimeBody = body;
+
+    // Box Collider 2D 를 보유한 오브젝트
+    CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
+    if (nullptr != bc2d)
+    {
+        b2PolygonShape boxShape;
+        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x, bc2d->m_Size.y * pTr->GetRelativeScale().y,
+                          b2Vec2(bc2d->m_Offset.x, bc2d->m_Offset.y), 0.f);
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &boxShape;
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(bc2d);
+        fixtureDef.friction = bc2d->m_Friction;
+        fixtureDef.restitution = bc2d->m_Bounciness;
+        fixtureDef.density = bc2d->m_Density;
+        fixtureDef.isSensor = bc2d->m_bTrigger;
+
+        fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
+        fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
+
+        bc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+    }
+
+    // Circle Collider 2D 를 보유한 오브젝트
+    CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
+    if (nullptr != cc2d)
+    {
+        b2CircleShape circleShape;
+        circleShape.m_p.Set(cc2d->m_Offset.x, cc2d->m_Offset.y);
+        circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius;
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &circleShape;
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(cc2d);
+        fixtureDef.friction = cc2d->m_Friction;
+        fixtureDef.restitution = cc2d->m_Bounciness;
+        fixtureDef.density = cc2d->m_Density;
+        fixtureDef.isSensor = cc2d->m_bTrigger;
+
+        fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
+        fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
+
+        cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+    }
+
+    m_vecPhysicsObj.push_back(_GameObject);
+}
+
+void CPhysics2DMgr::RemoveGameObject(CGameObject* _GameObject)
+{
+    CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
+    if (nullptr == m_PhysicsWorld || nullptr == rb2d)
+        return;
+
+    m_PhysicsWorld->DestroyBody((b2Body*)rb2d->m_RuntimeBody);
+    m_vecPhysicsObj.erase(remove(m_vecPhysicsObj.begin(), m_vecPhysicsObj.end(), _GameObject), m_vecPhysicsObj.end());
 }
 
 void CPhysics2DMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)

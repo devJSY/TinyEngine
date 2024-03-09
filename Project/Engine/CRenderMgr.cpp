@@ -19,8 +19,7 @@ CRenderMgr::CRenderMgr()
     , m_Light2DBuffer(nullptr)
     , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
-    , m_bShowDebugRender(false)
-    , m_bShowCollider(true)
+    , m_bShowDebugRender(true)
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
@@ -113,7 +112,7 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_debug()
 {
-    if (nullptr == m_mainCam)
+    if (nullptr == m_mainCam || !m_bShowDebugRender)
         return;
 
     g_Transform.matView = m_mainCam->GetViewMat();
@@ -272,14 +271,14 @@ void CRenderMgr::render_LightDepth()
 void CRenderMgr::UpdateData()
 {
     // GlobalData 에 광원 개수정보 세팅
-    g_Global.Light2DCount = (UINT)m_vecLight2D.size();
-    g_Global.Light3DCount = (UINT)m_vecLight3D.size();
+    g_Global.g_Light2DCount = (UINT)m_vecLight2D.size();
+    g_Global.g_Light3DCount = (UINT)m_vecLight3D.size();
 
     // 메인 카메라 위치 등록
     if (nullptr != m_mainCam)
-        g_Global.eyeWorld = m_mainCam->Transform()->GetWorldPos();
+        g_Global.g_eyeWorld = m_mainCam->Transform()->GetWorldPos();
     else
-        g_Global.eyeWorld = Vec3();
+        g_Global.g_eyeWorld = Vec3();
 
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);

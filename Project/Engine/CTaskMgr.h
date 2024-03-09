@@ -17,9 +17,6 @@ enum class TASK_TYPE
     // Param1 : Parent Object, Param2 : Child Object
     ADD_CHILD,
 
-    // Param1 : Parent Object, Param2 : Child Object
-    DISCONNECT_PARENT,
-
     // Param1 : Width , Param2 : Height
     WINDOW_RESIZE,
 
@@ -76,7 +73,6 @@ private:
     void CHANGE_LEVEL(const tTask& _Task);
     void CHANGE_LEVELSTATE(const tTask& _Task);
     void ADD_CHILD(const tTask& _Task);
-    void DISCONNECT_PARENT(const tTask& _Task);
     void WINDOW_RESIZE(const tTask& _Task);
     void DELETE_ASSET(const tTask& _Task);
     void SCREENSHOT(const tTask& _Task);

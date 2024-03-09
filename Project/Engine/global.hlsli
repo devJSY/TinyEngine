@@ -95,7 +95,9 @@ cbuffer GLOBAL_DATA : register(b3)
     uint g_Light3DCount;
         
     float3 g_eyeWorld;
-    bool g_DrawAsWireFrame;
+    int g_DrawAsWireFrame;
+    
+    int g_ColliderRender;
 }
 
 Texture2D g_tex_0 : register(t0);

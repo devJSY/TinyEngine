@@ -15,6 +15,9 @@ CBoxCollider2D::~CBoxCollider2D()
 
 void CBoxCollider2D::finaltick()
 {
+    if (!g_Global.g_ColliderRender)
+        return;
+
     Vec3 sacle = Transform()->GetRelativeScale();
 
     Matrix matWorld = Transform()->GetWorldMat();

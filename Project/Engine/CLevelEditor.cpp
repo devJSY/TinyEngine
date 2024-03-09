@@ -317,15 +317,13 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(), ImGuiColorEditFlags_PickerHueWheel);
 
-    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.DrawAsWireFrame);
+    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.g_DrawAsWireFrame);
+
+    ImGui::Checkbox("Collider Render", (bool*)&g_Global.g_ColliderRender);
 
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
-    ImGui::Checkbox("Show DebugRender", &bDebugRender);
-    CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
-
-    bool bCollider = CRenderMgr::GetInst()->IsShowCollider();
-    ImGui::Checkbox("Show Collider", &bCollider);
-    CRenderMgr::GetInst()->SetShowCollider(bCollider);
+    if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
+        CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
 
     ImGui::End();
 }

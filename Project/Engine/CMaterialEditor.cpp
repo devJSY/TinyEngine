@@ -128,10 +128,10 @@ void CMaterialEditor::DrawViewport()
     g_Transform.matProjInv = g_Transform.matProj.Invert();
 
     // 광원 정보 설정
-    g_Global.Light3DCount = 1;
+    g_Global.g_Light3DCount = 1;
 
     // 메인 카메라 위치 등록
-    g_Global.eyeWorld = m_ViewportCam->Transform()->GetWorldPos();
+    g_Global.g_eyeWorld = m_ViewportCam->Transform()->GetWorldPos();
 
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);

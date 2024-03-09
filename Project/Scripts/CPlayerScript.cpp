@@ -131,37 +131,38 @@ void CPlayerScript::tick()
         {
             Rigidbody2D()->AddForce(Vec2(0.f, 5.f), ForceMode2D::Impulse);
         }
+
+        if (KEY_TAP(KEY::O))
+        {
+            CGameObject* pObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Test.pref", L"prefab\\Test.pref")->Instantiate();
+            pObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 5.f, 0.f));
+            GamePlayStatic::SpawnGameObject(pObj, 0);
+        }
     }
 }
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnCollisionEnter");
 }
 
 void CPlayerScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnCollisionStay");
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnCollisionExit");
 }
 
 void CPlayerScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnTriggerEnter");
 }
 
 void CPlayerScript::OnTriggerStay(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnTriggerStay");
 }
 
 void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnTriggerExit");
 }
 
 void CPlayerScript::SaveToLevelFile(FILE* _File)

@@ -6,6 +6,7 @@
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
+#include "CPhysics2DMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CEngine.h"
@@ -107,9 +108,6 @@ void CTaskMgr::tick()
         case TASK_TYPE::ADD_CHILD:
             ADD_CHILD(m_vecTask[i]);
             break;
-        case TASK_TYPE::DISCONNECT_PARENT:
-            DISCONNECT_PARENT(m_vecTask[i]);
-            break;
         case TASK_TYPE::WINDOW_RESIZE:
             WINDOW_RESIZE(m_vecTask[i]);
             break;
@@ -149,19 +147,20 @@ void CTaskMgr::tick()
 void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
 {
     int LayerIdx = (int)_Task.Param_1;
-    CGameObject* Object = (CGameObject*)_Task.Param_2;
+    CGameObject* pObject = (CGameObject*)_Task.Param_2;
 
     if (-1 == LayerIdx)
         LayerIdx = 0;
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    pCurLevel->AddObject(Object, LayerIdx, false);
-    CEditorMgr::GetInst()->SetSelectedObject(Object);
+    pCurLevel->AddObject(pObject, LayerIdx, false);
+    CEditorMgr::GetInst()->SetSelectedObject(pObject);
+    CPhysics2DMgr::GetInst()->AddGameObject(pObject);
 
-    /*if (LEVEL_STATE::PLAY == pCurLevel->GetState())
+    if (LEVEL_STATE::PLAY == pCurLevel->GetState())
     {
-        Object->begin();
-    }*/
+        pObject->begin();
+    }
 }
 
 void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
@@ -188,6 +187,8 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
     // Selected Obj ÇØÁ¦
     if (pDeadObj == CEditorMgr::GetInst()->GetSelectedObject())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
+
+    CPhysics2DMgr::GetInst()->RemoveGameObject(pDeadObj);
 }
 
 void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
@@ -241,10 +242,6 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     {
         pDestObj->AddChild(pSrcObj);
     }
-}
-
-void CTaskMgr::DISCONNECT_PARENT(const tTask& _Task)
-{
 }
 
 void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
