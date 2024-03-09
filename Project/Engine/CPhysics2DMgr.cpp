@@ -68,6 +68,8 @@ void CPhysics2DMgr::tick()
         pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
         pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
     }
+
+    m_PhysicsWorld->GetContactList();
 }
 
 void CPhysics2DMgr::OnPhysics2DStart()
@@ -105,8 +107,11 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     b2BodyDef bodyDef;
                     bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
                     bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
+                    bodyDef.linearDamping = rb2d->m_LinearDrag;
+                    bodyDef.angularDamping = rb2d->m_AngularDrag;
                     bodyDef.gravityScale = rb2d->m_GravityScale;
                     bodyDef.angle = pTr->GetRelativeRotation().z;
+                    bodyDef.enabled = rb2d->m_bSimulated;
 
                     b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
                     body->SetFixedRotation(rb2d->m_bFreezeRotation);

@@ -802,6 +802,18 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
                 pRigidbody->SetBodyType(BODY_TYPE::Static);
         }
 
+        bool bSimulated = pRigidbody->IsSimulated();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Simulated").c_str(), &bSimulated))
+            pRigidbody->SetSimulated(bSimulated);
+
+        float LinearDrag = pRigidbody->GetLinearDrag();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Linear Drag").c_str(), &LinearDrag, 0.1f))
+            pRigidbody->SetLinearDrag(LinearDrag);
+
+        float AngularDrag = pRigidbody->GetAngularDrag();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Angular Drag").c_str(), &AngularDrag, 0.1f))
+            pRigidbody->SetAngularDrag(AngularDrag);
+
         float GravityScale = pRigidbody->GetGravityScale();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Gravity Scale").c_str(), &GravityScale, 0.1f))
             pRigidbody->SetGravityScale(GravityScale);
