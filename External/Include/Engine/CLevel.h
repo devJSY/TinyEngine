@@ -26,7 +26,7 @@ public:
 public:
     void ChangeState(LEVEL_STATE _NextState);
     LEVEL_STATE GetState() const { return m_State; }
-    void Step(int _Frames = 1) { m_StepFrames = _Frames; }
+    void Step(int _Frames = 1);
 
 private:
     void clear();

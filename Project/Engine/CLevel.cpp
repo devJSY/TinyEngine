@@ -23,6 +23,7 @@ CLevel::CLevel(const CLevel& origin)
     : CEntity(origin)
     , m_arrLayer{}
     , m_State(LEVEL_STATE::STOP)
+    , m_StepFrames(origin.m_StepFrames)
 {
     for (size_t i = 0; i < LAYER_MAX; i++)
     {
@@ -56,6 +57,15 @@ void CLevel::finaltick()
     for (int i = 0; i < LAYER_MAX; ++i)
     {
         m_arrLayer[i]->finaltick();
+    }
+
+    // Step
+    if (0 < m_StepFrames)
+    {
+        m_StepFrames--;
+
+        if (0 == m_StepFrames)
+            CTimeMgr::GetInst()->LockDeltaTime(true);
     }
 }
 
@@ -170,6 +180,12 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
 
     // 레벨 스테이트 변경
     m_State = _NextState;
+}
+
+void CLevel::Step(int _Frames)
+{
+    m_StepFrames = _Frames;
+    CTimeMgr::GetInst()->LockDeltaTime(false);
 }
 
 void CLevel::clear()
