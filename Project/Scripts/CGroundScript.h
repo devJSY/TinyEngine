@@ -5,6 +5,12 @@
 class CGroundScript : public CScript
 {
 private:
+    float m_Life;
+
+public:
+    virtual void tick();
+
+private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider);
     virtual void OnCollisionStay(CCollider2D* _OtherCollider);
     virtual void OnCollisionExit(CCollider2D* _OtherCollider);

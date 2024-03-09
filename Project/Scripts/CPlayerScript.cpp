@@ -136,6 +136,7 @@ void CPlayerScript::tick()
         {
             CGameObject* pObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Test.pref", L"prefab\\Test.pref")->Instantiate();
             pObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 5.f, 0.f));
+            pObj->AddComponent(CScriptMgr::GetScript(GROUNDSCRIPT));
             GamePlayStatic::SpawnGameObject(pObj, 0);
         }
     }

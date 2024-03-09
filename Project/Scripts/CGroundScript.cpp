@@ -10,12 +10,20 @@ CGroundScript::~CGroundScript()
 {
 }
 
+void CGroundScript::tick()
+{
+}
+
 void CGroundScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
 }
 
 void CGroundScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
+    m_Life += DT;
+
+    if (m_Life > 5.f)
+        GamePlayStatic::DestroyGameObject(GetOwner());
 }
 
 void CGroundScript::OnCollisionExit(CCollider2D* _OtherCollider)
