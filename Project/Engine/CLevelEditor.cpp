@@ -44,6 +44,11 @@ CLevelEditor::CLevelEditor()
     , m_bShowBlueprintEditor(false)
     , m_bShowSpriteEditor(false)
     , m_bShowTileMapEditor(false)
+    , m_PlayButtonTex()
+    , m_SimulateButtonTex()
+    , m_StepButtonTex()
+    , m_PauseButtonTex()
+    , m_StopButtonTex()
 {
 }
 
@@ -55,6 +60,12 @@ void CLevelEditor::init()
 {
     m_Outliner.init();
     m_ContentBrowser.init();
+
+    m_PlayButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
+    m_SimulateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\SimulateButton.png", L"Icons\\SimulateButton.png");
+    m_StepButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StepButton.png", L"Icons\\StepButton.png");
+    m_PauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
+    m_StopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
 
     COutputLog::GetInst()->init();
 }
@@ -342,45 +353,33 @@ void CLevelEditor::render_Toolbar()
     ImGui_SetWindowClass_LevelEditor();
     ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
-    bool m_ActiveScene = true; // temp
-    bool toolbarEnabled = (bool)m_ActiveScene;
-
-    ImVec4 tintColor = ImVec4(1, 1, 1, 1);
-    if (!toolbarEnabled)
-        tintColor.w = 0.5f;
+    ImVec4 tintColor = ImVec4(1, 1, 1, 1.f);
 
     float size = ImGui::GetWindowHeight() - 4.0f;
     ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
 
-    Ptr<CTexture> pPlayButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
-    Ptr<CTexture> pPauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
-    Ptr<CTexture> pStopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
-
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-    if (LEVEL_STATE::PLAY == pCurLevel->GetState())
+    if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
     {
-        if (ImGui::ImageButton((void*)pPauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
-                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-            toolbarEnabled)
+        if (ImGui::ImageButton((void*)m_PauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
         {
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PAUSE);
         }
 
         ImGui::SameLine();
 
-        if (ImGui::ImageButton((void*)pStopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
-                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-            toolbarEnabled)
+        if (ImGui::ImageButton((void*)m_StopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
         {
             GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
         }
     }
     else if (LEVEL_STATE::PAUSE == pCurLevel->GetState())
     {
-        if (ImGui::ImageButton((void*)pPlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
-                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-            toolbarEnabled)
+        if (ImGui::ImageButton((void*)m_PlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
         {
             CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
@@ -388,21 +387,36 @@ void CLevelEditor::render_Toolbar()
 
         ImGui::SameLine();
 
-        if (ImGui::ImageButton((void*)pStopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
-                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-            toolbarEnabled)
+        if (ImGui::ImageButton((void*)m_StepButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
+        {
+            pCurLevel->Step();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::ImageButton((void*)m_StopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
         {
             GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
         }
     }
     else if (LEVEL_STATE::STOP == pCurLevel->GetState())
     {
-        if (ImGui::ImageButton((void*)pPlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
-                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) &&
-            toolbarEnabled)
+        if (ImGui::ImageButton((void*)m_PlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
         {
             CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::ImageButton((void*)m_SimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0,
+                               ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor))
+        {
+            CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::SIMULATE);
         }
     }
 

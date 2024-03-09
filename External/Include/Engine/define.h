@@ -270,6 +270,7 @@ enum class PARTICLE_MODULE
 enum class LEVEL_STATE
 {
     PLAY,
+    SIMULATE,
     PAUSE,
     STOP,
 };

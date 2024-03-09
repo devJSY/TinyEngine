@@ -32,6 +32,12 @@ private:
     bool m_bShowSpriteEditor;
     bool m_bShowTileMapEditor;
 
+    Ptr<CTexture> m_PlayButtonTex;
+    Ptr<CTexture> m_SimulateButtonTex;
+    Ptr<CTexture> m_StepButtonTex;
+    Ptr<CTexture> m_PauseButtonTex;
+    Ptr<CTexture> m_StopButtonTex;
+
 public:
     virtual void init() override;
     virtual void tick() override;

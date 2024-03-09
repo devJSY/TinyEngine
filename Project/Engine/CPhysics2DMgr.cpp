@@ -84,8 +84,9 @@ void CPhysics2DMgr::tick()
     if (nullptr == m_PhysicsWorld)
         return;
 
-    // 레벨 Play 모드 에서만 계산
-    if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
+    // 레벨 Play or Simulate 모드 에서만 계산
+    if (!(CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY ||
+          CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::SIMULATE))
         return;
 
     const int32_t velocityIterations = 6; // 속도를 얼마나 강하게 수정해야하는지
