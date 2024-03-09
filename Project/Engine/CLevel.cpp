@@ -121,64 +121,68 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             CPhysics2DMgr::GetInst()->OnPhysics2DStop();
         }
     }
-    else if (LEVEL_STATE::PLAY == m_State)
+    else
     {
-        if (LEVEL_STATE::PAUSE == _NextState)
+        switch (m_State)
         {
+        case LEVEL_STATE::PLAY: {
+            if (LEVEL_STATE::PAUSE == _NextState)
+            {
+                CTimeMgr::GetInst()->LockDeltaTime(true);
+            }
+            else if (LEVEL_STATE::STOP == _NextState)
+            {
+                CTimeMgr::GetInst()->LockDeltaTime(true);
+                CRenderMgr::GetInst()->ActiveEditorMode(true);
+                CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+            }
+        }
+        break;
+        case LEVEL_STATE::SIMULATE: {
             CTimeMgr::GetInst()->LockDeltaTime(true);
+
+            // if (LEVEL_STATE::PAUSE == _NextState)
+            //{
+            // }
+            if (LEVEL_STATE::STOP == _NextState)
+            {
+                CRenderMgr::GetInst()->ActiveEditorMode(true);
+                CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+            }
         }
-        else if (LEVEL_STATE::STOP == _NextState)
-        {
-            CTimeMgr::GetInst()->LockDeltaTime(true);
-            CRenderMgr::GetInst()->ActiveEditorMode(true);
-            CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+        break;
+        case LEVEL_STATE::PAUSE: {
+            if (LEVEL_STATE::PLAY == _NextState)
+            {
+                CTimeMgr::GetInst()->LockDeltaTime(false);
+            }
+            else if (LEVEL_STATE::STOP == _NextState)
+            {
+                CTimeMgr::GetInst()->LockDeltaTime(true);
+                CRenderMgr::GetInst()->ActiveEditorMode(true);
+                CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+            }
         }
-    }
-    else if (LEVEL_STATE::SIMULATE == m_State)
-    {
-        if (LEVEL_STATE::PAUSE == _NextState)
-        {
-            CTimeMgr::GetInst()->LockDeltaTime(true);
-        }
-        else if (LEVEL_STATE::STOP == _NextState)
-        {
-            CTimeMgr::GetInst()->LockDeltaTime(true);
-            CRenderMgr::GetInst()->ActiveEditorMode(true);
-            CPhysics2DMgr::GetInst()->OnPhysics2DStop();
-        }
-    }
-    else if (LEVEL_STATE::PAUSE == m_State)
-    {
-        if (LEVEL_STATE::PLAY == _NextState)
-        {
-            CTimeMgr::GetInst()->LockDeltaTime(false);
-        }
-        else if (LEVEL_STATE::STOP == _NextState)
-        {
-            CTimeMgr::GetInst()->LockDeltaTime(true);
-            CRenderMgr::GetInst()->ActiveEditorMode(true);
-            CPhysics2DMgr::GetInst()->OnPhysics2DStop();
-        }
-    }
-    else if (LEVEL_STATE::STOP == m_State)
-    {
-        if (LEVEL_STATE::PLAY == _NextState)
-        {
+        break;
+        case LEVEL_STATE::STOP: {
             begin();
             CTimeMgr::GetInst()->LockDeltaTime(false);
-            CRenderMgr::GetInst()->ActiveEditorMode(false);
             CPhysics2DMgr::GetInst()->OnPhysics2DStart();
+
+            if (LEVEL_STATE::PLAY == _NextState)
+            {
+                CRenderMgr::GetInst()->ActiveEditorMode(false);
+            }
+            else if (LEVEL_STATE::SIMULATE == _NextState)
+            {
+                CRenderMgr::GetInst()->ActiveEditorMode(true);
+            }
         }
-        else if (LEVEL_STATE::SIMULATE == _NextState)
-        {
-            begin();
-            CTimeMgr::GetInst()->LockDeltaTime(false);
-            CRenderMgr::GetInst()->ActiveEditorMode(true);
-            CPhysics2DMgr::GetInst()->OnPhysics2DStart();
+        break;
         }
     }
 
-    // 레벨 스테이트 변경
+    // 레벨 상태 변경
     m_State = _NextState;
 }
 
