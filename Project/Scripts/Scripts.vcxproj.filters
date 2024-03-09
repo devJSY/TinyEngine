@@ -19,6 +19,9 @@
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CGroundScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -37,6 +40,9 @@
       <Filter>ScriptMgr</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CGroundScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,3 +1,4 @@
 CCameraMoveScript
+CGroundScript
 CPlayerScript
 CShockWaveScript

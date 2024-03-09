@@ -12,8 +12,13 @@ public:
     virtual void tick() override;
 
 private:
-    virtual void OnCollisionStay(CCollider2D* _OtherCollider) override;
-    virtual void OnTriggerStay(CCollider2D* _OtherCollider) override;
+    virtual void OnCollisionEnter(CCollider2D* _OtherCollider);
+    virtual void OnCollisionStay(CCollider2D* _OtherCollider);
+    virtual void OnCollisionExit(CCollider2D* _OtherCollider);
+
+    virtual void OnTriggerEnter(CCollider2D* _OtherCollider);
+    virtual void OnTriggerStay(CCollider2D* _OtherCollider);
+    virtual void OnTriggerExit(CCollider2D* _OtherCollider);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

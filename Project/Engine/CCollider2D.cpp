@@ -53,6 +53,8 @@ void CCollider2D::SetBounciness(float _Bounciness)
 
 void CCollider2D::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
+    ++m_CollisionCount;
+
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnCollisionEnter(_OtherCollider);
@@ -67,6 +69,8 @@ void CCollider2D::OnCollisionStay(CCollider2D* _OtherCollider)
 
 void CCollider2D::OnCollisionExit(CCollider2D* _OtherCollider)
 {
+    --m_CollisionCount;
+
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnCollisionExit(_OtherCollider);
@@ -74,8 +78,6 @@ void CCollider2D::OnCollisionExit(CCollider2D* _OtherCollider)
 
 void CCollider2D::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
-    ++m_CollisionCount;
-
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnTriggerEnter(_OtherCollider);
@@ -90,8 +92,6 @@ void CCollider2D::OnTriggerStay(CCollider2D* _OtherCollider)
 
 void CCollider2D::OnTriggerExit(CCollider2D* _OtherCollider)
 {
-    --m_CollisionCount;
-
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnTriggerExit(_OtherCollider);

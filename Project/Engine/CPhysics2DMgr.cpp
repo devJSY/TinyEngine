@@ -20,8 +20,14 @@ void CollisionCallback::BeginContact(b2Contact* contact)
     CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
     CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
 
-    pColliderA->OnTriggerEnter(pColliderB);
-    pColliderB->OnTriggerEnter(pColliderA);
+    pColliderA->OnCollisionEnter(pColliderB);
+    pColliderB->OnCollisionEnter(pColliderA);
+
+    if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+    {
+        pColliderA->OnTriggerEnter(pColliderB);
+        pColliderB->OnTriggerEnter(pColliderA);
+    }
 }
 
 void CollisionCallback::EndContact(b2Contact* contact)
@@ -29,26 +35,14 @@ void CollisionCallback::EndContact(b2Contact* contact)
     CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
     CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
 
-    pColliderA->OnTriggerExit(pColliderB);
-    pColliderB->OnTriggerExit(pColliderA);
-}
-
-void CollisionCallback::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
-{
-    CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
-    CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
-
-    pColliderA->OnCollisionEnter(pColliderB);
-    pColliderB->OnCollisionEnter(pColliderA);
-}
-
-void CollisionCallback::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
-{
-    CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
-    CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
-
     pColliderA->OnCollisionExit(pColliderB);
     pColliderB->OnCollisionExit(pColliderA);
+
+    if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+    {
+        pColliderA->OnTriggerExit(pColliderB);
+        pColliderB->OnTriggerExit(pColliderA);
+    }
 }
 
 static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
@@ -69,7 +63,7 @@ static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
 
 CPhysics2DMgr::CPhysics2DMgr()
     : m_PhysicsWorld(nullptr)
-    , m_Callback()
+    , m_CallbackInst()
     , m_vecPhysicsObj{}
     , m_Matrix{}
 {
@@ -109,14 +103,18 @@ void CPhysics2DMgr::tick()
 
         if (pColliderA->m_CollisionCount > 0)
         {
-            pColliderA->OnTriggerStay(pColliderB);
             pColliderA->OnCollisionStay(pColliderB);
+
+            if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+                pColliderA->OnTriggerStay(pColliderB);
         }
 
         if (pColliderB->m_CollisionCount > 0)
         {
-            pColliderB->OnTriggerStay(pColliderA);
             pColliderB->OnCollisionStay(pColliderA);
+
+            if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+                pColliderB->OnTriggerStay(pColliderA);
         }
 
         contact = contact->GetNext();
@@ -138,7 +136,7 @@ void CPhysics2DMgr::tick()
 void CPhysics2DMgr::OnPhysics2DStart()
 {
     m_PhysicsWorld = new b2World({0.0f, -9.8f});
-    m_PhysicsWorld->SetContactListener(&m_Callback);
+    m_PhysicsWorld->SetContactListener(&m_CallbackInst);
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     for (UINT i = 0; i < LAYER_MAX; i++)
