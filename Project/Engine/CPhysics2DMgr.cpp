@@ -55,8 +55,8 @@ void CPhysics2DMgr::tick()
     if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() != LEVEL_STATE::PLAY)
         return;
 
-    const int32_t velocityIterations = 6;
-    const int32_t positionIterations = 2;
+    const int32_t velocityIterations = 6; // 속도를 얼마나 강하게 수정해야하는지
+    const int32_t positionIterations = 2; // 위치를 얼마나 강하게 수정해야 하는지
     m_PhysicsWorld->Step(DT, velocityIterations, positionIterations);
 
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
@@ -69,13 +69,11 @@ void CPhysics2DMgr::tick()
         pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
         pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
     }
-
-    m_PhysicsWorld->GetContactList();
 }
 
 void CPhysics2DMgr::OnPhysics2DStart()
 {
-    m_PhysicsWorld = new b2World({0.0f, -10.f});
+    m_PhysicsWorld = new b2World({0.0f, -9.8f});
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     for (UINT i = 0; i < LAYER_MAX; i++)

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "pch.h"
 #include "CRigidbody2D.h"
+#include <box2d\\b2_body.h>
 
 CRigidbody2D::CRigidbody2D()
     : CComponent(COMPONENT_TYPE::RIGIDBODY2D)
@@ -18,8 +19,40 @@ CRigidbody2D::~CRigidbody2D()
 {
 }
 
-void CRigidbody2D::finaltick()
+void CRigidbody2D::AddForce(Vec2 _Force, ForceMode2D _Mode)
 {
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    b2Body* body = (b2Body*)m_RuntimeBody;
+
+    switch (_Mode)
+    {
+    case Force:
+        body->ApplyForceToCenter(b2Vec2(_Force.x, _Force.y), true);
+        break;
+    case Impulse:
+        body->ApplyLinearImpulseToCenter(b2Vec2(_Force.x, _Force.y), true);
+        break;
+    }
+}
+
+void CRigidbody2D::AddTorque(float _Torque, ForceMode2D _Mode)
+{
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    b2Body* body = (b2Body*)m_RuntimeBody;
+
+    switch (_Mode)
+    {
+    case Force:
+        body->ApplyTorque(_Torque, true);
+        break;
+    case Impulse:
+        body->ApplyAngularImpulse(_Torque, true);
+        break;
+    }
 }
 
 void CRigidbody2D::SaveToLevelFile(FILE* _File)

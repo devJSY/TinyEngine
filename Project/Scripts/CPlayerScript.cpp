@@ -15,81 +15,109 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
-    m_ShockWave = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ShockWavePrefab.pref", L"prefab\\ShockWavePrefab.pref");
+    /* m_ShockWave = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ShockWavePrefab.pref", L"prefab\\ShockWavePrefab.pref");
 
-    if (nullptr == Animator2D())
-        return;
+     if (nullptr == Animator2D())
+         return;
 
-    CAnim* CurAnim = Animator2D()->GetCurAnim();
-    wstring CurAnimName = wstring();
-    if (nullptr != CurAnim)
-        CurAnimName = CurAnim->GetName();
+     CAnim* CurAnim = Animator2D()->GetCurAnim();
+     wstring CurAnimName = wstring();
+     if (nullptr != CurAnim)
+         CurAnimName = CurAnim->GetName();
 
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_backward.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_forward.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_front.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_back.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_back_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_backward.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_forward.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_forward_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_front.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_front_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_back.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_back_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_backward.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_backward_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_doorway.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_forward.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_forward_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_front.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_front_hands.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_choose.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_idle.anim");
-    Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_smoking_idle.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_back.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_backward.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_forward.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\dodge_front.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_back.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_back_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_backward.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_forward.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_forward_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_front.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\idle_front_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_back.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_back_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_backward.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_backward_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_doorway.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_forward.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_forward_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_front.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\run_front_hands.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_choose.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_idle.anim");
+     Animator2D()->LoadAnimation(L"AnimData\\Player\\Convict\\select_smoking_idle.anim");
 
-    Animator2D()->Play(CurAnimName, true);
+     Animator2D()->Play(CurAnimName, true);*/
 }
 
 void CPlayerScript::tick()
 {
-    Vec3 vPos = Transform()->GetRelativePos();
-    Vec3 vRot = Transform()->GetRelativeRotation();
+    // Vec3 vPos = Transform()->GetRelativePos();
+    // Vec3 vRot = Transform()->GetRelativeRotation();
 
-    if (KEY_PRESSED(KEY::UP))
-    {
-        vPos.y += DT * m_Speed;
-    }
+    // if (KEY_PRESSED(KEY::UP))
+    //{
+    //     vPos.y += DT * m_Speed;
+    // }
 
-    if (KEY_PRESSED(KEY::DOWN))
-    {
-        vPos.y -= DT * m_Speed;
-    }
+    // if (KEY_PRESSED(KEY::DOWN))
+    //{
+    //     vPos.y -= DT * m_Speed;
+    // }
 
-    if (KEY_PRESSED(KEY::LEFT))
-    {
-        vPos.x -= DT * m_Speed;
-    }
+    // if (KEY_PRESSED(KEY::LEFT))
+    //{
+    //     vPos.x -= DT * m_Speed;
+    // }
 
-    if (KEY_PRESSED(KEY::RIGHT))
-    {
-        vPos.x += DT * m_Speed;
-    }
+    // if (KEY_PRESSED(KEY::RIGHT))
+    //{
+    //     vPos.x += DT * m_Speed;
+    // }
 
-    // 傍器藕 积己
-    if (KEY_TAP(KEY::Q))
+    //// 傍器藕 积己
+    // if (KEY_TAP(KEY::Q))
+    //{
+    //     if (nullptr != m_ShockWave)
+    //     {
+    //         CGameObject* pShockWave = m_ShockWave->Instantiate();
+    //         pShockWave->Transform()->SetRelativePos(Transform()->GetRelativePos());
+    //         GamePlayStatic::SpawnGameObject(pShockWave, 14);
+    //     }
+    // }
+
+    // Transform()->SetRelativePos(vPos);
+    // Transform()->SetRelativeRotation(vRot);
+
+    if (nullptr != Rigidbody2D())
     {
-        if (nullptr != m_ShockWave)
+        if (KEY_TAP(KEY::UP))
         {
-            CGameObject* pShockWave = m_ShockWave->Instantiate();
-            pShockWave->Transform()->SetRelativePos(Transform()->GetRelativePos());
-            GamePlayStatic::SpawnGameObject(pShockWave, 14);
+            Rigidbody2D()->AddForce(Vec2(0.f, 5.f), ForceMode2D::Impulse);
+        }
+
+        if (KEY_TAP(KEY::DOWN))
+        {
+            Rigidbody2D()->AddForce(Vec2(0.f, -5.f), ForceMode2D::Impulse);
+        }
+
+        if (KEY_TAP(KEY::LEFT))
+        {
+            Rigidbody2D()->AddForce(Vec2(-5.f, 0.f), ForceMode2D::Impulse);
+        }
+
+        if (KEY_TAP(KEY::RIGHT))
+        {
+            Rigidbody2D()->AddForce(Vec2(5.f, 0.f), ForceMode2D::Impulse);
+        }
+
+        if (KEY_PRESSED(KEY::SPACE))
+        {
+            Rigidbody2D()->AddTorque(-1.f, ForceMode2D::Force);
         }
     }
-
-    Transform()->SetRelativePos(vPos);
-    Transform()->SetRelativeRotation(vRot);
 }
 
 void CPlayerScript::SaveToLevelFile(FILE* _File)

@@ -8,6 +8,12 @@ enum class BODY_TYPE
     Static,
 };
 
+enum ForceMode2D
+{
+    Force,
+    Impulse,
+};
+
 class CRigidbody2D : public CComponent
 {
 private:
@@ -20,7 +26,11 @@ private:
     bool m_bFreezeRotation;
 
 public:
-    virtual void finaltick() override;
+    virtual void finaltick() override{};
+
+public:
+    void AddForce(Vec2 _Force, ForceMode2D _Mode = ForceMode2D::Force);
+    void AddTorque(float _Torque, ForceMode2D _Mode = ForceMode2D::Force);
 
 public:
     BODY_TYPE GetBodyType() const { return m_BodyType; }

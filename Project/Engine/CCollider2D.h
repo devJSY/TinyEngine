@@ -17,16 +17,16 @@ public:
     void SetOffset(Vec2 _offset) { m_Offset = _offset; }
 
     bool IsTrigger() const { return m_bTrigger; }
-    void SetTrigger(bool _trigger) { m_bTrigger = _trigger; }
+    void SetTrigger(bool _trigger);
 
     float GetDensity() const { return m_Density; }
-    void SetDensity(float _Density) { m_Density = _Density; }
+    void SetDensity(float _Density);
 
     float GetFriction() const { return m_Friction; }
-    void SetFriction(float _Friction) { m_Friction = _Friction; }
+    void SetFriction(float _Friction);
 
     float GetBounciness() const { return m_Bounciness; }
-    void SetBounciness(float _Bounciness) { m_Bounciness = _Bounciness; }
+    void SetBounciness(float _Bounciness);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
