@@ -4,6 +4,7 @@
 CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
     : CComponent(_Type)
     , m_RuntimeFixture(nullptr)
+    , m_bTrigger(false)
     , m_Offset(Vec2(0.f, 0.f))
     , m_Density(1.f)
     , m_Friction(0.5f)
@@ -18,6 +19,7 @@ CCollider2D::~CCollider2D()
 void CCollider2D::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Offset, sizeof(Vec2), 1, _File);
+    fwrite(&m_bTrigger, sizeof(bool), 1, _File);
     fwrite(&m_Density, sizeof(float), 1, _File);
     fwrite(&m_Friction, sizeof(float), 1, _File);
     fwrite(&m_Bounciness, sizeof(float), 1, _File);
@@ -26,6 +28,7 @@ void CCollider2D::SaveToLevelFile(FILE* _File)
 void CCollider2D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Offset, sizeof(Vec2), 1, _File);
+    fread(&m_bTrigger, sizeof(bool), 1, _File);
     fread(&m_Density, sizeof(float), 1, _File);
     fread(&m_Friction, sizeof(float), 1, _File);
     fread(&m_Bounciness, sizeof(float), 1, _File);

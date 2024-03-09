@@ -34,6 +34,7 @@ CPhysics2DMgr::CPhysics2DMgr()
     , m_vecPhysicsObj{}
     , m_Matrix{}
 {
+    EnableAllLayer();
 }
 
 CPhysics2DMgr::~CPhysics2DMgr()
@@ -127,9 +128,10 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &boxShape;
-                        fixtureDef.density = bc2d->m_Density;
                         fixtureDef.friction = bc2d->m_Friction;
                         fixtureDef.restitution = bc2d->m_Bounciness;
+                        fixtureDef.density = bc2d->m_Density;
+                        fixtureDef.isSensor = bc2d->m_bTrigger;
 
                         fixtureDef.filter.categoryBits = (1 << pObject->GetLayerIdx());
                         fixtureDef.filter.maskBits = m_Matrix[pObject->GetLayerIdx()];
@@ -147,9 +149,10 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &circleShape;
-                        fixtureDef.density = cc2d->m_Density;
                         fixtureDef.friction = cc2d->m_Friction;
                         fixtureDef.restitution = cc2d->m_Bounciness;
+                        fixtureDef.density = cc2d->m_Density;
+                        fixtureDef.isSensor = cc2d->m_bTrigger;
 
                         fixtureDef.filter.categoryBits = (1 << pObject->GetLayerIdx());
                         fixtureDef.filter.maskBits = m_Matrix[pObject->GetLayerIdx()];

@@ -846,6 +846,10 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f))
             pBoxCol->SetSize(Size);
 
+        bool bTrigger = pBoxCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pBoxCol->SetTrigger(bTrigger);
+
         float Density = pBoxCol->GetDensity();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.1f))
             pBoxCol->SetDensity(Density);
@@ -881,6 +885,10 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         float Radius = pCircleCol->GetRadius();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f))
             pCircleCol->SetRadius(Radius);
+
+        bool bTrigger = pCircleCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pCircleCol->SetTrigger(bTrigger);
 
         float Density = pCircleCol->GetDensity();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.1f))

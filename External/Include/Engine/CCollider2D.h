@@ -7,6 +7,7 @@ protected:
     void* m_RuntimeFixture;
 
     Vec2 m_Offset;
+    bool m_bTrigger;
     float m_Density;
     float m_Friction;
     float m_Bounciness;
@@ -14,6 +15,9 @@ protected:
 public:
     Vec2 GetOffset() const { return m_Offset; }
     void SetOffset(Vec2 _offset) { m_Offset = _offset; }
+
+    bool IsTrigger() const { return m_bTrigger; }
+    void SetTrigger(bool _trigger) { m_bTrigger = _trigger; }
 
     float GetDensity() const { return m_Density; }
     void SetDensity(float _Density) { m_Density = _Density; }
@@ -23,7 +27,7 @@ public:
 
     float GetBounciness() const { return m_Bounciness; }
     void SetBounciness(float _Bounciness) { m_Bounciness = _Bounciness; }
-      
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
