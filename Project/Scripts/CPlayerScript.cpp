@@ -93,29 +93,43 @@ void CPlayerScript::tick()
 
     if (nullptr != Rigidbody2D())
     {
-        if (KEY_TAP(KEY::UP))
+        // if (KEY_PRESSED(KEY::UP))
+        //{
+        //     Rigidbody2D()->AddForce(Vec2(0.f, 5.f), ForceMode2D::Impulse);
+        // }
+
+        // if (KEY_PRESSED(KEY::DOWN))
+        //{
+        //     Rigidbody2D()->AddForce(Vec2(0.f, -5.f), ForceMode2D::Impulse);
+        // }
+
+        // if (KEY_PRESSED(KEY::LEFT))
+        //{
+        //     Rigidbody2D()->AddForce(Vec2(-5.f, 0.f), ForceMode2D::Impulse);
+        // }
+
+        // if (KEY_PRESSED(KEY::RIGHT))
+        //{
+        //     Rigidbody2D()->AddForce(Vec2(5.f, 0.f), ForceMode2D::Impulse);
+        // }
+
+        Vec2 vel = Rigidbody2D()->GetVelocity();
+
+        if (KEY_PRESSED(KEY::LEFT))
+        {
+            vel.x -= 10.f * DT;
+        }
+
+        if (KEY_PRESSED(KEY::RIGHT))
+        {
+            vel.x += 10.f * DT;
+        }
+
+        Rigidbody2D()->SetVelocity(vel);
+
+        if (KEY_TAP(KEY::SPACE))
         {
             Rigidbody2D()->AddForce(Vec2(0.f, 5.f), ForceMode2D::Impulse);
-        }
-
-        if (KEY_TAP(KEY::DOWN))
-        {
-            Rigidbody2D()->AddForce(Vec2(0.f, -5.f), ForceMode2D::Impulse);
-        }
-
-        if (KEY_TAP(KEY::LEFT))
-        {
-            Rigidbody2D()->AddForce(Vec2(-5.f, 0.f), ForceMode2D::Impulse);
-        }
-
-        if (KEY_TAP(KEY::RIGHT))
-        {
-            Rigidbody2D()->AddForce(Vec2(5.f, 0.f), ForceMode2D::Impulse);
-        }
-
-        if (KEY_PRESSED(KEY::SPACE))
-        {
-            Rigidbody2D()->AddTorque(-1.f, ForceMode2D::Force);
         }
     }
 }

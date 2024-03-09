@@ -12,6 +12,8 @@ protected:
     float m_Friction;
     float m_Bounciness;
 
+    int m_CollisionCount;
+
 public:
     Vec2 GetOffset() const { return m_Offset; }
     void SetOffset(Vec2 _offset) { m_Offset = _offset; }
@@ -28,6 +30,15 @@ public:
     float GetBounciness() const { return m_Bounciness; }
     void SetBounciness(float _Bounciness);
 
+private:
+    void OnCollisionEnter(CCollider2D* _OtherCollider);
+    void OnCollisionStay(CCollider2D* _OtherCollider);
+    void OnCollisionExit(CCollider2D* _OtherCollider);
+
+    void OnTriggerEnter(CCollider2D* _OtherCollider);
+    void OnTriggerStay(CCollider2D* _OtherCollider);
+    void OnTriggerExit(CCollider2D* _OtherCollider);
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
@@ -37,4 +48,7 @@ public:
 public:
     CCollider2D(COMPONENT_TYPE _Type);
     virtual ~CCollider2D();
+
+    friend class CPhysics2DMgr;
+    friend class CollisionCallback;
 };

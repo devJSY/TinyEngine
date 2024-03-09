@@ -13,6 +13,44 @@
 #include <box2d\\b2_polygon_shape.h>
 #include <box2d\\b2_circle_shape.h>
 
+#include <box2d\\b2_contact.h>
+
+void CollisionCallback::BeginContact(b2Contact* contact)
+{
+    CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
+    CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+
+    pColliderA->OnTriggerEnter(pColliderB);
+    pColliderB->OnTriggerEnter(pColliderA);
+}
+
+void CollisionCallback::EndContact(b2Contact* contact)
+{
+    CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
+    CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+
+    pColliderA->OnTriggerExit(pColliderB);
+    pColliderB->OnTriggerExit(pColliderA);
+}
+
+void CollisionCallback::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+{
+    CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
+    CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+
+    pColliderA->OnCollisionEnter(pColliderB);
+    pColliderB->OnCollisionEnter(pColliderA);
+}
+
+void CollisionCallback::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+{
+    CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
+    CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+
+    pColliderA->OnCollisionExit(pColliderB);
+    pColliderB->OnCollisionExit(pColliderA);
+}
+
 static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
 {
     switch (bodyType)
@@ -31,6 +69,7 @@ static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
 
 CPhysics2DMgr::CPhysics2DMgr()
     : m_PhysicsWorld(nullptr)
+    , m_Callback()
     , m_vecPhysicsObj{}
     , m_Matrix{}
 {
@@ -57,8 +96,33 @@ void CPhysics2DMgr::tick()
 
     const int32_t velocityIterations = 6; // 속도를 얼마나 강하게 수정해야하는지
     const int32_t positionIterations = 2; // 위치를 얼마나 강하게 수정해야 하는지
+
+    // 시뮬레이션
     m_PhysicsWorld->Step(DT, velocityIterations, positionIterations);
 
+    // 시뮬레이션 이후 충돌 카운트가 남아있다면 충돌 Stay 상태
+    b2Contact* contact = m_PhysicsWorld->GetContactList();
+    while (contact)
+    {
+        CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
+        CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+
+        if (pColliderA->m_CollisionCount > 0)
+        {
+            pColliderA->OnTriggerStay(pColliderB);
+            pColliderA->OnCollisionStay(pColliderB);
+        }
+
+        if (pColliderB->m_CollisionCount > 0)
+        {
+            pColliderB->OnTriggerStay(pColliderA);
+            pColliderB->OnCollisionStay(pColliderA);
+        }
+
+        contact = contact->GetNext();
+    }
+
+    // 시뮬레이션 이후 트랜스폼 업데이트
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
         CTransform* pTr = m_vecPhysicsObj[i]->Transform();
@@ -74,6 +138,7 @@ void CPhysics2DMgr::tick()
 void CPhysics2DMgr::OnPhysics2DStart()
 {
     m_PhysicsWorld = new b2World({0.0f, -9.8f});
+    m_PhysicsWorld->SetContactListener(&m_Callback);
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     for (UINT i = 0; i < LAYER_MAX; i++)
@@ -126,6 +191,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &boxShape;
+                        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(bc2d);
                         fixtureDef.friction = bc2d->m_Friction;
                         fixtureDef.restitution = bc2d->m_Bounciness;
                         fixtureDef.density = bc2d->m_Density;
@@ -147,6 +213,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
                         b2FixtureDef fixtureDef;
                         fixtureDef.shape = &circleShape;
+                        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(cc2d);
                         fixtureDef.friction = cc2d->m_Friction;
                         fixtureDef.restitution = cc2d->m_Bounciness;
                         fixtureDef.density = cc2d->m_Density;

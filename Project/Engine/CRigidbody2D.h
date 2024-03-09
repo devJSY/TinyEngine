@@ -31,26 +31,28 @@ public:
 public:
     void AddForce(Vec2 _Force, ForceMode2D _Mode = ForceMode2D::Force);
     void AddTorque(float _Torque, ForceMode2D _Mode = ForceMode2D::Force);
+    Vec2 GetVelocity();
+    void SetVelocity(Vec2 _Velocity);
 
 public:
     BODY_TYPE GetBodyType() const { return m_BodyType; }
     void SetBodyType(BODY_TYPE _type) { m_BodyType = _type; }
 
     bool IsSimulated() const { return m_bSimulated; }
-    void SetSimulated(bool _bSimulated) { m_bSimulated = _bSimulated; }
+    void SetSimulated(bool _bSimulated);
 
     float GetLinearDrag() const { return m_LinearDrag; }
-    void SetLinearDrag(float _drag) { m_LinearDrag = _drag; }
+    void SetLinearDrag(float _Drag);
 
     float GetAngularDrag() const { return m_AngularDrag; }
-    void SetAngularDrag(float _drag) { m_AngularDrag = _drag; }
+    void SetAngularDrag(float _Drag);
 
     float GetGravityScale() const { return m_GravityScale; }
-    void SetGravityScale(float _scale) { m_GravityScale = _scale; }
+    void SetGravityScale(float _Scale);
 
     bool IsFreezeRotation() const { return m_bFreezeRotation; }
-    void SetFreezeRotation(bool _bFreeze) { m_bFreezeRotation = _bFreeze; }
-
+    void SetFreezeRotation(bool _bFreeze);
+    
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

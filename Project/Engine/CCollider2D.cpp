@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CCollider2D.h"
 #include <box2d\\b2_fixture.h>
+#include "CScript.h"
 
 CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
     : CComponent(_Type)
@@ -10,6 +11,7 @@ CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
     , m_Density(1.f)
     , m_Friction(0.5f)
     , m_Bounciness(0.f)
+    , m_CollisionCount(0)
 {
 }
 
@@ -47,6 +49,52 @@ void CCollider2D::SetBounciness(float _Bounciness)
 
     if (nullptr != m_RuntimeFixture)
         ((b2Fixture*)m_RuntimeFixture)->SetRestitution(m_Bounciness);
+}
+
+void CCollider2D::OnCollisionEnter(CCollider2D* _OtherCollider)
+{
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnCollisionEnter(_OtherCollider);
+}
+
+void CCollider2D::OnCollisionStay(CCollider2D* _OtherCollider)
+{
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnCollisionStay(_OtherCollider);
+}
+
+void CCollider2D::OnCollisionExit(CCollider2D* _OtherCollider)
+{
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnCollisionExit(_OtherCollider);
+}
+
+void CCollider2D::OnTriggerEnter(CCollider2D* _OtherCollider)
+{
+    ++m_CollisionCount;
+
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnTriggerEnter(_OtherCollider);
+}
+
+void CCollider2D::OnTriggerStay(CCollider2D* _OtherCollider)
+{
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnTriggerStay(_OtherCollider);
+}
+
+void CCollider2D::OnTriggerExit(CCollider2D* _OtherCollider)
+{
+    --m_CollisionCount;
+
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnTriggerExit(_OtherCollider);
 }
 
 void CCollider2D::SaveToLevelFile(FILE* _File)
