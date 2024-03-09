@@ -19,6 +19,12 @@ CCollider2D::~CCollider2D()
 {
 }
 
+void CCollider2D::SetOffset(Vec2 _offset)
+{
+    m_Offset = _offset;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
 void CCollider2D::SetTrigger(bool _trigger)
 {
     m_bTrigger = _trigger;

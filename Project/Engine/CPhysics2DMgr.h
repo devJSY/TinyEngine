@@ -12,6 +12,7 @@ public:
 
 class b2World;
 class CGameObject;
+class CCollider2D;
 
 class CPhysics2DMgr : public CSingleton<CPhysics2DMgr>
 {
@@ -30,9 +31,6 @@ public:
     void OnPhysics2DStart();
     void OnPhysics2DStop();
 
-    void AddGameObject(CGameObject* _GameObject);
-    void RemoveGameObject(CGameObject* _GameObject);
-
 public:
     void LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck = true);
     void LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, const wstring& _RightLayer);
@@ -42,4 +40,11 @@ public:
 
     unsigned short GetCollisionLayer(UINT idx) const { return m_Matrix[idx]; }
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
+
+private:
+    void AddPhysicsObject(CGameObject* _GameObject);
+    void RemovePhysicsObject(CGameObject* _GameObject);
+
+    friend class CTaskMgr;
+    friend class CRigidbody2D;
 };

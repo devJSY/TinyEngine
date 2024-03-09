@@ -289,6 +289,24 @@ void GamePlayStatic::ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::DeleteAsset(ASSET_TYPE _type, Ptr<CAsset> _Asset)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::DELETE_ASSET;
+    task.Param_1 = (DWORD_PTR)_type;
+    task.Param_2 = (DWORD_PTR)_Asset.Get();
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
+void GamePlayStatic::Physics2D_Event(CGameObject* _pObj, Physics2D_EVENT_TYPE _Type)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::PHYSICS2D_EVNET;
+    task.Param_1 = (DWORD_PTR)_pObj;
+    task.Param_2 = (DWORD_PTR)_Type;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 string ToString(const wstring& wstr)
 {
     string str(wstr.length(), 0);

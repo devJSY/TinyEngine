@@ -46,11 +46,7 @@ void CAssetMgr::ReloadContent()
             {
                 MessageBox(nullptr, L"원본파일이 삭제되었습니다.", L"Asset 싱크", MB_OK);
 
-                tTask task = {};
-                task.Type = TASK_TYPE::DELETE_ASSET;
-                task.Param_1 = (DWORD_PTR)i;
-                task.Param_2 = (DWORD_PTR)pair.second.Get();
-                CTaskMgr::GetInst()->AddTask(task);
+                GamePlayStatic::DeleteAsset((ASSET_TYPE)i, pair.second);
             }
         }
     }

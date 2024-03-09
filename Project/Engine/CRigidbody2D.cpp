@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "pch.h"
+#include "CPhysics2DMgr.h"
+
 #include "CRigidbody2D.h"
 #include <box2d\\b2_body.h>
 

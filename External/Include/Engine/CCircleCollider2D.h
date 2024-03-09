@@ -11,7 +11,7 @@ public:
 
 public:
     float GetRadius() const { return m_Radius; }
-    void SetRadius(float _Radius) { m_Radius = _Radius; }
+    void SetRadius(float _Radius);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

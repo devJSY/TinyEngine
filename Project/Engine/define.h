@@ -274,3 +274,10 @@ enum class LEVEL_STATE
     PAUSE,
     STOP,
 };
+
+enum class Physics2D_EVENT_TYPE
+{
+    ADD,
+    REMOVE,
+    RESPAWN,
+};

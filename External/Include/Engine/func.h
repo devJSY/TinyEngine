@@ -6,6 +6,7 @@ class CScript;
 class CPrefab;
 template <typename T>
 class Ptr;
+class CAsset;
 
 namespace GamePlayStatic
 {
@@ -40,6 +41,10 @@ namespace GamePlayStatic
 
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState);
     void ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState);
+
+    void DeleteAsset(ASSET_TYPE _type, Ptr<CAsset> _Asset);
+
+    void Physics2D_Event(CGameObject* _pObj, Physics2D_EVENT_TYPE _Type);
 }
 
 string ToString(const wstring& wstr);

@@ -157,7 +157,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
                     queue.push_back(vecChildObj[i]);
                 }
 
-                AddGameObject(pObject);
+                AddPhysicsObject(pObject);
             }
         }
     }
@@ -171,7 +171,7 @@ void CPhysics2DMgr::OnPhysics2DStop()
     m_vecPhysicsObj.clear();
 }
 
-void CPhysics2DMgr::AddGameObject(CGameObject* _GameObject)
+void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
     if (nullptr == m_PhysicsWorld || nullptr == rb2d)
@@ -239,14 +239,21 @@ void CPhysics2DMgr::AddGameObject(CGameObject* _GameObject)
     m_vecPhysicsObj.push_back(_GameObject);
 }
 
-void CPhysics2DMgr::RemoveGameObject(CGameObject* _GameObject)
+void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
 {
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
     if (nullptr == m_PhysicsWorld || nullptr == rb2d)
         return;
 
-    m_PhysicsWorld->DestroyBody((b2Body*)rb2d->m_RuntimeBody);
-    m_vecPhysicsObj.erase(remove(m_vecPhysicsObj.begin(), m_vecPhysicsObj.end(), _GameObject), m_vecPhysicsObj.end());
+    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
+    {
+        if (m_vecPhysicsObj[i] != _GameObject)
+            continue;
+
+        m_PhysicsWorld->DestroyBody((b2Body*)rb2d->m_RuntimeBody);
+        m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
+        break;
+    }
 }
 
 void CPhysics2DMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)

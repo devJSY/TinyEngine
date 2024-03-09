@@ -20,7 +20,7 @@ enum class TASK_TYPE
     // Param1 : Width , Param2 : Height
     WINDOW_RESIZE,
 
-    // wParam : Asset_TYPE, lParam : Resource Address
+    // Param1 : Asset_TYPE, Param2 : Asset Address
     DELETE_ASSET,
 
     // No Param
@@ -45,7 +45,10 @@ enum class TASK_TYPE
     CHANGE_LAYER,
 
     // Param1 : Object
-    CLONE_OBJECT
+    CLONE_OBJECT,
+
+    // Param1 : Object, Param2 : Event Type - 0 : Add, 1 : Remove, 2 : Regenerate
+    PHYSICS2D_EVNET
 };
 
 struct tTask
@@ -83,4 +86,5 @@ private:
     void REMOVE_SCRIPT(const tTask& _Task);
     void CHANGE_LAYER(const tTask& _Task);
     void CLONE_OBJECT(const tTask& _Task);
+    void PHYSICS2D_EVNET(const tTask& _Task);
 };

@@ -138,6 +138,9 @@ void CTaskMgr::tick()
         case TASK_TYPE::CLONE_OBJECT:
             CLONE_OBJECT(m_vecTask[i]);
             break;
+        case TASK_TYPE::PHYSICS2D_EVNET:
+            PHYSICS2D_EVNET(m_vecTask[i]);
+            break;
         }
     }
 
@@ -155,7 +158,7 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     pCurLevel->AddObject(pObject, LayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(pObject);
-    CPhysics2DMgr::GetInst()->AddGameObject(pObject);
+    CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
 
     if (LEVEL_STATE::PLAY == pCurLevel->GetState())
     {
@@ -188,7 +191,7 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
     if (pDeadObj == CEditorMgr::GetInst()->GetSelectedObject())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 
-    CPhysics2DMgr::GetInst()->RemoveGameObject(pDeadObj);
+    CPhysics2DMgr::GetInst()->RemovePhysicsObject(pDeadObj);
 }
 
 void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
@@ -538,6 +541,8 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
         }
     }
 
+    CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
+
     switch (type)
     {
     case COMPONENT_TYPE::TRANSFORM:
@@ -583,13 +588,18 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::LANDSCAPE:
         break;
     }
+
+    CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
 }
 
 void CTaskMgr::REMOVE_COMPONENT(const tTask& _Task)
 {
     CGameObject* pObj = (CGameObject*)_Task.Param_1;
     COMPONENT_TYPE type = (COMPONENT_TYPE)_Task.Param_2;
+
+    CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
     pObj->RemoveComponent(type);
+    CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
 }
 
 void CTaskMgr::REMOVE_SCRIPT(const tTask& _Task)
@@ -622,4 +632,25 @@ void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
 
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);
+}
+
+void CTaskMgr::PHYSICS2D_EVNET(const tTask& _Task)
+{
+    CGameObject* pObj = (CGameObject*)_Task.Param_1;
+    Physics2D_EVENT_TYPE type = (Physics2D_EVENT_TYPE)_Task.Param_2;
+
+    switch (type)
+    {
+    case Physics2D_EVENT_TYPE::ADD:
+        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
+        break;
+    case Physics2D_EVENT_TYPE::REMOVE:
+        CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
+        break;
+    case Physics2D_EVENT_TYPE::RESPAWN: {
+        CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
+        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
+    }
+    break;
+    }
 }

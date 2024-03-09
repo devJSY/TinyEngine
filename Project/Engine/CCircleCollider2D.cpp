@@ -32,6 +32,12 @@ void CCircleCollider2D::finaltick()
     GamePlayStatic::DrawDebugCircle(matScale * matTranslation * matInvScale * matWorld, color, false);
 }
 
+void CCircleCollider2D::SetRadius(float _Radius)
+{
+    m_Radius = _Radius;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
 void CCircleCollider2D::SaveToLevelFile(FILE* _File)
 {
     CCollider2D::SaveToLevelFile(_File);

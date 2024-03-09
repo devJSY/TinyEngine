@@ -16,7 +16,7 @@ protected:
 
 public:
     Vec2 GetOffset() const { return m_Offset; }
-    void SetOffset(Vec2 _offset) { m_Offset = _offset; }
+    void SetOffset(Vec2 _offset);
 
     bool IsTrigger() const { return m_bTrigger; }
     void SetTrigger(bool _trigger);

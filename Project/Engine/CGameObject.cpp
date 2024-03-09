@@ -188,9 +188,6 @@ void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
     if (COMPONENT_TYPE::TRANSFORM == _Type)
         return;
 
-    // 충돌 해제 처리
-    CPhysics2DMgr::GetInst()->RemoveGameObject(this);
-
     // Render Component
     if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type || COMPONENT_TYPE::PARTICLESYSTEM == _Type ||
         COMPONENT_TYPE::SKYBOX == _Type || COMPONENT_TYPE::DECAL == _Type || COMPONENT_TYPE::LANDSCAPE == _Type)
@@ -276,11 +273,6 @@ void CGameObject::AddChild(CGameObject* _Child)
     // 부모 자식 연결
     _Child->m_Parent = this;
     m_vecChild.push_back(_Child);
-}
-
-void CGameObject::Destroy()
-{
-    GamePlayStatic::DestroyGameObject(this);
 }
 
 bool CGameObject::IsAncestor(CGameObject* _Other)

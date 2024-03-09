@@ -82,8 +82,6 @@ public:
     void AddChild(CGameObject* _Child);
     bool IsDead() const { return m_bDead; }
 
-    void Destroy();
-
      bool IsAncestor(CGameObject* _Other);
 
 public:

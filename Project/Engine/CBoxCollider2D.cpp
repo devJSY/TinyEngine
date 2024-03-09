@@ -31,6 +31,12 @@ void CBoxCollider2D::finaltick()
     GamePlayStatic::DrawDebugRect(matScale * matTranslation * matInvScale * matWorld, color, false);
 }
 
+void CBoxCollider2D::SetSize(Vec2 _size)
+{
+    m_Size = _size;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
 void CBoxCollider2D::SaveToLevelFile(FILE* _File)
 {
     CCollider2D::SaveToLevelFile(_File);

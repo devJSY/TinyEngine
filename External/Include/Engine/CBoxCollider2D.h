@@ -12,7 +12,7 @@ public:
 
 public:
     Vec2 GetSize() const { return m_Size; }
-    void SetSize(Vec2 _size) { m_Size = _size; }
+    void SetSize(Vec2 _size);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
