@@ -7,8 +7,8 @@ protected:
     void* m_RuntimeFixture;
 
     Ptr<CPhysics2DMaterial> m_Mtrl;
-    Vec2 m_Offset;
     bool m_bTrigger;
+    Vec2 m_Offset;
 
     int m_CollisionCount;
 
@@ -22,11 +22,11 @@ public:
     Ptr<CPhysics2DMaterial> GetMaterial() const { return m_Mtrl; }
     void SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl);
 
-    Vec2 GetOffset() const { return m_Offset; }
-    void SetOffset(Vec2 _offset);
-
     bool IsTrigger() const { return m_bTrigger; }
     void SetTrigger(bool _trigger);
+
+    Vec2 GetOffset() const { return m_Offset; }
+    void SetOffset(Vec2 _offset);
 
 private:
     void OnCollisionEnter(CCollider2D* _OtherCollider);

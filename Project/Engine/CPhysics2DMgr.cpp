@@ -183,6 +183,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 
     b2BodyDef bodyDef;
     bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
+    bodyDef.angle = pTr->GetRelativeRotation().z;
     b2Body* body = nullptr;
 
     // Rigidbody 2D
@@ -192,7 +193,6 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         bodyDef.linearDamping = rb2d->m_LinearDrag;
         bodyDef.angularDamping = rb2d->m_AngularDrag;
         bodyDef.gravityScale = rb2d->m_GravityScale;
-        bodyDef.angle = pTr->GetRelativeRotation().z;
         bodyDef.enabled = rb2d->m_bSimulated;
 
         body = m_PhysicsWorld->CreateBody(&bodyDef);

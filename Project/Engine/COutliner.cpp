@@ -871,6 +871,10 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
         }
 
+        bool bTrigger = pBoxCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pBoxCol->SetTrigger(bTrigger);
+
         Vec2 Offset = pBoxCol->GetOffset();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pBoxCol->SetOffset(Offset);
@@ -878,10 +882,6 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         Vec2 Size = pBoxCol->GetSize();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f))
             pBoxCol->SetSize(Size);
-
-        bool bTrigger = pBoxCol->IsTrigger();
-        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
-            pBoxCol->SetTrigger(bTrigger);
 
         ImGui::TreePop();
     }
@@ -927,6 +927,10 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
         }
 
+        bool bTrigger = pCircleCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pCircleCol->SetTrigger(bTrigger);
+
         Vec2 Offset = pCircleCol->GetOffset();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pCircleCol->SetOffset(Offset);
@@ -934,10 +938,6 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         float Radius = pCircleCol->GetRadius();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f))
             pCircleCol->SetRadius(Radius);
-
-        bool bTrigger = pCircleCol->IsTrigger();
-        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
-            pCircleCol->SetTrigger(bTrigger);
 
         ImGui::TreePop();
     }
