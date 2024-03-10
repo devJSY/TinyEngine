@@ -196,16 +196,9 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         bodyDef.enabled = rb2d->m_bSimulated;
 
         body = m_PhysicsWorld->CreateBody(&bodyDef);
-
-        body->SetFixedRotation(rb2d->m_bFreezeRotation);
         rb2d->m_RuntimeBody = body;
 
-        if (!rb2d->m_bAutoMass)
-        {
-            b2MassData MassData = b2MassData();
-            MassData.mass = rb2d->m_Mass;
-            body->SetMassData(&MassData);
-        }
+        body->SetFixedRotation(rb2d->m_bFreezeRotation);
     }
     else
     {
@@ -229,8 +222,8 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
             fixtureDef.friction = Mtrl->m_Friction;
             fixtureDef.restitution = Mtrl->m_Bounciness;
         }
-        fixtureDef.density = 0.f;
-        fixtureDef.isSensor = rb2d == nullptr ? true : bc2d->m_bTrigger;
+        fixtureDef.density = 1.f;
+        fixtureDef.isSensor = nullptr == rb2d ? true : bc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
@@ -255,13 +248,21 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
             fixtureDef.friction = Mtrl->m_Friction;
             fixtureDef.restitution = Mtrl->m_Bounciness;
         }
-        fixtureDef.density = 0.f;
-        fixtureDef.isSensor = rb2d == nullptr ? true : cc2d->m_bTrigger;
+        fixtureDef.density = 1.f;
+        fixtureDef.isSensor = nullptr == rb2d ? true : cc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
         cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+    }
+
+    // 질량 설정
+    if (nullptr != rb2d && !rb2d->m_bAutoMass)
+    {
+        b2MassData MassData = body->GetMassData();
+        MassData.mass = rb2d->m_Mass;
+        body->SetMassData(&MassData);
     }
 
     m_vecPhysicsObj.push_back(_GameObject);

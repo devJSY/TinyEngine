@@ -115,7 +115,7 @@ void CRigidbody2D::SetMass(float _Mass)
         return;
 
     b2Body* body = (b2Body*)m_RuntimeBody;
-    b2MassData MassData = b2MassData();
+    b2MassData MassData = body->GetMassData();
     MassData.mass = m_Mass;
     body->SetMassData(&MassData);
 }
