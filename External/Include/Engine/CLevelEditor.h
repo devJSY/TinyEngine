@@ -31,6 +31,7 @@ private:
     bool m_bShowBlueprintEditor;
     bool m_bShowSpriteEditor;
     bool m_bShowTileMapEditor;
+    bool m_bShowPhysics2DMaterialEditor;
 
     Ptr<CTexture> m_PlayButtonTex;
     Ptr<CTexture> m_SimulateButtonTex;
@@ -67,6 +68,7 @@ public:
     void ShowBlueprintEditor(bool _show) { m_bShowBlueprintEditor = _show; }
     void ShowSpriteEditor(bool _show) { m_bShowSpriteEditor = _show; }
     void ShowTileMapEditor(bool _show) { m_bShowTileMapEditor = _show; }
+    void ShowPhysics2DMaterialEditor(bool _show) { m_bShowPhysics2DMaterialEditor = _show; }
 
 public:
     CLevelEditor();

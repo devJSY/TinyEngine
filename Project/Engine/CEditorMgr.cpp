@@ -115,6 +115,10 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->SetName(L"TileMap Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->init();
 
+    m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL] = new CPhysics2DMaterialEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL]->SetName(L"Physics2D Material Editor");
+    m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL]->init();
+
     // 에디터용 카메라 오브젝트 생성
     CGameObjectEx* pEditorCam = new CGameObjectEx;
     pEditorCam->SetName(L"Editor Camera");

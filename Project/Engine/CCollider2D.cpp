@@ -101,12 +101,14 @@ void CCollider2D::OnTriggerExit(CCollider2D* _OtherCollider)
 
 void CCollider2D::SaveToLevelFile(FILE* _File)
 {
+    SaveAssetRef(m_Mtrl, _File);
     fwrite(&m_Offset, sizeof(Vec2), 1, _File);
     fwrite(&m_bTrigger, sizeof(bool), 1, _File);
 }
 
 void CCollider2D::LoadFromLevelFile(FILE* _File)
 {
+    LoadAssetRef(m_Mtrl, _File);
     fread(&m_Offset, sizeof(Vec2), 1, _File);
     fread(&m_bTrigger, sizeof(bool), 1, _File);
 }

@@ -4,6 +4,7 @@
 #include "CBlueprintEditor.h"
 #include "CSpriteEditor.h"
 #include "CTileMapEditor.h"
+#include "CPhysics2DMaterialEditor.h"
 
 class CEditor;
 class CGameObject;
@@ -34,6 +35,10 @@ public:
     CBlueprintEditor* GetBlueprintEditor() const { return (CBlueprintEditor*)m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]; }
     CSpriteEditor* GetSpriteEditor() const { return (CSpriteEditor*)m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]; }
     CTileMapEditor* GetTileMapEditor() const { return (CTileMapEditor*)m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]; }
+    CPhysics2DMaterialEditor* GetPhysics2DMaterialEditor() const
+    {
+        return (CPhysics2DMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL];
+    }
 
     CGameObject* GetSelectedObject() const { return m_SelectedObj; }
     void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }

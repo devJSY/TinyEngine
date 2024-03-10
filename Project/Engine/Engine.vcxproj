@@ -213,6 +213,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CParticleUpdate.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CPhysics2DMaterialEditor.h" />
     <ClInclude Include="CPhysics2DMgr.h" />
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CRenderComponent.h" />
@@ -309,6 +310,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPhysics2DMaterialEditor.cpp" />
     <ClCompile Include="CPhysics2DMgr.cpp" />
     <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />

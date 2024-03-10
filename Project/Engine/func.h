@@ -119,6 +119,7 @@ void ImGui_SetWindowClass_MaterialEditor();
 void ImGui_SetWindowClass_Blueprint();
 void ImGui_SetWindowClass_SpriteEditor();
 void ImGui_SetWindowClass_TileMapEditor();
+void ImGui_SetWindowClass_Physics2DMaterialEditor();
 
 // =====================================
 // template

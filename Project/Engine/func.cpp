@@ -801,3 +801,13 @@ void ImGui_SetWindowClass_TileMapEditor()
 
     ImGui::SetNextWindowClass(&window_class);
 }
+
+void ImGui_SetWindowClass_Physics2DMaterialEditor()
+{
+    ImGuiWindowClass window_class;
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->GetName()).c_str());
+    window_class.DockNodeFlagsOverrideSet = 0;
+    window_class.DockingAllowUnclassed = true;
+
+    ImGui::SetNextWindowClass(&window_class);
+}

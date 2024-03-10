@@ -44,6 +44,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowBlueprintEditor(false)
     , m_bShowSpriteEditor(false)
     , m_bShowTileMapEditor(false)
+    , m_bShowPhysics2DMaterialEditor(false)
     , m_PlayButtonTex()
     , m_SimulateButtonTex()
     , m_StepButtonTex()
@@ -211,6 +212,9 @@ void CLevelEditor::render()
 
     if (m_bShowTileMapEditor)
         CEditorMgr::GetInst()->GetTileMapEditor()->render(&m_bShowTileMapEditor);
+
+    if (m_bShowPhysics2DMaterialEditor)
+        CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->render(&m_bShowPhysics2DMaterialEditor);
 }
 
 void CLevelEditor::render_MenuBar()
@@ -316,7 +320,7 @@ void CLevelEditor::render_MenuBar()
     }
 
     // ======================
-    // Create Popup
+    // Create Asset Popup
     // ======================
     if (ASSET_TYPE::END != m_ModalAssetType)
     {
@@ -464,14 +468,34 @@ void CLevelEditor::render_Assets()
 
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
                 {
-                    // Material Editor
-                    if ((UINT)ASSET_TYPE::MATERIAL == i)
+                    switch ((ASSET_TYPE)i)
                     {
+                    case ASSET_TYPE::MESH:
+                        break;
+                    case ASSET_TYPE::MESHDATA:
+                        break;
+                    case ASSET_TYPE::PREFAB:
+                        break;
+                    case ASSET_TYPE::TEXTURE:
+                        break;
+                    case ASSET_TYPE::COMPUTE_SHADER:
+                        break;
+                    case ASSET_TYPE::GRAPHICS_SHADER:
+                        break;
+                    case ASSET_TYPE::MATERIAL: {
                         Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(iter.second.Get());
-                        assert(pMtrl.Get());
-
                         ShowMaterialEditor(true);
                         CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMtrl);
+                    }
+                    break;
+                    case ASSET_TYPE::SOUND:
+                        break;
+                    case ASSET_TYPE::PHYSICS2D_MATERIAL: {
+                        Ptr<CPhysics2DMaterial> pMtrl = dynamic_cast<CPhysics2DMaterial*>(iter.second.Get());
+                        ShowPhysics2DMaterialEditor(true);
+                        CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
+                    }
+                    break;
                     }
                 }
 

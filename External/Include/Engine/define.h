@@ -76,7 +76,7 @@ enum class COMPONENT_TYPE
     LIGHT3D, // 3차원 광원
 
     CAMERA, // 카메라 기능
-    
+
     // 2D Physics
     RIGIDBODY2D,      // 리지드바디 2D
     BOXCOLLIDER2D,    // BOX 콜라이더 2D
@@ -222,7 +222,8 @@ enum class EDITOR_TYPE
     BLUEPRINT,
     SPRITE,
     TILEMAP,
-
+    PHYSICS2D_MATERIAL,
+    
     END,
 };
 
