@@ -38,6 +38,8 @@ private:
     Ptr<CTexture> m_PauseButtonTex;
     Ptr<CTexture> m_StopButtonTex;
 
+    ASSET_TYPE m_ModalAssetType;
+
 public:
     virtual void init() override;
     virtual void tick() override;
@@ -52,6 +54,9 @@ private:
     void render_CollisionMatrix();
     void render_Toolbar();
     void render_Assets();
+
+private:
+    void CreateAssetModal();
 
 public:
     bool IsViewportFocused() const { return m_ViewportFocused; }

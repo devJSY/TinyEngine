@@ -20,7 +20,7 @@ public:
 
 public:
     Ptr<CPhysics2DMaterial> GetMaterial() const { return m_Mtrl; }
-    void SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl) { m_Mtrl = _Mtrl; }
+    void SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl);
 
     Vec2 GetOffset() const { return m_Offset; }
     void SetOffset(Vec2 _offset);

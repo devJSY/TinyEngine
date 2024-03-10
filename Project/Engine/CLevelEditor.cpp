@@ -49,6 +49,7 @@ CLevelEditor::CLevelEditor()
     , m_StepButtonTex()
     , m_PauseButtonTex()
     , m_StopButtonTex()
+    , m_ModalAssetType(ASSET_TYPE::END)
 {
 }
 
@@ -214,8 +215,6 @@ void CLevelEditor::render()
 
 void CLevelEditor::render_MenuBar()
 {
-    static bool bModalEvent = false;
-
     if (ImGui::BeginMainMenuBar())
     {
         // FPS
@@ -305,7 +304,10 @@ void CLevelEditor::render_MenuBar()
         if (ImGui::BeginMenu("Assets"))
         {
             if (ImGui::MenuItem("Create Material"))
-                bModalEvent = true;
+                m_ModalAssetType = ASSET_TYPE::MATERIAL;
+
+            if (ImGui::MenuItem("Create Physics2D Material"))
+                m_ModalAssetType = ASSET_TYPE::PHYSICS2D_MATERIAL;
 
             ImGui::EndMenu();
         }
@@ -313,44 +315,17 @@ void CLevelEditor::render_MenuBar()
         ImGui::EndMainMenuBar();
     }
 
-    if (bModalEvent)
+    // ======================
+    // Create Popup
+    // ======================
+    if (ASSET_TYPE::END != m_ModalAssetType)
     {
-        ImGui::OpenPopup("Create Material##ModalEvent");
-        bModalEvent = false;
+        string popupID = ASSET_TYPE_STRING[(UINT)m_ModalAssetType];
+        popupID += "##Create Asset";
+        ImGui::OpenPopup(popupID.c_str());
     }
 
-    ImGui::SetNextWindowSize(ImVec2(400.f, 125.f));
-    if (ImGui::BeginPopupModal("Create Material##ModalEvent", NULL, ImGuiWindowFlags_NoResize))
-    {
-        static char buffer[256];
-        ImGui::InputText(ImGui_LabelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
-
-        if (ImGui::Button("Create", ImVec2(120, 0)))
-        {
-            Ptr<CMaterial> pMtrl = new CMaterial(false);
-            wstring name = L"material\\";
-            name += ToWstring(buffer);
-            name += L".mtrl";
-            pMtrl->SetName(name);
-            CAssetMgr::GetInst()->AddAsset(name, pMtrl);
-            pMtrl->Save(name);
-
-            ImGui::CloseCurrentPopup();
-            memset(buffer, 0, sizeof(buffer));
-        }
-
-        ImGui::SetItemDefaultFocus();
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Cancel", ImVec2(120, 0)))
-        {
-            ImGui::CloseCurrentPopup();
-            memset(buffer, 0, sizeof(buffer));
-        }
-
-        ImGui::EndPopup();
-    }
+    CreateAssetModal();
 }
 
 void CLevelEditor::render_WorldSettings()
@@ -515,6 +490,68 @@ void CLevelEditor::render_Assets()
     }
 
     ImGui::End();
+}
+
+void CLevelEditor::CreateAssetModal()
+{
+    if (ASSET_TYPE::END == m_ModalAssetType)
+        return;
+
+    string popupID = ASSET_TYPE_STRING[(UINT)m_ModalAssetType];
+    popupID += "##Create Asset";
+
+    ImGui::SetNextWindowSize(ImVec2(500.f, 125.f));
+    if (ImGui::BeginPopupModal(popupID.c_str(), NULL, ImGuiWindowFlags_NoResize))
+    {
+        static char buffer[256];
+        string InputTextStr = ASSET_TYPE_STRING[(UINT)m_ModalAssetType];
+        InputTextStr += " Name";
+        ImGui::InputText(ImGui_LabelPrefix(InputTextStr.c_str()).c_str(), buffer, sizeof(buffer));
+
+        if (ImGui::Button("Create", ImVec2(120, 0)))
+        {
+            switch (m_ModalAssetType)
+            {
+            case ASSET_TYPE::PREFAB:
+                break;
+            case ASSET_TYPE::TEXTURE:
+                break;
+            case ASSET_TYPE::MATERIAL: {
+                Ptr<CMaterial> pMtrl = new CMaterial(false);
+                wstring name = L"material\\" + ToWstring(buffer) + L".mtrl";
+                pMtrl->SetName(name);
+                CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+                pMtrl->Save(name);
+            }
+            break;
+            case ASSET_TYPE::PHYSICS2D_MATERIAL: {
+                Ptr<CPhysics2DMaterial> pMtrl = new CPhysics2DMaterial(false);
+                wstring name = L"physics2Dmaterial\\" + ToWstring(buffer) + L".physic2Dmtrl";
+                pMtrl->SetName(name);
+                CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+                pMtrl->Save(name);
+            }
+            break;
+            }
+
+            ImGui::CloseCurrentPopup();
+            memset(buffer, 0, sizeof(buffer));
+            m_ModalAssetType = ASSET_TYPE::END;
+        }
+
+        ImGui::SetItemDefaultFocus();
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(120, 0)))
+        {
+            ImGui::CloseCurrentPopup();
+            memset(buffer, 0, sizeof(buffer));
+            m_ModalAssetType = ASSET_TYPE::END;
+        }
+
+        ImGui::EndPopup();
+    }
 }
 
 void CLevelEditor::render_Viewport()
