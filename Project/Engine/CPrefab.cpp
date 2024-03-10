@@ -42,6 +42,9 @@ int CPrefab::Save(const wstring& _strRelativePath)
 {
     assert(GAMEOBJECT_SAVE);
 
+    if (IsEngineAsset())
+        return E_FAIL;
+
     wstring strContentPath = CPathMgr::GetContentPath();
     strContentPath += _strRelativePath;
 
@@ -57,6 +60,7 @@ int CPrefab::Save(const wstring& _strRelativePath)
     GAMEOBJECT_SAVE(m_ProtoObj, pFile);
 
     fclose(pFile);
+
     return S_OK;
 }
 
@@ -76,5 +80,6 @@ int CPrefab::Load(const wstring& _strFilePath)
     m_ProtoObj = GAMEOBJECT_LOAD(pFile);
 
     fclose(pFile);
+
     return S_OK;
 }

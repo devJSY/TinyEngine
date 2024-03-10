@@ -262,6 +262,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CPhysics2DMaterial.h" />
     <ClInclude Include="Ptr.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="singleton.h" />
@@ -417,6 +418,7 @@ call EngineCopy.bat</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CRenderMgr_init.cpp" />
+    <ClCompile Include="CPhysics2DMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="disksample.hlsli" />

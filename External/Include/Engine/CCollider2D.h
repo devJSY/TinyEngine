@@ -6,10 +6,9 @@ class CCollider2D : public CComponent
 protected:
     void* m_RuntimeFixture;
 
+    Ptr<CPhysics2DMaterial> m_Mtrl;
     Vec2 m_Offset;
     bool m_bTrigger;
-    float m_Friction;
-    float m_Bounciness;
 
     int m_CollisionCount;
 
@@ -20,17 +19,14 @@ public:
     virtual void finaltick() override;
 
 public:
+    Ptr<CPhysics2DMaterial> GetMaterial() const { return m_Mtrl; }
+    void SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl) { m_Mtrl = _Mtrl; }
+
     Vec2 GetOffset() const { return m_Offset; }
     void SetOffset(Vec2 _offset);
 
     bool IsTrigger() const { return m_bTrigger; }
     void SetTrigger(bool _trigger);
-
-    float GetFriction() const { return m_Friction; }
-    void SetFriction(float _Friction);
-
-    float GetBounciness() const { return m_Bounciness; }
-    void SetBounciness(float _Bounciness);
 
 private:
     void OnCollisionEnter(CCollider2D* _OtherCollider);

@@ -10,6 +10,7 @@
 #include "CComputeShader.h"
 #include "CMaterial.h"
 #include "CSound.h"
+#include "CPhysics2DMaterial.h"
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
@@ -23,7 +24,7 @@ public:
 
 public:
     void init();
-    void InitSound();
+    void initSound();
     void ReloadContent();
 
 private:
@@ -35,6 +36,7 @@ private:
     void CreateDefaultGraphicsShader();
     void CreateDefaultComputeShader();
     void CreateDefaultMaterial();
+    void CreateDefaultPhysics2DMaterial();
 
 public:
     // Geometry
@@ -110,6 +112,9 @@ ASSET_TYPE GetAssetType()
         Type = ASSET_TYPE::MATERIAL;
     if constexpr (std::is_same_v<CSound, T>)
         Type = ASSET_TYPE::SOUND;
+    if constexpr (std::is_same_v<CPhysics2DMaterial, T>)
+        Type = ASSET_TYPE::PHYSICS2D_MATERIAL;
+
     return Type;
 }
 

@@ -28,11 +28,12 @@ void CAssetMgr::init()
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
+    CreateDefaultPhysics2DMaterial();
 
-    InitSound();
+    initSound();
 }
 
-void CAssetMgr::InitSound()
+void CAssetMgr::initSound()
 {
     FMOD::System_Create(&CSound::g_pFMOD);
 

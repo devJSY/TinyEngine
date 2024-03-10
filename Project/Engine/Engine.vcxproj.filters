@@ -280,6 +280,9 @@
     <ClInclude Include="CSound.h">
       <Filter>06. Asset\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysics2DMaterial.h">
+      <Filter>06. Asset\Physics2DMaterial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -534,6 +537,9 @@
     <ClCompile Include="CSound.cpp">
       <Filter>06. Asset\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysics2DMaterial.cpp">
+      <Filter>06. Asset\Physics2DMaterial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -787,6 +793,9 @@
     </Filter>
     <Filter Include="08. Component\Collider2D\09. CircleCollider2D">
       <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\Physics2DMaterial">
+      <UniqueIdentifier>{24671929-f30d-4e38-8721-e9e92d062107}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

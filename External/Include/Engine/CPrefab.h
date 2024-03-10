@@ -18,8 +18,8 @@ public:
     CGameObject* Instantiate();
 
 public:
-    virtual int Save(const wstring& _strRelativePath);
-    virtual int Load(const wstring& _strFilePath);
+    virtual int Save(const wstring& _strRelativePath) override;
+    virtual int Load(const wstring& _strFilePath) override;
 
     CLONE_DISABLE(CPrefab);
 

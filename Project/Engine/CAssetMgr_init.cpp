@@ -608,7 +608,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(FLOAT_0, "Exposure"); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
-        pShader->AddScalarParam(FLOAT_1, "Gamma");    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
+        pShader->AddScalarParam(FLOAT_1, "Gamma");          // 어떤 영역의 색을 더 넓게 보여줄지 의미함
         pShader->AddScalarParam(FLOAT_2, "Bloom Strength"); // Bloom Strength
 
         pShader->AddTexParam(TEX_0, "Render Texture");
@@ -894,6 +894,17 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_1, 1.f);
         pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
+    }
+}
+
+void CAssetMgr::CreateDefaultPhysics2DMaterial()
+{
+    // Default Material
+    {
+        Ptr<CPhysics2DMaterial> pMtrl = new CPhysics2DMaterial(true);
+        pMtrl->SetFriction(0.6f);
+        pMtrl->SetBounciness(0.f);
+        AddAsset<CPhysics2DMaterial>(L"Default Material", pMtrl);
     }
 }
 

@@ -843,6 +843,28 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
 
     if (open)
     {
+        // Physics2DMaterial
+        string MtrlName = "None";
+        Ptr<CPhysics2DMaterial> pMtrl = pBoxCol->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pBoxCol->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysics2DMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
         Vec2 Offset = pBoxCol->GetOffset();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pBoxCol->SetOffset(Offset);
@@ -854,14 +876,6 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         bool bTrigger = pBoxCol->IsTrigger();
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pBoxCol->SetTrigger(bTrigger);
-
-        float Friction = pBoxCol->GetFriction();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
-            pBoxCol->SetFriction(Friction);
-
-        float Bounciness = pBoxCol->GetBounciness();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Bounciness").c_str(), &Bounciness, 0.01f, 0.0f, 1.0f))
-            pBoxCol->SetBounciness(Bounciness);
 
         ImGui::TreePop();
     }
@@ -879,6 +893,28 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
 
     if (open)
     {
+        // Physics2DMaterial
+        string MtrlName = "None";
+        Ptr<CPhysics2DMaterial> pMtrl = pCircleCol->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pCircleCol->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysics2DMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
         Vec2 Offset = pCircleCol->GetOffset();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pCircleCol->SetOffset(Offset);
@@ -890,14 +926,6 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         bool bTrigger = pCircleCol->IsTrigger();
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pCircleCol->SetTrigger(bTrigger);
-
-        float Friction = pCircleCol->GetFriction();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
-            pCircleCol->SetFriction(Friction);
-
-        float Bounciness = pCircleCol->GetBounciness();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Bounciness").c_str(), &Bounciness, 0.01f, 0.0f, 1.0f))
-            pCircleCol->SetBounciness(Bounciness);
 
         ImGui::TreePop();
     }

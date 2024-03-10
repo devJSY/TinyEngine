@@ -60,6 +60,7 @@ enum class ASSET_TYPE
     GRAPHICS_SHADER,
     MATERIAL,
     SOUND,
+    PHYSICS2D_MATERIAL,
     END,
 };
 extern const char* ASSET_TYPE_STRING[(UINT)ASSET_TYPE::END];

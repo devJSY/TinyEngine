@@ -223,8 +223,12 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &boxShape;
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(bc2d);
-        fixtureDef.friction = bc2d->m_Friction;
-        fixtureDef.restitution = bc2d->m_Bounciness;
+        Ptr<CPhysics2DMaterial> Mtrl = bc2d->GetMaterial();
+        if (nullptr != Mtrl)
+        {
+            fixtureDef.friction = Mtrl->m_Friction;
+            fixtureDef.restitution = Mtrl->m_Bounciness;
+        }
         fixtureDef.density = 1.f;
         fixtureDef.isSensor = rb2d == nullptr ? true : bc2d->m_bTrigger;
 
@@ -245,8 +249,12 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circleShape;
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(cc2d);
-        fixtureDef.friction = cc2d->m_Friction;
-        fixtureDef.restitution = cc2d->m_Bounciness;
+        Ptr<CPhysics2DMaterial> Mtrl = cc2d->GetMaterial();
+        if (nullptr != Mtrl)
+        {
+            fixtureDef.friction = Mtrl->m_Friction;
+            fixtureDef.restitution = Mtrl->m_Bounciness;
+        }
         fixtureDef.density = 1.f;
         fixtureDef.isSensor = rb2d == nullptr ? true : cc2d->m_bTrigger;
 
