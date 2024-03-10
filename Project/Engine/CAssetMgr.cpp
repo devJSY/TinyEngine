@@ -100,6 +100,8 @@ void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
                 Load<CMaterial>(FileRelativePath, FileRelativePath);
             if (FileExtension == L".wav" || FileExtension == L".mp3" || FileExtension == L".ogg")
                 Load<CSound>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".physic2Dmtrl")
+                Load<CPhysics2DMaterial>(FileRelativePath, FileRelativePath);
         }
     }
 }

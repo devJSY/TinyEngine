@@ -123,10 +123,14 @@ inline void CAssetMgr::AddAsset(const wstring& _strKey, Ptr<T> _Asset)
 {
     ASSET_TYPE Type = GetAssetType<T>();
 
-    map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)Type].find(_strKey);
-    assert(iter == m_mapAsset[(UINT)Type].end());
+    if (nullptr != FindAsset<T>(_strKey))
+    {
+        MessageBox(nullptr, L"동일한 키의 에셋이 이미 존재합니다!", L"에셋 추가 실패", MB_OK);
+        return;
+    }
 
     m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset.Get()));
+
     _Asset->SetName(_strKey);
     _Asset->SetKey(_strKey);
     _Asset->SetRelativePath(_strKey);
