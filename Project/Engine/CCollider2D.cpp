@@ -11,11 +11,22 @@ CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
     , m_Friction(0.5f)
     , m_Bounciness(0.f)
     , m_CollisionCount(0)
+    , m_PrevScale()
 {
 }
 
 CCollider2D::~CCollider2D()
 {
+}
+
+void CCollider2D::finaltick()
+{
+    if (m_PrevScale != Transform()->GetRelativeScale())
+    {
+        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+    }
+
+    m_PrevScale = Transform()->GetRelativeScale();
 }
 
 void CCollider2D::SetOffset(Vec2 _offset)

@@ -16,6 +16,8 @@ CCircleCollider2D::~CCircleCollider2D()
 
 void CCircleCollider2D::finaltick()
 {
+    CCollider2D::finaltick();
+
     if (!g_Global.g_ColliderRender)
         return;
 

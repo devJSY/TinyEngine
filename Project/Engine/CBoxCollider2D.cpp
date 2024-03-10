@@ -15,6 +15,8 @@ CBoxCollider2D::~CBoxCollider2D()
 
 void CBoxCollider2D::finaltick()
 {
+    CCollider2D::finaltick();
+
     if (!g_Global.g_ColliderRender)
         return;
 

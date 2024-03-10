@@ -6,7 +6,7 @@ class CBoxCollider2D : public CCollider2D
 {
 private:
     Vec2 m_Size;
-
+    
 public:
     virtual void finaltick() override;
 

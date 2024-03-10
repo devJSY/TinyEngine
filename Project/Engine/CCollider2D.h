@@ -13,6 +13,12 @@ protected:
 
     int m_CollisionCount;
 
+private:
+    Vec3 m_PrevScale;
+
+public:
+    virtual void finaltick() override;
+
 public:
     Vec2 GetOffset() const { return m_Offset; }
     void SetOffset(Vec2 _offset);

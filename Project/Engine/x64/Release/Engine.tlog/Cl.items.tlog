@@ -47,6 +47,7 @@ D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Releas
 D:\TinyEngine\Project\Engine\CSetColorShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSetColorShader.obj
 D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CShader.obj
 D:\TinyEngine\Project\Engine\CSkyBox.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSkyBox.obj
+D:\TinyEngine\Project\Engine\CSound.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSound.obj
 D:\TinyEngine\Project\Engine\CSpriteEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSpriteEditor.obj
 D:\TinyEngine\Project\Engine\CStructuredBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Release\CStructuredBuffer.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTaskMgr.obj
