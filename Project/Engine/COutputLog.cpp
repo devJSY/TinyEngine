@@ -31,7 +31,7 @@ void COutputLog::render(bool* open)
 {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
 
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(EDITOR_TYPE::LEVEL);
     if (!ImGui::Begin("Output Log", open))
     {
         ImGui::End();

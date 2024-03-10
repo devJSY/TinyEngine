@@ -43,7 +43,7 @@ void CPhysics2DMaterialEditor::render()
     if (nullptr == m_Mtrl.Get())
         return;
 
-    ImGui_SetWindowClass_Physics2DMaterialEditor();
+    ImGui_SetWindowClass(GetEditorType());
     DrawDetails();
 }
 

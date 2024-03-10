@@ -30,6 +30,7 @@ private:
 public:
     bool IsEnable() const { return m_bEnable; }
 
+    CEditor* GetEditor(EDITOR_TYPE _Type) const { return m_arrEditor[(UINT)_Type]; }
     CLevelEditor* GetLevelEditor() const { return (CLevelEditor*)m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]; }
     CMaterialEditor* GetMaterialEditor() const { return (CMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]; }
     CBlueprintEditor* GetBlueprintEditor() const { return (CBlueprintEditor*)m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]; }

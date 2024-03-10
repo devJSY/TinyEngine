@@ -752,60 +752,10 @@ void ImGui_InputText(const char* label, const string& Text, float alignment)
     ImGui::InputText(ImGui_LabelPrefix(label, alignment).c_str(), buffer, sizeof(buffer));
 }
 
-void ImGui_SetWindowClass_LevelEditor()
+void ImGui_SetWindowClass(EDITOR_TYPE _Type)
 {
     ImGuiWindowClass window_class;
-    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetLevelEditor()->GetName()).c_str());
-    window_class.DockNodeFlagsOverrideSet = 0;
-    window_class.DockingAllowUnclassed = true;
-
-    ImGui::SetNextWindowClass(&window_class);
-}
-
-void ImGui_SetWindowClass_MaterialEditor()
-{
-    ImGuiWindowClass window_class;
-    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetMaterialEditor()->GetName()).c_str());
-    window_class.DockNodeFlagsOverrideSet = 0;
-    window_class.DockingAllowUnclassed = true;
-
-    ImGui::SetNextWindowClass(&window_class);
-}
-
-void ImGui_SetWindowClass_Blueprint()
-{
-    ImGuiWindowClass window_class;
-    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetBlueprintEditor()->GetName()).c_str());
-    window_class.DockNodeFlagsOverrideSet = 0;
-    window_class.DockingAllowUnclassed = true;
-
-    ImGui::SetNextWindowClass(&window_class);
-}
-
-void ImGui_SetWindowClass_SpriteEditor()
-{
-    ImGuiWindowClass window_class;
-    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetSpriteEditor()->GetName()).c_str());
-    window_class.DockNodeFlagsOverrideSet = 0;
-    window_class.DockingAllowUnclassed = true;
-
-    ImGui::SetNextWindowClass(&window_class);
-}
-
-void ImGui_SetWindowClass_TileMapEditor()
-{
-    ImGuiWindowClass window_class;
-    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetTileMapEditor()->GetName()).c_str());
-    window_class.DockNodeFlagsOverrideSet = 0;
-    window_class.DockingAllowUnclassed = true;
-
-    ImGui::SetNextWindowClass(&window_class);
-}
-
-void ImGui_SetWindowClass_Physics2DMaterialEditor()
-{
-    ImGuiWindowClass window_class;
-    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->GetName()).c_str());
+    window_class.ClassId = ImGui::GetID(ToString(CEditorMgr::GetInst()->GetEditor(_Type)->GetName()).c_str());
     window_class.DockNodeFlagsOverrideSet = 0;
     window_class.DockingAllowUnclassed = true;
 

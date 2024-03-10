@@ -95,10 +95,10 @@ void CMaterialEditor::render()
     if (nullptr == m_Mtrl.Get())
         return;
 
-    ImGui_SetWindowClass_MaterialEditor();
+    ImGui_SetWindowClass(GetEditorType());
     DrawViewport();
 
-    ImGui_SetWindowClass_MaterialEditor();
+    ImGui_SetWindowClass(GetEditorType());
     DrawDetails();
 }
 
@@ -171,6 +171,7 @@ void CMaterialEditor::DrawViewport()
 
 void CMaterialEditor::DrawDetails()
 {
+
     ImGui::Begin("Details##MaterialEditor");
 
     ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));

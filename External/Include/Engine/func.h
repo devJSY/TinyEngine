@@ -114,12 +114,7 @@ bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<s
 bool ImGui_AlignButton(const char* label, float alignment = 0.5f);
 void ImGui_InputText(const char* label, const string& Text, float alignment = 0.5f);
 
-void ImGui_SetWindowClass_LevelEditor();
-void ImGui_SetWindowClass_MaterialEditor();
-void ImGui_SetWindowClass_Blueprint();
-void ImGui_SetWindowClass_SpriteEditor();
-void ImGui_SetWindowClass_TileMapEditor();
-void ImGui_SetWindowClass_Physics2DMaterialEditor();
+void ImGui_SetWindowClass(EDITOR_TYPE _Type);
 
 // =====================================
 // template

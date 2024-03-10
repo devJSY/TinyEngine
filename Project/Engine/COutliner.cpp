@@ -40,7 +40,7 @@ void COutliner::render()
     // ===================
     // Outliner
     // ===================
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(EDITOR_TYPE::LEVEL);
     ImGui::Begin("Outliner");
 
     static ImGuiTextFilter Filter;
@@ -133,7 +133,7 @@ void COutliner::render()
     // ===================
     // Details
     // ===================
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(EDITOR_TYPE::LEVEL);
     ImGui::Begin("Details##Outliner");
     if (nullptr != CEditorMgr::GetInst()->GetSelectedObject())
         DrawDetails(CEditorMgr::GetInst()->GetSelectedObject());

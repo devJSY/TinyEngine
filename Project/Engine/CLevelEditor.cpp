@@ -162,7 +162,7 @@ void CLevelEditor::render()
     // ID Map
     if (m_bShowIDMap)
     {
-        ImGui_SetWindowClass_LevelEditor();
+        ImGui_SetWindowClass(GetEditorType());
         ImGui::Begin("Picking Color ID Map", &m_bShowIDMap);
         ImGui::Image((void*)CRenderMgr::GetInst()->GetIDMapTex()->GetSRV().Get(), ImGui::GetContentRegionAvail());
         ImGui::End();
@@ -337,7 +337,7 @@ void CLevelEditor::render_MenuBar()
 
 void CLevelEditor::render_WorldSettings()
 {
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(GetEditorType());
     ImGui::Begin("World Settings", &m_bShowWorldSettings);
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
     ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
@@ -367,7 +367,7 @@ void CLevelEditor::render_Toolbar()
     const auto& buttonActive = colors[ImGuiCol_ButtonActive];
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
 
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(GetEditorType());
     ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
     ImVec4 tintColor = ImVec4(1, 1, 1, 1.f);
@@ -444,7 +444,7 @@ void CLevelEditor::render_Toolbar()
 
 void CLevelEditor::render_Assets()
 {
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(GetEditorType());
     ImGui::Begin("Assets", &m_bShowAssets);
 
     static ImGuiTextFilter filter;
@@ -583,7 +583,7 @@ void CLevelEditor::CreateAssetModal()
 
 void CLevelEditor::render_Viewport()
 {
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(GetEditorType());
     ImGui::Begin("Level ViewPort");
 
     // RT Copy
@@ -722,7 +722,7 @@ void CLevelEditor::render_ImGuizmo()
 
 void CLevelEditor::render_CollisionMatrix()
 {
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(GetEditorType());
     if (!ImGui::Begin("Collision Matrix", &m_bShowCollisionMatrix))
     {
         ImGui::End();

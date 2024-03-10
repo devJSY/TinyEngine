@@ -23,7 +23,7 @@ void CContentBrowser::init()
 
 void CContentBrowser::render()
 {
-    ImGui_SetWindowClass_LevelEditor();
+    ImGui_SetWindowClass(EDITOR_TYPE::LEVEL);
     ImGui::Begin("Content Browser");
 
     // 뒤로가기 버튼
