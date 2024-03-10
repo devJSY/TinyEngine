@@ -173,12 +173,7 @@ void CMaterialEditor::DrawDetails()
 {
     ImGui::Begin("Details##MaterialEditor");
 
-    char buffer[256];
-    memset(buffer, 0, sizeof(buffer));
-    string MtrlName = ToString(m_Mtrl->GetName());
-    strcpy_s(buffer, sizeof(buffer), MtrlName.c_str());
-    if (ImGui::InputText(ImGui_LabelPrefix("Material Name").c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
-        m_Mtrl->SetName(ToWstring(buffer));
+    ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));
 
     ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap |
                                              ImGuiTreeNodeFlags_FramePadding | ImGuiTreeNodeFlags_DefaultOpen;

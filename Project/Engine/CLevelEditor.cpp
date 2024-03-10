@@ -214,6 +214,8 @@ void CLevelEditor::render()
 
 void CLevelEditor::render_MenuBar()
 {
+    static bool bModalEvent = false;
+
     if (ImGui::BeginMainMenuBar())
     {
         // FPS
@@ -303,20 +305,51 @@ void CLevelEditor::render_MenuBar()
         if (ImGui::BeginMenu("Assets"))
         {
             if (ImGui::MenuItem("Create Material"))
-            {
-                Ptr<CMaterial> pMtrl = new CMaterial(false);
-                wstring name = L"material\\NewMaterial_";
-                name += std::to_wstring(pMtrl->GetID());
-                name += L".mtrl";
-                pMtrl->SetName(name);
-                CAssetMgr::GetInst()->AddAsset(name, pMtrl);
-                pMtrl->Save(name);
-            }
+                bModalEvent = true;
 
             ImGui::EndMenu();
         }
 
         ImGui::EndMainMenuBar();
+    }
+
+    if (bModalEvent)
+    {
+        ImGui::OpenPopup("Create Material##ModalEvent");
+        bModalEvent = false;
+    }
+
+    ImGui::SetNextWindowSize(ImVec2(400.f, 125.f));
+    if (ImGui::BeginPopupModal("Create Material##ModalEvent", NULL, ImGuiWindowFlags_NoResize))
+    {
+        static char buffer[256];
+        ImGui::InputText(ImGui_LabelPrefix("Material Name").c_str(), buffer, sizeof(buffer));
+
+        if (ImGui::Button("Create", ImVec2(120, 0)))
+        {
+            Ptr<CMaterial> pMtrl = new CMaterial(false);
+            wstring name = L"material\\";
+            name += ToWstring(buffer);
+            name += L".mtrl";
+            pMtrl->SetName(name);
+            CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+            pMtrl->Save(name);
+
+            ImGui::CloseCurrentPopup();
+            memset(buffer, 0, sizeof(buffer));
+        }
+
+        ImGui::SetItemDefaultFocus();
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(120, 0)))
+        {
+            ImGui::CloseCurrentPopup();
+            memset(buffer, 0, sizeof(buffer));
+        }
+
+        ImGui::EndPopup();
     }
 }
 
