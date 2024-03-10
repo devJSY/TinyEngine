@@ -23,7 +23,7 @@ void CollisionCallback::BeginContact(b2Contact* contact)
     pColliderA->OnCollisionEnter(pColliderB);
     pColliderB->OnCollisionEnter(pColliderA);
 
-    if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+    if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
     {
         pColliderA->OnTriggerEnter(pColliderB);
         pColliderB->OnTriggerEnter(pColliderA);
@@ -38,7 +38,7 @@ void CollisionCallback::EndContact(b2Contact* contact)
     pColliderA->OnCollisionExit(pColliderB);
     pColliderB->OnCollisionExit(pColliderA);
 
-    if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+    if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
     {
         pColliderA->OnTriggerExit(pColliderB);
         pColliderB->OnTriggerExit(pColliderA);
@@ -101,7 +101,7 @@ void CPhysics2DMgr::tick()
         {
             pColliderA->OnCollisionStay(pColliderB);
 
-            if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+            if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
                 pColliderA->OnTriggerStay(pColliderB);
         }
 
@@ -109,18 +109,20 @@ void CPhysics2DMgr::tick()
         {
             pColliderB->OnCollisionStay(pColliderA);
 
-            if (contact->GetFixtureA()->IsSensor() || contact->GetFixtureB()->IsSensor())
+            if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
                 pColliderB->OnTriggerStay(pColliderA);
         }
 
         contact = contact->GetNext();
     }
 
-    // 시뮬레이션 이후 트랜스폼 업데이트
+    // 시뮬레이션 결과값으로 트랜스폼 업데이트
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
         CTransform* pTr = m_vecPhysicsObj[i]->Transform();
         CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
+        if (nullptr == rb2d)
+            continue;
 
         b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
         const auto& position = body->GetPosition();
@@ -173,30 +175,41 @@ void CPhysics2DMgr::OnPhysics2DStop()
 
 void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
-    CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
-    if (nullptr == m_PhysicsWorld || nullptr == rb2d)
+    if (nullptr == m_PhysicsWorld)
         return;
 
     CTransform* pTr = _GameObject->Transform();
+    CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
 
     b2BodyDef bodyDef;
-    bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
     bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
-    bodyDef.linearDamping = rb2d->m_LinearDrag;
-    bodyDef.angularDamping = rb2d->m_AngularDrag;
-    bodyDef.gravityScale = rb2d->m_GravityScale;
-    bodyDef.angle = pTr->GetRelativeRotation().z;
-    bodyDef.enabled = rb2d->m_bSimulated;
+    b2Body* body = nullptr;
 
-    b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
-    body->SetFixedRotation(rb2d->m_bFreezeRotation);
-    rb2d->m_RuntimeBody = body;
-
-    if (!rb2d->m_bAutoMass)
+    // Rigidbody 2D
+    if (nullptr != rb2d)
     {
-        b2MassData MassData = b2MassData();
-        MassData.mass = rb2d->m_Mass;
-        body->SetMassData(&MassData);
+        bodyDef.type = Rigidbody2DTypeTob2BodyType(rb2d->m_BodyType);
+        bodyDef.linearDamping = rb2d->m_LinearDrag;
+        bodyDef.angularDamping = rb2d->m_AngularDrag;
+        bodyDef.gravityScale = rb2d->m_GravityScale;
+        bodyDef.angle = pTr->GetRelativeRotation().z;
+        bodyDef.enabled = rb2d->m_bSimulated;
+
+        body = m_PhysicsWorld->CreateBody(&bodyDef);
+
+        body->SetFixedRotation(rb2d->m_bFreezeRotation);
+        rb2d->m_RuntimeBody = body;
+
+        if (!rb2d->m_bAutoMass)
+        {
+            b2MassData MassData = b2MassData();
+            MassData.mass = rb2d->m_Mass;
+            body->SetMassData(&MassData);
+        }
+    }
+    else
+    {
+        body = m_PhysicsWorld->CreateBody(&bodyDef);
     }
 
     // Box Collider 2D
@@ -213,7 +226,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.friction = bc2d->m_Friction;
         fixtureDef.restitution = bc2d->m_Bounciness;
         fixtureDef.density = 1.f;
-        fixtureDef.isSensor = bc2d->m_bTrigger;
+        fixtureDef.isSensor = rb2d == nullptr ? true : bc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
@@ -235,7 +248,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.friction = cc2d->m_Friction;
         fixtureDef.restitution = cc2d->m_Bounciness;
         fixtureDef.density = 1.f;
-        fixtureDef.isSensor = cc2d->m_bTrigger;
+        fixtureDef.isSensor = rb2d == nullptr ? true : cc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
@@ -248,8 +261,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 
 void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
 {
-    CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
-    if (nullptr == m_PhysicsWorld || nullptr == rb2d)
+    if (nullptr == m_PhysicsWorld)
         return;
 
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
@@ -257,7 +269,20 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
         if (m_vecPhysicsObj[i] != _GameObject)
             continue;
 
-        m_PhysicsWorld->DestroyBody((b2Body*)rb2d->m_RuntimeBody);
+        CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
+        CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
+        CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
+
+        b2Body* body = nullptr;
+
+        if (nullptr != rb2d)
+            body = (b2Body*)rb2d->m_RuntimeBody;
+        else if (nullptr != bc2d)
+            body = ((b2Fixture*)bc2d->m_RuntimeFixture)->GetBody();
+        else if (nullptr != cc2d)
+            body = ((b2Fixture*)cc2d->m_RuntimeFixture)->GetBody();
+
+        m_PhysicsWorld->DestroyBody(body);
         m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
         break;
     }
