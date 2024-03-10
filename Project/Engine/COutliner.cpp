@@ -803,6 +803,14 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Simulated").c_str(), &bSimulated))
             pRigidbody->SetSimulated(bSimulated);
 
+        bool bAutoMass = pRigidbody->IsUseAutoMass();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Use Auto Mass").c_str(), &bAutoMass))
+            pRigidbody->SetAutoMass(bAutoMass);
+
+        float Mass = pRigidbody->GetMass();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Mass").c_str(), &Mass, 0.1f))
+            pRigidbody->SetMass(Mass);
+
         float LinearDrag = pRigidbody->GetLinearDrag();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Linear Drag").c_str(), &LinearDrag, 0.1f))
             pRigidbody->SetLinearDrag(LinearDrag);
@@ -847,10 +855,6 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pBoxCol->SetTrigger(bTrigger);
 
-        float Density = pBoxCol->GetDensity();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.1f))
-            pBoxCol->SetDensity(Density);
-
         float Friction = pBoxCol->GetFriction();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))
             pBoxCol->SetFriction(Friction);
@@ -886,10 +890,6 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         bool bTrigger = pCircleCol->IsTrigger();
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pCircleCol->SetTrigger(bTrigger);
-
-        float Density = pCircleCol->GetDensity();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Density").c_str(), &Density, 0.1f))
-            pCircleCol->SetDensity(Density);
 
         float Friction = pCircleCol->GetFriction();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Friction").c_str(), &Friction, 0.01f, 0.0f, 1.0f))

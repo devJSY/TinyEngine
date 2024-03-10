@@ -615,7 +615,7 @@ void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
     int NextLayerIdx = (int)_Task.Param_2;
     int OriginLayerIdx = Object->GetLayerIdx();
 
-    // CCollisionMgr::GetInst()->CollisionRelease(Object);
+    GamePlayStatic::Physics2D_Event(Object, Physics2D_EVENT_TYPE::RESPAWN);
     CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(OriginLayerIdx)->DetachGameObject(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx, false);
 }

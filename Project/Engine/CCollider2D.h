@@ -8,7 +8,6 @@ protected:
 
     Vec2 m_Offset;
     bool m_bTrigger;
-    float m_Density;
     float m_Friction;
     float m_Bounciness;
 
@@ -20,9 +19,6 @@ public:
 
     bool IsTrigger() const { return m_bTrigger; }
     void SetTrigger(bool _trigger);
-
-    float GetDensity() const { return m_Density; }
-    void SetDensity(float _Density);
 
     float GetFriction() const { return m_Friction; }
     void SetFriction(float _Friction);

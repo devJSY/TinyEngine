@@ -10,6 +10,8 @@ CRigidbody2D::CRigidbody2D()
     , m_RuntimeBody(nullptr)
     , m_BodyType(BODY_TYPE::Dynamic)
     , m_bSimulated(true)
+    , m_bAutoMass(false)
+    , m_Mass(1.f)
     , m_LinearDrag(0.f)
     , m_AngularDrag(0.05f)
     , m_GravityScale(1.f)
@@ -19,6 +21,12 @@ CRigidbody2D::CRigidbody2D()
 
 CRigidbody2D::~CRigidbody2D()
 {
+}
+
+void CRigidbody2D::SetBodyType(BODY_TYPE _type)
+{
+    m_BodyType = _type;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
 void CRigidbody2D::AddForce(Vec2 _Force, ForceMode2D _Mode)
@@ -88,6 +96,30 @@ void CRigidbody2D::SetSimulated(bool _bSimulated)
     body->SetEnabled(m_bSimulated);
 }
 
+void CRigidbody2D::SetAutoMass(bool _Use)
+{
+    m_bAutoMass = _Use;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    b2Body* body = (b2Body*)m_RuntimeBody;
+    body->ResetMassData();
+}
+
+void CRigidbody2D::SetMass(float _Mass)
+{
+    m_Mass = _Mass;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    b2Body* body = (b2Body*)m_RuntimeBody;
+    b2MassData MassData = b2MassData();
+    MassData.mass = m_Mass;
+    body->SetMassData(&MassData);
+}
+
 void CRigidbody2D::SetLinearDrag(float _Drag)
 {
     m_LinearDrag = _Drag;
@@ -136,6 +168,8 @@ void CRigidbody2D::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_BodyType, sizeof(BODY_TYPE), 1, _File);
     fwrite(&m_bSimulated, sizeof(bool), 1, _File);
+    fwrite(&m_bAutoMass, sizeof(bool), 1, _File);
+    fwrite(&m_Mass, sizeof(float), 1, _File);
     fwrite(&m_LinearDrag, sizeof(float), 1, _File);
     fwrite(&m_AngularDrag, sizeof(float), 1, _File);
     fwrite(&m_GravityScale, sizeof(float), 1, _File);
@@ -146,6 +180,8 @@ void CRigidbody2D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_BodyType, sizeof(BODY_TYPE), 1, _File);
     fread(&m_bSimulated, sizeof(bool), 1, _File);
+    fread(&m_bAutoMass, sizeof(bool), 1, _File);
+    fread(&m_Mass, sizeof(float), 1, _File);
     fread(&m_LinearDrag, sizeof(float), 1, _File);
     fread(&m_AngularDrag, sizeof(float), 1, _File);
     fread(&m_GravityScale, sizeof(float), 1, _File);

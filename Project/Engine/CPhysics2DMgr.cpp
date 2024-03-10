@@ -192,7 +192,14 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     body->SetFixedRotation(rb2d->m_bFreezeRotation);
     rb2d->m_RuntimeBody = body;
 
-    // Box Collider 2D 를 보유한 오브젝트
+    if (!rb2d->m_bAutoMass)
+    {
+        b2MassData MassData = b2MassData();
+        MassData.mass = rb2d->m_Mass;
+        body->SetMassData(&MassData);
+    }
+
+    // Box Collider 2D
     CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
     if (nullptr != bc2d)
     {
@@ -205,7 +212,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(bc2d);
         fixtureDef.friction = bc2d->m_Friction;
         fixtureDef.restitution = bc2d->m_Bounciness;
-        fixtureDef.density = bc2d->m_Density;
+        fixtureDef.density = 1.f;
         fixtureDef.isSensor = bc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
@@ -214,7 +221,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         bc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
     }
 
-    // Circle Collider 2D 를 보유한 오브젝트
+    // Circle Collider 2D
     CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
     if (nullptr != cc2d)
     {
@@ -227,7 +234,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(cc2d);
         fixtureDef.friction = cc2d->m_Friction;
         fixtureDef.restitution = cc2d->m_Bounciness;
-        fixtureDef.density = cc2d->m_Density;
+        fixtureDef.density = 1.f;
         fixtureDef.isSensor = cc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());

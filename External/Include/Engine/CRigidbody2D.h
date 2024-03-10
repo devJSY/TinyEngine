@@ -20,6 +20,8 @@ private:
     void* m_RuntimeBody;
     BODY_TYPE m_BodyType;
     bool m_bSimulated;
+    bool m_bAutoMass;
+    float m_Mass;
     float m_LinearDrag;
     float m_AngularDrag;
     float m_GravityScale;
@@ -36,10 +38,16 @@ public:
 
 public:
     BODY_TYPE GetBodyType() const { return m_BodyType; }
-    void SetBodyType(BODY_TYPE _type) { m_BodyType = _type; }
+    void SetBodyType(BODY_TYPE _type);
 
     bool IsSimulated() const { return m_bSimulated; }
     void SetSimulated(bool _bSimulated);
+
+    bool IsUseAutoMass() const { return m_bAutoMass; }
+    void SetAutoMass(bool _Use);
+
+    float GetMass() const { return m_Mass; }
+    void SetMass(float _Mass);
 
     float GetLinearDrag() const { return m_LinearDrag; }
     void SetLinearDrag(float _Drag);
@@ -52,7 +60,7 @@ public:
 
     bool IsFreezeRotation() const { return m_bFreezeRotation; }
     void SetFreezeRotation(bool _bFreeze);
-    
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
