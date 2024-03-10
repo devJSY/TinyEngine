@@ -12,6 +12,7 @@
 #include "CMeshRender.h"
 
 #include "CDevice.h"
+#include "CSound.h"
 
 CAssetMgr::CAssetMgr()
 {
@@ -27,6 +28,21 @@ void CAssetMgr::init()
     CreateDefaultGraphicsShader();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
+
+    InitSound();
+}
+
+void CAssetMgr::InitSound()
+{
+    FMOD::System_Create(&CSound::g_pFMOD);
+
+    if (nullptr == CSound::g_pFMOD)
+    {
+        assert(nullptr);
+    }
+
+    // 32개 채널 생성
+    CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
 }
 
 void CAssetMgr::ReloadContent()
@@ -81,8 +97,8 @@ void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
                 Load<CTexture>(FileRelativePath, FileRelativePath);
             if (FileExtension == L".mtrl")
                 Load<CMaterial>(FileRelativePath, FileRelativePath);
-            // if (FileExtension == L".wav" || FileExtension == L".mp3" || FileExtension == L".ogg")
-            //     Load<CSound>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".wav" || FileExtension == L".mp3" || FileExtension == L".ogg")
+                Load<CSound>(FileRelativePath, FileRelativePath);
         }
     }
 }

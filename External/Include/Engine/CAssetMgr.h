@@ -9,6 +9,7 @@
 #include "CGraphicsShader.h"
 #include "CComputeShader.h"
 #include "CMaterial.h"
+#include "CSound.h"
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
@@ -22,6 +23,7 @@ public:
 
 public:
     void init();
+    void InitSound();
     void ReloadContent();
 
 private:
@@ -106,7 +108,8 @@ ASSET_TYPE GetAssetType()
         Type = ASSET_TYPE::COMPUTE_SHADER;
     if constexpr (std::is_same_v<CMaterial, T>)
         Type = ASSET_TYPE::MATERIAL;
-
+    if constexpr (std::is_same_v<CSound, T>)
+        Type = ASSET_TYPE::SOUND;
     return Type;
 }
 

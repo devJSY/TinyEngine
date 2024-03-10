@@ -277,6 +277,9 @@
     <ClInclude Include="CCollider2D.h">
       <Filter>08. Component\Collider2D</Filter>
     </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>06. Asset\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -527,6 +530,9 @@
     </ClCompile>
     <ClCompile Include="CCollider2D.cpp">
       <Filter>08. Component\Collider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>06. Asset\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

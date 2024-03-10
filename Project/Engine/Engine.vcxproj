@@ -222,6 +222,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CSetColorShader.h" />
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CSkyBox.h" />
+    <ClInclude Include="CSound.h" />
     <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
@@ -316,6 +317,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CSetColorShader.cpp" />
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CSkyBox.cpp" />
+    <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />

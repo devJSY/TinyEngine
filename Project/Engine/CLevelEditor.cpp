@@ -304,11 +304,13 @@ void CLevelEditor::render_MenuBar()
         {
             if (ImGui::MenuItem("Create Material"))
             {
-                Ptr<CMaterial> pMtrl = new CMaterial;
-                wstring name = L"material\\New Material_";
+                Ptr<CMaterial> pMtrl = new CMaterial(false);
+                wstring name = L"material\\NewMaterial_";
                 name += std::to_wstring(pMtrl->GetID());
+                name += L".mtrl";
                 pMtrl->SetName(name);
                 CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+                pMtrl->Save(name);
             }
 
             ImGui::EndMenu();
