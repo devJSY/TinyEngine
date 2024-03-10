@@ -789,7 +789,7 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
 
         CurbodyType = bodyTypes[(UINT)pRigidbody->GetBodyType()];
 
-        if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Type").c_str(), CurbodyType, bodyTypes))
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Body Type").c_str(), CurbodyType, bodyTypes))
         {
             if (bodyTypes[0] == CurbodyType)
                 pRigidbody->SetBodyType(BODY_TYPE::Dynamic);
