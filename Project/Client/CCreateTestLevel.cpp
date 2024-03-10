@@ -83,7 +83,6 @@ void CCreateTestLevel::CreateTestLevel()
 
     pPlayer->AddComponent(new CTransform);
     pPlayer->AddComponent(new CMeshRender);
-    pPlayer->AddComponent(new CAnimator2D);
 
     pPlayer->Transform()->SetAbsolute(true);
     pPlayer->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));

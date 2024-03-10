@@ -865,6 +865,12 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             ImGui::EndDragDropTarget();
         }
 
+        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowPhysics2DMaterialEditor(true);
+            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
+        }
+
         Vec2 Offset = pBoxCol->GetOffset();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pBoxCol->SetOffset(Offset);
@@ -913,6 +919,12 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             }
 
             ImGui::EndDragDropTarget();
+        }
+
+        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowPhysics2DMaterialEditor(true);
+            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
         }
 
         Vec2 Offset = pCircleCol->GetOffset();

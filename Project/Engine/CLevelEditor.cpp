@@ -270,6 +270,9 @@ void CLevelEditor::render_MenuBar()
             if (ImGui::MenuItem("TileMap Editor", NULL, m_bShowTileMapEditor))
                 m_bShowTileMapEditor = !m_bShowTileMapEditor;
 
+            if (ImGui::MenuItem("Physics2D Material Editor", NULL, m_bShowPhysics2DMaterialEditor))
+                m_bShowPhysics2DMaterialEditor = !m_bShowPhysics2DMaterialEditor;
+
             ImGui::EndMenu();
         }
 
