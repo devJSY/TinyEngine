@@ -229,7 +229,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
             fixtureDef.friction = Mtrl->m_Friction;
             fixtureDef.restitution = Mtrl->m_Bounciness;
         }
-        fixtureDef.density = 1.f;
+        fixtureDef.density = 0.f;
         fixtureDef.isSensor = rb2d == nullptr ? true : bc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
@@ -255,7 +255,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
             fixtureDef.friction = Mtrl->m_Friction;
             fixtureDef.restitution = Mtrl->m_Bounciness;
         }
-        fixtureDef.density = 1.f;
+        fixtureDef.density = 0.f;
         fixtureDef.isSensor = rb2d == nullptr ? true : cc2d->m_bTrigger;
 
         fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());

@@ -253,8 +253,8 @@ void CEditorMgr::SetImGuizmoStyle()
 
     style->TranslationLineThickness = 6.0f;
     style->TranslationLineArrowSize = 12.0f;
-    style->RotationLineThickness = 4.0f;
-    style->RotationOuterLineThickness = 4.0f;
+    style->RotationLineThickness = 6.0f;
+    style->RotationOuterLineThickness = 6.0f;
     style->ScaleLineThickness = 6.0f;
     style->ScaleLineCircleSize = 10.0f;
     style->HatchedAxisLineThickness = 6.0f;
