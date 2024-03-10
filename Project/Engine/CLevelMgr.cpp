@@ -40,7 +40,11 @@ void CLevelMgr::tick()
     // 이전 프레임에 등록된 오브젝트들 clear
     m_CurLevel->clear();
 
-    m_CurLevel->tick();
+    if (m_CurLevel->GetState() == LEVEL_STATE::PLAY || m_CurLevel->GetState() == LEVEL_STATE::SIMULATE)
+    {
+        m_CurLevel->tick();
+    }
+
     m_CurLevel->finaltick();
 }
 

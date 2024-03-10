@@ -307,6 +307,34 @@ void GamePlayStatic::Physics2D_Event(CGameObject* _pObj, Physics2D_EVENT_TYPE _T
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap)
+{
+    Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
+
+    if (nullptr != pSound)
+    {
+        pSound->Play(_Loop, _Volume, _Overlap);
+    }
+}
+
+void GamePlayStatic::Play2DBGM(const wstring& _SoundPath, float _Volume)
+{
+    static Ptr<CSound> CurBGM = nullptr;
+
+    Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
+
+    if (nullptr != pSound)
+    {
+        if (nullptr != CurBGM)
+        {
+            CurBGM->Stop();
+        }
+
+        pSound->Play(0, _Volume);
+        CurBGM = pSound;
+    }
+}
+
 string ToString(const wstring& wstr)
 {
     string str(wstr.length(), 0);

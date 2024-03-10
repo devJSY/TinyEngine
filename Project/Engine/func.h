@@ -45,6 +45,9 @@ namespace GamePlayStatic
     void DeleteAsset(ASSET_TYPE _type, Ptr<CAsset> _Asset);
 
     void Physics2D_Event(CGameObject* _pObj, Physics2D_EVENT_TYPE _Type);
+
+    void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = true);
+    void Play2DBGM(const wstring& _SoundPath, float _Volume);
 }
 
 string ToString(const wstring& wstr);
