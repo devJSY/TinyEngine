@@ -30,19 +30,10 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
         assert(nullptr);
     }
 
-    if (!m_listChannel.empty())
+    // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
+    if (!_bOverlap && !m_listChannel.empty())
     {
-        // 일시 정지 상태인경우 해제
-        if (m_bPaused)
-        {
-            Pause(false);
-            return S_OK;
-        }
-        // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
-        else if (!_bOverlap)
-        {
-            return E_FAIL;
-        }
+        return E_FAIL;
     }
 
     _iRoopCount -= 1;
@@ -73,6 +64,8 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 
 void CSound::Stop()
 {
+    m_bPaused = false;
+
     list<FMOD::Channel*>::iterator iter;
 
     while (!m_listChannel.empty())

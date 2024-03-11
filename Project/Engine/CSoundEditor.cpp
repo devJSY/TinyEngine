@@ -66,6 +66,8 @@ void CSoundEditor::DrawDetails()
 
     if (m_Sound->IsPlaying())
     {
+        m_PlayPosition = m_Sound->GetPosition();
+
         if (ImGui::Button("Pause", ImVec2(120, 0)))
         {
             m_Sound->Pause();
@@ -75,8 +77,13 @@ void CSoundEditor::DrawDetails()
     {
         if (ImGui::Button("Play", ImVec2(120, 0)))
         {
-            m_Sound->Play(1, m_Volume, false);
-            m_Sound->SetPosition(m_PlayPosition);
+            if (m_Sound->IsPaused())
+                m_Sound->Pause(false);
+            else
+            {
+                m_Sound->Play(1, m_Volume, false);
+                m_Sound->SetPosition(m_PlayPosition);
+            }
         }
     }
 
@@ -84,6 +91,7 @@ void CSoundEditor::DrawDetails()
 
     if (ImGui::Button("Stop", ImVec2(120, 0)))
     {
+        m_PlayPosition = 0;
         m_Sound->Stop();
     }
 

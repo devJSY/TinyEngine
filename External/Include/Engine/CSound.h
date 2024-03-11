@@ -29,6 +29,7 @@ public:
     void Pause(bool _Pause = true);
 
     bool IsPlaying();
+    bool IsPaused() { return m_bPaused; }
 
     int GetLength();
     int GetPosition();
