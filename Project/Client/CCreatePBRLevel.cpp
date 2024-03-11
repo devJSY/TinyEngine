@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "CCreatePBRLevel.h"
 
-#include <Engine\\global.h>
 #include <Engine\\func.h>
 #include <Engine\\CLevel.h>
 #include <Engine\\CLayer.h>

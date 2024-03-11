@@ -37,6 +37,9 @@
     <ClInclude Include="CCreateTestLevel.h">
       <Filter>Level\Test</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Default</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -58,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="CCreateTestLevel.cpp">
       <Filter>Level\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Default</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

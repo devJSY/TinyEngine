@@ -1,8 +1,8 @@
-﻿#include "Client.h"
+﻿#include "pch.h"
+#include "Client.h"
 #include "framework.h"
 
-#include <Engine\global.h>
-#include <Engine\CEngine.h>
+#include <Engine\\CEngine.h>
 #include <Engine\\CKeyMgr.h>
 
 // Engine
