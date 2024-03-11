@@ -322,6 +322,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawLight2D(obj);
     DrawLight3D(obj);
     DrawCamera(obj);
+    DrawStateMachine(obj);
     DrawRigidbody2D(obj);
     DrawBoxCollider2D(obj);
     DrawCircleCollider2D(obj);
@@ -339,7 +340,8 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (nullptr == pTr)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), m_DefaultTreeNodeFlag, "Transform");
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CTransform).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::TRANSFORM]);
 
     ComponentSettingsButton(pTr);
 
@@ -377,7 +379,8 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
     if (nullptr == pAnimator)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, "Animator 2D");
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CAnimator2D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR2D]);
 
     ComponentSettingsButton(pAnimator);
 
@@ -518,7 +521,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag, "Light 2D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight2D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT2D]);
 
     ComponentSettingsButton(pLight);
 
@@ -581,7 +584,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, "Light 3D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT3D]);
 
     ComponentSettingsButton(pLight);
 
@@ -676,7 +679,7 @@ void COutliner::DrawCamera(CGameObject* obj)
     if (nullptr == pCam)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), m_DefaultTreeNodeFlag, "Camera");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCamera).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::CAMERA]);
 
     ComponentSettingsButton(pCam);
 
@@ -764,13 +767,31 @@ void COutliner::DrawCamera(CGameObject* obj)
     }
 }
 
+void COutliner::DrawStateMachine(CGameObject* obj)
+{
+    CStateMachine* pStateMachine = obj->StateMachine();
+    if (nullptr == pStateMachine)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CStateMachine).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::STATEMACHINE]);
+
+    ComponentSettingsButton(pStateMachine);
+
+    if (open)
+    {
+        ImGui::TreePop();
+    }
+}
+
 void COutliner::DrawRigidbody2D(CGameObject* obj)
 {
     CRigidbody2D* pRigidbody = obj->Rigidbody2D();
     if (nullptr == pRigidbody)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CRigidbody2D).hash_code(), m_DefaultTreeNodeFlag, "Rigidbody 2D");
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CRigidbody2D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::RIGIDBODY2D]);
 
     ComponentSettingsButton(pRigidbody);
 
@@ -837,7 +858,8 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
     if (nullptr == pBoxCol)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CBoxCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Box Collider 2D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CBoxCollider2D).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::BOXCOLLIDER2D]);
 
     ComponentSettingsButton(pBoxCol);
 
@@ -893,7 +915,8 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
     if (nullptr == pCircleCol)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CCircleCollider2D).hash_code(), m_DefaultTreeNodeFlag, "Circle Collider 2D");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCircleCollider2D).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::CIRCLECOLLIDER2D]);
 
     ComponentSettingsButton(pCircleCol);
 
@@ -950,7 +973,8 @@ void COutliner::DrawMeshRender(CGameObject* obj)
     if (nullptr == pMeshRender)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), m_DefaultTreeNodeFlag, "MeshRender");
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CMeshRender).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::MESHRENDER]);
 
     ComponentSettingsButton(pMeshRender);
 
@@ -1049,7 +1073,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
     if (nullptr == pTilemap)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CTileMap).hash_code(), m_DefaultTreeNodeFlag, "TileMap");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CTileMap).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::TILEMAP]);
 
     ComponentSettingsButton(pTilemap);
 
@@ -1128,7 +1152,8 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
     if (nullptr == pParticleSystem)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CParticleSystem).hash_code(), m_DefaultTreeNodeFlag, "ParticleSystem");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CParticleSystem).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::PARTICLESYSTEM]);
 
     ComponentSettingsButton(pParticleSystem);
 
@@ -1441,7 +1466,7 @@ void COutliner::DrawSkybox(CGameObject* obj)
     if (nullptr == pSkyBox)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CSkyBox).hash_code(), m_DefaultTreeNodeFlag, "SkyBox");
+    bool open = ImGui::TreeNodeEx((void*)typeid(CSkyBox).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::SKYBOX]);
 
     ComponentSettingsButton(pSkyBox);
 

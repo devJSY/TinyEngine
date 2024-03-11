@@ -61,6 +61,7 @@ enum class ASSET_TYPE
     MATERIAL,
     SOUND,
     PHYSICS2D_MATERIAL,
+    FSM,
     END,
 };
 extern const char* ASSET_TYPE_STRING[(UINT)ASSET_TYPE::END];
@@ -76,6 +77,8 @@ enum class COMPONENT_TYPE
     LIGHT3D, // 3차원 광원
 
     CAMERA, // 카메라 기능
+
+    STATEMACHINE, // 상태머신
 
     // 2D Physics
     RIGIDBODY2D,      // 리지드바디 2D
@@ -224,7 +227,7 @@ enum class EDITOR_TYPE
     TILEMAP,
     PHYSICS2D_MATERIAL,
     SOUND,
-    
+
     END,
 };
 

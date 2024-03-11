@@ -17,6 +17,15 @@
     <Filter Include="Level\Test">
       <UniqueIdentifier>{77b4d3f1-3349-4b7b-ac67-cd1f05a726ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{1aa338c3-ac90-44b1-86e4-90eca63c677b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\IdleState">
+      <UniqueIdentifier>{829f3e25-6273-4254-baeb-beed4519e27c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\TraceState">
+      <UniqueIdentifier>{4e8099af-1cdc-44e0-af16-aee872217c68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -39,6 +48,12 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CIdleState.h">
+      <Filter>State\IdleState</Filter>
+    </ClInclude>
+    <ClInclude Include="CTraceState.h">
+      <Filter>State\TraceState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +79,12 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CIdleState.cpp">
+      <Filter>State\IdleState</Filter>
+    </ClCompile>
+    <ClCompile Include="CTraceState.cpp">
+      <Filter>State\TraceState</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

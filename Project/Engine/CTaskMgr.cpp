@@ -562,6 +562,9 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::CAMERA:
         pObj->AddComponent(new CCamera);
         break;
+    case COMPONENT_TYPE::STATEMACHINE:
+        pObj->AddComponent(new CStateMachine);
+        break;
     case COMPONENT_TYPE::RIGIDBODY2D:
         pObj->AddComponent(new CRigidbody2D);
         break;
