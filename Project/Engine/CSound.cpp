@@ -39,7 +39,7 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
             return S_OK;
         }
         // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
-        else if (!_bOverlap && !m_listChannel.empty())
+        else if (!_bOverlap)
         {
             return E_FAIL;
         }
@@ -113,6 +113,37 @@ bool CSound::IsPlaying()
     return playing;
 }
 
+int CSound::GetLength()
+{
+    unsigned int length;
+    m_pSound->getLength(&length, FMOD_TIMEUNIT_MS);
+    return length;
+}
+
+int CSound::GetPosition()
+{
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    unsigned int position = 0;
+    for (; iter != m_listChannel.end(); ++iter)
+    {
+        (*iter)->getPosition(&position, FMOD_TIMEUNIT_MS);
+        return position;
+    }
+
+    return position;
+}
+
+void CSound::SetPosition(int _Position)
+{
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    for (; iter != m_listChannel.end(); iter++)
+    {
+        (*iter)->setPosition(_Position, FMOD_TIMEUNIT_MS); // 채널의 재생 위치를 설정
+    }
+}
+
 void CSound::SetVolume(float _Volume, int _iChannelIdx)
 {
     list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
@@ -126,6 +157,16 @@ void CSound::SetVolume(float _Volume, int _iChannelIdx)
             (*iter)->setVolume(_Volume);
             return;
         }
+    }
+}
+
+void CSound::SetVolume(float _Volume)
+{
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    for (; iter != m_listChannel.end(); ++iter)
+    {
+        (*iter)->setVolume(_Volume);
     }
 }
 

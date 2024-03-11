@@ -5,6 +5,8 @@ class CSoundEditor : public CEditor
 {
 private:
     Ptr<CSound> m_Sound;
+    float m_PlayPosition;
+    float m_Volume;
 
 public:
     virtual void init() override{};
