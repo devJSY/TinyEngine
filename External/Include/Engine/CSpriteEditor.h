@@ -33,10 +33,10 @@ public:
     virtual void init() override;
     virtual void tick() override{};
     virtual void finaltick() override;
-    void render(bool* open);
+    virtual void render(bool* open) override;
 
 private:
-    virtual void render() override;
+    void render();
 
 private:
     void DrawViewport();

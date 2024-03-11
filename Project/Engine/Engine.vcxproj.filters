@@ -286,6 +286,9 @@
     <ClInclude Include="CPhysics2DMaterialEditor.h">
       <Filter>20. Editor\Physics2DMaterialEditor</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundEditor.h">
+      <Filter>20. Editor\SoundEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -546,6 +549,9 @@
     <ClCompile Include="CPhysics2DMaterialEditor.cpp">
       <Filter>20. Editor\Physics2DMaterialEditor</Filter>
     </ClCompile>
+    <ClCompile Include="CSoundEditor.cpp">
+      <Filter>20. Editor\SoundEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -805,6 +811,9 @@
     </Filter>
     <Filter Include="20. Editor\Physics2DMaterialEditor">
       <UniqueIdentifier>{3cba7f3a-7cf0-43ea-911a-841181415e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\SoundEditor">
+      <UniqueIdentifier>{57698332-dc5c-4594-bca0-8fd946ea00f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

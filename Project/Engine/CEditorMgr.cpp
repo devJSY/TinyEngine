@@ -119,6 +119,10 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL]->SetName(L"Physics2D Material Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL]->init();
 
+    m_arrEditor[(UINT)EDITOR_TYPE::SOUND] = new CSoundEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::SOUND]->SetName(L"Sound Editor");
+    m_arrEditor[(UINT)EDITOR_TYPE::SOUND]->init();
+
     // 에디터용 카메라 오브젝트 생성
     CGameObjectEx* pEditorCam = new CGameObjectEx;
     pEditorCam->SetName(L"Editor Camera");
@@ -196,7 +200,7 @@ void CEditorMgr::render()
     // ======================
     // Editor Render
     // ======================
-    m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]->render();
+    GetLevelEditor()->render();
 
     // ====================
     // ImGUI Rendering

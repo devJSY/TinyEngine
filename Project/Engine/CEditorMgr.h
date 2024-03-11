@@ -5,6 +5,7 @@
 #include "CSpriteEditor.h"
 #include "CTileMapEditor.h"
 #include "CPhysics2DMaterialEditor.h"
+#include "CSoundEditor.h"
 
 class CEditor;
 class CGameObject;
@@ -40,6 +41,7 @@ public:
     {
         return (CPhysics2DMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL];
     }
+    CSoundEditor* GetSoundEditor() const { return (CSoundEditor*)m_arrEditor[(UINT)EDITOR_TYPE::SOUND]; }
 
     CGameObject* GetSelectedObject() const { return m_SelectedObj; }
     void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }

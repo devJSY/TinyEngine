@@ -27,11 +27,7 @@ private:
     bool m_bShowOutputLog;
     bool m_bShowCollisionMatrix;
 
-    bool m_bShowMaterialEditor;
-    bool m_bShowBlueprintEditor;
-    bool m_bShowSpriteEditor;
-    bool m_bShowTileMapEditor;
-    bool m_bShowPhysics2DMaterialEditor;
+    bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
 
     Ptr<CTexture> m_PlayButtonTex;
     Ptr<CTexture> m_SimulateButtonTex;
@@ -45,7 +41,8 @@ public:
     virtual void init() override;
     virtual void tick() override;
     virtual void finaltick() override;
-    virtual void render() override;
+    virtual void render(bool* open) override{}; // Not Used
+    void render();
 
 private:
     void render_MenuBar();
@@ -64,11 +61,7 @@ public:
     bool IsViewportHovered() const { return m_ViewportHovered; }
 
 public:
-    void ShowMaterialEditor(bool _show) { m_bShowMaterialEditor = _show; }
-    void ShowBlueprintEditor(bool _show) { m_bShowBlueprintEditor = _show; }
-    void ShowSpriteEditor(bool _show) { m_bShowSpriteEditor = _show; }
-    void ShowTileMapEditor(bool _show) { m_bShowTileMapEditor = _show; }
-    void ShowPhysics2DMaterialEditor(bool _show) { m_bShowPhysics2DMaterialEditor = _show; }
+    void ShowEditor(EDITOR_TYPE _Type, bool _show) { m_bShowEditor[(UINT)_Type] = _show; }
 
 public:
     CLevelEditor();

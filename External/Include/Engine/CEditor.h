@@ -10,7 +10,7 @@ public:
     virtual void init() = 0;
     virtual void tick() = 0;
     virtual void finaltick() = 0;
-    virtual void render() = 0;
+    virtual void render(bool* open) = 0;
 
 public:
     EDITOR_TYPE GetEditorType() const { return m_EditorType; }

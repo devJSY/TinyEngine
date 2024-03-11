@@ -501,7 +501,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
         if (ImGui_AlignButton("Sprite Editor", 1.f))
         {
-            CEditorMgr::GetInst()->GetLevelEditor()->ShowSpriteEditor(true);
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::SPRITE, true);
         }
 
         ImGui::TreePop();
@@ -867,7 +867,7 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
 
         if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
         {
-            CEditorMgr::GetInst()->GetLevelEditor()->ShowPhysics2DMaterialEditor(true);
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
             CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
         }
 
@@ -923,7 +923,7 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
 
         if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
         {
-            CEditorMgr::GetInst()->GetLevelEditor()->ShowPhysics2DMaterialEditor(true);
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
             CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
         }
 
@@ -1027,7 +1027,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
             if (ImGui_AlignButton("Material Editor", 1.f))
             {
-                CEditorMgr::GetInst()->GetLevelEditor()->ShowMaterialEditor(true);
+                CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
                 CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
             }
 
@@ -1114,7 +1114,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
 
         if (ImGui_AlignButton("TileMap Editor", 1.f))
         {
-            CEditorMgr::GetInst()->GetLevelEditor()->ShowTileMapEditor(true);
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::TILEMAP, true);
             CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(pTilemap);
         }
 

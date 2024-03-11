@@ -40,11 +40,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
     , m_bShowCollisionMatrix(false)
-    , m_bShowMaterialEditor(false)
-    , m_bShowBlueprintEditor(false)
-    , m_bShowSpriteEditor(false)
-    , m_bShowTileMapEditor(false)
-    , m_bShowPhysics2DMaterialEditor(false)
+    , m_bShowEditor{false,}
     , m_PlayButtonTex()
     , m_SimulateButtonTex()
     , m_StepButtonTex()
@@ -77,17 +73,13 @@ void CLevelEditor::tick()
     // =========================
     // Editor Tick
     // =========================
-    if (m_bShowMaterialEditor)
-        CEditorMgr::GetInst()->GetMaterialEditor()->tick();
+    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
+    {
+        if (i == (UINT)EDITOR_TYPE::LEVEL || !m_bShowEditor[i])
+            continue;
 
-    if (m_bShowBlueprintEditor)
-        CEditorMgr::GetInst()->GetBlueprintEditor()->tick();
-
-    if (m_bShowSpriteEditor)
-        CEditorMgr::GetInst()->GetSpriteEditor()->tick();
-
-    if (m_bShowTileMapEditor)
-        CEditorMgr::GetInst()->GetTileMapEditor()->tick();
+        CEditorMgr::GetInst()->GetEditor((EDITOR_TYPE)i)->tick();
+    }
 }
 
 void CLevelEditor::finaltick()
@@ -108,17 +100,13 @@ void CLevelEditor::finaltick()
     // =========================
     // Editor Final Tick
     // =========================
-    if (m_bShowMaterialEditor)
-        CEditorMgr::GetInst()->GetMaterialEditor()->finaltick();
+    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
+    {
+        if (i == (UINT)EDITOR_TYPE::LEVEL || !m_bShowEditor[i])
+            continue;
 
-    if (m_bShowBlueprintEditor)
-        CEditorMgr::GetInst()->GetBlueprintEditor()->finaltick();
-
-    if (m_bShowSpriteEditor)
-        CEditorMgr::GetInst()->GetSpriteEditor()->finaltick();
-
-    if (m_bShowTileMapEditor)
-        CEditorMgr::GetInst()->GetTileMapEditor()->finaltick();
+        CEditorMgr::GetInst()->GetEditor((EDITOR_TYPE)i)->finaltick();
+    }
 }
 
 void CLevelEditor::render()
@@ -191,30 +179,23 @@ void CLevelEditor::render()
     if (m_bShowCollisionMatrix)
         render_CollisionMatrix();
 
-    // ImGUI Demo
-    bool show_demo_window = true;
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+    //// ImGUI Demo
+    // bool show_demo_window = true;
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 
     ImGui::End(); // dockspace End
 
     // =========================
     // Editor Render
     // =========================
-    if (m_bShowMaterialEditor)
-        CEditorMgr::GetInst()->GetMaterialEditor()->render(&m_bShowMaterialEditor);
+    for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
+    {
+        if (i == (UINT)EDITOR_TYPE::LEVEL || !m_bShowEditor[i])
+            continue;
 
-    if (m_bShowBlueprintEditor)
-        CEditorMgr::GetInst()->GetBlueprintEditor()->render(&m_bShowBlueprintEditor);
-
-    if (m_bShowSpriteEditor)
-        CEditorMgr::GetInst()->GetSpriteEditor()->render(&m_bShowSpriteEditor);
-
-    if (m_bShowTileMapEditor)
-        CEditorMgr::GetInst()->GetTileMapEditor()->render(&m_bShowTileMapEditor);
-
-    if (m_bShowPhysics2DMaterialEditor)
-        CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->render(&m_bShowPhysics2DMaterialEditor);
+        CEditorMgr::GetInst()->GetEditor((EDITOR_TYPE)i)->render(&m_bShowEditor[i]);
+    }
 }
 
 void CLevelEditor::render_MenuBar()
@@ -258,20 +239,14 @@ void CLevelEditor::render_MenuBar()
 
         if (ImGui::BeginMenu("Editor"))
         {
-            if (ImGui::MenuItem("Material Editor", NULL, m_bShowMaterialEditor))
-                m_bShowMaterialEditor = !m_bShowMaterialEditor;
+            for (UINT i = 0; i < (UINT)EDITOR_TYPE::END; i++)
+            {
+                if (i == (UINT)EDITOR_TYPE::LEVEL)
+                    continue;
 
-            if (ImGui::MenuItem("Blueprint Editor", NULL, m_bShowBlueprintEditor))
-                m_bShowBlueprintEditor = !m_bShowBlueprintEditor;
-
-            if (ImGui::MenuItem("Sprite Editor", NULL, m_bShowSpriteEditor))
-                m_bShowSpriteEditor = !m_bShowSpriteEditor;
-
-            if (ImGui::MenuItem("TileMap Editor", NULL, m_bShowTileMapEditor))
-                m_bShowTileMapEditor = !m_bShowTileMapEditor;
-
-            if (ImGui::MenuItem("Physics2D Material Editor", NULL, m_bShowPhysics2DMaterialEditor))
-                m_bShowPhysics2DMaterialEditor = !m_bShowPhysics2DMaterialEditor;
+                if (ImGui::MenuItem(ToString(CEditorMgr::GetInst()->GetEditor((EDITOR_TYPE)i)->GetName()).c_str(), NULL, m_bShowEditor[i]))
+                    m_bShowEditor[i] = !m_bShowEditor[i];
+            }
 
             ImGui::EndMenu();
         }
@@ -487,15 +462,19 @@ void CLevelEditor::render_Assets()
                         break;
                     case ASSET_TYPE::MATERIAL: {
                         Ptr<CMaterial> pMtrl = dynamic_cast<CMaterial*>(iter.second.Get());
-                        ShowMaterialEditor(true);
+                        ShowEditor(EDITOR_TYPE::MATERIAL, true);
                         CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMtrl);
                     }
                     break;
-                    case ASSET_TYPE::SOUND:
-                        break;
+                    case ASSET_TYPE::SOUND: {
+                        Ptr<CSound> pSound = dynamic_cast<CSound*>(iter.second.Get());
+                        ShowEditor(EDITOR_TYPE::SOUND, true);
+                        CEditorMgr::GetInst()->GetSoundEditor()->SetSound(pSound);
+                    }
+                    break;
                     case ASSET_TYPE::PHYSICS2D_MATERIAL: {
                         Ptr<CPhysics2DMaterial> pMtrl = dynamic_cast<CPhysics2DMaterial*>(iter.second.Get());
-                        ShowPhysics2DMaterialEditor(true);
+                        ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
                         CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
                     }
                     break;

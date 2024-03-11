@@ -223,6 +223,7 @@ enum class EDITOR_TYPE
     SPRITE,
     TILEMAP,
     PHYSICS2D_MATERIAL,
+    SOUND,
     
     END,
 };
