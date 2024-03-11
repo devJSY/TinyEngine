@@ -749,7 +749,7 @@ void ImGui_InputText(const char* label, const string& Text, float alignment)
     if (!Text.empty())
         strcpy_s(buffer, sizeof(buffer), Text.c_str());
 
-    ImGui::InputText(ImGui_LabelPrefix(label, alignment).c_str(), buffer, sizeof(buffer));
+    ImGui::InputText(ImGui_LabelPrefix(label, alignment).c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_ReadOnly);
 }
 
 void ImGui_SetWindowClass(EDITOR_TYPE _Type)

@@ -191,10 +191,10 @@ void CLevelEditor::render()
     if (m_bShowCollisionMatrix)
         render_CollisionMatrix();
 
-    //// ImGUI Demo
-    // bool show_demo_window = true;
-    // if (show_demo_window)
-    //     ImGui::ShowDemoWindow(&show_demo_window);
+    // ImGUI Demo
+    bool show_demo_window = true;
+    if (show_demo_window)
+        ImGui::ShowDemoWindow(&show_demo_window);
 
     ImGui::End(); // dockspace End
 
@@ -527,13 +527,13 @@ void CLevelEditor::CreateAssetModal()
     string popupID = ASSET_TYPE_STRING[(UINT)m_ModalAssetType];
     popupID += "##Create Asset";
 
-    ImGui::SetNextWindowSize(ImVec2(500.f, 125.f));
+    ImGui::SetNextWindowSize(ImVec2(17.f * popupID.size(), 125.f));
     if (ImGui::BeginPopupModal(popupID.c_str(), NULL, ImGuiWindowFlags_NoResize))
     {
         static char buffer[256];
         string InputTextStr = ASSET_TYPE_STRING[(UINT)m_ModalAssetType];
         InputTextStr += " Name";
-        ImGui::InputText(ImGui_LabelPrefix(InputTextStr.c_str()).c_str(), buffer, sizeof(buffer));
+        ImGui::InputText(ImGui_LabelPrefix(InputTextStr.c_str(), 0.65f).c_str(), buffer, sizeof(buffer));
 
         if (ImGui::Button("Create", ImVec2(120, 0)))
         {
