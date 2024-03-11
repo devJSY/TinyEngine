@@ -10,6 +10,7 @@ FMOD::System* CSound::g_pFMOD = nullptr;
 CSound::CSound()
     : CAsset(ASSET_TYPE::SOUND, false)
     , m_pSound(nullptr)
+    , m_bPaused(false)
 {
 }
 
@@ -29,10 +30,19 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
         assert(nullptr);
     }
 
-    // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
-    if (!_bOverlap && !m_listChannel.empty())
+    if (!m_listChannel.empty())
     {
-        return E_FAIL;
+        // 일시 정지 상태인경우 해제
+        if (m_bPaused)
+        {
+            Pause(false);
+            return S_OK;
+        }
+        // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
+        else if (!_bOverlap && !m_listChannel.empty())
+        {
+            return E_FAIL;
+        }
     }
 
     _iRoopCount -= 1;
@@ -56,6 +66,7 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
 
     int iIdx = -1;
     pChannel->getIndex(&iIdx);
+    m_bPaused = false;
 
     return iIdx;
 }
@@ -69,6 +80,37 @@ void CSound::Stop()
         iter = m_listChannel.begin();
         (*iter)->stop();
     }
+}
+
+void CSound::Pause(bool _Pause)
+{
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    for (; iter != m_listChannel.end(); iter++)
+    {
+        (*iter)->setPaused(_Pause);
+    }
+
+    m_bPaused = _Pause;
+}
+
+bool CSound::IsPlaying()
+{
+    if (m_bPaused)
+        return false;
+
+    bool playing = false;
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    for (; iter != m_listChannel.end(); iter++)
+    {
+        (*iter)->isPlaying(&playing);
+
+        if (playing)
+            return playing;
+    }
+
+    return playing;
 }
 
 void CSound::SetVolume(float _Volume, int _iChannelIdx)

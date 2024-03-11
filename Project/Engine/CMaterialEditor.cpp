@@ -171,7 +171,6 @@ void CMaterialEditor::DrawViewport()
 
 void CMaterialEditor::DrawDetails()
 {
-
     ImGui::Begin("Details##MaterialEditor");
 
     ImGui_InputText("Material Name", ToString(m_Mtrl->GetName()));

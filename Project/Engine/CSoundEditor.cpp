@@ -51,5 +51,30 @@ void CSoundEditor::render()
 void CSoundEditor::DrawDetails()
 {
     ImGui::Begin("Details##SoundEditor");
+
+    ImGui_InputText("Sound Name", ToString(m_Sound->GetName()));
+
+    if (m_Sound->IsPlaying())
+    {
+        if (ImGui::Button("Pause", ImVec2(120, 0)))
+        {
+            m_Sound->Pause();
+        }
+    }
+    else
+    {
+        if (ImGui::Button("Play", ImVec2(120, 0)))
+        {
+            m_Sound->Play(1, 0.5f, false);
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Stop", ImVec2(120, 0)))
+    {
+        m_Sound->Stop();
+    }
+
     ImGui::End();
 }
