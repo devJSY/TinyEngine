@@ -29,8 +29,23 @@ private:
     HANDLE m_hObserver;
 
 public:
+    void init();
+    void tick();
+    void render();
+
+public:
     bool IsEnable() const { return m_bEnable; }
 
+    CGameObject* GetSelectedObject() const { return m_SelectedObj; }
+    void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }
+
+    void SetViewportSize(Vec2 size) { m_ViewportSize = size; }
+    Vec2 GetViewportSize() const { return m_ViewportSize; }
+
+    void SetViewportMousePos(Vec2 pos) { m_ViewportMousePos = pos; }
+    Vec2 GetViewportMousePos() const { return m_ViewportMousePos; }
+
+public:
     CEditor* GetEditor(EDITOR_TYPE _Type) const { return m_arrEditor[(UINT)_Type]; }
     CLevelEditor* GetLevelEditor() const { return (CLevelEditor*)m_arrEditor[(UINT)EDITOR_TYPE::LEVEL]; }
     CMaterialEditor* GetMaterialEditor() const { return (CMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]; }
@@ -43,23 +58,9 @@ public:
     }
     CSoundEditor* GetSoundEditor() const { return (CSoundEditor*)m_arrEditor[(UINT)EDITOR_TYPE::SOUND]; }
 
-    CGameObject* GetSelectedObject() const { return m_SelectedObj; }
-    void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }
-
-    void SetViewportSize(Vec2 size) { m_ViewportSize = size; }
-    Vec2 GetViewportSize() const { return m_ViewportSize; }
-
-    void SetViewportMousePos(Vec2 pos) { m_ViewportMousePos = pos; }
-    Vec2 GetViewportMousePos() const { return m_ViewportMousePos; }
-
 private:
     void SetDarkThemeColors();
     void SetImGuizmoStyle();
-
-public:
-    void init();
-    void tick();
-    void render();
 
 private:
     void ObserveContent();

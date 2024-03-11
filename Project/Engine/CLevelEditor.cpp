@@ -40,7 +40,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
     , m_bShowCollisionMatrix(false)
-    , m_bShowEditor{false,}
+    , m_bShowEditor{}
     , m_PlayButtonTex()
     , m_SimulateButtonTex()
     , m_StepButtonTex()
@@ -444,6 +444,15 @@ void CLevelEditor::render_Assets()
 
                 ImGui::TreeNodeEx(StringName.c_str(), ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet);
 
+                // Drag & Drop
+                if (ImGui::BeginDragDropSource())
+                {
+                    ImGui::Text("%s", key.c_str(), key.size());
+
+                    ImGui::SetDragDropPayload("LEVEL_EDITOR_ASSETS", key.c_str(), key.size());
+                    ImGui::EndDragDropSource();
+                }
+
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left) && ImGui::IsItemHovered(ImGuiHoveredFlags_None))
                 {
                     switch ((ASSET_TYPE)i)
@@ -481,13 +490,18 @@ void CLevelEditor::render_Assets()
                     }
                 }
 
-                // Drag & Drop
-                if (ImGui::BeginDragDropSource())
+                // Tooltip
+                if (ImGui::IsItemHovered() && ASSET_TYPE::TEXTURE == (ASSET_TYPE)i)
                 {
-                    ImGui::Text("%s", key.c_str(), key.size());
-
-                    ImGui::SetDragDropPayload("LEVEL_EDITOR_ASSETS", key.c_str(), key.size());
-                    ImGui::EndDragDropSource();
+                    if (ImGui::BeginItemTooltip())
+                    {
+                        Ptr<CTexture> HoveredTex = (CTexture*)iter.second.Get();
+                        ImGui::Text(ToString(HoveredTex->GetName()).c_str());
+                        ImGui::Text("Texture Width : %d", HoveredTex->GetWidth());
+                        ImGui::Text("Texture Height : %d", HoveredTex->GetHeight());
+                        ImGui::Image(((CTexture*)HoveredTex.Get())->GetSRV().Get(), ImVec2(100, 100));
+                        ImGui::EndTooltip();
+                    }
                 }
             }
 
