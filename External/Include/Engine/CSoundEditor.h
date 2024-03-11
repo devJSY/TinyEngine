@@ -5,6 +5,7 @@ class CSoundEditor : public CEditor
 {
 private:
     Ptr<CSound> m_Sound;
+    int m_PlayPosition;
     float m_Volume;
 
 public:

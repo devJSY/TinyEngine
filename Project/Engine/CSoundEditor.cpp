@@ -4,6 +4,7 @@
 CSoundEditor::CSoundEditor()
     : CEditor(EDITOR_TYPE::SOUND)
     , m_Sound(nullptr)
+    , m_PlayPosition(0)
     , m_Volume(0.5f)
 {
 }
@@ -58,9 +59,8 @@ void CSoundEditor::DrawDetails()
     if (ImGui::SliderFloat(ImGui_LabelPrefix("Volume").c_str(), &m_Volume, 0.f, 1.f))
         m_Sound->SetVolume(m_Volume);
 
-    int position = m_Sound->GetPosition();
-    if (ImGui::SliderInt(ImGui_LabelPrefix("Progress").c_str(), &position, 0, m_Sound->GetLength()))
-        m_Sound->SetPosition(position);
+    if (ImGui::SliderInt(ImGui_LabelPrefix("Progress").c_str(), &m_PlayPosition, 0, m_Sound->GetLength()))
+        m_Sound->SetPosition(m_PlayPosition);
 
     ImGui::ProgressBar((float)m_Sound->GetPosition() / (float)m_Sound->GetLength());
 
@@ -76,6 +76,7 @@ void CSoundEditor::DrawDetails()
         if (ImGui::Button("Play", ImVec2(120, 0)))
         {
             m_Sound->Play(1, m_Volume, false);
+            m_Sound->SetPosition(m_PlayPosition);
         }
     }
 
