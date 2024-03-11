@@ -179,10 +179,10 @@ void CLevelEditor::render()
     if (m_bShowCollisionMatrix)
         render_CollisionMatrix();
 
-    // ImGUI Demo
-    bool show_demo_window = true;
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+    //// ImGUI Demo
+    // bool show_demo_window = true;
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 
     ImGui::End(); // dockspace End
 
