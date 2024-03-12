@@ -66,6 +66,7 @@ CPhysics2DMgr::CPhysics2DMgr()
     , m_CallbackInst()
     , m_vecPhysicsObj{}
     , m_Matrix{}
+    , m_PPM(100.f)
 {
     EnableAllLayer();
 }
@@ -126,7 +127,7 @@ void CPhysics2DMgr::tick()
 
         b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
         const auto& position = body->GetPosition();
-        pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z));
+        pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z) * Vec3(m_PPM, m_PPM, 1.f));
         pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
     }
 }
@@ -182,7 +183,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
 
     b2BodyDef bodyDef;
-    bodyDef.position.Set(pTr->GetRelativePos().x, pTr->GetRelativePos().y);
+    bodyDef.position.Set(pTr->GetRelativePos().x / m_PPM, pTr->GetRelativePos().y / m_PPM);
     bodyDef.angle = pTr->GetRelativeRotation().z;
     b2Body* body = nullptr;
 
@@ -210,8 +211,8 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr != bc2d)
     {
         b2PolygonShape boxShape;
-        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x, bc2d->m_Size.y * pTr->GetRelativeScale().y,
-                          b2Vec2(bc2d->m_Offset.x, bc2d->m_Offset.y), 0.f);
+        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x / m_PPM, bc2d->m_Size.y * pTr->GetRelativeScale().y / m_PPM,
+                          b2Vec2(bc2d->m_Offset.x / m_PPM, bc2d->m_Offset.y / m_PPM), 0.f);
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &boxShape;
@@ -236,8 +237,8 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr != cc2d)
     {
         b2CircleShape circleShape;
-        circleShape.m_p.Set(cc2d->m_Offset.x, cc2d->m_Offset.y);
-        circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius;
+        circleShape.m_p.Set(cc2d->m_Offset.x / m_PPM, cc2d->m_Offset.y / m_PPM);
+        circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius / m_PPM;
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circleShape;

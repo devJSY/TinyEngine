@@ -2,6 +2,7 @@
 #include "CScriptMgr.h"
 
 #include "CCameraMoveScript.h"
+#include "CEnemyScript.h"
 #include "CGroundScript.h"
 #include "CPlayerScript.h"
 #include "CShockWaveScript.h"
@@ -9,6 +10,7 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
+	_vec.push_back(L"CEnemyScript");
 	_vec.push_back(L"CGroundScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CShockWaveScript");
@@ -18,6 +20,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
+	if (L"CEnemyScript" == _strScriptName)
+		return new CEnemyScript;
 	if (L"CGroundScript" == _strScriptName)
 		return new CGroundScript;
 	if (L"CPlayerScript" == _strScriptName)
@@ -33,6 +37,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
+	case (UINT)SCRIPT_TYPE::ENEMYSCRIPT:
+		return new CEnemyScript;
 	case (UINT)SCRIPT_TYPE::GROUNDSCRIPT:
 		return new CGroundScript;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
@@ -49,6 +55,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 	{
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
+	case SCRIPT_TYPE::ENEMYSCRIPT:
+		return L"CEnemyScript";
 	case SCRIPT_TYPE::GROUNDSCRIPT:
 		return L"CGroundScript";
 	case SCRIPT_TYPE::PLAYERSCRIPT:

@@ -25,6 +25,8 @@ private:
 
     unsigned short m_Matrix[LAYER_MAX];
 
+    const float m_PPM; // PixelPerMeter
+
 public:
     void tick();
 
@@ -40,6 +42,9 @@ public:
 
     unsigned short GetCollisionLayer(UINT idx) const { return m_Matrix[idx]; }
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
+
+public:
+    const float GetPPM() const { return m_PPM; }
 
 private:
     void AddPhysicsObject(CGameObject* _GameObject);

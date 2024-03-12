@@ -5,6 +5,7 @@
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
+#include "CPhysics2DMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
@@ -887,12 +888,14 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pBoxCol->SetTrigger(bTrigger);
 
+        static const float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+
         Vec2 Offset = pBoxCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f * PPM))
             pBoxCol->SetOffset(Offset);
 
         Vec2 Size = pBoxCol->GetSize();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f * PPM))
             pBoxCol->SetSize(Size);
 
         ImGui::Separator();
@@ -946,12 +949,14 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pCircleCol->SetTrigger(bTrigger);
 
+        static const float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+
         Vec2 Offset = pCircleCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f * PPM))
             pCircleCol->SetOffset(Offset);
 
         float Radius = pCircleCol->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f * PPM))
             pCircleCol->SetRadius(Radius);
 
         ImGui::Separator();
