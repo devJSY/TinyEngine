@@ -219,11 +219,7 @@ void COutliner::DrawNode(CGameObject* obj)
         {
             Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
             wstring path = L"prefab\\" + obj->GetName() + L".pref";
-
-            if (!filesystem::exists(CPathMgr::GetContentPath() + path))
-                pPrefab->Save(path);
-            else
-                MessageBox(nullptr, L"경로에 동일한 이름의 파일이 존재합니다!", L"Prefab 저장 실패", MB_OK);
+            pPrefab->Save(path);
         }
 
         ImGui::EndPopup();

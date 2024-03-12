@@ -69,6 +69,17 @@ void CAssetMgr::ReloadContent()
     }
 }
 
+void CAssetMgr::SaveAssetsToFile()
+{
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    {
+        for (const auto& pair : m_mapAsset[i])
+        {
+            pair.second->Save(pair.first);
+        }
+    }
+}
+
 void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
 {
     using namespace std::filesystem;

@@ -114,7 +114,7 @@ bool CAnim::SaveAnim(const wstring& _FilePath)
 
     if (nullptr == pFile)
     {
-        LOG(Warning, "파일 열기 실패");
+        LOG(Warning, "File Open Failed!");
         return false;
     }
 
@@ -185,7 +185,7 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
 
     if (nullptr == pFile)
     {
-        LOG(Warning, "파일 열기 실패");
+        LOG(Warning, "File Open Failed!");
         return false;
     }
 

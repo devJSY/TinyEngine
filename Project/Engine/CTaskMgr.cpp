@@ -18,6 +18,8 @@
 
 #include "CLevel.h"
 
+#include "CLevelSaveLoad.h"
+
 // stb
 extern "C"
 {
@@ -86,6 +88,13 @@ void CTaskMgr::tick()
                     // GamePlayStatic::MouseRayPicking(MousePos); // Ray Picking
                 }
             }
+        }
+
+        // ÀúÀå
+        if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
+        {
+            CAssetMgr::GetInst()->SaveAssetsToFile();
+            LOG(Log, "Assets Saved to file Successfully!");
         }
     }
 

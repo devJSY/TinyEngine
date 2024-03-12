@@ -29,6 +29,7 @@ public:
     void ReloadContent();
 
 private:
+    void SaveAssetsToFile();
     void LoadAssetsFromFile(std::filesystem::path _EntryPath);
 
 private:

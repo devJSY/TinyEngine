@@ -164,7 +164,7 @@ void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)
         wstring strFilePath = strFolderPath + L"\\" + pair.first + L".anim";
         if (!pair.second->SaveAnim(strFilePath))
         {
-            LOG(Warning, "Animation Save 실패");
+            LOG(Warning, "Animation Save Failed!");
         }
     }
 }
@@ -178,7 +178,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
 
     if (!pNewAnim->LoadAnim(strFilePath))
     {
-        LOG(Warning, "Animation Load 실패");
+        LOG(Warning, "Animation Load Failed!");
         delete pNewAnim;
         return;
     }

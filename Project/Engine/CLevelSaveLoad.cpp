@@ -37,10 +37,6 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
         strLevelPath = filePath.replace_extension(Level_extension);
     }
 
-    // 해당 경로에 레벨 파일이 저장한경우 삭제한뒤 재생성
-    if (std::filesystem::exists(strLevelPath))
-        std::filesystem::remove(strLevelPath);
-
     FILE* pFile = nullptr;
     _wfopen_s(&pFile, strLevelPath.c_str(), L"wb");
 
