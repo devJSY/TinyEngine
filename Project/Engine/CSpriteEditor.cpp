@@ -160,10 +160,18 @@ void CSpriteEditor::DrawViewport()
             {
                 m_LineCheckFlag = LineFlag;
 
-                for (int j = 0; j < m_Sprites.Size; j++)
-                    m_Sprites[j].bViewport_Selected = false;
+                if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
+                {
+                    m_Sprites[i].bViewport_Selected = true;
+                }
+                else
+                {
+                    for (int j = 0; j < m_Sprites.Size; j++)
+                        m_Sprites[j].bViewport_Selected = false;
 
-                m_Sprites[i].bViewport_Selected = true;
+                    m_Sprites[i].bViewport_Selected = true;
+                }
+
                 break;
             }
 
@@ -172,7 +180,9 @@ void CSpriteEditor::DrawViewport()
             {
                 // 컨트롤키 누른상태만 다중선택
                 if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
+                {
                     m_Sprites[i].bViewport_Selected = true;
+                }
                 else
                 {
                     for (int j = 0; j < m_Sprites.Size; j++)
@@ -198,8 +208,6 @@ void CSpriteEditor::DrawViewport()
                 std::swap(m_Sprites[i].Rect.Min.x, m_Sprites[i].Rect.Max.x);
             if (m_Sprites[i].Rect.Max.y < m_Sprites[i].Rect.Min.y)
                 std::swap(m_Sprites[i].Rect.Min.y, m_Sprites[i].Rect.Max.y);
-
-            break;
         }
 
         m_LineCheckFlag = 0;
@@ -303,11 +311,15 @@ void CSpriteEditor::DrawViewport()
             if (m_DragRect.Max.y < m_DragRect.Min.y)
                 std::swap(m_DragRect.Min.y, m_DragRect.Max.y);
 
-            tSprite sprite;
-            sprite.Rect = m_DragRect;
-            sprite.bViewport_Selected = false;
-            sprite.bSpriteList_Selected = false;
-            m_Sprites.push_back(sprite);
+            // 일정 크기 이상의 사각형의 경우에만 생성
+            if (m_DragRect.GetArea() > 5.f)
+            {
+                tSprite sprite;
+                sprite.Rect = m_DragRect;
+                sprite.bViewport_Selected = false;
+                sprite.bSpriteList_Selected = false;
+                m_Sprites.push_back(sprite);
+            }
         }
     }
 
