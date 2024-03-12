@@ -7,6 +7,7 @@ private:
     Ptr<CSound> m_Sound;
     int m_PlayPosition;
     float m_Volume;
+    float m_Pitch;
 
 public:
     virtual void init() override{};

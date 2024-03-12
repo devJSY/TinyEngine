@@ -6,6 +6,7 @@ CSoundEditor::CSoundEditor()
     , m_Sound(nullptr)
     , m_PlayPosition(0)
     , m_Volume(0.5f)
+    , m_Pitch(1.f)
 {
 }
 
@@ -58,6 +59,9 @@ void CSoundEditor::DrawDetails()
 
     if (ImGui::SliderFloat(ImGui_LabelPrefix("Volume").c_str(), &m_Volume, 0.f, 1.f))
         m_Sound->SetVolume(m_Volume);
+
+    if (ImGui::SliderFloat(ImGui_LabelPrefix("Pitch").c_str(), &m_Pitch, 0.f, 5.f))
+        m_Sound->SetPitch(m_Pitch);
 
     if (ImGui::SliderInt(ImGui_LabelPrefix("Progress").c_str(), &m_PlayPosition, 0, m_Sound->GetLength()))
         m_Sound->SetPosition(m_PlayPosition);

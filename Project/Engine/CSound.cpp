@@ -137,6 +137,30 @@ void CSound::SetPosition(int _Position)
     }
 }
 
+float CSound::GetPitch()
+{
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    float Pitch = 0;
+    for (; iter != m_listChannel.end(); ++iter)
+    {
+        (*iter)->getPitch(&Pitch);
+        return Pitch;
+    }
+
+    return Pitch;
+}
+
+void CSound::SetPitch(float _Pitch)
+{
+    list<FMOD::Channel*>::iterator iter = m_listChannel.begin();
+
+    for (; iter != m_listChannel.end(); iter++)
+    {
+        (*iter)->setPitch(_Pitch);
+    }
+}
+
 void CSound::SetVolume(float _Volume, int _iChannelIdx)
 {
     list<FMOD::Channel*>::iterator iter = m_listChannel.begin();

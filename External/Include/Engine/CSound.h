@@ -33,7 +33,10 @@ public:
 
     int GetLength();
     int GetPosition();
-    void SetPosition(int _Position);    
+    void SetPosition(int _Position);
+
+    float GetPitch();
+    void SetPitch(float _Pitch = 1.f);
 
     // 0 ~ 1
     void SetVolume(float _Volume, int _iChannelIdx);
