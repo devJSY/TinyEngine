@@ -19,7 +19,7 @@ CFSM::~CFSM()
         m_Blackboard = nullptr;
     }
 
-    if (nullptr != m_Master)
+    if (nullptr == m_Master)
     {
         Delete_Map(m_mapState);
     }

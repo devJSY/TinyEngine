@@ -120,15 +120,15 @@ void CPlayerScript::tick()
 
         Vec2 vel = Rigidbody2D()->GetVelocity();
 
-        //if (KEY_PRESSED(KEY::UP))
-        //{
-        //    vel.y += m_Speed * DT;
-        //}
+        if (KEY_PRESSED(KEY::UP))
+        {
+            vel.y += m_Speed * DT;
+        }
 
-        //if (KEY_PRESSED(KEY::DOWN))
-        //{
-        //    vel.y -= m_Speed * DT;
-        //}
+        if (KEY_PRESSED(KEY::DOWN))
+        {
+            vel.y -= m_Speed * DT;
+        }
 
         if (KEY_PRESSED(KEY::LEFT))
         {

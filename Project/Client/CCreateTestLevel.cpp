@@ -38,7 +38,7 @@ void CCreateTestLevel::Init()
     pFSM->AddState(L"IdleState", new CIdleState);
     pFSM->AddState(L"TraceState", new CTraceState);
 
-    CAssetMgr::GetInst()->AddAsset<CFSM>(L"NormalMonsterFSM", pFSM.Get());
+    CAssetMgr::GetInst()->AddAsset(L"NormalMonsterFSM", pFSM);
 }
 
 void CCreateTestLevel::CreateTestLevel()
