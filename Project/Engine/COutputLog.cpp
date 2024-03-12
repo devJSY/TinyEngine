@@ -23,10 +23,6 @@ COutputLog::~COutputLog()
         free(History[i]);
 }
 
-void COutputLog::init()
-{
-}
-
 void COutputLog::render(bool* open)
 {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);

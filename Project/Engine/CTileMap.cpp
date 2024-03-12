@@ -19,9 +19,6 @@ CTileMap::CTileMap()
     , m_vecTileInfo{}
     , m_TileInfoBuffer(nullptr)
 {
-    CAssetMgr::GetInst()->Load<CTexture>(L"EnterTheGungeon\\Map\\MapTile.bmp", L"EnterTheGungeon\\Map\\MapTile.bmp");
-    CAssetMgr::GetInst()->Load<CTexture>(L"EnterTheGungeon\\Map\\MapTileSmall.bmp", L"EnterTheGungeon\\Map\\MapTileSmall.bmp");
-
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));
 

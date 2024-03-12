@@ -56,12 +56,6 @@ void CTaskMgr::tick()
             }
         }
 
-        // ½ºÅ©¸°¼¦
-        if (KEY_TAP(KEY::PRINT))
-        {
-            GamePlayStatic::ScreenShot();
-        }
-
         // Mouse Picking
         if (KEY_TAP(KEY::LBTN))
         {
@@ -90,11 +84,20 @@ void CTaskMgr::tick()
             }
         }
 
-        // ÀúÀå
-        if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
+        if (CEditorMgr::GetInst()->IsEnable())
         {
-            CAssetMgr::GetInst()->SaveAssetsToFile();
-            LOG(Log, "Assets Saved to file Successfully!");
+            // ½ºÅ©¸°¼¦
+            if (KEY_TAP(KEY::PRINT))
+            {
+                GamePlayStatic::ScreenShot();
+            }
+
+            // ÀúÀå
+            if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
+            {
+                CAssetMgr::GetInst()->SaveAssetsToFile();
+                LOG(Log, "Assets Saved to file Successfully!");
+            }
         }
     }
 

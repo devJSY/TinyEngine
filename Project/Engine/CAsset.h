@@ -40,7 +40,6 @@ public:
     virtual int Save(const wstring& _strRelativePath) { return E_FAIL; };
     virtual int Load(const wstring& _strFilePath) { return E_FAIL; };
 
-public:
     virtual CAsset* Clone() = 0;
 
 public:

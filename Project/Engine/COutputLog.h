@@ -37,7 +37,7 @@ private:
     void Strtrim(char* s);
 
 public:
-    void init();
+    void init(){};
     void render(bool* open);
 };
 

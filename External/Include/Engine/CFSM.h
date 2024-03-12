@@ -20,6 +20,9 @@ public:
     void finaltick(CStateMachine* _StateMachine);
 
 public:
+    virtual int Save(const wstring& _strRelativePath) override;
+    virtual int Load(const wstring& _strFilePath) override;
+
     CLONE_DISABLE(CFSM);
 
 public:

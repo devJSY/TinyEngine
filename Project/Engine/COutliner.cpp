@@ -861,8 +861,8 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
 
     if (open)
     {
-        // Physics2DMaterial
-        string MtrlName = "None";
+        // Physics2D Material
+        string MtrlName = string();
         Ptr<CPhysics2DMaterial> pMtrl = pBoxCol->GetMaterial();
 
         if (nullptr != pMtrl)
@@ -883,12 +883,6 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             ImGui::EndDragDropTarget();
         }
 
-        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
-        {
-            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
-            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
-        }
-
         bool bTrigger = pBoxCol->IsTrigger();
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pBoxCol->SetTrigger(bTrigger);
@@ -900,6 +894,14 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         Vec2 Size = pBoxCol->GetSize();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f))
             pBoxCol->SetSize(Size);
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
+        }
 
         ImGui::TreePop();
     }
@@ -918,8 +920,8 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
 
     if (open)
     {
-        // Physics2DMaterial
-        string MtrlName = "None";
+        // Physics2D Material
+        string MtrlName = string();
         Ptr<CPhysics2DMaterial> pMtrl = pCircleCol->GetMaterial();
 
         if (nullptr != pMtrl)
@@ -940,12 +942,6 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             ImGui::EndDragDropTarget();
         }
 
-        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
-        {
-            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
-            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
-        }
-
         bool bTrigger = pCircleCol->IsTrigger();
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pCircleCol->SetTrigger(bTrigger);
@@ -957,6 +953,14 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         float Radius = pCircleCol->GetRadius();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f))
             pCircleCol->SetRadius(Radius);
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
+        }
 
         ImGui::TreePop();
     }
@@ -1038,22 +1042,10 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
             ImGui::Separator();
 
-            if (ImGui_AlignButton("Create Dynamic Material", 0.f))
-            {
-                pMeshRender->CreateDynamicMaterial();
-            }
-
-            ImGui::SameLine();
-
             if (ImGui_AlignButton("Material Editor", 1.f))
             {
                 CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
                 CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
-            }
-
-            if (ImGui_AlignButton("Restore Material", 0.f))
-            {
-                pMeshRender->RestoreMaterial();
             }
 
             ImGui::TreePop();
