@@ -23,6 +23,8 @@ public:
     CLayer* GetLayer(int _iLayerIdx) const { return m_arrLayer[_iLayerIdx]; }
     CLayer* GetLayer(const wstring& _strLayerName) const;
 
+    CGameObject* FindObjectByName(const wstring& _strName);
+
 public:
     void ChangeState(LEVEL_STATE _NextState);
     LEVEL_STATE GetState() const { return m_State; }

@@ -6,6 +6,7 @@
 #include "CPhysics2DMgr.h"
 
 #include "CLayer.h"
+#include "CGameObject.h"
 
 CLevel::CLevel()
     : m_arrLayer{}
@@ -95,26 +96,64 @@ CLayer* CLevel::GetLayer(const wstring& _strLayerName) const
     return nullptr;
 }
 
+CGameObject* CLevel::FindObjectByName(const wstring& _strName)
+{
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
+
+        for (size_t j = 0; j < vecParent.size(); ++j)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(vecParent[j]);
+
+            // 레이어에 입력되는 오브젝트 포함, 그 밑에 달린 자식들까지 모두 확인
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChild = pObject->GetChildObject();
+                for (size_t k = 0; k < vecChild.size(); ++k)
+                {
+                    queue.push_back(vecChild[k]);
+                }
+
+                if (_strName == pObject->GetName())
+                {
+                    return pObject;
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 void CLevel::ChangeState(LEVEL_STATE _NextState)
 {
-    if (m_State == _NextState)
+    // 레벨 상태 변경
+    LEVEL_STATE prevState = m_State;
+    m_State = _NextState;
+
+    if (prevState == _NextState)
     {
-        if (LEVEL_STATE::PLAY == m_State)
+        if (LEVEL_STATE::PLAY == prevState)
         {
             CTimeMgr::GetInst()->LockDeltaTime(false);
             CRenderMgr::GetInst()->ActiveEditorMode(false);
         }
-        else if (LEVEL_STATE::SIMULATE == m_State)
+        else if (LEVEL_STATE::SIMULATE == prevState)
         {
             CTimeMgr::GetInst()->LockDeltaTime(false);
             CRenderMgr::GetInst()->ActiveEditorMode(true);
         }
-        else if (LEVEL_STATE::PAUSE == m_State)
+        else if (LEVEL_STATE::PAUSE == prevState)
         {
             CTimeMgr::GetInst()->LockDeltaTime(true);
             CRenderMgr::GetInst()->ActiveEditorMode(true);
         }
-        else if (LEVEL_STATE::STOP == m_State)
+        else if (LEVEL_STATE::STOP == prevState)
         {
             CTimeMgr::GetInst()->LockDeltaTime(true);
             CRenderMgr::GetInst()->ActiveEditorMode(true);
@@ -123,7 +162,7 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
     }
     else
     {
-        switch (m_State)
+        switch (prevState)
         {
         case LEVEL_STATE::PLAY: {
             if (LEVEL_STATE::PAUSE == _NextState)
@@ -181,9 +220,6 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
         break;
         }
     }
-
-    // 레벨 상태 변경
-    m_State = _NextState;
 }
 
 void CLevel::Step(int _Frames)

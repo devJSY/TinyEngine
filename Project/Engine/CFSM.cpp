@@ -3,18 +3,35 @@
 
 CFSM::CFSM(bool _bEngineAsset)
     : CAsset(ASSET_TYPE::FSM, _bEngineAsset)
+    , m_Master(nullptr)
+    , m_StateMachie(nullptr)
     , m_mapState()
-    , m_Blackboard()
+    , m_Blackboard(nullptr)
+    , m_CurState(nullptr)
 {
 }
 
 CFSM::~CFSM()
 {
-    Delete_Map(m_mapState);
+    if (nullptr != m_Blackboard)
+    {
+        delete m_Blackboard;
+        m_Blackboard = nullptr;
+    }
+
+    if (nullptr != m_Master)
+    {
+        Delete_Map(m_mapState);
+    }
 }
 
-void CFSM::finaltick(CStateMachine* _StateMachine)
+void CFSM::finaltick()
 {
+    if (m_CurState)
+    {
+        m_CurState->m_FSM = this;
+        m_CurState->finaltick();
+    }
 }
 
 int CFSM::Save(const wstring& _strRelativePath)
@@ -46,4 +63,28 @@ CState* CFSM::FindState(const wstring& _StateName)
         return nullptr;
 
     return iter->second;
+}
+
+CFSM* CFSM::GetFSMIstance()
+{
+    CFSM* pFSMInst = new CFSM;
+
+    pFSMInst->m_mapState = m_mapState;
+    pFSMInst->m_Master = this;
+    pFSMInst->m_Blackboard = nullptr;
+    pFSMInst->m_CurState = nullptr;
+
+    return pFSMInst;
+}
+
+void CFSM::ChangeState(const wstring& _strStateName)
+{
+    if (nullptr != m_CurState)
+        m_CurState->Exit();
+
+    m_CurState = FindState(_strStateName);
+
+    assert(m_CurState);
+
+    m_CurState->Enter();
 }

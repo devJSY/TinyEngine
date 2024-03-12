@@ -3,6 +3,10 @@
 
 class CEnemyScript : public CScript
 {
+private:
+    float m_DetectRange;
+    float m_Speed;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

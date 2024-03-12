@@ -24,11 +24,13 @@ private:
 
 public:
     void AddBlackboardData(const wstring& _strKey, BLACKBOARD_DATA _Type, void* _Data);
+    void* GetBlackboardData(const wstring& _strKey);
 
+public:
     CLONE(CBlackboard);
 
 public:
     CBlackboard();
-    CBlackboard(const CBlackboard& _board);
+    CBlackboard(const CBlackboard& origin);
     virtual ~CBlackboard();
 };

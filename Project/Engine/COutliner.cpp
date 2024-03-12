@@ -777,6 +777,28 @@ void COutliner::DrawStateMachine(CGameObject* obj)
 
     if (open)
     {
+        // FSM
+        string FSMName = string();
+        Ptr<CFSM> pFSM = pStateMachine->GetFSM();
+
+        if (nullptr != pFSM)
+            FSMName = ToString(pFSM->GetName());
+
+        ImGui_InputText("FSM", FSMName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pStateMachine->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
         ImGui::TreePop();
     }
 }
