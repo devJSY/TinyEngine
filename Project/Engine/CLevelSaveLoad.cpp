@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CLevelSaveLoad.h"
 
+#include "CPhysics2DMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
@@ -54,6 +55,13 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
         SaveLayer(_Level->GetLayer(i), pFile);
+    }
+
+    // 콜리전 레이어 저장
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        unsigned short ColLayer = CPhysics2DMgr::GetInst()->GetCollisionLayer(i);
+        fwrite(&ColLayer, sizeof(unsigned short), 1, pFile);
     }
 
     fclose(pFile);
@@ -159,7 +167,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
         return nullptr;
     }
 
-    // 레벨의 이름을 읽는다.
+    // 레벨의 이름 로드
     CLevel* pLevel = new CLevel;
     wstring strLevelName;
     LoadWString(strLevelName, pFile);
@@ -169,6 +177,14 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
         LoadLayer(pLevel->GetLayer(i), pFile);
+    }
+
+    // 콜리전 레이어 로드
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        unsigned short ColLayer = 0;
+        fread(&ColLayer, sizeof(unsigned short), 1, pFile);
+        CPhysics2DMgr::GetInst()->SetCollisionLayer(i, ColLayer);
     }
 
     fclose(pFile);
