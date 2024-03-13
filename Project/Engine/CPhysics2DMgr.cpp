@@ -127,7 +127,12 @@ void CPhysics2DMgr::tick()
         {
             b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
             const auto& position = body->GetPosition();
-            pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z) * Vec3(m_PPM, m_PPM, 1.f));
+            Vec3 pos = pTr->GetRelativePos();
+
+            pos.x += (position.x * m_PPM) - pTr->GetWorldPos().x;
+            pos.y += (position.y * m_PPM) - pTr->GetWorldPos().y;
+
+            pTr->SetRelativePos(pos);
             pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
         }
     }
@@ -184,7 +189,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
 
     b2BodyDef bodyDef;
-    bodyDef.position.Set(pTr->GetRelativePos().x / m_PPM, pTr->GetRelativePos().y / m_PPM);
+    bodyDef.position.Set(pTr->GetWorldPos().x / m_PPM, pTr->GetWorldPos().y / m_PPM);
     bodyDef.angle = pTr->GetRelativeRotation().z;
     b2Body* body = nullptr;
 
