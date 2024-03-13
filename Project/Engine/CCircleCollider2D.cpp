@@ -18,9 +18,6 @@ void CCircleCollider2D::finaltick()
 {
     CCollider2D::finaltick();
 
-    if (!g_Global.g_ColliderRender)
-        return;
-
     Vec3 sacle = Transform()->GetRelativeScale();
 
     Matrix matWorld = Transform()->GetWorldMat();

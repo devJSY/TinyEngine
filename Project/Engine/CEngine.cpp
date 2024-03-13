@@ -74,8 +74,8 @@ void CEngine::progress()
 
     // Level Update
     CEditorMgr::GetInst()->tick();
-    CPhysics2DMgr::GetInst()->tick();
     CLevelMgr::GetInst()->tick();
+    CPhysics2DMgr::GetInst()->tick();
 
     // ===========================
     // Rendering

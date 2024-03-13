@@ -4,6 +4,7 @@
 
 #include "CRigidbody2D.h"
 #include <box2d\\b2_body.h>
+#include "CTransform.h"
 
 CRigidbody2D::CRigidbody2D()
     : CComponent(COMPONENT_TYPE::RIGIDBODY2D)
@@ -21,6 +22,17 @@ CRigidbody2D::CRigidbody2D()
 
 CRigidbody2D::~CRigidbody2D()
 {
+}
+
+void CRigidbody2D::finaltick()
+{
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    // 트랜스폼 위치 정보 업데이트
+    b2Body* body = (b2Body*)m_RuntimeBody;
+    float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+    body->SetTransform(b2Vec2(Transform()->GetRelativePos().x / PPM, Transform()->GetRelativePos().y / PPM), Transform()->GetRelativeRotation().z);
 }
 
 void CRigidbody2D::SetBodyType(BODY_TYPE _type)

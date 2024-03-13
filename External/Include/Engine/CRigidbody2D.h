@@ -28,7 +28,7 @@ private:
     bool m_bFreezeRotation;
 
 public:
-    virtual void finaltick() override{};
+    virtual void finaltick() override;
 
 public:
     void AddForce(Vec2 _Force, ForceMode2D _Mode = ForceMode2D::Force);

@@ -130,21 +130,6 @@ void CPhysics2DMgr::tick()
             pTr->SetRelativePos(Vec3(position.x, position.y, pTr->GetRelativePos().z) * Vec3(m_PPM, m_PPM, 1.f));
             pTr->SetRelativeRotation(Vec3(pTr->GetRelativeRotation().x, pTr->GetRelativeRotation().y, body->GetAngle()));
         }
-        // 시뮬레이션을 사용하지 않은경우 오브젝트 위치로 Body 업데이트
-        else
-        {
-            CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
-            CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
-
-            b2Body* body = nullptr;
-            if (nullptr != bc2d)
-                body = ((b2Fixture*)bc2d->m_RuntimeFixture)->GetBody();
-            else if (nullptr != cc2d)
-                body = ((b2Fixture*)cc2d->m_RuntimeFixture)->GetBody();
-
-            if (nullptr != body)
-                body->SetTransform(b2Vec2(pTr->GetRelativePos().x / m_PPM, pTr->GetRelativePos().y / m_PPM), body->GetAngle());
-        }
     }
 }
 

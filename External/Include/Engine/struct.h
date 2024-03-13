@@ -109,8 +109,6 @@ __declspec(align(16)) struct tGlobalData
 
     Vec3 g_eyeWorld;
     int g_DrawAsWireFrame;
-
-    int g_ColliderRender = true;
 };
 
 __declspec(align(16)) struct tAnimData2D

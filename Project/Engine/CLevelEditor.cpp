@@ -322,8 +322,6 @@ void CLevelEditor::render_WorldSettings()
 
     ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.g_DrawAsWireFrame);
 
-    ImGui::Checkbox("Collider Render", (bool*)&g_Global.g_ColliderRender);
-
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
         CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);

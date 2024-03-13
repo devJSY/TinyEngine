@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "CCollider2D.h"
+
+#include "CPhysics2DMgr.h"
+
 #include <box2d\\b2_fixture.h>
 #include "CScript.h"
 
@@ -20,12 +23,21 @@ CCollider2D::~CCollider2D()
 
 void CCollider2D::finaltick()
 {
+    // 스케일이 변경되었다면 Body 재생성
     if (m_PrevScale != Transform()->GetRelativeScale())
     {
         GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
     }
 
     m_PrevScale = Transform()->GetRelativeScale();
+
+    if (nullptr == m_RuntimeFixture)
+        return;
+
+    // 트랜스폼 위치 정보 업데이트
+    b2Body* body = ((b2Fixture*)m_RuntimeFixture)->GetBody();
+    float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+    body->SetTransform(b2Vec2(Transform()->GetRelativePos().x / PPM, Transform()->GetRelativePos().y / PPM), Transform()->GetRelativeRotation().z);
 }
 
 void CCollider2D::SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl)
