@@ -13,8 +13,8 @@ float4 main(PS_IN input) : SV_TARGET
     if (g_UseAnim2D)
     {
         float2 vUV = float2(0.0, 0.0);
-        dx *= g_vSliceSize.x; 
-        dy *= g_vSliceSize.y; 
+        dx *= g_vSliceSize.x;
+        dy *= g_vSliceSize.y;
 
         if (g_UseBackGround)
         {
@@ -28,6 +28,12 @@ float4 main(PS_IN input) : SV_TARGET
             vUV = LT + (g_vSliceSize * input.vUV);
         }
         
+        if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
+            || vUV.y < g_vLeftTop.y || (g_vLeftTop.y + g_vSliceSize.y) < vUV.y)
+        {
+            discard;
+        }
+
         float4 AnimColor = g_anim2d_tex.Sample(g_LinearWrapSampler, vUV);
                 
         // 알파값이 0이면 외곽선 체크

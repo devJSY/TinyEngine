@@ -383,8 +383,6 @@ void CSpriteEditor::DrawViewport()
             }
         }
 
-        ImGui::Separator();
-
         if (ImGui::MenuItem("Align Selected Sprites", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
@@ -409,6 +407,9 @@ void CSpriteEditor::DrawViewport()
                 }
             }
         }
+
+        ImGui::Separator();
+
         if (ImGui::MenuItem("Delete Selected Sprites", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
