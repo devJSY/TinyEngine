@@ -80,14 +80,154 @@ void COutliner::render()
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 
-    // Right-click on blank space
+    // =====================
+    // Popup
+    // =====================
     if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems))
     {
-        if (ImGui::MenuItem("Spawn GameObject"))
+        int Dirtyflag = 0;
+
+        if (ImGui::MenuItem("Create Empty Object"))
+            Dirtyflag = 1;
+
+        if (ImGui::BeginMenu("2D Object"))
+        {
+            if (ImGui::MenuItem("Rect"))
+                Dirtyflag = 10;
+
+            if (ImGui::MenuItem("Circle"))
+                Dirtyflag = 11;
+
+            if (ImGui::BeginMenu("Light"))
+            {
+                if (ImGui::MenuItem("Directional"))
+                    Dirtyflag = 20;
+                if (ImGui::MenuItem("Point"))
+                    Dirtyflag = 21;
+                if (ImGui::MenuItem("Spot"))
+                    Dirtyflag = 22;
+
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Physics"))
+            {
+                if (ImGui::MenuItem("Box"))
+                    Dirtyflag = 30;
+                if (ImGui::MenuItem("Circle"))
+                    Dirtyflag = 31;
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("3D Object"))
+        {
+            if (ImGui::MenuItem("Box"))
+                Dirtyflag = 40;
+
+            if (ImGui::MenuItem("Sphere"))
+                Dirtyflag = 41;
+
+            if (ImGui::BeginMenu("Light"))
+            {
+                if (ImGui::MenuItem("Directional"))
+                    Dirtyflag = 50;
+                if (ImGui::MenuItem("Point"))
+                    Dirtyflag = 51;
+                if (ImGui::MenuItem("Spot"))
+                    Dirtyflag = 52;
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMenu();
+        }
+
+        if (Dirtyflag > 0)
         {
             CGameObject* pObj = new CGameObject;
             pObj->SetName(L"Object");
             pObj->AddComponent(new CTransform);
+
+            if (10 == Dirtyflag)
+            {
+                pObj->SetName(L"Rect");
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+            }
+            else if (11 == Dirtyflag)
+            {
+                pObj->SetName(L"Circle");
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+            }
+            else if (20 == Dirtyflag)
+            {
+                pObj->SetName(L"Directional Light2D");
+                pObj->AddComponent(new CLight2D);
+                pObj->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+            }
+            else if (21 == Dirtyflag)
+            {
+                pObj->SetName(L"Point Light2D");
+                pObj->AddComponent(new CLight2D);
+                pObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
+            }
+            else if (22 == Dirtyflag)
+            {
+                pObj->SetName(L"Spot Light2D");
+                pObj->AddComponent(new CLight2D);
+                pObj->Light2D()->SetLightType(LIGHT_TYPE::SPOT);
+            }
+            else if (30 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics2D Box Object");
+                pObj->AddComponent(new CRigidbody2D);
+                pObj->AddComponent(new CBoxCollider2D);
+            }
+            else if (31 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics2D Circle Object");
+                pObj->AddComponent(new CRigidbody2D);
+                pObj->AddComponent(new CCircleCollider2D);
+            }
+            else if (40 == Dirtyflag)
+            {
+                pObj->SetName(L"Box");
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+            }
+            else if (41 == Dirtyflag)
+            {
+                pObj->SetName(L"Sphere");
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+            }
+            else if (50 == Dirtyflag)
+            {
+                pObj->SetName(L"Directional Light3D");
+                pObj->AddComponent(new CLight3D);
+                pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+            }
+            else if (51 == Dirtyflag)
+            {
+                pObj->SetName(L"Point Light3D");
+                pObj->AddComponent(new CLight3D);
+                pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+            }
+            else if (52 == Dirtyflag)
+            {
+                pObj->SetName(L"Spot Light3D");
+                pObj->AddComponent(new CLight3D);
+                pObj->Light3D()->SetLightType(LIGHT_TYPE::SPOT);
+            }
 
             // 카메라위치 기준 생성
             CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
@@ -202,20 +342,6 @@ void COutliner::DrawNode(CGameObject* obj)
 
     if (ImGui::BeginPopup(PopUpID.c_str()))
     {
-        if (ImGui::MenuItem("Clone Object"))
-        {
-            GamePlayStatic::CloneGameObject(obj);
-        }
-
-        if (ImGui::MenuItem("Add Child Object"))
-        {
-            CGameObject* pChild = new CGameObject;
-            pChild->SetName(L"Child Object");
-            pChild->AddComponent(new CTransform);
-
-            GamePlayStatic::AddChildObject(obj, pChild);
-        }
-
         if (ImGui::MenuItem("Create Prefab"))
         {
             Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
@@ -264,7 +390,6 @@ void COutliner::DrawDetails(CGameObject* obj)
             if (ImGui::MenuItem(COMPONENT_TYPE_STRING[i]))
             {
                 GamePlayStatic::AddComponent(obj, (COMPONENT_TYPE)i);
-                ImGui::CloseCurrentPopup();
             }
         }
 
@@ -278,7 +403,6 @@ void COutliner::DrawDetails(CGameObject* obj)
                 if (ImGui::MenuItem(ToString(vecScriptName[i]).c_str()))
                 {
                     obj->AddComponent(CScriptMgr::GetScript(vecScriptName[i]));
-                    ImGui::CloseCurrentPopup();
                 }
             }
 

@@ -554,7 +554,6 @@ void CLevelEditor::CreateAssetModal()
             break;
             }
 
-            ImGui::CloseCurrentPopup();
             memset(buffer, 0, sizeof(buffer));
             m_ModalAssetType = ASSET_TYPE::END;
         }
@@ -565,7 +564,6 @@ void CLevelEditor::CreateAssetModal()
 
         if (ImGui::Button("Cancel", ImVec2(120, 0)))
         {
-            ImGui::CloseCurrentPopup();
             memset(buffer, 0, sizeof(buffer));
             m_ModalAssetType = ASSET_TYPE::END;
         }
