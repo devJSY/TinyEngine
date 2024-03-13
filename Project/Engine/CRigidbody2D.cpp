@@ -117,6 +117,8 @@ void CRigidbody2D::SetAutoMass(bool _Use)
 
     b2Body* body = (b2Body*)m_RuntimeBody;
     body->ResetMassData();
+    if (!m_bAutoMass)
+        SetMass(m_Mass);
 }
 
 void CRigidbody2D::SetMass(float _Mass)
