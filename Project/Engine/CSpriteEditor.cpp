@@ -341,6 +341,50 @@ void CSpriteEditor::DrawViewport()
             m_Sprites.resize(m_Sprites.size() - 1);
         Adding_Rect = false;
 
+        if (ImGui::MenuItem("Selete all Sprites", NULL, false, m_Sprites.Size > 0))
+        {
+            for (int i = 0; i < m_Sprites.Size; i++)
+            {
+                m_Sprites[i].bViewport_Selected = true;
+            }
+        }
+        if (ImGui::MenuItem("Create Animation", NULL, false, m_Sprites.Size > 0))
+        {
+            if (nullptr != m_pAnim)
+                delete m_pAnim;
+
+            m_pAnim = new CAnim;
+            m_pAnim->m_AtlasTex = m_pTex;
+
+            for (int i = 0; i < m_Sprites.Size; i++)
+            {
+                ImVec2 vTextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
+
+                if (m_Sprites[i].bViewport_Selected)
+                {
+                    tAnimFrm AnimData;
+
+                    // UV 좌표로 변환
+                    AnimData.vLeftTop = m_Sprites[i].Rect.GetTL() / vTextureSize;
+                    AnimData.vSlice = m_Sprites[i].Rect.GetSize() / vTextureSize;
+                    AnimData.vOffset = Vec2(0.f, 0.f);
+                    AnimData.vBackground = Vec2(0.f, 0.f);
+                    AnimData.Duration = 1.f / m_AnimFPS;
+
+                    m_pAnim->m_vecFrm.push_back(AnimData);
+                }
+            }
+
+            // 선택된 Sprite가 없는 상태에서 애니메이션 생성요청했을경우
+            if (m_pAnim->m_vecFrm.empty())
+            {
+                delete m_pAnim;
+                m_pAnim = nullptr;
+            }
+        }
+
+        ImGui::Separator();
+
         if (ImGui::MenuItem("Align Selected Sprites", NULL, false, m_Sprites.Size > 0))
         {
             ImVector<tSprite>::iterator iter = m_Sprites.begin();
@@ -381,47 +425,10 @@ void CSpriteEditor::DrawViewport()
                 }
             }
         }
-        if (ImGui::MenuItem("Delete Previous Sprite", NULL, false, m_Sprites.Size > 0))
-        {
-            m_Sprites.resize(m_Sprites.Size - 1);
-        }
+
         if (ImGui::MenuItem("Delete all Sprites", NULL, false, m_Sprites.Size > 0))
         {
             m_Sprites.clear();
-        }
-        if (ImGui::MenuItem("Create Animation", NULL, false, m_Sprites.Size > 0))
-        {
-            if (nullptr != m_pAnim)
-                delete m_pAnim;
-
-            m_pAnim = new CAnim;
-            m_pAnim->m_AtlasTex = m_pTex;
-
-            for (int i = 0; i < m_Sprites.Size; i++)
-            {
-                ImVec2 vTextureSize = ImVec2((float)m_pTex->GetWidth(), (float)m_pTex->GetHeight());
-
-                if (m_Sprites[i].bViewport_Selected)
-                {
-                    tAnimFrm AnimData;
-
-                    // UV 좌표로 변환
-                    AnimData.vLeftTop = m_Sprites[i].Rect.GetTL() / vTextureSize;
-                    AnimData.vSlice = m_Sprites[i].Rect.GetSize() / vTextureSize;
-                    AnimData.vOffset = Vec2(0.f, 0.f);
-                    AnimData.vBackground = Vec2(0.f, 0.f);
-                    AnimData.Duration = 1.f / m_AnimFPS;
-
-                    m_pAnim->m_vecFrm.push_back(AnimData);
-                }
-            }
-
-            // 선택된 Sprite가 없는 상태에서 애니메이션 생성요청했을경우
-            if (m_pAnim->m_vecFrm.empty())
-            {
-                delete m_pAnim;
-                m_pAnim = nullptr;
-            }
         }
 
         ImGui::EndPopup();
@@ -583,8 +590,10 @@ void CSpriteEditor::DrawDetails()
                 // Grid
                 else
                 {
-                    int WidhtCount = m_pTex->GetWidth() / m_CellWidth;
-                    int HeightCount = m_pTex->GetHeight() / m_CellHeight;
+                    int TexWidth = (int)m_pTex->GetWidth();
+                    int TexHeight = (int)m_pTex->GetHeight();
+                    int WidhtCount = TexWidth / m_CellWidth;
+                    int HeightCount = TexHeight / m_CellHeight;
 
                     for (int y = 0; y < HeightCount; y++)
                     {
@@ -605,7 +614,11 @@ void CSpriteEditor::DrawDetails()
                             {
                                 for (int x = (int)rect.Min.x; x <= (int)rect.Max.x; x++)
                                 {
-                                    int idx = (m_pTex->GetWidth() * y) + x;
+                                    // 텍스춰의 범위를 벗어나는 경우
+                                    if (x < 0 || x >= TexWidth || y < 0 || y >= TexHeight)
+                                        continue;
+
+                                    int idx = (TexWidth * y) + x;
 
                                     if (pPixel[idx].a != 0)
                                     {

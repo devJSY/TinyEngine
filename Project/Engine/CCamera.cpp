@@ -35,6 +35,8 @@ CCamera::CCamera()
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
     m_AspectRatio = vResol.x / vResol.y;
+
+    LayerMaskAll();
 }
 
 CCamera::~CCamera()
