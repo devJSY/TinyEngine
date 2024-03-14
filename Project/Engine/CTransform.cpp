@@ -122,6 +122,20 @@ Vec3 CTransform::GetWorldScale() const
     return vWorldScale;
 }
 
+Vec3 CTransform::GetWorldRotation() const
+{
+    CGameObject* pParent = GetOwner()->GetParent();
+    Vec3 vWorldRot = m_vRelativeRotation;
+
+    while (pParent)
+    {
+        vWorldRot += pParent->Transform()->GetRelativeRotation();
+        pParent = pParent->GetParent();
+    }
+
+    return vWorldRot;
+}
+
 void CTransform::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);

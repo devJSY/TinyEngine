@@ -38,7 +38,7 @@ void CCollider2D::finaltick()
     // 트랜스폼 위치 정보 업데이트
     b2Body* body = ((b2Fixture*)m_RuntimeFixture)->GetBody();
     float PPM = CPhysics2DMgr::GetInst()->GetPPM();
-    body->SetTransform(b2Vec2(Transform()->GetWorldPos().x / PPM, Transform()->GetWorldPos().y / PPM), Transform()->GetRelativeRotation().z);
+    body->SetTransform(b2Vec2(Transform()->GetWorldPos().x / PPM, Transform()->GetWorldPos().y / PPM), Transform()->GetWorldRotation().z);
 }
 
 void CCollider2D::SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl)
