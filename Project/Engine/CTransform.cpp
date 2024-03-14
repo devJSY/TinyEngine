@@ -108,9 +108,14 @@ Vec3 CTransform::GetWorldScale() const
     CGameObject* pParent = GetOwner()->GetParent();
     Vec3 vWorldScale = m_vRelativeScale;
 
+    bool bAbsolute = m_bAbsolute;
+
     while (pParent)
     {
-        vWorldScale *= pParent->Transform()->GetRelativeScale();
+        if (!bAbsolute)
+            vWorldScale *= pParent->Transform()->GetRelativeScale();
+
+        bAbsolute = pParent->Transform()->IsAbsolute();
         pParent = pParent->GetParent();
     }
 

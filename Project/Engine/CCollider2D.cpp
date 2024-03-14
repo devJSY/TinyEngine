@@ -25,12 +25,12 @@ CCollider2D::~CCollider2D()
 void CCollider2D::finaltick()
 {
     // 스케일이 변경되었다면 Body 재생성
-    if (m_PrevScale != Transform()->GetRelativeScale())
+    if (m_PrevScale != Transform()->GetWorldScale())
     {
         GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
     }
 
-    m_PrevScale = Transform()->GetRelativeScale();
+    m_PrevScale = Transform()->GetWorldScale();
 
     if (nullptr == m_RuntimeFixture)
         return;

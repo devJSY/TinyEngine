@@ -761,7 +761,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"2D_OutLineShader"));
-        pMtrl->SetScalarParam(INT_0, 25);                                                     // Thickness
+        pMtrl->SetScalarParam(INT_0, 10);                                                     // Thickness
         pMtrl->SetScalarParam(VEC4_0, Vec4(235.f / 255.f, 162.f / 255.f, 10.f / 255.f, 1.f)); // Color
         pMtrl->SetName(L"2D_OutLineMtrl");
         AddAsset<CMaterial>(L"2D_OutLineMtrl", pMtrl);

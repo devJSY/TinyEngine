@@ -220,7 +220,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr != bc2d)
     {
         b2PolygonShape boxShape;
-        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetRelativeScale().x / m_PPM, bc2d->m_Size.y * pTr->GetRelativeScale().y / m_PPM,
+        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetWorldScale().x / m_PPM, bc2d->m_Size.y * pTr->GetWorldScale().y / m_PPM,
                           b2Vec2(bc2d->m_Offset.x / m_PPM, bc2d->m_Offset.y / m_PPM), 0.f);
 
         b2FixtureDef fixtureDef;
@@ -247,7 +247,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     {
         b2CircleShape circleShape;
         circleShape.m_p.Set(cc2d->m_Offset.x / m_PPM, cc2d->m_Offset.y / m_PPM);
-        circleShape.m_radius = pTr->GetRelativeScale().x * cc2d->m_Radius / m_PPM;
+        circleShape.m_radius = pTr->GetWorldScale().x * cc2d->m_Radius / m_PPM;
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circleShape;

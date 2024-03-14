@@ -1037,11 +1037,11 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         static const float PPM = CPhysics2DMgr::GetInst()->GetPPM();
 
         Vec2 Offset = pBoxCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f * PPM))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f * PPM))
             pBoxCol->SetOffset(Offset);
 
         Vec2 Size = pBoxCol->GetSize();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f * PPM))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 1e-3f * PPM))
             pBoxCol->SetSize(Size);
 
         ImGui::Separator();
@@ -1098,11 +1098,11 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         static const float PPM = CPhysics2DMgr::GetInst()->GetPPM();
 
         Vec2 Offset = pCircleCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f * PPM))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f * PPM))
             pCircleCol->SetOffset(Offset);
 
         float Radius = pCircleCol->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f * PPM))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 1e-3f * PPM))
             pCircleCol->SetRadius(Radius);
 
         ImGui::Separator();

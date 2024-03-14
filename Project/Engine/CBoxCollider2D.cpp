@@ -17,7 +17,7 @@ void CBoxCollider2D::finaltick()
 {
     CCollider2D::finaltick();
 
-    Vec3 sacle = Transform()->GetRelativeScale();
+    Vec3 sacle = Transform()->GetWorldScale();
 
     Matrix matWorld = Transform()->GetWorldMat();
     Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
