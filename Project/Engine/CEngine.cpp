@@ -12,6 +12,7 @@
 #include "CGrabageCollector.h"
 #include "CRenderMgr.h"
 #include "CPhysics2DMgr.h"
+#include "CFontMgr.h"
 
 #include "CSound.h"
 
@@ -55,6 +56,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CAssetMgr::GetInst()->init();
     CRenderMgr::GetInst()->init();
     CEditorMgr::GetInst()->init();
+    CFontMgr::GetInst()->init();
 
     return S_OK;
 }

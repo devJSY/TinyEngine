@@ -289,6 +289,9 @@
     <ClInclude Include="CSoundEditor.h">
       <Filter>20. Editor\SoundEditor</Filter>
     </ClInclude>
+    <ClInclude Include="CFontMgr.h">
+      <Filter>04. Manager\FontMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -552,6 +555,9 @@
     <ClCompile Include="CSoundEditor.cpp">
       <Filter>20. Editor\SoundEditor</Filter>
     </ClCompile>
+    <ClCompile Include="CFontMgr.cpp">
+      <Filter>04. Manager\FontMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -814,6 +820,9 @@
     </Filter>
     <Filter Include="08. Component\Collider2D\09. CircleCollider2D">
       <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\FontMgr">
+      <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

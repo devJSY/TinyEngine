@@ -18,6 +18,7 @@ CSpriteEditor::CSpriteEditor()
     , m_bAnimPlay(true)
     , m_CellWidth(0)
     , m_CellHeight(0)
+    , m_bEmptyAutoErase(true)
 
 {
 }
@@ -563,6 +564,7 @@ void CSpriteEditor::DrawDetails()
             {
                 ImGui::DragInt(ImGui_LabelPrefix("Cell Width").c_str(), &m_CellWidth, 1.f, 0, m_pTex->GetWidth());
                 ImGui::DragInt(ImGui_LabelPrefix("Cell Height").c_str(), &m_CellHeight, 1.f, 0, m_pTex->GetHeight());
+                ImGui::Checkbox("Empty Auto Erase", &m_bEmptyAutoErase);
             }
 
             if (ImGui::Button("Extract..."))
@@ -607,41 +609,44 @@ void CSpriteEditor::DrawDetails()
                             rect.Max.x = float(m_CellWidth * x + m_CellWidth);
                             rect.Max.y = float(m_CellHeight * y + m_CellHeight);
 
-                            // 비어있는 영역인지 체크
+                            // 비어있는 영역 자동 제거
                             bool bEmpty = true;
-                            tPixel* pPixel = m_pTex->GetPixels();
-
-                            for (int y = (int)rect.Min.y; y <= (int)rect.Max.y; y++)
+                            if (m_bEmptyAutoErase)
                             {
-                                for (int x = (int)rect.Min.x; x <= (int)rect.Max.x; x++)
+                                tPixel* pPixel = m_pTex->GetPixels();
+
+                                for (int y = (int)rect.Min.y; y <= (int)rect.Max.y; y++)
                                 {
-                                    // 텍스춰의 범위를 벗어나는 경우
-                                    if (x < 0 || x >= TexWidth || y < 0 || y >= TexHeight)
-                                        continue;
-
-                                    int idx = (TexWidth * y) + x;
-
-                                    if (pPixel[idx].a != 0)
+                                    for (int x = (int)rect.Min.x; x <= (int)rect.Max.x; x++)
                                     {
-                                        bEmpty = false;
-                                        break;
+                                        // 텍스춰의 범위를 벗어나는 경우
+                                        if (x < 0 || x >= TexWidth || y < 0 || y >= TexHeight)
+                                            continue;
+
+                                        int idx = (TexWidth * y) + x;
+
+                                        if (pPixel[idx].a != 0)
+                                        {
+                                            bEmpty = false;
+                                            break;
+                                        }
                                     }
+
+                                    if (!bEmpty)
+                                        break;
                                 }
-
-                                if (!bEmpty)
-                                    break;
                             }
 
-                            // 비어있지 않는 영역만 생성
-                            if (!bEmpty)
-                            {
-                                tSprite sprite;
-                                sprite.Rect = rect;
-                                sprite.bViewport_Selected = false;
-                                sprite.bSpriteList_Selected = false;
+                            if (m_bEmptyAutoErase && bEmpty)
+                                continue;
 
-                                m_Sprites.push_back(sprite);
-                            }
+                            // 스프라이트 생성
+                            tSprite sprite;
+                            sprite.Rect = rect;
+                            sprite.bViewport_Selected = false;
+                            sprite.bSpriteList_Selected = false;
+
+                            m_Sprites.push_back(sprite);
                         }
                     }
                 }

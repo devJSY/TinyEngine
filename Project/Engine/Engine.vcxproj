@@ -130,6 +130,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CEditorMgr.h" />
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
+    <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CGrabageCollector.h" />
@@ -229,6 +230,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CEditorMgr.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
+    <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CGrabageCollector.cpp" />

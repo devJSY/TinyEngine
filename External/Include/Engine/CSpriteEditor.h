@@ -29,6 +29,8 @@ private:
     int m_CellWidth;
     int m_CellHeight;
 
+    bool m_bEmptyErase;
+
 public:
     virtual void init() override;
     virtual void tick() override{};

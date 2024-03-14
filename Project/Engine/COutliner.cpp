@@ -387,7 +387,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     {
         for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; i++)
         {
-            if (ImGui::MenuItem(COMPONENT_TYPE_STRING[i]))
+            if (ImGui::MenuItem(COMPONENT_TYPE_STRING[i], NULL, false, nullptr == obj->GetComponent((COMPONENT_TYPE)i)))
             {
                 GamePlayStatic::AddComponent(obj, (COMPONENT_TYPE)i);
             }
@@ -994,14 +994,12 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pBoxCol->SetTrigger(bTrigger);
 
-        static const float PPM = CPhysics2DMgr::GetInst()->GetPPM();
-
         Vec2 Offset = pBoxCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f * PPM))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f))
             pBoxCol->SetOffset(Offset);
 
         Vec2 Size = pBoxCol->GetSize();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 1e-3f * PPM))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 1e-3f, 1e-3f, D3D11_FLOAT32_MAX))
             pBoxCol->SetSize(Size);
 
         ImGui::Separator();
@@ -1055,14 +1053,12 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
             pCircleCol->SetTrigger(bTrigger);
 
-        static const float PPM = CPhysics2DMgr::GetInst()->GetPPM();
-
         Vec2 Offset = pCircleCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f * PPM))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f))
             pCircleCol->SetOffset(Offset);
 
         float Radius = pCircleCol->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 1e-3f * PPM))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 1e-3f, 1e-3f, D3D11_FLOAT32_MAX))
             pCircleCol->SetRadius(Radius);
 
         ImGui::Separator();
