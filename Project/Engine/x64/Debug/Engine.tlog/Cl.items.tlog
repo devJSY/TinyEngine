@@ -3,7 +3,6 @@ D:\TinyEngine\Project\Engine\CAnimator2D.cpp;D:\TinyEngine\Project\Engine\x64\De
 D:\TinyEngine\Project\Engine\CAsset.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAsset.obj
 D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr.obj
 D:\TinyEngine\Project\Engine\CAssetMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr_init.obj
-D:\TinyEngine\Project\Engine\CBlackboard.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBlackboard.obj
 D:\TinyEngine\Project\Engine\CBlueprintEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBlueprintEditor.obj
 D:\TinyEngine\Project\Engine\CBoxCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBoxCollider2D.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCamera.obj
@@ -18,7 +17,6 @@ D:\TinyEngine\Project\Engine\CEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\
 D:\TinyEngine\Project\Engine\CEditorMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEditorMgr.obj
 D:\TinyEngine\Project\Engine\CEngine.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEngine.obj
 D:\TinyEngine\Project\Engine\CEntity.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEntity.obj
-D:\TinyEngine\Project\Engine\CFSM.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CFSM.obj
 D:\TinyEngine\Project\Engine\CGameObject.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGameObject.obj
 D:\TinyEngine\Project\Engine\CGameObjectEx.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGameObjectEx.obj
 D:\TinyEngine\Project\Engine\CGrabageCollector.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CGrabageCollector.obj
@@ -53,8 +51,6 @@ D:\TinyEngine\Project\Engine\CSkyBox.cpp;D:\TinyEngine\Project\Engine\x64\Debug\
 D:\TinyEngine\Project\Engine\CSound.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSound.obj
 D:\TinyEngine\Project\Engine\CSoundEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSoundEditor.obj
 D:\TinyEngine\Project\Engine\CSpriteEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSpriteEditor.obj
-D:\TinyEngine\Project\Engine\CState.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CState.obj
-D:\TinyEngine\Project\Engine\CStateMachine.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CStateMachine.obj
 D:\TinyEngine\Project\Engine\CStructuredBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CStructuredBuffer.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTaskMgr.obj
 D:\TinyEngine\Project\Engine\CTexture.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTexture.obj

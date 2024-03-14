@@ -9,7 +9,6 @@
 #include "CLight3D.h"
 
 #include "CCamera.h"
-#include "CStateMachine.h"
 
 #include "CRigidbody2D.h"
 #include "CBoxCollider2D.h"

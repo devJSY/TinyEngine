@@ -443,7 +443,6 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawLight2D(obj);
     DrawLight3D(obj);
     DrawCamera(obj);
-    DrawStateMachine(obj);
     DrawRigidbody2D(obj);
     DrawBoxCollider2D(obj);
     DrawCircleCollider2D(obj);
@@ -883,45 +882,6 @@ void COutliner::DrawCamera(CGameObject* obj)
         bool bHDRI = pCam->IsHDRI();
         if (ImGui::Checkbox(ImGui_LabelPrefix("HDRI").c_str(), &bHDRI))
             pCam->SetHDRI(bHDRI);
-
-        ImGui::TreePop();
-    }
-}
-
-void COutliner::DrawStateMachine(CGameObject* obj)
-{
-    CStateMachine* pStateMachine = obj->StateMachine();
-    if (nullptr == pStateMachine)
-        return;
-
-    bool open =
-        ImGui::TreeNodeEx((void*)typeid(CStateMachine).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::STATEMACHINE]);
-
-    ComponentSettingsButton(pStateMachine);
-
-    if (open)
-    {
-        // FSM
-        string FSMName = string();
-        Ptr<CFSM> pFSM = pStateMachine->GetFSM();
-
-        if (nullptr != pFSM)
-            FSMName = ToString(pFSM->GetName());
-
-        ImGui_InputText("FSM", FSMName);
-
-        // Drag & Drop
-        if (ImGui::BeginDragDropTarget())
-        {
-            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
-            {
-                string name = (char*)payload->Data;
-                name.resize(payload->DataSize);
-                pStateMachine->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(ToWstring(name)));
-            }
-
-            ImGui::EndDragDropTarget();
-        }
 
         ImGui::TreePop();
     }

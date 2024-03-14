@@ -22,9 +22,6 @@
     <ClInclude Include="CGroundScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemyScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -46,9 +43,6 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CGroundScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CEnemyScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

@@ -35,7 +35,6 @@ public:
     GET_OTHER_COMPONENT(Light2D);
     GET_OTHER_COMPONENT(Light3D);
     GET_OTHER_COMPONENT(Camera);
-    GET_OTHER_COMPONENT(StateMachine);
     GET_OTHER_COMPONENT(Rigidbody2D);
     GET_OTHER_COMPONENT(BoxCollider2D);
     GET_OTHER_COMPONENT(CircleCollider2D);

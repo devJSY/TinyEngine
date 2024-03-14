@@ -11,7 +11,6 @@
 #include "CMaterial.h"
 #include "CSound.h"
 #include "CPhysics2DMaterial.h"
-#include "CFSM.h"
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
@@ -116,8 +115,6 @@ ASSET_TYPE GetAssetType()
         Type = ASSET_TYPE::SOUND;
     if constexpr (std::is_same_v<CPhysics2DMaterial, T>)
         Type = ASSET_TYPE::PHYSICS2D_MATERIAL;
-    if constexpr (std::is_same_v<CFSM, T>)
-        Type = ASSET_TYPE::FSM;
 
     return Type;
 }

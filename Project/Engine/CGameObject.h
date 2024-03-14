@@ -16,7 +16,6 @@ class CAnimator2D;
 class Light2D;
 class Light3D;
 class CCamera;
-class StateMachine;
 class MeshRender;
 class CTileMap;
 class CParticleSystem;
@@ -56,7 +55,6 @@ public:
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(Light3D, LIGHT3D);
     GET_COMPONENT(Camera, CAMERA);
-    GET_COMPONENT(StateMachine, STATEMACHINE);
     GET_COMPONENT(Rigidbody2D, RIGIDBODY2D);
     GET_COMPONENT(BoxCollider2D, BOXCOLLIDER2D);
     GET_COMPONENT(CircleCollider2D, CIRCLECOLLIDER2D);

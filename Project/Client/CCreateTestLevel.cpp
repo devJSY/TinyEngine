@@ -11,9 +11,6 @@
 #include <Engine\\CLevelMgr.h>
 #include <Scripts\\CScriptMgr.h>
 
-#include "CIdleState.h"
-#include "CTraceState.h"
-
 void CCreateTestLevel::Init()
 {
     //// 공포탄
@@ -31,14 +28,6 @@ void CCreateTestLevel::Init()
     // CAssetMgr::GetInst()->AddAsset<CPrefab>(L"ShockWavePrefab", pMissilePrefab.Get());
 
     // pMissilePrefab->Save(L"prefab\\ShockWavePrefab.pref");
-
-    // 임시 FSM 객체 에셋 하나 생성하기
-    Ptr<CFSM> pFSM = new CFSM(true);
-
-    pFSM->AddState(L"IdleState", new CIdleState);
-    pFSM->AddState(L"TraceState", new CTraceState);
-
-    CAssetMgr::GetInst()->AddAsset(L"NormalMonsterFSM", pFSM);
 }
 
 void CCreateTestLevel::CreateTestLevel()
