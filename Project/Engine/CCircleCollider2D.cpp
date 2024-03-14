@@ -26,7 +26,7 @@ void CCircleCollider2D::finaltick()
 
     Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
 
-    Vec3 color = m_CollisionCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+    Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
     GamePlayStatic::DrawDebugCircle(matScale * matTranslation * matInvScale * matWorld, color, false);
 }

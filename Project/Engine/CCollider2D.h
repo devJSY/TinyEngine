@@ -11,6 +11,7 @@ protected:
     Vec2 m_Offset;
 
     int m_CollisionCount;
+    int m_TriggerCount;
 
 private:
     Vec3 m_PrevScale;

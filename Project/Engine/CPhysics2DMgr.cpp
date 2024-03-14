@@ -20,13 +20,15 @@ void CollisionCallback::BeginContact(b2Contact* contact)
     CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
     CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
 
-    pColliderA->OnCollisionEnter(pColliderB);
-    pColliderB->OnCollisionEnter(pColliderA);
-
     if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
     {
         pColliderA->OnTriggerEnter(pColliderB);
         pColliderB->OnTriggerEnter(pColliderA);
+    }
+    else
+    {
+        pColliderA->OnCollisionEnter(pColliderB);
+        pColliderB->OnCollisionEnter(pColliderA);
     }
 }
 
@@ -35,13 +37,15 @@ void CollisionCallback::EndContact(b2Contact* contact)
     CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
     CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
 
-    pColliderA->OnCollisionExit(pColliderB);
-    pColliderB->OnCollisionExit(pColliderA);
-
     if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
     {
         pColliderA->OnTriggerExit(pColliderB);
         pColliderB->OnTriggerExit(pColliderA);
+    }
+    else
+    {
+        pColliderA->OnCollisionExit(pColliderB);
+        pColliderB->OnCollisionExit(pColliderA);
     }
 }
 
@@ -98,20 +102,19 @@ void CPhysics2DMgr::tick()
         CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
         CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
 
-        if (pColliderA->m_CollisionCount > 0)
+        if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
         {
-            pColliderA->OnCollisionStay(pColliderB);
-
-            if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
+            if (pColliderA->m_TriggerCount > 0)
                 pColliderA->OnTriggerStay(pColliderB);
-        }
-
-        if (pColliderB->m_CollisionCount > 0)
-        {
-            pColliderB->OnCollisionStay(pColliderA);
-
-            if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
+            if (pColliderB->m_TriggerCount > 0)
                 pColliderB->OnTriggerStay(pColliderA);
+        }
+        else
+        {
+            if (pColliderA->m_CollisionCount > 0)
+                pColliderA->OnCollisionStay(pColliderB);
+            if (pColliderB->m_CollisionCount > 0)
+                pColliderB->OnCollisionStay(pColliderA);
         }
 
         contact = contact->GetNext();

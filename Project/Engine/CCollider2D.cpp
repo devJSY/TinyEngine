@@ -12,6 +12,7 @@ CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
     , m_Mtrl(nullptr)
     , m_bTrigger(false)
     , m_Offset(Vec2(0.f, 0.f))
+    , m_TriggerCount(0)
     , m_CollisionCount(0)
     , m_PrevScale()
 {
@@ -92,6 +93,8 @@ void CCollider2D::OnCollisionExit(CCollider2D* _OtherCollider)
 
 void CCollider2D::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
+    ++m_TriggerCount;
+
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnTriggerEnter(_OtherCollider);
@@ -106,6 +109,8 @@ void CCollider2D::OnTriggerStay(CCollider2D* _OtherCollider)
 
 void CCollider2D::OnTriggerExit(CCollider2D* _OtherCollider)
 {
+    --m_TriggerCount;
+
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnTriggerExit(_OtherCollider);

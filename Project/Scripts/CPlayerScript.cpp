@@ -164,26 +164,32 @@ void CPlayerScript::tick()
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
+    LOG(Log, "OnCollisionEnter");
 }
 
 void CPlayerScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
+    LOG(Log, "OnCollisionStay");
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _OtherCollider)
 {
+    LOG(Log, "OnCollisionExit");
 }
 
 void CPlayerScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
+    LOG(Log, "OnTriggerEnter");
 }
 
 void CPlayerScript::OnTriggerStay(CCollider2D* _OtherCollider)
 {
+    LOG(Log, "OnTriggerStay");
 }
 
 void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 {
+    LOG(Log, "OnTriggerExit");
 }
 
 void CPlayerScript::SaveToLevelFile(FILE* _File)
