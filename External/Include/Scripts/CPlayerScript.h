@@ -4,8 +4,8 @@
 class CPlayerScript : public CScript
 {
 private:
-    Ptr<CPrefab> m_ShockWave;
     float m_Speed;
+    float m_Force;
 
 public:
     virtual void begin() override;

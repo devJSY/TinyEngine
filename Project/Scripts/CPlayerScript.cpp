@@ -6,7 +6,10 @@
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
     , m_Speed(10.f)
+    , m_Force(1.f)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Force, "Force");
 }
 
 CPlayerScript::~CPlayerScript()
@@ -144,20 +147,12 @@ void CPlayerScript::tick()
 
         if (KEY_TAP(KEY::SPACE))
         {
-            Rigidbody2D()->AddForce(Vec2(0.f, 5.f), ForceMode2D::Impulse);
+            Rigidbody2D()->AddForce(Vec2(0.f, m_Force), ForceMode2D::Impulse);
         }
 
         if (KEY_TAP(KEY::TAB))
         {
-            Rigidbody2D()->AddTorque(-1.f, ForceMode2D::Impulse);
-        }
-
-        if (KEY_TAP(KEY::O))
-        {
-            CGameObject* pObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Test.pref", L"prefab\\Test.pref")->Instantiate();
-            pObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 5.f, 0.f));
-            pObj->AddComponent(CScriptMgr::GetScript(GROUNDSCRIPT));
-            GamePlayStatic::SpawnGameObject(pObj, 0);
+            Rigidbody2D()->AddTorque(m_Force, ForceMode2D::Impulse);
         }
     }
 }
@@ -195,9 +190,11 @@ void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 void CPlayerScript::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Speed, sizeof(float), 1, _File);
+    fwrite(&m_Force, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Speed, sizeof(float), 1, _File);
+    fread(&m_Force, sizeof(float), 1, _File);
 }

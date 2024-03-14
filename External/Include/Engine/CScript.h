@@ -6,13 +6,34 @@
 #include "CGameObject.h"
 #include "components.h"
 
+enum class SCRIPT_PARAM
+{
+    INT,
+    FLOAT,
+    VEC2,
+    VEC3,
+    VEC4,
+};
+
+struct tScriptParam
+{
+    SCRIPT_PARAM eParam;
+    void* pData;
+    string strDesc;
+};
+
 class CScript : public CComponent
 {
 private:
     const UINT m_ScriptType;
+    vector<tScriptParam> m_vecParam;
 
 public:
     UINT GetScriptType() const { return m_ScriptType; }
+    const vector<tScriptParam>& GetScritpParam() { return m_vecParam; }
+
+protected:
+    void AddScriptParam(SCRIPT_PARAM eParam, void* _pData, const string& _Desc) { m_vecParam.push_back(tScriptParam{eParam, _pData, _Desc}); }
 
 public:
     virtual void finaltick() final {}

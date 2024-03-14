@@ -1638,6 +1638,30 @@ void COutliner::DrawScript(CGameObject* obj)
         {
             ImGui_InputText("Name", ToString(CScriptMgr::GetScriptName(vecScript[i])));
 
+            const vector<tScriptParam>& ScriptParams = vecScript[i]->GetScritpParam();
+
+            for (int i = 0; i < ScriptParams.size(); i++)
+            {
+                switch (ScriptParams[i].eParam)
+                {
+                case SCRIPT_PARAM::INT:
+                    ImGui::DragInt(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (int*)ScriptParams[i].pData);
+                    break;
+                case SCRIPT_PARAM::FLOAT:
+                    ImGui::DragFloat(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    break;
+                case SCRIPT_PARAM::VEC2:
+                    ImGui::DragFloat2(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    break;
+                case SCRIPT_PARAM::VEC3:
+                    ImGui::DragFloat3(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    break;
+                case SCRIPT_PARAM::VEC4:
+                    ImGui::DragFloat4(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    break;
+                }
+            }
+
             ImGui::TreePop();
         }
     }
