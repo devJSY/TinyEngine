@@ -146,8 +146,6 @@ void CPhysics2DMgr::tick()
 
 void CPhysics2DMgr::OnPhysics2DStart()
 {
-    OnPhysics2DStop(); // Clear
-
     m_PhysicsWorld = new b2World({0.0f, -9.8f});
     m_PhysicsWorld->SetContactListener(&m_CallbackInst);
 
@@ -182,6 +180,20 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
 void CPhysics2DMgr::OnPhysics2DStop()
 {
+    for (size_t i = 0; i < m_vecPhysicsObj.size(); i++)
+    {
+        CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
+        CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
+        CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+
+        if (nullptr != rb2d)
+            rb2d->m_RuntimeBody = nullptr;
+        if (nullptr != bc2d)
+            bc2d->m_RuntimeFixture = nullptr;
+        if (nullptr != cc2d)
+            cc2d->m_RuntimeFixture = nullptr;
+    }
+
     if (nullptr != m_PhysicsWorld)
     {
         delete m_PhysicsWorld;
@@ -312,8 +324,18 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
         else if (nullptr != cc2d)
             body = ((b2Fixture*)cc2d->m_RuntimeFixture)->GetBody();
 
+        assert(body);
+
         m_PhysicsWorld->DestroyBody(body);
         m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
+
+        if (nullptr != rb2d)
+            rb2d->m_RuntimeBody = nullptr;
+        if (nullptr != bc2d)
+            bc2d->m_RuntimeFixture = nullptr;
+        if (nullptr != cc2d)
+            cc2d->m_RuntimeFixture = nullptr;
+
         break;
     }
 }
@@ -364,9 +386,10 @@ void CPhysics2DMgr::DisableAllLayer()
 
 CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _point)
 {
+    bool IsRunning = nullptr != m_PhysicsWorld;
     CGameObject* pSelectedObj = nullptr;
 
-    if (nullptr == m_PhysicsWorld)
+    if (!IsRunning)
         OnPhysics2DStart();
 
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
@@ -390,6 +413,9 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _point)
             break;
         }
     }
+
+    if (!IsRunning)
+        OnPhysics2DStop();
 
     return pSelectedObj;
 }

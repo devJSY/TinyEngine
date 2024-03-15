@@ -226,6 +226,7 @@ void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
     LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
 
     CRenderMgr::GetInst()->ClearCamera();
+    CPhysics2DMgr::GetInst()->OnPhysics2DStop();
     CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
 }
 
