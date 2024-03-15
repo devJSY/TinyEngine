@@ -56,14 +56,6 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         if (g_btex_0)
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
-            
-            //saturate 0 ~ 1 을 넘지 않게 보정
-            float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);
-        
-            if (fAlpha < 0.1f)
-            {
-                discard; //clip(-1);            
-            }
         }
     }
     
@@ -123,14 +115,6 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
         if (g_btex_0)
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
-            
-            //saturate 0 ~ 1 을 넘지 않게 보정
-            float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);
-        
-            if (fAlpha < 0.1f)
-            {
-                discard; //clip(-1);            
-            }
         }
     }
     
