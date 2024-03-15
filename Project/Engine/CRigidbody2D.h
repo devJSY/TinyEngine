@@ -69,6 +69,7 @@ public:
 
 public:
     CRigidbody2D();
+    CRigidbody2D(const CRigidbody2D& origin);
     virtual ~CRigidbody2D();
 
     friend class CPhysics2DMgr;

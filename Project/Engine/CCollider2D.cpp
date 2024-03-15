@@ -18,6 +18,18 @@ CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
 {
 }
 
+CCollider2D::CCollider2D(const CCollider2D& origin)
+    : CComponent(origin)
+    , m_RuntimeFixture(nullptr)
+    , m_Mtrl(origin.m_Mtrl)
+    , m_bTrigger(origin.m_bTrigger)
+    , m_Offset(origin.m_Offset)
+    , m_TriggerCount(0)
+    , m_CollisionCount(0)
+    , m_PrevScale()
+{
+}
+
 CCollider2D::~CCollider2D()
 {
 }

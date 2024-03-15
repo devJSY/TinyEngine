@@ -20,6 +20,20 @@ CRigidbody2D::CRigidbody2D()
 {
 }
 
+CRigidbody2D::CRigidbody2D(const CRigidbody2D& origin)
+    : CComponent(origin)
+    , m_RuntimeBody(nullptr)
+    , m_BodyType(origin.m_BodyType)
+    , m_bSimulated(origin.m_bSimulated)
+    , m_bAutoMass(origin.m_bAutoMass)
+    , m_Mass(origin.m_Mass)
+    , m_LinearDrag(origin.m_LinearDrag)
+    , m_AngularDrag(origin.m_AngularDrag)
+    , m_GravityScale(origin.m_GravityScale)
+    , m_bFreezeRotation(origin.m_bFreezeRotation)
+{
+}
+
 CRigidbody2D::~CRigidbody2D()
 {
 }

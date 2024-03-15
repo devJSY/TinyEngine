@@ -46,6 +46,7 @@ public:
 
 public:
     CCollider2D(COMPONENT_TYPE _Type);
+    CCollider2D(const CCollider2D& origin);
     virtual ~CCollider2D();
 
     friend class CPhysics2DMgr;
