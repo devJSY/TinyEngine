@@ -58,28 +58,16 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
         }
     }
-    
-    // 광원 처리
-    // 광원의 타입별 처리
-    // 광원이 여러개일 때 처리
-    tLightInfo LightColor = (tLightInfo) 0.f;
-    
-    for (uint i = 0; i < g_Light2DCount; ++i)
-    {
-        CalLight2D(_in.vPosWorld, i, LightColor);
-    }
-    
-    vColor.rgb *= LightColor.vRadiance.rgb;
-    
+  
     if (0.1f >= vColor.a)
         discard;
-            
+    
+    vColor.a = 1.f;
+    
     return vColor;
 }
 
-
-// EffectShader
-float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
+float4 PS_Std2D_Light(PS_IN _in) : SV_Target
 {
     float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
     vColor = float4(MtrlAlbedo.rgb, 1.0);
@@ -122,13 +110,19 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
     // 광원의 타입별 처리
     // 광원이 여러개일 때 처리
     tLightInfo LightColor = (tLightInfo) 0.f;
+    
     for (uint i = 0; i < g_Light2DCount; ++i)
     {
         CalLight2D(_in.vPosWorld, i, LightColor);
     }
     
     vColor.rgb *= LightColor.vRadiance.rgb;
-
+    
+    if (0.1f >= vColor.a)
+        discard;
+            
+    vColor.a = 1.f;
+    
     return vColor;
 }
 

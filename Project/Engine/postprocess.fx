@@ -19,7 +19,7 @@ struct VS_Output
 // ==========
 // GrayFilter
 // ==========
-VS_Output VS_GrayFilter(VS_Input _in)
+VS_Output VS_Postprocess(VS_Input _in)
 {
     VS_Output output = (VS_Output) 0.f;
     
@@ -42,10 +42,25 @@ float4 PS_GrayFilter(VS_Output _in) : SV_Target
     return vColor;
 }
 
+#define BlendColor g_vec4_0
+
+float4 PS_BlendFilter(VS_Output _in) : SV_Target
+{
+    float4 vColor = (float4) 0.f;
+    
+    vColor = g_postprocess_Tex.Sample(g_LinearWrapSampler, _in.vUV);
+    
+    float Alpha = g_vec4_0.a;
+
+    float3 color = (vColor.rgb * (1.f - Alpha)) + (BlendColor.rgb * Alpha);
+    
+    return float4(color, 1.f);
+}
+
 // ==========
 // Distortion
 // ==========
-VS_Output VS_Distortion(VS_Input _in)
+VS_Output VS_Postprocess_World(VS_Input _in)
 {
     VS_Output output = (VS_Output) 0.f;
     

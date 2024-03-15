@@ -176,28 +176,28 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
-    // EffectShader
+    // Std2DLightShader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
-        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Effect");
+        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Light");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-        pShader->AddTexParam(TEX_0, "Effect Texture");
+        pShader->AddTexParam(TEX_0, "Texture");
 
-        pShader->SetName(L"EffectShader");
-        AddAsset(L"EffectShader", pShader);
+        pShader->SetName(L"Std2DLightShader");
+        AddAsset(L"Std2DLightShader", pShader);
     }
 
-    // =============
+    // =================================
     // TileMapShader
-    // =============
+    // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\Tilemap.fx", "VS_TileMap");
@@ -218,9 +218,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"TileMapShader", pShader);
     }
 
-    // =============
+    // =================================
     // ParticleRender
-    // =============
+    // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader = new CGraphicsShader;
@@ -244,15 +244,10 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
     // =================================
     // GrayFilter Shader
-    // Mesh			: RectMesh
-    // RS_TYPE		: CULL_BACK
-    // DS_TYPE		: NO_TEST_NO_WRITE
-    // BS_TYPE		: Default
-    // Domain		: DOMAIN_POSTPROCESS
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_GrayFilter");
+        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
         pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_GrayFilter");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
@@ -264,16 +259,30 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // BlendFilter Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
+        pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_BlendFilter");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Blend Color");
+
+        pShader->SetName(L"BlendFilterShader");
+        AddAsset(L"BlendFilterShader", pShader);
+    }
+
+    // =================================
     // Distortion Shader
-    // RS_TYPE		: CULL_BACK
-    // DS_TYPE		: NO_TEST_NO_WRITE
-    // BS_TYPE		: Default
-    // Domain		: DOMAIN_POSTPROCESS
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Distortion");
+        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess_World");
         pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Distortion");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -688,6 +697,14 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
     }
 
+    // Std2DLightMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DLightShader"));
+        pMtrl->SetName(L"Std2DLightMtrl");
+        AddAsset<CMaterial>(L"Std2DLightMtrl", pMtrl);
+    }
+
     // TileMapMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -710,6 +727,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"GrayFilterShader"));
         pMtrl->SetName(L"GrayFilterMtrl");
         AddAsset<CMaterial>(L"GrayFilterMtrl", pMtrl);
+    }
+
+    // BlendFilterMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BlendFilterShader"));
+        pMtrl->SetName(L"BlendFilterMtrl");
+        AddAsset<CMaterial>(L"BlendFilterMtrl", pMtrl);
     }
 
     // DistortionMtrl
