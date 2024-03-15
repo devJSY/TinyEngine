@@ -43,6 +43,8 @@ public:
     unsigned short GetCollisionLayer(UINT idx) const { return m_Matrix[idx]; }
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
 
+    CGameObject* CollisionCheck(Vec2 _point);
+
 public:
     const float GetPPM() const { return m_PPM; }
 

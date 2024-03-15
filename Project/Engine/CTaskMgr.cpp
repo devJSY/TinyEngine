@@ -18,6 +18,8 @@
 
 #include "CLevel.h"
 
+#include <box2d\\b2_fixture.h>
+
 #include "CLevelSaveLoad.h"
 
 // stb
@@ -72,14 +74,16 @@ void CTaskMgr::tick()
                     {
                         MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-                        GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
+                        // GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
                         // GamePlayStatic::MouseRayPicking(MousePos); // Ray Picking
+                        GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
                     }
                 }
                 else
                 {
-                    GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
+                    // GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
                     // GamePlayStatic::MouseRayPicking(MousePos); // Ray Picking
+                    GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
                 }
             }
         }
@@ -134,6 +138,9 @@ void CTaskMgr::tick()
             break;
         case TASK_TYPE::MOUSE_RAY_PICKING:
             MOUSE_RAY_PICKING(m_vecTask[i]);
+            break;
+        case TASK_TYPE::MOUSE_COLLISION2D_PICKING:
+            MOUSE_COLLISION2D_PICKING(m_vecTask[i]);
             break;
         case TASK_TYPE::ADD_COMPONENT:
             ADD_COMPONENT(m_vecTask[i]);
@@ -414,11 +421,11 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
     {
         CLayer* pLayer = pCurLevel->GetLayer(i);
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
-        for (size_t i = 0; i < vecObjects.size(); ++i)
+        for (size_t j = 0; j < vecObjects.size(); ++j)
         {
             // 오브젝트 이름 + ID값으로 HashID Find
             hash<wstring> hasher;
-            int HashID = (int)hasher(vecObjects[i]->GetName()) + vecObjects[i]->GetID();
+            int HashID = (int)hasher(vecObjects[j]->GetName()) + vecObjects[j]->GetID();
             Vec4 colorID = HashIDToColor(HashID);
 
             // 0 ~ 1 → 0 ~ 255 범위확장
@@ -429,7 +436,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
             if (m_pickColor[0] == colorIDInt[0] && m_pickColor[1] == colorIDInt[1] && m_pickColor[2] == colorIDInt[2] &&
                 m_pickColor[3] == colorIDInt[3])
             {
-                pSelectedObj = vecObjects[i];
+                pSelectedObj = vecObjects[j];
                 break;
             }
         }
@@ -501,10 +508,10 @@ void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
     //{
     //     CLayer* pLayer = pCurLevel->GetLayer(i);
     //     const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
-    //     for (size_t i = 0; i < vecObjects.size(); ++i)
+    //     for (size_t j = 0; j < vecObjects.size(); ++j)
     //     {
     //         float dist = 0.0f;
-    //         CCollider2D* col = vecObjects[i]->Collider2D();
+    //         CCollider2D* col = vecObjects[j]->Collider2D();
     //         if (nullptr == col)
     //             continue;
 
@@ -516,7 +523,7 @@ void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
 
     //        if (bSelected)
     //        {
-    //            pSelectedObj = vecObjects[i];
+    //            pSelectedObj = vecObjects[j];
     //            break;
     //        }
     //    }
@@ -527,6 +534,53 @@ void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
     //}
 
     // CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
+}
+
+void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
+{
+    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+        return;
+
+    int MouseX = (int)_Task.Param_1;
+    int MouseY = (int)_Task.Param_2;
+
+    float NdcMouseX = 0.0f;
+    float NdcMouseY = 0.0f;
+
+    // 마우스 커서의 위치를 NDC로 변환
+    // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
+    // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+        if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
+            return;
+
+        NdcMouseX = MouseX * 2.0f / ViewportSize.x - 1.0f;
+        NdcMouseY = -MouseY * 2.0f / ViewportSize.y + 1.0f;
+    }
+    else
+    {
+        Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+        NdcMouseX = MouseX * 2.0f / WindowSize.x - 1.0f;
+        NdcMouseY = -MouseY * 2.0f / WindowSize.y + 1.0f;
+    }
+
+    if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
+        return;
+
+    CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
+
+    // Mouse Pos - NDC Near → World
+    Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
+    Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
+    Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
+
+    CGameObject* pSelectedObj = nullptr;
+
+    pSelectedObj = CPhysics2DMgr::GetInst()->CollisionCheck(Vec2(NearWorld.x, NearWorld.y));
+
+    CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 
 void CTaskMgr::ADD_COMPONENT(const tTask& _Task)

@@ -33,6 +33,7 @@ namespace GamePlayStatic
     void ScreenShot();
     void MouseColorPicking(Vec2 MousePos);
     void MouseRayPicking(Vec2 MousePos);
+    void MouseCollision2DPicking(Vec2 MousePos);
 
     void AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type);
     void RemoveComponent(CGameObject* _pObj, COMPONENT_TYPE _type);

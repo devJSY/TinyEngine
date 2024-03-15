@@ -131,54 +131,29 @@ void CPlayerScript::tick()
 
     if (nullptr != Rigidbody2D())
     {
-        /* if (KEY_PRESSED(KEY::UP))
-         {
-             Rigidbody2D()->AddForce(Vec2(0.f, 5.f));
-         }
-
-         if (KEY_PRESSED(KEY::DOWN))
-         {
-             Rigidbody2D()->AddForce(Vec2(0.f, -5.f));
-         }
-
-         if (KEY_PRESSED(KEY::LEFT))
-         {
-             Rigidbody2D()->AddForce(Vec2(-5.f, 0.f));
-         }
-
-         if (KEY_PRESSED(KEY::RIGHT))
-         {
-             Rigidbody2D()->AddForce(Vec2(5.f, 0.f));
-         }
-
-         if (KEY_PRESSED(KEY::RIGHT))
-         {
-             Rigidbody2D()->AddTorque(1.f);
-         }*/
-
-        Vec2 vel = Rigidbody2D()->GetVelocity();
+        Vec3 pos = Transform()->GetRelativePos();
 
         if (KEY_PRESSED(KEY::UP))
         {
-            vel.y += m_Speed * DT;
+            pos.y += m_Speed * DT;
         }
 
         if (KEY_PRESSED(KEY::DOWN))
         {
-            vel.y -= m_Speed * DT;
+            pos.y -= m_Speed * DT;
         }
 
         if (KEY_PRESSED(KEY::LEFT))
         {
-            vel.x -= m_Speed * DT;
+            pos.x -= m_Speed * DT;
         }
 
         if (KEY_PRESSED(KEY::RIGHT))
         {
-            vel.x += m_Speed * DT;
+            pos.x += m_Speed * DT;
         }
 
-        Rigidbody2D()->SetVelocity(vel);
+        Transform()->SetRelativePos(pos);
 
         if (KEY_TAP(KEY::SPACE))
         {

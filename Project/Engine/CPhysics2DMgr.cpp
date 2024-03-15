@@ -146,6 +146,8 @@ void CPhysics2DMgr::tick()
 
 void CPhysics2DMgr::OnPhysics2DStart()
 {
+    OnPhysics2DStop(); // Clear
+
     m_PhysicsWorld = new b2World({0.0f, -9.8f});
     m_PhysicsWorld->SetContactListener(&m_CallbackInst);
 
@@ -180,8 +182,11 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
 void CPhysics2DMgr::OnPhysics2DStop()
 {
-    delete m_PhysicsWorld;
-    m_PhysicsWorld = nullptr;
+    if (nullptr != m_PhysicsWorld)
+    {
+        delete m_PhysicsWorld;
+        m_PhysicsWorld = nullptr;
+    }
 
     m_vecPhysicsObj.clear();
 }
@@ -193,6 +198,11 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 
     CTransform* pTr = _GameObject->Transform();
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
+    CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
+    CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
+
+    if (nullptr == rb2d && nullptr == bc2d && nullptr == cc2d)
+        return;
 
     b2BodyDef bodyDef;
     bodyDef.position.Set(pTr->GetWorldPos().x / m_PPM, pTr->GetWorldPos().y / m_PPM);
@@ -219,7 +229,6 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // Box Collider 2D
-    CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
     if (nullptr != bc2d)
     {
         b2PolygonShape boxShape;
@@ -245,7 +254,6 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // Circle Collider 2D
-    CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
     if (nullptr != cc2d)
     {
         b2CircleShape circleShape;
@@ -352,4 +360,36 @@ void CPhysics2DMgr::DisableAllLayer()
     {
         m_Matrix[i] = 0;
     }
+}
+
+CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _point)
+{
+    CGameObject* pSelectedObj = nullptr;
+
+    if (nullptr == m_PhysicsWorld)
+        OnPhysics2DStart();
+
+    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
+    {
+        CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
+        CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+
+        b2Fixture* fixture = nullptr;
+
+        if (nullptr != bc2d)
+            fixture = (b2Fixture*)bc2d->m_RuntimeFixture;
+        else if (nullptr != cc2d)
+            fixture = (b2Fixture*)cc2d->m_RuntimeFixture;
+
+        if (nullptr == fixture)
+            continue;
+
+        if (fixture->TestPoint(b2Vec2(_point.x / m_PPM, _point.y / m_PPM)))
+        {
+            pSelectedObj = m_vecPhysicsObj[i];
+            break;
+        }
+    }
+
+    return pSelectedObj;
 }

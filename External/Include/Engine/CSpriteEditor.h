@@ -29,7 +29,7 @@ private:
     int m_CellWidth;
     int m_CellHeight;
 
-    bool m_bEmptyErase;
+    bool m_bEmptyAutoErase;
 
 public:
     virtual void init() override;
