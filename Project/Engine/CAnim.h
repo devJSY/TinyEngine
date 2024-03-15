@@ -65,4 +65,5 @@ public:
 
     friend class CAnimator2D;
     friend class CSpriteEditor;
+    friend class COutliner;
 };

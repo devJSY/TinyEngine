@@ -535,10 +535,8 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
             // Frame Index
             int Frmidx = pCurAnim->GetCurFrmIdx();
-            ImGui::Text("Frame Index");
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::SliderInt("##FrmIdx", &Frmidx, 0, (int)vecFrm.size() - 1);
-            ImGui::PopItemFlag();
+            if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &Frmidx, 0, (int)vecFrm.size() - 1))
+                pCurAnim->m_CurFrmIdx = Frmidx;
 
             // Frame Infomation
             ImGui::Text("Frame Infomation");

@@ -71,7 +71,7 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     
     vColor.rgb *= LightColor.vRadiance.rgb;
     
-    if (0.f >= vColor.a)
+    if (0.1f >= vColor.a)
         discard;
             
     return vColor;
