@@ -1,4 +1,5 @@
 CCameraMoveScript
-CGroundScript
+CFontScript
+CGameStartScript
+CLevelChangeScript
 CPlayerScript
-CShockWaveScript

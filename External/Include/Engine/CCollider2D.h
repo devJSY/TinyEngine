@@ -29,6 +29,9 @@ public:
     Vec2 GetOffset() const { return m_Offset; }
     void SetOffset(Vec2 _offset);
 
+public:
+    bool IsCollision(Vec2 _Point);
+
 private:
     void OnCollisionEnter(CCollider2D* _OtherCollider);
     void OnCollisionStay(CCollider2D* _OtherCollider);

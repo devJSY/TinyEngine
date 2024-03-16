@@ -7,20 +7,23 @@
     <ClInclude Include="pch.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CShockWaveScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
-    <ClInclude Include="CGroundScript.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="CGameStartScript.h">
+      <Filter>Scripts\GameStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelChangeScript.h">
+      <Filter>Scripts\LevelChange</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontScript.h">
+      <Filter>Scripts\Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -30,20 +33,23 @@
     <ClCompile Include="Scripts.cpp">
       <Filter>Default</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CShockWaveScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CScriptMgr.cpp">
       <Filter>ScriptMgr</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
-    <ClCompile Include="CGroundScript.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="CGameStartScript.cpp">
+      <Filter>Scripts\GameStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelChangeScript.cpp">
+      <Filter>Scripts\LevelChange</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontScript.cpp">
+      <Filter>Scripts\Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +61,21 @@
     </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\GameStart">
+      <UniqueIdentifier>{f7a4894b-9030-413f-b41a-ef0fea062f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\CameraMove">
+      <UniqueIdentifier>{624e92b2-eef9-499c-b658-6b93bdad80ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Player">
+      <UniqueIdentifier>{37678489-240c-4f73-ac0b-5963570baa58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\LevelChange">
+      <UniqueIdentifier>{4785b723-0f24-41ba-bc4a-477c1053982c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Font">
+      <UniqueIdentifier>{48d85114-c1a7-43b3-9a4b-2950332e1215}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

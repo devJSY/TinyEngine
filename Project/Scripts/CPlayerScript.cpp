@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CPlayerScript.h"
-#include "CShockWaveScript.h"
 #include <Engine\\CAnim.h>
 
 CPlayerScript::CPlayerScript()
@@ -92,43 +91,6 @@ void CPlayerScript::begin()
 
 void CPlayerScript::tick()
 {
-    /*  Vec3 vPos = Transform()->GetRelativePos();
-      Vec3 vRot = Transform()->GetRelativeRotation();
-
-      if (KEY_PRESSED(KEY::UP))
-      {
-          vPos.y += DT * m_Speed;
-      }
-
-      if (KEY_PRESSED(KEY::DOWN))
-      {
-          vPos.y -= DT * m_Speed;
-      }
-
-      if (KEY_PRESSED(KEY::LEFT))
-      {
-          vPos.x -= DT * m_Speed;
-      }
-
-      if (KEY_PRESSED(KEY::RIGHT))
-      {
-          vPos.x += DT * m_Speed;
-      }*/
-
-    //// °øÆ÷Åº »ý¼º
-    // if (KEY_TAP(KEY::Q))
-    //{
-    //     if (nullptr != m_ShockWave)
-    //     {
-    //         CGameObject* pShockWave = m_ShockWave->Instantiate();
-    //         pShockWave->Transform()->SetRelativePos(Transform()->GetRelativePos());
-    //         GamePlayStatic::SpawnGameObject(pShockWave, 14);
-    //     }
-    // }
-
-    // Transform()->SetRelativePos(vPos);
-    // Transform()->SetRelativeRotation(vRot);
-
     if (nullptr != Rigidbody2D())
     {
         Vec3 pos = Transform()->GetRelativePos();
@@ -169,32 +131,26 @@ void CPlayerScript::tick()
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnCollisionEnter");
 }
 
 void CPlayerScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnCollisionStay");
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnCollisionExit");
 }
 
 void CPlayerScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnTriggerEnter");
 }
 
 void CPlayerScript::OnTriggerStay(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnTriggerStay");
 }
 
 void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 {
-    LOG(Log, "OnTriggerExit");
 }
 
 void CPlayerScript::SaveToLevelFile(FILE* _File)

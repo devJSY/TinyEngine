@@ -45,7 +45,7 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 
     // 레벨 이름
     _Level->SetName(_LevelFileName);
-    SaveWString(_Level->GetName(), pFile);
+    SaveWStringToFile(_Level->GetName(), pFile);
 
     // 레벨의 레이어 저장
     for (UINT i = 0; i < LAYER_MAX; ++i)
@@ -66,7 +66,7 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
 {
     // Layer 의 이름 저장
-    SaveWString(_Layer->GetName(), _File);
+    SaveWStringToFile(_Layer->GetName(), _File);
 
     // Layer 가 보유하고 있는 GameObject 들을 저장
     const vector<CGameObject*>& vecObject = _Layer->GetParentObjects();
@@ -83,7 +83,7 @@ void CLevelSaveLoad::SaveLayer(CLayer* _Layer, FILE* _File)
 void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 {
     // GameObject 의 이름을 저장
-    SaveWString(_Obj->GetName(), _File);
+    SaveWStringToFile(_Obj->GetName(), _File);
 
     // 레이어 인덱스 저장
     int layerIdx = _Obj->GetLayerIdx();
@@ -119,7 +119,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 
     for (size_t i = 0; i < vecScripts.size(); ++i)
     {
-        SaveWString(CScriptMgr::GetScriptName(vecScripts[i]), _File);
+        SaveWStringToFile(CScriptMgr::GetScriptName(vecScripts[i]), _File);
         vecScripts[i]->SaveToLevelFile(_File);
     }
 
@@ -166,7 +166,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
     // 레벨의 이름 로드
     CLevel* pLevel = new CLevel;
     wstring strLevelName;
-    LoadWString(strLevelName, pFile);
+    LoadWStringFromFile(strLevelName, pFile);
     pLevel->SetName(strLevelName);
 
     // Layer 로드
@@ -192,7 +192,7 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 {
     // Layer 의 이름 저장
     wstring strLayerName;
-    LoadWString(strLayerName, _File);
+    LoadWStringFromFile(strLayerName, _File);
     _Layer->SetName(strLayerName);
 
     // Layer 가 보유하던 GameObject 들을 불러온다.
@@ -211,7 +211,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 
     // GameObject 의 이름을 로드
     wstring strName;
-    LoadWString(strName, _File);
+    LoadWStringFromFile(strName, _File);
     pObject->SetName(strName);
 
     // 레이어 인덱스 설정
@@ -287,7 +287,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
     for (size_t i = 0; i < ScriptCount; ++i)
     {
         wstring strScriptName;
-        LoadWString(strScriptName, _File);
+        LoadWStringFromFile(strScriptName, _File);
 
         CScript* pScript = CScriptMgr::GetScript(strScriptName);
         pObject->AddComponent(pScript);

@@ -487,20 +487,38 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
     return stagingTexture;
 }
 
-void SaveWString(const wstring& _str, FILE* _File)
+void SaveWStringToFile(const wstring& _str, FILE* _File)
 {
     UINT iLen = (UINT)_str.length();
     fwrite(&iLen, sizeof(UINT), 1, _File);
     fwrite(_str.c_str(), sizeof(wchar_t), _str.length(), _File);
 }
 
-void LoadWString(wstring& _str, FILE* _File)
+void LoadWStringFromFile(wstring& _str, FILE* _File)
 {
     wchar_t szBuffer[256] = {};
 
     UINT iLen = 0;
     fread(&iLen, sizeof(UINT), 1, _File);
     fread(szBuffer, sizeof(wchar_t), iLen, _File);
+
+    _str = szBuffer;
+}
+
+void SaveStringToFile(const string& _str, FILE* _File)
+{
+    UINT iLen = (UINT)_str.length();
+    fwrite(&iLen, sizeof(UINT), 1, _File);
+    fwrite(_str.c_str(), sizeof(char), _str.length(), _File);
+}
+
+void LoadStringFromFile(string& _str, FILE* _File)
+{
+    char szBuffer[256] = {};
+
+    UINT iLen = 0;
+    fread(&iLen, sizeof(UINT), 1, _File);
+    fread(szBuffer, sizeof(char), iLen, _File);
 
     _str = szBuffer;
 }
@@ -516,8 +534,8 @@ void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
     {
         i = 1;
         fwrite(&i, sizeof(i), 1, _File);
-        SaveWString(_Asset->GetKey(), _File);
-        SaveWString(_Asset->GetRelativePath(), _File);
+        SaveWStringToFile(_Asset->GetKey(), _File);
+        SaveWStringToFile(_Asset->GetRelativePath(), _File);
     }
 }
 

@@ -63,8 +63,10 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
 // =====================================
 // Save / Load
 // =====================================
-void SaveWString(const wstring& _str, FILE* _File);
-void LoadWString(wstring& _str, FILE* _File);
+void SaveWStringToFile(const wstring& _str, FILE* _File);
+void LoadWStringFromFile(wstring& _str, FILE* _File);
+void SaveStringToFile(const string& _str, FILE* _File);
+void LoadStringFromFile(string& _str, FILE* _File);
 
 #include "CAssetMgr.h"
 
@@ -78,8 +80,8 @@ void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
 
     if (bAssetExist)
     {
-        SaveWString(_Asset->GetKey(), _File);
-        SaveWString(_Asset->GetRelativePath(), _File);
+        SaveWStringToFile(_Asset->GetKey(), _File);
+        SaveWStringToFile(_Asset->GetRelativePath(), _File);
     }
 }
 
@@ -92,8 +94,8 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
     if (bAssetExist)
     {
         wstring strKey, strRelativePath;
-        LoadWString(strKey, _File);
-        LoadWString(strRelativePath, _File);
+        LoadWStringFromFile(strKey, _File);
+        LoadWStringFromFile(strRelativePath, _File);
 
         _Asset = CAssetMgr::GetInst()->Load<T>(strKey, strRelativePath);
     }

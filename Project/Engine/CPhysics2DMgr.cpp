@@ -384,7 +384,7 @@ void CPhysics2DMgr::DisableAllLayer()
     }
 }
 
-CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _point)
+CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
 {
     bool IsRunning = nullptr != m_PhysicsWorld;
     CGameObject* pSelectedObj = nullptr;
@@ -399,15 +399,13 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _point)
 
         b2Fixture* fixture = nullptr;
 
-        if (nullptr != bc2d)
-            fixture = (b2Fixture*)bc2d->m_RuntimeFixture;
-        else if (nullptr != cc2d)
-            fixture = (b2Fixture*)cc2d->m_RuntimeFixture;
+        if (nullptr != bc2d && bc2d->IsCollision(_Point))
+        {
+            pSelectedObj = m_vecPhysicsObj[i];
+            break;
+        }
 
-        if (nullptr == fixture)
-            continue;
-
-        if (fixture->TestPoint(b2Vec2(_point.x / m_PPM, _point.y / m_PPM)))
+        if (nullptr != cc2d && cc2d->IsCollision(_Point))
         {
             pSelectedObj = m_vecPhysicsObj[i];
             break;

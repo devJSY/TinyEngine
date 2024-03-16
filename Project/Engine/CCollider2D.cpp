@@ -70,6 +70,15 @@ void CCollider2D::SetOffset(Vec2 _offset)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
+bool CCollider2D::IsCollision(Vec2 _Point)
+{
+    if (nullptr == m_RuntimeFixture)
+        return false;
+
+    float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+    return ((b2Fixture*)m_RuntimeFixture)->TestPoint(b2Vec2(_Point.x / PPM, _Point.y / PPM));
+}
+
 void CCollider2D::SetTrigger(bool _trigger)
 {
     m_bTrigger = _trigger;

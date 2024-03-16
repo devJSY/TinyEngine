@@ -222,8 +222,8 @@ void CParticleSystem::LoadFromLevelFile(FILE* _File)
     if (i)
     {
         wstring strKey, strRelativePath;
-        LoadWString(strKey, _File);
-        LoadWString(strRelativePath, _File);
+        LoadWStringFromFile(strKey, _File);
+        LoadWStringFromFile(strRelativePath, _File);
 
         m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(strKey).Get();
     }

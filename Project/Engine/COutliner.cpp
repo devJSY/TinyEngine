@@ -1653,6 +1653,27 @@ void COutliner::DrawScript(CGameObject* obj)
                 case SCRIPT_PARAM::VEC4:
                     ImGui::DragFloat4(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
                     break;
+                case SCRIPT_PARAM::OBJECT: {
+                    CGameObject* pObj = (CGameObject*)ScriptParams[i].pData;
+                    string ObjName = string();
+                    if (nullptr != pObj)
+                        ObjName = ToString(pObj->GetName());
+
+                    ImGui_InputText(ScriptParams[i].strDesc.c_str(), ObjName);
+                }
+                break;
+                case SCRIPT_PARAM::STRING: {
+                    string* pString = (string*)ScriptParams[i].pData;
+
+                    char buffer[256];
+                    memset(buffer, 0, sizeof(buffer));
+                    strcpy_s(buffer, sizeof(buffer), (*pString).c_str());
+                    if (ImGui::InputText(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), buffer, sizeof(buffer)))
+                    {
+                        *pString = buffer;
+                    }
+                }
+                break;
                 }
             }
 

@@ -282,7 +282,7 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
 void CAnim::SaveToLevelFile(FILE* _File)
 {
     // 애니메이션 이름 저장
-    SaveWString(GetName(), _File);
+    SaveWStringToFile(GetName(), _File);
 
     // 모든 프레임 정보 저장
     size_t FrameCount = m_vecFrm.size();
@@ -300,7 +300,7 @@ void CAnim::LoadFromLevelFile(FILE* _File)
 {
     // 애니메이션 이름 로드
     wstring name;
-    LoadWString(name, _File);
+    LoadWStringFromFile(name, _File);
     SetName(name);
 
     // 모든 프레임 정보 로드

@@ -89,6 +89,7 @@ void CEngine::progress()
     // Level Render
     CRenderMgr::GetInst()->render();
     CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
+    CFontMgr::GetInst()->render();
 
     // Present
     CDevice::GetInst()->Present();

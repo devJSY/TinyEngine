@@ -19,7 +19,7 @@ CRenderMgr::CRenderMgr()
     , m_Light2DBuffer(nullptr)
     , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
-    , m_bShowDebugRender(true)
+    , m_bShowDebugRender(false)
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)

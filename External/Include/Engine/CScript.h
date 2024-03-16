@@ -13,6 +13,8 @@ enum class SCRIPT_PARAM
     VEC2,
     VEC3,
     VEC4,
+    OBJECT,
+    STRING,
 };
 
 struct tScriptParam

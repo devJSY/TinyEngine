@@ -127,7 +127,7 @@ void CAnimator2D::SaveToLevelFile(FILE* _File)
     {
         strCurAnimName = m_CurAnim->GetName();
     }
-    SaveWString(strCurAnimName, _File);
+    SaveWStringToFile(strCurAnimName, _File);
 
     fwrite(&m_bRepeat, sizeof(bool), 1, _File);
 }
@@ -147,7 +147,7 @@ void CAnimator2D::LoadFromLevelFile(FILE* _File)
     }
 
     wstring strCurAnimName;
-    LoadWString(strCurAnimName, _File);
+    LoadWStringFromFile(strCurAnimName, _File);
 
     m_CurAnim = FindAnim(strCurAnimName);
 
