@@ -190,7 +190,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
 
 void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 {
-    // Layer 의 이름 저장
+    // Layer 의 이름 로드
     wstring strLayerName;
     LoadWStringFromFile(strLayerName, _File);
     _Layer->SetName(strLayerName);

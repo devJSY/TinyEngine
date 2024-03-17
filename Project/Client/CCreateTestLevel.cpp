@@ -42,18 +42,6 @@ void CCreateTestLevel::CreateTestLevel()
         pCurLevel->GetLayer(i)->SetName(Name);
     }
 
-    pCurLevel->GetLayer(0)->SetName(L"Default");
-    pCurLevel->GetLayer(1)->SetName(L"Camera");
-    pCurLevel->GetLayer(2)->SetName(L"Light");
-    pCurLevel->GetLayer(3)->SetName(L"Player");
-    pCurLevel->GetLayer(4)->SetName(L"Monster");
-    pCurLevel->GetLayer(5)->SetName(L"Bullet");
-    pCurLevel->GetLayer(6)->SetName(L"Effect");
-    pCurLevel->GetLayer(7)->SetName(L"Tile");
-    pCurLevel->GetLayer(13)->SetName(L"BackGround");
-    pCurLevel->GetLayer(14)->SetName(L"PostProcess");
-    pCurLevel->GetLayer(15)->SetName(L"UI");
-
     CGameObject* pCamObj = new CGameObject;
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
@@ -64,7 +52,7 @@ void CCreateTestLevel::CreateTestLevel()
     pCamObj->Camera()->LayerMask(pCurLevel, L"UI", false);
     pCamObj->Camera()->SetHDRI(false);
 
-    pCurLevel->AddObject(pCamObj, L"Camera");
+    pCurLevel->AddObject(pCamObj, 0);
 
     // UI ¸¸ ·»´õ¸µ
     pCamObj = new CGameObject;
@@ -75,7 +63,7 @@ void CCreateTestLevel::CreateTestLevel()
     pCamObj->Camera()->SetCameraPriority(1);
     pCamObj->Camera()->LayerMask(pCurLevel, L"UI", true);
 
-    pCurLevel->AddObject(pCamObj, L"Camera");
+    pCurLevel->AddObject(pCamObj, 0);
 
     // Player
     CGameObject* pPlayer = new CGameObject;
@@ -91,7 +79,7 @@ void CCreateTestLevel::CreateTestLevel()
     pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 
-    pCurLevel->AddObject(pPlayer, L"Player");
+    pCurLevel->AddObject(pPlayer, 0);
 
     // ±¤¿ø Ãß°¡
     CGameObject* pLight = new CGameObject;
@@ -102,7 +90,7 @@ void CCreateTestLevel::CreateTestLevel()
 
     pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 
-    pCurLevel->AddObject(pLight, L"Light");
+    pCurLevel->AddObject(pLight, 0);
 
     GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::STOP);
 }

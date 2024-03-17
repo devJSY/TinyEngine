@@ -8,7 +8,7 @@
 
 CCameraMoveScript::CCameraMoveScript()
     : CScript(CAMERAMOVESCRIPT)
-    , m_CamSpeed(5.f)
+    , m_CamSpeed(50.f)
     , m_bFocus(false)
 {
 }

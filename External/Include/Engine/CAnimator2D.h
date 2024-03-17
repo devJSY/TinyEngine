@@ -24,6 +24,7 @@ public:
 
     CAnim* FindAnim(const wstring& _strAnimName);
     void Play(const wstring& _strAnimName, bool _bRepeat = true);
+    bool IsFinish() const;
 
 private:
     bool DeleteAnim(const wstring& _strAnimName);

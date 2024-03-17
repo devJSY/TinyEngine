@@ -40,6 +40,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
     , m_bShowCollisionMatrix(false)
+    , m_bShowTagsAndLayers(false)
     , m_bShowEditor{}
     , m_PlayButtonTex()
     , m_SimulateButtonTex()
@@ -179,6 +180,9 @@ void CLevelEditor::render()
     if (m_bShowCollisionMatrix)
         render_CollisionMatrix();
 
+    if (m_bShowTagsAndLayers)
+        render_TagsAndLayers();
+
     //// ImGUI Demo
     // bool show_demo_window = true;
     // if (show_demo_window)
@@ -279,6 +283,9 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Collision Matrix", NULL, m_bShowCollisionMatrix))
                 m_bShowCollisionMatrix = !m_bShowCollisionMatrix;
+
+            if (ImGui::MenuItem("Tags & Layers", NULL, m_bShowTagsAndLayers))
+                m_bShowTagsAndLayers = !m_bShowTagsAndLayers;
 
             ImGui::EndMenu();
         }
@@ -783,6 +790,49 @@ void CLevelEditor::render_CollisionMatrix()
             ImGui::PopID();
         }
         ImGui::EndTable();
+    }
+
+    ImGui::End();
+}
+
+void CLevelEditor::render_TagsAndLayers()
+{
+    ImGui_SetWindowClass(GetEditorType());
+    if (!ImGui::Begin("Tags & Layers", &m_bShowTagsAndLayers))
+    {
+        ImGui::End();
+        return;
+    }
+
+    // Tags
+    if (ImGui::TreeNodeEx("Tags##LevelEditor", 0, "Tags"))
+    {
+
+        ImGui::TreePop();
+    }
+
+    // Layers
+    if (ImGui::TreeNodeEx("Layers##LevelEditor", 0, "Layers"))
+    {
+        CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+        for (UINT i = 0; i < LAYER_MAX; i++)
+        {
+            CLayer* pCurLayer = pCurLevel->GetLayer(i);
+
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            string LayerName = ToString(pCurLayer->GetName());
+            strcpy_s(buffer, sizeof(buffer), LayerName.c_str());
+
+            string label = "User Layer ";
+            label += std::to_string(i);
+            if (ImGui::InputText(ImGui_LabelPrefix(label.c_str()).c_str(), buffer, sizeof(buffer)))
+            {
+                pCurLayer->SetName(ToWstring(buffer));
+            }
+        }
+
+        ImGui::TreePop();
     }
 
     ImGui::End();

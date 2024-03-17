@@ -112,6 +112,14 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
     m_CurAnim->Reset();
 }
 
+bool CAnimator2D::IsFinish() const
+{
+    if (nullptr == m_CurAnim)
+        return false;
+
+    return m_CurAnim->IsFinish();
+}
+
 void CAnimator2D::SaveToLevelFile(FILE* _File)
 {
     size_t AnimCount = m_mapAnim.size();

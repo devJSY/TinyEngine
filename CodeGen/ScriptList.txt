@@ -1,5 +1,6 @@
+CButtonScript
 CCameraMoveScript
 CFontScript
-CGameStartScript
 CLevelChangeScript
+CPlayButtonScript
 CPlayerScript

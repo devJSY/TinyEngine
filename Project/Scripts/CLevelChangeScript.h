@@ -3,8 +3,14 @@
 
 class CLevelChangeScript : public CScript
 {
+private:
+    string m_ChangeLevelName;
+
 public:
     virtual void tick() override;
+
+public:
+    void ChangeLevel(const std::string& LevelName);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override{};

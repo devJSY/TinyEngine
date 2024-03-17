@@ -26,6 +26,7 @@ private:
     bool m_bShowAssets;
     bool m_bShowOutputLog;
     bool m_bShowCollisionMatrix;
+    bool m_bShowTagsAndLayers;
 
     bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
 
@@ -49,9 +50,10 @@ private:
     void render_WorldSettings();
     void render_Viewport();
     void render_ImGuizmo();
-    void render_CollisionMatrix();
     void render_Toolbar();
     void render_Assets();
+    void render_CollisionMatrix();
+    void render_TagsAndLayers();
 
 private:
     void CreateAssetModal();

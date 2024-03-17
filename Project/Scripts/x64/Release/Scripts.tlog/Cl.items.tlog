@@ -1,8 +1,9 @@
+D:\TinyEngine\Project\Scripts\CButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CButtonScript.obj
 D:\TinyEngine\Project\Scripts\CCameraMoveScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CCameraMoveScript.obj
-D:\TinyEngine\Project\Scripts\CGameStartScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGameStartScript.obj
-D:\TinyEngine\Project\Scripts\CGroundScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGroundScript.obj
+D:\TinyEngine\Project\Scripts\CFontScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CFontScript.obj
+D:\TinyEngine\Project\Scripts\CLevelChangeScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CLevelChangeScript.obj
+D:\TinyEngine\Project\Scripts\CPlayButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayButtonScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerScript.obj
 D:\TinyEngine\Project\Scripts\CScriptMgr.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CScriptMgr.obj
-D:\TinyEngine\Project\Scripts\CShockWaveScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CShockWaveScript.obj
 D:\TinyEngine\Project\Scripts\pch.cpp;D:\TinyEngine\Project\Scripts\x64\Release\pch.obj
 D:\TinyEngine\Project\Scripts\Scripts.cpp;D:\TinyEngine\Project\Scripts\x64\Release\Scripts.obj

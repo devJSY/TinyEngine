@@ -1,6 +1,11 @@
 #pragma once
 #include <Engine\\CScript.h>
 
+enum class PLYAER_STATE
+{
+
+};
+
 class CPlayerScript : public CScript
 {
 private:

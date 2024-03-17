@@ -13,9 +13,6 @@
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
-    <ClInclude Include="CGameStartScript.h">
-      <Filter>Scripts\GameStart</Filter>
-    </ClInclude>
     <ClInclude Include="CLevelChangeScript.h">
       <Filter>Scripts\LevelChange</Filter>
     </ClInclude>
@@ -24,6 +21,12 @@
     </ClInclude>
     <ClInclude Include="CFontScript.h">
       <Filter>Scripts\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonScript.h">
+      <Filter>Scripts\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayButtonScript.h">
+      <Filter>Scripts\Button\PlayButton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -39,9 +42,6 @@
     <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
-    <ClCompile Include="CGameStartScript.cpp">
-      <Filter>Scripts\GameStart</Filter>
-    </ClCompile>
     <ClCompile Include="CLevelChangeScript.cpp">
       <Filter>Scripts\LevelChange</Filter>
     </ClCompile>
@@ -50,6 +50,12 @@
     </ClCompile>
     <ClCompile Include="CFontScript.cpp">
       <Filter>Scripts\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtonScript.cpp">
+      <Filter>Scripts\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayButtonScript.cpp">
+      <Filter>Scripts\Button\PlayButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +68,6 @@
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\GameStart">
-      <UniqueIdentifier>{f7a4894b-9030-413f-b41a-ef0fea062f02}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\CameraMove">
       <UniqueIdentifier>{624e92b2-eef9-499c-b658-6b93bdad80ef}</UniqueIdentifier>
     </Filter>
@@ -76,6 +79,12 @@
     </Filter>
     <Filter Include="Scripts\Font">
       <UniqueIdentifier>{48d85114-c1a7-43b3-9a4b-2950332e1215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Button">
+      <UniqueIdentifier>{f7a4894b-9030-413f-b41a-ef0fea062f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Button\PlayButton">
+      <UniqueIdentifier>{73404372-d392-4eb9-b27d-9bddd8fa3502}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

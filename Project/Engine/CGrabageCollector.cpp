@@ -14,7 +14,7 @@ CGrabageCollector::~CGrabageCollector()
 
 void CGrabageCollector::tick()
 {
-    if (100 < m_vecEntity.size())
+    if (10 < m_vecEntity.size())
     {
         Delete_Vec(m_vecEntity);
     }
