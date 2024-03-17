@@ -28,6 +28,12 @@
     <ClInclude Include="CPlayButtonScript.h">
       <Filter>Scripts\Button\PlayButton</Filter>
     </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerCameraScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -57,6 +63,9 @@
     <ClCompile Include="CPlayButtonScript.cpp">
       <Filter>Scripts\Button\PlayButton</Filter>
     </ClCompile>
+    <ClCompile Include="CPlayerCameraScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -85,6 +94,9 @@
     </Filter>
     <Filter Include="Scripts\Button\PlayButton">
       <UniqueIdentifier>{73404372-d392-4eb9-b27d-9bddd8fa3502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{c2a22188-4ce0-47f7-9f8e-01d22372aefe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
