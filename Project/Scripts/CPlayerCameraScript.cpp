@@ -20,3 +20,13 @@ void CPlayerCameraScript::tick()
         Transform()->SetRelativePos(pPlayer->Transform()->GetRelativePos() + m_OffsetPos);
     }
 }
+
+void CPlayerCameraScript::SaveToLevelFile(FILE* _File)
+{
+    fwrite(&m_OffsetPos, sizeof(Vec3), 1, _File);
+}
+
+void CPlayerCameraScript::LoadFromLevelFile(FILE* _File)
+{
+    fread(&m_OffsetPos, sizeof(Vec3), 1, _File);
+}

@@ -93,12 +93,6 @@ void CPlayerScript::begin()
 
 void CPlayerScript::tick()
 {
-    // Direction
-    if (DIRECTION_TYPE::LEFT == m_Dir)
-        Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
-    else
-        Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-
     // FSM
     switch (m_State)
     {
@@ -304,6 +298,11 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::IdleUturn: {
+        // Direction
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
+        else
+            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case PLAYER_STATE::Jump_Falling: {
@@ -319,6 +318,11 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::RunUturn: {
+        // Direction
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
+        else
+            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case PLAYER_STATE::RunToIdle: {
@@ -374,18 +378,31 @@ void CPlayerScript::ExitState()
 
 void CPlayerScript::Idle()
 {
-    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
     {
-        ChangeState(PLAYER_STATE::IdleToRun);
+        // 좌우 키 동시에 누른상태면 Idle 상태
+    }
+    // Run
+    else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    {
+        if (DIRECTION_TYPE::RIGHT == m_Dir)
+            ChangeState(PLAYER_STATE::IdleUturn);
+        else
+            ChangeState(PLAYER_STATE::IdleToRun);
+
         m_Dir = DIRECTION_TYPE::LEFT;
     }
-
-    if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+    else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
     {
-        ChangeState(PLAYER_STATE::IdleToRun);
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            ChangeState(PLAYER_STATE::IdleUturn);
+        else
+            ChangeState(PLAYER_STATE::IdleToRun);
+
         m_Dir = DIRECTION_TYPE::RIGHT;
     }
 
+    // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
@@ -394,78 +411,164 @@ void CPlayerScript::Idle()
 
 void CPlayerScript::IdleToRun()
 {
+    // Run
     if (Animator2D()->IsFinish())
     {
-        if (KEY_PRESSED(KEY::A))
-        {
-            ChangeState(PLAYER_STATE::Run);
-            m_Dir = DIRECTION_TYPE::LEFT;
-        }
-        else if (KEY_PRESSED(KEY::D))
-        {
-            ChangeState(PLAYER_STATE::Run);
-            m_Dir = DIRECTION_TYPE::RIGHT;
-        }
-        else
-        {
-            ChangeState(PLAYER_STATE::Idle);
-        }
+        ChangeState(PLAYER_STATE::Run);
+    }
+
+    if (DIRECTION_TYPE::LEFT == m_Dir && (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D)))
+    {
+        ChangeState(PLAYER_STATE::IdleToRun);
+        m_Dir = DIRECTION_TYPE::RIGHT;
+    }
+    else if (DIRECTION_TYPE::RIGHT == m_Dir && (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A)))
+    {
+        ChangeState(PLAYER_STATE::IdleToRun);
+        m_Dir = DIRECTION_TYPE::LEFT;
+    }
+    // 키가 눌리지 않은 상태라면 Idle 로 복귀
+    else if (!(KEY_PRESSED(KEY::A) || KEY_PRESSED(KEY::D)))
+    {
+        ChangeState(PLAYER_STATE::Idle);
+    }
+
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
     }
 
     // 이동
-    Vec3 pos = Transform()->GetRelativePos();
-
-    if (DIRECTION_TYPE::LEFT == m_Dir)
-        pos.x -= m_Speed * DT;
-    else
-        pos.x += m_Speed * DT;
-
-    Transform()->SetRelativePos(pos);
+    TransformMove();
 }
 
 void CPlayerScript::IdleUturn()
 {
+    if (Animator2D()->IsFinish())
+    {
+        if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+            m_Dir = DIRECTION_TYPE::RIGHT;
+        else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+            m_Dir = DIRECTION_TYPE::LEFT;
+
+        ChangeState(PLAYER_STATE::Idle);
+    }
+
+    // 방향 전환
+    if (DIRECTION_TYPE::LEFT == m_Dir && KEY_TAP(KEY::D))
+    {
+        ChangeState(PLAYER_STATE::IdleUturn);
+        m_Dir = DIRECTION_TYPE::RIGHT;
+    }
+    else if (DIRECTION_TYPE::RIGHT == m_Dir && KEY_TAP(KEY::A))
+    {
+        ChangeState(PLAYER_STATE::IdleUturn);
+        m_Dir = DIRECTION_TYPE::LEFT;
+    }
 }
 
 void CPlayerScript::Jump_Falling()
 {
+    // 이동
+    TransformMove();
 }
 
 void CPlayerScript::Jump_Start()
 {
+    // 이동
+    TransformMove();
 }
 
 void CPlayerScript::Jump_Landing()
 {
+    // 이동
+    TransformMove();
 }
 
 void CPlayerScript::Run()
 {
+    // Idle
     if (!(KEY_PRESSED(KEY::A) || KEY_PRESSED(KEY::D)))
     {
         ChangeState(PLAYER_STATE::RunToIdle);
     }
 
+    // Run 도중 반대반향 키를 누른경우 Idle
+    if ((KEY_PRESSED(KEY::A) && KEY_TAP(KEY::D)) || KEY_PRESSED(KEY::D) && KEY_TAP(KEY::A))
+    {
+        ChangeState(PLAYER_STATE::RunToIdle);
+    }
+
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
+    }
+
     // 이동
-    Vec3 pos = Transform()->GetRelativePos();
-
-    if (DIRECTION_TYPE::LEFT == m_Dir)
-        pos.x -= m_Speed * DT;
-    else
-        pos.x += m_Speed * DT;
-
-    Transform()->SetRelativePos(pos);
+    TransformMove();
 }
 
 void CPlayerScript::RunUturn()
 {
+    if (Animator2D()->IsFinish())
+    {
+        if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+            m_Dir = DIRECTION_TYPE::RIGHT;
+        else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+            m_Dir = DIRECTION_TYPE::LEFT;
+
+        ChangeState(PLAYER_STATE::Run);
+    }
+
+    // 방향 전환
+    if (DIRECTION_TYPE::LEFT == m_Dir && KEY_TAP(KEY::D))
+    {
+        ChangeState(PLAYER_STATE::RunUturn);
+        m_Dir = DIRECTION_TYPE::RIGHT;
+    }
+    else if (DIRECTION_TYPE::RIGHT == m_Dir && KEY_TAP(KEY::A))
+    {
+        ChangeState(PLAYER_STATE::RunUturn);
+        m_Dir = DIRECTION_TYPE::LEFT;
+    }
 }
 
 void CPlayerScript::RunToIdle()
 {
+    // Idle
     if (Animator2D()->IsFinish())
     {
+        if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+            m_Dir = DIRECTION_TYPE::RIGHT;
+        else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+            m_Dir = DIRECTION_TYPE::LEFT;
+
         ChangeState(PLAYER_STATE::Idle);
+    }
+    else
+    {
+        if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
+        {
+            // 좌우 키 동시에 누른상태면 처리 X
+        }
+        else if (DIRECTION_TYPE::LEFT == m_Dir && (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D)))
+        {
+            ChangeState(PLAYER_STATE::RunUturn);
+            m_Dir = DIRECTION_TYPE::RIGHT;
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A)))
+        {
+            ChangeState(PLAYER_STATE::RunUturn);
+            m_Dir = DIRECTION_TYPE::LEFT;
+        }
+    }
+
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
     }
 }
 
@@ -527,6 +630,18 @@ void CPlayerScript::UltAttack()
 
 void CPlayerScript::UltAttack_Rest()
 {
+}
+
+void CPlayerScript::TransformMove()
+{
+    Vec3 pos = Transform()->GetRelativePos();
+
+    if (DIRECTION_TYPE::LEFT == m_Dir)
+        pos.x -= m_Speed * DT;
+    else
+        pos.x += m_Speed * DT;
+
+    Transform()->SetRelativePos(pos);
 }
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)

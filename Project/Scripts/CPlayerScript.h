@@ -73,6 +73,8 @@ private:
     void UltAttack();
     void UltAttack_Rest();
 
+    void TransformMove();
+
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider);
     virtual void OnCollisionStay(CCollider2D* _OtherCollider);
