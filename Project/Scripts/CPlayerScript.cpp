@@ -417,14 +417,15 @@ void CPlayerScript::IdleToRun()
         ChangeState(PLAYER_STATE::Run);
     }
 
+    // 방향 전환
     if (DIRECTION_TYPE::LEFT == m_Dir && (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D)))
     {
-        ChangeState(PLAYER_STATE::IdleToRun);
+        ChangeState(PLAYER_STATE::IdleUturn);
         m_Dir = DIRECTION_TYPE::RIGHT;
     }
     else if (DIRECTION_TYPE::RIGHT == m_Dir && (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A)))
     {
-        ChangeState(PLAYER_STATE::IdleToRun);
+        ChangeState(PLAYER_STATE::IdleUturn);
         m_Dir = DIRECTION_TYPE::LEFT;
     }
     // 키가 눌리지 않은 상태라면 Idle 로 복귀
@@ -447,11 +448,6 @@ void CPlayerScript::IdleUturn()
 {
     if (Animator2D()->IsFinish())
     {
-        if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
-            m_Dir = DIRECTION_TYPE::RIGHT;
-        else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
-            m_Dir = DIRECTION_TYPE::LEFT;
-
         ChangeState(PLAYER_STATE::Idle);
     }
 
@@ -514,11 +510,6 @@ void CPlayerScript::RunUturn()
 {
     if (Animator2D()->IsFinish())
     {
-        if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
-            m_Dir = DIRECTION_TYPE::RIGHT;
-        else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
-            m_Dir = DIRECTION_TYPE::LEFT;
-
         ChangeState(PLAYER_STATE::Run);
     }
 
@@ -540,18 +531,13 @@ void CPlayerScript::RunToIdle()
     // Idle
     if (Animator2D()->IsFinish())
     {
-        if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
-            m_Dir = DIRECTION_TYPE::RIGHT;
-        else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
-            m_Dir = DIRECTION_TYPE::LEFT;
-
         ChangeState(PLAYER_STATE::Idle);
     }
     else
     {
         if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
         {
-            // 좌우 키 동시에 누른상태면 처리 X
+            // 좌우키 동시에 누른경우 Idle
         }
         else if (DIRECTION_TYPE::LEFT == m_Dir && (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D)))
         {
@@ -562,6 +548,10 @@ void CPlayerScript::RunToIdle()
         {
             ChangeState(PLAYER_STATE::RunUturn);
             m_Dir = DIRECTION_TYPE::LEFT;
+        }
+        else if (KEY_PRESSED(KEY::D) || KEY_PRESSED(KEY::A))
+        {
+            ChangeState(PLAYER_STATE::Run);
         }
     }
 
