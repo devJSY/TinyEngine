@@ -45,6 +45,9 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+public:
+    PLAYER_STATE GetState() const { return m_State; }
+
 private:
     void ChangeState(PLAYER_STATE _NextState);
     void EnterState();

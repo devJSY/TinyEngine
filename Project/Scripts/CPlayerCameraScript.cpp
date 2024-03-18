@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CPlayerCameraScript.h"
+#include "CPlayerScript.h"
 
 CPlayerCameraScript::CPlayerCameraScript()
     : CScript(PLAYERCAMERASCRIPT)
@@ -24,8 +25,11 @@ void CPlayerCameraScript::tick()
         Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
         Vec3 PlayerPos = pPlayer->Transform()->GetRelativePos();
         Vec3 Dir = PlayerPos - pos;
+
         if (Dir.Length() > m_CamMoveRange)
-            pos += Dir.Normalize() * (m_CamSpeed * DT);
+        {
+            pos += Dir.Normalize() * m_CamSpeed * DT;
+        }
 
         Transform()->SetRelativePos(pos + m_OffsetPos);
     }
