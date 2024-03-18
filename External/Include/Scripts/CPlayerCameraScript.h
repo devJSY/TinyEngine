@@ -4,6 +4,8 @@
 class CPlayerCameraScript : public CScript
 {
 private:
+    float m_CamSpeed;
+    float m_CamMoveRange;
     Vec3 m_OffsetPos;
 
 public:
