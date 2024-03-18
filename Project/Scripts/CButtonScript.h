@@ -10,12 +10,12 @@ public:
     virtual void tick() override;
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override{};
-    virtual void LoadFromLevelFile(FILE* _File) override{};
+    virtual void SaveToLevelFile(FILE* _File) = 0;
+    virtual void LoadFromLevelFile(FILE* _File) = 0;
 
-    CLONE(CButtonScript);
+    CButtonScript* Clone() = 0;
 
 public:
-    CButtonScript(SCRIPT_TYPE _Type = BUTTONSCRIPT);
+    CButtonScript(SCRIPT_TYPE _Type);
     virtual ~CButtonScript();
 };

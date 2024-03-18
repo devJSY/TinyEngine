@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CScriptMgr.h"
 
-#include "CButtonScript.h"
 #include "CCameraMoveScript.h"
 #include "CFontScript.h"
 #include "CLevelChangeScript.h"
@@ -11,7 +10,6 @@
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
-	_vec.push_back(L"CButtonScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CFontScript");
 	_vec.push_back(L"CLevelChangeScript");
@@ -22,8 +20,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
-	if (L"CButtonScript" == _strScriptName)
-		return new CButtonScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CFontScript" == _strScriptName)
@@ -43,8 +39,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 {
 	switch (_iScriptType)
 	{
-	case (UINT)SCRIPT_TYPE::BUTTONSCRIPT:
-		return new CButtonScript;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
 	case (UINT)SCRIPT_TYPE::FONTSCRIPT:
@@ -65,8 +59,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 {
 	switch ((SCRIPT_TYPE)_pScript->GetScriptType())
 	{
-	case SCRIPT_TYPE::BUTTONSCRIPT:
-		return L"CButtonScript";
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
 	case SCRIPT_TYPE::FONTSCRIPT:
