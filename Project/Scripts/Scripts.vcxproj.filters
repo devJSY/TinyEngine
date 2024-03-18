@@ -19,9 +19,6 @@
     <ClInclude Include="CPlayerScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CFontScript.h">
-      <Filter>Scripts\Font</Filter>
-    </ClInclude>
     <ClInclude Include="CButtonScript.h">
       <Filter>Scripts\Button</Filter>
     </ClInclude>
@@ -54,9 +51,6 @@
     <ClCompile Include="CPlayerScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CFontScript.cpp">
-      <Filter>Scripts\Font</Filter>
-    </ClCompile>
     <ClCompile Include="CButtonScript.cpp">
       <Filter>Scripts\Button</Filter>
     </ClCompile>
@@ -85,9 +79,6 @@
     </Filter>
     <Filter Include="Scripts\LevelChange">
       <UniqueIdentifier>{4785b723-0f24-41ba-bc4a-477c1053982c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Font">
-      <UniqueIdentifier>{48d85114-c1a7-43b3-9a4b-2950332e1215}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Button">
       <UniqueIdentifier>{f7a4894b-9030-413f-b41a-ef0fea062f02}</UniqueIdentifier>

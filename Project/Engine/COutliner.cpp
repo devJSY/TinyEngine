@@ -8,6 +8,7 @@
 #include "CPhysics2DMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
+#include "CEngine.h"
 #include "CLevel.h"
 #include "CLayer.h"
 
@@ -451,6 +452,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawParticlesystem(obj);
     DrawSkybox(obj);
     DrawLandscape(obj);
+    DrawTextRender(obj);
     DrawScript(obj);
 }
 
@@ -1614,6 +1616,48 @@ void COutliner::DrawSkybox(CGameObject* obj)
 
 void COutliner::DrawLandscape(CGameObject* obj)
 {
+}
+
+void COutliner::DrawTextRender(CGameObject* obj)
+{
+    CTextRender* pTextRender = obj->TextRender();
+    if (nullptr == pTextRender)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CTextRender).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::TEXTRENDER]);
+
+    ComponentSettingsButton(pTextRender);
+
+    if (open)
+    {
+        wstring Str = pTextRender->GetText();
+        char buffer[256];
+        memset(buffer, 0, sizeof(buffer));
+        strcpy_s(buffer, sizeof(buffer), ToString(Str).c_str());
+        if (ImGui::InputText(ImGui_LabelPrefix("Text").c_str(), buffer, sizeof(buffer)))
+        {
+            pTextRender->SetText(ToWstring(buffer));
+        }
+
+        Vec2 pos = pTextRender->GetTextPosition();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Position").c_str(), &pos.x))
+            pTextRender->SetTextPosition(pos);
+
+        float size = pTextRender->GetTextSize();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Size").c_str(), &size))
+            pTextRender->SetTextSize(size);
+
+        Vec4 color = pTextRender->GetTextColor();
+        color /= 255.f;
+        if (ImGui::ColorEdit4(ImGui_LabelPrefix("Color").c_str(), &color.x))
+        {
+            color *= 255.f;
+            pTextRender->SetTextColor(color);
+        }
+
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawScript(CGameObject* obj)

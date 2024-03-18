@@ -505,24 +505,6 @@ void LoadWStringFromFile(wstring& _str, FILE* _File)
     _str = szBuffer;
 }
 
-void SaveStringToFile(const string& _str, FILE* _File)
-{
-    UINT iLen = (UINT)_str.length();
-    fwrite(&iLen, sizeof(UINT), 1, _File);
-    fwrite(_str.c_str(), sizeof(char), _str.length(), _File);
-}
-
-void LoadStringFromFile(string& _str, FILE* _File)
-{
-    char szBuffer[256] = {};
-
-    UINT iLen = 0;
-    fread(&iLen, sizeof(UINT), 1, _File);
-    fread(szBuffer, sizeof(char), iLen, _File);
-
-    _str = szBuffer;
-}
-
 void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)
 {
     int i = 0;

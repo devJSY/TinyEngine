@@ -20,6 +20,7 @@ class MeshRender;
 class CTileMap;
 class CParticleSystem;
 class CSkyBox;
+class CTextRender;
 class CScript;
 
 class CGameObject : public CEntity
@@ -62,6 +63,7 @@ public:
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
     GET_COMPONENT(SkyBox, SKYBOX);
+    GET_COMPONENT(TextRender, TEXTRENDER);
 
     CGameObject* GetParent() const { return m_Parent; }
     const vector<CScript*>& GetScripts() const { return m_vecScript; }

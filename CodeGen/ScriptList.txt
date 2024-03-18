@@ -1,5 +1,4 @@
 CCameraMoveScript
-CFontScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript

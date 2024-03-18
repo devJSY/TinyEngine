@@ -20,3 +20,4 @@
 #include "CSkybox.h"
 // #include "Decal.h"
 // #include "Landscape.h"
+#include "CTextRender.h"

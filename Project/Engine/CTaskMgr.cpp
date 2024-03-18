@@ -654,6 +654,9 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
         break;
     case COMPONENT_TYPE::LANDSCAPE:
         break;
+    case COMPONENT_TYPE::TEXTRENDER:
+        pObj->AddComponent(new CTextRender);
+        break;
     }
 
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);

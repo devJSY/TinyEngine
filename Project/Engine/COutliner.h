@@ -37,6 +37,7 @@ private:
     void DrawParticlesystem(CGameObject* obj);
     void DrawSkybox(CGameObject* obj);
     void DrawLandscape(CGameObject* obj);
+    void DrawTextRender(CGameObject* obj);
     void DrawScript(CGameObject* obj);
 
 private:

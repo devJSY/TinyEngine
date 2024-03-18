@@ -292,6 +292,9 @@
     <ClInclude Include="CFontMgr.h">
       <Filter>04. Manager\FontMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CTextRender.h">
+      <Filter>08. Component\RenderComponent\07. TextRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -558,6 +561,9 @@
     <ClCompile Include="CFontMgr.cpp">
       <Filter>04. Manager\FontMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CTextRender.cpp">
+      <Filter>08. Component\RenderComponent\07. TextRender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -823,6 +829,9 @@
     </Filter>
     <Filter Include="04. Manager\FontMgr">
       <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\07. TextRender">
+      <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

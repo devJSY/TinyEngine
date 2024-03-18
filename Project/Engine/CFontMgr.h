@@ -10,26 +10,15 @@
 
 #define FONT_RGBA(r, g, b, a) (((((BYTE)a << 24) | (BYTE)b << 16) | (BYTE)g << 8) | (BYTE)r)
 
-struct tFont
-{
-    wstring _pStr;
-    float _fPosX;
-    float _fPosY;
-    float _fFontSize;
-    UINT _Color;
-};
-
 class CFontMgr : public CSingleton<CFontMgr>
 {
 private:
     IFW1Factory* m_pFW1Factory;
     IFW1FontWrapper* m_pFontWrapper;
-    std::list<tFont> m_ListFont;
 
 public:
     void init();
-    void DrawFont(tFont _Font) { m_ListFont.push_back(_Font); }
-    void render();
+    void DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color);
 
 public:
     CFontMgr();

@@ -65,8 +65,6 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
 // =====================================
 void SaveWStringToFile(const wstring& _str, FILE* _File);
 void LoadWStringFromFile(wstring& _str, FILE* _File);
-void SaveStringToFile(const string& _str, FILE* _File);
-void LoadStringFromFile(string& _str, FILE* _File);
 
 #include "CAssetMgr.h"
 

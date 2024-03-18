@@ -5,7 +5,6 @@
 CFontMgr::CFontMgr()
     : m_pFW1Factory(nullptr)
     , m_pFontWrapper(nullptr)
-    , m_ListFont{}
 {
 }
 
@@ -31,19 +30,14 @@ void CFontMgr::init()
     }
 }
 
-void CFontMgr::render()
+void CFontMgr::DrawFont(const wchar_t* _pStr, float _fPosX, float _fPosY, float _fFontSize, UINT _Color)
 {
-    for (const auto& iter : m_ListFont)
-    {
-        m_pFontWrapper->DrawString(CONTEXT,
-                                   iter._pStr.c_str(), // String
-                                   iter._fFontSize,    // Font size
-                                   iter._fPosX,        // X position
-                                   iter._fPosY,        // Y position
-                                   iter._Color,        // Text color, 0xAaBbGgRr
-                                   FW1_RESTORESTATE    // Flags (for example FW1_RESTORESTATE to keep context states unchanged)
-        );
-    }
-
-    m_ListFont.clear();
+    m_pFontWrapper->DrawString(CONTEXT,
+                               _pStr,           // String
+                               _fFontSize,      // Font size
+                               _fPosX,          // X position
+                               _fPosY,          // Y position
+                               _Color,          // Text color, 0xAaBbGgRr
+                               FW1_RESTORESTATE // Flags (for example FW1_RESTORESTATE to keep context states unchanged)
+    );
 }

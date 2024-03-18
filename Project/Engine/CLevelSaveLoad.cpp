@@ -273,6 +273,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             break;
         case COMPONENT_TYPE::LANDSCAPE:
             break;
+        case COMPONENT_TYPE::TEXTRENDER:
+            pComponent = new CTextRender;
+            break;
         }
 
         // 해당 컴포넌트가 저장한 데이터를 로드

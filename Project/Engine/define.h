@@ -89,6 +89,7 @@ enum class COMPONENT_TYPE
     SKYBOX,
     DECAL,
     LANDSCAPE,
+    TEXTRENDER,
 
     END,
 
