@@ -36,7 +36,10 @@ private:
     DIRECTION_TYPE m_Dir;
 
     float m_Speed;
-    float m_Force;
+    float m_JumpImpulse;
+    float m_JumpForce;
+
+    bool m_bOnGround;
 
 public:
     virtual void begin() override;
@@ -73,7 +76,8 @@ private:
     void UltAttack();
     void UltAttack_Rest();
 
-    void TransformMove();
+    void MoveTransform();
+    void RotateTransform();
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider);

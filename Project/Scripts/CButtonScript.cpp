@@ -30,8 +30,8 @@ void CButtonScript::tick()
             float NdcMouseX = 0.0f;
             float NdcMouseY = 0.0f;
 
-            // 마우스 커서의 위치를 NDC로 변환
-            // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
+            // Screen Coordinate → NDC Coordinate
+            // Screen Coordinate 에서 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
             // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
             if (CEditorMgr::GetInst()->IsEnable())
             {
@@ -49,12 +49,13 @@ void CButtonScript::tick()
                 NdcMouseY = -MouseScreenPos.y * 2.0f / WindowSize.y + 1.0f;
             }
 
+            // 화면 밖을 클릭한 경우 무효
             if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
                 return;
 
             CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
 
-            // Mouse Pos - NDC Near → World
+            // NDC Coordinate → World Coordinate
             Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
             Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
             Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);

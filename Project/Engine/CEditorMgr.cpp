@@ -14,7 +14,7 @@
 #include "CScript.h"
 
 CEditorMgr::CEditorMgr()
-    : m_bEnable(true)
+    : m_bEnable(false)
     , m_arrEditor{}
     , m_SelectedObj(nullptr)
     , m_ViewportSize(Vec2())

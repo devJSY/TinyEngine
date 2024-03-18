@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "CPlayerScript.h"
+#include <Engine\\CLevelMgr.h>
+#include <Engine\\CLevel.h>
+
 #include <Engine\\CAnim.h>
 
 CPlayerScript::CPlayerScript()
@@ -7,10 +10,13 @@ CPlayerScript::CPlayerScript()
     , m_State(PLAYER_STATE::Idle)
     , m_Dir(DIRECTION_TYPE::LEFT)
     , m_Speed(10.f)
-    , m_Force(1.f)
+    , m_JumpImpulse(1.f)
+    , m_JumpForce(1.f)
+    , m_bOnGround(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Force, "Force");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
 }
 
 CPlayerScript::~CPlayerScript()
@@ -205,7 +211,7 @@ void CPlayerScript::EnterState()
     }
     break;
     case PLAYER_STATE::Jump_Start: {
-        Rigidbody2D()->AddForce(Vec2(0.f, m_Force), ForceMode2D::Impulse);
+        Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse), ForceMode2D::Impulse);
         Animator2D()->Play(L"LD_Jump_Start", false);
     }
     break;
@@ -298,11 +304,7 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::IdleUturn: {
-        // Direction
-        if (DIRECTION_TYPE::LEFT == m_Dir)
-            Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
-        else
-            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+        RotateTransform();
     }
     break;
     case PLAYER_STATE::Jump_Falling: {
@@ -318,11 +320,7 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::RunUturn: {
-        // Direction
-        if (DIRECTION_TYPE::LEFT == m_Dir)
-            Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
-        else
-            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+        RotateTransform();
     }
     break;
     case PLAYER_STATE::RunToIdle: {
@@ -441,7 +439,7 @@ void CPlayerScript::IdleToRun()
     }
 
     // 이동
-    TransformMove();
+    MoveTransform();
 }
 
 void CPlayerScript::IdleUturn()
@@ -462,24 +460,84 @@ void CPlayerScript::IdleUturn()
         ChangeState(PLAYER_STATE::IdleUturn);
         m_Dir = DIRECTION_TYPE::LEFT;
     }
+
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
+    }
 }
 
 void CPlayerScript::Jump_Falling()
 {
-    // 이동
-    TransformMove();
+    if (m_bOnGround)
+        ChangeState(PLAYER_STATE::Jump_Landing);
+
+    // 키를 누른 상태라면 이동
+    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    {
+        m_Dir = DIRECTION_TYPE::LEFT;
+        RotateTransform();
+        MoveTransform();
+    }
+    else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+    {
+        m_Dir = DIRECTION_TYPE::RIGHT;
+        RotateTransform();
+        MoveTransform();
+    }
 }
 
 void CPlayerScript::Jump_Start()
 {
-    // 이동
-    TransformMove();
+    static float AirTime = 0.f;
+
+    AirTime += DT;
+    Vec2 Vel = Rigidbody2D()->GetVelocity();
+
+    if (AirTime < 0.3f && KEY_PRESSED(SPACE))
+    {
+        Rigidbody2D()->AddForce(Vec2(0.f, m_JumpForce));
+    }
+    else if (Vel.y < 5.f)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+        AirTime = 0.f;
+    }
+
+    // 키를 누른 상태라면 이동
+    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    {
+        m_Dir = DIRECTION_TYPE::LEFT;
+        RotateTransform();
+        MoveTransform();
+    }
+    else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+    {
+        m_Dir = DIRECTION_TYPE::RIGHT;
+        RotateTransform();
+        MoveTransform();
+    }
 }
 
 void CPlayerScript::Jump_Landing()
 {
-    // 이동
-    TransformMove();
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
+
+    // 키를 누른 상태라면 이동
+    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    {
+        m_Dir = DIRECTION_TYPE::LEFT;
+        RotateTransform();
+        MoveTransform();
+    }
+    else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+    {
+        m_Dir = DIRECTION_TYPE::RIGHT;
+        RotateTransform();
+        MoveTransform();
+    }
 }
 
 void CPlayerScript::Run()
@@ -503,7 +561,7 @@ void CPlayerScript::Run()
     }
 
     // 이동
-    TransformMove();
+    MoveTransform();
 }
 
 void CPlayerScript::RunUturn()
@@ -523,6 +581,12 @@ void CPlayerScript::RunUturn()
     {
         ChangeState(PLAYER_STATE::RunUturn);
         m_Dir = DIRECTION_TYPE::LEFT;
+    }
+
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
     }
 }
 
@@ -622,7 +686,15 @@ void CPlayerScript::UltAttack_Rest()
 {
 }
 
-void CPlayerScript::TransformMove()
+void CPlayerScript::RotateTransform()
+{
+    if (DIRECTION_TYPE::LEFT == m_Dir)
+        Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
+    else
+        Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+}
+
+void CPlayerScript::MoveTransform()
 {
     Vec3 pos = Transform()->GetRelativePos();
 
@@ -636,14 +708,35 @@ void CPlayerScript::TransformMove()
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+    if (LayerIdx >= 0)
+    {
+        if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
+            m_bOnGround = true;
+    }
 }
 
 void CPlayerScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+    if (LayerIdx >= 0)
+    {
+        if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
+            m_bOnGround = true;
+    }
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _OtherCollider)
 {
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+    if (LayerIdx >= 0)
+    {
+        if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
+            m_bOnGround = false;
+    }
 }
 
 void CPlayerScript::OnTriggerEnter(CCollider2D* _OtherCollider)
@@ -661,11 +754,13 @@ void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 void CPlayerScript::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Speed, sizeof(float), 1, _File);
-    fwrite(&m_Force, sizeof(float), 1, _File);
+    fwrite(&m_JumpImpulse, sizeof(float), 1, _File);
+    fwrite(&m_JumpForce, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Speed, sizeof(float), 1, _File);
-    fread(&m_Force, sizeof(float), 1, _File);
+    fread(&m_JumpImpulse, sizeof(float), 1, _File);
+    fread(&m_JumpForce, sizeof(float), 1, _File);
 }

@@ -62,12 +62,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         return 0;
     }
 
-    CCreateTestLevel::Init();
-    CCreateTestLevel::CreateTestLevel();
+    // CCreateTestLevel::Init();
+    // CCreateTestLevel::CreateTestLevel();
     // CCreatePBRLevel::Init();
     // CCreatePBRLevel::CreatePBRLevel();
 
-    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"HomeLevel.tLevel"), LEVEL_STATE::PLAY);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"HomeLevel.tLevel"), LEVEL_STATE::PLAY);
 
     while (true)
     {
