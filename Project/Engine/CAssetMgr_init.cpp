@@ -16,15 +16,6 @@
 
 void CAssetMgr::CreateDefaultMesh()
 {
-    // Crosshair
-    {
-        auto mesh = MakeCrosshair();
-        Ptr<CMesh> pMesh = new CMesh(true);
-        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        pMesh->SetName(L"CrosshairMesh");
-        AddAsset(L"CrosshairMesh", pMesh);
-    }
-
     // Point
     {
         auto mesh = MakePoint();
@@ -32,6 +23,24 @@ void CAssetMgr::CreateDefaultMesh()
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         pMesh->SetName(L"PointMesh");
         AddAsset(L"PointMesh", pMesh);
+    }
+
+    // Line
+    {
+        auto mesh = MakeLine();
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"LineMesh");
+        AddAsset(L"LineMesh", pMesh);
+    }
+
+    // Crosshair
+    {
+        auto mesh = MakeCrosshair();
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"CrosshairMesh");
+        AddAsset(L"CrosshairMesh", pMesh);
     }
 
     // Circle
@@ -961,6 +970,52 @@ void CAssetMgr::CreateDefaultPhysics2DMaterial()
     }
 }
 
+tMeshData CAssetMgr::MakePoint()
+{
+    tMeshData meshData;
+    Vtx v;
+    v.vPos = Vec3(0.f, 0.f, 0.f);
+    v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    v.vUV = Vec2(0.5f, 0.5f);
+    meshData.vertices.push_back(v);
+    meshData.indices.push_back(0);
+
+    return meshData;
+}
+
+tMeshData CAssetMgr::MakeLine()
+{
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec2> texcoords;
+
+    tMeshData meshData;
+    positions.push_back(Vec3(0.f, 0.f, 0.f));
+    positions.push_back(Vec3(0.f, -1.f, 0.f));
+
+    texcoords.push_back(Vec2(0.f, 0.f));
+    texcoords.push_back(Vec2(0.f, 0.f));
+
+    colors.push_back(Vec3(0.f, 1.f, 0.f));
+    colors.push_back(Vec3(0.f, 1.f, 0.f));
+
+    for (size_t i = 0; i < positions.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
+
+        meshData.vertices.push_back(v);
+    }
+
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(1);
+
+    return meshData;
+}
+
 tMeshData CAssetMgr::MakeCrosshair()
 {
     vector<Vec3> positions;
@@ -998,19 +1053,6 @@ tMeshData CAssetMgr::MakeCrosshair()
     meshData.indices.push_back(1);
     meshData.indices.push_back(2);
     meshData.indices.push_back(3);
-
-    return meshData;
-}
-
-tMeshData CAssetMgr::MakePoint()
-{
-    tMeshData meshData;
-    Vtx v;
-    v.vPos = Vec3(0.f, 0.f, 0.f);
-    v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-    v.vUV = Vec2(0.5f, 0.5f);
-    meshData.vertices.push_back(v);
-    meshData.indices.push_back(0);
 
     return meshData;
 }

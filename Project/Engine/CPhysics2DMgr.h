@@ -44,6 +44,7 @@ public:
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
 
     CGameObject* CollisionCheck(Vec2 _Point);
+    CGameObject* RayCast(Vec2 _p1, Vec2 _p2);
 
 public:
     const float GetPPM() const { return m_PPM; }

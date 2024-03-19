@@ -31,6 +31,7 @@ public:
 
 public:
     bool IsCollision(Vec2 _Point);
+    bool RayCast(Vec2 _p1, Vec2 _p2);
 
 private:
     void OnCollisionEnter(CCollider2D* _OtherCollider);

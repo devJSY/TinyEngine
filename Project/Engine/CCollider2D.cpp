@@ -79,6 +79,21 @@ bool CCollider2D::IsCollision(Vec2 _Point)
     return ((b2Fixture*)m_RuntimeFixture)->TestPoint(b2Vec2(_Point.x / PPM, _Point.y / PPM));
 }
 
+bool CCollider2D::RayCast(Vec2 _p1, Vec2 _p2)
+{
+    if (nullptr == m_RuntimeFixture)
+        return false;
+
+    float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+    b2RayCastInput input = b2RayCastInput();
+    input.p1 = b2Vec2(_p1.x / PPM, _p1.y / PPM);
+    input.p2 = b2Vec2(_p2.x / PPM, _p2.y / PPM);
+    input.maxFraction = 1.f;
+
+    b2RayCastOutput output = b2RayCastOutput();
+    return ((b2Fixture*)m_RuntimeFixture)->RayCast(&output, input, 0);
+}
+
 void CCollider2D::SetTrigger(bool _trigger)
 {
     m_bTrigger = _trigger;

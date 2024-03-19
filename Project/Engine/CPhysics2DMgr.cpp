@@ -417,3 +417,37 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
 
     return pSelectedObj;
 }
+
+CGameObject* CPhysics2DMgr::RayCast(Vec2 _p1, Vec2 _p2)
+{
+    bool IsRunning = nullptr != m_PhysicsWorld;
+    CGameObject* pSelectedObj = nullptr;
+
+    if (!IsRunning)
+        OnPhysics2DStart();
+
+    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
+    {
+        CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
+        CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+
+        b2Fixture* fixture = nullptr;
+
+        if (nullptr != bc2d && bc2d->RayCast(_p1, _p2))
+        {
+            pSelectedObj = m_vecPhysicsObj[i];
+            break;
+        }
+
+        if (nullptr != cc2d && cc2d->RayCast(_p1, _p2))
+        {
+            pSelectedObj = m_vecPhysicsObj[i];
+            break;
+        }
+    }
+
+    if (!IsRunning)
+        OnPhysics2DStop();
+
+    return pSelectedObj;
+}

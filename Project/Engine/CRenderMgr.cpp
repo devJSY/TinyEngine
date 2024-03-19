@@ -160,6 +160,9 @@ void CRenderMgr::render_debug()
     {
         switch ((*iter).eShape)
         {
+        case DEBUG_SHAPE::LINE:
+            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"LineMesh"));
+            break;
         case DEBUG_SHAPE::RECT:
             m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh_Debug"));
             break;
@@ -189,7 +192,8 @@ void CRenderMgr::render_debug()
         }
 
         D3D11_PRIMITIVE_TOPOLOGY PrevTopology = pMtrl->GetShader()->GetTopology();
-        if (DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape || DEBUG_SHAPE::SPHERE == (*iter).eShape)
+        if (DEBUG_SHAPE::LINE == (*iter).eShape || DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape ||
+            DEBUG_SHAPE::SPHERE == (*iter).eShape)
         {
             pMtrl->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }

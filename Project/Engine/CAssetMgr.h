@@ -41,8 +41,9 @@ private:
 
 public:
     // Geometry
-    tMeshData MakeCrosshair();
     tMeshData MakePoint();
+    tMeshData MakeLine();
+    tMeshData MakeCrosshair();
     tMeshData MakeCircle(const float radius, const int numSlices);
     tMeshData MakeRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
     tMeshData MakeDebugCircle(const float radius, const int numSlices);

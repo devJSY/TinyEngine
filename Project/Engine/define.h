@@ -231,6 +231,7 @@ enum class EDITOR_TYPE
 
 enum class DEBUG_SHAPE
 {
+    LINE,
     RECT,
     CIRCLE,
     CROSS,

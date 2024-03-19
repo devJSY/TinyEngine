@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CPlayerScript.h"
+#include <Engine\\CPhysics2DMgr.h>
 #include <Engine\\CLevelMgr.h>
 #include <Engine\\CLevel.h>
 
@@ -180,6 +181,36 @@ void CPlayerScript::tick()
     }
 
     m_DashPassedTime += DT;
+
+    // RayCast
+
+    if (Rigidbody2D()->GetVelocity().y <= 0.f)
+    {
+        float RayLength = 100.f;
+        Vec3 p1 = Transform()->GetWorldPos();
+        Vec3 p2 = p1 + Vec3(0.f, -RayLength, 0.f);
+        CGameObject* RayCastedObj = CPhysics2DMgr::GetInst()->RayCast(Vec2(p1.x, p1.y), Vec2(p2.x, p2.y));
+        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), RayLength, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
+
+        if (nullptr != RayCastedObj)
+        {
+            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+            int LayerIdx = RayCastedObj->GetLayerIdx();
+            if (LayerIdx >= 0)
+            {
+                if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
+                    m_bOnGround = true;
+
+                // Player 중점 에서 Ground 표면까지의 거리
+                float dist = std::fabsf(p1.y - RayCastedObj->Transform()->GetWorldPos().y - (RayCastedObj->Transform()->GetWorldScale().y / 2.f));
+                LOG(Log, "%f", dist);
+            }
+        }
+        else
+        {
+            m_bOnGround = false;
+        }
+    }
 }
 
 void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
@@ -771,24 +802,17 @@ void CPlayerScript::MoveTransform()
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
-    if (LayerIdx >= 0)
-    {
-        if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
-            m_bOnGround = true;
-    }
+    // CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    // int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+    // if (LayerIdx >= 0)
+    //{
+    //     if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
+    //         m_bOnGround = true;
+    // }
 }
 
 void CPlayerScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
-    if (LayerIdx >= 0)
-    {
-        if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
-            m_bOnGround = true;
-    }
 }
 
 void CPlayerScript::OnCollisionExit(CCollider2D* _OtherCollider)
