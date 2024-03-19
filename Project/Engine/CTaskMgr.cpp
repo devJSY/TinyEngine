@@ -601,7 +601,8 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     if (pObj->GetRenderComponent())
     {
         if (COMPONENT_TYPE::MESHRENDER == type || COMPONENT_TYPE::TILEMAP == type || COMPONENT_TYPE::PARTICLESYSTEM == type ||
-            COMPONENT_TYPE::SKYBOX == type || COMPONENT_TYPE::DECAL == type || COMPONENT_TYPE::LANDSCAPE == type)
+            COMPONENT_TYPE::SKYBOX == type || COMPONENT_TYPE::DECAL == type || COMPONENT_TYPE::LANDSCAPE == type ||
+            COMPONENT_TYPE::TEXTRENDER == type)
         {
             LOG(Error, "%s %s", ToString(pObj->GetName()).c_str(), "Already Has a RenderComponent!!");
             return;

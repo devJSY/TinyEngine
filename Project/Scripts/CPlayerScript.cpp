@@ -8,7 +8,7 @@
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
     , m_State(PLAYER_STATE::Idle)
-    , m_Dir(DIRECTION_TYPE::LEFT)
+    , m_Dir(DIRECTION_TYPE::RIGHT)
     , m_Speed(10.f)
     , m_JumpImpulse(1.f)
     , m_JumpForce(1.f)
@@ -95,6 +95,7 @@ void CPlayerScript::begin()
     }
 
     ChangeState(PLAYER_STATE::Idle);
+    RotateTransform();
 }
 
 void CPlayerScript::tick()

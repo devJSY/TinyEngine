@@ -190,7 +190,8 @@ void CGameObject::RemoveComponent(COMPONENT_TYPE _Type)
 
     // Render Component
     if (COMPONENT_TYPE::MESHRENDER == _Type || COMPONENT_TYPE::TILEMAP == _Type || COMPONENT_TYPE::PARTICLESYSTEM == _Type ||
-        COMPONENT_TYPE::SKYBOX == _Type || COMPONENT_TYPE::DECAL == _Type || COMPONENT_TYPE::LANDSCAPE == _Type)
+        COMPONENT_TYPE::SKYBOX == _Type || COMPONENT_TYPE::DECAL == _Type || COMPONENT_TYPE::LANDSCAPE == _Type ||
+        COMPONENT_TYPE::TEXTRENDER == _Type)
     {
         m_RenderCom = nullptr;
     }
