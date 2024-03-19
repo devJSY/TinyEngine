@@ -12,19 +12,20 @@ enum class PLAYER_STATE
     Run,
     RunUturn,
     RunToIdle,
-    ComboMove,
-    ComboMove_Rest,
-    ComboAerial,
-    ComboAerial_Rest,
-    JumpingAttack,
-    AerialDownAttack,
-    CapeAttack,
     Dash,
     Hit,
     EnterElavator,
     ExitElavator,
     Acquisition,
     PowerUp,
+
+    // The Scythe
+    ComboMove,
+    ComboMove_Rest,
+    ComboAerial,
+    ComboAerial_Rest,
+    JumpingAttack,
+    AerialDownAttack,
     UltAttack,
     UltAttack_Rest,
 };
@@ -38,6 +39,11 @@ private:
     float m_Speed;
     float m_JumpImpulse;
     float m_JumpForce;
+    float m_DashImpulse;
+
+    float m_DashPassedTime;
+    float m_DashCoolTime;
+    float m_RigidGravityScale;
 
     bool m_bOnGround;
 
@@ -63,19 +69,18 @@ private:
     void Run();
     void RunUturn();
     void RunToIdle();
-    void ComboMove();
-    void ComboMove_Rest();
-    void ComboAerial();
-    void ComboAerial_Rest();
-    void JumpingAttack();
-    void AerialDownAttack();
-    void CapeAttack();
     void Dash();
     void Hit();
     void EnterElavator();
     void ExitElavator();
     void Acquisition();
     void PowerUp();
+    void ComboMove();
+    void ComboMove_Rest();
+    void ComboAerial();
+    void ComboAerial_Rest();
+    void JumpingAttack();
+    void AerialDownAttack();
     void UltAttack();
     void UltAttack_Rest();
 

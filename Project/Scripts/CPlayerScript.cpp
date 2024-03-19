@@ -12,11 +12,16 @@ CPlayerScript::CPlayerScript()
     , m_Speed(10.f)
     , m_JumpImpulse(1.f)
     , m_JumpForce(1.f)
+    , m_DashImpulse(1.f)
+    , m_DashPassedTime(0.f)
+    , m_DashCoolTime(1.f)
+    , m_RigidGravityScale(0.f)
     , m_bOnGround(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DashImpulse, "Dash Impulse");
 }
 
 CPlayerScript::~CPlayerScript()
@@ -130,27 +135,6 @@ void CPlayerScript::tick()
     case PLAYER_STATE::RunToIdle:
         RunToIdle();
         break;
-    case PLAYER_STATE::ComboMove:
-        ComboMove();
-        break;
-    case PLAYER_STATE::ComboMove_Rest:
-        ComboMove_Rest();
-        break;
-    case PLAYER_STATE::ComboAerial:
-        ComboAerial();
-        break;
-    case PLAYER_STATE::ComboAerial_Rest:
-        ComboAerial_Rest();
-        break;
-    case PLAYER_STATE::JumpingAttack:
-        JumpingAttack();
-        break;
-    case PLAYER_STATE::AerialDownAttack:
-        AerialDownAttack();
-        break;
-    case PLAYER_STATE::CapeAttack:
-        CapeAttack();
-        break;
     case PLAYER_STATE::Dash:
         Dash();
         break;
@@ -169,6 +153,24 @@ void CPlayerScript::tick()
     case PLAYER_STATE::PowerUp:
         PowerUp();
         break;
+    case PLAYER_STATE::ComboMove:
+        ComboMove();
+        break;
+    case PLAYER_STATE::ComboMove_Rest:
+        ComboMove_Rest();
+        break;
+    case PLAYER_STATE::ComboAerial:
+        ComboAerial();
+        break;
+    case PLAYER_STATE::ComboAerial_Rest:
+        ComboAerial_Rest();
+        break;
+    case PLAYER_STATE::JumpingAttack:
+        JumpingAttack();
+        break;
+    case PLAYER_STATE::AerialDownAttack:
+        AerialDownAttack();
+        break;
     case PLAYER_STATE::UltAttack:
         UltAttack();
         break;
@@ -177,11 +179,7 @@ void CPlayerScript::tick()
         break;
     }
 
-    // 테스트 코드
-    if (KEY_TAP(KEY::T))
-    {
-        ChangeState(PLAYER_STATE::Idle);
-    }
+    m_DashPassedTime += DT;
 }
 
 void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
@@ -232,6 +230,40 @@ void CPlayerScript::EnterState()
         Animator2D()->Play(L"LD_RunToIdle", false);
     }
     break;
+    case PLAYER_STATE::Dash: {
+        Animator2D()->Play(L"LD_Dash", false);
+        m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
+        Rigidbody2D()->SetGravityScale(0.f);
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            Rigidbody2D()->AddForce(Vec2(-m_DashImpulse, 0.f), ForceMode2D::Impulse);
+        else
+            Rigidbody2D()->AddForce(Vec2(m_DashImpulse, 0.f), ForceMode2D::Impulse);
+
+        m_DashPassedTime = 0.f;
+    }
+    break;
+    case PLAYER_STATE::Hit: {
+        Animator2D()->Play(L"LD_Hit", false);
+    }
+    break;
+    case PLAYER_STATE::EnterElavator: {
+        Animator2D()->Play(L"LD_EnterElavator", false);
+    }
+    break;
+    case PLAYER_STATE::ExitElavator: {
+        Animator2D()->Play(L"LD_ExitElavator", false);
+    }
+    break;
+    case PLAYER_STATE::Acquisition: {
+        Animator2D()->Play(L"LD_Acquisition", false);
+    }
+    break;
+    case PLAYER_STATE::PowerUp: {
+        Animator2D()->Play(L"LD_PowerUp", false);
+    }
+    break;
     case PLAYER_STATE::ComboMove: {
         Animator2D()->Play(L"LD_ComboMove", false);
     }
@@ -254,33 +286,6 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::AerialDownAttack: {
         Animator2D()->Play(L"LD_AerialDownAttack", false);
-    }
-    break;
-    case PLAYER_STATE::CapeAttack: {
-    }
-    break;
-    case PLAYER_STATE::Dash: {
-        Animator2D()->Play(L"LD_Dash", false);
-    }
-    break;
-    case PLAYER_STATE::Hit: {
-        Animator2D()->Play(L"LD_Hit", false);
-    }
-    break;
-    case PLAYER_STATE::EnterElavator: {
-        Animator2D()->Play(L"LD_EnterElavator", false);
-    }
-    break;
-    case PLAYER_STATE::ExitElavator: {
-        Animator2D()->Play(L"LD_ExitElavator", false);
-    }
-    break;
-    case PLAYER_STATE::Acquisition: {
-        Animator2D()->Play(L"LD_Acquisition", false);
-    }
-    break;
-    case PLAYER_STATE::PowerUp: {
-        Animator2D()->Play(L"LD_PowerUp", false);
     }
     break;
     case PLAYER_STATE::UltAttack: {
@@ -327,6 +332,26 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::RunToIdle: {
     }
     break;
+    case PLAYER_STATE::Dash: {
+        Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+    }
+    break;
+    case PLAYER_STATE::Hit: {
+    }
+    break;
+    case PLAYER_STATE::EnterElavator: {
+    }
+    break;
+    case PLAYER_STATE::ExitElavator: {
+    }
+    break;
+    case PLAYER_STATE::Acquisition: {
+    }
+    break;
+    case PLAYER_STATE::PowerUp: {
+    }
+    break;
     case PLAYER_STATE::ComboMove: {
     }
     break;
@@ -345,27 +370,6 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::AerialDownAttack: {
     }
     break;
-    case PLAYER_STATE::CapeAttack: {
-    }
-    break;
-    case PLAYER_STATE::Dash: {
-    }
-    break;
-    case PLAYER_STATE::Hit: {
-    }
-    break;
-    case PLAYER_STATE::EnterElavator: {
-    }
-    break;
-    case PLAYER_STATE::ExitElavator: {
-    }
-    break;
-    case PLAYER_STATE::Acquisition: {
-    }
-    break;
-    case PLAYER_STATE::PowerUp: {
-    }
-    break;
     case PLAYER_STATE::UltAttack: {
     }
     break;
@@ -377,6 +381,12 @@ void CPlayerScript::ExitState()
 
 void CPlayerScript::Idle()
 {
+    // Dash
+    if (!m_bOnGround)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+
     if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
     {
         // 좌우 키 동시에 누른상태면 Idle 상태
@@ -399,6 +409,12 @@ void CPlayerScript::Idle()
             ChangeState(PLAYER_STATE::IdleToRun);
 
         m_Dir = DIRECTION_TYPE::RIGHT;
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
     }
 
     // Jump
@@ -433,6 +449,12 @@ void CPlayerScript::IdleToRun()
         ChangeState(PLAYER_STATE::Idle);
     }
 
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
+
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
@@ -462,6 +484,12 @@ void CPlayerScript::IdleUturn()
         m_Dir = DIRECTION_TYPE::LEFT;
     }
 
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
+
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
@@ -487,6 +515,12 @@ void CPlayerScript::Jump_Falling()
         RotateTransform();
         MoveTransform();
     }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 }
 
 void CPlayerScript::Jump_Start()
@@ -504,6 +538,12 @@ void CPlayerScript::Jump_Start()
     {
         ChangeState(PLAYER_STATE::Jump_Falling);
         AirTime = 0.f;
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
     }
 
     // 키를 누른 상태라면 이동
@@ -525,6 +565,12 @@ void CPlayerScript::Jump_Landing()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 
     // 키를 누른 상태라면 이동
     if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
@@ -555,6 +601,12 @@ void CPlayerScript::Run()
         ChangeState(PLAYER_STATE::RunToIdle);
     }
 
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
+
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
@@ -582,6 +634,12 @@ void CPlayerScript::RunUturn()
     {
         ChangeState(PLAYER_STATE::RunUturn);
         m_Dir = DIRECTION_TYPE::LEFT;
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
     }
 
     // Jump
@@ -620,11 +678,43 @@ void CPlayerScript::RunToIdle()
         }
     }
 
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
+
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
     }
+}
+
+void CPlayerScript::Dash()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
+}
+
+void CPlayerScript::Hit()
+{
+}
+
+void CPlayerScript::EnterElavator()
+{
+}
+
+void CPlayerScript::ExitElavator()
+{
+}
+
+void CPlayerScript::Acquisition()
+{
+}
+
+void CPlayerScript::PowerUp()
+{
 }
 
 void CPlayerScript::ComboMove()
@@ -648,34 +738,6 @@ void CPlayerScript::JumpingAttack()
 }
 
 void CPlayerScript::AerialDownAttack()
-{
-}
-
-void CPlayerScript::CapeAttack()
-{
-}
-
-void CPlayerScript::Dash()
-{
-}
-
-void CPlayerScript::Hit()
-{
-}
-
-void CPlayerScript::EnterElavator()
-{
-}
-
-void CPlayerScript::ExitElavator()
-{
-}
-
-void CPlayerScript::Acquisition()
-{
-}
-
-void CPlayerScript::PowerUp()
 {
 }
 
@@ -757,6 +819,7 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_Speed, sizeof(float), 1, _File);
     fwrite(&m_JumpImpulse, sizeof(float), 1, _File);
     fwrite(&m_JumpForce, sizeof(float), 1, _File);
+    fwrite(&m_DashImpulse, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
@@ -764,4 +827,5 @@ void CPlayerScript::LoadFromLevelFile(FILE* _File)
     fread(&m_Speed, sizeof(float), 1, _File);
     fread(&m_JumpImpulse, sizeof(float), 1, _File);
     fread(&m_JumpForce, sizeof(float), 1, _File);
+    fread(&m_DashImpulse, sizeof(float), 1, _File);
 }
