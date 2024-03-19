@@ -209,13 +209,20 @@ void CRenderMgr::render_postprocess_LDRI()
 {
     CopyToPostProcessTex_LDRI();
 
+    // 첫 샘플링만 Threshold 적용
+    Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
+    float Threshold = pSamplingMtrl->GetMtrlConst().arrFloat[0];
+
     // Down Sampling
     for (int i = 0; i < m_bloomLevels - 1; i++)
     {
         if (i == 0)
             m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_LDRI);
         else
+        {
             m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[i - 1]);
+            pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+        }
 
         CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[i]->GetWidth(), (float)m_BloomTextures_LDRI[i]->GetHeight());
         CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[i]->GetRTV().GetAddressOf(), NULL);
@@ -259,6 +266,9 @@ void CRenderMgr::render_postprocess_LDRI()
         m_SamplingObj->render();
         CTexture::Clear(0);
     }
+
+    // 원본 Threshold 설정
+    pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Threshold);
 
     // Combine
     CopyRTTexToRTCopyTex();
