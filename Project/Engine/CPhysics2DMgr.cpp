@@ -387,7 +387,7 @@ void CPhysics2DMgr::DisableAllLayer()
 CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
 {
     bool IsRunning = nullptr != m_PhysicsWorld;
-    CGameObject* pSelectedObj = nullptr;
+    CGameObject* pCollisionObj = nullptr;
 
     if (!IsRunning)
         OnPhysics2DStart();
@@ -401,13 +401,13 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
 
         if (nullptr != bc2d && bc2d->IsCollision(_Point))
         {
-            pSelectedObj = m_vecPhysicsObj[i];
+            pCollisionObj = m_vecPhysicsObj[i];
             break;
         }
 
         if (nullptr != cc2d && cc2d->IsCollision(_Point))
         {
-            pSelectedObj = m_vecPhysicsObj[i];
+            pCollisionObj = m_vecPhysicsObj[i];
             break;
         }
     }
@@ -415,13 +415,13 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
     if (!IsRunning)
         OnPhysics2DStop();
 
-    return pSelectedObj;
+    return pCollisionObj;
 }
 
 CGameObject* CPhysics2DMgr::RayCast(Vec2 _p1, Vec2 _p2)
 {
     bool IsRunning = nullptr != m_PhysicsWorld;
-    CGameObject* pSelectedObj = nullptr;
+    CGameObject* pCollisionObj = nullptr;
 
     if (!IsRunning)
         OnPhysics2DStart();
@@ -435,13 +435,13 @@ CGameObject* CPhysics2DMgr::RayCast(Vec2 _p1, Vec2 _p2)
 
         if (nullptr != bc2d && bc2d->RayCast(_p1, _p2))
         {
-            pSelectedObj = m_vecPhysicsObj[i];
+            pCollisionObj = m_vecPhysicsObj[i];
             break;
         }
 
         if (nullptr != cc2d && cc2d->RayCast(_p1, _p2))
         {
-            pSelectedObj = m_vecPhysicsObj[i];
+            pCollisionObj = m_vecPhysicsObj[i];
             break;
         }
     }
@@ -449,5 +449,51 @@ CGameObject* CPhysics2DMgr::RayCast(Vec2 _p1, Vec2 _p2)
     if (!IsRunning)
         OnPhysics2DStop();
 
-    return pSelectedObj;
+    return pCollisionObj;
+}
+
+CGameObject* CPhysics2DMgr::RayCast(Vec2 _p1, Vec2 _p2, int _LayerIdx)
+{
+    bool IsRunning = nullptr != m_PhysicsWorld;
+    CGameObject* pCollisionObj = nullptr;
+
+    if (!IsRunning)
+        OnPhysics2DStart();
+
+    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
+    {
+        if (_LayerIdx != m_vecPhysicsObj[i]->GetLayerIdx())
+            continue;
+
+        CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
+        CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+
+        b2Fixture* fixture = nullptr;
+
+        if (nullptr != bc2d && bc2d->RayCast(_p1, _p2))
+        {
+            pCollisionObj = m_vecPhysicsObj[i];
+            break;
+        }
+
+        if (nullptr != cc2d && cc2d->RayCast(_p1, _p2))
+        {
+            pCollisionObj = m_vecPhysicsObj[i];
+            break;
+        }
+    }
+
+    if (!IsRunning)
+        OnPhysics2DStop();
+
+    return pCollisionObj;
+}
+
+CGameObject* CPhysics2DMgr::RayCast(Vec2 _p1, Vec2 _p2, const std::wstring& _LayerName)
+{
+    CLayer* pLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_LayerName);
+    if (nullptr == pLayer)
+        return nullptr;
+
+    return RayCast(_p1, _p2, pLayer->GetLayerIdx());
 }

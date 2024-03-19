@@ -182,35 +182,7 @@ void CPlayerScript::tick()
 
     m_DashPassedTime += DT;
 
-    // RayCast
-
-    if (Rigidbody2D()->GetVelocity().y <= 0.f)
-    {
-        float RayLength = 100.f;
-        Vec3 p1 = Transform()->GetWorldPos();
-        Vec3 p2 = p1 + Vec3(0.f, -RayLength, 0.f);
-        CGameObject* RayCastedObj = CPhysics2DMgr::GetInst()->RayCast(Vec2(p1.x, p1.y), Vec2(p2.x, p2.y));
-        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), RayLength, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
-
-        if (nullptr != RayCastedObj)
-        {
-            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-            int LayerIdx = RayCastedObj->GetLayerIdx();
-            if (LayerIdx >= 0)
-            {
-                if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
-                    m_bOnGround = true;
-
-                // Player 중점 에서 Ground 표면까지의 거리
-                float dist = std::fabsf(p1.y - RayCastedObj->Transform()->GetWorldPos().y - (RayCastedObj->Transform()->GetWorldScale().y / 2.f));
-                LOG(Log, "%f", dist);
-            }
-        }
-        else
-        {
-            m_bOnGround = false;
-        }
-    }
+    RayCast();
 }
 
 void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
@@ -412,7 +384,10 @@ void CPlayerScript::ExitState()
 
 void CPlayerScript::Idle()
 {
-    // Dash
+    // 이동 제한
+    StopWalking();
+
+    // 공중에 떠있는 상태
     if (!m_bOnGround)
     {
         ChangeState(PLAYER_STATE::Jump_Falling);
@@ -442,21 +417,30 @@ void CPlayerScript::Idle()
         m_Dir = DIRECTION_TYPE::RIGHT;
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
-    {
-        ChangeState(PLAYER_STATE::Dash);
-    }
-
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
     }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 }
 
 void CPlayerScript::IdleToRun()
 {
+    // 이동
+    Walking();
+
+    // 공중에 떠있는 상태
+    if (!m_bOnGround)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+
     // Run
     if (Animator2D()->IsFinish())
     {
@@ -480,24 +464,30 @@ void CPlayerScript::IdleToRun()
         ChangeState(PLAYER_STATE::Idle);
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
-    {
-        ChangeState(PLAYER_STATE::Dash);
-    }
-
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
     }
 
-    // 이동
-    MoveTransform();
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 }
 
 void CPlayerScript::IdleUturn()
 {
+    // 이동 제한
+    StopWalking();
+
+    // 공중에 떠있는 상태
+    if (!m_bOnGround)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+
     if (Animator2D()->IsFinish())
     {
         ChangeState(PLAYER_STATE::Idle);
@@ -515,36 +505,43 @@ void CPlayerScript::IdleUturn()
         m_Dir = DIRECTION_TYPE::LEFT;
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
-    {
-        ChangeState(PLAYER_STATE::Dash);
-    }
-
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
     }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 }
 
 void CPlayerScript::Jump_Falling()
 {
+    // 이동 제한
+    StopWalking();
+
     if (m_bOnGround)
         ChangeState(PLAYER_STATE::Jump_Landing);
 
+    if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
+    {
+        // 좌우 키 동시에 누른상태면 이동 X
+    }
     // 키를 누른 상태라면 이동
-    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
     {
         m_Dir = DIRECTION_TYPE::LEFT;
         RotateTransform();
-        MoveTransform();
+        Walking();
     }
     else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
     {
         m_Dir = DIRECTION_TYPE::RIGHT;
         RotateTransform();
-        MoveTransform();
+        Walking();
     }
 
     // Dash
@@ -556,6 +553,9 @@ void CPlayerScript::Jump_Falling()
 
 void CPlayerScript::Jump_Start()
 {
+    // 이동 제한
+    StopWalking();
+
     static float AirTime = 0.f;
 
     AirTime += DT;
@@ -571,55 +571,75 @@ void CPlayerScript::Jump_Start()
         AirTime = 0.f;
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
     {
-        ChangeState(PLAYER_STATE::Dash);
+        // 좌우 키 동시에 누른상태면 이동 X
     }
-
     // 키를 누른 상태라면 이동
-    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
     {
         m_Dir = DIRECTION_TYPE::LEFT;
         RotateTransform();
-        MoveTransform();
+        Walking();
     }
     else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
     {
         m_Dir = DIRECTION_TYPE::RIGHT;
         RotateTransform();
-        MoveTransform();
+        Walking();
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
     }
 }
 
 void CPlayerScript::Jump_Landing()
 {
+    // 이동 제한
+    StopWalking();
+
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
+
+    if (KEY_PRESSED(KEY::A) && KEY_PRESSED(KEY::D))
+    {
+        // 좌우 키 동시에 누른상태면 이동 X
+    }
+    // 키를 누른 상태라면 이동
+    else if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+    {
+        m_Dir = DIRECTION_TYPE::LEFT;
+        RotateTransform();
+        Walking();
+    }
+    else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+    {
+        m_Dir = DIRECTION_TYPE::RIGHT;
+        RotateTransform();
+        Walking();
+    }
 
     // Dash
     if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
     {
         ChangeState(PLAYER_STATE::Dash);
     }
-
-    // 키를 누른 상태라면 이동
-    if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
-    {
-        m_Dir = DIRECTION_TYPE::LEFT;
-        RotateTransform();
-        MoveTransform();
-    }
-    else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
-    {
-        m_Dir = DIRECTION_TYPE::RIGHT;
-        RotateTransform();
-        MoveTransform();
-    }
 }
 
 void CPlayerScript::Run()
 {
+    // 이동
+    Walking();
+
+    // 공중에 떠있는 상태
+    if (!m_bOnGround)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+
     // Idle
     if (!(KEY_PRESSED(KEY::A) || KEY_PRESSED(KEY::D)))
     {
@@ -632,24 +652,27 @@ void CPlayerScript::Run()
         ChangeState(PLAYER_STATE::RunToIdle);
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
-    {
-        ChangeState(PLAYER_STATE::Dash);
-    }
-
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
     }
 
-    // 이동
-    MoveTransform();
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 }
 
 void CPlayerScript::RunUturn()
 {
+    // 공중에 떠있는 상태
+    if (!m_bOnGround)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+
     if (Animator2D()->IsFinish())
     {
         ChangeState(PLAYER_STATE::Run);
@@ -667,21 +690,30 @@ void CPlayerScript::RunUturn()
         m_Dir = DIRECTION_TYPE::LEFT;
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
-    {
-        ChangeState(PLAYER_STATE::Dash);
-    }
-
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
     }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
 }
 
 void CPlayerScript::RunToIdle()
 {
+    // 이동 제한
+    StopWalking();
+
+    // 공중에 떠있는 상태
+    if (!m_bOnGround)
+    {
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+
     // Idle
     if (Animator2D()->IsFinish())
     {
@@ -709,16 +741,16 @@ void CPlayerScript::RunToIdle()
         }
     }
 
-    // Dash
-    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
-    {
-        ChangeState(PLAYER_STATE::Dash);
-    }
-
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
         ChangeState(PLAYER_STATE::Jump_Start);
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
     }
 }
 
@@ -788,16 +820,42 @@ void CPlayerScript::RotateTransform()
         Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 }
 
-void CPlayerScript::MoveTransform()
+void CPlayerScript::RayCast()
 {
-    Vec3 pos = Transform()->GetRelativePos();
+    // RayCast
+    if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
+    {
+        float RayLength = 100.f;
+        Vec3 p1 = Transform()->GetWorldPos();
+        Vec3 p2 = p1 + Vec3(0.f, -RayLength, 0.f);
+        CGameObject* RayCastedObj = CPhysics2DMgr::GetInst()->RayCast(Vec2(p1.x, p1.y), Vec2(p2.x, p2.y), L"Ground"); // Ground 레이어와 충돌체크
+        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), RayLength, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
+
+        if (nullptr != RayCastedObj)
+        {
+            m_bOnGround = true;
+
+            // Player 중점 에서 Ground 표면까지의 거리
+            float dist = std::fabsf(p1.y - RayCastedObj->Transform()->GetWorldPos().y - (RayCastedObj->Transform()->GetWorldScale().y / 2.f));
+            // TODO 그림자 처리
+        }
+        else
+        {
+            m_bOnGround = false;
+        }
+    }
+}
+
+void CPlayerScript::Walking()
+{
+    Vec2 vel = Rigidbody2D()->GetVelocity();
 
     if (DIRECTION_TYPE::LEFT == m_Dir)
-        pos.x -= m_Speed * DT;
+        vel.x = -m_Speed;
     else
-        pos.x += m_Speed * DT;
+        vel.x = m_Speed;
 
-    Transform()->SetRelativePos(pos);
+    Rigidbody2D()->SetVelocity(vel);
 }
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)

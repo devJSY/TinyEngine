@@ -45,6 +45,8 @@ public:
 
     CGameObject* CollisionCheck(Vec2 _Point);
     CGameObject* RayCast(Vec2 _p1, Vec2 _p2);
+    CGameObject* RayCast(Vec2 _p1, Vec2 _p2, int _LayerIdx);
+    CGameObject* RayCast(Vec2 _p1, Vec2 _p2, const std::wstring& _LayerName);
 
 public:
     const float GetPPM() const { return m_PPM; }

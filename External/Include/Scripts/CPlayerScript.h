@@ -84,8 +84,12 @@ private:
     void UltAttack();
     void UltAttack_Rest();
 
-    void MoveTransform();
+private:
+    void Walking();
+    void StopWalking() { Rigidbody2D()->SetVelocity(Vec2(0.f, Rigidbody2D()->GetVelocity().y)); }
+    
     void RotateTransform();
+    void RayCast();
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider);
