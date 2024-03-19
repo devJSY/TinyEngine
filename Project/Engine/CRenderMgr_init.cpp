@@ -69,29 +69,17 @@ void CRenderMgr::init()
     m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_LDRI);
 
     // HDRI Bloom
-    for (int i = 0; i < m_bloomLevels - 1; i++)
-    {
-        CGameObject* bloomDownObj = new CGameObject;
-        bloomDownObj->AddComponent(new CTransform);
-        bloomDownObj->AddComponent(new CMeshRender);
+    m_BloomDownObj = new CGameObject;
+    m_BloomDownObj->AddComponent(new CTransform);
+    m_BloomDownObj->AddComponent(new CMeshRender);
+    m_BloomDownObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_BloomDownObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomDownMtrl"));
 
-        bloomDownObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        bloomDownObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomDownMtrl"));
-
-        m_BloomDownFilters_HDRI.push_back(bloomDownObj);
-    }
-
-    for (int i = 0; i < m_bloomLevels - 1; i++)
-    {
-        CGameObject* bloomUpObj = new CGameObject;
-        bloomUpObj->AddComponent(new CTransform);
-        bloomUpObj->AddComponent(new CMeshRender);
-
-        bloomUpObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        bloomUpObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomUpMtrl"));
-
-        m_BloomUpFilters_HDRI.push_back(bloomUpObj);
-    }
+    m_BloomUpObj = new CGameObject;
+    m_BloomUpObj->AddComponent(new CTransform);
+    m_BloomUpObj->AddComponent(new CMeshRender);
+    m_BloomUpObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_BloomUpObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomUpMtrl"));
 
     m_ToneMappingObj = new CGameObject;
     m_ToneMappingObj->AddComponent(new CTransform);

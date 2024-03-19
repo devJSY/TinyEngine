@@ -56,8 +56,8 @@ private:
     CGameObject* m_CombineObj;
 
     vector<Ptr<CTexture>> m_BloomTextures_HDRI;
-    vector<CGameObject*> m_BloomDownFilters_HDRI; // 객체하나로 수정 필요
-    vector<CGameObject*> m_BloomUpFilters_HDRI; // 객체하나로 수정 필요
+    CGameObject* m_BloomDownObj; 
+    CGameObject* m_BloomUpObj; 
     CGameObject* m_ToneMappingObj;
 
     // Render function pointer

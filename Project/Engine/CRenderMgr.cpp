@@ -30,8 +30,8 @@ CRenderMgr::CRenderMgr()
     , m_BlurYObj(nullptr)
     , m_CombineObj(nullptr)
     , m_BloomTextures_HDRI{}
-    , m_BloomDownFilters_HDRI{}
-    , m_BloomUpFilters_HDRI{}
+    , m_BloomDownObj(nullptr)
+    , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
@@ -81,8 +81,17 @@ CRenderMgr::~CRenderMgr()
         m_CombineObj = nullptr;
     }
 
-    Delete_Vec(m_BloomDownFilters_HDRI);
-    Delete_Vec(m_BloomUpFilters_HDRI);
+    if (nullptr != m_BloomDownObj)
+    {
+        delete m_BloomDownObj;
+        m_BloomDownObj = nullptr;
+    }
+
+    if (nullptr != m_BloomUpObj)
+    {
+        delete m_BloomUpObj;
+        m_BloomUpObj = nullptr;
+    }
 
     if (nullptr != m_ToneMappingObj)
     {
@@ -295,22 +304,22 @@ void CRenderMgr::render_postprocess_HDRI()
     // =================
     CDevice::GetInst()->SetFloatRenderTarget();
     CopyToPostProcessTex_HDRI();
-    for (int i = 0; i < m_BloomDownFilters_HDRI.size(); i++)
+    for (int i = 0; i < m_BloomTextures_HDRI.size(); i++)
     {
         if (i == 0)
-            m_BloomDownFilters_HDRI[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
+            m_BloomDownObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
         else
-            m_BloomDownFilters_HDRI[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
+            m_BloomDownObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
 
         CDevice::GetInst()->SetViewport((float)m_BloomTextures_HDRI[i]->GetWidth(), (float)m_BloomTextures_HDRI[i]->GetHeight());
         CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[i]->GetRTV().GetAddressOf(), NULL);
-        m_BloomDownFilters_HDRI[i]->render();
+        m_BloomDownObj->render();
         CTexture::Clear(0);
     }
-    for (int i = 0; i < m_BloomUpFilters_HDRI.size(); i++)
+    for (int i = 0; i < m_BloomTextures_HDRI.size(); i++)
     {
         int level = m_bloomLevels - 2 - i;
-        m_BloomUpFilters_HDRI[i]->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
+        m_BloomUpObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
         if (i == m_bloomLevels - 2)
         {
             CDevice::GetInst()->SetViewport((float)m_PostProcessTex_HDRI->GetWidth(), (float)m_PostProcessTex_HDRI->GetHeight());
@@ -321,7 +330,7 @@ void CRenderMgr::render_postprocess_HDRI()
             CDevice::GetInst()->SetViewport((float)m_BloomTextures_HDRI[level - 1]->GetWidth(), (float)m_BloomTextures_HDRI[level - 1]->GetHeight());
             CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[level - 1]->GetRTV().GetAddressOf(), NULL);
         }
-        m_BloomUpFilters_HDRI[i]->render();
+        m_BloomUpObj->render();
         CTexture::Clear(0);
     }
 

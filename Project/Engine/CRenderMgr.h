@@ -48,6 +48,7 @@ private:
     // Post Process
     int m_bloomLevels;
 
+    // LDRI Bloom
     vector<Ptr<CTexture>> m_BloomTextures_LDRI;
     vector<Ptr<CTexture>> m_BlurTextures;
     CGameObject* m_SamplingObj;
@@ -55,9 +56,10 @@ private:
     CGameObject* m_BlurYObj;
     CGameObject* m_CombineObj;
 
+    // HDRI Bloom
     vector<Ptr<CTexture>> m_BloomTextures_HDRI;
-    vector<CGameObject*> m_BloomDownFilters_HDRI; // 객체하나로 수정 필요
-    vector<CGameObject*> m_BloomUpFilters_HDRI; // 객체하나로 수정 필요
+    CGameObject* m_BloomDownObj;
+    CGameObject* m_BloomUpObj;
     CGameObject* m_ToneMappingObj;
 
     // Render function pointer
