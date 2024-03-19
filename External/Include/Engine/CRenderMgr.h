@@ -49,6 +49,7 @@ private:
     int m_bloomLevels;
 
     vector<Ptr<CTexture>> m_BloomTextures_LDRI;
+    vector<Ptr<CTexture>> m_BlurTextures;
     CGameObject* m_SamplingObj;
     CGameObject* m_BlurXObj;
     CGameObject* m_BlurYObj;

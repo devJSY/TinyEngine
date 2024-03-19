@@ -223,10 +223,26 @@ void CRenderMgr::render_postprocess_LDRI()
         CTexture::Clear(0);
     }
 
-    // UP Sampling 
+    // UP Sampling + Blur
     for (int i = 0; i < m_bloomLevels - 1; i++)
     {
         int level = m_bloomLevels - 2 - i;
+
+        // Blur X
+        m_BlurXObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
+        CDevice::GetInst()->SetViewport((float)m_BlurTextures[level]->GetWidth(), (float)m_BlurTextures[level]->GetHeight());
+        CONTEXT->OMSetRenderTargets(1, m_BlurTextures[level]->GetRTV().GetAddressOf(), NULL);
+        m_BlurXObj->render();
+        CTexture::Clear(0);
+
+        // Blur Y
+        m_BlurYObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BlurTextures[level]);
+        CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[level]->GetWidth(), (float)m_BloomTextures_LDRI[level]->GetHeight());
+        CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[level]->GetRTV().GetAddressOf(), NULL);
+        m_BlurYObj->render();
+        CTexture::Clear(0);
+
+        // Up Sampling
         m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
 
         if (i == m_bloomLevels - 2)
@@ -482,6 +498,9 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
         m_BloomTextures_LDRI.push_back(CAssetMgr::GetInst()->CreateTexture(
             L"LDRI_BloomTexture " + std::to_wstring(i), UINT(Resolution.x / div), UINT(Resolution.y / div), DXGI_FORMAT_R8G8B8A8_UNORM,
             D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT));
+        m_BlurTextures.push_back(CAssetMgr::GetInst()->CreateTexture(L"BlurTexture " + std::to_wstring(i), UINT(Resolution.x / div),
+                                                                     UINT(Resolution.y / div), DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                                     D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT));
     }
 
     // HDRI
@@ -534,6 +553,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
 
     for (int i = 0; i < m_bloomLevels - 1; i++)
     {
+        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BlurTexture " + std::to_wstring(i));
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LDRI_BloomTexture " + std::to_wstring(i));
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"HDRI_BloomTexture " + std::to_wstring(i));
     }
