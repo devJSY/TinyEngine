@@ -41,7 +41,35 @@ void CRenderMgr::init()
     // Post Processing
     CreateBloomTextures(vRenderResolution);
 
-    for (int i = 0; i < bloomLevels - 1; i++)
+    // LDRI Bloom
+    m_SamplingObj = new CGameObject;
+    m_SamplingObj->AddComponent(new CTransform);
+    m_SamplingObj->AddComponent(new CMeshRender);
+    m_SamplingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_SamplingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl"));
+
+    m_BlurXObj = new CGameObject;
+    m_BlurXObj->AddComponent(new CTransform);
+    m_BlurXObj->AddComponent(new CMeshRender);
+    m_BlurXObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_BlurXObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl"));
+
+    m_BlurYObj = new CGameObject;
+    m_BlurYObj->AddComponent(new CTransform);
+    m_BlurYObj->AddComponent(new CMeshRender);
+    m_BlurYObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_BlurYObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl"));
+
+    m_CombineObj = new CGameObject;
+    m_CombineObj->AddComponent(new CTransform);
+    m_CombineObj->AddComponent(new CMeshRender);
+    m_CombineObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_CombineObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CombineMtrl"));
+    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_RTCopyTex);
+    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_LDRI);
+
+    // HDRI Bloom
+    for (int i = 0; i < m_bloomLevels - 1; i++)
     {
         CGameObject* bloomDownObj = new CGameObject;
         bloomDownObj->AddComponent(new CTransform);
@@ -50,10 +78,10 @@ void CRenderMgr::init()
         bloomDownObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
         bloomDownObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomDownMtrl"));
 
-        m_BloomDownFilters.push_back(bloomDownObj);
+        m_BloomDownFilters_HDRI.push_back(bloomDownObj);
     }
 
-    for (int i = 0; i < bloomLevels - 1; i++)
+    for (int i = 0; i < m_bloomLevels - 1; i++)
     {
         CGameObject* bloomUpObj = new CGameObject;
         bloomUpObj->AddComponent(new CTransform);
@@ -62,7 +90,7 @@ void CRenderMgr::init()
         bloomUpObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
         bloomUpObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomUpMtrl"));
 
-        m_BloomUpFilters.push_back(bloomUpObj);
+        m_BloomUpFilters_HDRI.push_back(bloomUpObj);
     }
 
     m_ToneMappingObj = new CGameObject;

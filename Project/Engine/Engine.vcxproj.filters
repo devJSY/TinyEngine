@@ -894,7 +894,7 @@
     <FxCompile Include="postprocessVS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="Combine.hlsl">
+    <FxCompile Include="CombinePS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="std2d.fx">
@@ -995,6 +995,9 @@
     </FxCompile>
     <FxCompile Include="PostEffectPS.hlsl">
       <Filter>ShaderCode\Render\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="SamplingPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

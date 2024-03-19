@@ -46,10 +46,17 @@ private:
     CGameObject* m_PostEffectObj;
 
     // Post Process
-    int bloomLevels;
-    vector<Ptr<CTexture>> m_BloomTextures;
-    vector<CGameObject*> m_BloomDownFilters;
-    vector<CGameObject*> m_BloomUpFilters;
+    int m_bloomLevels;
+
+    vector<Ptr<CTexture>> m_BloomTextures_LDRI;
+    CGameObject* m_SamplingObj;
+    CGameObject* m_BlurXObj;
+    CGameObject* m_BlurYObj;
+    CGameObject* m_CombineObj;
+
+    vector<Ptr<CTexture>> m_BloomTextures_HDRI;
+    vector<CGameObject*> m_BloomDownFilters_HDRI; // 객체하나로 수정 필요
+    vector<CGameObject*> m_BloomUpFilters_HDRI; // 객체하나로 수정 필요
     CGameObject* m_ToneMappingObj;
 
     // Render function pointer
@@ -87,8 +94,8 @@ public:
     void Clear_Buffers(const Vec4& Color);
 
     void CopyRTTexToRTCopyTex();
-    void CopyToPostProcessTex_HDRI();
     void CopyToPostProcessTex_LDRI();
+    void CopyToPostProcessTex_HDRI();
     void Resize(Vec2 Resolution);
 
     Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
@@ -106,7 +113,8 @@ private:
     void CreateBloomTextures(Vec2 Resolution);
 
 public:
-    void render_postprocess();
+    void render_postprocess_LDRI();
+    void render_postprocess_HDRI();
 
 private:
     void render_play();

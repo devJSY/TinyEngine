@@ -197,12 +197,13 @@ void CCamera::render()
         // ÈÄÃ³¸®
         CDevice::GetInst()->SetFloatRenderTarget();
         render_postprocess_HDRI();
-        CRenderMgr::GetInst()->render_postprocess();
+        CRenderMgr::GetInst()->render_postprocess_HDRI();
     }
     else
     {
         CDevice::GetInst()->SetRenderTarget();
         render_postprocess_LDRI();
+        CRenderMgr::GetInst()->render_postprocess_LDRI();
     }
 
     // Clear

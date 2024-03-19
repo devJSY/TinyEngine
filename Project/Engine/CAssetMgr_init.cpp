@@ -490,12 +490,33 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Sampling Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\SamplingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Threshold");
+
+        pShader->AddTexParam(TEX_0, "Sampling Texture");
+
+        pShader->SetName(L"SamplingShader");
+        AddAsset(L"SamplingShader", pShader);
+    }
+
+    // =================================
     // Combine Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\Combine.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\CombinePS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -503,7 +524,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(FLOAT_0, "Strength");
-        pShader->AddScalarParam(FLOAT_1, "Threshold");
 
         pShader->AddTexParam(TEX_0, "Render Texture");
         pShader->AddTexParam(TEX_1, "Bloom Texture");
@@ -843,12 +863,20 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
     }
 
+    // Sampling
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SamplingShader"));
+        pMtrl->SetScalarParam(FLOAT_1, 0.5f); // Threshold
+        pMtrl->SetName(L"SamplingMtrl");
+        AddAsset<CMaterial>(L"SamplingMtrl", pMtrl);
+    }
+
     // Combine
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CombineShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Strength
-        pMtrl->SetScalarParam(FLOAT_1, 0.5f); // Threshold
+        pMtrl->SetScalarParam(FLOAT_0, 0.f); // Strength
         pMtrl->SetName(L"CombineMtrl");
         AddAsset<CMaterial>(L"CombineMtrl", pMtrl);
     }
