@@ -14,16 +14,19 @@ CPlayerScript::CPlayerScript()
     , m_JumpImpulse(1.f)
     , m_JumpForce(1.f)
     , m_DashImpulse(1.f)
+    , m_AttackImpulse(1.f)
     , m_RaycastDist(100.f)
     , m_bOnGround(false)
     , m_DashPassedTime(0.f)
     , m_DashCoolTime(1.f)
     , m_RigidGravityScale(0.f)
+    , m_bJumpAttackActive(true)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DashImpulse, "Dash Impulse");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackImpulse, "Attack Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
 }
 
@@ -38,9 +41,29 @@ void CPlayerScript::begin()
 
     if (Animator2D())
     {
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition_Curse.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Idle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleToRun.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleUturn.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Falling.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Landing.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Start.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Run.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunToIdle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunUturn.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Dash.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_FightToIdle.anim");
+
+        // The Scythe
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_JumpingAttack.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_AerialDownAttack.anim");
+
+        /*Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition_Curse.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_01.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_02.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_03.anim");
@@ -70,7 +93,6 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_Jump.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate_Start.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Dash.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Disappear.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_End.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Enter.anim");
@@ -78,28 +100,17 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds_Up.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Glide.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Idle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleToRun.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleUturn.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Falling.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Landing.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Start.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_JumpingAttack.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayDown.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayUp.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_01.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_02.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Run.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunToIdle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunUturn.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Teleport.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Waiting.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Wallgrab_Idle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");*/
     }
 
     ChangeState(PLAYER_STATE::Idle);
@@ -144,41 +155,35 @@ void CPlayerScript::tick()
     case PLAYER_STATE::Hit:
         Hit();
         break;
-    case PLAYER_STATE::EnterElavator:
-        EnterElavator();
+    case PLAYER_STATE::FightToIdle:
+        FightToIdle();
         break;
-    case PLAYER_STATE::ExitElavator:
-        ExitElavator();
+    case PLAYER_STATE::ComboMove_01:
+        ComboMove_01();
         break;
-    case PLAYER_STATE::Acquisition:
-        Acquisition();
+    case PLAYER_STATE::ComboMove_02:
+        ComboMove_02();
         break;
-    case PLAYER_STATE::PowerUp:
-        PowerUp();
+    case PLAYER_STATE::ComboMove_03:
+        ComboMove_03();
         break;
-    case PLAYER_STATE::ComboMove:
-        ComboMove();
+    case PLAYER_STATE::ComboMove_04:
+        ComboMove_04();
         break;
-    case PLAYER_STATE::ComboMove_Rest:
-        ComboMove_Rest();
+    case PLAYER_STATE::ComboAerial_01:
+        ComboAerial_01();
         break;
-    case PLAYER_STATE::ComboAerial:
-        ComboAerial();
+    case PLAYER_STATE::ComboAerial_02:
+        ComboAerial_02();
         break;
-    case PLAYER_STATE::ComboAerial_Rest:
-        ComboAerial_Rest();
+    case PLAYER_STATE::ComboAerial_03:
+        ComboAerial_03();
         break;
     case PLAYER_STATE::JumpingAttack:
         JumpingAttack();
         break;
     case PLAYER_STATE::AerialDownAttack:
         AerialDownAttack();
-        break;
-    case PLAYER_STATE::UltAttack:
-        UltAttack();
-        break;
-    case PLAYER_STATE::UltAttack_Rest:
-        UltAttack_Rest();
         break;
     }
 
@@ -253,52 +258,65 @@ void CPlayerScript::EnterState()
         Animator2D()->Play(L"LD_Hit", false);
     }
     break;
-    case PLAYER_STATE::EnterElavator: {
-        Animator2D()->Play(L"LD_EnterElavator", false);
+    case PLAYER_STATE::FightToIdle: {
+        Animator2D()->Play(L"LD_FightToIdle", false);
     }
     break;
-    case PLAYER_STATE::ExitElavator: {
-        Animator2D()->Play(L"LD_ExitElavator", false);
+    case PLAYER_STATE::ComboMove_01: {
+        Animator2D()->Play(L"LD_ComboMove_01", false);
     }
     break;
-    case PLAYER_STATE::Acquisition: {
-        Animator2D()->Play(L"LD_Acquisition", false);
+    case PLAYER_STATE::ComboMove_02: {
+        Animator2D()->Play(L"LD_ComboMove_02", false);
+        StopWalking();
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+        else
+            Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
     }
     break;
-    case PLAYER_STATE::PowerUp: {
-        Animator2D()->Play(L"LD_PowerUp", false);
+    case PLAYER_STATE::ComboMove_03: {
+        Animator2D()->Play(L"LD_ComboMove_03", false);
+        StopWalking();
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+        else
+            Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
     }
     break;
-    case PLAYER_STATE::ComboMove: {
-        Animator2D()->Play(L"LD_ComboMove", false);
+    case PLAYER_STATE::ComboMove_04: {
+        Animator2D()->Play(L"LD_ComboMove_04", false);
+        StopWalking();
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+            Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+        else
+            Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
     }
     break;
-    case PLAYER_STATE::ComboMove_Rest: {
-        Animator2D()->Play(L"LD_ComboMove_Rest", false);
+    case PLAYER_STATE::ComboAerial_01: {
+        Animator2D()->Play(L"LD_ComboAerial_01", false);
     }
     break;
-    case PLAYER_STATE::ComboAerial: {
-        Animator2D()->Play(L"LD_ComboAerial", false);
+    case PLAYER_STATE::ComboAerial_02: {
+        Animator2D()->Play(L"LD_ComboAerial_02", false);
     }
     break;
-    case PLAYER_STATE::ComboAerial_Rest: {
-        Animator2D()->Play(L"LD_ComboAerial_Rest", false);
+    case PLAYER_STATE::ComboAerial_03: {
+        Animator2D()->Play(L"LD_ComboAerial_03", false);
     }
     break;
     case PLAYER_STATE::JumpingAttack: {
         Animator2D()->Play(L"LD_JumpingAttack", false);
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+        Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
+
+        m_bJumpAttackActive = false;
     }
     break;
     case PLAYER_STATE::AerialDownAttack: {
         Animator2D()->Play(L"LD_AerialDownAttack", false);
-    }
-    break;
-    case PLAYER_STATE::UltAttack: {
-        Animator2D()->Play(L"LD_UltAttack", false);
-    }
-    break;
-    case PLAYER_STATE::UltAttack_Rest: {
-        Animator2D()->Play(L"LD_UltAttack_Rest", false);
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+        Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
     }
     break;
     }
@@ -345,40 +363,34 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::Hit: {
     }
     break;
-    case PLAYER_STATE::EnterElavator: {
+    case PLAYER_STATE::FightToIdle: {
     }
     break;
-    case PLAYER_STATE::ExitElavator: {
+    case PLAYER_STATE::ComboMove_01: {
     }
     break;
-    case PLAYER_STATE::Acquisition: {
+    case PLAYER_STATE::ComboMove_02: {
     }
     break;
-    case PLAYER_STATE::PowerUp: {
+    case PLAYER_STATE::ComboMove_03: {
     }
     break;
-    case PLAYER_STATE::ComboMove: {
+    case PLAYER_STATE::ComboMove_04: {
     }
     break;
-    case PLAYER_STATE::ComboMove_Rest: {
+    case PLAYER_STATE::ComboAerial_01: {
     }
     break;
-    case PLAYER_STATE::ComboAerial: {
+    case PLAYER_STATE::ComboAerial_02: {
     }
     break;
-    case PLAYER_STATE::ComboAerial_Rest: {
+    case PLAYER_STATE::ComboAerial_03: {
     }
     break;
     case PLAYER_STATE::JumpingAttack: {
     }
     break;
     case PLAYER_STATE::AerialDownAttack: {
-    }
-    break;
-    case PLAYER_STATE::UltAttack: {
-    }
-    break;
-    case PLAYER_STATE::UltAttack_Rest: {
     }
     break;
     }
@@ -430,6 +442,16 @@ void CPlayerScript::Idle()
     {
         ChangeState(PLAYER_STATE::Dash);
     }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
+    }
 }
 
 void CPlayerScript::IdleToRun()
@@ -477,6 +499,16 @@ void CPlayerScript::IdleToRun()
     {
         ChangeState(PLAYER_STATE::Dash);
     }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
+    }
 }
 
 void CPlayerScript::IdleUturn()
@@ -518,6 +550,16 @@ void CPlayerScript::IdleUturn()
     {
         ChangeState(PLAYER_STATE::Dash);
     }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
+    }
 }
 
 void CPlayerScript::Jump_Falling()
@@ -550,6 +592,20 @@ void CPlayerScript::Jump_Falling()
     if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
     {
         ChangeState(PLAYER_STATE::Dash);
+    }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::AerialDownAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        // ChangeState(PLAYER_STATE::ComboAerial_01);
     }
 }
 
@@ -596,6 +652,20 @@ void CPlayerScript::Jump_Start()
     {
         ChangeState(PLAYER_STATE::Dash);
     }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::AerialDownAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        // ChangeState(PLAYER_STATE::ComboAerial_01);
+    }
 }
 
 void CPlayerScript::Jump_Landing()
@@ -635,6 +705,16 @@ void CPlayerScript::Jump_Landing()
     {
         ChangeState(PLAYER_STATE::Dash);
     }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
+    }
 }
 
 void CPlayerScript::Run()
@@ -670,6 +750,16 @@ void CPlayerScript::Run()
     if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
     {
         ChangeState(PLAYER_STATE::Dash);
+    }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
     }
 }
 
@@ -708,6 +798,16 @@ void CPlayerScript::RunUturn()
     if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
     {
         ChangeState(PLAYER_STATE::Dash);
+    }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
     }
 }
 
@@ -760,6 +860,16 @@ void CPlayerScript::RunToIdle()
     {
         ChangeState(PLAYER_STATE::Dash);
     }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_01);
+    }
 }
 
 void CPlayerScript::Dash()
@@ -772,52 +882,102 @@ void CPlayerScript::Hit()
 {
 }
 
-void CPlayerScript::EnterElavator()
+void CPlayerScript::FightToIdle()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
+}
+
+void CPlayerScript::ComboMove_01()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
+
+    // Attack
+    if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_02);
+    }
+}
+
+void CPlayerScript::ComboMove_02()
+{
+    static float PassedTime = 0.f;
+    PassedTime += DT;
+    if (PassedTime > 0.2f)
+        StopWalking();
+
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(PLAYER_STATE::FightToIdle);
+        PassedTime = 0.f;
+    }
+
+    // Attack
+    if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_03);
+        PassedTime = 0.f;
+    }
+}
+
+void CPlayerScript::ComboMove_03()
+{
+    static float PassedTime = 0.f;
+    PassedTime += DT;
+    if (PassedTime > 0.2f)
+        StopWalking();
+
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(PLAYER_STATE::FightToIdle);
+        PassedTime = 0.f;
+    }
+
+    // Attack
+    if (KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::ComboMove_04);
+        PassedTime = 0.f;
+    }
+}
+
+void CPlayerScript::ComboMove_04()
+{
+    static float PassedTime = 0.f;
+    PassedTime += DT;
+    if (PassedTime > 0.2f)
+        StopWalking();
+
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(PLAYER_STATE::FightToIdle);
+        PassedTime = 0.f;
+    }
+}
+
+void CPlayerScript::ComboAerial_01()
 {
 }
 
-void CPlayerScript::ExitElavator()
+void CPlayerScript::ComboAerial_02()
 {
 }
 
-void CPlayerScript::Acquisition()
-{
-}
-
-void CPlayerScript::PowerUp()
-{
-}
-
-void CPlayerScript::ComboMove()
-{
-}
-
-void CPlayerScript::ComboMove_Rest()
-{
-}
-
-void CPlayerScript::ComboAerial()
-{
-}
-
-void CPlayerScript::ComboAerial_Rest()
+void CPlayerScript::ComboAerial_03()
 {
 }
 
 void CPlayerScript::JumpingAttack()
 {
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
 }
 
 void CPlayerScript::AerialDownAttack()
 {
-}
-
-void CPlayerScript::UltAttack()
-{
-}
-
-void CPlayerScript::UltAttack_Rest()
-{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
 }
 
 void CPlayerScript::RotateTransform()
@@ -841,6 +1001,7 @@ void CPlayerScript::RayCast()
         if (nullptr != Hit.pCollisionObj)
         {
             m_bOnGround = true;
+            m_bJumpAttackActive = true;
 
             // Player 중점 에서 Ground 표면까지의 거리
             Hit.Distance;
@@ -902,6 +1063,7 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_JumpImpulse, sizeof(float), 1, _File);
     fwrite(&m_JumpForce, sizeof(float), 1, _File);
     fwrite(&m_DashImpulse, sizeof(float), 1, _File);
+    fwrite(&m_AttackImpulse, sizeof(float), 1, _File);
     fwrite(&m_RaycastDist, sizeof(float), 1, _File);
 }
 
@@ -911,5 +1073,6 @@ void CPlayerScript::LoadFromLevelFile(FILE* _File)
     fread(&m_JumpImpulse, sizeof(float), 1, _File);
     fread(&m_JumpForce, sizeof(float), 1, _File);
     fread(&m_DashImpulse, sizeof(float), 1, _File);
+    fread(&m_AttackImpulse, sizeof(float), 1, _File);
     fread(&m_RaycastDist, sizeof(float), 1, _File);
 }

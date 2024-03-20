@@ -14,20 +14,18 @@ enum class PLAYER_STATE
     RunToIdle,
     Dash,
     Hit,
-    EnterElavator,
-    ExitElavator,
-    Acquisition,
-    PowerUp,
+    FightToIdle,
 
     // The Scythe
-    ComboMove,
-    ComboMove_Rest,
-    ComboAerial,
-    ComboAerial_Rest,
+    ComboMove_01,
+    ComboMove_02,
+    ComboMove_03,
+    ComboMove_04,
+    ComboAerial_01,
+    ComboAerial_02,
+    ComboAerial_03,
     JumpingAttack,
     AerialDownAttack,
-    UltAttack,
-    UltAttack_Rest,
 };
 
 class CPlayerScript : public CScript
@@ -41,13 +39,15 @@ private:
     float m_JumpImpulse;
     float m_JumpForce;
     float m_DashImpulse;
+    float m_AttackImpulse;
     float m_RaycastDist;
 
     // 수정 불가능한 멤버변수
     bool m_bOnGround;
     float m_DashPassedTime;
-    float m_DashCoolTime;
+    const float m_DashCoolTime;
     float m_RigidGravityScale;
+    bool m_bJumpAttackActive;
 
 public:
     virtual void begin() override;
@@ -73,23 +73,23 @@ private:
     void RunToIdle();
     void Dash();
     void Hit();
-    void EnterElavator();
-    void ExitElavator();
-    void Acquisition();
-    void PowerUp();
-    void ComboMove();
-    void ComboMove_Rest();
-    void ComboAerial();
-    void ComboAerial_Rest();
+    void FightToIdle();
+
+    // The Scythe
+    void ComboMove_01();
+    void ComboMove_02();
+    void ComboMove_03();
+    void ComboMove_04();
+    void ComboAerial_01();
+    void ComboAerial_02();
+    void ComboAerial_03();
     void JumpingAttack();
     void AerialDownAttack();
-    void UltAttack();
-    void UltAttack_Rest();
 
 private:
     void Walking();
     void StopWalking() { Rigidbody2D()->SetVelocity(Vec2(0.f, Rigidbody2D()->GetVelocity().y)); }
-    
+
     void RotateTransform();
     void RayCast();
 
