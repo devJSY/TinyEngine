@@ -924,6 +924,18 @@ void CPlayerScript::ComboMove()
         {
             if (bNextAttack)
             {
+                // 방향 전환
+                if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+                {
+                    m_Dir = DIRECTION_TYPE::LEFT;
+                    RotateTransform();
+                }
+                else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+                {
+                    m_Dir = DIRECTION_TYPE::RIGHT;
+                    RotateTransform();
+                }
+
                 m_AttackCount = 1;
                 ChangeState(PLAYER_STATE::ComboMove);
             }
@@ -946,6 +958,18 @@ void CPlayerScript::ComboMove()
         {
             if (bNextAttack)
             {
+                // 방향 전환
+                if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+                {
+                    m_Dir = DIRECTION_TYPE::LEFT;
+                    RotateTransform();
+                }
+                else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+                {
+                    m_Dir = DIRECTION_TYPE::RIGHT;
+                    RotateTransform();
+                }
+
                 m_AttackCount = 2;
                 ChangeState(PLAYER_STATE::ComboMove);
             }
@@ -971,6 +995,18 @@ void CPlayerScript::ComboMove()
         {
             if (bNextAttack)
             {
+                // 방향 전환
+                if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+                {
+                    m_Dir = DIRECTION_TYPE::LEFT;
+                    RotateTransform();
+                }
+                else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+                {
+                    m_Dir = DIRECTION_TYPE::RIGHT;
+                    RotateTransform();
+                }
+
                 m_AttackCount = 3;
                 ChangeState(PLAYER_STATE::ComboMove);
             }
@@ -1005,6 +1041,7 @@ void CPlayerScript::ComboMove()
     else
     {
         ChangeState(PLAYER_STATE::Idle);
+        PassedTime = 0.f;
         bNextAttack = false;
     }
 
@@ -1047,6 +1084,18 @@ void CPlayerScript::ComboAerial()
         {
             if (bNextAttack)
             {
+                // 방향 전환
+                if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+                {
+                    m_Dir = DIRECTION_TYPE::LEFT;
+                    RotateTransform();
+                }
+                else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+                {
+                    m_Dir = DIRECTION_TYPE::RIGHT;
+                    RotateTransform();
+                }
+
                 m_AttackCount = 1;
                 ChangeState(PLAYER_STATE::ComboAerial);
             }
@@ -1069,6 +1118,18 @@ void CPlayerScript::ComboAerial()
         {
             if (bNextAttack)
             {
+                // 방향 전환
+                if (KEY_TAP(KEY::A) || KEY_PRESSED(KEY::A))
+                {
+                    m_Dir = DIRECTION_TYPE::LEFT;
+                    RotateTransform();
+                }
+                else if (KEY_TAP(KEY::D) || KEY_PRESSED(KEY::D))
+                {
+                    m_Dir = DIRECTION_TYPE::RIGHT;
+                    RotateTransform();
+                }
+
                 m_AttackCount = 2;
                 ChangeState(PLAYER_STATE::ComboAerial);
             }
@@ -1103,6 +1164,7 @@ void CPlayerScript::ComboAerial()
     else
     {
         ChangeState(PLAYER_STATE::Idle);
+        PassedTime = 0.f;
         bNextAttack = false;
     }
 
