@@ -21,6 +21,7 @@ CPlayerScript::CPlayerScript()
     , m_DashCoolTime(1.f)
     , m_RigidGravityScale(0.f)
     , m_bJumpAttackActive(true)
+    , m_AttackCount(0)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
@@ -158,26 +159,11 @@ void CPlayerScript::tick()
     case PLAYER_STATE::FightToIdle:
         FightToIdle();
         break;
-    case PLAYER_STATE::ComboMove_01:
-        ComboMove_01();
+    case PLAYER_STATE::ComboMove:
+        ComboMove();
         break;
-    case PLAYER_STATE::ComboMove_02:
-        ComboMove_02();
-        break;
-    case PLAYER_STATE::ComboMove_03:
-        ComboMove_03();
-        break;
-    case PLAYER_STATE::ComboMove_04:
-        ComboMove_04();
-        break;
-    case PLAYER_STATE::ComboAerial_01:
-        ComboAerial_01();
-        break;
-    case PLAYER_STATE::ComboAerial_02:
-        ComboAerial_02();
-        break;
-    case PLAYER_STATE::ComboAerial_03:
-        ComboAerial_03();
+    case PLAYER_STATE::ComboAerial:
+        ComboAerial();
         break;
     case PLAYER_STATE::JumpingAttack:
         JumpingAttack();
@@ -205,6 +191,7 @@ void CPlayerScript::EnterState()
     {
     case PLAYER_STATE::Idle: {
         Animator2D()->Play(L"LD_Idle");
+        m_AttackCount = 0;
     }
     break;
     case PLAYER_STATE::IdleToRun: {
@@ -262,47 +249,54 @@ void CPlayerScript::EnterState()
         Animator2D()->Play(L"LD_FightToIdle", false);
     }
     break;
-    case PLAYER_STATE::ComboMove_01: {
-        Animator2D()->Play(L"LD_ComboMove_01", false);
+    case PLAYER_STATE::ComboMove: {
+        if (0 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboMove_01", false);
+        }
+        else if (1 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboMove_02", false);
+            StopWalking();
+            if (DIRECTION_TYPE::LEFT == m_Dir)
+                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+            else
+                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+        }
+        else if (2 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboMove_03", false);
+            StopWalking();
+            if (DIRECTION_TYPE::LEFT == m_Dir)
+                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+            else
+                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+        }
+        else if (3 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboMove_04", false);
+            StopWalking();
+            if (DIRECTION_TYPE::LEFT == m_Dir)
+                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+            else
+                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+        }
     }
     break;
-    case PLAYER_STATE::ComboMove_02: {
-        Animator2D()->Play(L"LD_ComboMove_02", false);
-        StopWalking();
-        if (DIRECTION_TYPE::LEFT == m_Dir)
-            Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-        else
-            Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-    }
-    break;
-    case PLAYER_STATE::ComboMove_03: {
-        Animator2D()->Play(L"LD_ComboMove_03", false);
-        StopWalking();
-        if (DIRECTION_TYPE::LEFT == m_Dir)
-            Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-        else
-            Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-    }
-    break;
-    case PLAYER_STATE::ComboMove_04: {
-        Animator2D()->Play(L"LD_ComboMove_04", false);
-        StopWalking();
-        if (DIRECTION_TYPE::LEFT == m_Dir)
-            Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-        else
-            Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-    }
-    break;
-    case PLAYER_STATE::ComboAerial_01: {
-        Animator2D()->Play(L"LD_ComboAerial_01", false);
-    }
-    break;
-    case PLAYER_STATE::ComboAerial_02: {
-        Animator2D()->Play(L"LD_ComboAerial_02", false);
-    }
-    break;
-    case PLAYER_STATE::ComboAerial_03: {
-        Animator2D()->Play(L"LD_ComboAerial_03", false);
+    case PLAYER_STATE::ComboAerial: {
+
+        if (0 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboAerial_01", false);
+        }
+        else if (1 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboAerial_02", false);
+        }
+        else if (2 == m_AttackCount)
+        {
+            Animator2D()->Play(L"LD_ComboAerial_03", false);
+        }
     }
     break;
     case PLAYER_STATE::JumpingAttack: {
@@ -366,25 +360,10 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::FightToIdle: {
     }
     break;
-    case PLAYER_STATE::ComboMove_01: {
+    case PLAYER_STATE::ComboMove: {
     }
     break;
-    case PLAYER_STATE::ComboMove_02: {
-    }
-    break;
-    case PLAYER_STATE::ComboMove_03: {
-    }
-    break;
-    case PLAYER_STATE::ComboMove_04: {
-    }
-    break;
-    case PLAYER_STATE::ComboAerial_01: {
-    }
-    break;
-    case PLAYER_STATE::ComboAerial_02: {
-    }
-    break;
-    case PLAYER_STATE::ComboAerial_03: {
+    case PLAYER_STATE::ComboAerial: {
     }
     break;
     case PLAYER_STATE::JumpingAttack: {
@@ -450,7 +429,7 @@ void CPlayerScript::Idle()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -507,7 +486,7 @@ void CPlayerScript::IdleToRun()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -558,7 +537,7 @@ void CPlayerScript::IdleUturn()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -713,7 +692,7 @@ void CPlayerScript::Jump_Landing()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -759,7 +738,7 @@ void CPlayerScript::Run()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -807,7 +786,7 @@ void CPlayerScript::RunUturn()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -868,7 +847,7 @@ void CPlayerScript::RunToIdle()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboMove_01);
+        ChangeState(PLAYER_STATE::ComboMove);
     }
 }
 
@@ -886,85 +865,105 @@ void CPlayerScript::FightToIdle()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
+
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        ChangeState(PLAYER_STATE::Dash);
+    }
+
+    // Attack
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        ++m_AttackCount;
+        ChangeState(PLAYER_STATE::ComboMove);
+    }
 }
 
-void CPlayerScript::ComboMove_01()
+void CPlayerScript::ComboMove()
 {
-    if (Animator2D()->IsFinish())
+    static float PassedTime = 0.f;
+    PassedTime += DT;
+
+    if (0 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+            ChangeState(PLAYER_STATE::Idle);
+
+        // Attack
+        if (KEY_TAP(KEY::LBTN))
+        {
+            PassedTime = 0.f;
+            m_AttackCount = 1;
+            ChangeState(PLAYER_STATE::ComboMove);
+        }
+    }
+    else if (1 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+        {
+            ChangeState(PLAYER_STATE::FightToIdle);
+            PassedTime = 0.f;
+        }
+
+        if (PassedTime > 0.2f)
+            StopWalking();
+
+        // Attack
+        if (KEY_TAP(KEY::LBTN))
+        {
+            PassedTime = 0.f;
+            m_AttackCount = 2;
+            ChangeState(PLAYER_STATE::ComboMove);
+        }
+    }
+    else if (2 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+        {
+            ChangeState(PLAYER_STATE::FightToIdle);
+            PassedTime = 0.f;
+        }
+
+        if (PassedTime > 0.2f)
+            StopWalking();
+
+        // Attack
+        if (KEY_TAP(KEY::LBTN))
+        {
+            PassedTime = 0.f;
+            m_AttackCount = 3;
+            ChangeState(PLAYER_STATE::ComboMove);
+        }
+    }
+    else if (3 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+        {
+            ChangeState(PLAYER_STATE::FightToIdle);
+            PassedTime = 0.f;
+        }
+
+        if (PassedTime > 0.4f)
+            StopWalking();
+    }
+    else
+    {
         ChangeState(PLAYER_STATE::Idle);
-
-    // Attack
-    if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove_02);
     }
 }
 
-void CPlayerScript::ComboMove_02()
-{
-    static float PassedTime = 0.f;
-    PassedTime += DT;
-    if (PassedTime > 0.2f)
-        StopWalking();
-
-    if (Animator2D()->IsFinish())
-    {
-        ChangeState(PLAYER_STATE::FightToIdle);
-        PassedTime = 0.f;
-    }
-
-    // Attack
-    if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove_03);
-        PassedTime = 0.f;
-    }
-}
-
-void CPlayerScript::ComboMove_03()
-{
-    static float PassedTime = 0.f;
-    PassedTime += DT;
-    if (PassedTime > 0.2f)
-        StopWalking();
-
-    if (Animator2D()->IsFinish())
-    {
-        ChangeState(PLAYER_STATE::FightToIdle);
-        PassedTime = 0.f;
-    }
-
-    // Attack
-    if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove_04);
-        PassedTime = 0.f;
-    }
-}
-
-void CPlayerScript::ComboMove_04()
-{
-    static float PassedTime = 0.f;
-    PassedTime += DT;
-    if (PassedTime > 0.2f)
-        StopWalking();
-
-    if (Animator2D()->IsFinish())
-    {
-        ChangeState(PLAYER_STATE::FightToIdle);
-        PassedTime = 0.f;
-    }
-}
-
-void CPlayerScript::ComboAerial_01()
-{
-}
-
-void CPlayerScript::ComboAerial_02()
-{
-}
-
-void CPlayerScript::ComboAerial_03()
+void CPlayerScript::ComboAerial()
 {
 }
 

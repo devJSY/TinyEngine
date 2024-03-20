@@ -17,13 +17,8 @@ enum class PLAYER_STATE
     FightToIdle,
 
     // The Scythe
-    ComboMove_01,
-    ComboMove_02,
-    ComboMove_03,
-    ComboMove_04,
-    ComboAerial_01,
-    ComboAerial_02,
-    ComboAerial_03,
+    ComboMove,
+    ComboAerial,
     JumpingAttack,
     AerialDownAttack,
 };
@@ -48,6 +43,7 @@ private:
     const float m_DashCoolTime;
     float m_RigidGravityScale;
     bool m_bJumpAttackActive;
+    int m_AttackCount;
 
 public:
     virtual void begin() override;
@@ -76,13 +72,8 @@ private:
     void FightToIdle();
 
     // The Scythe
-    void ComboMove_01();
-    void ComboMove_02();
-    void ComboMove_03();
-    void ComboMove_04();
-    void ComboAerial_01();
-    void ComboAerial_02();
-    void ComboAerial_03();
+    void ComboMove();
+    void ComboAerial();
     void JumpingAttack();
     void AerialDownAttack();
 
