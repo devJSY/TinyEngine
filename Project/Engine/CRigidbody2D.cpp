@@ -65,10 +65,10 @@ void CRigidbody2D::AddForce(Vec2 _Force, ForceMode2D _Mode)
     switch (_Mode)
     {
     case Force:
-        body->ApplyForceToCenter(b2Vec2(_Force.x, _Force.y), true);
+        body->ApplyForceToCenter(_Force, true);
         break;
     case Impulse:
-        body->ApplyLinearImpulseToCenter(b2Vec2(_Force.x, _Force.y), true);
+        body->ApplyLinearImpulseToCenter(_Force, true);
         break;
     }
 }
@@ -99,7 +99,7 @@ Vec2 CRigidbody2D::GetVelocity()
     b2Body* body = (b2Body*)m_RuntimeBody;
     b2Vec2 velocity = body->GetLinearVelocity();
 
-    return Vec2(velocity.x, velocity.y);
+    return Vec2(velocity);
 }
 
 void CRigidbody2D::SetVelocity(Vec2 _Velocity)
@@ -108,7 +108,7 @@ void CRigidbody2D::SetVelocity(Vec2 _Velocity)
         return;
 
     b2Body* body = (b2Body*)m_RuntimeBody;
-    body->SetLinearVelocity(b2Vec2(_Velocity.x, _Velocity.y));
+    body->SetLinearVelocity(_Velocity);
 }
 
 void CRigidbody2D::SetSimulated(bool _bSimulated)

@@ -2,6 +2,17 @@
 
 #include <box2d\\b2_world_callbacks.h>
 
+// RayCast
+struct RaycastHit2D
+{
+    Vec2 Centroid;              // Raycast 중심 위치
+    float Distance;             // Centroid 에서 부터 Ray를 발사하여 충돌한 지점까지의 거리
+    float Fraction;             // 적중이 발생한 광선의 거리의 비율
+    Vec2 Normal;                // 충돌 표면의 노말벡터
+    Vec2 Point;                 // 충돌 지점의 위치
+    CGameObject* pCollisionObj; // 충돌한 콜라이더 오브젝트
+};
+
 // 충돌 콜백 클래스
 class CollisionCallback : public b2ContactListener
 {
@@ -44,9 +55,8 @@ public:
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
 
     CGameObject* CollisionCheck(Vec2 _Point);
-    CGameObject* RayCast(Vec2 _p1, Vec2 _p2);
-    CGameObject* RayCast(Vec2 _p1, Vec2 _p2, int _LayerIdx);
-    CGameObject* RayCast(Vec2 _p1, Vec2 _p2, const std::wstring& _LayerName);
+    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, unsigned short _LayerMask = 0xFFFF);
+    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, const wstring& _LayerName);
 
 public:
     const float GetPPM() const { return m_PPM; }

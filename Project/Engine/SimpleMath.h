@@ -29,6 +29,7 @@
 #define XM_CONSTEXPR
 #endif
 
+// ImGui
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
     #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
@@ -36,6 +37,11 @@
 
 struct ImVec2;
 struct ImVec4;
+
+// Box2D
+#include "box2d\\b2_math.h"
+
+struct b2Vec2;
 
 namespace DirectX
 {
@@ -126,16 +132,19 @@ namespace DirectX
             Vector2& operator=(const Vector2&) = default;
             Vector2& operator =(FXMVECTOR V) { XMStoreFloat2(this, V); return *this; }
             Vector2& operator=(const ImVec2& _imv2) { x = _imv2.x; y = _imv2.y; return *this; }
+            Vector2& operator=(const b2Vec2& _b2v2) { x = _b2v2.x; y = _b2v2.y; return *this; }
 
             Vector2(Vector2&&) = default;
             Vector2& operator=(Vector2&&) = default;
 
             operator XMVECTOR() const { return XMLoadFloat2(this); }
-
             
             // Conversion
             operator ImVec2() const { return ImVec2(x, y); }
+            operator b2Vec2() const { return b2Vec2(x, y); }
 
+            Vector2(const b2Vec2& V) { this->x = V.x; this->y = V.y; }
+          
             // Comparison operators
             bool operator == (const Vector2& V) const;
             bool operator != (const Vector2& V) const;
@@ -229,6 +238,7 @@ namespace DirectX
         Vector2 operator* (const Vector2& V1, const Vector2& V2);
         Vector2 operator* (const Vector2& V, float S);
         Vector2 operator/ (const Vector2& V1, const Vector2& V2);
+        Vector2 operator/(const Vector2& V, float S) noexcept;
         Vector2 operator* (float S, const Vector2& V);
 
         //------------------------------------------------------------------------------

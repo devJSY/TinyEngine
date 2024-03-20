@@ -826,17 +826,17 @@ void CPlayerScript::RayCast()
     if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
     {
         float RayLength = 100.f;
-        Vec3 p1 = Transform()->GetWorldPos();
-        Vec3 p2 = p1 + Vec3(0.f, -RayLength, 0.f);
-        CGameObject* RayCastedObj = CPhysics2DMgr::GetInst()->RayCast(Vec2(p1.x, p1.y), Vec2(p2.x, p2.y), L"Ground"); // Ground 레이어와 충돌체크
+        Vec3 origin = Transform()->GetWorldPos();
+        RaycastHit2D Hit =
+            CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), RayLength, L"Ground"); // Ground 레이어와 충돌체크
         GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), RayLength, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
 
-        if (nullptr != RayCastedObj)
+        if (nullptr != Hit.pCollisionObj)
         {
             m_bOnGround = true;
 
             // Player 중점 에서 Ground 표면까지의 거리
-            float dist = std::fabsf(p1.y - RayCastedObj->Transform()->GetWorldPos().y - (RayCastedObj->Transform()->GetWorldScale().y / 2.f));
+            Hit.Distance;
             // TODO 그림자 처리
         }
         else

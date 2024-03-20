@@ -1,5 +1,6 @@
 #pragma once
 #include "CComponent.h"
+#include "CPhysics2DMgr.h"
 
 class CCollider2D : public CComponent
 {
@@ -31,7 +32,7 @@ public:
 
 public:
     bool IsCollision(Vec2 _Point);
-    bool RayCast(Vec2 _p1, Vec2 _p2);
+    bool RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, RaycastHit2D& _Hit);
 
 private:
     void OnCollisionEnter(CCollider2D* _OtherCollider);

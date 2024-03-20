@@ -315,6 +315,16 @@ inline Vector2 operator/(const Vector2& V1, const Vector2& V2)
     return R;
 }
 
+inline Vector2 operator/(const Vector2& V, float S) noexcept
+{
+    using namespace DirectX;
+    const XMVECTOR v1 = XMLoadFloat2(&V);
+    const XMVECTOR X = XMVectorScale(v1, 1.f / S);
+    Vector2 R;
+    XMStoreFloat2(&R, X);
+    return R;
+}
+
 inline Vector2 operator*(float S, const Vector2& V)
 {
     using namespace DirectX;

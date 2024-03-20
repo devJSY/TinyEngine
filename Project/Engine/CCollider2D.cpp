@@ -50,7 +50,8 @@ void CCollider2D::finaltick()
     // 트랜스폼 위치 정보 업데이트
     b2Body* body = ((b2Fixture*)m_RuntimeFixture)->GetBody();
     float PPM = CPhysics2DMgr::GetInst()->GetPPM();
-    body->SetTransform(b2Vec2(Transform()->GetWorldPos().x / PPM, Transform()->GetWorldPos().y / PPM), Transform()->GetWorldRotation().z);
+    Vec3 WorldPos = Transform()->GetWorldPos();
+    body->SetTransform(b2Vec2(WorldPos.x / PPM, WorldPos.y / PPM), Transform()->GetWorldRotation().z);
 }
 
 void CCollider2D::SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl)
@@ -76,22 +77,42 @@ bool CCollider2D::IsCollision(Vec2 _Point)
         return false;
 
     float PPM = CPhysics2DMgr::GetInst()->GetPPM();
-    return ((b2Fixture*)m_RuntimeFixture)->TestPoint(b2Vec2(_Point.x / PPM, _Point.y / PPM));
+    return ((b2Fixture*)m_RuntimeFixture)->TestPoint(_Point / PPM);
 }
 
-bool CCollider2D::RayCast(Vec2 _p1, Vec2 _p2)
+bool CCollider2D::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, RaycastHit2D& _Hit)
 {
     if (nullptr == m_RuntimeFixture)
         return false;
 
     float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+
+    _Dirction.Normalize();
+    Vec2 p1 = _Origin / PPM;
+    Vec2 p2 = (_Origin + _Dirction * _Distance) / PPM;
+
     b2RayCastInput input = b2RayCastInput();
-    input.p1 = b2Vec2(_p1.x / PPM, _p1.y / PPM);
-    input.p2 = b2Vec2(_p2.x / PPM, _p2.y / PPM);
+    input.p1 = p1;
+    input.p2 = p2;
     input.maxFraction = 1.f;
 
     b2RayCastOutput output = b2RayCastOutput();
-    return ((b2Fixture*)m_RuntimeFixture)->RayCast(&output, input, 0);
+    if (((b2Fixture*)m_RuntimeFixture)->RayCast(&output, input, 0))
+    {
+        b2Vec2 HitPoint = input.p1 + output.fraction * (input.p2 - input.p1);
+        HitPoint *= PPM;
+
+        _Hit.Centroid = _Origin;
+        _Hit.Fraction = output.fraction;
+        _Hit.Normal = output.normal;
+        _Hit.Point = HitPoint;
+        _Hit.Distance = (_Hit.Point - _Origin).Length();
+        _Hit.pCollisionObj = GetOwner();
+
+        return true;
+    }
+
+    return false;
 }
 
 void CCollider2D::SetTrigger(bool _trigger)
