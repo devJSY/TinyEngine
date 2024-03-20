@@ -14,15 +14,17 @@ CPlayerScript::CPlayerScript()
     , m_JumpImpulse(1.f)
     , m_JumpForce(1.f)
     , m_DashImpulse(1.f)
+    , m_RaycastDist(100.f)
+    , m_bOnGround(false)
     , m_DashPassedTime(0.f)
     , m_DashCoolTime(1.f)
     , m_RigidGravityScale(0.f)
-    , m_bOnGround(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DashImpulse, "Dash Impulse");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
 }
 
 CPlayerScript::~CPlayerScript()
@@ -622,6 +624,12 @@ void CPlayerScript::Jump_Landing()
         Walking();
     }
 
+    // Jump
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
+    }
+
     // Dash
     if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
     {
@@ -825,11 +833,10 @@ void CPlayerScript::RayCast()
     // RayCast
     if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
     {
-        float RayLength = 100.f;
         Vec3 origin = Transform()->GetWorldPos();
         RaycastHit2D Hit =
-            CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), RayLength, L"Ground"); // Ground 레이어와 충돌체크
-        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), RayLength, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
+            CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
+        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_RaycastDist, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
 
         if (nullptr != Hit.pCollisionObj)
         {
@@ -860,13 +867,6 @@ void CPlayerScript::Walking()
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
-    // CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    // int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
-    // if (LayerIdx >= 0)
-    //{
-    //     if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
-    //         m_bOnGround = true;
-    // }
 }
 
 void CPlayerScript::OnCollisionStay(CCollider2D* _OtherCollider)
@@ -902,6 +902,7 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_JumpImpulse, sizeof(float), 1, _File);
     fwrite(&m_JumpForce, sizeof(float), 1, _File);
     fwrite(&m_DashImpulse, sizeof(float), 1, _File);
+    fwrite(&m_RaycastDist, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
@@ -910,4 +911,5 @@ void CPlayerScript::LoadFromLevelFile(FILE* _File)
     fread(&m_JumpImpulse, sizeof(float), 1, _File);
     fread(&m_JumpForce, sizeof(float), 1, _File);
     fread(&m_DashImpulse, sizeof(float), 1, _File);
+    fread(&m_RaycastDist, sizeof(float), 1, _File);
 }

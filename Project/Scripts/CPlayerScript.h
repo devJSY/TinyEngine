@@ -36,16 +36,18 @@ private:
     PLAYER_STATE m_State;
     DIRECTION_TYPE m_Dir;
 
+    // 수정 가능한 멤버변수
     float m_Speed;
     float m_JumpImpulse;
     float m_JumpForce;
     float m_DashImpulse;
+    float m_RaycastDist;
 
+    // 수정 불가능한 멤버변수
+    bool m_bOnGround;
     float m_DashPassedTime;
     float m_DashCoolTime;
     float m_RigidGravityScale;
-
-    bool m_bOnGround;
 
 public:
     virtual void begin() override;
