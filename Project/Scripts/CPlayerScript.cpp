@@ -254,32 +254,17 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::ComboMove: {
         if (0 == m_AttackCount)
-        {
             Animator2D()->Play(L"LD_ComboMove_01", false);
-            StopWalking();
-        }
         else if (1 == m_AttackCount)
-        {
             Animator2D()->Play(L"LD_ComboMove_02", false);
-            StopWalking();
-            if (DIRECTION_TYPE::LEFT == m_Dir)
-                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-            else
-                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-        }
         else if (2 == m_AttackCount)
-        {
             Animator2D()->Play(L"LD_ComboMove_03", false);
-            StopWalking();
-            if (DIRECTION_TYPE::LEFT == m_Dir)
-                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-            else
-                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-        }
         else if (3 == m_AttackCount)
-        {
             Animator2D()->Play(L"LD_ComboMove_04", false);
-            StopWalking();
+
+        StopWalking();
+        if (0 != m_AttackCount)
+        {
             if (DIRECTION_TYPE::LEFT == m_Dir)
                 Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
             else
@@ -288,27 +273,19 @@ void CPlayerScript::EnterState()
     }
     break;
     case PLAYER_STATE::ComboAerial: {
+        if (0 == m_AttackCount)
+            Animator2D()->Play(L"LD_ComboAerial_01", false);
+        else if (1 == m_AttackCount)
+            Animator2D()->Play(L"LD_ComboAerial_02", false);
+        else if (2 == m_AttackCount)
+            Animator2D()->Play(L"LD_ComboAerial_03", false);
+
         m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
         Rigidbody2D()->SetGravityScale(0.f);
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
 
-        if (0 == m_AttackCount)
+        if (0 != m_AttackCount)
         {
-            Animator2D()->Play(L"LD_ComboAerial_01", false);
-            Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
-        }
-        else if (1 == m_AttackCount)
-        {
-            Animator2D()->Play(L"LD_ComboAerial_02", false);
-            Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
-            if (DIRECTION_TYPE::LEFT == m_Dir)
-                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-            else
-                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
-        }
-        else if (2 == m_AttackCount)
-        {
-            Animator2D()->Play(L"LD_ComboAerial_03", false);
-            Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
             if (DIRECTION_TYPE::LEFT == m_Dir)
                 Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
             else
@@ -616,6 +593,7 @@ void CPlayerScript::Jump_Start()
     AirTime += DT;
     Vec2 Vel = Rigidbody2D()->GetVelocity();
 
+    // Space 키를 누른 시간만큼 상승
     if (AirTime < 0.3f && KEY_PRESSED(SPACE))
     {
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpForce));
@@ -1220,8 +1198,7 @@ void CPlayerScript::RayCast()
             m_bOnGround = true;
             m_bJumpAttackActive = true;
 
-            // Player 중점 에서 Ground 표면까지의 거리
-            Hit.Distance;
+            Hit.Distance; // Player 중점 에서 Ground 표면까지의 거리
             // TODO 그림자 처리
         }
         else
