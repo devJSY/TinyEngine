@@ -60,6 +60,9 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_JumpingAttack.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_AerialDownAttack.anim");
 
@@ -253,6 +256,7 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove_01", false);
+            StopWalking();
         }
         else if (1 == m_AttackCount)
         {
@@ -284,18 +288,31 @@ void CPlayerScript::EnterState()
     }
     break;
     case PLAYER_STATE::ComboAerial: {
+        m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
+        Rigidbody2D()->SetGravityScale(0.f);
 
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboAerial_01", false);
+            Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboAerial_02", false);
+            Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+            if (DIRECTION_TYPE::LEFT == m_Dir)
+                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+            else
+                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboAerial_03", false);
+            Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+            if (DIRECTION_TYPE::LEFT == m_Dir)
+                Rigidbody2D()->AddForce(Vec2(-m_AttackImpulse, 0.f), ForceMode2D::Impulse);
+            else
+                Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
         }
     }
     break;
@@ -310,7 +327,7 @@ void CPlayerScript::EnterState()
     case PLAYER_STATE::AerialDownAttack: {
         Animator2D()->Play(L"LD_AerialDownAttack", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
-        Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
+        Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
     }
     break;
     }
@@ -364,6 +381,7 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::ComboAerial: {
+        Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
     }
     break;
     case PLAYER_STATE::JumpingAttack: {
@@ -584,7 +602,7 @@ void CPlayerScript::Jump_Falling()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        // ChangeState(PLAYER_STATE::ComboAerial_01);
+        ChangeState(PLAYER_STATE::ComboAerial);
     }
 }
 
@@ -643,7 +661,7 @@ void CPlayerScript::Jump_Start()
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        // ChangeState(PLAYER_STATE::ComboAerial_01);
+        ChangeState(PLAYER_STATE::ComboAerial);
     }
 }
 
@@ -886,7 +904,10 @@ void CPlayerScript::FightToIdle()
     else if (KEY_TAP(KEY::LBTN))
     {
         ++m_AttackCount;
-        ChangeState(PLAYER_STATE::ComboMove);
+        if (m_bOnGround)
+            ChangeState(PLAYER_STATE::ComboMove);
+        else
+            ChangeState(PLAYER_STATE::ComboAerial);
     }
 }
 
@@ -895,25 +916,44 @@ void CPlayerScript::ComboMove()
     static float PassedTime = 0.f;
     PassedTime += DT;
 
+    static bool bNextAttack = false;
+
     if (0 == m_AttackCount)
     {
         if (Animator2D()->IsFinish())
-            ChangeState(PLAYER_STATE::Idle);
+        {
+            if (bNextAttack)
+            {
+                m_AttackCount = 1;
+                ChangeState(PLAYER_STATE::ComboMove);
+            }
+            else
+                ChangeState(PLAYER_STATE::Idle);
+
+            PassedTime = 0.f;
+            bNextAttack = false;
+        }
 
         // Attack
         if (KEY_TAP(KEY::LBTN))
         {
-            PassedTime = 0.f;
-            m_AttackCount = 1;
-            ChangeState(PLAYER_STATE::ComboMove);
+            bNextAttack = true;
         }
     }
     else if (1 == m_AttackCount)
     {
         if (Animator2D()->IsFinish())
         {
-            ChangeState(PLAYER_STATE::FightToIdle);
+            if (bNextAttack)
+            {
+                m_AttackCount = 2;
+                ChangeState(PLAYER_STATE::ComboMove);
+            }
+            else
+                ChangeState(PLAYER_STATE::FightToIdle);
+
             PassedTime = 0.f;
+            bNextAttack = false;
         }
 
         if (PassedTime > 0.2f)
@@ -922,17 +962,23 @@ void CPlayerScript::ComboMove()
         // Attack
         if (KEY_TAP(KEY::LBTN))
         {
-            PassedTime = 0.f;
-            m_AttackCount = 2;
-            ChangeState(PLAYER_STATE::ComboMove);
+            bNextAttack = true;
         }
     }
     else if (2 == m_AttackCount)
     {
         if (Animator2D()->IsFinish())
         {
-            ChangeState(PLAYER_STATE::FightToIdle);
+            if (bNextAttack)
+            {
+                m_AttackCount = 3;
+                ChangeState(PLAYER_STATE::ComboMove);
+            }
+            else
+                ChangeState(PLAYER_STATE::FightToIdle);
+
             PassedTime = 0.f;
+            bNextAttack = false;
         }
 
         if (PassedTime > 0.2f)
@@ -941,9 +987,7 @@ void CPlayerScript::ComboMove()
         // Attack
         if (KEY_TAP(KEY::LBTN))
         {
-            PassedTime = 0.f;
-            m_AttackCount = 3;
-            ChangeState(PLAYER_STATE::ComboMove);
+            bNextAttack = true;
         }
     }
     else if (3 == m_AttackCount)
@@ -952,6 +996,7 @@ void CPlayerScript::ComboMove()
         {
             ChangeState(PLAYER_STATE::FightToIdle);
             PassedTime = 0.f;
+            bNextAttack = false;
         }
 
         if (PassedTime > 0.4f)
@@ -960,11 +1005,122 @@ void CPlayerScript::ComboMove()
     else
     {
         ChangeState(PLAYER_STATE::Idle);
+        bNextAttack = false;
     }
+
+    // Attack 중 공중에 뜬 상태일경우 ComboAerial 로 전환
+    if (!m_bOnGround && KEY_TAP(KEY::LBTN))
+    {
+        m_AttackCount = 0;
+        PassedTime = 0.f;
+        bNextAttack = false;
+        ChangeState(PLAYER_STATE::ComboAerial);
+    }
+
+    // 점프 & 하강 공격
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        m_AttackCount = 0;
+        PassedTime = 0.f;
+        bNextAttack = false;
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    // else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
+    //{
+    //     m_AttackCount = 0;
+    //     PassedTime = 0.f;
+    //     bNextAttack = false;
+    //     ChangeState(PLAYER_STATE::);
+    // }
 }
 
 void CPlayerScript::ComboAerial()
 {
+    static float PassedTime = 0.f;
+    PassedTime += DT;
+
+    static bool bNextAttack = false;
+
+    if (0 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+        {
+            if (bNextAttack)
+            {
+                m_AttackCount = 1;
+                ChangeState(PLAYER_STATE::ComboAerial);
+            }
+            else
+                ChangeState(PLAYER_STATE::FightToIdle);
+
+            PassedTime = 0.f;
+            bNextAttack = false;
+        }
+
+        // Attack
+        if (KEY_TAP(KEY::LBTN))
+        {
+            bNextAttack = true;
+        }
+    }
+    else if (1 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+        {
+            if (bNextAttack)
+            {
+                m_AttackCount = 2;
+                ChangeState(PLAYER_STATE::ComboAerial);
+            }
+            else
+                ChangeState(PLAYER_STATE::FightToIdle);
+
+            PassedTime = 0.f;
+            bNextAttack = false;
+        }
+
+        if (PassedTime > 0.2f)
+            StopWalking();
+
+        // Attack
+        if (KEY_TAP(KEY::LBTN))
+        {
+            bNextAttack = true;
+        }
+    }
+    else if (2 == m_AttackCount)
+    {
+        if (Animator2D()->IsFinish())
+        {
+            ChangeState(PLAYER_STATE::FightToIdle);
+            PassedTime = 0.f;
+            bNextAttack = false;
+        }
+
+        if (PassedTime > 0.2f)
+            StopWalking();
+    }
+    else
+    {
+        ChangeState(PLAYER_STATE::Idle);
+        bNextAttack = false;
+    }
+
+    // 점프 & 하강 공격
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        m_AttackCount = 0;
+        PassedTime = 0.f;
+        bNextAttack = false;
+        ChangeState(PLAYER_STATE::JumpingAttack);
+    }
+    else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
+    {
+        m_AttackCount = 0;
+        PassedTime = 0.f;
+        bNextAttack = false;
+        ChangeState(PLAYER_STATE::AerialDownAttack);
+    }
 }
 
 void CPlayerScript::JumpingAttack()
