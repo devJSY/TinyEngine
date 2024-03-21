@@ -833,6 +833,9 @@
     <Filter Include="08. Component\RenderComponent\07. TextRender">
       <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\ProgressBar">
+      <UniqueIdentifier>{255fc16a-e735-4269-bf34-360fbdcb3a95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -998,6 +1001,12 @@
     </FxCompile>
     <FxCompile Include="SamplingPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="ProgressBarVS.hlsl">
+      <Filter>ShaderCode\Render\ProgressBar</Filter>
+    </FxCompile>
+    <FxCompile Include="ProgressBarPS.hlsl">
+      <Filter>ShaderCode\Render\ProgressBar</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

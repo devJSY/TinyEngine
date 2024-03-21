@@ -29,6 +29,12 @@ private:
     PLAYER_STATE m_State;
     DIRECTION_TYPE m_Dir;
 
+    int m_MaxLife;
+    int m_MaxMana;
+
+    int m_CurLife;
+    int m_CurMana;
+
     // 수정 가능한 멤버변수
     float m_Speed;
     float m_JumpImpulse;

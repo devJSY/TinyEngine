@@ -693,6 +693,30 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"PostEffectShader");
         AddAsset(L"PostEffectShader", pShader);
     }
+
+    // =================================
+    // ProgressBar Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\ProgressBarVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ProgressBarPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddTexParam(TEX_0, "Render Texture");
+
+        pShader->AddScalarParam(SCALAR_PARAM::FLOAT_0, "Max Value");
+        pShader->AddScalarParam(SCALAR_PARAM::FLOAT_1, "Cur Value");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Color");
+
+        pShader->SetName(L"ProgressBarShader");
+        AddAsset(L"ProgressBarShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -956,6 +980,16 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_1, 1.f);
         pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
+    }
+
+    // ProgressBar
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ProgressBarShader"));
+        pMtrl->SetName(L"ProgressBarMtrl");
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);
+        pMtrl->SetScalarParam(FLOAT_1, 1.f);
+        AddAsset<CMaterial>(L"ProgressBarMtrl", pMtrl);
     }
 }
 
