@@ -57,6 +57,10 @@ public:
 
 public:
     PLAYER_STATE GetState() const { return m_State; }
+    int GetMaxLife() const { return m_MaxLife; }
+    int GetMaxMana() const { return m_MaxMana; }
+    int GetCurLife() const { return m_CurLife; }
+    int GetCurMana() const { return m_CurMana; }
 
 private:
     void ChangeState(PLAYER_STATE _NextState);

@@ -28,6 +28,10 @@ CPlayerScript::CPlayerScript()
     , m_bJumpAttackActive(true)
     , m_AttackCount(0)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_CurMana, "Current Mana");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
@@ -1296,6 +1300,10 @@ void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 
 void CPlayerScript::SaveToLevelFile(FILE* _File)
 {
+    fwrite(&m_MaxLife, sizeof(int), 1, _File);
+    fwrite(&m_MaxMana, sizeof(int), 1, _File);
+    fwrite(&m_CurLife, sizeof(int), 1, _File);
+    fwrite(&m_CurMana, sizeof(int), 1, _File);
     fwrite(&m_Speed, sizeof(float), 1, _File);
     fwrite(&m_JumpImpulse, sizeof(float), 1, _File);
     fwrite(&m_JumpForce, sizeof(float), 1, _File);
@@ -1306,6 +1314,10 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
 {
+    fread(&m_MaxLife, sizeof(int), 1, _File);
+    fread(&m_MaxMana, sizeof(int), 1, _File);
+    fread(&m_CurLife, sizeof(int), 1, _File);
+    fread(&m_CurMana, sizeof(int), 1, _File);
     fread(&m_Speed, sizeof(float), 1, _File);
     fread(&m_JumpImpulse, sizeof(float), 1, _File);
     fread(&m_JumpForce, sizeof(float), 1, _File);

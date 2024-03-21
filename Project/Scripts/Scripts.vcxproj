@@ -113,7 +113,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
+    <ClInclude Include="CPlayerManaBarScript.h" />
     <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CPlayerLifeBarScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
@@ -125,7 +127,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />
+    <ClCompile Include="CPlayerManaBarScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CPlayerLifeBarScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

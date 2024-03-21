@@ -2,4 +2,6 @@ CCameraMoveScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript
+CPlayerLifeBarScript
+CPlayerManaBarScript
 CPlayerScript

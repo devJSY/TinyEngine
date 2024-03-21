@@ -612,7 +612,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
         if (ImGui_AlignButton("Load Animation", 0.f))
         {
-            std::filesystem::path filePath = OpenFileDialog(L"AnimData\\", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+            std::filesystem::path filePath = OpenFileDialog(L"", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
             if (!filePath.empty()) // 취소, 닫기 버튼 체크
             {

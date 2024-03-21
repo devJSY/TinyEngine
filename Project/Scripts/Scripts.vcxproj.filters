@@ -31,6 +31,12 @@
     <ClInclude Include="CPlayerCameraScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerLifeBarScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerManaBarScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -58,6 +64,12 @@
       <Filter>Scripts\Button\PlayButton</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerCameraScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerLifeBarScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerManaBarScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
   </ItemGroup>
