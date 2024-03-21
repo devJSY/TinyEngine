@@ -7,6 +7,7 @@ CPlayerCameraScript::CPlayerCameraScript()
     , m_CamSpeed(1000.f)
     , m_CamMoveRange(0.f)
     , m_OffsetPos()
+    , m_listCamEffect{}
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamSpeed, "Camera Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamMoveRange, "Camera Move Range");
@@ -26,9 +27,37 @@ void CPlayerCameraScript::tick()
         Vec3 PlayerPos = pPlayer->Transform()->GetRelativePos();
         Vec3 Dir = PlayerPos - pos;
 
-        if (Dir.Length() > m_CamMoveRange)
+        if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRange)
+            pos.x += (Dir.Normalize() * m_CamSpeed * DT).x;
+
+        if (fabsf(pos.y - PlayerPos.y) > m_CamMoveRange)
+            pos.y += (Dir.Normalize() * m_CamSpeed * DT).y;
+
+        // Camera Effect
+        if (!m_listCamEffect.empty())
         {
-            pos += Dir.Normalize() * m_CamSpeed * DT;
+            tCamEffect& effect = m_listCamEffect.front();
+
+            effect.fCurTime += DT;
+
+            if (effect.eShakeDir == ShakeDir::Horizontal)
+            {
+                pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            }
+            else if (effect.eShakeDir == ShakeDir::Vertical)
+            {
+                pos.y += -sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            }
+            else if (effect.eShakeDir == ShakeDir::Comprehensive)
+            {
+                pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+                pos.y -= sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            }
+
+            if (effect.fCurTime > effect.fDuration)
+            {
+                m_listCamEffect.pop_front();
+            }
         }
 
         Transform()->SetRelativePos(pos + m_OffsetPos);
