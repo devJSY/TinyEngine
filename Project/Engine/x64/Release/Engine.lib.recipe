@@ -93,6 +93,12 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\postprocessVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\ProgressBarPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\ProgressBarVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\SamplingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
