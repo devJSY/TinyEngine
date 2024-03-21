@@ -185,6 +185,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Std2DUIShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"Std2DUIShader");
+        AddAsset(L"Std2DUIShader", pShader);
+    }
+
+    // =================================
     // Std2DLightShader
     // =================================
     {
@@ -703,7 +723,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreatePixelShader(L"shader\\ProgressBarPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
@@ -748,6 +768,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DShader"));
         pMtrl->SetName(L"Std2DMtrl");
         AddAsset<CMaterial>(L"Std2DMtrl", pMtrl);
+    }
+
+    // Std2DUIMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DUIShader"));
+        pMtrl->SetName(L"Std2DUIMtrl");
+        AddAsset<CMaterial>(L"Std2DUIMtrl", pMtrl);
     }
 
     // Std2DLightMtrl
