@@ -9259,7 +9259,7 @@ bool ImGui::IsMouseHoveringRect(const ImVec2& r_min, const ImVec2& r_max, bool c
     if (clip)
         rect_clipped.ClipWith(g.CurrentWindow->ClipRect);
 
-    // Hit testing, expanded for touch input
+    // Hit02 testing, expanded for touch input
     if (!rect_clipped.ContainsWithPad(g.IO.MousePos, g.Style.TouchExtraPadding))
         return false;
     if (!g.MouseViewport->GetMainRect().Overlaps(rect_clipped))

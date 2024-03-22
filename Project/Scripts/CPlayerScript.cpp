@@ -51,79 +51,81 @@ void CPlayerScript::begin()
 
     if (Animator2D())
     {
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Idle.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_IdleToRun.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_IdleUturn.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Jump_Falling.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Jump_Landing.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Jump_Start.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Run.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_RunToIdle.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_RunUturn.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Dash.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Hit.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_FightToIdle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Idle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleToRun.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleUturn.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Falling.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Landing.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Start.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Run.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunToIdle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunUturn.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Dash.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Fight_To_Idle.anim");
 
         // The Scythe
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_01.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_02.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_03.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_04.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_01.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_02.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_03.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_JumpingAttack.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_AerialDownAttack.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove03.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove04.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand1.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand2.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand3.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand4.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Special2.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Crush.anim");
 
-        /*Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Acquisition.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Acquisition_Curse.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_BookAttack_01.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_BookAttack_02.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_BookAttack_03.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_BossRitual_Intro.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Bump.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Combo_Stand.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_01.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_01_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_02.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_02_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_03.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboAerial_03_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboEvilHands.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboEvilHands_Up.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboKatana.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboKatanas_Ult.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboKatanas_Ult_Init.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboKatanas_Ult_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_01.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_01_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_02.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_02_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_03.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_03_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_04.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_04_Rest.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ComboMove_Jump.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Concentrate.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Concentrate_Start.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Disappear.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Elevator_End.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Elevator_Enter.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Elevator_Out.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_EvilBirds.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_EvilBirds_Up.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Glide.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_OneWayDown.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_OneWayUp.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_PowerUp.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_PowerUp_01.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_PowerUp_02.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Ritual_End_Boss.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Spawn_Lobby.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Teleport.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Waiting.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_Wallgrab_Idle.anim");
-        Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\Player\\LD_ZipUp.anim");*/
+        /*Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition_Curse.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_03.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BossRitual_Intro.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Bump.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Combo_Stand.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands_Up.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatana.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Init.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_Jump.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate_Start.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Disappear.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_End.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Enter.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Out.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds_Up.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Glide.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayDown.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayUp.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_01.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_02.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Teleport.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Waiting.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Wallgrab_Idle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");*/
     }
 
     ChangeState(PLAYER_STATE::Idle);
@@ -165,23 +167,23 @@ void CPlayerScript::tick()
     case PLAYER_STATE::Dash:
         Dash();
         break;
-    case PLAYER_STATE::Hit:
-        Hit();
+    case PLAYER_STATE::Hit02:
+        Hit02();
         break;
-    case PLAYER_STATE::FightToIdle:
-        FightToIdle();
+    case PLAYER_STATE::Fight_To_Idle:
+        Fight_To_Idle();
         break;
     case PLAYER_STATE::ComboMove:
         ComboMove();
         break;
-    case PLAYER_STATE::ComboAerial:
-        ComboAerial();
+    case PLAYER_STATE::ComboStand:
+        ComboStand();
         break;
-    case PLAYER_STATE::JumpingAttack:
-        JumpingAttack();
+    case PLAYER_STATE::Special2:
+        Special2();
         break;
-    case PLAYER_STATE::AerialDownAttack:
-        AerialDownAttack();
+    case PLAYER_STATE::Crush:
+        Crush();
         break;
     }
 
@@ -253,23 +255,23 @@ void CPlayerScript::EnterState()
         m_DashPassedTime = 0.f;
     }
     break;
-    case PLAYER_STATE::Hit: {
-        Animator2D()->Play(L"LD_Hit", false);
+    case PLAYER_STATE::Hit02: {
+        Animator2D()->Play(L"LD_Hit02", false);
     }
     break;
-    case PLAYER_STATE::FightToIdle: {
-        Animator2D()->Play(L"LD_FightToIdle", false);
+    case PLAYER_STATE::Fight_To_Idle: {
+        Animator2D()->Play(L"LD_Fight_To_Idle", false);
     }
     break;
     case PLAYER_STATE::ComboMove: {
         if (0 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboMove_01", false);
+            Animator2D()->Play(L"LD_ComboMove01", false);
         else if (1 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboMove_02", false);
+            Animator2D()->Play(L"LD_ComboMove02", false);
         else if (2 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboMove_03", false);
+            Animator2D()->Play(L"LD_ComboMove03", false);
         else if (3 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboMove_04", false);
+            Animator2D()->Play(L"LD_ComboMove04", false);
 
         StopWalking();
         if (0 != m_AttackCount)
@@ -281,13 +283,13 @@ void CPlayerScript::EnterState()
         }
     }
     break;
-    case PLAYER_STATE::ComboAerial: {
+    case PLAYER_STATE::ComboStand: {
         if (0 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboAerial_01", false);
+            Animator2D()->Play(L"LD_ComboStand1", false);
         else if (1 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboAerial_02", false);
+            Animator2D()->Play(L"LD_ComboMove01", false);
         else if (2 == m_AttackCount)
-            Animator2D()->Play(L"LD_ComboAerial_03", false);
+            Animator2D()->Play(L"LD_ComboStand2", false);
 
         m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
         Rigidbody2D()->SetGravityScale(0.f);
@@ -302,16 +304,16 @@ void CPlayerScript::EnterState()
         }
     }
     break;
-    case PLAYER_STATE::JumpingAttack: {
-        Animator2D()->Play(L"LD_JumpingAttack", false);
+    case PLAYER_STATE::Special2: {
+        Animator2D()->Play(L"LD_Special2", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
 
         m_bJumpAttackActive = false;
     }
     break;
-    case PLAYER_STATE::AerialDownAttack: {
-        Animator2D()->Play(L"LD_AerialDownAttack", false);
+    case PLAYER_STATE::Crush: {
+        Animator2D()->Play(L"LD_Crush", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
     }
@@ -357,23 +359,23 @@ void CPlayerScript::ExitState()
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
     }
     break;
-    case PLAYER_STATE::Hit: {
+    case PLAYER_STATE::Hit02: {
     }
     break;
-    case PLAYER_STATE::FightToIdle: {
+    case PLAYER_STATE::Fight_To_Idle: {
     }
     break;
     case PLAYER_STATE::ComboMove: {
     }
     break;
-    case PLAYER_STATE::ComboAerial: {
+    case PLAYER_STATE::ComboStand: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
     }
     break;
-    case PLAYER_STATE::JumpingAttack: {
+    case PLAYER_STATE::Special2: {
     }
     break;
-    case PLAYER_STATE::AerialDownAttack: {
+    case PLAYER_STATE::Crush: {
     }
     break;
     }
@@ -429,7 +431,7 @@ void CPlayerScript::Idle()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -486,7 +488,7 @@ void CPlayerScript::IdleToRun()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -537,7 +539,7 @@ void CPlayerScript::IdleUturn()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -580,15 +582,15 @@ void CPlayerScript::Jump_Falling()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::AerialDownAttack);
+        ChangeState(PLAYER_STATE::Crush);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboAerial);
+        ChangeState(PLAYER_STATE::ComboStand);
     }
 }
 
@@ -640,15 +642,15 @@ void CPlayerScript::Jump_Start()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::AerialDownAttack);
+        ChangeState(PLAYER_STATE::Crush);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboAerial);
+        ChangeState(PLAYER_STATE::ComboStand);
     }
 }
 
@@ -693,7 +695,7 @@ void CPlayerScript::Jump_Landing()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -739,7 +741,7 @@ void CPlayerScript::Run()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -787,7 +789,7 @@ void CPlayerScript::RunUturn()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -848,7 +850,7 @@ void CPlayerScript::RunToIdle()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -862,11 +864,11 @@ void CPlayerScript::Dash()
         ChangeState(PLAYER_STATE::Idle);
 }
 
-void CPlayerScript::Hit()
+void CPlayerScript::Hit02()
 {
 }
 
-void CPlayerScript::FightToIdle()
+void CPlayerScript::Fight_To_Idle()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
@@ -886,7 +888,7 @@ void CPlayerScript::FightToIdle()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -894,7 +896,7 @@ void CPlayerScript::FightToIdle()
         if (m_bOnGround)
             ChangeState(PLAYER_STATE::ComboMove);
         else
-            ChangeState(PLAYER_STATE::ComboAerial);
+            ChangeState(PLAYER_STATE::ComboStand);
     }
 }
 
@@ -961,7 +963,7 @@ void CPlayerScript::ComboMove()
                 ChangeState(PLAYER_STATE::ComboMove);
             }
             else
-                ChangeState(PLAYER_STATE::FightToIdle);
+                ChangeState(PLAYER_STATE::Fight_To_Idle);
 
             PassedTime = 0.f;
             bNextAttack = false;
@@ -998,7 +1000,7 @@ void CPlayerScript::ComboMove()
                 ChangeState(PLAYER_STATE::ComboMove);
             }
             else
-                ChangeState(PLAYER_STATE::FightToIdle);
+                ChangeState(PLAYER_STATE::Fight_To_Idle);
 
             PassedTime = 0.f;
             bNextAttack = false;
@@ -1019,7 +1021,7 @@ void CPlayerScript::ComboMove()
 
         if (Animator2D()->IsFinish())
         {
-            ChangeState(PLAYER_STATE::FightToIdle);
+            ChangeState(PLAYER_STATE::Fight_To_Idle);
             PassedTime = 0.f;
             bNextAttack = false;
             bShaked = false;
@@ -1050,13 +1052,13 @@ void CPlayerScript::ComboMove()
         bNextAttack = false;
     }
 
-    // Attack 중 공중에 뜬 상태일경우 ComboAerial 로 전환
+    // Attack 중 공중에 뜬 상태일경우 ComboStand 로 전환
     if (!m_bOnGround && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::ComboAerial);
+        ChangeState(PLAYER_STATE::ComboStand);
     }
 
     // 점프 & 하강 공격
@@ -1065,7 +1067,7 @@ void CPlayerScript::ComboMove()
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     // else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     //{
@@ -1076,7 +1078,7 @@ void CPlayerScript::ComboMove()
     // }
 }
 
-void CPlayerScript::ComboAerial()
+void CPlayerScript::ComboStand()
 {
     static float PassedTime = 0.f;
     PassedTime += DT;
@@ -1102,10 +1104,10 @@ void CPlayerScript::ComboAerial()
                 }
 
                 m_AttackCount = 1;
-                ChangeState(PLAYER_STATE::ComboAerial);
+                ChangeState(PLAYER_STATE::ComboStand);
             }
             else
-                ChangeState(PLAYER_STATE::FightToIdle);
+                ChangeState(PLAYER_STATE::Fight_To_Idle);
 
             PassedTime = 0.f;
             bNextAttack = false;
@@ -1136,10 +1138,10 @@ void CPlayerScript::ComboAerial()
                 }
 
                 m_AttackCount = 2;
-                ChangeState(PLAYER_STATE::ComboAerial);
+                ChangeState(PLAYER_STATE::ComboStand);
             }
             else
-                ChangeState(PLAYER_STATE::FightToIdle);
+                ChangeState(PLAYER_STATE::Fight_To_Idle);
 
             PassedTime = 0.f;
             bNextAttack = false;
@@ -1158,7 +1160,7 @@ void CPlayerScript::ComboAerial()
     {
         if (Animator2D()->IsFinish())
         {
-            ChangeState(PLAYER_STATE::FightToIdle);
+            ChangeState(PLAYER_STATE::Fight_To_Idle);
             PassedTime = 0.f;
             bNextAttack = false;
         }
@@ -1179,24 +1181,24 @@ void CPlayerScript::ComboAerial()
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::JumpingAttack);
+        ChangeState(PLAYER_STATE::Special2);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::AerialDownAttack);
+        ChangeState(PLAYER_STATE::Crush);
     }
 }
 
-void CPlayerScript::JumpingAttack()
+void CPlayerScript::Special2()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
 }
 
-void CPlayerScript::AerialDownAttack()
+void CPlayerScript::Crush()
 {
     static bool bShaked = false;
 
@@ -1236,16 +1238,16 @@ void CPlayerScript::RayCast()
     if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
     {
         Vec3 origin = Transform()->GetWorldPos();
-        RaycastHit2D Hit =
+        RaycastHit2D Hit02 =
             CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
         GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_RaycastDist, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
 
-        if (nullptr != Hit.pCollisionObj)
+        if (nullptr != Hit02.pCollisionObj)
         {
             m_bOnGround = true;
             m_bJumpAttackActive = true;
 
-            Hit.Distance; // Player 중점 에서 Ground 표면까지의 거리
+            Hit02.Distance; // Player 중점 에서 Ground 표면까지의 거리
             // TODO 그림자 처리
         }
         else

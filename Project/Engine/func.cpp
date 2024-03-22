@@ -625,7 +625,6 @@ void OpenFileDialog(vector<wstring>& _FilesName)
     {
         // 원하는 초기 디렉토리 경로를 여기에 설정
         wstring MetaPath = CPathMgr::GetContentPath();
-        MetaPath += L"meta";
 
         PWSTR initialDir = (PWSTR)(MetaPath.c_str());
 

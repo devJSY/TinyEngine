@@ -13,14 +13,14 @@ enum class PLAYER_STATE
     RunUturn,
     RunToIdle,
     Dash,
-    Hit,
-    FightToIdle,
+    Hit02,
+    Fight_To_Idle,
 
     // The Scythe
     ComboMove,
-    ComboAerial,
-    JumpingAttack,
-    AerialDownAttack,
+    ComboStand,
+    Special2,
+    Crush,
 };
 
 class CPlayerScript : public CScript
@@ -78,14 +78,14 @@ private:
     void RunUturn();
     void RunToIdle();
     void Dash();
-    void Hit();
-    void FightToIdle();
+    void Hit02();
+    void Fight_To_Idle();
 
     // The Scythe
     void ComboMove();
-    void ComboAerial();
-    void JumpingAttack();
-    void AerialDownAttack();
+    void ComboStand();
+    void Special2();
+    void Crush();
 
 private:
     void Walking();

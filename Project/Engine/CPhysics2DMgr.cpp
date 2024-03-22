@@ -420,13 +420,13 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
 
 RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, unsigned short _LayerMask)
 {
-    RaycastHit2D Hit;
-    Hit.Centroid = _Origin;
-    Hit.Distance = 0.f;
-    Hit.Fraction = 1.f;
-    Hit.Normal = Vec2();
-    Hit.Point = Vec2();
-    Hit.pCollisionObj = nullptr;
+    RaycastHit2D Hit02;
+    Hit02.Centroid = _Origin;
+    Hit02.Distance = 0.f;
+    Hit02.Fraction = 1.f;
+    Hit02.Normal = Vec2();
+    Hit02.Point = Vec2();
+    Hit02.pCollisionObj = nullptr;
 
     bool IsRunning = nullptr != m_PhysicsWorld;
     if (!IsRunning)
@@ -443,12 +443,12 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distanc
 
         b2Fixture* fixture = nullptr;
 
-        if (nullptr != bc2d && bc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+        if (nullptr != bc2d && bc2d->RayCast(_Origin, _Dirction, _Distance, Hit02))
         {
             break;
         }
 
-        if (nullptr != cc2d && cc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+        if (nullptr != cc2d && cc2d->RayCast(_Origin, _Dirction, _Distance, Hit02))
         {
             break;
         }
@@ -457,7 +457,7 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distanc
     if (!IsRunning)
         OnPhysics2DStop();
 
-    return Hit;
+    return Hit02;
 }
 
 RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, const wstring& _LayerName)

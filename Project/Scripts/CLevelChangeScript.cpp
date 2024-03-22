@@ -38,7 +38,7 @@ void CLevelChangeScript::ChangeLevel(const std::string& LevelName)
     if (nullptr == Animator2D())
         GetOwner()->AddComponent(new CAnimator2D);
 
-    Animator2D()->LoadAnimation(L"HaveANiceDeath\\AnimData\\UI\\Title\\Transition.anim");
+    Animator2D()->LoadAnimation(L"AnimData\\UI\\Title\\Transition.anim");
     Animator2D()->Play(L"Transition", false);
 
     if (nullptr == MeshRender())
