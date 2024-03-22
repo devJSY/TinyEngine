@@ -16,6 +16,8 @@ CSpriteEditor::CSpriteEditor()
     , m_pAnim(nullptr)
     , m_AnimFPS(12)
     , m_bAnimPlay(true)
+    , m_vAnimBackGround{}
+    , m_vGlobalOffset{}
     , m_CellWidth(0)
     , m_CellHeight(0)
     , m_bEmptyAutoErase(true)
@@ -721,6 +723,8 @@ void CSpriteEditor::DrawDetails()
 
             ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &m_pAnim->m_CurFrmIdx, 0, (int)m_pAnim->m_vecFrm.size() - 1);
 
+            ImGui::DragFloat2(ImGui_LabelPrefix("Animation Global Offset").c_str(), &m_vGlobalOffset.x);
+
             ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset X").c_str(), &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.x);
 
             ImGui::DragFloat(ImGui_LabelPrefix("Animation Offset Y").c_str(), &m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset.y);
@@ -783,6 +787,7 @@ void CSpriteEditor::DrawDetails()
                 for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                 {
                     m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                    m_vGlobalOffset = Vec2();
                     m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
                     m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
                     m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
@@ -808,6 +813,7 @@ void CSpriteEditor::DrawDetails()
                     for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                     {
                         m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                        m_pAnim->m_vecFrm[i].vOffset += m_vGlobalOffset;
                         m_pAnim->m_vecFrm[i].vOffset.x /= (float)m_pAnim->GetAtlasTex()->GetWidth();
                         m_pAnim->m_vecFrm[i].vOffset.y /= (float)m_pAnim->GetAtlasTex()->GetHeight();
                         m_pAnim->m_vecFrm[i].vBackground.x = m_vAnimBackGround.x / (float)m_pAnim->GetAtlasTex()->GetWidth();
@@ -824,6 +830,7 @@ void CSpriteEditor::DrawDetails()
                     {
                         m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
                         m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                        m_pAnim->m_vecFrm[i].vOffset -= m_vGlobalOffset;
                         m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
                         m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
                     }
@@ -953,9 +960,13 @@ void CSpriteEditor::DrawAnimationViewport()
 
     if (nullptr != m_pAnim)
     {
-        ImVec2 RenderSize = ImVec2(350.f, 350.f);
+        ImVec2 RenderSize = ImGui::GetContentRegionAvail();
+
+        RenderSize.x = m_pAnim->m_AtlasTex->GetWidth() * m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.x;
+        RenderSize.y = m_pAnim->m_AtlasTex->GetHeight() * m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.y;
+        
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
-        ImVec2 vOffset = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset;
+        ImVec2 vOffset = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset + m_vGlobalOffset;
         vLT.x += vOffset.x;
         vLT.y += vOffset.y;
         ImVec2 uv0 = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vLeftTop;

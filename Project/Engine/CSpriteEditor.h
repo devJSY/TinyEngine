@@ -25,6 +25,7 @@ private:
     int m_AnimFPS;
     bool m_bAnimPlay;
     Vec2 m_vAnimBackGround;
+    Vec2 m_vGlobalOffset;
 
     int m_CellWidth;
     int m_CellHeight;
