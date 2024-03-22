@@ -995,7 +995,7 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             pBoxCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pBoxCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
             pBoxCol->SetOffset(Offset);
 
         Vec2 Size = pBoxCol->GetSize();
@@ -1054,7 +1054,7 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             pCircleCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pCircleCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 1e-3f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
             pCircleCol->SetOffset(Offset);
 
         float Radius = pCircleCol->GetRadius();

@@ -675,6 +675,29 @@ void CSpriteEditor::DrawDetails()
                 m_bAnimPlay = !m_bAnimPlay;
             }
 
+            ImGui::SameLine();
+
+            if (ImGui_AlignButton("Load Meta Data", 1.f))
+            {
+                vector<wstring> vec;
+                OpenFileDialog(vec);
+
+                if (1 == vec.size())
+                {
+                    m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset = LoadMeta(vec[0]);
+                }
+                else
+                {
+                    if (vec.size() <= m_pAnim->m_vecFrm.size())
+                    {
+                        for (size_t i = 0; i < vec.size(); i++)
+                        {
+                            m_pAnim->m_vecFrm[i].vOffset = LoadMeta(vec[i]);
+                        }
+                    }
+                }
+            }
+
             char buffer[256];
             memset(buffer, 0, sizeof(buffer));
 

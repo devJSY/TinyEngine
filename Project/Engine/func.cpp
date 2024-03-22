@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "ShObjIdl_core.h" // FileDialog
 
 #include "CDevice.h"
 
@@ -600,6 +601,171 @@ wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter)
         return ofn.lpstrFile;
 
     return wstring();
+}
+
+void OpenFileDialog(vector<wstring>& _FilesName)
+{
+    IFileOpenDialog* pFileDialog;
+    HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileDialog));
+    if (FAILED(hr))
+    {
+        std::cerr << "Failed to create FileOpenDialog instance" << std::endl;
+        return;
+    }
+
+    // 다중 선택 가능 설정
+    DWORD dwOptions;
+    hr = pFileDialog->GetOptions(&dwOptions);
+    if (SUCCEEDED(hr))
+    {
+        hr = pFileDialog->SetOptions(dwOptions | FOS_ALLOWMULTISELECT);
+    }
+
+    if (SUCCEEDED(hr))
+    {
+        // 원하는 초기 디렉토리 경로를 여기에 설정
+        wstring MetaPath = CPathMgr::GetContentPath();
+        MetaPath += L"meta";
+
+        PWSTR initialDir = (PWSTR)(MetaPath.c_str());
+
+        IShellItem* pInitialDirItem;
+
+        hr = SHCreateItemFromParsingName(initialDir, NULL, IID_IShellItem, reinterpret_cast<void**>(&pInitialDirItem));
+
+        // 파일 대화 상자 인터페이스에 초기 디렉토리 설정
+        hr = pFileDialog->SetFolder(pInitialDirItem);
+    }
+
+    // 파일 필터 설정
+    COMDLG_FILTERSPEC fileTypes[] = {{L"All Files", L"*.*"}, {L"Text Files", L"*.txt"}, {L"FBX Files", L"*.fbx"}};
+    hr = pFileDialog->SetFileTypes(ARRAYSIZE(fileTypes), fileTypes);
+    if (FAILED(hr))
+    {
+        std::cerr << "Failed to set file types" << std::endl;
+        pFileDialog->Release();
+        return;
+    }
+
+    // 대화 상자 열기
+    hr = pFileDialog->Show(NULL);
+    if (FAILED(hr))
+    {
+        std::cerr << "Failed to open FileOpenDialog" << std::endl;
+        pFileDialog->Release();
+        return;
+    }
+
+    // 선택된 파일 목록 가져오기
+    IShellItemArray* pItems;
+    hr = pFileDialog->GetResults(&pItems);
+    if (FAILED(hr))
+    {
+        std::cerr << "Failed to get selected items" << std::endl;
+        pFileDialog->Release();
+        return;
+    }
+
+    // 선택된 파일들의 경로 가져오기
+    DWORD itemCount;
+    hr = pItems->GetCount(&itemCount);
+    if (SUCCEEDED(hr))
+    {
+        for (DWORD i = 0; i < itemCount; ++i)
+        {
+            IShellItem* pItem;
+            hr = pItems->GetItemAt(i, &pItem);
+            if (SUCCEEDED(hr))
+            {
+                PWSTR pszFilePath;
+                hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+                if (SUCCEEDED(hr))
+                {
+                    _FilesName.push_back(pszFilePath);
+                    CoTaskMemFree(pszFilePath);
+                }
+                pItem->Release();
+            }
+        }
+    }
+    pItems->Release();
+    pFileDialog->Release();
+}
+
+Vec2 LoadMeta(const wstring& _strMetaRelativePath)
+{
+    Vec2 retVec = {-1, -1};
+    FILE* pFile = nullptr;
+
+    _wfopen_s(&pFile, (_strMetaRelativePath).c_str(), L"r");
+
+    if (nullptr == pFile)
+    {
+        MessageBoxA(nullptr, "Meta 파일이 존재하지 않습니다.", "Meta File No Exist!", MB_OK);
+        return {};
+    }
+
+    // Animation 이름 로드
+
+    while (true)
+    {
+        wchar_t szRead[256] = {};
+        float tmpfloat = -1.f;
+
+        if (EOF == fwscanf_s(pFile, L"%s", szRead, 256))
+        {
+            break;
+        }
+
+        if (!wcscmp(szRead, L"m_Offset:"))
+        {
+            while (true)
+            {
+                fwscanf_s(pFile, L"%s", szRead, 256);
+
+                if (!wcscmp(szRead, L"{x:"))
+                {
+                    fwscanf_s(pFile, L"%f", &retVec.x);
+                    retVec.x *= -1;
+                }
+                if (!wcscmp(szRead, L"y:"))
+                {
+                    fwscanf_s(pFile, L"%s", szRead, 256);
+
+                    int length = (int)wcslen(szRead);
+
+                    // 끝에 한글자 잘라야됨 1.24} 라고 되어있음
+                    if (length > 0)
+                    {
+                        szRead[length - 1] = '\0';
+                    }
+
+                    wchar_t* end;
+                    float tmp = wcstof(szRead, &end);
+
+                    if (*end == L'\0')
+                    {
+                        retVec.y = tmp;
+                    }
+
+                    return retVec;
+                }
+
+                // 탈출 조건
+                if (!wcscmp(szRead, L"m_Border:"))
+                {
+                    break;
+                }
+            }
+        }
+        // 탈출 조건
+        if (!wcscmp(szRead, L"m_Border:"))
+            break;
+    }
+
+    fclose(pFile);
+
+    return retVec;
 }
 
 void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue, float columnWidth)
