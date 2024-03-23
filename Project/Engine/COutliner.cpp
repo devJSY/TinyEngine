@@ -117,6 +117,10 @@ void COutliner::render()
                     Dirtyflag = 30;
                 if (ImGui::MenuItem("Circle"))
                     Dirtyflag = 31;
+                if (ImGui::MenuItem("Polygon"))
+                    Dirtyflag = 32;
+                if (ImGui::MenuItem("Edge"))
+                    Dirtyflag = 33;
 
                 ImGui::EndMenu();
             }
@@ -196,6 +200,18 @@ void COutliner::render()
                 pObj->SetName(L"Physics2D Circle Object");
                 pObj->AddComponent(new CRigidbody2D);
                 pObj->AddComponent(new CCircleCollider2D);
+            }
+            else if (32 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics2D Polygon Object");
+                pObj->AddComponent(new CRigidbody2D);
+                pObj->AddComponent(new CPolygonCollider2D);
+            }
+            else if (33 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics2D Edge Object");
+                pObj->AddComponent(new CRigidbody2D);
+                pObj->AddComponent(new CEdgeCollider2D);
             }
             else if (40 == Dirtyflag)
             {
