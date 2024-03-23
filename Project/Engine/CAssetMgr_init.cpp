@@ -1025,7 +1025,7 @@ tMeshData CAssetMgr::MakeLine()
 
     tMeshData meshData;
     positions.push_back(Vec3(0.f, 0.f, 0.f));
-    positions.push_back(Vec3(0.f, -1.f, 0.f));
+    positions.push_back(Vec3(0.f, 0.f, 1.f));
 
     texcoords.push_back(Vec2(0.f, 0.f));
     texcoords.push_back(Vec2(0.f, 0.f));

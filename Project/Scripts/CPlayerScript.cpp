@@ -1240,7 +1240,8 @@ void CPlayerScript::RayCast()
         Vec3 origin = Transform()->GetWorldPos();
         RaycastHit2D Hit02 =
             CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
-        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_RaycastDist, Transform()->GetWorldRotation(), Vec3(1.f, 0.f, 0.f), false);
+        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_RaycastDist, Transform()->GetWorldRotation() + Vec3(XM_PIDIV2, 0.f, 0.f),
+                                      Vec3(1.f, 0.f, 0.f), false);
 
         if (nullptr != Hit02.pCollisionObj)
         {

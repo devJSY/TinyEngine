@@ -609,7 +609,7 @@ void OpenFileDialog(vector<wstring>& _FilesName)
     HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileDialog));
     if (FAILED(hr))
     {
-        std::cerr << "Failed to create FileOpenDialog instance" << std::endl;
+        LOG(Error, "Failed to create FileOpenDialog instance");
         return;
     }
 
@@ -641,7 +641,7 @@ void OpenFileDialog(vector<wstring>& _FilesName)
     hr = pFileDialog->SetFileTypes(ARRAYSIZE(fileTypes), fileTypes);
     if (FAILED(hr))
     {
-        std::cerr << "Failed to set file types" << std::endl;
+        LOG(Error, "Failed to set file types");
         pFileDialog->Release();
         return;
     }
@@ -650,7 +650,7 @@ void OpenFileDialog(vector<wstring>& _FilesName)
     hr = pFileDialog->Show(NULL);
     if (FAILED(hr))
     {
-        std::cerr << "Failed to open FileOpenDialog" << std::endl;
+        LOG(Error, "Failed to open FileOpenDialog");
         pFileDialog->Release();
         return;
     }
@@ -660,7 +660,7 @@ void OpenFileDialog(vector<wstring>& _FilesName)
     hr = pFileDialog->GetResults(&pItems);
     if (FAILED(hr))
     {
-        std::cerr << "Failed to get selected items" << std::endl;
+        LOG(Error, "Failed to get selected items");
         pFileDialog->Release();
         return;
     }
