@@ -233,11 +233,14 @@ enum class EDITOR_TYPE
 
 enum class DEBUG_SHAPE
 {
+    // 2D
     LINE,
     RECT,
     CIRCLE,
     CROSS,
+    POLYGON,
 
+    // 3D
     BOX,
     SPHERE,
 };

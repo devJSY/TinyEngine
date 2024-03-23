@@ -158,46 +158,29 @@ void CRenderMgr::render_debug()
     list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
     for (; iter != m_DbgShapeInfo.end();)
     {
-        switch ((*iter).eShape)
-        {
-        case DEBUG_SHAPE::LINE:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"LineMesh"));
-            break;
-        case DEBUG_SHAPE::RECT:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh_Debug"));
-            break;
-        case DEBUG_SHAPE::CIRCLE:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh_Debug"));
-            break;
-        case DEBUG_SHAPE::CROSS:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CrosshairMesh"));
-            break;
-        case DEBUG_SHAPE::BOX:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireBox"));
-            break;
-        case DEBUG_SHAPE::SPHERE:
-            m_pDebugObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere"));
-            break;
-        default:
-            break;
-        }
+        // 매쉬 설정
+        m_pDebugObj->MeshRender()->SetMesh((*iter).pMesh);
 
+        // 머테리얼 설정
         Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl");
         pMtrl->SetScalarParam(VEC4_0, (*iter).vColor);
 
+        // Depth 옵션 설정
         DS_TYPE PrevDSType = pMtrl->GetShader()->GetDSType();
         if ((*iter).bDepthTest)
         {
             pMtrl->GetShader()->SetDSType(DS_TYPE::LESS);
         }
 
+        // Topology 설정
         D3D11_PRIMITIVE_TOPOLOGY PrevTopology = pMtrl->GetShader()->GetTopology();
-        if (DEBUG_SHAPE::LINE == (*iter).eShape || DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::BOX == (*iter).eShape ||
-            DEBUG_SHAPE::SPHERE == (*iter).eShape)
+        if (DEBUG_SHAPE::LINE == (*iter).eShape || DEBUG_SHAPE::CROSS == (*iter).eShape || DEBUG_SHAPE::POLYGON == (*iter).eShape ||
+            DEBUG_SHAPE::BOX == (*iter).eShape || DEBUG_SHAPE::SPHERE == (*iter).eShape)
         {
             pMtrl->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }
-
+        
+        // 지정된 월드행렬로 설정
         m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
 
         m_pDebugObj->render(pMtrl);

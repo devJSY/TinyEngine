@@ -16,8 +16,7 @@ namespace GamePlayStatic
     void WindowResize(int width, int height);
     void CloneGameObject(CGameObject* _OriginObj);
 
-    void DrawDebugLine(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
-    void DrawDebugLine(Vec3 _vWorldPos, float _fLength, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+    void DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
@@ -32,6 +31,10 @@ namespace GamePlayStatic
 
     void DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+
+    void DrawDebugPolygon(const Matrix& _WorldMat, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest, float _Duration = 0.f);
+    void DrawDebugPolygon(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest,
+                          float _Duration = 0.f);
 
     void ScreenShot();
     void MouseColorPicking(Vec2 MousePos);

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CEdgeCollider2D.h"
 
+#include "components.h"
+
 CEdgeCollider2D::CEdgeCollider2D()
     : CCollider2D(COMPONENT_TYPE::EDGECOLLIDER2D)
     , m_EdgeRadius(1.f)
@@ -19,6 +21,7 @@ CEdgeCollider2D::~CEdgeCollider2D()
 
 void CEdgeCollider2D::finaltick()
 {
+    CCollider2D::finaltick();
 }
 
 void CEdgeCollider2D::SaveToLevelFile(FILE* _File)

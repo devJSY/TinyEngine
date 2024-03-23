@@ -62,34 +62,56 @@ void GamePlayStatic::CloneGameObject(CGameObject* _OriginObj)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
-void GamePlayStatic::DrawDebugLine(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration)
-{
-    tDebugShapeInfo info = {};
-    info.eShape = DEBUG_SHAPE::LINE;
-    info.matWorld = _WorldMat;
-    info.vColor = _Color;
-    info.bDepthTest = _bDepthTest;
-    info.fDuration = _Duration;
-
-    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
-}
-
-void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, float _fLength, Vec3 _vWorldRot, Vec3 _Color, bool _bDepthTest, float _Duration)
+void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
     tDebugShapeInfo info = {};
     info.eShape = DEBUG_SHAPE::LINE;
 
     info.vWorldPos = _vWorldPos;
     info.vWorldScale = Vec3(_fLength, _fLength, _fLength);
-    info.vWorldRot = _vWorldRot;
+    info.vWorldRot = Vec3();
 
-    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
-                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) *
                     XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
 
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+
+    // Line Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec2> texcoords;
+
+    tMeshData meshData;
+    positions.push_back(Vec3(0.f, 0.f, 0.f));
+    positions.push_back(_vDir.Normalize());
+
+    texcoords.push_back(Vec2(0.f, 0.f));
+    texcoords.push_back(Vec2(0.f, 0.f));
+
+    colors.push_back(_Color);
+    colors.push_back(_Color);
+
+    for (size_t i = 0; i < positions.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
+
+        meshData.vertices.push_back(v);
+    }
+
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(1);
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
+    pMesh->SetName(L"LineMesh");
+
+    info.pMesh = pMesh;
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -102,6 +124,7 @@ void GamePlayStatic::DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _b
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh_Debug");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -122,6 +145,7 @@ void GamePlayStatic::DrawDebugRect(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWo
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh_Debug");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -134,6 +158,7 @@ void GamePlayStatic::DrawDebugCircle(const Matrix& _WorldMat, Vec3 _Color, bool 
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh_Debug");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -154,6 +179,7 @@ void GamePlayStatic::DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh_Debug");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -174,6 +200,7 @@ void GamePlayStatic::DrawDebugCross(Vec3 _vWorldPos, float _fScale, Vec3 _Color,
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"CrosshairMesh");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -186,6 +213,7 @@ void GamePlayStatic::DrawDebugBox(const Matrix& _WorldMat, Vec3 _Color, bool _bD
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireBox");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -205,6 +233,7 @@ void GamePlayStatic::DrawDebugBox(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWor
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireBox");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -217,6 +246,7 @@ void GamePlayStatic::DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool 
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -237,6 +267,136 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere");
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::DrawDebugPolygon(const Matrix& _WorldMat, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest, float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::POLYGON;
+    info.matWorld = _WorldMat;
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+
+    // Polygon Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec3> normals;
+    vector<Vec2> texcoords;
+
+    for (size_t i = 0; i < _Polygon.size(); i++)
+    {
+        positions.push_back(Vec3(_Polygon[i].x, _Polygon[i].y, 0.f));
+        colors.push_back(_Color);
+        normals.push_back(Vec3(0.f, 0.f, -1.f));
+        texcoords.push_back(Vec2(0.f, 0.f));
+    }
+
+    tMeshData meshData;
+
+    for (UINT i = 0; i < _Polygon.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vNormal = normals[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
+
+        meshData.vertices.push_back(v);
+    }
+
+    for (UINT i = 0; i < _Polygon.size(); i++)
+    {
+        if (i == _Polygon.size() - 1)
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(0);
+        }
+        else
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(i + 1);
+        }
+    }
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
+    pMesh->SetName(L"PolygonMesh");
+
+    info.pMesh = pMesh;
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::DrawDebugPolygon(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, const vector<Vec2>& _Polygon,
+                                      bool _bDepthTest, float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::POLYGON;
+
+    info.vWorldPos = _vWorldPos;
+    info.vWorldScale = _vWorldScale;
+    info.vWorldRot = _vWorldRot;
+
+    info.matWorld = XMMatrixScaling(info.vWorldScale.x, info.vWorldScale.y, info.vWorldScale.z) * XMMatrixRotationX(info.vWorldRot.x) *
+                    XMMatrixRotationY(info.vWorldRot.y) * XMMatrixRotationZ(info.vWorldRot.z) *
+                    XMMatrixTranslation(info.vWorldPos.x, info.vWorldPos.y, info.vWorldPos.z);
+
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+
+    // Polygon Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec3> normals;
+    vector<Vec2> texcoords;
+
+    for (size_t i = 0; i < _Polygon.size(); i++)
+    {
+        positions.push_back(Vec3(_Polygon[i].x, _Polygon[i].y, 0.f));
+        colors.push_back(_Color);
+        normals.push_back(Vec3(0.f, 0.f, -1.f));
+        texcoords.push_back(Vec2(0.f, 0.f));
+    }
+
+    tMeshData meshData;
+
+    for (UINT i = 0; i < _Polygon.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vNormal = normals[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
+
+        meshData.vertices.push_back(v);
+    }
+
+    for (UINT i = 0; i < _Polygon.size(); i++)
+    {
+        if (i == _Polygon.size() - 1)
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(0);
+        }
+        else
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(i + 1);
+        }
+    }
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
+    pMesh->SetName(L"PolygonMesh");
+
+    info.pMesh = pMesh;
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }

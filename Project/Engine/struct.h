@@ -10,6 +10,8 @@ struct Vtx
     Vec3 vTangent; // Á¤Á¡ÀÇ ÁÂÇ¥
 };
 
+#include "CMesh.h"
+
 struct tDebugShapeInfo
 {
     DEBUG_SHAPE eShape;
@@ -23,6 +25,8 @@ struct tDebugShapeInfo
     float fLifeTime;
     float fDuration;
     bool bDepthTest;
+
+    Ptr<CMesh> pMesh;
 };
 
 struct tLightInfo

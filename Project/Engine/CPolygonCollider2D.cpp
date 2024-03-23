@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CPolygonCollider2D.h"
 
+#include "components.h"
+
 CPolygonCollider2D::CPolygonCollider2D()
     : CCollider2D(COMPONENT_TYPE::POLYGONCOLLIDER2D)
     , m_Points{}
@@ -26,6 +28,22 @@ void CPolygonCollider2D::PointReSize(int _size)
 
 void CPolygonCollider2D::finaltick()
 {
+    CCollider2D::finaltick();
+
+    if (!m_Points.empty())
+    {
+        Vec3 sacle = Transform()->GetWorldScale();
+
+        Matrix matWorld = Transform()->GetWorldMat();
+        Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
+        Matrix matScale = XMMatrixScaling(sacle.x, sacle.y, 1.f);
+
+        Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
+
+        Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+        GamePlayStatic::DrawDebugPolygon(matScale * matTranslation * matInvScale * matWorld, color, m_Points, false);
+    }
 }
 
 void CPolygonCollider2D::SaveToLevelFile(FILE* _File)

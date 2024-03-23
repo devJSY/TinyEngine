@@ -307,8 +307,8 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         for (size_t i = 0; i < vertices.size(); i++)
         {
-            vertices[i].x = vertices[i].x * pTr->GetWorldScale().x / m_PPM;
-            vertices[i].y = vertices[i].y * pTr->GetWorldScale().y / m_PPM;
+            vertices[i].x = (vertices[i].x + pc2d->m_Offset.x) * pTr->GetWorldScale().x / m_PPM;
+            vertices[i].y = (vertices[i].y + pc2d->m_Offset.y) * pTr->GetWorldScale().y / m_PPM;
         }
 
         b2PolygonShape PolygonShape;
@@ -330,12 +330,6 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
         pc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
-
-        // 위치설정
-        Vec2 pos = Vec2(pTr->GetWorldPos().x, pTr->GetWorldPos().y);
-        pos += pc2d->m_Offset;
-        pos /= m_PPM;
-        body->SetTransform(pos, pTr->GetWorldRotation().z);
     }
 
     // Edge Collider 2D
@@ -344,18 +338,18 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         Vec2 Scale = Vec2(pTr->GetWorldScale().x, pTr->GetWorldScale().y);
         b2EdgeShape EdgeShape;
         EdgeShape.m_radius = ec2d->GetEdgeRadius();
-        EdgeShape.m_vertex1 = ec2d->GetStartPoint() * Scale / m_PPM;
-        EdgeShape.m_vertex2 = ec2d->GetEndPoint() * Scale / m_PPM;
+        EdgeShape.m_vertex1 = (ec2d->GetStartPoint() + ec2d->m_Offset) * Scale / m_PPM;
+        EdgeShape.m_vertex2 = (ec2d->GetEndPoint() + ec2d->m_Offset) * Scale / m_PPM;
 
         if (ec2d->IsUseAdjacentStartPoint())
         {
-            EdgeShape.m_vertex0 = ec2d->GetAdjacentStartPoint() * Scale / m_PPM;
+            EdgeShape.m_vertex0 = (ec2d->GetAdjacentStartPoint() + ec2d->m_Offset) * Scale / m_PPM;
             EdgeShape.m_oneSided = true;
         }
 
         if (ec2d->IsUseAdjacentEndPoint())
         {
-            EdgeShape.m_vertex3 = ec2d->GetAdjacentEndPoint() * Scale / m_PPM;
+            EdgeShape.m_vertex3 = (ec2d->GetAdjacentEndPoint() + ec2d->m_Offset) * Scale / m_PPM;
             EdgeShape.m_oneSided = true;
         }
 
@@ -375,18 +369,12 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
         ec2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
-
-        // 위치설정
-        Vec2 pos = Vec2(pTr->GetWorldPos().x, pTr->GetWorldPos().y);
-        pos += ec2d->m_Offset;
-        pos /= m_PPM;
-        body->SetTransform(pos, pTr->GetWorldRotation().z);
     }
 
     // 질량 설정
     if (nullptr != rb2d && !rb2d->m_bAutoMass)
     {
-        b2MassData MassData = body->GetMassData();
+        b2MassData MassData = b2MassData();
         MassData.mass = rb2d->m_Mass;
         body->SetMassData(&MassData);
     }
