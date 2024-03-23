@@ -252,9 +252,16 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     // Box Collider 2D
     if (nullptr != bc2d)
     {
+        vector<b2Vec2> vertices = {b2Vec2(bc2d->m_Size.x, bc2d->m_Size.y), b2Vec2(-bc2d->m_Size.x, bc2d->m_Size.y),
+                                   b2Vec2(-bc2d->m_Size.x, -bc2d->m_Size.y), b2Vec2(bc2d->m_Size.x, -bc2d->m_Size.y)};
+        for (size_t i = 0; i < 4; i++)
+        {
+            vertices[i].x = (vertices[i].x + bc2d->m_Offset.x) * pTr->GetWorldScale().x / m_PPM;
+            vertices[i].y = (vertices[i].y + bc2d->m_Offset.y) * pTr->GetWorldScale().y / m_PPM;
+        }
+
         b2PolygonShape boxShape;
-        boxShape.SetAsBox(bc2d->m_Size.x * pTr->GetWorldScale().x / m_PPM, bc2d->m_Size.y * pTr->GetWorldScale().y / m_PPM, bc2d->m_Offset / m_PPM,
-                          0.f);
+        boxShape.Set(vertices.data(), 4);
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &boxShape;
