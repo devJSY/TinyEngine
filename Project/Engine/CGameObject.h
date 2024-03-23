@@ -2,10 +2,10 @@
 
 #include "CEntity.h"
 
-#define GET_COMPONENT(Type, TYPE)                                                                                      \
-    class C##Type* Type()                                                                                              \
-    {                                                                                                                  \
-        return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::##TYPE];                                                       \
+#define GET_COMPONENT(Type, TYPE)                                                                                                                    \
+    class C##Type* Type()                                                                                                                            \
+    {                                                                                                                                                \
+        return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::##TYPE];                                                                                     \
     }
 
 class CComponent;
@@ -16,6 +16,11 @@ class CAnimator2D;
 class Light2D;
 class Light3D;
 class CCamera;
+class CRigidbody2D;
+class CBoxCollider2D;
+class CCircleCollider2D;
+class CPolygonCollider2D;
+class CEdgeCollider2D;
 class MeshRender;
 class CTileMap;
 class CParticleSystem;
@@ -59,6 +64,8 @@ public:
     GET_COMPONENT(Rigidbody2D, RIGIDBODY2D);
     GET_COMPONENT(BoxCollider2D, BOXCOLLIDER2D);
     GET_COMPONENT(CircleCollider2D, CIRCLECOLLIDER2D);
+    GET_COMPONENT(PolygonCollider2D, POLYGONCOLLIDER2D);
+    GET_COMPONENT(EdgeCollider2D, EDGECOLLIDER2D);
     GET_COMPONENT(MeshRender, MESHRENDER);
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
@@ -86,7 +93,7 @@ public:
     void AddChild(CGameObject* _Child);
     bool IsDead() const { return m_bDead; }
 
-     bool IsAncestor(CGameObject* _Other);
+    bool IsAncestor(CGameObject* _Other);
 
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }

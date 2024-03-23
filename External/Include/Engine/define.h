@@ -78,9 +78,11 @@ enum class COMPONENT_TYPE
     CAMERA, // 카메라 기능
 
     // 2D Physics
-    RIGIDBODY2D,      // 리지드바디 2D
-    BOXCOLLIDER2D,    // BOX 콜라이더 2D
-    CIRCLECOLLIDER2D, // CIRCLE 콜라이더 2D
+    RIGIDBODY2D,       // 리지드바디 2D
+    BOXCOLLIDER2D,     // BOX 콜라이더 2D
+    CIRCLECOLLIDER2D,  // CIRCLE 콜라이더 2D
+    POLYGONCOLLIDER2D, // Polygon 콜라이더 2D
+    EDGECOLLIDER2D,    // Edge 콜라이더 2D
 
     // Render Component
     MESHRENDER,

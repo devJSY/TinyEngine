@@ -447,6 +447,8 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawRigidbody2D(obj);
     DrawBoxCollider2D(obj);
     DrawCircleCollider2D(obj);
+    DrawPolygonCollider2D(obj);
+    DrawEdgeCollider2D(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
     DrawParticlesystem(obj);
@@ -1060,6 +1062,116 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
         float Radius = pCircleCol->GetRadius();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 1e-3f, 1e-3f, D3D11_FLOAT32_MAX))
             pCircleCol->SetRadius(Radius);
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
+        }
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawPolygonCollider2D(CGameObject* obj)
+{
+    CPolygonCollider2D* pPloyCol = obj->PolygonCollider2D();
+    if (nullptr == pPloyCol)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CPolygonCollider2D).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::POLYGONCOLLIDER2D]);
+
+    ComponentSettingsButton(pPloyCol);
+
+    if (open)
+    {
+        // Physics2D Material
+        string MtrlName = string();
+        Ptr<CPhysics2DMaterial> pMtrl = pPloyCol->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pPloyCol->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysics2DMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        bool bTrigger = pPloyCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pPloyCol->SetTrigger(bTrigger);
+
+        Vec2 Offset = pPloyCol->GetOffset();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+            pPloyCol->SetOffset(Offset);
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSICS2D_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
+        }
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawEdgeCollider2D(CGameObject* obj)
+{
+    CEdgeCollider2D* pEdgeCol = obj->EdgeCollider2D();
+    if (nullptr == pEdgeCol)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CEdgeCollider2D).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::EDGECOLLIDER2D]);
+
+    ComponentSettingsButton(pEdgeCol);
+
+    if (open)
+    {
+        // Physics2D Material
+        string MtrlName = string();
+        Ptr<CPhysics2DMaterial> pMtrl = pEdgeCol->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pEdgeCol->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysics2DMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        bool bTrigger = pEdgeCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pEdgeCol->SetTrigger(bTrigger);
+
+        Vec2 Offset = pEdgeCol->GetOffset();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+            pEdgeCol->SetOffset(Offset);
 
         ImGui::Separator();
 

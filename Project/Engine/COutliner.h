@@ -32,6 +32,8 @@ private:
     void DrawRigidbody2D(CGameObject* obj);
     void DrawBoxCollider2D(CGameObject* obj);
     void DrawCircleCollider2D(CGameObject* obj);
+    void DrawPolygonCollider2D(CGameObject* obj);
+    void DrawEdgeCollider2D(CGameObject* obj);
     void DrawMeshRender(CGameObject* obj);
     void DrawTileMap(CGameObject* obj);
     void DrawParticlesystem(CGameObject* obj);

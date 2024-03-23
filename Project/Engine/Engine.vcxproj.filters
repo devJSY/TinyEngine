@@ -74,7 +74,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="CMeshRender.h">
-      <Filter>08. Component\RenderComponent\01. MeshRender</Filter>
+      <Filter>08. Component\RenderComponent\12. MeshRender</Filter>
     </ClInclude>
     <ClInclude Include="CAssetMgr.h">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -176,13 +176,13 @@
       <Filter>ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="CTileMap.h">
-      <Filter>08. Component\RenderComponent\02. TileMap</Filter>
+      <Filter>08. Component\RenderComponent\13. TileMap</Filter>
     </ClInclude>
     <ClInclude Include="CSpriteEditor.h">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClInclude>
     <ClInclude Include="CParticleSystem.h">
-      <Filter>08. Component\RenderComponent\03. ParticleSystem</Filter>
+      <Filter>08. Component\RenderComponent\14. ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="CSetColorShader.h">
       <Filter>ShaderCode\Compute\SetColor</Filter>
@@ -254,7 +254,7 @@
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
     <ClInclude Include="CSkyBox.h">
-      <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+      <Filter>08. Component\RenderComponent\15. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="CGameObjectEx.h">
       <Filter>07. GameObject\Ex</Filter>
@@ -293,7 +293,13 @@
       <Filter>04. Manager\FontMgr</Filter>
     </ClInclude>
     <ClInclude Include="CTextRender.h">
-      <Filter>08. Component\RenderComponent\07. TextRender</Filter>
+      <Filter>08. Component\RenderComponent\16. TextRender</Filter>
+    </ClInclude>
+    <ClInclude Include="CEdgeCollider2D.h">
+      <Filter>08. Component\Collider2D\11. EdgeCollider2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CPolygonCollider2D.h">
+      <Filter>08. Component\Collider2D\10. PolygonCollider2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -352,7 +358,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="CMeshRender.cpp">
-      <Filter>08. Component\RenderComponent\01. MeshRender</Filter>
+      <Filter>08. Component\RenderComponent\12. MeshRender</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -457,13 +463,13 @@
       <Filter>ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="CTileMap.cpp">
-      <Filter>08. Component\RenderComponent\02. TileMap</Filter>
+      <Filter>08. Component\RenderComponent\13. TileMap</Filter>
     </ClCompile>
     <ClCompile Include="CSpriteEditor.cpp">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClCompile>
     <ClCompile Include="CParticleSystem.cpp">
-      <Filter>08. Component\RenderComponent\03. ParticleSystem</Filter>
+      <Filter>08. Component\RenderComponent\14. ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="CSetColorShader.cpp">
       <Filter>ShaderCode\Compute\SetColor</Filter>
@@ -523,7 +529,7 @@
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
-      <Filter>08. Component\RenderComponent\04. SkyBox</Filter>
+      <Filter>08. Component\RenderComponent\15. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="CGameObjectEx.cpp">
       <Filter>07. GameObject\Ex</Filter>
@@ -562,7 +568,13 @@
       <Filter>04. Manager\FontMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTextRender.cpp">
-      <Filter>08. Component\RenderComponent\07. TextRender</Filter>
+      <Filter>08. Component\RenderComponent\16. TextRender</Filter>
+    </ClCompile>
+    <ClCompile Include="CEdgeCollider2D.cpp">
+      <Filter>08. Component\Collider2D\11. EdgeCollider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CPolygonCollider2D.cpp">
+      <Filter>08. Component\Collider2D\10. PolygonCollider2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -628,15 +640,6 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent">
       <UniqueIdentifier>{ee6c54e3-3c7d-487d-80ab-c7e791ba4a1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\01. MeshRender">
-      <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\02. TileMap">
-      <UniqueIdentifier>{e3652818-822e-4ad3-a1e6-2cc07871a700}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\03. ParticleSystem">
-      <UniqueIdentifier>{465e7928-9a4b-492c-b047-376839804dc2}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Manager\AssetMgr">
       <UniqueIdentifier>{a235bdd5-31ac-438a-bad0-e2050728bd54}</UniqueIdentifier>
@@ -770,9 +773,6 @@
     <Filter Include="ShaderCode\Render\UnrealPBR">
       <UniqueIdentifier>{f68944f3-5d62-46df-a0bc-eee34ca61828}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\04. SkyBox">
-      <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Render\Mirror">
       <UniqueIdentifier>{f02bee5b-14f4-4604-bc94-255ecf65739c}</UniqueIdentifier>
     </Filter>
@@ -830,11 +830,29 @@
     <Filter Include="04. Manager\FontMgr">
       <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\07. TextRender">
-      <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Render\ProgressBar">
       <UniqueIdentifier>{255fc16a-e735-4269-bf34-360fbdcb3a95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\10. PolygonCollider2D">
+      <UniqueIdentifier>{1b7a9b7a-f1c7-4072-92d1-5d555c385087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\11. EdgeCollider2D">
+      <UniqueIdentifier>{aabb79fb-d05d-4dab-bd10-9cb58899aca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\12. MeshRender">
+      <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\13. TileMap">
+      <UniqueIdentifier>{e3652818-822e-4ad3-a1e6-2cc07871a700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\14. ParticleSystem">
+      <UniqueIdentifier>{465e7928-9a4b-492c-b047-376839804dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\15. SkyBox">
+      <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\16. TextRender">
+      <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

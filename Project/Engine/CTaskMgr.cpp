@@ -639,6 +639,12 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::CIRCLECOLLIDER2D:
         pObj->AddComponent(new CCircleCollider2D);
         break;
+    case COMPONENT_TYPE::POLYGONCOLLIDER2D:
+        pObj->AddComponent(new CPolygonCollider2D);
+        break;
+    case COMPONENT_TYPE::EDGECOLLIDER2D:
+        pObj->AddComponent(new CEdgeCollider2D);
+        break;
     case COMPONENT_TYPE::MESHRENDER:
         pObj->AddComponent(new CMeshRender);
         break;

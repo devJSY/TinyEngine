@@ -126,6 +126,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CContentBrowser.h" />
     <ClInclude Include="CDevice.h" />
+    <ClInclude Include="CEdgeCollider2D.h" />
     <ClInclude Include="CEditor.h" />
     <ClInclude Include="CEditorMgr.h" />
     <ClInclude Include="CEngine.h" />
@@ -155,6 +156,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPhysics2DMaterialEditor.h" />
     <ClInclude Include="CPhysics2DMgr.h" />
+    <ClInclude Include="CPolygonCollider2D.h" />
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CRenderComponent.h" />
     <ClInclude Include="CRenderMgr.h" />
@@ -227,6 +229,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CContentBrowser.cpp" />
     <ClCompile Include="CDevice.cpp" />
+    <ClCompile Include="CEdgeCollider2D.cpp" />
     <ClCompile Include="CEditor.cpp" />
     <ClCompile Include="CEditorMgr.cpp" />
     <ClCompile Include="CEngine.cpp" />
@@ -255,6 +258,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPhysics2DMaterialEditor.cpp" />
     <ClCompile Include="CPhysics2DMgr.cpp" />
+    <ClCompile Include="CPolygonCollider2D.cpp" />
     <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />

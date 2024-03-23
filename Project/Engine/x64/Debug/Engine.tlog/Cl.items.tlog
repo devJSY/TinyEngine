@@ -13,6 +13,7 @@ D:\TinyEngine\Project\Engine\CComputeShader.cpp;D:\TinyEngine\Project\Engine\x64
 D:\TinyEngine\Project\Engine\CConstBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CConstBuffer.obj
 D:\TinyEngine\Project\Engine\CContentBrowser.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CContentBrowser.obj
 D:\TinyEngine\Project\Engine\CDevice.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CDevice.obj
+D:\TinyEngine\Project\Engine\CEdgeCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEdgeCollider2D.obj
 D:\TinyEngine\Project\Engine\CEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEditor.obj
 D:\TinyEngine\Project\Engine\CEditorMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEditorMgr.obj
 D:\TinyEngine\Project\Engine\CEngine.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CEngine.obj
@@ -41,6 +42,7 @@ D:\TinyEngine\Project\Engine\CParticleUpdate.cpp;D:\TinyEngine\Project\Engine\x6
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMaterialEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysics2DMaterialEditor.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysics2DMgr.obj
+D:\TinyEngine\Project\Engine\CPolygonCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPolygonCollider2D.obj
 D:\TinyEngine\Project\Engine\CPrefab.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPrefab.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderComponent.obj
 D:\TinyEngine\Project\Engine\CRenderMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderMgr.obj
