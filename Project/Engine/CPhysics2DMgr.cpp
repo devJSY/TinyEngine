@@ -252,16 +252,9 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     // Box Collider 2D
     if (nullptr != bc2d)
     {
-        vector<b2Vec2> vertices = {b2Vec2(bc2d->m_Size.x, bc2d->m_Size.y), b2Vec2(-bc2d->m_Size.x, bc2d->m_Size.y),
-                                   b2Vec2(-bc2d->m_Size.x, -bc2d->m_Size.y), b2Vec2(bc2d->m_Size.x, -bc2d->m_Size.y)};
-        for (size_t i = 0; i < 4; i++)
-        {
-            vertices[i].x = (vertices[i].x + bc2d->m_Offset.x) * pTr->GetWorldScale().x / m_PPM;
-            vertices[i].y = (vertices[i].y + bc2d->m_Offset.y) * pTr->GetWorldScale().y / m_PPM;
-        }
-
+        Vec3 scale = pTr->GetWorldScale();
         b2PolygonShape boxShape;
-        boxShape.Set(vertices.data(), 4);
+        boxShape.SetAsBox(bc2d->m_Size.x * scale.x / m_PPM, bc2d->m_Size.y * scale.y / m_PPM, bc2d->m_Offset * Vec2(scale.x, scale.y) / m_PPM, 0.f);
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &boxShape;
@@ -284,9 +277,10 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     // Circle Collider 2D
     if (nullptr != cc2d)
     {
+        Vec3 scale = pTr->GetWorldScale();
         b2CircleShape circleShape;
-        circleShape.m_p.Set(cc2d->m_Offset.x / m_PPM, cc2d->m_Offset.y / m_PPM);
-        circleShape.m_radius = pTr->GetWorldScale().x * cc2d->m_Radius / m_PPM;
+        circleShape.m_p.Set(cc2d->m_Offset.x * scale.x / m_PPM, cc2d->m_Offset.y * scale.y / m_PPM);
+        circleShape.m_radius = scale.x * cc2d->m_Radius / m_PPM;
 
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &circleShape;

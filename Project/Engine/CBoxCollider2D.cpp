@@ -17,13 +17,16 @@ void CBoxCollider2D::finaltick()
 {
     CCollider2D::finaltick();
 
+    Vec3 sacle = Transform()->GetWorldScale();
+
     Matrix matWorld = Transform()->GetWorldMat();
-    Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
-    Matrix matScale = XMMatrixScaling(2.f * m_Size.x, 2.f * m_Size.y, 1.f);
+    Matrix matTranslation = XMMatrixTranslation(m_Offset.x * sacle.x, m_Offset.y * sacle.y, 0.0f);
+    Matrix matScale = XMMatrixScaling(2.f * m_Size.x * sacle.x, 2.f * m_Size.y * sacle.y, 1.f);
+    Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
 
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-    GamePlayStatic::DrawDebugRect(matScale * matTranslation * matWorld, color, false);
+    GamePlayStatic::DrawDebugRect(matScale * matTranslation * matInvScale * matWorld, color, false);
 }
 
 void CBoxCollider2D::SetSize(Vec2 _size)

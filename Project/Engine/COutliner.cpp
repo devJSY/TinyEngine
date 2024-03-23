@@ -997,11 +997,11 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             pBoxCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pBoxCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
             pBoxCol->SetOffset(Offset);
 
         Vec2 Size = pBoxCol->GetSize();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 1e-3f, 1e-3f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.1f, 1e-3f, D3D11_FLOAT32_MAX))
             pBoxCol->SetSize(Size);
 
         ImGui::Separator();
@@ -1056,11 +1056,11 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             pCircleCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pCircleCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
             pCircleCol->SetOffset(Offset);
 
         float Radius = pCircleCol->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 1e-3f, 1e-3f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.1f, 1e-3f, D3D11_FLOAT32_MAX))
             pCircleCol->SetRadius(Radius);
 
         ImGui::Separator();
@@ -1115,7 +1115,7 @@ void COutliner::DrawPolygonCollider2D(CGameObject* obj)
             pPloyCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pPloyCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
             pPloyCol->SetOffset(Offset);
 
         const vector<Vec2>& points = pPloyCol->GetPoints();
@@ -1185,11 +1185,11 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
             pEdgeCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pEdgeCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
             pEdgeCol->SetOffset(Offset);
 
         float EdgeRadius = pEdgeCol->GetEdgeRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Edge Radius").c_str(), &EdgeRadius))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Edge Radius").c_str(), &EdgeRadius, 0.1f))
             pEdgeCol->SetEdgeRadius(EdgeRadius);
 
         Vec2 StartPoint = pEdgeCol->GetStartPoint();
