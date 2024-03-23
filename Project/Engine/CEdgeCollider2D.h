@@ -14,25 +14,25 @@ private:
     Vec2 m_AdjacentEndPoint;
 
 public:
-    void SetEdgeRadius(float _Radius) { m_EdgeRadius = _Radius; }
+    void SetEdgeRadius(float _Radius);
     float GetEdgeRadius() const { return m_EdgeRadius; }
 
-    void SetStartPoint(Vec2 _Point) { m_StartPoint = _Point; }
+    void SetStartPoint(Vec2 _Point);
     Vec2 GetStartPoint() const { return m_StartPoint; }
 
-    void SetEndPoint(Vec2 _Point) { m_EndPoint = _Point; }
+    void SetEndPoint(Vec2 _Point);
     Vec2 GetEndPoint() const { return m_EndPoint; }
 
-    void SetUseAdjacentStartPoint(bool _Use) { m_bUseAdjacentStartPoint = _Use; }
+    void SetUseAdjacentStartPoint(bool _Use);
     bool IsUseAdjacentStartPoint() const { return m_bUseAdjacentStartPoint; }
 
-    void SetUseAdjacentEndPoint(bool _Use) { m_bUseAdjacentEndPoint = _Use; }
+    void SetUseAdjacentEndPoint(bool _Use);
     bool IsUseAdjacentEndPoint() const { return m_bUseAdjacentEndPoint; }
 
-    void SetAdjacentStartPoint(Vec2 _Point) { m_AdjacentStartPoint = _Point; }
+    void SetAdjacentStartPoint(Vec2 _Point);
     Vec2 GetAdjacentStartPoint() const { return m_AdjacentStartPoint; }
 
-    void SetAdjacentEndPoint(Vec2 _Point) { m_AdjacentEndPoint = _Point; }
+    void SetAdjacentEndPoint(Vec2 _Point);
     Vec2 GetAdjacentEndPoint() const { return m_AdjacentEndPoint; }
 
 public:

@@ -16,6 +16,7 @@ namespace GamePlayStatic
     void WindowResize(int width, int height);
     void CloneGameObject(CGameObject* _OriginObj);
 
+    void DrawDebugLine(const Matrix& _WorldMat, Vec3 _p1, Vec3 _p2, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void DrawDebugRect(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);

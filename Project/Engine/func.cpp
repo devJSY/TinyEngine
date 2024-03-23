@@ -62,6 +62,53 @@ void GamePlayStatic::CloneGameObject(CGameObject* _OriginObj)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::DrawDebugLine(const Matrix& _WorldMat, Vec3 _p1, Vec3 _p2, Vec3 _Color, bool _bDepthTest, float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::LINE;
+    info.matWorld = _WorldMat;
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+
+    // Line Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec2> texcoords;
+
+    tMeshData meshData;
+    positions.push_back(_p1);
+    positions.push_back(_p2);
+
+    texcoords.push_back(Vec2(0.f, 0.f));
+    texcoords.push_back(Vec2(0.f, 0.f));
+
+    colors.push_back(_Color);
+    colors.push_back(_Color);
+
+    for (size_t i = 0; i < positions.size(); i++)
+    {
+        Vtx v;
+        v.vPos = positions[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
+
+        meshData.vertices.push_back(v);
+    }
+
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(1);
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
+    pMesh->SetName(L"LineMesh");
+
+    info.pMesh = pMesh;
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
 void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
     tDebugShapeInfo info = {};

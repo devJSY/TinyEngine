@@ -1145,7 +1145,7 @@ void COutliner::DrawPolygonCollider2D(CGameObject* obj)
             Vec2 Point = points[i];
             string Label = "Element ";
             Label += std::to_string(i);
-            if (ImGui::DragFloat2(ImGui_LabelPrefix(Label.c_str()).c_str(), &Point.x))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix(Label.c_str()).c_str(), &Point.x, 0.1f))
                 pPloyCol->SetPoint((int)i, Point);
         }
 
@@ -1209,11 +1209,11 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
             pEdgeCol->SetEdgeRadius(EdgeRadius);
 
         Vec2 StartPoint = pEdgeCol->GetStartPoint();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Start Point").c_str(), &StartPoint.x))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Start Point").c_str(), &StartPoint.x, 0.1f))
             pEdgeCol->SetStartPoint(StartPoint);
 
         Vec2 EndPoint = pEdgeCol->GetEndPoint();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("End Point").c_str(), &EndPoint.x))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("End Point").c_str(), &EndPoint.x, 0.1f))
             pEdgeCol->SetEndPoint(EndPoint);
 
         bool bUseAdjacentStartPoint = pEdgeCol->IsUseAdjacentStartPoint();
@@ -1223,7 +1223,7 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
         if (bUseAdjacentStartPoint)
         {
             Vec2 AdjacentStartPoint = pEdgeCol->GetAdjacentStartPoint();
-            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent Start Point").c_str(), &AdjacentStartPoint.x))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent Start Point").c_str(), &AdjacentStartPoint.x, 0.1f))
                 pEdgeCol->SetAdjacentStartPoint(AdjacentStartPoint);
         }
 
@@ -1234,7 +1234,7 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
         if (bUseAdjacentEndPoint)
         {
             Vec2 AdjacentEndPoint = pEdgeCol->GetAdjacentEndPoint();
-            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent End Point").c_str(), &AdjacentEndPoint.x))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent End Point").c_str(), &AdjacentEndPoint.x, 0.1f))
                 pEdgeCol->SetAdjacentEndPoint(AdjacentEndPoint);
         }
 

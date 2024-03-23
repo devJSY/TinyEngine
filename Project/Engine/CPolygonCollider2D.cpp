@@ -22,6 +22,21 @@ CPolygonCollider2D::~CPolygonCollider2D()
 {
 }
 
+void CPolygonCollider2D::AddPoint(Vec2 _Point)
+{
+    m_Points.push_back(_Point);
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CPolygonCollider2D::SetPoint(int _Idx, Vec2 _Point)
+{
+    if (_Idx >= m_Points.size())
+        return;
+
+    m_Points[_Idx] = _Point;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
 void CPolygonCollider2D::PointReSize(int _size)
 {
     if (_size < 0)

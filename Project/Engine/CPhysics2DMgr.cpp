@@ -301,7 +301,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // Polygon Collider 2D
-    if (nullptr != pc2d && !pc2d->GetPoints().empty())
+    if (nullptr != pc2d)
     {
         const vector<Vec2>& Points = pc2d->GetPoints();
         vector<b2Vec2> vertices(Points.begin(), Points.end());
@@ -315,22 +315,26 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         b2PolygonShape PolygonShape;
         PolygonShape.Set(vertices.data(), (int)vertices.size());
 
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &PolygonShape;
-        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(pc2d);
-        Ptr<CPhysics2DMaterial> Mtrl = pc2d->GetMaterial();
-        if (nullptr != Mtrl)
+        // 유효한 다각형인경우에만 생성
+        if (PolygonShape.Validate())
         {
-            fixtureDef.friction = Mtrl->m_Friction;
-            fixtureDef.restitution = Mtrl->m_Bounciness;
+            b2FixtureDef fixtureDef;
+            fixtureDef.shape = &PolygonShape;
+            fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(pc2d);
+            Ptr<CPhysics2DMaterial> Mtrl = pc2d->GetMaterial();
+            if (nullptr != Mtrl)
+            {
+                fixtureDef.friction = Mtrl->m_Friction;
+                fixtureDef.restitution = Mtrl->m_Bounciness;
+            }
+            fixtureDef.density = 1.f;
+            fixtureDef.isSensor = nullptr == rb2d ? true : pc2d->m_bTrigger;
+
+            fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
+            fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
+
+            pc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
         }
-        fixtureDef.density = 1.f;
-        fixtureDef.isSensor = nullptr == rb2d ? true : pc2d->m_bTrigger;
-
-        fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
-        fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
-
-        pc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
     }
 
     // Edge Collider 2D
