@@ -23,7 +23,6 @@ void CCircleCollider2D::finaltick()
     Matrix matWorld = Transform()->GetWorldMat();
     Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
     Matrix matScale = XMMatrixScaling(m_Radius * sacle.x, m_Radius * sacle.x, 1.f);
-
     Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
 
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);

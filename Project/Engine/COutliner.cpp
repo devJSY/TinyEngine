@@ -1121,13 +1121,13 @@ void COutliner::DrawPolygonCollider2D(CGameObject* obj)
         const vector<Vec2>& points = pPloyCol->GetPoints();
 
         int size = (int)points.size();
-        if (ImGui::InputInt(ImGui_LabelPrefix("size").c_str(), &size))
+        if (ImGui::InputInt(ImGui_LabelPrefix("Size").c_str(), &size))
             pPloyCol->PointReSize(size);
 
         for (size_t i = 0; i < points.size(); i++)
         {
             Vec2 Point = points[i];
-            string Label = "Element";
+            string Label = "Element ";
             Label += std::to_string(i);
             if (ImGui::DragFloat2(ImGui_LabelPrefix(Label.c_str()).c_str(), &Point.x))
                 pPloyCol->SetPoint((int)i, Point);

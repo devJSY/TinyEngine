@@ -26,6 +26,7 @@ void CEdgeCollider2D::finaltick()
 
 void CEdgeCollider2D::SaveToLevelFile(FILE* _File)
 {
+    CCollider2D::SaveToLevelFile(_File);
     fwrite(&m_EdgeRadius, sizeof(float), 1, _File);
     fwrite(&m_StartPoint, sizeof(Vec2), 1, _File);
     fwrite(&m_EndPoint, sizeof(Vec2), 1, _File);
@@ -37,6 +38,7 @@ void CEdgeCollider2D::SaveToLevelFile(FILE* _File)
 
 void CEdgeCollider2D::LoadFromLevelFile(FILE* _File)
 {
+    CCollider2D::LoadFromLevelFile(_File);
     fread(&m_EdgeRadius, sizeof(float), 1, _File);
     fread(&m_StartPoint, sizeof(Vec2), 1, _File);
     fread(&m_EndPoint, sizeof(Vec2), 1, _File);

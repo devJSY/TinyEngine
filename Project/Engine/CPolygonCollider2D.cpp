@@ -2,11 +2,20 @@
 #include "CPolygonCollider2D.h"
 
 #include "components.h"
+#include <box2d\\b2_fixture.h>
 
 CPolygonCollider2D::CPolygonCollider2D()
     : CCollider2D(COMPONENT_TYPE::POLYGONCOLLIDER2D)
     , m_Points{}
 {
+    // 기본 도형 오각형
+    m_Points.resize(5);
+    float fTheta = 0;
+    for (UINT i = 0; i < 5; i++)
+    {
+        fTheta = (XM_2PI / 5) * i;
+        m_Points[i] = Vec2(cosf(fTheta), sinf(fTheta));
+    }
 }
 
 CPolygonCollider2D::~CPolygonCollider2D()
@@ -32,22 +41,18 @@ void CPolygonCollider2D::finaltick()
 
     if (!m_Points.empty())
     {
-        Vec3 sacle = Transform()->GetWorldScale();
-
         Matrix matWorld = Transform()->GetWorldMat();
         Matrix matTranslation = XMMatrixTranslation(m_Offset.x, m_Offset.y, 0.0f);
-        Matrix matScale = XMMatrixScaling(sacle.x, sacle.y, 1.f);
-
-        Matrix matInvScale = XMMatrixScaling(1.f / sacle.x, 1.f / sacle.y, 1.f / sacle.z);
 
         Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-        GamePlayStatic::DrawDebugPolygon(matScale * matTranslation * matInvScale * matWorld, color, m_Points, false);
+        GamePlayStatic::DrawDebugPolygon(matTranslation * matWorld, color, m_Points, false);
     }
 }
 
 void CPolygonCollider2D::SaveToLevelFile(FILE* _File)
 {
+    CCollider2D::SaveToLevelFile(_File);
     int count = (int)m_Points.size();
     fwrite(&count, sizeof(int), 1, _File);
     for (size_t i = 0; i < count; i++)
@@ -58,6 +63,7 @@ void CPolygonCollider2D::SaveToLevelFile(FILE* _File)
 
 void CPolygonCollider2D::LoadFromLevelFile(FILE* _File)
 {
+    CCollider2D::LoadFromLevelFile(_File);
     int count = 0;
     fread(&count, sizeof(int), 1, _File);
     m_Points.resize(count);
