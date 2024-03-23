@@ -12,6 +12,7 @@
 #include <box2d\\b2_fixture.h>
 #include <box2d\\b2_polygon_shape.h>
 #include <box2d\\b2_circle_shape.h>
+#include <box2d\\b2_edge_shape.h>
 
 #include <box2d\\b2_contact.h>
 
@@ -185,6 +186,8 @@ void CPhysics2DMgr::OnPhysics2DStop()
         CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
         CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
         CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+        CPolygonCollider2D* pc2d = m_vecPhysicsObj[i]->PolygonCollider2D();
+        CEdgeCollider2D* ec2d = m_vecPhysicsObj[i]->EdgeCollider2D();
 
         if (nullptr != rb2d)
             rb2d->m_RuntimeBody = nullptr;
@@ -192,6 +195,10 @@ void CPhysics2DMgr::OnPhysics2DStop()
             bc2d->m_RuntimeFixture = nullptr;
         if (nullptr != cc2d)
             cc2d->m_RuntimeFixture = nullptr;
+        if (nullptr != pc2d)
+            pc2d->m_RuntimeFixture = nullptr;
+        if (nullptr != ec2d)
+            ec2d->m_RuntimeFixture = nullptr;
     }
 
     if (nullptr != m_PhysicsWorld)
@@ -212,8 +219,10 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
     CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
     CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
+    CPolygonCollider2D* pc2d = _GameObject->PolygonCollider2D();
+    CEdgeCollider2D* ec2d = _GameObject->EdgeCollider2D();
 
-    if (nullptr == rb2d && nullptr == bc2d && nullptr == cc2d)
+    if (nullptr == rb2d && nullptr == bc2d && nullptr == cc2d && nullptr == pc2d && nullptr == ec2d)
         return;
 
     b2BodyDef bodyDef;
@@ -290,6 +299,90 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
     }
 
+    // Polygon Collider 2D
+    if (nullptr != pc2d && !pc2d->GetPoints().empty())
+    {
+        const vector<Vec2>& Points = pc2d->GetPoints();
+        vector<b2Vec2> vertices(Points.begin(), Points.end());
+
+        for (size_t i = 0; i < vertices.size(); i++)
+        {
+            vertices[i].x = vertices[i].x * pTr->GetWorldScale().x / m_PPM;
+            vertices[i].y = vertices[i].y * pTr->GetWorldScale().y / m_PPM;
+        }
+
+        b2PolygonShape PolygonShape;
+        PolygonShape.Set(vertices.data(), (int)vertices.size());
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &PolygonShape;
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(pc2d);
+        Ptr<CPhysics2DMaterial> Mtrl = pc2d->GetMaterial();
+        if (nullptr != Mtrl)
+        {
+            fixtureDef.friction = Mtrl->m_Friction;
+            fixtureDef.restitution = Mtrl->m_Bounciness;
+        }
+        fixtureDef.density = 1.f;
+        fixtureDef.isSensor = nullptr == rb2d ? true : pc2d->m_bTrigger;
+
+        fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
+        fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
+
+        pc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+
+        // 위치설정
+        Vec2 pos = Vec2(pTr->GetWorldPos().x, pTr->GetWorldPos().y);
+        pos += pc2d->m_Offset;
+        pos /= m_PPM;
+        body->SetTransform(pos, pTr->GetWorldRotation().z);
+    }
+
+    // Edge Collider 2D
+    if (nullptr != ec2d)
+    {
+        Vec2 Scale = Vec2(pTr->GetWorldScale().x, pTr->GetWorldScale().y);
+        b2EdgeShape EdgeShape;
+        EdgeShape.m_radius = ec2d->GetEdgeRadius();
+        EdgeShape.m_vertex1 = ec2d->GetStartPoint() * Scale / m_PPM;
+        EdgeShape.m_vertex2 = ec2d->GetEndPoint() * Scale / m_PPM;
+
+        if (ec2d->IsUseAdjacentStartPoint())
+        {
+            EdgeShape.m_vertex0 = ec2d->GetAdjacentStartPoint() * Scale / m_PPM;
+            EdgeShape.m_oneSided = true;
+        }
+
+        if (ec2d->IsUseAdjacentEndPoint())
+        {
+            EdgeShape.m_vertex3 = ec2d->GetAdjacentEndPoint() * Scale / m_PPM;
+            EdgeShape.m_oneSided = true;
+        }
+
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &EdgeShape;
+        fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(ec2d);
+        Ptr<CPhysics2DMaterial> Mtrl = ec2d->GetMaterial();
+        if (nullptr != Mtrl)
+        {
+            fixtureDef.friction = Mtrl->m_Friction;
+            fixtureDef.restitution = Mtrl->m_Bounciness;
+        }
+        fixtureDef.density = 1.f;
+        fixtureDef.isSensor = nullptr == rb2d ? true : ec2d->m_bTrigger;
+
+        fixtureDef.filter.categoryBits = (1 << _GameObject->GetLayerIdx());
+        fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
+
+        ec2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+
+        // 위치설정
+        Vec2 pos = Vec2(pTr->GetWorldPos().x, pTr->GetWorldPos().y);
+        pos += ec2d->m_Offset;
+        pos /= m_PPM;
+        body->SetTransform(pos, pTr->GetWorldRotation().z);
+    }
+
     // 질량 설정
     if (nullptr != rb2d && !rb2d->m_bAutoMass)
     {
@@ -314,6 +407,8 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
         CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
         CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
         CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
+        CPolygonCollider2D* pc2d = _GameObject->PolygonCollider2D();
+        CEdgeCollider2D* ec2d = _GameObject->EdgeCollider2D();
 
         b2Body* body = nullptr;
 
@@ -323,6 +418,10 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
             body = ((b2Fixture*)bc2d->m_RuntimeFixture)->GetBody();
         else if (nullptr != cc2d)
             body = ((b2Fixture*)cc2d->m_RuntimeFixture)->GetBody();
+        else if (nullptr != pc2d)
+            body = ((b2Fixture*)pc2d->m_RuntimeFixture)->GetBody();
+        else if (nullptr != ec2d)
+            body = ((b2Fixture*)ec2d->m_RuntimeFixture)->GetBody();
 
         assert(body);
 
@@ -335,6 +434,10 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
             bc2d->m_RuntimeFixture = nullptr;
         if (nullptr != cc2d)
             cc2d->m_RuntimeFixture = nullptr;
+        if (nullptr != pc2d)
+            pc2d->m_RuntimeFixture = nullptr;
+        if (nullptr != ec2d)
+            ec2d->m_RuntimeFixture = nullptr;
 
         break;
     }
@@ -396,6 +499,8 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
     {
         CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
         CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+        CPolygonCollider2D* pc2d = m_vecPhysicsObj[i]->PolygonCollider2D();
+        CEdgeCollider2D* ec2d = m_vecPhysicsObj[i]->EdgeCollider2D();
 
         b2Fixture* fixture = nullptr;
 
@@ -410,6 +515,18 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
             pCollisionObj = m_vecPhysicsObj[i];
             break;
         }
+
+        if (nullptr != pc2d && pc2d->IsCollision(_Point))
+        {
+            pCollisionObj = m_vecPhysicsObj[i];
+            break;
+        }
+
+        if (nullptr != ec2d && ec2d->IsCollision(_Point))
+        {
+            pCollisionObj = m_vecPhysicsObj[i];
+            break;
+        }
     }
 
     if (!IsRunning)
@@ -420,13 +537,13 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
 
 RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, unsigned short _LayerMask)
 {
-    RaycastHit2D Hit02;
-    Hit02.Centroid = _Origin;
-    Hit02.Distance = 0.f;
-    Hit02.Fraction = 1.f;
-    Hit02.Normal = Vec2();
-    Hit02.Point = Vec2();
-    Hit02.pCollisionObj = nullptr;
+    RaycastHit2D Hit;
+    Hit.Centroid = _Origin;
+    Hit.Distance = 0.f;
+    Hit.Fraction = 1.f;
+    Hit.Normal = Vec2();
+    Hit.Point = Vec2();
+    Hit.pCollisionObj = nullptr;
 
     bool IsRunning = nullptr != m_PhysicsWorld;
     if (!IsRunning)
@@ -440,24 +557,28 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distanc
 
         CBoxCollider2D* bc2d = m_vecPhysicsObj[i]->BoxCollider2D();
         CCircleCollider2D* cc2d = m_vecPhysicsObj[i]->CircleCollider2D();
+        CPolygonCollider2D* pc2d = m_vecPhysicsObj[i]->PolygonCollider2D();
+        CEdgeCollider2D* ec2d = m_vecPhysicsObj[i]->EdgeCollider2D();
 
         b2Fixture* fixture = nullptr;
 
-        if (nullptr != bc2d && bc2d->RayCast(_Origin, _Dirction, _Distance, Hit02))
-        {
+        if (nullptr != bc2d && bc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
             break;
-        }
 
-        if (nullptr != cc2d && cc2d->RayCast(_Origin, _Dirction, _Distance, Hit02))
-        {
+        if (nullptr != cc2d && cc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
             break;
-        }
+
+        if (nullptr != pc2d && pc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+            break;
+
+        if (nullptr != ec2d && ec2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+            break;
     }
 
     if (!IsRunning)
         OnPhysics2DStop();
 
-    return Hit02;
+    return Hit;
 }
 
 RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, const wstring& _LayerName)

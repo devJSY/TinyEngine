@@ -1118,6 +1118,21 @@ void COutliner::DrawPolygonCollider2D(CGameObject* obj)
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
             pPloyCol->SetOffset(Offset);
 
+        const vector<Vec2>& points = pPloyCol->GetPoints();
+
+        int size = (int)points.size();
+        if (ImGui::InputInt(ImGui_LabelPrefix("size").c_str(), &size))
+            pPloyCol->PointReSize(size);
+
+        for (size_t i = 0; i < points.size(); i++)
+        {
+            Vec2 Point = points[i];
+            string Label = "Element";
+            Label += std::to_string(i);
+            if (ImGui::DragFloat2(ImGui_LabelPrefix(Label.c_str()).c_str(), &Point.x))
+                pPloyCol->SetPoint((int)i, Point);
+        }
+
         ImGui::Separator();
 
         if (ImGui_AlignButton("Physics2D Material Editor", 1.f))
@@ -1172,6 +1187,40 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
         Vec2 Offset = pEdgeCol->GetOffset();
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x))
             pEdgeCol->SetOffset(Offset);
+
+        float EdgeRadius = pEdgeCol->GetEdgeRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Edge Radius").c_str(), &EdgeRadius))
+            pEdgeCol->SetEdgeRadius(EdgeRadius);
+
+        Vec2 StartPoint = pEdgeCol->GetStartPoint();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Start Point").c_str(), &StartPoint.x))
+            pEdgeCol->SetStartPoint(StartPoint);
+
+        Vec2 EndPoint = pEdgeCol->GetEndPoint();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("End Point").c_str(), &EndPoint.x))
+            pEdgeCol->SetEndPoint(EndPoint);
+
+        bool bUseAdjacentStartPoint = pEdgeCol->IsUseAdjacentStartPoint();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Use Adjacent Start Point").c_str(), &bUseAdjacentStartPoint))
+            pEdgeCol->SetUseAdjacentStartPoint(bUseAdjacentStartPoint);
+
+        if (bUseAdjacentStartPoint)
+        {
+            Vec2 AdjacentStartPoint = pEdgeCol->GetAdjacentStartPoint();
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent Start Point").c_str(), &AdjacentStartPoint.x))
+                pEdgeCol->SetAdjacentStartPoint(AdjacentStartPoint);
+        }
+
+        bool bUseAdjacentEndPoint = pEdgeCol->IsUseAdjacentEndPoint();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Use Adjacent End Point").c_str(), &bUseAdjacentEndPoint))
+            pEdgeCol->SetUseAdjacentEndPoint(bUseAdjacentStartPoint);
+
+        if (bUseAdjacentEndPoint)
+        {
+            Vec2 AdjacentEndPoint = pEdgeCol->GetAdjacentEndPoint();
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent End Point").c_str(), &AdjacentEndPoint.x))
+                pEdgeCol->SetAdjacentEndPoint(AdjacentEndPoint);
+        }
 
         ImGui::Separator();
 
