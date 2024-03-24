@@ -167,6 +167,9 @@ void CPlayerScript::tick()
     case PLAYER_STATE::Dash:
         Dash();
         break;
+    case PLAYER_STATE::Hit01:
+        Hit01();
+        break;
     case PLAYER_STATE::Hit02:
         Hit02();
         break;
@@ -176,14 +179,14 @@ void CPlayerScript::tick()
     case PLAYER_STATE::ComboMove:
         ComboMove();
         break;
-    case PLAYER_STATE::ComboStand:
-        ComboStand();
+    case PLAYER_STATE::ComboAerial:
+        ComboAerial();
         break;
-    case PLAYER_STATE::Special2:
-        Special2();
+    case PLAYER_STATE::JumpAttack:
+        JumpAttack();
         break;
-    case PLAYER_STATE::Crush:
-        Crush();
+    case PLAYER_STATE::DownAttack:
+        DownAttack();
         break;
     }
 
@@ -255,6 +258,10 @@ void CPlayerScript::EnterState()
         m_DashPassedTime = 0.f;
     }
     break;
+    case PLAYER_STATE::Hit01: {
+        Animator2D()->Play(L"LD_Hit01", false);
+    }
+    break;
     case PLAYER_STATE::Hit02: {
         Animator2D()->Play(L"LD_Hit02", false);
     }
@@ -283,7 +290,7 @@ void CPlayerScript::EnterState()
         }
     }
     break;
-    case PLAYER_STATE::ComboStand: {
+    case PLAYER_STATE::ComboAerial: {
         if (0 == m_AttackCount)
             Animator2D()->Play(L"LD_ComboStand1", false);
         else if (1 == m_AttackCount)
@@ -304,7 +311,7 @@ void CPlayerScript::EnterState()
         }
     }
     break;
-    case PLAYER_STATE::Special2: {
+    case PLAYER_STATE::JumpAttack: {
         Animator2D()->Play(L"LD_Special2", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
@@ -312,7 +319,7 @@ void CPlayerScript::EnterState()
         m_bJumpAttackActive = false;
     }
     break;
-    case PLAYER_STATE::Crush: {
+    case PLAYER_STATE::DownAttack: {
         Animator2D()->Play(L"LD_Crush", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
@@ -362,20 +369,23 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::Hit02: {
     }
     break;
+    case PLAYER_STATE::Hit01: {
+    }
+    break;
     case PLAYER_STATE::Fight_To_Idle: {
     }
     break;
     case PLAYER_STATE::ComboMove: {
     }
     break;
-    case PLAYER_STATE::ComboStand: {
+    case PLAYER_STATE::ComboAerial: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
     }
     break;
-    case PLAYER_STATE::Special2: {
+    case PLAYER_STATE::JumpAttack: {
     }
     break;
-    case PLAYER_STATE::Crush: {
+    case PLAYER_STATE::DownAttack: {
     }
     break;
     }
@@ -431,7 +441,7 @@ void CPlayerScript::Idle()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -488,7 +498,7 @@ void CPlayerScript::IdleToRun()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -539,7 +549,7 @@ void CPlayerScript::IdleUturn()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -582,15 +592,15 @@ void CPlayerScript::Jump_Falling()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Crush);
+        ChangeState(PLAYER_STATE::DownAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboStand);
+        ChangeState(PLAYER_STATE::ComboAerial);
     }
 }
 
@@ -642,15 +652,15 @@ void CPlayerScript::Jump_Start()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Crush);
+        ChangeState(PLAYER_STATE::DownAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::ComboStand);
+        ChangeState(PLAYER_STATE::ComboAerial);
     }
 }
 
@@ -695,7 +705,7 @@ void CPlayerScript::Jump_Landing()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -741,7 +751,7 @@ void CPlayerScript::Run()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -789,7 +799,7 @@ void CPlayerScript::RunUturn()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -850,7 +860,7 @@ void CPlayerScript::RunToIdle()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -862,6 +872,10 @@ void CPlayerScript::Dash()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
+}
+
+void CPlayerScript::Hit01()
+{
 }
 
 void CPlayerScript::Hit02()
@@ -888,7 +902,7 @@ void CPlayerScript::Fight_To_Idle()
     // Attack
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_TAP(KEY::LBTN))
     {
@@ -896,7 +910,7 @@ void CPlayerScript::Fight_To_Idle()
         if (m_bOnGround)
             ChangeState(PLAYER_STATE::ComboMove);
         else
-            ChangeState(PLAYER_STATE::ComboStand);
+            ChangeState(PLAYER_STATE::ComboAerial);
     }
 }
 
@@ -1052,13 +1066,13 @@ void CPlayerScript::ComboMove()
         bNextAttack = false;
     }
 
-    // Attack 중 공중에 뜬 상태일경우 ComboStand 로 전환
+    // Attack 중 공중에 뜬 상태일경우 ComboAerial 로 전환
     if (!m_bOnGround && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::ComboStand);
+        ChangeState(PLAYER_STATE::ComboAerial);
     }
 
     // 점프 & 하강 공격
@@ -1067,7 +1081,7 @@ void CPlayerScript::ComboMove()
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     // else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     //{
@@ -1078,7 +1092,7 @@ void CPlayerScript::ComboMove()
     // }
 }
 
-void CPlayerScript::ComboStand()
+void CPlayerScript::ComboAerial()
 {
     static float PassedTime = 0.f;
     PassedTime += DT;
@@ -1104,7 +1118,7 @@ void CPlayerScript::ComboStand()
                 }
 
                 m_AttackCount = 1;
-                ChangeState(PLAYER_STATE::ComboStand);
+                ChangeState(PLAYER_STATE::ComboAerial);
             }
             else
                 ChangeState(PLAYER_STATE::Fight_To_Idle);
@@ -1138,7 +1152,7 @@ void CPlayerScript::ComboStand()
                 }
 
                 m_AttackCount = 2;
-                ChangeState(PLAYER_STATE::ComboStand);
+                ChangeState(PLAYER_STATE::ComboAerial);
             }
             else
                 ChangeState(PLAYER_STATE::Fight_To_Idle);
@@ -1181,24 +1195,24 @@ void CPlayerScript::ComboStand()
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::Special2);
+        ChangeState(PLAYER_STATE::JumpAttack);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::Crush);
+        ChangeState(PLAYER_STATE::DownAttack);
     }
 }
 
-void CPlayerScript::Special2()
+void CPlayerScript::JumpAttack()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
 }
 
-void CPlayerScript::Crush()
+void CPlayerScript::DownAttack()
 {
     static bool bShaked = false;
 
@@ -1238,16 +1252,16 @@ void CPlayerScript::RayCast()
     if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
     {
         Vec3 origin = Transform()->GetWorldPos();
-        RaycastHit2D Hit02 =
+        RaycastHit2D Hit =
             CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
         GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, Vec3(1.f, 0.f, 0.f), false);
 
-        if (nullptr != Hit02.pCollisionObj)
+        if (nullptr != Hit.pCollisionObj)
         {
             m_bOnGround = true;
             m_bJumpAttackActive = true;
 
-            Hit02.Distance; // Player 중점 에서 Ground 표면까지의 거리
+            Hit.Distance; // Player 중점 에서 Ground 표면까지의 거리
             // TODO 그림자 처리
         }
         else

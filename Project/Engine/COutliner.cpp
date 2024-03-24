@@ -630,7 +630,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
         if (ImGui_AlignButton("Load Animation", 0.f))
         {
-            std::filesystem::path filePath = OpenFileDialog(L"", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+            std::filesystem::path filePath = OpenFileDialog(L"AnimData", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
 
             if (!filePath.empty()) // 취소, 닫기 버튼 체크
             {
@@ -950,19 +950,19 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
             pRigidbody->SetAutoMass(bAutoMass);
 
         float Mass = pRigidbody->GetMass();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Mass").c_str(), &Mass, 0.1f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Mass").c_str(), &Mass, 0.01f))
             pRigidbody->SetMass(Mass);
 
         float LinearDrag = pRigidbody->GetLinearDrag();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Linear Drag").c_str(), &LinearDrag, 0.1f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Linear Drag").c_str(), &LinearDrag, 0.01f))
             pRigidbody->SetLinearDrag(LinearDrag);
 
         float AngularDrag = pRigidbody->GetAngularDrag();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Angular Drag").c_str(), &AngularDrag, 0.1f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Angular Drag").c_str(), &AngularDrag, 0.01f))
             pRigidbody->SetAngularDrag(AngularDrag);
 
         float GravityScale = pRigidbody->GetGravityScale();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Gravity Scale").c_str(), &GravityScale, 0.1f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Gravity Scale").c_str(), &GravityScale, 0.01f))
             pRigidbody->SetGravityScale(GravityScale);
 
         bool bFreezeRotation = pRigidbody->IsFreezeRotation();
@@ -1013,11 +1013,11 @@ void COutliner::DrawBoxCollider2D(CGameObject* obj)
             pBoxCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pBoxCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pBoxCol->SetOffset(Offset);
 
         Vec2 Size = pBoxCol->GetSize();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.1f, 1e-3f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f, 1e-3f, D3D11_FLOAT32_MAX))
             pBoxCol->SetSize(Size);
 
         ImGui::Separator();
@@ -1072,11 +1072,11 @@ void COutliner::DrawCircleCollider2D(CGameObject* obj)
             pCircleCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pCircleCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pCircleCol->SetOffset(Offset);
 
         float Radius = pCircleCol->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.1f, 1e-3f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 1e-3f, D3D11_FLOAT32_MAX))
             pCircleCol->SetRadius(Radius);
 
         ImGui::Separator();
@@ -1131,7 +1131,7 @@ void COutliner::DrawPolygonCollider2D(CGameObject* obj)
             pPloyCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pPloyCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pPloyCol->SetOffset(Offset);
 
         const vector<Vec2>& points = pPloyCol->GetPoints();
@@ -1145,7 +1145,7 @@ void COutliner::DrawPolygonCollider2D(CGameObject* obj)
             Vec2 Point = points[i];
             string Label = "Element ";
             Label += std::to_string(i);
-            if (ImGui::DragFloat2(ImGui_LabelPrefix(Label.c_str()).c_str(), &Point.x, 0.1f))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix(Label.c_str()).c_str(), &Point.x, 0.01f))
                 pPloyCol->SetPoint((int)i, Point);
         }
 
@@ -1201,19 +1201,19 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
             pEdgeCol->SetTrigger(bTrigger);
 
         Vec2 Offset = pEdgeCol->GetOffset();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.1f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Offset").c_str(), &Offset.x, 0.01f))
             pEdgeCol->SetOffset(Offset);
 
         float EdgeRadius = pEdgeCol->GetEdgeRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Edge Radius").c_str(), &EdgeRadius, 0.1f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Edge Radius").c_str(), &EdgeRadius, 0.01f))
             pEdgeCol->SetEdgeRadius(EdgeRadius);
 
         Vec2 StartPoint = pEdgeCol->GetStartPoint();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Start Point").c_str(), &StartPoint.x, 0.1f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Start Point").c_str(), &StartPoint.x, 0.01f))
             pEdgeCol->SetStartPoint(StartPoint);
 
         Vec2 EndPoint = pEdgeCol->GetEndPoint();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("End Point").c_str(), &EndPoint.x, 0.1f))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("End Point").c_str(), &EndPoint.x, 0.01f))
             pEdgeCol->SetEndPoint(EndPoint);
 
         bool bUseAdjacentStartPoint = pEdgeCol->IsUseAdjacentStartPoint();
@@ -1223,7 +1223,7 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
         if (bUseAdjacentStartPoint)
         {
             Vec2 AdjacentStartPoint = pEdgeCol->GetAdjacentStartPoint();
-            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent Start Point").c_str(), &AdjacentStartPoint.x, 0.1f))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent Start Point").c_str(), &AdjacentStartPoint.x, 0.01f))
                 pEdgeCol->SetAdjacentStartPoint(AdjacentStartPoint);
         }
 
@@ -1234,7 +1234,7 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
         if (bUseAdjacentEndPoint)
         {
             Vec2 AdjacentEndPoint = pEdgeCol->GetAdjacentEndPoint();
-            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent End Point").c_str(), &AdjacentEndPoint.x, 0.1f))
+            if (ImGui::DragFloat2(ImGui_LabelPrefix("Adjacent End Point").c_str(), &AdjacentEndPoint.x, 0.01f))
                 pEdgeCol->SetAdjacentEndPoint(AdjacentEndPoint);
         }
 

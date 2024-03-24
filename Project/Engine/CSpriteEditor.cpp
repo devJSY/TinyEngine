@@ -809,6 +809,8 @@ void CSpriteEditor::DrawDetails()
 
                 if (nullptr != m_pAnim)
                 {
+                    vector<tAnimFrm> OriginVec(m_pAnim->m_vecFrm.begin(), m_pAnim->m_vecFrm.end());
+
                     // Pixel to UV
                     for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
                     {
@@ -824,16 +826,7 @@ void CSpriteEditor::DrawDetails()
                         m_pAnim->SetName(filePath.stem());
 
                     m_pAnim->SaveAnim(filePath);
-
-                    // UV to Pixel
-                    for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
-                    {
-                        m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
-                        m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                        m_pAnim->m_vecFrm[i].vOffset -= m_vGlobalOffset;
-                        m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
-                        m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
-                    }
+                    m_pAnim->m_vecFrm = OriginVec;
                 }
             }
         }
@@ -964,7 +957,7 @@ void CSpriteEditor::DrawAnimationViewport()
 
         RenderSize.x = m_pAnim->m_AtlasTex->GetWidth() * m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.x;
         RenderSize.y = m_pAnim->m_AtlasTex->GetHeight() * m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vSlice.y;
-        
+
         ImVec2 vLT = canvas_LT + (canvas_sz / 2.f) - (RenderSize / 2.f);
         ImVec2 vOffset = m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].vOffset + m_vGlobalOffset;
         vLT.x += vOffset.x;
