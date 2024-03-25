@@ -1035,7 +1035,7 @@ void CPlayerScript::ComboMove()
 
         if (Animator2D()->IsFinish())
         {
-            ChangeState(PLAYER_STATE::Fight_To_Idle);
+            ChangeState(PLAYER_STATE::Idle);
             PassedTime = 0.f;
             bNextAttack = false;
             bShaked = false;
@@ -1053,7 +1053,7 @@ void CPlayerScript::ComboMove()
                 CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
                 if (nullptr != pScript)
                 {
-                    pScript->ShakeCam(ShakeDir::Vertical, 0.3f, 10.f, 50.f);
+                    pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f, 100.f);
                     bShaked = true;
                 }
             }
@@ -1231,7 +1231,7 @@ void CPlayerScript::DownAttack()
             CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
             if (nullptr != pScript)
             {
-                pScript->ShakeCam(ShakeDir::Vertical, 0.3f, 10.f, 50.f);
+                pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f, 100.f);
                 bShaked = true;
             }
         }

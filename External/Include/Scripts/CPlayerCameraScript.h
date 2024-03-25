@@ -29,7 +29,8 @@ class CPlayerCameraScript : public CScript
 {
 private:
     float m_CamSpeed;
-    float m_CamMoveRange;
+    float m_CamMoveRangeX;
+    float m_CamMoveRangeY;
     Vec3 m_OffsetPos;
 
     std::list<tCamEffect> m_listCamEffect;

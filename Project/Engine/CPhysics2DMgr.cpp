@@ -304,12 +304,13 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr != pc2d)
     {
         const vector<Vec2>& Points = pc2d->GetPoints();
-        vector<b2Vec2> vertices(Points.begin(), Points.end());
+        vector<b2Vec2> vertices;
+        vertices.resize(Points.size());
 
         for (size_t i = 0; i < vertices.size(); i++)
         {
-            vertices[i].x = (vertices[i].x + pc2d->m_Offset.x) * pTr->GetWorldScale().x / m_PPM;
-            vertices[i].y = (vertices[i].y + pc2d->m_Offset.y) * pTr->GetWorldScale().y / m_PPM;
+            vertices[i].x = (Points[i].x + pc2d->m_Offset.x) * pTr->GetWorldScale().x / m_PPM;
+            vertices[i].y = (Points[i].y + pc2d->m_Offset.y) * pTr->GetWorldScale().y / m_PPM;
         }
 
         b2PolygonShape PolygonShape;
@@ -407,18 +408,20 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
 
         if (nullptr != rb2d)
             body = (b2Body*)rb2d->m_RuntimeBody;
-        else if (nullptr != bc2d)
+        else if (nullptr != bc2d && nullptr != bc2d->m_RuntimeFixture)
             body = ((b2Fixture*)bc2d->m_RuntimeFixture)->GetBody();
-        else if (nullptr != cc2d)
+        else if (nullptr != cc2d && nullptr != cc2d->m_RuntimeFixture)
             body = ((b2Fixture*)cc2d->m_RuntimeFixture)->GetBody();
-        else if (nullptr != pc2d)
+        else if (nullptr != pc2d && nullptr != pc2d->m_RuntimeFixture)
             body = ((b2Fixture*)pc2d->m_RuntimeFixture)->GetBody();
-        else if (nullptr != ec2d)
+        else if (nullptr != ec2d && nullptr != ec2d->m_RuntimeFixture)
             body = ((b2Fixture*)ec2d->m_RuntimeFixture)->GetBody();
 
-        assert(body);
+        if (nullptr != body)
+        {
+            m_PhysicsWorld->DestroyBody(body);
+        }
 
-        m_PhysicsWorld->DestroyBody(body);
         m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
 
         if (nullptr != rb2d)

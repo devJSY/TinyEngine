@@ -402,8 +402,15 @@ void COutliner::DrawDetails(CGameObject* obj)
 
     if (ImGui::BeginPopup("AddComponent"))
     {
+        static ImGuiTextFilter filter;
+        filter.Draw("##Outliner Add Component Filter", 200.f);
+        ImGui::Separator();
+
         for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; i++)
         {
+            if (!filter.PassFilter(COMPONENT_TYPE_STRING[i]))
+                continue;
+
             if (ImGui::MenuItem(COMPONENT_TYPE_STRING[i], NULL, false, nullptr == obj->GetComponent((COMPONENT_TYPE)i)))
             {
                 GamePlayStatic::AddComponent(obj, (COMPONENT_TYPE)i);
@@ -417,6 +424,9 @@ void COutliner::DrawDetails(CGameObject* obj)
 
             for (size_t i = 0; i < vecScriptName.size(); i++)
             {
+                if (!filter.PassFilter(ToString(vecScriptName[i]).c_str()))
+                    continue;
+
                 if (ImGui::MenuItem(ToString(vecScriptName[i]).c_str()))
                 {
                     obj->AddComponent(CScriptMgr::GetScript(vecScriptName[i]));
