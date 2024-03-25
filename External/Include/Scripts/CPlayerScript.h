@@ -121,5 +121,6 @@ public:
 
 public:
     CPlayerScript();
+    CPlayerScript(const CPlayerScript& origin);
     virtual ~CPlayerScript();
 };

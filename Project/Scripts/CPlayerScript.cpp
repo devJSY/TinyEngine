@@ -40,6 +40,39 @@ CPlayerScript::CPlayerScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
 }
 
+CPlayerScript::CPlayerScript(const CPlayerScript& origin)
+    : CScript(origin)
+    , m_State(origin.m_State)
+    , m_Dir(origin.m_Dir)
+    , m_MaxLife(origin.m_MaxLife)
+    , m_MaxMana(origin.m_MaxMana)
+    , m_CurLife(origin.m_CurLife)
+    , m_CurMana(origin.m_CurMana)
+    , m_Speed(origin.m_Speed)
+    , m_JumpImpulse(origin.m_JumpImpulse)
+    , m_JumpForce(origin.m_JumpForce)
+    , m_DashImpulse(origin.m_DashImpulse)
+    , m_AttackImpulse(origin.m_AttackImpulse)
+    , m_RaycastDist(origin.m_RaycastDist)
+    , m_bOnGround(origin.m_bOnGround)
+    , m_DashPassedTime(origin.m_DashPassedTime)
+    , m_DashCoolTime(origin.m_DashCoolTime)
+    , m_RigidGravityScale(origin.m_RigidGravityScale)
+    , m_bJumpAttackActive(origin.m_bJumpAttackActive)
+    , m_AttackCount(origin.m_AttackCount)
+{
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_CurMana, "Current Mana");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DashImpulse, "Dash Impulse");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackImpulse, "Attack Impulse");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
+}
+
 CPlayerScript::~CPlayerScript()
 {
 }

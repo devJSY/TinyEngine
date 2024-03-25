@@ -57,6 +57,7 @@ public:
 
 public:
     CScript(UINT _ScriptType);
+    CScript(const CScript& origin);
     virtual ~CScript();
 
     friend class CCollider2D;

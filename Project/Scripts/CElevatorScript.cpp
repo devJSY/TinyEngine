@@ -52,7 +52,7 @@ void CElevatorScript::tick()
 
             Ptr<CPrefab> pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
             CGameObject* pPlayer = pPlayerPref->Instantiate();
-            pPlayer->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, -125.f, -100.f));
+            pPlayer->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, -160.f, 0.f));
             CPlayerScript* PlayerScript = pPlayer->GetScript<CPlayerScript>();
             PlayerScript->ChangeState(PLAYER_STATE::Elevator_Out);
 

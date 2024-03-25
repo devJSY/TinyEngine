@@ -17,6 +17,21 @@ CPlayerCameraScript::CPlayerCameraScript()
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_OffsetPos, "Offset Position");
 }
 
+CPlayerCameraScript::CPlayerCameraScript(const CPlayerCameraScript& origin)
+    : CScript(origin)
+    , m_Player(origin.m_Player)
+    , m_CamSpeed(origin.m_CamSpeed)
+    , m_CamMoveRangeX(origin.m_CamMoveRangeX)
+    , m_CamMoveRangeY(origin.m_CamMoveRangeY)
+    , m_OffsetPos(origin.m_OffsetPos)
+    , m_listCamEffect(origin.m_listCamEffect)
+{
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamSpeed, "Camera Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamMoveRangeX, "Camera Move Range X");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamMoveRangeY, "Camera Move Range Y");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_OffsetPos, "Offset Position");
+}
+
 CPlayerCameraScript::~CPlayerCameraScript()
 {
 }
