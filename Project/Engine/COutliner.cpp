@@ -1827,10 +1827,6 @@ void COutliner::DrawTextRender(CGameObject* obj)
             pTextRender->SetText(ToWstring(buffer));
         }
 
-        Vec2 pos = pTextRender->GetTextPosition();
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Position").c_str(), &pos.x))
-            pTextRender->SetTextPosition(pos);
-
         float size = pTextRender->GetTextSize();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Size").c_str(), &size))
             pTextRender->SetTextSize(size);

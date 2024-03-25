@@ -5,7 +5,6 @@ class CTextRender : public CRenderComponent
 {
 private:
     wstring m_Text;
-    Vec2 m_Position;
     float m_Size;
     Vec4 m_Color;
 
@@ -17,9 +16,6 @@ public:
 public:
     const wstring& GetText() const { return m_Text; }
     void SetText(const wstring& _Text) { m_Text = _Text; }
-
-    Vec2 GetTextPosition() const { return m_Position; }
-    void SetTextPosition(Vec2 _pos) { m_Position = _pos; }
 
     float GetTextSize() const { return m_Size; }
     void SetTextSize(float _size) { m_Size = _size; }
