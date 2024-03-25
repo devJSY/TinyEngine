@@ -607,6 +607,7 @@ void CLevelEditor::render_Viewport()
     // Drag & Drop
     if (ImGui::BeginDragDropTarget())
     {
+        // Level 불러오기
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
         {
             string name = (char*)payload->Data;
@@ -614,11 +615,24 @@ void CLevelEditor::render_Viewport()
             std::filesystem::path fileNameStr = name;
             if (fileNameStr.extension() == CLevelSaveLoad::GetLevelExtension())
             {
-                // Level 불러오기
                 CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(fileNameStr.filename().wstring());
 
                 if (nullptr != pLoadedLevel)
                     GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
+            }
+        }
+
+        // Prefab
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+        {
+            string AssetStr = (char*)payload->Data;
+            AssetStr.resize(payload->DataSize);
+            std::filesystem::path AssetPath = AssetStr;
+            if (L".pref" == AssetPath.extension())
+            {
+                Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
+                CGameObject* pObj = pPrefab->Instantiate();
+                GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
             }
         }
 

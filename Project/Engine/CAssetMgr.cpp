@@ -61,7 +61,7 @@ void CAssetMgr::ReloadContent()
             wstring strFilePath = CPathMgr::GetContentPath() + pair.first;
             if (!std::filesystem::exists(strFilePath))
             {
-                MessageBox(nullptr, L"원본파일이 삭제되었습니다.", L"Asset 싱크", MB_OK);
+                LOG(Warning, "%s Source File Deleted!", ToString(strFilePath).c_str());
 
                 GamePlayStatic::DeleteAsset((ASSET_TYPE)i, pair.second);
             }

@@ -37,6 +37,9 @@
     <ClInclude Include="CPlayerManaBarScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CElevatorScript.h">
+      <Filter>Scripts\Elevator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="CPlayerManaBarScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
+    <ClCompile Include="CElevatorScript.cpp">
+      <Filter>Scripts\Elevator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -100,6 +106,9 @@
     </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{c2a22188-4ce0-47f7-9f8e-01d22372aefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Elevator">
+      <UniqueIdentifier>{f1474fc9-8354-41c0-8faa-2a872b7bb17a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

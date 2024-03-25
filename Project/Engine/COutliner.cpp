@@ -363,6 +363,15 @@ void COutliner::DrawNode(CGameObject* obj)
         {
             Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
             wstring path = L"prefab\\" + obj->GetName() + L".pref";
+
+            // 기존에 존재한 프리팹이라면 변경처리
+            if (nullptr != CAssetMgr::GetInst()->FindAsset<CPrefab>(path))
+            {
+                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, path);
+                CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
+                LOG(Log, "Prefab is Replaced!!")
+            }
+
             pPrefab->Save(path);
         }
 

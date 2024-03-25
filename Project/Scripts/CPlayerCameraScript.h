@@ -28,6 +28,7 @@ struct tCamEffect
 class CPlayerCameraScript : public CScript
 {
 private:
+    CGameObject* m_Player;
     float m_CamSpeed;
     float m_CamMoveRangeX;
     float m_CamMoveRangeY;
@@ -36,6 +37,7 @@ private:
     std::list<tCamEffect> m_listCamEffect;
 
 public:
+    virtual void begin() override;
     virtual void tick() override;
 
 public:

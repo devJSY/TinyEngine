@@ -92,6 +92,7 @@ private:
     friend class CTaskMgr;
     friend class CDevice;
     friend class CRenderMgr;
+    friend class COutliner;
 };
 
 template <typename T>

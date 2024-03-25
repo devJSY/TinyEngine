@@ -16,6 +16,9 @@ enum class PLAYER_STATE
     Hit01,
     Hit02,
     Fight_To_Idle,
+    Elevator_In,
+    Elevator_End,
+    Elevator_Out,
 
     // The Scythe
     ComboMove,
@@ -63,8 +66,10 @@ public:
     int GetCurLife() const { return m_CurLife; }
     int GetCurMana() const { return m_CurMana; }
 
-private:
+public:
     void ChangeState(PLAYER_STATE _NextState);
+
+private:
     void EnterState();
     void ExitState();
 
@@ -82,6 +87,9 @@ private:
     void Hit01();
     void Hit02();
     void Fight_To_Idle();
+    void Elevator_In();
+    void Elevator_End();
+    void Elevator_Out();
 
     // The Scythe
     void ComboMove();

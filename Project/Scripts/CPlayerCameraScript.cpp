@@ -4,6 +4,7 @@
 
 CPlayerCameraScript::CPlayerCameraScript()
     : CScript(PLAYERCAMERASCRIPT)
+    , m_Player(nullptr)
     , m_CamSpeed(1000.f)
     , m_CamMoveRangeX(0.f)
     , m_CamMoveRangeY(0.f)
@@ -20,13 +21,20 @@ CPlayerCameraScript::~CPlayerCameraScript()
 {
 }
 
+void CPlayerCameraScript::begin()
+{
+    m_Player = GetOwner()->GetParent();
+
+    if (nullptr != m_Player)
+        Transform()->SetRelativePos(m_Player->Transform()->GetRelativePos());
+}
+
 void CPlayerCameraScript::tick()
 {
-    CGameObject* pPlayer = GetOwner()->GetParent();
-    if (nullptr != pPlayer)
+    if (nullptr != m_Player)
     {
         Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
-        Vec3 PlayerPos = pPlayer->Transform()->GetRelativePos();
+        Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
         Vec3 Dir = PlayerPos - pos;
 
         if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRangeX)

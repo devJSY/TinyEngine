@@ -64,6 +64,9 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit01.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit02.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Fight_To_Idle.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_In.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_End.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Out.anim");
 
         // The Scythe
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
@@ -109,9 +112,6 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate_Start.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Disappear.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_End.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Enter.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Out.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds_Up.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Glide.anim");
@@ -128,7 +128,7 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");*/
     }
 
-    ChangeState(PLAYER_STATE::Idle);
+    ChangeState(m_State);
     RotateTransform();
 }
 
@@ -175,6 +175,15 @@ void CPlayerScript::tick()
         break;
     case PLAYER_STATE::Fight_To_Idle:
         Fight_To_Idle();
+        break;
+    case PLAYER_STATE::Elevator_In:
+        Elevator_In();
+        break;
+    case PLAYER_STATE::Elevator_End:
+        Elevator_End();
+        break;
+    case PLAYER_STATE::Elevator_Out:
+        Elevator_Out();
         break;
     case PLAYER_STATE::ComboMove:
         ComboMove();
@@ -268,6 +277,18 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::Fight_To_Idle: {
         Animator2D()->Play(L"LD_Fight_To_Idle", false);
+    }
+    break;
+    case PLAYER_STATE::Elevator_In: {
+        Animator2D()->Play(L"Elevator_In", false);
+    }
+    break;
+    case PLAYER_STATE::Elevator_End: {
+        Animator2D()->Play(L"Elevator_End", false);
+    }
+    break;
+    case PLAYER_STATE::Elevator_Out: {
+        Animator2D()->Play(L"LD_Elevator_Out", false);
     }
     break;
     case PLAYER_STATE::ComboMove: {
@@ -373,6 +394,15 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::Fight_To_Idle: {
+    }
+    break;
+    case PLAYER_STATE::Elevator_In: {
+    }
+    break;
+    case PLAYER_STATE::Elevator_End: {
+    }
+    break;
+    case PLAYER_STATE::Elevator_Out: {
     }
     break;
     case PLAYER_STATE::ComboMove: {
@@ -912,6 +942,20 @@ void CPlayerScript::Fight_To_Idle()
         else
             ChangeState(PLAYER_STATE::ComboAerial);
     }
+}
+
+void CPlayerScript::Elevator_In()
+{
+}
+
+void CPlayerScript::Elevator_End()
+{
+}
+
+void CPlayerScript::Elevator_Out()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
 }
 
 void CPlayerScript::ComboMove()

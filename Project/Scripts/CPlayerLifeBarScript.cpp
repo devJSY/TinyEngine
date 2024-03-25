@@ -25,6 +25,9 @@ void CPlayerLifeBarScript::begin()
 
     m_pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
 
+    if (nullptr == m_pPlayer)
+        return;
+
     CPlayerScript* pPlyaerScript = m_pPlayer->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
         return;
