@@ -150,7 +150,10 @@ void CRenderMgr::render_editor()
 void CRenderMgr::render_debug()
 {
     if (nullptr == m_mainCam || !m_bShowDebugRender)
+    {
+        m_DbgShapeInfo.clear();
         return;
+    }
 
     g_Transform.matView = m_mainCam->GetViewMat();
     g_Transform.matProj = m_mainCam->GetProjMat();
@@ -179,7 +182,7 @@ void CRenderMgr::render_debug()
         {
             pMtrl->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }
-        
+
         // 지정된 월드행렬로 설정
         m_pDebugObj->Transform()->SetWorldMat((*iter).matWorld);
 
