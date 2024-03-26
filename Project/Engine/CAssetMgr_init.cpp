@@ -196,6 +196,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Std2DEffectShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Effect");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"Std2DEffectShader");
+        AddAsset(L"Std2DEffectShader", pShader);
+    }
+
+    // =================================
     // TileMapShader
     // =================================
     {
@@ -747,6 +767,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DLightShader"));
         pMtrl->SetName(L"Std2DLightMtrl");
         AddAsset<CMaterial>(L"Std2DLightMtrl", pMtrl);
+    }
+
+    // Std2DEffectMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DEffectShader"));
+        pMtrl->SetName(L"Std2DEffectMtrl");
+        AddAsset<CMaterial>(L"Std2DEffectMtrl", pMtrl);
     }
 
     // TileMapMtrl

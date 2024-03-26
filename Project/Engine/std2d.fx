@@ -127,3 +127,52 @@ float4 PS_Std2D_Light(PS_IN _in) : SV_Target
 }
 
 #endif
+
+// 텍스춰의 Alpha값 사용
+float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
+{
+    float4 vColor = float4(0.0, 0.0, 0.0, 0.0);
+    vColor = float4(MtrlAlbedo.rgb, 0.0);
+    
+    if (g_UseAnim2D)
+    {
+        float2 vUV = float2(0.0, 0.0);
+        
+        if (g_UseBackGround)
+        {
+            float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
+            vBackgroundLeftTop -= g_vOffset;
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+        }
+        else
+        {
+            float2 LT = g_vLeftTop - g_vOffset;
+            vUV = LT + (g_vSliceSize * _in.vUV);
+        }
+        
+        if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
+            || vUV.y < g_vLeftTop.y || (g_vLeftTop.y + g_vSliceSize.y) < vUV.y)
+        {
+            discard;
+        }
+        else
+        {
+            vColor = g_anim2d_tex.Sample(g_LinearWrapSampler, vUV);
+        }
+    }
+    else
+    {
+        if (g_btex_0)
+        {
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        }
+    }
+    
+    if (0.1f >= vColor.a)
+        discard;
+    
+    vColor.rgb = MtrlAlbedo.rgb * vColor.a;
+    vColor.a = 1.f;
+
+    return vColor;
+}
