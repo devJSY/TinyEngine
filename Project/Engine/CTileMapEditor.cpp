@@ -76,6 +76,10 @@ void CTileMapEditor::DrawViewport()
         canvas_sz.y = 50.0f;
     ImVec2 canvas_p1 = canvas_p0 + canvas_sz;
 
+    ImRect canvasRect;
+    canvasRect.Min = canvas_p0;
+    canvasRect.Max = canvas_p1;
+
     // Draw border and background color
     ImGuiIO& io = ImGui::GetIO();
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -125,7 +129,7 @@ void CTileMapEditor::DrawViewport()
                 rect.Min = origin + LT;
                 rect.Max = origin + RB;
 
-                if (rect.Contains(io.MousePos))
+                if (canvasRect.Contains(io.MousePos) && rect.Contains(io.MousePos))
                 {
                     // Hovering Border Render
                     draw_list->AddRect(origin + LT, origin + RB, IM_COL32(255, 0, 0, 255));
@@ -133,17 +137,14 @@ void CTileMapEditor::DrawViewport()
                     // Draw
                     if (m_DrawMode == DRAW_MODE::PAINT)
                     {
-                        if ((ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
-                             ImGui::IsMouseDragging(ImGuiMouseButton_Left)) &&
-                            m_SelectedImgIdx != -1)
+                        if ((ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseDragging(ImGuiMouseButton_Left)) && m_SelectedImgIdx != -1)
                         {
                             m_TileMap->SetTileIndex(y, x, m_SelectedImgIdx);
                         }
                     }
                     else if (m_DrawMode == DRAW_MODE::ERASER)
                     {
-                        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) ||
-                            ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+                        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseDragging(ImGuiMouseButton_Left))
                         {
                             m_TileMap->m_vecTileInfo[idx].vLeftTopUV = Vec2();
                             m_TileMap->m_vecTileInfo[idx].bRender = false;
@@ -203,8 +204,7 @@ void CTileMapEditor::DrawDetails()
         int TileCountX = m_TileMap->m_iTileCountX;
         int TileCountY = m_TileMap->m_iTileCountY;
 
-        if (ImGui::InputInt(ImGui_LabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100,
-                            ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputInt(ImGui_LabelPrefix("Tile Count X").c_str(), &TileCountX, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
         {
             if (TileCountX < 1)
                 TileCountX = 1;
@@ -212,8 +212,7 @@ void CTileMapEditor::DrawDetails()
             m_TileMap->SetTileCount(TileCountX, TileCountY);
         }
 
-        if (ImGui::InputInt(ImGui_LabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100,
-                            ImGuiInputTextFlags_EnterReturnsTrue))
+        if (ImGui::InputInt(ImGui_LabelPrefix("Tile Count Y").c_str(), &TileCountY, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
         {
             if (TileCountY < 1)
                 TileCountY = 1;
@@ -221,8 +220,7 @@ void CTileMapEditor::DrawDetails()
             m_TileMap->SetTileCount(TileCountX, TileCountY);
         }
 
-        ImGui::DragFloat2(ImGui_LabelPrefix("Tile Render Size").c_str(), &m_TileMap->m_vTileRenderSize.x, 1.f, 0.f,
-                          D3D11_FLOAT32_MAX);
+        ImGui::DragFloat2(ImGui_LabelPrefix("Tile Render Size").c_str(), &m_TileMap->m_vTileRenderSize.x, 1.f, 0.f, D3D11_FLOAT32_MAX);
 
         ImGui::Text("Draw Mode");
         ImGui::SameLine();
@@ -242,8 +240,7 @@ void CTileMapEditor::DrawTileSet()
 
     if (nullptr != m_TileMap)
     {
-        if (ImGui::DragFloat2(ImGui_LabelPrefix("Tile Pixel Size").c_str(), &m_TileMap->m_vTilePixelSize.x, 1.f, 0,
-                              D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Tile Pixel Size").c_str(), &m_TileMap->m_vTilePixelSize.x, 1.f, 0, D3D11_FLOAT32_MAX))
         {
             // Slice Size Àç¼³Á¤
             if (nullptr != m_TileMap->m_TileAtlas)
@@ -257,14 +254,12 @@ void CTileMapEditor::DrawTileSet()
 
         if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Tile Sheet Texture").c_str(), CurTextureName))
         {
-            m_TileMap->SetTileAtlas(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName)),
-                                    m_TileMap->m_vTilePixelSize);
+            m_TileMap->SetTileAtlas(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(CurTextureName)), m_TileMap->m_vTilePixelSize);
         }
 
         ImGui::Separator();
 
-        if (nullptr != m_TileMap->GetTileAtlas() && m_TileMap->m_vTilePixelSize.x > 0 &&
-            m_TileMap->m_vTilePixelSize.y > 0)
+        if (nullptr != m_TileMap->GetTileAtlas() && m_TileMap->m_vTilePixelSize.x > 0 && m_TileMap->m_vTilePixelSize.y > 0)
         {
             ImDrawList* draw_list = ImGui::GetWindowDrawList();
 

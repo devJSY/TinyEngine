@@ -3,6 +3,7 @@
 
 #include "Global.hlsli"
 #include "struct.hlsli"
+#include "Light.hlsli"
 
 // ==============
 // TileMap Shader
@@ -56,6 +57,23 @@ float4 PS_TileMap(VS_Output _in) : SV_Target
         vUV = g_TileInfo[bufferidx].vLeftTopUV + (vSliceUV * vUV);
         vColor = TileAtlas.Sample(g_LinearWrapSampler, vUV);
     }
+        
+    // 광원 처리
+    // 광원의 타입별 처리
+    // 광원이 여러개일 때 처리
+    tLightInfo LightColor = (tLightInfo) 0.f;
+    
+    for (uint i = 0; i < g_Light2DCount; ++i)
+    {
+        CalLight2D(_in.vPosition.rgb, i, LightColor);
+    }
+    
+    vColor.rgb *= LightColor.vRadiance.rgb;
+    
+    if (0.1f >= vColor.a)
+        discard;
+            
+    vColor.a = 1.f;
     
     return vColor;
 }

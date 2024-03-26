@@ -10,7 +10,6 @@ CGameManagerScript::CGameManagerScript()
     : CScript(GAMEMANAGERSCRIPT)
     , m_Player(nullptr)
 {
-    // 플레이어 생성
     Ptr<CPrefab> pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
     m_Player = pPlayerPref->Instantiate();
 }
@@ -18,11 +17,19 @@ CGameManagerScript::CGameManagerScript()
 CGameManagerScript::~CGameManagerScript()
 {
     m_Inst = nullptr;
+
+    if (nullptr == CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player"))
+    {
+        if (nullptr != m_Player)
+        {
+            delete m_Player;
+            m_Player = nullptr;
+        }
+    }
 }
 
 void CGameManagerScript::begin()
 {
-
     vector<CGameObject*> pGMObjs = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectsOfType<CGameManagerScript>();
     if (1 != pGMObjs.size())
     {

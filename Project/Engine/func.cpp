@@ -907,7 +907,7 @@ Vec2 LoadMeta(const wstring& _strMetaRelativePath)
 
     if (nullptr == pFile)
     {
-        MessageBoxA(nullptr, "Meta 파일이 존재하지 않습니다.", "Meta File No Exist!", MB_OK);
+        LOG(Error, "Meta File No Exist!");
         return {};
     }
 
