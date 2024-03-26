@@ -171,8 +171,9 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
     UINT idx = _Row * m_iTileCountX + _Col;
 
     // 렌더링할 타일 정보
-    UINT iRow = _ImgIdx / UINT(m_vTilePixelSize.x * m_iTileCountX);
-    UINT iCol = _ImgIdx % UINT(m_vTilePixelSize.y * m_iTileCountX);
+    UINT MaxCol = UINT(m_TileAtlas->GetWidth() / m_vTilePixelSize.x);
+    UINT iRow = _ImgIdx / MaxCol;
+    UINT iCol = _ImgIdx % MaxCol;
 
     m_vecTileInfo[idx].vLeftTopUV =
         Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth(), (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
