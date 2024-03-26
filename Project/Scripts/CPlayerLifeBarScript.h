@@ -6,7 +6,7 @@ class CGameObject;
 class CPlayerLifeBarScript : public CScript
 {
 private:
-    CGameObject* m_pPlayer;
+    CGameObject* m_Player;
     float m_RenderLife;
     float m_FluctuationSpeed;
 

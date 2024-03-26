@@ -1,5 +1,6 @@
 CCameraMoveScript
 CElevatorScript
+CGameManagerScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript

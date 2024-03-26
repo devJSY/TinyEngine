@@ -62,5 +62,6 @@ public:
 
 public:
     CPlayerCameraScript();
+    CPlayerCameraScript(const CPlayerCameraScript& origin);
     virtual ~CPlayerCameraScript();
 };

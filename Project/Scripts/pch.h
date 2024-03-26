@@ -23,3 +23,4 @@
 #endif // PCH_H
 
 #include "define.h"
+#include "CGameManagerScript.h"

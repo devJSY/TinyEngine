@@ -4,7 +4,7 @@
 class CPlayerManaBarScript : public CScript
 {
 private:
-    CGameObject* m_pPlayer;
+    CGameObject* m_Player;
     float m_RenderMana;
     float m_IncreaseSpeed;
     float m_DecreaseSpeed;

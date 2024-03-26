@@ -56,6 +56,17 @@ public:
     void RemoveScript(CScript* _script);
     CComponent* GetComponent(COMPONENT_TYPE _Type) const { return m_arrCom[(UINT)_Type]; }
 
+    template <typename T>
+    T* GetComponent()
+    {
+        for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; i++)
+        {
+            if (dynamic_cast<T*>(m_arrCom[i]))
+                return (T*)m_arrCom[i];
+        }
+        return nullptr;
+    }
+
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
     GET_COMPONENT(Light2D, LIGHT2D);

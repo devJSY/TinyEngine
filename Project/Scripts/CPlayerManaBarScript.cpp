@@ -8,7 +8,7 @@
 
 CPlayerManaBarScript::CPlayerManaBarScript()
     : CScript(PLAYERMANABARSCRIPT)
-    , m_pPlayer(nullptr)
+    , m_Player(nullptr)
     , m_RenderMana(0.f)
     , m_IncreaseSpeed(20.f)
     , m_DecreaseSpeed(100.f)
@@ -24,12 +24,12 @@ void CPlayerManaBarScript::begin()
     if (MeshRender())
         MeshRender()->CreateDynamicMaterial();
 
-    m_pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
+    m_Player = CGameManagerScript::GetInset()->GetPlayer();
 
-    if (nullptr == m_pPlayer)
+    if (nullptr == m_Player)
         return;
 
-    CPlayerScript* pPlyaerScript = m_pPlayer->GetScript<CPlayerScript>();
+    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
         return;
 
@@ -38,10 +38,10 @@ void CPlayerManaBarScript::begin()
 
 void CPlayerManaBarScript::tick()
 {
-    if (nullptr == m_pPlayer)
+    if (nullptr == m_Player)
         return;
 
-    CPlayerScript* pPlyaerScript = m_pPlayer->GetScript<CPlayerScript>();
+    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
         return;
 

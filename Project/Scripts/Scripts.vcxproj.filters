@@ -40,6 +40,9 @@
     <ClInclude Include="CElevatorScript.h">
       <Filter>Scripts\Elevator</Filter>
     </ClInclude>
+    <ClInclude Include="CGameManagerScript.h">
+      <Filter>Scripts\GameManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -78,6 +81,9 @@
     <ClCompile Include="CElevatorScript.cpp">
       <Filter>Scripts\Elevator</Filter>
     </ClCompile>
+    <ClCompile Include="CGameManagerScript.cpp">
+      <Filter>Scripts\GameManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -109,6 +115,9 @@
     </Filter>
     <Filter Include="Scripts\Elevator">
       <UniqueIdentifier>{f1474fc9-8354-41c0-8faa-2a872b7bb17a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\GameManager">
+      <UniqueIdentifier>{13d6e6c4-84d3-4392-86d9-8bb24e441298}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

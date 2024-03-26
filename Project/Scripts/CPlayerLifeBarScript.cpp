@@ -8,7 +8,7 @@
 
 CPlayerLifeBarScript::CPlayerLifeBarScript()
     : CScript(PLAYERLIFEBARSCRIPT)
-    , m_pPlayer(nullptr)
+    , m_Player(nullptr)
     , m_RenderLife(0.f)
     , m_FluctuationSpeed(30.f)
 {
@@ -23,12 +23,12 @@ void CPlayerLifeBarScript::begin()
     if (MeshRender())
         MeshRender()->CreateDynamicMaterial();
 
-    m_pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
+    m_Player = CGameManagerScript::GetInset()->GetPlayer();
 
-    if (nullptr == m_pPlayer)
+    if (nullptr == m_Player)
         return;
 
-    CPlayerScript* pPlyaerScript = m_pPlayer->GetScript<CPlayerScript>();
+    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
         return;
 
@@ -37,10 +37,10 @@ void CPlayerLifeBarScript::begin()
 
 void CPlayerLifeBarScript::tick()
 {
-    if (nullptr == m_pPlayer)
+    if (nullptr == m_Player)
         return;
 
-    CPlayerScript* pPlyaerScript = m_pPlayer->GetScript<CPlayerScript>();
+    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
         return;
 

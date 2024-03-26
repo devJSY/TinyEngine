@@ -179,7 +179,7 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     CEditorMgr::GetInst()->SetSelectedObject(pObject);
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
 
-    if (LEVEL_STATE::PLAY == pCurLevel->GetState())
+    if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
     {
         pObject->begin();
     }

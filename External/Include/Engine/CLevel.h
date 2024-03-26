@@ -1,8 +1,7 @@
 #pragma once
 #include "CEntity.h"
 #include "CLayer.h"
-
-class CGameObject;
+#include "CGameObject.h"
 
 class CLevel : public CEntity
 {
@@ -25,6 +24,12 @@ public:
 
     CGameObject* FindObjectByName(const wstring& _strName);
 
+    template <typename T>
+    CGameObject* FindObjectOfType();
+
+    template <typename T>
+    vector<CGameObject*> FindObjectsOfType();
+
 public:
     void ChangeState(LEVEL_STATE _NextState);
     LEVEL_STATE GetState() const { return m_State; }
@@ -42,3 +47,73 @@ public:
 
     friend class CLevelMgr;
 };
+
+template <typename T>
+inline CGameObject* CLevel::FindObjectOfType()
+{
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
+
+        for (size_t j = 0; j < vecParent.size(); ++j)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(vecParent[j]);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChild = pObject->GetChildObject();
+                for (size_t k = 0; k < vecChild.size(); ++k)
+                {
+                    queue.push_back(vecChild[k]);
+                }
+
+                if (nullptr != pObject->GetComponent<T>() || nullptr != pObject->GetScript<T>())
+                {
+                    return pObject;
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+template <typename T>
+inline vector<CGameObject*> CLevel::FindObjectsOfType()
+{
+    vector<CGameObject*> vecObj;
+
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
+
+        for (size_t j = 0; j < vecParent.size(); ++j)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(vecParent[j]);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChild = pObject->GetChildObject();
+                for (size_t k = 0; k < vecChild.size(); ++k)
+                {
+                    queue.push_back(vecChild[k]);
+                }
+
+                if (nullptr != pObject->GetComponent<T>() || nullptr != pObject->GetScript<T>())
+                {
+                    vecObj.push_back(pObject);
+                }
+            }
+        }
+    }
+
+    return vecObj;
+}

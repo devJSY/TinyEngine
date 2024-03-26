@@ -46,47 +46,47 @@ void CPlayerCameraScript::begin()
 
 void CPlayerCameraScript::tick()
 {
-    if (nullptr != m_Player)
+    if (nullptr == m_Player)
+        return;
+
+    Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
+    Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
+    Vec3 Dir = PlayerPos - pos;
+
+    if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRangeX)
+        pos.x += (Dir.Normalize() * m_CamSpeed * DT).x;
+
+    if (fabsf(pos.y - PlayerPos.y) > m_CamMoveRangeY)
+        pos.y += (Dir.Normalize() * m_CamSpeed * DT).y;
+
+    // Camera Effect
+    if (!m_listCamEffect.empty())
     {
-        Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
-        Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
-        Vec3 Dir = PlayerPos - pos;
+        tCamEffect& effect = m_listCamEffect.front();
 
-        if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRangeX)
-            pos.x += (Dir.Normalize() * m_CamSpeed * DT).x;
+        effect.fCurTime += DT;
 
-        if (fabsf(pos.y - PlayerPos.y) > m_CamMoveRangeY)
-            pos.y += (Dir.Normalize() * m_CamSpeed * DT).y;
-
-        // Camera Effect
-        if (!m_listCamEffect.empty())
+        if (effect.eShakeDir == ShakeDir::Horizontal)
         {
-            tCamEffect& effect = m_listCamEffect.front();
-
-            effect.fCurTime += DT;
-
-            if (effect.eShakeDir == ShakeDir::Horizontal)
-            {
-                pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
-            }
-            else if (effect.eShakeDir == ShakeDir::Vertical)
-            {
-                pos.y += -sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
-            }
-            else if (effect.eShakeDir == ShakeDir::Comprehensive)
-            {
-                pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
-                pos.y -= sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
-            }
-
-            if (effect.fCurTime > effect.fDuration)
-            {
-                m_listCamEffect.pop_front();
-            }
+            pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+        }
+        else if (effect.eShakeDir == ShakeDir::Vertical)
+        {
+            pos.y += -sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+        }
+        else if (effect.eShakeDir == ShakeDir::Comprehensive)
+        {
+            pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            pos.y -= sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
         }
 
-        Transform()->SetRelativePos(pos + m_OffsetPos);
+        if (effect.fCurTime > effect.fDuration)
+        {
+            m_listCamEffect.pop_front();
+        }
     }
+
+    Transform()->SetRelativePos(pos + m_OffsetPos);
 }
 
 void CPlayerCameraScript::SaveToLevelFile(FILE* _File)
