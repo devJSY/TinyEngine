@@ -53,8 +53,15 @@ void CPlayerCameraScript::tick()
     Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
     Vec3 Dir = PlayerPos - pos;
 
-    if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRangeX)
-        pos.x += (Dir.Normalize() * m_CamSpeed * DT).x;
+    if (PLAYER_STATE::Dash == m_Player->GetScript<CPlayerScript>()->GetState())
+    {
+        pos.x += (Dir.Normalize() * m_CamSpeed * 2.5f * DT).x;
+    }
+    else
+    {
+        if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRangeX)
+            pos.x += (Dir.Normalize() * m_CamSpeed * DT).x;
+    }
 
     if (fabsf(pos.y - PlayerPos.y) > m_CamMoveRangeY)
         pos.y += (Dir.Normalize() * m_CamSpeed * DT).y;
