@@ -89,25 +89,29 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     int layerIdx = _Obj->GetLayerIdx();
     fwrite(&layerIdx, sizeof(int), 1, _File);
 
-    // 컴포넌트 정보를 저장
-    for (UINT i = 0; i <= (UINT)COMPONENT_TYPE::END; ++i)
-    {
-        if (i == (UINT)COMPONENT_TYPE::END)
-        {
-            // 컴포넌트 타입 저장
-            fwrite(&i, sizeof(UINT), 1, _File);
-            break;
-        }
+    vector<pair<UINT, CComponent*>> vecComps;
 
+    // 컴포넌트 정보를 저장
+    for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+    {
         CComponent* pCom = _Obj->GetComponent((COMPONENT_TYPE)i);
         if (nullptr == pCom)
             continue;
 
-        // 컴포넌트 타입 정보 저장
-        fwrite(&i, sizeof(UINT), 1, _File);
+        vecComps.push_back({i, pCom});
+    }
+
+    // 컴포넌트 개수 저장
+    size_t CompCount = vecComps.size();
+    fwrite(&CompCount, sizeof(size_t), 1, _File);
+
+    for (size_t i = 0; i < CompCount; i++)
+    {
+        // 컴포넌트의 이름 저장
+        SaveWStringToFile(ToWstring(COMPONENT_TYPE_STRING[vecComps[i].first]), _File);
 
         // 해당 컴포넌트가 저장할 데이터 저장
-        pCom->SaveToLevelFile(_File);
+        vecComps[i].second->SaveToLevelFile(_File);
     }
 
     // 스크립트 정보 저장
@@ -117,7 +121,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     // 스크립트 개수 저장
     fwrite(&ScriptCount, sizeof(size_t), 1, _File);
 
-    for (size_t i = 0; i < vecScripts.size(); ++i)
+    for (size_t i = 0; i < ScriptCount; ++i)
     {
         SaveWStringToFile(CScriptMgr::GetScriptName(vecScripts[i]), _File);
         vecScripts[i]->SaveToLevelFile(_File);
@@ -219,13 +223,27 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
     fread(&layerIdx, sizeof(int), 1, _File);
     pObject->m_iLayerIdx = layerIdx;
 
+    // 컴포넌트 개수 읽기
+    size_t CompCount = 0;
+    fread(&CompCount, sizeof(size_t), 1, _File);
+
     // 컴포넌트 정보를 불러오기
-    COMPONENT_TYPE type = COMPONENT_TYPE::END;
-    while (true)
+    for (size_t i = 0; i < CompCount; i++)
     {
-        fread(&type, sizeof(UINT), 1, _File);
-        if (COMPONENT_TYPE::END == type)
-            break;
+        wstring CompName;
+        LoadWStringFromFile(CompName, _File);
+        string CompNameStr = ToString(CompName);
+        COMPONENT_TYPE type = COMPONENT_TYPE::END;
+
+        // 문자열과 일치하는 타입을 탐색
+        for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; i++)
+        {
+            if (CompNameStr == COMPONENT_TYPE_STRING[i])
+            {
+                type = (COMPONENT_TYPE)i;
+                break;
+            }
+        }
 
         CComponent* pComponent = nullptr;
 
@@ -281,6 +299,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             break;
         case COMPONENT_TYPE::TEXTRENDER:
             pComponent = new CTextRender;
+            break;
+        default:
+            assert(nullptr); // 타입에 맞는 컴포넌트가 존재하지않았다
             break;
         }
 
