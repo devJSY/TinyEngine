@@ -82,84 +82,85 @@ void CPlayerScript::begin()
     if (MeshRender())
         MeshRender()->CreateDynamicMaterial();
 
-    if (Animator2D())
-    {
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Idle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleToRun.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleUturn.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Falling.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Landing.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Start.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Run.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunToIdle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunUturn.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Dash.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Fight_To_Idle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_In.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_End.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Out.anim");
+    //// 애니메이션 로딩
+    // if (Animator2D())
+    //{
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Idle.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleToRun.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_IdleUturn.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Falling.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Landing.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Jump_Start.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Run.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunToIdle.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_RunUturn.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Dash.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit01.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Hit02.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Fight_To_Idle.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_In.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_End.anim");
+    //     Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Out.anim");
 
-        // The Scythe
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove04.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand1.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand2.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand3.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand4.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Special2.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Crush.anim");
+    //    // The Scythe
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove02.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove03.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove04.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand1.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand2.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand3.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand4.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Special2.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Crush.anim");
 
-        /*Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition_Curse.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BossRitual_Intro.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Bump.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Combo_Stand.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands_Up.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatana.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Init.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_Jump.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate_Start.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Disappear.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds_Up.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Glide.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayDown.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayUp.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Teleport.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Waiting.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Wallgrab_Idle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");*/
-    }
+    //    /*Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition_Curse.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_01.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_02.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_03.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BossRitual_Intro.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Bump.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Combo_Stand.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands_Up.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatana.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Init.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04_Rest.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_Jump.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate_Start.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Disappear.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds_Up.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Glide.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayDown.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayUp.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_01.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_02.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Teleport.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Waiting.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Wallgrab_Idle.anim");
+    //    Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");*/
+    //}
 
     ChangeState(m_State);
     RotateTransform();
@@ -1152,6 +1153,15 @@ void CPlayerScript::ComboMove()
         ChangeState(PLAYER_STATE::ComboAerial);
     }
 
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        m_AttackCount = 0;
+        PassedTime = 0.f;
+        bNextAttack = false;
+        ChangeState(PLAYER_STATE::Dash);
+    }
+
     // 점프 & 하강 공격
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
@@ -1264,6 +1274,15 @@ void CPlayerScript::ComboAerial()
         ChangeState(PLAYER_STATE::Idle);
         PassedTime = 0.f;
         bNextAttack = false;
+    }
+
+    // Dash
+    if (m_DashPassedTime > m_DashCoolTime && KEY_TAP(KEY::LSHIFT))
+    {
+        m_AttackCount = 0;
+        PassedTime = 0.f;
+        bNextAttack = false;
+        ChangeState(PLAYER_STATE::Dash);
     }
 
     // 점프 & 하강 공격

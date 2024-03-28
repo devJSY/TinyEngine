@@ -68,6 +68,12 @@ void CTileMapEditor::DrawViewport()
 {
     ImGui::Begin("Viewport##TileMapEditor");
 
+    if (ImGui::Button("Viewport Reset"))
+    {
+        m_ViewportOffset = Vec2();
+        m_ViewportScale = 1.f;
+    }
+
     ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
     ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
     if (canvas_sz.x < 50.0f)

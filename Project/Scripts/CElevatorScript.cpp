@@ -28,7 +28,7 @@ void CElevatorScript::begin()
 
     if (Animator2D())
     {
-        Animator2D()->LoadAnimation(L"AnimData\\BGObject\\GPE_Elevator.anim");
+        //Animator2D()->LoadAnimation(L"AnimData\\BGObject\\GPE_Elevator.anim");
         Animator2D()->Play(L"GPE_Elevator", false);
     }
 }
