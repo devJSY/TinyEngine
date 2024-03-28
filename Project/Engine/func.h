@@ -108,7 +108,7 @@ void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 
 wstring OpenFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
-void OpenFileDialog(vector<wstring>& _FilesName);
+void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath = L"");
 Vec2 LoadMeta(const wstring& _strMetaRelativePath);
 
 // =====================================

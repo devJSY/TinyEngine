@@ -46,4 +46,6 @@ public:
     CAnimator2D();
     CAnimator2D(const CAnimator2D& origin);
     virtual ~CAnimator2D();
+
+    friend class COutliner;
 };

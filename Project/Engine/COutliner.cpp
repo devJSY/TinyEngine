@@ -657,15 +657,23 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
         if (ImGui_AlignButton("Load Animation", 0.f))
         {
-            std::filesystem::path filePath = OpenFileDialog(L"AnimData", TEXT("애니메이션 파일\0*.anim\0모든 파일(*.*)\0*.*\0"));
+            vector<wstring> vec;
+            OpenFileDialog(vec, L"AnimData");
 
-            if (!filePath.empty()) // 취소, 닫기 버튼 체크
+            for (size_t i = 0; i < vec.size(); i++)
             {
+                std::filesystem::path filePath = vec[i];
                 pAnimator->LoadAnimation(filePath.lexically_relative(CPathMgr::GetContentPath()));
             }
         }
 
         ImGui::SameLine();
+
+        if (ImGui_AlignButton("Delete Current Animation", 1.f))
+        {
+            if (pAnimator->GetCurAnim())
+                pAnimator->DeleteAnim(pAnimator->GetCurAnim()->GetName());
+        }
 
         if (ImGui_AlignButton("Sprite Editor", 1.f))
         {

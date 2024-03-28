@@ -810,7 +810,7 @@ wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter)
     return wstring();
 }
 
-void OpenFileDialog(vector<wstring>& _FilesName)
+void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath)
 {
     IFileOpenDialog* pFileDialog;
     HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileDialog));
@@ -831,9 +831,10 @@ void OpenFileDialog(vector<wstring>& _FilesName)
     if (SUCCEEDED(hr))
     {
         // 원하는 초기 디렉토리 경로를 여기에 설정
-        wstring MetaPath = CPathMgr::GetContentPath();
+        wstring Path = CPathMgr::GetContentPath();
+        Path += _RelativePath;
 
-        PWSTR initialDir = (PWSTR)(MetaPath.c_str());
+        PWSTR initialDir = (PWSTR)(Path.c_str());
 
         IShellItem* pInitialDirItem;
 
