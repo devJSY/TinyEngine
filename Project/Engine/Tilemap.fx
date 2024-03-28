@@ -25,6 +25,7 @@ struct VS_Input
 struct VS_Output
 {
     float4 vPosition : SV_Position;
+    float3 vPosWorld : POSITION;
     float2 vUV : TEXCOORD;
 };
 
@@ -33,6 +34,7 @@ VS_Output VS_TileMap(VS_Input _in)
     VS_Output output = (VS_Output) 0.f;
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
     output.vUV = _in.vUV;
     
     return output;
@@ -65,7 +67,7 @@ float4 PS_TileMap(VS_Output _in) : SV_Target
     
     for (uint i = 0; i < g_Light2DCount; ++i)
     {
-        CalLight2D(_in.vPosition.rgb, i, LightColor);
+        CalLight2D(_in.vPosWorld, i, LightColor);
     }
     
     vColor.rgb *= LightColor.vRadiance.rgb;

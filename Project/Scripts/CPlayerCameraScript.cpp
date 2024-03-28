@@ -41,7 +41,11 @@ void CPlayerCameraScript::begin()
     m_Player = GetOwner()->GetParent();
 
     if (nullptr != m_Player)
-        Transform()->SetRelativePos(m_Player->Transform()->GetRelativePos());
+    {
+        Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
+        PlayerPos.z = 0.f;
+        Transform()->SetRelativePos(PlayerPos);
+    }
 }
 
 void CPlayerCameraScript::tick()
@@ -51,6 +55,7 @@ void CPlayerCameraScript::tick()
 
     Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
     Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
+    pos.z = PlayerPos.z; 
     Vec3 Dir = PlayerPos - pos;
 
     if (PLAYER_STATE::Dash == m_Player->GetScript<CPlayerScript>()->GetState())
@@ -93,6 +98,7 @@ void CPlayerCameraScript::tick()
         }
     }
 
+    pos.z = 0.f;
     Transform()->SetRelativePos(pos + m_OffsetPos);
 }
 
