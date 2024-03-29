@@ -52,6 +52,12 @@
     <ClInclude Include="CEnemyColliderScript.h">
       <Filter>Scripts\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemyHitBoxScript.h">
+      <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerHitBoxScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -101,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="CEnemyColliderScript.cpp">
       <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyHitBoxScript.cpp">
+      <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerHitBoxScript.cpp">
+      <Filter>Scripts\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

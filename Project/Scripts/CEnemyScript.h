@@ -16,6 +16,9 @@ protected:
 protected:
     virtual void tick() override;
 
+public:
+    virtual void TakeHit(int _DamageAmount, CGameObject* _HitObj) = 0;
+
 protected:
     void Walking();
     void StopWalking() { Rigidbody2D()->SetVelocity(Vec2(0.f, Rigidbody2D()->GetVelocity().y)); }
@@ -38,4 +41,5 @@ public:
     virtual ~CEnemyScript();
 
     friend class CEnemyColliderScript;
+    friend class CEnemyHitBoxScript;
 };

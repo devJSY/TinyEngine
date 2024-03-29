@@ -112,11 +112,13 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CElevatorScript.h" />
     <ClInclude Include="CEnemyColliderScript.h" />
+    <ClInclude Include="CEnemyHitBoxScript.h" />
     <ClInclude Include="CEnemyScript.h" />
     <ClInclude Include="CGameManagerScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
+    <ClInclude Include="CPlayerHitBoxScript.h" />
     <ClInclude Include="CPlayerManaBarScript.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayerLifeBarScript.h" />
@@ -131,11 +133,13 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
     <ClCompile Include="CEnemyColliderScript.cpp" />
+    <ClCompile Include="CEnemyHitBoxScript.cpp" />
     <ClCompile Include="CEnemyScript.cpp" />
     <ClCompile Include="CGameManagerScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />
+    <ClCompile Include="CPlayerHitBoxScript.cpp" />
     <ClCompile Include="CPlayerManaBarScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayerLifeBarScript.cpp" />

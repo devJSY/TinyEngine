@@ -27,6 +27,7 @@ public:
     virtual void tick() override;
 
 public:
+    virtual void TakeHit(int _DamageAmount, CGameObject* _HitObj);
     void ChangeState(PYROGHOST_STATE _NextState);
 
 private:

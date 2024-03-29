@@ -40,6 +40,7 @@ private:
     int m_CurMana;
 
     // 수정 가능한 멤버변수
+    int m_ATK;
     float m_Speed;
     float m_JumpImpulse;
     float m_JumpForce;
@@ -68,6 +69,7 @@ public:
 
 public:
     void ChangeState(PLAYER_STATE _NextState);
+    void TakeHit(int _DamageAmount, CGameObject* _HitObj);
 
 private:
     void EnterState();
@@ -103,6 +105,7 @@ private:
 
     void RotateTransform();
     void RayCast();
+    void OnHitBox(bool _Enable);
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;
@@ -123,4 +126,6 @@ public:
     CPlayerScript();
     CPlayerScript(const CPlayerScript& origin);
     virtual ~CPlayerScript();
+
+    friend class CPlayerHitBoxScript;
 };

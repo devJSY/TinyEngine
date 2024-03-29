@@ -6,6 +6,7 @@
 #include <Engine\\CLevel.h>
 #include <Engine\\CAnim.h>
 #include "CPlayerCameraScript.h"
+#include "CPlayerHitBoxScript.h"
 
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
@@ -15,6 +16,7 @@ CPlayerScript::CPlayerScript()
     , m_MaxMana(50)
     , m_CurLife(m_MaxLife)
     , m_CurMana(m_MaxMana)
+    , m_ATK(10)
     , m_Speed(10.f)
     , m_JumpImpulse(1.f)
     , m_JumpForce(1.f)
@@ -32,6 +34,7 @@ CPlayerScript::CPlayerScript()
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurMana, "Current Mana");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");
@@ -48,6 +51,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     , m_MaxMana(origin.m_MaxMana)
     , m_CurLife(origin.m_CurLife)
     , m_CurMana(origin.m_CurMana)
+    , m_ATK(origin.m_ATK)
     , m_Speed(origin.m_Speed)
     , m_JumpImpulse(origin.m_JumpImpulse)
     , m_JumpForce(origin.m_JumpForce)
@@ -257,6 +261,13 @@ void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
     EnterState();
 }
 
+void CPlayerScript::TakeHit(int _DamageAmount, CGameObject* _HitObj)
+{
+    m_CurLife -= _DamageAmount;
+
+    ChangeState(PLAYER_STATE::Hit02);
+}
+
 void CPlayerScript::EnterState()
 {
     switch (m_State)
@@ -355,6 +366,8 @@ void CPlayerScript::EnterState()
             else
                 Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
         }
+
+        OnHitBox(true);
     }
     break;
     case PLAYER_STATE::ComboAerial: {
@@ -376,6 +389,8 @@ void CPlayerScript::EnterState()
             else
                 Rigidbody2D()->AddForce(Vec2(m_AttackImpulse, 0.f), ForceMode2D::Impulse);
         }
+
+        OnHitBox(true);
     }
     break;
     case PLAYER_STATE::JumpAttack: {
@@ -384,12 +399,16 @@ void CPlayerScript::EnterState()
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
 
         m_bJumpAttackActive = false;
+
+        OnHitBox(true);
     }
     break;
     case PLAYER_STATE::DownAttack: {
         Animator2D()->Play(L"LD_Crush", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
+
+        OnHitBox(true);
     }
     break;
     }
@@ -452,16 +471,20 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::ComboMove: {
+        OnHitBox(false);
     }
     break;
     case PLAYER_STATE::ComboAerial: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
+        OnHitBox(false);
     }
     break;
     case PLAYER_STATE::JumpAttack: {
+        OnHitBox(false);
     }
     break;
     case PLAYER_STATE::DownAttack: {
+        OnHitBox(false);
     }
     break;
     }
@@ -952,10 +975,14 @@ void CPlayerScript::Dash()
 
 void CPlayerScript::Hit01()
 {
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
 }
 
 void CPlayerScript::Hit02()
 {
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
 }
 
 void CPlayerScript::Fight_To_Idle()
@@ -1379,6 +1406,19 @@ void CPlayerScript::RayCast()
     }
 }
 
+void CPlayerScript::OnHitBox(bool _Enable)
+{
+    const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+    for (size_t i = 0; i < vecChild.size(); i++)
+    {
+        CPlayerHitBoxScript* pHitBox = vecChild[i]->GetScript<CPlayerHitBoxScript>();
+        if (nullptr == pHitBox)
+            continue;
+
+        pHitBox->SetEnable(_Enable);
+    }
+}
+
 void CPlayerScript::Walking()
 {
     Vec2 vel = Rigidbody2D()->GetVelocity();
@@ -1428,6 +1468,7 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_MaxMana, sizeof(int), 1, _File);
     fwrite(&m_CurLife, sizeof(int), 1, _File);
     fwrite(&m_CurMana, sizeof(int), 1, _File);
+    fwrite(&m_ATK, sizeof(int), 1, _File);
     fwrite(&m_Speed, sizeof(float), 1, _File);
     fwrite(&m_JumpImpulse, sizeof(float), 1, _File);
     fwrite(&m_JumpForce, sizeof(float), 1, _File);
@@ -1442,6 +1483,7 @@ void CPlayerScript::LoadFromLevelFile(FILE* _File)
     fread(&m_MaxMana, sizeof(int), 1, _File);
     fread(&m_CurLife, sizeof(int), 1, _File);
     fread(&m_CurMana, sizeof(int), 1, _File);
+    fread(&m_ATK, sizeof(int), 1, _File);
     fread(&m_Speed, sizeof(float), 1, _File);
     fread(&m_JumpImpulse, sizeof(float), 1, _File);
     fread(&m_JumpForce, sizeof(float), 1, _File);

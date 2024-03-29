@@ -2,6 +2,7 @@
 #include "CPyroGhostScript.h"
 
 #include <Engine\\components.h>
+#include "CEnemyHitBoxScript.h"
 
 CPyroGhostScript::CPyroGhostScript()
     : CEnemyScript(PYROGHOSTSCRIPT)
@@ -98,6 +99,22 @@ void CPyroGhostScript::tick()
     }
 }
 
+void CPyroGhostScript::TakeHit(int _DamageAmount, CGameObject* _HitObj)
+{
+    m_Life -= _DamageAmount;
+
+    if (m_Life <= 0)
+        ChangeState(PYROGHOST_STATE::Death);
+    else
+    {
+        if (m_State != PYROGHOST_STATE::Attack)
+        {
+            ChangeState(PYROGHOST_STATE::Hit1);
+            // ChangeState(PYROGHOST_STATE::Hit2);
+        }
+    }
+}
+
 void CPyroGhostScript::ChangeState(PYROGHOST_STATE _NextState)
 {
     ExitState();
@@ -122,6 +139,17 @@ void CPyroGhostScript::EnterState()
     break;
     case PYROGHOST_STATE::Attack: {
         Animator2D()->Play(L"Enemy_Ghost_Woman_ATTACK", false);
+
+        const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+        for (size_t i = 0; i < vecChild.size(); i++)
+        {
+            CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
+            if (nullptr == pHitBox)
+                continue;
+
+            pHitBox->SetEnemy(this);
+            pHitBox->SetEnable(true);
+        }
     }
     break;
     case PYROGHOST_STATE::Trace: {
@@ -166,6 +194,15 @@ void CPyroGhostScript::ExitState()
     }
     break;
     case PYROGHOST_STATE::Attack: {
+        const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+        for (size_t i = 0; i < vecChild.size(); i++)
+        {
+            CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
+            if (nullptr == pHitBox)
+                continue;
+
+            pHitBox->SetEnable(false);
+        }
     }
     break;
     case PYROGHOST_STATE::Trace: {
@@ -199,7 +236,7 @@ void CPyroGhostScript::Idle()
 
     m_PassedTime += DT;
 
-    if (m_PassedTime > 0.5f)
+    if (m_PassedTime > 2.f)
     {
         // 방향 전환
         if (DIRECTION_TYPE::LEFT == m_Dir)
@@ -295,16 +332,12 @@ void CPyroGhostScript::Spotted()
 
 void CPyroGhostScript::Hit1()
 {
-    StopWalking();
-
     if (Animator2D()->IsFinish())
         ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::Hit2()
 {
-    StopWalking();
-
     if (Animator2D()->IsFinish())
         ChangeState(PYROGHOST_STATE::Idle);
 }
