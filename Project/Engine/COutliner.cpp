@@ -369,18 +369,27 @@ void COutliner::DrawNode(CGameObject* obj)
     {
         if (ImGui::MenuItem("Create Prefab"))
         {
-            Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
             wstring path = L"prefab\\" + obj->GetName() + L".pref";
-
-            // 기존에 존재한 프리팹이라면 변경처리
             if (nullptr != CAssetMgr::GetInst()->FindAsset<CPrefab>(path))
             {
-                CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, path);
-                CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
-                LOG(Log, "Prefab is Replaced!!")
+                int value = MessageBox(nullptr, L"동일한 이름의 프리팹이 이미 존재합니다.\n교체하시겠습니까?", L"Prefab Replacement Warning",
+                                       MB_YESNO | MB_ICONQUESTION);
+                if (value == IDYES)
+                {
+                    Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
+                    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, path);
+                    CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
+                    LOG(Log, "Prefab is Replaced!")
+                    pPrefab->Save(path);
+                }
             }
-
-            pPrefab->Save(path);
+            else
+            {
+                Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
+                CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
+                LOG(Log, "Prefab Creation Was Successful!")
+                pPrefab->Save(path);
+            }
         }
 
         ImGui::EndPopup();
