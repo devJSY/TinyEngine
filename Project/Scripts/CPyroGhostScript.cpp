@@ -4,37 +4,21 @@
 #include <Engine\\components.h>
 
 CPyroGhostScript::CPyroGhostScript()
-    : CScript(PYROGHOSTSCRIPT)
+    : CEnemyScript(PYROGHOSTSCRIPT)
     , m_State(PYROGHOST_STATE::Hide)
-    , m_Dir(DIRECTION_TYPE::RIGHT)
-    , m_Life(50)
-    , m_Speed(5)
-    , m_ATK(7)
-    , m_AttackRange(100.f)
     , m_PassedTime(0.f)
-    , m_pTarget(nullptr)
 {
-    AddScriptParam(SCRIPT_PARAM::INT, &m_Life, "Life");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ATK, "ATK");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackRange, "Attack Range");
+    m_Life = 50;
+    m_Speed = 5;
+    m_ATK = 7;
+    m_AttackRange = 100.f;
 }
 
 CPyroGhostScript::CPyroGhostScript(const CPyroGhostScript& origin)
-    : CScript(origin)
+    : CEnemyScript(origin)
     , m_State(origin.m_State)
-    , m_Dir(origin.m_Dir)
-    , m_Life(origin.m_Life)
-    , m_Speed(origin.m_Speed)
-    , m_ATK(origin.m_ATK)
-    , m_AttackRange(origin.m_AttackRange)
     , m_PassedTime(0.f)
-    , m_pTarget(nullptr)
 {
-    AddScriptParam(SCRIPT_PARAM::INT, &m_Life, "Life");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ATK, "ATK");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackRange, "Attack Range");
 }
 
 CPyroGhostScript::~CPyroGhostScript()
@@ -76,6 +60,8 @@ void CPyroGhostScript::begin()
 
 void CPyroGhostScript::tick()
 {
+    CEnemyScript::tick();
+
     // FSM
     switch (m_State)
     {
@@ -206,6 +192,9 @@ void CPyroGhostScript::ExitState()
 
 void CPyroGhostScript::Idle()
 {
+    if (nullptr != m_pTarget)
+        ChangeState(PYROGHOST_STATE::Trace);
+
     Walking();
 
     m_PassedTime += DT;
@@ -231,6 +220,9 @@ void CPyroGhostScript::Idle()
 void CPyroGhostScript::Hide()
 {
     StopWalking();
+
+    if (nullptr != m_pTarget)
+        ChangeState(PYROGHOST_STATE::Appear);
 }
 
 void CPyroGhostScript::Appear()
@@ -243,6 +235,12 @@ void CPyroGhostScript::Appear()
 
 void CPyroGhostScript::Trace()
 {
+    if (nullptr == m_pTarget)
+    {
+        ChangeState(PYROGHOST_STATE::Idle);
+        return;
+    }
+
     Walking();
 
     Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
@@ -276,12 +274,7 @@ void CPyroGhostScript::Attack()
     StopWalking();
 
     if (Animator2D()->IsFinish())
-    {
-        if (nullptr != m_pTarget)
-            ChangeState(PYROGHOST_STATE::Trace);
-        else
-            ChangeState(PYROGHOST_STATE::Idle);
-    }
+        ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::Uturn()
@@ -289,12 +282,7 @@ void CPyroGhostScript::Uturn()
     StopWalking();
 
     if (Animator2D()->IsFinish())
-    {
-        if (nullptr != m_pTarget)
-            ChangeState(PYROGHOST_STATE::Trace);
-        else
-            ChangeState(PYROGHOST_STATE::Idle);
-    }
+        ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::Spotted()
@@ -302,12 +290,7 @@ void CPyroGhostScript::Spotted()
     StopWalking();
 
     if (Animator2D()->IsFinish())
-    {
-        if (nullptr != m_pTarget)
-            ChangeState(PYROGHOST_STATE::Trace);
-        else
-            ChangeState(PYROGHOST_STATE::Idle);
-    }
+        ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::Hit1()
@@ -315,12 +298,7 @@ void CPyroGhostScript::Hit1()
     StopWalking();
 
     if (Animator2D()->IsFinish())
-    {
-        if (nullptr != m_pTarget)
-            ChangeState(PYROGHOST_STATE::Trace);
-        else
-            ChangeState(PYROGHOST_STATE::Idle);
-    }
+        ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::Hit2()
@@ -328,12 +306,7 @@ void CPyroGhostScript::Hit2()
     StopWalking();
 
     if (Animator2D()->IsFinish())
-    {
-        if (nullptr != m_pTarget)
-            ChangeState(PYROGHOST_STATE::Trace);
-        else
-            ChangeState(PYROGHOST_STATE::Idle);
-    }
+        ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::Death()
@@ -346,76 +319,22 @@ void CPyroGhostScript::Death()
     }
 }
 
-void CPyroGhostScript::Walking()
+void CPyroGhostScript::OnDetectTargetEnter(CGameObject* _TargetObj)
 {
-    Vec2 vel = Rigidbody2D()->GetVelocity();
-
-    if (DIRECTION_TYPE::LEFT == m_Dir)
-        vel.x = -m_Speed;
-    else
-        vel.x = m_Speed;
-
-    Rigidbody2D()->SetVelocity(vel);
+    m_pTarget = _TargetObj;
 }
 
-void CPyroGhostScript::RotateTransform()
+void CPyroGhostScript::OnDetectTargetExit(CGameObject* _TargetObj)
 {
-    if (DIRECTION_TYPE::LEFT == m_Dir)
-        Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
-    else
-        Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-}
-
-void CPyroGhostScript::OnCollisionEnter(CCollider2D* _OtherCollider)
-{
-}
-
-void CPyroGhostScript::OnCollisionStay(CCollider2D* _OtherCollider)
-{
-}
-
-void CPyroGhostScript::OnCollisionExit(CCollider2D* _OtherCollider)
-{
-}
-
-void CPyroGhostScript::OnTriggerEnter(CCollider2D* _OtherCollider)
-{
-    if (L"Player" != _OtherCollider->GetOwner()->GetName())
-        return;
-
-    m_pTarget = _OtherCollider->GetOwner();
-
-    if (PYROGHOST_STATE::Hide == m_State)
-        ChangeState(PYROGHOST_STATE::Appear);
-    else
-        ChangeState(PYROGHOST_STATE::Trace);
-}
-
-void CPyroGhostScript::OnTriggerStay(CCollider2D* _OtherCollider)
-{
-}
-
-void CPyroGhostScript::OnTriggerExit(CCollider2D* _OtherCollider)
-{
-    if (L"Player" != _OtherCollider->GetOwner()->GetName())
-        return;
-
     m_pTarget = nullptr;
-    ChangeState(PYROGHOST_STATE::Idle);
 }
 
 void CPyroGhostScript::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_Life, sizeof(int), 1, _File);
-    fwrite(&m_Speed, sizeof(float), 1, _File);
-    fwrite(&m_ATK, sizeof(float), 1, _File);
-    fwrite(&m_AttackRange, sizeof(float), 1, _File);
+    CEnemyScript::SaveToLevelFile(_File);
 }
 
 void CPyroGhostScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_Life, sizeof(int), 1, _File);
-    fread(&m_Speed, sizeof(float), 1, _File);
-    fread(&m_ATK, sizeof(float), 1, _File);
-    fread(&m_AttackRange, sizeof(float), 1, _File);
+    CEnemyScript::LoadFromLevelFile(_File);
 }

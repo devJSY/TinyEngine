@@ -3,6 +3,7 @@
 
 #include "CCameraMoveScript.h"
 #include "CElevatorScript.h"
+#include "CEnemyColliderScript.h"
 #include "CGameManagerScript.h"
 #include "CLevelChangeScript.h"
 #include "CPlayButtonScript.h"
@@ -16,6 +17,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CElevatorScript");
+	_vec.push_back(L"CEnemyColliderScript");
 	_vec.push_back(L"CGameManagerScript");
 	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CPlayButtonScript");
@@ -32,6 +34,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CElevatorScript" == _strScriptName)
 		return new CElevatorScript;
+	if (L"CEnemyColliderScript" == _strScriptName)
+		return new CEnemyColliderScript;
 	if (L"CGameManagerScript" == _strScriptName)
 		return new CGameManagerScript;
 	if (L"CLevelChangeScript" == _strScriptName)
@@ -59,6 +63,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CCameraMoveScript;
 	case (UINT)SCRIPT_TYPE::ELEVATORSCRIPT:
 		return new CElevatorScript;
+	case (UINT)SCRIPT_TYPE::ENEMYCOLLIDERSCRIPT:
+		return new CEnemyColliderScript;
 	case (UINT)SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return new CGameManagerScript;
 	case (UINT)SCRIPT_TYPE::LEVELCHANGESCRIPT:
@@ -87,6 +93,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CCameraMoveScript";
 	case SCRIPT_TYPE::ELEVATORSCRIPT:
 		return L"CElevatorScript";
+	case SCRIPT_TYPE::ENEMYCOLLIDERSCRIPT:
+		return L"CEnemyColliderScript";
 	case SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return L"CGameManagerScript";
 	case SCRIPT_TYPE::LEVELCHANGESCRIPT:

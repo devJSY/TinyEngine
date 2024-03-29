@@ -43,7 +43,13 @@
     <ClInclude Include="CGameManagerScript.h">
       <Filter>Scripts\GameManager</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemyScript.h">
+      <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="CPyroGhostScript.h">
+      <Filter>Scripts\Enemy\CPyroGhost</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyColliderScript.h">
       <Filter>Scripts\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
@@ -87,7 +93,13 @@
     <ClCompile Include="CGameManagerScript.cpp">
       <Filter>Scripts\GameManager</Filter>
     </ClCompile>
+    <ClCompile Include="CEnemyScript.cpp">
+      <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="CPyroGhostScript.cpp">
+      <Filter>Scripts\Enemy\CPyroGhost</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyColliderScript.cpp">
       <Filter>Scripts\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,6 +139,9 @@
     </Filter>
     <Filter Include="Scripts\Enemy">
       <UniqueIdentifier>{769f9bd2-4a28-4e07-8cda-cb02c780e67d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\CPyroGhost">
+      <UniqueIdentifier>{20e8a88c-1908-4da5-a09c-a2667ff4b5ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -111,6 +111,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CEnemyColliderScript.h" />
+    <ClInclude Include="CEnemyScript.h" />
     <ClInclude Include="CGameManagerScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
@@ -128,6 +130,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CEnemyColliderScript.cpp" />
+    <ClCompile Include="CEnemyScript.cpp" />
     <ClCompile Include="CGameManagerScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />

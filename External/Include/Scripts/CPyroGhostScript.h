@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine\\CScript.h>
+#include "CEnemyScript.h"
 
 enum class PYROGHOST_STATE
 {
@@ -15,19 +15,12 @@ enum class PYROGHOST_STATE
     Death,
 };
 
-class CPyroGhostScript : public CScript
+class CPyroGhostScript : public CEnemyScript
 {
 private:
     PYROGHOST_STATE m_State;
-    DIRECTION_TYPE m_Dir;
 
-    int m_Life;
-    float m_Speed;
-    float m_ATK; // °ø°Ý·Â
-    float m_AttackRange; 
     float m_PassedTime;
-
-    CGameObject* m_pTarget;
 
 public:
     virtual void begin() override;
@@ -52,19 +45,8 @@ private:
     void Death();
 
 private:
-    void Walking();
-    void StopWalking() { Rigidbody2D()->SetVelocity(Vec2(0.f, Rigidbody2D()->GetVelocity().y)); }
-
-    void RotateTransform();
-
-public:
-    virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;
-    virtual void OnCollisionStay(CCollider2D* _OtherCollider) override;
-    virtual void OnCollisionExit(CCollider2D* _OtherCollider) override;
-
-    virtual void OnTriggerEnter(CCollider2D* _OtherCollider) override;
-    virtual void OnTriggerStay(CCollider2D* _OtherCollider) override;
-    virtual void OnTriggerExit(CCollider2D* _OtherCollider) override;
+    virtual void OnDetectTargetEnter(CGameObject* _TargetObj) override;
+    virtual void OnDetectTargetExit(CGameObject* _TargetObj) override;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
