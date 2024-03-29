@@ -7,3 +7,4 @@ CPlayerCameraScript
 CPlayerLifeBarScript
 CPlayerManaBarScript
 CPlayerScript
+CPyroGhostScript

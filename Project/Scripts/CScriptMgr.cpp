@@ -10,6 +10,7 @@
 #include "CPlayerLifeBarScript.h"
 #include "CPlayerManaBarScript.h"
 #include "CPlayerScript.h"
+#include "CPyroGhostScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -22,6 +23,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerLifeBarScript");
 	_vec.push_back(L"CPlayerManaBarScript");
 	_vec.push_back(L"CPlayerScript");
+	_vec.push_back(L"CPyroGhostScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -44,6 +46,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerManaBarScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
+	if (L"CPyroGhostScript" == _strScriptName)
+		return new CPyroGhostScript;
 	return nullptr;
 }
 
@@ -69,6 +73,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayerManaBarScript;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
+	case (UINT)SCRIPT_TYPE::PYROGHOSTSCRIPT:
+		return new CPyroGhostScript;
 	}
 	return nullptr;
 }
@@ -95,6 +101,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerManaBarScript";
 	case SCRIPT_TYPE::PLAYERSCRIPT:
 		return L"CPlayerScript";
+	case SCRIPT_TYPE::PYROGHOSTSCRIPT:
+		return L"CPyroGhostScript";
 	}
 	return nullptr;
 }

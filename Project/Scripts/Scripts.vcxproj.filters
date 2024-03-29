@@ -43,6 +43,9 @@
     <ClInclude Include="CGameManagerScript.h">
       <Filter>Scripts\GameManager</Filter>
     </ClInclude>
+    <ClInclude Include="CPyroGhostScript.h">
+      <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="CGameManagerScript.cpp">
       <Filter>Scripts\GameManager</Filter>
     </ClCompile>
+    <ClCompile Include="CPyroGhostScript.cpp">
+      <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -118,6 +124,9 @@
     </Filter>
     <Filter Include="Scripts\GameManager">
       <UniqueIdentifier>{13d6e6c4-84d3-4392-86d9-8bb24e441298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy">
+      <UniqueIdentifier>{769f9bd2-4a28-4e07-8cda-cb02c780e67d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

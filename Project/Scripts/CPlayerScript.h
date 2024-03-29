@@ -105,13 +105,13 @@ private:
     void RayCast();
 
 private:
-    virtual void OnCollisionEnter(CCollider2D* _OtherCollider);
-    virtual void OnCollisionStay(CCollider2D* _OtherCollider);
-    virtual void OnCollisionExit(CCollider2D* _OtherCollider);
+    virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;
+    virtual void OnCollisionStay(CCollider2D* _OtherCollider) override;
+    virtual void OnCollisionExit(CCollider2D* _OtherCollider) override;
 
-    virtual void OnTriggerEnter(CCollider2D* _OtherCollider);
-    virtual void OnTriggerStay(CCollider2D* _OtherCollider);
-    virtual void OnTriggerExit(CCollider2D* _OtherCollider);
+    virtual void OnTriggerEnter(CCollider2D* _OtherCollider) override;
+    virtual void OnTriggerStay(CCollider2D* _OtherCollider) override;
+    virtual void OnTriggerExit(CCollider2D* _OtherCollider) override;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

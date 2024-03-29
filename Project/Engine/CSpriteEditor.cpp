@@ -706,8 +706,9 @@ void CSpriteEditor::DrawDetails()
                     }
                     else
                     {
-                        MessageBox(nullptr, L"애니메이션 프레임 갯수와 메타 데이터 파일 갯수가 일치하지 않습니다.", L"Meta Data Load Failed!",
-                                   MB_OK | MB_ICONERROR);
+                        if (!vec.empty()) // 취소버튼
+                            MessageBox(nullptr, L"애니메이션 프레임 갯수와 메타 데이터 파일 갯수가 일치하지 않습니다.", L"Meta Data Load Failed!",
+                                       MB_OK | MB_ICONERROR);
                     }
                 }
             }
