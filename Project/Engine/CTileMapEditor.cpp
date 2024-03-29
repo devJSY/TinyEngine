@@ -68,7 +68,7 @@ void CTileMapEditor::DrawViewport()
 {
     ImGui::Begin("Viewport##TileMapEditor");
 
-    if (ImGui::Button("Viewport Reset"))
+    if (ImGui_AlignButton("Viewport Reset", 1.f))
     {
         m_ViewportOffset = Vec2();
         m_ViewportScale = 1.f;

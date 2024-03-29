@@ -65,6 +65,13 @@ void CSpriteEditor::DrawViewport()
 
     ImGui::Checkbox("Enable grid", &opt_enable_grid);
 
+    ImGui::SameLine();
+    if (ImGui_AlignButton("Viewport Reset", 1.f))
+    {
+        m_ViewportOffset = Vec2();
+        m_ViewportScale = 1.f;
+    }
+
     ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();
     ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
     if (canvas_sz.x < 50.0f)
@@ -682,7 +689,7 @@ void CSpriteEditor::DrawDetails()
             if (ImGui_AlignButton("Load Meta Data", 1.f))
             {
                 vector<wstring> vec;
-                OpenFileDialog(vec);
+                OpenFileDialog(vec, L"Sprite");
 
                 if (1 == vec.size())
                 {
@@ -690,12 +697,17 @@ void CSpriteEditor::DrawDetails()
                 }
                 else
                 {
-                    if (vec.size() <= m_pAnim->m_vecFrm.size())
+                    if (vec.size() == m_pAnim->m_vecFrm.size())
                     {
                         for (size_t i = 0; i < vec.size(); i++)
                         {
                             m_pAnim->m_vecFrm[i].vOffset = LoadMeta(vec[i]);
                         }
+                    }
+                    else
+                    {
+                        MessageBox(nullptr, L"애니메이션 프레임 갯수와 메타 데이터 파일 갯수가 일치하지 않습니다.", L"Meta Data Load Failed!",
+                                   MB_OK | MB_ICONERROR);
                     }
                 }
             }
