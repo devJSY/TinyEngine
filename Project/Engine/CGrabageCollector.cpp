@@ -9,13 +9,18 @@ CGrabageCollector::CGrabageCollector()
 
 CGrabageCollector::~CGrabageCollector()
 {
-    Delete_Vec(m_vecEntity);
+    Clear();
 }
 
 void CGrabageCollector::tick()
 {
-    if (10 < m_vecEntity.size())
+    if (100 < m_vecEntity.size())
     {
-        Delete_Vec(m_vecEntity);
+        Clear();
     }
+}
+
+void CGrabageCollector::Clear()
+{
+    Delete_Vec(m_vecEntity);
 }

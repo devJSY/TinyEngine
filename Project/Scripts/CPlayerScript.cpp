@@ -261,7 +261,7 @@ void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
     EnterState();
 }
 
-void CPlayerScript::TakeHit(int _DamageAmount, CGameObject* _HitObj)
+void CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     m_CurLife -= _DamageAmount;
 

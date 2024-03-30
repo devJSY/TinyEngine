@@ -43,7 +43,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 {
     // 메모리 누수 체크
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //_CrtSetBreakAlloc(14015);
+    //_CrtSetBreakAlloc(838);
 
     MyRegisterClass(hInstance);
 
@@ -62,13 +62,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         return 0;
     }
 
-    CCreateTestLevel::Init();
-    CCreateTestLevel::CreateTestLevel();
+    // CCreateTestLevel::Init();
+    // CCreateTestLevel::CreateTestLevel();
     // CCreatePBRLevel::Init();
     // CCreatePBRLevel::CreatePBRLevel();
 
     // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Home Level.tLevel"), LEVEL_STATE::PLAY);
-    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Test Level.tLevel"), LEVEL_STATE::STOP);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Test Level.tLevel"), LEVEL_STATE::STOP);
 
     while (true)
     {

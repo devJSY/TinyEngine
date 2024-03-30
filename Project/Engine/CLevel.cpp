@@ -113,6 +113,9 @@ CGameObject* CLevel::FindObjectByName(const wstring& _strName)
                 CGameObject* pObject = queue.front();
                 queue.pop_front();
 
+                if (nullptr == pObject)
+                    continue;
+
                 const vector<CGameObject*>& vecChild = pObject->GetChildObject();
                 for (size_t k = 0; k < vecChild.size(); ++k)
                 {

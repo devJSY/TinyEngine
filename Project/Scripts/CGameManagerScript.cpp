@@ -10,15 +10,26 @@ CGameManagerScript::CGameManagerScript()
     : CScript(GAMEMANAGERSCRIPT)
     , m_Player(nullptr)
 {
-    Ptr<CPrefab> pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
-    m_Player = pPlayerPref->Instantiate();
+    CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
+
+    // 레벨에 플레이어가 존재하지않는 경우 프리팹에서 로드
+    if (nullptr == pPlayer)
+    {
+        Ptr<CPrefab> pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
+        m_Player = pPlayerPref->Instantiate();
+    }
+    else
+    {
+        m_Player = pPlayer;
+    }
 }
 
 CGameManagerScript::~CGameManagerScript()
 {
     m_Inst = nullptr;
 
-    if (nullptr == CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player"))
+    CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
+    if (nullptr == pObj)
     {
         if (nullptr != m_Player)
         {

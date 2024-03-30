@@ -17,7 +17,7 @@ protected:
     virtual void tick() override;
 
 public:
-    virtual void TakeHit(int _DamageAmount, CGameObject* _HitObj) = 0;
+    virtual void TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3()) = 0;
 
 protected:
     void Walking();
@@ -40,6 +40,6 @@ public:
     CEnemyScript(const CEnemyScript& origin);
     virtual ~CEnemyScript();
 
-    friend class CEnemyColliderScript;
+    friend class CPlayerDetectScript;
     friend class CEnemyHitBoxScript;
 };

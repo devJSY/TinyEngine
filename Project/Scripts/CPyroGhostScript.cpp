@@ -99,8 +99,11 @@ void CPyroGhostScript::tick()
     }
 }
 
-void CPyroGhostScript::TakeHit(int _DamageAmount, CGameObject* _HitObj)
+void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
+    if (PYROGHOST_STATE::Death == m_State)
+        return;
+
     m_Life -= _DamageAmount;
 
     if (m_Life <= 0)
@@ -278,8 +281,6 @@ void CPyroGhostScript::Trace()
         return;
     }
 
-    Walking();
-
     Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
     Vec3 pos = Transform()->GetWorldPos();
 
@@ -287,6 +288,12 @@ void CPyroGhostScript::Trace()
     pos.z = 0.f;
 
     Vec3 Dist = TargetPos - pos;
+
+    // 너무 가까운 경우 이동 X
+    if (Dist.Length() > 10.f)
+    {
+        Walking();
+    }
 
     if (Dist.Length() < m_AttackRange)
     {

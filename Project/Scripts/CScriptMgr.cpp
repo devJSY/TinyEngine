@@ -3,12 +3,12 @@
 
 #include "CCameraMoveScript.h"
 #include "CElevatorScript.h"
-#include "CEnemyColliderScript.h"
 #include "CEnemyHitBoxScript.h"
 #include "CGameManagerScript.h"
 #include "CLevelChangeScript.h"
 #include "CPlayButtonScript.h"
 #include "CPlayerCameraScript.h"
+#include "CPlayerDetectScript.h"
 #include "CPlayerHitBoxScript.h"
 #include "CPlayerLifeBarScript.h"
 #include "CPlayerManaBarScript.h"
@@ -19,12 +19,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CElevatorScript");
-	_vec.push_back(L"CEnemyColliderScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
 	_vec.push_back(L"CGameManagerScript");
 	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CPlayButtonScript");
 	_vec.push_back(L"CPlayerCameraScript");
+	_vec.push_back(L"CPlayerDetectScript");
 	_vec.push_back(L"CPlayerHitBoxScript");
 	_vec.push_back(L"CPlayerLifeBarScript");
 	_vec.push_back(L"CPlayerManaBarScript");
@@ -38,8 +38,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CElevatorScript" == _strScriptName)
 		return new CElevatorScript;
-	if (L"CEnemyColliderScript" == _strScriptName)
-		return new CEnemyColliderScript;
 	if (L"CEnemyHitBoxScript" == _strScriptName)
 		return new CEnemyHitBoxScript;
 	if (L"CGameManagerScript" == _strScriptName)
@@ -50,6 +48,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayButtonScript;
 	if (L"CPlayerCameraScript" == _strScriptName)
 		return new CPlayerCameraScript;
+	if (L"CPlayerDetectScript" == _strScriptName)
+		return new CPlayerDetectScript;
 	if (L"CPlayerHitBoxScript" == _strScriptName)
 		return new CPlayerHitBoxScript;
 	if (L"CPlayerLifeBarScript" == _strScriptName)
@@ -71,8 +71,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CCameraMoveScript;
 	case (UINT)SCRIPT_TYPE::ELEVATORSCRIPT:
 		return new CElevatorScript;
-	case (UINT)SCRIPT_TYPE::ENEMYCOLLIDERSCRIPT:
-		return new CEnemyColliderScript;
 	case (UINT)SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return new CEnemyHitBoxScript;
 	case (UINT)SCRIPT_TYPE::GAMEMANAGERSCRIPT:
@@ -83,6 +81,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayButtonScript;
 	case (UINT)SCRIPT_TYPE::PLAYERCAMERASCRIPT:
 		return new CPlayerCameraScript;
+	case (UINT)SCRIPT_TYPE::PLAYERDETECTSCRIPT:
+		return new CPlayerDetectScript;
 	case (UINT)SCRIPT_TYPE::PLAYERHITBOXSCRIPT:
 		return new CPlayerHitBoxScript;
 	case (UINT)SCRIPT_TYPE::PLAYERLIFEBARSCRIPT:
@@ -105,8 +105,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CCameraMoveScript";
 	case SCRIPT_TYPE::ELEVATORSCRIPT:
 		return L"CElevatorScript";
-	case SCRIPT_TYPE::ENEMYCOLLIDERSCRIPT:
-		return L"CEnemyColliderScript";
 	case SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return L"CEnemyHitBoxScript";
 	case SCRIPT_TYPE::GAMEMANAGERSCRIPT:
@@ -117,6 +115,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayButtonScript";
 	case SCRIPT_TYPE::PLAYERCAMERASCRIPT:
 		return L"CPlayerCameraScript";
+	case SCRIPT_TYPE::PLAYERDETECTSCRIPT:
+		return L"CPlayerDetectScript";
 	case SCRIPT_TYPE::PLAYERHITBOXSCRIPT:
 		return L"CPlayerHitBoxScript";
 	case SCRIPT_TYPE::PLAYERLIFEBARSCRIPT:

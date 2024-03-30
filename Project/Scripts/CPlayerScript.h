@@ -69,7 +69,7 @@ public:
 
 public:
     void ChangeState(PLAYER_STATE _NextState);
-    void TakeHit(int _DamageAmount, CGameObject* _HitObj);
+    void TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3());
 
 private:
     void EnterState();

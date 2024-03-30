@@ -1,11 +1,11 @@
 CCameraMoveScript
 CElevatorScript
-CEnemyColliderScript
 CEnemyHitBoxScript
 CGameManagerScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript
+CPlayerDetectScript
 CPlayerHitBoxScript
 CPlayerLifeBarScript
 CPlayerManaBarScript

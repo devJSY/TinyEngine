@@ -38,5 +38,15 @@ void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
         return;
 
     CPlayerScript* PlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
-    EnemyScript->TakeHit(PlayerScript->m_ATK, PlayerScript->GetOwner());
+
+    Vec3 PlayerPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
+    Vec3 EnemyPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
+
+    PlayerPos.z = 0;
+    EnemyPos.z = 0;
+
+    Vec3 Dir = PlayerPos - EnemyPos;
+    Dir.Normalize();
+
+    EnemyScript->TakeHit(PlayerScript->m_ATK, Dir);
 }

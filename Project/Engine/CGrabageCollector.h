@@ -14,4 +14,5 @@ public:
     void tick();
 
     void Add(CEntity* _Entity) { m_vecEntity.push_back(_Entity); }
+    void Clear();
 };

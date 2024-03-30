@@ -65,6 +65,9 @@ inline CGameObject* CLevel::FindObjectOfType()
                 CGameObject* pObject = queue.front();
                 queue.pop_front();
 
+                if (nullptr == pObject)
+                    continue;
+
                 const vector<CGameObject*>& vecChild = pObject->GetChildObject();
                 for (size_t k = 0; k < vecChild.size(); ++k)
                 {
@@ -100,6 +103,9 @@ inline vector<CGameObject*> CLevel::FindObjectsOfType()
             {
                 CGameObject* pObject = queue.front();
                 queue.pop_front();
+
+                if (nullptr == pObject)
+                    continue;
 
                 const vector<CGameObject*>& vecChild = pObject->GetChildObject();
                 for (size_t k = 0; k < vecChild.size(); ++k)

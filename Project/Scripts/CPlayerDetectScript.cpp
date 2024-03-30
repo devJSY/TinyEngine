@@ -1,29 +1,29 @@
 #include "pch.h"
-#include "CEnemyColliderScript.h"
+#include "CPlayerDetectScript.h"
 #include "CEnemyScript.h"
 
-CEnemyColliderScript::CEnemyColliderScript()
-    : CScript(ENEMYCOLLIDERSCRIPT)
+CPlayerDetectScript::CPlayerDetectScript()
+    : CScript(PLAYERDETECTSCRIPT)
 {
 }
 
-CEnemyColliderScript::~CEnemyColliderScript()
+CPlayerDetectScript::~CPlayerDetectScript()
 {
 }
 
-void CEnemyColliderScript::OnCollisionEnter(CCollider2D* _OtherCollider)
+void CPlayerDetectScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
 }
 
-void CEnemyColliderScript::OnCollisionStay(CCollider2D* _OtherCollider)
+void CPlayerDetectScript::OnCollisionStay(CCollider2D* _OtherCollider)
 {
 }
 
-void CEnemyColliderScript::OnCollisionExit(CCollider2D* _OtherCollider)
+void CPlayerDetectScript::OnCollisionExit(CCollider2D* _OtherCollider)
 {
 }
 
-void CEnemyColliderScript::OnTriggerEnter(CCollider2D* _OtherCollider)
+void CPlayerDetectScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
     if (L"Player" != _OtherCollider->GetOwner()->GetName() || nullptr == GetOwner()->GetParent())
         return;
@@ -32,11 +32,11 @@ void CEnemyColliderScript::OnTriggerEnter(CCollider2D* _OtherCollider)
     EnemyScript->OnDetectTargetEnter(_OtherCollider->GetOwner());
 }
 
-void CEnemyColliderScript::OnTriggerStay(CCollider2D* _OtherCollider)
+void CPlayerDetectScript::OnTriggerStay(CCollider2D* _OtherCollider)
 {
 }
 
-void CEnemyColliderScript::OnTriggerExit(CCollider2D* _OtherCollider)
+void CPlayerDetectScript::OnTriggerExit(CCollider2D* _OtherCollider)
 {
     if (L"Player" != _OtherCollider->GetOwner()->GetName() || nullptr == GetOwner()->GetParent())
         return;

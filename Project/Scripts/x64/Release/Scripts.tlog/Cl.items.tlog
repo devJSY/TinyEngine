@@ -1,10 +1,14 @@
 D:\TinyEngine\Project\Scripts\CButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CButtonScript.obj
 D:\TinyEngine\Project\Scripts\CCameraMoveScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CCameraMoveScript.obj
 D:\TinyEngine\Project\Scripts\CElevatorScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CElevatorScript.obj
+D:\TinyEngine\Project\Scripts\CEnemyColliderScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyColliderScript.obj
+D:\TinyEngine\Project\Scripts\CEnemyHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyHitBoxScript.obj
+D:\TinyEngine\Project\Scripts\CEnemyScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyScript.obj
 D:\TinyEngine\Project\Scripts\CGameManagerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGameManagerScript.obj
 D:\TinyEngine\Project\Scripts\CLevelChangeScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CLevelChangeScript.obj
 D:\TinyEngine\Project\Scripts\CPlayButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayButtonScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerCameraScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerCameraScript.obj
+D:\TinyEngine\Project\Scripts\CPlayerHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerHitBoxScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerManaBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerManaBarScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerLifeBarScript.obj

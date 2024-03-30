@@ -7,6 +7,7 @@
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
 #include "CPhysics2DMgr.h"
+#include "CGrabageCollector.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CEngine.h"
@@ -199,6 +200,7 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
         queue.pop_front();
 
         pObject->m_bDead = true;
+        CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObject);
 
         for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
         {
@@ -209,8 +211,6 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
     // Selected Obj ÇØÁ¦
     if (pDeadObj == CEditorMgr::GetInst()->GetSelectedObject())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-
-    CPhysics2DMgr::GetInst()->RemovePhysicsObject(pDeadObj);
 }
 
 void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
@@ -225,6 +225,7 @@ void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
     CLevel* pNexLevel = (CLevel*)_Task.Param_1;
     LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
 
+    CGrabageCollector::GetInst()->Clear();
     CRenderMgr::GetInst()->ClearCamera();
     CPhysics2DMgr::GetInst()->OnPhysics2DStop();
     CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
