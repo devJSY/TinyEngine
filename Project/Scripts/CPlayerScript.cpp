@@ -263,7 +263,7 @@ void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
 
 void CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (m_State == PLAYER_STATE::Dash)
+    if (m_State == PLAYER_STATE::Dash || m_State == PLAYER_STATE::DownAttack || m_State == PLAYER_STATE::JumpAttack)
         return;
 
     m_CurLife -= _DamageAmount;

@@ -332,12 +332,17 @@ void CPyroGhostScript::Attack()
         for (size_t i = 0; i < vecChild.size(); i++)
         {
             CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
-            if (nullptr == pHitBox)
-                continue;
+            if (nullptr != pHitBox)
+            {
+                pHitBox->SetEnemy(this);
+                pHitBox->SetEnable(true);
+                HasAttack = true;
+            }
 
-            pHitBox->SetEnemy(this);
-            pHitBox->SetEnable(true);
-            HasAttack = true;
+            if (L"Ghost_Attack_FX" == vecChild[i]->GetName())
+            {
+                vecChild[i]->Animator2D()->Play(L"Ghost_Attack_FX", false);
+            }
         }
     }
 }
