@@ -31,6 +31,9 @@ public:
     void SetOffset(Vec2 _offset);
 
 public:
+    void OnEnabled(bool _bEnabled);
+
+public:
     bool IsCollision(Vec2 _Point);
     bool RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, RaycastHit2D& _Hit);
 

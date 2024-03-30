@@ -6,8 +6,6 @@
 CEnemyHitBoxScript::CEnemyHitBoxScript()
     : CScript(ENEMYHITBOXSCRIPT)
     , m_Enemy(nullptr)
-    , m_bEnable(false)
-    , m_HitBoxScale(Vec3())
 {
 }
 
@@ -17,18 +15,15 @@ CEnemyHitBoxScript::~CEnemyHitBoxScript()
 
 void CEnemyHitBoxScript::begin()
 {
-    m_HitBoxScale = Transform()->GetRelativeScale();
-    Transform()->SetRelativeScale(Vec3(0.f, 0.f, 0.f));
+    SetEnable(false);
 }
 
 void CEnemyHitBoxScript::SetEnable(bool _bEnable)
 {
-    m_bEnable = _bEnable;
+    if (nullptr == BoxCollider2D())
+        return;
 
-    if (m_bEnable)
-        Transform()->SetRelativeScale(m_HitBoxScale);
-    else
-        Transform()->SetRelativeScale(Vec3(0.f, 0.f, 0.f));
+    BoxCollider2D()->OnEnabled(_bEnable);
 }
 
 void CEnemyHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)

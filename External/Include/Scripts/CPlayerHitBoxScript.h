@@ -3,10 +3,6 @@
 
 class CPlayerHitBoxScript : public CScript
 {
-private:
-    bool m_bEnable;
-    Vec3 m_HitBoxScale;
-
 public:
     virtual void begin() override;
 

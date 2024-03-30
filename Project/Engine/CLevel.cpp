@@ -207,9 +207,9 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
         }
         break;
         case LEVEL_STATE::STOP: {
-            begin();
             CTimeMgr::GetInst()->LockDeltaTime(false);
             CPhysics2DMgr::GetInst()->OnPhysics2DStart();
+            begin();
 
             if (LEVEL_STATE::PLAY == _NextState)
             {

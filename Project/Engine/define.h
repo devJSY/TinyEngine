@@ -290,4 +290,6 @@ enum class Physics2D_EVENT_TYPE
     ADD,
     REMOVE,
     RESPAWN,
+    ONENABLE_TRUE,
+    ONENABLE_FALSE,
 };

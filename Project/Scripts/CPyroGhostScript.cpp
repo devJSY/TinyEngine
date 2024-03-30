@@ -112,6 +112,11 @@ void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     {
         if (m_State != PYROGHOST_STATE::Attack)
         {
+            Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
+            Force.Normalize();
+            Force *= 50.f;
+            Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
+
             ChangeState(PYROGHOST_STATE::Hit1);
             // ChangeState(PYROGHOST_STATE::Hit2);
         }

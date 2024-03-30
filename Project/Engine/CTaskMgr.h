@@ -50,7 +50,8 @@ enum class TASK_TYPE
     // Param1 : Object
     CLONE_OBJECT,
 
-    // Param1 : Object, Param2 : Event Type - 0 : Add, 1 : Remove, 2 : Regenerate
+    // Param1 : Object,
+    // Param2 : Event Type - 0 : Add, 1 : Remove, 2 : Regenerate, 3 : OnEnable-True, 4 : OnEnable-False
     PHYSICS2D_EVNET
 };
 

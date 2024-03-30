@@ -7,8 +7,6 @@ class CEnemyHitBoxScript : public CScript
 {
 private:
     CEnemyScript* m_Enemy;
-    bool m_bEnable;
-    Vec3 m_HitBoxScale;
 
 public:
     virtual void begin() override;

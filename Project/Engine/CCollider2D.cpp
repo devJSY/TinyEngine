@@ -71,6 +71,22 @@ void CCollider2D::SetOffset(Vec2 _offset)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
+void CCollider2D::OnEnabled(bool _bEnabled)
+{
+    if (nullptr == m_RuntimeFixture)
+        return;
+
+    if (nullptr != Rigidbody2D())
+        Rigidbody2D()->SetSimulated(_bEnabled);
+    else
+    {
+        if (_bEnabled)
+            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_TRUE);
+        else
+            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_FALSE);
+    }
+}
+
 bool CCollider2D::IsCollision(Vec2 _Point)
 {
     if (nullptr == m_RuntimeFixture)

@@ -265,6 +265,11 @@ void CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     m_CurLife -= _DamageAmount;
 
+    Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
+    Force.Normalize();
+    Force *= 100.f; 
+    Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
+
     ChangeState(PLAYER_STATE::Hit02);
 }
 

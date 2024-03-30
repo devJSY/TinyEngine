@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "CPlayerHitBoxScript.h"
 
+#include <Engine\\CPhysics2DMgr.h>
+
 #include "CPlayerScript.h"
 #include "CEnemyScript.h"
 
 CPlayerHitBoxScript::CPlayerHitBoxScript()
     : CScript(PLAYERHITBOXSCRIPT)
-    , m_bEnable(false)
-    , m_HitBoxScale(Vec3())
 {
 }
 
@@ -17,18 +17,15 @@ CPlayerHitBoxScript::~CPlayerHitBoxScript()
 
 void CPlayerHitBoxScript::begin()
 {
-    m_HitBoxScale = Transform()->GetRelativeScale();
-    Transform()->SetRelativeScale(Vec3(0.f, 0.f, 0.f));
+    SetEnable(false);
 }
 
 void CPlayerHitBoxScript::SetEnable(bool _bEnable)
 {
-    m_bEnable = _bEnable;
+    if (nullptr == BoxCollider2D())
+        return;
 
-    if (m_bEnable)
-        Transform()->SetRelativeScale(m_HitBoxScale);
-    else
-        Transform()->SetRelativeScale(Vec3(0.f, 0.f, 0.f));
+    BoxCollider2D()->OnEnabled(_bEnable);
 }
 
 void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
@@ -39,13 +36,13 @@ void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 
     CPlayerScript* PlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
 
-    Vec3 PlayerPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
+    Vec3 PlayerPos = CGameManagerScript::GetInset()->GetPlayer()->Transform()->GetWorldPos();
     Vec3 EnemyPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
 
     PlayerPos.z = 0;
     EnemyPos.z = 0;
 
-    Vec3 Dir = PlayerPos - EnemyPos;
+    Vec3 Dir = EnemyPos - PlayerPos;
     Dir.Normalize();
 
     EnemyScript->TakeHit(PlayerScript->m_ATK, Dir);
