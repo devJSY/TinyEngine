@@ -1,8 +1,12 @@
 #include "pch.h"
 #include "CPyroGhostScript.h"
 
+#include <Engine\\CLevelMgr.h>
+
 #include <Engine\\components.h>
 #include "CEnemyHitBoxScript.h"
+#include <Engine\\CLevel.h>
+#include "CPlayerCameraScript.h"
 
 CPyroGhostScript::CPyroGhostScript()
     : CEnemyScript(PYROGHOSTSCRIPT)
@@ -101,7 +105,7 @@ void CPyroGhostScript::tick()
 
 void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (PYROGHOST_STATE::Death == m_State)
+    if (PYROGHOST_STATE::Death == m_State || PYROGHOST_STATE::Appear == m_State)
         return;
 
     m_Life -= _DamageAmount;

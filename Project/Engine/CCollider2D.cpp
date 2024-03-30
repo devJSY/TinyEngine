@@ -15,6 +15,7 @@ CCollider2D::CCollider2D(COMPONENT_TYPE _Type)
     , m_TriggerCount(0)
     , m_CollisionCount(0)
     , m_PrevScale()
+    , m_bEnabled(true)
 {
 }
 
@@ -27,6 +28,7 @@ CCollider2D::CCollider2D(const CCollider2D& origin)
     , m_TriggerCount(0)
     , m_CollisionCount(0)
     , m_PrevScale()
+    , m_bEnabled(origin.m_bEnabled)
 {
 }
 
@@ -71,16 +73,23 @@ void CCollider2D::SetOffset(Vec2 _offset)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
+bool CCollider2D::IsEnabled()
+{
+    if (nullptr != Rigidbody2D())
+        return Rigidbody2D()->IsSimulated();
+    else
+        return m_bEnabled;
+}
+
 void CCollider2D::OnEnabled(bool _bEnabled)
 {
-    if (nullptr == m_RuntimeFixture)
-        return;
+    m_bEnabled = _bEnabled;
 
     if (nullptr != Rigidbody2D())
-        Rigidbody2D()->SetSimulated(_bEnabled);
+        Rigidbody2D()->SetSimulated(m_bEnabled);
     else
     {
-        if (_bEnabled)
+        if (m_bEnabled)
             GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_TRUE);
         else
             GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_FALSE);
@@ -194,6 +203,7 @@ void CCollider2D::SaveToLevelFile(FILE* _File)
     SaveAssetRef(m_Mtrl, _File);
     fwrite(&m_Offset, sizeof(Vec2), 1, _File);
     fwrite(&m_bTrigger, sizeof(bool), 1, _File);
+    fwrite(&m_bEnabled, sizeof(bool), 1, _File);
 }
 
 void CCollider2D::LoadFromLevelFile(FILE* _File)
@@ -201,4 +211,5 @@ void CCollider2D::LoadFromLevelFile(FILE* _File)
     LoadAssetRef(m_Mtrl, _File);
     fread(&m_Offset, sizeof(Vec2), 1, _File);
     fread(&m_bTrigger, sizeof(bool), 1, _File);
+    fread(&m_bEnabled, sizeof(bool), 1, _File);
 }

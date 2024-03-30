@@ -67,7 +67,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     // CCreatePBRLevel::Init();
     // CCreatePBRLevel::CreatePBRLevel();
 
-    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Home Level.tLevel"), LEVEL_STATE::PLAY);
+    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Home Level.tLevel"), LEVEL_STATE::STOP);
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Test Level.tLevel"), LEVEL_STATE::STOP);
 
     while (true)

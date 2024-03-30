@@ -5,6 +5,7 @@ class CPlayerHitBoxScript : public CScript
 {
 public:
     virtual void begin() override;
+    virtual void tick() override;
 
 public:
     void SetEnable(bool _bEnable);

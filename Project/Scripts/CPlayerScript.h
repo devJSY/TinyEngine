@@ -105,7 +105,7 @@ private:
 
     void RotateTransform();
     void RayCast();
-    void OnHitBox(bool _Enable);
+    void OnHitBox(const wstring& _HitBoxName, bool _Enable);
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;

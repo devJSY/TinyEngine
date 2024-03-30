@@ -15,6 +15,9 @@ protected:
     int m_TriggerCount;
 
 private:
+    bool m_bEnabled; // Rigidbody를 보유한경우 사용하지않음
+
+private:
     Vec3 m_PrevScale;
 
 public:
@@ -31,6 +34,7 @@ public:
     void SetOffset(Vec2 _offset);
 
 public:
+    bool IsEnabled();
     void OnEnabled(bool _bEnabled);
 
 public:

@@ -65,22 +65,6 @@ void CCreateTestLevel::CreateTestLevel()
 
     pCurLevel->AddObject(pCamObj, 0);
 
-    // Player
-    CGameObject* pPlayer = new CGameObject;
-    pPlayer->SetName(L"Player");
-
-    pPlayer->AddComponent(new CTransform);
-    pPlayer->AddComponent(new CMeshRender);
-
-    pPlayer->Transform()->SetAbsolute(true);
-    pPlayer->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pPlayer->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-
-    pPlayer->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    pPlayer->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-
-    pCurLevel->AddObject(pPlayer, 0);
-
     // ±¤¿ø Ãß°¡
     CGameObject* pLight = new CGameObject;
     pLight->SetName(L"Light 1");

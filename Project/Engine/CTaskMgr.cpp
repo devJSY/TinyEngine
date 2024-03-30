@@ -178,7 +178,12 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     pCurLevel->AddObject(pObject, LayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(pObject);
+
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
+    for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+    {
+        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
+    }
 
     if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
     {

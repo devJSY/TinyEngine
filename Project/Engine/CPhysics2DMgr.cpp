@@ -272,6 +272,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
         bc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+        body->SetEnabled(bc2d->IsEnabled());
     }
 
     // Circle Collider 2D
@@ -298,6 +299,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
         cc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+        body->SetEnabled(cc2d->IsEnabled());
     }
 
     // Polygon Collider 2D
@@ -335,6 +337,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
             fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
             pc2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+            body->SetEnabled(pc2d->IsEnabled());
         }
     }
 
@@ -375,6 +378,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         fixtureDef.filter.maskBits = m_Matrix[_GameObject->GetLayerIdx()];
 
         ec2d->m_RuntimeFixture = body->CreateFixture(&fixtureDef);
+        body->SetEnabled(ec2d->IsEnabled());
     }
 
     // 질량 설정
