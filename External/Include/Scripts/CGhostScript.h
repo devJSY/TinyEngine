@@ -15,7 +15,6 @@ enum class GHOST_STATE
     Death,
 };
 
-
 class CGhostScript : public CEnemyScript
 {
 private:

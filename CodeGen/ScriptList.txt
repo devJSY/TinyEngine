@@ -12,3 +12,4 @@ CPlayerLifeBarScript
 CPlayerManaBarScript
 CPlayerScript
 CPyroGhostScript
+CSpooksmenScript

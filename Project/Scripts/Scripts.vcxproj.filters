@@ -61,6 +61,9 @@
     <ClInclude Include="CGhostScript.h">
       <Filter>Scripts\Enemy\Ghost</Filter>
     </ClInclude>
+    <ClInclude Include="CSpooksmenScript.h">
+      <Filter>Scripts\Enemy\Spooksmen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -120,6 +123,9 @@
     <ClCompile Include="CGhostScript.cpp">
       <Filter>Scripts\Enemy\Ghost</Filter>
     </ClCompile>
+    <ClCompile Include="CSpooksmenScript.cpp">
+      <Filter>Scripts\Enemy\Spooksmen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -163,6 +169,9 @@
     </Filter>
     <Filter Include="Scripts\Enemy\Ghost">
       <UniqueIdentifier>{9b54f0de-9bf7-4c69-8264-2a6bea106683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\Spooksmen">
+      <UniqueIdentifier>{29da2e78-fa09-40b5-803f-a81d28c6f2a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

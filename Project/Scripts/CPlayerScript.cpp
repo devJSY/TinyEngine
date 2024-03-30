@@ -1445,7 +1445,7 @@ void CPlayerScript::OnHitBox(bool _Enable, const wstring& _HitBoxName)
         if (nullptr == pHitBox)
             continue;
 
-        // _HitBoxName 이 입력되지않은 경우 모든 HitBox에 적용
+        // _HitBoxName 이 입력 되지 않은 경우 모든 HitBox에 적용
         // _HitBoxName 이 입력 된경우 해당 이름의 HitBox만 적용
         if (!_HitBoxName.empty() && pHitBox->GetOwner()->GetName() != _HitBoxName)
             continue;

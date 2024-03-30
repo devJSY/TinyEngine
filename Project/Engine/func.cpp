@@ -9,6 +9,7 @@
 #include "CEngine.h"
 #include "func.h"
 #include "components.h"
+#include <random>
 
 // stb
 extern "C"
@@ -582,6 +583,28 @@ void GamePlayStatic::Play2DBGM(const wstring& _SoundPath, float _Volume)
         pSound->Play(0, _Volume);
         CurBGM = pSound;
     }
+}
+
+int GetRandomInt(int _Min, int _Max)
+{
+    if (_Min > _Max)
+        std::swap(_Min, _Max);
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(_Min, _Max);
+    return dist(mt);
+}
+
+float GetRandomfloat(float _Min, float _Max)
+{
+    if (_Min > _Max)
+        std::swap(_Min, _Max);
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<float> dist(_Min, _Max);
+    return floor(dist(mt)); // (숫자가 클 경우 정밀도 문제 발생 -> floor로 절삭)
 }
 
 string ToString(const wstring& wstr)

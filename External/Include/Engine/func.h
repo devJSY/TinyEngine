@@ -58,6 +58,9 @@ namespace GamePlayStatic
     void Play2DBGM(const wstring& _SoundPath, float _Volume);
 }
 
+int GetRandomInt(int _Min, int _Max);
+float GetRandomfloat(float _Min, float _Max);
+
 string ToString(const wstring& wstr);
 wstring ToWstring(const string& str);
 string currentDateTime();
