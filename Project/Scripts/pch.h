@@ -24,3 +24,7 @@
 
 #include "define.h"
 #include "CGameManagerScript.h"
+
+#include <Engine\\CLevelMgr.h>
+#include <Engine\\CLevel.h>
+#include <Engine\\CLayer.h>

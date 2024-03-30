@@ -360,25 +360,25 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
-            OnHitBox(L"HitBox1", true);
+            OnHitBox(true, L"HitBox1");
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove02", false);
-            OnHitBox(L"HitBox1", false);
-            OnHitBox(L"HitBox2", true);
+            OnHitBox(false, L"HitBox1");
+            OnHitBox(true, L"HitBox2");
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove03", false);
-            OnHitBox(L"HitBox2", false);
-            OnHitBox(L"HitBox1", true);
+            OnHitBox(false, L"HitBox2");
+            OnHitBox(true, L"HitBox1");
         }
         else if (3 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove04", false);
-            OnHitBox(L"HitBox1", false);
-            OnHitBox(L"HitBox3", true);
+            OnHitBox(false, L"HitBox1");
+            OnHitBox(true, L"HitBox3");
         }
 
         StopWalking();
@@ -395,19 +395,19 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand1", false);
-            OnHitBox(L"HitBox3", true);
+            OnHitBox(true, L"HitBox3");
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
-            OnHitBox(L"HitBox3", false);
-            OnHitBox(L"HitBox1", true);
+            OnHitBox(false, L"HitBox3");
+            OnHitBox(true, L"HitBox1");
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand2", false);
-            OnHitBox(L"HitBox1", false);
-            OnHitBox(L"HitBox3", true);
+            OnHitBox(false, L"HitBox1");
+            OnHitBox(true, L"HitBox3");
         }
 
         m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
@@ -430,7 +430,7 @@ void CPlayerScript::EnterState()
 
         m_bJumpAttackActive = false;
 
-        OnHitBox(L"HitBox2", true);
+        OnHitBox(true, L"HitBox2");
     }
     break;
     case PLAYER_STATE::DownAttack: {
@@ -438,7 +438,7 @@ void CPlayerScript::EnterState()
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
 
-        OnHitBox(L"HitBox2", true);
+        OnHitBox(true, L"HitBox2");
     }
     break;
     }
@@ -501,32 +501,20 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::ComboMove: {
-        if (0 == m_AttackCount)
-            OnHitBox(L"HitBox1", false);
-        else if (1 == m_AttackCount)
-            OnHitBox(L"HitBox2", false);
-        else if (2 == m_AttackCount)
-            OnHitBox(L"HitBox1", false);
-        else if (3 == m_AttackCount)
-            OnHitBox(L"HitBox3", false);
+        OnHitBox(false);
     }
     break;
     case PLAYER_STATE::ComboAerial: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
-        if (0 == m_AttackCount)
-            OnHitBox(L"HitBox3", false);
-        else if (1 == m_AttackCount)
-            OnHitBox(L"HitBox1", false);
-        else if (2 == m_AttackCount)
-            OnHitBox(L"HitBox3", false);
+        OnHitBox(false);
     }
     break;
     case PLAYER_STATE::JumpAttack: {
-        OnHitBox(L"HitBox2", false);
+        OnHitBox(false);
     }
     break;
     case PLAYER_STATE::DownAttack: {
-        OnHitBox(L"HitBox2", false);
+        OnHitBox(false);
     }
     break;
     }
@@ -1448,13 +1436,18 @@ void CPlayerScript::RayCast()
     }
 }
 
-void CPlayerScript::OnHitBox(const wstring& _HitBoxName, bool _Enable)
+void CPlayerScript::OnHitBox(bool _Enable, const wstring& _HitBoxName)
 {
     const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
     for (size_t i = 0; i < vecChild.size(); i++)
     {
         CPlayerHitBoxScript* pHitBox = vecChild[i]->GetScript<CPlayerHitBoxScript>();
-        if (nullptr == pHitBox || _HitBoxName != pHitBox->GetOwner()->GetName())
+        if (nullptr == pHitBox)
+            continue;
+
+        // _HitBoxName 이 입력되지않은 경우 모든 HitBox에 적용
+        // _HitBoxName 이 입력 된경우 해당 이름의 HitBox만 적용
+        if (!_HitBoxName.empty() && pHitBox->GetOwner()->GetName() != _HitBoxName)
             continue;
 
         pHitBox->SetEnable(_Enable);

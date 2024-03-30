@@ -5,6 +5,7 @@
 #include "CElevatorScript.h"
 #include "CEnemyHitBoxScript.h"
 #include "CGameManagerScript.h"
+#include "CGhostScript.h"
 #include "CLevelChangeScript.h"
 #include "CPlayButtonScript.h"
 #include "CPlayerCameraScript.h"
@@ -21,6 +22,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElevatorScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
 	_vec.push_back(L"CGameManagerScript");
+	_vec.push_back(L"CGhostScript");
 	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CPlayButtonScript");
 	_vec.push_back(L"CPlayerCameraScript");
@@ -42,6 +44,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEnemyHitBoxScript;
 	if (L"CGameManagerScript" == _strScriptName)
 		return new CGameManagerScript;
+	if (L"CGhostScript" == _strScriptName)
+		return new CGhostScript;
 	if (L"CLevelChangeScript" == _strScriptName)
 		return new CLevelChangeScript;
 	if (L"CPlayButtonScript" == _strScriptName)
@@ -75,6 +79,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CEnemyHitBoxScript;
 	case (UINT)SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return new CGameManagerScript;
+	case (UINT)SCRIPT_TYPE::GHOSTSCRIPT:
+		return new CGhostScript;
 	case (UINT)SCRIPT_TYPE::LEVELCHANGESCRIPT:
 		return new CLevelChangeScript;
 	case (UINT)SCRIPT_TYPE::PLAYBUTTONSCRIPT:
@@ -109,6 +115,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CEnemyHitBoxScript";
 	case SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return L"CGameManagerScript";
+	case SCRIPT_TYPE::GHOSTSCRIPT:
+		return L"CGhostScript";
 	case SCRIPT_TYPE::LEVELCHANGESCRIPT:
 		return L"CLevelChangeScript";
 	case SCRIPT_TYPE::PLAYBUTTONSCRIPT:

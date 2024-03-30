@@ -5,9 +5,6 @@
 #include <Engine\\components.h>
 #include <Engine\\CAnim.h>
 #include <Engine\\CPrefab.h>
-#include <Engine\\CLevelMgr.h>
-#include <Engine\\CLevel.h>
-#include <Engine\\CLayer.h>
 
 #include "CPlayerScript.h"
 

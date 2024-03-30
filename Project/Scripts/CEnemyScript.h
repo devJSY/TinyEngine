@@ -1,5 +1,6 @@
 #pragma once
 #include <Engine\\CScript.h>
+#include "CEnemyHitBoxScript.h"
 
 class CEnemyScript : public CScript
 {

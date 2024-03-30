@@ -2,6 +2,7 @@ CCameraMoveScript
 CElevatorScript
 CEnemyHitBoxScript
 CGameManagerScript
+CGhostScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript

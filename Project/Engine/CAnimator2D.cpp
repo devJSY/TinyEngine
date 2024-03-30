@@ -6,6 +6,7 @@
 
 CAnimator2D::CAnimator2D()
     : CComponent(COMPONENT_TYPE::ANIMATOR2D)
+    , m_mapAnim{}
     , m_CurAnim(nullptr)
     , m_bRepeat(false)
 {
@@ -13,6 +14,7 @@ CAnimator2D::CAnimator2D()
 
 CAnimator2D::CAnimator2D(const CAnimator2D& origin)
     : CComponent(origin)
+    , m_mapAnim{}
     , m_CurAnim(nullptr)
     , m_bRepeat(origin.m_bRepeat)
 {

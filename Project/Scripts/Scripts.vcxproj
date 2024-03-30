@@ -114,6 +114,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEnemyHitBoxScript.h" />
     <ClInclude Include="CEnemyScript.h" />
     <ClInclude Include="CGameManagerScript.h" />
+    <ClInclude Include="CGhostScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
@@ -135,6 +136,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEnemyHitBoxScript.cpp" />
     <ClCompile Include="CEnemyScript.cpp" />
     <ClCompile Include="CGameManagerScript.cpp" />
+    <ClCompile Include="CGhostScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />

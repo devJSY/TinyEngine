@@ -47,7 +47,7 @@
       <Filter>Scripts\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="CPyroGhostScript.h">
-      <Filter>Scripts\Enemy\CPyroGhost</Filter>
+      <Filter>Scripts\Enemy\PyroGhost</Filter>
     </ClInclude>
     <ClInclude Include="CEnemyHitBoxScript.h">
       <Filter>Scripts\Enemy</Filter>
@@ -57,6 +57,9 @@
     </ClInclude>
     <ClInclude Include="CPlayerDetectScript.h">
       <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CGhostScript.h">
+      <Filter>Scripts\Enemy\Ghost</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -103,7 +106,7 @@
       <Filter>Scripts\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="CPyroGhostScript.cpp">
-      <Filter>Scripts\Enemy\CPyroGhost</Filter>
+      <Filter>Scripts\Enemy\PyroGhost</Filter>
     </ClCompile>
     <ClCompile Include="CEnemyHitBoxScript.cpp">
       <Filter>Scripts\Enemy</Filter>
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="CPlayerDetectScript.cpp">
       <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhostScript.cpp">
+      <Filter>Scripts\Enemy\Ghost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,8 +158,11 @@
     <Filter Include="Scripts\Enemy">
       <UniqueIdentifier>{769f9bd2-4a28-4e07-8cda-cb02c780e67d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Enemy\CPyroGhost">
+    <Filter Include="Scripts\Enemy\PyroGhost">
       <UniqueIdentifier>{20e8a88c-1908-4da5-a09c-a2667ff4b5ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\Ghost">
+      <UniqueIdentifier>{9b54f0de-9bf7-4c69-8264-2a6bea106683}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

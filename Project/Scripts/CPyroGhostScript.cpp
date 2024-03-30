@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "CPyroGhostScript.h"
 
-#include <Engine\\CLevelMgr.h>
-
-#include <Engine\\components.h>
-#include "CEnemyHitBoxScript.h"
-#include <Engine\\CLevel.h>
 #include "CPlayerCameraScript.h"
 #include <Engine\\components.h>
 #include <Engine\\CAnim.h>
@@ -18,7 +13,7 @@ CPyroGhostScript::CPyroGhostScript()
     m_Life = 50;
     m_Speed = 5;
     m_ATK = 7;
-    m_AttackRange = 100.f;
+    m_AttackRange = 200.f;
 }
 
 CPyroGhostScript::CPyroGhostScript(const CPyroGhostScript& origin)
@@ -124,8 +119,10 @@ void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= 50.f;
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            ChangeState(PYROGHOST_STATE::Hit1);
-            // ChangeState(PYROGHOST_STATE::Hit2);
+            if (m_Life < 20.f)
+                ChangeState(PYROGHOST_STATE::Hit2);
+            else
+                ChangeState(PYROGHOST_STATE::Hit1);
         }
     }
 }
