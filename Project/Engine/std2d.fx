@@ -57,7 +57,12 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
         }
+        else
+        {
+            discard;
+        }
     }
+
   
     if (0.1f >= vColor.a)
         discard;
@@ -103,6 +108,10 @@ float4 PS_Std2D_Light(PS_IN _in) : SV_Target
         if (g_btex_0)
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        }
+        else
+        {
+            discard;
         }
     }
     
@@ -166,6 +175,10 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
         if (g_btex_0)
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        }
+        else
+        {
+            discard;
         }
     }
 

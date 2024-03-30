@@ -7,6 +7,8 @@
 #include "CEnemyHitBoxScript.h"
 #include <Engine\\CLevel.h>
 #include "CPlayerCameraScript.h"
+#include <Engine\\components.h>
+#include <Engine\\CAnim.h>
 
 CPyroGhostScript::CPyroGhostScript()
     : CEnemyScript(PYROGHOSTSCRIPT)
@@ -116,6 +118,7 @@ void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     {
         if (m_State != PYROGHOST_STATE::Attack)
         {
+            StopWalking();
             Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
             Force.Normalize();
             Force *= 50.f;
@@ -151,17 +154,6 @@ void CPyroGhostScript::EnterState()
     break;
     case PYROGHOST_STATE::Attack: {
         Animator2D()->Play(L"Enemy_Ghost_Woman_ATTACK", false);
-
-        const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
-        for (size_t i = 0; i < vecChild.size(); i++)
-        {
-            CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
-            if (nullptr == pHitBox)
-                continue;
-
-            pHitBox->SetEnemy(this);
-            pHitBox->SetEnable(true);
-        }
     }
     break;
     case PYROGHOST_STATE::Trace: {
@@ -324,10 +316,30 @@ void CPyroGhostScript::Trace()
 
 void CPyroGhostScript::Attack()
 {
+    static bool HasAttack = false;
+
     StopWalking();
 
     if (Animator2D()->IsFinish())
+    {
         ChangeState(PYROGHOST_STATE::Idle);
+        HasAttack = false;
+    }
+
+    if (!HasAttack && 8 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+        for (size_t i = 0; i < vecChild.size(); i++)
+        {
+            CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
+            if (nullptr == pHitBox)
+                continue;
+
+            pHitBox->SetEnemy(this);
+            pHitBox->SetEnable(true);
+            HasAttack = true;
+        }
+    }
 }
 
 void CPyroGhostScript::Uturn()
