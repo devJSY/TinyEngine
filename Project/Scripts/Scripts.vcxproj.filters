@@ -70,6 +70,9 @@
     <ClInclude Include="CProjectile2DScript.h">
       <Filter>Scripts\Projectile2D</Filter>
     </ClInclude>
+    <ClInclude Include="CSkeletonHandScript.h">
+      <Filter>Scripts\Enemy\SkeletonHand</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -138,6 +141,9 @@
     <ClCompile Include="CProjectile2DScript.cpp">
       <Filter>Scripts\Projectile2D</Filter>
     </ClCompile>
+    <ClCompile Include="CSkeletonHandScript.cpp">
+      <Filter>Scripts\Enemy\SkeletonHand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -190,6 +196,9 @@
     </Filter>
     <Filter Include="Scripts\Projectile2D">
       <UniqueIdentifier>{8da82b5b-deb9-4c24-a752-ac43b7d476ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\SkeletonHand">
+      <UniqueIdentifier>{7c2d96ce-32a9-449b-838f-1d2406980b52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

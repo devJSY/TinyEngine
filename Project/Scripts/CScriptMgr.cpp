@@ -17,6 +17,7 @@
 #include "CPlayerScript.h"
 #include "CProjectile2DScript.h"
 #include "CPyroGhostScript.h"
+#include "CSkeletonHandScript.h"
 #include "CSpooksmenScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -37,6 +38,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CProjectile2DScript");
 	_vec.push_back(L"CPyroGhostScript");
+	_vec.push_back(L"CSkeletonHandScript");
 	_vec.push_back(L"CSpooksmenScript");
 }
 
@@ -74,6 +76,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProjectile2DScript;
 	if (L"CPyroGhostScript" == _strScriptName)
 		return new CPyroGhostScript;
+	if (L"CSkeletonHandScript" == _strScriptName)
+		return new CSkeletonHandScript;
 	if (L"CSpooksmenScript" == _strScriptName)
 		return new CSpooksmenScript;
 	return nullptr;
@@ -115,6 +119,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CProjectile2DScript;
 	case (UINT)SCRIPT_TYPE::PYROGHOSTSCRIPT:
 		return new CPyroGhostScript;
+	case (UINT)SCRIPT_TYPE::SKELETONHANDSCRIPT:
+		return new CSkeletonHandScript;
 	case (UINT)SCRIPT_TYPE::SPOOKSMENSCRIPT:
 		return new CSpooksmenScript;
 	}
@@ -157,6 +163,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CProjectile2DScript";
 	case SCRIPT_TYPE::PYROGHOSTSCRIPT:
 		return L"CPyroGhostScript";
+	case SCRIPT_TYPE::SKELETONHANDSCRIPT:
+		return L"CSkeletonHandScript";
 	case SCRIPT_TYPE::SPOOKSMENSCRIPT:
 		return L"CSpooksmenScript";
 	}

@@ -126,6 +126,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerLifeBarScript.h" />
     <ClInclude Include="CProjectile2DScript.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSkeletonHandScript.h" />
     <ClInclude Include="CSpooksmenScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
@@ -151,6 +152,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerLifeBarScript.cpp" />
     <ClCompile Include="CProjectile2DScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSkeletonHandScript.cpp" />
     <ClCompile Include="CSpooksmenScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

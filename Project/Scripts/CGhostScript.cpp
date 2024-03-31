@@ -37,12 +37,16 @@ void CGhostScript::begin()
     {
         GetOwner()->AddComponent(new CMeshRender);
         MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DLightMtrl"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DGlowMtrl"));
 
         Transform()->SetRelativeScale(Vec3(512.f, 512.f, 1.f));
     }
 
-    MeshRender()->CreateDynamicMaterial();
+    Ptr<CMaterial> pMtrl = MeshRender()->CreateDynamicMaterial();
+
+    pMtrl->SetScalarParam(INT_0, 1);
+    pMtrl->SetScalarParam(FLOAT_0, 0.7f);
+    pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
 
     if (nullptr == Animator2D())
     {

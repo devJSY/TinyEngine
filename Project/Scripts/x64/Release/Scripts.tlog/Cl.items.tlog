@@ -3,6 +3,7 @@ D:\TinyEngine\Project\Scripts\CCameraMoveScript.cpp;D:\TinyEngine\Project\Script
 D:\TinyEngine\Project\Scripts\CElevatorScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CElevatorScript.obj
 D:\TinyEngine\Project\Scripts\CEnemyHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyHitBoxScript.obj
 D:\TinyEngine\Project\Scripts\CEnemyScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyScript.obj
+D:\TinyEngine\Project\Scripts\CFlyingBookScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CFlyingBookScript.obj
 D:\TinyEngine\Project\Scripts\CGameManagerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGameManagerScript.obj
 D:\TinyEngine\Project\Scripts\CGhostScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGhostScript.obj
 D:\TinyEngine\Project\Scripts\CLevelChangeScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CLevelChangeScript.obj
@@ -13,7 +14,9 @@ D:\TinyEngine\Project\Scripts\CPlayerHitBoxScript.cpp;D:\TinyEngine\Project\Scri
 D:\TinyEngine\Project\Scripts\CPlayerManaBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerManaBarScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerLifeBarScript.obj
+D:\TinyEngine\Project\Scripts\CProjectile2DScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CProjectile2DScript.obj
 D:\TinyEngine\Project\Scripts\CScriptMgr.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CScriptMgr.obj
+D:\TinyEngine\Project\Scripts\CSkeletonHandScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CSkeletonHandScript.obj
 D:\TinyEngine\Project\Scripts\CSpooksmenScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CSpooksmenScript.obj
 D:\TinyEngine\Project\Scripts\pch.cpp;D:\TinyEngine\Project\Scripts\x64\Release\pch.obj
 D:\TinyEngine\Project\Scripts\CPyroGhostScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPyroGhostScript.obj
