@@ -67,6 +67,9 @@
     <ClInclude Include="CFlyingBookScript.h">
       <Filter>Scripts\Enemy\FlyingBook</Filter>
     </ClInclude>
+    <ClInclude Include="CProjectile2DScript.h">
+      <Filter>Scripts\Projectile2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -132,6 +135,9 @@
     <ClCompile Include="CFlyingBookScript.cpp">
       <Filter>Scripts\Enemy\FlyingBook</Filter>
     </ClCompile>
+    <ClCompile Include="CProjectile2DScript.cpp">
+      <Filter>Scripts\Projectile2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -181,6 +187,9 @@
     </Filter>
     <Filter Include="Scripts\Enemy\FlyingBook">
       <UniqueIdentifier>{6e693608-baa0-4c0f-ac23-6b32ba90c6da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Projectile2D">
+      <UniqueIdentifier>{8da82b5b-deb9-4c24-a752-ac43b7d476ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

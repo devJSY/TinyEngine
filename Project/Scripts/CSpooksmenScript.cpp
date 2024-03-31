@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CSpooksmenScript.h"
-#include <Engine\\CAnim.h>
 
 CSpooksmenScript::CSpooksmenScript()
     : CEnemyScript(SPOOKSMENSCRIPT)

@@ -3,7 +3,6 @@
 
 #include "CPlayerCameraScript.h"
 #include <Engine\\components.h>
-#include <Engine\\CAnim.h>
 
 CPyroGhostScript::CPyroGhostScript()
     : CEnemyScript(PYROGHOSTSCRIPT)

@@ -124,6 +124,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerManaBarScript.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayerLifeBarScript.h" />
+    <ClInclude Include="CProjectile2DScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpooksmenScript.h" />
     <ClInclude Include="define.h" />
@@ -148,6 +149,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerManaBarScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayerLifeBarScript.cpp" />
+    <ClCompile Include="CProjectile2DScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpooksmenScript.cpp" />
     <ClCompile Include="pch.cpp">

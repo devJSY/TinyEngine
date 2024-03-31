@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CFlyingBookScript.h"
+#include "CProjectile2DScript.h"
 
 CFlyingBookScript::CFlyingBookScript()
     : CEnemyScript(FLYINGBOOKSCRIPT)
@@ -205,10 +206,30 @@ void CFlyingBookScript::Idle()
 
 void CFlyingBookScript::Attack()
 {
-    StopMoving();
+    static bool HasAttack = false;
+
+    StopWalking();
 
     if (Animator2D()->IsFinish())
+    {
         ChangeState(FLYINGBOOK_STATE::Idle);
+        HasAttack = false;
+    }
+
+    if (nullptr != m_pTarget && !HasAttack && 24 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        Ptr<CPrefab> pProjectilePref =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FlyingBook_Projectile.pref", L"prefab\\FlyingBook_Projectile.pref");
+        CGameObject* pProjectile = pProjectilePref->Instantiate();
+        pProjectile->Transform()->SetRelativePos(Transform()->GetRelativePos());
+
+        CProjectile2DScript* ProjScript = pProjectile->GetScript<CProjectile2DScript>();
+        ProjScript->SetTarget(m_pTarget, Vec3(1.f, 0.f, 0.f));
+
+        GamePlayStatic::SpawnGameObject(pProjectile, 0);
+
+        HasAttack = true;
+    }
 }
 
 void CFlyingBookScript::Uturn()

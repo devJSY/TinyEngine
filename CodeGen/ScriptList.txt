@@ -12,5 +12,6 @@ CPlayerHitBoxScript
 CPlayerLifeBarScript
 CPlayerManaBarScript
 CPlayerScript
+CProjectile2DScript
 CPyroGhostScript
 CSpooksmenScript

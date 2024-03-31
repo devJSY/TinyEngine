@@ -3,7 +3,6 @@
 
 #include "CPlayerCameraScript.h"
 #include <Engine\\components.h>
-#include <Engine\\CAnim.h>
 
 CGhostScript::CGhostScript()
     : CEnemyScript(GHOSTSCRIPT)
