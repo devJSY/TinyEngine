@@ -1,6 +1,7 @@
 CCameraMoveScript
 CElevatorScript
 CEnemyHitBoxScript
+CFlyingBookScript
 CGameManagerScript
 CGhostScript
 CLevelChangeScript

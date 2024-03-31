@@ -60,6 +60,25 @@ void CEnemyScript::RotateTransform()
         Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 }
 
+void CEnemyScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
+{
+    const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+    for (size_t i = 0; i < vecChild.size(); i++)
+    {
+        CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
+        if (nullptr == pHitBox)
+            continue;
+
+        // _HitBoxName 이 입력 되지 않은 경우 모든 HitBox에 적용
+        // _HitBoxName 이 입력 된경우 해당 이름의 HitBox만 적용
+        if (!_HitBoxName.empty() && pHitBox->GetOwner()->GetName() != _HitBoxName)
+            continue;
+
+        pHitBox->SetEnemy(this);
+        pHitBox->SetEnabled(_Enable);
+    }
+}
+
 void CEnemyScript::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Life, sizeof(int), 1, _File);

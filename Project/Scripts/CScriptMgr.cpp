@@ -4,6 +4,7 @@
 #include "CCameraMoveScript.h"
 #include "CElevatorScript.h"
 #include "CEnemyHitBoxScript.h"
+#include "CFlyingBookScript.h"
 #include "CGameManagerScript.h"
 #include "CGhostScript.h"
 #include "CLevelChangeScript.h"
@@ -22,6 +23,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CElevatorScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
+	_vec.push_back(L"CFlyingBookScript");
 	_vec.push_back(L"CGameManagerScript");
 	_vec.push_back(L"CGhostScript");
 	_vec.push_back(L"CLevelChangeScript");
@@ -44,6 +46,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElevatorScript;
 	if (L"CEnemyHitBoxScript" == _strScriptName)
 		return new CEnemyHitBoxScript;
+	if (L"CFlyingBookScript" == _strScriptName)
+		return new CFlyingBookScript;
 	if (L"CGameManagerScript" == _strScriptName)
 		return new CGameManagerScript;
 	if (L"CGhostScript" == _strScriptName)
@@ -81,6 +85,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElevatorScript;
 	case (UINT)SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return new CEnemyHitBoxScript;
+	case (UINT)SCRIPT_TYPE::FLYINGBOOKSCRIPT:
+		return new CFlyingBookScript;
 	case (UINT)SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return new CGameManagerScript;
 	case (UINT)SCRIPT_TYPE::GHOSTSCRIPT:
@@ -119,6 +125,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElevatorScript";
 	case SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return L"CEnemyHitBoxScript";
+	case SCRIPT_TYPE::FLYINGBOOKSCRIPT:
+		return L"CFlyingBookScript";
 	case SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return L"CGameManagerScript";
 	case SCRIPT_TYPE::GHOSTSCRIPT:

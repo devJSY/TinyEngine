@@ -123,7 +123,7 @@ void CGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             StopWalking();
             Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
             Force.Normalize();
-            Force *= 50.f;
+            Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
             if (m_Life < 20.f)
@@ -208,15 +208,7 @@ void CGhostScript::ExitState()
     }
     break;
     case GHOST_STATE::Attack: {
-        const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
-        for (size_t i = 0; i < vecChild.size(); i++)
-        {
-            CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
-            if (nullptr == pHitBox)
-                continue;
-
-            pHitBox->SetEnabled(false);
-        }
+        SetHitBox(false);
     }
     break;
     case GHOST_STATE::Uturn: {
@@ -349,22 +341,18 @@ void CGhostScript::Attack()
 
     if (!HasAttack && 16 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
+        SetHitBox(true);
+
         const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
         for (size_t i = 0; i < vecChild.size(); i++)
         {
-            CEnemyHitBoxScript* pHitBox = vecChild[i]->GetScript<CEnemyHitBoxScript>();
-            if (nullptr != pHitBox)
-            {
-                pHitBox->SetEnemy(this);
-                pHitBox->SetEnabled(true);
-                HasAttack = true;
-            }
-
             if (L"Ghost_Attack_FX" == vecChild[i]->GetName())
             {
                 vecChild[i]->Animator2D()->Play(L"Ghost_Attack_FX", false);
             }
         }
+
+        HasAttack = true;
     }
 }
 
@@ -400,12 +388,12 @@ void CGhostScript::Death()
 
 void CGhostScript::OnDetectTargetEnter(CGameObject* _TargetObj)
 {
-    m_pTarget = _TargetObj;
+    CEnemyScript::OnDetectTargetEnter(_TargetObj);
 }
 
 void CGhostScript::OnDetectTargetExit(CGameObject* _TargetObj)
 {
-    m_pTarget = nullptr;
+    CEnemyScript::OnDetectTargetExit(_TargetObj);
 }
 
 void CGhostScript::SaveToLevelFile(FILE* _File)

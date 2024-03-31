@@ -64,6 +64,9 @@
     <ClInclude Include="CSpooksmenScript.h">
       <Filter>Scripts\Enemy\Spooksmen</Filter>
     </ClInclude>
+    <ClInclude Include="CFlyingBookScript.h">
+      <Filter>Scripts\Enemy\FlyingBook</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="CSpooksmenScript.cpp">
       <Filter>Scripts\Enemy\Spooksmen</Filter>
     </ClCompile>
+    <ClCompile Include="CFlyingBookScript.cpp">
+      <Filter>Scripts\Enemy\FlyingBook</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -172,6 +178,9 @@
     </Filter>
     <Filter Include="Scripts\Enemy\Spooksmen">
       <UniqueIdentifier>{29da2e78-fa09-40b5-803f-a81d28c6f2a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\FlyingBook">
+      <UniqueIdentifier>{6e693608-baa0-4c0f-ac23-6b32ba90c6da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

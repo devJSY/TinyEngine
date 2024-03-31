@@ -23,12 +23,15 @@ public:
 protected:
     void Walking();
     void StopWalking() { Rigidbody2D()->SetVelocity(Vec2(0.f, Rigidbody2D()->GetVelocity().y)); }
+    void StopMoving() { Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f)); }
 
     void RotateTransform();
 
-private:
-    virtual void OnDetectTargetEnter(CGameObject* _TargetObj) = 0;
-    virtual void OnDetectTargetExit(CGameObject* _TargetObj) = 0;
+    void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
+
+protected:
+    virtual void OnDetectTargetEnter(CGameObject* _TargetObj) { m_pTarget = _TargetObj; };
+    virtual void OnDetectTargetExit(CGameObject* _TargetObj) { m_pTarget = nullptr; };
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
