@@ -238,6 +238,7 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
         bodyDef.angularDamping = rb2d->m_AngularDrag;
         bodyDef.gravityScale = rb2d->m_GravityScale;
         bodyDef.enabled = rb2d->m_bSimulated;
+        bodyDef.allowSleep = false; // Sleep Mode Disable
 
         body = m_PhysicsWorld->CreateBody(&bodyDef);
         rb2d->m_RuntimeBody = body;

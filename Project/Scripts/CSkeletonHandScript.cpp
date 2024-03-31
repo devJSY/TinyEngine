@@ -6,7 +6,7 @@ CSkeletonHandScript::CSkeletonHandScript()
     , m_State(SKELETONHAND_STATE::Hide)
 {
     m_Life = 10;
-    m_Speed = 1e-3f; // 피격당하는 물체는 속력을 보유하고있어야함
+    m_Speed = 0.f; 
     m_ATK = 5;
     m_AttackRange = 100.f;
 }
@@ -57,8 +57,6 @@ void CSkeletonHandScript::begin()
 void CSkeletonHandScript::tick()
 {
     CEnemyScript::tick();
-
-    Walking(); // 피격당하는 물체는 속력을 보유하고있어야함
 
     // FSM
     switch (m_State)
