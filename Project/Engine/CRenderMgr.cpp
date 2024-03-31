@@ -24,6 +24,7 @@ CRenderMgr::CRenderMgr()
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
     , m_bloomLevels(5)
+    , m_BloomRTTex_LDRI(nullptr)
     , m_BloomTextures_LDRI{}
     , m_SamplingObj(nullptr)
     , m_BlurXObj(nullptr)
@@ -206,8 +207,6 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_postprocess_LDRI()
 {
-    CopyToPostProcessTex_LDRI();
-
     // 첫 샘플링만 Threshold 적용
     Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
     float Threshold = pSamplingMtrl->GetMtrlConst().arrFloat[0];
@@ -216,7 +215,7 @@ void CRenderMgr::render_postprocess_LDRI()
     for (int i = 0; i < m_bloomLevels - 1; i++)
     {
         if (i == 0)
-            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_LDRI);
+            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomRTTex_LDRI);
         else
         {
             m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[i - 1]);
@@ -253,8 +252,8 @@ void CRenderMgr::render_postprocess_LDRI()
 
         if (i == m_bloomLevels - 2)
         {
-            CDevice::GetInst()->SetViewport((float)m_PostProcessTex_LDRI->GetWidth(), (float)m_PostProcessTex_LDRI->GetHeight());
-            CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_LDRI->GetRTV().GetAddressOf(), NULL);
+            CDevice::GetInst()->SetViewport((float)m_BloomRTTex_LDRI->GetWidth(), (float)m_BloomRTTex_LDRI->GetHeight());
+            CONTEXT->OMSetRenderTargets(1, m_BloomRTTex_LDRI->GetRTV().GetAddressOf(), NULL);
         }
         else
         {
@@ -462,6 +461,23 @@ void CRenderMgr::Clear_Buffers(const Vec4& Color)
     CONTEXT->ClearRenderTargetView(m_PostProcessTex_HDRI->GetRTV().Get(), Color);
 
     CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+    CONTEXT->ClearRenderTargetView(m_BloomRTTex_LDRI->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
+
+    for (UINT i = 0; i < m_BloomTextures_LDRI.size(); i++)
+    {
+        CONTEXT->ClearRenderTargetView(m_BloomTextures_LDRI[i]->GetRTV().Get(), Color);
+    }
+
+    for (UINT i = 0; i < m_BlurTextures.size(); i++)
+    {
+        CONTEXT->ClearRenderTargetView(m_BlurTextures[i]->GetRTV().Get(), Color);
+    }
+
+    for (UINT i = 0; i < m_BloomTextures_HDRI.size(); i++)
+    {
+        CONTEXT->ClearRenderTargetView(m_BloomTextures_HDRI[i]->GetRTV().Get(), Color);
+    }
 }
 
 void CRenderMgr::CopyRTTexToRTCopyTex()
@@ -499,7 +515,12 @@ void CRenderMgr::CreatePostProcessTex(Vec2 Resolution)
 void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
 {
     // LDRI
+    m_BloomRTTex_LDRI = nullptr;
     m_BloomTextures_LDRI.clear();
+
+    m_BloomRTTex_LDRI =
+        CAssetMgr::GetInst()->CreateTexture(L"LDRI_BloomRenderTexture", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                            D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 
     for (int i = 0; i < m_bloomLevels - 1; i++)
     {
@@ -560,11 +581,12 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_LDRI");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
 
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LDRI_BloomRenderTexture");
     for (int i = 0; i < m_bloomLevels - 1; i++)
     {
-        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BlurTexture " + std::to_wstring(i));
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LDRI_BloomTexture " + std::to_wstring(i));
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"HDRI_BloomTexture " + std::to_wstring(i));
+        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BlurTexture " + std::to_wstring(i));
     }
 
     m_RTCopyTex = nullptr;
@@ -589,7 +611,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
     }
 
     m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_RTCopyTex);
-    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_LDRI);
+    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_BloomRTTex_LDRI);
 
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_HDRI);

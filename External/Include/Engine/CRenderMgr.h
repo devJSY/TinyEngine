@@ -49,6 +49,7 @@ private:
     int m_bloomLevels;
 
     // LDRI Bloom
+    Ptr<CTexture> m_BloomRTTex_LDRI;
     vector<Ptr<CTexture>> m_BloomTextures_LDRI;
     vector<Ptr<CTexture>> m_BlurTextures;
     CGameObject* m_SamplingObj;
@@ -107,6 +108,7 @@ public:
     Ptr<CTexture> GetPostProcessTex_LDRI() const { return m_PostProcessTex_LDRI; }
     Ptr<CTexture> GetPostProcessTex_HDRI() const { return m_PostProcessTex_HDRI; }
     Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
+    Ptr<CTexture> GetBloomRTTex_LDRI() const { return m_BloomRTTex_LDRI; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);

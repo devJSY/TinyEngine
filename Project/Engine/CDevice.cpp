@@ -160,6 +160,13 @@ void CDevice::SetRenderTarget()
     m_Context->OMSetRenderTargets(1, m_RenderTargetTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
 }
 
+void CDevice::SetRenderTarget_Bloom_LDRI()
+{
+    Ptr<CTexture> pBloomRTTex = CRenderMgr::GetInst()->GetBloomRTTex_LDRI();
+    ID3D11RenderTargetView* RTVs[2] = {m_RenderTargetTex->GetRTV().Get(), pBloomRTTex->GetRTV().Get()};
+    CONTEXT->OMSetRenderTargets(2, RTVs, m_DSTex->GetDSV().Get());
+}
+
 void CDevice::SetFloatRenderTarget()
 {
     m_Context->OMSetRenderTargets(1, m_FloatRTTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());

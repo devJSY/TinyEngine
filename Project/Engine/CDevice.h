@@ -50,6 +50,7 @@ public:
 public:
     void Resize(Vec2 resolution);
     void SetRenderTarget();
+    void SetRenderTarget_Bloom_LDRI();
     void SetFloatRenderTarget();
     void SetViewport(float _Width = 0, float _Height = 0);
     void ClearDepth(FLOAT _depth = 1.f);

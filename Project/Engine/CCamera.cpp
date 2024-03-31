@@ -170,7 +170,7 @@ void CCamera::render()
     if (m_bHDRI)
         CDevice::GetInst()->SetFloatRenderTarget();
     else
-        CDevice::GetInst()->SetRenderTarget();
+        CDevice::GetInst()->SetRenderTarget_Bloom_LDRI();
 
     CDevice::GetInst()->SetViewport();
 

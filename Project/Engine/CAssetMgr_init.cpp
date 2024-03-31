@@ -217,6 +217,29 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Std2DGlowShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Glow");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(INT_0, "GlowEnable");
+        pShader->AddScalarParam(FLOAT_0, "GlowThreshold");
+        pShader->AddScalarParam(VEC4_0, "GlowColor");
+
+        pShader->SetName(L"Std2DGlowShader");
+        AddAsset(L"Std2DGlowShader", pShader);
+    }
+
+    // =================================
     // TileMapShader
     // =================================
     {
@@ -778,6 +801,14 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"Std2DEffectMtrl", pMtrl);
     }
 
+    // Std2DGlowMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std2DGlowShader"));
+        pMtrl->SetName(L"Std2DGlowMtrl");
+        AddAsset<CMaterial>(L"Std2DGlowMtrl", pMtrl);
+    }
+
     // TileMapMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -929,7 +960,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CombineShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 0.f); // Strength
+        pMtrl->SetScalarParam(FLOAT_0, 1.5f); // Strength
         pMtrl->SetName(L"CombineMtrl");
         AddAsset<CMaterial>(L"CombineMtrl", pMtrl);
     }

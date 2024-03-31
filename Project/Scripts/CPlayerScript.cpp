@@ -87,7 +87,7 @@ void CPlayerScript::begin()
     {
         GetOwner()->AddComponent(new CMeshRender);
         MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DLightMtrl"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DGlowMtrl"));
 
         Transform()->SetRelativeScale(Vec3(1024.f, 1024.f, 1.f));
     }
@@ -247,6 +247,19 @@ void CPlayerScript::tick()
     case PLAYER_STATE::DownAttack:
         DownAttack();
         break;
+    }
+
+    // Bloom Texture
+    if (PLAYER_STATE::Dash == m_State || PLAYER_STATE::ComboMove == m_State || PLAYER_STATE::ComboAerial == m_State ||
+        PLAYER_STATE::JumpAttack == m_State || PLAYER_STATE::DownAttack == m_State)
+    {
+        MeshRender()->GetMaterial()->SetScalarParam(INT_0, 1);
+        MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.5f);
+        MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(0.48f, 0.40f, 0.78f, 1.f));
+    }
+    else
+    {
+        MeshRender()->GetMaterial()->SetScalarParam(INT_0, 0);
     }
 
     m_DashPassedTime += DT;
