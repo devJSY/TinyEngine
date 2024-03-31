@@ -9,18 +9,23 @@ CPyroGhostScript::CPyroGhostScript()
     : CEnemyScript(PYROGHOSTSCRIPT)
     , m_State(PYROGHOST_STATE::Hide)
     , m_PassedTime(0.f)
+    , m_PatrolDuration(2.f)
 {
     m_Life = 50;
     m_Speed = 5;
     m_ATK = 7;
     m_AttackRange = 200.f;
+
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_PatrolDuration, "Patrol Duration");
 }
 
 CPyroGhostScript::CPyroGhostScript(const CPyroGhostScript& origin)
     : CEnemyScript(origin)
     , m_State(origin.m_State)
     , m_PassedTime(0.f)
+    , m_PatrolDuration(origin.m_PatrolDuration)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_PatrolDuration, "Patrol Duration");
 }
 
 CPyroGhostScript::~CPyroGhostScript()
@@ -202,7 +207,7 @@ void CPyroGhostScript::ExitState()
             if (nullptr == pHitBox)
                 continue;
 
-            pHitBox->SetEnable(false);
+            pHitBox->SetEnabled(false);
         }
     }
     break;
@@ -237,7 +242,7 @@ void CPyroGhostScript::Idle()
 
     m_PassedTime += DT;
 
-    if (m_PassedTime > 2.f)
+    if (m_PassedTime > m_PatrolDuration)
     {
         // 방향 전환
         if (DIRECTION_TYPE::LEFT == m_Dir)
@@ -332,7 +337,7 @@ void CPyroGhostScript::Attack()
             if (nullptr != pHitBox)
             {
                 pHitBox->SetEnemy(this);
-                pHitBox->SetEnable(true);
+                pHitBox->SetEnabled(true);
                 HasAttack = true;
             }
 
@@ -395,9 +400,11 @@ void CPyroGhostScript::OnDetectTargetExit(CGameObject* _TargetObj)
 void CPyroGhostScript::SaveToLevelFile(FILE* _File)
 {
     CEnemyScript::SaveToLevelFile(_File);
+    fwrite(&m_PatrolDuration, sizeof(float), 1, _File);
 }
 
 void CPyroGhostScript::LoadFromLevelFile(FILE* _File)
 {
     CEnemyScript::LoadFromLevelFile(_File);
+    fread(&m_PatrolDuration, sizeof(float), 1, _File);
 }

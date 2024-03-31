@@ -17,7 +17,7 @@ CPlayerHitBoxScript::~CPlayerHitBoxScript()
 
 void CPlayerHitBoxScript::begin()
 {
-    SetEnable(false);
+    SetEnabled(false);
 }
 
 void CPlayerHitBoxScript::tick()
@@ -39,12 +39,12 @@ void CPlayerHitBoxScript::tick()
     //GamePlayStatic::DrawDebugRect(matScale * matTranslation * matInvScale * matWorld, color, false);
 }
 
-void CPlayerHitBoxScript::SetEnable(bool _bEnable)
+void CPlayerHitBoxScript::SetEnabled(bool _bEnable)
 {
     if (nullptr == BoxCollider2D())
         return;
 
-    BoxCollider2D()->OnEnabled(_bEnable);
+    BoxCollider2D()->SetEnabled(_bEnable);
 }
 
 void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)

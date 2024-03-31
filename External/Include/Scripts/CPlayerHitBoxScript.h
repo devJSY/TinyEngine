@@ -8,7 +8,7 @@ public:
     virtual void tick() override;
 
 public:
-    void SetEnable(bool _bEnable);
+    void SetEnabled(bool _bEnable);
 
 public:
     virtual void OnTriggerEnter(CCollider2D* _OtherCollider) override;

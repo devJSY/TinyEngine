@@ -360,25 +360,25 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
-            OnHitBox(true, L"HitBox1");
+            SetHitBox(true, L"HitBox1");
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove02", false);
-            OnHitBox(false, L"HitBox1");
-            OnHitBox(true, L"HitBox2");
+            SetHitBox(false, L"HitBox1");
+            SetHitBox(true, L"HitBox2");
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove03", false);
-            OnHitBox(false, L"HitBox2");
-            OnHitBox(true, L"HitBox1");
+            SetHitBox(false, L"HitBox2");
+            SetHitBox(true, L"HitBox1");
         }
         else if (3 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove04", false);
-            OnHitBox(false, L"HitBox1");
-            OnHitBox(true, L"HitBox3");
+            SetHitBox(false, L"HitBox1");
+            SetHitBox(true, L"HitBox3");
         }
 
         StopWalking();
@@ -395,19 +395,19 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand1", false);
-            OnHitBox(true, L"HitBox3");
+            SetHitBox(true, L"HitBox3");
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
-            OnHitBox(false, L"HitBox3");
-            OnHitBox(true, L"HitBox1");
+            SetHitBox(false, L"HitBox3");
+            SetHitBox(true, L"HitBox1");
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand2", false);
-            OnHitBox(false, L"HitBox1");
-            OnHitBox(true, L"HitBox3");
+            SetHitBox(false, L"HitBox1");
+            SetHitBox(true, L"HitBox3");
         }
 
         m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
@@ -430,7 +430,7 @@ void CPlayerScript::EnterState()
 
         m_bJumpAttackActive = false;
 
-        OnHitBox(true, L"HitBox2");
+        SetHitBox(true, L"HitBox2");
     }
     break;
     case PLAYER_STATE::DownAttack: {
@@ -438,7 +438,7 @@ void CPlayerScript::EnterState()
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
 
-        OnHitBox(true, L"HitBox2");
+        SetHitBox(true, L"HitBox2");
     }
     break;
     }
@@ -501,20 +501,20 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::ComboMove: {
-        OnHitBox(false);
+        SetHitBox(false);
     }
     break;
     case PLAYER_STATE::ComboAerial: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
-        OnHitBox(false);
+        SetHitBox(false);
     }
     break;
     case PLAYER_STATE::JumpAttack: {
-        OnHitBox(false);
+        SetHitBox(false);
     }
     break;
     case PLAYER_STATE::DownAttack: {
-        OnHitBox(false);
+        SetHitBox(false);
     }
     break;
     }
@@ -1436,7 +1436,7 @@ void CPlayerScript::RayCast()
     }
 }
 
-void CPlayerScript::OnHitBox(bool _Enable, const wstring& _HitBoxName)
+void CPlayerScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
 {
     const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
     for (size_t i = 0; i < vecChild.size(); i++)
@@ -1450,7 +1450,7 @@ void CPlayerScript::OnHitBox(bool _Enable, const wstring& _HitBoxName)
         if (!_HitBoxName.empty() && pHitBox->GetOwner()->GetName() != _HitBoxName)
             continue;
 
-        pHitBox->SetEnable(_Enable);
+        pHitBox->SetEnabled(_Enable);
     }
 }
 

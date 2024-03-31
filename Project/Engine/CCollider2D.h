@@ -35,7 +35,7 @@ public:
 
 public:
     bool IsEnabled();
-    void OnEnabled(bool _bEnabled);
+    void SetEnabled(bool _bEnabled);
 
 public:
     bool IsCollision(Vec2 _Point);

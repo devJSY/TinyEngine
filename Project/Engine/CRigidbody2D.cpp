@@ -119,9 +119,9 @@ void CRigidbody2D::SetSimulated(bool _bSimulated)
         return;
 
     if (m_bSimulated)
-        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_TRUE);
+        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_TRUE);
     else
-        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_FALSE);
+        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_FALSE);
 }
 
 void CRigidbody2D::SetAutoMass(bool _Use)

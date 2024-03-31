@@ -45,7 +45,7 @@ private:
     void Death();
 
 private:
-    void OnHitBox(bool _Enable, const wstring& _HitBoxName = L"");
+    void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
 
 private:
     virtual void OnDetectTargetEnter(CGameObject* _TargetObj) override;

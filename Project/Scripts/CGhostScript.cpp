@@ -9,18 +9,23 @@ CGhostScript::CGhostScript()
     : CEnemyScript(GHOSTSCRIPT)
     , m_State(GHOST_STATE::Waiting)
     , m_PassedTime(0.f)
+    , m_PatrolDuration(1.5f)
 {
     m_Life = 50;
     m_Speed = 5;
     m_ATK = 5;
     m_AttackRange = 200.f;
+
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_PatrolDuration, "Patrol Duration");
 }
 
 CGhostScript::CGhostScript(const CGhostScript& origin)
     : CEnemyScript(origin)
     , m_State(origin.m_State)
     , m_PassedTime(0.f)
+    , m_PatrolDuration(origin.m_PatrolDuration)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_PatrolDuration, "Patrol Duration");
 }
 
 CGhostScript::~CGhostScript()
@@ -210,7 +215,7 @@ void CGhostScript::ExitState()
             if (nullptr == pHitBox)
                 continue;
 
-            pHitBox->SetEnable(false);
+            pHitBox->SetEnabled(false);
         }
     }
     break;
@@ -283,7 +288,7 @@ void CGhostScript::Run()
 
     m_PassedTime += DT;
 
-    if (m_PassedTime > 1.5f)
+    if (m_PassedTime > m_PatrolDuration)
     {
         ChangeState(GHOST_STATE::Idle);
         m_PassedTime = 0.f;
@@ -351,7 +356,7 @@ void CGhostScript::Attack()
             if (nullptr != pHitBox)
             {
                 pHitBox->SetEnemy(this);
-                pHitBox->SetEnable(true);
+                pHitBox->SetEnabled(true);
                 HasAttack = true;
             }
 
@@ -406,9 +411,11 @@ void CGhostScript::OnDetectTargetExit(CGameObject* _TargetObj)
 void CGhostScript::SaveToLevelFile(FILE* _File)
 {
     CEnemyScript::SaveToLevelFile(_File);
+    fwrite(&m_PatrolDuration, sizeof(float), 1, _File);
 }
 
 void CGhostScript::LoadFromLevelFile(FILE* _File)
 {
     CEnemyScript::LoadFromLevelFile(_File);
+    fread(&m_PatrolDuration, sizeof(float), 1, _File);
 }

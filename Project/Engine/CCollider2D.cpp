@@ -81,7 +81,7 @@ bool CCollider2D::IsEnabled()
         return m_bEnabled;
 }
 
-void CCollider2D::OnEnabled(bool _bEnabled)
+void CCollider2D::SetEnabled(bool _bEnabled)
 {
     m_bEnabled = _bEnabled;
 
@@ -90,9 +90,9 @@ void CCollider2D::OnEnabled(bool _bEnabled)
     else
     {
         if (m_bEnabled)
-            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_TRUE);
+            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_TRUE);
         else
-            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::ONENABLE_FALSE);
+            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_FALSE);
     }
 }
 

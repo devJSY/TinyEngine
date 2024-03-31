@@ -204,7 +204,7 @@ void CSpooksmenScript::ExitState()
     }
     break;
     case SPOOKSMEN_STATE::Attack: {
-        OnHitBox(false);
+        SetHitBox(false);
     }
     break;
     case SPOOKSMEN_STATE::Uturn: {
@@ -308,13 +308,13 @@ void CSpooksmenScript::Attack()
     if (!HasAttack && 6 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         if (1 == m_AttackCount)
-            OnHitBox(true, L"HitBox1");
+            SetHitBox(true, L"HitBox1");
         else if (2 == m_AttackCount)
-            OnHitBox(true, L"HitBox2");
+            SetHitBox(true, L"HitBox2");
         else if (3 == m_AttackCount)
-            OnHitBox(true, L"HitBox2");
+            SetHitBox(true, L"HitBox2");
         else if (4 == m_AttackCount)
-            OnHitBox(true, L"HitBox3");
+            SetHitBox(true, L"HitBox3");
 
         HasAttack = true;
     }
@@ -360,7 +360,7 @@ void CSpooksmenScript::Death()
     }
 }
 
-void CSpooksmenScript::OnHitBox(bool _Enable, const wstring& _HitBoxName)
+void CSpooksmenScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
 {
     const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
     for (size_t i = 0; i < vecChild.size(); i++)
@@ -376,7 +376,7 @@ void CSpooksmenScript::OnHitBox(bool _Enable, const wstring& _HitBoxName)
             continue;
 
         pHitBox->SetEnemy(this);
-        pHitBox->SetEnable(_Enable);
+        pHitBox->SetEnabled(_Enable);
     }
 }
 

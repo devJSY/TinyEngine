@@ -13,7 +13,7 @@ public:
 
 public:
     void SetEnemy(CEnemyScript* _pEnemy) { m_Enemy = _pEnemy; };
-    void SetEnable(bool _bEnable);
+    void SetEnabled(bool _bEnable);
 
 public:
     virtual void OnTriggerEnter(CCollider2D* _OtherCollider) override;

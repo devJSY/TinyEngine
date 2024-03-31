@@ -443,7 +443,7 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
     }
 }
 
-void CPhysics2DMgr::OnEnable(CGameObject* _GameObject, bool _bEnable)
+void CPhysics2DMgr::SetEnabled(CGameObject* _GameObject, bool _bEnable)
 {
     if (nullptr == m_PhysicsWorld)
         return;

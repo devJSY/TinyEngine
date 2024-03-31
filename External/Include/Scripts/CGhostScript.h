@@ -19,8 +19,8 @@ class CGhostScript : public CEnemyScript
 {
 private:
     GHOST_STATE m_State;
-
     float m_PassedTime;
+    float m_PatrolDuration;
 
 public:
     virtual void begin() override;

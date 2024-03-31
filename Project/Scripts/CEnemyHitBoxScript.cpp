@@ -15,15 +15,15 @@ CEnemyHitBoxScript::~CEnemyHitBoxScript()
 
 void CEnemyHitBoxScript::begin()
 {
-    SetEnable(false);
+    SetEnabled(false);
 }
 
-void CEnemyHitBoxScript::SetEnable(bool _bEnable)
+void CEnemyHitBoxScript::SetEnabled(bool _bEnable)
 {
     if (nullptr == BoxCollider2D())
         return;
 
-    BoxCollider2D()->OnEnabled(_bEnable);
+    BoxCollider2D()->SetEnabled(_bEnable);
 }
 
 void CEnemyHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)

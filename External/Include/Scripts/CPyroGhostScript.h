@@ -19,8 +19,8 @@ class CPyroGhostScript : public CEnemyScript
 {
 private:
     PYROGHOST_STATE m_State;
-
     float m_PassedTime;
+    float m_PatrolDuration;
 
 public:
     virtual void begin() override;
