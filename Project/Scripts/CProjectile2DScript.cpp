@@ -7,12 +7,12 @@ CProjectile2DScript::CProjectile2DScript()
     : CScript(PROJECTILE2DSCRIPT)
     , m_pTarget(nullptr)
     , m_vDir(Vec3(0.f, 0.f, 0.f))
-    , m_Speed(0.f)
+    , m_Force(0.f)
     , m_ATK(5)
     , m_Duration(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Direction");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Force, "Force");
     AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
 }
 
@@ -20,12 +20,12 @@ CProjectile2DScript::CProjectile2DScript(const CProjectile2DScript& origin)
     : CScript(origin)
     , m_pTarget(origin.m_pTarget)
     , m_vDir(origin.m_vDir)
-    , m_Speed(origin.m_Speed)
+    , m_Force(origin.m_Force)
     , m_ATK(origin.m_ATK)
     , m_Duration(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Base Direction");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Force, "Force");
     AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
 }
 
@@ -43,8 +43,8 @@ void CProjectile2DScript::tick()
         return;
 
     m_vDir.Normalize();
-    m_vDir *= m_Speed;
-    Rigidbody2D()->SetVelocity(Vec2(m_vDir.x, m_vDir.y));
+    m_vDir *= m_Force;
+    Rigidbody2D()->AddForce(Vec2(m_vDir.x, m_vDir.y));
 }
 
 void CProjectile2DScript::SetTarget(CGameObject* _pTarget, Vec3 _vBaseDir)
@@ -124,13 +124,13 @@ void CProjectile2DScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 void CProjectile2DScript::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_vDir, sizeof(Vec3), 1, _File);
-    fwrite(&m_Speed, sizeof(float), 1, _File);
+    fwrite(&m_Force, sizeof(float), 1, _File);
     fwrite(&m_ATK, sizeof(int), 1, _File);
 }
 
 void CProjectile2DScript::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_vDir, sizeof(Vec3), 1, _File);
-    fread(&m_Speed, sizeof(float), 1, _File);
+    fread(&m_Force, sizeof(float), 1, _File);
     fread(&m_ATK, sizeof(int), 1, _File);
 }

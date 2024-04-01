@@ -6,7 +6,7 @@ class CProjectile2DScript : public CScript
 private:
     CGameObject* m_pTarget;
     Vec3 m_vDir;
-    float m_Speed;
+    float m_Force;
     int m_ATK;
     float m_Duration;
 

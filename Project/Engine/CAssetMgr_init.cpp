@@ -231,9 +231,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
         pShader->AddTexParam(TEX_0, "Texture");
-        pShader->AddScalarParam(INT_0, "GlowEnable");
-        pShader->AddScalarParam(FLOAT_0, "GlowThreshold");
-        pShader->AddScalarParam(VEC4_0, "GlowColor");
+        pShader->AddScalarParam(INT_0, "Glow Enable");
+        pShader->AddScalarParam(FLOAT_0, "Glow Threshold");
+        pShader->AddScalarParam(VEC4_0, "Glow Color");
 
         pShader->SetName(L"Std2DGlowShader");
         AddAsset(L"Std2DGlowShader", pShader);
