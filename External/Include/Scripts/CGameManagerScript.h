@@ -6,12 +6,15 @@ class CGameManagerScript : public CScript
 private:
     static CGameManagerScript* m_Inst;
     CGameObject* m_Player;
+    CGameObject* m_ExitElevator;
 
 public:
     static CGameManagerScript* GetInset();
 
 public:
     CGameObject* GetPlayer() const { return m_Player; }
+    CGameObject* GetExitElevator();
+    void ChangeLevel(const std::string& _LevelName);
 
 public:
     virtual void begin() override;

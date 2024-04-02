@@ -37,7 +37,7 @@
     <ClInclude Include="CPlayerManaBarScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CElevatorScript.h">
+    <ClInclude Include="CEntetElevatorScript.h">
       <Filter>Scripts\Elevator</Filter>
     </ClInclude>
     <ClInclude Include="CGameManagerScript.h">
@@ -72,6 +72,9 @@
     </ClInclude>
     <ClInclude Include="CSkeletonHandScript.h">
       <Filter>Scripts\Enemy\SkeletonHand</Filter>
+    </ClInclude>
+    <ClInclude Include="CExitElevatorScript.h">
+      <Filter>Scripts\Elevator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +111,7 @@
     <ClCompile Include="CPlayerManaBarScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CElevatorScript.cpp">
+    <ClCompile Include="CEntetElevatorScript.cpp">
       <Filter>Scripts\Elevator</Filter>
     </ClCompile>
     <ClCompile Include="CGameManagerScript.cpp">
@@ -143,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="CSkeletonHandScript.cpp">
       <Filter>Scripts\Enemy\SkeletonHand</Filter>
+    </ClCompile>
+    <ClCompile Include="CExitElevatorScript.cpp">
+      <Filter>Scripts\Elevator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

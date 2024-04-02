@@ -358,6 +358,7 @@ void CPlayerScript::EnterState()
     }
     break;
     case PLAYER_STATE::Elevator_In: {
+        StopWalking();
         Animator2D()->Play(L"Elevator_In", false);
     }
     break;
@@ -1062,6 +1063,24 @@ void CPlayerScript::Fight_To_Idle()
 
 void CPlayerScript::Elevator_In()
 {
+    CGameObject* ExitElevator = CGameManagerScript::GetInset()->GetExitElevator();
+
+    Vec3 PlayerPos = Transform()->GetRelativePos();
+    Vec3 ElevPos = ExitElevator->Transform()->GetRelativePos();
+
+    PlayerPos.z = 0.f;
+    ElevPos.z = 0.f;
+
+    Vec3 Dir = ElevPos - PlayerPos;
+
+    if (Dir.Length() < 10.f)
+        return;
+
+    Dir.Normalize();
+
+    PlayerPos.x += (Dir * 500.f * DT).x;
+
+    Transform()->SetRelativePos(PlayerPos);
 }
 
 void CPlayerScript::Elevator_End()

@@ -27,7 +27,7 @@ CEnemyScript::CEnemyScript(const CEnemyScript& origin)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_Life, "Life");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ATK, "ATK");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackRange, "Attack Range");
 }
 

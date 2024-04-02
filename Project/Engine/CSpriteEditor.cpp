@@ -672,16 +672,9 @@ void CSpriteEditor::DrawDetails()
     {
         if (nullptr != m_pAnim)
         {
-            string StopPlay;
-
-            if (m_bAnimPlay)
-                StopPlay = "Animation Stop";
-            else
-                StopPlay = "Animation Play";
-
-            if (ImGui::Button(StopPlay.c_str()))
+            if (ImGui_AlignButton("Reverse", 0.f))
             {
-                m_bAnimPlay = !m_bAnimPlay;
+                std::reverse(m_pAnim->m_vecFrm.begin(), m_pAnim->m_vecFrm.end());
             }
 
             ImGui::SameLine();
@@ -711,6 +704,20 @@ void CSpriteEditor::DrawDetails()
                                        MB_OK | MB_ICONERROR);
                     }
                 }
+            }
+
+            ImGui::Separator();
+
+            string StopPlay;
+
+            if (m_bAnimPlay)
+                StopPlay = "Animation Stop";
+            else
+                StopPlay = "Animation Play";
+
+            if (ImGui::Button(StopPlay.c_str()))
+            {
+                m_bAnimPlay = !m_bAnimPlay;
             }
 
             char buffer[256];

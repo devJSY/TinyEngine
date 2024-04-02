@@ -73,7 +73,7 @@ void CPlayerCameraScript::tick()
     }
 
     if (fabsf(pos.y - PlayerPos.y) > m_CamMoveRangeY)
-        pos.y += (Dir.Normalize() * m_CamSpeed * DT).y;
+        pos.y += (Dir.Normalize() * m_CamSpeed * DT).y * 1.5f;
 
     // Camera Effect
     if (!m_listCamEffect.empty())

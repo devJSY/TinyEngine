@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "CGameManagerScript.h"
 
-#include <Engine\\CLevelMgr.h>
-#include <Engine\\CLevel.h>
+#include "CLevelChangeScript.h"
 
 CGameManagerScript* CGameManagerScript::m_Inst = nullptr;
 
 CGameManagerScript::CGameManagerScript()
     : CScript(GAMEMANAGERSCRIPT)
     , m_Player(nullptr)
+    , m_ExitElevator(nullptr)
 {
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Player");
 
@@ -37,6 +37,28 @@ CGameManagerScript::~CGameManagerScript()
             m_Player = nullptr;
         }
     }
+}
+
+CGameObject* CGameManagerScript::GetExitElevator()
+{
+    if (nullptr == m_ExitElevator)
+    {
+        m_ExitElevator = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"ExitElevator");
+    }
+
+    return m_ExitElevator;
+}
+
+void CGameManagerScript::ChangeLevel(const std::string& _LevelName)
+{
+    CLevelChangeScript* LevelChangeScript = GetOwner()->GetScript<CLevelChangeScript>();
+    if (nullptr == LevelChangeScript)
+    {
+        LevelChangeScript = new CLevelChangeScript;
+        GetOwner()->AddComponent(LevelChangeScript);
+    }
+
+    LevelChangeScript->ChangeLevel(_LevelName);
 }
 
 void CGameManagerScript::begin()

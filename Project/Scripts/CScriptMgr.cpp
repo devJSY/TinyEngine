@@ -2,8 +2,9 @@
 #include "CScriptMgr.h"
 
 #include "CCameraMoveScript.h"
-#include "CElevatorScript.h"
 #include "CEnemyHitBoxScript.h"
+#include "CEntetElevatorScript.h"
+#include "CExitElevatorScript.h"
 #include "CFlyingBookScript.h"
 #include "CGameManagerScript.h"
 #include "CGhostScript.h"
@@ -23,8 +24,9 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
-	_vec.push_back(L"CElevatorScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
+	_vec.push_back(L"CEntetElevatorScript");
+	_vec.push_back(L"CExitElevatorScript");
 	_vec.push_back(L"CFlyingBookScript");
 	_vec.push_back(L"CGameManagerScript");
 	_vec.push_back(L"CGhostScript");
@@ -46,10 +48,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
-	if (L"CElevatorScript" == _strScriptName)
-		return new CElevatorScript;
 	if (L"CEnemyHitBoxScript" == _strScriptName)
 		return new CEnemyHitBoxScript;
+	if (L"CEntetElevatorScript" == _strScriptName)
+		return new CEntetElevatorScript;
+	if (L"CExitElevatorScript" == _strScriptName)
+		return new CExitElevatorScript;
 	if (L"CFlyingBookScript" == _strScriptName)
 		return new CFlyingBookScript;
 	if (L"CGameManagerScript" == _strScriptName)
@@ -89,10 +93,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
-	case (UINT)SCRIPT_TYPE::ELEVATORSCRIPT:
-		return new CElevatorScript;
 	case (UINT)SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return new CEnemyHitBoxScript;
+	case (UINT)SCRIPT_TYPE::ENTETELEVATORSCRIPT:
+		return new CEntetElevatorScript;
+	case (UINT)SCRIPT_TYPE::EXITELEVATORSCRIPT:
+		return new CExitElevatorScript;
 	case (UINT)SCRIPT_TYPE::FLYINGBOOKSCRIPT:
 		return new CFlyingBookScript;
 	case (UINT)SCRIPT_TYPE::GAMEMANAGERSCRIPT:
@@ -133,10 +139,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 	{
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
-	case SCRIPT_TYPE::ELEVATORSCRIPT:
-		return L"CElevatorScript";
 	case SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return L"CEnemyHitBoxScript";
+	case SCRIPT_TYPE::ENTETELEVATORSCRIPT:
+		return L"CEntetElevatorScript";
+	case SCRIPT_TYPE::EXITELEVATORSCRIPT:
+		return L"CExitElevatorScript";
 	case SCRIPT_TYPE::FLYINGBOOKSCRIPT:
 		return L"CFlyingBookScript";
 	case SCRIPT_TYPE::GAMEMANAGERSCRIPT:

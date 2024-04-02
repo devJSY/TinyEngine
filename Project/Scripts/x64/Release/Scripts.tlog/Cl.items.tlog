@@ -1,8 +1,9 @@
 D:\TinyEngine\Project\Scripts\CButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CButtonScript.obj
 D:\TinyEngine\Project\Scripts\CCameraMoveScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CCameraMoveScript.obj
-D:\TinyEngine\Project\Scripts\CElevatorScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CElevatorScript.obj
+D:\TinyEngine\Project\Scripts\CEntetElevatorScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEntetElevatorScript.obj
 D:\TinyEngine\Project\Scripts\CEnemyHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyHitBoxScript.obj
 D:\TinyEngine\Project\Scripts\CEnemyScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyScript.obj
+D:\TinyEngine\Project\Scripts\CExitElevatorScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CExitElevatorScript.obj
 D:\TinyEngine\Project\Scripts\CFlyingBookScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CFlyingBookScript.obj
 D:\TinyEngine\Project\Scripts\CGameManagerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGameManagerScript.obj
 D:\TinyEngine\Project\Scripts\CGhostScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGhostScript.obj
