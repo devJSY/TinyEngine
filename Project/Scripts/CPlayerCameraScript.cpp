@@ -55,12 +55,16 @@ void CPlayerCameraScript::tick()
 
     Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
     Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
-    pos.z = PlayerPos.z; 
+    pos.z = PlayerPos.z;
     Vec3 Dir = PlayerPos - pos;
 
     if (PLAYER_STATE::Dash == m_Player->GetScript<CPlayerScript>()->GetState())
     {
         pos.x += (Dir.Normalize() * m_CamSpeed * 2.5f * DT).x;
+    }
+    else if (PLAYER_STATE::DownAttack == m_Player->GetScript<CPlayerScript>()->GetState())
+    {
+        pos.y += (Dir.Normalize() * m_CamSpeed * 2.5f * DT).y;
     }
     else
     {

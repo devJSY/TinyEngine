@@ -960,7 +960,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CombineShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 1.5f); // Strength
+        pMtrl->SetScalarParam(FLOAT_0, 1.f); // Strength
         pMtrl->SetName(L"CombineMtrl");
         AddAsset<CMaterial>(L"CombineMtrl", pMtrl);
     }

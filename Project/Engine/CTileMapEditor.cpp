@@ -188,8 +188,8 @@ void CTileMapEditor::DrawViewport()
             m_ViewportScale *= 0.9f; // Zoom Out
 
         // Scale Limit
-        if (m_ViewportScale < 0.1f)
-            m_ViewportScale = 0.1f;
+        if (m_ViewportScale < 1e-3f)
+            m_ViewportScale = 1e-3f;
 
         if (m_ViewportScale > 100.f)
             m_ViewportScale = 100.f;

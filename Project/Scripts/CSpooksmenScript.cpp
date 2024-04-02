@@ -105,7 +105,7 @@ void CSpooksmenScript::tick()
 
 void CSpooksmenScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (SPOOKSMEN_STATE::Death == m_State || SPOOKSMEN_STATE::Appear == m_State)
+    if (SPOOKSMEN_STATE::Death == m_State || SPOOKSMEN_STATE::Hide == m_State || SPOOKSMEN_STATE::Appear == m_State)
         return;
 
     m_Life -= _DamageAmount;

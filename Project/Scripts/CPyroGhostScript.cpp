@@ -110,7 +110,7 @@ void CPyroGhostScript::tick()
 
 void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (PYROGHOST_STATE::Death == m_State || PYROGHOST_STATE::Appear == m_State)
+    if (PYROGHOST_STATE::Death == m_State || PYROGHOST_STATE::Hide == m_State || PYROGHOST_STATE::Appear == m_State)
         return;
 
     m_Life -= _DamageAmount;
