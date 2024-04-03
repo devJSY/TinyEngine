@@ -66,7 +66,7 @@ void CRenderMgr::init()
     m_CombineObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     m_CombineObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CombineMtrl"));
     m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_RTCopyTex);
-    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_LDRI);
+    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_BloomRTTex_LDRI);
 
     // HDRI Bloom
     m_BloomDownObj = new CGameObject;

@@ -53,6 +53,9 @@ inline CGameObject* CLevel::FindObjectOfType()
 {
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
+        if (nullptr == m_arrLayer[i])
+            continue;
+
         const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
 
         for (size_t j = 0; j < vecParent.size(); ++j)
@@ -92,6 +95,9 @@ inline vector<CGameObject*> CLevel::FindObjectsOfType()
 
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
+        if (nullptr == m_arrLayer[i])
+            continue;
+
         const vector<CGameObject*>& vecParent = m_arrLayer[i]->GetParentObjects();
 
         for (size_t j = 0; j < vecParent.size(); ++j)

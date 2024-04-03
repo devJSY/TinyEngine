@@ -245,7 +245,7 @@ PS_Std2D_Glow_Output PS_Std2D_Glow(PS_IN _in)
         
     if (0.1f >= vColor.a)
         discard;
-            
+    
     // Relative Luminance : 픽셀의 색이 밝은지 어두운지의 기준값
     float RelativeLuminance = dot(vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
         
@@ -258,7 +258,7 @@ PS_Std2D_Glow_Output PS_Std2D_Glow(PS_IN _in)
     {
         output.BloomTextureColor = float4(0.f, 0.f, 0.f, 1.f);
     }
-    
+  
     // 광원 처리
     tLightInfo LightColor = (tLightInfo) 0.f;
     

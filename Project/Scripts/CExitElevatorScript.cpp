@@ -43,7 +43,12 @@ void CExitElevatorScript::tick()
 
     if (Animator2D()->IsFinish())
     {
-        CGameManagerScript::GetInset()->ChangeLevel("Home Level");
+        const wstring& CurLevelName = CLevelMgr::GetInst()->GetCurrentLevel()->GetName();
+
+        if (L"Hall of Eternity Floor 0.tLevel" == CurLevelName)
+            CGameManagerScript::GetInset()->ChangeLevel("Hall of Eternity Floor 1");
+        else if (L"Hall of Eternity Floor 1.tLevel" == CurLevelName)
+            CGameManagerScript::GetInset()->ChangeLevel("Home Level");
     }
 }
 

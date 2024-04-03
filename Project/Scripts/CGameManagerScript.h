@@ -11,6 +11,9 @@ private:
 public:
     static CGameManagerScript* GetInset();
 
+private:
+    void Release();
+
 public:
     CGameObject* GetPlayer() const { return m_Player; }
     CGameObject* GetExitElevator();
