@@ -53,27 +53,11 @@ void CPlayerCameraScript::tick()
     if (nullptr == m_Player)
         return;
 
-    Vec3 pos = Transform()->GetRelativePos() - m_OffsetPos;
+    Vec3 pos = Transform()->GetRelativePos();
     Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
-    pos.z = PlayerPos.z;
-    Vec3 Dir = PlayerPos - pos;
+    pos.z = PlayerPos.z; // z축 플레이어 위치 기준으로 설정하여 연산
 
-    if (PLAYER_STATE::Dash == m_Player->GetScript<CPlayerScript>()->GetState())
-    {
-        pos.x += (Dir.Normalize() * m_CamSpeed * 2.5f * DT).x;
-    }
-    else if (PLAYER_STATE::DownAttack == m_Player->GetScript<CPlayerScript>()->GetState())
-    {
-        pos.y += (Dir.Normalize() * m_CamSpeed * 2.5f * DT).y;
-    }
-    else
-    {
-        if (fabsf(pos.x - PlayerPos.x) > m_CamMoveRangeX)
-            pos.x += (Dir.Normalize() * m_CamSpeed * DT).x;
-    }
-
-    if (fabsf(pos.y - PlayerPos.y) > m_CamMoveRangeY)
-        pos.y += (Dir.Normalize() * m_CamSpeed * DT).y * 1.5f;
+    pos = Vec3::Lerp(pos, PlayerPos + m_OffsetPos, DT * m_CamSpeed);
 
     // Camera Effect
     if (!m_listCamEffect.empty())
@@ -102,8 +86,8 @@ void CPlayerCameraScript::tick()
         }
     }
 
-    pos.z = 0.f;
-    Transform()->SetRelativePos(pos + m_OffsetPos);
+    pos.z = 0.f; // 플레이어 카메라 Z축은 항상 0으로 설정
+    Transform()->SetRelativePos(pos);
 }
 
 void CPlayerCameraScript::SaveToLevelFile(FILE* _File)
