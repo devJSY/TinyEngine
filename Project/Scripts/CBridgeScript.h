@@ -4,15 +4,14 @@
 class CBridgeScript : public CScript
 {
 private:
-    bool m_bEnabled;
-    float m_PassedTime;
+    float m_DisabledTime;
     
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 public:
-    void SetEnabled(bool _bEnable);
+    void SetEnabled(bool _bEnable, bool ForceEnable = false);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override{};

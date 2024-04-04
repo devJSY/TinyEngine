@@ -55,7 +55,6 @@ private:
     float m_RigidGravityScale;
     bool m_bJumpAttackActive;
     int m_AttackCount;
-    float m_BridgeIgnoreTime;
 
 public:
     virtual void begin() override;
@@ -105,10 +104,10 @@ private:
     void StopWalking() { Rigidbody2D()->SetVelocity(Vec2(0.f, Rigidbody2D()->GetVelocity().y)); }
 
     void RotateTransform();
-    
-    void GroundCheck();
-    RaycastHit2D RayCast(const wstring& _LayerName);
 
+    void GroundCheck();
+
+    void ChangeStateToJump();
 
     void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
 

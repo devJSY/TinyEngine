@@ -30,7 +30,6 @@ CPlayerScript::CPlayerScript()
     , m_RigidGravityScale(0.f)
     , m_bJumpAttackActive(true)
     , m_AttackCount(0)
-    , m_BridgeIgnoreTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -66,7 +65,6 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     , m_RigidGravityScale(origin.m_RigidGravityScale)
     , m_bJumpAttackActive(origin.m_bJumpAttackActive)
     , m_AttackCount(origin.m_AttackCount)
-    , m_BridgeIgnoreTime(origin.m_BridgeIgnoreTime)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -266,12 +264,8 @@ void CPlayerScript::tick()
     }
 
     m_DashPassedTime += DT;
-    m_BridgeIgnoreTime += DT;
 
     GroundCheck();
-
-    // RayCast
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, Vec3(1.f, 0.f, 0.f), false);
 }
 
 void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
@@ -579,29 +573,7 @@ void CPlayerScript::Idle()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        if (KEY_TAP(KEY::S) || KEY_PRESSED(KEY::S))
-        {
-            RaycastHit2D Hit = RayCast(L"Ground");
-
-            if (nullptr != Hit.pCollisionObj)
-            {
-                CBridgeScript* BridgeScript = Hit.pCollisionObj->GetScript<CBridgeScript>();
-                if (nullptr != BridgeScript)
-                {
-                    m_bOnGround = false;
-                    m_BridgeIgnoreTime = 0.f;
-                    ChangeState(PLAYER_STATE::Jump_Falling);
-
-                    BridgeScript->SetEnabled(false);
-                }
-                else
-                    ChangeState(PLAYER_STATE::Jump_Start);
-            }
-            else
-                ChangeState(PLAYER_STATE::Jump_Start);
-        }
-        else
-            ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -658,7 +630,7 @@ void CPlayerScript::IdleToRun()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -709,7 +681,7 @@ void CPlayerScript::IdleUturn()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -911,7 +883,7 @@ void CPlayerScript::Run()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -959,7 +931,7 @@ void CPlayerScript::RunUturn()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -1020,7 +992,7 @@ void CPlayerScript::RunToIdle()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -1066,7 +1038,7 @@ void CPlayerScript::Fight_To_Idle()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        ChangeStateToJump();
     }
 
     // Dash
@@ -1292,7 +1264,7 @@ void CPlayerScript::ComboMove()
         ChangeState(PLAYER_STATE::Dash);
     }
 
-    // 점프 & 하강 공격
+    // 점프 공격, 하강 공격
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
@@ -1415,7 +1387,7 @@ void CPlayerScript::ComboAerial()
         ChangeState(PLAYER_STATE::Dash);
     }
 
-    // 점프 & 하강 공격
+    // 점프 공경, 하강 공격
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
@@ -1474,9 +1446,14 @@ void CPlayerScript::RotateTransform()
 
 void CPlayerScript::GroundCheck()
 {
+    // RayCast
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, Vec3(1.f, 0.f, 0.f), false);
+
     if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
     {
-        RaycastHit2D Hit = RayCast(L"Ground"); // Ground 레이어와 충돌체크
+        Vec3 origin = Transform()->GetWorldPos();
+        RaycastHit2D Hit =
+            CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
         if (nullptr != Hit.pCollisionObj)
         {
             m_bOnGround = true;
@@ -1485,13 +1462,13 @@ void CPlayerScript::GroundCheck()
             // Hit.Distance; // Player 중점 에서 Ground 표면까지의 거리
             //  TODO 그림자 처리
 
-            if (m_BridgeIgnoreTime > 0.3f)
+            // Bridge 인경우 활성화 처리
+            CBridgeScript* BridgeScript = Hit.pCollisionObj->GetScript<CBridgeScript>();
+            if (nullptr != BridgeScript)
             {
-                CBridgeScript* BridgeScript = Hit.pCollisionObj->GetScript<CBridgeScript>();
-                if (nullptr != BridgeScript)
-                {
-                    BridgeScript->SetEnabled(true);
-                }
+                // 특정 상태에서는 강제 활성화
+                bool bForce = PLAYER_STATE::DownAttack == m_State;
+                BridgeScript->SetEnabled(true, bForce);
             }
         }
         else
@@ -1501,10 +1478,36 @@ void CPlayerScript::GroundCheck()
     }
 }
 
-RaycastHit2D CPlayerScript::RayCast(const wstring& _LayerName)
+void CPlayerScript::ChangeStateToJump()
 {
-    Vec3 origin = Transform()->GetWorldPos();
-    return CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, _LayerName);
+    bool m_bBridge = false;
+
+    if (KEY_TAP(KEY::S) || KEY_PRESSED(KEY::S))
+    {
+        Vec3 origin = Transform()->GetWorldPos();
+        RaycastHit2D Hit =
+            CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
+
+        if (nullptr != Hit.pCollisionObj)
+        {
+            CBridgeScript* BridgeScript = Hit.pCollisionObj->GetScript<CBridgeScript>();
+            if (nullptr != BridgeScript)
+            {
+                m_bBridge = true;
+                BridgeScript->SetEnabled(false); // Bridge 비활성화 처리
+            }
+        }
+    }
+
+    if (m_bBridge)
+    {
+        m_bOnGround = false;
+        ChangeState(PLAYER_STATE::Jump_Falling);
+    }
+    else
+    {
+        ChangeState(PLAYER_STATE::Jump_Start);
+    }
 }
 
 void CPlayerScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
@@ -1553,6 +1556,12 @@ void CPlayerScript::OnCollisionExit(CCollider2D* _OtherCollider)
     {
         if (L"Ground" == pCurLevel->GetLayer(LayerIdx)->GetName())
             m_bOnGround = false;
+    }
+
+    CBridgeScript* BridgeScript = _OtherCollider->GetOwner()->GetScript<CBridgeScript>();
+    if (nullptr != BridgeScript)
+    {
+        BridgeScript->SetEnabled(false); // Bridge 비활성화 처리
     }
 }
 

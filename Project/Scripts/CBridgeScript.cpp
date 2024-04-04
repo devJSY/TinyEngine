@@ -3,8 +3,7 @@
 
 CBridgeScript::CBridgeScript()
     : CScript(BRIDGESCRIPT)
-    , m_bEnabled(false)
-    , m_PassedTime(0.f)
+    , m_DisabledTime(0.f)
 {
 }
 
@@ -18,21 +17,20 @@ void CBridgeScript::begin()
 
 void CBridgeScript::tick()
 {
-    if (m_bEnabled)
-    {
-        m_PassedTime += DT;
-    }
-
-    if (m_PassedTime > 0.3f)
-    {
-        SetEnabled(false);
-    }
+    if (m_DisabledTime > 0.f)
+        m_DisabledTime -= DT;
 }
 
-void CBridgeScript::SetEnabled(bool _bEnable)
+void CBridgeScript::SetEnabled(bool _bEnable, bool ForceEnable)
 {
-    m_bEnabled = _bEnable;
-    m_PassedTime = 0.f;
+    if (_bEnable)
+    {
+        // Enable 은 DisabledTime이 지난 경우에만 적용 - 강제 활성화 인경우는 무시
+        if (!ForceEnable && m_DisabledTime > 0.f)
+            return; 
+    }
+    else
+        m_DisabledTime = 0.3f;
 
     if (nullptr == BoxCollider2D())
         return;
