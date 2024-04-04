@@ -1,3 +1,4 @@
+CBridgeScript
 CCameraMoveScript
 CEnemyHitBoxScript
 CEntetElevatorScript

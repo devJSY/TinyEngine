@@ -14,8 +14,8 @@
 #define vSliceUV    g_vec2_0
 
 #define TileAtlas   g_tex_0
-
 // ==============
+
 struct VS_Input
 {
     float3 vPos : POSITION;

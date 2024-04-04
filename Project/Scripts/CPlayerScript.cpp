@@ -7,6 +7,7 @@
 #include <Engine\\CAnim.h>
 #include "CPlayerCameraScript.h"
 #include "CPlayerHitBoxScript.h"
+#include "CBridgeScript.h"
 
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
@@ -29,6 +30,7 @@ CPlayerScript::CPlayerScript()
     , m_RigidGravityScale(0.f)
     , m_bJumpAttackActive(true)
     , m_AttackCount(0)
+    , m_BridgeIgnoreTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -64,6 +66,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     , m_RigidGravityScale(origin.m_RigidGravityScale)
     , m_bJumpAttackActive(origin.m_bJumpAttackActive)
     , m_AttackCount(origin.m_AttackCount)
+    , m_BridgeIgnoreTime(origin.m_BridgeIgnoreTime)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -263,8 +266,12 @@ void CPlayerScript::tick()
     }
 
     m_DashPassedTime += DT;
+    m_BridgeIgnoreTime += DT;
 
-    RayCast();
+    GroundCheck();
+
+    // RayCast
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, Vec3(1.f, 0.f, 0.f), false);
 }
 
 void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
@@ -572,7 +579,29 @@ void CPlayerScript::Idle()
     // Jump
     if (KEY_TAP(KEY::SPACE))
     {
-        ChangeState(PLAYER_STATE::Jump_Start);
+        if (KEY_TAP(KEY::S) || KEY_PRESSED(KEY::S))
+        {
+            RaycastHit2D Hit = RayCast(L"Ground");
+
+            if (nullptr != Hit.pCollisionObj)
+            {
+                CBridgeScript* BridgeScript = Hit.pCollisionObj->GetScript<CBridgeScript>();
+                if (nullptr != BridgeScript)
+                {
+                    m_bOnGround = false;
+                    m_BridgeIgnoreTime = 0.f;
+                    ChangeState(PLAYER_STATE::Jump_Falling);
+
+                    BridgeScript->SetEnabled(false);
+                }
+                else
+                    ChangeState(PLAYER_STATE::Jump_Start);
+            }
+            else
+                ChangeState(PLAYER_STATE::Jump_Start);
+        }
+        else
+            ChangeState(PLAYER_STATE::Jump_Start);
     }
 
     // Dash
@@ -1443,29 +1472,39 @@ void CPlayerScript::RotateTransform()
         Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 }
 
-void CPlayerScript::RayCast()
+void CPlayerScript::GroundCheck()
 {
-    // RayCast
     if (Rigidbody2D()->GetVelocity().y <= 0.f) // 낙하 or 정지 상태
     {
-        Vec3 origin = Transform()->GetWorldPos();
-        RaycastHit2D Hit =
-            CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, L"Ground"); // Ground 레이어와 충돌체크
-        GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, Vec3(1.f, 0.f, 0.f), false);
-
+        RaycastHit2D Hit = RayCast(L"Ground"); // Ground 레이어와 충돌체크
         if (nullptr != Hit.pCollisionObj)
         {
             m_bOnGround = true;
             m_bJumpAttackActive = true;
 
-            Hit.Distance; // Player 중점 에서 Ground 표면까지의 거리
-            // TODO 그림자 처리
+            // Hit.Distance; // Player 중점 에서 Ground 표면까지의 거리
+            //  TODO 그림자 처리
+
+            if (m_BridgeIgnoreTime > 0.3f)
+            {
+                CBridgeScript* BridgeScript = Hit.pCollisionObj->GetScript<CBridgeScript>();
+                if (nullptr != BridgeScript)
+                {
+                    BridgeScript->SetEnabled(true);
+                }
+            }
         }
         else
         {
             m_bOnGround = false;
         }
     }
+}
+
+RaycastHit2D CPlayerScript::RayCast(const wstring& _LayerName)
+{
+    Vec3 origin = Transform()->GetWorldPos();
+    return CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), m_RaycastDist, _LayerName);
 }
 
 void CPlayerScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)

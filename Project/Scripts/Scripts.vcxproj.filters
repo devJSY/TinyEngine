@@ -76,6 +76,9 @@
     <ClInclude Include="CExitElevatorScript.h">
       <Filter>Scripts\Elevator</Filter>
     </ClInclude>
+    <ClInclude Include="CBridgeScript.h">
+      <Filter>Scripts\Bridge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -150,6 +153,9 @@
     <ClCompile Include="CExitElevatorScript.cpp">
       <Filter>Scripts\Elevator</Filter>
     </ClCompile>
+    <ClCompile Include="CBridgeScript.cpp">
+      <Filter>Scripts\Bridge</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -205,6 +211,9 @@
     </Filter>
     <Filter Include="Scripts\Enemy\SkeletonHand">
       <UniqueIdentifier>{7c2d96ce-32a9-449b-838f-1d2406980b52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Bridge">
+      <UniqueIdentifier>{c317528b-f1f4-4dd6-ac8e-6009d82be140}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
