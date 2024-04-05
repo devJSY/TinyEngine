@@ -114,6 +114,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEntetElevatorScript.h" />
     <ClInclude Include="CEnemyHitBoxScript.h" />
     <ClInclude Include="CEnemyScript.h" />
+    <ClInclude Include="CEvilPumpkinScript.h" />
     <ClInclude Include="CExitElevatorScript.h" />
     <ClInclude Include="CFlyingBookScript.h" />
     <ClInclude Include="CGameManagerScript.h" />
@@ -142,6 +143,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEntetElevatorScript.cpp" />
     <ClCompile Include="CEnemyHitBoxScript.cpp" />
     <ClCompile Include="CEnemyScript.cpp" />
+    <ClCompile Include="CEvilPumpkinScript.cpp" />
     <ClCompile Include="CExitElevatorScript.cpp" />
     <ClCompile Include="CFlyingBookScript.cpp" />
     <ClCompile Include="CGameManagerScript.cpp" />

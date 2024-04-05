@@ -5,6 +5,7 @@
 #include "CCameraMoveScript.h"
 #include "CEnemyHitBoxScript.h"
 #include "CEntetElevatorScript.h"
+#include "CEvilPumpkinScript.h"
 #include "CExitElevatorScript.h"
 #include "CFlyingBookScript.h"
 #include "CGameManagerScript.h"
@@ -28,6 +29,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
 	_vec.push_back(L"CEntetElevatorScript");
+	_vec.push_back(L"CEvilPumpkinScript");
 	_vec.push_back(L"CExitElevatorScript");
 	_vec.push_back(L"CFlyingBookScript");
 	_vec.push_back(L"CGameManagerScript");
@@ -56,6 +58,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEnemyHitBoxScript;
 	if (L"CEntetElevatorScript" == _strScriptName)
 		return new CEntetElevatorScript;
+	if (L"CEvilPumpkinScript" == _strScriptName)
+		return new CEvilPumpkinScript;
 	if (L"CExitElevatorScript" == _strScriptName)
 		return new CExitElevatorScript;
 	if (L"CFlyingBookScript" == _strScriptName)
@@ -103,6 +107,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CEnemyHitBoxScript;
 	case (UINT)SCRIPT_TYPE::ENTETELEVATORSCRIPT:
 		return new CEntetElevatorScript;
+	case (UINT)SCRIPT_TYPE::EVILPUMPKINSCRIPT:
+		return new CEvilPumpkinScript;
 	case (UINT)SCRIPT_TYPE::EXITELEVATORSCRIPT:
 		return new CExitElevatorScript;
 	case (UINT)SCRIPT_TYPE::FLYINGBOOKSCRIPT:
@@ -151,6 +157,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CEnemyHitBoxScript";
 	case SCRIPT_TYPE::ENTETELEVATORSCRIPT:
 		return L"CEntetElevatorScript";
+	case SCRIPT_TYPE::EVILPUMPKINSCRIPT:
+		return L"CEvilPumpkinScript";
 	case SCRIPT_TYPE::EXITELEVATORSCRIPT:
 		return L"CExitElevatorScript";
 	case SCRIPT_TYPE::FLYINGBOOKSCRIPT:

@@ -2,6 +2,7 @@ CBridgeScript
 CCameraMoveScript
 CEnemyHitBoxScript
 CEntetElevatorScript
+CEvilPumpkinScript
 CExitElevatorScript
 CFlyingBookScript
 CGameManagerScript

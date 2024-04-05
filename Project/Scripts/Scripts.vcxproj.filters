@@ -79,6 +79,9 @@
     <ClInclude Include="CBridgeScript.h">
       <Filter>Scripts\Bridge</Filter>
     </ClInclude>
+    <ClInclude Include="CEvilPumpkinScript.h">
+      <Filter>Scripts\Miniboss\EvilPumpkin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -156,6 +159,9 @@
     <ClCompile Include="CBridgeScript.cpp">
       <Filter>Scripts\Bridge</Filter>
     </ClCompile>
+    <ClCompile Include="CEvilPumpkinScript.cpp">
+      <Filter>Scripts\Miniboss\EvilPumpkin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -194,26 +200,35 @@
     <Filter Include="Scripts\Enemy">
       <UniqueIdentifier>{769f9bd2-4a28-4e07-8cda-cb02c780e67d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Enemy\PyroGhost">
-      <UniqueIdentifier>{20e8a88c-1908-4da5-a09c-a2667ff4b5ca}</UniqueIdentifier>
+    <Filter Include="Scripts\Projectile2D">
+      <UniqueIdentifier>{8da82b5b-deb9-4c24-a752-ac43b7d476ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Enemy\Ghost">
-      <UniqueIdentifier>{9b54f0de-9bf7-4c69-8264-2a6bea106683}</UniqueIdentifier>
+    <Filter Include="Scripts\Bridge">
+      <UniqueIdentifier>{c317528b-f1f4-4dd6-ac8e-6009d82be140}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Enemy\Spooksmen">
-      <UniqueIdentifier>{29da2e78-fa09-40b5-803f-a81d28c6f2a5}</UniqueIdentifier>
+    <Filter Include="Scripts\Miniboss">
+      <UniqueIdentifier>{7a816f1c-aff9-4e77-910c-65310919d6d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\boss">
+      <UniqueIdentifier>{067d8fab-ce40-4cb4-807f-6fb2772625de}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Enemy\FlyingBook">
       <UniqueIdentifier>{6e693608-baa0-4c0f-ac23-6b32ba90c6da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Projectile2D">
-      <UniqueIdentifier>{8da82b5b-deb9-4c24-a752-ac43b7d476ba}</UniqueIdentifier>
+    <Filter Include="Scripts\Enemy\Ghost">
+      <UniqueIdentifier>{9b54f0de-9bf7-4c69-8264-2a6bea106683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Enemy\PyroGhost">
+      <UniqueIdentifier>{20e8a88c-1908-4da5-a09c-a2667ff4b5ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Enemy\SkeletonHand">
       <UniqueIdentifier>{7c2d96ce-32a9-449b-838f-1d2406980b52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Bridge">
-      <UniqueIdentifier>{c317528b-f1f4-4dd6-ac8e-6009d82be140}</UniqueIdentifier>
+    <Filter Include="Scripts\Enemy\Spooksmen">
+      <UniqueIdentifier>{29da2e78-fa09-40b5-803f-a81d28c6f2a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Miniboss\EvilPumpkin">
+      <UniqueIdentifier>{34d7aec4-3b0d-48d8-8799-4f09524c2fe6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
