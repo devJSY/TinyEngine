@@ -340,6 +340,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Cinematic Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
+        pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Cinematic");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(INT_0, "Cinematic Enable");
+        pShader->AddScalarParam(FLOAT_0, "Thickness");
+        pShader->AddScalarParam(VEC4_0, "Cinematic Color");
+
+        pShader->SetName(L"CinematicShader");
+        AddAsset(L"CinematicShader", pShader);
+    }
+
+    // =================================
     // DebugShape Shader
     // =================================
     {
@@ -848,6 +868,18 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetTexParam(TEX_0, FindAsset<CTexture>(L"Texture\\noise\\noise_01.jpg"));
         pMtrl->SetName(L"DistortionMtrl");
         AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
+    }
+
+    // CinematicMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CinematicShader"));
+        pMtrl->SetScalarParam(INT_0, 1);
+        pMtrl->SetScalarParam(FLOAT_0, 0.15f);
+        pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f));
+
+        pMtrl->SetName(L"CinematicMtrl");
+        AddAsset<CMaterial>(L"CinematicMtrl", pMtrl);
     }
 
     // DebugShapeMtrl

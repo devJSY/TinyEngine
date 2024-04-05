@@ -33,7 +33,7 @@ float4 PS_GrayFilter(VS_Output _in) : SV_Target
 {
     float4 vColor = (float4) 0.f;
     
-    vColor = g_postprocess_Tex.Sample(g_LinearWrapSampler, _in.vUV);
+    vColor = g_postprocess_Tex.Sample(g_LinearClampSampler, _in.vUV);
     
     float aver = (vColor.r + vColor.g + vColor.b) / 3.f;
     
@@ -48,7 +48,7 @@ float4 PS_BlendFilter(VS_Output _in) : SV_Target
 {
     float4 vColor = (float4) 0.f;
     
-    vColor = g_postprocess_Tex.Sample(g_LinearWrapSampler, _in.vUV);
+    vColor = g_postprocess_Tex.Sample(g_LinearClampSampler, _in.vUV);
     
     float Alpha = g_vec4_0.a;
 
@@ -91,7 +91,28 @@ float4 PS_Distortion(VS_Output _in) : SV_Target
         vScreenUV += vNoise;
     }
         
-    vColor = g_postprocess_Tex.Sample(g_LinearWrapSampler, vScreenUV);
+    vColor = g_postprocess_Tex.Sample(g_LinearClampSampler, vScreenUV);
+    
+    return vColor;
+}
+
+#define CinematicEnable g_int_0
+#define Thickness g_float_0
+#define CinematicColor g_vec4_0
+
+float4 PS_Cinematic(VS_Output _in) : SV_Target
+{
+    float4 vColor = float4(0.f, 0.f, 0.f, 1.f);
+        
+    vColor = g_postprocess_Tex.Sample(g_LinearClampSampler, _in.vUV);
+    
+    if (CinematicEnable)
+    {
+        if ((_in.vUV.y >= 0.f && _in.vUV.y <= Thickness) || (_in.vUV.y >= 1.f - Thickness && _in.vUV.y <= 1.f))
+        {
+            vColor = g_vec4_0;
+        }
+    }
     
     return vColor;
 }
