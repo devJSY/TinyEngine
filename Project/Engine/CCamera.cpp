@@ -192,7 +192,7 @@ void CCamera::render()
     render_IDMap(m_vecOpaque);
     render_IDMap(m_vecMaked);
     render_IDMap(m_vecTransparent);
-#endif
+#endif // DISTRIBUTE
 
     if (m_bHDRI)
     {
@@ -272,7 +272,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             else
                 pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
         }
-#endif
+#endif // DISTRIBUTE
     }
 }
 

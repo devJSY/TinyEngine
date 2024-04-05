@@ -56,7 +56,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
     MSG msg;
 
-    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1280, 768))))
+    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1280, 720)))) // 16 : 9
     {
         MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
         return 0;
@@ -71,7 +71,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Home Level.tLevel"), LEVEL_STATE::PLAY);
 #else
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Test Level.tLevel"), LEVEL_STATE::STOP);
-#endif
+#endif // DISTRIBUTE
 
     while (true)
     {

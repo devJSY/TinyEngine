@@ -39,7 +39,7 @@ CRenderMgr::CRenderMgr()
 
 #ifdef DISTRIBUTE
     m_bShowDebugRender = false;
-#endif
+#endif // DISTRIBUTE
 }
 
 CRenderMgr::~CRenderMgr()

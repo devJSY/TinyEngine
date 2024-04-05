@@ -53,7 +53,7 @@ void CTaskMgr::tick()
             int width = rect.right - rect.left;
             int height = rect.bottom - rect.top;
 
-            if (Resolution.x != width || Resolution.y != height)
+            if (int(Resolution.x) != width || int(Resolution.y) != height)
             {
                 GamePlayStatic::WindowResize(width, height);
             }

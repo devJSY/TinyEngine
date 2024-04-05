@@ -23,7 +23,7 @@ CEditorMgr::CEditorMgr()
 {
 #ifdef DISTRIBUTE
     m_bEnable = false;
-#endif
+#endif // DISTRIBUTE
 }
 
 CEditorMgr::~CEditorMgr()
