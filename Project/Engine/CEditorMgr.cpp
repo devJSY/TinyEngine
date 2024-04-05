@@ -21,6 +21,9 @@ CEditorMgr::CEditorMgr()
     , m_ViewportMousePos(Vec2())
     , m_hObserver(nullptr)
 {
+#ifdef DISTRIBUTE
+    m_bEnable = false;
+#endif
 }
 
 CEditorMgr::~CEditorMgr()

@@ -185,12 +185,14 @@ void CCamera::render()
     render_DepthOnly(m_vecMaked);
     render_DepthOnly(m_vecTransparent);
 
+#ifndef DISTRIBUTE
     // IDMap Pass
     CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
                                 CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
     render_IDMap(m_vecOpaque);
     render_IDMap(m_vecMaked);
     render_IDMap(m_vecTransparent);
+#endif
 
     if (m_bHDRI)
     {
@@ -240,6 +242,9 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
     for (size_t i = 0; i < _vecObj.size(); ++i)
     {
+#ifdef DISTRIBUTE
+        _vecObj[i]->render();
+#else
         // Render Pass
         if (g_Global.g_DrawAsWireFrame)
         {
@@ -267,6 +272,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             else
                 pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
         }
+#endif
     }
 }
 

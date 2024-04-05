@@ -1,5 +1,7 @@
 #pragma once
 
+#define DISTRIBUTE // 게임 배포 시 설정
+
 #include <stdlib.h>
 #include <Windows.h>
 #include <typeinfo>

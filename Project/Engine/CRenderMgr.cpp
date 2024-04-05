@@ -36,6 +36,10 @@ CRenderMgr::CRenderMgr()
     , m_ToneMappingObj(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
+
+#ifdef DISTRIBUTE
+    m_bShowDebugRender = false;
+#endif
 }
 
 CRenderMgr::~CRenderMgr()
