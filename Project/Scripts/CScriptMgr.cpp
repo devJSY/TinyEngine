@@ -2,6 +2,7 @@
 #include "CScriptMgr.h"
 
 #include "CBridgeScript.h"
+#include "CCameraLockScript.h"
 #include "CCameraMoveScript.h"
 #include "CEnemyHitBoxScript.h"
 #include "CEntetElevatorScript.h"
@@ -26,6 +27,7 @@
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CBridgeScript");
+	_vec.push_back(L"CCameraLockScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
 	_vec.push_back(L"CEntetElevatorScript");
@@ -52,6 +54,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CBridgeScript" == _strScriptName)
 		return new CBridgeScript;
+	if (L"CCameraLockScript" == _strScriptName)
+		return new CCameraLockScript;
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CEnemyHitBoxScript" == _strScriptName)
@@ -101,6 +105,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::BRIDGESCRIPT:
 		return new CBridgeScript;
+	case (UINT)SCRIPT_TYPE::CAMERALOCKSCRIPT:
+		return new CCameraLockScript;
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
 	case (UINT)SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
@@ -151,6 +157,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 	{
 	case SCRIPT_TYPE::BRIDGESCRIPT:
 		return L"CBridgeScript";
+	case SCRIPT_TYPE::CAMERALOCKSCRIPT:
+		return L"CCameraLockScript";
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
 	case SCRIPT_TYPE::ENEMYHITBOXSCRIPT:

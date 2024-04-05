@@ -927,7 +927,7 @@ Vec2 LoadMeta(const wstring& _strMetaRelativePath)
     Vec2 retVec = {-1, -1};
     FILE* pFile = nullptr;
 
-    _wfopen_s(&pFile, (_strMetaRelativePath).c_str(), L"r");
+    _wfopen_s(&pFile, _strMetaRelativePath.c_str(), L"r");
 
     if (nullptr == pFile)
     {

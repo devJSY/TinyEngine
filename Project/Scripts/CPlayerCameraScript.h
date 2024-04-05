@@ -36,6 +36,9 @@ private:
 
     std::list<tCamEffect> m_listCamEffect;
 
+    bool m_bLocked;
+    Vec3 m_LockedPos;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
@@ -53,6 +56,8 @@ public:
 
         m_listCamEffect.push_back(ef);
     }
+
+    void Lock(bool _bLocked, Vec3 _LockedPos = Vec3());
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -10,6 +10,8 @@ CPlayerCameraScript::CPlayerCameraScript()
     , m_CamMoveRangeY(0.f)
     , m_OffsetPos()
     , m_listCamEffect{}
+    , m_bLocked(false)
+    , m_LockedPos(Vec3())
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamSpeed, "Camera Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamMoveRangeX, "Camera Move Range X");
@@ -25,6 +27,8 @@ CPlayerCameraScript::CPlayerCameraScript(const CPlayerCameraScript& origin)
     , m_CamMoveRangeY(origin.m_CamMoveRangeY)
     , m_OffsetPos(origin.m_OffsetPos)
     , m_listCamEffect(origin.m_listCamEffect)
+    , m_bLocked(origin.m_bLocked)
+    , m_LockedPos(origin.m_LockedPos)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamSpeed, "Camera Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamMoveRangeX, "Camera Move Range X");
@@ -54,10 +58,19 @@ void CPlayerCameraScript::tick()
         return;
 
     Vec3 pos = Transform()->GetRelativePos();
-    Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
-    pos.z = PlayerPos.z; // z축 플레이어 위치 기준으로 설정하여 연산
 
-    pos = Vec3::Lerp(pos, PlayerPos + m_OffsetPos, DT * m_CamSpeed);
+    if (m_bLocked)
+    {
+        pos.z = m_LockedPos.z;
+        pos = Vec3::Lerp(pos, m_LockedPos, DT);
+    }
+    else
+    {
+        Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
+        pos.z = PlayerPos.z; // z축 플레이어 위치 기준으로 설정하여 연산
+
+        pos = Vec3::Lerp(pos, PlayerPos + m_OffsetPos, DT * m_CamSpeed);
+    }
 
     // Camera Effect
     if (!m_listCamEffect.empty())
@@ -90,12 +103,20 @@ void CPlayerCameraScript::tick()
     Transform()->SetRelativePos(pos);
 }
 
+void CPlayerCameraScript::Lock(bool _bLocked, Vec3 _LockedPos)
+{
+    m_bLocked = _bLocked;
+    m_LockedPos = _LockedPos;
+}
+
 void CPlayerCameraScript::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_CamSpeed, sizeof(float), 1, _File);
     fwrite(&m_CamMoveRangeX, sizeof(float), 1, _File);
     fwrite(&m_CamMoveRangeY, sizeof(float), 1, _File);
     fwrite(&m_OffsetPos, sizeof(Vec3), 1, _File);
+    fwrite(&m_bLocked, sizeof(bool), 1, _File);
+    fwrite(&m_LockedPos, sizeof(Vec3), 1, _File);
 }
 
 void CPlayerCameraScript::LoadFromLevelFile(FILE* _File)
@@ -104,4 +125,6 @@ void CPlayerCameraScript::LoadFromLevelFile(FILE* _File)
     fread(&m_CamMoveRangeX, sizeof(float), 1, _File);
     fread(&m_CamMoveRangeY, sizeof(float), 1, _File);
     fread(&m_OffsetPos, sizeof(Vec3), 1, _File);
+    fread(&m_bLocked, sizeof(bool), 1, _File);
+    fread(&m_LockedPos, sizeof(Vec3), 1, _File);
 }
