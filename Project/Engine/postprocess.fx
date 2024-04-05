@@ -16,9 +16,6 @@ struct VS_Output
     float2 vUV : TEXCOORD;
 };
 
-// ==========
-// GrayFilter
-// ==========
 VS_Output VS_Postprocess(VS_Input _in)
 {
     VS_Output output = (VS_Output) 0.f;
@@ -29,6 +26,19 @@ VS_Output VS_Postprocess(VS_Input _in)
     return output;
 }
 
+VS_Output VS_Postprocess_World(VS_Input _in)
+{
+    VS_Output output = (VS_Output) 0.f;
+    
+    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vUV = _in.vUV;
+    
+    return output;
+}
+
+// ==========
+// GrayFilter
+// ==========
 float4 PS_GrayFilter(VS_Output _in) : SV_Target
 {
     float4 vColor = (float4) 0.f;
@@ -60,16 +70,6 @@ float4 PS_BlendFilter(VS_Output _in) : SV_Target
 // ==========
 // Distortion
 // ==========
-VS_Output VS_Postprocess_World(VS_Input _in)
-{
-    VS_Output output = (VS_Output) 0.f;
-    
-    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
-    output.vUV = _in.vUV;
-    
-    return output;
-}
-
 float4 PS_Distortion(VS_Output _in) : SV_Target
 {
     float4 vColor = (float4) 0.f;
@@ -100,7 +100,7 @@ float4 PS_Distortion(VS_Output _in) : SV_Target
 #define Thickness g_float_0
 #define CinematicColor g_vec4_0
 
-float4 PS_Cinematic(VS_Output _in) : SV_Target
+float4 PS_CinematicFilter(VS_Output _in) : SV_Target
 {
     float4 vColor = float4(0.f, 0.f, 0.f, 1.f);
         
@@ -117,4 +117,54 @@ float4 PS_Cinematic(VS_Output _in) : SV_Target
     return vColor;
 }
 
+float4 PS_AnimationFilter(VS_Output _in) : SV_Target
+{
+    float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
+    
+    if (g_UseAnim2D)
+    {
+        float2 vUV = float2(0.0, 0.0);
+        
+        if (g_UseBackGround)
+        {
+            float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
+            vBackgroundLeftTop -= g_vOffset;
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+        }
+        else
+        {
+            float2 LT = g_vLeftTop - g_vOffset;
+            vUV = LT + (g_vSliceSize * _in.vUV);
+        }
+        
+        if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
+            || vUV.y < g_vLeftTop.y || (g_vLeftTop.y + g_vSliceSize.y) < vUV.y)
+        {
+            discard;
+        }
+        else
+        {
+            vColor = g_anim2d_tex.Sample(g_LinearWrapSampler, vUV);
+        }
+    }
+    else
+    {
+        if (g_btex_0)
+        {
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        }
+        else
+        {
+            discard;
+        }
+    }
+
+  
+    if (0.1f >= vColor.a)
+        discard;
+    
+    vColor.a = 1.f;
+    
+    return vColor;
+}
 #endif

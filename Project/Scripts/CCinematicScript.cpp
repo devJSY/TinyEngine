@@ -51,10 +51,16 @@ void CCinematicScript::tick()
         else
         {
             // 화면 효과 비활성화
-            CGameObject* pCinematicPostProcess = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicPostProcess");
-            if (nullptr != pCinematicPostProcess)
+            CGameObject* pCinematicFilter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicFilter");
+            if (nullptr != pCinematicFilter)
             {
-                pCinematicPostProcess->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 0);
+                pCinematicFilter->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 0);
+            }
+
+            CGameObject* pUICamera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI Camera");
+            if (nullptr != pUICamera)
+            {
+                pUICamera->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", true);
             }
 
             CPlayerScript* pPlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
@@ -62,6 +68,7 @@ void CCinematicScript::tick()
             {
                 pPlayerScript->ChangeState(PLAYER_STATE::Idle);
             }
+
             GamePlayStatic::RemoveComponent(GetOwner(), COMPONENT_TYPE::BOXCOLLIDER2D);
             m_bTrigger = true;
         }
@@ -86,10 +93,16 @@ void CCinematicScript::OnTriggerEnter(CCollider2D* _OtherCollider)
         }
     }
 
-    CGameObject* pCinematicPostProcess = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicPostProcess");
-    if (nullptr != pCinematicPostProcess)
+    CGameObject* pCinematicFilter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicFilter");
+    if (nullptr != pCinematicFilter)
     {
-        pCinematicPostProcess->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 1);
+        pCinematicFilter->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 1);
+    }
+
+    CGameObject* pUICamera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI Camera");
+    if (nullptr != pUICamera)
+    {
+        pUICamera->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
     }
 
     CPlayerScript* pPlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();

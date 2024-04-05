@@ -5,6 +5,7 @@ class CLevelChangeScript : public CScript
 {
 private:
     string m_ChangeLevelName;
+    CGameObject* m_TransitionFilterObj;
 
 public:
     virtual void tick() override;

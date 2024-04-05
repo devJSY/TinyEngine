@@ -10,6 +10,7 @@
 CLevelChangeScript::CLevelChangeScript()
     : CScript(LEVELCHANGESCRIPT)
     , m_ChangeLevelName()
+    , m_TransitionFilterObj(nullptr)
 {
 }
 
@@ -22,7 +23,7 @@ void CLevelChangeScript::tick()
     if (m_ChangeLevelName.empty())
         return;
 
-    if (Animator2D()->IsFinish())
+    if (nullptr != m_TransitionFilterObj && m_TransitionFilterObj->Animator2D()->IsFinish())
     {
         GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(ToWstring(m_ChangeLevelName)), LEVEL_STATE::PLAY);
     }
@@ -35,21 +36,18 @@ void CLevelChangeScript::ChangeLevel(const std::string& LevelName)
 
     m_ChangeLevelName = LevelName;
 
-    if (nullptr == Animator2D())
-        GetOwner()->AddComponent(new CAnimator2D);
+    int PostProcessIdx = LAYER_MAX - 1;
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
 
-    Animator2D()->LoadAnimation(L"AnimData\\UI\\Transition01.anim");
-    Animator2D()->Play(L"Transition01", false);
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        if (L"PostProcess" == pCurLevel->GetLayer(i)->GetName())
+        {
+            PostProcessIdx = i;
+            break;
+        }
+    }
 
-    if (nullptr == MeshRender())
-        GetOwner()->AddComponent(new CMeshRender);
-
-    MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-    MeshRender()->CreateDynamicMaterial();
-
-    Transform()->SetRelativePos(CRenderMgr::GetInst()->GetMainCamera()->GetOwner()->Transform()->GetRelativePos());
-    Vec2 resolution = CDevice::GetInst()->GetRenderResolution();
-
-    Transform()->SetRelativeScale(Vec3(resolution.x, resolution.y, 1.f));
+    m_TransitionFilterObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\TransitionFilter.pref", L"prefab\\TransitionFilter.pref")->Instantiate();
+    GamePlayStatic::SpawnGameObject(m_TransitionFilterObj, PostProcessIdx);
 }

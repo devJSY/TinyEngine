@@ -340,12 +340,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
-    // Cinematic Shader
+    // CinematicFilter Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
-        pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_Cinematic");
+        pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_CinematicFilter");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -355,8 +355,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(FLOAT_0, "Thickness");
         pShader->AddScalarParam(VEC4_0, "Cinematic Color");
 
-        pShader->SetName(L"CinematicShader");
-        AddAsset(L"CinematicShader", pShader);
+        pShader->SetName(L"CinematicFilterShader");
+        AddAsset(L"CinematicFilterShader", pShader);
+    }
+
+    // =================================
+    // AnimationFilter Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
+        pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_AnimationFilter");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"AnimationFilterShader");
+        AddAsset(L"AnimationFilterShader", pShader);
     }
 
     // =================================
@@ -870,16 +886,24 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"DistortionMtrl", pMtrl);
     }
 
-    // CinematicMtrl
+    // CinematicFilterMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
-        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CinematicShader"));
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CinematicFilterShader"));
         pMtrl->SetScalarParam(INT_0, 1);
         pMtrl->SetScalarParam(FLOAT_0, 0.15f);
         pMtrl->SetScalarParam(VEC4_0, Vec4(0.f, 0.f, 0.f, 1.f));
 
-        pMtrl->SetName(L"CinematicMtrl");
-        AddAsset<CMaterial>(L"CinematicMtrl", pMtrl);
+        pMtrl->SetName(L"CinematicFilterMtrl");
+        AddAsset<CMaterial>(L"CinematicFilterMtrl", pMtrl);
+    }
+
+    // AnimationFilterMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"AnimationFilterShader"));
+        pMtrl->SetName(L"AnimationFilterMtrl");
+        AddAsset<CMaterial>(L"AnimationFilterMtrl", pMtrl);
     }
 
     // DebugShapeMtrl
