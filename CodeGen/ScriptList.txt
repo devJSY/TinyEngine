@@ -1,6 +1,6 @@
 CBridgeScript
-CCameraLockScript
 CCameraMoveScript
+CCinematicScript
 CEnemyHitBoxScript
 CEntetElevatorScript
 CEvilPumpkinScript

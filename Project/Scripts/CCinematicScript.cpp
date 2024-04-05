@@ -1,17 +1,19 @@
 #include "pch.h"
-#include "CCameraLockScript.h"
+#include "CCinematicScript.h"
+
+#include "CPlayerScript.h"
 #include "CPlayerCameraScript.h"
 
-CCameraLockScript::CCameraLockScript()
-    : CScript(CAMERALOCKSCRIPT)
+CCinematicScript::CCinematicScript()
+    : CScript(CINEMATICSCRIPT)
 {
 }
 
-CCameraLockScript::~CCameraLockScript()
+CCinematicScript::~CCinematicScript()
 {
 }
 
-void CCameraLockScript::tick()
+void CCinematicScript::tick()
 {
     if (KEY_TAP(KEY::O))
     {
@@ -27,7 +29,7 @@ void CCameraLockScript::tick()
     }
 }
 
-void CCameraLockScript::OnTriggerEnter(CCollider2D* _OtherCollider)
+void CCinematicScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 {
     if (L"Player" != _OtherCollider->GetOwner()->GetName())
         return;
@@ -40,5 +42,11 @@ void CCameraLockScript::OnTriggerEnter(CCollider2D* _OtherCollider)
         {
             pScript->Lock(true, Transform()->GetWorldPos());
         }
+    }
+
+    CPlayerScript* pPlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
+    if (nullptr != pPlayerScript)
+    {
+        pPlayerScript->ChangeState(PLAYER_STATE::Cinematic);
     }
 }

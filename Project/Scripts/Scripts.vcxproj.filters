@@ -82,8 +82,8 @@
     <ClInclude Include="CEvilPumpkinScript.h">
       <Filter>Scripts\Miniboss\EvilPumpkin</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraLockScript.h">
-      <Filter>Scripts\CameraLock</Filter>
+    <ClInclude Include="CCinematicScript.h">
+      <Filter>Scripts\Cinematic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,8 +165,8 @@
     <ClCompile Include="CEvilPumpkinScript.cpp">
       <Filter>Scripts\Miniboss\EvilPumpkin</Filter>
     </ClCompile>
-    <ClCompile Include="CCameraLockScript.cpp">
-      <Filter>Scripts\CameraLock</Filter>
+    <ClCompile Include="CCinematicScript.cpp">
+      <Filter>Scripts\Cinematic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,7 +236,7 @@
     <Filter Include="Scripts\Miniboss\EvilPumpkin">
       <UniqueIdentifier>{34d7aec4-3b0d-48d8-8799-4f09524c2fe6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\CameraLock">
+    <Filter Include="Scripts\Cinematic">
       <UniqueIdentifier>{10d43e23-c840-4f26-b6c1-c19a946764b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

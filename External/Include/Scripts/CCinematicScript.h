@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine\\CScript.h>
 
-class CCameraLockScript : public CScript
+class CCinematicScript : public CScript
 {
 public:
     virtual void tick() override;
@@ -13,9 +13,9 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override{};
     virtual void LoadFromLevelFile(FILE* _File) override{};
 
-    CLONE(CCameraLockScript);
+    CLONE(CCinematicScript);
 
 public:
-    CCameraLockScript();
-    virtual ~CCameraLockScript();
+    CCinematicScript();
+    virtual ~CCinematicScript();
 };

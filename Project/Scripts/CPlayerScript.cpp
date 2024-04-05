@@ -236,6 +236,9 @@ void CPlayerScript::tick()
     case PLAYER_STATE::Elevator_Out:
         Elevator_Out();
         break;
+    case PLAYER_STATE::Cinematic:
+        Cinematic();
+        break;
     case PLAYER_STATE::ComboMove:
         ComboMove();
         break;
@@ -369,6 +372,11 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::Elevator_Out: {
         Animator2D()->Play(L"LD_Elevator_Out", false);
+    }
+    break;
+    case PLAYER_STATE::Cinematic: {
+        StopWalking();
+        Animator2D()->Play(L"LD_Idle");
     }
     break;
     case PLAYER_STATE::ComboMove: {
@@ -513,6 +521,9 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::Elevator_Out: {
+    }
+    break;
+    case PLAYER_STATE::Cinematic: {
     }
     break;
     case PLAYER_STATE::ComboMove: {
@@ -1092,6 +1103,10 @@ void CPlayerScript::Elevator_Out()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
+}
+
+void CPlayerScript::Cinematic()
+{
 }
 
 void CPlayerScript::ComboMove()

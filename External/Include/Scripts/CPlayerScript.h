@@ -19,6 +19,7 @@ enum class PLAYER_STATE
     Elevator_In,
     Elevator_End,
     Elevator_Out,
+    Cinematic,
 
     // The Scythe
     ComboMove,
@@ -92,6 +93,7 @@ private:
     void Elevator_In();
     void Elevator_End();
     void Elevator_Out();
+    void Cinematic();
 
     // The Scythe
     void ComboMove();
