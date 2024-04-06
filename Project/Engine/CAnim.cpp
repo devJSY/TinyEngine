@@ -8,8 +8,10 @@
 
 CAnim::CAnim()
     : m_Animator(nullptr)
+    , m_vecFrm{}
     , m_CurFrmIdx(0)
     , m_bFinish(false)
+    , m_AtlasTex(nullptr)
     , m_fAccTime(0.f)
     , m_bUseBackGround(false)
 {
@@ -182,8 +184,9 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
     FILE* pFile = nullptr;
 
     _wfopen_s(&pFile, _FilePath.c_str(), L"r");
+    std::filesystem::path filePath = _FilePath;
 
-    if (nullptr == pFile)
+    if (nullptr == pFile || L".anim" != filePath.extension())
     {
         LOG(Warning, "File Open Failed!");
         return false;
