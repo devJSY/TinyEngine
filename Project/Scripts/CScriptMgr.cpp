@@ -11,6 +11,7 @@
 #include "CFlyingBookScript.h"
 #include "CGameManagerScript.h"
 #include "CGhostScript.h"
+#include "CHallofEternity_Floor1_CinematicScript.h"
 #include "CLevelChangeScript.h"
 #include "CPlayButtonScript.h"
 #include "CPlayerCameraScript.h"
@@ -36,6 +37,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlyingBookScript");
 	_vec.push_back(L"CGameManagerScript");
 	_vec.push_back(L"CGhostScript");
+	_vec.push_back(L"CHallofEternity_Floor1_CinematicScript");
 	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CPlayButtonScript");
 	_vec.push_back(L"CPlayerCameraScript");
@@ -72,6 +74,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CGameManagerScript;
 	if (L"CGhostScript" == _strScriptName)
 		return new CGhostScript;
+	if (L"CHallofEternity_Floor1_CinematicScript" == _strScriptName)
+		return new CHallofEternity_Floor1_CinematicScript;
 	if (L"CLevelChangeScript" == _strScriptName)
 		return new CLevelChangeScript;
 	if (L"CPlayButtonScript" == _strScriptName)
@@ -123,6 +127,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CGameManagerScript;
 	case (UINT)SCRIPT_TYPE::GHOSTSCRIPT:
 		return new CGhostScript;
+	case (UINT)SCRIPT_TYPE::HALLOFETERNITY_FLOOR1_CINEMATICSCRIPT:
+		return new CHallofEternity_Floor1_CinematicScript;
 	case (UINT)SCRIPT_TYPE::LEVELCHANGESCRIPT:
 		return new CLevelChangeScript;
 	case (UINT)SCRIPT_TYPE::PLAYBUTTONSCRIPT:
@@ -175,6 +181,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CGameManagerScript";
 	case SCRIPT_TYPE::GHOSTSCRIPT:
 		return L"CGhostScript";
+	case SCRIPT_TYPE::HALLOFETERNITY_FLOOR1_CINEMATICSCRIPT:
+		return L"CHallofEternity_Floor1_CinematicScript";
 	case SCRIPT_TYPE::LEVELCHANGESCRIPT:
 		return L"CLevelChangeScript";
 	case SCRIPT_TYPE::PLAYBUTTONSCRIPT:

@@ -120,6 +120,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFlyingBookScript.h" />
     <ClInclude Include="CGameManagerScript.h" />
     <ClInclude Include="CGhostScript.h" />
+    <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
@@ -150,6 +151,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFlyingBookScript.cpp" />
     <ClCompile Include="CGameManagerScript.cpp" />
     <ClCompile Include="CGhostScript.cpp" />
+    <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />

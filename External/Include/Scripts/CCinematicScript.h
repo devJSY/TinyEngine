@@ -3,7 +3,7 @@
 
 class CCinematicScript : public CScript
 {
-private:
+protected:
     bool m_bTrigger;
     float m_ActionDuration;
 
@@ -12,6 +12,9 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+public:
+    void SetEnableWallCollider(bool _bEnable);
 
 public:
     virtual void OnTriggerEnter(CCollider2D* _OtherCollider) override;
@@ -24,6 +27,7 @@ public:
 
 public:
     CCinematicScript();
+    CCinematicScript(UINT _ScriptType);
     CCinematicScript(const CCinematicScript& origin);
     virtual ~CCinematicScript();
 };

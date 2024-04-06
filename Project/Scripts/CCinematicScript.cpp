@@ -13,6 +13,15 @@ CCinematicScript::CCinematicScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ActionDuration, "Action Duration");
 }
 
+CCinematicScript::CCinematicScript(UINT _ScriptType)
+    : CScript(_ScriptType)
+    , m_bTrigger(true)
+    , m_ActionDuration(3.f)
+    , m_PassedTime(0.f)
+{
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ActionDuration, "Action Duration");
+}
+
 CCinematicScript::CCinematicScript(const CCinematicScript& origin)
     : CScript(origin)
     , m_bTrigger(origin.m_bTrigger)
@@ -28,14 +37,8 @@ CCinematicScript::~CCinematicScript()
 
 void CCinematicScript::begin()
 {
-    const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
-    for (UINT i = 0; i < vecChild.size(); i++)
-    {
-        if (nullptr != vecChild[i]->BoxCollider2D())
-        {
-            vecChild[i]->BoxCollider2D()->SetEnabled(false);
-        }
-    }
+    // Wall Collider Disable
+    SetEnableWallCollider(false);
 }
 
 void CCinematicScript::tick()
@@ -44,33 +47,45 @@ void CCinematicScript::tick()
     {
         m_PassedTime += DT;
 
-        if (m_PassedTime < m_ActionDuration)
+        // 화면 효과 비활성화
+        if (m_PassedTime > m_ActionDuration)
         {
-            // 화면 효과 활성화
-        }
-        else
-        {
-            // 화면 효과 비활성화
+            // Filter Off
             CGameObject* pCinematicFilter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicFilter");
             if (nullptr != pCinematicFilter)
             {
                 pCinematicFilter->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 0);
             }
 
+            // UI On
             CGameObject* pUICamera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI Camera");
             if (nullptr != pUICamera)
             {
                 pUICamera->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", true);
             }
 
+            // Player State Change
             CPlayerScript* pPlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
             if (nullptr != pPlayerScript)
             {
                 pPlayerScript->ChangeState(PLAYER_STATE::Idle);
             }
 
+            // Trigger Collider Remove
             GamePlayStatic::RemoveComponent(GetOwner(), COMPONENT_TYPE::BOXCOLLIDER2D);
             m_bTrigger = true;
+        }
+    }
+}
+
+void CCinematicScript::SetEnableWallCollider(bool _bEnable)
+{
+    const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+    for (UINT i = 0; i < vecChild.size(); i++)
+    {
+        if (nullptr != vecChild[i]->BoxCollider2D())
+        {
+            vecChild[i]->BoxCollider2D()->SetEnabled(_bEnable);
         }
     }
 }
@@ -83,6 +98,28 @@ void CCinematicScript::OnTriggerEnter(CCollider2D* _OtherCollider)
     m_bTrigger = false;
     m_PassedTime = 0.f;
 
+    // Filter On
+    CGameObject* pCinematicFilter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicFilter");
+    if (nullptr != pCinematicFilter)
+    {
+        pCinematicFilter->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 1);
+    }
+
+    // UI Off
+    CGameObject* pUICamera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI Camera");
+    if (nullptr != pUICamera)
+    {
+        pUICamera->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
+    }
+
+    // Player State Change
+    CPlayerScript* pPlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
+    if (nullptr != pPlayerScript)
+    {
+        pPlayerScript->ChangeState(PLAYER_STATE::Cinematic);
+    }
+
+    // Player Camera Lock On
     CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
     if (nullptr != pPlayerCamObj)
     {
@@ -93,32 +130,8 @@ void CCinematicScript::OnTriggerEnter(CCollider2D* _OtherCollider)
         }
     }
 
-    CGameObject* pCinematicFilter = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicFilter");
-    if (nullptr != pCinematicFilter)
-    {
-        pCinematicFilter->GetRenderComponent()->GetMaterial()->SetScalarParam(INT_0, 1);
-    }
-
-    CGameObject* pUICamera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI Camera");
-    if (nullptr != pUICamera)
-    {
-        pUICamera->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
-    }
-
-    CPlayerScript* pPlayerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
-    if (nullptr != pPlayerScript)
-    {
-        pPlayerScript->ChangeState(PLAYER_STATE::Cinematic);
-    }
-
-    const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
-    for (UINT i = 0; i < vecChild.size(); i++)
-    {
-        if (nullptr != vecChild[i]->BoxCollider2D())
-        {
-            vecChild[i]->BoxCollider2D()->SetEnabled(true);
-        }
-    }
+    // Wall Collider Enable
+    SetEnableWallCollider(true);
 }
 
 void CCinematicScript::SaveToLevelFile(FILE* _File)

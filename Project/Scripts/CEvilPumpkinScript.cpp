@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CEvilPumpkinScript.h"
+#include "CPlayerCameraScript.h"
+#include "CCinematicScript.h"
 
 CEvilPumpkinScript::CEvilPumpkinScript()
     : CEnemyScript(EVILPUMPKINSCRIPT)
@@ -60,6 +62,7 @@ void CEvilPumpkinScript::begin()
         GetOwner()->AddComponent(new CRigidbody2D);
 
     ChangeState(m_State);
+    m_Dir = DIRECTION_TYPE::LEFT;
     RotateTransform();
 }
 
@@ -99,7 +102,7 @@ void CEvilPumpkinScript::tick()
 
 void CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (EVILPUMPKINSCRIPT_STATE::Death == m_State)
+    if (EVILPUMPKINSCRIPT_STATE::Death == m_State || EVILPUMPKINSCRIPT_STATE::Hide == m_State || EVILPUMPKINSCRIPT_STATE::Intro == m_State)
         return;
 
     m_Life -= _DamageAmount;
@@ -218,9 +221,12 @@ void CEvilPumpkinScript::Intro()
     StopWalking();
 
     // 206 บฮลอ Glow On
-    // MeshRender()->GetMaterial()->SetScalarParam(INT_0, 0);
-    // MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.f);
-    // MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
+    if (Animator2D()->GetCurAnim()->GetCurFrmIdx() >= 206)
+    {
+        MeshRender()->GetMaterial()->SetScalarParam(INT_0, 0);
+        MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.f);
+        MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
+    }
 
     if (Animator2D()->IsFinish())
         ChangeState(EVILPUMPKINSCRIPT_STATE::Idle);
@@ -256,7 +262,29 @@ void CEvilPumpkinScript::Death()
 
     if (Animator2D()->IsFinish())
     {
-        GamePlayStatic::DestroyGameObject(GetOwner());
+        // Player Camera Lock Off
+        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
+        if (nullptr != pPlayerCamObj)
+        {
+            CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
+            if (nullptr != pScript)
+            {
+                pScript->Lock(false);
+            }
+        }
+
+        // Wall Collider Disable
+        CGameObject* pCinematicObject = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicObject");
+        if (nullptr != pCinematicObject)
+        {
+            CCinematicScript* pCinematicScript = pCinematicObject->GetScript<CCinematicScript>();
+            if (nullptr != pCinematicScript)
+            {
+                pCinematicScript->SetEnableWallCollider(false);
+            }
+        }
+
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Hide);
     }
 }
 

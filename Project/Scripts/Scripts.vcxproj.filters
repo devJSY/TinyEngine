@@ -85,6 +85,9 @@
     <ClInclude Include="CCinematicScript.h">
       <Filter>Scripts\Cinematic</Filter>
     </ClInclude>
+    <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h">
+      <Filter>Scripts\Cinematic\Hall of Eternity\Floor 1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -168,6 +171,9 @@
     <ClCompile Include="CCinematicScript.cpp">
       <Filter>Scripts\Cinematic</Filter>
     </ClCompile>
+    <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp">
+      <Filter>Scripts\Cinematic\Hall of Eternity\Floor 1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -238,6 +244,12 @@
     </Filter>
     <Filter Include="Scripts\Cinematic">
       <UniqueIdentifier>{10d43e23-c840-4f26-b6c1-c19a946764b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Cinematic\Hall of Eternity">
+      <UniqueIdentifier>{79c17661-2e8c-4b3c-8c86-9d8c1a962c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Cinematic\Hall of Eternity\Floor 1">
+      <UniqueIdentifier>{7a74ee93-af17-4f32-ba7f-dd8810038d8d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

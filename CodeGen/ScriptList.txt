@@ -8,6 +8,7 @@ CExitElevatorScript
 CFlyingBookScript
 CGameManagerScript
 CGhostScript
+CHallofEternity_Floor1_CinematicScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript
