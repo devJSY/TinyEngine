@@ -6,6 +6,10 @@ CEvilPumpkinScript::CEvilPumpkinScript()
     , m_State(EVILPUMPKINSCRIPT_STATE::Hide)
     , m_AttackCount(0)
 {
+    m_Life = 1100;
+    m_Speed = 3;
+    m_ATK = 15;
+    m_AttackRange = 200.f;
 }
 
 CEvilPumpkinScript::CEvilPumpkinScript(const CEvilPumpkinScript& origin)
@@ -32,8 +36,8 @@ void CEvilPumpkinScript::begin()
 
     Ptr<CMaterial> pMtrl = MeshRender()->CreateDynamicMaterial();
 
-    pMtrl->SetScalarParam(INT_0, 1);
-    pMtrl->SetScalarParam(FLOAT_0, 0.5f);
+    pMtrl->SetScalarParam(INT_0, 0);
+    pMtrl->SetScalarParam(FLOAT_0, 0.f);
     pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
 
     if (nullptr == Animator2D())
@@ -212,6 +216,11 @@ void CEvilPumpkinScript::Hide()
 void CEvilPumpkinScript::Intro()
 {
     StopWalking();
+
+    // 206 บฮลอ Glow On
+    // MeshRender()->GetMaterial()->SetScalarParam(INT_0, 0);
+    // MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.f);
+    // MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
 
     if (Animator2D()->IsFinish())
         ChangeState(EVILPUMPKINSCRIPT_STATE::Idle);

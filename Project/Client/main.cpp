@@ -169,6 +169,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
     }
     break;
+    case WM_SIZE: {
+        UINT width = LOWORD(lParam);
+        UINT height = HIWORD(lParam);
+        GamePlayStatic::WindowResize(width, height);
+    }
+    break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
