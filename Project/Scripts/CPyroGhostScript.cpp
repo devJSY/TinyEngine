@@ -108,10 +108,10 @@ void CPyroGhostScript::tick()
     }
 }
 
-void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
+bool CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     if (PYROGHOST_STATE::Death == m_State || PYROGHOST_STATE::Hide == m_State || PYROGHOST_STATE::Appear == m_State)
-        return;
+        return false;
 
     m_Life -= _DamageAmount;
 
@@ -133,6 +133,8 @@ void CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
                 ChangeState(PYROGHOST_STATE::Hit1);
         }
     }
+
+    return true;
 }
 
 void CPyroGhostScript::ChangeState(PYROGHOST_STATE _NextState)

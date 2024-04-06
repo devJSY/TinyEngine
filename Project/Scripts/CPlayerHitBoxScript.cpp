@@ -4,6 +4,7 @@
 #include <Engine\\CPhysics2DMgr.h>
 
 #include "CPlayerScript.h"
+#include "CPlayerCameraScript.h"
 #include "CEnemyScript.h"
 
 CPlayerHitBoxScript::CPlayerHitBoxScript()
@@ -64,5 +65,17 @@ void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
     Vec3 Dir = EnemyPos - PlayerPos;
     Dir.Normalize();
 
-    EnemyScript->TakeHit(GetRandomInt(PlayerScript->m_ATK - 5, PlayerScript->m_ATK + 5), Dir);
+    if (EnemyScript->TakeHit(GetRandomInt(PlayerScript->m_ATK - 5, PlayerScript->m_ATK + 5), Dir))
+    {
+        // Camera Shake
+        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
+        if (nullptr != pPlayerCamObj)
+        {
+            CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
+            if (nullptr != pScript)
+            {
+                pScript->ShakeCam(ShakeDir::Comprehensive, 0.1f, 1.f, 100.f);
+            }
+        }
+    }
 }

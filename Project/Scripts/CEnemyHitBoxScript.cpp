@@ -2,6 +2,7 @@
 #include "CEnemyHitBoxScript.h"
 #include "CEnemyScript.h"
 #include "CPlayerScript.h"
+#include "CPlayerCameraScript.h"
 
 CEnemyHitBoxScript::CEnemyHitBoxScript()
     : CScript(ENEMYHITBOXSCRIPT)
@@ -42,5 +43,17 @@ void CEnemyHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
     Vec3 Dir = PlayerPos - EnemyPos;
     Dir.Normalize();
 
-    PlayerScript->TakeHit(m_Enemy->m_ATK, Dir);
+    if (PlayerScript->TakeHit(m_Enemy->m_ATK, Dir))
+    {
+        // Camera Shake
+        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
+        if (nullptr != pPlayerCamObj)
+        {
+            CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
+            if (nullptr != pScript)
+            {
+                pScript->ShakeCam(ShakeDir::Comprehensive, 0.1f, 1.f, 100.f);
+            }
+        }
+    }
 }

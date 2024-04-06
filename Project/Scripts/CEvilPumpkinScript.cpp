@@ -105,10 +105,10 @@ void CEvilPumpkinScript::tick()
     }
 }
 
-void CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
+bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     if (EVILPUMPKINSCRIPT_STATE::Death == m_State || EVILPUMPKINSCRIPT_STATE::Hide == m_State || EVILPUMPKINSCRIPT_STATE::Intro == m_State)
-        return;
+        return false;
 
     m_Life -= _DamageAmount;
 
@@ -130,6 +130,8 @@ void CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Hit);
         }
     }
+
+    return true;
 }
 
 void CEvilPumpkinScript::ChangeState(EVILPUMPKINSCRIPT_STATE _NextState)

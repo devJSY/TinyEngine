@@ -110,10 +110,10 @@ void CGhostScript::tick()
     }
 }
 
-void CGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
+bool CGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     if (GHOST_STATE::Death == m_State || GHOST_STATE::Waiting == m_State || GHOST_STATE::Appear == m_State)
-        return;
+        return false;
 
     m_Life -= _DamageAmount;
 
@@ -135,6 +135,8 @@ void CGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
                 ChangeState(GHOST_STATE::Hit1);
         }
     }
+
+    return true;
 }
 
 void CGhostScript::ChangeState(GHOST_STATE _NextState)

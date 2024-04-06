@@ -103,10 +103,10 @@ void CSpooksmenScript::tick()
     }
 }
 
-void CSpooksmenScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
+bool CSpooksmenScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     if (SPOOKSMEN_STATE::Death == m_State || SPOOKSMEN_STATE::Hide == m_State || SPOOKSMEN_STATE::Appear == m_State)
-        return;
+        return false;
 
     m_Life -= _DamageAmount;
 
@@ -128,6 +128,8 @@ void CSpooksmenScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
                 ChangeState(SPOOKSMEN_STATE::Hit1);
         }
     }
+
+    return true;
 }
 
 void CSpooksmenScript::ChangeState(SPOOKSMEN_STATE _NextState)

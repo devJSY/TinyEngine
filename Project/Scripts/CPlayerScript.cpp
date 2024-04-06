@@ -279,10 +279,10 @@ void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
     EnterState();
 }
 
-void CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
+bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     if (m_State == PLAYER_STATE::Dash || m_State == PLAYER_STATE::DownAttack || m_State == PLAYER_STATE::JumpAttack)
-        return;
+        return false;
 
     m_CurLife -= _DamageAmount;
 
@@ -292,6 +292,8 @@ void CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
     ChangeState(PLAYER_STATE::Hit02);
+
+    return true;
 }
 
 void CPlayerScript::EnterState()

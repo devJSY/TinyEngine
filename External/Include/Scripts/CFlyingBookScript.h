@@ -22,7 +22,7 @@ public:
     virtual void tick() override;
 
 public:
-    virtual void TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3()) override;
+    virtual bool TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3()) override;
     void ChangeState(FLYINGBOOK_STATE _NextState);
 
 private:

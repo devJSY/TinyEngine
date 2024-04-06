@@ -88,10 +88,10 @@ void CFlyingBookScript::tick()
     }
 }
 
-void CFlyingBookScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
+bool CFlyingBookScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
     if (FLYINGBOOK_STATE::Death == m_State)
-        return;
+        return false;
 
     m_Life -= _DamageAmount;
 
@@ -110,6 +110,8 @@ void CFlyingBookScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             ChangeState(FLYINGBOOK_STATE::Hit);
         }
     }
+
+    return true;
 }
 
 void CFlyingBookScript::ChangeState(FLYINGBOOK_STATE _NextState)
