@@ -176,7 +176,19 @@ void CEvilPumpkinScript::EnterState()
         else if (2 == m_AttackCount)
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack02", false);
         else if (3 == m_AttackCount)
+        {
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack03", false);
+            SetHitBox(true, L"Attack3_1_HitBox");
+
+            const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+            for (size_t i = 0; i < vecChild.size(); i++)
+            {
+                if (L"Attack03_FX" == vecChild[i]->GetName())
+                {
+                    vecChild[i]->Animator2D()->Play(L"Miniboss_EvilPumpkin_Fist", false);
+                }
+            }
+        }
         // else if (4 == m_AttackCount)
         //     Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack04", false);
         else if (5 == m_AttackCount)
@@ -368,12 +380,29 @@ void CEvilPumpkinScript::Attack()
         HasAttack = false;
     }
 
-    if (!HasAttack && 29 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    if (!HasAttack && 2 == m_AttackCount && 29 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
-        if (2 == m_AttackCount)
-            SetHitBox(true);
-
+        SetHitBox(true, L"Attack2_HitBox");
         HasAttack = true;
+    }
+    else if (!HasAttack && 3 == m_AttackCount && 40 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        SetHitBox(false, L"Attack3_1_HitBox");
+        SetHitBox(true, L"Attack3_2_HitBox");
+        HasAttack = true;
+    }
+    else if (!HasAttack && 5 == m_AttackCount && 30 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        SetHitBox(true, L"Attack5_HitBox");
+
+        const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+        for (size_t i = 0; i < vecChild.size(); i++)
+        {
+            if (L"Attack05_FX" == vecChild[i]->GetName())
+            {
+                vecChild[i]->Animator2D()->Play(L"Miniboss_EvilPumpkin_FX_Attack05", false);
+            }
+        }
     }
 }
 
