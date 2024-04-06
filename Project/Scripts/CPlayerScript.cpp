@@ -70,6 +70,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurMana, "Current Mana");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpImpulse, "Jump Impulse");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpForce, "Jump Force");

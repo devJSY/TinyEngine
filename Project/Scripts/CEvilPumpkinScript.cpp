@@ -7,6 +7,7 @@ CEvilPumpkinScript::CEvilPumpkinScript()
     : CEnemyScript(EVILPUMPKINSCRIPT)
     , m_State(EVILPUMPKINSCRIPT_STATE::Hide)
     , m_AttackCount(0)
+    , m_PassedTime(0.f)
 {
     m_Life = 1100;
     m_Speed = 3;
@@ -18,6 +19,7 @@ CEvilPumpkinScript::CEvilPumpkinScript(const CEvilPumpkinScript& origin)
     : CEnemyScript(origin)
     , m_State(origin.m_State)
     , m_AttackCount(origin.m_AttackCount)
+    , m_PassedTime(0.f)
 {
 }
 
@@ -64,6 +66,9 @@ void CEvilPumpkinScript::begin()
     ChangeState(m_State);
     m_Dir = DIRECTION_TYPE::LEFT;
     RotateTransform();
+
+    // 타겟 등록
+    m_pTarget = CGameManagerScript::GetInset()->GetPlayer();
 }
 
 void CEvilPumpkinScript::tick()
@@ -111,7 +116,7 @@ void CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
         ChangeState(EVILPUMPKINSCRIPT_STATE::Death);
     else
     {
-        if (m_State != EVILPUMPKINSCRIPT_STATE::Attack)
+        if (EVILPUMPKINSCRIPT_STATE::Attack != m_State && EVILPUMPKINSCRIPT_STATE::Stun != m_State && EVILPUMPKINSCRIPT_STATE::Hit != m_State)
         {
             StopWalking();
             Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
@@ -119,9 +124,9 @@ void CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            if (_DamageAmount > 20.f)
+            if (_DamageAmount >= 15.f)
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Stun);
-            else
+            else if (_DamageAmount >= 12.f)
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Hit);
         }
     }
@@ -162,14 +167,18 @@ void CEvilPumpkinScript::EnterState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Attack: {
+        // 4는 사용 X
+        if (4 == m_AttackCount)
+            m_AttackCount++;
+
         if (1 == m_AttackCount)
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack01", false);
         else if (2 == m_AttackCount)
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack02", false);
         else if (3 == m_AttackCount)
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack03", false);
-        else if (4 == m_AttackCount)
-            Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack04", false);
+        // else if (4 == m_AttackCount)
+        //     Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack04", false);
         else if (5 == m_AttackCount)
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack05", false);
     }
@@ -204,6 +213,7 @@ void CEvilPumpkinScript::ExitState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Attack: {
+        SetHitBox(false);
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Death: {
@@ -223,9 +233,9 @@ void CEvilPumpkinScript::Intro()
     // 206 부터 Glow On
     if (Animator2D()->GetCurAnim()->GetCurFrmIdx() >= 206)
     {
-        MeshRender()->GetMaterial()->SetScalarParam(INT_0, 0);
-        MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.f);
-        MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
+        MeshRender()->GetMaterial()->SetScalarParam(INT_0, 1);
+        MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.5f);
+        MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.2f, 0.f, 1.f));
     }
 
     if (Animator2D()->IsFinish())
@@ -234,10 +244,104 @@ void CEvilPumpkinScript::Intro()
 
 void CEvilPumpkinScript::Idle()
 {
+    StopWalking();
+
+    m_PassedTime += DT;
+
+    Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+    Vec3 pos = Transform()->GetWorldPos();
+    TargetPos.z = 0.f;
+    pos.z = 0.f;
+    Vec3 Dist = TargetPos - pos;
+
+    // 공격 범위 이내에 존재한다면 공격
+    if (Dist.Length() < m_AttackRange)
+    {
+        m_AttackCount = GetRandomInt(1, 5);
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+    }
+
+    if (m_PassedTime > 1.f)
+    {
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Run);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+
+        m_PassedTime = 0.f;
+    }
 }
 
 void CEvilPumpkinScript::Run()
 {
+    Walking();
+
+    m_PassedTime += DT;
+
+    Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+    Vec3 pos = Transform()->GetWorldPos();
+    TargetPos.z = 0.f;
+    pos.z = 0.f;
+    Vec3 Dist = TargetPos - pos;
+
+    // 공격 범위 이내에 존재한다면 공격
+    if (Dist.Length() < m_AttackRange)
+    {
+        m_AttackCount = GetRandomInt(1, 5);
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+    }
+
+    if (m_PassedTime > 1.f)
+    {
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Idle);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+
+        m_PassedTime = 0.f;
+    }
 }
 
 void CEvilPumpkinScript::Hit()
@@ -254,11 +358,34 @@ void CEvilPumpkinScript::Stun()
 
 void CEvilPumpkinScript::Attack()
 {
+    static bool HasAttack = false;
+
+    StopWalking();
+
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Idle);
+        HasAttack = false;
+    }
+
+    if (!HasAttack && 29 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        if (2 == m_AttackCount)
+            SetHitBox(true);
+
+        HasAttack = true;
+    }
 }
 
 void CEvilPumpkinScript::Death()
 {
     StopWalking();
+
+    // 206 부터 Glow Off
+    if (Animator2D()->GetCurAnim()->GetCurFrmIdx() >= 40)
+    {
+        MeshRender()->GetMaterial()->SetScalarParam(INT_0, 0);
+    }
 
     if (Animator2D()->IsFinish())
     {
@@ -286,16 +413,6 @@ void CEvilPumpkinScript::Death()
 
         ChangeState(EVILPUMPKINSCRIPT_STATE::Hide);
     }
-}
-
-void CEvilPumpkinScript::OnDetectTargetEnter(CGameObject* _TargetObj)
-{
-    CEnemyScript::OnDetectTargetEnter(_TargetObj);
-}
-
-void CEvilPumpkinScript::OnDetectTargetExit(CGameObject* _TargetObj)
-{
-    CEnemyScript::OnDetectTargetExit(_TargetObj);
 }
 
 void CEvilPumpkinScript::SaveToLevelFile(FILE* _File)

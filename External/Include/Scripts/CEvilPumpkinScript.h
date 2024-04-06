@@ -18,6 +18,7 @@ class CEvilPumpkinScript : public CEnemyScript
 private:
     EVILPUMPKINSCRIPT_STATE m_State;
     int m_AttackCount;
+    float m_PassedTime;
 
 public:
     virtual void begin() override;
@@ -41,8 +42,8 @@ private:
     void Death();
 
 private:
-    virtual void OnDetectTargetEnter(CGameObject* _TargetObj) override;
-    virtual void OnDetectTargetExit(CGameObject* _TargetObj) override;
+    virtual void OnDetectTargetEnter(CGameObject* _TargetObj) override{}; // 부모 OnDetectTargetEnter 사용 X
+    virtual void OnDetectTargetExit(CGameObject* _TargetObj) override{};  // 부모 OnDetectTargetExit 사용 X
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
