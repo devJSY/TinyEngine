@@ -167,8 +167,8 @@ void CEvilPumpkinScript::EnterState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Attack: {
-        // 4는 사용 X
-        if (4 == m_AttackCount)
+        // 1, 4는 사용 X
+        if (1 == m_AttackCount || 4 == m_AttackCount)
             m_AttackCount++;
 
         if (1 == m_AttackCount)
