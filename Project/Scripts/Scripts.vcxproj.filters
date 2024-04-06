@@ -88,6 +88,9 @@
     <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h">
       <Filter>Scripts\Cinematic\Hall of Eternity\Floor 1</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerDamageLifeBarScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -173,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp">
       <Filter>Scripts\Cinematic\Hall of Eternity\Floor 1</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerDamageLifeBarScript.cpp">
+      <Filter>Scripts\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

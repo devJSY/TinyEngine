@@ -15,7 +15,7 @@ float4 main(PS_IN _in) : SV_Target
     float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
 
     if (g_btex_0)
-        vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        vColor = g_tex_0.Sample(g_LinearClampSampler, _in.vUV);
   
     if (0.1f >= vColor.a)
         discard;

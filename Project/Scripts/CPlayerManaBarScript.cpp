@@ -8,10 +8,6 @@
 
 CPlayerManaBarScript::CPlayerManaBarScript()
     : CScript(PLAYERMANABARSCRIPT)
-    , m_Player(nullptr)
-    , m_RenderMana(0.f)
-    , m_IncreaseSpeed(20.f)
-    , m_DecreaseSpeed(100.f)
 {
 }
 
@@ -21,50 +17,26 @@ CPlayerManaBarScript::~CPlayerManaBarScript()
 
 void CPlayerManaBarScript::begin()
 {
-    if (MeshRender())
-        MeshRender()->CreateDynamicMaterial();
+    if (nullptr == MeshRender())
+    {
+        GetOwner()->AddComponent(new CMeshRender);
+        MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ProgressBarMtrl"));
+    }
 
-    m_Player = CGameManagerScript::GetInset()->GetPlayer();
-
-    if (nullptr == m_Player)
-        return;
-
-    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
-    if (nullptr == pPlyaerScript)
-        return;
-
-    m_RenderMana = (float)pPlyaerScript->GetCurMana();
+    MeshRender()->CreateDynamicMaterial();
 }
 
 void CPlayerManaBarScript::tick()
 {
-    if (nullptr == m_Player)
-        return;
-
-    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
+    CPlayerScript* pPlyaerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
-        return;
-
-    if (nullptr == MeshRender() || nullptr == MeshRender()->GetMaterial())
         return;
 
     float MaxMana = (float)pPlyaerScript->GetMaxMana();
     float CurMana = (float)pPlyaerScript->GetCurMana();
 
-    if (fabsf(m_RenderMana - CurMana) < 0.1f)
-    {
-        m_RenderMana = CurMana;
-    }
-    else if (m_RenderMana < CurMana)
-    {
-        m_RenderMana += m_IncreaseSpeed * DT;
-    }
-    else if (m_RenderMana > CurMana)
-    {
-        m_RenderMana -= m_DecreaseSpeed * DT;
-    }
-
     MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, MaxMana);
-    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, m_RenderMana);
+    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, CurMana);
     MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(0.f, 1.f, 0.f, 1.f));
 }

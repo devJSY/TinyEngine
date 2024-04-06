@@ -8,6 +8,7 @@
 #include "CPlayerCameraScript.h"
 #include "CPlayerHitBoxScript.h"
 #include "CBridgeScript.h"
+#include "CPlayerDamageLifeBarScript.h"
 
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
@@ -292,6 +293,12 @@ bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
     ChangeState(PLAYER_STATE::Hit02);
+
+    CGameObject* pDamageLifeBar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectOfType<CPlayerDamageLifeBarScript>();
+    if (nullptr != pDamageLifeBar)
+    {
+        pDamageLifeBar->GetScript<CPlayerDamageLifeBarScript>()->TakeHit(1.f);
+    }
 
     return true;
 }

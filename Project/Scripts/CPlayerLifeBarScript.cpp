@@ -8,9 +8,6 @@
 
 CPlayerLifeBarScript::CPlayerLifeBarScript()
     : CScript(PLAYERLIFEBARSCRIPT)
-    , m_Player(nullptr)
-    , m_RenderLife(0.f)
-    , m_FluctuationSpeed(30.f)
 {
 }
 
@@ -20,50 +17,26 @@ CPlayerLifeBarScript::~CPlayerLifeBarScript()
 
 void CPlayerLifeBarScript::begin()
 {
-    if (MeshRender())
-        MeshRender()->CreateDynamicMaterial();
+    if (nullptr == MeshRender())
+    {
+        GetOwner()->AddComponent(new CMeshRender);
+        MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ProgressBarMtrl"));
+    }
 
-    m_Player = CGameManagerScript::GetInset()->GetPlayer();
-
-    if (nullptr == m_Player)
-        return;
-
-    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
-    if (nullptr == pPlyaerScript)
-        return;
-
-    m_RenderLife = (float)pPlyaerScript->GetCurLife();
+    MeshRender()->CreateDynamicMaterial();
 }
 
 void CPlayerLifeBarScript::tick()
 {
-    if (nullptr == m_Player)
-        return;
-
-    CPlayerScript* pPlyaerScript = m_Player->GetScript<CPlayerScript>();
+    CPlayerScript* pPlyaerScript = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
     if (nullptr == pPlyaerScript)
-        return;
-
-    if (nullptr == MeshRender() || nullptr == MeshRender()->GetMaterial())
         return;
 
     float MaxLife = (float)pPlyaerScript->GetMaxLife();
     float CurLife = (float)pPlyaerScript->GetCurLife();
 
-    if (fabsf(m_RenderLife - CurLife) < 0.1f)
-    {
-        m_RenderLife = CurLife;
-    }
-    else if (m_RenderLife < CurLife)
-    {
-        m_RenderLife += m_FluctuationSpeed * DT;
-    }
-    else if (m_RenderLife > CurLife)
-    {
-        m_RenderLife -= m_FluctuationSpeed * DT;
-    }
-
     MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, MaxLife);
-    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, m_RenderLife);
+    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, CurLife);
     MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
 }

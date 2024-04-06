@@ -12,6 +12,7 @@ CHallofEternity_Floor1_CinematicScript
 CLevelChangeScript
 CPlayButtonScript
 CPlayerCameraScript
+CPlayerDamageLifeBarScript
 CPlayerDetectScript
 CPlayerHitBoxScript
 CPlayerLifeBarScript

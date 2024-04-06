@@ -124,6 +124,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
+    <ClInclude Include="CPlayerDamageLifeBarScript.h" />
     <ClInclude Include="CPlayerDetectScript.h" />
     <ClInclude Include="CPlayerHitBoxScript.h" />
     <ClInclude Include="CPlayerManaBarScript.h" />
@@ -155,6 +156,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />
+    <ClCompile Include="CPlayerDamageLifeBarScript.cpp" />
     <ClCompile Include="CPlayerDetectScript.cpp" />
     <ClCompile Include="CPlayerHitBoxScript.cpp" />
     <ClCompile Include="CPlayerManaBarScript.cpp" />

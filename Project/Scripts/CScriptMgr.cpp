@@ -15,6 +15,7 @@
 #include "CLevelChangeScript.h"
 #include "CPlayButtonScript.h"
 #include "CPlayerCameraScript.h"
+#include "CPlayerDamageLifeBarScript.h"
 #include "CPlayerDetectScript.h"
 #include "CPlayerHitBoxScript.h"
 #include "CPlayerLifeBarScript.h"
@@ -41,6 +42,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLevelChangeScript");
 	_vec.push_back(L"CPlayButtonScript");
 	_vec.push_back(L"CPlayerCameraScript");
+	_vec.push_back(L"CPlayerDamageLifeBarScript");
 	_vec.push_back(L"CPlayerDetectScript");
 	_vec.push_back(L"CPlayerHitBoxScript");
 	_vec.push_back(L"CPlayerLifeBarScript");
@@ -82,6 +84,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayButtonScript;
 	if (L"CPlayerCameraScript" == _strScriptName)
 		return new CPlayerCameraScript;
+	if (L"CPlayerDamageLifeBarScript" == _strScriptName)
+		return new CPlayerDamageLifeBarScript;
 	if (L"CPlayerDetectScript" == _strScriptName)
 		return new CPlayerDetectScript;
 	if (L"CPlayerHitBoxScript" == _strScriptName)
@@ -135,6 +139,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayButtonScript;
 	case (UINT)SCRIPT_TYPE::PLAYERCAMERASCRIPT:
 		return new CPlayerCameraScript;
+	case (UINT)SCRIPT_TYPE::PLAYERDAMAGELIFEBARSCRIPT:
+		return new CPlayerDamageLifeBarScript;
 	case (UINT)SCRIPT_TYPE::PLAYERDETECTSCRIPT:
 		return new CPlayerDetectScript;
 	case (UINT)SCRIPT_TYPE::PLAYERHITBOXSCRIPT:
@@ -189,6 +195,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayButtonScript";
 	case SCRIPT_TYPE::PLAYERCAMERASCRIPT:
 		return L"CPlayerCameraScript";
+	case SCRIPT_TYPE::PLAYERDAMAGELIFEBARSCRIPT:
+		return L"CPlayerDamageLifeBarScript";
 	case SCRIPT_TYPE::PLAYERDETECTSCRIPT:
 		return L"CPlayerDetectScript";
 	case SCRIPT_TYPE::PLAYERHITBOXSCRIPT:

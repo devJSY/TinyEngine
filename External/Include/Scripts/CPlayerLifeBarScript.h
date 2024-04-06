@@ -6,11 +6,6 @@ class CGameObject;
 class CPlayerLifeBarScript : public CScript
 {
 private:
-    CGameObject* m_Player;
-    float m_RenderLife;
-    float m_FluctuationSpeed;
-
-private:
     virtual void begin() override;
     virtual void tick() override;
 

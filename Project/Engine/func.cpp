@@ -598,6 +598,11 @@ float GetRandomfloat(float _Min, float _Max)
     return floor(dist(mt)); // (숫자가 클 경우 정밀도 문제 발생 -> floor로 절삭)
 }
 
+float Lerp(float A, float B, float Alpha)
+{
+    return A * (1 - Alpha) + B * Alpha;
+}
+
 string ToString(const wstring& wstr)
 {
     string str(wstr.length(), 0);

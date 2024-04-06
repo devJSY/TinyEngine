@@ -4,12 +4,6 @@
 class CPlayerManaBarScript : public CScript
 {
 private:
-    CGameObject* m_Player;
-    float m_RenderMana;
-    float m_IncreaseSpeed;
-    float m_DecreaseSpeed;
-
-private:
     virtual void begin() override;
     virtual void tick() override;
 
