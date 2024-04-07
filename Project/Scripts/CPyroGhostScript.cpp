@@ -10,7 +10,7 @@ CPyroGhostScript::CPyroGhostScript()
     , m_PassedTime(0.f)
     , m_PatrolDuration(2.f)
 {
-    m_Life = 50;
+    m_CurLife = m_MaxLife = 50;
     m_Speed = 5;
     m_ATK = 7;
     m_AttackRange = 200.f;
@@ -113,9 +113,9 @@ bool CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     if (PYROGHOST_STATE::Death == m_State || PYROGHOST_STATE::Hide == m_State || PYROGHOST_STATE::Appear == m_State)
         return false;
 
-    m_Life -= _DamageAmount;
+    m_CurLife -= _DamageAmount;
 
-    if (m_Life <= 0)
+    if (m_CurLife <= 0)
         ChangeState(PYROGHOST_STATE::Death);
     else
     {
@@ -127,9 +127,9 @@ bool CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            if (m_Life < 20.f)
+            if (_DamageAmount >= 12.f)
                 ChangeState(PYROGHOST_STATE::Hit2);
-            else
+            else if (_DamageAmount >= 10.f)
                 ChangeState(PYROGHOST_STATE::Hit1);
         }
     }

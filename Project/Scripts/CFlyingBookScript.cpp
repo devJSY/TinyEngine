@@ -8,7 +8,7 @@ CFlyingBookScript::CFlyingBookScript()
     , m_PassedTime(0.f)
     , m_PatrolDuration(1.5f)
 {
-    m_Life = 15;
+    m_CurLife = m_MaxLife = 15;
     m_Speed = 3;
     m_ATK = 5;
     m_AttackRange = 200.f;
@@ -93,9 +93,9 @@ bool CFlyingBookScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     if (FLYINGBOOK_STATE::Death == m_State)
         return false;
 
-    m_Life -= _DamageAmount;
+    m_CurLife -= _DamageAmount;
 
-    if (m_Life <= 0)
+    if (m_CurLife <= 0)
         ChangeState(FLYINGBOOK_STATE::Death);
     else
     {

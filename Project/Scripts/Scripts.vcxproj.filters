@@ -91,6 +91,12 @@
     <ClInclude Include="CPlayerDamageLifeBarScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemyLifeBarScript.h">
+      <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyDamageLifeBarScript.h">
+      <Filter>Scripts\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -179,6 +185,12 @@
     </ClCompile>
     <ClCompile Include="CPlayerDamageLifeBarScript.cpp">
       <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyLifeBarScript.cpp">
+      <Filter>Scripts\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyDamageLifeBarScript.cpp">
+      <Filter>Scripts\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

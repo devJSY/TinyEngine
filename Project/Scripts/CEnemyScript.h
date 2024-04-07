@@ -8,7 +8,8 @@ class CEnemyScript : public CScript
 protected:
     DIRECTION_TYPE m_Dir;
 
-    int m_Life;
+    int m_MaxLife;
+    int m_CurLife;
     float m_Speed;
     int m_ATK; // °ø°Ý·Â
     float m_AttackRange;
@@ -17,6 +18,10 @@ protected:
 
 protected:
     virtual void tick() override;
+
+public:
+    int GetMaxLife() const { return m_MaxLife; }
+    int GetCurLife() const { return m_CurLife; }
 
 public:
     virtual bool TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3()) = 0;

@@ -4,7 +4,9 @@
 #include "CBridgeScript.h"
 #include "CCameraMoveScript.h"
 #include "CCinematicScript.h"
+#include "CEnemyDamageLifeBarScript.h"
 #include "CEnemyHitBoxScript.h"
+#include "CEnemyLifeBarScript.h"
 #include "CEntetElevatorScript.h"
 #include "CEvilPumpkinScript.h"
 #include "CExitElevatorScript.h"
@@ -31,7 +33,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBridgeScript");
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CCinematicScript");
+	_vec.push_back(L"CEnemyDamageLifeBarScript");
 	_vec.push_back(L"CEnemyHitBoxScript");
+	_vec.push_back(L"CEnemyLifeBarScript");
 	_vec.push_back(L"CEntetElevatorScript");
 	_vec.push_back(L"CEvilPumpkinScript");
 	_vec.push_back(L"CExitElevatorScript");
@@ -62,8 +66,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCameraMoveScript;
 	if (L"CCinematicScript" == _strScriptName)
 		return new CCinematicScript;
+	if (L"CEnemyDamageLifeBarScript" == _strScriptName)
+		return new CEnemyDamageLifeBarScript;
 	if (L"CEnemyHitBoxScript" == _strScriptName)
 		return new CEnemyHitBoxScript;
+	if (L"CEnemyLifeBarScript" == _strScriptName)
+		return new CEnemyLifeBarScript;
 	if (L"CEntetElevatorScript" == _strScriptName)
 		return new CEntetElevatorScript;
 	if (L"CEvilPumpkinScript" == _strScriptName)
@@ -117,8 +125,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CCameraMoveScript;
 	case (UINT)SCRIPT_TYPE::CINEMATICSCRIPT:
 		return new CCinematicScript;
+	case (UINT)SCRIPT_TYPE::ENEMYDAMAGELIFEBARSCRIPT:
+		return new CEnemyDamageLifeBarScript;
 	case (UINT)SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return new CEnemyHitBoxScript;
+	case (UINT)SCRIPT_TYPE::ENEMYLIFEBARSCRIPT:
+		return new CEnemyLifeBarScript;
 	case (UINT)SCRIPT_TYPE::ENTETELEVATORSCRIPT:
 		return new CEntetElevatorScript;
 	case (UINT)SCRIPT_TYPE::EVILPUMPKINSCRIPT:
@@ -173,8 +185,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CCameraMoveScript";
 	case SCRIPT_TYPE::CINEMATICSCRIPT:
 		return L"CCinematicScript";
+	case SCRIPT_TYPE::ENEMYDAMAGELIFEBARSCRIPT:
+		return L"CEnemyDamageLifeBarScript";
 	case SCRIPT_TYPE::ENEMYHITBOXSCRIPT:
 		return L"CEnemyHitBoxScript";
+	case SCRIPT_TYPE::ENEMYLIFEBARSCRIPT:
+		return L"CEnemyLifeBarScript";
 	case SCRIPT_TYPE::ENTETELEVATORSCRIPT:
 		return L"CEntetElevatorScript";
 	case SCRIPT_TYPE::EVILPUMPKINSCRIPT:

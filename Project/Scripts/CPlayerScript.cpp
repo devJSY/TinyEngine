@@ -294,6 +294,7 @@ bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 
     ChangeState(PLAYER_STATE::Hit02);
 
+    // Damage LifeBar Update
     CGameObject* pDamageLifeBar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectOfType<CPlayerDamageLifeBarScript>();
     if (nullptr != pDamageLifeBar)
     {

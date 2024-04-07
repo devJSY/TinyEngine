@@ -10,7 +10,7 @@ CGhostScript::CGhostScript()
     , m_PassedTime(0.f)
     , m_PatrolDuration(1.5f)
 {
-    m_Life = 50;
+    m_CurLife = m_MaxLife = 50;
     m_Speed = 5;
     m_ATK = 5;
     m_AttackRange = 200.f;
@@ -115,9 +115,9 @@ bool CGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     if (GHOST_STATE::Death == m_State || GHOST_STATE::Waiting == m_State || GHOST_STATE::Appear == m_State)
         return false;
 
-    m_Life -= _DamageAmount;
+    m_CurLife -= _DamageAmount;
 
-    if (m_Life <= 0)
+    if (m_CurLife <= 0)
         ChangeState(GHOST_STATE::Death);
     else
     {
@@ -129,9 +129,9 @@ bool CGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            if (m_Life < 20.f)
+            if (_DamageAmount >= 12.f)
                 ChangeState(GHOST_STATE::Hit2);
-            else
+            else if (_DamageAmount >= 10.f)
                 ChangeState(GHOST_STATE::Hit1);
         }
     }

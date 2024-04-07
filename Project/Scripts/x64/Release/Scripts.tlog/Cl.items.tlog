@@ -2,6 +2,8 @@ D:\TinyEngine\Project\Scripts\CBridgeScript.cpp;D:\TinyEngine\Project\Scripts\x6
 D:\TinyEngine\Project\Scripts\CButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CButtonScript.obj
 D:\TinyEngine\Project\Scripts\CCinematicScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CCinematicScript.obj
 D:\TinyEngine\Project\Scripts\CCameraMoveScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CCameraMoveScript.obj
+D:\TinyEngine\Project\Scripts\CEnemyDamageLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyDamageLifeBarScript.obj
+D:\TinyEngine\Project\Scripts\CEnemyLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyLifeBarScript.obj
 D:\TinyEngine\Project\Scripts\CEntetElevatorScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEntetElevatorScript.obj
 D:\TinyEngine\Project\Scripts\CEnemyHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyHitBoxScript.obj
 D:\TinyEngine\Project\Scripts\CEnemyScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CEnemyScript.obj

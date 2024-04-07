@@ -4,13 +4,15 @@
 CEnemyScript::CEnemyScript(UINT _ScriptType)
     : CScript(_ScriptType)
     , m_Dir(DIRECTION_TYPE::RIGHT)
-    , m_Life(0)
+    , m_MaxLife(0)
+    , m_CurLife(0)
     , m_Speed(0.f)
     , m_ATK(0)
     , m_AttackRange(0.f)
     , m_pTarget(nullptr)
 {
-    AddScriptParam(SCRIPT_PARAM::INT, &m_Life, "Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackRange, "Attack Range");
@@ -19,13 +21,15 @@ CEnemyScript::CEnemyScript(UINT _ScriptType)
 CEnemyScript::CEnemyScript(const CEnemyScript& origin)
     : CScript(origin)
     , m_Dir(origin.m_Dir)
-    , m_Life(origin.m_Life)
+    , m_MaxLife(origin.m_MaxLife)
+    , m_CurLife(origin.m_CurLife)
     , m_Speed(origin.m_Speed)
     , m_ATK(origin.m_ATK)
     , m_AttackRange(origin.m_AttackRange)
     , m_pTarget(nullptr)
 {
-    AddScriptParam(SCRIPT_PARAM::INT, &m_Life, "Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::INT, &m_ATK, "ATK");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_AttackRange, "Attack Range");
@@ -81,7 +85,8 @@ void CEnemyScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
 
 void CEnemyScript::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_Life, sizeof(int), 1, _File);
+    fwrite(&m_MaxLife, sizeof(int), 1, _File);
+    fwrite(&m_CurLife, sizeof(int), 1, _File);
     fwrite(&m_Speed, sizeof(float), 1, _File);
     fwrite(&m_ATK, sizeof(int), 1, _File);
     fwrite(&m_AttackRange, sizeof(float), 1, _File);
@@ -89,7 +94,8 @@ void CEnemyScript::SaveToLevelFile(FILE* _File)
 
 void CEnemyScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_Life, sizeof(int), 1, _File);
+    fread(&m_MaxLife, sizeof(int), 1, _File);
+    fread(&m_CurLife, sizeof(int), 1, _File);
     fread(&m_Speed, sizeof(float), 1, _File);
     fread(&m_ATK, sizeof(int), 1, _File);
     fread(&m_AttackRange, sizeof(float), 1, _File);

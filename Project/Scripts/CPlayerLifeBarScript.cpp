@@ -33,10 +33,7 @@ void CPlayerLifeBarScript::tick()
     if (nullptr == pPlyaerScript)
         return;
 
-    float MaxLife = (float)pPlyaerScript->GetMaxLife();
-    float CurLife = (float)pPlyaerScript->GetCurLife();
-
-    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, MaxLife);
-    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, CurLife);
+    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, (float)pPlyaerScript->GetMaxLife());
+    MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, (float)pPlyaerScript->GetCurLife());
     MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
 }

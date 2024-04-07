@@ -6,7 +6,7 @@ CSpooksmenScript::CSpooksmenScript()
     , m_State(SPOOKSMEN_STATE::Hide)
     , m_AttackCount(0)
 {
-    m_Life = 200;
+    m_CurLife = m_MaxLife = 200;
     m_Speed = 3;
     m_ATK = 10;
     m_AttackRange = 200.f;
@@ -108,9 +108,9 @@ bool CSpooksmenScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     if (SPOOKSMEN_STATE::Death == m_State || SPOOKSMEN_STATE::Hide == m_State || SPOOKSMEN_STATE::Appear == m_State)
         return false;
 
-    m_Life -= _DamageAmount;
+    m_CurLife -= _DamageAmount;
 
-    if (m_Life <= 0)
+    if (m_CurLife <= 0)
         ChangeState(SPOOKSMEN_STATE::Death);
     else
     {
@@ -122,9 +122,9 @@ bool CSpooksmenScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            if (m_Life < 20.f)
+            if (_DamageAmount >= 12.f)
                 ChangeState(SPOOKSMEN_STATE::Hit2);
-            else
+            else if (_DamageAmount >= 10.f)
                 ChangeState(SPOOKSMEN_STATE::Hit1);
         }
     }

@@ -2,6 +2,7 @@
 #include "CEvilPumpkinScript.h"
 #include "CPlayerCameraScript.h"
 #include "CCinematicScript.h"
+#include "CEnemyDamageLifeBarScript.h"
 
 CEvilPumpkinScript::CEvilPumpkinScript()
     : CEnemyScript(EVILPUMPKINSCRIPT)
@@ -9,7 +10,7 @@ CEvilPumpkinScript::CEvilPumpkinScript()
     , m_AttackCount(0)
     , m_PassedTime(0.f)
 {
-    m_Life = 1100;
+    m_CurLife = m_MaxLife = 1100;
     m_Speed = 3;
     m_ATK = 15;
     m_AttackRange = 200.f;
@@ -110,9 +111,9 @@ bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     if (EVILPUMPKINSCRIPT_STATE::Death == m_State || EVILPUMPKINSCRIPT_STATE::Hide == m_State || EVILPUMPKINSCRIPT_STATE::Intro == m_State)
         return false;
 
-    m_Life -= _DamageAmount;
+    m_CurLife -= _DamageAmount;
 
-    if (m_Life <= 0)
+    if (m_CurLife <= 0)
         ChangeState(EVILPUMPKINSCRIPT_STATE::Death);
     else
     {
@@ -129,6 +130,13 @@ bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             else if (_DamageAmount >= 12.f)
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Hit);
         }
+    }
+
+    // Damage LifeBar Update
+    CGameObject* pDamageLifeBar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectOfType<CEnemyDamageLifeBarScript>();
+    if (nullptr != pDamageLifeBar)
+    {
+        pDamageLifeBar->GetScript<CEnemyDamageLifeBarScript>()->TakeHit(1.f);
     }
 
     return true;

@@ -1,7 +1,9 @@
 CBridgeScript
 CCameraMoveScript
 CCinematicScript
+CEnemyDamageLifeBarScript
 CEnemyHitBoxScript
+CEnemyLifeBarScript
 CEntetElevatorScript
 CEvilPumpkinScript
 CExitElevatorScript

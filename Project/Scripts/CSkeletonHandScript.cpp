@@ -5,7 +5,7 @@ CSkeletonHandScript::CSkeletonHandScript()
     : CEnemyScript(SKELETONHANDSCRIPT)
     , m_State(SKELETONHAND_STATE::Hide)
 {
-    m_Life = 10;
+    m_CurLife = m_MaxLife = 10;
     m_Speed = 0.f;
     m_ATK = 5;
     m_AttackRange = 100.f;
@@ -84,9 +84,9 @@ bool CSkeletonHandScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     if (SKELETONHAND_STATE::Death == m_State || SKELETONHAND_STATE::Hide == m_State || SKELETONHAND_STATE::Appear == m_State)
         return false;
 
-    m_Life -= _DamageAmount;
+    m_CurLife -= _DamageAmount;
 
-    if (m_Life <= 0)
+    if (m_CurLife <= 0)
         ChangeState(SKELETONHAND_STATE::Death);
 
     return true;
