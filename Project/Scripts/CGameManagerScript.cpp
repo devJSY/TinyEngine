@@ -48,6 +48,17 @@ void CGameManagerScript::ChangeLevel(const std::string& _LevelName)
     }
 
     LevelChangeScript->ChangeLevel(_LevelName);
+
+    // Player Prefab Save
+    if (nullptr != m_Player)
+    {
+        Ptr<CPrefab> pPlyaerPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
+        if (nullptr != pPlyaerPrefab)
+            GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, pPlyaerPrefab.Get());
+
+        pPlyaerPrefab = new CPrefab(m_Player->Clone());
+        pPlyaerPrefab->Save(L"prefab\\Player.pref");
+    }
 }
 
 void CGameManagerScript::begin()

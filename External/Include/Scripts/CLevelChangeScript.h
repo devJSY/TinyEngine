@@ -10,7 +10,7 @@ private:
 public:
     virtual void tick() override;
 
-public:
+private:
     void ChangeLevel(const std::string& LevelName);
 
 public:
@@ -22,4 +22,6 @@ public:
 public:
     CLevelChangeScript();
     virtual ~CLevelChangeScript();
+
+    friend class CGameManagerScript;
 };
