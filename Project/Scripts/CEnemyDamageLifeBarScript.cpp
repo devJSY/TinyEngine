@@ -48,5 +48,5 @@ void CEnemyDamageLifeBarScript::tick()
 
     MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, MaxLife);
     MeshRender()->GetMaterial()->SetScalarParam(FLOAT_1, m_RenderLife);
-    MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
+    MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(0.4f, 0.16f, 0.15f, 1.f));
 }

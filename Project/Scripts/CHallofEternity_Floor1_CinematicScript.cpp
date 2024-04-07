@@ -19,10 +19,6 @@ void CHallofEternity_Floor1_CinematicScript::begin()
 void CHallofEternity_Floor1_CinematicScript::tick()
 {
     CCinematicScript::tick();
-
-    // 테스트용 코드
-    if (KEY_TAP(KEY::T))
-        CGameManagerScript::GetInset()->GetPlayer()->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(-2000.f, 0.f, 0.f));
 }
 
 void CHallofEternity_Floor1_CinematicScript::OnTriggerEnter(CCollider2D* _OtherCollider)

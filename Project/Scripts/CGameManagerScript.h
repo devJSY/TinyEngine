@@ -5,6 +5,7 @@ class CGameManagerScript : public CScript
 {
 private:
     static CGameManagerScript* m_Inst;
+    static bool m_bPlayerPrefabLoaded;
     CGameObject* m_Player;
     CGameObject* m_ExitElevator;
 

@@ -4,6 +4,7 @@
 #include "CLevelChangeScript.h"
 
 CGameManagerScript* CGameManagerScript::m_Inst = nullptr;
+bool CGameManagerScript::m_bPlayerPrefabLoaded = false;
 
 CGameManagerScript::CGameManagerScript()
     : CScript(GAMEMANAGERSCRIPT)
@@ -18,8 +19,17 @@ CGameManagerScript::CGameManagerScript()
         GamePlayStatic::DestroyGameObject(pPlayer);
 
     // 프리팹으로 부터 플레이어 로딩
-    Ptr<CPrefab> pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
+    Ptr<CPrefab> pPlayerPref = nullptr;
+    if (m_bPlayerPrefabLoaded)
+        pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player.pref", L"prefab\\Player.pref");
+    else
+    {
+        pPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Player_Backup.pref", L"prefab\\Player_Backup.pref");
+        m_bPlayerPrefabLoaded = true;
+    }
+
     m_Player = pPlayerPref->Instantiate();
+    m_Player->SetName(L"Player");
 }
 
 CGameManagerScript::~CGameManagerScript()
