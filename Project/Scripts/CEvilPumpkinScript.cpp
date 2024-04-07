@@ -2,6 +2,7 @@
 #include "CEvilPumpkinScript.h"
 #include "CPlayerCameraScript.h"
 #include "CCinematicScript.h"
+#include "CEnemyLifeBarScript.h"
 #include "CEnemyDamageLifeBarScript.h"
 
 CEvilPumpkinScript::CEvilPumpkinScript()
@@ -158,6 +159,48 @@ void CEvilPumpkinScript::EnterState()
     break;
     case EVILPUMPKINSCRIPT_STATE::Intro: {
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Intro", false);
+
+        // UI 설정
+        Ptr<CPrefab> pHUD = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossUI.pref", L"prefab\\BossUI.pref");
+        if (nullptr != pHUD)
+        {
+            CGameObject* pHUDObj = pHUD->Instantiate();
+
+            const vector<CGameObject*>& vecChild = pHUDObj->GetChildObject();
+
+            for (UINT i = 0; i < vecChild.size(); i++)
+            {
+                CEnemyLifeBarScript* pLifeBarScript = vecChild[i]->GetScript<CEnemyLifeBarScript>();
+                CEnemyDamageLifeBarScript* pDamageLifeBarScript = vecChild[i]->GetScript<CEnemyDamageLifeBarScript>();
+
+                if (nullptr != pLifeBarScript)
+                    pLifeBarScript->SetEnemy(this);
+
+                if (nullptr != pDamageLifeBarScript)
+                    pDamageLifeBarScript->SetEnemy(this);
+            }
+
+            Ptr<CMaterial> pBossIcon = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\HUD_Boss_IconMtrl.mtrl");
+            if (nullptr != pBossIcon)
+            {
+                pBossIcon->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\HUD\\HUD_Boss_OmegaPumpQuinn.png",
+                                                                                   L"Texture\\UI\\HUD\\HUD_Boss_OmegaPumpQuinn.png"));
+            }
+
+            int UIIdx = 0;
+            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+            for (int i = 0; i < LAYER_MAX; i++)
+            {
+                if (L"UI" == pCurLevel->GetLayer(i)->GetName())
+                {
+                    UIIdx = i;
+                    break;
+                }
+            }
+
+            GamePlayStatic::SpawnGameObject(pHUDObj, UIIdx);
+        }
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Idle: {
@@ -207,6 +250,13 @@ void CEvilPumpkinScript::EnterState()
     break;
     case EVILPUMPKINSCRIPT_STATE::Death: {
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Death", false);
+
+        // BossUI 삭제
+        CGameObject* pBossUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"BossUI");
+        if (nullptr != pBossUI)
+        {
+            GamePlayStatic::DestroyGameObject(pBossUI);
+        }
     }
     break;
     }
