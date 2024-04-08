@@ -183,8 +183,8 @@ void CEvilPumpkinScript::EnterState()
             Ptr<CMaterial> pBossIcon = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\HUD_Boss_IconMtrl.mtrl");
             if (nullptr != pBossIcon)
             {
-                pBossIcon->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\HUD\\HUD_Boss_OmegaPumpQuinn.png",
-                                                                                   L"Texture\\UI\\HUD\\HUD_Boss_OmegaPumpQuinn.png"));
+                pBossIcon->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\HUD\\HUD_Elements_Miniboss_Icon_EvilPumpkin.png",
+                                                                                   L"Texture\\UI\\HUD\\HUD_Elements_Miniboss_Icon_EvilPumpkin.png"));
             }
 
             int UIIdx = 0;
