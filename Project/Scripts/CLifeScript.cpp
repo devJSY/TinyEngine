@@ -357,7 +357,7 @@ void CLifeScript::Idle()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(2, 2);
+        int AttackState = GetRandomInt(1, 1);
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -422,7 +422,7 @@ void CLifeScript::Run()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(2, 2);
+        int AttackState = GetRandomInt(1, 1);
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -494,7 +494,7 @@ void CLifeScript::Attack1()
         else
             Dir = Vec2(-1.f, 0.f);
 
-        Rigidbody2D()->AddForce(Dir * GetRandomfloat(20.f, 40.f), ForceMode2D::Impulse);
+        Rigidbody2D()->AddForce(Dir * GetRandomfloat(400.f, 800.f), ForceMode2D::Impulse);
     }
     else if (!m_bAttackEnd && 19 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
