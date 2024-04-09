@@ -801,17 +801,24 @@ void CSpriteEditor::DrawDetails()
                     delete m_pAnim;
 
                 m_pAnim = new CAnim;
-                m_pAnim->LoadAnim(filePath);
-
-                // UV to Pixel
-                for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                if (m_pAnim->LoadAnim(filePath))
                 {
-                    m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
-                    m_vGlobalOffset = Vec2();
-                    m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
-                    m_vAnimBackGround.x = m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth();
-                    m_vAnimBackGround.y = m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight();
+                    // UV to Pixel
+                    for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
+                    {
+                        m_pAnim->m_vecFrm[i].Duration = 1.f / m_AnimFPS;
+                        m_vGlobalOffset = Vec2();
+                        m_pAnim->m_vecFrm[i].vOffset.x *= (float)m_pAnim->GetAtlasTex()->GetWidth();
+                        m_pAnim->m_vecFrm[i].vOffset.y *= (float)m_pAnim->GetAtlasTex()->GetHeight();
+                        m_vAnimBackGround.x = floor(0.5f + (m_pAnim->m_vecFrm[i].vBackground.x * (float)m_pAnim->GetAtlasTex()->GetWidth()));
+                        m_vAnimBackGround.y = floor(0.5f + (m_pAnim->m_vecFrm[i].vBackground.y * (float)m_pAnim->GetAtlasTex()->GetHeight()));
+                    }
+                }
+                else
+                {
+                    // 애니메이션 로딩 실패
+                    delete m_pAnim;
+                    m_pAnim = nullptr;
                 }
             }
         }

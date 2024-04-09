@@ -186,9 +186,16 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
     _wfopen_s(&pFile, _FilePath.c_str(), L"r");
     std::filesystem::path filePath = _FilePath;
 
-    if (nullptr == pFile || L".anim" != filePath.extension())
+    if (nullptr == pFile)
     {
         LOG(Warning, "File Open Failed!");
+        return false;
+    }
+
+    if (L".anim" != filePath.extension())
+    {
+        LOG(Warning, "File Open Failed!");
+        fclose(pFile);
         return false;
     }
 

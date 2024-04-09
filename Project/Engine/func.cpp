@@ -855,12 +855,20 @@ void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath)
 
         PWSTR initialDir = (PWSTR)(Path.c_str());
 
-        IShellItem* pInitialDirItem;
+        IShellItem* pInitialDirItem = nullptr;
 
         hr = SHCreateItemFromParsingName(initialDir, NULL, IID_IShellItem, reinterpret_cast<void**>(&pInitialDirItem));
 
+        if (FAILED(hr))
+        {
+            LOG(Error, "Failed to set initial Directory Path");
+            pFileDialog->Release();
+            return;
+        }
+
         // 파일 대화 상자 인터페이스에 초기 디렉토리 설정
         hr = pFileDialog->SetFolder(pInitialDirItem);
+        pInitialDirItem->Release();
     }
 
     // 파일 필터 설정
@@ -914,6 +922,7 @@ void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath)
             }
         }
     }
+
     pItems->Release();
     pFileDialog->Release();
 }
