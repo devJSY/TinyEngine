@@ -106,7 +106,7 @@ bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
         ChangeState(EVILPUMPKINSCRIPT_STATE::Death);
     else
     {
-        if (EVILPUMPKINSCRIPT_STATE::Attack != m_State && EVILPUMPKINSCRIPT_STATE::Stun != m_State && EVILPUMPKINSCRIPT_STATE::Hit != m_State)
+        if (EVILPUMPKINSCRIPT_STATE::Attack != m_State && EVILPUMPKINSCRIPT_STATE::Stun != m_State)
         {
             StopWalking();
             Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
@@ -116,7 +116,7 @@ bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 
             if (_DamageAmount >= 15.f)
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Stun);
-            else if (_DamageAmount >= 12.f)
+            else
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Hit);
         }
     }

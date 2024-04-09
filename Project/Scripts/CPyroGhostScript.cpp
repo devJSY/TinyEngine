@@ -129,7 +129,7 @@ bool CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 
             if (_DamageAmount >= 12.f)
                 ChangeState(PYROGHOST_STATE::Hit2);
-            else if (_DamageAmount >= 10.f)
+            else 
                 ChangeState(PYROGHOST_STATE::Hit1);
         }
     }

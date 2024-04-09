@@ -3,6 +3,7 @@
 #include "CLifeScript.h"
 
 CW9_Boss_CinematicScript::CW9_Boss_CinematicScript()
+    : CCinematicScript(W9_BOSS_CINEMATICSCRIPT)
 {
 }
 

@@ -35,7 +35,6 @@ private:
     void Hit();
     void Death();
 
-
 private:
     virtual void OnDetectTargetEnter(CGameObject* _TargetObj) override;
     virtual void OnDetectTargetExit(CGameObject* _TargetObj) override;

@@ -32,7 +32,7 @@ void CLifeScript::begin()
 
     pMtrl->SetScalarParam(INT_0, 1);
     pMtrl->SetScalarParam(FLOAT_0, 0.9f);
-    pMtrl->SetScalarParam(VEC4_0, Vec4(0.5f, 0.5f, 0.f, 1.f));
+    pMtrl->SetScalarParam(VEC4_0, Vec4(0.2f, 0.2f, 0.f, 1.f));
 
     if (nullptr == Animator2D())
     {
@@ -112,7 +112,7 @@ bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
         ChangeState(LIFE_STATE::Death);
     else
     {
-        if (LIFE_STATE::Attack != m_State && LIFE_STATE::Stun != m_State && LIFE_STATE::Hit != m_State)
+        if (LIFE_STATE::Attack != m_State && LIFE_STATE::Stun != m_State)
         {
             StopWalking();
             Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
@@ -122,7 +122,7 @@ bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 
             if (_DamageAmount >= 15.f)
                 ChangeState(LIFE_STATE::Stun);
-            else if (_DamageAmount >= 12.f)
+            else 
                 ChangeState(LIFE_STATE::Hit);
         }
     }
@@ -163,6 +163,24 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Hit: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Hit", false);
+
+        // 방향 전환
+        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+        Vec3 pos = Transform()->GetWorldPos();
+        TargetPos.z = 0.f;
+        pos.z = 0.f;
+        Vec3 Dist = TargetPos - pos;
+
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
     }
     break;
     case LIFE_STATE::Stun: {
@@ -186,6 +204,9 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Death: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Death", false);
+
+        // BossUI 삭제
+        DestroyBossUI();
     }
     break;
     }
@@ -279,7 +300,7 @@ void CLifeScript::Death()
     {
         EndBossBattle();
 
-        ChangeState(LIFE_STATE::Hide);
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
 

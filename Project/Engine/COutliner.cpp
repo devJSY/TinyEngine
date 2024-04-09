@@ -1493,27 +1493,23 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         // Material
         if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
         {
-            vector<string> Materials = {
-                "ParticleRenderMtrl",
-                "ParticleRenderGlowMtrl",
-            };
+            string CurMtrlname;
+            if (nullptr != pMaterial)
+                CurMtrlname = ToString(pMaterial->GetName());
 
-            static string CurMaterial = ToString(pMaterial->GetName());
+            ImGui_InputText("Material", CurMtrlname);
 
-            CurMaterial = ToString(pMaterial->GetName());
-
-            if (ImGui_ComboUI(ImGui_LabelPrefix("Material").c_str(), CurMaterial, Materials))
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
             {
-                if (Materials[0] == CurMaterial)
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
                 {
-                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"));
-                    pMaterial = pParticleSystem->GetMaterial();
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)));
                 }
-                else if (Materials[1] == CurMaterial)
-                {
-                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderGlowMtrl"));
-                    pMaterial = pParticleSystem->GetMaterial();
-                }
+
+                ImGui::EndDragDropTarget();
             }
 
             ImGui::Separator();
