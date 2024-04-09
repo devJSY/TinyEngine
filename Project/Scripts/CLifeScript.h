@@ -5,12 +5,20 @@ enum class LIFE_STATE
 {
     Hide,
     Intro,
+    SecondPhase,
+    ThirdPhase,
     Idle,
     Run,
     Hit,
     Stun,
     Uturn,
-    Attack,
+    Attack1,
+    Attack2,
+    Attack3,
+    Attack4,
+    Attack5,
+    Skill1,
+    Skill2,
     Death,
 };
 
@@ -18,7 +26,6 @@ class CLifeScript : public CBossEnemyScript
 {
 private:
     LIFE_STATE m_State;
-    int m_AttackCount;
     float m_PassedTime;
 
 public:
@@ -35,12 +42,20 @@ private:
 
     void Hide();
     void Intro();
+    void SecondPhase();
+    void ThirdPhase();
     void Idle();
     void Run();
     void Hit();
     void Stun();
     void Uturn();
-    void Attack();
+    void Attack1();
+    void Attack2();
+    void Attack3();
+    void Attack4();
+    void Attack5();
+    void Skill1();
+    void Skill2();
     void Death();
 
 public:

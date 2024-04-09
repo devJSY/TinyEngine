@@ -8,7 +8,7 @@ CEvilPumpkinScript::CEvilPumpkinScript()
     , m_PassedTime(0.f)
 {
     m_CurLife = m_MaxLife = 1100;
-    m_Speed = 3;
+    m_Speed = 8;
     m_ATK = 15;
     m_AttackRange = 200.f;
 }
@@ -164,7 +164,7 @@ void CEvilPumpkinScript::EnterState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Attack: {
-        // 1, 4는 사용 X
+        // 사용되지 않는 상태
         if (1 == m_AttackCount || 4 == m_AttackCount)
             m_AttackCount++;
 
@@ -283,6 +283,8 @@ void CEvilPumpkinScript::Idle()
             m_Dir = DIRECTION_TYPE::LEFT;
             RotateTransform();
         }
+
+        m_PassedTime = 0.f;
     }
 
     if (m_PassedTime > 1.f)
@@ -334,6 +336,8 @@ void CEvilPumpkinScript::Run()
             m_Dir = DIRECTION_TYPE::LEFT;
             RotateTransform();
         }
+
+        m_PassedTime = 0.f;
     }
 
     if (m_PassedTime > 1.f)

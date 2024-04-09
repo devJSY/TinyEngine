@@ -4,11 +4,10 @@
 CLifeScript::CLifeScript()
     : CBossEnemyScript(LIFESCRIPT)
     , m_State(LIFE_STATE::Hide)
-    , m_AttackCount(0)
     , m_PassedTime(0.f)
 {
-    m_CurLife = m_MaxLife = 5000;
-    m_Speed = 3;
+    m_CurLife = m_MaxLife = 2000;
+    m_Speed = 10;
     m_ATK = 25;
     m_AttackRange = 200.f;
 }
@@ -77,6 +76,12 @@ void CLifeScript::tick()
     case LIFE_STATE::Intro:
         Intro();
         break;
+    case LIFE_STATE::SecondPhase:
+        SecondPhase();
+        break;
+    case LIFE_STATE::ThirdPhase:
+        ThirdPhase();
+        break;
     case LIFE_STATE::Idle:
         Idle();
         break;
@@ -92,8 +97,26 @@ void CLifeScript::tick()
     case LIFE_STATE::Uturn:
         Uturn();
         break;
-    case LIFE_STATE::Attack:
-        Attack();
+    case LIFE_STATE::Attack1:
+        Attack1();
+        break;
+    case LIFE_STATE::Attack2:
+        Attack2();
+        break;
+    case LIFE_STATE::Attack3:
+        Attack3();
+        break;
+    case LIFE_STATE::Attack4:
+        Attack4();
+        break;
+    case LIFE_STATE::Attack5:
+        Attack5();
+        break;
+    case LIFE_STATE::Skill1:
+        Skill1();
+        break;
+    case LIFE_STATE::Skill2:
+        Skill2();
         break;
     case LIFE_STATE::Death:
         Death();
@@ -103,7 +126,7 @@ void CLifeScript::tick()
 
 bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (LIFE_STATE::Death == m_State || LIFE_STATE::Hide == m_State || LIFE_STATE::Intro == m_State)
+    if (LIFE_STATE::Death == m_State || LIFE_STATE::Intro == m_State)
         return false;
 
     m_CurLife -= _DamageAmount;
@@ -112,7 +135,8 @@ bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
         ChangeState(LIFE_STATE::Death);
     else
     {
-        if (LIFE_STATE::Attack != m_State && LIFE_STATE::Stun != m_State)
+        if (LIFE_STATE::Attack1 != m_State && LIFE_STATE::Attack2 != m_State && LIFE_STATE::Attack3 != m_State && LIFE_STATE::Attack4 != m_State &&
+            LIFE_STATE::Attack5 != m_State && LIFE_STATE::Skill1 != m_State && LIFE_STATE::Skill2 != m_State && LIFE_STATE::Stun != m_State)
         {
             StopWalking();
             Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
@@ -122,7 +146,7 @@ bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 
             if (_DamageAmount >= 15.f)
                 ChangeState(LIFE_STATE::Stun);
-            else 
+            else
                 ChangeState(LIFE_STATE::Hit);
         }
     }
@@ -144,6 +168,7 @@ void CLifeScript::EnterState()
     switch (m_State)
     {
     case LIFE_STATE::Hide: {
+        Animator2D()->Play(L"W09_Boss_NatalieT_Idle", true);
     }
     break;
     case LIFE_STATE::Intro: {
@@ -151,6 +176,12 @@ void CLifeScript::EnterState()
 
         // UI 설정
         SpawnBossUI(BOSS_TYPE::LIFE);
+    }
+    break;
+    case LIFE_STATE::SecondPhase: {
+    }
+    break;
+    case LIFE_STATE::ThirdPhase: {
     }
     break;
     case LIFE_STATE::Idle: {
@@ -163,24 +194,6 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Hit: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Hit", false);
-
-        // 방향 전환
-        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
-        Vec3 pos = Transform()->GetWorldPos();
-        TargetPos.z = 0.f;
-        pos.z = 0.f;
-        Vec3 Dist = TargetPos - pos;
-
-        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
-        {
-            m_Dir = DIRECTION_TYPE::RIGHT;
-            RotateTransform();
-        }
-        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
-        {
-            m_Dir = DIRECTION_TYPE::LEFT;
-            RotateTransform();
-        }
     }
     break;
     case LIFE_STATE::Stun: {
@@ -191,15 +204,39 @@ void CLifeScript::EnterState()
         Animator2D()->Play(L"W09_Boss_NatalieT_Uturn", false);
     }
     break;
-    case LIFE_STATE::Attack: {
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack01", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack02", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack03", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack04", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack05", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack06", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack07", false);
-        // Animator2D()->Play(L"W09_Boss_NatalieT_Attack08", false);
+    case LIFE_STATE::Attack1: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack01", false);
+    }
+    break;
+    case LIFE_STATE::Attack2: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack02", false);
+    }
+    break;
+    case LIFE_STATE::Attack3: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack03", false);
+    }
+    break;
+    case LIFE_STATE::Attack4: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack05", false);
+    }
+    break;
+    case LIFE_STATE::Attack5: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack08", false);
+    }
+    break;
+    case LIFE_STATE::Skill1: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack06", false);
+    }
+    break;
+    case LIFE_STATE::Skill2: {
+        StopMoving();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Attack07", false);
     }
     break;
     case LIFE_STATE::Death: {
@@ -222,6 +259,12 @@ void CLifeScript::ExitState()
     case LIFE_STATE::Intro: {
     }
     break;
+    case LIFE_STATE::SecondPhase: {
+    }
+    break;
+    case LIFE_STATE::ThirdPhase: {
+    }
+    break;
     case LIFE_STATE::Idle: {
     }
     break;
@@ -238,8 +281,28 @@ void CLifeScript::ExitState()
         RotateTransform();
     }
     break;
-    case LIFE_STATE::Attack: {
+    case LIFE_STATE::Attack1: {
         SetHitBox(false);
+    }
+    break;
+    case LIFE_STATE::Attack2: {
+        SetHitBox(false);
+    }
+    break;
+    case LIFE_STATE::Attack3: {
+        SetHitBox(false);
+    }
+    break;
+    case LIFE_STATE::Attack4: {
+    }
+    break;
+    case LIFE_STATE::Attack5: {
+    }
+    break;
+    case LIFE_STATE::Skill1: {
+    }
+    break;
+    case LIFE_STATE::Skill2: {
     }
     break;
     case LIFE_STATE::Death: {
@@ -260,14 +323,123 @@ void CLifeScript::Intro()
         ChangeState(LIFE_STATE::Idle);
 }
 
+void CLifeScript::SecondPhase()
+{
+}
+
+void CLifeScript::ThirdPhase()
+{
+}
+
 void CLifeScript::Idle()
 {
     StopWalking();
+
+    m_PassedTime += DT;
+
+    Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+    Vec3 pos = Transform()->GetWorldPos();
+    TargetPos.z = 0.f;
+    pos.z = 0.f;
+    Vec3 Dist = TargetPos - pos;
+
+    // 공격 범위 이내에 존재한다면 공격
+    if (Dist.Length() < m_AttackRange)
+    {
+        int AttackState = GetRandomInt(1, 5);
+        if (1 == AttackState)
+            ChangeState(LIFE_STATE::Attack1);
+        else if (2 == AttackState)
+            ChangeState(LIFE_STATE::Attack2);
+        else if (3 == AttackState)
+            ChangeState(LIFE_STATE::Attack3);
+        else if (4 == AttackState)
+            ChangeState(LIFE_STATE::Attack4);
+        else if (5 == AttackState)
+            ChangeState(LIFE_STATE::Attack5);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+
+        m_PassedTime = 0.f;
+    }
+
+    if (m_PassedTime > 0.3f)
+    {
+        ChangeState(LIFE_STATE::Run);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+
+        m_PassedTime = 0.f;
+    }
 }
 
 void CLifeScript::Run()
 {
     Walking();
+
+    m_PassedTime += DT;
+
+    Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+    Vec3 pos = Transform()->GetWorldPos();
+    TargetPos.z = 0.f;
+    pos.z = 0.f;
+    Vec3 Dist = TargetPos - pos;
+
+    // 공격 범위 이내에 존재한다면 공격
+    if (Dist.Length() < m_AttackRange)
+    {
+        int AttackState = GetRandomInt(1, 5);
+        if (1 == AttackState)
+            ChangeState(LIFE_STATE::Attack1);
+        else if (2 == AttackState)
+            ChangeState(LIFE_STATE::Attack2);
+        else if (3 == AttackState)
+            ChangeState(LIFE_STATE::Attack3);
+        else if (4 == AttackState)
+            ChangeState(LIFE_STATE::Attack4);
+        else if (5 == AttackState)
+            ChangeState(LIFE_STATE::Attack5);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+
+        m_PassedTime = 0.f;
+    }
+
+    if (m_PassedTime > 1.f)
+    {
+        ChangeState(LIFE_STATE::Idle);
+        m_PassedTime = 0.f;
+    }
 }
 
 void CLifeScript::Hit()
@@ -288,8 +460,46 @@ void CLifeScript::Uturn()
         ChangeState(LIFE_STATE::Idle);
 }
 
-void CLifeScript::Attack()
+void CLifeScript::Attack1()
 {
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
+}
+
+void CLifeScript::Attack2()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
+}
+
+void CLifeScript::Attack3()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
+}
+
+void CLifeScript::Attack4()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
+}
+
+void CLifeScript::Attack5()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
+}
+
+void CLifeScript::Skill1()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
+}
+
+void CLifeScript::Skill2()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Idle);
 }
 
 void CLifeScript::Death()
