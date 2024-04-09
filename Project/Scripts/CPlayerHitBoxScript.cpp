@@ -74,7 +74,7 @@ void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
             CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
             if (nullptr != pScript)
             {
-                pScript->ShakeCam(ShakeDir::Comprehensive, 0.1f, 1.f, 100.f);
+                pScript->ShakeCam(ShakeDir::Comprehensive, 0.1f, 1.f);
             }
         }
     }

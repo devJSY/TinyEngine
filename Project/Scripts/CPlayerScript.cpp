@@ -1259,7 +1259,7 @@ void CPlayerScript::ComboMove()
                 CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
                 if (nullptr != pScript)
                 {
-                    pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f, 100.f);
+                    pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f);
                     bShaked = true;
                 }
             }
@@ -1455,7 +1455,7 @@ void CPlayerScript::DownAttack()
             CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
             if (nullptr != pScript)
             {
-                pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f, 100.f);
+                pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f);
                 bShaked = true;
             }
         }

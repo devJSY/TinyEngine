@@ -21,8 +21,7 @@ struct tCamEffect
     ShakeDir eShakeDir;
     float fDuration;
     float fCurTime;
-    float fDistance;
-    float fSpeed;
+    float fMagnitude;
 };
 
 class CPlayerCameraScript : public CScript
@@ -44,15 +43,14 @@ public:
     virtual void tick() override;
 
 public:
-    void ShakeCam(ShakeDir _eShakeDir, float _fDuration, float _fDistance, float _fSpeed)
+    void ShakeCam(ShakeDir _eShakeDir, float _fDuration, float _fMagnitude)
     {
         tCamEffect ef = {};
         ef.eEffect = CAM_EFFECT::Shake;
         ef.eShakeDir = _eShakeDir;
         ef.fDuration = _fDuration;
         ef.fCurTime = 0.f;
-        ef.fDistance = _fDistance;
-        ef.fSpeed = _fSpeed;
+        ef.fMagnitude = _fMagnitude;
 
         m_listCamEffect.push_back(ef);
     }

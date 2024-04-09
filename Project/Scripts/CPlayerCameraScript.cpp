@@ -62,7 +62,7 @@ void CPlayerCameraScript::tick()
     if (m_bLocked)
     {
         pos.z = m_LockedPos.z;
-        pos = Vec3::Lerp(pos, m_LockedPos, DT);
+        pos = Vec3::Lerp(pos, m_LockedPos, DT * 2.f);
     }
     else
     {
@@ -81,16 +81,16 @@ void CPlayerCameraScript::tick()
 
         if (effect.eShakeDir == ShakeDir::Horizontal)
         {
-            pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            pos.x += GetRandomInt(-1, 1) * effect.fMagnitude;
         }
         else if (effect.eShakeDir == ShakeDir::Vertical)
         {
-            pos.y += -sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            pos.y += GetRandomInt(-1, 1) * effect.fMagnitude;
         }
         else if (effect.eShakeDir == ShakeDir::Comprehensive)
         {
-            pos.x += cosf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
-            pos.y -= sinf(effect.fCurTime * effect.fSpeed) * effect.fDistance;
+            pos.x += GetRandomInt(-1, 1) * effect.fMagnitude;
+            pos.y += GetRandomInt(-1, 1) * effect.fMagnitude;
         }
 
         if (effect.fCurTime > effect.fDuration)
