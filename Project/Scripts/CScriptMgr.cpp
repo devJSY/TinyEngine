@@ -15,6 +15,7 @@
 #include "CGhostScript.h"
 #include "CHallofEternity_Floor1_CinematicScript.h"
 #include "CLevelChangeScript.h"
+#include "CLifeScript.h"
 #include "CPlayButtonScript.h"
 #include "CPlayerCameraScript.h"
 #include "CPlayerDamageLifeBarScript.h"
@@ -44,6 +45,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CGhostScript");
 	_vec.push_back(L"CHallofEternity_Floor1_CinematicScript");
 	_vec.push_back(L"CLevelChangeScript");
+	_vec.push_back(L"CLifeScript");
 	_vec.push_back(L"CPlayButtonScript");
 	_vec.push_back(L"CPlayerCameraScript");
 	_vec.push_back(L"CPlayerDamageLifeBarScript");
@@ -88,6 +90,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CHallofEternity_Floor1_CinematicScript;
 	if (L"CLevelChangeScript" == _strScriptName)
 		return new CLevelChangeScript;
+	if (L"CLifeScript" == _strScriptName)
+		return new CLifeScript;
 	if (L"CPlayButtonScript" == _strScriptName)
 		return new CPlayButtonScript;
 	if (L"CPlayerCameraScript" == _strScriptName)
@@ -147,6 +151,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CHallofEternity_Floor1_CinematicScript;
 	case (UINT)SCRIPT_TYPE::LEVELCHANGESCRIPT:
 		return new CLevelChangeScript;
+	case (UINT)SCRIPT_TYPE::LIFESCRIPT:
+		return new CLifeScript;
 	case (UINT)SCRIPT_TYPE::PLAYBUTTONSCRIPT:
 		return new CPlayButtonScript;
 	case (UINT)SCRIPT_TYPE::PLAYERCAMERASCRIPT:
@@ -207,6 +213,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CHallofEternity_Floor1_CinematicScript";
 	case SCRIPT_TYPE::LEVELCHANGESCRIPT:
 		return L"CLevelChangeScript";
+	case SCRIPT_TYPE::LIFESCRIPT:
+		return L"CLifeScript";
 	case SCRIPT_TYPE::PLAYBUTTONSCRIPT:
 		return L"CPlayButtonScript";
 	case SCRIPT_TYPE::PLAYERCAMERASCRIPT:

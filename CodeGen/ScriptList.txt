@@ -12,6 +12,7 @@ CGameManagerScript
 CGhostScript
 CHallofEternity_Floor1_CinematicScript
 CLevelChangeScript
+CLifeScript
 CPlayButtonScript
 CPlayerCameraScript
 CPlayerDamageLifeBarScript

@@ -1,12 +1,8 @@
 #include "pch.h"
 #include "CEvilPumpkinScript.h"
-#include "CPlayerCameraScript.h"
-#include "CCinematicScript.h"
-#include "CEnemyLifeBarScript.h"
-#include "CEnemyDamageLifeBarScript.h"
 
 CEvilPumpkinScript::CEvilPumpkinScript()
-    : CEnemyScript(EVILPUMPKINSCRIPT)
+    : CBossEnemyScript(EVILPUMPKINSCRIPT)
     , m_State(EVILPUMPKINSCRIPT_STATE::Hide)
     , m_AttackCount(0)
     , m_PassedTime(0.f)
@@ -15,14 +11,6 @@ CEvilPumpkinScript::CEvilPumpkinScript()
     m_Speed = 3;
     m_ATK = 15;
     m_AttackRange = 200.f;
-}
-
-CEvilPumpkinScript::CEvilPumpkinScript(const CEvilPumpkinScript& origin)
-    : CEnemyScript(origin)
-    , m_State(origin.m_State)
-    , m_AttackCount(origin.m_AttackCount)
-    , m_PassedTime(0.f)
-{
 }
 
 CEvilPumpkinScript::~CEvilPumpkinScript()
@@ -75,7 +63,7 @@ void CEvilPumpkinScript::begin()
 
 void CEvilPumpkinScript::tick()
 {
-    CEnemyScript::tick();
+    CBossEnemyScript::tick();
 
     // FSM
     switch (m_State)
@@ -133,12 +121,7 @@ bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
         }
     }
 
-    // Damage LifeBar Update
-    CGameObject* pDamageLifeBar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectOfType<CEnemyDamageLifeBarScript>();
-    if (nullptr != pDamageLifeBar)
-    {
-        pDamageLifeBar->GetScript<CEnemyDamageLifeBarScript>()->TakeHit(1.f);
-    }
+    DamageLifeBarUpdate();
 
     return true;
 }
@@ -161,46 +144,7 @@ void CEvilPumpkinScript::EnterState()
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Intro", false);
 
         // UI 설정
-        Ptr<CPrefab> pHUD = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossUI.pref", L"prefab\\BossUI.pref");
-        if (nullptr != pHUD)
-        {
-            CGameObject* pHUDObj = pHUD->Instantiate();
-
-            const vector<CGameObject*>& vecChild = pHUDObj->GetChildObject();
-
-            for (UINT i = 0; i < vecChild.size(); i++)
-            {
-                CEnemyLifeBarScript* pLifeBarScript = vecChild[i]->GetScript<CEnemyLifeBarScript>();
-                CEnemyDamageLifeBarScript* pDamageLifeBarScript = vecChild[i]->GetScript<CEnemyDamageLifeBarScript>();
-
-                if (nullptr != pLifeBarScript)
-                    pLifeBarScript->SetEnemy(this);
-
-                if (nullptr != pDamageLifeBarScript)
-                    pDamageLifeBarScript->SetEnemy(this);
-            }
-
-            Ptr<CMaterial> pBossIcon = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\HUD_Boss_IconMtrl.mtrl");
-            if (nullptr != pBossIcon)
-            {
-                pBossIcon->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\HUD\\HUD_Elements_Miniboss_Icon_EvilPumpkin.png",
-                                                                                   L"Texture\\UI\\HUD\\HUD_Elements_Miniboss_Icon_EvilPumpkin.png"));
-            }
-
-            int UIIdx = 0;
-            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-            for (int i = 0; i < LAYER_MAX; i++)
-            {
-                if (L"UI" == pCurLevel->GetLayer(i)->GetName())
-                {
-                    UIIdx = i;
-                    break;
-                }
-            }
-
-            GamePlayStatic::SpawnGameObject(pHUDObj, UIIdx);
-        }
+        SpawnBossUI(BOSS_TYPE::EVILPUMPKIN);
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Idle: {
@@ -252,11 +196,7 @@ void CEvilPumpkinScript::EnterState()
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Death", false);
 
         // BossUI 삭제
-        CGameObject* pBossUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"BossUI");
-        if (nullptr != pBossUI)
-        {
-            GamePlayStatic::DestroyGameObject(pBossUI);
-        }
+        DestroyBossUI();
     }
     break;
     }
@@ -478,27 +418,7 @@ void CEvilPumpkinScript::Death()
 
     if (Animator2D()->IsFinish())
     {
-        // Player Camera Lock Off
-        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
-        if (nullptr != pPlayerCamObj)
-        {
-            CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
-            if (nullptr != pScript)
-            {
-                pScript->Lock(false);
-            }
-        }
-
-        // Wall Collider Disable
-        CGameObject* pCinematicObject = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"CinematicObject");
-        if (nullptr != pCinematicObject)
-        {
-            CCinematicScript* pCinematicScript = pCinematicObject->GetScript<CCinematicScript>();
-            if (nullptr != pCinematicScript)
-            {
-                pCinematicScript->SetEnableWallCollider(false);
-            }
-        }
+        EndBossBattle();
 
         ChangeState(EVILPUMPKINSCRIPT_STATE::Hide);
     }
@@ -506,10 +426,10 @@ void CEvilPumpkinScript::Death()
 
 void CEvilPumpkinScript::SaveToLevelFile(FILE* _File)
 {
-    CEnemyScript::SaveToLevelFile(_File);
+    CBossEnemyScript::SaveToLevelFile(_File);
 }
 
 void CEvilPumpkinScript::LoadFromLevelFile(FILE* _File)
 {
-    CEnemyScript::LoadFromLevelFile(_File);
+    CBossEnemyScript::LoadFromLevelFile(_File);
 }

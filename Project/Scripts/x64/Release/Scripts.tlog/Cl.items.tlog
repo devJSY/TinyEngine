@@ -1,3 +1,4 @@
+D:\TinyEngine\Project\Scripts\CBossEnemyScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CBossEnemyScript.obj
 D:\TinyEngine\Project\Scripts\CBridgeScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CBridgeScript.obj
 D:\TinyEngine\Project\Scripts\CButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CButtonScript.obj
 D:\TinyEngine\Project\Scripts\CCinematicScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CCinematicScript.obj
@@ -14,6 +15,7 @@ D:\TinyEngine\Project\Scripts\CGameManagerScript.cpp;D:\TinyEngine\Project\Scrip
 D:\TinyEngine\Project\Scripts\CGhostScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CGhostScript.obj
 D:\TinyEngine\Project\Scripts\CHallofEternity_Floor1_CinematicScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CHallofEternity_Floor1_CinematicScript.obj
 D:\TinyEngine\Project\Scripts\CLevelChangeScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CLevelChangeScript.obj
+D:\TinyEngine\Project\Scripts\CLifeScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CLifeScript.obj
 D:\TinyEngine\Project\Scripts\CPlayButtonScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayButtonScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerCameraScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerCameraScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerDamageLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerDamageLifeBarScript.obj

@@ -108,6 +108,7 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CBossEnemyScript.h" />
     <ClInclude Include="CBridgeScript.h" />
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCinematicScript.h" />
@@ -124,6 +125,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CGhostScript.h" />
     <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
+    <ClInclude Include="CLifeScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
     <ClInclude Include="CPlayerDamageLifeBarScript.h" />
@@ -142,6 +144,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPyroGhostScript.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBossEnemyScript.cpp" />
     <ClCompile Include="CBridgeScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCinematicScript.cpp" />
@@ -158,6 +161,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CGhostScript.cpp" />
     <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
+    <ClCompile Include="CLifeScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />
     <ClCompile Include="CPlayerDamageLifeBarScript.cpp" />

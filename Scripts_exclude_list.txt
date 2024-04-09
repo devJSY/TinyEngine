@@ -4,3 +4,4 @@ framework.h
 define.h
 CButtonScript.h
 CEnemyScript.h
+CBossEnemyScript.h

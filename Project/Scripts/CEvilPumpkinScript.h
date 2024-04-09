@@ -1,5 +1,5 @@
 #pragma once
-#include "CEnemyScript.h"
+#include "CBossEnemyScript.h"
 
 enum class EVILPUMPKINSCRIPT_STATE
 {
@@ -13,7 +13,7 @@ enum class EVILPUMPKINSCRIPT_STATE
     Death,
 };
 
-class CEvilPumpkinScript : public CEnemyScript
+class CEvilPumpkinScript : public CBossEnemyScript
 {
 private:
     EVILPUMPKINSCRIPT_STATE m_State;
@@ -41,10 +41,6 @@ private:
     void Attack();
     void Death();
 
-private:
-    virtual void OnDetectTargetEnter(CGameObject* _TargetObj) override{}; // 부모 OnDetectTargetEnter 사용 X
-    virtual void OnDetectTargetExit(CGameObject* _TargetObj) override{};  // 부모 OnDetectTargetExit 사용 X
-
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
@@ -53,6 +49,5 @@ public:
 
 public:
     CEvilPumpkinScript();
-    CEvilPumpkinScript(const CEvilPumpkinScript& origin);
     virtual ~CEvilPumpkinScript();
 };
