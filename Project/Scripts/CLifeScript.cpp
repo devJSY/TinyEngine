@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CLifeScript.h"
+#include "CPlayerCameraScript.h"
 
 CLifeScript::CLifeScript()
     : CBossEnemyScript(LIFESCRIPT)
@@ -208,11 +209,15 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Attack1: {
         StopMoving();
+        m_bAttackStart = false;
+        m_bAttackEnd = false;
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack01", false);
     }
     break;
     case LIFE_STATE::Attack2: {
         StopMoving();
+        m_bAttackStart = false;
+        m_bAttackEnd = false;
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack02", false);
     }
     break;
@@ -288,6 +293,8 @@ void CLifeScript::ExitState()
     }
     break;
     case LIFE_STATE::Attack2: {
+        StopMoving();
+        Rigidbody2D()->SetGravityScale(1.f);
         SetHitBox(false);
     }
     break;
@@ -350,7 +357,7 @@ void CLifeScript::Idle()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(1, 1);
+        int AttackState = GetRandomInt(2, 2);
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -415,7 +422,7 @@ void CLifeScript::Run()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(1, 1);
+        int AttackState = GetRandomInt(2, 2);
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -473,8 +480,6 @@ void CLifeScript::Attack1()
     if (Animator2D()->IsFinish())
     {
         ChangeState(LIFE_STATE::Idle);
-        m_bAttackStart = false;
-        m_bAttackEnd = false;
     }
 
     if (!m_bAttackStart && 11 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
@@ -505,10 +510,85 @@ void CLifeScript::Attack1()
 
 void CLifeScript::Attack2()
 {
-    if (Animator2D()->IsFinish())
-        ChangeState(LIFE_STATE::Idle);
-}
+    static bool bShaked = false;
 
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(LIFE_STATE::Idle);
+        bShaked = false;
+    }
+
+    int CurAnimFrm = Animator2D()->GetCurAnim()->GetCurFrmIdx();
+
+    if ((0 <= CurAnimFrm && 25 >= CurAnimFrm) || (52 <= CurAnimFrm && 58 >= CurAnimFrm))
+    {
+        Rigidbody2D()->SetGravityScale(1.f);
+        if (0 <= CurAnimFrm && 25 >= CurAnimFrm)
+            Rigidbody2D()->SetVelocity(Vec2(0.f, 3.f));
+        else
+            Rigidbody2D()->SetVelocity(Vec2(0.f, 8.f));
+
+        m_bAttackStart = false;
+        m_bAttackEnd = false;
+        bShaked = false;
+    }
+    else if (26 == CurAnimFrm || 59 == CurAnimFrm)
+    {
+        StopMoving();
+    }
+    else if ((27 <= CurAnimFrm && 36 >= CurAnimFrm) || (60 <= CurAnimFrm && 70 >= CurAnimFrm))
+    {
+        Rigidbody2D()->SetGravityScale(0.f);
+        Walking();
+    }
+    else if (!m_bAttackStart && 37 == CurAnimFrm || !m_bAttackStart && 71 == CurAnimFrm)
+    {
+        StopWalking();
+        Rigidbody2D()->SetGravityScale(3.f);
+        SetHitBox(true, L"Attack2_HitBox");
+        m_bAttackStart = true;
+
+        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+        Vec3 pos = Transform()->GetWorldPos();
+        TargetPos.z = 0.f;
+        pos.z = 0.f;
+        Vec3 Dist = TargetPos - pos;
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+    }
+    else if (!bShaked && 46 == CurAnimFrm || !bShaked && 80 == CurAnimFrm)
+    {
+        // Camera Shake
+        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
+        if (nullptr != pPlayerCamObj)
+        {
+            CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
+            if (nullptr != pScript)
+            {
+                pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f);
+            }
+        }
+
+        bShaked = true;
+    }
+    else if (!m_bAttackEnd && 51 == CurAnimFrm || !m_bAttackEnd && 93 == CurAnimFrm)
+    {
+        StopMoving();
+        Rigidbody2D()->SetGravityScale(1.f);
+        SetHitBox(false, L"Attack2_HitBox");
+        m_bAttackEnd = true;
+    }
+}
 void CLifeScript::Attack3()
 {
     if (Animator2D()->IsFinish())
