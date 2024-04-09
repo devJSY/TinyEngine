@@ -48,6 +48,8 @@ void CExitElevatorScript::tick()
         if (L"Hall of Eternity Floor 0.tLevel" == CurLevelName)
             CGameManagerScript::GetInset()->ChangeLevel("Hall of Eternity Floor 1");
         else if (L"Hall of Eternity Floor 1.tLevel" == CurLevelName)
+            CGameManagerScript::GetInset()->ChangeLevel("W9_Boss");
+        else if (L"W9_Boss.tLevel" == CurLevelName)
             CGameManagerScript::GetInset()->ChangeLevel("Home Level");
     }
 }

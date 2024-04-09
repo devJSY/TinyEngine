@@ -38,13 +38,3 @@ void CHallofEternity_Floor1_CinematicScript::OnTriggerEnter(CCollider2D* _OtherC
         }
     }
 }
-
-void CHallofEternity_Floor1_CinematicScript::SaveToLevelFile(FILE* _File)
-{
-    CCinematicScript::SaveToLevelFile(_File);
-}
-
-void CHallofEternity_Floor1_CinematicScript::LoadFromLevelFile(FILE* _File)
-{
-    CCinematicScript::LoadFromLevelFile(_File);
-}

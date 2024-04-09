@@ -103,6 +103,9 @@
     <ClInclude Include="CBossEnemyScript.h">
       <Filter>Scripts\BossEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="CW9_Boss_CinematicScript.h">
+      <Filter>Scripts\Cinematic\W9 Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -204,6 +207,9 @@
     <ClCompile Include="CBossEnemyScript.cpp">
       <Filter>Scripts\BossEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="CW9_Boss_CinematicScript.cpp">
+      <Filter>Scripts\Cinematic\W9 Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -283,6 +289,9 @@
     </Filter>
     <Filter Include="Scripts\BossEnemy\Miniboss\EvilPumpkin">
       <UniqueIdentifier>{34d7aec4-3b0d-48d8-8799-4f09524c2fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Cinematic\W9 Boss">
+      <UniqueIdentifier>{448eab35-7880-4a28-93a7-66da719a4444}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

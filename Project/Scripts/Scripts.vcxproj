@@ -138,6 +138,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSkeletonHandScript.h" />
     <ClInclude Include="CSpooksmenScript.h" />
+    <ClInclude Include="CW9_Boss_CinematicScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -174,6 +175,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSkeletonHandScript.cpp" />
     <ClCompile Include="CSpooksmenScript.cpp" />
+    <ClCompile Include="CW9_Boss_CinematicScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

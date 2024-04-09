@@ -28,6 +28,7 @@
 #include "CPyroGhostScript.h"
 #include "CSkeletonHandScript.h"
 #include "CSpooksmenScript.h"
+#include "CW9_Boss_CinematicScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -58,6 +59,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPyroGhostScript");
 	_vec.push_back(L"CSkeletonHandScript");
 	_vec.push_back(L"CSpooksmenScript");
+	_vec.push_back(L"CW9_Boss_CinematicScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -116,6 +118,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSkeletonHandScript;
 	if (L"CSpooksmenScript" == _strScriptName)
 		return new CSpooksmenScript;
+	if (L"CW9_Boss_CinematicScript" == _strScriptName)
+		return new CW9_Boss_CinematicScript;
 	return nullptr;
 }
 
@@ -177,6 +181,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CSkeletonHandScript;
 	case (UINT)SCRIPT_TYPE::SPOOKSMENSCRIPT:
 		return new CSpooksmenScript;
+	case (UINT)SCRIPT_TYPE::W9_BOSS_CINEMATICSCRIPT:
+		return new CW9_Boss_CinematicScript;
 	}
 	return nullptr;
 }
@@ -239,6 +245,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CSkeletonHandScript";
 	case SCRIPT_TYPE::SPOOKSMENSCRIPT:
 		return L"CSpooksmenScript";
+	case SCRIPT_TYPE::W9_BOSS_CINEMATICSCRIPT:
+		return L"CW9_Boss_CinematicScript";
 	}
 	return nullptr;
 }

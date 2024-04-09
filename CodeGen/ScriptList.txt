@@ -25,3 +25,4 @@ CProjectile2DScript
 CPyroGhostScript
 CSkeletonHandScript
 CSpooksmenScript
+CW9_Boss_CinematicScript
