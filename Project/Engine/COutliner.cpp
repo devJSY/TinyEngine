@@ -1493,11 +1493,36 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
         // Material
         if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
         {
-            string name;
-            if (nullptr != pMaterial)
-                name = ToString(pMaterial->GetName());
+            vector<string> Materials = {
+                "ParticleRenderMtrl",
+                "ParticleRenderGlowMtrl",
+            };
 
-            ImGui_InputText("Material", name);
+            static string CurMaterial = ToString(pMaterial->GetName());
+
+            CurMaterial = ToString(pMaterial->GetName());
+
+            if (ImGui_ComboUI(ImGui_LabelPrefix("Material").c_str(), CurMaterial, Materials))
+            {
+                if (Materials[0] == CurMaterial)
+                {
+                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"));
+                    pMaterial = pParticleSystem->GetMaterial();
+                }
+                else if (Materials[1] == CurMaterial)
+                {
+                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderGlowMtrl"));
+                    pMaterial = pParticleSystem->GetMaterial();
+                }
+            }
+
+            ImGui::Separator();
+
+            if (ImGui_AlignButton("Material Editor", 1.f))
+            {
+                CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
+                CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMaterial);
+            }
 
             ImGui::TreePop();
         }

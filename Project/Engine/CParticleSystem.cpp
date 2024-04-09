@@ -164,6 +164,10 @@ void CParticleSystem::UpdateData()
     // 파티클 개별 랜더링 -> 인스턴싱
     GetMaterial()->UpdateData();
     GetMaterial()->SetTexParam(TEX_0, m_ParticleTex);
+
+    // Animatio2D 보유한 경우
+    if (Animator2D())
+        Animator2D()->UpdateData();
 }
 
 void CParticleSystem::render()
@@ -175,6 +179,10 @@ void CParticleSystem::render()
     // 렌더링때 사용한 리소스 바인딩 Clear
     m_ParticleBuffer->Clear(20);
     m_ModuleBuffer->Clear(21);
+
+    // Animation 관련 정보 제거
+    if (Animator2D())
+        Animator2D()->Clear();
 }
 
 void CParticleSystem::render(Ptr<CMaterial> _mtrl)
@@ -195,6 +203,10 @@ void CParticleSystem::render(Ptr<CMaterial> _mtrl)
     // 렌더링때 사용한 리소스 바인딩 Clear
     m_ParticleBuffer->Clear(20);
     m_ModuleBuffer->Clear(21);
+
+    // Animation 관련 정보 제거
+    if (Animator2D())
+        Animator2D()->Clear();
 }
 
 void CParticleSystem::SaveToLevelFile(FILE* _File)
@@ -216,10 +228,10 @@ void CParticleSystem::LoadFromLevelFile(FILE* _File)
     m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
     fread(&m_Module, sizeof(tParticleModule), 1, _File);
 
-    bool i = 0;
-    fread(&i, sizeof(i), 1, _File);
+    bool bAssetExist = 0;
+    fread(&bAssetExist, sizeof(bAssetExist), 1, _File);
 
-    if (i)
+    if (bAssetExist)
     {
         wstring strKey, strRelativePath;
         LoadWStringFromFile(strKey, _File);

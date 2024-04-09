@@ -175,11 +175,109 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
         else if (2 == module.AlphaBasedLife) // Max Age
         {
             float fRatio = particle.Age / module.AlphaMaxAge;
-            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));            
+            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
         }
     }
     
     return vOutColor;
+}
+
+#define GlowEnable g_int_0
+#define GlowThreshold g_float_0
+#define GlowColor g_vec4_0
+
+struct PS_Std2D_Glow_Output
+{
+    float4 RenderTargetColor : SV_Target0;
+    float4 BloomTextureColor : SV_Target1;
+};
+
+PS_Std2D_Glow_Output PS_ParticleRender_Glow(GS_Output _in)
+{
+    PS_Std2D_Glow_Output output;
+    
+    tParticle particle = g_ParticleBuffer[_in.iInstID];
+    tParticleModule module = g_ParticleModule[0];
+    
+    // 출력 색상
+    float4 vOutColor = particle.vColor;
+    vOutColor.a = 1.f;
+    
+    if (g_UseAnim2D)
+    {
+        float2 vUV = float2(0.0, 0.0);
+        
+        if (g_UseBackGround)
+        {
+            float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
+            vBackgroundLeftTop -= g_vOffset;
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+        }
+        else
+        {
+            float2 LT = g_vLeftTop - g_vOffset;
+            vUV = LT + (g_vSliceSize * _in.vUV);
+        }
+        
+        if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
+            || vUV.y < g_vLeftTop.y || (g_vLeftTop.y + g_vSliceSize.y) < vUV.y)
+        {
+            discard;
+        }
+        else
+        {
+            float4 vSampleColor = g_anim2d_tex.Sample(g_LinearWrapSampler, vUV);
+            vOutColor.rgb *= vSampleColor.rgb;
+            vOutColor.a = vSampleColor.a;
+        }
+    }
+    else
+    {
+        if (g_btex_0)
+        {
+            float4 vSampleColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+            vOutColor.rgb *= vSampleColor.rgb;
+            vOutColor.a = vSampleColor.a;
+        }
+        else
+        {
+            discard;
+        }
+    }
+        
+    if (0.1f >= vOutColor.a)
+        discard;
+    
+    // Relative Luminance : 픽셀의 색이 밝은지 어두운지의 기준값
+    float RelativeLuminance = dot(vOutColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+        
+    // 일정 GlowThreshold 이상인 경우 지정된 색상으로 마스킹
+    if (GlowEnable && RelativeLuminance > GlowThreshold)
+    {
+        output.BloomTextureColor = GlowColor;
+    }
+    else
+    {
+        output.BloomTextureColor = float4(0.f, 0.f, 0.f, 1.f);
+    }
+  
+    // 렌더모듈이 켜져 있으면
+    if (module.arrModuleCheck[6])
+    {
+        if (1 == module.AlphaBasedLife) // Normalize Age
+        {
+            vOutColor.a *= saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
+        }
+        else if (2 == module.AlphaBasedLife) // Max Age
+        {
+            float fRatio = particle.Age / module.AlphaMaxAge;
+            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
+        }
+    }
+    
+    output.RenderTargetColor = vOutColor;
+    
+    return output;
 }
 
 #endif
