@@ -5,6 +5,8 @@ CLifeScript::CLifeScript()
     : CBossEnemyScript(LIFESCRIPT)
     , m_State(LIFE_STATE::Hide)
     , m_PassedTime(0.f)
+    , m_bAttackStart(false)
+    , m_bAttackEnd(false)
 {
     m_CurLife = m_MaxLife = 2000;
     m_Speed = 10;
@@ -346,7 +348,10 @@ void CLifeScript::Idle()
     // 공격 범위 이내에 존재한다면 공격
     if (Dist.Length() < m_AttackRange)
     {
-        int AttackState = GetRandomInt(1, 5);
+        // int AttackState = GetRandomInt(1, 5);
+        // 테스트
+        int AttackState = GetRandomInt(1, 1);
+
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
         else if (2 == AttackState)
@@ -408,7 +413,10 @@ void CLifeScript::Run()
     // 공격 범위 이내에 존재한다면 공격
     if (Dist.Length() < m_AttackRange)
     {
-        int AttackState = GetRandomInt(1, 5);
+        // int AttackState = GetRandomInt(1, 5);
+        // 테스트
+        int AttackState = GetRandomInt(1, 1);
+
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
         else if (2 == AttackState)
@@ -463,7 +471,36 @@ void CLifeScript::Uturn()
 void CLifeScript::Attack1()
 {
     if (Animator2D()->IsFinish())
+    {
         ChangeState(LIFE_STATE::Idle);
+        m_bAttackStart = false;
+        m_bAttackEnd = false;
+    }
+
+    if (!m_bAttackStart && 11 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        SetHitBox(true, L"Attack1_HitBox");
+        m_bAttackStart = true;
+
+        Vec2 Dir = Vec2();
+
+        if (DIRECTION_TYPE::RIGHT == m_Dir)
+            Dir = Vec2(1.f, 0.f);
+        else
+            Dir = Vec2(-1.f, 0.f);
+
+        Rigidbody2D()->AddForce(Dir * GetRandomfloat(20.f, 40.f), ForceMode2D::Impulse);
+    }
+    else if (!m_bAttackEnd && 19 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        SetHitBox(false, L"Attack1_HitBox");
+        m_bAttackEnd = true;
+    }
+
+    if (m_bAttackStart && 15 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        StopMoving();
+    }
 }
 
 void CLifeScript::Attack2()

@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "CBossEnemyScript.h"
 
 enum class LIFE_STATE
@@ -27,6 +28,9 @@ class CLifeScript : public CBossEnemyScript
 private:
     LIFE_STATE m_State;
     float m_PassedTime;
+
+    bool m_bAttackStart;
+    bool m_bAttackEnd;
 
 public:
     virtual void begin() override;
