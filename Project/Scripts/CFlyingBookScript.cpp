@@ -231,6 +231,9 @@ void CFlyingBookScript::Attack()
 
         CProjectile2DScript* ProjScript = pProjectile->GetScript<CProjectile2DScript>();
         ProjScript->SetTarget(m_pTarget, Vec3(1.f, 0.f, 0.f));
+        Vec3 ToTarget = m_pTarget->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        ToTarget.z = 0.f;
+        ProjScript->SetInitDirection(ToTarget);
 
         GamePlayStatic::SpawnGameObject(pProjectile, 0);
 

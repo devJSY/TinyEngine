@@ -275,6 +275,10 @@ void CPlayerScript::tick()
     // 테스트 코드
     if (KEY_TAP(KEY::NUM0))
     {
+        m_ATK = 10;
+    }
+    else if (KEY_TAP(KEY::NUM1))
+    {
         m_ATK += 10;
     }
 }

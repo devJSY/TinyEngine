@@ -114,7 +114,7 @@ bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            if (_DamageAmount >= 15.f)
+            if (_DamageAmount >= 30.f)
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Stun);
             else
                 ChangeState(EVILPUMPKINSCRIPT_STATE::Hit);
@@ -260,7 +260,7 @@ void CEvilPumpkinScript::Idle()
 
     m_PassedTime += DT;
 
-    if (m_PassedTime > 0.5f)
+    if (m_PassedTime > 0.3f)
     {
         Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
         Vec3 pos = Transform()->GetWorldPos();

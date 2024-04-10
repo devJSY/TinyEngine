@@ -163,7 +163,7 @@ bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
             Force *= Rigidbody2D()->GetMass();
             Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-            if (_DamageAmount >= 15.f)
+            if (_DamageAmount >= 50.f)
                 ChangeState(LIFE_STATE::Stun);
             else
                 ChangeState(LIFE_STATE::Hit);
@@ -774,7 +774,11 @@ void CLifeScript::Skill2()
         StopMoving();
 
     if (Animator2D()->IsFinish())
+    {
+        // 플레이어 무기, 아니마, 버프 다뺏기
+
         ChangeState(LIFE_STATE::Idle);
+    }
 }
 
 void CLifeScript::Death()

@@ -37,10 +37,6 @@ CProjectile2DScript::~CProjectile2DScript()
 {
 }
 
-void CProjectile2DScript::begin()
-{
-}
-
 void CProjectile2DScript::tick()
 {
     m_Duration += DT;
@@ -52,8 +48,8 @@ void CProjectile2DScript::tick()
 
     if (nullptr == m_pTarget)
     {
-        // Base 방향으로 AddForce
-        Rigidbody2D()->SetVelocity(Vec2(m_vBaseDir.x, m_vBaseDir.y) * m_Force);
+        m_vBaseDir.Normalize();
+        Rigidbody2D()->AddForce(Vec2(m_vBaseDir.x, m_vBaseDir.y) * m_Force);
     }
     else
     {
