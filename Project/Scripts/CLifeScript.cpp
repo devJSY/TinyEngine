@@ -13,6 +13,8 @@ CLifeScript::CLifeScript()
     m_Speed = 10;
     m_ATK = 25;
     m_AttackRange = 200.f;
+
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &TestForce, "TEST FORCE");
 }
 
 CLifeScript::~CLifeScript()
@@ -223,6 +225,9 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Attack3: {
         StopMoving();
+        m_bAttackStart = false;
+        m_bAttackEnd = false;
+        Rigidbody2D()->SetGravityScale(1.f);
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack03", false);
     }
     break;
@@ -299,6 +304,8 @@ void CLifeScript::ExitState()
     }
     break;
     case LIFE_STATE::Attack3: {
+        StopMoving();
+        Rigidbody2D()->SetGravityScale(1.f);
         SetHitBox(false);
     }
     break;
@@ -357,7 +364,7 @@ void CLifeScript::Idle()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(1, 1);
+        int AttackState = GetRandomInt(3, 3);
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -422,7 +429,7 @@ void CLifeScript::Run()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(1, 1);
+        int AttackState = GetRandomInt(3, 3);
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -477,11 +484,6 @@ void CLifeScript::Uturn()
 
 void CLifeScript::Attack1()
 {
-    if (Animator2D()->IsFinish())
-    {
-        ChangeState(LIFE_STATE::Idle);
-    }
-
     if (!m_bAttackStart && 11 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         SetHitBox(true, L"Attack1_HitBox");
@@ -506,17 +508,16 @@ void CLifeScript::Attack1()
     {
         StopMoving();
     }
+
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(LIFE_STATE::Idle);
+    }
 }
 
 void CLifeScript::Attack2()
 {
     static bool bShaked = false;
-
-    if (Animator2D()->IsFinish())
-    {
-        ChangeState(LIFE_STATE::Idle);
-        bShaked = false;
-    }
 
     int CurAnimFrm = Animator2D()->GetCurAnim()->GetCurFrmIdx();
 
@@ -588,9 +589,51 @@ void CLifeScript::Attack2()
         SetHitBox(false, L"Attack2_HitBox");
         m_bAttackEnd = true;
     }
+
+    if (Animator2D()->IsFinish())
+    {
+        ChangeState(LIFE_STATE::Idle);
+        bShaked = false;
+    }
 }
 void CLifeScript::Attack3()
 {
+    if (!m_bAttackStart && 11 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        Rigidbody2D()->SetGravityScale(0.f);
+        SetHitBox(true, L"Attack3_HitBox");
+
+        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+        Vec3 pos = Transform()->GetWorldPos();
+        TargetPos.z = 0.f;
+        pos.z = 0.f;
+        Vec3 Dist = TargetPos - pos;
+        Dist.Normalize();
+
+        Rigidbody2D()->AddForce(Vec2(Dist.x, Dist.y) * GetRandomfloat(200.f, 250.f), ForceMode2D::Impulse);
+
+        // 방향 전환
+        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::RIGHT;
+            RotateTransform();
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        {
+            m_Dir = DIRECTION_TYPE::LEFT;
+            RotateTransform();
+        }
+
+        m_bAttackStart = true;
+    }
+
+    if (!m_bAttackEnd && 27 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        StopMoving();
+        Rigidbody2D()->SetGravityScale(1.f);
+        m_bAttackEnd = true;
+    }
+
     if (Animator2D()->IsFinish())
         ChangeState(LIFE_STATE::Idle);
 }

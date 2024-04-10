@@ -32,6 +32,8 @@ private:
     bool m_bAttackStart;
     bool m_bAttackEnd;
 
+    float TestForce;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
