@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CLifeScript.h"
+#include "CPlayerScript.h"
 #include "CPlayerCameraScript.h"
 #include "CProjectile2DScript.h"
 
@@ -9,14 +10,13 @@ CLifeScript::CLifeScript()
     , m_PassedTime(0.f)
     , m_bAttackStart(false)
     , m_bAttackEnd(false)
+    , m_CurPhase(1)
     , m_pFeatherProjPref(nullptr)
 {
     m_CurLife = m_MaxLife = 2000;
     m_Speed = 10;
     m_ATK = 25;
     m_AttackRange = 200.f;
-
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &TestForce, "TEST FORCE");
 
     m_pFeatherProjPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Feather_Projectile.pref", L"prefab\\Feather_Projectile.pref");
 }
@@ -135,13 +135,23 @@ void CLifeScript::tick()
 
 bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (LIFE_STATE::Death == m_State || LIFE_STATE::Intro == m_State)
+    if (LIFE_STATE::Death == m_State || LIFE_STATE::Intro == m_State || LIFE_STATE::SecondPhase == m_State || LIFE_STATE::ThirdPhase == m_State)
         return false;
 
     m_CurLife -= _DamageAmount;
 
     if (m_CurLife <= 0)
         ChangeState(LIFE_STATE::Death);
+    else if (1 == m_CurPhase && m_CurLife < m_MaxLife * (2.f / 3.f))
+    {
+        m_CurPhase = 2;
+        ChangeState(LIFE_STATE::SecondPhase);
+    }
+    else if (2 == m_CurPhase && m_CurLife < m_MaxLife * (1.f / 3.f))
+    {
+        m_CurPhase = 3;
+        ChangeState(LIFE_STATE::ThirdPhase);
+    }
     else
     {
         if (LIFE_STATE::Attack1 != m_State && LIFE_STATE::Attack2 != m_State && LIFE_STATE::Attack3 != m_State && LIFE_STATE::Attack4 != m_State &&
@@ -188,9 +198,15 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::SecondPhase: {
+        StopWalking();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Intro", false);
     }
     break;
     case LIFE_STATE::ThirdPhase: {
+        StopWalking();
+        m_CurLife = m_MaxLife;
+        DamageLifeBarUpdate();
+        Animator2D()->Play(L"W09_Boss_NatalieT_Intro", false);
     }
     break;
     case LIFE_STATE::Idle: {
@@ -264,11 +280,13 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Skill1: {
         StopMoving();
+        Rigidbody2D()->SetGravityScale(0.f);
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack06", false);
     }
     break;
     case LIFE_STATE::Skill2: {
         StopMoving();
+        Rigidbody2D()->SetGravityScale(0.f);
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack07", false);
     }
     break;
@@ -337,9 +355,11 @@ void CLifeScript::ExitState()
     }
     break;
     case LIFE_STATE::Skill1: {
+        Rigidbody2D()->SetGravityScale(1.f);
     }
     break;
     case LIFE_STATE::Skill2: {
+        Rigidbody2D()->SetGravityScale(1.f);
     }
     break;
     case LIFE_STATE::Death: {
@@ -362,10 +382,14 @@ void CLifeScript::Intro()
 
 void CLifeScript::SecondPhase()
 {
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Skill1);
 }
 
 void CLifeScript::ThirdPhase()
 {
+    if (Animator2D()->IsFinish())
+        ChangeState(LIFE_STATE::Skill2);
 }
 
 void CLifeScript::Idle()
@@ -374,66 +398,55 @@ void CLifeScript::Idle()
 
     m_PassedTime += DT;
 
-    Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
-    Vec3 pos = Transform()->GetWorldPos();
-    TargetPos.z = 0.f;
-    pos.z = 0.f;
-    Vec3 Dist = TargetPos - pos;
-
-    // 공격 범위 이내에 존재한다면 공격
-    if (Dist.Length() < m_AttackRange)
-    {
-        // int AttackState = GetRandomInt(1, 5);
-        // 테스트
-        int AttackState = GetRandomInt(1, 4);
-
-        Vec3 origin = Transform()->GetWorldPos();
-        RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와 충돌체크
-        if (nullptr == Hit.pCollisionObj)
-        {
-            AttackState = GetRandomInt(3, 4); // 공중에 있는 상태라면 특정 공격 상태만 설정
-        }
-
-        if (1 == AttackState)
-            ChangeState(LIFE_STATE::Attack1);
-        else if (2 == AttackState)
-            ChangeState(LIFE_STATE::Attack2);
-        else if (3 == AttackState)
-            ChangeState(LIFE_STATE::Attack3);
-        else if (4 == AttackState)
-            ChangeState(LIFE_STATE::Attack4);
-        else if (5 == AttackState)
-            ChangeState(LIFE_STATE::Attack5);
-
-        // 방향 전환
-        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
-        {
-            m_Dir = DIRECTION_TYPE::RIGHT;
-            RotateTransform();
-        }
-        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
-        {
-            m_Dir = DIRECTION_TYPE::LEFT;
-            RotateTransform();
-        }
-
-        m_PassedTime = 0.f;
-    }
-
     if (m_PassedTime > 0.3f)
     {
-        ChangeState(LIFE_STATE::Run);
+        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+        Vec3 pos = Transform()->GetWorldPos();
+        TargetPos.z = 0.f;
+        pos.z = 0.f;
+        Vec3 Dist = TargetPos - pos;
 
-        // 방향 전환
-        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        // 공격 범위 이내에 존재한다면 공격
+        if (Dist.Length() < m_AttackRange)
         {
-            m_Dir = DIRECTION_TYPE::RIGHT;
-            RotateTransform();
+            // int AttackState = GetRandomInt(1, 5);
+            // 테스트
+            int AttackState = GetRandomInt(1, 4);
+
+            Vec3 origin = Transform()->GetWorldPos();
+            RaycastHit2D Hit =
+                CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와 충돌체크
+            if (nullptr == Hit.pCollisionObj)
+            {
+                AttackState = GetRandomInt(3, 3); // 공중에 있는 상태라면 특정 공격 상태만 설정
+            }
+
+            if (1 == AttackState)
+                ChangeState(LIFE_STATE::Attack1);
+            else if (2 == AttackState)
+                ChangeState(LIFE_STATE::Attack2);
+            else if (3 == AttackState)
+                ChangeState(LIFE_STATE::Attack3);
+            else if (4 == AttackState)
+                ChangeState(LIFE_STATE::Attack4);
+            else if (5 == AttackState)
+                ChangeState(LIFE_STATE::Attack5);
         }
-        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        else
         {
-            m_Dir = DIRECTION_TYPE::LEFT;
-            RotateTransform();
+            ChangeState(LIFE_STATE::Run);
+
+            // 방향 전환
+            if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+            {
+                m_Dir = DIRECTION_TYPE::RIGHT;
+                RotateTransform();
+            }
+            else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+            {
+                m_Dir = DIRECTION_TYPE::LEFT;
+                RotateTransform();
+            }
         }
 
         m_PassedTime = 0.f;
@@ -463,7 +476,7 @@ void CLifeScript::Run()
         RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와 충돌체크
         if (nullptr == Hit.pCollisionObj)
         {
-            AttackState = GetRandomInt(3, 4); // 공중에 있는 상태라면 특정 공격 상태만 설정
+            AttackState = GetRandomInt(3, 3); // 공중에 있는 상태라면 특정 공격 상태만 설정
         }
 
         if (1 == AttackState)
@@ -725,12 +738,41 @@ void CLifeScript::Attack5()
 
 void CLifeScript::Skill1()
 {
+    if (Animator2D()->GetCurAnim()->GetCurFrmIdx() < 23)
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 3.f));
+    else
+        StopMoving();
+
     if (Animator2D()->IsFinish())
+    {
+        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+        Vec3 pos = Transform()->GetWorldPos();
+        TargetPos.z = 0.f;
+        pos.z = 0.f;
+        Vec3 Dist = TargetPos - pos;
+
+        // 공격 범위 이내에 존재한다면 1피
+        if (Dist.Length() < m_AttackRange)
+        {
+            CPlayerScript* pPlayerScript = m_pTarget->GetScript<CPlayerScript>();
+
+            if (nullptr != pPlayerScript)
+            {
+                pPlayerScript->TakeHit(pPlayerScript->GetCurLife() - 1);
+            }
+        }
+
         ChangeState(LIFE_STATE::Idle);
+    }
 }
 
 void CLifeScript::Skill2()
 {
+    if (Animator2D()->GetCurAnim()->GetCurFrmIdx() < 40)
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 3.f));
+    else
+        StopMoving();
+
     if (Animator2D()->IsFinish())
         ChangeState(LIFE_STATE::Idle);
 }

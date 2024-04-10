@@ -260,36 +260,24 @@ void CEvilPumpkinScript::Idle()
 
     m_PassedTime += DT;
 
-    Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
-    Vec3 pos = Transform()->GetWorldPos();
-    TargetPos.z = 0.f;
-    pos.z = 0.f;
-    Vec3 Dist = TargetPos - pos;
-
-    // 공격 범위 이내에 존재한다면 공격
-    if (Dist.Length() < m_AttackRange)
+    if (m_PassedTime > 0.5f)
     {
-        m_AttackCount = GetRandomInt(1, 5);
-        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+        Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
+        Vec3 pos = Transform()->GetWorldPos();
+        TargetPos.z = 0.f;
+        pos.z = 0.f;
+        Vec3 Dist = TargetPos - pos;
 
-        // 방향 전환
-        if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)
+        // 공격 범위 이내에 존재한다면 공격
+        if (Dist.Length() < m_AttackRange)
         {
-            m_Dir = DIRECTION_TYPE::RIGHT;
-            RotateTransform();
+            m_AttackCount = GetRandomInt(1, 5);
+            ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
         }
-        else if (DIRECTION_TYPE::RIGHT == m_Dir && Dist.x < 0.f)
+        else
         {
-            m_Dir = DIRECTION_TYPE::LEFT;
-            RotateTransform();
+            ChangeState(EVILPUMPKINSCRIPT_STATE::Run);
         }
-
-        m_PassedTime = 0.f;
-    }
-
-    if (m_PassedTime > 1.f)
-    {
-        ChangeState(EVILPUMPKINSCRIPT_STATE::Run);
 
         // 방향 전환
         if (DIRECTION_TYPE::LEFT == m_Dir && Dist.x > 0.f)

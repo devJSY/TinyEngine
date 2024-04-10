@@ -32,7 +32,7 @@ private:
     bool m_bAttackStart;
     bool m_bAttackEnd;
 
-    float TestForce;
+    int m_CurPhase;
 
     Ptr<CPrefab> m_pFeatherProjPref;
 
