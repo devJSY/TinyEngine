@@ -34,6 +34,8 @@ private:
 
     float TestForce;
 
+    Ptr<CPrefab> m_pFeatherProjPref;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

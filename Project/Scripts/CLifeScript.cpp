@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CLifeScript.h"
 #include "CPlayerCameraScript.h"
+#include "CProjectile2DScript.h"
 
 CLifeScript::CLifeScript()
     : CBossEnemyScript(LIFESCRIPT)
@@ -8,6 +9,7 @@ CLifeScript::CLifeScript()
     , m_PassedTime(0.f)
     , m_bAttackStart(false)
     , m_bAttackEnd(false)
+    , m_pFeatherProjPref(nullptr)
 {
     m_CurLife = m_MaxLife = 2000;
     m_Speed = 10;
@@ -15,6 +17,8 @@ CLifeScript::CLifeScript()
     m_AttackRange = 200.f;
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &TestForce, "TEST FORCE");
+
+    m_pFeatherProjPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Feather_Projectile.pref", L"prefab\\Feather_Projectile.pref");
 }
 
 CLifeScript::~CLifeScript()
@@ -381,14 +385,14 @@ void CLifeScript::Idle()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(4, 4);
+        int AttackState = GetRandomInt(1, 4);
 
-        // Vec3 origin = Transform()->GetWorldPos();
-        // RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와
-        // 충돌체크 if (nullptr == Hit.pCollisionObj)
-        //{
-        //     AttackState = GetRandomInt(3, 3); // 공중에 있는 상태라면 특정 공격 상태만 설정
-        // }
+        Vec3 origin = Transform()->GetWorldPos();
+        RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와 충돌체크
+        if (nullptr == Hit.pCollisionObj)
+        {
+            AttackState = GetRandomInt(3, 4); // 공중에 있는 상태라면 특정 공격 상태만 설정
+        }
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -453,14 +457,14 @@ void CLifeScript::Run()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(4, 4);
+        int AttackState = GetRandomInt(1, 4);
 
-        // Vec3 origin = Transform()->GetWorldPos();
-        // RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와
-        // 충돌체크 if (nullptr == Hit.pCollisionObj)
-        //{
-        //     AttackState = GetRandomInt(3, 3); // 공중에 있는 상태라면 특정 공격 상태만 설정
-        // }
+        Vec3 origin = Transform()->GetWorldPos();
+        RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와 충돌체크
+        if (nullptr == Hit.pCollisionObj)
+        {
+            AttackState = GetRandomInt(3, 4); // 공중에 있는 상태라면 특정 공격 상태만 설정
+        }
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -673,6 +677,39 @@ void CLifeScript::Attack4()
     if (!m_bAttackStart && 24 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         // 깃털 발사
+        if (nullptr != m_pFeatherProjPref)
+        {
+            int EffectIdx = 0;
+            CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+            for (int i = 0; i < LAYER_MAX; i++)
+            {
+                if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
+                {
+                    EffectIdx = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                CGameObject* pProjectile = m_pFeatherProjPref->Instantiate();
+                pProjectile->Transform()->SetRelativePos(Transform()->GetRelativePos());
+
+                // 초기 방향 설정
+                Vec3 Vel = Vec3(-1.f, 0.f, 0.f);
+                float dTheta = XM_PI / 6.f;
+                Vel = Vec3::Transform(Vel, Matrix::CreateRotationZ(-dTheta * float(i)));
+                Vel.Normalize();
+
+                CProjectile2DScript* ProjScript = pProjectile->GetScript<CProjectile2DScript>();
+                ProjScript->SetTarget(m_pTarget, Vec3(1.f, 0.f, 0.f));
+                ProjScript->SetInitDirection(Vel);
+
+                GamePlayStatic::SpawnGameObject(pProjectile, EffectIdx);
+            }
+        }
+
         m_bAttackStart = true;
     }
 

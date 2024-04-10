@@ -271,6 +271,12 @@ void CPlayerScript::tick()
     m_DashPassedTime += DT;
 
     GroundCheck();
+
+    // 테스트 코드
+    if (KEY_TAP(KEY::NUM0))
+    {
+        m_ATK += 10;
+    }
 }
 
 void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
