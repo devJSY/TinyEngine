@@ -5,7 +5,7 @@ class CProjectile2DScript : public CScript
 {
 private:
     CGameObject* m_pTarget;
-    Vec3 m_vDir;
+    Vec3 m_vBaseDir;
     float m_Force;
     int m_ATK;
     float m_Duration;
@@ -15,6 +15,7 @@ private:
 
 public:
     void SetTarget(CGameObject* _pTarget, Vec3 _vBaseDir);
+    void ZAxisAlign(Vec3 _vToDir, Vec3 _vBaseDir);
 
 private:
     virtual void OnTriggerEnter(CCollider2D* _OtherCollider) override;

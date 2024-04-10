@@ -227,12 +227,29 @@ void CLifeScript::EnterState()
         StopMoving();
         m_bAttackStart = false;
         m_bAttackEnd = false;
-        Rigidbody2D()->SetGravityScale(1.f);
+        Rigidbody2D()->SetGravityScale(0.f);
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack03", false);
     }
     break;
     case LIFE_STATE::Attack4: {
         StopMoving();
+        m_bAttackStart = false;
+        m_bAttackEnd = false;
+
+        Vec2 Vel = Vec2();
+        if (DIRECTION_TYPE::LEFT == m_Dir)
+        {
+            Vel = Vec2(0.3f, 1.f);
+        }
+        else if (DIRECTION_TYPE::RIGHT == m_Dir)
+        {
+            Vel = Vec2(-0.3f, 1.f);
+        }
+
+        Vel.Normalize();
+
+        Rigidbody2D()->AddForce(Vel * 225.f, ForceMode2D::Impulse);
+
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack05", false);
     }
     break;
@@ -364,7 +381,14 @@ void CLifeScript::Idle()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(3, 3);
+        int AttackState = GetRandomInt(4, 4);
+
+        // Vec3 origin = Transform()->GetWorldPos();
+        // RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와
+        // 충돌체크 if (nullptr == Hit.pCollisionObj)
+        //{
+        //     AttackState = GetRandomInt(3, 3); // 공중에 있는 상태라면 특정 공격 상태만 설정
+        // }
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -429,7 +453,14 @@ void CLifeScript::Run()
     {
         // int AttackState = GetRandomInt(1, 5);
         // 테스트
-        int AttackState = GetRandomInt(3, 3);
+        int AttackState = GetRandomInt(4, 4);
+
+        // Vec3 origin = Transform()->GetWorldPos();
+        // RaycastHit2D Hit = CPhysics2DMgr::GetInst()->RayCast(Vec2(origin.x, origin.y), Vec2(0.f, -1.f), 125.f, L"Ground"); // Ground 레이어와
+        // 충돌체크 if (nullptr == Hit.pCollisionObj)
+        //{
+        //     AttackState = GetRandomInt(3, 3); // 공중에 있는 상태라면 특정 공격 상태만 설정
+        // }
 
         if (1 == AttackState)
             ChangeState(LIFE_STATE::Attack1);
@@ -600,7 +631,6 @@ void CLifeScript::Attack3()
 {
     if (!m_bAttackStart && 11 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
-        Rigidbody2D()->SetGravityScale(0.f);
         SetHitBox(true, L"Attack3_HitBox");
 
         Vec3 TargetPos = m_pTarget->Transform()->GetWorldPos();
@@ -640,6 +670,12 @@ void CLifeScript::Attack3()
 
 void CLifeScript::Attack4()
 {
+    if (!m_bAttackStart && 24 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        // 깃털 발사
+        m_bAttackStart = true;
+    }
+
     if (Animator2D()->IsFinish())
         ChangeState(LIFE_STATE::Idle);
 }
