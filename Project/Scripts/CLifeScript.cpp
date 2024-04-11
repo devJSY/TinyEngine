@@ -783,7 +783,14 @@ void CLifeScript::Skill2()
 
     if (Animator2D()->IsFinish())
     {
-        // 플레이어 무기, 아니마, 버프 다뺏기
+        CPlayerScript* pPlayerScript = m_pTarget->GetScript<CPlayerScript>();
+
+        if (nullptr != pPlayerScript)
+        {
+            // Scythe 이외 모든 무기 삭제
+            pPlayerScript->ChangeWeapon(PLAYER_WEAPON_CLOAK::NONE);
+            pPlayerScript->ChangeWeapon(PLAYER_WEAPON_SPELL::NONE);
+        }
 
         ChangeState(LIFE_STATE::Idle);
     }
