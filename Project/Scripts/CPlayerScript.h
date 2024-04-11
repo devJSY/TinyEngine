@@ -137,7 +137,7 @@ private:
     void GroundCheck();
 
     void ChangeStateToJump();
-    void CheckChangeStateToAttack(bool _bDownAttackEnable);
+    void CheckChangeStateToAttack();
 
     void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
 

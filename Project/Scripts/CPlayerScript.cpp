@@ -626,7 +626,7 @@ void CPlayerScript::Idle()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::IdleToRun()
@@ -676,7 +676,7 @@ void CPlayerScript::IdleToRun()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::IdleUturn()
@@ -720,7 +720,7 @@ void CPlayerScript::IdleUturn()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::Jump_Falling()
@@ -756,7 +756,7 @@ void CPlayerScript::Jump_Falling()
     }
 
     // Attack
-    CheckChangeStateToAttack(true);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::Jump_Start()
@@ -805,7 +805,7 @@ void CPlayerScript::Jump_Start()
     }
 
     // Attack
-    CheckChangeStateToAttack(true);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::Jump_Landing()
@@ -847,7 +847,7 @@ void CPlayerScript::Jump_Landing()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::Run()
@@ -886,7 +886,7 @@ void CPlayerScript::Run()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::RunUturn()
@@ -927,7 +927,7 @@ void CPlayerScript::RunUturn()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::RunToIdle()
@@ -981,7 +981,7 @@ void CPlayerScript::RunToIdle()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::Dash()
@@ -1020,7 +1020,7 @@ void CPlayerScript::Fight_To_Idle()
     }
 
     // Attack
-    CheckChangeStateToAttack(false);
+    CheckChangeStateToAttack();
 }
 
 void CPlayerScript::Elevator_In()
@@ -1487,14 +1487,14 @@ void CPlayerScript::ChangeStateToJump()
     }
 }
 
-void CPlayerScript::CheckChangeStateToAttack(bool _bDownAttackEnable)
+void CPlayerScript::CheckChangeStateToAttack()
 {
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
         if (m_Scythe == PLAYER_WEAPON_SCYTHE::TheScythe)
             ChangeState(PLAYER_STATE::TheScythe_JumpAttack);
     }
-    else if (_bDownAttackEnable && KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
+    else if (!m_bOnGround && KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
         if (m_Scythe == PLAYER_WEAPON_SCYTHE::TheScythe)
             ChangeState(PLAYER_STATE::TheScythe_DownAttack);
