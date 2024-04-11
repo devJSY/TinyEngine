@@ -155,6 +155,10 @@ void CPlayerScript::begin()
     ChangeState(m_State);
     RotateTransform();
 
+    ChangeWeapon(m_Scythe);
+    ChangeWeapon(m_Cloak);
+    ChangeWeapon(m_Spell);
+
     // ÇÁ¸®ÆÕ ·Îµù
     m_pShockWavePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Shockwave01_Atlas.pref", L"prefab\\FX_Shockwave01_Atlas.pref");
 }
@@ -274,7 +278,8 @@ void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
 
 bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (m_State == PLAYER_STATE::Dash || m_State == PLAYER_STATE::TheScythe_DownAttack || m_State == PLAYER_STATE::TheScythe_JumpAttack)
+    if (m_State == PLAYER_STATE::Dash || m_State == PLAYER_STATE::TheScythe_DownAttack || m_State == PLAYER_STATE::TheScythe_JumpAttack ||
+        m_State == PLAYER_STATE::Slaymore_UpDown)
         return false;
 
     m_CurLife -= _DamageAmount;
@@ -296,6 +301,53 @@ bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     return true;
 }
 
+void CPlayerScript::ChangeWeapon(PLAYER_WEAPON_SCYTHE _Scythe)
+{
+    m_Scythe = _Scythe;
+
+    Ptr<CMaterial> pScytheMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\WeaponScytheMtrl.mtrl");
+
+    switch (m_Scythe)
+    {
+    case PLAYER_WEAPON_SCYTHE::TheScythe:
+        pScytheMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\PLACEHOLDER\\PLACEHOLDER_Scythe_Basic.png",
+                                                                             L"Texture\\UI\\PLACEHOLDER\\PLACEHOLDER_Scythe_Basic.png"));
+        break;
+    case PLAYER_WEAPON_SCYTHE::NONE:
+        pScytheMtrl->SetTexParam(TEX_0, nullptr);
+        break;
+    }
+}
+
+void CPlayerScript::ChangeWeapon(PLAYER_WEAPON_CLOAK _Cloak)
+{
+    m_Cloak = _Cloak;
+
+    Ptr<CMaterial> pCloakMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\WeaponCloakMtrl.mtrl");
+    switch (m_Cloak)
+    {
+    case PLAYER_WEAPON_CLOAK::Slaymore:
+        pCloakMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\PLACEHOLDER\\PLACEHOLDER_Zweihander.png",
+                                                                            L"Texture\\UI\\PLACEHOLDER\\PLACEHOLDER_Zweihander.png"));
+        break;
+    case PLAYER_WEAPON_CLOAK::NONE:
+        pCloakMtrl->SetTexParam(TEX_0, nullptr);
+        break;
+    }
+}
+
+void CPlayerScript::ChangeWeapon(PLAYER_WEAPON_SPELL _Spell)
+{
+    m_Spell = _Spell;
+
+    Ptr<CMaterial> pSpellMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\WeaponSpellMtrl.mtrl");
+    switch (m_Spell)
+    {
+    case PLAYER_WEAPON_SPELL::NONE:
+        pSpellMtrl->SetTexParam(TEX_0, nullptr);
+        break;
+    }
+}
 void CPlayerScript::EnterState()
 {
     switch (m_State)
@@ -1644,10 +1696,6 @@ void CPlayerScript::Walking()
         vel.x = m_Speed;
 
     Rigidbody2D()->SetVelocity(vel);
-}
-
-void CPlayerScript::WeaponUIUpdate()
-{
 }
 
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)

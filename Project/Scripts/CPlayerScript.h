@@ -101,9 +101,9 @@ public:
     void ChangeState(PLAYER_STATE _NextState);
     bool TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3());
 
-    void ChangeWeapon(PLAYER_WEAPON_SCYTHE _Scythe) { m_Scythe = _Scythe; }
-    void ChangeWeapon(PLAYER_WEAPON_CLOAK _Cloak) { m_Cloak = _Cloak; }
-    void ChangeWeapon(PLAYER_WEAPON_SPELL _Spell) { m_Spell = _Spell; }
+    void ChangeWeapon(PLAYER_WEAPON_SCYTHE _Scythe);
+    void ChangeWeapon(PLAYER_WEAPON_CLOAK _Cloak);
+    void ChangeWeapon(PLAYER_WEAPON_SPELL _Spell);
 
 private:
     void EnterState();
@@ -155,8 +155,6 @@ private:
     void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
 
     void EnableParticle(bool _bEnable);
-
-    void WeaponUIUpdate();
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;
