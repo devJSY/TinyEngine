@@ -141,7 +141,6 @@ void CParticleSystem::finaltick()
     // 파티클 모듈정보 업데이트
     m_ModuleBuffer->SetData(&m_Module);
     m_ModuleBuffer->UpdateData_CS_SRV(20);
-    m_ModuleBuffer->UpdateData(21);
 
     // 파티클 업데이트 컴퓨트 쉐이더
     m_CSParticleUpdate->SetParticleBuffer(m_ParticleBuffer);
@@ -159,6 +158,7 @@ void CParticleSystem::UpdateData()
 
     // ParticleBuffer 바인딩
     m_ParticleBuffer->UpdateData(20);
+    m_ModuleBuffer->UpdateData(21);
 
     // 모든 파티클 렌더링
     // 파티클 개별 랜더링 -> 인스턴싱
@@ -192,6 +192,7 @@ void CParticleSystem::render(Ptr<CMaterial> _mtrl)
 
     // ParticleBuffer 바인딩
     m_ParticleBuffer->UpdateData(20);
+    m_ModuleBuffer->UpdateData(21);
 
     // 모든 파티클 렌더링
     // 파티클 개별 랜더링 -> 인스턴싱
