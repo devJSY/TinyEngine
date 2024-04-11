@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "CEvilPumpkinScript.h"
+#include "CEvilPumpkinBombScript.h"
 
 CEvilPumpkinScript::CEvilPumpkinScript()
     : CBossEnemyScript(EVILPUMPKINSCRIPT)
     , m_State(EVILPUMPKINSCRIPT_STATE::Hide)
     , m_AttackCount(0)
     , m_PassedTime(0.f)
+    , m_pBombPref(nullptr)
 {
     m_CurLife = m_MaxLife = 1100;
     m_Speed = 8;
@@ -34,7 +36,7 @@ void CEvilPumpkinScript::begin()
 
     pMtrl->SetScalarParam(INT_0, 0);
     pMtrl->SetScalarParam(FLOAT_0, 0.f);
-    pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
+    pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 0.2f, 0.f, 1.f));
 
     if (nullptr == Animator2D())
     {
@@ -61,6 +63,9 @@ void CEvilPumpkinScript::begin()
 
     // 타겟 등록
     m_pTarget = CGameManagerScript::GetInset()->GetPlayer();
+
+    // 프리팹 로딩
+    m_pBombPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Miniboss_EvilPumpkin_Bomb.pref", L"prefab\\Miniboss_EvilPumpkin_Bomb.pref");
 }
 
 void CEvilPumpkinScript::tick()
@@ -168,7 +173,7 @@ void CEvilPumpkinScript::EnterState()
     case EVILPUMPKINSCRIPT_STATE::Attack: {
         SpawnExclamationMark(250.f);
         // 사용되지 않는 상태
-        if (1 == m_AttackCount || 4 == m_AttackCount)
+        if (4 == m_AttackCount)
             m_AttackCount++;
 
         if (1 == m_AttackCount)
@@ -376,7 +381,41 @@ void CEvilPumpkinScript::Attack()
         HasAttack = false;
     }
 
-    if (!HasAttack && 2 == m_AttackCount && 29 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    if (!HasAttack && 1 == m_AttackCount && 26 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        int EffectIdx = 0;
+        CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+        for (int i = 0; i < LAYER_MAX; i++)
+        {
+            if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
+            {
+                EffectIdx = i;
+                break;
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            CGameObject* pBomb = m_pBombPref->Instantiate();
+            Vec3 pos = Transform()->GetRelativePos();
+            CEvilPumpkinBombScript* pBombScript = pBomb->GetScript<CEvilPumpkinBombScript>();
+            if (nullptr != pBombScript)
+                pBombScript->m_Dir = m_Dir;
+
+            if (m_Dir == DIRECTION_TYPE::RIGHT)
+                pos.x += 300.f;
+            else
+                pos.x -= 300.f;
+
+            pBomb->Transform()->SetRelativePos(pos);
+
+            GamePlayStatic::SpawnGameObject(pBomb, EffectIdx);
+        }
+
+        HasAttack = true;
+    }
+    else if (!HasAttack && 2 == m_AttackCount && 29 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         SetHitBox(true, L"Attack2_HitBox");
         HasAttack = true;

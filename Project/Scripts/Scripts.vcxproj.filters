@@ -109,6 +109,9 @@
     <ClInclude Include="CFXScript.h">
       <Filter>Scripts\FX</Filter>
     </ClInclude>
+    <ClInclude Include="CEvilPumpkinBombScript.h">
+      <Filter>Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -216,6 +219,9 @@
     <ClCompile Include="CFXScript.cpp">
       <Filter>Scripts\FX</Filter>
     </ClCompile>
+    <ClCompile Include="CEvilPumpkinBombScript.cpp">
+      <Filter>Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -301,6 +307,9 @@
     </Filter>
     <Filter Include="Scripts\FX">
       <UniqueIdentifier>{887b12c1-7442-49fc-ac73-acce9d74ed70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb">
+      <UniqueIdentifier>{bd93faaf-d3a1-49a0-9f91-37f098f61a4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

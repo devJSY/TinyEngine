@@ -5,6 +5,7 @@ CEnemyDamageLifeBarScript
 CEnemyHitBoxScript
 CEnemyLifeBarScript
 CEntetElevatorScript
+CEvilPumpkinBombScript
 CEvilPumpkinScript
 CExitElevatorScript
 CFlyingBookScript

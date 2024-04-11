@@ -160,6 +160,7 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     pCurLevel->AddObject(pObject, LayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(pObject);
 
+
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
     for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
     {

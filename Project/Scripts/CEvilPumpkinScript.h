@@ -20,6 +20,8 @@ private:
     int m_AttackCount;
     float m_PassedTime;
 
+    Ptr<CPrefab> m_pBombPref;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

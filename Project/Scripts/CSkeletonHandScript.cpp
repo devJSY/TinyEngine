@@ -83,7 +83,7 @@ void CSkeletonHandScript::tick()
 
 bool CSkeletonHandScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (SKELETONHAND_STATE::Death == m_State || SKELETONHAND_STATE::Hide == m_State || SKELETONHAND_STATE::Appear == m_State)
+    if (SKELETONHAND_STATE::Death == m_State || SKELETONHAND_STATE::Hide == m_State)
         return false;
 
     m_CurLife -= _DamageAmount;
