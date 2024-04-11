@@ -33,6 +33,8 @@ CPyroGhostScript::~CPyroGhostScript()
 
 void CPyroGhostScript::begin()
 {
+    CEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);
@@ -160,6 +162,7 @@ void CPyroGhostScript::EnterState()
     }
     break;
     case PYROGHOST_STATE::Attack: {
+        SpawnExclamationMark();
         Animator2D()->Play(L"Enemy_Ghost_Woman_ATTACK", false);
     }
     break;
@@ -184,6 +187,7 @@ void CPyroGhostScript::EnterState()
     }
     break;
     case PYROGHOST_STATE::Death: {
+        SpawnFXGhost();
         Animator2D()->Play(L"Enemy_Ghost_Woman_Death", false);
     }
     break;

@@ -28,6 +28,8 @@ CLifeScript::~CLifeScript()
 
 void CLifeScript::begin()
 {
+    CBossEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);
@@ -231,6 +233,7 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Attack1: {
+        SpawnExclamationMark();
         StopMoving();
         m_bAttackStart = false;
         m_bAttackEnd = false;
@@ -238,6 +241,7 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Attack2: {
+        SpawnExclamationMark();
         StopMoving();
         m_bAttackStart = false;
         m_bAttackEnd = false;
@@ -245,6 +249,7 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Attack3: {
+        SpawnExclamationMark();
         StopMoving();
         m_bAttackStart = false;
         m_bAttackEnd = false;
@@ -253,6 +258,7 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Attack4: {
+        SpawnExclamationMark();
         StopMoving();
         m_bAttackStart = false;
         m_bAttackEnd = false;
@@ -275,6 +281,7 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Attack5: {
+        SpawnExclamationMark();
         StopMoving();
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack08", false);
     }
@@ -292,6 +299,7 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Death: {
+        SpawnFXGhost();
         Animator2D()->Play(L"W09_Boss_NatalieT_Death", false);
 
         // BossUI ªË¡¶

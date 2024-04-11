@@ -33,6 +33,8 @@ CGhostScript::~CGhostScript()
 
 void CGhostScript::begin()
 {
+    CEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);
@@ -171,6 +173,7 @@ void CGhostScript::EnterState()
     }
     break;
     case GHOST_STATE::Attack: {
+        SpawnExclamationMark();
         Animator2D()->Play(L"Ghost_Attack", false);
     }
     break;
@@ -187,6 +190,7 @@ void CGhostScript::EnterState()
     }
     break;
     case GHOST_STATE::Death: {
+        SpawnFXGhost();
         Animator2D()->Play(L"Ghost_Death", false);
     }
     break;

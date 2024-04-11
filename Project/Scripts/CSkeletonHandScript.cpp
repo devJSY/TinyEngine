@@ -23,6 +23,8 @@ CSkeletonHandScript::~CSkeletonHandScript()
 
 void CSkeletonHandScript::begin()
 {
+    CEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);

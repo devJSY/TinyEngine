@@ -31,6 +31,8 @@ CFlyingBookScript::~CFlyingBookScript()
 
 void CFlyingBookScript::begin()
 {
+    CEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);
@@ -130,6 +132,7 @@ void CFlyingBookScript::EnterState()
     }
     break;
     case FLYINGBOOK_STATE::Attack: {
+        SpawnExclamationMark();
         Animator2D()->Play(L"W1_Enemy_PossessedBook_Attack", false);
     }
     break;
@@ -142,6 +145,7 @@ void CFlyingBookScript::EnterState()
     }
     break;
     case FLYINGBOOK_STATE::Death: {
+        SpawnFXGhost();
         Animator2D()->Play(L"W1_Enemy_PossessedBook_Death", false);
     }
     break;

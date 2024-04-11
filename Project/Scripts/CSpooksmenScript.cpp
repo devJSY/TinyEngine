@@ -25,6 +25,8 @@ CSpooksmenScript::~CSpooksmenScript()
 
 void CSpooksmenScript::begin()
 {
+    CEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);
@@ -159,6 +161,7 @@ void CSpooksmenScript::EnterState()
     }
     break;
     case SPOOKSMEN_STATE::Attack: {
+        SpawnExclamationMark();
         if (1 == m_AttackCount)
             Animator2D()->Play(L"Ghost_Med_Attack01", false);
         else if (2 == m_AttackCount)
@@ -186,6 +189,7 @@ void CSpooksmenScript::EnterState()
     }
     break;
     case SPOOKSMEN_STATE::Death: {
+        SpawnFXGhost();
         Animator2D()->Play(L"Ghost_Med_Death", false);
     }
     break;

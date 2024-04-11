@@ -10,6 +10,8 @@ CEnemyScript::CEnemyScript(UINT _ScriptType)
     , m_ATK(0)
     , m_AttackRange(0.f)
     , m_pTarget(nullptr)
+    , m_ExclamationMarkPref(nullptr)
+    , m_FXGhostPref(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
@@ -27,6 +29,8 @@ CEnemyScript::CEnemyScript(const CEnemyScript& origin)
     , m_ATK(origin.m_ATK)
     , m_AttackRange(origin.m_AttackRange)
     , m_pTarget(nullptr)
+    , m_ExclamationMarkPref(origin.m_ExclamationMarkPref)
+    , m_FXGhostPref(origin.m_FXGhostPref)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
@@ -37,6 +41,12 @@ CEnemyScript::CEnemyScript(const CEnemyScript& origin)
 
 CEnemyScript::~CEnemyScript()
 {
+}
+
+void CEnemyScript::begin()
+{
+    m_ExclamationMarkPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Exclamation_Mark.pref", L"prefab\\Exclamation_Mark.pref");
+    m_FXGhostPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Ghost.pref", L"prefab\\FX_Ghost.pref");
 }
 
 void CEnemyScript::tick()
@@ -80,6 +90,60 @@ void CEnemyScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
 
         pHitBox->SetEnemy(this);
         pHitBox->SetEnabled(_Enable);
+    }
+}
+
+void CEnemyScript::SpawnExclamationMark(float _Height)
+{
+    int EffectIdx = 0;
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
+        {
+            EffectIdx = i;
+            break;
+        }
+    }
+
+    CGameObject* pExclamationMarkObj = m_ExclamationMarkPref->Instantiate();
+    pExclamationMarkObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, _Height, 0.f));
+    GamePlayStatic::SpawnGameObject(pExclamationMarkObj, EffectIdx);
+}
+
+void CEnemyScript::SpawnFXGhost()
+{
+    int EffectIdx = 0;
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
+        {
+            EffectIdx = i;
+            break;
+        }
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        CGameObject* pFXGhostObj = m_FXGhostPref->Instantiate();
+        pFXGhostObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 200.f, 0.f));
+        if (0 == i)
+        {
+            pFXGhostObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, XM_PIDIV2));
+            pFXGhostObj->Animator2D()->Play(L"Ghost01", false);
+        }
+        else if (2 == i)
+            pFXGhostObj->Animator2D()->Play(L"Ghost02", false);
+        else if (3 == i)
+        {
+            pFXGhostObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, -XM_PIDIV2));
+            pFXGhostObj->Animator2D()->Play(L"Ghost03", false);
+        }
+
+        GamePlayStatic::SpawnGameObject(pFXGhostObj, EffectIdx);
     }
 }
 

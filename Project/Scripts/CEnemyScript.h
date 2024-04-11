@@ -15,8 +15,11 @@ protected:
     float m_AttackRange;
 
     CGameObject* m_pTarget;
+    Ptr<CPrefab> m_ExclamationMarkPref;
+    Ptr<CPrefab> m_FXGhostPref;
 
 protected:
+    virtual void begin() override;
     virtual void tick() override;
 
 public:
@@ -34,6 +37,9 @@ protected:
     void RotateTransform();
 
     void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
+
+    void SpawnExclamationMark(float _Height = 150.f);
+    void SpawnFXGhost();
 
 protected:
     virtual void OnDetectTargetEnter(CGameObject* _TargetObj) { m_pTarget = _TargetObj; };

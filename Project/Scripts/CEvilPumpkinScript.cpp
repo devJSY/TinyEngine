@@ -19,6 +19,8 @@ CEvilPumpkinScript::~CEvilPumpkinScript()
 
 void CEvilPumpkinScript::begin()
 {
+    CBossEnemyScript::begin();
+
     if (nullptr == MeshRender())
     {
         GetOwner()->AddComponent(new CMeshRender);
@@ -164,6 +166,7 @@ void CEvilPumpkinScript::EnterState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Attack: {
+        SpawnExclamationMark(250.f);
         // 사용되지 않는 상태
         if (1 == m_AttackCount || 4 == m_AttackCount)
             m_AttackCount++;
@@ -193,6 +196,7 @@ void CEvilPumpkinScript::EnterState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Death: {
+        SpawnFXGhost();
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Death", false);
 
         // BossUI 삭제
