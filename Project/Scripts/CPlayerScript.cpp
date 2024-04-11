@@ -119,6 +119,8 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_In.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\Elevator_End.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Elevator_Out.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
 
         // The Scythe
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
@@ -245,6 +247,12 @@ void CPlayerScript::tick()
         break;
     case PLAYER_STATE::Cinematic:
         Cinematic();
+        break;
+    case PLAYER_STATE::EndBoss:
+        EndBoss();
+        break;
+    case PLAYER_STATE::SpawnLobby:
+        SpawnLobby();
         break;
     case PLAYER_STATE::ComboMove:
         ComboMove();
@@ -427,6 +435,16 @@ void CPlayerScript::EnterState()
         Animator2D()->Play(L"LD_Idle");
     }
     break;
+    case PLAYER_STATE::EndBoss: {
+        StopWalking();
+        Animator2D()->Play(L"LD_Ritual_End_Boss", false);
+    }
+    break;
+    case PLAYER_STATE::SpawnLobby: {
+        StopWalking();
+        Animator2D()->Play(L"LD_Spawn_Lobby", false);
+    }
+    break;
     case PLAYER_STATE::ComboMove: {
         if (0 == m_AttackCount)
         {
@@ -574,6 +592,12 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::Cinematic: {
+    }
+    break;
+    case PLAYER_STATE::EndBoss: {
+    }
+    break;
+    case PLAYER_STATE::SpawnLobby: {
     }
     break;
     case PLAYER_STATE::ComboMove: {
@@ -1157,6 +1181,18 @@ void CPlayerScript::Elevator_Out()
 
 void CPlayerScript::Cinematic()
 {
+}
+
+void CPlayerScript::EndBoss()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
+}
+
+void CPlayerScript::SpawnLobby()
+{
+    if (Animator2D()->IsFinish())
+        ChangeState(PLAYER_STATE::Idle);
 }
 
 void CPlayerScript::ComboMove()

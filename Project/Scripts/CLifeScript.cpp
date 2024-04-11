@@ -299,7 +299,6 @@ void CLifeScript::EnterState()
     }
     break;
     case LIFE_STATE::Death: {
-        SpawnFXGhost();
         Animator2D()->Play(L"W09_Boss_NatalieT_Death", false);
 
         // BossUI ªË¡¶

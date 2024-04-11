@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CBossEnemyScript.h"
+#include "CPlayerScript.h"
 #include "CPlayerCameraScript.h"
 #include "CCinematicScript.h"
 #include "CEnemyLifeBarScript.h"
@@ -89,6 +90,13 @@ void CBossEnemyScript::DamageLifeBarUpdate()
 
 void CBossEnemyScript::EndBossBattle()
 {
+    // Player State Change
+    CPlayerScript* pPlayer = CGameManagerScript::GetInset()->GetPlayer()->GetScript<CPlayerScript>();
+    if (nullptr != pPlayer)
+    {
+        pPlayer->ChangeState(PLAYER_STATE::EndBoss);
+    }
+
     // Player Camera Lock Off
     CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
     if (nullptr != pPlayerCamObj)
