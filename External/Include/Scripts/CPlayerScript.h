@@ -23,10 +23,16 @@ enum class PLAYER_STATE
     EndBoss,
     SpawnLobby,
 
+    // Scythe
     TheScythe_Attack,
     TheScythe_AerialAttack,
     TheScythe_JumpAttack,
     TheScythe_DownAttack,
+
+    // Cloak
+    Slaymore_UpDown,
+
+    // Spell
 };
 
 enum class PLAYER_WEAPON_SCYTHE
@@ -37,6 +43,7 @@ enum class PLAYER_WEAPON_SCYTHE
 
 enum class PLAYER_WEAPON_CLOAK
 {
+    Slaymore,
     NONE,
 };
 
@@ -123,10 +130,16 @@ private:
     void EndBoss();
     void SpawnLobby();
 
+    // Scythe
     void TheScythe_Attack();
     void TheScythe_AerialAttack();
     void TheScythe_JumpAttack();
     void TheScythe_DownAttack();
+
+    // Cloak
+    void Slaymore_UpDown();
+
+    // Spell
 
 private:
     void Walking();

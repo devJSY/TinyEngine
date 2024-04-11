@@ -71,6 +71,7 @@ enum KEY
 
     LBTN,
     RBTN,
+    MBTN,
 
     PRINT,
     DEL,

@@ -15,7 +15,7 @@ CPlayerScript::CPlayerScript()
     , m_State(PLAYER_STATE::Idle)
     , m_Dir(DIRECTION_TYPE::RIGHT)
     , m_Scythe(PLAYER_WEAPON_SCYTHE::TheScythe)
-    , m_Cloak(PLAYER_WEAPON_CLOAK::NONE)
+    , m_Cloak(PLAYER_WEAPON_CLOAK::Slaymore)
     , m_Spell(PLAYER_WEAPON_SPELL::NONE)
     , m_MaxLife(65)
     , m_MaxMana(50)
@@ -128,6 +128,7 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
 
+        // TheScythe
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove02.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove03.anim");
@@ -138,6 +139,14 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand4.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Special2.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Crush.anim");
+
+        // HeavySword
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboHeavySword_1.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboHeavySword_2.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboHeavySword_3.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboHeavySword_Rest.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboHeavySword_Up.anim");
+        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboHeavySword_UpDown.anim");
     }
 
     if (nullptr == Rigidbody2D())
@@ -224,11 +233,13 @@ void CPlayerScript::tick()
     case PLAYER_STATE::TheScythe_DownAttack:
         TheScythe_DownAttack();
         break;
+    case PLAYER_STATE::Slaymore_UpDown:
+        Slaymore_UpDown();
+        break;
     }
 
     // Bloom Texture
-    if (PLAYER_STATE::Dash == m_State || PLAYER_STATE::TheScythe_Attack == m_State || PLAYER_STATE::TheScythe_AerialAttack == m_State ||
-        PLAYER_STATE::TheScythe_JumpAttack == m_State || PLAYER_STATE::TheScythe_DownAttack == m_State)
+    if (PLAYER_STATE::Dash == m_State || (PLAYER_STATE::TheScythe_Attack <= m_State && PLAYER_STATE::Slaymore_UpDown >= m_State))
     {
         MeshRender()->GetMaterial()->SetScalarParam(INT_0, 1);
         MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.5f);
@@ -488,6 +499,20 @@ void CPlayerScript::EnterState()
         SetHitBox(true, L"HitBox2");
     }
     break;
+    case PLAYER_STATE::Slaymore_UpDown: {
+        m_ATK = 100;
+        m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
+        Rigidbody2D()->SetGravityScale(0.f);
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+
+        if (m_bOnGround)
+            Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse), ForceMode2D::Impulse);
+
+        Animator2D()->Play(L"LD_ComboHeavySword_UpDown", false);
+
+        SetHitBox(true, L"HitBox3");
+    }
+    break;
     }
 }
 
@@ -572,6 +597,12 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::TheScythe_DownAttack: {
+        SetHitBox(false);
+    }
+    break;
+    case PLAYER_STATE::Slaymore_UpDown: {
+        m_ATK = 10;
+        Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
         SetHitBox(false);
     }
     break;
@@ -1413,6 +1444,42 @@ void CPlayerScript::TheScythe_DownAttack()
     }
 }
 
+void CPlayerScript::Slaymore_UpDown()
+{
+    int CurIdx = Animator2D()->GetCurAnim()->GetCurFrmIdx();
+    if (CurIdx >= 5 && CurIdx <= 8)
+    {
+        Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+    }
+    else if (CurIdx >= 9)
+    {
+        Rigidbody2D()->SetGravityScale(m_RigidGravityScale * 2.f);
+    }
+
+    static bool bShaked = false;
+
+    if (Animator2D()->IsFinish())
+    {
+        bShaked = false;
+        ChangeState(PLAYER_STATE::Idle);
+    }
+
+    // Camera Shake
+    if (!bShaked && 13 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
+        if (nullptr != pPlayerCamObj)
+        {
+            CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
+            if (nullptr != pScript)
+            {
+                pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f);
+                bShaked = true;
+            }
+        }
+    }
+}
+
 void CPlayerScript::RotateTransform()
 {
     if (DIRECTION_TYPE::LEFT == m_Dir)
@@ -1489,6 +1556,9 @@ void CPlayerScript::ChangeStateToJump()
 
 void CPlayerScript::CheckChangeStateToAttack()
 {
+    // ===================
+    // Scythe
+    // ===================
     if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
     {
         if (m_Scythe == PLAYER_WEAPON_SCYTHE::TheScythe)
@@ -1514,6 +1584,21 @@ void CPlayerScript::CheckChangeStateToAttack()
                 ChangeState(PLAYER_STATE::TheScythe_AerialAttack);
         }
     }
+
+    // ===================
+    // Cloak
+    // ===================
+    if (KEY_TAP(KEY::RBTN))
+    {
+        if (m_Cloak == PLAYER_WEAPON_CLOAK::Slaymore)
+        {
+            ChangeState(PLAYER_STATE::Slaymore_UpDown);
+        }
+    }
+
+    // ===================
+    // Spell
+    // ===================
 }
 
 void CPlayerScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
