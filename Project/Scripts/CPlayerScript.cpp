@@ -14,6 +14,9 @@ CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
     , m_State(PLAYER_STATE::Idle)
     , m_Dir(DIRECTION_TYPE::RIGHT)
+    , m_Scythe(PLAYER_WEAPON_SCYTHE::TheScythe)
+    , m_Cloak(PLAYER_WEAPON_CLOAK::NONE)
+    , m_Spell(PLAYER_WEAPON_SPELL::NONE)
     , m_MaxLife(65)
     , m_MaxMana(50)
     , m_CurLife(m_MaxLife)
@@ -50,6 +53,9 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     : CScript(origin)
     , m_State(origin.m_State)
     , m_Dir(origin.m_Dir)
+    , m_Scythe(origin.m_Scythe)
+    , m_Cloak(origin.m_Cloak)
+    , m_Spell(origin.m_Spell)
     , m_MaxLife(origin.m_MaxLife)
     , m_MaxMana(origin.m_MaxMana)
     , m_CurLife(origin.m_CurLife)
@@ -122,7 +128,6 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
 
-        // The Scythe
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove01.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove02.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove03.anim");
@@ -133,53 +138,6 @@ void CPlayerScript::begin()
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboStand4.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Special2.anim");
         Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Crush.anim");
-
-        /*Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Acquisition_Curse.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BookAttack_03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_BossRitual_Intro.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Bump.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Combo_Stand.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_01_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_02_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboAerial_03_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboEvilHands_Up.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatana.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Init.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboKatanas_Ult_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_01_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_02_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_03_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_04_Rest.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ComboMove_Jump.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Concentrate_Start.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Disappear.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_EvilBirds_Up.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Glide.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayDown.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_OneWayUp.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_01.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_PowerUp_02.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Ritual_End_Boss.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Spawn_Lobby.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Teleport.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Waiting.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_Wallgrab_Idle.anim");
-        Animator2D()->LoadAnimation(L"AnimData\\Player\\LD_ZipUp.anim");*/
     }
 
     if (nullptr == Rigidbody2D())
@@ -254,23 +212,23 @@ void CPlayerScript::tick()
     case PLAYER_STATE::SpawnLobby:
         SpawnLobby();
         break;
-    case PLAYER_STATE::ComboMove:
-        ComboMove();
+    case PLAYER_STATE::TheScythe_Attack:
+        TheScythe_Attack();
         break;
-    case PLAYER_STATE::ComboAerial:
-        ComboAerial();
+    case PLAYER_STATE::TheScythe_AerialAttack:
+        TheScythe_AerialAttack();
         break;
-    case PLAYER_STATE::JumpAttack:
-        JumpAttack();
+    case PLAYER_STATE::TheScythe_JumpAttack:
+        TheScythe_JumpAttack();
         break;
-    case PLAYER_STATE::DownAttack:
-        DownAttack();
+    case PLAYER_STATE::TheScythe_DownAttack:
+        TheScythe_DownAttack();
         break;
     }
 
     // Bloom Texture
-    if (PLAYER_STATE::Dash == m_State || PLAYER_STATE::ComboMove == m_State || PLAYER_STATE::ComboAerial == m_State ||
-        PLAYER_STATE::JumpAttack == m_State || PLAYER_STATE::DownAttack == m_State)
+    if (PLAYER_STATE::Dash == m_State || PLAYER_STATE::TheScythe_Attack == m_State || PLAYER_STATE::TheScythe_AerialAttack == m_State ||
+        PLAYER_STATE::TheScythe_JumpAttack == m_State || PLAYER_STATE::TheScythe_DownAttack == m_State)
     {
         MeshRender()->GetMaterial()->SetScalarParam(INT_0, 1);
         MeshRender()->GetMaterial()->SetScalarParam(FLOAT_0, 0.5f);
@@ -305,7 +263,7 @@ void CPlayerScript::ChangeState(PLAYER_STATE _NextState)
 
 bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 {
-    if (m_State == PLAYER_STATE::Dash || m_State == PLAYER_STATE::DownAttack || m_State == PLAYER_STATE::JumpAttack)
+    if (m_State == PLAYER_STATE::Dash || m_State == PLAYER_STATE::TheScythe_DownAttack || m_State == PLAYER_STATE::TheScythe_JumpAttack)
         return false;
 
     m_CurLife -= _DamageAmount;
@@ -445,7 +403,7 @@ void CPlayerScript::EnterState()
         Animator2D()->Play(L"LD_Spawn_Lobby", false);
     }
     break;
-    case PLAYER_STATE::ComboMove: {
+    case PLAYER_STATE::TheScythe_Attack: {
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
@@ -480,7 +438,7 @@ void CPlayerScript::EnterState()
         }
     }
     break;
-    case PLAYER_STATE::ComboAerial: {
+    case PLAYER_STATE::TheScythe_AerialAttack: {
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand1", false);
@@ -512,7 +470,7 @@ void CPlayerScript::EnterState()
         }
     }
     break;
-    case PLAYER_STATE::JumpAttack: {
+    case PLAYER_STATE::TheScythe_JumpAttack: {
         Animator2D()->Play(L"LD_Special2", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
@@ -522,7 +480,7 @@ void CPlayerScript::EnterState()
         SetHitBox(true, L"HitBox2");
     }
     break;
-    case PLAYER_STATE::DownAttack: {
+    case PLAYER_STATE::TheScythe_DownAttack: {
         Animator2D()->Play(L"LD_Crush", false);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
@@ -600,20 +558,20 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::SpawnLobby: {
     }
     break;
-    case PLAYER_STATE::ComboMove: {
+    case PLAYER_STATE::TheScythe_Attack: {
         SetHitBox(false);
     }
     break;
-    case PLAYER_STATE::ComboAerial: {
+    case PLAYER_STATE::TheScythe_AerialAttack: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
         SetHitBox(false);
     }
     break;
-    case PLAYER_STATE::JumpAttack: {
+    case PLAYER_STATE::TheScythe_JumpAttack: {
         SetHitBox(false);
     }
     break;
-    case PLAYER_STATE::DownAttack: {
+    case PLAYER_STATE::TheScythe_DownAttack: {
         SetHitBox(false);
     }
     break;
@@ -668,14 +626,7 @@ void CPlayerScript::Idle()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::IdleToRun()
@@ -725,14 +676,7 @@ void CPlayerScript::IdleToRun()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::IdleUturn()
@@ -776,14 +720,7 @@ void CPlayerScript::IdleUturn()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::Jump_Falling()
@@ -819,18 +756,7 @@ void CPlayerScript::Jump_Falling()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::DownAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboAerial);
-    }
+    CheckChangeStateToAttack(true);
 }
 
 void CPlayerScript::Jump_Start()
@@ -879,18 +805,7 @@ void CPlayerScript::Jump_Start()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::DownAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboAerial);
-    }
+    CheckChangeStateToAttack(true);
 }
 
 void CPlayerScript::Jump_Landing()
@@ -932,14 +847,7 @@ void CPlayerScript::Jump_Landing()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::Run()
@@ -978,14 +886,7 @@ void CPlayerScript::Run()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::RunUturn()
@@ -1026,14 +927,7 @@ void CPlayerScript::RunUturn()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::RunToIdle()
@@ -1087,14 +981,7 @@ void CPlayerScript::RunToIdle()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::ComboMove);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::Dash()
@@ -1133,18 +1020,7 @@ void CPlayerScript::Fight_To_Idle()
     }
 
     // Attack
-    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
-    {
-        ChangeState(PLAYER_STATE::JumpAttack);
-    }
-    else if (KEY_TAP(KEY::LBTN))
-    {
-        ++m_AttackCount;
-        if (m_bOnGround)
-            ChangeState(PLAYER_STATE::ComboMove);
-        else
-            ChangeState(PLAYER_STATE::ComboAerial);
-    }
+    CheckChangeStateToAttack(false);
 }
 
 void CPlayerScript::Elevator_In()
@@ -1195,7 +1071,7 @@ void CPlayerScript::SpawnLobby()
         ChangeState(PLAYER_STATE::Idle);
 }
 
-void CPlayerScript::ComboMove()
+void CPlayerScript::TheScythe_Attack()
 {
     static float PassedTime = 0.f;
     PassedTime += DT;
@@ -1221,7 +1097,7 @@ void CPlayerScript::ComboMove()
                 }
 
                 m_AttackCount = 1;
-                ChangeState(PLAYER_STATE::ComboMove);
+                ChangeState(PLAYER_STATE::TheScythe_Attack);
             }
             else
                 ChangeState(PLAYER_STATE::Idle);
@@ -1255,7 +1131,7 @@ void CPlayerScript::ComboMove()
                 }
 
                 m_AttackCount = 2;
-                ChangeState(PLAYER_STATE::ComboMove);
+                ChangeState(PLAYER_STATE::TheScythe_Attack);
             }
             else
                 ChangeState(PLAYER_STATE::Fight_To_Idle);
@@ -1292,7 +1168,7 @@ void CPlayerScript::ComboMove()
                 }
 
                 m_AttackCount = 3;
-                ChangeState(PLAYER_STATE::ComboMove);
+                ChangeState(PLAYER_STATE::TheScythe_Attack);
             }
             else
                 ChangeState(PLAYER_STATE::Fight_To_Idle);
@@ -1347,13 +1223,13 @@ void CPlayerScript::ComboMove()
         bNextAttack = false;
     }
 
-    // Attack 중 공중에 뜬 상태일경우 ComboAerial 로 전환
+    // Attack 중 공중에 뜬 상태일경우 TheScythe_AerialAttack 로 전환
     if (!m_bOnGround && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::ComboAerial);
+        ChangeState(PLAYER_STATE::TheScythe_AerialAttack);
     }
 
     // Dash
@@ -1371,7 +1247,7 @@ void CPlayerScript::ComboMove()
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::JumpAttack);
+        ChangeState(PLAYER_STATE::TheScythe_JumpAttack);
     }
     // else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     //{
@@ -1382,7 +1258,7 @@ void CPlayerScript::ComboMove()
     // }
 }
 
-void CPlayerScript::ComboAerial()
+void CPlayerScript::TheScythe_AerialAttack()
 {
     static float PassedTime = 0.f;
     PassedTime += DT;
@@ -1408,7 +1284,7 @@ void CPlayerScript::ComboAerial()
                 }
 
                 m_AttackCount = 1;
-                ChangeState(PLAYER_STATE::ComboAerial);
+                ChangeState(PLAYER_STATE::TheScythe_AerialAttack);
             }
             else
                 ChangeState(PLAYER_STATE::Fight_To_Idle);
@@ -1442,7 +1318,7 @@ void CPlayerScript::ComboAerial()
                 }
 
                 m_AttackCount = 2;
-                ChangeState(PLAYER_STATE::ComboAerial);
+                ChangeState(PLAYER_STATE::TheScythe_AerialAttack);
             }
             else
                 ChangeState(PLAYER_STATE::Fight_To_Idle);
@@ -1494,24 +1370,24 @@ void CPlayerScript::ComboAerial()
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::JumpAttack);
+        ChangeState(PLAYER_STATE::TheScythe_JumpAttack);
     }
     else if (KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
     {
         m_AttackCount = 0;
         PassedTime = 0.f;
         bNextAttack = false;
-        ChangeState(PLAYER_STATE::DownAttack);
+        ChangeState(PLAYER_STATE::TheScythe_DownAttack);
     }
 }
 
-void CPlayerScript::JumpAttack()
+void CPlayerScript::TheScythe_JumpAttack()
 {
     if (Animator2D()->IsFinish())
         ChangeState(PLAYER_STATE::Idle);
 }
 
-void CPlayerScript::DownAttack()
+void CPlayerScript::TheScythe_DownAttack()
 {
     static bool bShaked = false;
 
@@ -1568,7 +1444,7 @@ void CPlayerScript::GroundCheck()
             if (nullptr != BridgeScript)
             {
                 // 특정 상태에서는 강제 활성화
-                bool bForce = PLAYER_STATE::DownAttack == m_State;
+                bool bForce = PLAYER_STATE::TheScythe_DownAttack == m_State;
                 BridgeScript->SetEnabled(true, bForce);
             }
         }
@@ -1608,6 +1484,35 @@ void CPlayerScript::ChangeStateToJump()
     else
     {
         ChangeState(PLAYER_STATE::Jump_Start);
+    }
+}
+
+void CPlayerScript::CheckChangeStateToAttack(bool _bDownAttackEnable)
+{
+    if (m_bJumpAttackActive && KEY_PRESSED(KEY::W) && KEY_TAP(KEY::LBTN))
+    {
+        if (m_Scythe == PLAYER_WEAPON_SCYTHE::TheScythe)
+            ChangeState(PLAYER_STATE::TheScythe_JumpAttack);
+    }
+    else if (_bDownAttackEnable && KEY_PRESSED(KEY::S) && KEY_TAP(KEY::LBTN))
+    {
+        if (m_Scythe == PLAYER_WEAPON_SCYTHE::TheScythe)
+            ChangeState(PLAYER_STATE::TheScythe_DownAttack);
+    }
+    else if (KEY_TAP(KEY::LBTN))
+    {
+        if (m_Scythe == PLAYER_WEAPON_SCYTHE::TheScythe)
+        {
+            if (m_State == PLAYER_STATE::Fight_To_Idle)
+            {
+                ++m_AttackCount;
+            }
+
+            if (m_bOnGround)
+                ChangeState(PLAYER_STATE::TheScythe_Attack);
+            else
+                ChangeState(PLAYER_STATE::TheScythe_AerialAttack);
+        }
     }
 }
 
@@ -1656,6 +1561,10 @@ void CPlayerScript::Walking()
     Rigidbody2D()->SetVelocity(vel);
 }
 
+void CPlayerScript::WeaponUIUpdate()
+{
+}
+
 void CPlayerScript::OnCollisionEnter(CCollider2D* _OtherCollider)
 {
 }
@@ -1695,6 +1604,9 @@ void CPlayerScript::OnTriggerExit(CCollider2D* _OtherCollider)
 
 void CPlayerScript::SaveToLevelFile(FILE* _File)
 {
+    fwrite(&m_Scythe, sizeof(PLAYER_WEAPON_SCYTHE), 1, _File);
+    fwrite(&m_Cloak, sizeof(PLAYER_WEAPON_CLOAK), 1, _File);
+    fwrite(&m_Spell, sizeof(PLAYER_WEAPON_SPELL), 1, _File);
     fwrite(&m_MaxLife, sizeof(int), 1, _File);
     fwrite(&m_MaxMana, sizeof(int), 1, _File);
     fwrite(&m_CurLife, sizeof(int), 1, _File);
@@ -1710,6 +1622,9 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
 {
+    fread(&m_Scythe, sizeof(PLAYER_WEAPON_SCYTHE), 1, _File);
+    fread(&m_Cloak, sizeof(PLAYER_WEAPON_CLOAK), 1, _File);
+    fread(&m_Spell, sizeof(PLAYER_WEAPON_SPELL), 1, _File);
     fread(&m_MaxLife, sizeof(int), 1, _File);
     fread(&m_MaxMana, sizeof(int), 1, _File);
     fread(&m_CurLife, sizeof(int), 1, _File);

@@ -23,11 +23,26 @@ enum class PLAYER_STATE
     EndBoss,
     SpawnLobby,
 
-    // The Scythe
-    ComboMove,
-    ComboAerial,
-    JumpAttack,
-    DownAttack,
+    TheScythe_Attack,
+    TheScythe_AerialAttack,
+    TheScythe_JumpAttack,
+    TheScythe_DownAttack,
+};
+
+enum class PLAYER_WEAPON_SCYTHE
+{
+    TheScythe,
+    NONE,
+};
+
+enum class PLAYER_WEAPON_CLOAK
+{
+    NONE,
+};
+
+enum class PLAYER_WEAPON_SPELL
+{
+    NONE,
 };
 
 class CPlayerScript : public CScript
@@ -35,6 +50,10 @@ class CPlayerScript : public CScript
 private:
     PLAYER_STATE m_State;
     DIRECTION_TYPE m_Dir;
+
+    PLAYER_WEAPON_SCYTHE m_Scythe;
+    PLAYER_WEAPON_CLOAK m_Cloak;
+    PLAYER_WEAPON_SPELL m_Spell;
 
     int m_MaxLife;
     int m_MaxMana;
@@ -75,6 +94,10 @@ public:
     void ChangeState(PLAYER_STATE _NextState);
     bool TakeHit(int _DamageAmount, Vec3 _Hitdir = Vec3());
 
+    void ChangeWeapon(PLAYER_WEAPON_SCYTHE _Scythe) { m_Scythe = _Scythe; }
+    void ChangeWeapon(PLAYER_WEAPON_CLOAK _Cloak) { m_Cloak = _Cloak; }
+    void ChangeWeapon(PLAYER_WEAPON_SPELL _Spell) { m_Spell = _Spell; }
+
 private:
     void EnterState();
     void ExitState();
@@ -100,11 +123,10 @@ private:
     void EndBoss();
     void SpawnLobby();
 
-    // The Scythe
-    void ComboMove();
-    void ComboAerial();
-    void JumpAttack();
-    void DownAttack();
+    void TheScythe_Attack();
+    void TheScythe_AerialAttack();
+    void TheScythe_JumpAttack();
+    void TheScythe_DownAttack();
 
 private:
     void Walking();
@@ -115,10 +137,13 @@ private:
     void GroundCheck();
 
     void ChangeStateToJump();
+    void CheckChangeStateToAttack(bool _bDownAttackEnable);
 
     void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
 
     void EnableParticle(bool _bEnable);
+
+    void WeaponUIUpdate();
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;
