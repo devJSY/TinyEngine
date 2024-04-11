@@ -17,8 +17,6 @@ CLifeScript::CLifeScript()
     m_Speed = 10;
     m_ATK = 25;
     m_AttackRange = 200.f;
-
-    m_pFeatherProjPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Feather_Projectile.pref", L"prefab\\Feather_Projectile.pref");
 }
 
 CLifeScript::~CLifeScript()
@@ -71,6 +69,9 @@ void CLifeScript::begin()
 
     // Å¸°Ù µî·Ï
     m_pTarget = CGameManagerScript::GetInset()->GetPlayer();
+
+    // ÇÁ¸®ÆÕ ·Îµù
+    m_pFeatherProjPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Feather_Projectile.pref", L"prefab\\Feather_Projectile.pref");
 }
 
 void CLifeScript::tick()

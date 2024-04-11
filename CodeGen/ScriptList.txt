@@ -8,6 +8,7 @@ CEntetElevatorScript
 CEvilPumpkinScript
 CExitElevatorScript
 CFlyingBookScript
+CFXScript
 CGameManagerScript
 CGhostScript
 CHallofEternity_Floor1_CinematicScript

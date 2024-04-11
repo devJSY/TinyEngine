@@ -106,6 +106,9 @@
     <ClInclude Include="CW9_Boss_CinematicScript.h">
       <Filter>Scripts\Cinematic\W9 Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CFXScript.h">
+      <Filter>Scripts\FX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -210,6 +213,9 @@
     <ClCompile Include="CW9_Boss_CinematicScript.cpp">
       <Filter>Scripts\Cinematic\W9 Boss</Filter>
     </ClCompile>
+    <ClCompile Include="CFXScript.cpp">
+      <Filter>Scripts\FX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -292,6 +298,9 @@
     </Filter>
     <Filter Include="Scripts\Cinematic\W9 Boss">
       <UniqueIdentifier>{448eab35-7880-4a28-93a7-66da719a4444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FX">
+      <UniqueIdentifier>{887b12c1-7442-49fc-ac73-acce9d74ed70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

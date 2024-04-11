@@ -56,6 +56,7 @@ private:
     float m_RigidGravityScale;
     bool m_bJumpAttackActive;
     int m_AttackCount;
+    Ptr<CPrefab> m_pShockWavePref;
 
 public:
     virtual void begin() override;
@@ -112,6 +113,8 @@ private:
     void ChangeStateToJump();
 
     void SetHitBox(bool _Enable, const wstring& _HitBoxName = L"");
+
+    void EnableParticle(bool _bEnable);
 
 private:
     virtual void OnCollisionEnter(CCollider2D* _OtherCollider) override;

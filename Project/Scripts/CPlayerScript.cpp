@@ -31,6 +31,7 @@ CPlayerScript::CPlayerScript()
     , m_RigidGravityScale(0.f)
     , m_bJumpAttackActive(true)
     , m_AttackCount(0)
+    , m_pShockWavePref(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -66,6 +67,7 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     , m_RigidGravityScale(origin.m_RigidGravityScale)
     , m_bJumpAttackActive(origin.m_bJumpAttackActive)
     , m_AttackCount(origin.m_AttackCount)
+    , m_pShockWavePref(origin.m_pShockWavePref)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -183,6 +185,9 @@ void CPlayerScript::begin()
 
     ChangeState(m_State);
     RotateTransform();
+
+    // ÇÁ¸®ÆÕ ·Îµù
+    m_pShockWavePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Shockwave01_Atlas.pref", L"prefab\\FX_Shockwave01_Atlas.pref");
 }
 
 void CPlayerScript::tick()
@@ -338,6 +343,7 @@ void CPlayerScript::EnterState()
     case PLAYER_STATE::Jump_Start: {
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse), ForceMode2D::Impulse);
         Animator2D()->Play(L"LD_Jump_Start", false);
+        EnableParticle(true);
     }
     break;
     case PLAYER_STATE::Jump_Landing: {
@@ -368,6 +374,27 @@ void CPlayerScript::EnterState()
             Rigidbody2D()->AddForce(Vec2(m_DashImpulse, 0.f), ForceMode2D::Impulse);
 
         m_DashPassedTime = 0.f;
+
+        EnableParticle(true);
+
+        // ShockWave Effect
+        int EffectIdx = 0;
+        CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+        for (int i = 0; i < LAYER_MAX; i++)
+        {
+            if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
+            {
+                EffectIdx = i;
+                break;
+            }
+        }
+
+        CGameObject* pShockWaveObj = m_pShockWavePref->Instantiate();
+        pShockWaveObj->Transform()->SetRelativePos(Transform()->GetRelativePos());
+        if (m_Dir == DIRECTION_TYPE::LEFT)
+            pShockWaveObj->Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
+        GamePlayStatic::SpawnGameObject(pShockWaveObj, EffectIdx);
     }
     break;
     case PLAYER_STATE::Hit01: {
@@ -506,6 +533,7 @@ void CPlayerScript::ExitState()
     }
     break;
     case PLAYER_STATE::Jump_Start: {
+        EnableParticle(false);
     }
     break;
     case PLAYER_STATE::Jump_Landing: {
@@ -524,6 +552,7 @@ void CPlayerScript::ExitState()
     case PLAYER_STATE::Dash: {
         Rigidbody2D()->SetGravityScale(m_RigidGravityScale);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
+        EnableParticle(false);
     }
     break;
     case PLAYER_STATE::Hit02: {
@@ -1561,6 +1590,21 @@ void CPlayerScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
             continue;
 
         pHitBox->SetEnabled(_Enable);
+    }
+}
+
+void CPlayerScript::EnableParticle(bool _bEnable)
+{
+    const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
+    for (size_t i = 0; i < vecChild.size(); i++)
+    {
+        if (L"Particle" != vecChild[i]->GetName())
+            continue;
+
+        if (nullptr != vecChild[i]->ParticleSystem())
+        {
+            vecChild[i]->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, _bEnable);
+        }
     }
 }
 

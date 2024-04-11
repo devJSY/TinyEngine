@@ -27,6 +27,9 @@ public:
     virtual void render(Ptr<CMaterial> _mtrl) override;
 
 public:
+    void EnableModule(PARTICLE_MODULE _ModuleType, bool _bEnable) { m_Module.arrModuleCheck[(UINT)_ModuleType] = _bEnable; }
+
+public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 

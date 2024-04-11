@@ -121,6 +121,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEvilPumpkinScript.h" />
     <ClInclude Include="CExitElevatorScript.h" />
     <ClInclude Include="CFlyingBookScript.h" />
+    <ClInclude Include="CFXScript.h" />
     <ClInclude Include="CGameManagerScript.h" />
     <ClInclude Include="CGhostScript.h" />
     <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h" />
@@ -158,6 +159,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEvilPumpkinScript.cpp" />
     <ClCompile Include="CExitElevatorScript.cpp" />
     <ClCompile Include="CFlyingBookScript.cpp" />
+    <ClCompile Include="CFXScript.cpp" />
     <ClCompile Include="CGameManagerScript.cpp" />
     <ClCompile Include="CGhostScript.cpp" />
     <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp" />

@@ -11,6 +11,7 @@
 #include "CEvilPumpkinScript.h"
 #include "CExitElevatorScript.h"
 #include "CFlyingBookScript.h"
+#include "CFXScript.h"
 #include "CGameManagerScript.h"
 #include "CGhostScript.h"
 #include "CHallofEternity_Floor1_CinematicScript.h"
@@ -42,6 +43,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEvilPumpkinScript");
 	_vec.push_back(L"CExitElevatorScript");
 	_vec.push_back(L"CFlyingBookScript");
+	_vec.push_back(L"CFXScript");
 	_vec.push_back(L"CGameManagerScript");
 	_vec.push_back(L"CGhostScript");
 	_vec.push_back(L"CHallofEternity_Floor1_CinematicScript");
@@ -84,6 +86,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CExitElevatorScript;
 	if (L"CFlyingBookScript" == _strScriptName)
 		return new CFlyingBookScript;
+	if (L"CFXScript" == _strScriptName)
+		return new CFXScript;
 	if (L"CGameManagerScript" == _strScriptName)
 		return new CGameManagerScript;
 	if (L"CGhostScript" == _strScriptName)
@@ -147,6 +151,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CExitElevatorScript;
 	case (UINT)SCRIPT_TYPE::FLYINGBOOKSCRIPT:
 		return new CFlyingBookScript;
+	case (UINT)SCRIPT_TYPE::FXSCRIPT:
+		return new CFXScript;
 	case (UINT)SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return new CGameManagerScript;
 	case (UINT)SCRIPT_TYPE::GHOSTSCRIPT:
@@ -211,6 +217,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CExitElevatorScript";
 	case SCRIPT_TYPE::FLYINGBOOKSCRIPT:
 		return L"CFlyingBookScript";
+	case SCRIPT_TYPE::FXSCRIPT:
+		return L"CFXScript";
 	case SCRIPT_TYPE::GAMEMANAGERSCRIPT:
 		return L"CGameManagerScript";
 	case SCRIPT_TYPE::GHOSTSCRIPT:
