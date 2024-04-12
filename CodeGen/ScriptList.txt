@@ -23,6 +23,7 @@ CPlayerHitBoxScript
 CPlayerLifeBarScript
 CPlayerManaBarScript
 CPlayerScript
+CPlayerSkillScript
 CProjectile2DScript
 CPyroGhostScript
 CSkeletonHandScript

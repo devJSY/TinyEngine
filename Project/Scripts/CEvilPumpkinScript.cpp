@@ -201,7 +201,7 @@ void CEvilPumpkinScript::EnterState()
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Death: {
-        SpawnFXExplosionCircle();
+        SpawnFXHealDeflagration();
         SpawnFXGhost();
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Death", false);
 

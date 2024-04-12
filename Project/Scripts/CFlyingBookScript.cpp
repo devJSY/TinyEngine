@@ -145,7 +145,7 @@ void CFlyingBookScript::EnterState()
     }
     break;
     case FLYINGBOOK_STATE::Death: {
-        SpawnFXExplosionCircle();
+        SpawnFXHealDeflagration();
         SpawnFXGhost();
         Animator2D()->Play(L"W1_Enemy_PossessedBook_Death", false);
     }

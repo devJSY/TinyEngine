@@ -187,7 +187,7 @@ void CPyroGhostScript::EnterState()
     }
     break;
     case PYROGHOST_STATE::Death: {
-        SpawnFXExplosionCircle();
+        SpawnFXHealDeflagration();
         SpawnFXGhost();
         Animator2D()->Play(L"Enemy_Ghost_Woman_Death", false);
     }

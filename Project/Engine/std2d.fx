@@ -135,12 +135,23 @@ float4 PS_Std2D_Light(PS_IN _in) : SV_Target
     return vColor;
 }
 
-#define UseAlbedo g_int_0
+#define GlowEnable g_int_0
+#define GlowThreshold g_float_0
+#define GlowColor g_vec4_0
+#define UseAlbedo g_int_1
+
+struct PS_Std2D_Glow_Output
+{
+    float4 RenderTargetColor : SV_Target0;
+    float4 BloomTextureColor : SV_Target1;
+};
 
 // 텍스춰의 Alpha값 사용
-float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
+PS_Std2D_Glow_Output PS_Std2D_Effect(PS_IN _in) : SV_Target
 {
-    float4 vColor = float4(0.0, 0.0, 0.0, 0.0);
+    PS_Std2D_Glow_Output output;
+    
+    float4 vColor = float4(0.0, 0.0, 0.0, 1.0);
     
     if (g_UseAnim2D)
     {
@@ -180,26 +191,30 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
         }
     }
     
-    if (0.1f >= vColor.a)
-        discard;
-    
-    if (UseAlbedo)
+    // Relative Luminance : 픽셀의 색이 밝은지 어두운지의 기준값
+    float RelativeLuminance = dot(vColor.rgb, float3(0.2126f, 0.7152f, 0.0722f));
+        
+    // 일정 GlowThreshold 이상인 경우 지정된 색상으로 마스킹
+    if (GlowEnable && RelativeLuminance > GlowThreshold)
     {
-        vColor.rgb = MtrlAlbedo.rgb;
+        output.BloomTextureColor = GlowColor;
     }
+    else
+    {
+        output.BloomTextureColor = float4(0.f, 0.f, 0.f, 1.f);
+    }
+  
+    if (UseAlbedo)
+        vColor.rgb = MtrlAlbedo.rgb;
+        
+    output.RenderTargetColor = vColor;
     
-    return vColor;
+    return output;
 }
 
 #define GlowEnable g_int_0
 #define GlowThreshold g_float_0
 #define GlowColor g_vec4_0
-
-struct PS_Std2D_Glow_Output
-{
-    float4 RenderTargetColor : SV_Target0;
-    float4 BloomTextureColor : SV_Target1;
-};
 
 PS_Std2D_Glow_Output PS_Std2D_Glow(PS_IN _in)
 {

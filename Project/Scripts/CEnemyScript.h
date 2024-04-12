@@ -17,7 +17,7 @@ protected:
     CGameObject* m_pTarget;
     Ptr<CPrefab> m_ExclamationMarkPref;
     Ptr<CPrefab> m_FXGhostPref;
-    Ptr<CPrefab> m_FXExplosionCirclePref;
+    Ptr<CPrefab> m_FXHealDeflagrationPref;
 
 protected:
     virtual void begin() override;
@@ -41,7 +41,7 @@ protected:
 
     void SpawnExclamationMark(float _Height = 150.f);
     void SpawnFXGhost();
-    void SpawnFXExplosionCircle();
+    void SpawnFXHealDeflagration();
 
 protected:
     virtual void OnDetectTargetEnter(CGameObject* _TargetObj) { m_pTarget = _TargetObj; };

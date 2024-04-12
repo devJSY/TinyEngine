@@ -12,7 +12,7 @@ CEnemyScript::CEnemyScript(UINT _ScriptType)
     , m_pTarget(nullptr)
     , m_ExclamationMarkPref(nullptr)
     , m_FXGhostPref(nullptr)
-    , m_FXExplosionCirclePref(nullptr)
+    , m_FXHealDeflagrationPref(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
@@ -32,7 +32,7 @@ CEnemyScript::CEnemyScript(const CEnemyScript& origin)
     , m_pTarget(nullptr)
     , m_ExclamationMarkPref(origin.m_ExclamationMarkPref)
     , m_FXGhostPref(origin.m_FXGhostPref)
-    , m_FXExplosionCirclePref(origin.m_FXExplosionCirclePref)
+    , m_FXHealDeflagrationPref(origin.m_FXHealDeflagrationPref)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
@@ -49,7 +49,7 @@ void CEnemyScript::begin()
 {
     m_ExclamationMarkPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Exclamation_Mark.pref", L"prefab\\Exclamation_Mark.pref");
     m_FXGhostPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Ghost.pref", L"prefab\\FX_Ghost.pref");
-    m_FXExplosionCirclePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ExplosionCircle.pref", L"prefab\\ExplosionCircle.pref");
+    m_FXHealDeflagrationPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Heal_Deflagration.pref", L"prefab\\FX_Heal_Deflagration.pref");
 }
 
 void CEnemyScript::tick()
@@ -139,17 +139,17 @@ void CEnemyScript::SpawnFXGhost()
     }
 }
 
-void CEnemyScript::SpawnFXExplosionCircle()
+void CEnemyScript::SpawnFXHealDeflagration()
 {
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
     if (-1 == EffectIdx)
         EffectIdx = 0;
 
-    CGameObject* pFXExplosionCircleObj = m_FXExplosionCirclePref->Instantiate();
-    pFXExplosionCircleObj->Transform()->SetRelativePos(Transform()->GetWorldPos());
+    CGameObject* FXHealDeflagrationObj = m_FXHealDeflagrationPref->Instantiate();
+    FXHealDeflagrationObj->Transform()->SetRelativePos(Transform()->GetWorldPos());
 
-    GamePlayStatic::SpawnGameObject(pFXExplosionCircleObj, EffectIdx);
+    GamePlayStatic::SpawnGameObject(FXHealDeflagrationObj, EffectIdx);
 }
 
 void CEnemyScript::SaveToLevelFile(FILE* _File)

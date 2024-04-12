@@ -49,6 +49,7 @@ enum class PLAYER_WEAPON_CLOAK
 
 enum class PLAYER_WEAPON_SPELL
 {
+    WizzalchBarrage,
     NONE,
 };
 
@@ -84,8 +85,11 @@ private:
     float m_RigidGravityScale;
     bool m_bJumpAttackActive;
     int m_AttackCount;
+    float m_ManaDelay;
 
+    // ÇÁ¸®ÆÕ
     Ptr<CPrefab> m_pShockWavePref;
+    Ptr<CPrefab> m_pLightningSpawner02Pref;
 
 public:
     virtual void begin() override;

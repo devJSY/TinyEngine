@@ -26,6 +26,7 @@
 #include "CPlayerLifeBarScript.h"
 #include "CPlayerManaBarScript.h"
 #include "CPlayerScript.h"
+#include "CPlayerSkillScript.h"
 #include "CProjectile2DScript.h"
 #include "CPyroGhostScript.h"
 #include "CSkeletonHandScript.h"
@@ -59,6 +60,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerLifeBarScript");
 	_vec.push_back(L"CPlayerManaBarScript");
 	_vec.push_back(L"CPlayerScript");
+	_vec.push_back(L"CPlayerSkillScript");
 	_vec.push_back(L"CProjectile2DScript");
 	_vec.push_back(L"CPyroGhostScript");
 	_vec.push_back(L"CSkeletonHandScript");
@@ -118,6 +120,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerManaBarScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
+	if (L"CPlayerSkillScript" == _strScriptName)
+		return new CPlayerSkillScript;
 	if (L"CProjectile2DScript" == _strScriptName)
 		return new CProjectile2DScript;
 	if (L"CPyroGhostScript" == _strScriptName)
@@ -185,6 +189,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayerManaBarScript;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
+	case (UINT)SCRIPT_TYPE::PLAYERSKILLSCRIPT:
+		return new CPlayerSkillScript;
 	case (UINT)SCRIPT_TYPE::PROJECTILE2DSCRIPT:
 		return new CProjectile2DScript;
 	case (UINT)SCRIPT_TYPE::PYROGHOSTSCRIPT:
@@ -253,6 +259,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerManaBarScript";
 	case SCRIPT_TYPE::PLAYERSCRIPT:
 		return L"CPlayerScript";
+	case SCRIPT_TYPE::PLAYERSKILLSCRIPT:
+		return L"CPlayerSkillScript";
 	case SCRIPT_TYPE::PROJECTILE2DSCRIPT:
 		return L"CProjectile2DScript";
 	case SCRIPT_TYPE::PYROGHOSTSCRIPT:

@@ -204,13 +204,17 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D_Effect");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-        pShader->AddScalarParam(INT_0, "Use Albedo");
         pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(INT_0, "Glow Enable");
+        pShader->AddScalarParam(FLOAT_0, "Glow Threshold");
+        pShader->AddScalarParam(VEC4_0, "Glow Color");
+
+        pShader->AddScalarParam(INT_1, "Use Albedo");
 
         pShader->SetName(L"Std2DEffectShader");
         AddAsset(L"Std2DEffectShader", pShader);

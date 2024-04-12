@@ -112,6 +112,9 @@
     <ClInclude Include="CEvilPumpkinBombScript.h">
       <Filter>Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerSkillScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="CEvilPumpkinBombScript.cpp">
       <Filter>Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerSkillScript.cpp">
+      <Filter>Scripts\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

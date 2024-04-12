@@ -16,7 +16,7 @@ CPlayerScript::CPlayerScript()
     , m_Dir(DIRECTION_TYPE::RIGHT)
     , m_Scythe(PLAYER_WEAPON_SCYTHE::TheScythe)
     , m_Cloak(PLAYER_WEAPON_CLOAK::Slaymore)
-    , m_Spell(PLAYER_WEAPON_SPELL::NONE)
+    , m_Spell(PLAYER_WEAPON_SPELL::WizzalchBarrage)
     , m_MaxLife(65)
     , m_MaxMana(50)
     , m_CurLife(m_MaxLife)
@@ -34,7 +34,9 @@ CPlayerScript::CPlayerScript()
     , m_RigidGravityScale(0.f)
     , m_bJumpAttackActive(true)
     , m_AttackCount(0)
+    , m_ManaDelay(0.f)
     , m_pShockWavePref(nullptr)
+    , m_pLightningSpawner02Pref(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -73,7 +75,9 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     , m_RigidGravityScale(origin.m_RigidGravityScale)
     , m_bJumpAttackActive(origin.m_bJumpAttackActive)
     , m_AttackCount(origin.m_AttackCount)
+    , m_ManaDelay(0.f)
     , m_pShockWavePref(origin.m_pShockWavePref)
+    , m_pLightningSpawner02Pref(origin.m_pLightningSpawner02Pref)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxMana, "Max Mana");
@@ -161,6 +165,7 @@ void CPlayerScript::begin()
 
     // 프리팹 로딩
     m_pShockWavePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Shockwave01_Atlas.pref", L"prefab\\FX_Shockwave01_Atlas.pref");
+    m_pLightningSpawner02Pref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\LightningSpawner02.pref", L"prefab\\LightningSpawner02.pref");
 }
 
 void CPlayerScript::tick()
@@ -242,7 +247,20 @@ void CPlayerScript::tick()
         break;
     }
 
-    // Bloom Texture
+    // Mana 재생
+    m_ManaDelay += DT;
+    if (m_ManaDelay > 1.f)
+    {
+        static float fTerm = 0.f;
+        fTerm += DT;
+        if (fTerm > 0.05f && m_CurMana < m_MaxMana)
+        {
+            m_CurMana++;
+            fTerm = 0.f;
+        }
+    }
+
+    // FSM에 맞춰 Bloom 조건 설정
     if (PLAYER_STATE::Dash == m_State || (PLAYER_STATE::TheScythe_Attack <= m_State && PLAYER_STATE::Slaymore_UpDown >= m_State))
     {
         MeshRender()->GetMaterial()->SetScalarParam(INT_0, 1);
@@ -343,6 +361,10 @@ void CPlayerScript::ChangeWeapon(PLAYER_WEAPON_SPELL _Spell)
     Ptr<CMaterial> pSpellMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\WeaponSpellMtrl.mtrl");
     switch (m_Spell)
     {
+    case PLAYER_WEAPON_SPELL::WizzalchBarrage:
+        pSpellMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UI\\PLACEHOLDER\\PLACEHOLDER_TopDanger.png",
+                                                                            L"Texture\\UI\\PLACEHOLDER\\PLACEHOLDER_TopDanger.png"));
+        break;
     case PLAYER_WEAPON_SPELL::NONE:
         pSpellMtrl->SetTexParam(TEX_0, nullptr);
         break;
@@ -1645,6 +1667,38 @@ void CPlayerScript::CheckChangeStateToAttack()
     // ===================
     // Spell
     // ===================
+    if (KEY_TAP(KEY::MBTN))
+    {
+        if (m_Spell == PLAYER_WEAPON_SPELL::WizzalchBarrage)
+        {
+            if (m_CurMana >= 15)
+            {
+                m_CurMana -= 15;
+                m_ManaDelay = 0.f;
+
+                CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+                int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+                if (-1 == EffectIdx)
+                    EffectIdx = 0;
+
+                CGameObject* pLightningObj = m_pLightningSpawner02Pref->Instantiate();
+                pLightningObj->Transform()->SetRelativePos(Transform()->GetWorldPos() + Vec3(0.f, 300.f, -250.f));
+
+                GamePlayStatic::SpawnGameObject(pLightningObj, EffectIdx);
+
+                // Camera Shake
+                CGameObject* pPlayerCamObj = pCurLevel->FindObjectByName(L"PlayerCamera");
+                if (nullptr != pPlayerCamObj)
+                {
+                    CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
+                    if (nullptr != pScript)
+                    {
+                        pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f);
+                    }
+                }
+            }
+        }
+    }
 }
 
 void CPlayerScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
