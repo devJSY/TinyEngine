@@ -42,5 +42,6 @@ void CLevelChangeScript::ChangeLevel(const std::string& LevelName)
         PostProcessIdx = LAYER_MAX - 1;
 
     m_TransitionFilterObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\TransitionFilter.pref", L"prefab\\TransitionFilter.pref")->Instantiate();
+    m_TransitionFilterObj->Animator2D()->Play(L"Transition01", false);
     GamePlayStatic::SpawnGameObject(m_TransitionFilterObj, PostProcessIdx);
 }
