@@ -234,6 +234,29 @@ void CLevel::Step(int _Frames)
     CTimeMgr::GetInst()->LockDeltaTime(false);
 }
 
+int CLevel::FindLayerIndexByName(const wstring& _strName)
+{
+    int Idx = -1;
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        if (_strName == GetLayer(i)->GetName())
+        {
+            Idx = i;
+            break;
+        }
+    }
+
+    return Idx;
+}
+
+wstring CLevel::FindLayerNameByIndex(int _Index)
+{
+    if (_Index < 0 || _Index >= LAYER_MAX)
+        return wstring();
+
+    return GetLayer(_Index)->GetName();
+}
+
 void CLevel::clear()
 {
     for (UINT i = 0; i < LAYER_MAX; ++i)

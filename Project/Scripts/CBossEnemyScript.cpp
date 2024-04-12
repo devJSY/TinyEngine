@@ -54,18 +54,10 @@ void CBossEnemyScript::SpawnBossUI(BOSS_TYPE _Type)
             }
         }
 
-        int UIIdx = 0;
         CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-        for (int i = 0; i < LAYER_MAX; i++)
-        {
-            if (L"UI" == pCurLevel->GetLayer(i)->GetName())
-            {
-                UIIdx = i;
-                break;
-            }
-        }
-
+        int UIIdx = pCurLevel->FindLayerIndexByName(L"UI");
+        if (-1 == UIIdx)
+            UIIdx = 0;
         GamePlayStatic::SpawnGameObject(pHUDObj, UIIdx);
     }
 }

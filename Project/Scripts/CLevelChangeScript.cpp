@@ -36,17 +36,10 @@ void CLevelChangeScript::ChangeLevel(const std::string& LevelName)
 
     m_ChangeLevelName = LevelName;
 
-    int PostProcessIdx = LAYER_MAX - 1;
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-    for (int i = 0; i < LAYER_MAX; i++)
-    {
-        if (L"PostProcess" == pCurLevel->GetLayer(i)->GetName())
-        {
-            PostProcessIdx = i;
-            break;
-        }
-    }
+    int PostProcessIdx = pCurLevel->FindLayerIndexByName(L"PostProcess");
+    if (-1 == PostProcessIdx)
+        PostProcessIdx = LAYER_MAX - 1;
 
     m_TransitionFilterObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\TransitionFilter.pref", L"prefab\\TransitionFilter.pref")->Instantiate();
     GamePlayStatic::SpawnGameObject(m_TransitionFilterObj, PostProcessIdx);

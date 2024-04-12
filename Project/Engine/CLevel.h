@@ -22,6 +22,12 @@ public:
     CLayer* GetLayer(int _iLayerIdx) const { return m_arrLayer[_iLayerIdx]; }
     CLayer* GetLayer(const wstring& _strLayerName) const;
 
+public:
+    void ChangeState(LEVEL_STATE _NextState);
+    LEVEL_STATE GetState() const { return m_State; }
+    void Step(int _Frames = 1);
+
+public:
     CGameObject* FindObjectByName(const wstring& _strName);
 
     template <typename T>
@@ -30,10 +36,8 @@ public:
     template <typename T>
     vector<CGameObject*> FindObjectsOfType();
 
-public:
-    void ChangeState(LEVEL_STATE _NextState);
-    LEVEL_STATE GetState() const { return m_State; }
-    void Step(int _Frames = 1);
+    int FindLayerIndexByName(const wstring& _strName);
+    wstring FindLayerNameByIndex(int _Index);
 
 private:
     void clear();

@@ -95,36 +95,23 @@ void CEnemyScript::SetHitBox(bool _Enable, const wstring& _HitBoxName)
 
 void CEnemyScript::SpawnExclamationMark(float _Height)
 {
-    int EffectIdx = 0;
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-    for (int i = 0; i < LAYER_MAX; i++)
-    {
-        if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
-        {
-            EffectIdx = i;
-            break;
-        }
-    }
+    int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+    if (-1 == EffectIdx)
+        EffectIdx = 0;
 
     CGameObject* pExclamationMarkObj = m_ExclamationMarkPref->Instantiate();
-    pExclamationMarkObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, _Height, 0.f));
+    pExclamationMarkObj->Transform()->SetRelativePos(Vec3(0.f, _Height, 0.f));
     GamePlayStatic::SpawnGameObject(pExclamationMarkObj, EffectIdx);
+    GamePlayStatic::AddChildObject(GetOwner(), pExclamationMarkObj);
 }
 
 void CEnemyScript::SpawnFXGhost()
 {
-    int EffectIdx = 0;
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-    for (int i = 0; i < LAYER_MAX; i++)
-    {
-        if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
-        {
-            EffectIdx = i;
-            break;
-        }
-    }
+    int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+    if (-1 == EffectIdx)
+        EffectIdx = 0;
 
     for (int i = 0; i < 3; i++)
     {

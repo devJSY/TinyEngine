@@ -114,17 +114,10 @@ CGameManagerScript* CGameManagerScript::GetInset()
             pNewGMObj->AddComponent(ScriptInst);
             m_Inst = ScriptInst;
 
-            int GMLayerIdx = 0;
             CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-            for (int i = 0; i < LAYER_MAX; i++)
-            {
-                if (L"GameManager" == pCurLevel->GetLayer(i)->GetName())
-                {
-                    GMLayerIdx = i;
-                    break;
-                }
-            }
+            int GMLayerIdx = pCurLevel->FindLayerIndexByName(L"GameManager");
+            if (-1 == GMLayerIdx)
+                GMLayerIdx = 0;
 
             GamePlayStatic::SpawnGameObject(pNewGMObj, GMLayerIdx);
         }

@@ -407,17 +407,10 @@ void CPlayerScript::EnterState()
         EnableParticle(true);
 
         // ShockWave Effect
-        int EffectIdx = 0;
         CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-        for (int i = 0; i < LAYER_MAX; i++)
-        {
-            if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
-            {
-                EffectIdx = i;
-                break;
-            }
-        }
+        int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+        if (-1 == EffectIdx)
+            EffectIdx = 0;
 
         CGameObject* pShockWaveObj = m_pShockWavePref->Instantiate();
         pShockWaveObj->Transform()->SetRelativePos(Transform()->GetRelativePos());

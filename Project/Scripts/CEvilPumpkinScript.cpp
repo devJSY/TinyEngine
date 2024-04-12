@@ -383,17 +383,10 @@ void CEvilPumpkinScript::Attack()
 
     if (!HasAttack && 1 == m_AttackCount && 26 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
-        int EffectIdx = 0;
         CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-        for (int i = 0; i < LAYER_MAX; i++)
-        {
-            if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
-            {
-                EffectIdx = i;
-                break;
-            }
-        }
+        int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+        if (-1 == EffectIdx)
+            EffectIdx = 0;
 
         for (int i = 0; i < 3; i++)
         {

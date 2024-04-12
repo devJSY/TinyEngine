@@ -700,17 +700,10 @@ void CLifeScript::Attack4()
         // ฑ๊ละ น฿ป็
         if (nullptr != m_pFeatherProjPref)
         {
-            int EffectIdx = 0;
             CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-
-            for (int i = 0; i < LAYER_MAX; i++)
-            {
-                if (L"Effect" == pCurLevel->GetLayer(i)->GetName())
-                {
-                    EffectIdx = i;
-                    break;
-                }
-            }
+            int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+            if (-1 == EffectIdx)
+                EffectIdx = 0;
 
             for (int i = 0; i < 6; i++)
             {
