@@ -190,6 +190,7 @@ void CGhostScript::EnterState()
     }
     break;
     case GHOST_STATE::Death: {
+        SpawnFXExplosionCircle();
         SpawnFXGhost();
         Animator2D()->Play(L"Ghost_Death", false);
     }

@@ -3,6 +3,9 @@
 
 class CPlayerHitBoxScript : public CScript
 {
+private:
+    Ptr<CPrefab> m_pFXImpactCritPref;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

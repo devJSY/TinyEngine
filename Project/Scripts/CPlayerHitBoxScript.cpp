@@ -9,6 +9,7 @@
 
 CPlayerHitBoxScript::CPlayerHitBoxScript()
     : CScript(PLAYERHITBOXSCRIPT)
+    , m_pFXImpactCritPref(nullptr)
 {
 }
 
@@ -19,6 +20,9 @@ CPlayerHitBoxScript::~CPlayerHitBoxScript()
 void CPlayerHitBoxScript::begin()
 {
     SetEnabled(false);
+
+    // ÇÁ¸®ÆÕ ·Îµù
+    m_pFXImpactCritPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_ImpactCrit.pref", L"prefab\\FX_ImpactCrit.pref");
 }
 
 void CPlayerHitBoxScript::tick()
@@ -67,8 +71,10 @@ void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
 
     if (EnemyScript->TakeHit(GetRandomInt(PlayerScript->m_ATK - 5, PlayerScript->m_ATK + 5), Dir))
     {
+        CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
         // Camera Shake
-        CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
+        CGameObject* pPlayerCamObj = pCurLevel->FindObjectByName(L"PlayerCamera");
         if (nullptr != pPlayerCamObj)
         {
             CPlayerCameraScript* pScript = pPlayerCamObj->GetScript<CPlayerCameraScript>();
@@ -77,5 +83,15 @@ void CPlayerHitBoxScript::OnTriggerEnter(CCollider2D* _OtherCollider)
                 pScript->ShakeCam(ShakeDir::Comprehensive, 0.1f, 1.f);
             }
         }
+
+        // FX_ImpactCrit
+        int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+        if (-1 == EffectIdx)
+            EffectIdx = 0;
+
+        CGameObject* pFXImpactObj = m_pFXImpactCritPref->Instantiate();
+        pFXImpactObj->Transform()->SetRelativePos(Transform()->GetWorldPos());
+
+        GamePlayStatic::SpawnGameObject(pFXImpactObj, EffectIdx);
     }
 }

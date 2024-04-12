@@ -189,6 +189,7 @@ void CSpooksmenScript::EnterState()
     }
     break;
     case SPOOKSMEN_STATE::Death: {
+        SpawnFXExplosionCircle();
         SpawnFXGhost();
         Animator2D()->Play(L"Ghost_Med_Death", false);
     }

@@ -84,6 +84,7 @@ private:
     float m_RigidGravityScale;
     bool m_bJumpAttackActive;
     int m_AttackCount;
+
     Ptr<CPrefab> m_pShockWavePref;
 
 public:

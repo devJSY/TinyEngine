@@ -179,7 +179,10 @@ float4 PS_Std2D_Effect(PS_IN _in) : SV_Target
             discard;
         }
     }
-
+    
+    if (0.1f >= vColor.a)
+        discard;
+    
     if (UseAlbedo)
     {
         vColor.rgb = MtrlAlbedo.rgb;

@@ -12,6 +12,7 @@ CEnemyScript::CEnemyScript(UINT _ScriptType)
     , m_pTarget(nullptr)
     , m_ExclamationMarkPref(nullptr)
     , m_FXGhostPref(nullptr)
+    , m_FXExplosionCirclePref(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
@@ -31,6 +32,7 @@ CEnemyScript::CEnemyScript(const CEnemyScript& origin)
     , m_pTarget(nullptr)
     , m_ExclamationMarkPref(origin.m_ExclamationMarkPref)
     , m_FXGhostPref(origin.m_FXGhostPref)
+    , m_FXExplosionCirclePref(origin.m_FXExplosionCirclePref)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxLife, "Max Life");
     AddScriptParam(SCRIPT_PARAM::INT, &m_CurLife, "Current Life");
@@ -47,6 +49,7 @@ void CEnemyScript::begin()
 {
     m_ExclamationMarkPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Exclamation_Mark.pref", L"prefab\\Exclamation_Mark.pref");
     m_FXGhostPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FX_Ghost.pref", L"prefab\\FX_Ghost.pref");
+    m_FXExplosionCirclePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ExplosionCircle.pref", L"prefab\\ExplosionCircle.pref");
 }
 
 void CEnemyScript::tick()
@@ -113,25 +116,40 @@ void CEnemyScript::SpawnFXGhost()
     if (-1 == EffectIdx)
         EffectIdx = 0;
 
-    for (int i = 0; i < 3; i++)
+    float Theta = XM_2PI / 6.f;
+    for (int i = 0; i < 6; i++)
     {
         CGameObject* pFXGhostObj = m_FXGhostPref->Instantiate();
-        pFXGhostObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Vec3(0.f, 200.f, 0.f));
-        if (0 == i)
-        {
-            pFXGhostObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, XM_PIDIV2));
+
+        if (0 == i || 3 == i)
             pFXGhostObj->Animator2D()->Play(L"Ghost01", false);
-        }
-        else if (2 == i)
+        else if (1 == i || 4 == i)
             pFXGhostObj->Animator2D()->Play(L"Ghost02", false);
-        else if (3 == i)
-        {
-            pFXGhostObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, -XM_PIDIV2));
+        else if (2 == i || 5 == i)
             pFXGhostObj->Animator2D()->Play(L"Ghost03", false);
-        }
+
+        pFXGhostObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, Theta * i));
+
+        Vec3 Dir = Vec3::Transform(Vec3(0.f, 1.f, 0.f), Matrix::CreateRotationZ(Theta * i));
+        Dir.Normalize();
+        Dir *= 200.f;
+        pFXGhostObj->Transform()->SetRelativePos(Transform()->GetRelativePos() + Dir);
 
         GamePlayStatic::SpawnGameObject(pFXGhostObj, EffectIdx);
     }
+}
+
+void CEnemyScript::SpawnFXExplosionCircle()
+{
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+    if (-1 == EffectIdx)
+        EffectIdx = 0;
+
+    CGameObject* pFXExplosionCircleObj = m_FXExplosionCirclePref->Instantiate();
+    pFXExplosionCircleObj->Transform()->SetRelativePos(Transform()->GetWorldPos());
+
+    GamePlayStatic::SpawnGameObject(pFXExplosionCircleObj, EffectIdx);
 }
 
 void CEnemyScript::SaveToLevelFile(FILE* _File)
