@@ -1116,6 +1116,7 @@ void CPlayerScript::Elevator_In()
 
     Dir.Normalize();
 
+    PlayerPos = Transform()->GetRelativePos();
     PlayerPos.x += (Dir * 500.f * DT).x;
 
     Transform()->SetRelativePos(PlayerPos);

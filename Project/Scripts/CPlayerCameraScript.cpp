@@ -48,8 +48,10 @@ void CPlayerCameraScript::begin()
     {
         Vec3 PlayerPos = m_Player->Transform()->GetRelativePos();
         PlayerPos.z = 0.f;
-        Transform()->SetRelativePos(PlayerPos);
+        Transform()->SetRelativePos(PlayerPos + m_OffsetPos);
     }
+
+    Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"Player", true);
 }
 
 void CPlayerCameraScript::tick()

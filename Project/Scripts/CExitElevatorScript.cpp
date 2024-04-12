@@ -2,6 +2,7 @@
 #include "CExitElevatorScript.h"
 #include "CLevelChangeScript.h"
 #include "CPlayerScript.h"
+#include <Engine\\CAnim.h>
 
 CExitElevatorScript::CExitElevatorScript()
     : CScript(EXITELEVATORSCRIPT)
@@ -39,6 +40,22 @@ void CExitElevatorScript::tick()
     if (!m_bExit)
     {
         Animator2D()->Play(L"GPE_Elevator_Reverse", false);
+    }
+
+    if (20 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        Vec3 pos = Transform()->GetRelativePos();
+        pos.z = 0.f;
+        Transform()->SetRelativePos(pos);
+    }
+    else if (30 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
+    {
+        CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+        CGameObject* pPlayerCam = pCurLevel->FindObjectByName(L"PlayerCamera");
+        if (nullptr != pPlayerCam)
+        {
+            pPlayerCam->Camera()->LayerMask(pCurLevel, L"Player", false);
+        }
     }
 
     if (Animator2D()->IsFinish())
