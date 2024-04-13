@@ -3,6 +3,7 @@
 
 #include "CLevelMgr.h"
 #include "CPhysics2DMgr.h"
+#include <Scripts\\CScriptMgr.h>
 
 #include "CComponent.h"
 #include "CRenderComponent.h"
@@ -36,12 +37,28 @@ CGameObject::CGameObject(const CGameObject& origin)
         if (nullptr == origin.m_arrCom[i])
             continue;
 
-        AddComponent(origin.m_arrCom[i]->Clone());
+        CComponent* pComp = origin.m_arrCom[i]->Clone();
+        if (nullptr == pComp)
+        {
+            LOG(Error, "%s Clone Failed!!", COMPONENT_TYPE_STRING[i]);
+        }
+        else
+        {
+            AddComponent(pComp);
+        }
     }
 
     for (size_t i = 0; i < origin.m_vecScript.size(); ++i)
     {
-        AddComponent(origin.m_vecScript[i]->Clone());
+        CScript* pScript = origin.m_vecScript[i]->Clone();
+        if (nullptr == pScript)
+        {
+            LOG(Error, "%s Clone Failed!!", ToString(CScriptMgr::GetScriptName(origin.m_vecScript[i])).c_str());
+        }
+        else
+        {
+            AddComponent(pScript);
+        }
     }
 
     for (size_t i = 0; i < origin.m_vecChild.size(); ++i)

@@ -74,16 +74,26 @@ void CGameManagerScript::ChangeLevel(const std::string& _LevelName)
 void CGameManagerScript::begin()
 {
     // 게임매니저 오브젝트가 1개이상인 경우
-    vector<CGameObject*> pGMObjs = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectsOfType<CGameManagerScript>();
-    if (1 != pGMObjs.size())
+    vector<CGameObject*> vecGameManager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectsOfType<CGameManagerScript>();
+    if (1 != vecGameManager.size())
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
         return;
     }
-}
 
-void CGameManagerScript::tick()
-{
+    // Transition Animation
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    int PostProcessIdx = pCurLevel->FindLayerIndexByName(L"PostProcess");
+    if (-1 == PostProcessIdx)
+        PostProcessIdx = LAYER_MAX - 1;
+
+    CGameObject* TransitionFilterObj =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\TransitionFilter.pref", L"prefab\\TransitionFilter.pref")->Instantiate();
+    TransitionFilterObj->Animator2D()->Play(L"Transition01_Reverse", false);
+    GamePlayStatic::SpawnGameObject(TransitionFilterObj, PostProcessIdx);
+
+    // BackGround Sound Play
+    CSoundManagerScript::GetInset()->PlayBackGround();
 }
 
 CGameManagerScript* CGameManagerScript::GetInset()

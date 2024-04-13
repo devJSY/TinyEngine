@@ -101,3 +101,14 @@ void CSoundEditor::DrawDetails()
 
     ImGui::End();
 }
+
+void CSoundEditor::SetSound(Ptr<CSound> _Sound)
+{
+    if (nullptr != m_Sound)
+    {
+        m_PlayPosition = 0;
+        m_Sound->Stop();
+    }
+
+    m_Sound = _Sound;
+}

@@ -32,6 +32,7 @@
 #include "CProjectile2DScript.h"
 #include "CPyroGhostScript.h"
 #include "CSkeletonHandScript.h"
+#include "CSoundManagerScript.h"
 #include "CSpooksmenScript.h"
 #include "CW9_Boss_CinematicScript.h"
 
@@ -68,6 +69,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CProjectile2DScript");
 	_vec.push_back(L"CPyroGhostScript");
 	_vec.push_back(L"CSkeletonHandScript");
+	_vec.push_back(L"CSoundManagerScript");
 	_vec.push_back(L"CSpooksmenScript");
 	_vec.push_back(L"CW9_Boss_CinematicScript");
 }
@@ -136,6 +138,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPyroGhostScript;
 	if (L"CSkeletonHandScript" == _strScriptName)
 		return new CSkeletonHandScript;
+	if (L"CSoundManagerScript" == _strScriptName)
+		return new CSoundManagerScript;
 	if (L"CSpooksmenScript" == _strScriptName)
 		return new CSpooksmenScript;
 	if (L"CW9_Boss_CinematicScript" == _strScriptName)
@@ -209,6 +213,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPyroGhostScript;
 	case (UINT)SCRIPT_TYPE::SKELETONHANDSCRIPT:
 		return new CSkeletonHandScript;
+	case (UINT)SCRIPT_TYPE::SOUNDMANAGERSCRIPT:
+		return new CSoundManagerScript;
 	case (UINT)SCRIPT_TYPE::SPOOKSMENSCRIPT:
 		return new CSpooksmenScript;
 	case (UINT)SCRIPT_TYPE::W9_BOSS_CINEMATICSCRIPT:
@@ -283,6 +289,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPyroGhostScript";
 	case SCRIPT_TYPE::SKELETONHANDSCRIPT:
 		return L"CSkeletonHandScript";
+	case SCRIPT_TYPE::SOUNDMANAGERSCRIPT:
+		return L"CSoundManagerScript";
 	case SCRIPT_TYPE::SPOOKSMENSCRIPT:
 		return L"CSpooksmenScript";
 	case SCRIPT_TYPE::W9_BOSS_CINEMATICSCRIPT:

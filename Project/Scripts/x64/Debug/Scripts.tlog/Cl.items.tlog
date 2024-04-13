@@ -23,12 +23,16 @@ D:\TinyEngine\Project\Scripts\CPlayerCameraScript.cpp;D:\TinyEngine\Project\Scri
 D:\TinyEngine\Project\Scripts\CPlayerDamageLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerDamageLifeBarScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerDetectScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerDetectScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerHitBoxScript.obj
+D:\TinyEngine\Project\Scripts\CPlayerLifeTextScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerLifeTextScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerManaBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerManaBarScript.obj
+D:\TinyEngine\Project\Scripts\CPlayerManaTextScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerManaTextScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerLifeBarScript.obj
+D:\TinyEngine\Project\Scripts\CPlayerSkillScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CPlayerSkillScript.obj
 D:\TinyEngine\Project\Scripts\CProjectile2DScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CProjectile2DScript.obj
 D:\TinyEngine\Project\Scripts\CScriptMgr.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CScriptMgr.obj
 D:\TinyEngine\Project\Scripts\CSkeletonHandScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CSkeletonHandScript.obj
+D:\TinyEngine\Project\Scripts\CSoundManagerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CSoundManagerScript.obj
 D:\TinyEngine\Project\Scripts\CSpooksmenScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CSpooksmenScript.obj
 D:\TinyEngine\Project\Scripts\CW9_Boss_CinematicScript.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\CW9_Boss_CinematicScript.obj
 D:\TinyEngine\Project\Scripts\pch.cpp;D:\TinyEngine\Project\Scripts\x64\Debug\pch.obj

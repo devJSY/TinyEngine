@@ -38,17 +38,6 @@ void CEntetElevatorScript::begin()
     }
 
     Animator2D()->Play(L"GPE_Elevator", false);
-
-    // Transition Animation
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    int PostProcessIdx = pCurLevel->FindLayerIndexByName(L"PostProcess");
-    if (-1 == PostProcessIdx)
-        PostProcessIdx = LAYER_MAX - 1;
-
-    CGameObject* TransitionFilterObj =
-        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\TransitionFilter.pref", L"prefab\\TransitionFilter.pref")->Instantiate();
-    TransitionFilterObj->Animator2D()->Play(L"Transition01_Reverse", false);
-    GamePlayStatic::SpawnGameObject(TransitionFilterObj, PostProcessIdx);
 }
 
 void CEntetElevatorScript::tick()

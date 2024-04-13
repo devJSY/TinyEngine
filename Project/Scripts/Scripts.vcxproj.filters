@@ -121,6 +121,9 @@
     <ClInclude Include="CPlayerManaTextScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundManagerScript.h">
+      <Filter>Scripts\SoundManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -240,6 +243,9 @@
     <ClCompile Include="CPlayerManaTextScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
+    <ClCompile Include="CSoundManagerScript.cpp">
+      <Filter>Scripts\SoundManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -328,6 +334,9 @@
     </Filter>
     <Filter Include="Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb">
       <UniqueIdentifier>{bd93faaf-d3a1-49a0-9f91-37f098f61a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\SoundManager">
+      <UniqueIdentifier>{aab2fa96-b904-4d74-afc9-c17dbb609362}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

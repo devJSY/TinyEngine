@@ -22,7 +22,7 @@ private:
     void DrawDetails();
 
 public:
-    void SetSound(Ptr<CSound> _Sound) { m_Sound = _Sound; }
+    void SetSound(Ptr<CSound> _Sound);
 
 public:
     CSoundEditor();

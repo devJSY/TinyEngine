@@ -48,7 +48,7 @@ void CPyroGhostScript::begin()
 
     pMtrl->SetScalarParam(INT_0, 1);
     pMtrl->SetScalarParam(FLOAT_0, 0.7f);
-    pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 0.f, 0.f, 1.f));
+    pMtrl->SetScalarParam(VEC4_0, Vec4(0.99f, 0.99f, 0.73f, 1.f));
 
     if (nullptr == Animator2D())
     {
@@ -131,7 +131,7 @@ bool CPyroGhostScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
 
             if (_DamageAmount >= 12.f)
                 ChangeState(PYROGHOST_STATE::Hit2);
-            else 
+            else
                 ChangeState(PYROGHOST_STATE::Hit1);
         }
     }

@@ -29,5 +29,6 @@ CPlayerSkillScript
 CProjectile2DScript
 CPyroGhostScript
 CSkeletonHandScript
+CSoundManagerScript
 CSpooksmenScript
 CW9_Boss_CinematicScript

@@ -24,7 +24,7 @@ void CFontMgr::init()
         assert(NULL);
     }
 
-    if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"Arial", &m_pFontWrapper)))
+    if (FAILED(m_pFW1Factory->CreateFontWrapper(DEVICE, L"Juice ITC", &m_pFontWrapper)))
     {
         assert(NULL);
     }
