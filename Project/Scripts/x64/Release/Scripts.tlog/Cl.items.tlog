@@ -23,7 +23,9 @@ D:\TinyEngine\Project\Scripts\CPlayerCameraScript.cpp;D:\TinyEngine\Project\Scri
 D:\TinyEngine\Project\Scripts\CPlayerDamageLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerDamageLifeBarScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerDetectScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerDetectScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerHitBoxScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerHitBoxScript.obj
+D:\TinyEngine\Project\Scripts\CPlayerLifeTextScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerLifeTextScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerManaBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerManaBarScript.obj
+D:\TinyEngine\Project\Scripts\CPlayerManaTextScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerManaTextScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerLifeBarScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerLifeBarScript.obj
 D:\TinyEngine\Project\Scripts\CPlayerSkillScript.cpp;D:\TinyEngine\Project\Scripts\x64\Release\CPlayerSkillScript.obj

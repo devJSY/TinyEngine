@@ -98,4 +98,5 @@ void CEngine::progress()
 
     // Task Execute
     CTaskMgr::GetInst()->tick();
+    CKeyMgr::GetInst()->clear();
 }

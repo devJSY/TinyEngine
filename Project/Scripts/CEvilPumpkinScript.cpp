@@ -100,6 +100,28 @@ void CEvilPumpkinScript::tick()
         Death();
         break;
     }
+
+    // 시연용 강제 상태변경 코드
+    if (KEY_TAP(KEY::NUM1))
+    {
+        m_AttackCount = 1;
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+    }
+    else if (KEY_TAP(KEY::NUM2))
+    {
+        m_AttackCount = 2;
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+    }
+    else if (KEY_TAP(KEY::NUM3))
+    {
+        m_AttackCount = 3;
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+    }
+    else if (KEY_TAP(KEY::NUM4))
+    {
+        m_AttackCount = 4;
+        ChangeState(EVILPUMPKINSCRIPT_STATE::Attack);
+    }
 }
 
 bool CEvilPumpkinScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)

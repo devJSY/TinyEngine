@@ -134,6 +134,24 @@ void CLifeScript::tick()
         Death();
         break;
     }
+
+    // 시연용 강제 상태변경 코드
+    if (KEY_TAP(KEY::NUM1))
+    {
+        ChangeState(LIFE_STATE::Attack1);
+    }
+    else if (KEY_TAP(KEY::NUM2))
+    {
+        ChangeState(LIFE_STATE::Attack2);
+    }
+    else if (KEY_TAP(KEY::NUM3))
+    {
+        ChangeState(LIFE_STATE::Attack3);
+    }
+    else if (KEY_TAP(KEY::NUM4))
+    {
+        ChangeState(LIFE_STATE::Attack4);
+    }
 }
 
 bool CLifeScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
@@ -701,7 +719,7 @@ void CLifeScript::Attack4()
         if (nullptr != m_pFeatherProjPref)
         {
             CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-            int EffectIdx = pCurLevel->FindLayerIndexByName(L"Effect");
+            int EffectIdx = pCurLevel->FindLayerIndexByName(L"HitBox");
             if (-1 == EffectIdx)
                 EffectIdx = 0;
 

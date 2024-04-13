@@ -3,7 +3,7 @@
 #include "CSkyBox.h"
 
 tTransform g_Transform = {};
-tGlobalData g_Global = {};
+tGlobalData g_Global = tGlobalData();
 
 const char* COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::END]{
     "Transform",          "Animation 2D",        "Animation 3D",     "Light 2D",   "Light 3D", "Camera",         "Rigidbody 2D", "Box Collider 2D",

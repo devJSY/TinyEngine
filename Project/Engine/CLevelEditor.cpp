@@ -327,11 +327,12 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Text("Choice Your Clear Color!");
     ImGui::ColorPicker3("clear color", (float*)&CEngine::GetInst()->GetClearColor(), ImGuiColorEditFlags_PickerHueWheel);
 
-    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.g_DrawAsWireFrame);
-
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
         CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
+
+    ImGui::Checkbox("Render Outline", (bool*)&g_Global.g_RenderOutline);
+    ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.g_DrawAsWireFrame);
 
     ImGui::End();
 }

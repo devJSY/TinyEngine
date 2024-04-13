@@ -119,4 +119,5 @@ public:
 public:
     void init();
     void tick();
+    void clear();
 };

@@ -277,11 +277,11 @@ void CPlayerScript::tick()
     GroundCheck();
 
     // 테스트 코드
-    if (KEY_TAP(KEY::NUM0))
+    if (KEY_TAP(KEY::Z))
     {
         m_ATK = 10;
     }
-    else if (KEY_TAP(KEY::NUM1))
+    else if (KEY_TAP(KEY::C))
     {
         m_ATK += 10;
     }
@@ -301,6 +301,10 @@ bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
         return false;
 
     m_CurLife -= _DamageAmount;
+
+    // 임시 체력 복구
+    if (m_CurLife <= 0)
+        m_CurLife = m_MaxLife;
 
     Vec2 Force = Vec2(_Hitdir.x, _Hitdir.y);
     Force.Normalize();
@@ -567,13 +571,13 @@ void CPlayerScript::EnterState()
     }
     break;
     case PLAYER_STATE::Slaymore_UpDown: {
-        m_ATK = 100;
+        m_ATK = 85;
         m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
         Rigidbody2D()->SetGravityScale(0.f);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
 
         if (m_bOnGround)
-            Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse), ForceMode2D::Impulse);
+            Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 0.5f), ForceMode2D::Impulse);
 
         Animator2D()->Play(L"LD_ComboHeavySword_UpDown", false);
 
@@ -1656,7 +1660,8 @@ void CPlayerScript::CheckChangeStateToAttack()
     // ===================
     // Cloak
     // ===================
-    if (KEY_TAP(KEY::RBTN))
+    bool bCloakInput = KEY_TAP(KEY::RBTN) || KEY_TAP(KEY::NUM8);
+    if (bCloakInput)
     {
         if (m_Cloak == PLAYER_WEAPON_CLOAK::Slaymore)
         {
@@ -1667,7 +1672,8 @@ void CPlayerScript::CheckChangeStateToAttack()
     // ===================
     // Spell
     // ===================
-    if (KEY_TAP(KEY::MBTN))
+    bool bSpellInput = KEY_TAP(KEY::MBTN) || KEY_TAP(KEY::NUM9);
+    if (bSpellInput)
     {
         if (m_Spell == PLAYER_WEAPON_SPELL::WizzalchBarrage)
         {

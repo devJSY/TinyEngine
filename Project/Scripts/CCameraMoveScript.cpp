@@ -85,9 +85,6 @@ void CCameraMoveScript::tick()
             MovePerspective();
     }
 
-    // Wheel 초기화
-    CKeyMgr::GetInst()->SetMouseWheel(0);
-
     // 카메라 속도 제한
     if (m_CamSpeed < 0.f)
         m_CamSpeed = 0.f;

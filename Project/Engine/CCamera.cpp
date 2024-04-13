@@ -267,10 +267,13 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
                 pSelectedObj->render(NormalLineMtrl);
 
             // OutLine Pass
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            else
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+            if (g_Global.g_RenderOutline)
+            {
+                if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                    pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+                else
+                    pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+            }
         }
 #endif // DISTRIBUTE
     }

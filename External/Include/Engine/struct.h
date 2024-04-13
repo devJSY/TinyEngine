@@ -46,9 +46,9 @@ struct tLightInfo
     float fallOffEnd;
     float spotPower;
 
-    // 그림자 렌더링 
-    Matrix viewMat; 
-    Matrix projMat; 
+    // 그림자 렌더링
+    Matrix viewMat;
+    Matrix projMat;
     Matrix invProj; // 그림자 렌더링 디버깅용
 
     int ShadowType; // 0 : Static , 1 : Dynamic
@@ -112,7 +112,9 @@ __declspec(align(16)) struct tGlobalData
     UINT g_Light3DCount;
 
     Vec3 g_eyeWorld;
-    int g_DrawAsWireFrame;
+    int g_RenderOutline = true;
+
+    int g_DrawAsWireFrame = false;
 };
 
 __declspec(align(16)) struct tAnimData2D

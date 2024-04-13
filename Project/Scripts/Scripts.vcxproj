@@ -133,7 +133,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerDamageLifeBarScript.h" />
     <ClInclude Include="CPlayerDetectScript.h" />
     <ClInclude Include="CPlayerHitBoxScript.h" />
+    <ClInclude Include="CPlayerLifeTextScript.h" />
     <ClInclude Include="CPlayerManaBarScript.h" />
+    <ClInclude Include="CPlayerManaTextScript.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayerLifeBarScript.h" />
     <ClInclude Include="CPlayerSkillScript.h" />
@@ -173,7 +175,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerDamageLifeBarScript.cpp" />
     <ClCompile Include="CPlayerDetectScript.cpp" />
     <ClCompile Include="CPlayerHitBoxScript.cpp" />
+    <ClCompile Include="CPlayerLifeTextScript.cpp" />
     <ClCompile Include="CPlayerManaBarScript.cpp" />
+    <ClCompile Include="CPlayerManaTextScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayerLifeBarScript.cpp" />
     <ClCompile Include="CPlayerSkillScript.cpp" />

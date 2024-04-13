@@ -95,6 +95,8 @@ cbuffer GLOBAL_DATA : register(b3)
     uint g_Light3DCount;
         
     float3 g_eyeWorld;
+    int g_RenderOutline;
+    
     int g_DrawAsWireFrame;
 }
 

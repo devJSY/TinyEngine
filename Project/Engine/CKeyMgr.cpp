@@ -126,3 +126,8 @@ void CKeyMgr::tick()
         }
     }
 }
+
+void CKeyMgr::clear()
+{
+    SetMouseWheel(0);
+}

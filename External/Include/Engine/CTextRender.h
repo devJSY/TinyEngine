@@ -7,6 +7,7 @@ private:
     wstring m_Text;
     float m_Size;
     Vec4 m_Color;
+    int m_CameraIdx;
 
 public:
     virtual void UpdateData() override{};
@@ -22,6 +23,9 @@ public:
 
     Vec4 GetTextColor() const { return m_Color; }
     void SetTextColor(Vec4 _color) { m_Color = _color; }
+
+    int GetCameraIdx() const { return m_CameraIdx; }
+    void SetCameraIdx(int _Idx) { m_CameraIdx = _Idx; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

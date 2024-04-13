@@ -24,7 +24,9 @@
 #include "CPlayerDetectScript.h"
 #include "CPlayerHitBoxScript.h"
 #include "CPlayerLifeBarScript.h"
+#include "CPlayerLifeTextScript.h"
 #include "CPlayerManaBarScript.h"
+#include "CPlayerManaTextScript.h"
 #include "CPlayerScript.h"
 #include "CPlayerSkillScript.h"
 #include "CProjectile2DScript.h"
@@ -58,7 +60,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerDetectScript");
 	_vec.push_back(L"CPlayerHitBoxScript");
 	_vec.push_back(L"CPlayerLifeBarScript");
+	_vec.push_back(L"CPlayerLifeTextScript");
 	_vec.push_back(L"CPlayerManaBarScript");
+	_vec.push_back(L"CPlayerManaTextScript");
 	_vec.push_back(L"CPlayerScript");
 	_vec.push_back(L"CPlayerSkillScript");
 	_vec.push_back(L"CProjectile2DScript");
@@ -116,8 +120,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerHitBoxScript;
 	if (L"CPlayerLifeBarScript" == _strScriptName)
 		return new CPlayerLifeBarScript;
+	if (L"CPlayerLifeTextScript" == _strScriptName)
+		return new CPlayerLifeTextScript;
 	if (L"CPlayerManaBarScript" == _strScriptName)
 		return new CPlayerManaBarScript;
+	if (L"CPlayerManaTextScript" == _strScriptName)
+		return new CPlayerManaTextScript;
 	if (L"CPlayerScript" == _strScriptName)
 		return new CPlayerScript;
 	if (L"CPlayerSkillScript" == _strScriptName)
@@ -185,8 +193,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayerHitBoxScript;
 	case (UINT)SCRIPT_TYPE::PLAYERLIFEBARSCRIPT:
 		return new CPlayerLifeBarScript;
+	case (UINT)SCRIPT_TYPE::PLAYERLIFETEXTSCRIPT:
+		return new CPlayerLifeTextScript;
 	case (UINT)SCRIPT_TYPE::PLAYERMANABARSCRIPT:
 		return new CPlayerManaBarScript;
+	case (UINT)SCRIPT_TYPE::PLAYERMANATEXTSCRIPT:
+		return new CPlayerManaTextScript;
 	case (UINT)SCRIPT_TYPE::PLAYERSCRIPT:
 		return new CPlayerScript;
 	case (UINT)SCRIPT_TYPE::PLAYERSKILLSCRIPT:
@@ -255,8 +267,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerHitBoxScript";
 	case SCRIPT_TYPE::PLAYERLIFEBARSCRIPT:
 		return L"CPlayerLifeBarScript";
+	case SCRIPT_TYPE::PLAYERLIFETEXTSCRIPT:
+		return L"CPlayerLifeTextScript";
 	case SCRIPT_TYPE::PLAYERMANABARSCRIPT:
 		return L"CPlayerManaBarScript";
+	case SCRIPT_TYPE::PLAYERMANATEXTSCRIPT:
+		return L"CPlayerManaTextScript";
 	case SCRIPT_TYPE::PLAYERSCRIPT:
 		return L"CPlayerScript";
 	case SCRIPT_TYPE::PLAYERSKILLSCRIPT:

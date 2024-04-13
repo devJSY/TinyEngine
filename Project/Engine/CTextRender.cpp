@@ -12,6 +12,7 @@ CTextRender::CTextRender()
     , m_Text()
     , m_Size(10.f)
     , m_Color(Vec4(255.f, 255.f, 255.f, 255.f))
+    , m_CameraIdx(0)
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl")); // Not Use
@@ -23,7 +24,7 @@ CTextRender::~CTextRender()
 
 void CTextRender::render()
 {
-    CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
+    CCamera* pCam = CRenderMgr::GetInst()->GetCamera(m_CameraIdx);
 
     if (nullptr == pCam)
         return;
@@ -64,6 +65,7 @@ void CTextRender::SaveToLevelFile(FILE* _File)
     SaveWStringToFile(m_Text, _File);
     fwrite(&m_Size, sizeof(float), 1, _File);
     fwrite(&m_Color, sizeof(Vec4), 1, _File);
+    fwrite(&m_CameraIdx, sizeof(int), 1, _File);
 }
 
 void CTextRender::LoadFromLevelFile(FILE* _File)
@@ -71,4 +73,5 @@ void CTextRender::LoadFromLevelFile(FILE* _File)
     LoadWStringFromFile(m_Text, _File);
     fread(&m_Size, sizeof(float), 1, _File);
     fread(&m_Color, sizeof(Vec4), 1, _File);
+    fread(&m_CameraIdx, sizeof(int), 1, _File);
 }

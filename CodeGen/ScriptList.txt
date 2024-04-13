@@ -21,7 +21,9 @@ CPlayerDamageLifeBarScript
 CPlayerDetectScript
 CPlayerHitBoxScript
 CPlayerLifeBarScript
+CPlayerLifeTextScript
 CPlayerManaBarScript
+CPlayerManaTextScript
 CPlayerScript
 CPlayerSkillScript
 CProjectile2DScript

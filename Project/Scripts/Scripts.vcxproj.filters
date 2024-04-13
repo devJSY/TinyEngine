@@ -115,6 +115,12 @@
     <ClInclude Include="CPlayerSkillScript.h">
       <Filter>Scripts\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerLifeTextScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerManaTextScript.h">
+      <Filter>Scripts\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -226,6 +232,12 @@
       <Filter>Scripts\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerSkillScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerLifeTextScript.cpp">
+      <Filter>Scripts\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerManaTextScript.cpp">
       <Filter>Scripts\Player</Filter>
     </ClCompile>
   </ItemGroup>

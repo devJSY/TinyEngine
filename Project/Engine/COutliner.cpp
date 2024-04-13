@@ -1894,6 +1894,10 @@ void COutliner::DrawTextRender(CGameObject* obj)
             pTextRender->SetTextColor(color);
         }
 
+        int CamIdx = pTextRender->GetCameraIdx();
+        if (ImGui::InputInt(ImGui_LabelPrefix("Camera Index").c_str(), &CamIdx))
+            pTextRender->SetCameraIdx(CamIdx);
+
         ImGui::TreePop();
     }
 }
