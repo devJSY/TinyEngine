@@ -311,7 +311,10 @@ bool CPlayerScript::TakeHit(int _DamageAmount, Vec3 _Hitdir)
     Force *= 100.f;
     Rigidbody2D()->AddForce(Force, ForceMode2D::Impulse);
 
-    ChangeState(PLAYER_STATE::Hit02);
+    if (_DamageAmount < 10)
+        ChangeState(PLAYER_STATE::Hit01);
+    else
+        ChangeState(PLAYER_STATE::Hit02);
 
     // Damage LifeBar Update
     CGameObject* pDamageLifeBar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectOfType<CPlayerDamageLifeBarScript>();
@@ -398,6 +401,7 @@ void CPlayerScript::EnterState()
     case PLAYER_STATE::Jump_Start: {
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse), ForceMode2D::Impulse);
         Animator2D()->Play(L"LD_Jump_Start", false);
+        GamePlayStatic::Play2DSound(L"sound\\Player\\PC_Nav_Jump_Lgt_01.wav", 1, 0.2f);
         EnableParticle(true);
     }
     break;
@@ -419,6 +423,7 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::Dash: {
         Animator2D()->Play(L"LD_Dash", false);
+        GamePlayStatic::Play2DSound(L"sound\\Player\\PC_Nav_Dash_Lgt_01.wav", 1, 0.2f);
         m_RigidGravityScale = Rigidbody2D()->GetGravityScale();
         Rigidbody2D()->SetGravityScale(0.f);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
@@ -446,10 +451,12 @@ void CPlayerScript::EnterState()
     }
     break;
     case PLAYER_STATE::Hit01: {
+        GamePlayStatic::Play2DSound(L"sound\\Player\\Onos_Player_Death_Hit_light_01.wav", 1, 0.2f);
         Animator2D()->Play(L"LD_Hit01", false);
     }
     break;
     case PLAYER_STATE::Hit02: {
+        GamePlayStatic::Play2DSound(L"sound\\Player\\Onos_Player_Death_Hit_light_02.wav", 1, 0.2f);
         Animator2D()->Play(L"LD_Hit02", false);
     }
     break;
@@ -489,23 +496,27 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\ComboAttack1.wav", 1, 0.2f);
             SetHitBox(true, L"HitBox1");
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove02", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\ComboAttack2.wav", 1, 0.2f);
             SetHitBox(false, L"HitBox1");
             SetHitBox(true, L"HitBox2");
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove03", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\ComboAttack3.wav", 1, 0.2f);
             SetHitBox(false, L"HitBox2");
             SetHitBox(true, L"HitBox1");
         }
         else if (3 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove04", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\ComboAttack4.wav", 1, 0.2f);
             SetHitBox(false, L"HitBox1");
             SetHitBox(true, L"HitBox3");
         }
@@ -524,17 +535,20 @@ void CPlayerScript::EnterState()
         if (0 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand1", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\JumpComboAttack1.wav", 1, 0.2f);
             SetHitBox(true, L"HitBox3");
         }
         else if (1 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboMove01", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\JumpComboAttack2.wav", 1, 0.2f);
             SetHitBox(false, L"HitBox3");
             SetHitBox(true, L"HitBox1");
         }
         else if (2 == m_AttackCount)
         {
             Animator2D()->Play(L"LD_ComboStand2", false);
+            GamePlayStatic::Play2DSound(L"sound\\Player\\JumpComboAttack3.wav", 1, 0.2f);
             SetHitBox(false, L"HitBox1");
             SetHitBox(true, L"HitBox3");
         }
@@ -554,6 +568,7 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::TheScythe_JumpAttack: {
         Animator2D()->Play(L"LD_Special2", false);
+        GamePlayStatic::Play2DSound(L"sound\\Player\\JumpAttack.wav", 1, 0.2f);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 1.5f), ForceMode2D::Impulse);
 
@@ -564,6 +579,7 @@ void CPlayerScript::EnterState()
     break;
     case PLAYER_STATE::TheScythe_DownAttack: {
         Animator2D()->Play(L"LD_Crush", false);
+        GamePlayStatic::Play2DSound(L"sound\\Player\\DownAttack.wav", 1, 0.2f);
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
         Rigidbody2D()->AddForce(Vec2(0.f, -m_JumpImpulse * 3.f), ForceMode2D::Impulse);
 
@@ -580,6 +596,7 @@ void CPlayerScript::EnterState()
             Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 0.5f), ForceMode2D::Impulse);
 
         Animator2D()->Play(L"LD_ComboHeavySword_UpDown", false);
+        GamePlayStatic::Play2DSound(L"sound\\Player\\PC_Atk_Y_SwordBig_Up_01.wav", 1, 0.2f);
 
         SetHitBox(true, L"HitBox3");
     }
@@ -1539,6 +1556,7 @@ void CPlayerScript::Slaymore_UpDown()
     // Camera Shake
     if (!bShaked && 13 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
+        GamePlayStatic::Play2DSound(L"sound\\Player\\PC_Atk_Y_SwordBig_Air_B_01.wav", 1, 0.2f);
         CGameObject* pPlayerCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PlayerCamera");
         if (nullptr != pPlayerCamObj)
         {
@@ -1691,6 +1709,7 @@ void CPlayerScript::CheckChangeStateToAttack()
                 pLightningObj->Transform()->SetRelativePos(Transform()->GetWorldPos() + Vec3(0.f, 300.f, -250.f));
 
                 GamePlayStatic::SpawnGameObject(pLightningObj, EffectIdx);
+                GamePlayStatic::Play2DSound(L"sound\\FX\\PC_FX_Spawn_Lightning_01.wav", 1, 0.2f);
 
                 // Camera Shake
                 CGameObject* pPlayerCamObj = pCurLevel->FindObjectByName(L"PlayerCamera");

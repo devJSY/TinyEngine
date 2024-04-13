@@ -94,6 +94,10 @@ void CGameManagerScript::begin()
 
     // BackGround Sound Play
     CSoundManagerScript::GetInset()->PlayBackGround();
+
+    // 게임 재시작 시 초기화
+    if (L"Home Level.tLevel" == pCurLevel->GetName())
+        m_bPlayerPrefabLoaded = false;
 }
 
 CGameManagerScript* CGameManagerScript::GetInset()
