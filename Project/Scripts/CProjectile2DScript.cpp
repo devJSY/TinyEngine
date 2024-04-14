@@ -70,11 +70,11 @@ void CProjectile2DScript::tick()
             vToTargetDir.Normalize();
             Rigidbody2D()->AddForce(Vec2(vToTargetDir.x, vToTargetDir.y) * m_Force);
         }
-
-        // 현재 진행방향에 맞춰서 Z축 회전
-        Vec2 vel = Rigidbody2D()->GetVelocity();
-        ZAxisAlign(Vec3(vel.x, vel.y, 0.f), m_vBaseDir);
     }
+
+    // 현재 진행방향에 맞춰서 Z축 회전
+    Vec2 vel = Rigidbody2D()->GetVelocity();
+    ZAxisAlign(Vec3(vel.x, vel.y, 0.f), m_vBaseDir);
 }
 
 void CProjectile2DScript::SetTarget(CGameObject* _pTarget, Vec3 _vBaseDir)

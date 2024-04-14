@@ -5,6 +5,7 @@ class CExitElevatorScript : public CScript
 {
 private:
     bool m_bExit;
+    bool m_bSoundPlayed;
 
 public:
     virtual void begin() override;

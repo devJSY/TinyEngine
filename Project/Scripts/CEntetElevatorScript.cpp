@@ -38,11 +38,12 @@ void CEntetElevatorScript::begin()
     }
 
     Animator2D()->Play(L"GPE_Elevator", false);
+    GamePlayStatic::Play2DSound(L"sound\\BGObject\\GPE_Elevator\\GPE_Elevator_Open_Up_01.wav", 1, 0.5f);
 }
 
 void CEntetElevatorScript::tick()
 {
-    if (45 == Animator2D()->GetCurAnim()->GetCurFrmIdx() && !m_IsPlayerSpawn)
+    if (!m_IsPlayerSpawn && 45 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
         int PlayerLayerIdx = pCurLevel->FindLayerIndexByName(L"Player");
@@ -55,6 +56,7 @@ void CEntetElevatorScript::tick()
         PlayerScript->ChangeState(PLAYER_STATE::Elevator_Out);
 
         GamePlayStatic::SpawnGameObject(pPlayer, PlayerLayerIdx);
+        GamePlayStatic::Play2DSound(L"sound\\BGObject\\GPE_Elevator\\GPE_Elevator_Open_Door_01.wav", 1, 0.5f);
         m_IsPlayerSpawn = true;
     }
 }

@@ -7,6 +7,7 @@
 CExitElevatorScript::CExitElevatorScript()
     : CScript(EXITELEVATORSCRIPT)
     , m_bExit(false)
+    , m_bSoundPlayed(false)
 {
 }
 
@@ -31,8 +32,9 @@ void CExitElevatorScript::begin()
     {
         GetOwner()->AddComponent(new CAnimator2D);
         Animator2D()->LoadAnimation(L"AnimData\\BGObject\\GPE_Elevator_Reverse.anim");
-        Animator2D()->Play(L"GPE_Elevator_Reverse", false);
     }
+
+    Animator2D()->Play(L"GPE_Elevator_Reverse", false);
 }
 
 void CExitElevatorScript::tick()
@@ -55,6 +57,12 @@ void CExitElevatorScript::tick()
         if (nullptr != pPlayerCam)
         {
             pPlayerCam->Camera()->LayerMask(pCurLevel, L"Player", false);
+        }
+
+        if (!m_bSoundPlayed)
+        {
+            GamePlayStatic::Play2DSound(L"sound\\BGObject\\GPE_Elevator\\GPE_Elevator_Close_Down_01.wav", 1, 0.5f);
+            m_bSoundPlayed = true;
         }
     }
 
