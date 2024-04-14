@@ -172,6 +172,7 @@ void CEvilPumpkinScript::EnterState()
     case EVILPUMPKINSCRIPT_STATE::Intro: {
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Intro", false);
         GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Intro_A_01.wav", 1, 0.5f);
+        GamePlayStatic::Play2DBGM(L"sound\\BackGround\\Pumpquinn\\HAND_Music_PUMPQUINN_160BPM_081222.wav", 0.2f);
 
         // UI 설정
         SpawnBossUI(BOSS_TYPE::EVILPUMPKIN);
@@ -234,6 +235,7 @@ void CEvilPumpkinScript::EnterState()
         SpawnFXGhost();
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Death", false);
         GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Outro_Death_01.wav", 1, 0.5f);
+        GamePlayStatic::Play2DBGM(L"sound\\BackGround\\W1\\HAND World 1 Musique 091221.wav", 0.2f);
 
         // BossUI 삭제
         DestroyBossUI();

@@ -63,13 +63,9 @@ void CSoundManagerScript::PlayBackGround()
     {
         GamePlayStatic::Play2DBGM(L"sound\\BackGround\\Music_HAND_MenuTheme_230223.wav", 0.2f);
     }
-    else if (L"Hall of Eternity Floor 0.tLevel" == CurLevelName)
+    else if (L"Hall of Eternity Floor 0.tLevel" == CurLevelName || L"Hall of Eternity Floor 1.tLevel" == CurLevelName)
     {
         GamePlayStatic::Play2DBGM(L"sound\\BackGround\\W1\\HAND World 1 Musique 091221.wav", 0.2f);
-    }
-    else if (L"Hall of Eternity Floor 1.tLevel" == CurLevelName)
-    {
-        GamePlayStatic::Play2DBGM(L"sound\\BackGround\\Pumpquinn\\HAND_Music_PUMPQUINN_160BPM_081222.wav", 0.2f);
     }
     else if (L"W9_Boss.tLevel" == CurLevelName)
     {
