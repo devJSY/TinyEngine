@@ -171,6 +171,7 @@ void CEvilPumpkinScript::EnterState()
     break;
     case EVILPUMPKINSCRIPT_STATE::Intro: {
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Intro", false);
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Intro_A_01.wav", 1, 0.5f);
 
         // UI 설정
         SpawnBossUI(BOSS_TYPE::EVILPUMPKIN);
@@ -186,10 +187,12 @@ void CEvilPumpkinScript::EnterState()
     break;
     case EVILPUMPKINSCRIPT_STATE::Hit: {
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Hit", false);
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Vo_HitBy_03.wav", 1, 0.5f);
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Stun: {
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Stun", false);
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Vo_HitBy_Stun_A_01.wav", 1, 0.5f);
     }
     break;
     case EVILPUMPKINSCRIPT_STATE::Attack: {
@@ -199,13 +202,17 @@ void CEvilPumpkinScript::EnterState()
             m_AttackCount++;
 
         if (1 == m_AttackCount)
+        {
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack01", false);
+            GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Atk1_Spit_Prepa_01.wav", 1, 0.5f);
+        }
         else if (2 == m_AttackCount)
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack02", false);
         else if (3 == m_AttackCount)
         {
             Animator2D()->Play(L"Miniboss_EvilPumpkin_Attack03", false);
             SetHitBox(true, L"Attack3_1_HitBox");
+            GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Atk3_C_RootUp_01.wav", 1, 0.5f);
 
             const vector<CGameObject*>& vecChild = GetOwner()->GetChildObject();
             for (size_t i = 0; i < vecChild.size(); i++)
@@ -226,6 +233,7 @@ void CEvilPumpkinScript::EnterState()
         SpawnFXHealDeflagration();
         SpawnFXGhost();
         Animator2D()->Play(L"Miniboss_EvilPumpkin_Death", false);
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Outro_Death_01.wav", 1, 0.5f);
 
         // BossUI 삭제
         DestroyBossUI();
@@ -272,6 +280,7 @@ void CEvilPumpkinScript::Hide()
 
 void CEvilPumpkinScript::Intro()
 {
+    static bool bSoundPlay = false;
     StopWalking();
 
     // 206 부터 Glow On
@@ -282,8 +291,17 @@ void CEvilPumpkinScript::Intro()
         MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, Vec4(1.f, 0.2f, 0.f, 1.f));
     }
 
+    if (!bSoundPlay && !CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Intro_A_01.wav")->IsPlaying())
+    {
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Intro_B_01.wav", 1, 0.5f);
+        bSoundPlay = true;
+    }
+
     if (Animator2D()->IsFinish())
+    {
         ChangeState(EVILPUMPKINSCRIPT_STATE::Idle);
+        bSoundPlay = false;
+    }
 }
 
 void CEvilPumpkinScript::Idle()
@@ -429,17 +447,20 @@ void CEvilPumpkinScript::Attack()
             GamePlayStatic::SpawnGameObject(pBomb, EffectIdx);
         }
 
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Atk1_Spit_01.wav", 1, 0.5f);
         HasAttack = true;
     }
     else if (!HasAttack && 2 == m_AttackCount && 29 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         SetHitBox(true, L"Attack2_HitBox");
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Atk2_Punch_01.wav", 1, 0.5f);
         HasAttack = true;
     }
     else if (!HasAttack && 3 == m_AttackCount && 40 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         SetHitBox(false, L"Attack3_1_HitBox");
         SetHitBox(true, L"Attack3_2_HitBox");
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Atk3_D_RootDown_01.wav", 1, 0.5f);
         HasAttack = true;
     }
     else if (!HasAttack && 5 == m_AttackCount && 30 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
@@ -454,6 +475,9 @@ void CEvilPumpkinScript::Attack()
                 vecChild[i]->Animator2D()->Play(L"Miniboss_EvilPumpkin_FX_Attack05", false);
             }
         }
+
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Atk5_RootsDown_01.wav", 1, 0.5f);
+        HasAttack = true;
     }
 }
 

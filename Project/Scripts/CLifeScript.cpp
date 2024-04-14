@@ -213,6 +213,7 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Intro: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Intro", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_01.wav", 1, 0.5f);
 
         // UI 설정
         SpawnBossUI(BOSS_TYPE::LIFE);
@@ -221,6 +222,8 @@ void CLifeScript::EnterState()
     case LIFE_STATE::SecondPhase: {
         StopWalking();
         Animator2D()->Play(L"W09_Boss_NatalieT_Intro", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_02.wav", 1, 0.5f);
+        GamePlayStatic::Play2DBGM(L"sound\\BackGround\\W9\\HAND_Music_Natalite_P2_165PBM_070223.wav", 0.2f);
     }
     break;
     case LIFE_STATE::ThirdPhase: {
@@ -228,6 +231,8 @@ void CLifeScript::EnterState()
         m_CurLife = m_MaxLife;
         DamageLifeBarUpdate();
         Animator2D()->Play(L"W09_Boss_NatalieT_Intro", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_03.wav", 1, 0.5f);
+        GamePlayStatic::Play2DBGM(L"sound\\BackGround\\W9\\HAND_Music_Natalite_P3_165PBM_070223.wav", 0.2f);
     }
     break;
     case LIFE_STATE::Idle: {
@@ -240,10 +245,12 @@ void CLifeScript::EnterState()
     break;
     case LIFE_STATE::Hit: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Hit", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Atk_Lgt_01.wav", 1, 0.5f);
     }
     break;
     case LIFE_STATE::Stun: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Stun", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_HitBy_Hvy_01.wav", 1, 0.5f);
     }
     break;
     case LIFE_STATE::Uturn: {
@@ -264,6 +271,7 @@ void CLifeScript::EnterState()
         m_bAttackStart = false;
         m_bAttackEnd = false;
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack02", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_Hammer_Charge_00.wav", 1, 0.5f);
     }
     break;
     case LIFE_STATE::Attack3: {
@@ -296,6 +304,7 @@ void CLifeScript::EnterState()
         Rigidbody2D()->AddForce(Vel * 225.f, ForceMode2D::Impulse);
 
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack05", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Wings_flap_02.wav", 1, 0.5f);
     }
     break;
     case LIFE_STATE::Attack5: {
@@ -308,16 +317,23 @@ void CLifeScript::EnterState()
         StopMoving();
         Rigidbody2D()->SetGravityScale(0.f);
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack06", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_Lifesteal.wav", 1, 0.5f);
     }
     break;
     case LIFE_STATE::Skill2: {
         StopMoving();
         Rigidbody2D()->SetGravityScale(0.f);
         Animator2D()->Play(L"W09_Boss_NatalieT_Attack07", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_LooseEverything.wav", 1, 0.5f);
     }
     break;
     case LIFE_STATE::Death: {
         Animator2D()->Play(L"W09_Boss_NatalieT_Death", false);
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_02.wav", 1, 0.5f);
+
+        Ptr<CSound> pBG = CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\BackGround\\W9\\HAND_Music_Natalite_P3_165PBM_070223.wav");
+        if (nullptr != pBG)
+            pBG->Stop();
 
         // BossUI 삭제
         DestroyBossUI();
@@ -402,20 +418,50 @@ void CLifeScript::Intro()
 {
     StopWalking();
 
+    static bool bSoundPlay = false;
+    if (!bSoundPlay && !CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_01.wav")->IsPlaying())
+    {
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_MakeUp_01.wav", 1, 0.5f);
+        bSoundPlay = true;
+    }
+
     if (Animator2D()->IsFinish())
+    {
         ChangeState(LIFE_STATE::Idle);
+        bSoundPlay = true;
+    }
 }
 
 void CLifeScript::SecondPhase()
 {
+    static bool bSoundPlay = false;
+    if (!bSoundPlay && !CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_02.wav")->IsPlaying())
+    {
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_MakeUp_02.wav", 1, 0.5f);
+        bSoundPlay = true;
+    }
+
     if (Animator2D()->IsFinish())
+    {
         ChangeState(LIFE_STATE::Skill1);
+        bSoundPlay = true;
+    }
 }
 
 void CLifeScript::ThirdPhase()
 {
+    static bool bSoundPlay = false;
+    if (!bSoundPlay && !CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Rage_03.wav")->IsPlaying())
+    {
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_MakeUp_03.wav", 1, 0.5f);
+        bSoundPlay = true;
+    }
+
     if (Animator2D()->IsFinish())
+    {
+        bSoundPlay = true;
         ChangeState(LIFE_STATE::Skill2);
+    }
 }
 
 void CLifeScript::Idle()
@@ -561,6 +607,7 @@ void CLifeScript::Attack1()
     if (!m_bAttackStart && 11 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         SetHitBox(true, L"Attack1_HitBox");
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_Sword_01.wav", 1, 0.5f);
         m_bAttackStart = true;
 
         Vec2 Dir = Vec2();
@@ -653,7 +700,7 @@ void CLifeScript::Attack2()
                 pScript->ShakeCam(ShakeDir::Vertical, 0.2f, 5.f);
             }
         }
-
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_Hammer_Impact_01.wav", 1, 0.5f);
         bShaked = true;
     }
     else if (!m_bAttackEnd && 51 == CurAnimFrm || !m_bAttackEnd && 93 == CurAnimFrm)
@@ -697,6 +744,7 @@ void CLifeScript::Attack3()
             RotateTransform();
         }
 
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_Sword_Spin_LP.wav", 1, 0.5f);
         m_bAttackStart = true;
     }
 
@@ -739,6 +787,11 @@ void CLifeScript::Attack4()
                 ProjScript->SetInitDirection(Vel);
 
                 GamePlayStatic::SpawnGameObject(pProjectile, EffectIdx);
+
+                wstring SoundName = L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Atk_Feather_flying_0";
+                SoundName += std::to_wstring(i + 1);
+                SoundName += L".wav";
+                GamePlayStatic::Play2DSound(SoundName.c_str(), 1, 0.5f);
             }
         }
 
@@ -761,6 +814,13 @@ void CLifeScript::Skill1()
         Rigidbody2D()->SetVelocity(Vec2(0.f, 3.f));
     else
         StopMoving();
+
+    static bool bSoundPlay = false;
+    if (!bSoundPlay && Animator2D()->GetCurAnim()->GetCurFrmIdx() == 20)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Vo_Incantation_01.wav", 1, 0.5f);
+        bSoundPlay = true;
+    }
 
     if (Animator2D()->IsFinish())
     {
@@ -811,10 +871,16 @@ void CLifeScript::Death()
 {
     StopWalking();
 
+    static bool bSoundPlay = false;
+    if (!bSoundPlay && Animator2D()->GetCurAnim()->GetCurFrmIdx() == 46)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\Boss\\boss_w09_nathality\\NPC_NathalieT_Death_SfxVo_01.wav", 1, 0.5f);
+        bSoundPlay = true;
+    }
+
     if (Animator2D()->IsFinish())
     {
         EndBossBattle();
-
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }

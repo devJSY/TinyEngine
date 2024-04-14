@@ -148,6 +148,7 @@ void CFlyingBookScript::EnterState()
         SpawnFXHealDeflagration();
         SpawnFXGhost();
         Animator2D()->Play(L"W1_Enemy_PossessedBook_Death", false);
+        GamePlayStatic::Play2DSound(L"sound\\Enemy\\NPC_FlyingBook\\NPC_FlyingBook_Death_01.wav", 1, 0.5f);
     }
     break;
     }
@@ -241,6 +242,7 @@ void CFlyingBookScript::Attack()
         ProjScript->SetInitDirection(ToTarget);
 
         GamePlayStatic::SpawnGameObject(pProjectile, 0);
+        GamePlayStatic::Play2DSound(L"sound\\Enemy\\NPC_FlyingBook\\NPC_FlyingBook_Proj_01.wav", 1, 0.5f);
 
         HasAttack = true;
     }

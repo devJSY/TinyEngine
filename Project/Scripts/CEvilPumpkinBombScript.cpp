@@ -119,5 +119,6 @@ void CEvilPumpkinBombScript::Explode()
     if (Animator2D()->IsFinish())
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
+        GamePlayStatic::Play2DSound(L"sound\\MiniBoss\\miniboss_w01_pumpquinn\\Npc_PumpEvil_Proj_Pumpkin_Explo_01.wav", 1, 0.5f);
     }
 }

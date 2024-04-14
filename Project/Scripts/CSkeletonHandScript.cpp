@@ -110,6 +110,7 @@ void CSkeletonHandScript::EnterState()
     break;
     case SKELETONHAND_STATE::Appear: {
         Animator2D()->Play(L"GPE_SkeletonHand_Appear", true);
+        GamePlayStatic::Play2DSound(L"sound\\Enemy\\GPE_SkeletHand\\GPE_SkeletHand_Spawn_In_01.wav", 1, 0.5f);
     }
     break;
     case SKELETONHAND_STATE::Idle: {
@@ -122,6 +123,7 @@ void CSkeletonHandScript::EnterState()
     break;
     case SKELETONHAND_STATE::Death: {
         Animator2D()->Play(L"GPE_SkeletonHand_Death", false);
+        GamePlayStatic::Play2DSound(L"sound\\Enemy\\GPE_SkeletHand\\GPE_SkeletHand_Destroy_01.wav", 1, 0.5f);
     }
     break;
     }
@@ -194,6 +196,7 @@ void CSkeletonHandScript::Attack()
     if (!HasAttack && 23 == Animator2D()->GetCurAnim()->GetCurFrmIdx())
     {
         SetHitBox(true);
+        GamePlayStatic::Play2DSound(L"sound\\Enemy\\GPE_SkeletHand\\GPE_SkeletHand_Atk_Punch_01.wav", 1, 0.5f);
         HasAttack = true;
     }
 }

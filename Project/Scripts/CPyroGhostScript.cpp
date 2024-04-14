@@ -342,7 +342,7 @@ void CPyroGhostScript::Attack()
                 vecChild[i]->Animator2D()->Play(L"Ghost_Attack_FX", false);
             }
         }
-
+        GamePlayStatic::Play2DSound(L"sound\\Enemy\\Ghost\\NPC_Ghost_Flame_Proj_Explo_01.wav", 1, 0.5f);
         HasAttack = true;
     }
 }
