@@ -90,62 +90,68 @@ void CTaskMgr::tick()
         }
     }
 
-    for (size_t i = 0; i < m_vecTask.size(); ++i)
+    while (!m_queueTask.empty())
     {
-        switch (m_vecTask[i].Type)
+        const tTask& Task = m_queueTask.front();
+        m_queueTask.pop();
+
+        switch (Task.Type)
         {
         case TASK_TYPE::CREATE_OBJECT:
-            CREATE_OBJECT(m_vecTask[i]);
+            CREATE_OBJECT(Task);
             break;
         case TASK_TYPE::DELETE_OBJECT:
-            DELETE_OBJECT(m_vecTask[i]);
-            break;
-        case TASK_TYPE::CHANGE_LEVEL:
-            CHANGE_LEVEL(m_vecTask[i]);
+            DELETE_OBJECT(Task);
             break;
         case TASK_TYPE::CHANGE_LEVELSTATE:
-            CHANGE_LEVELSTATE(m_vecTask[i]);
+            CHANGE_LEVELSTATE(Task);
             break;
         case TASK_TYPE::ADD_CHILD:
-            ADD_CHILD(m_vecTask[i]);
+            ADD_CHILD(Task);
             break;
         case TASK_TYPE::WINDOW_RESIZE:
-            WINDOW_RESIZE(m_vecTask[i]);
+            WINDOW_RESIZE(Task);
             break;
         case TASK_TYPE::DELETE_ASSET:
-            DELETE_ASSET(m_vecTask[i]);
+            DELETE_ASSET(Task);
             break;
         case TASK_TYPE::SCREENSHOT:
-            SCREENSHOT(m_vecTask[i]);
+            SCREENSHOT(Task);
             break;
         case TASK_TYPE::MOUSE_COLOR_PICKING:
-            MOUSE_COLOR_PICKING(m_vecTask[i]);
+            MOUSE_COLOR_PICKING(Task);
             break;
         case TASK_TYPE::MOUSE_COLLISION2D_PICKING:
-            MOUSE_COLLISION2D_PICKING(m_vecTask[i]);
+            MOUSE_COLLISION2D_PICKING(Task);
             break;
         case TASK_TYPE::ADD_COMPONENT:
-            ADD_COMPONENT(m_vecTask[i]);
+            ADD_COMPONENT(Task);
             break;
         case TASK_TYPE::REMOVE_COMPONENT:
-            REMOVE_COMPONENT(m_vecTask[i]);
+            REMOVE_COMPONENT(Task);
             break;
         case TASK_TYPE::REMOVE_SCRIPT:
-            REMOVE_SCRIPT(m_vecTask[i]);
+            REMOVE_SCRIPT(Task);
             break;
         case TASK_TYPE::CHANGE_LAYER:
-            CHANGE_LAYER(m_vecTask[i]);
+            CHANGE_LAYER(Task);
             break;
         case TASK_TYPE::CLONE_OBJECT:
-            CLONE_OBJECT(m_vecTask[i]);
+            CLONE_OBJECT(Task);
             break;
         case TASK_TYPE::PHYSICS2D_EVNET:
-            PHYSICS2D_EVNET(m_vecTask[i]);
+            PHYSICS2D_EVNET(Task);
             break;
+        case TASK_TYPE::CHANGE_LEVEL: {
+            // 이벤트중에서 제일 마지막에 처리
+            if (m_queueTask.empty())
+                CHANGE_LEVEL(Task);
+            else
+                m_queueTask.push(Task);
+        }
+        break;
         }
     }
-
-    m_vecTask.clear();
 }
 
 void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
@@ -197,24 +203,6 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
     // Selected Obj 해제
     if (pDeadObj == CEditorMgr::GetInst()->GetSelectedObject())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-}
-
-void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
-{
-    // Editor 초기화
-    CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-    if (CEditorMgr::GetInst()->IsEnable())
-    {
-        CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
-    }
-
-    CLevel* pNexLevel = (CLevel*)_Task.Param_1;
-    LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
-
-    CGrabageCollector::GetInst()->Clear();
-    CRenderMgr::GetInst()->ClearCamera();
-    CPhysics2DMgr::GetInst()->OnPhysics2DStop();
-    CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
 }
 
 void CTaskMgr::CHANGE_LEVELSTATE(const tTask& _Task)
@@ -437,7 +425,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
     CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
 //
-//void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
+// void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
 //{
 //    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
 //        return;
@@ -725,4 +713,22 @@ void CTaskMgr::PHYSICS2D_EVNET(const tTask& _Task)
     }
     break;
     }
+}
+
+void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
+{
+    // Editor 초기화
+    CEditorMgr::GetInst()->SetSelectedObject(nullptr);
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
+    }
+
+    CLevel* pNexLevel = (CLevel*)_Task.Param_1;
+    LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
+
+    CGrabageCollector::GetInst()->Clear();
+    CRenderMgr::GetInst()->ClearCamera();
+    CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+    CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
 }

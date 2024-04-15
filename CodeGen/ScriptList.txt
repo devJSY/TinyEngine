@@ -15,6 +15,7 @@ CGhostScript
 CHallofEternity_Floor1_CinematicScript
 CLevelChangeScript
 CLifeScript
+CPhysics2DScript
 CPlayButtonScript
 CPlayerCameraScript
 CPlayerDamageLifeBarScript

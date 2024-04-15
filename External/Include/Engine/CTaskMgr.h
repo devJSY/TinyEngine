@@ -8,9 +8,6 @@ enum class TASK_TYPE
     // Param1 : Object Address
     DELETE_OBJECT,
 
-    // Param1 : Level Address
-    CHANGE_LEVEL,
-
     // Param1 : Level, Param2 : LEVEL_STATE
     CHANGE_LEVELSTATE,
 
@@ -49,7 +46,10 @@ enum class TASK_TYPE
 
     // Param1 : Object,
     // Param2 : Event Type - 0 : Add, 1 : Remove, 2 : Regenerate, 3 : OnEnable-True, 4 : OnEnable-False
-    PHYSICS2D_EVNET
+    PHYSICS2D_EVNET,
+
+    // Param1 : Level Address
+    CHANGE_LEVEL,
 };
 
 struct tTask
@@ -64,17 +64,16 @@ class CTaskMgr : public CSingleton<CTaskMgr>
     SINGLE(CTaskMgr);
 
 private:
-    vector<tTask> m_vecTask;
+    std::queue<tTask> m_queueTask;
 
 public:
     void tick();
 
-    void AddTask(const tTask& _Task) { m_vecTask.push_back(_Task); }
+    void AddTask(const tTask& _Task) { m_queueTask.push(_Task); }
 
 private:
     void CREATE_OBJECT(const tTask& _Task);
     void DELETE_OBJECT(const tTask& _Task);
-    void CHANGE_LEVEL(const tTask& _Task);
     void CHANGE_LEVELSTATE(const tTask& _Task);
     void ADD_CHILD(const tTask& _Task);
     void WINDOW_RESIZE(const tTask& _Task);
@@ -88,4 +87,7 @@ private:
     void CHANGE_LAYER(const tTask& _Task);
     void CLONE_OBJECT(const tTask& _Task);
     void PHYSICS2D_EVNET(const tTask& _Task);
+
+    // 제일 마지막에 실행되야하는 이벤트
+    void CHANGE_LEVEL(const tTask& _Task);
 };

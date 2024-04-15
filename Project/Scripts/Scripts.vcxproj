@@ -128,6 +128,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h" />
     <ClInclude Include="CLevelChangeScript.h" />
     <ClInclude Include="CLifeScript.h" />
+    <ClInclude Include="CPhysics2DScript.h" />
     <ClInclude Include="CPlayButtonScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
     <ClInclude Include="CPlayerDamageLifeBarScript.h" />
@@ -171,6 +172,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp" />
     <ClCompile Include="CLevelChangeScript.cpp" />
     <ClCompile Include="CLifeScript.cpp" />
+    <ClCompile Include="CPhysics2DScript.cpp" />
     <ClCompile Include="CPlayButtonScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />
     <ClCompile Include="CPlayerDamageLifeBarScript.cpp" />

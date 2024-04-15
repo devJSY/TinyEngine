@@ -593,7 +593,7 @@ void CPlayerScript::EnterState()
         Rigidbody2D()->SetVelocity(Vec2(0.f, 0.f));
 
         if (m_bOnGround)
-            Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 0.5f), ForceMode2D::Impulse);
+            Rigidbody2D()->AddForce(Vec2(0.f, m_JumpImpulse * 0.8f), ForceMode2D::Impulse);
 
         Animator2D()->Play(L"LD_ComboHeavySword_UpDown", false);
         GamePlayStatic::Play2DSound(L"sound\\Player\\PC_Atk_Y_SwordBig_Up_01.wav", 1, 0.5f);

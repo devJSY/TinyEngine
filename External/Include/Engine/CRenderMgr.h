@@ -46,11 +46,12 @@ private:
     CGameObject* m_PostEffectObj;
 
     // Post Process
+    bool m_bBloomEnable;
     int m_bloomLevels;
 
     // LDRI Bloom
-    Ptr<CTexture> m_BloomRTTex_LDRI;  
-    vector<Ptr<CTexture>> m_BloomTextures_LDRI; 
+    Ptr<CTexture> m_BloomRTTex_LDRI;
+    vector<Ptr<CTexture>> m_BloomTextures_LDRI;
     vector<Ptr<CTexture>> m_BlurTextures;
     CGameObject* m_SamplingObj;
     CGameObject* m_BlurXObj;
@@ -74,6 +75,9 @@ public:
 
     void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
     bool IsShowDebugRender() const { return m_bShowDebugRender; }
+
+    void SetEnableBloom(bool _bEnable) { m_bBloomEnable = _bEnable; }
+    bool IsEnableBloom() const { return m_bBloomEnable; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }

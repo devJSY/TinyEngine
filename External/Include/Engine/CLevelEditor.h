@@ -16,6 +16,7 @@ private:
     CContentBrowser m_ContentBrowser;
 
     ImGuizmo::OPERATION m_GizmoType;
+    bool m_bEnableGizmo;
 
     bool m_bShowWorldSettings;
     bool m_bShowViewport;

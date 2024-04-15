@@ -31,6 +31,7 @@ CLevelEditor::CLevelEditor()
     , m_Outliner()
     , m_ContentBrowser()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
+    , m_bEnableGizmo(true)
     , m_bShowWorldSettings(true)
     , m_bShowViewport(true)
     , m_bShowIDMap(false)
@@ -331,8 +332,13 @@ void CLevelEditor::render_WorldSettings()
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
         CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
 
+    ImGui::Checkbox("Enable Gizmo", &m_bEnableGizmo);
     ImGui::Checkbox("Render Outline", (bool*)&g_Global.g_RenderOutline);
     ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.g_DrawAsWireFrame);
+
+    bool bEnableBloom = CRenderMgr::GetInst()->IsEnableBloom();
+    if (ImGui::Checkbox("Enable Bloom", &bEnableBloom))
+        CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);
 
     ImGui::End();
 }
@@ -603,7 +609,8 @@ void CLevelEditor::render_Viewport()
     ImGui::Image((void*)pCopyTex->GetSRV().Get(), viewportSize);
 
     // ImGuizmo
-    render_ImGuizmo();
+    if (m_bEnableGizmo)
+        render_ImGuizmo();
 
     // Drag & Drop
     if (ImGui::BeginDragDropTarget())

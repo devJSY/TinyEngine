@@ -124,6 +124,9 @@
     <ClInclude Include="CSoundManagerScript.h">
       <Filter>Scripts\SoundManager</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysics2DScript.h">
+      <Filter>Scripts\Physics2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -246,6 +249,9 @@
     <ClCompile Include="CSoundManagerScript.cpp">
       <Filter>Scripts\SoundManager</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysics2DScript.cpp">
+      <Filter>Scripts\Physics2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -337,6 +343,9 @@
     </Filter>
     <Filter Include="Scripts\SoundManager">
       <UniqueIdentifier>{aab2fa96-b904-4d74-afc9-c17dbb609362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Physics2D">
+      <UniqueIdentifier>{3531926e-0648-44f6-9f58-bd5bade01662}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
