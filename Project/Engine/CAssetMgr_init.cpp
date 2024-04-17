@@ -207,7 +207,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_WRITE);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
         pShader->AddTexParam(TEX_0, "Texture");
         pShader->AddScalarParam(INT_0, "Glow Enable");

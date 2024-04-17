@@ -334,16 +334,16 @@ void CRenderMgr::render_postprocess_HDRI()
             m_BloomUpObj->render();
             CTexture::Clear(0);
         }
-
-        // =================
-        // Tone Mapping + Bloom Combine
-        // =================
-        CDevice::GetInst()->SetViewport();
-        CDevice::GetInst()->SetRenderTarget();
-        m_ToneMappingObj->render();
-        CTexture::Clear(0);
-        CTexture::Clear(1);
     }
+
+    // =================
+    // Tone Mapping + Bloom Combine
+    // =================
+    CDevice::GetInst()->SetViewport();
+    CDevice::GetInst()->SetRenderTarget();
+    m_ToneMappingObj->render();
+    CTexture::Clear(0);
+    CTexture::Clear(1);
 }
 
 void CRenderMgr::render_LightDepth()

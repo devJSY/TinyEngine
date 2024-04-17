@@ -108,93 +108,19 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CBossEnemyScript.h" />
-    <ClInclude Include="CBridgeScript.h" />
-    <ClInclude Include="CButtonScript.h" />
-    <ClInclude Include="CCinematicScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
-    <ClInclude Include="CEnemyDamageLifeBarScript.h" />
-    <ClInclude Include="CEnemyLifeBarScript.h" />
-    <ClInclude Include="CEntetElevatorScript.h" />
-    <ClInclude Include="CEnemyHitBoxScript.h" />
-    <ClInclude Include="CEnemyScript.h" />
-    <ClInclude Include="CEvilPumpkinBombScript.h" />
-    <ClInclude Include="CEvilPumpkinScript.h" />
-    <ClInclude Include="CExitElevatorScript.h" />
-    <ClInclude Include="CFlyingBookScript.h" />
-    <ClInclude Include="CFXScript.h" />
-    <ClInclude Include="CGameManagerScript.h" />
-    <ClInclude Include="CGhostScript.h" />
-    <ClInclude Include="CHallofEternity_Floor1_CinematicScript.h" />
-    <ClInclude Include="CLevelChangeScript.h" />
-    <ClInclude Include="CLifeScript.h" />
-    <ClInclude Include="CPhysics2DScript.h" />
-    <ClInclude Include="CPlayButtonScript.h" />
-    <ClInclude Include="CPlayerCameraScript.h" />
-    <ClInclude Include="CPlayerDamageLifeBarScript.h" />
-    <ClInclude Include="CPlayerDetectScript.h" />
-    <ClInclude Include="CPlayerHitBoxScript.h" />
-    <ClInclude Include="CPlayerLifeTextScript.h" />
-    <ClInclude Include="CPlayerManaBarScript.h" />
-    <ClInclude Include="CPlayerManaTextScript.h" />
-    <ClInclude Include="CPlayerScript.h" />
-    <ClInclude Include="CPlayerLifeBarScript.h" />
-    <ClInclude Include="CPlayerSkillScript.h" />
-    <ClInclude Include="CProjectile2DScript.h" />
     <ClInclude Include="CScriptMgr.h" />
-    <ClInclude Include="CSkeletonHandScript.h" />
-    <ClInclude Include="CSoundManagerScript.h" />
-    <ClInclude Include="CSpooksmenScript.h" />
-    <ClInclude Include="CW9_Boss_CinematicScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="CPyroGhostScript.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CBossEnemyScript.cpp" />
-    <ClCompile Include="CBridgeScript.cpp" />
-    <ClCompile Include="CButtonScript.cpp" />
-    <ClCompile Include="CCinematicScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
-    <ClCompile Include="CEnemyDamageLifeBarScript.cpp" />
-    <ClCompile Include="CEnemyLifeBarScript.cpp" />
-    <ClCompile Include="CEntetElevatorScript.cpp" />
-    <ClCompile Include="CEnemyHitBoxScript.cpp" />
-    <ClCompile Include="CEnemyScript.cpp" />
-    <ClCompile Include="CEvilPumpkinBombScript.cpp" />
-    <ClCompile Include="CEvilPumpkinScript.cpp" />
-    <ClCompile Include="CExitElevatorScript.cpp" />
-    <ClCompile Include="CFlyingBookScript.cpp" />
-    <ClCompile Include="CFXScript.cpp" />
-    <ClCompile Include="CGameManagerScript.cpp" />
-    <ClCompile Include="CGhostScript.cpp" />
-    <ClCompile Include="CHallofEternity_Floor1_CinematicScript.cpp" />
-    <ClCompile Include="CLevelChangeScript.cpp" />
-    <ClCompile Include="CLifeScript.cpp" />
-    <ClCompile Include="CPhysics2DScript.cpp" />
-    <ClCompile Include="CPlayButtonScript.cpp" />
-    <ClCompile Include="CPlayerCameraScript.cpp" />
-    <ClCompile Include="CPlayerDamageLifeBarScript.cpp" />
-    <ClCompile Include="CPlayerDetectScript.cpp" />
-    <ClCompile Include="CPlayerHitBoxScript.cpp" />
-    <ClCompile Include="CPlayerLifeTextScript.cpp" />
-    <ClCompile Include="CPlayerManaBarScript.cpp" />
-    <ClCompile Include="CPlayerManaTextScript.cpp" />
-    <ClCompile Include="CPlayerScript.cpp" />
-    <ClCompile Include="CPlayerLifeBarScript.cpp" />
-    <ClCompile Include="CPlayerSkillScript.cpp" />
-    <ClCompile Include="CProjectile2DScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
-    <ClCompile Include="CSkeletonHandScript.cpp" />
-    <ClCompile Include="CSoundManagerScript.cpp" />
-    <ClCompile Include="CSpooksmenScript.cpp" />
-    <ClCompile Include="CW9_Boss_CinematicScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="CPyroGhostScript.cpp" />
     <ClCompile Include="Scripts.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

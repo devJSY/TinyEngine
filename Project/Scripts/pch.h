@@ -23,8 +23,6 @@
 #endif // PCH_H
 
 #include "define.h"
-#include "CGameManagerScript.h"
-#include "CSoundManagerScript.h"
 
 #include <Engine\\CLevelMgr.h>
 #include <Engine\\CLevel.h>
