@@ -48,28 +48,25 @@ void CTaskMgr::tick()
         // Mouse Picking
         if (KEY_TAP(KEY::LBTN))
         {
-            // Color Picking
+            Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+
+            // Editor 모드
+            if (CEditorMgr::GetInst()->IsEnable())
             {
-                Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
-
-                // Editor 모드
-                if (CEditorMgr::GetInst()->IsEnable())
+                // Viewport 에서만 마우스 피킹 적용
+                // Viewport 기준 마우스위치로 설정
+                if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
                 {
-                    // Viewport 에서만 마우스 피킹 적용
-                    // Viewport 기준 마우스위치로 설정
-                    if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
-                    {
-                        MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+                    MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-                        // GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
-                        GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
-                    }
+                    GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
+                    // GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
                 }
-                else
-                {
-                    // GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
-                    GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
-                }
+            }
+            else
+            {
+                GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
+                // GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
             }
         }
 
@@ -81,7 +78,7 @@ void CTaskMgr::tick()
                 GamePlayStatic::ScreenShot();
             }
 
-            // 저장
+            // 에셋 저장
             if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
             {
                 CAssetMgr::GetInst()->SaveAssetsToFile();
