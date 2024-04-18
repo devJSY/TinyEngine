@@ -66,37 +66,47 @@ void CEngine::progress()
     // ===========================
     // tick
     // ===========================
+    {
+        // Manager Update
+        CTimeMgr::GetInst()->tick();
+        CKeyMgr::GetInst()->tick();
 
-    // Manager Update
-    CTimeMgr::GetInst()->tick();
-    CKeyMgr::GetInst()->tick();
+        // FMOD Update
+        CSound::g_pFMOD->update();
 
-    // FMOD Update
-    CSound::g_pFMOD->update();
+        // Level Update
+        CEditorMgr::GetInst()->tick();
+        CLevelMgr::GetInst()->tick();
 
-    // Level Update
-    CEditorMgr::GetInst()->tick();
-    CLevelMgr::GetInst()->tick();
-    CPhysics2DMgr::GetInst()->tick();
+        // Physics Update
+        CPhysics2DMgr::GetInst()->tick();
+    }
 
     // ===========================
     // Rendering
     // ===========================
+    {
+        // Clear Buffer
+        CDevice::GetInst()->Clear_Buffers(m_ClearColor);
 
+        // Level Render
+        CRenderMgr::GetInst()->render();
+        CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
+
+        // Present
+        CDevice::GetInst()->Present();
+    }
+
+    // ===========================
     // Clear
-    CDevice::GetInst()->Clear_Buffers(m_ClearColor);
+    // ===========================
+    {
+        // Grabage Collector
+        CGrabageCollector::GetInst()->tick();
 
-    // Level Render
-    CRenderMgr::GetInst()->render();
-    CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
+        // Task Execute
+        CTaskMgr::GetInst()->tick();
 
-    // Present
-    CDevice::GetInst()->Present();
-
-    // Grabage Collector
-    CGrabageCollector::GetInst()->tick();
-
-    // Task Execute
-    CTaskMgr::GetInst()->tick();
-    CKeyMgr::GetInst()->clear();
+        CKeyMgr::GetInst()->clear();
+    }
 }

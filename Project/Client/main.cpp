@@ -62,15 +62,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         return 0;
     }
 
-    // CCreateTestLevel::Init();
-    // CCreateTestLevel::CreateTestLevel();
-    // CCreatePBRLevel::Init();
-    // CCreatePBRLevel::CreatePBRLevel();
+    //CCreateTestLevel::CreateTestLevel();
+    //CCreatePBRLevel::CreatePBRLevel();
 
 #ifdef DISTRIBUTE // Engine\\global.h
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Home Level.tLevel"), LEVEL_STATE::PLAY);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::PLAY);
 #else
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Test Level.tLevel"), LEVEL_STATE::STOP);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::STOP);
 #endif // DISTRIBUTE
 
     while (true)

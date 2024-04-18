@@ -1,8 +1,9 @@
 #pragma once
 
+class CLevel;
+
 class CCreateTestLevel
 {
 public:
-    static void Init();
-    static void CreateTestLevel();
+    static CLevel* CreateTestLevel();
 };

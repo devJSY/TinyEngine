@@ -5,8 +5,7 @@ class CLevel;
 class CCreatePBRLevel
 {
 public:
-    static void Init();
-    static void CreatePBRLevel();
+    static CLevel* CreatePBRLevel();
 
 private:
     static void AddSample(CLevel* _CurLevel);

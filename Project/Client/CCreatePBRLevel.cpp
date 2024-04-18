@@ -8,11 +8,7 @@
 #include <Engine\\components.h>
 #include <Engine\\CLevelMgr.h>
 
-void CCreatePBRLevel::Init()
-{
-}
-
-void CCreatePBRLevel::CreatePBRLevel()
+CLevel* CCreatePBRLevel::CreatePBRLevel()
 {
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     pCurLevel->SetName(L"PBR Level");
@@ -39,7 +35,7 @@ void CCreatePBRLevel::CreatePBRLevel()
     pCurLevel->GetLayer(15)->SetName(L"UI");
 
     AddSample(pCurLevel);
-    // AddModels(pCurLevel);
+    AddModels(pCurLevel);
 
     // Main Camera
     CGameObject* pCamObj = new CGameObject;
@@ -108,7 +104,7 @@ void CCreatePBRLevel::CreatePBRLevel()
 
     pCurLevel->AddObject(pFloor, 0);
 
-    GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::STOP);
+    return pCurLevel;
 }
 
 void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
