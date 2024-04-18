@@ -36,6 +36,9 @@ private:
     Ptr<CTexture> m_StepButtonTex;
     Ptr<CTexture> m_PauseButtonTex;
     Ptr<CTexture> m_StopButtonTex;
+    Ptr<CTexture> m_TranslateButtonTex;
+    Ptr<CTexture> m_RotateButtonTex;
+    Ptr<CTexture> m_ScaleButtonTex;
 
     ASSET_TYPE m_ModalAssetType;
 
