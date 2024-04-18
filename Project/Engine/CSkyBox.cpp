@@ -44,7 +44,7 @@ void CSkyBox::UpdateData()
 
 void CSkyBox::render()
 {
-    if (nullptr == GetMesh() || nullptr == GetMaterial())
+    if (nullptr == GetMesh() || nullptr == GetMaterial() || GetOwner()->IsDead())
         return;
     
     UpdateData();
