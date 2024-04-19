@@ -835,6 +835,21 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"ColorGradingShader");
         AddAsset(L"ColorGradingShader", pShader);
     }
+
+    // =================================
+    // SSAO Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\SSAOPS.hlsl", "main");
+
+        pShader->AddTexParam(TEX_0, "DepthOnly Texture");
+        pShader->AddScalarParam(FLOAT_0, "Sample Radius");
+
+        pShader->SetName(L"SSAOShader");
+        AddAsset(L"SSAOShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1160,6 +1175,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ColorGradingShader"));
         pMtrl->SetName(L"ColorGradingMtrl");
         AddAsset<CMaterial>(L"ColorGradingMtrl", pMtrl);
+    }
+
+    // SSAO
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SSAOShader"));
+        pMtrl->SetName(L"SSAOMtrl");
+        AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
     }
 }
 

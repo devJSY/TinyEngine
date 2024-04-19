@@ -36,6 +36,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\BlurYPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\ColorGradingPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\debug.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -115,6 +118,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\SkyBoxVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\SSAOPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>

@@ -104,7 +104,7 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 void CLight3D::render_LightDepth()
 {
     m_pLightCam->Camera()->SortObject();
-    m_pLightCam->Camera()->render_LightDepth(m_DepthMapTex);
+    m_pLightCam->Camera()->render_DepthOnly(m_DepthMapTex);
 }
 
 void CLight3D::CreateDepthMapTex()

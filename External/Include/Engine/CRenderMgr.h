@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "singleton.h"
 #include "Ptr.h"
 #include "CTexture.h"
@@ -64,6 +65,10 @@ private:
     CGameObject* m_BloomUpObj;
     CGameObject* m_ToneMappingObj;
 
+    // SSAO
+    Ptr<CTexture> m_SSAOTex;
+    CGameObject* m_SSAOObj;
+
     // Render function pointer
     void (CRenderMgr::*RENDER_FUNC)(void);
 
@@ -120,6 +125,7 @@ private:
     void CreateDepthOnlyTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
     void CreateBloomTextures(Vec2 Resolution);
+    void CreateSSAOTex(Vec2 Resolution);
 
 public:
     void render_postprocess_LDRI();

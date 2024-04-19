@@ -78,7 +78,7 @@ public:
 
     void SortObject();
     void render();
-    void render_LightDepth(Ptr<CTexture> _DepthMapTex);
+    void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
 
 private:
     void render(vector<CGameObject*>& _vecObj);

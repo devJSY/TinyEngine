@@ -854,6 +854,9 @@
     <Filter Include="08. Component\RenderComponent\16. TextRender">
       <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\SSAO">
+      <UniqueIdentifier>{a39218f8-8966-495f-b000-7c571b82f835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1028,6 +1031,9 @@
     </FxCompile>
     <FxCompile Include="ColorGradingPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="SSAOPS.hlsl">
+      <Filter>ShaderCode\Render\SSAO</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

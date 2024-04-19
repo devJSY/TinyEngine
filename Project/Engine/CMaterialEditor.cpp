@@ -165,6 +165,11 @@ void CMaterialEditor::DrawViewport()
     // ·»´õÅ¸°Ù ¿ø»óº¹±Í
     CDevice::GetInst()->SetViewport();
     CDevice::GetInst()->SetRenderTarget();
+    for (UINT i = 0; i < TEX_PARAM::TEX_END; i++)
+    {
+        CTexture::Clear(i);
+    }
+
 
     ImGui::End();
 }

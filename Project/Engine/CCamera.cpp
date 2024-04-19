@@ -179,12 +179,6 @@ void CCamera::render()
     render(m_vecMaked);
     render(m_vecTransparent);
 
-    // Depth Only Pass
-    CONTEXT->OMSetRenderTargets(0, NULL, CRenderMgr::GetInst()->GetDepthOnlyTex()->GetDSV().Get());
-    render_DepthOnly(m_vecOpaque);
-    render_DepthOnly(m_vecMaked);
-    render_DepthOnly(m_vecTransparent);
-
 #ifndef DISTRIBUTE
     // IDMap Pass
     CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
@@ -209,9 +203,8 @@ void CCamera::render()
     m_vecPostProcess.clear();
 }
 
-void CCamera::render_LightDepth(Ptr<CTexture> _DepthMapTex)
+void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
 {
-    // ±¤¿ø ½ÃÁ¡ ·»´õ¸µ
     g_Transform.matView = m_matView;
     g_Transform.matViewInv = m_matView.Invert();
     g_Transform.matProj = m_matProj;
@@ -228,6 +221,8 @@ void CCamera::render_LightDepth(Ptr<CTexture> _DepthMapTex)
     m_vecOpaque.clear();
     m_vecMaked.clear();
     m_vecTransparent.clear();
+
+    CONTEXT->OMSetRenderTargets(0, NULL, NULL);
 }
 
 void CCamera::render(vector<CGameObject*>& _vecObj)

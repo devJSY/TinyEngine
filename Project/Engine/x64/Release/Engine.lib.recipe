@@ -120,6 +120,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\SkyBoxVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\SSAOPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\std2d.cso</FullPath>
     </ContentFile>
     <ContentFile>

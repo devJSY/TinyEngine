@@ -27,6 +27,7 @@ void CRenderMgr::init()
     CreateIDMapTex(vRenderResolution);
     CreateDepthOnlyTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
+    CreateSSAOTex(vRenderResolution);
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
     // Noise Texture Load
@@ -84,18 +85,25 @@ void CRenderMgr::init()
     m_ToneMappingObj = new CGameObject;
     m_ToneMappingObj->AddComponent(new CTransform);
     m_ToneMappingObj->AddComponent(new CMeshRender);
-
     m_ToneMappingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     m_ToneMappingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl"));
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
 
+    // PostEffect
     m_PostEffectObj = new CGameObject;
     m_PostEffectObj->AddComponent(new CTransform);
     m_PostEffectObj->AddComponent(new CMeshRender);
-
     m_PostEffectObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     m_PostEffectObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl"));
     m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_DepthOnlyTex);
+
+    // SSAO
+    m_SSAOObj = new CGameObject;
+    m_SSAOObj->AddComponent(new CTransform);
+    m_SSAOObj->AddComponent(new CMeshRender);
+    m_SSAOObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_SSAOObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl"));
+    m_SSAOObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_DepthOnlyTex);
 }
