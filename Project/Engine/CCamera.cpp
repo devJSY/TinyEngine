@@ -194,19 +194,13 @@ void CCamera::render()
     render_IDMap(m_vecTransparent);
 #endif // DISTRIBUTE
 
+    // 후처리
     if (m_bHDRI)
-    {
-        // 후처리
-        CDevice::GetInst()->SetFloatRenderTarget();
-        render_postprocess_HDRI();
         CRenderMgr::GetInst()->render_postprocess_HDRI();
-    }
     else
-    {
-        CDevice::GetInst()->SetRenderTarget();
-        render_postprocess_LDRI();
         CRenderMgr::GetInst()->render_postprocess_LDRI();
-    }
+
+    render_postprocess();
 
     // Clear
     m_vecOpaque.clear();
@@ -306,8 +300,10 @@ void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_postprocess_LDRI()
+void CCamera::render_postprocess()
 {
+    CDevice::GetInst()->SetRenderTarget();
+
     for (int i = 0; i < m_vecPostProcess.size(); ++i)
     {
         // 최종 렌더링 이미지를 후처리 타겟에 복사
@@ -315,23 +311,6 @@ void CCamera::render_postprocess_LDRI()
 
         // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
         CRenderMgr::GetInst()->GetPostProcessTex_LDRI()->UpdateData(14);
-
-        // 후처리 오브젝트 렌더링
-        m_vecPostProcess[i]->render();
-    }
-
-    CTexture::Clear(14);
-}
-
-void CCamera::render_postprocess_HDRI()
-{
-    for (int i = 0; i < m_vecPostProcess.size(); ++i)
-    {
-        // 최종 렌더링 이미지를 후처리 타겟에 복사
-        CRenderMgr::GetInst()->CopyToPostProcessTex_HDRI();
-
-        // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
-        CRenderMgr::GetInst()->GetPostProcessTex_HDRI()->UpdateData(14);
 
         // 후처리 오브젝트 렌더링
         m_vecPostProcess[i]->render();

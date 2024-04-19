@@ -84,8 +84,7 @@ private:
     void render(vector<CGameObject*>& _vecObj);
     void render_DepthOnly(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
-    void render_postprocess_LDRI();
-    void render_postprocess_HDRI();
+    void render_postprocess();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

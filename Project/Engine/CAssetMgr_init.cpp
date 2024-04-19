@@ -819,6 +819,22 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"ProgressBarShader");
         AddAsset(L"ProgressBarShader", pShader);
     }
+
+    // =================================
+    // Color Grading Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ColorGradingPS.hlsl", "main");
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "LUT Texture");
+
+        pShader->SetName(L"ColorGradingShader");
+        AddAsset(L"ColorGradingShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1136,6 +1152,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_0, 1.f);
         pMtrl->SetScalarParam(FLOAT_1, 1.f);
         AddAsset<CMaterial>(L"ProgressBarMtrl", pMtrl);
+    }
+
+    // ColorGrading
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ColorGradingShader"));
+        pMtrl->SetName(L"ColorGradingMtrl");
+        AddAsset<CMaterial>(L"ColorGradingMtrl", pMtrl);
     }
 }
 

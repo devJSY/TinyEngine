@@ -1026,5 +1026,8 @@
     <FxCompile Include="ProgressBarPS.hlsl">
       <Filter>ShaderCode\Render\ProgressBar</Filter>
     </FxCompile>
+    <FxCompile Include="ColorGradingPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
