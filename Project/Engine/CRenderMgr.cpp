@@ -35,6 +35,7 @@ CRenderMgr::CRenderMgr()
     , m_BloomDownObj(nullptr)
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
+    , m_bSSAOEnable(false)
     , m_SSAOTex(nullptr)
     , m_SSAOObj(nullptr)
 {
@@ -131,9 +132,14 @@ void CRenderMgr::render()
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
 
         // SSAO Pass
-        CONTEXT->OMSetRenderTargets(1, m_SSAOTex->GetRTV().GetAddressOf(), NULL);
-        CDevice::GetInst()->SetViewport((float)m_SSAOTex->GetWidth(), (float)m_SSAOTex->GetHeight());
-        m_SSAOObj->render();
+        if (m_bSSAOEnable)
+        {
+            CONTEXT->OMSetRenderTargets(1, m_SSAOTex->GetRTV().GetAddressOf(), NULL);
+            CDevice::GetInst()->SetViewport((float)m_SSAOTex->GetWidth(), (float)m_SSAOTex->GetHeight());
+            m_SSAOObj->render();
+        }
+
+        m_SSAOTex->UpdateData(26);
     }
 
     // Light Depth Map
@@ -509,7 +515,7 @@ void CRenderMgr::Clear_Buffers(const Vec4& Color)
         CONTEXT->ClearRenderTargetView(m_BloomTextures_HDRI[i]->GetRTV().Get(), Color);
     }
 
-    CONTEXT->ClearRenderTargetView(m_SSAOTex->GetRTV().Get(), Color);
+    CONTEXT->ClearRenderTargetView(m_SSAOTex->GetRTV().Get(), Vec4(0.f));
 }
 
 void CRenderMgr::CopyRTTexToRTCopyTex()
