@@ -65,11 +65,6 @@ private:
     CGameObject* m_BloomUpObj;
     CGameObject* m_ToneMappingObj;
 
-    // SSAO
-    bool m_bSSAOEnable;
-    Ptr<CTexture> m_SSAOTex;
-    CGameObject* m_SSAOObj;
-
     // Render function pointer
     void (CRenderMgr::*RENDER_FUNC)(void);
 
@@ -84,9 +79,6 @@ public:
 
     void SetEnableBloom(bool _bEnable) { m_bBloomEnable = _bEnable; }
     bool IsEnableBloom() const { return m_bBloomEnable; }
-
-    void SetEnableSSAO(bool _bEnable) { m_bSSAOEnable = _bEnable; }
-    bool IsEnableSSAO() const { return m_bSSAOEnable; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
@@ -129,7 +121,6 @@ private:
     void CreateDepthOnlyTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
     void CreateBloomTextures(Vec2 Resolution);
-    void CreateSSAOTex(Vec2 Resolution);
 
 public:
     void render_postprocess_LDRI();

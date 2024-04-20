@@ -346,10 +346,6 @@ void CLevelEditor::render_WorldSettings()
     if (ImGui::Checkbox("Enable Bloom", &bEnableBloom))
         CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);
 
-    bool bEnableSSAO = CRenderMgr::GetInst()->IsEnableSSAO();
-    if (ImGui::Checkbox("Enable SSAO", &bEnableSSAO))
-        CRenderMgr::GetInst()->SetEnableSSAO(bEnableSSAO);
-
     ImGui::End();
 }
 

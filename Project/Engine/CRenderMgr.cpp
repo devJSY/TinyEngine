@@ -35,9 +35,6 @@ CRenderMgr::CRenderMgr()
     , m_BloomDownObj(nullptr)
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
-    , m_bSSAOEnable(false)
-    , m_SSAOTex(nullptr)
-    , m_SSAOObj(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
 
@@ -113,12 +110,6 @@ CRenderMgr::~CRenderMgr()
         delete m_PostEffectObj;
         m_PostEffectObj = nullptr;
     }
-
-    if (nullptr != m_SSAOObj)
-    {
-        delete m_SSAOObj;
-        m_SSAOObj = nullptr;
-    }
 }
 
 void CRenderMgr::render()
@@ -130,16 +121,6 @@ void CRenderMgr::render()
         // Depth Only Pass
         m_mainCam->SortObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
-
-        // SSAO Pass
-        if (m_bSSAOEnable)
-        {
-            CONTEXT->OMSetRenderTargets(1, m_SSAOTex->GetRTV().GetAddressOf(), NULL);
-            CDevice::GetInst()->SetViewport((float)m_SSAOTex->GetWidth(), (float)m_SSAOTex->GetHeight());
-            m_SSAOObj->render();
-        }
-
-        m_SSAOTex->UpdateData(26);
     }
 
     // Light Depth Map
@@ -514,8 +495,6 @@ void CRenderMgr::Clear_Buffers(const Vec4& Color)
     {
         CONTEXT->ClearRenderTargetView(m_BloomTextures_HDRI[i]->GetRTV().Get(), Color);
     }
-
-    CONTEXT->ClearRenderTargetView(m_SSAOTex->GetRTV().Get(), Vec4(0.f));
 }
 
 void CRenderMgr::CopyRTTexToRTCopyTex()
@@ -583,12 +562,6 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
     }
 }
 
-void CRenderMgr::CreateSSAOTex(Vec2 Resolution)
-{
-    m_SSAOTex = CAssetMgr::GetInst()->CreateTexture(L"SSAOTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-                                                    D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
-}
-
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 {
     m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
@@ -624,7 +597,6 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthOnlyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_LDRI");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
-    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"SSAOTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LDRI_BloomRenderTexture");
     for (int i = 0; i < m_bloomLevels - 1; i++)
@@ -641,14 +613,12 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_PostProcessTex_LDRI = nullptr;
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
-    m_SSAOTex = nullptr;
 
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreateDepthOnlyTex(Resolution);
     CreatePostProcessTex(Resolution);
     CreateBloomTextures(Resolution);
-    CreateSSAOTex(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
@@ -665,6 +635,4 @@ void CRenderMgr::Resize(Vec2 Resolution)
 
     m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
     m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_DepthOnlyTex);
-
-    m_SSAOObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_DepthOnlyTex);
 }
