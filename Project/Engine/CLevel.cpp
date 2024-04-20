@@ -4,6 +4,7 @@
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
 #include "CPhysics2DMgr.h"
+#include "CPhysicsMgr.h"
 
 #include "CLayer.h"
 #include "CGameObject.h"
@@ -164,6 +165,7 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             CTimeMgr::GetInst()->LockDeltaTime(true);
             CRenderMgr::GetInst()->ActiveEditorMode(true);
             CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+            CPhysicsMgr::GetInst()->OnPhysicsStop();
         }
     }
     else
@@ -180,6 +182,7 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
                 CTimeMgr::GetInst()->LockDeltaTime(true);
                 CRenderMgr::GetInst()->ActiveEditorMode(true);
                 CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+                CPhysicsMgr::GetInst()->OnPhysicsStop();
             }
         }
         break;
@@ -193,6 +196,7 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             {
                 CRenderMgr::GetInst()->ActiveEditorMode(true);
                 CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+                CPhysicsMgr::GetInst()->OnPhysicsStop();
             }
         }
         break;
@@ -206,12 +210,14 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
                 CTimeMgr::GetInst()->LockDeltaTime(true);
                 CRenderMgr::GetInst()->ActiveEditorMode(true);
                 CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+                CPhysicsMgr::GetInst()->OnPhysicsStop();
             }
         }
         break;
         case LEVEL_STATE::STOP: {
             CTimeMgr::GetInst()->LockDeltaTime(false);
             CPhysics2DMgr::GetInst()->OnPhysics2DStart();
+            CPhysicsMgr::GetInst()->OnPhysicsStart();
             begin();
 
             if (LEVEL_STATE::PLAY == _NextState)

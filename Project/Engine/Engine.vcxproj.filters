@@ -301,6 +301,9 @@
     <ClInclude Include="CPolygonCollider2D.h">
       <Filter>08. Component\Collider2D\10. PolygonCollider2D</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysicsMgr.h">
+      <Filter>04. Manager\PhysicsMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -576,6 +579,9 @@
     <ClCompile Include="CPolygonCollider2D.cpp">
       <Filter>08. Component\Collider2D\10. PolygonCollider2D</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysicsMgr.cpp">
+      <Filter>04. Manager\PhysicsMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -788,9 +794,6 @@
     <Filter Include="06. Asset\Prefab">
       <UniqueIdentifier>{e32e0f18-5fbe-4a54-be48-ad276488f2d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Manager\Physics2DMgr">
-      <UniqueIdentifier>{5bb8f90a-95b9-4d0b-b08d-71aa6c7386ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\02. Animator2D">
       <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
     </Filter>
@@ -856,6 +859,12 @@
     </Filter>
     <Filter Include="ShaderCode\Render\SSAO">
       <UniqueIdentifier>{a39218f8-8966-495f-b000-7c571b82f835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\PhysicsMgr">
+      <UniqueIdentifier>{1c85a419-9ad3-45bd-97fb-5c01b00b568e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Physics2DMgr">
+      <UniqueIdentifier>{5bb8f90a-95b9-4d0b-b08d-71aa6c7386ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

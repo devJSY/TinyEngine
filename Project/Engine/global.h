@@ -108,3 +108,22 @@ typedef Vector4 Vec4;
 #endif
 
 #include "COutputLog.h"
+
+// PhysX
+#ifdef _DEBUG
+    #pragma comment(lib, "PhysX\\PhysX_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXCommon_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXCooking_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXExtensions_static_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXFoundation_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXPvdSDK_static_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXVehicle_static_64_debug")
+#else
+    #pragma comment(lib, "PhysX\\PhysX_64")
+    #pragma comment(lib, "PhysX\\PhysXCommon_64")
+    #pragma comment(lib, "PhysX\\PhysXCooking_64")
+    #pragma comment(lib, "PhysX\\PhysXExtensions_static_64")
+    #pragma comment(lib, "PhysX\\PhysXFoundation_64")
+    #pragma comment(lib, "PhysX\\PhysXPvdSDK_static_64")
+    #pragma comment(lib, "PhysX\\PhysXVehicle_static_64")
+#endif

@@ -48,12 +48,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)OutputFile\bin\</OutDir>
     <TargetName>TinyEngine_d</TargetName>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\Engine\ImGui\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)OutputFile\bin\</OutDir>
-    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\Engine\ImGui\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)External\Include\;$(SolutionDir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
     <TargetName>TinyEngine</TargetName>
   </PropertyGroup>

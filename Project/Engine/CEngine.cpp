@@ -13,6 +13,7 @@
 #include "CRenderMgr.h"
 #include "CPhysics2DMgr.h"
 #include "CFontMgr.h"
+#include "CPhysicsMgr.h"
 
 #include "CSound.h"
 
@@ -80,6 +81,7 @@ void CEngine::progress()
 
         // Physics Update
         CPhysics2DMgr::GetInst()->tick();
+        CPhysicsMgr::GetInst()->tick();
     }
 
     // ===========================

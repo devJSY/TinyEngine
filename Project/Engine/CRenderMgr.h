@@ -1,6 +1,4 @@
 #pragma once
-#pragma once
-#include "singleton.h"
 #include "Ptr.h"
 #include "CTexture.h"
 

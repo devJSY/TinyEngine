@@ -42,6 +42,7 @@ D:\TinyEngine\Project\Engine\CParticleUpdate.cpp;D:\TinyEngine\Project\Engine\x6
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPathMgr.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMaterialEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysics2DMaterialEditor.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysics2DMgr.obj
+D:\TinyEngine\Project\Engine\CPhysicsMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysicsMgr.obj
 D:\TinyEngine\Project\Engine\CPolygonCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPolygonCollider2D.obj
 D:\TinyEngine\Project\Engine\CPrefab.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPrefab.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CRenderComponent.obj

@@ -48,12 +48,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
-    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -156,6 +156,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPhysics2DMaterialEditor.h" />
     <ClInclude Include="CPhysics2DMgr.h" />
+    <ClInclude Include="CPhysicsMgr.h" />
     <ClInclude Include="CPolygonCollider2D.h" />
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CRenderComponent.h" />
@@ -258,6 +259,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPhysics2DMaterialEditor.cpp" />
     <ClCompile Include="CPhysics2DMgr.cpp" />
+    <ClCompile Include="CPhysicsMgr.cpp" />
     <ClCompile Include="CPolygonCollider2D.cpp" />
     <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />

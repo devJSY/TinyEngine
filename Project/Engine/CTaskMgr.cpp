@@ -7,6 +7,7 @@
 #include "CAssetMgr.h"
 #include "CKeyMgr.h"
 #include "CPhysics2DMgr.h"
+#include "CPhysicsMgr.h"
 #include "CGrabageCollector.h"
 #include <Scripts\\CScriptMgr.h>
 
@@ -727,5 +728,6 @@ void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
     CGrabageCollector::GetInst()->Clear();
     CRenderMgr::GetInst()->ClearCamera();
     CPhysics2DMgr::GetInst()->OnPhysics2DStop();
+    CPhysicsMgr::GetInst()->OnPhysicsStop();
     CLevelMgr::GetInst()->ChangeLevel(pNexLevel, NextState);
 }
