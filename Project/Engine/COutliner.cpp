@@ -501,6 +501,10 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawCircleCollider2D(obj);
     DrawPolygonCollider2D(obj);
     DrawEdgeCollider2D(obj);
+    DrawRigidbody(obj);
+    DrawBoxCollider(obj);
+    DrawSphereCollider(obj);
+    DrawCapsuleCollider(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
     DrawParticlesystem(obj);
@@ -1290,6 +1294,74 @@ void COutliner::DrawEdgeCollider2D(CGameObject* obj)
             CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
         }
 
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawRigidbody(CGameObject* obj)
+{
+    CRigidbody* pRigidbody = obj->Rigidbody();
+    if (nullptr == pRigidbody)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CRigidbody).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::RIGIDBODY]);
+
+    ComponentSettingsButton(pRigidbody);
+
+    if (open)
+    {
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawBoxCollider(CGameObject* obj)
+{
+    CBoxCollider* pBoxCollider = obj->BoxCollider();
+    if (nullptr == pBoxCollider)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CBoxCollider).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::BOXCOLLIDER]);
+
+    ComponentSettingsButton(pBoxCollider);
+
+    if (open)
+    {
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawSphereCollider(CGameObject* obj)
+{
+    CSphereCollider* pSphereCollider = obj->SphereCollider();
+    if (nullptr == pSphereCollider)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CSphereCollider).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::SPHERECOLLIDER]);
+
+    ComponentSettingsButton(pSphereCollider);
+
+    if (open)
+    {
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawCapsuleCollider(CGameObject* obj)
+{
+    CCapsuleCollider* pCapsuleCollider = obj->CapsuleCollider();
+    if (nullptr == pCapsuleCollider)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCapsuleCollider).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::CAPSULECOLLIDER]);
+
+    ComponentSettingsButton(pCapsuleCollider);
+
+    if (open)
+    {
         ImGui::TreePop();
     }
 }

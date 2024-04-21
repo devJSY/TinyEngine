@@ -281,6 +281,18 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::EDGECOLLIDER2D:
             pComponent = new CEdgeCollider2D;
             break;
+        case COMPONENT_TYPE::RIGIDBODY:
+            pComponent = new CRigidbody;
+            break;
+        case COMPONENT_TYPE::BOXCOLLIDER:
+            pComponent = new CBoxCollider;
+            break;
+        case COMPONENT_TYPE::SPHERECOLLIDER:
+            pComponent = new CSphereCollider;
+            break;
+        case COMPONENT_TYPE::CAPSULECOLLIDER:
+            pComponent = new CCapsuleCollider;
+            break;
         case COMPONENT_TYPE::MESHRENDER:
             pComponent = new CMeshRender;
             break;

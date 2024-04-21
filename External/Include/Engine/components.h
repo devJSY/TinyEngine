@@ -16,6 +16,11 @@
 #include "CPolygonCollider2D.h"
 #include "CEdgeCollider2D.h"
 
+#include "CRigidBody.h"
+#include "CBoxCollider.h"
+#include "CSphereCollider.h"
+#include "CCapsuleCollider.h"
+
 #include "CMeshRender.h"
 #include "CTileMap.h"
 #include "CParticleSystem.h"

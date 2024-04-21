@@ -4,9 +4,12 @@ D:\TinyEngine\Project\Engine\CAsset.cpp;D:\TinyEngine\Project\Engine\x64\Release
 D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CAssetMgr.obj
 D:\TinyEngine\Project\Engine\CAssetMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Release\CAssetMgr_init.obj
 D:\TinyEngine\Project\Engine\CBlueprintEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CBlueprintEditor.obj
+D:\TinyEngine\Project\Engine\CBoxCollider.cpp;D:\TinyEngine\Project\Engine\x64\Release\CBoxCollider.obj
 D:\TinyEngine\Project\Engine\CBoxCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CBoxCollider2D.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCamera.obj
+D:\TinyEngine\Project\Engine\CCapsuleCollider.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCapsuleCollider.obj
 D:\TinyEngine\Project\Engine\CCircleCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCircleCollider2D.obj
+D:\TinyEngine\Project\Engine\CCollider.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCollider.obj
 D:\TinyEngine\Project\Engine\CCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CCollider2D.obj
 D:\TinyEngine\Project\Engine\CComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComponent.obj
 D:\TinyEngine\Project\Engine\CComputeShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CComputeShader.obj
@@ -40,6 +43,8 @@ D:\TinyEngine\Project\Engine\COutputLog.cpp;D:\TinyEngine\Project\Engine\x64\Rel
 D:\TinyEngine\Project\Engine\CParticleSystem.cpp;D:\TinyEngine\Project\Engine\x64\Release\CParticleSystem.obj
 D:\TinyEngine\Project\Engine\CParticleUpdate.cpp;D:\TinyEngine\Project\Engine\x64\Release\CParticleUpdate.obj
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPathMgr.obj
+D:\TinyEngine\Project\Engine\CPhysicMaterial.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysicMaterial.obj
+D:\TinyEngine\Project\Engine\CPhysicMaterialEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysicMaterialEditor.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMaterialEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysics2DMaterialEditor.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysics2DMgr.obj
 D:\TinyEngine\Project\Engine\CPhysicsMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPhysicsMgr.obj
@@ -47,6 +52,7 @@ D:\TinyEngine\Project\Engine\CPolygonCollider2D.cpp;D:\TinyEngine\Project\Engine
 D:\TinyEngine\Project\Engine\CPrefab.cpp;D:\TinyEngine\Project\Engine\x64\Release\CPrefab.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Release\CRenderComponent.obj
 D:\TinyEngine\Project\Engine\CRenderMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CRenderMgr.obj
+D:\TinyEngine\Project\Engine\CRigidBody.cpp;D:\TinyEngine\Project\Engine\x64\Release\CRigidBody.obj
 D:\TinyEngine\Project\Engine\CRigidbody2D.cpp;D:\TinyEngine\Project\Engine\x64\Release\CRigidbody2D.obj
 D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Release\CScript.obj
 D:\TinyEngine\Project\Engine\CSetColorShader.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSetColorShader.obj
@@ -54,6 +60,7 @@ D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Releas
 D:\TinyEngine\Project\Engine\CSkyBox.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSkyBox.obj
 D:\TinyEngine\Project\Engine\CSound.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSound.obj
 D:\TinyEngine\Project\Engine\CSoundEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSoundEditor.obj
+D:\TinyEngine\Project\Engine\CSphereCollider.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSphereCollider.obj
 D:\TinyEngine\Project\Engine\CSpriteEditor.cpp;D:\TinyEngine\Project\Engine\x64\Release\CSpriteEditor.obj
 D:\TinyEngine\Project\Engine\CStructuredBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Release\CStructuredBuffer.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Release\CTaskMgr.obj

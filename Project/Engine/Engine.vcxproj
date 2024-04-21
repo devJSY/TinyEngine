@@ -117,9 +117,12 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CBlueprintEditor.h" />
+    <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="CBoxCollider2D.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCapsuleCollider.h" />
     <ClInclude Include="CCircleCollider2D.h" />
+    <ClInclude Include="CCollider.h" />
     <ClInclude Include="CCollider2D.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CComputeShader.h" />
@@ -163,6 +166,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CPrefab.h" />
     <ClInclude Include="CRenderComponent.h" />
     <ClInclude Include="CRenderMgr.h" />
+    <ClInclude Include="CRigidBody.h" />
     <ClInclude Include="CRigidbody2D.h" />
     <ClInclude Include="CScript.h" />
     <ClInclude Include="CSetColorShader.h" />
@@ -170,6 +174,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CSkyBox.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundEditor.h" />
+    <ClInclude Include="CSphereCollider.h" />
     <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
@@ -223,9 +228,12 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_init.cpp" />
     <ClCompile Include="CBlueprintEditor.cpp" />
+    <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CBoxCollider2D.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCapsuleCollider.cpp" />
     <ClCompile Include="CCircleCollider2D.cpp" />
+    <ClCompile Include="CCollider.cpp" />
     <ClCompile Include="CCollider2D.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
@@ -268,6 +276,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CPrefab.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
+    <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="CRigidbody2D.cpp" />
     <ClCompile Include="CScript.cpp" />
     <ClCompile Include="CSetColorShader.cpp" />
@@ -275,6 +284,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CSkyBox.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundEditor.cpp" />
+    <ClCompile Include="CSphereCollider.cpp" />
     <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />

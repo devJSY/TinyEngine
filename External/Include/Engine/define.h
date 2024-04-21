@@ -50,6 +50,14 @@ enum class DIR_TYPE
     FRONT,
 };
 
+enum class AXIS_TYPE
+{
+    X,
+    Y,
+    Z,
+    END,
+};
+
 enum class ASSET_TYPE
 {
     MESH,
@@ -84,6 +92,12 @@ enum class COMPONENT_TYPE
     CIRCLECOLLIDER2D,  // CIRCLE 콜라이더 2D
     POLYGONCOLLIDER2D, // Polygon 콜라이더 2D
     EDGECOLLIDER2D,    // Edge 콜라이더 2D
+
+    // 3D Physics
+    RIGIDBODY,
+    BOXCOLLIDER,
+    SPHERECOLLIDER,
+    CAPSULECOLLIDER,
 
     // Render Component
     MESHRENDER,

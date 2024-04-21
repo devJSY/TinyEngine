@@ -4,9 +4,12 @@ D:\TinyEngine\Project\Engine\CAsset.cpp;D:\TinyEngine\Project\Engine\x64\Debug\C
 D:\TinyEngine\Project\Engine\CAssetMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr.obj
 D:\TinyEngine\Project\Engine\CAssetMgr_init.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CAssetMgr_init.obj
 D:\TinyEngine\Project\Engine\CBlueprintEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBlueprintEditor.obj
+D:\TinyEngine\Project\Engine\CBoxCollider.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBoxCollider.obj
 D:\TinyEngine\Project\Engine\CBoxCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CBoxCollider2D.obj
 D:\TinyEngine\Project\Engine\CCamera.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCamera.obj
+D:\TinyEngine\Project\Engine\CCapsuleCollider.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCapsuleCollider.obj
 D:\TinyEngine\Project\Engine\CCircleCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCircleCollider2D.obj
+D:\TinyEngine\Project\Engine\CCollider.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCollider.obj
 D:\TinyEngine\Project\Engine\CCollider2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CCollider2D.obj
 D:\TinyEngine\Project\Engine\CComponent.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CComponent.obj
 D:\TinyEngine\Project\Engine\CComputeShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CComputeShader.obj
@@ -49,6 +52,7 @@ D:\TinyEngine\Project\Engine\CPolygonCollider2D.cpp;D:\TinyEngine\Project\Engine
 D:\TinyEngine\Project\Engine\CPrefab.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPrefab.obj
 D:\TinyEngine\Project\Engine\CRenderComponent.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderComponent.obj
 D:\TinyEngine\Project\Engine\CRenderMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRenderMgr.obj
+D:\TinyEngine\Project\Engine\CRigidBody.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRigidBody.obj
 D:\TinyEngine\Project\Engine\CRigidbody2D.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CRigidbody2D.obj
 D:\TinyEngine\Project\Engine\CScript.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CScript.obj
 D:\TinyEngine\Project\Engine\CSetColorShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSetColorShader.obj
@@ -56,6 +60,7 @@ D:\TinyEngine\Project\Engine\CShader.cpp;D:\TinyEngine\Project\Engine\x64\Debug\
 D:\TinyEngine\Project\Engine\CSkyBox.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSkyBox.obj
 D:\TinyEngine\Project\Engine\CSound.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSound.obj
 D:\TinyEngine\Project\Engine\CSoundEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSoundEditor.obj
+D:\TinyEngine\Project\Engine\CSphereCollider.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSphereCollider.obj
 D:\TinyEngine\Project\Engine\CSpriteEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CSpriteEditor.obj
 D:\TinyEngine\Project\Engine\CStructuredBuffer.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CStructuredBuffer.obj
 D:\TinyEngine\Project\Engine\CTaskMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CTaskMgr.obj

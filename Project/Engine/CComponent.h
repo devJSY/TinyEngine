@@ -40,6 +40,10 @@ public:
     GET_OTHER_COMPONENT(CircleCollider2D);
     GET_OTHER_COMPONENT(PolygonCollider2D);
     GET_OTHER_COMPONENT(EdgeCollider2D);
+    GET_OTHER_COMPONENT(Rigidbody);
+    GET_OTHER_COMPONENT(BoxCollider);
+    GET_OTHER_COMPONENT(SphereCollider);
+    GET_OTHER_COMPONENT(CapsuleCollider);
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(TileMap);
     GET_OTHER_COMPONENT(ParticleSystem);

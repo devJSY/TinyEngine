@@ -74,7 +74,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="CMeshRender.h">
-      <Filter>08. Component\RenderComponent\12. MeshRender</Filter>
+      <Filter>08. Component\RenderComponent\16. MeshRender</Filter>
     </ClInclude>
     <ClInclude Include="CAssetMgr.h">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -176,13 +176,13 @@
       <Filter>ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="CTileMap.h">
-      <Filter>08. Component\RenderComponent\13. TileMap</Filter>
+      <Filter>08. Component\RenderComponent\17. TileMap</Filter>
     </ClInclude>
     <ClInclude Include="CSpriteEditor.h">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClInclude>
     <ClInclude Include="CParticleSystem.h">
-      <Filter>08. Component\RenderComponent\14. ParticleSystem</Filter>
+      <Filter>08. Component\RenderComponent\18. ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="CSetColorShader.h">
       <Filter>ShaderCode\Compute\SetColor</Filter>
@@ -254,7 +254,7 @@
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
     <ClInclude Include="CSkyBox.h">
-      <Filter>08. Component\RenderComponent\15. SkyBox</Filter>
+      <Filter>08. Component\RenderComponent\19. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="CGameObjectEx.h">
       <Filter>07. GameObject\Ex</Filter>
@@ -293,7 +293,7 @@
       <Filter>04. Manager\FontMgr</Filter>
     </ClInclude>
     <ClInclude Include="CTextRender.h">
-      <Filter>08. Component\RenderComponent\16. TextRender</Filter>
+      <Filter>08. Component\RenderComponent\20. TextRender</Filter>
     </ClInclude>
     <ClInclude Include="CEdgeCollider2D.h">
       <Filter>08. Component\Collider2D\11. EdgeCollider2D</Filter>
@@ -309,6 +309,21 @@
     </ClInclude>
     <ClInclude Include="CPhysicMaterialEditor.h">
       <Filter>20. Editor\PhysicMaterialEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>08. Component\12. Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollider.h">
+      <Filter>08. Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollider.h">
+      <Filter>08. Component\Collider\13. BoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CCapsuleCollider.h">
+      <Filter>08. Component\Collider\15. CapsuleCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CSphereCollider.h">
+      <Filter>08. Component\Collider\14. SphereCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,7 +382,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="CMeshRender.cpp">
-      <Filter>08. Component\RenderComponent\12. MeshRender</Filter>
+      <Filter>08. Component\RenderComponent\16. MeshRender</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -472,13 +487,13 @@
       <Filter>ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="CTileMap.cpp">
-      <Filter>08. Component\RenderComponent\13. TileMap</Filter>
+      <Filter>08. Component\RenderComponent\17. TileMap</Filter>
     </ClCompile>
     <ClCompile Include="CSpriteEditor.cpp">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClCompile>
     <ClCompile Include="CParticleSystem.cpp">
-      <Filter>08. Component\RenderComponent\14. ParticleSystem</Filter>
+      <Filter>08. Component\RenderComponent\18. ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="CSetColorShader.cpp">
       <Filter>ShaderCode\Compute\SetColor</Filter>
@@ -538,7 +553,7 @@
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
-      <Filter>08. Component\RenderComponent\15. SkyBox</Filter>
+      <Filter>08. Component\RenderComponent\19. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="CGameObjectEx.cpp">
       <Filter>07. GameObject\Ex</Filter>
@@ -577,7 +592,7 @@
       <Filter>04. Manager\FontMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTextRender.cpp">
-      <Filter>08. Component\RenderComponent\16. TextRender</Filter>
+      <Filter>08. Component\RenderComponent\20. TextRender</Filter>
     </ClCompile>
     <ClCompile Include="CEdgeCollider2D.cpp">
       <Filter>08. Component\Collider2D\11. EdgeCollider2D</Filter>
@@ -593,6 +608,21 @@
     </ClCompile>
     <ClCompile Include="CPhysicMaterialEditor.cpp">
       <Filter>20. Editor\PhysicMaterialEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>08. Component\12. Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider.cpp">
+      <Filter>08. Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoxCollider.cpp">
+      <Filter>08. Component\Collider\13. BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CCapsuleCollider.cpp">
+      <Filter>08. Component\Collider\15. CapsuleCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CSphereCollider.cpp">
+      <Filter>08. Component\Collider\14. SphereCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -854,21 +884,6 @@
     <Filter Include="08. Component\Collider2D\11. EdgeCollider2D">
       <UniqueIdentifier>{aabb79fb-d05d-4dab-bd10-9cb58899aca8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\12. MeshRender">
-      <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\13. TileMap">
-      <UniqueIdentifier>{e3652818-822e-4ad3-a1e6-2cc07871a700}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\14. ParticleSystem">
-      <UniqueIdentifier>{465e7928-9a4b-492c-b047-376839804dc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\15. SkyBox">
-      <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\RenderComponent\16. TextRender">
-      <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Render\SSAO">
       <UniqueIdentifier>{a39218f8-8966-495f-b000-7c571b82f835}</UniqueIdentifier>
     </Filter>
@@ -883,6 +898,36 @@
     </Filter>
     <Filter Include="20. Editor\PhysicMaterialEditor">
       <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider">
+      <UniqueIdentifier>{c4c40ce6-a806-4881-a9aa-fd22d56e7dca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\12. Rigidbody">
+      <UniqueIdentifier>{152ac541-d0e3-4eeb-ba1d-9eb0ea3bae72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\13. BoxCollider">
+      <UniqueIdentifier>{f3524a7c-1576-41b9-bae8-c0bde7d77228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\14. SphereCollider">
+      <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\15. CapsuleCollider">
+      <UniqueIdentifier>{8a4fdfbf-1545-4c16-bc26-a3b1b1c3c036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\16. MeshRender">
+      <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\17. TileMap">
+      <UniqueIdentifier>{e3652818-822e-4ad3-a1e6-2cc07871a700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\18. ParticleSystem">
+      <UniqueIdentifier>{465e7928-9a4b-492c-b047-376839804dc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\19. SkyBox">
+      <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\20. TextRender">
+      <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

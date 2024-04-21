@@ -49,6 +49,14 @@ private:
     virtual void OnTriggerStay(CCollider2D* _OtherCollider){};
     virtual void OnTriggerExit(CCollider2D* _OtherCollider){};
 
+    virtual void OnCollisionEnter(CCollider* _OtherCollider){};
+    virtual void OnCollisionStay(CCollider* _OtherCollider){};
+    virtual void OnCollisionExit(CCollider* _OtherCollider){};
+
+    virtual void OnTriggerEnter(CCollider* _OtherCollider){};
+    virtual void OnTriggerStay(CCollider* _OtherCollider){};
+    virtual void OnTriggerExit(CCollider* _OtherCollider){};
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override = 0;
     virtual void LoadFromLevelFile(FILE* _File) override = 0;
@@ -61,4 +69,5 @@ public:
     virtual ~CScript();
 
     friend class CCollider2D;
+    friend class CCollider;
 };
