@@ -123,25 +123,25 @@ void CPhysics2DMgr::tick()
 
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
-        CTransform* pTr = m_vecPhysicsObj[i]->Transform();
         CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
+        if (nullptr == rb2d)
+            continue;
 
         // 시뮬레이션 결과값으로 트랜스폼 업데이트
-        if (nullptr != rb2d)
-        {
-            b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
-            const auto& position = body->GetPosition();
-            Vec3 pos = pTr->GetRelativePos();
-            Vec3 rot = pTr->GetRelativeRotation();
+        CTransform* pTr = m_vecPhysicsObj[i]->Transform();
 
-            pos.x += (position.x * m_PPM) - pTr->GetWorldPos().x;
-            pos.y += (position.y * m_PPM) - pTr->GetWorldPos().y;
+        b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
+        const auto& position = body->GetPosition();
+        Vec3 pos = pTr->GetRelativePos();
+        Vec3 rot = pTr->GetRelativeRotation();
 
-            rot.z += body->GetAngle() - pTr->GetWorldRotation().z;
+        pos.x += (position.x * m_PPM) - pTr->GetWorldPos().x;
+        pos.y += (position.y * m_PPM) - pTr->GetWorldPos().y;
 
-            pTr->SetRelativePos(pos);
-            pTr->SetRelativeRotation(rot);
-        }
+        rot.z += body->GetAngle() - pTr->GetWorldRotation().z;
+
+        pTr->SetRelativePos(pos);
+        pTr->SetRelativeRotation(rot);
     }
 }
 

@@ -31,5 +31,5 @@ public:
     CCapsuleCollider();
     virtual ~CCapsuleCollider();
 
-    friend class CPhysicMgr;
+    friend class CPhysicsMgr;
 };

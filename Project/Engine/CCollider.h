@@ -4,6 +4,7 @@
 class CCollider : public CComponent
 {
 protected:
+    void* m_RuntimeShape;
     bool m_bTrigger;
     Ptr<CPhysicMaterial> m_Mtrl;
     Vec3 m_Center;
@@ -44,5 +45,5 @@ public:
     CCollider(const CCollider& origin);
     virtual ~CCollider();
 
-    friend class CPhysicMgr;
+    friend class CPhysicsMgr;
 };

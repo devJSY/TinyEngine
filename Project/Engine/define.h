@@ -55,7 +55,6 @@ enum class AXIS_TYPE
     X,
     Y,
     Z,
-    END,
 };
 
 enum class ASSET_TYPE

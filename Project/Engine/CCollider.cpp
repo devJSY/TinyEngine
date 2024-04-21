@@ -4,6 +4,7 @@
 
 CCollider::CCollider(COMPONENT_TYPE _Type)
     : CComponent(_Type)
+    , m_RuntimeShape(nullptr)
     , m_bTrigger(false)
     , m_Mtrl(nullptr)
     , m_Center(Vec3())
@@ -14,6 +15,7 @@ CCollider::CCollider(COMPONENT_TYPE _Type)
 
 CCollider::CCollider(const CCollider& origin)
     : CComponent(origin)
+    , m_RuntimeShape(nullptr)
     , m_bTrigger(origin.m_bTrigger)
     , m_Mtrl(origin.m_Mtrl)
     , m_Center(origin.m_Center)

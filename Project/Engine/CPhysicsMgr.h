@@ -16,6 +16,8 @@
     #define PVD_HOST "127.0.0.1"
 #endif // PVD_HOST
 
+class CGameObject;
+
 class CPhysicsMgr : public CSingleton<CPhysicsMgr>
 {
     SINGLE(CPhysicsMgr);
@@ -29,9 +31,14 @@ private:
     physx::PxScene* m_Scene;
     physx::PxPvd* m_Pvd;
 
+    vector<CGameObject*> m_vecPhysicsObj;
+
 public:
     void tick();
 
     void OnPhysicsStart();
     void OnPhysicsStop();
+
+private:
+    void AddPhysicsObject(CGameObject* _GameObject);
 };

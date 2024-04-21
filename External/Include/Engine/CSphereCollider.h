@@ -23,5 +23,5 @@ public:
     CSphereCollider();
     virtual ~CSphereCollider();
 
-    friend class CPhysicMgr;
+    friend class CPhysicsMgr;
 };

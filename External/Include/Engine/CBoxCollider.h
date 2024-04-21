@@ -23,5 +23,5 @@ public:
     CBoxCollider();
     virtual ~CBoxCollider();
 
-    friend class CPhysicMgr;
+    friend class CPhysicsMgr;
 };
