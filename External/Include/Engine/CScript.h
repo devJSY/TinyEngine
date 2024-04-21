@@ -1,0 +1,64 @@
+#pragma once
+#include "CComponent.h"
+
+#include "CTimeMgr.h"
+#include "CKeyMgr.h"
+#include "CGameObject.h"
+#include "components.h"
+
+enum class SCRIPT_PARAM
+{
+    INT,
+    FLOAT,
+    VEC2,
+    VEC3,
+    VEC4,
+    OBJECT,
+    STRING,
+};
+
+struct tScriptParam
+{
+    SCRIPT_PARAM eParam;
+    void* pData;
+    string strDesc;
+};
+
+class CScript : public CComponent
+{
+private:
+    const UINT m_ScriptType;
+    vector<tScriptParam> m_vecParam;
+
+public:
+    UINT GetScriptType() const { return m_ScriptType; }
+    const vector<tScriptParam>& GetScritpParam() { return m_vecParam; }
+
+protected:
+    void AddScriptParam(SCRIPT_PARAM eParam, void* _pData, const string& _Desc) { m_vecParam.push_back(tScriptParam{eParam, _pData, _Desc}); }
+
+public:
+    virtual void finaltick() final {}
+
+private:
+    virtual void OnCollisionEnter(CCollider2D* _OtherCollider){};
+    virtual void OnCollisionStay(CCollider2D* _OtherCollider){};
+    virtual void OnCollisionExit(CCollider2D* _OtherCollider){};
+
+    virtual void OnTriggerEnter(CCollider2D* _OtherCollider){};
+    virtual void OnTriggerStay(CCollider2D* _OtherCollider){};
+    virtual void OnTriggerExit(CCollider2D* _OtherCollider){};
+
+public:
+    virtual void SaveToLevelFile(FILE* _File) override = 0;
+    virtual void LoadFromLevelFile(FILE* _File) override = 0;
+
+    CScript* Clone() = 0;
+
+public:
+    CScript(UINT _ScriptType);
+    CScript(const CScript& origin);
+    virtual ~CScript();
+
+    friend class CCollider2D;
+};
