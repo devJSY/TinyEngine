@@ -11,5 +11,5 @@ const char* COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::END]{
     "Landscape",          "TextRender"};
 
 const char* ASSET_TYPE_STRING[(UINT)ASSET_TYPE::END]{
-    "Mesh", "Meshdata", "Prefab", "Texture", "Compute Shader", "Graphics Shader", "Material", "Sound", "Physics2D Material",
+    "Mesh", "Meshdata", "Prefab", "Texture", "Compute Shader", "Graphics Shader", "Material", "Sound", "Physics2D Material", "Physic Material",
 };

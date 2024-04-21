@@ -305,6 +305,9 @@ void CLevelEditor::render_MenuBar()
             if (ImGui::MenuItem("Create Physics2D Material"))
                 m_ModalAssetType = ASSET_TYPE::PHYSICS2D_MATERIAL;
 
+            if (ImGui::MenuItem("Create Physic Material"))
+                m_ModalAssetType = ASSET_TYPE::PHYSIC_MATERIAL;
+
             ImGui::EndMenu();
         }
 
@@ -521,6 +524,12 @@ void CLevelEditor::render_Assets()
                         CEditorMgr::GetInst()->GetPhysics2DMaterialEditor()->SetMaterial(pMtrl);
                     }
                     break;
+                    case ASSET_TYPE::PHYSIC_MATERIAL: {
+                        Ptr<CPhysicMaterial> pMtrl = dynamic_cast<CPhysicMaterial*>(iter.second.Get());
+                        ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
+                        CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+                    }
+                    break;
                     }
                 }
 
@@ -581,6 +590,14 @@ void CLevelEditor::CreateAssetModal()
             case ASSET_TYPE::PHYSICS2D_MATERIAL: {
                 Ptr<CPhysics2DMaterial> pMtrl = new CPhysics2DMaterial(false);
                 wstring name = L"physics2Dmaterial\\" + ToWstring(buffer) + L".physic2Dmtrl";
+                pMtrl->SetName(name);
+                CAssetMgr::GetInst()->AddAsset(name, pMtrl);
+                pMtrl->Save(name);
+            }
+            break;
+            case ASSET_TYPE::PHYSIC_MATERIAL: {
+                Ptr<CPhysicMaterial> pMtrl = new CPhysicMaterial(false);
+                wstring name = L"physicMaterial\\" + ToWstring(buffer) + L".physicMaterial";
                 pMtrl->SetName(name);
                 CAssetMgr::GetInst()->AddAsset(name, pMtrl);
                 pMtrl->Save(name);

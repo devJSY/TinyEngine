@@ -267,7 +267,7 @@ float4 main(PS_IN input) : SV_TARGET
     
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb 
                                  : MtrlAlbedo.rgb;
-    float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, input.vUV).r : 1.f - g_SSAOTex.Sample(g_LinearWrapSampler, input.vUV).r;
+    float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, input.vUV).r : 1.f;
     float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b
                                     : MtrlMetallic;
     float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g 

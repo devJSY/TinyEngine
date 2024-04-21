@@ -304,6 +304,12 @@
     <ClInclude Include="CPhysicsMgr.h">
       <Filter>04. Manager\PhysicsMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysicMaterial.h">
+      <Filter>06. Asset\PhysicMaterial</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysicMaterialEditor.h">
+      <Filter>20. Editor\PhysicMaterialEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -581,6 +587,12 @@
     </ClCompile>
     <ClCompile Include="CPhysicsMgr.cpp">
       <Filter>04. Manager\PhysicsMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysicMaterial.cpp">
+      <Filter>06. Asset\PhysicMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysicMaterialEditor.cpp">
+      <Filter>20. Editor\PhysicMaterialEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -865,6 +877,12 @@
     </Filter>
     <Filter Include="04. Manager\Physics2DMgr">
       <UniqueIdentifier>{5bb8f90a-95b9-4d0b-b08d-71aa6c7386ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Asset\PhysicMaterial">
+      <UniqueIdentifier>{b1a66690-71b3-4951-95d6-144c0cc946a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="20. Editor\PhysicMaterialEditor">
+      <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

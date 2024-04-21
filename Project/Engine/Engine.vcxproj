@@ -154,6 +154,8 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CParticleUpdate.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CPhysicMaterial.h" />
+    <ClInclude Include="CPhysicMaterialEditor.h" />
     <ClInclude Include="CPhysics2DMaterialEditor.h" />
     <ClInclude Include="CPhysics2DMgr.h" />
     <ClInclude Include="CPhysicsMgr.h" />
@@ -257,6 +259,8 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPhysicMaterial.cpp" />
+    <ClCompile Include="CPhysicMaterialEditor.cpp" />
     <ClCompile Include="CPhysics2DMaterialEditor.cpp" />
     <ClCompile Include="CPhysics2DMgr.cpp" />
     <ClCompile Include="CPhysicsMgr.cpp" />

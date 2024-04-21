@@ -29,6 +29,7 @@ void CAssetMgr::init()
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
     CreateDefaultPhysics2DMaterial();
+    CreateDefaultPhysicMaterial();
 
     initSound();
 }
@@ -113,6 +114,8 @@ void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
                 Load<CSound>(FileRelativePath, FileRelativePath);
             if (FileExtension == L".physic2Dmtrl")
                 Load<CPhysics2DMaterial>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".physicMaterial")
+                Load<CPhysicMaterial>(FileRelativePath, FileRelativePath);
         }
     }
 }

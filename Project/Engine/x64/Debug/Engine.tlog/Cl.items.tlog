@@ -40,6 +40,8 @@ D:\TinyEngine\Project\Engine\COutputLog.cpp;D:\TinyEngine\Project\Engine\x64\Deb
 D:\TinyEngine\Project\Engine\CParticleSystem.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CParticleSystem.obj
 D:\TinyEngine\Project\Engine\CParticleUpdate.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CParticleUpdate.obj
 D:\TinyEngine\Project\Engine\CPathMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPathMgr.obj
+D:\TinyEngine\Project\Engine\CPhysicMaterial.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysicMaterial.obj
+D:\TinyEngine\Project\Engine\CPhysicMaterialEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysicMaterialEditor.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMaterialEditor.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysics2DMaterialEditor.obj
 D:\TinyEngine\Project\Engine\CPhysics2DMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysics2DMgr.obj
 D:\TinyEngine\Project\Engine\CPhysicsMgr.cpp;D:\TinyEngine\Project\Engine\x64\Debug\CPhysicsMgr.obj

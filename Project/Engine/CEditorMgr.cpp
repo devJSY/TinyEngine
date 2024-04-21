@@ -123,6 +123,10 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL]->SetName(L"Physics2D Material Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL]->init();
 
+    m_arrEditor[(UINT)EDITOR_TYPE::PHYSIC_MATERIAL] = new CPhysicMaterialEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::PHYSIC_MATERIAL]->SetName(L"Physic Material Editor");
+    m_arrEditor[(UINT)EDITOR_TYPE::PHYSIC_MATERIAL]->init();
+
     m_arrEditor[(UINT)EDITOR_TYPE::SOUND] = new CSoundEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::SOUND]->SetName(L"Sound Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::SOUND]->init();

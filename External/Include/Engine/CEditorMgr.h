@@ -5,6 +5,7 @@
 #include "CSpriteEditor.h"
 #include "CTileMapEditor.h"
 #include "CPhysics2DMaterialEditor.h"
+#include "CPhysicMaterialEditor.h"
 #include "CSoundEditor.h"
 
 class CEditor;
@@ -56,6 +57,7 @@ public:
     {
         return (CPhysics2DMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::PHYSICS2D_MATERIAL];
     }
+    CPhysicMaterialEditor* GetPhysicMaterialEditor() const { return (CPhysicMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::PHYSIC_MATERIAL]; }
     CSoundEditor* GetSoundEditor() const { return (CSoundEditor*)m_arrEditor[(UINT)EDITOR_TYPE::SOUND]; }
 
 private:

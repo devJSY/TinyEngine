@@ -35,7 +35,12 @@ void CPhysicsMgr::OnPhysicsStart()
     physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
     m_Pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
 
-    m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, physx::PxTolerancesScale(), true, m_Pvd);
+    // 1M ±âÁØ
+    physx::PxTolerancesScale worldScale;
+    worldScale.length = 100; // typical length of an object
+    worldScale.speed = 981; // typical speed of an object, gravity*1s is a reasonable choice
+
+    m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, worldScale, true, m_Pvd);
 
     physx::PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
     sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);

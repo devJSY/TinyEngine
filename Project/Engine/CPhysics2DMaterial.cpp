@@ -3,7 +3,7 @@
 
 CPhysics2DMaterial::CPhysics2DMaterial(bool _bEngineAsset)
     : CAsset(ASSET_TYPE::PHYSICS2D_MATERIAL, _bEngineAsset)
-    , m_Friction(0.f)
+    , m_Friction(0.4f)
     , m_Bounciness(0.f)
 {
 }

@@ -1192,9 +1192,16 @@ void CAssetMgr::CreateDefaultPhysics2DMaterial()
     // Default Material
     {
         Ptr<CPhysics2DMaterial> pMtrl = new CPhysics2DMaterial(true);
-        pMtrl->SetFriction(0.6f);
-        pMtrl->SetBounciness(0.f);
         AddAsset<CPhysics2DMaterial>(L"Default Material", pMtrl);
+    }
+}
+
+void CAssetMgr::CreateDefaultPhysicMaterial()
+{
+    // Default Material
+    {
+        Ptr<CPhysicMaterial> pMtrl = new CPhysicMaterial(true);
+        AddAsset<CPhysicMaterial>(L"Default Material", pMtrl);
     }
 }
 

@@ -61,6 +61,7 @@ enum class ASSET_TYPE
     MATERIAL,
     SOUND,
     PHYSICS2D_MATERIAL,
+    PHYSIC_MATERIAL,
     END,
 };
 extern const char* ASSET_TYPE_STRING[(UINT)ASSET_TYPE::END];
@@ -226,6 +227,7 @@ enum class EDITOR_TYPE
     SPRITE,
     TILEMAP,
     PHYSICS2D_MATERIAL,
+    PHYSIC_MATERIAL,
     SOUND,
 
     END,

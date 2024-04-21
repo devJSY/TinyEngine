@@ -134,8 +134,6 @@ Texture2D g_LightDepthMapTex1 : register(t23);
 Texture2D g_LightDepthMapTex2 : register(t24);
 Texture2D g_LightDepthMapTex3 : register(t25);
 
-Texture2D g_SSAOTex : register(t26);
-
 SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);
 SamplerState g_PointSampler : register(s2);
