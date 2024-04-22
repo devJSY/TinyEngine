@@ -3,6 +3,7 @@
 #include "CTimeMgr.h"
 #include "CLevelMgr.h"
 #include "CAssetMgr.h"
+#include "CRenderMgr.h"
 
 #include "CLevel.h"
 #include "CGameObject.h"
@@ -35,15 +36,53 @@ void CPhysicsMgr::tick()
     m_Scene->simulate(DT);
     m_Scene->fetchResults(true);
 
-    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
+    PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+    std::vector<PxRigidActor*> actors(nbActors);
+    m_Scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+
+    for (PxU32 i = 0; i < nbActors; i++)
     {
-        CRigidbody* pRigidbody = m_vecPhysicsObj[i]->Rigidbody();
-        if (nullptr == pRigidbody)
-            continue;
+        const PxU32 nbShapes = actors[i]->getNbShapes();
+        vector<PxShape*> shapes(nbShapes);
+        actors[i]->getShapes(shapes.data(), nbShapes);
 
-        CTransform* pTr = m_vecPhysicsObj[i]->Transform();
+        if (actors[i]->is<PxRigidDynamic>())
+        {
+            CGameObject* obj = (CGameObject*)actors[i]->userData;
+            CTransform* pTr = obj->Transform();
+            Matrix WorldMat = pTr->GetWorldMat();
 
-        PxRigidDynamic* body = (PxRigidDynamic*)pRigidbody->m_RuntimeBody;
+            const PxMat44 ActorPose(actors[i]->getGlobalPose());
+            Matrix mat = Matrix(ActorPose.front());
+
+            // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
+            float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
+            ImGuizmo::DecomposeMatrixToComponents(*mat.m, Ftranslation, Frotation, Fscale);
+
+            float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f}, originFscale[3] = {0.0f, 0.0f, 0.0f};
+            ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, originFtranslation, originFrotation, originFscale);
+
+            // 변화량 추출
+            Vec3 vPosOffset =
+                Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1], originFtranslation[2] - Ftranslation[2]);
+            Vec3 vRotOffset = Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
+                                   DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
+                                   DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
+            Vec3 vScaleOffset = Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
+
+            // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
+            pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+            pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+        }
+
+        // Render Matrix 설정
+        for (PxU32 j = 0; j < nbShapes; j++)
+        {
+            const PxMat44 shapePose(PxShapeExt::getGlobalPose(*shapes[j], *actors[i]));
+            Matrix mat = Matrix(shapePose.front());
+            CCollider* col = (CCollider*)shapes[j]->userData;
+            col->m_RenderMatrix = mat;
+        }
     }
 }
 
@@ -156,6 +195,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
     Vec3 WorldPos = pTr->GetWorldPos();
     Vec3 WorldRot = pTr->GetWorldRotation();
+    Vec3 WorldScale = pTr->GetWorldScale();
 
     PxQuat RotX(WorldRot.x, PxVec3(1.f, 0.f, 0.f));
     PxQuat RotY(WorldRot.y, PxVec3(0.f, 1.f, 0.f));
@@ -190,9 +230,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     else
     {
         PxRigidStatic* staticRigid = m_Physics->createRigidStatic(PxTr);
-
         RigidActor = staticRigid;
-        pRigidbody->m_RuntimeBody = staticRigid;
     }
 
     Ptr<CPhysicMaterial> pDefaultMtrl = CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(L"Default Material");
@@ -209,7 +247,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
                                                 pBoxCol->m_Mtrl->GetBounciness());
         }
 
-        RigidActor->attachShape(*m_Physics->createShape(PxBoxGeometry(pBoxCol->m_Size.x, pBoxCol->m_Size.y, pBoxCol->m_Size.z), *pPxMtrl));
+        PxShape* shape = m_Physics->createShape(
+            PxBoxGeometry(WorldScale.x * pBoxCol->m_Size.x, WorldScale.y * pBoxCol->m_Size.y, WorldScale.z * pBoxCol->m_Size.z), *pPxMtrl);
+        shape->userData = (void*)pBoxCol;
+        RigidActor->attachShape(*shape);
     }
 
     // Sphere Collider
@@ -222,9 +263,12 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
                                                 pSphereCol->m_Mtrl->GetBounciness());
         }
 
-        RigidActor->attachShape(*m_Physics->createShape(PxSphereGeometry(pSphereCol->m_Radius), *pPxMtrl));
+        PxShape* shape = m_Physics->createShape(PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
+        shape->userData = (void*)pSphereCol;
+        RigidActor->attachShape(*shape);
     }
 
+    RigidActor->userData = (void*)_GameObject;
     m_Scene->addActor(*RigidActor);
     m_vecPhysicsObj.push_back(_GameObject);
 }

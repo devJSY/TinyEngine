@@ -9,6 +9,8 @@ protected:
     Ptr<CPhysicMaterial> m_Mtrl;
     Vec3 m_Center;
 
+    // 수정 불가능한 멤버 변수
+    Matrix m_RenderMatrix;
     int m_CollisionCount;
     int m_TriggerCount;
 
