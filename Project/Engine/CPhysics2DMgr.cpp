@@ -121,13 +121,13 @@ void CPhysics2DMgr::tick()
         contact = contact->GetNext();
     }
 
+    // 시뮬레이션 결과값으로 트랜스폼 업데이트
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
         CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
         if (nullptr == rb2d)
             continue;
 
-        // 시뮬레이션 결과값으로 트랜스폼 업데이트
         CTransform* pTr = m_vecPhysicsObj[i]->Transform();
 
         b2Body* body = (b2Body*)rb2d->m_RuntimeBody;

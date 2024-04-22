@@ -14,12 +14,12 @@ CBoxCollider::~CBoxCollider()
 
 void CBoxCollider::finaltick()
 {
-    Vec3 WorldScale = Transform()->GetWorldScale();
-    WorldScale *= m_Size; 
-    Matrix matScale = XMMatrixScaling(WorldScale.x, WorldScale.y, WorldScale.z);
+    CCollider::finaltick();
+
+    Matrix matScale = XMMatrixScaling(m_Size.x, m_Size.y, m_Size.z);
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-    GamePlayStatic::DrawDebugBox(matScale * m_RenderMatrix, color, false);
+    GamePlayStatic::DrawDebugBox(matScale * Transform()->GetWorldMat(), color, false);
 }
 
 void CBoxCollider::SaveToLevelFile(FILE* _File)

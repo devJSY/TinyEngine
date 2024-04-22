@@ -45,10 +45,10 @@ void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl)
 
 Ptr<CMaterial> CRenderComponent::CreateDynamicMaterial()
 {
-    // 런타임 에만 동적 재질 생성
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    if (!(pCurLevel->GetState() == LEVEL_STATE::PLAY || pCurLevel->GetState() == LEVEL_STATE::SIMULATE))
-        return nullptr;
+    //// 런타임 에만 동적 재질 생성
+    //CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    //if (!(pCurLevel->GetState() == LEVEL_STATE::PLAY || pCurLevel->GetState() == LEVEL_STATE::SIMULATE))
+    //    return nullptr;
 
     // 이미 동적재질을 보유한경우 리턴
     if (nullptr != m_DynamicMtrl)

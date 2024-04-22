@@ -99,7 +99,7 @@ void CAssetMgr::CreateDefaultMesh()
 
     // Sphere
     {
-        auto mesh = MakeSphere(1, 50, 50);
+        auto mesh = MakeSphere(1, 25, 25);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         pMesh->SetName(L"SphereMesh");
@@ -143,7 +143,7 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"WireBox", pMesh);
     }
 
-    // Wire Box
+    // Wire Sphere
     {
         auto mesh = MakeWireSphere(Vec3(), 1.f);
         Ptr<CMesh> pMesh = new CMesh(true);

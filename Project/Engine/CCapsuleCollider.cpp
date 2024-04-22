@@ -15,6 +15,7 @@ CCapsuleCollider::~CCapsuleCollider()
 
 void CCapsuleCollider::finaltick()
 {
+    CCollider::finaltick();
 }
 
 void CCapsuleCollider::SaveToLevelFile(FILE* _File)

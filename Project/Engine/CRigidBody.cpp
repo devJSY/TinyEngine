@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CRigidBody.h"
+#include "physx\\PxPhysicsAPI.h"
+#include "CTransform.h"
 
 CRigidbody::CRigidbody()
     : CComponent(COMPONENT_TYPE::RIGIDBODY)
@@ -33,6 +35,16 @@ CRigidbody::~CRigidbody()
 
 void CRigidbody::finaltick()
 {
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    // 트랜스폼 위치 정보 업데이트
+    physx::PxRigidActor* body = (physx::PxRigidActor*)m_RuntimeBody;
+    physx::PxTransform PxTr = body->getGlobalPose();
+
+    Vec3 WolrdPos = Transform()->GetWorldPos();
+    PxTr.p = physx::PxVec3(WolrdPos.x, WolrdPos.y, WolrdPos.z);
+    body->setGlobalPose(PxTr);
 }
 
 void CRigidbody::SaveToLevelFile(FILE* _File)

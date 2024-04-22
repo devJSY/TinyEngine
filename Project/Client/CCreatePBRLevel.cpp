@@ -34,7 +34,7 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pCurLevel->GetLayer(14)->SetName(L"PostProcess");
     pCurLevel->GetLayer(15)->SetName(L"UI");
 
-    AddSample(pCurLevel);
+    // AddSample(pCurLevel);
     AddModels(pCurLevel);
 
     // Main Camera

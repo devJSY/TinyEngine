@@ -62,7 +62,7 @@
       <Filter>07. GameObject</Filter>
     </ClInclude>
     <ClInclude Include="CTransform.h">
-      <Filter>08. Component\01. Transform</Filter>
+      <Filter>08. Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="func.h">
       <Filter>01. Header</Filter>
@@ -74,7 +74,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="CMeshRender.h">
-      <Filter>08. Component\RenderComponent\16. MeshRender</Filter>
+      <Filter>08. Component\RenderComponent\MeshRender</Filter>
     </ClInclude>
     <ClInclude Include="CAssetMgr.h">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -86,7 +86,7 @@
       <Filter>08. Component\Script</Filter>
     </ClInclude>
     <ClInclude Include="CCamera.h">
-      <Filter>08. Component\06. Camera</Filter>
+      <Filter>08. Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CLevelMgr.h">
       <Filter>04. Manager\LevelMgr</Filter>
@@ -116,7 +116,7 @@
       <Filter>06. Asset\Material</Filter>
     </ClInclude>
     <ClInclude Include="CLight3D.h">
-      <Filter>08. Component\05. Light3D</Filter>
+      <Filter>08. Component\Light3D</Filter>
     </ClInclude>
     <ClInclude Include="CModleLoader.h">
       <Filter>ModleLoader</Filter>
@@ -134,10 +134,10 @@
       <Filter>04. Manager\RenderMgr</Filter>
     </ClInclude>
     <ClInclude Include="CAnimator2D.h">
-      <Filter>08. Component\02. Animator2D</Filter>
+      <Filter>08. Component\Animator2D</Filter>
     </ClInclude>
     <ClInclude Include="CAnim.h">
-      <Filter>08. Component\02. Animator2D\Anim</Filter>
+      <Filter>08. Component\Animator2D\Anim</Filter>
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>LevelSaveLoad</Filter>
@@ -146,7 +146,7 @@
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClInclude>
     <ClInclude Include="CLight2D.h">
-      <Filter>08. Component\04. Light2D</Filter>
+      <Filter>08. Component\Light2D</Filter>
     </ClInclude>
     <ClInclude Include="CMaterialEditor.h">
       <Filter>20. Editor\MaterialEditor</Filter>
@@ -176,13 +176,13 @@
       <Filter>ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="CTileMap.h">
-      <Filter>08. Component\RenderComponent\17. TileMap</Filter>
+      <Filter>08. Component\RenderComponent\TileMap</Filter>
     </ClInclude>
     <ClInclude Include="CSpriteEditor.h">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClInclude>
     <ClInclude Include="CParticleSystem.h">
-      <Filter>08. Component\RenderComponent\18. ParticleSystem</Filter>
+      <Filter>08. Component\RenderComponent\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="CSetColorShader.h">
       <Filter>ShaderCode\Compute\SetColor</Filter>
@@ -254,7 +254,7 @@
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
     <ClInclude Include="CSkyBox.h">
-      <Filter>08. Component\RenderComponent\19. SkyBox</Filter>
+      <Filter>08. Component\RenderComponent\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="CGameObjectEx.h">
       <Filter>07. GameObject\Ex</Filter>
@@ -266,13 +266,13 @@
       <Filter>04. Manager\Physics2DMgr</Filter>
     </ClInclude>
     <ClInclude Include="CRigidbody2D.h">
-      <Filter>08. Component\07. Rigidbody2D</Filter>
+      <Filter>08. Component\Rigidbody2D</Filter>
     </ClInclude>
     <ClInclude Include="CBoxCollider2D.h">
-      <Filter>08. Component\Collider2D\08. BoxCollider2D</Filter>
+      <Filter>08. Component\Collider2D\BoxCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CCircleCollider2D.h">
-      <Filter>08. Component\Collider2D\09. CircleCollider2D</Filter>
+      <Filter>08. Component\Collider2D\CircleCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CCollider2D.h">
       <Filter>08. Component\Collider2D</Filter>
@@ -293,13 +293,13 @@
       <Filter>04. Manager\FontMgr</Filter>
     </ClInclude>
     <ClInclude Include="CTextRender.h">
-      <Filter>08. Component\RenderComponent\20. TextRender</Filter>
+      <Filter>08. Component\RenderComponent\TextRender</Filter>
     </ClInclude>
     <ClInclude Include="CEdgeCollider2D.h">
-      <Filter>08. Component\Collider2D\11. EdgeCollider2D</Filter>
+      <Filter>08. Component\Collider2D\EdgeCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CPolygonCollider2D.h">
-      <Filter>08. Component\Collider2D\10. PolygonCollider2D</Filter>
+      <Filter>08. Component\Collider2D\PolygonCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CPhysicsMgr.h">
       <Filter>04. Manager\PhysicsMgr</Filter>
@@ -311,19 +311,19 @@
       <Filter>20. Editor\PhysicMaterialEditor</Filter>
     </ClInclude>
     <ClInclude Include="CRigidBody.h">
-      <Filter>08. Component\12. Rigidbody</Filter>
+      <Filter>08. Component\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="CCollider.h">
       <Filter>08. Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="CBoxCollider.h">
-      <Filter>08. Component\Collider\13. BoxCollider</Filter>
+      <Filter>08. Component\Collider\BoxCollider</Filter>
     </ClInclude>
     <ClInclude Include="CCapsuleCollider.h">
-      <Filter>08. Component\Collider\15. CapsuleCollider</Filter>
+      <Filter>08. Component\Collider\CapsuleCollider</Filter>
     </ClInclude>
     <ClInclude Include="CSphereCollider.h">
-      <Filter>08. Component\Collider\14. SphereCollider</Filter>
+      <Filter>08. Component\Collider\SphereCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -373,7 +373,7 @@
       <Filter>07. GameObject</Filter>
     </ClCompile>
     <ClCompile Include="CTransform.cpp">
-      <Filter>08. Component\01. Transform</Filter>
+      <Filter>08. Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="CConstBuffer.cpp">
       <Filter>03. Device\ConstBuffer</Filter>
@@ -382,7 +382,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="CMeshRender.cpp">
-      <Filter>08. Component\RenderComponent\16. MeshRender</Filter>
+      <Filter>08. Component\RenderComponent\MeshRender</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -391,7 +391,7 @@
       <Filter>08. Component\Script</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
-      <Filter>08. Component\06. Camera</Filter>
+      <Filter>08. Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CLevelMgr.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
@@ -424,7 +424,7 @@
       <Filter>06. Asset\Material</Filter>
     </ClCompile>
     <ClCompile Include="CLight3D.cpp">
-      <Filter>08. Component\05. Light3D</Filter>
+      <Filter>08. Component\Light3D</Filter>
     </ClCompile>
     <ClCompile Include="CModleLoader.cpp">
       <Filter>ModleLoader</Filter>
@@ -445,10 +445,10 @@
       <Filter>04. Manager\RenderMgr</Filter>
     </ClCompile>
     <ClCompile Include="CAnimator2D.cpp">
-      <Filter>08. Component\02. Animator2D</Filter>
+      <Filter>08. Component\Animator2D</Filter>
     </ClCompile>
     <ClCompile Include="CAnim.cpp">
-      <Filter>08. Component\02. Animator2D\Anim</Filter>
+      <Filter>08. Component\Animator2D\Anim</Filter>
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>LevelSaveLoad</Filter>
@@ -457,7 +457,7 @@
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClCompile>
     <ClCompile Include="CLight2D.cpp">
-      <Filter>08. Component\04. Light2D</Filter>
+      <Filter>08. Component\Light2D</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr_init.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -487,13 +487,13 @@
       <Filter>ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="CTileMap.cpp">
-      <Filter>08. Component\RenderComponent\17. TileMap</Filter>
+      <Filter>08. Component\RenderComponent\TileMap</Filter>
     </ClCompile>
     <ClCompile Include="CSpriteEditor.cpp">
       <Filter>20. Editor\SpriteEditor</Filter>
     </ClCompile>
     <ClCompile Include="CParticleSystem.cpp">
-      <Filter>08. Component\RenderComponent\18. ParticleSystem</Filter>
+      <Filter>08. Component\RenderComponent\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="CSetColorShader.cpp">
       <Filter>ShaderCode\Compute\SetColor</Filter>
@@ -553,7 +553,7 @@
       <Filter>ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
-      <Filter>08. Component\RenderComponent\19. SkyBox</Filter>
+      <Filter>08. Component\RenderComponent\SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="CGameObjectEx.cpp">
       <Filter>07. GameObject\Ex</Filter>
@@ -565,13 +565,13 @@
       <Filter>04. Manager\Physics2DMgr</Filter>
     </ClCompile>
     <ClCompile Include="CRigidbody2D.cpp">
-      <Filter>08. Component\07. Rigidbody2D</Filter>
+      <Filter>08. Component\Rigidbody2D</Filter>
     </ClCompile>
     <ClCompile Include="CBoxCollider2D.cpp">
-      <Filter>08. Component\Collider2D\08. BoxCollider2D</Filter>
+      <Filter>08. Component\Collider2D\BoxCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CCircleCollider2D.cpp">
-      <Filter>08. Component\Collider2D\09. CircleCollider2D</Filter>
+      <Filter>08. Component\Collider2D\CircleCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CCollider2D.cpp">
       <Filter>08. Component\Collider2D</Filter>
@@ -592,13 +592,13 @@
       <Filter>04. Manager\FontMgr</Filter>
     </ClCompile>
     <ClCompile Include="CTextRender.cpp">
-      <Filter>08. Component\RenderComponent\20. TextRender</Filter>
+      <Filter>08. Component\RenderComponent\TextRender</Filter>
     </ClCompile>
     <ClCompile Include="CEdgeCollider2D.cpp">
-      <Filter>08. Component\Collider2D\11. EdgeCollider2D</Filter>
+      <Filter>08. Component\Collider2D\EdgeCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CPolygonCollider2D.cpp">
-      <Filter>08. Component\Collider2D\10. PolygonCollider2D</Filter>
+      <Filter>08. Component\Collider2D\PolygonCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CPhysicsMgr.cpp">
       <Filter>04. Manager\PhysicsMgr</Filter>
@@ -610,19 +610,19 @@
       <Filter>20. Editor\PhysicMaterialEditor</Filter>
     </ClCompile>
     <ClCompile Include="CRigidBody.cpp">
-      <Filter>08. Component\12. Rigidbody</Filter>
+      <Filter>08. Component\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="CCollider.cpp">
       <Filter>08. Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="CBoxCollider.cpp">
-      <Filter>08. Component\Collider\13. BoxCollider</Filter>
+      <Filter>08. Component\Collider\BoxCollider</Filter>
     </ClCompile>
     <ClCompile Include="CCapsuleCollider.cpp">
-      <Filter>08. Component\Collider\15. CapsuleCollider</Filter>
+      <Filter>08. Component\Collider\CapsuleCollider</Filter>
     </ClCompile>
     <ClCompile Include="CSphereCollider.cpp">
-      <Filter>08. Component\Collider\14. SphereCollider</Filter>
+      <Filter>08. Component\Collider\SphereCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -667,9 +667,6 @@
     </Filter>
     <Filter Include="08. Component">
       <UniqueIdentifier>{e87b178b-38c5-43c3-8cd8-0b4566683e23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\01. Transform">
-      <UniqueIdentifier>{7263119e-ba22-4cb5-9446-0ecb37b4016e}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. Asset\Mesh">
       <UniqueIdentifier>{8f54ffc6-a3b6-40d3-abfa-204909ad4b43}</UniqueIdentifier>
@@ -836,21 +833,6 @@
     <Filter Include="06. Asset\Prefab">
       <UniqueIdentifier>{e32e0f18-5fbe-4a54-be48-ad276488f2d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\02. Animator2D">
-      <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\02. Animator2D\Anim">
-      <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\04. Light2D">
-      <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\05. Light3D">
-      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\06. Camera">
-      <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Collider2D">
       <UniqueIdentifier>{79f67d4c-e983-44c5-8bc6-cbee0063c40d}</UniqueIdentifier>
     </Filter>
@@ -863,26 +845,11 @@
     <Filter Include="20. Editor\SoundEditor">
       <UniqueIdentifier>{57698332-dc5c-4594-bca0-8fd946ea00f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\07. Rigidbody2D">
-      <UniqueIdentifier>{3fb86466-781f-4b82-9e0f-bfd1ade7b13c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\08. BoxCollider2D">
-      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\09. CircleCollider2D">
-      <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\FontMgr">
       <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Render\ProgressBar">
       <UniqueIdentifier>{255fc16a-e735-4269-bf34-360fbdcb3a95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\10. PolygonCollider2D">
-      <UniqueIdentifier>{1b7a9b7a-f1c7-4072-92d1-5d555c385087}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\11. EdgeCollider2D">
-      <UniqueIdentifier>{aabb79fb-d05d-4dab-bd10-9cb58899aca8}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Render\SSAO">
       <UniqueIdentifier>{a39218f8-8966-495f-b000-7c571b82f835}</UniqueIdentifier>
@@ -902,31 +869,64 @@
     <Filter Include="08. Component\Collider">
       <UniqueIdentifier>{c4c40ce6-a806-4881-a9aa-fd22d56e7dca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\12. Rigidbody">
+    <Filter Include="08. Component\Transform">
+      <UniqueIdentifier>{7263119e-ba22-4cb5-9446-0ecb37b4016e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Animator2D">
+      <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Animator2D\Anim">
+      <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Light2D">
+      <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Light3D">
+      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Camera">
+      <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Rigidbody2D">
+      <UniqueIdentifier>{3fb86466-781f-4b82-9e0f-bfd1ade7b13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Rigidbody">
       <UniqueIdentifier>{152ac541-d0e3-4eeb-ba1d-9eb0ea3bae72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Collider\13. BoxCollider">
+    <Filter Include="08. Component\Collider\BoxCollider">
       <UniqueIdentifier>{f3524a7c-1576-41b9-bae8-c0bde7d77228}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Collider\14. SphereCollider">
-      <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider\15. CapsuleCollider">
+    <Filter Include="08. Component\Collider\CapsuleCollider">
       <UniqueIdentifier>{8a4fdfbf-1545-4c16-bc26-a3b1b1c3c036}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\16. MeshRender">
+    <Filter Include="08. Component\Collider\SphereCollider">
+      <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\BoxCollider2D">
+      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\CircleCollider2D">
+      <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\PolygonCollider2D">
+      <UniqueIdentifier>{1b7a9b7a-f1c7-4072-92d1-5d555c385087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider2D\EdgeCollider2D">
+      <UniqueIdentifier>{aabb79fb-d05d-4dab-bd10-9cb58899aca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\MeshRender">
       <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\17. TileMap">
+    <Filter Include="08. Component\RenderComponent\TileMap">
       <UniqueIdentifier>{e3652818-822e-4ad3-a1e6-2cc07871a700}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\18. ParticleSystem">
+    <Filter Include="08. Component\RenderComponent\ParticleSystem">
       <UniqueIdentifier>{465e7928-9a4b-492c-b047-376839804dc2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\19. SkyBox">
+    <Filter Include="08. Component\RenderComponent\SkyBox">
       <UniqueIdentifier>{ba210c92-6f64-4ba3-9fab-d0d08634c5dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\20. TextRender">
+    <Filter Include="08. Component\RenderComponent\TextRender">
       <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

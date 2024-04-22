@@ -294,7 +294,7 @@ void GamePlayStatic::DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool 
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
-    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere");
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }

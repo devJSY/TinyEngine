@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CCollider.h"
 #include "CScript.h"
+#include "CTransform.h"
+#include "physx\\PxPhysicsAPI.h"
 
 CCollider::CCollider(COMPONENT_TYPE _Type)
     : CComponent(_Type)
@@ -8,7 +10,6 @@ CCollider::CCollider(COMPONENT_TYPE _Type)
     , m_bTrigger(false)
     , m_Mtrl(nullptr)
     , m_Center(Vec3())
-    , m_RenderMatrix()
     , m_CollisionCount(0)
     , m_TriggerCount(0)
 {
@@ -20,7 +21,6 @@ CCollider::CCollider(const CCollider& origin)
     , m_bTrigger(origin.m_bTrigger)
     , m_Mtrl(origin.m_Mtrl)
     , m_Center(origin.m_Center)
-    , m_RenderMatrix(origin.m_RenderMatrix)
     , m_CollisionCount(0)
     , m_TriggerCount(0)
 {
@@ -32,6 +32,17 @@ CCollider::~CCollider()
 
 void CCollider::finaltick()
 {
+    if (nullptr == m_RuntimeShape)
+        return;
+
+    // 트랜스폼 위치 정보 업데이트
+    physx::PxShape* shape = (physx::PxShape*)m_RuntimeShape;
+    physx::PxRigidActor* body = shape->getActor();
+    physx::PxTransform PxTr = body->getGlobalPose();
+
+    Vec3 WolrdPos = Transform()->GetWorldPos();
+    PxTr.p = physx::PxVec3(WolrdPos.x, WolrdPos.y, WolrdPos.z);
+    body->setGlobalPose(PxTr);
 }
 
 void CCollider::OnCollisionEnter(CCollider* _OtherCollider)

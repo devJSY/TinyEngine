@@ -10,7 +10,6 @@ protected:
     Vec3 m_Center;
 
     // 수정 불가능한 멤버 변수
-    Matrix m_RenderMatrix;
     int m_CollisionCount;
     int m_TriggerCount;
 
@@ -25,7 +24,7 @@ public:
     void SetMaterial(Ptr<CPhysicMaterial> _Mtrl) { m_Mtrl = _Mtrl; };
 
     Vec3 GetCenter() const { return m_Center; }
-    void SetCenter(Vec3 _Center) { m_Center = m_Center; };
+    void SetCenter(Vec3 _Center) { m_Center = _Center; };
 
 private:
     void OnCollisionEnter(CCollider* _OtherCollider);

@@ -148,6 +148,18 @@ void COutliner::render()
                 ImGui::EndMenu();
             }
 
+            if (ImGui::BeginMenu("Physics"))
+            {
+                if (ImGui::MenuItem("Box"))
+                    Dirtyflag = 60;
+                if (ImGui::MenuItem("Sphere"))
+                    Dirtyflag = 61;
+                if (ImGui::MenuItem("Capsule"))
+                    Dirtyflag = 62;
+
+                ImGui::EndMenu();
+            }
+
             ImGui::EndMenu();
         }
 
@@ -244,6 +256,24 @@ void COutliner::render()
                 pObj->SetName(L"Spot Light3D");
                 pObj->AddComponent(new CLight3D);
                 pObj->Light3D()->SetLightType(LIGHT_TYPE::SPOT);
+            }
+            else if (60 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics Box Object");
+                pObj->AddComponent(new CRigidbody);
+                pObj->AddComponent(new CBoxCollider);
+            }
+            else if (61 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics Sphere Object");
+                pObj->AddComponent(new CRigidbody);
+                pObj->AddComponent(new CSphereCollider);
+            }
+            else if (62 == Dirtyflag)
+            {
+                pObj->SetName(L"Physics Capsule Object");
+                pObj->AddComponent(new CRigidbody);
+                pObj->AddComponent(new CCapsuleCollider);
             }
 
             // 카메라위치 기준 생성
@@ -1311,40 +1341,190 @@ void COutliner::DrawRigidbody(CGameObject* obj)
 
     if (open)
     {
+        float Mass = pRigidbody->GetMass();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Mass").c_str(), &Mass, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
+            pRigidbody->SetMass(Mass);
+
+        float Drag = pRigidbody->GetDrag();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Drag").c_str(), &Drag, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pRigidbody->SetDrag(Drag);
+
+        float AngularDrag = pRigidbody->GetAngularDrag();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("AngularDrag").c_str(), &AngularDrag, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pRigidbody->SetAngularDrag(AngularDrag);
+
+        bool bGravity = pRigidbody->IsUseGravity();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Use Gravity").c_str(), &bGravity))
+            pRigidbody->SetUseGravity(bGravity);
+
+        bool bKinematic = pRigidbody->IsKinematic();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Kinematic").c_str(), &bKinematic))
+            pRigidbody->SetKinematic(bKinematic);
+
+        // Constraints
+        if (ImGui::TreeNodeEx("##RigidbodyConstraints", m_DefaultTreeNodeFlag, "Constraints"))
+        {
+            // Rotation
+            ImGui_LabelPrefix("Freeze Position");
+            ImGui::SameLine();
+
+            bool bFreezePositionX = pRigidbody->IsFreezePosition(AXIS_TYPE::X);
+            if (ImGui::Checkbox("X##FreezePosition", &bFreezePositionX))
+                pRigidbody->SetFreezePosition(AXIS_TYPE::X, bFreezePositionX);
+
+            ImGui::SameLine();
+
+            bool bFreezePositionY = pRigidbody->IsFreezePosition(AXIS_TYPE::Y);
+            if (ImGui::Checkbox("Y##FreezePosition", &bFreezePositionY))
+                pRigidbody->SetFreezePosition(AXIS_TYPE::Y, bFreezePositionY);
+
+            ImGui::SameLine();
+
+            bool bFreezePositionZ = pRigidbody->IsFreezePosition(AXIS_TYPE::Z);
+            if (ImGui::Checkbox("Z##FreezePosition", &bFreezePositionZ))
+                pRigidbody->SetFreezePosition(AXIS_TYPE::Z, bFreezePositionZ);
+
+            // Rotation
+            ImGui_LabelPrefix("Freeze Rotation");
+            ImGui::SameLine();
+
+            bool bFreezeRotationX = pRigidbody->IsFreezeRotation(AXIS_TYPE::X);
+            if (ImGui::Checkbox("X##FreezeRotation", &bFreezeRotationX))
+                pRigidbody->SetFreezeRotation(AXIS_TYPE::X, bFreezeRotationX);
+
+            ImGui::SameLine();
+
+            bool bFreezeRotationY = pRigidbody->IsFreezeRotation(AXIS_TYPE::Y);
+            if (ImGui::Checkbox("Y##FreezeRotation", &bFreezeRotationY))
+                pRigidbody->SetFreezeRotation(AXIS_TYPE::Y, bFreezeRotationY);
+
+            ImGui::SameLine();
+
+            bool bFreezeRotationZ = pRigidbody->IsFreezeRotation(AXIS_TYPE::Z);
+            if (ImGui::Checkbox("Z##FreezeRotation", &bFreezeRotationZ))
+                pRigidbody->SetFreezeRotation(AXIS_TYPE::Z, bFreezeRotationZ);
+
+            ImGui::TreePop();
+        }
+
         ImGui::TreePop();
     }
 }
 
 void COutliner::DrawBoxCollider(CGameObject* obj)
 {
-    CBoxCollider* pBoxCollider = obj->BoxCollider();
-    if (nullptr == pBoxCollider)
+    CBoxCollider* pBoxCol = obj->BoxCollider();
+    if (nullptr == pBoxCol)
         return;
 
     bool open =
         ImGui::TreeNodeEx((void*)typeid(CBoxCollider).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::BOXCOLLIDER]);
 
-    ComponentSettingsButton(pBoxCollider);
+    ComponentSettingsButton(pBoxCol);
 
     if (open)
     {
+        bool bTrigger = pBoxCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pBoxCol->SetTrigger(bTrigger);
+
+        // Physic Material
+        string MtrlName = string();
+        Ptr<CPhysicMaterial> pMtrl = pBoxCol->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pBoxCol->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        Vec3 Center = pBoxCol->GetCenter();
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
+            pBoxCol->SetCenter(Center);
+
+        Vec3 Size = pBoxCol->GetSize();
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Size").c_str(), &Size.x, 0.01f))
+            pBoxCol->SetSize(Size);
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physic Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+        }
+
         ImGui::TreePop();
     }
 }
 
 void COutliner::DrawSphereCollider(CGameObject* obj)
 {
-    CSphereCollider* pSphereCollider = obj->SphereCollider();
-    if (nullptr == pSphereCollider)
+    CSphereCollider* pSphereCol = obj->SphereCollider();
+    if (nullptr == pSphereCol)
         return;
 
     bool open = ImGui::TreeNodeEx((void*)typeid(CSphereCollider).hash_code(), m_DefaultTreeNodeFlag,
                                   COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::SPHERECOLLIDER]);
 
-    ComponentSettingsButton(pSphereCollider);
+    ComponentSettingsButton(pSphereCol);
 
     if (open)
     {
+        bool bTrigger = pSphereCol->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pSphereCol->SetTrigger(bTrigger);
+
+        // Physic Material
+        string MtrlName = string();
+        Ptr<CPhysicMaterial> pMtrl = pSphereCol->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pSphereCol->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        Vec3 Center = pSphereCol->GetCenter();
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
+            pSphereCol->SetCenter(Center);
+
+        float Radius = pSphereCol->GetRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pSphereCol->SetRadius(Radius);
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physic Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+        }
+
         ImGui::TreePop();
     }
 }
