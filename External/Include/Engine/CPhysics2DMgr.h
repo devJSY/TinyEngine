@@ -37,6 +37,8 @@ private:
     unsigned short m_Matrix[LAYER_MAX];
 
     const float m_PPM; // PixelPerMeter
+    float m_Accumulator;
+    const float m_StepSize;
 
 public:
     void tick();

@@ -33,6 +33,9 @@ private:
 
     vector<CGameObject*> m_vecPhysicsObj;
 
+    float m_Accumulator;
+    const float m_StepSize;
+
 public:
     void tick();
 

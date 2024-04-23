@@ -20,6 +20,8 @@ CPhysicsMgr::CPhysicsMgr()
     , m_Scene(NULL)
     , m_Pvd(NULL)
     , m_vecPhysicsObj{}
+    , m_Accumulator(0.f)
+    , m_StepSize(1.f / 60.f)
 {
 }
 
@@ -30,10 +32,16 @@ CPhysicsMgr::~CPhysicsMgr()
 
 void CPhysicsMgr::tick()
 {
-    if (nullptr == m_Scene)
+    if (nullptr == m_Scene || m_vecPhysicsObj.empty())
         return;
 
-    m_Scene->simulate(DT);
+    m_Accumulator += DT;
+    if (m_Accumulator < m_StepSize)
+        return;
+
+    m_Accumulator -= m_StepSize;
+
+    m_Scene->simulate(m_StepSize);
     m_Scene->fetchResults(true);
 
     // 시뮬레이션 결과로 트랜스폼 업데이트
@@ -81,11 +89,6 @@ void CPhysicsMgr::OnPhysicsStart()
     m_Pvd = PxCreatePvd(*m_Foundation);
     PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
     m_Pvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
-
-    // 1M 기준
-    // PxTolerancesScale worldScale;
-    // worldScale.length = 100; // typical length of an object
-    // worldScale.speed = 981;  // typical speed of an object, gravity*1s is a reasonable choice
 
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, PxTolerancesScale(), true, m_Pvd);
 
@@ -272,6 +275,13 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
+    }
+
+    // 질량 설정
+    if (nullptr != pRigidbody)
+    {
+        PxRigidBody* body = (PxRigidBody*)pRigidbody->m_RuntimeBody;
+        PxRigidBodyExt::updateMassAndInertia(*body, body->getMass());
     }
 
     RigidActor->userData = (void*)_GameObject;

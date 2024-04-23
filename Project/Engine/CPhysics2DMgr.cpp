@@ -72,6 +72,8 @@ CPhysics2DMgr::CPhysics2DMgr()
     , m_vecPhysicsObj{}
     , m_Matrix{}
     , m_PPM(100.f)
+    , m_Accumulator(0.f)
+    , m_StepSize(1.f / 60.f)
 {
     EnableAllLayer();
 }
@@ -87,14 +89,20 @@ CPhysics2DMgr::~CPhysics2DMgr()
 
 void CPhysics2DMgr::tick()
 {
-    if (nullptr == m_PhysicsWorld)
+    if (nullptr == m_PhysicsWorld || m_vecPhysicsObj.empty())
         return;
+
+    m_Accumulator += DT;
+    if (m_Accumulator < m_StepSize)
+        return;
+
+    m_Accumulator -= m_StepSize;
 
     const int32_t velocityIterations = 6; // 속도를 얼마나 강하게 수정해야하는지
     const int32_t positionIterations = 2; // 위치를 얼마나 강하게 수정해야 하는지
 
     // 시뮬레이션
-    m_PhysicsWorld->Step(DT, velocityIterations, positionIterations);
+    m_PhysicsWorld->Step(m_StepSize, velocityIterations, positionIterations);
 
     // 시뮬레이션 이후 충돌 카운트가 남아있다면 충돌 Stay 상태
     b2Contact* contact = m_PhysicsWorld->GetContactList();
