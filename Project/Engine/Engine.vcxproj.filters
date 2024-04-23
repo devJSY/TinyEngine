@@ -896,12 +896,6 @@
     <Filter Include="08. Component\Collider\BoxCollider">
       <UniqueIdentifier>{f3524a7c-1576-41b9-bae8-c0bde7d77228}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Collider\CapsuleCollider">
-      <UniqueIdentifier>{8a4fdfbf-1545-4c16-bc26-a3b1b1c3c036}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider\SphereCollider">
-      <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Collider2D\BoxCollider2D">
       <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
     </Filter>
@@ -928,6 +922,12 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\TextRender">
       <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\CapsuleCollider">
+      <UniqueIdentifier>{8a4fdfbf-1545-4c16-bc26-a3b1b1c3c036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\SphereCollider">
+      <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -165,9 +165,11 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     CEditorMgr::GetInst()->SetSelectedObject(pObject);
 
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
+    CPhysicsMgr::GetInst()->AddPhysicsObject(pObject);
     for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
     {
         CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
+        CPhysicsMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
     }
 
     if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
@@ -191,6 +193,7 @@ void CTaskMgr::DELETE_OBJECT(const tTask& _Task)
 
         pObject->m_bDead = true;
         CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObject);
+        CPhysicsMgr::GetInst()->RemovePhysicsObject(pObject);
 
         for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
         {
@@ -583,6 +586,7 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     }
 
     CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
+    CPhysicsMgr::GetInst()->RemovePhysicsObject(pObj);
 
     switch (type)
     {
@@ -652,6 +656,7 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     }
 
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
+    CPhysicsMgr::GetInst()->AddPhysicsObject(pObj);
 }
 
 void CTaskMgr::REMOVE_COMPONENT(const tTask& _Task)
@@ -660,8 +665,10 @@ void CTaskMgr::REMOVE_COMPONENT(const tTask& _Task)
     COMPONENT_TYPE type = (COMPONENT_TYPE)_Task.Param_2;
 
     CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
+    CPhysicsMgr::GetInst()->RemovePhysicsObject(pObj);
     pObj->RemoveComponent(type);
     CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
+    CPhysicsMgr::GetInst()->AddPhysicsObject(pObj);
 }
 
 void CTaskMgr::REMOVE_SCRIPT(const tTask& _Task)

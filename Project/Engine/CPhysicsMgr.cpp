@@ -51,24 +51,21 @@ void CPhysicsMgr::tick()
         {
             CGameObject* obj = (CGameObject*)actors[i]->userData;
             CTransform* pTr = obj->Transform();
-            Matrix WorldMat = pTr->GetWorldMat();
+
+            Vec3 WorldPos = pTr->GetWorldPos();
+            Vec3 WorldRot = pTr->GetWorldRotation();
 
             const PxMat44 ActorPose(actors[i]->getGlobalPose());
             Matrix SimulatedMat = Matrix(ActorPose.front());
 
-            // 시뮬레이션 Matrix와 원본 Matrix SRT 분해
+            // 시뮬레이션 Matrix SRT 분해
             float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
             ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
 
-            float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f}, originFscale[3] = {0.0f, 0.0f, 0.0f};
-            ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, originFtranslation, originFrotation, originFscale);
-
             // 변화량 추출
-            Vec3 vPosOffset =
-                Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1], originFtranslation[2] - Ftranslation[2]);
-            Vec3 vRotOffset = Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
-                                   DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
-                                   DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
+            Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
+            Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
+                                   WorldRot.z - DirectX::XMConvertToRadians(Frotation[2]));
 
             // 변화량만큼 Relative 에 적용
             pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
@@ -86,11 +83,11 @@ void CPhysicsMgr::OnPhysicsStart()
     m_Pvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
 
     // 1M 기준
-    PxTolerancesScale worldScale;
+    // PxTolerancesScale worldScale;
     // worldScale.length = 100; // typical length of an object
     // worldScale.speed = 981;  // typical speed of an object, gravity*1s is a reasonable choice
 
-    m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, worldScale, true, m_Pvd);
+    m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, PxTolerancesScale(), true, m_Pvd);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
     sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
@@ -279,4 +276,50 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     RigidActor->userData = (void*)_GameObject;
     m_Scene->addActor(*RigidActor);
     m_vecPhysicsObj.push_back(_GameObject);
+}
+
+void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
+{
+    if (nullptr == m_Scene)
+        return;
+
+    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
+    {
+        if (m_vecPhysicsObj[i] != _GameObject)
+            continue;
+
+        CRigidbody* pRigidbody = m_vecPhysicsObj[i]->Rigidbody();
+        CBoxCollider* pBoxCol = m_vecPhysicsObj[i]->BoxCollider();
+        CSphereCollider* pSphereCol = m_vecPhysicsObj[i]->SphereCollider();
+        CCapsuleCollider* pCapsuleCol = m_vecPhysicsObj[i]->CapsuleCollider();
+
+        PxRigidActor* RigidActor = nullptr;
+
+        if (nullptr != pRigidbody)
+            RigidActor = (PxRigidActor*)pRigidbody->m_RuntimeBody;
+        else if (nullptr != pBoxCol)
+            RigidActor = ((PxShape*)pBoxCol->m_RuntimeShape)->getActor();
+        else if (nullptr != pSphereCol)
+            RigidActor = ((PxShape*)pSphereCol->m_RuntimeShape)->getActor();
+        else if (nullptr != pCapsuleCol)
+            RigidActor = ((PxShape*)pCapsuleCol->m_RuntimeShape)->getActor();
+
+        if (nullptr != RigidActor)
+        {
+            m_Scene->removeActor(*RigidActor);
+        }
+
+        m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
+
+        if (nullptr != pRigidbody)
+            pRigidbody->m_RuntimeBody = nullptr;
+        if (nullptr != pBoxCol)
+            pBoxCol->m_RuntimeShape = nullptr;
+        if (nullptr != pSphereCol)
+            pSphereCol->m_RuntimeShape = nullptr;
+        if (nullptr != pCapsuleCol)
+            pCapsuleCol->m_RuntimeShape = nullptr;
+
+        break;
+    }
 }

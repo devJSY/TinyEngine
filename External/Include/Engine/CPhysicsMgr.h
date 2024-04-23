@@ -41,4 +41,7 @@ public:
 
 private:
     void AddPhysicsObject(CGameObject* _GameObject);
+    void RemovePhysicsObject(CGameObject* _GameObject);
+
+    friend class CTaskMgr;
 };

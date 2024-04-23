@@ -17,9 +17,10 @@ void CSphereCollider::finaltick()
     CCollider::finaltick();
 
     Matrix matScale = XMMatrixScaling(m_Radius * 2.f, m_Radius * 2.f, m_Radius * 2.f);
+    Matrix matTrans = XMMatrixTranslation(m_Center.x, m_Center.y, m_Center.z);
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-    GamePlayStatic::DrawDebugSphere(matScale * Transform()->GetWorldMat(), color, false);
+    GamePlayStatic::DrawDebugSphere(matScale * matTrans * Transform()->GetWorldMat(), color, true);
 }
 
 void CSphereCollider::SaveToLevelFile(FILE* _File)

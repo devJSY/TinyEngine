@@ -40,9 +40,15 @@ void CCollider::finaltick()
     physx::PxRigidActor* body = shape->getActor();
     physx::PxTransform PxTr = body->getGlobalPose();
 
-    Vec3 WolrdPos = Transform()->GetWorldPos();
-    PxTr.p = physx::PxVec3(WolrdPos.x, WolrdPos.y, WolrdPos.z);
+    Vec3 WorldPos = Transform()->GetWorldPos();
+    PxTr.p = physx::PxVec3(WorldPos.x, WorldPos.y, WorldPos.z);
     body->setGlobalPose(PxTr);
+
+    physx::PxTransform LocalPos = shape->getLocalPose();
+    LocalPos.p.x = m_Center.x;
+    LocalPos.p.y = m_Center.y;
+    LocalPos.p.z = m_Center.z;
+    shape->setLocalPose(LocalPos);
 }
 
 void CCollider::OnCollisionEnter(CCollider* _OtherCollider)
