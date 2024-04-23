@@ -185,13 +185,14 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     Vec3 WorldRot = pTr->GetWorldRotation();
     Vec3 WorldScale = pTr->GetWorldScale();
 
-    PxQuat RotX(WorldRot.x, PxVec3(1.f, 0.f, 0.f));
-    PxQuat RotY(WorldRot.y, PxVec3(0.f, 1.f, 0.f));
-    PxQuat RotZ(WorldRot.z, PxVec3(0.f, 0.f, 1.f));
+    SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
+    SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);
+    SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
+    SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
+
+    PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
 
     PxRigidActor* RigidActor = nullptr;
-
-    PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, RotX * RotY * RotZ);
 
     // RigidBody
     if (nullptr != pRigidbody)

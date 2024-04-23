@@ -39,11 +39,17 @@ void CRigidbody::finaltick()
         return;
 
     // 트랜스폼 위치 정보 업데이트
-    physx::PxRigidActor* body = (physx::PxRigidActor*)m_RuntimeBody;
-    physx::PxTransform PxTr = body->getGlobalPose();
+    Vec3 WorldPos = Transform()->GetWorldPos();
+    Vec3 WorldRot = Transform()->GetWorldRotation();
 
-    Vec3 WolrdPos = Transform()->GetWorldPos();
-    PxTr.p = physx::PxVec3(WolrdPos.x, WolrdPos.y, WolrdPos.z);
+    SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
+    SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);
+    SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
+    SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
+
+    physx::PxTransform PxTr = physx::PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
+
+    physx::PxRigidActor* body = (physx::PxRigidActor*)m_RuntimeBody;
     body->setGlobalPose(PxTr);
 }
 
