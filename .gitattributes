@@ -57,7 +57,4 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-External/Library/Engine/Engine.lib filter=lfs diff=lfs merge=lfs -text
-External/Library/Engine/Engine_d.lib filter=lfs diff=lfs merge=lfs -text
-External/Library/PhysX/PhysXGpu_64.dll filter=lfs diff=lfs merge=lfs -text
-External/Library/PhysX/PhysXGpu_64_debug.dll filter=lfs diff=lfs merge=lfs -text
+

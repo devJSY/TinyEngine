@@ -999,7 +999,7 @@ void COutliner::DrawRigidbody2D(CGameObject* obj)
         // =======================
         // Type
         // =======================
-        vector<string> bodyTypes = {
+        static vector<string> bodyTypes = {
             "Dynamic",
             "Kinematic",
             "Static",
@@ -1361,10 +1361,10 @@ void COutliner::DrawRigidbody(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Kinematic").c_str(), &bKinematic))
             pRigidbody->SetKinematic(bKinematic);
 
-        vector<string> vecCollisionDetection = {
+        static vector<string> vecCollisionDetection = {
             "Discrete",
             "Continuous",
-            "ContinuousSpecutive",
+            "Continuous Specutive",
         };
 
         static string CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetection()];
@@ -2108,7 +2108,7 @@ void COutliner::DrawSkybox(CGameObject* obj)
         // =======================
         // Type
         // =======================
-        vector<string> SkyBoxTypes = {
+        static vector<string> SkyBoxTypes = {
             "IBLBaker",
             "LearnOpenGL",
             "moonless",
@@ -2134,7 +2134,7 @@ void COutliner::DrawSkybox(CGameObject* obj)
         // =======================
         // Shape
         // =======================
-        vector<string> SkyBoxShapes = {
+        static vector<string> SkyBoxShapes = {
             "Sphere",
             "Box",
         };
