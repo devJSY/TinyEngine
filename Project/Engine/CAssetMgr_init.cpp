@@ -143,9 +143,18 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
 
+    // Wire Circle
+    {
+        auto mesh = MakeWireCircle(1.f, 30);
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"WireCircle");
+        AddAsset(L"WireCircle", pMesh);
+    }
+
     // Wire Box
     {
-        auto mesh = MakeWireBox(Vec3(), Vec3(1.f, 1.f, 1.f));
+        auto mesh = MakeWireBox();
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         pMesh->SetName(L"WireBox");
@@ -154,11 +163,29 @@ void CAssetMgr::CreateDefaultMesh()
 
     // Wire Sphere
     {
-        auto mesh = MakeWireSphere(Vec3(), 1.f);
+        auto mesh = MakeWireSphere(1.f, 30);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         pMesh->SetName(L"WireSphere");
         AddAsset(L"WireSphere", pMesh);
+    }
+
+    // Wire Capsule 2D
+    {
+        auto mesh = MakeWireCapsule2D(1.f, 1.f, 15);
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"WireCapsule2D");
+        AddAsset(L"WireCapsule2D", pMesh);
+    }
+
+    // Wire Capsule
+    {
+        auto mesh = MakeWireCapsule(1.f, 1.f, 15);
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"WireCapsule");
+        AddAsset(L"WireCapsule", pMesh);
     }
 }
 
@@ -1936,29 +1963,55 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
     return newMesh;
 }
 
-tMeshData CAssetMgr::MakeWireBox(const Vector3 center, const Vector3 extents)
+tMeshData CAssetMgr::MakeWireCircle(const float radius, const int numPoints)
+{
+    tMeshData meshData;
+    vector<Vtx>& vertices = meshData.vertices;
+    vector<uint32_t>& indices = meshData.indices;
+
+    const float dTheta = XM_2PI / float(numPoints);
+
+    int offset = int(vertices.size());
+    Vector3 start(1.0f, 0.0f, 0.0f);
+    for (int i = 0; i < numPoints; i++)
+    {
+        Vtx v;
+        v.vPos = Vector3::Transform(start, Matrix::CreateRotationY(dTheta * float(i))) * radius;
+        vertices.push_back(v);
+        indices.push_back(i + offset);
+        if (i != 0)
+        {
+            indices.push_back(i + offset);
+        }
+    }
+    indices.push_back(offset);
+
+    return meshData;
+}
+
+tMeshData CAssetMgr::MakeWireBox(const float scale)
 {
     // 상자를 와이어 프레임으로 그리는 용도
     vector<Vector3> positions;
 
     // 앞면
-    positions.push_back(center + Vector3(-1.0f, -1.0f, -1.0f) * extents);
-    positions.push_back(center + Vector3(-1.0f, 1.0f, -1.0f) * extents);
-    positions.push_back(center + Vector3(1.0f, 1.0f, -1.0f) * extents);
-    positions.push_back(center + Vector3(1.0f, -1.0f, -1.0f) * extents);
+    positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, -1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, -1.0f) * scale);
 
     // 뒷면
-    positions.push_back(center + Vector3(-1.0f, -1.0f, 1.0f) * extents);
-    positions.push_back(center + Vector3(-1.0f, 1.0f, 1.0f) * extents);
-    positions.push_back(center + Vector3(1.0f, 1.0f, 1.0f) * extents);
-    positions.push_back(center + Vector3(1.0f, -1.0f, 1.0f) * extents);
+    positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(-1.0f, 1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, 1.0f, 1.0f) * scale);
+    positions.push_back(Vector3(1.0f, -1.0f, 1.0f) * scale);
 
     tMeshData meshData;
     for (size_t i = 0; i < positions.size(); i++)
     {
         Vtx v;
         v.vPos = positions[i];
-        v.vNormal = positions[i] - center;
+        v.vNormal = positions[i];
         v.vNormal.Normalize();
         v.vUV = Vector2(0.0f); // 미사용
         meshData.vertices.push_back(v);
@@ -1974,13 +2027,12 @@ tMeshData CAssetMgr::MakeWireBox(const Vector3 center, const Vector3 extents)
     return meshData;
 }
 
-tMeshData CAssetMgr::MakeWireSphere(const Vector3 center, const float radius)
+tMeshData CAssetMgr::MakeWireSphere(const float radius, const int numPoints)
 {
     tMeshData meshData;
     vector<Vtx>& vertices = meshData.vertices;
     vector<uint32_t>& indices = meshData.indices;
 
-    const int numPoints = 30;
     const float dTheta = XM_2PI / float(numPoints);
 
     // XY plane
@@ -1990,7 +2042,7 @@ tMeshData CAssetMgr::MakeWireSphere(const Vector3 center, const float radius)
         for (int i = 0; i < numPoints; i++)
         {
             Vtx v;
-            v.vPos = center + Vector3::Transform(start, Matrix::CreateRotationZ(dTheta * float(i))) * radius;
+            v.vPos = Vector3::Transform(start, Matrix::CreateRotationZ(dTheta * float(i))) * radius;
             vertices.push_back(v);
             indices.push_back(i + offset);
             if (i != 0)
@@ -2008,7 +2060,7 @@ tMeshData CAssetMgr::MakeWireSphere(const Vector3 center, const float radius)
         for (int i = 0; i < numPoints; i++)
         {
             Vtx v;
-            v.vPos = center + Vector3::Transform(start, Matrix::CreateRotationX(dTheta * float(i))) * radius;
+            v.vPos = Vector3::Transform(start, Matrix::CreateRotationX(dTheta * float(i))) * radius;
             vertices.push_back(v);
             indices.push_back(i + offset);
             if (i != 0)
@@ -2026,7 +2078,7 @@ tMeshData CAssetMgr::MakeWireSphere(const Vector3 center, const float radius)
         for (int i = 0; i < numPoints; i++)
         {
             Vtx v;
-            v.vPos = center + Vector3::Transform(start, Matrix::CreateRotationY(dTheta * float(i))) * radius;
+            v.vPos = Vector3::Transform(start, Matrix::CreateRotationY(dTheta * float(i))) * radius;
             vertices.push_back(v);
             indices.push_back(i + offset);
             if (i != 0)
@@ -2046,6 +2098,124 @@ tMeshData CAssetMgr::MakeWireSphere(const Vector3 center, const float radius)
     //     cout << indices[i] << " ";
     // }
     // cout << endl;
+
+    return meshData;
+}
+
+tMeshData CAssetMgr::MakeWireCapsule2D(const float radius, const float halfHeight, const int numPoints)
+{
+    tMeshData meshData;
+    vector<Vtx>& vertices = meshData.vertices;
+    vector<uint32_t>& indices = meshData.indices;
+
+    const float dTheta = XM_PI / float(numPoints);
+
+    // Top
+    {
+        int offset = int(vertices.size());
+        Vector3 start(-1.0f, 0.f, 0.0f);
+        for (int i = 0; i < numPoints; i++)
+        {
+            Vtx v;
+            v.vPos = Vector3::Transform(start, Matrix::CreateRotationZ(-dTheta * float(i))) * radius;
+            v.vPos.y += halfHeight;
+            vertices.push_back(v);
+            indices.push_back(i + offset);
+            if (i == 0)
+                continue;
+            indices.push_back(i + offset);
+        }
+    }
+
+    // Bottom
+    {
+        int offset = int(vertices.size());
+        Vector3 start(1.f, 0.f, 0.0f);
+        for (int i = 0; i < numPoints; i++)
+        {
+            Vtx v;
+            v.vPos = Vector3::Transform(start, Matrix::CreateRotationZ(-dTheta * float(i))) * radius;
+            v.vPos.y -= halfHeight;
+            vertices.push_back(v);
+            indices.push_back(i + offset);
+            indices.push_back(i + offset);
+        }
+    }
+    indices.push_back(0);
+
+    return meshData;
+}
+
+tMeshData CAssetMgr::MakeWireCapsule(const float radius, const float halfHeight, const int numPoints)
+{
+    tMeshData meshData;
+    vector<Vtx>& vertices = meshData.vertices;
+    vector<uint32_t>& indices = meshData.indices;
+
+    tMeshData casule2D = MakeWireCapsule2D(radius, halfHeight, numPoints);
+
+    // XY casule
+    {
+        for (const auto& vtx : casule2D.vertices)
+            vertices.push_back(vtx);
+
+        for (const auto& index : casule2D.indices)
+            indices.push_back(index);
+    }
+
+    // YZ casule
+    {
+        int offset = int(vertices.size());
+
+        for (auto& vtx : casule2D.vertices)
+        {
+            vtx.vPos = Vector3::Transform(vtx.vPos, Matrix::CreateRotationY(XM_PIDIV2));
+            vertices.push_back(vtx);
+        }
+
+        for (const auto& index : casule2D.indices)
+        {
+            indices.push_back(index + offset);
+        }
+    }
+
+    int circlenumPoints = numPoints;
+    tMeshData circle2D = MakeWireCircle(radius, circlenumPoints * 2);
+    // Top Circle
+    {
+        int offset = int(vertices.size());
+
+        for (auto& vtx : circle2D.vertices)
+        {
+            vtx.vPos = Vector3::Transform(vtx.vPos, Matrix::CreateRotationY(XM_PIDIV2));
+            vtx.vPos.y += halfHeight;
+            vertices.push_back(vtx);
+            vtx.vPos.y -= halfHeight; // 원상복귀
+        }
+
+        for (const auto& index : circle2D.indices)
+        {
+            indices.push_back(index + offset);
+        }
+    }
+
+    // Bottom Circle
+    {
+        int offset = int(vertices.size());
+
+        for (auto& vtx : circle2D.vertices)
+        {
+            vtx.vPos = Vector3::Transform(vtx.vPos, Matrix::CreateRotationY(XM_PIDIV2));
+            vtx.vPos.y -= halfHeight;
+            vertices.push_back(vtx);
+            vtx.vPos.y += halfHeight; // 원상복귀
+        }
+
+        for (const auto& index : circle2D.indices)
+        {
+            indices.push_back(index + offset);
+        }
+    }
 
     return meshData;
 }

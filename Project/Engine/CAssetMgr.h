@@ -58,8 +58,11 @@ public:
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
 
-    tMeshData MakeWireBox(const Vector3 center, const Vector3 extents);
-    tMeshData MakeWireSphere(const Vector3 center, const float radius);
+    tMeshData MakeWireCircle(const float radius, const int numPoints);
+    tMeshData MakeWireBox(const float scale = 1.0f);
+    tMeshData MakeWireSphere(const float radius, const int numPoints);
+    tMeshData MakeWireCapsule2D(const float radius, const float halfHeight, const int numPoints);
+    tMeshData MakeWireCapsule(const float radius, const float halfHeight, const int numPoints);
 
     // 모델 로딩
 public:

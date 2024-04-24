@@ -330,7 +330,7 @@ void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, f
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    auto meshData = CAssetMgr::GetInst()->MakeCapsule(_fRadius, _HalfHeight, 20);
+    auto meshData = CAssetMgr::GetInst()->MakeWireCapsule(_fRadius, _HalfHeight, 15);
 
     Matrix RotationMatrix = Matrix();
     switch (_Axis)
