@@ -258,6 +258,7 @@ enum class DEBUG_SHAPE
     // 3D
     BOX,
     SPHERE,
+    CAPSULE,
 };
 
 enum class LIGHT_TYPE

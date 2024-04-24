@@ -33,6 +33,9 @@ namespace GamePlayStatic
     void DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
+    void DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, float _HalfHeight, AXIS_TYPE _Axis, Vec3 _Color, bool _bDepthTest,
+                          float _Duration = 0.f);
+
     void DrawDebugPolygon(const Matrix& _WorldMat, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugPolygon(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest,
                           float _Duration = 0.f);

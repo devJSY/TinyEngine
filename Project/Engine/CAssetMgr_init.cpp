@@ -106,6 +106,15 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"SphereMesh", pMesh);
     }
 
+    // Capsule
+    {
+        auto mesh = MakeCapsule(1.f, 1.f, 20);
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"CapsuleMesh");
+        AddAsset(L"CapsuleMesh", pMesh);
+    }
+
     // Tetrahedron
     {
         auto mesh = MakeTetrahedron();
@@ -1662,7 +1671,6 @@ tMeshData CAssetMgr::MakeCylinder(const float bottomRadius, const float topRadiu
 
 tMeshData CAssetMgr::MakeSphere(const float radius, const int numSlices, const int numStacks, const Vec2 texScale)
 {
-
     // 참고: OpenGL Sphere
     // http://www.songho.ca/opengl/gl_sphere.html
     // Texture 좌표계때문에 (numSlices + 1) 개의 버텍스 사용 (마지막에 닫아주는
@@ -1731,6 +1739,39 @@ tMeshData CAssetMgr::MakeSphere(const float radius, const int numSlices, const i
     }
 
     return meshData;
+}
+
+tMeshData CAssetMgr::MakeCapsule(const float radius, const float halfHeight, const int numSlices)
+{
+    tMeshData topSphere = MakeSphere(radius, numSlices, numSlices / 2, Vec2(1.0f, 0.5f));
+    tMeshData bottomSphere = MakeSphere(radius, numSlices, numSlices / 2, Vec2(1.0f, 0.5f));
+
+    // 상단과 하단을 y축 방향으로 이동시켜서 캡슐의 상단과 하단에 배치합니다.
+    for (auto& vertex : topSphere.vertices)
+        vertex.vPos.y += halfHeight;
+
+    for (auto& vertex : bottomSphere.vertices)
+        vertex.vPos.y -= halfHeight;
+
+    // 이제 원기둥을 만듭니다.
+    tMeshData cylinder = MakeCylinder(radius, radius, 2.0f * halfHeight, numSlices);
+
+    // 상단과 하단, 그리고 원기둥의 메쉬 데이터를 결합하여 캡슐의 메쉬 데이터를 생성합니다.
+    tMeshData capsule;
+    capsule.vertices.insert(capsule.vertices.end(), topSphere.vertices.begin(), topSphere.vertices.end());
+    capsule.vertices.insert(capsule.vertices.end(), bottomSphere.vertices.begin(), bottomSphere.vertices.end());
+    capsule.vertices.insert(capsule.vertices.end(), cylinder.vertices.begin(), cylinder.vertices.end());
+
+    // 상단과 하단, 원기둥의 인덱스를 조정하여 캡슐의 인덱스를 생성합니다.
+    int offsetTop = int(topSphere.vertices.size());
+    int offsetCylinder = int(offsetTop + bottomSphere.vertices.size());
+    capsule.indices = topSphere.indices;
+    for (auto& index : bottomSphere.indices)
+        capsule.indices.push_back(index + offsetTop);
+    for (auto& index : cylinder.indices)
+        capsule.indices.push_back(index + offsetCylinder);
+
+    return capsule;
 }
 
 tMeshData CAssetMgr::MakeTetrahedron()

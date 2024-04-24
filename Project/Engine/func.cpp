@@ -294,7 +294,7 @@ void GamePlayStatic::DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool 
     info.vColor = _Color;
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
-    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
+    info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere");
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -316,6 +316,43 @@ void GamePlayStatic::DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Colo
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
     info.pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphere");
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, float _HalfHeight, AXIS_TYPE _Axis, Vec3 _Color, bool _bDepthTest,
+                                      float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::CAPSULE;
+    info.matWorld = _WorldMat;
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+
+    auto meshData = CAssetMgr::GetInst()->MakeCapsule(_fRadius, _HalfHeight, 20);
+
+    Matrix RotationMatrix = Matrix();
+    switch (_Axis)
+    {
+    case AXIS_TYPE::X:
+        RotationMatrix = XMMatrixRotationZ(XM_PIDIV2);
+        break;
+    case AXIS_TYPE::Y:
+        break;
+    case AXIS_TYPE::Z:
+        RotationMatrix = XMMatrixRotationX(XM_PIDIV2);
+        break;
+    }
+
+    for (auto& vertex : meshData.vertices)
+        vertex.vPos = Vec3::Transform(vertex.vPos, RotationMatrix);
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
+    pMesh->SetName(L"WireCapsule");
+
+    info.pMesh = pMesh;
 
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }

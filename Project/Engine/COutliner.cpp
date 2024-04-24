@@ -1586,6 +1586,72 @@ void COutliner::DrawCapsuleCollider(CGameObject* obj)
 
     if (open)
     {
+        bool bTrigger = pCapsuleCollider->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pCapsuleCollider->SetTrigger(bTrigger);
+
+        // Physic Material
+        string MtrlName = string();
+        Ptr<CPhysicMaterial> pMtrl = pCapsuleCollider->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pCapsuleCollider->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        Vec3 Center = pCapsuleCollider->GetCenter();
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
+            pCapsuleCollider->SetCenter(Center);
+
+        float Radius = pCapsuleCollider->GetRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCapsuleCollider->SetRadius(Radius);
+
+        float Height = pCapsuleCollider->GetHeight();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCapsuleCollider->SetHeight(Height);
+
+        static vector<string> vecAxis = {
+            "X-Axis",
+            "Y-Axis",
+            "Z-Axis",
+        };
+
+        static string CurAxis = vecAxis[(UINT)pCapsuleCollider->GetAxisDirection()];
+
+        CurAxis = vecAxis[(UINT)pCapsuleCollider->GetAxisDirection()];
+
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Direction").c_str(), CurAxis, vecAxis))
+        {
+            if (vecAxis[0] == CurAxis)
+                pCapsuleCollider->SetAxisDirection(AXIS_TYPE::X);
+            else if (vecAxis[1] == CurAxis)
+                pCapsuleCollider->SetAxisDirection(AXIS_TYPE::Y);
+            else if (vecAxis[2] == CurAxis)
+                pCapsuleCollider->SetAxisDirection(AXIS_TYPE::Z);
+        }
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physic Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+        }
+
         ImGui::TreePop();
     }
 }
