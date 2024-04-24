@@ -49,6 +49,7 @@ private:
     virtual void OnTriggerStay(CCollider2D* _OtherCollider){};
     virtual void OnTriggerExit(CCollider2D* _OtherCollider){};
 
+private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider){};
     virtual void OnCollisionStay(CCollider* _OtherCollider){};
     virtual void OnCollisionExit(CCollider* _OtherCollider){};

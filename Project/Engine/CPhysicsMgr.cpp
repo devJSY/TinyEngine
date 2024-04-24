@@ -254,6 +254,12 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
+        if (pBoxCol->IsTrigger())
+        {
+            shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+        }
+
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pBoxCol->GetCenter();
         shape->setLocalPose(LocalPos);
@@ -273,6 +279,12 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         }
 
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
+
+        if (pSphereCol->IsTrigger())
+        {
+            shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+        }
 
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pSphereCol->GetCenter();
