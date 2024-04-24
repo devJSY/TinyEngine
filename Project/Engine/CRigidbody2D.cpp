@@ -64,10 +64,10 @@ void CRigidbody2D::AddForce(Vec2 _Force, ForceMode2D _Mode)
 
     switch (_Mode)
     {
-    case Force:
+    case ForceMode2D::Force:
         body->ApplyForceToCenter(_Force, true);
         break;
-    case Impulse:
+    case ForceMode2D::Impulse:
         body->ApplyLinearImpulseToCenter(_Force, true);
         break;
     }
@@ -82,10 +82,10 @@ void CRigidbody2D::AddTorque(float _Torque, ForceMode2D _Mode)
 
     switch (_Mode)
     {
-    case Force:
+    case ForceMode2D::Force:
         body->ApplyTorque(_Torque, true);
         break;
-    case Impulse:
+    case ForceMode2D::Impulse:
         body->ApplyAngularImpulse(_Torque, true);
         break;
     }
@@ -99,7 +99,7 @@ Vec2 CRigidbody2D::GetVelocity()
     b2Body* body = (b2Body*)m_RuntimeBody;
     b2Vec2 velocity = body->GetLinearVelocity();
 
-    return Vec2(velocity);
+    return velocity;
 }
 
 void CRigidbody2D::SetVelocity(Vec2 _Velocity)

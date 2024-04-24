@@ -8,7 +8,7 @@ enum class BODY_TYPE
     Static,
 };
 
-enum ForceMode2D
+enum class ForceMode2D
 {
     Force,
     Impulse,

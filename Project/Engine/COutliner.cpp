@@ -1407,6 +1407,30 @@ void COutliner::DrawRigidbody(CGameObject* obj)
             ImGui::TreePop();
         }
 
+        // Info
+        if (ImGui::TreeNodeEx("##RigidbodyInfo", m_DefaultTreeNodeFlag, "Info"))
+        {
+            float Speed = pRigidbody->GetSpeed();
+            ImGui::InputFloat(ImGui_LabelPrefix("Speed").c_str(), &Speed, 0.f, 0.f, "%.3f", ImGuiInputTextFlags_ReadOnly);
+
+            Vec3 Vel = pRigidbody->GetVelocity();
+            ImGui::InputFloat3(ImGui_LabelPrefix("Velocity").c_str(), &Vel.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
+
+            Vec3 AngularVel = pRigidbody->GetAngularVelocity();
+            ImGui::InputFloat3(ImGui_LabelPrefix("Angular Velocity").c_str(), &AngularVel.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
+
+            Vec3 InertiaTensor = pRigidbody->GetInertiaTensor();
+            ImGui::InputFloat3(ImGui_LabelPrefix("Inertia Tensor").c_str(), &InertiaTensor.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
+
+            Vec3 LocalCenterOfMass = pRigidbody->GetLocalCenterOfMass();
+            ImGui::InputFloat3(ImGui_LabelPrefix("Local Center Of Mass").c_str(), &LocalCenterOfMass.x, "%.3f", ImGuiInputTextFlags_ReadOnly);
+
+            string SleepStr = pRigidbody->IsSleeping() ? "Asleep" : "Awake";
+            ImGui_InputText("Sleep State", SleepStr);
+
+            ImGui::TreePop();
+        }
+
         ImGui::TreePop();
     }
 }

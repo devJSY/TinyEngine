@@ -43,6 +43,10 @@ struct ImVec4;
 
 struct b2Vec2;
 
+// PhysX
+#include "physx\\foundation\\PxVec3.h"
+#include "physx\\foundation\\Px.h"
+
 namespace DirectX
 {
     namespace SimpleMath
@@ -258,7 +262,7 @@ namespace DirectX
 
             Vector3(Vector3&&) = default;
             Vector3& operator=(Vector3&&) = default;
-
+            Vector3& operator=(const physx::PxVec3& _PxVec3){x = _PxVec3.x; y = _PxVec3.y; z = _PxVec3.z; return *this;}
 
             Vector2 XY() { return Vector2(x, y); }
             operator XMVECTOR() const { return XMLoadFloat3(this); }
@@ -266,7 +270,11 @@ namespace DirectX
             typedef float(&f3)[3];
             operator f3() const { return (f3)x; }
 
-
+            // Conversion
+            operator physx::PxVec3() const { return physx::PxVec3(x, y, z); }
+            
+            Vector3(const physx::PxVec3& V) { this->x = V.x; this->y = V.y; this->z = V.z; }
+          
             // Comparison operators
             bool operator == (const Vector3& V) const;
             bool operator != (const Vector3& V) const;
