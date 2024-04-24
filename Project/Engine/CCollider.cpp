@@ -44,16 +44,14 @@ void CCollider::finaltick()
     SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
     SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
 
-    physx::PxTransform PxTr = physx::PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
+    physx::PxTransform PxTr = physx::PxTransform(WorldPos, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
 
     physx::PxShape* shape = (physx::PxShape*)m_RuntimeShape;
     physx::PxRigidActor* body = shape->getActor();
     body->setGlobalPose(PxTr);
 
     physx::PxTransform LocalPos = shape->getLocalPose();
-    LocalPos.p.x = m_Center.x;
-    LocalPos.p.y = m_Center.y;
-    LocalPos.p.z = m_Center.z;
+    LocalPos.p = m_Center;
     shape->setLocalPose(LocalPos);
 }
 

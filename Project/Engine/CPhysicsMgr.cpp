@@ -97,6 +97,7 @@ void CPhysicsMgr::OnPhysicsStart()
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
     sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+    sceneDesc.flags |= PxSceneFlag::eENABLE_CCD; // CCD Activate
     m_Scene = m_Physics->createScene(sceneDesc);
 
     PxPvdSceneClient* pvdClient = m_Scene->getScenePvdClient();
@@ -208,6 +209,18 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         dynamicRigid->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !pRigidbody->m_bGravity);
         dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, pRigidbody->m_bKinematic);
 
+        switch (pRigidbody->m_CollisionDetection)
+        {
+        case CollisionDetection::Discrete:
+            break;
+        case CollisionDetection::Continuous:
+            dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
+            break;
+        case CollisionDetection::ContinuousSpecutive:
+            dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
+            break;
+        }
+
         dynamicRigid->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, pRigidbody->m_FreezePosition[0]);
         dynamicRigid->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, pRigidbody->m_FreezePosition[1]);
         dynamicRigid->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, pRigidbody->m_FreezePosition[2]);
@@ -239,15 +252,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
                                                 pBoxCol->m_Mtrl->GetBounciness());
         }
 
-        PxShape* shape = PxRigidActorExt::createExclusiveShape(
-            *RigidActor, PxBoxGeometry(WorldScale.x * pBoxCol->m_Size.x, WorldScale.y * pBoxCol->m_Size.y, WorldScale.z * pBoxCol->m_Size.z),
-            *pPxMtrl);
+        PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
-        Vec3 Center = pBoxCol->GetCenter();
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p.x = Center.x;
-        LocalPos.p.y = Center.y;
-        LocalPos.p.z = Center.z;
+        LocalPos.p = pBoxCol->GetCenter();
         shape->setLocalPose(LocalPos);
 
         shape->userData = (void*)pBoxCol;
@@ -266,11 +274,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
 
-        Vec3 Center = pSphereCol->GetCenter();
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p.x = Center.x;
-        LocalPos.p.y = Center.y;
-        LocalPos.p.z = Center.z;
+        LocalPos.p = pSphereCol->GetCenter();
         shape->setLocalPose(LocalPos);
 
         shape->userData = (void*)pSphereCol;

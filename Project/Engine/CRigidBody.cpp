@@ -11,6 +11,7 @@ CRigidbody::CRigidbody()
     , m_AngularDrag(0.05f)
     , m_bGravity(true)
     , m_bKinematic(false)
+    , m_CollisionDetection(CollisionDetection::Discrete)
     , m_FreezePosition{}
     , m_FreezeRotation{}
 {
@@ -24,6 +25,7 @@ CRigidbody::CRigidbody(const CRigidbody& origin)
     , m_AngularDrag(origin.m_AngularDrag)
     , m_bGravity(origin.m_bGravity)
     , m_bKinematic(origin.m_bKinematic)
+    , m_CollisionDetection(origin.m_CollisionDetection)
     , m_FreezePosition{origin.m_FreezePosition[0], origin.m_FreezePosition[1], origin.m_FreezePosition[2]}
     , m_FreezeRotation{origin.m_FreezeRotation[0], origin.m_FreezeRotation[1], origin.m_FreezeRotation[2]}
 {
@@ -47,7 +49,7 @@ void CRigidbody::finaltick()
     SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
     SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
 
-    physx::PxTransform PxTr = physx::PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
+    physx::PxTransform PxTr = physx::PxTransform(WorldPos, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
 
     physx::PxRigidActor* body = (physx::PxRigidActor*)m_RuntimeBody;
     body->setGlobalPose(PxTr);
@@ -217,6 +219,7 @@ void CRigidbody::SaveToLevelFile(FILE* _File)
     fwrite(&m_AngularDrag, sizeof(float), 1, _File);
     fwrite(&m_bGravity, sizeof(bool), 1, _File);
     fwrite(&m_bKinematic, sizeof(bool), 1, _File);
+    fwrite(&m_CollisionDetection, sizeof(CollisionDetection), 1, _File);
     fwrite(&m_FreezePosition, sizeof(bool), 3, _File);
     fwrite(&m_FreezeRotation, sizeof(bool), 3, _File);
 }
@@ -228,6 +231,7 @@ void CRigidbody::LoadFromLevelFile(FILE* _File)
     fread(&m_AngularDrag, sizeof(float), 1, _File);
     fread(&m_bGravity, sizeof(bool), 1, _File);
     fread(&m_bKinematic, sizeof(bool), 1, _File);
+    fread(&m_CollisionDetection, sizeof(CollisionDetection), 1, _File);
     fread(&m_FreezePosition, sizeof(bool), 3, _File);
     fread(&m_FreezeRotation, sizeof(bool), 3, _File);
 }

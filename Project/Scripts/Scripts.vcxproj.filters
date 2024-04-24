@@ -16,6 +16,9 @@
     <ClInclude Include="define.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysicsTestScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -29,6 +32,9 @@
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysicsTestScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

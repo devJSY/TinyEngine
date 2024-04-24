@@ -1361,6 +1361,26 @@ void COutliner::DrawRigidbody(CGameObject* obj)
         if (ImGui::Checkbox(ImGui_LabelPrefix("Kinematic").c_str(), &bKinematic))
             pRigidbody->SetKinematic(bKinematic);
 
+        vector<string> vecCollisionDetection = {
+            "Discrete",
+            "Continuous",
+            "ContinuousSpecutive",
+        };
+
+        static string CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetection()];
+
+        CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetection()];
+
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Collision Detection").c_str(), CurCollisionDetection, vecCollisionDetection))
+        {
+            if (vecCollisionDetection[0] == CurCollisionDetection)
+                pRigidbody->SetCollisionDetection(CollisionDetection::Discrete);
+            else if (vecCollisionDetection[1] == CurCollisionDetection)
+                pRigidbody->SetCollisionDetection(CollisionDetection::Continuous);
+            else if (vecCollisionDetection[2] == CurCollisionDetection)
+                pRigidbody->SetCollisionDetection(CollisionDetection::ContinuousSpecutive);
+        }
+
         // Constraints
         if (ImGui::TreeNodeEx("##RigidbodyConstraints", m_DefaultTreeNodeFlag, "Constraints"))
         {
