@@ -6,7 +6,7 @@
 # Custom
 OutputFile/
 External/Library/Engine/Engine.lib 
-External/Library/Engine/Engine_d.lib
+External/Library/Engine/Engine_d.lib 
 
 # User-specific files
 *.rsuser
