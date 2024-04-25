@@ -11,6 +11,7 @@
 #include "CTaskMgr.h"
 
 #include "CLevelSaveLoad.h"
+#include "components.h"
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
@@ -46,6 +47,44 @@ void CLevelMgr::tick()
     }
 
     m_CurLevel->finaltick();
+}
+
+CLevel* CLevelMgr::CreateNewLevel()
+{
+    CLevel* NewLevel = new CLevel;
+    NewLevel->SetName(L"New Level");
+
+    for (int i = 0; i < LAYER_MAX; i++)
+    {
+        wstring Name = L"Layer ";
+        Name += std::to_wstring(i);
+        NewLevel->GetLayer(i)->SetName(Name);
+    }
+
+    CGameObject* pCamObj = new CGameObject;
+    pCamObj->SetName(L"Main Camera");
+    pCamObj->AddComponent(new CTransform);
+    pCamObj->AddComponent(new CCamera);
+
+    pCamObj->Camera()->SetCameraPriority(0);
+    pCamObj->Camera()->LayerMaskAll();
+    pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
+    pCamObj->Camera()->SetHDRI(false);
+
+    NewLevel->AddObject(pCamObj, 0);
+
+    // UI ¸¸ ·»´õ¸µ
+    pCamObj = new CGameObject;
+    pCamObj->SetName(L"UI Camera");
+    pCamObj->AddComponent(new CTransform);
+    pCamObj->AddComponent(new CCamera);
+
+    pCamObj->Camera()->SetCameraPriority(1);
+    pCamObj->Camera()->LayerMask(NewLevel, L"UI", true);
+
+    NewLevel->AddObject(pCamObj, 0);
+
+    return NewLevel;
 }
 
 void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState)

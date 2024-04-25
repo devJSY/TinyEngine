@@ -15,6 +15,7 @@ public:
 
 public:
     CLevel* GetCurrentLevel() const { return m_CurLevel; }
+    CLevel* CreateNewLevel();
 
 public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState);

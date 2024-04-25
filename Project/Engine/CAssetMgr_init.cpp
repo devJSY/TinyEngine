@@ -280,6 +280,28 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Std3DShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std3d.fx", "VS_Std3D");
+        pShader->CreatePixelShader(L"shader\\std3d.fx", "PS_Std3D");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Lighting Type, 0 : Gouraud, 1 : Phong");
+        pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
+        pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
+
+        pShader->SetName(L"Std3DShader");
+        AddAsset(L"Std3DShader", pShader);
+    }
+
+    // =================================
     // TileMapShader
     // =================================
     {
@@ -943,6 +965,14 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"Std2DGlowMtrl", pMtrl);
     }
 
+    // Std3D
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3DShader"));
+        pMtrl->SetName(L"Std3DMtrl");
+        AddAsset<CMaterial>(L"Std3DMtrl", pMtrl);
+    }
+
     // TileMapMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -1248,6 +1278,9 @@ tMeshData CAssetMgr::MakePoint()
     v.vPos = Vec3(0.f, 0.f, 0.f);
     v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
     v.vUV = Vec2(0.5f, 0.5f);
+    v.vNormal = Vec3(0.f, 0.f, -1.f);
+    v.vTangent = Vec3(1.f, 0.f, 0.f);
+
     meshData.vertices.push_back(v);
     meshData.indices.push_back(0);
 
@@ -1283,6 +1316,8 @@ tMeshData CAssetMgr::MakeCrosshair()
         v.vUV = texcoords[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vNormal = Vec3(0.f, 0.f, -1.f);
+        v.vTangent = Vec3(1.f, 0.f, 0.f);
 
         meshData.vertices.push_back(v);
     }
@@ -1317,6 +1352,7 @@ tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
         v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+        v.vTangent = Vec3(1.f, 0.f, 0.f);
 
         meshData.vertices.push_back(v);
     }
@@ -1337,6 +1373,7 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
     vector<Vec3> colors;
     vector<Vec3> normals;
     vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
+    vector<Vec3> tangents;
 
     // ¾Õ¸é
     positions.push_back(Vec3(-0.5f, 0.5f, 0.0f) * scale);
@@ -1358,6 +1395,10 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 
     tMeshData meshData;
 
@@ -1367,9 +1408,9 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
         v.vPos = positions[i];
         v.vNormal = normals[i];
         v.vUV = texcoords[i] * texScale;
-        // v.tangentModel = Vec3(1.0f, 0.0f, 0.0f);
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vTangent = tangents[i];
 
         meshData.vertices.push_back(v);
     }
@@ -1402,6 +1443,7 @@ tMeshData CAssetMgr::MakeDebugCircle(const float radius, const int numSlices)
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
         v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+        v.vTangent = Vec3(1.f, 0.f, 0.f);
 
         meshData.vertices.push_back(v);
     }
@@ -1420,6 +1462,7 @@ tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
     vector<Vec3> colors;
     vector<Vec3> normals;
     vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
+    vector<Vec3> tangents;
 
     // ¾Õ¸é
     positions.push_back(Vec3(-0.5f, 0.5f, 0.0f) * scale);
@@ -1441,6 +1484,10 @@ tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 
     tMeshData meshData;
 
@@ -1450,9 +1497,9 @@ tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
         v.vPos = positions[i];
         v.vNormal = normals[i];
         v.vUV = texcoords[i] * texScale;
-        // v.tangentModel = Vec3(1.0f, 0.0f, 0.0f);
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vTangent = tangents[i];
 
         meshData.vertices.push_back(v);
     }
@@ -1479,7 +1526,7 @@ tMeshData CAssetMgr::MakeSquareGrid(const int numSlices, const int numStacks, co
             v.vPos = Vec3(x, y, 0.0f) * scale;
             v.vNormal = Vec3(0.0f, 0.0f, -1.0f);
             v.vUV = Vec2(x + 1.0f, y + 1.0f) * 0.5f * texScale;
-            // v.tangentModel = Vec3(1.0f, 0.0f, 0.0f);
+            v.vTangent = Vec3(1.0f, 0.0f, 0.0f);
 
             meshData.vertices.push_back(v);
 
@@ -1510,6 +1557,7 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     vector<Vec3> colors;
     vector<Vec3> normals;
     vector<Vec2> texcoords; // ÅØ½ºÃç ÁÂÇ¥
+    vector<Vec3> tangents;
 
     // À­¸é
     positions.push_back(Vec3(-1.0f, 1.0f, -1.0f) * scale);
@@ -1528,6 +1576,10 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 
     // ¾Æ·§¸é
     positions.push_back(Vec3(-1.0f, -1.0f, -1.0f) * scale);
@@ -1546,6 +1598,10 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 
     // ¾Õ¸é
     positions.push_back(Vec3(-1.0f, -1.0f, -1.0f) * scale);
@@ -1564,6 +1620,10 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 
     // µÞ¸é
     positions.push_back(Vec3(-1.0f, -1.0f, 1.0f) * scale);
@@ -1582,6 +1642,10 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    tangents.push_back(Vec3(1.0f, 0.0f, 0.0f));
 
     // ¿ÞÂÊ
     positions.push_back(Vec3(-1.0f, -1.0f, 1.0f) * scale);
@@ -1600,6 +1664,10 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    tangents.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    tangents.push_back(Vec3(0.0f, 1.0f, 0.0f));
+    tangents.push_back(Vec3(0.0f, 1.0f, 0.0f));
 
     // ¿À¸¥ÂÊ
     positions.push_back(Vec3(1.0f, -1.0f, 1.0f) * scale);
@@ -1618,6 +1686,10 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     texcoords.push_back(Vec2(1.0f, 0.0f));
     texcoords.push_back(Vec2(1.0f, 1.0f));
     texcoords.push_back(Vec2(0.0f, 1.0f));
+    tangents.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    tangents.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    tangents.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    tangents.push_back(Vec3(0.0f, -1.0f, 0.0f));
 
     tMeshData meshData;
     for (size_t i = 0; i < positions.size(); i++)
@@ -1628,6 +1700,8 @@ tMeshData CAssetMgr::MakeBox(const float scale)
         v.vUV = texcoords[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vTangent = tangents[i];
+
         meshData.vertices.push_back(v);
     }
 

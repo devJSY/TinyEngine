@@ -218,6 +218,13 @@ void CLevelEditor::render_MenuBar()
 
         if (ImGui::BeginMenu("File"))
         {
+            if (ImGui::MenuItem("New Level"))
+            {
+                GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateNewLevel(), LEVEL_STATE::STOP);
+            }
+
+            ImGui::Separator();
+
             if (ImGui::MenuItem("Save Level"))
             {
                 std::filesystem::path filePath = SaveFileDialog(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));

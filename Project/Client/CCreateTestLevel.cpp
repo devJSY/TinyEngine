@@ -46,16 +46,5 @@ CLevel* CCreateTestLevel::CreateTestLevel()
 
     pCurLevel->AddObject(pCamObj, 0);
 
-    // ±¤¿ø Ãß°¡
-    CGameObject* pLight = new CGameObject;
-    pLight->SetName(L"Light 1");
-    pLight->AddComponent(new CTransform);
-    pLight->AddComponent(new CMeshRender);
-    pLight->AddComponent(new CLight2D);
-
-    pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-
-    pCurLevel->AddObject(pLight, 0);
-
     return pCurLevel;
 }

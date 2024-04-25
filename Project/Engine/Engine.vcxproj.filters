@@ -1107,5 +1107,8 @@
     <FxCompile Include="SSAOPS.hlsl">
       <Filter>ShaderCode\Render\SSAO</Filter>
     </FxCompile>
+    <FxCompile Include="std3d.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

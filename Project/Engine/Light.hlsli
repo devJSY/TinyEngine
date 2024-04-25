@@ -115,6 +115,59 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
     return rim * RimColor * strength;
 }
 
+
+void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, inout tLightInfo _LightColor)
+{
+    // 광원의 정보를 확인
+    tLightInfo Light = g_Light3D[_LightIdx];
+           
+    // 광원이 물체를 향하는 방향벡터
+    float3 vWorldLightDir = (float3) 0.f;
+    
+    float fDistanceRatio = 1.f;
+    
+    // Directional Light
+    if (LIGHT_DIRECTIONAL == Light.LightType)
+    {
+        vWorldLightDir = normalize(Light.vWorldDir);
+    }
+    
+    // Point Light
+    if (LIGHT_POINT == Light.LightType)
+    {
+        vWorldLightDir = _vWorldPos - Light.vWorldPos;
+        
+        // 광원과 물체 사이의 거리
+        float fDistance = length(vWorldLightDir);
+        vWorldLightDir = normalize(vWorldLightDir);
+                
+        // 광원 반경과 물체까지의 거리에 따른 빛의 세기        
+        fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius));
+    }
+    
+    // Spot Light
+    if (LIGHT_SPOT == Light.LightType)
+    {
+        
+    }
+   
+    // 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
+    float LightPow = saturate(dot(_vWorldNormal, -vWorldLightDir));
+            
+    // 빛이 표면에 진입해서 반사되는 방향을 구한다.
+    float3 vReflect = vWorldLightDir + 2 * dot(-vWorldLightDir, _vWorldNormal) * _vWorldNormal;
+    vReflect = normalize(vReflect);
+    
+    // 카메라가 물체를 향하는 방향
+    float3 vEye = normalize(_vWorldPos - g_eyeWorld);
+    
+    // 시선벡터와 반사벡터 내적, 반사광의 세기
+    float ReflectPow = saturate(dot(-vEye, vReflect));
+    ReflectPow = pow(ReflectPow, 20.f);
+    
+    _LightColor.vRadiance += MtrlAlbedo + (MtrlDiffuse * Light.vRadiance * LightPow * fDistanceRatio) + (MtrlSpecular * Light.vRadiance * ReflectPow);
+}
+
 // =======================================================================================
 // 2D LIGHT
 // =======================================================================================
