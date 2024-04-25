@@ -108,7 +108,7 @@ void CAssetMgr::CreateDefaultMesh()
 
     // Capsule
     {
-        auto mesh = MakeCapsule(1.f, 1.f, 20);
+        auto mesh = MakeCapsule(0.5f, 0.5f, 30);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
         pMesh->SetName(L"CapsuleMesh");
@@ -148,8 +148,8 @@ void CAssetMgr::CreateDefaultMesh()
         auto mesh = MakeWireCircle(1.f, 30);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        pMesh->SetName(L"WireCircle");
-        AddAsset(L"WireCircle", pMesh);
+        pMesh->SetName(L"WireCircleMesh");
+        AddAsset(L"WireCircleMesh", pMesh);
     }
 
     // Wire Box
@@ -157,8 +157,8 @@ void CAssetMgr::CreateDefaultMesh()
         auto mesh = MakeWireBox();
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        pMesh->SetName(L"WireBox");
-        AddAsset(L"WireBox", pMesh);
+        pMesh->SetName(L"WireBoxMesh");
+        AddAsset(L"WireBoxMesh", pMesh);
     }
 
     // Wire Sphere
@@ -166,26 +166,26 @@ void CAssetMgr::CreateDefaultMesh()
         auto mesh = MakeWireSphere(1.f, 30);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        pMesh->SetName(L"WireSphere");
-        AddAsset(L"WireSphere", pMesh);
+        pMesh->SetName(L"WireSphereMesh");
+        AddAsset(L"WireSphereMesh", pMesh);
     }
 
     // Wire Capsule 2D
     {
-        auto mesh = MakeWireCapsule2D(1.f, 1.f, 15);
+        auto mesh = MakeWireCapsule2D(0.5f, 0.5f, 15);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        pMesh->SetName(L"WireCapsule2D");
-        AddAsset(L"WireCapsule2D", pMesh);
+        pMesh->SetName(L"WireCapsuleMesh2D");
+        AddAsset(L"WireCapsuleMesh2D", pMesh);
     }
 
     // Wire Capsule
     {
-        auto mesh = MakeWireCapsule(1.f, 1.f, 15);
+        auto mesh = MakeWireCapsule(0.5f, 0.5f, 15);
         Ptr<CMesh> pMesh = new CMesh(true);
         pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
-        pMesh->SetName(L"WireCapsule");
-        AddAsset(L"WireCapsule", pMesh);
+        pMesh->SetName(L"WireCapsuleMesh");
+        AddAsset(L"WireCapsuleMesh", pMesh);
     }
 }
 
@@ -1770,8 +1770,8 @@ tMeshData CAssetMgr::MakeSphere(const float radius, const int numSlices, const i
 
 tMeshData CAssetMgr::MakeCapsule(const float radius, const float halfHeight, const int numSlices)
 {
-    tMeshData topSphere = MakeSphere(radius, numSlices, numSlices / 2, Vec2(1.0f, 0.5f));
-    tMeshData bottomSphere = MakeSphere(radius, numSlices, numSlices / 2, Vec2(1.0f, 0.5f));
+    tMeshData topSphere = MakeSphere(radius, numSlices, numSlices / 2);
+    tMeshData bottomSphere = MakeSphere(radius, numSlices, numSlices / 2);
 
     // 상단과 하단을 y축 방향으로 이동시켜서 캡슐의 상단과 하단에 배치합니다.
     for (auto& vertex : topSphere.vertices)
