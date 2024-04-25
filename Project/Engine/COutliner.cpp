@@ -136,6 +136,9 @@ void COutliner::render()
             if (ImGui::MenuItem("Sphere"))
                 Dirtyflag = 41;
 
+            if (ImGui::MenuItem("Capsule"))
+                Dirtyflag = 42;
+
             if (ImGui::BeginMenu("Light"))
             {
                 if (ImGui::MenuItem("Directional"))
@@ -237,6 +240,13 @@ void COutliner::render()
                 pObj->SetName(L"Sphere");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+            }
+            else if (42 == Dirtyflag)
+            {
+                pObj->SetName(L"Capsule");
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CapsuleMesh"));
                 pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
             }
             else if (50 == Dirtyflag)
