@@ -294,6 +294,62 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         pSphereCol->m_RuntimeShape = shape;
     }
 
+    // Capsule Collider
+    if (nullptr != pCapsuleCol)
+    {
+        PxMaterial* pPxMtrl = DefaultPxMtrl;
+        if (nullptr != pCapsuleCol->m_Mtrl)
+        {
+            pPxMtrl = m_Physics->createMaterial(pCapsuleCol->m_Mtrl->GetStaticFriction(), pCapsuleCol->m_Mtrl->GetDynamicFriction(),
+                                                pCapsuleCol->m_Mtrl->GetBounciness());
+        }
+
+        PxQuat PxrelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 0, 1));
+        float RadiusScale = 1.f;
+        float HeightScale = 1.f;
+
+        switch (pCapsuleCol->m_Direction)
+        {
+        case AXIS_TYPE::X: {
+            PxrelativeQuat *= PxQuat(PxHalfPi, PxVec3(0, 0, 1));
+
+            RadiusScale = WorldScale.y > WorldScale.z ? WorldScale.y : WorldScale.z;
+            HeightScale = WorldScale.x;
+        }
+        break;
+        case AXIS_TYPE::Y: {
+            RadiusScale = WorldScale.x > WorldScale.z ? WorldScale.x : WorldScale.z;
+            HeightScale = WorldScale.y;
+        }
+        break;
+        case AXIS_TYPE::Z: {
+            PxrelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 1, 0));
+
+            RadiusScale = WorldScale.x > WorldScale.y ? WorldScale.x : WorldScale.y;
+            HeightScale = WorldScale.z;
+        }
+        break;
+        }
+
+        PxShape* shape = PxRigidActorExt::createExclusiveShape(
+            *RigidActor, PxCapsuleGeometry(RadiusScale * pCapsuleCol->m_Radius, HeightScale * (pCapsuleCol->m_Height / 2.f - pCapsuleCol->m_Radius)),
+            *pPxMtrl);
+
+        if (pCapsuleCol->IsTrigger())
+        {
+            shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+        }
+
+        PxTransform LocalPos = shape->getLocalPose();
+        LocalPos.p = pCapsuleCol->GetCenter();
+        LocalPos.q = LocalPos.q * PxrelativeQuat;
+        shape->setLocalPose(LocalPos);
+
+        shape->userData = (void*)pCapsuleCol;
+        pCapsuleCol->m_RuntimeShape = shape;
+    }
+
     // 질량 설정
     if (nullptr != pRigidbody)
     {

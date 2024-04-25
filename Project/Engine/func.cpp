@@ -361,17 +361,23 @@ void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, f
     MeshName += L"_";
     MeshName += std::to_wstring(_HalfHeight);
 
+    Matrix RotationMatrix = Matrix();
     switch (_Axis)
     {
-    case AXIS_TYPE::X:
+    case AXIS_TYPE::X: {
         MeshName += L"_X";
-        break;
-    case AXIS_TYPE::Y:
+        RotationMatrix = XMMatrixRotationZ(XM_PIDIV2);
+    }
+    break;
+    case AXIS_TYPE::Y: {
         MeshName += L"_Y";
-        break;
-    case AXIS_TYPE::Z:
+    }
+    break;
+    case AXIS_TYPE::Z: {
         MeshName += L"_Z";
-        break;
+        RotationMatrix = XMMatrixRotationX(XM_PIDIV2);
+    }
+    break;
     }
 
     Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
@@ -379,22 +385,8 @@ void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, f
     if (nullptr == pMesh)
     {
         auto meshData = CAssetMgr::GetInst()->MakeWireCapsule(_fRadius, _HalfHeight, 15);
-
-        Matrix RotationMatrix = Matrix();
-        switch (_Axis)
-        {
-        case AXIS_TYPE::X:
-            RotationMatrix = XMMatrixRotationZ(XM_PIDIV2);
-            break;
-        case AXIS_TYPE::Y:
-            break;
-        case AXIS_TYPE::Z:
-            RotationMatrix = XMMatrixRotationX(XM_PIDIV2);
-            break;
-        }
-
-        for (auto& vertex : meshData.vertices)
-            vertex.vPos = Vec3::Transform(vertex.vPos, RotationMatrix);
+        for (auto& vtx : meshData.vertices)
+            vtx.vPos = Vector3::Transform(vtx.vPos, RotationMatrix);
 
         pMesh = new CMesh(true);
         pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
