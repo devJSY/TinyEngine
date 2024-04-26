@@ -228,6 +228,10 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     {
         if (pSrcObj->GetParent())
         {
+            pSrcObj->Transform()->SetRelativePos(pSrcObj->Transform()->GetWorldPos());
+            pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetWorldRotation());
+            pSrcObj->Transform()->SetRelativeScale(pSrcObj->Transform()->GetWorldScale());
+
             // 기존 부모와의 연결 해제
             int layerIdx = pSrcObj->m_iLayerIdx;
             pSrcObj->DisconnectWithParent();
@@ -239,6 +243,9 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     }
     else
     {
+        pSrcObj->Transform()->SetRelativePos(pSrcObj->Transform()->GetRelativePos() - pDestObj->Transform()->GetWorldPos());
+        pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetRelativeRotation() - pDestObj->Transform()->GetWorldRotation());
+
         pDestObj->AddChild(pSrcObj);
     }
 }

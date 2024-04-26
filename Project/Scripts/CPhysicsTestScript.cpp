@@ -61,3 +61,47 @@ void CPhysicsTestScript::tick()
         }
     }
 }
+
+void CPhysicsTestScript::OnCollisionEnter(CCollider* _OtherCollider)
+{
+    LOG(Log, "OnCollisionEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::OnCollisionStay(CCollider* _OtherCollider)
+{
+    LOG(Log, "OnCollisionStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::OnCollisionExit(CCollider* _OtherCollider)
+{
+    LOG(Log, "OnCollisionExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    LOG(Log, "OnTriggerEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::OnTriggerStay(CCollider* _OtherCollider)
+{
+    LOG(Log, "OnTriggerStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::OnTriggerExit(CCollider* _OtherCollider)
+{
+    LOG(Log, "OnTriggerExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::SaveToLevelFile(FILE* _File)
+{
+    fwrite(&m_Force, sizeof(Vec3), 1, _File);
+    fwrite(&m_Torque, sizeof(Vec3), 1, _File);
+    fwrite(&m_ForceMode, sizeof(int), 1, _File);
+}
+
+void CPhysicsTestScript::LoadFromLevelFile(FILE* _File)
+{
+    fread(&m_Force, sizeof(Vec3), 1, _File);
+    fread(&m_Torque, sizeof(Vec3), 1, _File);
+    fread(&m_ForceMode, sizeof(int), 1, _File);
+}

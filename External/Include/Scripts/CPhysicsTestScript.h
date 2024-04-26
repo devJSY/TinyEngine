@@ -11,9 +11,18 @@ private:
 public:
     virtual void tick() override;
 
+private:
+    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+    virtual void OnCollisionStay(CCollider* _OtherCollider) override;
+    virtual void OnCollisionExit(CCollider* _OtherCollider) override;
+
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
+    virtual void OnTriggerStay(CCollider* _OtherCollider) override;
+    virtual void OnTriggerExit(CCollider* _OtherCollider) override;
+
 public:
-    virtual void SaveToLevelFile(FILE* _File) override{};
-    virtual void LoadFromLevelFile(FILE* _File) override{};
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CPhysicsTestScript);
 

@@ -45,8 +45,10 @@ void CCollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader,
         pColliderB->OnCollisionExit(pColliderA);
     }
 
-    pColliderA->OnCollisionStay(pColliderB);
-    pColliderB->OnCollisionStay(pColliderA);
+    if (pColliderA->m_CollisionCount > 0)
+        pColliderA->OnCollisionStay(pColliderB);
+    if (pColliderB->m_CollisionCount > 0)
+        pColliderB->OnCollisionStay(pColliderA);
 }
 
 void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
@@ -66,8 +68,10 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
         pColliderB->OnTriggerExit(pColliderA);
     }
 
-    pColliderA->OnTriggerStay(pColliderB);
-    pColliderB->OnTriggerStay(pColliderA);
+    if (pColliderA->m_TriggerCount > 0)
+        pColliderA->OnTriggerStay(pColliderB);
+    if (pColliderB->m_TriggerCount > 0)
+        pColliderB->OnTriggerStay(pColliderA);
 }
 
 CPhysicsMgr::CPhysicsMgr()
