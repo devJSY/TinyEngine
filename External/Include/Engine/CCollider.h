@@ -47,4 +47,5 @@ public:
     virtual ~CCollider();
 
     friend class CPhysicsMgr;
+    friend class CCollisionCallback;
 };

@@ -26,7 +26,8 @@ private:
     bool m_bShowToolbar;
     bool m_bShowAssets;
     bool m_bShowOutputLog;
-    bool m_bShowCollisionMatrix;
+    bool m_bShowPhysics2DMgr;
+    bool m_bShowPhysicsMgr;
     bool m_bShowTagsAndLayers;
 
     bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
@@ -56,7 +57,8 @@ private:
     void render_ImGuizmo();
     void render_Toolbar();
     void render_Assets();
-    void render_CollisionMatrix();
+    void render_Physics2DMgr();
+    void render_PhysicsMgr();
     void render_TagsAndLayers();
 
 private:

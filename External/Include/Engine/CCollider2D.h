@@ -62,5 +62,5 @@ public:
     virtual ~CCollider2D();
 
     friend class CPhysics2DMgr;
-    friend class CollisionCallback;
+    friend class CCollision2DCallback;
 };

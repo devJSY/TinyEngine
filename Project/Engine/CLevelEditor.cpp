@@ -15,6 +15,7 @@
 #include "CAssetMgr.h"
 #include <Scripts\\CScriptMgr.h>
 #include "CPhysics2DMgr.h"
+#include "CPhysicsMgr.h"
 
 #include "CLevel.h"
 #include "CLayer.h"
@@ -40,7 +41,8 @@ CLevelEditor::CLevelEditor()
     , m_bShowToolbar(true)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
-    , m_bShowCollisionMatrix(false)
+    , m_bShowPhysics2DMgr(false)
+    , m_bShowPhysicsMgr(false)
     , m_bShowTagsAndLayers(false)
     , m_bShowEditor{}
     , m_PlayButtonTex(nullptr)
@@ -184,8 +186,11 @@ void CLevelEditor::render()
     if (m_bShowOutputLog)
         COutputLog::GetInst()->render(&m_bShowOutputLog);
 
-    if (m_bShowCollisionMatrix)
-        render_CollisionMatrix();
+    if (m_bShowPhysics2DMgr)
+        render_Physics2DMgr();
+
+    if (m_bShowPhysicsMgr)
+        render_PhysicsMgr();
 
     if (m_bShowTagsAndLayers)
         render_TagsAndLayers();
@@ -295,8 +300,11 @@ void CLevelEditor::render_MenuBar()
             if (ImGui::MenuItem("Output Log", NULL, m_bShowOutputLog))
                 m_bShowOutputLog = !m_bShowOutputLog;
 
-            if (ImGui::MenuItem("Collision Matrix", NULL, m_bShowCollisionMatrix))
-                m_bShowCollisionMatrix = !m_bShowCollisionMatrix;
+            if (ImGui::MenuItem("Physics2D Manager", NULL, m_bShowPhysics2DMgr))
+                m_bShowPhysics2DMgr = !m_bShowPhysics2DMgr;
+
+            if (ImGui::MenuItem("Physics Manager", NULL, m_bShowPhysicsMgr))
+                m_bShowPhysicsMgr = !m_bShowPhysicsMgr;
 
             if (ImGui::MenuItem("Tags & Layers", NULL, m_bShowTagsAndLayers))
                 m_bShowTagsAndLayers = !m_bShowTagsAndLayers;
@@ -792,10 +800,10 @@ void CLevelEditor::render_ImGuizmo()
     }
 }
 
-void CLevelEditor::render_CollisionMatrix()
+void CLevelEditor::render_Physics2DMgr()
 {
     ImGui_SetWindowClass(GetEditorType());
-    if (!ImGui::Begin("Collision Matrix", &m_bShowCollisionMatrix))
+    if (!ImGui::Begin("Physics2D Manager##CLevelEditor", &m_bShowPhysics2DMgr))
     {
         ImGui::End();
         return;
@@ -838,7 +846,7 @@ void CLevelEditor::render_CollisionMatrix()
                                          ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
                                          ImGuiTableFlags_HighlightHoveredColumn;
 
-    if (ImGui::BeginTable("CollisionResponses", columns_count, table_flags, ImGui::GetContentRegionAvail()))
+    if (ImGui::BeginTable("Collision Matrix##Physics2DMgr", columns_count, table_flags, ImGui::GetContentRegionAvail()))
     {
         ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
         for (int n = columns_count - 1; n >= 1; n--)
@@ -861,6 +869,85 @@ void CLevelEditor::render_CollisionMatrix()
                     ImGui::PushID(column);
                     if (ImGui::Checkbox("", &bools[row * columns_count + column]))
                         CPhysics2DMgr::GetInst()->LayerCheck(row, column - 1, bools[row * columns_count + column]);
+                    ImGui::PopID();
+                }
+            ImGui::PopID();
+        }
+        ImGui::EndTable();
+    }
+
+    ImGui::End();
+}
+
+void CLevelEditor::render_PhysicsMgr()
+{
+    ImGui_SetWindowClass(GetEditorType());
+    if (!ImGui::Begin("Physics Manager##CLevelEditor", &m_bShowPhysicsMgr))
+    {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::Button("All Layer Enable"))
+        CPhysicsMgr::GetInst()->EnableAllLayer();
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("All Layer Disable"))
+        CPhysicsMgr::GetInst()->DisableAllLayer();
+
+    string column_names[LAYER_MAX + 1] = {"Layers"};
+    for (int i = 1; i <= LAYER_MAX; i++)
+    {
+        const wstring& LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i - 1)->GetName();
+        column_names[i] = ToString(LayerName);
+    }
+
+    const int columns_count = LAYER_MAX + 1; // columns 0 is Layer Name
+
+    static bool bools[columns_count * LAYER_MAX] = {}; // Dummy storage selection storage
+    for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
+    {
+        for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
+        {
+            if (CPhysicsMgr::GetInst()->GetCollisionLayer(iRow) & (1 << iCol))
+            {
+                bools[iRow * columns_count + iCol + 1] = true;
+            }
+            else
+            {
+                bools[iRow * columns_count + iCol + 1] = false;
+            }
+        }
+    }
+
+    static ImGuiTableFlags table_flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY |
+                                         ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_Hideable |
+                                         ImGuiTableFlags_HighlightHoveredColumn;
+
+    if (ImGui::BeginTable("Collision Matrix##Physics2DMgr", columns_count, table_flags, ImGui::GetContentRegionAvail()))
+    {
+        ImGui::TableSetupColumn(column_names[0].c_str(), ImGuiTableColumnFlags_NoHide | ImGuiTableColumnFlags_NoReorder);
+        for (int n = columns_count - 1; n >= 1; n--)
+            ImGui::TableSetupColumn(column_names[n].c_str(), ImGuiTableColumnFlags_AngledHeader | ImGuiTableColumnFlags_WidthFixed);
+
+        ImGui::TableAngledHeadersRow(); // Draw angled headers for all columns with the
+                                        // ImGuiTableColumnFlags_AngledHeader flag.
+        ImGui::TableHeadersRow();       // Draw remaining headers and allow access to context-menu and other   functions.
+
+        for (int row = 0; row < LAYER_MAX; row++)
+        {
+            ImGui::PushID(row);
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGui::Text(column_names[row + 1].c_str());
+            for (int column = columns_count - 1; column > row; column--)
+                if (ImGui::TableSetColumnIndex(columns_count - column))
+                {
+                    ImGui::PushID(column);
+                    if (ImGui::Checkbox("", &bools[row * columns_count + column]))
+                        CPhysicsMgr::GetInst()->LayerCheck(row, column - 1, bools[row * columns_count + column]);
                     ImGui::PopID();
                 }
             ImGui::PopID();

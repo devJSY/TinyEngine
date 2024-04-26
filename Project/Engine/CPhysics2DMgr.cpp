@@ -16,7 +16,7 @@
 
 #include <box2d\\b2_contact.h>
 
-void CollisionCallback::BeginContact(b2Contact* contact)
+void CCollision2DCallback::BeginContact(b2Contact* contact)
 {
     CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
     CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
@@ -33,7 +33,7 @@ void CollisionCallback::BeginContact(b2Contact* contact)
     }
 }
 
-void CollisionCallback::EndContact(b2Contact* contact)
+void CCollision2DCallback::EndContact(b2Contact* contact)
 {
     CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
     CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
@@ -582,7 +582,7 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
     return pCollisionObj;
 }
 
-RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, unsigned short _LayerMask)
+RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, WORD _LayerMask)
 {
     RaycastHit2D Hit;
     Hit.Centroid = _Origin;

@@ -11,6 +11,65 @@
 
 using namespace physx;
 
+static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+                                                      PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags,
+                                                      const void* constantBlock, PxU32 constantBlockSize)
+{
+    if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+    {
+        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
+        return PxFilterFlag::eDEFAULT;
+    }
+
+    if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_CCD |
+                    PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
+
+    return PxFilterFlag::eDEFAULT;
+}
+
+void CCollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
+{
+    CCollider* pColliderA = (CCollider*)pairs->shapes[0]->userData;
+    CCollider* pColliderB = (CCollider*)pairs->shapes[1]->userData;
+
+    if (pairs->events.isSet(PxPairFlag::eNOTIFY_TOUCH_FOUND))
+    {
+        pColliderA->OnCollisionEnter(pColliderB);
+        pColliderB->OnCollisionEnter(pColliderA);
+    }
+
+    if (pairs->events.isSet(PxPairFlag::eNOTIFY_TOUCH_LOST))
+    {
+        pColliderA->OnCollisionExit(pColliderB);
+        pColliderB->OnCollisionExit(pColliderA);
+    }
+
+    pColliderA->OnCollisionStay(pColliderB);
+    pColliderB->OnCollisionStay(pColliderA);
+}
+
+void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
+{
+    CCollider* pColliderA = (CCollider*)pairs->triggerShape->userData;
+    CCollider* pColliderB = (CCollider*)pairs->otherShape->userData;
+
+    if (PxPairFlag::eNOTIFY_TOUCH_FOUND & pairs->status)
+    {
+        pColliderA->OnTriggerEnter(pColliderB);
+        pColliderB->OnTriggerEnter(pColliderA);
+    }
+
+    if (PxPairFlag::eNOTIFY_TOUCH_LOST & pairs->status)
+    {
+        pColliderA->OnTriggerExit(pColliderB);
+        pColliderB->OnTriggerExit(pColliderA);
+    }
+
+    pColliderA->OnTriggerStay(pColliderB);
+    pColliderB->OnTriggerStay(pColliderA);
+}
+
 CPhysicsMgr::CPhysicsMgr()
     : m_Allocator()
     , m_ErrorCallback()
@@ -20,9 +79,12 @@ CPhysicsMgr::CPhysicsMgr()
     , m_Scene(NULL)
     , m_Pvd(NULL)
     , m_vecPhysicsObj{}
+    , m_CallbackInst()
+    , m_Matrix{}
     , m_Accumulator(0.f)
     , m_StepSize(1.f / 60.f)
 {
+    EnableAllLayer();
 }
 
 CPhysicsMgr::~CPhysicsMgr()
@@ -41,6 +103,7 @@ void CPhysicsMgr::tick()
 
     m_Accumulator -= m_StepSize;
 
+    // 시뮬레이션
     m_Scene->simulate(m_StepSize);
     m_Scene->fetchResults(true);
 
@@ -51,34 +114,30 @@ void CPhysicsMgr::tick()
 
     for (PxU32 i = 0; i < nbActors; i++)
     {
-        const PxU32 nbShapes = actors[i]->getNbShapes();
-        vector<PxShape*> shapes(nbShapes);
-        actors[i]->getShapes(shapes.data(), nbShapes);
+        if (!actors[i]->is<PxRigidDynamic>())
+            continue;
 
-        if (actors[i]->is<PxRigidDynamic>())
-        {
-            CGameObject* obj = (CGameObject*)actors[i]->userData;
-            CTransform* pTr = obj->Transform();
+        CGameObject* obj = (CGameObject*)actors[i]->userData;
+        CTransform* pTr = obj->Transform();
 
-            Vec3 WorldPos = pTr->GetWorldPos();
-            Vec3 WorldRot = pTr->GetWorldRotation();
+        Vec3 WorldPos = pTr->GetWorldPos();
+        Vec3 WorldRot = pTr->GetWorldRotation();
 
-            const PxMat44 ActorPose(actors[i]->getGlobalPose());
-            Matrix SimulatedMat = Matrix(ActorPose.front());
+        const PxMat44 ActorPose(actors[i]->getGlobalPose());
+        Matrix SimulatedMat = Matrix(ActorPose.front());
 
-            // 시뮬레이션 Matrix SRT 분해
-            float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
-            ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
+        // 시뮬레이션 Matrix SRT 분해
+        float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
+        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
 
-            // 변화량 추출
-            Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
-            Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
-                                   WorldRot.z - DirectX::XMConvertToRadians(Frotation[2]));
+        // 변화량 추출
+        Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
+        Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
+                               WorldRot.z - DirectX::XMConvertToRadians(Frotation[2]));
 
-            // 변화량만큼 Relative 에 적용
-            pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
-            pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
-        }
+        // 변화량만큼 Relative 에 적용
+        pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+        pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
     }
 }
 
@@ -96,7 +155,8 @@ void CPhysicsMgr::OnPhysicsStart()
     sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
-    sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+    sceneDesc.filterShader = contactReportFilterShader;
+    sceneDesc.simulationEventCallback = &m_CallbackInst;
     sceneDesc.flags |= PxSceneFlag::eENABLE_CCD; // CCD Activate
     m_Scene = m_Physics->createScene(sceneDesc);
 
@@ -238,6 +298,11 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         RigidActor = staticRigid;
     }
 
+    int LayerIdx = _GameObject->GetLayerIdx();
+    PxFilterData filterData;
+    filterData.word0 = (1 << LayerIdx);    // word0 = own ID
+    filterData.word1 = m_Matrix[LayerIdx]; // word1 = ID mask to filter pairs that trigger a contact callback
+
     Ptr<CPhysicMaterial> pDefaultMtrl = CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(L"Default Material");
     PxMaterial* DefaultPxMtrl =
         m_Physics->createMaterial(pDefaultMtrl->GetStaticFriction(), pDefaultMtrl->GetDynamicFriction(), pDefaultMtrl->GetBounciness());
@@ -264,6 +329,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         LocalPos.p = pBoxCol->GetCenter();
         shape->setLocalPose(LocalPos);
 
+        shape->setSimulationFilterData(filterData);
+
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
     }
@@ -289,6 +356,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pSphereCol->GetCenter();
         shape->setLocalPose(LocalPos);
+
+        shape->setSimulationFilterData(filterData);
 
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
@@ -345,6 +414,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         LocalPos.p = pCapsuleCol->GetCenter();
         LocalPos.q = LocalPos.q * PxrelativeQuat;
         shape->setLocalPose(LocalPos);
+
+        shape->setSimulationFilterData(filterData);
 
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;
@@ -405,5 +476,49 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
             pCapsuleCol->m_RuntimeShape = nullptr;
 
         break;
+    }
+}
+
+void CPhysicsMgr::LayerCheck(UINT _LeftLayer, UINT _RightLayer, bool _bCheck)
+{
+    UINT iRow = (UINT)_LeftLayer;
+    UINT iCol = (UINT)_RightLayer;
+
+    if (_bCheck)
+    {
+        m_Matrix[iRow] |= (1 << iCol);
+        m_Matrix[iCol] |= (1 << iRow);
+    }
+    else
+    {
+        m_Matrix[iRow] &= ~(1 << iCol);
+        m_Matrix[iCol] &= ~(1 << iRow);
+    }
+}
+
+void CPhysicsMgr::LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, const wstring& _RightLayer)
+{
+    CLayer* pLeftLayer = _CurLevel->GetLayer(_LeftLayer);
+    CLayer* pRightLayer = _CurLevel->GetLayer(_RightLayer);
+
+    // 이름에 해당하는 Layer 가 존재하지 않으면
+    assert(pLeftLayer && pRightLayer);
+
+    LayerCheck(pLeftLayer->GetLayerIdx(), pRightLayer->GetLayerIdx());
+}
+
+void CPhysicsMgr::EnableAllLayer()
+{
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        m_Matrix[i] = 0xFFFF;
+    }
+}
+
+void CPhysicsMgr::DisableAllLayer()
+{
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        m_Matrix[i] = 0;
     }
 }

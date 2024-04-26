@@ -14,7 +14,7 @@ struct RaycastHit2D
 };
 
 // 충돌 콜백 클래스
-class CollisionCallback : public b2ContactListener
+class CCollision2DCallback : public b2ContactListener
 {
 public:
     virtual void BeginContact(b2Contact* contact) override;
@@ -31,10 +31,10 @@ class CPhysics2DMgr : public CSingleton<CPhysics2DMgr>
 
 private:
     b2World* m_PhysicsWorld;
-    CollisionCallback m_CallbackInst;
+    CCollision2DCallback m_CallbackInst;
     vector<CGameObject*> m_vecPhysicsObj;
 
-    unsigned short m_Matrix[LAYER_MAX];
+    WORD m_Matrix[LAYER_MAX];
 
     const float m_PPM; // PixelPerMeter
     float m_Accumulator;
@@ -53,11 +53,11 @@ public:
     void EnableAllLayer();
     void DisableAllLayer();
 
-    unsigned short GetCollisionLayer(UINT idx) const { return m_Matrix[idx]; }
+    WORD GetCollisionLayer(UINT idx) const { return m_Matrix[idx]; }
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
 
     CGameObject* CollisionCheck(Vec2 _Point);
-    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, unsigned short _LayerMask = 0xFFFF);
+    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, WORD _LayerMask = 0xFFFF);
     RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, const wstring& _LayerName);
 
 public:

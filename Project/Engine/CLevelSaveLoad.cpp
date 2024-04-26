@@ -2,6 +2,7 @@
 #include "CLevelSaveLoad.h"
 
 #include "CPhysics2DMgr.h"
+#include "CPhysicsMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CLevel.h"
@@ -56,8 +57,14 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
     // 콜리전 레이어 저장
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
-        unsigned short ColLayer = CPhysics2DMgr::GetInst()->GetCollisionLayer(i);
-        fwrite(&ColLayer, sizeof(unsigned short), 1, pFile);
+        WORD ColLayer = CPhysics2DMgr::GetInst()->GetCollisionLayer(i);
+        fwrite(&ColLayer, sizeof(WORD), 1, pFile);
+    }
+
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        WORD ColLayer = CPhysicsMgr::GetInst()->GetCollisionLayer(i);
+        fwrite(&ColLayer, sizeof(WORD), 1, pFile);
     }
 
     fclose(pFile);
@@ -182,9 +189,16 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
     // 콜리전 레이어 로드
     for (UINT i = 0; i < LAYER_MAX; ++i)
     {
-        unsigned short ColLayer = 0;
-        fread(&ColLayer, sizeof(unsigned short), 1, pFile);
+        WORD ColLayer = 0;
+        fread(&ColLayer, sizeof(WORD), 1, pFile);
         CPhysics2DMgr::GetInst()->SetCollisionLayer(i, ColLayer);
+    }
+
+    for (UINT i = 0; i < LAYER_MAX; ++i)
+    {
+        WORD ColLayer = 0;
+        fread(&ColLayer, sizeof(WORD), 1, pFile);
+        CPhysicsMgr::GetInst()->SetCollisionLayer(i, ColLayer);
     }
 
     fclose(pFile);
