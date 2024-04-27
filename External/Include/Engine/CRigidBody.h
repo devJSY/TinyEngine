@@ -56,28 +56,27 @@ public:
 
 public:
     float GetMass() const { return m_Mass; }
-    void SetMass(float _Mass) { m_Mass = _Mass; }
+    void SetMass(float _Mass);
 
     float GetDrag() const { return m_Drag; }
-    void SetDrag(float _Drag) { m_Drag = _Drag; }
+    void SetDrag(float _Drag);
 
     float GetAngularDrag() const { return m_AngularDrag; }
-    void SetAngularDrag(float _Drag) { m_AngularDrag = _Drag; }
+    void SetAngularDrag(float _Drag);
 
     bool IsUseGravity() const { return m_bGravity; }
-    void SetUseGravity(bool _Use) { m_bGravity = _Use; }
+    void SetUseGravity(bool _bGravity);
 
     bool IsKinematic() const { return m_bKinematic; }
-    void SetKinematic(bool _kinematic) { m_bKinematic = _kinematic; }
-
+    void SetKinematic(bool _kinematic);
     CollisionDetection_TYPE GetCollisionDetectionType() { return m_CollisionDetectionType; }
-    void SetCollisionDetectionType(CollisionDetection_TYPE _ColDet) { m_CollisionDetectionType = _ColDet; }
+    void SetCollisionDetectionType(CollisionDetection_TYPE _ColDet);
 
     bool IsFreezePosition(AXIS_TYPE _Axis) { return m_FreezePosition[(UINT)_Axis]; }
-    void SetFreezePosition(AXIS_TYPE _Axis, bool _Freeze) { m_FreezePosition[(UINT)_Axis] = _Freeze; }
+    void SetFreezePosition(AXIS_TYPE _Axis, bool _Freeze);
 
     bool IsFreezeRotation(AXIS_TYPE _Axis) { return m_FreezeRotation[(UINT)_Axis]; }
-    void SetFreezeRotation(AXIS_TYPE _Axis, bool _Freeze) { m_FreezeRotation[(UINT)_Axis] = _Freeze; }
+    void SetFreezeRotation(AXIS_TYPE _Axis, bool _Freeze);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -45,11 +45,11 @@ enum class TASK_TYPE
     CLONE_OBJECT,
 
     // Param1 : Object,
-    // Param2 : Event Type - 0 : Respawn, 1 : OnEnable-True, 2 : OnEnable-False
+    // Param2 : Event Type - 0 : Respawn
     PHYSICS2D_EVNET,
 
     // Param1 : Object,
-    // Param2 : Event Type - 0 : Respawn, 1 : OnEnable-True, 2 : OnEnable-False
+    // Param2 : Event Type - 0 : Respawn
     PHYSICS_EVNET,
 
     // Param1 : Level Address

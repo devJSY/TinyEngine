@@ -23,6 +23,25 @@ void CPhysicsTestScript::begin()
 
 void CPhysicsTestScript::tick()
 {
+    if (KEY_TAP(KEY::L))
+    {
+        if (BoxCollider())
+            BoxCollider()->SetEnabled(!BoxCollider()->IsEnabled());
+        if (SphereCollider())
+            SphereCollider()->SetEnabled(!SphereCollider()->IsEnabled());
+        if (CapsuleCollider())
+            CapsuleCollider()->SetEnabled(!CapsuleCollider()->IsEnabled());
+
+        if (BoxCollider2D())
+            BoxCollider2D()->SetEnabled(!BoxCollider2D()->IsEnabled());
+        if (CircleCollider2D())
+            CircleCollider2D()->SetEnabled(!CircleCollider2D()->IsEnabled());
+        if (PolygonCollider2D())
+            PolygonCollider2D()->SetEnabled(!PolygonCollider2D()->IsEnabled());
+        if (EdgeCollider2D())
+            EdgeCollider2D()->SetEnabled(!EdgeCollider2D()->IsEnabled());
+    }
+
     if (nullptr == Rigidbody())
         return;
 

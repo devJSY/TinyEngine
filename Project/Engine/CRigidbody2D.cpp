@@ -114,14 +114,7 @@ void CRigidbody2D::SetVelocity(Vec2 _Velocity)
 void CRigidbody2D::SetSimulated(bool _bSimulated)
 {
     m_bSimulated = _bSimulated;
-
-    if (nullptr == m_RuntimeBody)
-        return;
-
-    if (m_bSimulated)
-        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_TRUE);
-    else
-        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_FALSE);
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
 void CRigidbody2D::SetAutoMass(bool _Use)

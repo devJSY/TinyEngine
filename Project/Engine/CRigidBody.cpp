@@ -212,6 +212,118 @@ void CRigidbody::WakeUp()
     body->wakeUp();
 }
 
+void CRigidbody::SetMass(float _Mass)
+{
+    m_Mass = _Mass;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+    body->setMass(m_Mass);
+}
+
+void CRigidbody::SetDrag(float _Drag)
+{
+    m_Drag = _Drag;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+    body->setLinearDamping(m_Drag);
+}
+
+void CRigidbody::SetAngularDrag(float _Drag)
+{
+    m_AngularDrag = _Drag;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+    body->setAngularDamping(m_AngularDrag);
+}
+
+void CRigidbody::SetUseGravity(bool _bGravity)
+{
+    m_bGravity = _bGravity;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+    body->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, !m_bGravity);
+}
+
+void CRigidbody::SetKinematic(bool _kinematic)
+{
+    m_bKinematic = _kinematic;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+    body->setRigidBodyFlag(physx::PxRigidBodyFlag::eKINEMATIC, m_bKinematic);
+}
+
+void CRigidbody::SetCollisionDetectionType(CollisionDetection_TYPE _ColDet)
+{
+    m_CollisionDetectionType = _ColDet;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+
+    switch (m_CollisionDetectionType)
+    {
+    case CollisionDetection_TYPE::Discrete: {
+        body->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, false);
+        body->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, false);
+    }
+    break;
+    case CollisionDetection_TYPE::Continuous: {
+        body->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
+        body->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, false);
+    }
+    break;
+    case CollisionDetection_TYPE::ContinuousSpecutive: {
+        body->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_CCD, true);
+        body->setRigidBodyFlag(physx::PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
+    }
+    break;
+    }
+}
+
+void CRigidbody::SetFreezePosition(AXIS_TYPE _Axis, bool _Freeze)
+{
+    m_FreezePosition[(UINT)_Axis] = _Freeze;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+
+    body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_X, m_FreezePosition[0]);
+    body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Y, m_FreezePosition[1]);
+    body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_LINEAR_Z, m_FreezePosition[2]);
+}
+
+void CRigidbody::SetFreezeRotation(AXIS_TYPE _Axis, bool _Freeze)
+{
+    m_FreezeRotation[(UINT)_Axis] = _Freeze;
+
+    if (nullptr == m_RuntimeBody)
+        return;
+
+    physx::PxRigidDynamic* body = (physx::PxRigidDynamic*)m_RuntimeBody;
+
+    body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, m_FreezeRotation[0]);
+    body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, m_FreezeRotation[1]);
+    body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, m_FreezeRotation[2]);
+}
+
 void CRigidbody::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Mass, sizeof(float), 1, _File);

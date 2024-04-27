@@ -14,6 +14,9 @@ protected:
     int m_TriggerCount;
 
 private:
+    bool m_bEnabled;
+
+private:
     Vec3 m_PrevScale;
 
 public:
@@ -22,13 +25,17 @@ public:
 
 public:
     bool IsTrigger() const { return m_bTrigger; }
-    void SetTrigger(bool _trigger) { m_bTrigger = _trigger; };
+    void SetTrigger(bool _Trigger);
 
     Ptr<CPhysicMaterial> GetMaterial() const { return m_Mtrl; }
-    void SetMaterial(Ptr<CPhysicMaterial> _Mtrl) { m_Mtrl = _Mtrl; };
+    void SetMaterial(Ptr<CPhysicMaterial> _Mtrl);
 
     Vec3 GetCenter() const { return m_Center; }
     void SetCenter(Vec3 _Center) { m_Center = _Center; };
+
+public:
+    bool IsEnabled() const { return m_bEnabled; };
+    void SetEnabled(bool _bEnabled);
 
 private:
     void OnCollisionEnter(CCollider* _OtherCollider);

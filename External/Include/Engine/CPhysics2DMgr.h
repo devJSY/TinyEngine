@@ -66,7 +66,6 @@ public:
 private:
     void AddPhysicsObject(CGameObject* _GameObject);
     void RemovePhysicsObject(CGameObject* _GameObject);
-    void SetEnabled(CGameObject* _GameObject, bool _bEnable);
 
     friend class CTaskMgr;
     friend class CRigidbody2D;

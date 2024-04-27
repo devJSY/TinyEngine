@@ -275,14 +275,21 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         switch (pRigidbody->m_CollisionDetectionType)
         {
-        case CollisionDetection_TYPE::Discrete:
-            break;
-        case CollisionDetection_TYPE::Continuous:
+        case CollisionDetection_TYPE::Discrete: {
+            dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, false);
+            dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, false);
+        }
+        break;
+        case CollisionDetection_TYPE::Continuous: {
             dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
-            break;
-        case CollisionDetection_TYPE::ContinuousSpecutive:
+            dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, false);
+        }
+        break;
+        case CollisionDetection_TYPE::ContinuousSpecutive: {
+            dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
             dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
-            break;
+        }
+        break;
         }
 
         dynamicRigid->setRigidDynamicLockFlag(PxRigidDynamicLockFlag::eLOCK_LINEAR_X, pRigidbody->m_FreezePosition[0]);
@@ -323,7 +330,9 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
-        if (pBoxCol->IsTrigger())
+        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pBoxCol->m_bEnabled);
+
+        if (pBoxCol->m_bTrigger)
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
             shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
@@ -350,6 +359,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         }
 
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
+
+        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pSphereCol->m_bEnabled);
 
         if (pSphereCol->IsTrigger())
         {
@@ -407,6 +418,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         PxShape* shape = PxRigidActorExt::createExclusiveShape(
             *RigidActor, PxCapsuleGeometry(RadiusScale * pCapsuleCol->m_Radius, HeightScale * (pCapsuleCol->m_Height / 2.f - pCapsuleCol->m_Radius)),
             *pPxMtrl);
+
+        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pCapsuleCol->m_bEnabled);
 
         if (pCapsuleCol->IsTrigger())
         {

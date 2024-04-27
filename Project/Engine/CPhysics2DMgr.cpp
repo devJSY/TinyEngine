@@ -391,11 +391,16 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // 질량 설정
-    if (nullptr != rb2d && !rb2d->m_bAutoMass)
+    if (nullptr != rb2d)
     {
-        b2MassData MassData = b2MassData();
-        MassData.mass = rb2d->m_Mass;
-        body->SetMassData(&MassData);
+        if (!rb2d->m_bAutoMass)
+        {
+            b2MassData MassData = b2MassData();
+            MassData.mass = rb2d->m_Mass;
+            body->SetMassData(&MassData);
+        }
+
+        body->SetEnabled(rb2d->m_bSimulated);
     }
 
     m_vecPhysicsObj.push_back(_GameObject);
@@ -447,44 +452,6 @@ void CPhysics2DMgr::RemovePhysicsObject(CGameObject* _GameObject)
             pc2d->m_RuntimeFixture = nullptr;
         if (nullptr != ec2d)
             ec2d->m_RuntimeFixture = nullptr;
-
-        break;
-    }
-}
-
-void CPhysics2DMgr::SetEnabled(CGameObject* _GameObject, bool _bEnable)
-{
-    if (nullptr == m_PhysicsWorld)
-        return;
-
-    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
-    {
-        if (m_vecPhysicsObj[i] != _GameObject)
-            continue;
-
-        CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
-        CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
-        CCircleCollider2D* cc2d = _GameObject->CircleCollider2D();
-        CPolygonCollider2D* pc2d = _GameObject->PolygonCollider2D();
-        CEdgeCollider2D* ec2d = _GameObject->EdgeCollider2D();
-
-        b2Body* body = nullptr;
-
-        if (nullptr != rb2d)
-            body = (b2Body*)rb2d->m_RuntimeBody;
-        else if (nullptr != bc2d && nullptr != bc2d->m_RuntimeFixture)
-            body = ((b2Fixture*)bc2d->m_RuntimeFixture)->GetBody();
-        else if (nullptr != cc2d && nullptr != cc2d->m_RuntimeFixture)
-            body = ((b2Fixture*)cc2d->m_RuntimeFixture)->GetBody();
-        else if (nullptr != pc2d && nullptr != pc2d->m_RuntimeFixture)
-            body = ((b2Fixture*)pc2d->m_RuntimeFixture)->GetBody();
-        else if (nullptr != ec2d && nullptr != ec2d->m_RuntimeFixture)
-            body = ((b2Fixture*)ec2d->m_RuntimeFixture)->GetBody();
-
-        if (nullptr != body)
-        {
-            body->SetEnabled(_bEnable);
-        }
 
         break;
     }

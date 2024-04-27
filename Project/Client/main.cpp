@@ -4,6 +4,7 @@
 
 #include <Engine\\CEngine.h>
 #include <Engine\\CKeyMgr.h>
+#include <Engine\\CLevelMgr.h>
 
 // Engine
 #ifdef _DEBUG
@@ -68,7 +69,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #ifdef DISTRIBUTE // Engine\\global.h
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::PLAY);
 #else
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::STOP);
+    CLevel* pLevel = CLevelSaveLoad::LoadLevel(L"Default Level.tLevel");
+
+    if (nullptr == pLevel)
+        pLevel = CLevelMgr::GetInst()->CreateNewLevel();
+
+    GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
 #endif // DISTRIBUTE
 
     while (true)

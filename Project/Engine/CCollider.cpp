@@ -12,6 +12,7 @@ CCollider::CCollider(COMPONENT_TYPE _Type)
     , m_Center(Vec3())
     , m_CollisionCount(0)
     , m_TriggerCount(0)
+    , m_bEnabled(true)
     , m_PrevScale(Vec3())
 {
 }
@@ -24,6 +25,7 @@ CCollider::CCollider(const CCollider& origin)
     , m_Center(origin.m_Center)
     , m_CollisionCount(0)
     , m_TriggerCount(0)
+    , m_bEnabled(origin.m_bEnabled)
     , m_PrevScale(Vec3())
 {
 }
@@ -68,6 +70,24 @@ void CCollider::finaltick()
     physx::PxTransform LocalPos = shape->getLocalPose();
     LocalPos.p = m_Center;
     shape->setLocalPose(LocalPos);
+}
+
+void CCollider::SetTrigger(bool _Trigger)
+{
+    m_bTrigger = _Trigger;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+void CCollider::SetMaterial(Ptr<CPhysicMaterial> _Mtrl)
+{
+    m_Mtrl = _Mtrl;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+void CCollider::SetEnabled(bool _bEnabled)
+{
+    m_bEnabled = _bEnabled;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCollider::OnCollisionEnter(CCollider* _OtherCollider)
@@ -125,6 +145,7 @@ void CCollider::SaveToLevelFile(FILE* _File)
     fwrite(&m_bTrigger, sizeof(bool), 1, _File);
     SaveAssetRef(m_Mtrl, _File);
     fwrite(&m_Center, sizeof(Vec3), 1, _File);
+    fwrite(&m_bEnabled, sizeof(bool), 1, _File);
 }
 
 void CCollider::LoadFromLevelFile(FILE* _File)
@@ -132,4 +153,5 @@ void CCollider::LoadFromLevelFile(FILE* _File)
     fread(&m_bTrigger, sizeof(bool), 1, _File);
     LoadAssetRef(m_Mtrl, _File);
     fread(&m_Center, sizeof(Vec3), 1, _File);
+    fread(&m_bEnabled, sizeof(bool), 1, _File);
 }

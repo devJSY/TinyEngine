@@ -725,14 +725,6 @@ void CTaskMgr::PHYSICS2D_EVNET(const tTask& _Task)
         CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
     }
     break;
-    case Physics2D_EVENT_TYPE::SETENABLED_TRUE: {
-        CPhysics2DMgr::GetInst()->SetEnabled(pObj, true);
-    }
-    break;
-    case Physics2D_EVENT_TYPE::SETENABLED_FALSE: {
-        CPhysics2DMgr::GetInst()->SetEnabled(pObj, false);
-    }
-    break;
     }
 }
 

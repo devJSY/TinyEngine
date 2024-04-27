@@ -93,12 +93,7 @@ void CCollider2D::SetEnabled(bool _bEnabled)
     if (nullptr != Rigidbody2D())
         Rigidbody2D()->SetSimulated(m_bEnabled);
     else
-    {
-        if (m_bEnabled)
-            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_TRUE);
-        else
-            GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::SETENABLED_FALSE);
-    }
+        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
 bool CCollider2D::IsCollision(Vec2 _Point)
