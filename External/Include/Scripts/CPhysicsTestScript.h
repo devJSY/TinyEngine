@@ -9,6 +9,7 @@ private:
     int m_ForceMode;
 
 public:
+    virtual void begin() override;
     virtual void tick() override;
 
 private:

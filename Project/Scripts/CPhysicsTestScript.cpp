@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CPhysicsTestScript.h"
+#include <Engine\\CAssetMgr.h>
 
 CPhysicsTestScript::CPhysicsTestScript()
     : CScript(PHYSICSTESTSCRIPT)
@@ -13,6 +14,10 @@ CPhysicsTestScript::CPhysicsTestScript()
 }
 
 CPhysicsTestScript::~CPhysicsTestScript()
+{
+}
+
+void CPhysicsTestScript::begin()
 {
 }
 

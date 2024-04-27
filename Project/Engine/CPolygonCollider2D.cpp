@@ -50,6 +50,11 @@ void CPolygonCollider2D::PointReSize(int _size)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
+void CPolygonCollider2D::begin()
+{
+    CCollider2D::begin();
+}
+
 void CPolygonCollider2D::finaltick()
 {
     CCollider2D::finaltick();

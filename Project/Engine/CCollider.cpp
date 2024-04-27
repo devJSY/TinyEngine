@@ -12,6 +12,7 @@ CCollider::CCollider(COMPONENT_TYPE _Type)
     , m_Center(Vec3())
     , m_CollisionCount(0)
     , m_TriggerCount(0)
+    , m_PrevScale(Vec3())
 {
 }
 
@@ -23,6 +24,7 @@ CCollider::CCollider(const CCollider& origin)
     , m_Center(origin.m_Center)
     , m_CollisionCount(0)
     , m_TriggerCount(0)
+    , m_PrevScale(Vec3())
 {
 }
 
@@ -30,8 +32,21 @@ CCollider::~CCollider()
 {
 }
 
+void CCollider::begin()
+{
+    m_PrevScale = Transform()->GetWorldScale();
+}
+
 void CCollider::finaltick()
 {
+    // 스케일이 변경되었다면 재생성
+    if (m_PrevScale != Transform()->GetWorldScale())
+    {
+        GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+    }
+
+    m_PrevScale = Transform()->GetWorldScale();
+
     if (nullptr == m_RuntimeShape)
         return;
 

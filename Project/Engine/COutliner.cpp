@@ -1377,18 +1377,18 @@ void COutliner::DrawRigidbody(CGameObject* obj)
             "Continuous Specutive",
         };
 
-        static string CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetection()];
+        static string CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetectionType()];
 
-        CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetection()];
+        CurCollisionDetection = vecCollisionDetection[(UINT)pRigidbody->GetCollisionDetectionType()];
 
         if (ImGui_ComboUI(ImGui_LabelPrefix("Collision Detection").c_str(), CurCollisionDetection, vecCollisionDetection))
         {
             if (vecCollisionDetection[0] == CurCollisionDetection)
-                pRigidbody->SetCollisionDetection(CollisionDetection::Discrete);
+                pRigidbody->SetCollisionDetectionType(CollisionDetection_TYPE::Discrete);
             else if (vecCollisionDetection[1] == CurCollisionDetection)
-                pRigidbody->SetCollisionDetection(CollisionDetection::Continuous);
+                pRigidbody->SetCollisionDetectionType(CollisionDetection_TYPE::Continuous);
             else if (vecCollisionDetection[2] == CurCollisionDetection)
-                pRigidbody->SetCollisionDetection(CollisionDetection::ContinuousSpecutive);
+                pRigidbody->SetCollisionDetectionType(CollisionDetection_TYPE::ContinuousSpecutive);
         }
 
         // Constraints

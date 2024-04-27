@@ -652,6 +652,15 @@ void GamePlayStatic::Physics2D_Event(CGameObject* _pObj, Physics2D_EVENT_TYPE _T
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::Physics_Event(CGameObject* _pObj, Physics_EVENT_TYPE _Type)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::PHYSICS_EVNET;
+    task.Param_1 = (DWORD_PTR)_pObj;
+    task.Param_2 = (DWORD_PTR)_Type;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap)
 {
     Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);

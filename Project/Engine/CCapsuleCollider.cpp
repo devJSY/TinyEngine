@@ -14,6 +14,11 @@ CCapsuleCollider::~CCapsuleCollider()
 {
 }
 
+void CCapsuleCollider::begin()
+{
+    CCollider::begin();
+}
+
 void CCapsuleCollider::finaltick()
 {
     CCollider::finaltick();
@@ -56,8 +61,26 @@ void CCapsuleCollider::finaltick()
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
     // PhysX SRT * Transform SRT
-    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), 1.f, 1.f, m_Direction,color,
+    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), 1.f, 1.f, m_Direction, color,
                                      true);
+}
+
+void CCapsuleCollider::SetRadius(float _Radius)
+{
+    m_Radius = _Radius;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+void CCapsuleCollider::SetHeight(float _Height)
+{
+    m_Height = _Height;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+void CCapsuleCollider::SetAxisDirection(AXIS_TYPE _Dir)
+{
+    m_Direction = _Dir;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCapsuleCollider::SaveToLevelFile(FILE* _File)

@@ -36,6 +36,7 @@ public:
     Vec2 GetAdjacentEndPoint() const { return m_AdjacentEndPoint; }
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:

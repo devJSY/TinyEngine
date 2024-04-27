@@ -7,6 +7,7 @@ private:
     float m_Radius;
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:

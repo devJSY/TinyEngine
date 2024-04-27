@@ -14,6 +14,11 @@ CCircleCollider2D::~CCircleCollider2D()
 {
 }
 
+void CCircleCollider2D::begin()
+{
+    CCollider2D::begin();
+}
+
 void CCircleCollider2D::finaltick()
 {
     CCollider2D::finaltick();

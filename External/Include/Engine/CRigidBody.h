@@ -9,7 +9,7 @@ enum class ForceMode
     VelocityChange, // 질량을 무시하고 강체에 즉각적인 속도 변화 추가
 };
 
-enum class CollisionDetection
+enum class CollisionDetection_TYPE
 {
     Discrete,
     Continuous,
@@ -25,7 +25,7 @@ private:
     float m_AngularDrag;
     bool m_bGravity;
     bool m_bKinematic;
-    CollisionDetection m_CollisionDetection;
+    CollisionDetection_TYPE m_CollisionDetectionType;
     bool m_FreezePosition[3];
     bool m_FreezeRotation[3];
 
@@ -70,8 +70,8 @@ public:
     bool IsKinematic() const { return m_bKinematic; }
     void SetKinematic(bool _kinematic) { m_bKinematic = _kinematic; }
 
-    CollisionDetection GetCollisionDetection() { return m_CollisionDetection; }
-    void SetCollisionDetection(CollisionDetection _ColDet) { m_CollisionDetection = _ColDet; }
+    CollisionDetection_TYPE GetCollisionDetectionType() { return m_CollisionDetectionType; }
+    void SetCollisionDetectionType(CollisionDetection_TYPE _ColDet) { m_CollisionDetectionType = _ColDet; }
 
     bool IsFreezePosition(AXIS_TYPE _Axis) { return m_FreezePosition[(UINT)_Axis]; }
     void SetFreezePosition(AXIS_TYPE _Axis, bool _Freeze) { m_FreezePosition[(UINT)_Axis] = _Freeze; }

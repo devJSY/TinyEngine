@@ -61,6 +61,11 @@ void CEdgeCollider2D::SetAdjacentEndPoint(Vec2 _Point)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
+void CEdgeCollider2D::begin()
+{
+    CCollider2D::begin();
+}
+
 void CEdgeCollider2D::finaltick()
 {
     CCollider2D::finaltick();

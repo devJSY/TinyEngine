@@ -273,14 +273,14 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         dynamicRigid->setActorFlag(PxActorFlag::eDISABLE_GRAVITY, !pRigidbody->m_bGravity);
         dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, pRigidbody->m_bKinematic);
 
-        switch (pRigidbody->m_CollisionDetection)
+        switch (pRigidbody->m_CollisionDetectionType)
         {
-        case CollisionDetection::Discrete:
+        case CollisionDetection_TYPE::Discrete:
             break;
-        case CollisionDetection::Continuous:
+        case CollisionDetection_TYPE::Continuous:
             dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, true);
             break;
-        case CollisionDetection::ContinuousSpecutive:
+        case CollisionDetection_TYPE::ContinuousSpecutive:
             dynamicRigid->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD, true);
             break;
         }

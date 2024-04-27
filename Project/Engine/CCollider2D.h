@@ -21,6 +21,7 @@ private:
     Vec3 m_PrevScale;
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:

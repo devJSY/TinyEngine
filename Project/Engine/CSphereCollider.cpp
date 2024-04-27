@@ -12,6 +12,11 @@ CSphereCollider::~CSphereCollider()
 {
 }
 
+void CSphereCollider::begin()
+{
+    CCollider::begin();
+}
+
 void CSphereCollider::finaltick()
 {
     CCollider::finaltick();
@@ -25,6 +30,12 @@ void CSphereCollider::finaltick()
 
     // PhysX SRT * Transform SRT
     GamePlayStatic::DrawDebugSphere(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), color, true);
+}
+
+void CSphereCollider::SetRadius(float _Radius)
+{
+    m_Radius = _Radius;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CSphereCollider::SaveToLevelFile(FILE* _File)

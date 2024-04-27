@@ -7,11 +7,12 @@ private:
     Vec3 m_Size;
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:
     Vec3 GetSize() const { return m_Size; }
-    void SetSize(Vec3 _size) { m_Size = _size; };
+    void SetSize(Vec3 _size);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -303,9 +303,12 @@ enum class LEVEL_STATE
 
 enum class Physics2D_EVENT_TYPE
 {
-    ADD,
-    REMOVE,
     RESPAWN,
     SETENABLED_TRUE,
     SETENABLED_FALSE,
+};
+
+enum class Physics_EVENT_TYPE
+{
+    RESPAWN,
 };

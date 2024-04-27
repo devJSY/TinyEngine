@@ -140,6 +140,9 @@ void CTaskMgr::tick()
         case TASK_TYPE::PHYSICS2D_EVNET:
             PHYSICS2D_EVNET(Task);
             break;
+        case TASK_TYPE::PHYSICS_EVNET:
+            PHYSICS_EVNET(Task);
+            break;
         case TASK_TYPE::CHANGE_LEVEL: {
             // 이벤트중에서 제일 마지막에 처리
             if (m_queueTask.empty())
@@ -717,12 +720,6 @@ void CTaskMgr::PHYSICS2D_EVNET(const tTask& _Task)
 
     switch (type)
     {
-    case Physics2D_EVENT_TYPE::ADD:
-        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
-        break;
-    case Physics2D_EVENT_TYPE::REMOVE:
-        CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
-        break;
     case Physics2D_EVENT_TYPE::RESPAWN: {
         CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
         CPhysics2DMgr::GetInst()->AddPhysicsObject(pObj);
@@ -734,6 +731,21 @@ void CTaskMgr::PHYSICS2D_EVNET(const tTask& _Task)
     break;
     case Physics2D_EVENT_TYPE::SETENABLED_FALSE: {
         CPhysics2DMgr::GetInst()->SetEnabled(pObj, false);
+    }
+    break;
+    }
+}
+
+void CTaskMgr::PHYSICS_EVNET(const tTask& _Task)
+{
+    CGameObject* pObj = (CGameObject*)_Task.Param_1;
+    Physics_EVENT_TYPE type = (Physics_EVENT_TYPE)_Task.Param_2;
+
+    switch (type)
+    {
+    case Physics_EVENT_TYPE::RESPAWN: {
+        CPhysicsMgr::GetInst()->RemovePhysicsObject(pObj);
+        CPhysicsMgr::GetInst()->AddPhysicsObject(pObj);
     }
     break;
     }

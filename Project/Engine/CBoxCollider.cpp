@@ -12,6 +12,11 @@ CBoxCollider::~CBoxCollider()
 {
 }
 
+void CBoxCollider::begin()
+{
+    CCollider::begin();
+}
+
 void CBoxCollider::finaltick()
 {
     CCollider::finaltick();
@@ -25,6 +30,12 @@ void CBoxCollider::finaltick()
 
     // PhysX SRT * Transform SRT
     GamePlayStatic::DrawDebugBox(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), color, true);
+}
+
+void CBoxCollider::SetSize(Vec3 _size)
+{
+    m_Size = _size;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CBoxCollider::SaveToLevelFile(FILE* _File)

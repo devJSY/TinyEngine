@@ -13,6 +13,11 @@ CBoxCollider2D::~CBoxCollider2D()
 {
 }
 
+void CBoxCollider2D::begin()
+{
+    CCollider2D::begin();
+}
+
 void CBoxCollider2D::finaltick()
 {
     CCollider2D::finaltick();

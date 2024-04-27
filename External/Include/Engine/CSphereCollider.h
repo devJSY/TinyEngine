@@ -7,11 +7,12 @@ private:
     float m_Radius;
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:
     float GetRadius() const { return m_Radius; }
-    void SetRadius(float _Radius) { m_Radius = _Radius; };
+    void SetRadius(float _Radius);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

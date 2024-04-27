@@ -8,6 +8,7 @@ private:
     Vec2 m_Size;
     
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:

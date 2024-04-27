@@ -9,17 +9,18 @@ private:
     AXIS_TYPE m_Direction;
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:
     float GetRadius() const { return m_Radius; }
-    void SetRadius(float _Radius) { m_Radius = _Radius; };
+    void SetRadius(float _Radius);
 
     float GetHeight() const { return m_Height; }
-    void SetHeight(float _Height) { m_Height = _Height; };
+    void SetHeight(float _Height);
 
     AXIS_TYPE GetAxisDirection() const { return m_Direction; }
-    void SetAxisDirection(AXIS_TYPE _Dir) { m_Direction = _Dir; };
+    void SetAxisDirection(AXIS_TYPE _Dir);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

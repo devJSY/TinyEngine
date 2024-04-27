@@ -45,8 +45,12 @@ enum class TASK_TYPE
     CLONE_OBJECT,
 
     // Param1 : Object,
-    // Param2 : Event Type - 0 : Add, 1 : Remove, 2 : Regenerate, 3 : OnEnable-True, 4 : OnEnable-False
+    // Param2 : Event Type - 0 : Respawn, 1 : OnEnable-True, 2 : OnEnable-False
     PHYSICS2D_EVNET,
+
+    // Param1 : Object,
+    // Param2 : Event Type - 0 : Respawn, 1 : OnEnable-True, 2 : OnEnable-False
+    PHYSICS_EVNET,
 
     // Param1 : Level Address
     CHANGE_LEVEL,
@@ -87,6 +91,7 @@ private:
     void CHANGE_LAYER(const tTask& _Task);
     void CLONE_OBJECT(const tTask& _Task);
     void PHYSICS2D_EVNET(const tTask& _Task);
+    void PHYSICS_EVNET(const tTask& _Task);
 
     // 제일 마지막에 실행되야하는 이벤트
     void CHANGE_LEVEL(const tTask& _Task);

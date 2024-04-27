@@ -13,6 +13,7 @@ public:
     void PointReSize(int _size);
 
 public:
+    virtual void begin() override;
     virtual void finaltick() override;
 
 public:

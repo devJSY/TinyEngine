@@ -36,6 +36,11 @@ CCollider2D::~CCollider2D()
 {
 }
 
+void CCollider2D::begin()
+{
+    m_PrevScale = Transform()->GetWorldScale();
+}
+
 void CCollider2D::finaltick()
 {
     // 스케일이 변경되었다면 Body 재생성
