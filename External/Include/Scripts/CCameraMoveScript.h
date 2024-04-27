@@ -26,5 +26,6 @@ public:
 
 public:
     CCameraMoveScript();
+    CCameraMoveScript(const CCameraMoveScript& origin);
     virtual ~CCameraMoveScript();
 };

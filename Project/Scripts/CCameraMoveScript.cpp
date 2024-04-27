@@ -8,9 +8,18 @@
 
 CCameraMoveScript::CCameraMoveScript()
     : CScript(CAMERAMOVESCRIPT)
-    , m_CamSpeed(50.f)
+    , m_CamSpeed(10.f)
     , m_bFocus(false)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamSpeed, "Camera Speed");
+}
+
+CCameraMoveScript::CCameraMoveScript(const CCameraMoveScript& origin)
+    : CScript(origin)
+    , m_CamSpeed(origin.m_CamSpeed)
+    , m_bFocus(false)
+{
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CamSpeed, "Camera Speed");
 }
 
 CCameraMoveScript::~CCameraMoveScript()

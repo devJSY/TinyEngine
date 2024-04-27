@@ -47,6 +47,7 @@ class CPhysicsMgr : public CSingleton<CPhysicsMgr>
     SINGLE(CPhysicsMgr);
 
 private:
+    // PhysX
     physx::PxDefaultAllocator m_Allocator;
     physx::PxDefaultErrorCallback m_ErrorCallback;
     physx::PxFoundation* m_Foundation;
@@ -55,12 +56,13 @@ private:
     physx::PxScene* m_Scene;
     physx::PxPvd* m_Pvd;
 
+private:
     vector<CGameObject*> m_vecPhysicsObj;
     CCollisionCallback m_CallbackInst;
     WORD m_Matrix[LAYER_MAX];
 
-    float m_Accumulator;
-    const float m_StepSize;
+    float m_Accumulator;    // DT 누적량
+    const float m_StepSize; // 시뮬레이션 타임 스탭
 
 public:
     void tick();

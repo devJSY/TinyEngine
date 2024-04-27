@@ -15,12 +15,14 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
                                                       PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags,
                                                       const void* constantBlock, PxU32 constantBlockSize)
 {
+    // 트리거 플래그 등록
     if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
     {
         pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
         return PxFilterFlag::eDEFAULT;
     }
 
+    // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
     if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
         pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_CCD |
                     PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
@@ -45,6 +47,7 @@ void CCollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader,
         pColliderB->OnCollisionExit(pColliderA);
     }
 
+    // 충돌 카운트가 남아있는 경우 Stay 상태
     if (pColliderA->m_CollisionCount > 0)
         pColliderA->OnCollisionStay(pColliderB);
     if (pColliderB->m_CollisionCount > 0)
@@ -68,6 +71,7 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
         pColliderB->OnTriggerExit(pColliderA);
     }
 
+    // 충돌 카운트가 남아있는 경우 Stay 상태
     if (pColliderA->m_TriggerCount > 0)
         pColliderA->OnTriggerStay(pColliderB);
     if (pColliderB->m_TriggerCount > 0)
@@ -101,6 +105,7 @@ void CPhysicsMgr::tick()
     if (nullptr == m_Scene || m_vecPhysicsObj.empty())
         return;
 
+    // 시뮬레이션 안정성을 위해 StepSize 단위로 시뮬레이션
     m_Accumulator += DT;
     if (m_Accumulator < m_StepSize)
         return;
@@ -159,9 +164,10 @@ void CPhysicsMgr::OnPhysicsStart()
     sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
-    sceneDesc.filterShader = contactReportFilterShader;
-    sceneDesc.simulationEventCallback = &m_CallbackInst;
-    sceneDesc.flags |= PxSceneFlag::eENABLE_CCD; // CCD Activate
+    sceneDesc.filterShader = contactReportFilterShader;  // 필터 등록
+    sceneDesc.simulationEventCallback = &m_CallbackInst; // 충돌 콜백 등록
+    sceneDesc.flags |= PxSceneFlag::eENABLE_CCD;         // CCD Activate
+
     m_Scene = m_Physics->createScene(sceneDesc);
 
     PxPvdSceneClient* pvdClient = m_Scene->getScenePvdClient();
@@ -215,6 +221,7 @@ void CPhysicsMgr::OnPhysicsStop()
     }
     PX_RELEASE(m_Foundation);
 
+    // Physics Object가 보유하고있던 데이터 초기화
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
         CRigidbody* pRigidbody = m_vecPhysicsObj[i]->Rigidbody();
@@ -248,11 +255,10 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
     if (!IsRunning)
         OnPhysicsStart();
 
-    PxRaycastBuffer HitResult;
-
     PxQueryFilterData filterData = PxQueryFilterData();
     filterData.data.word0 = _LayerMask; // 검사할 레이어 체크
 
+    PxRaycastBuffer HitResult;
     bool status = m_Scene->raycast(_Origin, _Direction.Normalize(), _Distance, HitResult, PxHitFlag::eDEFAULT, filterData);
     if (status)
     {
@@ -297,6 +303,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     CSphereCollider* pSphereCol = _GameObject->SphereCollider();
     CCapsuleCollider* pCapsuleCol = _GameObject->CapsuleCollider();
 
+    // Physics 관련 컴포넌트가 존재하지않는 경우
     if (nullptr == pRigidbody && nullptr == pBoxCol && nullptr == pSphereCol && nullptr == pCapsuleCol)
         return;
 
@@ -304,11 +311,13 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     Vec3 WorldRot = pTr->GetWorldRotation();
     Vec3 WorldScale = pTr->GetWorldScale();
 
+    // 오일러 각 → 쿼터니언 으로 변환하여 적용
     SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
     SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);
     SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
     SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
 
+    // World Space 기준 위치, 회전상태 적용
     PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
 
     PxRigidActor* RigidActor = nullptr;
@@ -362,8 +371,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
     int LayerIdx = _GameObject->GetLayerIdx();
     PxFilterData filterData;
-    filterData.word0 = (1 << LayerIdx);    // word0 = own ID
-    filterData.word1 = m_Matrix[LayerIdx]; // word1 = ID mask to filter pairs that trigger a contact callback
+    filterData.word0 = (1 << LayerIdx);    // 해당 오브젝트의 레이어 번호
+    filterData.word1 = m_Matrix[LayerIdx]; // 필터링을 적용할 테이블
 
     Ptr<CPhysicMaterial> pDefaultMtrl = CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(L"Default Material");
     PxMaterial* DefaultPxMtrl =
@@ -372,6 +381,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     // Box Collider
     if (nullptr != pBoxCol)
     {
+        // Material 생성
         PxMaterial* pPxMtrl = DefaultPxMtrl;
         if (nullptr != pBoxCol->m_Mtrl)
         {
@@ -379,23 +389,29 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
                                                 pBoxCol->m_Mtrl->GetBounciness());
         }
 
+        // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
+        // 콜리이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pBoxCol->m_bEnabled);
 
+        // 트리거
         if (pBoxCol->m_bTrigger)
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
             shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
         }
 
+        // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pBoxCol->GetCenter();
         shape->setLocalPose(LocalPos);
 
+        // 필터링 데이터 적용
         shape->setSimulationFilterData(filterData);
         shape->setQueryFilterData(filterData);
 
+        // UserData 등록
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
     }
@@ -403,6 +419,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     // Sphere Collider
     if (nullptr != pSphereCol)
     {
+        // Material 생성
         PxMaterial* pPxMtrl = DefaultPxMtrl;
         if (nullptr != pSphereCol->m_Mtrl)
         {
@@ -410,23 +427,29 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
                                                 pSphereCol->m_Mtrl->GetBounciness());
         }
 
+        // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
 
+        // 콜리이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pSphereCol->m_bEnabled);
 
+        // 트리거
         if (pSphereCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
             shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
         }
 
+        // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pSphereCol->GetCenter();
         shape->setLocalPose(LocalPos);
 
+        // 필터링 데이터 적용
         shape->setSimulationFilterData(filterData);
         shape->setQueryFilterData(filterData);
 
+        // UserData 등록
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
     }
@@ -441,6 +464,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
                                                 pCapsuleCol->m_Mtrl->GetBounciness());
         }
 
+        // Capsule 기준 축 기준으로 회전 적용
         PxQuat PxrelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 0, 1));
         float RadiusScale = 1.f;
         float HeightScale = 1.f;
@@ -468,37 +492,44 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         break;
         }
 
+        // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(
             *RigidActor, PxCapsuleGeometry(RadiusScale * pCapsuleCol->m_Radius, HeightScale * (pCapsuleCol->m_Height / 2.f - pCapsuleCol->m_Radius)),
             *pPxMtrl);
 
+        // 콜리이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pCapsuleCol->m_bEnabled);
 
+        // 트리거
         if (pCapsuleCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
             shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
         }
 
+        // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pCapsuleCol->GetCenter();
         LocalPos.q = LocalPos.q * PxrelativeQuat;
         shape->setLocalPose(LocalPos);
 
+        // 필터링 데이터 적용
         shape->setSimulationFilterData(filterData);
         shape->setQueryFilterData(filterData);
 
+        // UserData 등록
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;
     }
 
-    // 질량 설정
+    // 설정한 질량 업데이트
     if (nullptr != pRigidbody)
     {
         PxRigidBody* body = (PxRigidBody*)pRigidbody->m_RuntimeBody;
         PxRigidBodyExt::updateMassAndInertia(*body, body->getMass());
     }
 
+    // Physics Object 추가
     RigidActor->userData = (void*)_GameObject;
     m_Scene->addActor(*RigidActor);
     m_vecPhysicsObj.push_back(_GameObject);
@@ -521,6 +552,7 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
 
         PxRigidActor* RigidActor = nullptr;
 
+        // 리지드바디, 콜라이더가 보유한 Actor 탐색
         if (nullptr != pRigidbody)
             RigidActor = (PxRigidActor*)pRigidbody->m_RuntimeBody;
         else if (nullptr != pBoxCol)
@@ -530,11 +562,13 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
         else if (nullptr != pCapsuleCol)
             RigidActor = ((PxShape*)pCapsuleCol->m_RuntimeShape)->getActor();
 
+        // PhysX Scene에서 제거
         if (nullptr != RigidActor)
         {
             m_Scene->removeActor(*RigidActor);
         }
 
+        // vecPhysicsObj에서 제거
         m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
 
         if (nullptr != pRigidbody)

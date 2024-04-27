@@ -92,6 +92,7 @@ void CPhysics2DMgr::tick()
     if (nullptr == m_PhysicsWorld || m_vecPhysicsObj.empty())
         return;
 
+    // 시뮬레이션 안정성을 위해 StepSize 단위로 시뮬레이션
     m_Accumulator += DT;
     if (m_Accumulator < m_StepSize)
         return;
@@ -189,6 +190,7 @@ void CPhysics2DMgr::OnPhysics2DStart()
 
 void CPhysics2DMgr::OnPhysics2DStop()
 {
+    // Physics Object가 보유하고있던 데이터 초기화
     for (size_t i = 0; i < m_vecPhysicsObj.size(); i++)
     {
         CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();

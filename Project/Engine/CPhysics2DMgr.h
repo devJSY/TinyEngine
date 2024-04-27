@@ -30,8 +30,11 @@ class CPhysics2DMgr : public CSingleton<CPhysics2DMgr>
     SINGLE(CPhysics2DMgr);
 
 private:
+    // Box2D
     b2World* m_PhysicsWorld;
     CCollision2DCallback m_CallbackInst;
+
+private:
     vector<CGameObject*> m_vecPhysicsObj;
 
     WORD m_Matrix[LAYER_MAX];
