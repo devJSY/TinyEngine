@@ -40,7 +40,7 @@ void CMeshRender::UpdateData()
 
 void CMeshRender::finaltick()
 {
-    GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 1.f, Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CMeshRender::render()

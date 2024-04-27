@@ -695,6 +695,7 @@ void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
     int OriginLayerIdx = Object->GetLayerIdx();
 
     GamePlayStatic::Physics2D_Event(Object, Physics2D_EVENT_TYPE::RESPAWN);
+    GamePlayStatic::Physics_Event(Object, Physics_EVENT_TYPE::RESPAWN);
     CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(OriginLayerIdx)->DetachGameObject(Object);
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(Object, NextLayerIdx, false);
 }

@@ -549,7 +549,7 @@ CGameObject* CPhysics2DMgr::CollisionCheck(Vec2 _Point)
     return pCollisionObj;
 }
 
-RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, WORD _LayerMask)
+RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, WORD _LayerMask)
 {
     RaycastHit2D Hit;
     Hit.Centroid = _Origin;
@@ -576,16 +576,16 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distanc
 
         b2Fixture* fixture = nullptr;
 
-        if (nullptr != bc2d && bc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+        if (nullptr != bc2d && bc2d->RayCast(_Origin, _Direction, _Distance, Hit))
             break;
 
-        if (nullptr != cc2d && cc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+        if (nullptr != cc2d && cc2d->RayCast(_Origin, _Direction, _Distance, Hit))
             break;
 
-        if (nullptr != pc2d && pc2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+        if (nullptr != pc2d && pc2d->RayCast(_Origin, _Direction, _Distance, Hit))
             break;
 
-        if (nullptr != ec2d && ec2d->RayCast(_Origin, _Dirction, _Distance, Hit))
+        if (nullptr != ec2d && ec2d->RayCast(_Origin, _Direction, _Distance, Hit))
             break;
     }
 
@@ -595,7 +595,7 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distanc
     return Hit;
 }
 
-RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, const wstring& _LayerName)
+RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, const wstring& _LayerName)
 {
     CLayer* pCurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_LayerName);
 
@@ -604,9 +604,9 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distanc
         return RaycastHit2D();
 
     int LayerIdx = pCurLayer->GetLayerIdx();
-    unsigned short LayerMask = 0;
+    WORD LayerMask = 0;
 
     LayerMask |= (1 << LayerIdx);
 
-    return RayCast(_Origin, _Dirction, _Distance, LayerMask);
+    return RayCast(_Origin, _Direction, _Distance, LayerMask);
 }

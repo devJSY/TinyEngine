@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CPhysicsTestScript.h"
 #include <Engine\\CAssetMgr.h>
+#include <Engine\\CPhysicsMgr.h>
 
 CPhysicsTestScript::CPhysicsTestScript()
     : CScript(PHYSICSTESTSCRIPT)
@@ -23,6 +24,11 @@ void CPhysicsTestScript::begin()
 
 void CPhysicsTestScript::tick()
 {
+    // RayCast Test
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 10.f, L"RayCastTest");
+    Vec3 Color = Hit.pCollisionObj == nullptr ? Vec3(0.f, 1.f, 0.f) : Vec3(1.f, 0.f, 0.f);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 10.f, Color, false);
+
     if (KEY_TAP(KEY::L))
     {
         if (BoxCollider())

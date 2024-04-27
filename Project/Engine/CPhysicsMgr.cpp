@@ -235,6 +235,57 @@ void CPhysicsMgr::OnPhysicsStop()
     m_vecPhysicsObj.clear();
 }
 
+RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask)
+{
+    RaycastHit Hit;
+    Hit.Centroid = _Origin;
+    Hit.Distance = 0.f;
+    Hit.Normal = Vec3();
+    Hit.Point = Vec3();
+    Hit.pCollisionObj = nullptr;
+
+    bool IsRunning = nullptr != m_Scene;
+    if (!IsRunning)
+        OnPhysicsStart();
+
+    PxRaycastBuffer HitResult;
+
+    PxQueryFilterData filterData = PxQueryFilterData();
+    filterData.data.word0 = _LayerMask; // 검사할 레이어 체크
+
+    bool status = m_Scene->raycast(_Origin, _Direction.Normalize(), _Distance, HitResult, PxHitFlag::eDEFAULT, filterData);
+    if (status)
+    {
+        PxShape* shape = (PxShape*)HitResult.block.shape;
+
+        Hit.Point = HitResult.block.position;
+        Hit.Distance = (Hit.Point - _Origin).Length();
+        Hit.Normal = HitResult.block.normal;
+        Hit.pCollisionObj = ((CCollider*)shape->userData)->GetOwner();
+    }
+
+    if (!IsRunning)
+        OnPhysicsStop();
+
+    return Hit;
+}
+
+RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, const wstring& _LayerName)
+{
+    CLayer* pCurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_LayerName);
+
+    // 해당이름의 레이어가 존재하지 않는경우
+    if (nullptr == pCurLayer)
+        return RaycastHit();
+
+    int LayerIdx = pCurLayer->GetLayerIdx();
+    WORD LayerMask = 0;
+
+    LayerMask |= (1 << LayerIdx);
+
+    return RayCast(_Origin, _Direction, _Distance, LayerMask);
+}
+
 void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
     if (nullptr == m_Scene)
@@ -343,6 +394,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         shape->setLocalPose(LocalPos);
 
         shape->setSimulationFilterData(filterData);
+        shape->setQueryFilterData(filterData);
 
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
@@ -373,6 +425,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         shape->setLocalPose(LocalPos);
 
         shape->setSimulationFilterData(filterData);
+        shape->setQueryFilterData(filterData);
 
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
@@ -433,6 +486,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         shape->setLocalPose(LocalPos);
 
         shape->setSimulationFilterData(filterData);
+        shape->setQueryFilterData(filterData);
 
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;

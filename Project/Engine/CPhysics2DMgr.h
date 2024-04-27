@@ -57,8 +57,8 @@ public:
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
 
     CGameObject* CollisionCheck(Vec2 _Point);
-    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, WORD _LayerMask = 0xFFFF);
-    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, const wstring& _LayerName);
+    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, WORD _LayerMask = 0xFFFF);
+    RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, const wstring& _LayerName);
 
 public:
     const float GetPPM() const { return m_PPM; }

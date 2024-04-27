@@ -3,19 +3,17 @@
 #include <physx\\PxPhysicsAPI.h>
 #include <physx\\PxSimulationEventCallback.h>
 
-#ifndef PX_RELEASE
-    #define PX_RELEASE(x)                                                                                                                            \
-        if (x)                                                                                                                                       \
-        {                                                                                                                                            \
-            x->release();                                                                                                                            \
-            x = NULL;                                                                                                                                \
-        }
+class CGameObject;
 
-#endif // PX_RELEASE
-
-#ifndef PVD_HOST
-    #define PVD_HOST "127.0.0.1"
-#endif // PVD_HOST
+// RayCast
+struct RaycastHit
+{
+    Vec3 Centroid;              // Raycast 중심 위치
+    float Distance;             // Centroid 에서 부터 Ray를 발사하여 충돌한 지점까지의 거리
+    Vec3 Normal;                // 충돌 표면의 노말벡터
+    Vec3 Point;                 // 충돌 지점의 위치
+    CGameObject* pCollisionObj; // 충돌한 콜라이더 오브젝트
+};
 
 // 충돌 콜백 클래스
 class CCollisionCallback : public physx::PxSimulationEventCallback
@@ -30,7 +28,19 @@ class CCollisionCallback : public physx::PxSimulationEventCallback
     virtual void onAdvance(const physx::PxRigidBody* const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override{};
 };
 
-class CGameObject;
+#ifndef PX_RELEASE
+    #define PX_RELEASE(x)                                                                                                                            \
+        if (x)                                                                                                                                       \
+        {                                                                                                                                            \
+            x->release();                                                                                                                            \
+            x = NULL;                                                                                                                                \
+        }
+
+#endif // PX_RELEASE
+
+#ifndef PVD_HOST
+    #define PVD_HOST "127.0.0.1"
+#endif // PVD_HOST
 
 class CPhysicsMgr : public CSingleton<CPhysicsMgr>
 {
@@ -67,6 +77,9 @@ public:
 
     WORD GetCollisionLayer(UINT idx) const { return m_Matrix[idx]; }
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
+
+    RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask = 0xFFFF);
+    RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, const wstring& _LayerName);
 
 private:
     void AddPhysicsObject(CGameObject* _GameObject);
