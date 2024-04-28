@@ -294,6 +294,9 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
         LayerMask |= (1 << LayerIdx);
     }
 
+    if (0 == LayerMask)
+        return RaycastHit();
+
     return RayCast(_Origin, _Direction, _Distance, LayerMask);
 }
 

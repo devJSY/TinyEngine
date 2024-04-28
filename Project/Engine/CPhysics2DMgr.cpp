@@ -615,5 +615,8 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Direction, float _Distan
         LayerMask |= (1 << LayerIdx);
     }
 
+    if (0 == LayerMask)
+        return RaycastHit2D();
+
     return RayCast(_Origin, _Direction, _Distance, LayerMask);
 }

@@ -1,2 +1,4 @@
 CCameraMoveScript
 CPhysicsTestScript
+CProjectileScript
+CShooterScript

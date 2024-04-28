@@ -20,16 +20,13 @@ CPhysicsTestScript::~CPhysicsTestScript()
 
 void CPhysicsTestScript::begin()
 {
-    if (Rigidbody())
-        Rigidbody()->AddForce(Vec3(0.f, 0.f, 1.f) * 500.f * Rigidbody()->GetMass(), ForceMode::Impulse);
 }
 
 void CPhysicsTestScript::tick()
 {
     //// RayCast Test
     // RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 10.f,
-    //                                                  {L"RayCastTest 1", L"RayCastTest 2", L"RayCastTest 3", L"RayCastTest 4"});
-    // Vec3 Color = Hit.pCollisionObj == nullptr ? Vec3(0.f, 1.f, 0.f) : Vec3(1.f, 0.f, 0.f);
+    // {L"RayCastTest"}); Vec3 Color = Hit.pCollisionObj == nullptr ? Vec3(0.f, 1.f, 0.f) : Vec3(1.f, 0.f, 0.f);
     // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 10.f, Color, false);
 
     // if (KEY_TAP(KEY::L))
@@ -51,86 +48,78 @@ void CPhysicsTestScript::tick()
     //        EdgeCollider2D()->SetEnabled(!EdgeCollider2D()->IsEnabled());
     //}
 
-    // if (nullptr == Rigidbody())
-    //     return;
+    if (nullptr == Rigidbody())
+        return;
 
-    // if (KEY_TAP(KEY::SPACE))
-    //{
-    //     if (0 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddForce(m_Force);
-    //     }
-    //     else if (1 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddForce(m_Force, ForceMode::Acceleration);
-    //     }
-    //     else if (2 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddForce(m_Force, ForceMode::Impulse);
-    //     }
-    //     else if (3 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddForce(m_Force, ForceMode::VelocityChange);
-    //     }
-    // }
-
-    // if (KEY_TAP(KEY::S))
-    //{
-    //     if (0 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddTorque(m_Torque);
-    //     }
-    //     else if (1 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddTorque(m_Torque, ForceMode::Acceleration);
-    //     }
-    //     else if (2 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddTorque(m_Torque, ForceMode::Impulse);
-    //     }
-    //     else if (3 == m_ForceMode)
-    //     {
-    //         Rigidbody()->AddTorque(m_Torque, ForceMode::VelocityChange);
-    //     }
-    // }
-
-    if (KEY_TAP(KEY::SPACE) && Camera())
+    if (KEY_TAP(KEY::SPACE))
     {
-        Ptr<CPrefab> pref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Test.pref", L"prefab\\Test.pref");
-        CGameObject* pObj = pref->Instantiate();
-        pObj->Transform()->SetRelativePos(Transform()->GetWorldPos());
-        GamePlayStatic::SpawnGameObject(pObj, 0);
+        if (0 == m_ForceMode)
+        {
+            Rigidbody()->AddForce(m_Force);
+        }
+        else if (1 == m_ForceMode)
+        {
+            Rigidbody()->AddForce(m_Force, ForceMode::Acceleration);
+        }
+        else if (2 == m_ForceMode)
+        {
+            Rigidbody()->AddForce(m_Force, ForceMode::Impulse);
+        }
+        else if (3 == m_ForceMode)
+        {
+            Rigidbody()->AddForce(m_Force, ForceMode::VelocityChange);
+        }
+    }
+
+    if (KEY_TAP(KEY::S))
+    {
+        if (0 == m_ForceMode)
+        {
+            Rigidbody()->AddTorque(m_Torque);
+        }
+        else if (1 == m_ForceMode)
+        {
+            Rigidbody()->AddTorque(m_Torque, ForceMode::Acceleration);
+        }
+        else if (2 == m_ForceMode)
+        {
+            Rigidbody()->AddTorque(m_Torque, ForceMode::Impulse);
+        }
+        else if (3 == m_ForceMode)
+        {
+            Rigidbody()->AddTorque(m_Torque, ForceMode::VelocityChange);
+        }
     }
 }
 
 void CPhysicsTestScript::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    // LOG(Log, "OnCollisionEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    LOG(Log, "OnCollisionEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnCollisionStay(CCollider* _OtherCollider)
 {
-    // LOG(Log, "OnCollisionStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    LOG(Log, "OnCollisionStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnCollisionExit(CCollider* _OtherCollider)
 {
-    // LOG(Log, "OnCollisionExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    LOG(Log, "OnCollisionExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    // LOG(Log, "OnTriggerEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    LOG(Log, "OnTriggerEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnTriggerStay(CCollider* _OtherCollider)
 {
-    // LOG(Log, "OnTriggerStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    LOG(Log, "OnTriggerStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnTriggerExit(CCollider* _OtherCollider)
 {
-    // LOG(Log, "OnTriggerExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    LOG(Log, "OnTriggerExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::SaveToLevelFile(FILE* _File)

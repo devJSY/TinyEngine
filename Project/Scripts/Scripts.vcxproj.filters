@@ -19,6 +19,12 @@
     <ClInclude Include="CPhysicsTestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CProjectileScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CShooterScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -34,6 +40,12 @@
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
     <ClCompile Include="CPhysicsTestScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CProjectileScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CShooterScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
