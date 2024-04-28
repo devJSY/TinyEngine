@@ -597,18 +597,23 @@ RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Direction, float _Distan
     return Hit;
 }
 
-RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, const wstring& _LayerName)
+RaycastHit2D CPhysics2DMgr::RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, const vector<wstring>& _LayerNames)
 {
-    CLayer* pCurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_LayerName);
-
-    // 해당이름의 레이어가 존재하지 않는경우
-    if (nullptr == pCurLayer)
-        return RaycastHit2D();
-
-    int LayerIdx = pCurLayer->GetLayerIdx();
     WORD LayerMask = 0;
 
-    LayerMask |= (1 << LayerIdx);
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    for (const wstring& LayerName : _LayerNames)
+    {
+        CLayer* pCurLayer = pCurLevel->GetLayer(LayerName);
+
+        // 해당이름의 레이어가 존재하지 않는경우
+        if (nullptr == pCurLayer)
+            continue;
+
+        int LayerIdx = pCurLayer->GetLayerIdx();
+        LayerMask |= (1 << LayerIdx);
+    }
 
     return RayCast(_Origin, _Direction, _Distance, LayerMask);
 }

@@ -81,7 +81,7 @@ public:
     void SetCollisionLayer(UINT idx, UINT row) { m_Matrix[idx] = row; }
 
     RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask = 0xFFFF);
-    RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, const wstring& _LayerName);
+    RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, const vector<wstring>& _LayerNames);
 
 private:
     void AddPhysicsObject(CGameObject* _GameObject);
