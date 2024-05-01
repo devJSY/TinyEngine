@@ -1110,5 +1110,8 @@
     <FxCompile Include="std3d.fx">
       <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
+    <FxCompile Include="skybox.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

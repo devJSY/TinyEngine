@@ -600,6 +600,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\skybox.fx", "VS_SkyBox");
+        pShader->CreatePixelShader(L"shader\\skybox.fx", "PS_SkyBox");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
+
+        pShader->SetName(L"SkyBoxShader");
+        AddAsset(L"SkyBoxShader", pShader);
+    }
+
+    // =================================
+    // SkyBox Shader Version 2
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\SkyboxPS.hlsl", "main");
 
@@ -611,8 +631,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
 
-        pShader->SetName(L"SkyBoxShader");
-        AddAsset(L"SkyBoxShader", pShader);
+        pShader->SetName(L"SkyBoxShader_V2");
+        AddAsset(L"SkyBoxShader_V2", pShader);
     }
 
     // =================================
@@ -1110,6 +1130,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyBoxShader"));
         pMtrl->SetName(L"SkyBoxMtrl");
         AddAsset<CMaterial>(L"SkyBoxMtrl", pMtrl);
+    }
+
+    // SkyBox CubeMap Version 2
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SkyBoxShader_V2"));
+        pMtrl->SetName(L"SkyBoxMtrl");
+        AddAsset<CMaterial>(L"SkyBoxMtrl_V2", pMtrl);
     }
 
     // Directional Light

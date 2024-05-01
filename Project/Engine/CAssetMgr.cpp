@@ -349,7 +349,7 @@ CGameObject* CAssetMgr::LoadModel(const wstring& _name, vector<tMeshData> meshes
         Parts->MeshRender()->SetMesh(pMesh);
         Parts->MeshRender()->SetMaterial(FindAsset<CMaterial>(L"UnrealPBRMtrl"));
 
-        //SetModelMaterial(Parts->GetRenderComponent()->CreateDynamicMaterial(), meshData);
+        SetModelMaterial(Parts->GetRenderComponent()->CreateDynamicMaterial(), meshData);
 
         model->AddChild(Parts);
         ++idx;
