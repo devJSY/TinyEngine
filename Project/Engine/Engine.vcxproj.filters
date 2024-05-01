@@ -325,6 +325,9 @@
     <ClInclude Include="CSphereCollider.h">
       <Filter>08. Component\Collider\SphereCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CMRT.h">
+      <Filter>MRT</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -623,6 +626,9 @@
     </ClCompile>
     <ClCompile Include="CSphereCollider.cpp">
       <Filter>08. Component\Collider\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CMRT.cpp">
+      <Filter>MRT</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -928,6 +934,9 @@
     </Filter>
     <Filter Include="08. Component\Collider\SphereCollider">
       <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MRT">
+      <UniqueIdentifier>{471c873d-6253-47dd-9e76-d63d719086be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -20,7 +20,6 @@
 CEngine::CEngine()
     : m_hMainWnd(nullptr)
     , m_vResolution()
-    , m_ClearColor(Vec4(0.f, 0.f, 0.f, 1.f))
 {
 }
 
@@ -88,9 +87,6 @@ void CEngine::progress()
     // Rendering
     // ===========================
     {
-        // Clear Buffer
-        CDevice::GetInst()->Clear_Buffers(m_ClearColor);
-
         // Level Render
         CRenderMgr::GetInst()->render();
         CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출

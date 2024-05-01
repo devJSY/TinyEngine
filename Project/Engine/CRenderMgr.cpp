@@ -12,10 +12,18 @@
 #include "components.h"
 
 #include "CConstBuffer.h"
+#include "CMRT.h"
 
 CRenderMgr::CRenderMgr()
-    : m_mainCam(nullptr)
+    : m_arrMRT{}
+    , m_mainCam(nullptr)
     , m_EditorCam(nullptr)
+    , m_RTCopyTex(nullptr)
+    , m_IDMapTex(nullptr)
+    , m_IDMapDSTex(nullptr)
+    , m_PostProcessTex_LDRI(nullptr)
+    , m_PostProcessTex_HDRI(nullptr)
+    , m_FloatRTTex(nullptr)
     , m_Light2DBuffer(nullptr)
     , m_Light3DBuffer(nullptr)
     , m_pDebugObj(nullptr)
@@ -45,6 +53,8 @@ CRenderMgr::CRenderMgr()
 
 CRenderMgr::~CRenderMgr()
 {
+    Delete_Array(m_arrMRT);
+
     if (nullptr != m_pDebugObj)
     {
         delete m_pDebugObj;
@@ -114,6 +124,8 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::render()
 {
+    render_clear(Vec4(0.f, 0.f, 0.f, 1.f));
+
     UpdateData();
 
     if (nullptr != m_mainCam)
@@ -133,6 +145,43 @@ void CRenderMgr::render()
     render_debug();
 
     Clear();
+}
+
+void CRenderMgr::render_clear(const Vec4& Color)
+{
+    // MRT Clear
+    for (UINT i = 0; i < (UINT)MRT_TYPE::END; i++)
+    {
+        if (nullptr != m_arrMRT[i])
+        {
+            m_arrMRT[i]->Clear();
+        }
+    }
+
+    CONTEXT->ClearRenderTargetView(m_IDMapTex->GetRTV().Get(), Color);
+    CONTEXT->ClearDepthStencilView(m_IDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    CONTEXT->ClearRenderTargetView(m_PostProcessTex_LDRI->GetRTV().Get(), Color);
+    CONTEXT->ClearRenderTargetView(m_PostProcessTex_HDRI->GetRTV().Get(), Color);
+
+    CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+    CONTEXT->ClearRenderTargetView(m_BloomRTTex_LDRI->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
+
+    for (UINT i = 0; i < m_BloomTextures_LDRI.size(); i++)
+    {
+        CONTEXT->ClearRenderTargetView(m_BloomTextures_LDRI[i]->GetRTV().Get(), Color);
+    }
+
+    for (UINT i = 0; i < m_BlurTextures.size(); i++)
+    {
+        CONTEXT->ClearRenderTargetView(m_BlurTextures[i]->GetRTV().Get(), Color);
+    }
+
+    for (UINT i = 0; i < m_BloomTextures_HDRI.size(); i++)
+    {
+        CONTEXT->ClearRenderTargetView(m_BloomTextures_HDRI[i]->GetRTV().Get(), Color);
+    }
 }
 
 void CRenderMgr::render_play()
@@ -284,8 +333,7 @@ void CRenderMgr::render_postprocess_LDRI()
 
         // Combine
         CopyRTTexToRTCopyTex();
-        CDevice::GetInst()->SetViewport();
-        CDevice::GetInst()->SetRenderTarget();
+        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
         m_CombineObj->render();
         CTexture::Clear(0);
         CTexture::Clear(1);
@@ -308,7 +356,7 @@ void CRenderMgr::render_postprocess_HDRI()
     // =================
     if (m_bBloomEnable)
     {
-        CDevice::GetInst()->SetFloatRenderTarget();
+        m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
         for (int i = 0; i < m_BloomTextures_HDRI.size(); i++)
         {
@@ -345,8 +393,7 @@ void CRenderMgr::render_postprocess_HDRI()
     // =================
     // Tone Mapping + Bloom Combine
     // =================
-    CDevice::GetInst()->SetViewport();
-    CDevice::GetInst()->SetRenderTarget();
+    m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
     m_ToneMappingObj->render();
     CTexture::Clear(0);
     CTexture::Clear(1);
@@ -392,9 +439,13 @@ void CRenderMgr::UpdateData()
 
     // 메인 카메라 위치 등록
     if (nullptr != m_mainCam)
+    {
         g_Global.g_eyeWorld = m_mainCam->Transform()->GetWorldPos();
+    }
     else
+    {
         g_Global.g_eyeWorld = Vec3();
+    }
 
     // 전역 상수 데이터 바인딩
     CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
@@ -468,34 +519,6 @@ CCamera* CRenderMgr::GetCamera(int _Idx) const
     return m_vecCam[_Idx];
 }
 
-void CRenderMgr::Clear_Buffers(const Vec4& Color)
-{
-    CONTEXT->ClearRenderTargetView(m_IDMapTex->GetRTV().Get(), Color);
-    CONTEXT->ClearDepthStencilView(m_IDMapDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-
-    CONTEXT->ClearRenderTargetView(m_PostProcessTex_LDRI->GetRTV().Get(), Color);
-    CONTEXT->ClearRenderTargetView(m_PostProcessTex_HDRI->GetRTV().Get(), Color);
-
-    CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-    CONTEXT->ClearRenderTargetView(m_BloomRTTex_LDRI->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
-
-    for (UINT i = 0; i < m_BloomTextures_LDRI.size(); i++)
-    {
-        CONTEXT->ClearRenderTargetView(m_BloomTextures_LDRI[i]->GetRTV().Get(), Color);
-    }
-
-    for (UINT i = 0; i < m_BlurTextures.size(); i++)
-    {
-        CONTEXT->ClearRenderTargetView(m_BlurTextures[i]->GetRTV().Get(), Color);
-    }
-
-    for (UINT i = 0; i < m_BloomTextures_HDRI.size(); i++)
-    {
-        CONTEXT->ClearRenderTargetView(m_BloomTextures_HDRI[i]->GetRTV().Get(), Color);
-    }
-}
-
 void CRenderMgr::CopyRTTexToRTCopyTex()
 {
     Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
@@ -504,7 +527,8 @@ void CRenderMgr::CopyRTTexToRTCopyTex()
 
 void CRenderMgr::CopyToPostProcessTex_LDRI()
 {
-    CONTEXT->CopyResource(m_PostProcessTex_LDRI->GetTex2D().Get(), CDevice::GetInst()->GetRenderTargetTex()->GetTex2D().Get());
+    Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    CONTEXT->CopyResource(m_PostProcessTex_LDRI->GetTex2D().Get(), pRTTex->GetTex2D().Get());
 }
 
 void CRenderMgr::CopyToPostProcessTex_HDRI()
@@ -561,6 +585,73 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
     }
 }
 
+void CRenderMgr::CreateMRT(Vec2 Resolution)
+{
+    // =============
+    // SwapChain MRT
+    // =============
+    {
+        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex")};
+        Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(arrRTTex, arrClear, 1, DSTex);
+    }
+
+    // =============
+    // HDRI MRT
+    // =============
+    {
+        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture")};
+        Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+        m_arrMRT[(UINT)MRT_TYPE::HDRI] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::HDRI]->Create(arrRTTex, arrClear, 1, DSTex);
+    }
+
+    // ============
+    // Deferred MRT
+    // ============
+    {
+        Ptr<CTexture> arrRTTex[4] = {
+            CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+            CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+            CAssetMgr::GetInst()->CreateTexture(L"NormalTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+            CAssetMgr::GetInst()->CreateTexture(L"DataTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+        };
+
+        Vec4 arrClearColor[4] = {
+            Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 0.f),
+            Vec4(0.f, 0.f, 0.f, 0.f),
+            Vec4(0.f, 0.f, 0.f, 0.f),
+        };
+
+        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 4, DSTex);
+    }
+
+    // =============
+    // IDMap MRT
+    // =============
+    {
+        Ptr<CTexture> arrRTTex[1] = {m_IDMapTex};
+        Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+        Ptr<CTexture> DSTex = m_IDMapDSTex;
+
+        m_arrMRT[(UINT)MRT_TYPE::IDMAP] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::IDMAP]->Create(arrRTTex, arrClear, 1, DSTex);
+    }
+}
+
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 {
     m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
@@ -588,8 +679,14 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
                                             D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
-void CRenderMgr::Resize(Vec2 Resolution)
+void CRenderMgr::Resize_Release()
 {
+    // MRT Texture
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"ColorTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PositionTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"NormalTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DataTargetTex");
+
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
@@ -605,19 +702,22 @@ void CRenderMgr::Resize(Vec2 Resolution)
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BlurTexture " + std::to_wstring(i));
     }
 
+    Delete_Array(m_arrMRT);
     m_RTCopyTex = nullptr;
-    m_IDMapTex = nullptr;
-    m_IDMapDSTex = nullptr;
     m_DepthOnlyTex = nullptr;
     m_PostProcessTex_LDRI = nullptr;
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
+}
 
+void CRenderMgr::Resize(Vec2 Resolution)
+{
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreateDepthOnlyTex(Resolution);
     CreatePostProcessTex(Resolution);
     CreateBloomTextures(Resolution);
+    CreateMRT(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 

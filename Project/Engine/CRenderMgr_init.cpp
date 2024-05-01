@@ -28,6 +28,7 @@ void CRenderMgr::init()
     CreateDepthOnlyTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
+    CreateMRT(vRenderResolution);
 
     // Noise Texture Load
     m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_01.jpg", L"Texture\\noise\\noise_01.jpg"));

@@ -263,6 +263,7 @@ void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
     Vec2 resolution = Vec2(width, height);
     CEngine::GetInst()->SetResolution(resolution);
 
+    CRenderMgr::GetInst()->Resize_Release();
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
 

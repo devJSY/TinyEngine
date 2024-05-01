@@ -18,6 +18,7 @@
 
 #include "CRenderComponent.h"
 #include "CConstBuffer.h"
+#include "CMRT.h"
 
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
@@ -168,11 +169,13 @@ void CCamera::render()
 
     // RenderTarget 설정
     if (m_bHDRI)
-        CDevice::GetInst()->SetFloatRenderTarget();
+    {
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::HDRI)->OMSet();
+    }
     else
-        CDevice::GetInst()->SetRenderTarget_Bloom_LDRI();
-
-    CDevice::GetInst()->SetViewport();
+    {
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+    }
 
     // Main Render Pass
     render(m_vecOpaque);
@@ -181,8 +184,7 @@ void CCamera::render()
 
 #ifndef DISTRIBUTE
     // IDMap Pass
-    CONTEXT->OMSetRenderTargets(1, CRenderMgr::GetInst()->GetIDMapTex()->GetRTV().GetAddressOf(),
-                                CRenderMgr::GetInst()->GetIDMapDSTex()->GetDSV().Get());
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::IDMAP)->OMSet();
     render_IDMap(m_vecOpaque);
     render_IDMap(m_vecMaked);
     render_IDMap(m_vecTransparent);
@@ -190,9 +192,13 @@ void CCamera::render()
 
     // 후처리
     if (m_bHDRI)
+    {
         CRenderMgr::GetInst()->render_postprocess_HDRI();
+    }
     else
+    {
         CRenderMgr::GetInst()->render_postprocess_LDRI();
+    }
 
     render_postprocess();
 
@@ -297,7 +303,7 @@ void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
 
 void CCamera::render_postprocess()
 {
-    CDevice::GetInst()->SetRenderTarget();
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
     for (int i = 0; i < m_vecPostProcess.size(); ++i)
     {

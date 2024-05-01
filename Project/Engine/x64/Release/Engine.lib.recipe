@@ -114,6 +114,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\ShockWaveVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\skybox.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\SkyBoxPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

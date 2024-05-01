@@ -13,7 +13,6 @@ CDevice::CDevice()
     , m_arrBS{}
     , m_arrSS{}
     , m_arrCB{}
-    , m_Viewport{}
 {
 }
 
@@ -116,20 +115,6 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
     return S_OK;
 }
 
-void CDevice::Clear_Buffers(const Vec4& Color)
-{
-    // Render Target
-    m_Context->ClearRenderTargetView(m_RenderTargetTex->GetRTV().Get(), Color);
-    m_Context->ClearRenderTargetView(m_FloatRTTex->GetRTV().Get(), Color);
-    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-
-    CRenderMgr::GetInst()->Clear_Buffers(Color);
-
-    // 기본 렌더타겟 설정
-    SetRenderTarget();
-    SetViewport();
-}
-
 void CDevice::Present()
 {
     m_SwapChain->Present(0, 0);
@@ -145,76 +130,40 @@ void CDevice::Resize(Vec2 resolution)
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthStencilTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"FloatRenderTargetTexture");
 
-    m_RenderTargetTex = nullptr;
-    m_FloatRTTex = nullptr;
-    m_DSTex = nullptr;
-
     m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
 
     CreateBuffer();
     CreateViewport();
 }
 
-void CDevice::SetRenderTarget()
-{
-    m_Context->OMSetRenderTargets(1, m_RenderTargetTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
-}
-
-void CDevice::SetRenderTarget_Bloom_LDRI()
-{
-    Ptr<CTexture> pBloomRTTex = CRenderMgr::GetInst()->GetBloomRTTex_LDRI();
-    ID3D11RenderTargetView* RTVs[2] = {m_RenderTargetTex->GetRTV().Get(), pBloomRTTex->GetRTV().Get()};
-    CONTEXT->OMSetRenderTargets(2, RTVs, m_DSTex->GetDSV().Get());
-}
-
-void CDevice::SetFloatRenderTarget()
-{
-    m_Context->OMSetRenderTargets(1, m_FloatRTTex->GetRTV().GetAddressOf(), m_DSTex->GetDSV().Get());
-}
-
 void CDevice::SetViewport(float _Width, float _Height)
 {
-    if (0 == _Width && 0 == _Height)
-    {
-        CONTEXT->RSSetViewports(1, &m_Viewport);
-    }
-    else
-    {
-        D3D11_VIEWPORT ViewportDesc = {};
+    D3D11_VIEWPORT ViewportDesc = {};
 
-        ViewportDesc.MinDepth = 0;
-        ViewportDesc.MaxDepth = 1.f;
+    ViewportDesc.MinDepth = 0;
+    ViewportDesc.MaxDepth = 1.f;
 
-        ViewportDesc.TopLeftX = 0;
-        ViewportDesc.TopLeftY = 0;
-        ViewportDesc.Width = _Width;
-        ViewportDesc.Height = _Height;
+    ViewportDesc.TopLeftX = 0;
+    ViewportDesc.TopLeftY = 0;
+    ViewportDesc.Width = _Width;
+    ViewportDesc.Height = _Height;
 
-        CONTEXT->RSSetViewports(1, &ViewportDesc);
-    }
-}
-
-void CDevice::ClearDepth(FLOAT _depth)
-{
-    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, _depth, 0);
-}
-
-void CDevice::ClearStencil(UINT8 _stencil)
-{
-    m_Context->ClearDepthStencilView(m_DSTex->GetDSV().Get(), D3D11_CLEAR_STENCIL, 1.f, _stencil);
+    CONTEXT->RSSetViewports(1, &ViewportDesc);
 }
 
 int CDevice::CreateViewport()
 {
-    m_Viewport.MinDepth = 0;
-    m_Viewport.MaxDepth = 1.f;
+    D3D11_VIEWPORT Viewport = {};
 
-    m_Viewport.TopLeftX = 0;
-    m_Viewport.TopLeftY = 0;
-    m_Viewport.Width = m_vRenderResolution.x;
-    m_Viewport.Height = m_vRenderResolution.y;
+    Viewport.MinDepth = 0;
+    Viewport.MaxDepth = 1.f;
 
-    CONTEXT->RSSetViewports(1, &m_Viewport);
+    Viewport.TopLeftX = 0;
+    Viewport.TopLeftY = 0;
+    Viewport.Width = m_vRenderResolution.x;
+    Viewport.Height = m_vRenderResolution.y;
+
+    CONTEXT->RSSetViewports(1, &Viewport);
 
     return S_OK;
 }
@@ -373,18 +322,15 @@ int CDevice::CreateBuffer()
     // RenderTarget 용 텍스쳐 등록
     ComPtr<ID3D11Texture2D> tex2D;
     m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)tex2D.GetAddressOf());
-    m_RenderTargetTex = CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
+    CAssetMgr::GetInst()->CreateTexture(L"RenderTargetTex", tex2D);
 
     // FLOAT RenderTarget
-    m_FloatRTTex = CAssetMgr::GetInst()->CreateTexture(L"FloatRenderTargetTexture", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
-                                                       DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
-                                                       D3D11_USAGE_DEFAULT);
+    CAssetMgr::GetInst()->CreateTexture(L"FloatRenderTargetTexture", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
+                                        DXGI_FORMAT_R16G16B16A16_FLOAT, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 
     // DepthStencil 용도 텍스쳐 생성
-    m_DSTex = CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y,
-                                                  DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
-
-    SetFloatRenderTarget();
+    CAssetMgr::GetInst()->CreateTexture(L"DepthStencilTex", (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
+                                        D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
 
     return S_OK;
 }

@@ -310,3 +310,15 @@ enum class Physics_EVENT_TYPE
 {
     RESPAWN,
 };
+
+enum class MRT_TYPE
+{
+    SWAPCHAIN,
+    HDRI,
+    DEFERRED,
+    DECAL,
+    LIGHT,
+    SHADOW,
+    IDMAP,
+    END,
+};

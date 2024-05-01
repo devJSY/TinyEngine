@@ -3,12 +3,14 @@
 #include "CEditorMgr.h"
 #include "CLevelMgr.h"
 #include "CKeyMgr.h"
+#include "CRenderMgr.h"
 
 #include "CLevel.h"
 #include "components.h"
 #include "CGameObjectEx.h"
 #include "CDevice.h"
 #include "CConstBuffer.h"
+#include "CMRT.h"
 
 CMaterialEditor::CMaterialEditor()
     : CEditor(EDITOR_TYPE::MATERIAL)
@@ -163,8 +165,7 @@ void CMaterialEditor::DrawViewport()
     ImGui::Image((void*)m_ViewportRTTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
 
     // ·»´õÅ¸°Ù ¿ø»óº¹±Í
-    CDevice::GetInst()->SetViewport();
-    CDevice::GetInst()->SetRenderTarget();
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
     for (UINT i = 0; i < TEX_PARAM::TEX_END; i++)
     {
         CTexture::Clear(i);

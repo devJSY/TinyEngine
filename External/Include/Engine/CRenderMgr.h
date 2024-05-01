@@ -6,6 +6,7 @@ class CGameObject;
 class CCamera;
 class CLight2D;
 class CLight3D;
+class CMRT;
 
 class CStructuredBuffer;
 
@@ -14,6 +15,8 @@ class CRenderMgr : public CSingleton<CRenderMgr>
     SINGLE(CRenderMgr);
 
 private:
+    CMRT* m_arrMRT[(UINT)MRT_TYPE::END];
+
     CCamera* m_mainCam;
     vector<CCamera*> m_vecCam;
     CCamera* m_EditorCam;
@@ -67,6 +70,8 @@ private:
     void (CRenderMgr::*RENDER_FUNC)(void);
 
 public:
+    CMRT* GetMRT(MRT_TYPE _type) { return m_arrMRT[(UINT)_type]; }
+
     void RegisterCamera(CCamera* _Cam, int _Idx);
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
 
@@ -98,11 +103,11 @@ public:
     void render();
 
 public:
-    void Clear_Buffers(const Vec4& Color);
-
     void CopyRTTexToRTCopyTex();
     void CopyToPostProcessTex_LDRI();
     void CopyToPostProcessTex_HDRI();
+
+    void Resize_Release();
     void Resize(Vec2 Resolution);
 
     Ptr<CTexture> GetRTCopyTex() const { return m_RTCopyTex; }
@@ -119,12 +124,15 @@ private:
     void CreateDepthOnlyTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
     void CreateBloomTextures(Vec2 Resolution);
+    void CreateMRT(Vec2 Resolution);
 
 public:
     void render_postprocess_LDRI();
     void render_postprocess_HDRI();
 
 private:
+    void render_clear(const Vec4& Color);
+
     void render_play();
     void render_editor();
 
