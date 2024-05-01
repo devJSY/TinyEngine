@@ -358,6 +358,7 @@ void CRenderMgr::render_postprocess_HDRI()
     {
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
+
         for (int i = 0; i < m_BloomTextures_HDRI.size(); i++)
         {
             if (i == 0)

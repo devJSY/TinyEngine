@@ -15,12 +15,15 @@ class CRenderMgr : public CSingleton<CRenderMgr>
     SINGLE(CRenderMgr);
 
 private:
+    // MRT
     CMRT* m_arrMRT[(UINT)MRT_TYPE::END];
 
+    // Camera
     CCamera* m_mainCam;
     vector<CCamera*> m_vecCam;
     CCamera* m_EditorCam;
 
+    // Render Texture
     Ptr<CTexture> m_RTCopyTex;
     Ptr<CTexture> m_IDMapTex;
     Ptr<CTexture> m_IDMapDSTex;
@@ -28,16 +31,16 @@ private:
     Ptr<CTexture> m_PostProcessTex_HDRI;
     Ptr<CTexture> m_FloatRTTex;
 
+    // Light
     CStructuredBuffer* m_Light2DBuffer;
     vector<CLight2D*> m_vecLight2D;
 
     CStructuredBuffer* m_Light3DBuffer;
     vector<CLight3D*> m_vecLight3D;
 
+    // Debug
     list<tDebugShapeInfo> m_DbgShapeInfo;
-
     CGameObject* m_pDebugObj;
-
     bool m_bShowDebugRender;
 
     // NoiseTexture
@@ -70,7 +73,7 @@ private:
     void (CRenderMgr::*RENDER_FUNC)(void);
 
 public:
-    CMRT* GetMRT(MRT_TYPE _type) { return m_arrMRT[(UINT)_type]; }
+    CMRT* GetMRT(MRT_TYPE _type) const { return m_arrMRT[(UINT)_type]; }
 
     void RegisterCamera(CCamera* _Cam, int _Idx);
     void RegisterEditorCamera(CCamera* _Cam) { m_EditorCam = _Cam; }
