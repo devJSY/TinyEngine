@@ -49,6 +49,5 @@ private:
     int CreateDepthStencilState();
     int CreateBlendState();
     int CreateConstBuffer();
-    int CreateViewport();
     int CreateSamplerState();
 };

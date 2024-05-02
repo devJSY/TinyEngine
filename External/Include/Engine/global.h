@@ -1,6 +1,6 @@
 #pragma once
 
-#define DISTRIBUTE // 게임 배포 시 정의
+// #define DISTRIBUTE // 게임 배포 시 정의
 
 #include <stdlib.h>
 #include <Windows.h>

@@ -74,12 +74,6 @@ int CDevice::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
-    if (FAILED(CreateViewport()))
-    {
-        MessageBox(nullptr, L"Viewport 생성 실패", L"Device 초기화 실패", MB_OK);
-        return E_FAIL;
-    }
-
     if (FAILED(CreateConstBuffer()))
     {
         MessageBox(nullptr, L"상수버퍼 생성 실패", L"Device 초기화 실패", MB_OK);
@@ -133,7 +127,6 @@ void CDevice::Resize(Vec2 resolution)
     m_SwapChain->ResizeBuffers(0, (UINT)m_vRenderResolution.x, (UINT)m_vRenderResolution.y, DXGI_FORMAT_UNKNOWN, 0);
 
     CreateBuffer();
-    CreateViewport();
 }
 
 void CDevice::SetViewport(float _Width, float _Height)
@@ -149,23 +142,6 @@ void CDevice::SetViewport(float _Width, float _Height)
     ViewportDesc.Height = _Height;
 
     CONTEXT->RSSetViewports(1, &ViewportDesc);
-}
-
-int CDevice::CreateViewport()
-{
-    D3D11_VIEWPORT Viewport = {};
-
-    Viewport.MinDepth = 0;
-    Viewport.MaxDepth = 1.f;
-
-    Viewport.TopLeftX = 0;
-    Viewport.TopLeftY = 0;
-    Viewport.Width = m_vRenderResolution.x;
-    Viewport.Height = m_vRenderResolution.y;
-
-    CONTEXT->RSSetViewports(1, &Viewport);
-
-    return S_OK;
 }
 
 int CDevice::CreateSamplerState()
