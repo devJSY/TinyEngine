@@ -301,6 +301,42 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Std3DShader", pShader);
     }
 
+    // ====================
+    // Std3D_DeferredShader
+    // ====================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std3d_deferred.fx", "VS_Std3D_Deferred");
+        pShader->CreatePixelShader(L"shader\\std3d_deferred.fx", "PS_Std3D_Deferred");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->SetName(L"Std3D_DeferredShader");
+        AddAsset(L"Std3D_DeferredShader", pShader);
+    }
+
+    // ====================
+    // Merge Deferred Shader
+    // ====================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\merge_deferred.fx", "VS_Merge");
+        pShader->CreatePixelShader(L"shader\\merge_deferred.fx", "PS_Merge");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MERGE);
+
+        pShader->SetName(L"Merge_DeferredShader");
+        AddAsset(L"Merge_DeferredShader", pShader);
+    }
+
     // =================================
     // TileMapShader
     // =================================
@@ -985,12 +1021,28 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"Std2DGlowMtrl", pMtrl);
     }
 
-    // Std3D
+    // Std3DMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3DShader"));
         pMtrl->SetName(L"Std3DMtrl");
         AddAsset<CMaterial>(L"Std3DMtrl", pMtrl);
+    }
+
+    // Std3D_DeferredMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3D_DeferredShader"));
+        pMtrl->SetName(L"Std3D_DeferredMtrl");
+        AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
+    }
+
+    // Merge_DeferredMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Merge_DeferredShader"));
+        pMtrl->SetName(L"Merge_DeferredMtrl");
+        AddAsset<CMaterial>(L"Merge_DeferredMtrl", pMtrl);
     }
 
     // TileMapMtrl

@@ -629,9 +629,9 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
 
         Vec4 arrClearColor[4] = {
             Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 0.f),
-            Vec4(0.f, 0.f, 0.f, 0.f),
-            Vec4(0.f, 0.f, 0.f, 0.f),
+            Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f),
         };
 
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");

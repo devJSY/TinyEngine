@@ -1122,5 +1122,11 @@
     <FxCompile Include="skybox.fx">
       <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
+    <FxCompile Include="std3d_deferred.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="merge_deferred.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

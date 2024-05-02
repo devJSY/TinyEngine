@@ -45,9 +45,13 @@ void CMRT::Create(Ptr<CTexture>* _pArrTex, Vec4* _ClearColor, UINT _RTCount, Ptr
 void CMRT::OMSet()
 {
     if (nullptr != m_DSTex)
+    {
         CONTEXT->OMSetRenderTargets(m_RTCount, m_arrRTView, m_DSTex->GetDSV().Get());
+    }
     else
+    {
         CONTEXT->OMSetRenderTargets(m_RTCount, m_arrRTView, nullptr);
+    }
 
     // ºäÆ÷Æ® ¼³Á¤
     CONTEXT->RSSetViewports(1, &m_tViewPort);

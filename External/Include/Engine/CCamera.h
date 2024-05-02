@@ -35,6 +35,7 @@ private:
     Matrix m_matProj;
 
     // 물체 분류
+    vector<CGameObject*> m_vecDeferred;
     vector<CGameObject*> m_vecOpaque;
     vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
@@ -79,6 +80,7 @@ public:
     void SortObject();
     void render();
     void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
+    void render_clear();
 
 private:
     void render(vector<CGameObject*>& _vecObj);

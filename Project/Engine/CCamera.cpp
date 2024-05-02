@@ -32,6 +32,13 @@ CCamera::CCamera()
     , m_LayerMask(0)
     , m_iCamPriority(-1)
     , m_bHDRI(false)
+    , m_matView()
+    , m_matProj()
+    , m_vecDeferred{}
+    , m_vecOpaque{}
+    , m_vecMaked{}
+    , m_vecTransparent{}
+    , m_vecPostProcess{}
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
@@ -142,6 +149,9 @@ void CCamera::SortObject()
 
             switch (domain)
             {
+            case SHADER_DOMAIN::DOMAIN_DEFERRED:
+                m_vecDeferred.push_back(vecObjects[j]);
+                break;
             case SHADER_DOMAIN::DOMAIN_OPAQUE:
                 m_vecOpaque.push_back(vecObjects[j]);
                 break;
@@ -167,6 +177,10 @@ void CCamera::render()
     g_Transform.matProj = m_matProj;
     g_Transform.matProjInv = m_matProj.Invert();
 
+    // Deferred 물체 렌더링
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
+    render(m_vecDeferred);
+
     // RenderTarget 설정
     if (m_bHDRI)
     {
@@ -176,6 +190,14 @@ void CCamera::render()
     {
         CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
     }
+
+    // Deferred 정보를 SwapChain 으로 병합
+    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+    Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
+
+    pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+    pMtrl->UpdateData();
+    pMesh->render();
 
     // Main Render Pass
     render(m_vecOpaque);
@@ -203,10 +225,7 @@ void CCamera::render()
     render_postprocess();
 
     // Clear
-    m_vecOpaque.clear();
-    m_vecMaked.clear();
-    m_vecTransparent.clear();
-    m_vecPostProcess.clear();
+    render_clear();
 }
 
 void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
@@ -224,11 +243,19 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
     render_DepthOnly(m_vecMaked);
     render_DepthOnly(m_vecTransparent);
 
+    // Clear
+    render_clear();
+
+    CONTEXT->OMSetRenderTargets(0, NULL, NULL);
+}
+
+void CCamera::render_clear()
+{
+    m_vecDeferred.clear();
     m_vecOpaque.clear();
     m_vecMaked.clear();
     m_vecTransparent.clear();
-
-    CONTEXT->OMSetRenderTargets(0, NULL, NULL);
+    m_vecPostProcess.clear();
 }
 
 void CCamera::render(vector<CGameObject*>& _vecObj)
