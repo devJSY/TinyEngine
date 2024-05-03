@@ -20,6 +20,13 @@ struct PS_IN
     float3 vTangentWorld : TANGENT;
 };
 
+struct tLightColor
+{
+    float4 vAmbient; // 기본 색상
+    float4 vDiffuse; // 램버트 코사인
+    float4 vSpecular; // 반사광 
+};
+
 struct tLightInfo
 {
     float4 vRadiance; // 빛이 나가는 강도 
@@ -39,7 +46,7 @@ struct tLightInfo
     
     row_major Matrix viewMat;
     row_major Matrix projMat;
-    row_major Matrix invProj; 
+    row_major Matrix invProj;
     
     int ShadowType; // 0 : Static , 1 : Dynamic
     float HaloRadius;

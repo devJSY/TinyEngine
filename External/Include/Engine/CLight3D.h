@@ -12,6 +12,9 @@ private:
 
     CGameObjectEx* m_pLightCam; // 광원 시점용 카메라
 
+    Ptr<CMesh> m_VolumeMesh;
+    Ptr<CMaterial> m_LightMtrl;
+
 public:
     virtual void finaltick() override;
 
@@ -54,6 +57,7 @@ public:
     void SetShadowIdx(int _Idx) { m_ShadowIdx = _Idx; }
 
 public:
+    void render_Deferred(int _LightIdx);
     void render_LightDepth();
 
 private:

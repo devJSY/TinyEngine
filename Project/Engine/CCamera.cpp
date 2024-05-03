@@ -19,6 +19,7 @@
 #include "CRenderComponent.h"
 #include "CConstBuffer.h"
 #include "CMRT.h"
+#include "CLight3D.h"
 
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
@@ -181,6 +182,8 @@ void CCamera::render()
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render(m_vecDeferred);
 
+    render_Light();
+
     // RenderTarget 설정
     if (m_bHDRI)
     {
@@ -191,13 +194,7 @@ void CCamera::render()
         CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
     }
 
-    // Deferred 정보를 SwapChain 으로 병합
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-    Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
-
-    pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-    pMtrl->UpdateData();
-    pMesh->render();
+    render_merge();
 
     // Main Render Pass
     render(m_vecOpaque);
@@ -226,6 +223,28 @@ void CCamera::render()
 
     // Clear
     render_clear();
+}
+
+void CCamera::render_Light()
+{
+    // Light MRT 로 변경
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
+
+    // 광원이 자신의 영향범위에 있는 Deferred 물체에 빛을 남긴다.
+    const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetvecLight3D();
+    for (UINT Idx = 0; Idx < vecLight3D.size(); ++Idx)
+    {
+        vecLight3D[Idx]->render_Deferred(Idx);
+    }
+}
+
+void CCamera::render_merge()
+{
+    static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+    static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
+
+    pMtrl->UpdateData();
+    pMesh->render();
 }
 
 void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)

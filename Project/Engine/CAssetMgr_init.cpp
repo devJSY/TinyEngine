@@ -315,8 +315,29 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
+        pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
+        pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
+
         pShader->SetName(L"Std3D_DeferredShader");
         AddAsset(L"Std3D_DeferredShader", pShader);
+    }
+
+    // ====================
+    // DirLight_deferredShader
+    // ====================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\light_deferred.fx", "VS_DirLight");
+        pShader->CreatePixelShader(L"shader\\light_deferred.fx", "PS_DirLight");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"DirLight_deferredShader");
+        AddAsset(L"DirLight_deferredShader", pShader);
     }
 
     // ====================
@@ -1035,6 +1056,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3D_DeferredShader"));
         pMtrl->SetName(L"Std3D_DeferredMtrl");
         AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
+    }
+
+    // DirLight_deferredMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DirLight_deferredShader"));
+        pMtrl->SetName(L"DirLight_deferredMtrl");
+        AddAsset<CMaterial>(L"DirLight_deferredMtrl", pMtrl);
     }
 
     // Merge_DeferredMtrl

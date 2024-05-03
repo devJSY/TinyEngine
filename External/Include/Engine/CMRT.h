@@ -20,6 +20,9 @@ public:
     void OMSet();
     void Clear();
 
+    Ptr<CTexture> GetRenderTargetTex(UINT _Idx) const { return m_arrRTTex[_Idx]; }
+    Ptr<CTexture> GetDepthStencilTex() const { return m_DSTex; }
+
     CLONE_DISABLE(CMRT);
 
 public:

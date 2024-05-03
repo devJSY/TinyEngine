@@ -1128,5 +1128,8 @@
     <FxCompile Include="merge_deferred.fx">
       <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
+    <FxCompile Include="light_deferred.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

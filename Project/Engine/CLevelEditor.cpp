@@ -20,6 +20,7 @@
 #include "CLevel.h"
 #include "CLayer.h"
 #include "CScript.h"
+#include "CMRT.h"
 
 #include "CLevelSaveLoad.h"
 #include "CMaterialEditor.h"
@@ -44,6 +45,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowPhysics2DMgr(false)
     , m_bShowPhysicsMgr(false)
     , m_bShowTagsAndLayers(false)
+    , m_bShowMRT(false)
     , m_bShowEditor{}
     , m_PlayButtonTex(nullptr)
     , m_SimulateButtonTex(nullptr)
@@ -195,6 +197,9 @@ void CLevelEditor::render()
     if (m_bShowTagsAndLayers)
         render_TagsAndLayers();
 
+    if (m_bShowMRT)
+        render_MRT();
+
     //// ImGUI Demo
     // bool show_demo_window = true;
     // if (show_demo_window)
@@ -308,6 +313,9 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Tags & Layers", NULL, m_bShowTagsAndLayers))
                 m_bShowTagsAndLayers = !m_bShowTagsAndLayers;
+
+            if (ImGui::MenuItem("Multi Render Target", NULL, m_bShowMRT))
+                m_bShowMRT = !m_bShowMRT;
 
             ImGui::EndMenu();
         }
@@ -993,6 +1001,38 @@ void CLevelEditor::render_TagsAndLayers()
         }
 
         ImGui::TreePop();
+    }
+
+    ImGui::End();
+}
+
+void CLevelEditor::render_MRT()
+{
+    ImGui_SetWindowClass(GetEditorType());
+    if (!ImGui::Begin("Multi Render Target", &m_bShowMRT))
+    {
+        ImGui::End();
+        return;
+    }
+
+    CMRT* pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED);
+
+    for (UINT i = 0; i < 8; i++)
+    {
+        Ptr<CTexture> pTex = pMRT->GetRenderTargetTex(i);
+        if (nullptr == pTex)
+            continue;
+
+        ImGui::Image((void*)pTex->GetSRV().Get(), ImVec2(200.f, 200.f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+        if (i % 2 == 0)
+            ImGui::SameLine();
+    }
+
+    Ptr<CTexture> pDSTex = pMRT->GetDepthStencilTex();
+    if (nullptr != pDSTex)
+    {
+        ImGui::Image((void*)pDSTex->GetSRV().Get(), ImVec2(200.f, 200.f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+        ImGui::SameLine();
     }
 
     ImGui::End();

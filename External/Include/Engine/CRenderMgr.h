@@ -121,6 +121,9 @@ public:
     Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
     Ptr<CTexture> GetBloomRTTex_LDRI() const { return m_BloomRTTex_LDRI; }
 
+    const vector<CLight2D*>& GetvecLight2D() const { return m_vecLight2D; }
+    const vector<CLight3D*>& GetvecLight3D() const { return m_vecLight3D; }
+
 private:
     void CreateRTCopyTex(Vec2 Resolution);
     void CreateIDMapTex(Vec2 Resolution);

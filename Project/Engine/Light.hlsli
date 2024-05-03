@@ -116,7 +116,7 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
 }
 
 
-void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, inout tLightInfo _LightColor)
+void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, inout tLightColor _LightColor)
 {
     // 광원의 정보를 확인
     tLightInfo Light = g_Light3D[_LightIdx];
@@ -165,7 +165,9 @@ void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, in
     float ReflectPow = saturate(dot(-vEye, vReflect));
     ReflectPow = pow(ReflectPow, 20.f);
     
-    _LightColor.vRadiance += MtrlAlbedo + (MtrlDiffuse * Light.vRadiance * LightPow * fDistanceRatio) + (MtrlSpecular * Light.vRadiance * ReflectPow);
+    _LightColor.vAmbient += MtrlAlbedo;
+    _LightColor.vDiffuse += MtrlDiffuse * Light.vRadiance * LightPow * fDistanceRatio;
+    _LightColor.vSpecular += MtrlSpecular * Light.vRadiance * ReflectPow;
 }
 
 // =======================================================================================

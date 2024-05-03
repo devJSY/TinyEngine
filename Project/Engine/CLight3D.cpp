@@ -14,6 +14,8 @@ CLight3D::CLight3D()
     , m_Info{}
     , m_ShadowIdx(-1)
     , m_pLightCam(nullptr)
+    , m_VolumeMesh(nullptr)
+    , m_LightMtrl(nullptr)
 {
     m_Info.vRadiance = Vec4(1.f, 1.f, 1.f, 1.f);
 
@@ -41,6 +43,8 @@ CLight3D::CLight3D()
     m_pLightCam->Camera()->SetNear(1.f);
     m_pLightCam->Camera()->SetFar(10000.f);
     m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
+
+    SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
 CLight3D::CLight3D(const CLight3D& origin)
@@ -88,6 +92,25 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 {
     m_Info.LightType = (int)_type;
 
+    if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+    {
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
+    }
+
+    else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+    {
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
+    }
+
+    else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
+    {
+        // m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh");
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl");
+    }
+
+    // Mesh Render ¼³Á¤
     if (nullptr == GetOwner() || nullptr == MeshRender())
         return;
 
@@ -99,6 +122,28 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl"));
+}
+
+void CLight3D::render_Deferred(int _LightIdx)
+{
+    if (nullptr == m_LightMtrl || nullptr == m_VolumeMesh)
+    {
+        return;
+    }
+
+    m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, _LightIdx);
+
+    if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+    {
+        m_LightMtrl->UpdateData();
+        m_VolumeMesh->render();
+    }
+    else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+    {
+    }
+    else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
+    {
+    }
 }
 
 void CLight3D::render_LightDepth()

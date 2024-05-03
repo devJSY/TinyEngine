@@ -79,6 +79,8 @@ public:
 
     void SortObject();
     void render();
+    void render_Light();
+    void render_merge();
     void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
     void render_clear();
 
