@@ -3,10 +3,24 @@
 
 #include "global.hlsli"
 
+#define SpecularIBLTex g_SpecularCube
+#define IrradianceIBLTex g_DiffuseCube 
+
+#define MtrlDiffuse g_vDiffuse
+#define MtrlSpecular g_vSpecular
+ 
 // ===============
 // Merge Shader
 // MRT : SwapChain
 // Mesh : RectMesh
+
+// Parameter
+// g_tex_0 : ColorTargetTex
+// g_tex_1 : LightRadianceTargetTex
+// g_tex_2 : PositionTargetTex
+// g_tex_3 : NormalTargetTex
+// g_tex_4 : DiffuseTargetTex
+// g_tex_5 : SpecularTargetTex
 // ===============
 
 struct VS_Input
@@ -39,6 +53,23 @@ float4 PS_Merge(VS_Output _in) : SV_Target
     float4 vRadiance = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV);
         
     vOutColor = vColor + vRadiance;
+    
+    // IBL
+    float3 vWorldPosition = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV).xyz;
+    float3 vWorldNormal = normalize(g_tex_3.Sample(g_LinearWrapSampler, _in.vUV).xyz);
+    
+    float3 toEye = normalize(g_eyeWorld - vWorldPosition);
+    
+    float4 diffuse = float4(0.0, 0.0, 0.0, 0.0);
+    float4 specular = float4(0.0, 0.0, 0.0, 0.0);
+    
+    diffuse = IrradianceIBLTex.Sample(g_LinearWrapSampler, vWorldNormal);
+    diffuse.xyz *= g_tex_4.Sample(g_LinearWrapSampler, _in.vUV).xyz;
+    
+    specular = SpecularIBLTex.Sample(g_LinearWrapSampler, reflect(-toEye, vWorldNormal));
+    specular.xyz *= g_tex_5.Sample(g_LinearWrapSampler, _in.vUV).xyz;
+
+    vOutColor += diffuse + specular;
     vOutColor.a = 1.f;
     
     return vOutColor;

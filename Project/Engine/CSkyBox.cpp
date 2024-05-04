@@ -8,8 +8,8 @@
 
 CSkyBox::CSkyBox()
     : CRenderComponent(COMPONENT_TYPE::SKYBOX)
-    , m_Type(SKYBOX_TYPE::IBLBaker)
-    , m_Shape(SKYBOX_SHAPE::SPHERE)
+    , m_Type(SKYBOX_TYPE::moonless)
+    , m_Shape(SKYBOX_SHAPE::BOX)
 {
     SetType(m_Type);
     SetShape(m_Shape);

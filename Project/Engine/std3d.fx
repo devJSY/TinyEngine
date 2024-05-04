@@ -5,6 +5,9 @@
 #include "struct.hlsli"
 #include "Light.hlsli"
 
+#define SpecularIBLTex g_SpecularCube
+#define IrradianceIBLTex g_DiffuseCube 
+
 #define MtrlAlbedo g_vAlbedo
 #define MtrlDiffuse g_vDiffuse
 #define MtrlSpecular g_vSpecular
@@ -66,6 +69,21 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
     }
         
     vOutColor = ObjectColor + LightColor.vRadiance;
+    
+    // IBL
+    float3 toEye = normalize(g_eyeWorld - _in.vPosWorld);
+    
+    float4 diffuse = float4(0.0, 0.0, 0.0, 0.0);
+    float4 specular = float4(0.0, 0.0, 0.0, 0.0);
+    
+    diffuse = IrradianceIBLTex.Sample(g_LinearWrapSampler, vWorldNormal);
+    diffuse.xyz *= MtrlDiffuse.xyz;
+    
+    specular = SpecularIBLTex.Sample(g_LinearWrapSampler, reflect(-toEye, vWorldNormal));
+    specular.xyz *= MtrlSpecular.xyz;
+    
+    vOutColor += diffuse + specular;
+
     vOutColor.a = 1.f;
     
     return vOutColor;
