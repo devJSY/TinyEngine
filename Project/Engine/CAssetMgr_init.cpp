@@ -1045,6 +1045,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3DShader"));
+        pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
         pMtrl->SetName(L"Std3DMtrl");
         AddAsset<CMaterial>(L"Std3DMtrl", pMtrl);
     }
@@ -1053,6 +1054,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Std3D_DeferredShader"));
+        pMtrl->SetMaterialCoefficient(Vec4(), Vec4(0.5f, 0.5f, 0.5f, 1.f), Vec4(0.5f, 0.5f, 0.5f, 1.f), 0.f, 0.f, Vec4());
         pMtrl->SetName(L"Std3D_DeferredMtrl");
         AddAsset<CMaterial>(L"Std3D_DeferredMtrl", pMtrl);
     }

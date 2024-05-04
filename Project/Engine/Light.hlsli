@@ -133,15 +133,15 @@ void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, fl
     }
     else if (LIGHT_POINT == info.LightType)
     {
-        float3 lightVec = info.vWorldPos - _vWorldPos;
+        lightVec = info.vWorldPos - _vWorldPos;
 
         float d = length(lightVec);
         lightVec /= d;
 
         if (d < info.fallOffEnd)
         {
-            float ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
-            float3 lightStrength = info.vRadiance.rgb * ndotl;
+            ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
+            lightStrength = info.vRadiance.rgb * ndotl;
 
             float att = CalcAttenuation(d, info.fallOffStart, info.fallOffEnd);
             lightStrength *= att;
@@ -149,15 +149,15 @@ void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, fl
     }
     else if (LIGHT_SPOT == info.LightType)
     {
-        float3 lightVec = info.vWorldPos - _vWorldPos;
+        lightVec = info.vWorldPos - _vWorldPos;
 
         float d = length(lightVec);
         lightVec /= d;
 
         if (d < info.fallOffEnd)
         {
-            float ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
-            float3 lightStrength = info.vRadiance.rgb * ndotl;
+            ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
+            lightStrength = info.vRadiance.rgb * ndotl;
 
             float att = CalcAttenuation(d, info.fallOffStart, info.fallOffEnd);
             lightStrength *= att;

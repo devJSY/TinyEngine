@@ -35,23 +35,22 @@ PS_IN VS_DirLight(VS_IN _in)
 
 float4 PS_DirLight(PS_IN _in) : SV_Target
 {
-    // PositionTarget 에서 현재 호출된 픽셀쉐이더랑 동일한 지점에 접근해서 좌표값을 확인
     float4 vWorldPos = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
     
-    // Deferred 단계에서 그려진게 없다면 빛을 줄 수 없다.
-    if (!any(vWorldPos))
+    // x,y,z 전부 0이라면 discard
+    if (!any(vWorldPos.xyz))
+    {
         discard;
+    }
     
-    // 해당 지점의 Normal 값을 가져온다.
     float3 vWorldNormal = normalize(g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).xyz);
     float3 vDiffuse = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV).xyz;
     float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, _in.vUV).xyz;
        
-    // 해당 지점이 받을 빛의 세기를 구한다.
     tLightInfo LightColor = (tLightInfo) 0.f;
     CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
         
-    LightColor.vRadiance = 1.f;
+    LightColor.vRadiance.a = 1.f;
     
     return LightColor.vRadiance;
 }

@@ -53,9 +53,12 @@ CLight3D::CLight3D(const CLight3D& origin)
     , m_DepthMapTex(nullptr)
     , m_ShadowIdx(-1)
     , m_pLightCam(nullptr)
+    , m_VolumeMesh(origin.m_VolumeMesh)
+    , m_LightMtrl(origin.m_LightMtrl)
 {
     CreateDepthMapTex();
     m_pLightCam = origin.m_pLightCam->Clone();
+    SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
 CLight3D::~CLight3D()
@@ -100,14 +103,14 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
     }
 
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
-        // m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl");
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
     }
 
     // Mesh Render ¼³Á¤
@@ -126,24 +129,14 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 
 void CLight3D::render_Deferred(int _LightIdx)
 {
-    if (nullptr == m_LightMtrl || nullptr == m_VolumeMesh)
+    if (nullptr == m_VolumeMesh || nullptr == m_LightMtrl)
     {
         return;
     }
 
     m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, _LightIdx);
-
-    if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
-    {
-        m_LightMtrl->UpdateData();
-        m_VolumeMesh->render();
-    }
-    else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
-    {
-    }
-    else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
-    {
-    }
+    m_LightMtrl->UpdateData();
+    m_VolumeMesh->render();
 }
 
 void CLight3D::render_LightDepth()
