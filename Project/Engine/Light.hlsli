@@ -116,58 +116,65 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
 }
 
 
-void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, inout tLightColor _LightColor)
+void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, float3 _Diffuse, float3 _Specular, inout tLightInfo _LightColor)
 {
     // 광원의 정보를 확인
-    tLightInfo Light = g_Light3D[_LightIdx];
-           
-    // 광원이 물체를 향하는 방향벡터
-    float3 vWorldLightDir = (float3) 0.f;
+    tLightInfo info = g_Light3D[_LightIdx];
     
-    float fDistanceRatio = 1.f;
+    float3 lightVec = (float3) 0.f;
+    float ndotl = (float) 0.f;
+    float3 lightStrength = (float3) 0.f;
     
-    // Directional Light
-    if (LIGHT_DIRECTIONAL == Light.LightType)
+    if (LIGHT_DIRECTIONAL == info.LightType)
     {
-        vWorldLightDir = normalize(Light.vWorldDir);
+        lightVec = -info.vWorldDir;
+        ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
+        lightStrength = info.vRadiance.rgb * ndotl;
+    }
+    else if (LIGHT_POINT == info.LightType)
+    {
+        float3 lightVec = info.vWorldPos - _vWorldPos;
+
+        float d = length(lightVec);
+        lightVec /= d;
+
+        if (d < info.fallOffEnd)
+        {
+            float ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
+            float3 lightStrength = info.vRadiance.rgb * ndotl;
+
+            float att = CalcAttenuation(d, info.fallOffStart, info.fallOffEnd);
+            lightStrength *= att;
+        }
+    }
+    else if (LIGHT_SPOT == info.LightType)
+    {
+        float3 lightVec = info.vWorldPos - _vWorldPos;
+
+        float d = length(lightVec);
+        lightVec /= d;
+
+        if (d < info.fallOffEnd)
+        {
+            float ndotl = max(dot(lightVec, _vWorldNormal), 0.0f);
+            float3 lightStrength = info.vRadiance.rgb * ndotl;
+
+            float att = CalcAttenuation(d, info.fallOffStart, info.fallOffEnd);
+            lightStrength *= att;
+
+            float spotFactor = pow(max(-dot(lightVec, info.vWorldDir), 0.0f), info.spotPower);
+            lightStrength *= spotFactor;
+        }
     }
     
-    // Point Light
-    if (LIGHT_POINT == Light.LightType)
-    {
-        vWorldLightDir = _vWorldPos - Light.vWorldPos;
-        
-        // 광원과 물체 사이의 거리
-        float fDistance = length(vWorldLightDir);
-        vWorldLightDir = normalize(vWorldLightDir);
-                
-        // 광원 반경과 물체까지의 거리에 따른 빛의 세기        
-        fDistanceRatio = saturate(1.f - (fDistance / Light.fRadius));
-    }
+    // BlinnPhong
+    float3 toEye = normalize(g_eyeWorld - _vWorldPos);
+    float3 halfway = normalize(toEye + lightVec);
+    float hdotn = dot(halfway, _vWorldNormal);
+    float shininess = 1.f;
+    float3 specular = _Specular * pow(max(hdotn, 0.0f), shininess * 2.0);
     
-    // Spot Light
-    if (LIGHT_SPOT == Light.LightType)
-    {
-        
-    }
-   
-    // 광원의 방향과, 물체 표면의 법선를 이용해서 광원의 진입 세기(Diffuse) 를 구한다.
-    float LightPow = saturate(dot(_vWorldNormal, -vWorldLightDir));
-            
-    // 빛이 표면에 진입해서 반사되는 방향을 구한다.
-    float3 vReflect = vWorldLightDir + 2 * dot(-vWorldLightDir, _vWorldNormal) * _vWorldNormal;
-    vReflect = normalize(vReflect);
-    
-    // 카메라가 물체를 향하는 방향
-    float3 vEye = normalize(_vWorldPos - g_eyeWorld);
-    
-    // 시선벡터와 반사벡터 내적, 반사광의 세기
-    float ReflectPow = saturate(dot(-vEye, vReflect));
-    ReflectPow = pow(ReflectPow, 20.f);
-    
-    _LightColor.vAmbient += MtrlAlbedo;
-    _LightColor.vDiffuse += MtrlDiffuse * Light.vRadiance * LightPow * fDistanceRatio;
-    _LightColor.vSpecular += MtrlSpecular * Light.vRadiance * ReflectPow;
+    _LightColor.vRadiance.rgb += (_Diffuse + specular) * lightStrength;
 }
 
 // =======================================================================================
@@ -179,14 +186,11 @@ void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightInfo _output)
     // 빛을 적용시킬 광원의 정보
     tLightInfo info = g_Light2D[_LightIdx];
     
-    // Directional Light
-    if (0 == info.LightType)
+    if (LIGHT_DIRECTIONAL == info.LightType)
     {
         _output.vRadiance += info.vRadiance;
     }
-    
-    // Point Light
-    else if (1 == info.LightType)
+    else if (LIGHT_POINT == info.LightType)
     {
         float fAttenu = 1.f;
         
@@ -209,9 +213,7 @@ void CalLight2D(float3 _WorldPos, uint _LightIdx, inout tLightInfo _output)
             _output.vRadiance += info.vRadiance * fAttenu;
         }
     }
-    
-    // Spot Light
-    else
+    else if (LIGHT_SPOT == info.LightType)
     {
         float2 LightToPixel = normalize(_WorldPos.xy - info.vWorldPos.xy);
         float Theta = dot(info.vWorldDir.xy, LightToPixel);

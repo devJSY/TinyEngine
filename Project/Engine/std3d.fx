@@ -5,6 +5,10 @@
 #include "struct.hlsli"
 #include "Light.hlsli"
 
+#define MtrlAlbedo g_vAlbedo
+#define MtrlDiffuse g_vDiffuse
+#define MtrlSpecular g_vSpecular
+
 PS_IN VS_Std3D(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
@@ -27,18 +31,18 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
     float4 vOutColor = float4(0.f, 0.f, 0.f, 1.f);
     
     // 물체 색상
-    float4 ObjectColor = float4(0.f, 0.f, 0.f, 1.f);
+    float4 ObjectColor = MtrlAlbedo;
     
     // 출력 텍스쳐가 바인딩 되어있다면, 텍스쳐의 색상을 사용한다.
     if (g_btex_0)
     {
-        ObjectColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        ObjectColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
     }
    
     float3 vWorldNormal = _in.normalWorld;
     
     // 노말 텍스쳐가 바인딩 되어있다면, 노말맵핑을 진행한다.
-    if (g_btex_1 && g_int_0)
+    if (g_btex_1)
     {
         // 색상의 범위는 0~1 이지만, 저장된 값은 방향벡터를 뜻하기 때문에 원래 의도한 값으로 바꾸기 위해서
         // 값의 0 ~ 1 범위를 -1.f ~ 1.f 로 변경한다.
@@ -54,14 +58,15 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
         vWorldNormal = normalize(mul(vNormal.xyz, TBN));
     }
     
-    tLightColor LightColor = (tLightColor) 0.f;
+    tLightInfo LightColor = (tLightInfo) 0.f;
     
     for (uint i = 0; i < g_Light3DCount; ++i)
     {
-        CalculateLight3D(i, _in.vPosWorld, vWorldNormal, LightColor);
+        CalculateLight3D(i, _in.vPosWorld, vWorldNormal, MtrlDiffuse.rgb, MtrlSpecular.rgb, LightColor);
     }
         
-    vOutColor.rgb = (ObjectColor * LightColor.vAmbient + LightColor.vDiffuse + LightColor.vSpecular).rgb;
+    vOutColor = ObjectColor + LightColor.vRadiance;
+    vOutColor.a = 1.f;
     
     return vOutColor;
 }

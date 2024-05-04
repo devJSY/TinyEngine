@@ -293,9 +293,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-        pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Lighting Type, 0 : Gouraud, 1 : Phong");
-        pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
-        pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
+        pShader->AddTexParam(TEX_0, "Ambient Texture");
+        pShader->AddTexParam(TEX_1, "Normal Texture");
 
         pShader->SetName(L"Std3DShader");
         AddAsset(L"Std3DShader", pShader);
@@ -315,8 +314,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-        pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture");
-        pShader->AddTexParam(TEX_PARAM::TEX_1, "Normal Texture");
+        pShader->AddTexParam(TEX_0, "Ambient Texture");
+        pShader->AddTexParam(TEX_1, "Normal Texture");
 
         pShader->SetName(L"Std3D_DeferredShader");
         AddAsset(L"Std3D_DeferredShader", pShader);

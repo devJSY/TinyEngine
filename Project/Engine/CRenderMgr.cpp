@@ -616,7 +616,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
     // Deferred MRT
     // ============
     {
-        Ptr<CTexture> arrRTTex[4] = {
+        Ptr<CTexture> arrRTTex[6] = {
             CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
@@ -625,48 +625,45 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
-        };
-
-        Vec4 arrClearColor[4] = {
-            Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f),
-        };
-
-        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
-
-        m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 4, DSTex);
-
-        Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
-    }
-
-    // ============
-    // Light MRT
-    // ============
-    {
-        Ptr<CTexture> arrRTTex[2] = {
             CAssetMgr::GetInst()->CreateTexture(L"DiffuseTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"SpecularTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
         };
 
-        Vec4 arrClearColor[2] = {
-            Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f),
+        Vec4 arrClearColor[6] = {
+            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
         };
 
+        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 6, DSTex);
+
+        Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+    }
+
+    // ============
+    // Light MRT
+    // ============
+    {
+        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->CreateTexture(L"LightRadianceTargetTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                                         DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                                         D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT)};
+
+        Vec4 arrClearColor[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+
         m_arrMRT[(UINT)MRT_TYPE::LIGHT] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(arrRTTex, arrClearColor, 2, nullptr);
+        m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(arrRTTex, arrClearColor, 1, nullptr);
 
         Ptr<CMaterial> pMerge_DeferredMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
         pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
         pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[0]);
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[1]);
     }
 
     // =============
@@ -719,6 +716,8 @@ void CRenderMgr::Resize_Release()
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DiffuseTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"SpecularTargetTex");
+
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LightRadianceTargetTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");

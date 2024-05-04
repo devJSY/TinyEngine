@@ -19,6 +19,8 @@
 // g_int_0 : Light Idex
 // g_tex_0 : PositionTargetTex
 // g_tex_1 : NormalTargetTex
+// g_tex_2 : DiffuseTargetTex
+// g_tex_3 : SpecularTargetTex
 // ========================
 
 PS_IN VS_DirLight(VS_IN _in)
@@ -31,16 +33,8 @@ PS_IN VS_DirLight(VS_IN _in)
     return output;
 }
 
-struct PS_OUT
+float4 PS_DirLight(PS_IN _in) : SV_Target
 {
-    float4 vDiffuse : SV_Target0;
-    float4 vSpecular : SV_Target1;
-};
-
-PS_OUT PS_DirLight(PS_IN _in)
-{
-    PS_OUT output = (PS_OUT) 0.f;
-        
     // PositionTarget 에서 현재 호출된 픽셀쉐이더랑 동일한 지점에 접근해서 좌표값을 확인
     float4 vWorldPos = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
     
@@ -50,18 +44,16 @@ PS_OUT PS_DirLight(PS_IN _in)
     
     // 해당 지점의 Normal 값을 가져온다.
     float3 vWorldNormal = normalize(g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).xyz);
+    float3 vDiffuse = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV).xyz;
+    float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, _in.vUV).xyz;
        
     // 해당 지점이 받을 빛의 세기를 구한다.
-    tLightColor LightColor = (tLightColor) 0.f;
-    CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, LightColor);
+    tLightInfo LightColor = (tLightInfo) 0.f;
+    CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
         
-    output.vDiffuse = LightColor.vDiffuse;
-    output.vSpecular = LightColor.vSpecular;
+    LightColor.vRadiance = 1.f;
     
-    output.vDiffuse.a = 1.f;
-    output.vSpecular.a = 1.f;
-    
-    return output;
+    return LightColor.vRadiance;
 }
 
 #endif

@@ -284,12 +284,12 @@ float4 main(PS_IN input) : SV_TARGET
         float3 lightVec = float3(0.f, 0.f, 0.f);
         float3 representativePoint = float3(0.f, 0.f, 0.f);
         
-        if (g_Light3D[i].LightType == LIGHT_DIRECTIONAL)
+        if (LIGHT_DIRECTIONAL == g_Light3D[i].LightType)
         {
             lightVec = -g_Light3D[i].vWorldDir;
             representativePoint = g_Light3D[i].vWorldPos;
         }
-        else if (g_Light3D[i].LightType == LIGHT_POINT)
+        else if (LIGHT_POINT == g_Light3D[i].LightType)
         {
             // SphereLight 
             float3 L = g_Light3D[i].vWorldPos - input.vPosWorld;
@@ -301,7 +301,7 @@ float4 main(PS_IN input) : SV_TARGET
             representativePoint += input.vPosWorld;
             lightVec = representativePoint - input.vPosWorld;
         }
-        else if (g_Light3D[i].LightType == LIGHT_SPOT)
+        else if (LIGHT_SPOT == g_Light3D[i].LightType)
         {
             lightVec = g_Light3D[i].vWorldPos - input.vPosWorld;
             representativePoint = g_Light3D[i].vWorldPos;
@@ -323,7 +323,7 @@ float4 main(PS_IN input) : SV_TARGET
         // Sphere Normalization
         float alpha = roughness * roughness;
         float alphaPrime = roughness;
-        if (g_Light3D[i].LightType == LIGHT_POINT) // Point Light의 경우에만 Sphere Light 적용
+        if (LIGHT_POINT == g_Light3D[i].LightType) // Point Light의 경우에만 Sphere Light 적용
         {
             alphaPrime = saturate(alpha + g_Light3D[i].fRadius / (2.0 * lightDist));
         }

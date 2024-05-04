@@ -20,13 +20,6 @@ struct PS_IN
     float3 vTangentWorld : TANGENT;
 };
 
-struct tLightColor
-{
-    float4 vAmbient; // 기본 색상
-    float4 vDiffuse; // 램버트 코사인
-    float4 vSpecular; // 반사광 
-};
-
 struct tLightInfo
 {
     float4 vRadiance; // 빛이 나가는 강도 

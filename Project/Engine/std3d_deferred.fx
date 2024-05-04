@@ -4,7 +4,9 @@
 #include "global.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
-
+#define MtrlDiffuse g_vDiffuse
+#define MtrlSpecular g_vSpecular
+ 
 PS_IN VS_Std3D_Deferred(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
@@ -25,6 +27,8 @@ struct PS_OUT
     float4 vPosition : SV_Target1;
     float4 vNormal : SV_Target2;
     float4 vEmissive : SV_Target3;
+    float4 vDiffuse : SV_Target4;
+    float4 vSpecular : SV_Target5;
 };
 
 PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
@@ -58,6 +62,8 @@ PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
         
     output.vNormal = float4(vWorldNormal, 1.f);
     output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
+    output.vDiffuse = MtrlDiffuse;
+    output.vSpecular = MtrlSpecular;
         
     return output;
 }

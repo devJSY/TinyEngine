@@ -36,10 +36,9 @@ float4 PS_Merge(VS_Output _in) : SV_Target
     float4 vOutColor = (float4) 0.f;
     
     float4 vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
-    float4 vDiffuse = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV);
-    float4 Specular = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV);
+    float4 vRadiance = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV);
         
-    vOutColor = vColor + vDiffuse + Specular;
+    vOutColor = vColor + vRadiance;
     vOutColor.a = 1.f;
     
     return vOutColor;
