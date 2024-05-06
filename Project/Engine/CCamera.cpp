@@ -356,8 +356,8 @@ void CCamera::render_postprocess()
         // 최종 렌더링 이미지를 후처리 타겟에 복사
         CRenderMgr::GetInst()->CopyToPostProcessTex_LDRI();
 
-        // 복사받은 후처리 텍스쳐를 t14 레지스터에 바인딩
-        CRenderMgr::GetInst()->GetPostProcessTex_LDRI()->UpdateData(14);
+        // 복사받은 후처리 텍스쳐를 t15 레지스터에 바인딩
+        CRenderMgr::GetInst()->GetPostProcessTex_LDRI()->UpdateData(15);
 
         // 후처리 오브젝트 렌더링
         m_vecPostProcess[i]->render();

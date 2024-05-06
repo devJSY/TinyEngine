@@ -164,6 +164,9 @@
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRVS.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBR_Deferred.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

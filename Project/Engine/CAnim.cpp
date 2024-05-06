@@ -67,8 +67,8 @@ void CAnim::UpdateData()
     pCB->SetData(&data);
     pCB->UpdateData();
 
-    // 아틀라스 텍스쳐 t10 에 바인딩
-    m_AtlasTex->UpdateData(10);
+    // 아틀라스 텍스쳐 t12 에 바인딩
+    m_AtlasTex->UpdateData(12);
 }
 
 void CAnim::Clear()

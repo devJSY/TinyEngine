@@ -3,6 +3,7 @@
 
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "disksample.hlsli"
 
 #define NormalTex g_tex_2
 

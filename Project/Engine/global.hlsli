@@ -62,6 +62,8 @@ cbuffer MATERIAL_CONST : register(b1)
     int g_btex_3;
     int g_btex_4;
     int g_btex_5;
+    int g_btex_6;
+    int g_btex_7;
     
     int g_btexcube_0;
     int g_btexcube_1;
@@ -106,21 +108,23 @@ Texture2D g_tex_2 : register(t2);
 Texture2D g_tex_3 : register(t3);
 Texture2D g_tex_4 : register(t4);
 Texture2D g_tex_5 : register(t5);
+Texture2D g_tex_6 : register(t6);
+Texture2D g_tex_7 : register(t7);
 
-TextureCube g_texCube_0 : register(t6);
-TextureCube g_texCube_1 : register(t7);
+TextureCube g_texCube_0 : register(t8);
+TextureCube g_texCube_1 : register(t9);
 
-Texture2DArray g_texArr_0 : register(t8);
-Texture2DArray g_texArr_1 : register(t9);
+Texture2DArray g_texArr_0 : register(t10);
+Texture2DArray g_texArr_1 : register(t11);
 
-Texture2D g_anim2d_tex : register(t10);
+Texture2D g_anim2d_tex : register(t12);
 
-StructuredBuffer<tLightInfo> g_Light2D : register(t11);
-StructuredBuffer<tLightInfo> g_Light3D : register(t12);
+StructuredBuffer<tLightInfo> g_Light2D : register(t13);
+StructuredBuffer<tLightInfo> g_Light3D : register(t14);
 
-Texture2D g_postprocess_Tex : register(t14);
+Texture2D g_postprocess_Tex : register(t15);
 
-Texture2D g_NoiseTex : register(t15);
+Texture2D g_NoiseTex : register(t16);
 
 Texture2D g_BRDFTex : register(t17);
 TextureCube g_DiffuseCube : register(t18);

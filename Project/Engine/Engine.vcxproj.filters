@@ -1134,5 +1134,20 @@
     <FxCompile Include="light_deferred.fx">
       <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredPS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredLightingVS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredLightingPS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredMergeVS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredMergePS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -222,6 +222,8 @@ enum TEX_PARAM
     TEX_3,
     TEX_4,
     TEX_5,
+    TEX_6,
+    TEX_7,
 
     TEXCUBE_0,
     TEXCUBE_1,
