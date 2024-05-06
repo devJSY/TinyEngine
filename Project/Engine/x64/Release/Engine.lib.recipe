@@ -159,10 +159,25 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\ToneMappingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRDeferredLightingVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRDeferredMergePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRDeferredMergeVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRDeferredPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRDeferredLightingPS.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

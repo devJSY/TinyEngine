@@ -15,7 +15,7 @@
 // Mesh : RectMesh
 
 // Parameter
-// g_tex_0 : ColorTargetTex
+// g_tex_0 : AlbedoTargetTex
 // g_tex_1 : LightRadianceTargetTex
 // g_tex_2 : PositionTargetTex
 // g_tex_3 : NormalTargetTex
@@ -49,10 +49,10 @@ float4 PS_Merge(VS_Output _in) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
     
-    float4 vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+    float4 vAlbedo = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
     float4 vRadiance = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV);
         
-    vOutColor = vColor + vRadiance;
+    vOutColor = vAlbedo + vRadiance;
     
     // IBL
     float3 vWorldPosition = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV).xyz;

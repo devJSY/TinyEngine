@@ -8,7 +8,6 @@ class CLight3D : public CComponent
 private:
     tLightInfo m_Info;
     Ptr<CTexture> m_DepthMapTex;
-    int m_ShadowIdx; // Dynamic Light의 경우 그림자가 적용되는 광원의 번호
 
     CGameObjectEx* m_pLightCam; // 광원 시점용 카메라
 
@@ -53,8 +52,8 @@ public:
 
     Ptr<CTexture> GetDepthMapTex() const { return m_DepthMapTex; }
 
-    int GetShadowIdx() const { return m_ShadowIdx; }
-    void SetShadowIdx(int _Idx) { m_ShadowIdx = _Idx; }
+    int GetShadowIdx() const { return m_Info.ShadowIndex; }
+    void SetShadowIdx(int _Idx) { m_Info.ShadowIndex = _Idx; }
 
 public:
     void render_Deferred(int _LightIdx);

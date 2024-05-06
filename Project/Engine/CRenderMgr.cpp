@@ -402,33 +402,30 @@ void CRenderMgr::render_postprocess_HDRI()
 
 void CRenderMgr::render_LightDepth()
 {
-    // 그림자 적용 광원 최대갯수설정
-    int dynamicShadowMaxCount = 3;
-
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
-        m_vecLight3D[i]->SetShadowIdx(-1); // 초기화
-
-        if (dynamicShadowMaxCount <= 0)
-            break;
-
-        const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
-        if (!info.ShadowType)
+        int ShadowIndex = m_vecLight3D[i]->GetShadowIdx();
+        if (0 > ShadowIndex)
             continue;
 
         // Rendering
-        m_vecLight3D[i]->SetShadowIdx(3 - dynamicShadowMaxCount);
         m_vecLight3D[i]->render_LightDepth();
 
-        // Binding
-        if (3 == dynamicShadowMaxCount)
+        // Bind
+        if (1 == ShadowIndex)
+        {
             m_vecLight3D[i]->GetDepthMapTex()->UpdateData(23);
-        else if (2 == dynamicShadowMaxCount)
+        }
+        else if (2 == ShadowIndex)
+        {
             m_vecLight3D[i]->GetDepthMapTex()->UpdateData(24);
-        else if (1 == dynamicShadowMaxCount)
+        }
+        else if (3 == ShadowIndex)
+        {
             m_vecLight3D[i]->GetDepthMapTex()->UpdateData(25);
+        }
 
-        dynamicShadowMaxCount--;
+        ShadowIndex--;
     }
 }
 
@@ -457,7 +454,7 @@ void CRenderMgr::UpdateData()
     // Light2D
     static vector<tLightInfo> vecLight2DInfo;
 
-    for (size_t i = 0; i < m_vecLight2D.size(); ++i)
+    for (UINT i = 0; i < m_vecLight2D.size(); ++i)
     {
         const tLightInfo& info = m_vecLight2D[i]->GetLightInfo();
         vecLight2DInfo.push_back(info);
@@ -471,8 +468,20 @@ void CRenderMgr::UpdateData()
     // Light3D
     static vector<tLightInfo> vecLight3DInfo;
 
-    for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+    // 그림자 적용 광원 최대갯수
+    const int dynamicShadowMaxCount = 3;
+    int ShadowIdx = 1;
+
+    for (UINT i = 0; i < m_vecLight3D.size(); ++i)
     {
+        m_vecLight3D[i]->SetShadowIdx(-1); // 초기화
+
+        if (ShadowIdx <= dynamicShadowMaxCount && 0 < m_vecLight3D[i]->GetShadowType())
+        {
+            m_vecLight3D[i]->SetShadowIdx(ShadowIdx);
+            ShadowIdx++;
+        }
+
         const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
         vecLight3DInfo.push_back(info);
     }
@@ -617,7 +626,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
     // ============
     {
         Ptr<CTexture> arrRTTex[8] = {
-            CAssetMgr::GetInst()->CreateTexture(L"ColorTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+            CAssetMgr::GetInst()->CreateTexture(L"AlbedoTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
@@ -645,18 +654,20 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
         m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 8, DSTex);
 
+        // PBR
+        Ptr<CMaterial> pPBRDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
+
+        // Phong
         Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
-
-        Ptr<CMaterial> pPBRDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
-        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
-        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
-        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[6]);
-        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[7]);
     }
 
     // ============
@@ -672,22 +683,24 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         m_arrMRT[(UINT)MRT_TYPE::LIGHT] = new CMRT;
         m_arrMRT[(UINT)MRT_TYPE::LIGHT]->Create(arrRTTex, arrClearColor, 1, nullptr);
 
-        Ptr<CMaterial> pMerge_DeferredMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[0]);
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
-        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_5, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
-
+        // PBR
         Ptr<CMaterial> pPBRDeferredMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl");
-        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"AlbedoTargetTex"));
         pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
         pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
         pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
         pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->FindAsset<CTexture>(L"MetallicRoughnessTargetTex"));
         pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_5, CAssetMgr::GetInst()->FindAsset<CTexture>(L"AmbientOcclusionTargetTex"));
         pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_6, arrRTTex[0]);
+
+        // Phong
+        Ptr<CMaterial> pMerge_DeferredMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
+        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"AlbedoTargetTex"));
+        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[0]);
+        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
+        pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_5, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
     }
 
     // =============
@@ -733,7 +746,7 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
 void CRenderMgr::Resize_Release()
 {
     // MRT Texture
-    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"ColorTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"AlbedoTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PositionTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"NormalTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"EmissiveTargetTex");

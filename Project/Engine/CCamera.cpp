@@ -204,6 +204,7 @@ void CCamera::render()
 #ifndef DISTRIBUTE
     // IDMap Pass
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::IDMAP)->OMSet();
+    render_IDMap(m_vecDeferred);
     render_IDMap(m_vecOpaque);
     render_IDMap(m_vecMaked);
     render_IDMap(m_vecTransparent);
@@ -241,8 +242,8 @@ void CCamera::render_Light()
 void CCamera::render_merge()
 {
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-    //static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl");
+    //static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
 
     pMtrl->UpdateData();
     pMesh->render();
@@ -259,6 +260,7 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
     CONTEXT->OMSetRenderTargets(0, NULL, _DepthMapTex->GetDSV().Get());
     CDevice::GetInst()->SetViewport((float)_DepthMapTex->GetWidth(), (float)_DepthMapTex->GetHeight());
 
+    render_DepthOnly(m_vecDeferred);
     render_DepthOnly(m_vecOpaque);
     render_DepthOnly(m_vecMaked);
     render_DepthOnly(m_vecTransparent);
@@ -306,15 +308,21 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
             // NormalLine Pass
             Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
             if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+            {
                 pSelectedObj->render(NormalLineMtrl);
+            }
 
             // OutLine Pass
             if (g_Global.g_RenderOutline)
             {
                 if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
+                {
                     pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
+                }
                 else
+                {
                     pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+                }
             }
         }
 #endif // DISTRIBUTE

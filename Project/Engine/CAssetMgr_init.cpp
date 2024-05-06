@@ -1220,7 +1220,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
+        pMtrl->SetScalarParam(FLOAT_0, 0.f); // HeightScale
         pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
 
         pMtrl->SetName(L"UnrealPBRMtrl");
@@ -1231,7 +1231,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
+        pMtrl->SetScalarParam(FLOAT_0, 0.f); // HeightScale
         pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
 
         pMtrl->SetName(L"UnrealPBRDeferredMtrl");

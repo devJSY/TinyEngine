@@ -14,7 +14,6 @@
 #define InvertNormalMapY g_int_0
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
-static int ShadowLightCount = 3; // 그림자가 적용될 광원의 최대갯수
 static float LightRadiusScale = 0.01f;
 
 // 보는 각도에 따라서 색이나 밝기가 달라 짐
@@ -212,7 +211,7 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
     // Shadow map
     float shadowFactor = 1.0;
 
-    if (0 < ShadowLightCount && 1 == light.ShadowType)
+    if (0 < light.ShadowIndex)
     {
         const float nearZ = 1.f; // 카메라 설정과 동일
         
@@ -231,14 +230,18 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
         
         // PCSS
         float bias = 0.001f;
-        if (3 == ShadowLightCount)
+        if (1 == light.ShadowIndex)
+        {
             shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
-        else if (2 == ShadowLightCount)
+        }
+        else if (2 == light.ShadowIndex)
+        {
             shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * LightRadiusScale);
-        else if (1 == ShadowLightCount)
+        }
+        else if (3 == light.ShadowIndex)
+        {
             shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
-        
-        ShadowLightCount -= 1;
+        }
     }
 
     float3 radiance = light.vRadiance.rgb * spotFator * att * shadowFactor;
@@ -262,7 +265,7 @@ void DirectLighting(int _LightIdx, float3 _WorldPos, float3 _NormalWorld, float3
     }
     else if (LIGHT_POINT == LightInfo.LightType)
     {
-            // SphereLight 
+        // SphereLight 
         float3 L = LightInfo.vWorldPos - _WorldPos;
         float3 r = normalize(reflect(g_eyeWorld - _WorldPos, _NormalWorld));
         float3 centerToRay = dot(L, r) * r - L;

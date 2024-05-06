@@ -12,7 +12,6 @@
 CLight3D::CLight3D()
     : CComponent(COMPONENT_TYPE::LIGHT3D)
     , m_Info{}
-    , m_ShadowIdx(-1)
     , m_pLightCam(nullptr)
     , m_VolumeMesh(nullptr)
     , m_LightMtrl(nullptr)
@@ -29,6 +28,7 @@ CLight3D::CLight3D()
     m_Info.spotPower = 100.f;
 
     m_Info.ShadowType = 1; // Dynamic Shadow
+    m_Info.ShadowIndex = -1;
 
     CreateDepthMapTex();
 
@@ -51,7 +51,6 @@ CLight3D::CLight3D(const CLight3D& origin)
     : CComponent(origin)
     , m_Info(origin.m_Info)
     , m_DepthMapTex(nullptr)
-    , m_ShadowIdx(-1)
     , m_pLightCam(nullptr)
     , m_VolumeMesh(origin.m_VolumeMesh)
     , m_LightMtrl(origin.m_LightMtrl)
@@ -78,7 +77,7 @@ void CLight3D::finaltick()
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-    // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트 한다.
+    // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트 
     m_pLightCam->Transform()->SetRelativePos(Transform()->GetRelativePos());
     m_pLightCam->Transform()->SetRelativeRotation(Transform()->GetRelativeRotation());
     m_pLightCam->finaltick();
@@ -105,14 +104,14 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
         m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredPointLightingMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
         // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
     }
 
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
         m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
         // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
     }
 
@@ -171,11 +170,9 @@ void CLight3D::CreateDepthMapTex()
 void CLight3D::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
-    fwrite(&m_ShadowIdx, sizeof(int), 1, _File);
 }
 
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
-    fread(&m_ShadowIdx, sizeof(int), 1, _File);
 }

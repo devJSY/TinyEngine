@@ -14,8 +14,6 @@
 
 float4 main(PS_IN input) : SV_Target
 {
-    float4 vOutColor = (float4) 0.f;
-    
     float3 albedo = AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
     float3 vWorldPos = PositionTex.Sample(g_LinearWrapSampler, input.vUV).xyz;
     float3 normalWorld = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
@@ -33,6 +31,6 @@ float4 main(PS_IN input) : SV_Target
     output = float4(ambientLighting + directLighting + emission, 1.f);
     output = clamp(output, 0.0, 1000.0);
     
-    return vOutColor;
+    return output;
 }
 

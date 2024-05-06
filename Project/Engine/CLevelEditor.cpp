@@ -1023,16 +1023,31 @@ void CLevelEditor::render_MRT()
         if (nullptr == pTex)
             continue;
 
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 250);
+        ImGui::Spacing();
+        ImGui::Dummy(ImVec2(0.f, 75.f));
+        ImGui::Text(ToString(pTex->GetKey()).c_str());
+        ImGui::NextColumn();
+
         ImGui::Image((void*)pTex->GetSRV().Get(), ImVec2(200.f, 200.f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
-        if (i % 2 == 0)
-            ImGui::SameLine();
+
+        ImGui::Columns(1);
     }
 
     Ptr<CTexture> pDSTex = pMRT->GetDepthStencilTex();
     if (nullptr != pDSTex)
     {
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 250);
+        ImGui::Spacing();
+        ImGui::Dummy(ImVec2(0.f, 75.f));
+        ImGui::Text(ToString(pDSTex->GetKey()).c_str());
+        ImGui::NextColumn();
+
         ImGui::Image((void*)pDSTex->GetSRV().Get(), ImVec2(200.f, 200.f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
-        ImGui::SameLine();
+
+        ImGui::Columns(1);
     }
 
     ImGui::End();

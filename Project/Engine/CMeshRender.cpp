@@ -68,7 +68,9 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
 
     // Animatio2D 보유한 경우
     if (Animator2D())
+    {
         Animator2D()->UpdateData();
+    }
 
     _mtrl->UpdateData();
     Transform()->UpdateData();
@@ -77,5 +79,7 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
 
     // Animation 관련 정보 제거
     if (Animator2D())
+    {
         Animator2D()->Clear();
+    }
 }
