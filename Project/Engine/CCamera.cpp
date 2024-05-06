@@ -241,13 +241,19 @@ void CCamera::render()
 
 void CCamera::render_SSAO()
 {
-    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SSAO)->OMSet();
+    CTexture::Clear(26);
+    CMRT* pSSAOMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SSAO);
+
+    pSSAOMRT->OMSet();
 
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
 
     pMtrl->UpdateData();
     pMesh->render();
+
+    CONTEXT->OMSetRenderTargets(0, NULL, NULL);
+    pSSAOMRT->GetRenderTargetTex(0)->UpdateData(26);
 }
 
 void CCamera::render_Light()

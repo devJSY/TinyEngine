@@ -46,7 +46,7 @@ PS_OUT main(PS_IN input)
     output.vNormal = float4(normalWorld, 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMetallicRoughness = float4(0.f, roughness, metallic, 1.f);
-    output.vAmbientOcclusion = float4(ao, 0.f, 0.f, 1.f);
+    output.vAmbientOcclusion = float4(ao, ao, ao, 1.f);
     
     return output;
 }

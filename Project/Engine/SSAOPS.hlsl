@@ -1,13 +1,11 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
-// Reference by https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
-// Reference by https://nellfamily.tistory.com/48
-
 #define DepthOnlyTex g_tex_0
 #define PositionTex g_tex_1
 #define NormalTex g_tex_2
 #define SampleRadius g_float_0
+#define PowPower g_float_1
 
 #define MAX_KERNEL_SIZE 16
 #define INV_MAX_KERNEL_SIZE_F 1.f / float(MAX_KERNEL_SIZE);
@@ -59,14 +57,13 @@ float4 main(PS_IN input) : SV_TARGET
 
     // we calculate a random offset using the noise texture sample. 
     //This will be applied as rotation to all samples for our current fragments.
-    float2 noiseScale = float2(g_RenderResolution.x / 4.f, g_RenderResolution.y / 4.f);
-    float3 randomVec = g_NoiseTex.Sample(g_PointSampler, input.vUV * noiseScale).xyz;
-    randomVec = normalize(2.f * randomVec - 1.f);
+    float2 noiseScale = float2(g_NoiseTexResolution.x / 4.f, g_NoiseTexResolution.y / 4.f);
+    float3 randomVec = normalize(g_NoiseTex.Sample(g_LinearWrapSampler, input.vUV * noiseScale).xyz);
     
     // here we apply the Gramm-Schmidt process to calculate the TBN matrix 
     // with a random offset applied. 
     float3 tangent = normalize(randomVec - viewNormal * dot(randomVec, viewNormal));
-    float3 bitangent = cross(viewNormal, tangent);
+    float3 bitangent = normalize(cross(viewNormal, tangent));
     float3x3 TBN = float3x3(tangent, bitangent, viewNormal);
     
     float occlusion_factor = 0.f;
@@ -81,7 +78,7 @@ float4 main(PS_IN input) : SV_TARGET
         float4 offset = float4(samplePos, 1.f);
         offset = mul(offset, g_matProj);
         offset.xy /= offset.w;
-        offset.xy = offset.xy * float2(0.5f, 0.5f) + float2(0.5f, 0.5f);
+        offset.xy = offset.xy * float2(0.5f, 0.5f) + float2(0.5f, 0.5f); // transform to range 0.0 ~ 1.0
         offset.y *= -1.f;
 
         // this is the geometry's depth i.e. the view_space_geometry_depth
@@ -104,7 +101,7 @@ float4 main(PS_IN input) : SV_TARGET
     // We can raise the visibility factor to a power to make the transition
     // more sharp. Experiment with the value of this power to see what works best for you.
     // Even after raising visibility to a power > 1, the range still remains between [0.0, 1.0].
-    visibility_factor = pow(visibility_factor, 2.f);
+    visibility_factor = pow(visibility_factor, PowPower);
 
     return float4(visibility_factor, visibility_factor, visibility_factor, 1.f);
 }

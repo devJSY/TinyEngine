@@ -1042,8 +1042,13 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\SSAOPS.hlsl", "main");
 
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
         pShader->AddTexParam(TEX_0, "DepthOnly Texture");
         pShader->AddScalarParam(FLOAT_0, "Sample Radius");
+        pShader->AddScalarParam(FLOAT_1, "Pow Power");
 
         pShader->SetName(L"SSAOShader");
         AddAsset(L"SSAOShader", pShader);
@@ -1449,7 +1454,8 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SSAOShader"));
         pMtrl->SetName(L"SSAOMtrl");
-        pMtrl->SetScalarParam(FLOAT_0, 0.5f);
+        pMtrl->SetScalarParam(FLOAT_0, 0.1f);
+        pMtrl->SetScalarParam(FLOAT_1, 2.f);
         AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
     }
 }

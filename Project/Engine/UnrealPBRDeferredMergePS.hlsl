@@ -21,7 +21,10 @@ float4 main(PS_IN input) : SV_Target
     float metallic = MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b;
     float roughness = MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g;
     float ao = AOTex.Sample(g_LinearWrapSampler, input.vUV).r;
-
+    if (ao >= 1.f)
+    {
+        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV).r;
+    }
     float3 pixelToEye = normalize(g_eyeWorld - vWorldPos);
     
     float3 ambientLighting = AmbientLightingByIBL(albedo, normalWorld, pixelToEye, ao, metallic, roughness);

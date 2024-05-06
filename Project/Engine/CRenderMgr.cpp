@@ -647,7 +647,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
 
         Vec4 arrClearColor[8] = {
             Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f),
         };
 
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
@@ -724,15 +724,15 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
                                                                          DXGI_FORMAT_R8G8B8A8_UNORM,
                                                                          D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT)};
 
-        Vec4 arrClearColor[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+        Vec4 arrClearColor[1] = {Vec4(1.f, 1.f, 1.f, 1.f)};
 
         m_arrMRT[(UINT)MRT_TYPE::SSAO] = new CMRT;
         m_arrMRT[(UINT)MRT_TYPE::SSAO]->Create(arrRTTex, arrClearColor, 1, nullptr);
 
-        Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, m_DepthOnlyTex);
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+        Ptr<CMaterial> pSSAOMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
+        pSSAOMtrl->SetTexParam(TEX_PARAM::TEX_0, m_DepthOnlyTex);
+        pSSAOMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+        pSSAOMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
     }
 }
 
