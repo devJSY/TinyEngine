@@ -3,7 +3,7 @@
 
 PS_IN main(VS_IN input)
 {
-    PS_IN output = (PS_IN)0;
+    PS_IN output = (PS_IN) 0;
     
     float4 normal = float4(input.vNormal, 0.0);
     output.normalWorld = mul(normal, g_matWorldInvTranspose).xyz;
@@ -15,7 +15,7 @@ PS_IN main(VS_IN input)
     
     // 카메라와의 거리와 thickness 값으로 외곽선 범위 만큼 크기 확장
     float dist = length(output.vPosWorld - g_eyeWorld);
-    float thickness = 0.005;
+    float thickness = 0.01f;
     
     output.vPosProj += float4(output.normalWorld * dist * thickness, 0.0);
     output.vPosProj = mul(output.vPosProj, g_matView);

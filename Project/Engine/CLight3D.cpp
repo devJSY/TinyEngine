@@ -122,11 +122,17 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
     MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
 
     if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+    {
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLightMtrl"));
+    }
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+    {
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
+    }
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
+    {
         MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl"));
+    }
 }
 
 void CLight3D::render_Deferred(int _LightIdx)

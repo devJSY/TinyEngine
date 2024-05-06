@@ -1050,5 +1050,20 @@ void CLevelEditor::render_MRT()
         ImGui::Columns(1);
     }
 
+    Ptr<CTexture> pLightTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"LightRadianceTargetTex");
+    if (nullptr != pLightTex)
+    {
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 250);
+        ImGui::Spacing();
+        ImGui::Dummy(ImVec2(0.f, 75.f));
+        ImGui::Text(ToString(pLightTex->GetKey()).c_str());
+        ImGui::NextColumn();
+
+        ImGui::Image((void*)pLightTex->GetSRV().Get(), ImVec2(200.f, 200.f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+
+        ImGui::Columns(1);
+    }
+
     ImGui::End();
 }

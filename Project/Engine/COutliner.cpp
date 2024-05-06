@@ -89,7 +89,9 @@ void COutliner::render()
         int Dirtyflag = 0;
 
         if (ImGui::MenuItem("Create Empty Object"))
+        {
             Dirtyflag = 1;
+        }
 
         if (ImGui::BeginMenu("2D Object"))
         {
@@ -208,12 +210,18 @@ void COutliner::render()
             {
                 pObj->SetName(L"Physics2D Box Object");
                 pObj->AddComponent(new CRigidbody2D);
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
                 pObj->AddComponent(new CBoxCollider2D);
             }
             else if (31 == Dirtyflag)
             {
                 pObj->SetName(L"Physics2D Circle Object");
                 pObj->AddComponent(new CRigidbody2D);
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
                 pObj->AddComponent(new CCircleCollider2D);
             }
             else if (32 == Dirtyflag)
@@ -233,21 +241,21 @@ void COutliner::render()
                 pObj->SetName(L"Box");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
             }
             else if (41 == Dirtyflag)
             {
                 pObj->SetName(L"Sphere");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
             }
             else if (42 == Dirtyflag)
             {
                 pObj->SetName(L"Capsule");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CapsuleMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
             }
             else if (50 == Dirtyflag)
             {
@@ -271,18 +279,27 @@ void COutliner::render()
             {
                 pObj->SetName(L"Physics Box Object");
                 pObj->AddComponent(new CRigidbody);
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
                 pObj->AddComponent(new CBoxCollider);
             }
             else if (61 == Dirtyflag)
             {
                 pObj->SetName(L"Physics Sphere Object");
                 pObj->AddComponent(new CRigidbody);
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
                 pObj->AddComponent(new CSphereCollider);
             }
             else if (62 == Dirtyflag)
             {
                 pObj->SetName(L"Physics Capsule Object");
                 pObj->AddComponent(new CRigidbody);
+                pObj->AddComponent(new CMeshRender);
+                pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CapsuleMesh"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
                 pObj->AddComponent(new CCapsuleCollider);
             }
 

@@ -44,6 +44,9 @@ public:
     int GetShadowType() const { return m_Info.ShadowType; }
     void SetShadowType(int _type) { m_Info.ShadowType = _type; }
 
+    int GetShadowIdx() const { return m_Info.ShadowIndex; }
+    void SetShadowIdx(int _Idx) { m_Info.ShadowIndex = _Idx; }
+
     float GetHaloRadius() const { return m_Info.HaloRadius; }
     void SetHaloRadius(float _Radius) { m_Info.HaloRadius = _Radius; }
 
@@ -51,9 +54,6 @@ public:
     void SetHaloStrength(float _Strength) { m_Info.HaloStrength = _Strength; }
 
     Ptr<CTexture> GetDepthMapTex() const { return m_DepthMapTex; }
-
-    int GetShadowIdx() const { return m_Info.ShadowIndex; }
-    void SetShadowIdx(int _Idx) { m_Info.ShadowIndex = _Idx; }
 
 public:
     void render_Deferred(int _LightIdx);

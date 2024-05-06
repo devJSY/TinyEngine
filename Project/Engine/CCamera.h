@@ -86,6 +86,7 @@ public:
 
 private:
     void render(vector<CGameObject*>& _vecObj);
+    void render_OutLine(vector<CGameObject*>& _vecObj);
     void render_DepthOnly(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
     void render_postprocess();

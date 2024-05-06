@@ -178,10 +178,11 @@ void CCamera::render()
     g_Transform.matProj = m_matProj;
     g_Transform.matProjInv = m_matProj.Invert();
 
-    // Deferred 물체 렌더링
+    // Deferred Render Pass
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render(m_vecDeferred);
 
+    // Light Pass
     render_Light();
 
     // RenderTarget 설정
@@ -194,7 +195,16 @@ void CCamera::render()
         CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
     }
 
+    // Merge Pass
     render_merge();
+
+#ifndef DISTRIBUTE
+    // OutLine Pass
+    render_OutLine(m_vecDeferred);
+    render_OutLine(m_vecOpaque);
+    render_OutLine(m_vecMaked);
+    render_OutLine(m_vecTransparent);
+#endif // DISTRIBUTE
 
     // Main Render Pass
     render(m_vecOpaque);
@@ -228,10 +238,8 @@ void CCamera::render()
 
 void CCamera::render_Light()
 {
-    // Light MRT 로 변경
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
 
-    // 광원이 자신의 영향범위에 있는 Deferred 물체에 빛을 남긴다.
     const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetvecLight3D();
     for (UINT Idx = 0; Idx < vecLight3D.size(); ++Idx)
     {
@@ -243,7 +251,7 @@ void CCamera::render_merge()
 {
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl");
-    //static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl");
+    // static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl"); // Phong
 
     pMtrl->UpdateData();
     pMesh->render();
@@ -282,8 +290,6 @@ void CCamera::render_clear()
 
 void CCamera::render(vector<CGameObject*>& _vecObj)
 {
-    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-
     for (size_t i = 0; i < _vecObj.size(); ++i)
     {
 #ifdef DISTRIBUTE
@@ -301,31 +307,38 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         {
             _vecObj[i]->render();
         }
+#endif // DISTRIBUTE
+    }
+}
 
-        // NormalLine & OutLine Pass
-        if (pSelectedObj == _vecObj[i] && this == CRenderMgr::GetInst()->GetMainCamera() && !g_Global.g_DrawAsWireFrame)
+void CCamera::render_OutLine(vector<CGameObject*>& _vecObj)
+{
+    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+
+    for (size_t i = 0; i < _vecObj.size(); ++i)
+    {
+        if (pSelectedObj != _vecObj[i] || this != CRenderMgr::GetInst()->GetMainCamera() || g_Global.g_DrawAsWireFrame)
+            continue;
+
+        // OutLine Pass
+        if (g_Global.g_RenderOutline)
         {
-            // NormalLine Pass
-            Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-            if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
             {
-                pSelectedObj->render(NormalLineMtrl);
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
             }
-
-            // OutLine Pass
-            if (g_Global.g_RenderOutline)
+            else
             {
-                if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-                {
-                    pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-                }
-                else
-                {
-                    pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-                }
+                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
             }
         }
-#endif // DISTRIBUTE
+
+        // NormalLine Pass
+        Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+        {
+            pSelectedObj->render(NormalLineMtrl);
+        }
     }
 }
 
