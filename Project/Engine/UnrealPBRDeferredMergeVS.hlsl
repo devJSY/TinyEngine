@@ -1,7 +1,7 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
-PS_IN VS_Merge(VS_IN _in)
+PS_IN main(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
     

@@ -1,5 +1,4 @@
 #include "global.hlsli"
-#include "Light.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
 #define AmbientTex g_tex_0
@@ -13,7 +12,7 @@
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
 
-float4 PS_Merge(PS_IN input) : SV_Target
+float4 main(PS_IN input) : SV_Target
 {
     float4 vOutColor = (float4) 0.f;
     
@@ -29,15 +28,11 @@ float4 PS_Merge(PS_IN input) : SV_Target
     
     float3 ambientLighting = AmbientLightingByIBL(albedo, normalWorld, pixelToEye, ao, metallic, roughness);
     float3 directLighting = RadianceTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
-    
-    // Rim
-    float3 toEye = normalize(g_eyeWorld - vWorldPos);
-    float3 RimColor = RimLight(normalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
-    
-    float4 output = float4(0.f, 0.f, 0.f, 1.f);
-    output = float4(ambientLighting + directLighting + emission + RimColor, 1.0);
-    output = clamp(output, 0.0, 1000.0);
 
+    float4 output = float4(0.f, 0.f, 0.f, 1.f);
+    output = float4(ambientLighting + directLighting + emission, 1.f);
+    output = clamp(output, 0.0, 1000.0);
+    
     return vOutColor;
 }
 

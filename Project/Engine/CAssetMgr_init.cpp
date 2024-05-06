@@ -572,6 +572,70 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Unreal PBR Deferred Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
+        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale");
+
+        pShader->AddTexParam(TEX_0, "Ambient Texture");
+        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_2, "Normal Texture");
+        pShader->AddTexParam(TEX_3, "Height Texture");
+        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
+        pShader->AddTexParam(TEX_5, "Emissive Texture");
+
+        pShader->SetName(L"UnrealPBRDeferredShader");
+        AddAsset(L"UnrealPBRDeferredShader", pShader);
+    }
+
+    // =================================
+    // Unreal PBR Deferred Dir Lighting Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredLightingVS.hlsl", "VS_DirLight");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredLightingPS.hlsl", "PS_DirLight");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"UnrealPBRDeferredDirLightingShader");
+        AddAsset(L"UnrealPBRDeferredDirLightingShader", pShader);
+    }
+
+    // =================================
+    // Unreal PBR Deferred Merge Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredMergeVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredMergePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MERGE);
+
+        pShader->SetName(L"UnrealPBRDeferredMergeShader");
+        AddAsset(L"UnrealPBRDeferredMergeShader", pShader);
+    }
+
+    // =================================
     // BlinnPhong Shader
     // =================================
     {
@@ -1161,6 +1225,33 @@ void CAssetMgr::CreateDefaultMaterial()
 
         pMtrl->SetName(L"UnrealPBRMtrl");
         AddAsset<CMaterial>(L"UnrealPBRMtrl", pMtrl);
+    }
+
+    // Unreal PBR Deferred
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredShader"));
+        pMtrl->SetScalarParam(FLOAT_0, 1.f); // HeightScale
+        pMtrl->SetScalarParam(INT_0, 0);     // Invert NormalMap Y
+
+        pMtrl->SetName(L"UnrealPBRDeferredMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredMtrl", pMtrl);
+    }
+
+    // Unreal PBR Deferred Dir Lighting
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredDirLightingShader"));
+        pMtrl->SetName(L"UnrealPBRDeferredDirLightingMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl", pMtrl);
+    }
+
+    // Unreal PBR Deferred Merge
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredMergeShader"));
+        pMtrl->SetName(L"UnrealPBRDeferredMergeMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl", pMtrl);
     }
 
     // BlinnPhong

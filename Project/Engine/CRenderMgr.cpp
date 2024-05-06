@@ -636,8 +636,8 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         };
 
         Vec4 arrClearColor[8] = {
-            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
         };
 
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
@@ -650,6 +650,13 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+
+        Ptr<CMaterial> pPBRDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[6]);
+        pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[7]);
     }
 
     // ============
@@ -672,6 +679,15 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
         pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->FindAsset<CTexture>(L"DiffuseTargetTex"));
         pMerge_DeferredMtrl->SetTexParam(TEX_PARAM::TEX_5, CAssetMgr::GetInst()->FindAsset<CTexture>(L"SpecularTargetTex"));
+
+        Ptr<CMaterial> pPBRDeferredMergeMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl");
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"ColorTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_4, CAssetMgr::GetInst()->FindAsset<CTexture>(L"MetallicRoughnessTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_5, CAssetMgr::GetInst()->FindAsset<CTexture>(L"AmbientOcclusionTargetTex"));
+        pPBRDeferredMergeMtrl->SetTexParam(TEX_PARAM::TEX_6, arrRTTex[0]);
     }
 
     // =============
