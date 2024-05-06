@@ -30,6 +30,7 @@ private:
     bool m_bShowPhysicsMgr;
     bool m_bShowTagsAndLayers;
     bool m_bShowMRT;
+    bool m_bShowSSAO;
 
     bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
 
@@ -62,6 +63,7 @@ private:
     void render_PhysicsMgr();
     void render_TagsAndLayers();
     void render_MRT();
+    void render_SSAO();
 
 private:
     void CreateAssetModal();

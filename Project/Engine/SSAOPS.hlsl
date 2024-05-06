@@ -1,7 +1,12 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+// Reference by https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
+// Reference by https://nellfamily.tistory.com/48
+
 #define DepthOnlyTex g_tex_0
+#define PositionTex g_tex_1
+#define NormalTex g_tex_2
 #define SampleRadius g_float_0
 
 #define MAX_KERNEL_SIZE 16
@@ -46,26 +51,24 @@ float4 TexcoordToView(float2 texcoord)
 
 float4 main(PS_IN input) : SV_TARGET
 {
-    float3 viewPos = TexcoordToView(input.vUV).rgb;
+    float3 viewPos = PositionTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    viewPos = mul(float4(viewPos, 1.f), g_matView).rgb;
+    
+    float3 viewNormal = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    viewNormal = normalize(mul(float4(viewNormal, 0.f), g_matView).rgb);
 
-    // the dFdy and dFdX are glsl functions used to calculate two vectors in view space 
-    // that lie on the plane of the surface being drawn. We pass the view space position to these functions.
-    // The cross product of these two vectors give us the normal in view space.
-    float3 viewNormal = cross(ddy(viewPos.xyz), ddx(viewPos.xyz));
-
-    // The normal is initilly away from the screen based on the order in which we calculate the cross products. 
-    // Here, we need to invert it to point towards the screen by multiplying by -1. 
-    // Then we normalize this vector to get a unit normal vector.
-    viewNormal = normalize(viewNormal * -1.f);
     // we calculate a random offset using the noise texture sample. 
     //This will be applied as rotation to all samples for our current fragments.
     float2 noiseScale = float2(g_RenderResolution.x / 4.f, g_RenderResolution.y / 4.f);
     float3 randomVec = g_NoiseTex.Sample(g_PointSampler, input.vUV * noiseScale).xyz;
+    randomVec = normalize(2.f * randomVec - 1.f);
+    
     // here we apply the Gramm-Schmidt process to calculate the TBN matrix 
     // with a random offset applied. 
     float3 tangent = normalize(randomVec - viewNormal * dot(randomVec, viewNormal));
     float3 bitangent = cross(viewNormal, tangent);
     float3x3 TBN = float3x3(tangent, bitangent, viewNormal);
+    
     float occlusion_factor = 0.f;
     for (int i = 0; i < MAX_KERNEL_SIZE; i++)
     {
@@ -105,75 +108,3 @@ float4 main(PS_IN input) : SV_TARGET
 
     return float4(visibility_factor, visibility_factor, visibility_factor, 1.f);
 }
-
-
-//// ======================
-//// Version 2
-//// ======================
-//float3 normal_from_depth(float depth, float2 texcoords)
-//{
-  
-//    const float2 offset1 = float2(0.0, 0.001);
-//    const float2 offset2 = float2(0.001, 0.0);
-  
-//    float depth1 = DepthOnlyTex.Sample(g_LinearClampSampler, texcoords + offset1).r;
-//    float depth2 = DepthOnlyTex.Sample(g_LinearClampSampler, texcoords + offset2).r;
-  
-//    float3 p1 = float3(offset1, depth1 - depth);
-//    float3 p2 = float3(offset2, depth2 - depth);
-  
-//    float3 normal = cross(p1, p2);
-//    normal.z = -normal.z;
-  
-//    return normalize(normal);
-//}
-
-//float4 main(PS_IN input) : SV_TARGET
-//{
-//    const float total_strength = 1.0;
-//    const float base = 0.2;
-  
-//    const float area = 0.0075;
-//    const float falloff = 0.000001;
-  
-//    const float radius = 0.0002;
-  
-//    const int samples = 16;
-//    float3 sample_sphere[samples] =
-//    {
-//        float3(0.5381, 0.1856, -0.4319), float3(0.1379, 0.2486, 0.4430),
-//      float3(0.3371, 0.5679, -0.0057), float3(-0.6999, -0.0451, -0.0019),
-//      float3(0.0689, -0.1598, -0.8547), float3(0.0560, 0.0069, -0.1843),
-//      float3(-0.0146, 0.1402, 0.0762), float3(0.0100, -0.1924, -0.0344),
-//      float3(-0.3577, -0.5301, -0.4358), float3(-0.3169, 0.1063, 0.0158),
-//      float3(0.0103, -0.5869, 0.0046), float3(-0.0897, -0.4940, 0.3287),
-//      float3(0.7119, -0.0154, -0.0918), float3(-0.0533, 0.0596, -0.5411),
-//      float3(0.0352, -0.0631, 0.5460), float3(-0.4776, 0.2847, -0.0271)
-//    };
-  
-//    float3 random = g_NoiseTex.Sample(g_PointSampler, input.vUV * 4.0).xyz;
-    
-//    float depth = DepthOnlyTex.Sample(g_LinearClampSampler, input.vUV).r;
- 
-//    float3 position = float3(input.vUV, depth);
-//    float3 normal = normal_from_depth(depth, input.vUV);
-  
-//    float radius_depth = radius / depth;
-//    float occlusion = 0.0;
-//    for (int i = 0; i < samples; i++)
-//    {
-//        float3 ray = radius_depth * reflect(sample_sphere[i], random);
-//        float3 hemi_ray = position + sign(dot(ray, normal)) * ray;
-    
-//        float occ_depth = DepthOnlyTex.Sample(g_LinearClampSampler, saturate(hemi_ray.xy)).r;
-//        float difference = depth - occ_depth;
-    
-//        occlusion += step(falloff, difference) * (1.0 - smoothstep(falloff, area, difference));
-//    }
-  
-//    float ao = 1.0 - total_strength * occlusion * (1.0 / samples);
-//    ao = saturate(ao + base);
-  
-//    return float4(ao, ao, ao, 1.f);
-//}
-

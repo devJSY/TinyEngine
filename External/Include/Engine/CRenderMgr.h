@@ -69,6 +69,9 @@ private:
     CGameObject* m_BloomUpObj;
     CGameObject* m_ToneMappingObj;
 
+    // SSAO
+    Ptr<CTexture> m_SSAOTex;
+
     // Render function pointer
     void (CRenderMgr::*RENDER_FUNC)(void);
 
@@ -137,7 +140,7 @@ public:
     void render_postprocess_HDRI();
 
 private:
-    void render_clear(const Vec4& Color);
+    void render_Clear(const Vec4& Color);
 
     void render_play();
     void render_editor();

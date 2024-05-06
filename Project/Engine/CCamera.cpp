@@ -182,6 +182,9 @@ void CCamera::render()
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render(m_vecDeferred);
 
+    // SSAO Pass
+    render_SSAO();
+
     // Light Pass
     render_Light();
 
@@ -196,7 +199,7 @@ void CCamera::render()
     }
 
     // Merge Pass
-    render_merge();
+    render_Merge();
 
 #ifndef DISTRIBUTE
     // OutLine Pass
@@ -230,10 +233,21 @@ void CCamera::render()
         CRenderMgr::GetInst()->render_postprocess_LDRI();
     }
 
-    render_postprocess();
+    render_Postprocess();
 
     // Clear
-    render_clear();
+    render_Clear();
+}
+
+void CCamera::render_SSAO()
+{
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SSAO)->OMSet();
+
+    static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+    static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
+
+    pMtrl->UpdateData();
+    pMesh->render();
 }
 
 void CCamera::render_Light()
@@ -247,7 +261,7 @@ void CCamera::render_Light()
     }
 }
 
-void CCamera::render_merge()
+void CCamera::render_Merge()
 {
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl");
@@ -274,12 +288,12 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
     render_DepthOnly(m_vecTransparent);
 
     // Clear
-    render_clear();
+    render_Clear();
 
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
 }
 
-void CCamera::render_clear()
+void CCamera::render_Clear()
 {
     m_vecDeferred.clear();
     m_vecOpaque.clear();
@@ -369,7 +383,7 @@ void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_postprocess()
+void CCamera::render_Postprocess()
 {
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 

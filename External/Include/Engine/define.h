@@ -330,5 +330,6 @@ enum class MRT_TYPE
     LIGHT,
     SHADOW,
     IDMAP,
+    SSAO,
     END,
 };

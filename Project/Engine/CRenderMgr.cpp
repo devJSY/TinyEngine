@@ -43,6 +43,7 @@ CRenderMgr::CRenderMgr()
     , m_BloomDownObj(nullptr)
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
+    , m_SSAOTex(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
 
@@ -124,7 +125,7 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::render()
 {
-    render_clear(Vec4(0.f, 0.f, 0.f, 1.f));
+    render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
 
     UpdateData();
 
@@ -147,7 +148,7 @@ void CRenderMgr::render()
     Clear();
 }
 
-void CRenderMgr::render_clear(const Vec4& Color)
+void CRenderMgr::render_Clear(const Vec4& Color)
 {
     // MRT Clear
     for (UINT i = 0; i < (UINT)MRT_TYPE::END; i++)
@@ -714,6 +715,25 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         m_arrMRT[(UINT)MRT_TYPE::IDMAP] = new CMRT;
         m_arrMRT[(UINT)MRT_TYPE::IDMAP]->Create(arrRTTex, arrClear, 1, DSTex);
     }
+
+    // =============
+    // SSAO MRT
+    // =============
+    {
+        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->CreateTexture(L"SSAOTex", (UINT)Resolution.x, (UINT)Resolution.y,
+                                                                         DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                                         D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT)};
+
+        Vec4 arrClearColor[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+
+        m_arrMRT[(UINT)MRT_TYPE::SSAO] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::SSAO]->Create(arrRTTex, arrClearColor, 1, nullptr);
+
+        Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, m_DepthOnlyTex);
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
+    }
 }
 
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
@@ -756,6 +776,8 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"AmbientOcclusionTargetTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LightRadianceTargetTex");
+
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"SSAOTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"RTCopyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");

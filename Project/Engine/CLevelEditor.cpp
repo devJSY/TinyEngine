@@ -46,6 +46,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowPhysicsMgr(false)
     , m_bShowTagsAndLayers(false)
     , m_bShowMRT(false)
+    , m_bShowSSAO(false)
     , m_bShowEditor{}
     , m_PlayButtonTex(nullptr)
     , m_SimulateButtonTex(nullptr)
@@ -200,6 +201,9 @@ void CLevelEditor::render()
     if (m_bShowMRT)
         render_MRT();
 
+    if (m_bShowSSAO)
+        render_SSAO();
+
     //// ImGUI Demo
     // bool show_demo_window = true;
     // if (show_demo_window)
@@ -316,6 +320,9 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Multi Render Target", NULL, m_bShowMRT))
                 m_bShowMRT = !m_bShowMRT;
+
+            if (ImGui::MenuItem("SSAO", NULL, m_bShowSSAO))
+                m_bShowSSAO = !m_bShowSSAO;
 
             ImGui::EndMenu();
         }
@@ -646,7 +653,7 @@ void CLevelEditor::CreateAssetModal()
 void CLevelEditor::render_Viewport()
 {
     ImGui_SetWindowClass(GetEditorType());
-    ImGui::Begin("Level ViewPort");
+    ImGui::Begin("Level ViewPort##CLevelEditor");
 
     // RT Copy
     CRenderMgr::GetInst()->CopyRTTexToRTCopyTex();
@@ -966,7 +973,7 @@ void CLevelEditor::render_PhysicsMgr()
 void CLevelEditor::render_TagsAndLayers()
 {
     ImGui_SetWindowClass(GetEditorType());
-    if (!ImGui::Begin("Tags & Layers", &m_bShowTagsAndLayers))
+    if (!ImGui::Begin("Tags & Layers##CLevelEditor", &m_bShowTagsAndLayers))
     {
         ImGui::End();
         return;
@@ -1009,7 +1016,7 @@ void CLevelEditor::render_TagsAndLayers()
 void CLevelEditor::render_MRT()
 {
     ImGui_SetWindowClass(GetEditorType());
-    if (!ImGui::Begin("Multi Render Target", &m_bShowMRT))
+    if (!ImGui::Begin("Multi Render Target##CLevelEditor", &m_bShowMRT))
     {
         ImGui::End();
         return;
@@ -1063,6 +1070,26 @@ void CLevelEditor::render_MRT()
         ImGui::Image((void*)pLightTex->GetSRV().Get(), ImVec2(200.f, 200.f), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
 
         ImGui::Columns(1);
+    }
+
+    ImGui::End();
+}
+
+void CLevelEditor::render_SSAO()
+{
+    ImGui_SetWindowClass(GetEditorType());
+    if (!ImGui::Begin("SSAO##CLevelEditor", &m_bShowSSAO))
+    {
+        ImGui::End();
+        return;
+    }
+
+    CMRT* pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SSAO);
+
+    Ptr<CTexture> pTex = pMRT->GetRenderTargetTex(0);
+    if (nullptr != pTex)
+    {
+        ImGui::Image((void*)pTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
     }
 
     ImGui::End();

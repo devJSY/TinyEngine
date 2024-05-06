@@ -79,17 +79,18 @@ public:
 
     void SortObject();
     void render();
+    void render_SSAO();
     void render_Light();
-    void render_merge();
+    void render_Merge();
     void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
-    void render_clear();
+    void render_Clear();
 
 private:
     void render(vector<CGameObject*>& _vecObj);
     void render_OutLine(vector<CGameObject*>& _vecObj);
     void render_DepthOnly(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
-    void render_postprocess();
+    void render_Postprocess();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
