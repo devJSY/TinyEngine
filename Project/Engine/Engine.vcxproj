@@ -397,6 +397,7 @@ call EngineCopy.bat</Command>
     <None Include="global.hlsli" />
     <None Include="SimpleMath.inl" />
     <None Include="struct.hlsli" />
+    <None Include="UnrealPBRCommon.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="2D_OutLinePS.hlsl">

@@ -967,6 +967,9 @@
     <None Include="disksample.hlsli">
       <Filter>ShaderCode\Utilities</Filter>
     </None>
+    <None Include="UnrealPBRCommon.hlsli">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BlinnPhongPS.hlsl">

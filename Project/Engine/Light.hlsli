@@ -115,7 +115,6 @@ float3 RimLight(float3 NormalWorld, float3 toEye, float3 RimColor, float RimPowe
     return rim * RimColor * strength;
 }
 
-
 void CalculateLight3D(int _LightIdx, float3 _vWorldPos, float3 _vWorldNormal, float3 _Diffuse, float3 _Specular, inout tLightInfo _LightColor)
 {
     // 광원의 정보를 확인
