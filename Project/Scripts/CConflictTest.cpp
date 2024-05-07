@@ -12,4 +12,6 @@ CConflictTest::~CConflictTest()
 
 void CConflictTest::tick()
 {
+    int a = 0;
+
 }
