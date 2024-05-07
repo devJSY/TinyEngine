@@ -1454,8 +1454,8 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SSAOShader"));
         pMtrl->SetName(L"SSAOMtrl");
-        pMtrl->SetScalarParam(FLOAT_0, 0.1f);
-        pMtrl->SetScalarParam(FLOAT_1, 2.f);
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // Radius
+        pMtrl->SetScalarParam(FLOAT_1, 1.f);  // Pow Power
         AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
     }
 }

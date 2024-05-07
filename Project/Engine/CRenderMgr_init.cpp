@@ -35,9 +35,9 @@ void CRenderMgr::init()
     m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_02.jpg", L"Texture\\noise\\noise_02.jpg"));
     m_vecNoiseTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\noise\\noise_03.jpg", L"Texture\\noise\\noise_03.jpg"));
 
-    m_vecNoiseTex[2]->UpdateData(16);
-    m_vecNoiseTex[2]->UpdateData_CS_SRV(16);
-    g_Global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[2]->GetWidth(), m_vecNoiseTex[2]->GetHeight());
+    m_vecNoiseTex[1]->UpdateData(16);
+    m_vecNoiseTex[1]->UpdateData_CS_SRV(16);
+    g_Global.g_NoiseTexResolution = Vec2(m_vecNoiseTex[1]->GetWidth(), m_vecNoiseTex[1]->GetHeight());
 
     // Post Processing
     CreateBloomTextures(vRenderResolution);
