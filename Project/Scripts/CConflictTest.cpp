@@ -12,7 +12,6 @@ CConflictTest::~CConflictTest()
 
 void CConflictTest::tick()
 {
-    int a = 0;
-
+    // ³­ ¹Ú´Ùºó
     float JSTest = 0.f;
 }
