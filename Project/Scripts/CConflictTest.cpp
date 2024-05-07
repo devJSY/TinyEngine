@@ -14,4 +14,5 @@ void CConflictTest::tick()
 {
     int a = 0;
 
+    float JSTest = 0.f;
 }
