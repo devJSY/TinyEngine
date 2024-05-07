@@ -109,6 +109,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CConflictTest.h" />
     <ClInclude Include="CPhysicsTestScript.h" />
     <ClInclude Include="CProjectileScript.h" />
     <ClInclude Include="CScriptMgr.h" />
@@ -119,6 +120,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CConflictTest.cpp" />
     <ClCompile Include="CPhysicsTestScript.cpp" />
     <ClCompile Include="CProjectileScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
