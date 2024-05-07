@@ -12,4 +12,5 @@ CConflictTest::~CConflictTest()
 
 void CConflictTest::tick()
 {
+    // ³­ ¹Ú´Ùºó
 }
