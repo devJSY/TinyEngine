@@ -25,6 +25,9 @@
     <ClInclude Include="CShooterScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CConflictTest.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -46,6 +49,9 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CShooterScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CConflictTest.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
