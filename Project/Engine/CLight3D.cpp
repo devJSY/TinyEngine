@@ -87,13 +87,16 @@ void CLight3D::finaltick()
     m_Info.projMat = m_pLightCam->Camera()->GetProjMat();
     m_Info.invProj = m_Info.projMat.Invert();
 
-    if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+    if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
     {
         Transform()->SetRelativeScale(Vec3(m_Info.fallOffEnd, m_Info.fallOffEnd, m_Info.fallOffEnd));
     }
 
     // ±¤¿ø ¹üÀ§ µð¹ö±× ·»´õ
-    GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fallOffEnd, Vec3(1.f, 1.f, 1.f), true);
+    if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
+    {
+        GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fallOffEnd, Vec3(1.f, 1.f, 1.f), true);
+    }
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)
@@ -116,7 +119,7 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh");
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
         // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
         m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl");
     }
@@ -197,4 +200,5 @@ void CLight3D::SaveToLevelFile(FILE* _File)
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
+    SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
