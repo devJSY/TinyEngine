@@ -1409,6 +1409,7 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ToneMappingShader"));
         pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Exposure
         pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
+        pMtrl->SetScalarParam(FLOAT_2, 0.5f); //  Bloom Strength
         pMtrl->SetName(L"ToneMappingMtrl");
         AddAsset<CMaterial>(L"ToneMappingMtrl", pMtrl);
     }
@@ -1454,8 +1455,8 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SSAOShader"));
         pMtrl->SetName(L"SSAOMtrl");
-        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // Radius
-        pMtrl->SetScalarParam(FLOAT_1, 1.f);  // Pow Power
+        pMtrl->SetScalarParam(FLOAT_0, 0.02f); // Radius
+        pMtrl->SetScalarParam(FLOAT_1, 2.f);   // Pow Power
         AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
     }
 }

@@ -100,6 +100,7 @@ cbuffer GLOBAL_DATA : register(b3)
     int g_RenderOutline;
     
     int g_DrawAsWireFrame;
+    int g_EnableSSAO;
 }
 
 Texture2D g_tex_0 : register(t0);

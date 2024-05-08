@@ -241,19 +241,44 @@ void CCamera::render()
 
 void CCamera::render_SSAO()
 {
-    CTexture::Clear(26);
     CMRT* pSSAOMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SSAO);
+    Ptr<CTexture> pSSAOTex = pSSAOMRT->GetRenderTargetTex(0);
+
+    if (!g_Global.g_EnableSSAO)
+    {
+        pSSAOTex->UpdateData(26);
+        return;
+    }
+
+    CTexture::Clear(26);
 
     pSSAOMRT->OMSet();
 
+    // SSAO
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
 
     pMtrl->UpdateData();
     pMesh->render();
 
+    static Ptr<CMaterial> pBlurXMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl");
+    static Ptr<CMaterial> pBlurYMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl");
+    Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex_LDRI();
+
+    // Blur X
+    CONTEXT->CopyResource(pPostProcessTex->GetTex2D().Get(), pSSAOTex->GetTex2D().Get());
+    pBlurXMtrl->SetTexParam(TEX_0, pPostProcessTex);
+    pBlurXMtrl->UpdateData();
+    pMesh->render();
+
+    // Blur Y
+    CONTEXT->CopyResource(pPostProcessTex->GetTex2D().Get(), pSSAOTex->GetTex2D().Get());
+    pBlurYMtrl->SetTexParam(TEX_0, pPostProcessTex);
+    pBlurYMtrl->UpdateData();
+    pMesh->render();
+
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
-    pSSAOMRT->GetRenderTargetTex(0)->UpdateData(26);
+    pSSAOTex->UpdateData(26);
 }
 
 void CCamera::render_Light()
