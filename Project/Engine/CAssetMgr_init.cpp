@@ -349,6 +349,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // ====================
+    // PointLight_deferredShader
+    // ====================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\light_deferred.fx", "VS_PointLight");
+        pShader->CreatePixelShader(L"shader\\light_deferred.fx", "PS_PointLight");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"PointLight_deferredShader");
+        AddAsset(L"PointLight_deferredShader", pShader);
+    }
+
+    // ====================
     // Merge Deferred Shader
     // ====================
     {
@@ -1143,6 +1161,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DirLight_deferredShader"));
         pMtrl->SetName(L"DirLight_deferredMtrl");
         AddAsset<CMaterial>(L"DirLight_deferredMtrl", pMtrl);
+    }
+
+    // PointLight_deferredMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PointLight_deferredShader"));
+        pMtrl->SetName(L"PointLight_deferredMtrl");
+        AddAsset<CMaterial>(L"PointLight_deferredMtrl", pMtrl);
     }
 
     // Merge_DeferredMtrl

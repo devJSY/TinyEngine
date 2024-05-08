@@ -669,6 +669,12 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+
+        Ptr<CMaterial> pPointLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
     }
 
     // ============

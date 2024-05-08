@@ -77,7 +77,7 @@ void CLight3D::finaltick()
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-    // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트 
+    // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트
     m_pLightCam->Transform()->SetRelativePos(Transform()->GetRelativePos());
     m_pLightCam->Transform()->SetRelativeRotation(Transform()->GetRelativeRotation());
     m_pLightCam->finaltick();
@@ -86,6 +86,11 @@ void CLight3D::finaltick()
     m_Info.viewMat = m_pLightCam->Camera()->GetViewMat();
     m_Info.projMat = m_pLightCam->Camera()->GetProjMat();
     m_Info.invProj = m_Info.projMat.Invert();
+
+    if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
+    {
+        Transform()->SetRelativeScale(Vec3(m_Info.fallOffEnd, m_Info.fallOffEnd, m_Info.fallOffEnd));
+    }
 
     // 광원 범위 디버그 렌더
     GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fallOffEnd, Vec3(1.f, 1.f, 1.f), true);
@@ -98,22 +103,22 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
     if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
     {
         m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl"); 
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
     }
 
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
     }
 
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh");
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl");
     }
 
     // Mesh Render 설정
@@ -143,8 +148,18 @@ void CLight3D::render_Deferred(int _LightIdx)
         return;
     }
 
+    Transform()->UpdateData();
+
     m_LightMtrl->SetScalarParam(SCALAR_PARAM::INT_0, _LightIdx);
+
+    if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
+    {
+        Matrix matWorldInv = Transform()->GetWorldMat().Invert();
+        m_LightMtrl->SetScalarParam(SCALAR_PARAM::MAT_0, matWorldInv);
+    }
+
     m_LightMtrl->UpdateData();
+
     m_VolumeMesh->render();
 }
 
