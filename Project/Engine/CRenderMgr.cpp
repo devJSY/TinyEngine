@@ -663,6 +663,20 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
 
+        Ptr<CMaterial> pPBRPointLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredPointLightingMtrl");
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
+
+        Ptr<CMaterial> pPBRSpotLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl");
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
+
         // Phong
         Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);

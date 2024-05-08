@@ -93,9 +93,14 @@ void CLight3D::finaltick()
     }
 
     // 광원 범위 디버그 렌더
-    if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
+    if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
         GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fallOffEnd, Vec3(1.f, 1.f, 1.f), true);
+    }
+
+    else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
+    {
+        GamePlayStatic::DrawDebugCone(Transform()->GetWorldMat(), Vec3(1.f, 1.f, 1.f), true);
     }
 }
 
@@ -106,22 +111,22 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
     if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
     {
         m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl"); // Phong
     }
 
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
         m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredPointLightingMtrl");
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl"); // Phong
     }
 
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
-        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh");
-        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
-        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl");
+        m_VolumeMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"ConeMesh");
+        m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl");
+        // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl"); // Phong
     }
 
     // Mesh Render 설정

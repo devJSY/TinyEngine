@@ -374,7 +374,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\light_deferred.fx", "VS_SpotLight");
         pShader->CreatePixelShader(L"shader\\light_deferred.fx", "PS_SpotLight");
 
-        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetBSType(BS_TYPE::ONE_ONE);
 
@@ -649,8 +649,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredLightingVS.hlsl", "VS_DirLight");
-        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredLightingPS.hlsl", "PS_DirLight");
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredDirLightingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredDirLightingPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -660,6 +660,42 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetName(L"UnrealPBRDeferredDirLightingShader");
         AddAsset(L"UnrealPBRDeferredDirLightingShader", pShader);
+    }
+
+    // =================================
+    // Unreal PBR Deferred Point Lighting Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredPointLightingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredPointLightingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"UnrealPBRDeferredPointLightingShader");
+        AddAsset(L"UnrealPBRDeferredPointLightingShader", pShader);
+    }
+
+    // =================================
+    // Unreal PBR Deferred Spot Lighting Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredSpotLightingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredSpotLightingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"UnrealPBRDeferredSpotLightingShader");
+        AddAsset(L"UnrealPBRDeferredSpotLightingShader", pShader);
     }
 
     // =================================
@@ -1310,6 +1346,22 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredDirLightingShader"));
         pMtrl->SetName(L"UnrealPBRDeferredDirLightingMtrl");
         AddAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl", pMtrl);
+    }
+
+    // Unreal PBR Deferred Point Lighting
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredPointLightingShader"));
+        pMtrl->SetName(L"UnrealPBRDeferredPointLightingMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredPointLightingMtrl", pMtrl);
+    }
+
+    // Unreal PBR Deferred Spot Lighting
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredSpotLightingShader"));
+        pMtrl->SetName(L"UnrealPBRDeferredSpotLightingMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl", pMtrl);
     }
 
     // Unreal PBR Deferred Merge

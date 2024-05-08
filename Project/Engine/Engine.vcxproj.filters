@@ -1137,16 +1137,28 @@
     <FxCompile Include="UnrealPBRDeferredPS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
-    <FxCompile Include="UnrealPBRDeferredLightingVS.hlsl">
+    <FxCompile Include="UnrealPBRDeferredDirLightingVS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
-    <FxCompile Include="UnrealPBRDeferredLightingPS.hlsl">
+    <FxCompile Include="UnrealPBRDeferredDirLightingPS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
     <FxCompile Include="UnrealPBRDeferredMergeVS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
     <FxCompile Include="UnrealPBRDeferredMergePS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredPointLightingVS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredSpotLightingVS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredPointLightingPS.hlsl">
+      <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="UnrealPBRDeferredSpotLightingPS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
   </ItemGroup>
