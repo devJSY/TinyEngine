@@ -155,8 +155,8 @@ float4 PS_SpotLight(PS_IN _in) : SV_Target
     // Sphere 볼륨메쉬의 로컬 공간으로 변환
     float3 vLocalPos = mul(float4(vWorldPos, 1.f), g_mat_0).xyz;
     
-    // 로컬공간에서 구(Sphere) 내부에 있는지 체크
-    if (1.f < length(vLocalPos))
+    // 로컬공간에서 원뿔(Cone) 내부에 있는지 체크
+    if (length(vLocalPos.xy) / vLocalPos.z > 0.5f)
     {
         discard;
     }
