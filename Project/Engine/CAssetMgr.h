@@ -42,21 +42,22 @@ private:
     void CreateDefaultPhysicMaterial();
 
 public:
-    // Geometry
+    // Geometry Function
     tMeshData MakePoint();
     tMeshData MakeCrosshair();
     tMeshData MakeCircle(const float radius, const int numSlices);
-    tMeshData MakeRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeRect(const float scale = 1.f, const Vec2 texScale = Vec2(1.f));
     tMeshData MakeDebugCircle(const float radius, const int numSlices);
-    tMeshData MakeDebugRect(const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
-    tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.0f, const Vec2 texScale = Vec2(1.0f));
-    tMeshData MakeBox(const float scale = 1.0f);
+    tMeshData MakeDebugRect(const float scale = 1.f, const Vec2 texScale = Vec2(1.f));
+    tMeshData MakeSquareGrid(const int numSlices, const int numStacks, const float scale = 1.f, const Vec2 texScale = Vec2(1.f));
+    tMeshData MakeBox(const float scale = 1.f);
     tMeshData MakeCylinder(const float bottomRadius, const float topRadius, float height, int numSlices);
-    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks, const Vec2 texScale = Vec2(1.0f));
+    tMeshData MakeSphere(const float radius, const int numSlices, const int numStacks, const Vec2 texScale = Vec2(1.f));
     tMeshData MakeCapsule(const float radius, const float halfHeight, const int numSlices);
     tMeshData MakeTetrahedron(); // 사면체
     tMeshData MakeIcosahedron(); // 이십면체
     tMeshData SubdivideToSphere(const float radius, tMeshData meshData);
+    tMeshData MakeCone(const float radius = 0.5f, const float height = 1.f);
 
     tMeshData MakeWireCircle(const float radius, const int numPoints);
     tMeshData MakeWireBox(const float scale = 1.0f);

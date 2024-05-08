@@ -24,7 +24,7 @@ CLight3D::CLight3D()
     m_Info.LightType = (int)LIGHT_TYPE::POINT;
 
     m_Info.fallOffStart = 0.f;
-    m_Info.fallOffEnd = 1000.f;
+    m_Info.fallOffEnd = 10.f;
     m_Info.spotPower = 100.f;
 
     m_Info.ShadowType = 1; // Dynamic Shadow
@@ -87,7 +87,8 @@ void CLight3D::finaltick()
     m_Info.projMat = m_pLightCam->Camera()->GetProjMat();
     m_Info.invProj = m_Info.projMat.Invert();
 
-    // GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), true);
+    // ±¤¿ø ¹üÀ§ µð¹ö±× ·»´õ
+    GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fallOffEnd, Vec3(1.f, 1.f, 1.f), true);
 }
 
 void CLight3D::SetLightType(LIGHT_TYPE _type)

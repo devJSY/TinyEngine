@@ -143,6 +143,15 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
 
+    // Cone
+    {
+        auto mesh = MakeCone(0.5f, 1.f);
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"ConeMesh");
+        AddAsset(L"ConeMesh", pMesh);
+    }
+
     // Wire Circle
     {
         auto mesh = MakeWireCircle(1.f, 30);
@@ -2243,6 +2252,50 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
     }
 
     return newMesh;
+}
+
+tMeshData CAssetMgr::MakeCone(const float radius, const float height)
+{
+    tMeshData meshData;
+    Vtx v;
+
+    // Top
+    v.vPos = Vec3(0.f, 0.f, 0.f);
+    v.vUV = Vec2(0.5f, 0.f);
+    v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    v.vNormal = Vec3(0.f, 0.f, -1.f);
+    v.vTangent = Vec3(1.f, 0.f, 0.f);
+    meshData.vertices.push_back(v);
+
+    // Body
+    UINT iSliceCount = 40; // 원뿔의 세로 분할 개수
+
+    float fSliceAngle = XM_2PI / iSliceCount;
+
+    float fUVXStep = 1.f / (float)iSliceCount;
+    float fUVYStep = 1.f;
+
+    for (UINT i = 0; i <= iSliceCount; ++i)
+    {
+        float theta = i * fSliceAngle;
+
+        v.vPos = Vec3(radius * cosf(theta), radius * sinf(theta), height);
+        v.vUV = Vec2(fUVXStep * i, fUVYStep);
+        v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+        v.vNormal = Vec3(0.f, 0.f, 1.f);
+        v.vTangent = Vec3(1.f, 0.f, 0.f);
+        meshData.vertices.push_back(v);
+
+        // 인덱스
+        if (i < iSliceCount)
+        {
+            meshData.indices.push_back(0);
+            meshData.indices.push_back(i + 2);
+            meshData.indices.push_back(i + 1);
+        }
+    }
+
+    return meshData;
 }
 
 tMeshData CAssetMgr::MakeWireCircle(const float radius, const int numPoints)
