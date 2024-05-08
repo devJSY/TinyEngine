@@ -12,5 +12,4 @@ CConflictTest::~CConflictTest()
 
 void CConflictTest::tick()
 {
-    // 브랜치 테스트
 }

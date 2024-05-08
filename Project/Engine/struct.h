@@ -115,6 +115,7 @@ __declspec(align(16)) struct tGlobalData
     int g_RenderOutline = true;
 
     int g_DrawAsWireFrame = false;
+    int g_EnableSSAO = false;
 };
 
 __declspec(align(16)) struct tAnimData2D

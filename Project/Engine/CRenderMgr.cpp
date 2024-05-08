@@ -31,7 +31,7 @@ CRenderMgr::CRenderMgr()
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
-    , m_bBloomEnable(true)
+    , m_bBloomEnable(false)
     , m_bloomLevels(5)
     , m_BloomRTTex_LDRI(nullptr)
     , m_BloomTextures_LDRI{}

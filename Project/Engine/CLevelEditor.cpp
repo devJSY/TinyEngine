@@ -38,7 +38,7 @@ CLevelEditor::CLevelEditor()
     , m_bShowViewport(true)
     , m_bShowIDMap(false)
     , m_bShowOutliner(true)
-    , m_bShowContentBrowser(true)
+    , m_bShowContentBrowser(false)
     , m_bShowToolbar(true)
     , m_bShowAssets(true)
     , m_bShowOutputLog(true)
@@ -375,6 +375,8 @@ void CLevelEditor::render_WorldSettings()
     bool bEnableBloom = CRenderMgr::GetInst()->IsEnableBloom();
     if (ImGui::Checkbox("Enable Bloom", &bEnableBloom))
         CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);
+
+    ImGui::Checkbox("Enable SSAO", (bool*)&g_Global.g_EnableSSAO);
 
     ImGui::End();
 }
