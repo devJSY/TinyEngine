@@ -10,7 +10,7 @@
 
 #define LIGHT_INDEX g_int_0
 
-float4 PS_DirLight(PS_IN input) : SV_Target
+float4 main(PS_IN input) : SV_Target
 {
     float3 vWorldPos = PositionTex.Sample(g_LinearWrapSampler, input.vUV).xyz;
     

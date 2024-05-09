@@ -143,6 +143,15 @@ void CAssetMgr::CreateDefaultMesh()
         AddAsset(L"SubdivideSphereMesh", pMesh);
     }
 
+    // Cone
+    {
+        auto mesh = MakeCone(0.5f, 1.f);
+        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh->Create(mesh.vertices.data(), (UINT)mesh.vertices.size(), mesh.indices.data(), (UINT)mesh.indices.size());
+        pMesh->SetName(L"ConeMesh");
+        AddAsset(L"ConeMesh", pMesh);
+    }
+
     // Wire Circle
     {
         auto mesh = MakeWireCircle(1.f, 30);
@@ -337,6 +346,42 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetName(L"DirLight_deferredShader");
         AddAsset(L"DirLight_deferredShader", pShader);
+    }
+
+    // ====================
+    // PointLight_deferredShader
+    // ====================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\light_deferred.fx", "VS_PointLight");
+        pShader->CreatePixelShader(L"shader\\light_deferred.fx", "PS_PointLight");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"PointLight_deferredShader");
+        AddAsset(L"PointLight_deferredShader", pShader);
+    }
+
+    // ====================
+    // SpotLight_deferredShader
+    // ====================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\light_deferred.fx", "VS_SpotLight");
+        pShader->CreatePixelShader(L"shader\\light_deferred.fx", "PS_SpotLight");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"SpotLight_deferredShader");
+        AddAsset(L"SpotLight_deferredShader", pShader);
     }
 
     // ====================
@@ -604,8 +649,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredLightingVS.hlsl", "VS_DirLight");
-        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredLightingPS.hlsl", "PS_DirLight");
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredDirLightingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredDirLightingPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -615,6 +660,42 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetName(L"UnrealPBRDeferredDirLightingShader");
         AddAsset(L"UnrealPBRDeferredDirLightingShader", pShader);
+    }
+
+    // =================================
+    // Unreal PBR Deferred Point Lighting Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredPointLightingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredPointLightingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"UnrealPBRDeferredPointLightingShader");
+        AddAsset(L"UnrealPBRDeferredPointLightingShader", pShader);
+    }
+
+    // =================================
+    // Unreal PBR Deferred Spot Lighting Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRDeferredSpotLightingVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UnrealPBRDeferredSpotLightingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ONE_ONE);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+        pShader->SetName(L"UnrealPBRDeferredSpotLightingShader");
+        AddAsset(L"UnrealPBRDeferredSpotLightingShader", pShader);
     }
 
     // =================================
@@ -773,6 +854,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(FLOAT_0, "Half Width");
 
         pShader->SetName(L"BillBoardPointShader");
         AddAsset(L"BillBoardPointShader", pShader);
@@ -1136,6 +1218,22 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"DirLight_deferredMtrl", pMtrl);
     }
 
+    // PointLight_deferredMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PointLight_deferredShader"));
+        pMtrl->SetName(L"PointLight_deferredMtrl");
+        AddAsset<CMaterial>(L"PointLight_deferredMtrl", pMtrl);
+    }
+
+    // SpotLight_deferredMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SpotLight_deferredShader"));
+        pMtrl->SetName(L"SpotLight_deferredMtrl");
+        AddAsset<CMaterial>(L"SpotLight_deferredMtrl", pMtrl);
+    }
+
     // Merge_DeferredMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -1251,6 +1349,22 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl", pMtrl);
     }
 
+    // Unreal PBR Deferred Point Lighting
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredPointLightingShader"));
+        pMtrl->SetName(L"UnrealPBRDeferredPointLightingMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredPointLightingMtrl", pMtrl);
+    }
+
+    // Unreal PBR Deferred Spot Lighting
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"UnrealPBRDeferredSpotLightingShader"));
+        pMtrl->SetName(L"UnrealPBRDeferredSpotLightingMtrl");
+        AddAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl", pMtrl);
+    }
+
     // Unreal PBR Deferred Merge
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -1323,6 +1437,7 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\DirectionalLight.png", L"Icons\\DirectionalLight.png"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // HalfWidth
         pMtrl->SetName(L"DirectionalLightMtrl");
         AddAsset<CMaterial>(L"DirectionalLightMtrl", pMtrl);
     }
@@ -1332,6 +1447,7 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\PointLight.png", L"Icons\\PointLight.png"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // HalfWidth
         pMtrl->SetName(L"PointLightMtrl");
         AddAsset<CMaterial>(L"PointLightMtrl", pMtrl);
     }
@@ -1341,6 +1457,7 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
         pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\SpotLight.png", L"Icons\\SpotLight.png"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // HalfWidth
         pMtrl->SetName(L"SpotLightMtrl");
         AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
     }
@@ -2243,6 +2360,67 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
     }
 
     return newMesh;
+}
+
+tMeshData CAssetMgr::MakeCone(const float radius, const float height)
+{
+    tMeshData meshData;
+    Vtx v;
+
+    // Top
+    v.vPos = Vec3(0.f, 0.f, 0.f);
+    v.vUV = Vec2(0.5f, 0.f);
+    v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    v.vNormal = Vec3(0.f, 0.f, -1.f);
+    v.vTangent = Vec3(1.f, 0.f, 0.f);
+    meshData.vertices.push_back(v);
+
+    // Body
+    UINT iSliceCount = 40; // 원뿔의 세로 분할 개수
+
+    float fSliceAngle = XM_2PI / iSliceCount;
+
+    float fUVXStep = 1.f / (float)iSliceCount;
+    float fUVYStep = 1.f;
+
+    for (UINT i = 0; i <= iSliceCount; ++i)
+    {
+        float theta = i * fSliceAngle;
+
+        v.vPos = Vec3(radius * cosf(theta), radius * sinf(theta), height);
+        v.vUV = Vec2(fUVXStep * i, fUVYStep);
+        v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+        v.vNormal = Vec3(0.f, 0.f, 1.f);
+        v.vTangent = Vec3(1.f, 0.f, 0.f);
+        meshData.vertices.push_back(v);
+
+        // 인덱스
+        if (i < iSliceCount)
+        {
+            meshData.indices.push_back(0);
+            meshData.indices.push_back(i + 2);
+            meshData.indices.push_back(i + 1);
+        }
+    }
+
+    tMeshData circle2D = MakeCircle(radius, iSliceCount);
+    {
+        int offset = int(meshData.vertices.size());
+
+        for (auto& vtx : circle2D.vertices)
+        {
+            vtx.vPos = Vector3::Transform(vtx.vPos, Matrix::CreateRotationX(XM_PI));
+            vtx.vPos.z += height;
+            meshData.vertices.push_back(vtx);
+        }
+
+        for (const auto& index : circle2D.indices)
+        {
+            meshData.indices.push_back(index + offset);
+        }
+    }
+
+    return meshData;
 }
 
 tMeshData CAssetMgr::MakeWireCircle(const float radius, const int numPoints)

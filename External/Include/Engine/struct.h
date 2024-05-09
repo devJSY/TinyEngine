@@ -42,7 +42,7 @@ struct tLightInfo
 
     // 물체는 조명으로부터 거리에따라 빛을 받는양이 달라짐
     // fallOffStart, fallOffEnd 옵션값으로 표현
-    float fallOffStart;
+    float fallOffStart; 
     float fallOffEnd;
     float spotPower;
 

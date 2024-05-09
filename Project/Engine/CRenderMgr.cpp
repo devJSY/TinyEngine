@@ -240,7 +240,7 @@ void CRenderMgr::render_debug()
 
         // Topology ¼³Á¤
         D3D11_PRIMITIVE_TOPOLOGY PrevTopology = pMtrl->GetShader()->GetTopology();
-        if (!(DEBUG_SHAPE::RECT == (*iter).eShape || DEBUG_SHAPE::CIRCLE == (*iter).eShape))
+        if (!(DEBUG_SHAPE::RECT == (*iter).eShape || DEBUG_SHAPE::CIRCLE == (*iter).eShape || DEBUG_SHAPE::CONE == (*iter).eShape))
         {
             pMtrl->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }
@@ -663,12 +663,38 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
 
+        Ptr<CMaterial> pPBRPointLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredPointLightingMtrl");
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
+        pPBRPointLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
+
+        Ptr<CMaterial> pPBRSpotLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl");
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
+        pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
+
         // Phong
         Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+
+        Ptr<CMaterial> pPointLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+
+        Ptr<CMaterial> pSpotLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl");
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
     }
 
     // ============

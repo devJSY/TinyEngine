@@ -260,6 +260,7 @@ enum class DEBUG_SHAPE
     // 3D
     BOX,
     SPHERE,
+    CONE,
     CAPSULE,
 };
 
