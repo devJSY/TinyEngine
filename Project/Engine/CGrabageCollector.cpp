@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "CGrabageCollector.h"
+#include "CTimeMgr.h"
 
 #include "CEntity.h"
 
 CGrabageCollector::CGrabageCollector()
+    : m_vecEntity{}
+    , m_AccTime(0.f)
 {
 }
 
@@ -14,9 +17,12 @@ CGrabageCollector::~CGrabageCollector()
 
 void CGrabageCollector::tick()
 {
-    if (100 < m_vecEntity.size())
+    m_AccTime += DT;
+
+    if (m_AccTime > 60.f)
     {
         Clear();
+        m_AccTime = 0.f;
     }
 }
 

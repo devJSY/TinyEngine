@@ -425,8 +425,6 @@ void CRenderMgr::render_LightDepth()
         {
             m_vecLight3D[i]->GetDepthMapTex()->UpdateData(25);
         }
-
-        ShadowIndex--;
     }
 }
 
