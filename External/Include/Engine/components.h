@@ -25,6 +25,6 @@
 #include "CTileMap.h"
 #include "CParticleSystem.h"
 #include "CSkybox.h"
-// #include "Decal.h"
+#include "CDecal.h"
 // #include "Landscape.h"
 #include "CTextRender.h"

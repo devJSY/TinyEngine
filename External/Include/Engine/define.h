@@ -170,6 +170,7 @@ enum class BS_TYPE
     MASK,        // Alpha Coverage
     ALPHA_BLEND, // Alpha °è¼ö
     ONE_ONE,     // 1:1 È¥ÇÕ
+    DECAL,
     END,
 };
 

@@ -658,6 +658,7 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
         pObj->AddComponent(new CSkyBox);
         break;
     case COMPONENT_TYPE::DECAL:
+        pObj->AddComponent(new CDecal);
         break;
     case COMPONENT_TYPE::LANDSCAPE:
         break;

@@ -42,6 +42,7 @@ private:
     void DrawTileMap(CGameObject* obj);
     void DrawParticlesystem(CGameObject* obj);
     void DrawSkybox(CGameObject* obj);
+    void DrawDecal(CGameObject* obj);
     void DrawLandscape(CGameObject* obj);
     void DrawTextRender(CGameObject* obj);
     void DrawScript(CGameObject* obj);

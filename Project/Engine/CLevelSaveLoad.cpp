@@ -320,6 +320,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             pComponent = new CSkyBox;
             break;
         case COMPONENT_TYPE::DECAL:
+            pComponent = new CDecal;
             break;
         case COMPONENT_TYPE::LANDSCAPE:
             break;

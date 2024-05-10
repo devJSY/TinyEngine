@@ -713,7 +713,7 @@ void CLevelEditor::render_Viewport()
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();
                 Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                pos += dir.Normalize() * 500.f;
+                pos += dir.Normalize() * 5.f;
                 pObj->Transform()->SetRelativePos(pos);
 
                 GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());

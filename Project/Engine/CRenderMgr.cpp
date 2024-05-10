@@ -695,6 +695,27 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
     }
 
+    // =========
+    // Decal MRT
+    // =========
+    {
+        Ptr<CTexture> pRTTex[2] = {
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"AlbedoTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"),
+        };
+
+        Vec4 arrClearColor[2] = {
+            Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f),
+        };
+
+        m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, arrClearColor, 2, nullptr);
+
+        Ptr<CMaterial> pSpotLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+    }
+
     // ============
     // Light MRT
     // ============

@@ -9,6 +9,7 @@ public:
     virtual void render() override;
     virtual void render(Ptr<CMaterial> _mtrl) override;
 
+public:
     CLONE(CMeshRender);
 
 public:

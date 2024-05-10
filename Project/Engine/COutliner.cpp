@@ -566,6 +566,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawTileMap(obj);
     DrawParticlesystem(obj);
     DrawSkybox(obj);
+    DrawDecal(obj);
     DrawLandscape(obj);
     DrawTextRender(obj);
     DrawScript(obj);
@@ -2240,6 +2241,81 @@ void COutliner::DrawSkybox(CGameObject* obj)
             else if (SkyBoxShapes[1] == CurShape)
                 pSkyBox->SetShape(SKYBOX_SHAPE::BOX);
         }
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawDecal(CGameObject* obj)
+{
+    CDecal* pDecal = obj->Decal();
+    if (nullptr == pDecal)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CDecal).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::DECAL]);
+
+    ComponentSettingsButton(pDecal);
+
+    if (open)
+    {
+        // Decal Texture
+        ImGui::Text("Decal Texture");
+        void* TextureID = nullptr;
+        Ptr<CTexture> pDecalTex = pDecal->GetDecalTex();
+
+        if (nullptr != pDecalTex)
+            TextureID = pDecalTex->GetSRV().Get();
+        else
+            TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+        ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+        if (nullptr != pDecalTex)
+        {
+            if (ImGui::BeginItemTooltip())
+            {
+                ImGui::Text("%s", ToString(pDecalTex->GetKey()).c_str());
+                ImGui::EndTooltip();
+            }
+        }
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pDecal->SetDecalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+            }
+
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pDecal->SetDecalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        // Delete Texture Popup
+        ImGui::OpenPopupOnItemClick("Decal Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+
+        if (ImGui::BeginPopup("Decal Texture##COutlinerDecal"))
+        {
+            if (ImGui::MenuItem("Delete Texture"))
+            {
+                pDecal->SetDecalTex(nullptr);
+            }
+
+            ImGui::EndPopup();
+        }
+
+        // As Emissive
+        bool bAsEmissive = pDecal->IsDecalAsEmissive();
+        ImGui::Checkbox(ImGui_LabelPrefix("Decal As Emissive").c_str(), &bAsEmissive);
+        pDecal->SetDecalAsEmissive(bAsEmissive);
 
         ImGui::TreePop();
     }

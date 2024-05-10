@@ -328,6 +328,9 @@
     <ClInclude Include="CMRT.h">
       <Filter>MRT</Filter>
     </ClInclude>
+    <ClInclude Include="CDecal.h">
+      <Filter>08. Component\RenderComponent\Decal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -629,6 +632,9 @@
     </ClCompile>
     <ClCompile Include="CMRT.cpp">
       <Filter>MRT</Filter>
+    </ClCompile>
+    <ClCompile Include="CDecal.cpp">
+      <Filter>08. Component\RenderComponent\Decal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -938,6 +944,9 @@
     <Filter Include="MRT">
       <UniqueIdentifier>{471c873d-6253-47dd-9e76-d63d719086be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\RenderComponent\Decal">
+      <UniqueIdentifier>{417a8c93-82a7-4d01-b972-fe5993527e9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1160,6 +1169,9 @@
     </FxCompile>
     <FxCompile Include="UnrealPBRDeferredSpotLightingPS.hlsl">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </FxCompile>
+    <FxCompile Include="decal.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

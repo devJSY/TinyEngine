@@ -36,6 +36,7 @@ private:
 
     // 물체 분류
     vector<CGameObject*> m_vecDeferred;
+    vector<CGameObject*> m_vecDecal;
     vector<CGameObject*> m_vecOpaque;
     vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
@@ -79,6 +80,7 @@ public:
 
     void SortObject();
     void render();
+    void render_Decal();
     void render_SSAO();
     void render_Light();
     void render_Merge();

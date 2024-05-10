@@ -402,6 +402,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Merge_DeferredShader", pShader);
     }
 
+    // ============
+    // Decal Shader
+    // ============
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\decal.fx", "VS_Decal");
+        pShader->CreatePixelShader(L"shader\\decal.fx", "PS_Decal");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DECAL);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DECAL);
+
+        pShader->SetName(L"DecalShader");
+        AddAsset(L"DecalShader", pShader);
+    }
+
     // =================================
     // TileMapShader
     // =================================
@@ -1240,6 +1257,13 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Merge_DeferredShader"));
         pMtrl->SetName(L"Merge_DeferredMtrl");
         AddAsset<CMaterial>(L"Merge_DeferredMtrl", pMtrl);
+    }
+
+    // DecalMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
+        AddAsset<CMaterial>(L"DecalMtrl", pMtrl);
     }
 
     // TileMapMtrl

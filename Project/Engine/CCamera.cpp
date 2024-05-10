@@ -36,6 +36,7 @@ CCamera::CCamera()
     , m_matView()
     , m_matProj()
     , m_vecDeferred{}
+    , m_vecDecal{}
     , m_vecOpaque{}
     , m_vecMaked{}
     , m_vecTransparent{}
@@ -153,6 +154,9 @@ void CCamera::SortObject()
             case SHADER_DOMAIN::DOMAIN_DEFERRED:
                 m_vecDeferred.push_back(vecObjects[j]);
                 break;
+            case SHADER_DOMAIN::DOMAIN_DECAL:
+                m_vecDecal.push_back(vecObjects[j]);
+                break;
             case SHADER_DOMAIN::DOMAIN_OPAQUE:
                 m_vecOpaque.push_back(vecObjects[j]);
                 break;
@@ -181,6 +185,9 @@ void CCamera::render()
     // Deferred Render Pass
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render(m_vecDeferred);
+
+    // Decal Pass
+    render_Decal();
 
     // SSAO Pass
     render_SSAO();
@@ -237,6 +244,16 @@ void CCamera::render()
 
     // Clear
     render_Clear();
+}
+
+void CCamera::render_Decal()
+{
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();
+
+    for (size_t i = 0; i < m_vecDecal.size(); ++i)
+    {
+        m_vecDecal[i]->render();
+    }
 }
 
 void CCamera::render_SSAO()
@@ -327,6 +344,7 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
 void CCamera::render_Clear()
 {
     m_vecDeferred.clear();
+    m_vecDecal.clear();
     m_vecOpaque.clear();
     m_vecMaked.clear();
     m_vecTransparent.clear();
