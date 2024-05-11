@@ -600,7 +600,34 @@ void COutliner::DrawTransform(CGameObject* obj)
         pTr->SetRelativeScale(scale);
 
         ImGui::Spacing();
-        ImGui::Separator();
+
+        // Mobility
+        static vector<string> MobilityTypes = {
+            "Static",
+            "Movable",
+        };
+
+        MOBILITY_TYPE MobilityType = pTr->GetMobilityType();
+
+        static string CurMobility = string();
+
+        switch (MobilityType)
+        {
+        case MOBILITY_TYPE::STATIC:
+            CurMobility = MobilityTypes[0];
+            break;
+        case MOBILITY_TYPE::MOVABLE:
+            CurMobility = MobilityTypes[1];
+            break;
+        }
+
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Mobility").c_str(), CurMobility, MobilityTypes))
+        {
+            if (MobilityTypes[0] == CurMobility)
+                pTr->SetMobilityType(MOBILITY_TYPE::STATIC);
+            else if (MobilityTypes[1] == CurMobility)
+                pTr->SetMobilityType(MOBILITY_TYPE::MOVABLE);
+        }
 
         bool bAbsolute = pTr->IsAbsolute();
         ImGui::Checkbox(ImGui_LabelPrefix("Absolute Scale").c_str(), &bAbsolute);

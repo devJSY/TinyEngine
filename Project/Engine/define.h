@@ -335,3 +335,9 @@ enum class MRT_TYPE
     SSAO,
     END,
 };
+
+enum MOBILITY_TYPE
+{
+    STATIC = 0x0001,
+    MOVABLE = 0x0002,
+};

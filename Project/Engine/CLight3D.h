@@ -57,7 +57,7 @@ public:
 
 public:
     void render_Deferred(int _LightIdx);
-    void render_LightDepth();
+    void render_ShadowDepth(UINT _MobilityType);
 
 private:
     void CreateDepthMapTex();

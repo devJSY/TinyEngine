@@ -4,6 +4,7 @@
 
 #include "CAssetMgr.h"
 #include "CRenderMgr.h"
+#include "CLevelMgr.h"
 
 #include "CMeshRender.h"
 #include "CCamera.h"
@@ -39,6 +40,7 @@ CLight3D::CLight3D()
     // 쉐이더와 동일하게 설정
     m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
     m_pLightCam->Camera()->LayerMaskAll();
+    m_pLightCam->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
     m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
     m_pLightCam->Camera()->SetNear(1.f);
     m_pLightCam->Camera()->SetFar(10000.f);
@@ -78,8 +80,9 @@ void CLight3D::finaltick()
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
     // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트
-    m_pLightCam->Transform()->SetRelativePos(Transform()->GetRelativePos());
-    m_pLightCam->Transform()->SetRelativeRotation(Transform()->GetRelativeRotation());
+    m_pLightCam->Transform()->SetRelativePos(m_Info.vWorldPos);
+    m_pLightCam->Transform()->SetDirection(m_Info.vWorldDir);
+
     m_pLightCam->finaltick();
 
     // 쉐이더에서 사용할 광원의 행렬 설정
@@ -97,7 +100,6 @@ void CLight3D::finaltick()
     {
         GamePlayStatic::DrawDebugSphere(m_Info.vWorldPos, m_Info.fallOffEnd, Vec3(1.f, 1.f, 1.f), true);
     }
-
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
         GamePlayStatic::DrawDebugCone(Transform()->GetWorldMat(), Vec3(1.f, 1.f, 1.f), true);
@@ -171,9 +173,9 @@ void CLight3D::render_Deferred(int _LightIdx)
     m_VolumeMesh->render();
 }
 
-void CLight3D::render_LightDepth()
+void CLight3D::render_ShadowDepth(UINT _MobilityType)
 {
-    m_pLightCam->Camera()->SortObject();
+    m_pLightCam->Camera()->SortShadowMapObject(_MobilityType);
     m_pLightCam->Camera()->render_DepthOnly(m_DepthMapTex);
 }
 

@@ -42,6 +42,8 @@ private:
     vector<CGameObject*> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;
 
+    vector<CGameObject*> m_vecShadow;
+
 public:
     PROJ_TYPE GetProjType() const { return m_ProjType; }
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
@@ -79,6 +81,8 @@ public:
     virtual void finaltick() override;
 
     void SortObject();
+    void SortShadowMapObject(UINT _MobilityType);
+
     void render();
     void render_Decal();
     void render_SSAO();

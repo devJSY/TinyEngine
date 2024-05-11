@@ -12,6 +12,8 @@ private:
     Vec3 m_arrWorldDir[3]; // Right, Up, Front
 
     Matrix m_matWorld;
+
+    MOBILITY_TYPE m_Mobility;
     bool m_bAbsolute;
 
     Matrix m_matTransformation;
@@ -32,6 +34,11 @@ public:
     Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
     Vec3 GetWorldScale() const;
     Vec3 GetWorldRotation() const;
+
+    void SetDirection(Vec3 _Dir);
+
+    MOBILITY_TYPE GetMobilityType() const { return m_Mobility; }
+    void SetMobilityType(MOBILITY_TYPE _Type) { m_Mobility = _Type; }
 
     bool IsAbsolute() const { return m_bAbsolute; }
     void SetAbsolute(bool _bAbsolute) { m_bAbsolute = _bAbsolute; }

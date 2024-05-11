@@ -1082,7 +1082,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(INT_0, "Render Mode");
 
         pShader->AddScalarParam(FLOAT_0, "FogStrength");
-        pShader->AddScalarParam(FLOAT_1, "DepthScale");
+        pShader->AddScalarParam(FLOAT_1, "FogScale");
+        pShader->AddScalarParam(FLOAT_2, "DepthScale");
 
         pShader->AddScalarParam(VEC4_0, "Fog Color");
 

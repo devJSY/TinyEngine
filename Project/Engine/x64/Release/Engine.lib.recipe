@@ -42,6 +42,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\debug.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\decal.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\DepthOnlyPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

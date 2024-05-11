@@ -6,8 +6,15 @@
 
 CTransform::CTransform()
     : CComponent(COMPONENT_TYPE::TRANSFORM)
+    , m_vRelativePos(Vec3())
     , m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
-    , m_bAbsolute(true)
+    , m_vRelativeRotation(Vec3())
+    , m_arrLocalDir{}
+    , m_arrWorldDir{}
+    , m_matWorld()
+    , m_Mobility(MOBILITY_TYPE::MOVABLE)
+    , m_bAbsolute()
+    , m_matTransformation()
 {
 }
 
@@ -19,6 +26,7 @@ CTransform::CTransform(const CTransform& origin)
     , m_arrLocalDir{origin.m_arrLocalDir[0], origin.m_arrLocalDir[1], origin.m_arrLocalDir[2]}
     , m_arrWorldDir{origin.m_arrWorldDir[0], origin.m_arrWorldDir[1], origin.m_arrWorldDir[2]}
     , m_matWorld()
+    , m_Mobility(origin.m_Mobility)
     , m_bAbsolute(origin.m_bAbsolute)
     , m_matTransformation()
 {
@@ -136,11 +144,38 @@ Vec3 CTransform::GetWorldRotation() const
     return vWorldRot;
 }
 
+void CTransform::SetDirection(Vec3 _Dir)
+{
+    _Dir.Normalize();
+    Vec3 vRight = Vec3(0.f, 1.f, 0.f).Cross(_Dir);
+    if (0.f >= vRight.Length())
+        vRight = Vec3(1.f, 0.f, 0.f);
+
+    vRight.Normalize();
+    Vec3 vUp = _Dir.Cross(vRight);
+
+    Matrix matRot = XMMatrixIdentity();
+
+    matRot._11 = vRight.x;
+    matRot._12 = vRight.y;
+    matRot._13 = vRight.z;
+    matRot._21 = vUp.x;
+    matRot._22 = vUp.y;
+    matRot._23 = vUp.z;
+    matRot._31 = _Dir.x;
+    matRot._32 = _Dir.y;
+    matRot._33 = _Dir.z;
+
+    Vec3 vRot = DecomposeRotMat(matRot);
+    SetRelativeRotation(vRot);
+}
+
 void CTransform::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
     fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
     fwrite(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
+    fwrite(&m_Mobility, sizeof(MOBILITY_TYPE), 1, _File);
     fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
 }
 
@@ -149,5 +184,6 @@ void CTransform::LoadFromLevelFile(FILE* _File)
     fread(&m_vRelativePos, sizeof(Vec3), 1, _File);
     fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
     fread(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
+    fread(&m_Mobility, sizeof(MOBILITY_TYPE), 1, _File);
     fread(&m_bAbsolute, sizeof(bool), 1, _File);
 }

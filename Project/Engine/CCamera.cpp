@@ -41,6 +41,7 @@ CCamera::CCamera()
     , m_vecMaked{}
     , m_vecTransparent{}
     , m_vecPostProcess{}
+    , m_vecShadow{}
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
@@ -169,6 +170,33 @@ void CCamera::SortObject()
             case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                 m_vecPostProcess.push_back(vecObjects[j]);
                 break;
+            }
+        }
+    }
+}
+
+void CCamera::SortShadowMapObject(UINT _MobilityType)
+{
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        // 카메라가 찍도록 설정된 Layer 가 아니면 무시
+        if (false == (m_LayerMask & (1 << i)))
+            continue;
+
+        CLayer* pLayer = pCurLevel->GetLayer(i);
+        const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
+        for (size_t j = 0; j < vecObjects.size(); ++j)
+        {
+            CRenderComponent* pRenderCom = vecObjects[j]->GetRenderComponent();
+
+            if (nullptr != pRenderCom)
+            {
+                if ((int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
+                {
+                    m_vecShadow.push_back(vecObjects[j]);
+                }
             }
         }
     }
@@ -330,13 +358,9 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
     CONTEXT->OMSetRenderTargets(0, NULL, _DepthMapTex->GetDSV().Get());
     CDevice::GetInst()->SetViewport((float)_DepthMapTex->GetWidth(), (float)_DepthMapTex->GetHeight());
 
-    render_DepthOnly(m_vecDeferred);
-    render_DepthOnly(m_vecOpaque);
-    render_DepthOnly(m_vecMaked);
-    render_DepthOnly(m_vecTransparent);
+    render_DepthOnly(m_vecShadow);
 
-    // Clear
-    render_Clear();
+    m_vecShadow.clear();
 
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
 }

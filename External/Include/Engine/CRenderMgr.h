@@ -146,7 +146,7 @@ private:
     void render_editor();
 
     void render_debug();
-    void render_LightDepth();
+    void render_DynamicShadowDepth();
 
     // 리소스 바인딩
     void UpdateData();

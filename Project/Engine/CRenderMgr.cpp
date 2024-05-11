@@ -132,12 +132,12 @@ void CRenderMgr::render()
     if (nullptr != m_mainCam)
     {
         // Depth Only Pass
-        m_mainCam->SortObject();
+        m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
 
-    // Light Depth Map
-    render_LightDepth();
+    // Dynamic Shadow Depth Map
+    render_DynamicShadowDepth();
 
     // Rendering
     (this->*RENDER_FUNC)();
@@ -401,7 +401,7 @@ void CRenderMgr::render_postprocess_HDRI()
     CTexture::Clear(1);
 }
 
-void CRenderMgr::render_LightDepth()
+void CRenderMgr::render_DynamicShadowDepth()
 {
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
@@ -410,7 +410,7 @@ void CRenderMgr::render_LightDepth()
             continue;
 
         // Rendering
-        m_vecLight3D[i]->render_LightDepth();
+        m_vecLight3D[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
 
         // Bind
         if (1 == ShadowIndex)
