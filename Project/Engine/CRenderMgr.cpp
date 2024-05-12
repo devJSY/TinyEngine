@@ -475,7 +475,7 @@ void CRenderMgr::UpdateData()
     {
         m_vecLight3D[i]->SetShadowIdx(-1); // √ ±‚»≠
 
-        if (ShadowIdx <= dynamicShadowMaxCount && 0 < m_vecLight3D[i]->GetShadowType())
+        if (ShadowIdx <= dynamicShadowMaxCount && MOBILITY_TYPE::MOVABLE == m_vecLight3D[i]->Transform()->GetMobilityType())
         {
             m_vecLight3D[i]->SetShadowIdx(ShadowIdx);
             ShadowIdx++;

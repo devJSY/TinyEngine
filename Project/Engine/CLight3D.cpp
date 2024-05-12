@@ -28,7 +28,6 @@ CLight3D::CLight3D()
     m_Info.fallOffEnd = 10.f;
     m_Info.spotPower = 100.f;
 
-    m_Info.ShadowType = 1; // Dynamic Shadow
     m_Info.ShadowIndex = -1;
 
     CreateDepthMapTex();

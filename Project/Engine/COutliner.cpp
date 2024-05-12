@@ -907,16 +907,6 @@ void COutliner::DrawLight3D(CGameObject* obj)
         if (ImGui::SliderFloat(ImGui_LabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
 
-        int shadowType = pLight->GetShadowType();
-        ImGui::Text("Shadow Type");
-        ImGui::SameLine();
-        ImGui::Dummy(ImVec2(50.f, 0.f));
-        ImGui::SameLine();
-        ImGui::RadioButton("Static Shadow", &shadowType, 0);
-        ImGui::SameLine();
-        ImGui::RadioButton("Dynamic Shadow", &shadowType, 1);
-        pLight->SetShadowType(shadowType);
-
         float HaloRadius = pLight->GetHaloRadius();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
             pLight->SetHaloRadius(HaloRadius);
