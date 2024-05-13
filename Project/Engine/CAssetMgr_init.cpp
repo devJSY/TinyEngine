@@ -1063,7 +1063,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\DepthOnlyVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\DepthOnlyPS.hlsl", "main");
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SHADOW);
 
         pShader->SetName(L"DepthOnlyShader");
         AddAsset(L"DepthOnlyShader", pShader);

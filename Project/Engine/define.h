@@ -288,6 +288,8 @@ enum class SHADER_DOMAIN
     DOMAIN_TRANSPARENT, // 반투명
     DOMAIN_POSTPROCESS, // 후처리
 
+    DOMAIN_SHADOW,
+
     DOMAIN_DEBUG,
 };
 
@@ -328,6 +330,7 @@ enum class MRT_TYPE
     SWAPCHAIN,
     HDRI,
     DEFERRED,
+    DEFERRED_PBR,
     DECAL,
     LIGHT,
     SHADOW,

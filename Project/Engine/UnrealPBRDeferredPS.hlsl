@@ -18,9 +18,9 @@ struct PS_OUT
     float4 vColor : SV_Target0;
     float4 vPosition : SV_Target1;
     float4 vNormal : SV_Target2;
-    float4 vEmissive : SV_Target3;
-    float4 vDiffuse : SV_Target4;
-    float4 vSpecular : SV_Target5;
+    float4 vTangent : SV_Target3;
+    float4 vBitangent : SV_Target4;
+    float4 vEmissive : SV_Target5;
     float4 vMetallicRoughness : SV_Target6;
     float4 vAmbientOcclusion : SV_Target7;
 };
@@ -28,8 +28,6 @@ struct PS_OUT
 PS_OUT main(PS_IN input)
 {
     PS_OUT output = (PS_OUT) 0.f;
-    
-    float3 normalWorld = GetNormal(input);
     
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb 
                                  : MtrlAlbedo.rgb;
@@ -43,7 +41,9 @@ PS_OUT main(PS_IN input)
 
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
-    output.vNormal = float4(normalWorld, 1.f);
+    output.vNormal = float4(GetNormal(input), 1.f);
+    output.vTangent = float4(input.vTangentWorld, 1.f);
+    output.vBitangent = float4(normalize(cross(input.normalWorld.xyz, output.vTangent.xyz)), 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMetallicRoughness = float4(0.f, roughness, metallic, 1.f);
     output.vAmbientOcclusion = float4(ao, ao, ao, 1.f);

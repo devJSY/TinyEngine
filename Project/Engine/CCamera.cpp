@@ -189,14 +189,16 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
         for (size_t j = 0; j < vecObjects.size(); ++j)
         {
-            CRenderComponent* pRenderCom = vecObjects[j]->GetRenderComponent();
-
-            if (nullptr != pRenderCom)
+            // 메쉬, 재질, 쉐이더 확인
+            if (!(vecObjects[j]->GetRenderComponent() && vecObjects[j]->GetRenderComponent()->GetMesh().Get() &&
+                  vecObjects[j]->GetRenderComponent()->GetMaterial().Get() && vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
             {
-                if ((int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
-                {
-                    m_vecShadow.push_back(vecObjects[j]);
-                }
+                continue;
+            }
+
+            if ((int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
+            {
+                m_vecShadow.push_back(vecObjects[j]);
             }
         }
     }
@@ -211,7 +213,7 @@ void CCamera::render()
     g_Transform.matProjInv = m_matProj.Invert();
 
     // Deferred Render Pass
-    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED_PBR)->OMSet();
     render(m_vecDeferred);
 
     // Decal Pass
@@ -276,10 +278,10 @@ void CCamera::render()
 
 void CCamera::render_Decal()
 {
-    CMRT* pDeferredMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED);
+    CMRT* pDeferredPBRMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED_PBR);
 
     static Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
-    CONTEXT->CopyResource(pDecalMtrl->GetTexParam(TEX_1)->GetTex2D().Get(), pDeferredMRT->GetRenderTargetTex(2)->GetTex2D().Get());
+    CONTEXT->CopyResource(pDecalMtrl->GetTexParam(TEX_1)->GetTex2D().Get(), pDeferredPBRMRT->GetRenderTargetTex(2)->GetTex2D().Get());
 
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();
 

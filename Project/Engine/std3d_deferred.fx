@@ -29,8 +29,6 @@ struct PS_OUT
     float4 vEmissive : SV_Target3;
     float4 vDiffuse : SV_Target4;
     float4 vSpecular : SV_Target5;
-    float4 vMetallicRoughness : SV_Target6;
-    float4 vAmbientOcclusion : SV_Target7;
 };
 
 PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target

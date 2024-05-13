@@ -1024,7 +1024,7 @@ void CLevelEditor::render_MRT()
         return;
     }
 
-    CMRT* pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED);
+    CMRT* pMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED_PBR);
 
     for (UINT i = 0; i < 8; i++)
     {

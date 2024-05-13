@@ -31,8 +31,8 @@ void CDecal::UpdateData()
     Matrix matInv = Transform()->GetWorldMat().Invert();
     GetMaterial()->SetScalarParam(MAT_0, matInv);
     GetMaterial()->SetScalarParam(INT_0, m_bAsEmissive);
-    GetMaterial()->SetTexParam(TEX_2, m_DecalColorTex);
-    GetMaterial()->SetTexParam(TEX_3, m_DecalNormalTex);
+    GetMaterial()->SetTexParam(TEX_4, m_DecalColorTex);
+    GetMaterial()->SetTexParam(TEX_5, m_DecalNormalTex);
 
     GetMaterial()->UpdateData();
 }

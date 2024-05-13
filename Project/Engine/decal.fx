@@ -18,9 +18,11 @@
 
 // g_tex_0  : PositionTex
 // g_tex_1  : NormalTargetCopyTex
+// g_tex_2  : TangentTex
+// g_tex_3  : BitangentTex
 
-// g_tex_2  : Output Texture
-// g_tex_3  : Normal Texture
+// g_tex_4  : Decal Color Texture
+// g_tex_5  : Decal Normal Texture
 // ===========================
 
 PS_IN VS_Decal(VS_IN _in)
@@ -70,14 +72,23 @@ PS_OUT PS_Decal(PS_IN _in)
     output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
     
     // 볼륨메쉬 내부 판정 성공 시
-    if (g_btex_2)
+    if (g_btex_4)
     {
-        output.vColor = g_tex_2.Sample(g_LinearWrapSampler, vLocal.xz);
+        output.vColor = g_tex_4.Sample(g_LinearWrapSampler, vLocal.xz);
     }
     
-    if (g_btex_3)
+    if (g_btex_5)
     {
-        output.vNormal = g_tex_3.Sample(g_LinearWrapSampler, vLocal.xz);
+        // TBN 행렬 생성
+        float3 Tangent = g_tex_2.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+        float3 Bitangent = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+        float3 normal = normalize(cross(Tangent, Bitangent));
+        float3x3 TBN = float3x3(Tangent, Bitangent, normal);
+        
+        float3 TexNormal = g_tex_5.Sample(g_LinearWrapSampler, vLocal.xz).xyz;
+        TexNormal = 2.0 * TexNormal - 1.0; // 범위 조절 [-1.0, 1.0]
+    
+        output.vNormal.xyz = normalize(mul(TexNormal, TBN));
     }
     
     if (g_int_0)
