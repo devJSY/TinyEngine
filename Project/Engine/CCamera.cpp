@@ -276,6 +276,11 @@ void CCamera::render()
 
 void CCamera::render_Decal()
 {
+    CMRT* pDeferredMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED);
+
+    static Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
+    CONTEXT->CopyResource(pDecalMtrl->GetTexParam(TEX_1)->GetTex2D().Get(), pDeferredMRT->GetRenderTargetTex(2)->GetTex2D().Get());
+
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();
 
     for (size_t i = 0; i < m_vecDecal.size(); ++i)

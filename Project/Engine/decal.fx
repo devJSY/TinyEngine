@@ -15,8 +15,12 @@
 // Parameter
 // g_int_0  : AsEmissive
 // g_mat_0  : WorldInv
-// g_tex_0  : Output Texture
-// g_tex_1  : PositionTargetTex
+
+// g_tex_0  : PositionTex
+// g_tex_1  : NormalTargetCopyTex
+
+// g_tex_2  : Output Texture
+// g_tex_3  : Normal Texture
 // ===========================
 
 PS_IN VS_Decal(VS_IN _in)
@@ -31,7 +35,8 @@ PS_IN VS_Decal(VS_IN _in)
 struct PS_OUT
 {
     float4 vColor : SV_Target0;
-    float4 vEmissive : SV_Target1;
+    float4 vNormal : SV_Target1;
+    float4 vEmissive : SV_Target2;
 };
 
 PS_OUT PS_Decal(PS_IN _in)
@@ -42,7 +47,7 @@ PS_OUT PS_Decal(PS_IN _in)
     float2 vScreenUV = _in.vPosProj.xy / g_RenderResolution;
     
     // PositionTarget 에서 현재 호출된 픽셀쉐이더랑 동일한 지점에 접근해서 좌표값을 확인
-    float4 vWorldPos = g_tex_1.Sample(g_LinearWrapSampler, vScreenUV);
+    float4 vWorldPos = g_tex_0.Sample(g_LinearWrapSampler, vScreenUV);
     
     // x,y,z 전부 0이라면 discard
     if (!any(vWorldPos))
@@ -61,17 +66,23 @@ PS_OUT PS_Decal(PS_IN _in)
     vLocal = (vLocal + 1.f) * 0.5f;
     
     output.vColor = float4(0.f, 0.f, 0.f, 0.f);
+    output.vNormal = g_tex_1.Sample(g_LinearWrapSampler, vScreenUV);
     output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
     
     // 볼륨메쉬 내부 판정 성공 시
-    if (g_btex_0)
+    if (g_btex_2)
     {
-        output.vColor = g_tex_0.Sample(g_LinearWrapSampler, vLocal.xz);
-        
-        if (g_int_0)
-        {
-            output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
-        }
+        output.vColor = g_tex_2.Sample(g_LinearWrapSampler, vLocal.xz);
+    }
+    
+    if (g_btex_3)
+    {
+        output.vNormal = g_tex_3.Sample(g_LinearWrapSampler, vLocal.xz);
+    }
+    
+    if (g_int_0)
+    {
+        output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
     }
     
     return output;

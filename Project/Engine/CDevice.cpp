@@ -524,6 +524,7 @@ int CDevice::CreateBlendState()
     tDesc.AlphaToCoverageEnable = false;
     tDesc.IndependentBlendEnable = true;
 
+    // PositionTarget
     tDesc.RenderTarget[0].BlendEnable = true;
     tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
     tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -534,15 +535,27 @@ int CDevice::CreateBlendState()
     tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
     tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    tDesc.RenderTarget[1].BlendEnable = true;
+    // Normal
+    tDesc.RenderTarget[1].BlendEnable = false;
     tDesc.RenderTarget[1].BlendOp = D3D11_BLEND_OP_ADD;
     tDesc.RenderTarget[1].SrcBlend = D3D11_BLEND_ONE;
-    tDesc.RenderTarget[1].DestBlend = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[1].DestBlend = D3D11_BLEND_ZERO;
 
     tDesc.RenderTarget[1].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     tDesc.RenderTarget[1].SrcBlendAlpha = D3D11_BLEND_ONE;
-    tDesc.RenderTarget[1].DestBlendAlpha = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[1].DestBlendAlpha = D3D11_BLEND_ZERO;
     tDesc.RenderTarget[1].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    // Emissive
+    tDesc.RenderTarget[2].BlendEnable = true;
+    tDesc.RenderTarget[2].BlendOp = D3D11_BLEND_OP_ADD;
+    tDesc.RenderTarget[2].SrcBlend = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[2].DestBlend = D3D11_BLEND_ONE;
+
+    tDesc.RenderTarget[2].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    tDesc.RenderTarget[2].SrcBlendAlpha = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[2].DestBlendAlpha = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[2].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
     DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::DECAL].GetAddressOf());
 

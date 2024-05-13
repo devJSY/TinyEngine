@@ -4,12 +4,16 @@
 class CDecal : public CRenderComponent
 {
 private:
-    Ptr<CTexture> m_DecalTex;
+    Ptr<CTexture> m_DecalColorTex;
+    Ptr<CTexture> m_DecalNormalTex;
     int m_bAsEmissive;
 
 public:
-    Ptr<CTexture> GetDecalTex() const { return m_DecalTex; }
-    void SetDecalTex(Ptr<CTexture> _Tex) { m_DecalTex = _Tex; }
+    Ptr<CTexture> GetDecalColorTex() const { return m_DecalColorTex; }
+    void SetDecalColorTex(Ptr<CTexture> _Tex) { m_DecalColorTex = _Tex; }
+
+    Ptr<CTexture> GetDecalNormalTex() const { return m_DecalNormalTex; }
+    void SetDecalNormalTex(Ptr<CTexture> _Tex) { m_DecalNormalTex = _Tex; }
 
     bool IsDecalAsEmissive() const { return m_bAsEmissive; }
     void SetDecalAsEmissive(bool _bTrue) { m_bAsEmissive = _bTrue; }
