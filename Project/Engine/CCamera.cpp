@@ -213,7 +213,7 @@ void CCamera::render()
     g_Transform.matProjInv = m_matProj.Invert();
 
     // Deferred Render Pass
-    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED_PBR)->OMSet();
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render(m_vecDeferred);
 
     // Decal Pass
@@ -278,9 +278,11 @@ void CCamera::render()
 
 void CCamera::render_Decal()
 {
-    CMRT* pDeferredPBRMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED_PBR);
+    CMRT* pDeferredPBRMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED);
 
     static Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
+
+    // Normal Texture Copy
     CONTEXT->CopyResource(pDecalMtrl->GetTexParam(TEX_1)->GetTex2D().Get(), pDeferredPBRMRT->GetRenderTargetTex(2)->GetTex2D().Get());
 
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();

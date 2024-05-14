@@ -169,7 +169,6 @@ float4 PS_SpotLight(PS_IN _in) : SV_Target
     CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
         
     LightColor.vRadiance.a = 1.f;
-    
     return LightColor.vRadiance;
 }
 

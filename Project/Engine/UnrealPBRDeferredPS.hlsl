@@ -43,7 +43,7 @@ PS_OUT main(PS_IN input)
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vNormal = float4(GetNormal(input), 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
-    output.vBitangent = float4(normalize(cross(input.normalWorld.xyz, output.vTangent.xyz)), 1.f);
+    output.vBitangent = float4(normalize(cross(input.normalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMetallicRoughness = float4(0.f, roughness, metallic, 1.f);
     output.vAmbientOcclusion = float4(ao, ao, ao, 1.f);

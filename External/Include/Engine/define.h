@@ -330,7 +330,7 @@ enum class MRT_TYPE
     SWAPCHAIN,
     HDRI,
     DEFERRED,
-    DEFERRED_PBR,
+    DEFERRED_PHONG,
     DECAL,
     LIGHT,
     SHADOW,
