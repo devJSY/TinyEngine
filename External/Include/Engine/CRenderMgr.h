@@ -139,6 +139,9 @@ public:
     void render_postprocess_LDRI();
     void render_postprocess_HDRI();
 
+public:
+    void render_StaticShadowDepth();
+
 private:
     void render_Clear(const Vec4& Color);
 

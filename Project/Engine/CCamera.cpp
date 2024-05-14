@@ -196,7 +196,7 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
                 continue;
             }
 
-            if ((int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
+            if (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
             {
                 m_vecShadow.push_back(vecObjects[j]);
             }
@@ -300,11 +300,11 @@ void CCamera::render_SSAO()
 
     if (!g_Global.g_EnableSSAO)
     {
-        pSSAOTex->UpdateData(26);
+        pSSAOTex->UpdateData(30);
         return;
     }
 
-    CTexture::Clear(26);
+    CTexture::Clear(30);
 
     pSSAOMRT->OMSet();
 
@@ -332,7 +332,7 @@ void CCamera::render_SSAO()
     pMesh->render();
 
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
-    pSSAOTex->UpdateData(26);
+    pSSAOTex->UpdateData(30);
 }
 
 void CCamera::render_Light()

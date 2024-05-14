@@ -12,6 +12,8 @@ private:
     Ptr<CMaterial> m_SharedMtrl;
     Ptr<CMaterial> m_DynamicMtrl;
 
+    bool m_bCastShadow;
+
 public:
     Ptr<CMesh> GetMesh() const { return m_Mesh; }
     void SetMesh(Ptr<CMesh> _Mesh) { m_Mesh = _Mesh; }
@@ -23,6 +25,9 @@ public:
     void SetMaterial(Ptr<CMaterial> _Mtrl);
 
     void RestoreMaterial();
+
+    bool IsCastShadow() const { return m_bCastShadow; }
+    void SetCastShadow(bool _bCastShadow) { m_bCastShadow = _bCastShadow; }
 
 public:
     virtual void finaltick(){};

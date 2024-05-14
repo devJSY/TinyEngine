@@ -36,15 +36,6 @@ CLight3D::CLight3D()
     m_pLightCam->AddComponent(new CTransform);
     m_pLightCam->AddComponent(new CCamera);
 
-    // 쉐이더와 동일하게 설정
-    m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    m_pLightCam->Camera()->LayerMaskAll();
-    m_pLightCam->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
-    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
-    m_pLightCam->Camera()->SetNear(1.f);
-    m_pLightCam->Camera()->SetFar(10000.f);
-    m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
-
     SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
@@ -129,6 +120,24 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
         m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredSpotLightingMtrl");
         // m_LightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl"); // Phong
     }
+
+    // 카메라 설정
+    // 쉐이더와 동일하게 설정
+    if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
+    {
+        m_pLightCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+    }
+    else
+    {
+        m_pLightCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    }
+    m_pLightCam->Camera()->LayerMaskAll();
+    m_pLightCam->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
+    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
+    m_pLightCam->Camera()->SetScale(1.f);
+    m_pLightCam->Camera()->SetNear(1.f);
+    m_pLightCam->Camera()->SetFar(10000.f);
+    m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
 
     // Mesh Render 설정
     if (nullptr == GetOwner() || nullptr == MeshRender())

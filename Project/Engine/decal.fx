@@ -14,6 +14,7 @@
 
 // Parameter
 // g_int_0  : AsEmissive
+// g_int_1  : Invert Normal Y
 // g_mat_0  : WorldInv
 
 // g_tex_0  : PositionTex
@@ -87,6 +88,8 @@ PS_OUT PS_Decal(PS_IN _in)
         
         float3 TexNormal = g_tex_5.Sample(g_LinearWrapSampler, vLocal.xz).xyz;
         TexNormal = 2.0 * TexNormal - 1.0; // 범위 조절 [-1.0, 1.0]
+        
+        TexNormal.y = g_int_1 ? -TexNormal.y : TexNormal.y;
     
         output.vNormal.xyz = normalize(mul(TexNormal, TBN));
     }

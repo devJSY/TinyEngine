@@ -6,6 +6,7 @@ class CDecal : public CRenderComponent
 private:
     Ptr<CTexture> m_DecalColorTex;
     Ptr<CTexture> m_DecalNormalTex;
+    int m_bInvertNormalY;
     int m_bAsEmissive;
 
 public:
@@ -15,8 +16,11 @@ public:
     Ptr<CTexture> GetDecalNormalTex() const { return m_DecalNormalTex; }
     void SetDecalNormalTex(Ptr<CTexture> _Tex) { m_DecalNormalTex = _Tex; }
 
+    bool IsInvertNormalY() const { return m_bInvertNormalY; }
+    void SetInvertNormalY(bool _bInvertY) { m_bInvertNormalY = _bInvertY; }
+
     bool IsDecalAsEmissive() const { return m_bAsEmissive; }
-    void SetDecalAsEmissive(bool _bTrue) { m_bAsEmissive = _bTrue; }
+    void SetDecalAsEmissive(bool _bEmiv) { m_bAsEmissive = _bEmiv; }
 
 public:
     virtual void finaltick() override;

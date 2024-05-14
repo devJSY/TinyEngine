@@ -13,6 +13,7 @@
 
 #include "CConstBuffer.h"
 #include "CMRT.h"
+#include "CLevel.h"
 
 CRenderMgr::CRenderMgr()
     : m_arrMRT{}
@@ -401,12 +402,66 @@ void CRenderMgr::render_postprocess_HDRI()
     CTexture::Clear(1);
 }
 
+void CRenderMgr::render_StaticShadowDepth()
+{
+    CLight3D* StaticLight = nullptr;
+
+    // 레벨을 순회하며 정적 광원 탐색
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+
+        for (const auto& ParentObj : vecParentObj)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(ParentObj);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                if (pObject->Light3D() && MOBILITY_TYPE::STATIC == pObject->Transform()->GetMobilityType())
+                {
+                    StaticLight = pObject->Light3D();
+                    break;
+                }
+
+                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+                for (size_t i = 0; i < vecChildObj.size(); ++i)
+                {
+                    queue.push_back(vecChildObj[i]);
+                }
+            }
+
+            if (nullptr != StaticLight)
+                break;
+        }
+
+        if (nullptr != StaticLight)
+            break;
+    }
+
+    // 레벨에 정적 광원이 존재하지않는다.
+    if (nullptr == StaticLight)
+        return;
+
+    StaticLight->SetShadowIdx(0);
+
+    // Rendering
+    StaticLight->render_ShadowDepth(MOBILITY_TYPE::STATIC);
+
+    // Bind
+    StaticLight->GetDepthMapTex()->UpdateData(26);
+}
+
 void CRenderMgr::render_DynamicShadowDepth()
 {
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
         int ShadowIndex = m_vecLight3D[i]->GetShadowIdx();
-        if (0 > ShadowIndex)
+        if (0 >= ShadowIndex)
             continue;
 
         // Rendering
@@ -468,17 +523,21 @@ void CRenderMgr::UpdateData()
     static vector<tLightInfo> vecLight3DInfo;
 
     // 그림자 적용 광원 최대갯수
-    const int dynamicShadowMaxCount = 3;
+    const static int dynamicShadowMaxCount = 3;
     int ShadowIdx = 1;
 
     for (UINT i = 0; i < m_vecLight3D.size(); ++i)
     {
-        m_vecLight3D[i]->SetShadowIdx(-1); // 초기화
+        // 정적 라이트 이외의 라이트 인덱스 초기화
+        if (0 != m_vecLight3D[i]->GetShadowIdx())
+        {
+            m_vecLight3D[i]->SetShadowIdx(-1);
+        }
 
         if (ShadowIdx <= dynamicShadowMaxCount && MOBILITY_TYPE::MOVABLE == m_vecLight3D[i]->Transform()->GetMobilityType())
         {
             m_vecLight3D[i]->SetShadowIdx(ShadowIdx);
-            ShadowIdx++;
+            ++ShadowIdx;
         }
 
         const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();

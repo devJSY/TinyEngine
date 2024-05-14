@@ -1715,6 +1715,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
+        // Cast Shadow
+        bool bCastShadow = pMeshRender->IsCastShadow();
+        ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);
+        pMeshRender->SetCastShadow(bCastShadow);
+
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
         // Mesh
@@ -2386,6 +2391,11 @@ void COutliner::DrawDecal(CGameObject* obj)
                 ImGui::EndPopup();
             }
         }
+
+        // Invert Normal Y
+        bool bInvertNormal = pDecal->IsInvertNormalY();
+        ImGui::Checkbox(ImGui_LabelPrefix("Invert Normal Y").c_str(), &bInvertNormal);
+        pDecal->SetInvertNormalY(bInvertNormal);
 
         // As Emissive
         bool bAsEmissive = pDecal->IsDecalAsEmissive();

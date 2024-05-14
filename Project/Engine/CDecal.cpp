@@ -9,10 +9,12 @@ CDecal::CDecal()
     : CRenderComponent(COMPONENT_TYPE::DECAL)
     , m_DecalColorTex(nullptr)
     , m_DecalNormalTex(nullptr)
+    , m_bInvertNormalY(false)
     , m_bAsEmissive(false)
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"));
+    SetCastShadow(false);
 }
 
 CDecal::~CDecal()
@@ -31,6 +33,7 @@ void CDecal::UpdateData()
     Matrix matInv = Transform()->GetWorldMat().Invert();
     GetMaterial()->SetScalarParam(MAT_0, matInv);
     GetMaterial()->SetScalarParam(INT_0, m_bAsEmissive);
+    GetMaterial()->SetScalarParam(INT_1, m_bInvertNormalY);
     GetMaterial()->SetTexParam(TEX_4, m_DecalColorTex);
     GetMaterial()->SetTexParam(TEX_5, m_DecalNormalTex);
 
@@ -63,6 +66,7 @@ void CDecal::SaveToLevelFile(FILE* _File)
     CRenderComponent::SaveToLevelFile(_File);
     SaveAssetRef(m_DecalColorTex, _File);
     SaveAssetRef(m_DecalNormalTex, _File);
+    fwrite(&m_bInvertNormalY, sizeof(int), 1, _File);
     fwrite(&m_bAsEmissive, sizeof(int), 1, _File);
 }
 
@@ -71,5 +75,6 @@ void CDecal::LoadFromLevelFile(FILE* _File)
     CRenderComponent::LoadFromLevelFile(_File);
     LoadAssetRef(m_DecalColorTex, _File);
     LoadAssetRef(m_DecalNormalTex, _File);
+    fread(&m_bInvertNormalY, sizeof(int), 1, _File);
     fread(&m_bAsEmissive, sizeof(int), 1, _File);
 }
