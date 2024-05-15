@@ -331,6 +331,9 @@
     <ClInclude Include="CDecal.h">
       <Filter>08. Component\RenderComponent\Decal</Filter>
     </ClInclude>
+    <ClInclude Include="CCharacterController.h">
+      <Filter>08. Component\Collider\CharacterController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -635,6 +638,9 @@
     </ClCompile>
     <ClCompile Include="CDecal.cpp">
       <Filter>08. Component\RenderComponent\Decal</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterController.cpp">
+      <Filter>08. Component\Collider\CharacterController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -946,6 +952,9 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\Decal">
       <UniqueIdentifier>{417a8c93-82a7-4d01-b972-fe5993527e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\CharacterController">
+      <UniqueIdentifier>{3d16ad29-3679-406b-a7fb-eb008eeb91e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

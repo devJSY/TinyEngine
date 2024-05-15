@@ -562,6 +562,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawBoxCollider(obj);
     DrawSphereCollider(obj);
     DrawCapsuleCollider(obj);
+    DrawCharacterController(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
     DrawParticlesystem(obj);
@@ -1696,6 +1697,51 @@ void COutliner::DrawCapsuleCollider(CGameObject* obj)
             CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
             CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
         }
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawCharacterController(CGameObject* obj)
+{
+    CCharacterController* pCharacterController = obj->CharacterController();
+    if (nullptr == pCharacterController)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCharacterController).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::CHARACTERCONTROLLER]);
+
+    ComponentSettingsButton(pCharacterController);
+
+    if (open)
+    {
+        float SlopeLimit = pCharacterController->GetSlopeLimit();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Slope Limit").c_str(), &SlopeLimit, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetSlopeLimit(SlopeLimit);
+
+        float StepOffset = pCharacterController->GetStepOffset();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Step Offset").c_str(), &StepOffset, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetStepOffset(StepOffset);
+
+        float SkinWitdh = pCharacterController->GetSkinWidth();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetSkinWidth(SkinWitdh);
+
+        float MinMoveDistance = pCharacterController->GetMinMoveDistance();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Min Move Distance").c_str(), &MinMoveDistance, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetMinMoveDistance(MinMoveDistance);
+
+        Vec3 Center = pCharacterController->GetCenter();
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
+            pCharacterController->SetCenter(Center);
+
+        float Radius = pCharacterController->GetRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetRadius(Radius);
+
+        float Height = pCharacterController->GetHeight();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetHeight(Height);
 
         ImGui::TreePop();
     }

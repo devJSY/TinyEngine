@@ -44,6 +44,7 @@ public:
     GET_OTHER_COMPONENT(BoxCollider);
     GET_OTHER_COMPONENT(SphereCollider);
     GET_OTHER_COMPONENT(CapsuleCollider);
+    GET_OTHER_COMPONENT(CharacterController);
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(TileMap);
     GET_OTHER_COMPONENT(ParticleSystem);

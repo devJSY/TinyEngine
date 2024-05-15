@@ -55,6 +55,7 @@ private:
     physx::PxDefaultCpuDispatcher* m_Dispatcher;
     physx::PxScene* m_Scene;
     physx::PxPvd* m_Pvd;
+    physx::PxControllerManager* m_ControllerMgr;
 
 private:
     vector<CGameObject*> m_vecPhysicsObj;

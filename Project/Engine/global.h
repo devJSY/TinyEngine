@@ -118,6 +118,7 @@ typedef Vector4 Vec4;
     #pragma comment(lib, "PhysX\\PhysXFoundation_64_debug")
     #pragma comment(lib, "PhysX\\PhysXPvdSDK_static_64_debug")
     #pragma comment(lib, "PhysX\\PhysXVehicle_static_64_debug")
+    #pragma comment(lib, "PhysX\\PhysXCharacterKinematic_static_64_debug")
 #else
     #pragma comment(lib, "PhysX\\PhysX_64")
     #pragma comment(lib, "PhysX\\PhysXCommon_64")
@@ -126,4 +127,5 @@ typedef Vector4 Vec4;
     #pragma comment(lib, "PhysX\\PhysXFoundation_64")
     #pragma comment(lib, "PhysX\\PhysXPvdSDK_static_64")
     #pragma comment(lib, "PhysX\\PhysXVehicle_static_64")
+    #pragma comment(lib, "PhysX\\PhysXCharacterKinematic_static_64")
 #endif

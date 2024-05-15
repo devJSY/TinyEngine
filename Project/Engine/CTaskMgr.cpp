@@ -645,6 +645,9 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::CAPSULECOLLIDER:
         pObj->AddComponent(new CCapsuleCollider);
         break;
+    case COMPONENT_TYPE::CHARACTERCONTROLLER:
+        pObj->AddComponent(new CCharacterController);
+        break;
     case COMPONENT_TYPE::MESHRENDER:
         pObj->AddComponent(new CMeshRender);
         break;

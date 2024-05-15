@@ -86,6 +86,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_Dispatcher(NULL)
     , m_Scene(NULL)
     , m_Pvd(NULL)
+    , m_ControllerMgr(NULL)
     , m_vecPhysicsObj{}
     , m_CallbackInst()
     , m_Matrix{}
@@ -185,6 +186,8 @@ void CPhysicsMgr::OnPhysicsStart()
         pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
     }
 
+    m_ControllerMgr = PxCreateControllerManager(*m_Scene);
+
     // 레벨의 모든 오브젝트를 순회하여 Scene 에 추가할 오브젝트를 등록
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
     for (UINT i = 0; i < LAYER_MAX; i++)
@@ -216,6 +219,7 @@ void CPhysicsMgr::OnPhysicsStart()
 
 void CPhysicsMgr::OnPhysicsStop()
 {
+    PX_RELEASE(m_ControllerMgr);
     PX_RELEASE(m_Scene);
     PX_RELEASE(m_Dispatcher);
     PX_RELEASE(m_Physics);

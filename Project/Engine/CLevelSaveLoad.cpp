@@ -345,6 +345,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::CAPSULECOLLIDER:
             pComponent = new CCapsuleCollider;
             break;
+        case COMPONENT_TYPE::CHARACTERCONTROLLER:
+            pComponent = new CCharacterController;
+            break;
         case COMPONENT_TYPE::MESHRENDER:
             pComponent = new CMeshRender;
             break;
