@@ -141,6 +141,11 @@ void CPhysicsMgr::tick()
         float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
         ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
 
+        for (UINT i = 0; i < 3; i++)
+        {
+            Ftranslation[i] *= m_PPM;
+        }
+
         // 변화량 추출
         Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
         Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
@@ -247,7 +252,7 @@ void CPhysicsMgr::OnPhysicsStop()
 RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask)
 {
     RaycastHit Hit;
-    Hit.Centroid = _Origin;
+    Hit.Centroid = _Origin / m_PPM;
     Hit.Distance = 0.f;
     Hit.Normal = Vec3();
     Hit.Point = Vec3();
@@ -261,13 +266,14 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
     filterData.data.word0 = _LayerMask; // 검사할 레이어 체크
 
     PxRaycastBuffer HitResult;
-    bool status = m_Scene->raycast(_Origin, _Direction.Normalize(), _Distance, HitResult, PxHitFlag::eDEFAULT, filterData);
+    bool status = m_Scene->raycast(Hit.Centroid, _Direction.Normalize(), _Distance / m_PPM, HitResult, PxHitFlag::eDEFAULT, filterData);
     if (status)
     {
         PxShape* shape = (PxShape*)HitResult.block.shape;
 
-        Hit.Point = HitResult.block.position;
-        Hit.Distance = (Hit.Point - _Origin).Length();
+        Hit.Centroid *= m_PPM;
+        Hit.Point = HitResult.block.position * m_PPM;
+        Hit.Distance = (Hit.Point - Hit.Centroid).Length();
         Hit.Normal = HitResult.block.normal;
         Hit.pCollisionObj = ((CCollider*)shape->userData)->GetOwner();
     }
@@ -320,6 +326,9 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     Vec3 WorldPos = pTr->GetWorldPos();
     Vec3 WorldRot = pTr->GetWorldRotation();
     Vec3 WorldScale = pTr->GetWorldScale();
+
+    WorldPos /= m_PPM;
+    WorldScale /= m_PPM;
 
     // 오일러 각 → 쿼터니언 으로 변환하여 적용
     SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
@@ -415,6 +424,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pBoxCol->GetCenter();
+        LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
         // 필터링 데이터 적용
@@ -453,6 +463,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pSphereCol->GetCenter();
+        LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
         // 필터링 데이터 적용
@@ -520,6 +531,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pCapsuleCol->GetCenter();
+        LocalPos.p /= m_PPM;
         LocalPos.q = LocalPos.q * PxrelativeQuat;
         shape->setLocalPose(LocalPos);
 

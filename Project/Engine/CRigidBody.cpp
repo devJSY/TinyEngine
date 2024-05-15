@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CRigidBody.h"
 #include "physx\\PxPhysicsAPI.h"
+
+#include "CPhysicsMgr.h"
+
 #include "CTransform.h"
 
 CRigidbody::CRigidbody()
@@ -41,8 +44,12 @@ void CRigidbody::finaltick()
         return;
 
     // 트랜스폼 위치 정보 업데이트
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+
     Vec3 WorldPos = Transform()->GetWorldPos();
     Vec3 WorldRot = Transform()->GetWorldRotation();
+
+    WorldPos /= PPM;
 
     SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
     SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);

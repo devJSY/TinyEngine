@@ -152,7 +152,7 @@ void CMaterialEditor::DrawViewport()
     CopyInfo.invProj = Matrix();
 
     m_LightBuffer->SetData(&CopyInfo, 1);
-    m_LightBuffer->UpdateData(12);
+    m_LightBuffer->UpdateData(14);
 
     // ·»´õ¸µ
     if (nullptr != m_Mtrl->GetShader())
