@@ -11,9 +11,15 @@ private:
     float m_Radius;
     float m_Height;
 
+private:
+    float m_MoveElapsedTime;
+
 public:
     virtual void begin() override;
     virtual void finaltick() override;
+
+public:
+    void Move(Vec3 _Motion);
 
 public:
     float GetSlopeLimit() const { return m_SlopeLimit; }

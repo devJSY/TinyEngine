@@ -16,7 +16,7 @@ protected:
 private:
     bool m_bEnabled;
 
-private:
+protected:
     Vec3 m_PrevScale;
 
 public:

@@ -24,10 +24,10 @@ void CPhysicsTestScript::begin()
 
 void CPhysicsTestScript::tick()
 {
-    // RayCast Test
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 250.f, {L"RayCastTest"});
-    Vec3 Color = Hit.pCollisionObj == nullptr ? Vec3(0.f, 1.f, 0.f) : Vec3(1.f, 0.f, 0.f);
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 250.f, Color, false);
+    //// RayCast Test
+    // RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 250.f,
+    // {L"RayCastTest"}); Vec3 Color = Hit.pCollisionObj == nullptr ? Vec3(0.f, 1.f, 0.f) : Vec3(1.f, 0.f, 0.f);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 250.f, Color, false);
 
     // if (KEY_TAP(KEY::L))
     //{
@@ -48,47 +48,55 @@ void CPhysicsTestScript::tick()
     //        EdgeCollider2D()->SetEnabled(!EdgeCollider2D()->IsEnabled());
     //}
 
-    if (nullptr == Rigidbody())
-        return;
+    // if (nullptr == Rigidbody())
+    //     return;
 
-    if (KEY_TAP(KEY::SPACE))
-    {
-        if (0 == m_ForceMode)
-        {
-            Rigidbody()->AddForce(m_Force);
-        }
-        else if (1 == m_ForceMode)
-        {
-            Rigidbody()->AddForce(m_Force, ForceMode::Acceleration);
-        }
-        else if (2 == m_ForceMode)
-        {
-            Rigidbody()->AddForce(m_Force, ForceMode::Impulse);
-        }
-        else if (3 == m_ForceMode)
-        {
-            Rigidbody()->AddForce(m_Force, ForceMode::VelocityChange);
-        }
-    }
+    // if (KEY_TAP(KEY::SPACE))
+    //{
+    //     if (0 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddForce(m_Force);
+    //     }
+    //     else if (1 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddForce(m_Force, ForceMode::Acceleration);
+    //     }
+    //     else if (2 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddForce(m_Force, ForceMode::Impulse);
+    //     }
+    //     else if (3 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddForce(m_Force, ForceMode::VelocityChange);
+    //     }
+    // }
 
-    if (KEY_TAP(KEY::S))
+    // if (KEY_TAP(KEY::S))
+    //{
+    //     if (0 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddTorque(m_Torque);
+    //     }
+    //     else if (1 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddTorque(m_Torque, ForceMode::Acceleration);
+    //     }
+    //     else if (2 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddTorque(m_Torque, ForceMode::Impulse);
+    //     }
+    //     else if (3 == m_ForceMode)
+    //     {
+    //         Rigidbody()->AddTorque(m_Torque, ForceMode::VelocityChange);
+    //     }
+    // }
+
+    if (nullptr != CharacterController())
     {
-        if (0 == m_ForceMode)
-        {
-            Rigidbody()->AddTorque(m_Torque);
-        }
-        else if (1 == m_ForceMode)
-        {
-            Rigidbody()->AddTorque(m_Torque, ForceMode::Acceleration);
-        }
-        else if (2 == m_ForceMode)
-        {
-            Rigidbody()->AddTorque(m_Torque, ForceMode::Impulse);
-        }
-        else if (3 == m_ForceMode)
-        {
-            Rigidbody()->AddTorque(m_Torque, ForceMode::VelocityChange);
-        }
+        Vec3 moveVec = Vec3();
+        moveVec += CPhysicsMgr::GetInst()->GetGravity() * DT;
+        moveVec += Transform()->GetWorldDir(DIR_TYPE::FRONT) * 5.f * DT;
+        CharacterController()->Move(moveVec);
     }
 }
 

@@ -1,5 +1,10 @@
 #include "pch.h"
 #include "CCharacterController.h"
+#include "physx\\PxPhysicsAPI.h"
+
+#include "CPhysicsMgr.h"
+#include "CTimeMgr.h"
+
 #include "CTransform.h"
 
 CCharacterController::CCharacterController()
@@ -10,6 +15,7 @@ CCharacterController::CCharacterController()
     , m_MinMoveDistance(0.001f)
     , m_Radius(0.5f)
     , m_Height(2.f)
+    , m_MoveElapsedTime(0.f)
 {
 }
 
@@ -24,7 +30,26 @@ void CCharacterController::begin()
 
 void CCharacterController::finaltick()
 {
-    CCollider::finaltick();
+    // 스케일이 변경되었다면 재생성
+    if (m_PrevScale != Transform()->GetWorldScale())
+    {
+        GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+    }
+
+    m_PrevScale = Transform()->GetWorldScale();
+
+    if (nullptr != m_RuntimeShape)
+    {
+        float PPM = CPhysicsMgr::GetInst()->GetPPM();
+        Vec3 WorldPos = Transform()->GetWorldPos();
+        WorldPos += m_Center;
+        WorldPos /= PPM;
+
+        physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
+        PxCharacterController->setPosition(physx::PxVec3d(WorldPos.x, WorldPos.y, WorldPos.z));
+    }
+
+    m_MoveElapsedTime += DT;
 
     Vec3 scale = Transform()->GetWorldScale();
 
@@ -44,6 +69,26 @@ void CCharacterController::finaltick()
     // PhysX SRT * Transform SRT
     GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), 1.f, 1.f, AXIS_TYPE::Y, color,
                                      true);
+}
+
+void CCharacterController::Move(Vec3 _Motion)
+{
+    if (nullptr == m_RuntimeShape)
+        return;
+
+    ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters());
+    m_MoveElapsedTime = 0.f;
+
+    // 트랜스폼 업데이트
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
+    physx::PxVec3d PxPos = PxCharacterController->getPosition();
+    Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
+    vPosOffset -= m_Center / PPM;
+    vPosOffset *= PPM;
+    vPosOffset = Transform()->GetWorldPos() - vPosOffset;
+
+    Transform()->SetRelativePos(Transform()->GetRelativePos() - vPosOffset);
 }
 
 void CCharacterController::SetSlopeLimit(float _Limit)

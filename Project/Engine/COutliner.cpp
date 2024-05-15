@@ -1716,7 +1716,7 @@ void COutliner::DrawCharacterController(CGameObject* obj)
     if (open)
     {
         float SlopeLimit = pCharacterController->GetSlopeLimit();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Slope Limit").c_str(), &SlopeLimit, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Slope Limit").c_str(), &SlopeLimit, 1.f, 0.f, D3D11_FLOAT32_MAX))
             pCharacterController->SetSlopeLimit(SlopeLimit);
 
         float StepOffset = pCharacterController->GetStepOffset();
