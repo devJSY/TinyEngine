@@ -54,17 +54,34 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
         SaveLayer(_Level->GetLayer(i), pFile);
     }
 
-    // 콜리전 레이어 저장
-    for (UINT i = 0; i < LAYER_MAX; ++i)
+    // CPhysics2DMgr
     {
-        WORD ColLayer = CPhysics2DMgr::GetInst()->GetCollisionLayer(i);
-        fwrite(&ColLayer, sizeof(WORD), 1, pFile);
+        for (UINT i = 0; i < LAYER_MAX; ++i)
+        {
+            WORD ColLayer = CPhysics2DMgr::GetInst()->GetCollisionLayer(i);
+            fwrite(&ColLayer, sizeof(WORD), 1, pFile);
+        }
+
+        Vec2 Gravity = CPhysics2DMgr::GetInst()->GetGravity();
+        fwrite(&Gravity, sizeof(Vec2), 1, pFile);
+
+        float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+        fwrite(&PPM, sizeof(float), 1, pFile);
     }
 
-    for (UINT i = 0; i < LAYER_MAX; ++i)
+    // CPhysicsMgr
     {
-        WORD ColLayer = CPhysicsMgr::GetInst()->GetCollisionLayer(i);
-        fwrite(&ColLayer, sizeof(WORD), 1, pFile);
+        for (UINT i = 0; i < LAYER_MAX; ++i)
+        {
+            WORD ColLayer = CPhysicsMgr::GetInst()->GetCollisionLayer(i);
+            fwrite(&ColLayer, sizeof(WORD), 1, pFile);
+        }
+
+        Vec3 Gravity = CPhysicsMgr::GetInst()->GetGravity();
+        fwrite(&Gravity, sizeof(Vec3), 1, pFile);
+
+        float PPM = CPhysicsMgr::GetInst()->GetPPM();
+        fwrite(&PPM, sizeof(float), 1, pFile);
     }
 
     fclose(pFile);
@@ -186,19 +203,40 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
         LoadLayer(pLevel->GetLayer(i), pFile);
     }
 
-    // 콜리전 레이어 로드
-    for (UINT i = 0; i < LAYER_MAX; ++i)
+    // CPhysics2DMgr
     {
-        WORD ColLayer = 0;
-        fread(&ColLayer, sizeof(WORD), 1, pFile);
-        CPhysics2DMgr::GetInst()->SetCollisionLayer(i, ColLayer);
+        for (UINT i = 0; i < LAYER_MAX; ++i)
+        {
+            WORD ColLayer = 0;
+            fread(&ColLayer, sizeof(WORD), 1, pFile);
+            CPhysics2DMgr::GetInst()->SetCollisionLayer(i, ColLayer);
+        }
+
+        Vec2 Gravity = Vec2();
+        fread(&Gravity, sizeof(Vec2), 1, pFile);
+        CPhysics2DMgr::GetInst()->SetGravity(Gravity);
+
+        float PPM = 0.f;
+        fread(&PPM, sizeof(float), 1, pFile);
+        CPhysics2DMgr::GetInst()->SetPPM(PPM);
     }
 
-    for (UINT i = 0; i < LAYER_MAX; ++i)
+    // CPhysicsMgr
     {
-        WORD ColLayer = 0;
-        fread(&ColLayer, sizeof(WORD), 1, pFile);
-        CPhysicsMgr::GetInst()->SetCollisionLayer(i, ColLayer);
+        for (UINT i = 0; i < LAYER_MAX; ++i)
+        {
+            WORD ColLayer = 0;
+            fread(&ColLayer, sizeof(WORD), 1, pFile);
+            CPhysicsMgr::GetInst()->SetCollisionLayer(i, ColLayer);
+        }
+
+        Vec3 Gravity = Vec3();
+        fread(&Gravity, sizeof(Vec3), 1, pFile);
+        CPhysicsMgr::GetInst()->SetGravity(Gravity);
+
+        float PPM = 0.f;
+        fread(&PPM, sizeof(float), 1, pFile);
+        CPhysicsMgr::GetInst()->SetPPM(PPM);
     }
 
     fclose(pFile);

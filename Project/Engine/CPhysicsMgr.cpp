@@ -91,6 +91,8 @@ CPhysicsMgr::CPhysicsMgr()
     , m_Matrix{}
     , m_Accumulator(0.f)
     , m_StepSize(1.f / 60.f)
+    , m_Gravity(Vec3(0.f, -9.81f, 0.f))
+    , m_PPM(1.f)
 {
     EnableAllLayer();
 }
@@ -161,7 +163,7 @@ void CPhysicsMgr::OnPhysicsStart()
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, PxTolerancesScale(), true, m_Pvd);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
-    sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+    sceneDesc.gravity = m_Gravity;
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
     sceneDesc.filterShader = contactReportFilterShader;  // 필터 등록

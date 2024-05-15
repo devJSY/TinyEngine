@@ -64,6 +64,9 @@ private:
     float m_Accumulator;    // DT 누적량
     const float m_StepSize; // 시뮬레이션 타임 스탭
 
+    Vec3 m_Gravity;
+    float m_PPM; // PixelPerMeter
+
 public:
     void tick();
 
@@ -82,6 +85,13 @@ public:
 
     RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask = 0xFFFF);
     RaycastHit RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, const vector<wstring>& _LayerNames);
+
+public:
+    Vec3 GetGravity() const { return m_Gravity; }
+    void SetGravity(Vec3 _Gravity) { m_Gravity = _Gravity; }
+
+    float GetPPM() const { return m_PPM; }
+    void SetPPM(float _PPM) { m_PPM = _PPM; }
 
 private:
     void AddPhysicsObject(CGameObject* _GameObject);
