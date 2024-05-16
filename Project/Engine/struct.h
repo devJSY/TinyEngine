@@ -29,7 +29,7 @@ struct tDebugShapeInfo
     Ptr<CMesh> pMesh;
 };
 
-struct tLightInfo
+__declspec(align(16)) struct tLightInfo
 {
     Vec4 vRadiance; // 빛이 나가는 강도
 
@@ -42,7 +42,7 @@ struct tLightInfo
 
     // 물체는 조명으로부터 거리에따라 빛을 받는양이 달라짐
     // fallOffStart, fallOffEnd 옵션값으로 표현
-    float fallOffStart; 
+    float fallOffStart;
     float fallOffEnd;
     float spotPower;
 
@@ -51,7 +51,6 @@ struct tLightInfo
     Matrix projMat;
     Matrix invProj; // 그림자 렌더링 디버깅용
 
-    int ShadowType; // 0 : Static , 1 : Dynamic
     int ShadowIndex;
     float HaloRadius;
     float HaloStrength;

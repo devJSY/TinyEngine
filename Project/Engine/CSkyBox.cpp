@@ -13,6 +13,7 @@ CSkyBox::CSkyBox()
 {
     SetType(m_Type);
     SetShape(m_Shape);
+    SetCastShadow(false);
 }
 
 CSkyBox::~CSkyBox()

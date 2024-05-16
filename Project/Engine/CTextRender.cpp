@@ -16,6 +16,7 @@ CTextRender::CTextRender()
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl")); // Not Use
+    SetCastShadow(false);
 }
 
 CTextRender::~CTextRender()

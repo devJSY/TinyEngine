@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "CCollider.h"
 #include "CScript.h"
-#include "CTransform.h"
 #include "physx\\PxPhysicsAPI.h"
+
+#include "CPhysicsMgr.h"
+
+#include "CTransform.h"
 
 CCollider::CCollider(COMPONENT_TYPE _Type)
     : CComponent(_Type)
@@ -53,8 +56,12 @@ void CCollider::finaltick()
         return;
 
     // 트랜스폼 위치 정보 업데이트
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+
     Vec3 WorldPos = Transform()->GetWorldPos();
     Vec3 WorldRot = Transform()->GetWorldRotation();
+
+    WorldPos /= PPM;
 
     SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
     SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);
@@ -69,6 +76,7 @@ void CCollider::finaltick()
 
     physx::PxTransform LocalPos = shape->getLocalPose();
     LocalPos.p = m_Center;
+    LocalPos.p /= PPM; 
     shape->setLocalPose(LocalPos);
 }
 
@@ -138,6 +146,13 @@ void CCollider::OnTriggerExit(CCollider* _OtherCollider)
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnTriggerExit(_OtherCollider);
+}
+
+void CCollider::OnControllerColliderHit(ControllerColliderHit Hit)
+{
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnControllerColliderHit(Hit);
 }
 
 void CCollider::SaveToLevelFile(FILE* _File)

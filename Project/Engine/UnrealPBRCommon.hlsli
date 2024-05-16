@@ -14,7 +14,7 @@
 #define InvertNormalMapY g_int_0
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
-static float LightRadiusScale = 0.01f;
+static float LightRadiusScale = 1e-2f;
 
 // 보는 각도에 따라서 색이나 밝기가 달라 짐
 float3 SchlickFresnel(float3 F0, float NdotH)
@@ -110,6 +110,7 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
 
 #define LIGHT_NEAR_PLANE 1.f
 #define LIGHT_FRUSTUM_WIDTH 3.4614f // Near 1.f Far 10000.f 기준 
+#define LIGHT_TEXTURE_WIDTH 2048.f
 
 // NdcDepthToViewDepth
 float N2V(float ndcDepth, matrix invProj)
@@ -124,6 +125,8 @@ float PCF_Filter(float2 uv, float zReceiverNdc, float filterRadiusUV, Texture2D 
     for (int i = 0; i < 16; ++i)
     {
         float2 offset = diskSamples16[i] * filterRadiusUV;
+        // SampleCmpLevelZero() - 밉맵 0 텍스춰에서 샘플링해온 첫번째 값과 인자값을 비교한다.
+        // 주변 4개의 픽셀값 중 몇개가 조건에 만족하는지 비율로 결과값을 0 ~ 1 범위로 리턴한다.
         sum += shadowMap.SampleCmpLevelZero(
             g_ShadowCompareSampler, uv + offset, zReceiverNdc);
     }
@@ -203,7 +206,7 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
     float spotFator = light.LightType == LIGHT_SPOT
                       ? pow(max(-dot(lightVec, light.vWorldDir), 0.0f), light.spotPower)
                       : 1.0f;
-        
+    
     // Distance attenuation
     float att = saturate((light.fallOffEnd - lightDist)
                          / (light.fallOffEnd - light.fallOffStart));
@@ -211,7 +214,7 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
     // Shadow map
     float shadowFactor = 1.0;
 
-    if (0 < light.ShadowIndex)
+    if (0 <= light.ShadowIndex)
     {
         const float nearZ = 1.f; // 카메라 설정과 동일
         
@@ -230,17 +233,34 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
         
         // PCSS
         float bias = 0.001f;
-        if (1 == light.ShadowIndex)
+        
+        if (0 == light.ShadowIndex) // Static Shadow
         {
-            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
+            if (light.LightType == LIGHT_DIRECTIONAL)
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_StaticLightDepthMapTex);
+            else
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_StaticLightDepthMapTex, light.invProj, light.fRadius * LightRadiusScale);
+        }
+        else if (1 == light.ShadowIndex)
+        {
+            if (light.LightType == LIGHT_DIRECTIONAL)
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_LightDepthMapTex1);
+            else
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
         }
         else if (2 == light.ShadowIndex)
         {
-            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * LightRadiusScale);
+            if (light.LightType == LIGHT_DIRECTIONAL)
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_LightDepthMapTex2);
+            else
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * LightRadiusScale);
         }
         else if (3 == light.ShadowIndex)
         {
-            shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
+            if (light.LightType == LIGHT_DIRECTIONAL)
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_LightDepthMapTex3);
+            else
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
         }
     }
 

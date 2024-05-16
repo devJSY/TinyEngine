@@ -7,6 +7,13 @@
 OutputFile/
 External/Library/Engine/Engine.lib 
 External/Library/Engine/Engine_d.lib 
+Project/Client/x64/**
+Project/Engine/x64/**
+*.cso
+*.recipe
+*.tlog
+*.idb
+*.lib
 
 # User-specific files
 *.rsuser

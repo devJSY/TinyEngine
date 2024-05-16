@@ -25,10 +25,12 @@ class CRigidbody;
 class CBoxCollider;
 class CSphereCollider;
 class CCapsuleCollider;
+class CCharacterController;
 class MeshRender;
 class CTileMap;
 class CParticleSystem;
 class CSkyBox;
+class CDecal;
 class CTextRender;
 class CScript;
 
@@ -85,10 +87,12 @@ public:
     GET_COMPONENT(BoxCollider, BOXCOLLIDER);
     GET_COMPONENT(SphereCollider, SPHERECOLLIDER);
     GET_COMPONENT(CapsuleCollider, CAPSULECOLLIDER);
+    GET_COMPONENT(CharacterController, CHARACTERCONTROLLER);
     GET_COMPONENT(MeshRender, MESHRENDER);
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
     GET_COMPONENT(SkyBox, SKYBOX);
+    GET_COMPONENT(Decal, DECAL);
     GET_COMPONENT(TextRender, TEXTRENDER);
 
     CGameObject* GetParent() const { return m_Parent; }

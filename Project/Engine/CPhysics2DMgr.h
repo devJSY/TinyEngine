@@ -39,9 +39,11 @@ private:
 
     WORD m_Matrix[LAYER_MAX];
 
-    const float m_PPM; // PixelPerMeter
     float m_Accumulator;
     const float m_StepSize;
+
+    Vec2 m_Gravity;
+    float m_PPM; // PixelPerMeter
 
 public:
     void tick();
@@ -64,7 +66,11 @@ public:
     RaycastHit2D RayCast(Vec2 _Origin, Vec2 _Direction, float _Distance, const vector<wstring>& _LayerNames);
 
 public:
-    const float GetPPM() const { return m_PPM; }
+    Vec2 GetGravity() const { return m_Gravity; }
+    void SetGravity(Vec2 _Gravity) { m_Gravity = _Gravity; }
+
+    float GetPPM() const { return m_PPM; }
+    void SetPPM(float _PPM) { m_PPM = _PPM; }
 
 private:
     void AddPhysicsObject(CGameObject* _GameObject);

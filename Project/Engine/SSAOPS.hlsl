@@ -110,7 +110,7 @@ float4 main(PS_IN input) : SV_TARGET
     float visibility_factor = 1.f - average_occlusion_factor;
 
     // occlusion 강도 조정
-    visibility_factor = pow(visibility_factor, PowPower);
+    visibility_factor = pow(abs(visibility_factor), PowPower);
     
     return float4(visibility_factor, visibility_factor, visibility_factor, 1.f);
 }

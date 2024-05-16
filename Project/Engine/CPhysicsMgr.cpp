@@ -78,6 +78,23 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
         pColliderB->OnTriggerStay(pColliderA);
 }
 
+void CCTCCollisionCallback::onShapeHit(const physx::PxControllerShapeHit& hit)
+{
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+
+    ControllerColliderHit HitResult;
+    HitResult.Collider = (CCollider*)hit.shape->userData;
+    HitResult.Controller = (CCharacterController*)hit.controller->getUserData();
+    HitResult.MoveDirection = hit.dir;
+    HitResult.MoveLength = hit.length * PPM;
+    HitResult.Normal = hit.worldNormal;
+    HitResult.Point = Vec3((float)hit.worldPos.x, (float)hit.worldPos.y, (float)hit.worldPos.z);
+    HitResult.Point *= PPM;
+
+    HitResult.Controller->OnControllerColliderHit(HitResult);
+    HitResult.Collider->OnControllerColliderHit(HitResult);
+}
+
 CPhysicsMgr::CPhysicsMgr()
     : m_Allocator()
     , m_ErrorCallback()
@@ -86,11 +103,15 @@ CPhysicsMgr::CPhysicsMgr()
     , m_Dispatcher(NULL)
     , m_Scene(NULL)
     , m_Pvd(NULL)
+    , m_ControllerMgr(NULL)
     , m_vecPhysicsObj{}
     , m_CallbackInst()
+    , m_CCTCallbackInst()
     , m_Matrix{}
     , m_Accumulator(0.f)
     , m_StepSize(1.f / 60.f)
+    , m_Gravity(Vec3(0.f, -9.81f, 0.f))
+    , m_PPM(1.f)
 {
     EnableAllLayer();
 }
@@ -126,6 +147,10 @@ void CPhysicsMgr::tick()
         if (!actors[i]->is<PxRigidDynamic>())
             continue;
 
+        // RigidDynamic이 캐릭터 컨트롤러인 경우
+        if (nullptr == actors[i]->userData)
+            continue;
+
         CGameObject* obj = (CGameObject*)actors[i]->userData;
         CTransform* pTr = obj->Transform();
 
@@ -139,6 +164,11 @@ void CPhysicsMgr::tick()
         float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
         ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
 
+        for (UINT i = 0; i < 3; i++)
+        {
+            Ftranslation[i] *= m_PPM;
+        }
+
         // 변화량 추출
         Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
         Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
@@ -147,6 +177,23 @@ void CPhysicsMgr::tick()
         // 변화량만큼 Relative 에 적용
         pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
         pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+    }
+
+    // Character Controller
+    PxU32 nbControllers = m_ControllerMgr->getNbControllers();
+    for (PxU32 i = 0; i < nbControllers; i++)
+    {
+        PxController* pPxController = m_ControllerMgr->getController(i);
+        CCharacterController* pCharacterController = (CCharacterController*)pPxController->getUserData();
+        CTransform* pTr = pCharacterController->Transform();
+
+        PxVec3d PxPos = pPxController->getPosition();
+        Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
+        vPosOffset -= pCharacterController->m_Center / m_PPM;
+        vPosOffset *= m_PPM;
+        vPosOffset = pTr->GetWorldPos() - vPosOffset;
+
+        pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
     }
 }
 
@@ -161,7 +208,7 @@ void CPhysicsMgr::OnPhysicsStart()
     m_Physics = PxCreatePhysics(PX_PHYSICS_VERSION, *m_Foundation, PxTolerancesScale(), true, m_Pvd);
 
     PxSceneDesc sceneDesc(m_Physics->getTolerancesScale());
-    sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+    sceneDesc.gravity = m_Gravity;
     m_Dispatcher = PxDefaultCpuDispatcherCreate(2);
     sceneDesc.cpuDispatcher = m_Dispatcher;
     sceneDesc.filterShader = contactReportFilterShader;  // 필터 등록
@@ -177,6 +224,8 @@ void CPhysicsMgr::OnPhysicsStart()
         pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
         pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
     }
+
+    m_ControllerMgr = PxCreateControllerManager(*m_Scene);
 
     // 레벨의 모든 오브젝트를 순회하여 Scene 에 추가할 오브젝트를 등록
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -209,6 +258,7 @@ void CPhysicsMgr::OnPhysicsStart()
 
 void CPhysicsMgr::OnPhysicsStop()
 {
+    PX_RELEASE(m_ControllerMgr);
     PX_RELEASE(m_Scene);
     PX_RELEASE(m_Dispatcher);
     PX_RELEASE(m_Physics);
@@ -245,7 +295,7 @@ void CPhysicsMgr::OnPhysicsStop()
 RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask)
 {
     RaycastHit Hit;
-    Hit.Centroid = _Origin;
+    Hit.Centroid = _Origin / m_PPM;
     Hit.Distance = 0.f;
     Hit.Normal = Vec3();
     Hit.Point = Vec3();
@@ -259,13 +309,14 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
     filterData.data.word0 = _LayerMask; // 검사할 레이어 체크
 
     PxRaycastBuffer HitResult;
-    bool status = m_Scene->raycast(_Origin, _Direction.Normalize(), _Distance, HitResult, PxHitFlag::eDEFAULT, filterData);
+    bool status = m_Scene->raycast(Hit.Centroid, _Direction.Normalize(), _Distance / m_PPM, HitResult, PxHitFlag::eDEFAULT, filterData);
     if (status)
     {
         PxShape* shape = (PxShape*)HitResult.block.shape;
 
-        Hit.Point = HitResult.block.position;
-        Hit.Distance = (Hit.Point - _Origin).Length();
+        Hit.Centroid *= m_PPM;
+        Hit.Point = HitResult.block.position * m_PPM;
+        Hit.Distance = (Hit.Point - Hit.Centroid).Length();
         Hit.Normal = HitResult.block.normal;
         Hit.pCollisionObj = ((CCollider*)shape->userData)->GetOwner();
     }
@@ -305,6 +356,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr == m_Scene)
         return;
 
+    AddCharacterControllerObject(_GameObject);
+
     CTransform* pTr = _GameObject->Transform();
     CRigidbody* pRigidbody = _GameObject->Rigidbody();
     CBoxCollider* pBoxCol = _GameObject->BoxCollider();
@@ -318,6 +371,9 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     Vec3 WorldPos = pTr->GetWorldPos();
     Vec3 WorldRot = pTr->GetWorldRotation();
     Vec3 WorldScale = pTr->GetWorldScale();
+
+    WorldPos /= m_PPM;
+    WorldScale /= m_PPM;
 
     // 오일러 각 → 쿼터니언 으로 변환하여 적용
     SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
@@ -413,6 +469,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pBoxCol->GetCenter();
+        LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
         // 필터링 데이터 적용
@@ -451,6 +508,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pSphereCol->GetCenter();
+        LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
         // 필터링 데이터 적용
@@ -473,14 +531,14 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         }
 
         // Capsule 기준 축 기준으로 회전 적용
-        PxQuat PxrelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 0, 1));
+        PxQuat PxRelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 0, 1));
         float RadiusScale = 1.f;
         float HeightScale = 1.f;
 
         switch (pCapsuleCol->m_Direction)
         {
         case AXIS_TYPE::X: {
-            PxrelativeQuat *= PxQuat(PxHalfPi, PxVec3(0, 0, 1));
+            PxRelativeQuat *= PxQuat(PxHalfPi, PxVec3(0, 0, 1));
 
             RadiusScale = WorldScale.y > WorldScale.z ? WorldScale.y : WorldScale.z;
             HeightScale = WorldScale.x;
@@ -492,7 +550,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         }
         break;
         case AXIS_TYPE::Z: {
-            PxrelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 1, 0));
+            PxRelativeQuat = PxQuat(PxHalfPi, PxVec3(0, 1, 0));
 
             RadiusScale = WorldScale.x > WorldScale.y ? WorldScale.x : WorldScale.y;
             HeightScale = WorldScale.z;
@@ -518,7 +576,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
         LocalPos.p = pCapsuleCol->GetCenter();
-        LocalPos.q = LocalPos.q * PxrelativeQuat;
+        LocalPos.p /= m_PPM;
+        LocalPos.q = LocalPos.q * PxRelativeQuat;
         shape->setLocalPose(LocalPos);
 
         // 필터링 데이터 적용
@@ -543,10 +602,69 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     m_vecPhysicsObj.push_back(_GameObject);
 }
 
+void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
+{
+    CCharacterController* pCharacterController = _GameObject->CharacterController();
+
+    if (nullptr == pCharacterController)
+        return;
+
+    CTransform* pTr = _GameObject->Transform();
+
+    Vec3 WorldScale = pTr->GetWorldScale();
+
+    WorldScale /= m_PPM;
+
+    Ptr<CPhysicMaterial> pDefaultMtrl = CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(L"Default Material");
+    PxMaterial* DefaultPxMtrl =
+        m_Physics->createMaterial(pDefaultMtrl->GetStaticFriction(), pDefaultMtrl->GetDynamicFriction(), pDefaultMtrl->GetBounciness());
+
+    float RadiusScale = WorldScale.x > WorldScale.z ? WorldScale.x : WorldScale.z;
+    float HeightScale = WorldScale.y;
+
+    PxCapsuleControllerDesc desc;
+    desc.slopeLimit = max(cosf(DirectX::XMConvertToRadians(pCharacterController->m_SlopeLimit)), 0.f);
+    desc.stepOffset = pCharacterController->m_StepOffset;
+    desc.contactOffset = pCharacterController->m_SkinWidth;
+    desc.radius = pCharacterController->m_Radius * RadiusScale;
+    desc.height = (pCharacterController->m_Height - (pCharacterController->m_Radius * 2.f)) * HeightScale;
+    desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
+    desc.material = DefaultPxMtrl;
+
+    Vec3 WorldPos = pTr->GetWorldPos();
+    WorldPos += pCharacterController->m_Center;
+    WorldPos /= m_PPM;
+    desc.position = PxVec3d(WorldPos.x, WorldPos.y, WorldPos.z);
+
+    desc.reportCallback = &m_CCTCallbackInst;
+    desc.userData = (void*)pCharacterController;
+
+    PxController* PxCharacterController = m_ControllerMgr->createController(desc);
+    pCharacterController->m_RuntimeShape = PxCharacterController;
+
+    // Shape 에 UserData 등록
+    PxRigidDynamic* PxActor = PxCharacterController->getActor();
+    PxU32 nbShapes = PxActor->getNbShapes();
+    std::vector<PxShape*> vecShapes(nbShapes);
+    PxActor->getShapes(vecShapes.data(), nbShapes);
+
+    for (UINT i = 0; i < vecShapes.size(); i++)
+    {
+        vecShapes[i]->userData = (void*)pCharacterController;
+    }
+}
+
 void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
 {
     if (nullptr == m_Scene)
         return;
+
+    CCharacterController* pCharacterController = _GameObject->CharacterController();
+    if (nullptr != pCharacterController)
+    {
+        ((PxController*)pCharacterController->m_RuntimeShape)->release();
+        pCharacterController->m_RuntimeShape = nullptr;
+    }
 
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {

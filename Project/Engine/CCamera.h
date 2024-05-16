@@ -36,10 +36,13 @@ private:
 
     // 물체 분류
     vector<CGameObject*> m_vecDeferred;
+    vector<CGameObject*> m_vecDecal;
     vector<CGameObject*> m_vecOpaque;
     vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;
+
+    vector<CGameObject*> m_vecShadow;
 
 public:
     PROJ_TYPE GetProjType() const { return m_ProjType; }
@@ -78,7 +81,10 @@ public:
     virtual void finaltick() override;
 
     void SortObject();
+    void SortShadowMapObject(UINT _MobilityType);
+
     void render();
+    void render_Decal();
     void render_SSAO();
     void render_Light();
     void render_Merge();

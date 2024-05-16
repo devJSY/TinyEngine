@@ -562,10 +562,12 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawBoxCollider(obj);
     DrawSphereCollider(obj);
     DrawCapsuleCollider(obj);
+    DrawCharacterController(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
     DrawParticlesystem(obj);
     DrawSkybox(obj);
+    DrawDecal(obj);
     DrawLandscape(obj);
     DrawTextRender(obj);
     DrawScript(obj);
@@ -599,7 +601,34 @@ void COutliner::DrawTransform(CGameObject* obj)
         pTr->SetRelativeScale(scale);
 
         ImGui::Spacing();
-        ImGui::Separator();
+
+        // Mobility
+        static vector<string> MobilityTypes = {
+            "Static",
+            "Movable",
+        };
+
+        MOBILITY_TYPE MobilityType = pTr->GetMobilityType();
+
+        static string CurMobility = string();
+
+        switch (MobilityType)
+        {
+        case MOBILITY_TYPE::STATIC:
+            CurMobility = MobilityTypes[0];
+            break;
+        case MOBILITY_TYPE::MOVABLE:
+            CurMobility = MobilityTypes[1];
+            break;
+        }
+
+        if (ImGui_ComboUI(ImGui_LabelPrefix("Mobility").c_str(), CurMobility, MobilityTypes))
+        {
+            if (MobilityTypes[0] == CurMobility)
+                pTr->SetMobilityType(MOBILITY_TYPE::STATIC);
+            else if (MobilityTypes[1] == CurMobility)
+                pTr->SetMobilityType(MOBILITY_TYPE::MOVABLE);
+        }
 
         bool bAbsolute = pTr->IsAbsolute();
         ImGui::Checkbox(ImGui_LabelPrefix("Absolute Scale").c_str(), &bAbsolute);
@@ -878,16 +907,6 @@ void COutliner::DrawLight3D(CGameObject* obj)
         float spotPower = pLight->GetSpotPower();
         if (ImGui::SliderFloat(ImGui_LabelPrefix("Spot Power").c_str(), &spotPower, 1.f, 256.f))
             pLight->SetSpotPower(spotPower);
-
-        int shadowType = pLight->GetShadowType();
-        ImGui::Text("Shadow Type");
-        ImGui::SameLine();
-        ImGui::Dummy(ImVec2(50.f, 0.f));
-        ImGui::SameLine();
-        ImGui::RadioButton("Static Shadow", &shadowType, 0);
-        ImGui::SameLine();
-        ImGui::RadioButton("Dynamic Shadow", &shadowType, 1);
-        pLight->SetShadowType(shadowType);
 
         float HaloRadius = pLight->GetHaloRadius();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
@@ -1683,6 +1702,51 @@ void COutliner::DrawCapsuleCollider(CGameObject* obj)
     }
 }
 
+void COutliner::DrawCharacterController(CGameObject* obj)
+{
+    CCharacterController* pCharacterController = obj->CharacterController();
+    if (nullptr == pCharacterController)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CCharacterController).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::CHARACTERCONTROLLER]);
+
+    ComponentSettingsButton(pCharacterController);
+
+    if (open)
+    {
+        float SlopeLimit = pCharacterController->GetSlopeLimit();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Slope Limit").c_str(), &SlopeLimit, 0.1f, 0.f, 90.f))
+            pCharacterController->SetSlopeLimit(SlopeLimit);
+
+        float StepOffset = pCharacterController->GetStepOffset();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Step Offset").c_str(), &StepOffset, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetStepOffset(StepOffset);
+
+        float SkinWitdh = pCharacterController->GetSkinWidth();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetSkinWidth(SkinWitdh);
+
+        float MinMoveDistance = pCharacterController->GetMinMoveDistance();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Min Move Distance").c_str(), &MinMoveDistance, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetMinMoveDistance(MinMoveDistance);
+
+        Vec3 Center = pCharacterController->GetCenter();
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
+            pCharacterController->SetCenter(Center);
+
+        float Radius = pCharacterController->GetRadius();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetRadius(Radius);
+
+        float Height = pCharacterController->GetHeight();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+            pCharacterController->SetHeight(Height);
+
+        ImGui::TreePop();
+    }
+}
+
 void COutliner::DrawMeshRender(CGameObject* obj)
 {
     // MeshRender
@@ -1697,6 +1761,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
+        // Cast Shadow
+        bool bCastShadow = pMeshRender->IsCastShadow();
+        ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);
+        pMeshRender->SetCastShadow(bCastShadow);
+
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
         // Mesh
@@ -2240,6 +2309,144 @@ void COutliner::DrawSkybox(CGameObject* obj)
             else if (SkyBoxShapes[1] == CurShape)
                 pSkyBox->SetShape(SKYBOX_SHAPE::BOX);
         }
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawDecal(CGameObject* obj)
+{
+    CDecal* pDecal = obj->Decal();
+    if (nullptr == pDecal)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CDecal).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::DECAL]);
+
+    ComponentSettingsButton(pDecal);
+
+    if (open)
+    {
+        // Decal Color Texture
+        {
+            ImGui::Text("Decal Color Texture");
+            void* TextureID = nullptr;
+            Ptr<CTexture> pDecalColorTex = pDecal->GetDecalColorTex();
+
+            if (nullptr != pDecalColorTex)
+                TextureID = pDecalColorTex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pDecalColorTex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pDecalColorTex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalColorTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalColorTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            // Delete Texture Popup
+            ImGui::OpenPopupOnItemClick("Decal Color Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Decal Color Texture##COutlinerDecal"))
+            {
+                if (ImGui::MenuItem("Delete Color Texture"))
+                {
+                    pDecal->SetDecalColorTex(nullptr);
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
+        // Decal Normal Texture
+        {
+            ImGui::Text("Decal Normal Texture");
+            void* TextureID = nullptr;
+            Ptr<CTexture> pDecalNormalTex = pDecal->GetDecalNormalTex();
+
+            if (nullptr != pDecalNormalTex)
+                TextureID = pDecalNormalTex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pDecalNormalTex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pDecalNormalTex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalNormalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalNormalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            // Delete Texture Popup
+            ImGui::OpenPopupOnItemClick("Decal Normal Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Decal Normal Texture##COutlinerDecal"))
+            {
+                if (ImGui::MenuItem("Delete Normal Texture"))
+                {
+                    pDecal->SetDecalNormalTex(nullptr);
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
+        // Invert Normal Y
+        bool bInvertNormal = pDecal->IsInvertNormalY();
+        ImGui::Checkbox(ImGui_LabelPrefix("Invert Normal Y").c_str(), &bInvertNormal);
+        pDecal->SetInvertNormalY(bInvertNormal);
+
+        // As Emissive
+        bool bAsEmissive = pDecal->IsDecalAsEmissive();
+        ImGui::Checkbox(ImGui_LabelPrefix("Decal As Emissive").c_str(), &bAsEmissive);
+        pDecal->SetDecalAsEmissive(bAsEmissive);
 
         ImGui::TreePop();
     }

@@ -139,6 +139,9 @@ public:
     void render_postprocess_LDRI();
     void render_postprocess_HDRI();
 
+public:
+    void render_StaticShadowDepth();
+
 private:
     void render_Clear(const Vec4& Color);
 
@@ -146,7 +149,7 @@ private:
     void render_editor();
 
     void render_debug();
-    void render_LightDepth();
+    void render_DynamicShadowDepth();
 
     // 리소스 바인딩
     void UpdateData();

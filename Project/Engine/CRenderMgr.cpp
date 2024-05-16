@@ -13,6 +13,7 @@
 
 #include "CConstBuffer.h"
 #include "CMRT.h"
+#include "CLevel.h"
 
 CRenderMgr::CRenderMgr()
     : m_arrMRT{}
@@ -132,12 +133,12 @@ void CRenderMgr::render()
     if (nullptr != m_mainCam)
     {
         // Depth Only Pass
-        m_mainCam->SortObject();
+        m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
 
-    // Light Depth Map
-    render_LightDepth();
+    // Dynamic Shadow Depth Map
+    render_DynamicShadowDepth();
 
     // Rendering
     (this->*RENDER_FUNC)();
@@ -401,16 +402,70 @@ void CRenderMgr::render_postprocess_HDRI()
     CTexture::Clear(1);
 }
 
-void CRenderMgr::render_LightDepth()
+void CRenderMgr::render_StaticShadowDepth()
+{
+    CLight3D* StaticLight = nullptr;
+
+    // 레벨을 순회하며 정적 광원 탐색
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+
+        for (const auto& ParentObj : vecParentObj)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(ParentObj);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                if (pObject->Light3D() && MOBILITY_TYPE::STATIC == pObject->Transform()->GetMobilityType())
+                {
+                    StaticLight = pObject->Light3D();
+                    break;
+                }
+
+                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+                for (size_t i = 0; i < vecChildObj.size(); ++i)
+                {
+                    queue.push_back(vecChildObj[i]);
+                }
+            }
+
+            if (nullptr != StaticLight)
+                break;
+        }
+
+        if (nullptr != StaticLight)
+            break;
+    }
+
+    // 레벨에 정적 광원이 존재하지않는다.
+    if (nullptr == StaticLight)
+        return;
+
+    StaticLight->SetShadowIdx(0);
+
+    // Rendering
+    StaticLight->render_ShadowDepth(MOBILITY_TYPE::STATIC);
+
+    // Bind
+    StaticLight->GetDepthMapTex()->UpdateData(26);
+}
+
+void CRenderMgr::render_DynamicShadowDepth()
 {
     for (int i = 0; i < m_vecLight3D.size(); i++)
     {
         int ShadowIndex = m_vecLight3D[i]->GetShadowIdx();
-        if (0 > ShadowIndex)
+        if (0 >= ShadowIndex)
             continue;
 
         // Rendering
-        m_vecLight3D[i]->render_LightDepth();
+        m_vecLight3D[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
 
         // Bind
         if (1 == ShadowIndex)
@@ -425,8 +480,6 @@ void CRenderMgr::render_LightDepth()
         {
             m_vecLight3D[i]->GetDepthMapTex()->UpdateData(25);
         }
-
-        ShadowIndex--;
     }
 }
 
@@ -470,17 +523,21 @@ void CRenderMgr::UpdateData()
     static vector<tLightInfo> vecLight3DInfo;
 
     // 그림자 적용 광원 최대갯수
-    const int dynamicShadowMaxCount = 3;
+    const static int dynamicShadowMaxCount = 3;
     int ShadowIdx = 1;
 
     for (UINT i = 0; i < m_vecLight3D.size(); ++i)
     {
-        m_vecLight3D[i]->SetShadowIdx(-1); // 초기화
+        // 정적 라이트 이외의 라이트 인덱스 초기화
+        if (0 != m_vecLight3D[i]->GetShadowIdx())
+        {
+            m_vecLight3D[i]->SetShadowIdx(-1);
+        }
 
-        if (ShadowIdx <= dynamicShadowMaxCount && 0 < m_vecLight3D[i]->GetShadowType())
+        if (ShadowIdx <= dynamicShadowMaxCount && MOBILITY_TYPE::MOVABLE == m_vecLight3D[i]->Transform()->GetMobilityType())
         {
             m_vecLight3D[i]->SetShadowIdx(ShadowIdx);
-            ShadowIdx++;
+            ++ShadowIdx;
         }
 
         const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
@@ -633,11 +690,11 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"NormalTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+            CAssetMgr::GetInst()->CreateTexture(L"TangentTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+            CAssetMgr::GetInst()->CreateTexture(L"BitangentTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"EmissiveTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
-                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
-            CAssetMgr::GetInst()->CreateTexture(L"DiffuseTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
-            CAssetMgr::GetInst()->CreateTexture(L"SpecularTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"MetallicRoughnessTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
@@ -647,7 +704,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
 
         Vec4 arrClearColor[8] = {
             Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(1.f, 1.f, 1.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
         };
 
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
@@ -655,7 +712,6 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
         m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 8, DSTex);
 
-        // PBR
         Ptr<CMaterial> pPBRDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[1]);
@@ -676,25 +732,78 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[2]);
         pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[6]);
         pPBRSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_4, arrRTTex[7]);
+    }
 
-        // Phong
+    // ============
+    // Deferred Phong MRT
+    // ============
+    {
+        Ptr<CTexture> arrRTTex[8] = {
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"AlbedoTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"TangentTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"BitangentTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"),
+            CAssetMgr::GetInst()->CreateTexture(L"DiffuseTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+            CAssetMgr::GetInst()->CreateTexture(L"SpecularTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
+        };
+
+        Vec4 arrClearColor[8] = {Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+                                 Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f)};
+
+        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED_PHONG] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED_PHONG]->Create(arrRTTex, arrClearColor, 8, DSTex);
+
         Ptr<CMaterial> pDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirLight_deferredMtrl");
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
         pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
-        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[6]);
+        pDirLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[7]);
 
         Ptr<CMaterial> pPointLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLight_deferredMtrl");
         pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
         pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
-        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
-        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[6]);
+        pPointLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[7]);
 
         Ptr<CMaterial> pSpotLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLight_deferredMtrl");
         pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[1]);
         pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_1, arrRTTex[2]);
-        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[4]);
-        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[5]);
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_2, arrRTTex[6]);
+        pSpotLightMtrl->SetTexParam(TEX_PARAM::TEX_3, arrRTTex[7]);
+    }
+
+    // =========
+    // Decal MRT
+    // =========
+    {
+        Ptr<CTexture> pRTTex[3] = {
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"AlbedoTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"),
+        };
+
+        Vec4 arrClearColor[3] = {
+            Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f),
+            Vec4(0.f, 0.f, 0.f, 1.f),
+        };
+
+        m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, arrClearColor, 3, nullptr);
+
+        Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
+        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
+        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->CreateTexture(
+                                                      L"NormalTargetCopyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
+                                                      D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT));
+        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"TangentTargetTex"));
+        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"BitangentTargetTex"));
     }
 
     // ============
@@ -795,6 +904,8 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"AlbedoTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PositionTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"NormalTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"TangentTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BitangentTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"EmissiveTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DiffuseTargetTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"SpecularTargetTex");
@@ -802,6 +913,7 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"AmbientOcclusionTargetTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LightRadianceTargetTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"NormalTargetCopyTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"SSAOTex");
 

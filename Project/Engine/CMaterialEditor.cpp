@@ -59,7 +59,6 @@ CMaterialEditor::CMaterialEditor()
     m_LightObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
     m_LightObj->Light3D()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
     m_LightObj->Light3D()->SetRadius(10.f);
-    m_LightObj->Light3D()->SetShadowType(0);
 
     m_LightBuffer = new CStructuredBuffer;
     m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
@@ -153,7 +152,7 @@ void CMaterialEditor::DrawViewport()
     CopyInfo.invProj = Matrix();
 
     m_LightBuffer->SetData(&CopyInfo, 1);
-    m_LightBuffer->UpdateData(12);
+    m_LightBuffer->UpdateData(14);
 
     // ·»´õ¸µ
     if (nullptr != m_Mtrl->GetShader())

@@ -121,6 +121,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CBoxCollider2D.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCapsuleCollider.h" />
+    <ClInclude Include="CCharacterController.h" />
     <ClInclude Include="CCircleCollider2D.h" />
     <ClInclude Include="CCollider.h" />
     <ClInclude Include="CCollider2D.h" />
@@ -128,6 +129,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CComputeShader.h" />
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CContentBrowser.h" />
+    <ClInclude Include="CDecal.h" />
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CEdgeCollider2D.h" />
     <ClInclude Include="CEditor.h" />
@@ -233,6 +235,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CBoxCollider2D.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCapsuleCollider.cpp" />
+    <ClCompile Include="CCharacterController.cpp" />
     <ClCompile Include="CCircleCollider2D.cpp" />
     <ClCompile Include="CCollider.cpp" />
     <ClCompile Include="CCollider2D.cpp" />
@@ -240,6 +243,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CComputeShader.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CContentBrowser.cpp" />
+    <ClCompile Include="CDecal.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CEdgeCollider2D.cpp" />
     <ClCompile Include="CEditor.cpp" />
@@ -476,6 +480,12 @@ call EngineCopy.bat</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="decal.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="DepthOnlyPS.hlsl">

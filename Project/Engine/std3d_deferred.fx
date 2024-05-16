@@ -26,28 +26,26 @@ struct PS_OUT
     float4 vColor : SV_Target0;
     float4 vPosition : SV_Target1;
     float4 vNormal : SV_Target2;
-    float4 vEmissive : SV_Target3;
-    float4 vDiffuse : SV_Target4;
-    float4 vSpecular : SV_Target5;
-    float4 vMetallicRoughness : SV_Target6;
-    float4 vAmbientOcclusion : SV_Target7;
+    float4 vTangent : SV_Target3;
+    float4 vBitangent : SV_Target4;
+    float4 vEmissive : SV_Target5;
+    float4 vDiffuse : SV_Target6;
+    float4 vSpecular : SV_Target7;
 };
 
 PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
 
+    // Color
     float4 vOutColor = MtrlAlbedo;
     if (g_btex_0)
     {
         vOutColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
     }
     
-    output.vColor = vOutColor;
-    output.vPosition = float4(_in.vPosWorld, 1.f);
-        
+    // Normal 
     float3 vWorldNormal = _in.normalWorld;
-    
     if (g_btex_1)
     {
         float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).rgb;
@@ -62,7 +60,11 @@ PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
         vWorldNormal = normalize(mul(vNormal.xyz, TBN));
     }
         
+    output.vColor = vOutColor;
+    output.vPosition = float4(_in.vPosWorld, 1.f);
     output.vNormal = float4(vWorldNormal, 1.f);
+    output.vTangent = float4(_in.vTangentWorld, 1.f);
+    output.vBitangent = float4(normalize(cross(_in.normalWorld.xyz, _in.vTangentWorld.xyz)), 1.f);
     output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
     output.vDiffuse = MtrlDiffuse;
     output.vSpecular = MtrlSpecular;

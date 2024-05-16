@@ -9,6 +9,7 @@ class CGrabageCollector : public CSingleton<CGrabageCollector>
 
 private:
     vector<CEntity*> m_vecEntity;
+    float m_AccTime;
 
 public:
     void tick();

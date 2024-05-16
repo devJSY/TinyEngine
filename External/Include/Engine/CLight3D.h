@@ -41,9 +41,6 @@ public:
     float GetSpotPower() const { return m_Info.spotPower; }
     void SetSpotPower(float power) { m_Info.spotPower = power; }
 
-    int GetShadowType() const { return m_Info.ShadowType; }
-    void SetShadowType(int _type) { m_Info.ShadowType = _type; }
-
     int GetShadowIdx() const { return m_Info.ShadowIndex; }
     void SetShadowIdx(int _Idx) { m_Info.ShadowIndex = _Idx; }
 
@@ -57,7 +54,7 @@ public:
 
 public:
     void render_Deferred(int _LightIdx);
-    void render_LightDepth();
+    void render_ShadowDepth(UINT _MobilityType);
 
 private:
     void CreateDepthMapTex();

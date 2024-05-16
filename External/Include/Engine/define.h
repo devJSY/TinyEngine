@@ -97,6 +97,7 @@ enum class COMPONENT_TYPE
     BOXCOLLIDER,
     SPHERECOLLIDER,
     CAPSULECOLLIDER,
+    CHARACTERCONTROLLER,
 
     // Render Component
     MESHRENDER,
@@ -170,6 +171,7 @@ enum class BS_TYPE
     MASK,        // Alpha Coverage
     ALPHA_BLEND, // Alpha 계수
     ONE_ONE,     // 1:1 혼합
+    DECAL,
     END,
 };
 
@@ -287,6 +289,8 @@ enum class SHADER_DOMAIN
     DOMAIN_TRANSPARENT, // 반투명
     DOMAIN_POSTPROCESS, // 후처리
 
+    DOMAIN_SHADOW,
+
     DOMAIN_DEBUG,
 };
 
@@ -327,10 +331,17 @@ enum class MRT_TYPE
     SWAPCHAIN,
     HDRI,
     DEFERRED,
+    DEFERRED_PHONG,
     DECAL,
     LIGHT,
     SHADOW,
     IDMAP,
     SSAO,
     END,
+};
+
+enum MOBILITY_TYPE
+{
+    STATIC = 0x0001,
+    MOVABLE = 0x0002,
 };

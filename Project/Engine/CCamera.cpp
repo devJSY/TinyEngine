@@ -36,10 +36,12 @@ CCamera::CCamera()
     , m_matView()
     , m_matProj()
     , m_vecDeferred{}
+    , m_vecDecal{}
     , m_vecOpaque{}
     , m_vecMaked{}
     , m_vecTransparent{}
     , m_vecPostProcess{}
+    , m_vecShadow{}
 {
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
@@ -153,6 +155,9 @@ void CCamera::SortObject()
             case SHADER_DOMAIN::DOMAIN_DEFERRED:
                 m_vecDeferred.push_back(vecObjects[j]);
                 break;
+            case SHADER_DOMAIN::DOMAIN_DECAL:
+                m_vecDecal.push_back(vecObjects[j]);
+                break;
             case SHADER_DOMAIN::DOMAIN_OPAQUE:
                 m_vecOpaque.push_back(vecObjects[j]);
                 break;
@@ -170,6 +175,35 @@ void CCamera::SortObject()
     }
 }
 
+void CCamera::SortShadowMapObject(UINT _MobilityType)
+{
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        // 카메라가 찍도록 설정된 Layer 가 아니면 무시
+        if (false == (m_LayerMask & (1 << i)))
+            continue;
+
+        CLayer* pLayer = pCurLevel->GetLayer(i);
+        const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
+        for (size_t j = 0; j < vecObjects.size(); ++j)
+        {
+            // 메쉬, 재질, 쉐이더 확인
+            if (!(vecObjects[j]->GetRenderComponent() && vecObjects[j]->GetRenderComponent()->GetMesh().Get() &&
+                  vecObjects[j]->GetRenderComponent()->GetMaterial().Get() && vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+            {
+                continue;
+            }
+
+            if (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
+            {
+                m_vecShadow.push_back(vecObjects[j]);
+            }
+        }
+    }
+}
+
 void CCamera::render()
 {
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
@@ -181,6 +215,9 @@ void CCamera::render()
     // Deferred Render Pass
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render(m_vecDeferred);
+
+    // Decal Pass
+    render_Decal();
 
     // SSAO Pass
     render_SSAO();
@@ -239,6 +276,23 @@ void CCamera::render()
     render_Clear();
 }
 
+void CCamera::render_Decal()
+{
+    CMRT* pDeferredPBRMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED);
+
+    static Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
+
+    // Normal Texture Copy
+    CONTEXT->CopyResource(pDecalMtrl->GetTexParam(TEX_1)->GetTex2D().Get(), pDeferredPBRMRT->GetRenderTargetTex(2)->GetTex2D().Get());
+
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();
+
+    for (size_t i = 0; i < m_vecDecal.size(); ++i)
+    {
+        m_vecDecal[i]->render();
+    }
+}
+
 void CCamera::render_SSAO()
 {
     CMRT* pSSAOMRT = CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SSAO);
@@ -246,11 +300,11 @@ void CCamera::render_SSAO()
 
     if (!g_Global.g_EnableSSAO)
     {
-        pSSAOTex->UpdateData(26);
+        pSSAOTex->UpdateData(30);
         return;
     }
 
-    CTexture::Clear(26);
+    CTexture::Clear(30);
 
     pSSAOMRT->OMSet();
 
@@ -278,7 +332,7 @@ void CCamera::render_SSAO()
     pMesh->render();
 
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
-    pSSAOTex->UpdateData(26);
+    pSSAOTex->UpdateData(30);
 }
 
 void CCamera::render_Light()
@@ -313,13 +367,9 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
     CONTEXT->OMSetRenderTargets(0, NULL, _DepthMapTex->GetDSV().Get());
     CDevice::GetInst()->SetViewport((float)_DepthMapTex->GetWidth(), (float)_DepthMapTex->GetHeight());
 
-    render_DepthOnly(m_vecDeferred);
-    render_DepthOnly(m_vecOpaque);
-    render_DepthOnly(m_vecMaked);
-    render_DepthOnly(m_vecTransparent);
+    render_DepthOnly(m_vecShadow);
 
-    // Clear
-    render_Clear();
+    m_vecShadow.clear();
 
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
 }
@@ -327,6 +377,7 @@ void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
 void CCamera::render_Clear()
 {
     m_vecDeferred.clear();
+    m_vecDecal.clear();
     m_vecOpaque.clear();
     m_vecMaked.clear();
     m_vecTransparent.clear();

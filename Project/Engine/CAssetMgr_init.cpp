@@ -402,6 +402,23 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Merge_DeferredShader", pShader);
     }
 
+    // ============
+    // Decal Shader
+    // ============
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\decal.fx", "VS_Decal");
+        pShader->CreatePixelShader(L"shader\\decal.fx", "PS_Decal");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::DECAL);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DECAL);
+
+        pShader->SetName(L"DecalShader");
+        AddAsset(L"DecalShader", pShader);
+    }
+
     // =================================
     // TileMapShader
     // =================================
@@ -1046,7 +1063,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\DepthOnlyVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\DepthOnlyPS.hlsl", "main");
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SHADOW);
 
         pShader->SetName(L"DepthOnlyShader");
         AddAsset(L"DepthOnlyShader", pShader);
@@ -1065,7 +1082,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(INT_0, "Render Mode");
 
         pShader->AddScalarParam(FLOAT_0, "FogStrength");
-        pShader->AddScalarParam(FLOAT_1, "DepthScale");
+        pShader->AddScalarParam(FLOAT_1, "FogScale");
+        pShader->AddScalarParam(FLOAT_2, "DepthScale");
 
         pShader->AddScalarParam(VEC4_0, "Fog Color");
 
@@ -1240,6 +1258,13 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"Merge_DeferredShader"));
         pMtrl->SetName(L"Merge_DeferredMtrl");
         AddAsset<CMaterial>(L"Merge_DeferredMtrl", pMtrl);
+    }
+
+    // DecalMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DecalShader"));
+        AddAsset<CMaterial>(L"DecalMtrl", pMtrl);
     }
 
     // TileMapMtrl

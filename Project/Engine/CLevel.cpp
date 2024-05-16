@@ -218,6 +218,7 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             CTimeMgr::GetInst()->LockDeltaTime(false);
             CPhysics2DMgr::GetInst()->OnPhysics2DStart();
             CPhysicsMgr::GetInst()->OnPhysicsStart();
+            CRenderMgr::GetInst()->render_StaticShadowDepth();
             begin();
 
             if (LEVEL_STATE::PLAY == _NextState)

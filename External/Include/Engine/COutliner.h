@@ -38,10 +38,12 @@ private:
     void DrawBoxCollider(CGameObject* obj);
     void DrawSphereCollider(CGameObject* obj);
     void DrawCapsuleCollider(CGameObject* obj);
+    void DrawCharacterController(CGameObject* obj);
     void DrawMeshRender(CGameObject* obj);
     void DrawTileMap(CGameObject* obj);
     void DrawParticlesystem(CGameObject* obj);
     void DrawSkybox(CGameObject* obj);
+    void DrawDecal(CGameObject* obj);
     void DrawLandscape(CGameObject* obj);
     void DrawTextRender(CGameObject* obj);
     void DrawScript(CGameObject* obj);

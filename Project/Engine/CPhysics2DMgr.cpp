@@ -71,9 +71,10 @@ CPhysics2DMgr::CPhysics2DMgr()
     , m_CallbackInst()
     , m_vecPhysicsObj{}
     , m_Matrix{}
-    , m_PPM(100.f)
     , m_Accumulator(0.f)
     , m_StepSize(1.f / 60.f)
+    , m_Gravity(Vec2(0.f, -9.8f))
+    , m_PPM(1.f)
 {
     EnableAllLayer();
 }
@@ -156,7 +157,7 @@ void CPhysics2DMgr::tick()
 
 void CPhysics2DMgr::OnPhysics2DStart()
 {
-    m_PhysicsWorld = new b2World({0.0f, -9.8f});
+    m_PhysicsWorld = new b2World(m_Gravity);
     m_PhysicsWorld->SetContactListener(&m_CallbackInst);
 
     // 레벨의 모든 오브젝트를 순회하여 World 에 추가할 오브젝트를 등록

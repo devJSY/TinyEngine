@@ -5,6 +5,7 @@
 #include "CKeyMgr.h"
 #include "CGameObject.h"
 #include "components.h"
+#include "CPhysicsMgr.h"
 
 enum class SCRIPT_PARAM
 {
@@ -58,6 +59,8 @@ private:
     virtual void OnTriggerStay(CCollider* _OtherCollider){};
     virtual void OnTriggerExit(CCollider* _OtherCollider){};
 
+    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit){};
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override = 0;
     virtual void LoadFromLevelFile(FILE* _File) override = 0;
@@ -71,4 +74,5 @@ public:
 
     friend class CCollider2D;
     friend class CCollider;
+    friend class CCharacterController;
 };

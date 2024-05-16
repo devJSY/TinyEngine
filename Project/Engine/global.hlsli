@@ -138,14 +138,15 @@ StructuredBuffer<tTileInfo> g_TileInfo : register(t22);
 Texture2D g_LightDepthMapTex1 : register(t23);
 Texture2D g_LightDepthMapTex2 : register(t24);
 Texture2D g_LightDepthMapTex3 : register(t25);
+Texture2D g_StaticLightDepthMapTex : register(t26);
 
-Texture2D SSAOTex : register(t26);
+Texture2D SSAOTex : register(t30);
 
 SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);
 SamplerState g_PointSampler : register(s2);
 SamplerState g_AnisotropicSampler : register(s3);
 SamplerState g_ShadowPointSampler : register(s4);
-SamplerComparisonState g_ShadowCompareSampler : register(s5);
+SamplerComparisonState g_ShadowCompareSampler : register(s5); 
 
 #endif

@@ -713,7 +713,7 @@ void CLevelEditor::render_Viewport()
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();
                 Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                pos += dir.Normalize() * 500.f;
+                pos += dir.Normalize() * 5.f;
                 pObj->Transform()->SetRelativePos(pos);
 
                 GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
@@ -823,6 +823,16 @@ void CLevelEditor::render_Physics2DMgr()
         return;
     }
 
+    Vec2 Gravity = CPhysics2DMgr::GetInst()->GetGravity();
+    if (ImGui::DragFloat2(ImGui_LabelPrefix("Gravity").c_str(), &Gravity.x, 0.01f))
+        CPhysics2DMgr::GetInst()->SetGravity(Gravity);
+
+    float PPM = CPhysics2DMgr::GetInst()->GetPPM();
+    if (ImGui::DragFloat(ImGui_LabelPrefix("Pixel Per Meter").c_str(), &PPM, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+        CPhysics2DMgr::GetInst()->SetPPM(PPM);
+
+    ImGui::Separator();
+
     if (ImGui::Button("All Layer Enable"))
         CPhysics2DMgr::GetInst()->EnableAllLayer();
 
@@ -901,6 +911,16 @@ void CLevelEditor::render_PhysicsMgr()
         ImGui::End();
         return;
     }
+
+    Vec3 Gravity = CPhysicsMgr::GetInst()->GetGravity();
+    if (ImGui::DragFloat3(ImGui_LabelPrefix("Gravity").c_str(), &Gravity.x, 0.01f))
+        CPhysicsMgr::GetInst()->SetGravity(Gravity);
+
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    if (ImGui::DragFloat(ImGui_LabelPrefix("Pixel Per Meter").c_str(), &PPM, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+        CPhysicsMgr::GetInst()->SetPPM(PPM);
+
+    ImGui::Separator();
 
     if (ImGui::Button("All Layer Enable"))
         CPhysicsMgr::GetInst()->EnableAllLayer();
