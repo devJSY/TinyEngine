@@ -15,6 +15,16 @@ struct RaycastHit
     CGameObject* pCollisionObj; // 충돌한 콜라이더 오브젝트
 };
 
+struct ControllerColliderHit
+{
+    class CCollider* Collider;
+    class CCharacterController* Controller;
+    Vec3 MoveDirection;
+    float MoveLength;
+    Vec3 Normal;
+    Vec3 Point;
+};
+
 // 충돌 콜백 클래스
 class CCollisionCallback : public physx::PxSimulationEventCallback
 {
@@ -26,6 +36,15 @@ class CCollisionCallback : public physx::PxSimulationEventCallback
     virtual void onWake(physx::PxActor** actors, physx::PxU32 count) override{};
     virtual void onSleep(physx::PxActor** actors, physx::PxU32 count) override{};
     virtual void onAdvance(const physx::PxRigidBody* const* bodyBuffer, const physx::PxTransform* poseBuffer, const physx::PxU32 count) override{};
+};
+
+// 캐릭터 컨트롤러 콜백 클래스
+class CCTCCollisionCallback : public physx::PxUserControllerHitReport
+{
+    virtual void onShapeHit(const physx::PxControllerShapeHit& hit) override;
+
+    virtual void onControllerHit(const physx::PxControllersHit& hit) override{};
+    virtual void onObstacleHit(const physx::PxControllerObstacleHit& hit) override{};
 };
 
 #ifndef PX_RELEASE
@@ -60,6 +79,7 @@ private:
 private:
     vector<CGameObject*> m_vecPhysicsObj;
     CCollisionCallback m_CallbackInst;
+    CCTCCollisionCallback m_CCTCallbackInst;
     WORD m_Matrix[LAYER_MAX];
 
     float m_Accumulator;    // DT 누적량

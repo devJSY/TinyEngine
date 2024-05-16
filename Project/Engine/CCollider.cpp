@@ -148,6 +148,13 @@ void CCollider::OnTriggerExit(CCollider* _OtherCollider)
         vecScript[i]->OnTriggerExit(_OtherCollider);
 }
 
+void CCollider::OnControllerColliderHit(ControllerColliderHit Hit)
+{
+    const vector<CScript*>& vecScript = GetOwner()->GetScripts();
+    for (UINT i = 0; i < vecScript.size(); i++)
+        vecScript[i]->OnControllerColliderHit(Hit);
+}
+
 void CCollider::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_bTrigger, sizeof(bool), 1, _File);

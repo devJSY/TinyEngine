@@ -46,6 +46,8 @@ private:
     void OnTriggerStay(CCollider* _OtherCollider);
     void OnTriggerExit(CCollider* _OtherCollider);
 
+    void OnControllerColliderHit(struct ControllerColliderHit Hit);
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
@@ -59,4 +61,5 @@ public:
 
     friend class CPhysicsMgr;
     friend class CCollisionCallback;
+    friend class CCTCCollisionCallback;
 };

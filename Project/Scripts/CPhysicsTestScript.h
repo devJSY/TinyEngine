@@ -21,6 +21,8 @@ private:
     virtual void OnTriggerStay(CCollider* _OtherCollider) override;
     virtual void OnTriggerExit(CCollider* _OtherCollider) override;
 
+    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit) override;
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

@@ -1,5 +1,6 @@
 #pragma once
 #include "CCollider.h"
+#include "CPhysicsMgr.h"
 
 class CCharacterController : public CCollider
 {
@@ -13,6 +14,7 @@ private:
 
 private:
     float m_MoveElapsedTime;
+    bool m_bGrounded; 
 
 public:
     virtual void begin() override;
@@ -20,6 +22,7 @@ public:
 
 public:
     void Move(Vec3 _Motion);
+    bool IsGrounded() const { return m_bGrounded; }
 
 public:
     float GetSlopeLimit() const { return m_SlopeLimit; }

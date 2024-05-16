@@ -96,38 +96,46 @@ void CPhysicsTestScript::tick()
         Vec3 moveVec = Vec3();
         moveVec += CPhysicsMgr::GetInst()->GetGravity() * DT;
         moveVec += Transform()->GetWorldDir(DIR_TYPE::FRONT) * 5.f * DT;
+
         CharacterController()->Move(moveVec);
+
+        LOG(Log, "Is Grounded : %d", CharacterController()->IsGrounded());
     }
 }
 
 void CPhysicsTestScript::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    LOG(Log, "OnCollisionEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    // LOG(Log, "OnCollisionEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnCollisionStay(CCollider* _OtherCollider)
 {
-    LOG(Log, "OnCollisionStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    // LOG(Log, "OnCollisionStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnCollisionExit(CCollider* _OtherCollider)
 {
-    LOG(Log, "OnCollisionExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    // LOG(Log, "OnCollisionExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    LOG(Log, "OnTriggerEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    // LOG(Log, "OnTriggerEnter Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnTriggerStay(CCollider* _OtherCollider)
 {
-    LOG(Log, "OnTriggerStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    // LOG(Log, "OnTriggerStay Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::OnTriggerExit(CCollider* _OtherCollider)
 {
-    LOG(Log, "OnTriggerExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+    // LOG(Log, "OnTriggerExit Other Collider Name : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
+}
+
+void CPhysicsTestScript::OnControllerColliderHit(ControllerColliderHit Hit)
+{
+    // LOG(Log, "OnControllerColliderHit Other Collider Name : %s", ToString(Hit.Collider->GetOwner()->GetName()).c_str());
 }
 
 void CPhysicsTestScript::SaveToLevelFile(FILE* _File)

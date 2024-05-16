@@ -78,6 +78,23 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
         pColliderB->OnTriggerStay(pColliderA);
 }
 
+void CCTCCollisionCallback::onShapeHit(const physx::PxControllerShapeHit& hit)
+{
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+
+    ControllerColliderHit HitResult;
+    HitResult.Collider = (CCollider*)hit.shape->userData;
+    HitResult.Controller = (CCharacterController*)hit.controller->getUserData();
+    HitResult.MoveDirection = hit.dir;
+    HitResult.MoveLength = hit.length * PPM;
+    HitResult.Normal = hit.worldNormal;
+    HitResult.Point = Vec3((float)hit.worldPos.x, (float)hit.worldPos.y, (float)hit.worldPos.z);
+    HitResult.Point *= PPM;
+
+    HitResult.Controller->OnControllerColliderHit(HitResult);
+    HitResult.Collider->OnControllerColliderHit(HitResult);
+}
+
 CPhysicsMgr::CPhysicsMgr()
     : m_Allocator()
     , m_ErrorCallback()
@@ -89,6 +106,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_ControllerMgr(NULL)
     , m_vecPhysicsObj{}
     , m_CallbackInst()
+    , m_CCTCallbackInst()
     , m_Matrix{}
     , m_Accumulator(0.f)
     , m_StepSize(1.f / 60.f)
@@ -129,7 +147,7 @@ void CPhysicsMgr::tick()
         if (!actors[i]->is<PxRigidDynamic>())
             continue;
 
-        // RigidDynamic이 캐릭터 컨트롤러 인 경우
+        // RigidDynamic이 캐릭터 컨트롤러인 경우
         if (nullptr == actors[i]->userData)
             continue;
 
@@ -161,6 +179,7 @@ void CPhysicsMgr::tick()
         pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
     }
 
+    // Character Controller
     PxU32 nbControllers = m_ControllerMgr->getNbControllers();
     for (PxU32 i = 0; i < nbControllers; i++)
     {
@@ -604,7 +623,7 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     float HeightScale = WorldScale.y;
 
     PxCapsuleControllerDesc desc;
-    desc.slopeLimit = DirectX::XMConvertToRadians(pCharacterController->m_SlopeLimit);
+    desc.slopeLimit = max(cosf(DirectX::XMConvertToRadians(pCharacterController->m_SlopeLimit)), 0.f);
     desc.stepOffset = pCharacterController->m_StepOffset;
     desc.contactOffset = pCharacterController->m_SkinWidth;
     desc.radius = pCharacterController->m_Radius * RadiusScale;
@@ -617,11 +636,22 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     WorldPos /= m_PPM;
     desc.position = PxVec3d(WorldPos.x, WorldPos.y, WorldPos.z);
 
-    // desc.reportCallback;
+    desc.reportCallback = &m_CCTCallbackInst;
     desc.userData = (void*)pCharacterController;
 
     PxController* PxCharacterController = m_ControllerMgr->createController(desc);
     pCharacterController->m_RuntimeShape = PxCharacterController;
+
+    // Shape 에 UserData 등록
+    PxRigidDynamic* PxActor = PxCharacterController->getActor();
+    PxU32 nbShapes = PxActor->getNbShapes();
+    std::vector<PxShape*> vecShapes(nbShapes);
+    PxActor->getShapes(vecShapes.data(), nbShapes);
+
+    for (UINT i = 0; i < vecShapes.size(); i++)
+    {
+        vecShapes[i]->userData = (void*)pCharacterController;
+    }
 }
 
 void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)

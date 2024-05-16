@@ -6,6 +6,7 @@
 #include "CTimeMgr.h"
 
 #include "CTransform.h"
+#include "CScript.h"
 
 CCharacterController::CCharacterController()
     : CCollider(COMPONENT_TYPE::CHARACTERCONTROLLER)
@@ -16,6 +17,7 @@ CCharacterController::CCharacterController()
     , m_Radius(0.5f)
     , m_Height(2.f)
     , m_MoveElapsedTime(0.f)
+    , m_bGrounded(false)
 {
 }
 
@@ -51,6 +53,7 @@ void CCharacterController::finaltick()
 
     m_MoveElapsedTime += DT;
 
+    Vec3 worldpos = Transform()->GetWorldPos();
     Vec3 scale = Transform()->GetWorldScale();
 
     float HalfHeight = m_Height / 2.f - m_Radius;
@@ -66,8 +69,11 @@ void CCharacterController::finaltick()
     Matrix matWorldScaleInv = XMMatrixScaling(1.f / scale.x, 1.f / scale.y, 1.f / scale.z);
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-    // PhysX SRT * Transform SRT
-    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), 1.f, 1.f, AXIS_TYPE::Y, color,
+    Matrix matWorldTrans = XMMatrixTranslation(worldpos.x, worldpos.y, worldpos.z);
+    Matrix matWorldScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+    // PhysX SRT * Transform ST
+    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * matWorldScale * matWorldTrans, 1.f, 1.f, AXIS_TYPE::Y, color,
                                      true);
 }
 
@@ -76,8 +82,11 @@ void CCharacterController::Move(Vec3 _Motion)
     if (nullptr == m_RuntimeShape)
         return;
 
-    ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters());
+    physx::PxControllerCollisionFlags MoveFlags =
+        ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters());
     m_MoveElapsedTime = 0.f;
+
+    m_bGrounded = physx::PxControllerCollisionFlag::eCOLLISION_DOWN & MoveFlags;
 
     // 트랜스폼 업데이트
     float PPM = CPhysicsMgr::GetInst()->GetPPM();
