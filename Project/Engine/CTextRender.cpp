@@ -58,7 +58,7 @@ void CTextRender::render()
     NdcPos.z = projPos.z / projPos.w;
 
     // 화면 밖인경우
-    if (NdcPos.x < -1.0 || NdcPos.y < -1.0 || NdcPos.x > 1.0 || NdcPos.y > 1.0)
+    if (NdcPos.x < -1.0 || NdcPos.y < -1.0 || NdcPos.x > 1.0 || NdcPos.y > 1.0 || NdcPos.z > 1.0 || NdcPos.z < 0.f)
         return;
 
     // Ndc Coordinate → Screen Coordinate
