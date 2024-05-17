@@ -39,7 +39,6 @@ CMaterialEditor::CMaterialEditor()
     m_ViewportCam->SetFOV(XM_PI / 2.f);
     m_ViewportCam->SetFar(10000.f);
     m_ViewportCam->SetHDRI(true);
-    m_ViewportCam->SetCameraPriority(0);
 
     // Object
     m_ViewportObj = new CGameObjectEx;
@@ -169,7 +168,6 @@ void CMaterialEditor::DrawViewport()
     {
         CTexture::Clear(i);
     }
-
 
     ImGui::End();
 }

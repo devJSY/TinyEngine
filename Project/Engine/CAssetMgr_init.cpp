@@ -1487,6 +1487,16 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
     }
 
+    // Camera Icon
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
+        pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\CameraIcon.png", L"Icons\\CameraIcon.png"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // HalfWidth
+        pMtrl->SetName(L"CameraIconMtrl");
+        AddAsset<CMaterial>(L"CameraIconMtrl", pMtrl);
+    }
+
     // Sampling
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);

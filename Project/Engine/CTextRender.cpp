@@ -3,8 +3,10 @@
 
 #include "CFontMgr.h"
 #include "CRenderMgr.h"
+#include "CLevelMgr.h"
 
 #include "CDevice.h"
+#include "CLevel.h"
 #include "components.h"
 
 CTextRender::CTextRender()
@@ -32,7 +34,12 @@ void CTextRender::finaltick()
 
 void CTextRender::render()
 {
-    CCamera* pCam = CRenderMgr::GetInst()->GetCamera(m_CameraIdx);
+    CCamera* pCam = nullptr;
+
+    if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+        pCam = CRenderMgr::GetInst()->GetCamera(m_CameraIdx);
+    else
+        pCam = CRenderMgr::GetInst()->GetEditorCamera();
 
     if (nullptr == pCam)
         return;

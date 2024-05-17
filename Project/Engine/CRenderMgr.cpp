@@ -195,13 +195,15 @@ void CRenderMgr::render_play()
         return;
 
     m_mainCam = m_vecCam[0];
-    m_mainCam->SortObject();
-    m_mainCam->render_Deferred();
-    m_mainCam->render_Forward();
 
-    for (size_t i = 1; i < m_vecCam.size(); ++i)
+    for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
+        if (nullptr == m_vecCam[i])
+            continue;
+
         m_vecCam[i]->SortObject();
+        if (0 == i)
+            m_vecCam[i]->render_Deferred();
         m_vecCam[i]->render_Forward();
     }
 }
@@ -234,15 +236,16 @@ void CRenderMgr::render_CameraPreview()
     UpdateData();
 
     // Depth Only Pass
-    SelectedObj->Camera()->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
-    SelectedObj->Camera()->render_DepthOnly(m_DepthOnlyTex);
+    m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
+    m_mainCam->render_DepthOnly(m_DepthOnlyTex);
 
     // Dynamic Shadow Depth Map
     render_DynamicShadowDepth();
 
-    SelectedObj->Camera()->SortObject();
-    SelectedObj->Camera()->render_Deferred();
-    SelectedObj->Camera()->render_Forward();
+    m_mainCam->SortObject();
+    if (0 == m_mainCam->GetCameraPriority())
+        m_mainCam->render_Deferred();
+    m_mainCam->render_Forward();
 
     Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
     CONTEXT->CopyResource(m_CameraPreviewTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
