@@ -23,6 +23,7 @@
 
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
+    , m_Frustum(this)
     , m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
     , m_FOV(XM_PI / 2.f)
     , m_Width(0.f)
@@ -34,7 +35,9 @@ CCamera::CCamera()
     , m_iCamPriority(-1)
     , m_bHDRI(false)
     , m_matView()
+    , m_matViewInv()
     , m_matProj()
+    , m_matProjInv()
     , m_vecDeferred{}
     , m_vecDecal{}
     , m_vecOpaque{}
@@ -46,8 +49,33 @@ CCamera::CCamera()
     Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
     m_Width = vResol.x;
     m_AspectRatio = vResol.x / vResol.y;
+}
 
-    LayerMaskAll();
+CCamera::CCamera(const CCamera& origin)
+    : CComponent(origin)
+    , m_Frustum(this)
+    , m_ProjType(origin.m_ProjType)
+    , m_FOV(origin.m_FOV)
+    , m_Width(origin.m_Width)
+    , m_Scale(origin.m_Scale)
+    , m_AspectRatio(origin.m_AspectRatio)
+    , m_Near(origin.m_Near)
+    , m_Far(origin.m_Far)
+    , m_LayerMask(origin.m_LayerMask)
+    , m_iCamPriority(-1)
+    , m_bHDRI(origin.m_bHDRI)
+    , m_matView()
+    , m_matViewInv()
+    , m_matProj()
+    , m_matProjInv()
+    , m_vecDeferred{}
+    , m_vecDecal{}
+    , m_vecOpaque{}
+    , m_vecMaked{}
+    , m_vecTransparent{}
+    , m_vecPostProcess{}
+    , m_vecShadow{}
+{
 }
 
 CCamera::~CCamera()
@@ -75,6 +103,7 @@ void CCamera::finaltick()
 
     // 이동 x 회전 = view 행렬
     m_matView = matTrans * matRotate;
+    m_matViewInv = m_matView.Invert();
 
     // ===============================
     // 투영 방식에 따른 투영 행렬 계산
@@ -102,6 +131,10 @@ void CCamera::finaltick()
         // 원근투영
         m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, m_Near, m_Far);
     }
+
+    m_matProjInv = m_matProj.Invert();
+
+    m_Frustum.finaltick();
 }
 
 void CCamera::LayerMask(UINT _LayerIdx, bool _bMask)
@@ -146,6 +179,14 @@ void CCamera::SortObject()
                   vecObjects[j]->GetRenderComponent()->GetMaterial().Get() && vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
             {
                 continue;
+            }
+
+            // FrustumCheck
+            if (vecObjects[j]->GetRenderComponent()->IsFrustumCheck())
+            {
+                if (!m_Frustum.FrustumCheckBySphere(vecObjects[j]->Transform()->GetWorldPos(),
+                                                    vecObjects[j]->GetRenderComponent()->GetBoundingRadius()))
+                    continue;
             }
 
             SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
@@ -204,13 +245,13 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
     }
 }
 
-void CCamera::render()
+void CCamera::render_Deferred()
 {
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
     g_Transform.matView = m_matView;
-    g_Transform.matViewInv = m_matView.Invert();
+    g_Transform.matViewInv = m_matViewInv;
     g_Transform.matProj = m_matProj;
-    g_Transform.matProjInv = m_matProj.Invert();
+    g_Transform.matProjInv = m_matProjInv;
 
     // Deferred Render Pass
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
@@ -237,6 +278,25 @@ void CCamera::render()
 
     // Merge Pass
     render_Merge();
+}
+
+void CCamera::render_Forward()
+{
+    // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
+    g_Transform.matView = m_matView;
+    g_Transform.matViewInv = m_matViewInv;
+    g_Transform.matProj = m_matProj;
+    g_Transform.matProjInv = m_matProjInv;
+
+    // RenderTarget 설정
+    if (m_bHDRI)
+    {
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::HDRI)->OMSet();
+    }
+    else
+    {
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+    }
 
 #ifndef DISTRIBUTE
     // OutLine Pass
@@ -359,9 +419,9 @@ void CCamera::render_Merge()
 void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
 {
     g_Transform.matView = m_matView;
-    g_Transform.matViewInv = m_matView.Invert();
+    g_Transform.matViewInv = m_matViewInv;
     g_Transform.matProj = m_matProj;
-    g_Transform.matProjInv = m_matProj.Invert();
+    g_Transform.matProjInv = m_matProjInv;
 
     CONTEXT->ClearDepthStencilView(_DepthMapTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
     CONTEXT->OMSetRenderTargets(0, NULL, _DepthMapTex->GetDSV().Get());

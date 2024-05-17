@@ -27,6 +27,7 @@ void CRenderMgr::init()
     CreateIDMapTex(vRenderResolution);
     CreateDepthOnlyTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
+    CreateCameraPreviewTex(vRenderResolution);
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
     CreateMRT(vRenderResolution);
 

@@ -66,6 +66,7 @@ CLevel* CLevelMgr::CreateNewLevel()
     pCamObj->AddComponent(new CTransform);
     pCamObj->AddComponent(new CCamera);
 
+    pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerMaskAll();
     pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);

@@ -44,7 +44,7 @@ CRenderMgr::CRenderMgr()
     , m_BloomDownObj(nullptr)
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
-    , m_SSAOTex(nullptr)
+    , m_CameraPreviewTex(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
 
@@ -126,6 +126,9 @@ CRenderMgr::~CRenderMgr()
 
 void CRenderMgr::render()
 {
+    // Camera Preview
+    render_CameraPreview();
+
     render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
 
     UpdateData();
@@ -192,11 +195,14 @@ void CRenderMgr::render_play()
         return;
 
     m_mainCam = m_vecCam[0];
+    m_mainCam->SortObject();
+    m_mainCam->render_Deferred();
+    m_mainCam->render_Forward();
 
-    for (size_t i = 0; i < m_vecCam.size(); ++i)
+    for (size_t i = 1; i < m_vecCam.size(); ++i)
     {
         m_vecCam[i]->SortObject();
-        m_vecCam[i]->render();
+        m_vecCam[i]->render_Forward();
     }
 }
 
@@ -208,7 +214,39 @@ void CRenderMgr::render_editor()
     m_mainCam = m_EditorCam;
 
     m_EditorCam->SortObject();
-    m_EditorCam->render();
+    m_EditorCam->render_Deferred();
+    m_EditorCam->render_Forward();
+}
+
+void CRenderMgr::render_CameraPreview()
+{
+    if (!CEditorMgr::GetInst()->IsEnable() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+        return;
+
+    CGameObject* SelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr == SelectedObj || nullptr == SelectedObj->Camera())
+        return;
+
+    render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
+
+    CCamera* originMainCam = m_mainCam;
+    m_mainCam = SelectedObj->Camera();
+    UpdateData();
+
+    // Depth Only Pass
+    SelectedObj->Camera()->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
+    SelectedObj->Camera()->render_DepthOnly(m_DepthOnlyTex);
+
+    // Dynamic Shadow Depth Map
+    render_DynamicShadowDepth();
+
+    SelectedObj->Camera()->SortObject();
+    SelectedObj->Camera()->render_Deferred();
+    SelectedObj->Camera()->render_Forward();
+
+    Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    CONTEXT->CopyResource(m_CameraPreviewTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+    m_mainCam = originMainCam;
 }
 
 void CRenderMgr::render_debug()
@@ -653,6 +691,12 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
     }
 }
 
+void CRenderMgr::CreateCameraPreviewTex(Vec2 Resolution)
+{
+    m_CameraPreviewTex = CAssetMgr::GetInst()->CreateTexture(L"CameraPreviewTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                             D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+}
+
 void CRenderMgr::CreateMRT(Vec2 Resolution)
 {
     // =============
@@ -931,6 +975,7 @@ void CRenderMgr::Resize_Release()
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"HDRI_BloomTexture " + std::to_wstring(i));
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"BlurTexture " + std::to_wstring(i));
     }
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"CameraPreviewTex");
 
     Delete_Array(m_arrMRT);
     m_RTCopyTex = nullptr;
@@ -938,6 +983,7 @@ void CRenderMgr::Resize_Release()
     m_PostProcessTex_LDRI = nullptr;
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
+    m_CameraPreviewTex = nullptr;
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
@@ -947,6 +993,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateDepthOnlyTex(Resolution);
     CreatePostProcessTex(Resolution);
     CreateBloomTextures(Resolution);
+    CreateCameraPreviewTex(Resolution);
     CreateMRT(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");

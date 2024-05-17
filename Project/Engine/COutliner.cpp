@@ -78,7 +78,7 @@ void COutliner::render()
     }
 
     // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
-    if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+    if (ImGui::IsMouseDown(ImGuiPopupFlags_MouseButtonLeft) && ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 
     // =====================
@@ -988,13 +988,23 @@ void COutliner::DrawCamera(CGameObject* obj)
         // Near Far
         float Near = pCam->GetNear();
         float Far = pCam->GetFar();
-        float offset = 1.f;
+        float offset = 0.1f;
 
         if (ImGui::DragFloat(ImGui_LabelPrefix("Near").c_str(), &Near, 1.f, 1.f, Far - offset))
+        {
+            if (Near >= Far)
+                Near = Far - offset;
+
             pCam->SetNear(Near);
+        }
 
         if (ImGui::DragFloat(ImGui_LabelPrefix("Far").c_str(), &Far, 1.f, Near + offset, 10000.f))
+        {
+            if (Far <= Near)
+                Far = Near + offset;
+
             pCam->SetFar(Far);
+        }
 
         // Layer Check
         UINT LayerMask = pCam->GetLayerMask();
@@ -1761,6 +1771,16 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
+        // Use Frustum Check
+        bool bFrustumCheck = pMeshRender->IsFrustumCheck();
+        ImGui::Checkbox(ImGui_LabelPrefix("Use Frustum Check").c_str(), &bFrustumCheck);
+        pMeshRender->SetFrustumCheck(bFrustumCheck);
+
+        // Bounding Radius
+        float BoundingRadius = pMeshRender->GetBoundingRadius();
+        ImGui::DragFloat(ImGui_LabelPrefix("Bounding Radius").c_str(), &BoundingRadius, 1.f, 0.f, D3D11_FLOAT32_MAX);
+        pMeshRender->SetBoundingRadius(BoundingRadius);
+
         // Cast Shadow
         bool bCastShadow = pMeshRender->IsCastShadow();
         ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);

@@ -334,6 +334,9 @@
     <ClInclude Include="CCharacterController.h">
       <Filter>08. Component\Collider\CharacterController</Filter>
     </ClInclude>
+    <ClInclude Include="CFrustum.h">
+      <Filter>08. Component\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -641,6 +644,9 @@
     </ClCompile>
     <ClCompile Include="CCharacterController.cpp">
       <Filter>08. Component\Collider\CharacterController</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrustum.cpp">
+      <Filter>08. Component\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

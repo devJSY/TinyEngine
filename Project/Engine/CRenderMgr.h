@@ -69,8 +69,8 @@ private:
     CGameObject* m_BloomUpObj;
     CGameObject* m_ToneMappingObj;
 
-    // SSAO
-    Ptr<CTexture> m_SSAOTex;
+    // Camera Preview
+    Ptr<CTexture> m_CameraPreviewTex;
 
     // Render function pointer
     void (CRenderMgr::*RENDER_FUNC)(void);
@@ -83,11 +83,11 @@ public:
 
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_DbgShapeInfo.push_back(_info); }
 
-    void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
     bool IsShowDebugRender() const { return m_bShowDebugRender; }
+    void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
 
-    void SetEnableBloom(bool _bEnable) { m_bBloomEnable = _bEnable; }
     bool IsEnableBloom() const { return m_bBloomEnable; }
+    void SetEnableBloom(bool _bEnable) { m_bBloomEnable = _bEnable; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
@@ -123,6 +123,7 @@ public:
     Ptr<CTexture> GetPostProcessTex_HDRI() const { return m_PostProcessTex_HDRI; }
     Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
     Ptr<CTexture> GetBloomRTTex_LDRI() const { return m_BloomRTTex_LDRI; }
+    Ptr<CTexture> GetCameraPreviewTex() const { return m_CameraPreviewTex; }
 
     const vector<CLight2D*>& GetvecLight2D() const { return m_vecLight2D; }
     const vector<CLight3D*>& GetvecLight3D() const { return m_vecLight3D; }
@@ -133,6 +134,7 @@ private:
     void CreateDepthOnlyTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
     void CreateBloomTextures(Vec2 Resolution);
+    void CreateCameraPreviewTex(Vec2 Resolution);
     void CreateMRT(Vec2 Resolution);
 
 public:
@@ -147,6 +149,7 @@ private:
 
     void render_play();
     void render_editor();
+    void render_CameraPreview();
 
     void render_debug();
     void render_DynamicShadowDepth();

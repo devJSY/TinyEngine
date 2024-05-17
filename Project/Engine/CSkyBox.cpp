@@ -13,6 +13,8 @@ CSkyBox::CSkyBox()
 {
     SetType(m_Type);
     SetShape(m_Shape);
+
+    SetFrustumCheck(false);
     SetCastShadow(false);
 }
 
@@ -25,6 +27,8 @@ CSkyBox::~CSkyBox()
 
 void CSkyBox::finaltick()
 {
+    CRenderComponent::finaltick();
+
     if (GetOwner()->IsDead())
     {
         CTexture::Clear(17);

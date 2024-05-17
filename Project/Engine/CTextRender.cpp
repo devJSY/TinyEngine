@@ -16,11 +16,18 @@ CTextRender::CTextRender()
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl")); // Not Use
+
+    SetFrustumCheck(false);
     SetCastShadow(false);
 }
 
 CTextRender::~CTextRender()
 {
+}
+
+void CTextRender::finaltick()
+{
+    CRenderComponent::finaltick();
 }
 
 void CTextRender::render()

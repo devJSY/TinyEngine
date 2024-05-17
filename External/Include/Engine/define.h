@@ -264,6 +264,7 @@ enum class DEBUG_SHAPE
     SPHERE,
     CONE,
     CAPSULE,
+    FRUSTUM,
 };
 
 enum class LIGHT_TYPE

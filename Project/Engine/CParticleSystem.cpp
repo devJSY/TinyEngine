@@ -79,6 +79,9 @@ CParticleSystem::CParticleSystem()
     m_Module.VelocityAlignment = 0; // Off
     m_Module.AlphaBasedLife = 0;    // Off
     m_Module.AlphaMaxAge = 1.f;
+
+    SetFrustumCheck(false);
+    SetCastShadow(false);
 }
 
 CParticleSystem::CParticleSystem(const CParticleSystem& origin)
@@ -116,6 +119,8 @@ CParticleSystem::~CParticleSystem()
 
 void CParticleSystem::finaltick()
 {
+    CRenderComponent::finaltick();
+
     m_AccTime += DT;
 
     if ((1.f / m_Module.SpawnRate) < m_AccTime)

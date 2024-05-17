@@ -34,6 +34,16 @@ CLevelEditor::CLevelEditor()
     , m_ContentBrowser()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
     , m_bEnableGizmo(true)
+    , m_bShowEditor{}
+    , m_PlayButtonTex(nullptr)
+    , m_SimulateButtonTex(nullptr)
+    , m_StepButtonTex(nullptr)
+    , m_PauseButtonTex(nullptr)
+    , m_StopButtonTex(nullptr)
+    , m_TranslateButtonTex(nullptr)
+    , m_RotateButtonTex(nullptr)
+    , m_ScaleButtonTex(nullptr)
+    , m_ModalAssetType(ASSET_TYPE::END)
     , m_bShowWorldSettings(true)
     , m_bShowViewport(true)
     , m_bShowIDMap(false)
@@ -47,16 +57,6 @@ CLevelEditor::CLevelEditor()
     , m_bShowTagsAndLayers(false)
     , m_bShowMRT(false)
     , m_bShowSSAO(false)
-    , m_bShowEditor{}
-    , m_PlayButtonTex(nullptr)
-    , m_SimulateButtonTex(nullptr)
-    , m_StepButtonTex(nullptr)
-    , m_PauseButtonTex(nullptr)
-    , m_StopButtonTex(nullptr)
-    , m_TranslateButtonTex(nullptr)
-    , m_RotateButtonTex(nullptr)
-    , m_ScaleButtonTex(nullptr)
-    , m_ModalAssetType(ASSET_TYPE::END)
 {
 }
 
@@ -203,6 +203,8 @@ void CLevelEditor::render()
 
     if (m_bShowSSAO)
         render_SSAO();
+
+    render_MainCamPreview();
 
     //// ImGUI Demo
     // bool show_demo_window = true;
@@ -362,7 +364,7 @@ void CLevelEditor::render_WorldSettings()
     ImGui_SetWindowClass(GetEditorType());
     ImGui::Begin("World Settings", &m_bShowWorldSettings);
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
-    ImGui::Text("Delta Time : %.5f", CTimeMgr::GetInst()->GetDeltaTime());
+    ImGui::Text("Delta Time : %.5f", DT_ENGINE);
 
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
@@ -1113,6 +1115,23 @@ void CLevelEditor::render_SSAO()
     {
         ImGui::Image((void*)pTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
     }
+
+    ImGui::End();
+}
+
+void CLevelEditor::render_MainCamPreview()
+{
+    CGameObject* SelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr == SelectedObj || nullptr == SelectedObj->Camera() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+        return;
+
+    ImGui_SetWindowClass(GetEditorType());
+    string Name = ToString(SelectedObj->GetName());
+    Name += "##CLevelEditor";
+    ImGui::Begin(Name.c_str(), NULL, ImGuiWindowFlags_NoDocking);
+
+    Ptr<CTexture> pCameraPreviewTex = CRenderMgr::GetInst()->GetCameraPreviewTex();
+    ImGui::Image((void*)pCameraPreviewTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
 
     ImGui::End();
 }

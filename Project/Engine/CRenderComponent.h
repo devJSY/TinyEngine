@@ -12,6 +12,8 @@ private:
     Ptr<CMaterial> m_SharedMtrl;
     Ptr<CMaterial> m_DynamicMtrl;
 
+    bool m_bFrustumCheck;
+    float m_BoundingRadius;
     bool m_bCastShadow;
 
 public:
@@ -26,11 +28,17 @@ public:
 
     void RestoreMaterial();
 
+    bool IsFrustumCheck() const { return m_bFrustumCheck; }
+    void SetFrustumCheck(bool _bCheck) { m_bFrustumCheck = _bCheck; }
+
+    float GetBoundingRadius() const { return m_BoundingRadius; }
+    void SetBoundingRadius(float _fRadius) { m_BoundingRadius = _fRadius; }
+
     bool IsCastShadow() const { return m_bCastShadow; }
     void SetCastShadow(bool _bCastShadow) { m_bCastShadow = _bCastShadow; }
 
 public:
-    virtual void finaltick(){};
+    virtual void finaltick();
     virtual void UpdateData() = 0;
     virtual void render() = 0;
     virtual void render(Ptr<CMaterial> _mtrl) = 0;

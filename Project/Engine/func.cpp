@@ -474,7 +474,7 @@ void GamePlayStatic::DrawDebugPolygon(const Matrix& _WorldMat, Vec3 _Color, cons
             }
         }
 
-        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh = new CMesh(true);
         pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
         CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
     }
@@ -556,7 +556,83 @@ void GamePlayStatic::DrawDebugPolygon(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _
             }
         }
 
-        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh = new CMesh(true);
+        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
+        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
+    }
+
+    info.pMesh = pMesh;
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void GamePlayStatic::DrawDebugFrustum(const Vec3 WorldVertex[8], Vec3 _Color, bool _bDepthTest, float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::FRUSTUM;
+    info.matWorld = Matrix();
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+
+    wstring MeshName = L"FrustumMesh_";
+    for (UINT i = 0; i < 8; i++)
+    {
+        MeshName += std::to_wstring(WorldVertex[i].x);
+        MeshName += std::to_wstring(WorldVertex[i].y);
+        MeshName += std::to_wstring(WorldVertex[i].z);
+        MeshName += L"_";
+    }
+
+    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+
+    if (nullptr == pMesh)
+    {
+        vector<Vec3> positions;
+        vector<Vec3> colors;
+
+        tMeshData meshData;
+
+        for (UINT i = 0; i < 8; i++)
+        {
+            Vtx v;
+            v.vPos = WorldVertex[i];
+            v.vColor = _Color;
+
+            meshData.vertices.push_back(v);
+        }
+
+        // Near
+        meshData.indices.push_back(0);
+        meshData.indices.push_back(1);
+        meshData.indices.push_back(1);
+        meshData.indices.push_back(2);
+        meshData.indices.push_back(2);
+        meshData.indices.push_back(3);
+        meshData.indices.push_back(3);
+        meshData.indices.push_back(0);
+
+        // Far
+        meshData.indices.push_back(4);
+        meshData.indices.push_back(5);
+        meshData.indices.push_back(5);
+        meshData.indices.push_back(6);
+        meshData.indices.push_back(6);
+        meshData.indices.push_back(7);
+        meshData.indices.push_back(7);
+        meshData.indices.push_back(4);
+
+        // Edge
+        meshData.indices.push_back(0);
+        meshData.indices.push_back(4);
+        meshData.indices.push_back(1);
+        meshData.indices.push_back(5);
+        meshData.indices.push_back(2);
+        meshData.indices.push_back(6);
+        meshData.indices.push_back(3);
+        meshData.indices.push_back(7);
+
+        pMesh = new CMesh(true);
         pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
         CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
     }

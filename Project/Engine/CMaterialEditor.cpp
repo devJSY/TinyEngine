@@ -124,9 +124,9 @@ void CMaterialEditor::DrawViewport()
 
     // 카메라 정보 설정
     g_Transform.matView = m_ViewportCam->GetViewMat();
-    g_Transform.matViewInv = g_Transform.matView.Invert();
+    g_Transform.matViewInv = m_ViewportCam->GetViewInvMat();
     g_Transform.matProj = m_ViewportCam->GetProjMat();
-    g_Transform.matProjInv = g_Transform.matProj.Invert();
+    g_Transform.matProjInv = m_ViewportCam->GetProjInvMat();
 
     // 광원 정보 설정
     g_Global.g_Light3DCount = 1;

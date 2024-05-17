@@ -561,7 +561,7 @@ void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
 
     // Mouse Pos - NDC Near ¡æ World
     Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
-    Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
+    Matrix inverseProjView = pCam->GetProjInvMat() * pCam->GetViewInvMat();
     Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
 
     CGameObject* pSelectedObj = nullptr;
