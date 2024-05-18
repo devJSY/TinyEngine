@@ -99,7 +99,7 @@ void CPhysicsTestScript::tick()
 
         CharacterController()->Move(moveVec);
 
-        LOG(Log, "Is Grounded : %d", CharacterController()->IsGrounded());
+        // LOG(Log, "Is Grounded : %d", CharacterController()->IsGrounded());
     }
 }
 

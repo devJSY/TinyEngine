@@ -13,7 +13,7 @@ CTransform::CTransform()
     , m_arrWorldDir{}
     , m_matWorld()
     , m_Mobility(MOBILITY_TYPE::MOVABLE)
-    , m_bAbsolute()
+    , m_bAbsolute(true)
     , m_matTransformation()
 {
 }

@@ -456,7 +456,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
-        // 콜리이더 Enable / Disable
+        // 콜라이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pBoxCol->m_bEnabled);
 
         // 트리거
@@ -495,7 +495,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
 
-        // 콜리이더 Enable / Disable
+        // 콜라이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pSphereCol->m_bEnabled);
 
         // 트리거

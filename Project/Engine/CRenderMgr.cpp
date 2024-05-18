@@ -250,6 +250,11 @@ void CRenderMgr::render_CameraPreview()
     Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
     CONTEXT->CopyResource(m_CameraPreviewTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
     m_mainCam = originMainCam;
+
+    // Light DepthMap Clear
+    CTexture::Clear(23);
+    CTexture::Clear(24);
+    CTexture::Clear(25);
 }
 
 void CRenderMgr::render_debug()

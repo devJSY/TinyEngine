@@ -1731,7 +1731,12 @@ void COutliner::DrawCharacterController(CGameObject* obj)
 
         float StepOffset = pCharacterController->GetStepOffset();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Step Offset").c_str(), &StepOffset, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        {
+            if (StepOffset > pCharacterController->GetHeight())
+                StepOffset = pCharacterController->GetHeight();
+
             pCharacterController->SetStepOffset(StepOffset);
+        }
 
         float SkinWitdh = pCharacterController->GetSkinWidth();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.f, D3D11_FLOAT32_MAX))
