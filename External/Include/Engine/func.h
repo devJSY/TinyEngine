@@ -43,6 +43,7 @@ namespace GamePlayStatic
                           float _Duration = 0.f);
 
     void DrawDebugFrustum(const Vec3 WorldVertex[8], Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+    void DrawDebugMesh(const Matrix& _WorldMat, Ptr<CMesh> _pMesh, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void ScreenShot();
     void MouseColorPicking(Vec2 MousePos);

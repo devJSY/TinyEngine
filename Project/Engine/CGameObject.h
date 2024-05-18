@@ -25,6 +25,7 @@ class CRigidbody;
 class CBoxCollider;
 class CSphereCollider;
 class CCapsuleCollider;
+class CMeshCollider;
 class CCharacterController;
 class MeshRender;
 class CTileMap;
@@ -87,6 +88,7 @@ public:
     GET_COMPONENT(BoxCollider, BOXCOLLIDER);
     GET_COMPONENT(SphereCollider, SPHERECOLLIDER);
     GET_COMPONENT(CapsuleCollider, CAPSULECOLLIDER);
+    GET_COMPONENT(MeshCollider, MESHCOLLIDER);
     GET_COMPONENT(CharacterController, CHARACTERCONTROLLER);
     GET_COMPONENT(MeshRender, MESHRENDER);
     GET_COMPONENT(TileMap, TILEMAP);

@@ -20,6 +20,7 @@
 #include "CBoxCollider.h"
 #include "CSphereCollider.h"
 #include "CCapsuleCollider.h"
+#include "CMeshCollider.h"
 #include "CCharacterController.h"
 
 #include "CMeshRender.h"

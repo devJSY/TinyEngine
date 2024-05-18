@@ -152,6 +152,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CMaterial.h" />
     <ClInclude Include="CMaterialEditor.h" />
     <ClInclude Include="CMesh.h" />
+    <ClInclude Include="CMeshCollider.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CModleLoader.h" />
     <ClInclude Include="CMRT.h" />
@@ -267,6 +268,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CMaterial.cpp" />
     <ClCompile Include="CMaterialEditor.cpp" />
     <ClCompile Include="CMesh.cpp" />
+    <ClCompile Include="CMeshCollider.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CModleLoader.cpp" />
     <ClCompile Include="CMRT.cpp" />

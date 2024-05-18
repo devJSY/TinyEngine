@@ -642,6 +642,19 @@ void GamePlayStatic::DrawDebugFrustum(const Vec3 WorldVertex[8], Vec3 _Color, bo
     CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
+void GamePlayStatic::DrawDebugMesh(const Matrix& _WorldMat, Ptr<CMesh> _pMesh, Vec3 _Color, bool _bDepthTest, float _Duration)
+{
+    tDebugShapeInfo info = {};
+    info.eShape = DEBUG_SHAPE::FRUSTUM;
+    info.matWorld = _WorldMat;
+    info.vColor = _Color;
+    info.bDepthTest = _bDepthTest;
+    info.fDuration = _Duration;
+    info.pMesh = _pMesh;
+
+    CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
 void GamePlayStatic::ScreenShot()
 {
     tTask task = {};

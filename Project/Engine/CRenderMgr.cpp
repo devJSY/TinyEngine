@@ -287,7 +287,8 @@ void CRenderMgr::render_debug()
 
         // Topology ¼³Á¤
         D3D11_PRIMITIVE_TOPOLOGY PrevTopology = pMtrl->GetShader()->GetTopology();
-        if (!(DEBUG_SHAPE::RECT == (*iter).eShape || DEBUG_SHAPE::CIRCLE == (*iter).eShape || DEBUG_SHAPE::CONE == (*iter).eShape))
+        if (!(DEBUG_SHAPE::RECT == (*iter).eShape || DEBUG_SHAPE::CIRCLE == (*iter).eShape || DEBUG_SHAPE::CONE == (*iter).eShape ||
+              DEBUG_SHAPE::MESH == (*iter).eShape))
         {
             pMtrl->GetShader()->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
         }

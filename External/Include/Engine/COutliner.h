@@ -38,6 +38,7 @@ private:
     void DrawBoxCollider(CGameObject* obj);
     void DrawSphereCollider(CGameObject* obj);
     void DrawCapsuleCollider(CGameObject* obj);
+    void DrawMeshCollider(CGameObject* obj);
     void DrawCharacterController(CGameObject* obj);
     void DrawMeshRender(CGameObject* obj);
     void DrawTileMap(CGameObject* obj);

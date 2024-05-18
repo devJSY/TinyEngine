@@ -562,6 +562,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawBoxCollider(obj);
     DrawSphereCollider(obj);
     DrawCapsuleCollider(obj);
+    DrawMeshCollider(obj);
     DrawCharacterController(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
@@ -1706,6 +1707,77 @@ void COutliner::DrawCapsuleCollider(CGameObject* obj)
         {
             CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
             CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+        }
+
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawMeshCollider(CGameObject* obj)
+{
+    CMeshCollider* pMeshCollider = obj->MeshCollider();
+    if (nullptr == pMeshCollider)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CMeshCollider).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::MESHCOLLIDER]);
+
+    ComponentSettingsButton(pMeshCollider);
+
+    if (open)
+    {
+        // Convex
+        bool bConvex = pMeshCollider->IsConvex();
+        ImGui::Checkbox(ImGui_LabelPrefix("Convex").c_str(), &bConvex);
+        pMeshCollider->SetConvex(bConvex);
+
+        // Trigger
+        bool bTrigger = pMeshCollider->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pMeshCollider->SetTrigger(bTrigger);
+
+        // Physic Material
+        string MtrlName = string();
+        Ptr<CPhysicMaterial> pMtrl = pMeshCollider->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pMeshCollider->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        // Mesh
+        string MeshName = string();
+        Ptr<CMesh> pMesh = pMeshCollider->GetMesh();
+
+        if (nullptr != pMesh)
+            MeshName = ToString(pMesh->GetName());
+
+        ImGui_InputText("Mesh", MeshName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pMeshCollider->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
         }
 
         ImGui::TreePop();

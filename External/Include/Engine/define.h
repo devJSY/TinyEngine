@@ -97,6 +97,7 @@ enum class COMPONENT_TYPE
     BOXCOLLIDER,
     SPHERECOLLIDER,
     CAPSULECOLLIDER,
+    MESHCOLLIDER,
     CHARACTERCONTROLLER,
 
     // Render Component
@@ -265,6 +266,7 @@ enum class DEBUG_SHAPE
     CONE,
     CAPSULE,
     FRUSTUM,
+    MESH,
 };
 
 enum class LIGHT_TYPE
