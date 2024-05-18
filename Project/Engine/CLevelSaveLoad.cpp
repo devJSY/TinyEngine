@@ -372,6 +372,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             pComponent = new CDecal;
             break;
         case COMPONENT_TYPE::LANDSCAPE:
+            pComponent = new CLandScape;
             break;
         case COMPONENT_TYPE::TEXTRENDER:
             pComponent = new CTextRender;

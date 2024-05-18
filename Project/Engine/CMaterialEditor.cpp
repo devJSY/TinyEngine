@@ -45,6 +45,9 @@ CMaterialEditor::CMaterialEditor()
     m_ViewportObj->AddComponent(new CTransform);
     m_ViewportObj->AddComponent(new CMeshRender);
 
+    m_ViewportObj->MeshRender()->SetFrustumCheck(false);
+    m_ViewportObj->MeshRender()->SetCastShadow(false);
+
     m_ViewportObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
     m_ViewportObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 250.f));
     m_ViewportObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));

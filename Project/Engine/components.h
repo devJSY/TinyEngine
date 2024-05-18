@@ -28,5 +28,5 @@
 #include "CParticleSystem.h"
 #include "CSkybox.h"
 #include "CDecal.h"
-// #include "Landscape.h"
+#include "CLandscape.h"
 #include "CTextRender.h"

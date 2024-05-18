@@ -2559,6 +2559,19 @@ void COutliner::DrawDecal(CGameObject* obj)
 
 void COutliner::DrawLandscape(CGameObject* obj)
 {
+    CLandScape* pLandScape = obj->LandScape();
+    if (nullptr == pLandScape)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CLandScape).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LANDSCAPE]);
+
+    ComponentSettingsButton(pLandScape);
+
+    if (open)
+    {
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawTextRender(CGameObject* obj)

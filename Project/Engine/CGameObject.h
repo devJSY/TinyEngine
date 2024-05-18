@@ -32,6 +32,7 @@ class CTileMap;
 class CParticleSystem;
 class CSkyBox;
 class CDecal;
+class CLandScape;
 class CTextRender;
 class CScript;
 
@@ -95,6 +96,7 @@ public:
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
     GET_COMPONENT(SkyBox, SKYBOX);
     GET_COMPONENT(Decal, DECAL);
+    GET_COMPONENT(LandScape, LANDSCAPE);
     GET_COMPONENT(TextRender, TEXTRENDER);
 
     CGameObject* GetParent() const { return m_Parent; }

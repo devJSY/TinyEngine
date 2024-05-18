@@ -340,6 +340,9 @@
     <ClInclude Include="CMeshCollider.h">
       <Filter>08. Component\Collider\Mesh Collider</Filter>
     </ClInclude>
+    <ClInclude Include="CLandScape.h">
+      <Filter>08. Component\RenderComponent\LandScape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -653,6 +656,12 @@
     </ClCompile>
     <ClCompile Include="CMeshCollider.cpp">
       <Filter>08. Component\Collider\Mesh Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandScape.cpp">
+      <Filter>08. Component\RenderComponent\LandScape</Filter>
+    </ClCompile>
+    <ClCompile Include="CLandScape_init.cpp">
+      <Filter>08. Component\RenderComponent\LandScape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -971,6 +980,9 @@
     <Filter Include="08. Component\Collider\Sphere Collider">
       <UniqueIdentifier>{7471b024-91f6-4ccc-802b-b10e34018203}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\RenderComponent\LandScape">
+      <UniqueIdentifier>{8c0dbd1b-8e73-4728-bf88-38dff4378acc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1195,6 +1207,12 @@
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
     </FxCompile>
     <FxCompile Include="decal.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="tess.fx">
+      <Filter>ShaderCode\Render\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="landscape.fx">
       <Filter>ShaderCode\Render\fx</Filter>
     </FxCompile>
   </ItemGroup>

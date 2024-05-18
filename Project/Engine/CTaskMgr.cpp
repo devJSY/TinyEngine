@@ -672,6 +672,7 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
         pObj->AddComponent(new CDecal);
         break;
     case COMPONENT_TYPE::LANDSCAPE:
+        pObj->AddComponent(new CLandScape);
         break;
     case COMPONENT_TYPE::TEXTRENDER:
         pObj->AddComponent(new CTextRender);

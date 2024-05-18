@@ -603,6 +603,46 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"DebugShapeShader", pShader);
     }
 
+    // ===========
+    // Tess Shader
+    // ===========
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\tess.fx", "VS_Tess");
+        pShader->CreateHullShader(L"shader\\tess.fx", "HS_Tess");
+        pShader->CreateDomainShader(L"shader\\tess.fx", "DS_Tess");
+        pShader->CreatePixelShader(L"shader\\tess.fx", "PS_Tess");
+
+        pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+        pShader->AddScalarParam(VEC4_0, "Tessellation Factor");
+
+        pShader->SetName(L"TessShader");
+        AddAsset(L"TessShader", pShader);
+    }
+
+    // ================
+    // LandScape Shader
+    // ================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\landscape.fx", "VS_LandScape");
+        pShader->CreateHullShader(L"shader\\landscape.fx", "HS_LandScape");
+        pShader->CreateDomainShader(L"shader\\landscape.fx", "DS_LandScape");
+        pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
+
+        pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE); // pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+        pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+        pShader->AddScalarParam(VEC4_0, "Tessellation Factor");
+
+        pShader->SetName(L"LandScapeShader");
+        AddAsset(L"LandScapeShader", pShader);
+    }
+
     // =================================
     // Unreal PBR Shader
     // =================================
@@ -1344,6 +1384,26 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
     }
 
+    // TessMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TessShader"));
+        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f)); // TessFactor
+
+        pMtrl->SetName(L"TessMtrl");
+        AddAsset<CMaterial>(L"TessMtrl", pMtrl);
+    }
+
+    // LandScapeMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
+        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f)); // TessFactor
+
+        pMtrl->SetName(L"LandScapeMtrl");
+        AddAsset<CMaterial>(L"LandScapeMtrl", pMtrl);
+    }
+
     // Unreal PBR
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -1775,7 +1835,7 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
         meshData.vertices.push_back(v);
     }
     meshData.indices = {
-        0, 1, 2, 0, 2, 3, // 앞면
+        0, 2, 3, 2, 0, 1, // 앞면
     };
 
     return meshData;

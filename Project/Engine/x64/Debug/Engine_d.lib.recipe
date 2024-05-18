@@ -60,6 +60,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\IDMapVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\landscape.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\light_deferred.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -142,6 +145,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\std3d_deferred.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\tess.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\TessellatedQuadDS.cso</FullPath>
