@@ -622,7 +622,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             PxDefaultMemoryInputData input(buf.getData(), buf.getSize());
             PxConvexMesh* convexMesh = m_Physics->createConvexMesh(input);
 
-            PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxConvexMeshGeometry(convexMesh), *pPxMtrl);
+            PxShape* shape = PxRigidActorExt::createExclusiveShape(
+                *RigidActor, PxConvexMeshGeometry(convexMesh, PxMeshScale(WorldScale)), *pPxMtrl);
 
             // 콜라이더 Enable / Disable
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pMeshCol->m_bEnabled);
