@@ -20,6 +20,13 @@ private:
     void UpdateData();
 
 public:
+    UINT GetVtxCount() const { return m_VtxCount; }
+    UINT GetIdxCount() const { return m_IdxCount; }
+
+    void* GetVtxSysMem() const { return m_VtxSysMem; }
+    void* GetIdxSysMem() const { return m_IdxSysMem; }
+
+public:
     int Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount);
     void render();
     void render_draw();

@@ -1780,6 +1780,14 @@ void COutliner::DrawMeshCollider(CGameObject* obj)
             ImGui::EndDragDropTarget();
         }
 
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physic Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+        }
+
         ImGui::TreePop();
     }
 }
