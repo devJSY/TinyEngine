@@ -1,5 +1,3 @@
 CCameraMoveScript
-CConflictTest
-CPhysicsTestScript
-CProjectileScript
-CShooterScript
+CPlayerCameraScript
+CPlayerScript

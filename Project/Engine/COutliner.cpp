@@ -2639,19 +2639,24 @@ void COutliner::DrawScript(CGameObject* obj)
                 switch (ScriptParams[i].eParam)
                 {
                 case SCRIPT_PARAM::INT:
-                    ImGui::DragInt(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (int*)ScriptParams[i].pData);
+                    ImGui::DragInt(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (int*)ScriptParams[i].pData,
+                                   ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::FLOAT:
-                    ImGui::DragFloat(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                     ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::VEC2:
-                    ImGui::DragFloat2(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat2(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                      ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::VEC3:
-                    ImGui::DragFloat3(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat3(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                      ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::VEC4:
-                    ImGui::DragFloat4(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat4(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                      ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::OBJECT: {
                     CGameObject* pObj = (CGameObject*)ScriptParams[i].pData;

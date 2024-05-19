@@ -109,22 +109,18 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h" />
-    <ClInclude Include="CConflictTest.h" />
-    <ClInclude Include="CPhysicsTestScript.h" />
-    <ClInclude Include="CProjectileScript.h" />
+    <ClInclude Include="CPlayerCameraScript.h" />
+    <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CScriptMgr.h" />
-    <ClInclude Include="CShooterScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp" />
-    <ClCompile Include="CConflictTest.cpp" />
-    <ClCompile Include="CPhysicsTestScript.cpp" />
-    <ClCompile Include="CProjectileScript.cpp" />
+    <ClCompile Include="CPlayerCameraScript.cpp" />
+    <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
-    <ClCompile Include="CShooterScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

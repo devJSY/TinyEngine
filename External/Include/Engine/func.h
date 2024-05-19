@@ -79,8 +79,6 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
                                              const DXGI_FORMAT pixelFormat = DXGI_FORMAT_R8G8B8A8_UNORM, const int mipLevels = 1,
                                              const int arraySize = 1);
 
-Vec3 DecomposeRotMat(const Matrix& _matRot);
-
 // =====================================
 // Save / Load
 // =====================================

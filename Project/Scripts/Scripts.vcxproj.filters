@@ -16,17 +16,11 @@
     <ClInclude Include="define.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="CPhysicsTestScript.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
-    <ClInclude Include="CProjectileScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CShooterScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="CConflictTest.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="CPlayerCameraScript.h">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -42,17 +36,11 @@
     <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
-    <ClCompile Include="CPhysicsTestScript.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
-    <ClCompile Include="CProjectileScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CShooterScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CConflictTest.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="CPlayerCameraScript.cpp">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +58,9 @@
     </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{c2a22188-4ce0-47f7-9f8e-01d22372aefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\The Game of Sisyphus">
+      <UniqueIdentifier>{fba07866-d561-42f1-a64b-9193eba197ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

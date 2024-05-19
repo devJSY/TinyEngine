@@ -223,9 +223,6 @@ void CMaterialEditor::DrawDetails()
         // Scaler Parameter
         if (nullptr != pShader)
         {
-            static float fDragSpeed = 1.0f;
-            ImGui::SliderFloat(ImGui_LabelPrefix("Drag Speed").c_str(), &fDragSpeed, 0.f, 1.f);
-
             const vector<tScalarParam>& ScalerParams = pShader->GetScalarParam();
 
             for (int i = 0; i < ScalerParams.size(); i++)
@@ -237,7 +234,7 @@ void CMaterialEditor::DrawDetails()
                 case INT_2:
                 case INT_3: {
                     ImGui::DragInt(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (int*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                   fDragSpeed);
+                                   ScalerParams[i].DragSpeed);
                 }
                 break;
                 case FLOAT_0:
@@ -245,7 +242,7 @@ void CMaterialEditor::DrawDetails()
                 case FLOAT_2:
                 case FLOAT_3: {
                     ImGui::DragFloat(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                     fDragSpeed);
+                                     ScalerParams[i].DragSpeed);
                 }
                 break;
                 case VEC2_0:
@@ -253,7 +250,7 @@ void CMaterialEditor::DrawDetails()
                 case VEC2_2:
                 case VEC2_3: {
                     ImGui::DragFloat2(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                      fDragSpeed);
+                                      ScalerParams[i].DragSpeed);
                 }
                 break;
                 case VEC4_0:
@@ -261,7 +258,7 @@ void CMaterialEditor::DrawDetails()
                 case VEC4_2:
                 case VEC4_3: {
                     ImGui::DragFloat4(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                      fDragSpeed);
+                                      ScalerParams[i].DragSpeed);
                 }
                 break;
                 case MAT_0:
