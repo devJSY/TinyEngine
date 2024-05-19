@@ -41,6 +41,16 @@ void CPlayerCameraScript::tick()
 
     CamPos = Vec3::Lerp(CamPos - m_OffsetPos, PlayerPos, DT * m_Speed);
     Transform()->SetRelativePos(CamPos + m_OffsetPos);
+
+    // Drag
+    if (KEY_PRESSED(KEY::RBTN))
+    {
+        Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
+        Vec3 vRot = Transform()->GetRelativeRotation();
+        vRot.y += vDrag.x * XM_PI / 360.f;
+        vRot.x += vDrag.y * XM_PI / 360.f;
+        Transform()->SetRelativeRotation(vRot);
+    }
 }
 
 void CPlayerCameraScript::SaveToLevelFile(FILE* _File)

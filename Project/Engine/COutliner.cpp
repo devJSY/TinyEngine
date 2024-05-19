@@ -902,7 +902,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
         if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 100.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();

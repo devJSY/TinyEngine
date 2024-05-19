@@ -1187,8 +1187,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->AddTexParam(TEX_0, "DepthOnly Texture");
-        pShader->AddScalarParam(FLOAT_0, "Sample Radius", 0.1f);
-        pShader->AddScalarParam(FLOAT_1, "Pow Power", 0.1f);
+        pShader->AddScalarParam(FLOAT_0, "Sample Radius", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
 
         pShader->SetName(L"SSAOShader");
         AddAsset(L"SSAOShader", pShader);

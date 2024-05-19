@@ -10,6 +10,14 @@ private:
     float m_JumpPower;
     float m_RayCastDist;
 
+    float m_BulletFirePower;
+
+private:
+    int m_BulletCount;
+
+public:
+    int GetBulletCount() const { return m_BulletCount; }
+
 public:
     virtual void begin() override;
     virtual void tick() override;

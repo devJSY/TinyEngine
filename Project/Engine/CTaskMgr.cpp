@@ -723,6 +723,9 @@ void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
         return;
 
     CGameObject* CloneObj = OriginObject->Clone();
+    CloneObj->Transform()->SetRelativePos(OriginObject->Transform()->GetWorldPos());
+    CloneObj->Transform()->SetRelativeRotation(OriginObject->Transform()->GetWorldRotation());
+    CloneObj->Transform()->SetRelativeScale(OriginObject->Transform()->GetWorldScale());
 
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CPlayerScript.h"
 #include <Engine\\CPhysicsMgr.h>
+#include "CBulletScript.h"
 
 CPlayerScript::CPlayerScript()
     : CScript(PLAYERSCRIPT)
@@ -9,11 +10,14 @@ CPlayerScript::CPlayerScript()
     , m_ForcePower(10.f)
     , m_JumpPower(1.f)
     , m_RayCastDist(15.f)
+    , m_BulletFirePower(100.f)
+    , m_BulletCount(30)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ForcePower, "Force Power");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "Jump Power");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RayCastDist, "RayCast Distance");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_BulletFirePower, "Bullet Fire Power");
 }
 
 CPlayerScript::CPlayerScript(const CPlayerScript& origin)
@@ -23,6 +27,8 @@ CPlayerScript::CPlayerScript(const CPlayerScript& origin)
     , m_ForcePower(origin.m_ForcePower)
     , m_JumpPower(origin.m_JumpPower)
     , m_RayCastDist(origin.m_JumpPower)
+    , m_BulletFirePower(origin.m_BulletFirePower)
+    , m_BulletCount(origin.m_BulletCount)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ForcePower, "Force Power");
@@ -102,6 +108,27 @@ void CPlayerScript::tick()
     // 중력 적용
     m_MoveVelocity.y += GravityVelue * DT;
     CharacterController()->Move(m_MoveVelocity * DT);
+
+    // 총알 발사
+    if (KEY_TAP(KEY::ENTER) && m_BulletCount > 0)
+    {
+        Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BulletPref.pref", L"prefab\\BulletPref.pref");
+        if (nullptr != BulletPref)
+        {
+            CGameObject* BulletInst = BulletPref->Instantiate();
+            BulletInst->Transform()->SetRelativePos(Transform()->GetWorldPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f);
+            GamePlayStatic::SpawnGameObject(BulletInst, 0);
+
+            CBulletScript* bulletScript = BulletInst->GetScript<CBulletScript>();
+
+            if (nullptr != bulletScript)
+            {
+                bulletScript->SetInitVelocity(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_BulletFirePower);
+            }
+
+            --m_BulletCount;
+        }
+    }
 }
 
 void CPlayerScript::OnControllerColliderHit(ControllerColliderHit Hit)
@@ -121,6 +148,8 @@ void CPlayerScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_ForcePower, 1, sizeof(float), _File);
     fwrite(&m_JumpPower, 1, sizeof(float), _File);
     fwrite(&m_RayCastDist, 1, sizeof(float), _File);
+    fwrite(&m_BulletFirePower, 1, sizeof(float), _File);
+    fwrite(&m_BulletCount, 1, sizeof(int), _File);
 }
 
 void CPlayerScript::LoadFromLevelFile(FILE* _File)
@@ -129,4 +158,6 @@ void CPlayerScript::LoadFromLevelFile(FILE* _File)
     fread(&m_ForcePower, 1, sizeof(float), _File);
     fread(&m_JumpPower, 1, sizeof(float), _File);
     fread(&m_RayCastDist, 1, sizeof(float), _File);
+    fread(&m_BulletFirePower, 1, sizeof(float), _File);
+    fread(&m_BulletCount, 1, sizeof(int), _File);
 }

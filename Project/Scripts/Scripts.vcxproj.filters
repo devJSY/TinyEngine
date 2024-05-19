@@ -22,6 +22,15 @@
     <ClInclude Include="CPlayerCameraScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
+    <ClInclude Include="CGoalScript.h">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletScript.h">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClInclude>
+    <ClInclude Include="CBulletCountUIScript.h">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -40,6 +49,15 @@
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerCameraScript.cpp">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClCompile>
+    <ClCompile Include="CGoalScript.cpp">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletScript.cpp">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClCompile>
+    <ClCompile Include="CBulletCountUIScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
   </ItemGroup>

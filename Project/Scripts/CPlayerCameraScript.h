@@ -3,7 +3,7 @@
 
 class CPlayerCameraScript : public CScript
 {
-public:
+private:
     CGameObject* m_Player;
     Vec3 m_OffsetPos;
     float m_Speed;

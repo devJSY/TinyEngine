@@ -1,3 +1,6 @@
+CBulletCountUIScript
+CBulletScript
 CCameraMoveScript
+CGoalScript
 CPlayerCameraScript
 CPlayerScript

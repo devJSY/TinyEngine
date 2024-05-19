@@ -93,11 +93,11 @@ void CCamera::finaltick()
     // 뷰 행렬 계산
     // =====================
     // 카메라를 원점으로 이동시키는 이동 행렬
-    Vec3 vCamPos = Transform()->GetRelativePos();
+    Vec3 vCamPos = Transform()->GetWorldPos();
     Matrix matTrans = XMMatrixTranslation(-vCamPos.x, -vCamPos.y, -vCamPos.z);
 
     //// 카메라의 각 우, 상, 전 방 방향을 기저축이랑 일치시키도록 회전하는 회전행렬
-    Vec3 vCamRot = Transform()->GetRelativeRotation();
+    Vec3 vCamRot = Transform()->GetWorldRotation();
     Matrix matRotate = Matrix::CreateRotationX(vCamRot.x) * Matrix::CreateRotationY(vCamRot.y) * Matrix::CreateRotationZ(vCamRot.z);
     matRotate = matRotate.Transpose(); // 직교행렬의 역행렬은 전치행렬
 

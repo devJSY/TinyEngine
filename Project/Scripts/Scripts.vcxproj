@@ -108,7 +108,10 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CBulletCountUIScript.h" />
+    <ClInclude Include="CBulletScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CGoalScript.h" />
     <ClInclude Include="CPlayerCameraScript.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CScriptMgr.h" />
@@ -117,7 +120,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBulletCountUIScript.cpp" />
+    <ClCompile Include="CBulletScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CGoalScript.cpp" />
     <ClCompile Include="CPlayerCameraScript.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
