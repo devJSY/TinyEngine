@@ -9,6 +9,7 @@ CLandScape::CLandScape()
     , m_FaceZ(64)
 {
     Init();
+    SetFrustumCheck(false);
 }
 
 CLandScape::~CLandScape()
@@ -28,6 +29,11 @@ void CLandScape::render()
 
 void CLandScape::render(Ptr<CMaterial> _mtrl)
 {
+    Transform()->UpdateData();
+
+    _mtrl->UpdateData();
+
+    GetMesh()->render();
 }
 
 void CLandScape::UpdateData()
@@ -43,10 +49,10 @@ void CLandScape::UpdateData()
 
 void CLandScape::SaveToLevelFile(FILE* _File)
 {
-    CRenderComponent::SaveToLevelFile(_File);
+    SaveAssetRef(m_HeightMapTex, _File);
 }
 
 void CLandScape::LoadFromLevelFile(FILE* _File)
 {
-    CRenderComponent::LoadFromLevelFile(_File);
+    LoadAssetRef(m_HeightMapTex, _File);
 }

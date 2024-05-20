@@ -237,7 +237,10 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
                 continue;
             }
 
-            if (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
+            // _MobilityType 가 0 인경우 무조건 추가
+            // 그 외의 경우에는 RenderComponent의 옵션 확인
+            if (0 == _MobilityType ||
+                (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType))
             {
                 m_vecShadow.push_back(vecObjects[j]);
             }

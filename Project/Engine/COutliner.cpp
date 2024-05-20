@@ -2570,6 +2570,62 @@ void COutliner::DrawLandscape(CGameObject* obj)
 
     if (open)
     {
+        // Height Map Texture
+        {
+            ImGui::Text("Height Map Texture");
+            void* TextureID = nullptr;
+            Ptr<CTexture> pHeightMapTex = pLandScape->GetHeightMapTex();
+
+            if (nullptr != pHeightMapTex)
+                TextureID = pHeightMapTex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pHeightMapTex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pHeightMapTex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pLandScape->SetHeightMapTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pLandScape->SetHeightMapTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            // Delete Texture Popup
+            ImGui::OpenPopupOnItemClick("Height Map Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Height Map Texture##COutlinerDecal"))
+            {
+                if (ImGui::MenuItem("Delete Height Map Texture"))
+                {
+                    pLandScape->SetHeightMapTex(nullptr);
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
         ImGui::TreePop();
     }
 }

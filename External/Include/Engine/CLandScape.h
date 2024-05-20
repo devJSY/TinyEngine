@@ -10,7 +10,8 @@ private:
     Ptr<CTexture> m_HeightMapTex;
 
 public:
-    void SetHeightMap(Ptr<CTexture> _HeightMap) { m_HeightMapTex = _HeightMap; }
+    Ptr<CTexture> GetHeightMapTex() const { return m_HeightMapTex; }
+    void SetHeightMapTex(Ptr<CTexture> _HeightMap) { m_HeightMapTex = _HeightMap; }
 
 private:
     void Init();

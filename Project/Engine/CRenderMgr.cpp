@@ -136,7 +136,7 @@ void CRenderMgr::render()
     if (nullptr != m_mainCam)
     {
         // Depth Only Pass
-        m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
+        m_mainCam->SortShadowMapObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
 
