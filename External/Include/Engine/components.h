@@ -20,6 +20,7 @@
 #include "CBoxCollider.h"
 #include "CSphereCollider.h"
 #include "CCapsuleCollider.h"
+#include "CMeshCollider.h"
 #include "CCharacterController.h"
 
 #include "CMeshRender.h"
@@ -27,5 +28,5 @@
 #include "CParticleSystem.h"
 #include "CSkybox.h"
 #include "CDecal.h"
-// #include "Landscape.h"
+#include "CLandscape.h"
 #include "CTextRender.h"

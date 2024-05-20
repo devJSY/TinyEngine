@@ -32,7 +32,7 @@ namespace GamePlayStatic
 
     void DrawDebugSphere(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
-    
+
     void DrawDebugCone(const Matrix& _WorldMat, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, float _HalfHeight, AXIS_TYPE _Axis, Vec3 _Color, bool _bDepthTest,
@@ -41,6 +41,9 @@ namespace GamePlayStatic
     void DrawDebugPolygon(const Matrix& _WorldMat, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugPolygon(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _vWorldRot, Vec3 _Color, const vector<Vec2>& _Polygon, bool _bDepthTest,
                           float _Duration = 0.f);
+
+    void DrawDebugFrustum(const Vec3 WorldVertex[8], Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
+    void DrawDebugMesh(const Matrix& _WorldMat, Ptr<CMesh> _pMesh, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
 
     void ScreenShot();
     void MouseColorPicking(Vec2 MousePos);
@@ -75,8 +78,6 @@ void ReadImage(const std::string filename, std::vector<uint8_t>& image, int& wid
 ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, const std::vector<uint8_t>& image,
                                              const DXGI_FORMAT pixelFormat = DXGI_FORMAT_R8G8B8A8_UNORM, const int mipLevels = 1,
                                              const int arraySize = 1);
-
-Vec3 DecomposeRotMat(const Matrix& _matRot);
 
 // =====================================
 // Save / Load

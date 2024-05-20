@@ -256,7 +256,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddTexParam(TEX_0, "Texture");
         pShader->AddScalarParam(INT_0, "Glow Enable");
-        pShader->AddScalarParam(FLOAT_0, "Glow Threshold");
+        pShader->AddScalarParam(FLOAT_0, "Glow Threshold", 0.1f);
         pShader->AddScalarParam(VEC4_0, "Glow Color");
 
         pShader->AddScalarParam(INT_1, "Use Albedo");
@@ -435,7 +435,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddScalarParam(INT_0, "COUNT X");
         pShader->AddScalarParam(INT_1, "COUNT Y");
-        pShader->AddScalarParam(VEC2_0, "Slice UV");
+        pShader->AddScalarParam(VEC2_0, "Slice UV", 0.1f);
         pShader->AddTexParam(TEX_0, "Atlas Texture");
 
         pShader->SetName(L"TileMapShader");
@@ -486,7 +486,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddTexParam(TEX_0, "Texture");
         pShader->AddScalarParam(INT_0, "Glow Enable");
-        pShader->AddScalarParam(FLOAT_0, "Glow Threshold");
+        pShader->AddScalarParam(FLOAT_0, "Glow Threshold", 0.1f);
         pShader->AddScalarParam(VEC4_0, "Glow Color");
 
         pShader->SetName(L"ParticleRenderGlowShader");
@@ -559,7 +559,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(INT_0, "Cinematic Enable");
-        pShader->AddScalarParam(FLOAT_0, "Thickness");
+        pShader->AddScalarParam(FLOAT_0, "Thickness", 0.1f);
         pShader->AddScalarParam(VEC4_0, "Cinematic Color");
 
         pShader->SetName(L"CinematicFilterShader");
@@ -603,6 +603,46 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"DebugShapeShader", pShader);
     }
 
+    // ===========
+    // Tess Shader
+    // ===========
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\tess.fx", "VS_Tess");
+        pShader->CreateHullShader(L"shader\\tess.fx", "HS_Tess");
+        pShader->CreateDomainShader(L"shader\\tess.fx", "DS_Tess");
+        pShader->CreatePixelShader(L"shader\\tess.fx", "PS_Tess");
+
+        pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+        pShader->AddScalarParam(VEC4_0, "Tessellation Factor", 0.1f);
+
+        pShader->SetName(L"TessShader");
+        AddAsset(L"TessShader", pShader);
+    }
+
+    // ================
+    // LandScape Shader
+    // ================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\landscape.fx", "VS_LandScape");
+        pShader->CreateHullShader(L"shader\\landscape.fx", "HS_LandScape");
+        pShader->CreateDomainShader(L"shader\\landscape.fx", "DS_LandScape");
+        pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
+
+        pShader->SetRSType(RS_TYPE::WIRE_FRAME);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE); // pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+        pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
+
+        pShader->AddScalarParam(VEC4_0, "Tessellation Factor", 0.1f);
+
+        pShader->SetName(L"LandScapeShader");
+        AddAsset(L"LandScapeShader", pShader);
+    }
+
     // =================================
     // Unreal PBR Shader
     // =================================
@@ -618,7 +658,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddScalarParam(INT_0, "Invert NormalMapY");
-        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale");
+        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
         pShader->AddScalarParam(FLOAT_1, "Rim Power");
         pShader->AddScalarParam(VEC4_0, "Rim Color");
 
@@ -648,7 +688,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
         pShader->AddScalarParam(INT_0, "Invert NormalMapY");
-        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale");
+        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
         pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
@@ -788,7 +828,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
-        pShader->AddScalarParam(INT_0, "Thickness");
+        pShader->AddScalarParam(INT_0, "Thickness", 0.1f);
         pShader->AddScalarParam(VEC4_0, "OutLine Color");
 
         pShader->SetName(L"2D_OutLineShader");
@@ -871,7 +911,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddTexParam(TEX_0, "Texture");
-        pShader->AddScalarParam(FLOAT_0, "Half Width");
+        pShader->AddScalarParam(FLOAT_0, "Half Width", 0.1f);
 
         pShader->SetName(L"BillBoardPointShader");
         AddAsset(L"BillBoardPointShader", pShader);
@@ -910,7 +950,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddScalarParam(FLOAT_0, "Threshold");
+        pShader->AddScalarParam(FLOAT_0, "Threshold", 0.01f);
 
         pShader->AddTexParam(TEX_0, "Sampling Texture");
 
@@ -931,7 +971,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddScalarParam(FLOAT_0, "Strength");
+        pShader->AddScalarParam(FLOAT_0, "Strength", 0.01f);
 
         pShader->AddTexParam(TEX_0, "Render Texture");
         pShader->AddTexParam(TEX_1, "Bloom Texture");
@@ -1025,7 +1065,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddScalarParam(FLOAT_0, "Circle Size");
+        pShader->AddScalarParam(FLOAT_0, "Circle Size", 0.1f);
 
         pShader->SetName(L"ShockWaveShader");
         AddAsset(L"ShockWaveShader", pShader);
@@ -1044,9 +1084,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddScalarParam(FLOAT_0, "Exposure"); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
-        pShader->AddScalarParam(FLOAT_1, "Gamma");          // 어떤 영역의 색을 더 넓게 보여줄지 의미함
-        pShader->AddScalarParam(FLOAT_2, "Bloom Strength"); // Bloom Strength
+        pShader->AddScalarParam(FLOAT_0, "Exposure", 0.01f); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
+        pShader->AddScalarParam(FLOAT_1, "Gamma", 0.01f);          // 어떤 영역의 색을 더 넓게 보여줄지 의미함
+        pShader->AddScalarParam(FLOAT_2, "Bloom Strength", 0.01f); // Bloom Strength
 
         pShader->AddTexParam(TEX_0, "Render Texture");
         pShader->AddTexParam(TEX_1, "Bloom Texture");
@@ -1081,9 +1121,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddScalarParam(INT_0, "Render Mode");
 
-        pShader->AddScalarParam(FLOAT_0, "FogStrength");
-        pShader->AddScalarParam(FLOAT_1, "FogScale");
-        pShader->AddScalarParam(FLOAT_2, "DepthScale");
+        pShader->AddScalarParam(FLOAT_0, "FogStrength", 0.01f);
+        pShader->AddScalarParam(FLOAT_1, "FogScale", 0.01f);
+        pShader->AddScalarParam(FLOAT_2, "DepthScale", 0.01f);
 
         pShader->AddScalarParam(VEC4_0, "Fog Color");
 
@@ -1147,8 +1187,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->AddTexParam(TEX_0, "DepthOnly Texture");
-        pShader->AddScalarParam(FLOAT_0, "Sample Radius");
-        pShader->AddScalarParam(FLOAT_1, "Pow Power");
+        pShader->AddScalarParam(FLOAT_0, "Sample Radius", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
 
         pShader->SetName(L"SSAOShader");
         AddAsset(L"SSAOShader", pShader);
@@ -1344,6 +1384,26 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"DebugShapeMtrl", pMtrl);
     }
 
+    // TessMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"TessShader"));
+        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f)); // TessFactor
+
+        pMtrl->SetName(L"TessMtrl");
+        AddAsset<CMaterial>(L"TessMtrl", pMtrl);
+    }
+
+    // LandScapeMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
+        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f)); // TessFactor
+
+        pMtrl->SetName(L"LandScapeMtrl");
+        AddAsset<CMaterial>(L"LandScapeMtrl", pMtrl);
+    }
+
     // Unreal PBR
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -1485,6 +1545,16 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_0, 0.5f); // HalfWidth
         pMtrl->SetName(L"SpotLightMtrl");
         AddAsset<CMaterial>(L"SpotLightMtrl", pMtrl);
+    }
+
+    // Camera Icon
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"BillBoardPointShader"));
+        pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Icons\\CameraIcon.png", L"Icons\\CameraIcon.png"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // HalfWidth
+        pMtrl->SetName(L"CameraIconMtrl");
+        AddAsset<CMaterial>(L"CameraIconMtrl", pMtrl);
     }
 
     // Sampling
@@ -1765,7 +1835,7 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
         meshData.vertices.push_back(v);
     }
     meshData.indices = {
-        0, 1, 2, 0, 2, 3, // 앞면
+        0, 2, 3, 2, 0, 1, // 앞면
     };
 
     return meshData;

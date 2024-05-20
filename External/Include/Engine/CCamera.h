@@ -1,5 +1,6 @@
 #pragma once
 #include "CComponent.h"
+#include "CFrustum.h"
 
 enum class PROJ_TYPE
 {
@@ -10,6 +11,8 @@ enum class PROJ_TYPE
 class CCamera : public CComponent
 {
 private:
+    CFrustum m_Frustum;
+
     PROJ_TYPE m_ProjType; // 투영 방식
 
     // 원근투영(Perspective)
@@ -32,7 +35,9 @@ private:
 
     // 변환 행렬
     Matrix m_matView;
+    Matrix m_matViewInv;
     Matrix m_matProj;
+    Matrix m_matProjInv;
 
     // 물체 분류
     vector<CGameObject*> m_vecDeferred;
@@ -72,7 +77,9 @@ public:
     void SetHDRI(bool _Enable) { m_bHDRI = _Enable; }
 
     const Matrix& GetViewMat() const { return m_matView; }
+    const Matrix& GetViewInvMat() const { return m_matViewInv; }
     const Matrix& GetProjMat() const { return m_matProj; }
+    const Matrix& GetProjInvMat() const { return m_matProjInv; }
 
     void Resize(Vec2 Resolution);
 
@@ -83,12 +90,16 @@ public:
     void SortObject();
     void SortShadowMapObject(UINT _MobilityType);
 
-    void render();
+public:
+    void render_Deferred();
+    void render_Forward();
+    void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
+
+private:
     void render_Decal();
     void render_SSAO();
     void render_Light();
     void render_Merge();
-    void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
     void render_Clear();
 
 private:
@@ -106,5 +117,6 @@ public:
 
 public:
     CCamera();
+    CCamera(const CCamera& origin);
     virtual ~CCamera();
 };

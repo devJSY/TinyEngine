@@ -363,9 +363,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     CBoxCollider* pBoxCol = _GameObject->BoxCollider();
     CSphereCollider* pSphereCol = _GameObject->SphereCollider();
     CCapsuleCollider* pCapsuleCol = _GameObject->CapsuleCollider();
+    CMeshCollider* pMeshCol = _GameObject->MeshCollider();
 
     // Physics 관련 컴포넌트가 존재하지않는 경우
-    if (nullptr == pRigidbody && nullptr == pBoxCol && nullptr == pSphereCol && nullptr == pCapsuleCol)
+    if (nullptr == pRigidbody && nullptr == pBoxCol && nullptr == pSphereCol && nullptr == pCapsuleCol && nullptr == pMeshCol)
         return;
 
     Vec3 WorldPos = pTr->GetWorldPos();
@@ -456,7 +457,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
-        // 콜리이더 Enable / Disable
+        // 콜라이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pBoxCol->m_bEnabled);
 
         // 트리거
@@ -495,7 +496,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // Shape 생성
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
 
-        // 콜리이더 Enable / Disable
+        // 콜라이더 Enable / Disable
         shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pSphereCol->m_bEnabled);
 
         // 트리거
@@ -589,6 +590,61 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         pCapsuleCol->m_RuntimeShape = shape;
     }
 
+    // Mesh Collider
+    if (nullptr != pMeshCol)
+    {
+        PxMaterial* pPxMtrl = DefaultPxMtrl;
+        if (nullptr != pMeshCol->m_Mtrl)
+        {
+            pPxMtrl = m_Physics->createMaterial(pMeshCol->m_Mtrl->GetStaticFriction(), pMeshCol->m_Mtrl->GetDynamicFriction(),
+                                                pMeshCol->m_Mtrl->GetBounciness());
+        }
+
+        Ptr<CMesh> pMesh = pMeshCol->GetMesh();
+
+        PxConvexMeshDesc convexDesc;
+        convexDesc.points.count = pMesh->GetVtxCount();
+        convexDesc.points.stride = sizeof(Vtx);
+        convexDesc.points.data = pMesh->GetVtxSysMem();
+
+        if (pMeshCol->m_bConvex)
+            convexDesc.flags |= PxConvexFlag::eCOMPUTE_CONVEX;
+
+        // PxConvexMesh 생성
+        PxTolerancesScale scale;
+        PxCookingParams params(scale);
+        PxDefaultMemoryOutputStream buf;
+        PxConvexMeshCookingResult::Enum result;
+
+        // 유효한 메쉬인 경우에만 생성
+        if (PxCookConvexMesh(params, convexDesc, buf, &result))
+        {
+            PxDefaultMemoryInputData input(buf.getData(), buf.getSize());
+            PxConvexMesh* convexMesh = m_Physics->createConvexMesh(input);
+
+            PxShape* shape = PxRigidActorExt::createExclusiveShape(
+                *RigidActor, PxConvexMeshGeometry(convexMesh, PxMeshScale(WorldScale)), *pPxMtrl);
+
+            // 콜라이더 Enable / Disable
+            shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pMeshCol->m_bEnabled);
+
+            // 트리거
+            if (pMeshCol->m_bTrigger)
+            {
+                shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            }
+
+            // 필터링 데이터 적용
+            shape->setSimulationFilterData(filterData);
+            shape->setQueryFilterData(filterData);
+
+            // UserData 등록
+            shape->userData = (void*)pMeshCol;
+            pMeshCol->m_RuntimeShape = shape;
+        }
+    }
+
     // 설정한 질량 업데이트
     if (nullptr != pRigidbody)
     {
@@ -675,18 +731,21 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
         CBoxCollider* pBoxCol = m_vecPhysicsObj[i]->BoxCollider();
         CSphereCollider* pSphereCol = m_vecPhysicsObj[i]->SphereCollider();
         CCapsuleCollider* pCapsuleCol = m_vecPhysicsObj[i]->CapsuleCollider();
+        CMeshCollider* pMeshCol = m_vecPhysicsObj[i]->MeshCollider();
 
         PxRigidActor* RigidActor = nullptr;
 
         // 리지드바디, 콜라이더가 보유한 Actor 탐색
         if (nullptr != pRigidbody)
             RigidActor = (PxRigidActor*)pRigidbody->m_RuntimeBody;
-        else if (nullptr != pBoxCol)
+        else if (nullptr != pBoxCol && nullptr != pBoxCol->m_RuntimeShape)
             RigidActor = ((PxShape*)pBoxCol->m_RuntimeShape)->getActor();
-        else if (nullptr != pSphereCol)
+        else if (nullptr != pSphereCol && nullptr != pSphereCol->m_RuntimeShape)
             RigidActor = ((PxShape*)pSphereCol->m_RuntimeShape)->getActor();
-        else if (nullptr != pCapsuleCol)
+        else if (nullptr != pCapsuleCol && nullptr != pCapsuleCol->m_RuntimeShape)
             RigidActor = ((PxShape*)pCapsuleCol->m_RuntimeShape)->getActor();
+        else if (nullptr != pMeshCol && nullptr != pMeshCol->m_RuntimeShape)
+            RigidActor = ((PxShape*)pMeshCol->m_RuntimeShape)->getActor();
 
         // PhysX Scene에서 제거
         if (nullptr != RigidActor)
@@ -705,6 +764,8 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
             pSphereCol->m_RuntimeShape = nullptr;
         if (nullptr != pCapsuleCol)
             pCapsuleCol->m_RuntimeShape = nullptr;
+        if (nullptr != pMeshCol)
+            pMeshCol->m_RuntimeShape = nullptr;
 
         break;
     }

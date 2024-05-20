@@ -3,8 +3,10 @@
 
 #include "CFontMgr.h"
 #include "CRenderMgr.h"
+#include "CLevelMgr.h"
 
 #include "CDevice.h"
+#include "CLevel.h"
 #include "components.h"
 
 CTextRender::CTextRender()
@@ -16,6 +18,8 @@ CTextRender::CTextRender()
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl")); // Not Use
+
+    SetFrustumCheck(false);
     SetCastShadow(false);
 }
 
@@ -23,9 +27,19 @@ CTextRender::~CTextRender()
 {
 }
 
+void CTextRender::finaltick()
+{
+    CRenderComponent::finaltick();
+}
+
 void CTextRender::render()
 {
-    CCamera* pCam = CRenderMgr::GetInst()->GetCamera(m_CameraIdx);
+    CCamera* pCam = nullptr;
+
+    if (CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+        pCam = CRenderMgr::GetInst()->GetCamera(m_CameraIdx);
+    else
+        pCam = CRenderMgr::GetInst()->GetEditorCamera();
 
     if (nullptr == pCam)
         return;
@@ -44,7 +58,7 @@ void CTextRender::render()
     NdcPos.z = projPos.z / projPos.w;
 
     // 화면 밖인경우
-    if (NdcPos.x < -1.0 || NdcPos.y < -1.0 || NdcPos.x > 1.0 || NdcPos.y > 1.0)
+    if (NdcPos.x < -1.0 || NdcPos.y < -1.0 || NdcPos.x > 1.0 || NdcPos.y > 1.0 || NdcPos.z > 1.0 || NdcPos.z < 0.f)
         return;
 
     // Ndc Coordinate → Screen Coordinate

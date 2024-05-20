@@ -78,7 +78,7 @@ void COutliner::render()
     }
 
     // Outliner 내에서 트리 이외의 부분 마우스 왼쪽 버튼 클릭시 선택오브젝트 초기화
-    if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+    if (ImGui::IsMouseDown(ImGuiPopupFlags_MouseButtonLeft) && ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
         CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 
     // =====================
@@ -562,6 +562,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawBoxCollider(obj);
     DrawSphereCollider(obj);
     DrawCapsuleCollider(obj);
+    DrawMeshCollider(obj);
     DrawCharacterController(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
@@ -901,7 +902,7 @@ void COutliner::DrawLight3D(CGameObject* obj)
         if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 100.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
@@ -988,13 +989,23 @@ void COutliner::DrawCamera(CGameObject* obj)
         // Near Far
         float Near = pCam->GetNear();
         float Far = pCam->GetFar();
-        float offset = 1.f;
+        float offset = 0.1f;
 
         if (ImGui::DragFloat(ImGui_LabelPrefix("Near").c_str(), &Near, 1.f, 1.f, Far - offset))
+        {
+            if (Near >= Far)
+                Near = Far - offset;
+
             pCam->SetNear(Near);
+        }
 
         if (ImGui::DragFloat(ImGui_LabelPrefix("Far").c_str(), &Far, 1.f, Near + offset, 10000.f))
+        {
+            if (Far <= Near)
+                Far = Near + offset;
+
             pCam->SetFar(Far);
+        }
 
         // Layer Check
         UINT LayerMask = pCam->GetLayerMask();
@@ -1702,6 +1713,85 @@ void COutliner::DrawCapsuleCollider(CGameObject* obj)
     }
 }
 
+void COutliner::DrawMeshCollider(CGameObject* obj)
+{
+    CMeshCollider* pMeshCollider = obj->MeshCollider();
+    if (nullptr == pMeshCollider)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CMeshCollider).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::MESHCOLLIDER]);
+
+    ComponentSettingsButton(pMeshCollider);
+
+    if (open)
+    {
+        // Convex
+        bool bConvex = pMeshCollider->IsConvex();
+        ImGui::Checkbox(ImGui_LabelPrefix("Convex").c_str(), &bConvex);
+        pMeshCollider->SetConvex(bConvex);
+
+        // Trigger
+        bool bTrigger = pMeshCollider->IsTrigger();
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Is Trigger").c_str(), &bTrigger))
+            pMeshCollider->SetTrigger(bTrigger);
+
+        // Physic Material
+        string MtrlName = string();
+        Ptr<CPhysicMaterial> pMtrl = pMeshCollider->GetMaterial();
+
+        if (nullptr != pMtrl)
+            MtrlName = ToString(pMtrl->GetName());
+
+        ImGui_InputText("Material", MtrlName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pMeshCollider->SetMaterial(CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        // Mesh
+        string MeshName = string();
+        Ptr<CMesh> pMesh = pMeshCollider->GetMesh();
+
+        if (nullptr != pMesh)
+            MeshName = ToString(pMesh->GetName());
+
+        ImGui_InputText("Mesh", MeshName);
+
+        // Drag & Drop
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+            {
+                string name = (char*)payload->Data;
+                name.resize(payload->DataSize);
+                pMeshCollider->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
+            }
+
+            ImGui::EndDragDropTarget();
+        }
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Physic Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::PHYSIC_MATERIAL, true);
+            CEditorMgr::GetInst()->GetPhysicMaterialEditor()->SetMaterial(pMtrl);
+        }
+
+        ImGui::TreePop();
+    }
+}
+
 void COutliner::DrawCharacterController(CGameObject* obj)
 {
     CCharacterController* pCharacterController = obj->CharacterController();
@@ -1721,7 +1811,12 @@ void COutliner::DrawCharacterController(CGameObject* obj)
 
         float StepOffset = pCharacterController->GetStepOffset();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Step Offset").c_str(), &StepOffset, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        {
+            if (StepOffset > pCharacterController->GetHeight())
+                StepOffset = pCharacterController->GetHeight();
+
             pCharacterController->SetStepOffset(StepOffset);
+        }
 
         float SkinWitdh = pCharacterController->GetSkinWidth();
         if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.f, D3D11_FLOAT32_MAX))
@@ -1761,6 +1856,16 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
+        // Use Frustum Check
+        bool bFrustumCheck = pMeshRender->IsFrustumCheck();
+        ImGui::Checkbox(ImGui_LabelPrefix("Use Frustum Check").c_str(), &bFrustumCheck);
+        pMeshRender->SetFrustumCheck(bFrustumCheck);
+
+        // Bounding Radius
+        float BoundingRadius = pMeshRender->GetBoundingRadius();
+        ImGui::DragFloat(ImGui_LabelPrefix("Bounding Radius").c_str(), &BoundingRadius, 1.f, 0.f, D3D11_FLOAT32_MAX);
+        pMeshRender->SetBoundingRadius(BoundingRadius);
+
         // Cast Shadow
         bool bCastShadow = pMeshRender->IsCastShadow();
         ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);
@@ -2454,6 +2559,19 @@ void COutliner::DrawDecal(CGameObject* obj)
 
 void COutliner::DrawLandscape(CGameObject* obj)
 {
+    CLandScape* pLandScape = obj->LandScape();
+    if (nullptr == pLandScape)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CLandScape).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LANDSCAPE]);
+
+    ComponentSettingsButton(pLandScape);
+
+    if (open)
+    {
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawTextRender(CGameObject* obj)
@@ -2521,19 +2639,24 @@ void COutliner::DrawScript(CGameObject* obj)
                 switch (ScriptParams[i].eParam)
                 {
                 case SCRIPT_PARAM::INT:
-                    ImGui::DragInt(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (int*)ScriptParams[i].pData);
+                    ImGui::DragInt(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (int*)ScriptParams[i].pData,
+                                   ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::FLOAT:
-                    ImGui::DragFloat(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                     ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::VEC2:
-                    ImGui::DragFloat2(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat2(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                      ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::VEC3:
-                    ImGui::DragFloat3(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat3(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                      ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::VEC4:
-                    ImGui::DragFloat4(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData);
+                    ImGui::DragFloat4(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (float*)ScriptParams[i].pData,
+                                      ScriptParams[i].DragSpeed);
                     break;
                 case SCRIPT_PARAM::OBJECT: {
                     CGameObject* pObj = (CGameObject*)ScriptParams[i].pData;

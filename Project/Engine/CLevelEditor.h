@@ -18,6 +18,21 @@ private:
     ImGuizmo::OPERATION m_GizmoType;
     bool m_bEnableGizmo;
 
+    bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
+
+    Ptr<CTexture> m_PlayButtonTex;
+    Ptr<CTexture> m_SimulateButtonTex;
+    Ptr<CTexture> m_StepButtonTex;
+    Ptr<CTexture> m_PauseButtonTex;
+    Ptr<CTexture> m_StopButtonTex;
+    Ptr<CTexture> m_TranslateButtonTex;
+    Ptr<CTexture> m_RotateButtonTex;
+    Ptr<CTexture> m_ScaleButtonTex;
+
+    ASSET_TYPE m_ModalAssetType;
+
+private:
+    // Windows Menu 
     bool m_bShowWorldSettings;
     bool m_bShowViewport;
     bool m_bShowIDMap;
@@ -31,19 +46,6 @@ private:
     bool m_bShowTagsAndLayers;
     bool m_bShowMRT;
     bool m_bShowSSAO;
-
-    bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
-
-    Ptr<CTexture> m_PlayButtonTex;
-    Ptr<CTexture> m_SimulateButtonTex;
-    Ptr<CTexture> m_StepButtonTex;
-    Ptr<CTexture> m_PauseButtonTex;
-    Ptr<CTexture> m_StopButtonTex;
-    Ptr<CTexture> m_TranslateButtonTex;
-    Ptr<CTexture> m_RotateButtonTex;
-    Ptr<CTexture> m_ScaleButtonTex;
-
-    ASSET_TYPE m_ModalAssetType;
 
 public:
     virtual void init() override;
@@ -64,6 +66,7 @@ private:
     void render_TagsAndLayers();
     void render_MRT();
     void render_SSAO();
+    void render_MainCamPreview();
 
 private:
     void CreateAssetModal();

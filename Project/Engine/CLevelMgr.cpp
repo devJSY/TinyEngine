@@ -64,8 +64,15 @@ CLevel* CLevelMgr::CreateNewLevel()
     CGameObject* pCamObj = new CGameObject;
     pCamObj->SetName(L"Main Camera");
     pCamObj->AddComponent(new CTransform);
+    pCamObj->AddComponent(new CMeshRender);
     pCamObj->AddComponent(new CCamera);
 
+    pCamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"));
+    pCamObj->MeshRender()->SetFrustumCheck(false);
+    pCamObj->MeshRender()->SetCastShadow(false);
+
+    pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
     pCamObj->Camera()->SetCameraPriority(0);
     pCamObj->Camera()->LayerMaskAll();
     pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
@@ -74,15 +81,21 @@ CLevel* CLevelMgr::CreateNewLevel()
     NewLevel->AddObject(pCamObj, 0);
 
     // UI ¸¸ ·»´õ¸µ
-    pCamObj = new CGameObject;
-    pCamObj->SetName(L"UI Camera");
-    pCamObj->AddComponent(new CTransform);
-    pCamObj->AddComponent(new CCamera);
+    CGameObject* pUICamObj = new CGameObject;
+    pUICamObj->SetName(L"UI Camera");
+    pUICamObj->AddComponent(new CTransform);
+    pUICamObj->AddComponent(new CMeshRender);
+    pUICamObj->AddComponent(new CCamera);
 
-    pCamObj->Camera()->SetCameraPriority(1);
-    pCamObj->Camera()->LayerMask(NewLevel, L"UI", true);
+    pUICamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pUICamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"));
+    pUICamObj->MeshRender()->SetFrustumCheck(false);
+    pUICamObj->MeshRender()->SetCastShadow(false);
 
-    NewLevel->AddObject(pCamObj, 0);
+    pUICamObj->Camera()->SetCameraPriority(1);
+    pUICamObj->Camera()->LayerMask(NewLevel, L"UI", true);
+
+    NewLevel->AddObject(pUICamObj, 0);
 
     return NewLevel;
 }

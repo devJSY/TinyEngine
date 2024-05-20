@@ -1,5 +1,6 @@
+CBulletCountUIScript
+CBulletScript
 CCameraMoveScript
-CConflictTest
-CPhysicsTestScript
-CProjectileScript
-CShooterScript
+CGoalScript
+CPlayerCameraScript
+CPlayerScript

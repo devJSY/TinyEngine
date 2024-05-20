@@ -1,18 +1,18 @@
 #pragma once
 #include <Engine\\CScript.h>
 
-class CShooterScript : public CScript
+class CGoalScript : public CScript
 {
-private:
-    virtual void tick() override;
+public:
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override{};
     virtual void LoadFromLevelFile(FILE* _File) override{};
 
-    CLONE(CShooterScript);
+    CLONE(CGoalScript);
 
 public:
-    CShooterScript();
-    virtual ~CShooterScript();
+    CGoalScript();
+    virtual ~CGoalScript();
 };

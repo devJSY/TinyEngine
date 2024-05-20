@@ -561,7 +561,7 @@ void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
 
     // Mouse Pos - NDC Near ¡æ World
     Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
-    Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
+    Matrix inverseProjView = pCam->GetProjInvMat() * pCam->GetViewInvMat();
     Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
 
     CGameObject* pSelectedObj = nullptr;
@@ -645,6 +645,14 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::CAPSULECOLLIDER:
         pObj->AddComponent(new CCapsuleCollider);
         break;
+    case COMPONENT_TYPE::MESHCOLLIDER: {
+        pObj->AddComponent(new CMeshCollider);
+        if (nullptr != pObj->MeshRender())
+        {
+            pObj->MeshCollider()->SetMesh(pObj->MeshRender()->GetMesh());
+        }
+    }
+    break;
     case COMPONENT_TYPE::CHARACTERCONTROLLER:
         pObj->AddComponent(new CCharacterController);
         break;
@@ -664,6 +672,7 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
         pObj->AddComponent(new CDecal);
         break;
     case COMPONENT_TYPE::LANDSCAPE:
+        pObj->AddComponent(new CLandScape);
         break;
     case COMPONENT_TYPE::TEXTRENDER:
         pObj->AddComponent(new CTextRender);
@@ -714,6 +723,9 @@ void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
         return;
 
     CGameObject* CloneObj = OriginObject->Clone();
+    CloneObj->Transform()->SetRelativePos(OriginObject->Transform()->GetWorldPos());
+    CloneObj->Transform()->SetRelativeRotation(OriginObject->Transform()->GetWorldRotation());
+    CloneObj->Transform()->SetRelativeScale(OriginObject->Transform()->GetWorldScale());
 
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);

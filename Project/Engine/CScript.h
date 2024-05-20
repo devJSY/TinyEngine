@@ -23,6 +23,7 @@ struct tScriptParam
     SCRIPT_PARAM eParam;
     void* pData;
     string strDesc;
+    float DragSpeed;
 };
 
 class CScript : public CComponent
@@ -36,7 +37,10 @@ public:
     const vector<tScriptParam>& GetScritpParam() { return m_vecParam; }
 
 protected:
-    void AddScriptParam(SCRIPT_PARAM eParam, void* _pData, const string& _Desc) { m_vecParam.push_back(tScriptParam{eParam, _pData, _Desc}); }
+    void AddScriptParam(SCRIPT_PARAM eParam, void* _pData, const string& _Desc, float DragSpeed = 1.f)
+    {
+        m_vecParam.push_back(tScriptParam{eParam, _pData, _Desc, DragSpeed});
+    }
 
 public:
     virtual void finaltick() final {}

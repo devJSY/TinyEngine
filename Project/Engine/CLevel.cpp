@@ -205,6 +205,10 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             {
                 CTimeMgr::GetInst()->LockDeltaTime(false);
             }
+            else if (LEVEL_STATE::SIMULATE == _NextState)
+            {
+                CTimeMgr::GetInst()->LockDeltaTime(false);
+            }
             else if (LEVEL_STATE::STOP == _NextState)
             {
                 CTimeMgr::GetInst()->LockDeltaTime(true);

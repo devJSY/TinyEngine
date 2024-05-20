@@ -39,12 +39,14 @@ CMaterialEditor::CMaterialEditor()
     m_ViewportCam->SetFOV(XM_PI / 2.f);
     m_ViewportCam->SetFar(10000.f);
     m_ViewportCam->SetHDRI(true);
-    m_ViewportCam->SetCameraPriority(0);
 
     // Object
     m_ViewportObj = new CGameObjectEx;
     m_ViewportObj->AddComponent(new CTransform);
     m_ViewportObj->AddComponent(new CMeshRender);
+
+    m_ViewportObj->MeshRender()->SetFrustumCheck(false);
+    m_ViewportObj->MeshRender()->SetCastShadow(false);
 
     m_ViewportObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
     m_ViewportObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 250.f));
@@ -124,9 +126,9 @@ void CMaterialEditor::DrawViewport()
 
     // 카메라 정보 설정
     g_Transform.matView = m_ViewportCam->GetViewMat();
-    g_Transform.matViewInv = g_Transform.matView.Invert();
+    g_Transform.matViewInv = m_ViewportCam->GetViewInvMat();
     g_Transform.matProj = m_ViewportCam->GetProjMat();
-    g_Transform.matProjInv = g_Transform.matProj.Invert();
+    g_Transform.matProjInv = m_ViewportCam->GetProjInvMat();
 
     // 광원 정보 설정
     g_Global.g_Light3DCount = 1;
@@ -169,7 +171,6 @@ void CMaterialEditor::DrawViewport()
     {
         CTexture::Clear(i);
     }
-
 
     ImGui::End();
 }
@@ -222,9 +223,6 @@ void CMaterialEditor::DrawDetails()
         // Scaler Parameter
         if (nullptr != pShader)
         {
-            static float fDragSpeed = 1.0f;
-            ImGui::SliderFloat(ImGui_LabelPrefix("Drag Speed").c_str(), &fDragSpeed, 0.f, 1.f);
-
             const vector<tScalarParam>& ScalerParams = pShader->GetScalarParam();
 
             for (int i = 0; i < ScalerParams.size(); i++)
@@ -236,7 +234,7 @@ void CMaterialEditor::DrawDetails()
                 case INT_2:
                 case INT_3: {
                     ImGui::DragInt(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (int*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                   fDragSpeed);
+                                   ScalerParams[i].DragSpeed);
                 }
                 break;
                 case FLOAT_0:
@@ -244,7 +242,7 @@ void CMaterialEditor::DrawDetails()
                 case FLOAT_2:
                 case FLOAT_3: {
                     ImGui::DragFloat(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                     fDragSpeed);
+                                     ScalerParams[i].DragSpeed);
                 }
                 break;
                 case VEC2_0:
@@ -252,7 +250,7 @@ void CMaterialEditor::DrawDetails()
                 case VEC2_2:
                 case VEC2_3: {
                     ImGui::DragFloat2(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                      fDragSpeed);
+                                      ScalerParams[i].DragSpeed);
                 }
                 break;
                 case VEC4_0:
@@ -260,7 +258,7 @@ void CMaterialEditor::DrawDetails()
                 case VEC4_2:
                 case VEC4_3: {
                     ImGui::DragFloat4(ImGui_LabelPrefix(ScalerParams[i].Desc.c_str()).c_str(), (float*)m_Mtrl->GetScalarParam(ScalerParams[i].Type),
-                                      fDragSpeed);
+                                      ScalerParams[i].DragSpeed);
                 }
                 break;
                 case MAT_0:

@@ -345,6 +345,14 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::CAPSULECOLLIDER:
             pComponent = new CCapsuleCollider;
             break;
+        case COMPONENT_TYPE::MESHCOLLIDER: {
+            pComponent = new CMeshCollider;
+            if (nullptr != pObject->MeshRender())
+            {
+                pObject->MeshCollider()->SetMesh(pObject->MeshRender()->GetMesh());
+            }
+        }
+        break;
         case COMPONENT_TYPE::CHARACTERCONTROLLER:
             pComponent = new CCharacterController;
             break;
@@ -364,6 +372,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             pComponent = new CDecal;
             break;
         case COMPONENT_TYPE::LANDSCAPE:
+            pComponent = new CLandScape;
             break;
         case COMPONENT_TYPE::TEXTRENDER:
             pComponent = new CTextRender;

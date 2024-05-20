@@ -14,6 +14,8 @@ CDecal::CDecal()
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"));
+    
+    SetFrustumCheck(false);
     SetCastShadow(false);
 }
 
@@ -23,6 +25,8 @@ CDecal::~CDecal()
 
 void CDecal::finaltick()
 {
+    CRenderComponent::finaltick();
+
     GamePlayStatic::DrawDebugBox(Transform()->GetWorldMat(), Vec3(0.f, 1.f, 0.f), true);
 }
 

@@ -5,6 +5,7 @@ struct tScalarParam
 {
     SCALAR_PARAM Type;
     string Desc;
+    float DragSpeed;
 };
 
 struct tTexParam
@@ -68,7 +69,10 @@ public:
     BS_TYPE GetBSType() const { return m_BSType; }
     SHADER_DOMAIN GetDomain() const { return m_Domain; }
 
-    void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc) { m_ScalarParam.push_back(tScalarParam{_Param, _Desc}); }
+    void AddScalarParam(SCALAR_PARAM _Param, const string& _Desc, float _DragSpeed = 1.f)
+    {
+        m_ScalarParam.push_back(tScalarParam{_Param, _Desc, _DragSpeed});
+    }
     void AddTexParam(TEX_PARAM _Param, const string& _Desc) { m_TexParam.push_back(tTexParam{_Param, _Desc}); }
     const vector<tScalarParam>& GetScalarParam() const { return m_ScalarParam; }
     const vector<tTexParam>& GetTexParam() const { return m_TexParam; }
