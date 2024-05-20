@@ -102,7 +102,7 @@ void CPlayerScript::tick()
     // 점프
     if (KEY_TAP(KEY::SPACE) && bGrounded)
     {
-        m_MoveVelocity.y += m_JumpPower - GravityVelue;
+        m_MoveVelocity.y += std::sqrt(m_JumpPower * -3.f * GravityVelue);
     }
 
     // 중력 적용

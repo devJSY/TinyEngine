@@ -136,7 +136,7 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
     m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
     m_pLightCam->Camera()->SetScale(1.f);
     m_pLightCam->Camera()->SetNear(1.f);
-    m_pLightCam->Camera()->SetFar(10000.f);
+    m_pLightCam->Camera()->SetFar(100000.f);
     m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
 
     // Mesh Render ¼³Á¤
@@ -203,7 +203,7 @@ void CLight3D::CreateDepthMapTex()
     wstring name = L"LightDepthTex";
     name += std::to_wstring(GetID());
     m_DepthMapTex =
-        CAssetMgr::GetInst()->CreateTexture(name, 2048, 2048, DXGI_FORMAT_R32_TYPELESS, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
+        CAssetMgr::GetInst()->CreateTexture(name, 4096, 4096, DXGI_FORMAT_R32_TYPELESS, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL,
                                             D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 

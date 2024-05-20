@@ -52,7 +52,7 @@ private:
 
     // Post Process
     bool m_bBloomEnable;
-    int m_bloomLevels;
+    const UINT m_bloomLevels;
 
     // LDRI Bloom
     Ptr<CTexture> m_BloomRTTex_LDRI;
@@ -112,6 +112,8 @@ public:
     void CopyRTTexToRTCopyTex();
     void CopyToPostProcessTex_LDRI();
     void CopyToPostProcessTex_HDRI();
+
+    void BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel);
 
     void Resize_Release();
     void Resize(Vec2 Resolution);
