@@ -148,6 +148,21 @@ struct tPixel
     BYTE r, g, b, a;
 };
 
+// 광선 구조체
+struct tRay
+{
+    Vec3 vStart;
+    Vec3 vDir;
+};
+
+// Raycast 결과를 받을 구조체
+struct tRaycastOut
+{
+    Vec2 vUV;
+    float fDist;
+    int bSuccess;
+};
+
 __declspec(align(16)) struct tParticle
 {
     Vec4 vLocalPos;       // 로컬 위치

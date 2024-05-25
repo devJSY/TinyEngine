@@ -142,6 +142,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CGrabageCollector.h" />
     <ClInclude Include="CGraphicsShader.h" />
+    <ClInclude Include="CHeightMapShader.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CLandScape.h" />
     <ClInclude Include="CLayer.h" />
@@ -170,6 +171,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CPhysicsMgr.h" />
     <ClInclude Include="CPolygonCollider2D.h" />
     <ClInclude Include="CPrefab.h" />
+    <ClInclude Include="CRaycastShader.h" />
     <ClInclude Include="CRenderComponent.h" />
     <ClInclude Include="CRenderMgr.h" />
     <ClInclude Include="CRigidBody.h" />
@@ -259,6 +261,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CGrabageCollector.cpp" />
     <ClCompile Include="CGraphicsShader.cpp" />
+    <ClCompile Include="CHeightMapShader.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CLandScape.cpp" />
     <ClCompile Include="CLandScape_init.cpp" />
@@ -287,6 +290,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CPhysicsMgr.cpp" />
     <ClCompile Include="CPolygonCollider2D.cpp" />
     <ClCompile Include="CPrefab.cpp" />
+    <ClCompile Include="CRaycastShader.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
     <ClCompile Include="CRigidBody.cpp" />
@@ -513,6 +517,12 @@ call EngineCopy.bat</Command>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="heightmap.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="IDMapPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -635,6 +645,12 @@ call EngineCopy.bat</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="raycast.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="SamplingPS.hlsl">

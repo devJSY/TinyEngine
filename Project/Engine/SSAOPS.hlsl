@@ -1,10 +1,9 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
-// reference by https://learnopengl.com/Advanced-Lighting/SSAO
-// reference by https://nellfamily.tistory.com/48
-// reference by https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
-
+// reference https://learnopengl.com/Advanced-Lighting/SSAO
+// reference https://nellfamily.tistory.com/48
+// reference https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
 
 #define DepthOnlyTex g_tex_0
 #define PositionTex g_tex_1

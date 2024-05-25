@@ -6,6 +6,19 @@
 void CLandScape::Init()
 {
     CreateMesh();
+
+    // 지형 전용 재질 적용
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"));
+
+    // 지형 전용 컴퓨트 쉐이더 생성
+    CreateComputeShader();
+
+    // 지형 전용 텍스쳐 생성
+    CreateTexture();
+
+    // 레이캐스팅 결과 받는 버퍼
+    m_CrossBuffer = new CStructuredBuffer;
+    m_CrossBuffer->Create(sizeof(tRaycastOut), 1, SB_TYPE::READ_WRITE, true);
 }
 
 void CLandScape::CreateMesh()
@@ -24,7 +37,7 @@ void CLandScape::CreateMesh()
             v.vNormal = Vec3(0.f, 1.f, 0.f);
 
             v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-            v.vUV = Vec2((float)j, float(m_FaceZ - i));
+            v.vUV = Vec2((float)j, m_FaceZ - (float)i);
 
             vecVtx.push_back(v);
         }
@@ -59,4 +72,29 @@ void CLandScape::CreateMesh()
 
     // 지형 전용 재질 적용
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"));
+}
+
+void CLandScape::CreateComputeShader()
+{
+    // ======================
+    // 높이 수정 컴퓨트 쉐이더
+    // ======================
+    m_CSHeightMap = (CHeightMapShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"HeightMapShader").Get();
+
+    // =====================
+    // 지형 피킹 컴퓨트 쉐이더
+    // =====================
+    m_CSRaycast = (CRaycastShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"RaycastShader").Get();
+}
+
+void CLandScape::CreateTexture()
+{
+    // 높이맵 텍스춰
+    m_HeightMapTex = CAssetMgr::GetInst()->CreateTexture(L"LandScapeHeightMapTex", 2048, 2048, DXGI_FORMAT_R32_FLOAT,
+                                                         D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS, D3D11_USAGE_DEFAULT);
+
+    // CLandScape에서만 높이맵 텍스춰를 관리하도록 에셋매니저에서 삭제
+    GamePlayStatic::DeleteAsset(ASSET_TYPE::TEXTURE, m_HeightMapTex.Get());
+
+    m_BrushTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\brush\\Brush_02.png");
 }

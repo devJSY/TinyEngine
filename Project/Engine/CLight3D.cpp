@@ -172,7 +172,7 @@ void CLight3D::render_Deferred(int _LightIdx)
 
     if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
     {
-        Matrix matWorldInv = Transform()->GetWorldMat().Invert();
+        Matrix matWorldInv = Transform()->GetWorldInvMat();
         m_LightMtrl->SetScalarParam(SCALAR_PARAM::MAT_0, matWorldInv);
     }
 

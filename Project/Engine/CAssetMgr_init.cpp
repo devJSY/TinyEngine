@@ -13,6 +13,8 @@
 
 #include "CSetColorShader.h"
 #include "CParticleUpdate.h"
+#include "CHeightMapShader.h"
+#include "CRaycastShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -1207,12 +1209,30 @@ void CAssetMgr::CreateDefaultComputeShader()
     }
 
     // =================================
-    // SetColor Shader
+    // Particle Update Shader
     // =================================
     {
         Ptr<CComputeShader> pShader = new CParticleUpdate;
         pShader->SetName(L"ParticleUpdateShader");
         AddAsset(L"ParticleUpdateShader", pShader);
+    }
+
+    // ======================
+    // 높이 수정 컴퓨트 쉐이더
+    // ======================
+    {
+        Ptr<CComputeShader> pShader = new CHeightMapShader;
+        pShader->SetName(L"HeightMapShader");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"HeightMapShader", pShader);
+    }
+
+    // =====================
+    // 지형 피킹 컴퓨트 쉐이더
+    // =====================
+    {
+        Ptr<CComputeShader> pShader = new CRaycastShader;
+        pShader->SetName(L"RaycastShader");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", pShader);
     }
 }
 

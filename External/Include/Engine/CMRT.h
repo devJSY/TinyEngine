@@ -22,6 +22,7 @@ public:
 
     Ptr<CTexture> GetRenderTargetTex(UINT _Idx) const { return m_arrRTTex[_Idx]; }
     Ptr<CTexture> GetDepthStencilTex() const { return m_DSTex; }
+    const D3D11_VIEWPORT& GetViewPort() const { return m_tViewPort; }
 
     CLONE_DISABLE(CMRT);
 

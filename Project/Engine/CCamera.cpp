@@ -3,6 +3,7 @@
 
 #include "CAssetMgr.h"
 #include "CEditorMgr.h"
+#include "CKeyMgr.h"
 
 #include "CDevice.h"
 #include "CTransform.h"
@@ -33,6 +34,7 @@ CCamera::CCamera()
     , m_Far(10000.f)
     , m_LayerMask(0)
     , m_iCamPriority(-1)
+    , m_Ray()
     , m_bHDRI(false)
     , m_matView()
     , m_matViewInv()
@@ -63,6 +65,7 @@ CCamera::CCamera(const CCamera& origin)
     , m_Far(origin.m_Far)
     , m_LayerMask(origin.m_LayerMask)
     , m_iCamPriority(-1)
+    , m_Ray()
     , m_bHDRI(origin.m_bHDRI)
     , m_matView()
     , m_matViewInv()
@@ -134,7 +137,11 @@ void CCamera::finaltick()
 
     m_matProjInv = m_matProj.Invert();
 
+    // Frustum 계산
     m_Frustum.finaltick();
+
+    // 마우스방향 직선 계산
+    CalculateRay();
 }
 
 void CCamera::LayerMask(UINT _LayerIdx, bool _bMask)
@@ -532,6 +539,42 @@ void CCamera::render_Postprocess()
     }
 
     CTexture::Clear(14);
+}
+
+void CCamera::CalculateRay()
+{
+    // 마우스 방향을 향하는 Ray 구하기
+    // 현재 마우스 좌표
+    Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+
+    float NdcMouseX = 0.0f;
+    float NdcMouseY = 0.0f;
+
+    // Mouse Pos → NDC
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        vMousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+
+        NdcMouseX = vMousePos.x * 2.0f / ViewportSize.x - 1.0f;
+        NdcMouseY = -vMousePos.y * 2.0f / ViewportSize.y + 1.0f;
+    }
+    else
+    {
+        Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+        NdcMouseX = vMousePos.x * 2.0f / WindowSize.x - 1.0f;
+        NdcMouseY = -vMousePos.y * 2.0f / WindowSize.y + 1.0f;
+    }
+
+    // NDC → World
+    Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
+    Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
+    Matrix inverseProjView = m_matProjInv * m_matViewInv;
+    Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
+    Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
+
+    m_Ray.vStart = Transform()->GetWorldPos();
+    m_Ray.vDir = (NearWorld - FarWorld).Normalize();
 }
 
 void CCamera::Resize(Vec2 Resolution)

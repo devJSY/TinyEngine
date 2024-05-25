@@ -145,7 +145,7 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
     if (g_btex_0)
     {
         float2 FullUV = vUV / float2(g_int_0, g_int_1);
-        vLocalPos.y = g_tex_0.SampleLevel(g_LinearWrapSampler, FullUV, 0).x;
+        vLocalPos.y = g_tex_0.SampleLevel(g_LinearClampSampler, FullUV, 0).x;
                        
         // 주변 정점(위, 아래, 좌, 우) 로 접근할때의 로컬스페이스상에서의 간격
         float LocalStep = 1.f / _pathlevel.Inside;
@@ -155,22 +155,22 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
         
         // 위
         float3 vUp = float3(vLocalPos.x
-                            , g_tex_0.SampleLevel(g_LinearWrapSampler, float2(FullUV.x, FullUV.y - vUVStep.y), 0).x
+                            , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x, FullUV.y - vUVStep.y), 0).x
                             , vLocalPos.z + LocalStep);
         
         // 아래
         float3 vDown = float3(vLocalPos.x
-                             , g_tex_0.SampleLevel(g_LinearWrapSampler, float2(FullUV.x, FullUV.y + vUVStep.y), 0).x
+                             , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x, FullUV.y + vUVStep.y), 0).x
                              , vLocalPos.z - LocalStep);
         
         // 좌
         float3 vLeft = float3(vLocalPos.x - LocalStep
-                             , g_tex_0.SampleLevel(g_LinearWrapSampler, float2(FullUV.x - vUVStep.x, FullUV.y), 0).x
+                             , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x - vUVStep.x, FullUV.y), 0).x
                              , vLocalPos.z);
         
         // 우
         float3 vRight = float3(vLocalPos.x + LocalStep
-                            , g_tex_0.SampleLevel(g_LinearWrapSampler, float2(FullUV.x + vUVStep.x, FullUV.y), 0).x
+                            , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x + vUVStep.x, FullUV.y), 0).x
                             , vLocalPos.z);
         
         output.vPosition = mul(float4(vLocalPos, 1.f), g_matWVP);
