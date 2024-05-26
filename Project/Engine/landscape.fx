@@ -4,6 +4,18 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+#define AmbientTex g_tex_0
+#define AOTex g_tex_1
+#define NormalTex g_tex_2
+#define HeightTexture g_tex_3
+#define MetallicRoughnessTex g_tex_4
+#define EmissiveTex g_tex_5
+
+#define MtrlAlbedo g_vAlbedo
+#define MtrlMetallic g_vMetallic
+#define MtrlRoughness g_vRoughness
+#define MtrlEmission g_vEmission
+
 // =======================================
 // LandScape Shader
 // MRT      : Deferred
@@ -14,7 +26,7 @@
 // Parameter
 // g_int_0  : Face X
 // g_int_1  : Face Z
-// g_tex_0  : HeightMap Texture
+// g_tex_3  : HeightMap Texture
 // =======================================
 
 struct VS_Input
@@ -142,10 +154,10 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
     output.vWorldNormal = mul(float4(vNormal, 1.f), g_matWorld).xyz;
     
     // 높이맵 텍스춰가 존재하는 경우
-    if (g_btex_0)
+    if (g_btex_3)
     {
         float2 FullUV = vUV / float2(g_int_0, g_int_1);
-        vLocalPos.y = g_tex_0.SampleLevel(g_LinearClampSampler, FullUV, 0).x;
+        vLocalPos.y = HeightTexture.SampleLevel(g_LinearClampSampler, FullUV, 0).x;
                        
         // 주변 정점(위, 아래, 좌, 우) 로 접근할때의 로컬스페이스상에서의 간격
         float LocalStep = 1.f / _pathlevel.Inside;
@@ -155,22 +167,22 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
         
         // 위
         float3 vUp = float3(vLocalPos.x
-                            , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x, FullUV.y - vUVStep.y), 0).x
+                            , HeightTexture.SampleLevel(g_LinearClampSampler, float2(FullUV.x, FullUV.y - vUVStep.y), 0).x
                             , vLocalPos.z + LocalStep);
         
         // 아래
         float3 vDown = float3(vLocalPos.x
-                             , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x, FullUV.y + vUVStep.y), 0).x
+                             , HeightTexture.SampleLevel(g_LinearClampSampler, float2(FullUV.x, FullUV.y + vUVStep.y), 0).x
                              , vLocalPos.z - LocalStep);
         
         // 좌
         float3 vLeft = float3(vLocalPos.x - LocalStep
-                             , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x - vUVStep.x, FullUV.y), 0).x
+                             , HeightTexture.SampleLevel(g_LinearClampSampler, float2(FullUV.x - vUVStep.x, FullUV.y), 0).x
                              , vLocalPos.z);
         
         // 우
         float3 vRight = float3(vLocalPos.x + LocalStep
-                            , g_tex_0.SampleLevel(g_LinearClampSampler, float2(FullUV.x + vUVStep.x, FullUV.y), 0).x
+                            , HeightTexture.SampleLevel(g_LinearClampSampler, float2(FullUV.x + vUVStep.x, FullUV.y), 0).x
                             , vLocalPos.z);
         
         output.vPosition = mul(float4(vLocalPos, 1.f), g_matWVP);
@@ -199,14 +211,24 @@ PS_Output PS_LandScape(DS_Output _in)
 {
     PS_Output output = (PS_Output) 0.f;
     
-    output.vColor = float4(0.4f, 0.4f, 0.4f, 1.f);
+    float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, _in.vUV).rgb 
+                                 : MtrlAlbedo.rgb;
+    float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, _in.vUV).r : 1.f;
+    float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, _in.vUV).b
+                                    : MtrlMetallic;
+    float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, _in.vUV).g 
+                                      : MtrlRoughness;
+    float3 emission = g_btex_5 ? EmissiveTex.Sample(g_LinearWrapSampler, _in.vUV).rgb
+                                     : MtrlEmission.rgb;
+
+    output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(_in.vWorldPos, 1.f);
     output.vTangent = float4(_in.vWorldTangent, 1.f);
     output.vBitangent = float4(_in.vWorldBinormal, 1.f);
     output.vNormal = float4(_in.vWorldNormal, 1.f);
-    output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
-    output.vMetallicRoughness = float4(0.f, 0.f, 0.f, 1.f);
-    output.vAmbientOcclusion = float4(0.f, 0.f, 0.f, 1.f);
+    output.vEmissive = float4(emission, 1.f);
+    output.vMetallicRoughness = float4(0.f, roughness, metallic, 1.f);
+    output.vAmbientOcclusion = float4(ao, ao, ao, 1.f);
     
     return output;
 }

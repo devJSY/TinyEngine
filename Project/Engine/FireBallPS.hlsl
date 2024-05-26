@@ -63,7 +63,7 @@ float4 main(PS_Input input) : SV_TARGET
     float3 dir = normalize(input.posWolrd.xyz - eye);
     float3 sphere_pos = input.center.xyz;
     float radiusScale = 100;
-    float currentTime = -g_time;
+    float currentTime = -g_Time;
         
     float intensity = 0.;
     

@@ -91,16 +91,19 @@ cbuffer GLOBAL_DATA : register(b3)
     float2 g_RenderResolution;
     float2 g_NoiseTexResolution;
     
-    float g_dt;
-    float g_time;
+    float g_DT;
+    float g_Time;
+    float g_EngineDT;
+    float g_EngineTime;
+    
+    float3 g_eyeWorld;
+    int g_EnableSSAO;
+    
     uint g_Light2DCount;
     uint g_Light3DCount;
         
-    float3 g_eyeWorld;
-    int g_RenderOutline;
-    
     int g_DrawAsWireFrame;
-    int g_EnableSSAO;
+    int g_RenderOutline;
 }
 
 Texture2D g_tex_0 : register(t0);

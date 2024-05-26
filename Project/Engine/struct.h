@@ -105,16 +105,19 @@ __declspec(align(16)) struct tGlobalData
     Vec2 g_RenderResolution;
     Vec2 g_NoiseTexResolution;
 
-    float g_dt;
-    float g_time;
+    float g_DT;
+    float g_Time;
+    float g_EngineDT;
+    float g_EngineTime;
+
+    Vec3 g_eyeWorld;
+    int g_EnableSSAO = false;
+
     UINT g_Light2DCount;
     UINT g_Light3DCount;
 
-    Vec3 g_eyeWorld;
-    int g_RenderOutline = true;
-
     int g_DrawAsWireFrame = false;
-    int g_EnableSSAO = false;
+    int g_RenderOutline = true;
 };
 
 __declspec(align(16)) struct tAnimData2D

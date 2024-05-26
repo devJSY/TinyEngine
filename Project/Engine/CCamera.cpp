@@ -34,7 +34,6 @@ CCamera::CCamera()
     , m_Far(10000.f)
     , m_LayerMask(0)
     , m_iCamPriority(-1)
-    , m_Ray()
     , m_bHDRI(false)
     , m_matView()
     , m_matViewInv()
@@ -65,7 +64,6 @@ CCamera::CCamera(const CCamera& origin)
     , m_Far(origin.m_Far)
     , m_LayerMask(origin.m_LayerMask)
     , m_iCamPriority(-1)
-    , m_Ray()
     , m_bHDRI(origin.m_bHDRI)
     , m_matView()
     , m_matViewInv()
@@ -139,9 +137,6 @@ void CCamera::finaltick()
 
     // Frustum 계산
     m_Frustum.finaltick();
-
-    // 마우스방향 직선 계산
-    CalculateRay();
 }
 
 void CCamera::LayerMask(UINT _LayerIdx, bool _bMask)
@@ -541,9 +536,17 @@ void CCamera::render_Postprocess()
     CTexture::Clear(14);
 }
 
-void CCamera::CalculateRay()
+void CCamera::Resize(Vec2 Resolution)
 {
-    // 마우스 방향을 향하는 Ray 구하기
+    if (Resolution.x <= 0.f || Resolution.y <= 0.f) // 창 최소화 예외처리
+        return;
+
+    m_Width = Resolution.x;
+    m_AspectRatio = Resolution.x / Resolution.y;
+}
+
+tRay CCamera::GetRay()
+{
     // 현재 마우스 좌표
     Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
 
@@ -573,17 +576,12 @@ void CCamera::CalculateRay()
     Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
     Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
 
-    m_Ray.vStart = Transform()->GetWorldPos();
-    m_Ray.vDir = (NearWorld - FarWorld).Normalize();
-}
+    // World 좌표 Ray
+    tRay ray = {};
+    ray.vStart = Transform()->GetWorldPos();
+    ray.vDir = (NearWorld - FarWorld).Normalize();
 
-void CCamera::Resize(Vec2 Resolution)
-{
-    if (Resolution.x <= 0.f || Resolution.y <= 0.f) // 창 최소화 예외처리
-        return;
-
-    m_Width = Resolution.x;
-    m_AspectRatio = Resolution.x / Resolution.y;
+    return ray;
 }
 
 void CCamera::SaveToLevelFile(FILE* _File)

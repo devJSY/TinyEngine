@@ -57,6 +57,8 @@ void CTimeMgr::tick()
 
     ++m_iCall;
 
-    g_Global.g_dt = m_DeltaTime;
-    g_Global.g_time += m_DeltaTime;
+    g_Global.g_DT = m_DeltaTime;
+    g_Global.g_Time += m_DeltaTime;
+    g_Global.g_EngineDT = m_EngineDeltaTime;
+    g_Global.g_EngineTime += m_EngineDeltaTime;
 }

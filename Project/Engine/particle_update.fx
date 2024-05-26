@@ -46,9 +46,9 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // 랜덤
                 float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);
                 
-                vUV.x += g_time * 0.2f;
+                vUV.x += g_Time * 0.2f;
                 //                 ( 주파수 )    (진폭)  (V 축 offset)
-                vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
+                vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_Time * 0.1f;
                                 
                 float4 vRand0 = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
                 float4 vRand1 = g_NoiseTex.SampleLevel(g_PointSampler, vUV - float2(0.1f, 0.1f), 0);
@@ -132,7 +132,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
     // 파티클이 활성화 상태라면
     else
     {
-        Particle.Age += g_dt;
+        Particle.Age += g_DT;
         if (Particle.Life < Particle.Age)
         {
             Particle.Active = 0;
@@ -172,12 +172,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             if (Particle.NoiseForceTime == 0.f) // 초기 Force
             {
                 Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
-                Particle.NoiseForceTime = g_time;
+                Particle.NoiseForceTime = g_Time;
             }
-            else if (Module.NoiseForceTerm < g_time - Particle.NoiseForceTime) // Term 마다 Force 업데이트
+            else if (Module.NoiseForceTerm < g_Time - Particle.NoiseForceTime) // Term 마다 Force 업데이트
             {
                 Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
-                Particle.NoiseForceTime = g_time;
+                Particle.NoiseForceTime = g_Time;
             }
         }
                 
@@ -191,7 +191,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             float3 vAccel = Particle.vForce.xyz / Particle.Mass;
                   
             // Accel 연산
-            Particle.vVelocity.xyz += vAccel * g_dt;
+            Particle.vVelocity.xyz += vAccel * g_DT;
             
             float4 DragForce = float4(0.f, 0.f, 0.f, 0.f);
             // Drag 모듈
@@ -205,7 +205,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 }
                 else
                 {
-                    float DT = g_dt / LimitTime;
+                    float DT = g_DT / LimitTime;
                     DragForce = Particle.vVelocity * DT;
                 }
             }
@@ -218,12 +218,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             // Velocity 연산
             if (0 == Module.SpaceType) // Local
             {
-                Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_dt;
+                Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_DT;
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
             }
             else if (1 == Module.SpaceType) // World
             {
-                Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_dt;
+                Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_DT;
             }
             
         }

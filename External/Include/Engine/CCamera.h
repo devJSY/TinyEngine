@@ -31,8 +31,6 @@ private:
 
     int m_iCamPriority;
 
-    tRay m_Ray; // 마우스 방향을 향하는 직선
-
     bool m_bHDRI;
 
     // 변환 행렬
@@ -85,7 +83,7 @@ public:
 
     void Resize(Vec2 Resolution);
 
-    const tRay& GetRay() const { return m_Ray; }
+    tRay GetRay();
 
 public:
     virtual void begin() override;
@@ -112,8 +110,6 @@ private:
     void render_DepthOnly(vector<CGameObject*>& _vecObj);
     void render_IDMap(vector<CGameObject*>& _vecObj);
     void render_Postprocess();
-
-    void CalculateRay();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -641,6 +641,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddScalarParam(VEC4_0, "Tessellation Factor", 0.1f);
 
+        pShader->AddTexParam(TEX_0, "Ambient Texture");
+        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
+        pShader->AddTexParam(TEX_5, "Emissive Texture");
+
         pShader->SetName(L"LandScapeShader");
         AddAsset(L"LandScapeShader", pShader);
     }

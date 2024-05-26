@@ -83,7 +83,7 @@ float4 PS_Distortion(VS_Output _in) : SV_Target
     if (g_btex_0)
     {
         float2 vUV = _in.vUV;
-        vUV.x += g_time * 0.1f;
+        vUV.x += g_Time * 0.1f;
         
         float2 vNoise = g_tex_0.Sample(g_LinearWrapSampler, vUV).rg;
         vNoise = (vNoise.xy - 0.5f) * 0.1f;

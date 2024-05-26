@@ -10,6 +10,7 @@ CHeightMapShader::CHeightMapShader()
     , m_pHeightMap(nullptr)
     , m_pBrushTex(nullptr)
     , m_vScale(Vec2())
+    , m_Strength(0.f)
     , m_iBrushIdx(0)
     , m_pInput(nullptr)
 {
@@ -28,6 +29,7 @@ int CHeightMapShader::UpdateData()
     m_Const.arrInt[0] = (int)m_pHeightMap->GetWidth();
     m_Const.arrInt[1] = (int)m_pHeightMap->GetHeight();
     m_Const.arrInt[2] = m_iBrushIdx;
+    m_Const.arrFloat[0] = m_Strength;
     m_Const.arrVec2[0] = m_vScale;
 
     // ≥Ù¿Ã∏ 
