@@ -1,0 +1,27 @@
+#pragma once
+#include <Engine\\CScript.h>
+
+class CLevelChangeScript : public CScript
+{
+private:
+    string m_ChangeLevelName;
+    CGameObject* m_TransitionFilterObj;
+
+public:
+    virtual void tick() override;
+
+private:
+    void ChangeLevel(const std::string& LevelName);
+
+public:
+    virtual void SaveToLevelFile(FILE* _File) override{};
+    virtual void LoadFromLevelFile(FILE* _File) override{};
+
+    CLONE(CLevelChangeScript);
+
+public:
+    CLevelChangeScript();
+    virtual ~CLevelChangeScript();
+
+    friend class CGameManagerScript;
+};
