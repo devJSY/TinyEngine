@@ -39,10 +39,10 @@ void CS_HeightMap(int3 _iThreadID : SV_DispatchThreadID)
     
     
     // 배열텍스처 진행 시 사용가능
-    //float4 vBrushColor = BRUSH_TEX.SampleLevel(g_LinearClampSampler, float3(vUV, BRUSH_IDX), 0);
+    //float4 vBrushColor = BRUSH_TEX.SampleLevel(g_LinearWrapSampler, float3(vUV, BRUSH_IDX), 0);
     
     // 브러쉬로 부터 알파값 샘플링
-    float4 vBrushColor = BRUSH_TEX.SampleLevel(g_LinearClampSampler, vUV, 0);
+    float4 vBrushColor = BRUSH_TEX.SampleLevel(g_LinearWrapSampler, vUV, 0);
     HEIGHT_MAP[_iThreadID.xy] += g_EngineDT * vBrushColor.a * STRENGTH; // 브러쉬 알파값으로 높이 설정
     
     //// cos 그래프로 높이 설정

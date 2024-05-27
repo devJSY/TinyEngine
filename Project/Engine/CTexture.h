@@ -22,8 +22,14 @@ private:
                const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc);
     int Create(ComPtr<ID3D11Texture2D> _tex2D, const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc,
                const D3D11_SHADER_RESOURCE_VIEW_DESC* _srvDesc, const D3D11_UNORDERED_ACCESS_VIEW_DESC* _uavDesc);
+    int CreateArrayTexture(const vector<Ptr<CTexture>>& _vecTex, int _iMapLevel);
+
+public:
+    void GenerateMip(UINT _iMipLevel);
 
 private:
+    virtual int Save(const wstring& _strRelativePath) override;
+    int Load(const wstring& _strFilePath, int _iMipLevel);
     virtual int Load(const wstring& _strFilePath) override;
 
 public:
@@ -38,6 +44,10 @@ public:
 
     UINT GetWidth() const { return m_Desc.Width; }
     UINT GetHeight() const { return m_Desc.Height; }
+
+    UINT GetArraySize() const { return m_Desc.ArraySize; }
+    UINT GetRowPitch() const { return (UINT)m_Image.GetImages()->rowPitch; }
+    UINT GetSlicePitch() const { return (UINT)m_Image.GetImages()->slicePitch; }
 
     ComPtr<ID3D11Texture2D> GetTex2D() const { return m_Tex2D; }
     const D3D11_TEXTURE2D_DESC& GetDesc() const { return m_Desc; }

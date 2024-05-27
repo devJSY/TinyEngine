@@ -16,6 +16,11 @@
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
 
+#define                     TileTexArr                      g_texArr_0  // Tile 배열 택스쳐
+#define                     TileTexArrSize                  g_float_0   // 배열 개수
+#define                     WeightMapResolution             g_vec2_0    // 가중치 버퍼 해상도
+StructuredBuffer<float4> WEIGHT_MAP : register(t17); // 가중치 버퍼
+
 // =======================================
 // LandScape Shader
 // MRT      : Deferred
@@ -115,6 +120,7 @@ struct DS_Output
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
+    float2 vFullUV : TEXCOORD1;
         
     float3 vWorldPos : POSITION;
     float3 vWorldTangent : TANGENT;
@@ -146,6 +152,9 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
         vNormal += _Origin[i].vNormal * _Weight[i];
     }
     
+    // 지형 전체기준 UV
+    output.vFullUV = vUV / float2(g_int_0, g_int_1);
+    
     output.vPosition = mul(float4(vLocalPos, 1.f), g_matWVP);
     output.vUV = vUV;
     output.vWorldPos = mul(float4(vLocalPos, 1.f), g_matWorld).xyz;
@@ -156,7 +165,7 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
     // 높이맵 텍스춰가 존재하는 경우
     if (g_btex_3)
     {
-        float2 FullUV = vUV / float2(g_int_0, g_int_1);
+        float2 FullUV = output.vFullUV;
         vLocalPos.y = HeightTexture.SampleLevel(g_LinearClampSampler, FullUV, 0).x;
                        
         // 주변 정점(위, 아래, 좌, 우) 로 접근할때의 로컬스페이스상에서의 간격
@@ -213,6 +222,7 @@ PS_Output PS_LandScape(DS_Output _in)
     
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, _in.vUV).rgb 
                                  : MtrlAlbedo.rgb;
+    float3 normal = _in.vWorldNormal;
     float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, _in.vUV).r : 1.f;
     float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, _in.vUV).b
                                     : MtrlMetallic;
@@ -221,11 +231,51 @@ PS_Output PS_LandScape(DS_Output _in)
     float3 emission = g_btex_5 ? EmissiveTex.Sample(g_LinearWrapSampler, _in.vUV).rgb
                                      : MtrlEmission.rgb;
 
+    if (g_btexarr_0)
+    {
+        float2 derivX = ddx(_in.vUV); // 인접픽셀과 x축 편미분값을 구한다
+        float2 derivY = ddy(_in.vUV); // 인접픽셀과 y축 편미분값을 구한다
+
+        // 타일 색상
+        int2 iWeightIdx = (int2) (_in.vFullUV * WeightMapResolution);
+        float4 vWeight = WEIGHT_MAP[iWeightIdx.y * (int) WeightMapResolution.x + iWeightIdx.x];
+        float4 vColor = (float4) 0.f;
+
+        int iMaxWeightIdx = -1;
+        float fMaxWeight = 0.f;
+
+        for (int i = 0; i < TileTexArrSize; ++i)
+        {
+            // 배열 텍스쳐 샘플링할때 UV 3번째값이 배열 인덱스
+            vColor += TileTexArr.SampleGrad(g_LinearWrapSampler, float3(_in.vUV, i), derivX, derivY) * vWeight[i];
+            //vColor += TileTexArr.SampleLevel(g_LinearWrapSampler, float3(_in.vUV, i), 0) * vWeight[i];
+
+            if (fMaxWeight < vWeight[i])
+            {
+                fMaxWeight = vWeight[i];
+                iMaxWeightIdx = i;
+            }
+        }
+        
+        albedo = vColor.rgb;
+
+        // 타일 노말
+        if (-1 != iMaxWeightIdx)
+        {
+            float3 vTangentSpaceNormal = TileTexArr.SampleGrad(g_LinearWrapSampler, float3(_in.vUV, iMaxWeightIdx + TileTexArrSize), derivX, derivY).xyz;
+            //float3 vTangentSpaceNormal = TileTexArr.SampleLevel(g_LinearWrapSampler, float3(_in.vUV, iMaxWeightIdx + TileCount), 0).xyz;
+            vTangentSpaceNormal = vTangentSpaceNormal * 2.f - 1.f;
+
+            float3x3 matTBN = { _in.vWorldTangent, _in.vWorldBinormal, _in.vWorldNormal };
+            normal = normalize(mul(vTangentSpaceNormal, matTBN));
+        }
+    }
+    
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(_in.vWorldPos, 1.f);
     output.vTangent = float4(_in.vWorldTangent, 1.f);
     output.vBitangent = float4(_in.vWorldBinormal, 1.f);
-    output.vNormal = float4(_in.vWorldNormal, 1.f);
+    output.vNormal = float4(normal, 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMetallicRoughness = float4(0.f, roughness, metallic, 1.f);
     output.vAmbientOcclusion = float4(ao, ao, ao, 1.f);

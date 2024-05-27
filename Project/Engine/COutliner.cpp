@@ -2570,14 +2570,21 @@ void COutliner::DrawLandscape(CGameObject* obj)
 
     if (open)
     {
+        // LandScape Mode
+        LANDSCAPE_MODE mode = pLandScape->GetLandScapeMode();
+        ImGui::Text("LandScape Mode");
+        ImGui::SameLine();
+        ImGui::RadioButton("Height Map", (int*)&mode, (int)LANDSCAPE_MODE::HEIGHT_MAP);
+        ImGui::SameLine();
+        ImGui::RadioButton("Splat", (int*)&mode, (int)LANDSCAPE_MODE::SPLAT);
+        ImGui::SameLine();
+        ImGui::RadioButton("None", (int*)&mode, (int)LANDSCAPE_MODE::NONE);
+        pLandScape->SetLandScapeMode(mode);
+
         // Cast Shadow
         bool bCastShadow = pLandScape->IsCastShadow();
         ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);
         pLandScape->SetCastShadow(bCastShadow);
-
-        bool bDraw = pLandScape->IsDrawLandScape();
-        ImGui::Checkbox(ImGui_LabelPrefix("Draw").c_str(), &bDraw);
-        pLandScape->SetDrawLandScape(bDraw);
 
         // Brush Texture
         {

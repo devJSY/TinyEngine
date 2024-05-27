@@ -2,6 +2,7 @@
 #include "CLandScape.h"
 
 #include "CAssetMgr.h"
+#include "CStructuredBuffer.h"
 
 void CLandScape::Init()
 {
@@ -19,6 +20,12 @@ void CLandScape::Init()
     // 레이캐스팅 결과 받는 버퍼
     m_CrossBuffer = new CStructuredBuffer;
     m_CrossBuffer->Create(sizeof(tRaycastOut), 1, SB_TYPE::READ_WRITE, true);
+
+    // 타일 텍스쳐(Color, Normal 혼합, 총 6장)
+    // m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds");
+    // m_TileArrTex = CAssetMgr::GetInst()->LoadTexture(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds", 8);
+    m_TileArrTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\tile\\TILE_ARRR.dds");
+    m_TileArrTex->GenerateMip(8);
 }
 
 void CLandScape::CreateMesh()
@@ -85,6 +92,11 @@ void CLandScape::CreateComputeShader()
     // 지형 피킹 컴퓨트 쉐이더
     // =====================
     m_CSRaycast = (CRaycastShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"RaycastShader").Get();
+
+    // =======================
+    // 가중치 수정 컴퓨트 쉐이더
+    // =======================
+    m_CSWeightMap = (CWeightMapShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"WeightMapShader").Get();
 }
 
 void CLandScape::CreateTexture()
@@ -97,4 +109,11 @@ void CLandScape::CreateTexture()
     GamePlayStatic::DeleteAsset(ASSET_TYPE::TEXTURE, m_HeightMapTex.Get());
 
     m_BrushTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\brush\\Brush_02.png");
+
+    // 가중치 버퍼
+    m_WeightWidth = 1024;
+    m_WeightHeight = 1024;
+
+    m_WeightMapBuffer = new CStructuredBuffer;
+    m_WeightMapBuffer->Create(sizeof(tWeight_4), m_WeightWidth * m_WeightHeight, SB_TYPE::READ_WRITE, false);
 }

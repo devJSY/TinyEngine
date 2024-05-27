@@ -15,6 +15,7 @@
 #include "CParticleUpdate.h"
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
+#include "CWeightMapShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -1238,6 +1239,15 @@ void CAssetMgr::CreateDefaultComputeShader()
         Ptr<CComputeShader> pShader = new CRaycastShader;
         pShader->SetName(L"RaycastShader");
         CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", pShader);
+    }
+
+    // =======================
+    // 가중치 수정 컴퓨트 쉐이더
+    // =======================
+    {
+        Ptr<CComputeShader> pShader = new CWeightMapShader;
+        pShader->SetName(L"WeightMapShader");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"WeightMapShader", pShader);
     }
 }
 

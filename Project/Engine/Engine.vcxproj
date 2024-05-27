@@ -192,6 +192,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CTileMapEditor.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CTransform.h" />
+    <ClInclude Include="CWeightMapShader.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="func.h" />
@@ -311,6 +312,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CTileMapEditor.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
+    <ClCompile Include="CWeightMapShader.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="CLevelMgr.cpp" />
     <ClCompile Include="extern.cpp" />
@@ -832,6 +834,12 @@ call EngineCopy.bat</Command>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">main</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="weightmap.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

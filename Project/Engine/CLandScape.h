@@ -3,6 +3,19 @@
 
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
+#include "CWeightMapShader.h"
+
+enum class LANDSCAPE_MODE
+{
+    HEIGHT_MAP,
+    SPLAT,
+    NONE,
+};
+
+struct tWeight_4
+{
+    float arrWeight[4];
+};
 
 class CLandScape : public CRenderComponent
 {
@@ -16,7 +29,15 @@ private:
     Ptr<CRaycastShader> m_CSRaycast;  // 픽킹 쉐이더
     CStructuredBuffer* m_CrossBuffer; // 마우스 피킹되는 지점 정보 받는 버퍼
 
-    bool m_bDrawLandScape;
+    Ptr<CWeightMapShader> m_CSWeightMap;  // 가중치 쉐이더
+    CStructuredBuffer* m_WeightMapBuffer; // 가중치 저장 버퍼
+    UINT m_WeightWidth;                   // 가중치 버퍼 가로세로 행렬 수
+    UINT m_WeightHeight;                  // 가중치 버퍼 가로세로 행렬 수
+    UINT m_WeightIdx;                     // 증가 시킬 가중치 부위
+
+    Ptr<CTexture> m_TileArrTex; // 타일 배열 텍스쳐
+
+    LANDSCAPE_MODE m_Mode;
 
     Ptr<CTexture> m_BrushTex; // 브러쉬용 텍스쳐
     float m_BrushStrength;    // 브러쉬 강도
@@ -25,8 +46,8 @@ private:
 public:
     void SetHeightMap(Ptr<CTexture> _HeightMap) { m_HeightMapTex = _HeightMap; }
 
-    bool IsDrawLandScape() const { return m_bDrawLandScape; }
-    void SetDrawLandScape(bool _bDraw) { m_bDrawLandScape = _bDraw; }
+    LANDSCAPE_MODE GetLandScapeMode() const { return m_Mode; }
+    void SetLandScapeMode(LANDSCAPE_MODE _Mode) { m_Mode = _Mode; }
 
     Ptr<CTexture> GetBrushTex() const { return m_BrushTex; }
     void SetBrushTex(Ptr<CTexture> _Tex) { m_BrushTex = _Tex; }

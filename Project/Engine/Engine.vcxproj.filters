@@ -349,6 +349,9 @@
     <ClInclude Include="CHeightMapShader.h">
       <Filter>ShaderCode\Compute\LandScape\HeightMap</Filter>
     </ClInclude>
+    <ClInclude Include="CWeightMapShader.h">
+      <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -674,6 +677,9 @@
     </ClCompile>
     <ClCompile Include="CHeightMapShader.cpp">
       <Filter>ShaderCode\Compute\LandScape\HeightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeightMapShader.cpp">
+      <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1004,6 +1010,9 @@
     <Filter Include="ShaderCode\Compute\LandScape\Raycast">
       <UniqueIdentifier>{b87c0ad2-c4d8-4878-bed7-5e0d073cb528}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Compute\LandScape\WeightMap">
+      <UniqueIdentifier>{e3ccf83e-b5cf-43a5-b51a-303e6dfc6f83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1241,6 +1250,9 @@
     </FxCompile>
     <FxCompile Include="heightmap.fx">
       <Filter>ShaderCode\Compute\LandScape\HeightMap</Filter>
+    </FxCompile>
+    <FxCompile Include="weightmap.fx">
+      <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
