@@ -109,8 +109,8 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
 }
 
 #define LIGHT_NEAR_PLANE 1.f
-#define LIGHT_FRUSTUM_WIDTH 3.4614f // Near 1.f Far 10000.f 기준 
-#define LIGHT_TEXTURE_WIDTH 2048.f
+#define LIGHT_FRUSTUM_WIDTH 3.4614f // Near 1.f Far 100000.f 기준 
+#define LIGHT_TEXTURE_WIDTH 4096.f
 
 // NdcDepthToViewDepth
 float N2V(float ndcDepth, matrix invProj)

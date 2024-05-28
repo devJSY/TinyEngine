@@ -1,10 +1,9 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
-// reference by https://learnopengl.com/Advanced-Lighting/SSAO
-// reference by https://nellfamily.tistory.com/48
-// reference by https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
-
+// reference https://learnopengl.com/Advanced-Lighting/SSAO
+// reference https://nellfamily.tistory.com/48
+// reference https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
 
 #define DepthOnlyTex g_tex_0
 #define PositionTex g_tex_1
@@ -67,7 +66,7 @@ float4 main(PS_IN input) : SV_TARGET
 
     // 罚待 氦磐 积己
     float2 NoiseScale = float2(g_NoiseTexResolution.x / 4.f, g_NoiseTexResolution.y / 4.f);
-    float3 randomVec = g_NoiseTex.Sample(g_LinearClampSampler, input.vUV * NoiseScale).rgb;
+    float3 randomVec = g_NoiseTex.Sample(g_LinearWrapSampler, input.vUV * NoiseScale).rgb;
     randomVec = normalize(randomVec * 2.f - 1.f);
 
     // TBN 青纺 积己

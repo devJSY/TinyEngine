@@ -13,6 +13,9 @@
 
 #include "CSetColorShader.h"
 #include "CParticleUpdate.h"
+#include "CHeightMapShader.h"
+#include "CRaycastShader.h"
+#include "CWeightMapShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -633,11 +636,16 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateDomainShader(L"shader\\landscape.fx", "DS_LandScape");
         pShader->CreatePixelShader(L"shader\\landscape.fx", "PS_LandScape");
 
-        pShader->SetRSType(RS_TYPE::WIRE_FRAME);
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE); // pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
         pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
         pShader->AddScalarParam(VEC4_0, "Tessellation Factor", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Ambient Texture");
+        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
+        pShader->AddTexParam(TEX_5, "Emissive Texture");
 
         pShader->SetName(L"LandScapeShader");
         AddAsset(L"LandScapeShader", pShader);
@@ -1207,12 +1215,39 @@ void CAssetMgr::CreateDefaultComputeShader()
     }
 
     // =================================
-    // SetColor Shader
+    // Particle Update Shader
     // =================================
     {
         Ptr<CComputeShader> pShader = new CParticleUpdate;
         pShader->SetName(L"ParticleUpdateShader");
         AddAsset(L"ParticleUpdateShader", pShader);
+    }
+
+    // ======================
+    // 높이 수정 컴퓨트 쉐이더
+    // ======================
+    {
+        Ptr<CComputeShader> pShader = new CHeightMapShader;
+        pShader->SetName(L"HeightMapShader");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"HeightMapShader", pShader);
+    }
+
+    // =====================
+    // 지형 피킹 컴퓨트 쉐이더
+    // =====================
+    {
+        Ptr<CComputeShader> pShader = new CRaycastShader;
+        pShader->SetName(L"RaycastShader");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", pShader);
+    }
+
+    // =======================
+    // 가중치 수정 컴퓨트 쉐이더
+    // =======================
+    {
+        Ptr<CComputeShader> pShader = new CWeightMapShader;
+        pShader->SetName(L"WeightMapShader");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"WeightMapShader", pShader);
     }
 }
 
@@ -1667,8 +1702,8 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SSAOShader"));
         pMtrl->SetName(L"SSAOMtrl");
-        pMtrl->SetScalarParam(FLOAT_0, 0.02f); // Radius
-        pMtrl->SetScalarParam(FLOAT_1, 2.f);   // Pow Power
+        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // Radius
+        pMtrl->SetScalarParam(FLOAT_1, 1.f);  // Pow Power
         AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
     }
 }

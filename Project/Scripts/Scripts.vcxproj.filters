@@ -7,29 +7,140 @@
     <ClInclude Include="pch.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="CScriptMgr.h">
-      <Filter>ScriptMgr</Filter>
-    </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
     <ClInclude Include="define.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
+    <ClInclude Include="The Game of Sisyphus\CBulletCountUIScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerCameraScript.h">
+    <ClInclude Include="The Game of Sisyphus\CBulletScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
-    <ClInclude Include="CGoalScript.h">
+    <ClInclude Include="The Game of Sisyphus\CGoalScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletScript.h">
+    <ClInclude Include="The Game of Sisyphus\CPlayerCameraScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
-    <ClInclude Include="CBulletCountUIScript.h">
+    <ClInclude Include="The Game of Sisyphus\CPlayerScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClInclude>
+    <ClInclude Include="CScriptMgr.h">
+      <Filter>ScriptMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CBossEnemyScript.h">
+      <Filter>Scripts\Have A Nice Death\BossEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CLifeScript.h">
+      <Filter>Scripts\Have A Nice Death\BossEnemy\Life</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEvilPumpkinBombScript.h">
+      <Filter>Scripts\Have A Nice Death\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEvilPumpkinScript.h">
+      <Filter>Scripts\Have A Nice Death\BossEnemy\Miniboss\EvilPumpkin</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CBridgeScript.h">
+      <Filter>Scripts\Have A Nice Death\Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CButtonScript.h">
+      <Filter>Scripts\Have A Nice Death\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayButtonScript.h">
+      <Filter>Scripts\Have A Nice Death\Button\PlayButton</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CSoundManagerScript.h">
+      <Filter>Scripts\Have A Nice Death\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CGameManagerScript.h">
+      <Filter>Scripts\Have A Nice Death\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CCinematicScript.h">
+      <Filter>Scripts\Have A Nice Death\Cinematic</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CHallofEternity_Floor1_CinematicScript.h">
+      <Filter>Scripts\Have A Nice Death\Cinematic\Hall of Eternity\Floor 1</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CW9_Boss_CinematicScript.h">
+      <Filter>Scripts\Have A Nice Death\Cinematic\W9 Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEntetElevatorScript.h">
+      <Filter>Scripts\Have A Nice Death\Elevator</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CExitElevatorScript.h">
+      <Filter>Scripts\Have A Nice Death\Elevator</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEnemyDamageLifeBarScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEnemyHitBoxScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEnemyLifeBarScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CEnemyScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerDetectScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CFlyingBookScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy\FlyingBook</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CGhostScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CSpooksmenScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy\Spooksmen</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CSkeletonHandScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy\SkeletonHand</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPyroGhostScript.h">
+      <Filter>Scripts\Have A Nice Death\Enemy\PyroGhost</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CFXScript.h">
+      <Filter>Scripts\Have A Nice Death\FX</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CLevelChangeScript.h">
+      <Filter>Scripts\Have A Nice Death\LevelChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPhysics2DScript.h">
+      <Filter>Scripts\Have A Nice Death\Physics2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CProjectile2DScript.h">
+      <Filter>Scripts\Have A Nice Death\Projectile2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerCameraScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerDamageLifeBarScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerHitBoxScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerLifeBarScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerLifeTextScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerManaBarScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerManaTextScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Have A Nice Death\CPlayerSkillScript.h">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -39,26 +150,137 @@
     <ClCompile Include="Scripts.cpp">
       <Filter>Default</Filter>
     </ClCompile>
-    <ClCompile Include="CScriptMgr.cpp">
-      <Filter>ScriptMgr</Filter>
-    </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
+    <ClCompile Include="The Game of Sisyphus\CBulletScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerCameraScript.cpp">
+    <ClCompile Include="The Game of Sisyphus\CGoalScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
-    <ClCompile Include="CGoalScript.cpp">
+    <ClCompile Include="The Game of Sisyphus\CPlayerCameraScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletScript.cpp">
+    <ClCompile Include="The Game of Sisyphus\CPlayerScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
-    <ClCompile Include="CBulletCountUIScript.cpp">
+    <ClCompile Include="The Game of Sisyphus\CBulletCountUIScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClCompile>
+    <ClCompile Include="CScriptMgr.cpp">
+      <Filter>ScriptMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CBossEnemyScript.cpp">
+      <Filter>Scripts\Have A Nice Death\BossEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CLifeScript.cpp">
+      <Filter>Scripts\Have A Nice Death\BossEnemy\Life</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEvilPumpkinBombScript.cpp">
+      <Filter>Scripts\Have A Nice Death\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEvilPumpkinScript.cpp">
+      <Filter>Scripts\Have A Nice Death\BossEnemy\Miniboss\EvilPumpkin</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CBridgeScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CButtonScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayButtonScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Button\PlayButton</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CSoundManagerScript.cpp">
+      <Filter>Scripts\Have A Nice Death\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CGameManagerScript.cpp">
+      <Filter>Scripts\Have A Nice Death\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CCinematicScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Cinematic</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CHallofEternity_Floor1_CinematicScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Cinematic\Hall of Eternity\Floor 1</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CW9_Boss_CinematicScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Cinematic\W9 Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEntetElevatorScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Elevator</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CExitElevatorScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Elevator</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEnemyDamageLifeBarScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEnemyHitBoxScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEnemyLifeBarScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CEnemyScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerDetectScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CFlyingBookScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy\FlyingBook</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CGhostScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CSpooksmenScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy\Spooksmen</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CSkeletonHandScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy\SkeletonHand</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPyroGhostScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Enemy\PyroGhost</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CFXScript.cpp">
+      <Filter>Scripts\Have A Nice Death\FX</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CLevelChangeScript.cpp">
+      <Filter>Scripts\Have A Nice Death\LevelChange</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPhysics2DScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Physics2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CProjectile2DScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Projectile2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerCameraScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerDamageLifeBarScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerHitBoxScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerLifeBarScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerLifeTextScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerManaBarScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerManaTextScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Have A Nice Death\CPlayerSkillScript.cpp">
+      <Filter>Scripts\Have A Nice Death\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +301,87 @@
     </Filter>
     <Filter Include="Scripts\The Game of Sisyphus">
       <UniqueIdentifier>{fba07866-d561-42f1-a64b-9193eba197ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death">
+      <UniqueIdentifier>{96a91f10-e3c8-4347-a956-edeada12ef51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\BossEnemy">
+      <UniqueIdentifier>{bca57198-5d81-4462-b133-04c928c7b4ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\BossEnemy\Life">
+      <UniqueIdentifier>{ab61a928-c11e-4dcb-a702-9d3b0c1278f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\BossEnemy\Miniboss">
+      <UniqueIdentifier>{6311121f-6dde-44a6-a896-ab3ee2e9a99e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\BossEnemy\Miniboss\EvilPumpkin">
+      <UniqueIdentifier>{1e4a0f04-46d7-46fa-95cb-aa7920c7ee4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\BossEnemy\Miniboss\EvilPumpkin\EvilPumpkinBomb">
+      <UniqueIdentifier>{d00b5a6d-b11c-46b5-a8b1-7c5bd48233e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Bridge">
+      <UniqueIdentifier>{9d836527-20c5-49d9-941e-3ec3e6694376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Button">
+      <UniqueIdentifier>{f6b46b72-48fc-4c1d-9a1f-01fe7f4d2e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Cinematic">
+      <UniqueIdentifier>{abe835b8-dc17-4bbe-9d22-ac48a694b12e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Elevator">
+      <UniqueIdentifier>{093c0a68-a8c7-4b17-8562-598c75697166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Enemy">
+      <UniqueIdentifier>{a82b0742-a755-4b51-bc57-0867979407ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\FX">
+      <UniqueIdentifier>{46c22dac-9dce-4125-b34c-735de1a0c02d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\GameManager">
+      <UniqueIdentifier>{ebb055e4-4b6a-41ba-ac4b-6dbb5052c32b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\LevelChange">
+      <UniqueIdentifier>{4134692d-9674-4200-bf0b-f57ad26f3f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Physics2D">
+      <UniqueIdentifier>{a0dbb57b-1ef2-4b01-8b26-2d52004ca637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Player">
+      <UniqueIdentifier>{8930a1d2-3ed8-44cd-a933-488ff555a7b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Projectile2D">
+      <UniqueIdentifier>{28dd73d0-039c-49c9-9946-1135e266f8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\SoundManager">
+      <UniqueIdentifier>{c012092b-de71-4d6d-9788-b8f3f12b7ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Button\PlayButton">
+      <UniqueIdentifier>{c919c675-d53b-4968-bc97-cb8d3013a924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Cinematic\W9 Boss">
+      <UniqueIdentifier>{00b6fdac-022e-45b2-a639-e016669b8a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Cinematic\Hall of Eternity">
+      <UniqueIdentifier>{38379974-7dc0-4a0e-b265-ef6107e5d7e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Cinematic\Hall of Eternity\Floor 1">
+      <UniqueIdentifier>{f9df2664-fc72-4860-8b92-4339327a3e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Enemy\FlyingBook">
+      <UniqueIdentifier>{1887c4e2-e4b1-4192-8d48-29d9b7dda751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Enemy\Ghost">
+      <UniqueIdentifier>{91ca09d3-40db-4654-b10c-64cf67a8234c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Enemy\PyroGhost">
+      <UniqueIdentifier>{f896645b-847f-4626-9a16-f67b4f2ff34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Enemy\SkeletonHand">
+      <UniqueIdentifier>{cad8306e-0fff-414c-9522-999075a124c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Have A Nice Death\Enemy\Spooksmen">
+      <UniqueIdentifier>{672b938b-9119-4da3-9a06-809546746ac7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

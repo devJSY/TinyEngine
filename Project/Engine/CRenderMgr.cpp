@@ -136,7 +136,7 @@ void CRenderMgr::render()
     if (nullptr != m_mainCam)
     {
         // Depth Only Pass
-        m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
+        m_mainCam->SortShadowMapObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
 
@@ -318,67 +318,7 @@ void CRenderMgr::render_postprocess_LDRI()
 {
     if (m_bBloomEnable)
     {
-        // 첫 샘플링만 Threshold 적용
-        Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
-        float Threshold = pSamplingMtrl->GetMtrlConst().arrFloat[0];
-
-        // Down Sampling
-        for (int i = 0; i < m_bloomLevels - 1; i++)
-        {
-            if (i == 0)
-                m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomRTTex_LDRI);
-            else
-            {
-                m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[i - 1]);
-                pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
-            }
-
-            CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[i]->GetWidth(), (float)m_BloomTextures_LDRI[i]->GetHeight());
-            CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[i]->GetRTV().GetAddressOf(), NULL);
-            m_SamplingObj->render();
-            CTexture::Clear(0);
-        }
-
-        // UP Sampling + Blur
-        for (int i = 0; i < m_bloomLevels - 1; i++)
-        {
-            int level = m_bloomLevels - 2 - i;
-
-            // Blur X
-            m_BlurXObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
-            CDevice::GetInst()->SetViewport((float)m_BlurTextures[level]->GetWidth(), (float)m_BlurTextures[level]->GetHeight());
-            CONTEXT->OMSetRenderTargets(1, m_BlurTextures[level]->GetRTV().GetAddressOf(), NULL);
-            m_BlurXObj->render();
-            CTexture::Clear(0);
-
-            // Blur Y
-            m_BlurYObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BlurTextures[level]);
-            CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[level]->GetWidth(), (float)m_BloomTextures_LDRI[level]->GetHeight());
-            CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[level]->GetRTV().GetAddressOf(), NULL);
-            m_BlurYObj->render();
-            CTexture::Clear(0);
-
-            // Up Sampling
-            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
-
-            if (i == m_bloomLevels - 2)
-            {
-                CDevice::GetInst()->SetViewport((float)m_BloomRTTex_LDRI->GetWidth(), (float)m_BloomRTTex_LDRI->GetHeight());
-                CONTEXT->OMSetRenderTargets(1, m_BloomRTTex_LDRI->GetRTV().GetAddressOf(), NULL);
-            }
-            else
-            {
-                CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[level - 1]->GetWidth(),
-                                                (float)m_BloomTextures_LDRI[level - 1]->GetHeight());
-                CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[level - 1]->GetRTV().GetAddressOf(), NULL);
-            }
-
-            m_SamplingObj->render();
-            CTexture::Clear(0);
-        }
-
-        // 원본 Threshold 설정
-        pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Threshold);
+        BlurTexture(m_BloomRTTex_LDRI, m_bloomLevels);
 
         // Combine
         CopyRTTexToRTCopyTex();
@@ -408,7 +348,7 @@ void CRenderMgr::render_postprocess_HDRI()
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
 
-        for (int i = 0; i < m_BloomTextures_HDRI.size(); i++)
+        for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             if (i == 0)
                 m_BloomDownObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
@@ -420,7 +360,7 @@ void CRenderMgr::render_postprocess_HDRI()
             m_BloomDownObj->render();
             CTexture::Clear(0);
         }
-        for (int i = 0; i < m_BloomTextures_HDRI.size(); i++)
+        for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             int level = m_bloomLevels - 2 - i;
             m_BloomUpObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
@@ -651,6 +591,75 @@ void CRenderMgr::CopyToPostProcessTex_HDRI()
     CONTEXT->CopyResource(m_PostProcessTex_HDRI->GetTex2D().Get(), m_FloatRTTex->GetTex2D().Get());
 }
 
+void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel)
+{
+    if (_BlurLevel > m_bloomLevels)
+        _BlurLevel = m_bloomLevels;
+
+    // 첫 샘플링만 Threshold 적용
+    Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
+    float Threshold = pSamplingMtrl->GetMtrlConst().arrFloat[0];
+
+    // Down Sampling
+    for (UINT i = 0; i < _BlurLevel - 1; i++)
+    {
+        if (i == 0)
+        {
+            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, _BlurTargetTex);
+        }
+        else
+        {
+            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[i - 1]);
+            pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+        }
+
+        CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[i]->GetWidth(), (float)m_BloomTextures_LDRI[i]->GetHeight());
+        CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[i]->GetRTV().GetAddressOf(), NULL);
+        m_SamplingObj->render();
+        CTexture::Clear(0);
+    }
+
+    // UP Sampling + Blur
+    for (UINT i = 0; i < _BlurLevel - 1; i++)
+    {
+        int level = _BlurLevel - 2 - i;
+
+        // Blur X
+        m_BlurXObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
+        CDevice::GetInst()->SetViewport((float)m_BlurTextures[level]->GetWidth(), (float)m_BlurTextures[level]->GetHeight());
+        CONTEXT->OMSetRenderTargets(1, m_BlurTextures[level]->GetRTV().GetAddressOf(), NULL);
+        m_BlurXObj->render();
+        CTexture::Clear(0);
+
+        // Blur Y
+        m_BlurYObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BlurTextures[level]);
+        CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[level]->GetWidth(), (float)m_BloomTextures_LDRI[level]->GetHeight());
+        CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[level]->GetRTV().GetAddressOf(), NULL);
+        m_BlurYObj->render();
+        CTexture::Clear(0);
+
+        // Up Sampling
+        m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
+
+        if (i == _BlurLevel - 2)
+        {
+            CDevice::GetInst()->SetViewport((float)_BlurTargetTex->GetWidth(), (float)_BlurTargetTex->GetHeight());
+            CONTEXT->OMSetRenderTargets(1, _BlurTargetTex->GetRTV().GetAddressOf(), NULL);
+        }
+        else
+        {
+            CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[level - 1]->GetWidth(), (float)m_BloomTextures_LDRI[level - 1]->GetHeight());
+            CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[level - 1]->GetRTV().GetAddressOf(), NULL);
+        }
+
+        m_SamplingObj->render();
+        CTexture::Clear(0);
+    }
+
+    // 원본 Threshold 설정
+    pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Threshold);
+}
+
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
 {
     m_RTCopyTex = CAssetMgr::GetInst()->CreateTexture(L"RTCopyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
@@ -677,7 +686,7 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
         CAssetMgr::GetInst()->CreateTexture(L"LDRI_BloomRenderTexture", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                             D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 
-    for (int i = 0; i < m_bloomLevels - 1; i++)
+    for (UINT i = 0; i < m_bloomLevels - 1; i++)
     {
         int div = int(pow(2, 1 + i));
         m_BloomTextures_LDRI.push_back(CAssetMgr::GetInst()->CreateTexture(
@@ -691,7 +700,7 @@ void CRenderMgr::CreateBloomTextures(Vec2 Resolution)
     // HDRI
     m_BloomTextures_HDRI.clear();
 
-    for (int i = 0; i < m_bloomLevels - 1; i++)
+    for (UINT i = 0; i < m_bloomLevels - 1; i++)
     {
         int div = int(pow(2, 1 + i));
         m_BloomTextures_HDRI.push_back(CAssetMgr::GetInst()->CreateTexture(
@@ -978,7 +987,7 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LDRI_BloomRenderTexture");
-    for (int i = 0; i < m_bloomLevels - 1; i++)
+    for (UINT i = 0; i < m_bloomLevels - 1; i++)
     {
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LDRI_BloomTexture " + std::to_wstring(i));
         CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"HDRI_BloomTexture " + std::to_wstring(i));

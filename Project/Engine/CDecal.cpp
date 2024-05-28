@@ -34,7 +34,7 @@ void CDecal::UpdateData()
 {
     Transform()->UpdateData();
 
-    Matrix matInv = Transform()->GetWorldMat().Invert();
+    Matrix matInv = Transform()->GetWorldInvMat();
     GetMaterial()->SetScalarParam(MAT_0, matInv);
     GetMaterial()->SetScalarParam(INT_0, m_bAsEmissive);
     GetMaterial()->SetScalarParam(INT_1, m_bInvertNormalY);

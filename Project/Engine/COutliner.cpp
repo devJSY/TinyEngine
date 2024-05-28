@@ -2570,6 +2570,96 @@ void COutliner::DrawLandscape(CGameObject* obj)
 
     if (open)
     {
+        // LandScape Mode
+        LANDSCAPE_MODE mode = pLandScape->GetLandScapeMode();
+        ImGui::Text("LandScape Mode");
+        ImGui::SameLine();
+        ImGui::RadioButton("Height Map", (int*)&mode, (int)LANDSCAPE_MODE::HEIGHT_MAP);
+        ImGui::SameLine();
+        ImGui::RadioButton("Splat", (int*)&mode, (int)LANDSCAPE_MODE::SPLAT);
+        ImGui::SameLine();
+        ImGui::RadioButton("None", (int*)&mode, (int)LANDSCAPE_MODE::NONE);
+        pLandScape->SetLandScapeMode(mode);
+
+        // Cast Shadow
+        bool bCastShadow = pLandScape->IsCastShadow();
+        ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);
+        pLandScape->SetCastShadow(bCastShadow);
+
+        // Brush Texture
+        {
+            ImGui::Text("Brush Texture");
+            void* TextureID = nullptr;
+            Ptr<CTexture> pBrushTex = pLandScape->GetBrushTex();
+
+            if (nullptr != pBrushTex)
+                TextureID = pBrushTex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pBrushTex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pBrushTex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pLandScape->SetBrushTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pLandScape->SetBrushTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            // Delete Texture Popup
+            ImGui::OpenPopupOnItemClick("Brush Texture##COutlinerLandScape", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Brush Texture##COutlinerDecal"))
+            {
+                if (ImGui::MenuItem("Brush Texture"))
+                {
+                    pLandScape->SetBrushTex(nullptr);
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
+        float Strength = pLandScape->GetBrushStrength();
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Brush Strength").c_str(), &Strength, 0.01f, 1e-3f, D3D11_FLOAT32_MAX))
+            pLandScape->SetBrushStrength(Strength);
+
+        Vec2 Scale = pLandScape->GetBrushScale();
+        if (ImGui::DragFloat2(ImGui_LabelPrefix("Brush Scale").c_str(), &Scale.x, 0.01f, 1e-3f, 1.f))
+            pLandScape->SetBrushScale(Scale);
+
+        Ptr<CMaterial> pCurMtrl = pLandScape->GetMaterial();
+
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Material Editor", 1.f))
+        {
+            CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
+            CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
+        }
+
         ImGui::TreePop();
     }
 }

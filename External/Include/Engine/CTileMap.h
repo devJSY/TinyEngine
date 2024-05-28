@@ -39,6 +39,7 @@ public:
     Vec2 GetTilePixelSize() const { return m_vTilePixelSize; }
 
     void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx); // row,col 위치의 타일에 ImgIdx를 배정
+
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;

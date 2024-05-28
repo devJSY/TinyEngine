@@ -26,6 +26,7 @@ public:                                                                         
 #define KEY_NONE(Key) KEY_CHECK(Key, NONE)
 
 #define LAYER_MAX 16
+#define MAX_MIP 8
 
 #define CLONE(type)                                                                                                                                  \
 public:                                                                                                                                              \

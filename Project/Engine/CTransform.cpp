@@ -12,6 +12,7 @@ CTransform::CTransform()
     , m_arrLocalDir{}
     , m_arrWorldDir{}
     , m_matWorld()
+    , m_matWorldInv()
     , m_Mobility(MOBILITY_TYPE::MOVABLE)
     , m_bAbsolute(true)
     , m_matTransformation()
@@ -26,6 +27,7 @@ CTransform::CTransform(const CTransform& origin)
     , m_arrLocalDir{origin.m_arrLocalDir[0], origin.m_arrLocalDir[1], origin.m_arrLocalDir[2]}
     , m_arrWorldDir{origin.m_arrWorldDir[0], origin.m_arrWorldDir[1], origin.m_arrWorldDir[2]}
     , m_matWorld()
+    , m_matWorldInv()
     , m_Mobility(origin.m_Mobility)
     , m_bAbsolute(origin.m_bAbsolute)
     , m_matTransformation()
@@ -92,11 +94,14 @@ void CTransform::finaltick()
             m_arrWorldDir[i].Normalize();
         }
     }
+
+    m_matWorldInv = m_matWorld.Invert();
 }
 
 void CTransform::UpdateData()
 {
     g_Transform.matWorld = m_matWorld;
+    g_Transform.matWorldInv = m_matWorldInv;
 
     g_Transform.matWorldInvTranspose = g_Transform.matWorld;
     g_Transform.matWorldInvTranspose.Translation(Vec3(0.0f));

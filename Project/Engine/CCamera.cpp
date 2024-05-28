@@ -3,6 +3,7 @@
 
 #include "CAssetMgr.h"
 #include "CEditorMgr.h"
+#include "CKeyMgr.h"
 
 #include "CDevice.h"
 #include "CTransform.h"
@@ -134,6 +135,7 @@ void CCamera::finaltick()
 
     m_matProjInv = m_matProj.Invert();
 
+    // Frustum 계산
     m_Frustum.finaltick();
 }
 
@@ -237,7 +239,10 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
                 continue;
             }
 
-            if (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
+            // _MobilityType 가 0 인경우 무조건 추가
+            // 그 외의 경우에는 RenderComponent의 옵션 확인
+            if (0 == _MobilityType ||
+                (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType))
             {
                 m_vecShadow.push_back(vecObjects[j]);
             }
@@ -371,26 +376,13 @@ void CCamera::render_SSAO()
     // SSAO
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
-
     pMtrl->UpdateData();
     pMesh->render();
 
-    static Ptr<CMaterial> pBlurXMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl");
-    static Ptr<CMaterial> pBlurYMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl");
-    Ptr<CTexture> pPostProcessTex = CRenderMgr::GetInst()->GetPostProcessTex_LDRI();
+    // Blur
+    CRenderMgr::GetInst()->BlurTexture(pSSAOTex, 3);
 
-    // Blur X
-    CONTEXT->CopyResource(pPostProcessTex->GetTex2D().Get(), pSSAOTex->GetTex2D().Get());
-    pBlurXMtrl->SetTexParam(TEX_0, pPostProcessTex);
-    pBlurXMtrl->UpdateData();
-    pMesh->render();
-
-    // Blur Y
-    CONTEXT->CopyResource(pPostProcessTex->GetTex2D().Get(), pSSAOTex->GetTex2D().Get());
-    pBlurYMtrl->SetTexParam(TEX_0, pPostProcessTex);
-    pBlurYMtrl->UpdateData();
-    pMesh->render();
-
+    // Bind
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
     pSSAOTex->UpdateData(30);
 }
@@ -551,6 +543,45 @@ void CCamera::Resize(Vec2 Resolution)
 
     m_Width = Resolution.x;
     m_AspectRatio = Resolution.x / Resolution.y;
+}
+
+tRay CCamera::GetRay()
+{
+    // 현재 마우스 좌표
+    Vec2 vMousePos = CKeyMgr::GetInst()->GetMousePos();
+
+    float NdcMouseX = 0.0f;
+    float NdcMouseY = 0.0f;
+
+    // Mouse Pos → NDC
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        vMousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+
+        NdcMouseX = vMousePos.x * 2.0f / ViewportSize.x - 1.0f;
+        NdcMouseY = -vMousePos.y * 2.0f / ViewportSize.y + 1.0f;
+    }
+    else
+    {
+        Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+        NdcMouseX = vMousePos.x * 2.0f / WindowSize.x - 1.0f;
+        NdcMouseY = -vMousePos.y * 2.0f / WindowSize.y + 1.0f;
+    }
+
+    // NDC → World
+    Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
+    Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
+    Matrix inverseProjView = m_matProjInv * m_matViewInv;
+    Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
+    Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
+
+    // World 좌표 Ray
+    tRay ray = {};
+    ray.vStart = Transform()->GetWorldPos();
+    ray.vDir = (NearWorld - FarWorld).Normalize();
+
+    return ray;
 }
 
 void CCamera::SaveToLevelFile(FILE* _File)

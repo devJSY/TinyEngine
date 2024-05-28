@@ -83,12 +83,14 @@ public:
 
     void Resize(Vec2 Resolution);
 
+    tRay GetRay();
+
 public:
     virtual void begin() override;
     virtual void finaltick() override;
 
     void SortObject();
-    void SortShadowMapObject(UINT _MobilityType);
+    void SortShadowMapObject(UINT _MobilityType = 0);
 
 public:
     void render_Deferred();

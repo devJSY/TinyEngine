@@ -19,10 +19,10 @@ void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _Nomalize
 {
     float2 vUV = float2(_NomalizedThreadID, 0.5f);
     
-    vUV.x += g_time * 0.5f;
+    vUV.x += g_Time * 0.5f;
     
     // sin 그래프로 텍스쳐의 샘플링 위치 UV 를 계산
-    vUV.y -= (sin((_NomalizedThreadID - (g_time /*그래프 우측 이동 속도*/)) * 2.f * 3.1415926535f * 10.f /*반복주기*/) / 2.f);
+    vUV.y -= (sin((_NomalizedThreadID - (g_Time /*그래프 우측 이동 속도*/)) * 2.f * 3.1415926535f * 10.f /*반복주기*/) / 2.f);
     
     if (1.f < vUV.x)
         vUV.x = frac(vUV.x);
@@ -55,6 +55,51 @@ float random(float3 seed, int i)
     float4 seed4 = float4(seed, i);
     float dot_product = dot(seed4, float4(12.9898, 78.233, 45.164, 94.673));
     return frac(sin(dot_product) * 43758.5453);
+}
+
+int IntersectsRay(float3 _vertices[3], float3 _vStart, float3 _vDir, out float3 _vCrossPoint, out float _fResult)
+{
+    float3 edge[2] = { (float3) 0.f, (float3) 0.f };
+    edge[0] = _vertices[1].xyz - _vertices[0].xyz;
+    edge[1] = _vertices[2].xyz - _vertices[0].xyz;
+
+    float3 normal = normalize(cross(edge[0], edge[1]));
+    float b = dot(normal, _vDir);
+
+    float3 w0 = _vStart - _vertices[0].xyz;
+    float a = -dot(normal, w0);
+    float t = a / b;
+
+    _fResult = t;
+
+    float3 p = _vStart + t * _vDir;
+
+    _vCrossPoint = p;
+
+    float uu, uv, vv, wu, wv, inverseD;
+    uu = dot(edge[0], edge[0]);
+    uv = dot(edge[0], edge[1]);
+    vv = dot(edge[1], edge[1]);
+
+    float3 w = p - _vertices[0].xyz;
+    wu = dot(w, edge[0]);
+    wv = dot(w, edge[1]);
+    inverseD = uv * uv - uu * vv;
+    inverseD = 1.0f / inverseD;
+
+    float u = (uv * wv - vv * wu) * inverseD;
+    if (u < 0.0f || u > 1.0f)
+    {
+        return 0;
+    }
+
+    float v = (uv * wu - uu * wv) * inverseD;
+    if (v < 0.0f || (u + v) > 1.0f)
+    {
+        return 0;
+    }
+
+    return 1;
 }
 
 #endif
