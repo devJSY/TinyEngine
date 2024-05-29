@@ -640,7 +640,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
         pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
-        pShader->AddScalarParam(VEC4_0, "Tessellation Factor", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Tessellation Distance Scale");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
         pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
@@ -1433,7 +1433,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
-        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f)); // TessFactor
+        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Tess Dist Scale
 
         pMtrl->SetName(L"LandScapeMtrl");
         AddAsset<CMaterial>(L"LandScapeMtrl", pMtrl);
