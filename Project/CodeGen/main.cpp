@@ -1,7 +1,50 @@
 ﻿#include "pch.h"
 #include "PathMgr.h"
 
+#include <fstream>
+#include <iostream>
+
 vector<wstring> g_vecName;
+
+void NameInput()
+{
+    wstring strProjPath = CPathMgr::GetProjectPath();
+    wstring filterPath = strProjPath + L"Scripts\\Scripts.vcxproj.filters";
+
+    wifstream fin;
+    fin.open(filterPath);
+    wstring line;
+    wstring header;
+    bool isheader = false;
+    wcout << L"Script!!=======================" << endl;
+    while (getline(fin, line))
+    {
+
+        if (line.find(L".cpp") != string::npos)
+        {
+            isheader = false;
+            continue;
+        }
+
+        if (line.find(L".h") != string::npos)
+        {
+            int start = line.find(L"\"");
+            int end = line.find(L".");
+
+            header = line.substr(start + 1, end - start - 1);
+            isheader = true;
+        }
+
+        if (line.find(L"<Filter>Scripts") != string::npos)
+        {
+            if (isheader)
+            {
+                wcout << header << endl;
+                g_vecName.push_back(header);
+            }
+        }
+    }
+}
 
 int main()
 {
@@ -9,6 +52,7 @@ int main()
     wstring strProjPath = CPathMgr::GetProjectPath();
     wstring strCppPath = strProjPath + L"Scripts\\CScriptMgr.cpp";
     wstring strHeaderPath = strProjPath + L"Scripts\\CScriptMgr.h";
+    wstring strFilterPath = strProjPath + L"Scripts\\Scripts.vcxproj.filters";
 
     // 1. 현재 존재하는 모든 스크립트를 알아내야함.
     wstring strScriptIncludePath = CPathMgr::GetIncludePath();
@@ -17,90 +61,53 @@ int main()
     WIN32_FIND_DATA tData = {};
     HANDLE handle = FindFirstFile(wstring(strScriptCode + L"\\*.h").c_str(), &tData);
 
+    NameInput();
+
+
     if (INVALID_HANDLE_VALUE == handle)
         return 0;
 
     // 예외 리스트 목록을 알아낸다.
-    FILE* pExeptList = nullptr;
-    _wfopen_s(&pExeptList, L"exeptlist.txt", L"r");
-
+    wifstream fin;
+    wstring line;
     vector<wstring> strExept;
+    fin.open(L"exeptlist.txt");
 
-    if (nullptr != pExeptList)
+    while (getline(fin, line))
     {
-        wchar_t szName[255] = L"";
+        strExept.push_back(line);
 
-        while (true)
-        {
-            int iLen = fwscanf_s(pExeptList, L"%s", szName, 255);
-            if (iLen == -1)
-                break;
-
-            strExept.push_back(szName);
-        }
-        fclose(pExeptList);
     }
 
-    while (true)
+
+    vector<wstring>::iterator iter = g_vecName.begin();
+
+    while (iter != g_vecName.end())
     {
-        // 예외가 아닌경우, 스크립트 이름으로 본다.
-        bool bExeption = false;
+        bool isExept = false;
+
         for (size_t i = 0; i < strExept.size(); ++i)
         {
-            if (!wcscmp(tData.cFileName, strExept[i].c_str()))
+            if (iter->find(strExept[i])!= wstring::npos)
             {
-                bExeption = true;
+                isExept = true;
                 break;
             }
         }
 
-        if (!bExeption)
+        if (isExept)
         {
-            g_vecName.push_back(wstring(tData.cFileName).substr(0, wcslen(tData.cFileName) - 2));
+            iter = g_vecName.erase(iter);
+        }
+        else
+        {
+            iter++;
         }
 
-        if (!FindNextFile(handle, &tData))
-            break;
     }
 
     FindClose(handle);
 
-    // 이전에 CodeGen 이 실행할때 체크해둔 스크립트 목록
-    FILE* pScriptListFile = nullptr;
-    _wfopen_s(&pScriptListFile, L"ScriptList.txt", L"r");
-
-    if (nullptr != pScriptListFile)
-    {
-        wchar_t szScriptName[50] = L"";
-        vector<wstring> strCurScriptList;
-        while (true)
-        {
-            int iLen = fwscanf_s(pScriptListFile, L"%s", szScriptName, 50);
-            if (iLen == -1)
-                break;
-
-            strCurScriptList.push_back(szScriptName);
-        }
-        fclose(pScriptListFile);
-
-        if (g_vecName.size() == strCurScriptList.size())
-        {
-            bool bSame = true;
-            for (UINT i = 0; i < g_vecName.size(); ++i)
-            {
-                if (g_vecName[i] != strCurScriptList[i])
-                {
-                    // 같지 않은게 1개이상 있다
-                    bSame = false;
-                    break;
-                }
-            }
-
-            // 이전 목록과, 현재 스크립트 목록이 완전 일치한다(변경사항 없다)
-            if (bSame)
-                return 0;
-        }
-    }
 
     FILE* pFile = NULL;
 

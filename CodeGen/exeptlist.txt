@@ -1,1 +1,3 @@
 CScriptMgr.h
+Have A Nice Death
+The Game of Sisyphus

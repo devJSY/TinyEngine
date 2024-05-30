@@ -142,6 +142,27 @@
     <ClInclude Include="Have A Nice Death\CPlayerSkillScript.h">
       <Filter>Scripts\Have A Nice Death\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CFSMScript.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>FSM\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestForward.h">
+      <Filter>State\FSMTest</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestLeft.h">
+      <Filter>State\FSMTest</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestRight.h">
+      <Filter>State\FSMTest</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestIdle.h">
+      <Filter>State\FSMTest</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestFSM.h">
+      <Filter>Scripts\FSM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -282,6 +303,27 @@
     <ClCompile Include="Have A Nice Death\CPlayerSkillScript.cpp">
       <Filter>Scripts\Have A Nice Death\Player</Filter>
     </ClCompile>
+    <ClCompile Include="CFSMScript.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>FSM\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestForward.cpp">
+      <Filter>State\FSMTest</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestLeft.cpp">
+      <Filter>State\FSMTest</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestRight.cpp">
+      <Filter>State\FSMTest</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestIdle.cpp">
+      <Filter>State\FSMTest</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestFSM.cpp">
+      <Filter>Scripts\FSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -382,6 +424,21 @@
     </Filter>
     <Filter Include="Scripts\Have A Nice Death\Enemy\Spooksmen">
       <UniqueIdentifier>{672b938b-9119-4da3-9a06-809546746ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{49752795-61fd-4535-b079-696b576ba6c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM\State">
+      <UniqueIdentifier>{91c88dbd-b34e-4c0c-b822-7dc479e24bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM">
+      <UniqueIdentifier>{dd9ede4a-0dc6-41ec-8eeb-0b3eead1c9e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{1310388c-732a-4e84-a34c-61ad55000c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\FSMTest">
+      <UniqueIdentifier>{47e22545-89ca-424c-9f3c-34d22adcbb7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

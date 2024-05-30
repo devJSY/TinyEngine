@@ -45,13 +45,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Scripts\</OutDir>
-    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ProjectDir);$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Scripts\</OutDir>
-    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ProjectDir);$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(SolutionDir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -109,7 +109,14 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CState.h" />
+    <ClInclude Include="CTestForward.h" />
+    <ClInclude Include="CTestFSM.h" />
+    <ClInclude Include="CTestIdle.h" />
+    <ClInclude Include="CTestLeft.h" />
+    <ClInclude Include="CTestRight.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Have A Nice Death\CBossEnemyScript.h">
@@ -284,7 +291,14 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CTestForward.cpp" />
+    <ClCompile Include="CTestFSM.cpp" />
+    <ClCompile Include="CTestIdle.cpp" />
+    <ClCompile Include="CTestLeft.cpp" />
+    <ClCompile Include="CTestRight.cpp" />
     <ClCompile Include="Have A Nice Death\CBossEnemyScript.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

@@ -6,6 +6,7 @@
 enum SCRIPT_TYPE
 {
 	CAMERAMOVESCRIPT,
+	TESTFSM,
 	END,
 };
 
