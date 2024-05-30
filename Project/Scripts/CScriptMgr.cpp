@@ -2,16 +2,20 @@
 #include "CScriptMgr.h"
 
 #include "CCameraMoveScript.h"
+#include "CTestFSM.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
+	_vec.push_back(L"CTestFSM");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 {
 	if (L"CCameraMoveScript" == _strScriptName)
 		return new CCameraMoveScript;
+	if (L"CTestFSM" == _strScriptName)
+		return new CTestFSM;
 	return nullptr;
 }
 
@@ -21,6 +25,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 	{
 	case (UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return new CCameraMoveScript;
+	case (UINT)SCRIPT_TYPE::TESTFSM:
+		return new CTestFSM;
 	}
 	return nullptr;
 }
@@ -31,6 +37,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 	{
 	case SCRIPT_TYPE::CAMERAMOVESCRIPT:
 		return L"CCameraMoveScript";
+	case SCRIPT_TYPE::TESTFSM:
+		return L"CTestFSM";
 	}
 	return nullptr;
 }
