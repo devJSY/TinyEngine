@@ -117,6 +117,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTestIdle.h" />
     <ClInclude Include="CTestLeft.h" />
     <ClInclude Include="CTestRight.h" />
+    <ClInclude Include="CUnitScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Have A Nice Death\CBossEnemyScript.h">
@@ -299,6 +300,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CTestIdle.cpp" />
     <ClCompile Include="CTestLeft.cpp" />
     <ClCompile Include="CTestRight.cpp" />
+    <ClCompile Include="CUnitScript.cpp" />
     <ClCompile Include="Have A Nice Death\CBossEnemyScript.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
