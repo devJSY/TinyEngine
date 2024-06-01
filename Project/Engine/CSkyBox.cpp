@@ -49,18 +49,18 @@ void CSkyBox::UpdateData()
 
 void CSkyBox::render()
 {
-    if (nullptr == GetMesh() || nullptr == GetMaterial() || GetOwner()->IsDead())
+    if (nullptr == GetMesh() || nullptr == GetMaterial(0) || GetOwner()->IsDead())
         return;
     
     UpdateData();
 
     Transform()->UpdateData();
 
-    GetMaterial()->SetTexParam(TEXCUBE_0, m_EnvTex);
+    GetMaterial(0)->SetTexParam(TEXCUBE_0, m_EnvTex);
 
-    GetMaterial()->UpdateData();
+    GetMaterial(0)->UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 }
 
 void CSkyBox::render(Ptr<CMaterial> _mtrl)
@@ -74,7 +74,7 @@ void CSkyBox::render(Ptr<CMaterial> _mtrl)
 
     _mtrl->UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 }
 
 void CSkyBox::SetType(SKYBOX_TYPE _type)
@@ -142,7 +142,7 @@ void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)
         SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     }
 
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl"));
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl"), 0);
 }
 
 void CSkyBox::SaveToLevelFile(FILE* _File)

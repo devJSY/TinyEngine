@@ -68,12 +68,6 @@ typedef Vector2 Vec2;
 typedef Vector3 Vec3;
 typedef Vector4 Vec4;
 
-// 엔진 헤더 참조
-#include "singleton.h"
-#include "define.h"
-#include "struct.h"
-#include "func.h"
-
 // ImGui
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
     #define IMGUI_DEFINE_MATH_OPERATORS
@@ -96,8 +90,6 @@ typedef Vector4 Vec4;
     #pragma comment(lib, "box2d\\box2d")
 #endif
 
-#include "COutputLog.h"
-
 // PhysX
 #ifdef _DEBUG
     #pragma comment(lib, "PhysX\\PhysX_64_debug")
@@ -118,3 +110,19 @@ typedef Vector4 Vec4;
     #pragma comment(lib, "PhysX\\PhysXVehicle_static_64")
     #pragma comment(lib, "PhysX\\PhysXCharacterKinematic_static_64")
 #endif
+
+// Fbx Loader
+#include <FBXLoader\\fbxsdk.h>
+#ifdef _DEBUG
+    #pragma comment(lib, "FBXLoader\\libfbxsdk-md_debug")
+#else
+    #pragma comment(lib, "FBXLoader\\libfbxsdk-md")
+#endif
+
+// 엔진 헤더 참조
+#include "singleton.h"
+#include "define.h"
+#include "struct.h"
+#include "func.h"
+
+#include "COutputLog.h"

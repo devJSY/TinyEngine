@@ -147,15 +147,15 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
 
     if (LIGHT_TYPE::DIRECTIONAL == (LIGHT_TYPE)m_Info.LightType)
     {
-        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLightMtrl"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DirectionalLightMtrl"), 0);
     }
     else if (LIGHT_TYPE::POINT == (LIGHT_TYPE)m_Info.LightType)
     {
-        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PointLightMtrl"), 0);
     }
     else if (LIGHT_TYPE::SPOT == (LIGHT_TYPE)m_Info.LightType)
     {
-        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl"));
+        MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SpotLightMtrl"), 0);
     }
 }
 
@@ -178,7 +178,7 @@ void CLight3D::render_Deferred(int _LightIdx)
 
     m_LightMtrl->UpdateData();
 
-    m_VolumeMesh->render();
+    m_VolumeMesh->render(0);
 }
 
 void CLight3D::render_ShadowDepth(UINT _MobilityType)

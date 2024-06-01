@@ -48,12 +48,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
-    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -136,6 +136,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CEditorMgr.h" />
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
+    <ClInclude Include="CFBXLoader.h" />
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CFrustum.h" />
     <ClInclude Include="CGameObject.h" />
@@ -155,6 +156,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CMaterialEditor.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshCollider.h" />
+    <ClInclude Include="CMeshData.h" />
     <ClInclude Include="CMeshRender.h" />
     <ClInclude Include="CMRT.h" />
     <ClInclude Include="components.h" />
@@ -255,6 +257,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CEditorMgr.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
+    <ClCompile Include="CFBXLoader.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CFrustum.cpp" />
     <ClCompile Include="CGameObject.cpp" />
@@ -275,6 +278,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CMaterialEditor.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshCollider.cpp" />
+    <ClCompile Include="CMeshData.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
     <ClCompile Include="CMRT.cpp" />
     <ClCompile Include="COutliner.cpp" />

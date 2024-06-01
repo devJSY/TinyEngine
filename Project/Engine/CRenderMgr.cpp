@@ -351,9 +351,9 @@ void CRenderMgr::render_postprocess_HDRI()
         for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             if (i == 0)
-                m_BloomDownObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
+                m_BloomDownObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
             else
-                m_BloomDownObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
+                m_BloomDownObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
 
             CDevice::GetInst()->SetViewport((float)m_BloomTextures_HDRI[i]->GetWidth(), (float)m_BloomTextures_HDRI[i]->GetHeight());
             CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[i]->GetRTV().GetAddressOf(), NULL);
@@ -363,7 +363,7 @@ void CRenderMgr::render_postprocess_HDRI()
         for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             int level = m_bloomLevels - 2 - i;
-            m_BloomUpObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
+            m_BloomUpObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
             if (i == m_bloomLevels - 2)
             {
                 CDevice::GetInst()->SetViewport((float)m_PostProcessTex_HDRI->GetWidth(), (float)m_PostProcessTex_HDRI->GetHeight());
@@ -605,11 +605,11 @@ void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel)
     {
         if (i == 0)
         {
-            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, _BlurTargetTex);
+            m_SamplingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, _BlurTargetTex);
         }
         else
         {
-            m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[i - 1]);
+            m_SamplingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_LDRI[i - 1]);
             pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
         }
 
@@ -625,21 +625,21 @@ void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel)
         int level = _BlurLevel - 2 - i;
 
         // Blur X
-        m_BlurXObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
+        m_BlurXObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
         CDevice::GetInst()->SetViewport((float)m_BlurTextures[level]->GetWidth(), (float)m_BlurTextures[level]->GetHeight());
         CONTEXT->OMSetRenderTargets(1, m_BlurTextures[level]->GetRTV().GetAddressOf(), NULL);
         m_BlurXObj->render();
         CTexture::Clear(0);
 
         // Blur Y
-        m_BlurYObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BlurTextures[level]);
+        m_BlurYObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BlurTextures[level]);
         CDevice::GetInst()->SetViewport((float)m_BloomTextures_LDRI[level]->GetWidth(), (float)m_BloomTextures_LDRI[level]->GetHeight());
         CONTEXT->OMSetRenderTargets(1, m_BloomTextures_LDRI[level]->GetRTV().GetAddressOf(), NULL);
         m_BlurYObj->render();
         CTexture::Clear(0);
 
         // Up Sampling
-        m_SamplingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
+        m_SamplingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_LDRI[level]);
 
         if (i == _BlurLevel - 2)
         {
@@ -1021,12 +1021,12 @@ void CRenderMgr::Resize(Vec2 Resolution)
         m_vecCam[i]->Resize(Resolution);
     }
 
-    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_RTCopyTex);
-    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_BloomRTTex_LDRI);
+    m_CombineObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_RTCopyTex);
+    m_CombineObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_BloomRTTex_LDRI);
 
-    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
-    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
+    m_ToneMappingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
+    m_ToneMappingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
 
-    m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
-    m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_DepthOnlyTex);
+    m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
+    m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
 }

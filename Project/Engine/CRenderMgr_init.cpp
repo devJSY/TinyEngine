@@ -48,55 +48,55 @@ void CRenderMgr::init()
     m_SamplingObj->AddComponent(new CTransform);
     m_SamplingObj->AddComponent(new CMeshRender);
     m_SamplingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_SamplingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl"));
+    m_SamplingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl"), 0);
 
     m_BlurXObj = new CGameObject;
     m_BlurXObj->AddComponent(new CTransform);
     m_BlurXObj->AddComponent(new CMeshRender);
     m_BlurXObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_BlurXObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl"));
+    m_BlurXObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurXMtrl"), 0);
 
     m_BlurYObj = new CGameObject;
     m_BlurYObj->AddComponent(new CTransform);
     m_BlurYObj->AddComponent(new CMeshRender);
     m_BlurYObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_BlurYObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl"));
+    m_BlurYObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlurYMtrl"), 0);
 
     m_CombineObj = new CGameObject;
     m_CombineObj->AddComponent(new CTransform);
     m_CombineObj->AddComponent(new CMeshRender);
     m_CombineObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_CombineObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CombineMtrl"));
-    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_RTCopyTex);
-    m_CombineObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_BloomRTTex_LDRI);
+    m_CombineObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CombineMtrl"), 0);
+    m_CombineObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_RTCopyTex);
+    m_CombineObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_BloomRTTex_LDRI);
 
     // HDRI Bloom
     m_BloomDownObj = new CGameObject;
     m_BloomDownObj->AddComponent(new CTransform);
     m_BloomDownObj->AddComponent(new CMeshRender);
     m_BloomDownObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_BloomDownObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomDownMtrl"));
+    m_BloomDownObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomDownMtrl"), 0);
 
     m_BloomUpObj = new CGameObject;
     m_BloomUpObj->AddComponent(new CTransform);
     m_BloomUpObj->AddComponent(new CMeshRender);
     m_BloomUpObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_BloomUpObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomUpMtrl"));
+    m_BloomUpObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BloomUpMtrl"), 0);
 
     m_ToneMappingObj = new CGameObject;
     m_ToneMappingObj->AddComponent(new CTransform);
     m_ToneMappingObj->AddComponent(new CMeshRender);
     m_ToneMappingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_ToneMappingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl"));
-    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
-    m_ToneMappingObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
+    m_ToneMappingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl"), 0);
+    m_ToneMappingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
+    m_ToneMappingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
 
     // PostEffect
     m_PostEffectObj = new CGameObject;
     m_PostEffectObj->AddComponent(new CTransform);
     m_PostEffectObj->AddComponent(new CMeshRender);
     m_PostEffectObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    m_PostEffectObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl"));
-    m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_0, m_FloatRTTex);
-    m_PostEffectObj->MeshRender()->GetMaterial()->SetTexParam(TEX_1, m_DepthOnlyTex);
+    m_PostEffectObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl"), 0);
+    m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
+    m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
 }

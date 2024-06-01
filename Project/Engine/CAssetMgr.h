@@ -12,6 +12,7 @@
 #include "CSound.h"
 #include "CPhysics2DMaterial.h"
 #include "CPhysicMaterial.h"
+#include "CMeshData.h"
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
@@ -40,6 +41,9 @@ private:
     void CreateDefaultMaterial();
     void CreateDefaultPhysics2DMaterial();
     void CreateDefaultPhysicMaterial();
+
+public:
+    Ptr<CMeshData> LoadFBX(const wstring& _strPath);
 
 public:
     // Geometry Function
@@ -100,6 +104,8 @@ ASSET_TYPE GetAssetType()
 
     if constexpr (std::is_same_v<CMesh, T>)
         Type = ASSET_TYPE::MESH;
+    if constexpr (std::is_same_v<CMeshData, T>)
+        Type = ASSET_TYPE::MESHDATA;
     if constexpr (std::is_same_v<CPrefab, T>)
         Type = ASSET_TYPE::PREFAB;
     if constexpr (std::is_same_v<CTexture, T>)

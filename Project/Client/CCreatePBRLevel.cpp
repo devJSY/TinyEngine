@@ -87,7 +87,7 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pPhongObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     pPhongObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-    pPhongObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"));
+    pPhongObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"), 0);
 
     pCurLevel->AddObject(pPhongObj, 0);
 
@@ -100,7 +100,7 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pFloor->Transform()->SetRelativeScale(Vec3(2500.f, 100.f, 2500.f));
 
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"));
+    pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"), 0);
 
     pCurLevel->AddObject(pFloor, 0);
 

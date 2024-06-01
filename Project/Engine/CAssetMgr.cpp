@@ -99,8 +99,8 @@ void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
 
             if (FileExtension == L".mesh")
                 Load<CMesh>(FileRelativePath, FileRelativePath);
-            // if (FileExtension == L".mdat")
-            //     Load<CMeshData>(FileRelativePath, FileRelativePath);
+            if (FileExtension == L".mdat")
+                Load<CMeshData>(FileRelativePath, FileRelativePath);
             if (FileExtension == L".pref")
                 Load<CPrefab>(FileRelativePath, FileRelativePath);
             if (FileExtension == L".dds" || FileExtension == L".DDS" || FileExtension == L".tga" || FileExtension == L".TGA" ||

@@ -179,14 +179,14 @@ void COutliner::render()
                 pObj->SetName(L"Rect");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"), 0);
             }
             else if (11 == Dirtyflag)
             {
                 pObj->SetName(L"Circle");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"), 0);
             }
             else if (20 == Dirtyflag)
             {
@@ -212,7 +212,7 @@ void COutliner::render()
                 pObj->AddComponent(new CRigidbody2D);
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"), 0);
                 pObj->AddComponent(new CBoxCollider2D);
             }
             else if (31 == Dirtyflag)
@@ -221,7 +221,7 @@ void COutliner::render()
                 pObj->AddComponent(new CRigidbody2D);
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CircleMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"), 0);
                 pObj->AddComponent(new CCircleCollider2D);
             }
             else if (32 == Dirtyflag)
@@ -241,21 +241,21 @@ void COutliner::render()
                 pObj->SetName(L"Box");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
             }
             else if (41 == Dirtyflag)
             {
                 pObj->SetName(L"Sphere");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
             }
             else if (42 == Dirtyflag)
             {
                 pObj->SetName(L"Capsule");
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CapsuleMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
             }
             else if (50 == Dirtyflag)
             {
@@ -281,7 +281,7 @@ void COutliner::render()
                 pObj->AddComponent(new CRigidbody);
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
                 pObj->AddComponent(new CBoxCollider);
             }
             else if (61 == Dirtyflag)
@@ -290,7 +290,7 @@ void COutliner::render()
                 pObj->AddComponent(new CRigidbody);
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
                 pObj->AddComponent(new CSphereCollider);
             }
             else if (62 == Dirtyflag)
@@ -299,7 +299,7 @@ void COutliner::render()
                 pObj->AddComponent(new CRigidbody);
                 pObj->AddComponent(new CMeshRender);
                 pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"CapsuleMesh"));
-                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"));
+                pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
                 pObj->AddComponent(new CCapsuleCollider);
             }
 
@@ -1898,48 +1898,42 @@ void COutliner::DrawMeshRender(CGameObject* obj)
             ImGui::TreePop();
         }
 
-        Ptr<CMaterial> pCurMtrl = pMeshRender->GetMaterial();
-        Ptr<CMaterial> pSharedMtrl = pMeshRender->GetSharedMaterial();
-        Ptr<CMaterial> pDynamicMtrl = pMeshRender->GetDynamicMaterial();
-
-        // Material
-        if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
+        if (nullptr != pMesh)
         {
-            string CurMtrlname, SharedMtrlname, DynamicMtrlname;
-            if (nullptr != pCurMtrl)
-                CurMtrlname = ToString(pCurMtrl->GetName());
-            if (nullptr != pSharedMtrl)
-                SharedMtrlname = ToString(pSharedMtrl->GetName());
-            if (nullptr != pDynamicMtrl)
-                DynamicMtrlname = ToString(pDynamicMtrl->GetName());
+            Ptr<CMaterial> pCurMtrl = pMeshRender->GetMaterial(0);
 
-            ImGui_InputText("Material", CurMtrlname);
-
-            // Drag & Drop
-            if (ImGui::BeginDragDropTarget())
+            // Material
+            if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
             {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                string CurMtrlname, SharedMtrlname, DynamicMtrlname;
+                if (nullptr != pCurMtrl)
+                    CurMtrlname = ToString(pCurMtrl->GetName());
+
+                ImGui_InputText("Material 0", CurMtrlname);
+
+                // Drag & Drop
+                if (ImGui::BeginDragDropTarget())
                 {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)));
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                    {
+                        string name = (char*)payload->Data;
+                        name.resize(payload->DataSize);
+                        pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)), 0);
+                    }
+
+                    ImGui::EndDragDropTarget();
                 }
 
-                ImGui::EndDragDropTarget();
+                ImGui::Separator();
+
+                if (ImGui_AlignButton("Material Editor", 1.f))
+                {
+                    CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
+                    CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
+                }
+
+                ImGui::TreePop();
             }
-
-            ImGui_InputText("Shared Material", SharedMtrlname);
-            ImGui_InputText("Dynamic Material", DynamicMtrlname);
-
-            ImGui::Separator();
-
-            if (ImGui_AlignButton("Material Editor", 1.f))
-            {
-                CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
-                CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
-            }
-
-            ImGui::TreePop();
         }
 
         ImGui::TreePop();
@@ -1959,7 +1953,7 @@ void COutliner::DrawTileMap(CGameObject* obj)
     if (open)
     {
         Ptr<CMesh> pMesh = pTilemap->GetMesh();
-        Ptr<CMaterial> pMaterial = pTilemap->GetMaterial();
+        Ptr<CMaterial> pMaterial = pTilemap->GetMaterial(0);
 
         // Mesh
         if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
@@ -2039,7 +2033,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
     if (open)
     {
         Ptr<CMesh> pMesh = pParticleSystem->GetMesh();
-        Ptr<CMaterial> pMaterial = pParticleSystem->GetMaterial();
+        Ptr<CMaterial> pMaterial = pParticleSystem->GetMaterial(0);
 
         // Mesh
         if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Mesh"))
@@ -2069,7 +2063,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
-                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)));
+                    pParticleSystem->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)), 0);
                 }
 
                 ImGui::EndDragDropTarget();
@@ -2650,7 +2644,7 @@ void COutliner::DrawLandscape(CGameObject* obj)
         if (ImGui::DragFloat2(ImGui_LabelPrefix("Brush Scale").c_str(), &Scale.x, 0.01f, 1e-3f, 1.f))
             pLandScape->SetBrushScale(Scale);
 
-        Ptr<CMaterial> pCurMtrl = pLandScape->GetMaterial();
+        Ptr<CMaterial> pCurMtrl = pLandScape->GetMaterial(0);
 
         ImGui::Separator();
 

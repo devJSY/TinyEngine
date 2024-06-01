@@ -17,7 +17,7 @@ CTextRender::CTextRender()
     , m_CameraIdx(0)
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl")); // Not Use
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"), 0); // Not Use
 
     SetFrustumCheck(false);
     SetCastShadow(false);

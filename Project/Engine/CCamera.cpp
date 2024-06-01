@@ -178,7 +178,8 @@ void CCamera::SortObject()
         {
             // 메쉬, 재질, 쉐이더 확인
             if (!(vecObjects[j]->GetRenderComponent() && vecObjects[j]->GetRenderComponent()->GetMesh().Get() &&
-                  vecObjects[j]->GetRenderComponent()->GetMaterial().Get() && vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+                  vecObjects[j]->GetRenderComponent()->GetMaterial(0).Get() &&
+                  vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader().Get()))
             {
                 continue;
             }
@@ -191,7 +192,7 @@ void CCamera::SortObject()
                     continue;
             }
 
-            SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader()->GetDomain();
+            SHADER_DOMAIN domain = vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader()->GetDomain();
 
             switch (domain)
             {
@@ -234,7 +235,8 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
         {
             // 메쉬, 재질, 쉐이더 확인
             if (!(vecObjects[j]->GetRenderComponent() && vecObjects[j]->GetRenderComponent()->GetMesh().Get() &&
-                  vecObjects[j]->GetRenderComponent()->GetMaterial().Get() && vecObjects[j]->GetRenderComponent()->GetMaterial()->GetShader().Get()))
+                  vecObjects[j]->GetRenderComponent()->GetMaterial(0).Get() &&
+                  vecObjects[j]->GetRenderComponent()->GetMaterial(0)->GetShader().Get()))
             {
                 continue;
             }
@@ -377,7 +379,7 @@ void CCamera::render_SSAO()
     static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
     static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
     pMtrl->UpdateData();
-    pMesh->render();
+    pMesh->render(0);
 
     // Blur
     CRenderMgr::GetInst()->BlurTexture(pSSAOTex, 3);
@@ -405,7 +407,7 @@ void CCamera::render_Merge()
     // static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Merge_DeferredMtrl"); // Phong
 
     pMtrl->UpdateData();
-    pMesh->render();
+    pMesh->render(0);
 }
 
 void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)
@@ -446,10 +448,10 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
         // Render Pass
         if (g_Global.g_DrawAsWireFrame)
         {
-            RS_TYPE originRSType = _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->GetRSType();
-            _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            RS_TYPE originRSType = _vecObj[i]->GetRenderComponent()->GetMaterial(0)->GetShader()->GetRSType();
+            _vecObj[i]->GetRenderComponent()->GetMaterial(0)->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
             _vecObj[i]->render();
-            _vecObj[i]->GetRenderComponent()->GetMaterial()->GetShader()->SetRSType(originRSType);
+            _vecObj[i]->GetRenderComponent()->GetMaterial(0)->GetShader()->SetRSType(originRSType);
         }
         else
         {
