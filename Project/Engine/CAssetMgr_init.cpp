@@ -3,7 +3,6 @@
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
-#include "CModleLoader.h"
 
 #include "CGameObject.h"
 #include "CTransform.h"

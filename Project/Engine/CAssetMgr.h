@@ -65,15 +65,6 @@ public:
     tMeshData MakeWireCapsule2D(const float radius, const float halfHeight, const int numPoints);
     tMeshData MakeWireCapsule(const float radius, const float halfHeight, const int numPoints);
 
-    // ¸ðµ¨ ·Îµù
-public:
-    CGameObject* LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals = false, tMeshData _TexturesName = {});
-    CGameObject* LoadModel(const wstring& _name, vector<tMeshData> meshes);
-
-private:
-    vector<tMeshData> ReadFromFile(string _basePath, string _filename, bool _revertNormals);
-    void SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _MeshData);
-
 public:
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage,
                                 const D3D11_DEPTH_STENCIL_VIEW_DESC* _dsvDesc = nullptr, const D3D11_RENDER_TARGET_VIEW_DESC* _rtvDesc = nullptr,

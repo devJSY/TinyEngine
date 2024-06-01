@@ -118,9 +118,6 @@
     <ClInclude Include="CLight3D.h">
       <Filter>08. Component\Light3D</Filter>
     </ClInclude>
-    <ClInclude Include="CModleLoader.h">
-      <Filter>ModleLoader</Filter>
-    </ClInclude>
     <ClInclude Include="CContentBrowser.h">
       <Filter>20. Editor\LevelEditor\Content Browser</Filter>
     </ClInclude>
@@ -453,9 +450,6 @@
     <ClCompile Include="CLight3D.cpp">
       <Filter>08. Component\Light3D</Filter>
     </ClCompile>
-    <ClCompile Include="CModleLoader.cpp">
-      <Filter>ModleLoader</Filter>
-    </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>
     </ClCompile>
@@ -778,9 +772,6 @@
     </Filter>
     <Filter Include="20. Editor\LevelEditor\Outliner">
       <UniqueIdentifier>{13a45330-55a0-469f-8332-f154d870f5af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ModleLoader">
-      <UniqueIdentifier>{217a6a91-fde4-4060-bdbf-96650c1d1c2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{18a059c4-7e85-4c7a-aadf-f1e5440c30c7}</UniqueIdentifier>

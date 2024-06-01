@@ -89,17 +89,6 @@ typedef Vector4 Vec4;
 // ImGui Node Editor
 #include <imgui_node_editor\\imgui_node_editor.h>
 
-// Assimp 5.2.5
-// #define NOMINMAX
-#ifdef _DEBUG
-    #pragma comment(lib, "assimp\\assimp-vc143-mtd")
-#else
-    #pragma comment(lib, "assimp\\assimp-vc143-mt")
-#endif
-#include <assimp\\Importer.hpp>
-#include <assimp\\postprocess.h>
-#include <assimp\\scene.h>
-
 // Box2D
 #ifdef _DEBUG
     #pragma comment(lib, "box2d\\box2d_debug")
