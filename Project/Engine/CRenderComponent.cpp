@@ -156,7 +156,9 @@ void CRenderComponent::LoadFromLevelFile(FILE* _File)
     m_vecMtrls.resize(iMtrlCount);
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
-        LoadAssetRef(m_vecMtrls[i].pSharedMtrl, _File);
+        Ptr<CMaterial> pMtrl;
+        LoadAssetRef(pMtrl, _File);
+        SetMaterial(pMtrl, i);
     }
 
     fread(&m_bFrustumCheck, 1, sizeof(bool), _File);
