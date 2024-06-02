@@ -25,6 +25,9 @@ CTileMap::CTileMap()
     m_TileInfoBuffer = new CStructuredBuffer;
 
     SetTileCount(m_iTileCountX, m_iTileCountY);
+
+    SetFrustumCheck(false);
+    SetCastShadow(false);
 }
 
 CTileMap::CTileMap(const CTileMap& origin)
