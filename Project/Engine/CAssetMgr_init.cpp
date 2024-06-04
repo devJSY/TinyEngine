@@ -1173,6 +1173,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\ColorGradingPS.hlsl", "main");
 
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "LUT Texture");

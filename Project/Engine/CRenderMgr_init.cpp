@@ -21,6 +21,8 @@ void CRenderMgr::init()
     m_pDebugObj = new CGameObject;
     m_pDebugObj->AddComponent(new CTransform);
     m_pDebugObj->AddComponent(new CMeshRender);
+    m_pDebugObj->MeshRender()->SetFrustumCheck(false);
+    m_pDebugObj->MeshRender()->SetCastShadow(false);
 
     Vec2 vRenderResolution = CDevice::GetInst()->GetRenderResolution();
     CreateRTCopyTex(vRenderResolution);

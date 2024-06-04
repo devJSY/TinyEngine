@@ -75,8 +75,8 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
         Animator2D()->UpdateData();
     }
 
-    _mtrl->UpdateData();
     Transform()->UpdateData();
+    _mtrl->UpdateData();
 
     GetMesh()->render(0);
 

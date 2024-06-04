@@ -266,7 +266,9 @@ void CRenderMgr::render_debug()
     }
 
     g_Transform.matView = m_mainCam->GetViewMat();
+    g_Transform.matViewInv = m_mainCam->GetViewInvMat();
     g_Transform.matProj = m_mainCam->GetProjMat();
+    g_Transform.matProjInv = m_mainCam->GetProjInvMat();
 
     list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
     for (; iter != m_DbgShapeInfo.end();)
@@ -275,7 +277,7 @@ void CRenderMgr::render_debug()
         m_pDebugObj->MeshRender()->SetMesh((*iter).pMesh);
 
         // 머테리얼 설정
-        Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl");
+        static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl");
         pMtrl->SetScalarParam(VEC4_0, (*iter).vColor);
 
         // Depth 옵션 설정
