@@ -206,6 +206,9 @@
     <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\UnrealPBRDeferredDirLightingPS.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\weightmap.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

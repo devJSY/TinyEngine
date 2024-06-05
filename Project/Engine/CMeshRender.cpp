@@ -28,26 +28,16 @@ CMeshRender::~CMeshRender()
 {
 }
 
-void CMeshRender::UpdateData()
-{
-    if (nullptr != GetMaterial())
-    {
-        GetMaterial()->UpdateData();
-    }
-
-    Transform()->UpdateData();
-}
-
 void CMeshRender::finaltick()
 {
     CRenderComponent::finaltick();
-    
+
     // GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 1.f, Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CMeshRender::render()
 {
-    if (nullptr == GetMesh() || nullptr == GetMaterial())
+    if (nullptr == GetMesh())
         return;
 
     // Animatio2D 보유한 경우
@@ -56,9 +46,16 @@ void CMeshRender::render()
         Animator2D()->UpdateData();
     }
 
-    UpdateData();
+    Transform()->UpdateData();
 
-    GetMesh()->render();
+    for (UINT i = 0; i < GetMesh()->GetSubsetCount(); ++i)
+    {
+        if (nullptr == GetMaterial(i))
+            continue;
+
+        GetMaterial(i)->UpdateData();
+        GetMesh()->render(i);
+    }
 
     // Animation 관련 정보 제거
     if (Animator2D())
@@ -78,10 +75,10 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
         Animator2D()->UpdateData();
     }
 
-    _mtrl->UpdateData();
     Transform()->UpdateData();
+    _mtrl->UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 
     // Animation 관련 정보 제거
     if (Animator2D())

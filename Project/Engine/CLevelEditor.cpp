@@ -617,10 +617,6 @@ void CLevelEditor::CreateAssetModal()
         {
             switch (m_ModalAssetType)
             {
-            case ASSET_TYPE::PREFAB:
-                break;
-            case ASSET_TYPE::TEXTURE:
-                break;
             case ASSET_TYPE::MATERIAL: {
                 Ptr<CMaterial> pMtrl = new CMaterial(false);
                 wstring name = L"material\\" + ToWstring(buffer) + L".mtrl";

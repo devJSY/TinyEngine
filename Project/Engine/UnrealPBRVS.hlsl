@@ -6,7 +6,7 @@
 
 PS_IN main(VS_IN input)
 {
-    PS_IN output;
+    PS_IN output = (PS_IN) 0.f;
     
     // Normal 벡터 먼저 변환 (Height Mapping)
     float4 normal = float4(input.vNormal, 0.0f);

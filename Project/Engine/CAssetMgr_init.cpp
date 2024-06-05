@@ -3,7 +3,6 @@
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
-#include "CModleLoader.h"
 
 #include "CGameObject.h"
 #include "CTransform.h"
@@ -640,7 +639,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
         pShader->SetTopology(D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
-        pShader->AddScalarParam(VEC4_0, "Tessellation Factor", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Tessellation Distance Scale");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
         pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
@@ -1174,6 +1173,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\ColorGradingPS.hlsl", "main");
 
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "LUT Texture");
@@ -1433,7 +1433,7 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LandScapeShader"));
-        pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f)); // TessFactor
+        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Tess Dist Scale
 
         pMtrl->SetName(L"LandScapeMtrl");
         AddAsset<CMaterial>(L"LandScapeMtrl", pMtrl);
@@ -1726,6 +1726,30 @@ void CAssetMgr::CreateDefaultPhysicMaterial()
     }
 }
 
+Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
+{
+    wstring strFileName = std::filesystem::path(_strPath).stem();
+
+    wstring strName = L"meshdata\\";
+    strName += strFileName + L".mdat";
+
+    Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
+
+    if (nullptr != pMeshData)
+        return pMeshData;
+
+    pMeshData = CMeshData::LoadFromFBX(_strPath);
+    pMeshData->SetKey(strName);
+    pMeshData->SetRelativePath(strName);
+
+    m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
+
+    // meshdata 를 실제파일로 저장
+    // pMeshData->Save(strName);
+
+    return pMeshData;
+}
+
 tMeshData CAssetMgr::MakePoint()
 {
     tMeshData meshData;
@@ -1733,8 +1757,11 @@ tMeshData CAssetMgr::MakePoint()
     v.vPos = Vec3(0.f, 0.f, 0.f);
     v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
     v.vUV = Vec2(0.5f, 0.5f);
+
     v.vNormal = Vec3(0.f, 0.f, -1.f);
     v.vTangent = Vec3(1.f, 0.f, 0.f);
+    v.vNormal.Cross(v.vTangent, v.vBiTangent);
+    v.vBiTangent.Normalize();
 
     meshData.vertices.push_back(v);
     meshData.indices.push_back(0);
@@ -1768,11 +1795,14 @@ tMeshData CAssetMgr::MakeCrosshair()
     {
         Vtx v;
         v.vPos = positions[i];
-        v.vUV = texcoords[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vUV = texcoords[i];
+
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
 
         meshData.vertices.push_back(v);
     }
@@ -1804,10 +1834,13 @@ tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
         fTheta = (XM_2PI / numSlices) * i;
 
         v.vPos = Vec3(radius * cosf(fTheta), radius * sinf(fTheta), 0.f);
-        v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
         v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+
+        v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
 
         meshData.vertices.push_back(v);
     }
@@ -1861,11 +1894,14 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
     {
         Vtx v;
         v.vPos = positions[i];
-        v.vNormal = normals[i];
-        v.vUV = texcoords[i] * texScale;
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vUV = texcoords[i] * texScale;
+
+        v.vNormal = normals[i];
         v.vTangent = tangents[i];
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
 
         meshData.vertices.push_back(v);
     }
@@ -1895,10 +1931,13 @@ tMeshData CAssetMgr::MakeDebugCircle(const float radius, const int numSlices)
         fTheta = (XM_2PI / numSlices) * i;
 
         v.vPos = Vec3(radius * cosf(fTheta), radius * sinf(fTheta), 0.f);
-        v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
         v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+
+        v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
 
         meshData.vertices.push_back(v);
     }
@@ -1950,11 +1989,14 @@ tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
     {
         Vtx v;
         v.vPos = positions[i];
-        v.vNormal = normals[i];
-        v.vUV = texcoords[i] * texScale;
         v.vColor = colors[i];
+        v.vUV = texcoords[i] * texScale;
         v.vColor.w = 1.f;
+
+        v.vNormal = normals[i];
         v.vTangent = tangents[i];
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
 
         meshData.vertices.push_back(v);
     }
@@ -1979,9 +2021,11 @@ tMeshData CAssetMgr::MakeSquareGrid(const int numSlices, const int numStacks, co
         {
             Vtx v;
             v.vPos = Vec3(x, y, 0.0f) * scale;
-            v.vNormal = Vec3(0.0f, 0.0f, -1.0f);
             v.vUV = Vec2(x + 1.0f, y + 1.0f) * 0.5f * texScale;
+            v.vNormal = Vec3(0.0f, 0.0f, -1.0f);
             v.vTangent = Vec3(1.0f, 0.0f, 0.0f);
+            v.vNormal.Cross(v.vTangent, v.vBiTangent);
+            v.vBiTangent.Normalize();
 
             meshData.vertices.push_back(v);
 
@@ -2151,11 +2195,14 @@ tMeshData CAssetMgr::MakeBox(const float scale)
     {
         Vtx v;
         v.vPos = positions[i];
-        v.vNormal = normals[i];
-        v.vUV = texcoords[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
+        v.vUV = texcoords[i];
+
+        v.vNormal = normals[i];
         v.vTangent = tangents[i];
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
 
         meshData.vertices.push_back(v);
     }
@@ -2187,12 +2234,12 @@ tMeshData CAssetMgr::MakeCylinder(const float bottomRadius, const float topRadiu
     {
         Vtx v;
         v.vPos = Vec3::Transform(Vec3(bottomRadius, -0.5f * height, 0.0f), Matrix::CreateRotationY(dTheta * float(i)));
+        v.vUV = Vec2(float(i) / numSlices, 1.0f);
 
         // std::cout << v.vPos.x << " " << v.vPos.z << std::endl;
 
         v.vNormal = v.vPos - Vec3(0.0f, -0.5f * height, 0.0f);
         v.vNormal.Normalize();
-        v.vUV = Vec2(float(i) / numSlices, 1.0f);
 
         vertices.push_back(v);
     }
@@ -2202,9 +2249,10 @@ tMeshData CAssetMgr::MakeCylinder(const float bottomRadius, const float topRadiu
     {
         Vtx v;
         v.vPos = Vec3::Transform(Vec3(topRadius, 0.5f * height, 0.0f), Matrix::CreateRotationY(dTheta * float(i)));
+        v.vUV = Vec2(float(i) / numSlices, 0.0f);
+
         v.vNormal = v.vPos - Vec3(0.0f, 0.5f * height, 0.0f);
         v.vNormal.Normalize();
-        v.vUV = Vec2(float(i) / numSlices, 0.0f);
 
         vertices.push_back(v);
     }
@@ -2264,6 +2312,8 @@ tMeshData CAssetMgr::MakeSphere(const float radius, const int numSlices, const i
 
             v.vTangent = biTangent.Cross(normalOrth);
             v.vTangent.Normalize();
+            v.vNormal.Cross(v.vTangent, v.vBiTangent);
+            v.vBiTangent.Normalize();
 
             /*    Vec3::Transform(Vec3(0.0f, 0.0f, 1.0f),
                                    Matrix::CreateRotationY(dTheta *
@@ -2518,10 +2568,13 @@ tMeshData CAssetMgr::MakeCone(const float radius, const float height)
         float theta = i * fSliceAngle;
 
         v.vPos = Vec3(radius * cosf(theta), radius * sinf(theta), height);
-        v.vUV = Vec2(fUVXStep * i, fUVYStep);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+        v.vUV = Vec2(fUVXStep * i, fUVYStep);
+
         v.vNormal = Vec3(0.f, 0.f, 1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
+        v.vNormal.Cross(v.vTangent, v.vBiTangent);
+        v.vBiTangent.Normalize();
         meshData.vertices.push_back(v);
 
         // 인덱스

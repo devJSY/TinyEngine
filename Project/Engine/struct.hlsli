@@ -3,21 +3,25 @@
 
 struct VS_IN
 {
-    float3 vPos : POSITION; // Sementic
-    float3 vNormal : NORMAL;
+    float3 vPos : POSITION;
     float4 vColor : COLOR;
     float2 vUV : TEXCOORD;
+    
     float3 vTangent : TANGENT;
+    float3 vBitangent : BINORMAL;
+    float3 vNormal : NORMAL;
 };
 
 struct PS_IN
 {
     float4 vPosProj : SV_Position;
     float3 vPosWorld : POSITION;
-    float3 normalWorld : NORMAL;
     float4 vColor : COLOR;
     float2 vUV : TEXCOORD;
+    
     float3 vTangentWorld : TANGENT;
+    float3 vBitangentWorld : BINORMAL;
+    float3 normalWorld : NORMAL;
 };
 
 struct tLightInfo
@@ -41,7 +45,7 @@ struct tLightInfo
     row_major Matrix projMat;
     row_major Matrix invProj;
     
-    int ShadowIndex; 
+    int ShadowIndex;
     float HaloRadius;
     float HaloStrength;
     int LightPadd;

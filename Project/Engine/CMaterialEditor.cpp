@@ -159,7 +159,7 @@ void CMaterialEditor::DrawViewport()
     // ·»´õ¸µ
     if (nullptr != m_Mtrl->GetShader())
     {
-        m_ViewportObj->MeshRender()->SetMaterial(m_Mtrl);
+        m_ViewportObj->MeshRender()->SetMaterial(m_Mtrl, 0);
         m_ViewportObj->render();
     }
 
