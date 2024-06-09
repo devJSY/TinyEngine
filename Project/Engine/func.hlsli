@@ -22,7 +22,7 @@ void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _Nomalize
     vUV.x += g_Time * 0.5f;
     
     // sin 그래프로 텍스쳐의 샘플링 위치 UV 를 계산
-    vUV.y -= (sin((_NomalizedThreadID - (g_Time /*그래프 우측 이동 속도*/)) * 2.f * 3.1415926535f * 10.f /*반복주기*/) / 2.f);
+    vUV.y -= (sin((_NomalizedThreadID - (g_Time /*그래프 우측 이동 속도*/)) * 2.f * PI * 10.f /*반복주기*/) / 2.f);
     
     if (1.f < vUV.x)
         vUV.x = frac(vUV.x);

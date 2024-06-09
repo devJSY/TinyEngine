@@ -90,7 +90,7 @@ float NdfGGX(float NdotH, float roughness, float alphaPrime)
     float alphaSq = alpha * alpha;
     float denom = (NdotH * NdotH) * (alphaSq - 1.0) + 1.0;
 
-    return alphaPrime * alphaPrime / (3.141592 * denom * denom);
+    return alphaPrime * alphaPrime / (PI * denom * denom);
 }
 
 // Single term for separable Schlick-GGX below.
@@ -216,8 +216,6 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
 
     if (0 <= light.ShadowIndex)
     {
-        const float nearZ = 1.f; // 카메라 설정과 동일
-        
         // Project posWorld to light screen
         // light.viewProj 사용
         float4 pos = float4(posWorld, 1.0);
@@ -314,7 +312,7 @@ void DirectLighting(int _LightIdx, float3 _WorldPos, float3 _NormalWorld, float3
     float3 kd = lerp(float3(1, 1, 1) - F, float3(0, 0, 0), _Matallic);
     float3 diffuseBRDF = kd * _Albedo;
 
-        // Sphere Normalization
+    // Sphere Normalization
     float alpha = _Roughness * _Roughness;
     float alphaPrime = _Roughness;
     if (LIGHT_POINT == LightInfo.LightType) // Point Light의 경우에만 Sphere Light 적용
