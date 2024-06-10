@@ -13,8 +13,8 @@ CDecal::CDecal()
     , m_bAsEmissive(false)
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"));
-    
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"), 0);
+
     SetFrustumCheck(false);
     SetCastShadow(false);
 }
@@ -35,23 +35,23 @@ void CDecal::UpdateData()
     Transform()->UpdateData();
 
     Matrix matInv = Transform()->GetWorldInvMat();
-    GetMaterial()->SetScalarParam(MAT_0, matInv);
-    GetMaterial()->SetScalarParam(INT_0, m_bAsEmissive);
-    GetMaterial()->SetScalarParam(INT_1, m_bInvertNormalY);
-    GetMaterial()->SetTexParam(TEX_4, m_DecalColorTex);
-    GetMaterial()->SetTexParam(TEX_5, m_DecalNormalTex);
+    GetMaterial(0)->SetScalarParam(MAT_0, matInv);
+    GetMaterial(0)->SetScalarParam(INT_0, m_bAsEmissive);
+    GetMaterial(0)->SetScalarParam(INT_1, m_bInvertNormalY);
+    GetMaterial(0)->SetTexParam(TEX_4, m_DecalColorTex);
+    GetMaterial(0)->SetTexParam(TEX_5, m_DecalNormalTex);
 
-    GetMaterial()->UpdateData();
+    GetMaterial(0)->UpdateData();
 }
 
 void CDecal::render()
 {
-    if (nullptr == GetMesh() || nullptr == GetMaterial())
+    if (nullptr == GetMesh() || nullptr == GetMaterial(0))
         return;
 
     UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 }
 
 void CDecal::render(Ptr<CMaterial> _mtrl)
@@ -62,7 +62,7 @@ void CDecal::render(Ptr<CMaterial> _mtrl)
     Transform()->UpdateData();
     _mtrl->UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 }
 
 void CDecal::SaveToLevelFile(FILE* _File)

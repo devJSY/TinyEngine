@@ -25,8 +25,8 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     wstring strContentPath = CPathMgr::GetContentPath();
     wstring strFilePath = strContentPath + _strRelativePath;
 
-    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "vs_5_0", m_CompileFlags, 0, m_VSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(), "vs_5_0", m_CompileFlags, 0,
+                                  m_VSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -44,7 +44,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     DEVICE->CreateVertexShader(m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), nullptr, m_VS.GetAddressOf());
 
     // 정점 구조정보(Layout) 생성
-    D3D11_INPUT_ELEMENT_DESC arrElement[5] = {}; // 정점하나안의 요소 갯수만큼 생성
+    D3D11_INPUT_ELEMENT_DESC arrElement[6] = {}; // 정점하나안의 요소 갯수만큼 생성
 
     arrElement[0].InputSlot = 0;
     arrElement[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -56,38 +56,45 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
 
     arrElement[1].InputSlot = 0;
     arrElement[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    arrElement[1].SemanticName = "NORMAL";
+    arrElement[1].SemanticName = "COLOR";
     arrElement[1].SemanticIndex = 0;
     arrElement[1].InstanceDataStepRate = 0;
     arrElement[1].AlignedByteOffset = 12;
-    arrElement[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+    arrElement[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
     arrElement[2].InputSlot = 0;
     arrElement[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    arrElement[2].SemanticName = "COLOR";
+    arrElement[2].SemanticName = "TEXCOORD";
     arrElement[2].SemanticIndex = 0;
     arrElement[2].InstanceDataStepRate = 0;
-    arrElement[2].AlignedByteOffset = 24;
-    arrElement[2].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    arrElement[2].AlignedByteOffset = 28;
+    arrElement[2].Format = DXGI_FORMAT_R32G32_FLOAT;
 
     arrElement[3].InputSlot = 0;
     arrElement[3].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    arrElement[3].SemanticName = "TEXCOORD";
+    arrElement[3].SemanticName = "TANGENT";
     arrElement[3].SemanticIndex = 0;
     arrElement[3].InstanceDataStepRate = 0;
-    arrElement[3].AlignedByteOffset = 40;
-    arrElement[3].Format = DXGI_FORMAT_R32G32_FLOAT;
+    arrElement[3].AlignedByteOffset = 36;
+    arrElement[3].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
     arrElement[4].InputSlot = 0;
     arrElement[4].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    arrElement[4].SemanticName = "TANGENT";
+    arrElement[4].SemanticName = "BINORMAL";
     arrElement[4].SemanticIndex = 0;
     arrElement[4].InstanceDataStepRate = 0;
     arrElement[4].AlignedByteOffset = 48;
     arrElement[4].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
-    DEVICE->CreateInputLayout(arrElement, 5, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(),
-                              m_Layout.GetAddressOf());
+    arrElement[5].InputSlot = 0;
+    arrElement[5].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    arrElement[5].SemanticName = "NORMAL";
+    arrElement[5].SemanticIndex = 0;
+    arrElement[5].InstanceDataStepRate = 0;
+    arrElement[5].AlignedByteOffset = 60;
+    arrElement[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+
+    DEVICE->CreateInputLayout(arrElement, 6, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), m_Layout.GetAddressOf());
 
     return S_OK;
 }
@@ -97,8 +104,8 @@ int CGraphicsShader::CreateHullShader(const wstring& _strRelativePath, const str
     wstring strContentPath = CPathMgr::GetContentPath();
     wstring strFilePath = strContentPath + _strRelativePath;
 
-    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "hs_5_0", m_CompileFlags, 0, m_HSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(), "hs_5_0", m_CompileFlags, 0,
+                                  m_HSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -123,8 +130,8 @@ int CGraphicsShader::CreateDomainShader(const wstring& _strRelativePath, const s
     wstring strContentPath = CPathMgr::GetContentPath();
     wstring strFilePath = strContentPath + _strRelativePath;
 
-    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "ds_5_0", m_CompileFlags, 0, m_DSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(), "ds_5_0", m_CompileFlags, 0,
+                                  m_DSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -149,8 +156,8 @@ int CGraphicsShader::CreateGeometryShader(const wstring& _strRelativePath, const
     wstring strContentPath = CPathMgr::GetContentPath();
     wstring strFilePath = strContentPath + _strRelativePath;
 
-    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "gs_5_0", m_CompileFlags, 0, m_GSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(), "gs_5_0", m_CompileFlags, 0,
+                                  m_GSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {
@@ -177,8 +184,8 @@ int CGraphicsShader::CreatePixelShader(const wstring& _strRelativePath, const st
 
     // 픽셀 쉐이더 생성
     // 픽셀 쉐이더 컴파일
-    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(),
-                                  "ps_5_0", m_CompileFlags, 0, m_PSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
+    if (FAILED(D3DCompileFromFile(strFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, _strFuncName.c_str(), "ps_5_0", m_CompileFlags, 0,
+                                  m_PSBlob.GetAddressOf(), m_ErrBlob.GetAddressOf())))
     {
         if (nullptr != m_ErrBlob)
         {

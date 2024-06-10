@@ -3,30 +3,13 @@
 // 3차원 공간에 배치되는 정점
 struct Vtx
 {
-    Vec3 vPos;     // 정점의 좌표
-    Vec3 vNormal;  // 정점의 좌표
-    Vec4 vColor;   // 정점의 색상 정보
-    Vec2 vUV;      // UV 좌표계 of Texture Coordinate
-    Vec3 vTangent; // 정점의 좌표
-};
+    Vec3 vPos;   // 정점의 좌표
+    Vec4 vColor; // 정점의 색상 정보
+    Vec2 vUV;    // UV 좌표계 of Texture Coordinate
 
-#include "CMesh.h"
-
-struct tDebugShapeInfo
-{
-    DEBUG_SHAPE eShape;
-
-    Vec3 vWorldPos;
-    Vec3 vWorldScale;
-    Vec3 vWorldRot;
-    Matrix matWorld;
-
-    Vec3 vColor;
-    float fLifeTime;
-    float fDuration;
-    bool bDepthTest;
-
-    Ptr<CMesh> pMesh;
+    Vec3 vBiTangent; // 종법선 벡터
+    Vec3 vTangent;   // 접선 벡터
+    Vec3 vNormal;    // 법선 벡터
 };
 
 __declspec(align(16)) struct tLightInfo
@@ -134,16 +117,6 @@ struct tMeshData
 {
     std::vector<Vtx> vertices;
     std::vector<UINT> indices;
-
-    string AmbientTextureFilename;
-    string AoTextureFilename; // Ambient Occlusion
-    string NormalTextureFilename;
-    string HeightTextureFilename;
-    string MetallicTextureFilename;
-    string RoughnessTextureFilename;
-    string EmissiveTextureFilename;
-
-    string RelativeTextureFilePath; // 전체경로 = 절대경로/상대경로/파일이름 - 상대경로에 해당되는 문자열
 };
 
 struct tPixel
@@ -236,3 +209,22 @@ __declspec(align(16)) struct tSpawnCount
 
 extern tTransform g_Transform;
 extern tGlobalData g_Global;
+
+#include "CMesh.h"
+
+struct tDebugShapeInfo
+{
+    DEBUG_SHAPE eShape;
+
+    Vec3 vWorldPos;
+    Vec3 vWorldScale;
+    Vec3 vWorldRot;
+    Matrix matWorld;
+
+    Vec3 vColor;
+    float fLifeTime;
+    float fDuration;
+    bool bDepthTest;
+
+    Ptr<CMesh> pMesh;
+};
