@@ -98,10 +98,10 @@
       <Filter>04. Manager\EditorMgr</Filter>
     </ClInclude>
     <ClInclude Include="CEditor.h">
-      <Filter>20. Editor</Filter>
+      <Filter>09. Editor</Filter>
     </ClInclude>
     <ClInclude Include="CLevelEditor.h">
-      <Filter>20. Editor\LevelEditor</Filter>
+      <Filter>09. Editor\LevelEditor</Filter>
     </ClInclude>
     <ClInclude Include="CTaskMgr.h">
       <Filter>04. Manager\TaskMgr</Filter>
@@ -110,7 +110,7 @@
       <Filter>06. Asset\Texture</Filter>
     </ClInclude>
     <ClInclude Include="COutliner.h">
-      <Filter>20. Editor\LevelEditor\Outliner</Filter>
+      <Filter>09. Editor\LevelEditor\Outliner</Filter>
     </ClInclude>
     <ClInclude Include="CMaterial.h">
       <Filter>06. Asset\Material</Filter>
@@ -118,11 +118,8 @@
     <ClInclude Include="CLight3D.h">
       <Filter>08. Component\Light3D</Filter>
     </ClInclude>
-    <ClInclude Include="CModleLoader.h">
-      <Filter>ModleLoader</Filter>
-    </ClInclude>
     <ClInclude Include="CContentBrowser.h">
-      <Filter>20. Editor\LevelEditor\Content Browser</Filter>
+      <Filter>09. Editor\LevelEditor\Content Browser</Filter>
     </ClInclude>
     <ClInclude Include="CGrabageCollector.h">
       <Filter>04. Manager\GrabageCollector</Filter>
@@ -140,7 +137,7 @@
       <Filter>08. Component\Animator2D\Anim</Filter>
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
-      <Filter>LevelSaveLoad</Filter>
+      <Filter>Module\LevelSaveLoad</Filter>
     </ClInclude>
     <ClInclude Include="CStructuredBuffer.h">
       <Filter>03. Device\StructuredBuffer</Filter>
@@ -149,37 +146,37 @@
       <Filter>08. Component\Light2D</Filter>
     </ClInclude>
     <ClInclude Include="CMaterialEditor.h">
-      <Filter>20. Editor\MaterialEditor</Filter>
+      <Filter>09. Editor\MaterialEditor</Filter>
     </ClInclude>
     <ClInclude Include="COutputLog.h">
-      <Filter>20. Editor\LevelEditor\COutputLog</Filter>
+      <Filter>09. Editor\LevelEditor\COutputLog</Filter>
     </ClInclude>
     <ClInclude Include="CBlueprintEditor.h">
-      <Filter>20. Editor\Blueprint</Filter>
+      <Filter>09. Editor\Blueprint</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo\ImCurveEdit.h">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo\ImGradient.h">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo\ImSequencer.h">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo\ImZoomSlider.h">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo\ImGuizmo.h">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuizmo\GraphEditor.h">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="CTileMap.h">
       <Filter>08. Component\RenderComponent\TileMap</Filter>
     </ClInclude>
     <ClInclude Include="CSpriteEditor.h">
-      <Filter>20. Editor\SpriteEditor</Filter>
+      <Filter>09. Editor\SpriteEditor</Filter>
     </ClInclude>
     <ClInclude Include="CParticleSystem.h">
       <Filter>08. Component\RenderComponent\ParticleSystem</Filter>
@@ -194,64 +191,64 @@
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </ClInclude>
     <ClInclude Include="CTileMapEditor.h">
-      <Filter>20. Editor\TileMapEditor</Filter>
+      <Filter>09. Editor\TileMapEditor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_impl_dx11.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_impl_win32.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_internal.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_stacklayout.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_stacklayout_internal.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_truetype.h">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\crude_json.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\imgui_bezier_math.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\imgui_canvas.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\imgui_extra_math.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor_internal.h">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\utilities\builders.h">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+      <Filter>Module\ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\utilities\drawing.h">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+      <Filter>Module\ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+      <Filter>Module\ImGui\imgui_node_editor\utilities</Filter>
     </ClInclude>
     <ClInclude Include="CSkyBox.h">
       <Filter>08. Component\RenderComponent\SkyBox</Filter>
@@ -284,10 +281,10 @@
       <Filter>06. Asset\Physics2DMaterial</Filter>
     </ClInclude>
     <ClInclude Include="CPhysics2DMaterialEditor.h">
-      <Filter>20. Editor\Physics2DMaterialEditor</Filter>
+      <Filter>09. Editor\Physics2DMaterialEditor</Filter>
     </ClInclude>
     <ClInclude Include="CSoundEditor.h">
-      <Filter>20. Editor\SoundEditor</Filter>
+      <Filter>09. Editor\SoundEditor</Filter>
     </ClInclude>
     <ClInclude Include="CFontMgr.h">
       <Filter>04. Manager\FontMgr</Filter>
@@ -308,7 +305,7 @@
       <Filter>06. Asset\PhysicMaterial</Filter>
     </ClInclude>
     <ClInclude Include="CPhysicMaterialEditor.h">
-      <Filter>20. Editor\PhysicMaterialEditor</Filter>
+      <Filter>09. Editor\PhysicMaterialEditor</Filter>
     </ClInclude>
     <ClInclude Include="CRigidBody.h">
       <Filter>08. Component\Rigidbody</Filter>
@@ -326,7 +323,7 @@
       <Filter>08. Component\Collider\Sphere Collider</Filter>
     </ClInclude>
     <ClInclude Include="CMRT.h">
-      <Filter>MRT</Filter>
+      <Filter>Module\MRT</Filter>
     </ClInclude>
     <ClInclude Include="CDecal.h">
       <Filter>08. Component\RenderComponent\Decal</Filter>
@@ -351,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="CWeightMapShader.h">
       <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
+    </ClInclude>
+    <ClInclude Include="CFBXLoader.h">
+      <Filter>Module\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshData.h">
+      <Filter>06. Asset\MeshData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,10 +436,10 @@
       <Filter>04. Manager\EditorMgr</Filter>
     </ClCompile>
     <ClCompile Include="CEditor.cpp">
-      <Filter>20. Editor</Filter>
+      <Filter>09. Editor</Filter>
     </ClCompile>
     <ClCompile Include="CLevelEditor.cpp">
-      <Filter>20. Editor\LevelEditor</Filter>
+      <Filter>09. Editor\LevelEditor</Filter>
     </ClCompile>
     <ClCompile Include="CTaskMgr.cpp">
       <Filter>04. Manager\TaskMgr</Filter>
@@ -445,7 +448,7 @@
       <Filter>06. Asset\Texture</Filter>
     </ClCompile>
     <ClCompile Include="COutliner.cpp">
-      <Filter>20. Editor\LevelEditor\Outliner</Filter>
+      <Filter>09. Editor\LevelEditor\Outliner</Filter>
     </ClCompile>
     <ClCompile Include="CMaterial.cpp">
       <Filter>06. Asset\Material</Filter>
@@ -453,14 +456,11 @@
     <ClCompile Include="CLight3D.cpp">
       <Filter>08. Component\Light3D</Filter>
     </ClCompile>
-    <ClCompile Include="CModleLoader.cpp">
-      <Filter>ModleLoader</Filter>
-    </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>
     </ClCompile>
     <ClCompile Include="CContentBrowser.cpp">
-      <Filter>20. Editor\LevelEditor\Content Browser</Filter>
+      <Filter>09. Editor\LevelEditor\Content Browser</Filter>
     </ClCompile>
     <ClCompile Include="CGrabageCollector.cpp">
       <Filter>04. Manager\GrabageCollector</Filter>
@@ -478,7 +478,7 @@
       <Filter>08. Component\Animator2D\Anim</Filter>
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
-      <Filter>LevelSaveLoad</Filter>
+      <Filter>Module\LevelSaveLoad</Filter>
     </ClCompile>
     <ClCompile Include="CStructuredBuffer.cpp">
       <Filter>03. Device\StructuredBuffer</Filter>
@@ -490,34 +490,34 @@
       <Filter>04. Manager\AssetMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMaterialEditor.cpp">
-      <Filter>20. Editor\MaterialEditor</Filter>
+      <Filter>09. Editor\MaterialEditor</Filter>
     </ClCompile>
     <ClCompile Include="COutputLog.cpp">
-      <Filter>20. Editor\LevelEditor\COutputLog</Filter>
+      <Filter>09. Editor\LevelEditor\COutputLog</Filter>
     </ClCompile>
     <ClCompile Include="CBlueprintEditor.cpp">
-      <Filter>20. Editor\Blueprint</Filter>
+      <Filter>09. Editor\Blueprint</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo\ImGradient.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo\ImSequencer.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo\ImGuizmo.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo\GraphEditor.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuizmo\ImCurveEdit.cpp">
-      <Filter>ImGui\ImGuizmo</Filter>
+      <Filter>Module\ImGui\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="CTileMap.cpp">
       <Filter>08. Component\RenderComponent\TileMap</Filter>
     </ClCompile>
     <ClCompile Include="CSpriteEditor.cpp">
-      <Filter>20. Editor\SpriteEditor</Filter>
+      <Filter>09. Editor\SpriteEditor</Filter>
     </ClCompile>
     <ClCompile Include="CParticleSystem.cpp">
       <Filter>08. Component\RenderComponent\ParticleSystem</Filter>
@@ -532,52 +532,52 @@
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </ClCompile>
     <ClCompile Include="CTileMapEditor.cpp">
-      <Filter>20. Editor\TileMapEditor</Filter>
+      <Filter>09. Editor\TileMapEditor</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_impl_win32.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_stacklayout.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_tables.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
+      <Filter>Module\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\crude_json.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\imgui_canvas.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor_api.cpp">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\utilities\drawing.cpp">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+      <Filter>Module\ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\utilities\widgets.cpp">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+      <Filter>Module\ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
-      <Filter>ImGui\imgui_node_editor\utilities</Filter>
+      <Filter>Module\ImGui\imgui_node_editor\utilities</Filter>
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
       <Filter>08. Component\RenderComponent\SkyBox</Filter>
@@ -610,10 +610,10 @@
       <Filter>06. Asset\Physics2DMaterial</Filter>
     </ClCompile>
     <ClCompile Include="CPhysics2DMaterialEditor.cpp">
-      <Filter>20. Editor\Physics2DMaterialEditor</Filter>
+      <Filter>09. Editor\Physics2DMaterialEditor</Filter>
     </ClCompile>
     <ClCompile Include="CSoundEditor.cpp">
-      <Filter>20. Editor\SoundEditor</Filter>
+      <Filter>09. Editor\SoundEditor</Filter>
     </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
       <Filter>04. Manager\FontMgr</Filter>
@@ -634,7 +634,7 @@
       <Filter>06. Asset\PhysicMaterial</Filter>
     </ClCompile>
     <ClCompile Include="CPhysicMaterialEditor.cpp">
-      <Filter>20. Editor\PhysicMaterialEditor</Filter>
+      <Filter>09. Editor\PhysicMaterialEditor</Filter>
     </ClCompile>
     <ClCompile Include="CRigidBody.cpp">
       <Filter>08. Component\Rigidbody</Filter>
@@ -652,7 +652,7 @@
       <Filter>08. Component\Collider\Sphere Collider</Filter>
     </ClCompile>
     <ClCompile Include="CMRT.cpp">
-      <Filter>MRT</Filter>
+      <Filter>Module\MRT</Filter>
     </ClCompile>
     <ClCompile Include="CDecal.cpp">
       <Filter>08. Component\RenderComponent\Decal</Filter>
@@ -680,6 +680,12 @@
     </ClCompile>
     <ClCompile Include="CWeightMapShader.cpp">
       <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="CFBXLoader.cpp">
+      <Filter>Module\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshData.cpp">
+      <Filter>06. Asset\MeshData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -755,12 +761,6 @@
     <Filter Include="04. Manager\EditorMgr">
       <UniqueIdentifier>{09b1b8a6-d707-4b61-9b04-c1b48e49d632}</UniqueIdentifier>
     </Filter>
-    <Filter Include="20. Editor">
-      <UniqueIdentifier>{3cff4e82-0f38-4e70-a8fe-8c48c982fdb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\LevelEditor">
-      <UniqueIdentifier>{9c4bd6e4-cb1e-4a94-abfd-2cf8fc04fe59}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\TaskMgr">
       <UniqueIdentifier>{71673e13-8b50-409a-b41e-f98964acc927}</UniqueIdentifier>
     </Filter>
@@ -776,47 +776,17 @@
     <Filter Include="06. Asset\Texture">
       <UniqueIdentifier>{6ef43a2b-d46f-4f70-8436-e6e6158ae4b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="20. Editor\LevelEditor\Outliner">
-      <UniqueIdentifier>{13a45330-55a0-469f-8332-f154d870f5af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ModleLoader">
-      <UniqueIdentifier>{217a6a91-fde4-4060-bdbf-96650c1d1c2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{18a059c4-7e85-4c7a-aadf-f1e5440c30c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\ImGuizmo">
-      <UniqueIdentifier>{a6dc6aa6-5bf6-46a5-8157-67afa13db34e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\LevelEditor\Content Browser">
-      <UniqueIdentifier>{834d4261-0b1f-4dc9-b33d-93b4fd5dc98c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\GrabageCollector">
       <UniqueIdentifier>{16f1149d-3d02-4bba-803b-51a38dc2c467}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Manager\RenderMgr">
       <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LevelSaveLoad">
-      <UniqueIdentifier>{bdf3eee3-1a1e-45c1-a45a-a0f2fd4d8952}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Device\StructuredBuffer">
       <UniqueIdentifier>{9bc152a0-79ed-40d7-8633-be0834c741d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. Engine">
       <UniqueIdentifier>{9f111e3a-05f2-4f21-9949-7619719dc3b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\MaterialEditor">
-      <UniqueIdentifier>{8ad859a0-383c-4701-9fe0-f4cdcef4694f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\LevelEditor\COutputLog">
-      <UniqueIdentifier>{98af686a-47c3-4b4b-8c44-25c760f20bbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\imgui_node_editor">
-      <UniqueIdentifier>{dd42f278-2230-4591-b0ee-4661945d707b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\Blueprint">
-      <UniqueIdentifier>{d4a92038-91e8-4b2e-9d45-0e4019d95d8d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Compute">
       <UniqueIdentifier>{6c7f0ee5-cd8f-4221-9b4e-ac369a818409}</UniqueIdentifier>
@@ -860,15 +830,6 @@
     <Filter Include="ShaderCode\Compute\ParticleUpdate">
       <UniqueIdentifier>{ca4b92ac-f16e-406a-9387-403008e51038}</UniqueIdentifier>
     </Filter>
-    <Filter Include="20. Editor\TileMapEditor">
-      <UniqueIdentifier>{79706b21-6959-4ba5-81f1-4e2d11bf09f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\SpriteEditor">
-      <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\imgui_node_editor\utilities">
-      <UniqueIdentifier>{754f8c1a-5c96-4c5d-bf3c-e2515c59e080}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Render\OutLine">
       <UniqueIdentifier>{32794d67-0e3f-4d28-9f08-b34493e1a0bb}</UniqueIdentifier>
     </Filter>
@@ -896,12 +857,6 @@
     <Filter Include="06. Asset\Physics2DMaterial">
       <UniqueIdentifier>{24671929-f30d-4e38-8721-e9e92d062107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="20. Editor\Physics2DMaterialEditor">
-      <UniqueIdentifier>{3cba7f3a-7cf0-43ea-911a-841181415e2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\SoundEditor">
-      <UniqueIdentifier>{57698332-dc5c-4594-bca0-8fd946ea00f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Manager\FontMgr">
       <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
     </Filter>
@@ -919,9 +874,6 @@
     </Filter>
     <Filter Include="06. Asset\PhysicMaterial">
       <UniqueIdentifier>{b1a66690-71b3-4951-95d6-144c0cc946a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="20. Editor\PhysicMaterialEditor">
-      <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
     </Filter>
     <Filter Include="08. Component\Collider">
       <UniqueIdentifier>{c4c40ce6-a806-4881-a9aa-fd22d56e7dca}</UniqueIdentifier>
@@ -977,9 +929,6 @@
     <Filter Include="08. Component\RenderComponent\TextRender">
       <UniqueIdentifier>{4fc2258a-b0b1-46ca-a1dd-ed6c7b3d96ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MRT">
-      <UniqueIdentifier>{471c873d-6253-47dd-9e76-d63d719086be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\RenderComponent\Decal">
       <UniqueIdentifier>{417a8c93-82a7-4d01-b972-fe5993527e9e}</UniqueIdentifier>
     </Filter>
@@ -1013,6 +962,63 @@
     <Filter Include="ShaderCode\Compute\LandScape\WeightMap">
       <UniqueIdentifier>{e3ccf83e-b5cf-43a5-b51a-303e6dfc6f83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Module\FBXLoader">
+      <UniqueIdentifier>{17111ca6-31ab-44b6-8a06-56a76f10adb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\MRT">
+      <UniqueIdentifier>{471c873d-6253-47dd-9e76-d63d719086be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\ImGui">
+      <UniqueIdentifier>{18a059c4-7e85-4c7a-aadf-f1e5440c30c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\ImGui\ImGuizmo">
+      <UniqueIdentifier>{a6dc6aa6-5bf6-46a5-8157-67afa13db34e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\ImGui\imgui_node_editor">
+      <UniqueIdentifier>{dd42f278-2230-4591-b0ee-4661945d707b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\ImGui\imgui_node_editor\utilities">
+      <UniqueIdentifier>{754f8c1a-5c96-4c5d-bf3c-e2515c59e080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\LevelSaveLoad">
+      <UniqueIdentifier>{bdf3eee3-1a1e-45c1-a45a-a0f2fd4d8952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor">
+      <UniqueIdentifier>{3cff4e82-0f38-4e70-a8fe-8c48c982fdb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\LevelEditor">
+      <UniqueIdentifier>{9c4bd6e4-cb1e-4a94-abfd-2cf8fc04fe59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\LevelEditor\Outliner">
+      <UniqueIdentifier>{13a45330-55a0-469f-8332-f154d870f5af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\LevelEditor\Content Browser">
+      <UniqueIdentifier>{834d4261-0b1f-4dc9-b33d-93b4fd5dc98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\LevelEditor\COutputLog">
+      <UniqueIdentifier>{98af686a-47c3-4b4b-8c44-25c760f20bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\MaterialEditor">
+      <UniqueIdentifier>{8ad859a0-383c-4701-9fe0-f4cdcef4694f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\Blueprint">
+      <UniqueIdentifier>{d4a92038-91e8-4b2e-9d45-0e4019d95d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\TileMapEditor">
+      <UniqueIdentifier>{79706b21-6959-4ba5-81f1-4e2d11bf09f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\SpriteEditor">
+      <UniqueIdentifier>{3c1378c9-4151-479b-97ff-b66579fdd949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\Physics2DMaterialEditor">
+      <UniqueIdentifier>{3cba7f3a-7cf0-43ea-911a-841181415e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\SoundEditor">
+      <UniqueIdentifier>{57698332-dc5c-4594-bca0-8fd946ea00f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09. Editor\PhysicMaterialEditor">
+      <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1028,13 +1034,13 @@
       <Filter>ShaderCode\Utilities</Filter>
     </None>
     <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </None>
     <None Include="ImGui\imgui_node_editor\imgui_extra_math.inl">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </None>
     <None Include="ImGui\imgui_node_editor\imgui_node_editor_internal.inl">
-      <Filter>ImGui\imgui_node_editor</Filter>
+      <Filter>Module\ImGui\imgui_node_editor</Filter>
     </None>
     <None Include="func.hlsli">
       <Filter>ShaderCode\Utilities</Filter>

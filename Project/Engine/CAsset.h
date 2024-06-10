@@ -37,8 +37,8 @@ private:
     }
 
 public:
-    virtual int Save(const wstring& _strRelativePath) { return E_FAIL; };
-    virtual int Load(const wstring& _strFilePath) { return E_FAIL; };
+    virtual int Save(const wstring& _strRelativePath) { return E_FAIL; }
+    virtual int Load(const wstring& _strFilePath) { return E_FAIL; }
 
     virtual CAsset* Clone() = 0;
 
@@ -48,6 +48,7 @@ public:
     virtual ~CAsset();
 
     friend class CAssetMgr;
+    friend class CFBXLoader;
 
     template <typename T>
     friend class Ptr;

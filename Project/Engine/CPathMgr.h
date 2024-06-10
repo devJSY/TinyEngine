@@ -10,4 +10,5 @@ public:
     static void init();
     static const wchar_t* GetOutputPath() { return g_szOutput; }
     static const wchar_t* GetContentPath() { return g_szContent; }
+    static wstring GetRelativePath(const wstring& _FullPath);
 };

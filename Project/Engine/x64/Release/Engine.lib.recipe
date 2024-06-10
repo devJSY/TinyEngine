@@ -209,6 +209,9 @@
     <ContentFile>
       <FullPath>C:\Users\sjrnf\source\repos\TinyEngine\External\Library\Engine\weightmap.cso</FullPath>
     </ContentFile>
+    <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\weightmap.cso</FullPath>
+    </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />

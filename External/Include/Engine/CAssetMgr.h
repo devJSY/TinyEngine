@@ -12,6 +12,7 @@
 #include "CSound.h"
 #include "CPhysics2DMaterial.h"
 #include "CPhysicMaterial.h"
+#include "CMeshData.h"
 
 class CAssetMgr : public CSingleton<CAssetMgr>
 {
@@ -42,6 +43,9 @@ private:
     void CreateDefaultPhysicMaterial();
 
 public:
+    Ptr<CMeshData> LoadFBX(const wstring& _strPath);
+
+public:
     // Geometry Function
     tMeshData MakePoint();
     tMeshData MakeCrosshair();
@@ -64,15 +68,6 @@ public:
     tMeshData MakeWireSphere(const float radius, const int numPoints);
     tMeshData MakeWireCapsule2D(const float radius, const float halfHeight, const int numPoints);
     tMeshData MakeWireCapsule(const float radius, const float halfHeight, const int numPoints);
-
-    // ¸ðµ¨ ·Îµù
-public:
-    CGameObject* LoadModel(const wstring& _name, string _basePath, string _filename, bool _revertNormals = false, tMeshData _TexturesName = {});
-    CGameObject* LoadModel(const wstring& _name, vector<tMeshData> meshes);
-
-private:
-    vector<tMeshData> ReadFromFile(string _basePath, string _filename, bool _revertNormals);
-    void SetModelMaterial(const Ptr<CMaterial>& _Mtrl, const tMeshData& _MeshData);
 
 public:
     Ptr<CTexture> CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage,
@@ -109,6 +104,8 @@ ASSET_TYPE GetAssetType()
 
     if constexpr (std::is_same_v<CMesh, T>)
         Type = ASSET_TYPE::MESH;
+    if constexpr (std::is_same_v<CMeshData, T>)
+        Type = ASSET_TYPE::MESHDATA;
     if constexpr (std::is_same_v<CPrefab, T>)
         Type = ASSET_TYPE::PREFAB;
     if constexpr (std::is_same_v<CTexture, T>)

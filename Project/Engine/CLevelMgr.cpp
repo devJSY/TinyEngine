@@ -68,7 +68,7 @@ CLevel* CLevelMgr::CreateNewLevel()
     pCamObj->AddComponent(new CCamera);
 
     pCamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"));
+    pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
     pCamObj->MeshRender()->SetFrustumCheck(false);
     pCamObj->MeshRender()->SetCastShadow(false);
 
@@ -88,7 +88,7 @@ CLevel* CLevelMgr::CreateNewLevel()
     pUICamObj->AddComponent(new CCamera);
 
     pUICamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pUICamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"));
+    pUICamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
     pUICamObj->MeshRender()->SetFrustumCheck(false);
     pUICamObj->MeshRender()->SetCastShadow(false);
 

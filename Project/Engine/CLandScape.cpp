@@ -93,7 +93,7 @@ void CLandScape::render()
 {
     UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 
     // 가중치 버퍼 클리어(컴퓨터 쉐이더에서도 써야해서)
     m_WeightMapBuffer->Clear(17);
@@ -104,7 +104,7 @@ void CLandScape::render(Ptr<CMaterial> _mtrl)
     Transform()->UpdateData();
     _mtrl->UpdateData();
 
-    GetMesh()->render();
+    GetMesh()->render(0);
 }
 
 void CLandScape::SaveToLevelFile(FILE* _File)
@@ -123,25 +123,25 @@ void CLandScape::UpdateData()
 {
     Transform()->UpdateData();
 
-    GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
-    GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
-    GetMaterial()->SetTexParam(TEX_PARAM::TEX_3, m_HeightMapTex);
+    GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);
+    GetMaterial(0)->SetScalarParam(SCALAR_PARAM::INT_1, m_FaceZ);
+    GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_3, m_HeightMapTex);
 
     // 가중치 버퍼 전달
     m_WeightMapBuffer->UpdateData(17);
 
     // 가중치 버퍼 해상도 전달
     Vec2 vWeightMapResolution = Vec2((float)m_WeightWidth, (float)m_WeightHeight);
-    GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, vWeightMapResolution);
+    GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, vWeightMapResolution);
 
     // 타일 텍스쳐 전달
-    GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_TileArrTex);
+    GetMaterial(0)->SetTexParam(TEX_PARAM::TEXARR_0, m_TileArrTex);
 
     // 타일 배열 개수 전달
     float m_fTileCount = float(m_TileArrTex->GetArraySize() / 2); // 색상, 노말 합쳐져있어서 나누기 2 해줌
-    GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
+    GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
 
-    GetMaterial()->UpdateData();
+    GetMaterial(0)->UpdateData();
 }
 
 void CLandScape::Raycasting()

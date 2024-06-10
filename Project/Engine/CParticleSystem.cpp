@@ -25,7 +25,7 @@ CParticleSystem::CParticleSystem()
 {
     // 전용 메쉬와 전용 재질 사용
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"));
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleRenderMtrl"), 0);
 
     // 파티클을 저장하는 구조화 버퍼
     m_ParticleBuffer = new CStructuredBuffer;
@@ -108,13 +108,22 @@ CParticleSystem::CParticleSystem(const CParticleSystem& origin)
 CParticleSystem::~CParticleSystem()
 {
     if (nullptr != m_ParticleBuffer)
+    {
         delete m_ParticleBuffer;
+        m_ParticleBuffer = nullptr;
+    }
 
     if (nullptr != m_ModuleBuffer)
+    {
         delete m_ModuleBuffer;
+        m_ModuleBuffer = nullptr;
+    }
 
     if (nullptr != m_RWBuffer)
+    {
         delete m_RWBuffer;
+        m_RWBuffer = nullptr;
+    }
 }
 
 void CParticleSystem::finaltick()
@@ -167,8 +176,8 @@ void CParticleSystem::UpdateData()
 
     // 모든 파티클 렌더링
     // 파티클 개별 랜더링 -> 인스턴싱
-    GetMaterial()->UpdateData();
-    GetMaterial()->SetTexParam(TEX_0, m_ParticleTex);
+    GetMaterial(0)->UpdateData();
+    GetMaterial(0)->SetTexParam(TEX_0, m_ParticleTex);
 
     // Animatio2D 보유한 경우
     if (Animator2D())

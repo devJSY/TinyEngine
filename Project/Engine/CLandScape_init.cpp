@@ -9,7 +9,7 @@ void CLandScape::Init()
     CreateMesh();
 
     // 지형 전용 재질 적용
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"));
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"), 0);
 
     // 지형 전용 컴퓨트 쉐이더 생성
     CreateComputeShader();
@@ -78,7 +78,7 @@ void CLandScape::CreateMesh()
     SetMesh(pMesh);
 
     // 지형 전용 재질 적용
-    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"));
+    SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"LandScapeMtrl"), 0);
 }
 
 void CLandScape::CreateComputeShader()
