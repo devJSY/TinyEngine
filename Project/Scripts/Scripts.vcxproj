@@ -110,6 +110,10 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CFSMScript.h" />
+    <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyFSM.h" />
+    <ClInclude Include="CKirbyMoveController.h" />
+    <ClInclude Include="CKirbyRun.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CTestForward.h" />
@@ -293,6 +297,10 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
+    <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyFSM.cpp" />
+    <ClCompile Include="CKirbyMoveController.cpp" />
+    <ClCompile Include="CKirbyRun.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CTestForward.cpp" />

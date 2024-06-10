@@ -143,10 +143,10 @@
       <Filter>Scripts\Have A Nice Death\Player</Filter>
     </ClInclude>
     <ClInclude Include="CFSMScript.h">
-      <Filter>FSM</Filter>
+      <Filter>Module\FSM</Filter>
     </ClInclude>
     <ClInclude Include="CState.h">
-      <Filter>FSM\State</Filter>
+      <Filter>Module\FSM\State</Filter>
     </ClInclude>
     <ClInclude Include="CTestForward.h">
       <Filter>State\FSMTest</Filter>
@@ -162,6 +162,21 @@
     </ClInclude>
     <ClInclude Include="CTestFSM.h">
       <Filter>Scripts\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CUnitScript.h">
+      <Filter>Module\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAbility.h">
+      <Filter>Module\KirbyAbility</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyRun.h">
+      <Filter>State\KirbyState</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFSM.h">
+      <Filter>Scripts\FSM\KirbyFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyMoveController.h">
+      <Filter>Scripts\MoveController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -304,10 +319,10 @@
       <Filter>Scripts\Have A Nice Death\Player</Filter>
     </ClCompile>
     <ClCompile Include="CFSMScript.cpp">
-      <Filter>FSM</Filter>
+      <Filter>Module\FSM</Filter>
     </ClCompile>
     <ClCompile Include="CState.cpp">
-      <Filter>FSM\State</Filter>
+      <Filter>Module\FSM\State</Filter>
     </ClCompile>
     <ClCompile Include="CTestForward.cpp">
       <Filter>State\FSMTest</Filter>
@@ -323,6 +338,21 @@
     </ClCompile>
     <ClCompile Include="CTestFSM.cpp">
       <Filter>Scripts\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CUnitScript.cpp">
+      <Filter>Module\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAbility.cpp">
+      <Filter>Module\KirbyAbility</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyRun.cpp">
+      <Filter>State\KirbyState</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFSM.cpp">
+      <Filter>Scripts\FSM\KirbyFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyMoveController.cpp">
+      <Filter>Scripts\MoveController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -425,12 +455,6 @@
     <Filter Include="Scripts\Have A Nice Death\Enemy\Spooksmen">
       <UniqueIdentifier>{672b938b-9119-4da3-9a06-809546746ac7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FSM">
-      <UniqueIdentifier>{49752795-61fd-4535-b079-696b576ba6c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FSM\State">
-      <UniqueIdentifier>{91c88dbd-b34e-4c0c-b822-7dc479e24bb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\FSM">
       <UniqueIdentifier>{dd9ede4a-0dc6-41ec-8eeb-0b3eead1c9e7}</UniqueIdentifier>
     </Filter>
@@ -439,6 +463,30 @@
     </Filter>
     <Filter Include="State\FSMTest">
       <UniqueIdentifier>{47e22545-89ca-424c-9f3c-34d22adcbb7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module">
+      <UniqueIdentifier>{635d33ed-e298-45b4-b149-3157f7ddd657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState">
+      <UniqueIdentifier>{7a639449-d85a-420c-9cd2-ddbb6b51f352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FSM">
+      <UniqueIdentifier>{49752795-61fd-4535-b079-696b576ba6c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FSM\State">
+      <UniqueIdentifier>{91c88dbd-b34e-4c0c-b822-7dc479e24bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\KirbyFSM">
+      <UniqueIdentifier>{7f2e3799-33fb-41ed-800b-ea950d353744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\KirbyAbility">
+      <UniqueIdentifier>{d69c96af-566c-468a-9293-30bfaed70441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\MoveController">
+      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\Unit">
+      <UniqueIdentifier>{ebad3036-12bc-48c3-bcba-b17801742ef1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
