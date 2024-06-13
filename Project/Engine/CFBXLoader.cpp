@@ -176,6 +176,20 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
             int iIdx = _pFbxMesh->GetPolygonVertex(i, j);
             arrIdx[j] = iIdx;
 
+            // Normal 이 존재하지 않는 경우 생성
+            if (0 == _pFbxMesh->GetElementNormalCount())
+            {
+                _pFbxMesh->InitNormals();
+                _pFbxMesh->GenerateNormals();
+            }
+            // Tangent, Binormal이 존재하지 않는 경우 생성
+            if (0 == _pFbxMesh->GetElementTangentCount() || 0 == _pFbxMesh->GetElementBinormalCount())
+            {
+                _pFbxMesh->InitTangents();
+                _pFbxMesh->InitBinormals();
+                _pFbxMesh->GenerateTangentsData(NULL, true);
+            }
+
             GetTangent(_pFbxMesh, &Container, iIdx, iVtxOrder);
             GetBinormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
             GetNormal(_pFbxMesh, &Container, iIdx, iVtxOrder);

@@ -786,6 +786,20 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
 void COutliner::DrawAnimator3D(CGameObject* obj)
 {
+    CAnimator3D* pAnimator = obj->Animator3D();
+    if (nullptr == pAnimator)
+        return;
+
+    bool open =
+        ImGui::TreeNodeEx((void*)typeid(CAnimator3D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
+
+    ComponentSettingsButton(pAnimator);
+
+    if (open)
+    {
+
+        ImGui::TreePop();
+    }
 }
 
 void COutliner::DrawLight2D(CGameObject* obj)

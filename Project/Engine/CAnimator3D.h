@@ -29,7 +29,7 @@ private:
 
 public:
     virtual void finaltick() override;
-    void UpdateData();
+    virtual void UpdateData() override;
 
 public:
     void SetBones(const vector<tMTBone>* _vecBones)

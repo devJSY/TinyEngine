@@ -100,7 +100,7 @@ void CAnimator3D::UpdateData()
     if (!m_bFinalMatUpdate)
     {
         // Animation3D Update Compute Shader
-        CAnimation3DShader* pUpdateShader = (CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
+        static CAnimation3DShader* pUpdateShader = (CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
 
         // Bone Data
         Ptr<CMesh> pMesh = MeshRender()->GetMesh();

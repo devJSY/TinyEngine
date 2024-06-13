@@ -4,8 +4,8 @@
 class CAnimation3DShader : public CComputeShader
 {
 private:
-    CStructuredBuffer* m_pFrameDataBuffer; // t16
-    CStructuredBuffer* m_pOffsetMatBuffer; // t17
+    CStructuredBuffer* m_pFrameDataBuffer; // t32
+    CStructuredBuffer* m_pOffsetMatBuffer; // t33
     CStructuredBuffer* m_pOutputBuffer;    // u0
 
 public:
