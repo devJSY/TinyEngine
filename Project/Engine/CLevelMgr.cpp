@@ -97,6 +97,10 @@ CLevel* CLevelMgr::CreateNewLevel()
 
     NewLevel->AddObject(pUICamObj, 0);
 
+    CGameObject* pMonster = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Monster.fbx")->Instantiate();
+
+    NewLevel->AddObject(pMonster, 0);
+
     return NewLevel;
 }
 

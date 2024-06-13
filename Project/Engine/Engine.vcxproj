@@ -113,7 +113,9 @@ call EngineCopy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAnim.h" />
+    <ClInclude Include="CAnimation3DShader.h" />
     <ClInclude Include="CAnimator2D.h" />
+    <ClInclude Include="CAnimator3D.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CBlueprintEditor.h" />
@@ -233,7 +235,9 @@ call EngineCopy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnim.cpp" />
+    <ClCompile Include="CAnimation3DShader.cpp" />
     <ClCompile Include="CAnimator2D.cpp" />
+    <ClCompile Include="CAnimator3D.cpp" />
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_init.cpp" />
@@ -429,6 +433,12 @@ call EngineCopy.bat</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="animation.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="BillBoardPointGS.hlsl">

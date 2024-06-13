@@ -120,4 +120,37 @@ float GetTessFactor(float _Length, int _iMinLevel, int _iMaxLevel, float _MinDis
     }
 }
 
+matrix GetBoneMat(int _iBoneIdx, int _iRowIdx)
+{
+    return g_arrBoneMat[(g_iBoneCount * _iRowIdx) + _iBoneIdx];
+}
+
+void Skinning(inout float3 _vPos, inout float3 _vTangent, inout float3 _vBinormal, inout float3 _vNormal
+    , inout float4 _vWeight, inout float4 _vIndices
+    , int _iRowIdx)
+{
+    tSkinningInfo info = (tSkinningInfo) 0.f;
+
+    if (_iRowIdx == -1)
+        return;
+
+    for (int i = 0; i < 4; ++i)
+    {
+        if (0.f == _vWeight[i])
+            continue;
+
+        matrix matBone = GetBoneMat((int) _vIndices[i], _iRowIdx);
+
+        info.vPos += (mul(float4(_vPos, 1.f), matBone) * _vWeight[i]).xyz;
+        info.vTangent += (mul(float4(_vTangent, 0.f), matBone) * _vWeight[i]).xyz;
+        info.vBinormal += (mul(float4(_vBinormal, 0.f), matBone) * _vWeight[i]).xyz;
+        info.vNormal += (mul(float4(_vNormal, 0.f), matBone) * _vWeight[i]).xyz;
+    }
+
+    _vPos = info.vPos;
+    _vTangent = normalize(info.vTangent);
+    _vBinormal = normalize(info.vBinormal);
+    _vNormal = normalize(info.vNormal);
+}
+
 #endif

@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 
 #define HeightTexture g_tex_3
 #define HeightScale g_float_0
@@ -7,6 +8,12 @@
 PS_IN main(VS_IN input)
 {
     PS_IN output = (PS_IN) 0.f;
+    
+    if (g_iAnim)
+    {
+        Skinning(input.vPos, input.vTangent, input.vBitangent, input.vNormal
+              , input.vWeights, input.vIndices, 0);
+    }
     
     // Normal 벡터 먼저 변환 (Height Mapping)
     float4 normal = float4(input.vNormal, 0.0f);

@@ -10,6 +10,9 @@ struct VS_IN
     float3 vTangent : TANGENT;
     float3 vBitangent : BINORMAL;
     float3 vNormal : NORMAL;
+    
+    float4 vWeights : BLENDWEIGHT;
+    float4 vIndices : BLENDINDICES;
 };
 
 struct PS_IN
@@ -130,6 +133,14 @@ struct tRaycastOut
     float2 vUV;
     float fDist;
     int success;
+};
+
+struct tSkinningInfo
+{
+    float3 vPos;
+    float3 vTangent;
+    float3 vBinormal;
+    float3 vNormal;
 };
 
 #endif

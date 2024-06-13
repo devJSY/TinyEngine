@@ -13,6 +13,7 @@ class CRenderComponent;
 
 class Transform;
 class CAnimator2D;
+class CAnimator3D;
 class Light2D;
 class Light3D;
 class CCamera;
@@ -77,6 +78,7 @@ public:
 
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
+    GET_COMPONENT(Animator3D, ANIMATOR3D);
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(Light3D, LIGHT3D);
     GET_COMPONENT(Camera, CAMERA);

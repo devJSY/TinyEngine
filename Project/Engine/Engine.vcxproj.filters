@@ -355,6 +355,12 @@
     <ClInclude Include="CMeshData.h">
       <Filter>06. Asset\MeshData</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimator3D.h">
+      <Filter>08. Component\Animator3D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation3DShader.h">
+      <Filter>ShaderCode\Compute\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -686,6 +692,12 @@
     </ClCompile>
     <ClCompile Include="CMeshData.cpp">
       <Filter>06. Asset\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator3D.cpp">
+      <Filter>08. Component\Animator3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation3DShader.cpp">
+      <Filter>ShaderCode\Compute\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1019,6 +1031,12 @@
     <Filter Include="09. Editor\PhysicMaterialEditor">
       <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\Animator3D">
+      <UniqueIdentifier>{b5a6f8f8-45eb-44ee-ac40-ec642d50418e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Compute\Animation">
+      <UniqueIdentifier>{fd4a2d04-1232-4966-b9de-417e8d4900ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1259,6 +1277,9 @@
     </FxCompile>
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
+    </FxCompile>
+    <FxCompile Include="animation.fx">
+      <Filter>ShaderCode\Compute\Animation</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

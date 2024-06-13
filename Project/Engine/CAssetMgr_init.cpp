@@ -15,6 +15,7 @@
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
 #include "CWeightMapShader.h"
+#include "CAnimation3DShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -1249,6 +1250,15 @@ void CAssetMgr::CreateDefaultComputeShader()
         pShader->SetName(L"WeightMapShader");
         CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"WeightMapShader", pShader);
     }
+
+    // =======================
+    // Animation 3D
+    // =======================
+    {
+        Ptr<CComputeShader> pShader = new CAnimation3DShader;
+        pShader->SetName(L"Animation3DUpdateCS");
+        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"Animation3DUpdateCS", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultMaterial()
@@ -1745,7 +1755,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
     m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
 
     // meshdata 를 실제파일로 저장
-    // pMeshData->Save(strName);
+    pMeshData->Save(strName);
 
     return pMeshData;
 }

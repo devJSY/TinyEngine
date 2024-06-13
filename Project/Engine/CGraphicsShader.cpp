@@ -44,7 +44,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     DEVICE->CreateVertexShader(m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), nullptr, m_VS.GetAddressOf());
 
     // 정점 구조정보(Layout) 생성
-    D3D11_INPUT_ELEMENT_DESC arrElement[6] = {}; // 정점하나안의 요소 갯수만큼 생성
+    D3D11_INPUT_ELEMENT_DESC arrElement[8] = {}; // 정점하나안의 요소 갯수만큼 생성
 
     arrElement[0].InputSlot = 0;
     arrElement[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
@@ -94,7 +94,23 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[5].AlignedByteOffset = 60;
     arrElement[5].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 
-    DEVICE->CreateInputLayout(arrElement, 6, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), m_Layout.GetAddressOf());
+    arrElement[6].SemanticName = "BLENDWEIGHT";
+    arrElement[6].SemanticIndex = 0;
+    arrElement[6].AlignedByteOffset = 72;
+    arrElement[6].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    arrElement[6].InputSlot = 0;
+    arrElement[6].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    arrElement[6].InstanceDataStepRate = 0;
+
+    arrElement[7].SemanticName = "BLENDINDICES";
+    arrElement[7].SemanticIndex = 0;
+    arrElement[7].AlignedByteOffset = 88;
+    arrElement[7].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    arrElement[7].InputSlot = 0;
+    arrElement[7].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    arrElement[7].InstanceDataStepRate = 0;
+
+    DEVICE->CreateInputLayout(arrElement, 8, m_VSBlob->GetBufferPointer(), m_VSBlob->GetBufferSize(), m_Layout.GetAddressOf());
 
     return S_OK;
 }

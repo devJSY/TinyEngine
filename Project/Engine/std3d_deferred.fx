@@ -2,6 +2,7 @@
 #define _STD_DEFERED
 
 #include "global.hlsli"
+#include "func.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlDiffuse g_vDiffuse
@@ -10,7 +11,13 @@
 PS_IN VS_Std3D_Deferred(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
-
+    
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBitangent, _in.vNormal
+              , _in.vWeights, _in.vIndices, 0);
+    }
+    
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
     
