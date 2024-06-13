@@ -110,9 +110,6 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
 
     for (UINT i = 0; i < GetMesh()->GetSubsetCount(); ++i)
     {
-        if (nullptr == GetMaterial(i))
-            continue;
-
         GetMesh()->render(i);
     }
 

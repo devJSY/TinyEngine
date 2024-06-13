@@ -13,14 +13,16 @@ CAnimator3D::CAnimator3D()
     : CComponent(COMPONENT_TYPE::ANIMATOR3D)
     , m_pVecBones(nullptr)
     , m_pVecClip(nullptr)
-    , m_iCurClip(0)
-    , m_dCurTime(0.)
+    , m_vecClipUpdateTime{}
+    , m_vecFinalBoneMat{}
     , m_iFrameCount(30)
-    , m_pBoneFinalMatBuffer(nullptr)
-    , m_bFinalMatUpdate(false)
+    , m_dCurTime(0.)
+    , m_iCurClip(0)
     , m_iFrameIdx(0)
     , m_iNextFrameIdx(0)
     , m_fRatio(0.f)
+    , m_pBoneFinalMatBuffer(nullptr)
+    , m_bFinalMatUpdate(false)
 {
     m_pBoneFinalMatBuffer = new CStructuredBuffer;
 }
@@ -29,14 +31,16 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
     : CComponent(_origin)
     , m_pVecBones(_origin.m_pVecBones)
     , m_pVecClip(_origin.m_pVecClip)
-    , m_iCurClip(_origin.m_iCurClip)
-    , m_dCurTime(_origin.m_dCurTime)
+    , m_vecClipUpdateTime(_origin.m_vecClipUpdateTime)
+    , m_vecFinalBoneMat(_origin.m_vecFinalBoneMat)
     , m_iFrameCount(_origin.m_iFrameCount)
-    , m_pBoneFinalMatBuffer(nullptr)
-    , m_bFinalMatUpdate(false)
+    , m_dCurTime(_origin.m_dCurTime)
+    , m_iCurClip(_origin.m_iCurClip)
     , m_iFrameIdx(_origin.m_iFrameIdx)
     , m_iNextFrameIdx(_origin.m_iNextFrameIdx)
     , m_fRatio(_origin.m_fRatio)
+    , m_pBoneFinalMatBuffer(nullptr)
+    , m_bFinalMatUpdate(false)
 {
     m_pBoneFinalMatBuffer = new CStructuredBuffer;
 }
