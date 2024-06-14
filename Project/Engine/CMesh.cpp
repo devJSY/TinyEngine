@@ -61,33 +61,43 @@ void CMesh::UpdateData(UINT _iSubset)
 
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 {
-    const tContainer* container = &_loader.GetContainer(0);
+    vector<Vtx> vecVtx = {};
+    for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
+    {
+        const tContainer* container = &_loader.GetContainer(ContainerIndex);
 
-    UINT iVtxCount = (UINT)container->vecPos.size();
+        vector<Vtx> vecVtxContainer = {};
+        UINT iVtxCount = (UINT)container->vecPos.size();
+        vecVtxContainer.resize(iVtxCount);
+
+        for (UINT i = 0; i < iVtxCount; ++i)
+        {
+            vecVtxContainer[i].vPos = container->vecPos[i];
+            vecVtxContainer[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
+            vecVtxContainer[i].vUV = container->vecUV[i];
+            vecVtxContainer[i].vTangent = container->vecTangent[i];
+            vecVtxContainer[i].vBiTangent = container->vecBinormal[i];
+            vecVtxContainer[i].vNormal = container->vecNormal[i];
+            vecVtxContainer[i].vWeights = container->vecWeights[i];
+            vecVtxContainer[i].vIndices = container->vecIndices[i];
+        }
+
+        // Container의 모든 정점을 연결하여 하나의 Mesh생성
+        vecVtx.insert(vecVtx.end(), vecVtxContainer.begin(), vecVtxContainer.end());
+    }
 
     D3D11_BUFFER_DESC tVtxDesc = {};
-
-    tVtxDesc.ByteWidth = sizeof(Vtx) * iVtxCount;
+    tVtxDesc.ByteWidth = UINT(sizeof(Vtx) * vecVtx.size());
     tVtxDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
     tVtxDesc.Usage = D3D11_USAGE_DEFAULT;
     if (D3D11_USAGE_DYNAMIC == tVtxDesc.Usage)
         tVtxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
+    void* pVecVtxSysMem = malloc(tVtxDesc.ByteWidth);
+    memcpy(pVecVtxSysMem, vecVtx.data(), tVtxDesc.ByteWidth);
+
     D3D11_SUBRESOURCE_DATA tSub = {};
-    tSub.pSysMem = malloc(tVtxDesc.ByteWidth);
-    Vtx* pSys = (Vtx*)tSub.pSysMem;
-    for (UINT i = 0; i < iVtxCount; ++i)
-    {
-        pSys[i].vPos = container->vecPos[i];
-        pSys[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-        pSys[i].vUV = container->vecUV[i];
-        pSys[i].vTangent = container->vecTangent[i];
-        pSys[i].vBiTangent = container->vecBinormal[i];
-        pSys[i].vNormal = container->vecNormal[i];
-        pSys[i].vWeights = container->vecWeights[i];
-        pSys[i].vIndices = container->vecIndices[i];
-    }
+    tSub.pSysMem = pVecVtxSysMem;
 
     ComPtr<ID3D11Buffer> pVB = NULL;
     if (FAILED(DEVICE->CreateBuffer(&tVtxDesc, &tSub, pVB.GetAddressOf())))
@@ -98,42 +108,65 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
     CMesh* pMesh = new CMesh;
     pMesh->m_VB = pVB;
     pMesh->m_VBDesc = tVtxDesc;
-    pMesh->m_VtxSysMem = pSys;
-    pMesh->m_VtxCount = iVtxCount;
+    pMesh->m_VtxSysMem = pVecVtxSysMem;
+    pMesh->m_VtxCount = (UINT)vecVtx.size();
 
     // 인덱스 정보
-    UINT iIdxBufferCount = (UINT)container->vecIdx.size();
-    D3D11_BUFFER_DESC tIdxDesc = {};
-
-    for (UINT i = 0; i < iIdxBufferCount; ++i)
+    UINT idxOffset = 0;
+    for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
     {
-        tIdxDesc.ByteWidth = (UINT)container->vecIdx[i].size() * sizeof(UINT); // Index Format 이 R32_UINT 이기 때문
-        tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-        tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
-        if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
-            tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        const tContainer* container = &_loader.GetContainer(ContainerIndex);
 
-        void* pSysMem = malloc(tIdxDesc.ByteWidth);
-        memcpy(pSysMem, container->vecIdx[i].data(), tIdxDesc.ByteWidth);
-        tSub.pSysMem = pSysMem;
+        UINT iIdxBufferCount = (UINT)container->vecIdx.size();
+        D3D11_BUFFER_DESC tIdxDesc = {};
 
-        ComPtr<ID3D11Buffer> pIB = nullptr;
-        if (FAILED(DEVICE->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+        for (UINT i = 0; i < iIdxBufferCount; ++i)
         {
-            return NULL;
+            vector<UINT> vecIdx(container->vecIdx[i].size());
+            for (UINT j = 0; j < vecIdx.size(); ++j)
+            {
+                vecIdx[j] = idxOffset + container->vecIdx[i][j];
+            }
+
+            tIdxDesc.ByteWidth = (UINT)container->vecIdx[i].size() * sizeof(UINT); // Index Format 이 R32_UINT 이기 때문
+            tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+            tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
+            if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
+                tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+            void* pVecIdxSysMem = malloc(tIdxDesc.ByteWidth);
+            memcpy(pVecIdxSysMem, vecIdx.data(), tIdxDesc.ByteWidth);
+            tSub.pSysMem = pVecIdxSysMem;
+
+            ComPtr<ID3D11Buffer> pIB = nullptr;
+            if (FAILED(DEVICE->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+            {
+                return NULL;
+            }
+
+            tIndexInfo info = {};
+            info.tIBDesc = tIdxDesc;
+            info.iIdxCount = (UINT)container->vecIdx[i].size();
+            info.pIdxSysMem = pVecIdxSysMem;
+            info.pIB = pIB;
+
+            pMesh->m_vecIdxInfo.push_back(info);
+            idxOffset += (UINT)container->vecPos.size(); // 이전 컨테이너의 정점수만큼 offset 추가
         }
-
-        tIndexInfo info = {};
-        info.tIBDesc = tIdxDesc;
-        info.iIdxCount = (UINT)container->vecIdx[i].size();
-        info.pIdxSysMem = pSysMem;
-        info.pIB = pIB;
-
-        pMesh->m_vecIdxInfo.push_back(info);
     }
 
     // Animation3D
-    if (!container->bAnimation)
+    bool bHasAnim = false;
+    for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
+    {
+        const tContainer* container = &_loader.GetContainer(ContainerIndex);
+        bHasAnim = container->bAnimation;
+        if (bHasAnim)
+            break;
+    }
+
+    // 애니메이션을 가지고있지 않았다.
+    if (!bHasAnim)
         return pMesh;
 
     vector<tBone*>& vecBone = _loader.GetBones();

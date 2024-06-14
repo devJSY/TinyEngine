@@ -154,13 +154,16 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
     vector<Ptr<CMaterial>> vecMtrl;
 
     // 메테리얼 가져오기
-    for (UINT i = 0; i < loader.GetContainer(0).vecMtrl.size(); ++i)
+    for (UINT i = 0; i < (UINT)loader.GetContainerCount(); ++i)
     {
-        // 예외처리 (material 이름이 입력 안되어있을 수도 있다.)
-        Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(loader.GetContainer(0).vecMtrl[i].strMtrlName);
-        assert(pMtrl.Get());
+        for (UINT j = 0; j < (UINT)loader.GetContainer(i).vecMtrl.size(); ++j)
+        {
+            // 예외처리 (material 이름이 입력 안되어있을 수도 있다.)
+            Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(loader.GetContainer(i).vecMtrl[j].strMtrlName);
+            assert(pMtrl.Get());
 
-        vecMtrl.push_back(pMtrl);
+            vecMtrl.push_back(pMtrl);
+        }
     }
 
     CMeshData* pMeshData = new CMeshData(true);

@@ -1914,28 +1914,34 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
         if (nullptr != pMesh)
         {
-            Ptr<CMaterial> pCurMtrl = pMeshRender->GetMaterial(0);
 
             // Material
             if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
             {
-                string CurMtrlname, SharedMtrlname, DynamicMtrlname;
-                if (nullptr != pCurMtrl)
-                    CurMtrlname = ToString(pCurMtrl->GetName());
-
-                ImGui_InputText("Material 0", CurMtrlname);
-
-                // Drag & Drop
-                if (ImGui::BeginDragDropTarget())
+                for (UINT i = 0; i < pMesh->GetSubsetCount(); ++i)
                 {
-                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                    Ptr<CMaterial> pCurMtrl = pMeshRender->GetMaterial(i);
+
+                    string CurMtrlname;
+                    if (nullptr != pCurMtrl)
                     {
-                        string name = (char*)payload->Data;
-                        name.resize(payload->DataSize);
-                        pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)), 0);
+                        CurMtrlname = ToString(pCurMtrl->GetName());
                     }
 
-                    ImGui::EndDragDropTarget();
+                    ImGui_InputText((string("Material ") + std::to_string(i)).c_str(), CurMtrlname);
+
+                    // Drag & Drop
+                    if (ImGui::BeginDragDropTarget())
+                    {
+                        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                        {
+                            string name = (char*)payload->Data;
+                            name.resize(payload->DataSize);
+                            pMeshRender->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(name)), i);
+                        }
+
+                        ImGui::EndDragDropTarget();
+                    }
                 }
 
                 ImGui::Separator();
@@ -1943,7 +1949,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 if (ImGui_AlignButton("Material Editor", 1.f))
                 {
                     CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
-                    CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
+                    CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMeshRender->GetMaterial(0));
                 }
 
                 ImGui::TreePop();
