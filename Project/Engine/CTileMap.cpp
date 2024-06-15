@@ -119,6 +119,11 @@ void CTileMap::render(Ptr<CMaterial> _mtrl)
     GetMesh()->render(0);
 }
 
+void CTileMap::render(UINT _Subset)
+{
+    render();
+}
+
 void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 {
     m_TileAtlas = _Atlas;

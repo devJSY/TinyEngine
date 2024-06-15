@@ -45,6 +45,7 @@ public:
     virtual void UpdateData() override;
     virtual void render() override;
     virtual void render(Ptr<CMaterial> _mtrl) override;
+    virtual void render(UINT _Subset) override;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -153,6 +153,7 @@ Texture2D SSAOTex : register(t30);
 StructuredBuffer<Matrix> g_arrBoneMat : register(t31);
 
 // Animation3D 32,33 사용
+// CopyBone 34 사용
 
 SamplerState g_LinearWrapSampler : register(s0);
 SamplerState g_LinearClampSampler : register(s1);

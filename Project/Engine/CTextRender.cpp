@@ -75,6 +75,11 @@ void CTextRender::render(Ptr<CMaterial> _mtrl)
     render();
 }
 
+void CTextRender::render(UINT _Subset)
+{
+    render();
+}
+
 void CTextRender::SaveToLevelFile(FILE* _File)
 {
     SaveWStringToFile(m_Text, _File);

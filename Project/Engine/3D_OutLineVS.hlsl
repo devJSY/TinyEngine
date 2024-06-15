@@ -13,8 +13,8 @@ PS_IN main(VS_IN input)
     }
     
     float4 normal = float4(input.vNormal, 0.0);
-    output.normalWorld = mul(normal, g_matWorldInvTranspose).xyz;
-    output.normalWorld = normalize(output.normalWorld);
+    output.vNormalWorld = mul(normal, g_matWorldInvTranspose).xyz;
+    output.vNormalWorld = normalize(output.vNormalWorld);
     
     float4 pos = float4(input.vPos, 1.0);
     output.vPosProj = mul(pos, g_matWorld);
@@ -24,7 +24,7 @@ PS_IN main(VS_IN input)
     float dist = length(output.vPosWorld - g_eyeWorld);
     float thickness = 0.005f;
     
-    output.vPosProj += float4(output.normalWorld * dist * thickness, 0.0);
+    output.vPosProj += float4(output.vNormalWorld * dist * thickness, 0.0);
     output.vPosProj = mul(output.vPosProj, g_matView);
     output.vPosProj = mul(output.vPosProj, g_matProj);
 

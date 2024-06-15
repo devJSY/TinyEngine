@@ -107,6 +107,11 @@ void CLandScape::render(Ptr<CMaterial> _mtrl)
     GetMesh()->render(0);
 }
 
+void CLandScape::render(UINT _Subset)
+{
+    render();
+}
+
 void CLandScape::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_BrushStrength, 1, sizeof(float), _File);

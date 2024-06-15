@@ -25,6 +25,7 @@ public:
     virtual void UpdateData() override;
     virtual void render() override;
     virtual void render(Ptr<CMaterial> _mtrl) override;
+    virtual void render(UINT _Subset) override;
 
 public:
     void EnableModule(PARTICLE_MODULE _ModuleType, bool _bEnable) { m_Module.arrModuleCheck[(UINT)_ModuleType] = _bEnable; }

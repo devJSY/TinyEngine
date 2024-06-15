@@ -120,6 +120,15 @@ void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx)
     m_vecMtrls[_idx].pDynamicMtrl = nullptr;
 }
 
+ULONG64 CRenderComponent::GetInstID(UINT _iMtrlIdx)
+{
+    if (m_Mesh == nullptr || m_vecMtrls[_iMtrlIdx].pCurMtrl == nullptr)
+        return 0;
+
+    uInstID id{(UINT)m_Mesh->GetID(), (WORD)m_vecMtrls[_iMtrlIdx].pCurMtrl->GetID(), (WORD)_iMtrlIdx};
+    return id.llID;
+}
+
 void CRenderComponent::finaltick()
 {
     if (m_bFrustumCheck)

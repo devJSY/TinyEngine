@@ -14,6 +14,7 @@
 #include "CPhysics2DMgr.h"
 #include "CFontMgr.h"
 #include "CPhysicsMgr.h"
+#include "CInstancingBuffer.h"
 
 #include "CSound.h"
 
@@ -57,6 +58,7 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
     CRenderMgr::GetInst()->init();
     CEditorMgr::GetInst()->init();
     CFontMgr::GetInst()->init();
+    CInstancingBuffer::GetInst()->init();
 
     return S_OK;
 }

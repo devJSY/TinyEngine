@@ -13,6 +13,13 @@ struct VS_IN
     
     float4 vWeights : BLENDWEIGHT;
     float4 vIndices : BLENDINDICES;
+        
+    // Per Instance Data    
+    row_major matrix matWorld : WORLD;
+    row_major matrix matWorldInvTranspose : WORLDINVTRANSPOSE;
+    row_major matrix matWV : WV;
+    row_major matrix matWVP : WVP;
+    uint iRowIndex : ROWINDEX;
 };
 
 struct PS_IN
@@ -24,7 +31,7 @@ struct PS_IN
     
     float3 vTangentWorld : TANGENT;
     float3 vBitangentWorld : BINORMAL;
-    float3 normalWorld : NORMAL;
+    float3 vNormalWorld : NORMAL;
 };
 
 struct tLightInfo

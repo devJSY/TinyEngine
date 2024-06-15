@@ -47,7 +47,7 @@ float4 main(PS_IN input) : SV_TARGET
     
     // Rim
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
-    float3 RimColor = RimLight(input.normalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
+    float3 RimColor = RimLight(input.vNormalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
     
     float4 output = float4(0.f, 0.f, 0.f, 1.f);
     output = float4(ambientLighting + directLighting + emission + RimColor, 1.0);

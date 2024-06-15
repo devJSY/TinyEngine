@@ -25,7 +25,7 @@ float3 SchlickFresnel(float3 F0, float NdotH)
 
 float3 GetNormal(PS_IN input)
 {
-    float3 normalWorld = normalize(input.normalWorld);
+    float3 normalWorld = normalize(input.vNormalWorld);
     
     if (g_btex_2) // NormalWorld¸¦ ±³Ã¼
     {

@@ -224,6 +224,11 @@ void CParticleSystem::render(Ptr<CMaterial> _mtrl)
         Animator2D()->Clear();
 }
 
+void CParticleSystem::render(UINT _Subset)
+{
+    render();
+}
+
 void CParticleSystem::SaveToLevelFile(FILE* _File)
 {
     CRenderComponent::SaveToLevelFile(_File);

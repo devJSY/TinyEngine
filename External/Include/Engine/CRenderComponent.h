@@ -40,11 +40,14 @@ public:
     bool IsCastShadow() const { return m_bCastShadow; }
     void SetCastShadow(bool _bCastShadow) { m_bCastShadow = _bCastShadow; }
 
+    ULONG64 GetInstID(UINT _iMtrlIdx);
+
 public:
     virtual void finaltick();
     virtual void UpdateData() = 0;
     virtual void render() = 0;
     virtual void render(Ptr<CMaterial> _mtrl) = 0;
+    virtual void render(UINT _iSubset) = 0;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

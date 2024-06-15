@@ -33,6 +33,7 @@ private:
 
 private:
     void UpdateData(UINT _iSubset);
+    void UpdateData_Inst(UINT _iSubset);
 
 public:
     UINT GetVtxCount() const { return m_VtxCount; }
@@ -55,6 +56,7 @@ public:
     void render(UINT _iSubset);
     void render_draw(UINT _iSubset);
     void render_IndexedInstanced(UINT _InstanceCount);
+    void render_instancing(UINT _iSubset);
 
 public:
     virtual int Save(const wstring& _strRelativePath) override;

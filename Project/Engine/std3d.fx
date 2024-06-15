@@ -18,13 +18,14 @@ PS_IN VS_Std3D(VS_IN _in)
     
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).rgb;
-
-    output.normalWorld = normalize(mul(float4(_in.vNormal, 0.f), g_matWorld).rgb);
-    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorld).rgb);
-        
+    
     output.vUV = _in.vUV;
     output.vColor = _in.vColor;
     
+    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorldInvTranspose).rgb);
+    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), g_matWorldInvTranspose).rgb);
+    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), g_matWorldInvTranspose).rgb);
+        
     return output;
 }
 
@@ -42,7 +43,7 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
         ObjectColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
     }
    
-    float3 vWorldNormal = _in.normalWorld;
+    float3 vWorldNormal = _in.vNormalWorld;
     
     // 노말 텍스쳐가 바인딩 되어있다면, 노말맵핑을 진행한다.
     if (g_btex_1)
@@ -52,7 +53,7 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
         float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).rgb;
         vNormal = vNormal * 2.f - 1.f;
                         
-        float3 N = _in.normalWorld;
+        float3 N = _in.vNormalWorld;
         float3 T = normalize(_in.vTangentWorld - dot(_in.vTangentWorld, N) * N);
         float3 B = cross(N, T);
         

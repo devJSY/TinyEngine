@@ -29,6 +29,8 @@ void CAnimation3DShader::UpdateGroupCount()
     UINT GroupX = (m_Const.arrInt[0] / m_ThreadX) + 1;
     UINT GroupY = 1;
     UINT GroupZ = 1;
+
+    SetGroup(GroupX, GroupY, GroupZ);
 }
 
 void CAnimation3DShader::Clear()

@@ -40,10 +40,11 @@ private:
     Matrix m_matProjInv;
 
     // 물체 분류
-    vector<CGameObject*> m_vecDeferred;
+    map<ULONG64, vector<tInstObj>> m_mapInstGroup_D; // Deferred
+    map<ULONG64, vector<tInstObj>> m_mapInstGroup_F; // Foward ( Opaque, Mask )
+    map<INT_PTR, vector<tInstObj>> m_mapSingleObj;   // Single Object
+
     vector<CGameObject*> m_vecDecal;
-    vector<CGameObject*> m_vecOpaque;
-    vector<CGameObject*> m_vecMaked;
     vector<CGameObject*> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;
 
@@ -98,6 +99,9 @@ public:
     void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
 
 private:
+    void render_Deferred_Inst();
+    void render_Forward_Inst();
+
     void render_Decal();
     void render_SSAO();
     void render_Light();

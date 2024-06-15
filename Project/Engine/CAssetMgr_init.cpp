@@ -16,6 +16,7 @@
 #include "CRaycastShader.h"
 #include "CWeightMapShader.h"
 #include "CAnimation3DShader.h"
+#include "CCopyBoneShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -1230,7 +1231,7 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CHeightMapShader;
         pShader->SetName(L"HeightMapShader");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"HeightMapShader", pShader);
+        AddAsset<CComputeShader>(L"HeightMapShader", pShader);
     }
 
     // =====================
@@ -1239,7 +1240,7 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CRaycastShader;
         pShader->SetName(L"RaycastShader");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", pShader);
+        AddAsset<CComputeShader>(L"RaycastShader", pShader);
     }
 
     // =======================
@@ -1248,7 +1249,7 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CWeightMapShader;
         pShader->SetName(L"WeightMapShader");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"WeightMapShader", pShader);
+        AddAsset<CComputeShader>(L"WeightMapShader", pShader);
     }
 
     // =======================
@@ -1257,7 +1258,16 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CAnimation3DShader;
         pShader->SetName(L"Animation3DUpdateCS");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"Animation3DUpdateCS", pShader);
+        AddAsset<CComputeShader>(L"Animation3DUpdateCS", pShader);
+    }
+
+    // =======================
+    // CopyBone
+    // =======================
+    {
+        Ptr<CComputeShader> pShader = new CCopyBoneShader;
+        pShader->SetName(L"CopyBoneCS");
+        AddAsset<CComputeShader>(L"CopyBoneCS", pShader);
     }
 }
 

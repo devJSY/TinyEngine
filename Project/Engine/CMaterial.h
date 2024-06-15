@@ -38,6 +38,7 @@ public:
 
 public:
     void UpdateData();
+    void UpdateData_Inst();
 
 public:
     const tMtrlConst& GetMtrlConst() const { return m_Const; }
