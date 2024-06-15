@@ -15,18 +15,14 @@ PS_IN main(VS_IN input)
               , input.vWeights, input.vIndices, 0);
     }
     
-    float4 tangentWorld = float4(input.vTangent, 0.0f);
-    tangentWorld = mul(tangentWorld, g_matWorldInvTranspose);
-    
-    float4 BitangentWorld = float4(input.vBitangent, 0.0f);
-    BitangentWorld = mul(BitangentWorld, g_matWorldInvTranspose);
+    float3 tangentWorld = normalize(mul(float4(input.vTangent, 0.0f), g_matWorldInvTranspose).xyz);
+
+    float3 BitangentWorld = normalize(mul(float4(input.vBitangent, 0.0f), g_matWorldInvTranspose).xyz);
 
     // Normal 벡터 먼저 변환 (Height Mapping)
-    float4 normalWorld = float4(input.vNormal, 0.0f);
-    normalWorld = mul(normalWorld, g_matWorldInvTranspose);
+    float3 normalWorld = normalize(mul(float4(input.vNormal, 0.0f), g_matWorldInvTranspose).xyz);
 
-    float4 posWorld = float4(input.vPos, 1.0f);
-    posWorld = mul(posWorld, g_matWorld);
+    float4 posWorld = mul(float4(input.vPos, 1.0f), g_matWorld);
     
     // Height Mapping
     if (g_btex_3)
@@ -34,7 +30,7 @@ PS_IN main(VS_IN input)
         // Heightmap은 보통 흑백이라서 마지막에 .r로 float 하나만 사용
         float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV, 0).r;
         height = height * 2.0 - 1.0;
-        posWorld += float4(normalWorld.xyz * height * HeightScale, 0.0);
+        posWorld += float4(normalWorld * height * HeightScale, 0.0);
     }
 
     output.vPosProj = mul(posWorld, g_matView);
@@ -44,9 +40,9 @@ PS_IN main(VS_IN input)
     output.vColor = input.vColor;
     output.vUV = input.vUV;
     
-    output.vTangentWorld = tangentWorld.xyz;
-    output.vBitangentWorld = BitangentWorld.xyz;
-    output.vNormalWorld = normalWorld.xyz;
+    output.vTangentWorld = tangentWorld;
+    output.vBitangentWorld = BitangentWorld;
+    output.vNormalWorld = normalWorld;
 
     return output;
 }
@@ -60,19 +56,15 @@ PS_IN main_Inst(VS_IN input)
         Skinning(input.vPos, input.vTangent, input.vBitangent, input.vNormal
               , input.vWeights, input.vIndices, input.iRowIndex);
     }
-    
-    float4 tangentWorld = float4(input.vTangent, 0.0f);
-    tangentWorld = mul(tangentWorld, input.matWorldInvTranspose);
-    
-    float4 BitangentWorld = float4(input.vBitangent, 0.0f);
-    BitangentWorld = mul(BitangentWorld, input.matWorldInvTranspose);
+     
+    float3 tangentWorld = normalize(mul(float4(input.vTangent, 0.0f), input.matWorldInvTranspose).xyz);
+
+    float3 BitangentWorld = normalize(mul(float4(input.vBitangent, 0.0f), input.matWorldInvTranspose).xyz);
 
     // Normal 벡터 먼저 변환 (Height Mapping)
-    float4 normalWorld = float4(input.vNormal, 0.0f);
-    normalWorld = mul(normalWorld, input.matWorldInvTranspose);
+    float3 normalWorld = normalize(mul(float4(input.vNormal, 0.0f), input.matWorldInvTranspose).xyz);
 
-    float4 posWorld = float4(input.vPos, 1.0f);
-    posWorld = mul(posWorld, input.matWorld);
+    float4 posWorld = mul(float4(input.vPos, 1.0f), input.matWorld);
     
     // Height Mapping
     if (g_btex_3)
@@ -80,19 +72,19 @@ PS_IN main_Inst(VS_IN input)
         // Heightmap은 보통 흑백이라서 마지막에 .r로 float 하나만 사용
         float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV, 0).r;
         height = height * 2.0 - 1.0;
-        posWorld += float4(normalWorld.xyz * height * HeightScale, 0.0);
+        posWorld += float4(normalWorld * height * HeightScale, 0.0);
     }
-
-    output.vPosProj = mul(posWorld, g_matView);
-    output.vPosProj = mul(output.vPosProj, g_matProj);
+    
+    output.vPosProj = mul(posWorld, input.matView);
+    output.vPosProj = mul(output.vPosProj, input.matProj);
 
     output.vPosWorld = posWorld.xyz; // 월드 위치 따로 저장
     output.vColor = input.vColor;
     output.vUV = input.vUV;
     
-    output.vTangentWorld = tangentWorld.xyz;
-    output.vBitangentWorld = BitangentWorld.xyz;
-    output.vNormalWorld = normalWorld.xyz;
+    output.vTangentWorld = tangentWorld;
+    output.vBitangentWorld = BitangentWorld;
+    output.vNormalWorld = normalWorld;
 
     return output;
 }

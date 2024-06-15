@@ -99,8 +99,7 @@ public:
     void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
 
 private:
-    void render_Deferred_Inst();
-    void render_Forward_Inst();
+    void render_Inst(const map<ULONG64, vector<tInstObj>>& _Group);
 
     void render_Decal();
     void render_SSAO();

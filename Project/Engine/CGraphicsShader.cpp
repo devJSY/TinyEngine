@@ -168,7 +168,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[15].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[15].InstanceDataStepRate = 1;
 
-    arrElement[16].SemanticName = "WV";
+    arrElement[16].SemanticName = "VIEW";
     arrElement[16].SemanticIndex = 0;
     arrElement[16].AlignedByteOffset = 128;
     arrElement[16].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -176,7 +176,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[16].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[16].InstanceDataStepRate = 1;
 
-    arrElement[17].SemanticName = "WV";
+    arrElement[17].SemanticName = "VIEW";
     arrElement[17].SemanticIndex = 1;
     arrElement[17].AlignedByteOffset = 144;
     arrElement[17].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -184,7 +184,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[17].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[17].InstanceDataStepRate = 1;
 
-    arrElement[18].SemanticName = "WV";
+    arrElement[18].SemanticName = "VIEW";
     arrElement[18].SemanticIndex = 2;
     arrElement[18].AlignedByteOffset = 160;
     arrElement[18].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -192,7 +192,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[18].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[18].InstanceDataStepRate = 1;
 
-    arrElement[19].SemanticName = "WV";
+    arrElement[19].SemanticName = "VIEW";
     arrElement[19].SemanticIndex = 3;
     arrElement[19].AlignedByteOffset = 176;
     arrElement[19].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -200,7 +200,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[19].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[19].InstanceDataStepRate = 1;
 
-    arrElement[20].SemanticName = "WVP";
+    arrElement[20].SemanticName = "PROJ";
     arrElement[20].SemanticIndex = 0;
     arrElement[20].AlignedByteOffset = 192;
     arrElement[20].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -208,7 +208,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[20].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[20].InstanceDataStepRate = 1;
 
-    arrElement[21].SemanticName = "WVP";
+    arrElement[21].SemanticName = "PROJ";
     arrElement[21].SemanticIndex = 1;
     arrElement[21].AlignedByteOffset = 208;
     arrElement[21].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -216,7 +216,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[21].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[21].InstanceDataStepRate = 1;
 
-    arrElement[22].SemanticName = "WVP";
+    arrElement[22].SemanticName = "PROJ";
     arrElement[22].SemanticIndex = 2;
     arrElement[22].AlignedByteOffset = 224;
     arrElement[22].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -224,7 +224,7 @@ int CGraphicsShader::CreateVertexShader(const wstring& _strRelativePath, const s
     arrElement[22].InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
     arrElement[22].InstanceDataStepRate = 1;
 
-    arrElement[23].SemanticName = "WVP";
+    arrElement[23].SemanticName = "PROJ";
     arrElement[23].SemanticIndex = 3;
     arrElement[23].AlignedByteOffset = 240;
     arrElement[23].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;

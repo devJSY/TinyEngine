@@ -21,10 +21,10 @@ PS_IN VS_Std3D_Deferred(VS_IN _in)
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
     
-    output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).rgb;
-    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorldInvTranspose).rgb);
-    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), g_matWorldInvTranspose).rgb);
-    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), g_matWorldInvTranspose).rgb);
+    output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
+    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorldInvTranspose).xyz);
+    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), g_matWorldInvTranspose).xyz);
+    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), g_matWorldInvTranspose).xyz);
     
     return output;
 }
@@ -39,13 +39,15 @@ PS_IN VS_Std3D_Deferred_Inst(VS_IN _in)
               , _in.vWeights, _in.vIndices, _in.iRowIndex);
     }
         
-    output.vPosProj = mul(float4(_in.vPos, 1.f), _in.matWVP);
+    output.vPosProj = mul(float4(_in.vPos, 1.f), _in.matWorld);
+    output.vPosProj = mul(output.vPosProj, _in.matView);
+    output.vPosProj = mul(output.vPosProj, _in.matProj);
     output.vUV = _in.vUV;
     
-    output.vPosWorld = mul(float4(_in.vPos, 1.f), _in.matWorld).rgb;
-    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), _in.matWorldInvTranspose).rgb);
-    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), _in.matWorldInvTranspose).rgb);
-    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), _in.matWorldInvTranspose).rgb);
+    output.vPosWorld = mul(float4(_in.vPos, 1.f), _in.matWorld).xyz;
+    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), _in.matWorldInvTranspose).xyz);
+    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), _in.matWorldInvTranspose).xyz);
+    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), _in.matWorldInvTranspose).xyz);
     
     return output;
 }

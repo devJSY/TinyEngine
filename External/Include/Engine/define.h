@@ -28,8 +28,6 @@ public:                                                                         
 #define LAYER_MAX 16
 #define MAX_MIP 8
 
-#define INSTANCE_COUNT 10
-
 #define CLONE(type)                                                                                                                                  \
 public:                                                                                                                                              \
     virtual type* Clone()                                                                                                                            \

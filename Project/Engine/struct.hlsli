@@ -17,8 +17,8 @@ struct VS_IN
     // Per Instance Data    
     row_major matrix matWorld : WORLD;
     row_major matrix matWorldInvTranspose : WORLDINVTRANSPOSE;
-    row_major matrix matWV : WV;
-    row_major matrix matWVP : WVP;
+    row_major matrix matView : VIEW;
+    row_major matrix matProj : PROJ;
     uint iRowIndex : ROWINDEX;
 };
 

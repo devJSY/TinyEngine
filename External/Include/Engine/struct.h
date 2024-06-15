@@ -110,8 +110,8 @@ struct tInstancingData
 {
     Matrix matWorld;
     Matrix matWorldInvTranspose;
-    Matrix matWV;
-    Matrix matWVP;
+    Matrix matView;
+    Matrix matProj;
     int iRowIdx;
 };
 
