@@ -98,7 +98,7 @@ CLevel* CLevelMgr::CreateNewLevel()
     NewLevel->AddObject(pUICamObj, 0);
 
     // Fbx
-    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\MorphoKnight.fbx")->Instantiate();
     NewLevel->AddObject(pFbxObj, 0);
 
     return NewLevel;
