@@ -206,8 +206,8 @@ void CCamera::SortObject()
                 }
 
                 // 쉐이더 도메인에 따른 분류
-                SHADER_DOMAIN eDomain = pRenderCom->GetMaterial(iMtrl)->GetShader()->GetDomain();
                 Ptr<CGraphicsShader> pShader = pRenderCom->GetMaterial(iMtrl)->GetShader();
+                SHADER_DOMAIN eDomain = pShader->GetDomain();
 
                 switch (eDomain)
                 {
@@ -216,13 +216,12 @@ void CCamera::SortObject()
                 case SHADER_DOMAIN::DOMAIN_MASKED: {
                     // Shader 의 DOMAIN 에 따라서 인스턴싱 그룹을 분류한다.
                     map<ULONG64, vector<tInstObj>>* pMap = NULL;
-                    Ptr<CMaterial> pMtrl = pRenderCom->GetMaterial(iMtrl);
 
-                    if (pShader->GetDomain() == SHADER_DOMAIN::DOMAIN_DEFERRED)
+                    if (eDomain == SHADER_DOMAIN::DOMAIN_DEFERRED)
                     {
                         pMap = &m_mapInstGroup_D;
                     }
-                    else if (pShader->GetDomain() == SHADER_DOMAIN::DOMAIN_OPAQUE || pShader->GetDomain() == SHADER_DOMAIN::DOMAIN_MASKED)
+                    else if (eDomain == SHADER_DOMAIN::DOMAIN_OPAQUE || eDomain == SHADER_DOMAIN::DOMAIN_MASKED)
                     {
                         pMap = &m_mapInstGroup_F;
                     }
@@ -348,27 +347,21 @@ void CCamera::render_Forward()
     {
         CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
     }
-    //
-    // #ifndef DISTRIBUTE
-    //    // OutLine Pass
-    //    render_OutLine(m_vecDeferred);
-    //    render_OutLine(m_vecOpaque);
-    //    render_OutLine(m_vecMaked);
-    //    render_OutLine(m_vecTransparent);
-    // #endif // DISTRIBUTE
+
+#ifndef DISTRIBUTE
+    // OutLine Pass
+    render_OutLine();
+#endif // DISTRIBUTE
 
     // Main Render Pass
     render_Inst(m_mapInstGroup_F);
     render(m_vecTransparent);
 
-    // #ifndef DISTRIBUTE
-    //     // IDMap Pass
-    //     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::IDMAP)->OMSet();
-    //     render_IDMap(m_vecDeferred);
-    //     render_IDMap(m_vecOpaque);
-    //     render_IDMap(m_vecMaked);
-    //     render_IDMap(m_vecTransparent);
-    // #endif // DISTRIBUTE
+#ifndef DISTRIBUTE
+    // IDMap Pass
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::IDMAP)->OMSet();
+    render_IDMap();
+#endif // DISTRIBUTE
 
     // 후처리
     if (m_bHDRI)
@@ -465,8 +458,24 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
             pMtrl->SetBoneCount(pMesh->GetBoneCount());
         }
 
+#ifdef DISTRIBUTE
         pMtrl->UpdateData_Inst();
         pMesh->render_instancing(pair.second[0].iMtrlIdx);
+#else
+        if (g_Global.g_DrawAsWireFrame)
+        {
+            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
+            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            pMtrl->UpdateData_Inst();
+            pMesh->render_instancing(pair.second[0].iMtrlIdx);
+            pMtrl->GetShader()->SetRSType(originRSType);
+        }
+        else
+        {
+            pMtrl->UpdateData_Inst();
+            pMesh->render_instancing(pair.second[0].iMtrlIdx);
+        }
+#endif // DISTRIBUTE
 
         // 정리
         if (bHasAnim3D)
@@ -486,7 +495,22 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
 
         for (auto& instObj : pair.second)
         {
+#ifdef DISTRIBUTE
             instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+#else
+            if (g_Global.g_DrawAsWireFrame)
+            {
+                Ptr<CGraphicsShader> pSingleObjShader = instObj.pObj->GetRenderComponent()->GetMaterial(instObj.iMtrlIdx)->GetShader();
+                RS_TYPE originRSType = pSingleObjShader->GetRSType();
+                pSingleObjShader->SetRSType(RS_TYPE::WIRE_FRAME);
+                instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+                pSingleObjShader->SetRSType(originRSType);
+            }
+            else
+            {
+                instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+            }
+#endif
         }
 
         if (pair.second[0].pObj->Animator3D())
@@ -615,34 +639,30 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_OutLine(vector<CGameObject*>& _vecObj)
+void CCamera::render_OutLine()
 {
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr == pSelectedObj)
+        return;
 
-    for (size_t i = 0; i < _vecObj.size(); ++i)
+    CRenderComponent* pRenderCom = pSelectedObj->GetRenderComponent();
+
+    // 렌더링 기능이 없는 오브젝트는 제외
+    if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh() || g_Global.g_DrawAsWireFrame)
+        return;
+
+    // OutLine Pass
+    if (g_Global.g_RenderOutline)
     {
-        if (pSelectedObj != _vecObj[i] || this != CRenderMgr::GetInst()->GetMainCamera() || g_Global.g_DrawAsWireFrame)
-            continue;
+        pSelectedObj->render(PROJ_TYPE::ORTHOGRAPHIC == m_ProjType ? CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl")
+                                                                   : CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+    }
 
-        // OutLine Pass
-        if (g_Global.g_RenderOutline)
-        {
-            if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
-            {
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl"));
-            }
-            else
-            {
-                pSelectedObj->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
-            }
-        }
-
-        // NormalLine Pass
-        static Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-        if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-        {
-            pSelectedObj->render(NormalLineMtrl);
-        }
+    // NormalLine Pass
+    static Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+    if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+    {
+        pSelectedObj->render(NormalLineMtrl);
     }
 }
 
@@ -654,22 +674,43 @@ void CCamera::render_DepthOnly(vector<CGameObject*>& _vecObj)
     }
 }
 
-void CCamera::render_IDMap(vector<CGameObject*>& _vecObj)
+void CCamera::render_IDMap()
 {
-    for (size_t i = 0; i < _vecObj.size(); i++)
-    {
-        wstring LayerName = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(_vecObj[i]->GetLayerIdx())->GetName();
-        // 특정 레이어는 IDMap 에서 제외
-        if (LayerName != L"UI" && LayerName != L"Camera" && LayerName != L"SkyBox")
-        {
-            // 오브젝트 이름 + ID값으로 HashID Find
-            hash<wstring> hasher;
-            int HashID = (int)hasher(_vecObj[i]->GetName()) + _vecObj[i]->GetID();
+    static Ptr<CMaterial> IDMapMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl");
+    static vector<CGameObject*> vecIDMapObj = {};
+    vecIDMapObj.clear();
 
-            static Ptr<CMaterial> IDMapMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"IDMapMtrl");
-            IDMapMtrl->SetScalarParam(VEC4_0, HashIDToColor(HashID));
-            _vecObj[i]->render(IDMapMtrl);
+    for (const auto& pair : m_mapInstGroup_D)
+    {
+        for (UINT i = 0; i < pair.second.size(); ++i)
+        {
+            vecIDMapObj.push_back(pair.second[i].pObj);
         }
+    }
+
+    for (const auto& pair : m_mapInstGroup_F)
+    {
+        for (UINT i = 0; i < pair.second.size(); ++i)
+        {
+            vecIDMapObj.push_back(pair.second[i].pObj);
+        }
+    }
+
+    // Transparent
+    vecIDMapObj.insert(vecIDMapObj.end(), m_vecTransparent.begin(), m_vecTransparent.end());
+
+    // Render
+    for (const auto& iter : vecIDMapObj)
+    {
+        if (iter->Camera() || iter->SkyBox())
+            continue;
+
+        // 오브젝트 이름 + ID값으로 HashID Find
+        hash<wstring> hasher;
+        int HashID = (int)hasher(iter->GetName()) + iter->GetID();
+
+        IDMapMtrl->SetScalarParam(VEC4_0, HashIDToColor(HashID));
+        iter->render(IDMapMtrl);
     }
 }
 

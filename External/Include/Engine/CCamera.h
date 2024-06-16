@@ -105,14 +105,15 @@ private:
     void render_SSAO();
     void render_Light();
     void render_Merge();
+
     void render_Clear();
 
 private:
     void render(vector<CGameObject*>& _vecObj);
-    void render_OutLine(vector<CGameObject*>& _vecObj);
-    void render_DepthOnly(vector<CGameObject*>& _vecObj);
-    void render_IDMap(vector<CGameObject*>& _vecObj);
+    void render_OutLine();
+    void render_IDMap();
     void render_Postprocess();
+    void render_DepthOnly(vector<CGameObject*>& _vecObj);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

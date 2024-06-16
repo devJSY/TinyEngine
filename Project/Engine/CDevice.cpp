@@ -187,7 +187,7 @@ int CDevice::CreateSamplerState()
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
     tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    tSamDesc.BorderColor[0] = 10000.0f; // 큰 Z값
+    tSamDesc.BorderColor[0] = 100000.f; // 큰 Z값
     DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
 
     tSamDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
@@ -197,7 +197,7 @@ int CDevice::CreateSamplerState()
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
     tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    tSamDesc.BorderColor[0] = 10000.0f; // 큰 Z값
+    tSamDesc.BorderColor[0] = 100000.f; // 큰 Z값
     DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::SHADOW_COMPARISION].GetAddressOf());
 
     CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
