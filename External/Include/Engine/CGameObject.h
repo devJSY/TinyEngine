@@ -11,32 +11,6 @@
 class CComponent;
 class CRenderComponent;
 
-class Transform;
-class CAnimator2D;
-class CAnimator3D;
-class Light2D;
-class Light3D;
-class CCamera;
-class CRigidbody2D;
-class CBoxCollider2D;
-class CCircleCollider2D;
-class CPolygonCollider2D;
-class CEdgeCollider2D;
-class CRigidbody;
-class CBoxCollider;
-class CSphereCollider;
-class CCapsuleCollider;
-class CMeshCollider;
-class CCharacterController;
-class MeshRender;
-class CTileMap;
-class CParticleSystem;
-class CSkyBox;
-class CDecal;
-class CLandScape;
-class CTextRender;
-class CScript;
-
 class CGameObject : public CEntity
 {
 private:

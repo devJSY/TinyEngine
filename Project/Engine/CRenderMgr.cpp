@@ -196,7 +196,7 @@ void CRenderMgr::render_play()
 
     m_mainCam = m_vecCam[0];
 
-    for (size_t i = 0; i < m_vecCam.size(); ++i)
+    for (size_t i = 1; i < m_vecCam.size(); ++i)
     {
         if (nullptr == m_vecCam[i])
             continue;
