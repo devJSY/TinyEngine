@@ -31,13 +31,13 @@ public:
     CState* GetPrevState() { return m_PrevState; }
     bool IsGlobalState() { return m_bGlobalState; }
 
-public:
-    CFSMScript* Clone() = 0;
 
 public:
     virtual void SaveToLevelFile(FILE* _File) {}
     virtual void LoadFromLevelFile(FILE* _File) {}
 
+public:
+    CFSMScript* Clone() = 0;
 
 public:
     CFSMScript(SCRIPT_TYPE _ScriptType);

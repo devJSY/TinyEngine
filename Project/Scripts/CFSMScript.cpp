@@ -13,7 +13,7 @@ CFSMScript::CFSMScript(SCRIPT_TYPE _ScriptType)
 }
 
 CFSMScript::CFSMScript(const CFSMScript& _Origin)
-    : CScript(_Origin.GetScriptType())
+    : CScript(_Origin)
     , m_CurState(nullptr)
     , m_PrevState(nullptr)
     , m_bGlobalState(false)

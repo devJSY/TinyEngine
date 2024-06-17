@@ -110,6 +110,10 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CFSMScript.h" />
+    <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyFSM.h" />
+    <ClInclude Include="CKirbyMoveController.h" />
+    <ClInclude Include="CKirbyRun.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CTestForward.h" />
@@ -117,6 +121,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTestIdle.h" />
     <ClInclude Include="CTestLeft.h" />
     <ClInclude Include="CTestRight.h" />
+    <ClInclude Include="CUnitScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Have A Nice Death\CBossEnemyScript.h">
@@ -292,6 +297,10 @@ call CodeGen.exe</Command>
   <ItemGroup>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
+    <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyFSM.cpp" />
+    <ClCompile Include="CKirbyMoveController.cpp" />
+    <ClCompile Include="CKirbyRun.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CTestForward.cpp" />
@@ -299,6 +308,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CTestIdle.cpp" />
     <ClCompile Include="CTestLeft.cpp" />
     <ClCompile Include="CTestRight.cpp" />
+    <ClCompile Include="CUnitScript.cpp" />
     <ClCompile Include="Have A Nice Death\CBossEnemyScript.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
