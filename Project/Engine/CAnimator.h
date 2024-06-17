@@ -8,7 +8,7 @@
 
 class CStructuredBuffer;
 
-class CAnimator3D : public CComponent
+class CAnimator : public CComponent
 {
 private:
     const vector<tMTBone>* m_pVecBones;
@@ -51,10 +51,10 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CAnimator3D);
+    CLONE(CAnimator);
 
 public:
-    CAnimator3D();
-    CAnimator3D(const CAnimator3D& _origin);
-    virtual ~CAnimator3D();
+    CAnimator();
+    CAnimator(const CAnimator& _origin);
+    virtual ~CAnimator();
 };

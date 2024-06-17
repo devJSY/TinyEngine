@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "CAnimator3D.h"
+#include "CAnimator.h"
 
 #include "CTimeMgr.h"
 #include "CMeshRender.h"
@@ -9,7 +9,7 @@
 #include "CAnimation3DShader.h"
 #include "CKeyMgr.h"
 
-CAnimator3D::CAnimator3D()
+CAnimator::CAnimator()
     : CComponent(COMPONENT_TYPE::ANIMATOR3D)
     , m_pVecBones(nullptr)
     , m_pVecClip(nullptr)
@@ -27,7 +27,7 @@ CAnimator3D::CAnimator3D()
     m_pBoneFinalMatBuffer = new CStructuredBuffer;
 }
 
-CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
+CAnimator::CAnimator(const CAnimator& _origin)
     : CComponent(_origin)
     , m_pVecBones(_origin.m_pVecBones)
     , m_pVecClip(_origin.m_pVecClip)
@@ -45,7 +45,7 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
     m_pBoneFinalMatBuffer = new CStructuredBuffer;
 }
 
-CAnimator3D::~CAnimator3D()
+CAnimator::~CAnimator()
 {
     if (nullptr != m_pBoneFinalMatBuffer)
     {
@@ -54,7 +54,7 @@ CAnimator3D::~CAnimator3D()
     }
 }
 
-void CAnimator3D::finaltick()
+void CAnimator::finaltick()
 {
     m_dCurTime = 0.f;
     // 현재 재생중인 Clip 의 시간을 진행한다.
@@ -84,7 +84,7 @@ void CAnimator3D::finaltick()
     m_bFinalMatUpdate = false;
 }
 
-void CAnimator3D::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
+void CAnimator::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
 {
     m_pVecClip = _vecAnimClip;
     m_vecClipUpdateTime.resize(m_pVecClip->size());
@@ -95,7 +95,7 @@ void CAnimator3D::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
     m_vecClipUpdateTime[0] = fTime;*/
 }
 
-void CAnimator3D::UpdateData()
+void CAnimator::UpdateData()
 {
     if (!m_bFinalMatUpdate)
     {
@@ -126,7 +126,7 @@ void CAnimator3D::UpdateData()
     m_pBoneFinalMatBuffer->UpdateData(31);
 }
 
-void CAnimator3D::ClearData()
+void CAnimator::ClearData()
 {
     m_pBoneFinalMatBuffer->Clear(31);
 
@@ -143,7 +143,7 @@ void CAnimator3D::ClearData()
     }
 }
 
-void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
+void CAnimator::check_mesh(Ptr<CMesh> _pMesh)
 {
     UINT iBoneCount = _pMesh->GetBoneCount();
     if (m_pBoneFinalMatBuffer->GetElementCount() != iBoneCount)
@@ -152,10 +152,10 @@ void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)
     }
 }
 
-void CAnimator3D::SaveToLevelFile(FILE* _File)
+void CAnimator::SaveToLevelFile(FILE* _File)
 {
 }
 
-void CAnimator3D::LoadFromLevelFile(FILE* _File)
+void CAnimator::LoadFromLevelFile(FILE* _File)
 {
 }

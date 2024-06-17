@@ -1,6 +1,6 @@
 #pragma once
 #include "CEditor.h"
-#include "CAnim.h"
+#include "CAnim2D.h"
 
 struct tSprite
 {
@@ -21,7 +21,7 @@ private:
 
     int m_LineCheckFlag;
 
-    CAnim* m_pAnim;
+    CAnim2D* m_pAnim;
     int m_AnimFPS;
     bool m_bAnimPlay;
     Vec2 m_vAnimBackGround;

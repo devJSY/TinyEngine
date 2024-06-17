@@ -12,7 +12,7 @@
 
 #include "CGameObject.h"
 #include "CAnimator2D.h"
-#include "CAnimator3D.h"
+#include "CAnimator.h"
 #include "CTransform.h"
 
 #include "CConstBuffer.h"
@@ -48,9 +48,9 @@ void CMeshRender::render()
     }
 
     // Animator3D 업데이트
-    if (Animator3D())
+    if (Animator())
     {
-        Animator3D()->UpdateData();
+        Animator()->UpdateData();
 
         for (UINT i = 0; i < GetMtrlCount(); ++i)
         {
@@ -58,7 +58,7 @@ void CMeshRender::render()
                 continue;
 
             GetMaterial(i)->SetAnim3D(true); // Animation Mesh 알리기
-            GetMaterial(i)->SetBoneCount(Animator3D()->GetBoneCount());
+            GetMaterial(i)->SetBoneCount(Animator()->GetBoneCount());
         }
     }
 
@@ -79,9 +79,9 @@ void CMeshRender::render()
         Animator2D()->Clear();
     }
 
-    if (Animator3D())
+    if (Animator())
     {
-        Animator3D()->ClearData();
+        Animator()->ClearData();
     }
 }
 
@@ -97,12 +97,12 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
     }
 
     // Animator3D 업데이트
-    if (Animator3D())
+    if (Animator())
     {
-        Animator3D()->UpdateData();
+        Animator()->UpdateData();
 
         _mtrl->SetAnim3D(true);
-        _mtrl->SetBoneCount(Animator3D()->GetBoneCount());
+        _mtrl->SetBoneCount(Animator()->GetBoneCount());
     }
 
     Transform()->UpdateData();
@@ -119,9 +119,9 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
         Animator2D()->Clear();
     }
 
-    if (Animator3D())
+    if (Animator())
     {
-        Animator3D()->ClearData();
+        Animator()->ClearData();
     }
 }
 
@@ -137,12 +137,12 @@ void CMeshRender::render(UINT _Subset)
     }
 
     // Animator3D 업데이트
-    if (Animator3D())
+    if (Animator())
     {
-        Animator3D()->UpdateData();
+        Animator()->UpdateData();
 
         GetMaterial(_Subset)->SetAnim3D(true); // Animation Mesh 알리기
-        GetMaterial(_Subset)->SetBoneCount(Animator3D()->GetBoneCount());
+        GetMaterial(_Subset)->SetBoneCount(Animator()->GetBoneCount());
     }
 
     Transform()->UpdateData();
@@ -159,8 +159,8 @@ void CMeshRender::render(UINT _Subset)
         Animator2D()->Clear();
     }
 
-    if (Animator3D())
+    if (Animator())
     {
-        Animator3D()->ClearData();
+        Animator()->ClearData();
     }
 }

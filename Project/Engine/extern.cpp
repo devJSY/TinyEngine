@@ -6,10 +6,10 @@ tTransform g_Transform = {};
 tGlobalData g_Global = tGlobalData();
 
 const char* COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::END]{"Transform",
-                                                             "Animation 2D",
-                                                             "Animation 3D",
+                                                             "Animator 2D",
+                                                             "Animator",
                                                              "Light 2D",
-                                                             "Light 3D",
+                                                             "Light",
                                                              "Camera",
                                                              "Rigidbody 2D",
                                                              "Box Collider 2D",

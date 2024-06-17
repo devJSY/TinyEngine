@@ -7,7 +7,7 @@
 #include "CGameObject.h"
 #include "CTransform.h"
 #include "CMeshRender.h"
-#include "CAnimator3D.h"
+#include "CAnimator.h"
 
 #include "CFBXLoader.h"
 
@@ -41,7 +41,7 @@ CGameObject* CMeshData::Instantiate()
     if (false == m_pMesh->IsAnimMesh())
         return pNewObj;
 
-    CAnimator3D* pAnimator = new CAnimator3D;
+    CAnimator* pAnimator = new CAnimator;
     pNewObj->AddComponent(pAnimator);
 
     pAnimator->SetBones(m_pMesh->GetBones());

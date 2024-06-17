@@ -21,8 +21,8 @@
 #include "CRenderComponent.h"
 #include "CConstBuffer.h"
 #include "CMRT.h"
-#include "CLight3D.h"
-#include "CAnimator3D.h"
+#include "CLight.h"
+#include "CAnimator.h"
 
 CCamera::CCamera()
     : CComponent(COMPONENT_TYPE::CAMERA)
@@ -434,11 +434,11 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
             tInstData.matView = m_matView;
             tInstData.matProj = m_matProj;
 
-            if (pair.second[i].pObj->Animator3D())
+            if (pair.second[i].pObj->Animator())
             {
-                pair.second[i].pObj->Animator3D()->UpdateData();
+                pair.second[i].pObj->Animator()->UpdateData();
                 tInstData.iRowIdx = iRowIdx++;
-                CInstancingBuffer::GetInst()->AddInstancingBoneMat(pair.second[i].pObj->Animator3D()->GetFinalBoneMat());
+                CInstancingBuffer::GetInst()->AddInstancingBoneMat(pair.second[i].pObj->Animator()->GetFinalBoneMat());
                 bHasAnim3D = true;
             }
             else
@@ -513,9 +513,9 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
 #endif
         }
 
-        if (pair.second[0].pObj->Animator3D())
+        if (pair.second[0].pObj->Animator())
         {
-            pair.second[0].pObj->Animator3D()->ClearData();
+            pair.second[0].pObj->Animator()->ClearData();
         }
     }
 }
@@ -570,7 +570,7 @@ void CCamera::render_Light()
 {
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
 
-    const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetvecLight3D();
+    const vector<CLight*>& vecLight3D = CRenderMgr::GetInst()->GetvecLight3D();
     for (UINT Idx = 0; Idx < vecLight3D.size(); ++Idx)
     {
         vecLight3D[Idx]->render_Deferred(Idx);

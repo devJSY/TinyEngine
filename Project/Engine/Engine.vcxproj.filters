@@ -115,8 +115,8 @@
     <ClInclude Include="CMaterial.h">
       <Filter>06. Asset\Material</Filter>
     </ClInclude>
-    <ClInclude Include="CLight3D.h">
-      <Filter>08. Component\Light3D</Filter>
+    <ClInclude Include="CLight.h">
+      <Filter>08. Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="CContentBrowser.h">
       <Filter>09. Editor\LevelEditor\Content Browser</Filter>
@@ -131,10 +131,7 @@
       <Filter>04. Manager\RenderMgr</Filter>
     </ClInclude>
     <ClInclude Include="CAnimator2D.h">
-      <Filter>08. Component\Animator2D</Filter>
-    </ClInclude>
-    <ClInclude Include="CAnim.h">
-      <Filter>08. Component\Animator2D\Anim</Filter>
+      <Filter>08. Component\Animator 2D</Filter>
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>Module\LevelSaveLoad</Filter>
@@ -143,7 +140,7 @@
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClInclude>
     <ClInclude Include="CLight2D.h">
-      <Filter>08. Component\Light2D</Filter>
+      <Filter>08. Component\Light 2D</Filter>
     </ClInclude>
     <ClInclude Include="CMaterialEditor.h">
       <Filter>09. Editor\MaterialEditor</Filter>
@@ -263,16 +260,16 @@
       <Filter>04. Manager\Physics2DMgr</Filter>
     </ClInclude>
     <ClInclude Include="CRigidbody2D.h">
-      <Filter>08. Component\Rigidbody2D</Filter>
+      <Filter>08. Component\Rigidbody 2D</Filter>
     </ClInclude>
     <ClInclude Include="CBoxCollider2D.h">
-      <Filter>08. Component\Collider2D\BoxCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\BoxCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CCircleCollider2D.h">
-      <Filter>08. Component\Collider2D\CircleCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\CircleCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CCollider2D.h">
-      <Filter>08. Component\Collider2D</Filter>
+      <Filter>08. Component\Collider 2D</Filter>
     </ClInclude>
     <ClInclude Include="CSound.h">
       <Filter>06. Asset\Sound</Filter>
@@ -293,10 +290,10 @@
       <Filter>08. Component\RenderComponent\TextRender</Filter>
     </ClInclude>
     <ClInclude Include="CEdgeCollider2D.h">
-      <Filter>08. Component\Collider2D\EdgeCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\EdgeCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CPolygonCollider2D.h">
-      <Filter>08. Component\Collider2D\PolygonCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\PolygonCollider2D</Filter>
     </ClInclude>
     <ClInclude Include="CPhysicsMgr.h">
       <Filter>04. Manager\PhysicsMgr</Filter>
@@ -355,8 +352,8 @@
     <ClInclude Include="CMeshData.h">
       <Filter>06. Asset\MeshData</Filter>
     </ClInclude>
-    <ClInclude Include="CAnimator3D.h">
-      <Filter>08. Component\Animator3D</Filter>
+    <ClInclude Include="CAnimator.h">
+      <Filter>08. Component\Animator</Filter>
     </ClInclude>
     <ClInclude Include="CAnimation3DShader.h">
       <Filter>ShaderCode\Compute\Animation</Filter>
@@ -366,6 +363,9 @@
     </ClInclude>
     <ClInclude Include="CInstancingBuffer.h">
       <Filter>04. Manager\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnim2D.h">
+      <Filter>08. Component\Animator 2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -465,8 +465,8 @@
     <ClCompile Include="CMaterial.cpp">
       <Filter>06. Asset\Material</Filter>
     </ClCompile>
-    <ClCompile Include="CLight3D.cpp">
-      <Filter>08. Component\Light3D</Filter>
+    <ClCompile Include="CLight.cpp">
+      <Filter>08. Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="func.cpp">
       <Filter>01. Header</Filter>
@@ -484,10 +484,7 @@
       <Filter>04. Manager\RenderMgr</Filter>
     </ClCompile>
     <ClCompile Include="CAnimator2D.cpp">
-      <Filter>08. Component\Animator2D</Filter>
-    </ClCompile>
-    <ClCompile Include="CAnim.cpp">
-      <Filter>08. Component\Animator2D\Anim</Filter>
+      <Filter>08. Component\Animator 2D</Filter>
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>Module\LevelSaveLoad</Filter>
@@ -496,7 +493,7 @@
       <Filter>03. Device\StructuredBuffer</Filter>
     </ClCompile>
     <ClCompile Include="CLight2D.cpp">
-      <Filter>08. Component\Light2D</Filter>
+      <Filter>08. Component\Light 2D</Filter>
     </ClCompile>
     <ClCompile Include="CAssetMgr_init.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
@@ -604,16 +601,16 @@
       <Filter>04. Manager\Physics2DMgr</Filter>
     </ClCompile>
     <ClCompile Include="CRigidbody2D.cpp">
-      <Filter>08. Component\Rigidbody2D</Filter>
+      <Filter>08. Component\Rigidbody 2D</Filter>
     </ClCompile>
     <ClCompile Include="CBoxCollider2D.cpp">
-      <Filter>08. Component\Collider2D\BoxCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\BoxCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CCircleCollider2D.cpp">
-      <Filter>08. Component\Collider2D\CircleCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\CircleCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CCollider2D.cpp">
-      <Filter>08. Component\Collider2D</Filter>
+      <Filter>08. Component\Collider 2D</Filter>
     </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>06. Asset\Sound</Filter>
@@ -634,10 +631,10 @@
       <Filter>08. Component\RenderComponent\TextRender</Filter>
     </ClCompile>
     <ClCompile Include="CEdgeCollider2D.cpp">
-      <Filter>08. Component\Collider2D\EdgeCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\EdgeCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CPolygonCollider2D.cpp">
-      <Filter>08. Component\Collider2D\PolygonCollider2D</Filter>
+      <Filter>08. Component\Collider 2D\PolygonCollider2D</Filter>
     </ClCompile>
     <ClCompile Include="CPhysicsMgr.cpp">
       <Filter>04. Manager\PhysicsMgr</Filter>
@@ -699,8 +696,8 @@
     <ClCompile Include="CMeshData.cpp">
       <Filter>06. Asset\MeshData</Filter>
     </ClCompile>
-    <ClCompile Include="CAnimator3D.cpp">
-      <Filter>08. Component\Animator3D</Filter>
+    <ClCompile Include="CAnimator.cpp">
+      <Filter>08. Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="CAnimation3DShader.cpp">
       <Filter>ShaderCode\Compute\Animation</Filter>
@@ -710,6 +707,9 @@
     </ClCompile>
     <ClCompile Include="CInstancingBuffer.cpp">
       <Filter>04. Manager\Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnim2D.cpp">
+      <Filter>08. Component\Animator 2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -875,9 +875,6 @@
     <Filter Include="06. Asset\Prefab">
       <UniqueIdentifier>{e32e0f18-5fbe-4a54-be48-ad276488f2d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Collider2D">
-      <UniqueIdentifier>{79f67d4c-e983-44c5-8bc6-cbee0063c40d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06. Asset\Physics2DMaterial">
       <UniqueIdentifier>{24671929-f30d-4e38-8721-e9e92d062107}</UniqueIdentifier>
     </Filter>
@@ -905,38 +902,11 @@
     <Filter Include="08. Component\Transform">
       <UniqueIdentifier>{7263119e-ba22-4cb5-9446-0ecb37b4016e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Animator2D">
-      <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Animator2D\Anim">
-      <UniqueIdentifier>{0d45d08f-4efe-4d12-9365-3b29507dd597}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Light2D">
-      <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Light3D">
-      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Camera">
       <UniqueIdentifier>{495ffeae-38f4-4697-8067-b7ce93f406c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Rigidbody2D">
-      <UniqueIdentifier>{3fb86466-781f-4b82-9e0f-bfd1ade7b13c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Rigidbody">
       <UniqueIdentifier>{152ac541-d0e3-4eeb-ba1d-9eb0ea3bae72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\BoxCollider2D">
-      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\CircleCollider2D">
-      <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\PolygonCollider2D">
-      <UniqueIdentifier>{1b7a9b7a-f1c7-4072-92d1-5d555c385087}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Component\Collider2D\EdgeCollider2D">
-      <UniqueIdentifier>{aabb79fb-d05d-4dab-bd10-9cb58899aca8}</UniqueIdentifier>
     </Filter>
     <Filter Include="08. Component\RenderComponent\MeshRender">
       <UniqueIdentifier>{e9b9b29f-1340-4b32-bb9e-2e0b7e89bca4}</UniqueIdentifier>
@@ -1043,9 +1013,6 @@
     <Filter Include="09. Editor\PhysicMaterialEditor">
       <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Animator3D">
-      <UniqueIdentifier>{b5a6f8f8-45eb-44ee-ac40-ec642d50418e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Compute\Animation">
       <UniqueIdentifier>{fd4a2d04-1232-4966-b9de-417e8d4900ea}</UniqueIdentifier>
     </Filter>
@@ -1054,6 +1021,36 @@
     </Filter>
     <Filter Include="04. Manager\Instancing">
       <UniqueIdentifier>{991a345b-6f88-4be8-9664-3f4f2dee0c8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Animator">
+      <UniqueIdentifier>{b5a6f8f8-45eb-44ee-ac40-ec642d50418e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Light">
+      <UniqueIdentifier>{cb64fc51-6534-4973-95d7-39eefdcd4813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Light 2D">
+      <UniqueIdentifier>{4c8fc6f4-c40d-4822-942d-f02e46d0aaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider 2D">
+      <UniqueIdentifier>{79f67d4c-e983-44c5-8bc6-cbee0063c40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider 2D\BoxCollider2D">
+      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider 2D\CircleCollider2D">
+      <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider 2D\PolygonCollider2D">
+      <UniqueIdentifier>{1b7a9b7a-f1c7-4072-92d1-5d555c385087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider 2D\EdgeCollider2D">
+      <UniqueIdentifier>{aabb79fb-d05d-4dab-bd10-9cb58899aca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Rigidbody 2D">
+      <UniqueIdentifier>{3fb86466-781f-4b82-9e0f-bfd1ade7b13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Animator 2D">
+      <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

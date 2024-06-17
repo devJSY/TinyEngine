@@ -3,7 +3,7 @@
 
 class CGameObjectEx;
 
-class CLight3D : public CComponent
+class CLight : public CComponent
 {
 private:
     tLightInfo m_Info;
@@ -63,10 +63,10 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CLight3D);
+    CLONE(CLight);
 
 public:
-    CLight3D();
-    CLight3D(const CLight3D& origin);
-    virtual ~CLight3D();
+    CLight();
+    CLight(const CLight& origin);
+    virtual ~CLight();
 };

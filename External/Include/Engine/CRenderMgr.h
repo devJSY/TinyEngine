@@ -5,7 +5,7 @@
 class CGameObject;
 class CCamera;
 class CLight2D;
-class CLight3D;
+class CLight;
 class CMRT;
 
 class CStructuredBuffer;
@@ -36,7 +36,7 @@ private:
     vector<CLight2D*> m_vecLight2D;
 
     CStructuredBuffer* m_Light3DBuffer;
-    vector<CLight3D*> m_vecLight3D;
+    vector<CLight*> m_vecLight3D;
 
     // Debug
     list<tDebugShapeInfo> m_DbgShapeInfo;
@@ -90,7 +90,7 @@ public:
     void SetEnableBloom(bool _bEnable) { m_bBloomEnable = _bEnable; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
-    void RegisterLight3D(CLight3D* _Light3D) { m_vecLight3D.push_back(_Light3D); }
+    void RegisterLight3D(CLight* _Light3D) { m_vecLight3D.push_back(_Light3D); }
 
     void ActiveEditorMode(bool _bActive);
 
@@ -128,7 +128,7 @@ public:
     Ptr<CTexture> GetCameraPreviewTex() const { return m_CameraPreviewTex; }
 
     const vector<CLight2D*>& GetvecLight2D() const { return m_vecLight2D; }
-    const vector<CLight3D*>& GetvecLight3D() const { return m_vecLight3D; }
+    const vector<CLight*>& GetvecLight3D() const { return m_vecLight3D; }
 
 private:
     void CreateRTCopyTex(Vec2 Resolution);

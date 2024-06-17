@@ -3,7 +3,7 @@
 
 #include "CTexture.h"
 
-struct tAnimFrm
+struct tAnim2DFrm
 {
     Vec2 vLeftTop;
     Vec2 vSlice;
@@ -14,12 +14,12 @@ struct tAnimFrm
 
 class CAnimator2D;
 
-class CAnim : public CEntity
+class CAnim2D : public CEntity
 {
 private:
     CAnimator2D* m_Animator;
 
-    vector<tAnimFrm> m_vecFrm;
+    vector<tAnim2DFrm> m_vecFrm;
     int m_CurFrmIdx;
     bool m_bFinish;
 
@@ -45,7 +45,7 @@ public:
 
 public:
     Ptr<CTexture> GetAtlasTex() const { return m_AtlasTex; }
-    const vector<tAnimFrm>& GetVecFrm() const { return m_vecFrm; }
+    const vector<tAnim2DFrm>& GetVecFrm() const { return m_vecFrm; }
     int GetCurFrmIdx() const { return m_CurFrmIdx; }
     bool IsUseBackGround() const { return m_bUseBackGround; }
 
@@ -56,12 +56,12 @@ public:
     void SaveToLevelFile(FILE* _File);
     void LoadFromLevelFile(FILE* _File);
 
-    CLONE(CAnim);
+    CLONE(CAnim2D);
 
 public:
-    CAnim();
-    CAnim(const CAnim& origin);
-    virtual ~CAnim();
+    CAnim2D();
+    CAnim2D(const CAnim2D& origin);
+    virtual ~CAnim2D();
 
     friend class CAnimator2D;
     friend class CSpriteEditor;

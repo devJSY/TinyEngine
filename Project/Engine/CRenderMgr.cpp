@@ -393,7 +393,7 @@ void CRenderMgr::render_postprocess_HDRI()
 
 void CRenderMgr::render_StaticShadowDepth()
 {
-    CLight3D* StaticLight = nullptr;
+    CLight* StaticLight = nullptr;
 
     // 레벨을 순회하며 정적 광원 탐색
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -411,9 +411,9 @@ void CRenderMgr::render_StaticShadowDepth()
                 CGameObject* pObject = queue.front();
                 queue.pop_front();
 
-                if (pObject->Light3D() && MOBILITY_TYPE::STATIC == pObject->Transform()->GetMobilityType())
+                if (pObject->Light() && MOBILITY_TYPE::STATIC == pObject->Transform()->GetMobilityType())
                 {
-                    StaticLight = pObject->Light3D();
+                    StaticLight = pObject->Light();
                     break;
                 }
 
@@ -508,7 +508,7 @@ void CRenderMgr::UpdateData()
 
     vecLight2DInfo.clear();
 
-    // Light3D
+    // Light
     static vector<tLightInfo> vecLight3DInfo;
 
     // 그림자 적용 광원 최대갯수

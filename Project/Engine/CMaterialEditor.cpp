@@ -55,12 +55,12 @@ CMaterialEditor::CMaterialEditor()
     // Light
     m_LightObj = new CGameObjectEx;
     m_LightObj->AddComponent(new CTransform);
-    m_LightObj->AddComponent(new CLight3D);
+    m_LightObj->AddComponent(new CLight);
 
     m_LightObj->Transform()->SetRelativePos(Vec3(250.f, 500.f, 0.f));
-    m_LightObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
-    m_LightObj->Light3D()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
-    m_LightObj->Light3D()->SetRadius(10.f);
+    m_LightObj->Light()->SetLightType(LIGHT_TYPE::POINT);
+    m_LightObj->Light()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
+    m_LightObj->Light()->SetRadius(10.f);
 
     m_LightBuffer = new CStructuredBuffer;
     m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
@@ -143,7 +143,7 @@ void CMaterialEditor::DrawViewport()
     pGlobalBuffer->UpdateData_CS();
 
     // Light 정보 설정
-    const tLightInfo& info = m_LightObj->Light3D()->GetLightInfo();
+    const tLightInfo& info = m_LightObj->Light()->GetLightInfo();
 
     tLightInfo CopyInfo = {};
     CopyInfo = info;

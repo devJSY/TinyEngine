@@ -17,7 +17,7 @@
 #include "CScript.h"
 
 #include "CTexture.h"
-#include "CAnim.h"
+#include "CAnim2D.h"
 #include "CMaterial.h"
 
 #include "CKeyMgr.h"
@@ -259,21 +259,21 @@ void COutliner::render()
             }
             else if (50 == Dirtyflag)
             {
-                pObj->SetName(L"Directional Light3D");
-                pObj->AddComponent(new CLight3D);
-                pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+                pObj->SetName(L"Directional Light");
+                pObj->AddComponent(new CLight);
+                pObj->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
             }
             else if (51 == Dirtyflag)
             {
-                pObj->SetName(L"Point Light3D");
-                pObj->AddComponent(new CLight3D);
-                pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+                pObj->SetName(L"Point Light");
+                pObj->AddComponent(new CLight);
+                pObj->Light()->SetLightType(LIGHT_TYPE::POINT);
             }
             else if (52 == Dirtyflag)
             {
-                pObj->SetName(L"Spot Light3D");
-                pObj->AddComponent(new CLight3D);
-                pObj->Light3D()->SetLightType(LIGHT_TYPE::SPOT);
+                pObj->SetName(L"Spot Light");
+                pObj->AddComponent(new CLight);
+                pObj->Light()->SetLightType(LIGHT_TYPE::SPOT);
             }
             else if (60 == Dirtyflag)
             {
@@ -653,8 +653,8 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
     if (open)
     {
-        const map<wstring, CAnim*>& mapAnim = pAnimator->GetmapAnim();
-        CAnim* pCurAnim = pAnimator->GetCurAnim();
+        const map<wstring, CAnim2D*>& mapAnim = pAnimator->GetmapAnim();
+        CAnim2D* pCurAnim = pAnimator->GetCurAnim();
 
         // =====================
         // Animation Select
@@ -678,7 +678,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
             Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();
             Vec2 TexSize = Vec2((float)pTex->GetWidth(), (float)pTex->GetHeight());
-            const vector<tAnimFrm>& vecFrm = pCurAnim->GetVecFrm();
+            const vector<tAnim2DFrm>& vecFrm = pCurAnim->GetVecFrm();
 
             // Frame Index
             int Frmidx = pCurAnim->GetCurFrmIdx();
@@ -691,7 +691,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
                                            ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
             if (ImGui::BeginTable("##AnimFrame", 3, flags, ImVec2(450.f, 200.f)))
             {
-                const tAnimFrm& frm = vecFrm[Frmidx];
+                const tAnim2DFrm& frm = vecFrm[Frmidx];
 
                 ImGui::TableSetupScrollFreeze(0, 1);
                 ImGui::TableSetupColumn("Frame", ImGuiTableColumnFlags_None);
@@ -786,12 +786,12 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
 void COutliner::DrawAnimator3D(CGameObject* obj)
 {
-    CAnimator3D* pAnimator = obj->Animator3D();
+    CAnimator* pAnimator = obj->Animator();
     if (nullptr == pAnimator)
         return;
 
     bool open =
-        ImGui::TreeNodeEx((void*)typeid(CAnimator3D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
+        ImGui::TreeNodeEx((void*)typeid(CAnimator).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
 
     ComponentSettingsButton(pAnimator);
 
@@ -867,11 +867,11 @@ void COutliner::DrawLight2D(CGameObject* obj)
 
 void COutliner::DrawLight3D(CGameObject* obj)
 {
-    CLight3D* pLight = obj->Light3D();
+    CLight* pLight = obj->Light();
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT3D]);
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT3D]);
 
     ComponentSettingsButton(pLight);
 
