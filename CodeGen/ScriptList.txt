@@ -1,2 +1,4 @@
 CCameraMoveScript
 CTestFSM
+CKirbyFSM
+CKirbyMoveController
