@@ -42,13 +42,13 @@ void CAnim2D::finaltick()
 
     if (m_vecFrm[m_CurFrmIdx].Duration < m_fAccTime)
     {
+        m_fAccTime -= m_vecFrm[m_CurFrmIdx].Duration;
         ++m_CurFrmIdx;
         if (m_vecFrm.size() <= m_CurFrmIdx)
         {
             m_CurFrmIdx = (int)m_vecFrm.size() - 1;
             m_bFinish = true;
         }
-        m_fAccTime = 0.f;
     }
 }
 
@@ -83,7 +83,7 @@ void CAnim2D::Clear()
 }
 
 void CAnim2D::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount,
-                   float _FPS, bool _UseBackGround)
+                     float _FPS, bool _UseBackGround)
 {
     m_Animator = _Animator;
     m_AtlasTex = _Atlas;

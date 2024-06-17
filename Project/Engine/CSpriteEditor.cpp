@@ -1061,12 +1061,12 @@ void CSpriteEditor::finaltick()
 
     if (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].Duration < m_pAnim->m_fAccTime)
     {
+        m_pAnim->m_fAccTime -= m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].Duration;
         ++m_pAnim->m_CurFrmIdx;
         if (m_pAnim->m_vecFrm.size() <= m_pAnim->m_CurFrmIdx)
         {
             m_pAnim->m_CurFrmIdx = 0;
         }
-        m_pAnim->m_fAccTime = 0.f;
     }
 }
 
