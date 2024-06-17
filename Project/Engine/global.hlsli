@@ -149,10 +149,10 @@ Texture2D g_StaticLightDepthMapTex : register(t26);
 
 Texture2D SSAOTex : register(t30);
 
-// Animation3D Bone Matrix Buffer
+// Animator Bone Matrix Buffer
 StructuredBuffer<Matrix> g_arrBoneMat : register(t31);
 
-// Animation3D 32,33 사용
+// Animator 32,33 사용
 // CopyBone 34 사용
 
 SamplerState g_LinearWrapSampler : register(s0);

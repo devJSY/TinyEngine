@@ -6,7 +6,7 @@
 #include "CMeshRender.h"
 #include "CStructuredBuffer.h"
 #include "CAssetMgr.h"
-#include "CAnimation3DShader.h"
+#include "CAnimationUpdateShader.h"
 #include "CKeyMgr.h"
 
 CAnimator::CAnimator()
@@ -99,8 +99,8 @@ void CAnimator::UpdateData()
 {
     if (!m_bFinalMatUpdate)
     {
-        // Animation3D Update Compute Shader
-        static CAnimation3DShader* pUpdateShader = (CAnimation3DShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"Animation3DUpdateCS").Get();
+        // Animation Update Compute Shader
+        static CAnimationUpdateShader* pUpdateShader = (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
 
         // Bone Data
         Ptr<CMesh> pMesh = MeshRender()->GetMesh();

@@ -1,5 +1,5 @@
-#ifndef _ANIMATION
-#define _ANIMATION
+#ifndef _ANIMATION_UPDATE
+#define _ANIMATION_UPDATE
 
 #include "global.hlsli"
 
@@ -146,7 +146,6 @@ void MatrixAffineTransformation(in float4 Scaling
     _outMat = M;
 }
 
-
 float4 QuternionLerp(in float4 _vQ1, in float4 _vQ2, float _fRatio)
 {
     float4 vT = float4(_fRatio, _fRatio, _fRatio, _fRatio);
@@ -209,13 +208,13 @@ StructuredBuffer<matrix> g_arrOffset : register(t33);
 RWStructuredBuffer<matrix> g_arrFinelMat : register(u0);
 
 // ===========================
-// Animation3D Compute Shader
+// Animation Update Compute Shader
 #define BoneCount   g_int_0
 #define CurFrame    g_int_1
 #define Ratio       g_float_0
 // ===========================
 [numthreads(256, 1, 1)]
-void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
+void AnimationUpdateCS(int3 _iThreadIdx : SV_DispatchThreadID)
 {
     if (BoneCount <= _iThreadIdx.x)
         return;
@@ -243,6 +242,5 @@ void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
     // 구조화버퍼에 결과값 저장
     g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
 }
-
 
 #endif

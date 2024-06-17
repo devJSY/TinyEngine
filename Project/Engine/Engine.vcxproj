@@ -113,7 +113,7 @@ call EngineCopy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAnim2D.h" />
-    <ClInclude Include="CAnimation3DShader.h" />
+    <ClInclude Include="CAnimationUpdateShader.h" />
     <ClInclude Include="CAnimator2D.h" />
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CAsset.h" />
@@ -237,7 +237,7 @@ call EngineCopy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnim2D.cpp" />
-    <ClCompile Include="CAnimation3DShader.cpp" />
+    <ClCompile Include="CAnimationUpdateShader.cpp" />
     <ClCompile Include="CAnimator2D.cpp" />
     <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CAsset.cpp" />
@@ -439,7 +439,7 @@ call EngineCopy.bat</Command>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="animation.fx">
+    <FxCompile Include="animation_update.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>

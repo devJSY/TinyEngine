@@ -11,7 +11,7 @@ private:
     UINT m_MaxCount;
     vector<tInstancingData> m_vecData;
 
-    // anim3D 용도
+    // Anim3D 용도
     vector<CStructuredBuffer*> m_vecBoneMat;
     int m_AnimInstCount;
     CStructuredBuffer* m_BoneBuffer;

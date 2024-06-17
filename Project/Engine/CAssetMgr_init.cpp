@@ -15,7 +15,7 @@
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
 #include "CWeightMapShader.h"
-#include "CAnimation3DShader.h"
+#include "CAnimationUpdateShader.h"
 #include "CCopyBoneShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
@@ -1253,12 +1253,12 @@ void CAssetMgr::CreateDefaultComputeShader()
     }
 
     // =======================
-    // Animation 3D
+    // Animation Update
     // =======================
     {
-        Ptr<CComputeShader> pShader = new CAnimation3DShader;
-        pShader->SetName(L"Animation3DUpdateCS");
-        AddAsset<CComputeShader>(L"Animation3DUpdateCS", pShader);
+        Ptr<CComputeShader> pShader = new CAnimationUpdateShader;
+        pShader->SetName(L"AnimationUpdateCS");
+        AddAsset<CComputeShader>(L"AnimationUpdateCS", pShader);
     }
 
     // =======================

@@ -1,20 +1,20 @@
 #include "pch.h"
-#include "CAnimation3DShader.h"
+#include "CAnimationUpdateShader.h"
 
-CAnimation3DShader::CAnimation3DShader()
+CAnimationUpdateShader::CAnimationUpdateShader()
     : CComputeShader(256, 1, 1)
     , m_pFrameDataBuffer(nullptr)
     , m_pOffsetMatBuffer(nullptr)
     , m_pOutputBuffer(nullptr)
 {
-    Create(L"shader\\animation.fx", "CS_Animation3D");
+    Create(L"shader\\animation_update.fx", "AnimationUpdateCS");
 }
 
-CAnimation3DShader::~CAnimation3DShader()
+CAnimationUpdateShader::~CAnimationUpdateShader()
 {
 }
 
-int CAnimation3DShader::UpdateData()
+int CAnimationUpdateShader::UpdateData()
 {
     // 구조화버퍼 전달
     m_pFrameDataBuffer->UpdateData_CS_SRV(32); // t32
@@ -24,7 +24,7 @@ int CAnimation3DShader::UpdateData()
     return S_OK;
 }
 
-void CAnimation3DShader::UpdateGroupCount()
+void CAnimationUpdateShader::UpdateGroupCount()
 {
     UINT GroupX = (m_Const.arrInt[0] / m_ThreadX) + 1;
     UINT GroupY = 1;
@@ -33,7 +33,7 @@ void CAnimation3DShader::UpdateGroupCount()
     SetGroup(GroupX, GroupY, GroupZ);
 }
 
-void CAnimation3DShader::Clear()
+void CAnimationUpdateShader::Clear()
 {
     m_pFrameDataBuffer->Clear_CS_SRV();
     m_pOffsetMatBuffer->Clear_CS_SRV();

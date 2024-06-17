@@ -169,7 +169,7 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         }
     }
 
-    // Animation3D
+    // Animator
     bool bHasAnim = false;
     for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
     {
@@ -392,7 +392,7 @@ int CMesh::Save(const wstring& _strRelativePath)
         fwrite(m_vecIdxInfo[i].pIdxSysMem, m_vecIdxInfo[i].iIdxCount * sizeof(UINT), 1, pFile);
     }
 
-    // Animation3D 정보
+    // Animator 정보
     UINT iCount = (UINT)m_vecAnimClip.size();
     fwrite(&iCount, sizeof(int), 1, pFile);
     for (UINT i = 0; i < iCount; ++i)
@@ -494,7 +494,7 @@ int CMesh::Load(const wstring& _strFilePath)
         m_vecIdxInfo.push_back(info);
     }
 
-    // Animation3D 정보 읽기
+    // Animator 정보 읽기
     int iCount = 0;
     fread(&iCount, sizeof(int), 1, pFile);
     for (int i = 0; i < iCount; ++i)

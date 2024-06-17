@@ -355,8 +355,8 @@
     <ClInclude Include="CAnimator.h">
       <Filter>08. Component\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="CAnimation3DShader.h">
-      <Filter>ShaderCode\Compute\Animation</Filter>
+    <ClInclude Include="CAnimationUpdateShader.h">
+      <Filter>ShaderCode\Compute\AnimationUpdate</Filter>
     </ClInclude>
     <ClInclude Include="CCopyBoneShader.h">
       <Filter>ShaderCode\Compute\CopyBone</Filter>
@@ -699,8 +699,8 @@
     <ClCompile Include="CAnimator.cpp">
       <Filter>08. Component\Animator</Filter>
     </ClCompile>
-    <ClCompile Include="CAnimation3DShader.cpp">
-      <Filter>ShaderCode\Compute\Animation</Filter>
+    <ClCompile Include="CAnimationUpdateShader.cpp">
+      <Filter>ShaderCode\Compute\AnimationUpdate</Filter>
     </ClCompile>
     <ClCompile Include="CCopyBoneShader.cpp">
       <Filter>ShaderCode\Compute\CopyBone</Filter>
@@ -1013,9 +1013,6 @@
     <Filter Include="09. Editor\PhysicMaterialEditor">
       <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Compute\Animation">
-      <UniqueIdentifier>{fd4a2d04-1232-4966-b9de-417e8d4900ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Compute\CopyBone">
       <UniqueIdentifier>{35e35875-a556-4d9d-a0e4-6f20ae30dd85}</UniqueIdentifier>
     </Filter>
@@ -1051,6 +1048,9 @@
     </Filter>
     <Filter Include="08. Component\Animator 2D">
       <UniqueIdentifier>{9d93aab6-f129-4ec9-8792-04600c0214ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Compute\AnimationUpdate">
+      <UniqueIdentifier>{fd4a2d04-1232-4966-b9de-417e8d4900ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1293,8 +1293,8 @@
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
     </FxCompile>
-    <FxCompile Include="animation.fx">
-      <Filter>ShaderCode\Compute\Animation</Filter>
+    <FxCompile Include="animation_update.fx">
+      <Filter>ShaderCode\Compute\AnimationUpdate</Filter>
     </FxCompile>
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\Compute\CopyBone</Filter>
