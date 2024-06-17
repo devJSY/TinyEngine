@@ -716,24 +716,30 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
 
     FbxTime::EMode eTimeMode = m_pScene->GetGlobalSettings().GetTimeMode();
 
-    FbxLongLong llStartFrame = m_vecAnimClip[0]->tStartTime.GetFrameCount(eTimeMode);
-    FbxLongLong llEndFrame = m_vecAnimClip[0]->tEndTime.GetFrameCount(eTimeMode);
-
-    for (FbxLongLong i = llStartFrame; i < llEndFrame; ++i)
+    for (const auto& Clip : m_vecAnimClip)
     {
-        tKeyFrame tFrame = {};
-        FbxTime tTime = 0;
+        FbxLongLong llStartFrame = Clip->tStartTime.GetFrameCount(eTimeMode);
+        FbxLongLong llEndFrame = Clip->tEndTime.GetFrameCount(eTimeMode);
 
-        tTime.SetFrame(i, eTimeMode);
+        vector<tKeyFrame> vecKeyFrame = {};
+        for (FbxLongLong i = llStartFrame; i < llEndFrame; ++i)
+        {
+            tKeyFrame tFrame = {};
+            FbxTime tTime = 0;
 
-        FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
-        FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
-        matCurTrans = matReflect * matCurTrans * matReflect;
+            tTime.SetFrame(i, eTimeMode);
 
-        tFrame.dTime = tTime.GetSecondDouble();
-        tFrame.matTransform = matCurTrans;
+            FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
+            FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
+            matCurTrans = matReflect * matCurTrans * matReflect;
 
-        m_vecBone[_iBoneIdx]->vecKeyFrame.push_back(tFrame);
+            tFrame.dTime = tTime.GetSecondDouble();
+            tFrame.matTransform = matCurTrans;
+
+            vecKeyFrame.push_back(tFrame);
+        }
+
+        m_vecBone[_iBoneIdx]->mapKeyFrame.insert(make_pair(Clip->strName, vecKeyFrame));
     }
 }
 

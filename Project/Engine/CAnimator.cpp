@@ -56,13 +56,20 @@ CAnimator::~CAnimator()
 
 void CAnimator::finaltick()
 {
+    if (KEY_TAP(KEY::N))
+    {
+        ++m_iCurClip;
+        if (m_iCurClip >= m_pVecClip->size())
+            m_iCurClip = 0;
+    }
+
     m_dCurTime = 0.f;
     // 현재 재생중인 Clip 의 시간을 진행한다.
     m_vecClipUpdateTime[m_iCurClip] += DT;
 
     if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
     {
-        m_vecClipUpdateTime[m_iCurClip] = 0.f;
+        m_vecClipUpdateTime[m_iCurClip] = 0;
     }
 
     m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
@@ -72,7 +79,7 @@ void CAnimator::finaltick()
     m_iFrameIdx = (int)(dFrameIdx);
 
     // 다음 프레임 인덱스
-    if (m_iFrameIdx >= m_pVecClip->at(0).iFrameLength - 1)
+    if (m_iFrameIdx >= m_pVecClip->at(m_iCurClip).iFrameLength - 1)
         m_iNextFrameIdx = m_iFrameIdx; // 끝이면 현재 인덱스를 유지
     else
         m_iNextFrameIdx = m_iFrameIdx + 1;
@@ -100,13 +107,14 @@ void CAnimator::UpdateData()
     if (!m_bFinalMatUpdate)
     {
         // Animation Update Compute Shader
-        static CAnimationUpdateShader* pUpdateShader = (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
+        static CAnimationUpdateShader* pUpdateShader =
+            (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
 
         // Bone Data
         Ptr<CMesh> pMesh = MeshRender()->GetMesh();
         check_mesh(pMesh);
 
-        pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer());
+        pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer(m_pVecClip->at(m_iCurClip).strAnimName));
         pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
         pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
 

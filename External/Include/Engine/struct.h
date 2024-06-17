@@ -67,8 +67,7 @@ struct tMTBone
     int iDepth;
     int iParentIndx;
     Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
-    Matrix matBone;   // 이거 안씀
-    vector<tMTKeyFrame> vecKeyFrame;
+    map<wstring, vector<tMTKeyFrame>> mapKeyFrame; // Clip, Frame
 };
 
 struct tMTAnimClip
@@ -81,7 +80,6 @@ struct tMTAnimClip
     double dStartTime;
     double dEndTime;
     double dTimeLength;
-    float fUpdateTime; // 이거 안씀
 
     FbxTime::EMode eMode;
 };

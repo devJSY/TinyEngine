@@ -65,7 +65,7 @@ struct tBone
     int iParentIndx;      // ºÎ¸ð Bone ÀÇ ÀÎµ¦½º
     FbxAMatrix matOffset; // Offset Çà·Ä( -> »Ñ¸® -> Local)
     FbxAMatrix matBone;
-    vector<tKeyFrame> vecKeyFrame;
+    map<wstring, vector<tKeyFrame>> mapKeyFrame;
 };
 
 struct tAnimClip
