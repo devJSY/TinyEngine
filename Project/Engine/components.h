@@ -3,8 +3,8 @@
 #include "CTransform.h"
 
 #include "CAnimator2D.h"
-// #include "CAnimator3D.h"
-//
+#include "CAnimator3D.h"
+
 #include "CLight2D.h"
 #include "CLight3D.h"
 

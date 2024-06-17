@@ -187,7 +187,7 @@ int CDevice::CreateSamplerState()
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
     tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    tSamDesc.BorderColor[0] = 10000.0f; // 큰 Z값
+    tSamDesc.BorderColor[0] = 100000.f; // 큰 Z값
     DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::SHADOW_POINT].GetAddressOf());
 
     tSamDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT;
@@ -197,7 +197,7 @@ int CDevice::CreateSamplerState()
     tSamDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
     tSamDesc.MinLOD = 0;
     tSamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    tSamDesc.BorderColor[0] = 10000.0f; // 큰 Z값
+    tSamDesc.BorderColor[0] = 100000.f; // 큰 Z값
     DEVICE->CreateSamplerState(&tSamDesc, m_arrSS[(UINT)SS_TYPE::SHADOW_COMPARISION].GetAddressOf());
 
     CONTEXT->VSSetSamplers((UINT)SS_TYPE::LINEAR_WRAP, 1, m_arrSS[(UINT)SS_TYPE::LINEAR_WRAP].GetAddressOf());
@@ -264,13 +264,7 @@ int CDevice::CreateSwapChain()
     tDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
-
-#ifdef DISTRIBUTE
-    tDesc.Windowed = false; // 전체화면 모드
-#else
     tDesc.Windowed = true; // 창모드
-#endif // DISTRIBUTE
-
     tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
 
     // 스왚체인 생성기능을 가지고 있는 Factory 에 접근한다.

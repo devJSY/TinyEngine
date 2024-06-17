@@ -2,6 +2,7 @@
 #define _STD_DEFERED
 
 #include "global.hlsli"
+#include "func.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlDiffuse g_vDiffuse
@@ -10,13 +11,43 @@
 PS_IN VS_Std3D_Deferred(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
-
+    
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBitangent, _in.vNormal
+              , _in.vWeights, _in.vIndices, 0);
+    }
+    
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
     
-    output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).rgb;
-    output.normalWorld = normalize(mul(float4(_in.vNormal, 0.f), g_matWorld).rgb);
-    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorld).rgb);
+    output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
+    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorldInvTranspose).xyz);
+    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), g_matWorldInvTranspose).xyz);
+    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), g_matWorldInvTranspose).xyz);
+    
+    return output;
+}
+
+PS_IN VS_Std3D_Deferred_Inst(VS_IN _in)
+{
+    PS_IN output = (PS_IN) 0.f;
+
+    if (g_iAnim)
+    {
+        Skinning(_in.vPos, _in.vTangent, _in.vBitangent, _in.vNormal
+              , _in.vWeights, _in.vIndices, _in.iRowIndex);
+    }
+        
+    output.vPosProj = mul(float4(_in.vPos, 1.f), _in.matWorld);
+    output.vPosProj = mul(output.vPosProj, _in.matView);
+    output.vPosProj = mul(output.vPosProj, _in.matProj);
+    output.vUV = _in.vUV;
+    
+    output.vPosWorld = mul(float4(_in.vPos, 1.f), _in.matWorld).xyz;
+    output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), _in.matWorldInvTranspose).xyz);
+    output.vBitangentWorld = normalize(mul(float4(_in.vBitangent, 0.f), _in.matWorldInvTranspose).xyz);
+    output.vNormalWorld = normalize(mul(float4(_in.vNormal, 0.f), _in.matWorldInvTranspose).xyz);
     
     return output;
 }
@@ -45,13 +76,13 @@ PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
     }
     
     // Normal 
-    float3 vWorldNormal = _in.normalWorld;
+    float3 vWorldNormal = _in.vNormalWorld;
     if (g_btex_1)
     {
         float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).rgb;
         vNormal = vNormal * 2.f - 1.f;
                         
-        float3 N = _in.normalWorld;
+        float3 N = _in.vNormalWorld;
         float3 T = normalize(_in.vTangentWorld - dot(_in.vTangentWorld, N) * N);
         float3 B = cross(N, T);
         
@@ -64,7 +95,7 @@ PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
     output.vPosition = float4(_in.vPosWorld, 1.f);
     output.vNormal = float4(vWorldNormal, 1.f);
     output.vTangent = float4(_in.vTangentWorld, 1.f);
-    output.vBitangent = float4(normalize(cross(_in.normalWorld.xyz, _in.vTangentWorld.xyz)), 1.f);
+    output.vBitangent = float4(normalize(cross(_in.vNormalWorld.xyz, _in.vTangentWorld.xyz)), 1.f);
     output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
     output.vDiffuse = MtrlDiffuse;
     output.vSpecular = MtrlSpecular;

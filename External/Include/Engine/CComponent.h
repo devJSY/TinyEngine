@@ -32,6 +32,7 @@ public:
 public:
     GET_OTHER_COMPONENT(Transform);
     GET_OTHER_COMPONENT(Animator2D);
+    GET_OTHER_COMPONENT(Animator3D);
     GET_OTHER_COMPONENT(Light2D);
     GET_OTHER_COMPONENT(Light3D);
     GET_OTHER_COMPONENT(Camera);

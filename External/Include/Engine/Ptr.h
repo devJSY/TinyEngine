@@ -38,27 +38,11 @@ public:
         return *this;
     }
 
-    bool operator==(const Ptr<T>& _Other) const
-    {
-        if (Asset == _Other.Asset)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    bool operator==(const Ptr<T>& _Other) const { return Asset == _Other.Asset; }
 
     bool operator!=(const Ptr<T>& _Other) const { return !(*this == _Other); }
 
-    bool operator==(const T* _Asset) const
-    {
-        if (Asset == _Asset)
-            return true;
-        else
-            return false;
-    }
+    bool operator==(const T* _Asset) const { return Asset == _Asset; }
 
     bool operator!=(const T* _Asset) const { return !(*this == _Asset); }
 
@@ -94,10 +78,7 @@ public:
 template <typename T>
 bool operator==(const void* _Asset, const Ptr<T>& _Ptr)
 {
-    if (_Asset == _Ptr.Get())
-        return true;
-    else
-        return false;
+    return _Asset == _Ptr.Get();
 }
 
 template <typename T>

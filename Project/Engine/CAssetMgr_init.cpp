@@ -15,6 +15,8 @@
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
 #include "CWeightMapShader.h"
+#include "CAnimation3DShader.h"
+#include "CCopyBoneShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
 {
@@ -1229,7 +1231,7 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CHeightMapShader;
         pShader->SetName(L"HeightMapShader");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"HeightMapShader", pShader);
+        AddAsset<CComputeShader>(L"HeightMapShader", pShader);
     }
 
     // =====================
@@ -1238,7 +1240,7 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CRaycastShader;
         pShader->SetName(L"RaycastShader");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"RaycastShader", pShader);
+        AddAsset<CComputeShader>(L"RaycastShader", pShader);
     }
 
     // =======================
@@ -1247,7 +1249,25 @@ void CAssetMgr::CreateDefaultComputeShader()
     {
         Ptr<CComputeShader> pShader = new CWeightMapShader;
         pShader->SetName(L"WeightMapShader");
-        CAssetMgr::GetInst()->AddAsset<CComputeShader>(L"WeightMapShader", pShader);
+        AddAsset<CComputeShader>(L"WeightMapShader", pShader);
+    }
+
+    // =======================
+    // Animation 3D
+    // =======================
+    {
+        Ptr<CComputeShader> pShader = new CAnimation3DShader;
+        pShader->SetName(L"Animation3DUpdateCS");
+        AddAsset<CComputeShader>(L"Animation3DUpdateCS", pShader);
+    }
+
+    // =======================
+    // CopyBone
+    // =======================
+    {
+        Ptr<CComputeShader> pShader = new CCopyBoneShader;
+        pShader->SetName(L"CopyBoneCS");
+        AddAsset<CComputeShader>(L"CopyBoneCS", pShader);
     }
 }
 
@@ -1745,7 +1765,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
     m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
 
     // meshdata 를 실제파일로 저장
-    // pMeshData->Save(strName);
+    pMeshData->Save(strName);
 
     return pMeshData;
 }

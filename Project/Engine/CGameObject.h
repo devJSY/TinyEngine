@@ -11,31 +11,6 @@
 class CComponent;
 class CRenderComponent;
 
-class Transform;
-class CAnimator2D;
-class Light2D;
-class Light3D;
-class CCamera;
-class CRigidbody2D;
-class CBoxCollider2D;
-class CCircleCollider2D;
-class CPolygonCollider2D;
-class CEdgeCollider2D;
-class CRigidbody;
-class CBoxCollider;
-class CSphereCollider;
-class CCapsuleCollider;
-class CMeshCollider;
-class CCharacterController;
-class MeshRender;
-class CTileMap;
-class CParticleSystem;
-class CSkyBox;
-class CDecal;
-class CLandScape;
-class CTextRender;
-class CScript;
-
 class CGameObject : public CEntity
 {
 private:
@@ -77,6 +52,7 @@ public:
 
     GET_COMPONENT(Transform, TRANSFORM);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
+    GET_COMPONENT(Animator3D, ANIMATOR3D);
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(Light3D, LIGHT3D);
     GET_COMPONENT(Camera, CAMERA);

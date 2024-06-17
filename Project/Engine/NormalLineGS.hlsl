@@ -5,7 +5,7 @@
 struct GS_Input
 {
     float4 posModel : SV_POSITION;
-    float3 normalWorld : NORMAL;
+    float3 normal : NORMAL;
 };
 
 struct PS_Input
@@ -20,7 +20,7 @@ void main(point GS_Input input[1], inout LineStream<PS_Input> outputStream)
     PS_Input output;
     
     float4 posWorld = mul(input[0].posModel, g_matWorld);
-    float4 normalModel = float4(input[0].normalWorld, 0.f);
+    float4 normalModel = float4(input[0].normal, 0.f);
     float4 normalWorld = mul(normalModel, g_matWorldInvTranspose);
     normalWorld = float4(normalize(normalWorld.xyz), 0.f);
     

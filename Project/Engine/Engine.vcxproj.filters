@@ -355,6 +355,18 @@
     <ClInclude Include="CMeshData.h">
       <Filter>06. Asset\MeshData</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimator3D.h">
+      <Filter>08. Component\Animator3D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation3DShader.h">
+      <Filter>ShaderCode\Compute\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="CCopyBoneShader.h">
+      <Filter>ShaderCode\Compute\CopyBone</Filter>
+    </ClInclude>
+    <ClInclude Include="CInstancingBuffer.h">
+      <Filter>04. Manager\Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -686,6 +698,18 @@
     </ClCompile>
     <ClCompile Include="CMeshData.cpp">
       <Filter>06. Asset\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator3D.cpp">
+      <Filter>08. Component\Animator3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation3DShader.cpp">
+      <Filter>ShaderCode\Compute\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CCopyBoneShader.cpp">
+      <Filter>ShaderCode\Compute\CopyBone</Filter>
+    </ClCompile>
+    <ClCompile Include="CInstancingBuffer.cpp">
+      <Filter>04. Manager\Instancing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1019,6 +1043,18 @@
     <Filter Include="09. Editor\PhysicMaterialEditor">
       <UniqueIdentifier>{15051d17-e77d-41f9-8c1f-aa883f35cd69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08. Component\Animator3D">
+      <UniqueIdentifier>{b5a6f8f8-45eb-44ee-ac40-ec642d50418e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Compute\Animation">
+      <UniqueIdentifier>{fd4a2d04-1232-4966-b9de-417e8d4900ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Compute\CopyBone">
+      <UniqueIdentifier>{35e35875-a556-4d9d-a0e4-6f20ae30dd85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Instancing">
+      <UniqueIdentifier>{991a345b-6f88-4be8-9664-3f4f2dee0c8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1259,6 +1295,12 @@
     </FxCompile>
     <FxCompile Include="weightmap.fx">
       <Filter>ShaderCode\Compute\LandScape\WeightMap</Filter>
+    </FxCompile>
+    <FxCompile Include="animation.fx">
+      <Filter>ShaderCode\Compute\Animation</Filter>
+    </FxCompile>
+    <FxCompile Include="copybone.fx">
+      <Filter>ShaderCode\Compute\CopyBone</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

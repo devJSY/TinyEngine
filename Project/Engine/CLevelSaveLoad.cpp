@@ -308,6 +308,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
             pComponent = new CAnimator2D;
             break;
         case COMPONENT_TYPE::ANIMATOR3D:
+            pComponent = new CAnimator3D;
             break;
         case COMPONENT_TYPE::LIGHT2D:
             pComponent = new CLight2D;

@@ -10,6 +10,16 @@ struct VS_IN
     float3 vTangent : TANGENT;
     float3 vBitangent : BINORMAL;
     float3 vNormal : NORMAL;
+    
+    float4 vWeights : BLENDWEIGHT;
+    float4 vIndices : BLENDINDICES;
+        
+    // Per Instance Data    
+    row_major matrix matWorld : WORLD;
+    row_major matrix matWorldInvTranspose : WORLDINVTRANSPOSE;
+    row_major matrix matView : VIEW;
+    row_major matrix matProj : PROJ;
+    uint iRowIndex : ROWINDEX;
 };
 
 struct PS_IN
@@ -21,7 +31,7 @@ struct PS_IN
     
     float3 vTangentWorld : TANGENT;
     float3 vBitangentWorld : BINORMAL;
-    float3 normalWorld : NORMAL;
+    float3 vNormalWorld : NORMAL;
 };
 
 struct tLightInfo
@@ -130,6 +140,14 @@ struct tRaycastOut
     float2 vUV;
     float fDist;
     int success;
+};
+
+struct tSkinningInfo
+{
+    float3 vPos;
+    float3 vTangent;
+    float3 vBinormal;
+    float3 vNormal;
 };
 
 #endif

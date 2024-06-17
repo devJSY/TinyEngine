@@ -13,6 +13,7 @@
 #include "CGameObjectEx.h"
 #include "components.h"
 #include "CScript.h"
+#include "CMRT.h"
 
 CEditorMgr::CEditorMgr()
     : m_bEnable(true)
@@ -190,6 +191,9 @@ void CEditorMgr::render()
 {
     if (!m_bEnable)
         return;
+
+    // MRT Set
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
     // ====================
     // ImGUI Render Start

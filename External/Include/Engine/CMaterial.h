@@ -23,6 +23,9 @@ public:
         m_Const.mtrl.vEmission = _vEmis;
     }
 
+    void SetAnim3D(bool _bUseAnim) { m_Const.arrAnimData[0] = (int)_bUseAnim; }
+    void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
+
     template <typename T>
     void SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value);
     void* GetScalarParam(SCALAR_PARAM _ParamType);
@@ -35,6 +38,7 @@ public:
 
 public:
     void UpdateData();
+    void UpdateData_Inst();
 
 public:
     const tMtrlConst& GetMtrlConst() const { return m_Const; }

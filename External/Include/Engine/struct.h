@@ -10,6 +10,9 @@ struct Vtx
     Vec3 vBiTangent; // 종법선 벡터
     Vec3 vTangent;   // 접선 벡터
     Vec3 vNormal;    // 법선 벡터
+
+    Vec4 vWeights; // Bone 가중치
+    Vec4 vIndices; // Bone 인덱스
 };
 
 __declspec(align(16)) struct tLightInfo
@@ -37,6 +40,79 @@ __declspec(align(16)) struct tLightInfo
     int ShadowIndex;
     float HaloRadius;
     float HaloStrength;
+};
+
+// ============
+// Animation 3D
+// ============
+struct tFrameTrans
+{
+    Vec4 vTranslate;
+    Vec4 vScale;
+    Vec4 qRot;
+};
+
+struct tMTKeyFrame
+{
+    double dTime;
+    int iFrame;
+    Vec3 vTranslate;
+    Vec3 vScale;
+    Vec4 qRot;
+};
+
+struct tMTBone
+{
+    wstring strBoneName;
+    int iDepth;
+    int iParentIndx;
+    Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
+    Matrix matBone;   // 이거 안씀
+    vector<tMTKeyFrame> vecKeyFrame;
+};
+
+struct tMTAnimClip
+{
+    wstring strAnimName;
+    int iStartFrame;
+    int iEndFrame;
+    int iFrameLength;
+
+    double dStartTime;
+    double dEndTime;
+    double dTimeLength;
+    float fUpdateTime; // 이거 안씀
+
+    FbxTime::EMode eMode;
+};
+
+// ===========
+// Instancing
+// ===========
+union uInstID {
+    struct
+    {
+        UINT iMesh;
+        WORD iMtrl;
+        WORD iMtrlIdx;
+    };
+    ULONG64 llID;
+};
+
+class CGameObject;
+struct tInstObj
+{
+    CGameObject* pObj;
+    UINT iMtrlIdx;
+};
+
+struct tInstancingData
+{
+    Matrix matWorld;
+    Matrix matWorldInvTranspose;
+    Matrix matView;
+    Matrix matProj;
+    int iRowIdx;
 };
 
 // ==================
@@ -81,6 +157,9 @@ __declspec(align(16)) struct tMtrlConst
     Matrix arrMat[4];
 
     int bTex[TEX_PARAM::TEX_END];
+
+    // 3D Animation 정보
+    int arrAnimData[2];
 };
 
 __declspec(align(16)) struct tGlobalData

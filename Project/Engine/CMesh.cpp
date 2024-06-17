@@ -2,6 +2,7 @@
 #include "CMesh.h"
 
 #include "CDevice.h"
+#include "CInstancingBuffer.h"
 
 #include "CAssetMgr.h"
 #include "CTexture.h"
@@ -13,6 +14,10 @@ CMesh::CMesh(bool _bEngineAsset)
     , m_VtxCount(0)
     , m_VtxSysMem(nullptr)
     , m_vecIdxInfo{}
+    , m_vecAnimClip{}
+    , m_vecBones{}
+    , m_pBoneFrameData(nullptr)
+    , m_pBoneOffset(nullptr)
 {
 }
 
@@ -32,6 +37,18 @@ CMesh::~CMesh()
             m_vecIdxInfo[i].pIdxSysMem = nullptr;
         }
     }
+
+    if (nullptr != m_pBoneFrameData)
+    {
+        delete m_pBoneFrameData;
+        m_pBoneFrameData = nullptr;
+    }
+
+    if (nullptr != m_pBoneOffset)
+    {
+        delete m_pBoneOffset;
+        m_pBoneOffset = nullptr;
+    }
 }
 
 void CMesh::UpdateData(UINT _iSubset)
@@ -43,35 +60,58 @@ void CMesh::UpdateData(UINT _iSubset)
     CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
+void CMesh::UpdateData_Inst(UINT _iSubset)
+{
+    if (_iSubset >= m_vecIdxInfo.size())
+        assert(nullptr);
+
+    ID3D11Buffer* arrBuffer[2] = {m_VB.Get(), CInstancingBuffer::GetInst()->GetBuffer().Get()};
+    UINT iStride[2] = {sizeof(Vtx), sizeof(tInstancingData)};
+    UINT iOffset[2] = {0, 0};
+
+    CONTEXT->IASetVertexBuffers(0, 2, arrBuffer, iStride, iOffset);
+    CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
+}
+
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 {
-    const tContainer* container = &_loader.GetContainer(0);
+    vector<Vtx> vecVtx = {};
+    for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
+    {
+        const tContainer* container = &_loader.GetContainer(ContainerIndex);
 
-    UINT iVtxCount = (UINT)container->vecPos.size();
+        vector<Vtx> vecVtxContainer = {};
+        UINT iVtxCount = (UINT)container->vecPos.size();
+        vecVtxContainer.resize(iVtxCount);
+
+        for (UINT i = 0; i < iVtxCount; ++i)
+        {
+            vecVtxContainer[i].vPos = container->vecPos[i];
+            vecVtxContainer[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
+            vecVtxContainer[i].vUV = container->vecUV[i];
+            vecVtxContainer[i].vTangent = container->vecTangent[i];
+            vecVtxContainer[i].vBiTangent = container->vecBinormal[i];
+            vecVtxContainer[i].vNormal = container->vecNormal[i];
+            vecVtxContainer[i].vWeights = container->vecWeights[i];
+            vecVtxContainer[i].vIndices = container->vecIndices[i];
+        }
+
+        // Container의 모든 정점을 연결하여 하나의 Mesh생성
+        vecVtx.insert(vecVtx.end(), vecVtxContainer.begin(), vecVtxContainer.end());
+    }
 
     D3D11_BUFFER_DESC tVtxDesc = {};
-
-    tVtxDesc.ByteWidth = sizeof(Vtx) * iVtxCount;
+    tVtxDesc.ByteWidth = UINT(sizeof(Vtx) * vecVtx.size());
     tVtxDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
     tVtxDesc.Usage = D3D11_USAGE_DEFAULT;
     if (D3D11_USAGE_DYNAMIC == tVtxDesc.Usage)
         tVtxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
+    void* pVecVtxSysMem = malloc(tVtxDesc.ByteWidth);
+    memcpy(pVecVtxSysMem, vecVtx.data(), tVtxDesc.ByteWidth);
+
     D3D11_SUBRESOURCE_DATA tSub = {};
-    tSub.pSysMem = malloc(tVtxDesc.ByteWidth);
-    Vtx* pSys = (Vtx*)tSub.pSysMem;
-    for (UINT i = 0; i < iVtxCount; ++i)
-    {
-        pSys[i].vPos = container->vecPos[i];
-        pSys[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-        pSys[i].vUV = container->vecUV[i];
-        pSys[i].vTangent = container->vecTangent[i];
-        pSys[i].vBiTangent = container->vecBinormal[i];
-        pSys[i].vNormal = container->vecNormal[i];
-        // pSys[i].vWeights = container->vecWeights[i];
-        // pSys[i].vIndices = container->vecIndices[i];
-    }
+    tSub.pSysMem = pVecVtxSysMem;
 
     ComPtr<ID3D11Buffer> pVB = NULL;
     if (FAILED(DEVICE->CreateBuffer(&tVtxDesc, &tSub, pVB.GetAddressOf())))
@@ -82,37 +122,148 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
     CMesh* pMesh = new CMesh;
     pMesh->m_VB = pVB;
     pMesh->m_VBDesc = tVtxDesc;
-    pMesh->m_VtxSysMem = pSys;
+    pMesh->m_VtxSysMem = pVecVtxSysMem;
+    pMesh->m_VtxCount = (UINT)vecVtx.size();
 
     // 인덱스 정보
-    UINT iIdxBufferCount = (UINT)container->vecIdx.size();
-    D3D11_BUFFER_DESC tIdxDesc = {};
-
-    for (UINT i = 0; i < iIdxBufferCount; ++i)
+    UINT idxOffset = 0;
+    for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
     {
-        tIdxDesc.ByteWidth = (UINT)container->vecIdx[i].size() * sizeof(UINT); // Index Format 이 R32_UINT 이기 때문
-        tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-        tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
-        if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
-            tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        const tContainer* container = &_loader.GetContainer(ContainerIndex);
 
-        void* pSysMem = malloc(tIdxDesc.ByteWidth);
-        memcpy(pSysMem, container->vecIdx[i].data(), tIdxDesc.ByteWidth);
-        tSub.pSysMem = pSysMem;
+        UINT iIdxBufferCount = (UINT)container->vecIdx.size();
+        D3D11_BUFFER_DESC tIdxDesc = {};
 
-        ComPtr<ID3D11Buffer> pIB = nullptr;
-        if (FAILED(DEVICE->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+        for (UINT i = 0; i < iIdxBufferCount; ++i)
         {
-            return NULL;
+            vector<UINT> vecIdx(container->vecIdx[i].size());
+            for (UINT j = 0; j < vecIdx.size(); ++j)
+            {
+                vecIdx[j] = idxOffset + container->vecIdx[i][j];
+            }
+
+            tIdxDesc.ByteWidth = (UINT)container->vecIdx[i].size() * sizeof(UINT); // Index Format 이 R32_UINT 이기 때문
+            tIdxDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+            tIdxDesc.Usage = D3D11_USAGE_DEFAULT;
+            if (D3D11_USAGE_DYNAMIC == tIdxDesc.Usage)
+                tIdxDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+            void* pVecIdxSysMem = malloc(tIdxDesc.ByteWidth);
+            memcpy(pVecIdxSysMem, vecIdx.data(), tIdxDesc.ByteWidth);
+            tSub.pSysMem = pVecIdxSysMem;
+
+            ComPtr<ID3D11Buffer> pIB = nullptr;
+            if (FAILED(DEVICE->CreateBuffer(&tIdxDesc, &tSub, pIB.GetAddressOf())))
+            {
+                return NULL;
+            }
+
+            tIndexInfo info = {};
+            info.tIBDesc = tIdxDesc;
+            info.iIdxCount = (UINT)container->vecIdx[i].size();
+            info.pIdxSysMem = pVecIdxSysMem;
+            info.pIB = pIB;
+
+            pMesh->m_vecIdxInfo.push_back(info);
+            idxOffset += (UINT)container->vecPos.size(); // 이전 컨테이너의 정점수만큼 offset 추가
+        }
+    }
+
+    // Animation3D
+    bool bHasAnim = false;
+    for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
+    {
+        const tContainer* container = &_loader.GetContainer(ContainerIndex);
+        bHasAnim = container->bAnimation;
+        if (bHasAnim)
+            break;
+    }
+
+    // 애니메이션을 가지고있지 않았다.
+    if (!bHasAnim)
+        return pMesh;
+
+    vector<tBone*>& vecBone = _loader.GetBones();
+    UINT iFrameCount = 0;
+    for (UINT i = 0; i < vecBone.size(); ++i)
+    {
+        tMTBone bone = {};
+        bone.iDepth = vecBone[i]->iDepth;
+        bone.iParentIndx = vecBone[i]->iParentIndx;
+        bone.matBone = GetMatrixFromFbxMatrix(vecBone[i]->matBone);
+        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
+        bone.strBoneName = vecBone[i]->strBoneName;
+
+        for (UINT j = 0; j < vecBone[i]->vecKeyFrame.size(); ++j)
+        {
+            tMTKeyFrame tKeyframe = {};
+            tKeyframe.dTime = vecBone[i]->vecKeyFrame[j].dTime;
+            tKeyframe.iFrame = j;
+            tKeyframe.vTranslate.x = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetT().mData[0];
+            tKeyframe.vTranslate.y = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetT().mData[1];
+            tKeyframe.vTranslate.z = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetT().mData[2];
+
+            tKeyframe.vScale.x = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetS().mData[0];
+            tKeyframe.vScale.y = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetS().mData[1];
+            tKeyframe.vScale.z = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetS().mData[2];
+
+            tKeyframe.qRot.x = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[0];
+            tKeyframe.qRot.y = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[1];
+            tKeyframe.qRot.z = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[2];
+            tKeyframe.qRot.w = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[3];
+
+            bone.vecKeyFrame.push_back(tKeyframe);
         }
 
-        tIndexInfo info = {};
-        info.tIBDesc = tIdxDesc;
-        info.iIdxCount = (UINT)container->vecIdx[i].size();
-        info.pIdxSysMem = pSysMem;
-        info.pIB = pIB;
+        iFrameCount = max(iFrameCount, (UINT)bone.vecKeyFrame.size());
 
-        pMesh->m_vecIdxInfo.push_back(info);
+        pMesh->m_vecBones.push_back(bone);
+    }
+
+    vector<tAnimClip*>& vecAnimClip = _loader.GetAnimClip();
+
+    for (UINT i = 0; i < vecAnimClip.size(); ++i)
+    {
+        tMTAnimClip tClip = {};
+
+        tClip.strAnimName = vecAnimClip[i]->strName;
+        tClip.dStartTime = vecAnimClip[i]->tStartTime.GetSecondDouble();
+        tClip.dEndTime = vecAnimClip[i]->tEndTime.GetSecondDouble();
+        tClip.dTimeLength = tClip.dEndTime - tClip.dStartTime;
+
+        tClip.iStartFrame = (int)vecAnimClip[i]->tStartTime.GetFrameCount(vecAnimClip[i]->eMode);
+        tClip.iEndFrame = (int)vecAnimClip[i]->tEndTime.GetFrameCount(vecAnimClip[i]->eMode);
+        tClip.iFrameLength = tClip.iEndFrame - tClip.iStartFrame;
+        tClip.eMode = vecAnimClip[i]->eMode;
+
+        pMesh->m_vecAnimClip.push_back(tClip);
+    }
+
+    // Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
+    if (pMesh->IsAnimMesh())
+    {
+        // BoneOffet 행렬
+        vector<Matrix> vecOffset;
+        vector<tFrameTrans> vecFrameTrans;
+        vecFrameTrans.resize((UINT)pMesh->m_vecBones.size() * iFrameCount);
+
+        for (size_t i = 0; i < pMesh->m_vecBones.size(); ++i)
+        {
+            vecOffset.push_back(pMesh->m_vecBones[i].matOffset);
+
+            for (size_t j = 0; j < pMesh->m_vecBones[i].vecKeyFrame.size(); ++j)
+            {
+                vecFrameTrans[(UINT)pMesh->m_vecBones.size() * j + i] =
+                    tFrameTrans{Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f), Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vScale, 0.f),
+                                pMesh->m_vecBones[i].vecKeyFrame[j].qRot};
+            }
+        }
+
+        pMesh->m_pBoneOffset = new CStructuredBuffer;
+        pMesh->m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
+
+        pMesh->m_pBoneFrameData = new CStructuredBuffer;
+        pMesh->m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * iFrameCount, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
     }
 
     return pMesh;
@@ -200,3 +351,222 @@ void CMesh::render_IndexedInstanced(UINT _InstanceCount)
     CONTEXT->DrawIndexedInstanced(m_vecIdxInfo[0].iIdxCount, _InstanceCount, 0, 0, 0);
 }
 
+void CMesh::render_instancing(UINT _iSubset)
+{
+    UpdateData_Inst(_iSubset);
+
+    CONTEXT->DrawIndexedInstanced(m_vecIdxInfo[_iSubset].iIdxCount, CInstancingBuffer::GetInst()->GetInstanceCount(), 0, 0, 0);
+}
+
+int CMesh::Save(const wstring& _strRelativePath)
+{
+    // 상대경로 저장
+    SetRelativePath(_strRelativePath);
+
+    // 파일 경로 만들기
+    wstring strFilePath = CPathMgr::GetContentPath() + _strRelativePath;
+
+    // 파일 쓰기모드로 열기
+    FILE* pFile = nullptr;
+    errno_t err = _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+    assert(pFile);
+
+    // 키값, 상대 경로
+    SaveWStringToFile(GetName(), pFile);
+    SaveWStringToFile(GetKey(), pFile);
+    SaveWStringToFile(GetRelativePath(), pFile);
+
+    // 정점 데이터 저장
+    int iByteSize = m_VBDesc.ByteWidth;
+    fwrite(&iByteSize, sizeof(int), 1, pFile);
+    fwrite(m_VtxSysMem, iByteSize, 1, pFile);
+
+    // 인덱스 정보
+    UINT iMtrlCount = (UINT)m_vecIdxInfo.size();
+    fwrite(&iMtrlCount, sizeof(int), 1, pFile);
+
+    UINT iIdxBuffSize = 0;
+    for (UINT i = 0; i < iMtrlCount; ++i)
+    {
+        fwrite(&m_vecIdxInfo[i], sizeof(tIndexInfo), 1, pFile);
+        fwrite(m_vecIdxInfo[i].pIdxSysMem, m_vecIdxInfo[i].iIdxCount * sizeof(UINT), 1, pFile);
+    }
+
+    // Animation3D 정보
+    UINT iCount = (UINT)m_vecAnimClip.size();
+    fwrite(&iCount, sizeof(int), 1, pFile);
+    for (UINT i = 0; i < iCount; ++i)
+    {
+        SaveWStringToFile(m_vecAnimClip[i].strAnimName, pFile);
+        fwrite(&m_vecAnimClip[i].dStartTime, sizeof(double), 1, pFile);
+        fwrite(&m_vecAnimClip[i].dEndTime, sizeof(double), 1, pFile);
+        fwrite(&m_vecAnimClip[i].dTimeLength, sizeof(double), 1, pFile);
+        fwrite(&m_vecAnimClip[i].eMode, sizeof(int), 1, pFile);
+        fwrite(&m_vecAnimClip[i].fUpdateTime, sizeof(float), 1, pFile);
+        fwrite(&m_vecAnimClip[i].iStartFrame, sizeof(int), 1, pFile);
+        fwrite(&m_vecAnimClip[i].iEndFrame, sizeof(int), 1, pFile);
+        fwrite(&m_vecAnimClip[i].iFrameLength, sizeof(int), 1, pFile);
+    }
+
+    iCount = (UINT)m_vecBones.size();
+    fwrite(&iCount, sizeof(int), 1, pFile);
+
+    for (UINT i = 0; i < iCount; ++i)
+    {
+        SaveWStringToFile(m_vecBones[i].strBoneName, pFile);
+        fwrite(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].matBone, sizeof(Matrix), 1, pFile);
+        fwrite(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
+
+        int iFrameCount = (int)m_vecBones[i].vecKeyFrame.size();
+        fwrite(&iFrameCount, sizeof(int), 1, pFile);
+
+        for (int j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+        {
+            fwrite(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+    }
+
+    fclose(pFile);
+
+    return S_OK;
+}
+
+int CMesh::Load(const wstring& _strFilePath)
+{
+    // 읽기모드로 파일열기
+    FILE* pFile = nullptr;
+    _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
+
+    // 키값, 상대경로
+    wstring strName, strKey, strRelativePath;
+    LoadWStringFromFile(strName, pFile);
+    LoadWStringFromFile(strKey, pFile);
+    LoadWStringFromFile(strRelativePath, pFile);
+
+    SetName(strName);
+    SetKey(strKey);
+    SetRelativePath(strRelativePath);
+
+    // 정점데이터
+    UINT iByteSize = 0;
+    fread(&iByteSize, sizeof(int), 1, pFile);
+
+    m_VtxSysMem = (Vtx*)malloc(iByteSize);
+    fread(m_VtxSysMem, 1, iByteSize, pFile);
+
+    D3D11_BUFFER_DESC tDesc = {};
+    tDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    tDesc.ByteWidth = iByteSize;
+    tDesc.Usage = D3D11_USAGE_DEFAULT;
+
+    D3D11_SUBRESOURCE_DATA tSubData = {};
+    tSubData.pSysMem = m_VtxSysMem;
+
+    if (FAILED(DEVICE->CreateBuffer(&tDesc, &tSubData, m_VB.GetAddressOf())))
+    {
+        assert(nullptr);
+    }
+
+    // 인덱스 정보
+    UINT iMtrlCount = 0;
+    fread(&iMtrlCount, sizeof(int), 1, pFile);
+
+    for (UINT i = 0; i < iMtrlCount; ++i)
+    {
+        tIndexInfo info = {};
+        fread(&info, sizeof(tIndexInfo), 1, pFile);
+
+        UINT iByteWidth = info.iIdxCount * sizeof(UINT);
+
+        void* pSysMem = malloc(iByteWidth);
+        info.pIdxSysMem = pSysMem;
+        fread(info.pIdxSysMem, iByteWidth, 1, pFile);
+
+        tSubData.pSysMem = info.pIdxSysMem;
+
+        if (FAILED(DEVICE->CreateBuffer(&info.tIBDesc, &tSubData, info.pIB.GetAddressOf())))
+        {
+            assert(nullptr);
+        }
+
+        m_vecIdxInfo.push_back(info);
+    }
+
+    // Animation3D 정보 읽기
+    int iCount = 0;
+    fread(&iCount, sizeof(int), 1, pFile);
+    for (int i = 0; i < iCount; ++i)
+    {
+        tMTAnimClip tClip = {};
+
+        LoadWStringFromFile(tClip.strAnimName, pFile);
+        fread(&tClip.dStartTime, sizeof(double), 1, pFile);
+        fread(&tClip.dEndTime, sizeof(double), 1, pFile);
+        fread(&tClip.dTimeLength, sizeof(double), 1, pFile);
+        fread(&tClip.eMode, sizeof(int), 1, pFile);
+        fread(&tClip.fUpdateTime, sizeof(float), 1, pFile);
+        fread(&tClip.iStartFrame, sizeof(int), 1, pFile);
+        fread(&tClip.iEndFrame, sizeof(int), 1, pFile);
+        fread(&tClip.iFrameLength, sizeof(int), 1, pFile);
+
+        m_vecAnimClip.push_back(tClip);
+    }
+
+    iCount = 0;
+    fread(&iCount, sizeof(int), 1, pFile);
+    m_vecBones.resize(iCount);
+
+    UINT _iFrameCount = 0;
+    for (int i = 0; i < iCount; ++i)
+    {
+        LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);
+        fread(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].matBone, sizeof(Matrix), 1, pFile);
+        fread(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
+
+        UINT iFrameCount = 0;
+        fread(&iFrameCount, sizeof(int), 1, pFile);
+        m_vecBones[i].vecKeyFrame.resize(iFrameCount);
+        _iFrameCount = max(_iFrameCount, iFrameCount);
+        for (UINT j = 0; j < iFrameCount; ++j)
+        {
+            fread(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+    }
+
+    // Animation 이 있는 Mesh 경우 Bone StructuredBuffer 만들기
+    if (m_vecAnimClip.size() > 0 && m_vecBones.size() > 0)
+    {
+        wstring strBone = GetName();
+
+        // BoneOffet 행렬
+        vector<Matrix> vecOffset;
+        vector<tFrameTrans> vecFrameTrans;
+        vecFrameTrans.resize((UINT)m_vecBones.size() * _iFrameCount);
+
+        for (size_t i = 0; i < m_vecBones.size(); ++i)
+        {
+            vecOffset.push_back(m_vecBones[i].matOffset);
+
+            for (size_t j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+            {
+                vecFrameTrans[(UINT)m_vecBones.size() * j + i] =
+                    tFrameTrans{Vec4(m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f), Vec4(m_vecBones[i].vecKeyFrame[j].vScale, 0.f),
+                                Vec4(m_vecBones[i].vecKeyFrame[j].qRot)};
+            }
+        }
+
+        m_pBoneOffset = new CStructuredBuffer;
+        m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
+
+        m_pBoneFrameData = new CStructuredBuffer;
+        m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * (UINT)_iFrameCount, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
+    }
+
+    fclose(pFile);
+
+    return S_OK;
+}

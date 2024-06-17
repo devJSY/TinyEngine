@@ -12,6 +12,7 @@
 
 #include "CGameObject.h"
 #include "CAnimator2D.h"
+#include "CAnimator3D.h"
 #include "CTransform.h"
 
 #include "CConstBuffer.h"
@@ -40,10 +41,25 @@ void CMeshRender::render()
     if (nullptr == GetMesh())
         return;
 
-    // Animatio2D 보유한 경우
+    // Animatio2D 업데이트
     if (Animator2D())
     {
         Animator2D()->UpdateData();
+    }
+
+    // Animator3D 업데이트
+    if (Animator3D())
+    {
+        Animator3D()->UpdateData();
+
+        for (UINT i = 0; i < GetMtrlCount(); ++i)
+        {
+            if (nullptr == GetMaterial(i))
+                continue;
+
+            GetMaterial(i)->SetAnim3D(true); // Animation Mesh 알리기
+            GetMaterial(i)->SetBoneCount(Animator3D()->GetBoneCount());
+        }
     }
 
     Transform()->UpdateData();
@@ -62,6 +78,11 @@ void CMeshRender::render()
     {
         Animator2D()->Clear();
     }
+
+    if (Animator3D())
+    {
+        Animator3D()->ClearData();
+    }
 }
 
 void CMeshRender::render(Ptr<CMaterial> _mtrl)
@@ -69,20 +90,77 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
     if (nullptr == GetMesh() || nullptr == _mtrl)
         return;
 
-    // Animatio2D 보유한 경우
+    // Animatio2D 업데이트
     if (Animator2D())
     {
         Animator2D()->UpdateData();
     }
 
+    // Animator3D 업데이트
+    if (Animator3D())
+    {
+        Animator3D()->UpdateData();
+
+        _mtrl->SetAnim3D(true);
+        _mtrl->SetBoneCount(Animator3D()->GetBoneCount());
+    }
+
     Transform()->UpdateData();
     _mtrl->UpdateData();
 
-    GetMesh()->render(0);
+    for (UINT i = 0; i < GetMesh()->GetSubsetCount(); ++i)
+    {
+        GetMesh()->render(i);
+    }
 
     // Animation 관련 정보 제거
     if (Animator2D())
     {
         Animator2D()->Clear();
+    }
+
+    if (Animator3D())
+    {
+        Animator3D()->ClearData();
+    }
+}
+
+void CMeshRender::render(UINT _Subset)
+{
+    if (nullptr == GetMesh() || nullptr == GetMaterial(_Subset))
+        return;
+
+    // Animatio2D 업데이트
+    if (Animator2D())
+    {
+        Animator2D()->UpdateData();
+    }
+
+    // Animator3D 업데이트
+    if (Animator3D())
+    {
+        Animator3D()->UpdateData();
+
+        GetMaterial(_Subset)->SetAnim3D(true); // Animation Mesh 알리기
+        GetMaterial(_Subset)->SetBoneCount(Animator3D()->GetBoneCount());
+    }
+
+    Transform()->UpdateData();
+
+    // 사용할 재질 업데이트
+    GetMaterial(_Subset)->UpdateData();
+
+    // 사용할 메쉬 업데이트 및 렌더링
+    GetMesh()->render(_Subset);
+
+    // Animation 관련 정보 제거
+    if (Animator2D())
+    {
+        Animator2D()->Clear();
+    }
+
+    if (Animator3D())
+    {
+        Animator3D()->ClearData();
     }
 }
