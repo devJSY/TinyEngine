@@ -104,7 +104,7 @@ cbuffer GLOBAL_DATA : register(b3)
     int g_EnableSSAO;
     
     uint g_Light2DCount;
-    uint g_Light3DCount;
+    uint g_LightCount;
         
     int g_DrawAsWireFrame;
     int g_RenderOutline;
@@ -128,7 +128,7 @@ Texture2DArray g_texArr_1 : register(t11);
 Texture2D g_anim2d_tex : register(t12);
 
 StructuredBuffer<tLightInfo> g_Light2D : register(t13);
-StructuredBuffer<tLightInfo> g_Light3D : register(t14);
+StructuredBuffer<tLightInfo> g_Light : register(t14);
 
 Texture2D g_postprocess_Tex : register(t15);
 

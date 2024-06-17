@@ -570,10 +570,10 @@ void CCamera::render_Light()
 {
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
 
-    const vector<CLight*>& vecLight3D = CRenderMgr::GetInst()->GetvecLight3D();
-    for (UINT Idx = 0; Idx < vecLight3D.size(); ++Idx)
+    const vector<CLight*>& vecLight = CRenderMgr::GetInst()->GetvecLight();
+    for (UINT Idx = 0; Idx < vecLight.size(); ++Idx)
     {
-        vecLight3D[Idx]->render_Deferred(Idx);
+        vecLight[Idx]->render_Deferred(Idx);
     }
 }
 

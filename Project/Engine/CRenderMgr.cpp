@@ -26,7 +26,7 @@ CRenderMgr::CRenderMgr()
     , m_PostProcessTex_HDRI(nullptr)
     , m_FloatRTTex(nullptr)
     , m_Light2DBuffer(nullptr)
-    , m_Light3DBuffer(nullptr)
+    , m_LightBuffer(nullptr)
     , m_pDebugObj(nullptr)
     , m_bShowDebugRender(true)
     , m_vecNoiseTex{}
@@ -69,10 +69,10 @@ CRenderMgr::~CRenderMgr()
         m_Light2DBuffer = nullptr;
     }
 
-    if (nullptr != m_Light3DBuffer)
+    if (nullptr != m_LightBuffer)
     {
-        delete m_Light3DBuffer;
-        m_Light3DBuffer = nullptr;
+        delete m_LightBuffer;
+        m_LightBuffer = nullptr;
     }
 
     if (nullptr != m_SamplingObj)
@@ -447,27 +447,27 @@ void CRenderMgr::render_StaticShadowDepth()
 
 void CRenderMgr::render_DynamicShadowDepth()
 {
-    for (int i = 0; i < m_vecLight3D.size(); i++)
+    for (int i = 0; i < m_vecLight.size(); i++)
     {
-        int ShadowIndex = m_vecLight3D[i]->GetShadowIdx();
+        int ShadowIndex = m_vecLight[i]->GetShadowIdx();
         if (0 >= ShadowIndex)
             continue;
 
         // Rendering
-        m_vecLight3D[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
+        m_vecLight[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
 
         // Bind
         if (1 == ShadowIndex)
         {
-            m_vecLight3D[i]->GetDepthMapTex()->UpdateData(23);
+            m_vecLight[i]->GetDepthMapTex()->UpdateData(23);
         }
         else if (2 == ShadowIndex)
         {
-            m_vecLight3D[i]->GetDepthMapTex()->UpdateData(24);
+            m_vecLight[i]->GetDepthMapTex()->UpdateData(24);
         }
         else if (3 == ShadowIndex)
         {
-            m_vecLight3D[i]->GetDepthMapTex()->UpdateData(25);
+            m_vecLight[i]->GetDepthMapTex()->UpdateData(25);
         }
     }
 }
@@ -476,7 +476,7 @@ void CRenderMgr::UpdateData()
 {
     // GlobalData 에 광원 개수정보 세팅
     g_Global.g_Light2DCount = (UINT)m_vecLight2D.size();
-    g_Global.g_Light3DCount = (UINT)m_vecLight3D.size();
+    g_Global.g_LightCount = (UINT)m_vecLight.size();
 
     // 메인 카메라 위치 등록
     if (nullptr != m_mainCam)
@@ -509,40 +509,40 @@ void CRenderMgr::UpdateData()
     vecLight2DInfo.clear();
 
     // Light
-    static vector<tLightInfo> vecLight3DInfo;
+    static vector<tLightInfo> vecLightInfo;
 
     // 그림자 적용 광원 최대갯수
     const static int dynamicShadowMaxCount = 3;
     int ShadowIdx = 1;
 
-    for (UINT i = 0; i < m_vecLight3D.size(); ++i)
+    for (UINT i = 0; i < m_vecLight.size(); ++i)
     {
         // 정적 라이트 이외의 라이트 인덱스 초기화
-        if (0 != m_vecLight3D[i]->GetShadowIdx())
+        if (0 != m_vecLight[i]->GetShadowIdx())
         {
-            m_vecLight3D[i]->SetShadowIdx(-1);
+            m_vecLight[i]->SetShadowIdx(-1);
         }
 
-        if (ShadowIdx <= dynamicShadowMaxCount && MOBILITY_TYPE::MOVABLE == m_vecLight3D[i]->Transform()->GetMobilityType())
+        if (ShadowIdx <= dynamicShadowMaxCount && MOBILITY_TYPE::MOVABLE == m_vecLight[i]->Transform()->GetMobilityType())
         {
-            m_vecLight3D[i]->SetShadowIdx(ShadowIdx);
+            m_vecLight[i]->SetShadowIdx(ShadowIdx);
             ++ShadowIdx;
         }
 
-        const tLightInfo& info = m_vecLight3D[i]->GetLightInfo();
-        vecLight3DInfo.push_back(info);
+        const tLightInfo& info = m_vecLight[i]->GetLightInfo();
+        vecLightInfo.push_back(info);
     }
 
-    m_Light3DBuffer->SetData(vecLight3DInfo.data(), (UINT)vecLight3DInfo.size());
-    m_Light3DBuffer->UpdateData(14);
+    m_LightBuffer->SetData(vecLightInfo.data(), (UINT)vecLightInfo.size());
+    m_LightBuffer->UpdateData(14);
 
-    vecLight3DInfo.clear();
+    vecLightInfo.clear();
 }
 
 void CRenderMgr::Clear()
 {
     m_vecLight2D.clear();
-    m_vecLight3D.clear();
+    m_vecLight.clear();
 
     // Light DepthMap Clear
     CTexture::Clear(23);

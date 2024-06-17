@@ -40,7 +40,7 @@ float4 main(PS_IN input) : SV_TARGET
     
     float3 directLighting = float3(0, 0, 0);
 
-    for (uint i = 0; i < g_Light3DCount; ++i)
+    for (uint i = 0; i < g_LightCount; ++i)
     {
         DirectLighting(i, input.vPosWorld, normalWorld, albedo, ao, metallic, roughness, directLighting);
     }

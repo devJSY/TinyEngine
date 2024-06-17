@@ -269,7 +269,7 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
 
 void DirectLighting(int _LightIdx, float3 _WorldPos, float3 _NormalWorld, float3 _Albedo, float _AO, float _Matallic, float _Roughness, inout float3 OutDirectLighting)
 {
-    tLightInfo LightInfo = g_Light3D[_LightIdx];
+    tLightInfo LightInfo = g_Light[_LightIdx];
     
     const float3 pixelToEye = normalize(g_eyeWorld - _WorldPos);
     

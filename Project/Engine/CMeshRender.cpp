@@ -47,7 +47,7 @@ void CMeshRender::render()
         Animator2D()->UpdateData();
     }
 
-    // Animator3D 업데이트
+    // Animator 업데이트
     if (Animator())
     {
         Animator()->UpdateData();
@@ -96,7 +96,7 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
         Animator2D()->UpdateData();
     }
 
-    // Animator3D 업데이트
+    // Animator 업데이트
     if (Animator())
     {
         Animator()->UpdateData();
@@ -136,7 +136,7 @@ void CMeshRender::render(UINT _Subset)
         Animator2D()->UpdateData();
     }
 
-    // Animator3D 업데이트
+    // Animator 업데이트
     if (Animator())
     {
         Animator()->UpdateData();

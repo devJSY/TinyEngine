@@ -131,7 +131,7 @@ void CMaterialEditor::DrawViewport()
     g_Transform.matProjInv = m_ViewportCam->GetProjInvMat();
 
     // 광원 정보 설정
-    g_Global.g_Light3DCount = 1;
+    g_Global.g_LightCount = 1;
 
     // 메인 카메라 위치 등록
     g_Global.g_eyeWorld = m_ViewportCam->Transform()->GetWorldPos();

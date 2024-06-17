@@ -607,13 +607,13 @@ void CTaskMgr::ADD_COMPONENT(const tTask& _Task)
     case COMPONENT_TYPE::ANIMATOR2D:
         pObj->AddComponent(new CAnimator2D);
         break;
-    case COMPONENT_TYPE::ANIMATOR3D:
+    case COMPONENT_TYPE::ANIMATOR:
         pObj->AddComponent(new CAnimator);
         break;
     case COMPONENT_TYPE::LIGHT2D:
         pObj->AddComponent(new CLight2D);
         break;
-    case COMPONENT_TYPE::LIGHT3D:
+    case COMPONENT_TYPE::LIGHT:
         pObj->AddComponent(new CLight);
         break;
     case COMPONENT_TYPE::CAMERA:

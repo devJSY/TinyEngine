@@ -16,16 +16,16 @@ float4 main(PS_IN input) : SV_Target
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
     float4 color = float4(0.0, 0.0, 0.0, 1.0);
 
-    for (uint i = 0; i < g_Light3DCount; ++i)
+    for (uint i = 0; i < g_LightCount; ++i)
     {
-        if (LIGHT_DIRECTIONAL == g_Light3D[i].LightType)
-            color.rgb += ComputeDirectionalLight(g_Light3D[i], input.vNormalWorld, toEye);
+        if (LIGHT_DIRECTIONAL == g_Light[i].LightType)
+            color.rgb += ComputeDirectionalLight(g_Light[i], input.vNormalWorld, toEye);
         
-        if (LIGHT_POINT == g_Light3D[i].LightType)
-            color.rgb += ComputePointLight(g_Light3D[i], input.vPosWorld, input.vNormalWorld, toEye);
+        if (LIGHT_POINT == g_Light[i].LightType)
+            color.rgb += ComputePointLight(g_Light[i], input.vPosWorld, input.vNormalWorld, toEye);
   
-        if (LIGHT_SPOT == g_Light3D[i].LightType)
-            color.rgb += ComputeSpotLight(g_Light3D[i], input.vPosWorld, input.vNormalWorld, toEye);
+        if (LIGHT_SPOT == g_Light[i].LightType)
+            color.rgb += ComputeSpotLight(g_Light[i], input.vPosWorld, input.vNormalWorld, toEye);
     }
 
     // Rim

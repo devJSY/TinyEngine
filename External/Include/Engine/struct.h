@@ -176,7 +176,7 @@ __declspec(align(16)) struct tGlobalData
     int g_EnableSSAO = false;
 
     UINT g_Light2DCount;
-    UINT g_Light3DCount;
+    UINT g_LightCount;
 
     int g_DrawAsWireFrame = false;
     int g_RenderOutline = true;

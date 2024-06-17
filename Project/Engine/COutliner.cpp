@@ -549,9 +549,9 @@ void COutliner::DrawDetails(CGameObject* obj)
 
     DrawTransform(obj);
     DrawAnimator2D(obj);
-    DrawAnimator3D(obj);
+    DrawAnimator(obj);
     DrawLight2D(obj);
-    DrawLight3D(obj);
+    DrawLight(obj);
     DrawCamera(obj);
     DrawRigidbody2D(obj);
     DrawBoxCollider2D(obj);
@@ -784,14 +784,13 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
     }
 }
 
-void COutliner::DrawAnimator3D(CGameObject* obj)
+void COutliner::DrawAnimator(CGameObject* obj)
 {
     CAnimator* pAnimator = obj->Animator();
     if (nullptr == pAnimator)
         return;
 
-    bool open =
-        ImGui::TreeNodeEx((void*)typeid(CAnimator).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
+    bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR]);
 
     ComponentSettingsButton(pAnimator);
 
@@ -865,13 +864,13 @@ void COutliner::DrawLight2D(CGameObject* obj)
     }
 }
 
-void COutliner::DrawLight3D(CGameObject* obj)
+void COutliner::DrawLight(CGameObject* obj)
 {
     CLight* pLight = obj->Light();
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT3D]);
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT]);
 
     ComponentSettingsButton(pLight);
 

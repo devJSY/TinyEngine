@@ -11,7 +11,7 @@
 #include "CGameObjectEx.h"
 
 CLight::CLight()
-    : CComponent(COMPONENT_TYPE::LIGHT3D)
+    : CComponent(COMPONENT_TYPE::LIGHT)
     , m_Info{}
     , m_pLightCam(nullptr)
     , m_VolumeMesh(nullptr)
@@ -64,7 +64,7 @@ CLight::~CLight()
 void CLight::finaltick()
 {
     // ±¤¿ø µî·Ï
-    CRenderMgr::GetInst()->RegisterLight3D(this);
+    CRenderMgr::GetInst()->RegisterLight(this);
 
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);

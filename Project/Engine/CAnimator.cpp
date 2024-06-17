@@ -10,7 +10,7 @@
 #include "CKeyMgr.h"
 
 CAnimator::CAnimator()
-    : CComponent(COMPONENT_TYPE::ANIMATOR3D)
+    : CComponent(COMPONENT_TYPE::ANIMATOR)
     , m_pVecBones(nullptr)
     , m_pVecClip(nullptr)
     , m_vecClipUpdateTime{}
