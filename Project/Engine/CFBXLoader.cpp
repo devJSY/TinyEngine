@@ -511,7 +511,7 @@ void CFBXLoader::CreateMaterial()
                                               m_vecContainer[i].vecMtrl[j].tMtrl.vSpecular, 0.f, 0.f, m_vecContainer[i].vecMtrl[j].tMtrl.vEmission);
 
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
-            pMaterial->Save(strPath);
+            // pMaterial->Save(strPath);
         }
     }
 }
@@ -702,6 +702,10 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
     if (m_vecAnimClip.empty())
         return;
 
+    // 누적 프레임 방지
+    if (!m_vecBone[_iBoneIdx]->vecKeyFrame.empty())
+        return;
+
     FbxVector4 v1 = {1, 0, 0, 0};
     FbxVector4 v2 = {0, 0, 1, 0};
     FbxVector4 v3 = {0, 1, 0, 0};
@@ -716,18 +720,18 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
 
     FbxTime::EMode eTimeMode = m_pScene->GetGlobalSettings().GetTimeMode();
 
+    FbxLongLong FrameOffset = 0;
     for (const auto& Clip : m_vecAnimClip)
     {
         FbxLongLong llStartFrame = Clip->tStartTime.GetFrameCount(eTimeMode);
         FbxLongLong llEndFrame = Clip->tEndTime.GetFrameCount(eTimeMode);
 
-        vector<tKeyFrame> vecKeyFrame = {};
-        for (FbxLongLong i = llStartFrame; i < llEndFrame; ++i)
+        for (FbxLongLong i = llStartFrame; i <= llEndFrame; ++i)
         {
             tKeyFrame tFrame = {};
             FbxTime tTime = 0;
 
-            tTime.SetFrame(i, eTimeMode);
+            tTime.SetFrame(FrameOffset + i, eTimeMode);
 
             FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
             FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
@@ -736,10 +740,10 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
             tFrame.dTime = tTime.GetSecondDouble();
             tFrame.matTransform = matCurTrans;
 
-            vecKeyFrame.push_back(tFrame);
+            m_vecBone[_iBoneIdx]->vecKeyFrame.push_back(tFrame);
         }
 
-        m_vecBone[_iBoneIdx]->mapKeyFrame.insert(make_pair(Clip->strName, vecKeyFrame));
+        FrameOffset += llEndFrame;
     }
 }
 

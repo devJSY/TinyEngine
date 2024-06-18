@@ -149,7 +149,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
         CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);
 
         // 메시를 실제 파일로 저장
-        pMesh->Save(strMeshKey);
+        // pMesh->Save(strMeshKey);
     }
 
     vector<Ptr<CMaterial>> vecMtrl;

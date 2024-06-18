@@ -16,7 +16,7 @@ private:
 
     vector<float> m_vecClipUpdateTime;
     vector<Matrix> m_vecFinalBoneMat; // 텍스쳐에 전달할 최종 행렬정보
-    int m_iFrameCount;                // 30
+    int m_iFrameCount;                // 24
     double m_dCurTime;
     int m_iCurClip; // 클립 인덱스
 

@@ -16,7 +16,7 @@ CMesh::CMesh(bool _bEngineAsset)
     , m_vecIdxInfo{}
     , m_vecAnimClip{}
     , m_vecBones{}
-    , m_mapBoneFrameData{}
+    , m_pBoneFrameData(nullptr)
     , m_pBoneOffset(nullptr)
 {
 }
@@ -38,7 +38,11 @@ CMesh::~CMesh()
         }
     }
 
-    Delete_Map(m_mapBoneFrameData);
+    if (nullptr != m_pBoneFrameData)
+    {
+        delete m_pBoneFrameData;
+        m_pBoneFrameData = nullptr;
+    }
 
     if (nullptr != m_pBoneOffset)
     {
@@ -184,95 +188,85 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
     for (UINT i = 0; i < vecBone.size(); ++i)
     {
         tMTBone bone = {};
-        bone.strBoneName = vecBone[i]->strBoneName;
         bone.iDepth = vecBone[i]->iDepth;
         bone.iParentIndx = vecBone[i]->iParentIndx;
         bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
+        bone.strBoneName = vecBone[i]->strBoneName;
 
-        for (const auto& iter : vecBone[i]->mapKeyFrame)
+        for (UINT j = 0; j < vecBone[i]->vecKeyFrame.size(); ++j)
         {
-            vector<tMTKeyFrame> vecKeyFrame = {};
-            for (UINT j = 0; j < iter.second.size(); ++j)
-            {
-                tMTKeyFrame tKeyframe = {};
-                tKeyframe.dTime = iter.second[j].dTime;
-                tKeyframe.iFrame = j;
-                tKeyframe.vTranslate.x = (float)iter.second[j].matTransform.GetT().mData[0];
-                tKeyframe.vTranslate.y = (float)iter.second[j].matTransform.GetT().mData[1];
-                tKeyframe.vTranslate.z = (float)iter.second[j].matTransform.GetT().mData[2];
+            tMTKeyFrame tKeyframe = {};
+            tKeyframe.dTime = vecBone[i]->vecKeyFrame[j].dTime;
+            tKeyframe.iFrame = j;
+            tKeyframe.vTranslate.x = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetT().mData[0];
+            tKeyframe.vTranslate.y = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetT().mData[1];
+            tKeyframe.vTranslate.z = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetT().mData[2];
 
-                tKeyframe.vScale.x = (float)iter.second[j].matTransform.GetS().mData[0];
-                tKeyframe.vScale.y = (float)iter.second[j].matTransform.GetS().mData[1];
-                tKeyframe.vScale.z = (float)iter.second[j].matTransform.GetS().mData[2];
+            tKeyframe.vScale.x = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetS().mData[0];
+            tKeyframe.vScale.y = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetS().mData[1];
+            tKeyframe.vScale.z = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetS().mData[2];
 
-                tKeyframe.qRot.x = (float)iter.second[j].matTransform.GetQ().mData[0];
-                tKeyframe.qRot.y = (float)iter.second[j].matTransform.GetQ().mData[1];
-                tKeyframe.qRot.z = (float)iter.second[j].matTransform.GetQ().mData[2];
-                tKeyframe.qRot.w = (float)iter.second[j].matTransform.GetQ().mData[3];
+            tKeyframe.qRot.x = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[0];
+            tKeyframe.qRot.y = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[1];
+            tKeyframe.qRot.z = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[2];
+            tKeyframe.qRot.w = (float)vecBone[i]->vecKeyFrame[j].matTransform.GetQ().mData[3];
 
-                vecKeyFrame.push_back(tKeyframe);
-            }
-
-            iFrameCount = max(iFrameCount, (UINT)vecKeyFrame.size());
-
-            bone.mapKeyFrame.insert(make_pair(iter.first, vecKeyFrame));
+            bone.vecKeyFrame.push_back(tKeyframe);
         }
+
+        iFrameCount = max(iFrameCount, (UINT)bone.vecKeyFrame.size());
 
         pMesh->m_vecBones.push_back(bone);
     }
 
     vector<tAnimClip*>& vecAnimClip = _loader.GetAnimClip();
+
+    double OffsetTime = 0.;
+    UINT OffsetFrame = 0;
     for (UINT i = 0; i < vecAnimClip.size(); ++i)
     {
         tMTAnimClip tClip = {};
 
         tClip.strAnimName = vecAnimClip[i]->strName;
-        tClip.dStartTime = vecAnimClip[i]->tStartTime.GetSecondDouble();
-        tClip.dEndTime = vecAnimClip[i]->tEndTime.GetSecondDouble();
+        tClip.dStartTime = OffsetTime + vecAnimClip[i]->tStartTime.GetSecondDouble();
+        tClip.dEndTime = OffsetTime + vecAnimClip[i]->tEndTime.GetSecondDouble();
         tClip.dTimeLength = tClip.dEndTime - tClip.dStartTime;
 
-        tClip.iStartFrame = (int)vecAnimClip[i]->tStartTime.GetFrameCount(vecAnimClip[i]->eMode);
-        tClip.iEndFrame = (int)vecAnimClip[i]->tEndTime.GetFrameCount(vecAnimClip[i]->eMode);
+        tClip.iStartFrame = OffsetFrame + (int)vecAnimClip[i]->tStartTime.GetFrameCount(vecAnimClip[i]->eMode);
+        tClip.iEndFrame = OffsetFrame + (int)vecAnimClip[i]->tEndTime.GetFrameCount(vecAnimClip[i]->eMode);
         tClip.iFrameLength = tClip.iEndFrame - tClip.iStartFrame;
         tClip.eMode = vecAnimClip[i]->eMode;
 
         pMesh->m_vecAnimClip.push_back(tClip);
+        OffsetTime += tClip.dTimeLength;
+        OffsetFrame += tClip.iFrameLength;
     }
 
     // Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
     if (pMesh->IsAnimMesh())
     {
-        // Bone Frame Data
-        for (UINT i = 0; i < pMesh->m_vecAnimClip.size(); ++i)
-        {
-            vector<tFrameTrans> vecFrameTrans = {};
-            vecFrameTrans.resize((UINT)pMesh->m_vecBones.size() * iFrameCount);
-            for (size_t j = 0; j < pMesh->m_vecBones.size(); ++j)
-            {
-                for (const auto& iter : pMesh->m_vecBones[j].mapKeyFrame)
-                {
-                    for (size_t k = 0; k < iter.second.size(); ++k)
-                    {
-                        vecFrameTrans[(UINT)pMesh->m_vecBones.size() * k + j] =
-                            tFrameTrans{Vec4(iter.second[k].vTranslate, 0.f), Vec4(iter.second[k].vScale, 0.f), iter.second[k].qRot};
-                    }
-                }
-            }
-
-            CStructuredBuffer* pBoneFrameData = new CStructuredBuffer;
-            pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
-            pMesh->m_mapBoneFrameData.insert(make_pair(pMesh->m_vecAnimClip[i].strAnimName, pBoneFrameData));
-        }
-
         // BoneOffet 행렬
         vector<Matrix> vecOffset;
+        vector<tFrameTrans> vecFrameTrans;
+        vecFrameTrans.resize((UINT)pMesh->m_vecBones.size() * iFrameCount);
+
         for (size_t i = 0; i < pMesh->m_vecBones.size(); ++i)
         {
             vecOffset.push_back(pMesh->m_vecBones[i].matOffset);
+
+            for (size_t j = 0; j < pMesh->m_vecBones[i].vecKeyFrame.size(); ++j)
+            {
+                vecFrameTrans[(UINT)pMesh->m_vecBones.size() * j + i] =
+                    tFrameTrans{Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f), Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vScale, 0.f),
+                                pMesh->m_vecBones[i].vecKeyFrame[j].qRot};
+            }
         }
 
         pMesh->m_pBoneOffset = new CStructuredBuffer;
         pMesh->m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
+
+        pMesh->m_pBoneFrameData = new CStructuredBuffer;
+        pMesh->m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * iFrameCount, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
     }
 
     return pMesh;
@@ -426,17 +420,12 @@ int CMesh::Save(const wstring& _strRelativePath)
         fwrite(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
         fwrite(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
-        UINT mapKeyFrameCount = (UINT)m_vecBones[i].mapKeyFrame.size();
-        fwrite(&mapKeyFrameCount, sizeof(UINT), 1, pFile);
-        for (const auto& iter : m_vecBones[i].mapKeyFrame)
+        int iFrameCount = (int)m_vecBones[i].vecKeyFrame.size();
+        fwrite(&iFrameCount, sizeof(int), 1, pFile);
+
+        for (int j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
         {
-            SaveWStringToFile(iter.first, pFile);
-            UINT keyFrameCount = (UINT)iter.second.size();
-            fwrite(&keyFrameCount, sizeof(UINT), 1, pFile);
-            for (UINT j = 0; j < keyFrameCount; ++j)
-            {
-                fwrite(&iter.second[j], sizeof(tMTKeyFrame), 1, pFile);
-            }
+            fwrite(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
         }
     }
 
@@ -529,7 +518,7 @@ int CMesh::Load(const wstring& _strFilePath)
     fread(&iCount, sizeof(int), 1, pFile);
     m_vecBones.resize(iCount);
 
-    UINT iFrameCount = 0;
+    UINT _iFrameCount = 0;
     for (int i = 0; i < iCount; ++i)
     {
         LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);
@@ -537,61 +526,43 @@ int CMesh::Load(const wstring& _strFilePath)
         fread(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
         fread(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
-        UINT mapKeyFrameCount = 0;
-        fread(&mapKeyFrameCount, sizeof(UINT), 1, pFile);
-        for (UINT j = 0; j < mapKeyFrameCount; ++j)
+        UINT iFrameCount = 0;
+        fread(&iFrameCount, sizeof(int), 1, pFile);
+        m_vecBones[i].vecKeyFrame.resize(iFrameCount);
+        _iFrameCount = max(_iFrameCount, iFrameCount);
+        for (UINT j = 0; j < iFrameCount; ++j)
         {
-            wstring strKey;
-            LoadWStringFromFile(strKey, pFile);
-
-            UINT keyFrameCount = 0;
-            fread(&keyFrameCount, sizeof(UINT), 1, pFile);
-
-            vector<tMTKeyFrame> vecKeyFrame(keyFrameCount);
-            for (UINT j = 0; j < keyFrameCount; ++j)
-            {
-                fread(&vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
-            }
-
-            iFrameCount = max(iFrameCount, (UINT)vecKeyFrame.size());
-            m_vecBones[i].mapKeyFrame.insert(make_pair(strKey, vecKeyFrame));
+            fread(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
         }
     }
 
     // Animation 이 있는 Mesh 경우 Bone StructuredBuffer 만들기
     if (m_vecAnimClip.size() > 0 && m_vecBones.size() > 0)
     {
-        // Bone Frame Data
-        for (UINT i = 0; i < m_vecAnimClip.size(); ++i)
-        {
-            vector<tFrameTrans> vecFrameTrans = {};
-            vecFrameTrans.resize((UINT)m_vecBones.size() * iFrameCount);
-            for (size_t j = 0; j < m_vecBones.size(); ++j)
-            {
-                for (const auto& iter : m_vecBones[j].mapKeyFrame)
-                {
-                    for (size_t k = 0; k < iter.second.size(); ++k)
-                    {
-                        vecFrameTrans[(UINT)m_vecBones.size() * k + j] =
-                            tFrameTrans{Vec4(iter.second[k].vTranslate, 0.f), Vec4(iter.second[k].vScale, 0.f), iter.second[k].qRot};
-                    }
-                }
-            }
-
-            CStructuredBuffer* pBoneFrameData = new CStructuredBuffer;
-            pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
-            m_mapBoneFrameData.insert(make_pair(m_vecAnimClip[i].strAnimName, pBoneFrameData));
-        }
+        wstring strBone = GetName();
 
         // BoneOffet 행렬
         vector<Matrix> vecOffset;
+        vector<tFrameTrans> vecFrameTrans;
+        vecFrameTrans.resize((UINT)m_vecBones.size() * _iFrameCount);
+
         for (size_t i = 0; i < m_vecBones.size(); ++i)
         {
             vecOffset.push_back(m_vecBones[i].matOffset);
+
+            for (size_t j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+            {
+                vecFrameTrans[(UINT)m_vecBones.size() * j + i] =
+                    tFrameTrans{Vec4(m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f), Vec4(m_vecBones[i].vecKeyFrame[j].vScale, 0.f),
+                                Vec4(m_vecBones[i].vecKeyFrame[j].qRot)};
+            }
         }
 
         m_pBoneOffset = new CStructuredBuffer;
         m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
+
+        m_pBoneFrameData = new CStructuredBuffer;
+        m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * (UINT)_iFrameCount, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
     }
 
     fclose(pFile);

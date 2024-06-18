@@ -15,7 +15,7 @@ CAnimator::CAnimator()
     , m_pVecClip(nullptr)
     , m_vecClipUpdateTime{}
     , m_vecFinalBoneMat{}
-    , m_iFrameCount(30)
+    , m_iFrameCount(24)
     , m_dCurTime(0.)
     , m_iCurClip(0)
     , m_iFrameIdx(0)
@@ -69,7 +69,7 @@ void CAnimator::finaltick()
 
     if (m_vecClipUpdateTime[m_iCurClip] >= m_pVecClip->at(m_iCurClip).dTimeLength)
     {
-        m_vecClipUpdateTime[m_iCurClip] = 0;
+        m_vecClipUpdateTime[m_iCurClip] = 0.f;
     }
 
     m_dCurTime = m_pVecClip->at(m_iCurClip).dStartTime + m_vecClipUpdateTime[m_iCurClip];
@@ -79,7 +79,7 @@ void CAnimator::finaltick()
     m_iFrameIdx = (int)(dFrameIdx);
 
     // 다음 프레임 인덱스
-    if (m_iFrameIdx >= m_pVecClip->at(m_iCurClip).iFrameLength - 1)
+    if (m_iFrameIdx >= m_pVecClip->at(m_iCurClip).iEndFrame - 1)
         m_iNextFrameIdx = m_iFrameIdx; // 끝이면 현재 인덱스를 유지
     else
         m_iNextFrameIdx = m_iFrameIdx + 1;
@@ -114,7 +114,7 @@ void CAnimator::UpdateData()
         Ptr<CMesh> pMesh = MeshRender()->GetMesh();
         check_mesh(pMesh);
 
-        pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer(m_pVecClip->at(m_iCurClip).strAnimName));
+        pUpdateShader->SetFrameDataBuffer(pMesh->GetBoneFrameDataBuffer());
         pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
         pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
 

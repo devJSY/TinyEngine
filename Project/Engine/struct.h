@@ -67,7 +67,7 @@ struct tMTBone
     int iDepth;
     int iParentIndx;
     Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
-    map<wstring, vector<tMTKeyFrame>> mapKeyFrame; // Clip, Frame
+    vector<tMTKeyFrame> vecKeyFrame;
 };
 
 struct tMTAnimClip
