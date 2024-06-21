@@ -237,8 +237,10 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         tClip.eMode = vecAnimClip[i]->eMode;
 
         pMesh->m_vecAnimClip.push_back(tClip);
-        OffsetTime += tClip.dTimeLength;
-        OffsetFrame += tClip.iFrameLength;
+
+        // 이전 Clip의 End부터 시작하도록 Offset 설정
+        OffsetTime = tClip.dEndTime;
+        OffsetFrame = tClip.iEndFrame;
     }
 
     // Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기

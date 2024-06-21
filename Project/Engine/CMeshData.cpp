@@ -44,8 +44,7 @@ CGameObject* CMeshData::Instantiate()
     CAnimator* pAnimator = new CAnimator;
     pNewObj->AddComponent(pAnimator);
 
-    pAnimator->SetBones(m_pMesh->GetBones());
-    pAnimator->SetAnimClip(m_pMesh->GetAnimClip());
+    pAnimator->SetSkeletalMesh(m_pMesh);
 
     return pNewObj;
 }
@@ -149,7 +148,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
         CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);
 
         // 메시를 파일 저장
-        // pMesh->Save(strMeshKey);
+        pMesh->Save(strMeshKey);
     }
 
     vector<Ptr<CMaterial>> vecMtrl;

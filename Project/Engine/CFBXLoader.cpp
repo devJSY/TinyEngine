@@ -497,7 +497,7 @@ void CFBXLoader::CreateMaterial()
                                               m_vecContainer[i].vecMtrl[j].tMtrl.vSpecular, 0.f, 0.f, m_vecContainer[i].vecMtrl[j].tMtrl.vEmission);
 
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
-            // pMaterial->Save(strPath);
+            pMaterial->Save(strPath);
         }
     }
 }

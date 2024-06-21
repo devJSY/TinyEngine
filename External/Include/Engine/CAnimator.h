@@ -6,46 +6,67 @@
 #include "CMaterial.h"
 #include "CMesh.h"
 
+class CMesh;
 class CStructuredBuffer;
 
 class CAnimator : public CComponent
 {
 private:
-    const vector<tMTBone>* m_pVecBones;
-    const vector<tMTAnimClip>* m_pVecClip;
+    Ptr<CMesh> m_SkeletalMesh;
 
+    int m_CurClipIdx; // 클립 인덱스
     vector<float> m_vecClipUpdateTime;
-    vector<Matrix> m_vecFinalBoneMat; // 텍스쳐에 전달할 최종 행렬정보
-    int m_iFrameCount;                // 30
-    double m_dCurTime;
-    int m_iCurClip; // 클립 인덱스
 
-    int m_iFrameIdx;     // 클립의 현재 프레임
-    int m_iNextFrameIdx; // 클립의 다음 프레임
-    float m_fRatio;      // 프레임 사이 비율
+    bool m_bPlay;      // 애니메이션 재생 여부
+    bool m_bRepeat;    // 반복 재생 여부
+    float m_PlaySpeed; // 재생 속도
 
-    CStructuredBuffer* m_pBoneFinalMatBuffer; // 특정 프레임의 최종 행렬
-    bool m_bFinalMatUpdate;                   // 최종행렬 연산 수행여부
+    double m_FrameRate; // Animation FPS
+    double m_CurTime;
+
+    int m_FrameIdx;     // 클립의 현재 프레임
+    int m_NextFrameIdx; // 클립의 다음 프레임
+    float m_Ratio;      // 프레임 사이 비율
+
+    CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
+    bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
 
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
 
 public:
-    void SetBones(const vector<tMTBone>* _vecBones)
-    {
-        m_pVecBones = _vecBones;
-        m_vecFinalBoneMat.resize(m_pVecBones->size());
-    }
-    void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
-    void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
-
-    CStructuredBuffer* GetFinalBoneMat() const { return m_pBoneFinalMatBuffer; }
-    UINT GetBoneCount() const { return (UINT)m_pVecBones->size(); }
     void ClearData();
 
+public:
+    Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
+    void SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh);
+
+    int GetCurClipIdx() const { return m_CurClipIdx; }
+    void SetCurClipIdx(int _Idx) { m_CurClipIdx = _Idx; }
+
+    const vector<float>& GetClipTime() const { return m_vecClipUpdateTime; }
+
+    bool IsPlaying() const { return m_bPlay; }
+    void Play(bool _bPlay) { m_bPlay = _bPlay; }
+
+    bool IsRepeat() const { return m_bRepeat; }
+    void SetRepeat(bool _bRepeat) { m_bRepeat = _bRepeat; }
+
+    float GetPlaySpeed() const { return m_PlaySpeed; }
+    void SetPlaySpeed(float _Speed) { m_PlaySpeed = _Speed; }
+
+    double GetFrameRate() const { return m_FrameRate; }
+
+    int GetCurFrameIdx() const { return m_FrameIdx; }
+    void SetFrameIdx(int _FrameIdx);
+
+    CStructuredBuffer* GetFinalBoneMat() const { return m_BoneFinalMatBuffer; }
+    UINT GetBoneCount() const;
+
 private:
-    void check_mesh(Ptr<CMesh> _pMesh);
+    void CheckSkeletalMesh();
+    void CheckBoneFinalMatBuffer();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -663,7 +663,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         if (nullptr != pCurAnim)
             curAnimName = ToString(pCurAnim->GetName());
 
-        ImGui::Text("Animation Name");
+        ImGui::Text("Animations");
         if (ImGui_ComboUI("##Anim", curAnimName, mapAnim))
         {
             pAnimator->Play(ToWstring(curAnimName), true);
@@ -796,6 +796,141 @@ void COutliner::DrawAnimator(CGameObject* obj)
 
     if (open)
     {
+        Ptr<CMesh> pSkeletalMesh = pAnimator->GetSkeletalMesh();
+
+        // Skeletal Mesh
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Skeletal Mesh"))
+        {
+            string name;
+            if (nullptr != pSkeletalMesh)
+                name = ToString(pSkeletalMesh->GetName());
+
+            ImGui_InputText("Skeletal Mesh", name);
+
+            ImGui::TreePop();
+        }
+
+        // Animation
+        if (nullptr != pSkeletalMesh)
+        {
+            if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Animation"))
+            {
+                // =====================
+                // Animation Select
+                // =====================
+                const vector<tMTAnimClip>* vecAnimClip = pSkeletalMesh->GetAnimClip();
+
+                int CurClipIdx = pAnimator->GetCurClipIdx();
+                const tMTAnimClip& CurClip = vecAnimClip->at(CurClipIdx);
+
+                string CurClipName = ToString(CurClip.strAnimName);
+
+                int ChangedClipIdx = -1;
+                ImGui::Text("Animations");
+                if (ImGui::BeginCombo("##Anim", CurClipName.c_str()))
+                {
+                    for (int i = 0; i < vecAnimClip->size(); i++)
+                    {
+                        string ClipName = ToString(vecAnimClip->at(i).strAnimName);
+                        bool is_selected = (CurClipName == ClipName);
+                        if (ImGui::Selectable(ClipName.c_str(), is_selected))
+                        {
+                            CurClipName = ClipName;
+                            ChangedClipIdx = i;
+                        }
+
+                        if (is_selected)
+                        {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+
+                if (ChangedClipIdx >= 0)
+                {
+                    pAnimator->SetCurClipIdx(ChangedClipIdx);
+                }
+
+                // Frame Index
+                int FrameIdx = pAnimator->GetCurFrameIdx();
+                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &FrameIdx, CurClip.iStartFrame, CurClip.iEndFrame))
+                {
+                    pAnimator->SetFrameIdx(FrameIdx);
+                }
+
+                bool bPlaying = pAnimator->IsPlaying();
+                if (ImGui::Checkbox(ImGui_LabelPrefix("Play").c_str(), &bPlaying))
+                    pAnimator->Play(bPlaying);
+
+                bool bRepeat = pAnimator->IsRepeat();
+                if (ImGui::Checkbox(ImGui_LabelPrefix("Repeat").c_str(), &bRepeat))
+                    pAnimator->SetRepeat(bRepeat);
+
+                float PlaySpeed = pAnimator->GetPlaySpeed();
+                if (ImGui::DragFloat(ImGui_LabelPrefix("Play Speed").c_str(), &PlaySpeed, 0.01f, 0.f, 100.f))
+                    pAnimator->SetPlaySpeed(PlaySpeed);
+
+                // =====================
+                // Animation Clip Info
+                // =====================
+                ImGui::Text("Clip Infomation");
+                static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV |
+                                               ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
+                if (ImGui::BeginTable("##AnimClip", 3, flags, ImVec2(600.f, 150.f)))
+                {
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Animation Name");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%s", ToString(CurClip.strAnimName).c_str());
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Clip Index");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", CurClipIdx);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Rate");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", (int)pAnimator->GetFrameRate());
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Range");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", CurClip.iStartFrame);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%d", CurClip.iEndFrame);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Length");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", CurClip.iFrameLength);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Time Range");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", CurClip.dStartTime);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%.3f", CurClip.dEndTime);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Time Length");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", CurClip.dTimeLength);
+
+                    ImGui::EndTable();
+                }
+
+                ImGui::TreePop();
+            }
+        }
 
         ImGui::TreePop();
     }

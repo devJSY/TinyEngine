@@ -132,9 +132,9 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f
                            float columnWidth = 100.0f);
 string ImGui_LabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::vector<string>& items);
-bool ImGui_TexturesComboUI(const string& caption, string& current_item);
 template <typename T>
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items);
+bool ImGui_TexturesComboUI(const string& caption, string& current_item);
 bool ImGui_AlignButton(const char* label, float alignment = 0.5f);
 void ImGui_InputText(const char* label, const string& Text, float alignment = 0.5f);
 
@@ -143,6 +143,34 @@ void ImGui_SetWindowClass(EDITOR_TYPE _Type);
 // =====================================
 // template
 // =====================================
+template <typename T>
+inline bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items)
+{
+    bool changed = false;
+
+    if (ImGui::BeginCombo(caption.c_str(), current_item.c_str()))
+    {
+        for (const auto& iter : items)
+        {
+            std::string strKey = ToString(iter.first);
+            bool is_selected = (current_item == strKey);
+            if (ImGui::Selectable(strKey.c_str(), is_selected))
+            {
+                current_item = strKey;
+                changed = true;
+            }
+            if (is_selected)
+            {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+
+    return changed;
+}
+
 template <typename T, UINT SIZE>
 void Delete_Array(T* (&Arr)[SIZE])
 {
@@ -180,32 +208,4 @@ void Delete_Map(map<T1, T2>& _map)
             delete pair.second;
     }
     _map.clear();
-}
-
-template <typename T>
-inline bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items)
-{
-    bool changed = false;
-
-    if (ImGui::BeginCombo(caption.c_str(), current_item.c_str()))
-    {
-        for (const auto& iter : items)
-        {
-            std::string strKey = ToString(iter.first);
-            bool is_selected = (current_item == strKey);
-            if (ImGui::Selectable(strKey.c_str(), is_selected))
-            {
-                current_item = strKey;
-                changed = true;
-            }
-            if (is_selected)
-            {
-                ImGui::SetItemDefaultFocus();
-            }
-        }
-
-        ImGui::EndCombo();
-    }
-
-    return changed;
 }

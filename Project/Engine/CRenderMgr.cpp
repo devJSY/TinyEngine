@@ -278,6 +278,7 @@ void CRenderMgr::render_debug()
 
         // 머테리얼 설정
         static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl");
+        m_pDebugObj->MeshRender()->SetMaterial(pMtrl, 0);
         pMtrl->SetScalarParam(VEC4_0, (*iter).vColor);
 
         // Depth 옵션 설정
