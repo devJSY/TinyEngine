@@ -15,7 +15,7 @@ CAnimator::CAnimator()
     , m_pVecClip(nullptr)
     , m_vecClipUpdateTime{}
     , m_vecFinalBoneMat{}
-    , m_iFrameCount(24)
+    , m_iFrameCount(30)
     , m_dCurTime(0.)
     , m_iCurClip(0)
     , m_iFrameIdx(0)
@@ -58,6 +58,7 @@ void CAnimator::finaltick()
 {
     if (KEY_TAP(KEY::N))
     {
+        m_vecClipUpdateTime[m_iCurClip] = 0.f;
         ++m_iCurClip;
         if (m_iCurClip >= m_pVecClip->size())
             m_iCurClip = 0;
@@ -96,10 +97,10 @@ void CAnimator::SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip)
     m_pVecClip = _vecAnimClip;
     m_vecClipUpdateTime.resize(m_pVecClip->size());
 
-    // 테스트 코드
-    /*static float fTime = 0.f;
-    fTime += 1.f;
-    m_vecClipUpdateTime[0] = fTime;*/
+    if (!m_pVecClip->empty())
+    {
+        m_iFrameCount = (int)FbxTime::GetFrameRate(m_pVecClip->back().eMode);
+    }
 }
 
 void CAnimator::UpdateData()

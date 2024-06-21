@@ -1764,7 +1764,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
 
     m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
 
-    // meshdata 를 실제파일로 저장
+    // meshdata 를 파일 저장
     // pMeshData->Save(strName);
 
     return pMeshData;

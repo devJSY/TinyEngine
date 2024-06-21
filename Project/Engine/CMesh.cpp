@@ -219,10 +219,9 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         pMesh->m_vecBones.push_back(bone);
     }
 
-    vector<tAnimClip*>& vecAnimClip = _loader.GetAnimClip();
-
     double OffsetTime = 0.;
     UINT OffsetFrame = 0;
+    vector<tAnimClip*>& vecAnimClip = _loader.GetAnimClip();
     for (UINT i = 0; i < vecAnimClip.size(); ++i)
     {
         tMTAnimClip tClip = {};

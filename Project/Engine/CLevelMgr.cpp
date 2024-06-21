@@ -97,8 +97,19 @@ CLevel* CLevelMgr::CreateNewLevel()
 
     NewLevel->AddObject(pUICamObj, 0);
 
+    // SkyBox
+    CGameObject* pSkyBoxObj = new CGameObject;
+    pSkyBoxObj->SetName(L"SkyBox");
+    pSkyBoxObj->AddComponent(new CTransform);
+    pSkyBoxObj->AddComponent(new CSkyBox);
+
+    pSkyBoxObj->Transform()->SetRelativePos(Vec3(5000.f, 0.f, 0.f));
+
+    NewLevel->AddObject(pSkyBoxObj, 15);
+
     // Fbx
-    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby1.fbx")->Instantiate();
+    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+    pFbxObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
     NewLevel->AddObject(pFbxObj, 0);
 
     return NewLevel;

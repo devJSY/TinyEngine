@@ -56,19 +56,10 @@ void CFBXLoader::LoadFbx(const wstring& _strPath)
 
     m_pImporter = FbxImporter::Create(m_pManager, "");
 
-    // wstring str = wstring_convert<codecvt_utf8<wchar_t>>().from_bytes(strName.c_str());
-    string strPath = ToString(_strPath);
-
-    if (!m_pImporter->Initialize(strPath.c_str(), -1, m_pManager->GetIOSettings()))
+    if (!m_pImporter->Initialize(ToString(_strPath).c_str(), -1, m_pManager->GetIOSettings()))
         assert(nullptr);
 
     m_pImporter->Import(m_pScene);
-
-    /*FbxAxisSystem originAxis = FbxAxisSystem::eMax;
-    originAxis = m_pScene->GetGlobalSettings().GetAxisSystem();
-    FbxAxisSystem DesireAxis = FbxAxisSystem::DirectX;
-    DesireAxis.ConvertScene(m_pScene);
-    originAxis = m_pScene->GetGlobalSettings().GetAxisSystem();*/
 
     m_pScene->GetGlobalSettings().SetAxisSystem(FbxAxisSystem::Max);
 
@@ -103,9 +94,6 @@ void CFBXLoader::LoadMeshDataFromNode(FbxNode* _pNode)
 
     if (pAttr && FbxNodeAttribute::eMesh == pAttr->GetAttributeType())
     {
-        FbxAMatrix matGlobal = _pNode->EvaluateGlobalTransform();
-        matGlobal.GetR();
-
         FbxMesh* pMesh = _pNode->GetMesh();
         if (NULL != pMesh)
             LoadMesh(pMesh);
@@ -447,8 +435,6 @@ void CFBXLoader::LoadTexture()
                 }
             }
         }
-        path_origin = path_origin.parent_path();
-        remove_all(path_origin);
     }
 }
 
@@ -555,9 +541,6 @@ void CFBXLoader::LoadAnimationClip()
     {
         FbxAnimStack* pAnimStack = m_pScene->FindMember<FbxAnimStack>(m_arrAnimName[i]->Buffer());
 
-        // FbxAnimEvaluator* pevaluator = m_pScene->GetAnimationEvaluator();
-        // m_pScene->SetCurrentAnimationStack();
-
         if (!pAnimStack)
             continue;
 
@@ -639,7 +622,7 @@ void CFBXLoader::LoadAnimationData(FbxMesh* _pMesh, tContainer* _pContainer)
                     // Bone 의 OffSet 행렬 구한다.
                     LoadOffsetMatrix(pCluster, matNodeTransform, iBoneIdx, _pContainer);
 
-                    // Bone KeyFrame 별 행렬을 구한다.
+                    // Bone별 KeyFrame 행렬을 구한다.
                     LoadKeyframeTransform(_pMesh->GetNode(), pCluster, matNodeTransform, iBoneIdx, _pContainer);
                 }
             }
@@ -720,18 +703,21 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
 
     FbxTime::EMode eTimeMode = m_pScene->GetGlobalSettings().GetTimeMode();
 
-    FbxLongLong FrameOffset = 0;
-    for (const auto& Clip : m_vecAnimClip)
+    for (UINT i = 0; i < m_vecAnimClip.size(); ++i)
     {
-        FbxLongLong llStartFrame = Clip->tStartTime.GetFrameCount(eTimeMode);
-        FbxLongLong llEndFrame = Clip->tEndTime.GetFrameCount(eTimeMode);
+        // 애니메이션 설정
+        FbxAnimStack* animStack = m_pScene->FindMember<FbxAnimStack>(ToString(m_vecAnimClip[i]->strName).c_str());
+        m_pScene->SetCurrentAnimationStack(animStack);
 
-        for (FbxLongLong i = llStartFrame; i <= llEndFrame; ++i)
+        FbxLongLong llStartFrame = m_vecAnimClip[i]->tStartTime.GetFrameCount(eTimeMode);
+        FbxLongLong llEndFrame = m_vecAnimClip[i]->tEndTime.GetFrameCount(eTimeMode);
+
+        for (FbxLongLong frame = llStartFrame; frame < llEndFrame; ++frame)
         {
             tKeyFrame tFrame = {};
-            FbxTime tTime = 0;
+            FbxTime tTime = FbxTime();
 
-            tTime.SetFrame(FrameOffset + i, eTimeMode);
+            tTime.SetFrame(frame, eTimeMode);
 
             FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
             FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
@@ -742,8 +728,6 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
 
             m_vecBone[_iBoneIdx]->vecKeyFrame.push_back(tFrame);
         }
-
-        FrameOffset += llEndFrame;
     }
 }
 

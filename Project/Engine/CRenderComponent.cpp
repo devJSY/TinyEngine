@@ -114,6 +114,9 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 
 void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx)
 {
+    if (_idx >= m_vecMtrls.size())
+        return;
+
     // 재질이 변경되면 기존에 복사본 받아둔 DynamicMaterial 을 삭제한다.
     m_vecMtrls[_idx].pSharedMtrl = _Mtrl;
     m_vecMtrls[_idx].pCurMtrl = _Mtrl;
