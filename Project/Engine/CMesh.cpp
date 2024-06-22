@@ -219,7 +219,6 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         pMesh->m_vecBones.push_back(bone);
     }
 
-    double OffsetTime = 0.;
     UINT OffsetFrame = 0;
     vector<tAnimClip*>& vecAnimClip = _loader.GetAnimClip();
     for (UINT i = 0; i < vecAnimClip.size(); ++i)
@@ -227,20 +226,21 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         tMTAnimClip tClip = {};
 
         tClip.strAnimName = vecAnimClip[i]->strName;
-        tClip.dStartTime = OffsetTime + vecAnimClip[i]->tStartTime.GetSecondDouble();
-        tClip.dEndTime = OffsetTime + vecAnimClip[i]->tEndTime.GetSecondDouble();
-        tClip.dTimeLength = tClip.dEndTime - tClip.dStartTime;
 
         tClip.iStartFrame = OffsetFrame + (int)vecAnimClip[i]->tStartTime.GetFrameCount(vecAnimClip[i]->eMode);
         tClip.iEndFrame = OffsetFrame + (int)vecAnimClip[i]->tEndTime.GetFrameCount(vecAnimClip[i]->eMode);
-        tClip.iFrameLength = tClip.iEndFrame - tClip.iStartFrame;
+        tClip.iFrameLength = 1 + tClip.iEndFrame - tClip.iStartFrame;
         tClip.eMode = vecAnimClip[i]->eMode;
+
+        double FrameRate = FbxTime::GetFrameRate(tClip.eMode);
+        tClip.dStartTime = tClip.iStartFrame / FrameRate;
+        tClip.dEndTime = tClip.iEndFrame / FrameRate;
+        tClip.dTimeLength = (1. / FrameRate) + tClip.dEndTime - tClip.dStartTime;
 
         pMesh->m_vecAnimClip.push_back(tClip);
 
-        // 이전 Clip의 End부터 시작하도록 Offset 설정
-        OffsetTime = tClip.dEndTime;
-        OffsetFrame = tClip.iEndFrame;
+        // 이전 Clip의 End 부터 시작하도록 Offset 설정
+        OffsetFrame += tClip.iFrameLength;
     }
 
     // Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기

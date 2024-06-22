@@ -712,7 +712,7 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
         FbxLongLong llStartFrame = m_vecAnimClip[i]->tStartTime.GetFrameCount(eTimeMode);
         FbxLongLong llEndFrame = m_vecAnimClip[i]->tEndTime.GetFrameCount(eTimeMode);
 
-        for (FbxLongLong frame = llStartFrame; frame < llEndFrame; ++frame)
+        for (FbxLongLong frame = llStartFrame; frame <= llEndFrame; ++frame)
         {
             tKeyFrame tFrame = {};
             FbxTime tTime = FbxTime();

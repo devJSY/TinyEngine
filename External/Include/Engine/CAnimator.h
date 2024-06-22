@@ -15,7 +15,7 @@ private:
     Ptr<CMesh> m_SkeletalMesh;
 
     int m_CurClipIdx; // 클립 인덱스
-    vector<float> m_vecClipUpdateTime;
+    vector<double> m_vecClipUpdateTime;
 
     bool m_bPlay;      // 애니메이션 재생 여부
     bool m_bRepeat;    // 반복 재생 여부
@@ -26,7 +26,7 @@ private:
 
     int m_FrameIdx;     // 클립의 현재 프레임
     int m_NextFrameIdx; // 클립의 다음 프레임
-    float m_Ratio;      // 프레임 사이 비율
+    float m_Ratio;     // 프레임 사이 비율
 
     CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
     bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
@@ -45,7 +45,7 @@ public:
     int GetCurClipIdx() const { return m_CurClipIdx; }
     void SetCurClipIdx(int _Idx) { m_CurClipIdx = _Idx; }
 
-    const vector<float>& GetClipTime() const { return m_vecClipUpdateTime; }
+    const vector<double>& GetClipTime() const { return m_vecClipUpdateTime; }
 
     bool IsPlaying() const { return m_bPlay; }
     void Play(bool _bPlay) { m_bPlay = _bPlay; }

@@ -80,7 +80,7 @@ void CAnimator::finaltick()
         }
         else
         {
-            m_vecClipUpdateTime[m_CurClipIdx] = (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+            m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
         }
     }
 
@@ -160,16 +160,8 @@ void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
 
 void CAnimator::SetFrameIdx(int _FrameIdx)
 {
-    float FrameRate = float(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iEndFrame - _FrameIdx) /
-                      (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iFrameLength;
-
-    FrameRate = (1.f - FrameRate);
-    if (FrameRate >= 1.f)
-    {
-        FrameRate = 1.f;
-    }
-
-    m_vecClipUpdateTime[m_CurClipIdx] = FrameRate * (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+    double CurFrameTime = (_FrameIdx / m_FrameRate) - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dStartTime;
+    m_vecClipUpdateTime[m_CurClipIdx] = std::clamp(CurFrameTime, 0., m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }
 
 UINT CAnimator::GetBoneCount() const
