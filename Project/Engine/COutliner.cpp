@@ -861,7 +861,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
 
                 bool bPlaying = pAnimator->IsPlaying();
                 if (ImGui::Checkbox(ImGui_LabelPrefix("Play").c_str(), &bPlaying))
-                    pAnimator->Play(bPlaying);
+                    pAnimator->SetPlay(bPlaying);
 
                 bool bRepeat = pAnimator->IsRepeat();
                 if (ImGui::Checkbox(ImGui_LabelPrefix("Repeat").c_str(), &bRepeat))

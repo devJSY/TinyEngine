@@ -108,6 +108,7 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimationTestScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
@@ -295,6 +296,7 @@ call CodeGen.exe</Command>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimationTestScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />

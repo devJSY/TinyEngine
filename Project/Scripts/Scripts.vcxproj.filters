@@ -178,6 +178,9 @@
     <ClInclude Include="CKirbyMoveController.h">
       <Filter>Scripts\MoveController</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimationTestScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -353,6 +356,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyMoveController.cpp">
       <Filter>Scripts\MoveController</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimationTestScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

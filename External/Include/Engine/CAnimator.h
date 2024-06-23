@@ -14,6 +14,8 @@ class CAnimator : public CComponent
 private:
     Ptr<CMesh> m_SkeletalMesh;
 
+    map<wstring, int> m_mapClip; // Key, Clip Index
+
     int m_CurClipIdx; // 클립 인덱스
     vector<double> m_vecClipUpdateTime;
 
@@ -26,7 +28,7 @@ private:
 
     int m_FrameIdx;     // 클립의 현재 프레임
     int m_NextFrameIdx; // 클립의 다음 프레임
-    float m_Ratio;     // 프레임 사이 비율
+    float m_Ratio;      // 프레임 사이 비율
 
     CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
     bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
@@ -35,8 +37,12 @@ public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
 
-public:
     void ClearData();
+
+public:
+    int FindClipIndex(const wstring& _strClipName);
+    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f);
+    bool IsFinish() const;
 
 public:
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
@@ -48,7 +54,7 @@ public:
     const vector<double>& GetClipTime() const { return m_vecClipUpdateTime; }
 
     bool IsPlaying() const { return m_bPlay; }
-    void Play(bool _bPlay) { m_bPlay = _bPlay; }
+    void SetPlay(bool _bPlay) { m_bPlay = _bPlay; }
 
     bool IsRepeat() const { return m_bRepeat; }
     void SetRepeat(bool _bRepeat) { m_bRepeat = _bRepeat; }

@@ -12,6 +12,7 @@
 CAnimator::CAnimator()
     : CComponent(COMPONENT_TYPE::ANIMATOR)
     , m_SkeletalMesh(nullptr)
+    , m_mapClip{}
     , m_CurClipIdx(0)
     , m_vecClipUpdateTime{}
     , m_bPlay(true)
@@ -31,6 +32,7 @@ CAnimator::CAnimator()
 CAnimator::CAnimator(const CAnimator& _origin)
     : CComponent(_origin)
     , m_SkeletalMesh(_origin.m_SkeletalMesh)
+    , m_mapClip(_origin.m_mapClip)
     , m_CurClipIdx(_origin.m_CurClipIdx)
     , m_vecClipUpdateTime(_origin.m_vecClipUpdateTime)
     , m_bPlay(_origin.m_bPlay)
@@ -148,6 +150,12 @@ void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
     m_SkeletalMesh = _SkeletalMesh;
 
     const vector<tMTAnimClip>* vecAnimClip = m_SkeletalMesh->GetAnimClip();
+    for (int i = 0; i < (int)vecAnimClip->size(); ++i)
+    {
+        const tMTAnimClip& Clip = vecAnimClip->at(i);
+        const auto& iter = m_mapClip.insert(make_pair(Clip.strAnimName, i));
+        assert(!(iter.first == m_mapClip.end())); // 동일한 Key의 Clip이 존재하였다.
+    }
 
     m_vecClipUpdateTime.resize(vecAnimClip->size());
 
@@ -187,6 +195,35 @@ void CAnimator::ClearData()
         pMtrl->SetAnim3D(false);
         pMtrl->SetBoneCount(0);
     }
+}
+
+int CAnimator::FindClipIndex(const wstring& _strClipName)
+{
+    map<wstring, int>::iterator iter = m_mapClip.find(_strClipName);
+    if (iter == m_mapClip.end())
+        return -1; // Key에 해당하는 Clip 을 찾지 못하였다.
+
+    return iter->second;
+}
+
+void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, float _PlaySpeed)
+{
+    int ClipIndex = FindClipIndex(_strClipName);
+    if (-1 == ClipIndex)
+        return;
+
+    SetCurClipIdx(ClipIndex);
+    m_vecClipUpdateTime[ClipIndex] = 0.f; // 애니메이션의 처음부터 시작
+
+    m_bPlay = true;
+    m_bRepeat = _bRepeat;
+    m_PlaySpeed = _PlaySpeed;
+}
+
+bool CAnimator::IsFinish() const
+{
+    // 현재 ClipUpdateTime과 TimeLength의 차이가 작은 경우 Finish
+    return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }
 
 void CAnimator::CheckSkeletalMesh()
