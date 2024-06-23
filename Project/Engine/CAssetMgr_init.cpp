@@ -644,9 +644,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(FLOAT_1, "Tessellation Distance Scale");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
-        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
-        pShader->AddTexParam(TEX_5, "Emissive Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_4, "Emissive Texture");
 
         pShader->SetName(L"LandScapeShader");
         AddAsset(L"LandScapeShader", pShader);
@@ -666,17 +665,17 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
-        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
+        pShader->AddScalarParam(INT_0, "Packed NormalMap");
+        pShader->AddScalarParam(INT_1, "Invert NormalMapY");
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
         pShader->AddScalarParam(FLOAT_1, "Rim Power");
         pShader->AddScalarParam(VEC4_0, "Rim Color");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
         pShader->AddTexParam(TEX_2, "Normal Texture");
         pShader->AddTexParam(TEX_3, "Height Texture");
-        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
-        pShader->AddTexParam(TEX_5, "Emissive Texture");
+        pShader->AddTexParam(TEX_4, "Emissive Texture");
 
         pShader->SetName(L"UnrealPBRShader");
         AddAsset(L"UnrealPBRShader", pShader);
@@ -696,15 +695,15 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
+        pShader->AddScalarParam(INT_0, "Packed NormalMap");
+        pShader->AddScalarParam(INT_1, "Invert NormalMapY");
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
         pShader->AddTexParam(TEX_2, "Normal Texture");
         pShader->AddTexParam(TEX_3, "Height Texture");
-        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
-        pShader->AddTexParam(TEX_5, "Emissive Texture");
+        pShader->AddTexParam(TEX_4, "Emissive Texture");
 
         pShader->SetName(L"UnrealPBRDeferredShader");
         AddAsset(L"UnrealPBRDeferredShader", pShader);

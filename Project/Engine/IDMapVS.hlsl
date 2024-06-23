@@ -11,7 +11,7 @@ PS_IN main(VS_IN input)
               , input.vWeights, input.vIndices, 0);
     }
     
-    output.vPosProj = mul(float4(input.vPos, 1.0f), g_matWVP);
+    output.vPosProj = mul(float4(input.vPos, 1.f), g_matWVP);
 
     return output;
 }

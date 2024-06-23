@@ -125,6 +125,9 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
     if (Animator())
     {
         Animator()->ClearData();
+
+        _mtrl->SetAnim3D(false);
+        _mtrl->SetBoneCount(0);
     }
 }
 
@@ -165,5 +168,8 @@ void CMeshRender::render(UINT _Subset)
     if (Animator())
     {
         Animator()->ClearData();
+
+        GetMaterial(_Subset)->SetAnim3D(false);
+        GetMaterial(_Subset)->SetBoneCount(0);
     }
 }

@@ -50,13 +50,16 @@ void CFBXLoader::init()
         assert(NULL);
 }
 
-void CFBXLoader::LoadFbx(const wstring& _strPath)
+void CFBXLoader::LoadFbx(const wstring& _RelativePath)
 {
+    wstring strFullPath = CPathMgr::GetContentPath();
+    strFullPath += _RelativePath;
+
     m_vecContainer.clear();
 
     m_pImporter = FbxImporter::Create(m_pManager, "");
 
-    if (!m_pImporter->Initialize(ToString(_strPath).c_str(), -1, m_pManager->GetIOSettings()))
+    if (!m_pImporter->Initialize(ToString(strFullPath).c_str(), -1, m_pManager->GetIOSettings()))
         assert(nullptr);
 
     m_pImporter->Import(m_pScene);
@@ -81,7 +84,7 @@ void CFBXLoader::LoadFbx(const wstring& _strPath)
     m_pImporter->Destroy();
 
     // 필요한 텍스쳐 로드
-    LoadTexture();
+    LoadTexture(_RelativePath);
 
     // 필요한 메테리얼 생성
     CreateMaterial();
@@ -201,23 +204,23 @@ void CFBXLoader::LoadMaterial(FbxSurfaceMaterial* _pMtrlSur)
     string str = _pMtrlSur->GetName();
     tMtrlInfo.strMtrlName = ToWstring(str);
 
-    // Albedo
     tMtrlInfo.tMtrl.vAlbedo = GetMtrlData(_pMtrlSur, FbxSurfaceMaterial::sAmbient, FbxSurfaceMaterial::sAmbientFactor);
-
-    // Diffuse
     tMtrlInfo.tMtrl.vDiffuse = GetMtrlData(_pMtrlSur, FbxSurfaceMaterial::sDiffuse, FbxSurfaceMaterial::sDiffuseFactor);
-
-    // Specular
     tMtrlInfo.tMtrl.vSpecular = GetMtrlData(_pMtrlSur, FbxSurfaceMaterial::sSpecular, FbxSurfaceMaterial::sSpecularFactor);
-
-    // Emission
+    tMtrlInfo.tMtrl.vMetallic = GetMtrlData(_pMtrlSur, FbxSurfaceMaterial::sReflection, FbxSurfaceMaterial::sReflectionFactor).w;
+    tMtrlInfo.tMtrl.vRoughness = GetMtrlData(_pMtrlSur, FbxSurfaceMaterial::sShininess, FbxSurfaceMaterial::sSpecularFactor).w;
     tMtrlInfo.tMtrl.vEmission = GetMtrlData(_pMtrlSur, FbxSurfaceMaterial::sEmissive, FbxSurfaceMaterial::sEmissiveFactor);
 
     // Texture Name
-    tMtrlInfo.strDiff = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sDiffuse);
+    tMtrlInfo.strAlbedo = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sAmbient);
     tMtrlInfo.strNormal = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sNormalMap);
-    tMtrlInfo.strSpec = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sSpecular);
-    tMtrlInfo.strEmis = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sEmissive);
+    tMtrlInfo.strMRA = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sReflection); // Metallic
+    if (tMtrlInfo.strMRA.empty())
+        tMtrlInfo.strMRA = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sShininess); // Roughness
+    tMtrlInfo.strEmission = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sEmissive);
+
+    if (tMtrlInfo.strAlbedo.empty())
+        tMtrlInfo.strAlbedo = GetMtrlTextureName(_pMtrlSur, FbxSurfaceMaterial::sDiffuse);
 
     m_vecContainer.back().vecMtrl.push_back(tMtrlInfo);
 }
@@ -375,62 +378,44 @@ wstring CFBXLoader::GetMtrlTextureName(FbxSurfaceMaterial* _pSurface, const char
     return wstring(strName.begin(), strName.end());
 }
 
-void CFBXLoader::LoadTexture()
+void CFBXLoader::LoadTexture(const wstring& _RelativePath)
 {
     using namespace std::filesystem;
-
-    path path_content = CPathMgr::GetContentPath();
-
-    path path_fbx_texture = path_content.wstring() + L"texture\\FBXTexture\\";
-    if (false == exists(path_fbx_texture))
-    {
-        create_directory(path_fbx_texture);
-    }
-
-    path path_origin;
-    path path_filename;
-    path path_dest;
 
     for (UINT i = 0; i < m_vecContainer.size(); ++i)
     {
         for (UINT j = 0; j < m_vecContainer[i].vecMtrl.size(); ++j)
         {
             vector<path> vecPath;
-            vecPath.push_back(m_vecContainer[i].vecMtrl[j].strDiff.c_str());
+            vecPath.push_back(m_vecContainer[i].vecMtrl[j].strAlbedo.c_str());
             vecPath.push_back(m_vecContainer[i].vecMtrl[j].strNormal.c_str());
-            vecPath.push_back(m_vecContainer[i].vecMtrl[j].strSpec.c_str());
-            vecPath.push_back(m_vecContainer[i].vecMtrl[j].strEmis.c_str());
+            vecPath.push_back(m_vecContainer[i].vecMtrl[j].strMRA.c_str());
+            vecPath.push_back(m_vecContainer[i].vecMtrl[j].strEmission.c_str());
 
             for (size_t k = 0; k < vecPath.size(); ++k)
             {
                 if (vecPath[k].filename().empty())
                     continue;
 
-                path_origin = vecPath[k];
-                path_filename = vecPath[k].filename();
-                path_dest = path_fbx_texture.wstring() + path_filename.wstring();
-
-                if (false == exists(path_dest))
-                {
-                    copy(path_origin, path_dest);
-                }
-
-                path_dest = CPathMgr::GetRelativePath(path_dest);
-                CAssetMgr::GetInst()->Load<CTexture>(path_dest, path_dest);
+                // .fbx 파일이 존재하는 경로의 Texture 파일 Load
+                wstring TexturePath = path(_RelativePath).parent_path();
+                TexturePath += L"\\";
+                TexturePath += vecPath[k].filename();
+                CAssetMgr::GetInst()->Load<CTexture>(TexturePath, TexturePath);
 
                 switch (k)
                 {
                 case 0:
-                    m_vecContainer[i].vecMtrl[j].strDiff = path_dest;
+                    m_vecContainer[i].vecMtrl[j].strAlbedo = TexturePath;
                     break;
                 case 1:
-                    m_vecContainer[i].vecMtrl[j].strNormal = path_dest;
+                    m_vecContainer[i].vecMtrl[j].strNormal = TexturePath;
                     break;
                 case 2:
-                    m_vecContainer[i].vecMtrl[j].strSpec = path_dest;
+                    m_vecContainer[i].vecMtrl[j].strMRA = TexturePath;
                     break;
                 case 3:
-                    m_vecContainer[i].vecMtrl[j].strEmis = path_dest;
+                    m_vecContainer[i].vecMtrl[j].strEmission = TexturePath;
                     break;
                 }
             }
@@ -452,7 +437,7 @@ void CFBXLoader::CreateMaterial()
             // Material 이름짓기
             strMtrlName = m_vecContainer[i].vecMtrl[j].strMtrlName;
             if (strMtrlName.empty())
-                strMtrlName = path(m_vecContainer[i].vecMtrl[j].strDiff).stem();
+                strMtrlName = path(m_vecContainer[i].vecMtrl[j].strAlbedo).stem();
 
             strPath = L"material\\";
             strPath += strMtrlName + L".mtrl";
@@ -473,28 +458,36 @@ void CFBXLoader::CreateMaterial()
 
             pMaterial->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRDeferredShader"));
 
-            wstring strTexKey = m_vecContainer[i].vecMtrl[j].strDiff;
+            // Albedo
+            wstring strTexKey = m_vecContainer[i].vecMtrl[j].strAlbedo;
             Ptr<CTexture> pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
             if (NULL != pTex)
                 pMaterial->SetTexParam(TEX_PARAM::TEX_0, pTex);
 
+            // Metallic, Roughness, Ambient Occlusion
+            strTexKey = m_vecContainer[i].vecMtrl[j].strMRA;
+            pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
+            if (NULL != pTex)
+                pMaterial->SetTexParam(TEX_PARAM::TEX_1, pTex);
+
+            // Normal
             strTexKey = m_vecContainer[i].vecMtrl[j].strNormal;
             pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
             if (NULL != pTex)
                 pMaterial->SetTexParam(TEX_PARAM::TEX_2, pTex);
 
-            strTexKey = m_vecContainer[i].vecMtrl[j].strSpec;
+            // Height
+            // TEX_3
+
+            // Emissive
+            strTexKey = m_vecContainer[i].vecMtrl[j].strEmission;
             pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
             if (NULL != pTex)
                 pMaterial->SetTexParam(TEX_PARAM::TEX_4, pTex);
 
-            strTexKey = m_vecContainer[i].vecMtrl[j].strEmis;
-            pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
-            if (NULL != pTex)
-                pMaterial->SetTexParam(TEX_PARAM::TEX_5, pTex);
-
             pMaterial->SetMaterialCoefficient(m_vecContainer[i].vecMtrl[j].tMtrl.vAlbedo, m_vecContainer[i].vecMtrl[j].tMtrl.vDiffuse,
-                                              m_vecContainer[i].vecMtrl[j].tMtrl.vSpecular, 0.f, 0.f, m_vecContainer[i].vecMtrl[j].tMtrl.vEmission);
+                                              m_vecContainer[i].vecMtrl[j].tMtrl.vSpecular, m_vecContainer[i].vecMtrl[j].tMtrl.vMetallic,
+                                              m_vecContainer[i].vecMtrl[j].tMtrl.vRoughness, m_vecContainer[i].vecMtrl[j].tMtrl.vEmission);
 
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
             pMaterial->Save(strPath);

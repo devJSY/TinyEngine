@@ -108,7 +108,11 @@ CLevel* CLevelMgr::CreateNewLevel()
     NewLevel->AddObject(pSkyBoxObj, 15);
 
     // Fbx
-    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Kirby\\DeformKirby\\Crater\\Crater.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Dedede\\SteelTower\\SteelTower.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\Cone\\Cone.fbx")->Instantiate();
+    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\ConeIce\\ConeIce.fbx")->Instantiate();
     pFbxObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
     NewLevel->AddObject(pFbxObj, 0);
 

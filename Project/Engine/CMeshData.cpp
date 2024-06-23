@@ -51,13 +51,18 @@ CGameObject* CMeshData::Instantiate()
 
 int CMeshData::Save(const wstring& _strRelativePath)
 {
+    if (IsEngineAsset())
+        return E_FAIL;
+
     SetRelativePath(_strRelativePath);
 
     wstring strFilePath = CPathMgr::GetContentPath() + _strRelativePath;
 
     FILE* pFile = nullptr;
-    errno_t err = _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
-    assert(pFile);
+    _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+
+    if (nullptr == pFile)
+        return E_FAIL;
 
     // Mesh Key 저장
     // Mesh Data 저장
@@ -109,7 +114,7 @@ int CMeshData::Load(const wstring& _strFilePath)
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
         UINT idx = -1;
-        fread(&idx, 4, 1, pFile);
+        fread(&idx, sizeof(UINT), 1, pFile);
         if (idx == -1)
             break;
 
@@ -128,12 +133,9 @@ int CMeshData::Load(const wstring& _strFilePath)
 
 CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
 {
-    wstring strFullPath = CPathMgr::GetContentPath();
-    strFullPath += _RelativePath;
-
     CFBXLoader loader;
     loader.init();
-    loader.LoadFbx(strFullPath);
+    loader.LoadFbx(_RelativePath);
 
     // 메쉬 가져오기
     CMesh* pMesh = nullptr;
@@ -143,7 +145,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
     if (nullptr != pMesh)
     {
         wstring strMeshKey = L"mesh\\";
-        strMeshKey += std::filesystem::path(strFullPath).stem();
+        strMeshKey += std::filesystem::path(_RelativePath).stem();
         strMeshKey += L".mesh";
         CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);
 
@@ -166,7 +168,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
         }
     }
 
-    CMeshData* pMeshData = new CMeshData(true);
+    CMeshData* pMeshData = new CMeshData();
     pMeshData->m_pMesh = pMesh;
     pMeshData->m_vecMtrl = vecMtrl;
 

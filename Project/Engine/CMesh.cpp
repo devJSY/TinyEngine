@@ -364,6 +364,9 @@ void CMesh::render_instancing(UINT _iSubset)
 
 int CMesh::Save(const wstring& _strRelativePath)
 {
+    if (IsEngineAsset())
+        return E_FAIL;
+
     // 상대경로 저장
     SetRelativePath(_strRelativePath);
 
@@ -372,8 +375,10 @@ int CMesh::Save(const wstring& _strRelativePath)
 
     // 파일 쓰기모드로 열기
     FILE* pFile = nullptr;
-    errno_t err = _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
-    assert(pFile);
+    _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+
+    if (nullptr == pFile)
+        return E_FAIL;
 
     // 키값, 상대 경로
     SaveWStringToFile(GetName(), pFile);

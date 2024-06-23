@@ -9,5 +9,5 @@ float4 main(VS_IN input) : SV_Position
               , input.vWeights, input.vIndices, 0);
     }
     
-    return mul(float4(input.vPos, 1.0f), g_matWVP);
+    return mul(float4(input.vPos, 1.f), g_matWVP);
 }
