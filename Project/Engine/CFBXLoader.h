@@ -11,7 +11,7 @@ struct tFbxMaterial
     wstring strAlbedo;
     wstring strNormal;
     wstring strMRA; // Metallic, Roughness, Ambient Occlusion
-    wstring strEmission;
+    wstring strEmissive;
 };
 
 struct tWeightsAndIndices
@@ -78,6 +78,7 @@ struct tAnimClip
 };
 
 class CMesh;
+class CMaterial;
 
 class CFBXLoader
 {
@@ -117,7 +118,8 @@ private:
     wstring GetMtrlTextureName(FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
 
     void LoadTexture(const wstring& _RelativePath);
-    void CreateMaterial();
+    void CreateMaterial(const wstring& _RelativePath);
+    void ParseTexture(std::filesystem::path _EntryPath, const wstring& _MtrlName, const Ptr<CMaterial>& _Mtrl);
 
     // Animation
     void LoadSkeleton(FbxNode* _pNode);

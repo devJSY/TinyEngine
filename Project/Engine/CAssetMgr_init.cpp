@@ -665,8 +665,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
-        pShader->AddScalarParam(INT_0, "Packed NormalMap");
-        pShader->AddScalarParam(INT_1, "Invert NormalMapY");
+        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
         pShader->AddScalarParam(FLOAT_1, "Rim Power");
         pShader->AddScalarParam(VEC4_0, "Rim Color");
@@ -695,8 +694,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-        pShader->AddScalarParam(INT_0, "Packed NormalMap");
-        pShader->AddScalarParam(INT_1, "Invert NormalMapY");
+        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");

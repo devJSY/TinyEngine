@@ -11,8 +11,7 @@
 #define SpecularIBLTex g_SpecularCube
 #define IrradianceIBLTex g_DiffuseCube 
 
-#define PackedNormalMap g_int_0
-#define InvertNormalMapY g_int_1
+#define InvertNormalMapY g_int_0
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 static float LightRadiusScale = 1e-2f;
@@ -32,7 +31,8 @@ float3 GetNormal(PS_IN input)
     {
         float3 normal = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
 
-        if (PackedNormalMap)
+        // 압축되어있는 Normal Map인 경우
+        if (0.f >= normal.b)
         {
             normal.b = 1.f;
         }
