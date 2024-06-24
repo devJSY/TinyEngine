@@ -492,10 +492,12 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
                                               m_vecContainer[i].vecMtrl[j].tMtrl.vSpecular, m_vecContainer[i].vecMtrl[j].tMtrl.vMetallic,
                                               m_vecContainer[i].vecMtrl[j].tMtrl.vRoughness, m_vecContainer[i].vecMtrl[j].tMtrl.vEmission);
 
+            // Texture Parse
             wstring TexturePath = CPathMgr::GetContentPath();
             TexturePath += path(_RelativePath).parent_path();
             TexturePath += L"\\";
             ParseTexture(TexturePath, strMtrlName, pMaterial);
+
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
             pMaterial->Save(strPath);
         }

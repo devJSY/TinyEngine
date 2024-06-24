@@ -526,9 +526,6 @@ void CCamera::render_Decal()
 
     static Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
 
-    // Normal Texture Copy
-    CONTEXT->CopyResource(pDecalMtrl->GetTexParam(TEX_1)->GetTex2D().Get(), pDeferredPBRMRT->GetRenderTargetTex(2)->GetTex2D().Get());
-
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DECAL)->OMSet();
 
     for (size_t i = 0; i < m_vecDecal.size(); ++i)

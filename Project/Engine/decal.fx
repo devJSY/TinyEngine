@@ -13,18 +13,18 @@
 // BS_TYPE  : DECAL 
 
 // Parameter
-// g_int_0  : AsEmissive
-// g_int_1  : Invert Normal Y
+// g_int_0  : Invert Normal Y
 // g_mat_0  : WorldInv
-
-// g_tex_0  : PositionTex
-// g_tex_1  : NormalTargetCopyTex
-// g_tex_2  : TangentTex
-// g_tex_3  : BitangentTex
-
-// g_tex_4  : Decal Color Texture
-// g_tex_5  : Decal Normal Texture
 // ===========================
+
+#define PositionTex g_tex_0
+#define TangentTex g_tex_1
+#define BitangentTex g_tex_2
+
+#define DecalAlbedoTexture g_tex_4
+#define DecalMRATexture g_tex_5
+#define DecalNormalTexture g_tex_6
+#define DecalEmissiveTexture g_tex_7
 
 PS_IN VS_Decal(VS_IN _in)
 {
@@ -38,8 +38,9 @@ PS_IN VS_Decal(VS_IN _in)
 struct PS_OUT
 {
     float4 vColor : SV_Target0;
-    float4 vNormal : SV_Target1;
-    float4 vEmissive : SV_Target2;
+    float4 vMRA : SV_Target1;
+    float4 vNormal : SV_Target2;
+    float4 vEmissive : SV_Target3;
 };
 
 PS_OUT PS_Decal(PS_IN _in)
@@ -50,7 +51,7 @@ PS_OUT PS_Decal(PS_IN _in)
     float2 vScreenUV = _in.vPosProj.xy / g_RenderResolution;
     
     // PositionTarget 에서 현재 호출된 픽셀쉐이더랑 동일한 지점에 접근해서 좌표값을 확인
-    float4 vWorldPos = g_tex_0.Sample(g_LinearWrapSampler, vScreenUV);
+    float4 vWorldPos = PositionTex.Sample(g_LinearWrapSampler, vScreenUV);
     
     // x,y,z 전부 0이라면 discard
     if (!any(vWorldPos))
@@ -69,34 +70,52 @@ PS_OUT PS_Decal(PS_IN _in)
     vLocal = (vLocal + 1.f) * 0.5f;
     
     output.vColor = float4(0.f, 0.f, 0.f, 0.f);
-    output.vNormal = g_tex_1.Sample(g_LinearWrapSampler, vScreenUV);
+    output.vMRA = float4(0.f, 0.f, 0.f, 0.f);
+    output.vNormal = float4(0.f, 0.f, 0.f, 0.f);
     output.vEmissive = float4(0.f, 0.f, 0.f, 1.f);
     
     // 볼륨메쉬 내부 판정 성공 시
     if (g_btex_4)
     {
-        output.vColor = g_tex_4.Sample(g_LinearWrapSampler, vLocal.xz);
+        output.vColor = DecalAlbedoTexture.Sample(g_LinearWrapSampler, vLocal.xz);
     }
     
+    if (0.1f > output.vColor.a)
+        return output;
+
     if (g_btex_5)
     {
+        output.vMRA = DecalMRATexture.Sample(g_LinearWrapSampler, vLocal.xz);
+        output.vMRA.a = 1.f;
+    }
+    
+    if (g_btex_6)
+    {
         // TBN 행렬 생성
-        float3 Tangent = g_tex_2.Sample(g_LinearWrapSampler, vScreenUV).xyz;
-        float3 Bitangent = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+        float3 Tangent = TangentTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+        float3 Bitangent = BitangentTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
         float3 normal = normalize(cross(Tangent, Bitangent));
         float3x3 TBN = float3x3(Tangent, Bitangent, normal);
         
-        float3 TexNormal = g_tex_5.Sample(g_LinearWrapSampler, vLocal.xz).xyz;
+        float3 TexNormal = DecalNormalTexture.Sample(g_LinearWrapSampler, vLocal.xz).xyz;
+        
+        // 압축되어있는 Normal Map인 경우
+        if (0.f >= TexNormal.b)
+        {
+            TexNormal.b = 1.f;
+        }
+        
         TexNormal = 2.0 * TexNormal - 1.0; // 범위 조절 [-1.0, 1.0]
         
-        TexNormal.y = g_int_1 ? -TexNormal.y : TexNormal.y;
+        TexNormal.y = g_int_0 ? -TexNormal.y : TexNormal.y;
     
         output.vNormal.xyz = normalize(mul(TexNormal, TBN));
+        output.vNormal.a = 1.f;
     }
     
-    if (g_int_0)
+    if (g_btex_7)
     {
-        output.vEmissive.rgb = output.vColor.rgb * output.vColor.a;
+        output.vEmissive = DecalEmissiveTexture.Sample(g_LinearWrapSampler, vLocal.xz);
     }
     
     return output;

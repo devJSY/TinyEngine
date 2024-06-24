@@ -842,28 +842,26 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
     // Decal MRT
     // =========
     {
-        Ptr<CTexture> pRTTex[3] = {
+        Ptr<CTexture> pRTTex[4] = {
             CAssetMgr::GetInst()->FindAsset<CTexture>(L"AlbedoTargetTex"),
+            CAssetMgr::GetInst()->FindAsset<CTexture>(L"MRATargetTex"),
             CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"),
             CAssetMgr::GetInst()->FindAsset<CTexture>(L"EmissiveTargetTex"),
         };
 
-        Vec4 arrClearColor[3] = {
+        Vec4 arrClearColor[4] = {
             Vec4(0.f, 0.f, 0.f, 1.f),
             Vec4(0.f, 0.f, 0.f, 1.f),
             Vec4(0.f, 0.f, 0.f, 1.f),
         };
 
         m_arrMRT[(UINT)MRT_TYPE::DECAL] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, arrClearColor, 3, nullptr);
+        m_arrMRT[(UINT)MRT_TYPE::DECAL]->Create(pRTTex, arrClearColor, 4, nullptr);
 
         Ptr<CMaterial> pDecalMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl");
         pDecalMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
-        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->CreateTexture(
-                                                      L"NormalTargetCopyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
-                                                      D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT));
-        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"TangentTargetTex"));
-        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"BitangentTargetTex"));
+        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"TangentTargetTex"));
+        pDecalMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"BitangentTargetTex"));
     }
 
     // ============
@@ -971,7 +969,6 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"MRATargetTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"LightRadianceTargetTex");
-    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"NormalTargetCopyTex");
 
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"SSAOTex");
 
