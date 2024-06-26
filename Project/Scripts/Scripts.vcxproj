@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -111,9 +111,15 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyAbility_Normal.h" />
+    <ClInclude Include="CKirbyAttack.h" />
+    <ClInclude Include="CKirbyBulletScript.h" />
     <ClInclude Include="CKirbyFSM.h" />
+    <ClInclude Include="CKirbyIdle.h" />
     <ClInclude Include="CKirbyMoveController.h" />
+    <ClInclude Include="CKirbyObject.h" />
     <ClInclude Include="CKirbyRun.h" />
+    <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CTestForward.h" />
@@ -298,9 +304,15 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyAbility_Normal.cpp" />
+    <ClCompile Include="CKirbyAttack.cpp" />
+    <ClCompile Include="CKirbyBulletScript.cpp" />
     <ClCompile Include="CKirbyFSM.cpp" />
+    <ClCompile Include="CKirbyIdle.cpp" />
     <ClCompile Include="CKirbyMoveController.cpp" />
+    <ClCompile Include="CKirbyObject.cpp" />
     <ClCompile Include="CKirbyRun.cpp" />
+    <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CTestForward.cpp" />

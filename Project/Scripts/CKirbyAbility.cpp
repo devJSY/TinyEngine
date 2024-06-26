@@ -9,8 +9,3 @@ CKirbyAbility::CKirbyAbility()
 CKirbyAbility::~CKirbyAbility()
 {
 }
-
-void CKirbyAbility::Throw()
-{
-	// Throw State tick();
-}
