@@ -5,8 +5,7 @@
 #define AmbientTex g_tex_0
 #define PositionTex g_tex_1
 #define NormalTex g_tex_2
-#define MetallicRoughnessTex g_tex_3
-#define AOTex g_tex_4
+#define MRATex g_tex_3
 
 #define LIGHT_INDEX g_int_0
 
@@ -22,9 +21,9 @@ float4 main(PS_IN input) : SV_Target
 
     float3 albedo = AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
     float3 normalWorld = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
-    float metallic = MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b;
-    float roughness = MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g;
-    float ao = AOTex.Sample(g_LinearWrapSampler, input.vUV).r;
+    float metallic = MRATex.Sample(g_LinearWrapSampler, input.vUV).r;
+    float roughness = MRATex.Sample(g_LinearWrapSampler, input.vUV).g;
+    float ao = MRATex.Sample(g_LinearWrapSampler, input.vUV).b;
     if (ao >= 1.f)
     {
         ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV).r;

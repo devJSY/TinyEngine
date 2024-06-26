@@ -8,10 +8,10 @@ struct tFbxMaterial
 {
     tMtrlData tMtrl;
     wstring strMtrlName;
-    wstring strDiff;
+    wstring strAlbedo;
     wstring strNormal;
-    wstring strSpec;
-    wstring strEmis;
+    wstring strMRA; // Metallic, Roughness, Ambient Occlusion
+    wstring strEmissive;
 };
 
 struct tWeightsAndIndices
@@ -78,6 +78,7 @@ struct tAnimClip
 };
 
 class CMesh;
+class CMaterial;
 
 class CFBXLoader
 {
@@ -95,7 +96,7 @@ private:
 
 public:
     void init();
-    void LoadFbx(const wstring& _strPath);
+    void LoadFbx(const wstring& _RelativePath);
 
 public:
     int GetContainerCount() { return (int)m_vecContainer.size(); }
@@ -116,8 +117,9 @@ private:
     Vec4 GetMtrlData(FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
     wstring GetMtrlTextureName(FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
 
-    void LoadTexture();
-    void CreateMaterial();
+    void LoadTexture(const wstring& _RelativePath);
+    void CreateMaterial(const wstring& _RelativePath);
+    void ParseTexture(std::filesystem::path _EntryPath, const wstring& _MtrlName, const Ptr<CMaterial>& _Mtrl);
 
     // Animation
     void LoadSkeleton(FbxNode* _pNode);

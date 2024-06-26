@@ -5,6 +5,7 @@
 #include "CTestFSM.h"
 #include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
+#include "CAnimationTestScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -12,6 +13,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTestFSM");
 	_vec.push_back(L"CKirbyFSM");
 	_vec.push_back(L"CKirbyMoveController");
+	_vec.push_back(L"CAnimationTestScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -24,6 +26,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyFSM;
 	if (L"CKirbyMoveController" == _strScriptName)
 		return new CKirbyMoveController;
+	if (L"CAnimationTestScript" == _strScriptName)
+		return new CAnimationTestScript;
 	return nullptr;
 }
 
@@ -39,6 +43,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyFSM;
 	case (UINT)SCRIPT_TYPE::KIRBYMOVECONTROLLER:
 		return new CKirbyMoveController;
+	case (UINT)SCRIPT_TYPE::ANIMATIONTESTSCRIPT:
+		return new CAnimationTestScript;
 	}
 	return nullptr;
 }
@@ -55,6 +61,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyFSM";
 	case SCRIPT_TYPE::KIRBYMOVECONTROLLER:
 		return L"CKirbyMoveController";
+	case SCRIPT_TYPE::ANIMATIONTESTSCRIPT:
+		return L"CAnimationTestScript";
 	}
 	return nullptr;
 }

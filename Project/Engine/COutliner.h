@@ -25,9 +25,9 @@ private:
 private:
     void DrawTransform(CGameObject* obj);
     void DrawAnimator2D(CGameObject* obj);
-    void DrawAnimator3D(CGameObject* obj);
+    void DrawAnimator(CGameObject* obj);
     void DrawLight2D(CGameObject* obj);
-    void DrawLight3D(CGameObject* obj);
+    void DrawLight(CGameObject* obj);
     void DrawCamera(CGameObject* obj);
     void DrawRigidbody2D(CGameObject* obj);
     void DrawBoxCollider2D(CGameObject* obj);

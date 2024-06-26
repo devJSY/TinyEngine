@@ -15,7 +15,7 @@
 #include "CHeightMapShader.h"
 #include "CRaycastShader.h"
 #include "CWeightMapShader.h"
-#include "CAnimation3DShader.h"
+#include "CAnimationUpdateShader.h"
 #include "CCopyBoneShader.h"
 
 void CAssetMgr::CreateDefaultMesh()
@@ -644,9 +644,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(FLOAT_1, "Tessellation Distance Scale");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
-        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
-        pShader->AddTexParam(TEX_5, "Emissive Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_4, "Emissive Texture");
 
         pShader->SetName(L"LandScapeShader");
         AddAsset(L"LandScapeShader", pShader);
@@ -672,11 +671,10 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(VEC4_0, "Rim Color");
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
         pShader->AddTexParam(TEX_2, "Normal Texture");
         pShader->AddTexParam(TEX_3, "Height Texture");
-        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
-        pShader->AddTexParam(TEX_5, "Emissive Texture");
+        pShader->AddTexParam(TEX_4, "Emissive Texture");
 
         pShader->SetName(L"UnrealPBRShader");
         AddAsset(L"UnrealPBRShader", pShader);
@@ -700,11 +698,10 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
 
         pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "Ambient Occlusion Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
         pShader->AddTexParam(TEX_2, "Normal Texture");
         pShader->AddTexParam(TEX_3, "Height Texture");
-        pShader->AddTexParam(TEX_4, "MetallicRoughness Texture");
-        pShader->AddTexParam(TEX_5, "Emissive Texture");
+        pShader->AddTexParam(TEX_4, "Emissive Texture");
 
         pShader->SetName(L"UnrealPBRDeferredShader");
         AddAsset(L"UnrealPBRDeferredShader", pShader);
@@ -1253,12 +1250,12 @@ void CAssetMgr::CreateDefaultComputeShader()
     }
 
     // =======================
-    // Animation 3D
+    // Animation Update
     // =======================
     {
-        Ptr<CComputeShader> pShader = new CAnimation3DShader;
-        pShader->SetName(L"Animation3DUpdateCS");
-        AddAsset<CComputeShader>(L"Animation3DUpdateCS", pShader);
+        Ptr<CComputeShader> pShader = new CAnimationUpdateShader;
+        pShader->SetName(L"AnimationUpdateCS");
+        AddAsset<CComputeShader>(L"AnimationUpdateCS", pShader);
     }
 
     // =======================
@@ -1764,7 +1761,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
 
     m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
 
-    // meshdata 를 실제파일로 저장
+    // meshdata 를 파일 저장
     pMeshData->Save(strName);
 
     return pMeshData;

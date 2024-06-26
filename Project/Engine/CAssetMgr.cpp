@@ -73,6 +73,10 @@ void CAssetMgr::SaveAssetsToFile()
 {
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
     {
+        // 특정 에셋은 저장 X
+        if (i == (UINT)ASSET_TYPE::MESH || i == (UINT)ASSET_TYPE::TEXTURE)
+            continue;
+
         for (const auto& pair : m_mapAsset[i])
         {
             pair.second->Save(pair.first);

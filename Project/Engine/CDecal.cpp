@@ -7,10 +7,11 @@
 
 CDecal::CDecal()
     : CRenderComponent(COMPONENT_TYPE::DECAL)
-    , m_DecalColorTex(nullptr)
+    , m_DecalAlbedoTex(nullptr)
+    , m_DecalMRATex(nullptr)
     , m_DecalNormalTex(nullptr)
+    , m_DecalEmissiveTex(nullptr)
     , m_bInvertNormalY(false)
-    , m_bAsEmissive(false)
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DecalMtrl"), 0);
@@ -36,10 +37,11 @@ void CDecal::UpdateData()
 
     Matrix matInv = Transform()->GetWorldInvMat();
     GetMaterial(0)->SetScalarParam(MAT_0, matInv);
-    GetMaterial(0)->SetScalarParam(INT_0, m_bAsEmissive);
-    GetMaterial(0)->SetScalarParam(INT_1, m_bInvertNormalY);
-    GetMaterial(0)->SetTexParam(TEX_4, m_DecalColorTex);
-    GetMaterial(0)->SetTexParam(TEX_5, m_DecalNormalTex);
+    GetMaterial(0)->SetScalarParam(INT_0, m_bInvertNormalY);
+    GetMaterial(0)->SetTexParam(TEX_4, m_DecalAlbedoTex);
+    GetMaterial(0)->SetTexParam(TEX_5, m_DecalMRATex);
+    GetMaterial(0)->SetTexParam(TEX_6, m_DecalNormalTex);
+    GetMaterial(0)->SetTexParam(TEX_7, m_DecalEmissiveTex);
 
     GetMaterial(0)->UpdateData();
 }
@@ -73,17 +75,19 @@ void CDecal::render(UINT _Subset)
 void CDecal::SaveToLevelFile(FILE* _File)
 {
     CRenderComponent::SaveToLevelFile(_File);
-    SaveAssetRef(m_DecalColorTex, _File);
+    SaveAssetRef(m_DecalAlbedoTex, _File);
+    SaveAssetRef(m_DecalMRATex, _File);
     SaveAssetRef(m_DecalNormalTex, _File);
+    SaveAssetRef(m_DecalEmissiveTex, _File);
     fwrite(&m_bInvertNormalY, sizeof(int), 1, _File);
-    fwrite(&m_bAsEmissive, sizeof(int), 1, _File);
 }
 
 void CDecal::LoadFromLevelFile(FILE* _File)
 {
     CRenderComponent::LoadFromLevelFile(_File);
-    LoadAssetRef(m_DecalColorTex, _File);
+    LoadAssetRef(m_DecalAlbedoTex, _File);
+    LoadAssetRef(m_DecalMRATex, _File);
     LoadAssetRef(m_DecalNormalTex, _File);
+    LoadAssetRef(m_DecalEmissiveTex, _File);
     fread(&m_bInvertNormalY, sizeof(int), 1, _File);
-    fread(&m_bAsEmissive, sizeof(int), 1, _File);
 }

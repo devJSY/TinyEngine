@@ -5,9 +5,8 @@
 #define PositionTex g_tex_1
 #define NormalTex g_tex_2
 #define EmissiveTex g_tex_3
-#define MetallicRoughnessTex g_tex_4
-#define AOTex g_tex_5
-#define RadianceTex g_tex_6
+#define MRATex g_tex_4
+#define RadianceTex g_tex_5
 
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
@@ -18,9 +17,9 @@ float4 main(PS_IN input) : SV_Target
     float3 vWorldPos = PositionTex.Sample(g_LinearWrapSampler, input.vUV).xyz;
     float3 normalWorld = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
     float3 emission = EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
-    float metallic = MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b;
-    float roughness = MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g;
-    float ao = AOTex.Sample(g_LinearWrapSampler, input.vUV).r;
+    float metallic = MRATex.Sample(g_LinearWrapSampler, input.vUV).r;
+    float roughness = MRATex.Sample(g_LinearWrapSampler, input.vUV).g;
+    float ao = MRATex.Sample(g_LinearWrapSampler, input.vUV).b;
     if (ao >= 1.f)
     {
         ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV).r;

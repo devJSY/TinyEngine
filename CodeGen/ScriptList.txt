@@ -2,3 +2,4 @@ CCameraMoveScript
 CTestFSM
 CKirbyFSM
 CKirbyMoveController
+CAnimationTestScript

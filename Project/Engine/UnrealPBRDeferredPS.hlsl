@@ -3,10 +3,9 @@
 #include "UnrealPBRCommon.hlsli"
 
 #define AmbientTex g_tex_0
-#define AOTex g_tex_1
+#define MRATex g_tex_1 // Metallic, Roughness, Ambient Occlusion
 #define NormalTex g_tex_2
-#define MetallicRoughnessTex g_tex_4
-#define EmissiveTex g_tex_5
+#define EmissiveTex g_tex_4
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlMetallic g_vMetallic
@@ -21,8 +20,7 @@ struct PS_OUT
     float4 vTangent : SV_Target3;
     float4 vBitangent : SV_Target4;
     float4 vEmissive : SV_Target5;
-    float4 vMetallicRoughness : SV_Target6;
-    float4 vAmbientOcclusion : SV_Target7;
+    float4 vMRA : SV_Target6;
 };
 
 PS_OUT main(PS_IN input)
@@ -31,12 +29,12 @@ PS_OUT main(PS_IN input)
     
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb 
                                  : MtrlAlbedo.rgb;
-    float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, input.vUV).r : 1.f;
-    float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b
+    float metallic = g_btex_1 ? MRATex.Sample(g_LinearWrapSampler, input.vUV).r
                                     : MtrlMetallic;
-    float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g 
+    float roughness = g_btex_1 ? MRATex.Sample(g_LinearWrapSampler, input.vUV).g 
                                       : MtrlRoughness;
-    float3 emission = g_btex_5 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb
+    float ao = g_btex_1 ? MRATex.Sample(g_LinearWrapSampler, input.vUV).b : 1.f;
+    float3 emission = g_btex_4 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb
                                      : MtrlEmission.rgb;
 
     output.vColor = float4(albedo, 1.f);
@@ -45,8 +43,7 @@ PS_OUT main(PS_IN input)
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
     output.vEmissive = float4(emission, 1.f);
-    output.vMetallicRoughness = float4(0.f, roughness, metallic, 1.f);
-    output.vAmbientOcclusion = float4(ao, ao, ao, 1.f);
+    output.vMRA = float4(metallic, roughness, ao, 1.f);
     
     return output;
 }

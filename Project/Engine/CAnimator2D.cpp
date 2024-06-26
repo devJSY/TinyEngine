@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CAnimator2D.h"
 
-#include "CAnim.h"
+#include "CAnim2D.h"
 #include "CPathMgr.h"
 
 CAnimator2D::CAnimator2D()
@@ -18,10 +18,10 @@ CAnimator2D::CAnimator2D(const CAnimator2D& origin)
     , m_CurAnim(nullptr)
     , m_bRepeat(origin.m_bRepeat)
 {
-    map<wstring, CAnim*>::const_iterator iter = origin.m_mapAnim.begin();
+    map<wstring, CAnim2D*>::const_iterator iter = origin.m_mapAnim.begin();
     for (; iter != origin.m_mapAnim.end(); ++iter)
     {
-        CAnim* pCloneAnim = iter->second->Clone();
+        CAnim2D* pCloneAnim = iter->second->Clone();
 
         pCloneAnim->m_Animator = this;
         m_mapAnim.insert(make_pair(iter->first, pCloneAnim));
@@ -61,24 +61,24 @@ void CAnimator2D::UpdateData()
 
 void CAnimator2D::Clear()
 {
-    CAnim::Clear();
+    CAnim2D::Clear();
 }
 
 void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop, Vec2 _vSliceSize, Vec2 _OffsetPos, Vec2 _Background,
                          int _FrmCount, float _FPS, bool _UseBackGround)
 {
-    CAnim* pAnim = FindAnim(_strKey);
+    CAnim2D* pAnim = FindAnim(_strKey);
     assert(!pAnim);
 
-    pAnim = new CAnim;
+    pAnim = new CAnim2D;
     pAnim->SetName(_strKey);
     pAnim->Create(this, _AltasTex, _LeftTop, _vSliceSize, _OffsetPos, _Background, _FrmCount, _FPS, _UseBackGround);
     m_mapAnim.insert(make_pair(_strKey, pAnim));
 }
 
-CAnim* CAnimator2D::FindAnim(const wstring& _strKey)
+CAnim2D* CAnimator2D::FindAnim(const wstring& _strKey)
 {
-    map<wstring, CAnim*>::iterator iter = m_mapAnim.find(_strKey);
+    map<wstring, CAnim2D*>::iterator iter = m_mapAnim.find(_strKey);
 
     if (iter == m_mapAnim.end())
         return nullptr;
@@ -88,7 +88,7 @@ CAnim* CAnimator2D::FindAnim(const wstring& _strKey)
 
 bool CAnimator2D::DeleteAnim(const wstring& _strAnimName)
 {
-    CAnim* deleteAnim = FindAnim(_strAnimName);
+    CAnim2D* deleteAnim = FindAnim(_strAnimName);
     if (nullptr == deleteAnim)
         return false;
 
@@ -105,7 +105,7 @@ bool CAnimator2D::DeleteAnim(const wstring& _strAnimName)
 
 void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 {
-    CAnim* pAnim = FindAnim(_strAnimName);
+    CAnim2D* pAnim = FindAnim(_strAnimName);
     if (nullptr == pAnim)
         return;
 
@@ -149,7 +149,7 @@ void CAnimator2D::LoadFromLevelFile(FILE* _File)
 
     for (size_t i = 0; i < AnimCount; ++i)
     {
-        CAnim* pNewAnim = new CAnim;
+        CAnim2D* pNewAnim = new CAnim2D;
         pNewAnim->LoadFromLevelFile(_File);
 
         m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
@@ -184,7 +184,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
     wstring strFilePath = CPathMgr::GetContentPath();
     strFilePath += _strRelativePath;
 
-    CAnim* pNewAnim = new CAnim;
+    CAnim2D* pNewAnim = new CAnim2D;
 
     if (!pNewAnim->LoadAnim(strFilePath))
     {

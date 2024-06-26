@@ -64,9 +64,9 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
     
     tLightInfo LightColor = (tLightInfo) 0.f;
     
-    for (uint i = 0; i < g_Light3DCount; ++i)
+    for (uint i = 0; i < g_LightCount; ++i)
     {
-        CalculateLight3D(i, _in.vPosWorld, vWorldNormal, MtrlDiffuse.rgb, MtrlSpecular.rgb, LightColor);
+        CalculateLight(i, _in.vPosWorld, vWorldNormal, MtrlDiffuse.rgb, MtrlSpecular.rgb, LightColor);
     }
         
     vOutColor = ObjectColor + LightColor.vRadiance;

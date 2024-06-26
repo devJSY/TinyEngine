@@ -363,7 +363,7 @@ void CSpriteEditor::DrawViewport()
             if (nullptr != m_pAnim)
                 delete m_pAnim;
 
-            m_pAnim = new CAnim;
+            m_pAnim = new CAnim2D;
             m_pAnim->m_AtlasTex = m_pTex;
 
             for (int i = 0; i < m_Sprites.Size; i++)
@@ -372,7 +372,7 @@ void CSpriteEditor::DrawViewport()
 
                 if (m_Sprites[i].bViewport_Selected)
                 {
-                    tAnimFrm AnimData;
+                    tAnim2DFrm AnimData;
 
                     // UV 좌표로 변환
                     AnimData.vLeftTop = m_Sprites[i].Rect.GetTL() / vTextureSize;
@@ -800,7 +800,7 @@ void CSpriteEditor::DrawDetails()
                 if (nullptr != m_pAnim)
                     delete m_pAnim;
 
-                m_pAnim = new CAnim;
+                m_pAnim = new CAnim2D;
                 if (m_pAnim->LoadAnim(filePath))
                 {
                     // UV to Pixel
@@ -836,7 +836,7 @@ void CSpriteEditor::DrawDetails()
 
                 if (nullptr != m_pAnim)
                 {
-                    vector<tAnimFrm> OriginVec(m_pAnim->m_vecFrm.begin(), m_pAnim->m_vecFrm.end());
+                    vector<tAnim2DFrm> OriginVec(m_pAnim->m_vecFrm.begin(), m_pAnim->m_vecFrm.end());
 
                     // Pixel to UV
                     for (size_t i = 0; i < m_pAnim->m_vecFrm.size(); i++)
@@ -918,7 +918,7 @@ void CSpriteEditor::DrawSpriteList()
             if (nullptr != m_pAnim)
                 delete m_pAnim;
 
-            m_pAnim = new CAnim;
+            m_pAnim = new CAnim2D;
             m_pAnim->m_AtlasTex = m_pTex;
 
             for (int i = 0; i < m_Sprites.Size; i++)
@@ -927,7 +927,7 @@ void CSpriteEditor::DrawSpriteList()
 
                 if (m_Sprites[i].bSpriteList_Selected)
                 {
-                    tAnimFrm AnimData;
+                    tAnim2DFrm AnimData;
 
                     // UV 좌표로 변환
                     AnimData.vLeftTop = m_Sprites[i].Rect.GetTL() / vTextureSize;
@@ -1061,12 +1061,12 @@ void CSpriteEditor::finaltick()
 
     if (m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].Duration < m_pAnim->m_fAccTime)
     {
+        m_pAnim->m_fAccTime -= m_pAnim->m_vecFrm[m_pAnim->m_CurFrmIdx].Duration;
         ++m_pAnim->m_CurFrmIdx;
         if (m_pAnim->m_vecFrm.size() <= m_pAnim->m_CurFrmIdx)
         {
             m_pAnim->m_CurFrmIdx = 0;
         }
-        m_pAnim->m_fAccTime = 0.f;
     }
 }
 

@@ -67,7 +67,6 @@ struct tMTBone
     int iDepth;
     int iParentIndx;
     Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
-    Matrix matBone;   // 이거 안씀
     vector<tMTKeyFrame> vecKeyFrame;
 };
 
@@ -81,7 +80,6 @@ struct tMTAnimClip
     double dStartTime;
     double dEndTime;
     double dTimeLength;
-    float fUpdateTime; // 이거 안씀
 
     FbxTime::EMode eMode;
 };
@@ -176,7 +174,7 @@ __declspec(align(16)) struct tGlobalData
     int g_EnableSSAO = false;
 
     UINT g_Light2DCount;
-    UINT g_Light3DCount;
+    UINT g_LightCount;
 
     int g_DrawAsWireFrame = false;
     int g_RenderOutline = true;

@@ -24,7 +24,7 @@ private:
     // 하나의 버텍스버퍼에 여러개의 인덱스버퍼가 연결
     vector<tIndexInfo> m_vecIdxInfo;
 
-    // Animation3D 정보
+    // Animator 정보
     vector<tMTAnimClip> m_vecAnimClip;
     vector<tMTBone> m_vecBones;
 
