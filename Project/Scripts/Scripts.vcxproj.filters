@@ -366,30 +366,6 @@
     <ClCompile Include="CKirbyMoveController.cpp">
       <Filter>Scripts\MoveController</Filter>
     </ClCompile>
-    <ClCompile Include="CKirbyRun.cpp">
-      <Filter>State\KirbyState\Run</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyIdle.cpp">
-      <Filter>State\KirbyState\Idle</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyAbility_Normal.cpp">
-      <Filter>State\KirbyState\_State Group\Normal</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyAttack.cpp">
-      <Filter>State\KirbyState\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayerMgr.cpp">
-      <Filter>Scripts\PlayerMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyObject.cpp">
-      <Filter>Module\State Group\KirbyObject</Filter>
-    </ClCompile>
-    <ClCompile Include="The Game of Sisyphus\CBulletScript.cpp">
-      <Filter>Scripts\The Game of Sisyphus</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyBulletScript.cpp">
-      <Filter>Scripts\KirbyBullet</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

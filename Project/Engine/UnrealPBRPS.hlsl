@@ -4,10 +4,9 @@
 #include "UnrealPBRCommon.hlsli"
 
 #define AmbientTex g_tex_0
-#define AOTex g_tex_1
+#define MRATex g_tex_1 // Metallic, Roughness, Ambient Occlusion
 #define NormalTex g_tex_2
-#define MetallicRoughnessTex g_tex_4
-#define EmissiveTex g_tex_5
+#define EmissiveTex g_tex_4
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlMetallic g_vMetallic
@@ -25,22 +24,25 @@ float4 main(PS_IN input) : SV_TARGET
 {
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
     float3 normalWorld = GetNormal(input);
-    
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, input.vUV).rgb 
                                  : MtrlAlbedo.rgb;
-    float ao = g_btex_1 ? AOTex.Sample(g_LinearWrapSampler, input.vUV).r : SSAOTex.Sample(g_LinearWrapSampler, input.vUV).r;
-    float metallic = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).b
+    float metallic = g_btex_1 ? MRATex.Sample(g_LinearWrapSampler, input.vUV).r
                                     : MtrlMetallic;
-    float roughness = g_btex_4 ? MetallicRoughnessTex.Sample(g_LinearWrapSampler, input.vUV).g 
+    float roughness = g_btex_1 ? MRATex.Sample(g_LinearWrapSampler, input.vUV).g 
                                       : MtrlRoughness;
-    float3 emission = g_btex_5 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb
+    float ao = g_btex_1 ? MRATex.Sample(g_LinearWrapSampler, input.vUV).b : 1.f;
+    if (ao >= 1.f)
+    {
+        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV).r;
+    }
+    float3 emission = g_btex_4 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV).rgb
                                      : MtrlEmission.rgb;
 
     float3 ambientLighting = AmbientLightingByIBL(albedo, normalWorld, pixelToEye, ao, metallic, roughness);
     
     float3 directLighting = float3(0, 0, 0);
 
-    for (uint i = 0; i < g_Light3DCount; ++i)
+    for (uint i = 0; i < g_LightCount; ++i)
     {
         DirectLighting(i, input.vPosWorld, normalWorld, albedo, ao, metallic, roughness, directLighting);
     }

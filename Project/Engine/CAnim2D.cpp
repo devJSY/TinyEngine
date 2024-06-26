@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "CAnim.h"
+#include "CAnim2D.h"
 
 #include "CTimeMgr.h"
 
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
-CAnim::CAnim()
+CAnim2D::CAnim2D()
     : m_Animator(nullptr)
     , m_vecFrm{}
     , m_CurFrmIdx(0)
@@ -17,7 +17,7 @@ CAnim::CAnim()
 {
 }
 
-CAnim::CAnim(const CAnim& origin)
+CAnim2D::CAnim2D(const CAnim2D& origin)
     : CEntity(origin)
     , m_Animator(nullptr)
     , m_vecFrm(origin.m_vecFrm)
@@ -29,11 +29,11 @@ CAnim::CAnim(const CAnim& origin)
 {
 }
 
-CAnim::~CAnim()
+CAnim2D::~CAnim2D()
 {
 }
 
-void CAnim::finaltick()
+void CAnim2D::finaltick()
 {
     if (m_bFinish)
         return;
@@ -42,17 +42,17 @@ void CAnim::finaltick()
 
     if (m_vecFrm[m_CurFrmIdx].Duration < m_fAccTime)
     {
+        m_fAccTime -= m_vecFrm[m_CurFrmIdx].Duration;
         ++m_CurFrmIdx;
         if (m_vecFrm.size() <= m_CurFrmIdx)
         {
             m_CurFrmIdx = (int)m_vecFrm.size() - 1;
             m_bFinish = true;
         }
-        m_fAccTime = 0.f;
     }
 }
 
-void CAnim::UpdateData()
+void CAnim2D::UpdateData()
 {
     // 현재 프레임 정보를 상수버퍼로 옮기고 b2 레지스터로 바인딩
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
@@ -71,7 +71,7 @@ void CAnim::UpdateData()
     m_AtlasTex->UpdateData(12);
 }
 
-void CAnim::Clear()
+void CAnim2D::Clear()
 {
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::ANIM2D_DATA);
     tAnimData2D data = {};
@@ -82,8 +82,8 @@ void CAnim::Clear()
     pCB->UpdateData();
 }
 
-void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount,
-                   float _FPS, bool _UseBackGround)
+void CAnim2D::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount,
+                     float _FPS, bool _UseBackGround)
 {
     m_Animator = _Animator;
     m_AtlasTex = _Atlas;
@@ -93,7 +93,7 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop,
 
     for (int i = 0; i < _FrmCount; ++i)
     {
-        tAnimFrm frm = {};
+        tAnim2DFrm frm = {};
 
         frm.vSlice = Vec2(_vSliceSize.x, _vSliceSize.y) / AtlasSize;
 
@@ -108,7 +108,7 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop,
     }
 }
 
-bool CAnim::SaveAnim(const wstring& _FilePath)
+bool CAnim2D::SaveAnim(const wstring& _FilePath)
 {
     FILE* pFile = nullptr;
 
@@ -179,7 +179,7 @@ bool CAnim::SaveAnim(const wstring& _FilePath)
     return true;
 }
 
-bool CAnim::LoadAnim(const wstring& _FilePath)
+bool CAnim2D::LoadAnim(const wstring& _FilePath)
 {
     FILE* pFile = nullptr;
 
@@ -289,7 +289,7 @@ bool CAnim::LoadAnim(const wstring& _FilePath)
     return true;
 }
 
-void CAnim::SaveToLevelFile(FILE* _File)
+void CAnim2D::SaveToLevelFile(FILE* _File)
 {
     // 애니메이션 이름 저장
     SaveWStringToFile(GetName(), _File);
@@ -297,7 +297,7 @@ void CAnim::SaveToLevelFile(FILE* _File)
     // 모든 프레임 정보 저장
     size_t FrameCount = m_vecFrm.size();
     fwrite(&FrameCount, sizeof(size_t), 1, _File);
-    fwrite(m_vecFrm.data(), sizeof(tAnimFrm), FrameCount, _File);
+    fwrite(m_vecFrm.data(), sizeof(tAnim2DFrm), FrameCount, _File);
 
     // 백그라운드 사용여부 저장
     fwrite(&m_bUseBackGround, sizeof(bool), 1, _File);
@@ -306,7 +306,7 @@ void CAnim::SaveToLevelFile(FILE* _File)
     SaveAssetRef(m_AtlasTex, _File);
 }
 
-void CAnim::LoadFromLevelFile(FILE* _File)
+void CAnim2D::LoadFromLevelFile(FILE* _File)
 {
     // 애니메이션 이름 로드
     wstring name;
@@ -317,7 +317,7 @@ void CAnim::LoadFromLevelFile(FILE* _File)
     size_t FrameCount = 0;
     fread(&FrameCount, sizeof(size_t), 1, _File);
     m_vecFrm.resize(FrameCount);
-    fread(m_vecFrm.data(), sizeof(tAnimFrm), m_vecFrm.size(), _File);
+    fread(m_vecFrm.data(), sizeof(tAnim2DFrm), m_vecFrm.size(), _File);
 
     // 백그라운드 사용여부 로드
     fread(&m_bUseBackGround, sizeof(bool), 1, _File);

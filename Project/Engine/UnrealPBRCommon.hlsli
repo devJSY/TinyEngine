@@ -30,14 +30,21 @@ float3 GetNormal(PS_IN input)
     if (g_btex_2) // NormalWorld를 교체
     {
         float3 normal = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
-        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
 
+        // 압축되어있는 Normal Map인 경우
+        if (0.f >= normal.b)
+        {
+            normal.b = 1.f;
+        }
+
+        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
+        
         // OpenGL 용 노멀맵일 경우에는 y 방향 반전
         normal.y = InvertNormalMapY ? -normal.y : normal.y;
         
         float3 N = normalWorld;
         float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = cross(N, T);
+        float3 B = normalize(cross(N, T));
         
         // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
         float3x3 TBN = float3x3(T, B, N);
@@ -269,7 +276,7 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
 
 void DirectLighting(int _LightIdx, float3 _WorldPos, float3 _NormalWorld, float3 _Albedo, float _AO, float _Matallic, float _Roughness, inout float3 OutDirectLighting)
 {
-    tLightInfo LightInfo = g_Light3D[_LightIdx];
+    tLightInfo LightInfo = g_Light[_LightIdx];
     
     const float3 pixelToEye = normalize(g_eyeWorld - _WorldPos);
     

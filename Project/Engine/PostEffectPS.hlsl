@@ -96,12 +96,12 @@ float4 main(PS_IN input) : SV_TARGET
         
         // Halo
         float3 HaloColor = float3(0.96, 0.94, 0.82);
-        for (uint i = 0; i < g_Light3DCount; ++i)
+        for (uint i = 0; i < g_LightCount; ++i)
         {
-            if (0.f >= g_Light3D[i].HaloRadius)
+            if (0.f >= g_Light[i].HaloRadius)
                 continue;
             
-            color += HaloEmission(g_Light3D[i], posView.xyz) * HaloColor * g_Light3D[i].HaloStrength;
+            color += HaloEmission(g_Light[i], posView.xyz) * HaloColor * g_Light[i].HaloStrength;
         }
 
         // Fog

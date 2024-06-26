@@ -264,7 +264,7 @@ int CDevice::CreateSwapChain()
     tDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
-    tDesc.Windowed = true; // 창모드
+    tDesc.Windowed = true;             // 창모드
     tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
 
     // 스왚체인 생성기능을 가지고 있는 Factory 에 접근한다.
@@ -518,7 +518,7 @@ int CDevice::CreateBlendState()
     tDesc.AlphaToCoverageEnable = false;
     tDesc.IndependentBlendEnable = true;
 
-    // PositionTarget
+    // Albedo
     tDesc.RenderTarget[0].BlendEnable = true;
     tDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
     tDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
@@ -529,27 +529,38 @@ int CDevice::CreateBlendState()
     tDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
     tDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    // Normal
-    tDesc.RenderTarget[1].BlendEnable = false;
+    // MRA
+    tDesc.RenderTarget[1].BlendEnable = true;
     tDesc.RenderTarget[1].BlendOp = D3D11_BLEND_OP_ADD;
-    tDesc.RenderTarget[1].SrcBlend = D3D11_BLEND_ONE;
-    tDesc.RenderTarget[1].DestBlend = D3D11_BLEND_ZERO;
+    tDesc.RenderTarget[1].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    tDesc.RenderTarget[1].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 
     tDesc.RenderTarget[1].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     tDesc.RenderTarget[1].SrcBlendAlpha = D3D11_BLEND_ONE;
-    tDesc.RenderTarget[1].DestBlendAlpha = D3D11_BLEND_ZERO;
+    tDesc.RenderTarget[1].DestBlendAlpha = D3D11_BLEND_ONE;
     tDesc.RenderTarget[1].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-    // Emissive
+    // Normal
     tDesc.RenderTarget[2].BlendEnable = true;
     tDesc.RenderTarget[2].BlendOp = D3D11_BLEND_OP_ADD;
-    tDesc.RenderTarget[2].SrcBlend = D3D11_BLEND_ONE;
-    tDesc.RenderTarget[2].DestBlend = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[2].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    tDesc.RenderTarget[2].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 
     tDesc.RenderTarget[2].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     tDesc.RenderTarget[2].SrcBlendAlpha = D3D11_BLEND_ONE;
     tDesc.RenderTarget[2].DestBlendAlpha = D3D11_BLEND_ONE;
     tDesc.RenderTarget[2].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    // Emissive
+    tDesc.RenderTarget[3].BlendEnable = true;
+    tDesc.RenderTarget[3].BlendOp = D3D11_BLEND_OP_ADD;
+    tDesc.RenderTarget[3].SrcBlend = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[3].DestBlend = D3D11_BLEND_ONE;
+
+    tDesc.RenderTarget[3].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    tDesc.RenderTarget[3].SrcBlendAlpha = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[3].DestBlendAlpha = D3D11_BLEND_ONE;
+    tDesc.RenderTarget[3].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
     DEVICE->CreateBlendState(&tDesc, m_arrBS[(UINT)BS_TYPE::DECAL].GetAddressOf());
 

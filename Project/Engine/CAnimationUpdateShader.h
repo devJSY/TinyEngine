@@ -1,7 +1,7 @@
 #pragma once
 #include "CComputeShader.h"
 
-class CAnimation3DShader : public CComputeShader
+class CAnimationUpdateShader : public CComputeShader
 {
 private:
     CStructuredBuffer* m_pFrameDataBuffer; // t32
@@ -24,6 +24,6 @@ public:
     virtual void Clear() override;
 
 public:
-    CAnimation3DShader();
-    virtual ~CAnimation3DShader();
+    CAnimationUpdateShader();
+    virtual ~CAnimationUpdateShader();
 };

@@ -1,5 +1,5 @@
-#ifndef _ANIMATION
-#define _ANIMATION
+#ifndef _ANIMATION_UPDATE
+#define _ANIMATION_UPDATE
 
 #include "global.hlsli"
 
@@ -146,7 +146,6 @@ void MatrixAffineTransformation(in float4 Scaling
     _outMat = M;
 }
 
-
 float4 QuternionLerp(in float4 _vQ1, in float4 _vQ2, float _fRatio)
 {
     float4 vT = float4(_fRatio, _fRatio, _fRatio, _fRatio);
@@ -209,13 +208,14 @@ StructuredBuffer<matrix> g_arrOffset : register(t33);
 RWStructuredBuffer<matrix> g_arrFinelMat : register(u0);
 
 // ===========================
-// Animation3D Compute Shader
+// Animation Update Compute Shader
 #define BoneCount   g_int_0
 #define CurFrame    g_int_1
+#define NextFrame   g_int_2
 #define Ratio       g_float_0
 // ===========================
 [numthreads(256, 1, 1)]
-void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
+void AnimationUpdateCS(int3 _iThreadIdx : SV_DispatchThreadID)
 {
     if (BoneCount <= _iThreadIdx.x)
         return;
@@ -226,7 +226,8 @@ void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
 
     // Frame Data Index == Bone Count * Frame Count + _iThreadIdx.x
     uint iFrameDataIndex = BoneCount * CurFrame + _iThreadIdx.x;
-    uint iNextFrameDataIdx = BoneCount * (CurFrame + 1) + _iThreadIdx.x;
+    uint iNextFrameDataIdx = BoneCount * NextFrame + _iThreadIdx.x;
+    //uint iNextFrameDataIdx = BoneCount * (CurFrame + 1) + _iThreadIdx.x;
 
     float4 vScale = lerp(g_arrFrameTrans[iFrameDataIndex].vScale, g_arrFrameTrans[iNextFrameDataIdx].vScale, Ratio);
     float4 vTrans = lerp(g_arrFrameTrans[iFrameDataIndex].vTranslate, g_arrFrameTrans[iNextFrameDataIdx].vTranslate, Ratio);
@@ -234,15 +235,11 @@ void CS_Animation3D(int3 _iThreadIdx : SV_DispatchThreadID)
 
     // 최종 본행렬 연산
     MatrixAffineTransformation(vScale, vQZero, qRot, vTrans, matBone);
-
-    // 최종 본행렬 연산    
-    //MatrixAffineTransformation(g_arrFrameTrans[iFrameDataIndex].vScale, vQZero, g_arrFrameTrans[iFrameDataIndex].qRot, g_arrFrameTrans[iFrameDataIndex].vTranslate, matBone);
-
+    
     matrix matOffset = transpose(g_arrOffset[_iThreadIdx.x]);
 
     // 구조화버퍼에 결과값 저장
     g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
 }
-
 
 #endif

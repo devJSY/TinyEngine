@@ -17,7 +17,7 @@
 #include "CScript.h"
 
 #include "CTexture.h"
-#include "CAnim.h"
+#include "CAnim2D.h"
 #include "CMaterial.h"
 
 #include "CKeyMgr.h"
@@ -259,21 +259,21 @@ void COutliner::render()
             }
             else if (50 == Dirtyflag)
             {
-                pObj->SetName(L"Directional Light3D");
-                pObj->AddComponent(new CLight3D);
-                pObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+                pObj->SetName(L"Directional Light");
+                pObj->AddComponent(new CLight);
+                pObj->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
             }
             else if (51 == Dirtyflag)
             {
-                pObj->SetName(L"Point Light3D");
-                pObj->AddComponent(new CLight3D);
-                pObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+                pObj->SetName(L"Point Light");
+                pObj->AddComponent(new CLight);
+                pObj->Light()->SetLightType(LIGHT_TYPE::POINT);
             }
             else if (52 == Dirtyflag)
             {
-                pObj->SetName(L"Spot Light3D");
-                pObj->AddComponent(new CLight3D);
-                pObj->Light3D()->SetLightType(LIGHT_TYPE::SPOT);
+                pObj->SetName(L"Spot Light");
+                pObj->AddComponent(new CLight);
+                pObj->Light()->SetLightType(LIGHT_TYPE::SPOT);
             }
             else if (60 == Dirtyflag)
             {
@@ -549,9 +549,9 @@ void COutliner::DrawDetails(CGameObject* obj)
 
     DrawTransform(obj);
     DrawAnimator2D(obj);
-    DrawAnimator3D(obj);
+    DrawAnimator(obj);
     DrawLight2D(obj);
-    DrawLight3D(obj);
+    DrawLight(obj);
     DrawCamera(obj);
     DrawRigidbody2D(obj);
     DrawBoxCollider2D(obj);
@@ -653,8 +653,8 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
     if (open)
     {
-        const map<wstring, CAnim*>& mapAnim = pAnimator->GetmapAnim();
-        CAnim* pCurAnim = pAnimator->GetCurAnim();
+        const map<wstring, CAnim2D*>& mapAnim = pAnimator->GetmapAnim();
+        CAnim2D* pCurAnim = pAnimator->GetCurAnim();
 
         // =====================
         // Animation Select
@@ -663,7 +663,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
         if (nullptr != pCurAnim)
             curAnimName = ToString(pCurAnim->GetName());
 
-        ImGui::Text("Animation Name");
+        ImGui::Text("Animations");
         if (ImGui_ComboUI("##Anim", curAnimName, mapAnim))
         {
             pAnimator->Play(ToWstring(curAnimName), true);
@@ -678,7 +678,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
 
             Ptr<CTexture> pTex = pCurAnim->GetAtlasTex();
             Vec2 TexSize = Vec2((float)pTex->GetWidth(), (float)pTex->GetHeight());
-            const vector<tAnimFrm>& vecFrm = pCurAnim->GetVecFrm();
+            const vector<tAnim2DFrm>& vecFrm = pCurAnim->GetVecFrm();
 
             // Frame Index
             int Frmidx = pCurAnim->GetCurFrmIdx();
@@ -691,7 +691,7 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
                                            ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
             if (ImGui::BeginTable("##AnimFrame", 3, flags, ImVec2(450.f, 200.f)))
             {
-                const tAnimFrm& frm = vecFrm[Frmidx];
+                const tAnim2DFrm& frm = vecFrm[Frmidx];
 
                 ImGui::TableSetupScrollFreeze(0, 1);
                 ImGui::TableSetupColumn("Frame", ImGuiTableColumnFlags_None);
@@ -784,19 +784,153 @@ void COutliner::DrawAnimator2D(CGameObject* obj)
     }
 }
 
-void COutliner::DrawAnimator3D(CGameObject* obj)
+void COutliner::DrawAnimator(CGameObject* obj)
 {
-    CAnimator3D* pAnimator = obj->Animator3D();
+    CAnimator* pAnimator = obj->Animator();
     if (nullptr == pAnimator)
         return;
 
-    bool open =
-        ImGui::TreeNodeEx((void*)typeid(CAnimator3D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR3D]);
+    bool open = ImGui::TreeNodeEx((void*)typeid(CAnimator).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::ANIMATOR]);
 
     ComponentSettingsButton(pAnimator);
 
     if (open)
     {
+        Ptr<CMesh> pSkeletalMesh = pAnimator->GetSkeletalMesh();
+
+        // Skeletal Mesh
+        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Skeletal Mesh"))
+        {
+            string name;
+            if (nullptr != pSkeletalMesh)
+                name = ToString(pSkeletalMesh->GetName());
+
+            ImGui_InputText("Skeletal Mesh", name);
+
+            ImGui::TreePop();
+        }
+
+        // Animation
+        if (nullptr != pSkeletalMesh)
+        {
+            if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Animation"))
+            {
+                // =====================
+                // Animation Select
+                // =====================
+                const vector<tMTAnimClip>* vecAnimClip = pSkeletalMesh->GetAnimClip();
+
+                int CurClipIdx = pAnimator->GetCurClipIdx();
+                const tMTAnimClip& CurClip = vecAnimClip->at(CurClipIdx);
+
+                string CurClipName = ToString(CurClip.strAnimName);
+
+                int ChangedClipIdx = -1;
+                ImGui::Text("Animations");
+                if (ImGui::BeginCombo("##Anim", CurClipName.c_str()))
+                {
+                    for (int i = 0; i < vecAnimClip->size(); i++)
+                    {
+                        string ClipName = ToString(vecAnimClip->at(i).strAnimName);
+                        bool is_selected = (CurClipName == ClipName);
+                        if (ImGui::Selectable(ClipName.c_str(), is_selected))
+                        {
+                            CurClipName = ClipName;
+                            ChangedClipIdx = i;
+                        }
+
+                        if (is_selected)
+                        {
+                            ImGui::SetItemDefaultFocus();
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+
+                if (ChangedClipIdx >= 0)
+                {
+                    pAnimator->SetCurClipIdx(ChangedClipIdx);
+                }
+
+                // Frame Index
+                int FrameIdx = pAnimator->GetCurFrameIdx();
+                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &FrameIdx, CurClip.iStartFrame, CurClip.iEndFrame))
+                {
+                    pAnimator->SetFrameIdx(FrameIdx);
+                }
+
+                bool bPlaying = pAnimator->IsPlaying();
+                if (ImGui::Checkbox(ImGui_LabelPrefix("Play").c_str(), &bPlaying))
+                    pAnimator->SetPlay(bPlaying);
+
+                bool bRepeat = pAnimator->IsRepeat();
+                if (ImGui::Checkbox(ImGui_LabelPrefix("Repeat").c_str(), &bRepeat))
+                    pAnimator->SetRepeat(bRepeat);
+
+                float PlaySpeed = pAnimator->GetPlaySpeed();
+                if (ImGui::DragFloat(ImGui_LabelPrefix("Play Speed").c_str(), &PlaySpeed, 0.01f, 0.f, 100.f))
+                    pAnimator->SetPlaySpeed(PlaySpeed);
+
+                // =====================
+                // Animation Clip Info
+                // =====================
+                ImGui::Text("Clip Infomation");
+                static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV |
+                                               ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_SizingFixedSame;
+                if (ImGui::BeginTable("##AnimClip", 3, flags, ImVec2(600.f, 150.f)))
+                {
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Animation Name");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%s", ToString(CurClip.strAnimName).c_str());
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Clip Index");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", CurClipIdx);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Rate");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", (int)pAnimator->GetFrameRate());
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Range");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", CurClip.iStartFrame);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%d", CurClip.iEndFrame);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Frame Length");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%d", CurClip.iFrameLength);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Time Range");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", CurClip.dStartTime);
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%.3f", CurClip.dEndTime);
+
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::Text("Time Length");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::Text("%.3f", CurClip.dTimeLength);
+
+                    ImGui::EndTable();
+                }
+
+                ImGui::TreePop();
+            }
+        }
 
         ImGui::TreePop();
     }
@@ -865,13 +999,13 @@ void COutliner::DrawLight2D(CGameObject* obj)
     }
 }
 
-void COutliner::DrawLight3D(CGameObject* obj)
+void COutliner::DrawLight(CGameObject* obj)
 {
-    CLight3D* pLight = obj->Light3D();
+    CLight* pLight = obj->Light();
     if (nullptr == pLight)
         return;
 
-    bool open = ImGui::TreeNodeEx((void*)typeid(CLight3D).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT3D]);
+    bool open = ImGui::TreeNodeEx((void*)typeid(CLight).hash_code(), m_DefaultTreeNodeFlag, COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::LIGHT]);
 
     ComponentSettingsButton(pLight);
 
@@ -2445,24 +2579,24 @@ void COutliner::DrawDecal(CGameObject* obj)
 
     if (open)
     {
-        // Decal Color Texture
+        // Decal Albedo Texture
         {
-            ImGui::Text("Decal Color Texture");
+            ImGui::Text("Decal Albedo Texture");
             void* TextureID = nullptr;
-            Ptr<CTexture> pDecalColorTex = pDecal->GetDecalColorTex();
+            Ptr<CTexture> pDecalAlbedoTex = pDecal->GetDecalAlbedoTex();
 
-            if (nullptr != pDecalColorTex)
-                TextureID = pDecalColorTex->GetSRV().Get();
+            if (nullptr != pDecalAlbedoTex)
+                TextureID = pDecalAlbedoTex->GetSRV().Get();
             else
                 TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
             ImGui::Image(TextureID, ImVec2(256.f, 256.f));
 
-            if (nullptr != pDecalColorTex)
+            if (nullptr != pDecalAlbedoTex)
             {
                 if (ImGui::BeginItemTooltip())
                 {
-                    ImGui::Text("%s", ToString(pDecalColorTex->GetKey()).c_str());
+                    ImGui::Text("%s", ToString(pDecalAlbedoTex->GetKey()).c_str());
                     ImGui::EndTooltip();
                 }
             }
@@ -2474,27 +2608,83 @@ void COutliner::DrawDecal(CGameObject* obj)
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
-                    pDecal->SetDecalColorTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                    pDecal->SetDecalAlbedoTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
                 }
 
                 if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
-                    pDecal->SetDecalColorTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                    pDecal->SetDecalAlbedoTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
                 }
 
                 ImGui::EndDragDropTarget();
             }
 
             // Delete Texture Popup
-            ImGui::OpenPopupOnItemClick("Decal Color Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+            ImGui::OpenPopupOnItemClick("Decal Albedo Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
 
-            if (ImGui::BeginPopup("Decal Color Texture##COutlinerDecal"))
+            if (ImGui::BeginPopup("Decal Albedo Texture##COutlinerDecal"))
             {
-                if (ImGui::MenuItem("Delete Color Texture"))
+                if (ImGui::MenuItem("Delete Albedo Texture"))
                 {
-                    pDecal->SetDecalColorTex(nullptr);
+                    pDecal->SetDecalAlbedoTex(nullptr);
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
+        // Decal MRA Texture
+        {
+            ImGui::Text("Decal MRA Texture");
+            void* TextureID = nullptr;
+            Ptr<CTexture> pDecalMRATex = pDecal->GetDecalMRATex();
+
+            if (nullptr != pDecalMRATex)
+                TextureID = pDecalMRATex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pDecalMRATex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pDecalMRATex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalMRATex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalMRATex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            // Delete Texture Popup
+            ImGui::OpenPopupOnItemClick("Decal MRA Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Decal MRA Texture##COutlinerDecal"))
+            {
+                if (ImGui::MenuItem("Delete MRA Texture"))
+                {
+                    pDecal->SetDecalMRATex(nullptr);
                 }
 
                 ImGui::EndPopup();
@@ -2557,15 +2747,66 @@ void COutliner::DrawDecal(CGameObject* obj)
             }
         }
 
+        // Decal Emissive Texture
+        {
+            ImGui::Text("Decal Emissive Texture");
+            void* TextureID = nullptr;
+            Ptr<CTexture> pDecalEmissiveTex = pDecal->GetDecalEmissiveTex();
+
+            if (nullptr != pDecalEmissiveTex)
+                TextureID = pDecalEmissiveTex->GetSRV().Get();
+            else
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+
+            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
+
+            if (nullptr != pDecalEmissiveTex)
+            {
+                if (ImGui::BeginItemTooltip())
+                {
+                    ImGui::Text("%s", ToString(pDecalEmissiveTex->GetKey()).c_str());
+                    ImGui::EndTooltip();
+                }
+            }
+
+            // Drag & Drop
+            if (ImGui::BeginDragDropTarget())
+            {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalEmissiveTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+                {
+                    string name = (char*)payload->Data;
+                    name.resize(payload->DataSize);
+                    pDecal->SetDecalEmissiveTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
+                }
+
+                ImGui::EndDragDropTarget();
+            }
+
+            // Delete Texture Popup
+            ImGui::OpenPopupOnItemClick("Decal Emissive Texture##COutlinerDecal", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Decal Emissive Texture##COutlinerDecal"))
+            {
+                if (ImGui::MenuItem("Delete Emissive Texture"))
+                {
+                    pDecal->SetDecalEmissiveTex(nullptr);
+                }
+
+                ImGui::EndPopup();
+            }
+        }
+
         // Invert Normal Y
         bool bInvertNormal = pDecal->IsInvertNormalY();
         ImGui::Checkbox(ImGui_LabelPrefix("Invert Normal Y").c_str(), &bInvertNormal);
         pDecal->SetInvertNormalY(bInvertNormal);
-
-        // As Emissive
-        bool bAsEmissive = pDecal->IsDecalAsEmissive();
-        ImGui::Checkbox(ImGui_LabelPrefix("Decal As Emissive").c_str(), &bAsEmissive);
-        pDecal->SetDecalAsEmissive(bAsEmissive);
 
         ImGui::TreePop();
     }

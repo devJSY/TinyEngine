@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "CLight3D.h"
+#include "CLight.h"
 #include "CTransform.h"
 
 #include "CAssetMgr.h"
@@ -10,8 +10,8 @@
 #include "CCamera.h"
 #include "CGameObjectEx.h"
 
-CLight3D::CLight3D()
-    : CComponent(COMPONENT_TYPE::LIGHT3D)
+CLight::CLight()
+    : CComponent(COMPONENT_TYPE::LIGHT)
     , m_Info{}
     , m_pLightCam(nullptr)
     , m_VolumeMesh(nullptr)
@@ -39,7 +39,7 @@ CLight3D::CLight3D()
     SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
-CLight3D::CLight3D(const CLight3D& origin)
+CLight::CLight(const CLight& origin)
     : CComponent(origin)
     , m_Info(origin.m_Info)
     , m_DepthMapTex(nullptr)
@@ -52,7 +52,7 @@ CLight3D::CLight3D(const CLight3D& origin)
     SetLightType((LIGHT_TYPE)m_Info.LightType);
 }
 
-CLight3D::~CLight3D()
+CLight::~CLight()
 {
     if (nullptr != m_pLightCam)
     {
@@ -61,10 +61,10 @@ CLight3D::~CLight3D()
     }
 }
 
-void CLight3D::finaltick()
+void CLight::finaltick()
 {
     // ±¤¿ø µî·Ï
-    CRenderMgr::GetInst()->RegisterLight3D(this);
+    CRenderMgr::GetInst()->RegisterLight(this);
 
     m_Info.vWorldPos = Transform()->GetWorldPos();
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -96,7 +96,7 @@ void CLight3D::finaltick()
     }
 }
 
-void CLight3D::SetLightType(LIGHT_TYPE _type)
+void CLight::SetLightType(LIGHT_TYPE _type)
 {
     m_Info.LightType = (int)_type;
 
@@ -159,7 +159,7 @@ void CLight3D::SetLightType(LIGHT_TYPE _type)
     }
 }
 
-void CLight3D::render_Deferred(int _LightIdx)
+void CLight::render_Deferred(int _LightIdx)
 {
     if (nullptr == m_VolumeMesh || nullptr == m_LightMtrl)
     {
@@ -181,13 +181,13 @@ void CLight3D::render_Deferred(int _LightIdx)
     m_VolumeMesh->render(0);
 }
 
-void CLight3D::render_ShadowDepth(UINT _MobilityType)
+void CLight::render_ShadowDepth(UINT _MobilityType)
 {
     m_pLightCam->Camera()->SortShadowMapObject(_MobilityType);
     m_pLightCam->Camera()->render_DepthOnly(m_DepthMapTex);
 }
 
-void CLight3D::CreateDepthMapTex()
+void CLight::CreateDepthMapTex()
 {
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
     ZeroMemory(&dsvDesc, sizeof(dsvDesc));
@@ -207,12 +207,12 @@ void CLight3D::CreateDepthMapTex()
                                             D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
-void CLight3D::SaveToLevelFile(FILE* _File)
+void CLight::SaveToLevelFile(FILE* _File)
 {
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
 }
 
-void CLight3D::LoadFromLevelFile(FILE* _File)
+void CLight::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
     SetLightType((LIGHT_TYPE)m_Info.LightType);

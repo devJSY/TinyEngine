@@ -7,7 +7,7 @@
 #include "CGameObject.h"
 #include "CTransform.h"
 #include "CMeshRender.h"
-#include "CAnimator3D.h"
+#include "CAnimator.h"
 
 #include "CFBXLoader.h"
 
@@ -41,24 +41,28 @@ CGameObject* CMeshData::Instantiate()
     if (false == m_pMesh->IsAnimMesh())
         return pNewObj;
 
-    CAnimator3D* pAnimator = new CAnimator3D;
+    CAnimator* pAnimator = new CAnimator;
     pNewObj->AddComponent(pAnimator);
 
-    pAnimator->SetBones(m_pMesh->GetBones());
-    pAnimator->SetAnimClip(m_pMesh->GetAnimClip());
+    pAnimator->SetSkeletalMesh(m_pMesh);
 
     return pNewObj;
 }
 
 int CMeshData::Save(const wstring& _strRelativePath)
 {
+    if (IsEngineAsset())
+        return E_FAIL;
+
     SetRelativePath(_strRelativePath);
 
     wstring strFilePath = CPathMgr::GetContentPath() + _strRelativePath;
 
     FILE* pFile = nullptr;
-    errno_t err = _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
-    assert(pFile);
+    _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+
+    if (nullptr == pFile)
+        return E_FAIL;
 
     // Mesh Key 저장
     // Mesh Data 저장
@@ -110,7 +114,7 @@ int CMeshData::Load(const wstring& _strFilePath)
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
         UINT idx = -1;
-        fread(&idx, 4, 1, pFile);
+        fread(&idx, sizeof(UINT), 1, pFile);
         if (idx == -1)
             break;
 
@@ -129,12 +133,9 @@ int CMeshData::Load(const wstring& _strFilePath)
 
 CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
 {
-    wstring strFullPath = CPathMgr::GetContentPath();
-    strFullPath += _RelativePath;
-
     CFBXLoader loader;
     loader.init();
-    loader.LoadFbx(strFullPath);
+    loader.LoadFbx(_RelativePath);
 
     // 메쉬 가져오기
     CMesh* pMesh = nullptr;
@@ -144,11 +145,11 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
     if (nullptr != pMesh)
     {
         wstring strMeshKey = L"mesh\\";
-        strMeshKey += std::filesystem::path(strFullPath).stem();
+        strMeshKey += std::filesystem::path(_RelativePath).stem();
         strMeshKey += L".mesh";
         CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);
 
-        // 메시를 실제 파일로 저장
+        // 메시를 파일 저장
         pMesh->Save(strMeshKey);
     }
 
@@ -167,7 +168,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
         }
     }
 
-    CMeshData* pMeshData = new CMeshData(true);
+    CMeshData* pMeshData = new CMeshData();
     pMeshData->m_pMesh = pMesh;
     pMeshData->m_vecMtrl = vecMtrl;
 

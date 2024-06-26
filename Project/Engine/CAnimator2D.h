@@ -3,13 +3,13 @@
 
 #include "CTexture.h"
 
-class CAnim;
+class CAnim2D;
 
 class CAnimator2D : public CComponent
 {
 private:
-    map<wstring, CAnim*> m_mapAnim;
-    CAnim* m_CurAnim;
+    map<wstring, CAnim2D*> m_mapAnim;
+    CAnim2D* m_CurAnim;
     bool m_bRepeat;
 
 public:
@@ -22,7 +22,7 @@ public:
     void Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop, Vec2 _vSliceSize, Vec2 _OffsetPos, Vec2 _Background, int _FrmCount,
                 float _FPS, bool _UseBackGround = false);
 
-    CAnim* FindAnim(const wstring& _strAnimName);
+    CAnim2D* FindAnim(const wstring& _strAnimName);
     void Play(const wstring& _strAnimName, bool _bRepeat = true);
     bool IsFinish() const;
 
@@ -30,8 +30,8 @@ private:
     bool DeleteAnim(const wstring& _strAnimName);
 
 public:
-    const map<wstring, CAnim*>& GetmapAnim() const { return m_mapAnim; }
-    CAnim* GetCurAnim() const { return m_CurAnim; }
+    const map<wstring, CAnim2D*>& GetmapAnim() const { return m_mapAnim; }
+    CAnim2D* GetCurAnim() const { return m_CurAnim; }
 
 public:
     void SaveAnimations(const wstring& _strRelativePath);

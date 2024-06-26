@@ -48,7 +48,7 @@ float4 PS_DirLight(PS_IN _in) : SV_Target
     float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, _in.vUV).xyz;
        
     tLightInfo LightColor = (tLightInfo) 0.f;
-    CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
+    CalculateLight(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
         
     LightColor.vRadiance.a = 1.f;
     
@@ -107,7 +107,7 @@ float4 PS_PointLight(PS_IN _in) : SV_Target
     float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).xyz;
        
     tLightInfo LightColor = (tLightInfo) 0.f;
-    CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
+    CalculateLight(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
         
     LightColor.vRadiance.a = 1.f;
     
@@ -166,7 +166,7 @@ float4 PS_SpotLight(PS_IN _in) : SV_Target
     float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).xyz;
        
     tLightInfo LightColor = (tLightInfo) 0.f;
-    CalculateLight3D(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
+    CalculateLight(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
         
     LightColor.vRadiance.a = 1.f;
     return LightColor.vRadiance;

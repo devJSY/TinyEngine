@@ -18,6 +18,9 @@ CTexture::~CTexture()
 
 int CTexture::Save(const wstring& _strRelativePath)
 {
+    if (IsEngineAsset())
+        return E_FAIL;
+
     // °æ·Î
     wstring strFilePath = CPathMgr::GetContentPath();
     strFilePath += _strRelativePath;

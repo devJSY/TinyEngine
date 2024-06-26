@@ -169,7 +169,7 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         }
     }
 
-    // Animation3D
+    // Animator
     bool bHasAnim = false;
     for (int ContainerIndex = 0; ContainerIndex < _loader.GetContainerCount(); ++ContainerIndex)
     {
@@ -190,7 +190,6 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         tMTBone bone = {};
         bone.iDepth = vecBone[i]->iDepth;
         bone.iParentIndx = vecBone[i]->iParentIndx;
-        bone.matBone = GetMatrixFromFbxMatrix(vecBone[i]->matBone);
         bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
         bone.strBoneName = vecBone[i]->strBoneName;
 
@@ -220,23 +219,28 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         pMesh->m_vecBones.push_back(bone);
     }
 
+    UINT OffsetFrame = 0;
     vector<tAnimClip*>& vecAnimClip = _loader.GetAnimClip();
-
     for (UINT i = 0; i < vecAnimClip.size(); ++i)
     {
         tMTAnimClip tClip = {};
 
         tClip.strAnimName = vecAnimClip[i]->strName;
-        tClip.dStartTime = vecAnimClip[i]->tStartTime.GetSecondDouble();
-        tClip.dEndTime = vecAnimClip[i]->tEndTime.GetSecondDouble();
-        tClip.dTimeLength = tClip.dEndTime - tClip.dStartTime;
 
-        tClip.iStartFrame = (int)vecAnimClip[i]->tStartTime.GetFrameCount(vecAnimClip[i]->eMode);
-        tClip.iEndFrame = (int)vecAnimClip[i]->tEndTime.GetFrameCount(vecAnimClip[i]->eMode);
-        tClip.iFrameLength = tClip.iEndFrame - tClip.iStartFrame;
+        tClip.iStartFrame = OffsetFrame + (int)vecAnimClip[i]->tStartTime.GetFrameCount(vecAnimClip[i]->eMode);
+        tClip.iEndFrame = OffsetFrame + (int)vecAnimClip[i]->tEndTime.GetFrameCount(vecAnimClip[i]->eMode);
+        tClip.iFrameLength = 1 + tClip.iEndFrame - tClip.iStartFrame;
         tClip.eMode = vecAnimClip[i]->eMode;
 
+        double FrameRate = FbxTime::GetFrameRate(tClip.eMode);
+        tClip.dStartTime = tClip.iStartFrame / FrameRate;
+        tClip.dEndTime = tClip.iEndFrame / FrameRate;
+        tClip.dTimeLength = (1. / FrameRate) + tClip.dEndTime - tClip.dStartTime;
+
         pMesh->m_vecAnimClip.push_back(tClip);
+
+        // 이전 Clip의 End 부터 시작하도록 Offset 설정
+        OffsetFrame += tClip.iFrameLength;
     }
 
     // Animation 이 있는 Mesh 경우 structuredbuffer 만들어두기
@@ -360,6 +364,9 @@ void CMesh::render_instancing(UINT _iSubset)
 
 int CMesh::Save(const wstring& _strRelativePath)
 {
+    if (IsEngineAsset())
+        return E_FAIL;
+
     // 상대경로 저장
     SetRelativePath(_strRelativePath);
 
@@ -368,8 +375,10 @@ int CMesh::Save(const wstring& _strRelativePath)
 
     // 파일 쓰기모드로 열기
     FILE* pFile = nullptr;
-    errno_t err = _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
-    assert(pFile);
+    _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+
+    if (nullptr == pFile)
+        return E_FAIL;
 
     // 키값, 상대 경로
     SaveWStringToFile(GetName(), pFile);
@@ -392,7 +401,7 @@ int CMesh::Save(const wstring& _strRelativePath)
         fwrite(m_vecIdxInfo[i].pIdxSysMem, m_vecIdxInfo[i].iIdxCount * sizeof(UINT), 1, pFile);
     }
 
-    // Animation3D 정보
+    // Animator 정보
     UINT iCount = (UINT)m_vecAnimClip.size();
     fwrite(&iCount, sizeof(int), 1, pFile);
     for (UINT i = 0; i < iCount; ++i)
@@ -402,7 +411,6 @@ int CMesh::Save(const wstring& _strRelativePath)
         fwrite(&m_vecAnimClip[i].dEndTime, sizeof(double), 1, pFile);
         fwrite(&m_vecAnimClip[i].dTimeLength, sizeof(double), 1, pFile);
         fwrite(&m_vecAnimClip[i].eMode, sizeof(int), 1, pFile);
-        fwrite(&m_vecAnimClip[i].fUpdateTime, sizeof(float), 1, pFile);
         fwrite(&m_vecAnimClip[i].iStartFrame, sizeof(int), 1, pFile);
         fwrite(&m_vecAnimClip[i].iEndFrame, sizeof(int), 1, pFile);
         fwrite(&m_vecAnimClip[i].iFrameLength, sizeof(int), 1, pFile);
@@ -416,7 +424,6 @@ int CMesh::Save(const wstring& _strRelativePath)
         SaveWStringToFile(m_vecBones[i].strBoneName, pFile);
         fwrite(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
         fwrite(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
-        fwrite(&m_vecBones[i].matBone, sizeof(Matrix), 1, pFile);
         fwrite(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
         int iFrameCount = (int)m_vecBones[i].vecKeyFrame.size();
@@ -494,7 +501,7 @@ int CMesh::Load(const wstring& _strFilePath)
         m_vecIdxInfo.push_back(info);
     }
 
-    // Animation3D 정보 읽기
+    // Animator 정보 읽기
     int iCount = 0;
     fread(&iCount, sizeof(int), 1, pFile);
     for (int i = 0; i < iCount; ++i)
@@ -506,7 +513,6 @@ int CMesh::Load(const wstring& _strFilePath)
         fread(&tClip.dEndTime, sizeof(double), 1, pFile);
         fread(&tClip.dTimeLength, sizeof(double), 1, pFile);
         fread(&tClip.eMode, sizeof(int), 1, pFile);
-        fread(&tClip.fUpdateTime, sizeof(float), 1, pFile);
         fread(&tClip.iStartFrame, sizeof(int), 1, pFile);
         fread(&tClip.iEndFrame, sizeof(int), 1, pFile);
         fread(&tClip.iFrameLength, sizeof(int), 1, pFile);
@@ -524,7 +530,6 @@ int CMesh::Load(const wstring& _strFilePath)
         LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);
         fread(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
         fread(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
-        fread(&m_vecBones[i].matBone, sizeof(Matrix), 1, pFile);
         fread(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
         UINT iFrameCount = 0;
