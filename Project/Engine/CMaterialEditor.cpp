@@ -21,6 +21,37 @@ CMaterialEditor::CMaterialEditor()
     , m_LightObj(nullptr)
     , m_LightBuffer(nullptr)
 {
+}
+
+CMaterialEditor::~CMaterialEditor()
+{
+    if (nullptr != m_ViewportCam)
+    {
+        delete m_ViewportCam->GetOwner();
+        m_ViewportCam = nullptr;
+    }
+
+    if (nullptr != m_ViewportObj)
+    {
+        delete m_ViewportObj;
+        m_ViewportObj = nullptr;
+    }
+
+    if (nullptr != m_LightObj)
+    {
+        delete m_LightObj;
+        m_LightObj = nullptr;
+    }
+
+    if (nullptr != m_LightBuffer)
+    {
+        delete m_LightBuffer;
+        m_LightBuffer = nullptr;
+    }
+}
+
+void CMaterialEditor::init()
+{
     // RenderTarget
     m_ViewportRTTex = CAssetMgr::GetInst()->CreateTexture(L"MtrlEditorViewportTex", 1280, 1280, DXGI_FORMAT_R16G16B16A16_FLOAT,
                                                           D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
@@ -64,33 +95,6 @@ CMaterialEditor::CMaterialEditor()
 
     m_LightBuffer = new CStructuredBuffer;
     m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
-}
-
-CMaterialEditor::~CMaterialEditor()
-{
-    if (nullptr != m_ViewportCam)
-    {
-        delete m_ViewportCam->GetOwner();
-        m_ViewportCam = nullptr;
-    }
-
-    if (nullptr != m_ViewportObj)
-    {
-        delete m_ViewportObj;
-        m_ViewportObj = nullptr;
-    }
-
-    if (nullptr != m_LightObj)
-    {
-        delete m_LightObj;
-        m_LightObj = nullptr;
-    }
-
-    if (nullptr != m_LightBuffer)
-    {
-        delete m_LightBuffer;
-        m_LightBuffer = nullptr;
-    }
 }
 
 void CMaterialEditor::render()

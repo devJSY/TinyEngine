@@ -104,6 +104,17 @@ CLevel* CLevelMgr::CreateNewLevel()
     pSkyBoxObj->AddComponent(new CSkyBox);
 
     pSkyBoxObj->Transform()->SetRelativePos(Vec3(5000.f, 0.f, 0.f));
+    pSkyBoxObj->SkyBox()->SetBrdfTex(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessBrdf.dds", L"Texture\\skybox\\moonless\\moonlessBrdf.dds"));
+
+    pSkyBoxObj->SkyBox()->SetEnvTex(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds", L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds"));
+
+    pSkyBoxObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessDiffuseHDR.dds",
+                                                                             L"Texture\\skybox\\moonless\\moonlessDiffuseHDR.dds"));
+
+    pSkyBoxObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessSpecularHDR.dds",
+                                                                              L"Texture\\skybox\\moonless\\moonlessSpecularHDR.dds"));
 
     NewLevel->AddObject(pSkyBoxObj, 15);
 
@@ -116,7 +127,10 @@ CLevel* CLevelMgr::CreateNewLevel()
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\ConeIce\\ConeIce.fbx")->Instantiate();
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\DededeMap\\IbMountain\\IbMountain_0.fbx")->Instantiate();
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\DededeMap\\IbBossTemple\\IbBossTemple01L.fbx")->Instantiate();
-    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\HotHead\\HotHead.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\HotHead\\HotHead.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Elfilis\\untitled.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Halberd\\untitled.fbx")->Instantiate();
+    CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Butterfly\\Butterfly_Anim.fbx")->Instantiate();
     pFbxObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
     NewLevel->AddObject(pFbxObj, 0);
 

@@ -1,6 +1,9 @@
 #pragma once
 #include "CAsset.h"
 
+class CGameObject;
+class CGameObjectEx;
+
 class CMeshData : public CAsset
 {
 private:
@@ -11,6 +14,7 @@ public:
     static CMeshData* LoadFromFBX(const wstring& _RelativePath);
 
     CGameObject* Instantiate();
+    CGameObjectEx* InstantiateEx();
 
 public:
     virtual int Save(const wstring& _strRelativePath);

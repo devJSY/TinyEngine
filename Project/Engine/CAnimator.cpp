@@ -142,6 +142,69 @@ void CAnimator::UpdateData()
     m_BoneFinalMatBuffer->UpdateData(31);
 }
 
+void CAnimator::finaltick_ModelEditor()
+{
+    if (nullptr == m_SkeletalMesh)
+    {
+        // SkeletalMesh 가 존재하지 않는 경우 Mesh Render의 Mesh로 설정
+        CheckSkeletalMesh();
+        return;
+    }
+
+    // 현재 재생중인 Clip 의 시간을 진행한다.
+    if (m_bPlay)
+    {
+        m_vecClipUpdateTime[m_CurClipIdx] += DT_ENGINE * m_PlaySpeed;
+    }
+
+    if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
+    {
+        // 반복 재생
+        if (m_bRepeat)
+        {
+            m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
+        }
+        else
+        {
+            m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+        }
+    }
+
+    m_CurTime = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dStartTime + m_vecClipUpdateTime[m_CurClipIdx];
+
+    // 현재 프레임 인덱스 구하기
+    double dFrameIdx = m_CurTime * m_FrameRate;
+    m_FrameIdx = (int)(dFrameIdx);
+
+    // 다음 프레임 인덱스
+    if (m_FrameIdx >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iEndFrame)
+        m_NextFrameIdx = m_FrameIdx; // 끝이면 현재 인덱스를 유지
+    else
+        m_NextFrameIdx = m_FrameIdx + 1;
+
+    // 프레임간의 시간에 따른 비율을 구해준다.
+    m_Ratio = (float)(dFrameIdx - (double)m_FrameIdx);
+
+    // Animation Update Compute Shader
+    static CAnimationUpdateShader* pUpdateShader =
+        (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
+
+    // Bone Data
+    CheckBoneFinalMatBuffer();
+
+    pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
+    pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
+    pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
+
+    pUpdateShader->SetBoneCount(m_SkeletalMesh->GetBoneCount());
+    pUpdateShader->SetFrameIndex(m_FrameIdx);
+    pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
+    pUpdateShader->SetFrameRatio(m_Ratio);
+
+    // 업데이트 쉐이더 실행
+    pUpdateShader->Execute();
+}
+
 void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
 {
     if (nullptr == _SkeletalMesh)
@@ -164,6 +227,8 @@ void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
     {
         m_FrameRate = FbxTime::GetFrameRate(vecAnimClip->back().eMode);
     }
+
+    CheckBoneFinalMatBuffer();
 }
 
 void CAnimator::SetFrameIdx(int _FrameIdx)
@@ -242,7 +307,7 @@ void CAnimator::CheckBoneFinalMatBuffer()
     UINT iBoneCount = m_SkeletalMesh->GetBoneCount();
     if (m_BoneFinalMatBuffer->GetElementCount() != iBoneCount)
     {
-        m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
+        m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, true, nullptr);
     }
 }
 

@@ -799,7 +799,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
         Ptr<CMesh> pSkeletalMesh = pAnimator->GetSkeletalMesh();
 
         // Skeletal Mesh
-        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Skeletal Mesh"))
+        if (ImGui::TreeNodeEx("Skeletal Mesh##Outliner Animator", m_DefaultTreeNodeFlag))
         {
             string name;
             if (nullptr != pSkeletalMesh)
@@ -813,10 +813,10 @@ void COutliner::DrawAnimator(CGameObject* obj)
         // Animation
         if (nullptr != pSkeletalMesh)
         {
-            if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Animation"))
+            if (ImGui::TreeNodeEx("Animation##Outliner Animator", m_DefaultTreeNodeFlag))
             {
                 // =====================
-                // Animation Select
+                // Animations
                 // =====================
                 const vector<tMTAnimClip>* vecAnimClip = pSkeletalMesh->GetAnimClip();
 
@@ -2048,7 +2048,6 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
         if (nullptr != pMesh)
         {
-
             // Material
             if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
             {
@@ -2520,30 +2519,46 @@ void COutliner::DrawSkybox(CGameObject* obj)
 
     if (open)
     {
-        // =======================
-        // Type
-        // =======================
-        static vector<string> SkyBoxTypes = {
-            "IBLBaker",
-            "LearnOpenGL",
-            "moonless",
-            "PureSky",
-        };
+        Ptr<CTexture> pBrdfTex = pSkyBox->GetBrdfTex();
+        Ptr<CTexture> pEnvTex = pSkyBox->GetEnvTex();
+        Ptr<CTexture> pDiffuseTex = pSkyBox->GetDiffuseTex();
+        Ptr<CTexture> pSpecularTex = pSkyBox->GetSpecularTex();
 
-        static string CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+        std::string BrdfTexName;
+        std::string EnvTexName;
+        std::string DiffuseTexName;
+        std::string SpecularTexName;
 
-        CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+        if (nullptr != pBrdfTex)
+            BrdfTexName = ToString(pBrdfTex->GetName());
 
-        if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Type").c_str(), CurType, SkyBoxTypes))
+        if (nullptr != pEnvTex)
+            EnvTexName = ToString(pEnvTex->GetName());
+
+        if (nullptr != pDiffuseTex)
+            DiffuseTexName = ToString(pDiffuseTex->GetName());
+
+        if (nullptr != pSpecularTex)
+            SpecularTexName = ToString(pSpecularTex->GetName());
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Brdf Texture").c_str(), BrdfTexName))
         {
-            if (SkyBoxTypes[0] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::IBLBaker);
-            else if (SkyBoxTypes[1] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::LearnOpenGL);
-            else if (SkyBoxTypes[2] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::moonless);
-            else if (SkyBoxTypes[3] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::PureSky);
+            pSkyBox->SetBrdfTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(BrdfTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Environment Texture").c_str(), EnvTexName))
+        {
+            pSkyBox->SetEnvTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(EnvTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Diffuse Texture").c_str(), DiffuseTexName))
+        {
+            pSkyBox->SetDiffuseTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(DiffuseTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Specular Texture").c_str(), SpecularTexName))
+        {
+            pSkyBox->SetSpecularTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(SpecularTexName)));
         }
 
         // =======================

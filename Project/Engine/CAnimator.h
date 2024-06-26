@@ -36,6 +36,7 @@ private:
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
+    void finaltick_ModelEditor();
 
     void ClearData();
 

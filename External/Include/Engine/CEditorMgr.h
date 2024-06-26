@@ -3,6 +3,7 @@
 #include "CMaterialEditor.h"
 #include "CBlueprintEditor.h"
 #include "CSpriteEditor.h"
+#include "CModelEditor.h"
 #include "CTileMapEditor.h"
 #include "CPhysics2DMaterialEditor.h"
 #include "CPhysicMaterialEditor.h"
@@ -52,6 +53,7 @@ public:
     CMaterialEditor* GetMaterialEditor() const { return (CMaterialEditor*)m_arrEditor[(UINT)EDITOR_TYPE::MATERIAL]; }
     CBlueprintEditor* GetBlueprintEditor() const { return (CBlueprintEditor*)m_arrEditor[(UINT)EDITOR_TYPE::BLUEPRINT]; }
     CSpriteEditor* GetSpriteEditor() const { return (CSpriteEditor*)m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]; }
+    CModelEditor* GetModelEditor() const { return (CModelEditor*)m_arrEditor[(UINT)EDITOR_TYPE::MODEL]; }
     CTileMapEditor* GetTileMapEditor() const { return (CTileMapEditor*)m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]; }
     CPhysics2DMaterialEditor* GetPhysics2DMaterialEditor() const
     {

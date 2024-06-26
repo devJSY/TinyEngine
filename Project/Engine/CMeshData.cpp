@@ -5,6 +5,7 @@
 #include "CAssetMgr.h"
 
 #include "CGameObject.h"
+#include "CGameObjectEx.h"
 #include "CTransform.h"
 #include "CMeshRender.h"
 #include "CAnimator.h"
@@ -25,28 +26,54 @@ CMeshData::~CMeshData()
 
 CGameObject* CMeshData::Instantiate()
 {
-    CGameObject* pNewObj = new CGameObject;
-    pNewObj->SetName(L"MeshData Instance");
-    pNewObj->AddComponent(new CTransform);
-    pNewObj->AddComponent(new CMeshRender);
+    CGameObject* pInstObj = new CGameObject;
+    pInstObj->SetName(GetName());
+    pInstObj->AddComponent(new CTransform);
+    pInstObj->AddComponent(new CMeshRender);
 
-    pNewObj->MeshRender()->SetMesh(m_pMesh);
+    pInstObj->MeshRender()->SetMesh(m_pMesh);
 
     for (UINT i = 0; i < m_vecMtrl.size(); ++i)
     {
-        pNewObj->MeshRender()->SetMaterial(m_vecMtrl[i], i);
+        pInstObj->MeshRender()->SetMaterial(m_vecMtrl[i], i);
     }
 
     // Animation 파트 추가
     if (false == m_pMesh->IsAnimMesh())
-        return pNewObj;
+        return pInstObj;
 
     CAnimator* pAnimator = new CAnimator;
-    pNewObj->AddComponent(pAnimator);
+    pInstObj->AddComponent(pAnimator);
 
     pAnimator->SetSkeletalMesh(m_pMesh);
 
-    return pNewObj;
+    return pInstObj;
+}
+
+CGameObjectEx* CMeshData::InstantiateEx()
+{
+    CGameObjectEx* pInstObjEx = new CGameObjectEx;
+    pInstObjEx->SetName(GetName());
+    pInstObjEx->AddComponent(new CTransform);
+    pInstObjEx->AddComponent(new CMeshRender);
+
+    pInstObjEx->MeshRender()->SetMesh(m_pMesh);
+
+    for (UINT i = 0; i < m_vecMtrl.size(); ++i)
+    {
+        pInstObjEx->MeshRender()->SetMaterial(m_vecMtrl[i], i);
+    }
+
+    // Animation 파트 추가
+    if (false == m_pMesh->IsAnimMesh())
+        return pInstObjEx;
+
+    CAnimator* pAnimator = new CAnimator;
+    pInstObjEx->AddComponent(pAnimator);
+
+    pAnimator->SetSkeletalMesh(m_pMesh);
+
+    return pInstObjEx;
 }
 
 int CMeshData::Save(const wstring& _strRelativePath)
