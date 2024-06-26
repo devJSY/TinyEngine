@@ -16,6 +16,9 @@
     <ClInclude Include="The Game of Sisyphus\CBulletCountUIScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
+    <ClInclude Include="The Game of Sisyphus\CBulletScript.h">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
+    </ClInclude>
     <ClInclude Include="The Game of Sisyphus\CGoalScript.h">
       <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClInclude>
@@ -164,7 +167,7 @@
       <Filter>Module\Unit</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAbility.h">
-      <Filter>Module\State Group\KirbyAbility</Filter>
+      <Filter>Module\StateGroup\KirbyAbility</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyFSM.h">
       <Filter>Scripts\FSM\KirbyFSM</Filter>
@@ -172,29 +175,29 @@
     <ClInclude Include="CKirbyMoveController.h">
       <Filter>Scripts\MoveController</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyRun.h">
-      <Filter>State\KirbyState\Run</Filter>
+    <ClInclude Include="CAnimationTestScript.h">
+      <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyIdle.h">
-      <Filter>State\KirbyState\Idle</Filter>
+    <ClInclude Include="CKirbyObject.h">
+      <Filter>Module\StateGroup\KirbyObject</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAbility_Normal.h">
-      <Filter>State\KirbyState\_State Group\Normal</Filter>
+      <Filter>State\KirbyAbility\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyRun.h">
+      <Filter>State\KirbyState\Run</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAttack.h">
       <Filter>State\KirbyState\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyIdle.h">
+      <Filter>State\KirbyState\Idle</Filter>
+    </ClInclude>
     <ClInclude Include="CPlayerMgr.h">
-      <Filter>Scripts\PlayerMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="CKirbyObject.h">
-      <Filter>Module\State Group\KirbyObject</Filter>
-    </ClInclude>
-    <ClInclude Include="The Game of Sisyphus\CBulletScript.h">
-      <Filter>Scripts\The Game of Sisyphus</Filter>
+      <Filter>Scripts\PlayerManager</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyBulletScript.h">
-      <Filter>Scripts\KirbyBullet</Filter>
+      <Filter>State\KirbyBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
+    </ClCompile>
+    <ClCompile Include="The Game of Sisyphus\CBulletScript.cpp">
+      <Filter>Scripts\The Game of Sisyphus</Filter>
     </ClCompile>
     <ClCompile Include="The Game of Sisyphus\CGoalScript.cpp">
       <Filter>Scripts\The Game of Sisyphus</Filter>
@@ -358,13 +364,37 @@
       <Filter>Module\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility.cpp">
-      <Filter>Module\State Group\KirbyAbility</Filter>
+      <Filter>Module\StateGroup\KirbyAbility</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyFSM.cpp">
       <Filter>Scripts\FSM\KirbyFSM</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyMoveController.cpp">
       <Filter>Scripts\MoveController</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimationTestScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyObject.cpp">
+      <Filter>Module\StateGroup\KirbyObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAbility_Normal.cpp">
+      <Filter>State\KirbyAbility\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyRun.cpp">
+      <Filter>State\KirbyState\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttack.cpp">
+      <Filter>State\KirbyState\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyIdle.cpp">
+      <Filter>State\KirbyState\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerMgr.cpp">
+      <Filter>Scripts\PlayerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBulletScript.cpp">
+      <Filter>State\KirbyBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -497,35 +527,35 @@
     <Filter Include="Module\Unit">
       <UniqueIdentifier>{ebad3036-12bc-48c3-bcba-b17801742ef1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Run">
-      <UniqueIdentifier>{fd770738-85c1-47b0-b327-3b0ea7d8223f}</UniqueIdentifier>
+    <Filter Include="Module\StateGroup">
+      <UniqueIdentifier>{b27fa8f3-8d75-490f-b445-55f878f3fd4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Idle">
-      <UniqueIdentifier>{97dca3e0-3026-422c-85f8-ee9e1869db01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\PlayerMgr">
-      <UniqueIdentifier>{ae2f576d-bf43-469a-9685-acd7854f7d81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Module\State Group">
-      <UniqueIdentifier>{c7a8362c-326f-4c72-b4cf-304bc89d9512}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Module\State Group\KirbyAbility">
+    <Filter Include="Module\StateGroup\KirbyAbility">
       <UniqueIdentifier>{d69c96af-566c-468a-9293-30bfaed70441}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Module\State Group\KirbyObject">
-      <UniqueIdentifier>{79dd3fec-492b-4633-8903-578f119156e3}</UniqueIdentifier>
+    <Filter Include="Module\StateGroup\KirbyObject">
+      <UniqueIdentifier>{89bdfd22-2940-44ec-ba4f-fd2331d65f6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run">
+      <UniqueIdentifier>{4415bcfb-c85a-483a-a065-927946cd7c95}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\Attack">
-      <UniqueIdentifier>{4eb03a71-b828-449a-a5a8-3da636b984d5}</UniqueIdentifier>
+      <UniqueIdentifier>{51d2c4a6-2f8c-4e64-9c25-9e0225979547}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\_State Group">
-      <UniqueIdentifier>{e30c46a5-bb29-4b46-9120-89768c281359}</UniqueIdentifier>
+    <Filter Include="State\KirbyState\Idle">
+      <UniqueIdentifier>{fe639bd6-4d24-46d6-b624-3c5a9c03ca37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\_State Group\Normal">
-      <UniqueIdentifier>{e35159d2-118b-4306-8cdf-5e072f92a227}</UniqueIdentifier>
+    <Filter Include="State\KirbyAbility">
+      <UniqueIdentifier>{5ee9a637-ce71-449c-a785-19f23f6c845d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\KirbyBullet">
-      <UniqueIdentifier>{0832448d-cb3c-4403-8af7-9543426f2a65}</UniqueIdentifier>
+    <Filter Include="State\KirbyAbility\Normal">
+      <UniqueIdentifier>{480a404a-5c6d-40dd-b81c-b2deda831a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\PlayerManager">
+      <UniqueIdentifier>{6cdc35c1-ba7c-4d69-bb31-8616c785861a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyBullet">
+      <UniqueIdentifier>{e7733917-0ffd-4dee-b078-d17213862822}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
