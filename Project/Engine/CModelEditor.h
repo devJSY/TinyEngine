@@ -18,11 +18,14 @@ private:
 
     // Viewport
     Ptr<CTexture> m_ViewportRTTex;
+    Ptr<CTexture> m_ViewportFloatRTTex;
     Ptr<CTexture> m_ViewportDSTex;
+
     CCamera* m_ViewportCam;
     CGameObjectEx* m_LightObj;
     CGameObjectEx* m_SkyBoxObj;
     CGameObjectEx* m_FloorObj;
+    CGameObjectEx* m_ToneMappingObj;
     CStructuredBuffer* m_LightBuffer;
 
 public:

@@ -90,10 +90,6 @@ Ptr<CMaterial> CRenderComponent::GetSharedMaterial(UINT _idx)
 
 Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 {
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
-        return nullptr;
-
     // 원본 재질이 없다 -> Nullptr 반환
     if (nullptr == m_vecMtrls[_idx].pSharedMtrl)
     {
