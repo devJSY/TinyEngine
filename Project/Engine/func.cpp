@@ -126,6 +126,9 @@ void GamePlayStatic::DrawDebugLine(const Matrix& _WorldMat, Vec3 _p1, Vec3 _p2, 
 
 void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
+    if (_vDir == Vec3() || _fLength == 0.f)
+        return;
+
     tDebugShapeInfo info = {};
     info.eShape = DEBUG_SHAPE::LINE;
 
@@ -180,7 +183,7 @@ void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, 
         meshData.indices.push_back(0);
         meshData.indices.push_back(1);
 
-        Ptr<CMesh> pMesh = new CMesh(true);
+        pMesh = new CMesh(true);
         pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
         CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
     }

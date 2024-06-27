@@ -181,6 +181,9 @@
     <ClInclude Include="CAnimationTestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CSpringArmCameraScript.h">
+      <Filter>Scripts\SpringArm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -360,6 +363,9 @@
     <ClCompile Include="CAnimationTestScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CSpringArmCameraScript.cpp">
+      <Filter>Scripts\SpringArm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -493,6 +499,9 @@
     </Filter>
     <Filter Include="Module\Unit">
       <UniqueIdentifier>{ebad3036-12bc-48c3-bcba-b17801742ef1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\SpringArm">
+      <UniqueIdentifier>{fc55fd22-e453-4e13-97d8-3051fbdde796}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
