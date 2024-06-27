@@ -12,8 +12,8 @@ class CSkyBox : public CRenderComponent
 private:
     SKYBOX_SHAPE m_Shape;
 
-    Ptr<CTexture> m_BrdfTex;
     Ptr<CTexture> m_EnvTex;
+    Ptr<CTexture> m_BrdfTex;
     Ptr<CTexture> m_DiffuseTex;
     Ptr<CTexture> m_SpecularTex;
 
@@ -21,11 +21,11 @@ public:
     SKYBOX_SHAPE GetSkyBoxShape() const { return m_Shape; };
     void SetShape(SKYBOX_SHAPE _shape);
 
-    Ptr<CTexture> GetBrdfTex() const { return m_BrdfTex; }
-    void SetBrdfTex(Ptr<CTexture> _BrdfTex) { m_BrdfTex = _BrdfTex; }
-
     Ptr<CTexture> GetEnvTex() const { return m_EnvTex; }
     void SetEnvTex(Ptr<CTexture> _EnvTex) { m_EnvTex = _EnvTex; }
+
+    Ptr<CTexture> GetBrdfTex() const { return m_BrdfTex; }
+    void SetBrdfTex(Ptr<CTexture> _BrdfTex) { m_BrdfTex = _BrdfTex; }
 
     Ptr<CTexture> GetDiffuseTex() const { return m_DiffuseTex; }
     void SetDiffuseTex(Ptr<CTexture> _DiffuseTex) { m_DiffuseTex = _DiffuseTex; }

@@ -115,8 +115,8 @@ void CSkyBox::SaveToLevelFile(FILE* _File)
     CRenderComponent::SaveToLevelFile(_File);
 
     fwrite(&m_Shape, sizeof(SKYBOX_SHAPE), 1, _File);
-    SaveAssetRef(m_BrdfTex, _File);
     SaveAssetRef(m_EnvTex, _File);
+    SaveAssetRef(m_BrdfTex, _File);
     SaveAssetRef(m_DiffuseTex, _File);
     SaveAssetRef(m_SpecularTex, _File);
 }
@@ -126,8 +126,8 @@ void CSkyBox::LoadFromLevelFile(FILE* _File)
     CRenderComponent::LoadFromLevelFile(_File);
 
     fread(&m_Shape, sizeof(SKYBOX_SHAPE), 1, _File);
-    LoadAssetRef(m_BrdfTex, _File);
     LoadAssetRef(m_EnvTex, _File);
+    LoadAssetRef(m_BrdfTex, _File);
     LoadAssetRef(m_DiffuseTex, _File);
     LoadAssetRef(m_SpecularTex, _File);
 

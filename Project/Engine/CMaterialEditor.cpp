@@ -73,6 +73,7 @@ void CMaterialEditor::init()
 
     // Object
     m_ViewportObj = new CGameObjectEx;
+    m_ViewportObj->SetName(L"Object");
     m_ViewportObj->AddComponent(new CTransform);
     m_ViewportObj->AddComponent(new CMeshRender);
 
@@ -85,6 +86,7 @@ void CMaterialEditor::init()
 
     // Light
     m_LightObj = new CGameObjectEx;
+    m_LightObj->SetName(L"Point Light");
     m_LightObj->AddComponent(new CTransform);
     m_LightObj->AddComponent(new CLight);
 

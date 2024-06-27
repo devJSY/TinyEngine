@@ -3,3 +3,4 @@ CTestFSM
 CKirbyFSM
 CKirbyMoveController
 CAnimationTestScript
+CModelEditorCameraMoveScript

@@ -2,6 +2,12 @@
 #include "CEditor.h"
 
 class CGameObjectEx;
+class CCamera;
+
+class CStructuredBuffer;
+
+class CTexture;
+class CMeshData;
 
 class CModelEditor : public CEditor
 {
@@ -9,6 +15,15 @@ private:
     CGameObjectEx* m_ModelObj;
     int m_SelectedBoneIdx;
     vector<Matrix> m_FinalBoneMat;
+
+    // Viewport
+    Ptr<CTexture> m_ViewportRTTex;
+    Ptr<CTexture> m_ViewportDSTex;
+    CCamera* m_ViewportCam;
+    CGameObjectEx* m_LightObj;
+    CGameObjectEx* m_SkyBoxObj;
+    CGameObjectEx* m_FloorObj;
+    CStructuredBuffer* m_LightBuffer;
 
 public:
     virtual void init() override;
@@ -26,8 +41,8 @@ private:
     void SkeletonRe(const vector<tMTBone>& _vecBone, int _BoneIdx, int _NodeOpenFlag);
     void DrawAnimation();
 
-private:
-    void ReleaseModel();
+public:
+    void SetModel(Ptr<CMeshData> _MeshData);
 
 public:
     CModelEditor();

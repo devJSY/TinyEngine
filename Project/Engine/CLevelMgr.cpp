@@ -104,11 +104,12 @@ CLevel* CLevelMgr::CreateNewLevel()
     pSkyBoxObj->AddComponent(new CSkyBox);
 
     pSkyBoxObj->Transform()->SetRelativePos(Vec3(5000.f, 0.f, 0.f));
-    pSkyBoxObj->SkyBox()->SetBrdfTex(
-        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessBrdf.dds", L"Texture\\skybox\\moonless\\moonlessBrdf.dds"));
 
     pSkyBoxObj->SkyBox()->SetEnvTex(
         CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds", L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds"));
+
+    pSkyBoxObj->SkyBox()->SetBrdfTex(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessBrdf.dds", L"Texture\\skybox\\moonless\\moonlessBrdf.dds"));
 
     pSkyBoxObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessDiffuseHDR.dds",
                                                                              L"Texture\\skybox\\moonless\\moonlessDiffuseHDR.dds"));

@@ -181,6 +181,9 @@
     <ClInclude Include="CAnimationTestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CModelEditorCameraMoveScript.h">
+      <Filter>Scripts\CameraMove</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -359,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="CAnimationTestScript.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CModelEditorCameraMoveScript.cpp">
+      <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

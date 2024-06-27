@@ -2075,14 +2075,14 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
                         ImGui::EndDragDropTarget();
                     }
-                }
 
-                ImGui::Separator();
-
-                if (ImGui_AlignButton("Material Editor", 1.f))
-                {
-                    CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
-                    CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMeshRender->GetMaterial(0));
+                    string MtrlEditorButtonStr = "Material Editor##";
+                    MtrlEditorButtonStr += to_string(i);
+                    if (ImGui_AlignButton(MtrlEditorButtonStr.c_str(), 1.f))
+                    {
+                        CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
+                        CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
+                    }
                 }
 
                 ImGui::TreePop();
@@ -2519,21 +2519,21 @@ void COutliner::DrawSkybox(CGameObject* obj)
 
     if (open)
     {
-        Ptr<CTexture> pBrdfTex = pSkyBox->GetBrdfTex();
         Ptr<CTexture> pEnvTex = pSkyBox->GetEnvTex();
+        Ptr<CTexture> pBrdfTex = pSkyBox->GetBrdfTex();
         Ptr<CTexture> pDiffuseTex = pSkyBox->GetDiffuseTex();
         Ptr<CTexture> pSpecularTex = pSkyBox->GetSpecularTex();
 
-        std::string BrdfTexName;
         std::string EnvTexName;
+        std::string BrdfTexName;
         std::string DiffuseTexName;
         std::string SpecularTexName;
 
-        if (nullptr != pBrdfTex)
-            BrdfTexName = ToString(pBrdfTex->GetName());
-
         if (nullptr != pEnvTex)
             EnvTexName = ToString(pEnvTex->GetName());
+
+        if (nullptr != pBrdfTex)
+            BrdfTexName = ToString(pBrdfTex->GetName());
 
         if (nullptr != pDiffuseTex)
             DiffuseTexName = ToString(pDiffuseTex->GetName());
@@ -2541,14 +2541,14 @@ void COutliner::DrawSkybox(CGameObject* obj)
         if (nullptr != pSpecularTex)
             SpecularTexName = ToString(pSpecularTex->GetName());
 
-        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Brdf Texture").c_str(), BrdfTexName))
-        {
-            pSkyBox->SetBrdfTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(BrdfTexName)));
-        }
-
         if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Environment Texture").c_str(), EnvTexName))
         {
             pSkyBox->SetEnvTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(EnvTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Brdf Texture").c_str(), BrdfTexName))
+        {
+            pSkyBox->SetBrdfTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(BrdfTexName)));
         }
 
         if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Diffuse Texture").c_str(), DiffuseTexName))

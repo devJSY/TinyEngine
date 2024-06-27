@@ -211,7 +211,7 @@ void CCameraMoveScript::MoveFocusOrthographic()
     Vec2 dir = Vec2(ObjPos.x, ObjPos.y) - Vec2(CamPos.x, CamPos.y);
 
     // 카메라 오브젝트가 선택되었거나 지정된 위치근처에 도달했다면 Stop
-    if (GetOwner() == pSelectedObj || (dir.Length() < 10.f))
+    if (GetOwner() == pSelectedObj || (dir.Length() < 5.f))
     {
         m_bFocus = false;
     }
@@ -237,7 +237,7 @@ void CCameraMoveScript::MoveFocusPerspective()
 
     float scale = 1.f;
 
-    float focusDist = 10.f;
+    float focusDist = 5.f;
     Vec3 CamDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 CamDistPos = Transform()->GetWorldPos() + CamDir * focusDist * scale;
 

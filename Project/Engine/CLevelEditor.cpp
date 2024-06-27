@@ -538,8 +538,12 @@ void CLevelEditor::render_Assets()
                     {
                     case ASSET_TYPE::MESH:
                         break;
-                    case ASSET_TYPE::MESHDATA:
-                        break;
+                    case ASSET_TYPE::MESHDATA: {
+                        Ptr<CMeshData> pMeshData = dynamic_cast<CMeshData*>(iter.second.Get());
+                        ShowEditor(EDITOR_TYPE::MODEL, true);
+                        CEditorMgr::GetInst()->GetModelEditor()->SetModel(pMeshData);
+                    }
+                    break;
                     case ASSET_TYPE::PREFAB:
                         break;
                     case ASSET_TYPE::TEXTURE:
@@ -692,12 +696,14 @@ void CLevelEditor::render_Viewport()
     // Drag & Drop
     if (ImGui::BeginDragDropTarget())
     {
-        // Level 불러오기
+        // Content Browser
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
         {
             string name = (char*)payload->Data;
             name.resize(payload->DataSize);
             std::filesystem::path fileNameStr = name;
+
+            // Level 불러오기
             if (fileNameStr.extension() == CLevelSaveLoad::GetLevelExtension())
             {
                 CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(fileNameStr.filename().wstring());
@@ -707,17 +713,29 @@ void CLevelEditor::render_Viewport()
             }
         }
 
-        // Prefab
+        // Assets
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
         {
             string AssetStr = (char*)payload->Data;
             AssetStr.resize(payload->DataSize);
             std::filesystem::path AssetPath = AssetStr;
+
+            CGameObject* pObj = nullptr;
+
+            // Prefab
             if (L".pref" == AssetPath.extension())
             {
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
-                CGameObject* pObj = pPrefab->Instantiate();
+                pObj = pPrefab->Instantiate();
+            }
+            else if (L".mdat" == AssetPath.extension())
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath);
+                pObj = pMeshData->Instantiate();
+            }
 
+            if (nullptr != pObj)
+            {
                 // 카메라위치 기준 생성
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();

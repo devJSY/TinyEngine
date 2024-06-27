@@ -1,17 +1,30 @@
 #include "pch.h"
 #include "CModelEditor.h"
 
+#include "CRenderMgr.h"
+#include <Scripts\\CScriptMgr.h>
+
 #include "CGameObjectEx.h"
 
-#include "CMeshRender.h"
+#include "components.h"
+#include "CScript.h"
 
-#include "CAnimator.h"
+#include "CDevice.h"
+#include "CConstBuffer.h"
+#include "CMRT.h"
 
 CModelEditor::CModelEditor()
     : CEditor(EDITOR_TYPE::MODEL)
     , m_ModelObj(nullptr)
     , m_SelectedBoneIdx(-1)
     , m_FinalBoneMat{}
+    , m_ViewportRTTex(nullptr)
+    , m_ViewportDSTex(nullptr)
+    , m_ViewportCam(nullptr)
+    , m_LightObj(nullptr)
+    , m_SkyBoxObj(nullptr)
+    , m_FloorObj(nullptr)
+    , m_LightBuffer(nullptr)
 {
 }
 
@@ -22,50 +35,165 @@ CModelEditor::~CModelEditor()
         delete m_ModelObj;
         m_ModelObj = nullptr;
     }
+
+    if (nullptr != m_ViewportCam)
+    {
+        delete m_ViewportCam->GetOwner();
+        m_ViewportCam = nullptr;
+    }
+
+    if (nullptr != m_LightObj)
+    {
+        delete m_LightObj;
+        m_LightObj = nullptr;
+    }
+
+    if (nullptr != m_SkyBoxObj)
+    {
+        delete m_SkyBoxObj;
+        m_SkyBoxObj = nullptr;
+    }
+
+    if (nullptr != m_FloorObj)
+    {
+        delete m_FloorObj;
+        m_FloorObj = nullptr;
+    }
+
+    if (nullptr != m_LightBuffer)
+    {
+        delete m_LightBuffer;
+        m_LightBuffer = nullptr;
+    }
 }
 
 void CModelEditor::init()
 {
+    // RenderTarget
+    m_ViewportRTTex = CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportRTTex", 1280, 1280, DXGI_FORMAT_R16G16B16A16_FLOAT,
+                                                          D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+    m_ViewportDSTex = CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportDSTex", 1280, 1280, DXGI_FORMAT_D24_UNORM_S8_UINT,
+                                                          D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+
+    // Camera
+    CGameObjectEx* pCam = new CGameObjectEx;
+
+    pCam->SetName(L"Editor Camera");
+    pCam->AddComponent(new CTransform);
+    pCam->AddComponent(new CCamera);
+    pCam->AddComponent(CScriptMgr::GetScript(MODELEDITORCAMERAMOVESCRIPT));
+
+    pCam->Transform()->SetRelativePos(Vec3(0.f, 250.f, -250.f));
+
+    m_ViewportCam = pCam->Camera();
+
+    m_ViewportCam->LayerMaskAll();
+    m_ViewportCam->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    m_ViewportCam->SetFOV(XM_PI / 2.f);
+    m_ViewportCam->SetFar(10000.f);
+    m_ViewportCam->SetHDRI(true);
+
+    // Light
+    m_LightObj = new CGameObjectEx;
+    m_LightObj->SetName(L"Directional Light");
+    m_LightObj->AddComponent(new CTransform);
+    m_LightObj->AddComponent(new CLight);
+
+    m_LightObj->Transform()->SetRelativePos(Vec3(-500.f, 1000.f, -500.f));
+    m_LightObj->Transform()->SetDirection(Vec3(1.f, -1.f, 1.f));
+    m_LightObj->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+    // m_LightObj->Light()->SetLightRadiance(Vec3(0.5f, 0.5f, 0.5f));
+    m_LightObj->Light()->SetLightRadiance(Vec3(1.f, 0.f, 0.f));
+    m_LightObj->Light()->SetRadius(10.f);
+
+    // SkyBox
+    m_SkyBoxObj = new CGameObjectEx;
+    m_SkyBoxObj->SetName(L"SkyBox");
+    m_SkyBoxObj->AddComponent(new CTransform);
+    m_SkyBoxObj->AddComponent(new CSkyBox);
+
+    m_SkyBoxObj->Transform()->SetRelativePos(Vec3(0.f, 5000.f, 0.f));
+
+    m_SkyBoxObj->SkyBox()->SetEnvTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaEnvHDR.dds",
+                                                                          L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaEnvHDR.dds"));
+
+    m_SkyBoxObj->SkyBox()->SetBrdfTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaBrdf.dds",
+                                                                           L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaBrdf.dds"));
+
+    m_SkyBoxObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaDiffuseHDR.dds",
+                                                                              L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaDiffuseHDR.dds"));
+
+    m_SkyBoxObj->SkyBox()->SetSpecularTex(
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaSpecularHDR.dds",
+                                             L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaSpecularHDR.dds"));
+
+    // Floor
+    m_FloorObj = new CGameObjectEx;
+    m_FloorObj->SetName(L"Floor");
+    m_FloorObj->AddComponent(new CTransform);
+    m_FloorObj->AddComponent(new CMeshRender);
+
+    m_FloorObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    m_FloorObj->Transform()->SetRelativeScale(Vec3(500.f, 10.f, 500.f));
+
+    m_FloorObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
+    m_FloorObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
+    m_FloorObj->MeshRender()->GetMaterial(0)->SetMaterialCoefficient(Vec4(1.f, 1.f, 1.f, 1.f));
+    m_FloorObj->MeshRender()->SetFrustumCheck(false);
+
+    // Light Buffer
+    m_LightBuffer = new CStructuredBuffer;
+    m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
 }
 
 void CModelEditor::tick()
 {
-    if (nullptr == m_ModelObj)
-        return;
+    if (nullptr != m_ModelObj)
+    {
+        m_ModelObj->tick();
+    }
 
-    m_ModelObj->tick();
+    m_ViewportCam->GetOwner()->tick();
+    m_LightObj->Transform()->tick();
+    m_SkyBoxObj->tick();
+    m_FloorObj->tick();
 }
 
 void CModelEditor::finaltick()
 {
-    if (nullptr == m_ModelObj)
-        return;
-
-    for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+    if (nullptr != m_ModelObj)
     {
-        CComponent* pComp = m_ModelObj->GetComponent((COMPONENT_TYPE)i);
-        if (nullptr != pComp)
+        for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
         {
-            if (i == (UINT)COMPONENT_TYPE::ANIMATOR)
+            CComponent* pComp = m_ModelObj->GetComponent((COMPONENT_TYPE)i);
+            if (nullptr != pComp)
             {
-                m_ModelObj->Animator()->finaltick_ModelEditor();
-            }
-            else
-            {
-                pComp->finaltick();
+                if (i == (UINT)COMPONENT_TYPE::ANIMATOR)
+                {
+                    m_ModelObj->Animator()->finaltick_ModelEditor();
+                }
+                else
+                {
+                    pComp->finaltick();
+                }
             }
         }
+
+        UINT BoneCount = m_ModelObj->Animator()->GetBoneCount();
+
+        if (m_FinalBoneMat.size() != BoneCount)
+        {
+            m_FinalBoneMat.resize(BoneCount);
+        }
+
+        // 최종 Bone 행렬을 받아온다.
+        m_ModelObj->Animator()->GetFinalBoneMat()->GetData(m_FinalBoneMat.data(), BoneCount);
     }
 
-    UINT BoneCount = m_ModelObj->Animator()->GetBoneCount();
-
-    if (m_FinalBoneMat.size() != BoneCount)
-    {
-        m_FinalBoneMat.resize(BoneCount);
-    }
-
-    // 최종 Bone 행렬을 받아온다.
-    m_ModelObj->Animator()->GetFinalBoneMat()->GetData(m_FinalBoneMat.data(), BoneCount);
+    m_ViewportCam->GetOwner()->finaltick();
+    m_LightObj->Transform()->finaltick();
+    m_SkyBoxObj->finaltick();
+    m_FloorObj->finaltick();
 }
 
 void CModelEditor::render(bool* open)
@@ -114,6 +242,63 @@ void CModelEditor::render()
 void CModelEditor::DrawViewport()
 {
     ImGui::Begin("Viewport##ModelEditor");
+
+    // 렌더타겟 설정
+    CONTEXT->ClearRenderTargetView(m_ViewportRTTex->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
+    CONTEXT->ClearDepthStencilView(m_ViewportDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    CONTEXT->OMSetRenderTargets(1, m_ViewportRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
+    CDevice::GetInst()->SetViewport(1280.f, 1280.f);
+
+    // 카메라 정보 설정
+    g_Transform.matView = m_ViewportCam->GetViewMat();
+    g_Transform.matViewInv = m_ViewportCam->GetViewInvMat();
+    g_Transform.matProj = m_ViewportCam->GetProjMat();
+    g_Transform.matProjInv = m_ViewportCam->GetProjInvMat();
+
+    // 광원 정보 설정
+    g_Global.g_LightCount = 1;
+
+    // 메인 카메라 위치 등록
+    g_Global.g_eyeWorld = m_ViewportCam->Transform()->GetWorldPos();
+
+    // 전역 상수 데이터 바인딩
+    CConstBuffer* pGlobalBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::GLOBAL_DATA);
+    pGlobalBuffer->SetData(&g_Global);
+    pGlobalBuffer->UpdateData();
+    pGlobalBuffer->UpdateData_CS();
+
+    // Light 정보 설정
+    const tLightInfo& info = m_LightObj->Light()->GetLightInfo();
+
+    tLightInfo CopyInfo = {};
+    CopyInfo = info;
+    CopyInfo.vWorldPos = m_LightObj->Transform()->GetWorldPos();
+    CopyInfo.vWorldDir = m_LightObj->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    CopyInfo.viewMat = Matrix();
+    CopyInfo.projMat = Matrix();
+    CopyInfo.invProj = Matrix();
+
+    m_LightBuffer->SetData(&CopyInfo, 1);
+    m_LightBuffer->UpdateData(14);
+
+    // 렌더링
+    m_SkyBoxObj->render();
+    m_FloorObj->render();
+    if (nullptr != m_ModelObj)
+    {
+        m_ModelObj->render();
+    }
+
+    ImGui::Image((void*)m_ViewportRTTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
+
+    // 렌더타겟 원상복귀
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+    for (UINT i = 0; i < TEX_PARAM::TEX_END; i++)
+    {
+        CTexture::Clear(i);
+    }
+
     ImGui::End();
 }
 
@@ -143,10 +328,7 @@ void CModelEditor::DrawDetails()
 
             if (nullptr != pMeshData)
             {
-                ReleaseModel();
-                m_ModelObj = pMeshData->InstantiateEx();
-                m_ModelObj->MeshRender()->SetFrustumCheck(false);
-                m_ModelObj->Animator()->SetPlay(false);
+                SetModel(pMeshData);
             }
         }
 
@@ -171,10 +353,7 @@ void CModelEditor::DrawDetails()
 
                 if (nullptr != pMeshData)
                 {
-                    ReleaseModel();
-                    m_ModelObj = pMeshData->InstantiateEx();
-                    m_ModelObj->MeshRender()->SetFrustumCheck(false);
-                    m_ModelObj->Animator()->SetPlay(false);
+                    SetModel(pMeshData);
                 }
             }
         }
@@ -457,7 +636,7 @@ void CModelEditor::DrawAnimation()
     ImGui::End();
 }
 
-void CModelEditor::ReleaseModel()
+void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
 {
     if (nullptr != m_ModelObj)
     {
@@ -468,4 +647,14 @@ void CModelEditor::ReleaseModel()
     // Bone 데이터 초기화
     m_SelectedBoneIdx = -1;
     m_FinalBoneMat.clear();
+
+    m_ModelObj = _MeshData->InstantiateEx();
+
+    m_ModelObj->Transform()->SetRelativePos(Vec3(0.f, 100.f, 0.f));
+    m_ModelObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
+    m_ModelObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100));
+
+    m_ModelObj->MeshRender()->SetFrustumCheck(false);
+
+    m_ModelObj->Animator()->SetPlay(false);
 }
