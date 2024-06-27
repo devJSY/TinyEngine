@@ -72,52 +72,37 @@ void GamePlayStatic::DrawDebugLine(const Matrix& _WorldMat, Vec3 _p1, Vec3 _p2, 
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    wstring MeshName = L"LineMesh_";
-    MeshName += std::to_wstring(_p1.x);
-    MeshName += std::to_wstring(_p1.y);
-    MeshName += std::to_wstring(_p1.z);
-    MeshName += L"_";
-    MeshName += std::to_wstring(_p2.x);
-    MeshName += std::to_wstring(_p2.y);
-    MeshName += std::to_wstring(_p2.z);
+    // Line Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec2> texcoords;
 
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+    tMeshData meshData;
+    positions.push_back(_p1);
+    positions.push_back(_p2);
 
-    if (nullptr == pMesh)
+    texcoords.push_back(Vec2(0.f, 0.f));
+    texcoords.push_back(Vec2(0.f, 0.f));
+
+    colors.push_back(_Color);
+    colors.push_back(_Color);
+
+    for (size_t i = 0; i < positions.size(); i++)
     {
-        // Line Mesh
-        vector<Vec3> positions;
-        vector<Vec3> colors;
-        vector<Vec2> texcoords;
+        Vtx v;
+        v.vPos = positions[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
 
-        tMeshData meshData;
-        positions.push_back(_p1);
-        positions.push_back(_p2);
-
-        texcoords.push_back(Vec2(0.f, 0.f));
-        texcoords.push_back(Vec2(0.f, 0.f));
-
-        colors.push_back(_Color);
-        colors.push_back(_Color);
-
-        for (size_t i = 0; i < positions.size(); i++)
-        {
-            Vtx v;
-            v.vPos = positions[i];
-            v.vUV = texcoords[i];
-            v.vColor = colors[i];
-            v.vColor.w = 1.f;
-
-            meshData.vertices.push_back(v);
-        }
-
-        meshData.indices.push_back(0);
-        meshData.indices.push_back(1);
-
-        Ptr<CMesh> pMesh = new CMesh(true);
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
-        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
+        meshData.vertices.push_back(v);
     }
+
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(1);
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
 
     info.pMesh = pMesh;
 
@@ -140,50 +125,37 @@ void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, 
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    wstring MeshName = L"LineMesh_";
-    MeshName += std::to_wstring(_vDir.x);
-    MeshName += std::to_wstring(_vDir.y);
-    MeshName += std::to_wstring(_vDir.z);
-    MeshName += L"_";
-    MeshName += std::to_wstring(_fLength);
+    // Line Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec2> texcoords;
 
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+    tMeshData meshData;
+    positions.push_back(Vec3(0.f, 0.f, 0.f));
+    positions.push_back(_vDir.Normalize());
 
-    if (nullptr == pMesh)
+    texcoords.push_back(Vec2(0.f, 0.f));
+    texcoords.push_back(Vec2(0.f, 0.f));
+
+    colors.push_back(_Color);
+    colors.push_back(_Color);
+
+    for (size_t i = 0; i < positions.size(); i++)
     {
-        // Line Mesh
-        vector<Vec3> positions;
-        vector<Vec3> colors;
-        vector<Vec2> texcoords;
+        Vtx v;
+        v.vPos = positions[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
 
-        tMeshData meshData;
-        positions.push_back(Vec3(0.f, 0.f, 0.f));
-        positions.push_back(_vDir.Normalize());
-
-        texcoords.push_back(Vec2(0.f, 0.f));
-        texcoords.push_back(Vec2(0.f, 0.f));
-
-        colors.push_back(_Color);
-        colors.push_back(_Color);
-
-        for (size_t i = 0; i < positions.size(); i++)
-        {
-            Vtx v;
-            v.vPos = positions[i];
-            v.vUV = texcoords[i];
-            v.vColor = colors[i];
-            v.vColor.w = 1.f;
-
-            meshData.vertices.push_back(v);
-        }
-
-        meshData.indices.push_back(0);
-        meshData.indices.push_back(1);
-
-        Ptr<CMesh> pMesh = new CMesh(true);
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
-        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
+        meshData.vertices.push_back(v);
     }
+
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(1);
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
 
     info.pMesh = pMesh;
 
@@ -369,42 +341,30 @@ void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, f
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    wstring MeshName = L"WireCapsuleMesh_";
-    MeshName += std::to_wstring(_fRadius);
-    MeshName += L"_";
-    MeshName += std::to_wstring(_HalfHeight);
-
     Matrix RotationMatrix = Matrix();
     switch (_Axis)
     {
     case AXIS_TYPE::X: {
-        MeshName += L"_X";
+
         RotationMatrix = XMMatrixRotationZ(XM_PIDIV2);
     }
     break;
     case AXIS_TYPE::Y: {
-        MeshName += L"_Y";
     }
     break;
     case AXIS_TYPE::Z: {
-        MeshName += L"_Z";
+
         RotationMatrix = XMMatrixRotationX(XM_PIDIV2);
     }
     break;
     }
 
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+    auto meshData = CAssetMgr::GetInst()->MakeWireCapsule(_fRadius, _HalfHeight, 15);
+    for (auto& vtx : meshData.vertices)
+        vtx.vPos = Vector3::Transform(vtx.vPos, RotationMatrix);
 
-    if (nullptr == pMesh)
-    {
-        auto meshData = CAssetMgr::GetInst()->MakeWireCapsule(_fRadius, _HalfHeight, 15);
-        for (auto& vtx : meshData.vertices)
-            vtx.vPos = Vector3::Transform(vtx.vPos, RotationMatrix);
-
-        pMesh = new CMesh(true);
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
-        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
-    }
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
 
     info.pMesh = pMesh;
 
@@ -420,64 +380,50 @@ void GamePlayStatic::DrawDebugPolygon(const Matrix& _WorldMat, Vec3 _Color, cons
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    wstring MeshName = L"PolygonMesh_";
+    // Polygon Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec3> normals;
+    vector<Vec2> texcoords;
+
     for (size_t i = 0; i < _Polygon.size(); i++)
     {
-        MeshName += std::to_wstring(_Polygon[i].x);
-        MeshName += std::to_wstring(_Polygon[i].y);
-        MeshName += L"_";
+        positions.push_back(Vec3(_Polygon[i].x, _Polygon[i].y, 0.f));
+        colors.push_back(_Color);
+        normals.push_back(Vec3(0.f, 0.f, -1.f));
+        texcoords.push_back(Vec2(0.f, 0.f));
     }
 
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+    tMeshData meshData;
 
-    if (nullptr == pMesh)
+    for (UINT i = 0; i < _Polygon.size(); i++)
     {
-        // Polygon Mesh
-        vector<Vec3> positions;
-        vector<Vec3> colors;
-        vector<Vec3> normals;
-        vector<Vec2> texcoords;
+        Vtx v;
+        v.vPos = positions[i];
+        v.vNormal = normals[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
 
-        for (size_t i = 0; i < _Polygon.size(); i++)
-        {
-            positions.push_back(Vec3(_Polygon[i].x, _Polygon[i].y, 0.f));
-            colors.push_back(_Color);
-            normals.push_back(Vec3(0.f, 0.f, -1.f));
-            texcoords.push_back(Vec2(0.f, 0.f));
-        }
-
-        tMeshData meshData;
-
-        for (UINT i = 0; i < _Polygon.size(); i++)
-        {
-            Vtx v;
-            v.vPos = positions[i];
-            v.vNormal = normals[i];
-            v.vUV = texcoords[i];
-            v.vColor = colors[i];
-            v.vColor.w = 1.f;
-
-            meshData.vertices.push_back(v);
-        }
-
-        for (UINT i = 0; i < _Polygon.size(); i++)
-        {
-            if (i == _Polygon.size() - 1)
-            {
-                meshData.indices.push_back(i);
-                meshData.indices.push_back(0);
-            }
-            else
-            {
-                meshData.indices.push_back(i);
-                meshData.indices.push_back(i + 1);
-            }
-        }
-
-        pMesh = new CMesh(true);
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
-        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
+        meshData.vertices.push_back(v);
     }
+
+    for (UINT i = 0; i < _Polygon.size(); i++)
+    {
+        if (i == _Polygon.size() - 1)
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(0);
+        }
+        else
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(i + 1);
+        }
+    }
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
 
     info.pMesh = pMesh;
 
@@ -502,64 +448,50 @@ void GamePlayStatic::DrawDebugPolygon(Vec3 _vWorldPos, Vec3 _vWorldScale, Vec3 _
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    wstring MeshName = L"PolygonMesh_";
+    // Polygon Mesh
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+    vector<Vec3> normals;
+    vector<Vec2> texcoords;
+
     for (size_t i = 0; i < _Polygon.size(); i++)
     {
-        MeshName += std::to_wstring(_Polygon[i].x);
-        MeshName += std::to_wstring(_Polygon[i].y);
-        MeshName += L"_";
+        positions.push_back(Vec3(_Polygon[i].x, _Polygon[i].y, 0.f));
+        colors.push_back(_Color);
+        normals.push_back(Vec3(0.f, 0.f, -1.f));
+        texcoords.push_back(Vec2(0.f, 0.f));
     }
 
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+    tMeshData meshData;
 
-    if (nullptr == pMesh)
+    for (UINT i = 0; i < _Polygon.size(); i++)
     {
-        // Polygon Mesh
-        vector<Vec3> positions;
-        vector<Vec3> colors;
-        vector<Vec3> normals;
-        vector<Vec2> texcoords;
+        Vtx v;
+        v.vPos = positions[i];
+        v.vNormal = normals[i];
+        v.vUV = texcoords[i];
+        v.vColor = colors[i];
+        v.vColor.w = 1.f;
 
-        for (size_t i = 0; i < _Polygon.size(); i++)
-        {
-            positions.push_back(Vec3(_Polygon[i].x, _Polygon[i].y, 0.f));
-            colors.push_back(_Color);
-            normals.push_back(Vec3(0.f, 0.f, -1.f));
-            texcoords.push_back(Vec2(0.f, 0.f));
-        }
-
-        tMeshData meshData;
-
-        for (UINT i = 0; i < _Polygon.size(); i++)
-        {
-            Vtx v;
-            v.vPos = positions[i];
-            v.vNormal = normals[i];
-            v.vUV = texcoords[i];
-            v.vColor = colors[i];
-            v.vColor.w = 1.f;
-
-            meshData.vertices.push_back(v);
-        }
-
-        for (UINT i = 0; i < _Polygon.size(); i++)
-        {
-            if (i == _Polygon.size() - 1)
-            {
-                meshData.indices.push_back(i);
-                meshData.indices.push_back(0);
-            }
-            else
-            {
-                meshData.indices.push_back(i);
-                meshData.indices.push_back(i + 1);
-            }
-        }
-
-        pMesh = new CMesh(true);
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
-        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
+        meshData.vertices.push_back(v);
     }
+
+    for (UINT i = 0; i < _Polygon.size(); i++)
+    {
+        if (i == _Polygon.size() - 1)
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(0);
+        }
+        else
+        {
+            meshData.indices.push_back(i);
+            meshData.indices.push_back(i + 1);
+        }
+    }
+
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
 
     info.pMesh = pMesh;
 
@@ -575,67 +507,52 @@ void GamePlayStatic::DrawDebugFrustum(const Vec3 WorldVertex[8], Vec3 _Color, bo
     info.bDepthTest = _bDepthTest;
     info.fDuration = _Duration;
 
-    wstring MeshName = L"FrustumMesh_";
+    vector<Vec3> positions;
+    vector<Vec3> colors;
+
+    tMeshData meshData;
+
     for (UINT i = 0; i < 8; i++)
     {
-        MeshName += std::to_wstring(WorldVertex[i].x);
-        MeshName += std::to_wstring(WorldVertex[i].y);
-        MeshName += std::to_wstring(WorldVertex[i].z);
-        MeshName += L"_";
+        Vtx v;
+        v.vPos = WorldVertex[i];
+        v.vColor = _Color;
+
+        meshData.vertices.push_back(v);
     }
 
-    Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(MeshName);
+    // Near
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(1);
+    meshData.indices.push_back(1);
+    meshData.indices.push_back(2);
+    meshData.indices.push_back(2);
+    meshData.indices.push_back(3);
+    meshData.indices.push_back(3);
+    meshData.indices.push_back(0);
 
-    if (nullptr == pMesh)
-    {
-        vector<Vec3> positions;
-        vector<Vec3> colors;
+    // Far
+    meshData.indices.push_back(4);
+    meshData.indices.push_back(5);
+    meshData.indices.push_back(5);
+    meshData.indices.push_back(6);
+    meshData.indices.push_back(6);
+    meshData.indices.push_back(7);
+    meshData.indices.push_back(7);
+    meshData.indices.push_back(4);
 
-        tMeshData meshData;
+    // Edge
+    meshData.indices.push_back(0);
+    meshData.indices.push_back(4);
+    meshData.indices.push_back(1);
+    meshData.indices.push_back(5);
+    meshData.indices.push_back(2);
+    meshData.indices.push_back(6);
+    meshData.indices.push_back(3);
+    meshData.indices.push_back(7);
 
-        for (UINT i = 0; i < 8; i++)
-        {
-            Vtx v;
-            v.vPos = WorldVertex[i];
-            v.vColor = _Color;
-
-            meshData.vertices.push_back(v);
-        }
-
-        // Near
-        meshData.indices.push_back(0);
-        meshData.indices.push_back(1);
-        meshData.indices.push_back(1);
-        meshData.indices.push_back(2);
-        meshData.indices.push_back(2);
-        meshData.indices.push_back(3);
-        meshData.indices.push_back(3);
-        meshData.indices.push_back(0);
-
-        // Far
-        meshData.indices.push_back(4);
-        meshData.indices.push_back(5);
-        meshData.indices.push_back(5);
-        meshData.indices.push_back(6);
-        meshData.indices.push_back(6);
-        meshData.indices.push_back(7);
-        meshData.indices.push_back(7);
-        meshData.indices.push_back(4);
-
-        // Edge
-        meshData.indices.push_back(0);
-        meshData.indices.push_back(4);
-        meshData.indices.push_back(1);
-        meshData.indices.push_back(5);
-        meshData.indices.push_back(2);
-        meshData.indices.push_back(6);
-        meshData.indices.push_back(3);
-        meshData.indices.push_back(7);
-
-        pMesh = new CMesh(true);
-        pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
-        CAssetMgr::GetInst()->AddAsset(MeshName, pMesh);
-    }
+    Ptr<CMesh> pMesh = new CMesh(true);
+    pMesh->Create(meshData.vertices.data(), (UINT)meshData.vertices.size(), meshData.indices.data(), (UINT)meshData.indices.size());
 
     info.pMesh = pMesh;
 
