@@ -443,20 +443,20 @@ void CLevelEditor::render_Toolbar()
     }
     else if (LEVEL_STATE::PAUSE == pCurLevel->GetState())
     {
-        if (CRenderMgr::GetInst()->GetEditorCamera() == CRenderMgr::GetInst()->GetMainCamera())
-        {
-            if (ImGui::ImageButton((void*)m_SimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
-            {
-                CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
-                GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::SIMULATE);
-            }
-        }
-        else
+        if (CLevelMgr::GetInst()->GetCurrentLevel()->GetPrevState() == LEVEL_STATE::PLAY)
         {
             if (ImGui::ImageButton((void*)m_PlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
             {
                 CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
                 GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
+            }
+        }
+        else
+        {
+            if (ImGui::ImageButton((void*)m_SimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
+            {
+                CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
+                GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::SIMULATE);
             }
         }
 

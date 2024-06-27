@@ -8,6 +8,7 @@ class CLevel : public CEntity
 private:
     CLayer* m_arrLayer[LAYER_MAX];
     LEVEL_STATE m_State;
+    LEVEL_STATE m_PrevState;
     int m_StepFrames;
 
 public:
@@ -25,6 +26,7 @@ public:
 public:
     void ChangeState(LEVEL_STATE _NextState);
     LEVEL_STATE GetState() const { return m_State; }
+    LEVEL_STATE GetPrevState() const { return m_PrevState; }
     void Step(int _Frames = 1);
 
 public:
