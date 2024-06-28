@@ -1295,6 +1295,12 @@ bool ImGui_TexturesComboUI(const string& caption, string& current_item)
         filter.Draw(ImGui_LabelPrefix("Filter").c_str());
         ImGui::Separator();
 
+        if (ImGui::Selectable("...", false))
+        {
+            current_item = string();
+            changed = true;
+        }
+
         for (const auto& iter : mapTextures)
         {
             string key = ToString(iter.first);
