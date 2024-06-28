@@ -4,3 +4,4 @@ CKirbyFSM
 CKirbyMoveController
 CAnimationTestScript
 CModelEditorCameraMoveScript
+CSpringArmCameraScript
