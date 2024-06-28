@@ -34,10 +34,10 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_MoveDir{0.f, 0.f, 0.f}
     , m_GroundNormal{0.f, 1.f, 0.f}
     , m_MoveVelocity{}
-    , m_Speed(2.f)
+    , m_Speed(15.f)
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
-    , m_Gravity(-10.f)
+    , m_Gravity(-20.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -76,9 +76,11 @@ void CKirbyMoveController::tick()
     // 표면 정렬 (보류)
     //SurfaceAlignment();
 
+
+    // Debug : 방향 표시
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 30.f, Vec3(0.f, 1.f, 0.f), true);
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 30.f, Vec3(1.f, 0.f, 0.f), true);
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 30.f, Vec3(0.f, 0.f, 1.f), true);
+    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 30.f, Vec3(1.f, 0.f, 0.f), true);
+    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 30.f, Vec3(0.f, 0.f, 1.f), true);
 
 }
 
@@ -172,7 +174,7 @@ void CKirbyMoveController::SetDir()
     // 180도 돌 경우 예외처리
     if (m_CurDir.Dot(m_TowardDir) == (-m_CurDir.Length() * m_TowardDir.Length()))
     {
-        m_TowardDir.x += 0.1;
+        m_TowardDir.x += 0.1f;
         m_TowardDir.Normalize();
     }
 
