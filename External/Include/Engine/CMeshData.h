@@ -16,6 +16,9 @@ public:
     CGameObject* Instantiate();
     CGameObjectEx* InstantiateEx();
 
+    Ptr<CMesh> GetMesh() const { return m_pMesh; }
+    const vector<Ptr<CMaterial>>& GetVecMaterial() const { return m_vecMtrl; }
+
 public:
     virtual int Save(const wstring& _strRelativePath);
     virtual int Load(const wstring& _strFilePath);

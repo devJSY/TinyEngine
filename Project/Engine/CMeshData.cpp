@@ -31,12 +31,7 @@ CGameObject* CMeshData::Instantiate()
     pInstObj->AddComponent(new CTransform);
     pInstObj->AddComponent(new CMeshRender);
 
-    pInstObj->MeshRender()->SetMesh(m_pMesh);
-
-    for (UINT i = 0; i < m_vecMtrl.size(); ++i)
-    {
-        pInstObj->MeshRender()->SetMaterial(m_vecMtrl[i], i);
-    }
+    pInstObj->MeshRender()->SetMeshData(this);
 
     // Animation 파트 추가
     if (false == m_pMesh->IsAnimMesh())
@@ -57,12 +52,7 @@ CGameObjectEx* CMeshData::InstantiateEx()
     pInstObjEx->AddComponent(new CTransform);
     pInstObjEx->AddComponent(new CMeshRender);
 
-    pInstObjEx->MeshRender()->SetMesh(m_pMesh);
-
-    for (UINT i = 0; i < m_vecMtrl.size(); ++i)
-    {
-        pInstObjEx->MeshRender()->SetMaterial(m_vecMtrl[i], i);
-    }
+    pInstObjEx->MeshRender()->SetMeshData(this);
 
     // Animation 파트 추가
     if (false == m_pMesh->IsAnimMesh())

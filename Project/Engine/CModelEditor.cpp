@@ -3,6 +3,7 @@
 
 #include "CRenderMgr.h"
 #include <Scripts\\CScriptMgr.h>
+#include "CEditorMgr.h"
 
 #include "CGameObjectEx.h"
 
@@ -18,6 +19,7 @@ CModelEditor::CModelEditor()
     , m_ModelObj(nullptr)
     , m_SelectedBoneIdx(-1)
     , m_FinalBoneMat{}
+    , m_bDrawWireFrame(false)
     , m_ViewportRTTex(nullptr)
     , m_ViewportFloatRTTex(nullptr)
     , m_ViewportDSTex(nullptr)
@@ -152,6 +154,7 @@ void CModelEditor::init()
     m_FloorObj->MeshRender()->GetDynamicMaterial(0)->SetMaterialCoefficient(Vec4(1.f, 1.f, 1.f, 1.f), Vec4(), Vec4(), 0.f, 0.2f);
     m_FloorObj->MeshRender()->SetFrustumCheck(false);
 
+    // ToneMapping
     m_ToneMappingObj = new CGameObjectEx;
     m_ToneMappingObj->SetName(L"ToneMapping Object");
     m_ToneMappingObj->AddComponent(new CTransform);
@@ -205,15 +208,18 @@ void CModelEditor::finaltick()
         }
 
         // FinalBone Matrix Bind
-        UINT BoneCount = m_ModelObj->Animator()->GetBoneCount();
-
-        if (m_FinalBoneMat.size() != BoneCount)
+        if (m_ModelObj->Animator()->IsVaild())
         {
-            m_FinalBoneMat.resize(BoneCount);
-        }
+            UINT BoneCount = m_ModelObj->Animator()->GetBoneCount();
 
-        // 최종 Bone 행렬을 받아온다.
-        m_ModelObj->Animator()->GetFinalBoneMat()->GetData(m_FinalBoneMat.data(), BoneCount);
+            if (m_FinalBoneMat.size() != BoneCount)
+            {
+                m_FinalBoneMat.resize(BoneCount);
+            }
+
+            // 최종 Bone 행렬을 받아온다.
+            m_ModelObj->Animator()->GetFinalBoneMat()->GetData(m_FinalBoneMat.data(), BoneCount);
+        }
     }
 
     m_ViewportCam->GetOwner()->finaltick();
@@ -350,7 +356,28 @@ void CModelEditor::DrawViewport()
     m_FloorObj->render();
     if (nullptr != m_ModelObj)
     {
-        m_ModelObj->render();
+        if (m_bDrawWireFrame)
+        {
+            if (nullptr != m_ModelObj->MeshRender()->GetMesh())
+            {
+                UINT SubsetCnt = m_ModelObj->MeshRender()->GetMesh()->GetSubsetCount();
+                for (UINT i = 0; i < SubsetCnt; ++i)
+                {
+                    Ptr<CMaterial> pMtrl = m_ModelObj->MeshRender()->GetMaterial(i);
+                    if (nullptr == pMtrl)
+                        continue;
+
+                    RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
+                    pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+                    m_ModelObj->MeshRender()->render(i);
+                    pMtrl->GetShader()->SetRSType(originRSType);
+                }
+            }
+        }
+        else
+        {
+            m_ModelObj->render();
+        }
     }
 
     // ToneMapping
@@ -391,12 +418,7 @@ void CModelEditor::DrawDetails()
 
         if (ImGui_ComboUI(ImGui_LabelPrefix("Mesh Data").c_str(), ModelName, mapMeshData))
         {
-            Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(ModelName));
-
-            if (nullptr != pMeshData)
-            {
-                SetModel(pMeshData);
-            }
+            SetModel(CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(ModelName)));
         }
 
         if (ImGui_AlignButton("Load Model", 1.f))
@@ -416,14 +438,79 @@ void CModelEditor::DrawDetails()
                 {
                     MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_OK);
                 }
-
                 else
                 {
-                    Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->LoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
+                    SetModel(CAssetMgr::GetInst()->LoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath())));
+                }
+            }
+        }
 
-                    if (nullptr != pMeshData)
+        ImGui::TreePop();
+    }
+
+    // ==========================
+    // Mesh
+    // ==========================
+    if (ImGui::TreeNodeEx("Mesh##ModelEditorDetails", DefaultTreeNodeFlag))
+    {
+        if (nullptr != m_ModelObj)
+        {
+            Ptr<CMesh> pMesh = m_ModelObj->MeshRender()->GetMesh();
+
+            string MeshName;
+            if (nullptr != pMesh)
+            {
+                MeshName = ToString(pMesh->GetName());
+            }
+
+            const map<wstring, Ptr<CAsset>>& mapMesh = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::MESH);
+
+            if (ImGui_ComboUI(ImGui_LabelPrefix("Mesh").c_str(), MeshName, mapMesh))
+            {
+                m_ModelObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(MeshName)));
+                m_FinalBoneMat.clear(); // Bone Matrix Reset
+            }
+        }
+
+        ImGui::TreePop();
+    }
+
+    // ==========================
+    // Material
+    // ==========================
+    if (ImGui::TreeNodeEx("Material##ModelEditorDetails", DefaultTreeNodeFlag))
+    {
+        if (nullptr != m_ModelObj)
+        {
+            CMeshRender* pMeshRender = m_ModelObj->MeshRender();
+            Ptr<CMesh> pMesh = pMeshRender->GetMesh();
+
+            if (nullptr != pMesh)
+            {
+                for (UINT i = 0; i < pMesh->GetSubsetCount(); ++i)
+                {
+                    Ptr<CMaterial> pCurMtrl = pMeshRender->GetMaterial(i);
+
+                    string CurMtrlname;
+                    if (nullptr != pCurMtrl)
                     {
-                        SetModel(pMeshData);
+                        CurMtrlname = ToString(pCurMtrl->GetName());
+                    }
+
+                    const map<wstring, Ptr<CAsset>>& mapMtrl = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::MATERIAL);
+
+                    if (ImGui_ComboUI(ImGui_LabelPrefix(ToString(pMesh->GetIBName(i)).c_str()).c_str(), CurMtrlname, mapMtrl))
+                    {
+                        m_ModelObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(CurMtrlname)), i);
+                    }
+
+                    string MtrlEditorStr = "Material ";
+                    MtrlEditorStr += std::to_string(i);
+                    MtrlEditorStr += " Editor";
+                    if (ImGui_AlignButton(MtrlEditorStr.c_str(), 1.f))
+                    {
+                        CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
+                        CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
                     }
                 }
             }
@@ -437,7 +524,8 @@ void CModelEditor::DrawDetails()
     // ==========================
     if (ImGui::TreeNodeEx("Bone##ModelEditorDetails", DefaultTreeNodeFlag))
     {
-        if (nullptr != m_ModelObj && -1 < m_SelectedBoneIdx)
+        if (nullptr != m_ModelObj && -1 < m_SelectedBoneIdx && nullptr != m_ModelObj->MeshRender()->GetMesh() &&
+            m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh())
         {
             const tMTBone& CurBone = m_ModelObj->MeshRender()->GetMesh()->GetBones()->at(m_SelectedBoneIdx);
             ImGui_InputText("Bone Name", ToString(CurBone.strBoneName).c_str());
@@ -451,7 +539,8 @@ void CModelEditor::DrawDetails()
     // ==========================
     if (ImGui::TreeNodeEx("Transforms##ModelEditorDetails", DefaultTreeNodeFlag))
     {
-        if (nullptr != m_ModelObj && -1 < m_SelectedBoneIdx)
+        if (nullptr != m_ModelObj && -1 < m_SelectedBoneIdx && nullptr != m_ModelObj->MeshRender()->GetMesh() &&
+            m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh())
         {
             const tMTBone& CurBone = m_ModelObj->MeshRender()->GetMesh()->GetBones()->at(m_SelectedBoneIdx);
 
@@ -491,6 +580,16 @@ void CModelEditor::DrawDetails()
         ImGui::TreePop();
     }
 
+    // ==========================
+    // Options
+    // ==========================
+    if (ImGui::TreeNodeEx("Options##ModelEditorDetails", DefaultTreeNodeFlag))
+    {
+        ImGui::Checkbox(ImGui_LabelPrefix("Draw WireFrame").c_str(), &m_bDrawWireFrame);
+
+        ImGui::TreePop();
+    }
+
     ImGui::End();
 }
 
@@ -498,7 +597,7 @@ void CModelEditor::DrawSkeletonTree()
 {
     ImGui::Begin("Skeleton Tree##ModelEditor");
 
-    if (nullptr != m_ModelObj)
+    if (nullptr != m_ModelObj && nullptr != m_ModelObj->MeshRender()->GetMesh() && m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh())
     {
         int NodeOpenFlag = 0;
         if (ImGui::Button("Expand All"))
@@ -583,7 +682,7 @@ void CModelEditor::DrawAnimation()
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh)
+        if (nullptr != pSkeletalMesh && pAnimator->IsVaild())
         {
             if (ImGui::TreeNodeEx("Animation##ModelEditor Animation", DefaultTreeNodeFlag))
             {
@@ -597,14 +696,22 @@ void CModelEditor::DrawAnimation()
 
                 string CurClipName = ToString(CurClip.strAnimName);
 
+                static ImGuiTextFilter filter;
                 int ChangedClipIdx = -1;
                 ImGui::Text("Animations");
                 if (ImGui::BeginCombo("##Anim", CurClipName.c_str()))
                 {
+                    filter.Draw(ImGui_LabelPrefix("Filter").c_str());
+                    ImGui::Separator();
+
                     for (int i = 0; i < vecAnimClip->size(); i++)
                     {
                         string ClipName = ToString(vecAnimClip->at(i).strAnimName);
                         bool is_selected = (CurClipName == ClipName);
+
+                        if (!filter.PassFilter(ClipName.c_str()))
+                            continue;
+
                         if (ImGui::Selectable(ClipName.c_str(), is_selected))
                         {
                             CurClipName = ClipName;
@@ -719,12 +826,17 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_SelectedBoneIdx = -1;
     m_FinalBoneMat.clear();
 
+    if (nullptr == _MeshData)
+    {
+        return;
+    }
+
     m_ModelObj = _MeshData->InstantiateEx();
 
     m_ModelObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
-    m_ModelObj->Transform()->SetRelativePos(Vec3(0.f, 100.f, 0.f));
+    m_ModelObj->Transform()->SetRelativePos(Vec3(0.f, 150.f, 0.f));
     m_ModelObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
-    m_ModelObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100));
+    m_ModelObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     m_ModelObj->MeshRender()->SetFrustumCheck(false);
 
@@ -737,4 +849,6 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     }
 
     m_ModelObj->Animator()->SetPlay(false);
+
+    m_bDrawWireFrame = false;
 }

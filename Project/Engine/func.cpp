@@ -1250,6 +1250,7 @@ bool ImGui_ComboUI(const string& caption, string& current_item, const std::vecto
         for (int n = 0; n < items.size(); n++)
         {
             bool is_selected = (current_item == items[n]);
+
             if (ImGui::Selectable(items[n].c_str(), is_selected))
             {
                 current_item = items[n];

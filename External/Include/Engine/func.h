@@ -146,19 +146,33 @@ void ImGui_SetWindowClass(EDITOR_TYPE _Type);
 template <typename T>
 inline bool ImGui_ComboUI(const string& caption, string& current_item, const std::map<std::wstring, T>& items)
 {
+    static ImGuiTextFilter filter;
     bool changed = false;
 
     if (ImGui::BeginCombo(caption.c_str(), current_item.c_str()))
     {
+        filter.Draw(ImGui_LabelPrefix("Filter").c_str());
+        ImGui::Separator();
+        if (ImGui::Selectable("...", false))
+        {
+            current_item = string();
+            changed = true;
+        }
+
         for (const auto& iter : items)
         {
             std::string strKey = ToString(iter.first);
             bool is_selected = (current_item == strKey);
+
+            if (!filter.PassFilter(strKey.c_str()))
+                continue;
+
             if (ImGui::Selectable(strKey.c_str(), is_selected))
             {
                 current_item = strKey;
                 changed = true;
             }
+
             if (is_selected)
             {
                 ImGui::SetItemDefaultFocus();

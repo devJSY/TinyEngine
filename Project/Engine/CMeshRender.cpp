@@ -48,7 +48,7 @@ void CMeshRender::render()
     }
 
     // Animator 업데이트
-    if (Animator())
+    if (Animator() && Animator()->IsVaild())
     {
         Animator()->UpdateData();
 
@@ -79,7 +79,7 @@ void CMeshRender::render()
         Animator2D()->Clear();
     }
 
-    if (Animator())
+    if (Animator() && Animator()->IsVaild())
     {
         Animator()->ClearData();
     }
@@ -97,7 +97,7 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
     }
 
     // Animator 업데이트
-    if (Animator())
+    if (Animator() && Animator()->IsVaild())
     {
         Animator()->UpdateData();
 
@@ -122,7 +122,7 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
         Animator2D()->Clear();
     }
 
-    if (Animator())
+    if (Animator() && Animator()->IsVaild())
     {
         Animator()->ClearData();
 
@@ -143,7 +143,7 @@ void CMeshRender::render(UINT _Subset)
     }
 
     // Animator 업데이트
-    if (Animator())
+    if (Animator() && Animator()->IsVaild())
     {
         Animator()->UpdateData();
 
@@ -165,7 +165,7 @@ void CMeshRender::render(UINT _Subset)
         Animator2D()->Clear();
     }
 
-    if (Animator())
+    if (Animator() && Animator()->IsVaild())
     {
         Animator()->ClearData();
 

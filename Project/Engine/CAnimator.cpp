@@ -60,12 +60,8 @@ CAnimator::~CAnimator()
 
 void CAnimator::finaltick()
 {
-    if (nullptr == m_SkeletalMesh)
-    {
-        // SkeletalMesh 가 존재하지 않는 경우 Mesh Render의 Mesh로 설정
-        CheckSkeletalMesh();
+    if (!IsVaild())
         return;
-    }
 
     // 현재 재생중인 Clip 의 시간을 진행한다.
     if (m_bPlay)
@@ -107,12 +103,8 @@ void CAnimator::finaltick()
 
 void CAnimator::UpdateData()
 {
-    if (nullptr == m_SkeletalMesh)
-    {
-        // SkeletalMesh 가 존재하지 않는 경우 Mesh Render의 Mesh로 설정
-        CheckSkeletalMesh();
+    if (!IsVaild())
         return;
-    }
 
     if (!m_bFinalMatUpdate)
     {
@@ -144,12 +136,8 @@ void CAnimator::UpdateData()
 
 void CAnimator::finaltick_ModelEditor()
 {
-    if (nullptr == m_SkeletalMesh)
-    {
-        // SkeletalMesh 가 존재하지 않는 경우 Mesh Render의 Mesh로 설정
-        CheckSkeletalMesh();
+    if (!IsVaild())
         return;
-    }
 
     // 현재 재생중인 Clip 의 시간을 진행한다.
     if (m_bPlay)
@@ -208,7 +196,29 @@ void CAnimator::finaltick_ModelEditor()
 void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
 {
     if (nullptr == _SkeletalMesh)
+    {
+        // Reset
+        m_SkeletalMesh = nullptr;
+        m_mapClip.clear();
+        m_CurClipIdx = 0;
+        m_vecClipUpdateTime.clear();
+        m_bPlay = true;
+        m_bRepeat = true;
+        m_PlaySpeed = 1.f;
+        m_FrameRate = 30;
+        m_CurTime = 0.;
+        m_NextFrameIdx = 0;
+        m_Ratio = 0.;
+        m_bFinalMatUpdate = false;
+
+        if (nullptr != m_BoneFinalMatBuffer)
+        {
+            delete m_BoneFinalMatBuffer;
+            m_BoneFinalMatBuffer = new CStructuredBuffer;
+        }
+
         return;
+    }
 
     m_SkeletalMesh = _SkeletalMesh;
 
@@ -291,17 +301,19 @@ bool CAnimator::IsFinish() const
     return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }
 
-void CAnimator::CheckSkeletalMesh()
+bool CAnimator::IsVaild()
 {
-    if (nullptr != MeshRender())
+    if (nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh())
     {
-        SetSkeletalMesh(MeshRender()->GetMesh());
+        return true;
     }
+
+    return false;
 }
 
 void CAnimator::CheckBoneFinalMatBuffer()
 {
-    if (nullptr == m_SkeletalMesh)
+    if (!IsVaild())
         return;
 
     UINT iBoneCount = m_SkeletalMesh->GetBoneCount();

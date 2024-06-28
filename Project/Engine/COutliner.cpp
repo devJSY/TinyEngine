@@ -811,7 +811,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh)
+        if (nullptr != pSkeletalMesh && pAnimator->IsVaild())
         {
             if (ImGui::TreeNodeEx("Animation##Outliner Animator", m_DefaultTreeNodeFlag))
             {
@@ -825,14 +825,22 @@ void COutliner::DrawAnimator(CGameObject* obj)
 
                 string CurClipName = ToString(CurClip.strAnimName);
 
+                static ImGuiTextFilter filter;
                 int ChangedClipIdx = -1;
                 ImGui::Text("Animations");
                 if (ImGui::BeginCombo("##Anim", CurClipName.c_str()))
                 {
+                    filter.Draw(ImGui_LabelPrefix("Filter").c_str());
+                    ImGui::Separator();
+
                     for (int i = 0; i < vecAnimClip->size(); i++)
                     {
                         string ClipName = ToString(vecAnimClip->at(i).strAnimName);
                         bool is_selected = (CurClipName == ClipName);
+
+                        if (!filter.PassFilter(ClipName.c_str()))
+                            continue;
+
                         if (ImGui::Selectable(ClipName.c_str(), is_selected))
                         {
                             CurClipName = ClipName;
@@ -2038,6 +2046,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
                     pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
+                    pMesh = pMeshRender->GetMesh();
                 }
 
                 ImGui::EndDragDropTarget();
@@ -2061,7 +2070,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                         CurMtrlname = ToString(pCurMtrl->GetName());
                     }
 
-                    ImGui_InputText((string("Material ") + std::to_string(i)).c_str(), CurMtrlname);
+                    ImGui_InputText(ToString(pMesh->GetIBName(i)).c_str(), CurMtrlname);
 
                     // Drag & Drop
                     if (ImGui::BeginDragDropTarget())
@@ -2076,9 +2085,10 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                         ImGui::EndDragDropTarget();
                     }
 
-                    string MtrlEditorButtonStr = "Material Editor##";
-                    MtrlEditorButtonStr += to_string(i);
-                    if (ImGui_AlignButton(MtrlEditorButtonStr.c_str(), 1.f))
+                    string MtrlEditorStr = "Material ";
+                    MtrlEditorStr += std::to_string(i);
+                    MtrlEditorStr += " Editor";
+                    if (ImGui_AlignButton(MtrlEditorStr.c_str(), 1.f))
                     {
                         CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
                         CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);

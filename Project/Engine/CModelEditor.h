@@ -16,6 +16,8 @@ private:
     int m_SelectedBoneIdx;
     vector<Matrix> m_FinalBoneMat;
 
+    bool m_bDrawWireFrame;
+
     // Viewport
     Ptr<CTexture> m_ViewportRTTex;
     Ptr<CTexture> m_ViewportFloatRTTex;

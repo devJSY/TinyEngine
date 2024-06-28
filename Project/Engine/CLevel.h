@@ -31,6 +31,7 @@ public:
 
 public:
     CGameObject* FindObjectByName(const wstring& _strName);
+    CGameObject* FindObjectByName(const wstring& _strName, int _LayerIdx);
 
     template <typename T>
     CGameObject* FindObjectOfType();

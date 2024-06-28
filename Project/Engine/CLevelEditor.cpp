@@ -206,11 +206,6 @@ void CLevelEditor::render()
 
     render_MainCamPreview();
 
-    //// ImGUI Demo
-    // bool show_demo_window = true;
-    // if (show_demo_window)
-    //     ImGui::ShowDemoWindow(&show_demo_window);
-
     ImGui::End(); // dockspace End
 
     // =========================

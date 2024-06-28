@@ -5,7 +5,7 @@
 
 void CGameObjectEx::finaltick()
 {
-    for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
+    for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
     {
         if (nullptr != GetComponent((COMPONENT_TYPE)i))
         {
