@@ -45,8 +45,25 @@ void CKirbyIdle::tick()
 
 void CKirbyIdle::Enter()
 {
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    
+    if (KirbyFSM->GetCurObject())
+    {
+        KirbyFSM->GetCurObject()->IdleEnter();
+    }
+    else
+    {
+        //KirbyFSM->GetCurObject()->IdleEnter();
+        GetOwner()->Animator()->Play(KIRBYANIM(L"Wait"));
+    }
 }
 
 void CKirbyIdle::Exit()
 {
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+
+    if (KirbyFSM->GetCurObject())
+    {
+        KirbyFSM->GetCurObject()->IdleExit();
+    }
 }

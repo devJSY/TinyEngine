@@ -110,8 +110,8 @@ CLevel* CLevelMgr::CreateNewLevel()
     // Fbx
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Kirby\\DeformKirby\\Crater\\Crater.fbx")->Instantiate();
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Dedede\\SteelTower\\SteelTower.fbx")->Instantiate();
-     //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
-     CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\axisTest.fbx")->Instantiate();
+     CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+     //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\axisTest.fbx")->Instantiate();
      //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirbyTest.fbx")->Instantiate();
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\Cone\\Cone.fbx")->Instantiate();
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\ConeIce\\ConeIce.fbx")->Instantiate();

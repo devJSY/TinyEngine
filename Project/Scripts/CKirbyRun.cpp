@@ -25,7 +25,7 @@ void CKirbyRun::tick()
     }
     else
     {
-        KirbyFSM->GetCurAbility()->Run();
+        //KirbyFSM->GetCurAbility()->Run();
     }
 
     // 기본적으로 수행해야 하는 동작
@@ -51,7 +51,17 @@ void CKirbyRun::tick()
 
 void CKirbyRun::Enter()
 {
-    PLAY_CURSTATE(RunEnter)
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+
+    if (KirbyFSM->GetCurObject())
+    {
+        KirbyFSM->GetCurObject()->RunEnter();
+    }
+    else
+    {
+        // KirbyFSM->GetCurObject()->IdleEnter();
+        GetOwner()->Animator()->Play(KIRBYANIM(L"RunStart", false));
+    }
 }
 
 void CKirbyRun::Exit()

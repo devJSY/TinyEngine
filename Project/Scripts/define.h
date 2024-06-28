@@ -19,6 +19,8 @@
         KirbyFSM->GetCurAbility()->STATE();                                                                                                          \
     }
 
+#define KIRBYANIM(NAME) ((wstring)L"Armature|" + NAME)
+
 enum class DIRECTION_TYPE
 {
     LEFT,

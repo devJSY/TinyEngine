@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "CKirbyFSM.h"
-
 #include "CKirbyAbility.h"
 #include "CKirbyObject.h"
 
 #include "CKirbyAbility_Normal.h"
+
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
     , m_CurAbility(nullptr)
