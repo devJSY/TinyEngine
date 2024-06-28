@@ -433,6 +433,7 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
 {
     using namespace std::filesystem;
 
+    wstring strMtrlFileName;
     wstring strMtrlName;
     wstring strPath;
 
@@ -441,9 +442,16 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
         for (UINT j = 0; j < m_vecContainer[i].vecMtrl.size(); ++j)
         {
             // Material ÀÌ¸§Áþ±â
-            strMtrlName = m_vecContainer[i].vecMtrl[j].strMtrlName;
-            if (strMtrlName.empty())
-                strMtrlName = path(m_vecContainer[i].vecMtrl[j].strAlbedo).stem();
+            strMtrlFileName = m_vecContainer[i].vecMtrl[j].strMtrlName;
+
+            // FileName_
+            strMtrlName = path(_RelativePath).stem();
+            strMtrlName += L"_";
+
+            // + Mtrl Name
+            strMtrlName += strMtrlFileName;
+            if (strMtrlFileName.empty())
+                strMtrlName += path(m_vecContainer[i].vecMtrl[j].strAlbedo).stem();
 
             strPath = L"material\\";
             strPath += strMtrlName + L".mtrl";
@@ -499,7 +507,7 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
             wstring TexturePath = CPathMgr::GetContentPath();
             TexturePath += path(_RelativePath).parent_path();
             TexturePath += L"\\";
-            ParseTexture(TexturePath, strMtrlName, pMaterial);
+            ParseTexture(TexturePath, strMtrlFileName, pMaterial);
 
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
             pMaterial->Save(strPath);
