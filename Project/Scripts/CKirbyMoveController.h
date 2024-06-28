@@ -26,8 +26,8 @@ private:
 
     // πÊ«‚
     Vec3                        m_CurDir;
-    Vec3                        m_TowardDir;
     Vec3                        m_MoveDir;
+    Vec3                        m_TowardDir;
     Vec3                        m_GroundNormal;
     vector<ForceDirInfo>        m_ForceDirInfos;
 

@@ -74,9 +74,11 @@ void CKirbyMoveController::tick()
     Move();
 
     // 표면 정렬 (보류)
-    // SurfaceAlignment();
+    //SurfaceAlignment();
 
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 30.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 30.f, Vec3(1.f, 0.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 30.f, Vec3(0.f, 0.f, 1.f), true);
 
 }
 
@@ -166,19 +168,25 @@ void CKirbyMoveController::SetDir()
         m_TowardDir = m_MoveDir;
     }
 
+
+    // 180도 돌 경우 예외처리
+    if (m_CurDir.Dot(m_TowardDir) == (-m_CurDir.Length() * m_TowardDir.Length()))
+    {
+        m_TowardDir.x += 0.1;
+        m_TowardDir.Normalize();
+    }
+
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
-    //Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * 50.f));
+    Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * 50.f));
 
     // 방향 설정
-    Transform()->SetDirection(m_TowardDir);
+    //Transform()->SetDirection(m_TowardDir);
 
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 50.f, Vec3(0.f, 1.f, 0.f), false);
 }
 
 void CKirbyMoveController::Move()
 {
     bool bGrounded = CharacterController()->IsGrounded();
-    float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
 
@@ -211,53 +219,53 @@ void CKirbyMoveController::Move()
 
 void CKirbyMoveController::SurfaceAlignment()
 {
-    //bool bGrounded = CharacterController()->IsGrounded();
-    //float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
+    bool bGrounded = CharacterController()->IsGrounded();
+    float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
-    //RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-
-
-    //// Rotate Character
-    //if (bGrounded)
-    //{
-    //    Vec3 SurfaceNormal = Hit.Normal;
-    //    SurfaceNormal.Normalize();
-
-    //    Vec3 ProjectedTowardDir = m_TowardDir - SurfaceNormal * (m_TowardDir.Dot(SurfaceNormal));
-    //    ProjectedTowardDir.Normalize();
-
-    //    Vec3 Right = SurfaceNormal.Cross(ProjectedTowardDir);
-    //    Right.Normalize();
-
-    //    Vec3 Front = Right.Cross(SurfaceNormal);
-    //    Front.Normalize();
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
 
 
-    //    // 회전 행렬 생성
-    //    XMMATRIX rotationMatrix =
-    //        XMMATRIX(XMVectorSet(Right.x, Right.y, Right.z, 0.0f), 
-    //                 XMVectorSet(SurfaceNormal.x, SurfaceNormal.y, SurfaceNormal.z, 0.0f),
-    //                 XMVectorSet(Front.x, Front.y, Front.z, 0.0f), 
-    //                 XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
+    // Rotate Character
+    if (bGrounded)
+    {
+        Vec3 SurfaceNormal = Hit.Normal;
+        SurfaceNormal.Normalize();
 
-    //    XMMATRIX rotationMatrix2 = DirectX::XMMatrixLookToLH(XMVectorZero(), Vec3(1.f,0.f,0.f), Vec3(0.f,1.f,0.f));
+        Vec3 ProjectedTowardDir = m_TowardDir - SurfaceNormal * (m_TowardDir.Dot(SurfaceNormal));
+        ProjectedTowardDir.Normalize();
 
-    //    float yaw, pitch, roll;
-    //    pitch = asinf(-rotationMatrix.r[2].m128_f32[1]);
-    //    yaw = atan2f(rotationMatrix.r[2].m128_f32[0], rotationMatrix.r[2].m128_f32[2]);
-    //    roll = atan2f(rotationMatrix.r[0].m128_f32[1], rotationMatrix.r[1].m128_f32[1]);
+        Vec3 Right = SurfaceNormal.Cross(ProjectedTowardDir);
+        Right.Normalize();
 
-    //    Transform()->SetRelativeRotation({pitch, yaw, roll});
+        Vec3 Front = Right.Cross(SurfaceNormal);
+        Front.Normalize();
 
-    //}
-    //else
-    //{
-    //    Transform()->SetDirection(m_TowardDir);
 
-    //    Vec3 Movement = {0.f, -50.f, 0.f};
+        // 회전 행렬 생성
+        XMMATRIX rotationMatrix =
+            XMMATRIX(XMVectorSet(Right.x, Right.y, Right.z, 0.0f), 
+                     XMVectorSet(SurfaceNormal.x, SurfaceNormal.y, SurfaceNormal.z, 0.0f),
+                     XMVectorSet(Front.x, Front.y, Front.z, 0.0f), 
+                     XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f));
 
-    //    CharacterController()->Move(Movement * DT);
-    //}
+        XMMATRIX rotationMatrix2 = DirectX::XMMatrixLookToLH(XMVectorZero(), Vec3(1.f,0.f,0.f), Vec3(0.f,1.f,0.f));
+
+        float yaw, pitch, roll;
+        pitch = asinf(-rotationMatrix.r[2].m128_f32[1]);
+        yaw = atan2f(rotationMatrix.r[2].m128_f32[0], rotationMatrix.r[2].m128_f32[2]);
+        roll = atan2f(rotationMatrix.r[0].m128_f32[1], rotationMatrix.r[1].m128_f32[1]);
+
+        Transform()->SetRelativeRotation({pitch, yaw, roll});
+
+    }
+    else
+    {
+        Transform()->SetDirection(m_TowardDir);
+
+        Vec3 Movement = {0.f, -50.f, 0.f};
+
+        CharacterController()->Move(Movement * DT);
+    }
 
 }
 
@@ -275,8 +283,6 @@ void CKirbyMoveController::SaveToLevelFile(FILE* _File)
     fwrite(&m_Speed, 1, sizeof(float), _File);
     fwrite(&m_Gravity, 1, sizeof(float), _File);
     fwrite(&m_JumpPower, 1, sizeof(float), _File);
-
-
 }
 
 void CKirbyMoveController::LoadFromLevelFile(FILE* _File)
@@ -284,5 +290,4 @@ void CKirbyMoveController::LoadFromLevelFile(FILE* _File)
     fread(&m_Speed, 1, sizeof(float), _File);
     fread(&m_Gravity, 1, sizeof(float), _File);
     fread(&m_JumpPower, 1, sizeof(float), _File);
-
 }
