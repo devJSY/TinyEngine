@@ -34,7 +34,7 @@ private:
     CKirbyObject* m_CurObject;
 
     // 상태 관리를 위한 값들
-    bool m_bVacuum;
+    bool m_bStuffed;
 
 public:
     void begin() override;
@@ -43,11 +43,11 @@ public:
     void ChangeAbilityCopy(ABILITY_COPY_TYPE _Type);
     void ChangeObjectCopy(OBJECT_COPY_TYPE _Type);
 
-    void SetVacuum(bool _bVacuum) { m_bVacuum = _bVacuum; }
+    void SetStuffed(bool _bVacuum) { m_bStuffed = _bVacuum; }
 
     CKirbyAbility* GetCurAbility() const { return m_CurAbility; }
     CKirbyObject* GetCurObject() const { return m_CurObject; }
-    bool GetVacuum() const { return m_bVacuum; }
+    bool IsStuffed() const { return m_bStuffed; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

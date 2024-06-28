@@ -19,7 +19,13 @@ public:
 
     //virtual void Idle();
 
-    //virtual void Run();
+    virtual void Run(){};
+    virtual void RunEnter(){};
+    virtual void RunExit(){};
+
+    virtual void RunStart(){};
+    virtual void RunStartEnter(){};
+    virtual void RunStartExit(){};
 
     //virtual void Jump();
 

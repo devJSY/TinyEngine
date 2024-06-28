@@ -23,6 +23,10 @@ public:
     virtual void RunEnter(){};
     virtual void RunExit(){};
 
+    virtual void RunStart(){};
+    virtual void RunStartEnter(){};
+    virtual void RunStartExit(){};
+
     //virtual void Jump();
 
     //virtual void Hovering();

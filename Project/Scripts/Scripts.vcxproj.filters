@@ -208,6 +208,7 @@
     <ClInclude Include="CKirbyAttackCharge1.h">
       <Filter>State\KirbyState\ChargeAttack1</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyRunStart.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -381,21 +382,6 @@
     <ClCompile Include="CAnimationTestScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CUIManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
-    </ClCompile>
-    <ClCompile Include="CButtonManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CButtonScript.cpp">
-      <Filter>Scripts\UI\Button</Filter>
-    </ClCompile>
-    <ClCompile Include="CModelEditorCameraMoveScript.cpp">
-      <Filter>Scripts\CameraMove</Filter>
-    </ClCompile>
     <ClCompile Include="CKirbyObject.cpp">
       <Filter>Module\StateGroup\KirbyObject</Filter>
     </ClCompile>
@@ -429,6 +415,7 @@
     <ClCompile Include="CKirbyAttackCharge1.cpp">
       <Filter>State\KirbyState\ChargeAttack1</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyRunStart.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -604,6 +591,9 @@
     </Filter>
     <Filter Include="State\KirbyState\ChargeAttack1">
       <UniqueIdentifier>{175ddc01-87b9-4551-acf1-a887e0430088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run_Start">
+      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

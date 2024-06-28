@@ -5,6 +5,15 @@
 class CKirbyAbility_Normal : public CKirbyAbility
 {
 public:
+    // RUN
+    virtual void RunStart();
+    virtual void RunStartEnter();
+    virtual void RunStartExit();
+
+    virtual void Run();
+    virtual void RunEnter();
+    virtual void RunExit();
+
     // ¹ñ±â
     virtual void Attack();
     virtual void AttackEnter();

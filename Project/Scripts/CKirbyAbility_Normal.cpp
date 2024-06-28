@@ -20,6 +20,37 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 }
 
 // ===============
+// RUN
+// ===============
+void CKirbyAbility_Normal::RunStart()
+{
+}
+
+void CKirbyAbility_Normal::RunStartEnter()
+{
+    if (PLAYERFSM->IsStuffed())
+        PLAYER->Animator()->Play(KIRBYANIM(L"StuffedRun"), false);
+    else
+        PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
+}
+
+void CKirbyAbility_Normal::RunStartExit()
+{
+}
+
+void CKirbyAbility_Normal::Run()
+{
+}
+
+void CKirbyAbility_Normal::RunEnter()
+{
+}
+
+void CKirbyAbility_Normal::RunExit()
+{
+}
+
+// ===============
 // Attack
 // ===============
 // 머금은 물체 뱉기
@@ -32,7 +63,7 @@ void CKirbyAbility_Normal::AttackEnter()
     // ==============
     // case: Vacuum
     // ==============
-    if (!PLAYERFSM->GetVacuum())
+    if (!PLAYERFSM->IsStuffed())
     {
         ChangeState(L"ATTACK_CHARGE1");
         return;
@@ -42,7 +73,7 @@ void CKirbyAbility_Normal::AttackEnter()
     // case: Shoot
     // ==============
     CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(1, 1, 1));
-    PLAYERFSM->SetVacuum(false);
+    PLAYERFSM->SetStuffed(false);
 
     // fire bullet
     Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BulletStar.pref", L"prefab\\BulletStar.pref");
@@ -78,13 +109,13 @@ void CKirbyAbility_Normal::AttackCharge1()
 
 void CKirbyAbility_Normal::AttackCharge1Enter()
 {
-    PLAYERFSM->SetVacuum(true);
+    PLAYERFSM->SetStuffed(true);
     CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(2, 2, 2));
 }
 
 void CKirbyAbility_Normal::AttackCharge1Exit()
 {
-    if (!PLAYERFSM->GetVacuum())
+    if (!PLAYERFSM->IsStuffed())
         CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(1, 1, 1));
 }
 

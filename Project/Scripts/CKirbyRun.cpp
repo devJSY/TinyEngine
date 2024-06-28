@@ -17,16 +17,6 @@ CKirbyRun::~CKirbyRun()
 
 void CKirbyRun::tick()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    
-    if (KirbyFSM->GetCurObject())
-    {
-        KirbyFSM->GetCurObject()->Run();
-    }
-    else
-    {
-        //KirbyFSM->GetCurAbility()->Run();
-    }
 
     // 기본적으로 수행해야 하는 동작
     Vec3 NewPos = GetOwner()->Transform()->GetRelativePos();
@@ -47,6 +37,19 @@ void CKirbyRun::tick()
         ChangeState(L"ATTACK");
     else if (KEY_RELEASED_ARROW || KEY_NONE_ARROW)
         ChangeState(L"IDLE");
+
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+
+    if (KirbyFSM->GetCurObject())
+    {
+        KirbyFSM->GetCurObject()->Run();
+    }
+    else
+    {
+        // KirbyFSM->GetCurAbility()->Run();
+        if (GetOwner()->Animator()->IsFinish())
+            ChangeState(L"RUN");
+    }
 }
 
 void CKirbyRun::Enter()
@@ -60,11 +63,16 @@ void CKirbyRun::Enter()
     else
     {
         // KirbyFSM->GetCurObject()->IdleEnter();
-        GetOwner()->Animator()->Play(KIRBYANIM(L"RunStart", false));
+        GetOwner()->Animator()->Play(KIRBYANIM(L"Run"));
     }
 }
 
 void CKirbyRun::Exit()
 {
-    PLAY_CURSTATE(RunExit)
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+
+    if (KirbyFSM->GetCurObject())
+    {
+        KirbyFSM->GetCurObject()->RunExit();
+    }
 }
