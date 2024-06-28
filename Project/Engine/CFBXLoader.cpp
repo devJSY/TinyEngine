@@ -64,7 +64,10 @@ void CFBXLoader::LoadFbx(const wstring& _RelativePath)
 
     m_pImporter->Import(m_pScene);
 
-    m_pScene->GetGlobalSettings().SetAxisSystem(FbxAxisSystem::Max);
+    if (m_pScene->GetGlobalSettings().GetAxisSystem() != FbxAxisSystem::Max)
+    {
+        m_pScene->GetGlobalSettings().SetAxisSystem(FbxAxisSystem::Max);
+    }
 
     // Bone 정보 읽기
     LoadSkeleton(m_pScene->GetRootNode());
@@ -763,6 +766,10 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
 
     FbxTime::EMode eTimeMode = m_pScene->GetGlobalSettings().GetTimeMode();
 
+    // DirectX 축으로 변환하는 회전 행렬
+    static Matrix OffsetRotmat = XMMatrixRotationX(-XM_PIDIV2) * XMMatrixRotationY(XM_PI);
+    static FbxAMatrix OffsetRotFbxMat = GetFbxMatrixFromMatrix(OffsetRotmat);
+
     for (UINT i = 0; i < m_vecAnimClip.size(); ++i)
     {
         // 애니메이션 설정
@@ -781,10 +788,11 @@ void CFBXLoader::LoadKeyframeTransform(FbxNode* _pNode, FbxCluster* _pCluster, c
 
             FbxAMatrix matFromNode = _pNode->EvaluateGlobalTransform(tTime) * _matNodeTransform;
             FbxAMatrix matCurTrans = matFromNode.Inverse() * _pCluster->GetLink()->EvaluateGlobalTransform(tTime);
+
             matCurTrans = matReflect * matCurTrans * matReflect;
 
             tFrame.dTime = tTime.GetSecondDouble();
-            tFrame.matTransform = matCurTrans;
+            tFrame.matTransform = OffsetRotFbxMat * matCurTrans;
 
             m_vecBone[_iBoneIdx]->vecKeyFrame.push_back(tFrame);
         }

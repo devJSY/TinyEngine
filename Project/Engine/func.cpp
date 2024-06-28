@@ -894,6 +894,19 @@ Matrix GetMatrixFromFbxMatrix(FbxAMatrix& _mat)
     return mat;
 }
 
+FbxAMatrix GetFbxMatrixFromMatrix(Matrix& _mat)
+{
+    FbxAMatrix mat;
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            mat[i][j] = _mat.m[i][j];
+        }
+    }
+    return mat;
+}
+
 bool closeEnough(const float& a, const float& b, const float& epsilon = std::numeric_limits<float>::epsilon())
 {
     return (epsilon > std::abs(a - b));

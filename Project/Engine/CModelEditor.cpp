@@ -96,6 +96,7 @@ void CModelEditor::init()
     pCam->AddComponent(CScriptMgr::GetScript(MODELEDITORCAMERAMOVESCRIPT));
 
     pCam->Transform()->SetRelativePos(Vec3(0.f, 250.f, -250.f));
+    pCam->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
     m_ViewportCam = pCam->Camera();
 
@@ -540,7 +541,7 @@ void CModelEditor::DrawDetails()
     if (ImGui::TreeNodeEx("Transforms##ModelEditorDetails", DefaultTreeNodeFlag))
     {
         if (nullptr != m_ModelObj && -1 < m_SelectedBoneIdx && nullptr != m_ModelObj->MeshRender()->GetMesh() &&
-            m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh())
+            m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh() && !m_FinalBoneMat.empty())
         {
             const tMTBone& CurBone = m_ModelObj->MeshRender()->GetMesh()->GetBones()->at(m_SelectedBoneIdx);
 
@@ -835,7 +836,7 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
 
     m_ModelObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
     m_ModelObj->Transform()->SetRelativePos(Vec3(0.f, 150.f, 0.f));
-    m_ModelObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
+    m_ModelObj->Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
     m_ModelObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
 
     m_ModelObj->MeshRender()->SetFrustumCheck(false);

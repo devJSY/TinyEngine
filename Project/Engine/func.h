@@ -80,6 +80,7 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
                                              const int arraySize = 1);
 
 Matrix GetMatrixFromFbxMatrix(FbxAMatrix& _mat);
+FbxAMatrix GetFbxMatrixFromMatrix(Matrix& _mat);
 
 // =====================================
 // Save / Load

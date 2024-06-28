@@ -16,6 +16,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyFSM");
 	_vec.push_back(L"CKirbyMoveController");
 	_vec.push_back(L"CAnimationTestScript");
+	_vec.push_back(L"CModelEditorCameraMoveScript");
+	_vec.push_back(L"CSpringArmCameraScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -30,6 +32,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyMoveController;
 	if (L"CAnimationTestScript" == _strScriptName)
 		return new CAnimationTestScript;
+	if (L"CModelEditorCameraMoveScript" == _strScriptName)
+		return new CModelEditorCameraMoveScript;
+	if (L"CSpringArmCameraScript" == _strScriptName)
+		return new CSpringArmCameraScript;
 	return nullptr;
 }
 
@@ -47,6 +53,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyMoveController;
 	case (UINT)SCRIPT_TYPE::ANIMATIONTESTSCRIPT:
 		return new CAnimationTestScript;
+	case (UINT)SCRIPT_TYPE::MODELEDITORCAMERAMOVESCRIPT:
+		return new CModelEditorCameraMoveScript;
+	case (UINT)SCRIPT_TYPE::SPRINGARMCAMERASCRIPT:
+		return new CSpringArmCameraScript;
 	}
 	return nullptr;
 }
@@ -65,6 +75,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyMoveController";
 	case SCRIPT_TYPE::ANIMATIONTESTSCRIPT:
 		return L"CAnimationTestScript";
+	case SCRIPT_TYPE::MODELEDITORCAMERAMOVESCRIPT:
+		return L"CModelEditorCameraMoveScript";
+	case SCRIPT_TYPE::SPRINGARMCAMERASCRIPT:
+		return L"CSpringArmCameraScript";
 	}
 	return nullptr;
 }
