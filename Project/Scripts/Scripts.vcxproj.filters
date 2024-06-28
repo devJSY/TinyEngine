@@ -184,6 +184,15 @@
     <ClInclude Include="CSpringArmCameraScript.h">
       <Filter>Scripts\SpringArm</Filter>
     </ClInclude>
+    <ClInclude Include="CButtonManagerScript.h">
+      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIManagerScript.h">
+      <Filter>Scripts\UI\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonScript.h">
+      <Filter>Scripts\UI\Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -366,6 +375,15 @@
     <ClCompile Include="CSpringArmCameraScript.cpp">
       <Filter>Scripts\SpringArm</Filter>
     </ClCompile>
+    <ClCompile Include="CButtonManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtonScript.cpp">
+      <Filter>Scripts\UI\Button</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -502,6 +520,18 @@
     </Filter>
     <Filter Include="Scripts\SpringArm">
       <UniqueIdentifier>{fc55fd22-e453-4e13-97d8-3051fbdde796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager">
+      <UniqueIdentifier>{6b3c5070-7a6c-418e-96aa-68444b73f6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Button">
+      <UniqueIdentifier>{09073fd3-e471-4b9e-889f-7b1e566b3325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\ButtonManager">
+      <UniqueIdentifier>{455669fa-563b-415d-a29b-da54b92e128b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

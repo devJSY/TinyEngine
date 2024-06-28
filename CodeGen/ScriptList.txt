@@ -4,3 +4,6 @@ CKirbyFSM
 CKirbyMoveController
 CAnimationTestScript
 CSpringArmCameraScript
+CButtonManagerScript
+CUIManagerScript
+CButtonScript
