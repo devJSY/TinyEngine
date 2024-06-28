@@ -181,6 +181,9 @@
     <ClInclude Include="CAnimationTestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CModelEditorCameraMoveScript.h">
+      <Filter>Scripts\CameraMove</Filter>
+    </ClInclude>
     <ClInclude Include="CSpringArmCameraScript.h">
       <Filter>Scripts\SpringArm</Filter>
     </ClInclude>
@@ -371,18 +374,6 @@
     </ClCompile>
     <ClCompile Include="CAnimationTestScript.cpp">
       <Filter>Scripts</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
-    </ClCompile>
-    <ClCompile Include="CButtonManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CUIManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CButtonScript.cpp">
-      <Filter>Scripts\UI\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

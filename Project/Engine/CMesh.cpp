@@ -163,6 +163,7 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
             info.iIdxCount = (UINT)container->vecIdx[i].size();
             info.pIdxSysMem = pVecIdxSysMem;
             info.pIB = pIB;
+            info.IBName = container->strName;
 
             pMesh->m_vecIdxInfo.push_back(info);
             idxOffset += (UINT)container->vecPos.size(); // 이전 컨테이너의 정점수만큼 offset 추가
@@ -397,7 +398,9 @@ int CMesh::Save(const wstring& _strRelativePath)
     UINT iIdxBuffSize = 0;
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
-        fwrite(&m_vecIdxInfo[i], sizeof(tIndexInfo), 1, pFile);
+        fwrite(&m_vecIdxInfo[i].tIBDesc, sizeof(D3D11_BUFFER_DESC), 1, pFile);
+        fwrite(&m_vecIdxInfo[i].iIdxCount, sizeof(UINT), 1, pFile);
+        SaveWStringToFile(m_vecIdxInfo[i].IBName, pFile);
         fwrite(m_vecIdxInfo[i].pIdxSysMem, m_vecIdxInfo[i].iIdxCount * sizeof(UINT), 1, pFile);
     }
 
@@ -483,7 +486,9 @@ int CMesh::Load(const wstring& _strFilePath)
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
         tIndexInfo info = {};
-        fread(&info, sizeof(tIndexInfo), 1, pFile);
+        fread(&info.tIBDesc, sizeof(D3D11_BUFFER_DESC), 1, pFile);
+        fread(&info.iIdxCount, sizeof(UINT), 1, pFile);
+        LoadWStringFromFile(info.IBName, pFile);
 
         UINT iByteWidth = info.iIdxCount * sizeof(UINT);
 

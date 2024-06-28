@@ -799,7 +799,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
         Ptr<CMesh> pSkeletalMesh = pAnimator->GetSkeletalMesh();
 
         // Skeletal Mesh
-        if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Skeletal Mesh"))
+        if (ImGui::TreeNodeEx("Skeletal Mesh##Outliner Animator", m_DefaultTreeNodeFlag))
         {
             string name;
             if (nullptr != pSkeletalMesh)
@@ -811,12 +811,12 @@ void COutliner::DrawAnimator(CGameObject* obj)
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh)
+        if (nullptr != pSkeletalMesh && pAnimator->IsVaild())
         {
-            if (ImGui::TreeNodeEx((void*)typeid(CMesh).hash_code(), m_DefaultTreeNodeFlag, "Animation"))
+            if (ImGui::TreeNodeEx("Animation##Outliner Animator", m_DefaultTreeNodeFlag))
             {
                 // =====================
-                // Animation Select
+                // Animations
                 // =====================
                 const vector<tMTAnimClip>* vecAnimClip = pSkeletalMesh->GetAnimClip();
 
@@ -825,14 +825,22 @@ void COutliner::DrawAnimator(CGameObject* obj)
 
                 string CurClipName = ToString(CurClip.strAnimName);
 
+                static ImGuiTextFilter filter;
                 int ChangedClipIdx = -1;
                 ImGui::Text("Animations");
                 if (ImGui::BeginCombo("##Anim", CurClipName.c_str()))
                 {
+                    filter.Draw(ImGui_LabelPrefix("Filter").c_str());
+                    ImGui::Separator();
+
                     for (int i = 0; i < vecAnimClip->size(); i++)
                     {
                         string ClipName = ToString(vecAnimClip->at(i).strAnimName);
                         bool is_selected = (CurClipName == ClipName);
+
+                        if (!filter.PassFilter(ClipName.c_str()))
+                            continue;
+
                         if (ImGui::Selectable(ClipName.c_str(), is_selected))
                         {
                             CurClipName = ClipName;
@@ -2038,6 +2046,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
                     pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
+                    pMesh = pMeshRender->GetMesh();
                 }
 
                 ImGui::EndDragDropTarget();
@@ -2048,7 +2057,6 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
         if (nullptr != pMesh)
         {
-
             // Material
             if (ImGui::TreeNodeEx((void*)typeid(CMaterial).hash_code(), m_DefaultTreeNodeFlag, "Material"))
             {
@@ -2062,7 +2070,7 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                         CurMtrlname = ToString(pCurMtrl->GetName());
                     }
 
-                    ImGui_InputText((string("Material ") + std::to_string(i)).c_str(), CurMtrlname);
+                    ImGui_InputText(ToString(pMesh->GetIBName(i)).c_str(), CurMtrlname);
 
                     // Drag & Drop
                     if (ImGui::BeginDragDropTarget())
@@ -2076,14 +2084,15 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
                         ImGui::EndDragDropTarget();
                     }
-                }
 
-                ImGui::Separator();
-
-                if (ImGui_AlignButton("Material Editor", 1.f))
-                {
-                    CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
-                    CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pMeshRender->GetMaterial(0));
+                    string MtrlEditorStr = "Material ";
+                    MtrlEditorStr += std::to_string(i);
+                    MtrlEditorStr += " Editor";
+                    if (ImGui_AlignButton(MtrlEditorStr.c_str(), 1.f))
+                    {
+                        CEditorMgr::GetInst()->GetLevelEditor()->ShowEditor(EDITOR_TYPE::MATERIAL, true);
+                        CEditorMgr::GetInst()->GetMaterialEditor()->SetMaterial(pCurMtrl);
+                    }
                 }
 
                 ImGui::TreePop();
@@ -2520,30 +2529,46 @@ void COutliner::DrawSkybox(CGameObject* obj)
 
     if (open)
     {
-        // =======================
-        // Type
-        // =======================
-        static vector<string> SkyBoxTypes = {
-            "IBLBaker",
-            "LearnOpenGL",
-            "moonless",
-            "PureSky",
-        };
+        Ptr<CTexture> pEnvTex = pSkyBox->GetEnvTex();
+        Ptr<CTexture> pBrdfTex = pSkyBox->GetBrdfTex();
+        Ptr<CTexture> pDiffuseTex = pSkyBox->GetDiffuseTex();
+        Ptr<CTexture> pSpecularTex = pSkyBox->GetSpecularTex();
 
-        static string CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+        std::string EnvTexName;
+        std::string BrdfTexName;
+        std::string DiffuseTexName;
+        std::string SpecularTexName;
 
-        CurType = SkyBoxTypes[(UINT)pSkyBox->GetSkyBoxType()];
+        if (nullptr != pEnvTex)
+            EnvTexName = ToString(pEnvTex->GetName());
 
-        if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Type").c_str(), CurType, SkyBoxTypes))
+        if (nullptr != pBrdfTex)
+            BrdfTexName = ToString(pBrdfTex->GetName());
+
+        if (nullptr != pDiffuseTex)
+            DiffuseTexName = ToString(pDiffuseTex->GetName());
+
+        if (nullptr != pSpecularTex)
+            SpecularTexName = ToString(pSpecularTex->GetName());
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Environment Texture").c_str(), EnvTexName))
         {
-            if (SkyBoxTypes[0] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::IBLBaker);
-            else if (SkyBoxTypes[1] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::LearnOpenGL);
-            else if (SkyBoxTypes[2] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::moonless);
-            else if (SkyBoxTypes[3] == CurType)
-                pSkyBox->SetType(SKYBOX_TYPE::PureSky);
+            pSkyBox->SetEnvTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(EnvTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Brdf Texture").c_str(), BrdfTexName))
+        {
+            pSkyBox->SetBrdfTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(BrdfTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Diffuse Texture").c_str(), DiffuseTexName))
+        {
+            pSkyBox->SetDiffuseTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(DiffuseTexName)));
+        }
+
+        if (ImGui_TexturesComboUI(ImGui_LabelPrefix("Specular Texture").c_str(), SpecularTexName))
+        {
+            pSkyBox->SetSpecularTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(SpecularTexName)));
         }
 
         // =======================

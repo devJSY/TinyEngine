@@ -50,6 +50,8 @@ public:
     float GetHaloStrength() const { return m_Info.HaloStrength; }
     void SetHaloStrength(float _Strength) { m_Info.HaloStrength = _Strength; }
 
+    CGameObjectEx* GetLightCam() const { return m_pLightCam; }
+
     Ptr<CTexture> GetDepthMapTex() const { return m_DepthMapTex; }
 
 public:
