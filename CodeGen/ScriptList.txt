@@ -5,3 +5,6 @@ CKirbyMoveController
 CAnimationTestScript
 CModelEditorCameraMoveScript
 CSpringArmCameraScript
+CButtonManagerScript
+CUIManagerScript
+CButtonScript
