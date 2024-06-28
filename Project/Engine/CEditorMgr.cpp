@@ -116,6 +116,10 @@ void CEditorMgr::init()
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]->SetName(L"Sprite Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::SPRITE]->init();
 
+    m_arrEditor[(UINT)EDITOR_TYPE::MODEL] = new CModelEditor;
+    m_arrEditor[(UINT)EDITOR_TYPE::MODEL]->SetName(L"Model Editor");
+    m_arrEditor[(UINT)EDITOR_TYPE::MODEL]->init();
+
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP] = new CTileMapEditor;
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->SetName(L"TileMap Editor");
     m_arrEditor[(UINT)EDITOR_TYPE::TILEMAP]->init();

@@ -649,10 +649,11 @@ void CCamera::render_OutLine()
         return;
 
     // OutLine Pass
+    static Ptr<CMaterial> OutLineMtrl2D = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl");
+    static Ptr<CMaterial> OutLineMtrl3D = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl");
     if (g_Global.g_RenderOutline)
     {
-        pSelectedObj->render(PROJ_TYPE::ORTHOGRAPHIC == m_ProjType ? CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl")
-                                                                   : CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl"));
+        pSelectedObj->render(PROJ_TYPE::ORTHOGRAPHIC == m_ProjType ? OutLineMtrl2D : OutLineMtrl3D);
     }
 
     // NormalLine Pass
@@ -665,9 +666,10 @@ void CCamera::render_OutLine()
 
 void CCamera::render_DepthOnly(vector<CGameObject*>& _vecObj)
 {
+    static Ptr<CMaterial> DepthOnlyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl");
     for (size_t i = 0; i < _vecObj.size(); i++)
     {
-        _vecObj[i]->render(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl"));
+        _vecObj[i]->render(DepthOnlyMtrl);
     }
 }
 

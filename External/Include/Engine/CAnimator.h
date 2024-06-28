@@ -36,6 +36,7 @@ private:
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
+    void finaltick_ModelEditor();
 
     void ClearData();
 
@@ -43,6 +44,8 @@ public:
     int FindClipIndex(const wstring& _strClipName);
     void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f);
     bool IsFinish() const;
+
+    bool IsVaild();
 
 public:
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
@@ -71,7 +74,6 @@ public:
     UINT GetBoneCount() const;
 
 private:
-    void CheckSkeletalMesh();
     void CheckBoneFinalMatBuffer();
 
 public:
