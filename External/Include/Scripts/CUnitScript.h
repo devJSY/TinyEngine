@@ -44,12 +44,15 @@ public:
 private:
     void DamageProc();
 
+protected:
+    void SetInfo(UnitInfo _Info) { m_CurInfo = _Info; }
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
     CUnitScript* Clone() = 0;
 public: 
-    CUnitScript(SCRIPT_TYPE _Type);
+    CUnitScript(UINT _Type);
     virtual ~CUnitScript();
 };

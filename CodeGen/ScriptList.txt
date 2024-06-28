@@ -1,5 +1,8 @@
 CCameraMoveScript
-CTestFSM
 CKirbyFSM
 CKirbyMoveController
 CAnimationTestScript
+CPlayerMgr
+CKirbyBulletScript
+CTestFSM
+CKirbyScript

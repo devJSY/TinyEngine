@@ -160,12 +160,6 @@
     <ClInclude Include="CTestIdle.h">
       <Filter>State\FSMTest</Filter>
     </ClInclude>
-    <ClInclude Include="CTestFSM.h">
-      <Filter>Scripts\FSM</Filter>
-    </ClInclude>
-    <ClInclude Include="CUnitScript.h">
-      <Filter>Module\Unit</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyAbility.h">
       <Filter>Module\StateGroup\KirbyAbility</Filter>
     </ClInclude>
@@ -197,7 +191,22 @@
       <Filter>Scripts\PlayerManager</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyBulletScript.h">
-      <Filter>State\KirbyBullet</Filter>
+      <Filter>Scripts\KirbyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="CUnitScript.h">
+      <Filter>Module\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestFSM.h">
+      <Filter>Scripts\FSM\TestFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyScript.h">
+      <Filter>Scripts\Kirby</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeAbility.h">
+      <Filter>State\KirbyState\ChangeAbility</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge1.h">
+      <Filter>State\KirbyState\ChargeAttack1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +366,6 @@
     <ClCompile Include="CTestIdle.cpp">
       <Filter>State\FSMTest</Filter>
     </ClCompile>
-    <ClCompile Include="CTestFSM.cpp">
-      <Filter>Scripts\FSM</Filter>
-    </ClCompile>
     <ClCompile Include="CUnitScript.cpp">
       <Filter>Module\Unit</Filter>
     </ClCompile>
@@ -394,7 +400,19 @@
       <Filter>Scripts\PlayerManager</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyBulletScript.cpp">
-      <Filter>State\KirbyBullet</Filter>
+      <Filter>Scripts\KirbyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestFSM.cpp">
+      <Filter>Scripts\FSM\TestFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyScript.cpp">
+      <Filter>Scripts\Kirby</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeAbility.cpp">
+      <Filter>State\KirbyState\ChangeAbility</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge1.cpp">
+      <Filter>State\KirbyState\ChargeAttack1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,8 +572,23 @@
     <Filter Include="Scripts\PlayerManager">
       <UniqueIdentifier>{6cdc35c1-ba7c-4d69-bb31-8616c785861a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyBullet">
+    <Filter Include="Scripts\KirbyBullet">
       <UniqueIdentifier>{e7733917-0ffd-4dee-b078-d17213862822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\TestFSM">
+      <UniqueIdentifier>{59566cef-a444-4bd8-84b6-385db5b09b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Kirby">
+      <UniqueIdentifier>{cba6baff-ce74-4825-8cfd-92a0752da116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeAbility">
+      <UniqueIdentifier>{f27176a3-376c-41e5-ac72-c9de985af8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeObject">
+      <UniqueIdentifier>{9fe1c146-5378-4a9e-bb27-a28009aa8917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChargeAttack1">
+      <UniqueIdentifier>{175ddc01-87b9-4551-acf1-a887e0430088}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

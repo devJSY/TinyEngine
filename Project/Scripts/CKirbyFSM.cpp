@@ -2,7 +2,9 @@
 #include "CKirbyFSM.h"
 
 #include "CKirbyAbility.h"
+#include "CKirbyObject.h"
 
+#include "CKirbyAbility_Normal.h"
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
     , m_CurAbility(nullptr)
@@ -10,6 +12,8 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
 {
+    m_arrAbility[(UINT)ABILITY_COPY_TYPE::NORMAL] = new CKirbyAbility_Normal();
+    m_CurAbility = m_arrAbility[(UINT)ABILITY_COPY_TYPE::NORMAL];
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -42,7 +46,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
         if (nullptr == _Origin.m_arrObject[i])
             continue;
 
-        CScript* pObjCopy = _Origin.m_arrObject[i]->Clone();
+        CKirbyObject* pObjCopy = _Origin.m_arrObject[i]->Clone();
         assert(pObjCopy);
         m_arrObject[i] = pObjCopy;
 
@@ -75,18 +79,32 @@ CKirbyFSM::~CKirbyFSM()
     }
 }
 
+#include "CKirbyIdle.h"
+#include "CKirbyRun.h"
+#include "CKirbyAttack.h"
+#include "CKirbyAttackCharge1.h"
 void CKirbyFSM::begin()
 {
     // State Ãß°¡
+    AddState(L"IDLE", new CKirbyIdle);
+    AddState(L"RUN", new CKirbyRun);
+    AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
 
+    ChangeState(L"IDLE");
 }
 
 void CKirbyFSM::ChangeAbilityCopy(ABILITY_COPY_TYPE _Type)
 {
+    ChangeState(L"CHANGE_ABILITY");
+
+    m_CurAbility = m_arrAbility[(UINT)_Type];
 }
 
 void CKirbyFSM::ChangeObjectCopy(OBJECT_COPY_TYPE _Type)
 {
+    ChangeState(L"CHANGE_OBJECT");
+    m_CurObject = m_arrObject[(UINT)_Type];
 }
 
 void CKirbyFSM::SaveToLevelFile(FILE* _File)

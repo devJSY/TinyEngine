@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "CKirbyIdle.h"
+
+// 통?합?
 #include "CKirbyFSM.h"
 #include "CPlayerMgr.h"
-
-#define KEY_TAP_ARROW (KEY_TAP(KEY::UP) || KEY_TAP(KEY::DOWN) || KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT))
-#define KEY_PRESSED_ARROW (KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN) || KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT))
+#include "CKirbyObject.h"
+#include "CKirbyAbility.h"
 
 CKirbyIdle::CKirbyIdle()
 {
@@ -30,11 +31,15 @@ void CKirbyIdle::tick()
     else
     {
         // 현재 state에 맞는 추가동작
-        KirbyFSM->GetCurAbility()->Idle();
+        //KirbyFSM->GetCurAbility()->Idle();
     }
 
     // 기본적으로 수행해야 하는 동작
-    if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
+
+    // Change State
+    if (KEY_TAP(KEY::Q))
+        ChangeState(L"ATTACK");
+    else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
         ChangeState(L"RUN");
 }
 

@@ -47,7 +47,7 @@ public:
 
     CKirbyAbility* GetCurAbility() const { return m_CurAbility; }
     CKirbyObject* GetCurObject() const { return m_CurObject; }
-    bool GetVacuum() const { m_bVacuum; }
+    bool GetVacuum() const { return m_bVacuum; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

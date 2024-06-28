@@ -2,6 +2,9 @@
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyBulletScript.h"
 
+#define BULLET_SPEED 5.f
+
+
 // 이거 Ability쪽에 박아도 되나?
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
@@ -16,23 +19,6 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 {
 }
 
-void CKirbyAbility_Normal::Vacuum()
-{
-}
-
-void CKirbyAbility_Normal::VacuumEnter()
-{
-    PLAYERFSM->SetVacuum(true);
-    CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(200, 200, 200));
-
-}
-
-void CKirbyAbility_Normal::VacuumExit()
-{
-    if (!PLAYERFSM->GetVacuum())
-        CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(100, 100, 100));
-}
-
 // ===============
 // Attack
 // ===============
@@ -43,10 +29,19 @@ void CKirbyAbility_Normal::Attack()
 
 void CKirbyAbility_Normal::AttackEnter()
 {
+    // ==============
+    // case: Vacuum
+    // ==============
     if (!PLAYERFSM->GetVacuum())
+    {
+        ChangeState(L"ATTACK_CHARGE1");
         return;
+    }
 
-    CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(100, 100, 100));
+    // ==============
+    // case: Shoot
+    // ==============
+    CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(1, 1, 1));
     PLAYERFSM->SetVacuum(false);
 
     // fire bullet
@@ -54,7 +49,7 @@ void CKirbyAbility_Normal::AttackEnter()
     if (nullptr != BulletPref)
     {
         CGameObject* BulletInst = BulletPref->Instantiate();
-        Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f;
+        Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 2.f;
         
         BulletInst->Transform()->SetRelativePos(InitPos);
         GamePlayStatic::SpawnGameObject(BulletInst, 0);
@@ -62,9 +57,11 @@ void CKirbyAbility_Normal::AttackEnter()
         CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
         if (nullptr != bulletScript)
         {
-            bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 50.f);
+            bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * BULLET_SPEED);
         }
     }
+
+    ChangeState(L"IDLE");
 }
 
 void CKirbyAbility_Normal::AttackExit()
@@ -75,30 +72,34 @@ void CKirbyAbility_Normal::AttackExit()
 // Charge Attack 1
 // ===============
 // 흡입하기1
-void CKirbyAbility_Normal::ChargeAttack1()
+void CKirbyAbility_Normal::AttackCharge1()
 {
 }
 
-void CKirbyAbility_Normal::ChargeAttack1Enter()
+void CKirbyAbility_Normal::AttackCharge1Enter()
 {
+    PLAYERFSM->SetVacuum(true);
+    CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(2, 2, 2));
 }
 
-void CKirbyAbility_Normal::ChargeAttack1Exit()
+void CKirbyAbility_Normal::AttackCharge1Exit()
 {
+    if (!PLAYERFSM->GetVacuum())
+        CPlayerMgr::GetPlayer()->Transform()->SetRelativeScale(Vec3(1, 1, 1));
 }
 
 // ===============
 // Charge Attack 2
 // ===============
 // 흡입하기2
-void CKirbyAbility_Normal::ChargeAttack2()
+void CKirbyAbility_Normal::AttackCharge2()
 {
 }
 
-void CKirbyAbility_Normal::ChargeAttack2Enter()
+void CKirbyAbility_Normal::AttackCharge2Enter()
 {
 }
 
-void CKirbyAbility_Normal::ChargeAttack2Exit()
+void CKirbyAbility_Normal::AttackCharge2Exit()
 {
 }

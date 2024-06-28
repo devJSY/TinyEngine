@@ -11,6 +11,7 @@ class CKirbyAbility
 {
 protected:
     // 사용 메쉬: hat, weapon
+    void ChangeState(const wstring& _strStateName);
 
 public:
     // 필수: Change, Idle, Attack, Jump Attack
@@ -34,13 +35,13 @@ public:
     virtual void AttackEnter() = 0;
     virtual void AttackExit() = 0;
 
-    virtual void ChargeAttack1(){};
-    virtual void ChargeAttack1Enter(){};
-    virtual void ChargeAttack1Exit(){};
+    virtual void AttackCharge1(){};
+    virtual void AttackCharge1Enter(){};
+    virtual void AttackCharge1Exit(){};
 
-    virtual void ChargeAttack2(){};
-    virtual void ChargeAttack2Enter(){};
-    virtual void ChargeAttack2Exit(){};
+    virtual void AttackCharge2(){};
+    virtual void AttackCharge2Enter(){};
+    virtual void AttackCharge2Exit(){};
 
     virtual void JumpAttack() = 0;
     virtual void JumpAttackEnter() = 0;
