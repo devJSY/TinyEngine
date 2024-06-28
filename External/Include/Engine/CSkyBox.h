@@ -1,15 +1,6 @@
 #pragma once
 #include "CRenderComponent.h"
 
-enum class SKYBOX_TYPE
-{
-    IBLBaker,
-    LearnOpenGL,
-    moonless,
-    PureSky,
-    END
-};
-
 enum class SKYBOX_SHAPE
 {
     SPHERE,
@@ -19,20 +10,28 @@ enum class SKYBOX_SHAPE
 class CSkyBox : public CRenderComponent
 {
 private:
-    SKYBOX_TYPE m_Type;
     SKYBOX_SHAPE m_Shape;
 
-    Ptr<CTexture> m_BrdfTex;
     Ptr<CTexture> m_EnvTex;
+    Ptr<CTexture> m_BrdfTex;
     Ptr<CTexture> m_DiffuseTex;
     Ptr<CTexture> m_SpecularTex;
 
 public:
-    void SetType(SKYBOX_TYPE _type);
+    SKYBOX_SHAPE GetSkyBoxShape() const { return m_Shape; };
     void SetShape(SKYBOX_SHAPE _shape);
 
-    SKYBOX_TYPE GetSkyBoxType() const { return m_Type; };
-    SKYBOX_SHAPE GetSkyBoxShape() const { return m_Shape; };
+    Ptr<CTexture> GetEnvTex() const { return m_EnvTex; }
+    void SetEnvTex(Ptr<CTexture> _EnvTex) { m_EnvTex = _EnvTex; }
+
+    Ptr<CTexture> GetBrdfTex() const { return m_BrdfTex; }
+    void SetBrdfTex(Ptr<CTexture> _BrdfTex) { m_BrdfTex = _BrdfTex; }
+
+    Ptr<CTexture> GetDiffuseTex() const { return m_DiffuseTex; }
+    void SetDiffuseTex(Ptr<CTexture> _DiffuseTex) { m_DiffuseTex = _DiffuseTex; }
+
+    Ptr<CTexture> GetSpecularTex() const { return m_SpecularTex; }
+    void SetSpecularTex(Ptr<CTexture> _SpecularTex) { m_SpecularTex = _SpecularTex; }
 
 public:
     virtual void finaltick() override;

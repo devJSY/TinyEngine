@@ -17,7 +17,7 @@ private:
     CStructuredBuffer* m_LightBuffer;
 
 public:
-    virtual void init() override{};
+    virtual void init() override;
     virtual void tick() override;
     virtual void finaltick() override;
     virtual void render(bool* open) override;

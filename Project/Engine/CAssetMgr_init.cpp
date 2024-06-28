@@ -1756,6 +1756,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
         return pMeshData;
 
     pMeshData = CMeshData::LoadFromFBX(_strPath);
+    pMeshData->SetName(strName);
     pMeshData->SetKey(strName);
     pMeshData->SetRelativePath(strName);
 

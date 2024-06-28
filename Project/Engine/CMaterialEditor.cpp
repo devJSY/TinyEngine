@@ -21,49 +21,6 @@ CMaterialEditor::CMaterialEditor()
     , m_LightObj(nullptr)
     , m_LightBuffer(nullptr)
 {
-    // RenderTarget
-    m_ViewportRTTex = CAssetMgr::GetInst()->CreateTexture(L"MtrlEditorViewportTex", 1280, 1280, DXGI_FORMAT_R16G16B16A16_FLOAT,
-                                                          D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
-
-    // Camera
-    CGameObjectEx* pCam = new CGameObjectEx;
-
-    pCam->SetName(L"Editor Camera");
-    pCam->AddComponent(new CTransform);
-    pCam->AddComponent(new CCamera);
-
-    m_ViewportCam = pCam->Camera();
-
-    m_ViewportCam->LayerMaskAll();
-    m_ViewportCam->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    m_ViewportCam->SetFOV(XM_PI / 2.f);
-    m_ViewportCam->SetFar(10000.f);
-    m_ViewportCam->SetHDRI(true);
-
-    // Object
-    m_ViewportObj = new CGameObjectEx;
-    m_ViewportObj->AddComponent(new CTransform);
-    m_ViewportObj->AddComponent(new CMeshRender);
-
-    m_ViewportObj->MeshRender()->SetFrustumCheck(false);
-    m_ViewportObj->MeshRender()->SetCastShadow(false);
-
-    m_ViewportObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-    m_ViewportObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 250.f));
-    m_ViewportObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-
-    // Light
-    m_LightObj = new CGameObjectEx;
-    m_LightObj->AddComponent(new CTransform);
-    m_LightObj->AddComponent(new CLight);
-
-    m_LightObj->Transform()->SetRelativePos(Vec3(250.f, 500.f, 0.f));
-    m_LightObj->Light()->SetLightType(LIGHT_TYPE::POINT);
-    m_LightObj->Light()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
-    m_LightObj->Light()->SetRadius(10.f);
-
-    m_LightBuffer = new CStructuredBuffer;
-    m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
 }
 
 CMaterialEditor::~CMaterialEditor()
@@ -91,6 +48,55 @@ CMaterialEditor::~CMaterialEditor()
         delete m_LightBuffer;
         m_LightBuffer = nullptr;
     }
+}
+
+void CMaterialEditor::init()
+{
+    // RenderTarget
+    m_ViewportRTTex = CAssetMgr::GetInst()->CreateTexture(L"MtrlEditorViewportTex", 1280, 1280, DXGI_FORMAT_R16G16B16A16_FLOAT,
+                                                          D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+
+    // Camera
+    CGameObjectEx* pCam = new CGameObjectEx;
+
+    pCam->SetName(L"Editor Camera");
+    pCam->AddComponent(new CTransform);
+    pCam->AddComponent(new CCamera);
+
+    m_ViewportCam = pCam->Camera();
+
+    m_ViewportCam->LayerMaskAll();
+    m_ViewportCam->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    m_ViewportCam->SetFOV(XM_PI / 2.f);
+    m_ViewportCam->SetFar(10000.f);
+    m_ViewportCam->SetHDRI(true);
+
+    // Object
+    m_ViewportObj = new CGameObjectEx;
+    m_ViewportObj->SetName(L"Object");
+    m_ViewportObj->AddComponent(new CTransform);
+    m_ViewportObj->AddComponent(new CMeshRender);
+
+    m_ViewportObj->MeshRender()->SetFrustumCheck(false);
+    m_ViewportObj->MeshRender()->SetCastShadow(false);
+
+    m_ViewportObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+    m_ViewportObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 250.f));
+    m_ViewportObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+
+    // Light
+    m_LightObj = new CGameObjectEx;
+    m_LightObj->SetName(L"Point Light");
+    m_LightObj->AddComponent(new CTransform);
+    m_LightObj->AddComponent(new CLight);
+
+    m_LightObj->Transform()->SetRelativePos(Vec3(250.f, 500.f, 0.f));
+    m_LightObj->Light()->SetLightType(LIGHT_TYPE::POINT);
+    m_LightObj->Light()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
+    m_LightObj->Light()->SetRadius(10.f);
+
+    m_LightBuffer = new CStructuredBuffer;
+    m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
 }
 
 void CMaterialEditor::render()

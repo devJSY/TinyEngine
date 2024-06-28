@@ -1,7 +1,9 @@
 #pragma once
+
 #include "CComponent.h"
 #include "CMesh.h"
 #include "CMaterial.h"
+#include "CMeshData.h"
 
 struct tMtrlSet
 {
@@ -28,6 +30,8 @@ public:
     Ptr<CMaterial> GetSharedMaterial(UINT _idx);
     Ptr<CMaterial> GetDynamicMaterial(UINT _idx);
     void SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx);
+
+    void SetMeshData(Ptr<CMeshData> _MeshData);
 
     UINT GetMtrlCount() const { return (UINT)m_vecMtrls.size(); }
 

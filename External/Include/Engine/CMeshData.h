@@ -1,6 +1,9 @@
 #pragma once
 #include "CAsset.h"
 
+class CGameObject;
+class CGameObjectEx;
+
 class CMeshData : public CAsset
 {
 private:
@@ -11,6 +14,10 @@ public:
     static CMeshData* LoadFromFBX(const wstring& _RelativePath);
 
     CGameObject* Instantiate();
+    CGameObjectEx* InstantiateEx();
+
+    Ptr<CMesh> GetMesh() const { return m_pMesh; }
+    const vector<Ptr<CMaterial>>& GetVecMaterial() const { return m_vecMtrl; }
 
 public:
     virtual int Save(const wstring& _strRelativePath);
