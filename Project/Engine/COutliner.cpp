@@ -332,11 +332,23 @@ void COutliner::render()
             string AssetStr = (char*)payload->Data;
             AssetStr.resize(payload->DataSize);
             std::filesystem::path AssetPath = AssetStr;
+
+            CGameObject* pObj = nullptr;
+
+            // Prefab
             if (L".pref" == AssetPath.extension())
             {
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
-                CGameObject* pObj = pPrefab->Instantiate();
+                pObj = pPrefab->Instantiate();
+            }
+            else if (L".mdat" == AssetPath.extension())
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath);
+                pObj = pMeshData->Instantiate();
+            }
 
+            if (nullptr != pObj)
+            {
                 // 카메라위치 기준 생성
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();
