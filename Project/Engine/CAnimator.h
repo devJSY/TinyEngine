@@ -75,8 +75,13 @@ public:
 
     double GetFrameRate() const { return m_FrameRate; }
 
+    // 전체 프레임 인덱스
     int GetCurFrameIdx() const { return m_FrameIdx; }
     void SetFrameIdx(int _FrameIdx);
+
+    // Clip에서의 프레임 인덱스
+    int GetClipFrameIndex();
+    void SetClipFrameIndex(int _FrameIdx);
 
     CStructuredBuffer* GetFinalBoneMat() const { return m_BoneFinalMatBuffer; }
     UINT GetBoneCount() const;

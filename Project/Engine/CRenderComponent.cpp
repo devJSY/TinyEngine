@@ -122,6 +122,57 @@ void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx)
     m_vecMtrls[_idx].pDynamicMtrl = nullptr;
 }
 
+Ptr<CMaterial> CRenderComponent::GetMaterial(wstring _Name)
+{
+    for (UINT i = 0; i < m_Mesh->GetSubsetCount(); ++i)
+    {
+        if (_Name == m_Mesh->GetIBName(i))
+        {
+            return GetMaterial(i);
+        }
+    }
+
+    return nullptr;
+}
+
+Ptr<CMaterial> CRenderComponent::GetSharedMaterial(wstring _Name)
+{
+    for (UINT i = 0; i < m_Mesh->GetSubsetCount(); ++i)
+    {
+        if (_Name == m_Mesh->GetIBName(i))
+        {
+            return GetSharedMaterial(i);
+        }
+    }
+
+    return nullptr;
+}
+
+Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(wstring _Name)
+{
+    for (UINT i = 0; i < m_Mesh->GetSubsetCount(); ++i)
+    {
+        if (_Name == m_Mesh->GetIBName(i))
+        {
+            return GetDynamicMaterial(i);
+        }
+    }
+
+    return nullptr;
+}
+
+void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl, wstring _Name)
+{
+    for (UINT i = 0; i < m_Mesh->GetSubsetCount(); ++i)
+    {
+        if (_Name == m_Mesh->GetIBName(i))
+        {
+            SetMaterial(_Mtrl, i);
+            return;
+        }
+    }
+}
+
 void CRenderComponent::SetMeshData(Ptr<CMeshData> _MeshData)
 {
     SetMesh(_MeshData->GetMesh());

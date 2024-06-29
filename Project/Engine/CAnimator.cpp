@@ -136,9 +136,13 @@ void CAnimator::finaltick()
         m_FrameIdx = (int)dFrameIdx;
 
         if (m_FrameIdx >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iEndFrame)
+        {
             m_NextFrameIdx = m_FrameIdx; // 끝이면 현재 인덱스를 유지
+        }
         else
+        {
             m_NextFrameIdx = m_FrameIdx + 1;
+        }
 
         // 프레임간의 시간에 따른 비율을 구해준다.
         m_Ratio = (float)(dFrameIdx - (double)m_FrameIdx);
@@ -348,6 +352,16 @@ bool CAnimator::IsFinish() const
 {
     // 현재 ClipUpdateTime과 TimeLength의 차이가 작은 경우 Finish
     return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
+}
+
+int CAnimator::GetClipFrameIndex()
+{
+    return m_FrameIdx - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame;
+}
+
+void CAnimator::SetClipFrameIndex(int _FrameIdx)
+{
+    SetFrameIdx(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame + _FrameIdx);
 }
 
 bool CAnimator::IsVaild()
