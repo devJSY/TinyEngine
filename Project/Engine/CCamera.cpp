@@ -16,6 +16,7 @@
 #include "CGameObject.h"
 
 #include "CMeshRender.h"
+#include "CSkyBox.h"
 #include "CMaterial.h"
 
 #include "CRenderComponent.h"
@@ -44,6 +45,7 @@ CCamera::CCamera()
     , m_mapInstGroup_D{}
     , m_mapInstGroup_F{}
     , m_mapSingleObj{}
+    , m_vecSkybox{}
     , m_vecDecal{}
     , m_vecTransparent{}
     , m_vecPostProcess{}
@@ -74,6 +76,7 @@ CCamera::CCamera(const CCamera& origin)
     , m_mapInstGroup_D{}
     , m_mapInstGroup_F{}
     , m_mapSingleObj{}
+    , m_vecSkybox{}
     , m_vecDecal{}
     , m_vecTransparent{}
     , m_vecPostProcess{}
@@ -211,6 +214,9 @@ void CCamera::SortObject()
 
                 switch (eDomain)
                 {
+                case SHADER_DOMAIN::DOMAIN_SKYBOX:
+                    m_vecSkybox.push_back(vecObjects[j]);
+                    break;
                 case SHADER_DOMAIN::DOMAIN_DEFERRED:
                 case SHADER_DOMAIN::DOMAIN_OPAQUE:
                 case SHADER_DOMAIN::DOMAIN_MASKED: {
@@ -303,6 +309,12 @@ void CCamera::render_Deferred()
     g_Transform.matProj = m_matProj;
     g_Transform.matProjInv = m_matProjInv;
 
+    // SkyBox Bind
+    for (size_t i = 0; i < m_vecSkybox.size(); ++i)
+    {
+        m_vecSkybox[i]->SkyBox()->UpdateData();
+    }
+
     // Deferred Render Pass
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet();
     render_Inst(m_mapInstGroup_D);
@@ -354,6 +366,7 @@ void CCamera::render_Forward()
 #endif // DISTRIBUTE
 
     // Main Render Pass
+    render(m_vecSkybox);
     render_Inst(m_mapInstGroup_F);
     render(m_vecTransparent);
 
@@ -608,6 +621,7 @@ void CCamera::render_Clear()
     m_mapInstGroup_F.clear();
     m_mapSingleObj.clear();
 
+    m_vecSkybox.clear();
     m_vecDecal.clear();
     m_vecTransparent.clear();
     m_vecPostProcess.clear();

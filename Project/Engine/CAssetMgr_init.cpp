@@ -871,7 +871,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS_EQUAL);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
 
         pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
 
@@ -891,7 +891,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
 
         pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
 
