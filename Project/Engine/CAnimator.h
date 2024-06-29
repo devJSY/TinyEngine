@@ -33,6 +33,14 @@ private:
     CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
     bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
 
+    // Next Animation Parameter
+    bool m_bChanging;
+    double m_CurChangeTime;
+    double m_ChangeDuration;
+    int m_NextClipIdx;
+    bool m_bNextRepeat;
+    float m_NextPlaySpeed;
+
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
@@ -42,7 +50,7 @@ public:
 
 public:
     int FindClipIndex(const wstring& _strClipName);
-    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f);
+    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
     bool IsVaild();
