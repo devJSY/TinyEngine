@@ -72,7 +72,7 @@ CAnimator::~CAnimator()
 
 void CAnimator::finaltick()
 {
-    if (!IsVaild())
+    if (!InValid())
         return;
 
     // 다른 Clip 으로 전환 중인 경우
@@ -154,7 +154,7 @@ void CAnimator::finaltick()
 
 void CAnimator::UpdateData()
 {
-    if (!IsVaild())
+    if (!InValid())
         return;
 
     if (!m_bFinalMatUpdate)
@@ -187,7 +187,7 @@ void CAnimator::UpdateData()
 
 void CAnimator::finaltick_ModelEditor()
 {
-    if (!IsVaild())
+    if (!InValid())
         return;
 
     // 현재 재생중인 Clip 의 시간을 진행한다.
@@ -364,7 +364,7 @@ void CAnimator::SetClipFrameIndex(int _FrameIdx)
     SetFrameIdx(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame + _FrameIdx);
 }
 
-bool CAnimator::IsVaild()
+bool CAnimator::InValid()
 {
     if (nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh())
     {
@@ -376,7 +376,7 @@ bool CAnimator::IsVaild()
 
 void CAnimator::CheckBoneFinalMatBuffer()
 {
-    if (!IsVaild())
+    if (!InValid())
         return;
 
     UINT iBoneCount = m_SkeletalMesh->GetBoneCount();

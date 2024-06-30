@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAssetMgr.h"
+#include "CEditorMgr.h"
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
@@ -1753,19 +1754,59 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
     Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
 
     if (nullptr != pMeshData)
+    {
+        LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
         return pMeshData;
+    }
 
     pMeshData = CMeshData::LoadFromFBX(_strPath);
     pMeshData->SetName(strName);
     pMeshData->SetKey(strName);
     pMeshData->SetRelativePath(strName);
 
-    m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
+    AddAsset<CMeshData>(strName, pMeshData);
+
+    // meshdata 를 파일 저장
+    pMeshData->Save(strName);
+    LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
+    return pMeshData;
+}
+
+void CAssetMgr::AsyncLoadFBX(const wstring& _strPath)
+{
+    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncLoadFBXFunc, this, _strPath));
+}
+
+void CAssetMgr::AsyncLoadFBXFunc(const wstring& _strPath)
+{
+    std::scoped_lock lock(m_Mutex); // 상호배제
+
+    wstring strFileName = std::filesystem::path(_strPath).stem();
+
+    wstring strName = L"meshdata\\";
+    strName += strFileName + L".mdat";
+
+    Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
+
+    if (nullptr != pMeshData)
+    {
+        ++m_CompletedThread;
+        LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
+        return;
+    }
+
+    pMeshData = CMeshData::LoadFromFBX(_strPath);
+    pMeshData->SetName(strName);
+    pMeshData->SetKey(strName);
+    pMeshData->SetRelativePath(strName);
+
+    AddAsset<CMeshData>(strName, pMeshData);
 
     // meshdata 를 파일 저장
     pMeshData->Save(strName);
 
-    return pMeshData;
+    ++m_CompletedThread;
+    LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
 }
 
 tMeshData CAssetMgr::MakePoint()

@@ -96,7 +96,7 @@ void CModelEditor::init()
     pCam->AddComponent(CScriptMgr::GetScript(MODELEDITORCAMERAMOVESCRIPT));
 
     pCam->Transform()->SetRelativePos(Vec3(0.f, 250.f, -250.f));
-    pCam->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+    pCam->Transform()->SetRelativeRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
 
     m_ViewportCam = pCam->Camera();
 
@@ -209,7 +209,7 @@ void CModelEditor::finaltick()
         }
 
         // FinalBone Matrix Bind
-        if (m_ModelObj->Animator()->IsVaild())
+        if (m_ModelObj->Animator()->InValid())
         {
             UINT BoneCount = m_ModelObj->Animator()->GetBoneCount();
 
@@ -449,7 +449,8 @@ void CModelEditor::DrawDetails()
                 }
                 else
                 {
-                    SetModel(CAssetMgr::GetInst()->LoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath())));
+                    // SetModel(CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath())));
+                    CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
                 }
             }
         }
@@ -687,7 +688,7 @@ void CModelEditor::DrawAnimation()
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh && pAnimator->IsVaild())
+        if (nullptr != pSkeletalMesh && pAnimator->InValid())
         {
             if (ImGui::TreeNodeEx("Animation##ModelEditor Animation", DefaultTreeNodeFlag))
             {

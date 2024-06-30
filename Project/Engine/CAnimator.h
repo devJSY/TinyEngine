@@ -53,7 +53,7 @@ public:
     void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
-    bool IsVaild();
+    bool InValid();
 
 public:
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }

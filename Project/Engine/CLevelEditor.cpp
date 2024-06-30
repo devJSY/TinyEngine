@@ -206,6 +206,19 @@ void CLevelEditor::render()
 
     render_MainCamPreview();
 
+    if (CAssetMgr::GetInst()->IsModelLoading())
+    {
+        ImGui::Begin("Model Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
+
+        const ImU32 col = ImGui::GetColorU32(ImVec4{0.2f, 0.45f, 0.811f, 1.0f});
+        const ImU32 bg = ImGui::GetColorU32(ImVec4{0.258f, 0.258f, 0.258f, 1.0f});
+
+        ImGui_Spinner("##spinner", 15, 6, col);
+        ImGui_BufferingBar("##buffer_bar", CAssetMgr::GetInst()->GetModelLoadingProgress(), ImVec2(400, 6), bg, col);
+
+        ImGui::End();
+    }
+
     ImGui::End(); // dockspace End
 
     // =========================

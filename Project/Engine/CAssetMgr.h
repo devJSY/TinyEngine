@@ -20,6 +20,9 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
+    std::list<std::thread> m_listLoadThread;
+    std::mutex m_Mutex;
+    UINT m_CompletedThread;
 
 public:
     const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
@@ -28,6 +31,10 @@ public:
     void init();
     void initSound();
     void ReloadContent();
+
+    float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
+    bool IsModelLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
+    void Release();
 
 private:
     void SaveAssetsToFile();
@@ -44,6 +51,10 @@ private:
 
 public:
     Ptr<CMeshData> LoadFBX(const wstring& _strPath);
+    void AsyncLoadFBX(const wstring& _strPath);
+
+private:
+    void AsyncLoadFBXFunc(const wstring& _strPath);
 
 public:
     // Geometry Function

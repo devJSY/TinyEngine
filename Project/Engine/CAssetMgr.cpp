@@ -14,6 +14,10 @@
 #include "CSound.h"
 
 CAssetMgr::CAssetMgr()
+    : m_mapAsset{}
+    , m_listLoadThread{}
+    , m_Mutex()
+    , m_CompletedThread(0)
 {
 }
 
@@ -65,6 +69,18 @@ void CAssetMgr::ReloadContent()
 
                 GamePlayStatic::DeleteAsset((ASSET_TYPE)i, pair.second);
             }
+        }
+    }
+}
+
+void CAssetMgr::Release()
+{
+    // LoadThread 종료될때 까지 대기
+    for (std::thread& Thread : m_listLoadThread)
+    {
+        if (Thread.joinable())
+        {
+            Thread.join();
         }
     }
 }

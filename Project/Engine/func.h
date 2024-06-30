@@ -139,6 +139,9 @@ bool ImGui_TexturesComboUI(const string& caption, string& current_item);
 bool ImGui_AlignButton(const char* label, float alignment = 0.5f);
 void ImGui_InputText(const char* label, const string& Text, float alignment = 0.5f);
 
+bool ImGui_BufferingBar(const char* label, float value, const ImVec2& size_arg, const ImU32& bg_col, const ImU32& fg_col);
+bool ImGui_Spinner(const char* label, float radius, int thickness, const ImU32& color);
+
 void ImGui_SetWindowClass(EDITOR_TYPE _Type);
 
 // =====================================
