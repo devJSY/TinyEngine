@@ -50,6 +50,15 @@ void CAssetMgr::initSound()
     CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
 }
 
+void CAssetMgr::tick()
+{
+    // 모델 로딩이 종료된 후 쓰레드 해제
+    if (!IsModelLoading())
+    {
+        ThreadRelease();
+    }
+}
+
 void CAssetMgr::ReloadContent()
 {
     LoadAssetsFromFile(CPathMgr::GetContentPath());
@@ -73,9 +82,12 @@ void CAssetMgr::ReloadContent()
     }
 }
 
-void CAssetMgr::Release()
+void CAssetMgr::ThreadRelease()
 {
-    // LoadThread 종료될때 까지 대기
+    if (m_listLoadThread.empty())
+        return;
+
+    // 각 Thread가 종료될때 까지 대기
     for (std::thread& Thread : m_listLoadThread)
     {
         if (Thread.joinable())
@@ -83,6 +95,9 @@ void CAssetMgr::Release()
             Thread.join();
         }
     }
+
+    m_listLoadThread.clear();
+    m_CompletedThread = 0;
 }
 
 void CAssetMgr::SaveAssetsToFile()

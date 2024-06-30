@@ -30,11 +30,12 @@ public:
 public:
     void init();
     void initSound();
+    void tick();
     void ReloadContent();
 
     float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
     bool IsModelLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
-    void Release();
+    void ThreadRelease();
 
 private:
     void SaveAssetsToFile();

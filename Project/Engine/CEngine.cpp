@@ -72,6 +72,7 @@ void CEngine::progress()
         // Manager Update
         CTimeMgr::GetInst()->tick();
         CKeyMgr::GetInst()->tick();
+        CAssetMgr::GetInst()->tick();
 
         // FMOD Update
         CSound::g_pFMOD->update();
