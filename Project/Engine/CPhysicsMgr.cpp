@@ -154,25 +154,20 @@ void CPhysicsMgr::tick()
         CGameObject* obj = (CGameObject*)actors[i]->userData;
         CTransform* pTr = obj->Transform();
 
-        Vec3 WorldPos = pTr->GetWorldPos();
-        Vec3 WorldRot = pTr->GetWorldRotation();
-
         const PxMat44 ActorPose(actors[i]->getGlobalPose());
         Matrix SimulatedMat = Matrix(ActorPose.front());
 
         // 시뮬레이션 Matrix SRT 분해
-        float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
-        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
+        Vec3 Translation, Rotation, Scale;
+        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
-        for (UINT i = 0; i < 3; i++)
-        {
-            Ftranslation[i] *= m_PPM;
-        }
+        // PPM 적용
+        Translation *= m_PPM;
+        Rotation.ToRadian();
 
         // 변화량 추출
-        Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
-        Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
-                               WorldRot.z - DirectX::XMConvertToRadians(Frotation[2]));
+        Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
+        Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
 
         // 변화량만큼 Relative 에 적용
         pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);

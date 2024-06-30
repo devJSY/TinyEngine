@@ -556,9 +556,7 @@ void CModelEditor::DrawDetails()
             // Bone
             if (ImGui::TreeNodeEx("Bone##ModelEditorDetailsTransforms", DefaultTreeNodeFlag))
             {
-                Vec3 pos = Vec3();
-                Vec3 rot = Vec3();
-                Vec3 scale = Vec3();
+                Vec3 pos, rot, scale;
                 ImGuizmo::DecomposeMatrixToComponents(*m_FinalBoneMat[m_SelectedBoneIdx].m, pos, rot, scale);
 
                 ImGui_DrawVec3Control("Location", pos, 10.f);
@@ -573,9 +571,7 @@ void CModelEditor::DrawDetails()
             {
                 const tMTBone& CurBone = m_ModelObj->MeshRender()->GetMesh()->GetBones()->at(m_SelectedBoneIdx);
 
-                Vec3 pos = Vec3();
-                Vec3 rot = Vec3();
-                Vec3 scale = Vec3();
+                Vec3 pos, rot, scale;
                 ImGuizmo::DecomposeMatrixToComponents(*CurBone.matOffset.m, pos, rot, scale);
 
                 ImGui_DrawVec3Control("Location", pos, 10.f);

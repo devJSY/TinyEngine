@@ -791,9 +791,9 @@ void CLevelEditor::render_ImGuizmo()
 
     float snapValue = 0.f;
     if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
-        snapValue = 25.f;
+        snapValue = 10.f;
     else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
-        snapValue = 30.0f;
+        snapValue = 15.0f;
     else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
         snapValue = 1.0f;
 
@@ -815,19 +815,17 @@ void CLevelEditor::render_ImGuizmo()
         }
 
         // ImGuizmo변화량이 적용된 Matrix와 원본 Matrix SRT 분해
-        float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
-        ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Ftranslation, Frotation, Fscale);
+        Vec3 Translation, Rotation, Scale;
+        ImGuizmo::DecomposeMatrixToComponents(*WorldMat.m, Translation, Rotation, Scale);
 
-        float originFtranslation[3] = {0.0f, 0.0f, 0.0f}, originFrotation[3] = {0.0f, 0.0f, 0.0f}, originFscale[3] = {0.0f, 0.0f, 0.0f};
-        ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, originFtranslation, originFrotation, originFscale);
+        Vec3 OriginTranslation, OriginRotation, OriginScale;
+        ImGuizmo::DecomposeMatrixToComponents(*originWorldMat.m, OriginTranslation, OriginRotation, OriginScale);
 
         // ImGuizmo로 조정한 변화량 추출
-        Vec3 vPosOffset =
-            Vec3(originFtranslation[0] - Ftranslation[0], originFtranslation[1] - Ftranslation[1], originFtranslation[2] - Ftranslation[2]);
-        Vec3 vRotOffset = Vec3(DirectX::XMConvertToRadians(originFrotation[0]) - DirectX::XMConvertToRadians(Frotation[0]),
-                               DirectX::XMConvertToRadians(originFrotation[1]) - DirectX::XMConvertToRadians(Frotation[1]),
-                               DirectX::XMConvertToRadians(originFrotation[2]) - DirectX::XMConvertToRadians(Frotation[2]));
-        Vec3 vScaleOffset = Vec3(originFscale[0] - Fscale[0], originFscale[1] - Fscale[1], originFscale[2] - Fscale[2]);
+        Vec3 vPosOffset = OriginTranslation - Translation;
+        Vec3 vRotOffset = OriginRotation - Rotation;
+        vRotOffset.ToRadian();
+        Vec3 vScaleOffset = OriginScale - Scale;
 
         // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
         pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);

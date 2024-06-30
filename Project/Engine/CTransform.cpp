@@ -171,10 +171,10 @@ void CTransform::SetDirection(Vec3 _Dir)
     matRot._32 = _Dir.y;
     matRot._33 = _Dir.z;
 
-    float Translation[3] = {0.0f, 0.0f, 0.0f}, Rotation[3] = {0.0f, 0.0f, 0.0f}, Scale[3] = {0.0f, 0.0f, 0.0f};
+    Vec3 Translation, Rotation, Scale;
     ImGuizmo::DecomposeMatrixToComponents(*matRot.m, Translation, Rotation, Scale);
-    SetRelativeRotation(
-        Vec3(DirectX::XMConvertToRadians(Rotation[0]), DirectX::XMConvertToRadians(Rotation[1]), DirectX::XMConvertToRadians(Rotation[2])));
+    Rotation.ToRadian();
+    SetRelativeRotation(Rotation);
 }
 
 void CTransform::SaveToLevelFile(FILE* _File)
