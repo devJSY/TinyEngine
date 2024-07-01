@@ -18,7 +18,6 @@ CModelEditor::CModelEditor()
     : CEditor(EDITOR_TYPE::MODEL)
     , m_ModelObj(nullptr)
     , m_SelectedBoneIdx(-1)
-    , m_FinalBoneMat{}
     , m_bDrawWireFrame(false)
     , m_ViewportRTTex(nullptr)
     , m_ViewportFloatRTTex(nullptr)
@@ -206,20 +205,6 @@ void CModelEditor::finaltick()
             {
                 pComp->finaltick();
             }
-        }
-
-        // FinalBone Matrix Bind
-        if (m_ModelObj->Animator()->InValid())
-        {
-            UINT BoneCount = m_ModelObj->Animator()->GetBoneCount();
-
-            if (m_FinalBoneMat.size() != BoneCount)
-            {
-                m_FinalBoneMat.resize(BoneCount);
-            }
-
-            // 최종 Bone 행렬을 받아온다.
-            m_ModelObj->Animator()->GetFinalBoneMat()->GetData(m_FinalBoneMat.data(), BoneCount);
         }
     }
 
@@ -478,7 +463,6 @@ void CModelEditor::DrawDetails()
             if (ImGui_ComboUI(ImGui_LabelPrefix("Mesh").c_str(), MeshName, mapMesh))
             {
                 m_ModelObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(MeshName)));
-                m_FinalBoneMat.clear(); // Bone Matrix Reset
             }
         }
 
@@ -550,7 +534,7 @@ void CModelEditor::DrawDetails()
     if (ImGui::TreeNodeEx("Transforms##ModelEditorDetails", DefaultTreeNodeFlag))
     {
         if (nullptr != m_ModelObj && -1 < m_SelectedBoneIdx && nullptr != m_ModelObj->MeshRender()->GetMesh() &&
-            m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh() && !m_FinalBoneMat.empty())
+            m_ModelObj->MeshRender()->GetMesh()->IsSkeletalMesh())
         {
             const tMTBone& CurBone = m_ModelObj->MeshRender()->GetMesh()->GetBones()->at(m_SelectedBoneIdx);
 
@@ -558,7 +542,7 @@ void CModelEditor::DrawDetails()
             if (ImGui::TreeNodeEx("Bone##ModelEditorDetailsTransforms", DefaultTreeNodeFlag))
             {
                 Vec3 pos, rot, scale;
-                ImGuizmo::DecomposeMatrixToComponents(*m_FinalBoneMat[m_SelectedBoneIdx].m, pos, rot, scale);
+                ImGuizmo::DecomposeMatrixToComponents(*m_ModelObj->Animator()->GetFinalBoneMat().at(m_SelectedBoneIdx).m, pos, rot, scale);
 
                 ImGui_DrawVec3Control("Location", pos, 10.f);
                 ImGui_DrawVec3Control("Rotation", rot, 1.f);
@@ -830,7 +814,6 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
 
     // Bone 데이터 초기화
     m_SelectedBoneIdx = -1;
-    m_FinalBoneMat.clear();
 
     if (nullptr == _MeshData)
     {

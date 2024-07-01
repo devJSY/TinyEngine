@@ -451,7 +451,7 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
             {
                 pair.second[i].pObj->Animator()->UpdateData();
                 tInstData.iRowIdx = iRowIdx++;
-                CInstancingBuffer::GetInst()->AddInstancingBoneMat(pair.second[i].pObj->Animator()->GetFinalBoneMat());
+                CInstancingBuffer::GetInst()->AddInstancingBoneMat(pair.second[i].pObj->Animator()->GetFinalBoneMatBuffer());
                 bHasAnim3D = true;
             }
             else

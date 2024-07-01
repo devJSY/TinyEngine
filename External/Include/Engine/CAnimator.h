@@ -30,6 +30,7 @@ private:
     int m_NextFrameIdx; // 클립의 다음 프레임
     float m_Ratio;      // 프레임 사이 비율
 
+    vector<Matrix> m_FinalBoneMat;           // 최종 행렬 데이터
     CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
     bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
 
@@ -83,7 +84,8 @@ public:
     int GetClipFrameIndex();
     void SetClipFrameIndex(int _FrameIdx);
 
-    CStructuredBuffer* GetFinalBoneMat() const { return m_BoneFinalMatBuffer; }
+    const vector<Matrix>& GetFinalBoneMat() const { return m_FinalBoneMat; }
+    CStructuredBuffer* GetFinalBoneMatBuffer() const { return m_BoneFinalMatBuffer; }
     UINT GetBoneCount() const;
 
 private:

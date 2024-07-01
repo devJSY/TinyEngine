@@ -14,7 +14,6 @@ class CModelEditor : public CEditor
 private:
     CGameObjectEx* m_ModelObj;
     int m_SelectedBoneIdx;
-    vector<Matrix> m_FinalBoneMat;
 
     bool m_bDrawWireFrame;
 

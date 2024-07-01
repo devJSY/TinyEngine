@@ -23,6 +23,7 @@ CAnimator::CAnimator()
     , m_FrameIdx(0)
     , m_NextFrameIdx(0)
     , m_Ratio(0.f)
+    , m_FinalBoneMat{}
     , m_BoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
     , m_bChanging(false)
@@ -49,6 +50,7 @@ CAnimator::CAnimator(const CAnimator& _origin)
     , m_FrameIdx(_origin.m_FrameIdx)
     , m_NextFrameIdx(_origin.m_NextFrameIdx)
     , m_Ratio(_origin.m_Ratio)
+    , m_FinalBoneMat(_origin.m_FinalBoneMat)
     , m_BoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
     , m_bChanging(_origin.m_bChanging)
@@ -170,13 +172,39 @@ void CAnimator::UpdateData()
         pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
         pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
 
-        pUpdateShader->SetBoneCount(m_SkeletalMesh->GetBoneCount());
+        UINT BoneCount = m_SkeletalMesh->GetBoneCount();
+        pUpdateShader->SetBoneCount(BoneCount);
         pUpdateShader->SetFrameIndex(m_FrameIdx);
         pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
         pUpdateShader->SetFrameRatio(m_Ratio);
 
         // 업데이트 쉐이더 실행
         pUpdateShader->Execute();
+
+        // Bone Socket 행렬 생성
+        vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
+        m_FinalBoneMat.clear();
+        m_FinalBoneMat.resize(BoneCount);
+        m_BoneFinalMatBuffer->GetData(m_FinalBoneMat.data(), BoneCount);
+        for (UINT i = 0; i < BoneCount; ++i)
+        {
+            if (vecBones[i].vecBoneSocket.empty())
+                continue;
+
+            for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
+            {
+                Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
+
+                Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
+                Matrix matRotY = XMMatrixRotationY(BoneSocket.RelativeRotation.y);
+                Matrix matRotZ = XMMatrixRotationZ(BoneSocket.RelativeRotation.z);
+
+                Matrix matTranslation =
+                    XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
+
+                BoneSocket.matFinalBoneSocket = m_FinalBoneMat[i] * matScale * matRotX * matRotY * matRotZ * matTranslation;
+            }
+        }
 
         m_bFinalMatUpdate = true;
     }

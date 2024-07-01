@@ -61,6 +61,15 @@ struct tMTKeyFrame
     Vec4 qRot;
 };
 
+struct tBoneSocket
+{
+    wstring SoketName;
+    Vec3 RelativeLocation;
+    Vec3 RelativeRotation;
+    Vec3 RelativeScale;
+    Matrix matFinalBoneSocket; // Final Matrix + BonSocket SRT
+};
+
 struct tMTBone
 {
     wstring strBoneName;
@@ -68,6 +77,7 @@ struct tMTBone
     int iParentIndx;
     Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
     vector<tMTKeyFrame> vecKeyFrame;
+    vector<tBoneSocket> vecBoneSocket; // BoneSocket
 };
 
 struct tMTAnimClip
