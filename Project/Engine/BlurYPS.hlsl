@@ -18,7 +18,7 @@ float4 main(PS_IN input) : SV_TARGET
 
     for (int i = 0; i < 5; i++)
     {
-        color += weights[i] * g_tex_0.Sample(g_LinearClampSampler, input.vUV + (float2(0.0, dy) * float(i - 2))).rgb;
+        color += weights[i] * g_tex_0.Sample(g_LinearClampSampler, input.vUV0 + (float2(0.0, dy) * float(i - 2))).rgb;
     }
         
     return float4(color, 1.f);

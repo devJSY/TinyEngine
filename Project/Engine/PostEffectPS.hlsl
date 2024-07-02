@@ -91,8 +91,8 @@ float4 main(PS_IN input) : SV_TARGET
 {
     if (0 == MODE)  // 0: Rendered image
     {
-        float3 color = RenderTex.Sample(g_LinearClampSampler, input.vUV).rgb;
-        float4 posView = TexcoordToView(input.vUV);
+        float3 color = RenderTex.Sample(g_LinearClampSampler, input.vUV0).rgb;
+        float4 posView = TexcoordToView(input.vUV0);
         
         // Halo
         float3 HaloColor = float3(0.96, 0.94, 0.82);
@@ -118,7 +118,7 @@ float4 main(PS_IN input) : SV_TARGET
     }
     else // DepthOnly Mode
     {
-        float z = TexcoordToView(input.vUV).z * DepthScale;
+        float z = TexcoordToView(input.vUV0).z * DepthScale;
         float FarZ = 10000.f;
         z /= FarZ;
         return float4(z, z, z, 1);

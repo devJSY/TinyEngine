@@ -34,7 +34,7 @@ float4 main(PS_IN input) : SV_Target
     // Texture
     if (g_btex_0)
     {
-        color = color * g_tex_0.Sample(g_LinearWrapSampler, input.vUV);
+        color = color * g_tex_0.Sample(g_LinearWrapSampler, input.vUV0);
     }
     
     // IBL

@@ -6,8 +6,8 @@ float4 main(PS_IN input) : SV_TARGET
     float dx = 1.f / g_RenderResolution.x;
     float dy = 1.f / g_RenderResolution.y;
         
-    float x = input.vUV.x;
-    float y = input.vUV.y;
+    float x = input.vUV0.x;
+    float y = input.vUV0.y;
     
     // Take 13 samples around current texel:
     // a - b - c

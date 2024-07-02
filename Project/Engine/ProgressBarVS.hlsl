@@ -7,7 +7,7 @@ PS_IN main(VS_IN _in)
     
     output.vPosProj = mul(float4(_in.vPos, 1.0), g_matWVP);
     output.vColor = _in.vColor;
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     output.vPosWorld = mul(float4(_in.vPos, 1.0), g_matWorld).xyz;
     

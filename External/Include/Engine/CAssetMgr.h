@@ -24,8 +24,13 @@ private:
     std::mutex m_Mutex;
     UINT m_CompletedThread;
 
+    vector<D3D11_INPUT_ELEMENT_DESC> m_vecLayoutInfo;
+    UINT m_iLayoutOffset_0;
+    UINT m_iLayoutOffset_1;
+
 public:
     const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
+    const vector<D3D11_INPUT_ELEMENT_DESC>& GetInputLayoutInfo() const { return m_vecLayoutInfo; }
 
 public:
     void init();
@@ -49,6 +54,8 @@ private:
     void CreateDefaultMaterial();
     void CreateDefaultPhysics2DMaterial();
     void CreateDefaultPhysicMaterial();
+
+    void AddInputLayout(DXGI_FORMAT _eFormat, const char* _strSemanticName, UINT _iSlotNum, UINT _iSemanticIdx);
 
 public:
     Ptr<CMeshData> LoadFBX(const wstring& _strPath);

@@ -82,6 +82,9 @@ ComPtr<ID3D11Texture2D> CreateStagingTexture(const int width, const int height, 
 Matrix GetMatrixFromFbxMatrix(FbxAMatrix& _mat);
 FbxAMatrix GetFbxMatrixFromMatrix(Matrix& _mat);
 
+// DXGI_FORMAT -> Size(Byte)
+int GetSizeofFormat(DXGI_FORMAT _eFormat);
+
 // =====================================
 // Save / Load
 // =====================================

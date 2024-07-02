@@ -18,6 +18,9 @@ CAssetMgr::CAssetMgr()
     , m_listLoadThread{}
     , m_Mutex()
     , m_CompletedThread(0)
+    , m_vecLayoutInfo{}
+    , m_iLayoutOffset_0(0)
+    , m_iLayoutOffset_1(0)
 {
 }
 

@@ -119,7 +119,7 @@ CLevel* CLevelMgr::CreateNewLevel()
 
     NewLevel->AddObject(pSkyBoxObj, 15);
 
-    //// Fbx
+    // Fbx
     // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Test\\Coffee.fbx")->Instantiate();
     // NewLevel->AddObject(pFbxObj, 0);
     // pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Test\\Babybottle.fbx")->Instantiate();

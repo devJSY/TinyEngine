@@ -4,15 +4,20 @@
 struct VS_IN
 {
     float3 vPos : POSITION;
-    float4 vColor : COLOR;
-    float2 vUV : TEXCOORD;
-    
+  
+    float3 vNormal : NORMAL;
     float3 vTangent : TANGENT;
     float3 vBitangent : BINORMAL;
-    float3 vNormal : NORMAL;
     
-    float4 vWeights : BLENDWEIGHT;
+    float4 vColor : COLOR;
+    
+    float2 vUV0 : TEXCOORD;
+    float2 vUV1 : TEXCOORD;
+    float2 vUV2 : TEXCOORD;
+    float2 vUV3 : TEXCOORD;
+    
     float4 vIndices : BLENDINDICES;
+    float4 vWeights : BLENDWEIGHT;
         
     // Per Instance Data    
     row_major matrix matWorld : WORLD;
@@ -26,12 +31,17 @@ struct PS_IN
 {
     float4 vPosProj : SV_Position;
     float3 vPosWorld : POSITION;
-    float4 vColor : COLOR;
-    float2 vUV : TEXCOORD;
     
+    float3 vNormalWorld : NORMAL;
     float3 vTangentWorld : TANGENT;
     float3 vBitangentWorld : BINORMAL;
-    float3 vNormalWorld : NORMAL;
+    
+    float4 vColor : COLOR;
+    
+    float2 vUV0 : TEXCOORD0;
+    float2 vUV1 : TEXCOORD1;
+    float2 vUV2 : TEXCOORD2;
+    float2 vUV3 : TEXCOORD3;
 };
 
 struct tLightInfo

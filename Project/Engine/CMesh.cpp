@@ -87,13 +87,16 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         for (UINT i = 0; i < iVtxCount; ++i)
         {
             vecVtxContainer[i].vPos = container->vecPos[i];
-            vecVtxContainer[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-            vecVtxContainer[i].vUV = container->vecUV[i];
+            vecVtxContainer[i].vNormal = container->vecNormal[i];
             vecVtxContainer[i].vTangent = container->vecTangent[i];
             vecVtxContainer[i].vBiTangent = container->vecBinormal[i];
-            vecVtxContainer[i].vNormal = container->vecNormal[i];
-            vecVtxContainer[i].vWeights = container->vecWeights[i];
+            vecVtxContainer[i].vColor = container->vecColor[i];
+            vecVtxContainer[i].vUV0 = container->vecUV0[i];
+            vecVtxContainer[i].vUV1 = container->vecUV1[i];
+            vecVtxContainer[i].vUV2 = container->vecUV2[i];
+            vecVtxContainer[i].vUV3 = container->vecUV3[i];
             vecVtxContainer[i].vIndices = container->vecIndices[i];
+            vecVtxContainer[i].vWeights = container->vecWeights[i];
         }
 
         // Container의 모든 정점을 연결하여 하나의 Mesh생성
