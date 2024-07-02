@@ -650,7 +650,7 @@ void CModelEditor::SkeletonRe(const vector<tMTBone>& _vecBone, int _BoneIdx, int
 void CModelEditor::DrawAnimation()
 {
     ImGui::Begin("Animation##ModelEditor");
-    if (nullptr != m_ModelObj && m_ModelObj->Animator())
+    if (nullptr != m_ModelObj && nullptr != m_ModelObj->Animator())
     {
         static ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
                                                         ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap |
@@ -837,7 +837,10 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
         m_ModelObj->MeshRender()->GetMaterial(i)->SetShader(pShader);
     }
 
-    m_ModelObj->Animator()->SetPlay(false);
+    if (nullptr != m_ModelObj->Animator())
+    {
+        m_ModelObj->Animator()->SetPlay(false);
+    }
 
     m_bDrawWireFrame = false;
 }

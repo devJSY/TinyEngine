@@ -24,7 +24,6 @@ struct tContainer
 {
     wstring strName;
     vector<Vec3> vecPos;
-    vector<Vec4> vecColor;
     vector<Vec3> vecTangent;
     vector<Vec3> vecBinormal;
     vector<Vec3> vecNormal;
