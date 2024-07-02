@@ -25,6 +25,14 @@ CSkyBox::~CSkyBox()
 
 void CSkyBox::finaltick()
 {
+    if (GetOwner()->IsDead())
+    {
+        CTexture::Clear(17);
+        CTexture::Clear(18);
+        CTexture::Clear(19);
+        return;
+    }
+
     CRenderComponent::finaltick();
 }
 
@@ -62,6 +70,14 @@ void CSkyBox::render()
 {
     if (nullptr == GetMesh() || nullptr == GetMaterial(0))
         return;
+    
+    if (GetOwner()->IsDead())
+    {
+        CTexture::Clear(17);
+        CTexture::Clear(18);
+        CTexture::Clear(19);
+        return;
+    }
 
     UpdateData();
 

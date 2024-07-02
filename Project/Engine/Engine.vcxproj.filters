@@ -740,18 +740,6 @@
     <Filter Include="05. Level">
       <UniqueIdentifier>{bbcc4b52-f89c-4b90-8f98-ecbb79676c76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Manager">
-      <UniqueIdentifier>{eae498c6-6a7f-4f44-90c6-0ff013b91274}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\KeyMgr">
-      <UniqueIdentifier>{a12fed08-2d50-493a-b886-da76dcf958e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\PathMgr">
-      <UniqueIdentifier>{d1cff104-c7e1-4342-a358-f4a83078678c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\TimeMgr">
-      <UniqueIdentifier>{bcd1f63b-3214-43a1-a499-914e398b7f09}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06. Asset">
       <UniqueIdentifier>{4b68f9bb-e9b3-4643-96d9-9e95a5aa8a97}</UniqueIdentifier>
     </Filter>
@@ -779,20 +767,8 @@
     <Filter Include="08. Component\RenderComponent">
       <UniqueIdentifier>{ee6c54e3-3c7d-487d-80ab-c7e791ba4a1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Manager\AssetMgr">
-      <UniqueIdentifier>{a235bdd5-31ac-438a-bad0-e2050728bd54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\LevelMgr">
-      <UniqueIdentifier>{76b77282-f8da-483d-9b08-c092636426ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Script">
       <UniqueIdentifier>{21850e1c-1906-43b3-b65e-868bb3418669}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\EditorMgr">
-      <UniqueIdentifier>{09b1b8a6-d707-4b61-9b04-c1b48e49d632}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\TaskMgr">
-      <UniqueIdentifier>{71673e13-8b50-409a-b41e-f98964acc927}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. Asset\Material">
       <UniqueIdentifier>{f621e868-f531-4089-b323-1959e05a63e6}</UniqueIdentifier>
@@ -805,12 +781,6 @@
     </Filter>
     <Filter Include="06. Asset\Texture">
       <UniqueIdentifier>{6ef43a2b-d46f-4f70-8436-e6e6158ae4b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\GrabageCollector">
-      <UniqueIdentifier>{16f1149d-3d02-4bba-803b-51a38dc2c467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\RenderMgr">
-      <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Device\StructuredBuffer">
       <UniqueIdentifier>{9bc152a0-79ed-40d7-8633-be0834c741d5}</UniqueIdentifier>
@@ -884,20 +854,11 @@
     <Filter Include="06. Asset\Physics2DMaterial">
       <UniqueIdentifier>{24671929-f30d-4e38-8721-e9e92d062107}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Manager\FontMgr">
-      <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Render\ProgressBar">
       <UniqueIdentifier>{255fc16a-e735-4269-bf34-360fbdcb3a95}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Render\SSAO">
       <UniqueIdentifier>{a39218f8-8966-495f-b000-7c571b82f835}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\PhysicsMgr">
-      <UniqueIdentifier>{1c85a419-9ad3-45bd-97fb-5c01b00b568e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Manager\Physics2DMgr">
-      <UniqueIdentifier>{5bb8f90a-95b9-4d0b-b08d-71aa6c7386ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. Asset\PhysicMaterial">
       <UniqueIdentifier>{b1a66690-71b3-4951-95d6-144c0cc946a0}</UniqueIdentifier>
@@ -989,9 +950,6 @@
     <Filter Include="ShaderCode\Compute\CopyBone">
       <UniqueIdentifier>{35e35875-a556-4d9d-a0e4-6f20ae30dd85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Manager\Instancing">
-      <UniqueIdentifier>{991a345b-6f88-4be8-9664-3f4f2dee0c8b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Animator">
       <UniqueIdentifier>{b5a6f8f8-45eb-44ee-ac40-ec642d50418e}</UniqueIdentifier>
     </Filter>
@@ -1060,6 +1018,48 @@
     </Filter>
     <Filter Include="09. Editor\Model Editor">
       <UniqueIdentifier>{7eb3909d-35df-4e78-95a4-30978790d451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager">
+      <UniqueIdentifier>{eae498c6-6a7f-4f44-90c6-0ff013b91274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\KeyMgr">
+      <UniqueIdentifier>{a12fed08-2d50-493a-b886-da76dcf958e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\PathMgr">
+      <UniqueIdentifier>{d1cff104-c7e1-4342-a358-f4a83078678c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\TimeMgr">
+      <UniqueIdentifier>{bcd1f63b-3214-43a1-a499-914e398b7f09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\AssetMgr">
+      <UniqueIdentifier>{a235bdd5-31ac-438a-bad0-e2050728bd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\LevelMgr">
+      <UniqueIdentifier>{76b77282-f8da-483d-9b08-c092636426ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\EditorMgr">
+      <UniqueIdentifier>{09b1b8a6-d707-4b61-9b04-c1b48e49d632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\TaskMgr">
+      <UniqueIdentifier>{71673e13-8b50-409a-b41e-f98964acc927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\GrabageCollector">
+      <UniqueIdentifier>{16f1149d-3d02-4bba-803b-51a38dc2c467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\RenderMgr">
+      <UniqueIdentifier>{ae6b38b1-0e5f-4294-8421-d3521fa3e4c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\FontMgr">
+      <UniqueIdentifier>{ae9005bf-4144-4ba5-b7ea-27764e21947e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\PhysicsMgr">
+      <UniqueIdentifier>{1c85a419-9ad3-45bd-97fb-5c01b00b568e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Physics2DMgr">
+      <UniqueIdentifier>{5bb8f90a-95b9-4d0b-b08d-71aa6c7386ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Manager\Instancing">
+      <UniqueIdentifier>{991a345b-6f88-4be8-9664-3f4f2dee0c8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
