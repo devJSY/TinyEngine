@@ -119,13 +119,20 @@ CLevel* CLevelMgr::CreateNewLevel()
 
     NewLevel->AddObject(pSkyBoxObj, 15);
 
-    //// Fbx
-    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Test\\Coffee.fbx")->Instantiate();
-    // NewLevel->AddObject(pFbxObj, 0);
-    // pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Test\\Babybottle.fbx")->Instantiate();
-    // NewLevel->AddObject(pFbxObj, 0);
-    // pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Test\\MilkPack.fbx")->Instantiate();
-    // NewLevel->AddObject(pFbxObj, 0);
+    // Fbx
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Kirby\\DeformKirby\\Crater\\Crater.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Dedede\\SteelTower\\SteelTower.fbx")->Instantiate();
+     //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+     CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby.fbx")->Instantiate();
+     //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\axisTest.fbx")->Instantiate();
+     //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirbyTest.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\Cone\\Cone.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\kirby\\DeformKirby\\ConeIce\\ConeIce.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\DededeMap\\IbMountain\\IbMountain_0.fbx")->Instantiate();
+    // CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\DededeMap\\IbBossTemple\\IbBossTemple01L.fbx")->Instantiate();
+    //CGameObject* pFbxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\HotHead\\HotHead.fbx")->Instantiate();
+    pFbxObj->Transform()->SetRelativeRotation(Vec3(-XM_PIDIV2, 0.f, 0.f));
+    NewLevel->AddObject(pFbxObj, 0);
 
     return NewLevel;
 }
