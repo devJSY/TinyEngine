@@ -8,6 +8,8 @@
 #define KEY_RELEASED_ARROW (KEY_RELEASED(KEY::UP) || KEY_RELEASED(KEY::DOWN) || KEY_RELEASED(KEY::LEFT) || KEY_RELEASED(KEY::RIGHT))
 #define KEY_NONE_ARROW (KEY_NONE(KEY::UP) && KEY_NONE(KEY::DOWN) && KEY_NONE(KEY::LEFT) && KEY_NONE(KEY::RIGHT))
 
+#define GET_CURCLIP_FRM PLAYER->Animator()->GetCurFrameIdx() - PLAYER->Animator()->GetSkeletalMesh()->GetAnimClip()->at(PLAYER->Animator()->GetCurClipIdx()).iStartFrame
+
 #define PLAY_CURSTATE(STATE)                                                                                                                         \
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();                                                                                                \
     if (KirbyFSM->GetCurObject())                                                                                                                    \

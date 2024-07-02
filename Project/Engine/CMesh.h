@@ -11,6 +11,7 @@ struct tIndexInfo
     D3D11_BUFFER_DESC tIBDesc;
     UINT iIdxCount;
     void* pIdxSysMem;
+    wstring IBName;
 };
 
 class CMesh : public CAsset
@@ -39,10 +40,14 @@ public:
     UINT GetVtxCount() const { return m_VtxCount; }
     Vtx* GetVtxSysMem() const { return (Vtx*)m_VtxSysMem; }
     UINT GetSubsetCount() const { return (UINT)m_vecIdxInfo.size(); }
+    wstring GetIBName(UINT _Idx) const { return m_vecIdxInfo[_Idx].IBName; }
 
 public:
+    bool IsSkeletalMesh() const { return !m_vecBones.empty(); }
+
     const vector<tMTBone>* GetBones() const { return &m_vecBones; }
     UINT GetBoneCount() const { return (UINT)m_vecBones.size(); }
+
     const vector<tMTAnimClip>* GetAnimClip() const { return &m_vecAnimClip; }
     bool IsAnimMesh() const { return !m_vecAnimClip.empty(); }
 

@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "CKirbyAttack.h"
 
-#include "CKirbyFSM.h"
-#include "CPlayerMgr.h"
-#include "CKirbyObject.h"
-#include "CKirbyAbility.h"
-
 CKirbyAttack::CKirbyAttack()
 {
 }
@@ -16,18 +11,8 @@ CKirbyAttack::~CKirbyAttack()
 
 void CKirbyAttack::tick()
 {
-    wstring NextState = L"IDLE";
-
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-
-    if (KirbyFSM->GetCurObject())
-    {
-        KirbyFSM->GetCurObject()->Attack();
-    }
-    else
-    {
-        KirbyFSM->GetCurAbility()->Attack();
-    }
+    //wstring NextState = L"IDLE";
+    PLAY_CURSTATE(Attack)
 
     // 기본적으로 수행해야 하는 동작
 

@@ -1,18 +1,28 @@
 #pragma once
 #include "CKirbyAbility.h"
 #include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
 
 class CKirbyAbility_Normal : public CKirbyAbility
 {
-public:
-    // RUN
-    virtual void RunStart();
-    virtual void RunStartEnter();
-    virtual void RunStartExit();
+private:
+    bool        m_FrmEnter;
+    const float m_Charge1Time;
 
+public:
+    // Idle
+    virtual void Idle();
+    virtual void IdleEnter();
+    virtual void IdleExit();
+
+    // RUN
     virtual void Run();
     virtual void RunEnter();
     virtual void RunExit();
+
+    virtual void RunStart();
+    virtual void RunStartEnter();
+    virtual void RunStartExit();
 
     // πÒ±‚
     virtual void Attack();
@@ -23,6 +33,14 @@ public:
     virtual void AttackCharge1();
     virtual void AttackCharge1Enter();
     virtual void AttackCharge1Exit();
+
+    virtual void AttackCharge1Start();
+    virtual void AttackCharge1StartEnter();
+    virtual void AttackCharge1StartExit();
+
+    virtual void AttackCharge1End();
+    virtual void AttackCharge1EndEnter();
+    virtual void AttackCharge1EndExit();
 
     // »Ì¿‘2
     virtual void AttackCharge2();

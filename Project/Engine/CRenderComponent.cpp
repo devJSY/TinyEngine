@@ -5,6 +5,7 @@
 
 #include "CLevel.h"
 #include "CTransform.h"
+#include "CAnimator.h"
 
 CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
     : CComponent(_Type)
@@ -68,6 +69,11 @@ void CRenderComponent::SetMesh(Ptr<CMesh> _Mesh)
     {
         m_vecMtrls.resize(m_Mesh->GetSubsetCount());
     }
+
+    if (nullptr != GetOwner() && nullptr != Animator())
+    {
+        Animator()->SetSkeletalMesh(m_Mesh);
+    }
 }
 
 Ptr<CMaterial> CRenderComponent::GetMaterial(UINT _idx)
@@ -90,10 +96,6 @@ Ptr<CMaterial> CRenderComponent::GetSharedMaterial(UINT _idx)
 
 Ptr<CMaterial> CRenderComponent::GetDynamicMaterial(UINT _idx)
 {
-    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    if (pCurLevel->GetState() != LEVEL_STATE::PLAY)
-        return nullptr;
-
     // 원본 재질이 없다 -> Nullptr 반환
     if (nullptr == m_vecMtrls[_idx].pSharedMtrl)
     {
@@ -118,6 +120,22 @@ void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx)
     m_vecMtrls[_idx].pSharedMtrl = _Mtrl;
     m_vecMtrls[_idx].pCurMtrl = _Mtrl;
     m_vecMtrls[_idx].pDynamicMtrl = nullptr;
+}
+
+void CRenderComponent::SetMeshData(Ptr<CMeshData> _MeshData)
+{
+    SetMesh(_MeshData->GetMesh());
+
+    const vector<Ptr<CMaterial>>& vecMtrl = _MeshData->GetVecMaterial();
+    for (UINT i = 0; i < vecMtrl.size(); ++i)
+    {
+        SetMaterial(vecMtrl[i], i);
+    }
+
+    if (nullptr != GetOwner() && nullptr != Animator())
+    {
+        Animator()->SetSkeletalMesh(_MeshData->GetMesh());
+    }
 }
 
 ULONG64 CRenderComponent::GetInstID(UINT _iMtrlIdx)

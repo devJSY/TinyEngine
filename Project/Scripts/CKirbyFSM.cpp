@@ -11,6 +11,9 @@ CKirbyFSM::CKirbyFSM()
     , m_CurObject(nullptr)
     , m_arrAbility{}
     , m_arrObject{}
+    , m_ChargeAccTime(0.f)
+    , m_bVacuum(false)
+    , m_bStuffed(false)
 {
     m_arrAbility[(UINT)ABILITY_COPY_TYPE::NORMAL] = new CKirbyAbility_Normal();
     m_CurAbility = m_arrAbility[(UINT)ABILITY_COPY_TYPE::NORMAL];
@@ -81,17 +84,38 @@ CKirbyFSM::~CKirbyFSM()
 
 #include "CKirbyIdle.h"
 #include "CKirbyRun.h"
+#include "CKirbyRunStart.h"
 #include "CKirbyAttack.h"
 #include "CKirbyAttackCharge1.h"
+#include "CKirbyAttackCharge1Start.h"
+#include "CKirbyAttackCharge1End.h"
+#include "CKirbyAttackCharge2.h"
+#include "CKirbyStuffed.h"
+
 void CKirbyFSM::begin()
 {
     // State Ãß°¡
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"RUN", new CKirbyRun);
+    AddState(L"RUN_START", new CKirbyRunStart);
     AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
+    AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
+    AddState(L"ATTACK_CHARGE1_END", new CKirbyAttackCharge1End);
+    AddState(L"ATTACK_CHARGE2", new CKirbyAttackCharge2);
+    AddState(L"STUFFED", new CKirbyStuffed);
 
     ChangeState(L"IDLE");
+}
+
+void CKirbyFSM::tick()
+{
+    if (KEY_TAP(KEY::Q) || KEY_PRESSED(KEY::Q))
+    {
+        m_ChargeAccTime += DT;
+    }
+
+    CFSMScript::tick();
 }
 
 void CKirbyFSM::ChangeAbilityCopy(ABILITY_COPY_TYPE _Type)

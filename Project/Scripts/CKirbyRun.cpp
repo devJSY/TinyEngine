@@ -2,10 +2,6 @@
 #include "CKirbyRun.h"
 
 #define RUN_SPEED 10.f
-#include "CKirbyFSM.h"
-#include "CPlayerMgr.h"
-#include "CKirbyObject.h"
-#include "CKirbyAbility.h"
 
 CKirbyRun::CKirbyRun()
 {
@@ -17,8 +13,7 @@ CKirbyRun::~CKirbyRun()
 
 void CKirbyRun::tick()
 {
-
-    // 기본적으로 수행해야 하는 동작
+    // Common Run
     Vec3 NewPos = GetOwner()->Transform()->GetRelativePos();
 
     if (KEY_TAP(KEY::LEFT) || KEY_PRESSED(KEY::LEFT))
@@ -34,22 +29,16 @@ void CKirbyRun::tick()
 
     // Change State
     if (KEY_TAP(KEY::Q))
+    {
         ChangeState(L"ATTACK");
+    }
     else if (KEY_RELEASED_ARROW || KEY_NONE_ARROW)
+    {
         ChangeState(L"IDLE");
-
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-
-    if (KirbyFSM->GetCurObject())
-    {
-        KirbyFSM->GetCurObject()->Run();
     }
-    else
-    {
-        // KirbyFSM->GetCurAbility()->Run();
-        if (GetOwner()->Animator()->IsFinish())
-            ChangeState(L"RUN");
-    }
+
+    // Per State
+    PLAY_CURSTATE(Run)
 }
 
 void CKirbyRun::Enter()
@@ -59,20 +48,15 @@ void CKirbyRun::Enter()
     if (KirbyFSM->GetCurObject())
     {
         KirbyFSM->GetCurObject()->RunEnter();
+        GetOwner()->Animator()->Play(KIRBYANIM(L"Run"));
     }
     else
     {
-        // KirbyFSM->GetCurObject()->IdleEnter();
-        GetOwner()->Animator()->Play(KIRBYANIM(L"Run"));
+        KirbyFSM->GetCurAbility()->RunEnter();
     }
 }
 
 void CKirbyRun::Exit()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-
-    if (KirbyFSM->GetCurObject())
-    {
-        KirbyFSM->GetCurObject()->RunExit();
-    }
+    PLAY_CURSTATE(RunExit)
 }

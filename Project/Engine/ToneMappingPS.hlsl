@@ -53,8 +53,18 @@ float3 lumaBasedReinhardToneMapping(float3 color)
 float4 main(PS_IN input) : SV_TARGET
 {
     // Bloom
-    float3 color0 = g_tex_0.Sample(g_LinearWrapSampler, input.vUV).rgb;
-    float3 color1 = g_tex_1.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    float3 color0 = (float3) 0.f;
+    float3 color1 = (float3) 0.f;
+    
+    if (g_btex_0)
+    {
+        color0 = g_tex_0.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    }
+  
+    if (g_btex_1)
+    {
+        color1 = g_tex_1.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    }
     
     float3 combined = (1.0 - Strength) * color0 + Strength * color1;
 

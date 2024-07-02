@@ -72,7 +72,6 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
     pSkyBox->Transform()->SetAbsolute(true);
 
-    pSkyBox->SkyBox()->SetType(SKYBOX_TYPE::moonless);
     pSkyBox->SkyBox()->SetShape(SKYBOX_SHAPE::BOX);
 
     pCurLevel->AddObject(pSkyBox, L"SkyBox");

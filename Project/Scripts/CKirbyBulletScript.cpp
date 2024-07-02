@@ -3,7 +3,7 @@
 
 CKirbyBulletScript::CKirbyBulletScript()
     : CScript(KIRBYBULLETSCRIPT)
-    , m_InitVelocity()
+    , m_PlayTime(5.f)
 {
 }
 
@@ -16,5 +16,15 @@ void CKirbyBulletScript::begin()
     if (Rigidbody())
     {
         Rigidbody()->AddForce(m_InitVelocity, ForceMode::Impulse);
+    }
+}
+
+void CKirbyBulletScript::tick()
+{
+    m_PlayTime -= DT;
+
+    if (m_PlayTime <= 0.f)
+    {
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }

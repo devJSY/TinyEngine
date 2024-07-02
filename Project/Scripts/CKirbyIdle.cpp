@@ -1,12 +1,6 @@
 #include "pch.h"
 #include "CKirbyIdle.h"
 
-// 통?합?
-#include "CKirbyFSM.h"
-#include "CPlayerMgr.h"
-#include "CKirbyObject.h"
-#include "CKirbyAbility.h"
-
 CKirbyIdle::CKirbyIdle()
 {
 }
@@ -31,39 +25,23 @@ void CKirbyIdle::tick()
     else
     {
         // 현재 state에 맞는 추가동작
-        //KirbyFSM->GetCurAbility()->Idle();
+        KirbyFSM->GetCurAbility()->Idle();
     }
 
-    // 기본적으로 수행해야 하는 동작
-
+    // 기본적으로 수행해야 하는 동작은 여기가 아닌듯;
     // Change State
-    if (KEY_TAP(KEY::Q))
-        ChangeState(L"ATTACK");
-    else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
-        ChangeState(L"RUN");
+    // ex, Change State를 여기서 수행하면 ...
+    // (1) 구현 범위 헷갈림
+    // (2) 위쪽에서 Change State 발생하고 또다시 발생하는 경우 의도한대로 상태가 안 도는 경우 생김
+    // - ex 특정상태Start && 상태전환 -> 특정상태~End까지 의도한대로 동작 않을 수? 있 ? 음 ?
 }
 
 void CKirbyIdle::Enter()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    
-    if (KirbyFSM->GetCurObject())
-    {
-        KirbyFSM->GetCurObject()->IdleEnter();
-    }
-    else
-    {
-        //KirbyFSM->GetCurObject()->IdleEnter();
-        GetOwner()->Animator()->Play(KIRBYANIM(L"Wait"));
-    }
+    PLAY_CURSTATE(IdleEnter)
 }
 
 void CKirbyIdle::Exit()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-
-    if (KirbyFSM->GetCurObject())
-    {
-        KirbyFSM->GetCurObject()->IdleExit();
-    }
+    PLAY_CURSTATE(IdleExit)
 }

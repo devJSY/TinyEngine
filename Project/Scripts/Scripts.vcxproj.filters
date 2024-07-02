@@ -172,6 +172,9 @@
     <ClInclude Include="CAnimationTestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CModelEditorCameraMoveScript.h">
+      <Filter>Scripts\CameraMove</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyObject.h">
       <Filter>Module\StateGroup\KirbyObject</Filter>
     </ClInclude>
@@ -206,9 +209,38 @@
       <Filter>State\KirbyState\ChangeAbility</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAttackCharge1.h">
-      <Filter>State\KirbyState\ChargeAttack1</Filter>
+      <Filter>State\KirbyState\AttackCharge1</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyRunStart.h" />
+    <ClInclude Include="CKirbyRunStart.h">
+      <Filter>State\KirbyState\Run\Run_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpringArmCameraScript.h">
+      <Filter>Scripts\SpringArm</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonScript.h">
+      <Filter>Scripts\UI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIManagerScript.h">
+      <Filter>Scripts\UI\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CButtonManagerScript.h">
+      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge1Start.h">
+      <Filter>State\KirbyState\AttackCharge1\AttackCharge1Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge1End.h">
+      <Filter>State\KirbyState\AttackCharge1\AttackCharge1End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffed.h">
+      <Filter>State\KirbyState\Stuffed</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyJump.h">
+      <Filter>State\KirbyState\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge2.h">
+      <Filter>State\KirbyState\AttackCharge2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -413,9 +445,41 @@
       <Filter>State\KirbyState\ChangeAbility</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAttackCharge1.cpp">
-      <Filter>State\KirbyState\ChargeAttack1</Filter>
+      <Filter>State\KirbyState\AttackCharge1</Filter>
     </ClCompile>
-    <ClCompile Include="CKirbyRunStart.cpp" />
+    <ClCompile Include="CKirbyRunStart.cpp">
+      <Filter>State\KirbyState\Run\Run_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpringArmCameraScript.cpp">
+      <Filter>Scripts\SpringArm</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtonScript.cpp">
+      <Filter>Scripts\UI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CButtonManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CModelEditorCameraMoveScript.cpp">
+      <Filter>Scripts\CameraMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge1Start.cpp">
+      <Filter>State\KirbyState\AttackCharge1\AttackCharge1Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge1End.cpp">
+      <Filter>State\KirbyState\AttackCharge1\AttackCharge1End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffed.cpp">
+      <Filter>State\KirbyState\Stuffed</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyJump.cpp">
+      <Filter>State\KirbyState\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge2.cpp">
+      <Filter>State\KirbyState\AttackCharge2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -589,11 +653,41 @@
     <Filter Include="State\KirbyState\ChangeObject">
       <UniqueIdentifier>{9fe1c146-5378-4a9e-bb27-a28009aa8917}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\ChargeAttack1">
+    <Filter Include="Scripts\SpringArm">
+      <UniqueIdentifier>{ed0fe73b-a25f-4112-ab6a-c74dab2df3bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager">
+      <UniqueIdentifier>{6b3c5070-7a6c-418e-96aa-68444b73f6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Button">
+      <UniqueIdentifier>{09073fd3-e471-4b9e-889f-7b1e566b3325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\ButtonManager">
+      <UniqueIdentifier>{455669fa-563b-415d-a29b-da54b92e128b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run\Run_Start">
+      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge1">
       <UniqueIdentifier>{175ddc01-87b9-4551-acf1-a887e0430088}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Run_Start">
-      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
+    <Filter Include="State\KirbyState\AttackCharge1\AttackCharge1Start">
+      <UniqueIdentifier>{4e2342c8-6941-460f-9b13-d237776619c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge1\AttackCharge1End">
+      <UniqueIdentifier>{cfa9607b-488d-49fa-898a-6ae9955bb2f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed">
+      <UniqueIdentifier>{418f91bb-a833-49f6-9854-c4e49b6b8679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Jump">
+      <UniqueIdentifier>{138ced5b-d9d1-4858-89c0-e6aa39b6dc6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge2">
+      <UniqueIdentifier>{2d59ad2d-3945-4870-a275-9ea9ea60a051}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

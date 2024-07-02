@@ -111,6 +111,9 @@ void GamePlayStatic::DrawDebugLine(const Matrix& _WorldMat, Vec3 _p1, Vec3 _p2, 
 
 void GamePlayStatic::DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration)
 {
+    if (_vDir == Vec3() || _fLength == 0.f)
+        return;
+
     tDebugShapeInfo info = {};
     info.eShape = DEBUG_SHAPE::LINE;
 
@@ -891,6 +894,19 @@ Matrix GetMatrixFromFbxMatrix(FbxAMatrix& _mat)
     return mat;
 }
 
+FbxAMatrix GetFbxMatrixFromMatrix(Matrix& _mat)
+{
+    FbxAMatrix mat;
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            mat[i][j] = _mat.m[i][j];
+        }
+    }
+    return mat;
+}
+
 bool closeEnough(const float& a, const float& b, const float& epsilon = std::numeric_limits<float>::epsilon())
 {
     return (epsilon > std::abs(a - b));
@@ -1250,6 +1266,7 @@ bool ImGui_ComboUI(const string& caption, string& current_item, const std::vecto
         for (int n = 0; n < items.size(); n++)
         {
             bool is_selected = (current_item == items[n]);
+
             if (ImGui::Selectable(items[n].c_str(), is_selected))
             {
                 current_item = items[n];

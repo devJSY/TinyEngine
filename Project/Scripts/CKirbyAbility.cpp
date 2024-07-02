@@ -18,3 +18,8 @@ void CKirbyAbility::ChangeState(const wstring& _strStateName)
 
     OwnerFSM->ChangeState(_strStateName);
 }
+
+void CKirbyAbility::IdleEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
+}

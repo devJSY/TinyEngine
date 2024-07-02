@@ -17,7 +17,9 @@ public:
     // 필수: Change, Idle, Attack, Jump Attack
     // 선택: ChargeAttack1, ChargeAttack2
 
-    //virtual void Idle();
+    virtual void Idle(){};
+    virtual void IdleEnter();
+    virtual void IdleExit(){};
 
     virtual void Run(){};
     virtual void RunEnter(){};
@@ -39,9 +41,21 @@ public:
     virtual void AttackEnter() = 0;
     virtual void AttackExit() = 0;
 
+    virtual void AttackEnd(){};
+    virtual void AttackEndEnter(){};
+    virtual void AttackEndExit(){};
+
     virtual void AttackCharge1(){};
     virtual void AttackCharge1Enter(){};
     virtual void AttackCharge1Exit(){};
+
+    virtual void AttackCharge1Start(){};
+    virtual void AttackCharge1StartEnter(){};
+    virtual void AttackCharge1StartExit(){};
+
+    virtual void AttackCharge1End(){};
+    virtual void AttackCharge1EndEnter(){};
+    virtual void AttackCharge1EndExit(){};
 
     virtual void AttackCharge2(){};
     virtual void AttackCharge2Enter(){};
