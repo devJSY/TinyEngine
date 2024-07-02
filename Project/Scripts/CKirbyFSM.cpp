@@ -85,6 +85,9 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyIdle.h"
 #include "CKirbyRun.h"
 #include "CKirbyRunStart.h"
+#include "CKirbyJump.h"
+#include "CKirbyJumpStart.h"
+#include "CKirbyJumpEnd.h"
 #include "CKirbyAttack.h"
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
@@ -98,6 +101,9 @@ void CKirbyFSM::begin()
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"RUN", new CKirbyRun);
     AddState(L"RUN_START", new CKirbyRunStart);
+    AddState(L"JUMP", new CKirbyRunStart);
+    AddState(L"JUMP_START", new CKirbyJumpStart);
+    AddState(L"JUMP_END", new CKirbyJumpEnd);
     AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);

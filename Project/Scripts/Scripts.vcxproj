@@ -125,6 +125,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyFSM.h" />
     <ClInclude Include="CKirbyIdle.h" />
     <ClInclude Include="CKirbyJump.h" />
+    <ClInclude Include="CKirbyJumpEnd.h" />
+    <ClInclude Include="CKirbyJumpStart.h" />
+    <ClInclude Include="CKirbyLanding.h" />
+    <ClInclude Include="CKirbyLandingEnd.h" />
     <ClInclude Include="CKirbyMoveController.h" />
     <ClInclude Include="CKirbyObject.h" />
     <ClInclude Include="CKirbyRun.h" />
@@ -165,6 +169,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyFSM.cpp" />
     <ClCompile Include="CKirbyIdle.cpp" />
     <ClCompile Include="CKirbyJump.cpp" />
+    <ClCompile Include="CKirbyJumpEnd.cpp" />
+    <ClCompile Include="CKirbyJumpStart.cpp" />
+    <ClCompile Include="CKirbyLanding.cpp" />
+    <ClCompile Include="CKirbyLandingEnd.cpp" />
     <ClCompile Include="CKirbyMoveController.cpp" />
     <ClCompile Include="CKirbyObject.cpp" />
     <ClCompile Include="CKirbyRun.cpp" />
