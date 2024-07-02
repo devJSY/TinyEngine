@@ -154,6 +154,7 @@ inline bool ImGui_ComboUI(const string& caption, string& current_item, const std
     {
         filter.Draw(ImGui_LabelPrefix("Filter").c_str());
         ImGui::Separator();
+
         if (ImGui::Selectable("...", false))
         {
             current_item = string();

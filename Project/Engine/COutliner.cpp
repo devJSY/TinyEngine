@@ -2052,6 +2052,20 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 ImGui::EndDragDropTarget();
             }
 
+            // Delete Mesh Popup
+            ImGui::OpenPopupOnItemClick("Mesh##COutlinerMeshRender", ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup("Mesh##COutlinerMeshRender"))
+            {
+                if (ImGui::MenuItem("Delete Mesh"))
+                {
+                    pMeshRender->SetMesh(nullptr);
+                    pMesh = nullptr;
+                }
+
+                ImGui::EndPopup();
+            }
+
             ImGui::TreePop();
         }
 
@@ -2083,6 +2097,22 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                         }
 
                         ImGui::EndDragDropTarget();
+                    }
+
+                    // Delete Material Popup
+                    string MtrlPopupStr = "Material";
+                    MtrlPopupStr += to_string(i);
+                    MtrlPopupStr += "##COutlinerMeshRender";
+                    ImGui::OpenPopupOnItemClick(MtrlPopupStr.c_str(), ImGuiPopupFlags_MouseButtonRight);
+
+                    if (ImGui::BeginPopup(MtrlPopupStr.c_str()))
+                    {
+                        if (ImGui::MenuItem("Delete Material"))
+                        {
+                            pMeshRender->SetMaterial(nullptr, i);
+                        }
+
+                        ImGui::EndPopup();
                     }
 
                     string MtrlEditorStr = "Material ";

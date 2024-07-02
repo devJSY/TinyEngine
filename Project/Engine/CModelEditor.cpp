@@ -394,6 +394,14 @@ void CModelEditor::DrawViewport()
         CTexture::Clear(i);
     }
 
+    // SkyBox Clear
+    CTexture::Clear(17);
+    CTexture::Clear(18);
+    CTexture::Clear(19);
+
+    // Light Depth Map Clear
+    CTexture::Clear(23);
+
     ImGui::End();
 }
 
