@@ -23,18 +23,19 @@ void CKirbyRun::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: {
+        case AbilityCopyType::NORMAL: 
+        {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1");
             }
-            else if (KEY_RELEASED_ARROW || KEY_NONE_ARROW)
-            {
-                ChangeState(L"IDLE");
-            }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
                 ChangeState(L"JUMP_START");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
             }
         }
         break;

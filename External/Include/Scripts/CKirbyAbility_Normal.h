@@ -6,8 +6,7 @@
 class CKirbyAbility_Normal : public CKirbyAbility
 {
 private:
-    bool        m_bFrmEnter;
-    const float m_Charge1Time;
+    bool m_bFrmEnter;
 
 public:
     // RUN
@@ -36,6 +35,10 @@ public:
     virtual void AttackCharge1End();
     virtual void AttackCharge1EndEnter();
     virtual void AttackCharge1EndExit();
+
+    virtual void AttackCharge1Run();
+    virtual void AttackCharge1RunEnter();
+    virtual void AttackCharge1RunExit();
 
     // »Ì¿‘2
     virtual void AttackCharge2();

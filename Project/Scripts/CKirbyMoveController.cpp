@@ -18,6 +18,9 @@ CKirbyMoveController::CKirbyMoveController()
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
     , m_Gravity(-10.f)
+    , m_bMoveLock(false)
+    , m_bDirLock(false)
+    , m_bJumpLock(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -38,6 +41,9 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
     , m_Gravity(-20.f)
+    , m_bMoveLock(false)
+    , m_bDirLock(false)
+    , m_bJumpLock(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -165,7 +171,7 @@ void CKirbyMoveController::SetDir()
     }
 
     // 키 입력시 바라봐야할 방향을 수정
-    if (m_Input.Length() > 0.f)
+    if (m_Input.Length() > 0.f && m_bDirLock == false)
     {
         m_TowardDir = m_MoveDir;
     }
@@ -207,7 +213,7 @@ void CKirbyMoveController::Move()
     m_MoveVelocity.z = m_MoveDir.z * m_Speed;
     
     // 점프
-    if (KEY_TAP(KEY_JUMP) && bGrounded)
+    if (KEY_TAP(KEY_JUMP) && bGrounded && m_bJumpLock == false)
     {
         m_MoveVelocity.y += std::sqrt(m_JumpPower * -3.f * m_Gravity);
     }
@@ -215,7 +221,11 @@ void CKirbyMoveController::Move()
     // 중력 적용
     m_MoveVelocity.y += m_Gravity * DT;
 
-    CharacterController()->Move(m_MoveVelocity * DT);
+
+    if (m_bMoveLock == false)
+    {
+        CharacterController()->Move(m_MoveVelocity * DT);
+    }
 
 }
 

@@ -27,9 +27,13 @@ void CKirbyAttackCharge1Start::tick()
             {
                 ChangeState(L"ATTACK_CHARGE1_END");
             }
-            else
+            else if (PLAYER->Animator()->IsFinish())
             {
-                if (PLAYER->Animator()->IsFinish())
+                if (PLAYERCTRL->GetInput().Length() != 0.f)
+                {
+                    ChangeState(L"ATTACK_CHARGE1_RUN");
+                }
+                else
                 {
                     ChangeState(L"ATTACK_CHARGE1");
                 }
@@ -49,6 +53,7 @@ void CKirbyAttackCharge1Start::tick()
 void CKirbyAttackCharge1Start::Enter()
 {
     PLAY_CURSTATE(AttackCharge1StartEnter)
+    PLAYERFSM->ClearChargeAccTime();
 }
 
 void CKirbyAttackCharge1Start::Exit()

@@ -28,13 +28,13 @@ void CKirbyIdle::tick()
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
             }
-            else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
-            {
-                ChangeState(L"RUN_START");
-            }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
                 ChangeState(L"JUMP_START");
+            }
+            else if (PLAYERCTRL->GetInput().Length() != 0.f)
+            {
+                ChangeState(L"RUN_START");
             }
         }
             break;

@@ -12,6 +12,31 @@ CKirbyAttackCharge1End::~CKirbyAttackCharge1End()
 void CKirbyAttackCharge1End::tick()
 {
     PLAY_CURSTATE(AttackCharge1End)
+
+    // State Change
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL: 
+        {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                ChangeState(L"IDLE");
+            }
+        }
+        break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::RANGER:
+            break;
+        case AbilityCopyType::SWORD:
+            break;
+        }
+    }
 }
 
 void CKirbyAttackCharge1End::Enter()

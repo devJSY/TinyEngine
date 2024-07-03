@@ -12,7 +12,6 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
-    , m_Charge(ChargeType::NONE)
     , m_LastJump(JumpType::HIGH)
     , m_bStuffed(false)
 {
@@ -27,7 +26,6 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
-    , m_Charge(ChargeType::NONE)
     , m_LastJump(JumpType::HIGH)
     , m_bStuffed(false)
 {
@@ -87,8 +85,14 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
 #include "CKirbyAttackCharge1End.h"
+#include "CKirbyAttackCharge1Run.h"
 #include "CKirbyAttackCharge2.h"
 #include "CKirbyStuffed.h"
+#include "CKirbyStuffedIdle.h"
+#include "CKirbyStuffedRun.h"
+#include "CKirbyStuffedJump.h"
+#include "CKirbyStuffedJumpEnd.h"
+#include "CKirbyStuffedLanding.h"
 
 void CKirbyFSM::begin()
 {
@@ -105,8 +109,14 @@ void CKirbyFSM::begin()
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
     AddState(L"ATTACK_CHARGE1_END", new CKirbyAttackCharge1End);
+    AddState(L"ATTACK_CHARGE1_RUN", new CKirbyAttackCharge1Run);
     AddState(L"ATTACK_CHARGE2", new CKirbyAttackCharge2);
     AddState(L"STUFFED", new CKirbyStuffed);
+    AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
+    AddState(L"STUFFED_RUN", new CKirbyStuffedRun);
+    AddState(L"STUFFED_JUMP", new CKirbyStuffedJump);
+    AddState(L"STUFFED_JUMP_END", new CKirbyStuffedJumpEnd);
+    AddState(L"STUFFED_LANDING", new CKirbyStuffedLanding);
 
     ChangeState(L"IDLE");
 }

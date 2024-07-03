@@ -5,6 +5,7 @@
 #include "CKirbyFSM.h"
 
 CKirbyAbility::CKirbyAbility()
+    : m_Charge1Time(0.f)
 {
 }
 
