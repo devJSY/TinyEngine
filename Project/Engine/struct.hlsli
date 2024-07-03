@@ -11,10 +11,10 @@ struct VS_IN
     
     float4 vColor : COLOR;
     
-    float2 vUV0 : TEXCOORD;
-    float2 vUV1 : TEXCOORD;
-    float2 vUV2 : TEXCOORD;
-    float2 vUV3 : TEXCOORD;
+    float2 vUV0 : TEXCOORD0;
+    float2 vUV1 : TEXCOORD1;
+    float2 vUV2 : TEXCOORD2;
+    float2 vUV3 : TEXCOORD3;
     
     float4 vIndices : BLENDINDICES;
     float4 vWeights : BLENDWEIGHT;

@@ -29,15 +29,24 @@ struct PS_OUT
 PS_OUT main(PS_IN input)
 {
     PS_OUT output = (PS_OUT) 0.f;
+
+    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
+    float4 albedo1 = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;
+    float4 albedo2 = g_btex_2 ? Albedo2Tex.Sample(g_LinearClampSampler, input.vUV2) : (float4) 0.f;
+    float4 albedo3 = g_btex_3 ? Albedo3Tex.Sample(g_LinearClampSampler, input.vUV3) : (float4) 0.f;
     
-    float3 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, input.vUV0).rgb 
-                                 : MtrlAlbedo.rgb;
-    float3 albedo1 = g_btex_1 ? Albedo1Tex.Sample(g_LinearWrapSampler, input.vUV1).rgb 
-                                 : MtrlAlbedo.rgb;
-    float3 albedo2 = g_btex_2 ? Albedo2Tex.Sample(g_LinearWrapSampler, input.vUV2).rgb 
-                                 : MtrlAlbedo.rgb;
-    float3 albedo3 = g_btex_3 ? Albedo3Tex.Sample(g_LinearWrapSampler, input.vUV3).rgb 
-                                 : MtrlAlbedo.rgb;
+    albedo0.rgb *= albedo0.a;
+    albedo1.rgb *= albedo1.a;
+    albedo2.rgb *= albedo2.a;
+    albedo3.rgb *= albedo3.a;
+    
+    float3 albedo = albedo0.rgb + albedo1.rgb + albedo2.rgb + albedo3.rgb;
+    
+    if (0.f >= length(albedo))
+    {
+        albedo = MtrlAlbedo.rgb;
+    }
+    
     float metallic = g_btex_4 ? MRATex.Sample(g_LinearWrapSampler, input.vUV0).r
                                     : MtrlMetallic;
     float roughness = g_btex_4 ? MRATex.Sample(g_LinearWrapSampler, input.vUV0).g 
@@ -50,7 +59,7 @@ PS_OUT main(PS_IN input)
     float3 emission = g_btex_7 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV0).rgb
                                      : MtrlEmission.rgb;
 
-    output.vColor = float4(albedo1, 1.f);
+    output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vNormal = float4(GetNormal(input), 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);

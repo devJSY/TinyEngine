@@ -188,10 +188,7 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
             GetBinormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
             GetNormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
 
-            for (UINT i = 0; i < 4; ++i)
-            {
-                GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j), i);
-            }
+            GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j), iVtxOrder);
 
             ++iVtxOrder;
         }
@@ -330,47 +327,62 @@ void CFBXLoader::GetNormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, 
     _pContainer->vecNormal[_iIdx].z = (float)vNormal.mData[1];
 }
 
-void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _TextureIdx)
+void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _iVtxOrder)
 {
-    FbxGeometryElementUV* pUV = _pMesh->GetElementUV(_TextureIdx);
-
-    if (!pUV)
-        return;
-
-    UINT iUVIdx = 0;
-    if (pUV->GetReferenceMode() == FbxGeometryElement::eDirect)
-        iUVIdx = _iIdx;
-    else
-        iUVIdx = pUV->GetIndexArray().GetAt(_iIdx);
-
-    iUVIdx = _iUVIndex;
-    FbxVector2 vUV = pUV->GetDirectArray().GetAt(iUVIdx);
-
-    switch (_TextureIdx)
+    for (int ElementCount = 0; ElementCount < 4; ElementCount++)
     {
-    case 0: {
-        _pContainer->vecUV0[_iIdx].x = (float)vUV.mData[0];
-        _pContainer->vecUV0[_iIdx].y = 1.f - (float)vUV.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        const FbxGeometryElementUV* lUVElement = _pMesh->GetElementUV(ElementCount);
+
+        if (!lUVElement)
+            continue;
+
+        // only support mapping mode eByPolygonVertex and eByControlPoint
+        if (lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+            lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
+            continue;
+
+        // index array, where holds the index referenced to the uv data
+        const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
+        const int lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
+        FbxVector2 lUVValue;
+
+        if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+        {
+            int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(_iIdx) : _iIdx;
+
+            FbxVector2 lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+        }
+        else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+        {
+            // the UV index depends on the reference mode
+            int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(_iVtxOrder) : _iVtxOrder;
+
+            lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+        }
+
+        switch (ElementCount)
+        {
+        case 0: {
+            _pContainer->vecUV0[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV0[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
         break;
-    }
-    case 1: {
-        _pContainer->vecUV1[_iIdx].x = (float)vUV.mData[0];
-        _pContainer->vecUV1[_iIdx].y = 1.f - (float)vUV.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        case 1: {
+            _pContainer->vecUV1[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV1[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
         break;
-    }
-    case 2: {
-        _pContainer->vecUV2[_iIdx].x = (float)vUV.mData[0];
-        _pContainer->vecUV2[_iIdx].y = 1.f - (float)vUV.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        case 2: {
+            _pContainer->vecUV2[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV2[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
         break;
-    }
-    case 3: {
-        _pContainer->vecUV3[_iIdx].x = (float)vUV.mData[0];
-        _pContainer->vecUV3[_iIdx].y = 1.f - (float)vUV.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        case 3: {
+            _pContainer->vecUV3[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV3[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
         break;
-    }
-    default:
-        assert(nullptr);
-        break;
+        }
     }
 }
 
