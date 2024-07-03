@@ -74,7 +74,7 @@ CAnimator::~CAnimator()
 
 void CAnimator::finaltick()
 {
-    if (!InValid())
+    if (!IsValid())
         return;
 
     // 다른 Clip 으로 전환 중인 경우
@@ -156,7 +156,7 @@ void CAnimator::finaltick()
 
 void CAnimator::UpdateData()
 {
-    if (!InValid())
+    if (!IsValid())
         return;
 
     if (!m_bFinalMatUpdate)
@@ -181,18 +181,19 @@ void CAnimator::UpdateData()
         // 업데이트 쉐이더 실행
         pUpdateShader->Execute();
 
-        // Bone Socket 행렬 생성
+        // Final Bone Matrix 저장
         vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
         m_FinalBoneMat.clear();
         m_FinalBoneMat.resize(BoneCount);
         m_BoneFinalMatBuffer->GetData(m_FinalBoneMat.data(), BoneCount);
+
+        // Bone Socket 행렬 생성
         for (UINT i = 0; i < BoneCount; ++i)
         {
-            if (vecBones[i].vecBoneSocket.empty())
-                continue;
-
             for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
             {
+                BoneSocket.BoneIndex = i;
+
                 Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
 
                 Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
@@ -202,7 +203,7 @@ void CAnimator::UpdateData()
                 Matrix matTranslation =
                     XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
 
-                BoneSocket.matFinalBoneSocket = m_FinalBoneMat[i] * matScale * matRotX * matRotY * matRotZ * matTranslation;
+                BoneSocket.matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
             }
         }
 
@@ -215,7 +216,7 @@ void CAnimator::UpdateData()
 
 void CAnimator::finaltick_ModelEditor()
 {
-    if (!InValid())
+    if (!IsValid())
         return;
 
     // 현재 재생중인 Clip 의 시간을 진행한다.
@@ -392,7 +393,7 @@ void CAnimator::SetClipFrameIndex(int _FrameIdx)
     SetFrameIdx(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame + _FrameIdx);
 }
 
-bool CAnimator::InValid()
+bool CAnimator::IsValid()
 {
     if (nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh())
     {
@@ -404,7 +405,7 @@ bool CAnimator::InValid()
 
 void CAnimator::CheckBoneFinalMatBuffer()
 {
-    if (!InValid())
+    if (!IsValid())
         return;
 
     UINT iBoneCount = m_SkeletalMesh->GetBoneCount();

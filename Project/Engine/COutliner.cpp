@@ -823,7 +823,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh && pAnimator->InValid())
+        if (nullptr != pSkeletalMesh && pAnimator->IsValid())
         {
             if (ImGui::TreeNodeEx("Animation##Outliner Animator", m_DefaultTreeNodeFlag))
             {

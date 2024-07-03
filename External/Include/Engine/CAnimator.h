@@ -54,7 +54,7 @@ public:
     void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
-    bool InValid();
+    bool IsValid();
 
 public:
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
@@ -85,6 +85,8 @@ public:
     void SetClipFrameIndex(int _FrameIdx);
 
     const vector<Matrix>& GetFinalBoneMat() const { return m_FinalBoneMat; }
+    const Matrix& GetFinalBoneMat(UINT _Idx) const { return m_FinalBoneMat[_Idx]; }
+
     CStructuredBuffer* GetFinalBoneMatBuffer() const { return m_BoneFinalMatBuffer; }
     UINT GetBoneCount() const;
 

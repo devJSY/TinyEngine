@@ -672,7 +672,7 @@ void CModelEditor::DrawAnimation()
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh && pAnimator->InValid())
+        if (nullptr != pSkeletalMesh && pAnimator->IsValid())
         {
             if (ImGui::TreeNodeEx("Animation##ModelEditor Animation", DefaultTreeNodeFlag))
             {

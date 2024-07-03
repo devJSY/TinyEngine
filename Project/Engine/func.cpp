@@ -33,6 +33,17 @@ void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _Ch
     task.Type = TASK_TYPE::ADD_CHILD;
     task.Param_1 = (DWORD_PTR)_ParentObject;
     task.Param_2 = (DWORD_PTR)_ChildObject;
+    task.Param_3 = (DWORD_PTR) nullptr;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
+void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, tBoneSocket* _BoneSocket)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::ADD_CHILD;
+    task.Param_1 = (DWORD_PTR)_ParentObject;
+    task.Param_2 = (DWORD_PTR)_ChildObject;
+    task.Param_3 = (DWORD_PTR)_BoneSocket;
     CTaskMgr::GetInst()->AddTask(task);
 }
 
@@ -48,8 +59,8 @@ void GamePlayStatic::WindowResize(int width, int height)
 {
     tTask task;
     task.Type = TASK_TYPE::WINDOW_RESIZE;
-    task.Param_1 = (INT_PTR)width;
-    task.Param_2 = (INT_PTR)height;
+    task.Param_1 = (DWORD_PTR)width;
+    task.Param_2 = (DWORD_PTR)height;
 
     CTaskMgr::GetInst()->AddTask(task);
 }

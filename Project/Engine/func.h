@@ -12,6 +12,7 @@ namespace GamePlayStatic
 {
     void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject);
+    void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, tBoneSocket* _BoneSocket);
     void DestroyGameObject(CGameObject* _Target);
     void WindowResize(int width, int height);
     void CloneGameObject(CGameObject* _OriginObj);

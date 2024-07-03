@@ -70,10 +70,11 @@ struct tMTKeyFrame
 struct tBoneSocket
 {
     wstring SoketName;
+    int BoneIndex;
     Vec3 RelativeLocation;
     Vec3 RelativeRotation;
     Vec3 RelativeScale;
-    Matrix matFinalBoneSocket; // Final Matrix + BonSocket SRT
+    Matrix matSocket; // Bone Socket SRT
 };
 
 struct tMTBone

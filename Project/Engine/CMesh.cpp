@@ -73,6 +73,20 @@ void CMesh::UpdateData_Inst(UINT _iSubset)
     CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
+const tBoneSocket* CMesh::GetBoneSocket(UINT _BoneIdx, wstring _SocketName)
+{
+    if (_BoneIdx < 0 || _BoneIdx >= m_vecBones.size())
+        return nullptr;
+
+    for (tBoneSocket& Socket : m_vecBones[_BoneIdx].vecBoneSocket)
+    {
+        if (Socket.SoketName == _SocketName)
+            return &Socket;
+    }
+
+    return nullptr;
+}
+
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 {
     vector<Vtx> vecVtx = {};

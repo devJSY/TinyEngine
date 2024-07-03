@@ -4,6 +4,8 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
+#include "CAnimator.h"
+
 CTransform::CTransform()
     : CComponent(COMPONENT_TYPE::TRANSFORM)
     , m_vRelativePos(Vec3())
@@ -68,28 +70,40 @@ void CTransform::finaltick()
     }
 
     // 부모 오브젝트가 있다면
-    if (GetOwner()->GetParent())
+    CGameObject* pParent = GetOwner()->GetParent();
+    if (nullptr != pParent)
     {
-        m_matTransformation = GetOwner()->GetParent()->Transform()->GetWorldMat();
+        // Bone Socket Matrix
+        Matrix FinalBoneMat = XMMatrixIdentity();
+        Matrix SocketMat = XMMatrixIdentity();
 
+        const tBoneSocket* pBoneSocket = GetOwner()->GetBoneSocket();
+        if (nullptr != pBoneSocket && nullptr != pParent->Animator() && pParent->Animator()->IsValid())
+        {
+            FinalBoneMat = pParent->Animator()->GetFinalBoneMat(pBoneSocket->BoneIndex);
+            SocketMat = pBoneSocket->matSocket;
+        }
+
+        // Parent Matrix
+        m_matTransformation = pParent->Transform()->GetWorldMat();
         if (m_bAbsolute)
         {
-            Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
+            Vec3 vParentScale = pParent->Transform()->GetRelativeScale();
             Matrix matParentScaleInv = XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
 
             // 부모의 크기 행렬 상쇄
             m_matTransformation = matParentScaleInv * m_matTransformation;
-
-            m_matWorld *= m_matTransformation;
-        }
-        else
-        {
-            m_matWorld *= m_matTransformation;
         }
 
+        // Final Bone Matrix * Parent World * Socket Matrix
+        m_matTransformation = FinalBoneMat * m_matTransformation * SocketMat;
+
+        // 변환행렬 적용
+        m_matWorld *= m_matTransformation;
+
+        // 부모 변환 행렬이 적용된 월드 행렬로 방향 재계산
         for (int i = 0; i < 3; ++i)
         {
-            // 부모 행렬이 적용된 월드 행렬로 방향 계산
             m_arrWorldDir[i] = XMVector3TransformNormal(BasisVector[i], m_matWorld);
             m_arrWorldDir[i].Normalize();
         }
