@@ -4,6 +4,10 @@
 #include <Engine\\CTimeMgr.h>
 #include <Engine\\CKeyMgr.h>
 #include <Engine\\components.h>
+#include "CKirbyFSM.h"
+#include "CPlayerMgr.h"
+#include "CKirbyObject.h"
+#include "CKirbyAbility.h"
 
 class CFSMScript;
 

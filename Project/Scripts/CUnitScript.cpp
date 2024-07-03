@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CUnitScript.h"
 
-CUnitScript::CUnitScript(SCRIPT_TYPE _Type)
+CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
     , m_PrevInfo{}
     , m_CurInfo{}

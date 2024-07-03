@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -114,10 +114,25 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyAbility_Normal.h" />
+    <ClInclude Include="CKirbyAttack.h" />
+    <ClInclude Include="CKirbyAttackCharge1End.h" />
+    <ClInclude Include="CKirbyAttackCharge1Start.h" />
+    <ClInclude Include="CKirbyAttackCharge2.h" />
+    <ClInclude Include="CKirbyBulletScript.h" />
+    <ClInclude Include="CKirbyChangeAbility.h" />
+    <ClInclude Include="CKirbyAttackCharge1.h" />
     <ClInclude Include="CKirbyFSM.h" />
+    <ClInclude Include="CKirbyIdle.h" />
+    <ClInclude Include="CKirbyJump.h" />
     <ClInclude Include="CKirbyMoveController.h" />
+    <ClInclude Include="CKirbyObject.h" />
     <ClInclude Include="CKirbyRun.h" />
+    <ClInclude Include="CKirbyStuffed.h" />
     <ClInclude Include="CModelEditorCameraMoveScript.h" />
+    <ClInclude Include="CKirbyRunStart.h" />
+    <ClInclude Include="CKirbyScript.h" />
+    <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpringArmCameraScript.h" />
     <ClInclude Include="CState.h" />
@@ -139,10 +154,25 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyAbility_Normal.cpp" />
+    <ClCompile Include="CKirbyAttack.cpp" />
+    <ClCompile Include="CKirbyAttackCharge1End.cpp" />
+    <ClCompile Include="CKirbyAttackCharge1Start.cpp" />
+    <ClCompile Include="CKirbyAttackCharge2.cpp" />
+    <ClCompile Include="CKirbyBulletScript.cpp" />
+    <ClCompile Include="CKirbyChangeAbility.cpp" />
+    <ClCompile Include="CKirbyAttackCharge1.cpp" />
     <ClCompile Include="CKirbyFSM.cpp" />
+    <ClCompile Include="CKirbyIdle.cpp" />
+    <ClCompile Include="CKirbyJump.cpp" />
     <ClCompile Include="CKirbyMoveController.cpp" />
+    <ClCompile Include="CKirbyObject.cpp" />
     <ClCompile Include="CKirbyRun.cpp" />
+    <ClCompile Include="CKirbyRunStart.cpp" />
+    <ClCompile Include="CKirbyScript.cpp" />
+    <ClCompile Include="CKirbyStuffed.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
+    <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpringArmCameraScript.cpp" />
     <ClCompile Include="CState.cpp" />

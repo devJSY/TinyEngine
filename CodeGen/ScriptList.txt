@@ -1,10 +1,13 @@
 CCameraMoveScript
-CTestFSM
 CKirbyFSM
 CKirbyMoveController
 CAnimationTestScript
 CModelEditorCameraMoveScript
+CPlayerMgr
+CKirbyBulletScript
+CTestFSM
+CKirbyScript
 CSpringArmCameraScript
-CButtonManagerScript
-CUIManagerScript
 CButtonScript
+CUIManagerScript
+CButtonManagerScript

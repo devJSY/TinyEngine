@@ -1,17 +1,15 @@
 #include "pch.h"
-#include "CKirbyRun.h"
+#include "CKirbyRunStart.h"
 
-#define RUN_SPEED 10.f
-
-CKirbyRun::CKirbyRun()
+CKirbyRunStart::CKirbyRunStart()
 {
 }
 
-CKirbyRun::~CKirbyRun()
+CKirbyRunStart::~CKirbyRunStart()
 {
 }
 
-void CKirbyRun::tick()
+void CKirbyRunStart::tick()
 {
     // Common Run
     Vec3 NewPos = GetOwner()->Transform()->GetRelativePos();
@@ -29,34 +27,31 @@ void CKirbyRun::tick()
 
     // Change State
     if (KEY_TAP(KEY::Q))
-    {
         ChangeState(L"ATTACK");
-    }
     else if (KEY_RELEASED_ARROW || KEY_NONE_ARROW)
-    {
         ChangeState(L"IDLE");
+    else
+    {
+        if (GetOwner()->Animator()->IsFinish())
+            ChangeState(L"RUN");
     }
-
-    // Per State
-    PLAY_CURSTATE(Run)
 }
 
-void CKirbyRun::Enter()
+void CKirbyRunStart::Enter()
 {
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
 
     if (KirbyFSM->GetCurObject())
     {
         KirbyFSM->GetCurObject()->RunEnter();
-        GetOwner()->Animator()->Play(KIRBYANIM(L"Run"));
+        GetOwner()->Animator()->Play(KIRBYANIM(L"RunStart", false));
     }
     else
     {
-        KirbyFSM->GetCurAbility()->RunEnter();
+        KirbyFSM->GetCurAbility()->RunStartEnter();
     }
 }
 
-void CKirbyRun::Exit()
+void CKirbyRunStart::Exit()
 {
-    PLAY_CURSTATE(RunExit)
 }
