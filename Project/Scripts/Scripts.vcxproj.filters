@@ -106,9 +106,6 @@
     <ClInclude Include="CKirbyAttackCharge1End.h">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1End</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyStuffed.h">
-      <Filter>State\KirbyState\Stuffed</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyJump.h">
       <Filter>State\KirbyState\Jump</Filter>
     </ClInclude>
@@ -126,6 +123,12 @@
     </ClInclude>
     <ClInclude Include="CKirbyLandingEnd.h">
       <Filter>State\KirbyState\Landing\LandingEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffedIdle.h">
+      <Filter>State\KirbyState\Stuffed\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffed.h">
+      <Filter>State\KirbyState\Stuffed</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +249,6 @@
     <ClCompile Include="CKirbyAttackCharge1End.cpp">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1End</Filter>
     </ClCompile>
-    <ClCompile Include="CKirbyStuffed.cpp">
-      <Filter>State\KirbyState\Stuffed</Filter>
-    </ClCompile>
     <ClCompile Include="CKirbyJump.cpp">
       <Filter>State\KirbyState\Jump</Filter>
     </ClCompile>
@@ -266,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="CKirbyLandingEnd.cpp">
       <Filter>State\KirbyState\Landing\LandingEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedIdle.cpp">
+      <Filter>State\KirbyState\Stuffed\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffed.cpp">
+      <Filter>State\KirbyState\Stuffed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +409,21 @@
     </Filter>
     <Filter Include="State\KirbyState\Landing\LandingEnd">
       <UniqueIdentifier>{7877d160-f7de-464d-b46a-83a3b73b9b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Idle">
+      <UniqueIdentifier>{0516cba1-ffa8-47f5-a9a4-0559c7047e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Run">
+      <UniqueIdentifier>{ccf1d5ac-c079-4b68-b8c6-9d2d1c47aa3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Jump">
+      <UniqueIdentifier>{22410045-3ca5-4436-9af6-9ab52ab776ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Landing">
+      <UniqueIdentifier>{307d56a4-da96-4d14-a788-0d7e0a6caf09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\JumpEnd">
+      <UniqueIdentifier>{4a13bcdc-76d5-4603-880b-94089b67bc5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

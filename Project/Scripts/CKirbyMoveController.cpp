@@ -18,8 +18,6 @@ CKirbyMoveController::CKirbyMoveController()
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
     , m_Gravity(-10.f)
-    , m_bJump(JumpType::NONE)
-    , m_JumpFallHeight(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -40,8 +38,6 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
     , m_Gravity(-20.f)
-    , m_bJump(JumpType::NONE)
-    , m_JumpFallHeight(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -183,7 +179,7 @@ void CKirbyMoveController::SetDir()
     }
 
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
-    Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * 50.f));
+    Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * 20.f));
 
     // 방향 설정
     //Transform()->SetDirection(m_TowardDir);
@@ -205,7 +201,6 @@ void CKirbyMoveController::Move()
     if (bGrounded && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
-        m_bJump = JumpType::NONE;
     }
 
     m_MoveVelocity.x = m_MoveDir.x * m_Speed;
@@ -215,23 +210,10 @@ void CKirbyMoveController::Move()
     if (KEY_TAP(KEY_JUMP) && bGrounded)
     {
         m_MoveVelocity.y += std::sqrt(m_JumpPower * -3.f * m_Gravity);
-        m_bJump = JumpType::UP;
     }
 
     // 중력 적용
     m_MoveVelocity.y += m_Gravity * DT;
-
-    // 상태 변경 및 기록
-    if (m_bJump == JumpType::UP && m_MoveVelocity.y <= 0.f)
-    {
-        m_bJump = JumpType::DOWN;
-        m_JumpFallHeight = 0.f;
-    }
-
-    if (m_bJump == JumpType::DOWN)
-    {
-        m_JumpFallHeight += fabs(m_MoveVelocity.y * DT);
-    }
 
     CharacterController()->Move(m_MoveVelocity * DT);
 
@@ -287,36 +269,6 @@ void CKirbyMoveController::SurfaceAlignment()
         CharacterController()->Move(Movement * DT);
     }
 
-}
-
-void CKirbyMoveController::OnCollisionEnter(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyMoveController::OnCollisionStay(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyMoveController::OnCollisionExit(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyMoveController::OnTriggerEnter(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyMoveController::OnTriggerStay(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyMoveController::OnTriggerExit(CCollider* _OtherCollider)
-{
-    int a = 0;
 }
 
 void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)

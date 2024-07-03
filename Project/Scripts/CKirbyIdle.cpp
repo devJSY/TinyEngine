@@ -23,6 +23,20 @@ void CKirbyIdle::tick()
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
         case AbilityCopyType::NORMAL:
+        {
+            if (KEY_TAP(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_CHARGE1_START");
+            }
+            else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
+            {
+                ChangeState(L"RUN_START");
+            }
+            else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+        }
             break;
         case AbilityCopyType::FIRE:
             break;

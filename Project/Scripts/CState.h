@@ -8,6 +8,7 @@
 #include "CPlayerMgr.h"
 #include "CKirbyObject.h"
 #include "CKirbyAbility.h"
+#include "CKirbyMoveController.h"
 
 class CFSMScript;
 

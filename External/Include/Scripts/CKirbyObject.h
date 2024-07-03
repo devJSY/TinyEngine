@@ -25,9 +25,29 @@ public:
     virtual void RunEnter(){};
     virtual void RunExit(){};
 
+    virtual void RunStart(){};
+    virtual void RunStartEnter(){};
+    virtual void RunStartExit(){};
+
     virtual void Jump(){};
     virtual void JumpEnter(){};
     virtual void JumpExit(){};
+
+    virtual void JumpStart(){};
+    virtual void JumpStartEnter(){};
+    virtual void JumpStartExit(){};
+
+    virtual void JumpEnd(){};
+    virtual void JumpEndEnter(){};
+    virtual void JumpEndExit(){};
+
+    virtual void Landing(){};
+    virtual void LandingEnter(){};
+    virtual void LandingExit(){};
+
+    virtual void LandingEnd(){};
+    virtual void LandingEndEnter(){};
+    virtual void LandingEndExit(){};
 
     // virtual void Hovering();
 

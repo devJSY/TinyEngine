@@ -13,21 +13,42 @@ void CKirbyJump::tick()
 {
     PLAY_CURSTATE(Jump)
 
-    if (GetOwner()->CharacterController()->IsGrounded())
+    // State Change
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-        ChangeState(L"LANDING");
     }
-    else if (GetOwner()->Animator()->IsFinish())
+    else
     {
-        ChangeState(L"JUMP_END");
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL: 
+        {
+            if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+            else if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"JUMP_END");
+            }
+        }
+        break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::RANGER:
+            break;
+        case AbilityCopyType::SWORD:
+            break;
+        }
     }
 }
 
 void CKirbyJump::Enter()
 {
-    GetOwner()->Animator()->Play(KIRBYANIM(L"JumpEnd"), false);
+    PLAY_CURSTATE(JumpEnter)
 }
 
 void CKirbyJump::Exit()
 {
+    PLAY_CURSTATE(JumpExit)
 }

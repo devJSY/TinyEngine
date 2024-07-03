@@ -133,6 +133,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyObject.h" />
     <ClInclude Include="CKirbyRun.h" />
     <ClInclude Include="CKirbyStuffed.h" />
+    <ClInclude Include="CKirbyStuffedIdle.h" />
     <ClInclude Include="CModelEditorCameraMoveScript.h" />
     <ClInclude Include="CKirbyRunStart.h" />
     <ClInclude Include="CKirbyScript.h" />
@@ -179,6 +180,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyRunStart.cpp" />
     <ClCompile Include="CKirbyScript.cpp" />
     <ClCompile Include="CKirbyStuffed.cpp" />
+    <ClCompile Include="CKirbyStuffedIdle.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />

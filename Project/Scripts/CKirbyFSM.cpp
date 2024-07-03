@@ -12,7 +12,8 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
-    , m_bCharge(ChargeType::NONE)
+    , m_Charge(ChargeType::NONE)
+    , m_LastJump(JumpType::HIGH)
     , m_bStuffed(false)
 {
     // @TODO Copy Type마다 추가
@@ -26,7 +27,8 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
-    , m_bCharge(ChargeType::NONE)
+    , m_Charge(ChargeType::NONE)
+    , m_LastJump(JumpType::HIGH)
     , m_bStuffed(false)
 {
     // Ability Copy 복사

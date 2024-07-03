@@ -13,13 +13,32 @@ void CKirbyStuffed::tick()
 {
     if (PLAYER->Animator()->IsFinish())
     {
-        PLAYERFSM->SetGlobalState(false);
-        ChangeState(L"IDLE");
+        if (PLAYERCTRL->GetInput().Length() != 0.f)
+        {
+            //ChageState(L"STUFFED_RUN")
+        }
+        else
+        {
+            // ChageState(L"STUFFED_IDLE")
+        }
     }
 }
 
 void CKirbyStuffed::Enter()
 {
+    PLAYER->Animator()->Play(KIRBYANIM(L"Stuffed"));
+
+
+    
+    // ===============================
+
+    PLAYER->Animator()->Play(KIRBYANIM(L"StuffedWait"));
+
+    // Run
+    //PLAYER->Animator()->Play(KIRBYANIM(L"StuffedRun"));
+
+    // ===============================
+
     // clean up vacuum state
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, 0);
     PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 6);
@@ -35,4 +54,5 @@ void CKirbyStuffed::Enter()
 
 void CKirbyStuffed::Exit()
 {
+    //PLAY_CURSTATE(StuffedExit)
 }

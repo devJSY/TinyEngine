@@ -12,24 +12,36 @@ CKirbyLanding::~CKirbyLanding()
 
 void CKirbyLanding::tick()
 {
-    if (GetOwner()->Animator()->IsFinish())
+    PLAY_CURSTATE(Landing)
+
+    // State Change
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-        ChangeState(L"LANDING_END");
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+        case AbilityCopyType::FIRE:
+        case AbilityCopyType::RANGER:
+        case AbilityCopyType::SWORD:
+            break;
+        }
+
+        if (GetOwner()->Animator()->IsFinish())
+        {
+            ChangeState(L"LANDING_END");
+        }
     }
 }
 
 void CKirbyLanding::Enter()
 {
-    if (PLAYERCTRL->GetJumpFallHeight() < 3.f)
-    {
-        GetOwner()->Animator()->Play(KIRBYANIM(L"LandingSmall"), false);
-    }
-    else
-    {
-        GetOwner()->Animator()->Play(KIRBYANIM(L"Landing"), false);
-    }
+    PLAY_CURSTATE(LandingEnter)
 }
 
 void CKirbyLanding::Exit()
 {
+    PLAY_CURSTATE(LandingExit)
 }

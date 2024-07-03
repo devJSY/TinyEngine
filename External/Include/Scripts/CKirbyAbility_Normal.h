@@ -6,15 +6,10 @@
 class CKirbyAbility_Normal : public CKirbyAbility
 {
 private:
-    bool        m_FrmEnter;
+    bool        m_bFrmEnter;
     const float m_Charge1Time;
 
 public:
-    // Idle
-    virtual void Idle();
-    virtual void IdleEnter();
-    virtual void IdleExit();
-
     // RUN
     virtual void Run();
     virtual void RunEnter();
