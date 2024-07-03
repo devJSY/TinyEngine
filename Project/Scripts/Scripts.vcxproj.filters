@@ -130,6 +130,21 @@
     <ClInclude Include="CKirbyStuffed.h">
       <Filter>State\KirbyState\Stuffed</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyStuffedLanding.h">
+      <Filter>State\KirbyState\Stuffed\Landing</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffedRun.h">
+      <Filter>State\KirbyState\Stuffed\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffedJump.h">
+      <Filter>State\KirbyState\Stuffed\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffedJumpEnd.h">
+      <Filter>State\KirbyState\Stuffed\Jump\JumpEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge1Run.h">
+      <Filter>State\KirbyState\AttackCharge1\AttackCharge1Run</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -272,6 +287,21 @@
     </ClCompile>
     <ClCompile Include="CKirbyStuffed.cpp">
       <Filter>State\KirbyState\Stuffed</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedLanding.cpp">
+      <Filter>State\KirbyState\Stuffed\Landing</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedRun.cpp">
+      <Filter>State\KirbyState\Stuffed\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedJump.cpp">
+      <Filter>State\KirbyState\Stuffed\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedJumpEnd.cpp">
+      <Filter>State\KirbyState\Stuffed\Jump\JumpEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge1Run.cpp">
+      <Filter>State\KirbyState\AttackCharge1\AttackCharge1Run</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -422,8 +452,11 @@
     <Filter Include="State\KirbyState\Stuffed\Landing">
       <UniqueIdentifier>{307d56a4-da96-4d14-a788-0d7e0a6caf09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Stuffed\JumpEnd">
+    <Filter Include="State\KirbyState\Stuffed\Jump\JumpEnd">
       <UniqueIdentifier>{4a13bcdc-76d5-4603-880b-94089b67bc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge1\AttackCharge1Run">
+      <UniqueIdentifier>{e43fdef1-7732-4cab-b283-a8e5a481959c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

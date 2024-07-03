@@ -117,6 +117,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAbility_Normal.h" />
     <ClInclude Include="CKirbyAttack.h" />
     <ClInclude Include="CKirbyAttackCharge1End.h" />
+    <ClInclude Include="CKirbyAttackCharge1Run.h" />
     <ClInclude Include="CKirbyAttackCharge1Start.h" />
     <ClInclude Include="CKirbyAttackCharge2.h" />
     <ClInclude Include="CKirbyBulletScript.h" />
@@ -134,6 +135,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyRun.h" />
     <ClInclude Include="CKirbyStuffed.h" />
     <ClInclude Include="CKirbyStuffedIdle.h" />
+    <ClInclude Include="CKirbyStuffedJump.h" />
+    <ClInclude Include="CKirbyStuffedJumpEnd.h" />
+    <ClInclude Include="CKirbyStuffedLanding.h" />
+    <ClInclude Include="CKirbyStuffedRun.h" />
     <ClInclude Include="CModelEditorCameraMoveScript.h" />
     <ClInclude Include="CKirbyRunStart.h" />
     <ClInclude Include="CKirbyScript.h" />
@@ -162,6 +167,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
     <ClCompile Include="CKirbyAttack.cpp" />
     <ClCompile Include="CKirbyAttackCharge1End.cpp" />
+    <ClCompile Include="CKirbyAttackCharge1Run.cpp" />
     <ClCompile Include="CKirbyAttackCharge1Start.cpp" />
     <ClCompile Include="CKirbyAttackCharge2.cpp" />
     <ClCompile Include="CKirbyBulletScript.cpp" />
@@ -181,6 +187,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyScript.cpp" />
     <ClCompile Include="CKirbyStuffed.cpp" />
     <ClCompile Include="CKirbyStuffedIdle.cpp" />
+    <ClCompile Include="CKirbyStuffedJump.cpp" />
+    <ClCompile Include="CKirbyStuffedJumpEnd.cpp" />
+    <ClCompile Include="CKirbyStuffedLanding.cpp" />
+    <ClCompile Include="CKirbyStuffedRun.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />

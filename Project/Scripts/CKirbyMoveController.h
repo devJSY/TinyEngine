@@ -23,6 +23,8 @@ class CKirbyMoveController : public CScript
 private:
     // 입력
     Vec3                        m_Input;
+    //bool                        m_bMoveLock;
+    //bool                        m_bJumpLock;
 
     // 방향
     Vec3                        m_CurDir;

@@ -23,7 +23,11 @@ void CKirbyJumpEnd::tick()
         {
         case AbilityCopyType::NORMAL: 
         {
-            if (GetOwner()->CharacterController()->IsGrounded())
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_CHARGE1_START");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");
             }

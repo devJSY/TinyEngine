@@ -10,6 +10,9 @@
 class CKirbyAbility
 {
 protected:
+    float m_Charge1Time;
+
+protected:
     // 사용 메쉬: hat, weapon
     void ChangeState(const wstring& _strStateName);
 
@@ -75,6 +78,10 @@ public:
     virtual void AttackCharge1EndEnter(){};
     virtual void AttackCharge1EndExit(){};
 
+    virtual void AttackCharge1Run(){};
+    virtual void AttackCharge1RunEnter(){};
+    virtual void AttackCharge1RunExit(){};
+
     virtual void AttackCharge2(){};
     virtual void AttackCharge2Enter(){};
     virtual void AttackCharge2Exit(){};
@@ -86,6 +93,9 @@ public:
     //virtual void Throw();
 
     //virtual void Change();
+
+public:
+    float GetCharge1Time() const { return m_Charge1Time; }
 
 public:
     virtual CKirbyAbility* Clone() = 0;
