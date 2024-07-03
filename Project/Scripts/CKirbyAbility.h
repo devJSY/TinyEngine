@@ -56,8 +56,6 @@ public:
 
     //virtual void Evasiveness();
 
-    //virtual void Sliding();
-
     virtual void Attack() = 0;
     virtual void AttackEnter() = 0;
     virtual void AttackExit() = 0;

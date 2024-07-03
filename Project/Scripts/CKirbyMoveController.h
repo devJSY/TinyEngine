@@ -52,6 +52,7 @@ public:
 
 public:
     Vec3 GetInput() const { return m_Input; }
+    Vec3 GetMoveDir() const { return m_MoveDir; }
 
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
