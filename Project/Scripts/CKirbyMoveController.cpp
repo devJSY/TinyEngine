@@ -18,6 +18,8 @@ CKirbyMoveController::CKirbyMoveController()
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
     , m_Gravity(-10.f)
+    , m_bJump(JumpType::NONE)
+    , m_JumpFallHeight(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -38,6 +40,8 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_JumpPower(1.f)
     , m_RayCastDist(2.f)
     , m_Gravity(-20.f)
+    , m_bJump(JumpType::NONE)
+    , m_JumpFallHeight(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
@@ -201,19 +205,33 @@ void CKirbyMoveController::Move()
     if (bGrounded && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
+        m_bJump = JumpType::NONE;
     }
 
     m_MoveVelocity.x = m_MoveDir.x * m_Speed;
     m_MoveVelocity.z = m_MoveDir.z * m_Speed;
     
     // 점프
-    if (KEY_TAP(KEY::B) && bGrounded)
+    if (KEY_TAP(KEY_JUMP) && bGrounded)
     {
         m_MoveVelocity.y += std::sqrt(m_JumpPower * -3.f * m_Gravity);
+        m_bJump = JumpType::UP;
     }
 
     // 중력 적용
     m_MoveVelocity.y += m_Gravity * DT;
+
+    // 상태 변경 및 기록
+    if (m_bJump == JumpType::UP && m_MoveVelocity.y <= 0.f)
+    {
+        m_bJump = JumpType::DOWN;
+        m_JumpFallHeight = 0.f;
+    }
+
+    if (m_bJump == JumpType::DOWN)
+    {
+        m_JumpFallHeight += fabs(m_MoveVelocity.y * DT);
+    }
 
     CharacterController()->Move(m_MoveVelocity * DT);
 
@@ -271,12 +289,40 @@ void CKirbyMoveController::SurfaceAlignment()
 
 }
 
+void CKirbyMoveController::OnCollisionEnter(CCollider* _OtherCollider)
+{
+    int a = 0;
+}
+
+void CKirbyMoveController::OnCollisionStay(CCollider* _OtherCollider)
+{
+    int a = 0;
+}
+
+void CKirbyMoveController::OnCollisionExit(CCollider* _OtherCollider)
+{
+    int a = 0;
+}
+
+void CKirbyMoveController::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    int a = 0;
+}
+
+void CKirbyMoveController::OnTriggerStay(CCollider* _OtherCollider)
+{
+    int a = 0;
+}
+
+void CKirbyMoveController::OnTriggerExit(CCollider* _OtherCollider)
+{
+    int a = 0;
+}
+
 void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
 {
     //CPhysicsMgr::RayCast(Transform()->GetWorldPos(), Vec3(0.f,-1.f,0.f), 100.f, )
-
-
-
+    int a = 0;
 }
 
 

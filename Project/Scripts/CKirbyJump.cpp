@@ -13,7 +13,11 @@ void CKirbyJump::tick()
 {
     PLAY_CURSTATE(Jump)
 
-    if (GetOwner()->Animator()->IsFinish())
+    if (GetOwner()->CharacterController()->IsGrounded())
+    {
+        ChangeState(L"LANDING");
+    }
+    else if (GetOwner()->Animator()->IsFinish())
     {
         ChangeState(L"JUMP_END");
     }

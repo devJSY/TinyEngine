@@ -3,14 +3,16 @@
 
 class CUnitScript;
 class CKirbyFSM;
+class CKirbyMoveController;
 
 class CPlayerMgr : public CScript
 
 {
 private:
-    static CGameObject* m_PlayerObj;
-    static CUnitScript* m_PlayerUnit;
-    static CKirbyFSM*   m_PlayerFSM;
+    static CGameObject*         m_PlayerObj;
+    static CUnitScript*         m_PlayerUnit;
+    static CKirbyFSM*           m_PlayerFSM;
+    static CKirbyMoveController* m_PlayerController;
 
 public:
     virtual void begin() override;
@@ -24,6 +26,7 @@ public:
     static CGameObject* GetPlayer() { return m_PlayerObj; }
     static CUnitScript* GetPlayerScript() { return m_PlayerUnit; }
     static CKirbyFSM* GetPlayerFSM() { return m_PlayerFSM; }
+    static CKirbyMoveController* GetPlayerCtrl() { return m_PlayerController; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

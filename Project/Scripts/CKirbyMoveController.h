@@ -10,6 +10,13 @@ enum class ForceDirType
     END,
 };
 
+enum class JumpType
+{
+    NONE,   // false (점프가 아님)
+    UP,     // 상승
+    DOWN,   // 하강
+};
+
 // 물체의 방향을 강제로 바꿔야하는 경우
 struct ForceDirInfo
 {
@@ -31,23 +38,35 @@ private:
     Vec3                        m_GroundNormal;
     vector<ForceDirInfo>        m_ForceDirInfos;
 
-    /// 물리
+    // 물리
     Vec3                        m_MoveVelocity;
     float                       m_Speed;
     float                       m_JumpPower;
     float                       m_RayCastDist;
     float                       m_Gravity;
 
-
-
+    // 상태값
+    JumpType                    m_bJump;
+    float                       m_JumpFallHeight;
 
 
 private:
+    virtual void OnCollisionEnter(CCollider* _OtherCollider);
+    virtual void OnCollisionStay(CCollider* _OtherCollider);
+    virtual void OnCollisionExit(CCollider* _OtherCollider);
+
+    virtual void OnTriggerEnter(CCollider* _OtherCollider);
+    virtual void OnTriggerStay(CCollider* _OtherCollider);
+    virtual void OnTriggerExit(CCollider* _OtherCollider);
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
 
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+public:
+    JumpType GetJump() const { return m_bJump; }
+    float GetJumpFallHeight() const { return m_JumpFallHeight; }
 
 private:
     void Input();

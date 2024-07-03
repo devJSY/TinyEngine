@@ -12,6 +12,11 @@ CKirbyJumpEnd::~CKirbyJumpEnd()
 void CKirbyJumpEnd::tick()
 {
     PLAY_CURSTATE(Jump)
+
+    if (GetOwner()->CharacterController()->IsGrounded())
+    {
+        ChangeState(L"LANDING");
+    }
 }
 
 void CKirbyJumpEnd::Enter()

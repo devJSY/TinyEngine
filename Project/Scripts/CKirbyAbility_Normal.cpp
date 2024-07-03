@@ -16,17 +16,21 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 
 void CKirbyAbility_Normal::Idle()
 {
-    if (KEY_TAP(KEY::Q))
+    if (KEY_TAP(KEY_ATK))
     {
         ChangeState(L"ATTACK");
     }
-    else if (PLAYERFSM->IsVacuum() && (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q)))
+    else if ((bool)PLAYERFSM->IsCharge() && (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)))
     {
         ChangeState(L"ATTACK_CHARGE1_END");
     }
     else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
     {
         ChangeState(L"RUN_START");
+    }
+    else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+    {
+        ChangeState(L"JUMP_START");
     }
 }
 
@@ -36,11 +40,11 @@ void CKirbyAbility_Normal::IdleEnter()
     {
         PLAYER->Animator()->Play(KIRBYANIM(L"StuffedWait"));
     }
-    else if (PLAYERFSM->IsVacuum() == 1)
+    else if (PLAYERFSM->IsCharge() == ChargeType::LV1)
     {
         ChangeState(L"ATTACK_CHARGE1");
     }
-    else if (PLAYERFSM->IsVacuum() == 2)
+    else if (PLAYERFSM->IsCharge() == ChargeType::LV2)
     {
         ChangeState(L"ATTACK_CHARGE2");
     }
@@ -59,7 +63,7 @@ void CKirbyAbility_Normal::IdleExit()
 // ===============
 void CKirbyAbility_Normal::Run()
 {
-    if (PLAYERFSM->IsVacuum() && (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q)))
+    if ((bool)PLAYERFSM->IsCharge() && (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)))
     {
         ChangeState(L"ATTACK_CHARGE1_END");
     }
@@ -67,7 +71,7 @@ void CKirbyAbility_Normal::Run()
 
 void CKirbyAbility_Normal::RunEnter()
 {
-    if (PLAYERFSM->IsVacuum())
+    if ((bool)PLAYERFSM->IsCharge())
     {
         PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"));
     }
@@ -92,7 +96,7 @@ void CKirbyAbility_Normal::RunStart()
 
 void CKirbyAbility_Normal::RunStartEnter()
 {
-    if (PLAYERFSM->IsVacuum() || PLAYERFSM->IsStuffed())
+    if ((bool)PLAYERFSM->IsCharge() || PLAYERFSM->IsStuffed())
         ChangeState(L"RUN");
     else
         PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
@@ -186,13 +190,17 @@ void CKirbyAbility_Normal::AttackCharge1()
         ChangeState(L"STUFFED");
     }
 
-    if (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q))
+    if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
     {
         ChangeState(L"ATTACK_CHARGE1_END");
     }
     else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
     {
         ChangeState(L"RUN_START");
+    }
+    else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+    {
+        ChangeState(L"JUMP_START");
     }
 }
 
@@ -220,7 +228,7 @@ void CKirbyAbility_Normal::AttackCharge1StartEnter()
     // @TODO Material 이름으로 받아오기 & material key값 변경
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, 6);
     PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
-    PLAYERFSM->SetVacuum(true);
+    PLAYERFSM->SetCharge(ChargeType::LV1);
     // @TODO 속도조절
 }
 
@@ -243,7 +251,7 @@ void CKirbyAbility_Normal::AttackCharge1EndEnter()
     // @TODO Material 이름으로 받아오기 & material key값 변경
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, 0);
     PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 6);
-    PLAYERFSM->SetVacuum(false);
+    PLAYERFSM->SetCharge(ChargeType::NONE);
     // @TODO 속도조절
 }
 
@@ -258,13 +266,17 @@ void CKirbyAbility_Normal::AttackCharge1EndExit()
 // 흡입하기2
 void CKirbyAbility_Normal::AttackCharge2()
 {
-    if (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q))
+    if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
     {
         ChangeState(L"ATTACK_CHARGE1_END");
     }
     else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
     {
         ChangeState(L"RUN_START");
+    }
+    else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+    {
+        ChangeState(L"JUMP_START");
     }
 }
 
@@ -274,7 +286,7 @@ void CKirbyAbility_Normal::AttackCharge2Enter()
     // @TODO Material 이름으로 받아오기 & material key값 변경
     PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, 6);
-    PLAYERFSM->SetVacuum(true);
+    PLAYERFSM->SetCharge(ChargeType::LV2);
     // @TODO 속도조절
 }
 

@@ -11,16 +11,23 @@ CKirbyAttack::~CKirbyAttack()
 
 void CKirbyAttack::tick()
 {
-    //wstring NextState = L"IDLE";
     PLAY_CURSTATE(Attack)
 
-    // 기본적으로 수행해야 하는 동작
+    //if (애니메이션 끝나면)
+    //{
+    //    // 내가 지금 무슨 모습인지에 따라 달라야됨
+    //    switch (상태)
+    //    {
+    //    case 노말:
+    //        break;
 
-    // Change State
-    //if (KEY_TAP(KEY::Q))
-    //    NextState = L"ATTACK_COMBO";
+    //    case Fire:
+    //        break;
 
-    //ChangeState(NextState);
+    //    default:
+    //        break;
+    //    }
+    //}
 }
 
 void CKirbyAttack::Enter()

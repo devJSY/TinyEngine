@@ -7,27 +7,30 @@
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
-    , m_CurAbility(nullptr)
-    , m_CurObject(nullptr)
+    , m_CurAbility(AbilityCopyType::NORMAL)
+    , m_CurObject(ObjectCopyType::NONE)
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
-    , m_bVacuum(false)
+    , m_bCharge(ChargeType::NONE)
     , m_bStuffed(false)
 {
-    m_arrAbility[(UINT)ABILITY_COPY_TYPE::NORMAL] = new CKirbyAbility_Normal();
-    m_CurAbility = m_arrAbility[(UINT)ABILITY_COPY_TYPE::NORMAL];
+    // @TODO Copy Type마다 추가
+    m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     : CFSMScript(_Origin)
-    , m_CurAbility(nullptr)
-    , m_CurObject(nullptr)
+    , m_CurAbility(_Origin.m_CurAbility)
+    , m_CurObject(_Origin.m_CurObject)
     , m_arrAbility{}
     , m_arrObject{}
+    , m_ChargeAccTime(0.f)
+    , m_bCharge(ChargeType::NONE)
+    , m_bStuffed(false)
 {
     // Ability Copy 복사
-    for (UINT i = 0; i < (UINT)ABILITY_COPY_TYPE::END; ++i)
+    for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
     {
         if (nullptr == _Origin.m_arrAbility[i])
             continue;
@@ -35,16 +38,10 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
         CKirbyAbility* pAbil = _Origin.m_arrAbility[i]->Clone();
         assert(pAbil);
         m_arrAbility[i] = pAbil;
-        
-        // 현재 능력 복사
-        if (m_CurAbility == nullptr && _Origin.m_CurAbility == _Origin.m_arrAbility[i])
-        {
-            m_CurAbility = pAbil;
-        }
     }
 
     // Object Copy 복사
-    for (UINT i = 0; i < (UINT)OBJECT_COPY_TYPE::END; ++i)
+    for (UINT i = 0; i < (UINT)ObjectCopyType::END; ++i)
     {
         if (nullptr == _Origin.m_arrObject[i])
             continue;
@@ -52,18 +49,12 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
         CKirbyObject* pObjCopy = _Origin.m_arrObject[i]->Clone();
         assert(pObjCopy);
         m_arrObject[i] = pObjCopy;
-
-        // 현재 Object Copy 복사
-        if (m_CurObject == nullptr && _Origin.m_CurObject == _Origin.m_arrObject[i])
-        {
-            m_CurObject = pObjCopy;
-        }
     }
 }
 
 CKirbyFSM::~CKirbyFSM()
 {
-    for (UINT i = 0; i < (UINT)ABILITY_COPY_TYPE::END; ++i)
+    for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
     {
         if (m_arrAbility[i] != nullptr)
         {
@@ -72,7 +63,7 @@ CKirbyFSM::~CKirbyFSM()
         }
     }
 
-    for (UINT i = 0; i < (UINT)OBJECT_COPY_TYPE::END; ++i)
+    for (UINT i = 0; i < (UINT)ObjectCopyType::END; ++i)
     {
         if (m_arrObject[i] != nullptr)
         {
@@ -88,6 +79,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyJump.h"
 #include "CKirbyJumpStart.h"
 #include "CKirbyJumpEnd.h"
+#include "CKirbyLanding.h"
+#include "CKirbyLandingEnd.h"
 #include "CKirbyAttack.h"
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
@@ -101,9 +94,11 @@ void CKirbyFSM::begin()
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"RUN", new CKirbyRun);
     AddState(L"RUN_START", new CKirbyRunStart);
-    AddState(L"JUMP", new CKirbyRunStart);
+    AddState(L"JUMP", new CKirbyJump);
     AddState(L"JUMP_START", new CKirbyJumpStart);
     AddState(L"JUMP_END", new CKirbyJumpEnd);
+    AddState(L"LANDING", new CKirbyLanding);
+    AddState(L"LANDING_END", new CKirbyLandingEnd);
     AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
@@ -116,7 +111,7 @@ void CKirbyFSM::begin()
 
 void CKirbyFSM::tick()
 {
-    if (KEY_TAP(KEY::Q) || KEY_PRESSED(KEY::Q))
+    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         m_ChargeAccTime += DT;
     }
@@ -124,17 +119,16 @@ void CKirbyFSM::tick()
     CFSMScript::tick();
 }
 
-void CKirbyFSM::ChangeAbilityCopy(ABILITY_COPY_TYPE _Type)
+void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
     ChangeState(L"CHANGE_ABILITY");
-
-    m_CurAbility = m_arrAbility[(UINT)_Type];
+    m_CurAbility = _Type;
 }
 
-void CKirbyFSM::ChangeObjectCopy(OBJECT_COPY_TYPE _Type)
+void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 {
     ChangeState(L"CHANGE_OBJECT");
-    m_CurObject = m_arrObject[(UINT)_Type];
+    m_CurObject = _Type;
 }
 
 void CKirbyFSM::SaveToLevelFile(FILE* _File)

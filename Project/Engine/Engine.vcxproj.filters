@@ -326,7 +326,7 @@
       <Filter>08. Component\RenderComponent\Decal</Filter>
     </ClInclude>
     <ClInclude Include="CCharacterController.h">
-      <Filter>08. Component\Collider\Characte rController</Filter>
+      <Filter>08. Component\Collider\Character Controller</Filter>
     </ClInclude>
     <ClInclude Include="CFrustum.h">
       <Filter>08. Component\Camera</Filter>
@@ -670,7 +670,7 @@
       <Filter>08. Component\RenderComponent\Decal</Filter>
     </ClCompile>
     <ClCompile Include="CCharacterController.cpp">
-      <Filter>08. Component\Collider\Characte rController</Filter>
+      <Filter>08. Component\Collider\Character Controller</Filter>
     </ClCompile>
     <ClCompile Include="CFrustum.cpp">
       <Filter>08. Component\Camera</Filter>
@@ -896,9 +896,6 @@
     <Filter Include="08. Component\Collider\Mesh Collider">
       <UniqueIdentifier>{ae277705-4aaf-4b30-8a3a-11589e3e99c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Collider\Characte rController">
-      <UniqueIdentifier>{3d16ad29-3679-406b-a7fb-eb008eeb91e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Collider\Capsule Collider">
       <UniqueIdentifier>{8a4fdfbf-1545-4c16-bc26-a3b1b1c3c036}</UniqueIdentifier>
     </Filter>
@@ -1060,6 +1057,9 @@
     </Filter>
     <Filter Include="04. Manager\Instancing">
       <UniqueIdentifier>{991a345b-6f88-4be8-9664-3f4f2dee0c8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider\Character Controller">
+      <UniqueIdentifier>{3d16ad29-3679-406b-a7fb-eb008eeb91e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

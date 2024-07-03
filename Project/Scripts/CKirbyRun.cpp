@@ -13,22 +13,8 @@ CKirbyRun::~CKirbyRun()
 
 void CKirbyRun::tick()
 {
-    // Common Run
-    Vec3 NewPos = GetOwner()->Transform()->GetRelativePos();
-
-    if (KEY_TAP(KEY::LEFT) || KEY_PRESSED(KEY::LEFT))
-        NewPos.x -= 10.f * DT;
-    if (KEY_TAP(KEY::RIGHT) || KEY_PRESSED(KEY::RIGHT))
-        NewPos.x += 10.f * DT;
-    if (KEY_TAP(KEY::UP) || KEY_PRESSED(KEY::UP))
-        NewPos.z += 10.f * DT;
-    if (KEY_TAP(KEY::DOWN) || KEY_PRESSED(KEY::DOWN))
-        NewPos.z -= 10.f * DT;
-
-    GetOwner()->Transform()->SetRelativePos(NewPos);
-
     // Change State
-    if (KEY_TAP(KEY::Q))
+    if (KEY_TAP(KEY_ATK))
     {
         ChangeState(L"ATTACK");
     }

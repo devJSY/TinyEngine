@@ -23,7 +23,7 @@ void CKirbyStuffed::Enter()
     // clean up vacuum state
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, 0);
     PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 6);
-    PLAYERFSM->SetVacuum(false);
+    PLAYERFSM->SetCharge(ChargeType::NONE);
     // @TODO 속도조절
 
     // enter stuffed state
