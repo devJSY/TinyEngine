@@ -292,7 +292,7 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, float _PlaySpee
 
     m_bPlay = true;
     m_bRepeat = _bRepeat;
-    m_PlaySpeed = 3.f;
+    m_PlaySpeed = 2.5f;
 }
 
 bool CAnimator::IsFinish() const

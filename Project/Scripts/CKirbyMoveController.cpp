@@ -75,9 +75,13 @@ void CKirbyMoveController::begin()
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
 
+    m_Speed = 10.f;
+    m_RotSpeed = 50.f;
+    m_JumpPower = 13.f;
+    m_Gravity = -20.f;
+    m_HoveringLimitHeight = 15.f;
 
-    // Test
-    GetOwner()->Animator()->SetPlaySpeed(3.f);
+
 }
 
 void CKirbyMoveController::tick()
@@ -198,6 +202,9 @@ void CKirbyMoveController::SetDir()
 
 void CKirbyMoveController::Move()
 {
+    // 가속도 초기화
+    m_Accel = {0.f, 0.f, 0.f};
+
     bool bGrounded = CharacterController()->IsGrounded();
 
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
@@ -207,49 +214,28 @@ void CKirbyMoveController::Move()
         bGrounded = nullptr != Hit.pCollisionObj;
     }
 
-    // 땅에 닿은 상태면 Velocity Y값 초기화
-    if (bGrounded && m_MoveVelocity.y < 0)
-    {
-        m_MoveVelocity.y = 0.f;
-    }
-
     // 수평 방향 이동속도 계산
     m_MoveVelocity.x = m_MoveDir.x * m_Speed;
     m_MoveVelocity.z = m_MoveDir.z * m_Speed;
 
+    // Jump
+    if (m_bJump)
+    {
+        m_bJump = false;
+        m_MoveVelocity.y = m_JumpPower;
+    }
 
-    // Y축 속도 계산
-    switch (m_JumpType)
-    {
-    case JumpType::NONE:
-    {
-        // 중력 적용
-        m_MoveVelocity.y += m_Gravity * DT;
-    }
-        break;
-    case JumpType::UP:
-    {
-        m_MoveVelocity.y = m_JumpPower * DT;
-    }
-        break;
-    case JumpType::AIR:
+    // 중력 적용
+    m_Accel.y += m_Gravity;
+
+    //수직 방향 이동속도 계산
+    m_MoveVelocity.y += m_Accel.y * DT;
+
+
+    // 땅에 닿은 상태면 Velocity Y값 초기화
+    if (bGrounded && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
-    }
-        break;
-    case JumpType::DOWN:
-    {
-        m_MoveVelocity.y = -m_JumpPower * DT;
-    }
-        break;
-    //case JumpType::HOVER:
-    //{
-    //    m_MoveVelocity.y += m_JumpPower * DT;
-    //    SetJumpType(JumpType::NONE);
-    //}
-
-    default:
-        break;
     }
 
 

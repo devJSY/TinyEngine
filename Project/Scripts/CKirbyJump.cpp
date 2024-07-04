@@ -54,11 +54,9 @@ void CKirbyJump::tick()
 void CKirbyJump::Enter()
 {
     PLAY_CURSTATE(JumpEnter)
-    PLAYERCTRL->SetJumpType(JumpType::AIR);
 }
 
 void CKirbyJump::Exit()
 {
     PLAY_CURSTATE(JumpExit)
-    PLAYERCTRL->SetJumpType(JumpType::NONE);
 }

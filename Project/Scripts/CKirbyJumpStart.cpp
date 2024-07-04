@@ -5,6 +5,7 @@
 CKirbyJumpStart::CKirbyJumpStart()
     : m_JumpAccTime(0.f)
     , m_MinJumpTime(0.2f)
+    , m_MaxJumpTime(0.3f)
 {
 }
 
@@ -14,6 +15,8 @@ CKirbyJumpStart::~CKirbyJumpStart()
 
 void CKirbyJumpStart::tick()
 {
+    m_JumpAccTime += DT;
+
     PLAY_CURSTATE(Jump)
 
     // State Change
@@ -24,8 +27,7 @@ void CKirbyJumpStart::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");
@@ -40,13 +42,15 @@ void CKirbyJumpStart::tick()
             }
             else if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
             {
-                if (m_JumpAccTime > m_MinJumpTime)
+                if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false)
+                {
+                    PLAYERCTRL->SetGravity(m_OriginGravity / 4.f);
+                    PLAYERCTRL->VelocityCut(4.f);
+                    m_bVelocityCut = true;
+                }
+                else if (m_JumpAccTime > m_MaxJumpTime)
                 {
                     ChangeState(L"JUMP_FALL");
-                }
-                else
-                {
-                    PLAYERCTRL->SetJumpType(JumpType::AIR);
                 }
             }
         }
@@ -59,29 +63,22 @@ void CKirbyJumpStart::tick()
             break;
         }
     }
-
-    if (GetOwner()->Animator()->IsPlaying())
-    {
-        if ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP)) && !m_bJumpEnd)
-        {
-            PLAYERCTRL->ClearVelocityY();
-            m_bJumpEnd = true;
-        }
-    }
 }
 
 void CKirbyJumpStart::Enter()
 {
     PLAY_CURSTATE(JumpStartEnter)
 
-    PLAYERCTRL->SetJumpType(JumpType::UP);
+    PLAYERCTRL->Jump();
 
+    m_OriginGravity = PLAYERCTRL->GetGravity();
     m_JumpAccTime = 0.f;
+    m_bVelocityCut = false;
 }
 
 void CKirbyJumpStart::Exit()
 {
     PLAY_CURSTATE(JumpStartExit)
 
-    PLAYERCTRL->SetJumpType(JumpType::NONE);
+    PLAYERCTRL->SetGravity(m_OriginGravity);
 }

@@ -44,7 +44,6 @@ void CKirbyHovering::tick()
 void CKirbyHovering::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"Flight"));
-    PLAYERCTRL->AddForce(Vec3(0.f, 8.5f, 0.f), AddForceType::VelocityChange);
 
     m_bFrmEnter = true;
 }

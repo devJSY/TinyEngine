@@ -2,25 +2,6 @@
 
 #include <Engine/CScript.h>
 
-enum class MoveType
-{
-    NORMAL,
-    SLIDE,
-    DODGE,
-    GUARD,
-    END,
-};
-
-enum class JumpType
-{
-    NONE,
-    UP,
-    AIR,
-    DOWN,
-    HOVER,
-};
-
-
 // 방향 변경 타입 (enum 순서가 우선순위)
 enum class ForceDirType
 {
@@ -48,6 +29,9 @@ class CKirbyMoveController : public CScript
 private:
     // 입력
     Vec3                        m_Input;
+    bool                        m_bJump;
+
+    // Lock
     bool                        m_bMoveLock;
     bool                        m_bJumpLock;
     bool                        m_bDirLock;
@@ -61,21 +45,18 @@ private:
 
     // 물리
     Vec3                        m_MoveVelocity;
-    Vec3                        m_ForceVelocity;
+    Vec3                        m_Accel;
     float                       m_Speed;
     float                       m_MaxSpeed;
-
-    float                       m_RotSpeed;
     float                       m_JumpPower;
-    float                       m_RayCastDist;
     float                       m_Gravity;
+
 
     float                       m_HoveringLimitHeight;
     float                       m_HoveringHeight;
 
-    //
-    MoveType                    m_MoveType;
-    JumpType                    m_JumpType;
+    float                       m_RayCastDist;
+    float                       m_RotSpeed;
 
 private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
@@ -83,8 +64,6 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
-    void SetMoveType(MoveType _MoveType) { m_MoveType = _MoveType; }
-    void SetJumpType(JumpType _JumpType) { m_JumpType = _JumpType; }
 
 public:
     Vec3 GetInput() const { return m_Input; }
@@ -97,10 +76,13 @@ public:
     void UnlockJump() { m_bJumpLock = false; }
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
+
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
-    void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
+    void Jump() { m_bJump = true; }
+    void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
+   
 private:
     void Input();
     void SetDir();
