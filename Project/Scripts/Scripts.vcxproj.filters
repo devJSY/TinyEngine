@@ -592,6 +592,7 @@
     </Filter>
     <Filter Include="State\KirbyState\Slide">
       <UniqueIdentifier>{b8b15ac3-4f50-4d85-aadc-d3c954721719}</UniqueIdentifier>
+	</Filter>
     <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Start">
       <UniqueIdentifier>{edac8bf3-1f74-409b-a816-21c5140c6040}</UniqueIdentifier>
     </Filter>
@@ -630,6 +631,7 @@
     </Filter>
     <Filter Include="State\KirbyState\Dodge">
       <UniqueIdentifier>{dbafc833-a617-45ec-b055-52bf08b33875}</UniqueIdentifier>
+	</Filter>
     <Filter Include="State\KirbyState\Hovering\HoveringSpit">
       <UniqueIdentifier>{fbe948b2-b466-4794-b723-9dc9dca0d083}</UniqueIdentifier>
     </Filter>
