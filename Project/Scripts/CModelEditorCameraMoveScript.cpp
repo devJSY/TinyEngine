@@ -37,7 +37,10 @@ void CModelEditorCameraMoveScript::tick()
     }
 
     // Move
-    MovePerspective();
+    if (CEditorMgr::GetInst()->GetModelEditor()->IsViewportHovered())
+    {
+        MovePerspective();
+    }
 
     // 카메라 속도 제한
     if (m_CamSpeed < 0.f)

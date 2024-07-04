@@ -349,14 +349,12 @@ void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int 
         if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
         {
             int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(_iIdx) : _iIdx;
-
-            FbxVector2 lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+            lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
         }
         else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
         {
             // the UV index depends on the reference mode
             int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(_iVtxOrder) : _iVtxOrder;
-
             lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
         }
 

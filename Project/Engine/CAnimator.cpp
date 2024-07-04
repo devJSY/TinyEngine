@@ -182,12 +182,10 @@ void CAnimator::UpdateData()
         pUpdateShader->Execute();
 
         // Final Bone Matrix 历厘
-        vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
-        m_FinalBoneMat.clear();
-        m_FinalBoneMat.resize(BoneCount);
         m_BoneFinalMatBuffer->GetData(m_FinalBoneMat.data(), BoneCount);
 
         // Bone Socket 青纺 积己
+        vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
         for (UINT i = 0; i < BoneCount; ++i)
         {
             for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
@@ -264,13 +262,37 @@ void CAnimator::finaltick_ModelEditor()
     pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
     pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
 
-    pUpdateShader->SetBoneCount(m_SkeletalMesh->GetBoneCount());
+    UINT BoneCount = m_SkeletalMesh->GetBoneCount();
+    pUpdateShader->SetBoneCount(BoneCount);
     pUpdateShader->SetFrameIndex(m_FrameIdx);
     pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
     pUpdateShader->SetFrameRatio(m_Ratio);
 
     // 诀单捞飘 溅捞歹 角青
     pUpdateShader->Execute();
+
+    // Final Bone Matrix 历厘
+    m_BoneFinalMatBuffer->GetData(m_FinalBoneMat.data(), BoneCount);
+
+    // Bone Socket 青纺 积己
+    vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
+    for (UINT i = 0; i < BoneCount; ++i)
+    {
+        for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
+        {
+            BoneSocket.BoneIndex = i;
+
+            Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
+
+            Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
+            Matrix matRotY = XMMatrixRotationY(BoneSocket.RelativeRotation.y);
+            Matrix matRotZ = XMMatrixRotationZ(BoneSocket.RelativeRotation.z);
+
+            Matrix matTranslation = XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
+
+            BoneSocket.matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
+        }
+    }
 }
 
 void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
@@ -412,6 +434,8 @@ void CAnimator::CheckBoneFinalMatBuffer()
     if (m_BoneFinalMatBuffer->GetElementCount() != iBoneCount)
     {
         m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, true, nullptr);
+        m_FinalBoneMat.clear();
+        m_FinalBoneMat.resize(iBoneCount);
     }
 }
 

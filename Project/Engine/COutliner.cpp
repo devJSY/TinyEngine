@@ -600,12 +600,12 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (open)
     {
         Vec3 pos = pTr->GetRelativePos();
-        ImGui_DrawVec3Control("Location", pos, 10.f);
+        ImGui_DrawVec3Control("Location", pos, 1.f);
         pTr->SetRelativePos(pos);
 
         Vec3 rot = pTr->GetRelativeRotation();
         rot.ToDegree();
-        ImGui_DrawVec3Control("Rotation", rot, 1.f);
+        ImGui_DrawVec3Control("Rotation", rot, DirectX::XMConvertToRadians(15.f));
         rot.ToRadian();
         pTr->SetRelativeRotation(rot);
 

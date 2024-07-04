@@ -206,10 +206,11 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
     for (UINT i = 0; i < vecBone.size(); ++i)
     {
         tMTBone bone = {};
-        bone.iDepth = vecBone[i]->iDepth;
-        bone.iParentIndx = vecBone[i]->iParentIndx;
-        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
         bone.strBoneName = vecBone[i]->strBoneName;
+        bone.iDepth = vecBone[i]->iDepth;
+        bone.iIdx = i;
+        bone.iParentIdx = vecBone[i]->iParentIndx;
+        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
 
         for (UINT j = 0; j < vecBone[i]->vecKeyFrame.size(); ++j)
         {
@@ -443,15 +444,25 @@ int CMesh::Save(const wstring& _strRelativePath)
     {
         SaveWStringToFile(m_vecBones[i].strBoneName, pFile);
         fwrite(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
-        fwrite(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iIdx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iParentIdx, sizeof(int), 1, pFile);
         fwrite(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
+        // KeyFrame
         int iFrameCount = (int)m_vecBones[i].vecKeyFrame.size();
         fwrite(&iFrameCount, sizeof(int), 1, pFile);
-
-        for (int j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+        for (int j = 0; j < iFrameCount; ++j)
         {
             fwrite(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+
+        // BoneSocket
+        int iBoneSocketCount = (int)m_vecBones[i].vecBoneSocket.size();
+        fwrite(&iBoneSocketCount, sizeof(int), 1, pFile);
+        for (int j = 0; j < iBoneSocketCount; ++j)
+        {
+            fwrite(&m_vecBones[i].vecBoneSocket[j], sizeof(tBoneSocket), 1, pFile);
+            SaveWStringToFile(m_vecBones[i].vecBoneSocket[j].SoketName, pFile);
         }
     }
 
@@ -551,16 +562,28 @@ int CMesh::Load(const wstring& _strFilePath)
     {
         LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);
         fread(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
-        fread(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iIdx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iParentIdx, sizeof(int), 1, pFile);
         fread(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
-        UINT iFrameCount = 0;
+        // KeyFrame
+        int iFrameCount = 0;
         fread(&iFrameCount, sizeof(int), 1, pFile);
         m_vecBones[i].vecKeyFrame.resize(iFrameCount);
         _iFrameCount = max(_iFrameCount, iFrameCount);
-        for (UINT j = 0; j < iFrameCount; ++j)
+        for (int j = 0; j < iFrameCount; ++j)
         {
             fread(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+
+        // BoneSocket
+        int iBoneSocketCount = 0;
+        fread(&iBoneSocketCount, sizeof(int), 1, pFile);
+        m_vecBones[i].vecBoneSocket.resize(iBoneSocketCount);
+        for (int j = 0; j < iBoneSocketCount; ++j)
+        {
+            fread(&m_vecBones[i].vecBoneSocket[j], sizeof(tBoneSocket), 1, pFile);
+            LoadWStringFromFile(m_vecBones[i].vecBoneSocket[j].SoketName, pFile);
         }
     }
 

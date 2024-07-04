@@ -81,7 +81,8 @@ struct tMTBone
 {
     wstring strBoneName;
     int iDepth;
-    int iParentIndx;
+    int iIdx;         // 본 인덱스
+    int iParentIdx;   // 부모 본 인덱스
     Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
     vector<tMTKeyFrame> vecKeyFrame;
     vector<tBoneSocket> vecBoneSocket; // BoneSocket
