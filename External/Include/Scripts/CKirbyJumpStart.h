@@ -4,7 +4,8 @@
 class CKirbyJumpStart : public CState
 {
 private:
-    bool m_bJumpEnd;
+    float m_JumpAccTime;
+    float m_MinJumpTime;
 
 public:
     virtual void tick();

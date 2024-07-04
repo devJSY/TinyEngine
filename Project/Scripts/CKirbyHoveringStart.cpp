@@ -28,7 +28,7 @@ void CKirbyHoveringStart::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightStart"), false);
 
-    PLAYERCTRL->AddForce(Vec3(0.f, 5.f, 0.f), AddForceType::VelocityChange);
+    //PLAYERCTRL->AddForce(Vec3(0.f, 5.f, 0.f), AddForceType::VelocityChange);
     PLAYERFSM->SetHovering(true);
 }
 

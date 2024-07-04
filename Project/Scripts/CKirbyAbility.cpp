@@ -43,7 +43,7 @@ void CKirbyAbility::JumpFallEnter()
 
 void CKirbyAbility::LandingEnter()
 {
-    if (PLAYERFSM->GetLastJump() == JumpType::LOW)
+    if (PLAYERFSM->GetLastJump() == LastJumpType::LOW)
     {
         PLAYER->Animator()->Play(KIRBYANIM(L"LandingSmall"), false);
     }

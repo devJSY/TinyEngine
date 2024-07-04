@@ -2,6 +2,25 @@
 
 #include <Engine/CScript.h>
 
+enum class MoveType
+{
+    NORMAL,
+    SLIDE,
+    DODGE,
+    GUARD,
+    END,
+};
+
+enum class JumpType
+{
+    NONE,
+    UP,
+    AIR,
+    DOWN,
+    HOVER,
+};
+
+
 // 방향 변경 타입 (enum 순서가 우선순위)
 enum class ForceDirType
 {
@@ -42,16 +61,21 @@ private:
 
     // 물리
     Vec3                        m_MoveVelocity;
-    Vec3                        m_AdditionalVelocity;
+    Vec3                        m_ForceVelocity;
     float                       m_Speed;
+    float                       m_MaxSpeed;
+
     float                       m_RotSpeed;
     float                       m_JumpPower;
     float                       m_RayCastDist;
     float                       m_Gravity;
+
     float                       m_HoveringLimitHeight;
     float                       m_HoveringHeight;
 
-
+    //
+    MoveType                    m_MoveType;
+    JumpType                    m_JumpType;
 
 private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
@@ -59,7 +83,8 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
-    void AddForce(Vec3 _Force, AddForceType _Type);
+    void SetMoveType(MoveType _MoveType) { m_MoveType = _MoveType; }
+    void SetJumpType(JumpType _JumpType) { m_JumpType = _JumpType; }
 
 public:
     Vec3 GetInput() const { return m_Input; }
