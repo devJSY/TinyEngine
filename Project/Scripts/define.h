@@ -10,7 +10,8 @@
 #define KEY_NONE_ARROW (KEY_NONE(KEY::UP) && KEY_NONE(KEY::DOWN) && KEY_NONE(KEY::LEFT) && KEY_NONE(KEY::RIGHT))
 
 #define KEY_JUMP KEY::B
-#define KEY_ATK KEY::Q
+#define KEY_ATK KEY::N
+#define KEY_GUARD KEY::M
 
 #define GET_CURCLIP_FRM PLAYER->Animator()->GetCurFrameIdx() - PLAYER->Animator()->GetSkeletalMesh()->GetAnimClip()->at(PLAYER->Animator()->GetCurClipIdx()).iStartFrame
 

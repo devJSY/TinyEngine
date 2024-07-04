@@ -145,6 +145,45 @@
     <ClInclude Include="CKirbyAttackCharge1Run.h">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1Run</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbySlide.h">
+      <Filter>State\KirbyState\Slide</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbySlideStart.h">
+      <Filter>State\KirbyState\Slide\SlideStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyGuard.h">
+      <Filter>State\KirbyState\Guard</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbySlideEnd.h">
+      <Filter>State\KirbyState\Slide\SlideEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeBack1.h">
+      <Filter>State\KirbyState\Dodge\DodgeBack</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeStart.h">
+      <Filter>State\KirbyState\Dodge\DodgeStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeFront1.h">
+      <Filter>State\KirbyState\Dodge\DodgeFront</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeFront2.h">
+      <Filter>State\KirbyState\Dodge\DodgeFront</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeBack2.h">
+      <Filter>State\KirbyState\Dodge\DodgeBack</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeRight1.h">
+      <Filter>State\KirbyState\Dodge\DodgeRight</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeRight2.h">
+      <Filter>State\KirbyState\Dodge\DodgeRight</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeLeft1.h">
+      <Filter>State\KirbyState\Dodge\DodgeLeft</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDodgeLeft2.h">
+      <Filter>State\KirbyState\Dodge\DodgeLeft</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyAttackCharge2Start.h">
       <Filter>State\KirbyState\AttackCharge2\AttackCharge2Start</Filter>
     </ClInclude>
@@ -330,6 +369,45 @@
     <ClCompile Include="CKirbyAttackCharge1Run.cpp">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1Run</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbySlide.cpp">
+      <Filter>State\KirbyState\Slide</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySlideStart.cpp">
+      <Filter>State\KirbyState\Slide\SlideStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyGuard.cpp">
+      <Filter>State\KirbyState\Guard</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySlideEnd.cpp">
+      <Filter>State\KirbyState\Slide\SlideEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeBack1.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeBack</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeStart.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeFront1.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeFront</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeFront2.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeFront</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeBack2.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeBack</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeRight1.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeRight</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeRight2.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeRight</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeLeft1.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeLeft</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDodgeLeft2.cpp">
+      <Filter>State\KirbyState\Dodge\DodgeLeft</Filter>
+    </ClCompile>
     <ClCompile Include="CKirbyAttackCharge2Start.cpp">
       <Filter>State\KirbyState\AttackCharge2\AttackCharge2Start</Filter>
     </ClCompile>
@@ -512,6 +590,8 @@
     <Filter Include="State\KirbyState\AttackCharge1\AttackCharge1Run">
       <UniqueIdentifier>{e43fdef1-7732-4cab-b283-a8e5a481959c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State\KirbyState\Slide">
+      <UniqueIdentifier>{b8b15ac3-4f50-4d85-aadc-d3c954721719}</UniqueIdentifier>
     <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Start">
       <UniqueIdentifier>{edac8bf3-1f74-409b-a816-21c5140c6040}</UniqueIdentifier>
     </Filter>
@@ -539,8 +619,34 @@
     <Filter Include="State\KirbyState\Hovering\HoveringLanding">
       <UniqueIdentifier>{20819704-837b-43aa-b60b-9a25ef464dc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State\KirbyState\Slide\SlideStart">
+      <UniqueIdentifier>{a5bc5e27-4aa2-4b4f-9a03-4226bd961d54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Guard">
+      <UniqueIdentifier>{b7d248a5-5a65-4afd-9a9b-3dde27cfb26f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Slide\SlideEnd">
+      <UniqueIdentifier>{c3d1c170-f217-49f6-a6cd-0ea12f128b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Dodge">
+      <UniqueIdentifier>{dbafc833-a617-45ec-b055-52bf08b33875}</UniqueIdentifier>
     <Filter Include="State\KirbyState\Hovering\HoveringSpit">
       <UniqueIdentifier>{fbe948b2-b466-4794-b723-9dc9dca0d083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Dodge\DodgeBack">
+      <UniqueIdentifier>{2f22b71d-d6f4-4c60-9696-c19d49238efb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Dodge\DodgeFront">
+      <UniqueIdentifier>{23552f23-e50e-4a28-ae3f-67726170926e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Dodge\DodgeStart">
+      <UniqueIdentifier>{aa7f2222-9240-44b5-8733-749aafc4fba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Dodge\DodgeRight">
+      <UniqueIdentifier>{77057e24-fcab-4336-bca4-501a09fb3d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Dodge\DodgeLeft">
+      <UniqueIdentifier>{69ab4309-a78e-4f0f-b8ec-8e7cf028ed47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

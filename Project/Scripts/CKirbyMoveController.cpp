@@ -176,6 +176,11 @@ void CKirbyMoveController::SetDir()
         m_TowardDir = m_MoveDir;
     }
 
+    // 방향 보간중 Lock 걸릴 경우 바라봐야할 방향을 현재 방향으로 고정
+    if (m_bDirLock)
+    {
+        m_TowardDir = m_CurDir;
+    }
 
     // 180도 돌 경우 예외처리
     if (m_CurDir.Dot(m_TowardDir) == (-m_CurDir.Length() * m_TowardDir.Length()))
