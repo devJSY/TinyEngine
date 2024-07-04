@@ -2,6 +2,7 @@
 #include "CKirbyHoveringFall.h"
 
 CKirbyHoveringFall::CKirbyHoveringFall()
+    : m_SavedGravity(0.f)
 {
 }
 
@@ -19,7 +20,7 @@ void CKirbyHoveringFall::tick()
     {
         ChangeState(L"HOVERING_LANDING");
     }
-    else if (PLAYERCTRL->GetInput().Length() != 0.f || KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+    else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
     {
         ChangeState(L"HOVERING");
     }
@@ -32,8 +33,12 @@ void CKirbyHoveringFall::tick()
 void CKirbyHoveringFall::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightFall"));
+
+    m_SavedGravity = PLAYERCTRL->GetGravity();
+    PLAYERCTRL->SetGravity(-8.5f);
 }
 
 void CKirbyHoveringFall::Exit()
 {
+    PLAYERCTRL->SetGravity(m_SavedGravity);
 }

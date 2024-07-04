@@ -13,7 +13,7 @@ void CKirbyHoveringStart::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        if (PLAYERCTRL->GetInput().Length() != 0.f || KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+        if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
         {
             ChangeState(L"HOVERING");
         }
@@ -27,6 +27,8 @@ void CKirbyHoveringStart::tick()
 void CKirbyHoveringStart::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightStart"), false);
+
+    PLAYERCTRL->AddForce(Vec3(0.f, 5.f, 0.f), AddForceType::VelocityChange);
     PLAYERFSM->SetHovering(true);
 }
 

@@ -959,9 +959,6 @@
     <Filter Include="08. Component\Collider 2D">
       <UniqueIdentifier>{79f67d4c-e983-44c5-8bc6-cbee0063c40d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\Collider 2D\BoxCollider2D">
-      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\Collider 2D\CircleCollider2D">
       <UniqueIdentifier>{597428fa-79f5-4c7d-b8e3-e933352bf77d}</UniqueIdentifier>
     </Filter>
@@ -1060,6 +1057,9 @@
     </Filter>
     <Filter Include="08. Component\Collider\Character Controller">
       <UniqueIdentifier>{3d16ad29-3679-406b-a7fb-eb008eeb91e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\Collider 2D\BoxCollider2D">
+      <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

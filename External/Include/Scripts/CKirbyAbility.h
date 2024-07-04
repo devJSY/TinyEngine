@@ -40,9 +40,9 @@ public:
     virtual void JumpStartEnter();
     virtual void JumpStartExit(){};
 
-    virtual void JumpEnd(){};
-    virtual void JumpEndEnter();
-    virtual void JumpEndExit(){};
+    virtual void JumpFall(){};
+    virtual void JumpFallEnter();
+    virtual void JumpFallExit(){};
 
     virtual void Landing(){};
     virtual void LandingEnter();
@@ -55,8 +55,6 @@ public:
     //virtual void Hovering();
 
     //virtual void Evasiveness();
-
-    //virtual void Sliding();
 
     virtual void Attack() = 0;
     virtual void AttackEnter() = 0;

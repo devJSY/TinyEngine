@@ -37,9 +37,9 @@ public:
     virtual void JumpStartEnter(){};
     virtual void JumpStartExit(){};
 
-    virtual void JumpEnd(){};
-    virtual void JumpEndEnter(){};
-    virtual void JumpEndExit(){};
+    virtual void JumpFall(){};
+    virtual void JumpFallEnter(){};
+    virtual void JumpFallExit(){};
 
     virtual void Landing(){};
     virtual void LandingEnter(){};

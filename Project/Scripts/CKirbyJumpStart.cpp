@@ -32,6 +32,10 @@ void CKirbyJumpStart::tick()
             {
                 ChangeState(L"LANDING");
             }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
             else if (GetOwner()->Animator()->IsFinish())
             {
                 if (KEY_PRESSED(KEY_JUMP))
@@ -52,12 +56,6 @@ void CKirbyJumpStart::tick()
         case AbilityCopyType::SWORD:
             break;
         }
-    }
-
-    //@TODO 테스트코드
-    if (KEY_TAP(KEY::SPACE))
-    {
-        ChangeState(L"HOVERING_START");
     }
 }
 

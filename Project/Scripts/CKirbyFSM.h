@@ -57,7 +57,7 @@ public:
 public:
     void SetLastJump(JumpType _Type) { m_LastJump = _Type; }
     void SetStuffed(bool _bStuffed) { m_bStuffed = _bStuffed; }
-    void SetHovering(bool _bHovering) { m_bHovering = _bHovering; }
+    void SetHovering(bool _bHovering);
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
 
@@ -70,6 +70,7 @@ public:
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
     bool IsStuffed() const { return m_bStuffed; }
+    bool IsHovering() const { return m_bHovering; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

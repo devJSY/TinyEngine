@@ -3,6 +3,9 @@
 
 class CKirbyHoveringFall : public CState
 {
+private:
+    float m_SavedGravity;
+
 public:
     virtual void tick();
     virtual void Enter();

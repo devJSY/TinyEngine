@@ -3,6 +3,9 @@
 
 class CKirbyHovering : public CState
 {
+private:
+    bool m_bFrmEnter;
+
 public:
     virtual void tick();
     virtual void Enter();

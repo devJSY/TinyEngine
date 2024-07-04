@@ -172,6 +172,17 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
     m_CurObject = _Type;
 }
 
+void CKirbyFSM::SetHovering(bool _bHovering)
+{
+    if (m_bHovering != _bHovering)
+    {
+        ClearHoveringAccTime();
+        PLAYERCTRL->ClearHoveringHeight();
+    }
+    
+    m_bHovering = _bHovering;
+}
+
 void CKirbyFSM::SaveToLevelFile(FILE* _File)
 {
 }

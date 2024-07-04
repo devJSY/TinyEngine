@@ -31,6 +31,10 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"LANDING");
             }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
         }
         break;
         case AbilityCopyType::FIRE:

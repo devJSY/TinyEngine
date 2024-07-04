@@ -10,6 +10,12 @@ enum class ForceDirType
     END,
 };
 
+enum class AddForceType
+{
+    Acceleration,   // 질량을 무시하고 강체에 즉각적인 가속도 추가
+    VelocityChange, // 질량을 무시하고 강체에 즉각적인 속도 변화 추가
+};
+
 // 물체의 방향을 강제로 바꿔야하는 경우
 struct ForceDirInfo
 {
@@ -36,10 +42,14 @@ private:
 
     // 물리
     Vec3                        m_MoveVelocity;
+    Vec3                        m_ForceVelocity;
     float                       m_Speed;
+    float                       m_RotSpeed;
     float                       m_JumpPower;
     float                       m_RayCastDist;
     float                       m_Gravity;
+    float                       m_HoveringLimitHeight;
+    float                       m_HoveringHeight;
 
 
 
@@ -49,10 +59,12 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
+    void AddForce(Vec3 _Force, AddForceType _Type);
 
 public:
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
+    float GetGravity() const { return m_Gravity; }
 
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
@@ -60,6 +72,8 @@ public:
     void UnlockJump() { m_bJumpLock = false; }
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
+    void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
+    void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
 private:
     void Input();
