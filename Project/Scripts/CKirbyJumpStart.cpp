@@ -3,7 +3,7 @@
 #include "CKirbyMoveController.h"
 
 CKirbyJumpStart::CKirbyJumpStart()
-    : m_JumpAccTime(0.f)
+    : m_bJumpEnd(false)
 {
 }
 
@@ -13,9 +13,6 @@ CKirbyJumpStart::~CKirbyJumpStart()
 
 void CKirbyJumpStart::tick()
 {
-    //@TODO 점프높이 다르게
-    m_JumpAccTime += DT;
-
     PLAY_CURSTATE(Jump)
 
     // State Change
@@ -38,7 +35,7 @@ void CKirbyJumpStart::tick()
             }
             else if (GetOwner()->Animator()->IsFinish())
             {
-                if (KEY_PRESSED(KEY_JUMP))
+                if (KEY_PRESSED(KEY_JUMP) && !m_bJumpEnd)
                 {
                     ChangeState(L"JUMP");
                 }
@@ -57,13 +54,22 @@ void CKirbyJumpStart::tick()
             break;
         }
     }
+
+    if (GetOwner()->Animator()->IsPlaying())
+    {
+        if ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP)) && !m_bJumpEnd)
+        {
+            PLAYERCTRL->ClearVelocityY();
+            m_bJumpEnd = true;
+        }
+    }
 }
 
 void CKirbyJumpStart::Enter()
 {
     PLAY_CURSTATE(JumpStartEnter)
 
-    m_JumpAccTime = 0.f;
+    m_bJumpEnd = false;
 }
 
 void CKirbyJumpStart::Exit()

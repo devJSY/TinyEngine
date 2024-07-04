@@ -42,7 +42,7 @@ private:
 
     // ¹°¸®
     Vec3                        m_MoveVelocity;
-    Vec3                        m_ForceVelocity;
+    Vec3                        m_AdditionalVelocity;
     float                       m_Speed;
     float                       m_RotSpeed;
     float                       m_JumpPower;
@@ -73,6 +73,7 @@ public:
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
+    void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
 private:

@@ -31,6 +31,10 @@ void CKirbyJump::tick()
             {
                 ChangeState(L"LANDING");
             }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
             else if (GetOwner()->Animator()->IsFinish())
             {
                 ChangeState(L"JUMP_FALL");

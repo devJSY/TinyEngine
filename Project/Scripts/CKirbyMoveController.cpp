@@ -224,8 +224,8 @@ void CKirbyMoveController::Move()
     }
 
     // 누적된 힘 적용
-    m_MoveVelocity += m_ForceVelocity;
-    m_ForceVelocity = Vec3();
+    m_MoveVelocity += m_AdditionalVelocity;
+    m_AdditionalVelocity = Vec3();
 
     if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
     {
@@ -272,7 +272,7 @@ void CKirbyMoveController::AddForce(Vec3 _Force, AddForceType _Type)
         }
 
         // 속도 계산
-        m_ForceVelocity += Accel * DT;
+        m_AdditionalVelocity += Accel * DT;
 
         // 마찰력 계산
         // if (_Force == Vec3() && CharacterController()->IsGrounded() && m_MoveVelocity.x != 0.f)
@@ -293,7 +293,7 @@ void CKirbyMoveController::AddForce(Vec3 _Force, AddForceType _Type)
     }
     break;
     case AddForceType::VelocityChange: {
-        m_ForceVelocity += _Force;
+        m_AdditionalVelocity += _Force;
     }
     break;
     }

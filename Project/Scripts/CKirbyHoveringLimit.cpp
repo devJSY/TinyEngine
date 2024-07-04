@@ -41,6 +41,7 @@ void CKirbyHoveringLimit::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLimit"));
 
+    PLAYERCTRL->AddForce(Vec3(0.f, 3.f, 0.f), AddForceType::VelocityChange);
     m_bFrmEnter = true;
 }
 

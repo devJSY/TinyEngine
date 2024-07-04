@@ -17,7 +17,7 @@ CAnimator::CAnimator()
     , m_vecClipUpdateTime{}
     , m_bPlay(true)
     , m_bRepeat(true)
-    , m_PlaySpeed(1.f)
+    , m_PlaySpeed(2.f)
     , m_FrameRate(30)
     , m_CurTime(0.)
     , m_FrameIdx(0)
