@@ -146,7 +146,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyHoveringStart.h" />
     <ClInclude Include="CKirbyIdle.h" />
     <ClInclude Include="CKirbyJump.h" />
-    <ClInclude Include="CKirbyJumpEnd.h" />
+    <ClInclude Include="CKirbyJumpFall.h" />
     <ClInclude Include="CKirbyJumpStart.h" />
     <ClInclude Include="CKirbyLanding.h" />
     <ClInclude Include="CKirbyLandingEnd.h" />
@@ -158,7 +158,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyStuffed.h" />
     <ClInclude Include="CKirbyStuffedIdle.h" />
     <ClInclude Include="CKirbyStuffedJump.h" />
-    <ClInclude Include="CKirbyStuffedJumpEnd.h" />
+    <ClInclude Include="CKirbyStuffedJumpFall.h" />
     <ClInclude Include="CKirbyStuffedLanding.h" />
     <ClInclude Include="CKirbyStuffedRun.h" />
     <ClInclude Include="CModelEditorCameraMoveScript.h" />
@@ -218,7 +218,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyHoveringStart.cpp" />
     <ClCompile Include="CKirbyIdle.cpp" />
     <ClCompile Include="CKirbyJump.cpp" />
-    <ClCompile Include="CKirbyJumpEnd.cpp" />
+    <ClCompile Include="CKirbyJumpFall.cpp" />
     <ClCompile Include="CKirbyJumpStart.cpp" />
     <ClCompile Include="CKirbyLanding.cpp" />
     <ClCompile Include="CKirbyLandingEnd.cpp" />
@@ -232,7 +232,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyStuffed.cpp" />
     <ClCompile Include="CKirbyStuffedIdle.cpp" />
     <ClCompile Include="CKirbyStuffedJump.cpp" />
-    <ClCompile Include="CKirbyStuffedJumpEnd.cpp" />
+    <ClCompile Include="CKirbyStuffedJumpFall.cpp" />
     <ClCompile Include="CKirbyStuffedLanding.cpp" />
     <ClCompile Include="CKirbyStuffedRun.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />

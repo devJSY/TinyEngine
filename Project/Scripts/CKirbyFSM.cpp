@@ -84,7 +84,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyRunStart.h"
 #include "CKirbyJump.h"
 #include "CKirbyJumpStart.h"
-#include "CKirbyJumpEnd.h"
+#include "CKirbyJumpFall.h"
 #include "CKirbyLanding.h"
 #include "CKirbyLandingEnd.h"
 #include "CKirbyHovering.h"
@@ -106,7 +106,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyStuffedIdle.h"
 #include "CKirbyStuffedRun.h"
 #include "CKirbyStuffedJump.h"
-#include "CKirbyStuffedJumpEnd.h"
+#include "CKirbyStuffedJumpFall.h"
 #include "CKirbyStuffedLanding.h"
 
 void CKirbyFSM::begin()
@@ -117,7 +117,7 @@ void CKirbyFSM::begin()
     AddState(L"RUN_START", new CKirbyRunStart);
     AddState(L"JUMP", new CKirbyJump);
     AddState(L"JUMP_START", new CKirbyJumpStart);
-    AddState(L"JUMP_END", new CKirbyJumpEnd);
+    AddState(L"JUMP_FALL", new CKirbyJumpFall);
     AddState(L"LANDING", new CKirbyLanding);
     AddState(L"LANDING_END", new CKirbyLandingEnd);
     AddState(L"HOVERING", new CKirbyHovering);
@@ -139,7 +139,7 @@ void CKirbyFSM::begin()
     AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
     AddState(L"STUFFED_RUN", new CKirbyStuffedRun);
     AddState(L"STUFFED_JUMP", new CKirbyStuffedJump);
-    AddState(L"STUFFED_JUMP_END", new CKirbyStuffedJumpEnd);
+    AddState(L"STUFFED_JUMP_FALL", new CKirbyStuffedJumpFall);
     AddState(L"STUFFED_LANDING", new CKirbyStuffedLanding);
 
     ChangeState(L"IDLE");

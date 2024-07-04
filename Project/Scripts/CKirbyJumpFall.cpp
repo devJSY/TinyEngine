@@ -1,17 +1,17 @@
 #include "pch.h"
-#include "CKirbyJumpEnd.h"
+#include "CKirbyJumpFall.h"
 
-CKirbyJumpEnd::CKirbyJumpEnd()
+CKirbyJumpFall::CKirbyJumpFall()
 {
 }
 
-CKirbyJumpEnd::~CKirbyJumpEnd()
+CKirbyJumpFall::~CKirbyJumpFall()
 {
 }
 
-void CKirbyJumpEnd::tick()
+void CKirbyJumpFall::tick()
 {
-    PLAY_CURSTATE(JumpEnd)
+    PLAY_CURSTATE(JumpFall)
 
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
@@ -43,12 +43,12 @@ void CKirbyJumpEnd::tick()
     }
 }
 
-void CKirbyJumpEnd::Enter()
+void CKirbyJumpFall::Enter()
 {
-    PLAY_CURSTATE(JumpEndEnter)
+    PLAY_CURSTATE(JumpFallEnter)
 }
 
-void CKirbyJumpEnd::Exit()
+void CKirbyJumpFall::Exit()
 {
-    PLAY_CURSTATE(JumpEndExit)
+    PLAY_CURSTATE(JumpFallExit)
 }

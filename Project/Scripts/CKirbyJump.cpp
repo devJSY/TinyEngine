@@ -33,7 +33,7 @@ void CKirbyJump::tick()
             }
             else if (GetOwner()->Animator()->IsFinish())
             {
-                ChangeState(L"JUMP_END");
+                ChangeState(L"JUMP_FALL");
             }
         }
         break;

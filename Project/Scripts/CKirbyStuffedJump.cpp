@@ -23,7 +23,7 @@ void CKirbyStuffedJump::tick()
     }
     else if (GetOwner()->Animator()->IsFinish())
     {
-        ChangeState(L"STUFFED_JUMP_END");
+        ChangeState(L"STUFFED_JUMP_FALL");
     }
 }
 

@@ -19,7 +19,7 @@ void CKirbySlideEnd::tick()
         }
         else if (false == PLAYER->CharacterController()->IsGrounded())
         {
-            ChangeState(L"JUMP_END");
+            ChangeState(L"JUMP_FALL");
         }
         else
         {

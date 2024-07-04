@@ -1,7 +1,7 @@
 #pragma once
 #include "CState.h"
 
-class CKirbyJumpEnd : public CState
+class CKirbyJumpFall : public CState
 {
 public:
     virtual void tick();
@@ -9,7 +9,7 @@ public:
     virtual void Exit();
 
 public:
-    CLONE(CKirbyJumpEnd)
-    CKirbyJumpEnd();
-    virtual ~CKirbyJumpEnd();
+    CLONE(CKirbyJumpFall)
+    CKirbyJumpFall();
+    virtual ~CKirbyJumpFall();
 };
