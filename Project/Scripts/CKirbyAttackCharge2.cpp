@@ -21,14 +21,15 @@ void CKirbyAttackCharge2::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: {
+        case AbilityCopyType::NORMAL: 
+        {
             if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_END");
             }
             else if (PLAYERCTRL->GetInput().Length() != 0.f)
             {
-                ChangeState(L"ATTACK_CHARGE1_RUN");
+                ChangeState(L"ATTACK_CHARGE2_RUN");
             }
         }
         break;

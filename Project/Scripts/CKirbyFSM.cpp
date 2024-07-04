@@ -12,8 +12,11 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
+    , m_HoveringAccTime(0.f)
+    , m_HoveringLimitTime(5.f)
     , m_LastJump(JumpType::HIGH)
     , m_bStuffed(false)
+    , m_bHovering(false)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
@@ -26,8 +29,11 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrAbility{}
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
+    , m_HoveringAccTime(0.f)
+    , m_HoveringLimitTime(5.f)
     , m_LastJump(JumpType::HIGH)
     , m_bStuffed(false)
+    , m_bHovering(false)
 {
     // Ability Copy 복사
     for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
@@ -81,12 +87,21 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyJumpEnd.h"
 #include "CKirbyLanding.h"
 #include "CKirbyLandingEnd.h"
+#include "CKirbyHovering.h"
+#include "CKirbyHoveringStart.h"
+#include "CKirbyHoveringFall.h"
+#include "CKirbyHoveringLimit.h"
+#include "CKirbyHoveringFallLimit.h"
+#include "CKirbyHoveringLanding.h"
+#include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
 #include "CKirbyAttackCharge1End.h"
 #include "CKirbyAttackCharge1Run.h"
 #include "CKirbyAttackCharge2.h"
+#include "CKirbyAttackCharge2Start.h"
+#include "CKirbyAttackCharge2Run.h"
 #include "CKirbyStuffed.h"
 #include "CKirbyStuffedIdle.h"
 #include "CKirbyStuffedRun.h"
@@ -105,12 +120,21 @@ void CKirbyFSM::begin()
     AddState(L"JUMP_END", new CKirbyJumpEnd);
     AddState(L"LANDING", new CKirbyLanding);
     AddState(L"LANDING_END", new CKirbyLandingEnd);
+    AddState(L"HOVERING", new CKirbyHovering);
+    AddState(L"HOVERING_START", new CKirbyHoveringStart);
+    AddState(L"HOVERING_FALL", new CKirbyHoveringFall);
+    AddState(L"HOVERING_LIMIT", new CKirbyHoveringLimit);
+    AddState(L"HOVERING_FALL_LIMIT", new CKirbyHoveringFallLimit);
+    AddState(L"HOVERING_LANDING", new CKirbyHoveringLanding);
+    AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
     AddState(L"ATTACK_CHARGE1_END", new CKirbyAttackCharge1End);
     AddState(L"ATTACK_CHARGE1_RUN", new CKirbyAttackCharge1Run);
     AddState(L"ATTACK_CHARGE2", new CKirbyAttackCharge2);
+    AddState(L"ATTACK_CHARGE2_START", new CKirbyAttackCharge2Start);
+    AddState(L"ATTACK_CHARGE2_RUN", new CKirbyAttackCharge2Run);
     AddState(L"STUFFED", new CKirbyStuffed);
     AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
     AddState(L"STUFFED_RUN", new CKirbyStuffedRun);
@@ -126,6 +150,11 @@ void CKirbyFSM::tick()
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         m_ChargeAccTime += DT;
+    }
+
+    if (m_bHovering)
+    {
+        m_HoveringAccTime += DT;
     }
 
     CFSMScript::tick();

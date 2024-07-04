@@ -176,7 +176,7 @@ void CKirbyAbility_Normal::AttackCharge2()
 
 void CKirbyAbility_Normal::AttackCharge2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumHustleLv2"));
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"));
 
     // @TODO Material 이름으로 받아오기 & material key값 변경
     PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
@@ -185,5 +185,33 @@ void CKirbyAbility_Normal::AttackCharge2Enter()
 }
 
 void CKirbyAbility_Normal::AttackCharge2Exit()
+{
+}
+
+// start
+void CKirbyAbility_Normal::AttackCharge2Start()
+{
+}
+
+void CKirbyAbility_Normal::AttackCharge2StartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleStart"), false);
+}
+
+void CKirbyAbility_Normal::AttackCharge2StartExit()
+{
+}
+
+// run
+void CKirbyAbility_Normal::AttackCharge2Run()
+{
+}
+
+void CKirbyAbility_Normal::AttackCharge2RunEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"));
+}
+
+void CKirbyAbility_Normal::AttackCharge2RunExit()
 {
 }

@@ -38,7 +38,7 @@ void CKirbyAttackCharge1::tick()
             }
             else if (PLAYERFSM->GetChargeAccTime() >= PLAYERFSM->GetCurAbility()->GetCharge1Time())
             {
-                ChangeState(L"ATTACK_CHARGE2");
+                ChangeState(L"ATTACK_CHARGE2_START");
             }
         }
         break;

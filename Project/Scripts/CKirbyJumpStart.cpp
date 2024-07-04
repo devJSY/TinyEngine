@@ -53,6 +53,12 @@ void CKirbyJumpStart::tick()
             break;
         }
     }
+
+    //@TODO 테스트코드
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeState(L"HOVERING_START");
+    }
 }
 
 void CKirbyJumpStart::Enter()

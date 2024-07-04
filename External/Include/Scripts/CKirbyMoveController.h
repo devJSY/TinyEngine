@@ -23,6 +23,9 @@ class CKirbyMoveController : public CScript
 private:
     // 입력
     Vec3                        m_Input;
+    bool                        m_bMoveLock;
+    bool                        m_bJumpLock;
+    bool                        m_bDirLock;
 
     // 방향
     Vec3                        m_CurDir;
@@ -49,6 +52,13 @@ public:
 
 public:
     Vec3 GetInput() const { return m_Input; }
+
+    void LockMove() { m_bMoveLock = true; }
+    void UnlockMove() { m_bMoveLock = false; }
+    void LockJump() { m_bJumpLock = true; }
+    void UnlockJump() { m_bJumpLock = false; }
+    void LockDirection() { m_bDirLock = true; }
+    void UnlockDirection() { m_bDirLock = false; }
 
 private:
     void Input();

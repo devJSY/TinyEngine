@@ -40,6 +40,10 @@ private:
     ObjectCopyType  m_CurObject;
 
     // 상태 관리를 위한 값들
+    const float     m_HoveringLimitTime;
+    float           m_HoveringAccTime;
+    bool            m_bHovering;
+
     float           m_ChargeAccTime;
     JumpType        m_LastJump;
     bool            m_bStuffed;
@@ -53,7 +57,9 @@ public:
 public:
     void SetLastJump(JumpType _Type) { m_LastJump = _Type; }
     void SetStuffed(bool _bStuffed) { m_bStuffed = _bStuffed; }
+    void SetHovering(bool _bHovering) { m_bHovering = _bHovering; }
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
+    void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
@@ -61,6 +67,8 @@ public:
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
     JumpType GetLastJump() const { return m_LastJump; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
+    float GetHoveringAccTime() const { return m_HoveringAccTime; }
+    float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
     bool IsStuffed() const { return m_bStuffed; }
 
 public:

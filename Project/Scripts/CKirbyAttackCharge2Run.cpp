@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "CKirbyAttackCharge1Run.h"
+#include "CKirbyAttackCharge2Run.h"
 
-CKirbyAttackCharge1Run::CKirbyAttackCharge1Run()
+CKirbyAttackCharge2Run::CKirbyAttackCharge2Run()
 {
 }
 
-CKirbyAttackCharge1Run::~CKirbyAttackCharge1Run()
+CKirbyAttackCharge2Run::~CKirbyAttackCharge2Run()
 {
 }
 
-void CKirbyAttackCharge1Run::tick()
+void CKirbyAttackCharge2Run::tick()
 {
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->AttackCharge1Run();
+    KirbyFSM->GetCurAbility()->AttackCharge2Run();
 
     // State Change
     switch (PLAYERFSM->GetCurAbilityIdx())
@@ -25,11 +25,7 @@ void CKirbyAttackCharge1Run::tick()
         }
         else if (PLAYERCTRL->GetInput().Length() == 0.f)
         {
-            ChangeState(L"ATTACK_CHARGE1");
-        }
-        else if (PLAYERFSM->GetChargeAccTime() >= PLAYERFSM->GetCurAbility()->GetCharge1Time())
-        {
-            ChangeState(L"ATTACK_CHARGE2_RUN");
+            ChangeState(L"ATTACK_CHARGE2");
         }
     }
     break;
@@ -42,14 +38,14 @@ void CKirbyAttackCharge1Run::tick()
     }
 }
 
-void CKirbyAttackCharge1Run::Enter()
+void CKirbyAttackCharge2Run::Enter()
 {
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->AttackCharge1RunEnter();
+    KirbyFSM->GetCurAbility()->AttackCharge2RunEnter();
 }
 
-void CKirbyAttackCharge1Run::Exit()
+void CKirbyAttackCharge2Run::Exit()
 {
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->AttackCharge1RunExit();
+    KirbyFSM->GetCurAbility()->AttackCharge2RunExit();
 }

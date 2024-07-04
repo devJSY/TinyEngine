@@ -145,6 +145,33 @@
     <ClInclude Include="CKirbyAttackCharge1Run.h">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1Run</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge2Start.h">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge2Run.h">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Run</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHovering.h">
+      <Filter>State\KirbyState\Hovering\Hovering</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHoveringStart.h">
+      <Filter>State\KirbyState\Hovering\HoveringStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHoveringFall.h">
+      <Filter>State\KirbyState\Hovering\HoveringFall</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHoveringLanding.h">
+      <Filter>State\KirbyState\Hovering\HoveringLanding</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHoveringLimit.h">
+      <Filter>State\KirbyState\Hovering\HoveringLimit</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHoveringFallLimit.h">
+      <Filter>State\KirbyState\Hovering\HoveringFallLimit</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHoveringSpit.h">
+      <Filter>State\KirbyState\Hovering\HoveringSpit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -303,6 +330,33 @@
     <ClCompile Include="CKirbyAttackCharge1Run.cpp">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1Run</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge2Start.cpp">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge2Run.cpp">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Run</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHovering.cpp">
+      <Filter>State\KirbyState\Hovering\Hovering</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHoveringStart.cpp">
+      <Filter>State\KirbyState\Hovering\HoveringStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHoveringFall.cpp">
+      <Filter>State\KirbyState\Hovering\HoveringFall</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHoveringLanding.cpp">
+      <Filter>State\KirbyState\Hovering\HoveringLanding</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHoveringLimit.cpp">
+      <Filter>State\KirbyState\Hovering\HoveringLimit</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHoveringFallLimit.cpp">
+      <Filter>State\KirbyState\Hovering\HoveringFallLimit</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHoveringSpit.cpp">
+      <Filter>State\KirbyState\Hovering\HoveringSpit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -458,11 +512,35 @@
     <Filter Include="State\KirbyState\AttackCharge1\AttackCharge1Run">
       <UniqueIdentifier>{e43fdef1-7732-4cab-b283-a8e5a481959c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Dash">
-      <UniqueIdentifier>{b8b15ac3-4f50-4d85-aadc-d3c954721719}</UniqueIdentifier>
+    <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Start">
+      <UniqueIdentifier>{edac8bf3-1f74-409b-a816-21c5140c6040}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Avoid%3f">
-      <UniqueIdentifier>{dbafc833-a617-45ec-b055-52bf08b33875}</UniqueIdentifier>
+    <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Run">
+      <UniqueIdentifier>{d4d51dc4-fe64-4ee9-b3fd-476f8b959094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering">
+      <UniqueIdentifier>{7866b874-1a55-422e-88a5-2826db111fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\HoveringStart">
+      <UniqueIdentifier>{348ca0ea-d0c7-4ea2-8775-e2e3e7515dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\HoveringFall">
+      <UniqueIdentifier>{5a570709-062b-4bc3-b0c0-7c2e8b7eb845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\Hovering">
+      <UniqueIdentifier>{cf974e20-b021-4f30-8bd4-7a2f4eb5bd37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\HoveringLimit">
+      <UniqueIdentifier>{7d73764b-6c52-43d6-af66-41a2512911c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\HoveringFallLimit">
+      <UniqueIdentifier>{c493b409-8994-4358-bcdd-89b089e3d6ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\HoveringLanding">
+      <UniqueIdentifier>{20819704-837b-43aa-b60b-9a25ef464dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Hovering\HoveringSpit">
+      <UniqueIdentifier>{fbe948b2-b466-4794-b723-9dc9dca0d083}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

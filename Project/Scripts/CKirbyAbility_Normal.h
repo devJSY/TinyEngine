@@ -40,11 +40,21 @@ public:
     virtual void AttackCharge1RunEnter();
     virtual void AttackCharge1RunExit();
 
+
     // »Ì¿‘2
     virtual void AttackCharge2();
     virtual void AttackCharge2Enter();
     virtual void AttackCharge2Exit();
 
+    virtual void AttackCharge2Start();
+    virtual void AttackCharge2StartEnter();
+    virtual void AttackCharge2StartExit();
+
+    virtual void AttackCharge2Run();
+    virtual void AttackCharge2RunEnter();
+    virtual void AttackCharge2RunExit();
+
+    // ¡°«¡
     virtual void JumpAttack(){};
     virtual void JumpAttackEnter(){};
     virtual void JumpAttackExit(){};

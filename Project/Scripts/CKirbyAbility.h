@@ -86,6 +86,14 @@ public:
     virtual void AttackCharge2Enter(){};
     virtual void AttackCharge2Exit(){};
 
+    virtual void AttackCharge2Start(){};
+    virtual void AttackCharge2StartEnter(){};
+    virtual void AttackCharge2StartExit(){};
+
+    virtual void AttackCharge2Run(){};
+    virtual void AttackCharge2RunEnter(){};
+    virtual void AttackCharge2RunExit(){};
+
     virtual void JumpAttack() = 0;
     virtual void JumpAttackEnter() = 0;
     virtual void JumpAttackExit() = 0;
