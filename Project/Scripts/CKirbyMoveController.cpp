@@ -15,11 +15,11 @@ CKirbyMoveController::CKirbyMoveController()
     , m_GroundNormal{0.f, 1.f, 0.f}
     , m_ForceDirInfos{}
     , m_MoveVelocity{}
-    , m_Speed(2.f)
-    , m_RotSpeed(20.f)
-    , m_JumpPower(1.f)
+    , m_Speed(10.f)
+    , m_RotSpeed(50.f)
+    , m_JumpPower(1000.f)
     , m_RayCastDist(2.f)
-    , m_Gravity(-10.f)
+    , m_Gravity(-50.f)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -27,6 +27,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_HoveringHeight(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -41,11 +42,11 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_MoveDir{0.f, 0.f, 0.f}
     , m_GroundNormal{0.f, 1.f, 0.f}
     , m_MoveVelocity{}
-    , m_Speed(15.f)
+    , m_Speed(10.f)
     , m_RotSpeed(_Origin.m_RotSpeed)
-    , m_JumpPower(1.f)
+    , m_JumpPower(1000.f)
     , m_RayCastDist(2.f)
-    , m_Gravity(-20.f)
+    , m_Gravity(-50.f)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -53,6 +54,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_HoveringHeight(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -72,6 +74,10 @@ void CKirbyMoveController::begin()
 
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
+
+
+    // Test
+    GetOwner()->Animator()->SetPlaySpeed(3.f);
 }
 
 void CKirbyMoveController::tick()
@@ -183,19 +189,12 @@ void CKirbyMoveController::SetDir()
         m_TowardDir = m_CurDir;
     }
 
-    // 180도 돌 경우 예외처리
-    if (m_CurDir.Dot(m_TowardDir) == (-m_CurDir.Length() * m_TowardDir.Length()))
-    {
-        m_TowardDir.x += 0.1f;
-        m_TowardDir.Normalize();
-    }
-
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
     Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
 
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
-}
+} 
 
 void CKirbyMoveController::Move()
 {
@@ -214,32 +213,50 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = 0.f;
     }
 
+    // 수평 방향 이동속도 계산
     m_MoveVelocity.x = m_MoveDir.x * m_Speed;
     m_MoveVelocity.z = m_MoveDir.z * m_Speed;
 
-    // 점프
-    if (KEY_TAP(KEY_JUMP) && bGrounded && m_bJumpLock == false)
+
+    // Y축 속도 계산
+    switch (m_JumpType)
     {
-        m_MoveVelocity.y += std::sqrt(m_JumpPower * -3.f * m_Gravity);
+    case JumpType::NONE:
+    {
+        // 중력 적용
+        m_MoveVelocity.y += m_Gravity * DT;
+    }
+        break;
+    case JumpType::UP:
+    {
+        m_MoveVelocity.y = m_JumpPower * DT;
+    }
+        break;
+    case JumpType::AIR:
+    {
+        m_MoveVelocity.y = 0.f;
+    }
+        break;
+    case JumpType::DOWN:
+    {
+        m_MoveVelocity.y = -m_JumpPower * DT;
+    }
+        break;
+    //case JumpType::HOVER:
+    //{
+    //    m_MoveVelocity.y += m_JumpPower * DT;
+    //    SetJumpType(JumpType::NONE);
+    //}
+
+    default:
+        break;
     }
 
-    // 누적된 힘 적용
-    m_MoveVelocity += m_ForceVelocity;
-    m_ForceVelocity = Vec3();
 
     if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
     {
         m_MoveVelocity.y = 0.f;
     }
-
-    // 중력 적용
-    m_MoveVelocity.y += m_Gravity * DT;
-
-    // 최대 속도 제한
-    //if (PLAYERFSM->IsHovering() && m_MoveVelocity.y > 20.f)
-    //{
-    //    m_MoveVelocity.y = 20.f;
-    //}
 
     // 움직임 적용
     Vec3 Diff;
@@ -255,49 +272,6 @@ void CKirbyMoveController::Move()
     }
 }
 
-// USAGE: 캐릭터의 무게를 무시하고 힘을 주고 싶을 때 (속도 조작 X)
-// RESULT: 받은 힘에 대한 가속도를 계산해 속도를 변경
-// - 가속도 등은 이외 함수에서 처리한다고 가정, 가해지는 힘에 대해서만 처리
-void CKirbyMoveController::AddForce(Vec3 _Force, AddForceType _Type)
-{
-    switch (_Type)
-    {
-    case AddForceType::Acceleration: {
-        // 가속도 계산
-        Vec3 Accel = _Force / 1.f; // A = F/M;
-
-        if (CharacterController()->IsGrounded())
-        {
-            Accel.y = 0.f;
-        }
-
-        // 속도 계산
-        m_ForceVelocity += Accel * DT;
-
-        // 마찰력 계산
-        // if (_Force == Vec3() && CharacterController()->IsGrounded() && m_MoveVelocity.x != 0.f)
-        //{
-        //    // 마찰력 크기
-        //    float fFriction = -m_MoveVelocity.x / fabs(m_MoveVelocity.x);
-        //    fFriction *= m_fFrictionScale;
-
-        //    // 순간 마찰력 크기
-        //    float fFrictionAccel = (fFriction / 1.f) * DT;
-        //    if (fabs(m_MoveVelocity.x) < fabs(fFrictionAccel))
-        //    {
-        //        m_MoveVelocity.x = 0.f;
-        //    }
-        //    else
-        //        m_MoveVelocity.x += fFrictionAccel;
-        //}
-    }
-    break;
-    case AddForceType::VelocityChange: {
-        m_ForceVelocity += _Force;
-    }
-    break;
-    }
-}
 
 void CKirbyMoveController::SurfaceAlignment()
 {

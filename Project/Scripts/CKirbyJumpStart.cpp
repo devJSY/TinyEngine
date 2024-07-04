@@ -4,6 +4,7 @@
 
 CKirbyJumpStart::CKirbyJumpStart()
     : m_JumpAccTime(0.f)
+    , m_MinJumpTime(0.2f)
 {
 }
 
@@ -36,15 +37,19 @@ void CKirbyJumpStart::tick()
             {
                 ChangeState(L"HOVERING_START");
             }
-            else if (GetOwner()->Animator()->IsFinish())
+            else if (PLAYER->Animator()->IsFinish())
             {
-                if (KEY_PRESSED(KEY_JUMP))
+                ChangeState(L"JUMP");
+            }
+            else if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
+            {
+                if (m_JumpAccTime > m_MinJumpTime)
                 {
-                    ChangeState(L"JUMP");
+                    ChangeState(L"JUMP_FALL");
                 }
                 else
                 {
-                    ChangeState(L"JUMP_FALL");
+                    PLAYERCTRL->SetJumpType(JumpType::AIR);
                 }
             }
         }
@@ -63,10 +68,14 @@ void CKirbyJumpStart::Enter()
 {
     PLAY_CURSTATE(JumpStartEnter)
 
+    PLAYERCTRL->SetJumpType(JumpType::UP);
+
     m_JumpAccTime = 0.f;
 }
 
 void CKirbyJumpStart::Exit()
 {
     PLAY_CURSTATE(JumpStartExit)
+
+    PLAYERCTRL->SetJumpType(JumpType::NONE);
 }

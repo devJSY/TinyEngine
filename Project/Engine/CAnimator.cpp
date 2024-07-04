@@ -17,7 +17,7 @@ CAnimator::CAnimator()
     , m_vecClipUpdateTime{}
     , m_bPlay(true)
     , m_bRepeat(true)
-    , m_PlaySpeed(1.f)
+    , m_PlaySpeed(3.f)
     , m_FrameRate(30)
     , m_CurTime(0.)
     , m_FrameIdx(0)
@@ -292,7 +292,7 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, float _PlaySpee
 
     m_bPlay = true;
     m_bRepeat = _bRepeat;
-    m_PlaySpeed = _PlaySpeed;
+    m_PlaySpeed = 3.f;
 }
 
 bool CAnimator::IsFinish() const

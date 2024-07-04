@@ -14,7 +14,7 @@ void CKirbyHoveringLimit::tick()
 {
     if (GET_CURCLIP_FRM == 7 && m_bFrmEnter)
     {
-        PLAYERCTRL->AddForce(Vec3(0.f, 3.f, 0.f), AddForceType::VelocityChange);
+        //PLAYERCTRL->AddForce(Vec3(0.f, 3.f, 0.f), AddForceType::VelocityChange);
         m_bFrmEnter = false;
     }
     else if (GET_CURCLIP_FRM == 12 && !m_bFrmEnter)

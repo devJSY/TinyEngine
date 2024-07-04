@@ -21,7 +21,7 @@ enum class ObjectCopyType
     END,
 };
 
-enum class JumpType
+enum class LastJumpType
 {
     LOW,
     HIGH,
@@ -45,7 +45,7 @@ private:
     bool            m_bHovering;
 
     float           m_ChargeAccTime;
-    JumpType        m_LastJump;
+    LastJumpType m_LastJump;
     bool            m_bStuffed;
 
 public:
@@ -55,7 +55,7 @@ public:
     void ChangeObjectCopy(ObjectCopyType _Type);
 
 public:
-    void SetLastJump(JumpType _Type) { m_LastJump = _Type; }
+    void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetStuffed(bool _bStuffed) { m_bStuffed = _bStuffed; }
     void SetHovering(bool _bHovering);
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
@@ -65,7 +65,7 @@ public:
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
     AbilityCopyType GetCurAbilityIdx() const { return m_CurAbility; }
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
-    JumpType GetLastJump() const { return m_LastJump; }
+    LastJumpType GetLastJump() const { return m_LastJump; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
