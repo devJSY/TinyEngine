@@ -36,23 +36,24 @@ void CKirbyJumpStart::tick()
             {
                 ChangeState(L"HOVERING_START");
             }
-            else if (PLAYER->Animator()->IsFinish())
+            else if (m_JumpAccTime > m_MaxJumpTime)
             {
-                ChangeState(L"JUMP");
-            }
-            else if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
-            {
-                if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false)
+                if (KEY_PRESSED(KEY_JUMP))
                 {
-                    PLAYERCTRL->SetGravity(m_OriginGravity / 4.f);
-                    PLAYERCTRL->VelocityCut(4.f);
-                    m_bVelocityCut = true;
+                    ChangeState(L"JUMP");
                 }
-                else if (m_JumpAccTime > m_MaxJumpTime)
+                else if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
                 {
                     ChangeState(L"JUMP_FALL");
                 }
             }
+            if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
+            {
+                //PLAYERCTRL->SetGravity(m_OriginGravity / 2.f);
+                PLAYERCTRL->VelocityCut(2.f);
+                m_bVelocityCut = true;
+            }
+
         }
         break;
         case AbilityCopyType::FIRE:

@@ -77,7 +77,7 @@ void CKirbyMoveController::begin()
 
     m_Speed = 10.f;
     m_RotSpeed = 50.f;
-    m_JumpPower = 13.f;
+    m_JumpPower = 10.f;
     m_Gravity = -20.f;
     m_HoveringLimitHeight = 15.f;
 
@@ -192,6 +192,15 @@ void CKirbyMoveController::SetDir()
     {
         m_TowardDir = m_CurDir;
     }
+
+    // 바라봐야할 방향과 현재 방향이 정반대일 경우 예외처리
+    if (m_CurDir.Dot(m_TowardDir) - (m_CurDir.Length() * m_TowardDir.Length() * -1.f) < 0.0001f)
+    {
+        Vec3 Rot = Transform()->GetRelativeRotation();
+        Rot.y += XM_PI / 180.f;
+        Transform()->SetRelativeRotation(Rot);
+    }
+
 
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
     Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));

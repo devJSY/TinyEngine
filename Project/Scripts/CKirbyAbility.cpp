@@ -33,7 +33,7 @@ void CKirbyAbility::JumpEnter()
 
 void CKirbyAbility::JumpStartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Jump"), false);
+    PLAYER->Animator()->Play(KIRBYANIM(L"JumpL"), false);
 }
 
 void CKirbyAbility::JumpFallEnter()
