@@ -4,7 +4,7 @@
 
 float4 main(PS_IN input) : SV_TARGET
 {
-    float3 color = g_tex_0.Sample(g_LinearClampSampler, input.vUV).rgb;
+    float3 color = g_tex_0.Sample(g_LinearClampSampler, input.vUV0).rgb;
     
     // Relative Luminance : 픽셀의 색이 밝은지 어두운지의 기준값
     float RelativeLuminance = dot(color, float3(0.2126f, 0.7152f, 0.0722f));

@@ -51,10 +51,9 @@ void CRigidbody::finaltick()
 
     WorldPos /= PPM;
 
-    SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
-    SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);
-    SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
-    SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
+    SimpleMath::Quaternion Quat = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x) *
+                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y) *
+                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
 
     physx::PxTransform PxTr = physx::PxTransform(WorldPos, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
 
