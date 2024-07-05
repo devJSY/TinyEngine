@@ -30,7 +30,9 @@ private:
     int m_NextFrameIdx; // 클립의 다음 프레임
     float m_Ratio;      // 프레임 사이 비율
 
-    vector<Matrix> m_FinalBoneMat;           // 최종 행렬 데이터
+    vector<Matrix> m_BoneTransformMat;           // 본 변환 행렬 데이터
+    CStructuredBuffer* m_BoneTransformMatBuffer; // 특정 프레임의 최종 행렬
+
     CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
     bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
 
@@ -51,7 +53,7 @@ public:
 
 public:
     int FindClipIndex(const wstring& _strClipName);
-    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f, double _ChangeDuration = 0.1);
+    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
     bool IsValid();
@@ -84,14 +86,14 @@ public:
     int GetClipFrameIndex();
     void SetClipFrameIndex(int _FrameIdx);
 
-    const vector<Matrix>& GetFinalBoneMat() const { return m_FinalBoneMat; }
-    const Matrix& GetFinalBoneMat(UINT _Idx) const { return m_FinalBoneMat[_Idx]; }
+    const vector<Matrix>& GetBoneTransformMat() const { return m_BoneTransformMat; }
+    const Matrix& GetBoneTransformMat(UINT _Idx) const { return m_BoneTransformMat[_Idx]; }
 
     CStructuredBuffer* GetFinalBoneMatBuffer() const { return m_BoneFinalMatBuffer; }
     UINT GetBoneCount() const;
 
 private:
-    void CheckBoneFinalMatBuffer();
+    void CheckBoneMatBuffer();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

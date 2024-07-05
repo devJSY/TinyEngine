@@ -189,22 +189,28 @@ void CLevelEditor::render()
     if (m_bShowOutputLog)
         COutputLog::GetInst()->render(&m_bShowOutputLog);
 
+    // Physics2DMgr
     if (m_bShowPhysics2DMgr)
         render_Physics2DMgr();
 
+    // PhysicsMgr
     if (m_bShowPhysicsMgr)
         render_PhysicsMgr();
 
+    // TagsAndLayers
     if (m_bShowTagsAndLayers)
         render_TagsAndLayers();
 
+    // MRT
     if (m_bShowMRT)
         render_MRT();
 
+    // SSAO
     if (m_bShowSSAO)
         render_SSAO();
 
-    render_MainCamPreview();
+    // Cam Preview
+    render_CamPreview();
 
     if (CAssetMgr::GetInst()->IsModelLoading())
     {
@@ -1150,7 +1156,7 @@ void CLevelEditor::render_SSAO()
     ImGui::End();
 }
 
-void CLevelEditor::render_MainCamPreview()
+void CLevelEditor::render_CamPreview()
 {
     CGameObject* SelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
     if (nullptr == SelectedObj || nullptr == SelectedObj->Camera() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)

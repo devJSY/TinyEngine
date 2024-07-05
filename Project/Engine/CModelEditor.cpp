@@ -27,7 +27,6 @@ CModelEditor::CModelEditor()
     , m_LightObj(nullptr)
     , m_SkyBoxObj(nullptr)
     , m_FloorObj(nullptr)
-    , m_BoneObj(nullptr)
     , m_ToneMappingObj(nullptr)
     , m_LightBuffer(nullptr)
     , m_ViewportFocused(false)
@@ -72,12 +71,6 @@ CModelEditor::~CModelEditor()
     {
         delete m_ToneMappingObj;
         m_ToneMappingObj = nullptr;
-    }
-
-    if (nullptr != m_BoneObj)
-    {
-        delete m_BoneObj;
-        m_BoneObj = nullptr;
     }
 
     if (nullptr != m_LightBuffer)
@@ -164,16 +157,6 @@ void CModelEditor::init()
     m_FloorObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"), 0);
     m_FloorObj->MeshRender()->GetDynamicMaterial(0)->SetMaterialCoefficient(Vec4(1.f, 1.f, 1.f, 1.f), Vec4(), Vec4(), 0.f, 0.2f);
     m_FloorObj->MeshRender()->SetFrustumCheck(false);
-
-    // Bone
-    m_BoneObj = new CGameObjectEx;
-    m_BoneObj->AddComponent(new CTransform);
-    m_BoneObj->AddComponent(new CMeshRender);
-    m_BoneObj->MeshRender()->SetFrustumCheck(false);
-    m_BoneObj->MeshRender()->SetCastShadow(false);
-    m_BoneObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"WireSphereMesh"));
-    m_BoneObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DebugShapeMtrl"), 0);
-    m_BoneObj->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 0.f, 1.f));
 
     // ToneMapping
     m_ToneMappingObj = new CGameObjectEx;
@@ -389,21 +372,6 @@ void CModelEditor::DrawViewport()
         {
             m_ModelObj->render();
         }
-
-        // Bone Render
-        if (nullptr != m_ModelObj->Animator() && m_ModelObj->Animator()->IsValid())
-        {
-            Vec3 vScale = m_ModelObj->Transform()->GetRelativeScale();
-            Matrix matScaleInv = XMMatrixScaling(1.f / vScale.x, 1.f / vScale.y, 1.f / vScale.z);
-            Matrix WorldMat = m_ModelObj->Transform()->GetWorldMat();
-
-            const vector<Matrix>& FinalBoneMat = m_ModelObj->Animator()->GetFinalBoneMat();
-            for (int i = 0; i < FinalBoneMat.size(); ++i)
-            {
-                m_BoneObj->Transform()->SetWorldMat(FinalBoneMat[i] * matScaleInv * WorldMat);
-                m_BoneObj->render();
-            }
-        }
     }
 
     // ToneMapping
@@ -412,6 +380,7 @@ void CModelEditor::DrawViewport()
 
     ImGui::Image((void*)m_ViewportRTTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
 
+    // Gizmo
     DrawImGizmo();
 
     // ·»´õÅ¸°Ù ¿ø»óº¹±Í
@@ -470,17 +439,17 @@ void CModelEditor::DrawImGizmo()
 
     float snapValues[3] = {snapValue, snapValue, snapValue};
 
-    Matrix FinalBoneMat = m_ModelObj->Animator()->GetFinalBoneMat(m_SelectedBoneSocket->BoneIndex);
+    Matrix BoneTransformMat = m_ModelObj->Animator()->GetBoneTransformMat(m_SelectedBoneSocket->BoneIndex);
     Matrix WorldMat = m_ModelObj->Transform()->GetWorldMat();
     Matrix SocketMat = m_SelectedBoneSocket->matSocket;
 
-    Matrix mat = FinalBoneMat * WorldMat * SocketMat;
+    Matrix mat = BoneTransformMat * WorldMat * SocketMat;
 
     ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *mat.m, nullptr, snap ? snapValues : nullptr);
 
     if (ImGuizmo::IsUsing())
     {
-        mat *= m_ModelObj->Transform()->GetWorldInvMat() * FinalBoneMat.Invert();
+        mat *= m_ModelObj->Transform()->GetWorldInvMat() * BoneTransformMat.Invert();
 
         Vec3 Translation, Rotation, Scale;
         ImGuizmo::DecomposeMatrixToComponents(*mat.m, Translation, Rotation, Scale);
@@ -636,7 +605,7 @@ void CModelEditor::DrawDetails()
             if (ImGui::TreeNodeEx("Bone##ModelEditorDetailsTransforms", DefaultTreeNodeFlag))
             {
                 Vec3 pos, rot, scale;
-                ImGuizmo::DecomposeMatrixToComponents(*m_ModelObj->Animator()->GetFinalBoneMat(m_SelectedBone->iIdx).m, pos, rot, scale);
+                ImGuizmo::DecomposeMatrixToComponents(*m_ModelObj->Animator()->GetBoneTransformMat(m_SelectedBone->iIdx).m, pos, rot, scale);
 
                 ImGui_DrawVec3Control("Location", pos, 1.f);
                 ImGui_DrawVec3Control("Rotation", rot, DirectX::XMConvertToRadians(15.f));

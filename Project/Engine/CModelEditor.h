@@ -29,7 +29,6 @@ private:
     CGameObjectEx* m_LightObj;
     CGameObjectEx* m_SkyBoxObj;
     CGameObjectEx* m_FloorObj;
-    CGameObjectEx* m_BoneObj;
     CGameObjectEx* m_ToneMappingObj;
     CStructuredBuffer* m_LightBuffer;
 

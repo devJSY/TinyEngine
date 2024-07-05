@@ -17,13 +17,14 @@ CAnimator::CAnimator()
     , m_vecClipUpdateTime{}
     , m_bPlay(true)
     , m_bRepeat(true)
-    , m_PlaySpeed(1.f)
+    , m_PlaySpeed(2.5f)
     , m_FrameRate(30)
     , m_CurTime(0.)
     , m_FrameIdx(0)
     , m_NextFrameIdx(0)
     , m_Ratio(0.f)
-    , m_FinalBoneMat{}
+    , m_BoneTransformMat{}
+    , m_BoneTransformMatBuffer(nullptr)
     , m_BoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
     , m_bChanging(false)
@@ -31,8 +32,9 @@ CAnimator::CAnimator()
     , m_ChangeDuration(0.)
     , m_NextClipIdx(-1)
     , m_bNextRepeat(true)
-    , m_NextPlaySpeed(1.f)
+    , m_NextPlaySpeed(2.5f)
 {
+    m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
 }
 
@@ -50,7 +52,8 @@ CAnimator::CAnimator(const CAnimator& _origin)
     , m_FrameIdx(_origin.m_FrameIdx)
     , m_NextFrameIdx(_origin.m_NextFrameIdx)
     , m_Ratio(_origin.m_Ratio)
-    , m_FinalBoneMat(_origin.m_FinalBoneMat)
+    , m_BoneTransformMat(_origin.m_BoneTransformMat)
+    , m_BoneTransformMatBuffer(nullptr)
     , m_BoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
     , m_bChanging(_origin.m_bChanging)
@@ -60,11 +63,18 @@ CAnimator::CAnimator(const CAnimator& _origin)
     , m_bNextRepeat(_origin.m_bNextRepeat)
     , m_NextPlaySpeed(_origin.m_NextPlaySpeed)
 {
+    m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
 }
 
 CAnimator::~CAnimator()
 {
+    if (nullptr != m_BoneTransformMatBuffer)
+    {
+        delete m_BoneTransformMatBuffer;
+        m_BoneTransformMatBuffer = nullptr;
+    }
+
     if (nullptr != m_BoneFinalMatBuffer)
     {
         delete m_BoneFinalMatBuffer;
@@ -165,12 +175,8 @@ void CAnimator::UpdateData()
         static CAnimationUpdateShader* pUpdateShader =
             (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
 
-        // Bone Data
-        CheckBoneFinalMatBuffer();
-
-        pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
-        pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
-        pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
+        // Bone Data Check
+        CheckBoneMatBuffer();
 
         UINT BoneCount = m_SkeletalMesh->GetBoneCount();
         pUpdateShader->SetBoneCount(BoneCount);
@@ -178,11 +184,16 @@ void CAnimator::UpdateData()
         pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
         pUpdateShader->SetFrameRatio(m_Ratio);
 
+        pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
+        pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
+        pUpdateShader->SetBoneTransformMatBuffer(m_BoneTransformMatBuffer);
+        pUpdateShader->SetFinalMatBuffer(m_BoneFinalMatBuffer);
+
         // 업데이트 쉐이더 실행
         pUpdateShader->Execute();
 
-        // Final Bone Matrix 저장
-        m_BoneFinalMatBuffer->GetData(m_FinalBoneMat.data(), BoneCount);
+        // Bone Transformation Matrix 저장
+        m_BoneTransformMatBuffer->GetData(m_BoneTransformMat.data(), BoneCount);
 
         // Bone Socket 행렬 생성
         vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
@@ -255,12 +266,8 @@ void CAnimator::finaltick_ModelEditor()
     static CAnimationUpdateShader* pUpdateShader =
         (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
 
-    // Bone Data
-    CheckBoneFinalMatBuffer();
-
-    pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
-    pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
-    pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
+    // Bone Data Check
+    CheckBoneMatBuffer();
 
     UINT BoneCount = m_SkeletalMesh->GetBoneCount();
     pUpdateShader->SetBoneCount(BoneCount);
@@ -268,11 +275,16 @@ void CAnimator::finaltick_ModelEditor()
     pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
     pUpdateShader->SetFrameRatio(m_Ratio);
 
+    pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
+    pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
+    pUpdateShader->SetBoneTransformMatBuffer(m_BoneTransformMatBuffer);
+    pUpdateShader->SetFinalMatBuffer(m_BoneFinalMatBuffer);
+
     // 업데이트 쉐이더 실행
     pUpdateShader->Execute();
 
-    // Final Bone Matrix 저장
-    m_BoneFinalMatBuffer->GetData(m_FinalBoneMat.data(), BoneCount);
+    // Bone Transformation Matrix 저장
+    m_BoneTransformMatBuffer->GetData(m_BoneTransformMat.data(), BoneCount);
 
     // Bone Socket 행렬 생성
     vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
@@ -340,7 +352,7 @@ void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
         m_FrameRate = FbxTime::GetFrameRate(vecAnimClip->back().eMode);
     }
 
-    CheckBoneFinalMatBuffer();
+    CheckBoneMatBuffer();
 }
 
 void CAnimator::SetFrameIdx(int _FrameIdx)
@@ -425,17 +437,22 @@ bool CAnimator::IsValid()
     return false;
 }
 
-void CAnimator::CheckBoneFinalMatBuffer()
+void CAnimator::CheckBoneMatBuffer()
 {
     if (!IsValid())
         return;
 
     UINT iBoneCount = m_SkeletalMesh->GetBoneCount();
+    if (m_BoneTransformMatBuffer->GetElementCount() != iBoneCount)
+    {
+        m_BoneTransformMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, true, nullptr);
+        m_BoneTransformMat.clear();
+        m_BoneTransformMat.resize(iBoneCount);
+    }
+
     if (m_BoneFinalMatBuffer->GetElementCount() != iBoneCount)
     {
-        m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, true, nullptr);
-        m_FinalBoneMat.clear();
-        m_FinalBoneMat.resize(iBoneCount);
+        m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
     }
 }
 

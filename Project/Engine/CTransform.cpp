@@ -80,7 +80,7 @@ void CTransform::finaltick()
         const tBoneSocket* pBoneSocket = GetOwner()->GetBoneSocket();
         if (nullptr != pBoneSocket && nullptr != pParent->Animator() && pParent->Animator()->IsValid())
         {
-            FinalBoneMat = pParent->Animator()->GetFinalBoneMat(pBoneSocket->BoneIndex);
+            FinalBoneMat = pParent->Animator()->GetBoneTransformMat(pBoneSocket->BoneIndex);
             SocketMat = pBoneSocket->matSocket;
         }
 
