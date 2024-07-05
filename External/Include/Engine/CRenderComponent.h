@@ -31,6 +31,11 @@ public:
     Ptr<CMaterial> GetDynamicMaterial(UINT _idx);
     void SetMaterial(Ptr<CMaterial> _Mtrl, UINT _idx);
 
+    Ptr<CMaterial> GetMaterial(wstring _Name);
+    Ptr<CMaterial> GetSharedMaterial(wstring _Name);
+    Ptr<CMaterial> GetDynamicMaterial(wstring _Name);
+    void SetMaterial(Ptr<CMaterial> _Mtrl, wstring _Name);
+
     void SetMeshData(Ptr<CMeshData> _MeshData);
 
     UINT GetMtrlCount() const { return (UINT)m_vecMtrls.size(); }

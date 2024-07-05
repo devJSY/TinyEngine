@@ -38,39 +38,16 @@ void CSkyBox::finaltick()
 
 void CSkyBox::UpdateData()
 {
-    if (nullptr != m_BrdfTex)
-    {
-        m_BrdfTex->UpdateData(17);
-    }
-    else
-    {
-        CTexture::Clear(17);
-    }
-
-    if (nullptr != m_DiffuseTex)
-    {
-        m_DiffuseTex->UpdateData(18);
-    }
-    else
-    {
-        CTexture::Clear(18);
-    }
-
-    if (nullptr != m_SpecularTex)
-    {
-        m_SpecularTex->UpdateData(19);
-    }
-    else
-    {
-        CTexture::Clear(19);
-    }
+    nullptr != m_BrdfTex ? m_BrdfTex->UpdateData(17) : CTexture::Clear(17);
+    nullptr != m_DiffuseTex ? m_DiffuseTex->UpdateData(18) : CTexture::Clear(18);
+    nullptr != m_SpecularTex ? m_SpecularTex->UpdateData(19) : CTexture::Clear(19);
 }
 
 void CSkyBox::render()
 {
     if (nullptr == GetMesh() || nullptr == GetMaterial(0))
         return;
-    
+
     if (GetOwner()->IsDead())
     {
         CTexture::Clear(17);

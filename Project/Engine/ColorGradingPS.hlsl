@@ -18,7 +18,7 @@ float3 GetLutColor(float3 colorIN)
 
 float4 main(PS_IN input) : SV_TARGET
 {
-    float3 color = g_postprocess_Tex.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    float3 color = g_postprocess_Tex.Sample(g_LinearWrapSampler, input.vUV0).rgb;
     
     if (g_btex_0)
     {

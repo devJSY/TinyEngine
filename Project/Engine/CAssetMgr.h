@@ -20,14 +20,27 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
+    std::list<std::thread> m_listLoadThread;
+    std::mutex m_Mutex;
+    UINT m_CompletedThread;
+
+    vector<D3D11_INPUT_ELEMENT_DESC> m_vecLayoutInfo;
+    UINT m_iLayoutOffset_0;
+    UINT m_iLayoutOffset_1;
 
 public:
     const map<wstring, Ptr<CAsset>>& GetMapAsset(ASSET_TYPE _type) const { return m_mapAsset[(UINT)_type]; }
+    const vector<D3D11_INPUT_ELEMENT_DESC>& GetInputLayoutInfo() const { return m_vecLayoutInfo; }
 
 public:
     void init();
     void initSound();
+    void tick();
     void ReloadContent();
+
+    float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
+    bool IsModelLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
+    void ThreadRelease();
 
 private:
     void SaveAssetsToFile();
@@ -42,8 +55,14 @@ private:
     void CreateDefaultPhysics2DMaterial();
     void CreateDefaultPhysicMaterial();
 
+    void AddInputLayout(DXGI_FORMAT _eFormat, const char* _strSemanticName, UINT _iSlotNum, UINT _iSemanticIdx);
+
 public:
     Ptr<CMeshData> LoadFBX(const wstring& _strPath);
+    void AsyncLoadFBX(const wstring& _strPath);
+
+private:
+    void AsyncLoadFBXFunc(const wstring& _strPath);
 
 public:
     // Geometry Function

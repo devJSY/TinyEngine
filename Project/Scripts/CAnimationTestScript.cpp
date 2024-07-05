@@ -17,19 +17,11 @@ void CAnimationTestScript::tick()
 
     if (KEY_TAP(KEY::NUM1))
     {
-        Animator()->Play(L"Armature|ArenaDeathWait");
+        Animator()->Play(L"Armature|Move", true);
     }
     if (KEY_TAP(KEY::NUM2))
     {
-        Animator()->Play(L"Armature|Flight");
-    }
-    if (KEY_TAP(KEY::NUM3))
-    {
-        Animator()->Play(L"Armature|NormalExit");
-    }
-    if (KEY_TAP(KEY::NUM4))
-    {
-        Animator()->Play(L"Armature|SuperJumpRolling");
+        Animator()->Play(L"Armature|Wait", true);
     }
 
     if (KEY_TAP(KEY::F))

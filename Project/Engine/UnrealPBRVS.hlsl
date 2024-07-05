@@ -2,7 +2,7 @@
 #include "global.hlsli"
 #include "func.hlsli"
 
-#define HeightTexture g_tex_3
+#define HeightTexture g_tex_6
 #define HeightScale g_float_0
 
 PS_IN main(VS_IN input)
@@ -25,10 +25,10 @@ PS_IN main(VS_IN input)
     float4 posWorld = mul(float4(input.vPos, 1.0f), g_matWorld);
     
     // Height Mapping
-    if (g_btex_3)
+    if (g_btex_6)
     {
         // Heightmap은 보통 흑백이라서 마지막에 .r로 float 하나만 사용
-        float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV, 0).r;
+        float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV0, 0).r;
         height = height * 2.0 - 1.0;
         posWorld += float4(normalWorld * height * HeightScale, 0.0);
     }
@@ -37,13 +37,18 @@ PS_IN main(VS_IN input)
     output.vPosProj = mul(output.vPosProj, g_matProj);
 
     output.vPosWorld = posWorld.xyz; // 월드 위치 따로 저장
-    output.vColor = input.vColor;
-    output.vUV = input.vUV;
     
+    output.vNormalWorld = normalWorld;
     output.vTangentWorld = tangentWorld;
     output.vBitangentWorld = BitangentWorld;
-    output.vNormalWorld = normalWorld;
 
+    output.vColor = input.vColor;
+    
+    output.vUV0 = input.vUV0;
+    output.vUV1 = input.vUV1;
+    output.vUV2 = input.vUV2;
+    output.vUV3 = input.vUV3;
+    
     return output;
 }
 
@@ -67,10 +72,10 @@ PS_IN main_Inst(VS_IN input)
     float4 posWorld = mul(float4(input.vPos, 1.0f), input.matWorld);
     
     // Height Mapping
-    if (g_btex_3)
+    if (g_btex_6)
     {
         // Heightmap은 보통 흑백이라서 마지막에 .r로 float 하나만 사용
-        float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV, 0).r;
+        float height = HeightTexture.SampleLevel(g_LinearWrapSampler, input.vUV0, 0).r;
         height = height * 2.0 - 1.0;
         posWorld += float4(normalWorld * height * HeightScale, 0.0);
     }
@@ -79,12 +84,17 @@ PS_IN main_Inst(VS_IN input)
     output.vPosProj = mul(output.vPosProj, input.matProj);
 
     output.vPosWorld = posWorld.xyz; // 월드 위치 따로 저장
-    output.vColor = input.vColor;
-    output.vUV = input.vUV;
     
+    output.vNormalWorld = normalWorld;
     output.vTangentWorld = tangentWorld;
     output.vBitangentWorld = BitangentWorld;
-    output.vNormalWorld = normalWorld;
 
+    output.vColor = input.vColor;
+    
+    output.vUV0 = input.vUV0;
+    output.vUV1 = input.vUV1;
+    output.vUV2 = input.vUV2;
+    output.vUV3 = input.vUV3;
+    
     return output;
 }

@@ -3,16 +3,22 @@
 // 3차원 공간에 배치되는 정점
 struct Vtx
 {
-    Vec3 vPos;   // 정점의 좌표
-    Vec4 vColor; // 정점의 색상 정보
-    Vec2 vUV;    // UV 좌표계 of Texture Coordinate
+    Vec3 vPos; // 정점의 좌표
 
-    Vec3 vBiTangent; // 종법선 벡터
-    Vec3 vTangent;   // 접선 벡터
     Vec3 vNormal;    // 법선 벡터
+    Vec3 vTangent;   // 접선 벡터
+    Vec3 vBiTangent; // 종법선 벡터
 
-    Vec4 vWeights; // Bone 가중치
+    Vec4 vColor; // 정점의 색상 정보
+
+    // UV 좌표계 of Texture Coordinate
+    Vec2 vUV0;
+    Vec2 vUV1;
+    Vec2 vUV2;
+    Vec2 vUV3;
+
     Vec4 vIndices; // Bone 인덱스
+    Vec4 vWeights; // Bone 가중치
 };
 
 __declspec(align(16)) struct tLightInfo
@@ -61,13 +67,25 @@ struct tMTKeyFrame
     Vec4 qRot;
 };
 
+struct tBoneSocket
+{
+    wstring SoketName;
+    int BoneIndex;
+    Vec3 RelativeLocation;
+    Vec3 RelativeRotation;
+    Vec3 RelativeScale;
+    Matrix matSocket; // Bone Socket SRT
+};
+
 struct tMTBone
 {
     wstring strBoneName;
     int iDepth;
-    int iParentIndx;
+    int iIdx;         // 본 인덱스
+    int iParentIdx;   // 부모 본 인덱스
     Matrix matOffset; // Offset 행렬(뼈 -> 루트 까지의 행렬)
     vector<tMTKeyFrame> vecKeyFrame;
+    vector<tBoneSocket> vecBoneSocket; // BoneSocket
 };
 
 struct tMTAnimClip
@@ -211,7 +229,7 @@ struct tRay
 // Raycast 결과를 받을 구조체
 struct tRaycastOut
 {
-    Vec2 vUV;
+    Vec2 vUV0;
     float fDist;
     int bSuccess;
 };

@@ -37,6 +37,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"IDLE");
             }
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+            {
+                ChangeState(L"GUARD");
+            }
         }
         break;
 

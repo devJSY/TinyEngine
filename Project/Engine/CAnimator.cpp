@@ -17,15 +17,24 @@ CAnimator::CAnimator()
     , m_vecClipUpdateTime{}
     , m_bPlay(true)
     , m_bRepeat(true)
-    , m_PlaySpeed(3.f)
+    , m_PlaySpeed(2.5f)
     , m_FrameRate(30)
     , m_CurTime(0.)
     , m_FrameIdx(0)
     , m_NextFrameIdx(0)
     , m_Ratio(0.f)
+    , m_BoneTransformMat{}
+    , m_BoneTransformMatBuffer(nullptr)
     , m_BoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
+    , m_bChanging(false)
+    , m_CurChangeTime(0.)
+    , m_ChangeDuration(0.)
+    , m_NextClipIdx(-1)
+    , m_bNextRepeat(true)
+    , m_NextPlaySpeed(2.5f)
 {
+    m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
 }
 
@@ -43,14 +52,29 @@ CAnimator::CAnimator(const CAnimator& _origin)
     , m_FrameIdx(_origin.m_FrameIdx)
     , m_NextFrameIdx(_origin.m_NextFrameIdx)
     , m_Ratio(_origin.m_Ratio)
+    , m_BoneTransformMat(_origin.m_BoneTransformMat)
+    , m_BoneTransformMatBuffer(nullptr)
     , m_BoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
+    , m_bChanging(_origin.m_bChanging)
+    , m_CurChangeTime(_origin.m_CurChangeTime)
+    , m_ChangeDuration(_origin.m_ChangeDuration)
+    , m_NextClipIdx(_origin.m_NextClipIdx)
+    , m_bNextRepeat(_origin.m_bNextRepeat)
+    , m_NextPlaySpeed(_origin.m_NextPlaySpeed)
 {
+    m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
 }
 
 CAnimator::~CAnimator()
 {
+    if (nullptr != m_BoneTransformMatBuffer)
+    {
+        delete m_BoneTransformMatBuffer;
+        m_BoneTransformMatBuffer = nullptr;
+    }
+
     if (nullptr != m_BoneFinalMatBuffer)
     {
         delete m_BoneFinalMatBuffer;
@@ -60,42 +84,81 @@ CAnimator::~CAnimator()
 
 void CAnimator::finaltick()
 {
-    if (!IsVaild())
+    if (!IsValid())
         return;
 
-    // 현재 재생중인 Clip 의 시간을 진행한다.
-    if (m_bPlay)
+    // 다른 Clip 으로 전환 중인 경우
+    if (m_bChanging)
     {
-        m_vecClipUpdateTime[m_CurClipIdx] += DT * m_PlaySpeed;
-    }
-
-    if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
-    {
-        // 반복 재생
-        if (m_bRepeat)
+        if (m_bPlay)
         {
-            m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
+            m_CurChangeTime += DT * m_PlaySpeed;
+        }
+
+        m_Ratio = float(m_CurChangeTime / m_ChangeDuration);
+
+        if (m_CurChangeTime >= m_ChangeDuration)
+        {
+            SetCurClipIdx(m_NextClipIdx);
+            m_vecClipUpdateTime[m_CurClipIdx] = 0.f; // 애니메이션의 처음부터 시작
+
+            // 애니메이션 재생 설정
+            m_bRepeat = m_bNextRepeat;
+            m_PlaySpeed = m_NextPlaySpeed;
+
+            // 초기화
+            m_bChanging = false;
+            m_CurChangeTime = 0.;
+            m_ChangeDuration = 0.;
+            m_NextClipIdx = -1;
+            m_bNextRepeat = true;
+            m_NextPlaySpeed = 1.f;
+
+            // 이번 프레임 애니메이션 설정
+            m_FrameIdx = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame;
+            m_NextFrameIdx = m_FrameIdx + 1;
+            m_Ratio = 0.;
+        }
+    }
+    else
+    {
+        // 현재 재생중인 Clip 의 시간을 진행한다.
+        if (m_bPlay)
+        {
+            m_vecClipUpdateTime[m_CurClipIdx] += DT * m_PlaySpeed;
+        }
+
+        if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
+        {
+            // 반복 재생
+            if (m_bRepeat)
+            {
+                m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
+            }
+            else
+            {
+                m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+            }
+        }
+
+        m_CurTime = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dStartTime + m_vecClipUpdateTime[m_CurClipIdx];
+
+        // 현재 프레임 인덱스 구하기
+        double dFrameIdx = m_CurTime * m_FrameRate;
+        m_FrameIdx = (int)dFrameIdx;
+
+        if (m_FrameIdx >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iEndFrame)
+        {
+            m_NextFrameIdx = m_FrameIdx; // 끝이면 현재 인덱스를 유지
         }
         else
         {
-            m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+            m_NextFrameIdx = m_FrameIdx + 1;
         }
+
+        // 프레임간의 시간에 따른 비율을 구해준다.
+        m_Ratio = (float)(dFrameIdx - (double)m_FrameIdx);
     }
-
-    m_CurTime = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dStartTime + m_vecClipUpdateTime[m_CurClipIdx];
-
-    // 현재 프레임 인덱스 구하기
-    double dFrameIdx = m_CurTime * m_FrameRate;
-    m_FrameIdx = (int)(dFrameIdx);
-
-    // 다음 프레임 인덱스
-    if (m_FrameIdx >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iEndFrame)
-        m_NextFrameIdx = m_FrameIdx; // 끝이면 현재 인덱스를 유지
-    else
-        m_NextFrameIdx = m_FrameIdx + 1;
-
-    // 프레임간의 시간에 따른 비율을 구해준다.
-    m_Ratio = (float)(dFrameIdx - (double)m_FrameIdx);
 
     // 컴퓨트 쉐이더 연산여부
     m_bFinalMatUpdate = false;
@@ -103,7 +166,7 @@ void CAnimator::finaltick()
 
 void CAnimator::UpdateData()
 {
-    if (!IsVaild())
+    if (!IsValid())
         return;
 
     if (!m_bFinalMatUpdate)
@@ -112,20 +175,46 @@ void CAnimator::UpdateData()
         static CAnimationUpdateShader* pUpdateShader =
             (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
 
-        // Bone Data
-        CheckBoneFinalMatBuffer();
+        // Bone Data Check
+        CheckBoneMatBuffer();
 
-        pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
-        pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
-        pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
-
-        pUpdateShader->SetBoneCount(m_SkeletalMesh->GetBoneCount());
+        UINT BoneCount = m_SkeletalMesh->GetBoneCount();
+        pUpdateShader->SetBoneCount(BoneCount);
         pUpdateShader->SetFrameIndex(m_FrameIdx);
         pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
         pUpdateShader->SetFrameRatio(m_Ratio);
 
+        pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
+        pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
+        pUpdateShader->SetBoneTransformMatBuffer(m_BoneTransformMatBuffer);
+        pUpdateShader->SetFinalMatBuffer(m_BoneFinalMatBuffer);
+
         // 업데이트 쉐이더 실행
         pUpdateShader->Execute();
+
+        // Bone Transformation Matrix 저장
+        m_BoneTransformMatBuffer->GetData(m_BoneTransformMat.data(), BoneCount);
+
+        // Bone Socket 행렬 생성
+        vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
+        for (UINT i = 0; i < BoneCount; ++i)
+        {
+            for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
+            {
+                BoneSocket.BoneIndex = i;
+
+                Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
+
+                Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
+                Matrix matRotY = XMMatrixRotationY(BoneSocket.RelativeRotation.y);
+                Matrix matRotZ = XMMatrixRotationZ(BoneSocket.RelativeRotation.z);
+
+                Matrix matTranslation =
+                    XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
+
+                BoneSocket.matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
+            }
+        }
 
         m_bFinalMatUpdate = true;
     }
@@ -136,7 +225,7 @@ void CAnimator::UpdateData()
 
 void CAnimator::finaltick_ModelEditor()
 {
-    if (!IsVaild())
+    if (!IsValid())
         return;
 
     // 현재 재생중인 Clip 의 시간을 진행한다.
@@ -177,20 +266,45 @@ void CAnimator::finaltick_ModelEditor()
     static CAnimationUpdateShader* pUpdateShader =
         (CAnimationUpdateShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"AnimationUpdateCS").Get();
 
-    // Bone Data
-    CheckBoneFinalMatBuffer();
+    // Bone Data Check
+    CheckBoneMatBuffer();
 
-    pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
-    pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
-    pUpdateShader->SetOutputBuffer(m_BoneFinalMatBuffer);
-
-    pUpdateShader->SetBoneCount(m_SkeletalMesh->GetBoneCount());
+    UINT BoneCount = m_SkeletalMesh->GetBoneCount();
+    pUpdateShader->SetBoneCount(BoneCount);
     pUpdateShader->SetFrameIndex(m_FrameIdx);
     pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
     pUpdateShader->SetFrameRatio(m_Ratio);
 
+    pUpdateShader->SetFrameDataBuffer(m_SkeletalMesh->GetBoneFrameDataBuffer());
+    pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
+    pUpdateShader->SetBoneTransformMatBuffer(m_BoneTransformMatBuffer);
+    pUpdateShader->SetFinalMatBuffer(m_BoneFinalMatBuffer);
+
     // 업데이트 쉐이더 실행
     pUpdateShader->Execute();
+
+    // Bone Transformation Matrix 저장
+    m_BoneTransformMatBuffer->GetData(m_BoneTransformMat.data(), BoneCount);
+
+    // Bone Socket 행렬 생성
+    vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
+    for (UINT i = 0; i < BoneCount; ++i)
+    {
+        for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
+        {
+            BoneSocket.BoneIndex = i;
+
+            Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
+
+            Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
+            Matrix matRotY = XMMatrixRotationY(BoneSocket.RelativeRotation.y);
+            Matrix matRotZ = XMMatrixRotationZ(BoneSocket.RelativeRotation.z);
+
+            Matrix matTranslation = XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
+
+            BoneSocket.matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
+        }
+    }
 }
 
 void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
@@ -238,7 +352,7 @@ void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
         m_FrameRate = FbxTime::GetFrameRate(vecAnimClip->back().eMode);
     }
 
-    CheckBoneFinalMatBuffer();
+    CheckBoneMatBuffer();
 }
 
 void CAnimator::SetFrameIdx(int _FrameIdx)
@@ -281,18 +395,20 @@ int CAnimator::FindClipIndex(const wstring& _strClipName)
     return iter->second;
 }
 
-void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, float _PlaySpeed)
+void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, float _PlaySpeed, double _ChangeDuration)
 {
     int ClipIndex = FindClipIndex(_strClipName);
     if (-1 == ClipIndex)
         return;
 
-    SetCurClipIdx(ClipIndex);
-    m_vecClipUpdateTime[ClipIndex] = 0.f; // 애니메이션의 처음부터 시작
+    m_bChanging = true;
+    m_CurChangeTime = 0.;
+    m_ChangeDuration = _ChangeDuration;
+    m_NextClipIdx = ClipIndex;
+    m_bNextRepeat = _bRepeat;
+    m_NextPlaySpeed = _PlaySpeed;
 
-    m_bPlay = true;
-    m_bRepeat = _bRepeat;
-    m_PlaySpeed = 2.5f;
+    m_NextFrameIdx = m_SkeletalMesh->GetAnimClip()->at(m_NextClipIdx).iStartFrame;
 }
 
 bool CAnimator::IsFinish() const
@@ -301,7 +417,17 @@ bool CAnimator::IsFinish() const
     return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }
 
-bool CAnimator::IsVaild()
+int CAnimator::GetClipFrameIndex()
+{
+    return m_FrameIdx - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame;
+}
+
+void CAnimator::SetClipFrameIndex(int _FrameIdx)
+{
+    SetFrameIdx(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame + _FrameIdx);
+}
+
+bool CAnimator::IsValid()
 {
     if (nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh())
     {
@@ -311,15 +437,22 @@ bool CAnimator::IsVaild()
     return false;
 }
 
-void CAnimator::CheckBoneFinalMatBuffer()
+void CAnimator::CheckBoneMatBuffer()
 {
-    if (!IsVaild())
+    if (!IsValid())
         return;
 
     UINT iBoneCount = m_SkeletalMesh->GetBoneCount();
+    if (m_BoneTransformMatBuffer->GetElementCount() != iBoneCount)
+    {
+        m_BoneTransformMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, true, nullptr);
+        m_BoneTransformMat.clear();
+        m_BoneTransformMat.resize(iBoneCount);
+    }
+
     if (m_BoneFinalMatBuffer->GetElementCount() != iBoneCount)
     {
-        m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, true, nullptr);
+        m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
     }
 }
 

@@ -36,7 +36,10 @@ void CKirbyRunStart::tick()
             {
                 ChangeState(L"JUMP_START");
             }
-
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+            {
+                ChangeState(L"GUARD");
+            }
             // 상태변경 시그널 발생 않을 시
             else
             {

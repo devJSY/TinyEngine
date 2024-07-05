@@ -19,7 +19,7 @@ PS_IN VS_Std3D_Deferred(VS_IN _in)
     }
     
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
     output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorldInvTranspose).xyz);
@@ -42,7 +42,7 @@ PS_IN VS_Std3D_Deferred_Inst(VS_IN _in)
     output.vPosProj = mul(float4(_in.vPos, 1.f), _in.matWorld);
     output.vPosProj = mul(output.vPosProj, _in.matView);
     output.vPosProj = mul(output.vPosProj, _in.matProj);
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     output.vPosWorld = mul(float4(_in.vPos, 1.f), _in.matWorld).xyz;
     output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), _in.matWorldInvTranspose).xyz);
@@ -72,14 +72,14 @@ PS_OUT PS_Std3D_Deferred(PS_IN _in) : SV_Target
     float4 vOutColor = MtrlAlbedo;
     if (g_btex_0)
     {
-        vOutColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        vOutColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
     }
     
     // Normal 
     float3 vWorldNormal = _in.vNormalWorld;
     if (g_btex_1)
     {
-        float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).rgb;
+        float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV0).rgb;
         vNormal = vNormal * 2.f - 1.f;
                         
         float3 N = _in.vNormalWorld;

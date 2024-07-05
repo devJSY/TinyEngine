@@ -28,14 +28,14 @@ PS_IN VS_DirLight(VS_IN _in)
     PS_IN output = (PS_IN) 0.f;
     
     output.vPosProj = float4(_in.vPos * 2.f, 1.f);
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     return output;
 }
 
 float4 PS_DirLight(PS_IN _in) : SV_Target
 {
-    float4 vWorldPos = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+    float4 vWorldPos = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
     
     // x,y,z 전부 0이라면 discard
     if (!any(vWorldPos.xyz))
@@ -43,9 +43,9 @@ float4 PS_DirLight(PS_IN _in) : SV_Target
         discard;
     }
     
-    float3 vWorldNormal = normalize(g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).xyz);
-    float3 vDiffuse = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV).xyz;
-    float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, _in.vUV).xyz;
+    float3 vWorldNormal = normalize(g_tex_1.Sample(g_LinearWrapSampler, _in.vUV0).xyz);
+    float3 vDiffuse = g_tex_2.Sample(g_LinearWrapSampler, _in.vUV0).xyz;
+    float3 vSpecular = g_tex_3.Sample(g_LinearWrapSampler, _in.vUV0).xyz;
        
     tLightInfo LightColor = (tLightInfo) 0.f;
     CalculateLight(g_int_0, vWorldPos.xyz, vWorldNormal, vDiffuse, vSpecular, LightColor);
@@ -75,7 +75,7 @@ PS_IN VS_PointLight(VS_IN _in)
     PS_IN output = (PS_IN) 0.f;
     
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     return output;
 }
@@ -134,7 +134,7 @@ PS_IN VS_SpotLight(VS_IN _in)
     PS_IN output = (PS_IN) 0.f;
     
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     return output;
 }

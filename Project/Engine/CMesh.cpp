@@ -73,6 +73,20 @@ void CMesh::UpdateData_Inst(UINT _iSubset)
     CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
+const tBoneSocket* CMesh::GetBoneSocket(UINT _BoneIdx, wstring _SocketName)
+{
+    if (_BoneIdx < 0 || _BoneIdx >= m_vecBones.size())
+        return nullptr;
+
+    for (tBoneSocket& Socket : m_vecBones[_BoneIdx].vecBoneSocket)
+    {
+        if (Socket.SoketName == _SocketName)
+            return &Socket;
+    }
+
+    return nullptr;
+}
+
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 {
     vector<Vtx> vecVtx = {};
@@ -87,13 +101,16 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         for (UINT i = 0; i < iVtxCount; ++i)
         {
             vecVtxContainer[i].vPos = container->vecPos[i];
-            vecVtxContainer[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-            vecVtxContainer[i].vUV = container->vecUV[i];
+            vecVtxContainer[i].vNormal = container->vecNormal[i];
             vecVtxContainer[i].vTangent = container->vecTangent[i];
             vecVtxContainer[i].vBiTangent = container->vecBinormal[i];
-            vecVtxContainer[i].vNormal = container->vecNormal[i];
-            vecVtxContainer[i].vWeights = container->vecWeights[i];
+            vecVtxContainer[i].vColor = container->vecColor[i];
+            vecVtxContainer[i].vUV0 = container->vecUV0[i];
+            vecVtxContainer[i].vUV1 = container->vecUV1[i];
+            vecVtxContainer[i].vUV2 = container->vecUV2[i];
+            vecVtxContainer[i].vUV3 = container->vecUV3[i];
             vecVtxContainer[i].vIndices = container->vecIndices[i];
+            vecVtxContainer[i].vWeights = container->vecWeights[i];
         }
 
         // Container의 모든 정점을 연결하여 하나의 Mesh생성
@@ -189,10 +206,11 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
     for (UINT i = 0; i < vecBone.size(); ++i)
     {
         tMTBone bone = {};
-        bone.iDepth = vecBone[i]->iDepth;
-        bone.iParentIndx = vecBone[i]->iParentIndx;
-        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
         bone.strBoneName = vecBone[i]->strBoneName;
+        bone.iDepth = vecBone[i]->iDepth;
+        bone.iIdx = i;
+        bone.iParentIdx = vecBone[i]->iParentIndx;
+        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
 
         for (UINT j = 0; j < vecBone[i]->vecKeyFrame.size(); ++j)
         {
@@ -426,15 +444,25 @@ int CMesh::Save(const wstring& _strRelativePath)
     {
         SaveWStringToFile(m_vecBones[i].strBoneName, pFile);
         fwrite(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
-        fwrite(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iIdx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iParentIdx, sizeof(int), 1, pFile);
         fwrite(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
+        // KeyFrame
         int iFrameCount = (int)m_vecBones[i].vecKeyFrame.size();
         fwrite(&iFrameCount, sizeof(int), 1, pFile);
-
-        for (int j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+        for (int j = 0; j < iFrameCount; ++j)
         {
             fwrite(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+
+        // BoneSocket
+        int iBoneSocketCount = (int)m_vecBones[i].vecBoneSocket.size();
+        fwrite(&iBoneSocketCount, sizeof(int), 1, pFile);
+        for (int j = 0; j < iBoneSocketCount; ++j)
+        {
+            fwrite(&m_vecBones[i].vecBoneSocket[j], sizeof(tBoneSocket), 1, pFile);
+            SaveWStringToFile(m_vecBones[i].vecBoneSocket[j].SoketName, pFile);
         }
     }
 
@@ -534,16 +562,28 @@ int CMesh::Load(const wstring& _strFilePath)
     {
         LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);
         fread(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
-        fread(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iIdx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iParentIdx, sizeof(int), 1, pFile);
         fread(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
-        UINT iFrameCount = 0;
+        // KeyFrame
+        int iFrameCount = 0;
         fread(&iFrameCount, sizeof(int), 1, pFile);
         m_vecBones[i].vecKeyFrame.resize(iFrameCount);
         _iFrameCount = max(_iFrameCount, iFrameCount);
-        for (UINT j = 0; j < iFrameCount; ++j)
+        for (int j = 0; j < iFrameCount; ++j)
         {
             fread(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+
+        // BoneSocket
+        int iBoneSocketCount = 0;
+        fread(&iBoneSocketCount, sizeof(int), 1, pFile);
+        m_vecBones[i].vecBoneSocket.resize(iBoneSocketCount);
+        for (int j = 0; j < iBoneSocketCount; ++j)
+        {
+            fread(&m_vecBones[i].vecBoneSocket[j], sizeof(tBoneSocket), 1, pFile);
+            LoadWStringFromFile(m_vecBones[i].vecBoneSocket[j].SoketName, pFile);
         }
     }
 
