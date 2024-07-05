@@ -10,6 +10,14 @@ enum class ForceDirType
     END,
 };
 
+enum class DodgeType
+{
+    FRONT,
+    BACK,
+    RIGHT,
+    LEFT,
+};
+
 enum class AddForceType
 {
     Acceleration,   // 질량을 무시하고 강체에 즉각적인 가속도 추가

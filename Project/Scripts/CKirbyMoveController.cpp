@@ -288,7 +288,7 @@ void CKirbyMoveController::Move()
     // 움직임 적용
     Vec3 Diff;
 
-    Diff = CharacterController()->Move(m_MoveVelocity * DT);
+    CharacterController()->Move(m_MoveVelocity * DT);
     
 
     if (PLAYERFSM->IsHovering())
