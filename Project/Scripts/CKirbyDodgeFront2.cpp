@@ -13,7 +13,7 @@ void CKirbyDodgeFront2::tick()
 {
     if (PLAYER->Animator()->IsFinish())
     {
-        ChangeState(L"IDEL");
+        ChangeState(L"IDLE");
     }
 }
 

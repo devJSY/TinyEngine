@@ -1,23 +1,22 @@
 #include "pch.h"
 #include "CKirbyDodgeLeft2.h"
 
+CKirbyDodgeLeft2::CKirbyDodgeLeft2()
+{
+}
+
+CKirbyDodgeLeft2::~CKirbyDodgeLeft2()
+{
+}
 void CKirbyDodgeLeft2::tick()
-{
-}
-
-void CKirbyDodgeLeft2::Enter()
-{
-}
-
-void CKirbyDodgeLeft2::Exit()
 {
     if (PLAYER->Animator()->IsFinish())
     {
-        ChangeState(L"IDEL");
+        ChangeState(L"IDLE");
     }
 }
 
-CKirbyDodgeLeft2::CKirbyDodgeLeft2()
+void CKirbyDodgeLeft2::Enter()
 {
     // 애니메이션 재생
     PLAYER->Animator()->Play(KIRBYANIM(L"DodgeLeft2"), false);
@@ -27,9 +26,11 @@ CKirbyDodgeLeft2::CKirbyDodgeLeft2()
     PLAYERCTRL->LockJump();
 }
 
-CKirbyDodgeLeft2::~CKirbyDodgeLeft2()
+void CKirbyDodgeLeft2::Exit()
 {
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
 }
+

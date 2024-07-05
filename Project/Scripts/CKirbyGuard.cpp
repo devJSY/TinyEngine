@@ -36,7 +36,7 @@ void CKirbyGuard::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
-    //PLAYERCTRL->SetFriction(0.1f);
+    PLAYERCTRL->SetFriction(0.1f);
     PLAYERCTRL->SetGuard(true);
 }
 
@@ -46,6 +46,6 @@ void CKirbyGuard::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
-    //PLAYERCTRL->SetFriction(1.f);
+    PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetGuard(false);
 }

@@ -27,6 +27,8 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bGuard(false)
     , m_HoveringLimitHeight(15.f)
     , m_HoveringHeight(0.f)
+    , m_AddVelocity{0.f,0.f,0.f}
+    , m_Friction(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
@@ -56,6 +58,8 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bGuard(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
     , m_HoveringHeight(0.f)
+    , m_AddVelocity{0.f, 0.f, 0.f}
+    , m_Friction(_Origin.m_Friction)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
@@ -152,8 +156,11 @@ void CKirbyMoveController::Input()
     Front.y = 0.f;
     Right.y = 0.f;
 
-    m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
-    m_MoveDir.Normalize();
+    if (!m_bMoveLock)
+    {
+        m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
+        m_MoveDir.Normalize();
+    }
 }
 
 void CKirbyMoveController::SetDir()
@@ -233,11 +240,9 @@ void CKirbyMoveController::Move()
 
     if (m_bGuard)
     {
-        //m_Accel.x = -m_MoveVelocity.x * m_Friction;
-        //m_Accel.z = -m_MoveVelocity.z * m_Friction;
-        m_Accel.x = -m_MoveVelocity.x;
-        m_Accel.z = -m_MoveVelocity.z;
-
+        m_Accel.x = -m_MoveVelocity.x * m_Friction;
+        m_Accel.z = -m_MoveVelocity.z * m_Friction;
+        
         m_MoveVelocity.x += m_Accel.x;
         m_MoveVelocity.z += m_Accel.z;
     }
@@ -250,7 +255,7 @@ void CKirbyMoveController::Move()
     
 
     // Jump
-    if (m_bJump)
+    if (m_bJump && !m_bJumpLock)
     {
         m_bJump = false;
         m_MoveVelocity.y = m_JumpPower;
@@ -273,6 +278,13 @@ void CKirbyMoveController::Move()
     if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
     {
         m_MoveVelocity.y = 0.f;
+    }
+
+    // AddVelocity 적용
+    if (m_AddVelocity.Length() != 0.f)
+    {
+        m_MoveVelocity += m_AddVelocity;
+        m_AddVelocity = {0.f, 0.f, 0.f};
     }
 
     // 움직임 적용
