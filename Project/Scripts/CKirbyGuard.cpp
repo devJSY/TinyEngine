@@ -13,12 +13,12 @@ void CKirbyGuard::tick()
 {
     if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
     {
-        ChangeState(L"DODGE_START");
+        //ChangeState(L"DODGE_START");
     }
 
     else if (KEY_TAP(KEY_JUMP) || KEY_PRESSED(KEY_JUMP))
     {
-        ChangeState(L"SLIDE_START");
+        //ChangeState(L"SLIDE_START");
     }
 
     else if (KEY_RELEASED(KEY_GUARD) || KEY_NONE(KEY_GUARD))
@@ -36,6 +36,8 @@ void CKirbyGuard::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+    PLAYERCTRL->SetFriction(0.1f);
+    PLAYERCTRL->SetGuard(true);
 }
 
 void CKirbyGuard::Exit()
@@ -44,5 +46,6 @@ void CKirbyGuard::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
-
+    PLAYERCTRL->SetFriction(1.f);
+    PLAYERCTRL->SetGuard(false);
 }

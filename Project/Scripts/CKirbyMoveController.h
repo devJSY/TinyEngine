@@ -30,6 +30,7 @@ private:
     // ют╥б
     Vec3                        m_Input;
     bool                        m_bJump;
+    bool                        m_bGuard;
 
     // Lock
     bool                        m_bMoveLock;
@@ -70,6 +71,7 @@ public:
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     float GetGravity() const { return m_Gravity; }
+    float GetGuard() const { return m_bGuard; }
 
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
@@ -78,6 +80,7 @@ public:
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
 
+    void SetGuard(bool _Guard) { m_bGuard = _Guard; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
 
