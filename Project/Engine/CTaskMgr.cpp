@@ -221,6 +221,7 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
 {
     CGameObject* pDestObj = (CGameObject*)_Task.Param_1;
     CGameObject* pSrcObj = (CGameObject*)_Task.Param_2;
+    tBoneSocket* BoneSocket = (tBoneSocket*)_Task.Param_3;
 
     // 부모 오브젝트가 자신의 자식오브젝트의 자식으로 들어가려는 경우는 방지
     if (pDestObj != nullptr && pDestObj->IsAncestor(pSrcObj))
@@ -250,6 +251,7 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
         pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetRelativeRotation() - pDestObj->Transform()->GetWorldRotation());
 
         pDestObj->AddChild(pSrcObj);
+        pDestObj->SetBoneSocket(BoneSocket);
     }
 }
 

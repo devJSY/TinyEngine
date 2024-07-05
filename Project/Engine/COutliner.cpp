@@ -332,11 +332,23 @@ void COutliner::render()
             string AssetStr = (char*)payload->Data;
             AssetStr.resize(payload->DataSize);
             std::filesystem::path AssetPath = AssetStr;
+
+            CGameObject* pObj = nullptr;
+
+            // Prefab
             if (L".pref" == AssetPath.extension())
             {
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
-                CGameObject* pObj = pPrefab->Instantiate();
+                pObj = pPrefab->Instantiate();
+            }
+            else if (L".mdat" == AssetPath.extension())
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath);
+                pObj = pMeshData->Instantiate();
+            }
 
+            if (nullptr != pObj)
+            {
                 // 카메라위치 기준 생성
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();
@@ -588,12 +600,12 @@ void COutliner::DrawTransform(CGameObject* obj)
     if (open)
     {
         Vec3 pos = pTr->GetRelativePos();
-        ImGui_DrawVec3Control("Location", pos, 10.f);
+        ImGui_DrawVec3Control("Location", pos, 1.f);
         pTr->SetRelativePos(pos);
 
         Vec3 rot = pTr->GetRelativeRotation();
         rot.ToDegree();
-        ImGui_DrawVec3Control("Rotation", rot, 1.f);
+        ImGui_DrawVec3Control("Rotation", rot, DirectX::XMConvertToRadians(15.f));
         rot.ToRadian();
         pTr->SetRelativeRotation(rot);
 
@@ -811,7 +823,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
         }
 
         // Animation
-        if (nullptr != pSkeletalMesh && pAnimator->IsVaild())
+        if (nullptr != pSkeletalMesh && pAnimator->IsValid())
         {
             if (ImGui::TreeNodeEx("Animation##Outliner Animator", m_DefaultTreeNodeFlag))
             {
@@ -861,10 +873,10 @@ void COutliner::DrawAnimator(CGameObject* obj)
                 }
 
                 // Frame Index
-                int FrameIdx = pAnimator->GetCurFrameIdx();
-                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &FrameIdx, CurClip.iStartFrame, CurClip.iEndFrame))
+                int ClipFrameIdx = pAnimator->GetClipFrameIndex();
+                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &ClipFrameIdx, 0, CurClip.iFrameLength))
                 {
-                    pAnimator->SetFrameIdx(FrameIdx);
+                    pAnimator->SetClipFrameIndex(ClipFrameIdx);
                 }
 
                 bool bPlaying = pAnimator->IsPlaying();

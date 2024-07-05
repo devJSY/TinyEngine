@@ -17,6 +17,9 @@
 #include <unordered_map>
 #include <string>
 
+#include <thread>
+#include <future>
+
 #include <commdlg.h> // OPENFILENAME
 
 using std::hash;

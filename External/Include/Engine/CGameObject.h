@@ -26,6 +26,9 @@ private:
 
     bool m_bDead;
 
+    // Bone Socket
+    tBoneSocket* m_BoneSocket;
+
 public:
     void begin();
     void tick();
@@ -102,6 +105,10 @@ public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
 
     int GetLayerIdx() const { return m_iLayerIdx; }
+
+public:
+    const tBoneSocket* GetBoneSocket() const { return m_BoneSocket; }
+    void SetBoneSocket(tBoneSocket* _BoneSocket) { m_BoneSocket = _BoneSocket; }
 
     CLONE(CGameObject);
 

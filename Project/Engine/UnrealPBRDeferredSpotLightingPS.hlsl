@@ -2,11 +2,6 @@
 #include "global.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
-#define AmbientTex g_tex_0
-#define PositionTex g_tex_1
-#define NormalTex g_tex_2
-#define MRATex g_tex_3
-
 #define LIGHT_INDEX g_int_0
 
 float4 main(PS_IN input) : SV_Target
@@ -14,7 +9,7 @@ float4 main(PS_IN input) : SV_Target
      // 호출된 픽셀의 위치를 UV 값으로 환산
     float2 vScreenUV = input.vPosProj.xy / g_RenderResolution;
         
-    float3 vWorldPos = PositionTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+    float3 vWorldPos = g_tex_1.Sample(g_LinearWrapSampler, vScreenUV).xyz;
     
     // x,y,z 전부 0이라면 discard
     if (!any(vWorldPos))
@@ -31,11 +26,11 @@ float4 main(PS_IN input) : SV_Target
         discard;
     }
     
-    float3 albedo = AmbientTex.Sample(g_LinearWrapSampler, vScreenUV).rgb;
-    float3 normalWorld = NormalTex.Sample(g_LinearWrapSampler, vScreenUV).rgb;
-    float metallic = MRATex.Sample(g_LinearWrapSampler, vScreenUV).r;
-    float roughness = MRATex.Sample(g_LinearWrapSampler, vScreenUV).g;
-    float ao = MRATex.Sample(g_LinearWrapSampler, vScreenUV).b;
+    float3 albedo = g_tex_0.Sample(g_LinearWrapSampler, vScreenUV).rgb;
+    float3 normalWorld = g_tex_2.Sample(g_LinearWrapSampler, vScreenUV).rgb;
+    float metallic = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).r;
+    float roughness = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).g;
+    float ao = g_tex_3.Sample(g_LinearWrapSampler, vScreenUV).b;
     if (ao >= 1.f)
     {
         ao = SSAOTex.Sample(g_LinearWrapSampler, vScreenUV).r;

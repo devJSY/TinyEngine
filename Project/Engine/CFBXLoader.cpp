@@ -187,7 +187,8 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
             GetTangent(_pFbxMesh, &Container, iIdx, iVtxOrder);
             GetBinormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
             GetNormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
-            GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j));
+
+            GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j), iVtxOrder);
 
             ++iVtxOrder;
         }
@@ -326,23 +327,61 @@ void CFBXLoader::GetNormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, 
     _pContainer->vecNormal[_iIdx].z = (float)vNormal.mData[1];
 }
 
-void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex)
+void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _iVtxOrder)
 {
-    FbxGeometryElementUV* pUV = _pMesh->GetElementUV();
+    for (int ElementCount = 0; ElementCount < 4; ElementCount++)
+    {
+        const FbxGeometryElementUV* lUVElement = _pMesh->GetElementUV(ElementCount);
 
-    if (!pUV)
-        return;
+        if (!lUVElement)
+            continue;
 
-    UINT iUVIdx = 0;
-    if (pUV->GetReferenceMode() == FbxGeometryElement::eDirect)
-        iUVIdx = _iIdx;
-    else
-        iUVIdx = pUV->GetIndexArray().GetAt(_iIdx);
+        // only support mapping mode eByPolygonVertex and eByControlPoint
+        if (lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+            lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
+            continue;
 
-    iUVIdx = _iUVIndex;
-    FbxVector2 vUV = pUV->GetDirectArray().GetAt(iUVIdx);
-    _pContainer->vecUV[_iIdx].x = (float)vUV.mData[0];
-    _pContainer->vecUV[_iIdx].y = 1.f - (float)vUV.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        // index array, where holds the index referenced to the uv data
+        const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
+        const int lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
+        FbxVector2 lUVValue;
+
+        if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+        {
+            int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(_iIdx) : _iIdx;
+            lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+        }
+        else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+        {
+            // the UV index depends on the reference mode
+            int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(_iVtxOrder) : _iVtxOrder;
+            lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+        }
+
+        switch (ElementCount)
+        {
+        case 0: {
+            _pContainer->vecUV0[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV0[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
+        break;
+        case 1: {
+            _pContainer->vecUV1[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV1[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
+        break;
+        case 2: {
+            _pContainer->vecUV2[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV2[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
+        break;
+        case 3: {
+            _pContainer->vecUV3[_iIdx].x = (float)lUVValue.mData[0];
+            _pContainer->vecUV3[_iIdx].y = 1.f - (float)lUVValue.mData[1]; // fbx uv ÁÂÇ¥°è´Â ÁÂÇÏ´ÜÀÌ 0,0
+        }
+        break;
+        }
+    }
 }
 
 Vec4 CFBXLoader::GetMtrlData(FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName)
@@ -482,22 +521,22 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
             strTexKey = m_vecContainer[i].vecMtrl[j].strMRA;
             pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
             if (NULL != pTex)
-                pMaterial->SetTexParam(TEX_PARAM::TEX_1, pTex);
+                pMaterial->SetTexParam(TEX_PARAM::TEX_4, pTex);
 
             // Normal
             strTexKey = m_vecContainer[i].vecMtrl[j].strNormal;
             pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
             if (NULL != pTex)
-                pMaterial->SetTexParam(TEX_PARAM::TEX_2, pTex);
+                pMaterial->SetTexParam(TEX_PARAM::TEX_5, pTex);
 
             // Height
-            // TEX_3
+            // TEX_6
 
             // Emissive
             strTexKey = m_vecContainer[i].vecMtrl[j].strEmissive;
             pTex = CAssetMgr::GetInst()->FindAsset<CTexture>(strTexKey);
             if (NULL != pTex)
-                pMaterial->SetTexParam(TEX_PARAM::TEX_4, pTex);
+                pMaterial->SetTexParam(TEX_PARAM::TEX_7, pTex);
 
             pMaterial->SetMaterialCoefficient(m_vecContainer[i].vecMtrl[j].tMtrl.vAlbedo, m_vecContainer[i].vecMtrl[j].tMtrl.vDiffuse,
                                               m_vecContainer[i].vecMtrl[j].tMtrl.vSpecular, m_vecContainer[i].vecMtrl[j].tMtrl.vMetallic,
@@ -547,27 +586,27 @@ void CFBXLoader::ParseTexture(std::filesystem::path _EntryPath, const wstring& _
             }
 
             // MRA
-            if (nullptr == _Mtrl->GetTexParam(TEX_1) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_MRA"))
+            if (nullptr == _Mtrl->GetTexParam(TEX_4) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_MRA"))
             {
-                _Mtrl->SetTexParam(TEX_1, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
+                _Mtrl->SetTexParam(TEX_4, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
             }
 
             // Normal
-            if (nullptr == _Mtrl->GetTexParam(TEX_2) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_Normal"))
+            if (nullptr == _Mtrl->GetTexParam(TEX_5) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_Normal"))
             {
-                _Mtrl->SetTexParam(TEX_2, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
+                _Mtrl->SetTexParam(TEX_5, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
             }
 
             // Height
-            if (nullptr == _Mtrl->GetTexParam(TEX_3) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_Height"))
+            if (nullptr == _Mtrl->GetTexParam(TEX_6) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_Height"))
             {
-                _Mtrl->SetTexParam(TEX_3, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
+                _Mtrl->SetTexParam(TEX_6, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
             }
 
             // Emissive
-            if (nullptr == _Mtrl->GetTexParam(TEX_4) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_Emissive"))
+            if (nullptr == _Mtrl->GetTexParam(TEX_7) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_Emissive"))
             {
-                _Mtrl->SetTexParam(TEX_4, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
+                _Mtrl->SetTexParam(TEX_7, CAssetMgr::GetInst()->Load<CTexture>(FileRelativePath, FileRelativePath));
             }
         }
     }

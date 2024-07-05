@@ -12,6 +12,7 @@ enum class TASK_TYPE
     CHANGE_LEVELSTATE,
 
     // Param1 : Parent Object, Param2 : Child Object
+    // Param1 : Parent Object, Param2 : Child Object, Param3 : Bone Socket
     ADD_CHILD,
 
     // Param1 : Width , Param2 : Height
@@ -59,8 +60,9 @@ enum class TASK_TYPE
 struct tTask
 {
     TASK_TYPE Type;
-    UINT_PTR Param_1;
-    UINT_PTR Param_2;
+    DWORD_PTR Param_1;
+    DWORD_PTR Param_2;
+    DWORD_PTR Param_3;
 };
 
 class CTaskMgr : public CSingleton<CTaskMgr>

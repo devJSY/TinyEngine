@@ -5,7 +5,7 @@
 #include "global.hlsli"
 #include "disksample.hlsli"
 
-#define NormalTex g_tex_2
+#define NormalTex g_tex_5
 
 #define BRDFTex g_BRDFTex // SpecularIBL Look-up Table
 #define SpecularIBLTex g_SpecularCube
@@ -27,9 +27,9 @@ float3 GetNormal(PS_IN input)
 {
     float3 normalWorld = normalize(input.vNormalWorld);
     
-    if (g_btex_2) // NormalWorld를 교체
+    if (g_btex_5) // NormalWorld를 교체
     {
-        float3 normal = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
+        float3 normal = NormalTex.Sample(g_LinearWrapSampler, input.vUV0).rgb;
 
         // 압축되어있는 Normal Map인 경우
         if (0.f >= normal.b)
