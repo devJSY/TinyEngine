@@ -77,10 +77,10 @@ void CCharacterController::finaltick()
                                      true);
 }
 
-Vec3 CCharacterController::Move(Vec3 _Motion)
+void CCharacterController::Move(Vec3 _Motion)
 {
     if (nullptr == m_RuntimeShape)
-        return Vec3();
+        return;
 
     physx::PxControllerCollisionFlags MoveFlags =
         ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters());
@@ -98,7 +98,6 @@ Vec3 CCharacterController::Move(Vec3 _Motion)
     vPosOffset = Transform()->GetWorldPos() - vPosOffset;
 
     Transform()->SetRelativePos(Transform()->GetRelativePos() - vPosOffset);
-    return -vPosOffset;
 }
 
 void CCharacterController::SetSlopeLimit(float _Limit)

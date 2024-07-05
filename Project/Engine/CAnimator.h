@@ -53,7 +53,7 @@ public:
 
 public:
     int FindClipIndex(const wstring& _strClipName);
-    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 1.f);
+    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
     bool IsValid();
