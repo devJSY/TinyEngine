@@ -54,10 +54,9 @@ private:
 
     // 물리
     Vec3                        m_MoveVelocity;
-    Vec3                        m_AddVelocity;
     Vec3                        m_Accel;
     float                       m_Speed;
-    float                       m_Friction; // 마찰력 계수
+    float                       m_MaxSpeed;
     float                       m_JumpPower;
     float                       m_Gravity;
 
@@ -89,8 +88,8 @@ public:
     void UnlockDirection() { m_bDirLock = false; }
 
     void SetGuard(bool _Guard) { m_bGuard = _Guard; }
-    void SetFriction(float _Friction) { m_Friction = _Friction; }
-    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+    //void SetFriction(float _Friction) { m_Friction = _Friction; }
+    //void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
 
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }

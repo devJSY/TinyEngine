@@ -27,9 +27,6 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bGuard(false)
     , m_HoveringLimitHeight(15.f)
     , m_HoveringHeight(0.f)
-    , m_AddVelocity{0.f, 0.f, 0.f}
-    , m_Friction(1.f)
-
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
@@ -59,8 +56,6 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bGuard(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
     , m_HoveringHeight(0.f)
-    , m_AddVelocity{0.f, 0.f, 0.f}
-    , m_Friction(_Origin.m_Friction)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
@@ -89,6 +84,8 @@ void CKirbyMoveController::begin()
     m_JumpPower = 10.f;
     m_Gravity = -20.f;
     m_HoveringLimitHeight = 15.f;
+
+
 }
 
 void CKirbyMoveController::tick()
@@ -110,8 +107,6 @@ void CKirbyMoveController::tick()
     // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 30.f, Vec3(1.f, 0.f, 0.f), true);
     // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 30.f, Vec3(0.f, 0.f, 1.f), true);
 }
-
-
 
 void CKirbyMoveController::Input()
 {
@@ -157,11 +152,8 @@ void CKirbyMoveController::Input()
     Front.y = 0.f;
     Right.y = 0.f;
 
-    if (!m_bMoveLock)
-    {
-        m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
-        m_MoveDir.Normalize();
-    }
+    m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
+    m_MoveDir.Normalize();
 }
 
 void CKirbyMoveController::SetDir()
@@ -213,12 +205,13 @@ void CKirbyMoveController::SetDir()
         Transform()->SetRelativeRotation(Rot);
     }
 
+
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
     Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
 
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
-}
+} 
 
 void CKirbyMoveController::Move()
 {
@@ -240,8 +233,10 @@ void CKirbyMoveController::Move()
 
     if (m_bGuard)
     {
-        m_Accel.x = -m_MoveVelocity.x * m_Friction;
-        m_Accel.z = -m_MoveVelocity.z * m_Friction;
+        //m_Accel.x = -m_MoveVelocity.x * m_Friction;
+        //m_Accel.z = -m_MoveVelocity.z * m_Friction;
+        m_Accel.x = -m_MoveVelocity.x;
+        m_Accel.z = -m_MoveVelocity.z;
 
         m_MoveVelocity.x += m_Accel.x;
         m_MoveVelocity.z += m_Accel.z;
@@ -255,7 +250,7 @@ void CKirbyMoveController::Move()
     
 
     // Jump
-    if (m_bJump && !m_bJumpLock)
+    if (m_bJump)
     {
         m_bJump = false;
         m_MoveVelocity.y = m_JumpPower;
@@ -264,8 +259,9 @@ void CKirbyMoveController::Move()
     // 중력 적용
     m_Accel.y += m_Gravity;
 
-    // 수직 방향 이동속도 계산
+    //수직 방향 이동속도 계산
     m_MoveVelocity.y += m_Accel.y * DT;
+
 
     // 땅에 닿은 상태면 Velocity Y값 초기화
     if (bGrounded && m_MoveVelocity.y < 0)
@@ -273,16 +269,10 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = 0.f;
     }
 
+
     if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
     {
         m_MoveVelocity.y = 0.f;
-    }
-
-    // AddVelocity 적용
-    if (m_AddVelocity.Length() != 0.f)
-    {
-        m_MoveVelocity += m_AddVelocity;
-        m_AddVelocity = {0.f, 0.f, 0.f};
     }
 
     // 움직임 적용
@@ -296,6 +286,7 @@ void CKirbyMoveController::Move()
         m_HoveringHeight += Diff.y;
     }
 }
+
 
 void CKirbyMoveController::SurfaceAlignment()
 {
