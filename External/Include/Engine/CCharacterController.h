@@ -21,7 +21,7 @@ public:
     virtual void finaltick() override;
 
 public:
-    Vec3 Move(Vec3 _Motion);
+    void Move(Vec3 _Motion);
     bool IsGrounded() const { return m_bGrounded; }
 
 public:

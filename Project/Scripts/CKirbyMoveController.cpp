@@ -233,8 +233,10 @@ void CKirbyMoveController::Move()
 
     if (m_bGuard)
     {
-        m_Accel.x = -m_MoveVelocity.x * m_Friction;
-        m_Accel.z = -m_MoveVelocity.z * m_Friction;
+        //m_Accel.x = -m_MoveVelocity.x * m_Friction;
+        //m_Accel.z = -m_MoveVelocity.z * m_Friction;
+        m_Accel.x = -m_MoveVelocity.x;
+        m_Accel.z = -m_MoveVelocity.z;
 
         m_MoveVelocity.x += m_Accel.x;
         m_MoveVelocity.z += m_Accel.z;
@@ -278,7 +280,7 @@ void CKirbyMoveController::Move()
 
     if (m_bMoveLock == false)
     {
-        Diff = CharacterController()->Move(m_MoveVelocity * DT);
+        CharacterController()->Move(m_MoveVelocity * DT);
     }
 
     if (PLAYERFSM->IsHovering())

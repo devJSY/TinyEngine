@@ -80,8 +80,8 @@ public:
     void UnlockDirection() { m_bDirLock = false; }
 
     void SetGuard(bool _Guard) { m_bGuard = _Guard; }
-    void SetFriction(float _Friction) { m_Friction = _Friction; }
-    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+    //void SetFriction(float _Friction) { m_Friction = _Friction; }
+    //void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
 
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
