@@ -557,7 +557,7 @@ int CMesh::Load(const wstring& _strFilePath)
     fread(&iCount, sizeof(int), 1, pFile);
     m_vecBones.resize(iCount);
 
-    UINT _iFrameCount = 0;
+    int _iFrameCount = 0;
     for (int i = 0; i < iCount; ++i)
     {
         LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);

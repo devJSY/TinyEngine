@@ -74,14 +74,14 @@ void CTransform::finaltick()
     if (nullptr != pParent)
     {
         // Bone Socket Matrix
-        Matrix FinalBoneMat = XMMatrixIdentity();
         Matrix SocketMat = XMMatrixIdentity();
+        Matrix BoneTransformMat = XMMatrixIdentity();
 
         const tBoneSocket* pBoneSocket = GetOwner()->GetBoneSocket();
         if (nullptr != pBoneSocket && nullptr != pParent->Animator() && pParent->Animator()->IsValid())
         {
-            FinalBoneMat = pParent->Animator()->GetBoneTransformMat(pBoneSocket->BoneIndex);
             SocketMat = pBoneSocket->matSocket;
+            BoneTransformMat = pParent->Animator()->GetBoneTransformMat(pBoneSocket->BoneIndex);
         }
 
         // Parent Matrix
@@ -95,8 +95,8 @@ void CTransform::finaltick()
             m_matTransformation = matParentScaleInv * m_matTransformation;
         }
 
-        // Final Bone Matrix * Parent World * Socket Matrix
-        m_matTransformation = FinalBoneMat * m_matTransformation * SocketMat;
+        // Socket Matrix * Bone Transform Matrix * Parent World
+        m_matTransformation = SocketMat * BoneTransformMat * m_matTransformation;
 
         // 변환행렬 적용
         m_matWorld *= m_matTransformation;

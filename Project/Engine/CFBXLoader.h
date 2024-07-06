@@ -72,9 +72,9 @@ struct tKeyFrame
 struct tBone
 {
     wstring strBoneName;
-    int iDepth;           // °èÃþ±¸Á¶ ±íÀÌ
-    int iParentIndx;      // ºÎ¸ð Bone ÀÇ ÀÎµ¦½º
-    FbxAMatrix matOffset; // Offset Çà·Ä( -> »Ñ¸® -> Local)
+    int iDepth;             // °èÃþ±¸Á¶ ±íÀÌ
+    int iParentIndx;        // ºÎ¸ð Bone ÀÇ ÀÎµ¦½º
+    FbxAMatrix matOffset;   // Offset Çà·Ä( -> »Ñ¸® -> Local)
     FbxAMatrix matBone;
     vector<tKeyFrame> vecKeyFrame;
 };

@@ -812,9 +812,9 @@ void CLevelEditor::render_ImGuizmo()
     if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
         snapValue = 10.f;
     else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
-        snapValue = 15.0f;
+        snapValue = 15.f;
     else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
-        snapValue = 1.0f;
+        snapValue = 1.f;
 
     float snapValues[3] = {snapValue, snapValue, snapValue};
 

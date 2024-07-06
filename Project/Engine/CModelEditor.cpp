@@ -407,14 +407,17 @@ void CModelEditor::DrawImGizmo()
         return;
 
     // 선택된 오브젝트가 있을때 키입력으로 Gizmo 타입설정
-    if (KEY_TAP(KEY::Q))
-        m_GizmoType = (ImGuizmo::OPERATION)0;
-    else if (KEY_TAP(KEY::W))
-        m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-    else if (KEY_TAP(KEY::E))
-        m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-    else if (KEY_TAP(KEY::R))
-        m_GizmoType = ImGuizmo::OPERATION::SCALE;
+    if (!KEY_PRESSED(KEY::RBTN))
+    {
+        if (KEY_TAP(KEY::Q))
+            m_GizmoType = (ImGuizmo::OPERATION)0;
+        else if (KEY_TAP(KEY::W))
+            m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+        else if (KEY_TAP(KEY::E))
+            m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+        else if (KEY_TAP(KEY::R))
+            m_GizmoType = ImGuizmo::OPERATION::SCALE;
+    }
 
     ImGuizmo::SetOrthographic(false);
 
@@ -433,9 +436,9 @@ void CModelEditor::DrawImGizmo()
     if (m_GizmoType == ImGuizmo::OPERATION::TRANSLATE)
         snapValue = 10.f;
     else if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
-        snapValue = 15.0f;
+        snapValue = 15.f;
     else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
-        snapValue = 1.0f;
+        snapValue = 1.f;
 
     float snapValues[3] = {snapValue, snapValue, snapValue};
 
@@ -443,20 +446,30 @@ void CModelEditor::DrawImGizmo()
     Matrix WorldMat = m_ModelObj->Transform()->GetWorldMat();
     Matrix SocketMat = m_SelectedBoneSocket->matSocket;
 
-    Matrix mat = BoneTransformMat * WorldMat * SocketMat;
+    Matrix mat = SocketMat * BoneTransformMat * WorldMat;
 
     ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *mat.m, nullptr, snap ? snapValues : nullptr);
 
     if (ImGuizmo::IsUsing())
     {
+        // Socket Matrix 추출
         mat *= m_ModelObj->Transform()->GetWorldInvMat() * BoneTransformMat.Invert();
+
+        Vec3 SocketTranslation, SocketRotation, SocketScale;
+        ImGuizmo::DecomposeMatrixToComponents(*SocketMat.m, SocketTranslation, SocketRotation, SocketScale);
 
         Vec3 Translation, Rotation, Scale;
         ImGuizmo::DecomposeMatrixToComponents(*mat.m, Translation, Rotation, Scale);
 
-        m_SelectedBoneSocket->RelativeLocation = Translation;
-        m_SelectedBoneSocket->RelativeLocation = Rotation;
-        m_SelectedBoneSocket->RelativeLocation = Scale;
+        // 원본 Socket Matrix와 Gizmo Socket Matrix의 변화량 추출
+        Vec3 vPosOffset = SocketTranslation - Translation;
+        Vec3 vRotOffset = SocketRotation - Rotation;
+        vRotOffset.ToRadian();
+        Vec3 vScaleOffset = SocketScale - Scale;
+
+        m_SelectedBoneSocket->RelativeLocation -= vPosOffset;
+        m_SelectedBoneSocket->RelativeRotation -= vRotOffset;
+        m_SelectedBoneSocket->RelativeScale -= vScaleOffset;
     }
 }
 
