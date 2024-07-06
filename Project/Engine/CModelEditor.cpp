@@ -604,7 +604,7 @@ void CModelEditor::DrawDetails()
     {
         if (ImGui::TreeNodeEx("Bone##ModelEditorDetails", DefaultTreeNodeFlag))
         {
-            ImGui_InputText("Bone Name", ToString(m_SelectedBone->strBoneName).c_str());
+            ImGui_InputText("Bone Name", ToString(m_SelectedBone->strBoneName));
 
             ImGui::TreePop();
         }
@@ -651,7 +651,16 @@ void CModelEditor::DrawDetails()
     {
         if (ImGui::TreeNodeEx("Socket Parameters##ModelEditorDetails", DefaultTreeNodeFlag))
         {
-            ImGui_InputText("Socket Name", ToString(m_SelectedBoneSocket->SoketName).c_str());
+            char buffer[256];
+            memset(buffer, 0, sizeof(buffer));
+            string SocketName = ToString(m_SelectedBoneSocket->SoketName);
+            strcpy_s(buffer, sizeof(buffer), SocketName.c_str());
+
+            if (ImGui::InputText(ImGui_LabelPrefix("Bone Socket Name").c_str(), buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+            {
+                m_SelectedBoneSocket->SoketName = ToWstring(buffer);
+            }
+
             ImGui_InputText("Bone Name",
                             ToString(m_ModelObj->Animator()->GetSkeletalMesh()->GetBones()->at(m_SelectedBoneSocket->BoneIndex).strBoneName).c_str());
 
@@ -729,8 +738,8 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
         m_SelectedBoneSocket = nullptr;
     }
 
-    // Bone Socket PopUp
-    string PopUpID = "BoneSocketPopUp##ModelEditor";
+    // Bone PopUp
+    string PopUpID = "BonePopUp##ModelEditor";
     PopUpID += std::to_string(_BoneIdx);
 
     ImGui::OpenPopupOnItemClick(PopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
@@ -744,6 +753,7 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
             ++SocketNameNumber;
             _vecBone[_BoneIdx].vecBoneSocket.push_back(
                 tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)});
+            m_SelectedBoneSocket = &_vecBone[_BoneIdx].vecBoneSocket.back();
         }
 
         ImGui::EndPopup();
@@ -752,22 +762,49 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
     if (opened)
     {
         // Bone Socket
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6667f, 0.6667f, 1.f, 1.f));
-        for (tBoneSocket& BoneSocket : _vecBone[_BoneIdx].vecBoneSocket)
+        for (UINT i = 0; i < (UINT)_vecBone[_BoneIdx].vecBoneSocket.size(); ++i)
         {
-            if (ImGui::TreeNodeEx(ToString(BoneSocket.SoketName).c_str(),
-                                  m_SelectedBoneSocket == &BoneSocket ? ImGuiTreeNodeFlags_Selected : 0 | DefaultTreeNodeFlag))
+            tBoneSocket& BoneSocket = _vecBone[_BoneIdx].vecBoneSocket[i];
+
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6667f, 0.6667f, 1.f, 1.f));
+            bool bBoneSocketOpend = ImGui::TreeNodeEx(ToString(BoneSocket.SoketName).c_str(),
+                                                      m_SelectedBoneSocket == &BoneSocket ? ImGuiTreeNodeFlags_Selected : 0 | DefaultTreeNodeFlag);
+            ImGui::PopStyleColor();
+
+            // Bone Socket Popup
+            string BoneSocketPopUpID = "BoneSocketPopUp##ModelEditor";
+            BoneSocketPopUpID += ToString(BoneSocket.SoketName);
+
+            ImGui::OpenPopupOnItemClick(BoneSocketPopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
+
+            if (ImGui::BeginPopup(BoneSocketPopUpID.c_str()))
             {
-                if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+                if (ImGui::MenuItem("Delete Bone Socket"))
                 {
-                    m_SelectedBone = nullptr;
-                    m_SelectedBoneSocket = &BoneSocket;
+                    if (m_SelectedBoneSocket == &BoneSocket)
+                    {
+                        m_SelectedBoneSocket = nullptr;
+                    }
+
+                    _vecBone[_BoneIdx].vecBoneSocket.erase(_vecBone[_BoneIdx].vecBoneSocket.begin() + i);
+                    --i;
                 }
 
+                ImGui::EndPopup();
+            }
+
+            // Select
+            if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+            {
+                m_SelectedBone = nullptr;
+                m_SelectedBoneSocket = &BoneSocket;
+            }
+
+            if (bBoneSocketOpend)
+            {
                 ImGui::TreePop();
             }
         }
-        ImGui::PopStyleColor();
 
         for (UINT i = 0; i < (UINT)_vecBone.size(); ++i)
         {
