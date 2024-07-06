@@ -211,6 +211,10 @@ void CLevelEditor::render()
 
     // Cam Preview
     render_CamPreview();
+    
+    // ImGui Demo
+    // static bool b = true;
+    // ImGui::ShowDemoWindow(&b);
 
     if (CAssetMgr::GetInst()->IsModelLoading())
     {

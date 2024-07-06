@@ -195,21 +195,7 @@ void CModelEditor::finaltick()
 {
     if (nullptr != m_ModelObj)
     {
-        for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
-        {
-            CComponent* pComp = m_ModelObj->GetComponent((COMPONENT_TYPE)i);
-            if (nullptr == pComp)
-                continue;
-
-            if (i == (UINT)COMPONENT_TYPE::ANIMATOR)
-            {
-                m_ModelObj->Animator()->finaltick_ModelEditor(); // Animator finaltick 예외처리
-            }
-            else
-            {
-                pComp->finaltick();
-            }
-        }
+        finaltick_ModelEditor(m_ModelObj);
     }
 
     m_ViewportCam->GetOwner()->finaltick();
@@ -372,6 +358,12 @@ void CModelEditor::DrawViewport()
         {
             m_ModelObj->render();
         }
+
+        vector<CGameObject*>::const_iterator iter = m_ModelObj->GetChildObject().begin();
+        for (; iter != m_ModelObj->GetChildObject().end(); ++iter)
+        {
+            (*iter)->render();
+        }
     }
 
     // ToneMapping
@@ -442,9 +434,9 @@ void CModelEditor::DrawImGizmo()
 
     float snapValues[3] = {snapValue, snapValue, snapValue};
 
+    Matrix SocketMat = m_SelectedBoneSocket->matSocket;
     Matrix BoneTransformMat = m_ModelObj->Animator()->GetBoneTransformMat(m_SelectedBoneSocket->BoneIndex);
     Matrix WorldMat = m_ModelObj->Transform()->GetWorldMat();
-    Matrix SocketMat = m_SelectedBoneSocket->matSocket;
 
     Matrix mat = SocketMat * BoneTransformMat * WorldMat;
 
@@ -790,6 +782,42 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
                     --i;
                 }
 
+                if (ImGui::BeginMenu("Add Preview Asset"))
+                {
+                    string PreviewAssetName;
+                    const map<wstring, Ptr<CAsset>>& mapMeshData = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::MESHDATA);
+
+                    if (ImGui_ComboUI("##Mesh Data", PreviewAssetName, mapMeshData))
+                    {
+                        CGameObjectEx* PreviewAssetObj = CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(PreviewAssetName))->InstantiateEx();
+
+                        PreviewAssetObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
+                        PreviewAssetObj->Transform()->SetRelativePos(Vec3(0.f, 00.f, 0.f));
+                        PreviewAssetObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+                        PreviewAssetObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+
+                        PreviewAssetObj->MeshRender()->SetFrustumCheck(false);
+
+                        // Forward PBR Shader 로 설정
+                        Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
+                        UINT SubsetCnt = PreviewAssetObj->MeshRender()->GetMesh()->GetSubsetCount();
+                        for (UINT i = 0; i < SubsetCnt; ++i)
+                        {
+                            PreviewAssetObj->MeshRender()->GetMaterial(i)->SetShader(pShader);
+                        }
+
+                        if (nullptr != PreviewAssetObj->Animator())
+                        {
+                            PreviewAssetObj->Animator()->SetPlay(false);
+                        }
+
+                        m_ModelObj->AddChild(PreviewAssetObj);
+                        m_ModelObj->SetBoneSocket(&BoneSocket);
+                    }
+
+                    ImGui::EndMenu();
+                }
+
                 ImGui::EndPopup();
             }
 
@@ -977,6 +1005,31 @@ void CModelEditor::DrawAnimation()
         }
     }
     ImGui::End();
+}
+
+void CModelEditor::finaltick_ModelEditor(CGameObject* _Obj)
+{
+    for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
+    {
+        CComponent* pComp = _Obj->GetComponent((COMPONENT_TYPE)i);
+        if (nullptr == pComp)
+            continue;
+
+        if (i == (UINT)COMPONENT_TYPE::ANIMATOR)
+        {
+            _Obj->Animator()->finaltick_ModelEditor(); // Animator finaltick 예외처리
+        }
+        else
+        {
+            pComp->finaltick();
+        }
+
+        vector<CGameObject*>::const_iterator iter = _Obj->GetChildObject().begin();
+        for (; iter != _Obj->GetChildObject().end(); ++iter)
+        {
+            finaltick_ModelEditor(*iter);
+        }
+    }
 }
 
 void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)

@@ -52,6 +52,7 @@ private:
     void DrawSkeletonTree();
     void SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _NodeOpenFlag);
     void DrawAnimation();
+    void finaltick_ModelEditor(CGameObject* _Obj);
 
 public:
     void SetModel(Ptr<CMeshData> _MeshData);
