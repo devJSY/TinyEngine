@@ -717,6 +717,9 @@
     <ClCompile Include="CModelEditor.cpp">
       <Filter>09. Editor\Model Editor</Filter>
     </ClCompile>
+    <ClCompile Include="CAssetMgr_Kirby.cpp">
+      <Filter>04. Manager\AssetMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -1061,6 +1064,21 @@
     <Filter Include="08. Component\Collider 2D\BoxCollider2D">
       <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\Characters">
+      <UniqueIdentifier>{c1400185-f673-4f7d-810e-45f34fcda712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Characters\Kirby">
+      <UniqueIdentifier>{ba3e7ba3-f030-49ee-892f-e6039050922e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Characters\Boss">
+      <UniqueIdentifier>{ba8bd562-b57d-4dd5-b378-f77900ac5e05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Characters\Monster">
+      <UniqueIdentifier>{4bb31100-7dd9-49a1-acda-b7805560ce2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Characters\WaddleDee">
+      <UniqueIdentifier>{6722e1ac-3997-4a66-a35e-d0ffd8c157a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1307,6 +1325,9 @@
     </FxCompile>
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\Compute\CopyBone</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbyBodyPS.hlsl">
+      <Filter>ShaderCode\Render\Characters\Kirby</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

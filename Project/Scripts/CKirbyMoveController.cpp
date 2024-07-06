@@ -95,7 +95,6 @@ void CKirbyMoveController::begin()
     m_RotSpeed = 50.f;
     m_JumpPower = 10.f;
     m_Gravity = -20.f;
-    m_HoveringLimitHeight = 15.f;
 }
 
 void CKirbyMoveController::tick()

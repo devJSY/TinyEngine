@@ -50,6 +50,7 @@ private:
     // 에셋 생성
     void CreateDefaultMesh();
     void CreateDefaultGraphicsShader();
+    void CreateDefaultGraphicsShader_Kirby();
     void CreateDefaultComputeShader();
     void CreateDefaultMaterial();
     void CreateDefaultPhysics2DMaterial();
