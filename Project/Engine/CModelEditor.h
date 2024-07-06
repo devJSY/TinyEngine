@@ -50,6 +50,7 @@ private:
     void DrawImGizmo();
     void DrawDetails();
     void DrawSkeletonTree();
+    void DrawBoneSocket(tMTBone& _Bone);
     void SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _NodeOpenFlag);
     void DrawAnimation();
     void finaltick_ModelEditor(CGameObject* _Obj);

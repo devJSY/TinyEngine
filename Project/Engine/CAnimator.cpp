@@ -199,20 +199,20 @@ void CAnimator::UpdateData()
         vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
         for (UINT i = 0; i < BoneCount; ++i)
         {
-            for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
+            for (tBoneSocket* pBoneSocket : vecBones[i].vecBoneSocket)
             {
-                BoneSocket.BoneIndex = i;
+                pBoneSocket->BoneIndex = i;
 
-                Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
+                Matrix matScale = XMMatrixScaling(pBoneSocket->RelativeScale.x, pBoneSocket->RelativeScale.y, pBoneSocket->RelativeScale.z);
 
-                Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
-                Matrix matRotY = XMMatrixRotationY(BoneSocket.RelativeRotation.y);
-                Matrix matRotZ = XMMatrixRotationZ(BoneSocket.RelativeRotation.z);
+                Matrix matRotX = XMMatrixRotationX(pBoneSocket->RelativeRotation.x);
+                Matrix matRotY = XMMatrixRotationY(pBoneSocket->RelativeRotation.y);
+                Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
 
                 Matrix matTranslation =
-                    XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
+                    XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
 
-                BoneSocket.matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
+                pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
             }
         }
 
@@ -290,19 +290,20 @@ void CAnimator::finaltick_ModelEditor()
     vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
     for (UINT i = 0; i < BoneCount; ++i)
     {
-        for (tBoneSocket& BoneSocket : vecBones[i].vecBoneSocket)
+        for (tBoneSocket* pBoneSocket : vecBones[i].vecBoneSocket)
         {
-            BoneSocket.BoneIndex = i;
+            pBoneSocket->BoneIndex = i;
 
-            Matrix matScale = XMMatrixScaling(BoneSocket.RelativeScale.x, BoneSocket.RelativeScale.y, BoneSocket.RelativeScale.z);
+            Matrix matScale = XMMatrixScaling(pBoneSocket->RelativeScale.x, pBoneSocket->RelativeScale.y, pBoneSocket->RelativeScale.z);
 
-            Matrix matRotX = XMMatrixRotationX(BoneSocket.RelativeRotation.x);
-            Matrix matRotY = XMMatrixRotationY(BoneSocket.RelativeRotation.y);
-            Matrix matRotZ = XMMatrixRotationZ(BoneSocket.RelativeRotation.z);
+            Matrix matRotX = XMMatrixRotationX(pBoneSocket->RelativeRotation.x);
+            Matrix matRotY = XMMatrixRotationY(pBoneSocket->RelativeRotation.y);
+            Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
 
-            Matrix matTranslation = XMMatrixTranslation(BoneSocket.RelativeLocation.x, BoneSocket.RelativeLocation.y, BoneSocket.RelativeLocation.z);
+            Matrix matTranslation =
+                XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
 
-            BoneSocket.matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
+            pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
         }
     }
 }

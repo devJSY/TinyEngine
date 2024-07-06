@@ -82,6 +82,9 @@
       <Command>cd $(SolutionDir)
 call EngineCopy.bat</Command>
     </PreBuildEvent>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -110,6 +113,9 @@ call EngineCopy.bat</Command>
       <Command>cd $(SolutionDir)
 call EngineCopy.bat</Command>
     </PreBuildEvent>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAnim2D.h" />

@@ -338,31 +338,26 @@ void CModelEditor::DrawViewport()
     {
         if (m_bDrawWireFrame)
         {
-            if (nullptr != m_ModelObj->MeshRender()->GetMesh())
-            {
-                UINT SubsetCnt = m_ModelObj->MeshRender()->GetMesh()->GetSubsetCount();
-                for (UINT i = 0; i < SubsetCnt; ++i)
-                {
-                    Ptr<CMaterial> pMtrl = m_ModelObj->MeshRender()->GetMaterial(i);
-                    if (nullptr == pMtrl)
-                        continue;
+            static Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
+            RS_TYPE originRSType = pShader->GetRSType();
+            pShader->SetRSType(RS_TYPE::WIRE_FRAME);
 
-                    RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
-                    pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-                    m_ModelObj->MeshRender()->render(i);
-                    pMtrl->GetShader()->SetRSType(originRSType);
-                }
+            m_ModelObj->render();
+            for (CGameObject* pChild : m_ModelObj->GetChildObject())
+            {
+                pChild->render();
             }
+
+            pShader->SetRSType(originRSType);
         }
         else
         {
             m_ModelObj->render();
-        }
 
-        vector<CGameObject*>::const_iterator iter = m_ModelObj->GetChildObject().begin();
-        for (; iter != m_ModelObj->GetChildObject().end(); ++iter)
-        {
-            (*iter)->render();
+            for (CGameObject* pChild : m_ModelObj->GetChildObject())
+            {
+                pChild->render();
+            }
         }
     }
 
@@ -539,6 +534,23 @@ void CModelEditor::DrawDetails()
                 m_ModelObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(MeshName)));
                 m_SelectedBone = nullptr;
                 m_SelectedBoneSocket = nullptr;
+            }
+
+            if (nullptr != m_ModelObj && nullptr != m_ModelObj->Animator() && m_ModelObj->Animator()->IsValid())
+            {
+                ImGui::Separator();
+                if (ImGui_AlignButton("Save Mesh##ModelEditorDetails", 0.f))
+                {
+                    Ptr<CMesh> pMesh = m_ModelObj->Animator()->GetSkeletalMesh();
+                    if (S_OK == pMesh->Save(pMesh->GetKey()))
+                    {
+                        MessageBox(nullptr, L"Mesh 저장 성공!", L"Save Mesh", MB_OK);
+                    }
+                    else
+                    {
+                        MessageBox(nullptr, L"Mesh 저장 실패!", L"Save Mesh", MB_OK);
+                    }
+                }
             }
         }
 
@@ -744,8 +756,9 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
             static int SocketNameNumber = -1;
             ++SocketNameNumber;
             _vecBone[_BoneIdx].vecBoneSocket.push_back(
-                tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)});
-            m_SelectedBoneSocket = &_vecBone[_BoneIdx].vecBoneSocket.back();
+                new tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)});
+
+            m_SelectedBoneSocket = _vecBone[_BoneIdx].vecBoneSocket.back();
         }
 
         ImGui::EndPopup();
@@ -754,85 +767,7 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
     if (opened)
     {
         // Bone Socket
-        for (UINT i = 0; i < (UINT)_vecBone[_BoneIdx].vecBoneSocket.size(); ++i)
-        {
-            tBoneSocket& BoneSocket = _vecBone[_BoneIdx].vecBoneSocket[i];
-
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6667f, 0.6667f, 1.f, 1.f));
-            bool bBoneSocketOpend = ImGui::TreeNodeEx(ToString(BoneSocket.SoketName).c_str(),
-                                                      m_SelectedBoneSocket == &BoneSocket ? ImGuiTreeNodeFlags_Selected : 0 | DefaultTreeNodeFlag);
-            ImGui::PopStyleColor();
-
-            // Bone Socket Popup
-            string BoneSocketPopUpID = "BoneSocketPopUp##ModelEditor";
-            BoneSocketPopUpID += ToString(BoneSocket.SoketName);
-
-            ImGui::OpenPopupOnItemClick(BoneSocketPopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
-
-            if (ImGui::BeginPopup(BoneSocketPopUpID.c_str()))
-            {
-                if (ImGui::MenuItem("Delete Bone Socket"))
-                {
-                    if (m_SelectedBoneSocket == &BoneSocket)
-                    {
-                        m_SelectedBoneSocket = nullptr;
-                    }
-
-                    _vecBone[_BoneIdx].vecBoneSocket.erase(_vecBone[_BoneIdx].vecBoneSocket.begin() + i);
-                    --i;
-                }
-
-                if (ImGui::BeginMenu("Add Preview Asset"))
-                {
-                    string PreviewAssetName;
-                    const map<wstring, Ptr<CAsset>>& mapMeshData = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::MESHDATA);
-
-                    if (ImGui_ComboUI("##Mesh Data", PreviewAssetName, mapMeshData))
-                    {
-                        CGameObjectEx* PreviewAssetObj = CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(PreviewAssetName))->InstantiateEx();
-
-                        PreviewAssetObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
-                        PreviewAssetObj->Transform()->SetRelativePos(Vec3(0.f, 00.f, 0.f));
-                        PreviewAssetObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-                        PreviewAssetObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
-
-                        PreviewAssetObj->MeshRender()->SetFrustumCheck(false);
-
-                        // Forward PBR Shader 로 설정
-                        Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
-                        UINT SubsetCnt = PreviewAssetObj->MeshRender()->GetMesh()->GetSubsetCount();
-                        for (UINT i = 0; i < SubsetCnt; ++i)
-                        {
-                            PreviewAssetObj->MeshRender()->GetMaterial(i)->SetShader(pShader);
-                        }
-
-                        if (nullptr != PreviewAssetObj->Animator())
-                        {
-                            PreviewAssetObj->Animator()->SetPlay(false);
-                        }
-
-                        m_ModelObj->AddChild(PreviewAssetObj);
-                        m_ModelObj->SetBoneSocket(&BoneSocket);
-                    }
-
-                    ImGui::EndMenu();
-                }
-
-                ImGui::EndPopup();
-            }
-
-            // Select
-            if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
-            {
-                m_SelectedBone = nullptr;
-                m_SelectedBoneSocket = &BoneSocket;
-            }
-
-            if (bBoneSocketOpend)
-            {
-                ImGui::TreePop();
-            }
-        }
+        DrawBoneSocket(_vecBone[_BoneIdx]);
 
         for (UINT i = 0; i < (UINT)_vecBone.size(); ++i)
         {
@@ -847,6 +782,138 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
         }
 
         ImGui::TreePop();
+    }
+}
+
+void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
+{
+    static ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow;
+
+    for (UINT i = 0; i < (UINT)_Bone.vecBoneSocket.size(); ++i)
+    {
+        tBoneSocket* pBoneSocket = _Bone.vecBoneSocket[i];
+
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6667f, 0.6667f, 1.f, 1.f));
+        bool bBoneSocketOpend = ImGui::TreeNodeEx(ToString(pBoneSocket->SoketName).c_str(),
+                                                  m_SelectedBoneSocket == pBoneSocket ? ImGuiTreeNodeFlags_Selected : 0 | DefaultTreeNodeFlag);
+        ImGui::PopStyleColor();
+
+        // Bone Socket Popup
+        string BoneSocketPopUpID = "BoneSocketPopUp##ModelEditor";
+        BoneSocketPopUpID += ToString(pBoneSocket->SoketName);
+
+        ImGui::OpenPopupOnItemClick(BoneSocketPopUpID.c_str(), ImGuiPopupFlags_MouseButtonRight);
+
+        if (ImGui::BeginPopup(BoneSocketPopUpID.c_str()))
+        {
+            if (ImGui::MenuItem("Delete Bone Socket"))
+            {
+                if (m_SelectedBoneSocket == pBoneSocket)
+                {
+                    m_SelectedBoneSocket = nullptr;
+                }
+
+                _Bone.vecBoneSocket.erase(_Bone.vecBoneSocket.begin() + i);
+                --i;
+
+                // BoneSocket에 부착된 오브젝트 삭제
+                std::stack<CGameObject*> stackChild;
+
+                for (CGameObject* pChild : m_ModelObj->GetChildObject())
+                {
+                    if (pBoneSocket == pChild->GetBoneSocket())
+                    {
+                        stackChild.push(pChild);
+                    }
+                }
+
+                while (!stackChild.empty())
+                {
+                    CGameObject* pChild = stackChild.top();
+                    stackChild.pop();
+
+                    pChild->DisconnectWithParent();
+                    delete pChild;
+                    pChild = nullptr;
+                }
+
+                // BoneSocket 삭제
+                delete pBoneSocket;
+                pBoneSocket = nullptr;
+            }
+
+            if (ImGui::BeginMenu("Add Preview Asset"))
+            {
+                string PreviewAssetName;
+                const map<wstring, Ptr<CAsset>>& mapMeshData = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::MESHDATA);
+
+                if (ImGui_ComboUI("Mesh Data", PreviewAssetName, mapMeshData))
+                {
+                    Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(PreviewAssetName));
+
+                    if (nullptr == pMeshData)
+                    {
+                        // 해당 소켓 자식 오브젝트 삭제
+                        std::stack<CGameObject*> stackChild;
+
+                        for (CGameObject* pChild : m_ModelObj->GetChildObject())
+                        {
+                            if (pBoneSocket == pChild->GetBoneSocket())
+                            {
+                                stackChild.push(pChild);
+                            }
+                        }
+
+                        while (!stackChild.empty())
+                        {
+                            CGameObject* pChild = stackChild.top();
+                            stackChild.pop();
+
+                            pChild->DisconnectWithParent();
+                            delete pChild;
+                            pChild = nullptr;
+                        }
+                    }
+                    else
+                    {
+                        // 해당 소켓에 프리뷰 오브젝트 자식오브젝트로 추가
+                        CGameObjectEx* PreviewAssetObj = pMeshData->InstantiateEx();
+
+                        PreviewAssetObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
+                        PreviewAssetObj->Transform()->SetAbsolute(false);
+
+                        PreviewAssetObj->MeshRender()->SetFrustumCheck(false);
+
+                        // Forward PBR Shader 로 설정
+                        Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
+                        UINT SubsetCnt = PreviewAssetObj->MeshRender()->GetMesh()->GetSubsetCount();
+                        for (UINT i = 0; i < SubsetCnt; ++i)
+                        {
+                            PreviewAssetObj->MeshRender()->GetMaterial(i)->SetShader(pShader);
+                        }
+
+                        PreviewAssetObj->SetBoneSocket(pBoneSocket);
+                        m_ModelObj->AddChild(PreviewAssetObj);
+                    }
+                }
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndPopup();
+        }
+
+        // Select
+        if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+        {
+            m_SelectedBone = nullptr;
+            m_SelectedBoneSocket = pBoneSocket;
+        }
+
+        if (bBoneSocketOpend)
+        {
+            ImGui::TreePop();
+        }
     }
 }
 

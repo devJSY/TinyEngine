@@ -77,7 +77,7 @@ void CTransform::finaltick()
         Matrix SocketMat = XMMatrixIdentity();
         Matrix BoneTransformMat = XMMatrixIdentity();
 
-        const tBoneSocket* pBoneSocket = pParent->GetBoneSocket();
+        const tBoneSocket* pBoneSocket = GetOwner()->GetBoneSocket();
         if (nullptr != pBoneSocket && nullptr != pParent->Animator() && pParent->Animator()->IsValid())
         {
             SocketMat = pBoneSocket->matSocket;
