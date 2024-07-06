@@ -13,7 +13,7 @@ void CKirbyHoveringLanding::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        ChangeState(L"IDLE");
+        ChangeState(L"HOVERING_SPIT");
     }
 }
 
@@ -24,5 +24,4 @@ void CKirbyHoveringLanding::Enter()
 
 void CKirbyHoveringLanding::Exit()
 {
-    PLAYERFSM->SetHovering(false);
 }

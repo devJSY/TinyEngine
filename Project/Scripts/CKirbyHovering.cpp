@@ -2,7 +2,8 @@
 #include "CKirbyHovering.h"
 
 CKirbyHovering::CKirbyHovering()
-    : m_bFrmEnter(true)
+    : m_SavedGravity(0.f)
+    , m_bFrmEnter(true)
 {
 }
 
@@ -12,12 +13,13 @@ CKirbyHovering::~CKirbyHovering()
 
 void CKirbyHovering::tick()
 {
-    if (GET_CURCLIP_FRM == 9 && m_bFrmEnter)
+    if (m_bFrmEnter && GET_CURCLIP_FRM == 0)
     {
-        //PLAYERCTRL->AddForce(Vec3(0.f, 8.5f, 0.f), AddForceType::VelocityChange);
+        PLAYERCTRL->ClearVelocityY();
+        PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
         m_bFrmEnter = false;
     }
-    else if (GET_CURCLIP_FRM == 19 && !m_bFrmEnter)
+    else if (!m_bFrmEnter && GET_CURCLIP_FRM != 0)
     {
         m_bFrmEnter = true;
     }
@@ -43,11 +45,15 @@ void CKirbyHovering::tick()
 
 void CKirbyHovering::Enter()
 {
-    GetOwner()->Animator()->Play(KIRBYANIM(L"Flight"));
+    GetOwner()->Animator()->Play(KIRBYANIM(L"Flight"), true, 2.f);
+
+    m_SavedGravity = PLAYERCTRL->GetGravity();
+    PLAYERCTRL->SetGravity(-10.f);
 
     m_bFrmEnter = true;
 }
 
 void CKirbyHovering::Exit()
 {
+    PLAYERCTRL->SetGravity(m_SavedGravity);
 }

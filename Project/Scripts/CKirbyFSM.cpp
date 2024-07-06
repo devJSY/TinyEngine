@@ -204,7 +204,6 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     if (m_bHovering != _bHovering)
     {
         ClearHoveringAccTime();
-        PLAYERCTRL->ClearHoveringHeight();
     }
     
     m_bHovering = _bHovering;

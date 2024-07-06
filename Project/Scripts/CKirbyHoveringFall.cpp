@@ -33,9 +33,13 @@ void CKirbyHoveringFall::tick()
 void CKirbyHoveringFall::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightFall"));
-
+    
+    if (PLAYERCTRL->GetVelocity().y > 0.f)
+    {
+        PLAYERCTRL->ClearVelocityY();
+    }
     m_SavedGravity = PLAYERCTRL->GetGravity();
-    PLAYERCTRL->SetGravity(-8.5f);
+    PLAYERCTRL->SetGravity(-3.f);
 }
 
 void CKirbyHoveringFall::Exit()

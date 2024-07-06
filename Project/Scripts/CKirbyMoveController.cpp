@@ -25,10 +25,18 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bJumpLock(false)
     , m_bJump(false)
     , m_bGuard(false)
-    , m_HoveringLimitHeight(15.f)
-    , m_HoveringHeight(0.f)
-    , m_AddVelocity{0.f,0.f,0.f}
+    , m_HoveringLimitHeight(7.5f)
+    , m_HoveringMinSpeed(-5.f)
+    , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)
+    , m_bPurse(PurseType::NONE)
+    , m_PurseAccType(PurseAccType::AccUp)
+    , m_PurseAcc(0.f)
+    , m_PurseAirTime(0.f)
+    , m_PurseContTime(0.f)
+    , m_PurseMinSpeed(0.f)
+    , m_PurseSpeed(0.f)
+    , m_PurseScale(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
@@ -57,7 +65,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bJump(false)
     , m_bGuard(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
-    , m_HoveringHeight(0.f)
+    , m_HoveringMinSpeed(_Origin.m_HoveringMinSpeed)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(_Origin.m_Friction)
 {
@@ -88,8 +96,6 @@ void CKirbyMoveController::begin()
     m_JumpPower = 10.f;
     m_Gravity = -20.f;
     m_HoveringLimitHeight = 15.f;
-
-
 }
 
 void CKirbyMoveController::tick()
@@ -212,13 +218,12 @@ void CKirbyMoveController::SetDir()
         Transform()->SetRelativeRotation(Rot);
     }
 
-
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
     Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
 
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
-} 
+}
 
 void CKirbyMoveController::Move()
 {
@@ -234,15 +239,17 @@ void CKirbyMoveController::Move()
         bGrounded = nullptr != Hit.pCollisionObj;
     }
 
+    // =========================
+    // Velocity 계산
+    // =========================
+
     // 수평 방향 이동속도 계산
-
     // Guard시에는 이전프레임의 이동속도를 남겨 감속시킴
-
     if (m_bGuard)
     {
         m_Accel.x = -m_MoveVelocity.x * m_Friction;
         m_Accel.z = -m_MoveVelocity.z * m_Friction;
-        
+
         m_MoveVelocity.x += m_Accel.x;
         m_MoveVelocity.z += m_Accel.z;
     }
@@ -251,8 +258,6 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.x = m_MoveDir.x * m_Speed;
         m_MoveVelocity.z = m_MoveDir.z * m_Speed;
     }
-
-    
 
     // Jump
     if (m_bJump && !m_bJumpLock)
@@ -264,20 +269,12 @@ void CKirbyMoveController::Move()
     // 중력 적용
     m_Accel.y += m_Gravity;
 
-    //수직 방향 이동속도 계산
+    // 수직 방향 이동속도 계산
     m_MoveVelocity.y += m_Accel.y * DT;
 
-
-    // 땅에 닿은 상태면 Velocity Y값 초기화
-    if (bGrounded && m_MoveVelocity.y < 0)
+    if (m_bPurse != PurseType::NONE)
     {
-        m_MoveVelocity.y = 0.f;
-    }
-
-
-    if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
-    {
-        m_MoveVelocity.y = 0.f;
+        CalcPurse();
     }
 
     // AddVelocity 적용
@@ -287,18 +284,38 @@ void CKirbyMoveController::Move()
         m_AddVelocity = {0.f, 0.f, 0.f};
     }
 
-    // 움직임 적용
-    Vec3 Diff;
-
-    CharacterController()->Move(m_MoveVelocity * DT);
-    
+    // =========================
+    // Velocity Min / Max 확인
+    // =========================
+    // 땅에 닿은 상태면 Velocity Y값 초기화
+    if (bGrounded && m_MoveVelocity.y < 0)
+    {
+        m_MoveVelocity.y = 0.f;
+    }
 
     if (PLAYERFSM->IsHovering())
     {
-        m_HoveringHeight += Diff.y;
-    }
-}
+        // falling
+        if (m_MoveVelocity.y <= m_HoveringMinSpeed)
+        {
+            m_MoveVelocity.y = m_HoveringMinSpeed;
+        }
 
+        // check limit height
+        Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
+        
+        if (Hit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
+        {
+            //@TODO 레이어이름
+            m_MoveVelocity.y = 0.f;
+        }
+    }
+
+    // =========================
+    // 움직임 적용
+    // =========================
+    CharacterController()->Move(m_MoveVelocity * DT);
+}
 
 void CKirbyMoveController::SurfaceAlignment()
 {
@@ -343,6 +360,95 @@ void CKirbyMoveController::SurfaceAlignment()
         Vec3 Movement = {0.f, -50.f, 0.f};
 
         CharacterController()->Move(Movement * DT);
+    }
+}
+
+void CKirbyMoveController::PurseY(float _PurseSpeed, float _PurseAirTime, float _PurseContTime, float _PurseMinSpeed, float _PurseScale)
+{
+    m_bPurse = PurseType::Up;
+    m_PurseAccType = PurseAccType::AccUp;
+    float m_PurseAcc = 0.f;
+
+    m_PurseSpeed = _PurseSpeed;
+    m_PurseAirTime = _PurseAirTime;
+    m_PurseContTime = _PurseContTime;
+    m_PurseMinSpeed = _PurseMinSpeed;
+    m_PurseScale = _PurseScale;
+}
+
+void CKirbyMoveController::CalcPurse()
+{
+    if (m_bPurse == PurseType::NONE)
+    {
+        return;
+    }
+
+    float m_PurseCurSpeed = 0.f;
+    m_PurseAcc += DT;
+
+    if (m_bPurse == PurseType::Zero)
+    {
+        m_MoveVelocity.y = 0;
+
+        if (m_PurseAcc > m_PurseAirTime)
+        {
+            m_bPurse = PurseType::Down;
+            m_PurseAcc -= m_PurseAirTime;
+        }
+    }
+    else
+    {
+        // speed up
+        if (m_PurseAccType == PurseAccType::AccUp)
+        {
+            m_PurseCurSpeed = pow(2, m_PurseAcc * m_PurseScale);
+
+            if (m_PurseCurSpeed >= m_PurseSpeed)
+            {
+                m_PurseCurSpeed = m_PurseSpeed;
+                m_PurseAccType = PurseAccType::AccZero;
+                m_PurseAcc = 0.f;
+            }
+        }
+        // const velocity
+        else if (m_PurseAccType == PurseAccType::AccZero)
+        {
+            if (m_PurseAcc > m_PurseContTime)
+            {
+                m_PurseAccType = PurseAccType::AccDown;
+                m_PurseAcc -= m_PurseContTime;
+            }
+        }
+        // speed down
+        else if (m_PurseAccType == PurseAccType::AccDown)
+        {
+            m_PurseCurSpeed = m_PurseSpeed - pow(2, m_PurseAcc * m_PurseScale);
+
+            if (m_PurseCurSpeed <= m_PurseMinSpeed)
+            {
+                m_MoveVelocity.y = m_PurseMinSpeed;
+                m_PurseAccType = PurseAccType::AccUp;
+                m_PurseAcc = 0.f;
+
+                if (m_bPurse == PurseType::Up)
+                {
+                    m_bPurse = PurseType::Zero;
+                }
+                else if (m_bPurse == PurseType::Down)
+                {
+                    m_bPurse = PurseType::NONE;
+                }
+            }
+        }
+
+        if (m_bPurse == PurseType::Up)
+        {
+            m_MoveVelocity.y = m_PurseCurSpeed;
+        }
+        else if (m_bPurse == PurseType::Down)
+        {
+            m_MoveVelocity.y = -m_PurseCurSpeed;
+        }
     }
 }
 

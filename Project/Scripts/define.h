@@ -3,6 +3,8 @@
 #define PLAYER CPlayerMgr::GetPlayer()
 #define PLAYERFSM CPlayerMgr::GetPlayerFSM()
 #define PLAYERCTRL CPlayerMgr::GetPlayerCtrl()
+#define PLAYERMTRL CPlayerMgr::GetPlayerBodyMtrl()
+#define PLAYERMESH(part) CPlayerMgr::GetPlayerMeshIdx().part
 
 #define KEY_TAP_ARROW (KEY_TAP(KEY::UP) || KEY_TAP(KEY::DOWN) || KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT))
 #define KEY_PRESSED_ARROW (KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN) || KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT))

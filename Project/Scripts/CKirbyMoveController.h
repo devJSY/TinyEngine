@@ -24,6 +24,21 @@ enum class AddForceType
     VelocityChange, // 질량을 무시하고 강체에 즉각적인 속도 변화 추가
 };
 
+enum class PurseType
+{
+    NONE,
+    Zero,
+    Up,
+    Down,
+};
+
+enum class PurseAccType
+{
+    AccZero,
+    AccUp,
+    AccDown,
+};
+
 // 물체의 방향을 강제로 바꿔야하는 경우
 struct ForceDirInfo
 {
@@ -63,10 +78,24 @@ private:
 
 
     float                       m_HoveringLimitHeight;
-    float                       m_HoveringHeight;
+    float                       m_HoveringMinSpeed;
 
     float                       m_RayCastDist;
     float                       m_RotSpeed;
+
+    // =====================================
+    PurseType                   m_bPurse;
+    PurseAccType                m_PurseAccType;
+    float                       m_PurseAcc;
+    float                       m_PurseAirTime;
+    float                       m_PurseContTime;
+    float                       m_PurseMinSpeed;
+    float                       m_PurseSpeed;
+    float                       m_PurseScale;
+
+public:
+    void PurseY(float _PurseSpeed, float m_PurseAirTime = 0.5f, float _PurseContTime = 0.3f, float m_PurseMinSpeed = 0.f, float _PurseScale = 5.f);
+    void CalcPurse();
 
 private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
@@ -78,6 +107,7 @@ public:
 public:
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
+    Vec3 GetVelocity() const { return m_MoveVelocity; }
     float GetGravity() const { return m_Gravity; }
     float GetGuard() const { return m_bGuard; }
 
@@ -90,9 +120,9 @@ public:
 
     void SetGuard(bool _Guard) { m_bGuard = _Guard; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
+    void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
 
-    void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
     void Jump() { m_bJump = true; }
