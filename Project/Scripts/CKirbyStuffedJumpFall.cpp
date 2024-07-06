@@ -11,8 +11,7 @@ CKirbyStuffedJumpFall::~CKirbyStuffedJumpFall()
 
 void CKirbyStuffedJumpFall::tick()
 {
-    // PLAY_CURSTATE(StuffedJumpFall)
-
+    // Change State
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         ChangeState(L"ATTACK");
@@ -25,11 +24,12 @@ void CKirbyStuffedJumpFall::tick()
 
 void CKirbyStuffedJumpFall::Enter()
 {
-    // PLAY_CURSTATE(StuffedJumpFall)
     PLAYER->Animator()->Play(KIRBYANIM(L"StuffedFall"));
+
+    PLAYERCTRL->LockJump();
 }
 
 void CKirbyStuffedJumpFall::Exit()
 {
-    // PLAY_CURSTATE(StuffedJumpFall)
+    PLAYERCTRL->UnlockJump();
 }

@@ -27,7 +27,7 @@ void CKirbyRun::tick()
         {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                ChangeState(L"ATTACK_CHARGE1");
+                ChangeState(L"ATTACK_CHARGE1_START");
             }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {

@@ -7,6 +7,7 @@ class CKirbyAbility_Normal : public CKirbyAbility
 {
 private:
     bool m_bFrmEnter;
+    float m_SavedSpeed;
 
 public:
     // RUN

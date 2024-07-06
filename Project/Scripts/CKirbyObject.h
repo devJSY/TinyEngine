@@ -42,12 +42,12 @@ public:
     virtual void JumpFallExit(){};
 
     virtual void Landing(){};
-    virtual void LandingEnter(){};
-    virtual void LandingExit(){};
+    virtual void LandingEnter();
+    virtual void LandingExit();
 
     virtual void LandingEnd(){};
-    virtual void LandingEndEnter(){};
-    virtual void LandingEndExit(){};
+    virtual void LandingEndEnter();
+    virtual void LandingEndExit();
 
     // virtual void Hovering();
 

@@ -8,7 +8,7 @@
 CKirbyAbility_Normal::CKirbyAbility_Normal()
     : m_bFrmEnter(true)
 {
-    m_Charge1Time = 3.f;
+    m_Charge1Time = 2.f;
 }
 
 CKirbyAbility_Normal::~CKirbyAbility_Normal()
@@ -55,8 +55,8 @@ void CKirbyAbility_Normal::Attack()
 {
     if (GET_CURCLIP_FRM == 3 && m_bFrmEnter)
     {
-        // @TODO Material 이름으로 받아오기
-        PLAYER->GetRenderComponent()->SetMaterial(nullptr, 1);
+        CPlayerMgr::ClearBodyMtrl();
+        CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
         m_bFrmEnter = false;
 
         // fire bullet
@@ -89,11 +89,22 @@ void CKirbyAbility_Normal::AttackEnter()
         PLAYER->Animator()->Play(KIRBYANIM(L"SpitAir"), false);
     }
 
+    PLAYERCTRL->LockMove();
+    PLAYERCTRL->LockJump();
+    PLAYERCTRL->LockDirection();
+
     m_bFrmEnter = true;
 }
 
 void CKirbyAbility_Normal::AttackExit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
 }
 
 // ===============
@@ -107,11 +118,17 @@ void CKirbyAbility_Normal::AttackCharge1()
 
 void CKirbyAbility_Normal::AttackCharge1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"));
+    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"), true, 2.f);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(4.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge1Exit()
 {
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // start
@@ -123,14 +140,19 @@ void CKirbyAbility_Normal::AttackCharge1StartEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"VacuumStart2"), false);
 
-    // @TODO Material 이름으로 받아오기 & material key값 변경
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 6);
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
-    // @TODO 속도조절
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge1StartExit()
 {
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // end
@@ -142,14 +164,19 @@ void CKirbyAbility_Normal::AttackCharge1EndEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"VacuumEnd"), false);
 
-    // @TODO Material 이름으로 받아오기 & material key값 변경
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 0);
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 6);
-    // @TODO 속도조절
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge1EndExit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // Run
@@ -159,11 +186,17 @@ void CKirbyAbility_Normal::AttackCharge1Run()
 
 void CKirbyAbility_Normal::AttackCharge1RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"));
+    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"), true, 2.f);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge1RunExit()
 {
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // ===============
@@ -176,16 +209,20 @@ void CKirbyAbility_Normal::AttackCharge2()
 
 void CKirbyAbility_Normal::AttackCharge2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"));
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"), true, 2.f);
+    CPlayerMgr::SetPlayerFace(FaceType::Frown);
 
-    // @TODO Material 이름으로 받아오기 & material key값 변경
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 6);
-    // @TODO 속도조절
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge2Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // start
@@ -196,10 +233,19 @@ void CKirbyAbility_Normal::AttackCharge2Start()
 void CKirbyAbility_Normal::AttackCharge2StartEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleStart"), false);
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge2StartExit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // run
@@ -209,9 +255,15 @@ void CKirbyAbility_Normal::AttackCharge2Run()
 
 void CKirbyAbility_Normal::AttackCharge2RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"));
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"), true, 2.f);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge2RunExit()
 {
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }

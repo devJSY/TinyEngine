@@ -24,9 +24,10 @@ CPlayerMgr::~CPlayerMgr()
 
 void CPlayerMgr::begin()
 {
+    m_PlayerBodyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_BodyC.mtrl");
+
     //@TODO ·¹ÀÌ¾î
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", 3);
-    m_PlayerBodyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_BodyC.mtrl");
     SetPlayer(pPlayer);
 }
 
@@ -85,6 +86,20 @@ void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
 void CPlayerMgr::SetPlayerMtrl(UINT _Idx)
 {
     m_PlayerObj->GetRenderComponent()->SetMaterial(m_PlayerBodyMtrl, _Idx);
+}
+
+void CPlayerMgr::SetPlayerFace(FaceType _Type)
+{
+    if (m_PlayerBodyMtrl == nullptr)
+        return;
+
+    wstring filepath = L"fbx\\Characters\\Kirby\\Base\\";
+    wstring albedo = filepath + L"KirbyEye.0" + to_wstring((UINT)_Type) + L".png";
+    wstring mask = filepath + L"KirbyEyeMask.0" + to_wstring((UINT)_Type) + L".png";
+    wstring normal = filepath + L"KirbyEyeNormal.0" + to_wstring((UINT)_Type) + L".png";
+    m_PlayerBodyMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(albedo));
+    m_PlayerBodyMtrl->SetTexParam(TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(mask));
+    m_PlayerBodyMtrl->SetTexParam(TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(normal));
 }
 
 void CPlayerMgr::ClearBodyMtrl()

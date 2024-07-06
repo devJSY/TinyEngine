@@ -313,7 +313,7 @@ void CKirbyMoveController::Move()
     // =========================
     // 움직임 적용
     // =========================
-    CharacterController()->Move(m_MoveVelocity * DT);
+    CharacterController()->Move(m_MoveVelocity * GetOwner()->Transform()->GetRelativeScale() * DT);
 }
 
 void CKirbyMoveController::SurfaceAlignment()

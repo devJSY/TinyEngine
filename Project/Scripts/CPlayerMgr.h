@@ -6,6 +6,17 @@ class CUnitScript;
 class CKirbyFSM;
 class CKirbyMoveController;
 
+enum class FaceType
+{
+    Normal,
+    Half,
+    Close,
+    Frown,
+    UpTail,
+    Surprised,
+    DownTail,
+};
+
 struct KirbyMeshIdx
 {
     UINT BodyNormal;
@@ -39,6 +50,7 @@ public:
 public:
     void SetPlayer(CGameObject* _PlayerObj);
     static void SetPlayerMtrl(UINT _Idx);
+    static void SetPlayerFace(FaceType _Type);
     static void ClearBodyMtrl();
     static void ClearMouthMtrl();
 

@@ -46,11 +46,11 @@ public:
 
     virtual void Landing(){};
     virtual void LandingEnter();
-    virtual void LandingExit(){};
+    virtual void LandingExit();
 
     virtual void LandingEnd(){};
     virtual void LandingEndEnter();
-    virtual void LandingEndExit(){};
+    virtual void LandingEndExit();
 
     //virtual void Hovering();
 

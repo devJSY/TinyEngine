@@ -46,52 +46,50 @@ struct ForceDirInfo
     Vec3 Dir; // 바라봐야할 방향(World 좌표계)
 };
 
-
 class CKirbyMoveController : public CScript
 {
 private:
     // 입력
-    Vec3                        m_Input;
-    bool                        m_bJump;
-    bool                        m_bGuard;
+    Vec3 m_Input;
+    bool m_bJump;
+    bool m_bGuard;
 
     // Lock
-    bool                        m_bMoveLock;
-    bool                        m_bJumpLock;
-    bool                        m_bDirLock;
+    bool m_bMoveLock;
+    bool m_bJumpLock;
+    bool m_bDirLock;
 
     // 방향
-    Vec3                        m_CurDir;
-    Vec3                        m_MoveDir;
-    Vec3                        m_TowardDir;
-    Vec3                        m_GroundNormal;
-    vector<ForceDirInfo>        m_ForceDirInfos;
+    Vec3 m_CurDir;
+    Vec3 m_MoveDir;
+    Vec3 m_TowardDir;
+    Vec3 m_GroundNormal;
+    vector<ForceDirInfo> m_ForceDirInfos;
 
     // 물리
-    Vec3                        m_MoveVelocity;
-    Vec3                        m_AddVelocity;
-    Vec3                        m_Accel;
-    float                       m_Speed;
-    float                       m_Friction; // 마찰력 계수
-    float                       m_JumpPower;
-    float                       m_Gravity;
+    Vec3 m_MoveVelocity;
+    Vec3 m_AddVelocity;
+    Vec3 m_Accel;
+    float m_Speed;
+    float m_Friction; // 마찰력 계수
+    float m_JumpPower;
+    float m_Gravity;
 
+    float m_HoveringLimitHeight;
+    float m_HoveringMinSpeed;
 
-    float                       m_HoveringLimitHeight;
-    float                       m_HoveringMinSpeed;
-
-    float                       m_RayCastDist;
-    float                       m_RotSpeed;
+    float m_RayCastDist;
+    float m_RotSpeed;
 
     // =====================================
-    PurseType                   m_bPurse;
-    PurseAccType                m_PurseAccType;
-    float                       m_PurseAcc;
-    float                       m_PurseAirTime;
-    float                       m_PurseContTime;
-    float                       m_PurseMinSpeed;
-    float                       m_PurseSpeed;
-    float                       m_PurseScale;
+    PurseType m_bPurse;
+    PurseAccType m_PurseAccType;
+    float m_PurseAcc;
+    float m_PurseAirTime;
+    float m_PurseContTime;
+    float m_PurseMinSpeed;
+    float m_PurseSpeed;
+    float m_PurseScale;
 
 public:
     void PurseY(float _PurseSpeed, float m_PurseAirTime = 0.5f, float _PurseContTime = 0.3f, float m_PurseMinSpeed = 0.f, float _PurseScale = 5.f);
@@ -105,12 +103,10 @@ public:
     virtual void tick() override;
 
 public:
-    Vec3 GetInput() const { return m_Input; }
-    Vec3 GetMoveDir() const { return m_MoveDir; }
-    Vec3 GetVelocity() const { return m_MoveVelocity; }
-    float GetGravity() const { return m_Gravity; }
-    float GetGuard() const { return m_bGuard; }
+    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+    void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
 
+public:
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
     void LockJump() { m_bJumpLock = true; }
@@ -118,16 +114,20 @@ public:
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
 
-    void SetGuard(bool _Guard) { m_bGuard = _Guard; }
-    void SetFriction(float _Friction) { m_Friction = _Friction; }
+    void Jump() { m_bJump = true; }
     void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
-    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
-
+    void SetGuard(bool _Guard) { m_bGuard = _Guard; }
+    void SetSpeed(float _Speed) { m_Speed = _Speed; }
+    void SetFriction(float _Friction) { m_Friction = _Friction; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
-    void Jump() { m_bJump = true; }
-    void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
-   
+    Vec3 GetInput() const { return m_Input; }
+    Vec3 GetMoveDir() const { return m_MoveDir; }
+    Vec3 GetVelocity() const { return m_MoveVelocity; }
+    float GetSpeed() const { return m_Speed; }
+    float GetGravity() const { return m_Gravity; }
+    float GetGuard() const { return m_bGuard; }
+
 private:
     void Input();
     void SetDir();
