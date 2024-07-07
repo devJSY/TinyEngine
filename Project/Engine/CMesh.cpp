@@ -309,7 +309,7 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         double FrameRate = FbxTime::GetFrameRate(tClip.eMode);
         tClip.dStartTime = tClip.iStartFrame / FrameRate;
         tClip.dEndTime = tClip.iEndFrame / FrameRate;
-        tClip.dTimeLength = (1. / FrameRate) + tClip.dEndTime - tClip.dStartTime;
+        tClip.dTimeLength = tClip.dEndTime - tClip.dStartTime;
 
         pMesh->m_vecAnimClip.push_back(tClip);
 

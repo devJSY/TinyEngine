@@ -138,18 +138,18 @@ void CAnimator::finaltick()
         if (m_bPlay)
         {
             m_vecClipUpdateTime[m_CurClipIdx] += DT * m_PlaySpeed;
-        }
 
-        if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
-        {
-            // 반복 재생
-            if (m_bRepeat)
+            if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
             {
-                m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
-            }
-            else
-            {
-                m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+                // 반복 재생
+                if (m_bRepeat)
+                {
+                    m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
+                }
+                else
+                {
+                    m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+                }
             }
         }
 
@@ -239,18 +239,18 @@ void CAnimator::finaltick_ModelEditor()
     if (m_bPlay)
     {
         m_vecClipUpdateTime[m_CurClipIdx] += DT_ENGINE * m_PlaySpeed;
-    }
 
-    if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
-    {
-        // 반복 재생
-        if (m_bRepeat)
+        if (m_vecClipUpdateTime[m_CurClipIdx] >= m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength)
         {
-            m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
-        }
-        else
-        {
-            m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+            // 반복 재생
+            if (m_bRepeat)
+            {
+                m_vecClipUpdateTime[m_CurClipIdx] = 0.f;
+            }
+            else
+            {
+                m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+            }
         }
     }
 

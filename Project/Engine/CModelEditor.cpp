@@ -999,7 +999,7 @@ void CModelEditor::DrawAnimation()
 
                 // Frame Index
                 int ClipFrameIdx = pAnimator->GetClipFrameIndex();
-                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &ClipFrameIdx, 0, CurClip.iFrameLength))
+                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &ClipFrameIdx, 0, CurClip.iFrameLength - 1))
                 {
                     pAnimator->SetClipFrameIndex(ClipFrameIdx);
                 }
