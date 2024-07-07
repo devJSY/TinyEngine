@@ -1012,6 +1012,10 @@ void CModelEditor::DrawAnimation()
                 if (ImGui::Checkbox(ImGui_LabelPrefix("Repeat").c_str(), &bRepeat))
                     pAnimator->SetRepeat(bRepeat);
 
+                bool bReverse = pAnimator->IsReverse();
+                if (ImGui::Checkbox(ImGui_LabelPrefix("Reverse").c_str(), &bReverse))
+                    pAnimator->SetReverse(bReverse);
+
                 float PlaySpeed = pAnimator->GetPlaySpeed();
                 if (ImGui::DragFloat(ImGui_LabelPrefix("Play Speed").c_str(), &PlaySpeed, 0.01f, 0.f, 100.f))
                     pAnimator->SetPlaySpeed(PlaySpeed);

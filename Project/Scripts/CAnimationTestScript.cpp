@@ -12,22 +12,22 @@ CAnimationTestScript::~CAnimationTestScript()
 
 void CAnimationTestScript::tick()
 {
-    /*if (nullptr == Animator())
+    if (nullptr == Animator())
         return;
 
     if (KEY_TAP(KEY::NUM1))
     {
-        Animator()->Play(L"Armature|Move", true);
+        Animator()->Play(L"Armature|Walk", true, true, 1.f);
     }
     if (KEY_TAP(KEY::NUM2))
     {
-        Animator()->Play(L"Armature|Wait", true);
+        Animator()->Play(L"Armature|Wait", true, true, 1.f);
     }
 
     if (KEY_TAP(KEY::F))
     {
         LOG(Log, "%d", Animator()->IsFinish())
-    }*/
+    }
 }
 
 void CAnimationTestScript::OnCollisionEnter(CCollider* _OtherCollider)

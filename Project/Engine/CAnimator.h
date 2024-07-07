@@ -21,6 +21,7 @@ private:
 
     bool m_bPlay;      // 애니메이션 재생 여부
     bool m_bRepeat;    // 반복 재생 여부
+    bool m_bReverse;   // 역재생 여부
     float m_PlaySpeed; // 재생 속도
 
     double m_FrameRate; // Animation FPS
@@ -42,6 +43,7 @@ private:
     double m_ChangeDuration;
     int m_NextClipIdx;
     bool m_bNextRepeat;
+    bool m_bNextReverse;
     float m_NextPlaySpeed;
 
 public:
@@ -53,7 +55,7 @@ public:
 
 public:
     int FindClipIndex(const wstring& _strClipName);
-    void Play(const wstring& _strClipName, bool _bRepeat = true, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
+    void Play(const wstring& _strClipName, bool _bRepeat = true, bool _bReverse = false, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
     bool IsValid();
@@ -72,6 +74,9 @@ public:
 
     bool IsRepeat() const { return m_bRepeat; }
     void SetRepeat(bool _bRepeat) { m_bRepeat = _bRepeat; }
+
+    bool IsReverse() const { return m_bReverse; }
+    void SetReverse(bool _bReverse) { m_bReverse = _bReverse; }
 
     float GetPlaySpeed() const { return m_PlaySpeed; }
     void SetPlaySpeed(float _Speed) { m_PlaySpeed = _Speed; }
