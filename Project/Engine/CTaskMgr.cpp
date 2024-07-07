@@ -251,7 +251,7 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
         pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetRelativeRotation() - pDestObj->Transform()->GetWorldRotation());
 
         pDestObj->AddChild(pSrcObj);
-        pDestObj->SetBoneSocket(BoneSocket);
+        pSrcObj->SetBoneSocket(BoneSocket);
     }
 }
 

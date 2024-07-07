@@ -13,7 +13,7 @@ public:
 
     static CLevel* LoadLevel(const wstring& _LevelFileName);
     static void LoadLayer(CLayer* _Layer, FILE* _File);
-    static CGameObject* LoadGameObject(FILE* _File);
+    static CGameObject* LoadGameObject(CGameObject* _ParentObj, FILE* _File);
 
 public:
     static const wstring& GetLevelExtension() { return Level_extension; }
