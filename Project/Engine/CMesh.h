@@ -28,6 +28,7 @@ private:
     // Animator 정보
     vector<tMTAnimClip> m_vecAnimClip;
     vector<tMTBone> m_vecBones;
+    vector<tBoneSocket*> vecBoneSocket; // Bone이 보유한 모든 Bone Socket
 
     CStructuredBuffer* m_pBoneFrameData; // 전체 본 프레임 정보(크기, 이동, 회전) (프레임 개수만큼)
     CStructuredBuffer* m_pBoneOffset;    // 각 뼈의 offset 행렬(각 뼈의 위치를 되돌리는 행렬) (1행 짜리)
@@ -45,11 +46,16 @@ public:
 public:
     bool IsSkeletalMesh() const { return !m_vecBones.empty(); }
 
+    const vector<tMTAnimClip>* GetAnimClip() const { return &m_vecAnimClip; }
+    bool IsAnimMesh() const { return !m_vecAnimClip.empty(); }
+
     const vector<tMTBone>* GetBones() const { return &m_vecBones; }
     UINT GetBoneCount() const { return (UINT)m_vecBones.size(); }
 
-    const vector<tMTAnimClip>* GetAnimClip() const { return &m_vecAnimClip; }
-    bool IsAnimMesh() const { return !m_vecAnimClip.empty(); }
+    void AddBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket);
+    void RemoveBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket);
+
+    const vector<tBoneSocket*>& GetvecBoneSocket() const { return vecBoneSocket; }
 
     CStructuredBuffer* GetBoneFrameDataBuffer() const { return m_pBoneFrameData; } // 전체 본 프레임 정보
     CStructuredBuffer* GetBoneOffsetBuffer() const { return m_pBoneOffset; }       // 각 뼈의 offset 행렬

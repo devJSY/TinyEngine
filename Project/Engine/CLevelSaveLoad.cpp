@@ -359,14 +359,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
         case COMPONENT_TYPE::CAPSULECOLLIDER:
             pComponent = new CCapsuleCollider;
             break;
-        case COMPONENT_TYPE::MESHCOLLIDER: {
+        case COMPONENT_TYPE::MESHCOLLIDER:
             pComponent = new CMeshCollider;
-            if (nullptr != pObject->MeshRender())
-            {
-                pObject->MeshCollider()->SetMesh(pObject->MeshRender()->GetMesh());
-            }
-        }
-        break;
+            break;
         case COMPONENT_TYPE::CHARACTERCONTROLLER:
             pComponent = new CCharacterController;
             break;
@@ -399,6 +394,20 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
         // 해당 컴포넌트가 저장한 데이터를 로드
         pObject->AddComponent(pComponent);
         pComponent->LoadFromLevelFile(_File);
+    }
+
+    // 컴포넌트 매쉬 설정
+    if (nullptr != pObject->MeshRender())
+    {
+        if (nullptr != pObject->Animator())
+        {
+            pObject->Animator()->SetSkeletalMesh(pObject->MeshRender()->GetMesh());
+        }
+
+        if (nullptr != pObject->MeshCollider())
+        {
+            pObject->MeshCollider()->SetMesh(pObject->MeshRender()->GetMesh());
+        }
     }
 
     // 스크립트 개수 읽기

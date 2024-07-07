@@ -1,10 +1,15 @@
 #include "pch.h"
 #include "CMesh.h"
 
+#include "CAssetMgr.h"
+#include "CLevelMgr.h"
+
+#include "CLevel.h"
+#include "CLayer.h"
+
 #include "CDevice.h"
 #include "CInstancingBuffer.h"
 
-#include "CAssetMgr.h"
 #include "CTexture.h"
 
 CMesh::CMesh(bool _bEngineAsset)
@@ -16,6 +21,7 @@ CMesh::CMesh(bool _bEngineAsset)
     , m_vecIdxInfo{}
     , m_vecAnimClip{}
     , m_vecBones{}
+    , vecBoneSocket{}
     , m_pBoneFrameData(nullptr)
     , m_pBoneOffset(nullptr)
 {
@@ -76,6 +82,64 @@ void CMesh::UpdateData_Inst(UINT _iSubset)
 
     CONTEXT->IASetVertexBuffers(0, 2, arrBuffer, iStride, iOffset);
     CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
+}
+
+void CMesh::AddBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket)
+{
+    if (_BoneIndex <= -1 || _BoneIndex >= m_vecBones.size() || nullptr == _BoneSocket)
+    {
+        return;
+    }
+
+    _BoneSocket->BoneIndex = _BoneIndex;
+    m_vecBones[_BoneIndex].vecBoneSocket.push_back(_BoneSocket);
+    vecBoneSocket.push_back(_BoneSocket);
+}
+
+void CMesh::RemoveBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket)
+{
+    if (_BoneIndex <= -1 || _BoneIndex >= m_vecBones.size() || nullptr == _BoneSocket)
+    {
+        return;
+    }
+
+    m_vecBones[_BoneIndex].vecBoneSocket.erase(
+        remove(m_vecBones[_BoneIndex].vecBoneSocket.begin(), m_vecBones[_BoneIndex].vecBoneSocket.end(), _BoneSocket),
+        m_vecBones[_BoneIndex].vecBoneSocket.end());
+
+    vecBoneSocket.erase(remove(vecBoneSocket.begin(), vecBoneSocket.end(), _BoneSocket), vecBoneSocket.end());
+
+    // 레벨의 모든 오브젝트를 순회하여 해당 BoneSocket을 참조하고 있던 자식오브젝트 해제
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+
+        for (const auto& ParentObj : vecParentObj)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(ParentObj);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+
+                for (size_t i = 0; i < vecChildObj.size(); ++i)
+                {
+                    queue.push_back(vecChildObj[i]);
+                }
+
+                // BoneSocket 참조 해제
+                if (pObject->GetBoneSocket() == _BoneSocket)
+                {
+                    pObject->SetBoneSocket(nullptr);
+                }
+            }
+        }
+    }
 }
 
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
@@ -588,6 +652,7 @@ int CMesh::Load(const wstring& _strFilePath)
             fread(&pBoneSocket->RelativeScale, sizeof(Vec3), 1, pFile);
             fread(&pBoneSocket->matSocket, sizeof(Matrix), 1, pFile);
             m_vecBones[i].vecBoneSocket[j] = pBoneSocket;
+            vecBoneSocket.push_back(pBoneSocket);
         }
     }
 

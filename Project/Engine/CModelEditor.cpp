@@ -755,10 +755,11 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
             static wstring SocketName = L"TestSocket";
             static int SocketNameNumber = -1;
             ++SocketNameNumber;
-            _vecBone[_BoneIdx].vecBoneSocket.push_back(
-                new tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)});
+            tBoneSocket* BoneSocket =
+                new tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)};
 
-            m_SelectedBoneSocket = _vecBone[_BoneIdx].vecBoneSocket.back();
+            m_ModelObj->Animator()->GetSkeletalMesh()->AddBoneSocket(_BoneIdx, BoneSocket);
+            m_SelectedBoneSocket = BoneSocket;
         }
 
         ImGui::EndPopup();
@@ -813,7 +814,7 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
                     m_SelectedBoneSocket = nullptr;
                 }
 
-                _Bone.vecBoneSocket.erase(_Bone.vecBoneSocket.begin() + i);
+                m_ModelObj->Animator()->GetSkeletalMesh()->RemoveBoneSocket(_Bone.iIdx, pBoneSocket);
                 --i;
 
                 // BoneSocket에 부착된 오브젝트 삭제

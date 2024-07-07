@@ -80,6 +80,18 @@ CAnimator::~CAnimator()
         delete m_BoneFinalMatBuffer;
         m_BoneFinalMatBuffer = nullptr;
     }
+
+    // 자식 오브젝트가 참조하고 있던 본 소켓 해제
+    if (IsValid())
+    {
+        for (CGameObject* pChild : GetOwner()->GetChildObject())
+        {
+            if (nullptr != pChild->GetBoneSocket())
+            {
+                pChild->SetBoneSocket(nullptr);
+            }
+        }
+    }
 }
 
 void CAnimator::finaltick()
@@ -196,24 +208,19 @@ void CAnimator::UpdateData()
         m_BoneTransformMatBuffer->GetData(m_BoneTransformMat.data(), BoneCount);
 
         // Bone Socket 행렬 생성
-        vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
-        for (UINT i = 0; i < BoneCount; ++i)
+        vector<tBoneSocket*>& vecBoneSocket = const_cast<vector<tBoneSocket*>&>(m_SkeletalMesh->GetvecBoneSocket());
+        for (tBoneSocket* pBoneSocket : vecBoneSocket)
         {
-            for (tBoneSocket* pBoneSocket : vecBones[i].vecBoneSocket)
-            {
-                pBoneSocket->BoneIndex = i;
+            Matrix matScale = XMMatrixScaling(pBoneSocket->RelativeScale.x, pBoneSocket->RelativeScale.y, pBoneSocket->RelativeScale.z);
 
-                Matrix matScale = XMMatrixScaling(pBoneSocket->RelativeScale.x, pBoneSocket->RelativeScale.y, pBoneSocket->RelativeScale.z);
+            Matrix matRotX = XMMatrixRotationX(pBoneSocket->RelativeRotation.x);
+            Matrix matRotY = XMMatrixRotationY(pBoneSocket->RelativeRotation.y);
+            Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
 
-                Matrix matRotX = XMMatrixRotationX(pBoneSocket->RelativeRotation.x);
-                Matrix matRotY = XMMatrixRotationY(pBoneSocket->RelativeRotation.y);
-                Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
+            Matrix matTranslation =
+                XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
 
-                Matrix matTranslation =
-                    XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
-
-                pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
-            }
+            pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
         }
 
         m_bFinalMatUpdate = true;
@@ -287,24 +294,19 @@ void CAnimator::finaltick_ModelEditor()
     m_BoneTransformMatBuffer->GetData(m_BoneTransformMat.data(), BoneCount);
 
     // Bone Socket 행렬 생성
-    vector<tMTBone>& vecBones = *const_cast<vector<tMTBone>*>(m_SkeletalMesh->GetBones());
-    for (UINT i = 0; i < BoneCount; ++i)
+    vector<tBoneSocket*>& vecBoneSocket = const_cast<vector<tBoneSocket*>&>(m_SkeletalMesh->GetvecBoneSocket());
+    for (tBoneSocket* pBoneSocket : vecBoneSocket)
     {
-        for (tBoneSocket* pBoneSocket : vecBones[i].vecBoneSocket)
-        {
-            pBoneSocket->BoneIndex = i;
+        Matrix matScale = XMMatrixScaling(pBoneSocket->RelativeScale.x, pBoneSocket->RelativeScale.y, pBoneSocket->RelativeScale.z);
 
-            Matrix matScale = XMMatrixScaling(pBoneSocket->RelativeScale.x, pBoneSocket->RelativeScale.y, pBoneSocket->RelativeScale.z);
+        Matrix matRotX = XMMatrixRotationX(pBoneSocket->RelativeRotation.x);
+        Matrix matRotY = XMMatrixRotationY(pBoneSocket->RelativeRotation.y);
+        Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
 
-            Matrix matRotX = XMMatrixRotationX(pBoneSocket->RelativeRotation.x);
-            Matrix matRotY = XMMatrixRotationY(pBoneSocket->RelativeRotation.y);
-            Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
+        Matrix matTranslation =
+            XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
 
-            Matrix matTranslation =
-                XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
-
-            pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
-        }
+        pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
     }
 }
 
