@@ -495,12 +495,12 @@ void CModelEditor::DrawDetails()
                 // .fbx 포맷이 아닌 경우
                 if (L".fbx" != filePath.extension())
                 {
-                    MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_OK);
+                    MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
                 }
                 // 경로에 Content 폴더가 포함되지 않은 경우
                 else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
                 {
-                    MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_OK);
+                    MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
                 }
                 else
                 {
@@ -544,11 +544,11 @@ void CModelEditor::DrawDetails()
                     Ptr<CMesh> pMesh = m_ModelObj->Animator()->GetSkeletalMesh();
                     if (S_OK == pMesh->Save(pMesh->GetKey()))
                     {
-                        MessageBox(nullptr, L"Mesh 저장 성공!", L"Save Mesh", MB_OK);
+                        MessageBox(nullptr, L"Mesh 저장 성공!", L"Save Mesh", MB_ICONASTERISK);
                     }
                     else
                     {
-                        MessageBox(nullptr, L"Mesh 저장 실패!", L"Save Mesh", MB_OK);
+                        MessageBox(nullptr, L"Mesh 저장 실패!", L"Save Mesh", MB_ICONHAND);
                     }
                 }
             }
@@ -668,15 +668,15 @@ void CModelEditor::DrawDetails()
             ImGui_InputText("Bone Name",
                             ToString(m_ModelObj->Animator()->GetSkeletalMesh()->GetBones()->at(m_SelectedBoneSocket->BoneIndex).strBoneName).c_str());
 
-            ImGui_DrawVec3Control("Relative Location", m_SelectedBoneSocket->RelativeLocation, 1.f);
+            ImGui_DrawVec3Control("Relative Location", m_SelectedBoneSocket->RelativeLocation, 1.f, 0.f, 0.f, 0.f, 200.f);
 
             Vec3 rot = m_SelectedBoneSocket->RelativeRotation;
             rot.ToDegree();
-            ImGui_DrawVec3Control("Relative Rotation", rot, DirectX::XMConvertToRadians(15.f));
+            ImGui_DrawVec3Control("Relative Rotation", rot, DirectX::XMConvertToRadians(15.f), 0.f, 0.f, 0.f, 200.f);
             rot.ToRadian();
             m_SelectedBoneSocket->RelativeRotation = rot;
 
-            ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
+            ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f);
 
             ImGui::TreePop();
         }
