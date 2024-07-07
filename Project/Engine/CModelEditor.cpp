@@ -281,6 +281,11 @@ void CModelEditor::DrawViewport()
     if (nullptr != m_ModelObj)
     {
         m_ModelObj->render(DepthOnlyMtrl);
+
+        for (CGameObject* pChild : m_ModelObj->GetChildObject())
+        {
+            pChild->render(DepthOnlyMtrl);
+        }
     }
 
     CONTEXT->OMSetRenderTargets(0, NULL, NULL);
