@@ -10,33 +10,10 @@ enum class ForceDirType
     END,
 };
 
-enum class DodgeType
-{
-    FRONT,
-    BACK,
-    RIGHT,
-    LEFT,
-};
-
 enum class AddForceType
 {
     Acceleration,   // 질량을 무시하고 강체에 즉각적인 가속도 추가
     VelocityChange, // 질량을 무시하고 강체에 즉각적인 속도 변화 추가
-};
-
-enum class PurseType
-{
-    NONE,
-    Zero,
-    Up,
-    Down,
-};
-
-enum class PurseAccType
-{
-    AccZero,
-    AccUp,
-    AccDown,
 };
 
 // 물체의 방향을 강제로 바꿔야하는 경우
@@ -50,50 +27,39 @@ class CKirbyMoveController : public CScript
 {
 private:
     // 입력
-    Vec3 m_Input;
-    bool m_bJump;
-    bool m_bGuard;
+    Vec3                        m_Input;
+    bool                        m_bJump;
+    bool                        m_bActiveFriction;
 
     // Lock
-    bool m_bMoveLock;
-    bool m_bJumpLock;
-    bool m_bDirLock;
+    bool                        m_bMoveLock;
+    bool                        m_bJumpLock;
+    bool                        m_bDirLock;
 
     // 방향
-    Vec3 m_CurDir;
-    Vec3 m_MoveDir;
-    Vec3 m_TowardDir;
-    Vec3 m_GroundNormal;
-    vector<ForceDirInfo> m_ForceDirInfos;
+    Vec3                        m_CurDir;
+    Vec3                        m_MoveDir;
+    Vec3                        m_TowardDir;
+    Vec3                        m_GroundNormal;
+    vector<ForceDirInfo>        m_ForceDirInfos;
 
     // 물리
-    Vec3 m_MoveVelocity;
-    Vec3 m_AddVelocity;
-    Vec3 m_Accel;
-    float m_Speed;
-    float m_Friction; // 마찰력 계수
-    float m_JumpPower;
-    float m_Gravity;
+    Vec3                        m_MoveVelocity;
+    Vec3                        m_AddVelocity;
+    Vec3                        m_Accel;
+    float                       m_Speed;
+    float                       m_Friction; // 마찰력 계수
+    float                       m_JumpPower;
+    float                       m_Gravity;
 
-    float m_HoveringLimitHeight;
-    float m_HoveringMinSpeed;
+    float                       m_HoveringLimitHeight;
+    float                       m_HoveringMinSpeed;
 
-    float m_RayCastDist;
-    float m_RotSpeed;
+    float                       m_RayCastDist;
+    float                       m_RotSpeed;
 
-    // =====================================
-    PurseType m_bPurse;
-    PurseAccType m_PurseAccType;
-    float m_PurseAcc;
-    float m_PurseAirTime;
-    float m_PurseContTime;
-    float m_PurseMinSpeed;
-    float m_PurseSpeed;
-    float m_PurseScale;
+    float                       m_HoveringHeight;
 
-public:
-    void PurseY(float _PurseSpeed, float m_PurseAirTime = 0.5f, float _PurseContTime = 0.3f, float m_PurseMinSpeed = 0.f, float _PurseScale = 5.f);
-    void CalcPurse();
 
 private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
@@ -101,10 +67,6 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
-
-public:
-    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
-    void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
 
 public:
     void LockMove() { m_bMoveLock = true; }
@@ -115,10 +77,17 @@ public:
     void UnlockDirection() { m_bDirLock = false; }
 
     void Jump() { m_bJump = true; }
-    void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
-    void SetGuard(bool _Guard) { m_bGuard = _Guard; }
+    void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
+  
+
+    void SetGuard(bool _Guard) { m_bActiveFriction = _Guard; }
     void SetSpeed(float _Speed) { m_Speed = _Speed; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
+    void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
+    void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
+    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+
+    void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
     Vec3 GetInput() const { return m_Input; }
@@ -126,7 +95,7 @@ public:
     Vec3 GetVelocity() const { return m_MoveVelocity; }
     float GetSpeed() const { return m_Speed; }
     float GetGravity() const { return m_Gravity; }
-    float GetGuard() const { return m_bGuard; }
+    float GetGuard() const { return m_bActiveFriction; }
 
 private:
     void Input();
