@@ -418,6 +418,11 @@ void COutliner::DrawNode(CGameObject* obj)
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
                 GamePlayStatic::AddChildObject(obj, pPrefab->Instantiate());
             }
+            else if (L".mdat" == AssetPath.extension())
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath);
+                GamePlayStatic::AddChildObject(obj, pMeshData->Instantiate());
+            }
         }
 
         ImGui::EndDragDropTarget();
@@ -466,9 +471,83 @@ void COutliner::DrawNode(CGameObject* obj)
 
     if (opened)
     {
-        // 자식 오브젝트 DrawNode() 호출
         const vector<CGameObject*>& objs = obj->GetChildObject();
-        std::for_each(objs.begin(), objs.end(), [&](CGameObject* obj) { DrawNode(obj); });
+
+        // BoneSocket
+        if (nullptr != obj->Animator() && obj->Animator()->IsValid())
+        {
+            // Bone Socket 행렬 생성
+            const vector<tBoneSocket*>& vecBoneSocket = obj->Animator()->GetSkeletalMesh()->GetvecBoneSocket();
+            for (tBoneSocket* BoneSocket : vecBoneSocket)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6667f, 0.6667f, 1.f, 1.f));
+                bool BoneSocketOpened =
+                    ImGui::TreeNodeEx((void*)(intptr_t)BoneSocket, ImGuiTreeNodeFlags_OpenOnArrow, ToString(BoneSocket->SoketName).c_str());
+                ImGui::PopStyleColor();
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_COUTLINER"))
+                    {
+                        DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+                        CGameObject* pChild = (CGameObject*)data;
+                        GamePlayStatic::AddChildObject(obj, pChild, BoneSocket);
+                    }
+
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                    {
+                        string AssetStr = (char*)payload->Data;
+                        AssetStr.resize(payload->DataSize);
+                        std::filesystem::path AssetPath = AssetStr;
+                        CGameObject* pInstObj = nullptr;
+                        if (L".pref" == AssetPath.extension())
+                        {
+                            pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath)->Instantiate();
+                        }
+                        else if (L".mdat" == AssetPath.extension())
+                        {
+                            pInstObj = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath)->Instantiate();
+                        }
+
+                        if (nullptr != pInstObj)
+                        {
+                            // 원점 설정
+                            pInstObj->Transform()->SetRelativePos(obj->Transform()->GetWorldPos());
+                            pInstObj->Transform()->SetRelativeRotation(obj->Transform()->GetWorldRotation());
+
+                            pInstObj->Transform()->SetAbsolute(false);
+                            GamePlayStatic::AddChildObject(obj, pInstObj, BoneSocket);
+                        }
+                    }
+
+                    ImGui::EndDragDropTarget();
+                }
+
+                if (BoneSocketOpened)
+                {
+                    for (UINT i = 0; i < (UINT)objs.size(); ++i)
+                    {
+                        // BoneSocket을 보유한 자식 오브젝트 DrawNode 호출
+                        if (objs[i]->GetBoneSocket() == BoneSocket)
+                        {
+                            DrawNode(objs[i]);
+                        }
+                    }
+
+                    ImGui::TreePop();
+                }
+            }
+        }
+
+        // 자식 오브젝트 DrawNode() 호출
+        for (UINT i = 0; i < (UINT)objs.size(); ++i)
+        {
+            // BoneSocket을 보유한 자식 오브젝트는 Continue
+            if (nullptr != objs[i]->GetBoneSocket())
+                continue;
+
+            DrawNode(objs[i]);
+        }
 
         ImGui::TreePop();
     }
@@ -874,7 +953,7 @@ void COutliner::DrawAnimator(CGameObject* obj)
 
                 // Frame Index
                 int ClipFrameIdx = pAnimator->GetClipFrameIndex();
-                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &ClipFrameIdx, 0, CurClip.iFrameLength))
+                if (ImGui::SliderInt(ImGui_LabelPrefix("Frame Index").c_str(), &ClipFrameIdx, 0, CurClip.iFrameLength - 1))
                 {
                     pAnimator->SetClipFrameIndex(ClipFrameIdx);
                 }
@@ -886,6 +965,10 @@ void COutliner::DrawAnimator(CGameObject* obj)
                 bool bRepeat = pAnimator->IsRepeat();
                 if (ImGui::Checkbox(ImGui_LabelPrefix("Repeat").c_str(), &bRepeat))
                     pAnimator->SetRepeat(bRepeat);
+
+                bool bReverse = pAnimator->IsReverse();
+                if (ImGui::Checkbox(ImGui_LabelPrefix("Reverse").c_str(), &bReverse))
+                    pAnimator->SetReverse(bReverse);
 
                 float PlaySpeed = pAnimator->GetPlaySpeed();
                 if (ImGui::DragFloat(ImGui_LabelPrefix("Play Speed").c_str(), &PlaySpeed, 0.01f, 0.f, 100.f))

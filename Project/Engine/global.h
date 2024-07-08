@@ -16,6 +16,7 @@
 #include <map>
 #include <unordered_map>
 #include <string>
+#include <stack>
 
 #include <thread>
 #include <future>

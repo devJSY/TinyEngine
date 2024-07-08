@@ -27,7 +27,7 @@ private:
     bool m_bDead;
 
     // Bone Socket
-    tBoneSocket* m_BoneSocket;
+    tBoneSocket* m_BoneSocket; // 부모 오브젝트가 보유한 Skeletal Mesh의 본 소켓
 
 public:
     void begin();

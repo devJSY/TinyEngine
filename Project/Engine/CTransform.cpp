@@ -74,29 +74,28 @@ void CTransform::finaltick()
     if (nullptr != pParent)
     {
         // Bone Socket Matrix
-        Matrix FinalBoneMat = XMMatrixIdentity();
         Matrix SocketMat = XMMatrixIdentity();
+        Matrix BoneTransformMat = XMMatrixIdentity();
 
         const tBoneSocket* pBoneSocket = GetOwner()->GetBoneSocket();
         if (nullptr != pBoneSocket && nullptr != pParent->Animator() && pParent->Animator()->IsValid())
         {
-            FinalBoneMat = pParent->Animator()->GetBoneTransformMat(pBoneSocket->BoneIndex);
             SocketMat = pBoneSocket->matSocket;
+            BoneTransformMat = pParent->Animator()->GetBoneTransformMat(pBoneSocket->BoneIndex);
         }
 
-        // Parent Matrix
-        m_matTransformation = pParent->Transform()->GetWorldMat();
+        // Parent Matrix = Socket Matrix * Bone Transform Matrix * Parent World
+        m_matTransformation = SocketMat * BoneTransformMat * pParent->Transform()->GetWorldMat();
+
         if (m_bAbsolute)
         {
-            Vec3 vParentScale = pParent->Transform()->GetRelativeScale();
-            Matrix matParentScaleInv = XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
+            Vec3 Translation, Rotation, Scale;
+            ImGuizmo::DecomposeMatrixToComponents(*m_matTransformation.m, Translation, Rotation, Scale);
+            Matrix matParentScaleInv = XMMatrixScaling(1.f / Scale.x, 1.f / Scale.y, 1.f / Scale.z);
 
             // 부모의 크기 행렬 상쇄
             m_matTransformation = matParentScaleInv * m_matTransformation;
         }
-
-        // Final Bone Matrix * Parent World * Socket Matrix
-        m_matTransformation = FinalBoneMat * m_matTransformation * SocketMat;
 
         // 변환행렬 적용
         m_matWorld *= m_matTransformation;

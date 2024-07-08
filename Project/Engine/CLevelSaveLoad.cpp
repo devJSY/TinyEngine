@@ -151,6 +151,19 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
         vecScripts[i]->SaveToLevelFile(_File);
     }
 
+    // BoneSocket 저장
+    int BoneIndex = -1;
+    wstring BoneSocketName;
+    const tBoneSocket* pBoneSocket = _Obj->GetBoneSocket();
+    if (nullptr != pBoneSocket)
+    {
+        BoneIndex = pBoneSocket->BoneIndex;
+        BoneSocketName = pBoneSocket->SoketName;
+    }
+
+    fwrite(&BoneIndex, sizeof(int), 1, _File);
+    SaveWStringToFile(BoneSocketName, _File);
+
     // 자식 오브젝트가 있으면 자식 오브젝트 정보 저장
     const vector<CGameObject*>& vecChild = _Obj->GetChildObject();
     size_t childcount = vecChild.size();
@@ -257,11 +270,11 @@ void CLevelSaveLoad::LoadLayer(CLayer* _Layer, FILE* _File)
 
     for (size_t i = 0; i < ObjCount; ++i)
     {
-        _Layer->AddObject(LoadGameObject(_File), false);
+        _Layer->AddObject(LoadGameObject(nullptr, _File), false);
     }
 }
 
-CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
+CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File)
 {
     CGameObject* pObject = new CGameObject;
 
@@ -346,14 +359,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         case COMPONENT_TYPE::CAPSULECOLLIDER:
             pComponent = new CCapsuleCollider;
             break;
-        case COMPONENT_TYPE::MESHCOLLIDER: {
+        case COMPONENT_TYPE::MESHCOLLIDER:
             pComponent = new CMeshCollider;
-            if (nullptr != pObject->MeshRender())
-            {
-                pObject->MeshCollider()->SetMesh(pObject->MeshRender()->GetMesh());
-            }
-        }
-        break;
+            break;
         case COMPONENT_TYPE::CHARACTERCONTROLLER:
             pComponent = new CCharacterController;
             break;
@@ -388,6 +396,20 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         pComponent->LoadFromLevelFile(_File);
     }
 
+    // 컴포넌트 매쉬 설정
+    if (nullptr != pObject->MeshRender())
+    {
+        if (nullptr != pObject->Animator())
+        {
+            pObject->Animator()->SetSkeletalMesh(pObject->MeshRender()->GetMesh());
+        }
+
+        if (nullptr != pObject->MeshCollider())
+        {
+            pObject->MeshCollider()->SetMesh(pObject->MeshRender()->GetMesh());
+        }
+    }
+
     // 스크립트 개수 읽기
     size_t ScriptCount = 0;
     fread(&ScriptCount, sizeof(size_t), 1, _File);
@@ -402,13 +424,32 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
         pScript->LoadFromLevelFile(_File);
     }
 
+    // BoneSocket 로드
+    int BoneIndex = -1;
+    wstring BoneSocketName;
+    fread(&BoneIndex, sizeof(int), 1, _File);
+    LoadWStringFromFile(BoneSocketName, _File);
+
+    if (-1 != BoneIndex)
+    {
+        const tMTBone& Bone = _ParentObj->Animator()->GetSkeletalMesh()->GetBones()->at(BoneIndex);
+        for (tBoneSocket* BoneSocket : Bone.vecBoneSocket)
+        {
+            if (BoneSocket->SoketName == BoneSocketName)
+            {
+                pObject->SetBoneSocket(BoneSocket);
+                break;
+            }
+        }
+    }
+
     // 자식 오브젝트가 있으면 자식 오브젝트 정보 저장
     size_t childcount = 0;
     fread(&childcount, sizeof(size_t), 1, _File);
 
     for (size_t i = 0; i < childcount; ++i)
     {
-        pObject->AddChild(LoadGameObject(_File));
+        pObject->AddChild(LoadGameObject(pObject, _File));
     }
 
     return pObject;
