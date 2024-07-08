@@ -48,6 +48,7 @@ private:
     Vec3                        m_AddVelocity;
     Vec3                        m_Accel;
     float                       m_Speed;
+    float                       m_MaxSpeed;
     float                       m_Friction; // ¸¶Âû·Â °è¼ö
     float                       m_JumpPower;
     float                       m_Gravity;
