@@ -11,8 +11,7 @@ CKirbyStuffedLanding::~CKirbyStuffedLanding()
 
 void CKirbyStuffedLanding::tick()
 {
-    // PLAY_CURSTATE(StuffedLanding)
-
+    // Change State
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeState(L"STUFFED_IDLE");
@@ -21,11 +20,12 @@ void CKirbyStuffedLanding::tick()
 
 void CKirbyStuffedLanding::Enter()
 {
-    // PLAY_CURSTATE(StuffedLanding)
     PLAYER->Animator()->Play(KIRBYANIM(L"StuffedLanding"), false);
+
+    PLAYERCTRL->LockJump();
 }
 
 void CKirbyStuffedLanding::Exit()
 {
-    // PLAY_CURSTATE(StuffedLanding)
+    PLAYERCTRL->UnlockJump();
 }

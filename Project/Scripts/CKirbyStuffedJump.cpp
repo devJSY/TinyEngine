@@ -11,8 +11,7 @@ CKirbyStuffedJump::~CKirbyStuffedJump()
 
 void CKirbyStuffedJump::tick()
 {
-    // PLAY_CURSTATE(StuffedJump)
-
+    // Change State
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         ChangeState(L"ATTACK");
@@ -29,13 +28,12 @@ void CKirbyStuffedJump::tick()
 
 void CKirbyStuffedJump::Enter()
 {
-    // PLAY_CURSTATE(StuffedJump)
-
-    //@TODO 점프높이
     PLAYER->Animator()->Play(KIRBYANIM(L"StuffedJump"), false);
+
+    PLAYERCTRL->LockJump();
 }
 
 void CKirbyStuffedJump::Exit()
 {
-    // PLAY_CURSTATE(StuffedJump)
+    PLAYERCTRL->UnlockJump();
 }

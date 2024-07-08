@@ -3,7 +3,7 @@
 class CKirbyHoveringLimit : public CState
 {
 private:
-    float m_bFrmEnter;
+    float m_SavedGravity;
 
 public:
     virtual void tick();

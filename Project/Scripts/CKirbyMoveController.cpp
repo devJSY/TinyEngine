@@ -57,7 +57,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bJump(false)
     , m_bActiveFriction(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
-    , m_HoveringHeight(0.f)
+    , m_HoveringMinSpeed(_Origin.m_HoveringMinSpeed)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(_Origin.m_Friction)
 {
@@ -87,9 +87,6 @@ void CKirbyMoveController::begin()
     m_RotSpeed = 50.f;
     m_JumpPower = 10.f;
     m_Gravity = -20.f;
-    m_HoveringLimitHeight = 15.f;
-
-
 }
 
 void CKirbyMoveController::tick()
@@ -212,13 +209,12 @@ void CKirbyMoveController::SetDir()
         Transform()->SetRelativeRotation(Rot);
     }
 
-
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
     Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
 
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
-} 
+}
 
 void CKirbyMoveController::Move()
 {
@@ -234,15 +230,18 @@ void CKirbyMoveController::Move()
         bGrounded = nullptr != Hit.pCollisionObj;
     }
 
-    // 수평 방향 이동속도 계산
+    // =========================
+    // Velocity 계산
+    // =========================
 
+    // 수평 방향 이동속도 계산
     // Guard시에는 이전프레임의 이동속도를 남겨 감속시킴
 
     if (m_bActiveFriction)
     {
         m_Accel.x = -m_MoveVelocity.x * m_Friction;
         m_Accel.z = -m_MoveVelocity.z * m_Friction;
-        
+
         m_MoveVelocity.x += m_Accel.x;
         m_MoveVelocity.z += m_Accel.z;
     }
@@ -251,8 +250,6 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.x = m_MoveDir.x * m_Speed;
         m_MoveVelocity.z = m_MoveDir.z * m_Speed;
     }
-
-    
 
     // Jump
     if (m_bJump && !m_bJumpLock)
@@ -264,7 +261,7 @@ void CKirbyMoveController::Move()
     // 중력 적용
     m_Accel.y += m_Gravity;
 
-    //수직 방향 이동속도 계산
+    // 수직 방향 이동속도 계산
     m_MoveVelocity.y += m_Accel.y * DT;
 
 
@@ -287,18 +284,38 @@ void CKirbyMoveController::Move()
         m_AddVelocity = {0.f, 0.f, 0.f};
     }
 
-    // 움직임 적용
-    Vec3 Diff;
-
-    CharacterController()->Move(m_MoveVelocity * DT);
-    
+    // =========================
+    // Velocity Min / Max 확인
+    // =========================
+    // 땅에 닿은 상태면 Velocity Y값 초기화
+    if (bGrounded && m_MoveVelocity.y < 0)
+    {
+        m_MoveVelocity.y = 0.f;
+    }
 
     if (PLAYERFSM->IsHovering())
     {
-        m_HoveringHeight += Diff.y;
-    }
-}
+        // falling
+        if (m_MoveVelocity.y <= m_HoveringMinSpeed)
+        {
+            m_MoveVelocity.y = m_HoveringMinSpeed;
+        }
 
+        // check limit height
+        Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
+        
+        if (Hit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
+        {
+            //@TODO 레이어이름
+            m_MoveVelocity.y = 0.f;
+        }
+    }
+
+    // =========================
+    // 움직임 적용
+    // =========================
+    CharacterController()->Move(m_MoveVelocity * GetOwner()->Transform()->GetRelativeScale() * DT);
+}
 
 void CKirbyMoveController::SurfaceAlignment()
 {

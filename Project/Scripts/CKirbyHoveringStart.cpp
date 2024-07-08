@@ -2,6 +2,7 @@
 #include "CKirbyHoveringStart.h"
 
 CKirbyHoveringStart::CKirbyHoveringStart()
+    : m_SavedGravity(0.f)
 {
 }
 
@@ -27,11 +28,18 @@ void CKirbyHoveringStart::tick()
 void CKirbyHoveringStart::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightStart"), false);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
-    //PLAYERCTRL->AddForce(Vec3(0.f, 5.f, 0.f), AddForceType::VelocityChange);
+    PLAYERCTRL->AddVelocity(Vec3(0.f, 7.5f, 0.f));
+    m_SavedGravity = PLAYERCTRL->GetGravity();
+    PLAYERCTRL->SetGravity(-10.f);
+
     PLAYERFSM->SetHovering(true);
 }
 
 void CKirbyHoveringStart::Exit()
 {
+    PLAYERCTRL->SetGravity(m_SavedGravity);
 }

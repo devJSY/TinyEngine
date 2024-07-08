@@ -11,8 +11,7 @@ CKirbyStuffedRun::~CKirbyStuffedRun()
 
 void CKirbyStuffedRun::tick()
 {
-    // PLAY_CURSTATE(StuffedRun)
-
+    // Change State
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         ChangeState(L"ATTACK");
@@ -29,11 +28,9 @@ void CKirbyStuffedRun::tick()
 
 void CKirbyStuffedRun::Enter()
 {
-    //PLAY_CURSTATE(StuffedRun)
     PLAYER->Animator()->Play(KIRBYANIM(L"StuffedRun"));
 }
 
 void CKirbyStuffedRun::Exit()
 {
-    // PLAY_CURSTATE(StuffedRun)
 }

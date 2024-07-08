@@ -440,20 +440,11 @@
     <Filter Include="Default">
       <UniqueIdentifier>{bf8b5893-c5d5-40d9-881c-b96caad131d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{dd8ce5b2-b3fe-4dcc-b49a-2d791733985e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\CameraMove">
-      <UniqueIdentifier>{624e92b2-eef9-499c-b658-6b93bdad80ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{c2a22188-4ce0-47f7-9f8e-01d22372aefe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\FSM">
-      <UniqueIdentifier>{dd9ede4a-0dc6-41ec-8eeb-0b3eead1c9e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{1310388c-732a-4e84-a34c-61ad55000c4e}</UniqueIdentifier>
@@ -472,12 +463,6 @@
     </Filter>
     <Filter Include="Module\FSM\State">
       <UniqueIdentifier>{91c88dbd-b34e-4c0c-b822-7dc479e24bb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\FSM\KirbyFSM">
-      <UniqueIdentifier>{7f2e3799-33fb-41ed-800b-ea950d353744}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\MoveController">
-      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Module\Unit">
       <UniqueIdentifier>{ebad3036-12bc-48c3-bcba-b17801742ef1}</UniqueIdentifier>
@@ -506,38 +491,11 @@
     <Filter Include="State\KirbyAbility\Normal">
       <UniqueIdentifier>{480a404a-5c6d-40dd-b81c-b2deda831a21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\PlayerManager">
-      <UniqueIdentifier>{6cdc35c1-ba7c-4d69-bb31-8616c785861a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\KirbyBullet">
-      <UniqueIdentifier>{e7733917-0ffd-4dee-b078-d17213862822}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\FSM\TestFSM">
-      <UniqueIdentifier>{59566cef-a444-4bd8-84b6-385db5b09b4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Kirby">
-      <UniqueIdentifier>{cba6baff-ce74-4825-8cfd-92a0752da116}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\ChangeAbility">
       <UniqueIdentifier>{f27176a3-376c-41e5-ac72-c9de985af8a0}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\ChangeObject">
       <UniqueIdentifier>{9fe1c146-5378-4a9e-bb27-a28009aa8917}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\SpringArm">
-      <UniqueIdentifier>{ed0fe73b-a25f-4112-ab6a-c74dab2df3bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI">
-      <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\UIManager">
-      <UniqueIdentifier>{6b3c5070-7a6c-418e-96aa-68444b73f6a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\Button">
-      <UniqueIdentifier>{09073fd3-e471-4b9e-889f-7b1e566b3325}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\UIManager\ButtonManager">
-      <UniqueIdentifier>{455669fa-563b-415d-a29b-da54b92e128b}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\Run\Run_Start">
       <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
@@ -649,6 +607,48 @@
     </Filter>
     <Filter Include="State\KirbyState\Stuffed\Jump\JumpFall">
       <UniqueIdentifier>{4a13bcdc-76d5-4603-880b-94089b67bc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{dd8ce5b2-b3fe-4dcc-b49a-2d791733985e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\CameraMove">
+      <UniqueIdentifier>{624e92b2-eef9-499c-b658-6b93bdad80ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM">
+      <UniqueIdentifier>{dd9ede4a-0dc6-41ec-8eeb-0b3eead1c9e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\KirbyFSM">
+      <UniqueIdentifier>{7f2e3799-33fb-41ed-800b-ea950d353744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\TestFSM">
+      <UniqueIdentifier>{59566cef-a444-4bd8-84b6-385db5b09b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\MoveController">
+      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\PlayerManager">
+      <UniqueIdentifier>{6cdc35c1-ba7c-4d69-bb31-8616c785861a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\KirbyBullet">
+      <UniqueIdentifier>{e7733917-0ffd-4dee-b078-d17213862822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Kirby">
+      <UniqueIdentifier>{cba6baff-ce74-4825-8cfd-92a0752da116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\SpringArm">
+      <UniqueIdentifier>{ed0fe73b-a25f-4112-ab6a-c74dab2df3bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI">
+      <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager">
+      <UniqueIdentifier>{6b3c5070-7a6c-418e-96aa-68444b73f6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\ButtonManager">
+      <UniqueIdentifier>{455669fa-563b-415d-a29b-da54b92e128b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Button">
+      <UniqueIdentifier>{09073fd3-e471-4b9e-889f-7b1e566b3325}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

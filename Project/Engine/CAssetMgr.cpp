@@ -32,6 +32,7 @@ void CAssetMgr::init()
 {
     CreateDefaultMesh();
     CreateDefaultGraphicsShader();
+    CreateDefaultGraphicsShader_Kirby();
     CreateDefaultComputeShader();
     CreateDefaultMaterial();
     CreateDefaultPhysics2DMaterial();

@@ -4,6 +4,7 @@
 class CKirbyHovering : public CState
 {
 private:
+    float m_SavedGravity;
     bool m_bFrmEnter;
 
 public:

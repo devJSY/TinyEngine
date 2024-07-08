@@ -11,8 +11,7 @@ CKirbyStuffedIdle::~CKirbyStuffedIdle()
 
 void CKirbyStuffedIdle::tick()
 {
-    // PLAY_CURSTATE(StuffedIdle)
-
+    // Change State
     if (KEY_TAP(KEY_ATK))
     {
         ChangeState(L"ATTACK");
@@ -29,12 +28,9 @@ void CKirbyStuffedIdle::tick()
 
 void CKirbyStuffedIdle::Enter()
 {
-    // PLAY_CURSTATE(StuffedIdle)
-
     PLAYER->Animator()->Play(KIRBYANIM(L"StuffedWait"));
 }
 
 void CKirbyStuffedIdle::Exit()
 {
-    // PLAY_CURSTATE(StuffedIdle)
 }

@@ -2,7 +2,7 @@
 #include "CKirbyHoveringLimit.h"
 
 CKirbyHoveringLimit::CKirbyHoveringLimit()
-    : m_bFrmEnter(true)
+    : m_SavedGravity(0.f)
 {
 }
 
@@ -12,16 +12,6 @@ CKirbyHoveringLimit::~CKirbyHoveringLimit()
 
 void CKirbyHoveringLimit::tick()
 {
-    if (GET_CURCLIP_FRM == 7 && m_bFrmEnter)
-    {
-        //PLAYERCTRL->AddForce(Vec3(0.f, 3.f, 0.f), AddForceType::VelocityChange);
-        m_bFrmEnter = false;
-    }
-    else if (GET_CURCLIP_FRM == 12 && !m_bFrmEnter)
-    {
-        m_bFrmEnter = true;
-    }
-
     // Change State
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
@@ -39,11 +29,13 @@ void CKirbyHoveringLimit::tick()
 
 void CKirbyHoveringLimit::Enter()
 {
-    GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLimit"));
+    GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLimit"), true, 1.5f);
 
-    m_bFrmEnter = true;
+    m_SavedGravity = PLAYERCTRL->GetGravity();
+    PLAYERCTRL->SetGravity(-3.f);
 }
 
 void CKirbyHoveringLimit::Exit()
 {
+    PLAYERCTRL->SetGravity(m_SavedGravity);
 }

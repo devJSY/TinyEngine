@@ -13,7 +13,7 @@ CKirbyFSM::CKirbyFSM()
     , m_arrObject{}
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
-    , m_HoveringLimitTime(5.f)
+    , m_HoveringLimitTime(7.f)
     , m_LastJump(LastJumpType::HIGH)
     , m_bStuffed(false)
     , m_bHovering(false)
@@ -204,7 +204,6 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     if (m_bHovering != _bHovering)
     {
         ClearHoveringAccTime();
-        PLAYERCTRL->ClearHoveringHeight();
     }
     
     m_bHovering = _bHovering;
