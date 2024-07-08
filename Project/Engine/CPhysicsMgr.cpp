@@ -18,14 +18,14 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
     // 트리거 플래그 등록
     if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
     {
-        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
+        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_CCD;
         return PxFilterFlag::eDEFAULT;
     }
 
     // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
     if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_CCD |
-                    PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
+        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
+                    PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
 
     return PxFilterFlag::eDEFAULT;
 }
@@ -63,19 +63,31 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
     {
         pColliderA->OnTriggerEnter(pColliderB);
         pColliderB->OnTriggerEnter(pColliderA);
+
+        // Trigger List 에 추가
+        CPhysicsMgr::GetInst()->m_listTrigger.push_back(make_pair(pColliderA, pColliderB));
     }
 
     if (PxPairFlag::eNOTIFY_TOUCH_LOST & pairs->status)
     {
-        pColliderA->OnTriggerExit(pColliderB);
-        pColliderB->OnTriggerExit(pColliderA);
-    }
+        if (pColliderA->m_TriggerCount > 0)
+            pColliderA->OnTriggerExit(pColliderB);
+        if (pColliderB->m_TriggerCount > 0)
+            pColliderB->OnTriggerExit(pColliderA);
 
-    // 충돌 카운트가 남아있는 경우 Stay 상태
-    if (pColliderA->m_TriggerCount > 0)
-        pColliderA->OnTriggerStay(pColliderB);
-    if (pColliderB->m_TriggerCount > 0)
-        pColliderB->OnTriggerStay(pColliderA);
+        // Trigger List 에서 삭제
+        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = CPhysicsMgr::GetInst()->m_listTrigger.begin();
+        while (iter != CPhysicsMgr::GetInst()->m_listTrigger.end())
+        {
+            if (iter->first == pColliderA && iter->second == pColliderB)
+            {
+                CPhysicsMgr::GetInst()->m_listTrigger.erase(iter);
+                break;
+            }
+
+            ++iter;
+        }
+    }
 }
 
 void CCTCCollisionCallback::onShapeHit(const physx::PxControllerShapeHit& hit)
@@ -112,6 +124,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_StepSize(1.f / 60.f)
     , m_Gravity(Vec3(0.f, -9.81f, 0.f))
     , m_PPM(1.f)
+    , m_listTrigger{}
 {
     EnableAllLayer();
 }
@@ -136,6 +149,15 @@ void CPhysicsMgr::tick()
     // 시뮬레이션
     m_Scene->simulate(m_StepSize);
     m_Scene->fetchResults(true);
+
+    // TriggerStay Event
+    for (const auto& iter : m_listTrigger)
+    {
+        if (iter.first->m_TriggerCount > 0)
+            iter.first->OnTriggerStay(iter.second);
+        if (iter.second->m_TriggerCount > 0)
+            iter.second->OnTriggerStay(iter.first);
+    }
 
     // 시뮬레이션 결과로 트랜스폼 업데이트
     PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
@@ -285,6 +307,7 @@ void CPhysicsMgr::OnPhysicsStop()
     }
 
     m_vecPhysicsObj.clear();
+    m_listTrigger.clear();
 }
 
 RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask)
@@ -474,6 +497,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
+
+        // Count 초기화
+        pBoxCol->m_CollisionCount = 0;
+        pBoxCol->m_TriggerCount = 0;
     }
 
     // Sphere Collider
@@ -513,6 +540,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
+
+        // Count 초기화
+        pSphereCol->m_CollisionCount = 0;
+        pSphereCol->m_TriggerCount = 0;
     }
 
     // Capsule Collider
@@ -582,6 +613,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;
+
+        // Count 초기화
+        pCapsuleCol->m_CollisionCount = 0;
+        pCapsuleCol->m_TriggerCount = 0;
     }
 
     // Mesh Collider
@@ -635,6 +670,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             // UserData 등록
             shape->userData = (void*)pMeshCol;
             pMeshCol->m_RuntimeShape = shape;
+
+            // Count 초기화
+            pMeshCol->m_CollisionCount = 0;
+            pMeshCol->m_TriggerCount = 0;
         }
     }
 

@@ -757,11 +757,9 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
     {
         if (ImGui::MenuItem("Add Socket"))
         {
-            static wstring SocketName = L"TestSocket";
-            static int SocketNameNumber = -1;
-            ++SocketNameNumber;
-            tBoneSocket* BoneSocket =
-                new tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)};
+            wstring SocketName = _vecBone[_BoneIdx].strBoneName;
+            tBoneSocket* BoneSocket = new tBoneSocket{SocketName + L"Socket_" + to_wstring(_vecBone[_BoneIdx].vecBoneSocket.size()), _BoneIdx, Vec3(),
+                                                      Vec3(), Vec3(1.f, 1.f, 1.f)};
 
             m_ModelObj->Animator()->GetSkeletalMesh()->AddBoneSocket(_BoneIdx, BoneSocket);
             m_SelectedBoneSocket = BoneSocket;

@@ -34,6 +34,7 @@ public:
 
     Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
     Vec3 GetWorldScale() const;
+    Vec3 GetTransformWorldScale() const;
     Vec3 GetWorldRotation() const;
 
     void SetDirection(Vec3 _Dir);
