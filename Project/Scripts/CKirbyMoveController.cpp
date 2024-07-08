@@ -24,7 +24,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bDirLock(false)
     , m_bJumpLock(false)
     , m_bJump(false)
-    , m_bGuard(false)
+    , m_bActiveFriction(false)
     , m_HoveringLimitHeight(15.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f,0.f,0.f}
@@ -55,7 +55,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bDirLock(false)
     , m_bJumpLock(false)
     , m_bJump(false)
-    , m_bGuard(false)
+    , m_bActiveFriction(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f, 0.f, 0.f}
@@ -238,7 +238,7 @@ void CKirbyMoveController::Move()
 
     // Guard시에는 이전프레임의 이동속도를 남겨 감속시킴
 
-    if (m_bGuard)
+    if (m_bActiveFriction)
     {
         m_Accel.x = -m_MoveVelocity.x * m_Friction;
         m_Accel.z = -m_MoveVelocity.z * m_Friction;

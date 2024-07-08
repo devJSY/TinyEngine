@@ -165,8 +165,8 @@ void CKirbyFSM::begin()
     AddState(L"DODGE_FRONT2", new CKirbyDodgeFront2);
     AddState(L"DODGE_LEFT1", new CKirbyDodgeLeft1);
     AddState(L"DODGE_LEFT2", new CKirbyDodgeLeft2);
-    AddState(L"DODGE_RIGHt1", new CKirbyDodgeRight1);
-    AddState(L"DODGE_RIGHt2", new CKirbyDodgeRight2);
+    AddState(L"DODGE_RIGHT1", new CKirbyDodgeRight1);
+    AddState(L"DODGE_RIGHT2", new CKirbyDodgeRight2);
 
 
     ChangeState(L"IDLE");

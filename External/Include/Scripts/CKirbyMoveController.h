@@ -30,7 +30,7 @@ private:
     // 입력
     Vec3                        m_Input;
     bool                        m_bJump;
-    bool                        m_bGuard;
+    bool                        m_bActiveFriction;
 
     // Lock
     bool                        m_bMoveLock;
@@ -46,9 +46,10 @@ private:
 
     // 물리
     Vec3                        m_MoveVelocity;
+    Vec3                        m_AddVelocity;
     Vec3                        m_Accel;
     float                       m_Speed;
-    float                       m_MaxSpeed;
+    float                       m_Friction; // 마찰력 계수
     float                       m_JumpPower;
     float                       m_Gravity;
 
@@ -70,7 +71,7 @@ public:
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     float GetGravity() const { return m_Gravity; }
-    float GetGuard() const { return m_bGuard; }
+    float ActiveFriction() const { return m_bActiveFriction; }
 
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
@@ -79,9 +80,10 @@ public:
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
 
-    void SetGuard(bool _Guard) { m_bGuard = _Guard; }
-    //void SetFriction(float _Friction) { m_Friction = _Friction; }
-    //void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+    void SetGuard(bool _Guard) { m_bActiveFriction = _Guard; }
+    void SetFriction(float _Friction) { m_Friction = _Friction; }
+    void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
+    void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
 
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }

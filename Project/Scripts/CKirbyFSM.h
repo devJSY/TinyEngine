@@ -27,6 +27,15 @@ enum class LastJumpType
     HIGH,
 };
 
+enum class DodgeType
+{
+    NONE,
+    FRONT,
+    RIGHT,
+    BACK,
+    LEFT,
+};
+    
 class CKirbyAbility;
 class CKirbyObject;
 
@@ -45,8 +54,10 @@ private:
     bool            m_bHovering;
 
     float           m_ChargeAccTime;
-    LastJumpType m_LastJump;
+    LastJumpType    m_LastJump;
     bool            m_bStuffed;
+
+    DodgeType       m_DodgeType;
 
 public:
     void begin() override;
@@ -60,6 +71,7 @@ public:
     void SetHovering(bool _bHovering);
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
+    void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
@@ -71,6 +83,7 @@ public:
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
+    DodgeType GetDodgeType() const { return m_DodgeType; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

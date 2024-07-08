@@ -21,6 +21,11 @@ void CKirbyDodgeFront1::Enter()
     // 애니메이션 재생
     PLAYER->Animator()->Play(KIRBYANIM(L"DodgeFront1"), false);
 
+    if (PLAYER->Animator()->IsFinish())
+    {
+        int a = 0;
+    }
+
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
