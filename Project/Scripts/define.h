@@ -35,3 +35,24 @@ enum class DIRECTION_TYPE
     LEFT,
     RIGHT,
 };
+
+enum class AbilityCopyType
+{
+    NONE,
+    NORMAL,
+    FIRE,
+    RANGER,
+    SWORD,
+
+    END,
+};
+
+enum class ObjectCopyType
+{
+    NONE,
+    CAR,
+    STAIR,
+    LIGHT,
+
+    END,
+};

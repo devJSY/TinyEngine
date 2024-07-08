@@ -11,3 +11,4 @@ CSpringArmCameraScript
 CButtonScript
 CUIManagerScript
 CButtonManagerScript
+CKirbyVacuumCollider

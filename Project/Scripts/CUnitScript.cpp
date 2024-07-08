@@ -3,6 +3,7 @@
 
 CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
+    , m_OriginInfo{}
     , m_PrevInfo{}
     , m_CurInfo{}
 {
