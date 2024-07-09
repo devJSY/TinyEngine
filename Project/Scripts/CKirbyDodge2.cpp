@@ -92,4 +92,6 @@ void CKirbyDodge2::Exit()
 
     PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetGuard(false);
+
+    PLAYERCTRL->SetGravity(-20.f);
 }

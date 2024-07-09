@@ -11,6 +11,13 @@ CKirbyIdle::~CKirbyIdle()
 
 void CKirbyIdle::tick()
 {
+    //TEST
+    if (KEY_TAP(KEY::V))
+    {
+        ChangeState(L"DAMAGE");
+    }
+
+
     // 각 State별로 수행할 작업 (상태전환 제외)
     PLAY_CURSTATE(Idle)
 
@@ -36,7 +43,7 @@ void CKirbyIdle::tick()
             {
                 ChangeState(L"RUN_START");
             }
-            else if (KEY_TAP(KEY_GUARD))
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
             {
                 ChangeState(L"GUARD");
             }

@@ -28,11 +28,11 @@ void CKirbyJumpStart::tick()
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
         case AbilityCopyType::NORMAL: {
-            if (GetOwner()->CharacterController()->IsGrounded())
+            /*if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");
             }
-            else if (KEY_TAP(KEY_JUMP))
+            else */if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
             }

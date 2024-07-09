@@ -120,6 +120,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyDodgeStart.h"
 #include "CKirbyDodge1.h"
 #include "CKirbyDodge2.h"
+#include "CKirbyDamage.h"
+#include "CKirbyBackJump.h"
 
 
 void CKirbyFSM::begin()
@@ -170,6 +172,8 @@ void CKirbyFSM::begin()
     AddState(L"DODGE_START", new CKirbyDodgeStart);
     AddState(L"DODGE1", new CKirbyDodge1);
     AddState(L"DODGE2", new CKirbyDodge2);
+    AddState(L"DAMAGE", new CKirbyDamage);
+    AddState(L"BACKJUMP", new CKirbyBackJump);
 
 
     ChangeState(L"IDLE");

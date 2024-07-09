@@ -208,6 +208,12 @@
     <ClInclude Include="CKirbyBodyCollider.h">
       <Filter>Scripts\Character\Kirby\KirbyBodyCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyBackJump.h">
+      <Filter>State\KirbyState\BackJump</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDamage.h">
+      <Filter>State\KirbyState\Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -428,6 +434,12 @@
     </ClCompile>
     <ClCompile Include="CKirbyBodyCollider.cpp">
       <Filter>Scripts\Character\Kirby\KirbyBodyCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBackJump.cpp">
+      <Filter>State\KirbyState\BackJump</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDamage.cpp">
+      <Filter>State\KirbyState\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -667,6 +679,12 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyBodyCollider">
       <UniqueIdentifier>{cd06ec9f-70d0-4d2f-bbbb-ebdf1cbf6d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\BackJump">
+      <UniqueIdentifier>{636364c1-59a1-4b55-8361-9129c07b9675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Damage">
+      <UniqueIdentifier>{d45406e5-4c96-4ff1-9873-6069ed3586a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
