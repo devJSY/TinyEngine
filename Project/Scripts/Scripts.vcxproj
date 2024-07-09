@@ -125,6 +125,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyBulletScript.h" />
     <ClInclude Include="CKirbyChangeAbility.h" />
     <ClInclude Include="CKirbyAttackCharge1.h" />
+    <ClInclude Include="CKirbyCopyAbilityScript.h" />
+    <ClInclude Include="CKirbyCopyObjScript.h" />
     <ClInclude Include="CKirbyDodge1.h" />
     <ClInclude Include="CKirbyDodge2.h" />
     <ClInclude Include="CKirbyDodgeStart.h" />
@@ -193,6 +195,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyBulletScript.cpp" />
     <ClCompile Include="CKirbyChangeAbility.cpp" />
     <ClCompile Include="CKirbyAttackCharge1.cpp" />
+    <ClCompile Include="CKirbyCopyAbilityScript.cpp" />
+    <ClCompile Include="CKirbyCopyObjScript.cpp" />
     <ClCompile Include="CKirbyDodge1.cpp" />
     <ClCompile Include="CKirbyDodge2.cpp" />
     <ClCompile Include="CKirbyDodgeStart.cpp" />

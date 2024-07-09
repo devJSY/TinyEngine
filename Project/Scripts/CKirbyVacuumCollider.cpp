@@ -69,7 +69,7 @@ void CKirbyVacuumCollider::tick()
         Vec3 Between = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
 
         // 커비와 충돌하면 오브젝트 삭제
-        if (fabs(Between.Length()) <= (PLAYER->CharacterController()->GetRadius() + m_))
+        if (fabs(Between.Length()) <= (PLAYER->CharacterController()->GetRadius()))
         {
             // Change Player State
             switch (m_FindType)

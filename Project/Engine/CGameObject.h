@@ -103,6 +103,18 @@ public:
 
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
+    CGameObject* GetChildObject(const wstring& _Name) const
+    {
+        for (auto& iter : m_vecChild)
+        {
+            if (iter->GetName() == _Name)
+            {
+                return iter;
+            }
+        }
+
+        return nullptr;
+    }
 
     int GetLayerIdx() const { return m_iLayerIdx; }
 
