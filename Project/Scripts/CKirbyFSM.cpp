@@ -12,7 +12,7 @@ CKirbyFSM::CKirbyFSM()
     , m_arrObject{}
     , m_CurAbility(AbilityCopyType::NORMAL)
     , m_CurObject(ObjectCopyType::NONE)
-    , m_StuffedObj(nullptr)
+    , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
@@ -31,7 +31,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrObject{}
     , m_CurAbility(_Origin.m_CurAbility)
     , m_CurObject(_Origin.m_CurObject)
-    , m_StuffedObj(nullptr)
+    , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
@@ -121,7 +121,6 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyDodge1.h"
 #include "CKirbyDodge2.h"
 
-
 void CKirbyFSM::begin()
 {
     // State Init
@@ -133,7 +132,7 @@ void CKirbyFSM::begin()
 
     m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
 
-    // State 추가 
+    // State 추가
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"RUN", new CKirbyRun);
     AddState(L"RUN_START", new CKirbyRunStart);
@@ -171,7 +170,6 @@ void CKirbyFSM::begin()
     AddState(L"DODGE1", new CKirbyDodge1);
     AddState(L"DODGE2", new CKirbyDodge2);
 
-
     ChangeState(L"IDLE");
 }
 
@@ -204,7 +202,7 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 
 void CKirbyFSM::StartStuffed(CGameObject* _Target)
 {
-    m_StuffedObj = _Target;
+    m_StuffedCopyObj = _Target;
     m_bStuffed = true;
 }
 
@@ -219,8 +217,18 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     {
         ClearHoveringAccTime();
     }
-    
+
     m_bHovering = _bHovering;
+}
+
+void CKirbyFSM::ClearStuff()
+{
+    m_bStuffed = false;
+
+    if (m_StuffedCopyObj)
+    {
+        delete m_StuffedCopyObj;
+    }
 }
 
 bool CKirbyFSM::IsDrawing() const

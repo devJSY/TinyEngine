@@ -4,8 +4,6 @@
 #include "CKirbyMoveController.h"
 #include "CKirbyVacuumCollider.h"
 
-#define BULLET_SPEED 5.f
-
 CKirbyAbility_Normal::CKirbyAbility_Normal()
     : m_bFrmEnter(true)
     , m_SavedSpeed(0.f)
@@ -62,19 +60,24 @@ void CKirbyAbility_Normal::Attack()
         m_bFrmEnter = false;
 
         // fire bullet
-        Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BulletStar.pref", L"prefab\\BulletStar.pref");
+        Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBullet.pref", L"prefab\\KirbyBullet.pref");
         if (nullptr != BulletPref)
         {
             CGameObject* BulletInst = BulletPref->Instantiate();
-            Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 2.f;
+            Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f;
+            InitPos.y += 2.f;
 
+            if (PLAYERFSM->GetStuffedCopyObj()->MeshRender())
+            {
+                BulletInst->AddComponent(PLAYERFSM->GetStuffedCopyObj()->MeshRender()->Clone());
+            }
             BulletInst->Transform()->SetRelativePos(InitPos);
             GamePlayStatic::SpawnGameObject(BulletInst, 0);
 
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
             if (nullptr != bulletScript)
             {
-                bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * BULLET_SPEED);
+                bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 120.f);
             }
         }
     }

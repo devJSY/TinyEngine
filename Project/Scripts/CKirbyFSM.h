@@ -29,7 +29,7 @@ private:
     CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
     ObjectCopyType          m_CurObject;
     
-    CGameObject*            m_StuffedObj;
+    CGameObject*            m_StuffedCopyObj;
     CKirbyVacuumCollider*   m_VacuumCollider;
 
     // 상태 관리를 위한 값들
@@ -57,7 +57,7 @@ public:
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
-    void ClearStuff() { m_bStuffed = false; m_StuffedObj = nullptr; }
+    void ClearStuff();
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
@@ -65,6 +65,7 @@ public:
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
+    CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }

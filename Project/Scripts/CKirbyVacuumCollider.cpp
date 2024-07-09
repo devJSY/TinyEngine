@@ -67,7 +67,7 @@ void CKirbyVacuumCollider::tick()
     if (m_bDrawing)
     {
         Vec3 Force = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-        Force = (Force).Normalize() * 20.f;
+        Force = (Force).Normalize() * 40.f;
         m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
     }
 }
@@ -100,7 +100,7 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (bChanged)
     {
-        //@TODO Vacuum State 중단 불가능 걸어야 함
+        PLAYERFSM->SetGlobalState(true);
 
         m_FindTarget = _OtherCollider->GetOwner();
         m_FindType = newType;
@@ -115,6 +115,9 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
     if (_CollisionObject != m_FindTarget)
         return;
 
+    m_bDrawing = false;
+    PLAYERFSM->SetGlobalState(false);
+
     // Change Player State
     switch (m_FindType)
     {
@@ -127,13 +130,13 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
         break;
     case EatType::Etc:
     case EatType::Monster:
-        PLAYERFSM->StartStuffed(m_FindTarget);
+        PLAYERFSM->StartStuffed(m_FindTarget->Clone());
         break;
     }
 
     // 충돌 오브젝트 삭제
     GamePlayStatic::DestroyGameObject(m_FindTarget);
-    m_bDrawing = false;
+    m_FindTarget = nullptr;
 }
 
 void CKirbyVacuumCollider::EnableCollider(bool _bEnable)
