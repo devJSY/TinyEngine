@@ -30,10 +30,9 @@ void CKirbyStuffedJump::Enter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"StuffedJump"), false);
 
-    PLAYERCTRL->LockJump();
+    PLAYERCTRL->Jump();
 }
 
 void CKirbyStuffedJump::Exit()
 {
-    PLAYERCTRL->UnlockJump();
 }

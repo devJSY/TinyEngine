@@ -2,14 +2,14 @@
 #include "CKirbyCopyAbilityScript.h"
 
 CKirbyCopyAbilityScript::CKirbyCopyAbilityScript()
-    : CScript(KIRBYCOOPYABILITYSCRIPT)
+    : CScript(KIRBYCOPYABILITYSCRIPT)
     , m_AbilityType(AbilityCopyType::NONE)
 {
     //@TODO Enum으로 Script param 추가하기
 }
 
 CKirbyCopyAbilityScript::CKirbyCopyAbilityScript(const CKirbyCopyAbilityScript& _Origin)
-    : CScript(KIRBYCOOPYABILITYSCRIPT)
+    : CScript(KIRBYCOPYABILITYSCRIPT)
     , m_AbilityType(_Origin.m_AbilityType)
 {
 }

@@ -15,6 +15,9 @@
 #include "CUIManagerScript.h"
 #include "CButtonManagerScript.h"
 #include "CKirbyVacuumCollider.h"
+#include "CMonsterUnitScript.h"
+#include "CKirbyCopyAbilityScript.h"
+#include "CKirbyCopyObjScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -32,6 +35,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonManagerScript");
 	_vec.push_back(L"CKirbyVacuumCollider");
+	_vec.push_back(L"CMonsterUnitScript");
+	_vec.push_back(L"CKirbyCopyAbilityScript");
+	_vec.push_back(L"CKirbyCopyObjScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -64,6 +70,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CButtonManagerScript;
 	if (L"CKirbyVacuumCollider" == _strScriptName)
 		return new CKirbyVacuumCollider;
+	if (L"CMonsterUnitScript" == _strScriptName)
+		return new CMonsterUnitScript;
+	if (L"CKirbyCopyAbilityScript" == _strScriptName)
+		return new CKirbyCopyAbilityScript;
+	if (L"CKirbyCopyObjScript" == _strScriptName)
+		return new CKirbyCopyObjScript;
 	return nullptr;
 }
 
@@ -99,6 +111,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CButtonManagerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
 		return new CKirbyVacuumCollider;
+	case (UINT)SCRIPT_TYPE::MONSTERUNITSCRIPT:
+		return new CMonsterUnitScript;
+	case (UINT)SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
+		return new CKirbyCopyAbilityScript;
+	case (UINT)SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
+		return new CKirbyCopyObjScript;
 	}
 	return nullptr;
 }
@@ -135,6 +153,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CButtonManagerScript";
 	case SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
 		return L"CKirbyVacuumCollider";
+	case SCRIPT_TYPE::MONSTERUNITSCRIPT:
+		return L"CMonsterUnitScript";
+	case SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
+		return L"CKirbyCopyAbilityScript";
+	case SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
+		return L"CKirbyCopyObjScript";
 	}
 	return nullptr;
 }

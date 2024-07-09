@@ -20,8 +20,11 @@ void CKirbyHoveringLanding::tick()
 void CKirbyHoveringLanding::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLanding"), false);
+
+    PLAYERCTRL->LockJump();
 }
 
 void CKirbyHoveringLanding::Exit()
 {
+    PLAYERCTRL->UnlockJump();
 }

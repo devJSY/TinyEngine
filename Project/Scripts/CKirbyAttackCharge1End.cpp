@@ -25,7 +25,14 @@ void CKirbyAttackCharge1End::tick()
         {
             if (PLAYER->Animator()->IsFinish())
             {
-                ChangeState(L"IDLE");
+                if (GetOwner()->CharacterController()->IsGrounded())
+                {
+                    ChangeState(L"IDLE");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_FALL");
+                }
             }
         }
         break;

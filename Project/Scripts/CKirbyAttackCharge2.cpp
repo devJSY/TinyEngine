@@ -23,7 +23,11 @@ void CKirbyAttackCharge2::tick()
         {
         case AbilityCopyType::NORMAL: 
         {
-            if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
+            if (PLAYERFSM->IsStuffed())
+            {
+                ChangeState(L"STUFFED");
+            }
+            else if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_END");
             }

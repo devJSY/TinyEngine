@@ -2,6 +2,7 @@
 #include "CKirbyFSM.h"
 #include "CKirbyAbility.h"
 #include "CKirbyObject.h"
+#include "CKirbyVacuumCollider.h"
 
 #include "CKirbyAbility_Normal.h"
 
@@ -12,6 +13,7 @@ CKirbyFSM::CKirbyFSM()
     , m_CurAbility(AbilityCopyType::NORMAL)
     , m_CurObject(ObjectCopyType::NONE)
     , m_StuffedObj(nullptr)
+    , m_VacuumCollider(nullptr)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(7.f)
@@ -25,13 +27,15 @@ CKirbyFSM::CKirbyFSM()
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     : CFSMScript(_Origin)
-    , m_CurAbility(_Origin.m_CurAbility)
-    , m_CurObject(_Origin.m_CurObject)
     , m_arrAbility{}
     , m_arrObject{}
+    , m_CurAbility(_Origin.m_CurAbility)
+    , m_CurObject(_Origin.m_CurObject)
+    , m_StuffedObj(nullptr)
+    , m_VacuumCollider(nullptr)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
-    , m_HoveringLimitTime(5.f)
+    , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
     , m_LastJump(LastJumpType::HIGH)
     , m_bStuffed(false)
     , m_bHovering(false)
@@ -125,7 +129,16 @@ CKirbyFSM::~CKirbyFSM()
 
 void CKirbyFSM::begin()
 {
-    // State 추가
+    // State Init
+    if (!GetOwner()->GetChildObject(L"Vacuum Collider") || !GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>())
+    {
+        MessageBox(nullptr, L"Player에 자식 오브젝트 'Vacuum Collider'가 존재하지 않습니다", L"Player FSM begin() 실패", MB_OK);
+        return;
+    }
+
+    m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
+
+    // State 추가 
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"RUN", new CKirbyRun);
     AddState(L"RUN_START", new CKirbyRunStart);
@@ -168,7 +181,6 @@ void CKirbyFSM::begin()
     AddState(L"DODGE_LEFT2", new CKirbyDodgeLeft2);
     AddState(L"DODGE_RIGHT1", new CKirbyDodgeRight1);
     AddState(L"DODGE_RIGHT2", new CKirbyDodgeRight2);
-
 
     ChangeState(L"IDLE");
 }

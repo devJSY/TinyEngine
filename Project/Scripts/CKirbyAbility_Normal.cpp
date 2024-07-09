@@ -2,11 +2,13 @@
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyBulletScript.h"
 #include "CKirbyMoveController.h"
+#include "CKirbyVacuumCollider.h"
 
 #define BULLET_SPEED 5.f
 
 CKirbyAbility_Normal::CKirbyAbility_Normal()
     : m_bFrmEnter(true)
+    , m_SavedSpeed(0.f)
 {
     m_Charge1Time = 2.f;
 }
@@ -98,8 +100,7 @@ void CKirbyAbility_Normal::AttackEnter()
 
 void CKirbyAbility_Normal::AttackExit()
 {
-    PLAYERFSM->SetStuffed(false);
-
+    PLAYERFSM->ClearStuff();
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
@@ -125,12 +126,16 @@ void CKirbyAbility_Normal::AttackCharge1Enter()
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(4.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge1Exit()
 {
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
 
 // start
@@ -193,12 +198,16 @@ void CKirbyAbility_Normal::AttackCharge1RunEnter()
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge1RunExit()
 {
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
 
 // ===============
@@ -217,6 +226,8 @@ void CKirbyAbility_Normal::AttackCharge2Enter()
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge2Exit()
@@ -225,6 +236,8 @@ void CKirbyAbility_Normal::AttackCharge2Exit()
 
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
 
 // start
@@ -240,6 +253,8 @@ void CKirbyAbility_Normal::AttackCharge2StartEnter()
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge2StartExit()
@@ -248,6 +263,8 @@ void CKirbyAbility_Normal::AttackCharge2StartExit()
 
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
 
 // run
@@ -262,10 +279,14 @@ void CKirbyAbility_Normal::AttackCharge2RunEnter()
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge2RunExit()
 {
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }

@@ -27,7 +27,13 @@ void CKirbyHoveringSpit::Enter()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
 
-    PLAYERCTRL->AddVelocity(Vec3(0.f, 1.f, 0.f));
+    if (!GetOwner()->CharacterController()->IsGrounded())
+    {
+        PLAYERCTRL->AddVelocity(Vec3(0.f, 1.f, 0.f));
+    }
+    PLAYERCTRL->LockJump();
+    PLAYERCTRL->LockDirection();
+    PLAYERCTRL->LockMove();
 }
 
 void CKirbyHoveringSpit::Exit()
@@ -37,4 +43,7 @@ void CKirbyHoveringSpit::Exit()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
 
     PLAYERFSM->SetHovering(false);
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->UnlockMove();
 }

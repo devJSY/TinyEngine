@@ -12,3 +12,6 @@ CButtonScript
 CUIManagerScript
 CButtonManagerScript
 CKirbyVacuumCollider
+CMonsterUnitScript
+CKirbyCopyAbilityScript
+CKirbyCopyObjScript

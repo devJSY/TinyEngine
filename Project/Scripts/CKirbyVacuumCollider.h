@@ -16,13 +16,19 @@ class CKirbyVacuumCollider : public CScript
 {
 private:
     CGameObject*    m_FindTarget;
-    float           m_FindDistance;
     EatType         m_FindType;
+    AbilityCopyType m_FindAbilityType;
+    ObjectCopyType  m_FindObjType;
+    float           m_FindDistance;
+    bool            m_bDrawing;
 
 public:
+    virtual void begin();
     virtual void tick();
 
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
+
+    void EnableCollider(bool _bEnable);
 
 private:
     EatType GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj);
