@@ -1,26 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
 
-enum class AbilityCopyType
-{
-    NORMAL,
-    FIRE,
-    RANGER,
-    SWORD,
-
-    END,
-};
-
-enum class ObjectCopyType
-{
-    NONE,
-    CAR,
-    STAIR,
-    LIGHT,
-
-    END,
-};
-
 enum class LastJumpType
 {
     LOW,
@@ -47,6 +27,8 @@ private:
 
     CKirbyObject*   m_arrObject[(UINT)ObjectCopyType::END];
     ObjectCopyType  m_CurObject;
+    
+    CGameObject*    m_StuffedObj;
 
     // 상태 관리를 위한 값들
     const float     m_HoveringLimitTime;
@@ -64,10 +46,10 @@ public:
     void tick() override;
     void ChangeAbilityCopy(AbilityCopyType _Type);
     void ChangeObjectCopy(ObjectCopyType _Type);
+    void StartStuffed(CGameObject* _Target);
 
 public:
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
-    void SetStuffed(bool _bStuffed) { m_bStuffed = _bStuffed; }
     void SetHovering(bool _bHovering);
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }

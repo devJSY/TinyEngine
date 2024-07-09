@@ -7,10 +7,11 @@
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
-    , m_CurAbility(AbilityCopyType::NORMAL)
-    , m_CurObject(ObjectCopyType::NONE)
     , m_arrAbility{}
     , m_arrObject{}
+    , m_CurAbility(AbilityCopyType::NORMAL)
+    , m_CurObject(ObjectCopyType::NONE)
+    , m_StuffedObj(nullptr)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(7.f)
@@ -179,14 +180,20 @@ void CKirbyFSM::tick()
 
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
-    ChangeState(L"CHANGE_ABILITY");
     m_CurAbility = _Type;
+    ChangeState(L"CHANGE_ABILITY");
 }
 
 void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 {
-    ChangeState(L"CHANGE_OBJECT");
     m_CurObject = _Type;
+    ChangeState(L"CHANGE_OBJECT");
+}
+
+void CKirbyFSM::StartStuffed(CGameObject* _Target)
+{
+    m_StuffedObj = _Target;
+    m_bStuffed = true;
 }
 
 void CKirbyFSM::SetHovering(bool _bHovering)

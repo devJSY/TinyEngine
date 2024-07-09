@@ -32,7 +32,6 @@ void CKirbyStuffed::Enter()
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
-    PLAYERFSM->SetStuffed(true);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();

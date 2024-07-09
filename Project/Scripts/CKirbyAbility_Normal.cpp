@@ -98,6 +98,8 @@ void CKirbyAbility_Normal::AttackEnter()
 
 void CKirbyAbility_Normal::AttackExit()
 {
+    PLAYERFSM->SetStuffed(false);
+
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));

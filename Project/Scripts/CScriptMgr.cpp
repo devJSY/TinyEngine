@@ -14,6 +14,7 @@
 #include "CButtonScript.h"
 #include "CUIManagerScript.h"
 #include "CButtonManagerScript.h"
+#include "CKirbyVacuumCollider.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -30,6 +31,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CButtonScript");
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonManagerScript");
+	_vec.push_back(L"CKirbyVacuumCollider");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -60,6 +62,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIManagerScript;
 	if (L"CButtonManagerScript" == _strScriptName)
 		return new CButtonManagerScript;
+	if (L"CKirbyVacuumCollider" == _strScriptName)
+		return new CKirbyVacuumCollider;
 	return nullptr;
 }
 
@@ -93,6 +97,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIManagerScript;
 	case (UINT)SCRIPT_TYPE::BUTTONMANAGERSCRIPT:
 		return new CButtonManagerScript;
+	case (UINT)SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
+		return new CKirbyVacuumCollider;
 	}
 	return nullptr;
 }
@@ -127,6 +133,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIManagerScript";
 	case SCRIPT_TYPE::BUTTONMANAGERSCRIPT:
 		return L"CButtonManagerScript";
+	case SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
+		return L"CKirbyVacuumCollider";
 	}
 	return nullptr;
 }
