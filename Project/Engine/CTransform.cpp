@@ -131,6 +131,13 @@ void CTransform::UpdateData()
 
 Vec3 CTransform::GetWorldScale() const
 {
+    Vec3 Translation, Rotation, Scale;
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
+    return Scale;
+}
+
+Vec3 CTransform::GetTransformWorldScale() const
+{
     CGameObject* pParent = GetOwner()->GetParent();
     Vec3 vWorldScale = m_vRelativeScale;
 
@@ -139,7 +146,9 @@ Vec3 CTransform::GetWorldScale() const
     while (pParent)
     {
         if (!bAbsolute)
+        {
             vWorldScale *= pParent->Transform()->GetRelativeScale();
+        }
 
         bAbsolute = pParent->Transform()->IsAbsolute();
         pParent = pParent->GetParent();
@@ -150,16 +159,10 @@ Vec3 CTransform::GetWorldScale() const
 
 Vec3 CTransform::GetWorldRotation() const
 {
-    CGameObject* pParent = GetOwner()->GetParent();
-    Vec3 vWorldRot = m_vRelativeRotation;
-
-    while (pParent)
-    {
-        vWorldRot += pParent->Transform()->GetRelativeRotation();
-        pParent = pParent->GetParent();
-    }
-
-    return vWorldRot;
+    Vec3 Translation, Rotation, Scale;
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
+    Rotation.ToRadian();
+    return Rotation;
 }
 
 void CTransform::SetDirection(Vec3 _Dir)

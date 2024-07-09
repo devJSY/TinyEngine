@@ -310,3 +310,16 @@ bool CGameObject::IsAncestor(CGameObject* _Other)
 
     return false;
 }
+
+CGameObject* CGameObject::GetChildObject(const wstring& _Name) const
+{
+    for (const auto& iter : m_vecChild)
+    {
+        if (iter->GetName() == _Name)
+        {
+            return iter;
+        }
+    }
+
+    return nullptr;
+}

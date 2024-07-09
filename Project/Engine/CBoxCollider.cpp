@@ -21,6 +21,10 @@ void CBoxCollider::finaltick()
 {
     CCollider::finaltick();
 
+    // 콜라이더 비활성화 상태에서는 렌더링 X
+    if (!m_bEnabled)
+        return; 
+
     Vec3 scale = Transform()->GetWorldScale();
 
     Matrix matPhysXScale = XMMatrixScaling(scale.x * m_Size.x, scale.y * m_Size.y, scale.z * m_Size.z);

@@ -70,6 +70,10 @@ void CEdgeCollider2D::finaltick()
 {
     CCollider2D::finaltick();
 
+    // 콜라이더 비활성화 상태에서는 렌더링 X
+    if (!m_bEnabled)
+        return;
+
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
     Matrix matWorld = Transform()->GetWorldMat();
     Vec3 WorldScale = Transform()->GetWorldScale();

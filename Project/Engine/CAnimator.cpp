@@ -18,7 +18,7 @@ CAnimator::CAnimator()
     , m_bPlay(true)
     , m_bRepeat(true)
     , m_bReverse(false)
-    , m_PlaySpeed(2.5f)
+    , m_PlaySpeed(1.f)
     , m_FrameRate(30)
     , m_CurTime(0.)
     , m_FrameIdx(0)
@@ -34,7 +34,7 @@ CAnimator::CAnimator()
     , m_NextClipIdx(-1)
     , m_bNextRepeat(true)
     , m_bNextReverse(false)
-    , m_NextPlaySpeed(2.5f)
+    , m_NextPlaySpeed(1.f)
 {
     m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
@@ -522,6 +522,10 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse,
 
 bool CAnimator::IsFinish() const
 {
+    // 애니메이션 전환중은 false
+    if (m_bChanging)
+        return false;
+
     // 현재 ClipUpdateTime과 TimeLength의 차이가 작은 경우 Finish
     return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }

@@ -673,7 +673,7 @@ void CModelEditor::DrawDetails()
             ImGui_InputText("Bone Name",
                             ToString(m_ModelObj->Animator()->GetSkeletalMesh()->GetBones()->at(m_SelectedBoneSocket->BoneIndex).strBoneName).c_str());
 
-            ImGui_DrawVec3Control("Relative Location", m_SelectedBoneSocket->RelativeLocation, 1.f, 0.f, 0.f, 0.f, 200.f);
+            ImGui_DrawVec3Control("Relative Location", m_SelectedBoneSocket->RelativeLocation, 0.01f, 0.f, 0.f, 0.f, 200.f);
 
             Vec3 rot = m_SelectedBoneSocket->RelativeRotation;
             rot.ToDegree();
@@ -681,7 +681,7 @@ void CModelEditor::DrawDetails()
             rot.ToRadian();
             m_SelectedBoneSocket->RelativeRotation = rot;
 
-            ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f);
+            ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 0.01f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f);
 
             ImGui::TreePop();
         }
@@ -757,11 +757,9 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
     {
         if (ImGui::MenuItem("Add Socket"))
         {
-            static wstring SocketName = L"TestSocket";
-            static int SocketNameNumber = -1;
-            ++SocketNameNumber;
-            tBoneSocket* BoneSocket =
-                new tBoneSocket{SocketName + L"_" + to_wstring(SocketNameNumber), _BoneIdx, Vec3(), Vec3(), Vec3(1.f, 1.f, 1.f)};
+            wstring SocketName = _vecBone[_BoneIdx].strBoneName;
+            tBoneSocket* BoneSocket = new tBoneSocket{SocketName + L"Socket_" + to_wstring(_vecBone[_BoneIdx].vecBoneSocket.size()), _BoneIdx, Vec3(),
+                                                      Vec3(), Vec3(1.f, 1.f, 1.f)};
 
             m_ModelObj->Animator()->GetSkeletalMesh()->AddBoneSocket(_BoneIdx, BoneSocket);
             m_SelectedBoneSocket = BoneSocket;

@@ -32,13 +32,14 @@ void CCharacterController::begin()
 
 void CCharacterController::finaltick()
 {
-    // 스케일이 변경되었다면 재생성
-    if (m_PrevScale != Transform()->GetWorldScale())
+    // 트랜스폼의 스케일이 변경되었다면 재생성
+    Vec3 TransformWorldScale = Transform()->GetTransformWorldScale();
+    if ((m_PrevScale - TransformWorldScale).Length() > 1e-3f)
     {
         GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
     }
 
-    m_PrevScale = Transform()->GetWorldScale();
+    m_PrevScale = TransformWorldScale;
 
     if (nullptr != m_RuntimeShape)
     {
@@ -52,6 +53,10 @@ void CCharacterController::finaltick()
     }
 
     m_MoveElapsedTime += DT;
+
+    // 콜라이더 비활성화 상태에서는 렌더링 X
+    if (!m_bEnabled)
+        return;
 
     Vec3 worldpos = Transform()->GetWorldPos();
     Vec3 scale = Transform()->GetWorldScale();

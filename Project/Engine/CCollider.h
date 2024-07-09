@@ -13,11 +13,9 @@ protected:
     int m_CollisionCount;
     int m_TriggerCount;
 
-private:
-    bool m_bEnabled;
-
 protected:
     Vec3 m_PrevScale;
+    bool m_bEnabled;
 
 public:
     virtual void begin() override;

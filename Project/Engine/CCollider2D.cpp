@@ -43,13 +43,14 @@ void CCollider2D::begin()
 
 void CCollider2D::finaltick()
 {
-    // 스케일이 변경되었다면 Body 재생성
-    if (m_PrevScale != Transform()->GetWorldScale())
+    // 트랜스폼의 스케일이 변경되었다면 재생성
+    Vec3 TransformWorldScale = Transform()->GetTransformWorldScale();
+    if ((m_PrevScale - TransformWorldScale).Length() > 1e-3f)
     {
-        GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+        GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
     }
 
-    m_PrevScale = Transform()->GetWorldScale();
+    m_PrevScale = TransformWorldScale;
 
     if (nullptr == m_RuntimeFixture)
         return;
