@@ -118,14 +118,9 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbySlide.h"
 #include "CKirbySlideEnd.h"
 #include "CKirbyDodgeStart.h"
-#include "CKirbyDodgeBack1.h"
-#include "CKirbyDodgeBack2.h"
-#include "CKirbyDodgeFront1.h"
-#include "CKirbyDodgeFront2.h"
-#include "CKirbyDodgeLeft1.h"
-#include "CKirbyDodgeLeft2.h"
-#include "CKirbyDodgeRight1.h"
-#include "CKirbyDodgeRight2.h"
+#include "CKirbyDodge1.h"
+#include "CKirbyDodge2.h"
+
 
 void CKirbyFSM::begin()
 {
@@ -173,14 +168,9 @@ void CKirbyFSM::begin()
     AddState(L"SLIDE", new CKirbySlide);
     AddState(L"SLIDE_END", new CKirbySlideEnd);
     AddState(L"DODGE_START", new CKirbyDodgeStart);
-    AddState(L"DODGE_BACK1", new CKirbyDodgeBack1);
-    AddState(L"DODGE_BACK2", new CKirbyDodgeBack2);
-    AddState(L"DODGE_FRONT1", new CKirbyDodgeFront1);
-    AddState(L"DODGE_FRONT2", new CKirbyDodgeFront2);
-    AddState(L"DODGE_LEFT1", new CKirbyDodgeLeft1);
-    AddState(L"DODGE_LEFT2", new CKirbyDodgeLeft2);
-    AddState(L"DODGE_RIGHT1", new CKirbyDodgeRight1);
-    AddState(L"DODGE_RIGHT2", new CKirbyDodgeRight2);
+    AddState(L"DODGE1", new CKirbyDodge1);
+    AddState(L"DODGE2", new CKirbyDodge2);
+
 
     ChangeState(L"IDLE");
 }

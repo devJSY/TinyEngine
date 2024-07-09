@@ -16,6 +16,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_ForceDirInfos{}
     , m_MoveVelocity{}
     , m_Speed(10.f)
+    , m_MaxSpeed(15.f)
     , m_RotSpeed(50.f)
     , m_JumpPower(1000.f)
     , m_RayCastDist(2.f)
@@ -29,6 +30,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f,0.f,0.f}
     , m_Friction(0.f)
+    , m_HoveringMinSpeed(-5.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
@@ -47,6 +49,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_GroundNormal{0.f, 1.f, 0.f}
     , m_MoveVelocity{}
     , m_Speed(10.f)
+    , m_MaxSpeed(15.f)
     , m_RotSpeed(_Origin.m_RotSpeed)
     , m_JumpPower(1000.f)
     , m_RayCastDist(2.f)
@@ -264,13 +267,11 @@ void CKirbyMoveController::Move()
     // 수직 방향 이동속도 계산
     m_MoveVelocity.y += m_Accel.y * DT;
 
-
     // 땅에 닿은 상태면 Velocity Y값 초기화
     if (bGrounded && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
     }
-
 
     if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
     {
@@ -303,12 +304,21 @@ void CKirbyMoveController::Move()
 
         // check limit height
         Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
-        
+
         if (Hit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
         {
             //@TODO 레이어이름
             m_MoveVelocity.y = 0.f;
         }
+    }
+
+    // 수평 MaxSpeed 제한
+    Vec3 HorizontalVel = {m_MoveVelocity.x, 0.f, m_MoveVelocity.z};
+    if (HorizontalVel.Length() > m_MaxSpeed)
+    {
+        HorizontalVel = HorizontalVel.Normalize() * m_MaxSpeed;
+        m_MoveVelocity.x = HorizontalVel.x;
+        m_MoveVelocity.z = HorizontalVel.z;
     }
 
     // =========================

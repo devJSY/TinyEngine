@@ -12,11 +12,11 @@ CKirbyGuard::~CKirbyGuard()
 }
 void CKirbyGuard::tick()
 {
-    if (PLAYERCTRL->GetInput().Length() != 0.f)
+    if (KEY_TAP_ARROW)
     {
         CCamera* MainCam = CRenderMgr::GetInst()->GetMainCamera();
 
-        // 입력 방향 (World 좌표계)
+        // 입력 방향
         Vec3 InputDir = PLAYERCTRL->GetInput();
 
         Vec3 Front = MainCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);

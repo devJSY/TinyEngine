@@ -413,6 +413,9 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, float _PlaySpee
 
 bool CAnimator::IsFinish() const
 {
+    if (m_bChanging)
+        return false;
+
     // 현재 ClipUpdateTime과 TimeLength의 차이가 작은 경우 Finish
     return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }
