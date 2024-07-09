@@ -1,6 +1,7 @@
 #pragma once
 
 #define PLAYER CPlayerMgr::GetPlayer()
+#define PLAYERUNIT CPlayerMgr::GetPlayerScript()
 #define PLAYERFSM CPlayerMgr::GetPlayerFSM()
 #define PLAYERCTRL CPlayerMgr::GetPlayerCtrl()
 #define PLAYERMTRL CPlayerMgr::GetPlayerBodyMtrl()

@@ -20,6 +20,10 @@ CKirbyFSM::CKirbyFSM()
     , m_LastJump(LastJumpType::HIGH)
     , m_bStuffed(false)
     , m_bHovering(false)
+    , m_bInvincible(false)
+    , m_InvincibleAcc(0.f)
+    , m_InvincibleDuration(3.f)
+    , m_EmissiveCoef(0.f)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
@@ -39,6 +43,10 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_LastJump(LastJumpType::HIGH)
     , m_bStuffed(false)
     , m_bHovering(false)
+    , m_bInvincible(false)
+    , m_InvincibleAcc(_Origin.m_InvincibleAcc)
+    , m_InvincibleDuration(_Origin.m_InvincibleDuration)
+    , m_EmissiveCoef(_Origin.m_EmissiveCoef)
 {
     // Ability Copy 복사
     for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
@@ -189,6 +197,36 @@ void CKirbyFSM::tick()
     if (m_bHovering)
     {
         m_HoveringAccTime += DT;
+    }
+
+    // 무적상태 관리
+    if (m_bInvincible)
+    {
+        m_InvincibleAcc += DT;
+
+        m_EmissiveCoef += 3.f * DT;
+
+        if (m_EmissiveCoef > 0.6f)
+        {
+            m_EmissiveCoef -= 0.6f;
+        }
+
+        if (m_EmissiveCoef > 0.3f)
+        {
+            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.6f - m_EmissiveCoef);
+        }
+        else
+        {
+            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_EmissiveCoef);
+        }
+
+        if (m_InvincibleAcc > m_InvincibleDuration)
+        {
+            m_bInvincible = false;
+            m_InvincibleAcc = 0.f;
+            m_EmissiveCoef = 0.f;
+            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+        }
     }
 
     CFSMScript::tick();

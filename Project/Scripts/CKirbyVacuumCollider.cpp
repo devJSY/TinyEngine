@@ -8,7 +8,7 @@
 CKirbyVacuumCollider::CKirbyVacuumCollider()
     : CScript(KIRBYVACUUMCOLLIDER)
     , m_FindTarget(nullptr)
-    , m_FindDistance(INT_MAX)
+    , m_FindDistance(FBXSDK_FLOAT_MAX)
     , m_FindType(EatType::NONE)
     , m_FindAbilityType(AbilityCopyType::NONE)
     , m_FindObjType(ObjectCopyType::NONE)
@@ -19,7 +19,7 @@ CKirbyVacuumCollider::CKirbyVacuumCollider()
 CKirbyVacuumCollider::CKirbyVacuumCollider(const CKirbyVacuumCollider& _Origin)
     : CScript(KIRBYVACUUMCOLLIDER)
     , m_FindTarget(nullptr)
-    , m_FindDistance(INT_MAX)
+    , m_FindDistance(FBXSDK_FLOAT_MAX)
     , m_FindType(EatType::NONE)
     , m_FindAbilityType(AbilityCopyType::NONE)
     , m_FindObjType(ObjectCopyType::NONE)
@@ -143,7 +143,7 @@ void CKirbyVacuumCollider::EnableCollider(bool _bEnable)
     if (_bEnable)
     {
         m_FindTarget = nullptr;
-        m_FindDistance = INT_MAX;
+        m_FindDistance = FBXSDK_FLOAT_MAX;
         m_FindType = EatType::NONE;
         m_FindAbilityType = AbilityCopyType::NONE;
         m_FindObjType = ObjectCopyType::NONE;

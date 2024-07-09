@@ -163,7 +163,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyVacuumCollider.h" />
     <ClInclude Include="CModelEditorCameraMoveScript.h" />
     <ClInclude Include="CKirbyRunStart.h" />
-    <ClInclude Include="CKirbyScript.h" />
+    <ClInclude Include="CKirbyUnitScript.h" />
     <ClInclude Include="CMonsterUnitScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
@@ -226,7 +226,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyObject.cpp" />
     <ClCompile Include="CKirbyRun.cpp" />
     <ClCompile Include="CKirbyRunStart.cpp" />
-    <ClCompile Include="CKirbyScript.cpp" />
+    <ClCompile Include="CKirbyUnitScript.cpp" />
     <ClCompile Include="CKirbySlideEnd.cpp" />
     <ClCompile Include="CKirbySlideStart.cpp" />
     <ClCompile Include="CKirbyStuffed.cpp" />

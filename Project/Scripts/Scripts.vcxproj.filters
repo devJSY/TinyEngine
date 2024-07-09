@@ -76,7 +76,7 @@
     <ClInclude Include="CTestFSM.h">
       <Filter>Scripts\FSM\TestFSM</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyScript.h">
+    <ClInclude Include="CKirbyUnitScript.h">
       <Filter>Scripts\Unit\Kirby</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyChangeAbility.h">
@@ -285,7 +285,7 @@
     <ClCompile Include="CTestFSM.cpp">
       <Filter>Scripts\FSM\TestFSM</Filter>
     </ClCompile>
-    <ClCompile Include="CKirbyScript.cpp">
+    <ClCompile Include="CKirbyUnitScript.cpp">
       <Filter>Scripts\Unit\Kirby</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyChangeAbility.cpp">

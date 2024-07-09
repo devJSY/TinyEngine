@@ -32,6 +32,41 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
     {
         PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
     }
+    else if (_OtherCollider->GetOwner()->GetLayerIdx() == 5)
+    {
+        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, 10.f, 0.f, 0.f};
+        PLAYERUNIT->GetDamage(HitInfo);
+
+        // 무적상태일 경우
+        if (PLAYERFSM->IsInvincible())
+        {
+            
+        }
+        // 무적 상태가 아닌경우
+        else
+        {
+            // 무적상태로 바꿈
+            PLAYERFSM->SetInvincible();
+
+            // 날라가는 방향 설정
+            Vec3 MonsterPos = _OtherCollider->Transform()->GetWorldPos();
+            Vec3 KirbyPos = Transform()->GetWorldPos();
+
+            Vec3 KnockBackDir = KirbyPos - MonsterPos;
+            KnockBackDir.y = 0.f;
+            KnockBackDir.Normalize();
+
+            PLAYERFSM->SetKnockBackDir(KnockBackDir);
+
+            // 상태 변경
+            PLAYERFSM->ChangeState(L"DAMAGE");
+        }
+
+
+
+    }
+
+    
 }
 
 void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)

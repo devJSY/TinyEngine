@@ -15,6 +15,8 @@
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
 
+#define sparklyEffect g_float_0
+
 struct PS_OUT
 {
     float4 vColor : SV_Target0;
@@ -73,7 +75,7 @@ PS_OUT main(PS_IN input)
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
-    output.vEmissive = float4(emission, 1.f);
+    output.vEmissive = float4(sparklyEffect, sparklyEffect, sparklyEffect, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
     
     return output;

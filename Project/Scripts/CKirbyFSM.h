@@ -42,6 +42,12 @@ private:
     DodgeType               m_DodgeType;
     bool                    m_bStuffed;
 
+    Vec3                    m_KnockbackDir;
+    float                   m_InvincibleAcc;
+    float                   m_InvincibleDuration;
+    float                   m_EmissiveCoef;
+    bool                    m_bInvincible;
+
 public:
     void begin() override;
     void tick() override;
@@ -55,6 +61,8 @@ public:
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
+    void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
+    void SetInvincible() { m_bInvincible = true;  m_InvincibleAcc = 0.f;}
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
     void ClearStuff() { m_bStuffed = false; m_StuffedObj = nullptr; }
@@ -65,13 +73,17 @@ public:
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
+    DodgeType GetDodgeType() const { return m_DodgeType; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;
-    DodgeType GetDodgeType() const { return m_DodgeType; }
+    bool IsInvincible() const { return m_bInvincible; }
+    Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
+
+    
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

@@ -39,7 +39,7 @@ void CUnitScript::DamageProc()
         {
         case DAMAGE_TYPE::NORMAL:
             CurDamage += iter->Damage;
-            m_HitHistory.erase(iter);
+            iter = m_HitHistory.erase(iter);
             break;
 
         case DAMAGE_TYPE::DOT:
@@ -53,7 +53,7 @@ void CUnitScript::DamageProc()
 
             if (iter->Duration <= 0.f)
             {
-                m_HitHistory.erase(iter);
+                iter = m_HitHistory.erase(iter);
             }
         }
             break;

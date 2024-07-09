@@ -21,7 +21,7 @@ void CKirbyBackJump::tick()
 
 void CKirbyBackJump::Enter()
 {
-    Vec3 Front = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
 
     PLAYER->Animator()->Play(KIRBYANIM(L"BackJump"), false, false, 2.f);
 
@@ -33,7 +33,7 @@ void CKirbyBackJump::Enter()
     PLAYERCTRL->SetGuard(true);
 
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
-    PLAYERCTRL->AddVelocity(-Front * m_InitSpeed);
+    PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
 
     PLAYERCTRL->SetGravity(-35.f);
 }
