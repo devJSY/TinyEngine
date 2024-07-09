@@ -55,19 +55,19 @@ void CKirbyDodge1::Enter()
     {
     case DodgeType::NONE:
     case DodgeType::FRONT:
-        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeFront1"), false, 1.5f);
+        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeFront1"), false, false, 1.5f);
         PLAYERCTRL->AddVelocity(Front * m_InitSpeed);
         break;
     case DodgeType::RIGHT:
-        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeRight1"), false, 1.5f);
+        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeRight1"), false, false, 1.5f);
         PLAYERCTRL->AddVelocity(Right * m_InitSpeed);
         break;
     case DodgeType::BACK:
-        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeBack1"), false, 1.5f);
+        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeBack1"), false, false, 1.5f);
         PLAYERCTRL->AddVelocity(-Front * m_InitSpeed);
         break;
     case DodgeType::LEFT:
-        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeLeft1"), false, 1.5f);
+        PLAYER->Animator()->Play(KIRBYANIM(L"DodgeLeft1"), false, false, 1.5f);
         PLAYERCTRL->AddVelocity(-Right * m_InitSpeed);
         break;
     default:

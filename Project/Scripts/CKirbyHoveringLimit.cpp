@@ -29,7 +29,7 @@ void CKirbyHoveringLimit::tick()
 
 void CKirbyHoveringLimit::Enter()
 {
-    GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLimit"), true, 1.5f);
+    GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLimit"), true, false, 1.5f);
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-3.f);

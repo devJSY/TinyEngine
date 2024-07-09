@@ -81,7 +81,7 @@ void CKirbyGuard::tick()
 void CKirbyGuard::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"Guard"), true, 1.f, 0.2);
+    PLAYER->Animator()->Play(KIRBYANIM(L"Guard"), true, false, 1.f, 0.2);
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();

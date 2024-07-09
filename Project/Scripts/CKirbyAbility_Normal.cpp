@@ -121,7 +121,7 @@ void CKirbyAbility_Normal::AttackCharge1()
 
 void CKirbyAbility_Normal::AttackCharge1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"), true, 2.f);
+    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"), true, false, 2.f);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
@@ -193,7 +193,7 @@ void CKirbyAbility_Normal::AttackCharge1Run()
 
 void CKirbyAbility_Normal::AttackCharge1RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"), true, 2.f);
+    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"), true, false, 2.f);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
@@ -220,7 +220,7 @@ void CKirbyAbility_Normal::AttackCharge2()
 
 void CKirbyAbility_Normal::AttackCharge2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"), true, 2.f);
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"), true, false, 2.f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
 
     PLAYERCTRL->LockJump();
@@ -274,7 +274,7 @@ void CKirbyAbility_Normal::AttackCharge2Run()
 
 void CKirbyAbility_Normal::AttackCharge2RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"), true, 2.f);
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"), true, false, 2.f);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
