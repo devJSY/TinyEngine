@@ -208,6 +208,11 @@ void CKirbyFSM::StartStuffed(CGameObject* _Target)
     m_bStuffed = true;
 }
 
+void CKirbyFSM::DrawingCollisionEnter(CGameObject* _CollisionObject)
+{
+    m_VacuumCollider->DrawingCollisionEnter(_CollisionObject);
+}
+
 void CKirbyFSM::SetHovering(bool _bHovering)
 {
     if (m_bHovering != _bHovering)
@@ -216,6 +221,11 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     }
     
     m_bHovering = _bHovering;
+}
+
+bool CKirbyFSM::IsDrawing() const
+{
+    return m_VacuumCollider->IsDrawing();
 }
 
 void CKirbyFSM::SaveToLevelFile(FILE* _File)

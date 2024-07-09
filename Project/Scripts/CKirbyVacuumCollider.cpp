@@ -48,12 +48,12 @@ void CKirbyVacuumCollider::begin()
 void CKirbyVacuumCollider::tick()
 {
     // 이전 충돌 판정 시 찾은 대상이 있다면
-    if (m_FindTarget)
+    if (!m_bDrawing && m_FindTarget)
     {
         //@TODO target object가 monster라면 Vacuum Drawed로 상태 변경
         if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
         {
-            //m_FindTarget->GetScript<CFSMScript>()->ChangeState(L"VACUUM_DRAWED");
+            // m_FindTarget->GetScript<CFSMScript>()->ChangeState(L"VACUUM_DRAWED");
         }
 
         // collider clear
@@ -66,37 +66,9 @@ void CKirbyVacuumCollider::tick()
     // 타겟 오브젝트 빨아들임
     if (m_bDrawing)
     {
-        Vec3 Between = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-
-        // 커비와 충돌하면 오브젝트 삭제
-        if (fabs(Between.Length()) <= (PLAYER->CharacterController()->GetRadius()))
-        {
-            // Change Player State
-            switch (m_FindType)
-            {
-            case EatType::Copy_Ability:
-            case EatType::Copy_Monster:
-                PLAYERFSM->ChangeAbilityCopy(m_FindAbilityType);
-                break;
-            case EatType::Copy_Object:
-                PLAYERFSM->ChangeObjectCopy(m_FindObjType);
-                break;
-            case EatType::Etc:
-            case EatType::Monster:
-                PLAYERFSM->StartStuffed(m_FindTarget);
-                break;
-            }
-
-            GamePlayStatic::DestroyGameObject(m_FindTarget);
-            m_bDrawing = false;
-        }
-
-        // 매 틱마다 커비쪽으로 이동
-        else
-        {
-            Vec3 Force = (Between).Normalize() * 20.f;
-            m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
-        }
+        Vec3 Force = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
+        Force = (Force).Normalize() * 20.f;
+        m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
     }
 }
 
@@ -136,6 +108,32 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
         m_FindAbilityType = newAbility;
         m_FindObjType = newObject;
     }
+}
+
+void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
+{
+    if (_CollisionObject != m_FindTarget)
+        return;
+
+    // Change Player State
+    switch (m_FindType)
+    {
+    case EatType::Copy_Ability:
+    case EatType::Copy_Monster:
+        PLAYERFSM->ChangeAbilityCopy(m_FindAbilityType);
+        break;
+    case EatType::Copy_Object:
+        PLAYERFSM->ChangeObjectCopy(m_FindObjType);
+        break;
+    case EatType::Etc:
+    case EatType::Monster:
+        PLAYERFSM->StartStuffed(m_FindTarget);
+        break;
+    }
+
+    // 충돌 오브젝트 삭제
+    GamePlayStatic::DestroyGameObject(m_FindTarget);
+    m_bDrawing = false;
 }
 
 void CKirbyVacuumCollider::EnableCollider(bool _bEnable)

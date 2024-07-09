@@ -18,6 +18,7 @@
 #include "CMonsterUnitScript.h"
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
+#include "CKirbyBodyCollider.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -38,6 +39,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterUnitScript");
 	_vec.push_back(L"CKirbyCopyAbilityScript");
 	_vec.push_back(L"CKirbyCopyObjScript");
+	_vec.push_back(L"CKirbyBodyCollider");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -76,6 +78,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyCopyAbilityScript;
 	if (L"CKirbyCopyObjScript" == _strScriptName)
 		return new CKirbyCopyObjScript;
+	if (L"CKirbyBodyCollider" == _strScriptName)
+		return new CKirbyBodyCollider;
 	return nullptr;
 }
 
@@ -117,6 +121,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyCopyAbilityScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
 		return new CKirbyCopyObjScript;
+	case (UINT)SCRIPT_TYPE::KIRBYBODYCOLLIDER:
+		return new CKirbyBodyCollider;
 	}
 	return nullptr;
 }
@@ -159,6 +165,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyCopyAbilityScript";
 	case SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
 		return L"CKirbyCopyObjScript";
+	case SCRIPT_TYPE::KIRBYBODYCOLLIDER:
+		return L"CKirbyBodyCollider";
 	}
 	return nullptr;
 }

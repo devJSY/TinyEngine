@@ -205,6 +205,9 @@
     <ClInclude Include="CKirbyCopyObjScript.h">
       <Filter>Scripts\Gimmik\KirbyCopyObj</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyBodyCollider.h">
+      <Filter>Scripts\Character\Kirby\KirbyBodyCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -422,6 +425,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyCopyObjScript.cpp">
       <Filter>Scripts\Gimmik\KirbyCopyObj</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBodyCollider.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyBodyCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -658,6 +664,9 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\KirbyCopyObj">
       <UniqueIdentifier>{f6e182c3-e6d9-47aa-83e9-323f9cdeff16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyBodyCollider">
+      <UniqueIdentifier>{cd06ec9f-70d0-4d2f-bbbb-ebdf1cbf6d74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

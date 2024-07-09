@@ -28,7 +28,11 @@ public:
 
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
 
+    void DrawingCollisionEnter(CGameObject* _CollisionObject);
     void EnableCollider(bool _bEnable);
+
+public:
+    bool IsDrawing() { return m_bDrawing; }
 
 private:
     EatType GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj);

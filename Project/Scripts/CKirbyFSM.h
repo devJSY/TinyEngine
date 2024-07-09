@@ -45,9 +45,11 @@ private:
 public:
     void begin() override;
     void tick() override;
+
     void ChangeAbilityCopy(AbilityCopyType _Type);
     void ChangeObjectCopy(ObjectCopyType _Type);
     void StartStuffed(CGameObject* _Target);
+    void DrawingCollisionEnter(CGameObject* _CollisionObject);
 
 public:
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
@@ -68,6 +70,7 @@ public:
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
+    bool IsDrawing() const;
     DodgeType GetDodgeType() const { return m_DodgeType; }
 
 public:

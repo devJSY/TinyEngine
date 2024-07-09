@@ -122,6 +122,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAttackCharge2.h" />
     <ClInclude Include="CKirbyAttackCharge2Run.h" />
     <ClInclude Include="CKirbyAttackCharge2Start.h" />
+    <ClInclude Include="CKirbyBodyCollider.h" />
     <ClInclude Include="CKirbyBulletScript.h" />
     <ClInclude Include="CKirbyChangeAbility.h" />
     <ClInclude Include="CKirbyAttackCharge1.h" />
@@ -192,6 +193,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAttackCharge2.cpp" />
     <ClCompile Include="CKirbyAttackCharge2Run.cpp" />
     <ClCompile Include="CKirbyAttackCharge2Start.cpp" />
+    <ClCompile Include="CKirbyBodyCollider.cpp" />
     <ClCompile Include="CKirbyBulletScript.cpp" />
     <ClCompile Include="CKirbyChangeAbility.cpp" />
     <ClCompile Include="CKirbyAttackCharge1.cpp" />
