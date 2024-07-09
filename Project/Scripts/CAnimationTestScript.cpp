@@ -12,30 +12,53 @@ CAnimationTestScript::~CAnimationTestScript()
 
 void CAnimationTestScript::tick()
 {
-    /*if (nullptr == Animator())
+    if (nullptr == Animator())
         return;
 
-    if (KEY_TAP(KEY::NUM1))
-    {
-        Animator()->Play(L"Armature|Walk", true, true, 1.f);
-    }
-    if (KEY_TAP(KEY::NUM2))
-    {
-        Animator()->Play(L"Armature|Wait", true, true, 1.f);
-    }
+    LOG(Log, "%d", Animator()->IsFinish());
 
-    if (KEY_TAP(KEY::F))
-    {
-        LOG(Log, "%d", Animator()->IsFinish())
-    }*/
+    // if (KEY_TAP(KEY::NUM1))
+    //{
+    //     Animator()->Play(L"Armature|Walk", true, true, 1.f);
+    // }
+    // if (KEY_TAP(KEY::NUM2))
+    //{
+    //     Animator()->Play(L"Armature|Wait", true, true, 1.f);
+    // }
 
-    if (GetOwner()->SphereCollider())
-    {
-        if (KEY_TAP(KEY::NUM1))
-        {
-            GetOwner()->SphereCollider()->SetEnabled(!GetOwner()->SphereCollider()->IsEnabled());
-        }
-    }
+    // if (KEY_TAP(KEY::F))
+    //{
+    //     LOG(Log, "%d", Animator()->IsFinish())
+    // }
+
+    // if (GetOwner()->SphereCollider())
+    //{
+    //     if (KEY_TAP(KEY::NUM1))
+    //     {
+    //         GetOwner()->SphereCollider()->SetEnabled(!GetOwner()->SphereCollider()->IsEnabled());
+    //     }
+    // }
+    // if (KEY_TAP(KEY::NUM1))
+    //{
+    //     Animator()->Play(L"Armature|Walk", true, true, 1.f);
+    // }
+    // if (KEY_TAP(KEY::NUM2))
+    //{
+    //     Animator()->Play(L"Armature|Wait", true, true, 1.f);
+    // }
+
+    // if (KEY_TAP(KEY::F))
+    //{
+    //     LOG(Log, "%d", Animator()->IsFinish())
+    // }
+
+    // if (GetOwner()->SphereCollider())
+    //{
+    //     if (KEY_TAP(KEY::NUM1))
+    //     {
+    //         GetOwner()->SphereCollider()->SetEnabled(!GetOwner()->SphereCollider()->IsEnabled());
+    //     }
+    // }
 }
 
 void CAnimationTestScript::OnCollisionEnter(CCollider* _OtherCollider)

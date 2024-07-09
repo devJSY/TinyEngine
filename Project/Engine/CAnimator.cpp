@@ -526,6 +526,12 @@ bool CAnimator::IsFinish() const
     if (m_bChanging)
         return false;
 
+    // 역 재생일 경우 ClipUpdateTime가 0과 가까운 경우 Finish
+    if (m_bReverse)
+    {
+        return 1e-3 > m_vecClipUpdateTime[m_CurClipIdx];
+    }
+
     // 현재 ClipUpdateTime과 TimeLength의 차이가 작은 경우 Finish
     return 1e-3 > abs(m_vecClipUpdateTime[m_CurClipIdx] - m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength);
 }
