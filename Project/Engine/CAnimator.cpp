@@ -546,16 +546,6 @@ void CAnimator::SetClipFrameIndex(int _FrameIdx)
     SetFrameIdx(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame + _FrameIdx);
 }
 
-bool CAnimator::IsValid()
-{
-    if (nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh())
-    {
-        return true;
-    }
-
-    return false;
-}
-
 void CAnimator::CheckBoneMatBuffer()
 {
     if (!IsValid())

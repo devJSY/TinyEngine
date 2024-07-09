@@ -2705,6 +2705,7 @@ void COutliner::DrawSkybox(CGameObject* obj)
         };
 
         static string CurShape = SkyBoxShapes[(UINT)pSkyBox->GetSkyBoxShape()];
+        CurShape = SkyBoxShapes[(UINT)pSkyBox->GetSkyBoxShape()];
         if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Shape").c_str(), CurShape, SkyBoxShapes))
         {
             if (SkyBoxShapes[0] == CurShape)

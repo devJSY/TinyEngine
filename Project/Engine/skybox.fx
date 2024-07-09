@@ -35,10 +35,22 @@ VS_SKYBOX_OUT VS_SkyBox(VS_SKYBOX_IN _in)
 float4 PS_SkyBox(VS_SKYBOX_OUT _in) : SV_Target
 {
     float4 vOutColor = float4(0.f, 0.f, 0.f, 1.f);
-
-    if (g_btexcube_0)
+  
+    // Sphere
+    if (0 == g_int_0)
     {
-        vOutColor = g_texCube_0.Sample(g_LinearWrapSampler, normalize(_in.vLocalPos));
+        if (g_btex_0)
+        {
+            vOutColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        }
+    }
+    // Box
+    else if (1 == g_int_0)
+    {
+        if (g_btexcube_0)
+        {
+            vOutColor = g_texCube_0.Sample(g_LinearWrapSampler, normalize(_in.vLocalPos));
+        }
     }
     
     return vOutColor;

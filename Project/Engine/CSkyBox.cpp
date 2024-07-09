@@ -60,7 +60,16 @@ void CSkyBox::render()
 
     Transform()->UpdateData();
 
-    GetMaterial(0)->SetTexParam(TEXCUBE_0, m_EnvTex);
+    GetMaterial(0)->SetScalarParam(INT_0, (int)m_Shape);
+
+    if (SKYBOX_SHAPE::BOX == m_Shape)
+    {
+        GetMaterial(0)->SetTexParam(TEXCUBE_0, m_EnvTex);
+    }
+    else
+    {
+        GetMaterial(0)->SetTexParam(TEX_0, m_EnvTex);
+    }
 
     GetMaterial(0)->UpdateData();
 
@@ -74,7 +83,16 @@ void CSkyBox::render(Ptr<CMaterial> _mtrl)
 
     Transform()->UpdateData();
 
-    _mtrl->SetTexParam(TEXCUBE_0, m_EnvTex);
+    _mtrl->SetScalarParam(INT_0, (int)m_Shape);
+
+    if (SKYBOX_SHAPE::SPHERE == m_Shape)
+    {
+        _mtrl->SetTexParam(TEX_0, m_EnvTex);
+    }
+    else
+    {
+        _mtrl->SetTexParam(TEXCUBE_0, m_EnvTex);
+    }
 
     _mtrl->UpdateData();
 
