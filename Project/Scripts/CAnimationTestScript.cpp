@@ -12,7 +12,7 @@ CAnimationTestScript::~CAnimationTestScript()
 
 void CAnimationTestScript::tick()
 {
-    if (nullptr == Animator())
+    /*if (nullptr == Animator())
         return;
 
     if (KEY_TAP(KEY::NUM1))
@@ -27,6 +27,14 @@ void CAnimationTestScript::tick()
     if (KEY_TAP(KEY::F))
     {
         LOG(Log, "%d", Animator()->IsFinish())
+    }*/
+
+    if (GetOwner()->SphereCollider())
+    {
+        if (KEY_TAP(KEY::NUM1))
+        {
+            GetOwner()->SphereCollider()->SetEnabled(!GetOwner()->SphereCollider()->IsEnabled());
+        }
     }
 }
 

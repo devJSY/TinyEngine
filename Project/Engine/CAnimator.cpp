@@ -18,7 +18,7 @@ CAnimator::CAnimator()
     , m_bPlay(true)
     , m_bRepeat(true)
     , m_bReverse(false)
-    , m_PlaySpeed(2.5f)
+    , m_PlaySpeed(1.f)
     , m_FrameRate(30)
     , m_CurTime(0.)
     , m_FrameIdx(0)
@@ -34,7 +34,7 @@ CAnimator::CAnimator()
     , m_NextClipIdx(-1)
     , m_bNextRepeat(true)
     , m_bNextReverse(false)
-    , m_NextPlaySpeed(2.5f)
+    , m_NextPlaySpeed(1.f)
 {
     m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;

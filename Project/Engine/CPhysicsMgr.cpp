@@ -18,7 +18,7 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
     // 트리거 플래그 등록
     if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
     {
-        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_CCD;
+        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
         return PxFilterFlag::eDEFAULT;
     }
 
@@ -70,10 +70,8 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
 
     if (PxPairFlag::eNOTIFY_TOUCH_LOST & pairs->status)
     {
-        if (pColliderA->m_TriggerCount > 0)
-            pColliderA->OnTriggerExit(pColliderB);
-        if (pColliderB->m_TriggerCount > 0)
-            pColliderB->OnTriggerExit(pColliderA);
+        pColliderA->OnTriggerExit(pColliderB);
+        pColliderB->OnTriggerExit(pColliderA);
 
         // Trigger List 에서 삭제
         std::list<std::pair<CCollider*, CCollider*>>::iterator iter = CPhysicsMgr::GetInst()->m_listTrigger.begin();
@@ -481,7 +479,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         if (pBoxCol->m_bTrigger)
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pBoxCol->m_bEnabled);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -524,7 +522,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         if (pSphereCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pSphereCol->m_bEnabled);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -596,7 +594,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         if (pCapsuleCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pCapsuleCol->m_bEnabled);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -660,7 +658,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             if (pMeshCol->m_bTrigger)
             {
                 shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pMeshCol->m_bEnabled);
             }
 
             // 필터링 데이터 적용

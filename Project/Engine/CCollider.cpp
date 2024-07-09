@@ -143,6 +143,10 @@ void CCollider::OnTriggerExit(CCollider* _OtherCollider)
 {
     --m_TriggerCount;
 
+    // Trigger는 Stay 감지를 해주지 않기 때문에 예외처리
+    if (m_TriggerCount < 0)
+        m_TriggerCount = 0;
+
     const vector<CScript*>& vecScript = GetOwner()->GetScripts();
     for (UINT i = 0; i < vecScript.size(); i++)
         vecScript[i]->OnTriggerExit(_OtherCollider);
