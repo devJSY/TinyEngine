@@ -2,7 +2,7 @@
 #include "CAsset.h"
 
 typedef void (*SAVE_TYPE)(CGameObject*, FILE*);
-typedef CGameObject* (*LOAD_TYPE)(FILE*);
+typedef CGameObject* (*LOAD_TYPE)(CGameObject*, FILE*);
 
 class CPrefab : public CAsset
 {

@@ -22,13 +22,18 @@ CPrefab::CPrefab(CGameObject* _Proto, bool _bEngineAsset)
 CPrefab::~CPrefab()
 {
     if (nullptr != m_ProtoObj)
+    {
         delete m_ProtoObj;
+        m_ProtoObj = nullptr;
+    }
 }
 
 void CPrefab::SetGameObject(CGameObject* _Object)
 {
     if (nullptr != m_ProtoObj)
+    {
         delete m_ProtoObj;
+    }
 
     m_ProtoObj = _Object;
 }
@@ -77,7 +82,7 @@ int CPrefab::Load(const wstring& _strFilePath)
         return E_FAIL;
     }
 
-    m_ProtoObj = GAMEOBJECT_LOAD(pFile);
+    m_ProtoObj = GAMEOBJECT_LOAD(nullptr, pFile);
 
     fclose(pFile);
 

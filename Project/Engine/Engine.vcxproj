@@ -83,9 +83,6 @@
 call EngineCopy.bat</Command>
     </PreBuildEvent>
     <FxCompile>
-      <ShaderType>Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile>
       <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
@@ -116,9 +113,6 @@ call EngineCopy.bat</Command>
       <Command>cd $(SolutionDir)
 call EngineCopy.bat</Command>
     </PreBuildEvent>
-    <FxCompile>
-      <ShaderType>Pixel</ShaderType>
-    </FxCompile>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
     </FxCompile>

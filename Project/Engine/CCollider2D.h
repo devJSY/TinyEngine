@@ -14,11 +14,9 @@ protected:
     int m_CollisionCount;
     int m_TriggerCount;
 
-private:
-    bool m_bEnabled; // Rigidbody를 보유한경우 사용하지않음
-
-private:
+protected:
     Vec3 m_PrevScale;
+    bool m_bEnabled; // Rigidbody를 보유한경우 사용하지않음
 
 public:
     virtual void begin() override;

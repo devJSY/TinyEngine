@@ -23,6 +23,10 @@ void CCapsuleCollider::finaltick()
 {
     CCollider::finaltick();
 
+    // 콜라이더 비활성화 상태에서는 렌더링 X
+    if (!m_bEnabled)
+        return; 
+
     Vec3 scale = Transform()->GetWorldScale();
 
     float HalfHeight = m_Height / 2.f - m_Radius;
