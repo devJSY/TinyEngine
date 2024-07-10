@@ -3,25 +3,31 @@
 #include <Engine/CLevelMgr.h>
 
 #include "CButtonManagerScript.h"
+#include "CUITexManagerScript.h"
+#include "CUIAnimManagerScript.h"
 
 CUIManagerScript::CUIManagerScript()
     : CScript(UIMANAGERSCRIPT)
+    , m_vUIManagerScript{}
 {
 }
 
 CUIManagerScript::~CUIManagerScript()
 {
-    Delete_Vec(m_vUIManagerScript);
+    Delete_Map(m_vUIManagerScript);
 }
 
 void CUIManagerScript::UIManagerScriptInit()
 {
-    m_vUIManagerScript.push_back(new CButtonManagerScript);
+    m_vUIManagerScript.insert(std::make_pair(L"ButtonManagerScript", new CButtonManagerScript));
+    m_vUIManagerScript.insert(std::make_pair(L"TexManagerScript", new CUITexManagerScript));
+    m_vUIManagerScript.insert(std::make_pair(L"AnimManagerScript", new CUIAnimManagerScript));
 
+    map<wstring, CScript*>::iterator iter = m_vUIManagerScript.begin();
 
-    for (size_t i = 0; i < m_vUIManagerScript.size();i++)
+    for (; iter != m_vUIManagerScript.end(); iter++)
     {
-        m_vUIManagerScript[i]->begin();
+        (*iter).second->begin();
     }
 }
 
@@ -32,8 +38,10 @@ void CUIManagerScript::begin()
 
 void CUIManagerScript::tick()
 { 
-    for (size_t i = 0; i < m_vUIManagerScript.size(); i++)
+    map<wstring, CScript*>::iterator iter = m_vUIManagerScript.begin();
+
+    for (; iter != m_vUIManagerScript.end(); iter++)
     {
-        m_vUIManagerScript[i]->tick();
+        (*iter).second->tick();
     }
 }

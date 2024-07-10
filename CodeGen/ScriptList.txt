@@ -16,3 +16,11 @@ CMonsterUnitScript
 CKirbyCopyAbilityScript
 CKirbyCopyObjScript
 CKirbyBodyCollider
+CUITexManagerScript
+CUITexScript
+CUIAnimManagerScript
+CLevelChangeButtonScript
+CStageChangeButtonScript
+CExitButton
+CUIHPScript
+CUIUnitManagerScript
