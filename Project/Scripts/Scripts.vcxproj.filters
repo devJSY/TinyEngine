@@ -214,6 +214,30 @@
     <ClInclude Include="CKirbyDamage.h">
       <Filter>State\KirbyState\Damage</Filter>
     </ClInclude>
+    <ClInclude Include="CUITexManagerScript.h">
+      <Filter>Scripts\UI\UIManager\UITexManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CUITexScript.h">
+      <Filter>Scripts\UI\UITex</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIAnimManagerScript.h">
+      <Filter>Scripts\UI\UIManager\UIAnimManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelChangeButtonScript.h">
+      <Filter>Scripts\UI\Button\LevelChangeButtonScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CStageChangeButtonScript.h">
+      <Filter>Scripts\UI\Button\StageChangeButtonScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CExitButton.h">
+      <Filter>Scripts\UI\Button\ExitButtonScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIHPScript.h">
+      <Filter>Scripts\UI\UIUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIUnitManagerScript.h">
+      <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -440,6 +464,30 @@
     </ClCompile>
     <ClCompile Include="CKirbyDamage.cpp">
       <Filter>State\KirbyState\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="CUITexManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager\UITexManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CUITexScript.cpp">
+      <Filter>Scripts\UI\UITex</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIAnimManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager\UIAnimManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelChangeButtonScript.cpp">
+      <Filter>Scripts\UI\Button\LevelChangeButtonScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageChangeButtonScript.cpp">
+      <Filter>Scripts\UI\Button\StageChangeButtonScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CExitButton.cpp">
+      <Filter>Scripts\UI\Button\ExitButtonScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIHPScript.cpp">
+      <Filter>Scripts\UI\UIUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIUnitManagerScript.cpp">
+      <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -685,6 +733,30 @@
     </Filter>
     <Filter Include="State\KirbyState\Damage">
       <UniqueIdentifier>{d45406e5-4c96-4ff1-9873-6069ed3586a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\UITexManager">
+      <UniqueIdentifier>{f3fc22b9-aefc-433f-9469-3abef929768d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\UIAnimManager">
+      <UniqueIdentifier>{caa27f85-a2c8-4bcd-8221-b1da05be5e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Button\LevelChangeButtonScript">
+      <UniqueIdentifier>{99fe27bc-7e11-44c0-afdd-8ded095123a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Button\StageChangeButtonScript">
+      <UniqueIdentifier>{0d1b9aea-6fcd-43b8-ad14-8495c764d95e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\Button\ExitButtonScript">
+      <UniqueIdentifier>{4222add9-c67a-4e57-83e3-c129f474007d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUnit">
+      <UniqueIdentifier>{8610c424-c6ff-4a5b-b97a-b702b52319e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UITex">
+      <UniqueIdentifier>{648c0bb3-94ce-4c8e-a9e5-28b061a9b2f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\UIUnitManager">
+      <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
