@@ -11,6 +11,14 @@
 #include "CButtonManagerScript.h"
 #include "CUIManagerScript.h"
 #include "CButtonScript.h"
+#include "CUITexManagerScript.h"
+#include "CUITexScript.h"
+#include "CUIAnimManagerScript.h"
+#include "CLevelChangeButtonScript.h"
+#include "CStageChangeButtonScript.h"
+#include "CExitButton.h"
+#include "CUIHPScript.h"
+#include "CUIUnitManagerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -24,6 +32,14 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CButtonManagerScript");
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonScript");
+	_vec.push_back(L"CUITexManagerScript");
+	_vec.push_back(L"CUITexScript");
+	_vec.push_back(L"CUIAnimManagerScript");
+	_vec.push_back(L"CLevelChangeButtonScript");
+	_vec.push_back(L"CStageChangeButtonScript");
+	_vec.push_back(L"CExitButton");
+	_vec.push_back(L"CUIHPScript");
+	_vec.push_back(L"CUIUnitManagerScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -48,6 +64,22 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIManagerScript;
 	if (L"CButtonScript" == _strScriptName)
 		return new CButtonScript;
+	if (L"CUITexManagerScript" == _strScriptName)
+		return new CUITexManagerScript;
+	if (L"CUITexScript" == _strScriptName)
+		return new CUITexScript;
+	if (L"CUIAnimManagerScript" == _strScriptName)
+		return new CUIAnimManagerScript;
+	if (L"CLevelChangeButtonScript" == _strScriptName)
+		return new CLevelChangeButtonScript;
+	if (L"CStageChangeButtonScript" == _strScriptName)
+		return new CStageChangeButtonScript;
+	if (L"CExitButton" == _strScriptName)
+		return new CExitButton;
+	if (L"CUIHPScript" == _strScriptName)
+		return new CUIHPScript;
+	if (L"CUIUnitManagerScript" == _strScriptName)
+		return new CUIUnitManagerScript;
 	return nullptr;
 }
 
@@ -75,6 +107,22 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIManagerScript;
 	case (UINT)SCRIPT_TYPE::BUTTONSCRIPT:
 		return new CButtonScript;
+	case (UINT)SCRIPT_TYPE::UITEXMANAGERSCRIPT:
+		return new CUITexManagerScript;
+	case (UINT)SCRIPT_TYPE::UITEXSCRIPT:
+		return new CUITexScript;
+	case (UINT)SCRIPT_TYPE::UIANIMMANAGERSCRIPT:
+		return new CUIAnimManagerScript;
+	case (UINT)SCRIPT_TYPE::LEVELCHANGEBUTTONSCRIPT:
+		return new CLevelChangeButtonScript;
+	case (UINT)SCRIPT_TYPE::STAGECHANGEBUTTONSCRIPT:
+		return new CStageChangeButtonScript;
+	case (UINT)SCRIPT_TYPE::EXITBUTTON:
+		return new CExitButton;
+	case (UINT)SCRIPT_TYPE::UIHPSCRIPT:
+		return new CUIHPScript;
+	case (UINT)SCRIPT_TYPE::UIUNITMANAGERSCRIPT:
+		return new CUIUnitManagerScript;
 	}
 	return nullptr;
 }
@@ -103,6 +151,22 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIManagerScript";
 	case SCRIPT_TYPE::BUTTONSCRIPT:
 		return L"CButtonScript";
+	case SCRIPT_TYPE::UITEXMANAGERSCRIPT:
+		return L"CUITexManagerScript";
+	case SCRIPT_TYPE::UITEXSCRIPT:
+		return L"CUITexScript";
+	case SCRIPT_TYPE::UIANIMMANAGERSCRIPT:
+		return L"CUIAnimManagerScript";
+	case SCRIPT_TYPE::LEVELCHANGEBUTTONSCRIPT:
+		return L"CLevelChangeButtonScript";
+	case SCRIPT_TYPE::STAGECHANGEBUTTONSCRIPT:
+		return L"CStageChangeButtonScript";
+	case SCRIPT_TYPE::EXITBUTTON:
+		return L"CExitButton";
+	case SCRIPT_TYPE::UIHPSCRIPT:
+		return L"CUIHPScript";
+	case SCRIPT_TYPE::UIUNITMANAGERSCRIPT:
+		return L"CUIUnitManagerScript";
 	}
 	return nullptr;
 }

@@ -7,7 +7,7 @@ class CUIManagerScript
 	: public CScript
 {
 private:
-    vector<CScript*> m_vUIManagerScript;
+    map<wstring, CScript*> m_vUIManagerScript;
 
 public:
     virtual void begin() override;

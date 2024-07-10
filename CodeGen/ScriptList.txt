@@ -8,3 +8,11 @@ CSpringArmCameraScript
 CButtonManagerScript
 CUIManagerScript
 CButtonScript
+CUITexManagerScript
+CUITexScript
+CUIAnimManagerScript
+CLevelChangeButtonScript
+CStageChangeButtonScript
+CExitButton
+CUIHPScript
+CUIUnitManagerScript

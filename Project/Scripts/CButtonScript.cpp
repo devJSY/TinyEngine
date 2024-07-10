@@ -18,6 +18,45 @@ CButtonScript::CButtonScript()
     , m_IsHovered(true)
     , m_IsIsolated(false)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_eTransition, "Transition");
+
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[0], "Normal Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[1], "Highlighted Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[2], "Pressed Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[3], "Selected Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[4], "Disabled Color");
+
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[0], "Normal Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[1], "Highlighted Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[2], "Pressed Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[3], "Selected Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[4], "Disabled Scale");
+}
+
+CButtonScript::CButtonScript(UINT _ScriptType)
+    : CScript(_ScriptType)
+    , m_ePrevState(ButtonState::NORMAL)
+    , m_eCurState(ButtonState::NORMAL)
+    , m_eTransition(ButtonTransition::TEXTURE)
+    , m_pButtonTex{}
+    , m_vButtonColor{}
+    , m_IsInteraction(true)
+    , m_IsHovered(true)
+    , m_IsIsolated(false)
+{
+    AddScriptParam(SCRIPT_PARAM::INT, &m_eTransition, "Transition");
+
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[0], "Normal Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[1], "Highlighted Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[2], "Pressed Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[3], "Selected Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[4], "Disabled Color");
+
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[0], "Normal Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[1], "Highlighted Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[2], "Pressed Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[3], "Selected Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[4], "Disabled Scale");
 }
 
 CButtonScript::~CButtonScript()
@@ -96,8 +135,7 @@ bool CButtonScript::IsRectInPoint(Vec2 _vNDCSMousePos)
     Vec3 _vNDCLT = Vector3::Transform(_vButtonLT, _VPMatrix);
     Vec3 _vNDCRB = Vector3::Transform(_vButtonRB, _VPMatrix);
 
-    if ((_vNDCSMousePos.x >= _vNDCLT.x && _vNDCSMousePos.x <= _vNDCRB.x) 
-        && (_vNDCSMousePos.y <= _vNDCLT.y && _vNDCSMousePos.y >= _vNDCRB.y))
+    if ((_vNDCSMousePos.x >= _vNDCLT.x && _vNDCSMousePos.x <= _vNDCRB.x) && (_vNDCSMousePos.y <= _vNDCLT.y && _vNDCSMousePos.y >= _vNDCRB.y))
     {
         _isHovered = true;
     }
@@ -137,4 +175,26 @@ void CButtonScript::ButtonUpdate()
     default:
         break;
     }
+}
+
+void CButtonScript::SaveToLevelFile(FILE* _File)
+{
+    fwrite(&m_eTransition, sizeof(ButtonTransition), 1, _File);
+    fwrite(&m_IsInteraction, sizeof(bool), 1, _File);
+    fwrite(&m_IsHovered, sizeof(bool), 1, _File);
+    fwrite(&m_IsIsolated, sizeof(bool), 1, _File);
+
+    fwrite(&m_vButtonColor, sizeof(Vec4), static_cast<size_t>((UINT)ButtonState::END), _File);
+    fwrite(&m_vButtonScale, sizeof(Vec2), static_cast<size_t>((UINT)ButtonState::END), _File);
+}
+
+void CButtonScript::LoadFromLevelFile(FILE* _File)
+{
+    fread(&m_eTransition, sizeof(ButtonTransition), 1, _File);
+    fread(&m_IsInteraction, sizeof(bool), 1, _File);
+    fread(&m_IsHovered, sizeof(bool), 1, _File);
+    fread(&m_IsIsolated, sizeof(bool), 1, _File);
+
+    fread(&m_vButtonColor, sizeof(Vec4), static_cast<size_t>((UINT)ButtonState::END), _File);
+    fread(&m_vButtonScale, sizeof(Vec2), static_cast<size_t>((UINT)ButtonState::END), _File);
 }

@@ -1061,6 +1061,9 @@
     <Filter Include="04. Manager\Instancing">
       <UniqueIdentifier>{991a345b-6f88-4be8-9664-3f4f2dee0c8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\UIShader">
+      <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1307,6 +1310,12 @@
     </FxCompile>
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\Compute\CopyBone</Filter>
+    </FxCompile>
+    <FxCompile Include="UIHPShaderVS.hlsl">
+      <Filter>ShaderCode\Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIHPShaderPS.hlsl">
+      <Filter>ShaderCode\Render\UIShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
