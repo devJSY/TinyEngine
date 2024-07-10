@@ -6,15 +6,10 @@
 class CKirbyAbility_Normal : public CKirbyAbility
 {
 private:
-    bool        m_FrmEnter;
-    const float m_Charge1Time;
+    bool        m_bFrmEnter;
+    float       m_SavedSpeed;
 
 public:
-    // Idle
-    virtual void Idle();
-    virtual void IdleEnter();
-    virtual void IdleExit();
-
     // RUN
     virtual void Run();
     virtual void RunEnter();
@@ -42,11 +37,25 @@ public:
     virtual void AttackCharge1EndEnter();
     virtual void AttackCharge1EndExit();
 
+    virtual void AttackCharge1Run();
+    virtual void AttackCharge1RunEnter();
+    virtual void AttackCharge1RunExit();
+
+
     // »Ì¿‘2
     virtual void AttackCharge2();
     virtual void AttackCharge2Enter();
     virtual void AttackCharge2Exit();
 
+    virtual void AttackCharge2Start();
+    virtual void AttackCharge2StartEnter();
+    virtual void AttackCharge2StartExit();
+
+    virtual void AttackCharge2Run();
+    virtual void AttackCharge2RunEnter();
+    virtual void AttackCharge2RunExit();
+
+    // ¡°«¡
     virtual void JumpAttack(){};
     virtual void JumpAttackEnter(){};
     virtual void JumpAttackExit(){};

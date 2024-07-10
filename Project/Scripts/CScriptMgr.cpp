@@ -9,11 +9,16 @@
 #include "CPlayerMgr.h"
 #include "CKirbyBulletScript.h"
 #include "CTestFSM.h"
-#include "CKirbyScript.h"
+#include "CKirbyUnitScript.h"
 #include "CSpringArmCameraScript.h"
 #include "CButtonScript.h"
 #include "CUIManagerScript.h"
 #include "CButtonManagerScript.h"
+#include "CKirbyVacuumCollider.h"
+#include "CMonsterUnitScript.h"
+#include "CKirbyCopyAbilityScript.h"
+#include "CKirbyCopyObjScript.h"
+#include "CKirbyBodyCollider.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -25,11 +30,16 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerMgr");
 	_vec.push_back(L"CKirbyBulletScript");
 	_vec.push_back(L"CTestFSM");
-	_vec.push_back(L"CKirbyScript");
+	_vec.push_back(L"CKirbyUnitScript");
 	_vec.push_back(L"CSpringArmCameraScript");
 	_vec.push_back(L"CButtonScript");
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonManagerScript");
+	_vec.push_back(L"CKirbyVacuumCollider");
+	_vec.push_back(L"CMonsterUnitScript");
+	_vec.push_back(L"CKirbyCopyAbilityScript");
+	_vec.push_back(L"CKirbyCopyObjScript");
+	_vec.push_back(L"CKirbyBodyCollider");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -50,8 +60,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyBulletScript;
 	if (L"CTestFSM" == _strScriptName)
 		return new CTestFSM;
-	if (L"CKirbyScript" == _strScriptName)
-		return new CKirbyScript;
+	if (L"CKirbyUnitScript" == _strScriptName)
+		return new CKirbyUnitScript;
 	if (L"CSpringArmCameraScript" == _strScriptName)
 		return new CSpringArmCameraScript;
 	if (L"CButtonScript" == _strScriptName)
@@ -60,6 +70,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIManagerScript;
 	if (L"CButtonManagerScript" == _strScriptName)
 		return new CButtonManagerScript;
+	if (L"CKirbyVacuumCollider" == _strScriptName)
+		return new CKirbyVacuumCollider;
+	if (L"CMonsterUnitScript" == _strScriptName)
+		return new CMonsterUnitScript;
+	if (L"CKirbyCopyAbilityScript" == _strScriptName)
+		return new CKirbyCopyAbilityScript;
+	if (L"CKirbyCopyObjScript" == _strScriptName)
+		return new CKirbyCopyObjScript;
+	if (L"CKirbyBodyCollider" == _strScriptName)
+		return new CKirbyBodyCollider;
 	return nullptr;
 }
 
@@ -83,8 +103,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyBulletScript;
 	case (UINT)SCRIPT_TYPE::TESTFSM:
 		return new CTestFSM;
-	case (UINT)SCRIPT_TYPE::KIRBYSCRIPT:
-		return new CKirbyScript;
+	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
+		return new CKirbyUnitScript;
 	case (UINT)SCRIPT_TYPE::SPRINGARMCAMERASCRIPT:
 		return new CSpringArmCameraScript;
 	case (UINT)SCRIPT_TYPE::BUTTONSCRIPT:
@@ -93,6 +113,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIManagerScript;
 	case (UINT)SCRIPT_TYPE::BUTTONMANAGERSCRIPT:
 		return new CButtonManagerScript;
+	case (UINT)SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
+		return new CKirbyVacuumCollider;
+	case (UINT)SCRIPT_TYPE::MONSTERUNITSCRIPT:
+		return new CMonsterUnitScript;
+	case (UINT)SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
+		return new CKirbyCopyAbilityScript;
+	case (UINT)SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
+		return new CKirbyCopyObjScript;
+	case (UINT)SCRIPT_TYPE::KIRBYBODYCOLLIDER:
+		return new CKirbyBodyCollider;
 	}
 	return nullptr;
 }
@@ -117,8 +147,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyBulletScript";
 	case SCRIPT_TYPE::TESTFSM:
 		return L"CTestFSM";
-	case SCRIPT_TYPE::KIRBYSCRIPT:
-		return L"CKirbyScript";
+	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
+		return L"CKirbyUnitScript";
 	case SCRIPT_TYPE::SPRINGARMCAMERASCRIPT:
 		return L"CSpringArmCameraScript";
 	case SCRIPT_TYPE::BUTTONSCRIPT:
@@ -127,6 +157,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIManagerScript";
 	case SCRIPT_TYPE::BUTTONMANAGERSCRIPT:
 		return L"CButtonManagerScript";
+	case SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
+		return L"CKirbyVacuumCollider";
+	case SCRIPT_TYPE::MONSTERUNITSCRIPT:
+		return L"CMonsterUnitScript";
+	case SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
+		return L"CKirbyCopyAbilityScript";
+	case SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
+		return L"CKirbyCopyObjScript";
+	case SCRIPT_TYPE::KIRBYBODYCOLLIDER:
+		return L"CKirbyBodyCollider";
 	}
 	return nullptr;
 }

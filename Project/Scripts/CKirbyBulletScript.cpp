@@ -13,10 +13,12 @@ CKirbyBulletScript::~CKirbyBulletScript()
 
 void CKirbyBulletScript::begin()
 {
-    if (Rigidbody())
+    if (!Rigidbody())
     {
-        Rigidbody()->AddForce(m_InitVelocity, ForceMode::Impulse);
+        GetOwner()->AddComponent(new CRigidbody());
     }
+    
+    Rigidbody()->AddForce(m_InitVelocity, ForceMode::Impulse);
 }
 
 void CKirbyBulletScript::tick()

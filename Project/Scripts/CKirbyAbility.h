@@ -10,6 +10,9 @@
 class CKirbyAbility
 {
 protected:
+    float m_Charge1Time;
+
+protected:
     // 사용 메쉬: hat, weapon
     void ChangeState(const wstring& _strStateName);
 
@@ -29,13 +32,29 @@ public:
     virtual void RunStartEnter(){};
     virtual void RunStartExit(){};
 
-    //virtual void Jump();
+    virtual void Jump(){};
+    virtual void JumpEnter();
+    virtual void JumpExit(){};
+
+    virtual void JumpStart(){};
+    virtual void JumpStartEnter();
+    virtual void JumpStartExit(){};
+
+    virtual void JumpFall(){};
+    virtual void JumpFallEnter();
+    virtual void JumpFallExit(){};
+
+    virtual void Landing(){};
+    virtual void LandingEnter();
+    virtual void LandingExit();
+
+    virtual void LandingEnd(){};
+    virtual void LandingEndEnter();
+    virtual void LandingEndExit();
 
     //virtual void Hovering();
 
     //virtual void Evasiveness();
-
-    //virtual void Sliding();
 
     virtual void Attack() = 0;
     virtual void AttackEnter() = 0;
@@ -57,9 +76,21 @@ public:
     virtual void AttackCharge1EndEnter(){};
     virtual void AttackCharge1EndExit(){};
 
+    virtual void AttackCharge1Run(){};
+    virtual void AttackCharge1RunEnter(){};
+    virtual void AttackCharge1RunExit(){};
+
     virtual void AttackCharge2(){};
     virtual void AttackCharge2Enter(){};
     virtual void AttackCharge2Exit(){};
+
+    virtual void AttackCharge2Start(){};
+    virtual void AttackCharge2StartEnter(){};
+    virtual void AttackCharge2StartExit(){};
+
+    virtual void AttackCharge2Run(){};
+    virtual void AttackCharge2RunEnter(){};
+    virtual void AttackCharge2RunExit(){};
 
     virtual void JumpAttack() = 0;
     virtual void JumpAttackEnter() = 0;
@@ -68,6 +99,9 @@ public:
     //virtual void Throw();
 
     //virtual void Change();
+
+public:
+    float GetCharge1Time() const { return m_Charge1Time; }
 
 public:
     virtual CKirbyAbility* Clone() = 0;

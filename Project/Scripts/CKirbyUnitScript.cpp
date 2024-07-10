@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "CKirbyScript.h"
+#include "CKirbyUnitScript.h"
 
-CKirbyScript::CKirbyScript()
-    : CUnitScript(KIRBYSCRIPT)
+CKirbyUnitScript::CKirbyUnitScript()
+    : CUnitScript(KIRBYUNITSCRIPT)
 {
     UnitInfo KirbyInfo =
     {
@@ -15,6 +15,6 @@ CKirbyScript::CKirbyScript()
     SetInfo(KirbyInfo);
 }
 
-CKirbyScript::~CKirbyScript()
+CKirbyUnitScript::~CKirbyUnitScript()
 {
 }
