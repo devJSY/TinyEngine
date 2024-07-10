@@ -11,28 +11,35 @@ CKirbyStuffed::~CKirbyStuffed()
 
 void CKirbyStuffed::tick()
 {
+    // Change State
     if (PLAYER->Animator()->IsFinish())
     {
-        PLAYERFSM->SetGlobalState(false);
-        ChangeState(L"IDLE");
+        if (PLAYERCTRL->GetInput().Length() != 0.f)
+        {
+            ChangeState(L"STUFFED_RUN");
+        }
+        else
+        {
+            ChangeState(L"STUFFED_IDLE");
+        }
     }
 }
 
 void CKirbyStuffed::Enter()
 {
-    // clean up vacuum state
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 0);
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 6);
-    PLAYERFSM->SetVacuum(false);
-    // @TODO 속도조절
-
-    // enter stuffed state
     PLAYER->Animator()->Play(KIRBYANIM(L"Stuffed"), false);
-    PLAYERFSM->SetGlobalState(true);
-    PLAYERFSM->SetStuffed(true);
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 1);
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
+
+    PLAYERCTRL->LockDirection();
+    PLAYERCTRL->LockJump();
+    PLAYERCTRL->LockMove();
 }
 
 void CKirbyStuffed::Exit()
 {
+    PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockMove();
 }

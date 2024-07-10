@@ -1,56 +1,17 @@
 #include "pch.h"
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyBulletScript.h"
-
-#define BULLET_SPEED 5.f
+#include "CKirbyMoveController.h"
+#include "CKirbyVacuumCollider.h"
 
 CKirbyAbility_Normal::CKirbyAbility_Normal()
-    : m_FrmEnter(true)
-    , m_Charge1Time(3.f)
+    : m_bFrmEnter(true)
+    , m_SavedSpeed(0.f)
 {
+    m_Charge1Time = 2.f;
 }
 
 CKirbyAbility_Normal::~CKirbyAbility_Normal()
-{
-}
-
-void CKirbyAbility_Normal::Idle()
-{
-    if (KEY_TAP(KEY::Q))
-    {
-        ChangeState(L"ATTACK");
-    }
-    else if (PLAYERFSM->IsVacuum() && (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q)))
-    {
-        ChangeState(L"ATTACK_CHARGE1_END");
-    }
-    else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
-    {
-        ChangeState(L"RUN_START");
-    }
-}
-
-void CKirbyAbility_Normal::IdleEnter()
-{
-    if (PLAYERFSM->IsStuffed())
-    {
-        PLAYER->Animator()->Play(KIRBYANIM(L"StuffedWait"));
-    }
-    else if (PLAYERFSM->IsVacuum() == 1)
-    {
-        ChangeState(L"ATTACK_CHARGE1");
-    }
-    else if (PLAYERFSM->IsVacuum() == 2)
-    {
-        ChangeState(L"ATTACK_CHARGE2");
-    }
-    else
-    {
-        PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
-    }
-}
-
-void CKirbyAbility_Normal::IdleExit()
 {
 }
 
@@ -59,26 +20,11 @@ void CKirbyAbility_Normal::IdleExit()
 // ===============
 void CKirbyAbility_Normal::Run()
 {
-    if (PLAYERFSM->IsVacuum() && (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q)))
-    {
-        ChangeState(L"ATTACK_CHARGE1_END");
-    }
 }
 
 void CKirbyAbility_Normal::RunEnter()
 {
-    if (PLAYERFSM->IsVacuum())
-    {
-        PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"));
-    }
-    else if (PLAYERFSM->IsStuffed())
-    {
-        PLAYER->Animator()->Play(KIRBYANIM(L"StuffedRun"));
-    }
-    else
-    {
-        PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
-    }
+    PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
 }
 
 void CKirbyAbility_Normal::RunExit()
@@ -92,10 +38,7 @@ void CKirbyAbility_Normal::RunStart()
 
 void CKirbyAbility_Normal::RunStartEnter()
 {
-    if (PLAYERFSM->IsVacuum() || PLAYERFSM->IsStuffed())
-        ChangeState(L"RUN");
-    else
-        PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
+    PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
 }
 
 void CKirbyAbility_Normal::RunStartExit()
@@ -106,67 +49,68 @@ void CKirbyAbility_Normal::RunStartExit()
 // Attack
 // ===============
 // 머금은 물체 뱉기
+// - Stuffed일 때만 들어옴
 
 void CKirbyAbility_Normal::Attack()
 {
-    // Attack: Stuffed 커비가 별을 뱉는 상태
-    if (!PLAYERFSM->IsStuffed())
-        return;
-
-    if (PLAYER->Animator()->IsFinish())
+    if (GET_CURCLIP_FRM == 3 && m_bFrmEnter)
     {
-        ChangeState(L"IDLE");
-        return;
-    }
+        CPlayerMgr::ClearBodyMtrl();
+        CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
+        m_bFrmEnter = false;
 
-    if (GET_CURCLIP_FRM == 3 && m_FrmEnter)
-    {
-        // @TODO Material 이름으로 받아오기
-        PLAYER->GetRenderComponent()->SetMaterial(nullptr, 1);
-        m_FrmEnter = false;
+        // fire bullet
+        Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBullet.pref", L"prefab\\KirbyBullet.pref");
+        if (nullptr != BulletPref)
+        {
+            CGameObject* BulletInst = BulletPref->Instantiate();
+            Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f;
+            InitPos.y += 2.f;
+
+            if (PLAYERFSM->GetStuffedCopyObj()->MeshRender())
+            {
+                BulletInst->AddComponent(PLAYERFSM->GetStuffedCopyObj()->MeshRender()->Clone());
+            }
+            BulletInst->Transform()->SetRelativePos(InitPos);
+            GamePlayStatic::SpawnGameObject(BulletInst, 0);
+
+            CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
+            if (nullptr != bulletScript)
+            {
+                bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 120.f);
+            }
+        }
     }
 }
 
 void CKirbyAbility_Normal::AttackEnter()
 {
-    // ===================
-    // case: Start Vacuum
-    // ===================
-    if (!PLAYERFSM->IsStuffed())
+    if (PLAYER->CharacterController()->IsGrounded())
     {
-        ChangeState(L"ATTACK_CHARGE1_START");
-        return;
+        PLAYER->Animator()->Play(KIRBYANIM(L"Spit"), false);
+    }
+    else
+    {
+        PLAYER->Animator()->Play(KIRBYANIM(L"SpitAir"), false);
     }
 
-    // ===================
-    // case: Shoot Bullet
-    // ===================
-    // @TODO 점프상태일 때 (Animation: SpitAir)
-    PLAYER->Animator()->Play(KIRBYANIM(L"Spit"), false);
-    m_FrmEnter = true;
+    PLAYERCTRL->LockMove();
+    PLAYERCTRL->LockJump();
+    PLAYERCTRL->LockDirection();
 
-    // fire bullet
-    Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BulletStar.pref", L"prefab\\BulletStar.pref");
-    if (nullptr != BulletPref)
-    {
-        CGameObject* BulletInst = BulletPref->Instantiate();
-        Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 2.f;
-
-        BulletInst->Transform()->SetRelativePos(InitPos);
-        GamePlayStatic::SpawnGameObject(BulletInst, 0);
-
-        CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
-        if (nullptr != bulletScript)
-        {
-            bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * BULLET_SPEED);
-        }
-    }
+    m_bFrmEnter = true;
 }
 
 void CKirbyAbility_Normal::AttackExit()
 {
-    PLAYERFSM->SetStuffed(false);
-    m_FrmEnter = true;
+    PLAYERFSM->ClearStuff();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
 }
 
 // ===============
@@ -176,80 +120,97 @@ void CKirbyAbility_Normal::AttackExit()
 
 void CKirbyAbility_Normal::AttackCharge1()
 {
-    if (PLAYERFSM->GetChargeAccTime() >= m_Charge1Time)
-    {
-        ChangeState(L"ATTACK_CHARGE2");
-    }
-    if (KEY_TAP(KEY::ENTER))
-    {
-        // @TODO 테스트용코드
-        ChangeState(L"STUFFED");
-    }
-
-    if (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q))
-    {
-        ChangeState(L"ATTACK_CHARGE1_END");
-    }
-    else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
-    {
-        ChangeState(L"RUN_START");
-    }
 }
 
 void CKirbyAbility_Normal::AttackCharge1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"));
+    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"), true, false, 2.f);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(4.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge1Exit()
 {
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
 
 // start
 void CKirbyAbility_Normal::AttackCharge1Start()
 {
-    if (PLAYER->Animator()->IsFinish())
-    {
-        ChangeState(L"ATTACK_CHARGE1");
-    }
 }
 
 void CKirbyAbility_Normal::AttackCharge1StartEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"VacuumStart2"), false);
-    // @TODO Material 이름으로 받아오기 & material key값 변경
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 6);
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
-    PLAYERFSM->SetVacuum(true);
-    // @TODO 속도조절
+
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge1StartExit()
 {
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 }
 
 // end
 void CKirbyAbility_Normal::AttackCharge1End()
 {
-    if (PLAYER->Animator()->IsFinish())
-    {
-        ChangeState(L"IDLE");
-    }
 }
 
 void CKirbyAbility_Normal::AttackCharge1EndEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"VacuumEnd"), false);
-    // @TODO Material 이름으로 받아오기 & material key값 변경
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 0);
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 6);
-    PLAYERFSM->SetVacuum(false);
-    // @TODO 속도조절
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
 }
 
 void CKirbyAbility_Normal::AttackCharge1EndExit()
 {
-    PLAYERFSM->ClearChargeAccTime();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+}
+
+// Run
+void CKirbyAbility_Normal::AttackCharge1Run()
+{
+}
+
+void CKirbyAbility_Normal::AttackCharge1RunEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"), true, false, 2.f);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
+}
+
+void CKirbyAbility_Normal::AttackCharge1RunExit()
+{
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
 
 // ===============
@@ -258,26 +219,77 @@ void CKirbyAbility_Normal::AttackCharge1EndExit()
 // 흡입하기2
 void CKirbyAbility_Normal::AttackCharge2()
 {
-    if (KEY_RELEASED(KEY::Q) || KEY_NONE(KEY::Q))
-    {
-        ChangeState(L"ATTACK_CHARGE1_END");
-    }
-    else if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
-    {
-        ChangeState(L"RUN_START");
-    }
 }
 
 void CKirbyAbility_Normal::AttackCharge2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumHustleLv2"));
-    // @TODO Material 이름으로 받아오기 & material key값 변경
-    PLAYER->GetRenderComponent()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\BodyC.mtrl"), 0);
-    PLAYER->GetRenderComponent()->SetMaterial(nullptr, 6);
-    PLAYERFSM->SetVacuum(true);
-    // @TODO 속도조절
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"), true, false, 2.f);
+    CPlayerMgr::SetPlayerFace(FaceType::Frown);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
 
 void CKirbyAbility_Normal::AttackCharge2Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
+}
+
+// start
+void CKirbyAbility_Normal::AttackCharge2Start()
+{
+}
+
+void CKirbyAbility_Normal::AttackCharge2StartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleStart"), false);
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
+}
+
+void CKirbyAbility_Normal::AttackCharge2StartExit()
+{
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
+}
+
+// run
+void CKirbyAbility_Normal::AttackCharge2Run()
+{
+}
+
+void CKirbyAbility_Normal::AttackCharge2RunEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"), true, false, 2.f);
+
+    PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(2.f);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(true);
+}
+
+void CKirbyAbility_Normal::AttackCharge2RunExit()
+{
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }

@@ -11,16 +11,39 @@ CKirbyAttack::~CKirbyAttack()
 
 void CKirbyAttack::tick()
 {
-    //wstring NextState = L"IDLE";
     PLAY_CURSTATE(Attack)
 
-    // 기본적으로 수행해야 하는 동작
-
-    // Change State
-    //if (KEY_TAP(KEY::Q))
-    //    NextState = L"ATTACK_COMBO";
-
-    //ChangeState(NextState);
+    // State Change
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL: 
+        {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (PLAYERCTRL->GetInput().Length() != 0.f)
+                {
+                    ChangeState(L"RUN_START");
+                }
+                else
+                {
+                    ChangeState(L"IDLE");
+                }
+            }
+        }
+        break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::RANGER:
+            break;
+        case AbilityCopyType::SWORD:
+            break;
+        }
+    }
 }
 
 void CKirbyAttack::Enter()
