@@ -6,7 +6,7 @@ CModelEditorCameraMoveScript
 CPlayerMgr
 CKirbyBulletScript
 CTestFSM
-CKirbyScript
+CKirbyUnitScript
 CSpringArmCameraScript
 CButtonScript
 CUIManagerScript
