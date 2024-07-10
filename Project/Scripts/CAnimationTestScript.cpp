@@ -15,8 +15,6 @@ void CAnimationTestScript::tick()
     if (nullptr == Animator())
         return;
 
-    LOG(Log, "%d", Animator()->IsFinish());
-
     // if (KEY_TAP(KEY::NUM1))
     //{
     //     Animator()->Play(L"Armature|Walk", true, true, 1.f);

@@ -386,19 +386,14 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         return;
 
     Vec3 WorldPos = pTr->GetWorldPos();
-    Vec3 WorldRot = pTr->GetWorldRotation();
+    Quat WorldQuat = pTr->GetWorldQuaternion();
     Vec3 WorldScale = pTr->GetWorldScale();
 
     WorldPos /= m_PPM;
     WorldScale /= m_PPM;
 
-    // 오일러 각 → 쿼터니언 으로 변환하여 적용
-    SimpleMath::Quaternion Quat = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x) *
-                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y) *
-                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
-
     // World Space 기준 위치, 회전상태 적용
-    PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
+    PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, PxQuat(WorldQuat.x, WorldQuat.y, WorldQuat.z, WorldQuat.w));
 
     PxRigidActor* RigidActor = nullptr;
 

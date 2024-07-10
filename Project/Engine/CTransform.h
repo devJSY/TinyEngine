@@ -19,6 +19,8 @@ private:
 
     Matrix m_matTransformation;
 
+    Quat m_RelativeQuaternion;
+
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
@@ -37,8 +39,6 @@ public:
     Vec3 GetTransformWorldScale() const;
     Vec3 GetWorldRotation() const;
 
-    void SetDirection(Vec3 _Dir);
-
     MOBILITY_TYPE GetMobilityType() const { return m_Mobility; }
     void SetMobilityType(MOBILITY_TYPE _Type) { m_Mobility = _Type; }
 
@@ -47,11 +47,17 @@ public:
 
     const Matrix& GetWorldMat() const { return m_matWorld; }
     void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
-    
+
     const Matrix& GetWorldInvMat() const { return m_matWorldInv; }
 
     Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
+
+public:
+    Quat GetRelativeQuaternion() const { return m_RelativeQuaternion; }
+    Quat GetWorldQuaternion() const;
+
+    void SetDirection(Vec3 _Dir);
 
 public:
     const Matrix& GetTransformationMat() const { return m_matTransformation; }

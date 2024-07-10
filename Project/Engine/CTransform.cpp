@@ -18,6 +18,7 @@ CTransform::CTransform()
     , m_Mobility(MOBILITY_TYPE::MOVABLE)
     , m_bAbsolute(true)
     , m_matTransformation()
+    , m_RelativeQuaternion()
 {
 }
 
@@ -33,6 +34,7 @@ CTransform::CTransform(const CTransform& origin)
     , m_Mobility(origin.m_Mobility)
     , m_bAbsolute(origin.m_bAbsolute)
     , m_matTransformation()
+    , m_RelativeQuaternion(origin.m_RelativeQuaternion)
 {
 }
 
@@ -46,13 +48,15 @@ void CTransform::finaltick()
 
     Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
 
-    Matrix matRotX = XMMatrixRotationX(m_vRelativeRotation.x);
-    Matrix matRotY = XMMatrixRotationY(m_vRelativeRotation.y);
-    Matrix matRotZ = XMMatrixRotationZ(m_vRelativeRotation.z);
+    m_RelativeQuaternion = Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_vRelativeRotation.x) *
+                           Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_vRelativeRotation.y) *
+                           Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_vRelativeRotation.z);
+
+    Matrix matRot = Matrix::CreateFromQuaternion(m_RelativeQuaternion);
 
     Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
-    m_matWorld = matScale * matRotX * matRotY * matRotZ * matTranslation;
+    m_matWorld = matScale * matRot * matTranslation;
 
     // 물체의 방향값을 다시 계산한다.
     static const Vec3 BasisVector[3] = {Vec3(1.f, 0.f, 0.f), Vec3(0.f, 1.f, 0.f), Vec3(0.f, 0.f, 1.f)};
@@ -127,6 +131,16 @@ void CTransform::UpdateData()
     CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
     pCB->SetData(&g_Transform);
     pCB->UpdateData();
+}
+
+Quat CTransform::GetWorldQuaternion() const
+{
+    Vec3 Translation, Rotation, Scale;
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
+    Rotation.ToRadian();
+
+    return Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), Rotation.x) * Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Rotation.y) *
+           Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), Rotation.z);
 }
 
 Vec3 CTransform::GetWorldScale() const
