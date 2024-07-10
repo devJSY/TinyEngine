@@ -1082,6 +1082,9 @@
     <Filter Include="ShaderCode\Kirby\Characters\WaddleDee">
       <UniqueIdentifier>{6722e1ac-3997-4a66-a35e-d0ffd8c157a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\UIShader">
+      <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -1331,6 +1334,12 @@
     </FxCompile>
     <FxCompile Include="KirbyBodyPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
+    <FxCompile Include="UIHPShaderVS.hlsl">
+      <Filter>ShaderCode\Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIHPShaderPS.hlsl">
+      <Filter>ShaderCode\Render\UIShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

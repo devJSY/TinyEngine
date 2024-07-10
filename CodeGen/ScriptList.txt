@@ -6,7 +6,7 @@ CModelEditorCameraMoveScript
 CPlayerMgr
 CKirbyBulletScript
 CTestFSM
-CKirbyScript
+CKirbyUnitScript
 CSpringArmCameraScript
 CButtonScript
 CUIManagerScript
@@ -16,3 +16,11 @@ CMonsterUnitScript
 CKirbyCopyAbilityScript
 CKirbyCopyObjScript
 CKirbyBodyCollider
+CUITexManagerScript
+CUITexScript
+CUIAnimManagerScript
+CLevelChangeButtonScript
+CStageChangeButtonScript
+CExitButton
+CUIHPScript
+CUIUnitManagerScript

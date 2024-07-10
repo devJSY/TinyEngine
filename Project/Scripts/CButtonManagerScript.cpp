@@ -5,14 +5,17 @@
 
 #include <Engine/CGameObject.h>
 #include "CButtonScript.h"
+#include "CStageChangeButtonScript.h"
 
 CButtonManagerScript::CButtonManagerScript()
     : CScript(UIMANAGERSCRIPT)
     , m_vBtn{}
     , m_iCurBtn(0)
     , m_iPrevBtn(0)
+    , m_eDownKey(KEY::UP)
+    , m_eUpKey(KEY::DOWN)
+    , m_eSelectKey(KEY::SPACE)
 {
-    AddScriptParam(SCRIPT_PARAM::INT, &m_iCurBtn, "CurrentButton");
 }
 
 CButtonManagerScript::~CButtonManagerScript()
@@ -25,7 +28,7 @@ void CButtonManagerScript::begin()
         return;
 
     CLevel* _pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    vector<CGameObject*> _vBtnObject = _pCurLevel->GetLayer(15)->GetLayerObjects();
+    vector<CGameObject*> _vBtnObject = _pCurLevel->GetLayer(15)->GetParentObjects();
 
     vector<CGameObject*>::iterator iter = _vBtnObject.begin();
 
@@ -37,8 +40,6 @@ void CButtonManagerScript::begin()
         {
             // Test
             _script->SetTransition(ButtonTransition::SCALE);
-            _script->SetScale(ButtonState::NORMAL, Vec2(1.f, 1.f));
-            _script->SetScale(ButtonState::SELECTED, Vec2(1.5f, 1.5f));
             m_vBtn.push_back(_script);
         }
     }
@@ -46,10 +47,10 @@ void CButtonManagerScript::begin()
 
 void CButtonManagerScript::tick()
 {
-    if (!m_vBtn.empty())
-    {
-        ButtonManipulation();
-    }
+    if (m_vBtn.empty())
+        return;
+
+    ButtonManipulation();
 
     if (m_iPrevBtn != m_iCurBtn)
     {
@@ -59,15 +60,18 @@ void CButtonManagerScript::tick()
         m_iPrevBtn = m_iCurBtn;
     }
 
-    if (KEY_TAP(SPACE) || (KEY_TAP(LBTN) && m_vBtn[m_iCurBtn]->IsHovered()))
+    if (m_vBtn[m_iCurBtn]->GetState() != ButtonState::DISABLED && (KEY_TAP(m_eSelectKey) || (KEY_TAP(LBTN) && m_vBtn[m_iCurBtn]->IsHovered())))
     {
-        // m_vBtn[m_iCurBtn]->Func();
+        m_vBtn[m_iCurBtn]->Func();
     }
+
+    if (m_vStageBtn.empty())
+        return;
 }
 
 void CButtonManagerScript::ButtonManipulation()
 {
-    if (KEY_TAP(UP))
+    if (KEY_TAP(m_eDownKey))
     {
         if (m_iCurBtn != 0)
         {
@@ -75,7 +79,7 @@ void CButtonManagerScript::ButtonManipulation()
         }
     }
 
-    if (KEY_TAP(DOWN))
+    if (KEY_TAP(m_eUpKey))
     {
         if (m_iCurBtn != m_vBtn.size() - 1)
         {

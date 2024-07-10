@@ -1,27 +1,24 @@
 #pragma once
-
 #include <Engine/CScript.h>
 
-class CButtonScript;
-class CUIManagerScript 
+
+class CUIAnimScript;
+class CUIAnimManagerScript 
 	: public CScript
 {
 private:
-    map<wstring, CScript*> m_vUIManagerScript;
+    vector<CUIAnimScript*> m_vUIAnimObject;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
-private:
-    void UIManagerScriptInit();
-
 public:
     virtual void SaveToLevelFile(FILE* _File) override{};
     virtual void LoadFromLevelFile(FILE* _File) override{};
 
-    CLONE_DISABLE(CUIManagerScript)
+    CLONE_DISABLE(CUIAnimManagerScript)
 public:
-    CUIManagerScript();
-    virtual ~CUIManagerScript();
+    CUIAnimManagerScript();
+    virtual ~CUIAnimManagerScript();
 };

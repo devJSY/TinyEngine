@@ -64,7 +64,7 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     }
 
   
-    if (0.1f >= vColor.a)
+     if (0.1f >= vColor.a)
         discard;
     
     vColor.a = 1.f;
