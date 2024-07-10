@@ -1,10 +1,15 @@
 #include "pch.h"
 #include "CMesh.h"
 
+#include "CAssetMgr.h"
+#include "CLevelMgr.h"
+
+#include "CLevel.h"
+#include "CLayer.h"
+
 #include "CDevice.h"
 #include "CInstancingBuffer.h"
 
-#include "CAssetMgr.h"
 #include "CTexture.h"
 
 CMesh::CMesh(bool _bEngineAsset)
@@ -16,6 +21,7 @@ CMesh::CMesh(bool _bEngineAsset)
     , m_vecIdxInfo{}
     , m_vecAnimClip{}
     , m_vecBones{}
+    , vecBoneSocket{}
     , m_pBoneFrameData(nullptr)
     , m_pBoneOffset(nullptr)
 {
@@ -36,6 +42,11 @@ CMesh::~CMesh()
             delete m_vecIdxInfo[i].pIdxSysMem;
             m_vecIdxInfo[i].pIdxSysMem = nullptr;
         }
+    }
+
+    for (UINT i = 0; i < (UINT)m_vecBones.size(); ++i)
+    {
+        Delete_Vec(m_vecBones[i].vecBoneSocket);
     }
 
     if (nullptr != m_pBoneFrameData)
@@ -73,6 +84,64 @@ void CMesh::UpdateData_Inst(UINT _iSubset)
     CONTEXT->IASetIndexBuffer(m_vecIdxInfo[_iSubset].pIB.Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
+void CMesh::AddBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket)
+{
+    if (_BoneIndex <= -1 || _BoneIndex >= m_vecBones.size() || nullptr == _BoneSocket)
+    {
+        return;
+    }
+
+    _BoneSocket->BoneIndex = _BoneIndex;
+    m_vecBones[_BoneIndex].vecBoneSocket.push_back(_BoneSocket);
+    vecBoneSocket.push_back(_BoneSocket);
+}
+
+void CMesh::RemoveBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket)
+{
+    if (_BoneIndex <= -1 || _BoneIndex >= m_vecBones.size() || nullptr == _BoneSocket)
+    {
+        return;
+    }
+
+    m_vecBones[_BoneIndex].vecBoneSocket.erase(
+        remove(m_vecBones[_BoneIndex].vecBoneSocket.begin(), m_vecBones[_BoneIndex].vecBoneSocket.end(), _BoneSocket),
+        m_vecBones[_BoneIndex].vecBoneSocket.end());
+
+    vecBoneSocket.erase(remove(vecBoneSocket.begin(), vecBoneSocket.end(), _BoneSocket), vecBoneSocket.end());
+
+    // 레벨의 모든 오브젝트를 순회하여 해당 BoneSocket을 참조하고 있던 자식오브젝트 해제
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+
+        for (const auto& ParentObj : vecParentObj)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(ParentObj);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+
+                for (size_t i = 0; i < vecChildObj.size(); ++i)
+                {
+                    queue.push_back(vecChildObj[i]);
+                }
+
+                // BoneSocket 참조 해제
+                if (pObject->GetBoneSocket() == _BoneSocket)
+                {
+                    pObject->SetBoneSocket(nullptr);
+                }
+            }
+        }
+    }
+}
+
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 {
     vector<Vtx> vecVtx = {};
@@ -87,13 +156,16 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         for (UINT i = 0; i < iVtxCount; ++i)
         {
             vecVtxContainer[i].vPos = container->vecPos[i];
-            vecVtxContainer[i].vColor = Vec4(1.f, 0.f, 1.f, 1.f);
-            vecVtxContainer[i].vUV = container->vecUV[i];
+            vecVtxContainer[i].vNormal = container->vecNormal[i];
             vecVtxContainer[i].vTangent = container->vecTangent[i];
             vecVtxContainer[i].vBiTangent = container->vecBinormal[i];
-            vecVtxContainer[i].vNormal = container->vecNormal[i];
-            vecVtxContainer[i].vWeights = container->vecWeights[i];
+            vecVtxContainer[i].vColor = container->vecColor[i];
+            vecVtxContainer[i].vUV0 = container->vecUV0[i];
+            vecVtxContainer[i].vUV1 = container->vecUV1[i];
+            vecVtxContainer[i].vUV2 = container->vecUV2[i];
+            vecVtxContainer[i].vUV3 = container->vecUV3[i];
             vecVtxContainer[i].vIndices = container->vecIndices[i];
+            vecVtxContainer[i].vWeights = container->vecWeights[i];
         }
 
         // Container의 모든 정점을 연결하여 하나의 Mesh생성
@@ -189,10 +261,11 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
     for (UINT i = 0; i < vecBone.size(); ++i)
     {
         tMTBone bone = {};
-        bone.iDepth = vecBone[i]->iDepth;
-        bone.iParentIndx = vecBone[i]->iParentIndx;
-        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
         bone.strBoneName = vecBone[i]->strBoneName;
+        bone.iDepth = vecBone[i]->iDepth;
+        bone.iIdx = i;
+        bone.iParentIdx = vecBone[i]->iParentIndx;
+        bone.matOffset = GetMatrixFromFbxMatrix(vecBone[i]->matOffset);
 
         for (UINT j = 0; j < vecBone[i]->vecKeyFrame.size(); ++j)
         {
@@ -236,7 +309,7 @@ CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
         double FrameRate = FbxTime::GetFrameRate(tClip.eMode);
         tClip.dStartTime = tClip.iStartFrame / FrameRate;
         tClip.dEndTime = tClip.iEndFrame / FrameRate;
-        tClip.dTimeLength = (1. / FrameRate) + tClip.dEndTime - tClip.dStartTime;
+        tClip.dTimeLength = tClip.dEndTime - tClip.dStartTime;
 
         pMesh->m_vecAnimClip.push_back(tClip);
 
@@ -368,9 +441,6 @@ int CMesh::Save(const wstring& _strRelativePath)
     if (IsEngineAsset())
         return E_FAIL;
 
-    // 상대경로 저장
-    SetRelativePath(_strRelativePath);
-
     // 파일 경로 만들기
     wstring strFilePath = CPathMgr::GetContentPath() + _strRelativePath;
 
@@ -381,60 +451,76 @@ int CMesh::Save(const wstring& _strRelativePath)
     if (nullptr == pFile)
         return E_FAIL;
 
+    // 상대경로 저장
+    SetRelativePath(_strRelativePath);
+
     // 키값, 상대 경로
     SaveWStringToFile(GetName(), pFile);
     SaveWStringToFile(GetKey(), pFile);
     SaveWStringToFile(GetRelativePath(), pFile);
 
     // 정점 데이터 저장
-    int iByteSize = m_VBDesc.ByteWidth;
-    fwrite(&iByteSize, sizeof(int), 1, pFile);
+    UINT iByteSize = m_VBDesc.ByteWidth;
+    fwrite(&iByteSize, sizeof(UINT), 1, pFile);
     fwrite(m_VtxSysMem, iByteSize, 1, pFile);
 
     // 인덱스 정보
     UINT iMtrlCount = (UINT)m_vecIdxInfo.size();
-    fwrite(&iMtrlCount, sizeof(int), 1, pFile);
+    fwrite(&iMtrlCount, sizeof(UINT), 1, pFile);
 
-    UINT iIdxBuffSize = 0;
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
         fwrite(&m_vecIdxInfo[i].tIBDesc, sizeof(D3D11_BUFFER_DESC), 1, pFile);
         fwrite(&m_vecIdxInfo[i].iIdxCount, sizeof(UINT), 1, pFile);
-        SaveWStringToFile(m_vecIdxInfo[i].IBName, pFile);
         fwrite(m_vecIdxInfo[i].pIdxSysMem, m_vecIdxInfo[i].iIdxCount * sizeof(UINT), 1, pFile);
+        SaveWStringToFile(m_vecIdxInfo[i].IBName, pFile);
     }
 
     // Animator 정보
-    UINT iCount = (UINT)m_vecAnimClip.size();
-    fwrite(&iCount, sizeof(int), 1, pFile);
-    for (UINT i = 0; i < iCount; ++i)
+    UINT iClipCount = (UINT)m_vecAnimClip.size();
+    fwrite(&iClipCount, sizeof(UINT), 1, pFile);
+    for (UINT i = 0; i < iClipCount; ++i)
     {
         SaveWStringToFile(m_vecAnimClip[i].strAnimName, pFile);
         fwrite(&m_vecAnimClip[i].dStartTime, sizeof(double), 1, pFile);
         fwrite(&m_vecAnimClip[i].dEndTime, sizeof(double), 1, pFile);
         fwrite(&m_vecAnimClip[i].dTimeLength, sizeof(double), 1, pFile);
-        fwrite(&m_vecAnimClip[i].eMode, sizeof(int), 1, pFile);
+        fwrite(&m_vecAnimClip[i].eMode, sizeof(FbxTime::EMode), 1, pFile);
         fwrite(&m_vecAnimClip[i].iStartFrame, sizeof(int), 1, pFile);
         fwrite(&m_vecAnimClip[i].iEndFrame, sizeof(int), 1, pFile);
         fwrite(&m_vecAnimClip[i].iFrameLength, sizeof(int), 1, pFile);
     }
 
-    iCount = (UINT)m_vecBones.size();
-    fwrite(&iCount, sizeof(int), 1, pFile);
+    UINT iBoneCount = (UINT)m_vecBones.size();
+    fwrite(&iBoneCount, sizeof(UINT), 1, pFile);
 
-    for (UINT i = 0; i < iCount; ++i)
+    for (UINT i = 0; i < iBoneCount; ++i)
     {
         SaveWStringToFile(m_vecBones[i].strBoneName, pFile);
         fwrite(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
-        fwrite(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iIdx, sizeof(int), 1, pFile);
+        fwrite(&m_vecBones[i].iParentIdx, sizeof(int), 1, pFile);
         fwrite(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
-        int iFrameCount = (int)m_vecBones[i].vecKeyFrame.size();
-        fwrite(&iFrameCount, sizeof(int), 1, pFile);
-
-        for (int j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+        // KeyFrame
+        UINT iFrameCount = (UINT)m_vecBones[i].vecKeyFrame.size();
+        fwrite(&iFrameCount, sizeof(UINT), 1, pFile);
+        for (UINT j = 0; j < iFrameCount; ++j)
         {
             fwrite(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+
+        // BoneSocket
+        UINT iBoneSocketCount = (UINT)m_vecBones[i].vecBoneSocket.size();
+        fwrite(&iBoneSocketCount, sizeof(UINT), 1, pFile);
+        for (UINT j = 0; j < iBoneSocketCount; ++j)
+        {
+            SaveWStringToFile(m_vecBones[i].vecBoneSocket[j]->SoketName, pFile);
+            fwrite(&m_vecBones[i].vecBoneSocket[j]->BoneIndex, sizeof(int), 1, pFile);
+            fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativeLocation, sizeof(Vec3), 1, pFile);
+            fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativeRotation, sizeof(Vec3), 1, pFile);
+            fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativeScale, sizeof(Vec3), 1, pFile);
+            fwrite(&m_vecBones[i].vecBoneSocket[j]->matSocket, sizeof(Matrix), 1, pFile);
         }
     }
 
@@ -447,7 +533,11 @@ int CMesh::Load(const wstring& _strFilePath)
 {
     // 읽기모드로 파일열기
     FILE* pFile = nullptr;
+
     _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
+
+    if (nullptr == pFile)
+        return E_FAIL;
 
     // 키값, 상대경로
     wstring strName, strKey, strRelativePath;
@@ -461,34 +551,32 @@ int CMesh::Load(const wstring& _strFilePath)
 
     // 정점데이터
     UINT iByteSize = 0;
-    fread(&iByteSize, sizeof(int), 1, pFile);
+    fread(&iByteSize, sizeof(UINT), 1, pFile);
 
     m_VtxSysMem = (Vtx*)malloc(iByteSize);
     fread(m_VtxSysMem, 1, iByteSize, pFile);
 
-    D3D11_BUFFER_DESC tDesc = {};
-    tDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    tDesc.ByteWidth = iByteSize;
-    tDesc.Usage = D3D11_USAGE_DEFAULT;
+    m_VBDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    m_VBDesc.ByteWidth = iByteSize;
+    m_VBDesc.Usage = D3D11_USAGE_DEFAULT;
 
     D3D11_SUBRESOURCE_DATA tSubData = {};
     tSubData.pSysMem = m_VtxSysMem;
 
-    if (FAILED(DEVICE->CreateBuffer(&tDesc, &tSubData, m_VB.GetAddressOf())))
+    if (FAILED(DEVICE->CreateBuffer(&m_VBDesc, &tSubData, m_VB.GetAddressOf())))
     {
         assert(nullptr);
     }
 
     // 인덱스 정보
     UINT iMtrlCount = 0;
-    fread(&iMtrlCount, sizeof(int), 1, pFile);
+    fread(&iMtrlCount, sizeof(UINT), 1, pFile);
 
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
         tIndexInfo info = {};
         fread(&info.tIBDesc, sizeof(D3D11_BUFFER_DESC), 1, pFile);
         fread(&info.iIdxCount, sizeof(UINT), 1, pFile);
-        LoadWStringFromFile(info.IBName, pFile);
 
         UINT iByteWidth = info.iIdxCount * sizeof(UINT);
 
@@ -503,13 +591,15 @@ int CMesh::Load(const wstring& _strFilePath)
             assert(nullptr);
         }
 
+        LoadWStringFromFile(info.IBName, pFile);
+
         m_vecIdxInfo.push_back(info);
     }
 
     // Animator 정보 읽기
-    int iCount = 0;
-    fread(&iCount, sizeof(int), 1, pFile);
-    for (int i = 0; i < iCount; ++i)
+    UINT iClipCount = 0;
+    fread(&iClipCount, sizeof(UINT), 1, pFile);
+    for (UINT i = 0; i < iClipCount; ++i)
     {
         tMTAnimClip tClip = {};
 
@@ -517,7 +607,7 @@ int CMesh::Load(const wstring& _strFilePath)
         fread(&tClip.dStartTime, sizeof(double), 1, pFile);
         fread(&tClip.dEndTime, sizeof(double), 1, pFile);
         fread(&tClip.dTimeLength, sizeof(double), 1, pFile);
-        fread(&tClip.eMode, sizeof(int), 1, pFile);
+        fread(&tClip.eMode, sizeof(FbxTime::EMode), 1, pFile);
         fread(&tClip.iStartFrame, sizeof(int), 1, pFile);
         fread(&tClip.iEndFrame, sizeof(int), 1, pFile);
         fread(&tClip.iFrameLength, sizeof(int), 1, pFile);
@@ -525,25 +615,44 @@ int CMesh::Load(const wstring& _strFilePath)
         m_vecAnimClip.push_back(tClip);
     }
 
-    iCount = 0;
-    fread(&iCount, sizeof(int), 1, pFile);
-    m_vecBones.resize(iCount);
+    UINT iBoneCount = 0;
+    fread(&iBoneCount, sizeof(UINT), 1, pFile);
+    m_vecBones.resize(iBoneCount);
 
-    UINT _iFrameCount = 0;
-    for (int i = 0; i < iCount; ++i)
+    UINT iMaxFrameCount = 0;
+    for (UINT i = 0; i < iBoneCount; ++i)
     {
         LoadWStringFromFile(m_vecBones[i].strBoneName, pFile);
         fread(&m_vecBones[i].iDepth, sizeof(int), 1, pFile);
-        fread(&m_vecBones[i].iParentIndx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iIdx, sizeof(int), 1, pFile);
+        fread(&m_vecBones[i].iParentIdx, sizeof(int), 1, pFile);
         fread(&m_vecBones[i].matOffset, sizeof(Matrix), 1, pFile);
 
+        // KeyFrame
         UINT iFrameCount = 0;
-        fread(&iFrameCount, sizeof(int), 1, pFile);
+        fread(&iFrameCount, sizeof(UINT), 1, pFile);
         m_vecBones[i].vecKeyFrame.resize(iFrameCount);
-        _iFrameCount = max(_iFrameCount, iFrameCount);
+        iMaxFrameCount = max(iMaxFrameCount, iFrameCount);
         for (UINT j = 0; j < iFrameCount; ++j)
         {
             fread(&m_vecBones[i].vecKeyFrame[j], sizeof(tMTKeyFrame), 1, pFile);
+        }
+
+        // BoneSocket
+        UINT iBoneSocketCount = 0;
+        fread(&iBoneSocketCount, sizeof(UINT), 1, pFile);
+        m_vecBones[i].vecBoneSocket.resize(iBoneSocketCount);
+        for (UINT j = 0; j < iBoneSocketCount; ++j)
+        {
+            tBoneSocket* pBoneSocket = new tBoneSocket;
+            LoadWStringFromFile(pBoneSocket->SoketName, pFile);
+            fread(&pBoneSocket->BoneIndex, sizeof(int), 1, pFile);
+            fread(&pBoneSocket->RelativeLocation, sizeof(Vec3), 1, pFile);
+            fread(&pBoneSocket->RelativeRotation, sizeof(Vec3), 1, pFile);
+            fread(&pBoneSocket->RelativeScale, sizeof(Vec3), 1, pFile);
+            fread(&pBoneSocket->matSocket, sizeof(Matrix), 1, pFile);
+            m_vecBones[i].vecBoneSocket[j] = pBoneSocket;
+            vecBoneSocket.push_back(pBoneSocket);
         }
     }
 
@@ -555,7 +664,7 @@ int CMesh::Load(const wstring& _strFilePath)
         // BoneOffet 행렬
         vector<Matrix> vecOffset;
         vector<tFrameTrans> vecFrameTrans;
-        vecFrameTrans.resize((UINT)m_vecBones.size() * _iFrameCount);
+        vecFrameTrans.resize((UINT)m_vecBones.size() * iMaxFrameCount);
 
         for (size_t i = 0; i < m_vecBones.size(); ++i)
         {
@@ -573,7 +682,7 @@ int CMesh::Load(const wstring& _strFilePath)
         m_pBoneOffset->Create(sizeof(Matrix), (UINT)vecOffset.size(), SB_TYPE::READ_ONLY, false, vecOffset.data());
 
         m_pBoneFrameData = new CStructuredBuffer;
-        m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * (UINT)_iFrameCount, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
+        m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecOffset.size() * (UINT)iMaxFrameCount, SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
     }
 
     fclose(pFile);

@@ -44,6 +44,7 @@ private:
     map<ULONG64, vector<tInstObj>> m_mapInstGroup_F; // Foward ( Opaque, Mask )
     map<INT_PTR, vector<tInstObj>> m_mapSingleObj;   // Single Object
 
+    vector<CGameObject*> m_vecSkybox;
     vector<CGameObject*> m_vecDecal;
     vector<CGameObject*> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;

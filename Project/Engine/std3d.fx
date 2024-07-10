@@ -19,7 +19,7 @@ PS_IN VS_Std3D(VS_IN _in)
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).rgb;
     
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     output.vColor = _in.vColor;
     
     output.vTangentWorld = normalize(mul(float4(_in.vTangent, 0.f), g_matWorldInvTranspose).rgb);
@@ -40,7 +40,7 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
     // 출력 텍스쳐가 바인딩 되어있다면, 텍스쳐의 색상을 사용한다.
     if (g_btex_0)
     {
-        ObjectColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        ObjectColor *= g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
     }
    
     float3 vWorldNormal = _in.vNormalWorld;
@@ -50,7 +50,7 @@ float4 PS_Std3D(PS_IN _in) : SV_Target
     {
         // 색상의 범위는 0~1 이지만, 저장된 값은 방향벡터를 뜻하기 때문에 원래 의도한 값으로 바꾸기 위해서
         // 값의 0 ~ 1 범위를 -1.f ~ 1.f 로 변경한다.
-        float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV).rgb;
+        float3 vNormal = g_tex_1.Sample(g_LinearWrapSampler, _in.vUV0).rgb;
         vNormal = vNormal * 2.f - 1.f;
                         
         float3 N = _in.vNormalWorld;

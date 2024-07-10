@@ -26,6 +26,9 @@ private:
 
     bool m_bDead;
 
+    // Bone Socket
+    tBoneSocket* m_BoneSocket; // 부모 오브젝트가 보유한 Skeletal Mesh의 본 소켓
+
 public:
     void begin();
     void tick();
@@ -100,8 +103,13 @@ public:
 
 public:
     const vector<CGameObject*>& GetChildObject() const { return m_vecChild; }
+    CGameObject* GetChildObject(const wstring& _Name) const;
 
     int GetLayerIdx() const { return m_iLayerIdx; }
+
+public:
+    const tBoneSocket* GetBoneSocket() const { return m_BoneSocket; }
+    void SetBoneSocket(tBoneSocket* _BoneSocket) { m_BoneSocket = _BoneSocket; }
 
     CLONE(CGameObject);
 

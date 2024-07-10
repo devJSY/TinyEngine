@@ -24,10 +24,17 @@ struct tContainer
 {
     wstring strName;
     vector<Vec3> vecPos;
+
+    vector<Vec3> vecNormal;
     vector<Vec3> vecTangent;
     vector<Vec3> vecBinormal;
-    vector<Vec3> vecNormal;
-    vector<Vec2> vecUV;
+
+    vector<Vec3> vecColor;
+
+    vector<Vec2> vecUV0;
+    vector<Vec2> vecUV1;
+    vector<Vec2> vecUV2;
+    vector<Vec2> vecUV3;
 
     vector<Vec4> vecIndices;
     vector<Vec4> vecWeights;
@@ -42,10 +49,14 @@ struct tContainer
     void Resize(UINT _iSize)
     {
         vecPos.resize(_iSize);
+        vecNormal.resize(_iSize);
         vecTangent.resize(_iSize);
         vecBinormal.resize(_iSize);
-        vecNormal.resize(_iSize);
-        vecUV.resize(_iSize);
+        vecColor.resize(_iSize);
+        vecUV0.resize(_iSize);
+        vecUV1.resize(_iSize);
+        vecUV2.resize(_iSize);
+        vecUV3.resize(_iSize);
         vecIndices.resize(_iSize);
         vecWeights.resize(_iSize);
         vecWI.resize(_iSize);
@@ -61,9 +72,9 @@ struct tKeyFrame
 struct tBone
 {
     wstring strBoneName;
-    int iDepth;           // °èÃþ±¸Á¶ ±íÀÌ
-    int iParentIndx;      // ºÎ¸ð Bone ÀÇ ÀÎµ¦½º
-    FbxAMatrix matOffset; // Offset Çà·Ä( -> »Ñ¸® -> Local)
+    int iDepth;             // °èÃþ±¸Á¶ ±íÀÌ
+    int iParentIndx;        // ºÎ¸ð Bone ÀÇ ÀÎµ¦½º
+    FbxAMatrix matOffset;   // Offset Çà·Ä( -> »Ñ¸® -> Local)
     FbxAMatrix matBone;
     vector<tKeyFrame> vecKeyFrame;
 };
@@ -112,7 +123,7 @@ private:
     void GetTangent(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
     void GetBinormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
     void GetNormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
-    void GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
+    void GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _iVtxOrder);
 
     Vec4 GetMtrlData(FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
     wstring GetMtrlTextureName(FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);

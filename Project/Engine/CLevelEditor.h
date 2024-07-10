@@ -66,7 +66,7 @@ private:
     void render_TagsAndLayers();
     void render_MRT();
     void render_SSAO();
-    void render_MainCamPreview();
+    void render_CamPreview();
 
 private:
     void CreateAssetModal();

@@ -57,16 +57,16 @@ float4 TexcoordToView(float2 texcoord)
 float4 main(PS_IN input) : SV_TARGET
 {
     // 轰 器瘤记
-    float3 viewPos = PositionTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    float3 viewPos = PositionTex.Sample(g_LinearWrapSampler, input.vUV0).rgb;
     viewPos = mul(float4(viewPos, 1.f), g_matView).rgb;
     
     // 轰 畴富
-    float3 viewNormal = NormalTex.Sample(g_LinearWrapSampler, input.vUV).rgb;
+    float3 viewNormal = NormalTex.Sample(g_LinearWrapSampler, input.vUV0).rgb;
     viewNormal = normalize(mul(float4(viewNormal, 0.f), g_matView).rgb);
 
     // 罚待 氦磐 积己
     float2 NoiseScale = float2(g_NoiseTexResolution.x / 4.f, g_NoiseTexResolution.y / 4.f);
-    float3 randomVec = g_NoiseTex.Sample(g_LinearWrapSampler, input.vUV * NoiseScale).rgb;
+    float3 randomVec = g_NoiseTex.Sample(g_LinearWrapSampler, input.vUV0 * NoiseScale).rgb;
     randomVec = normalize(randomVec * 2.f - 1.f);
 
     // TBN 青纺 积己

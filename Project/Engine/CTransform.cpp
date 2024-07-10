@@ -4,6 +4,8 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
+#include "CAnimator.h"
+
 CTransform::CTransform()
     : CComponent(COMPONENT_TYPE::TRANSFORM)
     , m_vRelativePos(Vec3())
@@ -68,28 +70,39 @@ void CTransform::finaltick()
     }
 
     // 부모 오브젝트가 있다면
-    if (GetOwner()->GetParent())
+    CGameObject* pParent = GetOwner()->GetParent();
+    if (nullptr != pParent)
     {
-        m_matTransformation = GetOwner()->GetParent()->Transform()->GetWorldMat();
+        // Bone Socket Matrix
+        Matrix SocketMat = XMMatrixIdentity();
+        Matrix BoneTransformMat = XMMatrixIdentity();
+
+        const tBoneSocket* pBoneSocket = GetOwner()->GetBoneSocket();
+        if (nullptr != pBoneSocket && nullptr != pParent->Animator() && pParent->Animator()->IsValid())
+        {
+            SocketMat = pBoneSocket->matSocket;
+            BoneTransformMat = pParent->Animator()->GetBoneTransformMat(pBoneSocket->BoneIndex);
+        }
+
+        // Parent Matrix = Socket Matrix * Bone Transform Matrix * Parent World
+        m_matTransformation = SocketMat * BoneTransformMat * pParent->Transform()->GetWorldMat();
 
         if (m_bAbsolute)
         {
-            Vec3 vParentScale = GetOwner()->GetParent()->Transform()->GetRelativeScale();
-            Matrix matParentScaleInv = XMMatrixScaling(1.f / vParentScale.x, 1.f / vParentScale.y, 1.f / vParentScale.z);
+            Vec3 Translation, Rotation, Scale;
+            ImGuizmo::DecomposeMatrixToComponents(*m_matTransformation.m, Translation, Rotation, Scale);
+            Matrix matParentScaleInv = XMMatrixScaling(1.f / Scale.x, 1.f / Scale.y, 1.f / Scale.z);
 
             // 부모의 크기 행렬 상쇄
             m_matTransformation = matParentScaleInv * m_matTransformation;
-
-            m_matWorld *= m_matTransformation;
-        }
-        else
-        {
-            m_matWorld *= m_matTransformation;
         }
 
+        // 변환행렬 적용
+        m_matWorld *= m_matTransformation;
+
+        // 부모 변환 행렬이 적용된 월드 행렬로 방향 재계산
         for (int i = 0; i < 3; ++i)
         {
-            // 부모 행렬이 적용된 월드 행렬로 방향 계산
             m_arrWorldDir[i] = XMVector3TransformNormal(BasisVector[i], m_matWorld);
             m_arrWorldDir[i].Normalize();
         }
@@ -118,6 +131,13 @@ void CTransform::UpdateData()
 
 Vec3 CTransform::GetWorldScale() const
 {
+    Vec3 Translation, Rotation, Scale;
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
+    return Scale;
+}
+
+Vec3 CTransform::GetTransformWorldScale() const
+{
     CGameObject* pParent = GetOwner()->GetParent();
     Vec3 vWorldScale = m_vRelativeScale;
 
@@ -126,7 +146,9 @@ Vec3 CTransform::GetWorldScale() const
     while (pParent)
     {
         if (!bAbsolute)
+        {
             vWorldScale *= pParent->Transform()->GetRelativeScale();
+        }
 
         bAbsolute = pParent->Transform()->IsAbsolute();
         pParent = pParent->GetParent();
@@ -137,16 +159,10 @@ Vec3 CTransform::GetWorldScale() const
 
 Vec3 CTransform::GetWorldRotation() const
 {
-    CGameObject* pParent = GetOwner()->GetParent();
-    Vec3 vWorldRot = m_vRelativeRotation;
-
-    while (pParent)
-    {
-        vWorldRot += pParent->Transform()->GetRelativeRotation();
-        pParent = pParent->GetParent();
-    }
-
-    return vWorldRot;
+    Vec3 Translation, Rotation, Scale;
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
+    Rotation.ToRadian();
+    return Rotation;
 }
 
 void CTransform::SetDirection(Vec3 _Dir)
@@ -171,10 +187,10 @@ void CTransform::SetDirection(Vec3 _Dir)
     matRot._32 = _Dir.y;
     matRot._33 = _Dir.z;
 
-    float Translation[3] = {0.0f, 0.0f, 0.0f}, Rotation[3] = {0.0f, 0.0f, 0.0f}, Scale[3] = {0.0f, 0.0f, 0.0f};
+    Vec3 Translation, Rotation, Scale;
     ImGuizmo::DecomposeMatrixToComponents(*matRot.m, Translation, Rotation, Scale);
-    SetRelativeRotation(
-        Vec3(DirectX::XMConvertToRadians(Rotation[0]), DirectX::XMConvertToRadians(Rotation[1]), DirectX::XMConvertToRadians(Rotation[2])));
+    Rotation.ToRadian();
+    SetRelativeRotation(Rotation);
 }
 
 void CTransform::SaveToLevelFile(FILE* _File)

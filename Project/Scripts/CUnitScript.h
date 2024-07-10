@@ -31,10 +31,11 @@ struct UnitHit
 
 class CUnitScript : public CScript
 {
-private:
-    UnitInfo       m_CurInfo;
-    UnitInfo       m_PrevInfo;
-    std::list<UnitHit> m_HitHistory;
+protected:
+    UnitInfo            m_OriginInfo;
+    UnitInfo            m_CurInfo;
+    UnitInfo            m_PrevInfo;
+    std::list<UnitHit>  m_HitHistory;
 
 public:
     virtual void tick() override;
@@ -44,12 +45,15 @@ public:
 private:
     void DamageProc();
 
+protected:
+    void SetInfo(UnitInfo _Info) { m_OriginInfo = _Info; }
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
     CUnitScript* Clone() = 0;
 public: 
-    CUnitScript(SCRIPT_TYPE _Type);
+    CUnitScript(UINT _Type);
     virtual ~CUnitScript();
 };

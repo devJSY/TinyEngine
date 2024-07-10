@@ -44,7 +44,7 @@ void CLandScape::CreateMesh()
             v.vNormal = Vec3(0.f, 1.f, 0.f);
 
             v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-            v.vUV = Vec2((float)j, m_FaceZ - (float)i);
+            v.vUV0 = Vec2((float)j, m_FaceZ - (float)i);
 
             vecVtx.push_back(v);
         }

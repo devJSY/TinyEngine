@@ -24,8 +24,8 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
 
     // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
     if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_CCD |
-                    PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
+        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
+                    PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
 
     return PxFilterFlag::eDEFAULT;
 }
@@ -63,19 +63,29 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
     {
         pColliderA->OnTriggerEnter(pColliderB);
         pColliderB->OnTriggerEnter(pColliderA);
+
+        // Trigger List 에 추가
+        CPhysicsMgr::GetInst()->m_listTrigger.push_back(make_pair(pColliderA, pColliderB));
     }
 
     if (PxPairFlag::eNOTIFY_TOUCH_LOST & pairs->status)
     {
         pColliderA->OnTriggerExit(pColliderB);
         pColliderB->OnTriggerExit(pColliderA);
-    }
 
-    // 충돌 카운트가 남아있는 경우 Stay 상태
-    if (pColliderA->m_TriggerCount > 0)
-        pColliderA->OnTriggerStay(pColliderB);
-    if (pColliderB->m_TriggerCount > 0)
-        pColliderB->OnTriggerStay(pColliderA);
+        // Trigger List 에서 삭제
+        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = CPhysicsMgr::GetInst()->m_listTrigger.begin();
+        while (iter != CPhysicsMgr::GetInst()->m_listTrigger.end())
+        {
+            if (iter->first == pColliderA && iter->second == pColliderB)
+            {
+                CPhysicsMgr::GetInst()->m_listTrigger.erase(iter);
+                break;
+            }
+
+            ++iter;
+        }
+    }
 }
 
 void CCTCCollisionCallback::onShapeHit(const physx::PxControllerShapeHit& hit)
@@ -112,6 +122,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_StepSize(1.f / 60.f)
     , m_Gravity(Vec3(0.f, -9.81f, 0.f))
     , m_PPM(1.f)
+    , m_listTrigger{}
 {
     EnableAllLayer();
 }
@@ -137,6 +148,15 @@ void CPhysicsMgr::tick()
     m_Scene->simulate(m_StepSize);
     m_Scene->fetchResults(true);
 
+    // TriggerStay Event
+    for (const auto& iter : m_listTrigger)
+    {
+        if (iter.first->m_TriggerCount > 0)
+            iter.first->OnTriggerStay(iter.second);
+        if (iter.second->m_TriggerCount > 0)
+            iter.second->OnTriggerStay(iter.first);
+    }
+
     // 시뮬레이션 결과로 트랜스폼 업데이트
     PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
     std::vector<PxRigidActor*> actors(nbActors);
@@ -154,25 +174,20 @@ void CPhysicsMgr::tick()
         CGameObject* obj = (CGameObject*)actors[i]->userData;
         CTransform* pTr = obj->Transform();
 
-        Vec3 WorldPos = pTr->GetWorldPos();
-        Vec3 WorldRot = pTr->GetWorldRotation();
-
         const PxMat44 ActorPose(actors[i]->getGlobalPose());
         Matrix SimulatedMat = Matrix(ActorPose.front());
 
         // 시뮬레이션 Matrix SRT 분해
-        float Ftranslation[3] = {0.0f, 0.0f, 0.0f}, Frotation[3] = {0.0f, 0.0f, 0.0f}, Fscale[3] = {0.0f, 0.0f, 0.0f};
-        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Ftranslation, Frotation, Fscale);
+        Vec3 Translation, Rotation, Scale;
+        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
-        for (UINT i = 0; i < 3; i++)
-        {
-            Ftranslation[i] *= m_PPM;
-        }
+        // PPM 적용
+        Translation *= m_PPM;
+        Rotation.ToRadian();
 
         // 변화량 추출
-        Vec3 vPosOffset = Vec3(WorldPos.x - Ftranslation[0], WorldPos.y - Ftranslation[1], WorldPos.z - Ftranslation[2]);
-        Vec3 vRotOffset = Vec3(WorldRot.x - DirectX::XMConvertToRadians(Frotation[0]), WorldRot.y - DirectX::XMConvertToRadians(Frotation[1]),
-                               WorldRot.z - DirectX::XMConvertToRadians(Frotation[2]));
+        Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
+        Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
 
         // 변화량만큼 Relative 에 적용
         pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
@@ -290,6 +305,7 @@ void CPhysicsMgr::OnPhysicsStop()
     }
 
     m_vecPhysicsObj.clear();
+    m_listTrigger.clear();
 }
 
 RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, WORD _LayerMask)
@@ -377,10 +393,9 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     WorldScale /= m_PPM;
 
     // 오일러 각 → 쿼터니언 으로 변환하여 적용
-    SimpleMath::Quaternion QuatX = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x);
-    SimpleMath::Quaternion QuatY = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y);
-    SimpleMath::Quaternion QuatZ = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
-    SimpleMath::Quaternion Quat = QuatX * QuatY * QuatZ;
+    SimpleMath::Quaternion Quat = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x) *
+                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y) *
+                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
 
     // World Space 기준 위치, 회전상태 적용
     PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
@@ -464,7 +479,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         if (pBoxCol->m_bTrigger)
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pBoxCol->m_bEnabled);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -480,6 +495,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
+
+        // Count 초기화
+        pBoxCol->m_CollisionCount = 0;
+        pBoxCol->m_TriggerCount = 0;
     }
 
     // Sphere Collider
@@ -503,7 +522,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         if (pSphereCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pSphereCol->m_bEnabled);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -519,6 +538,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
+
+        // Count 초기화
+        pSphereCol->m_CollisionCount = 0;
+        pSphereCol->m_TriggerCount = 0;
     }
 
     // Capsule Collider
@@ -571,7 +594,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         if (pCapsuleCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pCapsuleCol->m_bEnabled);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -588,6 +611,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;
+
+        // Count 초기화
+        pCapsuleCol->m_CollisionCount = 0;
+        pCapsuleCol->m_TriggerCount = 0;
     }
 
     // Mesh Collider
@@ -631,7 +658,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             if (pMeshCol->m_bTrigger)
             {
                 shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
+                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pMeshCol->m_bEnabled);
             }
 
             // 필터링 데이터 적용
@@ -641,6 +668,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             // UserData 등록
             shape->userData = (void*)pMeshCol;
             pMeshCol->m_RuntimeShape = shape;
+
+            // Count 초기화
+            pMeshCol->m_CollisionCount = 0;
+            pMeshCol->m_TriggerCount = 0;
         }
     }
 

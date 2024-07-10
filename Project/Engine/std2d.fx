@@ -13,7 +13,7 @@ PS_IN VS_Std2D(VS_IN _in)
     
     output.vPosProj = mul(float4(_in.vPos, 1.0), g_matWVP);
     output.vColor = _in.vColor;
-    output.vUV = _in.vUV;
+    output.vUV0 = _in.vUV0;
     
     output.vPosWorld = mul(float4(_in.vPos, 1.0), g_matWorld).xyz;
     
@@ -33,12 +33,12 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         {
             float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
             vBackgroundLeftTop -= g_vOffset;
-            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV0);
         }
         else
         {
             float2 LT = g_vLeftTop - g_vOffset;
-            vUV = LT + (g_vSliceSize * _in.vUV);
+            vUV = LT + (g_vSliceSize * _in.vUV0);
         }
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
@@ -55,7 +55,7 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
     {
         if (g_btex_0)
         {
-            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         }
         else
         {
@@ -85,12 +85,12 @@ float4 PS_Std2D_Light(PS_IN _in) : SV_Target
         {
             float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
             vBackgroundLeftTop -= g_vOffset;
-            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV0);
         }
         else
         {
             float2 LT = g_vLeftTop - g_vOffset;
-            vUV = LT + (g_vSliceSize * _in.vUV);
+            vUV = LT + (g_vSliceSize * _in.vUV0);
         }
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
@@ -107,7 +107,7 @@ float4 PS_Std2D_Light(PS_IN _in) : SV_Target
     {
         if (g_btex_0)
         {
-            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         }
         else
         {
@@ -161,12 +161,12 @@ PS_Std2D_Glow_Output PS_Std2D_Effect(PS_IN _in) : SV_Target
         {
             float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
             vBackgroundLeftTop -= g_vOffset;
-            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV0);
         }
         else
         {
             float2 LT = g_vLeftTop - g_vOffset;
-            vUV = LT + (g_vSliceSize * _in.vUV);
+            vUV = LT + (g_vSliceSize * _in.vUV0);
         }
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
@@ -183,7 +183,7 @@ PS_Std2D_Glow_Output PS_Std2D_Effect(PS_IN _in) : SV_Target
     {
         if (g_btex_0)
         {
-            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         }
         else
         {
@@ -231,12 +231,12 @@ PS_Std2D_Glow_Output PS_Std2D_Glow(PS_IN _in)
         {
             float2 vBackgroundLeftTop = g_vLeftTop + (g_vSliceSize / 2.f) - (g_vBackGround / 2.f);
             vBackgroundLeftTop -= g_vOffset;
-            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV);
+            vUV = vBackgroundLeftTop + (g_vBackGround * _in.vUV0);
         }
         else
         {
             float2 LT = g_vLeftTop - g_vOffset;
-            vUV = LT + (g_vSliceSize * _in.vUV);
+            vUV = LT + (g_vSliceSize * _in.vUV0);
         }
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSliceSize.x) < vUV.x
@@ -253,7 +253,7 @@ PS_Std2D_Glow_Output PS_Std2D_Glow(PS_IN _in)
     {
         if (g_btex_0)
         {
-            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+            vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         }
         else
         {

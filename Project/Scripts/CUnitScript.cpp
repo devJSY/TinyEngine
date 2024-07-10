@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "CUnitScript.h"
 
-CUnitScript::CUnitScript(SCRIPT_TYPE _Type)
+CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
+    , m_OriginInfo{}
     , m_PrevInfo{}
     , m_CurInfo{}
 {
@@ -38,7 +39,7 @@ void CUnitScript::DamageProc()
         {
         case DAMAGE_TYPE::NORMAL:
             CurDamage += iter->Damage;
-            m_HitHistory.erase(iter);
+            iter = m_HitHistory.erase(iter);
             break;
 
         case DAMAGE_TYPE::DOT:
@@ -52,7 +53,7 @@ void CUnitScript::DamageProc()
 
             if (iter->Duration <= 0.f)
             {
-                m_HitHistory.erase(iter);
+                iter = m_HitHistory.erase(iter);
             }
         }
             break;

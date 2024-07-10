@@ -131,6 +131,7 @@ void MatrixAffineTransformation(in float4 Scaling
 {
     matrix MScaling = (matrix) 0.f;
     MScaling._11_22_33 = Scaling.xyz;
+    MScaling._44 = 1.f;
 
     float4 VRotationOrigin = float4(RotationOrigin.xyz, 0.f);
     float4 VTranslation = float4(Translation.xyz, 0.f);
@@ -205,7 +206,9 @@ struct tFrameTrans
 
 StructuredBuffer<tFrameTrans> g_arrFrameTrans : register(t32);
 StructuredBuffer<matrix> g_arrOffset : register(t33);
-RWStructuredBuffer<matrix> g_arrFinelMat : register(u0);
+
+RWStructuredBuffer<matrix> g_arrBoneTransformMat : register(u0);
+RWStructuredBuffer<matrix> g_arrFinelMat : register(u1);
 
 // ===========================
 // Animation Update Compute Shader
@@ -227,7 +230,6 @@ void AnimationUpdateCS(int3 _iThreadIdx : SV_DispatchThreadID)
     // Frame Data Index == Bone Count * Frame Count + _iThreadIdx.x
     uint iFrameDataIndex = BoneCount * CurFrame + _iThreadIdx.x;
     uint iNextFrameDataIdx = BoneCount * NextFrame + _iThreadIdx.x;
-    //uint iNextFrameDataIdx = BoneCount * (CurFrame + 1) + _iThreadIdx.x;
 
     float4 vScale = lerp(g_arrFrameTrans[iFrameDataIndex].vScale, g_arrFrameTrans[iNextFrameDataIdx].vScale, Ratio);
     float4 vTrans = lerp(g_arrFrameTrans[iFrameDataIndex].vTranslate, g_arrFrameTrans[iNextFrameDataIdx].vTranslate, Ratio);
@@ -237,8 +239,9 @@ void AnimationUpdateCS(int3 _iThreadIdx : SV_DispatchThreadID)
     MatrixAffineTransformation(vScale, vQZero, qRot, vTrans, matBone);
     
     matrix matOffset = transpose(g_arrOffset[_iThreadIdx.x]);
-
+    
     // 구조화버퍼에 결과값 저장
+    g_arrBoneTransformMat[_iThreadIdx.x] = transpose(matBone);
     g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
 }
 

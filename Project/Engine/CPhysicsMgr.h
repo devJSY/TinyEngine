@@ -4,6 +4,7 @@
 #include <physx\\PxSimulationEventCallback.h>
 
 class CGameObject;
+class CCollider;
 
 // RayCast
 struct RaycastHit
@@ -17,7 +18,7 @@ struct RaycastHit
 
 struct ControllerColliderHit
 {
-    class CCollider* Collider;
+    CCollider* Collider;
     class CCharacterController* Controller;
     Vec3 MoveDirection;
     float MoveLength;
@@ -88,6 +89,8 @@ private:
     Vec3 m_Gravity;
     float m_PPM; // PixelPerMeter
 
+    std::list<std::pair<CCollider*, CCollider*>> m_listTrigger;
+
 public:
     void tick();
 
@@ -120,4 +123,5 @@ private:
     void RemovePhysicsObject(CGameObject* _GameObject);
 
     friend class CTaskMgr;
+    friend class CCollisionCallback;
 };

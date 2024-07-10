@@ -24,6 +24,10 @@ void CMeshCollider::finaltick()
 {
     CCollider::finaltick();
 
+    // 콜라이더 비활성화 상태에서는 렌더링 X
+    if (!m_bEnabled)
+        return;
+
     if (nullptr != m_Mesh)
     {
         GamePlayStatic::DrawDebugMesh(Transform()->GetWorldMat(), m_Mesh, Vec3(0.f, 1.f, 0.f), true);

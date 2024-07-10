@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAssetMgr.h"
+#include "CEditorMgr.h"
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"
@@ -204,6 +205,43 @@ void CAssetMgr::CreateDefaultMesh()
 
 void CAssetMgr::CreateDefaultGraphicsShader()
 {
+    // =================================
+    // InputLayout
+    // =================================
+    AddInputLayout(DXGI_FORMAT_R32G32B32_FLOAT, "POSITION", 0, 0);
+
+    AddInputLayout(DXGI_FORMAT_R32G32B32_FLOAT, "NORMAL", 0, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32_FLOAT, "TANGENT", 0, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32_FLOAT, "BINORMAL", 0, 0);
+
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "COLOR", 0, 0);
+
+    AddInputLayout(DXGI_FORMAT_R32G32_FLOAT, "TEXCOORD", 0, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32_FLOAT, "TEXCOORD", 0, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32_FLOAT, "TEXCOORD", 0, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32_FLOAT, "TEXCOORD", 0, 3);
+
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "BLENDINDICES", 0, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "BLENDWEIGHT", 0, 0);
+
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLD", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLD", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLD", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLD", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32_UINT, "ROWINDEX", 1, 0);
+
     // =================================
     // Std2DShader
     // =================================
@@ -691,11 +729,14 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(FLOAT_1, "Rim Power");
         pShader->AddScalarParam(VEC4_0, "Rim Color");
 
-        pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
-        pShader->AddTexParam(TEX_2, "Normal Texture");
-        pShader->AddTexParam(TEX_3, "Height Texture");
-        pShader->AddTexParam(TEX_4, "Emissive Texture");
+        pShader->AddTexParam(TEX_0, "Albedo0 Texture");
+        pShader->AddTexParam(TEX_1, "Albedo1 Texture");
+        pShader->AddTexParam(TEX_2, "Albedo2 Texture");
+        pShader->AddTexParam(TEX_3, "Albedo3 Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Height Texture");
+        pShader->AddTexParam(TEX_7, "Emissive Texture");
 
         pShader->SetName(L"UnrealPBRShader");
         AddAsset(L"UnrealPBRShader", pShader);
@@ -718,11 +759,14 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(INT_0, "Invert NormalMapY");
         pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
 
-        pShader->AddTexParam(TEX_0, "Ambient Texture");
-        pShader->AddTexParam(TEX_1, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
-        pShader->AddTexParam(TEX_2, "Normal Texture");
-        pShader->AddTexParam(TEX_3, "Height Texture");
-        pShader->AddTexParam(TEX_4, "Emissive Texture");
+        pShader->AddTexParam(TEX_0, "Albedo0 Texture");
+        pShader->AddTexParam(TEX_1, "Albedo1 Texture");
+        pShader->AddTexParam(TEX_2, "Albedo2 Texture");
+        pShader->AddTexParam(TEX_3, "Albedo3 Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Height Texture");
+        pShader->AddTexParam(TEX_7, "Emissive Texture");
 
         pShader->SetName(L"UnrealPBRDeferredShader");
         AddAsset(L"UnrealPBRDeferredShader", pShader);
@@ -892,7 +936,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS_EQUAL);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
 
         pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
 
@@ -912,7 +956,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
 
         pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
 
@@ -1764,6 +1808,41 @@ void CAssetMgr::CreateDefaultPhysicMaterial()
     }
 }
 
+void CAssetMgr::AddInputLayout(DXGI_FORMAT _eFormat, const char* _strSemanticName, UINT _iSlotNum, UINT _iSemanticIdx)
+{
+    D3D11_INPUT_ELEMENT_DESC LayoutDesc = {};
+
+    if (0 == _iSlotNum)
+    {
+        LayoutDesc.AlignedByteOffset = m_iLayoutOffset_0;
+        LayoutDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+        LayoutDesc.InstanceDataStepRate = 0;
+    }
+    else if (1 == _iSlotNum)
+    {
+        LayoutDesc.AlignedByteOffset = m_iLayoutOffset_1;
+        LayoutDesc.InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
+        LayoutDesc.InstanceDataStepRate = 1;
+    }
+
+    LayoutDesc.Format = _eFormat;
+    LayoutDesc.InputSlot = _iSlotNum;
+    LayoutDesc.SemanticName = _strSemanticName;
+    LayoutDesc.SemanticIndex = _iSemanticIdx;
+
+    m_vecLayoutInfo.push_back(LayoutDesc);
+
+    // Offset 증가
+    if (0 == _iSlotNum)
+    {
+        m_iLayoutOffset_0 += GetSizeofFormat(_eFormat);
+    }
+    else if (1 == _iSlotNum)
+    {
+        m_iLayoutOffset_1 += GetSizeofFormat(_eFormat);
+    }
+}
+
 Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
 {
     wstring strFileName = std::filesystem::path(_strPath).stem();
@@ -1774,19 +1853,59 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
     Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
 
     if (nullptr != pMeshData)
+    {
+        LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
         return pMeshData;
+    }
 
     pMeshData = CMeshData::LoadFromFBX(_strPath);
     pMeshData->SetName(strName);
     pMeshData->SetKey(strName);
     pMeshData->SetRelativePath(strName);
 
-    m_mapAsset[(UINT)ASSET_TYPE::MESHDATA].insert(make_pair(strName, pMeshData.Get()));
+    AddAsset<CMeshData>(strName, pMeshData);
+
+    // meshdata 를 파일 저장
+    pMeshData->Save(strName);
+    LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
+    return pMeshData;
+}
+
+void CAssetMgr::AsyncLoadFBX(const wstring& _strPath)
+{
+    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncLoadFBXFunc, this, _strPath));
+}
+
+void CAssetMgr::AsyncLoadFBXFunc(const wstring& _strPath)
+{
+    std::scoped_lock lock(m_Mutex); // 상호배제
+
+    wstring strFileName = std::filesystem::path(_strPath).stem();
+
+    wstring strName = L"meshdata\\";
+    strName += strFileName + L".mdat";
+
+    Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
+
+    if (nullptr != pMeshData)
+    {
+        ++m_CompletedThread;
+        LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
+        return;
+    }
+
+    pMeshData = CMeshData::LoadFromFBX(_strPath);
+    pMeshData->SetName(strName);
+    pMeshData->SetKey(strName);
+    pMeshData->SetRelativePath(strName);
+
+    AddAsset<CMeshData>(strName, pMeshData);
 
     // meshdata 를 파일 저장
     pMeshData->Save(strName);
 
-    return pMeshData;
+    ++m_CompletedThread;
+    LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
 }
 
 tMeshData CAssetMgr::MakePoint()
@@ -1795,7 +1914,7 @@ tMeshData CAssetMgr::MakePoint()
     Vtx v;
     v.vPos = Vec3(0.f, 0.f, 0.f);
     v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-    v.vUV = Vec2(0.5f, 0.5f);
+    v.vUV0 = Vec2(0.5f, 0.5f);
 
     v.vNormal = Vec3(0.f, 0.f, -1.f);
     v.vTangent = Vec3(1.f, 0.f, 0.f);
@@ -1836,7 +1955,7 @@ tMeshData CAssetMgr::MakeCrosshair()
         v.vPos = positions[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
-        v.vUV = texcoords[i];
+        v.vUV0 = texcoords[i];
 
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
@@ -1863,7 +1982,7 @@ tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
     // 중심 점
     v.vPos = Vec3(0.f, 0.f, 0.f);
     v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-    v.vUV = Vec2(0.5f, 0.5f);
+    v.vUV0 = Vec2(0.5f, 0.5f);
     meshData.vertices.push_back(v);
 
     float fTheta = 0.f;
@@ -1874,7 +1993,7 @@ tMeshData CAssetMgr::MakeCircle(const float radius, const int numSlices)
 
         v.vPos = Vec3(radius * cosf(fTheta), radius * sinf(fTheta), 0.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-        v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+        v.vUV0 = Vec2(cosf(fTheta), sinf(fTheta));
 
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
@@ -1935,7 +2054,7 @@ tMeshData CAssetMgr::MakeRect(const float scale, const Vec2 texScale)
         v.vPos = positions[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
-        v.vUV = texcoords[i] * texScale;
+        v.vUV0 = texcoords[i] * texScale;
 
         v.vNormal = normals[i];
         v.vTangent = tangents[i];
@@ -1960,7 +2079,7 @@ tMeshData CAssetMgr::MakeDebugCircle(const float radius, const int numSlices)
     // 중심 점
     v.vPos = Vec3(0.f, 0.f, 0.f);
     v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-    v.vUV = Vec2(0.5f, 0.5f);
+    v.vUV0 = Vec2(0.5f, 0.5f);
     meshData.vertices.push_back(v);
 
     float fTheta = 0.f;
@@ -1971,7 +2090,7 @@ tMeshData CAssetMgr::MakeDebugCircle(const float radius, const int numSlices)
 
         v.vPos = Vec3(radius * cosf(fTheta), radius * sinf(fTheta), 0.f);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-        v.vUV = Vec2(cosf(fTheta), sinf(fTheta));
+        v.vUV0 = Vec2(cosf(fTheta), sinf(fTheta));
 
         v.vNormal = Vec3(0.f, 0.f, -1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
@@ -2029,7 +2148,7 @@ tMeshData CAssetMgr::MakeDebugRect(const float scale, const Vec2 texScale)
         Vtx v;
         v.vPos = positions[i];
         v.vColor = colors[i];
-        v.vUV = texcoords[i] * texScale;
+        v.vUV0 = texcoords[i] * texScale;
         v.vColor.w = 1.f;
 
         v.vNormal = normals[i];
@@ -2060,7 +2179,7 @@ tMeshData CAssetMgr::MakeSquareGrid(const int numSlices, const int numStacks, co
         {
             Vtx v;
             v.vPos = Vec3(x, y, 0.0f) * scale;
-            v.vUV = Vec2(x + 1.0f, y + 1.0f) * 0.5f * texScale;
+            v.vUV0 = Vec2(x + 1.0f, y + 1.0f) * 0.5f * texScale;
             v.vNormal = Vec3(0.0f, 0.0f, -1.0f);
             v.vTangent = Vec3(1.0f, 0.0f, 0.0f);
             v.vNormal.Cross(v.vTangent, v.vBiTangent);
@@ -2236,7 +2355,7 @@ tMeshData CAssetMgr::MakeBox(const float scale)
         v.vPos = positions[i];
         v.vColor = colors[i];
         v.vColor.w = 1.f;
-        v.vUV = texcoords[i];
+        v.vUV0 = texcoords[i];
 
         v.vNormal = normals[i];
         v.vTangent = tangents[i];
@@ -2273,7 +2392,7 @@ tMeshData CAssetMgr::MakeCylinder(const float bottomRadius, const float topRadiu
     {
         Vtx v;
         v.vPos = Vec3::Transform(Vec3(bottomRadius, -0.5f * height, 0.0f), Matrix::CreateRotationY(dTheta * float(i)));
-        v.vUV = Vec2(float(i) / numSlices, 1.0f);
+        v.vUV0 = Vec2(float(i) / numSlices, 1.0f);
 
         // std::cout << v.vPos.x << " " << v.vPos.z << std::endl;
 
@@ -2288,7 +2407,7 @@ tMeshData CAssetMgr::MakeCylinder(const float bottomRadius, const float topRadiu
     {
         Vtx v;
         v.vPos = Vec3::Transform(Vec3(topRadius, 0.5f * height, 0.0f), Matrix::CreateRotationY(dTheta * float(i)));
-        v.vUV = Vec2(float(i) / numSlices, 0.0f);
+        v.vUV0 = Vec2(float(i) / numSlices, 0.0f);
 
         v.vNormal = v.vPos - Vec3(0.0f, 0.5f * height, 0.0f);
         v.vNormal.Normalize();
@@ -2341,7 +2460,7 @@ tMeshData CAssetMgr::MakeSphere(const float radius, const int numSlices, const i
 
             v.vNormal = v.vPos; // 원점이 구의 중심
             v.vNormal.Normalize();
-            v.vUV = Vec2(float(i) / numSlices, 1.0f - float(j) / numStacks) * texScale;
+            v.vUV0 = Vec2(float(i) / numSlices, 1.0f - float(j) / numStacks) * texScale;
 
             // texcoord가 위로 갈수록 증가
             Vec3 biTangent = Vec3(0.0f, 1.0f, 0.0f);
@@ -2510,8 +2629,8 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
         // https://stackoverflow.com/questions/283406/what-is-the-difference-between-atan-and-atan2-in-c
         // const float theta = atan2f(v.vPos.z, v.vPos.x);
         // const float phi = acosf(v.vPos.y / radius);
-        // v.vUV.x = theta / XM_2PI;
-        // v.vUV.y = phi / XM_PI;
+        // v.vUV0.x = theta / XM_2PI;
+        // v.vUV0.y = phi / XM_PI;
     };
 
     auto UpdateFaceNormal = [](Vtx& v0, Vtx& v1, Vtx& v2) {
@@ -2537,17 +2656,17 @@ tMeshData CAssetMgr::SubdivideToSphere(const float radius, tMeshData meshData)
 
         Vtx v3;
         v3.vPos = (v0.vPos + v2.vPos) * 0.5f;
-        v3.vUV = (v0.vUV + v2.vUV) * 0.5f;
+        v3.vUV0 = (v0.vUV0 + v2.vUV0) * 0.5f;
         ProjectVertex(v3);
 
         Vtx v4;
         v4.vPos = (v0.vPos + v1.vPos) * 0.5f;
-        v4.vUV = (v0.vUV + v1.vUV) * 0.5f;
+        v4.vUV0 = (v0.vUV0 + v1.vUV0) * 0.5f;
         ProjectVertex(v4);
 
         Vtx v5;
         v5.vPos = (v1.vPos + v2.vPos) * 0.5f;
-        v5.vUV = (v1.vUV + v2.vUV) * 0.5f;
+        v5.vUV0 = (v1.vUV0 + v2.vUV0) * 0.5f;
         ProjectVertex(v5);
 
         // UpdateFaceNormal(v4, v1, v5);
@@ -2588,7 +2707,7 @@ tMeshData CAssetMgr::MakeCone(const float radius, const float height)
 
     // Top
     v.vPos = Vec3(0.f, 0.f, 0.f);
-    v.vUV = Vec2(0.5f, 0.f);
+    v.vUV0 = Vec2(0.5f, 0.f);
     v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
     v.vNormal = Vec3(0.f, 0.f, -1.f);
     v.vTangent = Vec3(1.f, 0.f, 0.f);
@@ -2608,7 +2727,7 @@ tMeshData CAssetMgr::MakeCone(const float radius, const float height)
 
         v.vPos = Vec3(radius * cosf(theta), radius * sinf(theta), height);
         v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
-        v.vUV = Vec2(fUVXStep * i, fUVYStep);
+        v.vUV0 = Vec2(fUVXStep * i, fUVYStep);
 
         v.vNormal = Vec3(0.f, 0.f, 1.f);
         v.vTangent = Vec3(1.f, 0.f, 0.f);
@@ -2695,7 +2814,7 @@ tMeshData CAssetMgr::MakeWireBox(const float scale)
         v.vPos = positions[i];
         v.vNormal = positions[i];
         v.vNormal.Normalize();
-        v.vUV = Vector2(0.0f); // 미사용
+        v.vUV0 = Vector2(0.0f); // 미사용
         meshData.vertices.push_back(v);
     }
 

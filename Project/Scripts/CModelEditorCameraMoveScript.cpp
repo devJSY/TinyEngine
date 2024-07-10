@@ -33,11 +33,14 @@ void CModelEditorCameraMoveScript::tick()
     if (KEY_TAP(KEY::F))
     {
         Transform()->SetRelativePos(Vec3(0.f, 250.f, -250.f));
-        Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+        Transform()->SetRelativeRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
     }
 
     // Move
-    MovePerspective();
+    if (CEditorMgr::GetInst()->GetModelEditor()->IsViewportHovered())
+    {
+        MovePerspective();
+    }
 
     // 카메라 속도 제한
     if (m_CamSpeed < 0.f)

@@ -20,7 +20,7 @@ PS_IN main(VS_IN input)
     output.vPosProj = mul(pos, g_matWVP);
     output.vPosWorld = mul(pos, g_matWorld).xyz; // 월드 위치 따로 저장
 
-    output.vUV = input.vUV;
+    output.vUV0 = input.vUV0;
     output.vColor = input.vColor;
     
     output.vTangentWorld = tangentWorld.xyz;

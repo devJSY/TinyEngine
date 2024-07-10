@@ -21,6 +21,7 @@ CGameObject::CGameObject()
     , m_Parent(nullptr)
     , m_iLayerIdx(-1) // 어떠한 레벨(레이어) 소속되어있지 않다.
     , m_bDead(false)
+    , m_BoneSocket(nullptr)
 {
 }
 
@@ -31,6 +32,7 @@ CGameObject::CGameObject(const CGameObject& origin)
     , m_Parent(nullptr)
     , m_iLayerIdx(origin.m_iLayerIdx)
     , m_bDead(false)
+    , m_BoneSocket(origin.m_BoneSocket)
 {
     for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
     {
@@ -246,6 +248,7 @@ void CGameObject::DisconnectWithParent()
         {
             m_Parent->m_vecChild.erase(iter);
             m_Parent = nullptr;
+            m_BoneSocket = nullptr;
             bSuccess = true;
             break;
         }
@@ -306,4 +309,17 @@ bool CGameObject::IsAncestor(CGameObject* _Other)
     }
 
     return false;
+}
+
+CGameObject* CGameObject::GetChildObject(const wstring& _Name) const
+{
+    for (const auto& iter : m_vecChild)
+    {
+        if (iter->GetName() == _Name)
+        {
+            return iter;
+        }
+    }
+
+    return nullptr;
 }
