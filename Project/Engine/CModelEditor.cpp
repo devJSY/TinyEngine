@@ -1138,7 +1138,7 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     UINT SubsetCnt = m_ModelObj->MeshRender()->GetMesh()->GetSubsetCount();
     for (UINT i = 0; i < SubsetCnt; ++i)
     {
-        m_ModelObj->MeshRender()->GetMaterial(i)->SetShader(pShader);
+        m_ModelObj->MeshRender()->GetDynamicMaterial(i)->SetShader(pShader);
     }
 
     if (nullptr != m_ModelObj->Animator())

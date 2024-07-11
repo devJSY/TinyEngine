@@ -133,6 +133,14 @@ void CTransform::UpdateData()
     pCB->UpdateData();
 }
 
+void CTransform::SetDirection(Vec3 _Forward, Vec3 _Up)
+{
+    _Forward.Normalize();
+    _Up.Normalize();
+
+    Transform()->SetWorldRotation(Quat::LookRotation(_Forward, _Up));
+}
+
 Quat CTransform::GetWorldQuaternion() const
 {
     Vec3 Translation, Rotation, Scale;
@@ -206,34 +214,6 @@ void CTransform::SetWorldRotation(Vec3 _Radian)
     }
 
     SetLocalRotation(_Radian);
-}
-
-void CTransform::SetDirection(Vec3 _Dir)
-{
-    _Dir.Normalize();
-    Vec3 vRight = Vec3(0.f, 1.f, 0.f).Cross(_Dir);
-    if (0.f >= vRight.Length())
-        vRight = Vec3(1.f, 0.f, 0.f);
-
-    vRight.Normalize();
-    Vec3 vUp = _Dir.Cross(vRight);
-
-    Matrix matRot = XMMatrixIdentity();
-
-    matRot._11 = vRight.x;
-    matRot._12 = vRight.y;
-    matRot._13 = vRight.z;
-    matRot._21 = vUp.x;
-    matRot._22 = vUp.y;
-    matRot._23 = vUp.z;
-    matRot._31 = _Dir.x;
-    matRot._32 = _Dir.y;
-    matRot._33 = _Dir.z;
-
-    Vec3 Translation, Rotation, Scale;
-    ImGuizmo::DecomposeMatrixToComponents(*matRot.m, Translation, Rotation, Scale);
-    Rotation.ToRadian();
-    SetLocalRotation(Rotation);
 }
 
 void CTransform::SaveToLevelFile(FILE* _File)

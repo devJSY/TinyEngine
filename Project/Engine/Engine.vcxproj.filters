@@ -28,9 +28,6 @@
     <ClInclude Include="CEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleMath.h">
-      <Filter>Module</Filter>
-    </ClInclude>
     <ClInclude Include="CLevel.h">
       <Filter>05. Level</Filter>
     </ClInclude>
@@ -369,6 +366,9 @@
     </ClInclude>
     <ClInclude Include="CModelEditor.h">
       <Filter>09. Editor\Model Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Module\SimpleMath</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -719,6 +719,9 @@
     </ClCompile>
     <ClCompile Include="CAssetMgr_Kirby.cpp">
       <Filter>04. Manager\AssetMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>Module\SimpleMath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1085,11 +1088,11 @@
     <Filter Include="ShaderCode\Render\UIShader">
       <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Module\SimpleMath">
+      <UniqueIdentifier>{5f743d3c-a978-4db5-9aa2-75e1bbf57044}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimpleMath.inl">
-      <Filter>Module</Filter>
-    </None>
     <None Include="global.hlsli">
       <Filter>ShaderCode\Utilities</Filter>
     </None>
@@ -1116,6 +1119,9 @@
     </None>
     <None Include="UnrealPBRCommon.hlsli">
       <Filter>ShaderCode\Render\UnrealPBR</Filter>
+    </None>
+    <None Include="SimpleMath.inl">
+      <Filter>Module\SimpleMath</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
