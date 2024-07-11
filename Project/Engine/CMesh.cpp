@@ -517,7 +517,7 @@ int CMesh::Save(const wstring& _strRelativePath)
         {
             SaveWStringToFile(m_vecBones[i].vecBoneSocket[j]->SoketName, pFile);
             fwrite(&m_vecBones[i].vecBoneSocket[j]->BoneIndex, sizeof(int), 1, pFile);
-            fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativeLocation, sizeof(Vec3), 1, pFile);
+            fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativePosition, sizeof(Vec3), 1, pFile);
             fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativeRotation, sizeof(Vec3), 1, pFile);
             fwrite(&m_vecBones[i].vecBoneSocket[j]->RelativeScale, sizeof(Vec3), 1, pFile);
             fwrite(&m_vecBones[i].vecBoneSocket[j]->matSocket, sizeof(Matrix), 1, pFile);
@@ -647,7 +647,7 @@ int CMesh::Load(const wstring& _strFilePath)
             tBoneSocket* pBoneSocket = new tBoneSocket;
             LoadWStringFromFile(pBoneSocket->SoketName, pFile);
             fread(&pBoneSocket->BoneIndex, sizeof(int), 1, pFile);
-            fread(&pBoneSocket->RelativeLocation, sizeof(Vec3), 1, pFile);
+            fread(&pBoneSocket->RelativePosition, sizeof(Vec3), 1, pFile);
             fread(&pBoneSocket->RelativeRotation, sizeof(Vec3), 1, pFile);
             fread(&pBoneSocket->RelativeScale, sizeof(Vec3), 1, pFile);
             fread(&pBoneSocket->matSocket, sizeof(Matrix), 1, pFile);

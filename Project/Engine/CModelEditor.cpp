@@ -98,8 +98,8 @@ void CModelEditor::init()
     pCam->AddComponent(new CCamera);
     pCam->AddComponent(CScriptMgr::GetScript(MODELEDITORCAMERAMOVESCRIPT));
 
-    pCam->Transform()->SetRelativePos(Vec3(0.f, 250.f, -250.f));
-    pCam->Transform()->SetRelativeRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
+    pCam->Transform()->SetLocalPos(Vec3(0.f, 250.f, -250.f));
+    pCam->Transform()->SetLocalRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
 
     m_ViewportCam = pCam->Camera();
 
@@ -115,7 +115,7 @@ void CModelEditor::init()
     m_LightObj->AddComponent(new CTransform);
     m_LightObj->AddComponent(new CLight);
 
-    m_LightObj->Transform()->SetRelativePos(Vec3(-1000.f, 2500.f, -1000.f));
+    m_LightObj->Transform()->SetLocalPos(Vec3(-1000.f, 2500.f, -1000.f));
     m_LightObj->Transform()->SetDirection(Vec3(1.f, -1.f, 1.f));
     m_LightObj->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     m_LightObj->Light()->SetLightRadiance(Vec3(0.5f, 0.5f, 0.5f));
@@ -128,7 +128,7 @@ void CModelEditor::init()
     m_SkyBoxObj->AddComponent(new CTransform);
     m_SkyBoxObj->AddComponent(new CSkyBox);
 
-    m_SkyBoxObj->Transform()->SetRelativePos(Vec3(0.f, 5000.f, 0.f));
+    m_SkyBoxObj->Transform()->SetLocalPos(Vec3(0.f, 5000.f, 0.f));
 
     m_SkyBoxObj->SkyBox()->SetEnvTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaEnvHDR.dds",
                                                                           L"Texture\\skybox\\EpicQuadPanorama\\EpicQuadPanoramaEnvHDR.dds"));
@@ -150,8 +150,8 @@ void CModelEditor::init()
     m_FloorObj->AddComponent(new CMeshRender);
 
     m_FloorObj->Transform()->SetMobilityType(MOBILITY_TYPE::STATIC);
-    m_FloorObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    m_FloorObj->Transform()->SetRelativeScale(Vec3(5000.f, 10.f, 5000.f));
+    m_FloorObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+    m_FloorObj->Transform()->SetLocalScale(Vec3(5000.f, 10.f, 5000.f));
 
     m_FloorObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     m_FloorObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"), 0);
@@ -202,7 +202,7 @@ void CModelEditor::finaltick()
     m_LightObj->Transform()->finaltick();
 
     // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트
-    m_LightObj->Light()->GetLightCam()->Transform()->SetRelativePos(m_LightObj->Transform()->GetWorldPos());
+    m_LightObj->Light()->GetLightCam()->Transform()->SetLocalPos(m_LightObj->Transform()->GetWorldPos());
     m_LightObj->Light()->GetLightCam()->Transform()->SetDirection(m_LightObj->Transform()->GetWorldDir(DIR_TYPE::FRONT));
     m_LightObj->Light()->GetLightCam()->finaltick();
 
@@ -459,7 +459,7 @@ void CModelEditor::DrawImGizmo()
         vRotOffset.ToRadian();
         Vec3 vScaleOffset = SocketScale - Scale;
 
-        m_SelectedBoneSocket->RelativeLocation -= vPosOffset;
+        m_SelectedBoneSocket->RelativePosition -= vPosOffset;
         m_SelectedBoneSocket->RelativeRotation -= vRotOffset;
         m_SelectedBoneSocket->RelativeScale -= vScaleOffset;
     }
@@ -629,7 +629,7 @@ void CModelEditor::DrawDetails()
                 Vec3 pos, rot, scale;
                 ImGuizmo::DecomposeMatrixToComponents(*m_ModelObj->Animator()->GetBoneTransformMat(m_SelectedBone->iIdx).m, pos, rot, scale);
 
-                ImGui_DrawVec3Control("Location", pos, 1.f);
+                ImGui_DrawVec3Control("Position", pos, 1.f);
                 ImGui_DrawVec3Control("Rotation", rot, DirectX::XMConvertToRadians(15.f));
                 ImGui_DrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
 
@@ -642,7 +642,7 @@ void CModelEditor::DrawDetails()
                 Vec3 pos, rot, scale;
                 ImGuizmo::DecomposeMatrixToComponents(*m_SelectedBone->matOffset.m, pos, rot, scale);
 
-                ImGui_DrawVec3Control("Location", pos, 1.f);
+                ImGui_DrawVec3Control("Position", pos, 1.f);
                 ImGui_DrawVec3Control("Rotation", rot, DirectX::XMConvertToRadians(15.f));
                 ImGui_DrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
 
@@ -673,7 +673,7 @@ void CModelEditor::DrawDetails()
             ImGui_InputText("Bone Name",
                             ToString(m_ModelObj->Animator()->GetSkeletalMesh()->GetBones()->at(m_SelectedBoneSocket->BoneIndex).strBoneName).c_str());
 
-            ImGui_DrawVec3Control("Relative Location", m_SelectedBoneSocket->RelativeLocation, 0.01f, 0.f, 0.f, 0.f, 200.f);
+            ImGui_DrawVec3Control("Relative Position", m_SelectedBoneSocket->RelativePosition, 0.01f, 0.f, 0.f, 0.f, 200.f);
 
             Vec3 rot = m_SelectedBoneSocket->RelativeRotation;
             rot.ToDegree();
@@ -1127,9 +1127,9 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_ModelObj = _MeshData->InstantiateEx();
 
     m_ModelObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
-    m_ModelObj->Transform()->SetRelativePos(Vec3(0.f, 150.f, 0.f));
-    m_ModelObj->Transform()->SetRelativeRotation(Vec3(0.f, XM_PI, 0.f));
-    m_ModelObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    m_ModelObj->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
+    m_ModelObj->Transform()->SetLocalRotation(Vec3(0.f, XM_PI, 0.f));
+    m_ModelObj->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     m_ModelObj->MeshRender()->SetFrustumCheck(false);
 

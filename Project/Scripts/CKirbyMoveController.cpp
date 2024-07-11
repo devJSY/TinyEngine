@@ -207,9 +207,9 @@ void CKirbyMoveController::SetDir()
     // 바라봐야할 방향과 현재 방향이 정반대일 경우 예외처리
     if (m_CurDir.Dot(m_TowardDir) - (m_CurDir.Length() * m_TowardDir.Length() * -1.f) < 0.0001f)
     {
-        Vec3 Rot = Transform()->GetRelativeRotation();
+        Vec3 Rot = Transform()->GetLocalRotation();
         Rot.y += XM_PI / 180.f;
-        Transform()->SetRelativeRotation(Rot);
+        Transform()->SetLocalRotation(Rot);
     }
 
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
@@ -324,7 +324,7 @@ void CKirbyMoveController::Move()
     // =========================
     // 움직임 적용
     // =========================
-    CharacterController()->Move(m_MoveVelocity * GetOwner()->Transform()->GetRelativeScale() * DT);
+    CharacterController()->Move(m_MoveVelocity * GetOwner()->Transform()->GetLocalScale() * DT);
 }
 
 void CKirbyMoveController::SurfaceAlignment()
@@ -361,7 +361,7 @@ void CKirbyMoveController::SurfaceAlignment()
         yaw = atan2f(rotationMatrix.r[2].m128_f32[0], rotationMatrix.r[2].m128_f32[2]);
         roll = atan2f(rotationMatrix.r[0].m128_f32[1], rotationMatrix.r[1].m128_f32[1]);
 
-        Transform()->SetRelativeRotation({pitch, yaw, roll});
+        Transform()->SetLocalRotation({pitch, yaw, roll});
     }
     else
     {

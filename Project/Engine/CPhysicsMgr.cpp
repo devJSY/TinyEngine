@@ -190,8 +190,8 @@ void CPhysicsMgr::tick()
         Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
 
         // 변화량만큼 Relative 에 적용
-        pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
-        pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
+        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+        pTr->SetLocalRotation(pTr->GetLocalRotation() - vRotOffset);
     }
 
     // Character Controller
@@ -208,7 +208,7 @@ void CPhysicsMgr::tick()
         vPosOffset *= m_PPM;
         vPosOffset = pTr->GetWorldPos() - vPosOffset;
 
-        pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
+        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
     }
 }
 

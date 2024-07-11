@@ -4,7 +4,6 @@
 #include "CCameraMoveScript.h"
 #include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
-#include "CAnimationTestScript.h"
 #include "CModelEditorCameraMoveScript.h"
 #include "CPlayerMgr.h"
 #include "CKirbyBulletScript.h"
@@ -27,13 +26,13 @@
 #include "CExitButton.h"
 #include "CUIHPScript.h"
 #include "CUIUnitManagerScript.h"
+#include "CEngineTestScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
 	_vec.push_back(L"CCameraMoveScript");
 	_vec.push_back(L"CKirbyFSM");
 	_vec.push_back(L"CKirbyMoveController");
-	_vec.push_back(L"CAnimationTestScript");
 	_vec.push_back(L"CModelEditorCameraMoveScript");
 	_vec.push_back(L"CPlayerMgr");
 	_vec.push_back(L"CKirbyBulletScript");
@@ -56,6 +55,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CExitButton");
 	_vec.push_back(L"CUIHPScript");
 	_vec.push_back(L"CUIUnitManagerScript");
+	_vec.push_back(L"CEngineTestScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -66,8 +66,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyFSM;
 	if (L"CKirbyMoveController" == _strScriptName)
 		return new CKirbyMoveController;
-	if (L"CAnimationTestScript" == _strScriptName)
-		return new CAnimationTestScript;
 	if (L"CModelEditorCameraMoveScript" == _strScriptName)
 		return new CModelEditorCameraMoveScript;
 	if (L"CPlayerMgr" == _strScriptName)
@@ -112,6 +110,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIHPScript;
 	if (L"CUIUnitManagerScript" == _strScriptName)
 		return new CUIUnitManagerScript;
+	if (L"CEngineTestScript" == _strScriptName)
+		return new CEngineTestScript;
 	return nullptr;
 }
 
@@ -125,8 +125,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyFSM;
 	case (UINT)SCRIPT_TYPE::KIRBYMOVECONTROLLER:
 		return new CKirbyMoveController;
-	case (UINT)SCRIPT_TYPE::ANIMATIONTESTSCRIPT:
-		return new CAnimationTestScript;
 	case (UINT)SCRIPT_TYPE::MODELEDITORCAMERAMOVESCRIPT:
 		return new CModelEditorCameraMoveScript;
 	case (UINT)SCRIPT_TYPE::PLAYERMGR:
@@ -171,6 +169,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIHPScript;
 	case (UINT)SCRIPT_TYPE::UIUNITMANAGERSCRIPT:
 		return new CUIUnitManagerScript;
+	case (UINT)SCRIPT_TYPE::ENGINETESTSCRIPT:
+		return new CEngineTestScript;
 	}
 	return nullptr;
 }
@@ -185,8 +185,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyFSM";
 	case SCRIPT_TYPE::KIRBYMOVECONTROLLER:
 		return L"CKirbyMoveController";
-	case SCRIPT_TYPE::ANIMATIONTESTSCRIPT:
-		return L"CAnimationTestScript";
 	case SCRIPT_TYPE::MODELEDITORCAMERAMOVESCRIPT:
 		return L"CModelEditorCameraMoveScript";
 	case SCRIPT_TYPE::PLAYERMGR:
@@ -231,6 +229,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIHPScript";
 	case SCRIPT_TYPE::UIUNITMANAGERSCRIPT:
 		return L"CUIUnitManagerScript";
+	case SCRIPT_TYPE::ENGINETESTSCRIPT:
+		return L"CEngineTestScript";
 	}
 	return nullptr;
 }

@@ -8,9 +8,10 @@
 
 CTransform::CTransform()
     : CComponent(COMPONENT_TYPE::TRANSFORM)
-    , m_vRelativePos(Vec3())
-    , m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
-    , m_vRelativeRotation(Vec3())
+    , m_LocalPos(Vec3())
+    , m_LocalRotation(Vec3())
+    , m_LocalQuaternion()
+    , m_LocalScale(Vec3(1.f, 1.f, 1.f))
     , m_arrLocalDir{}
     , m_arrWorldDir{}
     , m_matWorld()
@@ -18,15 +19,15 @@ CTransform::CTransform()
     , m_Mobility(MOBILITY_TYPE::MOVABLE)
     , m_bAbsolute(true)
     , m_matTransformation()
-    , m_RelativeQuaternion()
 {
 }
 
 CTransform::CTransform(const CTransform& origin)
     : CComponent(origin)
-    , m_vRelativePos(origin.m_vRelativePos)
-    , m_vRelativeScale(origin.m_vRelativeScale)
-    , m_vRelativeRotation(origin.m_vRelativeRotation)
+    , m_LocalPos(origin.m_LocalPos)
+    , m_LocalRotation(origin.m_LocalRotation)
+    , m_LocalQuaternion(origin.m_LocalQuaternion)
+    , m_LocalScale(origin.m_LocalScale)
     , m_arrLocalDir{origin.m_arrLocalDir[0], origin.m_arrLocalDir[1], origin.m_arrLocalDir[2]}
     , m_arrWorldDir{origin.m_arrWorldDir[0], origin.m_arrWorldDir[1], origin.m_arrWorldDir[2]}
     , m_matWorld()
@@ -34,7 +35,6 @@ CTransform::CTransform(const CTransform& origin)
     , m_Mobility(origin.m_Mobility)
     , m_bAbsolute(origin.m_bAbsolute)
     , m_matTransformation()
-    , m_RelativeQuaternion(origin.m_RelativeQuaternion)
 {
 }
 
@@ -46,15 +46,15 @@ void CTransform::finaltick()
 {
     m_matWorld = XMMatrixIdentity();
 
-    Matrix matScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
+    Matrix matScale = XMMatrixScaling(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
 
-    m_RelativeQuaternion = Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_vRelativeRotation.x) *
-                           Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_vRelativeRotation.y) *
-                           Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_vRelativeRotation.z);
+    m_LocalQuaternion = Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_LocalRotation.x) *
+                        Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_LocalRotation.y) *
+                        Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_LocalRotation.z);
 
-    Matrix matRot = Matrix::CreateFromQuaternion(m_RelativeQuaternion);
+    Matrix matRot = Matrix::CreateFromQuaternion(m_LocalQuaternion);
 
-    Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
+    Matrix matTranslation = XMMatrixTranslation(m_LocalPos.x, m_LocalPos.y, m_LocalPos.z);
 
     m_matWorld = matScale * matRot * matTranslation;
 
@@ -150,10 +150,16 @@ Vec3 CTransform::GetWorldScale() const
     return Scale;
 }
 
+void CTransform::SetWorldScale(Vec3 _Scale)
+{
+    m_bAbsolute = true;
+    SetLocalScale(_Scale);
+}
+
 Vec3 CTransform::GetTransformWorldScale() const
 {
     CGameObject* pParent = GetOwner()->GetParent();
-    Vec3 vWorldScale = m_vRelativeScale;
+    Vec3 vWorldScale = m_LocalScale;
 
     bool bAbsolute = m_bAbsolute;
 
@@ -161,7 +167,7 @@ Vec3 CTransform::GetTransformWorldScale() const
     {
         if (!bAbsolute)
         {
-            vWorldScale *= pParent->Transform()->GetRelativeScale();
+            vWorldScale *= pParent->Transform()->GetLocalScale();
         }
 
         bAbsolute = pParent->Transform()->IsAbsolute();
@@ -171,12 +177,35 @@ Vec3 CTransform::GetTransformWorldScale() const
     return vWorldScale;
 }
 
+void CTransform::SetWorldPos(Vec3 _Pos)
+{
+    SetLocalPos(_Pos - GetWorldPos() + m_LocalPos);
+}
+
+void CTransform::SetLocalRotation(Vec3 _Radian)
+{
+    m_LocalRotation = _Radian;
+    finaltick(); // Dir Àç°è»ê
+}
+
 Vec3 CTransform::GetWorldRotation() const
 {
     Vec3 Translation, Rotation, Scale;
     ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
     Rotation.ToRadian();
     return Rotation;
+}
+
+void CTransform::SetWorldRotation(Vec3 _Radian)
+{
+    CGameObject* pParent = GetOwner()->GetParent();
+    if (nullptr != pParent)
+    {
+        Vec3 ParentWorldRot = pParent->Transform()->GetWorldRotation();
+        _Radian -= ParentWorldRot;
+    }
+
+    SetLocalRotation(_Radian);
 }
 
 void CTransform::SetDirection(Vec3 _Dir)
@@ -204,23 +233,23 @@ void CTransform::SetDirection(Vec3 _Dir)
     Vec3 Translation, Rotation, Scale;
     ImGuizmo::DecomposeMatrixToComponents(*matRot.m, Translation, Rotation, Scale);
     Rotation.ToRadian();
-    SetRelativeRotation(Rotation);
+    SetLocalRotation(Rotation);
 }
 
 void CTransform::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
-    fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-    fwrite(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
+    fwrite(&m_LocalPos, sizeof(Vec3), 1, _File);
+    fwrite(&m_LocalRotation, sizeof(Vec3), 1, _File);
+    fwrite(&m_LocalScale, sizeof(Vec3), 1, _File);
     fwrite(&m_Mobility, sizeof(MOBILITY_TYPE), 1, _File);
     fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
 }
 
 void CTransform::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_vRelativePos, sizeof(Vec3), 1, _File);
-    fread(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-    fread(&m_vRelativeRotation, sizeof(Vec3), 1, _File);
+    fread(&m_LocalPos, sizeof(Vec3), 1, _File);
+    fread(&m_LocalRotation, sizeof(Vec3), 1, _File);
+    fread(&m_LocalScale, sizeof(Vec3), 1, _File);
     fread(&m_Mobility, sizeof(MOBILITY_TYPE), 1, _File);
     fread(&m_bAbsolute, sizeof(bool), 1, _File);
 }

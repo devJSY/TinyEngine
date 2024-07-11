@@ -70,7 +70,7 @@ void CLight::finaltick()
     m_Info.vWorldDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
     // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트
-    m_pLightCam->Transform()->SetRelativePos(m_Info.vWorldPos);
+    m_pLightCam->Transform()->SetLocalPos(m_Info.vWorldPos);
     m_pLightCam->Transform()->SetDirection(m_Info.vWorldDir);
 
     m_pLightCam->finaltick();
@@ -82,7 +82,7 @@ void CLight::finaltick()
 
     if (LIGHT_TYPE::DIRECTIONAL != (LIGHT_TYPE)m_Info.LightType)
     {
-        Transform()->SetRelativeScale(Vec3(m_Info.fallOffEnd, m_Info.fallOffEnd, m_Info.fallOffEnd));
+        Transform()->SetLocalScale(Vec3(m_Info.fallOffEnd, m_Info.fallOffEnd, m_Info.fallOffEnd));
     }
 
     // 광원 범위 디버그 렌더

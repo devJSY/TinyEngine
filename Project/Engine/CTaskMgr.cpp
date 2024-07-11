@@ -232,9 +232,9 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     {
         if (pSrcObj->GetParent())
         {
-            pSrcObj->Transform()->SetRelativePos(pSrcObj->Transform()->GetWorldPos());
-            pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetWorldRotation());
-            pSrcObj->Transform()->SetRelativeScale(pSrcObj->Transform()->GetWorldScale());
+            pSrcObj->Transform()->SetLocalPos(pSrcObj->Transform()->GetWorldPos());
+            pSrcObj->Transform()->SetLocalRotation(pSrcObj->Transform()->GetWorldRotation());
+            pSrcObj->Transform()->SetLocalScale(pSrcObj->Transform()->GetWorldScale());
 
             // 기존 부모와의 연결 해제
             int layerIdx = pSrcObj->m_iLayerIdx;
@@ -247,11 +247,16 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     }
     else
     {
-        pSrcObj->Transform()->SetRelativePos(pSrcObj->Transform()->GetRelativePos() - pDestObj->Transform()->GetWorldPos());
-        pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetRelativeRotation() - pDestObj->Transform()->GetWorldRotation());
-
         pDestObj->AddChild(pSrcObj);
         pSrcObj->SetBoneSocket(BoneSocket);
+
+        // 부모가 적용된 트랜스폼으로 재계산
+        pSrcObj->Transform()->finaltick();
+
+        // Local SRT를 World SRT로 설정
+        pSrcObj->Transform()->SetWorldPos(pSrcObj->Transform()->GetLocalPos());
+        pSrcObj->Transform()->SetWorldRotation(pSrcObj->Transform()->GetLocalRotation());
+        pSrcObj->Transform()->SetWorldScale(pSrcObj->Transform()->GetLocalScale());
     }
 }
 
@@ -731,9 +736,9 @@ void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
         return;
 
     CGameObject* CloneObj = OriginObject->Clone();
-    CloneObj->Transform()->SetRelativePos(OriginObject->Transform()->GetWorldPos());
-    CloneObj->Transform()->SetRelativeRotation(OriginObject->Transform()->GetWorldRotation());
-    CloneObj->Transform()->SetRelativeScale(OriginObject->Transform()->GetWorldScale());
+    CloneObj->Transform()->SetLocalPos(OriginObject->Transform()->GetWorldPos());
+    CloneObj->Transform()->SetLocalRotation(OriginObject->Transform()->GetWorldRotation());
+    CloneObj->Transform()->SetLocalScale(OriginObject->Transform()->GetWorldScale());
 
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);

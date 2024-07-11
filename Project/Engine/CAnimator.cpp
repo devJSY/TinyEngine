@@ -271,7 +271,7 @@ void CAnimator::UpdateData()
             Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
 
             Matrix matTranslation =
-                XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
+                XMMatrixTranslation(pBoneSocket->RelativePosition.x, pBoneSocket->RelativePosition.y, pBoneSocket->RelativePosition.z);
 
             pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
         }
@@ -399,7 +399,7 @@ void CAnimator::finaltick_ModelEditor()
         Matrix matRotZ = XMMatrixRotationZ(pBoneSocket->RelativeRotation.z);
 
         Matrix matTranslation =
-            XMMatrixTranslation(pBoneSocket->RelativeLocation.x, pBoneSocket->RelativeLocation.y, pBoneSocket->RelativeLocation.z);
+            XMMatrixTranslation(pBoneSocket->RelativePosition.x, pBoneSocket->RelativePosition.y, pBoneSocket->RelativePosition.z);
 
         pBoneSocket->matSocket = matScale * matRotX * matRotY * matRotZ * matTranslation;
     }

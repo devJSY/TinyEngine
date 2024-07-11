@@ -65,7 +65,7 @@ CButtonScript::~CButtonScript()
 
 void CButtonScript::begin()
 {
-    m_vNormalScale = GetOwner()->GetComponent<CTransform>()->GetRelativeScale();
+    m_vNormalScale = GetOwner()->GetComponent<CTransform>()->GetLocalScale();
 }
 
 void CButtonScript::tick()
@@ -118,8 +118,8 @@ bool CButtonScript::IsMouseHovered()
 
 bool CButtonScript::IsRectInPoint(Vec2 _vNDCSMousePos)
 {
-    Vec3 _vButtonPos = GetOwner()->GetComponent<CTransform>()->GetRelativePos();
-    Vec3 _vButtonScale = GetOwner()->GetComponent<CTransform>()->GetRelativeScale();
+    Vec3 _vButtonPos = GetOwner()->GetComponent<CTransform>()->GetLocalPos();
+    Vec3 _vButtonScale = GetOwner()->GetComponent<CTransform>()->GetLocalScale();
 
     bool _isHovered = false;
     // Not Rotate Rect
@@ -164,7 +164,7 @@ void CButtonScript::ButtonUpdate()
     case ButtonTransition::SCALE: {
         CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
         if (_pTr)
-            _pTr->SetRelativeScale(m_vNormalScale * m_vButtonScale[(UINT)m_eCurState]);
+            _pTr->SetLocalScale(m_vNormalScale * m_vButtonScale[(UINT)m_eCurState]);
     }
     break;
     case ButtonTransition::ANIMATION: {

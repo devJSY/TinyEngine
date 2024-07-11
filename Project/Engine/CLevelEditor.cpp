@@ -759,7 +759,7 @@ void CLevelEditor::render_Viewport()
                 Vec3 pos = pCam->Transform()->GetWorldPos();
                 Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 pos += dir.Normalize() * 5.f;
-                pObj->Transform()->SetRelativePos(pos);
+                pObj->Transform()->SetLocalPos(pos);
 
                 GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
             }
@@ -851,9 +851,9 @@ void CLevelEditor::render_ImGuizmo()
         Vec3 vScaleOffset = OriginScale - Scale;
 
         // 부모 ↔ 자식 계층 구조이기 때문에 변화량을 계산해서 적용
-        pTr->SetRelativePos(pTr->GetRelativePos() - vPosOffset);
-        pTr->SetRelativeRotation(pTr->GetRelativeRotation() - vRotOffset);
-        pTr->SetRelativeScale(pTr->GetRelativeScale() - vScaleOffset);
+        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+        pTr->SetLocalRotation(pTr->GetLocalRotation() - vRotOffset);
+        pTr->SetLocalScale(pTr->GetLocalScale() - vScaleOffset);
     }
 }
 

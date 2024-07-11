@@ -71,7 +71,7 @@ void CKirbyAbility_Normal::Attack()
             {
                 BulletInst->AddComponent(PLAYERFSM->GetStuffedCopyObj()->MeshRender()->Clone());
             }
-            BulletInst->Transform()->SetRelativePos(InitPos);
+            BulletInst->Transform()->SetLocalPos(InitPos);
             GamePlayStatic::SpawnGameObject(BulletInst, 0);
 
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();

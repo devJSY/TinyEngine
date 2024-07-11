@@ -1,9 +1,10 @@
 #pragma once
 #include <Engine\\CScript.h>
 
-class CAnimationTestScript : public CScript
+class CEngineTestScript : public CScript
 {
 public:
+    virtual void begin() override;
     virtual void tick() override;
 
 private:
@@ -16,11 +17,12 @@ private:
     virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override{};
-    virtual void LoadFromLevelFile(FILE* _File) override{};
-    CLONE(CAnimationTestScript);
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+    CLONE(CEngineTestScript);
 
 public:
-    CAnimationTestScript();
-    virtual ~CAnimationTestScript();
+    CEngineTestScript();
+    virtual ~CEngineTestScript();
 };

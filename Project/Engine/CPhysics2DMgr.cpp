@@ -142,16 +142,16 @@ void CPhysics2DMgr::tick()
 
         b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
         const auto& position = body->GetPosition();
-        Vec3 pos = pTr->GetRelativePos();
-        Vec3 rot = pTr->GetRelativeRotation();
+        Vec3 pos = pTr->GetLocalPos();
+        Vec3 rot = pTr->GetLocalRotation();
 
         pos.x += (position.x * m_PPM) - pTr->GetWorldPos().x;
         pos.y += (position.y * m_PPM) - pTr->GetWorldPos().y;
 
         rot.z += body->GetAngle() - pTr->GetWorldRotation().z;
 
-        pTr->SetRelativePos(pos);
-        pTr->SetRelativeRotation(rot);
+        pTr->SetLocalPos(pos);
+        pTr->SetLocalRotation(rot);
     }
 }
 
