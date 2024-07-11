@@ -159,20 +159,19 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
     if (_pObj->GetScript<CKirbyCopyAbilityScript>())
     {
         _outAbility = _pObj->GetScript<CKirbyCopyAbilityScript>()->GetAbilityType();
-        return EatType::Copy_Ability;
-    }
-    else if (_pObj->GetScript<CMonsterUnitScript>())
-    {
-        CMonsterUnitScript* pMonster = _pObj->GetScript<CMonsterUnitScript>();
-        if (pMonster->GetAbilityType() != AbilityCopyType::NONE)
+
+        if (_pObj->GetScript<CMonsterUnitScript>())
         {
-            _outAbility = pMonster->GetAbilityType();
-            return EatType::Copy_Monster;
+            return EatType::Copy_Ability;
         }
         else
         {
-            return EatType::Monster;
+            return EatType::Copy_Monster;
         }
+    }
+    else if (_pObj->GetScript<CMonsterUnitScript>())
+    {
+        return EatType::Monster;
     }
     else if (_pObj->GetScript<CKirbyCopyObjScript>())
     {

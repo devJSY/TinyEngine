@@ -3,9 +3,11 @@
 
 CKirbyCopyAbilityScript::CKirbyCopyAbilityScript()
     : CScript(KIRBYCOPYABILITYSCRIPT)
-    , m_AbilityType(AbilityCopyType::NONE)
+    , m_AbilityType((UINT)AbilityCopyType::NONE)
 {
     //@TODO Enum으로 Script param 추가하기
+    AddScriptParam(SCRIPT_PARAM::INT, &m_AbilityType, "AbilityType UINT");
+
 }
 
 CKirbyCopyAbilityScript::CKirbyCopyAbilityScript(const CKirbyCopyAbilityScript& _Origin)
@@ -18,12 +20,13 @@ CKirbyCopyAbilityScript::~CKirbyCopyAbilityScript()
 {
 }
 
+
 void CKirbyCopyAbilityScript::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_AbilityType, sizeof(AbilityCopyType), 1, _File);
+    fwrite(&m_AbilityType, sizeof(UINT), 1, _File);
 }
 
 void CKirbyCopyAbilityScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_AbilityType, sizeof(AbilityCopyType), 1, _File);
+    fread(&m_AbilityType, sizeof(UINT), 1, _File);
 }
