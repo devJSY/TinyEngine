@@ -238,6 +238,15 @@
     <ClInclude Include="CEngineTestScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyAbility_Fire.h">
+      <Filter>State\KirbyAbility\Fire</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeAbilityWait.h">
+      <Filter>State\KirbyState\ChangeAbility\ChangeAbilityWait</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeAbilityEnd.h">
+      <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -488,6 +497,15 @@
     </ClCompile>
     <ClCompile Include="CEngineTestScript.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAbility_Fire.cpp">
+      <Filter>State\KirbyAbility\Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeAbilityWait.cpp">
+      <Filter>State\KirbyState\ChangeAbility\ChangeAbilityWait</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeAbilityEnd.cpp">
+      <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -757,6 +775,18 @@
     </Filter>
     <Filter Include="Scripts\UI\UIManager\UIUnitManager">
       <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Ranger">
+      <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Fire">
+      <UniqueIdentifier>{74495eea-de54-4e2e-ace2-c9f619f40932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeAbility\ChangeAbilityWait">
+      <UniqueIdentifier>{38825887-9ef8-48d2-a69d-9e5b1d3c0e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeAbility\ChangeAbilityEnd">
+      <UniqueIdentifier>{bf0bcba1-b3ca-4aa8-9d06-4e2569843b6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
