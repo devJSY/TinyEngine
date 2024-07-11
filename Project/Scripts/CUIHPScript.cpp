@@ -139,10 +139,6 @@ bool CUIHPScript::IsCombo()
     return _IsCombo;
 }
 
-void CUIHPScript::SlicingUI(UINT _iSlicingNum)
-{
-}
-
 void CUIHPScript::SaveToLevelFile(FILE* _File)
 {
     SaveWStringToFile(ToWstring(m_TargetName), _File);
