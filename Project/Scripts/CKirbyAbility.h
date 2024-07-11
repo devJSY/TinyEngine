@@ -100,6 +100,11 @@ public:
 
     //virtual void Change();
 
+    // º¯½Å
+    virtual void ChangeAbility(){};
+    virtual void ChangeAbilityEnter(){};
+    virtual void ChangeAbilityExit(){};
+
 public:
     float GetCharge1Time() const { return m_Charge1Time; }
 

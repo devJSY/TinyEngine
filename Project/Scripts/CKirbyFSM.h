@@ -25,6 +25,7 @@ class CKirbyFSM : public CFSMScript
 private:
     CKirbyAbility*          m_arrAbility[(UINT)AbilityCopyType::END];
     AbilityCopyType         m_CurAbility;
+    AbilityCopyType         m_NextAbility;
 
     CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
     ObjectCopyType          m_CurObject;
@@ -68,6 +69,7 @@ public:
     void ClearStuff();
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
+    CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
     AbilityCopyType GetCurAbilityIdx() const { return m_CurAbility; }
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
