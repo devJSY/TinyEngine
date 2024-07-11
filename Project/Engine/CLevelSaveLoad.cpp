@@ -249,7 +249,6 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
 
         float PPM = 0.f;
         fread(&PPM, sizeof(float), 1, pFile);
-        PPM = 1.f;
         CPhysicsMgr::GetInst()->SetPPM(PPM);
     }
 
