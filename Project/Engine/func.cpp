@@ -47,6 +47,23 @@ void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _Ch
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, const std::wstring& _BoneSocketName)
+{
+    tBoneSocket* pBoneSocket = nullptr;
+
+    if (nullptr != _ParentObject && nullptr != _ParentObject->Animator() && _ParentObject->Animator()->IsValid())
+    {
+        pBoneSocket = _ParentObject->Animator()->GetSkeletalMesh()->GetBoneSocket(_BoneSocketName);
+    }
+
+    tTask task = {};
+    task.Type = TASK_TYPE::ADD_CHILD;
+    task.Param_1 = (DWORD_PTR)_ParentObject;
+    task.Param_2 = (DWORD_PTR)_ChildObject;
+    task.Param_3 = (DWORD_PTR)pBoneSocket;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::DestroyGameObject(CGameObject* _Target)
 {
     tTask task = {};

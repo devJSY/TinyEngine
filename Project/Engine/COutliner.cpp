@@ -511,11 +511,6 @@ void COutliner::DrawNode(CGameObject* obj)
 
                         if (nullptr != pInstObj)
                         {
-                            // 원점 설정
-                            pInstObj->Transform()->SetLocalPos(obj->Transform()->GetWorldPos());
-                            pInstObj->Transform()->SetLocalRotation(obj->Transform()->GetWorldRotation());
-
-                            pInstObj->Transform()->SetAbsolute(false);
                             GamePlayStatic::AddChildObject(obj, pInstObj, BoneSocket);
                         }
                     }

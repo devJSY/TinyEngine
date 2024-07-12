@@ -3,9 +3,15 @@
 
 class CEngineTestScript : public CScript
 {
+private:
+    float m_Power;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+private:
+    void QuaternionExample();
 
 private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);
@@ -24,5 +30,6 @@ public:
 
 public:
     CEngineTestScript();
+    CEngineTestScript(const CEngineTestScript& origin);
     virtual ~CEngineTestScript();
 };

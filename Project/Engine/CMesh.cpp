@@ -142,6 +142,17 @@ void CMesh::RemoveBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket)
     }
 }
 
+tBoneSocket* CMesh::GetBoneSocket(const wstring& _SocketName)
+{
+    for (tBoneSocket* BoneSocket : vecBoneSocket)
+    {
+        if (_SocketName == BoneSocket->SoketName)
+            return BoneSocket;
+    }
+
+    return nullptr;
+}
+
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)
 {
     vector<Vtx> vecVtx = {};

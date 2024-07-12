@@ -158,26 +158,45 @@ void CTaskMgr::tick()
 void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
 {
     int LayerIdx = (int)_Task.Param_1;
-    CGameObject* pObject = (CGameObject*)_Task.Param_2;
+    CGameObject* pNewObject = (CGameObject*)_Task.Param_2;
 
     if (-1 == LayerIdx)
         LayerIdx = 0;
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    pCurLevel->AddObject(pObject, LayerIdx, false);
-    CEditorMgr::GetInst()->SetSelectedObject(pObject);
+    pCurLevel->AddObject(pNewObject, LayerIdx, false);
 
-    CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
-    CPhysicsMgr::GetInst()->AddPhysicsObject(pObject);
-    for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+    CEditorMgr::GetInst()->SetSelectedObject(pNewObject);
+
+    list<CGameObject*> queue;
+    queue.push_back(pNewObject);
+
+    // Physics 이벤트처리
+    while (!queue.empty())
     {
-        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
-        CPhysicsMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
+        CGameObject* pObject = queue.front();
+        queue.pop_front();
+
+        // Transform, Animator의 SRT, Bone Data 업데이트
+        pObject->Transform()->finaltick();
+        if (nullptr != pObject->Animator())
+        {
+            pObject->Animator()->finaltick();
+            pObject->Animator()->UpdateData();
+        }
+
+        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
+        CPhysicsMgr::GetInst()->AddPhysicsObject(pObject);
+
+        for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+        {
+            queue.push_back(pObject->m_vecChild[i]);
+        }
     }
 
     if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
     {
-        pObject->begin();
+        pNewObject->begin();
     }
 }
 
@@ -248,15 +267,31 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     else
     {
         pDestObj->AddChild(pSrcObj);
-        pSrcObj->SetBoneSocket(BoneSocket);
 
-        // 부모가 적용된 트랜스폼으로 재계산
-        pSrcObj->Transform()->finaltick();
+        if (nullptr != BoneSocket)
+        {
+            pSrcObj->SetBoneSocket(BoneSocket);
 
-        // Local SRT를 World SRT로 설정
-        pSrcObj->Transform()->SetWorldPos(pSrcObj->Transform()->GetLocalPos());
-        pSrcObj->Transform()->SetWorldRotation(pSrcObj->Transform()->GetLocalRotation());
-        pSrcObj->Transform()->SetWorldScale(pSrcObj->Transform()->GetLocalScale());
+            // 원점 설정
+            pSrcObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+            pSrcObj->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+            pSrcObj->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+            pSrcObj->Transform()->SetAbsolute(false);
+        }
+        else
+        {
+            // 부모가 적용된 트랜스폼으로 재계산
+            pSrcObj->Transform()->finaltick();
+
+            // Local SRT를 World SRT로 설정
+            Vec3 pos = pSrcObj->Transform()->GetLocalPos();
+            Vec3 rot = pSrcObj->Transform()->GetLocalRotation();
+            Vec3 scale = pSrcObj->Transform()->GetLocalScale();
+
+            pSrcObj->Transform()->SetWorldPos(pos);
+            pSrcObj->Transform()->SetWorldRotation(rot);
+            pSrcObj->Transform()->SetWorldScale(scale);
+        }
     }
 }
 
