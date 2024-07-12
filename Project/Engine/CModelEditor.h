@@ -17,12 +17,13 @@ private:
     CGameObjectEx* m_ModelObj;
     tMTBone* m_SelectedBone;
     tBoneSocket* m_SelectedBoneSocket;
+    CGameObject* m_SelectedPreviewObj;
 
     bool m_bDrawWireFrame;
 
     // Viewport
-    vector<tInstObj> m_vecDeferred; 
-    vector<tInstObj> m_vecForward;  
+    vector<tInstObj> m_vecDeferred;
+    vector<tInstObj> m_vecForward;
 
     Ptr<CTexture> m_ViewportRTTex;
     Ptr<CTexture> m_ViewportFloatRTTex;
@@ -58,7 +59,7 @@ private:
     void DrawSkeletonTree();
     void DrawBoneSocket(tMTBone& _Bone);
     void SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _NodeOpenFlag);
-    void DrawAnimation();
+    void DrawAnimation(CGameObject* _Obj, const string& _TreeNodeName);
     void finaltick_ModelEditor(CGameObject* _Obj);
 
 public:

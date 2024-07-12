@@ -20,6 +20,7 @@ CModelEditor::CModelEditor()
     , m_ModelObj(nullptr)
     , m_SelectedBone(nullptr)
     , m_SelectedBoneSocket(nullptr)
+    , m_SelectedPreviewObj(nullptr)
     , m_bDrawWireFrame(false)
     , m_vecDeferred{}
     , m_vecForward{}
@@ -248,7 +249,10 @@ void CModelEditor::render()
     DrawSkeletonTree();
 
     ImGui_SetWindowClass(GetEditorType());
-    DrawAnimation();
+    ImGui::Begin("Animation##ModelEditor");
+    DrawAnimation(m_ModelObj, "Model Animation");
+    DrawAnimation(m_SelectedPreviewObj, "Preview Model Animation");
+    ImGui::End();
 }
 
 void CModelEditor::DrawViewport()
@@ -651,6 +655,25 @@ void CModelEditor::DrawDetails()
                 m_ModelObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(MeshName)));
                 m_SelectedBone = nullptr;
                 m_SelectedBoneSocket = nullptr;
+                m_SelectedPreviewObj = nullptr;
+
+                // 자식 오브젝트 삭제
+                std::stack<CGameObject*> stackChild;
+
+                for (CGameObject* pChild : m_ModelObj->GetChildObject())
+                {
+                    stackChild.push(pChild);
+                }
+
+                while (!stackChild.empty())
+                {
+                    CGameObject* pChild = stackChild.top();
+                    stackChild.pop();
+
+                    pChild->DisconnectWithParent();
+                    delete pChild;
+                    pChild = nullptr;
+                }
             }
 
             if (nullptr != m_ModelObj && nullptr != m_ModelObj->Animator() && m_ModelObj->Animator()->IsValid())
@@ -857,6 +880,7 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
     {
         m_SelectedBone = &_vecBone[_BoneIdx];
         m_SelectedBoneSocket = nullptr;
+        m_SelectedPreviewObj = nullptr;
     }
 
     // Bone PopUp
@@ -929,6 +953,11 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
                     m_SelectedBoneSocket = nullptr;
                 }
 
+                if (nullptr != m_SelectedPreviewObj && m_SelectedPreviewObj->GetBoneSocket() == pBoneSocket)
+                {
+                    m_SelectedPreviewObj = nullptr;
+                }
+
                 m_ModelObj->Animator()->GetSkeletalMesh()->RemoveBoneSocket(_Bone.iIdx, pBoneSocket);
                 --i;
 
@@ -969,7 +998,7 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
 
                     if (nullptr == pMeshData)
                     {
-                        // 해당 소켓 자식 오브젝트 삭제
+                        // 해당 소켓 자식 오브젝트 전체 삭제
                         std::stack<CGameObject*> stackChild;
 
                         for (CGameObject* pChild : m_ModelObj->GetChildObject())
@@ -1011,31 +1040,93 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
             ImGui::EndPopup();
         }
 
-        // Select
+        // Bone Socket Select
         if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
         {
             m_SelectedBone = nullptr;
             m_SelectedBoneSocket = pBoneSocket;
+            m_SelectedPreviewObj = nullptr;
         }
 
         if (bBoneSocketOpend)
         {
+            // ================
+            // Preview Object
+            // ================
+            CGameObject* pDeleteObject = nullptr;
+            for (CGameObject* pChild : m_ModelObj->GetChildObject())
+            {
+                if (pBoneSocket == pChild->GetBoneSocket())
+                {
+                    string PreviewStr = ToString(pChild->GetName());
+                    PreviewStr += "##ModelEditor";
+                    PreviewStr += std::to_string(pChild->GetID());
+
+                    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, 0.647f, 0.f, 1.f));
+                    bool bPreviewOpend =
+                        ImGui::TreeNodeEx(PreviewStr.c_str(), m_SelectedPreviewObj == pChild ? ImGuiTreeNodeFlags_Selected : 0 | DefaultTreeNodeFlag);
+                    ImGui::PopStyleColor();
+
+                    // Preview Object Popup
+                    string PreviewObjectPopupID = "PreviewObjectPopup";
+                    PreviewObjectPopupID += PreviewStr;
+
+                    ImGui::OpenPopupOnItemClick(PreviewObjectPopupID.c_str(), ImGuiPopupFlags_MouseButtonRight);
+
+                    if (ImGui::BeginPopup(PreviewObjectPopupID.c_str()))
+                    {
+                        if (ImGui::MenuItem("Delete Preview Object"))
+                        {
+                            pDeleteObject = pChild;
+                        }
+
+                        ImGui::EndPopup();
+                    }
+
+                    // Preview Object Select
+                    if (ImGui::IsItemClicked(ImGuiMouseButton_Left))
+                    {
+                        m_SelectedBone = nullptr;
+                        m_SelectedBoneSocket = nullptr;
+                        m_SelectedPreviewObj = pChild;
+                    }
+
+                    if (bPreviewOpend)
+                    {
+                        ImGui::TreePop();
+                    }
+                }
+            }
+
+            if (nullptr != pDeleteObject)
+            {
+                if (m_SelectedPreviewObj == pDeleteObject)
+                {
+                    m_SelectedPreviewObj = nullptr;
+                }
+
+                pDeleteObject->DisconnectWithParent();
+                delete pDeleteObject;
+                pDeleteObject = nullptr;
+            }
+
             ImGui::TreePop();
         }
     }
 }
 
-void CModelEditor::DrawAnimation()
+void CModelEditor::DrawAnimation(CGameObject* _Obj, const string& _TreeNodeName)
 {
-    ImGui::Begin("Animation##ModelEditor");
-    if (nullptr != m_ModelObj && nullptr != m_ModelObj->Animator())
-    {
-        static ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
-                                                        ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap |
-                                                        ImGuiTreeNodeFlags_FramePadding;
+    if (nullptr == _Obj || nullptr == _Obj->Animator())
+        return;
 
-        CAnimator* pAnimator = m_ModelObj->Animator();
-        Ptr<CMesh> pSkeletalMesh = m_ModelObj->Animator()->GetSkeletalMesh();
+    static ImGuiTreeNodeFlags DefaultTreeNodeFlag = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth |
+                                                    ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+    if (ImGui::TreeNodeEx(_TreeNodeName.c_str(), DefaultTreeNodeFlag))
+    {
+        CAnimator* pAnimator = _Obj->Animator();
+        Ptr<CMesh> pSkeletalMesh = _Obj->Animator()->GetSkeletalMesh();
 
         // Skeletal Mesh
         if (ImGui::TreeNodeEx("Skeletal Mesh##ModelEditor Animation", DefaultTreeNodeFlag))
@@ -1182,8 +1273,9 @@ void CModelEditor::DrawAnimation()
                 ImGui::TreePop();
             }
         }
+
+        ImGui::TreePop();
     }
-    ImGui::End();
 }
 
 void CModelEditor::finaltick_ModelEditor(CGameObject* _Obj)
@@ -1259,6 +1351,7 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     // Bone 데이터 초기화
     m_SelectedBone = nullptr;
     m_SelectedBoneSocket = nullptr;
+    m_SelectedPreviewObj = nullptr;
 
     if (nullptr == _MeshData)
     {
