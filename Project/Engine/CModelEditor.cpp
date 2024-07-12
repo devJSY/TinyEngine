@@ -13,6 +13,7 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 #include "CMRT.h"
+#include "CEngine.h"
 
 CModelEditor::CModelEditor()
     : CEditor(EDITOR_TYPE::MODEL)
@@ -20,6 +21,8 @@ CModelEditor::CModelEditor()
     , m_SelectedBone(nullptr)
     , m_SelectedBoneSocket(nullptr)
     , m_bDrawWireFrame(false)
+    , m_vecDeferred{}
+    , m_vecForward{}
     , m_ViewportRTTex(nullptr)
     , m_ViewportFloatRTTex(nullptr)
     , m_ViewportDSTex(nullptr)
@@ -83,12 +86,7 @@ CModelEditor::~CModelEditor()
 void CModelEditor::init()
 {
     // Texture
-    m_ViewportRTTex = CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportRTTex", 1280, 1280, DXGI_FORMAT_R8G8B8A8_UNORM,
-                                                          D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
-    m_ViewportFloatRTTex = CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportFloatRTTex", 1280, 1280, DXGI_FORMAT_R16G16B16A16_FLOAT,
-                                                               D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
-    m_ViewportDSTex = CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportDSTex", 1280, 1280, DXGI_FORMAT_D24_UNORM_S8_UINT,
-                                                          D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+    Resize(CEngine::GetInst()->GetResolution());
 
     // Camera
     CGameObjectEx* pCam = new CGameObjectEx;
@@ -115,11 +113,11 @@ void CModelEditor::init()
     m_LightObj->AddComponent(new CTransform);
     m_LightObj->AddComponent(new CLight);
 
-    m_LightObj->Transform()->SetLocalPos(Vec3(-1000.f, 2500.f, -1000.f));
-    m_LightObj->Transform()->SetDirection(Vec3(1.f, -1.f, 1.f));
+    m_LightObj->Transform()->SetLocalPos(Vec3(100.f, 500.f, 100.f));
+    m_LightObj->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), XMConvertToRadians(45.f), 0.f));
     m_LightObj->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     m_LightObj->Light()->SetLightRadiance(Vec3(0.5f, 0.5f, 0.5f));
-    m_LightObj->Light()->SetRadius(10.f);
+    m_LightObj->Light()->SetRadius(5.f);
     m_LightObj->Light()->SetShadowIdx(1);
 
     // SkyBox
@@ -203,7 +201,7 @@ void CModelEditor::finaltick()
 
     // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트
     m_LightObj->Light()->GetLightCam()->Transform()->SetLocalPos(m_LightObj->Transform()->GetWorldPos());
-    m_LightObj->Light()->GetLightCam()->Transform()->SetDirection(m_LightObj->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+    m_LightObj->Light()->GetLightCam()->Transform()->SetLocalRotation(m_LightObj->Transform()->GetWorldRotation());
     m_LightObj->Light()->GetLightCam()->finaltick();
 
     m_SkyBoxObj->finaltick();
@@ -261,49 +259,20 @@ void CModelEditor::DrawViewport()
     m_ViewportFocused = ImGui::IsWindowFocused();
     m_ViewportHovered = ImGui::IsWindowHovered();
 
-    // =================================
+    // Object Sort
+    SortObject();
+
     // Shadow Map
-    // =================================
-    CCamera* pLightCam = m_LightObj->Light()->GetLightCam()->Camera();
-
-    g_Transform.matView = pLightCam->GetViewMat();
-    g_Transform.matViewInv = pLightCam->GetViewInvMat();
-    g_Transform.matProj = pLightCam->GetProjMat();
-    g_Transform.matProjInv = pLightCam->GetProjInvMat();
-
-    Ptr<CTexture> pLightDepthMapTex = m_LightObj->Light()->GetDepthMapTex();
-
-    CONTEXT->ClearDepthStencilView(pLightDepthMapTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-    CONTEXT->OMSetRenderTargets(0, NULL, pLightDepthMapTex->GetDSV().Get());
-    CDevice::GetInst()->SetViewport((float)pLightDepthMapTex->GetWidth(), (float)pLightDepthMapTex->GetHeight());
-
-    static Ptr<CMaterial> DepthOnlyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl");
-    if (nullptr != m_ModelObj)
-    {
-        m_ModelObj->render(DepthOnlyMtrl);
-
-        for (CGameObject* pChild : m_ModelObj->GetChildObject())
-        {
-            pChild->render(DepthOnlyMtrl);
-        }
-    }
-
-    CONTEXT->OMSetRenderTargets(0, NULL, NULL);
-
-    // ShadowMap Bind
-    m_LightObj->Light()->GetDepthMapTex()->UpdateData(23);
+    render_ShadowMap();
 
     // =================================
-    // Render
+    // 렌더타겟 Clear & 바인딩
     // =================================
-
-    // 렌더타겟 설정
     CONTEXT->ClearRenderTargetView(m_ViewportRTTex->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
     CONTEXT->ClearRenderTargetView(m_ViewportFloatRTTex->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
     CONTEXT->ClearDepthStencilView(m_ViewportDSTex->GetDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-
-    CONTEXT->OMSetRenderTargets(1, m_ViewportFloatRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
-    CDevice::GetInst()->SetViewport(1280.f, 1280.f);
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->Clear();
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->Clear();
 
     // 카메라 정보 설정
     g_Transform.matView = m_ViewportCam->GetViewMat();
@@ -327,6 +296,8 @@ void CModelEditor::DrawViewport()
     const tLightInfo& info = m_LightObj->Light()->GetLightInfo();
     tLightInfo CopyInfo = info;
 
+    CCamera* pLightCam = m_LightObj->Light()->GetLightCam()->Camera();
+
     CopyInfo.vWorldPos = pLightCam->Transform()->GetWorldPos();
     CopyInfo.vWorldDir = pLightCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     CopyInfo.viewMat = pLightCam->GetViewMat();
@@ -336,44 +307,76 @@ void CModelEditor::DrawViewport()
     m_LightBuffer->SetData(&CopyInfo, 1);
     m_LightBuffer->UpdateData(14);
 
+    // ========================
     // 렌더링
-    m_SkyBoxObj->render();
-    m_FloorObj->render();
-    if (nullptr != m_ModelObj)
+    // ========================
+    CONTEXT->OMSetRenderTargets(CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->GetRTCount(),
+                                CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->GetRenderTargetView(), m_ViewportDSTex->GetDSV().Get());
+    CDevice::GetInst()->SetViewport((float)m_ViewportFloatRTTex->GetWidth(), (float)m_ViewportFloatRTTex->GetHeight());
+
+    m_SkyBoxObj->SkyBox()->UpdateData();
+    for (UINT i = 0; i < (UINT)m_vecDeferred.size(); ++i)
     {
         if (m_bDrawWireFrame)
         {
-            static Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
-            RS_TYPE originRSType = pShader->GetRSType();
-            pShader->SetRSType(RS_TYPE::WIRE_FRAME);
-
-            m_ModelObj->render();
-            for (CGameObject* pChild : m_ModelObj->GetChildObject())
-            {
-                pChild->render();
-            }
-
-            pShader->SetRSType(originRSType);
+            Ptr<CMaterial> pMtrl = m_vecDeferred[i].pObj->GetRenderComponent()->GetMaterial(m_vecDeferred[i].iMtrlIdx);
+            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
+            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            m_vecDeferred[i].pObj->GetRenderComponent()->render(m_vecDeferred[i].iMtrlIdx);
+            pMtrl->GetShader()->SetRSType(originRSType);
         }
         else
         {
-            m_ModelObj->render();
-
-            for (CGameObject* pChild : m_ModelObj->GetChildObject())
-            {
-                pChild->render();
-            }
+            m_vecDeferred[i].pObj->GetRenderComponent()->render(m_vecDeferred[i].iMtrlIdx);
         }
     }
 
+    // Light
+    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
+    m_LightObj->Light()->render_Deferred(0);
+
+    // Merge
+    CONTEXT->OMSetRenderTargets(1, m_ViewportFloatRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
+    CDevice::GetInst()->SetViewport((float)m_ViewportFloatRTTex->GetWidth(), (float)m_ViewportFloatRTTex->GetHeight());
+
+    static Ptr<CMesh> pMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh");
+    static Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMergeMtrl");
+    pMtrl->UpdateData();
+    pMesh->render(0);
+
+    for (UINT i = 0; i < (UINT)m_vecForward.size(); ++i)
+    {
+        if (m_bDrawWireFrame)
+        {
+            Ptr<CMaterial> pMtrl = m_vecForward[i].pObj->GetRenderComponent()->GetMaterial(m_vecForward[i].iMtrlIdx);
+            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
+            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            m_vecForward[i].pObj->GetRenderComponent()->render(m_vecForward[i].iMtrlIdx);
+            pMtrl->GetShader()->SetRSType(originRSType);
+        }
+        else
+        {
+            m_vecForward[i].pObj->GetRenderComponent()->render(m_vecForward[i].iMtrlIdx);
+        }
+    }
+
+    // Skybox, Floor
+    m_SkyBoxObj->render();
+    m_FloorObj->render();
+
     // ToneMapping
     CONTEXT->OMSetRenderTargets(1, m_ViewportRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
+    CDevice::GetInst()->SetViewport((float)m_ViewportRTTex->GetWidth(), (float)m_ViewportRTTex->GetHeight());
     m_ToneMappingObj->render();
 
     ImGui::Image((void*)m_ViewportRTTex->GetSRV().Get(), ImGui::GetContentRegionAvail());
 
     // Gizmo
-    DrawImGizmo();
+    render_ImGizmo();
+
+    // =========================
+    // Clear
+    // =========================
 
     // 렌더타겟 원상복귀
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
@@ -393,7 +396,116 @@ void CModelEditor::DrawViewport()
     ImGui::End();
 }
 
-void CModelEditor::DrawImGizmo()
+void CModelEditor::SortObject()
+{
+    m_vecDeferred.clear();
+    m_vecForward.clear();
+
+    if (nullptr == m_ModelObj)
+        return;
+
+    list<CGameObject*> queue;
+    queue.push_back(m_ModelObj);
+
+    while (!queue.empty())
+    {
+        CGameObject* pObject = queue.front();
+        queue.pop_front();
+
+        // 자식 오브젝트 추가
+        vector<CGameObject*>::const_iterator iter = pObject->GetChildObject().begin();
+        for (; iter != pObject->GetChildObject().end(); ++iter)
+        {
+            queue.push_back(*iter);
+        }
+
+        // 도메인에 따라 분류
+        CRenderComponent* pRenderCom = pObject->GetRenderComponent();
+
+        // 렌더링 기능이 없는 오브젝트는 제외
+        if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh())
+            continue;
+
+        // 메테리얼 개수만큼 반복
+        UINT iMtrlCount = pRenderCom->GetMtrlCount();
+        for (UINT iMtrl = 0; iMtrl < iMtrlCount; ++iMtrl)
+        {
+            // 재질이 없거나, 재질의 쉐이더가 설정이 안된 경우
+            if (nullptr == pRenderCom->GetMaterial(iMtrl) || nullptr == pRenderCom->GetMaterial(iMtrl)->GetShader())
+            {
+                continue;
+            }
+
+            // 쉐이더 도메인에 따른 분류
+            Ptr<CGraphicsShader> pShader = pRenderCom->GetMaterial(iMtrl)->GetShader();
+            SHADER_DOMAIN eDomain = pShader->GetDomain();
+
+            switch (eDomain)
+            {
+            case SHADER_DOMAIN::DOMAIN_SKYBOX:
+                break;
+            case SHADER_DOMAIN::DOMAIN_DEFERRED:
+                m_vecDeferred.push_back(tInstObj{pObject, iMtrl});
+                break;
+            case SHADER_DOMAIN::DOMAIN_OPAQUE:
+            case SHADER_DOMAIN::DOMAIN_MASKED:
+                m_vecForward.push_back(tInstObj{pObject, iMtrl});
+                break;
+            case SHADER_DOMAIN::DOMAIN_DECAL:
+                break;
+            case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
+                break;
+            case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
+                break;
+            }
+        }
+    }
+}
+
+void CModelEditor::render_ShadowMap()
+{
+    CCamera* pLightCam = m_LightObj->Light()->GetLightCam()->Camera();
+
+    g_Transform.matView = pLightCam->GetViewMat();
+    g_Transform.matViewInv = pLightCam->GetViewInvMat();
+    g_Transform.matProj = pLightCam->GetProjMat();
+    g_Transform.matProjInv = pLightCam->GetProjInvMat();
+
+    Ptr<CTexture> pLightDepthMapTex = m_LightObj->Light()->GetDepthMapTex();
+
+    CONTEXT->ClearDepthStencilView(pLightDepthMapTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+    CONTEXT->OMSetRenderTargets(0, NULL, pLightDepthMapTex->GetDSV().Get());
+    CDevice::GetInst()->SetViewport((float)pLightDepthMapTex->GetWidth(), (float)pLightDepthMapTex->GetHeight());
+
+    static Ptr<CMaterial> DepthOnlyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthOnlyMtrl");
+
+    if (nullptr != m_ModelObj)
+    {
+        list<CGameObject*> queue;
+        queue.push_back(m_ModelObj);
+
+        while (!queue.empty())
+        {
+            CGameObject* pObject = queue.front();
+            queue.pop_front();
+
+            pObject->render(DepthOnlyMtrl);
+
+            // 자식 오브젝트 추가
+            vector<CGameObject*>::const_iterator iter = pObject->GetChildObject().begin();
+            for (; iter != pObject->GetChildObject().end(); ++iter)
+            {
+                queue.push_back(*iter);
+            }
+        }
+    }
+
+    // ShadowMap Bind
+    CONTEXT->OMSetRenderTargets(0, NULL, NULL);
+    m_LightObj->Light()->GetDepthMapTex()->UpdateData(23);
+}
+
+void CModelEditor::render_ImGizmo()
 {
     if (nullptr == m_ModelObj || nullptr == m_ModelObj->Animator() || !m_ModelObj->Animator()->IsValid() || nullptr == m_SelectedBoneSocket)
         return;
@@ -888,14 +1000,6 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
 
                         PreviewAssetObj->MeshRender()->SetFrustumCheck(false);
 
-                        // Forward PBR Shader 로 설정
-                        Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
-                        UINT SubsetCnt = PreviewAssetObj->MeshRender()->GetMesh()->GetSubsetCount();
-                        for (UINT i = 0; i < SubsetCnt; ++i)
-                        {
-                            PreviewAssetObj->MeshRender()->GetMaterial(i)->SetShader(pShader);
-                        }
-
                         PreviewAssetObj->SetBoneSocket(pBoneSocket);
                         m_ModelObj->AddChild(PreviewAssetObj);
                     }
@@ -1107,6 +1211,43 @@ void CModelEditor::finaltick_ModelEditor(CGameObject* _Obj)
     }
 }
 
+void CModelEditor::Resize(Vec2 resolution)
+{
+    if (nullptr != m_ViewportRTTex)
+    {
+        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"ModelEditorViewportRTTex");
+        m_ViewportRTTex = nullptr;
+    }
+
+    if (nullptr != m_ViewportFloatRTTex)
+    {
+        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"ModelEditorViewportFloatRTTex");
+        m_ViewportFloatRTTex = nullptr;
+    }
+
+    if (nullptr != m_ViewportDSTex)
+    {
+        CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"ModelEditorViewportDSTex");
+        m_ViewportDSTex = nullptr;
+    }
+
+    m_ViewportRTTex =
+        CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportRTTex", (UINT)resolution.x, (UINT)resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                            D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+
+    m_ViewportFloatRTTex =
+        CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportFloatRTTex", (UINT)resolution.x, (UINT)resolution.y, DXGI_FORMAT_R16G16B16A16_FLOAT,
+                                            D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+
+    m_ViewportDSTex = CAssetMgr::GetInst()->CreateTexture(L"ModelEditorViewportDSTex", (UINT)resolution.x, (UINT)resolution.y,
+                                                          DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
+
+    if (nullptr != m_ToneMappingObj)
+    {
+        m_ToneMappingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_ViewportFloatRTTex);
+    }
+}
+
 void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
 {
     if (nullptr != m_ModelObj)
@@ -1132,14 +1273,6 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_ModelObj->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     m_ModelObj->MeshRender()->SetFrustumCheck(false);
-
-    // Forward PBR Shader 로 설정
-    Ptr<CGraphicsShader> pShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRShader");
-    UINT SubsetCnt = m_ModelObj->MeshRender()->GetMesh()->GetSubsetCount();
-    for (UINT i = 0; i < SubsetCnt; ++i)
-    {
-        m_ModelObj->MeshRender()->GetDynamicMaterial(i)->SetShader(pShader);
-    }
 
     if (nullptr != m_ModelObj->Animator())
     {

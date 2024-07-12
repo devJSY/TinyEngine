@@ -308,6 +308,10 @@ void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
     CRenderMgr::GetInst()->Resize_Release();
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        CEditorMgr::GetInst()->GetModelEditor()->Resize(resolution);
+    }
 
     LOG(Log, "Window Resized!");
 }

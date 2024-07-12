@@ -71,7 +71,7 @@ void CLight::finaltick()
 
     // 광원의 카메라도 광원과 동일한 Transform 이 되도록 업데이트
     m_pLightCam->Transform()->SetLocalPos(m_Info.vWorldPos);
-    m_pLightCam->Transform()->SetDirection(m_Info.vWorldDir);
+    m_pLightCam->Transform()->SetLocalRotation(Transform()->GetWorldRotation());
 
     m_pLightCam->finaltick();
 
