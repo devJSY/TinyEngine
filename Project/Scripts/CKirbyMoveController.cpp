@@ -2,6 +2,7 @@
 #include "CKirbyMoveController.h"
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
+#include "CKirbyUnitScript.h"
 
 #include <Engine/CRenderMgr.h>
 #include <Engine/CPhysicsMgr.h>
@@ -26,15 +27,13 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bJumpLock(false)
     , m_bJump(false)
     , m_bActiveFriction(false)
-    , m_HoveringLimitHeight(15.f)
+    , m_HoveringLimitHeight(500.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f,0.f,0.f}
     , m_Friction(0.f)
     , m_HoveringMinSpeed(-5.f)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
@@ -64,9 +63,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(_Origin.m_Friction)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
@@ -86,9 +83,10 @@ void CKirbyMoveController::begin()
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
 
-    m_Speed = 10.f;
+    //@TODO UNIT쪽에서 받아오기
+    //m_Speed = PLAYERUNIT->GetCurInfo().Speed;
+    //m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
     m_RotSpeed = 50.f;
-    m_JumpPower = 10.f;
     m_Gravity = -20.f;
 }
 
@@ -225,12 +223,25 @@ void CKirbyMoveController::Move()
     m_Accel = {0.f, 0.f, 0.f};
 
     bool bGrounded = CharacterController()->IsGrounded();
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
+    
+    float a = CharacterController()->GetHeight() / 2.f - CharacterController()->GetRadius();
 
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-
-    if (!bGrounded)
+    if (Hit.pCollisionObj && Hit.Distance <= 0.1f)
     {
-        bGrounded = nullptr != Hit.pCollisionObj;
+        bGrounded = true;
+    }
+    else
+    {
+        bGrounded = false;
+    }
+
+    if (PLAYERFSM->IsHovering())
+    {
+        if (Hit.Distance >= CharacterController()->GetHeight() * 2.f)
+        {
+            PLAYERFSM->SetLastJump(LastJumpType::HIGH);
+        }
     }
 
     // =========================
@@ -303,8 +314,6 @@ void CKirbyMoveController::Move()
         }
 
         // check limit height
-        Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
-
         if (Hit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
         {
             //@TODO 레이어이름
@@ -324,7 +333,7 @@ void CKirbyMoveController::Move()
     // =========================
     // 움직임 적용
     // =========================
-    CharacterController()->Move(m_MoveVelocity * GetOwner()->Transform()->GetRelativeScale() * DT);
+    CharacterController()->Move(m_MoveVelocity * DT);
 }
 
 void CKirbyMoveController::SurfaceAlignment()

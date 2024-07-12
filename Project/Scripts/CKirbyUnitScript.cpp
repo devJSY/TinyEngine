@@ -7,8 +7,8 @@ CKirbyUnitScript::CKirbyUnitScript()
     UnitInfo KirbyInfo =
     {
         100.f, // HP
-        20.f, // Speed
-        50.f, //JumpPower
+        10.f, // Speed
+        10.f, //JumpPower
         100.f, //MaxHP
     };
 

@@ -75,8 +75,9 @@ void CKirbyVacuumCollider::tick()
 void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
     // 흡수할 수 있는 물체라면
-    // if (!_OtherCollider->GetOwner()->IsTagged(L"Eatable"))
-    //    return;
+    int i = _OtherCollider->GetOwner()->GetLayerIdx();
+    if (_OtherCollider->GetOwner()->GetLayerIdx() != LAYER_DYNAMIC && _OtherCollider->GetOwner()->GetLayerIdx() != LAYER_MONSTER)
+        return;
 
     bool TriggerEnable = GetOwner()->SphereCollider()->IsEnabled();
     bool bChanged = false;

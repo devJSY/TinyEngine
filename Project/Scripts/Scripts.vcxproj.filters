@@ -238,6 +238,9 @@
     <ClInclude Include="CUIUnitManagerScript.h">
       <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyStuffedEat.h">
+      <Filter>State\KirbyState\Stuffed\Eat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -488,6 +491,9 @@
     </ClCompile>
     <ClCompile Include="CUIUnitManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedEat.cpp">
+      <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -757,6 +763,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIManager\UIUnitManager">
       <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Eat">
+      <UniqueIdentifier>{274a9390-4fbf-49b1-8bb8-0290e3f4d1e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
