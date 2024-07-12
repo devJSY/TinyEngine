@@ -58,9 +58,6 @@ private:
     float                       m_HoveringMinSpeed;
     float                       m_HoveringHeight;
 
-private:
-    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
-
 public:
     virtual void begin() override;
     virtual void tick() override;
@@ -74,18 +71,15 @@ public:
     void UnlockDirection() { m_bDirLock = false; }
 
     void Jump() { m_bJump = true; }
+    void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
-  
-
     void SetGuard(bool _Guard) { m_bActiveFriction = _Guard; }
     void SetSpeed(float _Speed) { m_Speed = _Speed; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
+    void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
     void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
-
-    void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
-    void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }

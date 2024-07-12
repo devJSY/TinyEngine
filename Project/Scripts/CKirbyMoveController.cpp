@@ -80,11 +80,10 @@ void CKirbyMoveController::begin()
 
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
-
     m_Speed = PLAYERUNIT->GetCurInfo().Speed;
     m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
-    //m_RotSpeed = 50.f;
-    //m_Gravity = -20.f;
+    m_RotSpeed = 50.f;
+    m_Gravity = -20.f;
 }
 
 void CKirbyMoveController::tick()
@@ -378,22 +377,10 @@ void CKirbyMoveController::SurfaceAlignment()
     }
 }
 
-void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
-{
-    // CPhysicsMgr::RayCast(Transform()->GetWorldPos(), Vec3(0.f,-1.f,0.f), 100.f, )
-    int a = 0;
-}
-
 void CKirbyMoveController::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_Speed, 1, sizeof(float), _File);
-    fwrite(&m_Gravity, 1, sizeof(float), _File);
-    fwrite(&m_JumpPower, 1, sizeof(float), _File);
 }
 
 void CKirbyMoveController::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_Speed, 1, sizeof(float), _File);
-    fread(&m_Gravity, 1, sizeof(float), _File);
-    fread(&m_JumpPower, 1, sizeof(float), _File);
 }

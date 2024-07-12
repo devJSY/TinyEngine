@@ -80,5 +80,6 @@ void CUnitScript::SaveToLevelFile(FILE* _File)
 void CUnitScript::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_CurInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo.HP = m_CurInfo.MAXHP;
 }
 
