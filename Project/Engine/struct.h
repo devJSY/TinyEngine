@@ -71,7 +71,7 @@ struct tBoneSocket
 {
     wstring SoketName;
     int BoneIndex;
-    Vec3 RelativeLocation;
+    Vec3 RelativePosition;
     Vec3 RelativeRotation;
     Vec3 RelativeScale;
     Matrix matSocket; // Bone Socket SRT

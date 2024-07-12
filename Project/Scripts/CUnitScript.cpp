@@ -3,12 +3,16 @@
 
 CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
-    , m_OriginInfo{}
     , m_PrevInfo{}
     , m_CurInfo{}
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "MAXHP");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "CURHP");
+}
+
+CUnitScript::CUnitScript(const CUnitScript& _Origin)
+    : CScript(_Origin)
+    , m_PrevInfo{}
+    , m_CurInfo(_Origin.m_CurInfo)
+{
 }
 
 CUnitScript::~CUnitScript()
@@ -76,5 +80,6 @@ void CUnitScript::SaveToLevelFile(FILE* _File)
 void CUnitScript::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_CurInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo.HP = m_CurInfo.MAXHP;
 }
 

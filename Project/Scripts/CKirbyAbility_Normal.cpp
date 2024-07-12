@@ -64,20 +64,24 @@ void CKirbyAbility_Normal::Attack()
         if (nullptr != BulletPref)
         {
             CGameObject* BulletInst = BulletPref->Instantiate();
-            Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f;
-            InitPos.y += 2.f;
+            Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
+            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f * PLAYER->Transform()->GetLocalScale();
+            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP) * 2.f * PLAYER->Transform()->GetLocalScale();
 
             if (PLAYERFSM->GetStuffedCopyObj()->MeshRender())
             {
                 BulletInst->AddComponent(PLAYERFSM->GetStuffedCopyObj()->MeshRender()->Clone());
             }
-            BulletInst->Transform()->SetRelativePos(InitPos);
-            GamePlayStatic::SpawnGameObject(BulletInst, 0);
+            BulletInst->Transform()->SetLocalPos(InitPos);
+            GamePlayStatic::SpawnGameObject(BulletInst, LAYER_PLAYERATK);
 
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
             if (nullptr != bulletScript)
             {
                 bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 120.f);
+                Vec3 InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+                InitDir.y = 0.f;
+                bulletScript->SetInitVelocity(InitDir * 120.f);
             }
         }
     }

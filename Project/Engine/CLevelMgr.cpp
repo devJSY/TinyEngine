@@ -103,7 +103,7 @@ CLevel* CLevelMgr::CreateNewLevel()
     pSkyBoxObj->AddComponent(new CTransform);
     pSkyBoxObj->AddComponent(new CSkyBox);
 
-    pSkyBoxObj->Transform()->SetRelativePos(Vec3(5000.f, 0.f, 0.f));
+    pSkyBoxObj->Transform()->SetLocalPos(Vec3(5000.f, 0.f, 0.f));
 
     pSkyBoxObj->SkyBox()->SetEnvTex(
         CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds", L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds"));

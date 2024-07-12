@@ -40,6 +40,10 @@ void CKirbyBackJump::Enter()
 
 void CKirbyBackJump::Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();

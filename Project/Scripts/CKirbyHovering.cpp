@@ -49,6 +49,8 @@ void CKirbyHovering::Enter()
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-10.f);
+    PLAYERCTRL->ClearVelocityY();
+    PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
 
     m_bFrmEnter = true;
 }

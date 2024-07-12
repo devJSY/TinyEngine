@@ -69,7 +69,7 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override = 0;
     virtual void LoadFromLevelFile(FILE* _File) override = 0;
 
-    CScript* Clone() = 0;
+    virtual CScript* Clone() = 0;
 
 public:
     CScript(UINT _ScriptType);

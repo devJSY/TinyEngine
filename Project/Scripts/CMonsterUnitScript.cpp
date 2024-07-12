@@ -4,19 +4,19 @@
 CMonsterUnitScript::CMonsterUnitScript()
     : CUnitScript(MONSTERUNITSCRIPT)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.HP, "HP current");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.MAXHP, "HP max");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.Speed, "Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
 }
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(MONSTERUNITSCRIPT)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.HP, "HP current");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.MAXHP, "HP max");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.Speed, "Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_OriginInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
 }
 
 CMonsterUnitScript::~CMonsterUnitScript()

@@ -59,7 +59,7 @@ void CTileMap::finaltick()
 
     // (타일 개수 * 타일 사이즈) 로 사이즈를 변경처리한다.
     Vec3 vTileMapSize = Vec3(m_iTileCountX * m_vTileRenderSize.x, m_iTileCountY * m_vTileRenderSize.y, 1.f);
-    Transform()->SetRelativeScale(vTileMapSize);
+    Transform()->SetLocalScale(vTileMapSize);
 }
 
 void CTileMap::UpdateData()

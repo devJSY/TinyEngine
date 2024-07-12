@@ -5,10 +5,10 @@ void CTestRight::tick()
 {
 	Vec3 Dir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 
-	Vec3 vPos = GetOwner()->Transform()->GetRelativePos();
+	Vec3 vPos = GetOwner()->Transform()->GetLocalPos();
 	vPos += Dir * DT * 200.f;
 
-	GetOwner()->Transform()->SetRelativePos(vPos);
+	GetOwner()->Transform()->SetLocalPos(vPos);
 
 	if (KEY_PRESSED(KEY::UP))
 	{

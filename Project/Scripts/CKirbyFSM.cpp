@@ -93,6 +93,11 @@ CKirbyFSM::~CKirbyFSM()
             m_arrObject[i] = nullptr;
         }
     }
+
+    if (m_StuffedCopyObj)
+    {
+        delete m_StuffedCopyObj;
+    }
 }
 
 #include "CKirbyIdle.h"
@@ -124,6 +129,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyStuffedJump.h"
 #include "CKirbyStuffedJumpFall.h"
 #include "CKirbyStuffedLanding.h"
+#include "CKirbyStuffedEat.h"
 #include "CKirbyGuard.h"
 #include "CKirbySlideStart.h"
 #include "CKirbySlide.h"
@@ -178,6 +184,7 @@ void CKirbyFSM::begin()
     AddState(L"STUFFED_JUMP", new CKirbyStuffedJump);
     AddState(L"STUFFED_JUMP_FALL", new CKirbyStuffedJumpFall);
     AddState(L"STUFFED_LANDING", new CKirbyStuffedLanding);
+    AddState(L"STUFFED_EAT", new CKirbyStuffedEat);
     AddState(L"GUARD", new CKirbyGuard);
     AddState(L"SLIDE_START", new CKirbySlideStart);
     AddState(L"SLIDE", new CKirbySlide);

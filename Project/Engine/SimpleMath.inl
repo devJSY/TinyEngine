@@ -3171,6 +3171,39 @@ inline float Quaternion::Dot(const Quaternion& q) const
     return XMVectorGetX(XMQuaternionDot(q1, q2));
 }
 
+inline void Quaternion::RotateTowards(const Quaternion& target, float maxAngle) noexcept
+{
+    RotateTowards(target, maxAngle, *this);
+}
+
+inline Vector3 Quaternion::ToEuler() const noexcept
+{
+    const float xx = x * x;
+    const float yy = y * y;
+    const float zz = z * z;
+
+    const float m31 = 2.f * x * z + 2.f * y * w;
+    const float m32 = 2.f * y * z - 2.f * x * w;
+    const float m33 = 1.f - 2.f * xx - 2.f * yy;
+
+    const float cy = sqrtf(m33 * m33 + m31 * m31);
+    const float cx = atan2f(-m32, cy);
+    if (cy > 16.f * FLT_EPSILON)
+    {
+        const float m12 = 2.f * x * y + 2.f * z * w;
+        const float m22 = 1.f - 2.f * xx - 2.f * zz;
+
+        return Vector3(cx, atan2f(m31, m33), atan2f(m12, m22));
+    }
+    else
+    {
+        const float m11 = 1.f - 2.f * yy - 2.f * zz;
+        const float m21 = 2.f * x * y - 2.f * z * w;
+
+        return Vector3(cx, 0.f, atan2f(-m21, m11));
+    }
+}
+
 //------------------------------------------------------------------------------
 // Static functions
 //------------------------------------------------------------------------------
@@ -3291,6 +3324,34 @@ inline Quaternion Quaternion::Concatenate(const Quaternion& q1, const Quaternion
     Quaternion result;
     XMStoreFloat4(&result, XMQuaternionMultiply(Q1, Q0));
     return result;
+}
+
+inline Quaternion Quaternion::FromToRotation(const Vector3& fromDir, const Vector3& toDir) noexcept
+{
+    Quaternion result;
+    FromToRotation(fromDir, toDir, result);
+    return result;
+}
+
+inline Quaternion Quaternion::LookRotation(const Vector3& forward, const Vector3& up) noexcept
+{
+    Quaternion result;
+    LookRotation(forward, up, result);
+    return result;
+}
+
+inline float Quaternion::Angle(const Quaternion& q1, const Quaternion& q2) noexcept
+{
+    using namespace DirectX;
+    const XMVECTOR Q0 = XMLoadFloat4(&q1);
+    const XMVECTOR Q1 = XMLoadFloat4(&q2);
+
+    // We can use the conjugate here instead of inverse assuming q1 & q2 are normalized.
+    XMVECTOR R = XMQuaternionMultiply(XMQuaternionConjugate(Q0), Q1);
+
+    const float rs = XMVectorGetW(R);
+    R = XMVector3Length(R);
+    return 2.f * atan2f(XMVectorGetX(R), rs);
 }
 
 /****************************************************************************

@@ -80,8 +80,8 @@ void CMaterialEditor::init()
     m_ViewportObj->MeshRender()->SetFrustumCheck(false);
     m_ViewportObj->MeshRender()->SetCastShadow(false);
 
-    m_ViewportObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-    m_ViewportObj->Transform()->SetRelativeScale(Vec3(250.f, 250.f, 250.f));
+    m_ViewportObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 500.f));
+    m_ViewportObj->Transform()->SetLocalScale(Vec3(250.f, 250.f, 250.f));
     m_ViewportObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
 
     // Light
@@ -90,7 +90,7 @@ void CMaterialEditor::init()
     m_LightObj->AddComponent(new CTransform);
     m_LightObj->AddComponent(new CLight);
 
-    m_LightObj->Transform()->SetRelativePos(Vec3(250.f, 500.f, 0.f));
+    m_LightObj->Transform()->SetLocalPos(Vec3(250.f, 500.f, 0.f));
     m_LightObj->Light()->SetLightType(LIGHT_TYPE::POINT);
     m_LightObj->Light()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
     m_LightObj->Light()->SetRadius(10.f);
@@ -119,10 +119,10 @@ void CMaterialEditor::DrawViewport()
     if (ImGui::IsWindowHovered() && KEY_PRESSED(KEY::LBTN))
     {
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        Vec3 vRot = m_ViewportObj->Transform()->GetRelativeRotation();
+        Vec3 vRot = m_ViewportObj->Transform()->GetLocalRotation();
         vRot.y -= vDrag.x * XM_PI / 720.f;
         vRot.x -= vDrag.y * XM_PI / 720.f;
-        m_ViewportObj->Transform()->SetRelativeRotation(vRot);
+        m_ViewportObj->Transform()->SetLocalRotation(vRot);
     }
 
     // ∑ª¥ı≈∏∞Ÿ º≥¡§

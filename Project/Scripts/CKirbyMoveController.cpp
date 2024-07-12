@@ -2,6 +2,7 @@
 #include "CKirbyMoveController.h"
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
+#include "CKirbyUnitScript.h"
 
 #include <Engine/CRenderMgr.h>
 #include <Engine/CPhysicsMgr.h>
@@ -18,23 +19,20 @@ CKirbyMoveController::CKirbyMoveController()
     , m_Speed(10.f)
     , m_MaxSpeed(15.f)
     , m_RotSpeed(50.f)
-    , m_JumpPower(1000.f)
-    , m_RayCastDist(2.f)
-    , m_Gravity(-50.f)
+    , m_JumpPower(10.f)
+    , m_Gravity(-20.f)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
     , m_bJump(false)
     , m_bActiveFriction(false)
-    , m_HoveringLimitHeight(15.f)
+    , m_HoveringLimitHeight(500.f)
     , m_HoveringHeight(0.f)
-    , m_AddVelocity{0.f,0.f,0.f}
+    , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)
     , m_HoveringMinSpeed(-5.f)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
@@ -48,12 +46,11 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_MoveDir{0.f, 0.f, 0.f}
     , m_GroundNormal{0.f, 1.f, 0.f}
     , m_MoveVelocity{}
-    , m_Speed(10.f)
-    , m_MaxSpeed(15.f)
+    , m_Speed(_Origin.m_Speed)
+    , m_MaxSpeed(_Origin.m_MaxSpeed)
     , m_RotSpeed(_Origin.m_RotSpeed)
-    , m_JumpPower(1000.f)
-    , m_RayCastDist(2.f)
-    , m_Gravity(-50.f)
+    , m_JumpPower(_Origin.m_JumpPower)
+    , m_Gravity(_Origin.m_Gravity)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -64,9 +61,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(_Origin.m_Friction)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_JumpPower, "JumpPower");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
@@ -85,10 +80,9 @@ void CKirbyMoveController::begin()
 
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
-
-    m_Speed = 10.f;
+    m_Speed = PLAYERUNIT->GetCurInfo().Speed;
+    m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
     m_RotSpeed = 50.f;
-    m_JumpPower = 10.f;
     m_Gravity = -20.f;
 }
 
@@ -204,16 +198,20 @@ void CKirbyMoveController::SetDir()
         m_TowardDir = m_CurDir;
     }
 
-    // 바라봐야할 방향과 현재 방향이 정반대일 경우 예외처리
-    if (m_CurDir.Dot(m_TowardDir) - (m_CurDir.Length() * m_TowardDir.Length() * -1.f) < 0.0001f)
-    {
-        Vec3 Rot = Transform()->GetRelativeRotation();
-        Rot.y += XM_PI / 180.f;
-        Transform()->SetRelativeRotation(Rot);
-    }
+    //// 바라봐야할 방향과 현재 방향이 정반대일 경우 예외처리
+    // if (m_CurDir.Dot(m_TowardDir) - (m_CurDir.Length() * m_TowardDir.Length() * -1.f) < 0.0001f)
+    //{
+    //     Vec3 Rot = Transform()->GetLocalRotation();
+    //     Rot.y += XM_PI / 180.f;
+    //     Transform()->SetLocalRotation(Rot);
+    // }
 
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
-    Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
+    // Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
+
+    Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
+    Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * m_RotSpeed);
+    Transform()->SetWorldRotation(SlerpQuat);
 
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
@@ -225,12 +223,25 @@ void CKirbyMoveController::Move()
     m_Accel = {0.f, 0.f, 0.f};
 
     bool bGrounded = CharacterController()->IsGrounded();
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
+    
+    float a = CharacterController()->GetHeight() / 2.f - CharacterController()->GetRadius();
 
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-
-    if (!bGrounded)
+    if (Hit.pCollisionObj && Hit.Distance <= 0.1f)
     {
-        bGrounded = nullptr != Hit.pCollisionObj;
+        bGrounded = true;
+    }
+    else
+    {
+        bGrounded = false;
+    }
+
+    if (PLAYERFSM->IsHovering())
+    {
+        if (Hit.Distance >= CharacterController()->GetHeight() * 2.f)
+        {
+            PLAYERFSM->SetLastJump(LastJumpType::HIGH);
+        }
     }
 
     // =========================
@@ -303,11 +314,8 @@ void CKirbyMoveController::Move()
         }
 
         // check limit height
-        Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
-
         if (Hit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
         {
-            //@TODO 레이어이름
             m_MoveVelocity.y = 0.f;
         }
     }
@@ -324,7 +332,7 @@ void CKirbyMoveController::Move()
     // =========================
     // 움직임 적용
     // =========================
-    CharacterController()->Move(m_MoveVelocity * GetOwner()->Transform()->GetRelativeScale() * DT);
+    CharacterController()->Move(m_MoveVelocity * DT);
 }
 
 void CKirbyMoveController::SurfaceAlignment()
@@ -361,7 +369,7 @@ void CKirbyMoveController::SurfaceAlignment()
         yaw = atan2f(rotationMatrix.r[2].m128_f32[0], rotationMatrix.r[2].m128_f32[2]);
         roll = atan2f(rotationMatrix.r[0].m128_f32[1], rotationMatrix.r[1].m128_f32[1]);
 
-        Transform()->SetRelativeRotation({pitch, yaw, roll});
+        Transform()->SetLocalRotation({pitch, yaw, roll});
     }
     else
     {
@@ -373,22 +381,10 @@ void CKirbyMoveController::SurfaceAlignment()
     }
 }
 
-void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
-{
-    // CPhysicsMgr::RayCast(Transform()->GetWorldPos(), Vec3(0.f,-1.f,0.f), 100.f, )
-    int a = 0;
-}
-
 void CKirbyMoveController::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_Speed, 1, sizeof(float), _File);
-    fwrite(&m_Gravity, 1, sizeof(float), _File);
-    fwrite(&m_JumpPower, 1, sizeof(float), _File);
 }
 
 void CKirbyMoveController::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_Speed, 1, sizeof(float), _File);
-    fread(&m_Gravity, 1, sizeof(float), _File);
-    fread(&m_JumpPower, 1, sizeof(float), _File);
 }

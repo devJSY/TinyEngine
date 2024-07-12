@@ -23,6 +23,24 @@ public:
         m_Const.mtrl.vEmission = _vEmis;
     }
 
+    void SetAlbedo(Vec4 _Albedo) { m_Const.mtrl.vAlbedo = _Albedo; }
+    Vec4 GetAlbedo() const { return m_Const.mtrl.vAlbedo; }
+
+    void SetDiffuse(Vec4 _Diffuse) { m_Const.mtrl.vDiffuse = _Diffuse; }
+    Vec4 GetDiffuse() const { return m_Const.mtrl.vDiffuse; }
+
+    void SetSpecular(Vec4 _Specular) { m_Const.mtrl.vSpecular = _Specular; }
+    Vec4 GetSpecular() const { return m_Const.mtrl.vSpecular; }
+
+    void SetMetallic(float _Metallic) { m_Const.mtrl.vMetallic = _Metallic; }
+    float GetMetallic() const { return m_Const.mtrl.vMetallic; }
+
+    void SetRoughness(float _Roughness) { m_Const.mtrl.vRoughness = _Roughness; }
+    float GetRoughness() const { return m_Const.mtrl.vRoughness; }
+
+    void SetEmission(Vec4 _Emission) { m_Const.mtrl.vEmission = _Emission; }
+    Vec4 GetEmission() const { return m_Const.mtrl.vEmission; }
+
     void SetAnim3D(bool _bUseAnim) { m_Const.arrAnimData[0] = (int)_bUseAnim; }
     void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
 
