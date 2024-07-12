@@ -86,8 +86,6 @@ public:
     bool IsInvincible() const { return m_bInvincible; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
 
-    
-
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

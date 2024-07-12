@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "CPlayerMgr.h"
-#include "CUnitScript.h"
+#include "CKirbyUnitScript.h"
 #include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 
 CGameObject* CPlayerMgr::m_PlayerObj = nullptr;
-CUnitScript* CPlayerMgr::m_PlayerUnit = nullptr;
+CKirbyUnitScript* CPlayerMgr::m_PlayerUnit = nullptr;
 CKirbyFSM* CPlayerMgr::m_PlayerFSM = nullptr;
 CKirbyMoveController* CPlayerMgr::m_PlayerController = nullptr;
 Ptr<CMaterial> CPlayerMgr::m_PlayerBodyMtrl = nullptr;
@@ -26,8 +26,7 @@ void CPlayerMgr::begin()
 {
     m_PlayerBodyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_BodyC.mtrl");
 
-    //@TODO ·¹ÀÌ¾î
-    CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", 3);
+    CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
     SetPlayer(pPlayer);
 }
 
@@ -43,7 +42,7 @@ void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
         return;
     }
 
-    CUnitScript* pPlayerUnit = _PlayerObj->GetScript<CUnitScript>();
+    CKirbyUnitScript* pPlayerUnit = _PlayerObj->GetScript<CKirbyUnitScript>();
     CKirbyFSM* pPlayerFSM = _PlayerObj->GetScript<CKirbyFSM>();
     CKirbyMoveController* pPlayerController = _PlayerObj->GetScript<CKirbyMoveController>();
 

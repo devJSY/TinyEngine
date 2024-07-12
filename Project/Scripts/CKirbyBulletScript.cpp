@@ -17,7 +17,7 @@ void CKirbyBulletScript::begin()
     {
         GetOwner()->AddComponent(new CRigidbody());
     }
-    
+
     Rigidbody()->AddForce(m_InitVelocity, ForceMode::Impulse);
 }
 

@@ -3,9 +3,15 @@
 
 CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
-    , m_OriginInfo{}
     , m_PrevInfo{}
     , m_CurInfo{}
+{
+}
+
+CUnitScript::CUnitScript(const CUnitScript& _Origin)
+    : CScript(_Origin)
+    , m_PrevInfo{}
+    , m_CurInfo(_Origin.m_CurInfo)
 {
 }
 
@@ -64,7 +70,6 @@ void CUnitScript::DamageProc()
     }
 
     m_CurInfo.HP -= CurDamage;
-
 }
 
 void CUnitScript::SaveToLevelFile(FILE* _File)
@@ -75,5 +80,6 @@ void CUnitScript::SaveToLevelFile(FILE* _File)
 void CUnitScript::LoadFromLevelFile(FILE* _File)
 {
     fread(&m_CurInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo.HP = m_CurInfo.MAXHP;
 }
 

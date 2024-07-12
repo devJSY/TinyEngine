@@ -247,6 +247,9 @@
     <ClInclude Include="CKirbyChangeAbilityEnd.h">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyStuffedEat.h">
+      <Filter>State\KirbyState\Stuffed\Eat</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyAbility_Sword.h">
       <Filter>State\KirbyAbility\Sword</Filter>
     </ClInclude>
@@ -510,6 +513,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedEat.cpp">
+      <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility_Sword.cpp">
       <Filter>State\KirbyAbility\Sword</Filter>
@@ -783,6 +789,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIManager\UIUnitManager">
       <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Eat">
+      <UniqueIdentifier>{274a9390-4fbf-49b1-8bb8-0290e3f4d1e5}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyAbility\Ranger">
       <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
