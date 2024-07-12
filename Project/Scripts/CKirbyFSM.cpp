@@ -179,7 +179,6 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_END", new CKirbyAttackEnd);
-    AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_COMBO1", new CKirbyAttackCombo1);
     AddState(L"ATTACK_COMBO2", new CKirbyAttackCombo2);
     AddState(L"ATTACK_COMBO2_END", new CKirbyAttackCombo2End);

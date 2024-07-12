@@ -223,7 +223,8 @@ void CKirbyMoveController::Move()
     m_Accel = {0.f, 0.f, 0.f};
 
     bool bGrounded = CharacterController()->IsGrounded();
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, {L"Layer 1"});
+    static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
     
     float a = CharacterController()->GetHeight() / 2.f - CharacterController()->GetRadius();
 
