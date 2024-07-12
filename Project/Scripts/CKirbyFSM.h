@@ -38,6 +38,8 @@ private:
     float                   m_HoveringAccTime;
     bool                    m_bHovering;
 
+    UINT                    m_ComboLevel;
+    float                   m_ComboAccTime;
     float                   m_ChargeAccTime;
     LastJumpType            m_LastJump;
     DodgeType               m_DodgeType;
@@ -59,6 +61,7 @@ public:
     void DrawingCollisionEnter(CGameObject* _CollisionObject);
 
 public:
+    void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
@@ -77,9 +80,11 @@ public:
     LastJumpType GetLastJump() const { return m_LastJump; }
     CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
+    float GetComboAccTime() const { return m_ComboAccTime; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
+    UINT GetComboLevel() const { return m_ComboLevel; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;

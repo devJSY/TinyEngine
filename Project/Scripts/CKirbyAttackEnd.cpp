@@ -22,11 +22,19 @@ void CKirbyAttackEnd::tick()
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
         case AbilityCopyType::NORMAL:
-        break;
-        case AbilityCopyType::FIRE: {
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::RANGER:
+            break;
+        case AbilityCopyType::SWORD: {
             if (PLAYER->Animator()->IsFinish())
             {
-                if (PLAYERCTRL->GetInput().Length() != 0.f)
+                if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+                {
+                    ChangeState(L"ATTACK_COMBO1");
+                }
+                else if (PLAYERCTRL->GetInput().Length() != 0.f)
                 {
                     ChangeState(L"RUN_START");
                 }
@@ -37,18 +45,16 @@ void CKirbyAttackEnd::tick()
             }
         }
         break;
-        case AbilityCopyType::RANGER:
-            break;
-        case AbilityCopyType::SWORD:
-            break;
         }
     }
 }
 
 void CKirbyAttackEnd::Enter()
 {
+    PLAY_CURSTATE(AttackEnter)
 }
 
 void CKirbyAttackEnd::Exit()
 {
+    PLAY_CURSTATE(AttackExit)
 }

@@ -35,17 +35,24 @@ void CKirbyAttack::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE: {
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::RANGER:
+            break;
+        case AbilityCopyType::SWORD: {
             if (PLAYER->Animator()->IsFinish())
             {
-                ChangeState(L"ATTACK_END");
+                if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+                {
+                    ChangeState(L"ATTACK_COMBO1");
+                }
+                else
+                {
+                    ChangeState(L"ATTACK_END");
+                }
             }
         }
         break;
-        case AbilityCopyType::RANGER:
-            break;
-        case AbilityCopyType::SWORD:
-            break;
         }
     }
 }

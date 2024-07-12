@@ -125,6 +125,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAttackCharge2.h" />
     <ClInclude Include="CKirbyAttackCharge2Run.h" />
     <ClInclude Include="CKirbyAttackCharge2Start.h" />
+    <ClInclude Include="CKirbyAttackCombo1.h" />
+    <ClInclude Include="CKirbyAttackCombo2.h" />
+    <ClInclude Include="CKirbyAttackCombo2End.h" />
     <ClInclude Include="CKirbyAttackEnd.h" />
     <ClInclude Include="CKirbyBackJump.h" />
     <ClInclude Include="CKirbyBodyCollider.h" />
@@ -212,6 +215,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAttackCharge2.cpp" />
     <ClCompile Include="CKirbyAttackCharge2Run.cpp" />
     <ClCompile Include="CKirbyAttackCharge2Start.cpp" />
+    <ClCompile Include="CKirbyAttackCombo1.cpp" />
+    <ClCompile Include="CKirbyAttackCombo2.cpp" />
+    <ClCompile Include="CKirbyAttackCombo2End.cpp" />
     <ClCompile Include="CKirbyAttackEnd.cpp" />
     <ClCompile Include="CKirbyBackJump.cpp" />
     <ClCompile Include="CKirbyBodyCollider.cpp" />

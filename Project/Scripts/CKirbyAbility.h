@@ -12,6 +12,7 @@ class CKirbyAbility
 {
 protected:
     float m_Charge1Time;
+    float m_ComboSuccessTime;
 
 protected:
     // 사용 메쉬: hat, weapon
@@ -65,6 +66,18 @@ public:
     virtual void AttackEndEnter(){};
     virtual void AttackEndExit(){};
 
+    virtual void AttackCombo1(){};
+    virtual void AttackCombo1Enter(){};
+    virtual void AttackCombo1Exit(){};
+
+    virtual void AttackCombo2(){};
+    virtual void AttackCombo2Enter(){};
+    virtual void AttackCombo2Exit(){};
+
+    virtual void AttackCombo2End(){};
+    virtual void AttackCombo2EndEnter(){};
+    virtual void AttackCombo2EndExit(){};
+
     virtual void AttackCharge1(){};
     virtual void AttackCharge1Enter(){};
     virtual void AttackCharge1Exit(){};
@@ -108,6 +121,7 @@ public:
 
 public:
     float GetCharge1Time() const { return m_Charge1Time; }
+    float GetComboSuccessTime() const { return m_ComboSuccessTime; }
 
 public:
     virtual CKirbyAbility* Clone() = 0;

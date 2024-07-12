@@ -15,6 +15,8 @@ CKirbyFSM::CKirbyFSM()
     , m_CurObject(ObjectCopyType::NONE)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_ComboLevel(0)
+    , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(7.f)
@@ -39,6 +41,8 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_CurObject(_Origin.m_CurObject)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_ComboLevel(0)
+    , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
@@ -116,6 +120,9 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
 #include "CKirbyAttackEnd.h"
+#include "CKirbyAttackCombo1.h"
+#include "CKirbyAttackCombo2.h"
+#include "CKirbyAttackCombo2End.h"
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
 #include "CKirbyAttackCharge1End.h"
@@ -172,6 +179,10 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
     AddState(L"ATTACK_END", new CKirbyAttackEnd);
+    AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_COMBO1", new CKirbyAttackCombo1);
+    AddState(L"ATTACK_COMBO2", new CKirbyAttackCombo2);
+    AddState(L"ATTACK_COMBO2_END", new CKirbyAttackCombo2End);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
     AddState(L"ATTACK_CHARGE1_END", new CKirbyAttackCharge1End);
@@ -204,6 +215,16 @@ void CKirbyFSM::begin()
 
 void CKirbyFSM::tick()
 {
+    if (m_ComboLevel != 0)
+    {
+        m_ComboAccTime += DT;
+
+        if (m_ComboAccTime >= GetCurAbility()->GetComboSuccessTime())
+        {
+            SetComboLevel(0);
+        }
+    }
+
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         m_ChargeAccTime += DT;
@@ -262,6 +283,8 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 
 void CKirbyFSM::StartStuffed(CGameObject* _Target)
 {
+    ClearStuff();
+
     m_StuffedCopyObj = _Target;
     m_bStuffed = true;
 }
@@ -288,6 +311,7 @@ void CKirbyFSM::ClearStuff()
     if (m_StuffedCopyObj)
     {
         delete m_StuffedCopyObj;
+        m_StuffedCopyObj = nullptr;
     }
 }
 

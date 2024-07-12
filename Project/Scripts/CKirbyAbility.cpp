@@ -7,6 +7,7 @@
 
 CKirbyAbility::CKirbyAbility()
     : m_Charge1Time(0.f)
+    , m_ComboSuccessTime(1.f)
 {
 }
 

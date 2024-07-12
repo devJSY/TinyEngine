@@ -194,6 +194,8 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
             return EatType::Monster;
         }
     }
+
+    return EatType::NONE;
 }
 
 void CKirbyVacuumCollider::SaveToLevelFile(FILE* _File)
