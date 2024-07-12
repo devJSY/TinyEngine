@@ -4,10 +4,10 @@
 class CKirbyCopyAbilityScript : public CScript
 {
 private:
-    AbilityCopyType m_AbilityType;
+    UINT                        m_AbilityType;
 
 public:
-    AbilityCopyType GetAbilityType() const { return m_AbilityType; }
+    AbilityCopyType GetAbilityType() const { return (AbilityCopyType)m_AbilityType; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

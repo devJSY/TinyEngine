@@ -115,6 +115,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
     <ClInclude Include="CKirbyAttack.h" />
     <ClInclude Include="CKirbyAttackCharge1End.h" />
@@ -128,6 +129,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyBulletScript.h" />
     <ClInclude Include="CKirbyChangeAbility.h" />
     <ClInclude Include="CKirbyAttackCharge1.h" />
+    <ClInclude Include="CKirbyChangeAbilityEnd.h" />
+    <ClInclude Include="CKirbyChangeAbilityWait.h" />
     <ClInclude Include="CKirbyCopyAbilityScript.h" />
     <ClInclude Include="CKirbyCopyObjScript.h" />
     <ClInclude Include="CKirbyDamage.h" />
@@ -197,6 +200,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
     <ClCompile Include="CKirbyAttack.cpp" />
     <ClCompile Include="CKirbyAttackCharge1End.cpp" />
@@ -210,6 +214,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyBulletScript.cpp" />
     <ClCompile Include="CKirbyChangeAbility.cpp" />
     <ClCompile Include="CKirbyAttackCharge1.cpp" />
+    <ClCompile Include="CKirbyChangeAbilityEnd.cpp" />
+    <ClCompile Include="CKirbyChangeAbilityWait.cpp" />
     <ClCompile Include="CKirbyCopyAbilityScript.cpp" />
     <ClCompile Include="CKirbyCopyObjScript.cpp" />
     <ClCompile Include="CKirbyDamage.cpp" />

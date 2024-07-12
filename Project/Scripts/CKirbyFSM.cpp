@@ -11,6 +11,7 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
     , m_CurAbility(AbilityCopyType::NORMAL)
+    , m_NextAbility(AbilityCopyType::NONE)
     , m_CurObject(ObjectCopyType::NONE)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
@@ -27,6 +28,7 @@ CKirbyFSM::CKirbyFSM()
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
+    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Normal();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -131,6 +133,9 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyDodge2.h"
 #include "CKirbyDamage.h"
 #include "CKirbyBackJump.h"
+#include "CKirbyChangeAbility.h"
+#include "CKirbyChangeAbilityEnd.h"
+#include "CKirbyChangeAbilityWait.h"
 
 void CKirbyFSM::begin()
 {
@@ -183,6 +188,9 @@ void CKirbyFSM::begin()
     AddState(L"DODGE2", new CKirbyDodge2);
     AddState(L"DAMAGE", new CKirbyDamage);
     AddState(L"BACKJUMP", new CKirbyBackJump);
+    AddState(L"CHANGE_ABILITY", new CKirbyChangeAbility);
+    AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
+    AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
 
     ChangeState(L"IDLE");
 }
@@ -234,14 +242,15 @@ void CKirbyFSM::tick()
 
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
-    m_CurAbility = _Type;
+    m_NextAbility = _Type;
     ChangeState(L"CHANGE_ABILITY");
+    m_CurAbility = _Type;
 }
 
 void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 {
-    m_CurObject = _Type;
     ChangeState(L"CHANGE_OBJECT");
+    m_CurObject = _Type;
 }
 
 void CKirbyFSM::StartStuffed(CGameObject* _Target)
