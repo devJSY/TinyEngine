@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CExitButton.h"
+#include <Engine/CLevelSaveLoad.h>
 
 CExitButton::CExitButton()
     : CButtonScript(EXITBUTTON)
@@ -12,5 +13,5 @@ CExitButton::~CExitButton()
 
 void CExitButton::Func()
 {
-    PostQuitMessage(0);
+    GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::STOP);
 }

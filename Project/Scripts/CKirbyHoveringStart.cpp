@@ -32,7 +32,6 @@ void CKirbyHoveringStart::Enter()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
-    PLAYERCTRL->AddVelocity(Vec3(0.f, 7.5f, 0.f));
     m_SavedGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-10.f);
 

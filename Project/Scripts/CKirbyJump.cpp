@@ -54,6 +54,7 @@ void CKirbyJump::tick()
 void CKirbyJump::Enter()
 {
     PLAY_CURSTATE(JumpEnter)
+    PLAYERFSM->SetLastJump(LastJumpType::HIGH);
 }
 
 void CKirbyJump::Exit()

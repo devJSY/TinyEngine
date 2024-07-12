@@ -16,6 +16,16 @@
 #define KEY_ATK KEY::N
 #define KEY_GUARD KEY::M
 
+#define LAYER_MANAGER       1
+#define LAYER_STATIC        2
+#define LAYER_DYNAMIC       3
+#define LAYER_PLAYER        4
+#define LAYER_MONSTER       5
+#define LAYER_PLAYERATK     6
+#define LAYER_MONSTERATK    7
+#define LAYER_EFFECT        14
+#define LAYER_UI            15
+
 #define GET_CURCLIP_FRM PLAYER->Animator()->GetCurFrameIdx() - PLAYER->Animator()->GetSkeletalMesh()->GetAnimClip()->at(PLAYER->Animator()->GetCurClipIdx()).iStartFrame
 
 #define PLAY_CURSTATE(STATE)                                                                                                                         \

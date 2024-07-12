@@ -29,6 +29,7 @@ void CKirbyHoveringFallLimit::tick()
 void CKirbyHoveringFallLimit::Enter()
 {
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLimitFall"), true, false, 1.5f);
+    CPlayerMgr::SetPlayerFace(FaceType::Frown);
     
     if (PLAYERCTRL->GetVelocity().y > 0.f)
     {
@@ -40,5 +41,6 @@ void CKirbyHoveringFallLimit::Enter()
 
 void CKirbyHoveringFallLimit::Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
     PLAYERCTRL->SetGravity(m_SavedGravity);
 }

@@ -20,6 +20,10 @@ void CKirbyStuffedIdle::tick()
     {
         ChangeState(L"STUFFED_JUMP");
     }
+    else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+    {
+        ChangeState(L"STUFFED_EAT");
+    }
     else if (PLAYERCTRL->GetInput().Length() != 0.f)
     {
         ChangeState(L"STUFFED_RUN");
