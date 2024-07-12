@@ -21,7 +21,7 @@ CKirbyUnitScript::CKirbyUnitScript()
 }
 
 CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
-    : CUnitScript(KIRBYUNITSCRIPT)
+    : CUnitScript(_Origin)
 {
     UnitInfo KirbyInfo = {
         100.f, // HP

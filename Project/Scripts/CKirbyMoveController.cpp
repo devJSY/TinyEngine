@@ -81,13 +81,10 @@ void CKirbyMoveController::begin()
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
 
-    //@TODO UNIT쪽에서 받아오기
-    //m_Speed = PLAYERUNIT->GetCurInfo().Speed;
-    //m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
-    m_Speed = 10.f;
-    m_JumpPower = 10.f;
-    m_RotSpeed = 50.f;
-    m_Gravity = -20.f;
+    m_Speed = PLAYERUNIT->GetCurInfo().Speed;
+    m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
+    //m_RotSpeed = 50.f;
+    //m_Gravity = -20.f;
 }
 
 void CKirbyMoveController::tick()
@@ -316,7 +313,6 @@ void CKirbyMoveController::Move()
         // check limit height
         if (Hit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
         {
-            //@TODO 레이어이름
             m_MoveVelocity.y = 0.f;
         }
     }

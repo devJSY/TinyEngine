@@ -6,8 +6,13 @@ CUnitScript::CUnitScript(UINT _Type)
     , m_PrevInfo{}
     , m_CurInfo{}
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "MAXHP");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "CURHP");
+}
+
+CUnitScript::CUnitScript(const CUnitScript& _Origin)
+    : CScript(_Origin)
+    , m_PrevInfo{}
+    , m_CurInfo(_Origin.m_CurInfo)
+{
 }
 
 CUnitScript::~CUnitScript()
