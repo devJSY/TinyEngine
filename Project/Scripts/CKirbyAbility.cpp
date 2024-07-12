@@ -27,6 +27,16 @@ void CKirbyAbility::IdleEnter()
     PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
 }
 
+void CKirbyAbility::RunEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
+}
+
+void CKirbyAbility::RunStartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
+}
+
 void CKirbyAbility::JumpEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"JumpEnd"), false);

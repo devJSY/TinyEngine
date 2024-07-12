@@ -10,15 +10,6 @@ private:
     float       m_SavedSpeed;
 
 public:
-    // RUN
-    virtual void Run();
-    virtual void RunEnter();
-    virtual void RunExit();
-
-    virtual void RunStart();
-    virtual void RunStartEnter();
-    virtual void RunStartExit();
-
     // πÒ±‚
     virtual void Attack();
     virtual void AttackEnter();
@@ -41,7 +32,6 @@ public:
     virtual void AttackCharge1RunEnter();
     virtual void AttackCharge1RunExit();
 
-
     // »Ì¿‘2
     virtual void AttackCharge2();
     virtual void AttackCharge2Enter();
@@ -54,11 +44,6 @@ public:
     virtual void AttackCharge2Run();
     virtual void AttackCharge2RunEnter();
     virtual void AttackCharge2RunExit();
-
-    // ¡°«¡
-    virtual void JumpAttack(){};
-    virtual void JumpAttackEnter(){};
-    virtual void JumpAttackExit(){};
 
 public:
     CLONE_DISABLE(CKirbyAbility_Normal)

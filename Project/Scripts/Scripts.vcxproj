@@ -117,6 +117,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAbility.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
+    <ClInclude Include="CKirbyAbility_Sword.h" />
     <ClInclude Include="CKirbyAttack.h" />
     <ClInclude Include="CKirbyAttackCharge1End.h" />
     <ClInclude Include="CKirbyAttackCharge1Run.h" />
@@ -201,6 +202,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAbility.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
+    <ClCompile Include="CKirbyAbility_Sword.cpp" />
     <ClCompile Include="CKirbyAttack.cpp" />
     <ClCompile Include="CKirbyAttackCharge1End.cpp" />
     <ClCompile Include="CKirbyAttackCharge1Run.cpp" />

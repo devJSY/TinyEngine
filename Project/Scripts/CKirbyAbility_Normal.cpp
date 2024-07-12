@@ -16,36 +16,6 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 }
 
 // ===============
-// RUN
-// ===============
-void CKirbyAbility_Normal::Run()
-{
-}
-
-void CKirbyAbility_Normal::RunEnter()
-{
-    PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
-}
-
-void CKirbyAbility_Normal::RunExit()
-{
-}
-
-// start
-void CKirbyAbility_Normal::RunStart()
-{
-}
-
-void CKirbyAbility_Normal::RunStartEnter()
-{
-    PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
-}
-
-void CKirbyAbility_Normal::RunStartExit()
-{
-}
-
-// ===============
 // Attack
 // ===============
 // 머금은 물체 뱉기

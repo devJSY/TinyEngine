@@ -1,5 +1,6 @@
 #pragma once
-
+#include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
 // ====================================================================================
 // USAGE: Kirby의 Ability 종속적인 States를 모아 정의해둔 States Group Class
 // ====================================================================================
@@ -25,11 +26,11 @@ public:
     virtual void IdleExit(){};
 
     virtual void Run(){};
-    virtual void RunEnter(){};
+    virtual void RunEnter();
     virtual void RunExit(){};
 
     virtual void RunStart(){};
-    virtual void RunStartEnter(){};
+    virtual void RunStartEnter();
     virtual void RunStartExit(){};
 
     virtual void Jump(){};
@@ -92,9 +93,9 @@ public:
     virtual void AttackCharge2RunEnter(){};
     virtual void AttackCharge2RunExit(){};
 
-    virtual void JumpAttack() = 0;
-    virtual void JumpAttackEnter() = 0;
-    virtual void JumpAttackExit() = 0;
+    virtual void JumpAttack(){};
+    virtual void JumpAttackEnter(){};
+    virtual void JumpAttackExit(){};
 
     //virtual void Throw();
 

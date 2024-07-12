@@ -247,6 +247,9 @@
     <ClInclude Include="CKirbyChangeAbilityEnd.h">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyAbility_Sword.h">
+      <Filter>State\KirbyAbility\Sword</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -506,6 +509,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAbility_Sword.cpp">
+      <Filter>State\KirbyAbility\Sword</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -787,6 +793,9 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeAbility\ChangeAbilityEnd">
       <UniqueIdentifier>{bf0bcba1-b3ca-4aa8-9d06-4e2569843b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Sword">
+      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
