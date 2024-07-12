@@ -422,6 +422,7 @@ call EngineCopy.bat</Command>
     </ClCompile>
     <ClCompile Include="CRenderMgr_init.cpp" />
     <ClCompile Include="CPhysics2DMaterial.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="disksample.hlsli" />

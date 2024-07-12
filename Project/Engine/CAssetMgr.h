@@ -115,6 +115,7 @@ private:
     friend class CDevice;
     friend class CRenderMgr;
     friend class COutliner;
+    friend class CModelEditor;
 };
 
 template <typename T>

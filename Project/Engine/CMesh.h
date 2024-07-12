@@ -56,6 +56,7 @@ public:
     void RemoveBoneSocket(int _BoneIndex, tBoneSocket* _BoneSocket);
 
     const vector<tBoneSocket*>& GetvecBoneSocket() const { return vecBoneSocket; }
+    tBoneSocket* GetBoneSocket(const wstring& _SocketName);
 
     CStructuredBuffer* GetBoneFrameDataBuffer() const { return m_pBoneFrameData; } // 전체 본 프레임 정보
     CStructuredBuffer* GetBoneOffsetBuffer() const { return m_pBoneOffset; }       // 각 뼈의 offset 행렬

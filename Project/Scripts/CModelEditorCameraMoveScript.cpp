@@ -32,8 +32,8 @@ void CModelEditorCameraMoveScript::tick()
     // 위치 초기화
     if (KEY_TAP(KEY::F))
     {
-        Transform()->SetRelativePos(Vec3(0.f, 250.f, -250.f));
-        Transform()->SetRelativeRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
+        Transform()->SetLocalPos(Vec3(0.f, 250.f, -250.f));
+        Transform()->SetLocalRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
     }
 
     // Move
@@ -52,7 +52,7 @@ void CModelEditorCameraMoveScript::MovePerspective()
     if (KEY_PRESSED(KEY::RBTN))
     {
         // Move
-        Vec3 vPos = Transform()->GetRelativePos();
+        Vec3 vPos = Transform()->GetLocalPos();
 
         Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
         Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
@@ -76,14 +76,14 @@ void CModelEditorCameraMoveScript::MovePerspective()
         if (KEY_PRESSED(KEY::Q))
             vPos += DT_ENGINE * m_CamSpeed * -vUp;
 
-        Transform()->SetRelativePos(vPos);
+        Transform()->SetLocalPos(vPos);
 
         // Drag
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        Vec3 vRot = Transform()->GetRelativeRotation();
+        Vec3 vRot = Transform()->GetLocalRotation();
         vRot.y += vDrag.x * XM_PI / 360.f;
         vRot.x += vDrag.y * XM_PI / 360.f;
-        Transform()->SetRelativeRotation(vRot);
+        Transform()->SetLocalRotation(vRot);
 
         // Camera speed
         short wheel = CKeyMgr::GetInst()->GetMouseWheel();
