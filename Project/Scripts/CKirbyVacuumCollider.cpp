@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CKirbyVacuumCollider.h"
 #include "CPlayerMgr.h"
+#include "CKirbyMoveController.h"
 #include "CMonsterUnitScript.h"
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
@@ -67,7 +68,7 @@ void CKirbyVacuumCollider::tick()
     if (m_bDrawing)
     {
         Vec3 Force = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-        Force = (Force).Normalize() * 40.f;
+        Force = (Force).Normalize() * 60.f;
         m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
     }
 }
@@ -101,6 +102,9 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (bChanged)
     {
+        PLAYERCTRL->LockJump();
+        PLAYERCTRL->LockDirection();
+        PLAYERCTRL->LockMove();
         PLAYERFSM->SetGlobalState(true);
 
         m_FindTarget = _OtherCollider->GetOwner();
@@ -117,6 +121,9 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
         return;
 
     m_bDrawing = false;
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->UnlockMove();
     PLAYERFSM->SetGlobalState(false);
 
     // Change Player State

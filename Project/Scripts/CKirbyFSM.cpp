@@ -92,6 +92,11 @@ CKirbyFSM::~CKirbyFSM()
             m_arrObject[i] = nullptr;
         }
     }
+
+    if (m_StuffedCopyObj)
+    {
+        delete m_StuffedCopyObj;
+    }
 }
 
 #include "CKirbyIdle.h"
