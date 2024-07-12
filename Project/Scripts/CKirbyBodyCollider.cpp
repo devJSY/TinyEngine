@@ -3,6 +3,7 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CKirbyVacuumCollider.h"
+#include "CKirbyUnitScript.h"
 
 CKirbyBodyCollider::CKirbyBodyCollider()
     : CScript(KIRBYBODYCOLLIDER)

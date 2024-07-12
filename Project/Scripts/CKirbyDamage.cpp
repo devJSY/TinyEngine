@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CKirbyDamage.h"
+#include "CPlayerMgr.h"
 
 CKirbyDamage::CKirbyDamage()
     : m_Acc(0.f)
@@ -24,6 +25,9 @@ void CKirbyDamage::Enter()
 {
     // 애니메이션 재생
     PLAYER->Animator()->Play(KIRBYANIM(L"Damage"), true, false, 1.f);
+    CPlayerMgr::SetPlayerFace(FaceType::Frown);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthAngryClose));
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();

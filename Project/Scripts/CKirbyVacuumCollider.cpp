@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CKirbyVacuumCollider.h"
 #include "CPlayerMgr.h"
+#include "CKirbyMoveController.h"
 #include "CMonsterUnitScript.h"
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
@@ -67,7 +68,7 @@ void CKirbyVacuumCollider::tick()
     if (m_bDrawing)
     {
         Vec3 Force = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-        Force = (Force).Normalize() * 40.f;
+        Force = (Force).Normalize() * 60.f;
         m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
     }
 }
@@ -75,8 +76,9 @@ void CKirbyVacuumCollider::tick()
 void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
     // 흡수할 수 있는 물체라면
-    // if (!_OtherCollider->GetOwner()->IsTagged(L"Eatable"))
-    //    return;
+    int i = _OtherCollider->GetOwner()->GetLayerIdx();
+    if (_OtherCollider->GetOwner()->GetLayerIdx() != LAYER_DYNAMIC && _OtherCollider->GetOwner()->GetLayerIdx() != LAYER_MONSTER)
+        return;
 
     bool TriggerEnable = GetOwner()->SphereCollider()->IsEnabled();
     bool bChanged = false;
@@ -100,6 +102,9 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (bChanged)
     {
+        PLAYERCTRL->LockJump();
+        PLAYERCTRL->LockDirection();
+        PLAYERCTRL->LockMove();
         PLAYERFSM->SetGlobalState(true);
 
         m_FindTarget = _OtherCollider->GetOwner();
@@ -116,6 +121,9 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
         return;
 
     m_bDrawing = false;
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->UnlockMove();
     PLAYERFSM->SetGlobalState(false);
 
     // Change Player State
@@ -156,31 +164,35 @@ void CKirbyVacuumCollider::EnableCollider(bool _bEnable)
 
 EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj)
 {
-    if (_pObj->GetScript<CKirbyCopyAbilityScript>())
+    if (_pObj->GetLayerIdx() == LAYER_DYNAMIC)
     {
-        _outAbility = _pObj->GetScript<CKirbyCopyAbilityScript>()->GetAbilityType();
-
-        if (_pObj->GetScript<CMonsterUnitScript>())
+        if (_pObj->GetScript<CKirbyCopyObjScript>())
         {
+            _outObj = _pObj->GetScript<CKirbyCopyObjScript>()->GetObjType();
+            return EatType::Copy_Object;
+        }
+        else if (_pObj->GetScript<CKirbyCopyAbilityScript>())
+        {
+            _outAbility = _pObj->GetScript<CKirbyCopyAbilityScript>()->GetAbilityType();
             return EatType::Copy_Ability;
         }
         else
         {
-            return EatType::Copy_Monster;
+            return EatType::Etc;
         }
     }
-    else if (_pObj->GetScript<CMonsterUnitScript>())
+
+    else if (_pObj->GetLayerIdx() == LAYER_MONSTER)
     {
-        return EatType::Monster;
-    }
-    else if (_pObj->GetScript<CKirbyCopyObjScript>())
-    {
-        _outObj = _pObj->GetScript<CKirbyCopyObjScript>()->GetObjType();
-        return EatType::Copy_Object;
-    }
-    else
-    {
-        return EatType::Etc;
+        if (_pObj->GetScript<CKirbyCopyAbilityScript>())
+        {
+            _outAbility = _pObj->GetScript<CKirbyCopyAbilityScript>()->GetAbilityType();
+            return EatType::Copy_Monster;
+        }
+        else
+        {
+            return EatType::Monster;
+        }
     }
 }
 
