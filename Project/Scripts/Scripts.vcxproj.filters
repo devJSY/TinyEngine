@@ -253,7 +253,9 @@
     <ClInclude Include="CKirbyAbility_Sword.h">
       <Filter>State\KirbyAbility\Sword</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyAttackEnd.h" />
+    <ClInclude Include="CKirbyAttackEnd.h">
+      <Filter>State\KirbyState\Attack\AttackEnd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -520,7 +522,9 @@
     <ClCompile Include="CKirbyAbility_Sword.cpp">
       <Filter>State\KirbyAbility\Sword</Filter>
     </ClCompile>
-    <ClCompile Include="CKirbyAttackEnd.cpp" />
+    <ClCompile Include="CKirbyAttackEnd.cpp">
+      <Filter>State\KirbyState\Attack\AttackEnd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
