@@ -5,6 +5,7 @@
 #include "CKirbyVacuumCollider.h"
 
 #include "CKirbyAbility_Normal.h"
+#include "CKirbyAbility_Fire.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -28,7 +29,7 @@ CKirbyFSM::CKirbyFSM()
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
-    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Normal();
+    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
