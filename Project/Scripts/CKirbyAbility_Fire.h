@@ -2,10 +2,26 @@
 #include "CKirbyAbility.h"
 class CKirbyAbility_Fire : public CKirbyAbility
 {
+private:
+    bool m_bFrmEnter;
+    float m_SavedSpeed;
+
 public:
-    virtual void Attack() override;
-    virtual void AttackEnter() override;
-    virtual void AttackExit() override;
+    virtual void AttackCharge1Start() override;
+    virtual void AttackCharge1StartEnter() override;
+    virtual void AttackCharge1StartExit() override;
+
+    virtual void AttackCharge1() override;
+    virtual void AttackCharge1Enter() override;
+    virtual void AttackCharge1Exit() override;
+
+    virtual void AttackCharge1End() override;
+    virtual void AttackCharge1EndEnter() override;
+    virtual void AttackCharge1EndExit() override;
+
+    virtual void AttackCharge1Run() override;
+    virtual void AttackCharge1RunEnter() override;
+    virtual void AttackCharge1RunExit() override;
 
     virtual void JumpAttack() override;
     virtual void JumpAttackEnter() override;

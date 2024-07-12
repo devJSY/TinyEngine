@@ -37,7 +37,21 @@ void CKirbyJumpFall::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE:
+        case AbilityCopyType::FIRE: 
+        {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_CHARGE1_START");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+        }
             break;
         case AbilityCopyType::RANGER:
             break;

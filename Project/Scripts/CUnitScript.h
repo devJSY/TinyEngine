@@ -57,7 +57,7 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
-    CUnitScript* Clone() = 0;
+    virtual CUnitScript* Clone() = 0;
 
 public:
     CUnitScript(UINT _Type);
