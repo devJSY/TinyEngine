@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "CKirbyAttack.h"
+#include "CKirbyAttackEnd.h"
 
-CKirbyAttack::CKirbyAttack()
+CKirbyAttackEnd::CKirbyAttackEnd()
 {
 }
 
-CKirbyAttack::~CKirbyAttack()
+CKirbyAttackEnd::~CKirbyAttackEnd()
 {
 }
 
-void CKirbyAttack::tick()
+void CKirbyAttackEnd::tick()
 {
     PLAY_CURSTATE(Attack)
 
@@ -21,7 +21,9 @@ void CKirbyAttack::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: {
+        case AbilityCopyType::NORMAL:
+        break;
+        case AbilityCopyType::FIRE: {
             if (PLAYER->Animator()->IsFinish())
             {
                 if (PLAYERCTRL->GetInput().Length() != 0.f)
@@ -35,13 +37,6 @@ void CKirbyAttack::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE: {
-            if (PLAYER->Animator()->IsFinish())
-            {
-                ChangeState(L"ATTACK_END");
-            }
-        }
-        break;
         case AbilityCopyType::RANGER:
             break;
         case AbilityCopyType::SWORD:
@@ -50,12 +45,10 @@ void CKirbyAttack::tick()
     }
 }
 
-void CKirbyAttack::Enter()
+void CKirbyAttackEnd::Enter()
 {
-    PLAY_CURSTATE(AttackEnter)
 }
 
-void CKirbyAttack::Exit()
+void CKirbyAttackEnd::Exit()
 {
-    PLAY_CURSTATE(AttackExit)
 }

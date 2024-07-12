@@ -3,11 +3,19 @@
 
 class CKirbyAbility_Sword : public CKirbyAbility
 {
+private:
+    float   m_ComboTime;
+    bool    m_bFrmEnter;
+
 public:
     // Ä®ÈÖµÎ¸£±â (Lv1)
     virtual void Attack();
     virtual void AttackEnter();
     virtual void AttackExit();
+
+    virtual void AttackEnd();
+    virtual void AttackEndEnter();
+    virtual void AttackEndExit();
 
     // 
     //virtual void AttackCharge2();

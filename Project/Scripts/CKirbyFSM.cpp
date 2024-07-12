@@ -110,6 +110,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyHoveringLanding.h"
 #include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
+#include "CKirbyAttackEnd.h"
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
 #include "CKirbyAttackCharge1End.h"
@@ -164,6 +165,7 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_LANDING", new CKirbyHoveringLanding);
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_END", new CKirbyAttackEnd);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
     AddState(L"ATTACK_CHARGE1_END", new CKirbyAttackCharge1End);
