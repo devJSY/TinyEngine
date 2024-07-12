@@ -49,18 +49,14 @@ private:
     Vec3                        m_Accel;
     float                       m_Speed;
     float                       m_MaxSpeed;
+    float                       m_RotSpeed;
     float                       m_Friction; // ¸¶Âû·Â °è¼ö
     float                       m_JumpPower;
     float                       m_Gravity;
 
     float                       m_HoveringLimitHeight;
     float                       m_HoveringMinSpeed;
-
-    float                       m_RayCastDist;
-    float                       m_RotSpeed;
-
     float                       m_HoveringHeight;
-
 
 private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);

@@ -19,9 +19,8 @@ CKirbyMoveController::CKirbyMoveController()
     , m_Speed(10.f)
     , m_MaxSpeed(15.f)
     , m_RotSpeed(50.f)
-    , m_JumpPower(1000.f)
-    , m_RayCastDist(2.f)
-    , m_Gravity(-50.f)
+    , m_JumpPower(10.f)
+    , m_Gravity(-20.f)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -47,12 +46,11 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_MoveDir{0.f, 0.f, 0.f}
     , m_GroundNormal{0.f, 1.f, 0.f}
     , m_MoveVelocity{}
-    , m_Speed(10.f)
-    , m_MaxSpeed(15.f)
+    , m_Speed(_Origin.m_Speed)
+    , m_MaxSpeed(_Origin.m_MaxSpeed)
     , m_RotSpeed(_Origin.m_RotSpeed)
-    , m_JumpPower(1000.f)
-    , m_RayCastDist(2.f)
-    , m_Gravity(-50.f)
+    , m_JumpPower(_Origin.m_JumpPower)
+    , m_Gravity(_Origin.m_Gravity)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -86,6 +84,8 @@ void CKirbyMoveController::begin()
     //@TODO UNIT쪽에서 받아오기
     //m_Speed = PLAYERUNIT->GetCurInfo().Speed;
     //m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
+    m_Speed = 10.f;
+    m_JumpPower = 10.f;
     m_RotSpeed = 50.f;
     m_Gravity = -20.f;
 }
