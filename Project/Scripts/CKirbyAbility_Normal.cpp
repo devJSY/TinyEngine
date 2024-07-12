@@ -65,14 +65,14 @@ void CKirbyAbility_Normal::Attack()
         {
             CGameObject* BulletInst = BulletPref->Instantiate();
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
-            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f * PLAYER->Transform()->GetRelativeScale();
-            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP) * 2.f * PLAYER->Transform()->GetRelativeScale();
+            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f * PLAYER->Transform()->GetLocalScale();
+            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP) * 2.f * PLAYER->Transform()->GetLocalScale();
 
             if (PLAYERFSM->GetStuffedCopyObj()->MeshRender())
             {
                 BulletInst->AddComponent(PLAYERFSM->GetStuffedCopyObj()->MeshRender()->Clone());
             }
-            BulletInst->Transform()->SetRelativePos(InitPos);
+            BulletInst->Transform()->SetLocalPos(InitPos);
             GamePlayStatic::SpawnGameObject(BulletInst, LAYER_PLAYERATK);
 
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();

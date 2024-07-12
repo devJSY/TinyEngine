@@ -43,9 +43,6 @@
     <ClInclude Include="CKirbyMoveController.h">
       <Filter>Scripts\Character\Kirby\MoveController</Filter>
     </ClInclude>
-    <ClInclude Include="CAnimationTestScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CModelEditorCameraMoveScript.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
@@ -238,6 +235,9 @@
     <ClInclude Include="CUIUnitManagerScript.h">
       <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
     </ClInclude>
+    <ClInclude Include="CEngineTestScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyAbility_Fire.h">
       <Filter>State\KirbyAbility\Fire</Filter>
     </ClInclude>
@@ -293,9 +293,6 @@
     </ClCompile>
     <ClCompile Include="CKirbyMoveController.cpp">
       <Filter>Scripts\Character\Kirby\MoveController</Filter>
-    </ClCompile>
-    <ClCompile Include="CAnimationTestScript.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyObject.cpp">
       <Filter>Module\StateGroup\KirbyObject</Filter>
@@ -500,6 +497,9 @@
     </ClCompile>
     <ClCompile Include="CUIUnitManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CEngineTestScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility_Fire.cpp">
       <Filter>State\KirbyAbility\Fire</Filter>

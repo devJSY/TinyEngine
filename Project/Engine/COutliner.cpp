@@ -308,7 +308,7 @@ void COutliner::render()
             Vec3 pos = pCam->Transform()->GetWorldPos();
             Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
             pos += dir.Normalize() * 5.f;
-            pObj->Transform()->SetRelativePos(pos);
+            pObj->Transform()->SetLocalPos(pos);
 
             GamePlayStatic::SpawnGameObject(pObj, 0);
         }
@@ -354,7 +354,7 @@ void COutliner::render()
                 Vec3 pos = pCam->Transform()->GetWorldPos();
                 Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 pos += dir.Normalize() * 5.f;
-                pObj->Transform()->SetRelativePos(pos);
+                pObj->Transform()->SetLocalPos(pos);
 
                 GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
             }
@@ -511,11 +511,6 @@ void COutliner::DrawNode(CGameObject* obj)
 
                         if (nullptr != pInstObj)
                         {
-                            // 원점 설정
-                            pInstObj->Transform()->SetRelativePos(obj->Transform()->GetWorldPos());
-                            pInstObj->Transform()->SetRelativeRotation(obj->Transform()->GetWorldRotation());
-
-                            pInstObj->Transform()->SetAbsolute(false);
                             GamePlayStatic::AddChildObject(obj, pInstObj, BoneSocket);
                         }
                     }
@@ -678,19 +673,19 @@ void COutliner::DrawTransform(CGameObject* obj)
 
     if (open)
     {
-        Vec3 pos = pTr->GetRelativePos();
-        ImGui_DrawVec3Control("Location", pos, 1.f);
-        pTr->SetRelativePos(pos);
+        Vec3 pos = pTr->GetLocalPos();
+        ImGui_DrawVec3Control("Position", pos, 1.f);
+        pTr->SetLocalPos(pos);
 
-        Vec3 rot = pTr->GetRelativeRotation();
+        Vec3 rot = pTr->GetLocalRotation();
         rot.ToDegree();
         ImGui_DrawVec3Control("Rotation", rot, DirectX::XMConvertToRadians(15.f));
         rot.ToRadian();
-        pTr->SetRelativeRotation(rot);
+        pTr->SetLocalRotation(rot);
 
-        Vec3 scale = pTr->GetRelativeScale();
+        Vec3 scale = pTr->GetLocalScale();
         ImGui_DrawVec3Control("Scale", scale, 1.f, 1.f, D3D11_FLOAT32_MAX, 1.f);
-        pTr->SetRelativeScale(scale);
+        pTr->SetLocalScale(scale);
 
         ImGui::Spacing();
 
@@ -1212,7 +1207,7 @@ void COutliner::DrawCamera(CGameObject* obj)
                     pCam->SetProjType((PROJ_TYPE)i);
 
                     // Rotation 초기화
-                    obj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+                    obj->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
                 }
 
                 if (isSelected)
@@ -2140,7 +2135,17 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                 {
                     string name = (char*)payload->Data;
                     name.resize(payload->DataSize);
-                    pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
+                    std::filesystem::path AssetPath = name;
+
+                    if (L".mdat" == AssetPath.extension())
+                    {
+                        pMeshRender->SetMeshData(CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(name)));
+                    }
+                    else
+                    {
+                        pMeshRender->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(ToWstring(name)));
+                    }
+
                     pMesh = pMeshRender->GetMesh();
                 }
 
@@ -2705,6 +2710,7 @@ void COutliner::DrawSkybox(CGameObject* obj)
         };
 
         static string CurShape = SkyBoxShapes[(UINT)pSkyBox->GetSkyBoxShape()];
+        CurShape = SkyBoxShapes[(UINT)pSkyBox->GetSkyBoxShape()];
         if (ImGui_ComboUI(ImGui_LabelPrefix("SkyBox Shape").c_str(), CurShape, SkyBoxShapes))
         {
             if (SkyBoxShapes[0] == CurShape)

@@ -262,7 +262,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         AddAsset(L"Std2DShader", pShader);
     }
 
-     // =================================
+    // =================================
     // UIHPShader
     // =================================
     {
@@ -281,7 +281,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"UIHPShader");
         AddAsset(L"UIHPShader", pShader);
     }
-
 
     // =================================
     // Std2DLightShader
@@ -938,8 +937,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
 
-        pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
-
         pShader->SetName(L"SkyBoxShader");
         AddAsset(L"SkyBoxShader", pShader);
     }
@@ -957,8 +954,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
-
-        pShader->AddTexParam(TEXCUBE_0, "CubeMap Texture");
 
         pShader->SetName(L"SkyBoxShader_V2");
         AddAsset(L"SkyBoxShader_V2", pShader);

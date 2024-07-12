@@ -71,6 +71,7 @@ using namespace DirectX::SimpleMath;
 typedef Vector2 Vec2;
 typedef Vector3 Vec3;
 typedef Vector4 Vec4;
+typedef Quaternion Quat;
 
 // ImGui
 #ifndef IMGUI_DEFINE_MATH_OPERATORS

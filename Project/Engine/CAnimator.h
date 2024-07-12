@@ -58,7 +58,7 @@ public:
     void Play(const wstring& _strClipName, bool _bRepeat = true, bool _bReverse = false, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
-    bool IsValid();
+    bool IsValid() const { return nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh(); };
 
 public:
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
