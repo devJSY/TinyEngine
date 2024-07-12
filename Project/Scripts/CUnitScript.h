@@ -24,9 +24,9 @@ struct UnitInfo
 struct UnitHit
 {
     DAMAGE_TYPE Type;
-    float       Damage;
-    float       Duration;
-    float       Acc;
+    float Damage;
+    float Duration;
+    float Acc;
 };
 
 class CUnitScript : public CScript
@@ -38,8 +38,8 @@ protected:
 
 public:
     virtual void tick() override;
-    virtual void AttackReward() {}              // Atk: Unit의 Attack에 따른 보상 처리 (흡혈효과 등)
-    virtual void GetDamage(UnitHit _Damage);    // Hit: Unit의 Hit에 따른 패널티 처리 (HP감소 등)
+    virtual void AttackReward() {}           // Atk: Unit의 Attack에 따른 보상 처리 (흡혈효과 등)
+    virtual void GetDamage(UnitHit _Damage); // Hit: Unit의 Hit에 따른 패널티 처리 (HP감소 등)
 
 private:
     void DamageProc();
@@ -48,11 +48,17 @@ protected:
     void SetInfo(UnitInfo _Info) { m_CurInfo = _Info; }
 
 public:
+    const UnitInfo& GetPrevInfo() { return m_PrevInfo; }
+    const UnitInfo& GetCurInfo() { return m_CurInfo; }
+    const bool IsGetDamage() { return m_PrevInfo.HP - m_CurInfo.HP >= 0.1f ? true : false; }
+
+public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
     CUnitScript* Clone() = 0;
-public: 
+
+public:
     CUnitScript(UINT _Type);
     virtual ~CUnitScript();
 };

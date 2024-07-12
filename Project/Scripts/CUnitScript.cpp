@@ -6,6 +6,8 @@ CUnitScript::CUnitScript(UINT _Type)
     , m_PrevInfo{}
     , m_CurInfo{}
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "MAXHP");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "CURHP");
 }
 
 CUnitScript::~CUnitScript()
@@ -63,7 +65,6 @@ void CUnitScript::DamageProc()
     }
 
     m_CurInfo.HP -= CurDamage;
-
 }
 
 void CUnitScript::SaveToLevelFile(FILE* _File)

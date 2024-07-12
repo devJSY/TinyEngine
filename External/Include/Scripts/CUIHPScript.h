@@ -1,11 +1,14 @@
 #pragma once
 #include <Engine/CScript.h>
 
+class CUnitScript;
 class CUIHPScript : public CScript
 {
 private:
     vector<CGameObject*> m_pSlicingObjects;
-    CGameObject* m_pTargetObject;
+    string m_TargetName;
+    
+    CUnitScript* m_pUnitScript;
 
     CTransform* m_pTr;
     CMeshRender* m_pRenderer;
