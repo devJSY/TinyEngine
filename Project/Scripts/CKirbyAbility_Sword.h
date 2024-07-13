@@ -63,6 +63,9 @@ public:
     virtual void AttackCharge3EndEnter();
     virtual void AttackCharge3EndExit();
 
+    // 점프
+    virtual void JumpFallEnter();
+
     // 점프공격
      virtual void JumpAttack();
      virtual void JumpAttackEnter();
@@ -84,6 +87,11 @@ public:
      virtual void SlideEnd();
      virtual void SlideEndEnter();
      virtual void SlideEndExit();
+
+     // 슬라이드 콤보공격
+     virtual void SlideAttack();
+     virtual void SlideAttackEnter();
+     virtual void SlideAttackExit();
 
     // 변신 돌입
     virtual void ChangeAbility();

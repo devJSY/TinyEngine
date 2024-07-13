@@ -169,6 +169,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyMoveController.h" />
     <ClInclude Include="CKirbyObject.h" />
     <ClInclude Include="CKirbyRun.h" />
+    <ClInclude Include="CKirbySlideAttack.h" />
     <ClInclude Include="CKirbySlideEnd.h" />
     <ClInclude Include="CKirbySlideStart.h" />
     <ClInclude Include="CKirbyStuffed.h" />
@@ -268,6 +269,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyObject.cpp" />
     <ClCompile Include="CKirbyRun.cpp" />
     <ClCompile Include="CKirbyRunStart.cpp" />
+    <ClCompile Include="CKirbySlideAttack.cpp" />
     <ClCompile Include="CKirbyStuffedEat.cpp" />
     <ClCompile Include="CKirbyUnitScript.cpp" />
     <ClCompile Include="CKirbySlideEnd.cpp" />

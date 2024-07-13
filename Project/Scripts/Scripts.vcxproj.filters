@@ -289,6 +289,9 @@
     <ClInclude Include="CKirbyJumpAttackStart.h">
       <Filter>State\KirbyState\JumpAttack\Start</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbySlideAttack.h">
+      <Filter>State\KirbyState\Slide\SlideAttack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -590,6 +593,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyJumpAttackStart.cpp">
       <Filter>State\KirbyState\JumpAttack\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySlideAttack.cpp">
+      <Filter>State\KirbyState\Slide\SlideAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -913,6 +919,9 @@
     </Filter>
     <Filter Include="State\KirbyState\JumpAttack\Start">
       <UniqueIdentifier>{e102a6b7-0228-4d21-9951-db5f7292df7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Slide\SlideAttack">
+      <UniqueIdentifier>{3a74583b-c253-4812-9236-6efa2281fdb4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

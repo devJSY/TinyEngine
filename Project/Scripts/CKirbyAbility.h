@@ -64,6 +64,10 @@ public:
     virtual void SlideEndEnter();
     virtual void SlideEndExit(){};
 
+    virtual void SlideAttack(){};
+    virtual void SlideAttackEnter(){};
+    virtual void SlideAttackExit(){};
+
     //virtual void Evasiveness();
 
     virtual void Attack() = 0;

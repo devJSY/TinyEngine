@@ -377,6 +377,15 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 // ===============
 // Jump Attack
 // ===============
+// Á¡ÇÁ 
+void CKirbyAbility_Sword::JumpFallEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"JumpFall"), false, false, 2.5f, 0.3f);
+}
+
+// ===============
+// Jump Attack
+// ===============
 // Á¡ÇÁ ½ºÇÉ°ø°Ý
 
 void CKirbyAbility_Sword::JumpAttack()
@@ -469,6 +478,48 @@ void CKirbyAbility_Sword::SlideEndEnter()
 
 void CKirbyAbility_Sword::SlideEndExit()
 {
+}
+
+// ===============
+// Slide Attack
+// ===============
+// ½½¶óÀÌµå ÄÞº¸°ø°Ý
+
+void CKirbyAbility_Sword::SlideAttack()
+{
+    if (PLAYER->Animator()->IsFinish() && m_bFrmEnter)
+    {
+        if (PLAYERCTRL->GetVelocity().y > 0.f)
+        {
+            PLAYERCTRL->ClearVelocityY();
+        }
+
+        m_bFrmEnter = false;
+    }
+}
+
+void CKirbyAbility_Sword::SlideAttackEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"UpwardSlash"), false, false, 2.f);
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
+    //@Effect Ä®³¡ ±ËÀû¼±
+
+    PLAYERCTRL->AddVelocity(Vec3(0, 30, 0));
+    m_PrevGravity = PLAYERCTRL->GetGravity();
+    PLAYERCTRL->SetGravity(-100.f);
+
+    m_bFrmEnter = true;
+}
+
+void CKirbyAbility_Sword::SlideAttackExit()
+{
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->SetGravity(m_PrevGravity);
+    if (PLAYERCTRL->GetVelocity().y > 0.f)
+    {
+        PLAYERCTRL->ClearVelocityY();
+    }
 }
 
 // ===============

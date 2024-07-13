@@ -32,7 +32,14 @@ void CKirbySlide::tick()
     }
     break;
     case AbilityCopyType::SWORD: {
-        if (m_Acc > m_Duration)
+        if (KEY_TAP(KEY_JUMP) || KEY_PRESSED(KEY_JUMP))
+        {
+            if (m_Acc >= 0.2f)
+            {
+                ChangeState(L"SLIDE_ATTACK");
+            }
+        }
+        else if (m_Acc > m_Duration)
         {
             ChangeState(L"SLIDE_END");
         }
