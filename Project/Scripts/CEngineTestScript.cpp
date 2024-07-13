@@ -27,6 +27,7 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
+    AnimatorTest();
     // QuaternionExample();
 
     //// Bullet Test
@@ -42,6 +43,27 @@ void CEngineTestScript::tick()
     //        GamePlayStatic::SpawnGameObject(pBullet, 0);
     //    }
     //}
+}
+
+void CEngineTestScript::AnimatorTest()
+{
+    if (!Animator())
+        return;
+
+    if (KEY_TAP(KEY::NUM0))
+    {
+        Animator()->Play(L"Armature|Copy", true, false, 2.5f, 0.f);
+    }
+
+    if (KEY_TAP(KEY::NUM1))
+    {
+        Animator()->Play(L"Armature|Copy", true, false, 2.5f, 0.1f);
+    }
+
+    if (KEY_TAP(KEY::NUM2))
+    {
+        Animator()->Play(L"Armature|Copy", true, false, 2.5f, 1.0f);
+    }
 }
 
 void CEngineTestScript::QuaternionExample()

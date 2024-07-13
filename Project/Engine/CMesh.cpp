@@ -11,6 +11,7 @@
 #include "CInstancingBuffer.h"
 
 #include "CTexture.h"
+#include "CAnimator.h"
 
 CMesh::CMesh(bool _bEngineAsset)
     : CAsset(ASSET_TYPE::MESH, _bEngineAsset)
@@ -151,6 +152,167 @@ tBoneSocket* CMesh::GetBoneSocket(const wstring& _SocketName)
     }
 
     return nullptr;
+}
+
+bool CMesh::LoadAnimationFBX(const wstring& _strPath)
+{
+    CFBXLoader loader;
+    loader.init();
+    loader.LoadFbx(_strPath);
+
+    // 메쉬 가져오기
+    Ptr<CMesh> pAinmMesh = CMesh::CreateFromContainer(loader);
+
+    // 예외처리
+    if (nullptr == pAinmMesh)
+    {
+        MessageBox(nullptr, L"Mesh가 존재하지 않습니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return false;
+    }
+    if (!pAinmMesh->IsAnimMesh())
+    {
+        MessageBox(nullptr, L"애니메이션 Mesh가 아닙니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return false;
+    }
+    if (GetBoneCount() != pAinmMesh->GetBoneCount())
+    {
+        MessageBox(nullptr, L"동일한 Bone이 아닙니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return false;
+    }
+
+    // 동일한 본 여부 체크
+    const vector<tMTBone>& vecBones = *pAinmMesh->GetBones();
+    for (UINT i = 0; i < (UINT)vecBones.size(); ++i)
+    {
+        if (m_vecBones[i].strBoneName != vecBones[i].strBoneName)
+        {
+            MessageBox(nullptr, L"동일한 Bone이 아닙니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+            return false;
+        }
+    }
+
+    // 애니메이션 클립 이어붙이기
+    vector<tMTAnimClip>& vecAnimClip = const_cast<vector<tMTAnimClip>&>(*pAinmMesh->GetAnimClip());
+    std::map<wstring, tMTAnimClip*> mapAnimClip;
+    vector<tMTAnimClip*> vecOriginAnimClip;
+
+    // 같은 이름의 애니메이션 삭제
+    for (UINT i = 0; i < (UINT)m_vecAnimClip.size(); ++i)
+    {
+        mapAnimClip.insert(make_pair(m_vecAnimClip[i].strAnimName, &m_vecAnimClip[i]));
+    }
+
+    for (UINT i = 0; i < (UINT)vecAnimClip.size(); ++i)
+    {
+        auto iter = mapAnimClip.insert(make_pair(vecAnimClip[i].strAnimName, &vecAnimClip[i]));
+
+        // 중복된 이름이 존재하지 않았다
+        if (iter.second)
+        {
+            vecOriginAnimClip.push_back(&vecAnimClip[i]);
+        }
+    }
+
+    // 추가할 애니메이션이 존재하지 않았다.
+    if (vecOriginAnimClip.empty())
+    {
+        return false;
+    }
+
+    UINT iFrameCount = 0;
+    UINT OffsetFrame = 1 + m_vecAnimClip.back().iEndFrame;
+    for (UINT i = 0; i < (UINT)vecOriginAnimClip.size(); ++i)
+    {
+        tMTAnimClip& AnimClip = *vecOriginAnimClip[i];
+
+        // 키프레임 이어붙이기
+        for (UINT j = AnimClip.iStartFrame; j <= (UINT)AnimClip.iEndFrame; ++j)
+        {
+            for (UINT k = 0; k < (UINT)vecBones.size(); ++k)
+            {
+                UINT FrameOffset = (UINT)m_vecBones[k].vecKeyFrame.size();
+
+                // 프레임 데이터가 없는 Bone인 경우
+                if (0 == FrameOffset)
+                    continue;
+
+                tMTKeyFrame KeyFrame = vecBones[k].vecKeyFrame[j];
+                KeyFrame.iFrame = (UINT)m_vecBones[k].vecKeyFrame.size();
+                m_vecBones[k].vecKeyFrame.push_back(KeyFrame);
+
+                iFrameCount = max(iFrameCount, (UINT)m_vecBones[k].vecKeyFrame.size());
+            }
+        }
+
+        // 애니메이션 이어붙이기
+        AnimClip.iStartFrame = OffsetFrame;
+        AnimClip.iEndFrame = OffsetFrame + AnimClip.iFrameLength - 1;
+
+        double FrameRate = FbxTime::GetFrameRate(AnimClip.eMode);
+        AnimClip.dStartTime = AnimClip.iStartFrame / FrameRate;
+        AnimClip.dEndTime = AnimClip.iEndFrame / FrameRate;
+        AnimClip.dTimeLength = AnimClip.dEndTime - AnimClip.dStartTime;
+
+        m_vecAnimClip.push_back(AnimClip);
+
+        OffsetFrame = 1 + AnimClip.iEndFrame;
+    }
+
+    // BoneFrame 행렬 재생성
+    vector<tFrameTrans> vecFrameTrans;
+    vecFrameTrans.resize((UINT)m_vecBones.size() * iFrameCount);
+
+    for (size_t i = 0; i < m_vecBones.size(); ++i)
+    {
+        for (size_t j = 0; j < m_vecBones[i].vecKeyFrame.size(); ++j)
+        {
+            vecFrameTrans[(UINT)m_vecBones.size() * j + i] =
+                tFrameTrans{Vec4(m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f), Vec4(m_vecBones[i].vecKeyFrame[j].vScale, 0.f),
+                            m_vecBones[i].vecKeyFrame[j].qRot};
+        }
+    }
+
+    if (nullptr != m_pBoneFrameData)
+    {
+        delete m_pBoneFrameData;
+        m_pBoneFrameData = nullptr;
+    }
+
+    m_pBoneFrameData = new CStructuredBuffer;
+    m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
+
+    // 원본 매시를 참조하고 있던 Animator 재설정
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+
+        for (const auto& ParentObj : vecParentObj)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(ParentObj);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+
+                for (size_t i = 0; i < vecChildObj.size(); ++i)
+                {
+                    queue.push_back(vecChildObj[i]);
+                }
+
+                if (nullptr != pObject->Animator() && this == pObject->Animator()->GetSkeletalMesh())
+                {
+                    pObject->Animator()->SetSkeletalMesh(this);
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 CMesh* CMesh::CreateFromContainer(CFBXLoader& _loader)

@@ -421,7 +421,6 @@ void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
     m_FrameIdx = 0;
     m_NextFrameIdx = 0;
     m_Ratio = 0.;
-    m_BoneTransformMat.clear();
     m_bFinalMatUpdate = false;
     m_bChanging = false;
     m_CurChangeTime = 0.f;
@@ -499,6 +498,44 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse,
     if (-1 == ClipIndex)
         return;
 
+    // Change Duration이 0이면 애니메이션 즉시 전환
+    if (_ChangeDuration <= 0.f)
+    {
+        // 애니메이션 재생 설정
+        m_bRepeat = _bRepeat;
+        m_bReverse = _bReverse;
+        m_PlaySpeed = _PlaySpeed;
+
+        SetCurClipIdx(ClipIndex);
+
+        // 초기화
+        m_bChanging = false;
+        m_CurChangeTime = 0.;
+        m_ChangeDuration = 0.;
+        m_NextClipIdx = -1;
+        m_bNextRepeat = true;
+        m_bNextReverse = false;
+        m_NextPlaySpeed = 1.f;
+
+        // 이번 프레임 애니메이션 설정
+        if (m_bReverse)
+        {
+            m_vecClipUpdateTime[m_CurClipIdx] = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength; // 애니메이션의 마지막부터 시작
+            m_NextFrameIdx = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iEndFrame;
+        }
+        else
+        {
+            m_vecClipUpdateTime[m_CurClipIdx] = 0.f; // 애니메이션의 처음부터 시작
+            m_NextFrameIdx = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame;
+        }
+
+        m_FrameIdx = m_NextFrameIdx;
+        m_NextFrameIdx = m_NextFrameIdx;
+        m_Ratio = 0.;
+
+        return;
+    }
+
     m_bChanging = true;
     m_CurChangeTime = 0.;
     m_ChangeDuration = _ChangeDuration;
@@ -508,7 +545,7 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse,
     m_NextPlaySpeed = _PlaySpeed;
 
     // 역재생
-    if (m_bNextRepeat)
+    if (m_bNextReverse)
     {
         m_NextFrameIdx = m_SkeletalMesh->GetAnimClip()->at(m_NextClipIdx).iEndFrame;
     }
