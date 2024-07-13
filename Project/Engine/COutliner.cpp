@@ -2187,9 +2187,22 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                     ImGui_InputText(ToString(pMesh->GetIBName(i)).c_str(), CurMtrlname);
 
                     // Drag & Drop
+                    if (ImGui::BeginDragDropSource())
+                    {
+                        ImGui::Text("%s", CurMtrlname.c_str(), CurMtrlname.size());
+
+                        ImGui::SetDragDropPayload("MESHRENDER_MATERIAL", CurMtrlname.c_str(), CurMtrlname.size());
+                        ImGui::EndDragDropSource();
+                    }
+
+                    // Drag & Drop
                     if (ImGui::BeginDragDropTarget())
                     {
-                        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS");
+                        if (!payload)
+                            payload = ImGui::AcceptDragDropPayload("MESHRENDER_MATERIAL");
+
+                        if (payload)
                         {
                             string name = (char*)payload->Data;
                             name.resize(payload->DataSize);
