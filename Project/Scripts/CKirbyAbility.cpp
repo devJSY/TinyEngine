@@ -84,3 +84,18 @@ void CKirbyAbility::LandingEndExit()
 {
     PLAYERCTRL->UnlockJump();
 }
+
+void CKirbyAbility::SlideEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Slide"), false);
+}
+
+void CKirbyAbility::SlideStartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SlideStart"), false);
+}
+
+void CKirbyAbility::SlideEndEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SlideEnd"), false);
+}

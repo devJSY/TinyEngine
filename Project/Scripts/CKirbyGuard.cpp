@@ -88,7 +88,7 @@ void CKirbyGuard::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
-    PLAYERCTRL->SetFriction(0.1f);
+    PLAYERCTRL->SetFriction(5.f);
     PLAYERCTRL->SetGuard(true);
 
     // DodgeType reset

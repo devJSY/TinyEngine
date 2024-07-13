@@ -283,6 +283,12 @@
     <ClInclude Include="CKirbyAttackCharge3Start.h">
       <Filter>State\KirbyState\AttackCharge3\Start</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyJumpAttack.h">
+      <Filter>State\KirbyState\JumpAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyJumpAttackStart.h">
+      <Filter>State\KirbyState\JumpAttack\Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -578,6 +584,12 @@
     </ClCompile>
     <ClCompile Include="CKirbyAttackCharge3Start.cpp">
       <Filter>State\KirbyState\AttackCharge3\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyJumpAttack.cpp">
+      <Filter>State\KirbyState\JumpAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyJumpAttackStart.cpp">
+      <Filter>State\KirbyState\JumpAttack\Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -895,6 +907,12 @@
     </Filter>
     <Filter Include="State\KirbyState\AttackCharge3\End">
       <UniqueIdentifier>{78504f1f-5319-423f-b24c-3e34e4425b6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\JumpAttack">
+      <UniqueIdentifier>{84439ae4-9b0d-4e01-b999-2aeb5e2c7958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\JumpAttack\Start">
+      <UniqueIdentifier>{e102a6b7-0228-4d21-9951-db5f7292df7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -43,14 +43,7 @@ void CKirbyJumpFall::tick()
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                UINT Combo = PLAYERFSM->GetComboLevel();
-
-                if (Combo == 0)
-                    ChangeState(L"ATTACK");
-                else if (Combo == 1)
-                    ChangeState(L"ATTACK_COMBO1");
-                else if (Combo == 2)
-                    ChangeState(L"ATTACK_COMBO2");
+                ChangeState(L"JUMP_ATTACK_START");
             }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {

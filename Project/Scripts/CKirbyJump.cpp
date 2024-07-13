@@ -48,7 +48,7 @@ void CKirbyJump::tick()
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                //ChangeState(L"ATTACK_CHARGE1_START");
+                ChangeState(L"JUMP_ATTACK_START");
             }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {

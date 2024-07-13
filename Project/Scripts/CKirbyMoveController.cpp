@@ -227,16 +227,14 @@ void CKirbyMoveController::Move()
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
     //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
 
-    float a = CharacterController()->GetHeight() / 2.f - CharacterController()->GetRadius();
-
-    if (Hit.pCollisionObj && Hit.Distance <= 0.1f)
-    {
-        bGrounded = true;
-    }
-    else
-    {
-        bGrounded = false;
-    }
+    //if (Hit.pCollisionObj && Hit.Distance <= 0.1f)
+    //{
+    //    bGrounded = true;
+    //}
+    //else
+    //{
+    //    bGrounded = false;
+    //}
 
     if (PLAYERFSM->IsHovering())
     {
@@ -255,8 +253,8 @@ void CKirbyMoveController::Move()
 
     if (m_bActiveFriction)
     {
-        m_Accel.x = -m_MoveVelocity.x * m_Friction;
-        m_Accel.z = -m_MoveVelocity.z * m_Friction;
+        m_Accel.x = -m_MoveVelocity.x * m_Friction * DT;
+        m_Accel.z = -m_MoveVelocity.z * m_Friction * DT;
 
         m_MoveVelocity.x += m_Accel.x;
         m_MoveVelocity.z += m_Accel.z;

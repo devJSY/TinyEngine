@@ -112,6 +112,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyJump.h"
 #include "CKirbyJumpStart.h"
 #include "CKirbyJumpFall.h"
+#include "CKirbyJumpAttack.h"
+#include "CKirbyJumpAttackStart.h"
 #include "CKirbyLanding.h"
 #include "CKirbyLandingEnd.h"
 #include "CKirbyHovering.h"
@@ -177,6 +179,8 @@ void CKirbyFSM::begin()
     AddState(L"JUMP", new CKirbyJump);
     AddState(L"JUMP_START", new CKirbyJumpStart);
     AddState(L"JUMP_FALL", new CKirbyJumpFall);
+    AddState(L"JUMP_ATTACK", new CKirbyJumpAttack);
+    AddState(L"JUMP_ATTACK_START", new CKirbyJumpAttackStart);
     AddState(L"LANDING", new CKirbyLanding);
     AddState(L"LANDING_END", new CKirbyLandingEnd);
     AddState(L"HOVERING", new CKirbyHovering);

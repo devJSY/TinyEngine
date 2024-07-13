@@ -5,6 +5,8 @@ class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
     float   m_PrevSpeed;
+    float   m_PrevRotSpeed;
+    float   m_PrevGravity;
     bool    m_bFrmEnter;
 
 public:
@@ -49,22 +51,39 @@ public:
     virtual void AttackCharge2StartExit();
 
     // 대검찍기 (Lv3)
-     virtual void AttackCharge3();
-     virtual void AttackCharge3Enter();
-     virtual void AttackCharge3Exit();
+    virtual void AttackCharge3();
+    virtual void AttackCharge3Enter();
+    virtual void AttackCharge3Exit();
 
-     virtual void AttackCharge3Start();
-     virtual void AttackCharge3StartEnter();
-     virtual void AttackCharge3StartExit();
+    virtual void AttackCharge3Start();
+    virtual void AttackCharge3StartEnter();
+    virtual void AttackCharge3StartExit();
 
-     virtual void AttackCharge3End();
-     virtual void AttackCharge3EndEnter();
-     virtual void AttackCharge3EndExit();
+    virtual void AttackCharge3End();
+    virtual void AttackCharge3EndEnter();
+    virtual void AttackCharge3EndExit();
 
-    //// 점프공격
-    // virtual void JumpAttack();
-    // virtual void JumpAttackEnter();
-    // virtual void JumpAttackExit();
+    // 점프공격
+     virtual void JumpAttack();
+     virtual void JumpAttackEnter();
+     virtual void JumpAttackExit();
+
+     virtual void JumpAttackStart();
+     virtual void JumpAttackStartEnter();
+     virtual void JumpAttackStartExit();
+
+     // 슬라이드 찌르기
+     virtual void Slide();
+     virtual void SlideEnter();
+     virtual void SlideExit();
+
+     virtual void SlideStart();
+     virtual void SlideStartEnter();
+     virtual void SlideStartExit();
+
+     virtual void SlideEnd();
+     virtual void SlideEndEnter();
+     virtual void SlideEndExit();
 
     // 변신 돌입
     virtual void ChangeAbility();

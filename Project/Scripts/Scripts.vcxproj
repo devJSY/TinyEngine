@@ -149,6 +149,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyDodge2.h" />
     <ClInclude Include="CKirbyDodgeStart.h" />
     <ClInclude Include="CKirbyGuard.h" />
+    <ClInclude Include="CKirbyJumpAttack.h" />
+    <ClInclude Include="CKirbyJumpAttackStart.h" />
     <ClInclude Include="CKirbySlide.h" />
     <ClInclude Include="CKirbyFSM.h" />
     <ClInclude Include="CKirbyHovering.h" />
@@ -245,6 +247,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyDodge2.cpp" />
     <ClCompile Include="CKirbyDodgeStart.cpp" />
     <ClCompile Include="CKirbyGuard.cpp" />
+    <ClCompile Include="CKirbyJumpAttack.cpp" />
+    <ClCompile Include="CKirbyJumpAttackStart.cpp" />
     <ClCompile Include="CKirbySlide.cpp" />
     <ClCompile Include="CKirbyFSM.cpp" />
     <ClCompile Include="CKirbyHovering.cpp" />

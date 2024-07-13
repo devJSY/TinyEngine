@@ -20,9 +20,6 @@ protected:
     void ChangeState(const wstring& _strStateName);
 
 public:
-    // 필수: Change, Idle, Attack, Jump Attack
-    // 선택: ChargeAttack1, ChargeAttack2
-
     virtual void Idle(){};
     virtual void IdleEnter();
     virtual void IdleExit(){};
@@ -55,7 +52,17 @@ public:
     virtual void LandingEndEnter();
     virtual void LandingEndExit();
 
-    //virtual void Hovering();
+    virtual void Slide(){};
+    virtual void SlideEnter();
+    virtual void SlideExit(){};
+
+    virtual void SlideStart(){};
+    virtual void SlideStartEnter();
+    virtual void SlideStartExit(){};
+
+    virtual void SlideEnd(){};
+    virtual void SlideEndEnter();
+    virtual void SlideEndExit(){};
 
     //virtual void Evasiveness();
 
@@ -122,6 +129,10 @@ public:
     virtual void JumpAttack(){};
     virtual void JumpAttackEnter(){};
     virtual void JumpAttackExit(){};
+
+    virtual void JumpAttackStart(){};
+    virtual void JumpAttackStartEnter(){};
+    virtual void JumpAttackStartExit(){};
 
     //virtual void Throw();
 
