@@ -124,7 +124,13 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAttackCharge1Start.h" />
     <ClInclude Include="CKirbyAttackCharge2.h" />
     <ClInclude Include="CKirbyAttackCharge2Run.h" />
+    <ClInclude Include="CKirbyAttackCharge2Slash.h" />
+    <ClInclude Include="CKirbyAttackCharge2SlashEnd.h" />
+    <ClInclude Include="CKirbyAttackCharge2SlashStart.h" />
     <ClInclude Include="CKirbyAttackCharge2Start.h" />
+    <ClInclude Include="CKirbyAttackCharge3.h" />
+    <ClInclude Include="CKirbyAttackCharge3End.h" />
+    <ClInclude Include="CKirbyAttackCharge3Start.h" />
     <ClInclude Include="CKirbyAttackCombo1.h" />
     <ClInclude Include="CKirbyAttackCombo2.h" />
     <ClInclude Include="CKirbyAttackCombo2End.h" />
@@ -214,7 +220,13 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAttackCharge1Start.cpp" />
     <ClCompile Include="CKirbyAttackCharge2.cpp" />
     <ClCompile Include="CKirbyAttackCharge2Run.cpp" />
+    <ClCompile Include="CKirbyAttackCharge2Slash.cpp" />
+    <ClCompile Include="CKirbyAttackCharge2SlashEnd.cpp" />
+    <ClCompile Include="CKirbyAttackCharge2SlashStart.cpp" />
     <ClCompile Include="CKirbyAttackCharge2Start.cpp" />
+    <ClCompile Include="CKirbyAttackCharge3.cpp" />
+    <ClCompile Include="CKirbyAttackCharge3End.cpp" />
+    <ClCompile Include="CKirbyAttackCharge3Start.cpp" />
     <ClCompile Include="CKirbyAttackCombo1.cpp" />
     <ClCompile Include="CKirbyAttackCombo2.cpp" />
     <ClCompile Include="CKirbyAttackCombo2End.cpp" />

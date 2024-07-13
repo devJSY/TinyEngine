@@ -7,9 +7,6 @@ private:
     float m_JumpAccTime;
     float m_MinJumpTime;
     float m_MaxJumpTime;
-
-    float m_OriginGravity;
-
     bool m_bVelocityCut;
 
 public:

@@ -21,8 +21,7 @@ void CKirbyJumpFall::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
@@ -41,8 +40,28 @@ void CKirbyJumpFall::tick()
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
-            break;
+        case AbilityCopyType::SWORD: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                UINT Combo = PLAYERFSM->GetComboLevel();
+
+                if (Combo == 0)
+                    ChangeState(L"ATTACK");
+                else if (Combo == 1)
+                    ChangeState(L"ATTACK_COMBO1");
+                else if (Combo == 2)
+                    ChangeState(L"ATTACK_COMBO2");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+        }
+        break;
         }
     }
 }

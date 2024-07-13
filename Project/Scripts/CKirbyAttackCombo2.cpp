@@ -26,7 +26,7 @@ void CKirbyAttackCombo2::tick()
     case AbilityCopyType::SWORD: {
         if (PLAYER->Animator()->IsFinish())
         {
-            ChangeState(L"ATTACK_COMBO2_END");
+            ChangeState(L"IDLE");
         }
     }
     break;

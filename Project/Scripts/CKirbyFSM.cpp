@@ -5,6 +5,8 @@
 #include "CKirbyVacuumCollider.h"
 
 #include "CKirbyAbility_Normal.h"
+//#include "CKirbyAbility_Fire.h"
+#include "CKirbyAbility_Sword.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -30,7 +32,8 @@ CKirbyFSM::CKirbyFSM()
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
-    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Normal();
+    //m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
+    m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -130,6 +133,12 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyAttackCharge2.h"
 #include "CKirbyAttackCharge2Start.h"
 #include "CKirbyAttackCharge2Run.h"
+#include "CKirbyAttackCharge2Slash.h"
+#include "CKirbyAttackCharge2SlashStart.h"
+#include "CKirbyAttackCharge2SlashEnd.h"
+#include "CKirbyAttackCharge3.h"
+#include "CKirbyAttackCharge3Start.h"
+#include "CKirbyAttackCharge3End.h"
 #include "CKirbyStuffed.h"
 #include "CKirbyStuffedIdle.h"
 #include "CKirbyStuffedRun.h"
@@ -189,6 +198,12 @@ void CKirbyFSM::begin()
     AddState(L"ATTACK_CHARGE2", new CKirbyAttackCharge2);
     AddState(L"ATTACK_CHARGE2_START", new CKirbyAttackCharge2Start);
     AddState(L"ATTACK_CHARGE2_RUN", new CKirbyAttackCharge2Run);
+    AddState(L"ATTACK_CHARGE2_SLASH", new CKirbyAttackCharge2Slash);
+    AddState(L"ATTACK_CHARGE2_SLASH_START", new CKirbyAttackCharge2SlashStart);
+    AddState(L"ATTACK_CHARGE2_SLASH_END", new CKirbyAttackCharge2SlashEnd);
+    AddState(L"ATTACK_CHARGE3", new CKirbyAttackCharge3);
+    AddState(L"ATTACK_CHARGE3_START", new CKirbyAttackCharge3Start);
+    AddState(L"ATTACK_CHARGE3_END", new CKirbyAttackCharge3End);
     AddState(L"STUFFED", new CKirbyStuffed);
     AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
     AddState(L"STUFFED_RUN", new CKirbyStuffedRun);

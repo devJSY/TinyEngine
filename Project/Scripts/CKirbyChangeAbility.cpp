@@ -25,10 +25,8 @@ void CKirbyChangeAbility::Enter()
 {
     // 커버 머터리얼 다시 설정
     CPlayerMgr::ClearBodyMtrl();
-
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthSmileOpen));
-
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     // 소켓 꽂아주기

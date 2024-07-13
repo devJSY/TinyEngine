@@ -265,6 +265,24 @@
     <ClInclude Include="CKirbyAttackCombo2End.h">
       <Filter>State\KirbyState\AttackCombo2\AttackCombo2End</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge2Slash.h">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge2SlashStart.h">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Slash\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge2SlashEnd.h">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Slash\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge3.h">
+      <Filter>State\KirbyState\AttackCharge3</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge3End.h">
+      <Filter>State\KirbyState\AttackCharge3\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCharge3Start.h">
+      <Filter>State\KirbyState\AttackCharge3\Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -542,6 +560,24 @@
     </ClCompile>
     <ClCompile Include="CKirbyAttackCombo2End.cpp">
       <Filter>State\KirbyState\AttackCombo2\AttackCombo2End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge2Slash.cpp">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge2SlashStart.cpp">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Slash\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge2SlashEnd.cpp">
+      <Filter>State\KirbyState\AttackCharge2\AttackCharge2Slash\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge3.cpp">
+      <Filter>State\KirbyState\AttackCharge3</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge3End.cpp">
+      <Filter>State\KirbyState\AttackCharge3\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCharge3Start.cpp">
+      <Filter>State\KirbyState\AttackCharge3\Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -836,11 +872,29 @@
     <Filter Include="State\KirbyState\AttackCombo1">
       <UniqueIdentifier>{496146c1-20e5-4db9-81fa-41fcd30b76fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Slash">
+      <UniqueIdentifier>{c1ac6fcc-88c0-4c7f-b643-a60c89701038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Slash\Start">
+      <UniqueIdentifier>{4557086c-94e5-4090-8b61-35b97273c17d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge2\AttackCharge2Slash\End">
+      <UniqueIdentifier>{e3661d32-838b-455e-b4b4-6eb7b4ffd75c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="State\KirbyState\AttackCombo2">
       <UniqueIdentifier>{7f1400cf-25b1-48bf-a622-d41b4a7cdeb3}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\AttackCombo2\AttackCombo2End">
       <UniqueIdentifier>{d6a7a047-d341-4512-8da5-8c6ef9e5d03f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge3">
+      <UniqueIdentifier>{c1a1d423-bd50-4ea4-b65b-00a0e2637a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge3\Start">
+      <UniqueIdentifier>{2311f69c-3c1f-4151-ba28-b8c28632b1be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCharge3\End">
+      <UniqueIdentifier>{78504f1f-5319-423f-b24c-3e34e4425b6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

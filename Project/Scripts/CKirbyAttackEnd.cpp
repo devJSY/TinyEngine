@@ -11,7 +11,7 @@ CKirbyAttackEnd::~CKirbyAttackEnd()
 
 void CKirbyAttackEnd::tick()
 {
-    PLAY_CURSTATE(Attack)
+    PLAY_CURSTATE(AttackEnd)
 
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
@@ -51,10 +51,10 @@ void CKirbyAttackEnd::tick()
 
 void CKirbyAttackEnd::Enter()
 {
-    PLAY_CURSTATE(AttackEnter)
+    PLAY_CURSTATE(AttackEndEnter)
 }
 
 void CKirbyAttackEnd::Exit()
 {
-    PLAY_CURSTATE(AttackExit)
+    PLAY_CURSTATE(AttackEndExit)
 }

@@ -225,7 +225,8 @@ void CKirbyMoveController::Move()
     bool bGrounded = CharacterController()->IsGrounded();
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
-    
+    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
+
     float a = CharacterController()->GetHeight() / 2.f - CharacterController()->GetRadius();
 
     if (Hit.pCollisionObj && Hit.Distance <= 0.1f)
@@ -342,7 +343,7 @@ void CKirbyMoveController::SurfaceAlignment()
     float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-
+    
     // Rotate Character
     if (bGrounded)
     {

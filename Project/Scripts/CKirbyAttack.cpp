@@ -42,13 +42,17 @@ void CKirbyAttack::tick()
         case AbilityCopyType::SWORD: {
             if (PLAYER->Animator()->IsFinish())
             {
-                if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+                if (KEY_TAP(KEY_ATK))
                 {
                     ChangeState(L"ATTACK_COMBO1");
                 }
+                else if (KEY_PRESSED(KEY_ATK))
+                {
+                    ChangeState(L"ATTACK_CHARGE1_START");
+                }
                 else
                 {
-                    ChangeState(L"ATTACK_END");
+                    ChangeState(L"IDLE");
                 }
             }
         }

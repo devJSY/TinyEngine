@@ -26,9 +26,13 @@ void CKirbyAttackCombo2End::tick()
     case AbilityCopyType::SWORD: {
         if (PLAYER->Animator()->IsFinish())
         {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            if (KEY_TAP(KEY_ATK))
             {
                 ChangeState(L"ATTACK");
+            }
+            else if (KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_CHARGE1_START");
             }
             else if (PLAYERCTRL->GetInput().Length() != 0.f)
             {

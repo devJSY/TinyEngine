@@ -4,17 +4,17 @@
 class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
+    float   m_PrevSpeed;
     bool    m_bFrmEnter;
 
 public:
+    // Idle
+    virtual void IdleEnter();
+
     // Ä®ÈÖµÎ¸£±â (Lv0)
     virtual void Attack();
     virtual void AttackEnter();
     virtual void AttackExit();
-
-    virtual void AttackEnd();
-    virtual void AttackEndEnter();
-    virtual void AttackEndExit();
 
     // Ä®ÈÖµÎ¸£±â (Lv1)
     virtual void AttackCombo1();
@@ -26,27 +26,50 @@ public:
     virtual void AttackCombo2Enter();
     virtual void AttackCombo2Exit();
 
-    virtual void AttackCombo2End();
-    virtual void AttackCombo2EndEnter();
-    virtual void AttackCombo2EndExit();
+    // ½ºÇÉ°ø°Ý (Lv1)
+    virtual void AttackCharge1();
+    virtual void AttackCharge1Enter();
+    virtual void AttackCharge1Exit();
 
-    // 
-    //virtual void AttackCharge1();
-    //virtual void AttackCharge1Enter();
-    //virtual void AttackCharge1Exit();
+    virtual void AttackCharge1Start();
+    virtual void AttackCharge1StartEnter();
+    virtual void AttackCharge1StartExit();
 
-    //virtual void AttackCharge1Start();
-    //virtual void AttackCharge1StartEnter();
-    //virtual void AttackCharge1StartExit();
+    virtual void AttackCharge1End();
+    virtual void AttackCharge1EndEnter();
+    virtual void AttackCharge1EndExit();
 
-    //virtual void AttackCharge1Run();
-    //virtual void AttackCharge1RunEnter();
-    //virtual void AttackCharge1RunExit();
+    // ½ºÇÉ°ø°Ý (Lv2)
+    virtual void AttackCharge2();
+    virtual void AttackCharge2Enter();
+    virtual void AttackCharge2Exit();
+
+    virtual void AttackCharge2Start();
+    virtual void AttackCharge2StartEnter();
+    virtual void AttackCharge2StartExit();
+
+    // ´ë°ËÂï±â (Lv3)
+     virtual void AttackCharge3();
+     virtual void AttackCharge3Enter();
+     virtual void AttackCharge3Exit();
+
+     virtual void AttackCharge3Start();
+     virtual void AttackCharge3StartEnter();
+     virtual void AttackCharge3StartExit();
+
+     virtual void AttackCharge3End();
+     virtual void AttackCharge3EndEnter();
+     virtual void AttackCharge3EndExit();
 
     //// Á¡ÇÁ°ø°Ý
-    //virtual void JumpAttack();
-    //virtual void JumpAttackEnter();
-    //virtual void JumpAttackExit();
+    // virtual void JumpAttack();
+    // virtual void JumpAttackEnter();
+    // virtual void JumpAttackExit();
+
+    // º¯½Å µ¹ÀÔ
+    virtual void ChangeAbility();
+    virtual void ChangeAbilityEnter();
+    virtual void ChangeAbilityExit();
 
 public:
     CLONE_DISABLE(CKirbyAbility_Sword)

@@ -30,6 +30,10 @@ void CKirbyAttackCombo1::tick()
             {
                 ChangeState(L"ATTACK_COMBO2");
             }
+            //else if (KEY_PRESSED(KEY_ATK))
+            //{
+            //    ChangeState(L"ATTACK_CHARGE1_START");
+            //}
             else if (PLAYERCTRL->GetInput().Length() != 0.f)
             {
                 ChangeState(L"RUN_START");
