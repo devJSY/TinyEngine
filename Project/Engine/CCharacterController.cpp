@@ -3,10 +3,12 @@
 #include "physx\\PxPhysicsAPI.h"
 
 #include "CPhysicsMgr.h"
+#include "CLevelMgr.h"
 #include "CTimeMgr.h"
 
 #include "CTransform.h"
 #include "CScript.h"
+#include "CLevel.h"
 
 CCharacterController::CCharacterController()
     : CCollider(COMPONENT_TYPE::CHARACTERCONTROLLER)
@@ -57,6 +59,16 @@ void CCharacterController::finaltick()
     // 콜라이더 비활성화 상태에서는 렌더링 X
     if (!m_bEnabled)
         return;
+
+    // Play, Simulate State에서 m_RuntimeShape이 존재하지 않는 경우 렌더링 X
+    if (nullptr == m_RuntimeShape)
+    {
+        LEVEL_STATE CurLevelState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+        if (CurLevelState == LEVEL_STATE::PLAY || CurLevelState == LEVEL_STATE::SIMULATE)
+        {
+            return;
+        }
+    }
 
     Vec3 worldpos = Transform()->GetWorldPos();
     Vec3 scale = Transform()->GetWorldScale();

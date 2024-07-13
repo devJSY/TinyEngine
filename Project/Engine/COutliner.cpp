@@ -2065,23 +2065,23 @@ void COutliner::DrawCharacterController(CGameObject* obj)
         }
 
         float SkinWitdh = pCharacterController->GetSkinWidth();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetSkinWidth(SkinWitdh);
 
         float MinMoveDistance = pCharacterController->GetMinMoveDistance();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Min Move Distance").c_str(), &MinMoveDistance, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Min Move Distance").c_str(), &MinMoveDistance, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetMinMoveDistance(MinMoveDistance);
 
         Vec3 Center = pCharacterController->GetCenter();
-        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetCenter(Center);
 
         float Radius = pCharacterController->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetRadius(Radius);
 
         float Height = pCharacterController->GetHeight();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetHeight(Height);
 
         ImGui::TreePop();

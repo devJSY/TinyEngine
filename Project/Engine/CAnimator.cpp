@@ -407,29 +407,28 @@ void CAnimator::finaltick_ModelEditor()
 
 void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
 {
+    // Reset
+    m_SkeletalMesh = nullptr;
+    m_mapClip.clear();
+    m_NextClipIdx = m_CurClipIdx = 0;
+    m_vecClipUpdateTime.clear();
+    m_bPlay = true;
+    m_bNextRepeat = m_bRepeat = true;
+    m_bNextReverse = m_bReverse = false;
+    m_NextPlaySpeed = m_PlaySpeed = 1.f;
+    m_FrameRate = 30;
+    m_CurTime = 0.;
+    m_FrameIdx = 0;
+    m_NextFrameIdx = 0;
+    m_Ratio = 0.;
+    m_BoneTransformMat.clear();
+    m_bFinalMatUpdate = false;
+    m_bChanging = false;
+    m_CurChangeTime = 0.f;
+    m_ChangeDuration = 0.f;
+
     if (nullptr == _SkeletalMesh)
     {
-        // Reset
-        m_SkeletalMesh = nullptr;
-        m_mapClip.clear();
-        m_CurClipIdx = 0;
-        m_vecClipUpdateTime.clear();
-        m_bPlay = true;
-        m_bRepeat = true;
-        m_bReverse = false;
-        m_PlaySpeed = 1.f;
-        m_FrameRate = 30;
-        m_CurTime = 0.;
-        m_NextFrameIdx = 0;
-        m_Ratio = 0.;
-        m_bFinalMatUpdate = false;
-
-        if (nullptr != m_BoneFinalMatBuffer)
-        {
-            delete m_BoneFinalMatBuffer;
-            m_BoneFinalMatBuffer = new CStructuredBuffer;
-        }
-
         return;
     }
 
