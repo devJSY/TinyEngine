@@ -43,6 +43,9 @@ public:
     float GetHeight() const { return m_Height; }
     void SetHeight(float _Height);
 
+    Vec3 GetControllerPos();
+    Vec3 GetFootPos();
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

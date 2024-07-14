@@ -27,22 +27,106 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    AnimatorTest();
-    // QuaternionExample();
+    CharacterControllerTest();
+    // AnimatorTest();
+    //  QuaternionExample();
 
     //// Bullet Test
-    //if (KEY_TAP(KEY::N))
+    // if (KEY_TAP(KEY::N))
     //{
-    //    Ptr<CPrefab> bulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Bullet.pref", L"prefab\\Bullet.pref");
-    //    if (nullptr != bulletPref)
-    //    {
-    //        CGameObject* pBullet = bulletPref->Instantiate();
-    //        pBullet->Transform()->SetLocalPos(Transform()->GetWorldPos());
-    //        CKirbyBulletScript* bulletScript = pBullet->GetScript<CKirbyBulletScript>();
-    //        bulletScript->SetInitVelocity(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f);
-    //        GamePlayStatic::SpawnGameObject(pBullet, 0);
-    //    }
-    //}
+    //     Ptr<CPrefab> bulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Bullet.pref", L"prefab\\Bullet.pref");
+    //     if (nullptr != bulletPref)
+    //     {
+    //         CGameObject* pBullet = bulletPref->Instantiate();
+    //         pBullet->Transform()->SetLocalPos(Transform()->GetWorldPos());
+    //         CKirbyBulletScript* bulletScript = pBullet->GetScript<CKirbyBulletScript>();
+    //         bulletScript->SetInitVelocity(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f);
+    //         GamePlayStatic::SpawnGameObject(pBullet, 0);
+    //     }
+    // }
+}
+
+void CEngineTestScript::CharacterControllerTest()
+{
+    if (!CharacterController())
+        return;
+
+    static float Speed = 10.f;
+    static float RotSpeed = 10.f;
+    static float RayCastDist = 30.f;
+    static float JumpPower = 1.f;
+    static Vec3 MoveVelocity = Vec3();
+
+    bool bGrounded = CharacterController()->IsGrounded();
+    float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
+
+    // CharacterController의 Grounded 는 마지막 Move()를 기준으로 저장되기 때문에 정확도가 낮음
+    // Raycast로 한번 더 땅에 닿은 상태인지 확인한다.
+    // if (!bGrounded)
+    // {
+    Vec3 RayPos = Transform()->GetWorldPos();
+
+    RayPos.y -= (CharacterController()->GetHeight() / 2.f) * CPhysicsMgr::GetInst()->GetPPM();
+    RayPos += CharacterController()->GetCenter();
+
+    GamePlayStatic::DrawDebugLine(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist, Vec3(1.f, 0.f, 1.f), false);
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist);
+    // bGrounded = nullptr != Hit.pCollisionObj;
+
+    Vec3 FootPos = CharacterController()->GetFootPos();
+    int a = 0;
+    // }
+
+    // 땅에 닿은 상태면 Velocity Y값 초기화
+    if (bGrounded && MoveVelocity.y < 0)
+    {
+        MoveVelocity.y = 0.f;
+    }
+
+    // ↑ ↓
+    float Vertical = 0.f;
+    if (KEY_TAP(KEY::UP) || KEY_PRESSED(KEY::UP))
+    {
+        Vertical += 1.f;
+    }
+    if (KEY_TAP(KEY::DOWN) || KEY_PRESSED(KEY::DOWN))
+    {
+        Vertical -= 1.f;
+    }
+
+    // ← →
+    float Horizontal = 0.f;
+    if (KEY_TAP(KEY::RIGHT) || KEY_PRESSED(KEY::RIGHT))
+    {
+        Horizontal += 1.f;
+    }
+    if (KEY_TAP(KEY::LEFT) || KEY_PRESSED(KEY::LEFT))
+    {
+        Horizontal -= 1.f;
+    }
+
+    // 이동
+    Vec3 Dir = Vec3(Horizontal, 0, Vertical);
+    Dir.Normalize();
+    CharacterController()->Move(Dir * Speed * DT);
+
+    // 방향 전환
+    if (Dir.Length() > 0.f)
+    {
+        Quat ToWardQuaternion = Quat::LookRotation(-Dir, Vec3(0.f, 1.f, 0.f));
+        Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * RotSpeed);
+        Transform()->SetWorldRotation(SlerpQuat);
+    }
+
+    // 점프
+    if (KEY_TAP(KEY::SPACE) && bGrounded)
+    {
+        MoveVelocity.y += std::sqrt(JumpPower * -3.f * GravityVelue);
+    }
+
+    // 중력 적용
+    MoveVelocity.y += GravityVelue * DT;
+    CharacterController()->Move(MoveVelocity * DT);
 }
 
 void CEngineTestScript::AnimatorTest()

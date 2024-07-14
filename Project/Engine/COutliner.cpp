@@ -2069,7 +2069,7 @@ void COutliner::DrawCharacterController(CGameObject* obj)
             pCharacterController->SetSkinWidth(SkinWitdh);
 
         float MinMoveDistance = pCharacterController->GetMinMoveDistance();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Min Move Distance").c_str(), &MinMoveDistance, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Min Move Distance").c_str(), &MinMoveDistance, 0.01f, 0.f, D3D11_FLOAT32_MAX))
             pCharacterController->SetMinMoveDistance(MinMoveDistance);
 
         Vec3 Center = pCharacterController->GetCenter();

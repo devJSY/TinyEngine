@@ -11,6 +11,7 @@ public:
     virtual void tick() override;
 
 private:
+    void CharacterControllerTest();
     void AnimatorTest();
     void QuaternionExample();
 

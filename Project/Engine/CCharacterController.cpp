@@ -15,7 +15,7 @@ CCharacterController::CCharacterController()
     , m_SlopeLimit(45.f)
     , m_StepOffset(0.3f)
     , m_SkinWidth(0.08f)
-    , m_MinMoveDistance(0.001f)
+    , m_MinMoveDistance(0.f)
     , m_Radius(0.5f)
     , m_Height(2.f)
     , m_MoveElapsedTime(0.f)
@@ -96,7 +96,7 @@ void CCharacterController::finaltick()
 
 void CCharacterController::Move(Vec3 _Motion)
 {
-    if (nullptr == m_RuntimeShape)
+    if (nullptr == m_RuntimeShape || _Motion.Length() <= 1e-3f)
         return;
 
     physx::PxControllerCollisionFlags MoveFlags =
@@ -151,6 +151,32 @@ void CCharacterController::SetHeight(float _Height)
 {
     m_Height = _Height;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+Vec3 CCharacterController::GetControllerPos()
+{
+    if (nullptr == m_RuntimeShape)
+        return Vec3();
+
+    physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
+    Vec3 pos = physx::toVec3(PxCharacterController->getPosition());
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    pos *= PPM;
+
+    return pos;
+}
+
+Vec3 CCharacterController::GetFootPos()
+{
+    if (nullptr == m_RuntimeShape)
+        return Vec3();
+
+    physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
+    Vec3 FootPos = physx::toVec3(PxCharacterController->getFootPosition());
+    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    FootPos *= PPM;
+
+    return FootPos;
 }
 
 void CCharacterController::SaveToLevelFile(FILE* _File)
