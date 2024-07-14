@@ -41,7 +41,7 @@ private:
 
     // 물체 분류
     map<ULONG64, vector<tInstObj>> m_mapInstGroup_D; // Deferred
-    map<ULONG64, vector<tInstObj>> m_mapInstGroup_F; // Foward ( Opaque, Mask )
+    map<ULONG64, vector<tInstObj>> m_mapInstGroup_F; // Forward ( Opaque, Mask )
     map<INT_PTR, vector<tInstObj>> m_mapSingleObj;   // Single Object
 
     vector<CGameObject*> m_vecSkybox;

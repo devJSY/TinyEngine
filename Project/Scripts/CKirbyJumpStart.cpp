@@ -99,6 +99,7 @@ void CKirbyJumpStart::Enter()
     PLAY_CURSTATE(JumpStartEnter)
 
     PLAYERCTRL->Jump();
+    PLAYERFSM->SetLastJump(LastJumpType::LOW);
 
     m_OriginGravity = PLAYERCTRL->GetGravity();
     m_JumpAccTime = 0.f;

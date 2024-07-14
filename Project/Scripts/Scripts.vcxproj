@@ -113,6 +113,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CEngineTestScript.h" />
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
@@ -163,6 +164,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbySlideEnd.h" />
     <ClInclude Include="CKirbySlideStart.h" />
     <ClInclude Include="CKirbyStuffed.h" />
+    <ClInclude Include="CKirbyStuffedEat.h" />
     <ClInclude Include="CKirbyStuffedIdle.h" />
     <ClInclude Include="CKirbyStuffedJump.h" />
     <ClInclude Include="CKirbyStuffedJumpFall.h" />
@@ -201,6 +203,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CEngineTestScript.cpp" />
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
@@ -249,6 +252,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyObject.cpp" />
     <ClCompile Include="CKirbyRun.cpp" />
     <ClCompile Include="CKirbyRunStart.cpp" />
+    <ClCompile Include="CKirbyStuffedEat.cpp" />
     <ClCompile Include="CKirbyUnitScript.cpp" />
     <ClCompile Include="CKirbySlideEnd.cpp" />
     <ClCompile Include="CKirbySlideStart.cpp" />

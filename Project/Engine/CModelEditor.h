@@ -17,10 +17,14 @@ private:
     CGameObjectEx* m_ModelObj;
     tMTBone* m_SelectedBone;
     tBoneSocket* m_SelectedBoneSocket;
+    CGameObject* m_SelectedPreviewObj;
 
     bool m_bDrawWireFrame;
 
     // Viewport
+    vector<tInstObj> m_vecDeferred;
+    vector<tInstObj> m_vecForward;
+
     Ptr<CTexture> m_ViewportRTTex;
     Ptr<CTexture> m_ViewportFloatRTTex;
     Ptr<CTexture> m_ViewportDSTex;
@@ -47,15 +51,19 @@ private:
 
 private:
     void DrawViewport();
-    void DrawImGizmo();
+    void SortObject();
+    void render_ShadowMap();
+    void render_ImGizmo();
+
     void DrawDetails();
     void DrawSkeletonTree();
     void DrawBoneSocket(tMTBone& _Bone);
     void SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _NodeOpenFlag);
-    void DrawAnimation();
+    void DrawAnimation(CGameObject* _Obj, const string& _TreeNodeName);
     void finaltick_ModelEditor(CGameObject* _Obj);
 
 public:
+    void Resize(Vec2 resolution);
     void SetModel(Ptr<CMeshData> _MeshData);
 
     bool IsViewportFocused() const { return m_ViewportFocused; }

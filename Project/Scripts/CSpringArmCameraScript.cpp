@@ -45,7 +45,7 @@ void CSpringArmCameraScript::tick()
         return;
 
     Vec3 RadRot = Vec3(XMConvertToRadians(m_ArmRotation.x), XMConvertToRadians(m_ArmRotation.y), XMConvertToRadians(m_ArmRotation.z));
-    Vec3 TargetPos = GetOwner()->GetParent()->Transform()->GetRelativePos() + m_TargetOffset;
+    Vec3 TargetPos = GetOwner()->GetParent()->Transform()->GetLocalPos() + m_TargetOffset;
     
     // get spring arm world matrix
     Matrix matSpringRotX = XMMatrixRotationX(RadRot.x);
@@ -66,8 +66,8 @@ void CSpringArmCameraScript::tick()
     // set camera
     Vec3 NewCamPos = matCamTransform.Translation();
 
-    GetOwner()->Transform()->SetRelativePos(NewCamPos);
-    GetOwner()->Transform()->SetRelativeRotation(RadRot);
+    GetOwner()->Transform()->SetLocalPos(NewCamPos);
+    GetOwner()->Transform()->SetLocalRotation(RadRot);
 
     // draw debug
     if (CRenderMgr::GetInst()->IsShowDebugRender())

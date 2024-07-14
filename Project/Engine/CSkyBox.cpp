@@ -60,7 +60,16 @@ void CSkyBox::render()
 
     Transform()->UpdateData();
 
-    GetMaterial(0)->SetTexParam(TEXCUBE_0, m_EnvTex);
+    GetMaterial(0)->SetScalarParam(INT_0, (int)m_Shape);
+
+    if (SKYBOX_SHAPE::SPHERE == m_Shape)
+    {
+        GetMaterial(0)->SetTexParam(TEX_0, m_EnvTex);
+    }
+    else
+    {
+        GetMaterial(0)->SetTexParam(TEXCUBE_0, m_EnvTex);
+    }
 
     GetMaterial(0)->UpdateData();
 
@@ -74,7 +83,16 @@ void CSkyBox::render(Ptr<CMaterial> _mtrl)
 
     Transform()->UpdateData();
 
-    _mtrl->SetTexParam(TEXCUBE_0, m_EnvTex);
+    _mtrl->SetScalarParam(INT_0, (int)m_Shape);
+
+    if (SKYBOX_SHAPE::SPHERE == m_Shape)
+    {
+        _mtrl->SetTexParam(TEX_0, m_EnvTex);
+    }
+    else
+    {
+        _mtrl->SetTexParam(TEXCUBE_0, m_EnvTex);
+    }
 
     _mtrl->UpdateData();
 
@@ -93,6 +111,7 @@ void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)
     if (SKYBOX_SHAPE::SPHERE == _Shape)
     {
         SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+        // SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"mesh\\IcebergDay.mesh", L"mesh\\IcebergDay.mesh"));
     }
 
     else if (SKYBOX_SHAPE::BOX == _Shape)
@@ -101,6 +120,7 @@ void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)
     }
 
     SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl"), 0);
+    // SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl_V2"), 0);
 }
 
 void CSkyBox::SaveToLevelFile(FILE* _File)

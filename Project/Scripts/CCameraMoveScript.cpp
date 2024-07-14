@@ -45,7 +45,7 @@ void CCameraMoveScript::tick()
                     Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 
                 // Rotation 초기화
-                Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+                Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
             }
         }
 
@@ -84,7 +84,7 @@ void CCameraMoveScript::tick()
                 Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 
             // Rotation 초기화
-            Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+            Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
         }
 
         // Move
@@ -126,10 +126,10 @@ void CCameraMoveScript::MoveOrthographic()
 
         // 드래그한 픽셀 위치값만큼 이동
         // 뷰포트 비율 계산해서 적용
-        Vec3 vPos = Transform()->GetRelativePos();
+        Vec3 vPos = Transform()->GetLocalPos();
         vPos.x -= vDrag.x * scale * xRatio;
         vPos.y += vDrag.y * scale * yRatio;
-        Transform()->SetRelativePos(vPos);
+        Transform()->SetLocalPos(vPos);
     }
 
     // Zoom
@@ -145,7 +145,7 @@ void CCameraMoveScript::MovePerspective()
     if (KEY_PRESSED(KEY::RBTN))
     {
         // Move
-        Vec3 vPos = Transform()->GetRelativePos();
+        Vec3 vPos = Transform()->GetLocalPos();
 
         Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
         Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
@@ -169,14 +169,14 @@ void CCameraMoveScript::MovePerspective()
         if (KEY_PRESSED(KEY::Q))
             vPos += DT_ENGINE * m_CamSpeed * -vUp;
 
-        Transform()->SetRelativePos(vPos);
+        Transform()->SetLocalPos(vPos);
 
         // Drag
         Vec2 vDrag = CKeyMgr::GetInst()->GetMouseDrag();
-        Vec3 vRot = Transform()->GetRelativeRotation();
+        Vec3 vRot = Transform()->GetLocalRotation();
         vRot.y += vDrag.x * XM_PI / 360.f;
         vRot.x += vDrag.y * XM_PI / 360.f;
-        Transform()->SetRelativeRotation(vRot);
+        Transform()->SetLocalRotation(vRot);
 
         // Camera speed
         short wheel = CKeyMgr::GetInst()->GetMouseWheel();
@@ -221,7 +221,7 @@ void CCameraMoveScript::MoveFocusOrthographic()
         Vec3 dir3 = Vec3(dir.x, dir.y, 0.f);
         float CamMoveSpeed = dir.Length() * 25.f;
         float scale = Camera()->GetScale();
-        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT_ENGINE * dir3.Normalize() * CamMoveSpeed * scale);
+        Transform()->SetLocalPos(Transform()->GetLocalPos() + DT_ENGINE * dir3.Normalize() * CamMoveSpeed * scale);
     }
 }
 
@@ -253,7 +253,7 @@ void CCameraMoveScript::MoveFocusPerspective()
     if (m_bFocus)
     {
         float CamMoveSpeed = dir.Length() * 25.f;
-        Transform()->SetRelativePos(Transform()->GetRelativePos() + DT_ENGINE * dir.Normalize() * CamMoveSpeed);
+        Transform()->SetLocalPos(Transform()->GetLocalPos() + DT_ENGINE * dir.Normalize() * CamMoveSpeed);
     }
 }
 

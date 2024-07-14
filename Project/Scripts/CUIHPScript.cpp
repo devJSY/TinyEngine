@@ -58,8 +58,10 @@ void CUIHPScript::begin()
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
 
-    m_vNormalScale = m_pTr->GetRelativeScale();
-    m_vNormalPos = m_pTr->GetRelativePos();
+    m_vNormalScale = m_pTr->GetLocalScale();
+    m_vNormalPos = m_pTr->GetLocalPos();
+
+    // m_fMaxHP = m_fCurHP = m_fPrevH = TargetObject¿« MaxHP!
 }
 
 void CUIHPScript::tick()

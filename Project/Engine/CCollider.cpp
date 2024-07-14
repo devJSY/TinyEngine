@@ -60,15 +60,11 @@ void CCollider::finaltick()
     float PPM = CPhysicsMgr::GetInst()->GetPPM();
 
     Vec3 WorldPos = Transform()->GetWorldPos();
-    Vec3 WorldRot = Transform()->GetWorldRotation();
+    Quat WorldQuat = Transform()->GetWorldQuaternion();
 
     WorldPos /= PPM;
 
-    SimpleMath::Quaternion Quat = SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), WorldRot.x) *
-                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), WorldRot.y) *
-                                  SimpleMath::Quaternion::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), WorldRot.z);
-
-    physx::PxTransform PxTr = physx::PxTransform(WorldPos, physx::PxQuat(Quat.x, Quat.y, Quat.z, Quat.w));
+    physx::PxTransform PxTr = physx::PxTransform(WorldPos, physx::PxQuat(WorldQuat.x, WorldQuat.y, WorldQuat.z, WorldQuat.w));
 
     physx::PxShape* shape = (physx::PxShape*)m_RuntimeShape;
     physx::PxRigidActor* body = shape->getActor();

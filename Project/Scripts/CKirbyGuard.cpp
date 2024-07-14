@@ -82,6 +82,7 @@ void CKirbyGuard::Enter()
 {
     // 애니메이션 재생
     PLAYER->Animator()->Play(KIRBYANIM(L"Guard"), true, false, 1.f, 0.2);
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();
@@ -96,6 +97,8 @@ void CKirbyGuard::Enter()
 
 void CKirbyGuard::Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     // 방향, 점프, 이동 Unlock
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();

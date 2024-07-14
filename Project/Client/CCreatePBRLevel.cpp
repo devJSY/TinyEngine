@@ -68,8 +68,8 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pSkyBox->AddComponent(new CTransform);
     pSkyBox->AddComponent(new CSkyBox);
 
-    pSkyBox->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    pSkyBox->Transform()->SetRelativeScale(Vec3(5000.f, 5000.f, 5000.f));
+    pSkyBox->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+    pSkyBox->Transform()->SetLocalScale(Vec3(5000.f, 5000.f, 5000.f));
     pSkyBox->Transform()->SetAbsolute(true);
 
     pSkyBox->SkyBox()->SetShape(SKYBOX_SHAPE::BOX);
@@ -82,8 +82,8 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pPhongObj->AddComponent(new CTransform);
     pPhongObj->AddComponent(new CMeshRender);
 
-    pPhongObj->Transform()->SetRelativePos(Vec3(-250.f, 0.f, 0.f));
-    pPhongObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    pPhongObj->Transform()->SetLocalPos(Vec3(-250.f, 0.f, 0.f));
+    pPhongObj->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     pPhongObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
     pPhongObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BlinnPhongMtrl"), 0);
@@ -95,8 +95,8 @@ CLevel* CCreatePBRLevel::CreatePBRLevel()
     pFloor->AddComponent(new CTransform);
     pFloor->AddComponent(new CMeshRender);
 
-    pFloor->Transform()->SetRelativePos(Vec3(0.f, -250.f, 0.f));
-    pFloor->Transform()->SetRelativeScale(Vec3(2500.f, 100.f, 2500.f));
+    pFloor->Transform()->SetLocalPos(Vec3(0.f, -250.f, 0.f));
+    pFloor->Transform()->SetLocalScale(Vec3(2500.f, 100.f, 2500.f));
 
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRMtrl"), 0);
@@ -122,10 +122,10 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
 
     // CGameObject* pObj = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
-    // pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    // pObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
     // for (const auto& child : pObj->GetChildObject())
     //{
-    //     child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     child->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     //     child->Transform()->SetAbsolute(true);
     // }
     //_CurLevel->AddObject(pObj, 0);
@@ -144,10 +144,10 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\brick-wall-ue\\";
 
     // pObj = CAssetMgr::GetInst()->LoadModel(L"brick-wall", meshes);
-    // pObj->Transform()->SetRelativePos(Vec3(250.f, 0.f, 0.f));
+    // pObj->Transform()->SetLocalPos(Vec3(250.f, 0.f, 0.f));
     // for (const auto& child : pObj->GetChildObject())
     //{
-    //     child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     child->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     //     child->Transform()->SetAbsolute(true);
     // }
     //_CurLevel->AddObject(pObj, 0);
@@ -167,10 +167,10 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\columned-lava-rock-ue\\";
 
     // pObj = CAssetMgr::GetInst()->LoadModel(L"columned-lava-rock", meshes);
-    // pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 0.f));
+    // pObj->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
     // for (const auto& child : pObj->GetChildObject())
     //{
-    //     child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     child->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     //     child->Transform()->SetAbsolute(true);
     // }
     //_CurLevel->AddObject(pObj, 0);
@@ -189,10 +189,10 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\wrinkled-paper-ue\\";
 
     // pObj = CAssetMgr::GetInst()->LoadModel(L"wrinkled-paper", meshes);
-    // pObj->Transform()->SetRelativePos(Vec3(750.f, 0.f, 0.f));
+    // pObj->Transform()->SetLocalPos(Vec3(750.f, 0.f, 0.f));
     // for (const auto& child : pObj->GetChildObject())
     //{
-    //     child->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     child->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     //     child->Transform()->SetAbsolute(true);
     // }
     //_CurLevel->AddObject(pObj, 0);
@@ -204,8 +204,8 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     // CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
     // if (nullptr != pZelda)
     //{
-    //     pZelda->Transform()->SetRelativePos(Vec3(-500.f, 0.f, -250.f));
-    //     pZelda->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     pZelda->Transform()->SetLocalPos(Vec3(-500.f, 0.f, -250.f));
+    //     pZelda->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     //    _CurLevel->AddObject(pZelda, L"Model");
     //}
@@ -214,8 +214,8 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     // CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
     // if (nullptr != pDamagedHelmet)
     //{
-    //     pDamagedHelmet->Transform()->SetRelativePos(Vec3(-250.f, 0.f, -250.f));
-    //     pDamagedHelmet->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     pDamagedHelmet->Transform()->SetLocalPos(Vec3(-250.f, 0.f, -250.f));
+    //     pDamagedHelmet->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     //    _CurLevel->AddObject(pDamagedHelmet, L"Model");
     //}
@@ -224,8 +224,8 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     // CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
     // if (nullptr != ptoriigate)
     //{
-    //     ptoriigate->Transform()->SetRelativePos(Vec3(0.f, 0.f, -250.f));
-    //     ptoriigate->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     ptoriigate->Transform()->SetLocalPos(Vec3(0.f, 0.f, -250.f));
+    //     ptoriigate->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     //    _CurLevel->AddObject(ptoriigate, L"Model");
     //}
@@ -234,8 +234,8 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     // CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
     // if (nullptr != pDragonWarrior)
     //{
-    //     pDragonWarrior->Transform()->SetRelativePos(Vec3(250.f, 0.f, -250.f));
-    //     pDragonWarrior->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     pDragonWarrior->Transform()->SetLocalPos(Vec3(250.f, 0.f, -250.f));
+    //     pDragonWarrior->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
     //    _CurLevel->AddObject(pDragonWarrior, L"Model");
     //}
@@ -255,8 +255,8 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     //     CAssetMgr::GetInst()->LoadModel(L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
     // if (nullptr != pArmoredFemale)
     //{
-    //     pArmoredFemale->Transform()->SetRelativePos(Vec3(500.f, 0.f, -250.f));
-    //     pArmoredFemale->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 100.f));
+    //     pArmoredFemale->Transform()->SetLocalPos(Vec3(500.f, 0.f, -250.f));
+    //     pArmoredFemale->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     //     _CurLevel->AddObject(pArmoredFemale, L"Model");
     // }
 }

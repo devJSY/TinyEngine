@@ -21,8 +21,11 @@ public:
     void Clear();
 
     Ptr<CTexture> GetRenderTargetTex(UINT _Idx) const { return m_arrRTTex[_Idx]; }
+    ID3D11RenderTargetView* const* GetRenderTargetView() const { return m_arrRTView; }
     Ptr<CTexture> GetDepthStencilTex() const { return m_DSTex; }
     const D3D11_VIEWPORT& GetViewPort() const { return m_tViewPort; }
+
+    UINT GetRTCount() const { return m_RTCount; }
 
     CLONE_DISABLE(CMRT);
 

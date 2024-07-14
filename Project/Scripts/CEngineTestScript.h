@@ -1,10 +1,17 @@
 #pragma once
 #include <Engine\\CScript.h>
 
-class CAnimationTestScript : public CScript
+class CEngineTestScript : public CScript
 {
+private:
+    float m_Power;
+
 public:
+    virtual void begin() override;
     virtual void tick() override;
+
+private:
+    void QuaternionExample();
 
 private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);
@@ -16,11 +23,13 @@ private:
     virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override{};
-    virtual void LoadFromLevelFile(FILE* _File) override{};
-    CLONE(CAnimationTestScript);
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
+
+    CLONE(CEngineTestScript);
 
 public:
-    CAnimationTestScript();
-    virtual ~CAnimationTestScript();
+    CEngineTestScript();
+    CEngineTestScript(const CEngineTestScript& origin);
+    virtual ~CEngineTestScript();
 };

@@ -102,7 +102,7 @@ void CCharacterController::Move(Vec3 _Motion)
     vPosOffset *= PPM;
     vPosOffset = Transform()->GetWorldPos() - vPosOffset;
 
-    Transform()->SetRelativePos(Transform()->GetRelativePos() - vPosOffset);
+    Transform()->SetLocalPos(Transform()->GetLocalPos() - vPosOffset);
 }
 
 void CCharacterController::SetSlopeLimit(float _Limit)

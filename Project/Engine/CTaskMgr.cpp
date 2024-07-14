@@ -158,26 +158,45 @@ void CTaskMgr::tick()
 void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
 {
     int LayerIdx = (int)_Task.Param_1;
-    CGameObject* pObject = (CGameObject*)_Task.Param_2;
+    CGameObject* pNewObject = (CGameObject*)_Task.Param_2;
 
     if (-1 == LayerIdx)
         LayerIdx = 0;
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-    pCurLevel->AddObject(pObject, LayerIdx, false);
-    CEditorMgr::GetInst()->SetSelectedObject(pObject);
+    pCurLevel->AddObject(pNewObject, LayerIdx, false);
 
-    CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
-    CPhysicsMgr::GetInst()->AddPhysicsObject(pObject);
-    for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+    CEditorMgr::GetInst()->SetSelectedObject(pNewObject);
+
+    list<CGameObject*> queue;
+    queue.push_back(pNewObject);
+
+    // Physics 이벤트처리
+    while (!queue.empty())
     {
-        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
-        CPhysicsMgr::GetInst()->AddPhysicsObject(pObject->m_vecChild[i]);
+        CGameObject* pObject = queue.front();
+        queue.pop_front();
+
+        // Transform, Animator의 SRT, Bone Data 업데이트
+        pObject->Transform()->finaltick();
+        if (nullptr != pObject->Animator())
+        {
+            pObject->Animator()->finaltick();
+            pObject->Animator()->UpdateData();
+        }
+
+        CPhysics2DMgr::GetInst()->AddPhysicsObject(pObject);
+        CPhysicsMgr::GetInst()->AddPhysicsObject(pObject);
+
+        for (size_t i = 0; i < pObject->m_vecChild.size(); ++i)
+        {
+            queue.push_back(pObject->m_vecChild[i]);
+        }
     }
 
     if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
     {
-        pObject->begin();
+        pNewObject->begin();
     }
 }
 
@@ -232,9 +251,9 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     {
         if (pSrcObj->GetParent())
         {
-            pSrcObj->Transform()->SetRelativePos(pSrcObj->Transform()->GetWorldPos());
-            pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetWorldRotation());
-            pSrcObj->Transform()->SetRelativeScale(pSrcObj->Transform()->GetWorldScale());
+            pSrcObj->Transform()->SetLocalPos(pSrcObj->Transform()->GetWorldPos());
+            pSrcObj->Transform()->SetLocalRotation(pSrcObj->Transform()->GetWorldRotation());
+            pSrcObj->Transform()->SetLocalScale(pSrcObj->Transform()->GetWorldScale());
 
             // 기존 부모와의 연결 해제
             int layerIdx = pSrcObj->m_iLayerIdx;
@@ -247,11 +266,32 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
     }
     else
     {
-        pSrcObj->Transform()->SetRelativePos(pSrcObj->Transform()->GetRelativePos() - pDestObj->Transform()->GetWorldPos());
-        pSrcObj->Transform()->SetRelativeRotation(pSrcObj->Transform()->GetRelativeRotation() - pDestObj->Transform()->GetWorldRotation());
-
         pDestObj->AddChild(pSrcObj);
-        pSrcObj->SetBoneSocket(BoneSocket);
+
+        if (nullptr != BoneSocket)
+        {
+            pSrcObj->SetBoneSocket(BoneSocket);
+
+            // 원점 설정
+            pSrcObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+            pSrcObj->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+            pSrcObj->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+            pSrcObj->Transform()->SetAbsolute(false);
+        }
+        else
+        {
+            // 부모가 적용된 트랜스폼으로 재계산
+            pSrcObj->Transform()->finaltick();
+
+            // Local SRT를 World SRT로 설정
+            Vec3 pos = pSrcObj->Transform()->GetLocalPos();
+            Vec3 rot = pSrcObj->Transform()->GetLocalRotation();
+            Vec3 scale = pSrcObj->Transform()->GetLocalScale();
+
+            pSrcObj->Transform()->SetWorldPos(pos);
+            pSrcObj->Transform()->SetWorldRotation(rot);
+            pSrcObj->Transform()->SetWorldScale(scale);
+        }
     }
 }
 
@@ -268,6 +308,10 @@ void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
     CRenderMgr::GetInst()->Resize_Release();
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
+    if (CEditorMgr::GetInst()->IsEnable())
+    {
+        CEditorMgr::GetInst()->GetModelEditor()->Resize(resolution);
+    }
 
     LOG(Log, "Window Resized!");
 }
@@ -731,9 +775,9 @@ void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
         return;
 
     CGameObject* CloneObj = OriginObject->Clone();
-    CloneObj->Transform()->SetRelativePos(OriginObject->Transform()->GetWorldPos());
-    CloneObj->Transform()->SetRelativeRotation(OriginObject->Transform()->GetWorldRotation());
-    CloneObj->Transform()->SetRelativeScale(OriginObject->Transform()->GetWorldScale());
+    CloneObj->Transform()->SetLocalPos(OriginObject->Transform()->GetWorldPos());
+    CloneObj->Transform()->SetLocalRotation(OriginObject->Transform()->GetWorldRotation());
+    CloneObj->Transform()->SetLocalScale(OriginObject->Transform()->GetWorldScale());
 
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);

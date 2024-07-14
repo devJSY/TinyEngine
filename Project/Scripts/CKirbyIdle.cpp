@@ -11,6 +11,7 @@ CKirbyIdle::~CKirbyIdle()
 
 void CKirbyIdle::tick()
 {
+
     //TEST
     if (KEY_TAP(KEY::V))
     {
@@ -18,7 +19,7 @@ void CKirbyIdle::tick()
     }
 
 
-    // °¢ Stateº°·Î ¼öÇàÇÒ ÀÛ¾÷ (»óÅÂÀüÈ¯ Á¦¿Ü)
+    // ê° Stateë³„ë¡œ ìˆ˜í–‰í•  ì‘ì—… (ìƒíƒœì „í™˜ ì œì™¸)
     PLAY_CURSTATE(Idle)
 
     // State Change

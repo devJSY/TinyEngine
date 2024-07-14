@@ -43,9 +43,6 @@
     <ClInclude Include="CKirbyMoveController.h">
       <Filter>Scripts\Character\Kirby\MoveController</Filter>
     </ClInclude>
-    <ClInclude Include="CAnimationTestScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CModelEditorCameraMoveScript.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
@@ -238,6 +235,9 @@
     <ClInclude Include="CUIUnitManagerScript.h">
       <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
     </ClInclude>
+    <ClInclude Include="CEngineTestScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyAbility_Fire.h">
       <Filter>State\KirbyAbility\Fire</Filter>
     </ClInclude>
@@ -258,6 +258,8 @@
     </ClInclude>
     <ClInclude Include="CKirbyBurningPre.h">
       <Filter>State\KirbyState\Burning\BurningPre</Filter>
+    <ClInclude Include="CKirbyStuffedEat.h">
+      <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +304,6 @@
     </ClCompile>
     <ClCompile Include="CKirbyMoveController.cpp">
       <Filter>Scripts\Character\Kirby\MoveController</Filter>
-    </ClCompile>
-    <ClCompile Include="CAnimationTestScript.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyObject.cpp">
       <Filter>Module\StateGroup\KirbyObject</Filter>
@@ -510,6 +509,9 @@
     <ClCompile Include="CUIUnitManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
     </ClCompile>
+    <ClCompile Include="CEngineTestScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
     <ClCompile Include="CKirbyAbility_Fire.cpp">
       <Filter>State\KirbyAbility\Fire</Filter>
     </ClCompile>
@@ -530,6 +532,8 @@
     </ClCompile>
     <ClCompile Include="CKirbyBurningPre.cpp">
       <Filter>State\KirbyState\Burning\BurningPre</Filter>
+    <ClCompile Include="CKirbyStuffedEat.cpp">
+      <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -799,6 +803,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIManager\UIUnitManager">
       <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Eat">
+      <UniqueIdentifier>{274a9390-4fbf-49b1-8bb8-0290e3f4d1e5}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyAbility\Ranger">
       <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
