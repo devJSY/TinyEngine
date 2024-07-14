@@ -21,6 +21,7 @@ void CKirbyRunStart::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
+        case AbilityCopyType::FIRE:
         case AbilityCopyType::NORMAL:
         {
             // 상태변경 시그널 발생시
@@ -49,8 +50,7 @@ void CKirbyRunStart::tick()
         }
         break;
 
-        case AbilityCopyType::FIRE:
-            break;
+
         case AbilityCopyType::RANGER:
             break;
         case AbilityCopyType::SWORD:

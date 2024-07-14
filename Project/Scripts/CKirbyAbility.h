@@ -56,9 +56,9 @@ public:
 
     //virtual void Evasiveness();
 
-    virtual void Attack() = 0;
-    virtual void AttackEnter() = 0;
-    virtual void AttackExit() = 0;
+    virtual void Attack(){};
+    virtual void AttackEnter(){};
+    virtual void AttackExit(){};
 
     virtual void AttackEnd(){};
     virtual void AttackEndEnter(){};

@@ -12,7 +12,7 @@ enum class DAMAGE_TYPE
     END,
 };
 
-// Unit Á¤º¸ ±¸Á¶Ã¼´Â ÀÚ½Ä »ı¼ºÀÚ¿¡¼­ ³Ö¾îÁÖ±â
+// Unit ì •ë³´ êµ¬ì¡°ì²´ëŠ” ìì‹ ìƒì„±ìì—ì„œ ë„£ì–´ì£¼ê¸°
 struct UnitInfo
 {
     float HP;
@@ -38,8 +38,8 @@ protected:
 
 public:
     virtual void tick() override;
-    virtual void AttackReward() {}           // Atk: UnitÀÇ Attack¿¡ µû¸¥ º¸»ó Ã³¸® (ÈíÇ÷È¿°ú µî)
-    virtual void GetDamage(UnitHit _Damage); // Hit: UnitÀÇ Hit¿¡ µû¸¥ ÆĞ³ÎÆ¼ Ã³¸® (HP°¨¼Ò µî)
+    virtual void AttackReward() {}           // Atk: Unitì˜ Attackì— ë”°ë¥¸ ë³´ìƒ ì²˜ë¦¬ (í¡í˜ˆíš¨ê³¼ ë“±)
+    virtual void GetDamage(UnitHit _Damage); // Hit: Unitì˜ Hitì— ë”°ë¥¸ íŒ¨ë„í‹° ì²˜ë¦¬ (HPê°ì†Œ ë“±)
 
 private:
     void DamageProc();

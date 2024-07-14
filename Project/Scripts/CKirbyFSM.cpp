@@ -142,6 +142,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyChangeAbility.h"
 #include "CKirbyChangeAbilityEnd.h"
 #include "CKirbyChangeAbilityWait.h"
+#include "CKirbyBurningPre.h"
 
 void CKirbyFSM::begin()
 {
@@ -197,6 +198,8 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY", new CKirbyChangeAbility);
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
+
+    AddState(L"BURNING_PRE", new CKirbyBurningPre);
 
     ChangeState(L"IDLE");
 }

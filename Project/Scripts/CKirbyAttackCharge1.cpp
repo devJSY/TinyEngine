@@ -47,6 +47,16 @@ void CKirbyAttackCharge1::tick()
         }
         break;
         case AbilityCopyType::FIRE:
+        {
+            if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_CHARGE1_END");
+            }
+            else if (PLAYERCTRL->GetInput().Length() != 0.f)
+            {
+                ChangeState(L"ATTACK_CHARGE1_RUN");
+            }
+        }
             break;
         case AbilityCopyType::RANGER:
             break;

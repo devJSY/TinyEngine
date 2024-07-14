@@ -108,6 +108,8 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimationTestScript.h" />
+    <ClInclude Include="CBurningEnd.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -127,6 +129,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyBackJump.h" />
     <ClInclude Include="CKirbyBodyCollider.h" />
     <ClInclude Include="CKirbyBulletScript.h" />
+    <ClInclude Include="CKirbyBurning.h" />
+    <ClInclude Include="CKirbyBurningPre.h" />
+    <ClInclude Include="CKirbyBurningStart.h" />
     <ClInclude Include="CKirbyChangeAbility.h" />
     <ClInclude Include="CKirbyAttackCharge1.h" />
     <ClInclude Include="CKirbyChangeAbilityEnd.h" />
@@ -193,6 +198,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimationTestScript.cpp" />
+    <ClCompile Include="CBurningEnd.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -212,6 +219,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyBackJump.cpp" />
     <ClCompile Include="CKirbyBodyCollider.cpp" />
     <ClCompile Include="CKirbyBulletScript.cpp" />
+    <ClCompile Include="CKirbyBurning.cpp" />
+    <ClCompile Include="CKirbyBurningPre.cpp" />
+    <ClCompile Include="CKirbyBurningStart.cpp" />
     <ClCompile Include="CKirbyChangeAbility.cpp" />
     <ClCompile Include="CKirbyAttackCharge1.cpp" />
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp" />

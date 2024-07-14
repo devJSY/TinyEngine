@@ -11,7 +11,15 @@ CKirbyIdle::~CKirbyIdle()
 
 void CKirbyIdle::tick()
 {
-    // °¢ Stateº°·Î ¼öÇàÇÒ ÀÛ¾÷ (»óÅÂÀüÈ¯ Á¦¿Ü)
+
+    //TEST
+    if (KEY_TAP(KEY::V))
+    {
+        ChangeState(L"BURNING_PRE");
+    }
+
+
+    // ê° Stateë³„ë¡œ ìˆ˜í–‰í•  ìž‘ì—… (ìƒíƒœì „í™˜ ì œì™¸)
     PLAY_CURSTATE(Idle)
 
     // State Change
@@ -22,6 +30,7 @@ void CKirbyIdle::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
+        case AbilityCopyType::FIRE:
         case AbilityCopyType::NORMAL:
         {
             if (KEY_TAP(KEY_ATK))
@@ -42,8 +51,7 @@ void CKirbyIdle::tick()
             }
         }
             break;
-        case AbilityCopyType::FIRE:
-            break;
+
         case AbilityCopyType::RANGER:
             break;
         case AbilityCopyType::SWORD:

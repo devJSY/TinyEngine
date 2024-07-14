@@ -37,7 +37,7 @@ void CKirbyAttackCharge2::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE:
+        case AbilityCopyType::FIRE: // 상태 없음
             break;
         case AbilityCopyType::RANGER:
             break;
