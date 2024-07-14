@@ -34,7 +34,7 @@ void CKirbyLanding::tick()
         case AbilityCopyType::SWORD: {
             if (GetOwner()->Animator()->IsFinish())
             {
-                if (PLAYERFSM->GetSlideComboLevel())
+                if (PLAYERFSM->GetSlideComboLevel() == 2)
                 {
                     ChangeState(L"BACKJUMP");
                 }
