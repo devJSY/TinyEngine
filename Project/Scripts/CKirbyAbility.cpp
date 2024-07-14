@@ -99,3 +99,8 @@ void CKirbyAbility::SlideEndEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"SlideEnd"), false);
 }
+
+void CKirbyAbility::GuardEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Guard"), true, false, 1.f, 0.2);
+}

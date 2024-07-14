@@ -473,6 +473,14 @@ void CKirbyAbility_Sword::LandingExit()
 }
 
 // ===============
+// Guard
+// ===============
+void CKirbyAbility_Sword::GuardEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"GuardMask"), true, false, 1.5f, 0.2);
+}
+
+// ===============
 // Slide
 // ===============
 // 슬라이드 찌르기

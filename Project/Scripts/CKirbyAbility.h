@@ -138,6 +138,10 @@ public:
     virtual void JumpAttackStartEnter(){};
     virtual void JumpAttackStartExit(){};
 
+    virtual void Guard(){};
+    virtual void GuardEnter();
+    virtual void GuardExit(){};
+
     //virtual void Throw();
 
     //virtual void Change();

@@ -12,6 +12,9 @@ CKirbyGuard::~CKirbyGuard()
 }
 void CKirbyGuard::tick()
 {
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->Guard();
+
     if (KEY_TAP_ARROW)
     {
         CCamera* MainCam = CRenderMgr::GetInst()->GetMainCamera();
@@ -81,7 +84,8 @@ void CKirbyGuard::tick()
 void CKirbyGuard::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"Guard"), true, false, 1.f, 0.2);
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->GuardEnter();
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     // 방향, 점프, 이동 Lock
@@ -97,6 +101,8 @@ void CKirbyGuard::Enter()
 
 void CKirbyGuard::Exit()
 {
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->GuardExit();
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     // 방향, 점프, 이동 Unlock

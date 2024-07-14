@@ -78,6 +78,9 @@ public:
      // 랜딩
      virtual void LandingEnter();
      virtual void LandingExit();
+     
+     // 가드
+     virtual void GuardEnter();
 
      // 슬라이드 찌르기
      virtual void Slide();
