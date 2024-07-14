@@ -77,6 +77,7 @@ void CKirbyJumpStart::tick()
                     ChangeState(L"JUMP_FALL");
                 }
             }
+
             if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
             {
                 // PLAYERCTRL->SetGravity(m_OriginGravity / 2.f);

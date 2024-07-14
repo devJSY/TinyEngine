@@ -247,6 +247,18 @@
     <ClInclude Include="CKirbyChangeAbilityEnd.h">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyBurning.h">
+      <Filter>State\KirbyState\Burning\Burning</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyBurningStart.h">
+      <Filter>State\KirbyState\Burning\BurningStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CBurningEnd.h">
+      <Filter>State\KirbyState\Burning\BurningEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyBurningPre.h">
+      <Filter>State\KirbyState\Burning\BurningPre</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -506,6 +518,18 @@
     </ClCompile>
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurning.cpp">
+      <Filter>State\KirbyState\Burning\Burning</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningStart.cpp">
+      <Filter>State\KirbyState\Burning\BurningStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CBurningEnd.cpp">
+      <Filter>State\KirbyState\Burning\BurningEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningPre.cpp">
+      <Filter>State\KirbyState\Burning\BurningPre</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -787,6 +811,21 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeAbility\ChangeAbilityEnd">
       <UniqueIdentifier>{bf0bcba1-b3ca-4aa8-9d06-4e2569843b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning">
+      <UniqueIdentifier>{ea078dde-3e60-4a50-9f77-e8b113a6cdf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningPre">
+      <UniqueIdentifier>{4626a14e-8c74-4bd0-979e-4072439eacb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\Burning">
+      <UniqueIdentifier>{2529669e-87d0-499b-8dd7-ecefb42cca6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningStart">
+      <UniqueIdentifier>{e1f426ae-8f75-457e-88c1-439027f606b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningEnd">
+      <UniqueIdentifier>{2f86c255-94f2-4343-be20-9f9e100966c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

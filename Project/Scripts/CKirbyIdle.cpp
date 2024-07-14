@@ -14,7 +14,7 @@ void CKirbyIdle::tick()
     //TEST
     if (KEY_TAP(KEY::V))
     {
-        ChangeState(L"DAMAGE");
+        ChangeState(L"BURNING_PRE");
     }
 
 
