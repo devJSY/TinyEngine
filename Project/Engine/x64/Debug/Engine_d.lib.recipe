@@ -3,6 +3,9 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
+      <FullPath>C:\Users\DVYH\Desktop\DV\PROJECT\Kirby\External\Library\Engine\KirbySwordMagmaPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\DVYH\Desktop\DV\PROJECT\Kirby\External\Library\Engine\2D_OutLinePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -70,6 +73,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\DVYH\Desktop\DV\PROJECT\Kirby\External\Library\Engine\KirbyBodyPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\DVYH\Desktop\DV\PROJECT\Kirby\External\Library\Engine\KirbyButterflyPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\DVYH\Desktop\DV\PROJECT\Kirby\External\Library\Engine\landscape.cso</FullPath>

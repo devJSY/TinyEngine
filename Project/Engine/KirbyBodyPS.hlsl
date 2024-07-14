@@ -2,8 +2,6 @@
 #include "global.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
-#define bBody g_int_0
-#define bMouth g_int_1
 #define Albedo0Tex g_tex_0
 #define Albedo1Tex g_tex_1
 #define Albedo2Tex g_tex_2
@@ -11,8 +9,8 @@
 #define Albedo4Tex g_tex_4
 
 #define MtrlAlbedo g_vAlbedo
-#define MtrlMetallic g_vMetallic
-#define MtrlRoughness g_vRoughness
+#define MtrlMetallic 0.f
+#define MtrlRoughness 0.95f
 #define MtrlEmission g_vEmission
 
 #define sparklyEffect g_float_0

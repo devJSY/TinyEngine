@@ -613,14 +613,15 @@ void CKirbyAbility_Sword::ChangeAbility()
 void CKirbyAbility_Sword::ChangeAbilityEnter()
 {
     // create hat
-    Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoHat.mdat");
-    CGameObject* pInstObj = pMeshData->Instantiate();
-    //CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirySwordHat.pref", L"prefab\\KirySwordHat.pref")->Instantiate();
+    //Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoHat.mdat");
+    //CGameObject* pInstObj = pMeshData->Instantiate();
+    CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref")->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
     // create sword
-    pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoSword.mdat");
-    pInstObj = pMeshData->Instantiate();
+    //pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoSword.mdat");
+    //pInstObj = pMeshData->Instantiate();
+    pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref")->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"WeaponSword");
 }
 

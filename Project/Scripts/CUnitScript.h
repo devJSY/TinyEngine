@@ -16,9 +16,9 @@ enum class DAMAGE_TYPE
 struct UnitInfo
 {
     float HP;
-    float MAXHP;
     float Speed;
     float JumpPower;
+    float MAXHP;
 };
 
 struct UnitHit
