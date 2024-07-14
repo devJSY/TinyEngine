@@ -5,6 +5,9 @@ class CKirbyUnitScript : public CUnitScript
 {
 public:
     virtual void begin();
+    virtual void tick();
+
+    virtual void AttackReward();
 
 public:
     virtual void SaveToLevelFile(FILE* _File);

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CKirbyUnitScript.h"
+#include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
 
 CKirbyUnitScript::CKirbyUnitScript()
     : CUnitScript(KIRBYUNITSCRIPT)
@@ -41,6 +43,24 @@ CKirbyUnitScript::~CKirbyUnitScript()
 
 void CKirbyUnitScript::begin()
 {
+}
+
+void CKirbyUnitScript::tick()
+{
+    CUnitScript::tick();
+}
+
+void CKirbyUnitScript::AttackReward()
+{
+    if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD)
+    {
+        m_CurInfo.HP += 2.5f;
+
+        if (m_CurInfo.HP > m_CurInfo.MAXHP)
+        {
+            m_CurInfo.HP = m_CurInfo.MAXHP;
+        }
+    }
 }
 
 void CKirbyUnitScript::SaveToLevelFile(FILE* _File)
