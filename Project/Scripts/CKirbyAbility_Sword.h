@@ -75,6 +75,10 @@ public:
      virtual void JumpAttackStartEnter();
      virtual void JumpAttackStartExit();
 
+     // 랜딩
+     virtual void LandingEnter();
+     virtual void LandingExit();
+
      // 슬라이드 찌르기
      virtual void Slide();
      virtual void SlideEnter();

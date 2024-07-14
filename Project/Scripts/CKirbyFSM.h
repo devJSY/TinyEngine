@@ -41,6 +41,7 @@ private:
     UINT                    m_ComboLevel;
     float                   m_ComboAccTime;
     float                   m_ChargeAccTime;
+    UINT                    m_SlideComboLevel;
     LastJumpType            m_LastJump;
     DodgeType               m_DodgeType;
     bool                    m_bStuffed;
@@ -65,6 +66,7 @@ public:
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
+    void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
     void SetInvincible() { m_bInvincible = true;  m_InvincibleAcc = 0.f;}
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
@@ -85,6 +87,7 @@ public:
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
     UINT GetComboLevel() const { return m_ComboLevel; }
+    UINT GetSlideComboLevel() const { return m_SlideComboLevel; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;

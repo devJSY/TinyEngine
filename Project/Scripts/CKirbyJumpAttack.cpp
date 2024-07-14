@@ -30,7 +30,20 @@ void CKirbyJumpAttack::tick()
         case AbilityCopyType::SWORD: {
             if (GetOwner()->Animator()->IsFinish())
             {
-                if (GetOwner()->CharacterController()->IsGrounded())
+                if (PLAYERFSM->GetSlideComboLevel())
+                {
+                    PLAYERFSM->SetSlideComboLevel(2);
+
+                    if (GetOwner()->CharacterController()->IsGrounded())
+                    {
+                        ChangeState(L"LANDING");
+                    }
+                    else
+                    {
+                        ChangeState(L"JUMP_FALL");
+                    }
+                }
+                else if (GetOwner()->CharacterController()->IsGrounded())
                 {
                     ChangeState(L"LANDING");
                 }

@@ -24,14 +24,27 @@ void CKirbyLanding::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::RANGER:
-        case AbilityCopyType::SWORD:
-            break;
+        case AbilityCopyType::RANGER: {
+            if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"LANDING_END");
+            }
         }
-
-        if (GetOwner()->Animator()->IsFinish())
-        {
-            ChangeState(L"LANDING_END");
+        break;
+        case AbilityCopyType::SWORD: {
+            if (GetOwner()->Animator()->IsFinish())
+            {
+                if (PLAYERFSM->GetSlideComboLevel())
+                {
+                    ChangeState(L"BACKJUMP");
+                }
+                else
+                {
+                    ChangeState(L"LANDING_END");
+                }
+            }
+        }
+            break;
         }
     }
 }

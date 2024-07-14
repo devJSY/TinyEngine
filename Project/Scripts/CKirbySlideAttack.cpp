@@ -33,6 +33,7 @@ void CKirbySlideAttack::tick()
             }
             else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
+                PLAYERFSM->SetSlideComboLevel(1);
                 ChangeState(L"JUMP_ATTACK_START");
             }
             else if (KEY_TAP(KEY_JUMP))
@@ -41,6 +42,7 @@ void CKirbySlideAttack::tick()
             }
             else
             {
+                PLAYERFSM->SetSlideComboLevel(1);
                 ChangeState(L"JUMP_FALL");
             }
         }

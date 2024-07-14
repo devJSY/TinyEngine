@@ -392,7 +392,14 @@ void CKirbyAbility_Sword::JumpAttack()
 {
     if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() == 10)
     {
-        PLAYERCTRL->SetGravity(m_PrevGravity);
+        if (PLAYERFSM->GetSlideComboLevel())
+        {
+            PLAYERCTRL->SetGravity(-80.f);
+        }
+        else
+        {
+            PLAYERCTRL->SetGravity(m_PrevGravity);
+        }
         m_bFrmEnter = false;
     }
 }
@@ -432,6 +439,37 @@ void CKirbyAbility_Sword::JumpAttackStartEnter()
 void CKirbyAbility_Sword::JumpAttackStartExit()
 {
     PLAYERCTRL->UnlockDirection();
+}
+
+// ===============
+// Landing
+// ===============
+
+void CKirbyAbility_Sword::LandingEnter()
+{
+    if (PLAYERFSM->GetLastJump() == LastJumpType::LOW)
+    {
+        PLAYER->Animator()->Play(KIRBYANIM(L"LandingSmall"), false);
+    }
+    else
+    {
+        PLAYER->Animator()->Play(KIRBYANIM(L"Landing"), false);
+    }
+
+    if (PLAYERFSM->GetSlideComboLevel())
+    {
+        PLAYERFSM->SetKnockBackDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+
+        //@Effect 내려찍는 충격효과, 나비
+    }
+
+    PLAYERCTRL->LockJump();
+}
+
+void CKirbyAbility_Sword::LandingExit()
+{
+    PLAYERFSM->SetSlideComboLevel(0);
+    PLAYERCTRL->UnlockJump();
 }
 
 // ===============

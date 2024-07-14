@@ -41,13 +41,24 @@ void CKirbyJumpFall::tick()
         case AbilityCopyType::RANGER:
             break;
         case AbilityCopyType::SWORD: {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            if (PLAYERFSM->GetSlideComboLevel())
             {
-                ChangeState(L"JUMP_ATTACK_START");
+                if (GetOwner()->CharacterController()->IsGrounded())
+                {
+                    ChangeState(L"LANDING");
+                }
+                else if ((KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK)) && PLAYERFSM->GetSlideComboLevel() == 1)
+                {
+                    ChangeState(L"JUMP_ATTACK_START");
+                }
             }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"JUMP_ATTACK_START");
             }
             else if (KEY_TAP(KEY_JUMP))
             {
