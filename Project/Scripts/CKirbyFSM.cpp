@@ -142,6 +142,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyAttackCharge3.h"
 #include "CKirbyAttackCharge3Start.h"
 #include "CKirbyAttackCharge3End.h"
+#include "CKirbyAttackAirGuard.h"
+#include "CKirbyAttackAirGuardEnd.h"
+#include "CKirbyAttackAirGuardCharge.h"
+#include "CKirbyAttackAirGuardChargeStart.h"
 #include "CKirbyStuffed.h"
 #include "CKirbyStuffedIdle.h"
 #include "CKirbyStuffedRun.h"
@@ -150,6 +154,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyStuffedLanding.h"
 #include "CKirbyStuffedEat.h"
 #include "CKirbyGuard.h"
+#include "CKirbyGuardRun.h"
 #include "CKirbySlide.h"
 #include "CKirbySlideStart.h"
 #include "CKirbySlideEnd.h"
@@ -210,6 +215,10 @@ void CKirbyFSM::begin()
     AddState(L"ATTACK_CHARGE3", new CKirbyAttackCharge3);
     AddState(L"ATTACK_CHARGE3_START", new CKirbyAttackCharge3Start);
     AddState(L"ATTACK_CHARGE3_END", new CKirbyAttackCharge3End);
+    AddState(L"ATTACK_AIRGUARD", new CKirbyAttackAirGuard);
+    AddState(L"ATTACK_AIRGUARD_END", new CKirbyAttackAirGuardEnd);
+    AddState(L"ATTACK_AIRGUARD_CHARGE", new CKirbyAttackAirGuardCharge);
+    AddState(L"ATTACK_AIRGUARD_CHARGE_START", new CKirbyAttackAirGuardChargeStart);
     AddState(L"STUFFED", new CKirbyStuffed);
     AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
     AddState(L"STUFFED_RUN", new CKirbyStuffedRun);
@@ -218,6 +227,7 @@ void CKirbyFSM::begin()
     AddState(L"STUFFED_LANDING", new CKirbyStuffedLanding);
     AddState(L"STUFFED_EAT", new CKirbyStuffedEat);
     AddState(L"GUARD", new CKirbyGuard);
+    AddState(L"GUARD_RUN", new CKirbyGuardRun);
     AddState(L"SLIDE_START", new CKirbySlideStart);
     AddState(L"SLIDE", new CKirbySlide);
     AddState(L"SLIDE_END", new CKirbySlideEnd);

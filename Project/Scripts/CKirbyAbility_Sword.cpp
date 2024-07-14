@@ -481,6 +481,38 @@ void CKirbyAbility_Sword::GuardEnter()
 }
 
 // ===============
+// Guard Run
+// ===============
+// 순간이동
+
+void CKirbyAbility_Sword::GuardRun()
+{
+}
+
+void CKirbyAbility_Sword::GuardRunEnter()
+{
+    //@TODO visiblity 바꾸기
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(limbs), false);
+    //@Effect 궤적 파티클
+
+    m_PrevSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(15.f);
+    PLAYERCTRL->LockJump();
+}
+
+void CKirbyAbility_Sword::GuardRunExit()
+{
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(limbs));
+
+    PLAYERCTRL->SetSpeed(m_PrevSpeed);
+    PLAYERCTRL->UnlockJump();
+}
+
+// ===============
 // Slide
 // ===============
 // 슬라이드 찌르기

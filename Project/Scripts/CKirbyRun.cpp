@@ -33,13 +33,13 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"JUMP_START");
             }
-            else if (PLAYERCTRL->GetInput().Length() == 0.f)
-            {
-                ChangeState(L"IDLE");
-            }
             else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
             {
                 ChangeState(L"GUARD");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
             }
         }
         break;
@@ -62,13 +62,13 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"JUMP_START");
             }
-            else if (PLAYERCTRL->GetInput().Length() == 0.f)
-            {
-                ChangeState(L"IDLE");
-            }
             else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
             {
                 ChangeState(L"GUARD");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
             }
         }
             break;

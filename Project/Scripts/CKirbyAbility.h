@@ -142,6 +142,10 @@ public:
     virtual void GuardEnter();
     virtual void GuardExit(){};
 
+    virtual void GuardRun(){};
+    virtual void GuardRunEnter(){};
+    virtual void GuardRunExit(){};
+
     //virtual void Throw();
 
     //virtual void Change();

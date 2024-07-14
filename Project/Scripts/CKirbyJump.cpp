@@ -21,8 +21,7 @@ void CKirbyJump::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
@@ -48,7 +47,14 @@ void CKirbyJump::tick()
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                ChangeState(L"JUMP_ATTACK_START");
+                if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+                {
+                    ChangeState(L"ATTACK_AIRGUARD_CHARGE_START");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_ATTACK_START");
+                }
             }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {
@@ -63,7 +69,7 @@ void CKirbyJump::tick()
                 ChangeState(L"JUMP_FALL");
             }
         }
-            break;
+        break;
         }
     }
 }

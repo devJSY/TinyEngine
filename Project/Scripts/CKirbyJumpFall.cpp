@@ -58,7 +58,14 @@ void CKirbyJumpFall::tick()
             }
             else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                ChangeState(L"JUMP_ATTACK_START");
+                if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+                {
+                    ChangeState(L"ATTACK_AIRGUARD_CHARGE_START");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_ATTACK_START");
+                }
             }
             else if (KEY_TAP(KEY_JUMP))
             {

@@ -229,7 +229,7 @@ void CKirbyMoveController::Move()
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(rayStartPos, Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
     //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
 
-    //if (Hit.pCollisionObj && Hit.Distance <= 0.1f)
+    //if (Hit.pCollisionObj && Hit.Distance <= 50.f)
     //{
     //    bGrounded = true;
     //}

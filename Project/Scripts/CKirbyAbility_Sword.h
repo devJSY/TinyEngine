@@ -82,6 +82,10 @@ public:
      // 가드
      virtual void GuardEnter();
 
+     virtual void GuardRun();
+     virtual void GuardRunEnter();
+     virtual void GuardRunExit();
+
      // 슬라이드 찌르기
      virtual void Slide();
      virtual void SlideEnter();
