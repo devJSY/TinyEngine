@@ -730,11 +730,8 @@ void CModelEditor::DrawDetails()
                         }
                         else
                         {
-                            if (m_ModelObj->Animator()->GetSkeletalMesh()->LoadAnimationFBX(filePath.lexically_relative(CPathMgr::GetContentPath())))
-                            {
-                                m_ModelObj->Animator()->SetSkeletalMesh(m_ModelObj->Animator()->GetSkeletalMesh());
-                                m_bMeshSaved = false;
-                            }
+                            CAssetMgr::GetInst()->AsyncLoadAnimationFBX(m_ModelObj->Animator()->GetSkeletalMesh(),
+                                                                        filePath.lexically_relative(CPathMgr::GetContentPath()));
                         }
                     }
                 }
@@ -1423,4 +1420,13 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     }
 
     m_bDrawWireFrame = false;
+}
+
+void CModelEditor::NotifiedAnimationLoaded()
+{
+    if (nullptr == m_ModelObj || nullptr == m_ModelObj->Animator() || !m_ModelObj->Animator()->IsValid())
+        return;
+
+    m_ModelObj->Animator()->SetSkeletalMesh(m_ModelObj->Animator()->GetSkeletalMesh());
+    m_bMeshSaved = false;
 }

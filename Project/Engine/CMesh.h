@@ -61,8 +61,6 @@ public:
     CStructuredBuffer* GetBoneFrameDataBuffer() const { return m_pBoneFrameData; } // 전체 본 프레임 정보
     CStructuredBuffer* GetBoneOffsetBuffer() const { return m_pBoneOffset; }       // 각 뼈의 offset 행렬
 
-    bool LoadAnimationFBX(const wstring& _strPath);
-
 public:
     static CMesh* CreateFromContainer(CFBXLoader& _loader);
     int Create(void* _Vtx, UINT _VtxCount, void* _Idx, UINT _IdxCount);
@@ -81,4 +79,6 @@ public:
 public:
     CMesh(bool _bEngineAsset = false);
     virtual ~CMesh();
+
+    friend class CTaskMgr;
 };

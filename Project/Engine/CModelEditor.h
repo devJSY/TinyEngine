@@ -66,6 +66,7 @@ private:
 public:
     void Resize(Vec2 resolution);
     void SetModel(Ptr<CMeshData> _MeshData);
+    void NotifiedAnimationLoaded();
 
     bool IsViewportFocused() const { return m_ViewportFocused; }
     bool IsViewportHovered() const { return m_ViewportHovered; }
