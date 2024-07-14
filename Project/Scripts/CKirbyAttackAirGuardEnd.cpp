@@ -40,6 +40,10 @@ void CKirbyAttackAirGuardEnd::Enter()
 
 void CKirbyAttackAirGuardEnd::Exit()
 {
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->SetGravity(m_PrevGravity);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();

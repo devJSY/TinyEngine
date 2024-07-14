@@ -510,6 +510,8 @@ void CKirbyAbility_Sword::GuardRunExit()
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockJump();
+    Vec3 vel = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetVelocity(vel);
 }
 
 // ===============

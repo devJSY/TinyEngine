@@ -2,7 +2,7 @@
 #include "CKirbyGuardRun.h"
 
 CKirbyGuardRun::CKirbyGuardRun()
-    : m_PlayTime(2.f)
+    : m_PlayTime(1.f)
 {
 }
 
@@ -39,7 +39,7 @@ void CKirbyGuardRun::Enter()
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->GuardRunEnter();
 
-    m_PlayTime = 2.f;
+    m_PlayTime = 1.f;
 }
 
 void CKirbyGuardRun::Exit()

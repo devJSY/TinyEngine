@@ -255,11 +255,11 @@ void CKirbyMoveController::Move()
 
     if (m_bActiveFriction)
     {
-        m_Accel.x = -m_MoveVelocity.x * m_Friction * DT;
-        m_Accel.z = -m_MoveVelocity.z * m_Friction * DT;
+        m_Accel.x = -m_MoveVelocity.x * m_Friction;
+        m_Accel.z = -m_MoveVelocity.z * m_Friction;
 
-        m_MoveVelocity.x += m_Accel.x;
-        m_MoveVelocity.z += m_Accel.z;
+        m_MoveVelocity.x += m_Accel.x * DT;
+        m_MoveVelocity.z += m_Accel.z * DT;
     }
     else
     {
