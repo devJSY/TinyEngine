@@ -1,13 +1,10 @@
 #pragma once
 #include "CState.h"
-class CKirbyBurning : public CState
+class CKirbyBurningEnd : public CState
 {
 private:
     float m_SaveRotSpeed;
-    float m_Duration;
-    float m_Acc;
     float m_SaveSpeed;
-
 
 public:
     virtual void tick();
@@ -15,7 +12,7 @@ public:
     virtual void Exit();
 
 public:
-    CLONE(CKirbyBurning)
-    CKirbyBurning();
-    virtual ~CKirbyBurning();
+    CLONE(CKirbyBurningEnd)
+    CKirbyBurningEnd();
+    virtual ~CKirbyBurningEnd();
 };

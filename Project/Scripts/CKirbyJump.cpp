@@ -45,7 +45,14 @@ void CKirbyJump::tick()
         case AbilityCopyType::FIRE:
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                ChangeState(L"ATTACK_CHARGE1_START");
+                if (KEY_PRESSED_ARROW)
+                {
+                    ChangeState(L"BURNING_PRE");
+                }
+                else
+                {
+                    ChangeState(L"ATTACK_CHARGE1_START");
+                }
             }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {

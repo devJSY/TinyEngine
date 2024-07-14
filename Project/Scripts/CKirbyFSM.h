@@ -49,6 +49,9 @@ private:
     float                   m_EmissiveCoef;
     bool                    m_bInvincible;
 
+    float                   m_GlidingDuration;
+    float                   m_GlidingAcc;
+
 public:
     void begin() override;
     void tick() override;
@@ -57,6 +60,7 @@ public:
     void ChangeObjectCopy(ObjectCopyType _Type);
     void StartStuffed(CGameObject* _Target);
     void DrawingCollisionEnter(CGameObject* _CollisionObject);
+    void AddGlidingTime(float _Time) { m_GlidingAcc += _Time; }
 
 public:
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
@@ -67,6 +71,7 @@ public:
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
     void ClearStuff();
+    void ClearGlidingTime() { m_GlidingAcc = 0.f; }
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
@@ -80,6 +85,8 @@ public:
     float GetChargeAccTime() const { return m_ChargeAccTime; }
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
+    float GetGlidingDuration() const { return m_GlidingDuration; }
+    float GetCurGlidingTime() const { return m_GlidingAcc; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;

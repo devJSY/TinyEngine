@@ -10,15 +10,6 @@ private:
     float       m_SavedSpeed;
 
 public:
-    // RUN
-    virtual void Run();
-    virtual void RunEnter();
-    virtual void RunExit();
-
-    virtual void RunStart();
-    virtual void RunStartEnter();
-    virtual void RunStartExit();
-
     // ¹ñ±â
     virtual void Attack();
     virtual void AttackEnter();

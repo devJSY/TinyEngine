@@ -66,6 +66,17 @@ void CKirbyJumpStart::tick()
             {
                 ChangeState(L"HOVERING_START");
             }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                if (KEY_PRESSED_ARROW)
+                {
+                    ChangeState(L"BURNING_PRE");
+                }
+                else
+                {
+                    ChangeState(L"ATTACK_CHARGE1_START");
+                }
+            }
             else if (m_JumpAccTime > m_MaxJumpTime)
             {
                 if (KEY_PRESSED(KEY_JUMP))

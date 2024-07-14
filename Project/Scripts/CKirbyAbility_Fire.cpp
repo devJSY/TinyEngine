@@ -148,10 +148,6 @@ void CKirbyAbility_Fire::AttackCharge1RunEnter()
     // Kirby 표정 바꿔주기
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
-    // Kirby 머터리얼 변경
-    CPlayerMgr::ClearBodyMtrl();
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
-
     // @TODO 일정 주기마다 Fire Projectile 스폰
 
 }
@@ -188,32 +184,12 @@ void CKirbyAbility_Fire::ChangeAbility()
 
 void CKirbyAbility_Fire::ChangeAbilityEnter()
 {
-    const vector<tBoneSocket*>& vecBoneSocket = PLAYER->Animator()->GetSkeletalMesh()->GetvecBoneSocket();
+    // 소켓에 모자 끼워주기
+    CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref")->Instantiate();
+    GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
-    for (tBoneSocket* BoneSocket : vecBoneSocket)
-    {
-        CGameObject* pInstObj = nullptr;
-
-        if (BoneSocket->SoketName == L"HatLSocket_0")
-        {
-            pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref")->Instantiate();
-
-            if (nullptr != pInstObj)
-            {
-                // 애니메이션 설정
-                pInstObj->Animator()->Play(KIRBYANIM(L"Deform"));
-
-                // 원점 설정
-                pInstObj->Transform()->SetRelativePos(PLAYER->Transform()->GetWorldPos());
-                pInstObj->Transform()->SetRelativeRotation(PLAYER->Transform()->GetWorldRotation());
-
-                pInstObj->Transform()->SetAbsolute(false);
-
-
-                GamePlayStatic::AddChildObject(PLAYER, pInstObj, BoneSocket);
-            }
-        }
-    }
+    // 애니메이션 재생
+    pInstObj->Animator()->Play(KIRBYANIM(L"Deform"));
 }
 
 void CKirbyAbility_Fire::ChangeAbilityExit()

@@ -2,6 +2,9 @@
 #include "CState.h"
 class CKirbyBurningPre : public CState
 {
+private:
+    float m_SaveGravity;
+
 public:
     virtual void tick();
     virtual void Enter();

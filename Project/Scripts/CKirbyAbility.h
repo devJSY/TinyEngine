@@ -24,13 +24,13 @@ public:
     virtual void IdleEnter();
     virtual void IdleExit(){};
 
-    virtual void Run(){};
-    virtual void RunEnter(){};
-    virtual void RunExit(){};
+    virtual void Run();
+    virtual void RunEnter();
+    virtual void RunExit();
 
-    virtual void RunStart(){};
-    virtual void RunStartEnter(){};
-    virtual void RunStartExit(){};
+    virtual void RunStart();
+    virtual void RunStartEnter();
+    virtual void RunStartExit();
 
     virtual void Jump(){};
     virtual void JumpEnter();
