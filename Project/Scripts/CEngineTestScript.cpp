@@ -32,7 +32,7 @@ void CEngineTestScript::tick()
         GetOwner()->SetActive(!GetOwner()->IsActive());
     }
 
-    // CharacterControllerTest();
+    CharacterControllerTest();
     // AnimatorTest();
     //  QuaternionExample();
 
@@ -118,8 +118,16 @@ void CEngineTestScript::CharacterControllerTest()
     // 방향 전환
     if (Dir.Length() > 0.f)
     {
-        Quat ToWardQuaternion = Quat::LookRotation(-Dir, Vec3(0.f, 1.f, 0.f));
+        // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
+        Vec3 up = Vec3(0.f, 1.f, 0.f);
+        if (Dir == Vec3(0.f, 0.f, -1.f))
+        {
+            up = Vec3(0.f, -1.f, 0.f);
+        }
+
+        Quat ToWardQuaternion = Quat::LookRotation(-Dir, up);
         Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * RotSpeed);
+
         Transform()->SetWorldRotation(SlerpQuat);
     }
 

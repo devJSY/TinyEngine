@@ -96,7 +96,7 @@ void CCharacterController::finaltick()
 
 void CCharacterController::Move(Vec3 _Motion)
 {
-    if (nullptr == m_RuntimeShape || _Motion.Length() <= 1e-3f)
+    if (nullptr == m_RuntimeShape || _Motion == Vector3::Zero)
         return;
 
     physx::PxControllerCollisionFlags MoveFlags =
