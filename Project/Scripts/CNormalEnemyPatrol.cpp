@@ -1,21 +1,21 @@
 #include "pch.h"
-#include "CNormalEnemyTrack.h"
+#include "CNormalEnemyPatrol.h"
 
 #include "CMonsterMgr.h"
 #include "CMonsterMoveController.h"
 
-CNormalEnemyTrack::CNormalEnemyTrack()
+CNormalEnemyPatrol::CNormalEnemyPatrol()
     : m_pMgr(nullptr)
     , m_pTransform(nullptr)
     , m_pMMC(nullptr)
 {
 }
 
-CNormalEnemyTrack::~CNormalEnemyTrack()
+CNormalEnemyPatrol::~CNormalEnemyPatrol()
 {
 }
 
-void CNormalEnemyTrack::tick()
+void CNormalEnemyPatrol::tick()
 {
     bool _IsTrack = m_pMgr->IsTrack(m_pTransform->GetLocalPos(), m_pMMC->GetTrackDist());
 
@@ -25,7 +25,7 @@ void CNormalEnemyTrack::tick()
     }
 }
 
-void CNormalEnemyTrack::Enter()
+void CNormalEnemyPatrol::Enter()
 {
     if (nullptr == m_pMgr)
     {
@@ -35,7 +35,7 @@ void CNormalEnemyTrack::Enter()
     }
 }
 
-void CNormalEnemyTrack::Exit()
+void CNormalEnemyPatrol::Exit()
 {
     m_pMMC->SetTrack(false);
 }

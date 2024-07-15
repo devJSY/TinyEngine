@@ -72,10 +72,9 @@
       <FullPath>D:\C++\API\Engine\TinyEngine\External\Library\Engine\KirbyBodyPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\KirbySkySpherePS.cso</FullPath>
+      <FullPath>D:\C++\API\Engine\TinyEngine\External\Library\Engine\KirbySkySpherePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>D:\TinyEngine\External\Library\Engine\landscape.cso</FullPath>
       <FullPath>D:\C++\API\Engine\TinyEngine\External\Library\Engine\landscape.cso</FullPath>
     </ContentFile>
     <ContentFile>

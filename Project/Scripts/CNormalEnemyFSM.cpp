@@ -11,13 +11,16 @@ CNormalEnemyFSM::~CNormalEnemyFSM()
 }
 
 #include "CNormalEnemyIdle.h"
-#include "CNormalEnemyTrack.h"
-
+#include "CNormalEnemyPatrol.h"
+#include "CNormalEnemyAttack.h"
+#include "CNormalEnemyFind.h"
 
 void CNormalEnemyFSM::begin()
 {
     AddState(L"IDLE", new CNormalEnemyIdle);
-    AddState(L"TRACK", new CNormalEnemyTrack);
+    AddState(L"TRACK", new CNormalEnemyPatrol);
+    AddState(L"ATTACK", new CNormalEnemyAttack);
+    AddState(L"FIND", new CNormalEnemyFind);
 
     ChangeState(L"IDLE");
 }

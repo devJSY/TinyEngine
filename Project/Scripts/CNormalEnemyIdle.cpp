@@ -31,10 +31,10 @@ void CNormalEnemyIdle::Enter()
     // Idle 애니메이션 시작
     if (nullptr == m_pMgr)
     {
+        GetOwner()->GetComponent<CAnimator>()->Play(MONSTERANIM(L"Wait"));
         m_pMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CMonsterMgr>();
         m_pTransform = GetOwner()->GetComponent<CTransform>();
         m_pMMC = GetOwner()->GetScript<CMonsterMoveController>();
-        //GetOwner()->GetComponent<CAnimator>()->Play(L"");
     }
 }
 

@@ -4,7 +4,7 @@
 
 class CMonsterMgr;
 class CMonsterMoveController;
-class CNormalEnemyTrack
+class CNormalEnemyPatrol
 	:public CState
 {
 private:
@@ -18,7 +18,7 @@ public:
     virtual void Exit() override;
 
 public:
-    CLONE(CNormalEnemyTrack)
-    CNormalEnemyTrack();
-    virtual ~CNormalEnemyTrack();
+    CLONE(CNormalEnemyPatrol)
+    CNormalEnemyPatrol();
+    virtual ~CNormalEnemyPatrol();
 };

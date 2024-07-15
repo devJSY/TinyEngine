@@ -253,7 +253,7 @@
     <ClInclude Include="CNormalEnemyIdle.h">
       <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyTrack.h">
+    <ClInclude Include="CNormalEnemyPatrol.h">
       <Filter>State\MonsterState\NormalEnemyState\Track</Filter>
     </ClInclude>
     <ClInclude Include="CNormalEnemyFSM.h">
@@ -273,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="CNormalEnemyAttack.h">
       <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyFind.h">
+      <Filter>State\MonsterState\NormalEnemyState\Find</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -537,7 +540,7 @@
     <ClCompile Include="CNormalEnemyIdle.cpp">
       <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyTrack.cpp">
+    <ClCompile Include="CNormalEnemyPatrol.cpp">
       <Filter>State\MonsterState\NormalEnemyState\Track</Filter>
     </ClCompile>
     <ClCompile Include="CNormalEnemyFSM.cpp">
@@ -560,6 +563,9 @@
     </ClCompile>
     <ClCompile Include="CNormalEnemyAttack.cpp">
       <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyFind.cpp">
+      <Filter>State\MonsterState\NormalEnemyState\Find</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -880,6 +886,9 @@
     </Filter>
     <Filter Include="State\MonsterState\NormalEnemyState\Attack">
       <UniqueIdentifier>{98f23a19-9b25-426e-9113-48121c2dfd58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Find">
+      <UniqueIdentifier>{04c66023-e745-49c6-ba95-c754f4e7a498}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
