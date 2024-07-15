@@ -16,36 +16,6 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 }
 
 // ===============
-// RUN
-// ===============
-void CKirbyAbility_Normal::Run()
-{
-}
-
-void CKirbyAbility_Normal::RunEnter()
-{
-    PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
-}
-
-void CKirbyAbility_Normal::RunExit()
-{
-}
-
-// start
-void CKirbyAbility_Normal::RunStart()
-{
-}
-
-void CKirbyAbility_Normal::RunStartEnter()
-{
-    PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
-}
-
-void CKirbyAbility_Normal::RunStartExit()
-{
-}
-
-// ===============
 // Attack
 // ===============
 // 머금은 물체 뱉기
@@ -53,7 +23,7 @@ void CKirbyAbility_Normal::RunStartExit()
 
 void CKirbyAbility_Normal::Attack()
 {
-    if (GET_CURCLIP_FRM == 3 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() == 3 && m_bFrmEnter)
     {
         CPlayerMgr::ClearBodyMtrl();
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
@@ -296,4 +266,21 @@ void CKirbyAbility_Normal::AttackCharge2RunExit()
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
 
     PLAYERFSM->GetVacuumCol()->EnableCollider(false);
+}
+
+// ===============
+// Change Ability
+// ===============
+void CKirbyAbility_Normal::ChangeAbility()
+{
+}
+
+void CKirbyAbility_Normal::ChangeAbilityEnter()
+{
+    PLAYERFSM->SetCurHat(nullptr);
+    PLAYERFSM->SetCurWeapon(nullptr);
+}
+
+void CKirbyAbility_Normal::ChangeAbilityExit()
+{
 }

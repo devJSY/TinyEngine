@@ -19,13 +19,22 @@ CUnitScript::~CUnitScript()
 {
 }
 
-
 void CUnitScript::tick()
 {
     m_PrevInfo = m_CurInfo;
 
     // 현재 프레임에 받는 데미지들을 업데이트
     DamageProc();
+
+    if (m_CurInfo.HP < 0.f)
+    {
+        m_CurInfo.HP = 0.f;
+    }
+    
+    if (m_CurInfo.HP > m_CurInfo.MAXHP)
+    {
+        m_CurInfo.HP = m_CurInfo.MAXHP;
+    }
 }
 
 void CUnitScript::GetDamage(UnitHit _Damage)
@@ -48,8 +57,7 @@ void CUnitScript::DamageProc()
             iter = m_HitHistory.erase(iter);
             break;
 
-        case DAMAGE_TYPE::DOT:
-        {
+        case DAMAGE_TYPE::DOT: {
             if (iter->Acc >= DOT_TERM)
             {
                 CurDamage += iter->Damage;
@@ -62,7 +70,7 @@ void CUnitScript::DamageProc()
                 iter = m_HitHistory.erase(iter);
             }
         }
-            break;
+        break;
 
         default:
             break;
@@ -82,4 +90,3 @@ void CUnitScript::LoadFromLevelFile(FILE* _File)
     fread(&m_CurInfo, sizeof(UnitInfo), 1, _File);
     m_CurInfo.HP = m_CurInfo.MAXHP;
 }
-

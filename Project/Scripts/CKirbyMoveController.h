@@ -75,6 +75,7 @@ public:
     void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
     void SetGuard(bool _Guard) { m_bActiveFriction = _Guard; }
     void SetSpeed(float _Speed) { m_Speed = _Speed; }
+    void SetRotSpeed(float _Speed) { m_RotSpeed = _Speed; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
     void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
@@ -85,6 +86,7 @@ public:
     Vec3 GetMoveDir() const { return m_MoveDir; }
     Vec3 GetVelocity() const { return m_MoveVelocity; }
     float GetSpeed() const { return m_Speed; }
+    float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
     float GetGuard() const { return m_bActiveFriction; }
 

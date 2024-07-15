@@ -7,6 +7,8 @@
 
 CKirbyAbility::CKirbyAbility()
     : m_Charge1Time(0.f)
+    , m_Charge2Time(0.f)
+    , m_ComboSuccessTime(1.f)
 {
 }
 
@@ -25,6 +27,16 @@ void CKirbyAbility::ChangeState(const wstring& _strStateName)
 void CKirbyAbility::IdleEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
+}
+
+void CKirbyAbility::RunEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
+}
+
+void CKirbyAbility::RunStartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"RunStart"), false);
 }
 
 void CKirbyAbility::JumpEnter()
@@ -71,4 +83,24 @@ void CKirbyAbility::LandingEndEnter()
 void CKirbyAbility::LandingEndExit()
 {
     PLAYERCTRL->UnlockJump();
+}
+
+void CKirbyAbility::SlideEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Slide"), false);
+}
+
+void CKirbyAbility::SlideStartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SlideStart"), false);
+}
+
+void CKirbyAbility::SlideEndEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SlideEnd"), false);
+}
+
+void CKirbyAbility::GuardEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Guard"), true, false, 1.f, 0.2);
 }

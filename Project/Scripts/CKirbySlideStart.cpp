@@ -11,16 +11,36 @@ CKirbySlideStart::~CKirbySlideStart()
 
 void CKirbySlideStart::tick()
 {
-    if (PLAYER->Animator()->IsFinish())
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->SlideStart();
+
+    // State Change
+    switch (PLAYERFSM->GetCurAbilityIdx())
     {
-        ChangeState(L"SLIDE");
+    case AbilityCopyType::NORMAL:
+    case AbilityCopyType::FIRE:
+    case AbilityCopyType::RANGER: {
+        if (PLAYER->Animator()->IsFinish())
+        {
+            ChangeState(L"SLIDE");
+        }
+    }
+    break;
+    case AbilityCopyType::SWORD: {
+        if (PLAYER->Animator()->IsFinish())
+        {
+            ChangeState(L"SLIDE");
+        }
+    }
+    break;
     }
 }
 
 void CKirbySlideStart::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"SlideStart"), false);
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->SlideStartEnter();
     
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -29,6 +49,9 @@ void CKirbySlideStart::Enter()
 
 void CKirbySlideStart::Exit()
 {
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->SlideStartExit();
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
