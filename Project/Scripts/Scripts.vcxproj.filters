@@ -250,6 +250,30 @@
     <ClInclude Include="CKirbyStuffedEat.h">
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClInclude>
+    <ClInclude Include="CNormalEnemyIdle.h">
+      <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyTrack.h">
+      <Filter>State\MonsterState\NormalEnemyState\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyFSM.h">
+      <Filter>Scripts\FSM\MonsterFSM\NormalEnemyFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterMgr.h">
+      <Filter>Scripts\Manager\MonsterManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterMoveController.h">
+      <Filter>Scripts\Character\Monster\MoveController</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerTestScript.h">
+      <Filter>Scripts\Unit\Monster\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterMoveTest.h">
+      <Filter>Scripts\Unit\Monster\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyAttack.h">
+      <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -510,8 +534,32 @@
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClCompile>
+    <ClCompile Include="CNormalEnemyIdle.cpp">
+      <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyTrack.cpp">
+      <Filter>State\MonsterState\NormalEnemyState\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyFSM.cpp">
+      <Filter>Scripts\FSM\MonsterFSM\NormalEnemyFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterMgr.cpp">
+      <Filter>Scripts\Manager\MonsterManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterMoveController.cpp">
+      <Filter>Scripts\Character\Monster\MoveController</Filter>
+    </ClCompile>
     <ClCompile Include="CKirbyStuffedEat.cpp">
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerTestScript.cpp">
+      <Filter>Scripts\Unit\Monster\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterMoveTest.cpp">
+      <Filter>Scripts\Unit\Monster\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyAttack.cpp">
+      <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -796,6 +844,42 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeAbility\ChangeAbilityEnd">
       <UniqueIdentifier>{bf0bcba1-b3ca-4aa8-9d06-4e2569843b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState">
+      <UniqueIdentifier>{9c1bd081-6050-4167-9355-3f2c5bad598f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\CommonState">
+      <UniqueIdentifier>{cbc1ae8f-3596-4e54-9edc-640329cf5dc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState">
+      <UniqueIdentifier>{1d46cc36-ba8b-4811-adda-cb19973ebf43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MonsterFSM">
+      <UniqueIdentifier>{9c7f0ab6-ce81-4456-94c8-46ea0084701b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MonsterFSM\NormalEnemyFSM">
+      <UniqueIdentifier>{e5055b38-2ac6-4771-9056-e16481de60c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Idle">
+      <UniqueIdentifier>{45d5d6df-472e-4343-8860-2c8e7880e54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Track">
+      <UniqueIdentifier>{472f4d2f-e80b-49e2-ae81-274f47cfdef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\MonsterManager">
+      <UniqueIdentifier>{c6bed61d-ae8d-4c3e-a698-27c1945f2199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster">
+      <UniqueIdentifier>{1e293910-c7f0-411f-9802-276269cd71e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MoveController">
+      <UniqueIdentifier>{91fcbd49-a921-4366-9058-8e1744a7300f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Unit\Monster\Test">
+      <UniqueIdentifier>{c31faa41-afdc-4da5-a7f9-6fb2025eb439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Attack">
+      <UniqueIdentifier>{98f23a19-9b25-426e-9113-48121c2dfd58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -20,9 +20,9 @@ CUIHPScript::CUIHPScript()
     , m_fDescSpeed(10.f)
     , m_vDecreaseColor{}
     , m_vBasicColor{}
-    , m_fMaxHP(400.f)
-    , m_fCurHP(400.f)
-    , m_fPrevHP(400.f)
+    , m_fMaxHP(0.f)
+    , m_fCurHP(0.f)
+    , m_fPrevHP(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -53,8 +53,8 @@ void CUIHPScript::begin()
 
     m_pTr = GetOwner()->GetComponent<CTransform>();
     m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, 1.f);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, 1.f);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP/m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP/m_fMaxHP);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
 
