@@ -388,7 +388,24 @@ void COutliner::DrawNode(CGameObject* obj)
         ImGui::SetNextItemOpen(true);
     }
 
+    LEVEL_STATE LevelState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+    if (LEVEL_STATE::STOP == LevelState)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_Text));
+    }
+    else
+    {
+        if (obj->IsActive())
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.933f, 0.886f, 0.650f, 1.f));
+        }
+        else
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.403f, 0.403f, 0.403f, 1.f));
+        }
+    }
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
+    ImGui::PopStyleColor();
 
     // Drag & Drop
     if (ImGui::BeginDragDropSource())
