@@ -24,6 +24,7 @@ private:
 
     int m_iLayerIdx; // 오브젝트가 소속되어있는 Layer 의 Index
 
+    bool m_bActive;
     bool m_bDead;
 
     // Bone Socket
@@ -97,6 +98,10 @@ public:
     void DisconnectWithLayer();
 
     void AddChild(CGameObject* _Child);
+
+    bool IsActive() const { return m_bActive; }
+    void SetActive(bool _bActive);
+
     bool IsDead() const { return m_bDead; }
 
     bool IsAncestor(CGameObject* _Other);

@@ -20,6 +20,7 @@ CGameObject::CGameObject()
     , m_RenderCom(nullptr)
     , m_Parent(nullptr)
     , m_iLayerIdx(-1) // 어떠한 레벨(레이어) 소속되어있지 않다.
+    , m_bActive(true)
     , m_bDead(false)
     , m_BoneSocket(nullptr)
 {
@@ -31,6 +32,7 @@ CGameObject::CGameObject(const CGameObject& origin)
     , m_RenderCom(nullptr)
     , m_Parent(nullptr)
     , m_iLayerIdx(origin.m_iLayerIdx)
+    , m_bActive(origin.m_bActive)
     , m_bDead(false)
     , m_BoneSocket(origin.m_BoneSocket)
 {
@@ -101,10 +103,10 @@ void CGameObject::tick()
 {
     for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
     {
-        if (nullptr != m_arrCom[i])
-        {
-            m_arrCom[i]->tick();
-        }
+        if (nullptr == m_arrCom[i] || !m_bActive)
+            continue;
+
+        m_arrCom[i]->tick();
     }
 
     for (size_t i = 0; i < m_vecScript.size(); ++i)
@@ -122,10 +124,10 @@ void CGameObject::finaltick()
 {
     for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
     {
-        if (nullptr != m_arrCom[i])
-        {
-            m_arrCom[i]->finaltick();
-        }
+        if (nullptr == m_arrCom[i] || !m_bActive)
+            continue;
+
+        m_arrCom[i]->finaltick();
     }
 
     // 이번프레임에 렌더링할 레이어에 등록
@@ -294,6 +296,13 @@ void CGameObject::AddChild(CGameObject* _Child)
     // 부모 자식 연결
     _Child->m_Parent = this;
     m_vecChild.push_back(_Child);
+}
+
+void CGameObject::SetActive(bool _bActive)
+{
+    m_bActive = _bActive;
+    GamePlayStatic::Physics2D_Event(this, Physics2D_EVENT_TYPE::RESPAWN);
+    GamePlayStatic::Physics_Event(this, Physics_EVENT_TYPE::RESPAWN);
 }
 
 bool CGameObject::IsAncestor(CGameObject* _Other)

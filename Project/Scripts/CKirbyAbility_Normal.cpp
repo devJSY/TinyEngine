@@ -15,8 +15,6 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 {
 }
 
-
-
 // ===============
 // Attack
 // ===============
@@ -25,7 +23,7 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 
 void CKirbyAbility_Normal::Attack()
 {
-    if (GET_CURCLIP_FRM == 3 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() == 3 && m_bFrmEnter)
     {
         CPlayerMgr::ClearBodyMtrl();
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
@@ -268,4 +266,21 @@ void CKirbyAbility_Normal::AttackCharge2RunExit()
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
 
     PLAYERFSM->GetVacuumCol()->EnableCollider(false);
+}
+
+// ===============
+// Change Ability
+// ===============
+void CKirbyAbility_Normal::ChangeAbility()
+{
+}
+
+void CKirbyAbility_Normal::ChangeAbilityEnter()
+{
+    PLAYERFSM->SetCurHat(nullptr);
+    PLAYERFSM->SetCurWeapon(nullptr);
+}
+
+void CKirbyAbility_Normal::ChangeAbilityExit()
+{
 }

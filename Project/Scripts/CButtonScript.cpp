@@ -91,12 +91,12 @@ bool CButtonScript::IsMouseHovered()
     // ScreenSpace MousePos
     Vec2 _vMousePos = CKeyMgr::GetInst()->GetMousePos();
 
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
         _vMousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
     Vec2 _vNDCMousePos = Vec2(0.f, 0.f);
 
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         Vec2 _vEditorResol = CEditorMgr::GetInst()->GetViewportSize();
 

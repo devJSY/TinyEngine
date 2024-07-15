@@ -235,16 +235,16 @@ void CKirbyMoveController::Move()
     Vec3 rayStartPos = Transform()->GetWorldPos() + CharacterController()->GetCenter();
     rayStartPos.y -= (CharacterController()->GetHeight() / 2.f) * CPhysicsMgr::GetInst()->GetPPM();
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(rayStartPos, Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
-    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
+    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
 
-    // if (Hit.pCollisionObj && Hit.Distance <= 50.f)
+    //if (Hit.pCollisionObj && Hit.Distance <= 50.f)
     //{
-    //     bGrounded = true;
-    // }
-    // else
+    //    bGrounded = true;
+    //}
+    //else
     //{
-    //     bGrounded = false;
-    // }
+    //    bGrounded = false;
+    //}
 
     if (PLAYERFSM->IsHovering())
     {
@@ -263,11 +263,11 @@ void CKirbyMoveController::Move()
 
     if (m_bActiveFriction)
     {
-        m_Accel.x = -m_MoveVelocity.x * m_Friction * DT;
-        m_Accel.z = -m_MoveVelocity.z * m_Friction * DT;
+        m_Accel.x = -m_MoveVelocity.x * m_Friction;
+        m_Accel.z = -m_MoveVelocity.z * m_Friction;
 
-        m_MoveVelocity.x += m_Accel.x;
-        m_MoveVelocity.z += m_Accel.z;
+        m_MoveVelocity.x += m_Accel.x * DT;
+        m_MoveVelocity.z += m_Accel.z * DT;
     }
     else if (m_bForwardMode)
     {
@@ -361,7 +361,7 @@ void CKirbyMoveController::SurfaceAlignment()
     float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-
+    
     // Rotate Character
     if (bGrounded)
     {

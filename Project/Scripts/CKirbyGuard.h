@@ -1,5 +1,6 @@
 #pragma once
 #include "CState.h"
+
 class CKirbyGuard : public CState
 {
 public:
@@ -11,5 +12,4 @@ public:
     CLONE(CKirbyGuard)
     CKirbyGuard();
     virtual ~CKirbyGuard();
-
 };

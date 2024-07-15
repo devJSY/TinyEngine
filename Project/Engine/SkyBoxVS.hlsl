@@ -10,6 +10,8 @@ PS_IN main(VS_IN input)
     output.vPosWorld = WorldPos.xyz;
     output.vPosProj = mul(WorldPos, g_matView);
     output.vPosProj = mul(output.vPosProj, g_matProj);
+    
+    output.vUV0 = input.vUV0;
 
     return output;
 }

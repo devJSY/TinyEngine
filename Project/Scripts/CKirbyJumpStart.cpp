@@ -6,6 +6,7 @@ CKirbyJumpStart::CKirbyJumpStart()
     : m_JumpAccTime(0.f)
     , m_MinJumpTime(0.2f)
     , m_MaxJumpTime(0.3f)
+    , m_bVelocityCut(false)
 {
 }
 
@@ -27,7 +28,8 @@ void CKirbyJumpStart::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: {
+        case AbilityCopyType::NORMAL:
+        case AbilityCopyType::SWORD: {
             /*if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");
@@ -99,8 +101,6 @@ void CKirbyJumpStart::tick()
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
-            break;
         }
     }
 }
@@ -112,7 +112,6 @@ void CKirbyJumpStart::Enter()
     PLAYERCTRL->Jump();
     PLAYERFSM->SetLastJump(LastJumpType::LOW);
 
-    m_OriginGravity = PLAYERCTRL->GetGravity();
     m_JumpAccTime = 0.f;
     m_bVelocityCut = false;
 }
@@ -120,6 +119,4 @@ void CKirbyJumpStart::Enter()
 void CKirbyJumpStart::Exit()
 {
     PLAY_CURSTATE(JumpStartExit)
-
-    PLAYERCTRL->SetGravity(m_OriginGravity);
 }

@@ -372,6 +372,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr == m_Scene)
         return;
 
+    // 활성화 여부 체크
+    if (!_GameObject->IsActive())
+        return;
+
     AddCharacterControllerObject(_GameObject);
 
     CTransform* pTr = _GameObject->Transform();
@@ -720,18 +724,21 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     desc.reportCallback = &m_CCTCallbackInst;
     desc.userData = (void*)pCharacterController;
 
-    PxController* PxCharacterController = m_ControllerMgr->createController(desc);
-    pCharacterController->m_RuntimeShape = PxCharacterController;
-
-    // Shape 에 UserData 등록
-    PxRigidDynamic* PxActor = PxCharacterController->getActor();
-    PxU32 nbShapes = PxActor->getNbShapes();
-    std::vector<PxShape*> vecShapes(nbShapes);
-    PxActor->getShapes(vecShapes.data(), nbShapes);
-
-    for (UINT i = 0; i < vecShapes.size(); i++)
+    if (desc.isValid())
     {
-        vecShapes[i]->userData = (void*)pCharacterController;
+        PxController* PxCharacterController = m_ControllerMgr->createController(desc);
+        pCharacterController->m_RuntimeShape = PxCharacterController;
+
+        // Shape 에 UserData 등록
+        PxRigidDynamic* PxActor = PxCharacterController->getActor();
+        PxU32 nbShapes = PxActor->getNbShapes();
+        std::vector<PxShape*> vecShapes(nbShapes);
+        PxActor->getShapes(vecShapes.data(), nbShapes);
+
+        for (UINT i = 0; i < vecShapes.size(); i++)
+        {
+            vecShapes[i]->userData = (void*)pCharacterController;
+        }
     }
 }
 
@@ -741,7 +748,7 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
         return;
 
     CCharacterController* pCharacterController = _GameObject->CharacterController();
-    if (nullptr != pCharacterController)
+    if (nullptr != pCharacterController && nullptr != pCharacterController->m_RuntimeShape)
     {
         ((PxController*)pCharacterController->m_RuntimeShape)->release();
         pCharacterController->m_RuntimeShape = nullptr;

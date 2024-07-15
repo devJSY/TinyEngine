@@ -222,7 +222,7 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_CameraPreview()
 {
-    if (!CEditorMgr::GetInst()->IsEnable() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+    if (!CEditorMgr::GetInst()->IsEnabled() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
         return;
 
     CGameObject* SelectedObj = CEditorMgr::GetInst()->GetSelectedObject();

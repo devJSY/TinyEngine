@@ -83,9 +83,25 @@ public:
     virtual void AttackCharge2StartEnter(){};
     virtual void AttackCharge2StartExit(){};
 
-    virtual void JumpAttack() = 0;
-    virtual void JumpAttackEnter() = 0;
-    virtual void JumpAttackExit() = 0;
+    virtual void AttackCharge3(){};
+    virtual void AttackCharge3Enter(){};
+    virtual void AttackCharge3Exit(){};
+
+    virtual void AttackCharge3Start(){};
+    virtual void AttackCharge3StartEnter(){};
+    virtual void AttackCharge3StartExit(){};
+
+    virtual void AttackCharge3End(){};
+    virtual void AttackCharge3EndEnter(){};
+    virtual void AttackCharge3EndExit(){};
+
+    virtual void JumpAttack(){};
+    virtual void JumpAttackEnter(){};
+    virtual void JumpAttackExit(){};
+
+    virtual void JumpAttackStart(){};
+    virtual void JumpAttackStartEnter(){};
+    virtual void JumpAttackStartExit(){};
 
     // virtual void Throw();
 

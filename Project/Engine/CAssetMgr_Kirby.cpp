@@ -2,7 +2,6 @@
 #include "CAssetMgr.h"
 #include "CGraphicsShader.h"
 
-
 void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 {
     // =================================
@@ -49,8 +48,6 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-        pShader->AddScalarParam(INT_0, "Body");
-        pShader->AddScalarParam(INT_1, "Mouth");
         pShader->AddTexParam(TEX_0, "Eye Base Texture");
         pShader->AddTexParam(TEX_1, "Eye Mask Texture");
         pShader->AddTexParam(TEX_2, "Eye Normal Texture");
@@ -59,5 +56,113 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyBodyShader");
         AddAsset(L"KirbyBodyShader", pShader);
+    }
+
+    // =================================
+    // Kirby SkySphere Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbySkySpherePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddTexParam(TEX_0, "SkySphere Texture");
+
+        pShader->SetName(L"KirbySkySphereShader");
+        AddAsset(L"KirbySkySphereShader", pShader);
+    }
+
+    // =================================
+    // Normal Enemy Body Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\NormalEnemyPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddTexParam(TEX_0, "Eye Base Texture");
+        pShader->AddTexParam(TEX_1, "Skin Base Texture");
+        pShader->AddTexParam(TEX_2, "Skin Normal Texture");
+        pShader->AddTexParam(TEX_3, "Skin MRA Texture");
+
+        pShader->SetName(L"NormalEnemyBodyShader");
+        AddAsset(L"NormalEnemyBodyShader", pShader);
+    }
+
+    // =================================
+    // UIHPShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIHPShaderVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIHPShaderPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"KirbyUIHPShader");
+        AddAsset(L"KirbyUIHPShader", pShader);
+    }
+
+    // =================================
+    // Kirby Sword Magma Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbySwordMagmaPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddTexParam(TEX_0, "Base Texture");
+        pShader->AddTexParam(TEX_1, "MRA Texture");
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_2, "Magma Texture");
+
+        pShader->SetName(L"KirbySwordMagmaShader");
+        AddAsset(L"KirbySwordMagmaShader", pShader);
+    }
+
+    // =================================
+    // Kirby Butterfly Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyButterflyPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddTexParam(TEX_0, "Wing(Down) Texture");
+        pShader->AddTexParam(TEX_1, "Wing(Up) Texture");
+        pShader->AddTexParam(TEX_2, "Magma Texture");
+
+        pShader->SetName(L"KirbyButterflyShader");
+        AddAsset(L"KirbyButterflyShader", pShader);
     }
 }

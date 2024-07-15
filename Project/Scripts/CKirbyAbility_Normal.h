@@ -32,7 +32,6 @@ public:
     virtual void AttackCharge1RunEnter();
     virtual void AttackCharge1RunExit();
 
-
     // 흡입2
     virtual void AttackCharge2();
     virtual void AttackCharge2Enter();
@@ -46,10 +45,10 @@ public:
     virtual void AttackCharge2RunEnter();
     virtual void AttackCharge2RunExit();
 
-    // 점프
-    virtual void JumpAttack(){};
-    virtual void JumpAttackEnter(){};
-    virtual void JumpAttackExit(){};
+    // 변신
+    virtual void ChangeAbility();
+    virtual void ChangeAbilityEnter();
+    virtual void ChangeAbilityExit();
 
 public:
     CLONE_DISABLE(CKirbyAbility_Normal)

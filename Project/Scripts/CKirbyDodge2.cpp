@@ -98,13 +98,4 @@ void CKirbyDodge2::Exit()
     PLAYERCTRL->SetGuard(false);
 
     PLAYERCTRL->SetGravity(-20.f);
-
-    // speed clear
-    Vec3 CurVel = PLAYERCTRL->GetVelocity();
-    CurVel.x = 0.f;
-    CurVel.z = 0.f;
-
-    CurVel.Normalize();
-
-    PLAYERCTRL->SetVelocity(CurVel);
 }

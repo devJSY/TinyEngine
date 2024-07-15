@@ -21,8 +21,7 @@ void CKirbyAttack::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (PLAYER->Animator()->IsFinish())
             {
                 if (PLAYERCTRL->GetInput().Length() != 0.f)
@@ -40,8 +39,24 @@ void CKirbyAttack::tick()
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
-            break;
+        case AbilityCopyType::SWORD: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (KEY_TAP(KEY_ATK))
+                {
+                    ChangeState(L"ATTACK_COMBO1");
+                }
+                else if (KEY_PRESSED(KEY_ATK))
+                {
+                    ChangeState(L"ATTACK_CHARGE1_START");
+                }
+                else
+                {
+                    ChangeState(L"IDLE");
+                }
+            }
+        }
+        break;
         }
     }
 }

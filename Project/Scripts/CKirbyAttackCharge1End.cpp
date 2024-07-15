@@ -21,8 +21,9 @@ void CKirbyAttackCharge1End::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
+        case AbilityCopyType::NORMAL:
+        case AbilityCopyType::SWORD:
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::NORMAL: 
         {
             if (PLAYER->Animator()->IsFinish())
             {
@@ -38,8 +39,6 @@ void CKirbyAttackCharge1End::tick()
         }
         break;
         case AbilityCopyType::RANGER:
-            break;
-        case AbilityCopyType::SWORD:
             break;
         }
     }

@@ -18,6 +18,7 @@ private:
     Ptr<CMesh> m_Mesh;
     vector<tMtrlSet> m_vecMtrls; // ÀçÁú
 
+    bool m_bEnabled;
     bool m_bFrustumCheck;
     float m_BoundingRadius;
     bool m_bCastShadow;
@@ -39,6 +40,9 @@ public:
     void SetMeshData(Ptr<CMeshData> _MeshData);
 
     UINT GetMtrlCount() const { return (UINT)m_vecMtrls.size(); }
+
+    bool IsEnabled() const { return m_bEnabled; }
+    void SetEnabled(bool _bEnabled) { m_bEnabled = _bEnabled; }
 
     bool IsFrustumCheck() const { return m_bFrustumCheck; }
     void SetFrustumCheck(bool _bCheck) { m_bFrustumCheck = _bCheck; }

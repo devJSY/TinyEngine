@@ -3,9 +3,9 @@
 class CKirbySlide : public CState
 {
 private:
-    float m_Speed;
-    float m_Acc;
-    float m_Duration;
+    float   m_Speed;
+    float   m_Acc;
+    float   m_Duration;
 
 public:
     virtual void tick();

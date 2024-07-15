@@ -27,6 +27,11 @@
 #include "CUIHPScript.h"
 #include "CUIUnitManagerScript.h"
 #include "CEngineTestScript.h"
+#include "CNormalEnemyFSM.h"
+#include "CMonsterMgr.h"
+#include "CMonsterMoveController.h"
+#include "CPlayerTestScript.h"
+#include "CMonsterMoveTest.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -56,6 +61,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIHPScript");
 	_vec.push_back(L"CUIUnitManagerScript");
 	_vec.push_back(L"CEngineTestScript");
+	_vec.push_back(L"CNormalEnemyFSM");
+	_vec.push_back(L"CMonsterMgr");
+	_vec.push_back(L"CMonsterMoveController");
+	_vec.push_back(L"CPlayerTestScript");
+	_vec.push_back(L"CMonsterMoveTest");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -112,6 +122,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIUnitManagerScript;
 	if (L"CEngineTestScript" == _strScriptName)
 		return new CEngineTestScript;
+	if (L"CNormalEnemyFSM" == _strScriptName)
+		return new CNormalEnemyFSM;
+	if (L"CMonsterMgr" == _strScriptName)
+		return new CMonsterMgr;
+	if (L"CMonsterMoveController" == _strScriptName)
+		return new CMonsterMoveController;
+	if (L"CPlayerTestScript" == _strScriptName)
+		return new CPlayerTestScript;
+	if (L"CMonsterMoveTest" == _strScriptName)
+		return new CMonsterMoveTest;
 	return nullptr;
 }
 
@@ -171,6 +191,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIUnitManagerScript;
 	case (UINT)SCRIPT_TYPE::ENGINETESTSCRIPT:
 		return new CEngineTestScript;
+	case (UINT)SCRIPT_TYPE::NORMALENEMYFSM:
+		return new CNormalEnemyFSM;
+	case (UINT)SCRIPT_TYPE::MONSTERMGR:
+		return new CMonsterMgr;
+	case (UINT)SCRIPT_TYPE::MONSTERMOVECONTROLLER:
+		return new CMonsterMoveController;
+	case (UINT)SCRIPT_TYPE::PLAYERTESTSCRIPT:
+		return new CPlayerTestScript;
+	case (UINT)SCRIPT_TYPE::MONSTERMOVETEST:
+		return new CMonsterMoveTest;
 	}
 	return nullptr;
 }
@@ -231,6 +261,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIUnitManagerScript";
 	case SCRIPT_TYPE::ENGINETESTSCRIPT:
 		return L"CEngineTestScript";
+	case SCRIPT_TYPE::NORMALENEMYFSM:
+		return L"CNormalEnemyFSM";
+	case SCRIPT_TYPE::MONSTERMGR:
+		return L"CMonsterMgr";
+	case SCRIPT_TYPE::MONSTERMOVECONTROLLER:
+		return L"CMonsterMoveController";
+	case SCRIPT_TYPE::PLAYERTESTSCRIPT:
+		return L"CPlayerTestScript";
+	case SCRIPT_TYPE::MONSTERMOVETEST:
+		return L"CMonsterMoveTest";
 	}
 	return nullptr;
 }

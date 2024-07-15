@@ -52,7 +52,7 @@ void CTaskMgr::tick()
             Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
             // Editor 모드
-            if (CEditorMgr::GetInst()->IsEnable())
+            if (CEditorMgr::GetInst()->IsEnabled())
             {
                 // Viewport 에서만 마우스 피킹 적용
                 // Viewport 기준 마우스위치로 설정
@@ -71,7 +71,7 @@ void CTaskMgr::tick()
             }
         }
 
-        if (CEditorMgr::GetInst()->IsEnable())
+        if (CEditorMgr::GetInst()->IsEnabled())
         {
             // 스크린샷
             if (KEY_TAP(KEY::PRINT))
@@ -142,6 +142,12 @@ void CTaskMgr::tick()
             break;
         case TASK_TYPE::PHYSICS_EVNET:
             PHYSICS_EVNET(Task);
+            break;
+        case TASK_TYPE::APPEND_ANIMATION:
+            APPEND_ANIMATION(Task);
+            break;
+        case TASK_TYPE::SET_MODEL:
+            SET_MODEL(Task);
             break;
         case TASK_TYPE::CHANGE_LEVEL: {
             // 이벤트중에서 제일 마지막에 처리
@@ -308,7 +314,7 @@ void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
     CRenderMgr::GetInst()->Resize_Release();
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         CEditorMgr::GetInst()->GetModelEditor()->Resize(resolution);
     }
@@ -389,14 +395,14 @@ void CTaskMgr::SCREENSHOT(const tTask& _Task)
 
 void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 {
-    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
 
     int MouseX = (int)_Task.Param_1;
     int MouseY = (int)_Task.Param_2;
     Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
 
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -485,7 +491,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 //
 // void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
 //{
-//    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+//    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
 //        return;
 //
 //    int MouseX = (int)_Task.Param_1;
@@ -497,7 +503,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 //    // 마우스 커서의 위치를 NDC로 변환
 //    // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
 //    // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-//    if (CEditorMgr::GetInst()->IsEnable())
+//    if (CEditorMgr::GetInst()->IsEnabled())
 //    {
 //        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
 //        if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -572,7 +578,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 
 void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
 {
-    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
 
     int MouseX = (int)_Task.Param_1;
@@ -584,7 +590,7 @@ void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
     // 마우스 커서의 위치를 NDC로 변환
     // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
     // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -813,11 +819,182 @@ void CTaskMgr::PHYSICS_EVNET(const tTask& _Task)
     }
 }
 
+void CTaskMgr::APPEND_ANIMATION(const tTask& _Task)
+{
+    Ptr<CMesh> pMesh = (CMesh*)_Task.Param_1;
+    Ptr<CMesh> pAnimMesh = (CMesh*)_Task.Param_2;
+
+    // 예외처리
+    if (nullptr == pMesh || nullptr == pAnimMesh)
+    {
+        MessageBox(nullptr, L"Mesh가 존재하지 않습니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return;
+    }
+    if (!pAnimMesh->IsAnimMesh())
+    {
+        MessageBox(nullptr, L"애니메이션 Mesh가 아닙니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return;
+    }
+    if (pMesh->GetBoneCount() != pAnimMesh->GetBoneCount())
+    {
+        MessageBox(nullptr, L"동일한 Bone이 아닙니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return;
+    }
+
+    // 동일한 본 여부 체크
+    const vector<tMTBone>& vecBones = *pAnimMesh->GetBones();
+    for (UINT i = 0; i < (UINT)vecBones.size(); ++i)
+    {
+        if (pMesh->m_vecBones[i].strBoneName != vecBones[i].strBoneName)
+        {
+            MessageBox(nullptr, L"동일한 Bone이 아닙니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+            return;
+        }
+    }
+
+    // 애니메이션 클립 이어붙이기
+    vector<tMTAnimClip>& vecAnimClip = const_cast<vector<tMTAnimClip>&>(*pAnimMesh->GetAnimClip());
+    std::map<wstring, tMTAnimClip*> mapAnimClip;
+    vector<tMTAnimClip*> vecOriginAnimClip;
+
+    // 같은 이름의 애니메이션 삭제
+    for (UINT i = 0; i < (UINT)pMesh->m_vecAnimClip.size(); ++i)
+    {
+        mapAnimClip.insert(make_pair(pMesh->m_vecAnimClip[i].strAnimName, &pMesh->m_vecAnimClip[i]));
+    }
+
+    for (UINT i = 0; i < (UINT)vecAnimClip.size(); ++i)
+    {
+        auto iter = mapAnimClip.insert(make_pair(vecAnimClip[i].strAnimName, &vecAnimClip[i]));
+
+        // 중복된 이름이 존재하지 않았다
+        if (iter.second)
+        {
+            vecOriginAnimClip.push_back(&vecAnimClip[i]);
+        }
+    }
+
+    if (vecOriginAnimClip.empty())
+    {
+        MessageBox(nullptr, L"추가할 애니메이션이 존재하지 않습니다.", L"애니메이션 로딩 실패", MB_ICONHAND);
+        return;
+    }
+
+    UINT iFrameCount = 0;
+    UINT OffsetFrame = 1 + pMesh->m_vecAnimClip.back().iEndFrame;
+    for (UINT i = 0; i < (UINT)vecOriginAnimClip.size(); ++i)
+    {
+        tMTAnimClip& AnimClip = *vecOriginAnimClip[i];
+
+        // 키프레임 이어붙이기
+        for (UINT j = AnimClip.iStartFrame; j <= (UINT)AnimClip.iEndFrame; ++j)
+        {
+            for (UINT k = 0; k < (UINT)vecBones.size(); ++k)
+            {
+                UINT FrameOffset = (UINT)pMesh->m_vecBones[k].vecKeyFrame.size();
+
+                // 프레임 데이터가 없는 Bone인 경우
+                if (0 == FrameOffset)
+                    continue;
+
+                tMTKeyFrame KeyFrame = vecBones[k].vecKeyFrame[j];
+                KeyFrame.iFrame = (UINT)pMesh->m_vecBones[k].vecKeyFrame.size();
+                pMesh->m_vecBones[k].vecKeyFrame.push_back(KeyFrame);
+
+                iFrameCount = max(iFrameCount, (UINT)pMesh->m_vecBones[k].vecKeyFrame.size());
+            }
+        }
+
+        // 애니메이션 이어붙이기
+        AnimClip.iStartFrame = OffsetFrame;
+        AnimClip.iEndFrame = OffsetFrame + AnimClip.iFrameLength - 1;
+
+        double FrameRate = FbxTime::GetFrameRate(AnimClip.eMode);
+        AnimClip.dStartTime = AnimClip.iStartFrame / FrameRate;
+        AnimClip.dEndTime = AnimClip.iEndFrame / FrameRate;
+        AnimClip.dTimeLength = AnimClip.dEndTime - AnimClip.dStartTime;
+
+        pMesh->m_vecAnimClip.push_back(AnimClip);
+
+        OffsetFrame = 1 + AnimClip.iEndFrame;
+    }
+
+    // BoneFrame 행렬 재생성
+    vector<tFrameTrans> vecFrameTrans;
+    vecFrameTrans.resize((UINT)pMesh->m_vecBones.size() * iFrameCount);
+
+    for (size_t i = 0; i < pMesh->m_vecBones.size(); ++i)
+    {
+        for (size_t j = 0; j < pMesh->m_vecBones[i].vecKeyFrame.size(); ++j)
+        {
+            vecFrameTrans[(UINT)pMesh->m_vecBones.size() * j + i] =
+                tFrameTrans{Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vTranslate, 0.f), Vec4(pMesh->m_vecBones[i].vecKeyFrame[j].vScale, 0.f),
+                            pMesh->m_vecBones[i].vecKeyFrame[j].qRot};
+        }
+    }
+
+    if (nullptr != pMesh->m_pBoneFrameData)
+    {
+        delete pMesh->m_pBoneFrameData;
+        pMesh->m_pBoneFrameData = nullptr;
+    }
+
+    pMesh->m_pBoneFrameData = new CStructuredBuffer;
+    pMesh->m_pBoneFrameData->Create(sizeof(tFrameTrans), (UINT)vecFrameTrans.size(), SB_TYPE::READ_ONLY, false, vecFrameTrans.data());
+
+    // 원본 매시를 참조하고 있던 Animator 재설정
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    for (UINT i = 0; i < LAYER_MAX; i++)
+    {
+        const vector<CGameObject*>& vecParentObj = pCurLevel->GetLayer(i)->GetParentObjects();
+
+        for (const auto& ParentObj : vecParentObj)
+        {
+            list<CGameObject*> queue;
+            queue.push_back(ParentObj);
+
+            while (!queue.empty())
+            {
+                CGameObject* pObject = queue.front();
+                queue.pop_front();
+
+                const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+
+                for (size_t i = 0; i < vecChildObj.size(); ++i)
+                {
+                    queue.push_back(vecChildObj[i]);
+                }
+
+                if (nullptr != pObject->Animator() && pMesh == pObject->Animator()->GetSkeletalMesh())
+                {
+                    pObject->Animator()->SetSkeletalMesh(pMesh);
+                }
+            }
+        }
+    }
+
+    if (CEditorMgr::GetInst()->IsEnabled())
+    {
+        CEditorMgr::GetInst()->GetModelEditor()->NotifiedAnimationLoaded();
+    }
+
+    MessageBox(nullptr, L"애니메이션 추가 성공!", L"애니메이션 로딩 성공", MB_ICONASTERISK);
+}
+
+void CTaskMgr::SET_MODEL(const tTask& _Task)
+{
+    Ptr<CMeshData> pCMeshData = (CMeshData*)_Task.Param_1;
+    if (CEditorMgr::GetInst()->IsEnabled())
+    {
+        CEditorMgr::GetInst()->GetModelEditor()->SetModel(pCMeshData);
+    }
+}
+
 void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
 {
     // Editor 초기화
     CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
     }

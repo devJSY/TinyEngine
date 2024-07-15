@@ -30,6 +30,8 @@ private:
     CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
     ObjectCopyType          m_CurObject;
     
+    CGameObject*            m_CurHat;
+    CGameObject*            m_CurWeapon;
     CGameObject*            m_StuffedCopyObj;
     CKirbyVacuumCollider*   m_VacuumCollider;
 
@@ -38,7 +40,10 @@ private:
     float                   m_HoveringAccTime;
     bool                    m_bHovering;
 
+    UINT                    m_ComboLevel;
+    float                   m_ComboAccTime;
     float                   m_ChargeAccTime;
+    UINT                    m_SlideComboLevel;
     LastJumpType            m_LastJump;
     DodgeType               m_DodgeType;
     bool                    m_bStuffed;
@@ -63,9 +68,13 @@ public:
     void AddGlidingTime(float _Time) { m_GlidingAcc += _Time; }
 
 public:
+    void SetCurHat(CGameObject* _Hat) { m_CurHat = _Hat; }
+    void SetCurWeapon(CGameObject* _Weapon) { m_CurWeapon = _Weapon; }
+    void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
+    void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
     void SetInvincible() { m_bInvincible = true;  m_InvincibleAcc = 0.f;}
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
@@ -80,11 +89,16 @@ public:
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
+    CGameObject* GetCurHat() { return m_CurHat; }
+    CGameObject* GetCurWeapon() { return m_CurWeapon; }
     CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
+    float GetComboAccTime() const { return m_ComboAccTime; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
     float GetHoveringAccTime() const { return m_HoveringAccTime; }
     float GetHoveringLimitTime() const { return m_HoveringLimitTime; }
+    UINT GetComboLevel() const { return m_ComboLevel; }
+    UINT GetSlideComboLevel() const { return m_SlideComboLevel; }
     float GetGlidingDuration() const { return m_GlidingDuration; }
     float GetCurGlidingTime() const { return m_GlidingAcc; }
     bool IsStuffed() const { return m_bStuffed; }
