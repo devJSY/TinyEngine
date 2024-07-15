@@ -21,8 +21,7 @@ void CKirbyAttackCharge2Start::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (PLAYERFSM->IsStuffed())
             {
                 ChangeState(L"STUFFED");
@@ -44,12 +43,17 @@ void CKirbyAttackCharge2Start::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE:
+        case AbilityCopyType::FIRE: // 상태 없음
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
-            break;
+        case AbilityCopyType::SWORD: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                ChangeState(L"ATTACK_CHARGE2");
+            }
+        }
+        break;
         }
     }
 }

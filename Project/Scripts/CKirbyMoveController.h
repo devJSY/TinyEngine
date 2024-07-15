@@ -30,6 +30,7 @@ private:
     Vec3                        m_Input;
     bool                        m_bJump;
     bool                        m_bActiveFriction;
+    bool                        m_bForwardMode;
 
     // Lock
     bool                        m_bMoveLock;
@@ -69,22 +70,26 @@ public:
     void UnlockJump() { m_bJumpLock = false; }
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
+    void SetForwardMode(bool _Mode) { m_bForwardMode = _Mode; }
 
     void Jump() { m_bJump = true; }
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
     void SetGuard(bool _Guard) { m_bActiveFriction = _Guard; }
     void SetSpeed(float _Speed) { m_Speed = _Speed; }
+    void SetRotSpeed(float _Speed) { m_RotSpeed = _Speed; }
     void SetFriction(float _Friction) { m_Friction = _Friction; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
     void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+    void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     Vec3 GetVelocity() const { return m_MoveVelocity; }
     float GetSpeed() const { return m_Speed; }
+    float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
     float GetGuard() const { return m_bActiveFriction; }
 

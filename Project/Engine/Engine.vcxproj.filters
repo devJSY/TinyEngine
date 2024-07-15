@@ -1359,5 +1359,11 @@
     <FxCompile Include="NormalEnemyPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Monster\NormalEnemy</Filter>
     </FxCompile>
+    <FxCompile Include="KirbyButterflyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbySwordMagmaPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

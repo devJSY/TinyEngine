@@ -5,6 +5,8 @@
 #include "CKirbyVacuumCollider.h"
 
 #include "CKirbyAbility_Normal.h"
+#include "CKirbyAbility_Fire.h"
+#include "CKirbyAbility_Sword.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -15,6 +17,9 @@ CKirbyFSM::CKirbyFSM()
     , m_CurObject(ObjectCopyType::NONE)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_ComboLevel(0)
+    , m_SlideComboLevel(0)
+    , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(7.f)
@@ -25,10 +30,13 @@ CKirbyFSM::CKirbyFSM()
     , m_InvincibleAcc(0.f)
     , m_InvincibleDuration(3.f)
     , m_EmissiveCoef(0.f)
+    , m_GlidingDuration(1.7f)
+    , m_GlidingAcc(0.f)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
-    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Normal();
+    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
+    m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -39,6 +47,8 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_CurObject(_Origin.m_CurObject)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_ComboLevel(0)
+    , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
@@ -49,6 +59,8 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_InvincibleAcc(_Origin.m_InvincibleAcc)
     , m_InvincibleDuration(_Origin.m_InvincibleDuration)
     , m_EmissiveCoef(_Origin.m_EmissiveCoef)
+    , m_GlidingDuration(1.7f)
+    , m_GlidingAcc(0.f)
 {
     // Ability Copy 복사
     for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
@@ -105,6 +117,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyJump.h"
 #include "CKirbyJumpStart.h"
 #include "CKirbyJumpFall.h"
+#include "CKirbyJumpAttack.h"
+#include "CKirbyJumpAttackStart.h"
 #include "CKirbyLanding.h"
 #include "CKirbyLandingEnd.h"
 #include "CKirbyHovering.h"
@@ -115,6 +129,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyHoveringLanding.h"
 #include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
+#include "CKirbyAttackEnd.h"
+#include "CKirbyAttackCombo1.h"
+#include "CKirbyAttackCombo2.h"
+#include "CKirbyAttackCombo2End.h"
 #include "CKirbyAttackCharge1.h"
 #include "CKirbyAttackCharge1Start.h"
 #include "CKirbyAttackCharge1End.h"
@@ -122,6 +140,16 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyAttackCharge2.h"
 #include "CKirbyAttackCharge2Start.h"
 #include "CKirbyAttackCharge2Run.h"
+#include "CKirbyAttackCharge2Slash.h"
+#include "CKirbyAttackCharge2SlashStart.h"
+#include "CKirbyAttackCharge2SlashEnd.h"
+#include "CKirbyAttackCharge3.h"
+#include "CKirbyAttackCharge3Start.h"
+#include "CKirbyAttackCharge3End.h"
+#include "CKirbyAttackAirGuard.h"
+#include "CKirbyAttackAirGuardEnd.h"
+#include "CKirbyAttackAirGuardCharge.h"
+#include "CKirbyAttackAirGuardChargeStart.h"
 #include "CKirbyStuffed.h"
 #include "CKirbyStuffedIdle.h"
 #include "CKirbyStuffedRun.h"
@@ -130,9 +158,11 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyStuffedLanding.h"
 #include "CKirbyStuffedEat.h"
 #include "CKirbyGuard.h"
-#include "CKirbySlideStart.h"
+#include "CKirbyGuardRun.h"
 #include "CKirbySlide.h"
+#include "CKirbySlideStart.h"
 #include "CKirbySlideEnd.h"
+#include "CKirbySlideAttack.h"
 #include "CKirbyDodgeStart.h"
 #include "CKirbyDodge1.h"
 #include "CKirbyDodge2.h"
@@ -141,6 +171,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyChangeAbility.h"
 #include "CKirbyChangeAbilityEnd.h"
 #include "CKirbyChangeAbilityWait.h"
+#include "CKirbyBurningPre.h"
+#include "CKirbyBurningStart.h"
+#include "CKirbyBurning.h"
+#include "CKirbyBurningEnd.h"
 
 void CKirbyFSM::begin()
 {
@@ -160,6 +194,8 @@ void CKirbyFSM::begin()
     AddState(L"JUMP", new CKirbyJump);
     AddState(L"JUMP_START", new CKirbyJumpStart);
     AddState(L"JUMP_FALL", new CKirbyJumpFall);
+    AddState(L"JUMP_ATTACK", new CKirbyJumpAttack);
+    AddState(L"JUMP_ATTACK_START", new CKirbyJumpAttackStart);
     AddState(L"LANDING", new CKirbyLanding);
     AddState(L"LANDING_END", new CKirbyLandingEnd);
     AddState(L"HOVERING", new CKirbyHovering);
@@ -170,6 +206,10 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_LANDING", new CKirbyHoveringLanding);
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_END", new CKirbyAttackEnd);
+    AddState(L"ATTACK_COMBO1", new CKirbyAttackCombo1);
+    AddState(L"ATTACK_COMBO2", new CKirbyAttackCombo2);
+    AddState(L"ATTACK_COMBO2_END", new CKirbyAttackCombo2End);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
     AddState(L"ATTACK_CHARGE1_START", new CKirbyAttackCharge1Start);
     AddState(L"ATTACK_CHARGE1_END", new CKirbyAttackCharge1End);
@@ -177,6 +217,16 @@ void CKirbyFSM::begin()
     AddState(L"ATTACK_CHARGE2", new CKirbyAttackCharge2);
     AddState(L"ATTACK_CHARGE2_START", new CKirbyAttackCharge2Start);
     AddState(L"ATTACK_CHARGE2_RUN", new CKirbyAttackCharge2Run);
+    AddState(L"ATTACK_CHARGE2_SLASH", new CKirbyAttackCharge2Slash);
+    AddState(L"ATTACK_CHARGE2_SLASH_START", new CKirbyAttackCharge2SlashStart);
+    AddState(L"ATTACK_CHARGE2_SLASH_END", new CKirbyAttackCharge2SlashEnd);
+    AddState(L"ATTACK_CHARGE3", new CKirbyAttackCharge3);
+    AddState(L"ATTACK_CHARGE3_START", new CKirbyAttackCharge3Start);
+    AddState(L"ATTACK_CHARGE3_END", new CKirbyAttackCharge3End);
+    AddState(L"ATTACK_AIRGUARD", new CKirbyAttackAirGuard);
+    AddState(L"ATTACK_AIRGUARD_END", new CKirbyAttackAirGuardEnd);
+    AddState(L"ATTACK_AIRGUARD_CHARGE", new CKirbyAttackAirGuardCharge);
+    AddState(L"ATTACK_AIRGUARD_CHARGE_START", new CKirbyAttackAirGuardChargeStart);
     AddState(L"STUFFED", new CKirbyStuffed);
     AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
     AddState(L"STUFFED_RUN", new CKirbyStuffedRun);
@@ -185,9 +235,11 @@ void CKirbyFSM::begin()
     AddState(L"STUFFED_LANDING", new CKirbyStuffedLanding);
     AddState(L"STUFFED_EAT", new CKirbyStuffedEat);
     AddState(L"GUARD", new CKirbyGuard);
+    AddState(L"GUARD_RUN", new CKirbyGuardRun);
     AddState(L"SLIDE_START", new CKirbySlideStart);
     AddState(L"SLIDE", new CKirbySlide);
     AddState(L"SLIDE_END", new CKirbySlideEnd);
+    AddState(L"SLIDE_ATTACK", new CKirbySlideAttack);
     AddState(L"DODGE_START", new CKirbyDodgeStart);
     AddState(L"DODGE1", new CKirbyDodge1);
     AddState(L"DODGE2", new CKirbyDodge2);
@@ -197,11 +249,26 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
 
+    AddState(L"BURNING_PRE", new CKirbyBurningPre);
+    AddState(L"BURNING_START", new CKirbyBurningStart);
+    AddState(L"BURNING", new CKirbyBurning);
+    AddState(L"BURNING_END", new CKirbyBurningEnd);
+
     ChangeState(L"IDLE");
 }
 
 void CKirbyFSM::tick()
 {
+    if (m_ComboLevel != 0)
+    {
+        m_ComboAccTime += DT;
+
+        if (m_ComboAccTime >= GetCurAbility()->GetComboSuccessTime())
+        {
+            SetComboLevel(0);
+        }
+    }
+
     if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         m_ChargeAccTime += DT;
@@ -247,9 +314,29 @@ void CKirbyFSM::tick()
 
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
-    m_NextAbility = _Type;
-    ChangeState(L"CHANGE_ABILITY");
-    m_CurAbility = _Type;
+    switch (_Type)
+    {
+    case AbilityCopyType::NORMAL:
+    {
+        m_NextAbility = _Type;
+        ChangeState(L"DROP_ABILITY");
+        m_CurAbility = _Type;
+    }
+        break;
+    case AbilityCopyType::FIRE:
+    case AbilityCopyType::RANGER:
+    case AbilityCopyType::SWORD:
+    {
+        m_NextAbility = _Type;
+        ChangeState(L"CHANGE_ABILITY");
+        m_CurAbility = _Type;
+    }
+        break;
+    case AbilityCopyType::END:
+    case AbilityCopyType::NONE:
+        return;
+        break;
+    }
 }
 
 void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
@@ -260,6 +347,8 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 
 void CKirbyFSM::StartStuffed(CGameObject* _Target)
 {
+    ClearStuff();
+
     m_StuffedCopyObj = _Target;
     m_bStuffed = true;
 }
@@ -286,6 +375,7 @@ void CKirbyFSM::ClearStuff()
     if (m_StuffedCopyObj)
     {
         delete m_StuffedCopyObj;
+        m_StuffedCopyObj = nullptr;
     }
 }
 

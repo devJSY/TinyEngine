@@ -26,6 +26,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bJumpLock(false)
     , m_bJump(false)
     , m_bActiveFriction(false)
+    , m_bForwardMode(false)
     , m_HoveringLimitHeight(500.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f, 0.f, 0.f}
@@ -56,6 +57,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bJumpLock(false)
     , m_bJump(false)
     , m_bActiveFriction(false)
+    , m_bForwardMode(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
     , m_HoveringMinSpeed(_Origin.m_HoveringMinSpeed)
     , m_AddVelocity{0.f, 0.f, 0.f}
@@ -179,8 +181,9 @@ void CKirbyMoveController::SetDir()
         ForceDir.Normalize();
 
         // 가장 우선순위가 높은 방향을 적용
-        Transform()->SetDirection(ForceDir);
         m_TowardDir = ForceDir;
+        Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
+        Transform()->SetWorldRotation(ToWardQuaternion);
 
         m_ForceDirInfos.clear();
         return;
@@ -209,9 +212,14 @@ void CKirbyMoveController::SetDir()
     // 구면보간을 이용해서 물체의 새로운 방향을 정의
     // Transform()->SetDirection(Vector3::SmoothStep(m_CurDir, m_TowardDir, DT * m_RotSpeed));
 
-    Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
-    Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * m_RotSpeed);
-    Transform()->SetWorldRotation(SlerpQuat);
+    if (m_TowardDir.Dot(m_CurDir) < cosf(0.f) - 0.0000001f)
+    {
+        Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
+        Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * m_RotSpeed);
+        Transform()->SetWorldRotation(SlerpQuat);
+    }
+
+
 
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
@@ -223,20 +231,20 @@ void CKirbyMoveController::Move()
     m_Accel = {0.f, 0.f, 0.f};
 
     bool bGrounded = CharacterController()->IsGrounded();
-
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
+    Vec3 rayStartPos = Transform()->GetWorldPos() + CharacterController()->GetCenter();
+    rayStartPos.y -= (CharacterController()->GetHeight() / 2.f) * CPhysicsMgr::GetInst()->GetPPM();
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(rayStartPos, Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
+    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
 
-    float a = CharacterController()->GetHeight() / 2.f - CharacterController()->GetRadius();
-
-    if (Hit.pCollisionObj && Hit.Distance <= 10.f)
-    {
-        bGrounded = true;
-    }
-    else
-    {
-        bGrounded = false;
-    }
+    //if (Hit.pCollisionObj && Hit.Distance <= 50.f)
+    //{
+    //    bGrounded = true;
+    //}
+    //else
+    //{
+    //    bGrounded = false;
+    //}
 
     if (PLAYERFSM->IsHovering())
     {
@@ -258,8 +266,17 @@ void CKirbyMoveController::Move()
         m_Accel.x = -m_MoveVelocity.x * m_Friction;
         m_Accel.z = -m_MoveVelocity.z * m_Friction;
 
-        m_MoveVelocity.x += m_Accel.x;
-        m_MoveVelocity.z += m_Accel.z;
+        m_MoveVelocity.x += m_Accel.x * DT;
+        m_MoveVelocity.z += m_Accel.z * DT;
+    }
+    else if (m_bForwardMode)
+    {
+        m_CurDir.y = 0.f;
+        m_CurDir.Normalize();
+
+
+        m_MoveVelocity.x = m_CurDir.x * m_Speed;
+        m_MoveVelocity.z = m_CurDir.z * m_Speed;
     }
     else
     {
@@ -331,6 +348,7 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.z = HorizontalVel.z;
     }
 
+
     // =========================
     // 움직임 적용
     // =========================
@@ -343,7 +361,7 @@ void CKirbyMoveController::SurfaceAlignment()
     float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-
+    
     // Rotate Character
     if (bGrounded)
     {

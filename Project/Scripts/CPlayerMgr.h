@@ -49,7 +49,7 @@ public:
 
 public:
     void SetPlayer(CGameObject* _PlayerObj);
-    static void SetPlayerMtrl(UINT _Idx);
+    static void SetPlayerMtrl(UINT _Idx, bool _On = true);
     static void SetPlayerFace(FaceType _Type);
     static void ClearBodyMtrl();
     static void ClearMouthMtrl();
