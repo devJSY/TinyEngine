@@ -27,7 +27,12 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    CharacterControllerTest();
+    if (KEY_TAP(KEY::K))
+    {
+        GetOwner()->SetActive(!GetOwner()->IsActive());
+    }
+
+    // CharacterControllerTest();
     // AnimatorTest();
     //  QuaternionExample();
 

@@ -372,6 +372,10 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr == m_Scene)
         return;
 
+    // 활성화 여부 체크
+    if (!_GameObject->IsActive())
+        return;
+
     AddCharacterControllerObject(_GameObject);
 
     CTransform* pTr = _GameObject->Transform();

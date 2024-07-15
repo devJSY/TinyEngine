@@ -184,6 +184,10 @@ void CCamera::SortObject()
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
         for (size_t j = 0; j < vecObjects.size(); ++j)
         {
+            // 활성화 여부 체크
+            if (!vecObjects[j]->IsActive())
+                continue;
+
             CRenderComponent* pRenderCom = vecObjects[j]->GetRenderComponent();
 
             // 렌더링 기능이 없는 오브젝트는 제외
@@ -290,6 +294,10 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
         const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
         for (size_t j = 0; j < vecObjects.size(); ++j)
         {
+            // 활성화 여부 체크
+            if (!vecObjects[j]->IsActive())
+                continue;
+
             CRenderComponent* pRenderCom = vecObjects[j]->GetRenderComponent();
 
             // 렌더링 기능이 없는 오브젝트는 제외
