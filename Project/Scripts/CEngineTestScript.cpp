@@ -67,20 +67,14 @@ void CEngineTestScript::CharacterControllerTest()
 
     // CharacterController의 Grounded 는 마지막 Move()를 기준으로 저장되기 때문에 정확도가 낮음
     // Raycast로 한번 더 땅에 닿은 상태인지 확인한다.
-    // if (!bGrounded)
-    // {
-    Vec3 RayPos = Transform()->GetWorldPos();
+    if (!bGrounded)
+    {
+        Vec3 RayPos = CharacterController()->GetFootPos();
 
-    RayPos.y -= (CharacterController()->GetHeight() / 2.f) * CPhysicsMgr::GetInst()->GetPPM();
-    RayPos += CharacterController()->GetCenter();
-
-    GamePlayStatic::DrawDebugLine(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist, Vec3(1.f, 0.f, 1.f), false);
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist);
-    // bGrounded = nullptr != Hit.pCollisionObj;
-
-    Vec3 FootPos = CharacterController()->GetFootPos();
-    int a = 0;
-    // }
+        GamePlayStatic::DrawDebugLine(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist, Vec3(1.f, 0.f, 1.f), false);
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist);
+        bGrounded = nullptr != Hit.pCollisionObj;
+    }
 
     // 땅에 닿은 상태면 Velocity Y값 초기화
     if (bGrounded && MoveVelocity.y < 0)
