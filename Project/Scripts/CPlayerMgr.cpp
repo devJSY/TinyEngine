@@ -82,9 +82,16 @@ void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
     }
 }
 
-void CPlayerMgr::SetPlayerMtrl(UINT _Idx)
+void CPlayerMgr::SetPlayerMtrl(UINT _Idx, bool _On)
 {
-    m_PlayerObj->GetRenderComponent()->SetMaterial(m_PlayerBodyMtrl, _Idx);
+    if (_On)
+    {
+        m_PlayerObj->GetRenderComponent()->SetMaterial(m_PlayerBodyMtrl, _Idx);
+    }
+    else
+    {
+        m_PlayerObj->GetRenderComponent()->SetMaterial(nullptr, _Idx);
+    }
 }
 
 void CPlayerMgr::SetPlayerFace(FaceType _Type)

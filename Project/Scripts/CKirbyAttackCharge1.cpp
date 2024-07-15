@@ -50,7 +50,12 @@ void CKirbyAttackCharge1::tick()
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
+        case AbilityCopyType::SWORD: {
+            if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"ATTACK_CHARGE1_END");
+            }
+        }
             break;
         }
     }

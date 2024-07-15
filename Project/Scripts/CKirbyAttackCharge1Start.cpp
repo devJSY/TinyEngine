@@ -21,8 +21,7 @@ void CKirbyAttackCharge1Start::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_END");
@@ -44,8 +43,27 @@ void CKirbyAttackCharge1Start::tick()
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
-            break;
+        case AbilityCopyType::SWORD: {
+            if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
+            {
+                if (PLAYERFSM->GetChargeAccTime() >= 0.5f)
+                {
+                    ChangeState(L"ATTACK_CHARGE1");
+                }
+                else
+                {
+                    ChangeState(L"IDLE");
+                }
+            }
+            else if (KEY_PRESSED(KEY_ATK))
+            {
+                if (PLAYERFSM->GetChargeAccTime() >= PLAYERFSM->GetCurAbility()->GetCharge1Time())
+                {
+                     ChangeState(L"ATTACK_CHARGE2_START");
+                }
+            }
+        }
+        break;
         }
     }
 }

@@ -26,8 +26,6 @@
 #define LAYER_EFFECT        14
 #define LAYER_UI            15
 
-#define GET_CURCLIP_FRM PLAYER->Animator()->GetCurFrameIdx() - PLAYER->Animator()->GetSkeletalMesh()->GetAnimClip()->at(PLAYER->Animator()->GetCurClipIdx()).iStartFrame
-
 #define PLAY_CURSTATE(STATE)                                                                                                                         \
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();                                                                                                \
     if (KirbyFSM->GetCurObject())                                                                                                                    \

@@ -11,28 +11,61 @@ CKirbySlideEnd::~CKirbySlideEnd()
 
 void CKirbySlideEnd::tick()
 {
-    if (PLAYER->Animator()->IsFinish())
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->SlideEnd();
+
+    // State Change
+    switch (PLAYERFSM->GetCurAbilityIdx())
     {
-        if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
+    case AbilityCopyType::NORMAL:
+    case AbilityCopyType::FIRE:
+    case AbilityCopyType::RANGER: {
+        if (PLAYER->Animator()->IsFinish())
         {
-            ChangeState(L"RUN_START");
+            if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
+            {
+                ChangeState(L"RUN_START");
+            }
+            else if (false == PLAYER->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+            else
+            {
+                ChangeState(L"IDLE");
+            }
         }
-        else if (false == PLAYER->CharacterController()->IsGrounded())
+    }
+    break;
+    case AbilityCopyType::SWORD: {
+        if (PLAYER->Animator()->IsFinish())
         {
-            ChangeState(L"JUMP_FALL");
+            if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)
+            {
+                ChangeState(L"RUN_START");
+            }
+            else if (false == PLAYER->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+            else
+            {
+                ChangeState(L"IDLE");
+            }
         }
-        else
-        {
-            ChangeState(L"IDLE");
-        }
+    }
+    break;
     }
 }
 
 void CKirbySlideEnd::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"SlideEnd"), false);
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->SlideEndEnter();
 
+    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFriction(50.f);
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
@@ -40,6 +73,12 @@ void CKirbySlideEnd::Enter()
 
 void CKirbySlideEnd::Exit()
 {
+    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
+    KirbyFSM->GetCurAbility()->SlideEndExit();
+
+    PLAYERCTRL->SetVelocity(Vec3());
+    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFriction(0.f);
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();

@@ -21,8 +21,7 @@ void CKirbyJumpFall::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
+        case AbilityCopyType::NORMAL: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
@@ -41,8 +40,39 @@ void CKirbyJumpFall::tick()
             break;
         case AbilityCopyType::RANGER:
             break;
-        case AbilityCopyType::SWORD:
-            break;
+        case AbilityCopyType::SWORD: {
+            if (PLAYERFSM->GetSlideComboLevel())
+            {
+                if (GetOwner()->CharacterController()->IsGrounded())
+                {
+                    ChangeState(L"LANDING");
+                }
+                else if ((KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK)) && PLAYERFSM->GetSlideComboLevel() == 1)
+                {
+                    ChangeState(L"JUMP_ATTACK_START");
+                }
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+                {
+                    ChangeState(L"ATTACK_AIRGUARD_CHARGE_START");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_ATTACK_START");
+                }
+            }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+        }
+        break;
         }
     }
 }

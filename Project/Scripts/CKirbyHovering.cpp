@@ -13,13 +13,15 @@ CKirbyHovering::~CKirbyHovering()
 
 void CKirbyHovering::tick()
 {
-    if (m_bFrmEnter && GET_CURCLIP_FRM == 0)
+    int FrameIdx = PLAYER->Animator()->GetClipFrameIndex();
+
+    if (m_bFrmEnter && FrameIdx == 0)
     {
         PLAYERCTRL->ClearVelocityY();
         PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
         m_bFrmEnter = false;
     }
-    else if (!m_bFrmEnter && GET_CURCLIP_FRM != 0)
+    else if (!m_bFrmEnter && FrameIdx != 0)
     {
         m_bFrmEnter = true;
     }
