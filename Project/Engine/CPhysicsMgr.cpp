@@ -458,7 +458,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         m_Physics->createMaterial(pDefaultMtrl->GetStaticFriction(), pDefaultMtrl->GetDynamicFriction(), pDefaultMtrl->GetBounciness());
 
     // Box Collider
-    if (nullptr != pBoxCol)
+    if (nullptr != pBoxCol && pBoxCol->m_bEnabled)
     {
         // Material 생성
         PxMaterial* pPxMtrl = DefaultPxMtrl;
@@ -472,13 +472,13 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxBoxGeometry(WorldScale * pBoxCol->m_Size), *pPxMtrl);
 
         // 콜라이더 Enable / Disable
-        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pBoxCol->m_bEnabled);
+        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 
         // 트리거
         if (pBoxCol->m_bTrigger)
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pBoxCol->m_bEnabled);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -501,7 +501,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // Sphere Collider
-    if (nullptr != pSphereCol)
+    if (nullptr != pSphereCol && pSphereCol->m_bEnabled)
     {
         // Material 생성
         PxMaterial* pPxMtrl = DefaultPxMtrl;
@@ -515,13 +515,13 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxSphereGeometry(WorldScale.x * pSphereCol->m_Radius * 2.f), *pPxMtrl);
 
         // 콜라이더 Enable / Disable
-        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pSphereCol->m_bEnabled);
+        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 
         // 트리거
         if (pSphereCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pSphereCol->m_bEnabled);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -544,7 +544,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // Capsule Collider
-    if (nullptr != pCapsuleCol)
+    if (nullptr != pCapsuleCol && pCapsuleCol->m_bEnabled)
     {
         PxMaterial* pPxMtrl = DefaultPxMtrl;
         if (nullptr != pCapsuleCol->m_Mtrl)
@@ -587,13 +587,13 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             *pPxMtrl);
 
         // 콜리이더 Enable / Disable
-        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pCapsuleCol->m_bEnabled);
+        shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 
         // 트리거
         if (pCapsuleCol->IsTrigger())
         {
             shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pCapsuleCol->m_bEnabled);
+            shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
         }
 
         // 콜라이더의 상대 위치 적용
@@ -617,7 +617,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     }
 
     // Mesh Collider
-    if (nullptr != pMeshCol && nullptr != pMeshCol->GetMesh())
+    if (nullptr != pMeshCol && nullptr != pMeshCol->GetMesh() && pMeshCol->m_bEnabled)
     {
         PxMaterial* pPxMtrl = DefaultPxMtrl;
         if (nullptr != pMeshCol->m_Mtrl)
@@ -651,13 +651,13 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             PxShape* shape = PxRigidActorExt::createExclusiveShape(*RigidActor, PxConvexMeshGeometry(convexMesh, PxMeshScale(WorldScale)), *pPxMtrl);
 
             // 콜라이더 Enable / Disable
-            shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, pMeshCol->m_bEnabled);
+            shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
 
             // 트리거
             if (pMeshCol->m_bTrigger)
             {
                 shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, pMeshCol->m_bEnabled);
+                shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
             }
 
             // 필터링 데이터 적용
@@ -691,7 +691,7 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
 {
     CCharacterController* pCharacterController = _GameObject->CharacterController();
 
-    if (nullptr == pCharacterController)
+    if (nullptr == pCharacterController || !pCharacterController->m_bEnabled)
         return;
 
     CTransform* pTr = _GameObject->Transform();
