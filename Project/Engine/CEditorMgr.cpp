@@ -16,7 +16,7 @@
 #include "CMRT.h"
 
 CEditorMgr::CEditorMgr()
-    : m_bEnable(true)
+    : m_bEnabled(true)
     , m_arrEditor{}
     , m_SelectedObj(nullptr)
     , m_ViewportSize(Vec2())
@@ -30,7 +30,7 @@ CEditorMgr::CEditorMgr()
 
 CEditorMgr::~CEditorMgr()
 {
-    if (!m_bEnable)
+    if (!m_bEnabled)
         return;
 
     Delete_Array(m_arrEditor);
@@ -49,7 +49,7 @@ CEditorMgr::~CEditorMgr()
 
 void CEditorMgr::init()
 {
-    if (!m_bEnable)
+    if (!m_bEnabled)
         return;
 
     // Setup Dear ImGui context
@@ -165,7 +165,7 @@ void CEditorMgr::init()
 
 void CEditorMgr::tick()
 {
-    if (!m_bEnable)
+    if (!m_bEnabled)
         return;
 
     // ======================
@@ -193,7 +193,7 @@ void CEditorMgr::tick()
 
 void CEditorMgr::render()
 {
-    if (!m_bEnable)
+    if (!m_bEnabled)
         return;
 
     // MRT Set

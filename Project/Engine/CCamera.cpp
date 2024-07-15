@@ -190,6 +190,12 @@ void CCamera::SortObject()
             if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh())
                 continue;
 
+            // Enable Check
+            if (!pRenderCom->IsEnabled())
+            {
+                continue;
+            }
+
             // FrustumCheck
             if (pRenderCom->IsFrustumCheck())
             {
@@ -290,10 +296,15 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
             if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh())
                 continue;
 
+            // Enable, CastShadow Check
+            if (!pRenderCom->IsEnabled() || !vecObjects[j]->GetRenderComponent()->IsCastShadow())
+            {
+                continue;
+            }
+
             // _MobilityType 가 0 인경우 무조건 추가
             // 그 외의 경우에는 RenderComponent의 옵션 확인
-            if (0 == _MobilityType ||
-                (vecObjects[j]->GetRenderComponent()->IsCastShadow() && (int)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType))
+            if (0 == _MobilityType || (UINT)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
             {
                 m_vecShadow.push_back(vecObjects[j]);
             }
@@ -764,7 +775,7 @@ tRay CCamera::GetRay()
     float NdcMouseY = 0.0f;
 
     // Mouse Pos → NDC
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         vMousePos = CEditorMgr::GetInst()->GetViewportMousePos();
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();

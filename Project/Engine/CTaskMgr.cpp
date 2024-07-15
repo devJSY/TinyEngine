@@ -52,7 +52,7 @@ void CTaskMgr::tick()
             Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
             // Editor 모드
-            if (CEditorMgr::GetInst()->IsEnable())
+            if (CEditorMgr::GetInst()->IsEnabled())
             {
                 // Viewport 에서만 마우스 피킹 적용
                 // Viewport 기준 마우스위치로 설정
@@ -71,7 +71,7 @@ void CTaskMgr::tick()
             }
         }
 
-        if (CEditorMgr::GetInst()->IsEnable())
+        if (CEditorMgr::GetInst()->IsEnabled())
         {
             // 스크린샷
             if (KEY_TAP(KEY::PRINT))
@@ -314,7 +314,7 @@ void CTaskMgr::WINDOW_RESIZE(const tTask& _Task)
     CRenderMgr::GetInst()->Resize_Release();
     CDevice::GetInst()->Resize(resolution);
     CRenderMgr::GetInst()->Resize(resolution);
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         CEditorMgr::GetInst()->GetModelEditor()->Resize(resolution);
     }
@@ -395,14 +395,14 @@ void CTaskMgr::SCREENSHOT(const tTask& _Task)
 
 void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 {
-    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
 
     int MouseX = (int)_Task.Param_1;
     int MouseY = (int)_Task.Param_2;
     Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
 
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -491,7 +491,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 //
 // void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
 //{
-//    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+//    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
 //        return;
 //
 //    int MouseX = (int)_Task.Param_1;
@@ -503,7 +503,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 //    // 마우스 커서의 위치를 NDC로 변환
 //    // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
 //    // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-//    if (CEditorMgr::GetInst()->IsEnable())
+//    if (CEditorMgr::GetInst()->IsEnabled())
 //    {
 //        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
 //        if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -578,7 +578,7 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 
 void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
 {
-    if (CEditorMgr::GetInst()->IsEnable() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
         return;
 
     int MouseX = (int)_Task.Param_1;
@@ -590,7 +590,7 @@ void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
     // 마우스 커서의 위치를 NDC로 변환
     // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
     // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
         if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
@@ -973,7 +973,7 @@ void CTaskMgr::APPEND_ANIMATION(const tTask& _Task)
         }
     }
 
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         CEditorMgr::GetInst()->GetModelEditor()->NotifiedAnimationLoaded();
     }
@@ -984,7 +984,7 @@ void CTaskMgr::APPEND_ANIMATION(const tTask& _Task)
 void CTaskMgr::SET_MODEL(const tTask& _Task)
 {
     Ptr<CMeshData> pCMeshData = (CMeshData*)_Task.Param_1;
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         CEditorMgr::GetInst()->GetModelEditor()->SetModel(pCMeshData);
     }
@@ -994,7 +994,7 @@ void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
 {
     // Editor 초기화
     CEditorMgr::GetInst()->SetSelectedObject(nullptr);
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         CEditorMgr::GetInst()->GetTileMapEditor()->SetTileMap(nullptr);
     }

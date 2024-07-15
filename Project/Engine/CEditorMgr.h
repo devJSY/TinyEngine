@@ -18,7 +18,7 @@ class CEditorMgr : public CSingleton<CEditorMgr>
     SINGLE(CEditorMgr);
 
 private:
-    bool m_bEnable; // 에디터 활성화/비활성화
+    bool m_bEnabled; // 에디터 활성화/비활성화
     CEditor* m_arrEditor[(UINT)EDITOR_TYPE::END];
 
     CGameObject* m_SelectedObj;
@@ -36,7 +36,7 @@ public:
     void render();
 
 public:
-    bool IsEnable() const { return m_bEnable; }
+    bool IsEnabled() const { return m_bEnabled; }
 
     CGameObject* GetSelectedObject() const { return m_SelectedObj; }
     void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }

@@ -116,7 +116,7 @@ void CKeyMgr::tick()
         m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
 
         // 에디터 모드인 경우 Wheel 상태를 ImGui로 부터 입력받음
-        if (CEditorMgr::GetInst()->IsEnable())
+        if (CEditorMgr::GetInst()->IsEnabled())
         {
             float wheel = ImGui::GetIO().MouseWheel;
             if (wheel > 0)

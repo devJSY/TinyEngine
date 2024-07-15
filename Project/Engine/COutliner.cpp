@@ -2073,7 +2073,7 @@ void COutliner::DrawCharacterController(CGameObject* obj)
             pCharacterController->SetMinMoveDistance(MinMoveDistance);
 
         Vec3 Center = pCharacterController->GetCenter();
-        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat3(ImGui_LabelPrefix("Center").c_str(), &Center.x, 0.01f))
             pCharacterController->SetCenter(Center);
 
         float Radius = pCharacterController->GetRadius();
@@ -2102,6 +2102,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
+        // Enabled
+        bool bEnabled = pMeshRender->IsEnabled();
+        ImGui::Checkbox(ImGui_LabelPrefix("Enabled").c_str(), &bEnabled);
+        pMeshRender->SetEnabled(bEnabled);
+
         // Use Frustum Check
         bool bFrustumCheck = pMeshRender->IsFrustumCheck();
         ImGui::Checkbox(ImGui_LabelPrefix("Use Frustum Check").c_str(), &bFrustumCheck);
