@@ -301,9 +301,29 @@ void CKirbyFSM::tick()
 
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
-    m_NextAbility = _Type;
-    ChangeState(L"CHANGE_ABILITY");
-    m_CurAbility = _Type;
+    switch (_Type)
+    {
+    case AbilityCopyType::NORMAL:
+    {
+        m_NextAbility = _Type;
+        ChangeState(L"DROP_ABILITY");
+        m_CurAbility = _Type;
+    }
+        break;
+    case AbilityCopyType::FIRE:
+    case AbilityCopyType::RANGER:
+    case AbilityCopyType::SWORD:
+    {
+        m_NextAbility = _Type;
+        ChangeState(L"CHANGE_ABILITY");
+        m_CurAbility = _Type;
+    }
+        break;
+    case AbilityCopyType::END:
+    case AbilityCopyType::NONE:
+        return;
+        break;
+    }
 }
 
 void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)

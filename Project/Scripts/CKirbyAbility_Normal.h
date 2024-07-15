@@ -45,6 +45,11 @@ public:
     virtual void AttackCharge2RunEnter();
     virtual void AttackCharge2RunExit();
 
+    // º¯½Å
+    virtual void ChangeAbility();
+    virtual void ChangeAbilityEnter();
+    virtual void ChangeAbilityExit();
+
 public:
     CLONE_DISABLE(CKirbyAbility_Normal)
     CKirbyAbility_Normal();

@@ -267,3 +267,20 @@ void CKirbyAbility_Normal::AttackCharge2RunExit()
 
     PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
+
+// ===============
+// Change Ability
+// ===============
+void CKirbyAbility_Normal::ChangeAbility()
+{
+}
+
+void CKirbyAbility_Normal::ChangeAbilityEnter()
+{
+    PLAYERFSM->SetCurHat(nullptr);
+    PLAYERFSM->SetCurWeapon(nullptr);
+}
+
+void CKirbyAbility_Normal::ChangeAbilityExit()
+{
+}

@@ -30,6 +30,8 @@ private:
     CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
     ObjectCopyType          m_CurObject;
     
+    CGameObject*            m_CurHat;
+    CGameObject*            m_CurWeapon;
     CGameObject*            m_StuffedCopyObj;
     CKirbyVacuumCollider*   m_VacuumCollider;
 
@@ -62,6 +64,8 @@ public:
     void DrawingCollisionEnter(CGameObject* _CollisionObject);
 
 public:
+    void SetCurHat(CGameObject* _Hat) { m_CurHat = _Hat; }
+    void SetCurWeapon(CGameObject* _Weapon) { m_CurWeapon = _Weapon; }
     void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
@@ -80,6 +84,8 @@ public:
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
+    CGameObject* GetCurHat() { return m_CurHat; }
+    CGameObject* GetCurWeapon() { return m_CurWeapon; }
     CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
     float GetComboAccTime() const { return m_ComboAccTime; }

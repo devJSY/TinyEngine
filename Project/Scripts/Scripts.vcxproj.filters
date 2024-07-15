@@ -307,6 +307,7 @@
     <ClInclude Include="CKirbyAttackAirGuardEnd.h">
       <Filter>State\KirbyState\AttackAirGuard\AttackEnd</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyDropAbility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -627,6 +628,7 @@
     <ClCompile Include="CKirbyAttackAirGuardEnd.cpp">
       <Filter>State\KirbyState\AttackAirGuard\AttackEnd</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyDropAbility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -970,6 +972,9 @@
     </Filter>
     <Filter Include="State\KirbyState\AttackAirGuard\ChargeStart">
       <UniqueIdentifier>{8cd27366-925f-41d8-8681-b1753c4f157e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\DropAbility">
+      <UniqueIdentifier>{58526ce3-0719-4036-992f-adff626a47b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

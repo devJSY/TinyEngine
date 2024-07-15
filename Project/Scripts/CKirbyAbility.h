@@ -11,6 +11,8 @@
 class CKirbyAbility
 {
 protected:
+    Ptr<CPrefab>    m_Hat;
+    Ptr<CPrefab>    m_Weapon;
     float           m_Charge1Time;
     float           m_Charge2Time;
     float           m_ComboSuccessTime;
@@ -146,14 +148,14 @@ public:
     virtual void GuardRunEnter(){};
     virtual void GuardRunExit(){};
 
-    //virtual void Throw();
-
-    //virtual void Change();
+    //virtual void DropAbility();
+    //virtual void DropAbilityEnter();
+    //virtual void DropAbilityExit();
 
     // º¯½Å
-    virtual void ChangeAbility(){};
-    virtual void ChangeAbilityEnter(){};
-    virtual void ChangeAbilityExit(){};
+    virtual void ChangeAbility() = 0;
+    virtual void ChangeAbilityEnter() = 0;
+    virtual void ChangeAbilityExit() = 0;
 
 public:
     float GetCharge1Time() const { return m_Charge1Time; }

@@ -9,6 +9,8 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
     , m_PrevRotSpeed(0.f)
     , m_PrevGravity(0.f)
 {
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
+    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -615,13 +617,13 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
     // create hat
     //Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoHat.mdat");
     //CGameObject* pInstObj = pMeshData->Instantiate();
-    CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref")->Instantiate();
+    CGameObject* pInstObj = m_Hat->Instantiate();
+    PLAYERFSM->SetCurHat(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
     // create sword
-    //pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoSword.mdat");
-    //pInstObj = pMeshData->Instantiate();
-    pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref")->Instantiate();
+    pInstObj = m_Weapon->Instantiate();
+    PLAYERFSM->SetCurWeapon(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"WeaponSword");
 }
 
