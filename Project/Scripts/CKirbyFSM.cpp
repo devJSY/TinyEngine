@@ -5,7 +5,7 @@
 #include "CKirbyVacuumCollider.h"
 
 #include "CKirbyAbility_Normal.h"
-//#include "CKirbyAbility_Fire.h"
+#include "CKirbyAbility_Fire.h"
 #include "CKirbyAbility_Sword.h"
 
 CKirbyFSM::CKirbyFSM()
@@ -30,10 +30,12 @@ CKirbyFSM::CKirbyFSM()
     , m_InvincibleAcc(0.f)
     , m_InvincibleDuration(3.f)
     , m_EmissiveCoef(0.f)
+    , m_GlidingDuration(1.7f)
+    , m_GlidingAcc(0.f)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
-    //m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
+    m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 }
 
@@ -57,6 +59,8 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_InvincibleAcc(_Origin.m_InvincibleAcc)
     , m_InvincibleDuration(_Origin.m_InvincibleDuration)
     , m_EmissiveCoef(_Origin.m_EmissiveCoef)
+    , m_GlidingDuration(1.7f)
+    , m_GlidingAcc(0.f)
 {
     // Ability Copy 복사
     for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
@@ -167,6 +171,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyChangeAbility.h"
 #include "CKirbyChangeAbilityEnd.h"
 #include "CKirbyChangeAbilityWait.h"
+#include "CKirbyBurningPre.h"
+#include "CKirbyBurningStart.h"
+#include "CKirbyBurning.h"
+#include "CKirbyBurningEnd.h"
 
 void CKirbyFSM::begin()
 {
@@ -240,6 +248,11 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY", new CKirbyChangeAbility);
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
+
+    AddState(L"BURNING_PRE", new CKirbyBurningPre);
+    AddState(L"BURNING_START", new CKirbyBurningStart);
+    AddState(L"BURNING", new CKirbyBurning);
+    AddState(L"BURNING_END", new CKirbyBurningEnd);
 
     ChangeState(L"IDLE");
 }

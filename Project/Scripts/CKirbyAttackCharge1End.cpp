@@ -23,6 +23,7 @@ void CKirbyAttackCharge1End::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::SWORD:
+        case AbilityCopyType::FIRE:
         {
             if (PLAYER->Animator()->IsFinish())
             {
@@ -37,8 +38,6 @@ void CKirbyAttackCharge1End::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE:
-            break;
         case AbilityCopyType::RANGER:
             break;
         }

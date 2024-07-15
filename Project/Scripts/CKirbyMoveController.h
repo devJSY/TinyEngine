@@ -30,6 +30,7 @@ private:
     Vec3                        m_Input;
     bool                        m_bJump;
     bool                        m_bActiveFriction;
+    bool                        m_bForwardMode;
 
     // Lock
     bool                        m_bMoveLock;
@@ -69,6 +70,7 @@ public:
     void UnlockJump() { m_bJumpLock = false; }
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
+    void SetForwardMode(bool _Mode) { m_bForwardMode = _Mode; }
 
     void Jump() { m_bJump = true; }
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
@@ -81,6 +83,7 @@ public:
     void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
+    void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }

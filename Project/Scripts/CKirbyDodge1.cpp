@@ -78,7 +78,7 @@ void CKirbyDodge1::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
-    PLAYERCTRL->SetFriction(0.25f);
+    PLAYERCTRL->SetFriction(2.f);
     PLAYERCTRL->SetGuard(true);
     PLAYERCTRL->SetGravity(-100.f);
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});

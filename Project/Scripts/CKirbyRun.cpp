@@ -23,6 +23,7 @@ void CKirbyRun::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
+        case AbilityCopyType::FIRE:
         case AbilityCopyType::NORMAL: 
         {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
@@ -43,8 +44,6 @@ void CKirbyRun::tick()
             }
         }
         break;
-
-        case AbilityCopyType::FIRE:
         case AbilityCopyType::RANGER:
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
