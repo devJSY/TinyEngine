@@ -247,6 +247,15 @@
     <ClInclude Include="CKirbyChangeAbilityEnd.h">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyBurning.h">
+      <Filter>State\KirbyState\Burning\Burning</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyBurningStart.h">
+      <Filter>State\KirbyState\Burning\BurningStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyBurningPre.h">
+      <Filter>State\KirbyState\Burning\BurningPre</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyStuffedEat.h">
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClInclude>
@@ -332,6 +341,9 @@
       <Filter>State\KirbyState\AttackAirGuard\AttackEnd</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyDropAbility.h" />
+    <ClInclude Include="CKirbyBurningEnd.h">
+      <Filter>State\KirbyState\Burning\BurningEnd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -592,6 +604,15 @@
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp">
       <Filter>State\KirbyState\ChangeAbility\ChangeAbilityEnd</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyBurning.cpp">
+      <Filter>State\KirbyState\Burning\Burning</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningStart.cpp">
+      <Filter>State\KirbyState\Burning\BurningStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningPre.cpp">
+      <Filter>State\KirbyState\Burning\BurningPre</Filter>
+    </ClCompile>
     <ClCompile Include="CNormalEnemyIdle.cpp">
       <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
     </ClCompile>
@@ -676,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="CNormalEnemyAttack.cpp">
       <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningEnd.cpp">
+      <Filter>State\KirbyState\Burning\BurningEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1059,6 +1083,21 @@
     </Filter>
     <Filter Include="State\MonsterState\NormalEnemyState\Attack">
       <UniqueIdentifier>{98f23a19-9b25-426e-9113-48121c2dfd58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning">
+      <UniqueIdentifier>{ea078dde-3e60-4a50-9f77-e8b113a6cdf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningPre">
+      <UniqueIdentifier>{4626a14e-8c74-4bd0-979e-4072439eacb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\Burning">
+      <UniqueIdentifier>{2529669e-87d0-499b-8dd7-ecefb42cca6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningStart">
+      <UniqueIdentifier>{e1f426ae-8f75-457e-88c1-439027f606b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningEnd">
+      <UniqueIdentifier>{2f86c255-94f2-4343-be20-9f9e100966c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

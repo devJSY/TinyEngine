@@ -142,6 +142,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyBackJump.h" />
     <ClInclude Include="CKirbyBodyCollider.h" />
     <ClInclude Include="CKirbyBulletScript.h" />
+    <ClInclude Include="CKirbyBurning.h" />
+    <ClInclude Include="CKirbyBurningEnd.h" />
+    <ClInclude Include="CKirbyBurningPre.h" />
+    <ClInclude Include="CKirbyBurningStart.h" />
     <ClInclude Include="CKirbyChangeAbility.h" />
     <ClInclude Include="CKirbyAttackCharge1.h" />
     <ClInclude Include="CKirbyChangeAbilityEnd.h" />
@@ -255,6 +259,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyBackJump.cpp" />
     <ClCompile Include="CKirbyBodyCollider.cpp" />
     <ClCompile Include="CKirbyBulletScript.cpp" />
+    <ClCompile Include="CKirbyBurning.cpp" />
+    <ClCompile Include="CKirbyBurningEnd.cpp" />
+    <ClCompile Include="CKirbyBurningPre.cpp" />
+    <ClCompile Include="CKirbyBurningStart.cpp" />
     <ClCompile Include="CKirbyChangeAbility.cpp" />
     <ClCompile Include="CKirbyAttackCharge1.cpp" />
     <ClCompile Include="CKirbyChangeAbilityEnd.cpp" />
