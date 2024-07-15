@@ -536,7 +536,7 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse,
         return;
     }
 
-    m_bChanging = (_ChangeDuration <= 0.0) ? false : true;
+    m_bChanging = true;
     m_CurChangeTime = 0.;
     m_ChangeDuration = _ChangeDuration;
     m_NextClipIdx = ClipIndex;
