@@ -21,7 +21,7 @@ void CNormalEnemyIdle::tick()
 
     if (_IsTrack)
     {
-        ChangeState(L"TRACK");
+        ChangeState(L"FIND");
         m_pMMC->SetTrack(true);
     }
 }

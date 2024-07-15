@@ -198,6 +198,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterMoveController.h" />
     <ClInclude Include="CMonsterMoveTest.h" />
     <ClInclude Include="CNormalEnemyAttack.h" />
+    <ClInclude Include="CNormalEnemyFailedAttack.h" />
+    <ClInclude Include="CNormalEnemySucessedAttack.h" />
     <ClInclude Include="CNormalEnemyFind.h" />
     <ClInclude Include="CNormalEnemyFSM.h" />
     <ClInclude Include="CNormalEnemyIdle.h" />
@@ -316,6 +318,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterMoveController.cpp" />
     <ClCompile Include="CMonsterMoveTest.cpp" />
     <ClCompile Include="CNormalEnemyAttack.cpp" />
+    <ClCompile Include="CNormalEnemyFailedAttack.cpp" />
+    <ClCompile Include="CNormalEnemySucessedAttack.cpp" />
     <ClCompile Include="CNormalEnemyFind.cpp" />
     <ClCompile Include="CNormalEnemyFSM.cpp" />
     <ClCompile Include="CNormalEnemyIdle.cpp" />

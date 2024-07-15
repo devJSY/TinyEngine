@@ -263,7 +263,7 @@
       <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
     </ClInclude>
     <ClInclude Include="CNormalEnemyPatrol.h">
-      <Filter>State\MonsterState\NormalEnemyState\Track</Filter>
+      <Filter>State\MonsterState\NormalEnemyState\Patrol</Filter>
     </ClInclude>
     <ClInclude Include="CNormalEnemyFSM.h">
       <Filter>Scripts\FSM\MonsterFSM\NormalEnemyFSM</Filter>
@@ -346,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="CNormalEnemyFind.h">
       <Filter>State\MonsterState\NormalEnemyState\Find</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyFailedAttack.h">
+      <Filter>State\MonsterState\NormalEnemyState\Attack\FailedAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemySucessedAttack.h">
+      <Filter>State\MonsterState\NormalEnemyState\Attack\SuccessedAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -620,7 +626,7 @@
       <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
     </ClCompile>
     <ClCompile Include="CNormalEnemyPatrol.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Track</Filter>
+      <Filter>State\MonsterState\NormalEnemyState\Patrol</Filter>
     </ClCompile>
     <ClCompile Include="CNormalEnemyFSM.cpp">
       <Filter>Scripts\FSM\MonsterFSM\NormalEnemyFSM</Filter>
@@ -706,6 +712,12 @@
     </ClCompile>
     <ClCompile Include="CNormalEnemyFind.cpp">
       <Filter>State\MonsterState\NormalEnemyState\Find</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemySucessedAttack.cpp">
+      <Filter>State\MonsterState\NormalEnemyState\Attack\SuccessedAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyFailedAttack.cpp">
+      <Filter>State\MonsterState\NormalEnemyState\Attack\FailedAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1072,9 +1084,6 @@
     <Filter Include="State\MonsterState\NormalEnemyState\Idle">
       <UniqueIdentifier>{45d5d6df-472e-4343-8860-2c8e7880e54e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Track">
-      <UniqueIdentifier>{472f4d2f-e80b-49e2-ae81-274f47cfdef4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Manager\MonsterManager">
       <UniqueIdentifier>{c6bed61d-ae8d-4c3e-a698-27c1945f2199}</UniqueIdentifier>
     </Filter>
@@ -1107,6 +1116,42 @@
     </Filter>
     <Filter Include="State\MonsterState\NormalEnemyState\Find">
       <UniqueIdentifier>{04c66023-e745-49c6-ba95-c754f4e7a498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Patrol">
+      <UniqueIdentifier>{472f4d2f-e80b-49e2-ae81-274f47cfdef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Damage">
+      <UniqueIdentifier>{d64db8a9-94cc-4904-ada8-8814c0a7b569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Attack\FailedAttack">
+      <UniqueIdentifier>{4367b993-b5ee-4dc3-b216-5d8d7c7c1ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\NormalEnemyState\Attack\SuccessedAttack">
+      <UniqueIdentifier>{563118c7-2fd0-40a3-9fa4-e7963e74a6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\KabuState">
+      <UniqueIdentifier>{02a28301-2746-45e3-81fb-44483bddcfa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\GordoLongState">
+      <UniqueIdentifier>{a072ae10-9b1d-4206-bf1f-c92ed5b77bcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\GhostGordoState">
+      <UniqueIdentifier>{4eecdc57-3e8a-49cb-b136-5aeca6f79e48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\TackleEnemyState">
+      <UniqueIdentifier>{b00541ff-033e-4e4f-ae08-f0974287c3fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MonsterFSM\KabuFSM">
+      <UniqueIdentifier>{63f59c6e-3916-475c-b79d-bfc2f924d5cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MonsterFSM\GordoLongFSM">
+      <UniqueIdentifier>{25fe7021-3be1-4b82-ba57-c0f771fd8d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MonsterFSM\GhostGordoFSM">
+      <UniqueIdentifier>{886b7237-b6a0-42e2-b8c4-ab03705123dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MonsterFSM\TackleEnemyFSM">
+      <UniqueIdentifier>{bf26cdda-eb30-4971-9d17-71929678de0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
