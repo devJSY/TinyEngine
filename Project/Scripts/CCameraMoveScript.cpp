@@ -32,7 +32,7 @@ void CCameraMoveScript::tick()
         return;
 
     // 에디터 모드
-    if (CEditorMgr::GetInst()->IsEnable())
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         // Projection Change
         if (KEY_TAP(KEY::P))
@@ -113,7 +113,7 @@ void CCameraMoveScript::MoveOrthographic()
         float xRatio = 0.f;
         float yRatio = 0.f;
 
-        if (ViewportSize.x == 0 || ViewportSize.y == 0 || !CEditorMgr::GetInst()->IsEnable())
+        if (ViewportSize.x == 0 || ViewportSize.y == 0 || !CEditorMgr::GetInst()->IsEnabled())
         {
             xRatio = 1.f;
             yRatio = 1.f;

@@ -388,7 +388,24 @@ void COutliner::DrawNode(CGameObject* obj)
         ImGui::SetNextItemOpen(true);
     }
 
+    LEVEL_STATE LevelState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+    if (LEVEL_STATE::STOP == LevelState)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_Text));
+    }
+    else
+    {
+        if (obj->IsActive())
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.933f, 0.886f, 0.650f, 1.f));
+        }
+        else
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.403f, 0.403f, 0.403f, 1.f));
+        }
+    }
     bool opened = ImGui::TreeNodeEx((void*)(intptr_t)obj->GetID(), flags, name.c_str());
+    ImGui::PopStyleColor();
 
     // Drag & Drop
     if (ImGui::BeginDragDropSource())
@@ -2065,7 +2082,7 @@ void COutliner::DrawCharacterController(CGameObject* obj)
         }
 
         float SkinWitdh = pCharacterController->GetSkinWidth();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Skin Witdh").c_str(), &SkinWitdh, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetSkinWidth(SkinWitdh);
 
         float MinMoveDistance = pCharacterController->GetMinMoveDistance();
@@ -2077,11 +2094,11 @@ void COutliner::DrawCharacterController(CGameObject* obj)
             pCharacterController->SetCenter(Center);
 
         float Radius = pCharacterController->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &Radius, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetRadius(Radius);
 
         float Height = pCharacterController->GetHeight();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetHeight(Height);
 
         ImGui::TreePop();
@@ -2102,6 +2119,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
 
     if (open)
     {
+        // Enabled
+        bool bEnabled = pMeshRender->IsEnabled();
+        ImGui::Checkbox(ImGui_LabelPrefix("Enabled").c_str(), &bEnabled);
+        pMeshRender->SetEnabled(bEnabled);
+
         // Use Frustum Check
         bool bFrustumCheck = pMeshRender->IsFrustumCheck();
         ImGui::Checkbox(ImGui_LabelPrefix("Use Frustum Check").c_str(), &bFrustumCheck);
@@ -2187,9 +2209,22 @@ void COutliner::DrawMeshRender(CGameObject* obj)
                     ImGui_InputText(ToString(pMesh->GetIBName(i)).c_str(), CurMtrlname);
 
                     // Drag & Drop
+                    if (ImGui::BeginDragDropSource())
+                    {
+                        ImGui::Text("%s", CurMtrlname.c_str(), CurMtrlname.size());
+
+                        ImGui::SetDragDropPayload("MESHRENDER_MATERIAL", CurMtrlname.c_str(), CurMtrlname.size());
+                        ImGui::EndDragDropSource();
+                    }
+
+                    // Drag & Drop
                     if (ImGui::BeginDragDropTarget())
                     {
-                        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
+                        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS");
+                        if (!payload)
+                            payload = ImGui::AcceptDragDropPayload("MESHRENDER_MATERIAL");
+
+                        if (payload)
                         {
                             string name = (char*)payload->Data;
                             name.resize(payload->DataSize);

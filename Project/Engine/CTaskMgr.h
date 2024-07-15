@@ -53,6 +53,12 @@ enum class TASK_TYPE
     // Param2 : Event Type - 0 : Respawn
     PHYSICS_EVNET,
 
+    // Param1 : Origin Mesh, Param2 : Animation Mesh
+    APPEND_ANIMATION,
+
+    // Param1 : Mesh Data,
+    SET_MODEL,
+
     // Param1 : Level Address
     CHANGE_LEVEL,
 };
@@ -94,6 +100,8 @@ private:
     void CLONE_OBJECT(const tTask& _Task);
     void PHYSICS2D_EVNET(const tTask& _Task);
     void PHYSICS_EVNET(const tTask& _Task);
+    void APPEND_ANIMATION(const tTask& _Task);
+    void SET_MODEL(const tTask& _Task);
 
     // 제일 마지막에 실행되야하는 이벤트
     void CHANGE_LEVEL(const tTask& _Task);

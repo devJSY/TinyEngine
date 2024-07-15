@@ -113,6 +113,10 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     int layerIdx = _Obj->GetLayerIdx();
     fwrite(&layerIdx, sizeof(int), 1, _File);
 
+    // Active 저장
+    bool Active = _Obj->IsActive();
+    fwrite(&Active, sizeof(bool), 1, _File);
+
     vector<pair<UINT, CComponent*>> vecComps;
 
     // 컴포넌트 정보를 저장
@@ -287,6 +291,11 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
     int layerIdx = 0;
     fread(&layerIdx, sizeof(int), 1, _File);
     pObject->m_iLayerIdx = layerIdx;
+
+    // Active
+    bool Active = true;
+    fread(&Active, sizeof(bool), 1, _File);
+    pObject->m_bActive = Active;
 
     // 컴포넌트 개수 읽기
     size_t CompCount = 0;

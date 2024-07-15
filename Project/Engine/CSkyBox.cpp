@@ -111,7 +111,6 @@ void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)
     if (SKYBOX_SHAPE::SPHERE == _Shape)
     {
         SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
-        // SetMesh(CAssetMgr::GetInst()->Load<CMesh>(L"mesh\\IcebergDay.mesh", L"mesh\\IcebergDay.mesh"));
     }
 
     else if (SKYBOX_SHAPE::BOX == _Shape)

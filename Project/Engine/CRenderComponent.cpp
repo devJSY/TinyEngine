@@ -11,6 +11,7 @@ CRenderComponent::CRenderComponent(COMPONENT_TYPE _Type)
     : CComponent(_Type)
     , m_Mesh(nullptr)
     , m_vecMtrls{}
+    , m_bEnabled(true)
     , m_bFrustumCheck(true)
     , m_BoundingRadius(1.f)
     , m_bCastShadow(true)
@@ -21,6 +22,7 @@ CRenderComponent::CRenderComponent(const CRenderComponent& origin)
     : CComponent(origin)
     , m_Mesh(origin.m_Mesh)
     , m_vecMtrls{}
+    , m_bEnabled(origin.m_bEnabled)
     , m_bFrustumCheck(origin.m_bFrustumCheck)
     , m_BoundingRadius(origin.m_BoundingRadius)
     , m_bCastShadow(origin.m_bCastShadow)
@@ -219,6 +221,7 @@ void CRenderComponent::SaveToLevelFile(FILE* _File)
         SaveAssetRef(m_vecMtrls[i].pSharedMtrl, _File);
     }
 
+    fwrite(&m_bEnabled, 1, sizeof(bool), _File);
     fwrite(&m_bFrustumCheck, 1, sizeof(bool), _File);
     fwrite(&m_BoundingRadius, 1, sizeof(float), _File);
     fwrite(&m_bCastShadow, 1, sizeof(bool), _File);
@@ -239,6 +242,7 @@ void CRenderComponent::LoadFromLevelFile(FILE* _File)
         SetMaterial(pMtrl, i);
     }
 
+    fread(&m_bEnabled, 1, sizeof(bool), _File);
     fread(&m_bFrustumCheck, 1, sizeof(bool), _File);
     fread(&m_BoundingRadius, 1, sizeof(float), _File);
     fread(&m_bCastShadow, 1, sizeof(bool), _File);

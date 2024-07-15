@@ -226,6 +226,10 @@ void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr == m_PhysicsWorld)
         return;
 
+    // 활성화 여부 체크
+    if (!_GameObject->IsActive())
+        return;
+
     CTransform* pTr = _GameObject->Transform();
     CRigidbody2D* rb2d = _GameObject->Rigidbody2D();
     CBoxCollider2D* bc2d = _GameObject->BoxCollider2D();
