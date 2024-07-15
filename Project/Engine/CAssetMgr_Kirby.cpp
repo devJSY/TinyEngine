@@ -2,7 +2,6 @@
 #include "CAssetMgr.h"
 #include "CGraphicsShader.h"
 
-
 void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 {
     // =================================
@@ -57,6 +56,26 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyBodyShader");
         AddAsset(L"KirbyBodyShader", pShader);
+    }
+
+    // =================================
+    // Kirby SkySphere Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbySkySpherePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddTexParam(TEX_0, "SkySphere Texture");
+
+        pShader->SetName(L"KirbySkySphereShader");
+        AddAsset(L"KirbySkySphereShader", pShader);
     }
 
     // =================================

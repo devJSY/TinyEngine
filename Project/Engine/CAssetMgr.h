@@ -61,9 +61,11 @@ private:
 public:
     Ptr<CMeshData> LoadFBX(const wstring& _strPath);
     void AsyncLoadFBX(const wstring& _strPath);
+    void AsyncLoadAnimationFBX(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
 
 private:
     void AsyncLoadFBXFunc(const wstring& _strPath);
+    void AsyncLoadAnimationFBXFunc(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
 
 public:
     // Geometry Function

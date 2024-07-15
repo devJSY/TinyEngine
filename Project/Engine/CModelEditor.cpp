@@ -22,6 +22,7 @@ CModelEditor::CModelEditor()
     , m_SelectedBoneSocket(nullptr)
     , m_SelectedPreviewObj(nullptr)
     , m_bDrawWireFrame(false)
+    , m_bMeshSaved(true)
     , m_vecDeferred{}
     , m_vecForward{}
     , m_ViewportRTTex(nullptr)
@@ -679,16 +680,59 @@ void CModelEditor::DrawDetails()
             if (nullptr != m_ModelObj && nullptr != m_ModelObj->Animator() && m_ModelObj->Animator()->IsValid())
             {
                 ImGui::Separator();
+                if (m_bMeshSaved)
+                {
+                    ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_Button));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImGui::GetStyleColorVec4(ImGuiCol_ButtonActive));
+                }
+                else
+                {
+                    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+                }
+
                 if (ImGui_AlignButton("Save Mesh##ModelEditorDetails", 0.f))
                 {
                     Ptr<CMesh> pMesh = m_ModelObj->Animator()->GetSkeletalMesh();
                     if (S_OK == pMesh->Save(pMesh->GetKey()))
                     {
                         MessageBox(nullptr, L"Mesh 저장 성공!", L"Save Mesh", MB_ICONASTERISK);
+                        m_bMeshSaved = true;
                     }
                     else
                     {
                         MessageBox(nullptr, L"Mesh 저장 실패!", L"Save Mesh", MB_ICONHAND);
+                    }
+                }
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
+                ImGui::PopStyleColor();
+
+                ImGui::SameLine();
+                if (ImGui_AlignButton("Import Animation##ModelEditorDetails", 1.f))
+                {
+                    std::filesystem::path filePath = OpenFileDialog(L"fbx\\", TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
+
+                    // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
+                    if (!filePath.empty())
+                    {
+                        // .fbx 포맷이 아닌 경우
+                        if (L".fbx" != filePath.extension())
+                        {
+                            MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
+                        }
+                        // 경로에 Content 폴더가 포함되지 않은 경우
+                        else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
+                        {
+                            MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
+                        }
+                        else
+                        {
+                            CAssetMgr::GetInst()->AsyncLoadAnimationFBX(m_ModelObj->Animator()->GetSkeletalMesh(),
+                                                                        filePath.lexically_relative(CPathMgr::GetContentPath()));
+                        }
                     }
                 }
             }
@@ -899,6 +943,7 @@ void CModelEditor::SkeletonRe(vector<tMTBone>& _vecBone, int _BoneIdx, int _Node
 
             m_ModelObj->Animator()->GetSkeletalMesh()->AddBoneSocket(_BoneIdx, BoneSocket);
             m_SelectedBoneSocket = BoneSocket;
+            m_bMeshSaved = false;
         }
 
         ImGui::EndPopup();
@@ -985,6 +1030,7 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
                 // BoneSocket 삭제
                 delete pBoneSocket;
                 pBoneSocket = nullptr;
+                m_bMeshSaved = false;
             }
 
             if (ImGui::BeginMenu("Add Preview Asset"))
@@ -1352,6 +1398,7 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_SelectedBone = nullptr;
     m_SelectedBoneSocket = nullptr;
     m_SelectedPreviewObj = nullptr;
+    m_bMeshSaved = true;
 
     if (nullptr == _MeshData)
     {
@@ -1373,4 +1420,13 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     }
 
     m_bDrawWireFrame = false;
+}
+
+void CModelEditor::NotifiedAnimationLoaded()
+{
+    if (nullptr == m_ModelObj || nullptr == m_ModelObj->Animator() || !m_ModelObj->Animator()->IsValid())
+        return;
+
+    m_ModelObj->Animator()->SetSkeletalMesh(m_ModelObj->Animator()->GetSkeletalMesh());
+    m_bMeshSaved = false;
 }

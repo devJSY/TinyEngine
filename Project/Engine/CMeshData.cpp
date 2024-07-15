@@ -182,6 +182,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
             assert(pMtrl.Get());
 
             vecMtrl.push_back(pMtrl);
+            pMtrl->Save(pMtrl->GetKey());
         }
     }
 

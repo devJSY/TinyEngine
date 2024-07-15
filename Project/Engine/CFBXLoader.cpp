@@ -549,7 +549,6 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
             ParseTexture(TexturePath, strMtrlFileName, pMaterial);
 
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
-            pMaterial->Save(strPath);
         }
     }
 }

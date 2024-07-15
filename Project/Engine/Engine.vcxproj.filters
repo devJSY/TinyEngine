@@ -1091,6 +1091,9 @@
     <Filter Include="Module\SimpleMath">
       <UniqueIdentifier>{5f743d3c-a978-4db5-9aa2-75e1bbf57044}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\SkySphere">
+      <UniqueIdentifier>{b293636d-b337-4d38-b074-1775de15c827}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1346,6 +1349,9 @@
     </FxCompile>
     <FxCompile Include="UIHPShaderPS.hlsl">
       <Filter>ShaderCode\Render\UIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbySkySpherePS.hlsl">
+      <Filter>ShaderCode\Kirby\SkySphere</Filter>
     </FxCompile>
     <FxCompile Include="KirbyButterflyPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>

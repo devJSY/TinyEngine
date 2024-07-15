@@ -79,4 +79,6 @@ public:
 public:
     CMesh(bool _bEngineAsset = false);
     virtual ~CMesh();
+
+    friend class CTaskMgr;
 };
