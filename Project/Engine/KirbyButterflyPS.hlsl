@@ -28,7 +28,9 @@ PS_OUT main(PS_IN input)
 {
     PS_OUT output = (PS_OUT) 0.f;
 
-    float2 moveUV = input.vUV0 - g_EngineTime * 0.2f;
+    float2 moveUV = input.vUV0;
+    moveUV.x -= g_EngineTime * 0.2f;
+    moveUV.y += g_EngineTime * 0.2f;
     float4 albedo = float4(0.98f, 0.38f, 0.2f, 1.f);
     float4 wingDown = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
     float4 wingUp = g_btex_1 ? Albedo1Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
@@ -43,6 +45,7 @@ PS_OUT main(PS_IN input)
     albedo = albedo * (1.f - wingUp.r * 0.6f) + float4(1.f, 0.8f, 0.05f, 1.f) * (wingUp.r * 0.6f);
     
     // effect (overlay)
+    magma = float4(1.f, 0.5f, 0.5f, 1.f) * magma;
     albedo = albedo * 0.6f + lerp(saturate(1 - ((1 - albedo) * (1 - magma) * 2)), saturate(albedo * magma * 2), magma.r) * 0.4f;
     
     output.vColor = float4(albedo.rgb, 1.f);

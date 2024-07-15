@@ -37,7 +37,7 @@ PS_OUT main(PS_IN input)
 	float3 emission = MtrlEmission.rgb;
     
     // effect (overlay)
-    albedo = albedo * 0.6f + lerp(saturate(1 - ((1 - albedo) * (1 - magma) * 2)), saturate(albedo * magma * 2), magma.r) * 0.4f;
+    albedo = albedo * 0.5f + lerp(saturate(1 - ((1 - albedo) * (1 - magma) * 2)), saturate(albedo * magma * 2), magma.r) * 0.5f;
 
     output.vColor = float4(albedo.rgb, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
