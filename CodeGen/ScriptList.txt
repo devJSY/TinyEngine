@@ -24,3 +24,8 @@ CExitButton
 CUIHPScript
 CUIUnitManagerScript
 CEngineTestScript
+CNormalEnemyFSM
+CMonsterMgr
+CMonsterMoveController
+CPlayerTestScript
+CMonsterMoveTest
