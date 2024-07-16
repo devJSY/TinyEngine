@@ -10,6 +10,15 @@ CMonsterUnitScript::CMonsterUnitScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
 }
 
+CMonsterUnitScript::CMonsterUnitScript(SCRIPT_TYPE _type)
+    : CUnitScript(_type)
+{
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+}
+
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(MONSTERUNITSCRIPT)
 {

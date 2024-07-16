@@ -328,6 +328,9 @@
     <ClInclude Include="CKirbyDropAbility.h">
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClInclude>
+    <ClInclude Include="CNormalEnemyScript.h">
+      <Filter>State\MonsterState\NormalEnemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -668,6 +671,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyDropAbility.cpp">
       <Filter>State\KirbyState\DropAbility</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyScript.cpp">
+      <Filter>State\MonsterState\NormalEnemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

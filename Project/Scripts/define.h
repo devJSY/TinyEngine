@@ -38,7 +38,7 @@
     }
 
 #define KIRBYANIM(NAME) ((wstring)L"Armature|" + NAME)
-#define MONSTERANIM(NAME) ((wstring)L"Armature|" + NAME)
+#define ANIM(NAME) ((wstring)L"Armature|" + NAME)
 
 enum class DIRECTION_TYPE
 {
