@@ -11,7 +11,6 @@ CButtonScript
 CUIManagerScript
 CButtonManagerScript
 CKirbyVacuumCollider
-CMonsterUnitScript
 CKirbyCopyAbilityScript
 CKirbyCopyObjScript
 CKirbyBodyCollider
@@ -24,5 +23,6 @@ CExitButton
 CUIHPScript
 CUIUnitManagerScript
 CEngineTestScript
-CPlayerTestScript
-CMonsterMoveTest
+CBladeKnightScript
+CHitBoxScript
+CDetectAreaScript
