@@ -23,7 +23,7 @@ void CKirbyBackJump::Enter()
 {
     Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
 
-    PLAYER->Animator()->Play(KIRBYANIM(L"BackJump"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"BackJump"), false, false, 2.f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();

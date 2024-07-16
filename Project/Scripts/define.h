@@ -37,7 +37,6 @@
         KirbyFSM->GetCurAbility()->STATE();                                                                                                          \
     }
 
-#define KIRBYANIM(NAME) ((wstring)L"Armature|" + NAME)
 #define ANIMPREFIX(NAME) ((wstring)L"Armature|" + NAME)
 
 enum class DIRECTION_TYPE

@@ -27,7 +27,7 @@ void CKirbyStuffed::tick()
 
 void CKirbyStuffed::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Stuffed"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"Stuffed"), false);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
