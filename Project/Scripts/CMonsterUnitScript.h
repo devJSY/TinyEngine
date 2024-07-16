@@ -1,6 +1,21 @@
 #pragma once
 #include "CUnitScript.h"
 
+enum class PATROLDIR
+{
+    Up,
+    Down,
+    Right,
+    Left,
+
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight,
+
+    END,
+};
+
 class CMonsterUnitScript : public CUnitScript
 {
 private:

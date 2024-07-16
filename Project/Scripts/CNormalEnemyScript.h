@@ -20,21 +20,6 @@ enum class NORMALENEMY_STATE
     End,
 };
 
-enum class PATROLDIR
-{
-    Up,
-    Down,
-    Right,
-    Left,
-
-    UpLeft,
-    UpRight,
-    DownLeft,
-    DownRight,
-
-    END,
-};
-
 class CNormalEnemyScript : public CMonsterUnitScript
 {
 private:

@@ -60,7 +60,7 @@ void CGhostGordoScript::ChangeState(GHOSTGORDO_STATE _state)
 
 void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
 {
-    switch (m_eState)
+    switch (_state)
     {
     case GHOSTGORDO_STATE::CloseEyeIdle: {
         Animator()->Play(ANIMPREFIX(L"EyeCloseWait"), false);
@@ -96,7 +96,7 @@ void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
 
 void CGhostGordoScript::ExitState(GHOSTGORDO_STATE _state)
 {
-    switch (m_eState)
+    switch (_state)
     {
     case GHOSTGORDO_STATE::OpenEyeIdle:
         break;

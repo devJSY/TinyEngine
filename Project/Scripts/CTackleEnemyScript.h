@@ -6,13 +6,27 @@ enum class TACKLEENEMY_STATE
     Idle,
     Patrol,
     Find,
+    AttackPrev,
     Attack,
+    AttackAfter,
     Damage,
     Death,
 };
 
 class CTackleEnemyScript : public CMonsterUnitScript
 {
+private:
+    TACKLEENEMY_STATE m_eState;
+
+    CGameObject* m_pTargetObject;
+    float m_fRushSpeedLerp;
+    float m_fRushLerp;
+    float m_fSpeed;
+    float m_fMaxSpeed;
+
+    float m_fPatrolTime;
+    float m_fPatrolAccTime;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
@@ -22,9 +36,26 @@ public:
     virtual void LoadFromLevelFile(FILE* _File) override;
 
 private:
-    //void ChangeState(NORMALENEMY_STATE _state);
-    //void EnterState(NORMALENEMY_STATE _state);
-    //void ExitState(NORMALENEMY_STATE _state);
+    void ChangeState(TACKLEENEMY_STATE _state);
+    void EnterState(TACKLEENEMY_STATE _state);
+    void ExitState(TACKLEENEMY_STATE _state);
+
+private:
+    void Idle();
+    void Patrol();
+    void Find();
+    void AttackPrev();
+    void Attack();
+    void AttackAfter();
+    void Damage();
+    void Death();
+
+private:
+    Vec3 TrackDir(Vec3 _vPos);
+    TACKLEENEMY_STATE RandomIdleState();
+    Vec3 RandomPatrolDir();
+    void ApplyDir(Vec3 _vFront, bool _flag);
+    void PatrolMove();
 
 public:
     CLONE(CTackleEnemyScript)
