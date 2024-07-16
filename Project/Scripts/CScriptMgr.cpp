@@ -14,7 +14,6 @@
 #include "CUIManagerScript.h"
 #include "CButtonManagerScript.h"
 #include "CKirbyVacuumCollider.h"
-#include "CMonsterUnitScript.h"
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
 #include "CKirbyBodyCollider.h"
@@ -27,8 +26,9 @@
 #include "CUIHPScript.h"
 #include "CUIUnitManagerScript.h"
 #include "CEngineTestScript.h"
-#include "CPlayerTestScript.h"
-#include "CMonsterMoveTest.h"
+#include "CBladeKnightScript.h"
+#include "CHitBoxScript.h"
+#include "CDetectAreaScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -45,7 +45,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonManagerScript");
 	_vec.push_back(L"CKirbyVacuumCollider");
-	_vec.push_back(L"CMonsterUnitScript");
 	_vec.push_back(L"CKirbyCopyAbilityScript");
 	_vec.push_back(L"CKirbyCopyObjScript");
 	_vec.push_back(L"CKirbyBodyCollider");
@@ -58,8 +57,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIHPScript");
 	_vec.push_back(L"CUIUnitManagerScript");
 	_vec.push_back(L"CEngineTestScript");
-	_vec.push_back(L"CPlayerTestScript");
-	_vec.push_back(L"CMonsterMoveTest");
+	_vec.push_back(L"CBladeKnightScript");
+	_vec.push_back(L"CHitBoxScript");
+	_vec.push_back(L"CDetectAreaScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -90,8 +90,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CButtonManagerScript;
 	if (L"CKirbyVacuumCollider" == _strScriptName)
 		return new CKirbyVacuumCollider;
-	if (L"CMonsterUnitScript" == _strScriptName)
-		return new CMonsterUnitScript;
 	if (L"CKirbyCopyAbilityScript" == _strScriptName)
 		return new CKirbyCopyAbilityScript;
 	if (L"CKirbyCopyObjScript" == _strScriptName)
@@ -116,10 +114,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIUnitManagerScript;
 	if (L"CEngineTestScript" == _strScriptName)
 		return new CEngineTestScript;
-	if (L"CPlayerTestScript" == _strScriptName)
-		return new CPlayerTestScript;
-	if (L"CMonsterMoveTest" == _strScriptName)
-		return new CMonsterMoveTest;
+	if (L"CBladeKnightScript" == _strScriptName)
+		return new CBladeKnightScript;
+	if (L"CHitBoxScript" == _strScriptName)
+		return new CHitBoxScript;
+	if (L"CDetectAreaScript" == _strScriptName)
+		return new CDetectAreaScript;
 	return nullptr;
 }
 
@@ -153,8 +153,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CButtonManagerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
 		return new CKirbyVacuumCollider;
-	case (UINT)SCRIPT_TYPE::MONSTERUNITSCRIPT:
-		return new CMonsterUnitScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
 		return new CKirbyCopyAbilityScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
@@ -179,10 +177,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIUnitManagerScript;
 	case (UINT)SCRIPT_TYPE::ENGINETESTSCRIPT:
 		return new CEngineTestScript;
-	case (UINT)SCRIPT_TYPE::PLAYERTESTSCRIPT:
-		return new CPlayerTestScript;
-	case (UINT)SCRIPT_TYPE::MONSTERMOVETEST:
-		return new CMonsterMoveTest;
+	case (UINT)SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
+		return new CBladeKnightScript;
+	case (UINT)SCRIPT_TYPE::HITBOXSCRIPT:
+		return new CHitBoxScript;
+	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
+		return new CDetectAreaScript;
 	}
 	return nullptr;
 }
@@ -217,8 +217,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CButtonManagerScript";
 	case SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
 		return L"CKirbyVacuumCollider";
-	case SCRIPT_TYPE::MONSTERUNITSCRIPT:
-		return L"CMonsterUnitScript";
 	case SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
 		return L"CKirbyCopyAbilityScript";
 	case SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
@@ -243,10 +241,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIUnitManagerScript";
 	case SCRIPT_TYPE::ENGINETESTSCRIPT:
 		return L"CEngineTestScript";
-	case SCRIPT_TYPE::PLAYERTESTSCRIPT:
-		return L"CPlayerTestScript";
-	case SCRIPT_TYPE::MONSTERMOVETEST:
-		return L"CMonsterMoveTest";
+	case SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
+		return L"CBladeKnightScript";
+	case SCRIPT_TYPE::HITBOXSCRIPT:
+		return L"CHitBoxScript";
+	case SCRIPT_TYPE::DETECTAREASCRIPT:
+		return L"CDetectAreaScript";
 	}
 	return nullptr;
 }

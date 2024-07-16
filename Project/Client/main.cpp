@@ -67,17 +67,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     // CCreateTestLevel::CreateTestLevel();
     // CCreatePBRLevel::CreatePBRLevel();
 
-#define LEVEL L"Default Kirby Level"
 #ifdef DISTRIBUTE // Engine\\global.h
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(LEVEL), LEVEL_STATE::PLAY);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::PLAY);
 #else
-    CLevel* pLevel = CLevelSaveLoad::LoadLevel(LEVEL);
+    CLevel* pLevel = CLevelSaveLoad::LoadLevel(L"Default Level.tLevel");
 
     if (nullptr == pLevel)
     {
-        //pLevel = CLevelMgr::GetInst()->CreateNewLevel();
-        //pLevel->SetName(LEVEL);
-        pLevel = CLevelMgr::GetInst()->CreateDefaultKirbyLevel();
+        pLevel = CLevelMgr::GetInst()->CreateNewLevel();
+        pLevel->SetName(L"Default Level");
     }
 
     GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
