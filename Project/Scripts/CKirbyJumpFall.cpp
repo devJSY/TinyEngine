@@ -26,6 +26,10 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
             }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");

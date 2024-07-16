@@ -48,7 +48,6 @@ void CKirbyAbility_Normal::Attack()
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
             if (nullptr != bulletScript)
             {
-                bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 120.f);
                 Vec3 InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 InitDir.y = 0.f;
                 bulletScript->SetInitVelocity(InitDir * 120.f);

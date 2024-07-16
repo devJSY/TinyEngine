@@ -30,6 +30,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
             }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
                 ChangeState(L"JUMP_START");
@@ -56,6 +60,10 @@ void CKirbyRun::tick()
                     ChangeState(L"ATTACK_COMBO1");
                 else if (Combo == 2)
                     ChangeState(L"ATTACK_COMBO2");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
             }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {

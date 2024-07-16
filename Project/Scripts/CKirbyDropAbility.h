@@ -4,7 +4,7 @@
 class CKirbyDropAbility : public CState
 {
 private:
-    Ptr<CPrefab>    m_Bubble;
+    Ptr<CPrefab>    m_Bullet;
     bool            m_FrmEnter;
 
 public:

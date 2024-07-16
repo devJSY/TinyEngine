@@ -63,6 +63,14 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+private:
+    void Input();
+    void SetDir();
+    void Move();
+    void SurfaceAlignment();
+
+    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
+
 public:
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
@@ -92,12 +100,6 @@ public:
     float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
     float GetGuard() const { return m_bActiveFriction; }
-
-private:
-    void Input();
-    void SetDir();
-    void Move();
-    void SurfaceAlignment();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

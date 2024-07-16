@@ -28,7 +28,11 @@ void CKirbyHovering::tick()
     }
 
     // Change State
-    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+    if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+    {
+        ChangeState(L"DROP_ABILITY");
+    }
+    else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         ChangeState(L"HOVERING_SPIT");
     }

@@ -266,7 +266,7 @@
       <Filter>Scripts\Unit\Monster\Test</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAbility_Sword.h">
-      <Filter>State\KirbyState\Sword</Filter>
+      <Filter>State\KirbyAbility\Sword</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAttackEnd.h">
       <Filter>State\KirbyState\Attack\AttackEnd</Filter>
@@ -601,7 +601,7 @@
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility_Sword.cpp">
-      <Filter>State\KirbyState\Sword</Filter>
+      <Filter>State\KirbyAbility\Sword</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAttackEnd.cpp">
       <Filter>State\KirbyState\Attack\AttackEnd</Filter>
@@ -1019,9 +1019,6 @@
     <Filter Include="State\KirbyState\Burning\BurningEnd">
       <UniqueIdentifier>{2f86c255-94f2-4343-be20-9f9e100966c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Sword">
-      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\AttackAirGuard">
       <UniqueIdentifier>{e95e38fa-27be-45fe-9121-cf3edefeb769}</UniqueIdentifier>
     </Filter>
@@ -1063,6 +1060,9 @@
     </Filter>
     <Filter Include="State\MonsterState\Monkey">
       <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Sword">
+      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

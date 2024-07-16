@@ -295,8 +295,6 @@ void CKirbyFSM::tick()
         else
         {
             m_YPressedTime += DT;
-            string tmp = to_string(m_YPressedTime);
-            LOG(Log, tmp.c_str());
         }
     }
     else if (m_YPressedTime >= 0.f && KEY_RELEASED(KEY::Y))
@@ -336,29 +334,26 @@ void CKirbyFSM::tick()
 
     CFSMScript::tick();
 }
-
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
-    switch (_Type)
+    // Drop Ability 요청
+    if (_Type == AbilityCopyType::NORMAL)
     {
-    case AbilityCopyType::NORMAL: {
-        m_NextAbility = _Type;
-        ChangeState(L"DROP_ABILITY");
         m_CurAbility = _Type;
     }
-    break;
-    case AbilityCopyType::FIRE:
-    case AbilityCopyType::RANGER:
-    case AbilityCopyType::SWORD: {
+
+    // Change Ability 요청
+    else
+    {
+        if (m_CurAbility != AbilityCopyType::NORMAL)
+        {
+            MessageBox(nullptr, L"Ability가 이미 존재합니다", L"Change Ability 실패", MB_OK);
+            return;
+        }
+
         m_NextAbility = _Type;
         ChangeState(L"CHANGE_ABILITY");
         m_CurAbility = _Type;
-    }
-    break;
-    case AbilityCopyType::END:
-    case AbilityCopyType::NONE:
-        return;
-        break;
     }
 }
 

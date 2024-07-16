@@ -11,7 +11,11 @@ CKirbyHoveringLanding::~CKirbyHoveringLanding()
 
 void CKirbyHoveringLanding::tick()
 {
-    if (GetOwner()->Animator()->IsFinish())
+    if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+    {
+        ChangeState(L"DROP_ABILITY");
+    }
+    else if (GetOwner()->Animator()->IsFinish())
     {
         ChangeState(L"HOVERING_SPIT");
     }
