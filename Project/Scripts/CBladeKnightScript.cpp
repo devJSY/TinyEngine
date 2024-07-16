@@ -234,6 +234,7 @@ void CBladeKnightScript::ExitState()
     }
     break;
     case BLADEKNIGHT_STATE::Move: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::Retreat: {
@@ -313,6 +314,13 @@ void CBladeKnightScript::Landing()
 
 void CBladeKnightScript::Move()
 {
+    RigidbodyMove(GetTarget());
+    TransformRotate();
+
+    if (nullptr == GetTarget())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Wait);
+    }
 }
 
 void CBladeKnightScript::Retreat()
@@ -361,6 +369,10 @@ void CBladeKnightScript::TonadoAttackChargeMax()
 
 void CBladeKnightScript::Wait()
 {
+    if (nullptr != GetTarget())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Move);
+    }
 }
 
 void CBladeKnightScript::OnCollisionEnter(CCollider* _OtherCollider)
