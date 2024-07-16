@@ -24,7 +24,7 @@ void CKirbyDamage::tick()
 void CKirbyDamage::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"Damage"), true, false, 1.f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"Damage"), true, false, 1.f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthAngryClose));
