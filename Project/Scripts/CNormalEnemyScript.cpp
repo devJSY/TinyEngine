@@ -65,7 +65,7 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
         break;
     case NORMALENEMY_STATE::Patrol:
     {
-        Animator()->Play(M)
+        Animator()->Play()
     }
         break;
     case NORMALENEMY_STATE::Find:
