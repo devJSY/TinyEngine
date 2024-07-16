@@ -18,5 +18,8 @@ public:
     CLevel* CreateNewLevel();
 
 public:
+    CLevel* CreateDefaultKirbyLevel();
+
+public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState);
 };

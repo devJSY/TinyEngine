@@ -340,9 +340,11 @@
     <ClInclude Include="CKirbyAttackAirGuardEnd.h">
       <Filter>State\KirbyState\AttackAirGuard\AttackEnd</Filter>
     </ClInclude>
-    <ClInclude Include="CKirbyDropAbility.h" />
     <ClInclude Include="CKirbyBurningEnd.h">
       <Filter>State\KirbyState\Burning\BurningEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDropAbility.h">
+      <Filter>State\KirbyState\DropAbility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -688,7 +690,6 @@
     <ClCompile Include="CKirbyAttackAirGuardEnd.cpp">
       <Filter>State\KirbyState\AttackAirGuard\AttackEnd</Filter>
     </ClCompile>
-    <ClCompile Include="CKirbyDropAbility.cpp" />
     <ClCompile Include="CPlayerTestScript.cpp">
       <Filter>Scripts\Unit\Monster\Test</Filter>
     </ClCompile>
@@ -700,6 +701,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyBurningEnd.cpp">
       <Filter>State\KirbyState\Burning\BurningEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDropAbility.cpp">
+      <Filter>State\KirbyState\DropAbility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,4 @@
+
 #include "struct.hlsli"
 #include "global.hlsli"
 #include "func.hlsli"
