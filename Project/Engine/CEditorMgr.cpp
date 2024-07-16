@@ -148,6 +148,7 @@ void CEditorMgr::init()
     pEditorCam->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
     pEditorCam->Camera()->SetHDRI(true);
     pEditorCam->Camera()->SetCameraPriority(0);
+    pEditorCam->Camera()->SetFOV(XMConvertToRadians(60.f));
 
     m_vecEditorObj.push_back(pEditorCam);
 

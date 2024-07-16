@@ -723,6 +723,9 @@
     <ClCompile Include="SimpleMath.cpp">
       <Filter>Module\SimpleMath</Filter>
     </ClCompile>
+    <ClCompile Include="CLevelMgr_CreateDefaultKirbyLevel.cpp">
+      <Filter>04. Manager\LevelMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
