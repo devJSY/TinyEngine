@@ -4,8 +4,7 @@
 
 class CMonsterMgr;
 class CMonsterMoveController;
-class CNormalEnemyPatrol
-	:public CState
+class CEnemyPatrol : public CState
 {
 private:
     CTransform* m_pTransform;
@@ -18,7 +17,7 @@ public:
     virtual void Exit() override;
 
 public:
-    CLONE(CNormalEnemyPatrol)
-    CNormalEnemyPatrol();
-    virtual ~CNormalEnemyPatrol();
+    CLONE(CEnemyPatrol)
+    CEnemyPatrol();
+    virtual ~CEnemyPatrol();
 };

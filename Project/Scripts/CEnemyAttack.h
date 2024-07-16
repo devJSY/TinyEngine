@@ -3,7 +3,7 @@
 
 class CMonsterMgr;
 class CMonsterMoveController;
-class CNormalEnemyAttack : public CState
+class CEnemyAttack : public CState
 {
 private:
     CTransform* m_pTransform;
@@ -19,7 +19,7 @@ public:
     virtual void Exit() override;
 
 public:
-    CLONE(CNormalEnemyAttack)
-    CNormalEnemyAttack();
-    virtual ~CNormalEnemyAttack();
+    CLONE(CEnemyAttack)
+    CEnemyAttack();
+    virtual ~CEnemyAttack();
 };

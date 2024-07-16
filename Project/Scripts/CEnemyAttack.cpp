@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "CNormalEnemyAttack.h"
+#include "CEnemyAttack.h"
 
 #include "CMonsterMgr.h"
 #include "CMonsterMoveController.h"
 
-CNormalEnemyAttack::CNormalEnemyAttack()
+CEnemyAttack::CEnemyAttack()
     : m_pTransform(nullptr)
     , m_pMMC(nullptr)
     , m_pMgr(nullptr)
@@ -13,11 +13,11 @@ CNormalEnemyAttack::CNormalEnemyAttack()
 {
 }
 
-CNormalEnemyAttack::~CNormalEnemyAttack()
+CEnemyAttack::~CEnemyAttack()
 {
 }
 
-void CNormalEnemyAttack::tick()
+void CEnemyAttack::tick()
 {
     m_fAccTime += DT;
 
@@ -33,7 +33,7 @@ void CNormalEnemyAttack::tick()
     }
 }
 
-void CNormalEnemyAttack::Enter()
+void CEnemyAttack::Enter()
 {
     // Idle 애니메이션 시작
     if (nullptr == m_pMgr)
@@ -46,6 +46,6 @@ void CNormalEnemyAttack::Enter()
     m_pMMC->SetRush(true);
 }
 
-void CNormalEnemyAttack::Exit()
+void CEnemyAttack::Exit()
 {
 }

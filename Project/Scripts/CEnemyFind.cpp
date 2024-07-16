@@ -1,20 +1,20 @@
 #include "pch.h"
-#include "CNormalEnemyFind.h"
+#include "CEnemyFind.h"
 
-CNormalEnemyFind::CNormalEnemyFind()
+CEnemyFind::CEnemyFind()
 {
 }
 
-CNormalEnemyFind::~CNormalEnemyFind()
+CEnemyFind::~CEnemyFind()
 {
 }
 
-void CNormalEnemyFind::Enter()
+void CEnemyFind::Enter()
 {
     GetOwner()->GetComponent<CAnimator>()->Play(MONSTERANIM(L"Find"),false);
 }
 
-void CNormalEnemyFind::tick()
+void CEnemyFind::tick()
 {
     if (GetOwner()->GetComponent<CAnimator>()->IsFinish())
     {
@@ -22,6 +22,6 @@ void CNormalEnemyFind::tick()
     }
 }
 
-void CNormalEnemyFind::Exit()
+void CEnemyFind::Exit()
 {
 }

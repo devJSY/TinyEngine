@@ -1,20 +1,20 @@
 #include "pch.h"
-#include "CNormalEnemyFailedAttack.h"
+#include "CEnemyFailedAttack.h"
 
-CNormalEnemyFailedAttack::CNormalEnemyFailedAttack()
+CEnemyFailedAttack::CEnemyFailedAttack()
 {
 }
 
-CNormalEnemyFailedAttack::~CNormalEnemyFailedAttack()
+CEnemyFailedAttack::~CEnemyFailedAttack()
 {
 }
 
-void CNormalEnemyFailedAttack::Enter()
+void CEnemyFailedAttack::Enter()
 {
     GetOwner()->GetComponent<CAnimator>()->Play(MONSTERANIM(L"Brake"),false);
 }
 
-void CNormalEnemyFailedAttack::tick()
+void CEnemyFailedAttack::tick()
 {
     CAnimator* _anim = GetOwner()->GetComponent<CAnimator>();
     if (_anim->IsFinish() && _anim->FindClipIndex(MONSTERANIM(L"Brake")) == _anim->GetCurClipIdx())
@@ -28,6 +28,6 @@ void CNormalEnemyFailedAttack::tick()
     }
 }
 
-void CNormalEnemyFailedAttack::Exit()
+void CEnemyFailedAttack::Exit()
 {
 }

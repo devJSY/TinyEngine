@@ -10,21 +10,21 @@ CNormalEnemyFSM::~CNormalEnemyFSM()
 {
 }
 
-#include "CNormalEnemyIdle.h"
-#include "CNormalEnemyPatrol.h"
-#include "CNormalEnemyAttack.h"
-#include "CNormalEnemyFind.h"
-#include "CNormalEnemySucessedAttack.h"
-#include "CNormalEnemyFailedAttack.h"
+#include "CEnemyIdle.h"
+#include "CEnemyPatrol.h"
+#include "CEnemyAttack.h"
+#include "CEnemyFind.h"
+#include "CEnemySuccessedAttack.h"
+#include "CEnemyFailedAttack.h"
 
 void CNormalEnemyFSM::begin()
 {
-    AddState(L"IDLE", new CNormalEnemyIdle);
-    AddState(L"PATROL", new CNormalEnemyPatrol);
-    AddState(L"ATTACK", new CNormalEnemyAttack);
-    AddState(L"FIND", new CNormalEnemyFind);
-    AddState(L"SUCCESSEDATTACK", new CNormalEnemySucessedAttack);
-    AddState(L"FAILEDATTACK", new CNormalEnemyFailedAttack);
+    AddState(L"IDLE", new CEnemyIdle);
+    AddState(L"PATROL", new CEnemyPatrol);
+    AddState(L"ATTACK", new CEnemyAttack);
+    AddState(L"FIND", new CEnemyFind);
+    AddState(L"SUCCESSEDATTACK", new CEnemySuccessedAttack);
+    AddState(L"FAILEDATTACK", new CEnemyFailedAttack);
 
     ChangeState(L"IDLE");
 }

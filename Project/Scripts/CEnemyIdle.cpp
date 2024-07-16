@@ -1,41 +1,43 @@
 #include "pch.h"
-#include "CNormalEnemyPatrol.h"
+#include "CEnemyIdle.h"
 
 #include "CMonsterMgr.h"
 #include "CMonsterMoveController.h"
 
-CNormalEnemyPatrol::CNormalEnemyPatrol()
+CEnemyIdle::CEnemyIdle()
     : m_pMgr(nullptr)
-    , m_pTransform(nullptr)
     , m_pMMC(nullptr)
+    , m_pTransform(nullptr)
 {
 }
 
-CNormalEnemyPatrol::~CNormalEnemyPatrol()
+CEnemyIdle::~CEnemyIdle()
 {
 }
 
-void CNormalEnemyPatrol::tick()
+void CEnemyIdle::tick()
 {
     bool _IsTrack = m_pMgr->IsTrack(m_pTransform->GetLocalPos(), m_pMMC->GetTrackDist());
 
-    if (!_IsTrack)
+    if (_IsTrack)
     {
-        ChangeState(L"IDLE");
+        ChangeState(L"FIND");
+        m_pMMC->SetTrack(true);
     }
 }
 
-void CNormalEnemyPatrol::Enter()
+void CEnemyIdle::Enter()
 {
+    // Idle 애니메이션 시작
     if (nullptr == m_pMgr)
     {
+        GetOwner()->GetComponent<CAnimator>()->Play(MONSTERANIM(L"Wait"));
         m_pMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CMonsterMgr>();
         m_pTransform = GetOwner()->GetComponent<CTransform>();
         m_pMMC = GetOwner()->GetScript<CMonsterMoveController>();
     }
 }
 
-void CNormalEnemyPatrol::Exit()
+void CEnemyIdle::Exit()
 {
-    m_pMMC->SetTrack(false);
 }

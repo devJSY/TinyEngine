@@ -1,6 +1,7 @@
 #pragma once
 #include "CState.h"
-class CNormalEnemyFailedAttack : public CState
+class CEnemySuccessedAttack 
+	: public CState
 {
 public:
     virtual void Enter() override;
@@ -8,7 +9,7 @@ public:
     virtual void Exit() override;
 
 public:
-    CLONE(CNormalEnemyFailedAttack)
-    CNormalEnemyFailedAttack();
-    virtual ~CNormalEnemyFailedAttack();
+    CLONE(CEnemySuccessedAttack)
+    CEnemySuccessedAttack();
+    virtual ~CEnemySuccessedAttack();
 };

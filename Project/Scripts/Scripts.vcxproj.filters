@@ -259,11 +259,11 @@
     <ClInclude Include="CKirbyStuffedEat.h">
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyIdle.h">
-      <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
+    <ClInclude Include="CEnemyIdle.h">
+      <Filter>State\MonsterState\Idle</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyPatrol.h">
-      <Filter>State\MonsterState\NormalEnemyState\Patrol</Filter>
+    <ClInclude Include="CEnemyPatrol.h">
+      <Filter>State\MonsterState\Patrol</Filter>
     </ClInclude>
     <ClInclude Include="CNormalEnemyFSM.h">
       <Filter>Scripts\FSM\MonsterFSM\NormalEnemyFSM</Filter>
@@ -280,11 +280,11 @@
     <ClInclude Include="CMonsterMoveTest.h">
       <Filter>Scripts\Unit\Monster\Test</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyAttack.h">
-      <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
+    <ClInclude Include="CEnemyAttack.h">
+      <Filter>State\MonsterState\Attack</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAbility_Sword.h">
-      <Filter>State\KirbyAbility\Sword</Filter>
+      <Filter>State\KirbyState\Sword</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAttackEnd.h">
       <Filter>State\KirbyState\Attack\AttackEnd</Filter>
@@ -344,14 +344,14 @@
     <ClInclude Include="CKirbyBurningEnd.h">
       <Filter>State\KirbyState\Burning\BurningEnd</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyFind.h">
-      <Filter>State\MonsterState\NormalEnemyState\Find</Filter>
+    <ClInclude Include="CEnemyFind.h">
+      <Filter>State\MonsterState\Find</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyFailedAttack.h">
-      <Filter>State\MonsterState\NormalEnemyState\Attack\FailedAttack</Filter>
+    <ClInclude Include="CEnemyFailedAttack.h">
+      <Filter>State\MonsterState\Attack\FailedAttack</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemySucessedAttack.h">
-      <Filter>State\MonsterState\NormalEnemyState\Attack\SuccessedAttack</Filter>
+    <ClInclude Include="CEnemySuccessedAttack.h">
+      <Filter>State\MonsterState\Attack\SuccessedAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -622,11 +622,11 @@
     <ClCompile Include="CKirbyBurningPre.cpp">
       <Filter>State\KirbyState\Burning\BurningPre</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyIdle.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Idle</Filter>
+    <ClCompile Include="CEnemyIdle.cpp">
+      <Filter>State\MonsterState\Idle</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyPatrol.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Patrol</Filter>
+    <ClCompile Include="CEnemyPatrol.cpp">
+      <Filter>State\MonsterState\Patrol</Filter>
     </ClCompile>
     <ClCompile Include="CNormalEnemyFSM.cpp">
       <Filter>Scripts\FSM\MonsterFSM\NormalEnemyFSM</Filter>
@@ -641,7 +641,7 @@
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility_Sword.cpp">
-      <Filter>State\KirbyAbility\Sword</Filter>
+      <Filter>State\KirbyState\Sword</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAttackEnd.cpp">
       <Filter>State\KirbyState\Attack\AttackEnd</Filter>
@@ -704,20 +704,20 @@
     <ClCompile Include="CMonsterMoveTest.cpp">
       <Filter>Scripts\Unit\Monster\Test</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyAttack.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Attack</Filter>
+    <ClCompile Include="CEnemyAttack.cpp">
+      <Filter>State\MonsterState\Attack</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyBurningEnd.cpp">
       <Filter>State\KirbyState\Burning\BurningEnd</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyFind.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Find</Filter>
+    <ClCompile Include="CEnemyFind.cpp">
+      <Filter>State\MonsterState\Find</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemySucessedAttack.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Attack\SuccessedAttack</Filter>
+    <ClCompile Include="CEnemySuccessedAttack.cpp">
+      <Filter>State\MonsterState\Attack\SuccessedAttack</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyFailedAttack.cpp">
-      <Filter>State\MonsterState\NormalEnemyState\Attack\FailedAttack</Filter>
+    <ClCompile Include="CEnemyFailedAttack.cpp">
+      <Filter>State\MonsterState\Attack\FailedAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1003,9 +1003,6 @@
     <Filter Include="State\KirbyState\ChangeAbility\ChangeAbilityEnd">
       <UniqueIdentifier>{bf0bcba1-b3ca-4aa8-9d06-4e2569843b6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyAbility\Sword">
-      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\Attack\AttackEnd">
       <UniqueIdentifier>{c84b1943-a7cb-4b9e-81a6-2b6c88804794}</UniqueIdentifier>
     </Filter>
@@ -1048,41 +1045,17 @@
     <Filter Include="State\KirbyState\Guard\GuardRun">
       <UniqueIdentifier>{dce222b0-65d0-4263-8f9b-9ebe606a9a27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\AttackAirGuard">
-      <UniqueIdentifier>{e95e38fa-27be-45fe-9121-cf3edefeb769}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\KirbyState\AttackAirGuard\Attack">
-      <UniqueIdentifier>{a6282624-2fd5-4067-a923-4c70744baf4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\KirbyState\AttackAirGuard\AttackEnd">
-      <UniqueIdentifier>{a35ac4f9-d64f-4540-94ca-bfca31f6b832}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\KirbyState\AttackAirGuard\Charge">
-      <UniqueIdentifier>{4bb97377-80ce-4afd-98d9-8dfdec2fa1a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\KirbyState\AttackAirGuard\ChargeStart">
-      <UniqueIdentifier>{8cd27366-925f-41d8-8681-b1753c4f157e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\DropAbility">
       <UniqueIdentifier>{58526ce3-0719-4036-992f-adff626a47b1}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\MonsterState">
       <UniqueIdentifier>{9c1bd081-6050-4167-9355-3f2c5bad598f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MonsterState\CommonState">
-      <UniqueIdentifier>{cbc1ae8f-3596-4e54-9edc-640329cf5dc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState">
-      <UniqueIdentifier>{1d46cc36-ba8b-4811-adda-cb19973ebf43}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\FSM\MonsterFSM">
       <UniqueIdentifier>{9c7f0ab6-ce81-4456-94c8-46ea0084701b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\FSM\MonsterFSM\NormalEnemyFSM">
       <UniqueIdentifier>{e5055b38-2ac6-4771-9056-e16481de60c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Idle">
-      <UniqueIdentifier>{45d5d6df-472e-4343-8860-2c8e7880e54e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Manager\MonsterManager">
       <UniqueIdentifier>{c6bed61d-ae8d-4c3e-a698-27c1945f2199}</UniqueIdentifier>
@@ -1095,9 +1068,6 @@
     </Filter>
     <Filter Include="Scripts\Unit\Monster\Test">
       <UniqueIdentifier>{c31faa41-afdc-4da5-a7f9-6fb2025eb439}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Attack">
-      <UniqueIdentifier>{98f23a19-9b25-426e-9113-48121c2dfd58}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\Burning">
       <UniqueIdentifier>{ea078dde-3e60-4a50-9f77-e8b113a6cdf5}</UniqueIdentifier>
@@ -1114,33 +1084,6 @@
     <Filter Include="State\KirbyState\Burning\BurningEnd">
       <UniqueIdentifier>{2f86c255-94f2-4343-be20-9f9e100966c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Find">
-      <UniqueIdentifier>{04c66023-e745-49c6-ba95-c754f4e7a498}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Patrol">
-      <UniqueIdentifier>{472f4d2f-e80b-49e2-ae81-274f47cfdef4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Damage">
-      <UniqueIdentifier>{d64db8a9-94cc-4904-ada8-8814c0a7b569}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Attack\FailedAttack">
-      <UniqueIdentifier>{4367b993-b5ee-4dc3-b216-5d8d7c7c1ca7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\NormalEnemyState\Attack\SuccessedAttack">
-      <UniqueIdentifier>{563118c7-2fd0-40a3-9fa4-e7963e74a6b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\KabuState">
-      <UniqueIdentifier>{02a28301-2746-45e3-81fb-44483bddcfa1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\GordoLongState">
-      <UniqueIdentifier>{a072ae10-9b1d-4206-bf1f-c92ed5b77bcf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\GhostGordoState">
-      <UniqueIdentifier>{4eecdc57-3e8a-49cb-b136-5aeca6f79e48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MonsterState\TackleEnemyState">
-      <UniqueIdentifier>{b00541ff-033e-4e4f-ae08-f0974287c3fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\FSM\MonsterFSM\KabuFSM">
       <UniqueIdentifier>{63f59c6e-3916-475c-b79d-bfc2f924d5cd}</UniqueIdentifier>
     </Filter>
@@ -1152,6 +1095,45 @@
     </Filter>
     <Filter Include="Scripts\FSM\MonsterFSM\TackleEnemyFSM">
       <UniqueIdentifier>{bf26cdda-eb30-4971-9d17-71929678de0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Sword">
+      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackAirGuard">
+      <UniqueIdentifier>{e95e38fa-27be-45fe-9121-cf3edefeb769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackAirGuard\Attack">
+      <UniqueIdentifier>{a6282624-2fd5-4067-a923-4c70744baf4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackAirGuard\AttackEnd">
+      <UniqueIdentifier>{a35ac4f9-d64f-4540-94ca-bfca31f6b832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackAirGuard\Charge">
+      <UniqueIdentifier>{4bb97377-80ce-4afd-98d9-8dfdec2fa1a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackAirGuard\ChargeStart">
+      <UniqueIdentifier>{8cd27366-925f-41d8-8681-b1753c4f157e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Attack">
+      <UniqueIdentifier>{98f23a19-9b25-426e-9113-48121c2dfd58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Attack\FailedAttack">
+      <UniqueIdentifier>{4367b993-b5ee-4dc3-b216-5d8d7c7c1ca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Attack\SuccessedAttack">
+      <UniqueIdentifier>{563118c7-2fd0-40a3-9fa4-e7963e74a6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Damage">
+      <UniqueIdentifier>{d64db8a9-94cc-4904-ada8-8814c0a7b569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Find">
+      <UniqueIdentifier>{04c66023-e745-49c6-ba95-c754f4e7a498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Idle">
+      <UniqueIdentifier>{45d5d6df-472e-4343-8860-2c8e7880e54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MonsterState\Patrol">
+      <UniqueIdentifier>{472f4d2f-e80b-49e2-ae81-274f47cfdef4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
