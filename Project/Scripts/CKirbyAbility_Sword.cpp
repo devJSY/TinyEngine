@@ -493,10 +493,9 @@ void CKirbyAbility_Sword::GuardRun()
 
 void CKirbyAbility_Sword::GuardRunEnter()
 {
-    //@TODO visiblity 바꾸기
-    CPlayerMgr::ClearBodyMtrl();
-    CPlayerMgr::ClearMouthMtrl();
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(limbs), false);
+    PLAYER->MeshRender()->SetEnabled(false);
+    PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(false);
+    PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(false);
     //@Effect 궤적 파티클
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
@@ -506,9 +505,9 @@ void CKirbyAbility_Sword::GuardRunEnter()
 
 void CKirbyAbility_Sword::GuardRunExit()
 {
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(limbs));
+    PLAYER->MeshRender()->SetEnabled(true);
+    PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(true);
+    PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(true);
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockJump();
