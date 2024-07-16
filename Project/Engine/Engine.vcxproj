@@ -287,6 +287,9 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
     <ClCompile Include="CLevelEditor.cpp" />
+    <ClCompile Include="CLevelMgr_CreateDefaultKirbyLevel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp" />
     <ClCompile Include="CLight2D.cpp" />
     <ClCompile Include="CLight.cpp" />
