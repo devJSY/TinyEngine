@@ -3,18 +3,38 @@
 
 #include "CMonsterUnitScript.h"
 
+CHitBoxScript::CHitBoxScript()
+    : CScript(HITBOXSCRIPT)
+{
+}
+
+CHitBoxScript::~CHitBoxScript()
+{
+}
+
 void CHitBoxScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    CGameObject* _obj = _OtherCollider->GetOwner();
+    CGameObject* pObj = _OtherCollider->GetOwner();
     // TODO : 해당 데미지 가지고 오기
-    float _fDamage = 0.f;
+    UnitHit Hit;
+    float fDamage = 0.f;
 
-    CMonsterUnitScript* _owner = GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
+    Hit.Damage = fDamage;
 
-    _obj->GetLayerIdx() == LAYER_PLAYER ? _owner->GetDamage(_fDamage) : _owner->SetTarget(nullptr);
+    CMonsterUnitScript* OwnerScript = GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
+
+    pObj->GetLayerIdx() == LAYER_PLAYER ? OwnerScript->GetDamage(Hit) : OwnerScript->SetTarget(nullptr);
 }
 
 void CHitBoxScript::OnTriggerExit(CCollider* _OtherCollider)
 {
     GetOwner()->GetParent()->GetScript<CMonsterUnitScript>()->SetTarget(nullptr);
+}
+
+void CHitBoxScript::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CHitBoxScript::LoadFromLevelFile(FILE* _File)
+{
 }

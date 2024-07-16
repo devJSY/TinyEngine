@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "CMonsterUnitScript.h"
 
-CMonsterUnitScript::CMonsterUnitScript()
-    : CUnitScript(MONSTERUNITSCRIPT)
+CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
+    : CUnitScript(_Type)
+    , m_pTargetObj(nullptr)
 {
+    AddScriptParam(SCRIPT_PARAM::OBJECT, &m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
@@ -20,8 +22,10 @@ CMonsterUnitScript::CMonsterUnitScript(SCRIPT_TYPE _type)
 }
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
-    : CUnitScript(MONSTERUNITSCRIPT)
+    : CUnitScript(_Origin)
+    , m_pTargetObj(_Origin.m_pTargetObj)
 {
+    AddScriptParam(SCRIPT_PARAM::OBJECT, &m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
