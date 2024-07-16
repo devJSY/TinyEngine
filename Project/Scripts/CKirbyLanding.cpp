@@ -52,9 +52,11 @@ void CKirbyLanding::tick()
 void CKirbyLanding::Enter()
 {
     PLAY_CURSTATE(LandingEnter)
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyLanding::Exit()
 {
     PLAY_CURSTATE(LandingExit)
+    PLAYERFSM->SetDroppable(false);
 }

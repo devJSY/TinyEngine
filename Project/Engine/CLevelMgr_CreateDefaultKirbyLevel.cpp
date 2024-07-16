@@ -139,13 +139,11 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pFloor->AddComponent(new CTransform);
     pFloor->AddComponent(new CMeshRender);
     pFloor->AddComponent(new CBoxCollider);
-    pFloor->AddComponent(new CRigidbody);
 
     pFloor->Transform()->SetLocalScale(Vec3(10000.f, 1.f, 10000.f));
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
     pFloor->MeshRender()->SetFrustumCheck(false);
-    pFloor->Rigidbody()->SetKinematic(true);
 
     NewLevel->AddObject(pFloor, 2);
 
@@ -232,6 +230,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pBox->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     pBox->Transform()->SetLocalPos(Vec3(-500.f, 150.f, 500.f));
+    pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f)); 
 
     NewLevel->AddObject(pBox, 3);
 

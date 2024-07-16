@@ -16,10 +16,7 @@ void CKirbyDropAbility::tick()
     if (m_FrmEnter && GetOwner()->Animator()->GetClipFrameIndex() == 11)
     {
         // clear current hat & weapon
-        GamePlayStatic::DestroyGameObject(PLAYERFSM->GetCurHat());
-        GamePlayStatic::DestroyGameObject(PLAYERFSM->GetCurWeapon());
-        PLAYERFSM->SetCurHat(nullptr);
-        PLAYERFSM->SetCurWeapon(nullptr);
+        PLAYERFSM->ClearCurHatWeapon();
 
         //@TODO 버블 오브젝트
         // spawn ability buble
@@ -51,11 +48,12 @@ void CKirbyDropAbility::tick()
 
 void CKirbyDropAbility::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"AbilityDump"), false);
+    PLAYER->Animator()->Play(KIRBYANIM(L"AbilityDump"), false, false, 1.f);
 
     m_FrmEnter = true;
 }
 
 void CKirbyDropAbility::Exit()
 {
+    PLAYERFSM->ClearYPressedTime();
 }

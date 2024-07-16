@@ -3,6 +3,7 @@
 
 CKirbyHoveringFallLimit::CKirbyHoveringFallLimit()
     : m_SavedGravity(0.f)
+    , m_SavedSpeed(0.f)
 {
 }
 
@@ -36,11 +37,17 @@ void CKirbyHoveringFallLimit::Enter()
         PLAYERCTRL->ClearVelocityY();
     }
     m_SavedGravity = PLAYERCTRL->GetGravity();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-3.f);
+    PLAYERCTRL->SetSpeed(7.f);
+
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyHoveringFallLimit::Exit()
 {
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
     PLAYERCTRL->SetGravity(m_SavedGravity);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+    PLAYERFSM->SetDroppable(false);
 }

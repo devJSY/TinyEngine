@@ -44,6 +44,7 @@ private:
     float                   m_ComboAccTime;
     float                   m_ChargeAccTime;
     UINT                    m_SlideComboLevel;
+
     LastJumpType            m_LastJump;
     DodgeType               m_DodgeType;
     bool                    m_bStuffed;
@@ -57,6 +58,10 @@ private:
     float                   m_GlidingDuration;
     float                   m_GlidingAcc;
 
+    float                   m_YPressedTime;
+    float                   m_DropCopyTime;
+    bool                    m_bDroppable;
+
 public:
     void begin() override;
     void tick() override;
@@ -68,8 +73,8 @@ public:
     void AddGlidingTime(float _Time) { m_GlidingAcc += _Time; }
 
 public:
-    void SetCurHat(CGameObject* _Hat) { m_CurHat = _Hat; }
-    void SetCurWeapon(CGameObject* _Weapon) { m_CurWeapon = _Weapon; }
+    void SetCurHat(CGameObject* _Hat);
+    void SetCurWeapon(CGameObject* _Weapon);
     void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
@@ -77,10 +82,13 @@ public:
     void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
     void SetInvincible() { m_bInvincible = true;  m_InvincibleAcc = 0.f;}
+    void SetDroppable(bool _bDroppable) { m_bDroppable = _bDroppable; }
+    void ClearCurHatWeapon();
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
     void ClearStuff();
     void ClearGlidingTime() { m_GlidingAcc = 0.f; }
+    void ClearYPressedTime() { m_YPressedTime = 0.f; }
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
@@ -101,6 +109,8 @@ public:
     UINT GetSlideComboLevel() const { return m_SlideComboLevel; }
     float GetGlidingDuration() const { return m_GlidingDuration; }
     float GetCurGlidingTime() const { return m_GlidingAcc; }
+    float GetYPressedTime() const { return m_YPressedTime; }
+    float GetDropCopyTime() const { return m_DropCopyTime; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;

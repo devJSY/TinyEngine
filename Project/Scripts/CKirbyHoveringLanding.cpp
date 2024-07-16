@@ -22,9 +22,11 @@ void CKirbyHoveringLanding::Enter()
     GetOwner()->Animator()->Play(KIRBYANIM(L"FlightLanding"), false);
 
     PLAYERCTRL->LockJump();
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyHoveringLanding::Exit()
 {
     PLAYERCTRL->UnlockJump();
+    PLAYERFSM->SetDroppable(false);
 }

@@ -111,6 +111,7 @@ void CKirbyJumpStart::Enter()
 
     PLAYERCTRL->Jump();
     PLAYERFSM->SetLastJump(LastJumpType::LOW);
+    PLAYERFSM->SetDroppable(true);
 
     m_JumpAccTime = 0.f;
     m_bVelocityCut = false;
@@ -119,4 +120,6 @@ void CKirbyJumpStart::Enter()
 void CKirbyJumpStart::Exit()
 {
     PLAY_CURSTATE(JumpStartExit)
+
+    PLAYERFSM->SetDroppable(false);
 }

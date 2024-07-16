@@ -3,6 +3,7 @@
 
 CKirbyHovering::CKirbyHovering()
     : m_SavedGravity(0.f)
+    , m_SavedSpeed(0.f)
     , m_bFrmEnter(true)
 {
 }
@@ -50,14 +51,18 @@ void CKirbyHovering::Enter()
     GetOwner()->Animator()->Play(KIRBYANIM(L"Flight"), true, false, 2.f);
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-10.f);
+    PLAYERCTRL->SetSpeed(7.f);
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
 
+    PLAYERFSM->SetDroppable(true);
     m_bFrmEnter = true;
 }
 
 void CKirbyHovering::Exit()
 {
     PLAYERCTRL->SetGravity(m_SavedGravity);
+    PLAYERFSM->SetDroppable(false);
 }

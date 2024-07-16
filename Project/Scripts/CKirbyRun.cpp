@@ -78,9 +78,11 @@ void CKirbyRun::tick()
 void CKirbyRun::Enter()
 {
     PLAY_CURSTATE(RunEnter)
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyRun::Exit()
 {
     PLAY_CURSTATE(RunExit)
+    PLAYERFSM->SetDroppable(false);
 }

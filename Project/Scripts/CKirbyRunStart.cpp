@@ -92,9 +92,11 @@ void CKirbyRunStart::tick()
 void CKirbyRunStart::Enter()
 {
     PLAY_CURSTATE(RunStartEnter)
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyRunStart::Exit()
 {
     PLAY_CURSTATE(RunStartExit)
+    PLAYERFSM->SetDroppable(false);
 }

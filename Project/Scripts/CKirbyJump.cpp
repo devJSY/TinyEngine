@@ -104,9 +104,11 @@ void CKirbyJump::Enter()
 {
     PLAY_CURSTATE(JumpEnter)
     PLAYERFSM->SetLastJump(LastJumpType::HIGH);
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyJump::Exit()
 {
     PLAY_CURSTATE(JumpExit)
+    PLAYERFSM->SetDroppable(false);
 }

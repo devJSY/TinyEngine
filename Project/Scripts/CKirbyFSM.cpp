@@ -15,6 +15,8 @@ CKirbyFSM::CKirbyFSM()
     , m_CurAbility(AbilityCopyType::NORMAL)
     , m_NextAbility(AbilityCopyType::NONE)
     , m_CurObject(ObjectCopyType::NONE)
+    , m_CurHat(nullptr)
+    , m_CurWeapon(nullptr)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
     , m_ComboLevel(0)
@@ -24,6 +26,7 @@ CKirbyFSM::CKirbyFSM()
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(7.f)
     , m_LastJump(LastJumpType::HIGH)
+    , m_DodgeType(DodgeType::NONE)
     , m_bStuffed(false)
     , m_bHovering(false)
     , m_bInvincible(false)
@@ -32,6 +35,9 @@ CKirbyFSM::CKirbyFSM()
     , m_EmissiveCoef(0.f)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
+    , m_YPressedTime(0.f)
+    , m_DropCopyTime(1.f)
+    , m_bDroppable(false)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
@@ -171,6 +177,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyChangeAbility.h"
 #include "CKirbyChangeAbilityEnd.h"
 #include "CKirbyChangeAbilityWait.h"
+#include "CKirbyDropAbility.h"
 #include "CKirbyBurningPre.h"
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
@@ -248,6 +255,7 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY", new CKirbyChangeAbility);
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
+    AddState(L"DROP_ABILITY", new CKirbyDropAbility);
 
     AddState(L"BURNING_PRE", new CKirbyBurningPre);
     AddState(L"BURNING_START", new CKirbyBurningStart);
@@ -277,6 +285,23 @@ void CKirbyFSM::tick()
     if (m_bHovering)
     {
         m_HoveringAccTime += DT;
+    }
+
+    if (m_bDroppable && (KEY_TAP(KEY::Y) || KEY_PRESSED(KEY::Y)))
+    {
+        if (m_CurObject == ObjectCopyType::NONE && m_CurAbility == AbilityCopyType::NORMAL)
+        {
+        }
+        else
+        {
+            m_YPressedTime += DT;
+            string tmp = to_string(m_YPressedTime);
+            LOG(Log, tmp.c_str());
+        }
+    }
+    else if (m_YPressedTime >= 0.f && KEY_RELEASED(KEY::Y))
+    {
+        m_YPressedTime = 0.f;
     }
 
     // 무적상태 관리
@@ -316,22 +341,20 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
     switch (_Type)
     {
-    case AbilityCopyType::NORMAL:
-    {
+    case AbilityCopyType::NORMAL: {
         m_NextAbility = _Type;
         ChangeState(L"DROP_ABILITY");
         m_CurAbility = _Type;
     }
-        break;
+    break;
     case AbilityCopyType::FIRE:
     case AbilityCopyType::RANGER:
-    case AbilityCopyType::SWORD:
-    {
+    case AbilityCopyType::SWORD: {
         m_NextAbility = _Type;
         ChangeState(L"CHANGE_ABILITY");
         m_CurAbility = _Type;
     }
-        break;
+    break;
     case AbilityCopyType::END:
     case AbilityCopyType::NONE:
         return;
@@ -358,6 +381,32 @@ void CKirbyFSM::DrawingCollisionEnter(CGameObject* _CollisionObject)
     m_VacuumCollider->DrawingCollisionEnter(_CollisionObject);
 }
 
+void CKirbyFSM::SetCurHat(CGameObject* _Hat)
+{
+    if (!_Hat)
+        return;
+
+    if (m_CurHat)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurHat);
+    }
+
+    m_CurHat = _Hat;
+}
+
+void CKirbyFSM::SetCurWeapon(CGameObject* _Weapon)
+{
+    if (!_Weapon)
+        return;
+
+    if (m_CurWeapon)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurWeapon);
+    }
+
+    m_CurWeapon = _Weapon;
+}
+
 void CKirbyFSM::SetHovering(bool _bHovering)
 {
     if (m_bHovering != _bHovering)
@@ -366,6 +415,21 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     }
 
     m_bHovering = _bHovering;
+}
+
+void CKirbyFSM::ClearCurHatWeapon()
+{
+    if (m_CurHat)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurHat);
+        m_CurHat = nullptr;
+    }
+
+    if (m_CurWeapon)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurWeapon);
+        m_CurWeapon = nullptr;
+    }
 }
 
 void CKirbyFSM::ClearStuff()

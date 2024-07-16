@@ -29,6 +29,11 @@ void CKirbyAbility::IdleEnter()
     PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
 }
 
+void CKirbyAbility::IdleExit()
+{
+    PLAYERFSM->SetDroppable(false);
+}
+
 void CKirbyAbility::RunEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"Run"));
