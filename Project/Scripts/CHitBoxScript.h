@@ -3,6 +3,9 @@
 
 class CHitBoxScript : public CScript
 {
+private:
+    bool m_IsinvincibilityObj;
+    bool m_IsReflectionDamageObj;
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);

@@ -4,6 +4,7 @@
 CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     : CUnitScript(_Type)
     , m_pTargetObj(nullptr)
+    , m_fBodyDamage(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
@@ -16,6 +17,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(_Origin)
     , m_pTargetObj(_Origin.m_pTargetObj)
+    , m_fBodyDamage(_Origin.m_fBodyDamage)
 {
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
@@ -27,6 +29,18 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
 
 CMonsterUnitScript::~CMonsterUnitScript()
 {
+}
+
+void CMonsterUnitScript::TakeHit(const UnitHit& _info, const bool _IsDamaged, const bool _IsHitPlayerBody, const Vec3 _vDamageDir)
+{
+    m_IsDamaged = _IsDamaged;
+    m_IsHitPlayerBody = _IsHitPlayerBody;
+    m_vDamageDir = _vDamageDir;
+
+    if (_info.Damage > 0.f)
+    {
+        GetDamage(_info);
+    }
 }
 
 void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)

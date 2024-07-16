@@ -16,6 +16,7 @@ enum class NORMALENEMY_STATE
     AfterAttack,
     Damage,
     Land,
+    Dead,
     End,
 };
 
@@ -43,7 +44,13 @@ private:
     float m_fPatrolAccTime;
     Vec3 m_fPatrolDir;
 
+    float m_fMaxSpeed;
     float m_fSpeed;
+    float m_fRushLerp;
+    float m_fRushSpeedLerp;
+
+protected:
+    virtual void TakeHit(const UnitHit& _info, const bool _IsDamaged, const bool _IsHitPlayerBody, const Vec3 _vDamageDir) override;
 
 public:
     virtual void begin() override;
@@ -67,8 +74,10 @@ private:
     void Grooming();
     void SuccessedAttack();
     void FailedAttack();
+    void Land();
     void AfterAttack();
     void Damage();
+    void Dead();
 
 private:
     NORMALENEMY_STATE RandomIdleState();

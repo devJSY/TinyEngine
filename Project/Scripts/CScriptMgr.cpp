@@ -30,6 +30,10 @@
 #include "CDetectAreaScript.h"
 #include "CHitBoxScript.h"
 #include "CNormalEnemyScript.h"
+#include "CGhostGordoScript.h"
+#include "CGordoLongScript.h"
+#include "CKabuScript.h"
+#include "CTackleEnemyScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -62,6 +66,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDetectAreaScript");
 	_vec.push_back(L"CHitBoxScript");
 	_vec.push_back(L"CNormalEnemyScript");
+	_vec.push_back(L"CGhostGordoScript");
+	_vec.push_back(L"CGordoLongScript");
+	_vec.push_back(L"CKabuScript");
+	_vec.push_back(L"CTackleEnemyScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -124,6 +132,14 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CHitBoxScript;
 	if (L"CNormalEnemyScript" == _strScriptName)
 		return new CNormalEnemyScript;
+	if (L"CGhostGordoScript" == _strScriptName)
+		return new CGhostGordoScript;
+	if (L"CGordoLongScript" == _strScriptName)
+		return new CGordoLongScript;
+	if (L"CKabuScript" == _strScriptName)
+		return new CKabuScript;
+	if (L"CTackleEnemyScript" == _strScriptName)
+		return new CTackleEnemyScript;
 	return nullptr;
 }
 
@@ -189,6 +205,14 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CHitBoxScript;
 	case (UINT)SCRIPT_TYPE::NORMALENEMYSCRIPT:
 		return new CNormalEnemyScript;
+	case (UINT)SCRIPT_TYPE::GHOSTGORDOSCRIPT:
+		return new CGhostGordoScript;
+	case (UINT)SCRIPT_TYPE::GORDOLONGSCRIPT:
+		return new CGordoLongScript;
+	case (UINT)SCRIPT_TYPE::KABUSCRIPT:
+		return new CKabuScript;
+	case (UINT)SCRIPT_TYPE::TACKLEENEMYSCRIPT:
+		return new CTackleEnemyScript;
 	}
 	return nullptr;
 }
@@ -255,6 +279,14 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CHitBoxScript";
 	case SCRIPT_TYPE::NORMALENEMYSCRIPT:
 		return L"CNormalEnemyScript";
+	case SCRIPT_TYPE::GHOSTGORDOSCRIPT:
+		return L"CGhostGordoScript";
+	case SCRIPT_TYPE::GORDOLONGSCRIPT:
+		return L"CGordoLongScript";
+	case SCRIPT_TYPE::KABUSCRIPT:
+		return L"CKabuScript";
+	case SCRIPT_TYPE::TACKLEENEMYSCRIPT:
+		return L"CTackleEnemyScript";
 	}
 	return nullptr;
 }

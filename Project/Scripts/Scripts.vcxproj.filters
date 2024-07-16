@@ -334,6 +334,18 @@
     <ClInclude Include="CNormalEnemyScript.h">
       <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="CGhostGordoScript.h">
+      <Filter>Scripts\Monster\MonsterScript\GhostGordo</Filter>
+    </ClInclude>
+    <ClInclude Include="CGordoLongScript.h">
+      <Filter>Scripts\Monster\MonsterScript\GordoLong</Filter>
+    </ClInclude>
+    <ClInclude Include="CKabuScript.h">
+      <Filter>Scripts\Monster\MonsterScript\Kabu</Filter>
+    </ClInclude>
+    <ClInclude Include="CTackleEnemyScript.h">
+      <Filter>Scripts\Monster\MonsterScript\TackleEnemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -675,13 +687,25 @@
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Monster\Utill\Detect</Filter>
     </ClCompile>
-    <ClCompile Include="CHitBoxScript.cpp">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
-    </ClCompile>
     <ClCompile Include="CNormalEnemyScript.cpp">
       <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
     </ClCompile>
     <ClCompile Include="CHitBoxScript.cpp" />
+    <ClCompile Include="CHitBoxScript.cpp">
+      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhostGordoScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\GhostGordo</Filter>
+    </ClCompile>
+    <ClCompile Include="CGordoLongScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\GordoLong</Filter>
+    </ClCompile>
+    <ClCompile Include="CKabuScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\Kabu</Filter>
+    </ClCompile>
+    <ClCompile Include="CTackleEnemyScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\TackleEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

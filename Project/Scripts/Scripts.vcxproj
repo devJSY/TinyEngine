@@ -116,7 +116,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEngineTestScript.h" />
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
+    <ClInclude Include="CGhostGordoScript.h" />
+    <ClInclude Include="CGordoLongScript.h" />
     <ClInclude Include="CHitBoxScript.h" />
+    <ClInclude Include="CKabuScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
@@ -204,6 +207,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CSpringArmCameraScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CTackleEnemyScript.h" />
     <ClInclude Include="CTestForward.h" />
     <ClInclude Include="CTestFSM.h" />
     <ClInclude Include="CTestIdle.h" />
@@ -229,7 +233,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEngineTestScript.cpp" />
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
+    <ClCompile Include="CGhostGordoScript.cpp" />
+    <ClCompile Include="CGordoLongScript.cpp" />
     <ClCompile Include="CHitBoxScript.cpp" />
+    <ClCompile Include="CKabuScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
@@ -317,6 +324,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CSpringArmCameraScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CTackleEnemyScript.cpp" />
     <ClCompile Include="CTestForward.cpp" />
     <ClCompile Include="CTestFSM.cpp" />
     <ClCompile Include="CTestIdle.cpp" />

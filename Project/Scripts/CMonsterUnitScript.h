@@ -6,10 +6,17 @@ class CMonsterUnitScript : public CUnitScript
 private:
     CGameObject* m_pTargetObj;
 
+    Vec3         m_vDamageDir;
+    float        m_fBodyDamage;
+    bool         m_IsDamaged;
+    bool         m_IsHitPlayerBody;
+
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
     CGameObject* GetTarget() const { return m_pTargetObj; }
-
+    
+    virtual void TakeHit(const UnitHit& _info, const bool _IsDamaged, const bool _IsHitPlayerBody, const Vec3 _vDamageDir);
+    
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
     void TransformRotate();
 
