@@ -3,7 +3,10 @@
 
 enum class GHOSTGORDO_STATE
 {
-    Idle,
+    CloseEyeIdle,
+    OpenEyeIdle,
+    OpenEye,
+    Find,
     Track,
     TrackAfter,
     End,
@@ -28,7 +31,12 @@ private:
     void ExitState(GHOSTGORDO_STATE _state);
 
 private:
-    
+    void CloseEyeIdle();
+    void OpenEyeIdle();
+    void OpenEye();
+    void Find();
+    void Track();
+    void TrackAfter();
 
 public:
     CLONE(CGhostGordoScript)
