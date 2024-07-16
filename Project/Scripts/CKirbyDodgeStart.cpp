@@ -22,8 +22,8 @@ void CKirbyDodgeStart::tick()
 void CKirbyDodgeStart::Enter()
 {
     // 애니메이션 재생
-    //PLAYER->Animator()->Play(KIRBYANIM(L"DodgeStart"), false, false, 2.f, 0);
-    PLAYER->Animator()->Play(KIRBYANIM(L"DodgeStart"), false, false, 2.f);
+    //PLAYER->Animator()->Play(ANIMPREFIX(L"DodgeStart"), false, false, 2.f, 0);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"DodgeStart"), false, false, 2.f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();

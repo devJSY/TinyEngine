@@ -10,6 +10,9 @@ protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
     CGameObject* GetTarget() const { return m_pTargetObj; }
 
+    void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
+    void TransformRotate();
+
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

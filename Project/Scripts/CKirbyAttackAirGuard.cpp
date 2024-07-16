@@ -23,7 +23,7 @@ void CKirbyAttackAirGuard::tick()
 
 void CKirbyAttackAirGuard::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"ButterflyScalesAttack"), true, false, 1.5f, 0.2);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"ButterflyScalesAttack"), true, false, 1.5f, 0.2);
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthOpen));
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);

@@ -16,12 +16,19 @@ void CDetectAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
     CGameObject* pObj = _OtherCollider->GetOwner();
     CMonsterUnitScript* OwnerScript = GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
 
-    pObj->GetLayerIdx() == LAYER_PLAYER ? OwnerScript->SetTarget(pObj) : OwnerScript->SetTarget(nullptr);
+    if (pObj->GetLayerIdx() == LAYER_PLAYER)
+    {
+        OwnerScript->SetTarget(pObj);
+    }
 }
 
 void CDetectAreaScript::OnTriggerExit(CCollider* _OtherCollider)
 {
-    GetOwner()->GetParent()->GetScript<CMonsterUnitScript>()->SetTarget(nullptr);
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    if (pObj->GetLayerIdx() == LAYER_PLAYER)
+    {
+        GetOwner()->GetParent()->GetScript<CMonsterUnitScript>()->SetTarget(nullptr);
+    }
 }
 
 void CDetectAreaScript::SaveToLevelFile(FILE* _File)
