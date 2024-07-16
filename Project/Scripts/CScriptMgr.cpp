@@ -27,8 +27,9 @@
 #include "CUIUnitManagerScript.h"
 #include "CEngineTestScript.h"
 #include "CBladeKnightScript.h"
-#include "CHitBoxScript.h"
 #include "CDetectAreaScript.h"
+#include "CHitBoxScript.h"
+#include "CNormalEnemyScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -58,8 +59,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIUnitManagerScript");
 	_vec.push_back(L"CEngineTestScript");
 	_vec.push_back(L"CBladeKnightScript");
-	_vec.push_back(L"CHitBoxScript");
 	_vec.push_back(L"CDetectAreaScript");
+	_vec.push_back(L"CHitBoxScript");
+	_vec.push_back(L"CNormalEnemyScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -116,10 +118,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEngineTestScript;
 	if (L"CBladeKnightScript" == _strScriptName)
 		return new CBladeKnightScript;
-	if (L"CHitBoxScript" == _strScriptName)
-		return new CHitBoxScript;
 	if (L"CDetectAreaScript" == _strScriptName)
 		return new CDetectAreaScript;
+	if (L"CHitBoxScript" == _strScriptName)
+		return new CHitBoxScript;
+	if (L"CNormalEnemyScript" == _strScriptName)
+		return new CNormalEnemyScript;
 	return nullptr;
 }
 
@@ -179,10 +183,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CEngineTestScript;
 	case (UINT)SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
 		return new CBladeKnightScript;
-	case (UINT)SCRIPT_TYPE::HITBOXSCRIPT:
-		return new CHitBoxScript;
 	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
 		return new CDetectAreaScript;
+	case (UINT)SCRIPT_TYPE::HITBOXSCRIPT:
+		return new CHitBoxScript;
+	case (UINT)SCRIPT_TYPE::NORMALENEMYSCRIPT:
+		return new CNormalEnemyScript;
 	}
 	return nullptr;
 }
@@ -243,10 +249,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CEngineTestScript";
 	case SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
 		return L"CBladeKnightScript";
-	case SCRIPT_TYPE::HITBOXSCRIPT:
-		return L"CHitBoxScript";
 	case SCRIPT_TYPE::DETECTAREASCRIPT:
 		return L"CDetectAreaScript";
+	case SCRIPT_TYPE::HITBOXSCRIPT:
+		return L"CHitBoxScript";
+	case SCRIPT_TYPE::NORMALENEMYSCRIPT:
+		return L"CNormalEnemyScript";
 	}
 	return nullptr;
 }

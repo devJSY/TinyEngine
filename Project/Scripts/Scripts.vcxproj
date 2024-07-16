@@ -199,7 +199,6 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyUnitScript.h" />
     <ClInclude Include="CMonsterUnitScript.h" />
     <ClInclude Include="CNormalEnemyScript.h" />
-    <ClInclude Include="CPlayerDetectScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpringArmCameraScript.h" />
@@ -313,7 +312,6 @@ call CodeGen.exe</Command>
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
     <ClCompile Include="CMonsterUnitScript.cpp" />
     <ClCompile Include="CNormalEnemyScript.cpp" />
-    <ClCompile Include="CPlayerDetectScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpringArmCameraScript.cpp" />

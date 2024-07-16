@@ -325,20 +325,14 @@
     <ClInclude Include="CMonsterUnitScript.h">
       <Filter>Module\Unit</Filter>
     </ClInclude>
-    <ClInclude Include="CHitBoxScript.h">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
-    </ClInclude>
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Monster\Utill\Detect</Filter>
     </ClInclude>
-    <ClInclude Include="CNormalEnemyScript.h">
-      <Filter>Scripts\Monster\01. Monster\NormalEnemy</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayerDetectScript.h">
-      <Filter>Scripts\Monster\02. Util\DetectScript</Filter>
-    </ClInclude>
     <ClInclude Include="CHitBoxScript.h">
-      <Filter>Scripts\Monster\02. Util\HitboxScript</Filter>
+      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyScript.h">
+      <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -678,21 +672,16 @@
     <ClCompile Include="CMonsterUnitScript.cpp">
       <Filter>Module\Unit</Filter>
     </ClCompile>
-    <ClCompile Include="CHitBoxScript.cpp">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
-    </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Monster\Utill\Detect</Filter>
     </ClCompile>
-    <ClCompile Include="CNormalEnemyScript.cpp">
-      <Filter>Scripts\Monster\01. Monster\NormalEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayerDetectScript.cpp">
-      <Filter>Scripts\Monster\02. Util\DetectScript</Filter>
-    </ClCompile>
     <ClCompile Include="CHitBoxScript.cpp">
-      <Filter>Scripts\Monster\02. Util\HitboxScript</Filter>
+      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
     </ClCompile>
+    <ClCompile Include="CNormalEnemyScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CHitBoxScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
