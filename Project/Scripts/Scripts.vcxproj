@@ -108,12 +108,15 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
+    <ClInclude Include="CDetectAreaScript.h" />
     <ClInclude Include="CEngineTestScript.h" />
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
+    <ClInclude Include="CHitBoxScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
@@ -194,10 +197,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CModelEditorCameraMoveScript.h" />
     <ClInclude Include="CKirbyRunStart.h" />
     <ClInclude Include="CKirbyUnitScript.h" />
-    <ClInclude Include="CMonsterMoveTest.h" />
     <ClInclude Include="CMonsterUnitScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
-    <ClInclude Include="CPlayerTestScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpringArmCameraScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
@@ -219,12 +220,15 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
+    <ClCompile Include="CDetectAreaScript.cpp" />
     <ClCompile Include="CEngineTestScript.cpp" />
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
+    <ClCompile Include="CHitBoxScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
@@ -305,10 +309,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyVacuumCollider.cpp" />
     <ClCompile Include="CLevelChangeButtonScript.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
-    <ClCompile Include="CMonsterMoveTest.cpp" />
     <ClCompile Include="CMonsterUnitScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
-    <ClCompile Include="CPlayerTestScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpringArmCameraScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
