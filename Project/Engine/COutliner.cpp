@@ -3174,6 +3174,9 @@ void COutliner::DrawScript(CGameObject* obj)
             {
                 switch (ScriptParams[i].eParam)
                 {
+                case SCRIPT_PARAM::BOOL:
+                    ImGui::Checkbox(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (bool*)ScriptParams[i].pData);
+                    break;
                 case SCRIPT_PARAM::INT:
                     ImGui::DragInt(ImGui_LabelPrefix(ScriptParams[i].strDesc.c_str()).c_str(), (int*)ScriptParams[i].pData,
                                    ScriptParams[i].DragSpeed);

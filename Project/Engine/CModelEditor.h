@@ -21,6 +21,8 @@ private:
 
     bool m_bDrawWireFrame;
     bool m_bMeshSaved;
+    wstring m_MeshDataPath;
+    bool m_bMeshDataSaved;
 
     // Viewport
     vector<tInstObj> m_vecDeferred;

@@ -23,6 +23,8 @@ CModelEditor::CModelEditor()
     , m_SelectedPreviewObj(nullptr)
     , m_bDrawWireFrame(false)
     , m_bMeshSaved(true)
+    , m_bMeshDataSaved(true)
+    , m_MeshDataPath()
     , m_vecDeferred{}
     , m_vecForward{}
     , m_ViewportRTTex(nullptr)
@@ -607,7 +609,9 @@ void CModelEditor::DrawDetails()
             SetModel(CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(ModelName)));
         }
 
-        if (ImGui_AlignButton("Load Model", 1.f))
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Load Model", 0.f))
         {
             std::filesystem::path filePath = OpenFileDialog(L"fbx\\", TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
 
@@ -629,6 +633,52 @@ void CModelEditor::DrawDetails()
                     CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
                 }
             }
+        }
+
+        if (nullptr != m_ModelObj)
+        {
+            ImGui::SameLine();
+
+            if (m_bMeshDataSaved)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_Button));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImGui::GetStyleColorVec4(ImGuiCol_ButtonActive));
+            }
+            else
+            {
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+            }
+
+            if (ImGui_AlignButton("Save MeshData##ModelEditorDetails", 1.f))
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(m_MeshDataPath);
+
+                pMeshData->m_pMesh = m_ModelObj->MeshRender()->GetMesh();
+                UINT MtrlCount = m_ModelObj->MeshRender()->GetMtrlCount();
+                pMeshData->m_vecMtrl.clear();
+                pMeshData->m_vecMtrl.resize(MtrlCount);
+
+                for (UINT i = 0; i < MtrlCount; ++i)
+                {
+                    pMeshData->m_vecMtrl[i] = m_ModelObj->MeshRender()->GetMaterial(i);
+                }
+
+                if (S_OK == pMeshData->Save(m_MeshDataPath))
+                {
+                    MessageBox(nullptr, L"MeshData 저장 성공!", L"Save MeshData", MB_ICONASTERISK);
+                    m_bMeshDataSaved = true;
+                }
+                else
+                {
+                    MessageBox(nullptr, L"MeshData 저장 실패!", L"Save MeshData", MB_ICONHAND);
+                }
+            }
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
         }
 
         ImGui::TreePop();
@@ -657,6 +707,7 @@ void CModelEditor::DrawDetails()
                 m_SelectedBone = nullptr;
                 m_SelectedBoneSocket = nullptr;
                 m_SelectedPreviewObj = nullptr;
+                m_bMeshDataSaved = false;
 
                 // 자식 오브젝트 삭제
                 std::stack<CGameObject*> stackChild;
@@ -768,6 +819,7 @@ void CModelEditor::DrawDetails()
                     if (ImGui_ComboUI(ImGui_LabelPrefix(ToString(pMesh->GetIBName(i)).c_str()).c_str(), CurMtrlname, mapMtrl))
                     {
                         m_ModelObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(CurMtrlname)), i);
+                        m_bMeshDataSaved = false;
                     }
 
                     string MtrlEditorStr = "Material ";
@@ -1399,9 +1451,12 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_SelectedBoneSocket = nullptr;
     m_SelectedPreviewObj = nullptr;
     m_bMeshSaved = true;
+    m_MeshDataPath = _MeshData->GetKey();
+    m_bMeshDataSaved = true;
 
     if (nullptr == _MeshData)
     {
+        m_MeshDataPath.clear();
         return;
     }
 

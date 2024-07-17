@@ -19,11 +19,11 @@ enum class BLADEKNIGHT_STATE
     ThrustLoop,
     ThrustStart,
     ThrustStartWait,
-    ThrustWait,
+    // ThrustWait,
     TornadoAttack,
     TornadoAttackCharge,
     TornadoAttackCharge2,
-    TornadoAttackChargeMax,
+    // TornadoAttackChargeMax,
     Wait,
 };
 
@@ -32,8 +32,12 @@ class CBladeKnightScript : public CMonsterUnitScript
 private:
     BLADEKNIGHT_STATE m_State;
     float m_PassedTime;
-    float m_StepPower;
     bool m_bStepFlag;
+
+    // Script Parameter
+    float m_StepPower;
+    float m_AttackRange;
+    bool m_bTraceUnit;
 
 private:
     virtual void begin() override;
