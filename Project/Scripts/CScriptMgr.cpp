@@ -28,12 +28,12 @@
 #include "CEngineTestScript.h"
 #include "CBladeKnightScript.h"
 #include "CDetectAreaScript.h"
-#include "CHitBoxScript.h"
 #include "CNormalEnemyScript.h"
 #include "CGhostGordoScript.h"
 #include "CGordoLongScript.h"
 #include "CKabuScript.h"
 #include "CTackleEnemyScript.h"
+#include "CHotHeadScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -64,12 +64,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEngineTestScript");
 	_vec.push_back(L"CBladeKnightScript");
 	_vec.push_back(L"CDetectAreaScript");
-	_vec.push_back(L"CHitBoxScript");
 	_vec.push_back(L"CNormalEnemyScript");
 	_vec.push_back(L"CGhostGordoScript");
 	_vec.push_back(L"CGordoLongScript");
 	_vec.push_back(L"CKabuScript");
 	_vec.push_back(L"CTackleEnemyScript");
+	_vec.push_back(L"CHotHeadScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -128,8 +128,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBladeKnightScript;
 	if (L"CDetectAreaScript" == _strScriptName)
 		return new CDetectAreaScript;
-	if (L"CHitBoxScript" == _strScriptName)
-		return new CHitBoxScript;
 	if (L"CNormalEnemyScript" == _strScriptName)
 		return new CNormalEnemyScript;
 	if (L"CGhostGordoScript" == _strScriptName)
@@ -140,6 +138,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKabuScript;
 	if (L"CTackleEnemyScript" == _strScriptName)
 		return new CTackleEnemyScript;
+	if (L"CHotHeadScript" == _strScriptName)
+		return new CHotHeadScript;
 	return nullptr;
 }
 
@@ -201,8 +201,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CBladeKnightScript;
 	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
 		return new CDetectAreaScript;
-	case (UINT)SCRIPT_TYPE::HITBOXSCRIPT:
-		return new CHitBoxScript;
 	case (UINT)SCRIPT_TYPE::NORMALENEMYSCRIPT:
 		return new CNormalEnemyScript;
 	case (UINT)SCRIPT_TYPE::GHOSTGORDOSCRIPT:
@@ -213,6 +211,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKabuScript;
 	case (UINT)SCRIPT_TYPE::TACKLEENEMYSCRIPT:
 		return new CTackleEnemyScript;
+	case (UINT)SCRIPT_TYPE::HOTHEADSCRIPT:
+		return new CHotHeadScript;
 	}
 	return nullptr;
 }
@@ -275,8 +275,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CBladeKnightScript";
 	case SCRIPT_TYPE::DETECTAREASCRIPT:
 		return L"CDetectAreaScript";
-	case SCRIPT_TYPE::HITBOXSCRIPT:
-		return L"CHitBoxScript";
 	case SCRIPT_TYPE::NORMALENEMYSCRIPT:
 		return L"CNormalEnemyScript";
 	case SCRIPT_TYPE::GHOSTGORDOSCRIPT:
@@ -287,6 +285,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKabuScript";
 	case SCRIPT_TYPE::TACKLEENEMYSCRIPT:
 		return L"CTackleEnemyScript";
+	case SCRIPT_TYPE::HOTHEADSCRIPT:
+		return L"CHotHeadScript";
 	}
 	return nullptr;
 }

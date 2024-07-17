@@ -31,6 +31,10 @@ private:
     void ExitState(GHOSTGORDO_STATE _state);
 
 private:
+    void OnTriggerEnter(CCollider* _OtherCollider);
+    void OnTriggerExit(CCollider* _OtherCollider);
+
+private:
     void CloseEyeIdle();
     void OpenEyeIdle();
     void OpenEye();
@@ -41,5 +45,6 @@ private:
 public:
     CLONE(CGhostGordoScript)
     CGhostGordoScript();
+    CGhostGordoScript(const CGhostGordoScript& _Origin);
     virtual ~CGhostGordoScript();
 };

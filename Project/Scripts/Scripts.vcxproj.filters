@@ -328,9 +328,6 @@
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Monster\Utill\Detect</Filter>
     </ClInclude>
-    <ClInclude Include="CHitBoxScript.h">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
-    </ClInclude>
     <ClInclude Include="CNormalEnemyScript.h">
       <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
     </ClInclude>
@@ -345,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="CTackleEnemyScript.h">
       <Filter>Scripts\Monster\MonsterScript\TackleEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CHotHeadScript.h">
+      <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -705,6 +705,9 @@
     </ClCompile>
     <ClCompile Include="CTackleEnemyScript.cpp">
       <Filter>Scripts\Monster\MonsterScript\TackleEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CHotHeadScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1074,9 +1077,6 @@
     <Filter Include="Scripts\Monster\MonsterScript">
       <UniqueIdentifier>{f0691795-11fc-4ec7-94cb-617a5c369983}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\Monkey">
-      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Monster\MonsterScript\BladeKnight">
       <UniqueIdentifier>{902be184-f8ba-495f-a2a6-88673c9b2cfa}</UniqueIdentifier>
     </Filter>
@@ -1101,11 +1101,11 @@
     <Filter Include="Scripts\Monster\MonsterScript\TackleEnemy">
       <UniqueIdentifier>{86f1db90-617f-4cc8-8fdd-2d39d61c50b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill\Hitbox">
-      <UniqueIdentifier>{4d2414cc-e06d-49c8-a825-dd7d37084388}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Monster\Utill\Detect">
       <UniqueIdentifier>{9ff28eb8-8bc7-4e4b-852d-3087291ea3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\MonsterScript\BoomerangKnight">
+      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

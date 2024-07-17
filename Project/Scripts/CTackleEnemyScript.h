@@ -41,6 +41,10 @@ private:
     void ExitState(TACKLEENEMY_STATE _state);
 
 private:
+    void OnTriggerEnter(CCollider* _OtherCollider){};
+    void OnTriggerExit(CCollider* _OtherCollider){};
+
+private:
     void Idle();
     void Patrol();
     void Find();

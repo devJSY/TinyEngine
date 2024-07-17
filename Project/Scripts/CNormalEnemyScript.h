@@ -6,9 +6,9 @@
 enum class NORMALENEMY_STATE
 {
     Idle,
-    Sleep,
     Grooming,
     Patrol,
+    Sleep,
     Find,
     Attack,
     AttackSuccessed,
@@ -16,6 +16,7 @@ enum class NORMALENEMY_STATE
     AfterAttack,
     Damage,
     Land,
+    Eaten,
     Dead,
     End,
 };
@@ -27,15 +28,16 @@ private:
     NORMALENEMY_STATE m_eState;
     float m_fPatrolTime;
     float m_fPatrolAccTime;
+
     Vec3 m_fPatrolDir;
+    Vec3 m_vDamageDir;
 
     float m_fMaxSpeed;
     float m_fSpeed;
     float m_fRushLerp;
     float m_fRushSpeedLerp;
 
-protected:
-    virtual void TakeHit(const UnitHit& _info, const bool _IsDamaged, const bool _IsHitPlayerBody, const Vec3 _vDamageDir) override;
+    bool m_bFirst;
 
 public:
     virtual void begin() override;
@@ -55,7 +57,6 @@ private:
     void Patrol();
     void Find();
     void Attack();
-    void Sleep();
     void Grooming();
     void SuccessedAttack();
     void FailedAttack();
@@ -71,8 +72,13 @@ private:
     void ApplyDir(Vec3 _vFront, bool _flag);
     void PatrolMove();
 
+private:
+    void OnTriggerEnter(CCollider* _OtherCollider);
+    void OnTriggerExit(CCollider* _OtherCollider);
+
 public:
     CLONE(CNormalEnemyScript)
     CNormalEnemyScript();
+    CNormalEnemyScript(const CNormalEnemyScript& _Origin);
     virtual ~CNormalEnemyScript();
 };

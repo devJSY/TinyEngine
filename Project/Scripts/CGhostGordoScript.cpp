@@ -3,6 +3,13 @@
 
 CGhostGordoScript::CGhostGordoScript()
     : CMonsterUnitScript(GHOSTGORDOSCRIPT)
+    , m_eState(GHOSTGORDO_STATE::CloseEyeIdle)
+{
+}
+
+CGhostGordoScript::CGhostGordoScript(const CGhostGordoScript& _Origin)
+    : CMonsterUnitScript(_Origin)
+    , m_eState(GHOSTGORDO_STATE::CloseEyeIdle)
 {
 }
 
@@ -30,10 +37,19 @@ void CGhostGordoScript::tick()
     case GHOSTGORDO_STATE::OpenEye: {
         OpenEye();
     }
-    case GHOSTGORDO_STATE::Track:
-        break;
-    case GHOSTGORDO_STATE::TrackAfter:
-        break;
+    break;
+    case GHOSTGORDO_STATE::Find: {
+        Find();
+    }
+    break;
+    case GHOSTGORDO_STATE::Track: {
+        Track();
+    }
+    break;
+    case GHOSTGORDO_STATE::TrackAfter: {
+        TrackAfter();
+    }
+    break;
     case GHOSTGORDO_STATE::End:
         break;
     default:
@@ -70,9 +86,8 @@ void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
         Animator()->Play(ANIMPREFIX(L"Look"));
     }
     break;
-    case GHOSTGORDO_STATE::Find:
-    {
-        Animator()->Play(ANIMPREFIX(L"LowToHighSub"),false);
+    case GHOSTGORDO_STATE::Find: {
+        Animator()->Play(ANIMPREFIX(L"LowToHighSub"), false);
     }
     break;
     case GHOSTGORDO_STATE::Track: {
@@ -84,6 +99,7 @@ void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
     }
     break;
     case GHOSTGORDO_STATE::TrackAfter: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Animator()->Play(ANIMPREFIX(L"Look"), false);
     }
     break;
@@ -111,6 +127,17 @@ void CGhostGordoScript::ExitState(GHOSTGORDO_STATE _state)
     }
 }
 
+void CGhostGordoScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    LAYER_PLAYER == pObj->GetLayerIdx() ? ChangeState(GHOSTGORDO_STATE::OpenEyeIdle) : void();
+}
+
+void CGhostGordoScript::OnTriggerExit(CCollider* _OtherCollider)
+{
+}
+
 void CGhostGordoScript::CloseEyeIdle()
 {
     // TODO : ºû °¨Áö ±îÁö
@@ -122,6 +149,8 @@ void CGhostGordoScript::CloseEyeIdle()
 
 void CGhostGordoScript::OpenEyeIdle()
 {
+    Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX(L"EyeOpenWait")) : void();
+    
     // TODO : ºû °¨Áö ±îÁö
     if (nullptr != GetTarget())
     {
@@ -136,12 +165,12 @@ void CGhostGordoScript::OpenEye()
 
 void CGhostGordoScript::Find()
 {
-    TransformRotate();
     Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::Track) : void();
 }
 
 void CGhostGordoScript::Track()
 {
+    TransformRotate();
     nullptr != GetTarget() ? RigidbodyMove(GetTarget()) : ChangeState(GHOSTGORDO_STATE::TrackAfter);
 }
 

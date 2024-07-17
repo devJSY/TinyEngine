@@ -118,7 +118,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CGhostGordoScript.h" />
     <ClInclude Include="CGordoLongScript.h" />
-    <ClInclude Include="CHitBoxScript.h" />
+    <ClInclude Include="CHotHeadScript.h" />
     <ClInclude Include="CKabuScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
@@ -235,7 +235,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CGhostGordoScript.cpp" />
     <ClCompile Include="CGordoLongScript.cpp" />
-    <ClCompile Include="CHitBoxScript.cpp" />
+    <ClCompile Include="CHotHeadScript.cpp" />
     <ClCompile Include="CKabuScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />

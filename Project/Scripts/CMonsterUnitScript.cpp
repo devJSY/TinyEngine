@@ -4,7 +4,7 @@
 CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     : CUnitScript(_Type)
     , m_pTargetObj(nullptr)
-    , m_fBodyDamage(0.f)
+    , m_HitInfo{}
 {
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
@@ -12,12 +12,14 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
 }
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(_Origin)
-    , m_pTargetObj(_Origin.m_pTargetObj)
-    , m_fBodyDamage(_Origin.m_fBodyDamage)
+    , m_HitInfo(_Origin.m_HitInfo)
 {
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
@@ -25,22 +27,13 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
 }
 
 CMonsterUnitScript::~CMonsterUnitScript()
 {
-}
-
-void CMonsterUnitScript::TakeHit(const UnitHit& _info, const bool _IsDamaged, const bool _IsHitPlayerBody, const Vec3 _vDamageDir)
-{
-    m_IsDamaged = _IsDamaged;
-    m_IsHitPlayerBody = _IsHitPlayerBody;
-    m_vDamageDir = _vDamageDir;
-
-    if (_info.Damage > 0.f)
-    {
-        GetDamage(_info);
-    }
 }
 
 void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
@@ -50,8 +43,7 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
     {
         Vec3 Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-        Rigidbody()->AddForce(Dir * m_CurInfo.Speed, ForceMode::VelocityChange);
-        // Rigidbody()->SetVelocity(FrontDir * m_CurInfo.Speed); 동일한 기능을 하는 코드
+        Rigidbody()->SetVelocity(Dir * m_CurInfo.Speed);
     }
     // 타겟 방향으로 이동
     else
@@ -59,8 +51,7 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
         Vec3 ToTargetDir = m_pTargetObj->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         ToTargetDir.Normalize();
 
-        Rigidbody()->AddForce(ToTargetDir * m_CurInfo.Speed, ForceMode::VelocityChange);
-        // Rigidbody()->SetVelocity(FrontDir * m_CurInfo.Speed); 동일한 기능을 하는 코드
+        Rigidbody()->SetVelocity(ToTargetDir * m_CurInfo.Speed);
     }
 }
 
@@ -93,9 +84,11 @@ void CMonsterUnitScript::TransformRotate()
 void CMonsterUnitScript::SaveToLevelFile(FILE* _File)
 {
     CUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
 }
 
 void CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
 {
     CUnitScript::LoadFromLevelFile(_File);
+    fread(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
 }

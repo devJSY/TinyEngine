@@ -8,12 +8,32 @@ CNormalEnemyScript::CNormalEnemyScript()
     , m_fPatrolTime(4.f)
     , m_fPatrolAccTime(0.f)
     , m_fPatrolDir{}
-    , m_fMaxSpeed(10.f)
-    , m_fSpeed(10.f)
-    , m_fRushLerp(1.f)
-    , m_fRushSpeedLerp(1.f)
+    , m_fMaxSpeed(0.f)
+    , m_fSpeed(0.f)
+    , m_fRushLerp(0.f)
+    , m_fRushSpeedLerp(0.f)
+    , m_bFirst(false)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, " Rush Max Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
+}
+
+CNormalEnemyScript::CNormalEnemyScript(const CNormalEnemyScript& _Origin)
+    : CMonsterUnitScript(_Origin)
+    , m_pTargetObject(nullptr)
+    , m_eState(NORMALENEMY_STATE::Idle)
+    , m_fPatrolTime(_Origin.m_fPatrolTime)
+    , m_fPatrolAccTime(0.f)
+    , m_fPatrolDir{}
+    , m_fMaxSpeed(_Origin.m_fMaxSpeed)
+    , m_fSpeed(_Origin.m_fSpeed)
+    , m_fRushLerp(m_fRushLerp)
+    , m_fRushSpeedLerp(m_fRushSpeedLerp)
+    , m_bFirst(false)
+{
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
@@ -35,10 +55,6 @@ void CNormalEnemyScript::tick()
     {
     case NORMALENEMY_STATE::Idle: {
         Idle();
-    }
-    break;
-    case NORMALENEMY_STATE::Sleep: {
-        Sleep();
     }
     break;
     case NORMALENEMY_STATE::Grooming: {
@@ -76,6 +92,11 @@ void CNormalEnemyScript::tick()
     case NORMALENEMY_STATE::Dead: {
         Dead();
     }
+    break;
+    case NORMALENEMY_STATE::Land: {
+        Land();
+    }
+    break;
     case NORMALENEMY_STATE::End:
         break;
     default:
@@ -85,10 +106,12 @@ void CNormalEnemyScript::tick()
 
 void CNormalEnemyScript::ChangeState(NORMALENEMY_STATE _state)
 {
-    EnterState(_state);
-    NORMALENEMY_STATE _prev = m_eState;
+    ExitState(m_eState);
     m_eState = _state;
-    ExitState(_prev);
+    EnterState(_state);
+
+    string tmp = string("[State Change] : ") + to_string((int)_state);
+    LOG(LOG_LEVEL::Log, tmp.c_str());
 }
 
 void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
@@ -99,8 +122,16 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
         Animator()->Play(ANIMPREFIX(L"Wait"), false);
     }
     break;
+    case NORMALENEMY_STATE::Grooming: {
+        Animator()->Play(ANIMPREFIX(L"Grooming"));
+    }
+    break;
     case NORMALENEMY_STATE::Patrol: {
         Animator()->Play(ANIMPREFIX(L"Walk"), true, false, 1.5f);
+    }
+    break;
+    case NORMALENEMY_STATE::Sleep: {
+        Animator()->Play(ANIMPREFIX(L"Sleep"));
     }
     break;
     case NORMALENEMY_STATE::Find: {
@@ -111,19 +142,11 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
         Animator()->Play(ANIMPREFIX(L"Run"));
     }
     break;
-    case NORMALENEMY_STATE::AttackSuccessed:
-    {
-        //Rigidbody()->SetVelocity(Vec3(0.f,0.f,0.f));
-        Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        vDir *= -1.f;
-        vDir.y = 1.f;
-        vDir = vDir.Normalize();
-        Rigidbody()->AddForce(vDir * 4000.f, ForceMode::Impulse);
-        Animator()->Play(ANIMPREFIX(L"Damage"),false,false,1.5f);
-
+    case NORMALENEMY_STATE::AttackSuccessed: {
+        Animator()->Play(ANIMPREFIX(L"Damage"), false, false, 1.5f);
         m_pTargetObject = nullptr;
     }
-        break;
+    break;
     case NORMALENEMY_STATE::AttackFailed: {
         Animator()->Play(ANIMPREFIX(L"Brake"), false, false, 1.5f);
     }
@@ -133,7 +156,19 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
     }
     break;
     case NORMALENEMY_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX(L"Damage"), false, false, 1.5f);
+    }
+    break;
+    case NORMALENEMY_STATE::Land: {
+        Animator()->Play(ANIMPREFIX(L"Landing"), false);
+    }
+    break;
+    case NORMALENEMY_STATE::Eaten: {
+        m_vDamageDir.Normalize();
+        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+        Quat vQuat = Quat::LookRotation(m_vDamageDir, vUp);
+        Transform()->SetWorldRotation(vQuat);
+        Animator()->Play(ANIMPREFIX(L"Damage"), true, false, 1.5f);
     }
     break;
     case NORMALENEMY_STATE::End:
@@ -147,33 +182,16 @@ void CNormalEnemyScript::ExitState(NORMALENEMY_STATE _state)
 {
     switch (_state)
     {
-    case NORMALENEMY_STATE::Idle:
-        break;
-    case NORMALENEMY_STATE::Patrol:
-        break;
-    case NORMALENEMY_STATE::Find:
-        break;
-    case NORMALENEMY_STATE::Attack: {
-    }
-    break;
-    case NORMALENEMY_STATE::AttackSuccessed:
-    {
+    case NORMALENEMY_STATE::AttackSuccessed: {
         m_pTargetObject = nullptr;
         m_fSpeed = m_fMaxSpeed;
     }
-        break;
+    break;
     case NORMALENEMY_STATE::AttackFailed: {
         m_pTargetObject = nullptr;
         m_fSpeed = m_fMaxSpeed;
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
-    case NORMALENEMY_STATE::Damage:
-        break;
-    case NORMALENEMY_STATE::End:
-        break;
-    default:
-        break;
     }
 }
 
@@ -192,12 +210,19 @@ void CNormalEnemyScript::Idle()
     }
 }
 
-void CNormalEnemyScript::Sleep()
-{
-}
-
 void CNormalEnemyScript::Grooming()
 {
+    if (nullptr != GetTarget())
+    {
+        ChangeState(NORMALENEMY_STATE::Find);
+    }
+    else
+    {
+        if (Animator()->IsFinish())
+        {
+            ChangeState(RandomIdleState());
+        }
+    }
 }
 
 void CNormalEnemyScript::Patrol()
@@ -237,8 +262,22 @@ void CNormalEnemyScript::Attack()
 
 void CNormalEnemyScript::SuccessedAttack()
 {
+    if (!m_bFirst)
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        vDir *= -1.f;
+        vDir.y = 1.f;
+        vDir = vDir.Normalize();
+        vDir.y = 1.f;
+
+        Rigidbody()->AddForce(vDir * 100.f, ForceMode::Impulse);
+        m_bFirst = true;
+    }
+
     if (Animator()->IsFinish())
     {
+        m_bFirst = false;
         ChangeState(NORMALENEMY_STATE::Land);
     }
 }
@@ -285,6 +324,16 @@ void CNormalEnemyScript::AfterAttack()
 
 void CNormalEnemyScript::Damage()
 {
+    if (!m_bFirst)
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+
+        m_vDamageDir.Normalize();
+        m_vDamageDir.y = 1.5f;
+        Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
+        m_bFirst = true;
+    }
+
     if (Animator()->IsFinish())
     {
         if (nullptr != GetTarget())
@@ -298,6 +347,7 @@ void CNormalEnemyScript::Damage()
                 ChangeState(RandomIdleState());
             }
         }
+        m_bFirst = false;
     }
 }
 
@@ -307,27 +357,9 @@ void CNormalEnemyScript::Dead()
         GamePlayStatic::DestroyGameObject(GetOwner());
 }
 
-void CNormalEnemyScript::TakeHit(const UnitHit& _info, const bool _IsDamaged, const bool _IsHitPlayerBody, const Vec3 _vDamageDir)
-{
-    CMonsterUnitScript::TakeHit(_info, _IsDamaged, _IsHitPlayerBody, _vDamageDir);
-
-    if (GetCurInfo().HP - _info.Damage <= 0.f)
-    {
-        ChangeState(NORMALENEMY_STATE::Dead);
-    }
-    else if (_IsHitPlayerBody && NORMALENEMY_STATE::Attack == m_eState)
-    {
-        ChangeState(NORMALENEMY_STATE::AttackSuccessed);
-    }
-    else
-    {
-        ChangeState(NORMALENEMY_STATE::Damage);
-    }
-}
-
 NORMALENEMY_STATE CNormalEnemyScript::RandomIdleState()
 {
-    return NORMALENEMY_STATE::Patrol; // NORMALENEMY_STATE(GetRandomInt(0, 1));
+    return NORMALENEMY_STATE(GetRandomInt(0, 2));
 }
 
 Vec3 CNormalEnemyScript::RandomPatrolDir()
@@ -428,6 +460,76 @@ void CNormalEnemyScript::PatrolMove()
     Rigidbody()->SetVelocity(vDir * fSpeed);
 }
 
+void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    if (NORMALENEMY_STATE::Eaten == m_eState)
+        return;
+
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    bool flag = false;
+
+    UnitHit hit;
+    ZeroMemory(&hit, sizeof(hit));
+    /**********************
+    | 1. Player ATK Hit
+    ***********************/
+
+    // 충돌한 오브젝트가 플레이어 공격인지 확인
+    if (LAYER_PLAYERATK == pObj->GetLayerIdx())
+    {
+        flag = true;
+        // TODO : 플레이어 공격 데미지 가지고 오기
+
+        GetDamage(hit);
+        ChangeState(NORMALENEMY_STATE::Damage);
+        m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+    }
+
+    /**********************
+    | 2. Player Body Hit
+    ***********************/
+    // 충돌한 오브젝트가 PlayerBody인지 확인
+
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
+        if (L"Vacuum Collider" == pObj->GetName())
+        {
+            ChangeState(NORMALENEMY_STATE::Eaten);
+            m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+            return;
+        }
+
+        flag = true;
+
+        // 자기 자신의 데미지
+        GetDamage(GetHitInfo());
+
+        if (NORMALENEMY_STATE::AttackFailed == m_eState || NORMALENEMY_STATE::Attack == m_eState)
+        {
+            ChangeState(NORMALENEMY_STATE::AttackSuccessed);
+        }
+        else
+        {
+            ChangeState(NORMALENEMY_STATE::Damage);
+            m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+        }
+    }
+
+    // 둘 중 하나라도 피격 되었다면 체력 확인
+    if (flag)
+    {
+        if (GetCurInfo().HP - hit.Damage <= 0.f)
+        {
+            ChangeState(NORMALENEMY_STATE::Dead);
+        }
+    }
+}
+
+void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
+{
+}
+
 Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
 {
     return (m_pTargetObject->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
@@ -435,10 +537,19 @@ Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
 
 void CNormalEnemyScript::SaveToLevelFile(FILE* _File)
 {
-    //CMonsterUnitScript::SaveToLevelFile(_File);
+    CMonsterUnitScript::SaveToLevelFile(_File);
 
+    fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fRushLerp, sizeof(float), 1, _File);
+    fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
 }
 
 void CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
 {
+    CMonsterUnitScript::LoadFromLevelFile(_File);
+    fread(&m_fMaxSpeed, sizeof(float), 1, _File);
+    fread(&m_fSpeed, sizeof(float), 1, _File);
+    fread(&m_fRushLerp, sizeof(float), 1, _File);
+    fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
 }

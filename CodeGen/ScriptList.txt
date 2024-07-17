@@ -25,9 +25,9 @@ CUIUnitManagerScript
 CEngineTestScript
 CBladeKnightScript
 CDetectAreaScript
-CHitBoxScript
 CNormalEnemyScript
 CGhostGordoScript
 CGordoLongScript
 CKabuScript
 CTackleEnemyScript
+CHotHeadScript
