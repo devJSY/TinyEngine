@@ -46,9 +46,6 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
         // 무적 상태가 아닌경우
         else
         {
-            // 무적상태로 바꿈
-            PLAYERFSM->SetInvincible();
-
             // 날라가는 방향 설정
             Vec3 MonsterPos = _OtherCollider->Transform()->GetWorldPos();
             Vec3 KirbyPos = Transform()->GetWorldPos();

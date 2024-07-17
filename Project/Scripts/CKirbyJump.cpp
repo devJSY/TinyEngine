@@ -68,7 +68,26 @@ void CKirbyJump::tick()
 
             break;
 
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
+        {
+            if (KEY_TAP(KEY_ATK))
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+            else if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+        }
+
             break;
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))

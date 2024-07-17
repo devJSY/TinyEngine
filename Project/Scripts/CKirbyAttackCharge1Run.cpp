@@ -49,7 +49,7 @@ void CKirbyAttackCharge1Run::tick()
         }
     }
         break;
-    case AbilityCopyType::RANGER:
+    case AbilityCopyType::CUTTER:
         break;
     case AbilityCopyType::SWORD:
         break;

@@ -59,7 +59,21 @@ void CKirbyJumpFall::tick()
             }
         }
             break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER: 
+        {
+            if (KEY_TAP(KEY_ATK))
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+        }
             break;
         case AbilityCopyType::SWORD: {
             if (PLAYERFSM->GetSlideComboLevel())

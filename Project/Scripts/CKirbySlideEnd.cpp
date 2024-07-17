@@ -19,7 +19,7 @@ void CKirbySlideEnd::tick()
     {
     case AbilityCopyType::NORMAL:
     case AbilityCopyType::FIRE:
-    case AbilityCopyType::RANGER: {
+    case AbilityCopyType::CUTTER: {
         if (PLAYER->Animator()->IsFinish())
         {
             if (KEY_TAP_ARROW || KEY_PRESSED_ARROW)

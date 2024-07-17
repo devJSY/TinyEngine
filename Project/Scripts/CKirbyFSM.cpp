@@ -6,6 +6,7 @@
 
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyAbility_Fire.h"
+#include "CKirbyAbility_Cutter.h"
 #include "CKirbyAbility_Sword.h"
 
 CKirbyFSM::CKirbyFSM()
@@ -28,7 +29,7 @@ CKirbyFSM::CKirbyFSM()
     , m_bHovering(false)
     , m_bInvincible(false)
     , m_InvincibleAcc(0.f)
-    , m_InvincibleDuration(3.f)
+    , m_InvincibleDuration(0.f)
     , m_EmissiveCoef(0.f)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
@@ -36,6 +37,7 @@ CKirbyFSM::CKirbyFSM()
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
+    m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 }
 
@@ -279,10 +281,22 @@ void CKirbyFSM::tick()
         m_HoveringAccTime += DT;
     }
 
-    // 무적상태 관리
+    // 무적 상태 관리
     if (m_bInvincible)
     {
         m_InvincibleAcc += DT;
+
+        if (m_InvincibleAcc > m_InvincibleDuration)
+        {
+            // 무적 상태 해제
+            m_bInvincible = false;
+        }
+    }
+
+    // Emissive 상태 관리
+    if (m_bEmissive)
+    {
+        m_EmissiveAcc += DT;
 
         m_EmissiveCoef += 3.f * DT;
 
@@ -300,10 +314,10 @@ void CKirbyFSM::tick()
             PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_EmissiveCoef);
         }
 
-        if (m_InvincibleAcc > m_InvincibleDuration)
+        if (m_EmissiveAcc > m_EmissiveDuration)
         {
-            m_bInvincible = false;
-            m_InvincibleAcc = 0.f;
+            // Emissive 상태 해제
+            m_bEmissive = false;
             m_EmissiveCoef = 0.f;
             PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
         }
@@ -324,7 +338,7 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
     }
         break;
     case AbilityCopyType::FIRE:
-    case AbilityCopyType::RANGER:
+    case AbilityCopyType::CUTTER:
     case AbilityCopyType::SWORD:
     {
         m_NextAbility = _Type;
@@ -366,6 +380,63 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     }
 
     m_bHovering = _bHovering;
+}
+
+void CKirbyFSM::SetInvincible(bool _Invincible, float _Duration)
+{
+    if (_Duration != 0.f)
+    {
+        m_InvincibleDuration = _Duration;
+        m_InvincibleAcc = 0.f;
+    }
+
+    if (_Invincible == true)
+    {
+        m_bInvincible = true;
+    }
+    else
+    {
+        if (m_InvincibleAcc > m_InvincibleDuration)
+        {
+            m_bInvincible = false;
+        }
+    }
+}
+
+void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
+{
+    if (_Emissive == false)
+    {
+        m_bEmissive = false;
+        m_EmissiveCoef = 0.f;
+        PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+
+        m_EmissiveAcc = 0.f;
+        m_EmissiveDuration = 0.f;
+    }
+    else
+    {
+        // 현재 적용되고 있는 Emissive가 있는 경우
+        if (m_bEmissive)
+        {
+            float RemainTime = m_EmissiveDuration - m_EmissiveAcc;
+
+            // 남은 Emissive 시간보다 더 긴 경우 새로 입력받은 Emissive를 적용
+            if (RemainTime < _Duration)
+            {
+                m_EmissiveDuration = _Duration;
+                m_EmissiveAcc = 0.f;
+            }
+        }
+        // 현재 적용되고 있는 Emissive가 없는 경우 바로 적용한다.
+        else
+        {
+            m_bEmissive = true;
+
+            m_EmissiveDuration = _Duration;
+            m_EmissiveAcc = 0.f;
+        }
+    }
 }
 
 void CKirbyFSM::ClearStuff()

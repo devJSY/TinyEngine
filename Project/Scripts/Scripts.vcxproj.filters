@@ -346,6 +346,12 @@
     <ClInclude Include="CKirbyDropAbility.h">
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyAbility_Cutter.h">
+      <Filter>State\KirbyAbility\Cutter</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHatBlade.h">
+      <Filter>Scripts\Character\Kirby\KirbyHatBlade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -705,6 +711,12 @@
     <ClCompile Include="CKirbyDropAbility.cpp">
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyAbility_Cutter.cpp">
+      <Filter>State\KirbyAbility\Cutter</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHatBlade.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyHatBlade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -977,9 +989,6 @@
     <Filter Include="State\KirbyState\Stuffed\Eat">
       <UniqueIdentifier>{274a9390-4fbf-49b1-8bb8-0290e3f4d1e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyAbility\Ranger">
-      <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyAbility\Fire">
       <UniqueIdentifier>{74495eea-de54-4e2e-ace2-c9f619f40932}</UniqueIdentifier>
     </Filter>
@@ -1102,6 +1111,12 @@
     </Filter>
     <Filter Include="State\KirbyState\Burning\BurningEnd">
       <UniqueIdentifier>{2f86c255-94f2-4343-be20-9f9e100966c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Cutter">
+      <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyHatBlade">
+      <UniqueIdentifier>{9482f434-aef7-43dc-8241-cceea4903ecf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

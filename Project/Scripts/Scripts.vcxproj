@@ -115,6 +115,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyAbility_Cutter.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
     <ClInclude Include="CKirbyAbility_Sword.h" />
@@ -159,6 +160,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyDropAbility.h" />
     <ClInclude Include="CKirbyGuard.h" />
     <ClInclude Include="CKirbyGuardRun.h" />
+    <ClInclude Include="CKirbyHatBlade.h" />
     <ClInclude Include="CKirbyJumpAttack.h" />
     <ClInclude Include="CKirbyJumpAttackStart.h" />
     <ClInclude Include="CKirbySlide.h" />
@@ -232,6 +234,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyAbility_Cutter.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
     <ClCompile Include="CKirbyAbility_Sword.cpp" />
@@ -276,6 +279,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyDropAbility.cpp" />
     <ClCompile Include="CKirbyGuard.cpp" />
     <ClCompile Include="CKirbyGuardRun.cpp" />
+    <ClCompile Include="CKirbyHatBlade.cpp" />
     <ClCompile Include="CKirbyJumpAttack.cpp" />
     <ClCompile Include="CKirbyJumpAttackStart.cpp" />
     <ClCompile Include="CKirbySlide.cpp" />

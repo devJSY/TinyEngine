@@ -44,7 +44,26 @@ void CKirbyRun::tick()
             }
         }
         break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER: 
+        {
+            if (KEY_TAP(KEY_ATK))
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+            {
+                ChangeState(L"GUARD");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
+            }
+        }
+
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {

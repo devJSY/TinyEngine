@@ -50,7 +50,7 @@ enum class AbilityCopyType
     NONE,
     NORMAL,
     FIRE,
-    RANGER,
+    CUTTER,
     SWORD,
 
     END,

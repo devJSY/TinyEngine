@@ -70,7 +70,6 @@ public:
     virtual void SlideAttackEnter(){};
     virtual void SlideAttackExit(){};
 
-    //virtual void Evasiveness();
 
     virtual void Attack(){};
     virtual void AttackEnter(){};

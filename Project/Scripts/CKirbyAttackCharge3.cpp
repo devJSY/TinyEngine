@@ -25,7 +25,7 @@ void CKirbyAttackCharge3::tick()
             break;
         case AbilityCopyType::FIRE:
             break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
             break;
         case AbilityCopyType::SWORD:
         {

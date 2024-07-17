@@ -58,7 +58,7 @@ void CKirbyAttackCharge1::tick()
             }
         }
             break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
             break;
         case AbilityCopyType::SWORD: {
             if (GetOwner()->Animator()->IsFinish())

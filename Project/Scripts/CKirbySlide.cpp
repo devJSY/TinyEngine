@@ -24,7 +24,7 @@ void CKirbySlide::tick()
     {
     case AbilityCopyType::NORMAL:
     case AbilityCopyType::FIRE:
-    case AbilityCopyType::RANGER: {
+    case AbilityCopyType::CUTTER: {
         if (m_Acc > m_Duration)
         {
             ChangeState(L"SLIDE_END");

@@ -32,6 +32,7 @@
 #include "CMonsterMoveController.h"
 #include "CPlayerTestScript.h"
 #include "CMonsterMoveTest.h"
+#include "CKirbyHatBlade.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -66,6 +67,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterMoveController");
 	_vec.push_back(L"CPlayerTestScript");
 	_vec.push_back(L"CMonsterMoveTest");
+	_vec.push_back(L"CKirbyHatBlade");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -132,6 +134,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerTestScript;
 	if (L"CMonsterMoveTest" == _strScriptName)
 		return new CMonsterMoveTest;
+	if (L"CKirbyHatBlade" == _strScriptName)
+		return new CKirbyHatBlade;
 	return nullptr;
 }
 
@@ -201,6 +205,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayerTestScript;
 	case (UINT)SCRIPT_TYPE::MONSTERMOVETEST:
 		return new CMonsterMoveTest;
+	case (UINT)SCRIPT_TYPE::KIRBYHATBLADE:
+		return new CKirbyHatBlade;
 	}
 	return nullptr;
 }
@@ -271,6 +277,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerTestScript";
 	case SCRIPT_TYPE::MONSTERMOVETEST:
 		return L"CMonsterMoveTest";
+	case SCRIPT_TYPE::KIRBYHATBLADE:
+		return L"CKirbyHatBlade";
 	}
 	return nullptr;
 }
