@@ -320,16 +320,16 @@
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClInclude>
     <ClInclude Include="CBladeKnightScript.h">
-      <Filter>Scripts\Monster\MonsterScript\BladeKnight</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClInclude>
     <ClInclude Include="CMonsterUnitScript.h">
       <Filter>Module\Unit</Filter>
     </ClInclude>
     <ClInclude Include="CHitBoxScript.h">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
+      <Filter>Scripts\Character\Monster\Utill\Hitbox</Filter>
     </ClInclude>
     <ClInclude Include="CDetectAreaScript.h">
-      <Filter>Scripts\Monster\Utill\Detect</Filter>
+      <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -664,16 +664,16 @@
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClCompile>
     <ClCompile Include="CBladeKnightScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\BladeKnight</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClCompile>
     <ClCompile Include="CMonsterUnitScript.cpp">
       <Filter>Module\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CHitBoxScript.cpp">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
+      <Filter>Scripts\Character\Monster\Utill\Hitbox</Filter>
     </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
-      <Filter>Scripts\Monster\Utill\Detect</Filter>
+      <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1034,47 +1034,47 @@
     <Filter Include="State\KirbyState\AttackAirGuard\ChargeStart">
       <UniqueIdentifier>{8cd27366-925f-41d8-8681-b1753c4f157e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster">
+    <Filter Include="Scripts\Character\Monster">
       <UniqueIdentifier>{9c1bd081-6050-4167-9355-3f2c5bad598f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill">
+    <Filter Include="Scripts\Character\Monster\Utill">
       <UniqueIdentifier>{3b1f9935-ef44-484e-8c64-99e49f338150}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript">
-      <UniqueIdentifier>{f0691795-11fc-4ec7-94cb-617a5c369983}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\Monkey">
-      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\BladeKnight">
-      <UniqueIdentifier>{902be184-f8ba-495f-a2a6-88673c9b2cfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\GhostGordo">
-      <UniqueIdentifier>{4e70f052-ae78-4305-ac91-3b2fd98a090c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\GordoLong">
-      <UniqueIdentifier>{9cac0791-2317-4361-9528-2834eb79fd19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\HotHead">
-      <UniqueIdentifier>{59dbe434-2c73-4a4f-912c-9f70c32441aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\Kabu">
-      <UniqueIdentifier>{0a7ece9d-280f-4688-a3cd-3f3737db09ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\Noddy">
-      <UniqueIdentifier>{f94cbe65-0bbb-4a0f-a078-95b7e1d6efc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\NormalEnemy">
-      <UniqueIdentifier>{1a2be127-aee8-41f7-983f-048016e853bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\TackleEnemy">
-      <UniqueIdentifier>{86f1db90-617f-4cc8-8fdd-2d39d61c50b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\Utill\Hitbox">
+    <Filter Include="Scripts\Character\Monster\Utill\Hitbox">
       <UniqueIdentifier>{4d2414cc-e06d-49c8-a825-dd7d37084388}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill\Detect">
+    <Filter Include="Scripts\Character\Monster\Utill\Detect">
       <UniqueIdentifier>{9ff28eb8-8bc7-4e4b-852d-3087291ea3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript">
+      <UniqueIdentifier>{f0691795-11fc-4ec7-94cb-617a5c369983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Monkey">
+      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\BladeKnight">
+      <UniqueIdentifier>{902be184-f8ba-495f-a2a6-88673c9b2cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\GhostGordo">
+      <UniqueIdentifier>{4e70f052-ae78-4305-ac91-3b2fd98a090c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\GordoLong">
+      <UniqueIdentifier>{9cac0791-2317-4361-9528-2834eb79fd19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\HotHead">
+      <UniqueIdentifier>{59dbe434-2c73-4a4f-912c-9f70c32441aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Kabu">
+      <UniqueIdentifier>{0a7ece9d-280f-4688-a3cd-3f3737db09ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Noddy">
+      <UniqueIdentifier>{f94cbe65-0bbb-4a0f-a078-95b7e1d6efc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\NormalEnemy">
+      <UniqueIdentifier>{1a2be127-aee8-41f7-983f-048016e853bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\TackleEnemy">
+      <UniqueIdentifier>{86f1db90-617f-4cc8-8fdd-2d39d61c50b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

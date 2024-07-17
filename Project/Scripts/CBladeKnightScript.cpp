@@ -4,12 +4,14 @@
 CBladeKnightScript::CBladeKnightScript()
     : CMonsterUnitScript(BLADEKNIGHTSCRIPT)
     , m_State(BLADEKNIGHT_STATE::Wait)
+    , m_PassedTime(0.f)
 {
 }
 
 CBladeKnightScript::CBladeKnightScript(const CBladeKnightScript& origin)
     : CMonsterUnitScript(origin)
     , m_State(origin.m_State)
+    , m_PassedTime(origin.m_PassedTime)
 {
 }
 
@@ -104,6 +106,7 @@ void CBladeKnightScript::ChangeState(BLADEKNIGHT_STATE _NextState)
 {
     ExitState();
     m_State = _NextState;
+    m_PassedTime = 0.f;
     EnterState();
 }
 
@@ -132,7 +135,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Find: {
-        Animator()->Play(ANIMPREFIX("Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false, false, 1.f);
     }
     break;
     case BLADEKNIGHT_STATE::FindWait: {
@@ -140,11 +143,11 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::FindWaitSub: {
-        Animator()->Play(ANIMPREFIX("FindWaitSub"));
+        Animator()->Play(ANIMPREFIX("FindWaitSub"), true, false, 1.f);
     }
     break;
     case BLADEKNIGHT_STATE::Landing: {
-        Animator()->Play(ANIMPREFIX("Landing"), false);
+        Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.f);
     }
     break;
     case BLADEKNIGHT_STATE::Move: {
@@ -176,7 +179,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::ThrustWait: {
-        Animator()->Play(ANIMPREFIX("ThrustWait"));
+        Animator()->Play(ANIMPREFIX("ThrustWait"), true, false, 2.5f, 0.5);
     }
     break;
     case BLADEKNIGHT_STATE::TonadoAttack: {
@@ -196,7 +199,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Wait: {
-        Animator()->Play(ANIMPREFIX("Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 2.5f, 0.5);
     }
     break;
     }
@@ -228,6 +231,8 @@ void CBladeKnightScript::ExitState()
     }
     break;
     case BLADEKNIGHT_STATE::FindWaitSub: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::Landing: {
@@ -235,6 +240,7 @@ void CBladeKnightScript::ExitState()
     break;
     case BLADEKNIGHT_STATE::Move: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::Retreat: {
@@ -294,32 +300,92 @@ void CBladeKnightScript::DoubleAttack()
 
 void CBladeKnightScript::Fall()
 {
+    if (IsGround())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Landing);
+    }
 }
 
 void CBladeKnightScript::Find()
 {
+    TransformRotate();
+
+    if (Animator()->IsFinish())
+    {
+        ChangeState(BLADEKNIGHT_STATE::FindWait);
+    }
 }
 
 void CBladeKnightScript::FindWait()
 {
+    m_PassedTime += DT;
+
+    if (m_PassedTime > 3.f)
+    {
+        ChangeState(BLADEKNIGHT_STATE::Wait);
+    }
+
+    if (nullptr != GetTarget() && m_PassedTime > 1.f)
+    {
+        ChangeState(BLADEKNIGHT_STATE::FindWaitSub);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Fall);
+    }
 }
 
 void CBladeKnightScript::FindWaitSub()
-{
-}
-
-void CBladeKnightScript::Landing()
-{
-}
-
-void CBladeKnightScript::Move()
 {
     RigidbodyMove(GetTarget());
     TransformRotate();
 
     if (nullptr == GetTarget())
     {
+        ChangeState(BLADEKNIGHT_STATE::FindWait);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Fall);
+    }
+}
+
+void CBladeKnightScript::Landing()
+{
+    if (Animator()->IsFinish())
+    {
+        if (nullptr == GetTarget())
+        {
+            ChangeState(BLADEKNIGHT_STATE::Wait);
+        }
+        else
+        {
+            ChangeState(BLADEKNIGHT_STATE::FindWait);
+        }
+    }
+}
+
+void CBladeKnightScript::Move()
+{
+    RigidbodyMove(GetTarget());
+
+    m_PassedTime += DT;
+
+    if (m_PassedTime > 1.f)
+    {
         ChangeState(BLADEKNIGHT_STATE::Wait);
+    }
+
+    if (nullptr != GetTarget())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Find);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Fall);
     }
 }
 
@@ -369,9 +435,21 @@ void CBladeKnightScript::TonadoAttackChargeMax()
 
 void CBladeKnightScript::Wait()
 {
-    if (nullptr != GetTarget())
+    m_PassedTime += DT;
+
+    if (m_PassedTime > 5.f)
     {
         ChangeState(BLADEKNIGHT_STATE::Move);
+    }
+
+    if (nullptr != GetTarget())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Find);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Fall);
     }
 }
 
@@ -384,18 +462,6 @@ void CBladeKnightScript::OnCollisionStay(CCollider* _OtherCollider)
 }
 
 void CBladeKnightScript::OnCollisionExit(CCollider* _OtherCollider)
-{
-}
-
-void CBladeKnightScript::OnTriggerEnter(CCollider* _OtherCollider)
-{
-}
-
-void CBladeKnightScript::OnTriggerStay(CCollider* _OtherCollider)
-{
-}
-
-void CBladeKnightScript::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
 

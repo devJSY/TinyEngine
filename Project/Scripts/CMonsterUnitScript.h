@@ -5,6 +5,7 @@ class CMonsterUnitScript : public CUnitScript
 {
 private:
     CGameObject* m_pTargetObj;
+    float m_RaycastDist;
 
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
@@ -12,6 +13,7 @@ protected:
 
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
     void TransformRotate();
+    bool IsGround();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

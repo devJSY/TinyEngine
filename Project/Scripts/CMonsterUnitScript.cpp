@@ -4,25 +4,29 @@
 CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     : CUnitScript(_Type)
     , m_pTargetObj(nullptr)
+    , m_RaycastDist(100.f)
 {
-    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
 }
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(_Origin)
     , m_pTargetObj(_Origin.m_pTargetObj)
+    , m_RaycastDist(_Origin.m_RaycastDist)
 {
-    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
 }
 
 CMonsterUnitScript::~CMonsterUnitScript()
@@ -35,18 +39,15 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
     if (nullptr == _pTargetObj)
     {
         Vec3 Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-        Rigidbody()->AddForce(Dir * m_CurInfo.Speed, ForceMode::VelocityChange);
-        // Rigidbody()->SetVelocity(FrontDir * m_CurInfo.Speed); 동일한 기능을 하는 코드
+        Rigidbody()->SetVelocity(Dir * m_CurInfo.Speed);
     }
     // 타겟 방향으로 이동
     else
     {
         Vec3 ToTargetDir = m_pTargetObj->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        ToTargetDir.y = 0.f; // Y축 고정
         ToTargetDir.Normalize();
-
-        Rigidbody()->AddForce(ToTargetDir * m_CurInfo.Speed, ForceMode::VelocityChange);
-        // Rigidbody()->SetVelocity(FrontDir * m_CurInfo.Speed); 동일한 기능을 하는 코드
+        Rigidbody()->SetVelocity(ToTargetDir * m_CurInfo.Speed);
     }
 }
 
@@ -76,12 +77,21 @@ void CMonsterUnitScript::TransformRotate()
     }
 }
 
+bool CMonsterUnitScript::IsGround()
+{
+    static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, vecCollision);
+    return nullptr != Hit.pCollisionObj;
+}
+
 void CMonsterUnitScript::SaveToLevelFile(FILE* _File)
 {
     CUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_RaycastDist, 1, sizeof(float), _File);
 }
 
 void CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
 {
     CUnitScript::LoadFromLevelFile(_File);
+    fread(&m_RaycastDist, 1, sizeof(float), _File);
 }
