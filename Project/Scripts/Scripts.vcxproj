@@ -116,7 +116,6 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEngineTestScript.h" />
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
-    <ClInclude Include="CHitBoxScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
@@ -228,7 +227,6 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEngineTestScript.cpp" />
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
-    <ClCompile Include="CHitBoxScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />

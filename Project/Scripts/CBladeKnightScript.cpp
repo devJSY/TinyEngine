@@ -5,14 +5,20 @@ CBladeKnightScript::CBladeKnightScript()
     : CMonsterUnitScript(BLADEKNIGHTSCRIPT)
     , m_State(BLADEKNIGHT_STATE::Wait)
     , m_PassedTime(0.f)
+    , m_StepPower(10.f)
+    , m_bStepFlag(false)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_StepPower, "Step Power");
 }
 
 CBladeKnightScript::CBladeKnightScript(const CBladeKnightScript& origin)
     : CMonsterUnitScript(origin)
     , m_State(origin.m_State)
     , m_PassedTime(origin.m_PassedTime)
+    , m_StepPower(origin.m_StepPower)
+    , m_bStepFlag(false)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_StepPower, "Step Power");
 }
 
 CBladeKnightScript::~CBladeKnightScript()
@@ -84,17 +90,17 @@ void CBladeKnightScript::tick()
     case BLADEKNIGHT_STATE::ThrustWait:
         ThrustWait();
         break;
-    case BLADEKNIGHT_STATE::TonadoAttack:
-        TonadoAttack();
+    case BLADEKNIGHT_STATE::TornadoAttack:
+        TornadoAttack();
         break;
-    case BLADEKNIGHT_STATE::TonadoAttackCharge:
-        TonadoAttackCharge();
+    case BLADEKNIGHT_STATE::TornadoAttackCharge:
+        TornadoAttackCharge();
         break;
-    case BLADEKNIGHT_STATE::TonadoAttackCharge2:
-        TonadoAttackCharge2();
+    case BLADEKNIGHT_STATE::TornadoAttackCharge2:
+        TornadoAttackCharge2();
         break;
-    case BLADEKNIGHT_STATE::TonadoAttackChargeMax:
-        TonadoAttackChargeMax();
+    case BLADEKNIGHT_STATE::TornadoAttackChargeMax:
+        TornadoAttackChargeMax();
         break;
     case BLADEKNIGHT_STATE::Wait:
         Wait();
@@ -115,7 +121,8 @@ void CBladeKnightScript::EnterState()
     switch (m_State)
     {
     case BLADEKNIGHT_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX("Attack"), false);
+        Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
+        Animator()->Play(ANIMPREFIX("Attack"), false, false, 1.5f);
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
@@ -127,7 +134,8 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
-        Animator()->Play(ANIMPREFIX("DoubleAttack"), false);
+        Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
+        Animator()->Play(ANIMPREFIX("DoubleAttack"), false, false, 1.5f);
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
@@ -143,7 +151,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::FindWaitSub: {
-        Animator()->Play(ANIMPREFIX("FindWaitSub"), true, false, 1.f);
+        Animator()->Play(ANIMPREFIX("FindWaitSub"), false);
     }
     break;
     case BLADEKNIGHT_STATE::Landing: {
@@ -182,20 +190,20 @@ void CBladeKnightScript::EnterState()
         Animator()->Play(ANIMPREFIX("ThrustWait"), true, false, 2.5f, 0.5);
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttack: {
-        Animator()->Play(ANIMPREFIX("TonadoAttack"), false);
+    case BLADEKNIGHT_STATE::TornadoAttack: {
+        Animator()->Play(ANIMPREFIX("TornadoAttack"), false, false, 1.5f);
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttackCharge: {
-        Animator()->Play(ANIMPREFIX("TonadoAttackCharge"), false);
+    case BLADEKNIGHT_STATE::TornadoAttackCharge: {
+        Animator()->Play(ANIMPREFIX("TornadoAttackCharge"), false);
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttackCharge2: {
-        Animator()->Play(ANIMPREFIX("TonadoAttackCharge2"), false);
+    case BLADEKNIGHT_STATE::TornadoAttackCharge2: {
+        Animator()->Play(ANIMPREFIX("TornadoAttackCharge2"), false);
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttackChargeMax: {
-        Animator()->Play(ANIMPREFIX("TonadoAttackChargeMax"));
+    case BLADEKNIGHT_STATE::TornadoAttackChargeMax: {
+        Animator()->Play(ANIMPREFIX("TornadoAttackChargeMax"), false, false, 2.5f, 0.);
     }
     break;
     case BLADEKNIGHT_STATE::Wait: {
@@ -210,6 +218,7 @@ void CBladeKnightScript::ExitState()
     switch (m_State)
     {
     case BLADEKNIGHT_STATE::Attack: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
@@ -219,20 +228,21 @@ void CBladeKnightScript::ExitState()
     }
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
     }
     break;
     case BLADEKNIGHT_STATE::Find: {
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::FindWait: {
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::FindWaitSub: {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::Landing: {
@@ -244,6 +254,7 @@ void CBladeKnightScript::ExitState()
     }
     break;
     case BLADEKNIGHT_STATE::Retreat: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::Thrust: {
@@ -264,16 +275,16 @@ void CBladeKnightScript::ExitState()
     case BLADEKNIGHT_STATE::ThrustWait: {
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttack: {
+    case BLADEKNIGHT_STATE::TornadoAttack: {
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttackCharge: {
+    case BLADEKNIGHT_STATE::TornadoAttackCharge: {
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttackCharge2: {
+    case BLADEKNIGHT_STATE::TornadoAttackCharge2: {
     }
     break;
-    case BLADEKNIGHT_STATE::TonadoAttackChargeMax: {
+    case BLADEKNIGHT_STATE::TornadoAttackChargeMax: {
     }
     break;
     case BLADEKNIGHT_STATE::Wait: {
@@ -284,10 +295,33 @@ void CBladeKnightScript::ExitState()
 
 void CBladeKnightScript::Attack()
 {
+    if (Animator()->GetClipFrameIndex() == 10)
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
+
+    if (Animator()->IsFinish())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Retreat);
+    }
 }
 
 void CBladeKnightScript::AttackStart()
 {
+    m_PassedTime += DT;
+
+    if (m_PassedTime > 1.f)
+    {
+        int RandomInt = GetRandomInt(0, 1);
+        if (0 == RandomInt)
+        {
+            ChangeState(BLADEKNIGHT_STATE::Attack);
+        }
+        else
+        {
+            ChangeState(BLADEKNIGHT_STATE::DoubleAttack);
+        }
+    }
 }
 
 void CBladeKnightScript::Damage()
@@ -296,6 +330,21 @@ void CBladeKnightScript::Damage()
 
 void CBladeKnightScript::DoubleAttack()
 {
+    if (Animator()->GetClipFrameIndex() == 10 || Animator()->GetClipFrameIndex() == 40)
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
+    else if (Animator()->GetClipFrameIndex() == 20 && !m_bStepFlag)
+    {
+        Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
+        m_bStepFlag = true;
+    }
+
+    if (Animator()->IsFinish())
+    {
+        m_bStepFlag = false;
+        ChangeState(BLADEKNIGHT_STATE::Retreat);
+    }
 }
 
 void CBladeKnightScript::Fall()
@@ -318,16 +367,37 @@ void CBladeKnightScript::Find()
 
 void CBladeKnightScript::FindWait()
 {
+    TransformRotate();
+
     m_PassedTime += DT;
 
-    if (m_PassedTime > 3.f)
+    if (m_PassedTime > 2.f)
     {
-        ChangeState(BLADEKNIGHT_STATE::Wait);
-    }
+        if (nullptr == GetTarget())
+        {
+            ChangeState(BLADEKNIGHT_STATE::Wait);
+        }
+        else
+        {
+            int RandomInt = GetRandomInt(1, 4);
 
-    if (nullptr != GetTarget() && m_PassedTime > 1.f)
-    {
-        ChangeState(BLADEKNIGHT_STATE::FindWaitSub);
+            if (1 == RandomInt)
+            {
+                ChangeState(BLADEKNIGHT_STATE::AttackStart);
+            }
+            // else if (2 == RandomInt)
+            //{
+            //     ChangeState(BLADEKNIGHT_STATE::ThrustStart);
+            // }
+            else if (3 == RandomInt)
+            {
+                ChangeState(BLADEKNIGHT_STATE::TornadoAttackCharge);
+            }
+            else if (4 == RandomInt)
+            {
+                ChangeState(BLADEKNIGHT_STATE::TornadoAttackCharge2);
+            }
+        }
     }
 
     if (!IsGround())
@@ -338,18 +408,6 @@ void CBladeKnightScript::FindWait()
 
 void CBladeKnightScript::FindWaitSub()
 {
-    RigidbodyMove(GetTarget());
-    TransformRotate();
-
-    if (nullptr == GetTarget())
-    {
-        ChangeState(BLADEKNIGHT_STATE::FindWait);
-    }
-
-    if (!IsGround())
-    {
-        ChangeState(BLADEKNIGHT_STATE::Fall);
-    }
 }
 
 void CBladeKnightScript::Landing()
@@ -391,6 +449,27 @@ void CBladeKnightScript::Move()
 
 void CBladeKnightScript::Retreat()
 {
+    if (Animator()->GetClipFrameIndex() == 8 && !m_bStepFlag)
+    {
+        Rigidbody()->AddForce(-Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 0.8f, ForceMode::Impulse);
+        m_bStepFlag = true;
+    }
+    else if (Animator()->GetClipFrameIndex() == 24)
+    {
+        m_bStepFlag = false;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
+    else if (Animator()->GetClipFrameIndex() == 25 && !m_bStepFlag)
+    {
+        Rigidbody()->AddForce(-Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 0.8f, ForceMode::Impulse);
+        m_bStepFlag = true;
+    }
+
+    if (Animator()->IsFinish())
+    {
+        m_bStepFlag = false;
+        ChangeState(BLADEKNIGHT_STATE::FindWait);
+    }
 }
 
 void CBladeKnightScript::Thrust()
@@ -407,6 +486,10 @@ void CBladeKnightScript::ThrustLoop()
 
 void CBladeKnightScript::ThrustStart()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(BLADEKNIGHT_STATE::ThrustStartWait);
+    }
 }
 
 void CBladeKnightScript::ThrustStartWait()
@@ -417,19 +500,31 @@ void CBladeKnightScript::ThrustWait()
 {
 }
 
-void CBladeKnightScript::TonadoAttack()
+void CBladeKnightScript::TornadoAttack()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(BLADEKNIGHT_STATE::FindWait);
+    }
 }
 
-void CBladeKnightScript::TonadoAttackCharge()
+void CBladeKnightScript::TornadoAttackCharge()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(BLADEKNIGHT_STATE::TornadoAttack);
+    }
 }
 
-void CBladeKnightScript::TonadoAttackCharge2()
+void CBladeKnightScript::TornadoAttackCharge2()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(BLADEKNIGHT_STATE::TornadoAttack);
+    }
 }
 
-void CBladeKnightScript::TonadoAttackChargeMax()
+void CBladeKnightScript::TornadoAttackChargeMax()
 {
 }
 
@@ -468,9 +563,11 @@ void CBladeKnightScript::OnCollisionExit(CCollider* _OtherCollider)
 void CBladeKnightScript::SaveToLevelFile(FILE* _File)
 {
     CMonsterUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_StepPower, 1, sizeof(float), _File);
 }
 
 void CBladeKnightScript::LoadFromLevelFile(FILE* _File)
 {
     CMonsterUnitScript::LoadFromLevelFile(_File);
+    fread(&m_StepPower, 1, sizeof(float), _File);
 }

@@ -24,6 +24,5 @@ public:
     CMonsterUnitScript(const CMonsterUnitScript& _Origin);
     virtual ~CMonsterUnitScript();
 
-    friend class CHitBoxScript;
     friend class CDetectAreaScript;
 };

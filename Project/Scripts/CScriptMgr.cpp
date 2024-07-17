@@ -27,7 +27,6 @@
 #include "CUIUnitManagerScript.h"
 #include "CEngineTestScript.h"
 #include "CBladeKnightScript.h"
-#include "CHitBoxScript.h"
 #include "CDetectAreaScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -58,7 +57,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIUnitManagerScript");
 	_vec.push_back(L"CEngineTestScript");
 	_vec.push_back(L"CBladeKnightScript");
-	_vec.push_back(L"CHitBoxScript");
 	_vec.push_back(L"CDetectAreaScript");
 }
 
@@ -116,8 +114,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CEngineTestScript;
 	if (L"CBladeKnightScript" == _strScriptName)
 		return new CBladeKnightScript;
-	if (L"CHitBoxScript" == _strScriptName)
-		return new CHitBoxScript;
 	if (L"CDetectAreaScript" == _strScriptName)
 		return new CDetectAreaScript;
 	return nullptr;
@@ -179,8 +175,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CEngineTestScript;
 	case (UINT)SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
 		return new CBladeKnightScript;
-	case (UINT)SCRIPT_TYPE::HITBOXSCRIPT:
-		return new CHitBoxScript;
 	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
 		return new CDetectAreaScript;
 	}
@@ -243,8 +237,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CEngineTestScript";
 	case SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
 		return L"CBladeKnightScript";
-	case SCRIPT_TYPE::HITBOXSCRIPT:
-		return L"CHitBoxScript";
 	case SCRIPT_TYPE::DETECTAREASCRIPT:
 		return L"CDetectAreaScript";
 	}

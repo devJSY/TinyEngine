@@ -325,9 +325,6 @@
     <ClInclude Include="CMonsterUnitScript.h">
       <Filter>Module\Unit</Filter>
     </ClInclude>
-    <ClInclude Include="CHitBoxScript.h">
-      <Filter>Scripts\Character\Monster\Utill\Hitbox</Filter>
-    </ClInclude>
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClInclude>
@@ -668,9 +665,6 @@
     </ClCompile>
     <ClCompile Include="CMonsterUnitScript.cpp">
       <Filter>Module\Unit</Filter>
-    </ClCompile>
-    <ClCompile Include="CHitBoxScript.cpp">
-      <Filter>Scripts\Character\Monster\Utill\Hitbox</Filter>
     </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
@@ -1039,9 +1033,6 @@
     </Filter>
     <Filter Include="Scripts\Character\Monster\Utill">
       <UniqueIdentifier>{3b1f9935-ef44-484e-8c64-99e49f338150}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Character\Monster\Utill\Hitbox">
-      <UniqueIdentifier>{4d2414cc-e06d-49c8-a825-dd7d37084388}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Monster\Utill\Detect">
       <UniqueIdentifier>{9ff28eb8-8bc7-4e4b-852d-3087291ea3f3}</UniqueIdentifier>
