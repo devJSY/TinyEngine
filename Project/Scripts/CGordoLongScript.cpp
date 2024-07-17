@@ -17,10 +17,7 @@ void CGordoLongScript::begin()
 
 void CGordoLongScript::tick()
 {
-    float Angle = Transform()->GetLocalRotation().y;
-    Angle += DT * GetCurInfo().RotationSpeed;
-    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
-    Transform()->SetWorldRotation(Quaternion);
+    Rotating();
 }
 
 void CGordoLongScript::SaveToLevelFile(FILE* _File)

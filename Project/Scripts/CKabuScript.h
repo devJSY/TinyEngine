@@ -5,6 +5,7 @@ enum class KABU_STATE
 {
     Patrol,
     Damage,
+    Eaten,
     Death,
     End,
 };
@@ -17,6 +18,9 @@ private:
     Vec3 m_vPatrolDir;
     Vec3 m_vOriginPos;
     Vec3 m_vDestPos;
+
+    Vec3 m_vDamageDir;
+    bool m_bFlag;
 
     float m_fLerpValue;
 
@@ -37,8 +41,8 @@ private:
     void ExitState(KABU_STATE _state);
 
 private:
-    void OnTriggerEnter(CCollider* _OtherCollider){};
-    void OnTriggerExit(CCollider* _OtherCollider){};
+    void OnTriggerEnter(CCollider* _OtherCollider);
+    void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
     void Patrol();
@@ -50,5 +54,6 @@ private:
 public:
     CLONE(CKabuScript)
     CKabuScript();
+    CKabuScript(const CKabuScript& _Origin);
     virtual ~CKabuScript();
 };

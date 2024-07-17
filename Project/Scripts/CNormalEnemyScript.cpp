@@ -185,11 +185,16 @@ void CNormalEnemyScript::ExitState(NORMALENEMY_STATE _state)
     case NORMALENEMY_STATE::AttackSuccessed: {
         m_pTargetObject = nullptr;
         m_fSpeed = m_fMaxSpeed;
+        m_bFirst = false;
     }
     break;
     case NORMALENEMY_STATE::AttackFailed: {
         m_pTargetObject = nullptr;
         m_fSpeed = m_fMaxSpeed;
+    }
+    break;
+    case NORMALENEMY_STATE::Damage: {
+        m_bFirst = false;
     }
     break;
     }
@@ -528,6 +533,15 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
 void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
 {
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이는게 끝난 상태
+        if (L"Vacuum Collider" == pObj->GetName())
+        {
+            ChangeState(NORMALENEMY_STATE::Idle);
+        }
+    }
 }
 
 Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)

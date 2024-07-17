@@ -3,6 +3,7 @@
 
 CTackleEnemyScript::CTackleEnemyScript()
     : CMonsterUnitScript(TACKLEENEMYSCRIPT)
+    , m_eState(TACKLEENEMY_STATE::Idle)
     , m_fSpeed(10.f)
     , m_fMaxSpeed(10.f)
     , m_fRushLerp(0.9f)
@@ -10,7 +11,32 @@ CTackleEnemyScript::CTackleEnemyScript()
     , m_fPatrolTime(4.f)
     , m_fPatrolAccTime(0.f)
     , m_pTargetObject(nullptr)
+    , m_vDamageDir{}
+    , m_bFlag(false)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
+}
+
+CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& _Origin)
+    : CMonsterUnitScript(_Origin)
+    , m_eState(TACKLEENEMY_STATE::Idle)
+    , m_fSpeed(_Origin.m_fSpeed)
+    , m_fMaxSpeed(_Origin.m_fMaxSpeed)
+    , m_fRushLerp(_Origin.m_fRushLerp)
+    , m_fRushSpeedLerp(_Origin.m_fRushSpeedLerp)
+    , m_fPatrolTime(_Origin.m_fPatrolTime)
+    , m_fPatrolAccTime(0.f)
+    , m_pTargetObject(nullptr)
+    , m_vDamageDir{}
+    , m_bFlag(false)
+{
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
 }
 
 CTackleEnemyScript::~CTackleEnemyScript()
@@ -63,16 +89,6 @@ void CTackleEnemyScript::tick()
     }
 }
 
-void CTackleEnemyScript::SaveToLevelFile(FILE* _File)
-{
-    CMonsterUnitScript::SaveToLevelFile(_File);
-}
-
-void CTackleEnemyScript::LoadFromLevelFile(FILE* _File)
-{
-    CMonsterUnitScript::LoadFromLevelFile(_File);
-}
-
 void CTackleEnemyScript::ChangeState(TACKLEENEMY_STATE _state)
 {
     ExitState(m_eState);
@@ -93,7 +109,7 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
     }
     break;
     case TACKLEENEMY_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"));
+        Animator()->Play(ANIMPREFIX(L"Find"),false);
     }
     break;
     case TACKLEENEMY_STATE::AttackPrev: {
@@ -110,6 +126,11 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
     break;
     case TACKLEENEMY_STATE::Damage: {
         Animator()->Play(ANIMPREFIX(L"Damage"), false);
+    }
+    break;
+    case TACKLEENEMY_STATE::Eaten:
+    {
+        Animator()->Play(ANIMPREFIX(L"Damage"));
     }
     break;
     case TACKLEENEMY_STATE::Death:
@@ -144,8 +165,9 @@ void CTackleEnemyScript::ExitState(TACKLEENEMY_STATE _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
-    case TACKLEENEMY_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+    case TACKLEENEMY_STATE::Damage: 
+    {
+        m_bFlag = false;
     }
     break;
     case TACKLEENEMY_STATE::Death:
@@ -170,11 +192,13 @@ void CTackleEnemyScript::Patrol()
 
 void CTackleEnemyScript::Find()
 {
+    m_pTargetObject = GetTarget();
     Animator()->IsFinish() ? ChangeState(TACKLEENEMY_STATE::AttackPrev) : void();
 }
 
 void CTackleEnemyScript::AttackPrev()
 {
+    TransformRotate();
     Animator()->IsFinish() ? ChangeState(TACKLEENEMY_STATE::Attack) : void();
 }
 
@@ -209,7 +233,30 @@ void CTackleEnemyScript::AttackAfter()
 
 void CTackleEnemyScript::Damage()
 {
+    if (!m_bFlag)
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+
+        m_vDamageDir.Normalize();
+        m_vDamageDir.y = 1.5f;
+        Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
+        m_bFlag = true;
+    }
+
     Animator()->IsFinish() ? ChangeState(TACKLEENEMY_STATE::Idle) : void();
+}
+
+void CTackleEnemyScript::Eaten()
+{
+    if (!m_bFlag)
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+
+        m_vDamageDir.Normalize();
+        m_vDamageDir.y = 1.5f;
+        Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
+        m_bFlag = true;
+    }
 }
 
 void CTackleEnemyScript::Death()
@@ -219,7 +266,7 @@ void CTackleEnemyScript::Death()
 
 TACKLEENEMY_STATE CTackleEnemyScript::RandomIdleState()
 {
-    return TACKLEENEMY_STATE::Patrol; // TACKLEENEMY_STATE(GetRandomInt(0, 1));
+    return TACKLEENEMY_STATE(GetRandomInt(0, 1));
 }
 
 Vec3 CTackleEnemyScript::RandomPatrolDir()
@@ -323,4 +370,87 @@ void CTackleEnemyScript::PatrolMove()
 Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)
 {
     return (m_pTargetObject->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
+}
+
+void CTackleEnemyScript::SaveToLevelFile(FILE* _File)
+{
+    CMonsterUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fRushLerp, sizeof(float), 1, _File);
+    fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+}
+
+void CTackleEnemyScript::LoadFromLevelFile(FILE* _File)
+{
+    CMonsterUnitScript::LoadFromLevelFile(_File);
+    fread(&m_fMaxSpeed, sizeof(float), 1, _File);
+    fread(&m_fSpeed, sizeof(float), 1, _File);
+    fread(&m_fRushLerp, sizeof(float), 1, _File);
+    fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+}
+
+void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    if (TACKLEENEMY_STATE::Eaten == m_eState)
+        return;
+
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    bool flag = false;
+
+    UnitHit hit;
+    ZeroMemory(&hit, sizeof(hit));
+    /**********************
+    | 1. Player ATK Hit
+    ***********************/
+
+    // 충돌한 오브젝트가 플레이어 공격인지 확인
+    if (LAYER_PLAYERATK == pObj->GetLayerIdx())
+    {
+        flag = true;
+        // TODO : 플레이어 공격 데미지 가지고 오기
+
+        GetDamage(hit);
+        ChangeState(TACKLEENEMY_STATE::Damage);
+        m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+    }
+
+    /**********************
+    | 2. Player Body Hit
+    ***********************/
+    // 충돌한 오브젝트가 PlayerBody인지 확인
+
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
+        if (L"Vacuum Collider" == pObj->GetName())
+        {
+            ChangeState(TACKLEENEMY_STATE::Eaten);
+            m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+            return;
+        }
+    }
+
+    // 둘 중 하나라도 피격 되었다면 체력 확인
+    if (flag)
+    {
+        if (GetCurInfo().HP - hit.Damage <= 0.f)
+        {
+            ChangeState(TACKLEENEMY_STATE::Death);
+        }
+    }
+}
+
+void CTackleEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
+{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
+        if (L"Vacuum Collider" == pObj->GetName())
+        {
+            ChangeState(TACKLEENEMY_STATE::Idle);
+        }
+    }
 }

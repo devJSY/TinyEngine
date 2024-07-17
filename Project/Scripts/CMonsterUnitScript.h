@@ -31,6 +31,9 @@ protected:
 
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
     void TransformRotate();
+    
+    // ÀÚÀü
+    void Rotating();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

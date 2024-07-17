@@ -81,6 +81,14 @@ void CMonsterUnitScript::TransformRotate()
     }
 }
 
+void CMonsterUnitScript::Rotating()
+{
+    float Angle = Transform()->GetLocalRotation().y;
+    Angle += DT * GetCurInfo().RotationSpeed;
+    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
+    Transform()->SetWorldRotation(Quaternion);
+}
+
 void CMonsterUnitScript::SaveToLevelFile(FILE* _File)
 {
     CUnitScript::SaveToLevelFile(_File);

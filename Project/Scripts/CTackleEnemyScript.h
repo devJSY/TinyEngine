@@ -10,6 +10,7 @@ enum class TACKLEENEMY_STATE
     Attack,
     AttackAfter,
     Damage,
+    Eaten,
     Death,
 };
 
@@ -27,6 +28,9 @@ private:
     float m_fPatrolTime;
     float m_fPatrolAccTime;
 
+    Vec3 m_vDamageDir;
+    bool m_bFlag;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
@@ -41,8 +45,8 @@ private:
     void ExitState(TACKLEENEMY_STATE _state);
 
 private:
-    void OnTriggerEnter(CCollider* _OtherCollider){};
-    void OnTriggerExit(CCollider* _OtherCollider){};
+    void OnTriggerEnter(CCollider* _OtherCollider);
+    void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
     void Idle();
@@ -52,6 +56,7 @@ private:
     void Attack();
     void AttackAfter();
     void Damage();
+    void Eaten();
     void Death();
 
 private:
@@ -64,5 +69,6 @@ private:
 public:
     CLONE(CTackleEnemyScript)
     CTackleEnemyScript();
+    CTackleEnemyScript(const CTackleEnemyScript& _Origin);
     virtual ~CTackleEnemyScript();
 };
