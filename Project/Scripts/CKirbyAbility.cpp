@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "CKirbyAbility.h"
-#include "CPlayerMgr.h"
-#include "CFSMScript.h"
-#include "CKirbyFSM.h"
-#include "CKirbyMoveController.h"
 
 CKirbyAbility::CKirbyAbility()
     : m_Charge1Time(0.f)

@@ -78,7 +78,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pCamObj->Camera()->LayerMaskAll();
     pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
     pCamObj->Camera()->SetHDRI(true);
-    pCamObj->Camera()->SetFOV(60.f);
+    pCamObj->Camera()->SetFOV(XMConvertToRadians(60.f));
 
     NewLevel->AddObject(pCamObj, 0);
 
@@ -128,8 +128,9 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pDirLight->AddComponent(new CLight);
 
     pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
-    pDirLight->Transform()->SetLocalRotation(Vec3(45.f, 0.f, 0.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
     pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+    pDirLight->Light()->SetRadius(10.f);
 
     NewLevel->AddObject(pDirLight, 0);
 

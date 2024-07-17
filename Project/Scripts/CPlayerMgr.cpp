@@ -11,6 +11,7 @@ CKirbyUnitScript* CPlayerMgr::m_PlayerUnit = nullptr;
 CKirbyFSM* CPlayerMgr::m_PlayerFSM = nullptr;
 CKirbyMoveController* CPlayerMgr::m_PlayerController = nullptr;
 Ptr<CMaterial> CPlayerMgr::m_PlayerBodyMtrl = nullptr;
+Ptr<CMaterial> CPlayerMgr::m_PlayerBodyDemoMtrl = nullptr;
 KirbyMeshIdx CPlayerMgr::m_PlayerMeshIdx = KirbyMeshIdx();
 
 CPlayerMgr::CPlayerMgr()
@@ -25,6 +26,7 @@ CPlayerMgr::~CPlayerMgr()
 void CPlayerMgr::begin()
 {
     m_PlayerBodyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_BodyC.mtrl");
+    m_PlayerBodyDemoMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_DeformBodyC.mtrl");
 
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
     SetPlayer(pPlayer);

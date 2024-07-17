@@ -7,6 +7,7 @@
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyAbility_Fire.h"
 #include "CKirbyAbility_Sword.h"
+#include "CKirbyObject_Cone.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -43,6 +44,8 @@ CKirbyFSM::CKirbyFSM()
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
+
+    m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -182,6 +185,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
 #include "CKirbyBurningEnd.h"
+#include "CKirbyChangeObject.h"
+#include "CKirbyChangeObjectEnd.h"
 
 void CKirbyFSM::begin()
 {
@@ -261,6 +266,9 @@ void CKirbyFSM::begin()
     AddState(L"BURNING_START", new CKirbyBurningStart);
     AddState(L"BURNING", new CKirbyBurning);
     AddState(L"BURNING_END", new CKirbyBurningEnd);
+
+    AddState(L"CHANGE_OBJECT", new CKirbyChangeObject);
+    AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
 
     ChangeState(L"IDLE");
 }
@@ -359,8 +367,28 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 
 void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 {
-    ChangeState(L"CHANGE_OBJECT");
-    m_CurObject = _Type;
+    // Drop Object 요청
+    if (_Type == ObjectCopyType::NONE)
+    {
+        m_CurObject = _Type;
+    }
+
+    // Change Object 요청
+    else
+    {
+        if (m_CurObject != ObjectCopyType::NONE)
+        {
+            MessageBox(nullptr, L"Object가 이미 존재합니다", L"Change Object 실패", MB_OK);
+            return;
+        }
+
+        //m_NextObject = _Type;
+        //ChangeState(L"CHANGE_OBJECT");
+        //m_CurObject = _Type;
+
+        m_CurObject = _Type;
+        ChangeState(L"CHANGE_OBJECT");
+    }
 }
 
 void CKirbyFSM::StartStuffed(CGameObject* _Target)

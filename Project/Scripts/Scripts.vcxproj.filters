@@ -331,6 +331,15 @@
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Monster\Utill\Detect</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyObject_Cone.h">
+      <Filter>State\KirbyObject\Cone</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeObject.h">
+      <Filter>State\KirbyState\ChangeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeObjectEnd.h">
+      <Filter>State\KirbyState\ChangeObject\End</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -674,6 +683,15 @@
     </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Monster\Utill\Detect</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyObject_Cone.cpp">
+      <Filter>State\KirbyObject\Cone</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeObject.cpp">
+      <Filter>State\KirbyState\ChangeObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeObjectEnd.cpp">
+      <Filter>State\KirbyState\ChangeObject\End</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1075,6 +1093,15 @@
     </Filter>
     <Filter Include="State\KirbyAbility\Sword">
       <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject">
+      <UniqueIdentifier>{3a2a9b21-9fc6-42c4-91fc-4a589a4e9c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject\Cone">
+      <UniqueIdentifier>{51ea4777-2013-4f82-b2b0-0f43b0672afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeObject\End">
+      <UniqueIdentifier>{d062e6b2-9376-4c4b-bd53-a3b84152ca25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

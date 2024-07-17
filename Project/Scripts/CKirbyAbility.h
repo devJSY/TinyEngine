@@ -1,6 +1,7 @@
 #pragma once
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
+#include "CKirbyMoveController.h"
 // ====================================================================================
 // USAGE: Kirby의 Ability 종속적인 States를 모아 정의해둔 States Group Class
 // ====================================================================================
@@ -18,7 +19,6 @@ protected:
     float           m_ComboSuccessTime;
 
 protected:
-    // 사용 메쉬: hat, weapon
     void ChangeState(const wstring& _strStateName);
 
 public:

@@ -1,5 +1,7 @@
 #pragma once
-
+#include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
+#include "CKirbyMoveController.h"
 // ====================================================================================
 // USAGE: Kirby의 Object 종속적인 States를 모아 정의해둔 States Group Class
 // ====================================================================================
@@ -10,16 +12,22 @@
 class CKirbyObject
 {
 protected:
+    Ptr<CMeshData> m_Mesh;
+    Ptr<CMeshData> m_DemoMesh;
+    UINT m_DemoMeshIdx_BodyA;
+    UINT m_DemoMeshIdx_BodyB;
+    int m_MeshChangeIdx;
+    bool m_bFrmEnter;
+
+protected:
     // 사용 메쉬: mesh
+    void ParseDemoMesh(Ptr<CMeshData> _pMesh);
     void ChangeState(const wstring& _strStateName);
 
 public:
-    // 필수: Deform, Attack
-    // 선택: Move
-
     virtual void Idle(){};
-    virtual void IdleEnter(){};
-    virtual void IdleExit(){};
+    virtual void IdleEnter();
+    virtual void IdleExit();
 
     virtual void Run(){};
     virtual void RunEnter(){};
@@ -48,12 +56,6 @@ public:
     virtual void LandingEnd(){};
     virtual void LandingEndEnter();
     virtual void LandingEndExit();
-
-    // virtual void Hovering();
-
-    // virtual void Evasiveness();
-
-    // virtual void Sliding();
 
     virtual void Attack() = 0;
     virtual void AttackEnter() = 0;
@@ -103,9 +105,17 @@ public:
     virtual void JumpAttackStartEnter(){};
     virtual void JumpAttackStartExit(){};
 
-    // virtual void Throw();
+     virtual void DropObject() = 0;
+     virtual void DropObjectEnter() = 0;
+     virtual void DropObjectExit() = 0;
 
-    // virtual void Deform();
+     virtual void ChangeObject();
+     virtual void ChangeObjectEnter();
+     virtual void ChangeObjectExit();
+
+     virtual void ChangeObjectEnd(){};
+     virtual void ChangeObjectEndEnter();
+     virtual void ChangeObjectEndExit();
 
 public:
     virtual CKirbyObject* Clone() = 0;
