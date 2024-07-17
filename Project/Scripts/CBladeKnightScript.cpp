@@ -536,14 +536,7 @@ void CBladeKnightScript::ThrustEnd()
 {
     if (Animator()->IsFinish())
     {
-        if (nullptr == GetTarget())
-        {
-            ChangeState(BLADEKNIGHT_STATE::Wait);
-        }
-        else
-        {
-            ChangeState(BLADEKNIGHT_STATE::FindWait);
-        }
+        ChangeState(BLADEKNIGHT_STATE::FindWait);
     }
 }
 

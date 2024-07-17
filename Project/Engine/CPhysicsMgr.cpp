@@ -72,19 +72,6 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
     {
         pColliderA->OnTriggerExit(pColliderB);
         pColliderB->OnTriggerExit(pColliderA);
-
-        // Trigger List 에서 삭제
-        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = CPhysicsMgr::GetInst()->m_listTrigger.begin();
-        while (iter != CPhysicsMgr::GetInst()->m_listTrigger.end())
-        {
-            if (iter->first == pColliderA && iter->second == pColliderB)
-            {
-                CPhysicsMgr::GetInst()->m_listTrigger.erase(iter);
-                break;
-            }
-
-            ++iter;
-        }
     }
 }
 
@@ -149,12 +136,21 @@ void CPhysicsMgr::tick()
     m_Scene->fetchResults(true);
 
     // TriggerStay Event
-    for (const auto& iter : m_listTrigger)
+    std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
+    while (iter != m_listTrigger.end())
     {
-        if (iter.first->m_TriggerCount > 0)
-            iter.first->OnTriggerStay(iter.second);
-        if (iter.second->m_TriggerCount > 0)
-            iter.second->OnTriggerStay(iter.first);
+        if (0 == iter->first->m_TriggerCount || 0 == iter->second->m_TriggerCount)
+        {
+            iter = m_listTrigger.erase(iter);
+            continue;
+        }
+
+        if (iter->first->m_TriggerCount > 0)
+            iter->first->OnTriggerStay(iter->second);
+        if (iter->second->m_TriggerCount > 0)
+            iter->second->OnTriggerStay(iter->first);
+
+        ++iter;
     }
 
     // 시뮬레이션 결과로 트랜스폼 업데이트

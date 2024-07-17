@@ -29,10 +29,14 @@ void CEngineTestScript::tick()
 {
     if (KEY_TAP(KEY::K))
     {
-        GetOwner()->SetActive(!GetOwner()->IsActive());
+        if (SphereCollider())
+        {
+            SphereCollider()->SetEnabled(!SphereCollider()->IsEnabled());
+        }
+        // GetOwner()->SetActive(!GetOwner()->IsActive());
     }
 
-    CharacterControllerTest();
+    // CharacterControllerTest();
     // AnimatorTest();
     //  QuaternionExample();
 
@@ -280,14 +284,17 @@ void CEngineTestScript::OnCollisionExit(CCollider* _OtherCollider)
 
 void CEngineTestScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnTriggerEnter : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnTriggerStay(CCollider* _OtherCollider)
 {
+    LOG(Log, "TriggerStay : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnTriggerExit(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnTriggerExit : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::SaveToLevelFile(FILE* _File)
