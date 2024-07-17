@@ -1451,7 +1451,6 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_SelectedBoneSocket = nullptr;
     m_SelectedPreviewObj = nullptr;
     m_bMeshSaved = true;
-    m_MeshDataPath = _MeshData->GetKey();
     m_bMeshDataSaved = true;
 
     if (nullptr == _MeshData)
@@ -1460,6 +1459,7 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
         return;
     }
 
+    m_MeshDataPath = _MeshData->GetKey();
     m_ModelObj = _MeshData->InstantiateEx();
 
     m_ModelObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);
