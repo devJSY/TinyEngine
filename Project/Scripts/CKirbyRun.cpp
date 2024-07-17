@@ -48,7 +48,10 @@ void CKirbyRun::tick()
         {
             if (KEY_TAP(KEY_ATK))
             {
-                ChangeState(L"ATTACK");
+                if (PLAYERFSM->CanBladeAttack())
+                {
+                    ChangeState(L"ATTACK");
+                }
             }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {

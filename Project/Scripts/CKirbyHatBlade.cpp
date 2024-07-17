@@ -6,7 +6,7 @@
 
 CKirbyHatBlade::CKirbyHatBlade()
     : CScript(KIRBYHATBLADE)
-    , m_AttackCoolTime(0.6f)
+    , m_AttackCoolTime(0.7f)
     , m_Acc(0.f)
     , m_bCanAttack(true)
     , m_VariationDuration(0.3f)

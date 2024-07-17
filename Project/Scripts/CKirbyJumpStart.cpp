@@ -112,7 +112,10 @@ void CKirbyJumpStart::tick()
                 }
                 else if (KEY_TAP(KEY_ATK))
                 {
-                    ChangeState(L"ATTACK");
+                    if (PLAYERFSM->CanBladeAttack())
+                    {
+                        ChangeState(L"ATTACK");
+                    }
                 }
                 else if (m_JumpAccTime > m_MaxJumpTime)
                 {

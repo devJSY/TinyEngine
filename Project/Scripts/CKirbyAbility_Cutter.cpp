@@ -55,6 +55,7 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
 
     // FSM에 HatBlade 저장
     PLAYERFSM->SetCurHatBlade(pInstObj);
+    PLAYERFSM->SetBladeAttack(true);
 
     // 애니메이션 재생
     pInstObj->Animator()->Play(KIRBYANIM(L"BladeWait"));
