@@ -21,7 +21,7 @@ void CKirbyChangeAbilityEnd::tick()
 void CKirbyChangeAbilityEnd::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"EvolutionCopyEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyEnd"), false, false, 1.5f);
 }
 
 void CKirbyChangeAbilityEnd::Exit()

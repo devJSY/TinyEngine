@@ -51,7 +51,7 @@ void CKirbyDropAbility::tick()
 
 void CKirbyDropAbility::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"AbilityDump"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("AbilityDump"), false);
 
     m_FrmEnter = true;
 }

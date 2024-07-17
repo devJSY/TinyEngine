@@ -112,91 +112,91 @@ void CBladeKnightScript::EnterState()
     switch (m_State)
     {
     case BLADEKNIGHT_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX(L"Attack"), false);
+        Animator()->Play(ANIMPREFIX("Attack"), false);
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
-        Animator()->Play(ANIMPREFIX(L"AttackStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackStart"), false);
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
-        Animator()->Play(ANIMPREFIX(L"DoubleAttack"), false);
+        Animator()->Play(ANIMPREFIX("DoubleAttack"), false);
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
-        Animator()->Play(ANIMPREFIX(L"Fall"), true);
+        Animator()->Play(ANIMPREFIX("Fall"), true);
     }
     break;
     case BLADEKNIGHT_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false);
     }
     break;
     case BLADEKNIGHT_STATE::FindWait: {
-        Animator()->Play(ANIMPREFIX(L"FindWait"));
+        Animator()->Play(ANIMPREFIX("FindWait"));
     }
     break;
     case BLADEKNIGHT_STATE::FindWaitSub: {
-        Animator()->Play(ANIMPREFIX(L"FindWaitSub"));
+        Animator()->Play(ANIMPREFIX("FindWaitSub"));
     }
     break;
     case BLADEKNIGHT_STATE::Landing: {
-        Animator()->Play(ANIMPREFIX(L"Landing"), false);
+        Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case BLADEKNIGHT_STATE::Move: {
-        Animator()->Play(ANIMPREFIX(L"Move"));
+        Animator()->Play(ANIMPREFIX("Move"));
     }
     break;
     case BLADEKNIGHT_STATE::Retreat: {
-        Animator()->Play(ANIMPREFIX(L"Retreat"), false);
+        Animator()->Play(ANIMPREFIX("Retreat"), false);
     }
     break;
     case BLADEKNIGHT_STATE::Thrust: {
-        Animator()->Play(ANIMPREFIX(L"Thrust"), false);
+        Animator()->Play(ANIMPREFIX("Thrust"), false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustEnd: {
-        Animator()->Play(ANIMPREFIX(L"ThrustEnd"), false);
+        Animator()->Play(ANIMPREFIX("ThrustEnd"), false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustLoop: {
-        Animator()->Play(ANIMPREFIX(L"ThrustLoop"));
+        Animator()->Play(ANIMPREFIX("ThrustLoop"));
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStart: {
-        Animator()->Play(ANIMPREFIX(L"ThrustStart"), false);
+        Animator()->Play(ANIMPREFIX("ThrustStart"), false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStartWait: {
-        Animator()->Play(ANIMPREFIX(L"ThrustStartWait"));
+        Animator()->Play(ANIMPREFIX("ThrustStartWait"));
     }
     break;
     case BLADEKNIGHT_STATE::ThrustWait: {
-        Animator()->Play(ANIMPREFIX(L"ThrustWait"));
+        Animator()->Play(ANIMPREFIX("ThrustWait"));
     }
     break;
     case BLADEKNIGHT_STATE::TonadoAttack: {
-        Animator()->Play(ANIMPREFIX(L"TonadoAttack"), false);
+        Animator()->Play(ANIMPREFIX("TonadoAttack"), false);
     }
     break;
     case BLADEKNIGHT_STATE::TonadoAttackCharge: {
-        Animator()->Play(ANIMPREFIX(L"TonadoAttackCharge"), false);
+        Animator()->Play(ANIMPREFIX("TonadoAttackCharge"), false);
     }
     break;
     case BLADEKNIGHT_STATE::TonadoAttackCharge2: {
-        Animator()->Play(ANIMPREFIX(L"TonadoAttackCharge2"), false);
+        Animator()->Play(ANIMPREFIX("TonadoAttackCharge2"), false);
     }
     break;
     case BLADEKNIGHT_STATE::TonadoAttackChargeMax: {
-        Animator()->Play(ANIMPREFIX(L"TonadoAttackChargeMax"));
+        Animator()->Play(ANIMPREFIX("TonadoAttackChargeMax"));
     }
     break;
     case BLADEKNIGHT_STATE::Wait: {
-        Animator()->Play(ANIMPREFIX(L"Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
     }

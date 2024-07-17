@@ -32,7 +32,7 @@ void CKirbyHoveringFall::tick()
 
 void CKirbyHoveringFall::Enter()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX(L"FlightFall"));
+    GetOwner()->Animator()->Play(ANIMPREFIX("FlightFall"));
     
     if (PLAYERCTRL->GetVelocity().y > 0.f)
     {
