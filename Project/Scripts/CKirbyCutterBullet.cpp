@@ -2,15 +2,17 @@
 #include "CKirbyCutterBullet.h"
 
 #include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
+#include "CKirbyHatBlade.h"
 
 CKirbyCutterBullet::CKirbyCutterBullet()
     : CScript(KIRBYCUTTERBULLET)
     , m_IsBack(false)
     , m_Speed(35.f)
-    , m_RageSpeed(40.f)
-    , m_Frequency(1.f)
+    , m_RageSpeed(35.f)
+    , m_Frequency(0.5f)
     , m_RotAcc(0.f)
-    , m_Angle(30.f)
+    , m_Angle(45.f)
 {
 }
 
@@ -26,7 +28,7 @@ void CKirbyCutterBullet::begin()
     }
 
     // 애니메이션 재생
-    Animator()->Play(KIRBYANIM(L"Spin"), true, false, 1.5f,0);
+    Animator()->Play(KIRBYANIM(L"Spin"), false, false, 1.5f,0);
 
     // 초기 값 세팅
     m_IsBack = false;
@@ -45,10 +47,12 @@ void CKirbyCutterBullet::begin()
 
 void CKirbyCutterBullet::tick()
 {
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_MoveDir, 100.f, Vec3(1.f, 0.f, 0.f), true);
+
     // 좌우로 흔들리는 효과
     m_RotAcc += DT;
 
-    float Angle = 30.f * sinf((m_RotAcc / m_Frequency) * XM_PI * 2.f);
+    float Angle = m_Angle * sinf((m_RotAcc / m_Frequency) * XM_PI * 2.f);
 
     Vec3 Front = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Front.Normalize();
@@ -59,6 +63,11 @@ void CKirbyCutterBullet::tick()
     if (m_RotAcc > m_Frequency)
     {
         m_RotAcc -= m_Frequency;
+    }
+
+    if (Animator()->IsFinish())
+    {
+        Animator()->Play(KIRBYANIM(L"SpinBig"), true, false, 1.5f, 0.1);
     }
 
     // Bullter 움직임
@@ -91,6 +100,8 @@ void CKirbyCutterBullet::tick()
     break;
     case BulletState::HOLD_WALL: {
         m_Acc += DT;
+
+        Rigidbody()->SetVelocity({0.f, 0.f, 0.f});
 
         if (m_Acc > m_Duration)
         {
@@ -134,9 +145,28 @@ void CKirbyCutterBullet::tick()
     case BulletState::BACK: {
         m_Acc += DT;
 
-        m_Velocity = m_MoveDir * m_RageSpeed;
+        Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+        KirbyPos += Vec3(0.f, 50.f, 0.f);
+        Vec3 CurPos = Transform()->GetWorldPos();
+
+        Vec3 NewDir = KirbyPos - CurPos;
+        NewDir.Normalize();
+
+        if (m_MoveDir.Dot(NewDir) > 0.f)
+        {
+            NewDir.y = m_MoveDir.y;
+            m_MoveDir = DirectX::SimpleMath::Vector3::Lerp(m_MoveDir, NewDir, 0.15f);
+            m_MoveDir.Normalize();
+        }
+
+        float phase = (m_Acc / 0.2f) * XM_PI / 2.f;
+        phase = clamp(phase, 0.f, XM_PI/2.f);
+        phase = std::sin(phase);
+
+        m_Velocity = m_MoveDir * m_RageSpeed * phase;
 
         Rigidbody()->SetVelocity(m_Velocity);
+
 
         if (m_Acc > m_Duration)
         {
@@ -183,7 +213,9 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     case BulletState::BACK: {
         // 방향 설정
         Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
-        Vec3 Dir = KirbyPos - Transform()->GetWorldPos();
+        Vec3 test = Transform()->GetWorldPos();
+
+        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f,50.f,0.f);
         Dir.Normalize();
 
         m_MoveDir = Dir;
@@ -201,34 +233,58 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
 }
 
-void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyCutterBullet::OnCollisionStay(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
-
-void CKirbyCutterBullet::OnCollisionExit(CCollider* _OtherCollider)
-{
-    int a = 0;
-}
 
 void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    int a = 0;
-}
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
-void CKirbyCutterBullet::OnTriggerStay(CCollider* _OtherCollider)
-{
-    int a = 0;
+    // WorldStatic
+    if (LayerIdx == 2)
+    {
+        Vec3 CurVel = Rigidbody()->GetVelocity();
+        Rigidbody()->SetVelocity({0.f,0.f,0.f});
+
+        Vec3 RayDir = m_MoveDir;
+        RayDir.y = 0.f;
+        RayDir.Normalize();
+
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), RayDir, 100.f, {L"World Static"});
+        Vec3 Normal = Hit.Normal;
+
+        m_MoveDir = RayDir + 2.f * Normal * (-RayDir.Dot(Normal));
+
+        SetState(BulletState::HOLD_WALL);
+
+    }
+    // Player
+    else if (LayerIdx == 4)
+    {
+        // 커비한테 돌아가는 상태라면
+        if (m_IsBack)
+        {
+            GamePlayStatic::DestroyGameObject(GetOwner());
+
+
+            if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::CUTTER && PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
+            {
+                CKirbyHatBlade* BladeScript = dynamic_cast<CKirbyHatBlade*>(PLAYERFSM->GetCurHatBlade()->GetScripts()[0]);
+
+                if (BladeScript)
+                {
+                    BladeScript->Reset();
+                }
+
+            }
+
+        }
+    }
+
+
 }
 
 void CKirbyCutterBullet::OnTriggerExit(CCollider* _OtherCollider)
 {
-    int a = 0;
+
 }
 
 void CKirbyCutterBullet::SaveToLevelFile(FILE* _File)

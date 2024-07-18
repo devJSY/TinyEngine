@@ -18,6 +18,7 @@ private:
     bool                m_IsBack;           // 커비랑 충돌시 회수
 
     Vec3                m_MoveDir;          //  움직이는 방향
+    Vec3                m_PrevDir;
     float               m_Speed;            //  속도
     float               m_RageSpeed;        //  Rage상태 스피드
 
@@ -42,12 +43,11 @@ public:
     void SetDir(Vec3 _Dir) { m_MoveDir = _Dir; }
 
 private:
-    virtual void OnCollisionEnter(CCollider* _OtherCollider);
-    virtual void OnCollisionStay(CCollider* _OtherCollider);
-    virtual void OnCollisionExit(CCollider* _OtherCollider);
+    virtual void OnCollisionEnter(CCollider* _OtherCollider){}
+    virtual void OnCollisionStay(CCollider* _OtherCollider){}
+    virtual void OnCollisionExit(CCollider* _OtherCollider){}
 
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
-    virtual void OnTriggerStay(CCollider* _OtherCollider);
     virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 
