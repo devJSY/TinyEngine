@@ -361,6 +361,9 @@
     <ClInclude Include="CKirbyDropObjectStart.h">
       <Filter>State\KirbyState\DropObject\Start</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyObject_Lightbulb.h">
+      <Filter>State\KirbyObject\Lightbulb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -734,6 +737,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyDropObjectStart.cpp">
       <Filter>State\KirbyState\DropObject\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyObject_Lightbulb.cpp">
+      <Filter>State\KirbyObject\Lightbulb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1165,6 +1171,9 @@
     </Filter>
     <Filter Include="State\KirbyState\DropObject\Start">
       <UniqueIdentifier>{1e639a2e-041c-4613-8422-599791a654d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject\Lightbulb">
+      <UniqueIdentifier>{f25f684e-c448-4f1d-bcd8-bcbf640268ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -26,7 +26,19 @@ void CKirbyAttack::tick()
         }
             break;
         case ObjectCopyType::STAIR:
+            break;
         case ObjectCopyType::LIGHT:
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (PLAYER->CharacterController()->IsGrounded())
+                {
+                    ChangeState(L"IDLE");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_FALL");
+                }
+            }
         break;
         }
     }

@@ -39,7 +39,7 @@ public:
     virtual void RunStartExit(){};
 
     virtual void RunEnd(){};
-    virtual void RunEndEnter(){};
+    virtual void RunEndEnter();
     virtual void RunEndExit(){};
 
     virtual void Jump(){};

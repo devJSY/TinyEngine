@@ -8,6 +8,7 @@
 #include "CKirbyAbility_Fire.h"
 #include "CKirbyAbility_Sword.h"
 #include "CKirbyObject_Cone.h"
+#include "CKirbyObject_Lightbulb.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -28,6 +29,7 @@ CKirbyFSM::CKirbyFSM()
     , m_HoveringLimitTime(7.f)
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
+    , m_bAttackEvent(false)
     , m_bStuffed(false)
     , m_bHovering(false)
     , m_bInvincible(false)
@@ -46,6 +48,7 @@ CKirbyFSM::CKirbyFSM()
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
+    m_arrObject[(UINT)ObjectCopyType::LIGHT] = new CKirbyObject_Lightbulb();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -62,6 +65,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
     , m_LastJump(LastJumpType::HIGH)
+    , m_bAttackEvent(false)
     , m_bStuffed(false)
     , m_bHovering(false)
     , m_bInvincible(false)

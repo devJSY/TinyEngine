@@ -53,6 +53,7 @@ enum class AbilityCopyType
     FIRE,
     RANGER,
     SWORD,
+    SLIP,
 
     END,
 };

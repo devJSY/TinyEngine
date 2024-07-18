@@ -19,11 +19,11 @@ void CKirbyObject::ParseDemoMesh(Ptr<CMeshData> _pMesh)
     {
         wstring MtrlName = m_DemoMesh->GetMesh()->GetIBName(i);
 
-        if (MtrlName == L"BodyAM__BodyC")
+        if (MtrlName.find(L"BodyAM") != wstring::npos)
         {
             m_DemoMeshIdx_BodyA = i;
         }
-        else if (MtrlName == L"BodyBM__BodyC")
+        else if (MtrlName.find(L"BodyBM") != wstring::npos)
         {
             m_DemoMeshIdx_BodyB = i;
         }
@@ -53,6 +53,11 @@ void CKirbyObject::IdleExit()
 void CKirbyObject::RunEnter()
 {
     PLAYER->Animator()->Play(KIRBYANIM(L"Move"), true, false, 1.5f, 0.3f);
+}
+
+void CKirbyObject::RunEndEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Stop"), false);
 }
 
 void CKirbyObject::JumpStartEnter()

@@ -5,16 +5,9 @@ class CKirbyObject_Cone : public CKirbyObject
 {
 private:
     Ptr<CPrefab> m_Crater;
-    float m_PrevSpeed;
-    float m_PrevRotSpeed;
     bool m_bFrmEnter;
 
 public:
-    // run
-    virtual void RunEnd();
-    virtual void RunEndEnter();
-    virtual void RunEndExit();
-
     // 내려찍기 (시작)
     virtual void Attack();
     virtual void AttackEnter();

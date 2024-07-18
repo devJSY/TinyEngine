@@ -40,14 +40,19 @@ void CKirbyRun::tick()
         }
         break;
         case ObjectCopyType::STAIR:
+            break;
         case ObjectCopyType::LIGHT: {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
             {
-                ChangeState(L"ATTACK_START");
+                ChangeState(L"ATTACK");
+            }
+            else if ((KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)) && PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK_END");
             }
             else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
             {
-                ChangeState(L"DROP_OBJECT_START");
+                ChangeState(L"DROP_OBJECT");
             }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
@@ -55,7 +60,7 @@ void CKirbyRun::tick()
             }
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
-                ChangeState(L"IDLE");
+                ChangeState(L"RUN_END");
             }
         }
         break;

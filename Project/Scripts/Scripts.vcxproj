@@ -173,6 +173,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyJumpAttack.h" />
     <ClInclude Include="CKirbyJumpAttackStart.h" />
     <ClInclude Include="CKirbyObject_Cone.h" />
+    <ClInclude Include="CKirbyObject_Lightbulb.h" />
     <ClInclude Include="CKirbyRunEnd.h" />
     <ClInclude Include="CKirbySlide.h" />
     <ClInclude Include="CKirbyFSM.h" />
@@ -295,6 +296,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyJumpAttack.cpp" />
     <ClCompile Include="CKirbyJumpAttackStart.cpp" />
     <ClCompile Include="CKirbyObject_Cone.cpp" />
+    <ClCompile Include="CKirbyObject_Lightbulb.cpp" />
     <ClCompile Include="CKirbyRunEnd.cpp" />
     <ClCompile Include="CKirbySlide.cpp" />
     <ClCompile Include="CKirbyFSM.cpp" />

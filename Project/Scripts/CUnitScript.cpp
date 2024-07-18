@@ -3,13 +3,24 @@
 
 CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
+    , m_InitInfo{}
     , m_PrevInfo{}
     , m_CurInfo{}
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.JumpPower, "[Init] Jump Power");
+
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "[Current] HP");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "[Current] HP max");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "[Current] Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "[Current] Jump Power");
 }
 
 CUnitScript::CUnitScript(const CUnitScript& _Origin)
     : CScript(_Origin)
+    , m_InitInfo{}
     , m_PrevInfo{}
     , m_CurInfo(_Origin.m_CurInfo)
 {
@@ -17,6 +28,11 @@ CUnitScript::CUnitScript(const CUnitScript& _Origin)
 
 CUnitScript::~CUnitScript()
 {
+}
+
+void CUnitScript::begin()
+{
+    m_CurInfo = m_InitInfo;
 }
 
 void CUnitScript::tick()
@@ -82,11 +98,11 @@ void CUnitScript::DamageProc()
 
 void CUnitScript::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_CurInfo, sizeof(UnitInfo), 1, _File);
+    fwrite(&m_InitInfo, sizeof(UnitInfo), 1, _File);
 }
 
 void CUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_CurInfo, sizeof(UnitInfo), 1, _File);
-    m_CurInfo.HP = m_CurInfo.MAXHP;
+    fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo = m_InitInfo;
 }

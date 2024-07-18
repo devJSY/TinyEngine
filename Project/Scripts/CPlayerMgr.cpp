@@ -32,6 +32,19 @@ void CPlayerMgr::begin()
 
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
     SetPlayer(pPlayer);
+
+    if (m_PlayerObj)
+    {
+        CGameObject* pLight = m_PlayerObj->GetChildObject(L"DeformLight PointLight");
+        if (!pLight)
+        {
+            MessageBox(nullptr, L"Player에 DeformLight PointLight 자식이 존재하지 않습니다", L"[경고] 플레이어 세팅 오류", MB_OK);
+        }
+        else
+        {
+            pLight->SetActive(false);
+        }
+    }
 }
 
 void CPlayerMgr::tick()

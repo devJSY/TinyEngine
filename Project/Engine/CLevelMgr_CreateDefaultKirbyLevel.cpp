@@ -220,6 +220,24 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pPlayer->AddChild(pBodyCollider);
 
+    // DeformLight PointLight
+    CGameObject* pPointLight = new CGameObject;
+    pPointLight->SetName(L"DeformLight PointLight");
+    pPointLight->AddComponent(new CTransform);
+    pPointLight->AddComponent(new CLight);
+
+    pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
+    pPointLight->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(-60.f), 0.f));
+    pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
+    pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
+    pPointLight->Light()->SetRadius(80.f);
+    pPointLight->Light()->SetFallOffEnd(750.f);
+    pPointLight->Light()->SetHaloRadius(160.f);
+    pPointLight->Light()->SetHaloStrength(0.125f);
+
+    pPlayer->AddChild(pPointLight);
+    pPointLight->SetActive(false);
+
     // ==================
     // create default object
     // ==================

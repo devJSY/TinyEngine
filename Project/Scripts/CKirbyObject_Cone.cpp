@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "CKirbyObject_Cone.h"
+#include "CKirbyUnitScript.h"
 
 CKirbyObject_Cone::CKirbyObject_Cone()
     : m_bFrmEnter(true)
-    , m_PrevSpeed(0.f)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Cone.pref", L"prefab\\Cone.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyCone.mdat", L"meshdata\\KirbyCone.mdat");
@@ -14,24 +14,6 @@ CKirbyObject_Cone::CKirbyObject_Cone()
 }
 
 CKirbyObject_Cone::~CKirbyObject_Cone()
-{
-}
-
-// ===============
-// Run
-// ===============
-
-// End
-void CKirbyObject_Cone::RunEnd()
-{
-}
-
-void CKirbyObject_Cone::RunEndEnter()
-{
-    PLAYER->Animator()->Play(KIRBYANIM(L"Stop"), false);
-}
-
-void CKirbyObject_Cone::RunEndExit()
 {
 }
 
@@ -179,9 +161,10 @@ void CKirbyObject_Cone::AttackCombo1EndExit()
 void CKirbyObject_Cone::DropObjectEnter()
 {
     CKirbyObject::DropObjectEnter();
-
-    PLAYERCTRL->SetSpeed(m_PrevSpeed);
-    PLAYERCTRL->SetSpeed(m_PrevRotSpeed);
+    UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
+    PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
+    PLAYERCTRL->SetSpeed(10.f);
+    //PLAYERCTRL->SetRotSpeed(PlayerInfo.RotSpeed); //@TODO 머지후변경
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
@@ -195,8 +178,6 @@ void CKirbyObject_Cone::ChangeObjectEnter()
 {
     CKirbyObject::ChangeObjectEnter();
 
-    m_PrevSpeed = PLAYERCTRL->GetSpeed();
-    m_PrevRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetSpeed(7.f);
     PLAYERCTRL->SetSpeed(5.f);
 

@@ -44,6 +44,7 @@ private:
     float                   m_ComboAccTime;
     float                   m_ChargeAccTime;
     UINT                    m_SlideComboLevel;
+    bool                    m_bAttackEvent;
 
     LastJumpType            m_LastJump;
     DodgeType               m_DodgeType;
@@ -75,6 +76,7 @@ public:
 public:
     void SetCurHat(CGameObject* _Hat);
     void SetCurWeapon(CGameObject* _Weapon);
+    void SetAttackEvent(bool _bAttack) { m_bAttackEvent = _bAttack; }
     void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
@@ -112,6 +114,7 @@ public:
     float GetCurGlidingTime() const { return m_GlidingAcc; }
     float GetYPressedTime() const { return m_YPressedTime; }
     float GetDropCopyTime() const { return m_DropCopyTime; }
+    bool IsAttackEvent() const { return m_bAttackEvent; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;
