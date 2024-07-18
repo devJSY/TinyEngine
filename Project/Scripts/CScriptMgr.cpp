@@ -34,7 +34,7 @@
 #include "CKabuScript.h"
 #include "CTackleEnemyScript.h"
 #include "CHotHeadScript.h"
-#include "CBoomerangKnight.h"
+#include "CSirKibbleScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -71,7 +71,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKabuScript");
 	_vec.push_back(L"CTackleEnemyScript");
 	_vec.push_back(L"CHotHeadScript");
-	_vec.push_back(L"CBoomerangKnight");
+	_vec.push_back(L"CSirKibbleScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -142,8 +142,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTackleEnemyScript;
 	if (L"CHotHeadScript" == _strScriptName)
 		return new CHotHeadScript;
-	if (L"CBoomerangKnight" == _strScriptName)
-		return new CBoomerangKnight;
+	if (L"CSirKibbleScript" == _strScriptName)
+		return new CSirKibbleScript;
 	return nullptr;
 }
 
@@ -217,8 +217,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CTackleEnemyScript;
 	case (UINT)SCRIPT_TYPE::HOTHEADSCRIPT:
 		return new CHotHeadScript;
-	case (UINT)SCRIPT_TYPE::BOOMERANGKNIGHT:
-		return new CBoomerangKnight;
+	case (UINT)SCRIPT_TYPE::SIRKIBBLESCRIPT:
+		return new CSirKibbleScript;
 	}
 	return nullptr;
 }
@@ -293,8 +293,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CTackleEnemyScript";
 	case SCRIPT_TYPE::HOTHEADSCRIPT:
 		return L"CHotHeadScript";
-	case SCRIPT_TYPE::BOOMERANGKNIGHT:
-		return L"CBoomerangKnight";
+	case SCRIPT_TYPE::SIRKIBBLESCRIPT:
+		return L"CSirKibbleScript";
 	}
 	return nullptr;
 }

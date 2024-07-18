@@ -4,9 +4,10 @@ enum class HOTHEAD_STATE
 {
     Idle,
     Find,
-    AttackShotStart,
-    AttackShot,
-    AttackShotEnd,
+    Aiming,
+    AttackShootStart,
+    AttackShoot,
+    AttackShootEnd,
     AttackFlameStart,
     AttackFlame,
     AttackFlameEnd,
@@ -24,6 +25,15 @@ class CHotHeadScript : public CMonsterUnitScript
 private:
     HOTHEAD_STATE m_eState;
     Vec3 m_vDamageDir;
+
+    float m_fAimingTime;
+    float m_fAccTime;
+
+    float m_fShotLength;
+    float m_fFlameLength;
+    float m_fFlameRotLength;
+
+    bool m_bFlag;
 
 public:
     virtual void begin() override;
@@ -45,16 +55,16 @@ private:
 private:
     void Idle();
     void Find();
-    void AttackShotStart();
-    void AttackShot();
-    void AttackShotEnd();
+    void Aiming();
+    void AttackShootStart();
+    void AttackShoot();
     void AttackFlameStart();
     void AttackFlame();
-    void AttackFlameEnd();
     void AttackFlameRotStart();
     void AttackFlameRot();
-    void AttackFlameRotEnd();
+    void AttackEnd();
     void Damage();
+    void Eaten();
     void Death();
 
 public:

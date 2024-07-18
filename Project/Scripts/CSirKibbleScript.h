@@ -1,9 +1,10 @@
 #pragma once
 #include "CMonsterUnitScript.h"
-enum class BOOMERANGKNIGHT_STATE
+enum class SIRKIBBLE_STATE
 {
     Idle,
     Find,
+    FindWait,
     AirCutterJumpStart,
     AirCutterJump,
     AirCutterThrow,
@@ -11,6 +12,7 @@ enum class BOOMERANGKNIGHT_STATE
     CutterThrowStartWait,
     CutterThrow,
     CutterCatch,
+    Fall,
     Land,
     Damage,
     Eaten,
@@ -18,20 +20,24 @@ enum class BOOMERANGKNIGHT_STATE
     End,
 };
 
-class CBoomerangKnight : public CMonsterUnitScript
+class CSirKibbleScript : public CMonsterUnitScript
 {
 private:
-    BOOMERANGKNIGHT_STATE m_eState;
+    CGameObject* m_pTargetObj;
+    SIRKIBBLE_STATE m_eState;
     Vec3 m_vDamageDir;
+
+    float m_fAccTime;
+    bool m_bFlag;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 private:
-    void EnterState(BOOMERANGKNIGHT_STATE _state);
-    void ChangeState(BOOMERANGKNIGHT_STATE _state);
-    void ExitState(BOOMERANGKNIGHT_STATE _state);
+    void EnterState(SIRKIBBLE_STATE _state);
+    void ChangeState(SIRKIBBLE_STATE _state);
+    void ExitState(SIRKIBBLE_STATE _state);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
@@ -44,6 +50,7 @@ private:
 private:
     void Idle();
     void Find();
+    void FindWait();
     void AirCutterJumpStart();
     void AirCutterJump();
     void AirCutterThrow();
@@ -52,12 +59,14 @@ private:
     void CutterThrow();
     void CutterCatch();
     void Damage();
-    void Death();
+    void Eaten();
+    void Fall();
     void Land();
+    void Death();
 
 public:
-    CLONE(CBoomerangKnight)
-    CBoomerangKnight();
-    CBoomerangKnight(const CBoomerangKnight& _Origin);
-    virtual ~CBoomerangKnight();
+    CLONE(CSirKibbleScript)
+    CSirKibbleScript();
+    CSirKibbleScript(const CSirKibbleScript& _Origin);
+    virtual ~CSirKibbleScript();
 };

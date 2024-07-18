@@ -346,8 +346,8 @@
     <ClInclude Include="CHotHeadScript.h">
       <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
     </ClInclude>
-    <ClInclude Include="CBoomerangKnight.h">
-      <Filter>Scripts\Monster\MonsterScript\BoomerangKnight</Filter>
+    <ClInclude Include="CSirKibbleScript.h">
+      <Filter>Scripts\Monster\MonsterScript\SirKibble</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -693,7 +693,6 @@
     <ClCompile Include="CNormalEnemyScript.cpp">
       <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
     </ClCompile>
-    <ClCompile Include="CHitBoxScript.cpp" />
     <ClCompile Include="CHitBoxScript.cpp">
       <Filter>Scripts\Monster\Utill\Hitbox</Filter>
     </ClCompile>
@@ -712,8 +711,8 @@
     <ClCompile Include="CHotHeadScript.cpp">
       <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
     </ClCompile>
-    <ClCompile Include="CBoomerangKnight.cpp">
-      <Filter>Scripts\Monster\MonsterScript\BoomerangKnight</Filter>
+    <ClCompile Include="CSirKibbleScript.cpp">
+      <Filter>Scripts\Monster\MonsterScript\SirKibble</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1110,8 +1109,20 @@
     <Filter Include="Scripts\Monster\Utill\Detect">
       <UniqueIdentifier>{9ff28eb8-8bc7-4e4b-852d-3087291ea3f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\BoomerangKnight">
+    <Filter Include="Scripts\Monster\MonsterScript\SirKibble">
       <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\Utill\Projectile">
+      <UniqueIdentifier>{5367e55b-fe9a-49a9-aea8-8325dbf30d0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\Utill\Projectile\FireProjectile">
+      <UniqueIdentifier>{fd50ee9c-e03c-4372-965c-3db9c5adf9b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\Utill\Projectile\CutterProjectile">
+      <UniqueIdentifier>{70b8a2e3-b343-45c4-8e9c-9c7eab2db564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Monster\Utill\AttackArea">
+      <UniqueIdentifier>{33ec05f2-3086-462b-b3d9-7583f81d0ab9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
