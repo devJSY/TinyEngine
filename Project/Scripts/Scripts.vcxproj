@@ -109,6 +109,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CBladeKnightScript.h" />
+    <ClInclude Include="CBladeKnightSwordScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -197,6 +198,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyRunStart.h" />
     <ClInclude Include="CKirbyUnitScript.h" />
     <ClInclude Include="CMonsterUnitScript.h" />
+    <ClInclude Include="CNoddyScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpringArmCameraScript.h" />
@@ -220,6 +222,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBladeKnightScript.cpp" />
+    <ClCompile Include="CBladeKnightSwordScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -308,6 +311,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLevelChangeButtonScript.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
     <ClCompile Include="CMonsterUnitScript.cpp" />
+    <ClCompile Include="CNoddyScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpringArmCameraScript.cpp" />

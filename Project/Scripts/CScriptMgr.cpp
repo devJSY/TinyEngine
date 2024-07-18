@@ -28,6 +28,8 @@
 #include "CEngineTestScript.h"
 #include "CBladeKnightScript.h"
 #include "CDetectAreaScript.h"
+#include "CBladeKnightSwordScript.h"
+#include "CNoddyScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -58,6 +60,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEngineTestScript");
 	_vec.push_back(L"CBladeKnightScript");
 	_vec.push_back(L"CDetectAreaScript");
+	_vec.push_back(L"CBladeKnightSwordScript");
+	_vec.push_back(L"CNoddyScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -116,6 +120,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBladeKnightScript;
 	if (L"CDetectAreaScript" == _strScriptName)
 		return new CDetectAreaScript;
+	if (L"CBladeKnightSwordScript" == _strScriptName)
+		return new CBladeKnightSwordScript;
+	if (L"CNoddyScript" == _strScriptName)
+		return new CNoddyScript;
 	return nullptr;
 }
 
@@ -177,6 +185,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CBladeKnightScript;
 	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
 		return new CDetectAreaScript;
+	case (UINT)SCRIPT_TYPE::BLADEKNIGHTSWORDSCRIPT:
+		return new CBladeKnightSwordScript;
+	case (UINT)SCRIPT_TYPE::NODDYSCRIPT:
+		return new CNoddyScript;
 	}
 	return nullptr;
 }
@@ -239,6 +251,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CBladeKnightScript";
 	case SCRIPT_TYPE::DETECTAREASCRIPT:
 		return L"CDetectAreaScript";
+	case SCRIPT_TYPE::BLADEKNIGHTSWORDSCRIPT:
+		return L"CBladeKnightSwordScript";
+	case SCRIPT_TYPE::NODDYSCRIPT:
+		return L"CNoddyScript";
 	}
 	return nullptr;
 }

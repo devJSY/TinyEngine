@@ -25,3 +25,5 @@ CUIUnitManagerScript
 CEngineTestScript
 CBladeKnightScript
 CDetectAreaScript
+CBladeKnightSwordScript
+CNoddyScript

@@ -27,10 +27,13 @@ enum class BLADEKNIGHT_STATE
     Wait,
 };
 
+class CBladeKnightSwordScript;
+
 class CBladeKnightScript : public CMonsterUnitScript
 {
 private:
     BLADEKNIGHT_STATE m_State;
+    CBladeKnightSwordScript* m_Sword;
     float m_PassedTime;
     bool m_bStepFlag;
 
@@ -45,6 +48,9 @@ private:
 
 public:
     void ChangeState(BLADEKNIGHT_STATE _NextState);
+
+private:
+    void SetSword();
 
 private:
     void EnterState();

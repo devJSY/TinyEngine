@@ -328,6 +328,12 @@
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClInclude>
+    <ClInclude Include="CBladeKnightSwordScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
+    </ClInclude>
+    <ClInclude Include="CNoddyScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\Noddy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -668,6 +674,12 @@
     </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
+    </ClCompile>
+    <ClCompile Include="CBladeKnightSwordScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
+    </ClCompile>
+    <ClCompile Include="CNoddyScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\Noddy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

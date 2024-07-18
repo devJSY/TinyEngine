@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "CBladeKnightScript.h"
+#include "CBladeKnightSwordScript.h"
 
 CBladeKnightScript::CBladeKnightScript()
     : CMonsterUnitScript(BLADEKNIGHTSCRIPT)
     , m_State(BLADEKNIGHT_STATE::Wait)
+    , m_Sword(nullptr)
     , m_PassedTime(0.f)
     , m_bStepFlag(false)
     , m_StepPower(10.f)
@@ -18,6 +20,7 @@ CBladeKnightScript::CBladeKnightScript()
 CBladeKnightScript::CBladeKnightScript(const CBladeKnightScript& origin)
     : CMonsterUnitScript(origin)
     , m_State(origin.m_State)
+    , m_Sword(nullptr)
     , m_PassedTime(origin.m_PassedTime)
     , m_bStepFlag(false)
     , m_StepPower(origin.m_StepPower)
@@ -37,12 +40,19 @@ void CBladeKnightScript::begin()
 {
     CMonsterUnitScript::begin();
 
+    SetSword();
+
     ChangeState(m_State);
 }
 
 void CBladeKnightScript::tick()
 {
     CMonsterUnitScript::tick();
+
+    if (nullptr == m_Sword)
+    {
+        SetSword();
+    }
 
     // FSM
     switch (m_State)
@@ -124,6 +134,19 @@ void CBladeKnightScript::ChangeState(BLADEKNIGHT_STATE _NextState)
     EnterState();
 }
 
+void CBladeKnightScript::SetSword()
+{
+    for (CGameObject* pChild : GetOwner()->GetChildObject())
+    {
+        CBladeKnightSwordScript* Sword = pChild->GetScript<CBladeKnightSwordScript>();
+        if (nullptr != Sword)
+        {
+            m_Sword = Sword;
+            break;
+        }
+    }
+}
+
 void CBladeKnightScript::EnterState()
 {
     switch (m_State)
@@ -177,26 +200,50 @@ void CBladeKnightScript::EnterState()
     case BLADEKNIGHT_STATE::Thrust: {
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 2.f, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("Thrust"), false);
+        if (nullptr != m_Sword)
+        {
+            m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::Thrust);
+        }
     }
     break;
     case BLADEKNIGHT_STATE::ThrustEnd: {
         Animator()->Play(ANIMPREFIX("ThrustEnd"), false, false, 1.f);
+        if (nullptr != m_Sword)
+        {
+            m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustEnd);
+        }
     }
     break;
     case BLADEKNIGHT_STATE::ThrustLoop: {
         Animator()->Play(ANIMPREFIX("ThrustLoop"));
+        if (nullptr != m_Sword)
+        {
+            m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustLoop);
+        }
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStart: {
         Animator()->Play(ANIMPREFIX("ThrustStart"), false);
+        if (nullptr != m_Sword)
+        {
+            m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustStart);
+        }
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStartWait: {
         Animator()->Play(ANIMPREFIX("ThrustStartWait"));
+        if (nullptr != m_Sword)
+        {
+            m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustStartWait);
+        }
     }
     break;
     // case BLADEKNIGHT_STATE::ThrustWait: {
     //     Animator()->Play(ANIMPREFIX("ThrustWait"), true, false, 2.5f, 0.5);
+    //     if (nullptr != m_Sword)
+    //     {
+    //         m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustWait);
+    //     }
     // }
     // break;
     case BLADEKNIGHT_STATE::TornadoAttack: {
