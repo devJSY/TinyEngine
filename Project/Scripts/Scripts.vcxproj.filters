@@ -83,7 +83,7 @@
       <Filter>State\KirbyState\AttackCharge1</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyRunStart.h">
-      <Filter>State\KirbyState\Run\Run_Start</Filter>
+      <Filter>State\KirbyState\Run\Start</Filter>
     </ClInclude>
     <ClInclude Include="CSpringArmCameraScript.h">
       <Filter>Scripts\SpringArm</Filter>
@@ -340,6 +340,27 @@
     <ClInclude Include="CKirbyChangeObjectEnd.h">
       <Filter>State\KirbyState\ChangeObject\End</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyRunEnd.h">
+      <Filter>State\KirbyState\Run\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCombo1End.h">
+      <Filter>State\KirbyState\AttackCombo1\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackStart.h">
+      <Filter>State\KirbyState\Attack\AttackStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDeath.h">
+      <Filter>State\KirbyState\Death</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDeathEnd.h">
+      <Filter>State\KirbyState\Death\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDropObject.h">
+      <Filter>State\KirbyState\DropObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDropObjectStart.h">
+      <Filter>State\KirbyState\DropObject\Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -418,7 +439,7 @@
       <Filter>State\KirbyState\AttackCharge1</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyRunStart.cpp">
-      <Filter>State\KirbyState\Run\Run_Start</Filter>
+      <Filter>State\KirbyState\Run\Start</Filter>
     </ClCompile>
     <ClCompile Include="CUIManagerScript.cpp">
       <Filter>Scripts\UI\UIManager</Filter>
@@ -693,6 +714,27 @@
     <ClCompile Include="CKirbyChangeObjectEnd.cpp">
       <Filter>State\KirbyState\ChangeObject\End</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyRunEnd.cpp">
+      <Filter>State\KirbyState\Run\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCombo1End.cpp">
+      <Filter>State\KirbyState\AttackCombo1\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackStart.cpp">
+      <Filter>State\KirbyState\Attack\AttackStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDeath.cpp">
+      <Filter>State\KirbyState\Death</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDeathEnd.cpp">
+      <Filter>State\KirbyState\Death\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDropObject.cpp">
+      <Filter>State\KirbyState\DropObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDropObjectStart.cpp">
+      <Filter>State\KirbyState\DropObject\Start</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -754,9 +796,6 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeObject">
       <UniqueIdentifier>{9fe1c146-5378-4a9e-bb27-a28009aa8917}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\KirbyState\Run\Run_Start">
-      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\AttackCharge1">
       <UniqueIdentifier>{175ddc01-87b9-4551-acf1-a887e0430088}</UniqueIdentifier>
@@ -1102,6 +1141,30 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeObject\End">
       <UniqueIdentifier>{d062e6b2-9376-4c4b-bd53-a3b84152ca25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run\End">
+      <UniqueIdentifier>{80ad0f3e-15d4-4ce5-a4b9-5219d805d306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run\Start">
+      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Attack\AttackStart">
+      <UniqueIdentifier>{cd5baeb6-1572-4e51-a7d8-6363e9dc9fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCombo1\End">
+      <UniqueIdentifier>{dde2ee1c-1758-4ee2-9448-c3a4994be44c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Death">
+      <UniqueIdentifier>{f72d87e2-2b46-408e-8456-da98d75bc907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Death\End">
+      <UniqueIdentifier>{49fadc16-0256-4ed7-b3c6-3d6731b729b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\DropObject">
+      <UniqueIdentifier>{b55cbd84-e656-4463-b914-e67ae7d74341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\DropObject\Start">
+      <UniqueIdentifier>{1e639a2e-041c-4613-8422-599791a654d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

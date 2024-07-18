@@ -14,6 +14,7 @@ class CKirbyObject
 protected:
     Ptr<CMeshData> m_Mesh;
     Ptr<CMeshData> m_DemoMesh;
+    Ptr<CPrefab> m_OriginObject;
     UINT m_DemoMeshIdx_BodyA;
     UINT m_DemoMeshIdx_BodyB;
     int m_MeshChangeIdx;
@@ -30,23 +31,27 @@ public:
     virtual void IdleExit();
 
     virtual void Run(){};
-    virtual void RunEnter(){};
+    virtual void RunEnter();
     virtual void RunExit(){};
 
     virtual void RunStart(){};
     virtual void RunStartEnter(){};
     virtual void RunStartExit(){};
 
+    virtual void RunEnd(){};
+    virtual void RunEndEnter(){};
+    virtual void RunEndExit(){};
+
     virtual void Jump(){};
     virtual void JumpEnter(){};
     virtual void JumpExit(){};
 
     virtual void JumpStart(){};
-    virtual void JumpStartEnter(){};
+    virtual void JumpStartEnter();
     virtual void JumpStartExit(){};
 
     virtual void JumpFall(){};
-    virtual void JumpFallEnter(){};
+    virtual void JumpFallEnter();
     virtual void JumpFallExit(){};
 
     virtual void Landing(){};
@@ -64,6 +69,18 @@ public:
     virtual void AttackEnd(){};
     virtual void AttackEndEnter(){};
     virtual void AttackEndExit(){};
+
+    virtual void AttackStart(){};
+    virtual void AttackStartEnter(){};
+    virtual void AttackStartExit(){};
+
+    virtual void AttackCombo1(){};
+    virtual void AttackCombo1Enter(){};
+    virtual void AttackCombo1Exit(){};
+
+    virtual void AttackCombo1End(){};
+    virtual void AttackCombo1EndEnter(){};
+    virtual void AttackCombo1EndExit(){};
 
     virtual void AttackCharge1(){};
     virtual void AttackCharge1Enter(){};
@@ -105,17 +122,21 @@ public:
     virtual void JumpAttackStartEnter(){};
     virtual void JumpAttackStartExit(){};
 
-     virtual void DropObject() = 0;
-     virtual void DropObjectEnter() = 0;
-     virtual void DropObjectExit() = 0;
+    virtual void DropObject();
+    virtual void DropObjectEnter();
+    virtual void DropObjectExit();
 
-     virtual void ChangeObject();
-     virtual void ChangeObjectEnter();
-     virtual void ChangeObjectExit();
+    virtual void DropObjectStart(){};
+    virtual void DropObjectStartEnter();
+    virtual void DropObjectStartExit();
 
-     virtual void ChangeObjectEnd(){};
-     virtual void ChangeObjectEndEnter();
-     virtual void ChangeObjectEndExit();
+    virtual void ChangeObject();
+    virtual void ChangeObjectEnter();
+    virtual void ChangeObjectExit();
+
+    virtual void ChangeObjectEnd(){};
+    virtual void ChangeObjectEndEnter();
+    virtual void ChangeObjectEndExit();
 
 public:
     virtual CKirbyObject* Clone() = 0;

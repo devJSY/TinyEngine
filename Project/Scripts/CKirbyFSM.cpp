@@ -121,8 +121,11 @@ CKirbyFSM::~CKirbyFSM()
 }
 
 #include "CKirbyIdle.h"
+#include "CKirbyDeath.h"
+#include "CKirbyDeathEnd.h"
 #include "CKirbyRun.h"
 #include "CKirbyRunStart.h"
+#include "CKirbyRunEnd.h"
 #include "CKirbyJump.h"
 #include "CKirbyJumpStart.h"
 #include "CKirbyJumpFall.h"
@@ -138,8 +141,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyHoveringLanding.h"
 #include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
+#include "CKirbyAttackStart.h"
 #include "CKirbyAttackEnd.h"
 #include "CKirbyAttackCombo1.h"
+#include "CKirbyAttackCombo1End.h"
 #include "CKirbyAttackCombo2.h"
 #include "CKirbyAttackCombo2End.h"
 #include "CKirbyAttackCharge1.h"
@@ -187,6 +192,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyBurningEnd.h"
 #include "CKirbyChangeObject.h"
 #include "CKirbyChangeObjectEnd.h"
+#include "CKirbyDropObjectStart.h"
+#include "CKirbyDropObject.h"
 
 void CKirbyFSM::begin()
 {
@@ -201,8 +208,11 @@ void CKirbyFSM::begin()
 
     // State Ãß°¡
     AddState(L"IDLE", new CKirbyIdle);
+    AddState(L"DEATH", new CKirbyDeath);
+    AddState(L"DEATH_END", new CKirbyDeathEnd);
     AddState(L"RUN", new CKirbyRun);
     AddState(L"RUN_START", new CKirbyRunStart);
+    AddState(L"RUN_END", new CKirbyRunEnd);
     AddState(L"JUMP", new CKirbyJump);
     AddState(L"JUMP_START", new CKirbyJumpStart);
     AddState(L"JUMP_FALL", new CKirbyJumpFall);
@@ -218,8 +228,10 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_LANDING", new CKirbyHoveringLanding);
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_START", new CKirbyAttackStart);
     AddState(L"ATTACK_END", new CKirbyAttackEnd);
     AddState(L"ATTACK_COMBO1", new CKirbyAttackCombo1);
+    AddState(L"ATTACK_COMBO1_END", new CKirbyAttackCombo1End);
     AddState(L"ATTACK_COMBO2", new CKirbyAttackCombo2);
     AddState(L"ATTACK_COMBO2_END", new CKirbyAttackCombo2End);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
@@ -269,6 +281,8 @@ void CKirbyFSM::begin()
 
     AddState(L"CHANGE_OBJECT", new CKirbyChangeObject);
     AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
+    AddState(L"DROP_OBJECT", new CKirbyDropObject);
+    AddState(L"DROP_OBJECT_START", new CKirbyDropObjectStart);
 
     ChangeState(L"IDLE");
 }

@@ -17,6 +17,18 @@ void CKirbyLanding::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE:
+        case ObjectCopyType::STAIR:
+        case ObjectCopyType::LIGHT: {
+            if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"LANDING_END");
+            }
+        }
+        break;
+        }
     }
     else
     {

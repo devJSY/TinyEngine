@@ -1,17 +1,17 @@
 #include "pch.h"
-#include "CKirbyLandingEnd.h"
+#include "CKirbyRunEnd.h"
 
-CKirbyLandingEnd::CKirbyLandingEnd()
+CKirbyRunEnd::CKirbyRunEnd()
 {
 }
 
-CKirbyLandingEnd::~CKirbyLandingEnd()
+CKirbyRunEnd::~CKirbyRunEnd()
 {
 }
 
-void CKirbyLandingEnd::tick()
+void CKirbyRunEnd::tick()
 {
-    PLAY_CURSTATE(LandingEnd)
+    PLAY_CURSTATE(RunEnd);
 
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
@@ -36,25 +36,18 @@ void CKirbyLandingEnd::tick()
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
         case AbilityCopyType::RANGER:
-        case AbilityCopyType::SWORD: {
-            if (GetOwner()->Animator()->IsFinish())
-            {
-                ChangeState(L"IDLE");
-            }
-        }
-        break;
+        case AbilityCopyType::SWORD:
+            break;
         }
     }
 }
 
-void CKirbyLandingEnd::Enter()
+void CKirbyRunEnd::Enter()
 {
-    PLAY_CURSTATE(LandingEndEnter)
-    PLAYERFSM->SetDroppable(true);
+    PLAY_CURSTATE(RunEndEnter);
 }
 
-void CKirbyLandingEnd::Exit()
+void CKirbyRunEnd::Exit()
 {
-    PLAY_CURSTATE(LandingEndExit)
-    PLAYERFSM->SetDroppable(false);
+    PLAY_CURSTATE(RunEndExit);
 }

@@ -43,45 +43,125 @@ void CKirbyObject::IdleEnter()
     PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
 
     PLAYERCTRL->LockMove();
-    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyObject::IdleExit()
 {
     PLAYERCTRL->UnlockMove();
-    PLAYERFSM->SetDroppable(true);
+}
+
+void CKirbyObject::RunEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Move"), true, false, 1.5f, 0.3f);
+}
+
+void CKirbyObject::JumpStartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Jump"), false);
+}
+
+void CKirbyObject::JumpFallEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"Fall"));
 }
 
 void CKirbyObject::LandingEnter()
 {
+    PLAYER->Animator()->Play(KIRBYANIM(L"Landing"), false);
+
     PLAYERCTRL->LockJump();
-    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyObject::LandingExit()
 {
     PLAYERCTRL->UnlockJump();
-    PLAYERFSM->SetDroppable(false);
 }
 
 void CKirbyObject::LandingEndEnter()
 {
+    PLAYER->Animator()->Play(KIRBYANIM(L"LandingEnd"), false);
+
     PLAYERCTRL->LockJump();
-    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyObject::LandingEndExit()
 {
     PLAYERCTRL->UnlockJump();
-    PLAYERFSM->SetDroppable(false);
+}
+
+void CKirbyObject::DropObject()
+{
+}
+
+void CKirbyObject::DropObjectEnter()
+{
+    // change meshdata
+    PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Frown);
+
+    if (PLAYERFSM->GetCurHat())
+    {
+        GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
+        GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurWeapon(), L"Weapon");
+    }
+
+    // animation & move controller
+    PLAYER->Animator()->Play(KIRBYANIM(L"SpitDeform"), false, false, 1.5f);
+
+    PLAYERCTRL->LockMove();
+    PLAYERCTRL->LockDirection();
+
+    // spawn object
+    CGameObject* pObj = m_OriginObject->Instantiate();
+    Vec3 InitPos = PLAYER->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 400.f;
+    Vec3 Force = Vec3(0.f, 1.f, 0.f) - PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Force = Force.Normalize() * 3.f;
+
+    pObj->Transform()->SetWorldPos(InitPos);
+    pObj->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+
+    GamePlayStatic::SpawnGameObject(pObj, LAYER_DYNAMIC);
+}
+
+void CKirbyObject::DropObjectExit()
+{
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->UnlockDirection();
+}
+
+void CKirbyObject::DropObjectStartEnter()
+{
+    PLAYER->Animator()->Play(KIRBYANIM(L"SpitStart"), false, false, 1.5f);
+
+    PLAYERCTRL->AddVelocity(Vec3(0.f, 3.5f, 0.f));
+
+    PLAYERCTRL->LockMove();
+    PLAYERCTRL->LockDirection();
+}
+
+void CKirbyObject::DropObjectStartExit()
+{
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->UnlockDirection();
 }
 
 void CKirbyObject::ChangeObject()
 {
-    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() == m_MeshChangeIdx)
+    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() >= m_MeshChangeIdx)
     {
         PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyA);
         PLAYER->GetRenderComponent()->SetMaterial(CPlayerMgr::GetPlayerBodyDemoMtrl(), m_DemoMeshIdx_BodyB);
+
+        // 뒤쪽위로 힘 가함
+        Vec3 Force = Vec3(0.f, 1.f, 0.f) - PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT);
+        Force = Force.Normalize() * 10.f;
+        PLAYERCTRL->AddVelocity(Force);
 
         m_bFrmEnter = false;
     }
@@ -117,10 +197,6 @@ void CKirbyObject::ChangeObjectEndEnter()
     if (PLAYERFSM->GetCurHat())
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
-
-        PLAYERCTRL->UnlockMove();
-        PLAYERCTRL->UnlockJump();
-        PLAYERCTRL->UnlockDirection();
     }
     PLAYER->Animator()->Play(KIRBYANIM(L"DemoEndFirst"), false, false, 2.5f);
 
@@ -131,4 +207,7 @@ void CKirbyObject::ChangeObjectEndEnter()
 
 void CKirbyObject::ChangeObjectEndExit()
 {
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
 }

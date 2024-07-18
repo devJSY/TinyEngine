@@ -4,97 +4,41 @@
 class CKirbyObject_Cone : public CKirbyObject
 {
 private:
-    Ptr<CMeshData> m_Crater;
+    Ptr<CPrefab> m_Crater;
+    float m_PrevSpeed;
     bool m_bFrmEnter;
 
 public:
-    //virtual void Idle();
-    //virtual void IdleEnter();
-    //virtual void IdleExit();
+    // run
+    virtual void RunEnd();
+    virtual void RunEndEnter();
+    virtual void RunEndExit();
 
-    //virtual void Run(){};
-    //virtual void RunEnter(){};
-    //virtual void RunExit(){};
+    // 내려찍기 (시작)
+    virtual void Attack();
+    virtual void AttackEnter();
+    virtual void AttackExit();
 
-    //virtual void RunStart(){};
-    //virtual void RunStartEnter(){};
-    //virtual void RunStartExit(){};
+    virtual void AttackStart();
+    virtual void AttackStartEnter();
+    virtual void AttackStartExit();
 
-    //virtual void Jump(){};
-    //virtual void JumpEnter(){};
-    //virtual void JumpExit(){};
+    virtual void AttackEnd();
+    virtual void AttackEndEnter();
+    virtual void AttackEndExit();
 
-    //virtual void JumpStart(){};
-    //virtual void JumpStartEnter(){};
-    //virtual void JumpStartExit(){};
+    // 내려찍기 (끝)
+    virtual void AttackCombo1();
+    virtual void AttackCombo1Enter();
+    virtual void AttackCombo1Exit();
 
-    //virtual void JumpFall(){};
-    //virtual void JumpFallEnter(){};
-    //virtual void JumpFallExit(){};
-
-    //virtual void Landing(){};
-    //virtual void LandingEnter();
-    //virtual void LandingExit();
-
-    //virtual void LandingEnd(){};
-    //virtual void LandingEndEnter();
-    //virtual void LandingEndExit();
-
-    virtual void Attack() {};
-    virtual void AttackEnter(){};
-    virtual void AttackExit(){};
-
-    //virtual void AttackEnd(){};
-    //virtual void AttackEndEnter(){};
-    //virtual void AttackEndExit(){};
-
-    //virtual void AttackCharge1(){};
-    //virtual void AttackCharge1Enter(){};
-    //virtual void AttackCharge1Exit(){};
-
-    //virtual void AttackCharge1Start(){};
-    //virtual void AttackCharge1StartEnter(){};
-    //virtual void AttackCharge1StartExit(){};
-
-    //virtual void AttackCharge1End(){};
-    //virtual void AttackCharge1EndEnter(){};
-    //virtual void AttackCharge1EndExit(){};
-
-    //virtual void AttackCharge2(){};
-    //virtual void AttackCharge2Enter(){};
-    //virtual void AttackCharge2Exit(){};
-
-    //virtual void AttackCharge2Start(){};
-    //virtual void AttackCharge2StartEnter(){};
-    //virtual void AttackCharge2StartExit(){};
-
-    //virtual void AttackCharge3(){};
-    //virtual void AttackCharge3Enter(){};
-    //virtual void AttackCharge3Exit(){};
-
-    //virtual void AttackCharge3Start(){};
-    //virtual void AttackCharge3StartEnter(){};
-    //virtual void AttackCharge3StartExit(){};
-
-    //virtual void AttackCharge3End(){};
-    //virtual void AttackCharge3EndEnter(){};
-    //virtual void AttackCharge3EndExit(){};
-
-    //virtual void JumpAttack(){};
-    //virtual void JumpAttackEnter(){};
-    //virtual void JumpAttackExit(){};
-
-    //virtual void JumpAttackStart(){};
-    //virtual void JumpAttackStartEnter(){};
-    //virtual void JumpAttackStartExit(){};
+    virtual void AttackCombo1End();
+    virtual void AttackCombo1EndEnter();
+    virtual void AttackCombo1EndExit();
 
     // Change/Drop Object
-    virtual void DropObject();
     virtual void DropObjectEnter();
-    virtual void DropObjectExit();
-
-    //virtual void ChangeObject();
-    //virtual void ChangeObjectEnter();
+    virtual void ChangeObjectEnter();
 
 public:
     CLONE_DISABLE(CKirbyObject_Cone)

@@ -16,6 +16,19 @@ void CKirbyAttack::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                ChangeState(L"ATTACK_END");
+            }
+        }
+            break;
+        case ObjectCopyType::STAIR:
+        case ObjectCopyType::LIGHT:
+        break;
+        }
     }
     else
     {

@@ -16,6 +16,27 @@ void CKirbyJumpFall::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_START");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT_START");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"LANDING");
+            }
+        }
+        break;
+        case ObjectCopyType::STAIR:
+        case ObjectCopyType::LIGHT:
+            break;
+        }
     }
     else
     {

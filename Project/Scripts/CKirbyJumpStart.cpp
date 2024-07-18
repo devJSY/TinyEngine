@@ -23,6 +23,33 @@ void CKirbyJumpStart::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_START");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT_START");
+            }
+            else if (m_JumpAccTime > m_MaxJumpTime)
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+        }
+        break;
+        case ObjectCopyType::STAIR:
+        case ObjectCopyType::LIGHT:
+            break;
+        }
+
+        if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
+        {
+            PLAYERCTRL->VelocityCut(2.f);
+            m_bVelocityCut = true;
+        }
     }
     else
     {
@@ -55,7 +82,6 @@ void CKirbyJumpStart::tick()
                 PLAYERCTRL->VelocityCut(2.f);
                 m_bVelocityCut = true;
             }
-
         }
         break;
         case AbilityCopyType::FIRE: {

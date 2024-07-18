@@ -34,6 +34,10 @@ public:
     virtual void RunStartEnter();
     virtual void RunStartExit(){};
 
+    virtual void RunEnd(){};
+    virtual void RunEndEnter(){};
+    virtual void RunEndExit(){};
+
     virtual void Jump(){};
     virtual void JumpEnter();
     virtual void JumpExit(){};
@@ -76,6 +80,10 @@ public:
     virtual void AttackEnter(){};
     virtual void AttackExit(){};
 
+    virtual void AttackStart(){};
+    virtual void AttackStartEnter(){};
+    virtual void AttackStartExit(){};
+
     virtual void AttackEnd(){};
     virtual void AttackEndEnter(){};
     virtual void AttackEndExit(){};
@@ -83,6 +91,10 @@ public:
     virtual void AttackCombo1(){};
     virtual void AttackCombo1Enter(){};
     virtual void AttackCombo1Exit(){};
+
+    virtual void AttackCombo1End(){};
+    virtual void AttackCombo1EndEnter(){};
+    virtual void AttackCombo1EndExit(){};
 
     virtual void AttackCombo2(){};
     virtual void AttackCombo2Enter(){};

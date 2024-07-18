@@ -11,51 +11,67 @@ CKirbyAttackCombo1::~CKirbyAttackCombo1()
 
 void CKirbyAttackCombo1::tick()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->AttackCombo1();
+    PLAY_CURSTATE(AttackCombo1)
 
     // State Change
-    switch (PLAYERFSM->GetCurAbilityIdx())
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-    case AbilityCopyType::NORMAL:
-        break;
-    case AbilityCopyType::FIRE:
-        break;
-    case AbilityCopyType::RANGER:
-        break;
-    case AbilityCopyType::SWORD: {
-        if (PLAYER->Animator()->IsFinish())
+        switch (PLAYERFSM->GetCurObjectIdx())
         {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+        case ObjectCopyType::CONE: {
+            if (PLAYER->Animator()->IsFinish())
             {
-                ChangeState(L"ATTACK_COMBO2");
-            }
-            //else if (KEY_PRESSED(KEY_ATK))
-            //{
-            //    ChangeState(L"ATTACK_CHARGE1_START");
-            //}
-            else if (PLAYERCTRL->GetInput().Length() != 0.f)
-            {
-                ChangeState(L"RUN_START");
-            }
-            else
-            {
-                ChangeState(L"IDLE");
+                ChangeState(L"ATTACK_COMBO1_END");
             }
         }
+        break;
+        case ObjectCopyType::STAIR:
+        case ObjectCopyType::LIGHT:
+            break;
+        }
     }
-    break;
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::RANGER:
+            break;
+        case AbilityCopyType::SWORD: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+                {
+                    ChangeState(L"ATTACK_COMBO2");
+                }
+                // else if (KEY_PRESSED(KEY_ATK))
+                //{
+                //     ChangeState(L"ATTACK_CHARGE1_START");
+                // }
+                else if (PLAYERCTRL->GetInput().Length() != 0.f)
+                {
+                    ChangeState(L"RUN_START");
+                }
+                else
+                {
+                    ChangeState(L"IDLE");
+                }
+            }
+        }
+        break;
+        }
     }
 }
 
 void CKirbyAttackCombo1::Enter()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->AttackCombo1Enter();
+    PLAY_CURSTATE(AttackCombo1Enter)
 }
 
 void CKirbyAttackCombo1::Exit()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->AttackCombo1Exit();
+    PLAY_CURSTATE(AttackCombo1Exit)
 }

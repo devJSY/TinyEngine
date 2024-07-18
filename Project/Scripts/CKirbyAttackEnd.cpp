@@ -16,6 +16,25 @@ void CKirbyAttackEnd::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        PLAY_CURSTATE(Attack)
+
+        // State Change
+        if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+        {
+            switch (PLAYERFSM->GetCurObjectIdx())
+            {
+            case ObjectCopyType::CONE: {
+                if (PLAYER->CharacterController()->IsGrounded())
+                {
+                    ChangeState(L"ATTACK_COMBO1");
+                }
+            }
+            break;
+            case ObjectCopyType::STAIR:
+            case ObjectCopyType::LIGHT:
+                break;
+            }
+        }
     }
     else
     {

@@ -5,6 +5,7 @@ class CKirbyBackJump : public CState
 private:
     float m_InitSpeed;
     float m_JumpPower;
+    bool m_StateEnter;
 
 public:
     virtual void tick();

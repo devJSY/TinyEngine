@@ -82,6 +82,7 @@ public:
     void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
     void SetInvincible() { m_bInvincible = true;  m_InvincibleAcc = 0.f;}
+    void SetInvincible(bool _bInvicinvle) { } //@TODO 합쳐야함
     void SetDroppable(bool _bDroppable) { m_bDroppable = _bDroppable; }
     void ClearCurHatWeapon();
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
