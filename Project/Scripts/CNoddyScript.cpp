@@ -3,11 +3,15 @@
 
 CNoddyScript::CNoddyScript()
     : CMonsterUnitScript(NODDYSCRIPT)
+    , m_State(NODDY_STATE::Sleep)
+    , m_PassedTime(0.f)
 {
 }
 
 CNoddyScript::CNoddyScript(const CNoddyScript& origin)
     : CMonsterUnitScript(origin)
+    , m_State(origin.m_State)
+    , m_PassedTime(0.f)
 {
 }
 
@@ -17,6 +21,7 @@ CNoddyScript::~CNoddyScript()
 
 void CNoddyScript::begin()
 {
+    ChangeState(m_State);
 }
 
 void CNoddyScript::tick()
@@ -64,6 +69,7 @@ void CNoddyScript::ChangeState(NODDY_STATE _NextState)
 {
     ExitState();
     m_State = _NextState;
+    m_PassedTime = 0.f;
     EnterState();
 }
 
@@ -74,6 +80,8 @@ void CNoddyScript::EnterState()
     {
     case NODDY_STATE::Damage: {
         Animator()->Play(ANIMPREFIX("Damage"), false);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
     }
     break;
     case NODDY_STATE::Fall: {
@@ -89,11 +97,11 @@ void CNoddyScript::EnterState()
     }
     break;
     case NODDY_STATE::LandingSleep: {
-        Animator()->Play(ANIMPREFIX("LandingSleep"));
+        Animator()->Play(ANIMPREFIX("LandingSleep"), false);
     }
     break;
     case NODDY_STATE::LookAround: {
-        Animator()->Play(ANIMPREFIX("LookAround"), false);
+        Animator()->Play(ANIMPREFIX("LookAround"), false, false, 1.f, 0.5);
     }
     break;
     case NODDY_STATE::Move: {
@@ -101,19 +109,25 @@ void CNoddyScript::EnterState()
     }
     break;
     case NODDY_STATE::Sleep: {
-        Animator()->Play(ANIMPREFIX("Sleep"));
+        Animator()->Play(ANIMPREFIX("Sleep"), true, false, 2.5f, 0.5);
     }
     break;
     case NODDY_STATE::SleepStart: {
         Animator()->Play(ANIMPREFIX("SleepStart"), false);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.00.png"));
     }
     break;
     case NODDY_STATE::Wait: {
         Animator()->Play(ANIMPREFIX("Wait"));
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
     break;
     case NODDY_STATE::Wakeup: {
-        Animator()->Play(ANIMPREFIX("Wakeup"), false);
+        Animator()->Play(ANIMPREFIX("Wakeup"), false, false, 1.f);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
     break;
     }
@@ -143,6 +157,7 @@ void CNoddyScript::ExitState()
     }
     break;
     case NODDY_STATE::Move: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case NODDY_STATE::Sleep: {
@@ -166,42 +181,121 @@ void CNoddyScript::Damage()
 
 void CNoddyScript::Fall()
 {
+    if (IsGround())
+    {
+        ChangeState(NODDY_STATE::Landing);
+    }
 }
 
 void CNoddyScript::FallSleep()
 {
+    if (IsGround())
+    {
+        ChangeState(NODDY_STATE::LandingSleep);
+    }
 }
 
 void CNoddyScript::Landing()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NODDY_STATE::Wait);
+    }
 }
 
 void CNoddyScript::LandingSleep()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NODDY_STATE::Wait);
+    }
 }
 
 void CNoddyScript::LookAround()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NODDY_STATE::SleepStart);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(NODDY_STATE::Fall);
+    }
 }
 
 void CNoddyScript::Move()
 {
+    RigidbodyMove();
+
+    m_PassedTime += DT;
+    if (m_PassedTime >= 2.f)
+    {
+        ChangeState(NODDY_STATE::Wait);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(NODDY_STATE::Fall);
+    }
 }
 
 void CNoddyScript::Sleep()
 {
+    if (nullptr != GetTarget())
+    {
+        m_PassedTime += DT;
+
+        if (m_PassedTime >= 5.f)
+        {
+            ChangeState(NODDY_STATE::Wakeup);
+        }
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(NODDY_STATE::FallSleep);
+    }
 }
 
 void CNoddyScript::SleepStart()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NODDY_STATE::Sleep);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(NODDY_STATE::FallSleep);
+    }
 }
 
 void CNoddyScript::Wait()
 {
+    m_PassedTime += DT;
+    if (m_PassedTime >= 1.f)
+    {
+        ChangeState(NODDY_STATE::LookAround);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(NODDY_STATE::Fall);
+    }
 }
 
 void CNoddyScript::Wakeup()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NODDY_STATE::Move);
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(NODDY_STATE::Fall);
+    }
 }
 
 void CNoddyScript::OnCollisionEnter(CCollider* _OtherCollider)
@@ -214,4 +308,14 @@ void CNoddyScript::OnCollisionStay(CCollider* _OtherCollider)
 
 void CNoddyScript::OnCollisionExit(CCollider* _OtherCollider)
 {
+}
+
+void CNoddyScript::SaveToLevelFile(FILE* _File)
+{
+    CMonsterUnitScript::SaveToLevelFile(_File);
+}
+
+void CNoddyScript::LoadFromLevelFile(FILE* _File)
+{
+    CMonsterUnitScript::LoadFromLevelFile(_File);
 }

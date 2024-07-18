@@ -20,6 +20,7 @@ class CNoddyScript : public CMonsterUnitScript
 {
 private:
     NODDY_STATE m_State;
+    float m_PassedTime;
 
 private:
     virtual void begin() override;
@@ -50,8 +51,8 @@ private:
     virtual void OnCollisionExit(CCollider* _OtherCollider);
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override{};
-    virtual void LoadFromLevelFile(FILE* _File) override{};
+    virtual void SaveToLevelFile(FILE* _File) override;
+    virtual void LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CNoddyScript);
 
