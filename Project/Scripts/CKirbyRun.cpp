@@ -67,6 +67,7 @@ void CKirbyRun::tick()
             }
         }
 
+        break;
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {

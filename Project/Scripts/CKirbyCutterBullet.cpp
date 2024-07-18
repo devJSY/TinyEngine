@@ -9,10 +9,14 @@ CKirbyCutterBullet::CKirbyCutterBullet()
     : CScript(KIRBYCUTTERBULLET)
     , m_IsBack(false)
     , m_Speed(35.f)
-    , m_RageSpeed(35.f)
-    , m_Frequency(0.5f)
+    , m_BurningSpeed(40.f)
+    , m_Frequency(0.7f)
     , m_RotAcc(0.f)
     , m_Angle(45.f)
+    , m_bPressedATK(true)
+    , m_bBuning(false)
+    , m_BuningStepUpDuration(1.f)
+    , m_CurStep(BuningStep::NONE)
 {
 }
 
@@ -28,7 +32,7 @@ void CKirbyCutterBullet::begin()
     }
 
     // 애니메이션 재생
-    Animator()->Play(KIRBYANIM(L"Spin"), false, false, 1.5f,0);
+    Animator()->Play(KIRBYANIM(L"Spin"), false, false, 1.5f, 0);
 
     // 초기 값 세팅
     m_IsBack = false;
@@ -41,13 +45,46 @@ void CKirbyCutterBullet::begin()
     m_MoveDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
     m_BounceCount = 6;
-
-
+    m_bPressedATK = true;
+    m_bBuning = false;
+    m_BuningStepUpDuration = 1.f;
+    m_CurStep = BuningStep::NONE;
 }
 
 void CKirbyCutterBullet::tick()
 {
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_MoveDir, 100.f, Vec3(1.f, 0.f, 0.f), true);
+    switch (m_CurState)
+    {
+    case BulletState::HOLD_AIR:
+        GetOwner()->SetName(L"AIR");
+        break;
+    case BulletState::HOLD_WALL:
+        GetOwner()->SetName(L"WALL");
+        break;
+    case BulletState::DRAG:
+        GetOwner()->SetName(L"DRAG");
+        break;
+    case BulletState::BACK:
+        GetOwner()->SetName(L"BACK");
+        break;
+    case BulletState::RAGE:
+        GetOwner()->SetName(L"RAGE");
+        break;
+    case BulletState::BURNING_WAIT:
+        GetOwner()->SetName(L"BURNING_WAIT");
+        break;
+    case BulletState::BURNING:
+        GetOwner()->SetName(L"BURNING");
+        break;
+    default:
+        break;
+    }
+
+    // Burning check
+    if (m_bPressedATK && (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)))
+    {
+        m_bPressedATK = false;
+    }
 
     // 좌우로 흔들리는 효과
     m_RotAcc += DT;
@@ -76,7 +113,11 @@ void CKirbyCutterBullet::tick()
     case BulletState::HOLD_AIR: {
         m_Acc += DT;
 
-        if (m_Acc > m_Duration)
+        if (m_bPressedATK)
+        {
+            SetState(BulletState::BURNING_WAIT);
+        }
+        else if (m_Acc > m_Duration)
         {
             --m_BounceCount;
 
@@ -113,7 +154,11 @@ void CKirbyCutterBullet::tick()
             }
             else
             {
-                if (m_IsBack)
+                if (m_bBuning)
+                {
+                    SetState(BulletState::BURNING);
+                }
+                else if (m_IsBack)
                 {
                     SetState(BulletState::RAGE);
                 }
@@ -160,13 +205,12 @@ void CKirbyCutterBullet::tick()
         }
 
         float phase = (m_Acc / 0.2f) * XM_PI / 2.f;
-        phase = clamp(phase, 0.f, XM_PI/2.f);
+        phase = clamp(phase, 0.f, XM_PI / 2.f);
         phase = std::sin(phase);
 
-        m_Velocity = m_MoveDir * m_RageSpeed * phase;
+        m_Velocity = m_MoveDir * m_Speed * phase;
 
         Rigidbody()->SetVelocity(m_Velocity);
-
 
         if (m_Acc > m_Duration)
         {
@@ -177,7 +221,11 @@ void CKirbyCutterBullet::tick()
     case BulletState::RAGE: {
         m_Acc += DT;
 
-        m_Velocity = m_MoveDir * m_RageSpeed;
+        float phase = (m_Acc / 0.2f) * XM_PI / 2.f;
+        phase = clamp(phase, 0.f, XM_PI / 2.f);
+        phase = std::sin(phase);
+
+        m_Velocity = m_MoveDir * m_Speed * phase;
 
         Rigidbody()->SetVelocity(m_Velocity);
 
@@ -187,8 +235,46 @@ void CKirbyCutterBullet::tick()
         }
     }
     break;
-    }
+    case BulletState::BURNING_WAIT: {
+        m_Acc += DT;
 
+        // @TODO SCALA_PARAM을 이용하여 색이랑 크기가 시간에 따라 변하도록 해야함
+        
+        if (m_Acc > m_BuningStepUpDuration)
+        {
+            // StepUP 했을 경우
+            if (StepUp())
+            {
+                m_Acc -= m_BuningStepUpDuration;
+            }
+        }
+
+
+        if (m_Acc > m_Duration || KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
+        {
+            SetState(BulletState::BACK);
+        }
+    }
+    break;
+    case BulletState::BURNING: {
+        m_Acc += DT;
+
+        float phase = (m_Acc / 0.2f) * XM_PI / 2.f;
+        phase = clamp(phase, 0.f, XM_PI / 2.f);
+        phase = std::sin(phase);
+
+        m_Velocity = m_MoveDir * m_BurningSpeed * phase;
+
+        Rigidbody()->SetVelocity(m_Velocity);
+
+        if (m_Acc > m_Duration)
+        {
+            GamePlayStatic::DestroyGameObject(GetOwner());
+        }
+    }
+    break;
+
+    }
 }
 
 void CKirbyCutterBullet::SetState(BulletState _State)
@@ -215,7 +301,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
         Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
         Vec3 test = Transform()->GetWorldPos();
 
-        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f,50.f,0.f);
+        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f, 50.f, 0.f);
         Dir.Normalize();
 
         m_MoveDir = Dir;
@@ -228,11 +314,60 @@ void CKirbyCutterBullet::SetState(BulletState _State)
         m_Duration = 3.f;
     }
     break;
+    case BulletState::BURNING_WAIT: {
+        // @TODO 다이나믹 머터리얼로 머터리얼을 교체한뒤 쉐이더를 전용쉐이더로 바꿔줘야함
+        MeshRender()->GetDynamicMaterial(0);
+
+
+        m_Duration = 4.f;
+    }
+    break;
+    case BulletState::BURNING: {
+        m_Duration = 3.f;
+        m_bBuning = true;
+    }
+    break;
+
     default:
         break;
     }
 }
 
+bool CKirbyCutterBullet::StepUp()
+{
+
+    switch (m_CurStep)
+    {
+    case BuningStep::NONE: {
+        m_CurStep = BuningStep::STEP_1;
+
+        Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
+        DynamicMtrl->SetEmission(Vec4(0.3f,0.3f,0.3f,0.3f));
+
+    }
+    break;
+    case BuningStep::STEP_1: {
+        m_CurStep = BuningStep::STEP_2;
+
+        Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
+        DynamicMtrl->SetEmission(Vec4(0.6f, 0.6f, 0.6f, 0.6f));
+    }
+    break;
+    case BuningStep::STEP_2: {
+        m_CurStep = BuningStep::STEP_3;
+
+        Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
+        DynamicMtrl->SetEmission(Vec4(0.9f, 0.9f, 0.9f, 0.9f));
+    }
+    break;
+    case BuningStep::STEP_3: {
+        return false;
+    }
+    break;
+    }
+
+    return true;
+}
 
 void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 {
@@ -242,19 +377,20 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
     if (LayerIdx == 2)
     {
         Vec3 CurVel = Rigidbody()->GetVelocity();
-        Rigidbody()->SetVelocity({0.f,0.f,0.f});
+        Rigidbody()->SetVelocity({0.f, 0.f, 0.f});
 
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
         RayDir.Normalize();
+        
+        Vec3 RayStart = Transform()->GetWorldPos() - m_MoveDir * 100.f;
 
-        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), RayDir, 100.f, {L"World Static"});
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), RayDir, 200.f, {L"World Static"});
         Vec3 Normal = Hit.Normal;
 
         m_MoveDir = RayDir + 2.f * Normal * (-RayDir.Dot(Normal));
 
         SetState(BulletState::HOLD_WALL);
-
     }
     // Player
     else if (LayerIdx == 4)
@@ -264,7 +400,6 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         {
             GamePlayStatic::DestroyGameObject(GetOwner());
 
-
             if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::CUTTER && PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
             {
                 CKirbyHatBlade* BladeScript = dynamic_cast<CKirbyHatBlade*>(PLAYERFSM->GetCurHatBlade()->GetScripts()[0]);
@@ -273,18 +408,13 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
                 {
                     BladeScript->Reset();
                 }
-
             }
-
         }
     }
-
-
 }
 
 void CKirbyCutterBullet::OnTriggerExit(CCollider* _OtherCollider)
 {
-
 }
 
 void CKirbyCutterBullet::SaveToLevelFile(FILE* _File)

@@ -14,8 +14,6 @@ CKirbyAbility_Cutter::~CKirbyAbility_Cutter()
 
 void CKirbyAbility_Cutter::Attack()
 {
-
-
     if (PLAYER->Animator()->IsFinish())
     {
         ChangeState(L"IDLE");
