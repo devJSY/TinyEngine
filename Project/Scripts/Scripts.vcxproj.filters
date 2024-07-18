@@ -346,6 +346,9 @@
     <ClInclude Include="CHotHeadScript.h">
       <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
     </ClInclude>
+    <ClInclude Include="CBoomerangKnight.h">
+      <Filter>Scripts\Monster\MonsterScript\BoomerangKnight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -708,6 +711,9 @@
     </ClCompile>
     <ClCompile Include="CHotHeadScript.cpp">
       <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoomerangKnight.cpp">
+      <Filter>Scripts\Monster\MonsterScript\BoomerangKnight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

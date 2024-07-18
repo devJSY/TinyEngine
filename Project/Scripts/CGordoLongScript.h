@@ -11,6 +11,10 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
+private:
+    void OnTriggerEnter(CCollider* _OtherCollider);
+    void OnTriggerExit(CCollider* _OtherCollider);
+
 public:
     CLONE(CGordoLongScript)
     CGordoLongScript();

@@ -29,3 +29,17 @@ void CGordoLongScript::LoadFromLevelFile(FILE* _File)
 {
     CMonsterUnitScript::LoadFromLevelFile(_File);
 }
+
+void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        pObj->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
+    }
+}
+
+void CGordoLongScript::OnTriggerExit(CCollider* _OtherCollider)
+{
+}

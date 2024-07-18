@@ -31,3 +31,4 @@ CGordoLongScript
 CKabuScript
 CTackleEnemyScript
 CHotHeadScript
+CBoomerangKnight
