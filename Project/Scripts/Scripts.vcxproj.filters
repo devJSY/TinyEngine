@@ -92,10 +92,10 @@
       <Filter>Scripts\UI\Button</Filter>
     </ClInclude>
     <ClInclude Include="CUIManagerScript.h">
-      <Filter>Scripts\UI\UIManager</Filter>
+      <Filter>Scripts\Manager\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="CButtonManagerScript.h">
-      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
+      <Filter>Scripts\Manager\UIManager\ButtonManager</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAttackCharge1Start.h">
       <Filter>State\KirbyState\AttackCharge1\AttackCharge1Start</Filter>
@@ -209,13 +209,13 @@
       <Filter>State\KirbyState\Damage</Filter>
     </ClInclude>
     <ClInclude Include="CUITexManagerScript.h">
-      <Filter>Scripts\UI\UIManager\UITexManager</Filter>
+      <Filter>Scripts\Manager\UIManager\UITexManager</Filter>
     </ClInclude>
     <ClInclude Include="CUITexScript.h">
       <Filter>Scripts\UI\UITex</Filter>
     </ClInclude>
     <ClInclude Include="CUIAnimManagerScript.h">
-      <Filter>Scripts\UI\UIManager\UIAnimManager</Filter>
+      <Filter>Scripts\Manager\UIManager\UIAnimManager</Filter>
     </ClInclude>
     <ClInclude Include="CLevelChangeButtonScript.h">
       <Filter>Scripts\UI\Button\LevelChangeButtonScript</Filter>
@@ -230,7 +230,7 @@
       <Filter>Scripts\UI\UIUnit</Filter>
     </ClInclude>
     <ClInclude Include="CUIUnitManagerScript.h">
-      <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
+      <Filter>Scripts\Manager\UIManager\UIUnitManager</Filter>
     </ClInclude>
     <ClInclude Include="CEngineTestScript.h">
       <Filter>Scripts</Filter>
@@ -320,34 +320,46 @@
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClInclude>
     <ClInclude Include="CBladeKnightScript.h">
-      <Filter>Scripts\Monster\MonsterScript\BladeKnight</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonsterUnitScript.h">
-      <Filter>Module\Unit</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClInclude>
     <ClInclude Include="CDetectAreaScript.h">
-      <Filter>Scripts\Monster\Utill\Detect</Filter>
+      <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClInclude>
     <ClInclude Include="CNormalEnemyScript.h">
-      <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\NormalEnemy</Filter>
     </ClInclude>
     <ClInclude Include="CGhostGordoScript.h">
-      <Filter>Scripts\Monster\MonsterScript\GhostGordo</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\GhostGordo</Filter>
     </ClInclude>
     <ClInclude Include="CGordoLongScript.h">
-      <Filter>Scripts\Monster\MonsterScript\GordoLong</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\GordoLong</Filter>
     </ClInclude>
     <ClInclude Include="CKabuScript.h">
-      <Filter>Scripts\Monster\MonsterScript\Kabu</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\Kabu</Filter>
     </ClInclude>
     <ClInclude Include="CTackleEnemyScript.h">
-      <Filter>Scripts\Monster\MonsterScript\TackleEnemy</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\TackleEnemy</Filter>
     </ClInclude>
     <ClInclude Include="CHotHeadScript.h">
-      <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\HotHead</Filter>
     </ClInclude>
     <ClInclude Include="CSirKibbleScript.h">
-      <Filter>Scripts\Monster\MonsterScript\SirKibble</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\SirKibble</Filter>
+    </ClInclude>
+    <ClInclude Include="CAttackAreaScript.h">
+      <Filter>Scripts\Character\Monster\Utill\AttackArea</Filter>
+    </ClInclude>
+    <ClInclude Include="CCutterProjectileScript.h">
+      <Filter>Scripts\Character\Monster\Utill\Projectile\CutterProjectile</Filter>
+    </ClInclude>
+    <ClInclude Include="CFireProjectileScript.h">
+      <Filter>Scripts\Character\Monster\Utill\Projectile\FireProjectile</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterUnitScript.h">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterATKScript.h">
+      <Filter>Module\Unit\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -430,7 +442,7 @@
       <Filter>State\KirbyState\Run\Run_Start</Filter>
     </ClCompile>
     <ClCompile Include="CUIManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager</Filter>
+      <Filter>Scripts\Manager\UIManager</Filter>
     </ClCompile>
     <ClCompile Include="CSpringArmCameraScript.cpp">
       <Filter>Scripts\SpringArm</Filter>
@@ -439,7 +451,7 @@
       <Filter>Scripts\UI\Button</Filter>
     </ClCompile>
     <ClCompile Include="CButtonManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
+      <Filter>Scripts\Manager\UIManager\ButtonManager</Filter>
     </ClCompile>
     <ClCompile Include="CSpringArmCameraScript.cpp">
       <Filter>Scripts\SpringArm</Filter>
@@ -571,13 +583,13 @@
       <Filter>State\KirbyState\Damage</Filter>
     </ClCompile>
     <ClCompile Include="CUITexManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager\UITexManager</Filter>
+      <Filter>Scripts\Manager\UIManager\UITexManager</Filter>
     </ClCompile>
     <ClCompile Include="CUITexScript.cpp">
       <Filter>Scripts\UI\UITex</Filter>
     </ClCompile>
     <ClCompile Include="CUIAnimManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager\UIAnimManager</Filter>
+      <Filter>Scripts\Manager\UIManager\UIAnimManager</Filter>
     </ClCompile>
     <ClCompile Include="CLevelChangeButtonScript.cpp">
       <Filter>Scripts\UI\Button\LevelChangeButtonScript</Filter>
@@ -592,7 +604,7 @@
       <Filter>Scripts\UI\UIUnit</Filter>
     </ClCompile>
     <ClCompile Include="CUIUnitManagerScript.cpp">
-      <Filter>Scripts\UI\UIManager\UIUnitManager</Filter>
+      <Filter>Scripts\Manager\UIManager\UIUnitManager</Filter>
     </ClCompile>
     <ClCompile Include="CEngineTestScript.cpp">
       <Filter>Scripts</Filter>
@@ -682,37 +694,46 @@
       <Filter>State\KirbyState\DropAbility</Filter>
     </ClCompile>
     <ClCompile Include="CBladeKnightScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\BladeKnight</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterUnitScript.cpp">
-      <Filter>Module\Unit</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
-      <Filter>Scripts\Monster\Utill\Detect</Filter>
+      <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClCompile>
     <ClCompile Include="CNormalEnemyScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\NormalEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="CHitBoxScript.cpp">
-      <Filter>Scripts\Monster\Utill\Hitbox</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\NormalEnemy</Filter>
     </ClCompile>
     <ClCompile Include="CGhostGordoScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\GhostGordo</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\GhostGordo</Filter>
     </ClCompile>
     <ClCompile Include="CGordoLongScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\GordoLong</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\GordoLong</Filter>
     </ClCompile>
     <ClCompile Include="CKabuScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\Kabu</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\Kabu</Filter>
     </ClCompile>
     <ClCompile Include="CTackleEnemyScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\TackleEnemy</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\TackleEnemy</Filter>
     </ClCompile>
     <ClCompile Include="CHotHeadScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\HotHead</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\HotHead</Filter>
     </ClCompile>
     <ClCompile Include="CSirKibbleScript.cpp">
-      <Filter>Scripts\Monster\MonsterScript\SirKibble</Filter>
+      <Filter>Scripts\Character\Monster\MonsterScript\SirKibble</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttackAreaScript.cpp">
+      <Filter>Scripts\Character\Monster\Utill\AttackArea</Filter>
+    </ClCompile>
+    <ClCompile Include="CCutterProjectileScript.cpp">
+      <Filter>Scripts\Character\Monster\Utill\Projectile\CutterProjectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireProjectileScript.cpp">
+      <Filter>Scripts\Character\Monster\Utill\Projectile\FireProjectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterUnitScript.cpp">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterATKScript.cpp">
+      <Filter>Module\Unit\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -896,12 +917,6 @@
     <Filter Include="Scripts\UI">
       <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\UIManager">
-      <UniqueIdentifier>{6b3c5070-7a6c-418e-96aa-68444b73f6a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\UIManager\ButtonManager">
-      <UniqueIdentifier>{455669fa-563b-415d-a29b-da54b92e128b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI\Button">
       <UniqueIdentifier>{09073fd3-e471-4b9e-889f-7b1e566b3325}</UniqueIdentifier>
     </Filter>
@@ -956,12 +971,6 @@
     <Filter Include="State\KirbyState\Damage">
       <UniqueIdentifier>{d45406e5-4c96-4ff1-9873-6069ed3586a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\UIManager\UITexManager">
-      <UniqueIdentifier>{f3fc22b9-aefc-433f-9469-3abef929768d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\UIManager\UIAnimManager">
-      <UniqueIdentifier>{caa27f85-a2c8-4bcd-8221-b1da05be5e78}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI\Button\LevelChangeButtonScript">
       <UniqueIdentifier>{99fe27bc-7e11-44c0-afdd-8ded095123a0}</UniqueIdentifier>
     </Filter>
@@ -976,9 +985,6 @@
     </Filter>
     <Filter Include="Scripts\UI\UITex">
       <UniqueIdentifier>{648c0bb3-94ce-4c8e-a9e5-28b061a9b2f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\UIManager\UIUnitManager">
-      <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\Stuffed\Eat">
       <UniqueIdentifier>{274a9390-4fbf-49b1-8bb8-0290e3f4d1e5}</UniqueIdentifier>
@@ -1073,56 +1079,74 @@
     <Filter Include="State\KirbyState\AttackAirGuard\ChargeStart">
       <UniqueIdentifier>{8cd27366-925f-41d8-8681-b1753c4f157e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster">
+    <Filter Include="Module\Unit\Monster">
+      <UniqueIdentifier>{348ee75e-8609-43e5-aa2a-74c075a3530e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster">
       <UniqueIdentifier>{9c1bd081-6050-4167-9355-3f2c5bad598f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill">
+    <Filter Include="Scripts\Character\Monster\Utill">
       <UniqueIdentifier>{3b1f9935-ef44-484e-8c64-99e49f338150}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript">
-      <UniqueIdentifier>{f0691795-11fc-4ec7-94cb-617a5c369983}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\BladeKnight">
-      <UniqueIdentifier>{902be184-f8ba-495f-a2a6-88673c9b2cfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\GhostGordo">
-      <UniqueIdentifier>{4e70f052-ae78-4305-ac91-3b2fd98a090c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\GordoLong">
-      <UniqueIdentifier>{9cac0791-2317-4361-9528-2834eb79fd19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\HotHead">
-      <UniqueIdentifier>{59dbe434-2c73-4a4f-912c-9f70c32441aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\Kabu">
-      <UniqueIdentifier>{0a7ece9d-280f-4688-a3cd-3f3737db09ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\Noddy">
-      <UniqueIdentifier>{f94cbe65-0bbb-4a0f-a078-95b7e1d6efc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\NormalEnemy">
-      <UniqueIdentifier>{1a2be127-aee8-41f7-983f-048016e853bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\TackleEnemy">
-      <UniqueIdentifier>{86f1db90-617f-4cc8-8fdd-2d39d61c50b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\Utill\Detect">
+    <Filter Include="Scripts\Character\Monster\Utill\Detect">
       <UniqueIdentifier>{9ff28eb8-8bc7-4e4b-852d-3087291ea3f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\MonsterScript\SirKibble">
-      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Monster\Utill\Projectile">
+    <Filter Include="Scripts\Character\Monster\Utill\Projectile">
       <UniqueIdentifier>{5367e55b-fe9a-49a9-aea8-8325dbf30d0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill\Projectile\FireProjectile">
+    <Filter Include="Scripts\Character\Monster\Utill\Projectile\FireProjectile">
       <UniqueIdentifier>{fd50ee9c-e03c-4372-965c-3db9c5adf9b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill\Projectile\CutterProjectile">
+    <Filter Include="Scripts\Character\Monster\Utill\Projectile\CutterProjectile">
       <UniqueIdentifier>{70b8a2e3-b343-45c4-8e9c-9c7eab2db564}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Monster\Utill\AttackArea">
+    <Filter Include="Scripts\Character\Monster\Utill\AttackArea">
       <UniqueIdentifier>{33ec05f2-3086-462b-b3d9-7583f81d0ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript">
+      <UniqueIdentifier>{f0691795-11fc-4ec7-94cb-617a5c369983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\BladeKnight">
+      <UniqueIdentifier>{902be184-f8ba-495f-a2a6-88673c9b2cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\GhostGordo">
+      <UniqueIdentifier>{4e70f052-ae78-4305-ac91-3b2fd98a090c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\GordoLong">
+      <UniqueIdentifier>{9cac0791-2317-4361-9528-2834eb79fd19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\HotHead">
+      <UniqueIdentifier>{59dbe434-2c73-4a4f-912c-9f70c32441aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Kabu">
+      <UniqueIdentifier>{0a7ece9d-280f-4688-a3cd-3f3737db09ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Noddy">
+      <UniqueIdentifier>{f94cbe65-0bbb-4a0f-a078-95b7e1d6efc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\NormalEnemy">
+      <UniqueIdentifier>{1a2be127-aee8-41f7-983f-048016e853bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\TackleEnemy">
+      <UniqueIdentifier>{86f1db90-617f-4cc8-8fdd-2d39d61c50b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\SirKibble">
+      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\UIManager">
+      <UniqueIdentifier>{6b3c5070-7a6c-418e-96aa-68444b73f6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\UIManager\ButtonManager">
+      <UniqueIdentifier>{455669fa-563b-415d-a29b-da54b92e128b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\UIManager\UITexManager">
+      <UniqueIdentifier>{f3fc22b9-aefc-433f-9469-3abef929768d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\UIManager\UIAnimManager">
+      <UniqueIdentifier>{caa27f85-a2c8-4bcd-8221-b1da05be5e78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\UIManager\UIUnitManager">
+      <UniqueIdentifier>{afabccad-23ad-4d04-9116-62849efc5b10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -108,7 +108,11 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
+    <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CFireProjectileScript.h" />
+    <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -226,7 +230,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
+    <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CFireProjectileScript.cpp" />
+    <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
