@@ -29,13 +29,16 @@ void CEngineTestScript::tick()
 {
     if (KEY_TAP(KEY::K))
     {
-        if (SphereCollider())
+        if (BoxCollider())
         {
-            SphereCollider()->SetEnabled(!SphereCollider()->IsEnabled());
+            BoxCollider()->SetEnabled(!BoxCollider()->IsEnabled());
         }
-        // GetOwner()->SetActive(!GetOwner()->IsActive());
     }
 
+    if (KEY_TAP(KEY::L))
+    {
+        GetOwner()->SetActive(!GetOwner()->IsActive());
+    }
     // CharacterControllerTest();
     // AnimatorTest();
     //  QuaternionExample();

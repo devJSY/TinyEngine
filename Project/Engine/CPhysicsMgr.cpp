@@ -139,17 +139,14 @@ void CPhysicsMgr::tick()
     std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
     while (iter != m_listTrigger.end())
     {
-        if (0 == iter->first->m_TriggerCount || 0 == iter->second->m_TriggerCount)
+        if (0 >= iter->first->m_TriggerCount || 0 >= iter->second->m_TriggerCount)
         {
             iter = m_listTrigger.erase(iter);
             continue;
         }
 
-        if (iter->first->m_TriggerCount > 0)
-            iter->first->OnTriggerStay(iter->second);
-        if (iter->second->m_TriggerCount > 0)
-            iter->second->OnTriggerStay(iter->first);
-
+        iter->first->OnTriggerStay(iter->second);
+        iter->second->OnTriggerStay(iter->first);
         ++iter;
     }
 
@@ -490,10 +487,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
-
-        // Count 초기화
-        pBoxCol->m_CollisionCount = 0;
-        pBoxCol->m_TriggerCount = 0;
     }
 
     // Sphere Collider
@@ -533,10 +526,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
-
-        // Count 초기화
-        pSphereCol->m_CollisionCount = 0;
-        pSphereCol->m_TriggerCount = 0;
     }
 
     // Capsule Collider
@@ -606,10 +595,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;
-
-        // Count 초기화
-        pCapsuleCol->m_CollisionCount = 0;
-        pCapsuleCol->m_TriggerCount = 0;
     }
 
     // Mesh Collider
@@ -663,10 +648,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             // UserData 등록
             shape->userData = (void*)pMeshCol;
             pMeshCol->m_RuntimeShape = shape;
-
-            // Count 초기화
-            pMeshCol->m_CollisionCount = 0;
-            pMeshCol->m_TriggerCount = 0;
         }
     }
 
