@@ -181,6 +181,7 @@ void CKirbyObject_Cone::DropObjectEnter()
     CKirbyObject::DropObjectEnter();
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
+    PLAYERCTRL->SetSpeed(m_PrevRotSpeed);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
@@ -195,7 +196,9 @@ void CKirbyObject_Cone::ChangeObjectEnter()
     CKirbyObject::ChangeObjectEnter();
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
+    m_PrevRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetSpeed(7.f);
+    PLAYERCTRL->SetSpeed(5.f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     PLAYER->CharacterController()->SetCenter(Vec3(0.f, 140.f, 0.f));

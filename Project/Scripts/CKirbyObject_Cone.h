@@ -6,6 +6,7 @@ class CKirbyObject_Cone : public CKirbyObject
 private:
     Ptr<CPrefab> m_Crater;
     float m_PrevSpeed;
+    float m_PrevRotSpeed;
     bool m_bFrmEnter;
 
 public:

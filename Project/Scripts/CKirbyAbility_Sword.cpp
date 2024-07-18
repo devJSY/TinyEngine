@@ -45,7 +45,7 @@ void CKirbyAbility_Sword::IdleEnter()
 
 void CKirbyAbility_Sword::Attack()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 7 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 7 && m_bFrmEnter)
     {
         m_bFrmEnter = false;
 
@@ -87,7 +87,7 @@ void CKirbyAbility_Sword::AttackExit()
 
 void CKirbyAbility_Sword::AttackCombo1()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 9 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 9 && m_bFrmEnter)
     {
         m_bFrmEnter = false;
 
@@ -129,7 +129,7 @@ void CKirbyAbility_Sword::AttackCombo1Exit()
 
 void CKirbyAbility_Sword::AttackCombo2()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 17 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 17 && m_bFrmEnter)
     {
         m_bFrmEnter = false;
 
@@ -297,11 +297,11 @@ void CKirbyAbility_Sword::AttackCharge2StartExit()
 // (charge)
 void CKirbyAbility_Sword::AttackCharge3()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 25 && !PLAYER->Animator()->IsReverse())
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 25 && !PLAYER->Animator()->IsReverse())
     {
         PLAYER->Animator()->SetReverse(true);
     }
-    else if (PLAYER->Animator()->GetClipFrameIndex() == 19 && PLAYER->Animator()->IsReverse())
+    else if (PLAYER->Animator()->GetClipFrameIndex() >= 19 && PLAYER->Animator()->IsReverse())
     {
         PLAYER->Animator()->SetReverse(false);
     }
@@ -392,7 +392,7 @@ void CKirbyAbility_Sword::JumpFallEnter()
 
 void CKirbyAbility_Sword::JumpAttack()
 {
-    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() == 10)
+    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() >= 10)
     {
         if (PLAYERFSM->GetSlideComboLevel())
         {
