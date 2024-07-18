@@ -35,9 +35,7 @@ void CKirbyBurningEnd::tick()
 void CKirbyBurningEnd::Enter()
 {
     // 애니메이션 재생
-    //PLAYER->Animator()->Play(KIRBYANIM(L"BurningEnd"), false, false, 1.5f);
-
-    PLAYER->Animator()->Play(KIRBYANIM(L"Wait"), false, false, 1.5f);
+    PLAYER->Animator()->Play(KIRBYANIM(L"BurningEnd"), false, false, 1.5f);
 
     // Movement
     PLAYERCTRL->LockJump();
@@ -47,6 +45,9 @@ void CKirbyBurningEnd::Enter()
 
     m_SaveSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(13.f);
+
+    //  무적 상태
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyBurningEnd::Exit()
@@ -58,5 +59,22 @@ void CKirbyBurningEnd::Exit()
 
     PLAYERCTRL->SetGravity(-20.f);
     PLAYERCTRL->SetSpeed(m_SaveSpeed);
+
+    // MeshData 돌려주기
+    PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Kirby.mdat", L"meshdata\\Kirby.mdat"));
+
+    PLAYER->MeshRender()->SetMaterial(nullptr, 0);
+    PLAYER->MeshRender()->SetMaterial(nullptr, 2);
+    PLAYER->MeshRender()->SetMaterial(nullptr, 4);
+    PLAYER->MeshRender()->SetMaterial(nullptr, 6);
+    PLAYER->MeshRender()->SetMaterial(nullptr, 7);
+    PLAYER->MeshRender()->SetMaterial(nullptr, 8);
+
+    // 모자 다시 보이게하기
+    Ptr<CMaterial> HatMat = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\KiryDragonHat_DragonFireC.mtrl");
+    PLAYERFSM->GetCurHat()->MeshRender()->SetMaterial(HatMat, 0);
+
+    //  무적 상태
+    PLAYERFSM->SetInvincible(false);
 }
 

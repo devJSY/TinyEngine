@@ -188,6 +188,8 @@ void CKirbyAbility_Fire::ChangeAbilityEnter()
     CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref")->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
+    PLAYERFSM->SetCurHat(pInstObj);
+
     // 애니메이션 재생
     pInstObj->Animator()->Play(KIRBYANIM(L"Deform"));
 }

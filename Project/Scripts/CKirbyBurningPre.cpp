@@ -24,24 +24,22 @@ void CKirbyBurningPre::tick()
 void CKirbyBurningPre::Enter()
 {
     // Mesh Data 바꿔주기
-    //PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KiryDragon.mdat", L"meshdata\\KiryDragon.mdat"));
+    PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KiryDragon.mdat", L"meshdata\\KiryDragon.mdat"));
 
     // Kirby 표정 바꿔주기
-    //Ptr<CMaterial> KirbyBody = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\KiryDragon_BurningBodyC.mtrl");
+    Ptr<CMaterial> KirbyBody = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\KiryDragon_BurningBodyC.mtrl");
 
-    //wstring filepath = L"fbx\\Characters\\Kirby\\Base\\";
-    //wstring albedo = filepath + L"KirbyEye.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    //wstring mask = filepath + L"KirbyEyeMask.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    //wstring normal = filepath + L"KirbyEyeNormal.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    //KirbyBody->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(albedo));
-    //KirbyBody->SetTexParam(TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(mask));
-    //KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(normal));
+    wstring filepath = L"fbx\\Characters\\Kirby\\Base\\";
+    wstring albedo = filepath + L"KirbyEye.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
+    wstring mask = filepath + L"KirbyEyeMask.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
+    wstring normal = filepath + L"KirbyEyeNormal.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
+    KirbyBody->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(albedo));
+    KirbyBody->SetTexParam(TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(mask));
+    KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(normal));
 
     // 애니메이션 재생
-    //PLAYER->Animator()->Play(KIRBYANIM(L"BurningStart"), false, false, 1.5f);
-    PLAYER->Animator()->Play(KIRBYANIM(L"DodgeFront1"), false, false, 1.5f);
+    PLAYER->Animator()->Play(KIRBYANIM(L"BurningStart"), false, false, 1.5f);
     
-
     // Movement
     Vec3 Input = PLAYERCTRL->GetMoveDir();
     ForceDirInfo Info = {ForceDirType::DEFORM, Input};
@@ -56,6 +54,12 @@ void CKirbyBurningPre::Enter()
     PLAYERCTRL->ClearVelocityY();
     m_SaveGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(0.f);
+
+    // 모자 안보이게 하기
+    PLAYERFSM->GetCurHat()->MeshRender()->SetMaterial(nullptr,0);
+
+    //  무적 상태
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyBurningPre::Exit()
@@ -65,4 +69,7 @@ void CKirbyBurningPre::Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERCTRL->SetGravity(m_SaveGravity);
+
+    //  무적 상태
+    PLAYERFSM->SetInvincible(false);
 }
