@@ -352,6 +352,9 @@
     <ClInclude Include="CKirbyHatBlade.h">
       <Filter>Scripts\Character\Kirby\KirbyHatBlade</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyCutterBullet.h">
+      <Filter>Scripts\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -716,6 +719,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyHatBlade.cpp">
       <Filter>Scripts\Character\Kirby\KirbyHatBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyCutterBullet.cpp">
+      <Filter>Scripts\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1117,6 +1123,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyHatBlade">
       <UniqueIdentifier>{9482f434-aef7-43dc-8241-cceea4903ecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Projectile">
+      <UniqueIdentifier>{52d471ad-b835-4eda-afdf-c52b505f9c3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

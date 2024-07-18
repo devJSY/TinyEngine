@@ -153,6 +153,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyChangeAbilityWait.h" />
     <ClInclude Include="CKirbyCopyAbilityScript.h" />
     <ClInclude Include="CKirbyCopyObjScript.h" />
+    <ClInclude Include="CKirbyCutterBullet.h" />
     <ClInclude Include="CKirbyDamage.h" />
     <ClInclude Include="CKirbyDodge1.h" />
     <ClInclude Include="CKirbyDodge2.h" />
@@ -272,6 +273,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyChangeAbilityWait.cpp" />
     <ClCompile Include="CKirbyCopyAbilityScript.cpp" />
     <ClCompile Include="CKirbyCopyObjScript.cpp" />
+    <ClCompile Include="CKirbyCutterBullet.cpp" />
     <ClCompile Include="CKirbyDamage.cpp" />
     <ClCompile Include="CKirbyDodge1.cpp" />
     <ClCompile Include="CKirbyDodge2.cpp" />

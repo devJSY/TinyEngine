@@ -30,3 +30,4 @@ CMonsterMoveController
 CPlayerTestScript
 CMonsterMoveTest
 CKirbyHatBlade
+CKirbyCutterBullet

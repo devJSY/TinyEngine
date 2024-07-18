@@ -25,10 +25,6 @@ void CKirbyHatBlade::begin()
 
 void CKirbyHatBlade::tick()
 {
-    if (KEY_TAP(KEY::V))
-    {
-        Reset();
-    }
 
     // 공격을 할수 없는 상태일 경우
     if (!m_bCanAttack)

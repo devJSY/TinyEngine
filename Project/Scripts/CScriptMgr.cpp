@@ -33,6 +33,7 @@
 #include "CPlayerTestScript.h"
 #include "CMonsterMoveTest.h"
 #include "CKirbyHatBlade.h"
+#include "CKirbyCutterBullet.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -68,6 +69,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPlayerTestScript");
 	_vec.push_back(L"CMonsterMoveTest");
 	_vec.push_back(L"CKirbyHatBlade");
+	_vec.push_back(L"CKirbyCutterBullet");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -136,6 +138,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMonsterMoveTest;
 	if (L"CKirbyHatBlade" == _strScriptName)
 		return new CKirbyHatBlade;
+	if (L"CKirbyCutterBullet" == _strScriptName)
+		return new CKirbyCutterBullet;
 	return nullptr;
 }
 
@@ -207,6 +211,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CMonsterMoveTest;
 	case (UINT)SCRIPT_TYPE::KIRBYHATBLADE:
 		return new CKirbyHatBlade;
+	case (UINT)SCRIPT_TYPE::KIRBYCUTTERBULLET:
+		return new CKirbyCutterBullet;
 	}
 	return nullptr;
 }
@@ -279,6 +285,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CMonsterMoveTest";
 	case SCRIPT_TYPE::KIRBYHATBLADE:
 		return L"CKirbyHatBlade";
+	case SCRIPT_TYPE::KIRBYCUTTERBULLET:
+		return L"CKirbyCutterBullet";
 	}
 	return nullptr;
 }

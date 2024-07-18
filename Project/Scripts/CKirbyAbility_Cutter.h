@@ -2,6 +2,9 @@
 #include "CKirbyAbility.h"
 class CKirbyAbility_Cutter : public CKirbyAbility
 {
+private:
+    Ptr<CPrefab> m_CutterBulletPrefab;
+
 public:
     virtual void Attack() override;
     virtual void AttackEnter() override;
