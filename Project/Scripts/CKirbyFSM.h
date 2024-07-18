@@ -91,7 +91,7 @@ public:
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
     void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
-    void SetInvincible(bool _Invincible, float _Duration = 0.f);
+    void SetInvincible(bool _Invincible, float _Duration = -1.f);
     void SetEmissive(bool _Emissive, float _Duration);
     void SetBladeAttack(bool _CanAttack) { m_bCanBladeAttack = _CanAttack; }
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }

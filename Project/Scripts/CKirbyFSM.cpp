@@ -177,6 +177,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
 #include "CKirbyBurningEnd.h"
+#include "CKirbyFinalCutterRise.h"
+#include "CKirbyFinalCutterDrop.h"
+#include "CKirbyFinalCutterEnd.h"
+#include "CKirbyFinalCutterEndAfter.h"
 
 void CKirbyFSM::begin()
 {
@@ -251,10 +255,17 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
 
+    // Fire
     AddState(L"BURNING_PRE", new CKirbyBurningPre);
     AddState(L"BURNING_START", new CKirbyBurningStart);
     AddState(L"BURNING", new CKirbyBurning);
     AddState(L"BURNING_END", new CKirbyBurningEnd);
+
+    // Cutter
+    AddState(L"FINALCUTTERRISE", new CKirbyFinalCutterRise);
+    AddState(L"FINALCUTTERDROP", new CKirbyFinalCutterDrop);
+    AddState(L"FINALCUTTEREND", new CKirbyFinalCutterEnd);
+    AddState(L"FINALCUTTERENDAFTER", new CKirbyFinalCutterEndAfter);
 
     ChangeState(L"IDLE");
 }
@@ -282,7 +293,7 @@ void CKirbyFSM::tick()
     }
 
     // 公利 惑怕 包府
-    if (m_bInvincible)
+    if (m_bInvincible && m_InvincibleDuration != -1.f)
     {
         m_InvincibleAcc += DT;
 
@@ -384,23 +395,27 @@ void CKirbyFSM::SetHovering(bool _bHovering)
 
 void CKirbyFSM::SetInvincible(bool _Invincible, float _Duration)
 {
-    if (_Duration != 0.f)
+    if (_Duration == -1.f)
     {
+        m_bInvincible = _Invincible;
         m_InvincibleDuration = _Duration;
         m_InvincibleAcc = 0.f;
     }
-
-    if (_Invincible == true)
-    {
-        m_bInvincible = true;
-    }
     else
     {
-        if (m_InvincibleAcc > m_InvincibleDuration)
+        if (_Invincible == true)
         {
-            m_bInvincible = false;
+            float RemainTime = m_InvincibleDuration - m_InvincibleAcc;
+
+            if (RemainTime < _Duration)
+            {
+                m_bInvincible = _Invincible;
+                m_InvincibleDuration = _Duration;
+                m_InvincibleAcc = 0.f;
+            }
         }
     }
+
 }
 
 void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
