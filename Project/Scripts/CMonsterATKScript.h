@@ -1,5 +1,8 @@
 #pragma once
 #include <Engine\\CScript.h>
+
+#include "CUnitScript.h"
+
 class CMonsterATKScript : public CScript
 {
 protected:

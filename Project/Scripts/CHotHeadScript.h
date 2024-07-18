@@ -23,6 +23,10 @@ enum class HOTHEAD_STATE
 class CHotHeadScript : public CMonsterUnitScript
 {
 private:
+    CGameObject* m_pFlameRotObject;
+    CCollider* m_pFlameCol;
+    CCollider* m_pFlameRotCol;
+
     HOTHEAD_STATE m_eState;
     Vec3 m_vDamageDir;
 
@@ -32,6 +36,8 @@ private:
     float m_fShotLength;
     float m_fFlameLength;
     float m_fFlameRotLength;
+
+    float m_fRotRadian;
 
     bool m_bFlag;
 
@@ -66,6 +72,10 @@ private:
     void Damage();
     void Eaten();
     void Death();
+
+private:
+    // Test Func 이후 PreFab으로 대체
+    void ProjectileAttack();
 
 public:
     CLONE(CHotHeadScript)

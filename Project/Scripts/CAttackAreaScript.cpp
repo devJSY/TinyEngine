@@ -4,7 +4,7 @@
 #include "CUnitScript.h"
 
 CAttackAreaScript::CAttackAreaScript()
-    : CMonsterATKScript(ATTACKAREATSCRIPT)
+    : CMonsterATKScript(ATTACKAREASCRIPT)
 {
 }
 

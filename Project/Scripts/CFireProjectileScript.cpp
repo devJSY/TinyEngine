@@ -59,10 +59,8 @@ void CFireProjectileScript::EnterState(FIREPROJECTILE_STATE _state)
 {
     switch (m_eState)
     {
-    case FIREPROJECTILE_STATE::Attack: {
-        Transform()->SetWorldRotation(m_Quat);
-    }
-    break;
+    case FIREPROJECTILE_STATE::Attack:
+        break;
     case FIREPROJECTILE_STATE::Destroy:
         break;
     default:
@@ -93,8 +91,8 @@ void CFireProjectileScript::ExitState(FIREPROJECTILE_STATE _state)
 void CFireProjectileScript::Attack()
 {
     m_fAccRadian += DT * m_fFallSpeed;
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);  
-    vDir.y = cosf(m_fAccRadian);
+    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    vDir.y = -0.005f * cosf(m_fAccRadian);
     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 }
 

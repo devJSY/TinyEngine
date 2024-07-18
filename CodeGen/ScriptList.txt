@@ -32,3 +32,6 @@ CKabuScript
 CTackleEnemyScript
 CHotHeadScript
 CSirKibbleScript
+CAttackAreaScript
+CCutterProjectileScript
+CFireProjectileScript

@@ -1,15 +1,13 @@
 #include "pch.h"
 #include "CMonsterATKScript.h"
 
-#include "CUnitScript.h"
-
 CMonsterATKScript::CMonsterATKScript(UINT _Type)
     : CScript(_Type)
     , m_HitInfo{}
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Duration");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "Duration");
 }
 
 CMonsterATKScript::CMonsterATKScript(const CMonsterATKScript& _Origin)

@@ -19,6 +19,8 @@ private:
 
 public:
     void SetQuaternion(const Quat& _quat) { m_Quat = _quat; }
+    void SetFallSpeed(const float _fFallSpeed) { m_fFallSpeed = _fFallSpeed; }
+    void SetSpeed(const float _fSpeed) { m_fSpeed = _fSpeed; }
 
 public:
     virtual void begin() override;

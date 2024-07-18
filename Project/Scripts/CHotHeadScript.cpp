@@ -1,8 +1,13 @@
 #include "pch.h"
 #include "CHotHeadScript.h"
 
+#include "CFireProjectileScript.h"
+
 CHotHeadScript::CHotHeadScript()
     : CMonsterUnitScript(HOTHEADSCRIPT)
+    , m_pFlameRotObject(nullptr)
+    , m_pFlameCol(nullptr)
+    , m_pFlameRotCol(nullptr)
     , m_eState(HOTHEAD_STATE::Idle)
     , m_vDamageDir{}
     , m_fAimingTime(0.f)
@@ -10,6 +15,7 @@ CHotHeadScript::CHotHeadScript()
     , m_fShotLength(0.f)
     , m_fFlameLength(0.f)
     , m_fFlameRotLength(0.f)
+    , m_fRotRadian(0.f)
     , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAimingTime, "Aiming Time");
@@ -21,6 +27,9 @@ CHotHeadScript::CHotHeadScript()
 
 CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     : CMonsterUnitScript(_Origin)
+    , m_pFlameRotObject(nullptr)
+    , m_pFlameCol(nullptr)
+    , m_pFlameRotCol(nullptr)
     , m_eState(HOTHEAD_STATE::Idle)
     , m_vDamageDir{}
     , m_fAimingTime(_Origin.m_fAccTime)
@@ -28,6 +37,7 @@ CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     , m_fShotLength(_Origin.m_fShotLength)
     , m_fFlameLength(_Origin.m_fFlameLength)
     , m_fFlameRotLength(_Origin.m_fFlameRotLength)
+    , m_fRotRadian(_Origin.m_fRotRadian)
     , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAimingTime, "Aiming Time");
@@ -43,6 +53,32 @@ CHotHeadScript::~CHotHeadScript()
 
 void CHotHeadScript::begin()
 {
+    m_pFlameRotObject = GetOwner()->GetChildObject(L"FlameRot Object");
+
+    if (nullptr == m_pFlameRotObject)
+    {
+        MessageBox(nullptr, L"FlameRot Object Does Not Exist", L"FlameRot Object Issue", MB_OK);
+        // TODO : 위치 정해지면 코드로 생성해주기
+    }
+
+    m_pFlameCol = GetOwner()->GetChildObject(L"Flame Collider")->CapsuleCollider();
+    m_pFlameRotCol = m_pFlameRotObject->GetChildObject(L"FlameRot Collider")->SphereCollider();
+
+    if (nullptr == m_pFlameCol)
+    {
+        MessageBox(nullptr, L"Flame Collider Does Not Exist", L"Flame Collider Issue", MB_OK);
+        // TODO : 위치 정해지면 코드로 생성해주기
+    }
+
+    if (nullptr == m_pFlameRotCol)
+    {
+        MessageBox(nullptr, L"FlameRot Collider Does Not Exist", L"FlameRot Collider Issue", MB_OK);
+        // TODO : 위치 정해지면 코드로 생성해주기
+    }
+
+    m_pFlameCol->SetEnabled(false);
+    m_pFlameRotCol->SetEnabled(false);
+
     ChangeState(HOTHEAD_STATE::Idle);
 }
 
@@ -133,7 +169,7 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
     }
     break;
     case HOTHEAD_STATE::AttackShoot: {
-        // TODO : 발사체 발사!
+        ProjectileAttack();
         Animator()->Play(ANIMPREFIX(L"AttackShoot"), false);
     }
     break;
@@ -147,11 +183,13 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
     break;
     case HOTHEAD_STATE::AttackFlame: {
         // TODO : 앞에 Attack Area 키기
+        m_pFlameCol->SetEnabled(true);
         Animator()->Play(ANIMPREFIX(L"AttackFlame"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameEnd: {
         // TODO : 앞에 Attack Area 끄기
+        m_pFlameCol->SetEnabled(false);
         Animator()->Play(ANIMPREFIX(L"AttackFlameEnd"), false);
     }
     break;
@@ -160,12 +198,16 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
     }
     break;
     case HOTHEAD_STATE::AttackFlameRot: {
+        // 현재 Radian 가져오기
+        m_fRotRadian = m_pFlameRotObject->Transform()->GetLocalRotation().y;
         // TODO : 앞에 Attack Area 키기
+        m_pFlameRotCol->SetEnabled(true);
         Animator()->Play(ANIMPREFIX(L"AttackFlameRot"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameRotEnd: {
         // TODO : 앞에 Attack Area 끄기
+        m_pFlameRotCol->SetEnabled(false);
         Animator()->Play(ANIMPREFIX(L"AttackFlameRotEnd"), false);
     }
     break;
@@ -225,8 +267,12 @@ void CHotHeadScript::ExitState(HOTHEAD_STATE _state)
         break;
     case HOTHEAD_STATE::AttackFlameRotStart:
         break;
-    case HOTHEAD_STATE::AttackFlameRot:
-        break;
+    case HOTHEAD_STATE::AttackFlameRot: {
+        // 원래 Rotation으로 초기화
+        m_fRotRadian = 0.f;
+        m_pFlameRotObject->Transform()->SetWorldRotation(GetOwner()->Transform()->GetWorldQuaternion());
+    }
+    break;
     case HOTHEAD_STATE::AttackFlameRotEnd:
         break;
     case HOTHEAD_STATE::Damage:
@@ -345,6 +391,10 @@ void CHotHeadScript::AttackFlameRotStart()
 
 void CHotHeadScript::AttackFlameRot()
 {
+    m_fRotRadian += DT * 5.f;
+    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_fRotRadian);
+    m_pFlameRotObject->Transform()->SetWorldRotation(Quaternion);
+
     if (Animator()->IsFinish())
     {
         ChangeState(HOTHEAD_STATE::AttackFlameRotEnd);
@@ -392,6 +442,19 @@ void CHotHeadScript::Eaten()
 void CHotHeadScript::Death()
 {
     Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+}
+
+void CHotHeadScript::ProjectileAttack()
+{
+    Ptr<CPrefab> bulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\HotHeadBullet.pref", L"prefab\\HotHeadBullet.pref");
+    if (nullptr != bulletPref)
+    {
+        CGameObject* pBullet = bulletPref->Instantiate();
+        pBullet->Transform()->SetLocalPos(Transform()->GetLocalPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 150.f + Vec3(0.f, 84.f, 0.f));
+        pBullet->Transform()->SetWorldRotation(Transform()->GetWorldQuaternion());
+        // TODO : LAYER_MONSTER -> LAYER_MOSTERATK 변경
+        GamePlayStatic::SpawnGameObject(pBullet, LAYER_MONSTER);
+    }
 }
 
 void CHotHeadScript::SaveToLevelFile(FILE* _File)
@@ -452,7 +515,8 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
 
-        pObj->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
+        if (L"Body Collider" == pObj->GetName())
+            pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
 
         flag = true;
     }

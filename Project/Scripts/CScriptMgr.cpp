@@ -35,6 +35,9 @@
 #include "CTackleEnemyScript.h"
 #include "CHotHeadScript.h"
 #include "CSirKibbleScript.h"
+#include "CAttackAreaScript.h"
+#include "CCutterProjectileScript.h"
+#include "CFireProjectileScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -72,6 +75,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CTackleEnemyScript");
 	_vec.push_back(L"CHotHeadScript");
 	_vec.push_back(L"CSirKibbleScript");
+	_vec.push_back(L"CAttackAreaScript");
+	_vec.push_back(L"CCutterProjectileScript");
+	_vec.push_back(L"CFireProjectileScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -144,6 +150,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CHotHeadScript;
 	if (L"CSirKibbleScript" == _strScriptName)
 		return new CSirKibbleScript;
+	if (L"CAttackAreaScript" == _strScriptName)
+		return new CAttackAreaScript;
+	if (L"CCutterProjectileScript" == _strScriptName)
+		return new CCutterProjectileScript;
+	if (L"CFireProjectileScript" == _strScriptName)
+		return new CFireProjectileScript;
 	return nullptr;
 }
 
@@ -219,6 +231,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CHotHeadScript;
 	case (UINT)SCRIPT_TYPE::SIRKIBBLESCRIPT:
 		return new CSirKibbleScript;
+	case (UINT)SCRIPT_TYPE::ATTACKAREASCRIPT:
+		return new CAttackAreaScript;
+	case (UINT)SCRIPT_TYPE::CUTTERPROJECTILESCRIPT:
+		return new CCutterProjectileScript;
+	case (UINT)SCRIPT_TYPE::FIREPROJECTILESCRIPT:
+		return new CFireProjectileScript;
 	}
 	return nullptr;
 }
@@ -295,6 +313,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CHotHeadScript";
 	case SCRIPT_TYPE::SIRKIBBLESCRIPT:
 		return L"CSirKibbleScript";
+	case SCRIPT_TYPE::ATTACKAREASCRIPT:
+		return L"CAttackAreaScript";
+	case SCRIPT_TYPE::CUTTERPROJECTILESCRIPT:
+		return L"CCutterProjectileScript";
+	case SCRIPT_TYPE::FIREPROJECTILESCRIPT:
+		return L"CFireProjectileScript";
 	}
 	return nullptr;
 }
