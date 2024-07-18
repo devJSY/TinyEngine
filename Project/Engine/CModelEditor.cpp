@@ -581,6 +581,8 @@ void CModelEditor::render_ImGizmo()
         m_SelectedBoneSocket->RelativePosition -= vPosOffset;
         m_SelectedBoneSocket->RelativeRotation -= vRotOffset;
         m_SelectedBoneSocket->RelativeScale -= vScaleOffset;
+
+        m_bMeshSaved = false;
     }
 }
 
@@ -904,15 +906,24 @@ void CModelEditor::DrawDetails()
             ImGui_InputText("Bone Name",
                             ToString(m_ModelObj->Animator()->GetSkeletalMesh()->GetBones()->at(m_SelectedBoneSocket->BoneIndex).strBoneName).c_str());
 
-            ImGui_DrawVec3Control("Relative Position", m_SelectedBoneSocket->RelativePosition, 0.01f, 0.f, 0.f, 0.f, 200.f);
+            if (ImGui_DrawVec3Control("Relative Position", m_SelectedBoneSocket->RelativePosition, 0.01f, 0.f, 0.f, 0.f, 200.f))
+            {
+                m_bMeshSaved = false;
+            }
 
             Vec3 rot = m_SelectedBoneSocket->RelativeRotation;
             rot.ToDegree();
-            ImGui_DrawVec3Control("Relative Rotation", rot, DirectX::XMConvertToRadians(15.f), 0.f, 0.f, 0.f, 200.f);
+            if (ImGui_DrawVec3Control("Relative Rotation", rot, DirectX::XMConvertToRadians(15.f), 0.f, 0.f, 0.f, 200.f))
+            {
+                m_bMeshSaved = false;
+            }
             rot.ToRadian();
             m_SelectedBoneSocket->RelativeRotation = rot;
 
-            ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 0.01f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f);
+            if (ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 0.01f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f))
+            {
+                m_bMeshSaved = false;
+            }
 
             ImGui::TreePop();
         }

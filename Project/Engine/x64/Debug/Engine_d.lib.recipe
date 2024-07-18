@@ -96,6 +96,9 @@
       <FullPath>D:\TinyEngine\External\Library\Engine\MirrorVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>D:\TinyEngine\External\Library\Engine\NoddyPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>D:\TinyEngine\External\Library\Engine\NormalEnemyPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
