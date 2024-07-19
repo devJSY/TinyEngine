@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "CSirKibbleScript.h"
 
+#include "CCutterProjectileScript.h"
+
 CSirKibbleScript::CSirKibbleScript()
     : CMonsterUnitScript(SIRKIBBLESCRIPT)
     , m_eState(SIRKIBBLE_STATE::Idle)
     , m_pTargetObj(nullptr)
+    , m_pAttackPoint(nullptr)
     , m_vDamageDir{}
     , m_bFlag(false)
     , m_fAccTime(0.f)
@@ -16,6 +19,7 @@ CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_eState(SIRKIBBLE_STATE::Idle)
     , m_pTargetObj(nullptr)
+    , m_pAttackPoint(nullptr)
     , m_vDamageDir{}
     , m_bFlag(false)
     , m_fAccTime(0.f)
@@ -29,6 +33,15 @@ CSirKibbleScript::~CSirKibbleScript()
 
 void CSirKibbleScript::begin()
 {
+    m_pAttackPoint = GetOwner()->GetChildObject(L"Attack Point");
+
+    if (nullptr == m_pAttackPoint)
+    {
+        MessageBox(nullptr, L"Attack Point Miss", L"SirKibbleScript", MB_OK);
+        // TODO : 넣기
+    }
+
+    m_pAttackPoint->BoxCollider()->SetEnabled(false);
     ChangeState(SIRKIBBLE_STATE::Idle);
 }
 
@@ -128,6 +141,7 @@ void CSirKibbleScript::EnterState(SIRKIBBLE_STATE _state)
     case SIRKIBBLE_STATE::AirCutterThrow: {
         Rigidbody()->SetUseGravity(false);
         Animator()->Play(ANIMPREFIX(L"AirCutterThrow"), false);
+        ProjectileAttack();
     }
     break;
     case SIRKIBBLE_STATE::CutterThrowStart: {
@@ -141,9 +155,11 @@ void CSirKibbleScript::EnterState(SIRKIBBLE_STATE _state)
     break;
     case SIRKIBBLE_STATE::CutterThrow: {
         Animator()->Play(ANIMPREFIX(L"CutterThrow"), false);
+        ProjectileAttack();
     }
     break;
     case SIRKIBBLE_STATE::CutterCatch: {
+        m_pAttackPoint->BoxCollider()->SetEnabled(false);
         Animator()->Play(ANIMPREFIX(L"CutterCatch"), false);
     }
     break;
@@ -358,6 +374,22 @@ void CSirKibbleScript::Fall()
 void CSirKibbleScript::Death()
 {
     Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+}
+
+void CSirKibbleScript::ProjectileAttack()
+{
+    Ptr<CPrefab> bulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SirKibbleBullet.pref", L"prefab\\SirKibbleBullet.pref");
+    if (nullptr != bulletPref)
+    {
+        CGameObject* pBullet = bulletPref->Instantiate();
+        pBullet->Transform()->SetLocalPos(m_pAttackPoint->Transform()->GetWorldPos());
+        pBullet->Transform()->SetWorldRotation(Transform()->GetWorldQuaternion());
+
+        pBullet->GetScript<CCutterProjectileScript>()->SetOwenr(GetOwner());
+        pBullet->GetScript<CCutterProjectileScript>()->SetAttackPoint(m_pAttackPoint);
+        // TODO : LAYER_MONSTER -> LAYER_MOSTERATK 변경
+        GamePlayStatic::SpawnGameObject(pBullet, LAYER_MONSTER);
+    }
 }
 
 void CSirKibbleScript::SaveToLevelFile(FILE* _File)

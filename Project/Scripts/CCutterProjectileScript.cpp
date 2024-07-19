@@ -2,18 +2,28 @@
 #include "CCutterProjectileScript.h"
 
 #include "CUnitScript.h"
+#include "CSirKibbleScript.h"
 
 CCutterProjectileScript::CCutterProjectileScript()
     : CMonsterATKScript(CUTTERPROJECTILESCRIPT)
+    , m_pOwner(nullptr)
+    , m_pAttackPoint(nullptr)
+    , m_eState(CUTTERPROJECTILE_STATE::Attack)
     , m_fSpeed(0.f)
     , m_fAccTime(0.f)
+    , m_vOriginPos{}
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Bullet Speed");
 }
 
 CCutterProjectileScript::CCutterProjectileScript(const CCutterProjectileScript& _Origin)
     : CMonsterATKScript(_Origin)
+    , m_pOwner(nullptr)
+    , m_pAttackPoint(nullptr)
+    , m_eState(CUTTERPROJECTILE_STATE::Attack)
     , m_fSpeed(_Origin.m_fSpeed)
     , m_fAccTime(0.f)
+    , m_vOriginPos{}
 {
 }
 
@@ -58,16 +68,22 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     switch (m_eState)
     {
     case CUTTERPROJECTILE_STATE::Attack: {
-        m_vOriginPos = Transform()->GetLocalPos();
-        Transform()->SetWorldRotation(m_Quat);
+        Animator()->Play(ANIMPREFIX(L"SpinBig"));
+        m_vOriginPos = Transform()->GetWorldPos();
     }
     break;
     case CUTTERPROJECTILE_STATE::AttackStop: {
+        m_pAttackPoint->BoxCollider()->SetEnabled(true);
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case CUTTERPROJECTILE_STATE::AttackBack: {
-        Transform()->SetWorldRotation(-m_Quat);
+        Vec3 vDir = m_pAttackPoint->Transform()->GetWorldPos() - Transform()->GetLocalPos();
+        Vec3 vUP = vDir == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+        Quat quat = Quat::LookRotation(-vDir, vUP);
+
+        Transform()->SetWorldRotation(quat);
     }
     break;
     case CUTTERPROJECTILE_STATE::End:
@@ -107,7 +123,9 @@ void CCutterProjectileScript::ExitState(CUTTERPROJECTILE_STATE _state)
 
 void CCutterProjectileScript::Attack()
 {
-    Rigidbody()->SetVelocity(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_fSpeed);
+    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    vDir.y = 0.f;
+    Rigidbody()->SetVelocity(vDir * m_fSpeed);
 
     if ((Transform()->GetLocalPos() - m_vOriginPos).Length() >= 1000.f)
     {
@@ -149,6 +167,14 @@ void CCutterProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     // 2. Static Object Hit
     LAYER_STATIC == pObj->GetLayerIdx() ? ChangeState(CUTTERPROJECTILE_STATE::Destroy) : void();
+
+    // 3. 주인과 충돌
+    if (_OtherCollider->GetOwner() == m_pAttackPoint)
+    {
+        m_pOwner->GetScript<CSirKibbleScript>()->ChangeState(SIRKIBBLE_STATE::CutterCatch);
+
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 
 void CCutterProjectileScript::OnTriggerExit(CCollider* _OtherCollider)
@@ -163,6 +189,6 @@ void CCutterProjectileScript::SaveToLevelFile(FILE* _File)
 
 void CCutterProjectileScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterATKScript::SaveToLevelFile(_File);
+    CMonsterATKScript::LoadFromLevelFile(_File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
 }

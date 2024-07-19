@@ -14,15 +14,15 @@ class CCutterProjectileScript : public CMonsterATKScript
 {
 private:
     CGameObject* m_pOwner;
+    CGameObject* m_pAttackPoint;
     CUTTERPROJECTILE_STATE m_eState;
-    Quat m_Quat;
     Vec3 m_vOriginPos;
     float m_fSpeed;
     float m_fAccTime;
 
 public:
     void SetOwenr(CGameObject* _pObj) { m_pOwner = _pObj; }
-    void SetQuaternion(const Quat& _quat) { m_Quat = _quat; }
+    void SetAttackPoint(CGameObject* _pObj) { m_pAttackPoint = _pObj; }
 
 public:
     virtual void begin() override;

@@ -24,6 +24,7 @@ class CSirKibbleScript : public CMonsterUnitScript
 {
 private:
     CGameObject* m_pTargetObj;
+    CGameObject* m_pAttackPoint;
     SIRKIBBLE_STATE m_eState;
     Vec3 m_vDamageDir;
 
@@ -50,7 +51,6 @@ private:
 private:
     void Idle();
     void Find();
-    void FindWait();
     void AirCutterJumpStart();
     void AirCutterJump();
     void AirCutterThrow();
@@ -64,9 +64,14 @@ private:
     void Land();
     void Death();
 
+private:
+    void ProjectileAttack();
+
 public:
     CLONE(CSirKibbleScript)
     CSirKibbleScript();
     CSirKibbleScript(const CSirKibbleScript& _Origin);
     virtual ~CSirKibbleScript();
+
+    friend class CCutterProjectileScript;
 };
