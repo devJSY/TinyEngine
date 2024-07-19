@@ -122,8 +122,11 @@ void CKirbyObject::DropObjectEnter()
 
     // spawn object
     CGameObject* pObj = m_OriginObject->Instantiate();
-    Vec3 InitPos = PLAYER->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 400.f;
-    Vec3 Force = Vec3(0.f, 1.f, 0.f) - PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    pObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));    //@TODO 머지후삭제
+
+    Vec3 BackDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
+    Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + (BackDir * 300.f);
+    Vec3 Force = Vec3(0.f, 1.f, 0.f) + BackDir;
     Force = Force.Normalize() * 3.f;
 
     pObj->Transform()->SetWorldPos(InitPos);

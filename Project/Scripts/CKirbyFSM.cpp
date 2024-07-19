@@ -293,6 +293,8 @@ void CKirbyFSM::begin()
 
 void CKirbyFSM::tick()
 {
+    Vec3 BackDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP).Cross(PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT)).Normalize();
+
     if (m_ComboLevel != 0)
     {
         m_ComboAccTime += DT;
@@ -371,7 +373,12 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
     // Change Ability 요청
     else
     {
-        if (m_CurAbility != AbilityCopyType::NORMAL)
+        if (m_CurAbility != AbilityCopyType::NONE)
+        {
+            MessageBox(nullptr, L"흡수할 Ability Type이 존재하지 않습니다", L"Change Ability 실패", MB_OK);
+            return;
+        }
+        else if (m_CurAbility != AbilityCopyType::NORMAL)
         {
             MessageBox(nullptr, L"Ability가 이미 존재합니다", L"Change Ability 실패", MB_OK);
             return;

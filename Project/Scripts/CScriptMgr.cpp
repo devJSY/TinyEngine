@@ -29,6 +29,7 @@
 #include "CBladeKnightScript.h"
 #include "CHitBoxScript.h"
 #include "CDetectAreaScript.h"
+#include "CDeformObjectScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -60,6 +61,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBladeKnightScript");
 	_vec.push_back(L"CHitBoxScript");
 	_vec.push_back(L"CDetectAreaScript");
+	_vec.push_back(L"CDeformObjectScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -120,6 +122,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CHitBoxScript;
 	if (L"CDetectAreaScript" == _strScriptName)
 		return new CDetectAreaScript;
+	if (L"CDeformObjectScript" == _strScriptName)
+		return new CDeformObjectScript;
 	return nullptr;
 }
 
@@ -183,6 +187,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CHitBoxScript;
 	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
 		return new CDetectAreaScript;
+	case (UINT)SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
+		return new CDeformObjectScript;
 	}
 	return nullptr;
 }
@@ -247,6 +253,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CHitBoxScript";
 	case SCRIPT_TYPE::DETECTAREASCRIPT:
 		return L"CDetectAreaScript";
+	case SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
+		return L"CDeformObjectScript";
 	}
 	return nullptr;
 }

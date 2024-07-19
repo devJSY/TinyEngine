@@ -21,7 +21,6 @@ protected:
     bool m_bFrmEnter;
 
 protected:
-    // 사용 메쉬: mesh
     void ParseDemoMesh(Ptr<CMeshData> _pMesh);
     void ChangeState(const wstring& _strStateName);
 
