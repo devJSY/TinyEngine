@@ -686,9 +686,6 @@
     <Filter Include="Default">
       <UniqueIdentifier>{bf8b5893-c5d5-40d9-881c-b96caad131d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ScriptMgr">
-      <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{c2a22188-4ce0-47f7-9f8e-01d22372aefe}</UniqueIdentifier>
     </Filter>
@@ -1078,6 +1075,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Monster\MonsterScript\TackleEnemy">
       <UniqueIdentifier>{86f1db90-617f-4cc8-8fdd-2d39d61c50b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptMgr">
+      <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
