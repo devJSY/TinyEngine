@@ -24,7 +24,7 @@ void CKirbyStuffedJumpFall::tick()
 
 void CKirbyStuffedJumpFall::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"StuffedFall"));
+    PLAYER->Animator()->Play(ANIMPREFIX(L"StuffedFall"));
 
     PLAYERCTRL->LockJump();
 }

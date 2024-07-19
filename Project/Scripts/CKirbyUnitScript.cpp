@@ -8,15 +8,17 @@ CKirbyUnitScript::CKirbyUnitScript()
 {
     UnitInfo KirbyInfo = {
         100.f, // HP
-        10.f,  // Speed
-        10.f,  // JumpPower
         100.f, // MaxHP
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
     };
     SetInfo(KirbyInfo);
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
 }
 
@@ -25,15 +27,17 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
 {
     UnitInfo KirbyInfo = {
         100.f, // HP
-        10.f,  // Speed
-        10.f,  // JumpPower
         100.f, // MaxHP
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
     };
     SetInfo(KirbyInfo);
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
 }
 

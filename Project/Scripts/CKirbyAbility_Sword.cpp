@@ -30,11 +30,11 @@ void CKirbyAbility_Sword::IdleEnter()
 
     if (prev == L"ATTACK" || prev == L"ATTACK_COMBO1" || prev == L"ATTACK_COMBO2")
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"Wait"), true, false, 2.5f, 0.3f);
+        PLAYER->Animator()->Play(ANIMPREFIX(L"Wait"), true, false, 2.5f, 0.3f);
     }
     else
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
+        PLAYER->Animator()->Play(ANIMPREFIX(L"Wait"));
     }
 }
 
@@ -60,7 +60,7 @@ void CKirbyAbility_Sword::Attack()
 
 void CKirbyAbility_Sword::AttackEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Attack1"), false, false, 1.5);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"Attack1"), false, false, 1.5);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -102,7 +102,7 @@ void CKirbyAbility_Sword::AttackCombo1()
 
 void CKirbyAbility_Sword::AttackCombo1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Attack2"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"Attack2"), false, false, 1.5f);
     //@TODO Effect 재생
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
@@ -144,7 +144,7 @@ void CKirbyAbility_Sword::AttackCombo2()
 
 void CKirbyAbility_Sword::AttackCombo2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Attack3"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"Attack3"), false, false, 1.5f);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
@@ -177,7 +177,7 @@ void CKirbyAbility_Sword::AttackCharge1()
 
 void CKirbyAbility_Sword::AttackCharge1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SpinSlash"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SpinSlash"), false, false, 1.5f);
     //@Effect 스핀이펙트
 
     PLAYERCTRL->LockDirection();
@@ -197,7 +197,7 @@ void CKirbyAbility_Sword::AttackCharge1Start()
 
 void CKirbyAbility_Sword::AttackCharge1StartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SpinSlashCharge"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SpinSlashCharge"), false, false, 1.5f);
     //@Effect 충전완료
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
@@ -220,7 +220,7 @@ void CKirbyAbility_Sword::AttackCharge1End()
 
 void CKirbyAbility_Sword::AttackCharge1EndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SpinSlashEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SpinSlashEnd"), false, false, 1.5f);
     //@Effect 터지는 흰색 파티클 입자들
 
     PLAYERCTRL->LockDirection();
@@ -245,7 +245,7 @@ void CKirbyAbility_Sword::AttackCharge2()
 
 void CKirbyAbility_Sword::AttackCharge2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperSpinSlashCharge"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SuperSpinSlashCharge"), true, false, 1.5f);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
@@ -267,7 +267,7 @@ void CKirbyAbility_Sword::AttackCharge2Start()
 
 void CKirbyAbility_Sword::AttackCharge2StartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperSpinSlashChargeStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SuperSpinSlashChargeStart"), false, false, 1.5f);
     //@Effect 충전완료
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
@@ -309,7 +309,7 @@ void CKirbyAbility_Sword::AttackCharge3()
 
 void CKirbyAbility_Sword::AttackCharge3Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"GigantChargeAttack"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"GigantChargeAttack"), false, false, 1.5f);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     m_PrevRotSpeed = PLAYERCTRL->GetRotSpeed();
@@ -333,7 +333,7 @@ void CKirbyAbility_Sword::AttackCharge3Start()
 
 void CKirbyAbility_Sword::AttackCharge3StartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"GigantChargeAttackStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"GigantChargeAttackStart"), false, false, 1.5f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
     //@Effect 충전완료
 
@@ -358,7 +358,7 @@ void CKirbyAbility_Sword::AttackCharge3End()
 
 void CKirbyAbility_Sword::AttackCharge3EndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"GigantChargeAttack"), false, false, 1.5f, 0.f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"GigantChargeAttack"), false, false, 1.5f, 0.f);
     PLAYER->Animator()->SetClipFrameIndex(25);
     //@Effect 번개
 
@@ -382,7 +382,7 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 // 점프 
 void CKirbyAbility_Sword::JumpFallEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"JumpFall"), false, false, 2.5f, 0.3f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"JumpFall"), false, false, 2.5f, 0.3f);
 }
 
 // ===============
@@ -408,7 +408,7 @@ void CKirbyAbility_Sword::JumpAttack()
 
 void CKirbyAbility_Sword::JumpAttackEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SwordSpin"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SwordSpin"), false, false, 2.f);
     //@Effect 스핀 이펙트
 
     m_PrevGravity = PLAYERCTRL->GetGravity();
@@ -432,7 +432,7 @@ void CKirbyAbility_Sword::JumpAttackStart()
 
 void CKirbyAbility_Sword::JumpAttackStartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SwordSpinStart"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SwordSpinStart"), false, false, 2.f);
     //@Effect 칼 끝 따라가는 이펙트
 
     PLAYERCTRL->LockDirection();
@@ -451,11 +451,11 @@ void CKirbyAbility_Sword::LandingEnter()
 {
     if (PLAYERFSM->GetLastJump() == LastJumpType::LOW)
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"LandingSmall"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX(L"LandingSmall"), false);
     }
     else
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"Landing"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX(L"Landing"), false);
     }
 
     if (PLAYERFSM->GetSlideComboLevel())
@@ -479,7 +479,7 @@ void CKirbyAbility_Sword::LandingExit()
 // ===============
 void CKirbyAbility_Sword::GuardEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"GuardMask"), true, false, 1.5f, 0.2);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"GuardMask"), true, false, 1.5f, 0.2);
 }
 
 // ===============
@@ -527,7 +527,7 @@ void CKirbyAbility_Sword::Slide()
 
 void CKirbyAbility_Sword::SlideEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SwordSlide"));
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SwordSlide"));
 }
 
 void CKirbyAbility_Sword::SlideExit()
@@ -541,7 +541,7 @@ void CKirbyAbility_Sword::SlideStart()
 
 void CKirbyAbility_Sword::SlideStartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SwordSlideStart"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SwordSlideStart"), false);
 }
 
 void CKirbyAbility_Sword::SlideStartExit()
@@ -555,7 +555,7 @@ void CKirbyAbility_Sword::SlideEnd()
 
 void CKirbyAbility_Sword::SlideEndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SwordSlideEnd"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"SwordSlideEnd"), false);
 }
 
 void CKirbyAbility_Sword::SlideEndExit()
@@ -582,7 +582,7 @@ void CKirbyAbility_Sword::SlideAttack()
 
 void CKirbyAbility_Sword::SlideAttackEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"UpwardSlash"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX(L"UpwardSlash"), false, false, 2.f);
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
     //@Effect 칼끝 궤적선
 

@@ -24,5 +24,14 @@ CUIHPScript
 CUIUnitManagerScript
 CEngineTestScript
 CBladeKnightScript
-CHitBoxScript
 CDetectAreaScript
+CNormalEnemyScript
+CGhostGordoScript
+CGordoLongScript
+CKabuScript
+CTackleEnemyScript
+CHotHeadScript
+CSirKibbleScript
+CAttackAreaScript
+CCutterProjectileScript
+CFireProjectileScript
