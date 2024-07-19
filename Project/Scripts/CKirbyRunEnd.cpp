@@ -35,7 +35,7 @@ void CKirbyRunEnd::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
         case AbilityCopyType::SWORD:
             break;
         }

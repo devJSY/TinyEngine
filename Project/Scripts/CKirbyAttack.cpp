@@ -62,7 +62,20 @@ void CKirbyAttack::tick()
         break;
         case AbilityCopyType::FIRE: // 상태 없음
             break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
+        {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (PLAYERCTRL->GetInput().Length() != 0.f)
+                {
+                    ChangeState(L"RUN_START");
+                }
+                else
+                {
+                    ChangeState(L"IDLE");
+                }
+            }
+        }
             break;
         case AbilityCopyType::SWORD: {
             if (PLAYER->Animator()->IsFinish())

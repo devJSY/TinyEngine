@@ -35,9 +35,7 @@ void CKirbyBurningStart::tick()
 void CKirbyBurningStart::Enter()
 {
     // 애니메이션 재생
-    //PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
-
-    PLAYER->Animator()->Play(ANIMPREFIX("DodgeFront1"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
 
     // 글라이딩 시간 초기화
     PLAYERFSM->ClearGlidingTime();
@@ -52,6 +50,9 @@ void CKirbyBurningStart::Enter()
     PLAYERCTRL->SetSpeed(13.f);
 
     PLAYERCTRL->ClearVelocityY();
+
+    //  무적 상태
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyBurningStart::Exit()
@@ -60,4 +61,7 @@ void CKirbyBurningStart::Exit()
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
     PLAYERCTRL->SetSpeed(m_SaveSpeed);
+
+    //  무적 상태
+    PLAYERFSM->SetInvincible(false);
 }

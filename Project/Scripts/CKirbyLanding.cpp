@@ -36,7 +36,7 @@ void CKirbyLanding::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::RANGER: {
+        case AbilityCopyType::CUTTER: {
             if (GetOwner()->Animator()->IsFinish())
             {
                 ChangeState(L"LANDING_END");

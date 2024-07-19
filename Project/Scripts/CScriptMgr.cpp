@@ -41,6 +41,8 @@
 #include "CFireProjectileScript.h"
 #include "CAttackAreaScript.h"
 #include "CDeformObjectScript.h"
+#include "CKirbyHatBlade.h"
+#include "CKirbyCutterBullet.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -84,6 +86,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFireProjectileScript");
 	_vec.push_back(L"CAttackAreaScript");
 	_vec.push_back(L"CDeformObjectScript");
+	_vec.push_back(L"CKirbyHatBlade");
+	_vec.push_back(L"CKirbyCutterBullet");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -168,6 +172,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CAttackAreaScript;
 	if (L"CDeformObjectScript" == _strScriptName)
 		return new CDeformObjectScript;
+	if (L"CKirbyHatBlade" == _strScriptName)
+		return new CKirbyHatBlade;
+	if (L"CKirbyCutterBullet" == _strScriptName)
+		return new CKirbyCutterBullet;
 	return nullptr;
 }
 
@@ -255,6 +263,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CAttackAreaScript;
 	case (UINT)SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
 		return new CDeformObjectScript;
+	case (UINT)SCRIPT_TYPE::KIRBYHATBLADE:
+		return new CKirbyHatBlade;
+	case (UINT)SCRIPT_TYPE::KIRBYCUTTERBULLET:
+		return new CKirbyCutterBullet;
 	}
 	return nullptr;
 }
@@ -343,6 +355,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CAttackAreaScript";
 	case SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
 		return L"CDeformObjectScript";
+	case SCRIPT_TYPE::KIRBYHATBLADE:
+		return L"CKirbyHatBlade";
+	case SCRIPT_TYPE::KIRBYCUTTERBULLET:
+		return L"CKirbyCutterBullet";
 	}
 	return nullptr;
 }

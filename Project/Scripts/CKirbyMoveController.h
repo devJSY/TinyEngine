@@ -92,6 +92,7 @@ public:
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
+    void SetJumpPower(float _Power) { m_JumpPower = _Power; }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
@@ -100,6 +101,7 @@ public:
     float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
     float GetGuard() const { return m_bActiveFriction; }
+    float GetJumpPower() const { return m_JumpPower; }
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

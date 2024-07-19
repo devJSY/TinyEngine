@@ -41,7 +41,7 @@ void CKirbyAttackCharge1Start::tick()
             }
         }
         break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
             break;
         case AbilityCopyType::SWORD: {
             if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))

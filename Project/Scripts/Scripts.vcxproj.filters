@@ -403,6 +403,30 @@
     <ClInclude Include="CDeformObjectScript.h">
       <Filter>Scripts\Gimmik\DeformObject</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyAbility_Cutter.h">
+      <Filter>State\KirbyAbility\Cutter</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyHatBlade.h">
+      <Filter>Scripts\Character\Kirby\KirbyHatBlade</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyCutterBullet.h">
+      <Filter>Scripts\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyCutterCatch.h">
+      <Filter>State\KirbyState\CutterCatch</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFinalCutterRise.h">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterRise</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFinalCutterDrop.h">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterDrop</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFinalCutterEnd.h">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFinalCutterEndAfter.h">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEndAfter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -819,6 +843,30 @@
     <ClCompile Include="CDeformObjectScript.cpp">
       <Filter>Scripts\Gimmik\DeformObject</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyAbility_Cutter.cpp">
+      <Filter>State\KirbyAbility\Cutter</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyHatBlade.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyHatBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyCutterBullet.cpp">
+      <Filter>Scripts\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyCutterCatch.cpp">
+      <Filter>State\KirbyState\CutterCatch</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFinalCutterRise.cpp">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterRise</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFinalCutterDrop.cpp">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterDrop</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFinalCutterEnd.cpp">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFinalCutterEndAfter.cpp">
+      <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEndAfter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1082,9 +1130,6 @@
     <Filter Include="State\KirbyState\Stuffed\Eat">
       <UniqueIdentifier>{274a9390-4fbf-49b1-8bb8-0290e3f4d1e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyAbility\Ranger">
-      <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyAbility\Fire">
       <UniqueIdentifier>{74495eea-de54-4e2e-ace2-c9f619f40932}</UniqueIdentifier>
     </Filter>
@@ -1258,6 +1303,33 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\DeformObject">
       <UniqueIdentifier>{0e321129-ad6a-45ad-a064-acda5a40664c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Cutter">
+      <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyHatBlade">
+      <UniqueIdentifier>{9482f434-aef7-43dc-8241-cceea4903ecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Projectile">
+      <UniqueIdentifier>{52d471ad-b835-4eda-afdf-c52b505f9c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\CutterCatch">
+      <UniqueIdentifier>{9f9bb459-2123-45d1-8de1-27e6a14c8972}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\FinalCutterAttack">
+      <UniqueIdentifier>{c2952000-0145-4d54-b0ab-afa50af12523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\FinalCutterAttack\FinalCutterRise">
+      <UniqueIdentifier>{c9413468-acf1-494c-9bec-3b9e3e3b18db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\FinalCutterAttack\FinalCutterDrop">
+      <UniqueIdentifier>{d7df3e74-ba28-4631-b46b-006be0c9eb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\FinalCutterAttack\FinalCutterEnd">
+      <UniqueIdentifier>{7f1d3240-5d1c-4588-9dce-b2336acdecbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\FinalCutterAttack\FinalCutterEndAfter">
+      <UniqueIdentifier>{3e4ed452-b1ce-4c22-bfd5-c82a20720342}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ enum class DodgeType
     BACK,
     LEFT,
 };
-    
+
 class CKirbyAbility;
 class CKirbyObject;
 class CKirbyVacuumCollider;
@@ -31,6 +31,7 @@ private:
     ObjectCopyType          m_CurObject;
     
     CGameObject*            m_CurHat;
+    CGameObject*            m_CurHatBlade;
     CGameObject*            m_CurWeapon;
     CGameObject*            m_StuffedCopyObj;
     CKirbyVacuumCollider*   m_VacuumCollider;
@@ -51,11 +52,24 @@ private:
     bool                    m_bStuffed;
 
     Vec3                    m_KnockbackDir;
+
+    // 무적 상태
     float                   m_InvincibleAcc;
     float                   m_InvincibleDuration;
-    float                   m_EmissiveCoef;
     bool                    m_bInvincible;
 
+    // Emissive 상태
+    float                   m_EmissiveCoef;
+    float                   m_EmissiveAcc;
+    float                   m_EmissiveDuration;
+    bool                    m_bEmissive;
+
+
+
+
+    bool                    m_bCanBladeAttack;
+
+    // Fire Gliding Timer
     float                   m_GlidingDuration;
     float                   m_GlidingAcc;
 
@@ -75,6 +89,7 @@ public:
 
 public:
     void SetCurHat(CGameObject* _Hat);
+    void SetCurHatBlade(CGameObject* _HatBlade) { m_CurHatBlade = _HatBlade; }
     void SetCurWeapon(CGameObject* _Weapon);
     void SetAttackEvent(bool _bAttack) { m_bAttackEvent = _bAttack; }
     void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
@@ -83,8 +98,9 @@ public:
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
     void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
-    void SetInvincible() { m_bInvincible = true;  m_InvincibleAcc = 0.f;}
-    void SetInvincible(bool _bInvicinvle) { } //@TODO 합쳐야함
+    void SetInvincible(bool _Invincible, float _Duration = -1.f);
+    void SetEmissive(bool _Emissive, float _Duration);
+    void SetBladeAttack(bool _CanAttack) { m_bCanBladeAttack = _CanAttack; }
     void SetDroppable(bool _bDroppable) { m_bDroppable = _bDroppable; }
     void ClearCurHatWeapon();
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
@@ -101,6 +117,7 @@ public:
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
     CGameObject* GetCurHat() { return m_CurHat; }
+    CGameObject* GetCurHatBlade() { return m_CurHatBlade; }
     CGameObject* GetCurWeapon() { return m_CurWeapon; }
     CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
@@ -119,7 +136,9 @@ public:
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;
     bool IsInvincible() const { return m_bInvincible; }
+    bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
+
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;

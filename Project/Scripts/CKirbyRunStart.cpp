@@ -55,7 +55,37 @@ void CKirbyRunStart::tick()
         break;
 
 
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER: 
+        {
+            // 상태변경 시그널 발생시
+            if (KEY_TAP(KEY_ATK))
+            {
+                if (PLAYERFSM->CanBladeAttack())
+                {
+                    ChangeState(L"ATTACK");
+                }
+            }
+            else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+            {
+                ChangeState(L"GUARD");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
+            }
+            // 상태변경 시그널 발생 않을 시
+            else
+            {
+                if (GetOwner()->Animator()->IsFinish())
+                    ChangeState(L"RUN");
+            }
+        }
+        break;
+
             break;
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))

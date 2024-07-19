@@ -41,6 +41,10 @@ void CKirbyDamage::Enter()
 
     // Acc 초기화
     m_Acc = 0.f;
+
+    // 무적, 이미시브 효과
+    PLAYERFSM->SetInvincible(true, 3.f);
+    PLAYERFSM->SetEmissive(true, 3.f);
 }
 
 void CKirbyDamage::Exit()

@@ -35,14 +35,14 @@ void CKirbyLandingEnd::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::RANGER:
-        case AbilityCopyType::SWORD: {
-            if (GetOwner()->Animator()->IsFinish())
-            {
-                ChangeState(L"IDLE");
-            }
+        case AbilityCopyType::CUTTER:
+        case AbilityCopyType::SWORD:
+            break;
         }
-        break;
+
+        if (GetOwner()->Animator()->IsFinish())
+        {
+            ChangeState(L"IDLE");
         }
     }
 }

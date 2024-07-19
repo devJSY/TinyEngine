@@ -128,6 +128,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CHotHeadScript.h" />
     <ClInclude Include="CKabuScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
+    <ClInclude Include="CKirbyAbility_Cutter.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
     <ClInclude Include="CKirbyAbility_Sword.h" />
@@ -169,6 +170,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyChangeObjectEnd.h" />
     <ClInclude Include="CKirbyCopyAbilityScript.h" />
     <ClInclude Include="CKirbyCopyObjScript.h" />
+    <ClInclude Include="CKirbyCutterBullet.h" />
+    <ClInclude Include="CKirbyCutterCatch.h" />
     <ClInclude Include="CKirbyDamage.h" />
     <ClInclude Include="CKirbyDeath.h" />
     <ClInclude Include="CKirbyDeathEnd.h" />
@@ -176,10 +179,15 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyDodge2.h" />
     <ClInclude Include="CKirbyDodgeStart.h" />
     <ClInclude Include="CKirbyDropAbility.h" />
+    <ClInclude Include="CKirbyFinalCutterDrop.h" />
+    <ClInclude Include="CKirbyFinalCutterEnd.h" />
+    <ClInclude Include="CKirbyFinalCutterEndAfter.h" />
+    <ClInclude Include="CKirbyFinalCutterRise.h" />
     <ClInclude Include="CKirbyDropObject.h" />
     <ClInclude Include="CKirbyDropObjectStart.h" />
     <ClInclude Include="CKirbyGuard.h" />
     <ClInclude Include="CKirbyGuardRun.h" />
+    <ClInclude Include="CKirbyHatBlade.h" />
     <ClInclude Include="CKirbyJumpAttack.h" />
     <ClInclude Include="CKirbyJumpAttackStart.h" />
     <ClInclude Include="CKirbyObject_Cone.h" />
@@ -264,6 +272,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CHotHeadScript.cpp" />
     <ClCompile Include="CKabuScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
+    <ClCompile Include="CKirbyAbility_Cutter.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
     <ClCompile Include="CKirbyAbility_Sword.cpp" />
@@ -305,6 +314,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyChangeObjectEnd.cpp" />
     <ClCompile Include="CKirbyCopyAbilityScript.cpp" />
     <ClCompile Include="CKirbyCopyObjScript.cpp" />
+    <ClCompile Include="CKirbyCutterBullet.cpp" />
+    <ClCompile Include="CKirbyCutterCatch.cpp" />
     <ClCompile Include="CKirbyDamage.cpp" />
     <ClCompile Include="CKirbyDeath.cpp" />
     <ClCompile Include="CKirbyDeathEnd.cpp" />
@@ -312,10 +323,15 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyDodge2.cpp" />
     <ClCompile Include="CKirbyDodgeStart.cpp" />
     <ClCompile Include="CKirbyDropAbility.cpp" />
+    <ClCompile Include="CKirbyFinalCutterDrop.cpp" />
+    <ClCompile Include="CKirbyFinalCutterEnd.cpp" />
+    <ClCompile Include="CKirbyFinalCutterEndAfter.cpp" />
+    <ClCompile Include="CKirbyFinalCutterRise.cpp" />
     <ClCompile Include="CKirbyDropObject.cpp" />
     <ClCompile Include="CKirbyDropObjectStart.cpp" />
     <ClCompile Include="CKirbyGuard.cpp" />
     <ClCompile Include="CKirbyGuardRun.cpp" />
+    <ClCompile Include="CKirbyHatBlade.cpp" />
     <ClCompile Include="CKirbyJumpAttack.cpp" />
     <ClCompile Include="CKirbyJumpAttackStart.cpp" />
     <ClCompile Include="CKirbyObject_Cone.cpp" />

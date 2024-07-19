@@ -22,7 +22,7 @@ void CKirbySlideAttack::tick()
     {
     case AbilityCopyType::NORMAL:
     case AbilityCopyType::FIRE:
-    case AbilityCopyType::RANGER:
+    case AbilityCopyType::CUTTER:
         break;
     case AbilityCopyType::SWORD:
         if (m_PlayTime < 0.f && GetOwner()->Animator()->IsFinish())

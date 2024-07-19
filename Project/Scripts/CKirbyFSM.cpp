@@ -6,6 +6,7 @@
 
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyAbility_Fire.h"
+#include "CKirbyAbility_Cutter.h"
 #include "CKirbyAbility_Sword.h"
 #include "CKirbyObject_Cone.h"
 #include "CKirbyObject_Lightbulb.h"
@@ -34,7 +35,7 @@ CKirbyFSM::CKirbyFSM()
     , m_bHovering(false)
     , m_bInvincible(false)
     , m_InvincibleAcc(0.f)
-    , m_InvincibleDuration(3.f)
+    , m_InvincibleDuration(0.f)
     , m_EmissiveCoef(0.f)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
@@ -45,6 +46,7 @@ CKirbyFSM::CKirbyFSM()
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
+    m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
@@ -194,6 +196,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
 #include "CKirbyBurningEnd.h"
+#include "CKirbyFinalCutterRise.h"
+#include "CKirbyFinalCutterDrop.h"
+#include "CKirbyFinalCutterEnd.h"
+#include "CKirbyFinalCutterEndAfter.h"
 #include "CKirbyChangeObject.h"
 #include "CKirbyChangeObjectEnd.h"
 #include "CKirbyDropObjectStart.h"
@@ -278,10 +284,17 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
     AddState(L"DROP_ABILITY", new CKirbyDropAbility);
 
+    // Fire
     AddState(L"BURNING_PRE", new CKirbyBurningPre);
     AddState(L"BURNING_START", new CKirbyBurningStart);
     AddState(L"BURNING", new CKirbyBurning);
     AddState(L"BURNING_END", new CKirbyBurningEnd);
+
+    // Cutter
+    AddState(L"FINALCUTTERRISE", new CKirbyFinalCutterRise);
+    AddState(L"FINALCUTTERDROP", new CKirbyFinalCutterDrop);
+    AddState(L"FINALCUTTEREND", new CKirbyFinalCutterEnd);
+    AddState(L"FINALCUTTERENDAFTER", new CKirbyFinalCutterEndAfter);
 
     AddState(L"CHANGE_OBJECT", new CKirbyChangeObject);
     AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
@@ -330,10 +343,22 @@ void CKirbyFSM::tick()
         m_YPressedTime = 0.f;
     }
 
-    // 무적상태 관리
-    if (m_bInvincible)
+    // 무적 상태 관리
+    if (m_bInvincible && m_InvincibleDuration != -1.f)
     {
         m_InvincibleAcc += DT;
+
+        if (m_InvincibleAcc > m_InvincibleDuration)
+        {
+            // 무적 상태 해제
+            m_bInvincible = false;
+        }
+    }
+
+    // Emissive 상태 관리
+    if (m_bEmissive)
+    {
+        m_EmissiveAcc += DT;
 
         m_EmissiveCoef += 3.f * DT;
 
@@ -351,10 +376,10 @@ void CKirbyFSM::tick()
             PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_EmissiveCoef);
         }
 
-        if (m_InvincibleAcc > m_InvincibleDuration)
+        if (m_EmissiveAcc > m_EmissiveDuration)
         {
-            m_bInvincible = false;
-            m_InvincibleAcc = 0.f;
+            // Emissive 상태 해제
+            m_bEmissive = false;
             m_EmissiveCoef = 0.f;
             PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
         }
@@ -463,6 +488,67 @@ void CKirbyFSM::SetHovering(bool _bHovering)
     }
 
     m_bHovering = _bHovering;
+}
+
+void CKirbyFSM::SetInvincible(bool _Invincible, float _Duration)
+{
+    if (_Duration == -1.f)
+    {
+        m_bInvincible = _Invincible;
+        m_InvincibleDuration = _Duration;
+        m_InvincibleAcc = 0.f;
+    }
+    else
+    {
+        if (_Invincible == true)
+        {
+            float RemainTime = m_InvincibleDuration - m_InvincibleAcc;
+
+            if (RemainTime < _Duration)
+            {
+                m_bInvincible = _Invincible;
+                m_InvincibleDuration = _Duration;
+                m_InvincibleAcc = 0.f;
+            }
+        }
+    }
+
+}
+
+void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
+{
+    if (_Emissive == false)
+    {
+        m_bEmissive = false;
+        m_EmissiveCoef = 0.f;
+        PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+
+        m_EmissiveAcc = 0.f;
+        m_EmissiveDuration = 0.f;
+    }
+    else
+    {
+        // 현재 적용되고 있는 Emissive가 있는 경우
+        if (m_bEmissive)
+        {
+            float RemainTime = m_EmissiveDuration - m_EmissiveAcc;
+
+            // 남은 Emissive 시간보다 더 긴 경우 새로 입력받은 Emissive를 적용
+            if (RemainTime < _Duration)
+            {
+                m_EmissiveDuration = _Duration;
+                m_EmissiveAcc = 0.f;
+            }
+        }
+        // 현재 적용되고 있는 Emissive가 없는 경우 바로 적용한다.
+        else
+        {
+            m_bEmissive = true;
+
+            m_EmissiveDuration = _Duration;
+            m_EmissiveAcc = 0.f;
+        }
+    }
 }
 
 void CKirbyFSM::ClearCurHatWeapon()
