@@ -19,7 +19,7 @@ void CKirbyAttackCharge2SlashEnd::tick()
 
 void CKirbyAttackCharge2SlashEnd::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperSpinSlashEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashEnd"), false, false, 1.5f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();

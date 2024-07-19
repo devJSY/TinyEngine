@@ -20,7 +20,7 @@ void CKirbyAttackAirGuardChargeStart::tick()
 
 void CKirbyAttackAirGuardChargeStart::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"ButterflyScalesChargeStart"), false, false, 10.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("ButterflyScalesChargeStart"), false, false, 10.f);
     //@Effect 차지 파티클입자
 
     PLAYERCTRL->ClearVelocityY();

@@ -28,4 +28,6 @@ public:
 public:
     CMeshData(bool _Engine = false);
     virtual ~CMeshData();
+
+    friend class CModelEditor;
 };

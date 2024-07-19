@@ -38,7 +38,7 @@ void CKirbyBurningPre::Enter()
     KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(normal));
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"BurningStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
     
     // Movement
     Vec3 Input = PLAYERCTRL->GetMoveDir();

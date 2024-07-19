@@ -26,6 +26,10 @@ void CKirbyJump::tick()
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
             }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
             else if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"LANDING");
@@ -126,9 +130,11 @@ void CKirbyJump::Enter()
 {
     PLAY_CURSTATE(JumpEnter)
     PLAYERFSM->SetLastJump(LastJumpType::HIGH);
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyJump::Exit()
 {
     PLAY_CURSTATE(JumpExit)
+    PLAYERFSM->SetDroppable(false);
 }

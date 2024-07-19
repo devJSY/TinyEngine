@@ -114,8 +114,9 @@ void CLayer::AddObject(CGameObject* _Object, bool _bMove)
 
 bool CLayer::DetachGameObject(CGameObject* _Object)
 {
-    // 레이어에 소속이 되어있지 않거나, 이 레이어가 아니라면 assert
-    assert(!(-1 == _Object->m_iLayerIdx || _Object->m_iLayerIdx != m_iLayerIdx));
+    // 레이어에 소속이 되어있지 않거나, 이 레이어가 아닌 경우
+    if (nullptr == _Object || -1 == _Object->m_iLayerIdx || _Object->m_iLayerIdx != m_iLayerIdx)
+        return false;
 
     // 부모 오브젝트가 있는 경우
     if (nullptr != _Object->GetParent())

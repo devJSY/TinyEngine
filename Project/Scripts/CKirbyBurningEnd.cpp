@@ -35,7 +35,7 @@ void CKirbyBurningEnd::tick()
 void CKirbyBurningEnd::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"BurningEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningEnd"), false, false, 1.5f);
 
     // Movement
     PLAYERCTRL->LockJump();

@@ -13,27 +13,18 @@ CKirbyBodyCollider::CKirbyBodyCollider()
 CKirbyBodyCollider::~CKirbyBodyCollider()
 {
 }
-
-void CKirbyBodyCollider::OnCollisionEnter(CCollider* _OtherCollider)
-{
-}
-
-void CKirbyBodyCollider::OnCollisionStay(CCollider* _OtherCollider)
-{
-}
-
-void CKirbyBodyCollider::OnCollisionExit(CCollider* _OtherCollider)
-{
-}
-
 void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    int Layeridx = _OtherCollider->GetOwner()->GetLayerIdx();
+
     // 흡입을 시작한 상태(타겟을 결정해 빨아들이기 시작한 상태)에서 충돌한 경우
     if (PLAYERFSM->IsDrawing())
     {
         PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
     }
-    else if (_OtherCollider->GetOwner()->GetLayerIdx() == 5)
+
+    // 적과 충돌한 경우
+    else if (Layeridx == LAYER_MONSTER || Layeridx == LAYER_MONSTERATK)
     {
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, 10.f, 0.f, 0.f};
         PLAYERUNIT->GetDamage(HitInfo);
@@ -59,12 +50,7 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
             // 상태 변경
             PLAYERFSM->ChangeState(L"DAMAGE");
         }
-
-
-
     }
-
-    
 }
 
 void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)

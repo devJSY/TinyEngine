@@ -474,7 +474,7 @@ void CAnimator::ClearData()
     Ptr<CMaterial> pMtrl = nullptr;
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
-        pMtrl = MeshRender()->GetSharedMaterial(i);
+        pMtrl = MeshRender()->GetMaterial(i);
         if (nullptr == pMtrl)
             continue;
 

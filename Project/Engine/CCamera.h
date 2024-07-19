@@ -1,4 +1,5 @@
 #pragma once
+
 #include "CComponent.h"
 #include "CFrustum.h"
 
@@ -46,7 +47,7 @@ private:
 
     vector<CGameObject*> m_vecSkybox;
     vector<CGameObject*> m_vecDecal;
-    vector<CGameObject*> m_vecTransparent;
+    vector<tInstObj> m_vecTransparent;
     vector<CGameObject*> m_vecPostProcess;
 
     vector<CGameObject*> m_vecShadow;

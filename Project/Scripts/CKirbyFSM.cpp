@@ -8,6 +8,8 @@
 #include "CKirbyAbility_Fire.h"
 #include "CKirbyAbility_Cutter.h"
 #include "CKirbyAbility_Sword.h"
+#include "CKirbyObject_Cone.h"
+#include "CKirbyObject_Lightbulb.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -16,6 +18,8 @@ CKirbyFSM::CKirbyFSM()
     , m_CurAbility(AbilityCopyType::NORMAL)
     , m_NextAbility(AbilityCopyType::NONE)
     , m_CurObject(ObjectCopyType::NONE)
+    , m_CurHat(nullptr)
+    , m_CurWeapon(nullptr)
     , m_StuffedCopyObj(nullptr)
     , m_VacuumCollider(nullptr)
     , m_ComboLevel(0)
@@ -25,6 +29,8 @@ CKirbyFSM::CKirbyFSM()
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(7.f)
     , m_LastJump(LastJumpType::HIGH)
+    , m_DodgeType(DodgeType::NONE)
+    , m_bAttackEvent(false)
     , m_bStuffed(false)
     , m_bHovering(false)
     , m_bInvincible(false)
@@ -33,12 +39,18 @@ CKirbyFSM::CKirbyFSM()
     , m_EmissiveCoef(0.f)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
+    , m_YPressedTime(0.f)
+    , m_DropCopyTime(1.f)
+    , m_bDroppable(false)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
+
+    m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
+    m_arrObject[(UINT)ObjectCopyType::LIGHT] = new CKirbyObject_Lightbulb();
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -55,6 +67,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_HoveringAccTime(0.f)
     , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
     , m_LastJump(LastJumpType::HIGH)
+    , m_bAttackEvent(false)
     , m_bStuffed(false)
     , m_bHovering(false)
     , m_bInvincible(false)
@@ -114,8 +127,11 @@ CKirbyFSM::~CKirbyFSM()
 }
 
 #include "CKirbyIdle.h"
+#include "CKirbyDeath.h"
+#include "CKirbyDeathEnd.h"
 #include "CKirbyRun.h"
 #include "CKirbyRunStart.h"
+#include "CKirbyRunEnd.h"
 #include "CKirbyJump.h"
 #include "CKirbyJumpStart.h"
 #include "CKirbyJumpFall.h"
@@ -131,8 +147,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyHoveringLanding.h"
 #include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
+#include "CKirbyAttackStart.h"
 #include "CKirbyAttackEnd.h"
 #include "CKirbyAttackCombo1.h"
+#include "CKirbyAttackCombo1End.h"
 #include "CKirbyAttackCombo2.h"
 #include "CKirbyAttackCombo2End.h"
 #include "CKirbyAttackCharge1.h"
@@ -173,6 +191,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyChangeAbility.h"
 #include "CKirbyChangeAbilityEnd.h"
 #include "CKirbyChangeAbilityWait.h"
+#include "CKirbyDropAbility.h"
 #include "CKirbyBurningPre.h"
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
@@ -181,6 +200,10 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyFinalCutterDrop.h"
 #include "CKirbyFinalCutterEnd.h"
 #include "CKirbyFinalCutterEndAfter.h"
+#include "CKirbyChangeObject.h"
+#include "CKirbyChangeObjectEnd.h"
+#include "CKirbyDropObjectStart.h"
+#include "CKirbyDropObject.h"
 
 void CKirbyFSM::begin()
 {
@@ -195,8 +218,11 @@ void CKirbyFSM::begin()
 
     // State 추가
     AddState(L"IDLE", new CKirbyIdle);
+    AddState(L"DEATH", new CKirbyDeath);
+    AddState(L"DEATH_END", new CKirbyDeathEnd);
     AddState(L"RUN", new CKirbyRun);
     AddState(L"RUN_START", new CKirbyRunStart);
+    AddState(L"RUN_END", new CKirbyRunEnd);
     AddState(L"JUMP", new CKirbyJump);
     AddState(L"JUMP_START", new CKirbyJumpStart);
     AddState(L"JUMP_FALL", new CKirbyJumpFall);
@@ -212,8 +238,10 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_LANDING", new CKirbyHoveringLanding);
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_START", new CKirbyAttackStart);
     AddState(L"ATTACK_END", new CKirbyAttackEnd);
     AddState(L"ATTACK_COMBO1", new CKirbyAttackCombo1);
+    AddState(L"ATTACK_COMBO1_END", new CKirbyAttackCombo1End);
     AddState(L"ATTACK_COMBO2", new CKirbyAttackCombo2);
     AddState(L"ATTACK_COMBO2_END", new CKirbyAttackCombo2End);
     AddState(L"ATTACK_CHARGE1", new CKirbyAttackCharge1);
@@ -254,6 +282,7 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY", new CKirbyChangeAbility);
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
+    AddState(L"DROP_ABILITY", new CKirbyDropAbility);
 
     // Fire
     AddState(L"BURNING_PRE", new CKirbyBurningPre);
@@ -267,11 +296,18 @@ void CKirbyFSM::begin()
     AddState(L"FINALCUTTEREND", new CKirbyFinalCutterEnd);
     AddState(L"FINALCUTTERENDAFTER", new CKirbyFinalCutterEndAfter);
 
+    AddState(L"CHANGE_OBJECT", new CKirbyChangeObject);
+    AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
+    AddState(L"DROP_OBJECT", new CKirbyDropObject);
+    AddState(L"DROP_OBJECT_START", new CKirbyDropObjectStart);
+
     ChangeState(L"IDLE");
 }
 
 void CKirbyFSM::tick()
 {
+    Vec3 BackDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP).Cross(PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT)).Normalize();
+
     if (m_ComboLevel != 0)
     {
         m_ComboAccTime += DT;
@@ -290,6 +326,21 @@ void CKirbyFSM::tick()
     if (m_bHovering)
     {
         m_HoveringAccTime += DT;
+    }
+
+    if (m_bDroppable && (KEY_TAP(KEY::Y) || KEY_PRESSED(KEY::Y)))
+    {
+        if (m_CurObject == ObjectCopyType::NONE && m_CurAbility == AbilityCopyType::NORMAL)
+        {
+        }
+        else
+        {
+            m_YPressedTime += DT;
+        }
+    }
+    else if (m_YPressedTime >= 0.f && KEY_RELEASED(KEY::Y))
+    {
+        m_YPressedTime = 0.f;
     }
 
     // 무적 상태 관리
@@ -336,38 +387,58 @@ void CKirbyFSM::tick()
 
     CFSMScript::tick();
 }
-
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
 {
-    switch (_Type)
+    // Drop Ability 요청
+    if (_Type == AbilityCopyType::NORMAL)
     {
-    case AbilityCopyType::NORMAL:
-    {
-        m_NextAbility = _Type;
-        ChangeState(L"DROP_ABILITY");
         m_CurAbility = _Type;
     }
-        break;
-    case AbilityCopyType::FIRE:
-    case AbilityCopyType::CUTTER:
-    case AbilityCopyType::SWORD:
+
+    // Change Ability 요청
+    else
     {
+        if (_Type == AbilityCopyType::NONE)
+        {
+            MessageBox(nullptr, L"흡수할 Ability Type이 존재하지 않습니다", L"Change Ability 실패", MB_OK);
+            return;
+        }
+        if (m_CurAbility != AbilityCopyType::NORMAL)
+        {
+            MessageBox(nullptr, L"Ability가 이미 존재합니다", L"Change Ability 실패", MB_OK);
+            return;
+        }
+
         m_NextAbility = _Type;
         ChangeState(L"CHANGE_ABILITY");
         m_CurAbility = _Type;
-    }
-        break;
-    case AbilityCopyType::END:
-    case AbilityCopyType::NONE:
-        return;
-        break;
     }
 }
 
 void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
 {
-    ChangeState(L"CHANGE_OBJECT");
-    m_CurObject = _Type;
+    // Drop Object 요청
+    if (_Type == ObjectCopyType::NONE)
+    {
+        m_CurObject = _Type;
+    }
+
+    // Change Object 요청
+    else
+    {
+        if (m_CurObject != ObjectCopyType::NONE)
+        {
+            MessageBox(nullptr, L"Object가 이미 존재합니다", L"Change Object 실패", MB_OK);
+            return;
+        }
+
+        //m_NextObject = _Type;
+        //ChangeState(L"CHANGE_OBJECT");
+        //m_CurObject = _Type;
+
+        m_CurObject = _Type;
+        ChangeState(L"CHANGE_OBJECT");
+    }
 }
 
 void CKirbyFSM::StartStuffed(CGameObject* _Target)
@@ -381,6 +452,32 @@ void CKirbyFSM::StartStuffed(CGameObject* _Target)
 void CKirbyFSM::DrawingCollisionEnter(CGameObject* _CollisionObject)
 {
     m_VacuumCollider->DrawingCollisionEnter(_CollisionObject);
+}
+
+void CKirbyFSM::SetCurHat(CGameObject* _Hat)
+{
+    if (!_Hat)
+        return;
+
+    if (m_CurHat)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurHat);
+    }
+
+    m_CurHat = _Hat;
+}
+
+void CKirbyFSM::SetCurWeapon(CGameObject* _Weapon)
+{
+    if (!_Weapon)
+        return;
+
+    if (m_CurWeapon)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurWeapon);
+    }
+
+    m_CurWeapon = _Weapon;
 }
 
 void CKirbyFSM::SetHovering(bool _bHovering)
@@ -451,6 +548,21 @@ void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
             m_EmissiveDuration = _Duration;
             m_EmissiveAcc = 0.f;
         }
+    }
+}
+
+void CKirbyFSM::ClearCurHatWeapon()
+{
+    if (m_CurHat)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurHat);
+        m_CurHat = nullptr;
+    }
+
+    if (m_CurWeapon)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurWeapon);
+        m_CurWeapon = nullptr;
     }
 }
 

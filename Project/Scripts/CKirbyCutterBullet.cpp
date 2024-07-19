@@ -32,7 +32,7 @@ void CKirbyCutterBullet::begin()
     }
 
     // 애니메이션 재생
-    Animator()->Play(KIRBYANIM(L"Spin"), false, false, 1.5f, 0);
+    Animator()->Play(ANIMPREFIX("Spin"), false, false, 1.5f, 0);
 
     // 초기 값 세팅
     m_IsBack = false;
@@ -104,7 +104,7 @@ void CKirbyCutterBullet::tick()
 
     if (Animator()->IsFinish())
     {
-        Animator()->Play(KIRBYANIM(L"SpinBig"), true, false, 1.5f, 0.1);
+        Animator()->Play(ANIMPREFIX("SpinBig"), true, false, 1.5f, 0.1);
     }
 
     // Bullter 움직임

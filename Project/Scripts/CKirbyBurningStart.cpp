@@ -35,7 +35,7 @@ void CKirbyBurningStart::tick()
 void CKirbyBurningStart::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"BurningStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
 
     // 글라이딩 시간 초기화
     PLAYERFSM->ClearGlidingTime();

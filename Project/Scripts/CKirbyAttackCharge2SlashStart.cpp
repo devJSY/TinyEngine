@@ -20,7 +20,7 @@ void CKirbyAttackCharge2SlashStart::tick()
 
 void CKirbyAttackCharge2SlashStart::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperSpinSlashStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashStart"), false, false, 1.5f);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);

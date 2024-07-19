@@ -21,7 +21,7 @@ void CKirbyFinalCutterEndAfter::tick()
 
 void CKirbyFinalCutterEndAfter::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"FinalCutterEndAfter"), false, false, 1.5f, 0);
+    PLAYER->Animator()->Play(ANIMPREFIX("FinalCutterEndAfter"), false, false, 1.5f, 0);
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();

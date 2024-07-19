@@ -86,7 +86,7 @@ void CKirbyHatBlade::Reset()
 {
     // 날린 공격을 다시 받았을 경우
      
-    PLAYERFSM->GetCurHat()->Animator()->Play(KIRBYANIM(L"MetalCutterCatch"), false, false, 1.5f);
+    PLAYERFSM->GetCurHat()->Animator()->Play(ANIMPREFIX("MetalCutterCatch"), false, false, 1.5f);
     //  
     MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
     Transform()->SetLocalScale(Vec3(1.f,1.f,1.f));

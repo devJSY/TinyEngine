@@ -14,7 +14,6 @@
 #include "CUIManagerScript.h"
 #include "CButtonManagerScript.h"
 #include "CKirbyVacuumCollider.h"
-#include "CMonsterUnitScript.h"
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
 #include "CKirbyBodyCollider.h"
@@ -27,11 +26,21 @@
 #include "CUIHPScript.h"
 #include "CUIUnitManagerScript.h"
 #include "CEngineTestScript.h"
-#include "CNormalEnemyFSM.h"
-#include "CMonsterMgr.h"
-#include "CMonsterMoveController.h"
-#include "CPlayerTestScript.h"
-#include "CMonsterMoveTest.h"
+#include "CBladeKnightScript.h"
+#include "CDetectAreaScript.h"
+#include "CBladeKnightSwordScript.h"
+#include "CNoddyScript.h"
+#include "CHotHeadScript.h"
+#include "CKabuScript.h"
+#include "CSirKibbleScript.h"
+#include "CGhostGordoScript.h"
+#include "CGordoLongScript.h"
+#include "CNormalEnemyScript.h"
+#include "CTackleEnemyScript.h"
+#include "CCutterProjectileScript.h"
+#include "CFireProjectileScript.h"
+#include "CAttackAreaScript.h"
+#include "CDeformObjectScript.h"
 #include "CKirbyHatBlade.h"
 #include "CKirbyCutterBullet.h"
 
@@ -50,7 +59,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonManagerScript");
 	_vec.push_back(L"CKirbyVacuumCollider");
-	_vec.push_back(L"CMonsterUnitScript");
 	_vec.push_back(L"CKirbyCopyAbilityScript");
 	_vec.push_back(L"CKirbyCopyObjScript");
 	_vec.push_back(L"CKirbyBodyCollider");
@@ -63,11 +71,21 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIHPScript");
 	_vec.push_back(L"CUIUnitManagerScript");
 	_vec.push_back(L"CEngineTestScript");
-	_vec.push_back(L"CNormalEnemyFSM");
-	_vec.push_back(L"CMonsterMgr");
-	_vec.push_back(L"CMonsterMoveController");
-	_vec.push_back(L"CPlayerTestScript");
-	_vec.push_back(L"CMonsterMoveTest");
+	_vec.push_back(L"CBladeKnightScript");
+	_vec.push_back(L"CDetectAreaScript");
+	_vec.push_back(L"CBladeKnightSwordScript");
+	_vec.push_back(L"CNoddyScript");
+	_vec.push_back(L"CHotHeadScript");
+	_vec.push_back(L"CKabuScript");
+	_vec.push_back(L"CSirKibbleScript");
+	_vec.push_back(L"CGhostGordoScript");
+	_vec.push_back(L"CGordoLongScript");
+	_vec.push_back(L"CNormalEnemyScript");
+	_vec.push_back(L"CTackleEnemyScript");
+	_vec.push_back(L"CCutterProjectileScript");
+	_vec.push_back(L"CFireProjectileScript");
+	_vec.push_back(L"CAttackAreaScript");
+	_vec.push_back(L"CDeformObjectScript");
 	_vec.push_back(L"CKirbyHatBlade");
 	_vec.push_back(L"CKirbyCutterBullet");
 }
@@ -100,8 +118,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CButtonManagerScript;
 	if (L"CKirbyVacuumCollider" == _strScriptName)
 		return new CKirbyVacuumCollider;
-	if (L"CMonsterUnitScript" == _strScriptName)
-		return new CMonsterUnitScript;
 	if (L"CKirbyCopyAbilityScript" == _strScriptName)
 		return new CKirbyCopyAbilityScript;
 	if (L"CKirbyCopyObjScript" == _strScriptName)
@@ -126,16 +142,36 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIUnitManagerScript;
 	if (L"CEngineTestScript" == _strScriptName)
 		return new CEngineTestScript;
-	if (L"CNormalEnemyFSM" == _strScriptName)
-		return new CNormalEnemyFSM;
-	if (L"CMonsterMgr" == _strScriptName)
-		return new CMonsterMgr;
-	if (L"CMonsterMoveController" == _strScriptName)
-		return new CMonsterMoveController;
-	if (L"CPlayerTestScript" == _strScriptName)
-		return new CPlayerTestScript;
-	if (L"CMonsterMoveTest" == _strScriptName)
-		return new CMonsterMoveTest;
+	if (L"CBladeKnightScript" == _strScriptName)
+		return new CBladeKnightScript;
+	if (L"CDetectAreaScript" == _strScriptName)
+		return new CDetectAreaScript;
+	if (L"CBladeKnightSwordScript" == _strScriptName)
+		return new CBladeKnightSwordScript;
+	if (L"CNoddyScript" == _strScriptName)
+		return new CNoddyScript;
+	if (L"CHotHeadScript" == _strScriptName)
+		return new CHotHeadScript;
+	if (L"CKabuScript" == _strScriptName)
+		return new CKabuScript;
+	if (L"CSirKibbleScript" == _strScriptName)
+		return new CSirKibbleScript;
+	if (L"CGhostGordoScript" == _strScriptName)
+		return new CGhostGordoScript;
+	if (L"CGordoLongScript" == _strScriptName)
+		return new CGordoLongScript;
+	if (L"CNormalEnemyScript" == _strScriptName)
+		return new CNormalEnemyScript;
+	if (L"CTackleEnemyScript" == _strScriptName)
+		return new CTackleEnemyScript;
+	if (L"CCutterProjectileScript" == _strScriptName)
+		return new CCutterProjectileScript;
+	if (L"CFireProjectileScript" == _strScriptName)
+		return new CFireProjectileScript;
+	if (L"CAttackAreaScript" == _strScriptName)
+		return new CAttackAreaScript;
+	if (L"CDeformObjectScript" == _strScriptName)
+		return new CDeformObjectScript;
 	if (L"CKirbyHatBlade" == _strScriptName)
 		return new CKirbyHatBlade;
 	if (L"CKirbyCutterBullet" == _strScriptName)
@@ -173,8 +209,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CButtonManagerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
 		return new CKirbyVacuumCollider;
-	case (UINT)SCRIPT_TYPE::MONSTERUNITSCRIPT:
-		return new CMonsterUnitScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
 		return new CKirbyCopyAbilityScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
@@ -199,16 +233,36 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIUnitManagerScript;
 	case (UINT)SCRIPT_TYPE::ENGINETESTSCRIPT:
 		return new CEngineTestScript;
-	case (UINT)SCRIPT_TYPE::NORMALENEMYFSM:
-		return new CNormalEnemyFSM;
-	case (UINT)SCRIPT_TYPE::MONSTERMGR:
-		return new CMonsterMgr;
-	case (UINT)SCRIPT_TYPE::MONSTERMOVECONTROLLER:
-		return new CMonsterMoveController;
-	case (UINT)SCRIPT_TYPE::PLAYERTESTSCRIPT:
-		return new CPlayerTestScript;
-	case (UINT)SCRIPT_TYPE::MONSTERMOVETEST:
-		return new CMonsterMoveTest;
+	case (UINT)SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
+		return new CBladeKnightScript;
+	case (UINT)SCRIPT_TYPE::DETECTAREASCRIPT:
+		return new CDetectAreaScript;
+	case (UINT)SCRIPT_TYPE::BLADEKNIGHTSWORDSCRIPT:
+		return new CBladeKnightSwordScript;
+	case (UINT)SCRIPT_TYPE::NODDYSCRIPT:
+		return new CNoddyScript;
+	case (UINT)SCRIPT_TYPE::HOTHEADSCRIPT:
+		return new CHotHeadScript;
+	case (UINT)SCRIPT_TYPE::KABUSCRIPT:
+		return new CKabuScript;
+	case (UINT)SCRIPT_TYPE::SIRKIBBLESCRIPT:
+		return new CSirKibbleScript;
+	case (UINT)SCRIPT_TYPE::GHOSTGORDOSCRIPT:
+		return new CGhostGordoScript;
+	case (UINT)SCRIPT_TYPE::GORDOLONGSCRIPT:
+		return new CGordoLongScript;
+	case (UINT)SCRIPT_TYPE::NORMALENEMYSCRIPT:
+		return new CNormalEnemyScript;
+	case (UINT)SCRIPT_TYPE::TACKLEENEMYSCRIPT:
+		return new CTackleEnemyScript;
+	case (UINT)SCRIPT_TYPE::CUTTERPROJECTILESCRIPT:
+		return new CCutterProjectileScript;
+	case (UINT)SCRIPT_TYPE::FIREPROJECTILESCRIPT:
+		return new CFireProjectileScript;
+	case (UINT)SCRIPT_TYPE::ATTACKAREASCRIPT:
+		return new CAttackAreaScript;
+	case (UINT)SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
+		return new CDeformObjectScript;
 	case (UINT)SCRIPT_TYPE::KIRBYHATBLADE:
 		return new CKirbyHatBlade;
 	case (UINT)SCRIPT_TYPE::KIRBYCUTTERBULLET:
@@ -247,8 +301,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CButtonManagerScript";
 	case SCRIPT_TYPE::KIRBYVACUUMCOLLIDER:
 		return L"CKirbyVacuumCollider";
-	case SCRIPT_TYPE::MONSTERUNITSCRIPT:
-		return L"CMonsterUnitScript";
 	case SCRIPT_TYPE::KIRBYCOPYABILITYSCRIPT:
 		return L"CKirbyCopyAbilityScript";
 	case SCRIPT_TYPE::KIRBYCOPYOBJSCRIPT:
@@ -273,16 +325,36 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIUnitManagerScript";
 	case SCRIPT_TYPE::ENGINETESTSCRIPT:
 		return L"CEngineTestScript";
-	case SCRIPT_TYPE::NORMALENEMYFSM:
-		return L"CNormalEnemyFSM";
-	case SCRIPT_TYPE::MONSTERMGR:
-		return L"CMonsterMgr";
-	case SCRIPT_TYPE::MONSTERMOVECONTROLLER:
-		return L"CMonsterMoveController";
-	case SCRIPT_TYPE::PLAYERTESTSCRIPT:
-		return L"CPlayerTestScript";
-	case SCRIPT_TYPE::MONSTERMOVETEST:
-		return L"CMonsterMoveTest";
+	case SCRIPT_TYPE::BLADEKNIGHTSCRIPT:
+		return L"CBladeKnightScript";
+	case SCRIPT_TYPE::DETECTAREASCRIPT:
+		return L"CDetectAreaScript";
+	case SCRIPT_TYPE::BLADEKNIGHTSWORDSCRIPT:
+		return L"CBladeKnightSwordScript";
+	case SCRIPT_TYPE::NODDYSCRIPT:
+		return L"CNoddyScript";
+	case SCRIPT_TYPE::HOTHEADSCRIPT:
+		return L"CHotHeadScript";
+	case SCRIPT_TYPE::KABUSCRIPT:
+		return L"CKabuScript";
+	case SCRIPT_TYPE::SIRKIBBLESCRIPT:
+		return L"CSirKibbleScript";
+	case SCRIPT_TYPE::GHOSTGORDOSCRIPT:
+		return L"CGhostGordoScript";
+	case SCRIPT_TYPE::GORDOLONGSCRIPT:
+		return L"CGordoLongScript";
+	case SCRIPT_TYPE::NORMALENEMYSCRIPT:
+		return L"CNormalEnemyScript";
+	case SCRIPT_TYPE::TACKLEENEMYSCRIPT:
+		return L"CTackleEnemyScript";
+	case SCRIPT_TYPE::CUTTERPROJECTILESCRIPT:
+		return L"CCutterProjectileScript";
+	case SCRIPT_TYPE::FIREPROJECTILESCRIPT:
+		return L"CFireProjectileScript";
+	case SCRIPT_TYPE::ATTACKAREASCRIPT:
+		return L"CAttackAreaScript";
+	case SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
+		return L"CDeformObjectScript";
 	case SCRIPT_TYPE::KIRBYHATBLADE:
 		return L"CKirbyHatBlade";
 	case SCRIPT_TYPE::KIRBYCUTTERBULLET:

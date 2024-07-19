@@ -18,7 +18,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_MoveVelocity{}
     , m_Speed(10.f)
     , m_MaxSpeed(15.f)
-    , m_RotSpeed(50.f)
+    , m_RotSpeed(10.f)
     , m_JumpPower(10.f)
     , m_Gravity(-20.f)
     , m_bMoveLock(false)
@@ -33,7 +33,6 @@ CKirbyMoveController::CKirbyMoveController()
     , m_Friction(0.f)
     , m_HoveringMinSpeed(-5.f)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
@@ -63,7 +62,6 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(_Origin.m_Friction)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
@@ -82,9 +80,9 @@ void CKirbyMoveController::begin()
 
     m_CurDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_TowardDir = m_CurDir;
-    m_Speed = PLAYERUNIT->GetCurInfo().Speed;
-    m_JumpPower = PLAYERUNIT->GetCurInfo().JumpPower;
-    m_RotSpeed = 50.f;
+    m_Speed = PLAYERUNIT->GetInitInfo().Speed;
+    m_RotSpeed = PLAYERUNIT->GetInitInfo().RotationSpeed;
+    m_JumpPower = PLAYERUNIT->GetInitInfo().JumpPower;
     m_Gravity = -20.f;
 }
 
@@ -219,8 +217,6 @@ void CKirbyMoveController::SetDir()
         Transform()->SetWorldRotation(SlerpQuat);
     }
 
-
-
     // 방향 설정
     // Transform()->SetDirection(m_TowardDir);
 }
@@ -235,16 +231,16 @@ void CKirbyMoveController::Move()
     Vec3 rayStartPos = Transform()->GetWorldPos() + CharacterController()->GetCenter();
     rayStartPos.y -= (CharacterController()->GetHeight() / 2.f) * CPhysicsMgr::GetInst()->GetPPM();
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(rayStartPos, Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), Hit.Distance, Vec3(1.f, 1.f, 0.f), true);
 
-    //if (Hit.pCollisionObj && Hit.Distance <= 50.f)
+    // if (Hit.pCollisionObj && Hit.Distance <= 50.f)
     //{
-    //    bGrounded = true;
-    //}
-    //else
+    //     bGrounded = true;
+    // }
+    // else
     //{
-    //    bGrounded = false;
-    //}
+    //     bGrounded = false;
+    // }
 
     if (PLAYERFSM->IsHovering())
     {
@@ -273,7 +269,6 @@ void CKirbyMoveController::Move()
     {
         m_CurDir.y = 0.f;
         m_CurDir.Normalize();
-
 
         m_MoveVelocity.x = m_CurDir.x * m_Speed;
         m_MoveVelocity.z = m_CurDir.z * m_Speed;
@@ -348,7 +343,6 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.z = HorizontalVel.z;
     }
 
-
     // =========================
     // 움직임 적용
     // =========================
@@ -361,7 +355,7 @@ void CKirbyMoveController::SurfaceAlignment()
     float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 2.f, {L"Ground"});
-    
+
     // Rotate Character
     if (bGrounded)
     {
@@ -398,6 +392,17 @@ void CKirbyMoveController::SurfaceAlignment()
         Vec3 Movement = {0.f, -50.f, 0.f};
 
         CharacterController()->Move(Movement * DT);
+    }
+}
+
+void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
+{
+    // Dynamic Layer인 경우: 상대 오브젝트에게 힘 가함
+    if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
+    {
+        Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Force = Force.Normalize();
+        Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
     }
 }
 

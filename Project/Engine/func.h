@@ -11,6 +11,7 @@ class CAsset;
 namespace GamePlayStatic
 {
     void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
+    void DetachObject(CGameObject* _Target);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, tBoneSocket* _BoneSocket);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, const std::wstring& _BoneSocketName);
@@ -134,7 +135,7 @@ Vec2 LoadMeta(const wstring& _strMetaRelativePath);
 // =====================================
 // ImGui Utility
 // =====================================
-void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f, float resetValue = 0.0f,
+bool ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f, float resetValue = 0.0f,
                            float columnWidth = 100.0f);
 string ImGui_LabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::vector<string>& items);

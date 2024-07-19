@@ -38,7 +38,9 @@ private:
     static CKirbyUnitScript*        m_PlayerUnit;
     static CKirbyFSM*               m_PlayerFSM;
     static CKirbyMoveController*    m_PlayerController;
+    static Ptr<CMeshData>           m_PlayerMeshData;
     static Ptr<CMaterial>           m_PlayerBodyMtrl;
+    static Ptr<CMaterial>           m_PlayerBodyDemoMtrl;
     static KirbyMeshIdx             m_PlayerMeshIdx;
 
 public:
@@ -53,12 +55,15 @@ public:
     static void SetPlayerFace(FaceType _Type);
     static void ClearBodyMtrl();
     static void ClearMouthMtrl();
+    static void ResetBodyColliderSetting();
 
     static CGameObject* GetPlayer() { return m_PlayerObj; }
     static CKirbyUnitScript* GetPlayerScript() { return m_PlayerUnit; }
     static CKirbyFSM* GetPlayerFSM() { return m_PlayerFSM; }
     static CKirbyMoveController* GetPlayerCtrl() { return m_PlayerController; }
+    static Ptr<CMeshData> GetPlayerMeshData() { return m_PlayerMeshData; }
     static Ptr<CMaterial> GetPlayerBodyMtrl() { return m_PlayerBodyMtrl; }
+    static Ptr<CMaterial> GetPlayerBodyDemoMtrl() { return m_PlayerBodyDemoMtrl; }
     static KirbyMeshIdx GetPlayerMeshIdx() { return m_PlayerMeshIdx; }
 
 public:

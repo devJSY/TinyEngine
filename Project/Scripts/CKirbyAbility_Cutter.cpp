@@ -26,7 +26,7 @@ void CKirbyAbility_Cutter::Attack()
 void CKirbyAbility_Cutter::AttackEnter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"MetalCutterThrow"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("MetalCutterThrow"), false, false, 1.5f);
 
     // 모자쪽에 Blade 사라지게하기
     CKirbyHatBlade* HatBladeScript = dynamic_cast<CKirbyHatBlade*>(PLAYERFSM->GetCurHatBlade()->GetScripts()[0]);
@@ -85,7 +85,7 @@ void CKirbyAbility_Cutter::AttackCombo1()
 
 void CKirbyAbility_Cutter::AttackCombo1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"CutterSlashChain1"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("CutterSlashChain1"), false, false, 2.f);
 
     m_IsNextCombo = false;
 
@@ -143,7 +143,7 @@ void CKirbyAbility_Cutter::AttackCombo2()
 
 void CKirbyAbility_Cutter::AttackCombo2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"CutterSlashChain2"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("CutterSlashChain2"), false, false, 2.f);
     m_IsNextCombo = false;
 
     // 방향, 점프, 이동 Lock
@@ -212,7 +212,7 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Weapon");
 
     // 애니메이션 재생
-    pInstObj->Animator()->Play(KIRBYANIM(L"Hold"), true, false, 1.f, 0);
+    pInstObj->Animator()->Play(ANIMPREFIX("Hold"), true, false, 1.f, 0);
 
     // FSM에 무기 등록
     PLAYERFSM->SetCurWeapon(pInstObj);
@@ -222,7 +222,7 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
     pInstObj->MeshRender()->SetMaterial(nullptr, 0);
 
     // 애니메이션 재생
-    pInstObj->Animator()->Play(KIRBYANIM(L"BladeWait"));
+    pInstObj->Animator()->Play(ANIMPREFIX("BladeWait"));
 }
 
 void CKirbyAbility_Cutter::ChangeAbilityExit()

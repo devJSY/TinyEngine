@@ -19,7 +19,7 @@ void CKirbyFinalCutterDrop::tick()
 
 void CKirbyFinalCutterDrop::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"FinalCutterDrop"), true, false, 1.5f, 0);
+    PLAYER->Animator()->Play(ANIMPREFIX("FinalCutterDrop"), true, false, 1.5f, 0);
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();

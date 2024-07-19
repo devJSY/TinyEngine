@@ -22,7 +22,7 @@ void CKirbyFinalCutterEnd::tick()
 
 void CKirbyFinalCutterEnd::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"FinalCutterEnd"), false, false, 1.5f, 0);
+    PLAYER->Animator()->Play(ANIMPREFIX("FinalCutterEnd"), false, false, 1.5f, 0);
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();

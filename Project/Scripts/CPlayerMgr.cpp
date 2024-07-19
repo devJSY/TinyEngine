@@ -10,7 +10,9 @@ CGameObject* CPlayerMgr::m_PlayerObj = nullptr;
 CKirbyUnitScript* CPlayerMgr::m_PlayerUnit = nullptr;
 CKirbyFSM* CPlayerMgr::m_PlayerFSM = nullptr;
 CKirbyMoveController* CPlayerMgr::m_PlayerController = nullptr;
+Ptr<CMeshData> CPlayerMgr::m_PlayerMeshData = nullptr;
 Ptr<CMaterial> CPlayerMgr::m_PlayerBodyMtrl = nullptr;
+Ptr<CMaterial> CPlayerMgr::m_PlayerBodyDemoMtrl = nullptr;
 KirbyMeshIdx CPlayerMgr::m_PlayerMeshIdx = KirbyMeshIdx();
 
 CPlayerMgr::CPlayerMgr()
@@ -24,10 +26,25 @@ CPlayerMgr::~CPlayerMgr()
 
 void CPlayerMgr::begin()
 {
+    m_PlayerMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\Kirby.mdat");
     m_PlayerBodyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_BodyC.mtrl");
+    m_PlayerBodyDemoMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_DeformBodyC.mtrl");
 
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
     SetPlayer(pPlayer);
+
+    if (m_PlayerObj)
+    {
+        CGameObject* pLight = m_PlayerObj->GetChildObject(L"DeformLight PointLight");
+        if (!pLight)
+        {
+            MessageBox(nullptr, L"Player에 DeformLight PointLight 자식이 존재하지 않습니다", L"[경고] 플레이어 세팅 오류", MB_OK);
+        }
+        else
+        {
+            pLight->SetActive(false);
+        }
+    }
 }
 
 void CPlayerMgr::tick()
@@ -128,6 +145,19 @@ void CPlayerMgr::ClearMouthMtrl()
     m_PlayerObj->GetRenderComponent()->SetMaterial(nullptr, m_PlayerMeshIdx.MouthSmileClose);
     m_PlayerObj->GetRenderComponent()->SetMaterial(nullptr, m_PlayerMeshIdx.MouthSmileOpen);
     m_PlayerObj->GetRenderComponent()->SetMaterial(nullptr, m_PlayerMeshIdx.MouthAngryClose);
+}
+
+void CPlayerMgr::ResetBodyColliderSetting()
+{
+    m_PlayerObj->CharacterController()->SetCenter(Vec3(0.f, 50.f, 0.f));
+    m_PlayerObj->CharacterController()->SetRadius(0.5f);
+    m_PlayerObj->CharacterController()->SetHeight(1.6f);
+    m_PlayerObj->CharacterController()->SetMinMoveDistance(0.f);
+
+    static CCapsuleCollider* BodyCol = m_PlayerObj->GetChildObject(L"Body Collider")->CapsuleCollider();
+    BodyCol->SetCenter(Vec3(0.f, 50.f, 0.f));
+    BodyCol->SetRadius(0.5f);
+    BodyCol->SetHeight(1.6f);
 }
 
 void CPlayerMgr::SaveToLevelFile(FILE* _File)
