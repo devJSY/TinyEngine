@@ -29,16 +29,14 @@ void CEngineTestScript::tick()
 {
     if (KEY_TAP(KEY::K))
     {
-        if (BoxCollider())
-        {
-            BoxCollider()->SetEnabled(!BoxCollider()->IsEnabled());
-        }
+        DetachObject();
     }
 
-    if (KEY_TAP(KEY::L))
-    {
-        GetOwner()->SetActive(!GetOwner()->IsActive());
-    }
+    // if (KEY_TAP(KEY::L))
+    //{
+    //     GetOwner()->SetActive(!GetOwner()->IsActive());
+    // }
+
     // CharacterControllerTest();
     // AnimatorTest();
     //  QuaternionExample();
@@ -271,6 +269,11 @@ void CEngineTestScript::QuaternionExample()
             Transform()->SetWorldRotation(Quaternion);
         }
     }
+}
+
+void CEngineTestScript::DetachObject()
+{
+    GamePlayStatic::DetachObject(CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"TestObj"));
 }
 
 void CEngineTestScript::OnCollisionEnter(CCollider* _OtherCollider)

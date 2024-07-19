@@ -391,7 +391,14 @@ void COutliner::DrawNode(CGameObject* obj)
     LEVEL_STATE LevelState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
     if (LEVEL_STATE::STOP == LevelState)
     {
-        ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_Text));
+        if (obj->IsActive())
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyleColorVec4(ImGuiCol_Text));
+        }
+        else
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.403f, 0.403f, 0.403f, 1.f));
+        }
     }
     else
     {
@@ -648,6 +655,12 @@ void COutliner::DrawDetails(CGameObject* obj)
                 GamePlayStatic::LayerChange(obj, pCurLevel->GetLayer(ToWstring(name))->GetLayerIdx());
             }
         }
+    }
+
+    bool bActive = obj->IsActive();
+    if (ImGui::Checkbox(ImGui_LabelPrefix("Active").c_str(), &bActive))
+    {
+        obj->SetActive(bActive);
     }
 
     DrawTransform(obj);

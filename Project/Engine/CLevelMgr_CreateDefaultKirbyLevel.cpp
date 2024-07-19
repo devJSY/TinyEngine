@@ -78,7 +78,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pCamObj->Camera()->LayerMaskAll();
     pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
     pCamObj->Camera()->SetHDRI(true);
-    pCamObj->Camera()->SetFOV(60.f);
+    pCamObj->Camera()->SetFOV(XMConvertToRadians(60.f));
 
     NewLevel->AddObject(pCamObj, 0);
 
@@ -115,6 +115,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     Ptr<CMaterial> SkyBoxMtrl = pSkyBoxObj->GetRenderComponent()->GetMaterial(0);
     SkyBoxMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"KirbySkySphereShader"));
     SkyBoxMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Skybox\\Day\\SkySphere_DayTest.1151417570.png"));
+    SkyBoxMtrl->Save(SkyBoxMtrl->GetKey());
 
     NewLevel->AddObject(pSkyBoxObj, 0);
 

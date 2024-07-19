@@ -672,7 +672,7 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 void CCamera::render_OutLine()
 {
     CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-    if (nullptr == pSelectedObj)
+    if (nullptr == pSelectedObj || !pSelectedObj->IsActive())
         return;
 
     CRenderComponent* pRenderCom = pSelectedObj->GetRenderComponent();

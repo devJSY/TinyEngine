@@ -11,6 +11,7 @@ class CAsset;
 namespace GamePlayStatic
 {
     void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
+    void DetachObject(CGameObject* _Target);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, tBoneSocket* _BoneSocket);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, const std::wstring& _BoneSocketName);

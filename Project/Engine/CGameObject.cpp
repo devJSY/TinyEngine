@@ -80,6 +80,10 @@ CGameObject::~CGameObject()
 
 void CGameObject::begin()
 {
+    // 비활성화 상태이거나 레이어에 소속되어있는 오브젝트가 아닌경우
+    if (!m_bActive || -1 == m_iLayerIdx)
+        return;
+
     for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
     {
         if (nullptr != m_arrCom[i])
@@ -101,9 +105,13 @@ void CGameObject::begin()
 
 void CGameObject::tick()
 {
+    // 비활성화 상태이거나 레이어에 소속되어있는 오브젝트가 아닌경우
+    if (!m_bActive || -1 == m_iLayerIdx)
+        return;
+
     for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
     {
-        if (nullptr == m_arrCom[i] || !m_bActive)
+        if (nullptr == m_arrCom[i])
             continue;
 
         m_arrCom[i]->tick();
@@ -122,9 +130,13 @@ void CGameObject::tick()
 
 void CGameObject::finaltick()
 {
+    // 비활성화 상태이거나 레이어에 소속되어있는 오브젝트가 아닌경우
+    if (!m_bActive || -1 == m_iLayerIdx)
+        return;
+
     for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
     {
-        if (nullptr == m_arrCom[i] || !m_bActive)
+        if (nullptr == m_arrCom[i])
             continue;
 
         m_arrCom[i]->finaltick();

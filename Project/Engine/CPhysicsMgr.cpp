@@ -362,7 +362,7 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
 
 void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
-    if (nullptr == m_Scene)
+    if (nullptr == m_Scene || nullptr == _GameObject)
         return;
 
     // 활성화 여부 체크
@@ -721,7 +721,7 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
 
 void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
 {
-    if (nullptr == m_Scene)
+    if (nullptr == m_Scene || nullptr == _GameObject)
         return;
 
     CCharacterController* pCharacterController = _GameObject->CharacterController();

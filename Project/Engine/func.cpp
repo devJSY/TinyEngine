@@ -27,6 +27,14 @@ void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::DetachObject(CGameObject* _Target)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::DETACH_OBJECT;
+    task.Param_1 = (DWORD_PTR)_Target;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject)
 {
     tTask task = {};
