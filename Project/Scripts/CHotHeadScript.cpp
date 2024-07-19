@@ -217,6 +217,11 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
     break;
     case HOTHEAD_STATE::Eaten: {
         Animator()->Play(ANIMPREFIX(L"Damage"));
+
+        m_vDamageDir.Normalize();
+        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
+        Transform()->SetWorldRotation(vQuat);
     }
     break;
     case HOTHEAD_STATE::Death: {
@@ -429,14 +434,7 @@ void CHotHeadScript::Damage()
 
 void CHotHeadScript::Eaten()
 {
-    if (!m_bFlag)
-    {
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
-        m_bFlag = true;
-    }
+    Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f, ForceMode::Force);
 }
 
 void CHotHeadScript::Death()
@@ -494,8 +492,6 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
     {
         flag = true;
         // TODO : 플레이어 공격 데미지 가지고 오기
-
-        GetDamage(hit);
         ChangeState(HOTHEAD_STATE::Damage);
         m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
     }
@@ -515,8 +511,7 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
 
-        if (L"Body Collider" == pObj->GetName())
-            pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
+        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
 
         flag = true;
     }

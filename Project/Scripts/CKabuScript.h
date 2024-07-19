@@ -47,6 +47,7 @@ private:
 private:
     void Patrol();
     void Damage();
+    void Eaten();
     void Death();
 
     Vec3 CaculateDir(Vec3 _vRadian);

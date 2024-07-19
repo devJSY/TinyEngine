@@ -422,7 +422,7 @@ void CSirKibbleScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
 
-        pObj->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
+        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
     }
 
     // TODO : 돌아온 부메랑이 나에게 맞았다면 ChangeState(CutterCatch)

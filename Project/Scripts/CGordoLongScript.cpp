@@ -34,10 +34,7 @@ void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
 
-    if (LAYER_PLAYER == pObj->GetLayerIdx())
-    {
-        pObj->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
-    }
+    (LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName()) ? pObj->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
 }
 
 void CGordoLongScript::OnTriggerExit(CCollider* _OtherCollider)

@@ -4,12 +4,14 @@
 CGhostGordoScript::CGhostGordoScript()
     : CMonsterUnitScript(GHOSTGORDOSCRIPT)
     , m_eState(GHOSTGORDO_STATE::CloseEyeIdle)
+    , m_fAccTime(0.f)
 {
 }
 
 CGhostGordoScript::CGhostGordoScript(const CGhostGordoScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_eState(GHOSTGORDO_STATE::CloseEyeIdle)
+    , m_fAccTime(0.f)
 {
 }
 
@@ -57,15 +59,6 @@ void CGhostGordoScript::tick()
     }
 }
 
-void CGhostGordoScript::SaveToLevelFile(FILE* _File)
-{
-    CMonsterUnitScript::SaveToLevelFile(_File);
-}
-
-void CGhostGordoScript::LoadFromLevelFile(FILE* _File)
-{
-    CMonsterUnitScript::LoadFromLevelFile(_File);
-}
 
 void CGhostGordoScript::ChangeState(GHOSTGORDO_STATE _state)
 {
@@ -127,35 +120,25 @@ void CGhostGordoScript::ExitState(GHOSTGORDO_STATE _state)
     }
 }
 
-void CGhostGordoScript::OnTriggerEnter(CCollider* _OtherCollider)
-{
-    CGameObject* pObj = _OtherCollider->GetOwner();
-
-    LAYER_PLAYER == pObj->GetLayerIdx() ? ChangeState(GHOSTGORDO_STATE::OpenEyeIdle) : void();
-}
-
-void CGhostGordoScript::OnTriggerExit(CCollider* _OtherCollider)
-{
-}
-
 void CGhostGordoScript::CloseEyeIdle()
 {
     // TODO : ºû °¨Áö ±îÁö
-    if (nullptr != GetTarget())
-    {
-        ChangeState(GHOSTGORDO_STATE::OpenEye);
-    }
+    nullptr != GetTarget() ? ChangeState(GHOSTGORDO_STATE::OpenEye) : void();
 }
 
 void CGhostGordoScript::OpenEyeIdle()
 {
-    Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX(L"EyeOpenWait")) : void();
-    
-    // TODO : ºû °¨Áö ±îÁö
-    if (nullptr != GetTarget())
+    m_fAccTime += DT;
+    if (m_fAccTime >= 2.f)
     {
-        ChangeState(GHOSTGORDO_STATE::Find);
+        // TODO : ºû °¨Áö ±îÁö
+        if (nullptr != GetTarget())
+        {
+            ChangeState(GHOSTGORDO_STATE::Find);
+        }    
     }
+
+    Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX(L"EyeOpenWait")) : void();
 }
 
 void CGhostGordoScript::OpenEye()
@@ -177,4 +160,29 @@ void CGhostGordoScript::Track()
 void CGhostGordoScript::TrackAfter()
 {
     Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::OpenEyeIdle) : void();
+}
+
+void CGhostGordoScript::SaveToLevelFile(FILE* _File)
+{
+    CMonsterUnitScript::SaveToLevelFile(_File);
+}
+
+void CGhostGordoScript::LoadFromLevelFile(FILE* _File)
+{
+    CMonsterUnitScript::LoadFromLevelFile(_File);
+}
+
+void CGhostGordoScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    if (LAYER_PLAYER == pObj->GetLayerIdx() && L"BodyCollider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
+        ChangeState(GHOSTGORDO_STATE::TrackAfter);
+    }
+}
+
+void CGhostGordoScript::OnTriggerExit(CCollider* _OtherCollider)
+{
 }

@@ -16,6 +16,7 @@ class CGhostGordoScript : public CMonsterUnitScript
 {
 private:
     GHOSTGORDO_STATE m_eState;
+    float m_fAccTime;
 
 public:
     virtual void begin() override;

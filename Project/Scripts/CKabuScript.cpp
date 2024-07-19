@@ -60,6 +60,10 @@ void CKabuScript::tick()
         Death();
     }
     break;
+    case KABU_STATE::Eaten: {
+        Eaten();
+    }
+    break;
     case KABU_STATE::End:
         break;
     default:
@@ -88,6 +92,11 @@ void CKabuScript::EnterState(KABU_STATE _state)
     break;
     case KABU_STATE::Eaten: {
         Animator()->Play(ANIMPREFIX(L"Damage"));
+
+        m_vDamageDir.Normalize();
+        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
+        Transform()->SetWorldRotation(vQuat);
     }
     break;
     case KABU_STATE::Death:
@@ -144,6 +153,11 @@ void CKabuScript::Damage()
     }
 }
 
+void CKabuScript::Eaten()
+{
+    Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f, ForceMode::Force);
+}
+
 void CKabuScript::Death()
 {
     if (Animator()->IsFinish())
@@ -158,8 +172,7 @@ void CKabuScript::PatrolMove()
     float fSpeed = GetCurInfo().Speed;
 
     // 목적지까지 Patrol이 끝났는데 반복 정찰이라면 다시 원래 자리로 돌아간다.
-    if ((m_vDestPos.x - 5.f <= vPos.x && m_vDestPos.x + 5.f >= vPos.x) 
-        && (m_vDestPos.z - 5.f <= vPos.z && m_vDestPos.z + 5.f >= vPos.z))
+    if ((m_vDestPos.x - 5.f <= vPos.x && m_vDestPos.x + 5.f >= vPos.x) && (m_vDestPos.z - 5.f <= vPos.z && m_vDestPos.z + 5.f >= vPos.z))
     {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Vec3 _vTemp = m_vDestPos;
@@ -210,9 +223,6 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (LAYER_PLAYERATK == pObj->GetLayerIdx())
     {
         flag = true;
-        // TODO : 플레이어 공격 데미지 가지고 오기
-
-        GetDamage(hit);
         ChangeState(KABU_STATE::Damage);
         m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
     }
@@ -231,6 +241,8 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
             m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
             return;
         }
+
+        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
     }
 
     // 둘 중 하나라도 피격 되었다면 체력 확인

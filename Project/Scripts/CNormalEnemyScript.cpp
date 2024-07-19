@@ -465,6 +465,11 @@ void CNormalEnemyScript::PatrolMove()
     Rigidbody()->SetVelocity(vDir * fSpeed);
 }
 
+Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
+{
+    return (m_pTargetObject->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
+}
+
 void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     if (NORMALENEMY_STATE::Eaten == m_eState)
@@ -472,9 +477,6 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     CGameObject* pObj = _OtherCollider->GetOwner();
     bool flag = false;
-
-    UnitHit hit;
-    ZeroMemory(&hit, sizeof(hit));
     /**********************
     | 1. Player ATK Hit
     ***********************/
@@ -482,10 +484,6 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
     // 충돌한 오브젝트가 플레이어 공격인지 확인
     if (LAYER_PLAYERATK == pObj->GetLayerIdx())
     {
-        flag = true;
-        // TODO : 플레이어 공격 데미지 가지고 오기
-
-        GetDamage(hit);
         ChangeState(NORMALENEMY_STATE::Damage);
         m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
     }
@@ -505,28 +503,15 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
 
-        flag = true;
-
-        // 자기 자신의 데미지
-        GetDamage(GetHitInfo());
-
         if (NORMALENEMY_STATE::AttackFailed == m_eState || NORMALENEMY_STATE::Attack == m_eState)
         {
+            L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
             ChangeState(NORMALENEMY_STATE::AttackSuccessed);
         }
         else
         {
             ChangeState(NORMALENEMY_STATE::Damage);
             m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-        }
-    }
-
-    // 둘 중 하나라도 피격 되었다면 체력 확인
-    if (flag)
-    {
-        if (GetCurInfo().HP - hit.Damage <= 0.f)
-        {
-            ChangeState(NORMALENEMY_STATE::Dead);
         }
     }
 }
@@ -542,11 +527,6 @@ void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
             ChangeState(NORMALENEMY_STATE::Idle);
         }
     }
-}
-
-Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
-{
-    return (m_pTargetObject->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
 }
 
 void CNormalEnemyScript::SaveToLevelFile(FILE* _File)

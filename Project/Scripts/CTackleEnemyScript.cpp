@@ -80,6 +80,10 @@ void CTackleEnemyScript::tick()
         Damage();
     }
     break;
+    case TACKLEENEMY_STATE::Eaten: {
+        Eaten();
+    }
+    break;
     case TACKLEENEMY_STATE::Death: {
         Death();
     }
@@ -109,7 +113,7 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
     }
     break;
     case TACKLEENEMY_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"),false);
+        Animator()->Play(ANIMPREFIX(L"Find"), false);
     }
     break;
     case TACKLEENEMY_STATE::AttackPrev: {
@@ -128,8 +132,11 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
         Animator()->Play(ANIMPREFIX(L"Damage"), false);
     }
     break;
-    case TACKLEENEMY_STATE::Eaten:
-    {
+    case TACKLEENEMY_STATE::Eaten: {
+        m_vDamageDir.Normalize();
+        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
+        Transform()->SetWorldRotation(vQuat);
         Animator()->Play(ANIMPREFIX(L"Damage"));
     }
     break;
@@ -165,8 +172,7 @@ void CTackleEnemyScript::ExitState(TACKLEENEMY_STATE _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
-    case TACKLEENEMY_STATE::Damage: 
-    {
+    case TACKLEENEMY_STATE::Damage: {
         m_bFlag = false;
     }
     break;
@@ -248,15 +254,7 @@ void CTackleEnemyScript::Damage()
 
 void CTackleEnemyScript::Eaten()
 {
-    if (!m_bFlag)
-    {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-
-        m_vDamageDir.Normalize();
-        m_vDamageDir.y = 1.5f;
-        Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
-        m_bFlag = true;
-    }
+    Rigidbody()->AddForce(m_vDamageDir * 40.f, ForceMode::Force);
 }
 
 void CTackleEnemyScript::Death()
@@ -429,6 +427,8 @@ void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
             m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
             return;
         }
+
+        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
     }
 
     // 둘 중 하나라도 피격 되었다면 체력 확인
