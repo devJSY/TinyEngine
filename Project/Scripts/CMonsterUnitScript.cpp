@@ -5,6 +5,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     : CUnitScript(_Type)
     , m_pTargetObj(nullptr)
     , m_RaycastDist(100.f)
+    , m_HitInfo{}
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
@@ -13,12 +14,16 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
 }
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(_Origin)
     , m_pTargetObj(_Origin.m_pTargetObj)
     , m_RaycastDist(_Origin.m_RaycastDist)
+    , m_HitInfo(_Origin.m_HitInfo)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
@@ -27,6 +32,9 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
 }
 
 CMonsterUnitScript::~CMonsterUnitScript()
@@ -84,14 +92,24 @@ bool CMonsterUnitScript::IsGround()
     return nullptr != Hit.pCollisionObj;
 }
 
+void CMonsterUnitScript::Rotating()
+{
+    float Angle = Transform()->GetLocalRotation().y;
+    Angle += DT * GetCurInfo().RotationSpeed;
+    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
+    Transform()->SetWorldRotation(Quaternion);
+}
+
 void CMonsterUnitScript::SaveToLevelFile(FILE* _File)
 {
     CUnitScript::SaveToLevelFile(_File);
     fwrite(&m_RaycastDist, 1, sizeof(float), _File);
+    fwrite(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
 }
 
 void CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
 {
     CUnitScript::LoadFromLevelFile(_File);
     fread(&m_RaycastDist, 1, sizeof(float), _File);
+    fread(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
 }

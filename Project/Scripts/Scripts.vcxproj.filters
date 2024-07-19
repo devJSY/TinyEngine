@@ -334,6 +334,39 @@
     <ClInclude Include="CNoddyScript.h">
       <Filter>Scripts\Character\Monster\MonsterScript\Noddy</Filter>
     </ClInclude>
+    <ClInclude Include="CHotHeadScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\HotHead</Filter>
+    </ClInclude>
+    <ClInclude Include="CKabuScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\Kabu</Filter>
+    </ClInclude>
+    <ClInclude Include="CSirKibbleScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\SirKibble</Filter>
+    </ClInclude>
+    <ClInclude Include="CGhostGordoScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\GhostGordo</Filter>
+    </ClInclude>
+    <ClInclude Include="CGordoLongScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\GordoLong</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormalEnemyScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\NormalEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CTackleEnemyScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\TackleEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CCutterProjectileScript.h">
+      <Filter>Scripts\Character\Monster\Utill\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="CFireProjectileScript.h">
+      <Filter>Scripts\Character\Monster\Utill\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="CAttackAreaScript.h">
+      <Filter>Scripts\Character\Monster\Utill\AttackArea</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterATKScript.h">
+      <Filter>Module\Unit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -680,6 +713,39 @@
     </ClCompile>
     <ClCompile Include="CNoddyScript.cpp">
       <Filter>Scripts\Character\Monster\MonsterScript\Noddy</Filter>
+    </ClCompile>
+    <ClCompile Include="CHotHeadScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\HotHead</Filter>
+    </ClCompile>
+    <ClCompile Include="CKabuScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\Kabu</Filter>
+    </ClCompile>
+    <ClCompile Include="CSirKibbleScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\SirKibble</Filter>
+    </ClCompile>
+    <ClCompile Include="CGhostGordoScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\GhostGordo</Filter>
+    </ClCompile>
+    <ClCompile Include="CGordoLongScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\GordoLong</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormalEnemyScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\NormalEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CTackleEnemyScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\TackleEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttackAreaScript.cpp">
+      <Filter>Scripts\Character\Monster\Utill\AttackArea</Filter>
+    </ClCompile>
+    <ClCompile Include="CCutterProjectileScript.cpp">
+      <Filter>Scripts\Character\Monster\Utill\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireProjectileScript.cpp">
+      <Filter>Scripts\Character\Monster\Utill\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterATKScript.cpp">
+      <Filter>Module\Unit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1049,9 +1115,6 @@
     <Filter Include="Scripts\Character\Monster\MonsterScript">
       <UniqueIdentifier>{f0691795-11fc-4ec7-94cb-617a5c369983}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Monster\MonsterScript\Monkey">
-      <UniqueIdentifier>{17802733-fd6c-4360-ab82-2e956f1b4b1f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Monster\MonsterScript\BladeKnight">
       <UniqueIdentifier>{902be184-f8ba-495f-a2a6-88673c9b2cfa}</UniqueIdentifier>
     </Filter>
@@ -1078,6 +1141,15 @@
     </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{3da6e160-003c-4b09-9433-80140ad4fa61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\SirKibble">
+      <UniqueIdentifier>{5fa41332-95e8-45d6-ae73-3f5ecb8cb0c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\Utill\AttackArea">
+      <UniqueIdentifier>{f5585bfb-8a96-432a-9ac8-8a504d92bd69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\Utill\Projectile">
+      <UniqueIdentifier>{e59ca8c0-0451-4b11-a5ae-ecbcb6af7db1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

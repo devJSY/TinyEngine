@@ -27,3 +27,13 @@ CBladeKnightScript
 CDetectAreaScript
 CBladeKnightSwordScript
 CNoddyScript
+CHotHeadScript
+CKabuScript
+CSirKibbleScript
+CGhostGordoScript
+CGordoLongScript
+CNormalEnemyScript
+CTackleEnemyScript
+CCutterProjectileScript
+CFireProjectileScript
+CAttackAreaScript
