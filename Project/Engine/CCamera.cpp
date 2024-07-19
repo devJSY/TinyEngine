@@ -269,7 +269,7 @@ void CCamera::SortObject()
                     m_vecDecal.push_back(vecObjects[j]);
                     break;
                 case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
-                    m_vecTransparent.push_back(vecObjects[j]);
+                    m_vecTransparent.push_back(tInstObj{vecObjects[j], iMtrl});
                     break;
                 case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                     m_vecPostProcess.push_back(vecObjects[j]);
@@ -387,7 +387,27 @@ void CCamera::render_Forward()
     // Main Render Pass
     render(m_vecSkybox);
     render_Inst(m_mapInstGroup_F);
-    render(m_vecTransparent);
+
+    // Transparent
+    for (tInstObj& instObj : m_vecTransparent)
+    {
+#ifdef DISTRIBUTE
+        instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+#else
+        if (g_Global.g_DrawAsWireFrame)
+        {
+            Ptr<CGraphicsShader> pSingleObjShader = instObj.pObj->GetRenderComponent()->GetMaterial(instObj.iMtrlIdx)->GetShader();
+            RS_TYPE originRSType = pSingleObjShader->GetRSType();
+            pSingleObjShader->SetRSType(RS_TYPE::WIRE_FRAME);
+            instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+            pSingleObjShader->SetRSType(originRSType);
+        }
+        else
+        {
+            instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+        }
+#endif
+    }
 
 #ifndef DISTRIBUTE
     // IDMap Pass
@@ -466,7 +486,7 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
             tInstData.matView = m_matView;
             tInstData.matProj = m_matProj;
 
-            if (pair.second[i].pObj->Animator())
+            if (pair.second[i].pObj->Animator() && pair.second[i].pObj->Animator()->IsValid())
             {
                 pair.second[i].pObj->Animator()->UpdateData();
                 tInstData.iRowIdx = iRowIdx++;
@@ -523,8 +543,6 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
         if (pair.second.empty())
             continue;
 
-        pair.second[0].pObj->Transform()->UpdateData();
-
         for (auto& instObj : pair.second)
         {
 #ifdef DISTRIBUTE
@@ -543,11 +561,6 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
                 instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
             }
 #endif
-        }
-
-        if (pair.second[0].pObj->Animator())
-        {
-            pair.second[0].pObj->Animator()->ClearData();
         }
     }
 }
@@ -729,7 +742,10 @@ void CCamera::render_IDMap()
     }
 
     // Transparent
-    vecIDMapObj.insert(vecIDMapObj.end(), m_vecTransparent.begin(), m_vecTransparent.end());
+    for (tInstObj& instObj : m_vecTransparent)
+    {
+        vecIDMapObj.push_back(instObj.pObj);
+    }
 
     // Render
     for (const auto& iter : vecIDMapObj)

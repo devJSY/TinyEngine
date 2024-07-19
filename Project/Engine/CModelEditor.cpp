@@ -27,6 +27,7 @@ CModelEditor::CModelEditor()
     , m_MeshDataPath()
     , m_vecDeferred{}
     , m_vecForward{}
+    , m_vecTransparent{}
     , m_ViewportRTTex(nullptr)
     , m_ViewportFloatRTTex(nullptr)
     , m_ViewportDSTex(nullptr)
@@ -258,6 +259,25 @@ void CModelEditor::render()
     ImGui::End();
 }
 
+void CModelEditor::render(const vector<tInstObj>& _vecObj)
+{
+    for (const tInstObj& pInstObj : _vecObj)
+    {
+        if (m_bDrawWireFrame)
+        {
+            Ptr<CMaterial> pMtrl = pInstObj.pObj->GetRenderComponent()->GetMaterial(pInstObj.iMtrlIdx);
+            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
+            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            pInstObj.pObj->GetRenderComponent()->render(pInstObj.iMtrlIdx);
+            pMtrl->GetShader()->SetRSType(originRSType);
+        }
+        else
+        {
+            pInstObj.pObj->GetRenderComponent()->render(pInstObj.iMtrlIdx);
+        }
+    }
+}
+
 void CModelEditor::DrawViewport()
 {
     ImGui::Begin("Viewport##ModelEditor");
@@ -322,21 +342,9 @@ void CModelEditor::DrawViewport()
     CDevice::GetInst()->SetViewport((float)m_ViewportFloatRTTex->GetWidth(), (float)m_ViewportFloatRTTex->GetHeight());
 
     m_SkyBoxObj->SkyBox()->UpdateData();
-    for (UINT i = 0; i < (UINT)m_vecDeferred.size(); ++i)
-    {
-        if (m_bDrawWireFrame)
-        {
-            Ptr<CMaterial> pMtrl = m_vecDeferred[i].pObj->GetRenderComponent()->GetMaterial(m_vecDeferred[i].iMtrlIdx);
-            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
-            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-            m_vecDeferred[i].pObj->GetRenderComponent()->render(m_vecDeferred[i].iMtrlIdx);
-            pMtrl->GetShader()->SetRSType(originRSType);
-        }
-        else
-        {
-            m_vecDeferred[i].pObj->GetRenderComponent()->render(m_vecDeferred[i].iMtrlIdx);
-        }
-    }
+
+    // Deferred
+    render(m_vecDeferred);
 
     // Light
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
@@ -351,25 +359,15 @@ void CModelEditor::DrawViewport()
     pMtrl->UpdateData();
     pMesh->render(0);
 
-    for (UINT i = 0; i < (UINT)m_vecForward.size(); ++i)
-    {
-        if (m_bDrawWireFrame)
-        {
-            Ptr<CMaterial> pMtrl = m_vecForward[i].pObj->GetRenderComponent()->GetMaterial(m_vecForward[i].iMtrlIdx);
-            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
-            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-            m_vecForward[i].pObj->GetRenderComponent()->render(m_vecForward[i].iMtrlIdx);
-            pMtrl->GetShader()->SetRSType(originRSType);
-        }
-        else
-        {
-            m_vecForward[i].pObj->GetRenderComponent()->render(m_vecForward[i].iMtrlIdx);
-        }
-    }
+    // Forward
+    render(m_vecForward);
 
     // Skybox, Floor
     m_SkyBoxObj->render();
     m_FloorObj->render();
+
+    // Transparent
+    render(m_vecTransparent);
 
     // ToneMapping
     CONTEXT->OMSetRenderTargets(1, m_ViewportRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
@@ -407,6 +405,7 @@ void CModelEditor::SortObject()
 {
     m_vecDeferred.clear();
     m_vecForward.clear();
+    m_vecTransparent.clear();
 
     if (nullptr == m_ModelObj)
         return;
@@ -461,6 +460,7 @@ void CModelEditor::SortObject()
             case SHADER_DOMAIN::DOMAIN_DECAL:
                 break;
             case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
+                m_vecTransparent.push_back(tInstObj{pObject, iMtrl});
                 break;
             case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                 break;

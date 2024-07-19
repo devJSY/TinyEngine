@@ -27,6 +27,7 @@ private:
     // Viewport
     vector<tInstObj> m_vecDeferred;
     vector<tInstObj> m_vecForward;
+    vector<tInstObj> m_vecTransparent;
 
     Ptr<CTexture> m_ViewportRTTex;
     Ptr<CTexture> m_ViewportFloatRTTex;
@@ -51,6 +52,7 @@ public:
 
 private:
     void render();
+    void render(const vector<tInstObj>& _vecObj);
 
 private:
     void DrawViewport();
