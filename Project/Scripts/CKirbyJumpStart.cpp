@@ -23,6 +23,51 @@ void CKirbyJumpStart::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_START");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT_START");
+            }
+            else if (m_JumpAccTime > m_MaxJumpTime)
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+        }
+        break;
+        case ObjectCopyType::STAIR:
+            break;
+        case ObjectCopyType::LIGHT: {
+            if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if ((KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)) && PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK_END");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT");
+            }
+            else if (m_JumpAccTime > m_MaxJumpTime)
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+        }
+            break;
+        }
+
+        if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
+        {
+            PLAYERCTRL->VelocityCut(2.f);
+            m_bVelocityCut = true;
+        }
     }
     else
     {
@@ -55,7 +100,6 @@ void CKirbyJumpStart::tick()
                 PLAYERCTRL->VelocityCut(2.f);
                 m_bVelocityCut = true;
             }
-
         }
         break;
         case AbilityCopyType::FIRE: {
@@ -111,6 +155,7 @@ void CKirbyJumpStart::Enter()
 
     PLAYERCTRL->Jump();
     PLAYERFSM->SetLastJump(LastJumpType::LOW);
+    PLAYERFSM->SetDroppable(true);
 
     m_JumpAccTime = 0.f;
     m_bVelocityCut = false;
@@ -119,4 +164,6 @@ void CKirbyJumpStart::Enter()
 void CKirbyJumpStart::Exit()
 {
     PLAY_CURSTATE(JumpStartExit)
+
+    PLAYERFSM->SetDroppable(false);
 }

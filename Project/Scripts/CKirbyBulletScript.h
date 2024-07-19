@@ -6,6 +6,8 @@ class CKirbyBulletScript : public CScript
 private:
     Vec3    m_InitVelocity;
     float   m_PlayTime;
+    wstring m_EndAnim;
+    double m_EndAnimPlayTime;
 
 public:
     virtual void begin() override;
@@ -14,6 +16,7 @@ public:
 public:
     void SetInitVelocity(Vec3 _Vel) { m_InitVelocity = _Vel; }
     void SetPlayTime(float _Time) { m_PlayTime = _Time; }
+    void SetEndAnim(wstring _Key);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override{};

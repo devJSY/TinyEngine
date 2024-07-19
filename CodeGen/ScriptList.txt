@@ -37,3 +37,4 @@ CTackleEnemyScript
 CCutterProjectileScript
 CFireProjectileScript
 CAttackAreaScript
+CDeformObjectScript

@@ -45,7 +45,7 @@ void CKirbyAbility_Sword::IdleEnter()
 
 void CKirbyAbility_Sword::Attack()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 7 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 7 && m_bFrmEnter)
     {
         m_bFrmEnter = false;
 
@@ -87,7 +87,7 @@ void CKirbyAbility_Sword::AttackExit()
 
 void CKirbyAbility_Sword::AttackCombo1()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 9 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 9 && m_bFrmEnter)
     {
         m_bFrmEnter = false;
 
@@ -129,7 +129,7 @@ void CKirbyAbility_Sword::AttackCombo1Exit()
 
 void CKirbyAbility_Sword::AttackCombo2()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 17 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 17 && m_bFrmEnter)
     {
         m_bFrmEnter = false;
 
@@ -297,11 +297,11 @@ void CKirbyAbility_Sword::AttackCharge2StartExit()
 // (charge)
 void CKirbyAbility_Sword::AttackCharge3()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 25 && !PLAYER->Animator()->IsReverse())
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 25 && !PLAYER->Animator()->IsReverse())
     {
         PLAYER->Animator()->SetReverse(true);
     }
-    else if (PLAYER->Animator()->GetClipFrameIndex() == 19 && PLAYER->Animator()->IsReverse())
+    else if (PLAYER->Animator()->GetClipFrameIndex() >= 19 && PLAYER->Animator()->IsReverse())
     {
         PLAYER->Animator()->SetReverse(false);
     }
@@ -392,7 +392,7 @@ void CKirbyAbility_Sword::JumpFallEnter()
 
 void CKirbyAbility_Sword::JumpAttack()
 {
-    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() == 10)
+    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() >= 10)
     {
         if (PLAYERFSM->GetSlideComboLevel())
         {
@@ -493,10 +493,9 @@ void CKirbyAbility_Sword::GuardRun()
 
 void CKirbyAbility_Sword::GuardRunEnter()
 {
-    //@TODO visiblity 바꾸기
-    CPlayerMgr::ClearBodyMtrl();
-    CPlayerMgr::ClearMouthMtrl();
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(limbs), false);
+    PLAYER->MeshRender()->SetEnabled(false);
+    PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(false);
+    PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(false);
     //@Effect 궤적 파티클
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
@@ -506,9 +505,9 @@ void CKirbyAbility_Sword::GuardRunEnter()
 
 void CKirbyAbility_Sword::GuardRunExit()
 {
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(limbs));
+    PLAYER->MeshRender()->SetEnabled(true);
+    PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(true);
+    PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(true);
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockJump();

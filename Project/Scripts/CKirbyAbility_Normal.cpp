@@ -23,7 +23,7 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 
 void CKirbyAbility_Normal::Attack()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() == 3 && m_bFrmEnter)
+    if (PLAYER->Animator()->GetClipFrameIndex() >= 3 && m_bFrmEnter)
     {
         CPlayerMgr::ClearBodyMtrl();
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
@@ -48,7 +48,6 @@ void CKirbyAbility_Normal::Attack()
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
             if (nullptr != bulletScript)
             {
-                bulletScript->SetInitVelocity(PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 120.f);
                 Vec3 InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 InitDir.y = 0.f;
                 bulletScript->SetInitVelocity(InitDir * 120.f);

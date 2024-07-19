@@ -40,6 +40,7 @@
 #include "CCutterProjectileScript.h"
 #include "CFireProjectileScript.h"
 #include "CAttackAreaScript.h"
+#include "CDeformObjectScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -82,6 +83,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCutterProjectileScript");
 	_vec.push_back(L"CFireProjectileScript");
 	_vec.push_back(L"CAttackAreaScript");
+	_vec.push_back(L"CDeformObjectScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -164,6 +166,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFireProjectileScript;
 	if (L"CAttackAreaScript" == _strScriptName)
 		return new CAttackAreaScript;
+	if (L"CDeformObjectScript" == _strScriptName)
+		return new CDeformObjectScript;
 	return nullptr;
 }
 
@@ -249,6 +253,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFireProjectileScript;
 	case (UINT)SCRIPT_TYPE::ATTACKAREASCRIPT:
 		return new CAttackAreaScript;
+	case (UINT)SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
+		return new CDeformObjectScript;
 	}
 	return nullptr;
 }
@@ -335,6 +341,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFireProjectileScript";
 	case SCRIPT_TYPE::ATTACKAREASCRIPT:
 		return L"CAttackAreaScript";
+	case SCRIPT_TYPE::DEFORMOBJECTSCRIPT:
+		return L"CDeformObjectScript";
 	}
 	return nullptr;
 }

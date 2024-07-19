@@ -6,6 +6,7 @@ CKirbyCopyObjScript::CKirbyCopyObjScript()
     , m_ObjectType(ObjectCopyType::NONE)
 {
     //@TODO enum으로 script param 설정하기
+    AddScriptParam(SCRIPT_PARAM::INT, &m_ObjectType, "ObjectType UINT");
 }
 
 CKirbyCopyObjScript::CKirbyCopyObjScript(const CKirbyCopyObjScript& _Origin)

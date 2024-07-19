@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "CKirbyAbility.h"
-#include "CPlayerMgr.h"
-#include "CFSMScript.h"
-#include "CKirbyFSM.h"
-#include "CKirbyMoveController.h"
 
 CKirbyAbility::CKirbyAbility()
     : m_Charge1Time(0.f)
@@ -27,6 +23,11 @@ void CKirbyAbility::ChangeState(const wstring& _strStateName)
 void CKirbyAbility::IdleEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Wait"));
+}
+
+void CKirbyAbility::IdleExit()
+{
+    PLAYERFSM->SetDroppable(false);
 }
 
 void CKirbyAbility::RunEnter()

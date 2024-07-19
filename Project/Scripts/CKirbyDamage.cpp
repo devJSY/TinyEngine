@@ -26,8 +26,11 @@ void CKirbyDamage::Enter()
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
-    CPlayerMgr::ClearMouthMtrl();
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthAngryClose));
+    if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
+    {
+        CPlayerMgr::ClearMouthMtrl();
+        CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthAngryClose));
+    }
 
     // 방향, 점프, 이동 Lock
     PLAYERCTRL->LockMove();

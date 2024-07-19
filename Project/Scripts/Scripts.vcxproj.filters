@@ -83,7 +83,7 @@
       <Filter>State\KirbyState\AttackCharge1</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyRunStart.h">
-      <Filter>State\KirbyState\Run\Run_Start</Filter>
+      <Filter>State\KirbyState\Run\Start</Filter>
     </ClInclude>
     <ClInclude Include="CSpringArmCameraScript.h">
       <Filter>Scripts\SpringArm</Filter>
@@ -257,7 +257,7 @@
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAbility_Sword.h">
-      <Filter>State\KirbyState\Sword</Filter>
+      <Filter>State\KirbyAbility\Sword</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAttackEnd.h">
       <Filter>State\KirbyState\Attack\AttackEnd</Filter>
@@ -367,6 +367,42 @@
     <ClInclude Include="CMonsterATKScript.h">
       <Filter>Module\Unit</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyObject_Cone.h">
+      <Filter>State\KirbyObject\Cone</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeObject.h">
+      <Filter>State\KirbyState\ChangeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyChangeObjectEnd.h">
+      <Filter>State\KirbyState\ChangeObject\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyRunEnd.h">
+      <Filter>State\KirbyState\Run\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackCombo1End.h">
+      <Filter>State\KirbyState\AttackCombo1\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackStart.h">
+      <Filter>State\KirbyState\Attack\AttackStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDeath.h">
+      <Filter>State\KirbyState\Death</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDeathEnd.h">
+      <Filter>State\KirbyState\Death\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDropObject.h">
+      <Filter>State\KirbyState\DropObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDropObjectStart.h">
+      <Filter>State\KirbyState\DropObject\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyObject_Lightbulb.h">
+      <Filter>State\KirbyObject\Lightbulb</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeformObjectScript.h">
+      <Filter>Scripts\Gimmik\DeformObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -445,7 +481,7 @@
       <Filter>State\KirbyState\AttackCharge1</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyRunStart.cpp">
-      <Filter>State\KirbyState\Run\Run_Start</Filter>
+      <Filter>State\KirbyState\Run\Start</Filter>
     </ClCompile>
     <ClCompile Include="CUIManagerScript.cpp">
       <Filter>Scripts\UI\UIManager</Filter>
@@ -637,7 +673,7 @@
       <Filter>State\KirbyState\Stuffed\Eat</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility_Sword.cpp">
-      <Filter>State\KirbyState\Sword</Filter>
+      <Filter>State\KirbyAbility\Sword</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAttackEnd.cpp">
       <Filter>State\KirbyState\Attack\AttackEnd</Filter>
@@ -747,6 +783,42 @@
     <ClCompile Include="CMonsterATKScript.cpp">
       <Filter>Module\Unit</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyObject_Cone.cpp">
+      <Filter>State\KirbyObject\Cone</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeObject.cpp">
+      <Filter>State\KirbyState\ChangeObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyChangeObjectEnd.cpp">
+      <Filter>State\KirbyState\ChangeObject\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyRunEnd.cpp">
+      <Filter>State\KirbyState\Run\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackCombo1End.cpp">
+      <Filter>State\KirbyState\AttackCombo1\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackStart.cpp">
+      <Filter>State\KirbyState\Attack\AttackStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDeath.cpp">
+      <Filter>State\KirbyState\Death</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDeathEnd.cpp">
+      <Filter>State\KirbyState\Death\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDropObject.cpp">
+      <Filter>State\KirbyState\DropObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDropObjectStart.cpp">
+      <Filter>State\KirbyState\DropObject\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyObject_Lightbulb.cpp">
+      <Filter>State\KirbyObject\Lightbulb</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeformObjectScript.cpp">
+      <Filter>Scripts\Gimmik\DeformObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -805,9 +877,6 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeObject">
       <UniqueIdentifier>{9fe1c146-5378-4a9e-bb27-a28009aa8917}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\KirbyState\Run\Run_Start">
-      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\AttackCharge1">
       <UniqueIdentifier>{175ddc01-87b9-4551-acf1-a887e0430088}</UniqueIdentifier>
@@ -1085,9 +1154,6 @@
     <Filter Include="State\KirbyState\Burning\BurningEnd">
       <UniqueIdentifier>{2f86c255-94f2-4343-be20-9f9e100966c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\KirbyState\Sword">
-      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\AttackAirGuard">
       <UniqueIdentifier>{e95e38fa-27be-45fe-9121-cf3edefeb769}</UniqueIdentifier>
     </Filter>
@@ -1150,6 +1216,48 @@
     </Filter>
     <Filter Include="Scripts\Character\Monster\Utill\Projectile">
       <UniqueIdentifier>{e59ca8c0-0451-4b11-a5ae-ecbcb6af7db1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Sword">
+      <UniqueIdentifier>{1ea3b869-d578-4abc-86cf-18cf75854eb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject">
+      <UniqueIdentifier>{3a2a9b21-9fc6-42c4-91fc-4a589a4e9c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject\Cone">
+      <UniqueIdentifier>{51ea4777-2013-4f82-b2b0-0f43b0672afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeObject\End">
+      <UniqueIdentifier>{d062e6b2-9376-4c4b-bd53-a3b84152ca25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run\End">
+      <UniqueIdentifier>{80ad0f3e-15d4-4ce5-a4b9-5219d805d306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Run\Start">
+      <UniqueIdentifier>{a5fd454a-a8e5-4340-b372-62c98064edae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Attack\AttackStart">
+      <UniqueIdentifier>{cd5baeb6-1572-4e51-a7d8-6363e9dc9fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackCombo1\End">
+      <UniqueIdentifier>{dde2ee1c-1758-4ee2-9448-c3a4994be44c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Death">
+      <UniqueIdentifier>{f72d87e2-2b46-408e-8456-da98d75bc907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Death\End">
+      <UniqueIdentifier>{49fadc16-0256-4ed7-b3c6-3d6731b729b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\DropObject">
+      <UniqueIdentifier>{b55cbd84-e656-4463-b914-e67ae7d74341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\DropObject\Start">
+      <UniqueIdentifier>{1e639a2e-041c-4613-8422-599791a654d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject\Lightbulb">
+      <UniqueIdentifier>{f25f684e-c448-4f1d-bcd8-bcbf640268ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\DeformObject">
+      <UniqueIdentifier>{0e321129-ad6a-45ad-a064-acda5a40664c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -46,6 +46,7 @@ enum class AbilityCopyType
     FIRE,
     RANGER,
     SWORD,
+    SLIP,
 
     END,
 };
@@ -53,7 +54,7 @@ enum class AbilityCopyType
 enum class ObjectCopyType
 {
     NONE,
-    CAR,
+    CONE,
     STAIR,
     LIGHT,
 

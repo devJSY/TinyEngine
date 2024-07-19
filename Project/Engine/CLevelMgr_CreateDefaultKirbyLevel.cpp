@@ -126,7 +126,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pDirLight->AddComponent(new CLight);
 
     pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
-    pDirLight->Transform()->SetLocalRotation(Vec3(45.f, 0.f, 0.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
     pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     pDirLight->Light()->SetRadius(10.f);
 
@@ -138,14 +138,12 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pFloor->AddComponent(new CTransform);
     pFloor->AddComponent(new CMeshRender);
     pFloor->AddComponent(new CBoxCollider);
-    pFloor->AddComponent(new CRigidbody);
 
     pFloor->Transform()->SetLocalScale(Vec3(10000.f, 1.f, 10000.f));
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
     pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
     pFloor->MeshRender()->GetMaterial(0)->SetAlbedo(Vec4(1.f, 1.f, 1.f, 1.f));
     pFloor->MeshRender()->SetFrustumCheck(false);
-    pFloor->Rigidbody()->SetKinematic(true);
 
     NewLevel->AddObject(pFloor, 2);
 
@@ -223,6 +221,24 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pPlayer->AddChild(pBodyCollider);
 
+    // DeformLight PointLight
+    CGameObject* pPointLight = new CGameObject;
+    pPointLight->SetName(L"DeformLight PointLight");
+    pPointLight->AddComponent(new CTransform);
+    pPointLight->AddComponent(new CLight);
+
+    pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
+    pPointLight->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(-60.f), 0.f));
+    pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
+    pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
+    pPointLight->Light()->SetRadius(80.f);
+    pPointLight->Light()->SetFallOffEnd(750.f);
+    pPointLight->Light()->SetHaloRadius(160.f);
+    pPointLight->Light()->SetHaloStrength(0.125f);
+
+    pPlayer->AddChild(pPointLight);
+    pPointLight->SetActive(false);
+
     // ==================
     // create default object
     // ==================
@@ -234,6 +250,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pBox->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     pBox->Transform()->SetLocalPos(Vec3(-500.f, 150.f, 500.f));
+    pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f)); 
 
     pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f));
 

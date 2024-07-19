@@ -3,6 +3,7 @@
 
 CUnitScript::CUnitScript(UINT _Type)
     : CScript(_Type)
+    , m_InitInfo{}
     , m_PrevInfo{}
     , m_CurInfo{}
 {
@@ -10,6 +11,7 @@ CUnitScript::CUnitScript(UINT _Type)
 
 CUnitScript::CUnitScript(const CUnitScript& _Origin)
     : CScript(_Origin)
+    , m_InitInfo{}
     , m_PrevInfo{}
     , m_CurInfo(_Origin.m_CurInfo)
 {
@@ -17,6 +19,11 @@ CUnitScript::CUnitScript(const CUnitScript& _Origin)
 
 CUnitScript::~CUnitScript()
 {
+}
+
+void CUnitScript::begin()
+{
+    m_CurInfo = m_InitInfo;
 }
 
 void CUnitScript::tick()
@@ -82,11 +89,11 @@ void CUnitScript::DamageProc()
 
 void CUnitScript::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_CurInfo, sizeof(UnitInfo), 1, _File);
+    fwrite(&m_InitInfo, sizeof(UnitInfo), 1, _File);
 }
 
 void CUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_CurInfo, sizeof(UnitInfo), 1, _File);
-    m_CurInfo.HP = m_CurInfo.MAXHP;
+    fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo = m_InitInfo;
 }

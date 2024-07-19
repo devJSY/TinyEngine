@@ -60,7 +60,7 @@ void CKirbyVacuumCollider::tick()
         // collider clear
         EnableCollider(false);
 
-        //@TODO ¹ÝÂ¦ È¿°ú ¼ÎÀÌ´õ
+        //@Effect ¹ÝÂ¦ È¿°ú ¼ÎÀÌ´õ
         m_bDrawing = true;
     }
 

@@ -4,6 +4,7 @@
 CKirbyBackJump::CKirbyBackJump()
     : m_JumpPower(8.f)
     , m_InitSpeed(9.f)
+    , m_StateEnter(true)
 {
 }
 
@@ -13,17 +14,48 @@ CKirbyBackJump::~CKirbyBackJump()
 
 void CKirbyBackJump::tick()
 {
-    if (PLAYER->Animator()->IsFinish() && PLAYER->CharacterController()->IsGrounded())
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-        ChangeState(L"IDLE");
+        //@TODO 회전시켜주기
+        // Vec3 Rot = PLAYER->Transform()->GetLocalRotation();
+        // Rot.x += DT * 10.f;
+        // if (Rot.x >= XMConvertToRadians(360.f))
+        //{
+        //    Rot.x = XMConvertToRadians(360.f);
+        //}
+
+        if (PLAYER->CharacterController()->IsGrounded())
+        {
+            if (m_StateEnter)
+            {
+                PLAYERCTRL->ClearVelocityY();
+                Vec3 Vel = PLAYERCTRL->GetVelocity() * -0.75f;
+                PLAYERCTRL->AddVelocity(Vec3(Vel.x, 2.5f, Vel.z));
+                m_StateEnter = false;
+            }
+            else
+            {
+                ChangeState(L"IDLE");
+            }
+        }
+    }
+    else
+    {
+        if (PLAYER->Animator()->IsFinish() && PLAYER->CharacterController()->IsGrounded())
+        {
+            ChangeState(L"IDLE");
+        }
     }
 }
 
 void CKirbyBackJump::Enter()
 {
-    Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
+    if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
+    {
+        PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
+    }
 
-    PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
+    Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -36,13 +68,18 @@ void CKirbyBackJump::Enter()
     PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
 
     PLAYERCTRL->SetGravity(-35.f);
+
+    m_StateEnter = true;
 }
 
 void CKirbyBackJump::Exit()
 {
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
-    CPlayerMgr::ClearMouthMtrl();
-    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
+    {
+        CPlayerMgr::ClearMouthMtrl();
+        CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    }
 
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();

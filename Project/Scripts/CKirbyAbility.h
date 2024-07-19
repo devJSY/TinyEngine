@@ -1,6 +1,7 @@
 #pragma once
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
+#include "CKirbyMoveController.h"
 // ====================================================================================
 // USAGE: Kirby의 Ability 종속적인 States를 모아 정의해둔 States Group Class
 // ====================================================================================
@@ -18,13 +19,12 @@ protected:
     float           m_ComboSuccessTime;
 
 protected:
-    // 사용 메쉬: hat, weapon
     void ChangeState(const wstring& _strStateName);
 
 public:
     virtual void Idle(){};
     virtual void IdleEnter();
-    virtual void IdleExit(){};
+    virtual void IdleExit();
 
     virtual void Run(){};
     virtual void RunEnter();
@@ -33,6 +33,10 @@ public:
     virtual void RunStart(){};
     virtual void RunStartEnter();
     virtual void RunStartExit(){};
+
+    virtual void RunEnd(){};
+    virtual void RunEndEnter(){};
+    virtual void RunEndExit(){};
 
     virtual void Jump(){};
     virtual void JumpEnter();
@@ -76,6 +80,10 @@ public:
     virtual void AttackEnter(){};
     virtual void AttackExit(){};
 
+    virtual void AttackStart(){};
+    virtual void AttackStartEnter(){};
+    virtual void AttackStartExit(){};
+
     virtual void AttackEnd(){};
     virtual void AttackEndEnter(){};
     virtual void AttackEndExit(){};
@@ -83,6 +91,10 @@ public:
     virtual void AttackCombo1(){};
     virtual void AttackCombo1Enter(){};
     virtual void AttackCombo1Exit(){};
+
+    virtual void AttackCombo1End(){};
+    virtual void AttackCombo1EndEnter(){};
+    virtual void AttackCombo1EndExit(){};
 
     virtual void AttackCombo2(){};
     virtual void AttackCombo2Enter(){};
