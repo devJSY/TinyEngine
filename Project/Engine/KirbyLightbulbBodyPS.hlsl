@@ -13,8 +13,6 @@
 #define MtrlRoughness 0.95f
 #define MtrlEmission g_vEmission
 
-#define sparklyEffect g_float_0
-
 struct PS_OUT
 {
     float4 vColor : SV_Target0;
@@ -43,6 +41,13 @@ PS_OUT main(PS_IN input)
     
     // mouse
     albedo = albedo * (1.f - mouth.a) + mouth.rgb * mouth.a;
+    
+    // innerlight
+    float3 eye = normalize(mul(float4(input.vPosWorld, 1.f), g_matView)).xyz;
+    float3 viewNormal = normalize(mul(float4(input.vNormalWorld, 0.f), g_matView)).xyz;
+    float brightAlpha = 1.f - pow(saturate(abs(dot(-eye, viewNormal))), 0.1f);
+    brightAlpha = brightAlpha * 0.8f + 0.1f; // 최소값: 0.1f, 최대값: 0.9f
+    albedo = albedo + float3(1.f, 0.87f, 0.93f) * brightAlpha;
     
     //eye
     float EyeAlpha = dot(eyeBase.rgb, float3(1.0, 1.0, 1.0)) / 3.f;
@@ -77,7 +82,7 @@ PS_OUT main(PS_IN input)
     float metallic = MtrlMetallic;
     float roughness = MtrlRoughness;
     float ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
-    float3 emission = MtrlEmission.rgb + float3(sparklyEffect, sparklyEffect, sparklyEffect);
+    float3 emission = MtrlEmission.rgb;
 
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);

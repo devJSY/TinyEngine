@@ -1374,5 +1374,8 @@
     <FxCompile Include="GlassPS.hlsl">
       <Filter>ShaderCode\Kirby\_Common</Filter>
     </FxCompile>
+    <FxCompile Include="KirbyLightbulbBodyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
