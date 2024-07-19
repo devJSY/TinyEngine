@@ -40,7 +40,7 @@ void CKirbyObject::ChangeState(const wstring& _strStateName)
 
 void CKirbyObject::IdleEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Wait"));
+    PLAYER->Animator()->Play(ANIMPREFIX("Wait"));
 
     PLAYERCTRL->LockMove();
 }
@@ -52,27 +52,27 @@ void CKirbyObject::IdleExit()
 
 void CKirbyObject::RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Move"), true, false, 1.5f, 0.3f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Move"), true, false, 1.5f, 0.3f);
 }
 
 void CKirbyObject::RunEndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Stop"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("Stop"), false);
 }
 
 void CKirbyObject::JumpStartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Jump"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("Jump"), false);
 }
 
 void CKirbyObject::JumpFallEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Fall"));
+    PLAYER->Animator()->Play(ANIMPREFIX("Fall"));
 }
 
 void CKirbyObject::LandingEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Landing"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
 
     PLAYERCTRL->LockJump();
 }
@@ -84,7 +84,7 @@ void CKirbyObject::LandingExit()
 
 void CKirbyObject::LandingEndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"LandingEnd"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("LandingEnd"), false);
 
     PLAYERCTRL->LockJump();
 }
@@ -115,7 +115,7 @@ void CKirbyObject::DropObjectEnter()
     }
 
     // animation & move controller
-    PLAYER->Animator()->Play(KIRBYANIM(L"SpitDeform"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SpitDeform"), false, false, 1.5f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -145,7 +145,7 @@ void CKirbyObject::DropObjectExit()
 
 void CKirbyObject::DropObjectStartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SpitStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SpitStart"), false, false, 1.5f);
 
     PLAYERCTRL->AddVelocity(Vec3(0.f, 3.5f, 0.f));
 
@@ -183,7 +183,7 @@ void CKirbyObject::ChangeObjectEnter()
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
     }
-    PLAYER->Animator()->Play(KIRBYANIM(L"DeformFirst"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("DeformFirst"), false);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockJump();
@@ -206,7 +206,7 @@ void CKirbyObject::ChangeObjectEndEnter()
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
     }
-    PLAYER->Animator()->Play(KIRBYANIM(L"DemoEndFirst"), false, false, 2.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("DemoEndFirst"), false, false, 2.5f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockJump();

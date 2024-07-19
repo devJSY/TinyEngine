@@ -37,14 +37,7 @@
         KirbyFSM->GetCurAbility()->STATE();                                                                                                          \
     }
 
-#define KIRBYANIM(NAME) ((wstring)L"Armature|" + NAME)
-#define MONSTERANIM(NAME) ((wstring)L"Armature|" + NAME)
-
-enum class DIRECTION_TYPE
-{
-    LEFT,
-    RIGHT,
-};
+#define ANIMPREFIX(NAME) L"Armature|" L##NAME
 
 enum class AbilityCopyType
 {

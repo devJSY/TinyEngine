@@ -52,7 +52,7 @@ void CKirbyBackJump::Enter()
 {
     if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"BackJump"), false, false, 2.f);
+        PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
     }
 
     Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();

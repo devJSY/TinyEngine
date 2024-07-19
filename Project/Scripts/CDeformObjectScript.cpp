@@ -20,7 +20,7 @@ CDeformObjectScript::~CDeformObjectScript()
 
 void CDeformObjectScript::begin()
 {
-    GetOwner()->Animator()->Play(KIRBYANIM(L"Wait"));
+    GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
 
     if (GetOwner()->SphereCollider())
     {
@@ -49,7 +49,7 @@ void CDeformObjectScript::tick()
         // enter
         if (m_CurState != m_PrevState)
         {
-            GetOwner()->Animator()->Play(KIRBYANIM(L"Wait"));
+            GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         }
 
         // change state
@@ -64,7 +64,7 @@ void CDeformObjectScript::tick()
         // enter
         if (m_CurState != m_PrevState)
         {
-            GetOwner()->Animator()->Play(KIRBYANIM(L"Fall"));
+            GetOwner()->Animator()->Play(ANIMPREFIX("Fall"));
         }
         
         // change state
@@ -79,7 +79,7 @@ void CDeformObjectScript::tick()
         // enter
         if (m_CurState != m_PrevState)
         {
-            GetOwner()->Animator()->Play(KIRBYANIM(L"Landing"), false);
+            GetOwner()->Animator()->Play(ANIMPREFIX("Landing"), false);
         }
 
         // change state

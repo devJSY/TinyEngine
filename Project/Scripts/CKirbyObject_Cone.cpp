@@ -29,7 +29,7 @@ void CKirbyObject_Cone::Attack()
 
 void CKirbyObject_Cone::AttackEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"TurnEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 1.5f);
 
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->LockMove();
@@ -49,7 +49,7 @@ void CKirbyObject_Cone::AttackStart()
 
 void CKirbyObject_Cone::AttackStartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Turn"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Turn"), false, false, 1.5f);
 
     // 속도세팅
     PLAYERCTRL->LockDirection();
@@ -68,7 +68,7 @@ void CKirbyObject_Cone::AttackEnd()
 
 void CKirbyObject_Cone::AttackEndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"TurnEnd"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), true, false, 1.5f);
     //@Effect 속도선
 
     PLAYERCTRL->LockDirection();
@@ -98,7 +98,7 @@ void CKirbyObject_Cone::AttackCombo1()
 
 void CKirbyObject_Cone::AttackCombo1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"TurnLanding"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnLanding"), false, false, 1.5f);
     //@Effect 충돌이펙트
 
     // Crater 소환
@@ -110,8 +110,8 @@ void CKirbyObject_Cone::AttackCombo1Enter()
         pCrater->Transform()->SetLocalPos(InitPos);
         pBulletScript->SetInitVelocity(Vec3());
         pBulletScript->SetPlayTime(10.f);
-        pBulletScript->SetEndAnim(KIRBYANIM(L"End"));
-        pCrater->Animator()->Play(KIRBYANIM(L"Start"), false);
+        pBulletScript->SetEndAnim(ANIMPREFIX("End"));
+        pCrater->Animator()->Play(ANIMPREFIX("Start"), false);
 
         GamePlayStatic::SpawnGameObject(pCrater, LAYER_PLAYERATK);
     }
@@ -139,7 +139,7 @@ void CKirbyObject_Cone::AttackCombo1End()
 
 void CKirbyObject_Cone::AttackCombo1EndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"TurnEndEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnEndEnd"), false, false, 1.5f);
     //@Effect 충돌이펙트
 
     PLAYERCTRL->LockDirection();

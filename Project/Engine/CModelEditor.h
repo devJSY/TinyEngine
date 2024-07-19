@@ -21,10 +21,13 @@ private:
 
     bool m_bDrawWireFrame;
     bool m_bMeshSaved;
+    wstring m_MeshDataPath;
+    bool m_bMeshDataSaved;
 
     // Viewport
     vector<tInstObj> m_vecDeferred;
     vector<tInstObj> m_vecForward;
+    vector<tInstObj> m_vecTransparent;
 
     Ptr<CTexture> m_ViewportRTTex;
     Ptr<CTexture> m_ViewportFloatRTTex;
@@ -49,6 +52,7 @@ public:
 
 private:
     void render();
+    void render(const vector<tInstObj>& _vecObj);
 
 private:
     void DrawViewport();

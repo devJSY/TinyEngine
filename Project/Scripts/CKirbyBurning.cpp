@@ -47,9 +47,9 @@ void CKirbyBurning::Enter()
     m_Acc = 0.f;
 
     // 애니메이션 재생
-    //PLAYER->Animator()->Play(KIRBYANIM(L"Burning"), false, false, 1.5f);
+    //PLAYER->Animator()->Play(ANIMPREFIX("Burning"), false, false, 1.5f);
 
-    PLAYER->Animator()->Play(KIRBYANIM(L"Wait"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
 
     // Movement
     PLAYERCTRL->LockJump();

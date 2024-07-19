@@ -1,14 +1,42 @@
 #pragma once
 #include "CUnitScript.h"
 
+enum class PATROLDIR
+{
+    Up,
+    Down,
+    Right,
+    Left,
+
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight,
+
+    END,
+};
+
 class CMonsterUnitScript : public CUnitScript
 {
 private:
     CGameObject* m_pTargetObj;
+    float m_RaycastDist;
+    UnitHit m_HitInfo;
 
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
     CGameObject* GetTarget() const { return m_pTargetObj; }
+
+    const UnitHit& GetHitInfo() { return m_HitInfo; }
+    void SetHitInfo(const UnitHit& _hitInfo) { m_HitInfo = _hitInfo; }
+
+    void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
+    void TransformRotate();
+    bool IsGround();
+
+    
+    // ÀÚÀü
+    void Rotating();
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override;
@@ -19,6 +47,5 @@ public:
     CMonsterUnitScript(const CMonsterUnitScript& _Origin);
     virtual ~CMonsterUnitScript();
 
-    friend class CHitBoxScript;
     friend class CDetectAreaScript;
 };

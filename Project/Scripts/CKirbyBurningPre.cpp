@@ -38,8 +38,8 @@ void CKirbyBurningPre::Enter()
     KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(normal));
 
     // 애니메이션 재생
-    //PLAYER->Animator()->Play(KIRBYANIM(L"BurningStart"), false, false, 1.5f);
-    PLAYER->Animator()->Play(KIRBYANIM(L"DodgeFront1"), false, false, 1.5f);
+    //PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("DodgeFront1"), false, false, 1.5f);
     
 
     // Movement

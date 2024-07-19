@@ -95,10 +95,10 @@ void CModelEditorCameraMoveScript::MovePerspective()
 
     // Zoom
     float Zoffset = 1.5f;
-    if (KEY_PRESSED(KEY::Z))
+    if (KEY_PRESSED(KEY::B))
         Camera()->SetFOV(Camera()->GetFOV() + DT_ENGINE * Zoffset);
 
-    if (KEY_PRESSED(KEY::C))
+    if (KEY_PRESSED(KEY::M))
         Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * Zoffset);
 }
 

@@ -60,11 +60,11 @@ void CKirbyAbility_Normal::AttackEnter()
 {
     if (PLAYER->CharacterController()->IsGrounded())
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"Spit"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX("Spit"), false);
     }
     else
     {
-        PLAYER->Animator()->Play(KIRBYANIM(L"SpitAir"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX("SpitAir"), false);
     }
 
     PLAYERCTRL->LockMove();
@@ -97,7 +97,7 @@ void CKirbyAbility_Normal::AttackCharge1()
 
 void CKirbyAbility_Normal::AttackCharge1Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"Vacuum"), true, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Vacuum"), true, false, 2.f);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
@@ -121,7 +121,7 @@ void CKirbyAbility_Normal::AttackCharge1Start()
 
 void CKirbyAbility_Normal::AttackCharge1StartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumStart2"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("VacuumStart2"), false);
 
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
@@ -145,7 +145,7 @@ void CKirbyAbility_Normal::AttackCharge1End()
 
 void CKirbyAbility_Normal::AttackCharge1EndEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumEnd"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("VacuumEnd"), false);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
@@ -169,7 +169,7 @@ void CKirbyAbility_Normal::AttackCharge1Run()
 
 void CKirbyAbility_Normal::AttackCharge1RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"VacuumWalk"), true, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("VacuumWalk"), true, false, 2.f);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
@@ -196,7 +196,7 @@ void CKirbyAbility_Normal::AttackCharge2()
 
 void CKirbyAbility_Normal::AttackCharge2Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhale"), true, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperInhale"), true, false, 2.f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
 
     PLAYERCTRL->LockJump();
@@ -223,7 +223,7 @@ void CKirbyAbility_Normal::AttackCharge2Start()
 
 void CKirbyAbility_Normal::AttackCharge2StartEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleStart"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperInhaleStart"), false);
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     PLAYERCTRL->LockJump();
@@ -250,7 +250,7 @@ void CKirbyAbility_Normal::AttackCharge2Run()
 
 void CKirbyAbility_Normal::AttackCharge2RunEnter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"SuperInhaleWalk"), true, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperInhaleWalk"), true, false, 2.f);
 
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();

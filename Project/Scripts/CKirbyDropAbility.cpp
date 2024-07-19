@@ -60,7 +60,7 @@ void CKirbyDropAbility::tick()
 
 void CKirbyDropAbility::Enter()
 {
-    PLAYER->Animator()->Play(KIRBYANIM(L"AbilityDump"), false, false, 1.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("AbilityDump"), false, false, 1.f);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));

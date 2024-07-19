@@ -20,7 +20,7 @@ void CKirbyChangeAbilityWait::tick()
 void CKirbyChangeAbilityWait::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(KIRBYANIM(L"EvolutionCopyWait"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyWait"), true, false, 1.5f);
 
 }
 

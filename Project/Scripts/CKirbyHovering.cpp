@@ -52,7 +52,7 @@ void CKirbyHovering::tick()
 
 void CKirbyHovering::Enter()
 {
-    GetOwner()->Animator()->Play(KIRBYANIM(L"Flight"), true, false, 2.f);
+    GetOwner()->Animator()->Play(ANIMPREFIX("Flight"), true, false, 2.f);
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();

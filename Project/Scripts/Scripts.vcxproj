@@ -108,7 +108,13 @@ call CodeGen.exe</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
+    <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CFireProjectileScript.h" />
+    <ClInclude Include="CMonsterATKScript.h" />
+    <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
     <ClInclude Include="CCameraMoveScript.h" />
@@ -117,7 +123,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CEngineTestScript.h" />
     <ClInclude Include="CExitButton.h" />
     <ClInclude Include="CFSMScript.h" />
-    <ClInclude Include="CHitBoxScript.h" />
+    <ClInclude Include="CGhostGordoScript.h" />
+    <ClInclude Include="CGordoLongScript.h" />
+    <ClInclude Include="CHotHeadScript.h" />
+    <ClInclude Include="CKabuScript.h" />
     <ClInclude Include="CKirbyAbility.h" />
     <ClInclude Include="CKirbyAbility_Fire.h" />
     <ClInclude Include="CKirbyAbility_Normal.h" />
@@ -210,11 +219,14 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyRunStart.h" />
     <ClInclude Include="CKirbyUnitScript.h" />
     <ClInclude Include="CMonsterUnitScript.h" />
+    <ClInclude Include="CNoddyScript.h" />
+    <ClInclude Include="CNormalEnemyScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSpringArmCameraScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CTackleEnemyScript.h" />
     <ClInclude Include="CTestForward.h" />
     <ClInclude Include="CTestFSM.h" />
     <ClInclude Include="CTestIdle.h" />
@@ -232,7 +244,13 @@ call CodeGen.exe</Command>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
+    <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CFireProjectileScript.cpp" />
+    <ClCompile Include="CMonsterATKScript.cpp" />
+    <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
@@ -241,7 +259,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CEngineTestScript.cpp" />
     <ClCompile Include="CExitButton.cpp" />
     <ClCompile Include="CFSMScript.cpp" />
-    <ClCompile Include="CHitBoxScript.cpp" />
+    <ClCompile Include="CGhostGordoScript.cpp" />
+    <ClCompile Include="CGordoLongScript.cpp" />
+    <ClCompile Include="CHotHeadScript.cpp" />
+    <ClCompile Include="CKabuScript.cpp" />
     <ClCompile Include="CKirbyAbility.cpp" />
     <ClCompile Include="CKirbyAbility_Fire.cpp" />
     <ClCompile Include="CKirbyAbility_Normal.cpp" />
@@ -334,11 +355,14 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLevelChangeButtonScript.cpp" />
     <ClCompile Include="CModelEditorCameraMoveScript.cpp" />
     <ClCompile Include="CMonsterUnitScript.cpp" />
+    <ClCompile Include="CNoddyScript.cpp" />
+    <ClCompile Include="CNormalEnemyScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSpringArmCameraScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CTackleEnemyScript.cpp" />
     <ClCompile Include="CTestForward.cpp" />
     <ClCompile Include="CTestFSM.cpp" />
     <ClCompile Include="CTestIdle.cpp" />

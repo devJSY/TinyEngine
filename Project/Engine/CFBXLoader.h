@@ -29,7 +29,7 @@ struct tContainer
     vector<Vec3> vecTangent;
     vector<Vec3> vecBinormal;
 
-    vector<Vec3> vecColor;
+    vector<Vec4> vecColor;
 
     vector<Vec2> vecUV0;
     vector<Vec2> vecUV1;
@@ -123,6 +123,7 @@ private:
     void GetTangent(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
     void GetBinormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
     void GetNormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
+    void GetColor(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
     void GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _iVtxOrder);
 
     Vec4 GetMtrlData(FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);

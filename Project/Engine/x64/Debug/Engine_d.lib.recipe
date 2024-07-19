@@ -6,6 +6,9 @@
       <FullPath>C:\Users\howru\Desktop\DV\DEV\DX\Kirby\External\Library\Engine\GlassPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\howru\Desktop\DV\DEV\DX\Kirby\External\Library\Engine\KirbyLightbulbBodyPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\howru\Desktop\DV\DEV\DX\Kirby\External\Library\Engine\KirbySwordMagmaPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -97,6 +100,9 @@
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\howru\Desktop\DV\DEV\DX\Kirby\External\Library\Engine\MirrorVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\howru\Desktop\DV\DEV\DX\Kirby\External\Library\Engine\NoddyPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
       <FullPath>C:\Users\howru\Desktop\DV\DEV\DX\Kirby\External\Library\Engine\NormalEnemyPS.cso</FullPath>
