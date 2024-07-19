@@ -14,6 +14,7 @@ private:
     void CharacterControllerTest();
     void AnimatorTest();
     void QuaternionExample();
+    void DetachObject();
 
 private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);

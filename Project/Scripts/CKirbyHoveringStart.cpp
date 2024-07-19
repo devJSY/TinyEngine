@@ -27,7 +27,7 @@ void CKirbyHoveringStart::tick()
 
 void CKirbyHoveringStart::Enter()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX(L"FlightStart"), false);
+    GetOwner()->Animator()->Play(ANIMPREFIX("FlightStart"), false);
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));

@@ -68,7 +68,7 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     switch (m_eState)
     {
     case CUTTERPROJECTILE_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX(L"SpinBig"));
+        Animator()->Play(ANIMPREFIX("SpinBig"));
         m_vOriginPos = Transform()->GetWorldPos();
     }
     break;

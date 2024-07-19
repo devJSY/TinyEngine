@@ -27,6 +27,14 @@ void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::DetachObject(CGameObject* _Target)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::DETACH_OBJECT;
+    task.Param_1 = (DWORD_PTR)_Target;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject)
 {
     tTask task = {};
@@ -1323,8 +1331,10 @@ Vec2 LoadMeta(const wstring& _strMetaRelativePath)
     return retVec;
 }
 
-void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue, float columnWidth)
+bool ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float min, float max, float resetValue, float columnWidth)
 {
+    bool bDirtyflag = false;
+
     ImGui::PushStyleVar(ImGuiStyleVar_TabRounding, 4.f);
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.f);
     ImGui::PushStyleVar(ImGuiStyleVar_GrabRounding, 0.f);
@@ -1348,11 +1358,17 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
     if (ImGui::Button("X", buttonSize))
+    {
         values.x = resetValue;
+        bDirtyflag = true;
+    }
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f");
+    if (ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f"))
+    {
+        bDirtyflag = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -1360,11 +1376,17 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.3f, 0.8f, 0.3f, 1.0f});
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.2f, 0.7f, 0.2f, 1.0f});
     if (ImGui::Button("Y", buttonSize))
+    {
         values.y = resetValue;
+        bDirtyflag = true;
+    }
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
+    if (ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f"))
+    {
+        bDirtyflag = true;
+    }
     ImGui::PopItemWidth();
     ImGui::SameLine();
 
@@ -1372,11 +1394,17 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.2f, 0.35f, 0.9f, 1.0f});
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.1f, 0.25f, 0.8f, 1.0f});
     if (ImGui::Button("Z", buttonSize))
+    {
         values.z = resetValue;
+        bDirtyflag = true;
+    }
     ImGui::PopStyleColor(3);
 
     ImGui::SameLine();
-    ImGui::DragFloat("##Z", &values.z, speed, min, max, "%.2f");
+    if (ImGui::DragFloat("##Z", &values.z, speed, min, max, "%.2f"))
+    {
+        bDirtyflag = true;
+    }
     ImGui::PopItemWidth();
 
     ImGui::PopStyleVar();
@@ -1390,6 +1418,8 @@ void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed, float
     ImGui::PopStyleVar();
     ImGui::PopStyleVar();
     ImGui::PopStyleVar();
+
+    return bDirtyflag;
 }
 
 string ImGui_LabelPrefix(const char* const label, float alignment)

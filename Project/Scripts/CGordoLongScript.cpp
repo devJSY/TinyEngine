@@ -12,7 +12,7 @@ CGordoLongScript::~CGordoLongScript()
 
 void CGordoLongScript::begin()
 {
-    Animator()->Play(ANIMPREFIX(L"Wait"));
+    Animator()->Play(ANIMPREFIX("Wait"));
 }
 
 void CGordoLongScript::tick()

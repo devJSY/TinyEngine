@@ -27,7 +27,7 @@ void CKirbyAttackAirGuardEnd::tick()
 
 void CKirbyAttackAirGuardEnd::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"ButterflyScalesAttackEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("ButterflyScalesAttackEnd"), false, false, 1.5f);
     //@Effect 차지 파티클입자
 
     PLAYERCTRL->ClearVelocityY();

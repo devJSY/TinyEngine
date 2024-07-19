@@ -83,15 +83,15 @@ void CKabuScript::EnterState(KABU_STATE _state)
     switch (_state)
     {
     case KABU_STATE::Patrol: {
-        Animator()->Play(ANIMPREFIX(L"Wait"), false);
+        Animator()->Play(ANIMPREFIX("Wait"), false);
     }
     break;
     case KABU_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case KABU_STATE::Eaten: {
-        Animator()->Play(ANIMPREFIX(L"Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"));
 
         m_vDamageDir.Normalize();
         Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);

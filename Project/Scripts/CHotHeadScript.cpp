@@ -153,48 +153,48 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
     switch (m_eState)
     {
     case HOTHEAD_STATE::Idle: {
-        Animator()->Play(ANIMPREFIX(L"Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
     case HOTHEAD_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false);
     }
     break;
     case HOTHEAD_STATE::Aiming: {
-        Animator()->Play(ANIMPREFIX(L"Walk"), true, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
     case HOTHEAD_STATE::AttackShootStart: {
-        Animator()->Play(ANIMPREFIX(L"AttackShootStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackShootStart"), false);
     }
     break;
     case HOTHEAD_STATE::AttackShoot: {
         ProjectileAttack();
-        Animator()->Play(ANIMPREFIX(L"AttackShoot"), false);
+        Animator()->Play(ANIMPREFIX("AttackShoot"), false);
     }
     break;
     case HOTHEAD_STATE::AttackShootEnd: {
-        Animator()->Play(ANIMPREFIX(L"AttackShootEnd"), false);
+        Animator()->Play(ANIMPREFIX("AttackShootEnd"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameStart: {
-        Animator()->Play(ANIMPREFIX(L"AttackFlameStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameStart"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlame: {
         // TODO : 앞에 Attack Area 키기
         m_pFlameCol->SetEnabled(true);
-        Animator()->Play(ANIMPREFIX(L"AttackFlame"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlame"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameEnd: {
         // TODO : 앞에 Attack Area 끄기
         m_pFlameCol->SetEnabled(false);
-        Animator()->Play(ANIMPREFIX(L"AttackFlameEnd"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameEnd"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameRotStart: {
-        Animator()->Play(ANIMPREFIX(L"AttackFlameRotStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameRotStart"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameRot: {
@@ -202,21 +202,21 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
         m_fRotRadian = m_pFlameRotObject->Transform()->GetLocalRotation().y;
         // TODO : 앞에 Attack Area 키기
         m_pFlameRotCol->SetEnabled(true);
-        Animator()->Play(ANIMPREFIX(L"AttackFlameRot"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameRot"), false);
     }
     break;
     case HOTHEAD_STATE::AttackFlameRotEnd: {
         // TODO : 앞에 Attack Area 끄기
         m_pFlameRotCol->SetEnabled(false);
-        Animator()->Play(ANIMPREFIX(L"AttackFlameRotEnd"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameRotEnd"), false);
     }
     break;
     case HOTHEAD_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case HOTHEAD_STATE::Eaten: {
-        Animator()->Play(ANIMPREFIX(L"Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"));
 
         m_vDamageDir.Normalize();
         Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
@@ -225,7 +225,7 @@ void CHotHeadScript::EnterState(HOTHEAD_STATE _state)
     }
     break;
     case HOTHEAD_STATE::Death: {
-        Animator()->Play(ANIMPREFIX(L"Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
     case HOTHEAD_STATE::End:

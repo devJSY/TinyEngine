@@ -105,31 +105,31 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
     switch (_state)
     {
     case TACKLEENEMY_STATE::Idle: {
-        Animator()->Play(ANIMPREFIX(L"Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
     case TACKLEENEMY_STATE::Patrol: {
-        Animator()->Play(ANIMPREFIX(L"Walk"));
+        Animator()->Play(ANIMPREFIX("Walk"));
     }
     break;
     case TACKLEENEMY_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false);
     }
     break;
     case TACKLEENEMY_STATE::AttackPrev: {
-        Animator()->Play(ANIMPREFIX(L"RunStart"), false);
+        Animator()->Play(ANIMPREFIX("RunStart"), false);
     }
     break;
     case TACKLEENEMY_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX(L"Run"));
+        Animator()->Play(ANIMPREFIX("Run"));
     }
     break;
     case TACKLEENEMY_STATE::AttackAfter: {
-        Animator()->Play(ANIMPREFIX(L"Brake"), false);
+        Animator()->Play(ANIMPREFIX("Brake"), false);
     }
     break;
     case TACKLEENEMY_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case TACKLEENEMY_STATE::Eaten: {
@@ -137,7 +137,7 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
         Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
         Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
         Transform()->SetWorldRotation(vQuat);
-        Animator()->Play(ANIMPREFIX(L"Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
     case TACKLEENEMY_STATE::Death:

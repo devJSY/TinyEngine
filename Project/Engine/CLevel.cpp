@@ -75,11 +75,17 @@ void CLevel::finaltick()
 
 void CLevel::AddObject(CGameObject* _Object, int _LayerIdx, bool _bChildMove)
 {
+    if (nullptr == _Object || _LayerIdx < 0 || _LayerIdx >= LAYER_MAX)
+        return;
+
     m_arrLayer[_LayerIdx]->AddObject(_Object, _bChildMove);
 }
 
 void CLevel::AddObject(CGameObject* _Object, const wstring& _strLayerName, bool _bChildMove)
 {
+    if (nullptr == _Object)
+        return;
+
     CLayer* pLayer = GetLayer(_strLayerName);
     if (nullptr == pLayer)
         return;

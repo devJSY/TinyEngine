@@ -20,7 +20,7 @@ void CKirbyStuffedEat::tick()
 
 void CKirbyStuffedEat::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"StuffedLanding"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("StuffedLanding"), false);
 
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();

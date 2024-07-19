@@ -37,7 +37,7 @@ void CKirbyAttackAirGuardCharge::tick()
 
 void CKirbyAttackAirGuardCharge::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"ButterflyScalesCharge"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("ButterflyScalesCharge"), true, false, 1.5f);
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthOpen));
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);

@@ -29,10 +29,15 @@ void CEngineTestScript::tick()
 {
     if (KEY_TAP(KEY::K))
     {
-        GetOwner()->SetActive(!GetOwner()->IsActive());
+        DetachObject();
     }
 
-    CharacterControllerTest();
+    // if (KEY_TAP(KEY::L))
+    //{
+    //     GetOwner()->SetActive(!GetOwner()->IsActive());
+    // }
+
+    // CharacterControllerTest();
     // AnimatorTest();
     //  QuaternionExample();
 
@@ -266,6 +271,11 @@ void CEngineTestScript::QuaternionExample()
     }
 }
 
+void CEngineTestScript::DetachObject()
+{
+    GamePlayStatic::DetachObject(CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"TestObj"));
+}
+
 void CEngineTestScript::OnCollisionEnter(CCollider* _OtherCollider)
 {
 }
@@ -280,14 +290,17 @@ void CEngineTestScript::OnCollisionExit(CCollider* _OtherCollider)
 
 void CEngineTestScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnTriggerEnter : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnTriggerStay(CCollider* _OtherCollider)
 {
+    LOG(Log, "TriggerStay : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnTriggerExit(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnTriggerExit : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::SaveToLevelFile(FILE* _File)

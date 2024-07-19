@@ -32,7 +32,7 @@ void CKirbyStuffedIdle::tick()
 
 void CKirbyStuffedIdle::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"StuffedWait"));
+    PLAYER->Animator()->Play(ANIMPREFIX("StuffedWait"));
 }
 
 void CKirbyStuffedIdle::Exit()

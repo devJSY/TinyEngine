@@ -1100,6 +1100,9 @@
     <Filter Include="ShaderCode\Kirby\Characters\Monster\NormalEnemy">
       <UniqueIdentifier>{b1ce7628-f5b2-4fc2-b2d9-37e6cb80410c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Monster\Noddy">
+      <UniqueIdentifier>{82de1825-ebd5-48d8-8dd1-cbb92e02b601}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1367,6 +1370,9 @@
     </FxCompile>
     <FxCompile Include="KirbySwordMagmaPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
+    <FxCompile Include="NoddyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Monster\Noddy</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

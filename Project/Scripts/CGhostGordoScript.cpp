@@ -72,28 +72,28 @@ void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
     switch (_state)
     {
     case GHOSTGORDO_STATE::CloseEyeIdle: {
-        Animator()->Play(ANIMPREFIX(L"EyeCloseWait"), false);
+        Animator()->Play(ANIMPREFIX("EyeCloseWait"), false);
     }
     break;
     case GHOSTGORDO_STATE::OpenEyeIdle: {
-        Animator()->Play(ANIMPREFIX(L"Look"));
+        Animator()->Play(ANIMPREFIX("Look"));
     }
     break;
     case GHOSTGORDO_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"LowToHighSub"), false);
+        Animator()->Play(ANIMPREFIX("LowToHighSub"), false);
     }
     break;
     case GHOSTGORDO_STATE::Track: {
-        Animator()->Play(ANIMPREFIX(L"EyeOpenWait"), false);
+        Animator()->Play(ANIMPREFIX("EyeOpenWait"), false);
     }
     break;
     case GHOSTGORDO_STATE::OpenEye: {
-        Animator()->Play(ANIMPREFIX(L"EyeOpenStart"), false);
+        Animator()->Play(ANIMPREFIX("EyeOpenStart"), false);
     }
     break;
     case GHOSTGORDO_STATE::TrackAfter: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-        Animator()->Play(ANIMPREFIX(L"Look"), false);
+        Animator()->Play(ANIMPREFIX("Look"), false);
     }
     break;
     case GHOSTGORDO_STATE::End:
@@ -138,7 +138,7 @@ void CGhostGordoScript::OpenEyeIdle()
         }    
     }
 
-    Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX(L"EyeOpenWait")) : void();
+    Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX("EyeOpenWait")) : void();
 }
 
 void CGhostGordoScript::OpenEye()

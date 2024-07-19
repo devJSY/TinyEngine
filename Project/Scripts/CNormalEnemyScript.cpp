@@ -119,48 +119,48 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
     switch (_state)
     {
     case NORMALENEMY_STATE::Idle: {
-        Animator()->Play(ANIMPREFIX(L"Wait"), false);
+        Animator()->Play(ANIMPREFIX("Wait"), false);
     }
     break;
     case NORMALENEMY_STATE::Grooming: {
-        Animator()->Play(ANIMPREFIX(L"Grooming"));
+        Animator()->Play(ANIMPREFIX("Grooming"));
     }
     break;
     case NORMALENEMY_STATE::Patrol: {
-        Animator()->Play(ANIMPREFIX(L"Walk"), true, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
     case NORMALENEMY_STATE::Sleep: {
-        Animator()->Play(ANIMPREFIX(L"Sleep"));
+        Animator()->Play(ANIMPREFIX("Sleep"));
     }
     break;
     case NORMALENEMY_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false);
     }
     break;
     case NORMALENEMY_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX(L"Run"));
+        Animator()->Play(ANIMPREFIX("Run"));
     }
     break;
     case NORMALENEMY_STATE::AttackSuccessed: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
         m_pTargetObject = nullptr;
     }
     break;
     case NORMALENEMY_STATE::AttackFailed: {
-        Animator()->Play(ANIMPREFIX(L"Brake"), false, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Brake"), false, false, 1.5f);
     }
     break;
     case NORMALENEMY_STATE::AfterAttack: {
-        Animator()->Play(ANIMPREFIX(L"LookAround"), false);
+        Animator()->Play(ANIMPREFIX("LookAround"), false);
     }
     break;
     case NORMALENEMY_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
     break;
     case NORMALENEMY_STATE::Land: {
-        Animator()->Play(ANIMPREFIX(L"Landing"), false);
+        Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case NORMALENEMY_STATE::Eaten: {
@@ -168,7 +168,7 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
         Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
         Quat vQuat = Quat::LookRotation(m_vDamageDir, vUp);
         Transform()->SetWorldRotation(vQuat);
-        Animator()->Play(ANIMPREFIX(L"Damage"), true, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
     case NORMALENEMY_STATE::End:

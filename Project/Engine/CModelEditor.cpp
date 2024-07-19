@@ -23,8 +23,11 @@ CModelEditor::CModelEditor()
     , m_SelectedPreviewObj(nullptr)
     , m_bDrawWireFrame(false)
     , m_bMeshSaved(true)
+    , m_bMeshDataSaved(true)
+    , m_MeshDataPath()
     , m_vecDeferred{}
     , m_vecForward{}
+    , m_vecTransparent{}
     , m_ViewportRTTex(nullptr)
     , m_ViewportFloatRTTex(nullptr)
     , m_ViewportDSTex(nullptr)
@@ -256,6 +259,25 @@ void CModelEditor::render()
     ImGui::End();
 }
 
+void CModelEditor::render(const vector<tInstObj>& _vecObj)
+{
+    for (const tInstObj& pInstObj : _vecObj)
+    {
+        if (m_bDrawWireFrame)
+        {
+            Ptr<CMaterial> pMtrl = pInstObj.pObj->GetRenderComponent()->GetMaterial(pInstObj.iMtrlIdx);
+            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
+            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
+            pInstObj.pObj->GetRenderComponent()->render(pInstObj.iMtrlIdx);
+            pMtrl->GetShader()->SetRSType(originRSType);
+        }
+        else
+        {
+            pInstObj.pObj->GetRenderComponent()->render(pInstObj.iMtrlIdx);
+        }
+    }
+}
+
 void CModelEditor::DrawViewport()
 {
     ImGui::Begin("Viewport##ModelEditor");
@@ -320,21 +342,9 @@ void CModelEditor::DrawViewport()
     CDevice::GetInst()->SetViewport((float)m_ViewportFloatRTTex->GetWidth(), (float)m_ViewportFloatRTTex->GetHeight());
 
     m_SkyBoxObj->SkyBox()->UpdateData();
-    for (UINT i = 0; i < (UINT)m_vecDeferred.size(); ++i)
-    {
-        if (m_bDrawWireFrame)
-        {
-            Ptr<CMaterial> pMtrl = m_vecDeferred[i].pObj->GetRenderComponent()->GetMaterial(m_vecDeferred[i].iMtrlIdx);
-            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
-            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-            m_vecDeferred[i].pObj->GetRenderComponent()->render(m_vecDeferred[i].iMtrlIdx);
-            pMtrl->GetShader()->SetRSType(originRSType);
-        }
-        else
-        {
-            m_vecDeferred[i].pObj->GetRenderComponent()->render(m_vecDeferred[i].iMtrlIdx);
-        }
-    }
+
+    // Deferred
+    render(m_vecDeferred);
 
     // Light
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
@@ -349,25 +359,15 @@ void CModelEditor::DrawViewport()
     pMtrl->UpdateData();
     pMesh->render(0);
 
-    for (UINT i = 0; i < (UINT)m_vecForward.size(); ++i)
-    {
-        if (m_bDrawWireFrame)
-        {
-            Ptr<CMaterial> pMtrl = m_vecForward[i].pObj->GetRenderComponent()->GetMaterial(m_vecForward[i].iMtrlIdx);
-            RS_TYPE originRSType = pMtrl->GetShader()->GetRSType();
-            pMtrl->GetShader()->SetRSType(RS_TYPE::WIRE_FRAME);
-            m_vecForward[i].pObj->GetRenderComponent()->render(m_vecForward[i].iMtrlIdx);
-            pMtrl->GetShader()->SetRSType(originRSType);
-        }
-        else
-        {
-            m_vecForward[i].pObj->GetRenderComponent()->render(m_vecForward[i].iMtrlIdx);
-        }
-    }
+    // Forward
+    render(m_vecForward);
 
     // Skybox, Floor
     m_SkyBoxObj->render();
     m_FloorObj->render();
+
+    // Transparent
+    render(m_vecTransparent);
 
     // ToneMapping
     CONTEXT->OMSetRenderTargets(1, m_ViewportRTTex->GetRTV().GetAddressOf(), m_ViewportDSTex->GetDSV().Get());
@@ -405,6 +405,7 @@ void CModelEditor::SortObject()
 {
     m_vecDeferred.clear();
     m_vecForward.clear();
+    m_vecTransparent.clear();
 
     if (nullptr == m_ModelObj)
         return;
@@ -459,6 +460,7 @@ void CModelEditor::SortObject()
             case SHADER_DOMAIN::DOMAIN_DECAL:
                 break;
             case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
+                m_vecTransparent.push_back(tInstObj{pObject, iMtrl});
                 break;
             case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
                 break;
@@ -579,6 +581,8 @@ void CModelEditor::render_ImGizmo()
         m_SelectedBoneSocket->RelativePosition -= vPosOffset;
         m_SelectedBoneSocket->RelativeRotation -= vRotOffset;
         m_SelectedBoneSocket->RelativeScale -= vScaleOffset;
+
+        m_bMeshSaved = false;
     }
 }
 
@@ -607,7 +611,9 @@ void CModelEditor::DrawDetails()
             SetModel(CAssetMgr::GetInst()->FindAsset<CMeshData>(ToWstring(ModelName)));
         }
 
-        if (ImGui_AlignButton("Load Model", 1.f))
+        ImGui::Separator();
+
+        if (ImGui_AlignButton("Load Model", 0.f))
         {
             std::filesystem::path filePath = OpenFileDialog(L"fbx\\", TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
 
@@ -629,6 +635,52 @@ void CModelEditor::DrawDetails()
                     CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
                 }
             }
+        }
+
+        if (nullptr != m_ModelObj)
+        {
+            ImGui::SameLine();
+
+            if (m_bMeshDataSaved)
+            {
+                ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_Button));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered));
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImGui::GetStyleColorVec4(ImGuiCol_ButtonActive));
+            }
+            else
+            {
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.9f, 0.2f, 0.2f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{0.8f, 0.1f, 0.15f, 1.0f});
+            }
+
+            if (ImGui_AlignButton("Save MeshData##ModelEditorDetails", 1.f))
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(m_MeshDataPath);
+
+                pMeshData->m_pMesh = m_ModelObj->MeshRender()->GetMesh();
+                UINT MtrlCount = m_ModelObj->MeshRender()->GetMtrlCount();
+                pMeshData->m_vecMtrl.clear();
+                pMeshData->m_vecMtrl.resize(MtrlCount);
+
+                for (UINT i = 0; i < MtrlCount; ++i)
+                {
+                    pMeshData->m_vecMtrl[i] = m_ModelObj->MeshRender()->GetMaterial(i);
+                }
+
+                if (S_OK == pMeshData->Save(m_MeshDataPath))
+                {
+                    MessageBox(nullptr, L"MeshData 저장 성공!", L"Save MeshData", MB_ICONASTERISK);
+                    m_bMeshDataSaved = true;
+                }
+                else
+                {
+                    MessageBox(nullptr, L"MeshData 저장 실패!", L"Save MeshData", MB_ICONHAND);
+                }
+            }
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
+            ImGui::PopStyleColor();
         }
 
         ImGui::TreePop();
@@ -657,6 +709,7 @@ void CModelEditor::DrawDetails()
                 m_SelectedBone = nullptr;
                 m_SelectedBoneSocket = nullptr;
                 m_SelectedPreviewObj = nullptr;
+                m_bMeshDataSaved = false;
 
                 // 자식 오브젝트 삭제
                 std::stack<CGameObject*> stackChild;
@@ -768,6 +821,7 @@ void CModelEditor::DrawDetails()
                     if (ImGui_ComboUI(ImGui_LabelPrefix(ToString(pMesh->GetIBName(i)).c_str()).c_str(), CurMtrlname, mapMtrl))
                     {
                         m_ModelObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(ToWstring(CurMtrlname)), i);
+                        m_bMeshDataSaved = false;
                     }
 
                     string MtrlEditorStr = "Material ";
@@ -852,15 +906,24 @@ void CModelEditor::DrawDetails()
             ImGui_InputText("Bone Name",
                             ToString(m_ModelObj->Animator()->GetSkeletalMesh()->GetBones()->at(m_SelectedBoneSocket->BoneIndex).strBoneName).c_str());
 
-            ImGui_DrawVec3Control("Relative Position", m_SelectedBoneSocket->RelativePosition, 0.01f, 0.f, 0.f, 0.f, 200.f);
+            if (ImGui_DrawVec3Control("Relative Position", m_SelectedBoneSocket->RelativePosition, 0.01f, 0.f, 0.f, 0.f, 200.f))
+            {
+                m_bMeshSaved = false;
+            }
 
             Vec3 rot = m_SelectedBoneSocket->RelativeRotation;
             rot.ToDegree();
-            ImGui_DrawVec3Control("Relative Rotation", rot, DirectX::XMConvertToRadians(15.f), 0.f, 0.f, 0.f, 200.f);
+            if (ImGui_DrawVec3Control("Relative Rotation", rot, DirectX::XMConvertToRadians(15.f), 0.f, 0.f, 0.f, 200.f))
+            {
+                m_bMeshSaved = false;
+            }
             rot.ToRadian();
             m_SelectedBoneSocket->RelativeRotation = rot;
 
-            ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 0.01f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f);
+            if (ImGui_DrawVec3Control("Relative Scale", m_SelectedBoneSocket->RelativeScale, 0.01f, 1.f, D3D11_FLOAT32_MAX, 1.f, 200.f))
+            {
+                m_bMeshSaved = false;
+            }
 
             ImGui::TreePop();
         }
@@ -1399,12 +1462,15 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
     m_SelectedBoneSocket = nullptr;
     m_SelectedPreviewObj = nullptr;
     m_bMeshSaved = true;
+    m_bMeshDataSaved = true;
 
     if (nullptr == _MeshData)
     {
+        m_MeshDataPath.clear();
         return;
     }
 
+    m_MeshDataPath = _MeshData->GetKey();
     m_ModelObj = _MeshData->InstantiateEx();
 
     m_ModelObj->Transform()->SetMobilityType(MOBILITY_TYPE::MOVABLE);

@@ -118,65 +118,65 @@ void CSirKibbleScript::EnterState(SIRKIBBLE_STATE _state)
     switch (m_eState)
     {
     case SIRKIBBLE_STATE::Idle: {
-        Animator()->Play(ANIMPREFIX(L"Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
     case SIRKIBBLE_STATE::Find: {
-        Animator()->Play(ANIMPREFIX(L"Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false);
     }
     break;
     case SIRKIBBLE_STATE::FindWait: {
-        Animator()->Play(ANIMPREFIX(L"FindWait"));
+        Animator()->Play(ANIMPREFIX("FindWait"));
     }
     break;
     case SIRKIBBLE_STATE::AirCutterJumpStart: {
-        Animator()->Play(ANIMPREFIX(L"AirCutterJumpStart"), false);
+        Animator()->Play(ANIMPREFIX("AirCutterJumpStart"), false);
     }
     break;
     case SIRKIBBLE_STATE::AirCutterJump: {
         Rigidbody()->AddForce(Vec3(0.f, 1.f, 0.f) * GetCurInfo().JumpPower, ForceMode::Impulse);
-        Animator()->Play(ANIMPREFIX(L"AirCutterJump"), false);
+        Animator()->Play(ANIMPREFIX("AirCutterJump"), false);
     }
     break;
     case SIRKIBBLE_STATE::AirCutterThrow: {
         Rigidbody()->SetUseGravity(false);
-        Animator()->Play(ANIMPREFIX(L"AirCutterThrow"), false);
+        Animator()->Play(ANIMPREFIX("AirCutterThrow"), false);
         ProjectileAttack();
     }
     break;
     case SIRKIBBLE_STATE::CutterThrowStart: {
-        Animator()->Play(ANIMPREFIX(L"CutterThrowStart"), false);
+        Animator()->Play(ANIMPREFIX("CutterThrowStart"), false);
     }
     break;
     case SIRKIBBLE_STATE::CutterThrowStartWait: {
-        Animator()->Play(ANIMPREFIX(L"CutterThrowStartWait"));
+        Animator()->Play(ANIMPREFIX("CutterThrowStartWait"));
         m_pTargetObj = GetTarget();
     }
     break;
     case SIRKIBBLE_STATE::CutterThrow: {
-        Animator()->Play(ANIMPREFIX(L"CutterThrow"), false);
+        Animator()->Play(ANIMPREFIX("CutterThrow"), false);
         ProjectileAttack();
     }
     break;
     case SIRKIBBLE_STATE::CutterCatch: {
         m_pAttackPoint->BoxCollider()->SetEnabled(false);
-        Animator()->Play(ANIMPREFIX(L"CutterCatch"), false);
+        Animator()->Play(ANIMPREFIX("CutterCatch"), false);
     }
     break;
     case SIRKIBBLE_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case SIRKIBBLE_STATE::Eaten: {
-        Animator()->Play(ANIMPREFIX(L"Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
     case SIRKIBBLE_STATE::Fall: {
-        Animator()->Play(ANIMPREFIX(L"Fall"));
+        Animator()->Play(ANIMPREFIX("Fall"));
     }
     break;
     case SIRKIBBLE_STATE::Land: {
-        Animator()->Play(ANIMPREFIX(L"Landing"), false);
+        Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case SIRKIBBLE_STATE::Death:
