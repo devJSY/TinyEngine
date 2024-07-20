@@ -40,3 +40,4 @@ CAttackAreaScript
 CDeformObjectScript
 CKirbyHatBlade
 CKirbyCutterBullet
+CMonsterTest

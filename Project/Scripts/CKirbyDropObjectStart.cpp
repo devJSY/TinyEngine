@@ -21,6 +21,7 @@ void CKirbyDropObjectStart::tick()
     case ObjectCopyType::LIGHT: {
         if (PLAYER->Animator()->IsFinish())
         {
+            PLAYERFSM->SetGlobalState(false);
             ChangeState(L"DROP_OBJECT");
         }
     }
@@ -30,6 +31,7 @@ void CKirbyDropObjectStart::tick()
 
 void CKirbyDropObjectStart::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetCurObject()->DropObjectStartEnter();
 }
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CKirbyBackJump.h"
+#include "CKirbyUnitScript.h"
 
 CKirbyBackJump::CKirbyBackJump()
     : m_JumpPower(8.f)
@@ -56,6 +57,7 @@ void CKirbyBackJump::Enter()
     }
 
     Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
+    PLAYERFSM->SetKnockBackDir(Vec3());
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
