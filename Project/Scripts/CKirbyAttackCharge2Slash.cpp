@@ -31,6 +31,7 @@ void CKirbyAttackCharge2Slash::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
+    PLAYERFSM->SetInvincible(true);
     m_PlayTime = PLAYTIME;
 }
 
@@ -39,4 +40,6 @@ void CKirbyAttackCharge2Slash::Exit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }
