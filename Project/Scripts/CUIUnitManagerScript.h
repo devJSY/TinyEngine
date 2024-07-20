@@ -11,8 +11,8 @@ private:
     vector<UnitTask> m_vUnitTasks;
 
 public:
-    virtual UINT SaveToLevelFile(FILE* _File) override{};
-    virtual UINT LoadFromLevelFile(FILE* _File) override{};
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
     virtual void begin() override;

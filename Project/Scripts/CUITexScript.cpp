@@ -38,24 +38,36 @@ void CUITexScript::tick()
     }
 }
 
-void CUITexScript::SaveToLevelFile(FILE* _File)
+UINT CUITexScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_iCurTexCount, sizeof(UINT), 1, _File);
 
-    for (UINT i = 0;i < m_iCurTexCount;i++)
+    for (UINT i = 0; i < m_iCurTexCount; i++)
     {
-        SaveWStringToFile(ToWstring(m_vTexName[i]), _File);
+        MemoryByte += SaveWStringToFile(ToWstring(m_vTexName[i]), _File);
     }
+
+    MemoryByte += sizeof(UINT);
+
+    return MemoryByte;
 }
 
-void CUITexScript::LoadFromLevelFile(FILE* _File)
+UINT CUITexScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_iCurTexCount, sizeof(UINT), 1, _File);
 
     for (UINT i = 0; i < m_iCurTexCount; i++)
     {
         wstring _TexName = L"";
-        LoadWStringFromFile(_TexName, _File);
+        MemoryByte += LoadWStringFromFile(_TexName, _File);
         m_vTexName[i] = ToString(_TexName);
     }
+
+    MemoryByte += sizeof(UINT);
+
+    return MemoryByte;
 }

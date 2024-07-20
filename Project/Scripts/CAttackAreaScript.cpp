@@ -16,14 +16,22 @@ void CAttackAreaScript::begin()
 {
 }
 
-void CAttackAreaScript::SaveToLevelFile(FILE* _File)
+UINT CAttackAreaScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterATKScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterATKScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CAttackAreaScript::LoadFromLevelFile(FILE* _File)
+UINT CAttackAreaScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterATKScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterATKScript::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }
 
 // Body Collider
@@ -34,8 +42,8 @@ void CAttackAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (nullptr == pObj)
         return;
 
-    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() 
-        ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(m_HitInfo): void();
+    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(m_HitInfo)
+                                                                               : void();
 }
 
 void CAttackAreaScript::OnTriggerExit(CCollider* _OtherCollider)

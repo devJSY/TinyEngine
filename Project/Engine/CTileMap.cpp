@@ -217,7 +217,7 @@ UINT CTileMap::SaveToLevelFile(FILE* _File)
     MemoryByte += sizeof(Vec2);
     MemoryByte += sizeof(Vec2);
     MemoryByte += sizeof(size_t);
-    MemoryByte += sizeof(tTileInfo) * InfoCount;
+    MemoryByte += UINT(sizeof(tTileInfo) * InfoCount);
 
     return MemoryByte;
 }
@@ -248,7 +248,7 @@ UINT CTileMap::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(Vec2);
     MemoryByte += sizeof(Vec2);
     MemoryByte += sizeof(size_t);
-    MemoryByte += sizeof(tTileInfo) * InfoCount;
+    MemoryByte += UINT(sizeof(tTileInfo) * InfoCount);
 
     return MemoryByte;
 }

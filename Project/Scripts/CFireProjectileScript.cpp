@@ -121,16 +121,30 @@ void CFireProjectileScript::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
 
-void CFireProjectileScript::SaveToLevelFile(FILE* _File)
+UINT CFireProjectileScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterATKScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterATKScript::SaveToLevelFile(_File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fFallSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CFireProjectileScript::LoadFromLevelFile(FILE* _File)
+UINT CFireProjectileScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterATKScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterATKScript::LoadFromLevelFile(_File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fFallSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

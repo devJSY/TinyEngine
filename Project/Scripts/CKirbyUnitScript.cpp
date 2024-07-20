@@ -75,24 +75,32 @@ void CKirbyUnitScript::AttackReward()
     }
 }
 
-void CKirbyUnitScript::SaveToLevelFile(FILE* _File)
+UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
 {
-    CUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CKirbyUnitScript::LoadFromLevelFile(FILE* _File)
+UINT CKirbyUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    CUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
 
-    //if (m_CurInfo.MAXHP == 0.f)
+    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
+
+    // if (m_CurInfo.MAXHP == 0.f)
     //{
-    //UnitInfo KirbyInfo = {
-    //    100.f, // HP
-    //    100.f, // MaxHP
-    //    10.f,  // Speed
-    //    10.f,  // Rotation Speed
-    //    10.f,  // JumpPower
-    //};
-    //    SetInitInfo(KirbyInfo);
-    //}
+    // UnitInfo KirbyInfo = {
+    //     100.f, // HP
+    //     100.f, // MaxHP
+    //     10.f,  // Speed
+    //     10.f,  // Rotation Speed
+    //     10.f,  // JumpPower
+    // };
+    //     SetInitInfo(KirbyInfo);
+    // }
+
+    return MemoryByte;
 }

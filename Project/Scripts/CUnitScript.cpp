@@ -37,7 +37,7 @@ void CUnitScript::tick()
     {
         m_CurInfo.HP = 0.f;
     }
-    
+
     if (m_CurInfo.HP > m_CurInfo.MAXHP)
     {
         m_CurInfo.HP = m_CurInfo.MAXHP;
@@ -87,13 +87,24 @@ void CUnitScript::DamageProc()
     m_CurInfo.HP -= CurDamage;
 }
 
-void CUnitScript::SaveToLevelFile(FILE* _File)
+UINT CUnitScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    MemoryByte += sizeof(UnitInfo);
+
+    return MemoryByte;
 }
 
-void CUnitScript::LoadFromLevelFile(FILE* _File)
+UINT CUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    UINT MemoryByte = 0;
+
     m_CurInfo = m_InitInfo;
+    fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+
+    MemoryByte += sizeof(UnitInfo);
+
+    return MemoryByte;
 }

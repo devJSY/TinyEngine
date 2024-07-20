@@ -308,28 +308,36 @@ UINT CAnim2D::SaveToLevelFile(FILE* _File)
     MemoryByte += SaveAssetRef(m_AtlasTex, _File);
 
     MemoryByte += sizeof(size_t);
-    MemoryByte += sizeof(tAnim2DFrm) * FrameCount;
+    MemoryByte += UINT(sizeof(tAnim2DFrm) * FrameCount);
     MemoryByte += sizeof(bool);
-    
+
     return MemoryByte;
 }
 
 UINT CAnim2D::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     // 애니메이션 이름 로드
     wstring name;
-    LoadWStringFromFile(name, _File);
+    MemoryByte += LoadWStringFromFile(name, _File);
     SetName(name);
 
     // 모든 프레임 정보 로드
     size_t FrameCount = 0;
     fread(&FrameCount, sizeof(size_t), 1, _File);
     m_vecFrm.resize(FrameCount);
-    fread(m_vecFrm.data(), sizeof(tAnim2DFrm), m_vecFrm.size(), _File);
+    fread(m_vecFrm.data(), sizeof(tAnim2DFrm), FrameCount, _File);
 
     // 백그라운드 사용여부 로드
     fread(&m_bUseBackGround, sizeof(bool), 1, _File);
 
     // 참조하던 텍스쳐 정보 로드
-    LoadAssetRef(m_AtlasTex, _File);
+    MemoryByte += LoadAssetRef(m_AtlasTex, _File);
+
+    MemoryByte += sizeof(size_t);
+    MemoryByte += UINT(sizeof(tAnim2DFrm) * FrameCount);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

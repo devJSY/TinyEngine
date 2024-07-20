@@ -1096,10 +1096,15 @@ UINT LoadWStringFromFile(wstring& _str, FILE* _File)
 
     UINT iLen = 0;
     fread(&iLen, sizeof(UINT), 1, _File);
-    fread(szBuffer, sizeof(wchar_t), iLen, _File);
-
     MemoryByte += sizeof(UINT);
-    MemoryByte += sizeof(wchar_t) * iLen;
+
+    // SaveLoad 예외처리 32767자를 넘어가는 문자열은 Read하지 않는다.
+    if (32767 > iLen)
+    {
+        fread(szBuffer, sizeof(wchar_t), iLen, _File);
+        _str = szBuffer;
+        MemoryByte += sizeof(wchar_t) * iLen;
+    }
 
     return MemoryByte;
 }

@@ -46,7 +46,7 @@ void CSpringArmCameraScript::tick()
 
     Vec3 RadRot = Vec3(XMConvertToRadians(m_ArmRotation.x), XMConvertToRadians(m_ArmRotation.y), XMConvertToRadians(m_ArmRotation.z));
     Vec3 TargetPos = GetOwner()->GetParent()->Transform()->GetLocalPos() + m_TargetOffset;
-    
+
     // get spring arm world matrix
     Matrix matSpringRotX = XMMatrixRotationX(RadRot.x);
     Matrix matSpringRotY = XMMatrixRotationY(RadRot.y);
@@ -58,7 +58,7 @@ void CSpringArmCameraScript::tick()
     const static Matrix matCamRotX = XMMatrixRotationX(0.f);
     const static Matrix matCamRotY = XMMatrixRotationY(0.f);
     const static Matrix matCamRotZ = XMMatrixRotationZ(0.f);
-    Matrix matCamTranslation = XMMatrixTranslation(m_CameraOffset.x, m_CameraOffset.y, m_CameraOffset .z- m_ArmLength);
+    Matrix matCamTranslation = XMMatrixTranslation(m_CameraOffset.x, m_CameraOffset.y, m_CameraOffset.z - m_ArmLength);
     Matrix matCamTransform = matCamRotX * matCamRotY * matCamRotZ * matCamTranslation;
 
     matCamTransform *= matSpringTransform;
@@ -78,8 +78,10 @@ void CSpringArmCameraScript::tick()
     }
 }
 
-void CSpringArmCameraScript::SaveToLevelFile(FILE* _File)
+UINT CSpringArmCameraScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_CameraOffset, 1, sizeof(Vec3), _File);
     fwrite(&m_TargetOffset, 1, sizeof(Vec3), _File);
     fwrite(&m_ArmRotation, 1, sizeof(Vec3), _File);
@@ -87,10 +89,22 @@ void CSpringArmCameraScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_LagSpeed, 1, sizeof(float), _File);
     fwrite(&m_LagMaxDistance, 1, sizeof(float), _File);
     fwrite(&m_bUnableLag, 1, sizeof(bool), _File);
+
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CSpringArmCameraScript::LoadFromLevelFile(FILE* _File)
+UINT CSpringArmCameraScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_CameraOffset, 1, sizeof(Vec3), _File);
     fread(&m_TargetOffset, 1, sizeof(Vec3), _File);
     fread(&m_ArmRotation, 1, sizeof(Vec3), _File);
@@ -98,4 +112,14 @@ void CSpringArmCameraScript::LoadFromLevelFile(FILE* _File)
     fread(&m_LagSpeed, 1, sizeof(float), _File);
     fread(&m_LagMaxDistance, 1, sizeof(float), _File);
     fread(&m_bUnableLag, 1, sizeof(bool), _File);
+
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

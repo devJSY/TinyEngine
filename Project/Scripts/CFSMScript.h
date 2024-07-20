@@ -6,11 +6,11 @@ class CState;
 class CFSMScript : public CScript
 {
 private:
-    map<wstring, CState*>           m_mapState; 
-    CState*                         m_CurState; 
-    CState*                         m_PrevState;
+    map<wstring, CState*> m_mapState;
+    CState* m_CurState;
+    CState* m_PrevState;
 
-    bool                            m_bGlobalState;
+    bool m_bGlobalState;
 
 public:
     virtual void begin() override = 0;
@@ -31,10 +31,9 @@ public:
     CState* GetPrevState() { return m_PrevState; }
     bool IsGlobalState() { return m_bGlobalState; }
 
-
 public:
-    virtual UINT SaveToLevelFile(FILE* _File) {}
-    virtual UINT LoadFromLevelFile(FILE* _File) {}
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
     CFSMScript* Clone() = 0;
