@@ -21,6 +21,7 @@ void CKirbyChangeObjectEnd::tick()
     case ObjectCopyType::LIGHT: {
         if (PLAYER->Animator()->IsFinish())
         {
+            PLAYERFSM->SetGlobalState(false);
             ChangeState(L"IDLE");
         }
     }
@@ -30,6 +31,7 @@ void CKirbyChangeObjectEnd::tick()
 
 void CKirbyChangeObjectEnd::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetCurObject()->ChangeObjectEndEnter();
 }
 

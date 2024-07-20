@@ -52,6 +52,9 @@ private:
     bool                    m_bStuffed;
 
     Vec3                    m_KnockbackDir;
+    float                   m_YPressedTime;
+    float                   m_DropCopyTime;
+    bool                    m_bDroppable;
 
     // 무적 상태
     float                   m_InvincibleAcc;
@@ -64,18 +67,11 @@ private:
     float                   m_EmissiveDuration;
     bool                    m_bEmissive;
 
-
-
-
     bool                    m_bCanBladeAttack;
 
     // Fire Gliding Timer
     float                   m_GlidingDuration;
     float                   m_GlidingAcc;
-
-    float                   m_YPressedTime;
-    float                   m_DropCopyTime;
-    bool                    m_bDroppable;
 
 public:
     void begin() override;
@@ -138,7 +134,6 @@ public:
     bool IsInvincible() const { return m_bInvincible; }
     bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
-
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

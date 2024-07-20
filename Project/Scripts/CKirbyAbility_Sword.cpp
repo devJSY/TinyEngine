@@ -103,7 +103,7 @@ void CKirbyAbility_Sword::AttackCombo1()
 void CKirbyAbility_Sword::AttackCombo1Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Attack2"), false, false, 1.5f);
-    //@TODO Effect 재생
+    //@Effect 재생
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
@@ -152,6 +152,7 @@ void CKirbyAbility_Sword::AttackCombo2Enter()
     PLAYERCTRL->LockJump();
 
     //@Effect Effect 재생
+    PLAYERFSM->SetInvincible(true);
     m_bFrmEnter = true;
 }
 
@@ -162,6 +163,8 @@ void CKirbyAbility_Sword::AttackCombo2Exit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
@@ -182,12 +185,16 @@ void CKirbyAbility_Sword::AttackCharge1Enter()
 
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::AttackCharge1Exit()
 {
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // Start (charge)
@@ -225,12 +232,16 @@ void CKirbyAbility_Sword::AttackCharge1EndEnter()
 
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::AttackCharge1EndExit()
 {
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
@@ -365,6 +376,8 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndExit()
@@ -374,10 +387,12 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
-// Jump Attack
+// Jump
 // ===============
 // 점프 
 void CKirbyAbility_Sword::JumpFallEnter()
@@ -416,6 +431,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->LockDirection();
 
+    PLAYERFSM->SetInvincible(true);
     m_bFrmEnter = true;
 }
 
@@ -423,6 +439,8 @@ void CKirbyAbility_Sword::JumpAttackExit()
 {
     PLAYERCTRL->SetGravity(m_PrevGravity);
     PLAYERCTRL->UnlockDirection();
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // Start
@@ -501,6 +519,8 @@ void CKirbyAbility_Sword::GuardRunEnter()
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(15.f);
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::GuardRunExit()
@@ -513,6 +533,8 @@ void CKirbyAbility_Sword::GuardRunExit()
     PLAYERCTRL->UnlockJump();
     Vec3 vel = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetVelocity(vel);
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
@@ -614,8 +636,6 @@ void CKirbyAbility_Sword::ChangeAbility()
 void CKirbyAbility_Sword::ChangeAbilityEnter()
 {
     // create hat
-    //Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\MorphoHat.mdat");
-    //CGameObject* pInstObj = pMeshData->Instantiate();
     CGameObject* pInstObj = m_Hat->Instantiate();
     PLAYERFSM->SetCurHat(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");

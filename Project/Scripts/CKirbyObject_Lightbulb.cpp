@@ -128,6 +128,7 @@ void CKirbyObject_Lightbulb::AttackEnter()
 
     PLAYERCTRL->SetSpeed(m_BrightSpeed);
     PLAYERCTRL->SetRotSpeed(m_BrightSpeed);
+    PLAYERCTRL->LockMove();
 
     PLAYERFSM->SetAttackEvent(true);
 
@@ -137,6 +138,7 @@ void CKirbyObject_Lightbulb::AttackEnter()
 void CKirbyObject_Lightbulb::AttackExit()
 {
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
+    PLAYERCTRL->UnlockMove();
 }
 
 // End
@@ -149,6 +151,7 @@ void CKirbyObject_Lightbulb::AttackEndEnter()
     // Light끄기
     PLAYER->Animator()->Play(ANIMPREFIX("LightOff"), false);
 
+    PLAYERCTRL->LockMove();
     PLAYERCTRL->SetSpeed(m_Speed);
     PLAYERCTRL->SetRotSpeed(m_Speed);
 
@@ -157,6 +160,8 @@ void CKirbyObject_Lightbulb::AttackEndEnter()
 
 void CKirbyObject_Lightbulb::AttackEndExit()
 {
+    PLAYERCTRL->UnlockMove();
+
     PLAYERFSM->ClearChargeAccTime();
     PLAYERFSM->SetAttackEvent(false);
 }
@@ -173,7 +178,7 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
 
     UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
     PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    //PLAYERCTRL->SetRotSpeed(PlayerInfo.RotSpeed); //@TODO 머지후변경
+    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
     PLAYERCTRL->AddVelocity(Vec3(0.f, 3.5f, 0.f));
 
     // 포인트라이트
