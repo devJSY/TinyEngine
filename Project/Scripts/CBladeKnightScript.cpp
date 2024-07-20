@@ -676,18 +676,34 @@ void CBladeKnightScript::OnCollisionExit(CCollider* _OtherCollider)
 {
 }
 
-void CBladeKnightScript::SaveToLevelFile(FILE* _File)
+UINT CBladeKnightScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
     fwrite(&m_StepPower, 1, sizeof(float), _File);
     fwrite(&m_AttackRange, 1, sizeof(float), _File);
     fwrite(&m_bTraceUnit, 1, sizeof(bool), _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CBladeKnightScript::LoadFromLevelFile(FILE* _File)
+UINT CBladeKnightScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
     fread(&m_StepPower, 1, sizeof(float), _File);
     fread(&m_AttackRange, 1, sizeof(float), _File);
     fread(&m_bTraceUnit, 1, sizeof(bool), _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

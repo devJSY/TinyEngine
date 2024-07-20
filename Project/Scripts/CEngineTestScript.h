@@ -5,6 +5,10 @@ class CEngineTestScript : public CScript
 {
 private:
     float m_Power;
+    Vec2 TestParam1;
+    Vec4 TestParam2;
+    wstring TestParam3;
+    Vec3 TestParam4;
 
 public:
     virtual void begin() override;
@@ -26,8 +30,8 @@ private:
     virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CEngineTestScript);
 

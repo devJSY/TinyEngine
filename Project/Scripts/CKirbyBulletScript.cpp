@@ -55,3 +55,17 @@ void CKirbyBulletScript::SetEndAnim(wstring _Key)
         }
     }
 }
+
+UINT CKirbyBulletScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CKirbyBulletScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}

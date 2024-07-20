@@ -192,15 +192,17 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
     m_vecTileInfo[idx].ImageIndex = _ImgIdx;
 }
 
-void CTileMap::SaveToLevelFile(FILE* _File)
+UINT CTileMap::SaveToLevelFile(FILE* _File)
 {
-    CRenderComponent::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::SaveToLevelFile(_File);
 
     fwrite(&m_iTileCountX, sizeof(UINT), 1, _File);
     fwrite(&m_iTileCountY, sizeof(UINT), 1, _File);
     fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
-    SaveAssetRef(m_TileAtlas, _File);
+    MemoryByte += SaveAssetRef(m_TileAtlas, _File);
 
     fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
     fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
@@ -208,17 +210,29 @@ void CTileMap::SaveToLevelFile(FILE* _File)
     size_t InfoCount = m_vecTileInfo.size();
     fwrite(&InfoCount, sizeof(size_t), 1, _File);
     fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(size_t);
+    MemoryByte += UINT(sizeof(tTileInfo) * InfoCount);
+
+    return MemoryByte;
 }
 
-void CTileMap::LoadFromLevelFile(FILE* _File)
+UINT CTileMap::LoadFromLevelFile(FILE* _File)
 {
-    CRenderComponent::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::LoadFromLevelFile(_File);
 
     fread(&m_iTileCountX, sizeof(UINT), 1, _File);
     fread(&m_iTileCountY, sizeof(UINT), 1, _File);
     fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
-    LoadAssetRef(m_TileAtlas, _File);
+    MemoryByte += LoadAssetRef(m_TileAtlas, _File);
 
     fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
     fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
@@ -227,4 +241,14 @@ void CTileMap::LoadFromLevelFile(FILE* _File)
     fread(&InfoCount, sizeof(size_t), 1, _File);
     m_vecTileInfo.resize(InfoCount);
     fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(size_t);
+    MemoryByte += UINT(sizeof(tTileInfo) * InfoCount);
+
+    return MemoryByte;
 }

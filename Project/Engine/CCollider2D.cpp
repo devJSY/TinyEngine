@@ -199,18 +199,34 @@ void CCollider2D::OnTriggerExit(CCollider2D* _OtherCollider)
         vecScript[i]->OnTriggerExit(_OtherCollider);
 }
 
-void CCollider2D::SaveToLevelFile(FILE* _File)
+UINT CCollider2D::SaveToLevelFile(FILE* _File)
 {
-    SaveAssetRef(m_Mtrl, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += SaveAssetRef(m_Mtrl, _File);
     fwrite(&m_Offset, sizeof(Vec2), 1, _File);
     fwrite(&m_bTrigger, sizeof(bool), 1, _File);
     fwrite(&m_bEnabled, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CCollider2D::LoadFromLevelFile(FILE* _File)
+UINT CCollider2D::LoadFromLevelFile(FILE* _File)
 {
-    LoadAssetRef(m_Mtrl, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += LoadAssetRef(m_Mtrl, _File);
     fread(&m_Offset, sizeof(Vec2), 1, _File);
     fread(&m_bTrigger, sizeof(bool), 1, _File);
     fread(&m_bEnabled, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

@@ -91,40 +91,50 @@ int GetSizeofFormat(DXGI_FORMAT _eFormat);
 // =====================================
 // Save / Load
 // =====================================
-void SaveWStringToFile(const wstring& _str, FILE* _File);
-void LoadWStringFromFile(wstring& _str, FILE* _File);
+UINT SaveWStringToFile(const wstring& _str, FILE* _File);
+UINT LoadWStringFromFile(wstring& _str, FILE* _File);
 
 #include "CAssetMgr.h"
 
 template <typename T>
-void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
+UINT SaveAssetRef(Ptr<T> _Asset, FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     bool bAssetExist = false;
     _Asset == nullptr ? bAssetExist = false : bAssetExist = true;
 
     fwrite(&bAssetExist, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
 
     if (bAssetExist)
     {
-        SaveWStringToFile(_Asset->GetKey(), _File);
-        SaveWStringToFile(_Asset->GetRelativePath(), _File);
+        MemoryByte += SaveWStringToFile(_Asset->GetKey(), _File);
+        MemoryByte += SaveWStringToFile(_Asset->GetRelativePath(), _File);
     }
+
+    return MemoryByte;
 }
 
 template <typename T>
-void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
+UINT LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     bool bAssetExist = false;
     fread(&bAssetExist, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
 
     if (bAssetExist)
     {
         wstring strKey, strRelativePath;
-        LoadWStringFromFile(strKey, _File);
-        LoadWStringFromFile(strRelativePath, _File);
+        MemoryByte += LoadWStringFromFile(strKey, _File);
+        MemoryByte += LoadWStringFromFile(strRelativePath, _File);
 
         _Asset = CAssetMgr::GetInst()->Load<T>(strKey, strRelativePath);
     }
+
+    return MemoryByte;
 }
 
 wstring OpenFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환

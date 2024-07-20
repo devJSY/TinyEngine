@@ -31,13 +31,27 @@ void CUIManagerScript::UIManagerScriptInit()
     }
 }
 
+UINT CUIManagerScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CUIManagerScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
 void CUIManagerScript::begin()
 {
     UIManagerScriptInit();
 }
 
 void CUIManagerScript::tick()
-{ 
+{
     map<wstring, CScript*>::iterator iter = m_vUIManagerScript.begin();
 
     for (; iter != m_vUIManagerScript.end(); iter++)

@@ -102,9 +102,11 @@ void CEdgeCollider2D::finaltick()
     }
 }
 
-void CEdgeCollider2D::SaveToLevelFile(FILE* _File)
+UINT CEdgeCollider2D::SaveToLevelFile(FILE* _File)
 {
-    CCollider2D::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::SaveToLevelFile(_File);
     fwrite(&m_EdgeRadius, sizeof(float), 1, _File);
     fwrite(&m_StartPoint, sizeof(Vec2), 1, _File);
     fwrite(&m_EndPoint, sizeof(Vec2), 1, _File);
@@ -112,11 +114,23 @@ void CEdgeCollider2D::SaveToLevelFile(FILE* _File)
     fwrite(&m_bUseAdjacentEndPoint, sizeof(bool), 1, _File);
     fwrite(&m_AdjacentEndPoint, sizeof(Vec2), 1, _File);
     fwrite(&m_bUseAdjacentEndPoint, sizeof(Vec2), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+
+    return MemoryByte;
 }
 
-void CEdgeCollider2D::LoadFromLevelFile(FILE* _File)
+UINT CEdgeCollider2D::LoadFromLevelFile(FILE* _File)
 {
-    CCollider2D::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::LoadFromLevelFile(_File);
     fread(&m_EdgeRadius, sizeof(float), 1, _File);
     fread(&m_StartPoint, sizeof(Vec2), 1, _File);
     fread(&m_EndPoint, sizeof(Vec2), 1, _File);
@@ -124,4 +138,14 @@ void CEdgeCollider2D::LoadFromLevelFile(FILE* _File)
     fread(&m_bUseAdjacentEndPoint, sizeof(bool), 1, _File);
     fread(&m_AdjacentEndPoint, sizeof(Vec2), 1, _File);
     fread(&m_bUseAdjacentEndPoint, sizeof(Vec2), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec2);
+    MemoryByte += sizeof(Vec2);
+
+    return MemoryByte;
 }

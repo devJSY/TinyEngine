@@ -452,8 +452,10 @@ void CLevelEditor::render_Toolbar()
 
     if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
     {
+
         if (ImGui::ImageButton((void*)m_PauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
+            ImGui::SetWindowFocus(NULL);
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PAUSE);
         }
 
@@ -461,6 +463,7 @@ void CLevelEditor::render_Toolbar()
 
         if (ImGui::ImageButton((void*)m_StopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
+            ImGui::SetWindowFocus(NULL);
             GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
         }
     }
@@ -470,6 +473,7 @@ void CLevelEditor::render_Toolbar()
         {
             if (ImGui::ImageButton((void*)m_PlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
             {
+                ImGui::SetWindowFocus(NULL);
                 CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
                 GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
             }
@@ -478,6 +482,7 @@ void CLevelEditor::render_Toolbar()
         {
             if (ImGui::ImageButton((void*)m_SimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
             {
+                ImGui::SetWindowFocus(NULL);
                 CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
                 GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::SIMULATE);
             }
@@ -487,6 +492,7 @@ void CLevelEditor::render_Toolbar()
 
         if (ImGui::ImageButton((void*)m_StepButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
+            ImGui::SetWindowFocus(NULL);
             pCurLevel->Step();
         }
 
@@ -494,6 +500,7 @@ void CLevelEditor::render_Toolbar()
 
         if (ImGui::ImageButton((void*)m_StopButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
+            ImGui::SetWindowFocus(NULL);
             GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
         }
     }
@@ -501,6 +508,7 @@ void CLevelEditor::render_Toolbar()
     {
         if (ImGui::ImageButton((void*)m_PlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
+            ImGui::SetWindowFocus(NULL);
             CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
         }
@@ -509,6 +517,7 @@ void CLevelEditor::render_Toolbar()
 
         if (ImGui::ImageButton((void*)m_SimulateButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
+            ImGui::SetWindowFocus(NULL);
             CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
             GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::SIMULATE);
         }

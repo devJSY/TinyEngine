@@ -122,14 +122,16 @@ bool CAnimator2D::IsFinish() const
     return m_CurAnim->IsFinish();
 }
 
-void CAnimator2D::SaveToLevelFile(FILE* _File)
+UINT CAnimator2D::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     size_t AnimCount = m_mapAnim.size();
     fwrite(&AnimCount, sizeof(size_t), 1, _File);
 
     for (const auto& pair : m_mapAnim)
     {
-        pair.second->SaveToLevelFile(_File);
+        MemoryByte += pair.second->SaveToLevelFile(_File);
     }
 
     wstring strCurAnimName;
@@ -137,31 +139,43 @@ void CAnimator2D::SaveToLevelFile(FILE* _File)
     {
         strCurAnimName = m_CurAnim->GetName();
     }
-    SaveWStringToFile(strCurAnimName, _File);
+    MemoryByte += SaveWStringToFile(strCurAnimName, _File);
 
     fwrite(&m_bRepeat, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(size_t);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CAnimator2D::LoadFromLevelFile(FILE* _File)
+UINT CAnimator2D::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     size_t AnimCount = 0;
     fread(&AnimCount, sizeof(size_t), 1, _File);
 
     for (size_t i = 0; i < AnimCount; ++i)
     {
         CAnim2D* pNewAnim = new CAnim2D;
-        pNewAnim->LoadFromLevelFile(_File);
+        MemoryByte += pNewAnim->LoadFromLevelFile(_File);
 
         m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
         pNewAnim->m_Animator = this;
     }
 
     wstring strCurAnimName;
-    LoadWStringFromFile(strCurAnimName, _File);
+    MemoryByte += LoadWStringFromFile(strCurAnimName, _File);
 
     m_CurAnim = FindAnim(strCurAnimName);
 
     fread(&m_bRepeat, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(size_t);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
 void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)

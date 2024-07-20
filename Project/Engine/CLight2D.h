@@ -33,8 +33,8 @@ public:
     void SetSpotPower(float power) { m_Info.spotPower = power; }
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CLight2D);
 

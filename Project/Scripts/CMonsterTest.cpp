@@ -4,6 +4,15 @@
 #include "CPlayerMgr.h"
 #include "CKirbyUnitScript.h"
 
+CMonsterTest::CMonsterTest()
+    : CScript(MONSTERTEST)
+{
+}
+
+CMonsterTest::~CMonsterTest()
+{
+}
+
 void CMonsterTest::OnCollisionEnter(CCollider* _OtherCollider)
 {
     int Layeridx = _OtherCollider->GetOwner()->GetLayerIdx();
@@ -52,19 +61,16 @@ void CMonsterTest::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
 
-void CMonsterTest::SaveToLevelFile(FILE* _File)
+UINT CMonsterTest::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CMonsterTest::LoadFromLevelFile(FILE* _File)
+UINT CMonsterTest::LoadFromLevelFile(FILE* _File)
 {
-}
+    UINT MemoryByte = 0;
 
-CMonsterTest::CMonsterTest()
-    : CScript(MONSTERTEST)
-{
-}
-
-CMonsterTest::~CMonsterTest()
-{
+    return MemoryByte;
 }

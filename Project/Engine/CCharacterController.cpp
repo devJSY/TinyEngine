@@ -179,9 +179,11 @@ Vec3 CCharacterController::GetFootPos()
     return FootPos;
 }
 
-void CCharacterController::SaveToLevelFile(FILE* _File)
+UINT CCharacterController::SaveToLevelFile(FILE* _File)
 {
-    CCollider::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::SaveToLevelFile(_File);
 
     fwrite(&m_SlopeLimit, sizeof(float), 1, _File);
     fwrite(&m_StepOffset, sizeof(float), 1, _File);
@@ -189,11 +191,22 @@ void CCharacterController::SaveToLevelFile(FILE* _File)
     fwrite(&m_MinMoveDistance, sizeof(float), 1, _File);
     fwrite(&m_Radius, sizeof(float), 1, _File);
     fwrite(&m_Height, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CCharacterController::LoadFromLevelFile(FILE* _File)
+UINT CCharacterController::LoadFromLevelFile(FILE* _File)
 {
-    CCollider::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::LoadFromLevelFile(_File);
 
     fread(&m_SlopeLimit, sizeof(float), 1, _File);
     fread(&m_StepOffset, sizeof(float), 1, _File);
@@ -201,4 +214,13 @@ void CCharacterController::LoadFromLevelFile(FILE* _File)
     fread(&m_MinMoveDistance, sizeof(float), 1, _File);
     fread(&m_Radius, sizeof(float), 1, _File);
     fread(&m_Height, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

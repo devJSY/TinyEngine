@@ -77,7 +77,7 @@ void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
     for (UINT i = 0; i < m_PlayerObj->GetRenderComponent()->GetMtrlCount(); ++i)
     {
         wstring MtrlName = m_PlayerObj->GetRenderComponent()->GetMesh()->GetIBName(i);
-        
+
         if (MtrlName == L"BodyM__BodyC")
             m_PlayerMeshIdx.BodyNormal = i;
         else if (MtrlName == L"BodyBigM__BodyC")
@@ -160,10 +160,16 @@ void CPlayerMgr::ResetBodyColliderSetting()
     BodyCol->SetHeight(1.6f);
 }
 
-void CPlayerMgr::SaveToLevelFile(FILE* _File)
+UINT CPlayerMgr::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CPlayerMgr::LoadFromLevelFile(FILE* _File)
+UINT CPlayerMgr::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

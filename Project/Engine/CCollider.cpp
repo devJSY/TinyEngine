@@ -158,18 +158,34 @@ void CCollider::OnControllerColliderHit(ControllerColliderHit Hit)
         vecScript[i]->OnControllerColliderHit(Hit);
 }
 
-void CCollider::SaveToLevelFile(FILE* _File)
+UINT CCollider::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_bTrigger, sizeof(bool), 1, _File);
-    SaveAssetRef(m_Mtrl, _File);
+    MemoryByte += SaveAssetRef(m_Mtrl, _File);
     fwrite(&m_Center, sizeof(Vec3), 1, _File);
     fwrite(&m_bEnabled, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CCollider::LoadFromLevelFile(FILE* _File)
+UINT CCollider::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_bTrigger, sizeof(bool), 1, _File);
-    LoadAssetRef(m_Mtrl, _File);
+    MemoryByte += LoadAssetRef(m_Mtrl, _File);
     fread(&m_Center, sizeof(Vec3), 1, _File);
     fread(&m_bEnabled, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

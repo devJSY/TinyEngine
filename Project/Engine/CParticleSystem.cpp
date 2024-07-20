@@ -229,36 +229,51 @@ void CParticleSystem::render(UINT _Subset)
     render();
 }
 
-void CParticleSystem::SaveToLevelFile(FILE* _File)
+UINT CParticleSystem::SaveToLevelFile(FILE* _File)
 {
-    CRenderComponent::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::SaveToLevelFile(_File);
 
     fwrite(&m_MaxParticleCount, sizeof(UINT), 1, _File);
     fwrite(&m_Module, sizeof(tParticleModule), 1, _File);
 
-    SaveAssetRef<CComputeShader>(m_CSParticleUpdate.Get(), _File);
-    SaveAssetRef<CTexture>(m_ParticleTex.Get(), _File);
+    MemoryByte += SaveAssetRef<CComputeShader>(m_CSParticleUpdate.Get(), _File);
+    MemoryByte += SaveAssetRef<CTexture>(m_ParticleTex.Get(), _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(tParticleModule);
+
+    return MemoryByte;
 }
 
-void CParticleSystem::LoadFromLevelFile(FILE* _File)
+UINT CParticleSystem::LoadFromLevelFile(FILE* _File)
 {
-    CRenderComponent::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::LoadFromLevelFile(_File);
 
     fread(&m_MaxParticleCount, sizeof(UINT), 1, _File);
     m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
     fread(&m_Module, sizeof(tParticleModule), 1, _File);
 
     bool bAssetExist = 0;
-    fread(&bAssetExist, sizeof(bAssetExist), 1, _File);
+    fread(&bAssetExist, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
 
     if (bAssetExist)
     {
         wstring strKey, strRelativePath;
-        LoadWStringFromFile(strKey, _File);
-        LoadWStringFromFile(strRelativePath, _File);
+        MemoryByte += LoadWStringFromFile(strKey, _File);
+        MemoryByte += LoadWStringFromFile(strRelativePath, _File);
 
         m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(strKey).Get();
     }
 
-    LoadAssetRef<CTexture>(m_ParticleTex, _File);
+    MemoryByte += LoadAssetRef<CTexture>(m_ParticleTex, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(tParticleModule);
+
+    return MemoryByte;
 }
