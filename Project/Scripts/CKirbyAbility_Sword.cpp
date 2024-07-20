@@ -103,7 +103,7 @@ void CKirbyAbility_Sword::AttackCombo1()
 void CKirbyAbility_Sword::AttackCombo1Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Attack2"), false, false, 1.5f);
-    //@TODO Effect 재생
+    //@Effect 재생
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);

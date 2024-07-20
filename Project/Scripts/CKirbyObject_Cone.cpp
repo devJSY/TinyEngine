@@ -163,8 +163,7 @@ void CKirbyObject_Cone::DropObjectEnter()
     CKirbyObject::DropObjectEnter();
     UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
     PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    PLAYERCTRL->SetSpeed(10.f);
-    //PLAYERCTRL->SetRotSpeed(PlayerInfo.RotSpeed); //@TODO 머지후변경
+    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();

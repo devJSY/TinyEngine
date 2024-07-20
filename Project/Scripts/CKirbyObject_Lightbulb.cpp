@@ -178,7 +178,7 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
 
     UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
     PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    //PLAYERCTRL->SetRotSpeed(PlayerInfo.RotSpeed); //@TODO 머지후변경
+    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
     PLAYERCTRL->AddVelocity(Vec3(0.f, 3.5f, 0.f));
 
     // 포인트라이트
