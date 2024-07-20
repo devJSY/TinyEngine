@@ -27,15 +27,10 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    if (KEY_TAP(KEY::K))
+    if (KEY_TAP(KEY::L))
     {
-        DetachObject();
+        GetOwner()->SetActive(!GetOwner()->IsActive());
     }
-
-    // if (KEY_TAP(KEY::L))
-    //{
-    //     GetOwner()->SetActive(!GetOwner()->IsActive());
-    // }
 
     // CharacterControllerTest();
     // AnimatorTest();
