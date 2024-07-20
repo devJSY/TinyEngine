@@ -765,6 +765,21 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
         // vecPhysicsObj에서 제거
         m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
 
+        // Trigger List 에서 제거
+        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
+        while (iter != m_listTrigger.end())
+        {
+            if (iter->first == pCharacterController || iter->second == pCharacterController || iter->first == pBoxCol || iter->second == pBoxCol ||
+                iter->first == pSphereCol || iter->second == pSphereCol || iter->first == pCapsuleCol || iter->second == pCapsuleCol ||
+                iter->first == pMeshCol || iter->second == pMeshCol)
+            {
+                iter = m_listTrigger.erase(iter);
+                continue;
+            }
+
+            ++iter;
+        }
+
         if (nullptr != pRigidbody)
             pRigidbody->m_RuntimeBody = nullptr;
         if (nullptr != pBoxCol)
