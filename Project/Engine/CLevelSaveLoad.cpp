@@ -12,7 +12,7 @@
 #include "CScript.h"
 
 wstring CLevelSaveLoad::Level_extension = L".tLevel";
-const UINT CLevelSaveLoad::MemoryBlockSize = 1024;
+const UINT CLevelSaveLoad::MemoryBlockSize = 256;
 
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 {
