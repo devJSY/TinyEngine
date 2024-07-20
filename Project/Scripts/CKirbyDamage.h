@@ -1,5 +1,6 @@
 #pragma once
 #include "CState.h"
+
 class CKirbyDamage : public CState
 {
 private:

@@ -47,6 +47,7 @@ void CKirbyDropAbility::tick()
     // Change State
     if (GetOwner()->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         if (GetOwner()->CharacterController()->IsGrounded())
         {
             ChangeState(L"IDLE");
@@ -60,6 +61,8 @@ void CKirbyDropAbility::tick()
 
 void CKirbyDropAbility::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
+
     PLAYER->Animator()->Play(ANIMPREFIX("AbilityDump"), false, false, 1.f);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();

@@ -427,6 +427,9 @@
     <ClInclude Include="CKirbyFinalCutterEndAfter.h">
       <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEndAfter</Filter>
     </ClInclude>
+    <ClInclude Include="CMonsterTest.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -866,6 +869,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyFinalCutterEndAfter.cpp">
       <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEndAfter</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterTest.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

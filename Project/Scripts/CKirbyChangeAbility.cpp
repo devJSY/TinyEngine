@@ -16,6 +16,7 @@ void CKirbyChangeAbility::tick()
 
     if (PLAYER->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"CHANGE_ABILITY_WAIT");
     }
 
@@ -23,6 +24,8 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
+
     // 소켓 꽂아주기
     PLAYERFSM->GetNextAbility()->ChangeAbilityEnter();
     

@@ -13,6 +13,7 @@ void CKirbyChangeAbilityEnd::tick()
 {
     if (PLAYER->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"IDLE");
     }
 
@@ -20,6 +21,7 @@ void CKirbyChangeAbilityEnd::tick()
 
 void CKirbyChangeAbilityEnd::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyEnd"), false, false, 1.5f);
 }
