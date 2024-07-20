@@ -298,10 +298,16 @@ void CEngineTestScript::OnTriggerExit(CCollider* _OtherCollider)
     LOG(Log, "OnTriggerExit : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
-void CEngineTestScript::SaveToLevelFile(FILE* _File)
+UINT CEngineTestScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CEngineTestScript::LoadFromLevelFile(FILE* _File)
+UINT CEngineTestScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

@@ -45,14 +45,26 @@ void CCircleCollider2D::SetRadius(float _Radius)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
-void CCircleCollider2D::SaveToLevelFile(FILE* _File)
+UINT CCircleCollider2D::SaveToLevelFile(FILE* _File)
 {
-    CCollider2D::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::SaveToLevelFile(_File);
     fwrite(&m_Radius, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CCircleCollider2D::LoadFromLevelFile(FILE* _File)
+UINT CCircleCollider2D::LoadFromLevelFile(FILE* _File)
 {
-    CCollider2D::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::LoadFromLevelFile(_File);
     fread(&m_Radius, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

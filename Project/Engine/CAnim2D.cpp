@@ -289,10 +289,12 @@ bool CAnim2D::LoadAnim(const wstring& _FilePath)
     return true;
 }
 
-void CAnim2D::SaveToLevelFile(FILE* _File)
+UINT CAnim2D::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     // 애니메이션 이름 저장
-    SaveWStringToFile(GetName(), _File);
+    MemoryByte += SaveWStringToFile(GetName(), _File);
 
     // 모든 프레임 정보 저장
     size_t FrameCount = m_vecFrm.size();
@@ -303,10 +305,16 @@ void CAnim2D::SaveToLevelFile(FILE* _File)
     fwrite(&m_bUseBackGround, sizeof(bool), 1, _File);
 
     // 참조하던 텍스쳐 정보 저장
-    SaveAssetRef(m_AtlasTex, _File);
+    MemoryByte += SaveAssetRef(m_AtlasTex, _File);
+
+    MemoryByte += sizeof(size_t);
+    MemoryByte += sizeof(tAnim2DFrm) * FrameCount;
+    MemoryByte += sizeof(bool);
+    
+    return MemoryByte;
 }
 
-void CAnim2D::LoadFromLevelFile(FILE* _File)
+UINT CAnim2D::LoadFromLevelFile(FILE* _File)
 {
     // 애니메이션 이름 로드
     wstring name;

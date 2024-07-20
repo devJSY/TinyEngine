@@ -102,12 +102,24 @@ void CModelEditorCameraMoveScript::MovePerspective()
         Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * Zoffset);
 }
 
-void CModelEditorCameraMoveScript::SaveToLevelFile(FILE* _File)
+UINT CModelEditorCameraMoveScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_CamSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CModelEditorCameraMoveScript::LoadFromLevelFile(FILE* _File)
+UINT CModelEditorCameraMoveScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_CamSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

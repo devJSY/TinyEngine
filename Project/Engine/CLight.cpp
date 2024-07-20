@@ -207,13 +207,25 @@ void CLight::CreateDepthMapTex()
                                             D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
-void CLight::SaveToLevelFile(FILE* _File)
+UINT CLight::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
+
+    MemoryByte += sizeof(tLightInfo);
+
+    return MemoryByte;
 }
 
-void CLight::LoadFromLevelFile(FILE* _File)
+UINT CLight::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
     SetLightType((LIGHT_TYPE)m_Info.LightType);
+
+    MemoryByte += sizeof(tLightInfo);
+
+    return MemoryByte;
 }

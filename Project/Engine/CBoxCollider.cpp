@@ -23,7 +23,7 @@ void CBoxCollider::finaltick()
 
     // 콜라이더 비활성화 상태에서는 렌더링 X
     if (!m_bEnabled)
-        return; 
+        return;
 
     Vec3 scale = Transform()->GetWorldScale();
 
@@ -42,14 +42,26 @@ void CBoxCollider::SetSize(Vec3 _size)
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
-void CBoxCollider::SaveToLevelFile(FILE* _File)
+UINT CBoxCollider::SaveToLevelFile(FILE* _File)
 {
-    CCollider::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::SaveToLevelFile(_File);
     fwrite(&m_Size, sizeof(Vec3), 1, _File);
+
+    MemoryByte += sizeof(Vec3);
+
+    return MemoryByte;
 }
 
-void CBoxCollider::LoadFromLevelFile(FILE* _File)
+UINT CBoxCollider::LoadFromLevelFile(FILE* _File)
 {
-    CCollider::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::LoadFromLevelFile(_File);
     fread(&m_Size, sizeof(Vec3), 1, _File);
+
+    MemoryByte += sizeof(Vec3);
+
+    return MemoryByte;
 }

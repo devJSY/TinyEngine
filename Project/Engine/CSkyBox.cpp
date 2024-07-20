@@ -122,26 +122,38 @@ void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)
     // SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SkyBoxMtrl_V2"), 0);
 }
 
-void CSkyBox::SaveToLevelFile(FILE* _File)
+UINT CSkyBox::SaveToLevelFile(FILE* _File)
 {
-    CRenderComponent::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::SaveToLevelFile(_File);
 
     fwrite(&m_Shape, sizeof(SKYBOX_SHAPE), 1, _File);
-    SaveAssetRef(m_EnvTex, _File);
-    SaveAssetRef(m_BrdfTex, _File);
-    SaveAssetRef(m_DiffuseTex, _File);
-    SaveAssetRef(m_SpecularTex, _File);
+    MemoryByte += SaveAssetRef(m_EnvTex, _File);
+    MemoryByte += SaveAssetRef(m_BrdfTex, _File);
+    MemoryByte += SaveAssetRef(m_DiffuseTex, _File);
+    MemoryByte += SaveAssetRef(m_SpecularTex, _File);
+
+    MemoryByte += sizeof(SKYBOX_SHAPE);
+
+    return MemoryByte;
 }
 
-void CSkyBox::LoadFromLevelFile(FILE* _File)
+UINT CSkyBox::LoadFromLevelFile(FILE* _File)
 {
-    CRenderComponent::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::LoadFromLevelFile(_File);
 
     fread(&m_Shape, sizeof(SKYBOX_SHAPE), 1, _File);
-    LoadAssetRef(m_EnvTex, _File);
-    LoadAssetRef(m_BrdfTex, _File);
-    LoadAssetRef(m_DiffuseTex, _File);
-    LoadAssetRef(m_SpecularTex, _File);
+    MemoryByte += LoadAssetRef(m_EnvTex, _File);
+    MemoryByte += LoadAssetRef(m_BrdfTex, _File);
+    MemoryByte += LoadAssetRef(m_DiffuseTex, _File);
+    MemoryByte += LoadAssetRef(m_SpecularTex, _File);
 
     SetShape(m_Shape);
+
+    MemoryByte += sizeof(SKYBOX_SHAPE);
+
+    return MemoryByte;
 }

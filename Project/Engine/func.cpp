@@ -1074,22 +1074,34 @@ bool closeEnough(const float& a, const float& b, const float& epsilon = std::num
     return (epsilon > std::abs(a - b));
 }
 
-void SaveWStringToFile(const wstring& _str, FILE* _File)
+UINT SaveWStringToFile(const wstring& _str, FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     UINT iLen = (UINT)_str.length();
     fwrite(&iLen, sizeof(UINT), 1, _File);
-    fwrite(_str.c_str(), sizeof(wchar_t), _str.length(), _File);
+    fwrite(_str.c_str(), sizeof(wchar_t), iLen, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(wchar_t) * iLen;
+
+    return MemoryByte;
 }
 
-void LoadWStringFromFile(wstring& _str, FILE* _File)
+UINT LoadWStringFromFile(wstring& _str, FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     wchar_t szBuffer[256] = {};
 
     UINT iLen = 0;
     fread(&iLen, sizeof(UINT), 1, _File);
     fread(szBuffer, sizeof(wchar_t), iLen, _File);
 
-    _str = szBuffer;
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(wchar_t) * iLen;
+
+    return MemoryByte;
 }
 
 void SaveAssetRef(Ptr<CAsset> _Asset, FILE* _File)

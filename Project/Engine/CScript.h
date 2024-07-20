@@ -67,8 +67,8 @@ private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit){};
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override = 0;
-    virtual void LoadFromLevelFile(FILE* _File) override = 0;
+    virtual UINT SaveToLevelFile(FILE* _File) override = 0;
+    virtual UINT LoadFromLevelFile(FILE* _File) override = 0;
 
     virtual CScript* Clone() = 0;
 

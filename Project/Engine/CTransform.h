@@ -65,8 +65,8 @@ public:
     const Matrix& GetTransformationMat() const { return m_matTransformation; }
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CTransform)
 public:

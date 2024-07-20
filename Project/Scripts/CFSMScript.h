@@ -33,8 +33,8 @@ public:
 
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) {}
-    virtual void LoadFromLevelFile(FILE* _File) {}
+    virtual UINT SaveToLevelFile(FILE* _File) {}
+    virtual UINT LoadFromLevelFile(FILE* _File) {}
 
 public:
     CFSMScript* Clone() = 0;
