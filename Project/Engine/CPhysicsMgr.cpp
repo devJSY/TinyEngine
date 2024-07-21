@@ -106,7 +106,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_CCTCallbackInst()
     , m_Matrix{}
     , m_Accumulator(0.f)
-    , m_StepSize(1.f / 60.f)
+    , m_StepSize(0.02f) // 1.f / 50.f
     , m_Gravity(Vec3(0.f, -9.81f, 0.f))
     , m_PPM(1.f)
     , m_listTrigger{}
@@ -126,82 +126,82 @@ void CPhysicsMgr::tick()
 
     // 시뮬레이션 안정성을 위해 StepSize 단위로 시뮬레이션
     m_Accumulator += DT;
-    if (m_Accumulator < m_StepSize)
-        return;
-
-    m_Accumulator -= m_StepSize;
-
-    // 시뮬레이션
-    m_Scene->simulate(m_StepSize);
-    m_Scene->fetchResults(true);
-
-    // TriggerStay Event
-    std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
-    while (iter != m_listTrigger.end())
+    while (m_Accumulator >= m_StepSize)
     {
-        if (0 >= iter->first->m_TriggerCount || 0 >= iter->second->m_TriggerCount)
+        m_Accumulator -= m_StepSize;
+
+        // 시뮬레이션
+        m_Scene->simulate(m_StepSize);
+        m_Scene->fetchResults(true);
+
+        // TriggerStay Event
+        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
+        while (iter != m_listTrigger.end())
         {
-            iter = m_listTrigger.erase(iter);
-            continue;
+            if (0 >= iter->first->m_TriggerCount || 0 >= iter->second->m_TriggerCount)
+            {
+                iter = m_listTrigger.erase(iter);
+                continue;
+            }
+
+            iter->first->OnTriggerStay(iter->second);
+            iter->second->OnTriggerStay(iter->first);
+            ++iter;
         }
 
-        iter->first->OnTriggerStay(iter->second);
-        iter->second->OnTriggerStay(iter->first);
-        ++iter;
-    }
+        // 시뮬레이션 결과로 트랜스폼 업데이트
+        PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+        std::vector<PxRigidActor*> actors(nbActors);
+        m_Scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
 
-    // 시뮬레이션 결과로 트랜스폼 업데이트
-    PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
-    std::vector<PxRigidActor*> actors(nbActors);
-    m_Scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+        for (PxU32 i = 0; i < nbActors; i++)
+        {
+            if (!actors[i]->is<PxRigidDynamic>())
+                continue;
 
-    for (PxU32 i = 0; i < nbActors; i++)
-    {
-        if (!actors[i]->is<PxRigidDynamic>())
-            continue;
+            // RigidDynamic이 캐릭터 컨트롤러인 경우
+            if (nullptr == actors[i]->userData)
+                continue;
 
-        // RigidDynamic이 캐릭터 컨트롤러인 경우
-        if (nullptr == actors[i]->userData)
-            continue;
+            CGameObject* obj = (CGameObject*)actors[i]->userData;
+            CTransform* pTr = obj->Transform();
 
-        CGameObject* obj = (CGameObject*)actors[i]->userData;
-        CTransform* pTr = obj->Transform();
+            const PxMat44 ActorPose(actors[i]->getGlobalPose());
+            Matrix SimulatedMat = Matrix(ActorPose.front());
 
-        const PxMat44 ActorPose(actors[i]->getGlobalPose());
-        Matrix SimulatedMat = Matrix(ActorPose.front());
+            // 시뮬레이션 Matrix SRT 분해
+            Vec3 Translation, Rotation, Scale;
+            ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
-        // 시뮬레이션 Matrix SRT 분해
-        Vec3 Translation, Rotation, Scale;
-        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
+            // PPM 적용
+            Translation *= m_PPM;
+            Rotation.ToRadian();
 
-        // PPM 적용
-        Translation *= m_PPM;
-        Rotation.ToRadian();
+            // 변화량 추출
+            Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
+            Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
 
-        // 변화량 추출
-        Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
-        Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
+            // 변화량만큼 Relative 에 적용
+            pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+            pTr->SetLocalRotation(pTr->GetLocalRotation() - vRotOffset);
+        }
 
-        // 변화량만큼 Relative 에 적용
-        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
-        pTr->SetLocalRotation(pTr->GetLocalRotation() - vRotOffset);
-    }
+        // Character Controller
+        PxU32 nbControllers = m_ControllerMgr->getNbControllers();
+        for (PxU32 i = 0; i < nbControllers; i++)
+        {
+            PxController* pPxController = m_ControllerMgr->getController(i);
+            CCharacterController* pCharacterController = (CCharacterController*)pPxController->getUserData();
+            CTransform* pTr = pCharacterController->Transform();
 
-    // Character Controller
-    PxU32 nbControllers = m_ControllerMgr->getNbControllers();
-    for (PxU32 i = 0; i < nbControllers; i++)
-    {
-        PxController* pPxController = m_ControllerMgr->getController(i);
-        CCharacterController* pCharacterController = (CCharacterController*)pPxController->getUserData();
-        CTransform* pTr = pCharacterController->Transform();
+            PxVec3d PxPos = pPxController->getPosition();
+            Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
+            vPosOffset -= pCharacterController->m_Center / m_PPM;
+            vPosOffset *= m_PPM;
+            vPosOffset = pTr->GetWorldPos() - vPosOffset;
 
-        PxVec3d PxPos = pPxController->getPosition();
-        Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
-        vPosOffset -= pCharacterController->m_Center / m_PPM;
-        vPosOffset *= m_PPM;
-        vPosOffset = pTr->GetWorldPos() - vPosOffset;
-
-        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+            pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+        }
     }
 }
 
