@@ -141,20 +141,12 @@ void CBladeKnightSwordScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (Layeridx == LAYER_PLAYER)
     {
-        Vec3 HitDir = Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos();
+        Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         HitDir.Normalize();
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
 
         PLAYERUNIT->GetDamage(HitInfo);
     }
-}
-
-void CBladeKnightSwordScript::OnTriggerStay(CCollider* _OtherCollider)
-{
-}
-
-void CBladeKnightSwordScript::OnTriggerExit(CCollider* _OtherCollider)
-{
 }
 
 UINT CBladeKnightSwordScript::SaveToLevelFile(FILE* _File)

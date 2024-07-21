@@ -31,8 +31,10 @@ protected:
     void SetHitInfo(const UnitHit& _hitInfo) { m_HitInfo = _hitInfo; }
 
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
-    void TransformRotate(CGameObject* _pTargetObj = nullptr);
+    void Rotating();
+    void RotatingToTarget();
     bool IsGround();
+
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

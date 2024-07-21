@@ -91,20 +91,21 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
     }
 }
 
-void CMonsterUnitScript::TransformRotate(CGameObject* _pTargetObj)
+void CMonsterUnitScript::Rotating()
+{
+    float Angle = Transform()->GetLocalRotation().y;
+    Angle += DT * GetCurInfo().RotationSpeed;
+    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
+    Transform()->SetWorldRotation(Quaternion);
+}
+
+void CMonsterUnitScript::RotatingToTarget()
 {
     if (nullptr == m_pTargetObj)
-    {
-        float Angle = Transform()->GetLocalRotation().y;
-        Angle += DT * GetCurInfo().RotationSpeed;
-        Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
-        Transform()->SetWorldRotation(Quaternion);
-    }
-    else
-    {
-        Vec3 ToTargetDir = Transform()->GetWorldPos() - m_pTargetObj->Transform()->GetWorldPos();
-        Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
-    }
+        return;
+
+    Vec3 ToTargetDir = Transform()->GetWorldPos() - m_pTargetObj->Transform()->GetWorldPos();
+    Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
 }
 
 bool CMonsterUnitScript::IsGround()
