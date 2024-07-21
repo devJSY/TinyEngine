@@ -15,17 +15,21 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
                                                       PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags,
                                                       const void* constantBlock, PxU32 constantBlockSize)
 {
-    // 트리거 플래그 등록
-    if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
-    {
-        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
-        return PxFilterFlag::eDEFAULT;
-    }
-
-    // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
+    // 필터링 적용
     if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
-                    PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
+    {
+        // 트리거 플래그 등록
+        if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+        {
+            pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
+        }
+        else
+        {
+            // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
+            pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
+                        PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
+        }
+    }
 
     return PxFilterFlag::eDEFAULT;
 }
