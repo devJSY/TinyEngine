@@ -130,7 +130,7 @@ void CKabuScript::ExitState(KABU_STATE _state)
 
 void CKabuScript::Patrol()
 {
-    Rotating();
+    TransformRotate();
 
     PatrolMove();
 }

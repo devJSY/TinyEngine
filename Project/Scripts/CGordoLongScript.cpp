@@ -17,7 +17,7 @@ void CGordoLongScript::begin()
 
 void CGordoLongScript::tick()
 {
-    Rotating();
+    TransformRotate();
 }
 
 UINT CGordoLongScript::SaveToLevelFile(FILE* _File)

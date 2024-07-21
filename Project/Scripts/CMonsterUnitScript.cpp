@@ -91,29 +91,19 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
     }
 }
 
-void CMonsterUnitScript::TransformRotate()
+void CMonsterUnitScript::TransformRotate(CGameObject* _pTargetObj)
 {
     if (nullptr == m_pTargetObj)
-        return;
-
-    Vec3 Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Vec3 ToTargetDir = Transform()->GetWorldPos() - m_pTargetObj->Transform()->GetWorldPos();
-    ToTargetDir.y = 0.f; // Y축 고정
-    ToTargetDir.Normalize();
-
-    // 아주 미세한 값인 경우 보간 X
-    if (ToTargetDir.Dot(Dir) < cosf(0.f) - 0.0000001f)
     {
-        // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
-        Vec3 up = Vec3(0.f, 1.f, 0.f);
-        if (Dir == Vec3(0.f, 0.f, -1.f))
-        {
-            up = Vec3(0.f, -1.f, 0.f);
-        }
-
-        Quat ToWardQuaternion = Quat::LookRotation(ToTargetDir, up);
-        Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * m_CurInfo.RotationSpeed);
-        Transform()->SetWorldRotation(SlerpQuat);
+        float Angle = Transform()->GetLocalRotation().y;
+        Angle += DT * GetCurInfo().RotationSpeed;
+        Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
+        Transform()->SetWorldRotation(Quaternion);
+    }
+    else
+    {
+        Vec3 ToTargetDir = Transform()->GetWorldPos() - m_pTargetObj->Transform()->GetWorldPos();
+        Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
     }
 }
 
@@ -122,14 +112,6 @@ bool CMonsterUnitScript::IsGround()
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, vecCollision);
     return nullptr != Hit.pCollisionObj;
-}
-
-void CMonsterUnitScript::Rotating()
-{
-    float Angle = Transform()->GetLocalRotation().y;
-    Angle += DT * GetCurInfo().RotationSpeed;
-    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
-    Transform()->SetWorldRotation(Quaternion);
 }
 
 UINT CMonsterUnitScript::SaveToLevelFile(FILE* _File)
