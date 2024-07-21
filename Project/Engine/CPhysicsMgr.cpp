@@ -21,14 +21,16 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
         // 트리거 플래그 등록
         if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
         {
-            pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
+            pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
         }
         else
         {
             // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
-            pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
-                        PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
+            pairFlags =
+                PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
         }
+
+        pairFlags |= PxPairFlag::eDETECT_CCD_CONTACT | PxPairFlag::eNOTIFY_TOUCH_CCD;
     }
 
     return PxFilterFlag::eDEFAULT;
