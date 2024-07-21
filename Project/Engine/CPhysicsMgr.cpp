@@ -45,17 +45,17 @@ void CCollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader,
         pColliderB->OnCollisionEnter(pColliderA);
     }
 
+    if (pairs->events.isSet(PxPairFlag::eNOTIFY_TOUCH_PERSISTS))
+    {
+        pColliderA->OnCollisionStay(pColliderB);
+        pColliderB->OnCollisionStay(pColliderA);
+    }
+
     if (pairs->events.isSet(PxPairFlag::eNOTIFY_TOUCH_LOST))
     {
         pColliderA->OnCollisionExit(pColliderB);
         pColliderB->OnCollisionExit(pColliderA);
     }
-
-    // 충돌 카운트가 남아있는 경우 Stay 상태
-    if (pColliderA->m_CollisionCount > 0)
-        pColliderA->OnCollisionStay(pColliderB);
-    if (pColliderB->m_CollisionCount > 0)
-        pColliderB->OnCollisionStay(pColliderA);
 }
 
 void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
