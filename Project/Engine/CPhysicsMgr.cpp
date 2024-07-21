@@ -709,6 +709,11 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
 
     if (desc.isValid())
     {
+        int LayerIdx = _GameObject->GetLayerIdx();
+        PxFilterData filterData;
+        filterData.word0 = (1 << LayerIdx);    // 해당 오브젝트의 레이어 번호
+        filterData.word1 = m_Matrix[LayerIdx]; // 필터링을 적용할 테이블
+
         PxController* PxCharacterController = m_ControllerMgr->createController(desc);
         pCharacterController->m_RuntimeShape = PxCharacterController;
 
@@ -721,6 +726,10 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
         for (UINT i = 0; i < vecShapes.size(); i++)
         {
             vecShapes[i]->userData = (void*)pCharacterController;
+
+            // 필터링 데이터 적용
+            vecShapes[i]->setSimulationFilterData(filterData);
+            vecShapes[i]->setQueryFilterData(filterData);
         }
     }
 }
