@@ -23,7 +23,7 @@ void CKirbyHoveringSpit::tick()
 
 void CKirbyHoveringSpit::Enter()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX(L"SpitAir"), false);
+    GetOwner()->Animator()->Play(ANIMPREFIX("SpitAir"), false);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
 
@@ -34,6 +34,8 @@ void CKirbyHoveringSpit::Enter()
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockMove();
+
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyHoveringSpit::Exit()
@@ -46,4 +48,6 @@ void CKirbyHoveringSpit::Exit()
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockMove();
+
+    PLAYERFSM->SetDroppable(false);
 }

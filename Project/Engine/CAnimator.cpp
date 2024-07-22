@@ -474,7 +474,7 @@ void CAnimator::ClearData()
     Ptr<CMaterial> pMtrl = nullptr;
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
-        pMtrl = MeshRender()->GetSharedMaterial(i);
+        pMtrl = MeshRender()->GetMaterial(i);
         if (nullptr == pMtrl)
             continue;
 
@@ -601,23 +601,41 @@ void CAnimator::CheckBoneMatBuffer()
     }
 }
 
-void CAnimator::SaveToLevelFile(FILE* _File)
+UINT CAnimator::SaveToLevelFile(FILE* _File)
 {
-    SaveAssetRef(m_SkeletalMesh, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += SaveAssetRef(m_SkeletalMesh, _File);
 
     fwrite(&m_bPlay, 1, sizeof(bool), _File);
     fwrite(&m_bRepeat, 1, sizeof(bool), _File);
     fwrite(&m_bReverse, 1, sizeof(bool), _File);
     fwrite(&m_PlaySpeed, 1, sizeof(float), _File);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CAnimator::LoadFromLevelFile(FILE* _File)
+UINT CAnimator::LoadFromLevelFile(FILE* _File)
 {
-    LoadAssetRef(m_SkeletalMesh, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += LoadAssetRef(m_SkeletalMesh, _File);
     SetSkeletalMesh(m_SkeletalMesh);
 
     fread(&m_bPlay, 1, sizeof(bool), _File);
     fread(&m_bRepeat, 1, sizeof(bool), _File);
     fread(&m_bReverse, 1, sizeof(bool), _File);
     fread(&m_PlaySpeed, 1, sizeof(float), _File);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

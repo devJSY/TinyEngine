@@ -20,7 +20,7 @@ void CKirbyGuard::tick()
     {
     case AbilityCopyType::NORMAL:
     case AbilityCopyType::FIRE:
-    case AbilityCopyType::RANGER: {
+    case AbilityCopyType::CUTTER: {
         if (KEY_TAP_ARROW)
         {
             CCamera* MainCam = CRenderMgr::GetInst()->GetMainCamera();

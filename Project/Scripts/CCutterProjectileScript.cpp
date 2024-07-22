@@ -68,7 +68,7 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     switch (m_eState)
     {
     case CUTTERPROJECTILE_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX(L"SpinBig"));
+        Animator()->Play(ANIMPREFIX("SpinBig"));
         m_vOriginPos = Transform()->GetWorldPos();
     }
     break;
@@ -181,14 +181,26 @@ void CCutterProjectileScript::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
 
-void CCutterProjectileScript::SaveToLevelFile(FILE* _File)
+UINT CCutterProjectileScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterATKScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterATKScript::SaveToLevelFile(_File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CCutterProjectileScript::LoadFromLevelFile(FILE* _File)
+UINT CCutterProjectileScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterATKScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterATKScript::LoadFromLevelFile(_File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

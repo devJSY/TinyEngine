@@ -42,14 +42,26 @@ void CSphereCollider::SetRadius(float _Radius)
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
-void CSphereCollider::SaveToLevelFile(FILE* _File)
+UINT CSphereCollider::SaveToLevelFile(FILE* _File)
 {
-    CCollider::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::SaveToLevelFile(_File);
     fwrite(&m_Radius, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CSphereCollider::LoadFromLevelFile(FILE* _File)
+UINT CSphereCollider::LoadFromLevelFile(FILE* _File)
 {
-    CCollider::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::LoadFromLevelFile(_File);
     fread(&m_Radius, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

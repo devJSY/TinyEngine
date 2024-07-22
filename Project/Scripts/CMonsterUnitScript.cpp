@@ -4,14 +4,16 @@
 CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     : CUnitScript(_Type)
     , m_pTargetObj(nullptr)
+    , m_RaycastDist(100.f)
     , m_HitInfo{}
 {
-    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
     AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
@@ -19,14 +21,17 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(_Origin)
+    , m_pTargetObj(_Origin.m_pTargetObj)
+    , m_RaycastDist(_Origin.m_RaycastDist)
     , m_HitInfo(_Origin.m_HitInfo)
 {
-    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "HP current");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.Speed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.RotationSpeed, "Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "Jump Power");
+    AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
     AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
@@ -42,15 +47,14 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
     if (nullptr == _pTargetObj)
     {
         Vec3 Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
         Rigidbody()->SetVelocity(Dir * m_CurInfo.Speed);
     }
     // 타겟 방향으로 이동
     else
     {
         Vec3 ToTargetDir = m_pTargetObj->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        ToTargetDir.y = 0.f; // Y축 고정
         ToTargetDir.Normalize();
-
         Rigidbody()->SetVelocity(ToTargetDir * m_CurInfo.Speed);
     }
 }
@@ -81,6 +85,13 @@ void CMonsterUnitScript::TransformRotate()
     }
 }
 
+bool CMonsterUnitScript::IsGround()
+{
+    static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, vecCollision);
+    return nullptr != Hit.pCollisionObj;
+}
+
 void CMonsterUnitScript::Rotating()
 {
     float Angle = Transform()->GetLocalRotation().y;
@@ -89,14 +100,30 @@ void CMonsterUnitScript::Rotating()
     Transform()->SetWorldRotation(Quaternion);
 }
 
-void CMonsterUnitScript::SaveToLevelFile(FILE* _File)
+UINT CMonsterUnitScript::SaveToLevelFile(FILE* _File)
 {
-    CUnitScript::SaveToLevelFile(_File);
-    fwrite(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_RaycastDist, 1, sizeof(float), _File);
+    fwrite(&m_HitInfo, sizeof(UnitHit), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UnitHit);
+
+    return MemoryByte;
 }
 
-void CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
+UINT CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    CUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
+    fread(&m_RaycastDist, 1, sizeof(float), _File);
     fread(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UnitHit);
+
+    return MemoryByte;
 }

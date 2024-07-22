@@ -77,13 +77,13 @@ PS_OUT main(PS_IN input)
     float metallic = MtrlMetallic;
     float roughness = MtrlRoughness;
     float ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
-    float3 emission = MtrlEmission.rgb;
+    float3 emission = MtrlEmission.rgb + float3(sparklyEffect, sparklyEffect, sparklyEffect);
 
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
-    output.vEmissive = float4(sparklyEffect, sparklyEffect, sparklyEffect, 1.f);
+    output.vEmissive = float4(emission, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
     
     return output;

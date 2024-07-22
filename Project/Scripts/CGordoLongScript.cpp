@@ -12,7 +12,7 @@ CGordoLongScript::~CGordoLongScript()
 
 void CGordoLongScript::begin()
 {
-    Animator()->Play(ANIMPREFIX(L"Wait"));
+    Animator()->Play(ANIMPREFIX("Wait"));
 }
 
 void CGordoLongScript::tick()
@@ -20,14 +20,22 @@ void CGordoLongScript::tick()
     Rotating();
 }
 
-void CGordoLongScript::SaveToLevelFile(FILE* _File)
+UINT CGordoLongScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CGordoLongScript::LoadFromLevelFile(FILE* _File)
+UINT CGordoLongScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }
 
 void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)

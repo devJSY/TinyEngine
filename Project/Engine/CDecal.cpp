@@ -72,22 +72,34 @@ void CDecal::render(UINT _Subset)
     render();
 }
 
-void CDecal::SaveToLevelFile(FILE* _File)
+UINT CDecal::SaveToLevelFile(FILE* _File)
 {
-    CRenderComponent::SaveToLevelFile(_File);
-    SaveAssetRef(m_DecalAlbedoTex, _File);
-    SaveAssetRef(m_DecalMRATex, _File);
-    SaveAssetRef(m_DecalNormalTex, _File);
-    SaveAssetRef(m_DecalEmissiveTex, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::SaveToLevelFile(_File);
+    MemoryByte += SaveAssetRef(m_DecalAlbedoTex, _File);
+    MemoryByte += SaveAssetRef(m_DecalMRATex, _File);
+    MemoryByte += SaveAssetRef(m_DecalNormalTex, _File);
+    MemoryByte += SaveAssetRef(m_DecalEmissiveTex, _File);
     fwrite(&m_bInvertNormalY, sizeof(int), 1, _File);
+
+    MemoryByte += sizeof(int);
+
+    return MemoryByte;
 }
 
-void CDecal::LoadFromLevelFile(FILE* _File)
+UINT CDecal::LoadFromLevelFile(FILE* _File)
 {
-    CRenderComponent::LoadFromLevelFile(_File);
-    LoadAssetRef(m_DecalAlbedoTex, _File);
-    LoadAssetRef(m_DecalMRATex, _File);
-    LoadAssetRef(m_DecalNormalTex, _File);
-    LoadAssetRef(m_DecalEmissiveTex, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::LoadFromLevelFile(_File);
+    MemoryByte += LoadAssetRef(m_DecalAlbedoTex, _File);
+    MemoryByte += LoadAssetRef(m_DecalMRATex, _File);
+    MemoryByte += LoadAssetRef(m_DecalNormalTex, _File);
+    MemoryByte += LoadAssetRef(m_DecalEmissiveTex, _File);
     fread(&m_bInvertNormalY, sizeof(int), 1, _File);
+
+    MemoryByte += sizeof(int);
+
+    return MemoryByte;
 }

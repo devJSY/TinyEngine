@@ -3,6 +3,7 @@
 
 #include "CLevelSaveLoad.h"
 #include "CGameObject.h"
+#include "CTransform.h"
 
 SAVE_TYPE CPrefab::GAMEOBJECT_SAVE = &CLevelSaveLoad::SaveGameObject;
 LOAD_TYPE CPrefab::GAMEOBJECT_LOAD = &CLevelSaveLoad::LoadGameObject;
@@ -40,7 +41,11 @@ void CPrefab::SetGameObject(CGameObject* _Object)
 
 CGameObject* CPrefab::Instantiate()
 {
-    return m_ProtoObj->Clone();
+    CGameObject* pInstObj = m_ProtoObj->Clone();
+    pInstObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+    pInstObj->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+
+    return pInstObj;
 }
 
 int CPrefab::Save(const wstring& _strRelativePath)

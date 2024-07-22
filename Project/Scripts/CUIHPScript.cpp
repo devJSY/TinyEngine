@@ -40,7 +40,7 @@ void CUIHPScript::begin()
     CGameObject* _pTargetObj = nullptr;
     if (!m_pUnitScript && m_TargetName != "")
         _pTargetObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_TargetName));
-        
+
     if (_pTargetObj)
         m_pUnitScript = _pTargetObj->GetScript<CUnitScript>();
 
@@ -53,8 +53,8 @@ void CUIHPScript::begin()
 
     m_pTr = GetOwner()->GetComponent<CTransform>();
     m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP/m_fMaxHP);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP/m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
 
@@ -141,23 +141,45 @@ bool CUIHPScript::IsCombo()
     return _IsCombo;
 }
 
-void CUIHPScript::SaveToLevelFile(FILE* _File)
+void CUIHPScript::SlicingUI(UINT _iSlicingNum)
 {
-    SaveWStringToFile(ToWstring(m_TargetName), _File);
+}
+
+UINT CUIHPScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    MemoryByte += SaveWStringToFile(ToWstring(m_TargetName), _File);
     fwrite(&m_vBasicColor, sizeof(Vec4), 1, _File);
     fwrite(&m_vDecreaseColor, sizeof(Vec4), 1, _File);
     fwrite(&m_fComboTime, sizeof(float), 1, _File);
     fwrite(&m_fDescSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(Vec4);
+    MemoryByte += sizeof(Vec4);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CUIHPScript::LoadFromLevelFile(FILE* _File)
+UINT CUIHPScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     wstring _TargetName = {};
-    LoadWStringFromFile(_TargetName, _File);
+    MemoryByte += LoadWStringFromFile(_TargetName, _File);
     fread(&m_vBasicColor, sizeof(Vec4), 1, _File);
     fread(&m_vDecreaseColor, sizeof(Vec4), 1, _File);
     fread(&m_fComboTime, sizeof(float), 1, _File);
     fread(&m_fDescSpeed, sizeof(float), 1, _File);
-    
+
     m_TargetName = ToString(_TargetName);
+
+    MemoryByte += sizeof(Vec4);
+    MemoryByte += sizeof(Vec4);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

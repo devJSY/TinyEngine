@@ -16,6 +16,7 @@ void CKirbyChangeAbility::tick()
 
     if (PLAYER->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"CHANGE_ABILITY_WAIT");
     }
 
@@ -23,11 +24,13 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
+
     // 소켓 꽂아주기
     PLAYERFSM->GetNextAbility()->ChangeAbilityEnter();
     
     // 커비 변신 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"EvolutionCopy"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopy"), false, false, 1.5f);
 
     // 커버 머터리얼 다시 설정
     CPlayerMgr::ClearBodyMtrl();

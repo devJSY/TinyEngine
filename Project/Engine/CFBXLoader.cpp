@@ -188,6 +188,8 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
             GetBinormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
             GetNormal(_pFbxMesh, &Container, iIdx, iVtxOrder);
 
+            GetColor(_pFbxMesh, &Container, iIdx, iVtxOrder);
+
             GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j), iVtxOrder);
 
             ++iVtxOrder;
@@ -325,6 +327,46 @@ void CFBXLoader::GetNormal(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, 
     _pContainer->vecNormal[_iIdx].x = (float)vNormal.mData[0];
     _pContainer->vecNormal[_iIdx].y = (float)vNormal.mData[2];
     _pContainer->vecNormal[_iIdx].z = (float)vNormal.mData[1];
+}
+
+void CFBXLoader::GetColor(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder)
+{
+    // for (int i = 0; i < _pMesh->GetElementVertexColorCount(); i++)
+    FbxGeometryElementVertexColor* leVtxc = _pMesh->GetElementVertexColor(0);
+
+    if (!leVtxc)
+        return;
+
+    FbxColor Color = FbxColor();
+    if (leVtxc->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+    {
+        if (leVtxc->GetReferenceMode() == FbxGeometryElement::eDirect)
+        {
+            Color = leVtxc->GetDirectArray().GetAt(_iIdx);
+        }
+        else if (leVtxc->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+        {
+            int id = leVtxc->GetIndexArray().GetAt(_iIdx);
+            Color = leVtxc->GetDirectArray().GetAt(id);
+        }
+    }
+    else if (leVtxc->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+    {
+        if (leVtxc->GetReferenceMode() == FbxGeometryElement::eDirect)
+        {
+            Color = leVtxc->GetDirectArray().GetAt(_iVtxOrder);
+        }
+        else if (leVtxc->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+        {
+            int id = leVtxc->GetIndexArray().GetAt(_iVtxOrder);
+            Color = leVtxc->GetDirectArray().GetAt(id);
+        }
+    }
+
+    _pContainer->vecColor[_iIdx].x = (float)Color.mRed;
+    _pContainer->vecColor[_iIdx].y = (float)Color.mGreen;
+    _pContainer->vecColor[_iIdx].z = (float)Color.mBlue;
+    _pContainer->vecColor[_iIdx].w = (float)Color.mAlpha;
 }
 
 void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _iVtxOrder)

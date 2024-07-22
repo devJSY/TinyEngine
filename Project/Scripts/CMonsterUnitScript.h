@@ -20,6 +20,7 @@ class CMonsterUnitScript : public CUnitScript
 {
 private:
     CGameObject* m_pTargetObj;
+    float m_RaycastDist;
     UnitHit m_HitInfo;
 
 protected:
@@ -31,19 +32,20 @@ protected:
 
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
     void TransformRotate();
+    bool IsGround();
+
     
     // ÀÚÀü
     void Rotating();
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
     virtual CMonsterUnitScript* Clone() = 0;
 
     CMonsterUnitScript(UINT _Type);
     CMonsterUnitScript(const CMonsterUnitScript& _Origin);
     virtual ~CMonsterUnitScript();
 
-    friend class CHitBoxScript;
     friend class CDetectAreaScript;
 };

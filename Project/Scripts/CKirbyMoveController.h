@@ -63,6 +63,14 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+private:
+    void Input();
+    void SetDir();
+    void Move();
+    void SurfaceAlignment();
+
+    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
+
 public:
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
@@ -84,6 +92,7 @@ public:
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
+    void SetJumpPower(float _Power) { m_JumpPower = _Power; }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
@@ -92,16 +101,11 @@ public:
     float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
     float GetGuard() const { return m_bActiveFriction; }
-
-private:
-    void Input();
-    void SetDir();
-    void Move();
-    void SurfaceAlignment();
+    float GetJumpPower() const { return m_JumpPower; }
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
     CLONE(CKirbyMoveController);

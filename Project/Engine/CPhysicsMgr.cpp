@@ -72,19 +72,6 @@ void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 cou
     {
         pColliderA->OnTriggerExit(pColliderB);
         pColliderB->OnTriggerExit(pColliderA);
-
-        // Trigger List 에서 삭제
-        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = CPhysicsMgr::GetInst()->m_listTrigger.begin();
-        while (iter != CPhysicsMgr::GetInst()->m_listTrigger.end())
-        {
-            if (iter->first == pColliderA && iter->second == pColliderB)
-            {
-                CPhysicsMgr::GetInst()->m_listTrigger.erase(iter);
-                break;
-            }
-
-            ++iter;
-        }
     }
 }
 
@@ -149,12 +136,18 @@ void CPhysicsMgr::tick()
     m_Scene->fetchResults(true);
 
     // TriggerStay Event
-    for (const auto& iter : m_listTrigger)
+    std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
+    while (iter != m_listTrigger.end())
     {
-        if (iter.first->m_TriggerCount > 0)
-            iter.first->OnTriggerStay(iter.second);
-        if (iter.second->m_TriggerCount > 0)
-            iter.second->OnTriggerStay(iter.first);
+        if (0 >= iter->first->m_TriggerCount || 0 >= iter->second->m_TriggerCount)
+        {
+            iter = m_listTrigger.erase(iter);
+            continue;
+        }
+
+        iter->first->OnTriggerStay(iter->second);
+        iter->second->OnTriggerStay(iter->first);
+        ++iter;
     }
 
     // 시뮬레이션 결과로 트랜스폼 업데이트
@@ -369,7 +362,7 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
 
 void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
-    if (nullptr == m_Scene)
+    if (nullptr == m_Scene || nullptr == _GameObject)
         return;
 
     // 활성화 여부 체크
@@ -494,10 +487,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pBoxCol;
         pBoxCol->m_RuntimeShape = shape;
-
-        // Count 초기화
-        pBoxCol->m_CollisionCount = 0;
-        pBoxCol->m_TriggerCount = 0;
     }
 
     // Sphere Collider
@@ -537,10 +526,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pSphereCol;
         pSphereCol->m_RuntimeShape = shape;
-
-        // Count 초기화
-        pSphereCol->m_CollisionCount = 0;
-        pSphereCol->m_TriggerCount = 0;
     }
 
     // Capsule Collider
@@ -610,10 +595,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         // UserData 등록
         shape->userData = (void*)pCapsuleCol;
         pCapsuleCol->m_RuntimeShape = shape;
-
-        // Count 초기화
-        pCapsuleCol->m_CollisionCount = 0;
-        pCapsuleCol->m_TriggerCount = 0;
     }
 
     // Mesh Collider
@@ -667,10 +648,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
             // UserData 등록
             shape->userData = (void*)pMeshCol;
             pMeshCol->m_RuntimeShape = shape;
-
-            // Count 초기화
-            pMeshCol->m_CollisionCount = 0;
-            pMeshCol->m_TriggerCount = 0;
         }
     }
 
@@ -744,7 +721,7 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
 
 void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
 {
-    if (nullptr == m_Scene)
+    if (nullptr == m_Scene || nullptr == _GameObject)
         return;
 
     CCharacterController* pCharacterController = _GameObject->CharacterController();
@@ -787,6 +764,21 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
 
         // vecPhysicsObj에서 제거
         m_vecPhysicsObj.erase(m_vecPhysicsObj.begin() + i);
+
+        // Trigger List 에서 제거
+        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
+        while (iter != m_listTrigger.end())
+        {
+            if (iter->first == pCharacterController || iter->second == pCharacterController || iter->first == pBoxCol || iter->second == pBoxCol ||
+                iter->first == pSphereCol || iter->second == pSphereCol || iter->first == pCapsuleCol || iter->second == pCapsuleCol ||
+                iter->first == pMeshCol || iter->second == pMeshCol)
+            {
+                iter = m_listTrigger.erase(iter);
+                continue;
+            }
+
+            ++iter;
+        }
 
         if (nullptr != pRigidbody)
             pRigidbody->m_RuntimeBody = nullptr;

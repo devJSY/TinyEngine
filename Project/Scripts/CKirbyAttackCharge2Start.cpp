@@ -45,7 +45,7 @@ void CKirbyAttackCharge2Start::tick()
         break;
         case AbilityCopyType::FIRE: // 상태 없음
             break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
             break;
         case AbilityCopyType::SWORD: {
             if (PLAYER->Animator()->IsFinish())

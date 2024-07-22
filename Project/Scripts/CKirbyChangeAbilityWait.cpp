@@ -13,14 +13,17 @@ void CKirbyChangeAbilityWait::tick()
 {
     if (KEY_TAP(KEY_ATK))
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"CHANGE_ABILITY_END");
     }
 }
 
 void CKirbyChangeAbilityWait::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
+
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"EvolutionCopyWait"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyWait"), true, false, 1.5f);
 
 }
 

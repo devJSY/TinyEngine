@@ -6,6 +6,9 @@ enum class TASK_TYPE
     CREATE_OBJECT,
 
     // Param1 : Object Address
+    DETACH_OBJECT,
+
+    // Param1 : Object Address
     DELETE_OBJECT,
 
     // Param1 : Level, Param2 : LEVEL_STATE
@@ -85,6 +88,7 @@ public:
 
 private:
     void CREATE_OBJECT(const tTask& _Task);
+    void DETACH_OBJECT(const tTask& _Task);
     void DELETE_OBJECT(const tTask& _Task);
     void CHANGE_LEVELSTATE(const tTask& _Task);
     void ADD_CHILD(const tTask& _Task);

@@ -21,7 +21,7 @@ void CKirbyAttackCombo2End::tick()
         break;
     case AbilityCopyType::FIRE:
         break;
-    case AbilityCopyType::RANGER:
+    case AbilityCopyType::CUTTER:
         break;
     case AbilityCopyType::SWORD: {
         if (PLAYER->Animator()->IsFinish())

@@ -24,13 +24,14 @@ void CKirbyAttackCharge2Slash::tick()
 
 void CKirbyAttackCharge2Slash::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"SuperSpinSlashLoop"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashLoop"), true, false, 1.5f);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(13.f);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
+    PLAYERFSM->SetInvincible(true);
     m_PlayTime = PLAYTIME;
 }
 
@@ -39,4 +40,6 @@ void CKirbyAttackCharge2Slash::Exit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }

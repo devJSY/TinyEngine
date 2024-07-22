@@ -11,6 +11,7 @@ class CAsset;
 namespace GamePlayStatic
 {
     void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
+    void DetachObject(CGameObject* _Target);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, tBoneSocket* _BoneSocket);
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, const std::wstring& _BoneSocketName);
@@ -90,40 +91,50 @@ int GetSizeofFormat(DXGI_FORMAT _eFormat);
 // =====================================
 // Save / Load
 // =====================================
-void SaveWStringToFile(const wstring& _str, FILE* _File);
-void LoadWStringFromFile(wstring& _str, FILE* _File);
+UINT SaveWStringToFile(const wstring& _str, FILE* _File);
+UINT LoadWStringFromFile(wstring& _str, FILE* _File);
 
 #include "CAssetMgr.h"
 
 template <typename T>
-void SaveAssetRef(Ptr<T> _Asset, FILE* _File)
+UINT SaveAssetRef(Ptr<T> _Asset, FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     bool bAssetExist = false;
     _Asset == nullptr ? bAssetExist = false : bAssetExist = true;
 
     fwrite(&bAssetExist, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
 
     if (bAssetExist)
     {
-        SaveWStringToFile(_Asset->GetKey(), _File);
-        SaveWStringToFile(_Asset->GetRelativePath(), _File);
+        MemoryByte += SaveWStringToFile(_Asset->GetKey(), _File);
+        MemoryByte += SaveWStringToFile(_Asset->GetRelativePath(), _File);
     }
+
+    return MemoryByte;
 }
 
 template <typename T>
-void LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
+UINT LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     bool bAssetExist = false;
     fread(&bAssetExist, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
 
     if (bAssetExist)
     {
         wstring strKey, strRelativePath;
-        LoadWStringFromFile(strKey, _File);
-        LoadWStringFromFile(strRelativePath, _File);
+        MemoryByte += LoadWStringFromFile(strKey, _File);
+        MemoryByte += LoadWStringFromFile(strRelativePath, _File);
 
         _Asset = CAssetMgr::GetInst()->Load<T>(strKey, strRelativePath);
     }
+
+    return MemoryByte;
 }
 
 wstring OpenFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
@@ -134,7 +145,7 @@ Vec2 LoadMeta(const wstring& _strMetaRelativePath);
 // =====================================
 // ImGui Utility
 // =====================================
-void ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f, float resetValue = 0.0f,
+bool ImGui_DrawVec3Control(const string& label, Vec3& values, float speed = 0.1f, float min = 0.f, float max = 0.f, float resetValue = 0.0f,
                            float columnWidth = 100.0f);
 string ImGui_LabelPrefix(const char* const label, float alignment = 0.5f);
 bool ImGui_ComboUI(const string& caption, string& current_item, const std::vector<string>& items);

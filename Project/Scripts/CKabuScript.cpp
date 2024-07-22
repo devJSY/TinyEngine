@@ -83,15 +83,15 @@ void CKabuScript::EnterState(KABU_STATE _state)
     switch (_state)
     {
     case KABU_STATE::Patrol: {
-        Animator()->Play(ANIMPREFIX(L"Wait"), false);
+        Animator()->Play(ANIMPREFIX("Wait"), false);
     }
     break;
     case KABU_STATE::Damage: {
-        Animator()->Play(ANIMPREFIX(L"Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case KABU_STATE::Eaten: {
-        Animator()->Play(ANIMPREFIX(L"Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"));
 
         m_vDamageDir.Normalize();
         Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
@@ -268,16 +268,30 @@ void CKabuScript::OnTriggerExit(CCollider* _OtherCollider)
     }
 }
 
-void CKabuScript::SaveToLevelFile(FILE* _File)
+UINT CKabuScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
-    fwrite(&m_vDestPos, sizeof(m_vDestPos), 1, _File);
-    fwrite(&m_fLerpValue, sizeof(m_fLerpValue), 1, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_vDestPos, sizeof(Vec3), 1, _File);
+    fwrite(&m_fLerpValue, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CKabuScript::LoadFromLevelFile(FILE* _File)
+UINT CKabuScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
-    fread(&m_vDestPos, sizeof(m_vDestPos), 1, _File);
-    fread(&m_fLerpValue, sizeof(m_fLerpValue), 1, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+    fread(&m_vDestPos, sizeof(Vec3), 1, _File);
+    fread(&m_fLerpValue, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

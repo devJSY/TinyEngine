@@ -3,6 +3,7 @@
 
 CKirbyHoveringLimit::CKirbyHoveringLimit()
     : m_SavedGravity(0.f)
+    , m_SavedSpeed(0.f)
 {
 }
 
@@ -13,7 +14,11 @@ CKirbyHoveringLimit::~CKirbyHoveringLimit()
 void CKirbyHoveringLimit::tick()
 {
     // Change State
-    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+    if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+    {
+        ChangeState(L"DROP_ABILITY");
+    }
+    else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         ChangeState(L"HOVERING_SPIT");
     }
@@ -29,15 +34,21 @@ void CKirbyHoveringLimit::tick()
 
 void CKirbyHoveringLimit::Enter()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX(L"FlightLimit"), true, false, 1.5f);
+    GetOwner()->Animator()->Play(ANIMPREFIX("FlightLimit"), true, false, 1.5f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-3.f);
+
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyHoveringLimit::Exit()
 {
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
     PLAYERCTRL->SetGravity(m_SavedGravity);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->SetDroppable(false);
 }

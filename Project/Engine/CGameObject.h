@@ -31,8 +31,8 @@ private:
     tBoneSocket* m_BoneSocket; // 부모 오브젝트가 보유한 Skeletal Mesh의 본 소켓
 
 public:
-    void begin();
-    void tick();
+    virtual void begin();
+    virtual void tick();
     virtual void finaltick();
     void render();
     void render(Ptr<CMaterial> _mtrl);
@@ -123,6 +123,7 @@ public:
     CGameObject(const CGameObject& origin);
     virtual ~CGameObject();
 
+    friend class CGameObjectEx;
     friend class CLayer;
     friend class CTaskMgr;
     friend class CLevelSaveLoad;

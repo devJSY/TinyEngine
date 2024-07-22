@@ -17,6 +17,18 @@ void CKirbyLanding::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE:
+        case ObjectCopyType::STAIR:
+        case ObjectCopyType::LIGHT: {
+            if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"LANDING_END");
+            }
+        }
+        break;
+        }
     }
     else
     {
@@ -24,7 +36,7 @@ void CKirbyLanding::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::RANGER: {
+        case AbilityCopyType::CUTTER: {
             if (GetOwner()->Animator()->IsFinish())
             {
                 ChangeState(L"LANDING_END");
@@ -52,9 +64,11 @@ void CKirbyLanding::tick()
 void CKirbyLanding::Enter()
 {
     PLAY_CURSTATE(LandingEnter)
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyLanding::Exit()
 {
     PLAY_CURSTATE(LandingExit)
+    PLAYERFSM->SetDroppable(false);
 }

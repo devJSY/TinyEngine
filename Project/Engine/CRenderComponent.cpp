@@ -208,9 +208,11 @@ void CRenderComponent::finaltick()
     }
 }
 
-void CRenderComponent::SaveToLevelFile(FILE* _File)
+UINT CRenderComponent::SaveToLevelFile(FILE* _File)
 {
-    SaveAssetRef<CMesh>(m_Mesh.Get(), _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += SaveAssetRef<CMesh>(m_Mesh.Get(), _File);
 
     // 재질 참조정보 저장
     UINT iMtrlCount = GetMtrlCount();
@@ -218,18 +220,28 @@ void CRenderComponent::SaveToLevelFile(FILE* _File)
 
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
-        SaveAssetRef(m_vecMtrls[i].pSharedMtrl, _File);
+        MemoryByte += SaveAssetRef(m_vecMtrls[i].pSharedMtrl, _File);
     }
 
     fwrite(&m_bEnabled, 1, sizeof(bool), _File);
     fwrite(&m_bFrustumCheck, 1, sizeof(bool), _File);
     fwrite(&m_BoundingRadius, 1, sizeof(float), _File);
     fwrite(&m_bCastShadow, 1, sizeof(bool), _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CRenderComponent::LoadFromLevelFile(FILE* _File)
+UINT CRenderComponent::LoadFromLevelFile(FILE* _File)
 {
-    LoadAssetRef<CMesh>(m_Mesh, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += LoadAssetRef<CMesh>(m_Mesh, _File);
 
     // 재질 참조정보 불러오기
     UINT iMtrlCount = GetMtrlCount();
@@ -238,7 +250,7 @@ void CRenderComponent::LoadFromLevelFile(FILE* _File)
     for (UINT i = 0; i < iMtrlCount; ++i)
     {
         Ptr<CMaterial> pMtrl;
-        LoadAssetRef(pMtrl, _File);
+        MemoryByte += LoadAssetRef(pMtrl, _File);
         SetMaterial(pMtrl, i);
     }
 
@@ -246,4 +258,12 @@ void CRenderComponent::LoadFromLevelFile(FILE* _File)
     fread(&m_bFrustumCheck, 1, sizeof(bool), _File);
     fread(&m_BoundingRadius, 1, sizeof(float), _File);
     fread(&m_bCastShadow, 1, sizeof(bool), _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

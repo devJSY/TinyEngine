@@ -16,6 +16,31 @@ void CKirbyAttack::tick()
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                ChangeState(L"ATTACK_END");
+            }
+        }
+            break;
+        case ObjectCopyType::STAIR:
+            break;
+        case ObjectCopyType::LIGHT:
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (PLAYER->CharacterController()->IsGrounded())
+                {
+                    ChangeState(L"IDLE");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_FALL");
+                }
+            }
+        break;
+        }
     }
     else
     {
@@ -37,7 +62,20 @@ void CKirbyAttack::tick()
         break;
         case AbilityCopyType::FIRE: // 상태 없음
             break;
-        case AbilityCopyType::RANGER:
+        case AbilityCopyType::CUTTER:
+        {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                if (PLAYERCTRL->GetInput().Length() != 0.f)
+                {
+                    ChangeState(L"RUN_START");
+                }
+                else
+                {
+                    ChangeState(L"IDLE");
+                }
+            }
+        }
             break;
         case AbilityCopyType::SWORD: {
             if (PLAYER->Animator()->IsFinish())

@@ -3,6 +3,7 @@
 
 CKirbyHoveringStart::CKirbyHoveringStart()
     : m_SavedGravity(0.f)
+    , m_SavedSpeed(0.f)
 {
 }
 
@@ -27,18 +28,23 @@ void CKirbyHoveringStart::tick()
 
 void CKirbyHoveringStart::Enter()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX(L"FlightStart"), false);
+    GetOwner()->Animator()->Play(ANIMPREFIX("FlightStart"), false);
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-10.f);
 
     PLAYERFSM->SetHovering(true);
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyHoveringStart::Exit()
 {
     PLAYERCTRL->SetGravity(m_SavedGravity);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    PLAYERFSM->SetDroppable(false);
 }

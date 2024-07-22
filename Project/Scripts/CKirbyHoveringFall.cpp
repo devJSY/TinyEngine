@@ -3,6 +3,7 @@
 
 CKirbyHoveringFall::CKirbyHoveringFall()
     : m_SavedGravity(0.f)
+    , m_SavedSpeed(0.f)
 {
 }
 
@@ -12,7 +13,11 @@ CKirbyHoveringFall::~CKirbyHoveringFall()
 
 void CKirbyHoveringFall::tick()
 {
-    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+    if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+    {
+        ChangeState(L"DROP_ABILITY");
+    }
+    else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
     {
         ChangeState(L"HOVERING_SPIT");
     }
@@ -32,17 +37,23 @@ void CKirbyHoveringFall::tick()
 
 void CKirbyHoveringFall::Enter()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX(L"FlightFall"));
+    GetOwner()->Animator()->Play(ANIMPREFIX("FlightFall"));
     
     if (PLAYERCTRL->GetVelocity().y > 0.f)
     {
         PLAYERCTRL->ClearVelocityY();
     }
     m_SavedGravity = PLAYERCTRL->GetGravity();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-3.f);
+    PLAYERCTRL->SetSpeed(7.f);
+
+    PLAYERFSM->SetDroppable(true);
 }
 
 void CKirbyHoveringFall::Exit()
 {
     PLAYERCTRL->SetGravity(m_SavedGravity);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+    PLAYERFSM->SetDroppable(false);
 }

@@ -74,20 +74,29 @@ void CPolygonCollider2D::finaltick()
     }
 }
 
-void CPolygonCollider2D::SaveToLevelFile(FILE* _File)
+UINT CPolygonCollider2D::SaveToLevelFile(FILE* _File)
 {
-    CCollider2D::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::SaveToLevelFile(_File);
     int count = (int)m_Points.size();
     fwrite(&count, sizeof(int), 1, _File);
     for (size_t i = 0; i < count; i++)
     {
         fwrite(&m_Points[i], sizeof(Vec2), 1, _File);
     }
+
+    MemoryByte += sizeof(int);
+    MemoryByte += count * sizeof(Vec2);
+
+    return MemoryByte;
 }
 
-void CPolygonCollider2D::LoadFromLevelFile(FILE* _File)
+UINT CPolygonCollider2D::LoadFromLevelFile(FILE* _File)
 {
-    CCollider2D::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::LoadFromLevelFile(_File);
     int count = 0;
     fread(&count, sizeof(int), 1, _File);
     m_Points.resize(count);
@@ -95,4 +104,9 @@ void CPolygonCollider2D::LoadFromLevelFile(FILE* _File)
     {
         fread(&m_Points[i], sizeof(Vec2), 1, _File);
     }
+
+    MemoryByte += sizeof(int);
+    MemoryByte += count * sizeof(Vec2);
+
+    return MemoryByte;
 }

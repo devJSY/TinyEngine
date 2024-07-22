@@ -188,10 +188,10 @@ void CCameraMoveScript::MovePerspective()
 
     // Zoom
     float Zoffset = 1.5f;
-    if (KEY_PRESSED(KEY::Z))
+    if (KEY_PRESSED(KEY::B))
         Camera()->SetFOV(Camera()->GetFOV() + DT_ENGINE * Zoffset);
 
-    if (KEY_PRESSED(KEY::C))
+    if (KEY_PRESSED(KEY::M))
         Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * Zoffset);
 }
 
@@ -257,12 +257,24 @@ void CCameraMoveScript::MoveFocusPerspective()
     }
 }
 
-void CCameraMoveScript::SaveToLevelFile(FILE* _File)
+UINT CCameraMoveScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_CamSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CCameraMoveScript::LoadFromLevelFile(FILE* _File)
+UINT CCameraMoveScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_CamSpeed, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

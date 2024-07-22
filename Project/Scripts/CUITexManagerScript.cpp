@@ -131,4 +131,17 @@ int CUITexManagerScript::Drag()
 
     return _iIdx;
 }
-    
+
+UINT CUITexManagerScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CUITexManagerScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}

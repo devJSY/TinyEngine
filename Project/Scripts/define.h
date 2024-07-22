@@ -12,9 +12,9 @@
 #define KEY_RELEASED_ARROW (KEY_RELEASED(KEY::UP) || KEY_RELEASED(KEY::DOWN) || KEY_RELEASED(KEY::LEFT) || KEY_RELEASED(KEY::RIGHT))
 #define KEY_NONE_ARROW (KEY_NONE(KEY::UP) && KEY_NONE(KEY::DOWN) && KEY_NONE(KEY::LEFT) && KEY_NONE(KEY::RIGHT))
 
-#define KEY_JUMP KEY::B
-#define KEY_ATK KEY::N
-#define KEY_GUARD KEY::M
+#define KEY_JUMP KEY::C
+#define KEY_ATK KEY::X
+#define KEY_GUARD KEY::Z
 
 #define LAYER_MANAGER       1
 #define LAYER_STATIC        2
@@ -37,21 +37,16 @@
         KirbyFSM->GetCurAbility()->STATE();                                                                                                          \
     }
 
-#define ANIMPREFIX(NAME) ((wstring)L"Armature|" + NAME)
-
-enum class DIRECTION_TYPE
-{
-    LEFT,
-    RIGHT,
-};
+#define ANIMPREFIX(NAME) L"Armature|" L##NAME
 
 enum class AbilityCopyType
 {
     NONE,
     NORMAL,
     FIRE,
-    RANGER,
+    CUTTER,
     SWORD,
+    SLIP,
 
     END,
 };
@@ -59,7 +54,7 @@ enum class AbilityCopyType
 enum class ObjectCopyType
 {
     NONE,
-    CAR,
+    CONE,
     STAIR,
     LIGHT,
 

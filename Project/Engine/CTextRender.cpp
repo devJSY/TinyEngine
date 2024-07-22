@@ -80,18 +80,34 @@ void CTextRender::render(UINT _Subset)
     render();
 }
 
-void CTextRender::SaveToLevelFile(FILE* _File)
+UINT CTextRender::SaveToLevelFile(FILE* _File)
 {
-    SaveWStringToFile(m_Text, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += SaveWStringToFile(m_Text, _File);
     fwrite(&m_Size, sizeof(float), 1, _File);
     fwrite(&m_Color, sizeof(Vec4), 1, _File);
     fwrite(&m_CameraIdx, sizeof(int), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec4);
+    MemoryByte += sizeof(int);
+
+    return MemoryByte;
 }
 
-void CTextRender::LoadFromLevelFile(FILE* _File)
+UINT CTextRender::LoadFromLevelFile(FILE* _File)
 {
-    LoadWStringFromFile(m_Text, _File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += LoadWStringFromFile(m_Text, _File);
     fread(&m_Size, sizeof(float), 1, _File);
     fread(&m_Color, sizeof(Vec4), 1, _File);
     fread(&m_CameraIdx, sizeof(int), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec4);
+    MemoryByte += sizeof(int);
+
+    return MemoryByte;
 }

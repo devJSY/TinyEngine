@@ -98,6 +98,9 @@ void CTaskMgr::tick()
         case TASK_TYPE::CREATE_OBJECT:
             CREATE_OBJECT(Task);
             break;
+        case TASK_TYPE::DETACH_OBJECT:
+            DETACH_OBJECT(Task);
+            break;
         case TASK_TYPE::DELETE_OBJECT:
             DELETE_OBJECT(Task);
             break;
@@ -204,6 +207,28 @@ void CTaskMgr::CREATE_OBJECT(const tTask& _Task)
     {
         pNewObject->begin();
     }
+}
+
+void CTaskMgr::DETACH_OBJECT(const tTask& _Task)
+{
+    CGameObject* pObj = (CGameObject*)_Task.Param_1;
+
+    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+
+    for (int i = 0; i < LAYER_MAX; ++i)
+    {
+        if (pCurLevel->GetLayer(i)->DetachGameObject(pObj))
+        {
+            break;
+        }
+    }
+
+    CPhysics2DMgr::GetInst()->RemovePhysicsObject(pObj);
+    CPhysicsMgr::GetInst()->RemovePhysicsObject(pObj);
+
+    // Selected Obj ÇØÁ¦
+    if (pObj == CEditorMgr::GetInst()->GetSelectedObject())
+        CEditorMgr::GetInst()->SetSelectedObject(nullptr);
 }
 
 void CTaskMgr::DELETE_OBJECT(const tTask& _Task)

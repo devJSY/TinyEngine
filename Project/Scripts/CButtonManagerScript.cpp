@@ -95,3 +95,17 @@ void CButtonManagerScript::ButtonManipulation()
         }
     }
 }
+
+UINT CButtonManagerScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CButtonManagerScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}

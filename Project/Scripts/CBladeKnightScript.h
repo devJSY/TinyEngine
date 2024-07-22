@@ -19,18 +19,28 @@ enum class BLADEKNIGHT_STATE
     ThrustLoop,
     ThrustStart,
     ThrustStartWait,
-    ThrustWait,
-    TonadoAttack,
-    TonadoAttackCharge,
-    TonadoAttackCharge2,
-    TonadoAttackChargeMax,
+    // ThrustWait,
+    TornadoAttack,
+    TornadoAttackCharge,
+    TornadoAttackCharge2,
+    // TornadoAttackChargeMax,
     Wait,
 };
+
+class CBladeKnightSwordScript;
 
 class CBladeKnightScript : public CMonsterUnitScript
 {
 private:
     BLADEKNIGHT_STATE m_State;
+    CBladeKnightSwordScript* m_Sword;
+    float m_PassedTime;
+    bool m_bStepFlag;
+
+    // Script Parameter
+    float m_StepPower;
+    float m_AttackRange;
+    bool m_bTraceUnit;
 
 private:
     virtual void begin() override;
@@ -38,6 +48,9 @@ private:
 
 public:
     void ChangeState(BLADEKNIGHT_STATE _NextState);
+
+private:
+    void SetSword();
 
 private:
     void EnterState();
@@ -60,10 +73,10 @@ private:
     void ThrustStart();
     void ThrustStartWait();
     void ThrustWait();
-    void TonadoAttack();
-    void TonadoAttackCharge();
-    void TonadoAttackCharge2();
-    void TonadoAttackChargeMax();
+    void TornadoAttack();
+    void TornadoAttackCharge();
+    void TornadoAttackCharge2();
+    void TornadoAttackChargeMax();
     void Wait();
 
 private:
@@ -71,13 +84,9 @@ private:
     virtual void OnCollisionStay(CCollider* _OtherCollider);
     virtual void OnCollisionExit(CCollider* _OtherCollider);
 
-    virtual void OnTriggerEnter(CCollider* _OtherCollider);
-    virtual void OnTriggerStay(CCollider* _OtherCollider);
-    virtual void OnTriggerExit(CCollider* _OtherCollider);
-
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CBladeKnightScript);
 

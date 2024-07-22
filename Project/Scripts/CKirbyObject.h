@@ -1,5 +1,7 @@
 #pragma once
-
+#include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
+#include "CKirbyMoveController.h"
 // ====================================================================================
 // USAGE: Kirby의 Object 종속적인 States를 모아 정의해둔 States Group Class
 // ====================================================================================
@@ -10,35 +12,45 @@
 class CKirbyObject
 {
 protected:
-    // 사용 메쉬: mesh
+    Ptr<CMeshData> m_Mesh;
+    Ptr<CMeshData> m_DemoMesh;
+    Ptr<CPrefab> m_OriginObject;
+    UINT m_DemoMeshIdx_BodyA;
+    UINT m_DemoMeshIdx_BodyB;
+    int m_MeshChangeIdx;
+    bool m_bFrmEnter;
+
+protected:
+    void ParseDemoMesh(Ptr<CMeshData> _pMesh);
     void ChangeState(const wstring& _strStateName);
 
 public:
-    // 필수: Deform, Attack
-    // 선택: Move
-
     virtual void Idle(){};
-    virtual void IdleEnter(){};
-    virtual void IdleExit(){};
+    virtual void IdleEnter();
+    virtual void IdleExit();
 
     virtual void Run(){};
-    virtual void RunEnter(){};
+    virtual void RunEnter();
     virtual void RunExit(){};
 
     virtual void RunStart(){};
     virtual void RunStartEnter(){};
     virtual void RunStartExit(){};
 
+    virtual void RunEnd(){};
+    virtual void RunEndEnter();
+    virtual void RunEndExit(){};
+
     virtual void Jump(){};
     virtual void JumpEnter(){};
     virtual void JumpExit(){};
 
     virtual void JumpStart(){};
-    virtual void JumpStartEnter(){};
+    virtual void JumpStartEnter();
     virtual void JumpStartExit(){};
 
     virtual void JumpFall(){};
-    virtual void JumpFallEnter(){};
+    virtual void JumpFallEnter();
     virtual void JumpFallExit(){};
 
     virtual void Landing(){};
@@ -49,12 +61,6 @@ public:
     virtual void LandingEndEnter();
     virtual void LandingEndExit();
 
-    // virtual void Hovering();
-
-    // virtual void Evasiveness();
-
-    // virtual void Sliding();
-
     virtual void Attack() = 0;
     virtual void AttackEnter() = 0;
     virtual void AttackExit() = 0;
@@ -62,6 +68,18 @@ public:
     virtual void AttackEnd(){};
     virtual void AttackEndEnter(){};
     virtual void AttackEndExit(){};
+
+    virtual void AttackStart(){};
+    virtual void AttackStartEnter(){};
+    virtual void AttackStartExit(){};
+
+    virtual void AttackCombo1(){};
+    virtual void AttackCombo1Enter(){};
+    virtual void AttackCombo1Exit(){};
+
+    virtual void AttackCombo1End(){};
+    virtual void AttackCombo1EndEnter(){};
+    virtual void AttackCombo1EndExit(){};
 
     virtual void AttackCharge1(){};
     virtual void AttackCharge1Enter(){};
@@ -103,9 +121,21 @@ public:
     virtual void JumpAttackStartEnter(){};
     virtual void JumpAttackStartExit(){};
 
-    // virtual void Throw();
+    virtual void DropObject();
+    virtual void DropObjectEnter();
+    virtual void DropObjectExit();
 
-    // virtual void Deform();
+    virtual void DropObjectStart(){};
+    virtual void DropObjectStartEnter();
+    virtual void DropObjectStartExit();
+
+    virtual void ChangeObject();
+    virtual void ChangeObjectEnter();
+    virtual void ChangeObjectExit();
+
+    virtual void ChangeObjectEnd(){};
+    virtual void ChangeObjectEndEnter();
+    virtual void ChangeObjectEndExit();
 
 public:
     virtual CKirbyObject* Clone() = 0;

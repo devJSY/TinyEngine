@@ -43,7 +43,7 @@ void CKirbyStuffedJump::tick()
 
 void CKirbyStuffedJump::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"StuffedJump"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("StuffedJump"), false);
 
     PLAYERCTRL->Jump();
     PLAYERFSM->SetLastJump(LastJumpType::LOW);

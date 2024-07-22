@@ -19,11 +19,13 @@ void CKirbyAttackCharge2SlashEnd::tick()
 
 void CKirbyAttackCharge2SlashEnd::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"SuperSpinSlashEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashEnd"), false, false, 1.5f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAttackCharge2SlashEnd::Exit()
@@ -31,4 +33,6 @@ void CKirbyAttackCharge2SlashEnd::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }

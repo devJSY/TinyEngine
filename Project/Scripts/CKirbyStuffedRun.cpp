@@ -28,7 +28,7 @@ void CKirbyStuffedRun::tick()
 
 void CKirbyStuffedRun::Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX(L"StuffedRun"));
+    PLAYER->Animator()->Play(ANIMPREFIX("StuffedRun"));
 }
 
 void CKirbyStuffedRun::Exit()

@@ -19,18 +19,25 @@ void CLevelChangeButtonScript::Func()
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(ToWstring(m_LevelName)), LEVEL_STATE::PLAY);
 }
 
-void CLevelChangeButtonScript::SaveToLevelFile(FILE* _File)
+UINT CLevelChangeButtonScript::SaveToLevelFile(FILE* _File)
 {
-    CButtonScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
 
-    SaveWStringToFile(ToWstring(m_LevelName), _File);
+    MemoryByte += CButtonScript::SaveToLevelFile(_File);
+    MemoryByte += SaveWStringToFile(ToWstring(m_LevelName), _File);
+
+    return MemoryByte;
 }
 
-void CLevelChangeButtonScript::LoadFromLevelFile(FILE* _File)
+UINT CLevelChangeButtonScript::LoadFromLevelFile(FILE* _File)
 {
-    CButtonScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CButtonScript::LoadFromLevelFile(_File);
 
     wstring _SaveLevel = {};
-    LoadWStringFromFile(_SaveLevel, _File);
+    MemoryByte += LoadWStringFromFile(_SaveLevel, _File);
     m_LevelName = ToString(_SaveLevel);
+
+    return MemoryByte;
 }

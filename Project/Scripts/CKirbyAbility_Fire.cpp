@@ -30,7 +30,7 @@ void CKirbyAbility_Fire::AttackCharge1Start()
 void CKirbyAbility_Fire::AttackCharge1StartEnter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"FireBreathStart"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("FireBreathStart"), false, false, 2.f);
 
     // 커비 표정 바꿔주기
     CPlayerMgr::ClearMouthMtrl();
@@ -72,7 +72,7 @@ void CKirbyAbility_Fire::AttackCharge1()
 void CKirbyAbility_Fire::AttackCharge1Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"FireBreath"), true, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("FireBreath"), true, false, 2.f);
 
     // 커비 표정 바꿔주기
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
@@ -115,7 +115,7 @@ void CKirbyAbility_Fire::AttackCharge1End()
 void CKirbyAbility_Fire::AttackCharge1EndEnter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"FireBreathEnd"), false, false , 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("FireBreathEnd"), false, false , 2.f);
 
     // Movement 제한
     PLAYERCTRL->LockJump();
@@ -138,7 +138,7 @@ void CKirbyAbility_Fire::AttackCharge1Run()
 void CKirbyAbility_Fire::AttackCharge1RunEnter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX(L"FireWalk"), true, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("FireWalk"), true, false, 2.f);
 
     // Movement 제한
     PLAYERCTRL->LockJump();
@@ -188,8 +188,10 @@ void CKirbyAbility_Fire::ChangeAbilityEnter()
     CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref")->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
+    PLAYERFSM->SetCurHat(pInstObj);
+
     // 애니메이션 재생
-    pInstObj->Animator()->Play(ANIMPREFIX(L"Deform"));
+    pInstObj->Animator()->Play(ANIMPREFIX("Deform"));
 }
 
 void CKirbyAbility_Fire::ChangeAbilityExit()
