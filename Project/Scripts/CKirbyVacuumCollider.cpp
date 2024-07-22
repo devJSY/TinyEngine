@@ -206,10 +206,16 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
     return EatType::NONE;
 }
 
-void CKirbyVacuumCollider::SaveToLevelFile(FILE* _File)
+UINT CKirbyVacuumCollider::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CKirbyVacuumCollider::LoadFromLevelFile(FILE* _File)
+UINT CKirbyVacuumCollider::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

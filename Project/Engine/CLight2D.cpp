@@ -36,13 +36,24 @@ void CLight2D::finaltick()
     GamePlayStatic::DrawDebugCircle(m_Info.vWorldPos, m_Info.fRadius, Vec3(1.f, 1.f, 1.f), false);
 }
 
-
-void CLight2D::SaveToLevelFile(FILE* _File)
+UINT CLight2D::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_Info, sizeof(tLightInfo), 1, _File);
+
+    MemoryByte += sizeof(tLightInfo);
+
+    return MemoryByte;
 }
 
-void CLight2D::LoadFromLevelFile(FILE* _File)
+UINT CLight2D::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_Info, sizeof(tLightInfo), 1, _File);
+
+    MemoryByte += sizeof(tLightInfo);
+
+    return MemoryByte;
 }

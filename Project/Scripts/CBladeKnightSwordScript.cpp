@@ -144,3 +144,17 @@ void CBladeKnightSwordScript::OnTriggerStay(CCollider* _OtherCollider)
 void CBladeKnightSwordScript::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
+
+UINT CBladeKnightSwordScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CBladeKnightSwordScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}

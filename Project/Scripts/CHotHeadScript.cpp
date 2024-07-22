@@ -455,22 +455,40 @@ void CHotHeadScript::ProjectileAttack()
     }
 }
 
-void CHotHeadScript::SaveToLevelFile(FILE* _File)
+UINT CHotHeadScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
     fwrite(&m_fAimingTime, sizeof(float), 1, _File);
     fwrite(&m_fShotLength, sizeof(float), 1, _File);
     fwrite(&m_fFlameLength, sizeof(float), 1, _File);
     fwrite(&m_fFlameRotLength, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CHotHeadScript::LoadFromLevelFile(FILE* _File)
+UINT CHotHeadScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
     fread(&m_fAimingTime, sizeof(float), 1, _File);
     fread(&m_fShotLength, sizeof(float), 1, _File);
     fread(&m_fFlameLength, sizeof(float), 1, _File);
     fread(&m_fFlameRotLength, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
 void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)

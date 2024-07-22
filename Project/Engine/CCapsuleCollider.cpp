@@ -25,7 +25,7 @@ void CCapsuleCollider::finaltick()
 
     // 콜라이더 비활성화 상태에서는 렌더링 X
     if (!m_bEnabled)
-        return; 
+        return;
 
     Vec3 scale = Transform()->GetWorldScale();
 
@@ -87,18 +87,34 @@ void CCapsuleCollider::SetAxisDirection(AXIS_TYPE _Dir)
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
-void CCapsuleCollider::SaveToLevelFile(FILE* _File)
+UINT CCapsuleCollider::SaveToLevelFile(FILE* _File)
 {
-    CCollider::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::SaveToLevelFile(_File);
     fwrite(&m_Radius, sizeof(float), 1, _File);
     fwrite(&m_Height, sizeof(float), 1, _File);
     fwrite(&m_Direction, sizeof(AXIS_TYPE), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(AXIS_TYPE);
+
+    return MemoryByte;
 }
 
-void CCapsuleCollider::LoadFromLevelFile(FILE* _File)
+UINT CCapsuleCollider::LoadFromLevelFile(FILE* _File)
 {
-    CCollider::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::LoadFromLevelFile(_File);
     fread(&m_Radius, sizeof(float), 1, _File);
     fread(&m_Height, sizeof(float), 1, _File);
     fread(&m_Direction, sizeof(AXIS_TYPE), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(AXIS_TYPE);
+
+    return MemoryByte;
 }

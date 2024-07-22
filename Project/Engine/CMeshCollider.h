@@ -19,8 +19,8 @@ public:
     void SetMesh(Ptr<CMesh> _pMesh) { m_Mesh = _pMesh; }
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CMeshCollider);
 

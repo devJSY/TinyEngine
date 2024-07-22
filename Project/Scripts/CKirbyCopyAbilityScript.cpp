@@ -21,12 +21,24 @@ CKirbyCopyAbilityScript::~CKirbyCopyAbilityScript()
 }
 
 
-void CKirbyCopyAbilityScript::SaveToLevelFile(FILE* _File)
+UINT CKirbyCopyAbilityScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_AbilityType, sizeof(UINT), 1, _File);
+    
+    MemoryByte += sizeof(UINT);
+
+    return MemoryByte;
 }
 
-void CKirbyCopyAbilityScript::LoadFromLevelFile(FILE* _File)
+UINT CKirbyCopyAbilityScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_AbilityType, sizeof(UINT), 1, _File);
+
+    MemoryByte += sizeof(UINT);
+
+    return MemoryByte;
 }

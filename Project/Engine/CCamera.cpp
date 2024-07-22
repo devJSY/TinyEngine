@@ -829,8 +829,10 @@ tRay CCamera::GetRay()
     return ray;
 }
 
-void CCamera::SaveToLevelFile(FILE* _File)
+UINT CCamera::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_ProjType, sizeof(PROJ_TYPE), 1, _File);
     fwrite(&m_FOV, sizeof(float), 1, _File);
     fwrite(&m_Width, sizeof(float), 1, _File);
@@ -841,10 +843,24 @@ void CCamera::SaveToLevelFile(FILE* _File)
     fwrite(&m_LayerMask, sizeof(UINT), 1, _File);
     fwrite(&m_iCamPriority, sizeof(int), 1, _File);
     fwrite(&m_bHDRI, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(PROJ_TYPE);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(int);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CCamera::LoadFromLevelFile(FILE* _File)
+UINT CCamera::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_ProjType, sizeof(PROJ_TYPE), 1, _File);
     fread(&m_FOV, sizeof(float), 1, _File);
     fread(&m_Width, sizeof(float), 1, _File);
@@ -855,4 +871,16 @@ void CCamera::LoadFromLevelFile(FILE* _File)
     fread(&m_LayerMask, sizeof(UINT), 1, _File);
     fread(&m_iCamPriority, sizeof(int), 1, _File);
     fread(&m_bHDRI, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(PROJ_TYPE);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(int);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

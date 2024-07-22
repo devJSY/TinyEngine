@@ -216,20 +216,40 @@ void CTransform::SetWorldRotation(Vec3 _Radian)
     SetLocalRotation(_Radian);
 }
 
-void CTransform::SaveToLevelFile(FILE* _File)
+UINT CTransform::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_LocalPos, sizeof(Vec3), 1, _File);
     fwrite(&m_LocalRotation, sizeof(Vec3), 1, _File);
     fwrite(&m_LocalScale, sizeof(Vec3), 1, _File);
     fwrite(&m_Mobility, sizeof(MOBILITY_TYPE), 1, _File);
     fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(MOBILITY_TYPE);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CTransform::LoadFromLevelFile(FILE* _File)
+UINT CTransform::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_LocalPos, sizeof(Vec3), 1, _File);
     fread(&m_LocalRotation, sizeof(Vec3), 1, _File);
     fread(&m_LocalScale, sizeof(Vec3), 1, _File);
     fread(&m_Mobility, sizeof(MOBILITY_TYPE), 1, _File);
     fread(&m_bAbsolute, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(MOBILITY_TYPE);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

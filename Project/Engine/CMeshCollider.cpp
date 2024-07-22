@@ -34,16 +34,28 @@ void CMeshCollider::finaltick()
     }
 }
 
-void CMeshCollider::SaveToLevelFile(FILE* _File)
+UINT CMeshCollider::SaveToLevelFile(FILE* _File)
 {
-    CCollider::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::SaveToLevelFile(_File);
     fwrite(&m_bConvex, 1, sizeof(bool), _File);
-    SaveAssetRef(m_Mesh, _File);
+    MemoryByte += SaveAssetRef(m_Mesh, _File);
+
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CMeshCollider::LoadFromLevelFile(FILE* _File)
+UINT CMeshCollider::LoadFromLevelFile(FILE* _File)
 {
-    CCollider::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider::LoadFromLevelFile(_File);
     fread(&m_bConvex, 1, sizeof(bool), _File);
-    LoadAssetRef(m_Mesh, _File);
+    MemoryByte += LoadAssetRef(m_Mesh, _File);
+
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

@@ -43,7 +43,7 @@ void CDeformObjectScript::tick()
 {
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos() + rayCenter, Vec3(0.f, -1.f, 0.f), rayDist, vecCollision);
-    
+
     if (m_CurState == DEFORMOBJ_STATE::IDLE)
     {
         // enter
@@ -66,7 +66,7 @@ void CDeformObjectScript::tick()
         {
             GetOwner()->Animator()->Play(ANIMPREFIX("Fall"));
         }
-        
+
         // change state
         if (Hit.pCollisionObj)
         {
@@ -90,10 +90,16 @@ void CDeformObjectScript::tick()
     }
 }
 
-void CDeformObjectScript::SaveToLevelFile(FILE* _File)
+UINT CDeformObjectScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CDeformObjectScript::LoadFromLevelFile(FILE* _File)
+UINT CDeformObjectScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

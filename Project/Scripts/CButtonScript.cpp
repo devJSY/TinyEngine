@@ -177,8 +177,10 @@ void CButtonScript::ButtonUpdate()
     }
 }
 
-void CButtonScript::SaveToLevelFile(FILE* _File)
+UINT CButtonScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_eTransition, sizeof(ButtonTransition), 1, _File);
     fwrite(&m_IsInteraction, sizeof(bool), 1, _File);
     fwrite(&m_IsHovered, sizeof(bool), 1, _File);
@@ -186,10 +188,21 @@ void CButtonScript::SaveToLevelFile(FILE* _File)
 
     fwrite(&m_vButtonColor, sizeof(Vec4), static_cast<size_t>((UINT)ButtonState::END), _File);
     fwrite(&m_vButtonScale, sizeof(Vec2), static_cast<size_t>((UINT)ButtonState::END), _File);
+
+    MemoryByte += sizeof(ButtonTransition);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec4) * static_cast<size_t>((UINT)ButtonState::END);
+    MemoryByte += sizeof(Vec2) * static_cast<size_t>((UINT)ButtonState::END);
+
+    return MemoryByte;
 }
 
-void CButtonScript::LoadFromLevelFile(FILE* _File)
+UINT CButtonScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_eTransition, sizeof(ButtonTransition), 1, _File);
     fread(&m_IsInteraction, sizeof(bool), 1, _File);
     fread(&m_IsHovered, sizeof(bool), 1, _File);
@@ -197,4 +210,13 @@ void CButtonScript::LoadFromLevelFile(FILE* _File)
 
     fread(&m_vButtonColor, sizeof(Vec4), static_cast<size_t>((UINT)ButtonState::END), _File);
     fread(&m_vButtonScale, sizeof(Vec2), static_cast<size_t>((UINT)ButtonState::END), _File);
+
+    MemoryByte += sizeof(ButtonTransition);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec4) * static_cast<size_t>((UINT)ButtonState::END);
+    MemoryByte += sizeof(Vec2) * static_cast<size_t>((UINT)ButtonState::END);
+
+    return MemoryByte;
 }

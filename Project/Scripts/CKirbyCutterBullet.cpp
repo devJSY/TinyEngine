@@ -239,7 +239,7 @@ void CKirbyCutterBullet::tick()
         m_Acc += DT;
 
         // @TODO SCALA_PARAM을 이용하여 색이랑 크기가 시간에 따라 변하도록 해야함
-        
+
         if (m_Acc > m_BuningStepUpDuration)
         {
             // StepUP 했을 경우
@@ -248,7 +248,6 @@ void CKirbyCutterBullet::tick()
                 m_Acc -= m_BuningStepUpDuration;
             }
         }
-
 
         if (m_Acc > m_Duration || KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
         {
@@ -273,7 +272,6 @@ void CKirbyCutterBullet::tick()
         }
     }
     break;
-
     }
 }
 
@@ -318,7 +316,6 @@ void CKirbyCutterBullet::SetState(BulletState _State)
         // @TODO 다이나믹 머터리얼로 머터리얼을 교체한뒤 쉐이더를 전용쉐이더로 바꿔줘야함
         MeshRender()->GetDynamicMaterial(0);
 
-
         m_Duration = 4.f;
     }
     break;
@@ -342,8 +339,7 @@ bool CKirbyCutterBullet::StepUp()
         m_CurStep = BuningStep::STEP_1;
 
         Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
-        DynamicMtrl->SetEmission(Vec4(0.3f,0.3f,0.3f,0.3f));
-
+        DynamicMtrl->SetEmission(Vec4(0.3f, 0.3f, 0.3f, 0.3f));
     }
     break;
     case BuningStep::STEP_1: {
@@ -382,7 +378,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
         RayDir.Normalize();
-        
+
         Vec3 RayStart = Transform()->GetWorldPos() - m_MoveDir * 100.f;
 
         RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), RayDir, 200.f, {L"World Static"});
@@ -417,10 +413,16 @@ void CKirbyCutterBullet::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
 
-void CKirbyCutterBullet::SaveToLevelFile(FILE* _File)
+UINT CKirbyCutterBullet::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CKirbyCutterBullet::LoadFromLevelFile(FILE* _File)
+UINT CKirbyCutterBullet::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

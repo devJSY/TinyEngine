@@ -155,4 +155,18 @@ void CKirbyBulletScript::OnCollisionEnter(CCollider* _OtherCollider)
         pMonster->GetDamage(HitInfo);
         ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
- }
+}
+
+UINT CKirbyBulletScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CKirbyBulletScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}

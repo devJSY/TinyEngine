@@ -39,3 +39,17 @@ void CDetectAreaScript::OnTriggerExit(CCollider* _OtherCollider)
         GetOwner()->GetParent()->GetScript<CMonsterUnitScript>()->SetTarget(nullptr);
     }
 }
+
+UINT CDetectAreaScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CDetectAreaScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}

@@ -48,10 +48,16 @@ void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
     }
 }
 
-void CKirbyBodyCollider::SaveToLevelFile(FILE* _File)
+UINT CKirbyBodyCollider::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CKirbyBodyCollider::LoadFromLevelFile(FILE* _File)
+UINT CKirbyBodyCollider::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

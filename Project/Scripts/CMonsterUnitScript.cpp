@@ -100,16 +100,30 @@ void CMonsterUnitScript::Rotating()
     Transform()->SetWorldRotation(Quaternion);
 }
 
-void CMonsterUnitScript::SaveToLevelFile(FILE* _File)
+UINT CMonsterUnitScript::SaveToLevelFile(FILE* _File)
 {
-    CUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::SaveToLevelFile(_File);
     fwrite(&m_RaycastDist, 1, sizeof(float), _File);
-    fwrite(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
+    fwrite(&m_HitInfo, sizeof(UnitHit), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UnitHit);
+
+    return MemoryByte;
 }
 
-void CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
+UINT CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    CUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
     fread(&m_RaycastDist, 1, sizeof(float), _File);
     fread(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UnitHit);
+
+    return MemoryByte;
 }
