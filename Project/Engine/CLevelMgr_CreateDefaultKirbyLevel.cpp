@@ -102,7 +102,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     // =============
     // create Env
     // =============
-    //  SkyBox
+    // SkyBox
     CGameObject* pSkyBoxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Skybox\\Day\\Day.fbx")->Instantiate();
     pSkyBoxObj->SetName(L"SkyBox");
 
@@ -119,6 +119,20 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     NewLevel->AddObject(pSkyBoxObj, 0);
 
+    // IBL
+    CGameObject* pIBLObj = new CGameObject;
+    pIBLObj->SetName(L"IBL");
+    pIBLObj->AddComponent(new CTransform);
+    pIBLObj->AddComponent(new CSkyBox);
+
+    pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
+    pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
+
+    pIBLObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Diffuse.dds"));
+    pIBLObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Specular.dds"));
+
+    NewLevel->AddObject(pIBLObj, 0);
+
     // Light
     CGameObject* pDirLight = new CGameObject;
     pDirLight->SetName(L"Directional Light");
@@ -126,7 +140,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pDirLight->AddComponent(new CLight);
 
     pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
-    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
     pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     pDirLight->Light()->SetRadius(10.f);
 
@@ -250,7 +264,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pBox->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
     pBox->Transform()->SetLocalPos(Vec3(-500.f, 150.f, 500.f));
-    pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f)); 
+    pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f));
 
     pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f));
 
