@@ -41,6 +41,11 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
 
 void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
 {
+    if (PLAYERFSM->IsDrawing())
+    {
+        PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
+        return;
+    }
 }
 
 void CKirbyBodyCollider::SaveToLevelFile(FILE* _File)

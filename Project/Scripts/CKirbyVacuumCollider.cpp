@@ -80,12 +80,14 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
     if (_OtherCollider->GetOwner()->GetLayerIdx() != LAYER_DYNAMIC && _OtherCollider->GetOwner()->GetLayerIdx() != LAYER_MONSTER)
         return;
 
-    bool TriggerEnable = GetOwner()->SphereCollider()->IsEnabled();
     bool bChanged = false;
     AbilityCopyType newAbility = AbilityCopyType::NONE;
     ObjectCopyType newObject = ObjectCopyType::NONE;
     EatType newType = GetEatType(_OtherCollider->GetOwner(), newAbility, newObject);
     float newDist = (PLAYER->Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos()).Length();
+
+    if (newType == EatType::NONE)
+        return;
 
     // 현재 흡수예정인 오브젝트와 비교해 우선순위 판단
     if ((UINT)newType < (UINT)m_FindType)
@@ -117,7 +119,7 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 
 void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
 {
-    if (_CollisionObject != m_FindTarget)
+    if (!m_bDrawing || _CollisionObject != m_FindTarget)
         return;
 
     m_bDrawing = false;
@@ -143,7 +145,6 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
     }
 
     // 충돌 오브젝트 삭제
-    //GamePlayStatic::DestroyGameObject(m_FindTarget);
     m_FindTarget->SetActive(false);
     m_FindTarget = nullptr;
 }
@@ -192,6 +193,12 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
         }
         else
         {
+            CMonsterUnitScript* pMonster = _pObj->GetScript<CMonsterUnitScript>();
+            
+            if (!pMonster) // || !pMonster->IsEatable()) @TODO 머지 후 변경
+            {
+                return EatType::NONE;
+            }
             return EatType::Monster;
         }
     }
