@@ -16,20 +16,30 @@ CKirbyBodyCollider::~CKirbyBodyCollider()
 
 void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    int Layeridx = _OtherCollider->GetOwner()->GetLayerIdx();
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
     // 흡입을 시작한 상태(타겟을 결정해 빨아들이기 시작한 상태)에서 충돌한 경우
     if (PLAYERFSM->IsDrawing())
     {
         PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
+        return;
+    }
+
+    // monster : 데미지 가함
+    if (LayerIdx == LAYER_MONSTER)
+    {
+        Vec3 HitDir = (Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos()).Normalize();
+        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 5.f, 0.f, 0.f};
+        CUnitScript* pMonster = _OtherCollider->GetOwner()->GetScript<CUnitScript>();
+
+        if (!pMonster)
+            return;
+        pMonster->GetDamage(HitInfo);
+        ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
 }
 
 void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
-{
-}
-
-void CKirbyBodyCollider::OnTriggerExit(CCollider* _OtherCollider)
 {
 }
 

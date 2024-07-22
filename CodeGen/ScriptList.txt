@@ -42,3 +42,4 @@ CKirbyHatBlade
 CKirbyCutterBullet
 CMonsterTest
 CMomentaryObjScript
+CKirbyWeaponHitbox

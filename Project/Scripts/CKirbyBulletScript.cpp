@@ -2,6 +2,7 @@
 #include "CKirbyBulletScript.h"
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
+#include "CUnitScript.h"
 
 CKirbyBulletScript::CKirbyBulletScript()
     : CScript(KIRBYBULLETSCRIPT)
@@ -110,28 +111,48 @@ void CKirbyBulletScript::SetInitVelocity(Vec3 _Vel)
 
 void CKirbyBulletScript::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    if (m_bHasTickCol)
-        return;
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
-    Vec3 ColRadius = SphereCollider()->GetRadius() * Transform()->GetWorldScale();
-    Vec3 RayStart = Transform()->GetWorldPos() + m_MoveDir *  ColRadius;
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayStart, m_MoveDir, ColRadius.Length() + 10.f, {L"World Static"});
-
-    if (Hit.pCollisionObj)
+    // world static : bullet 튕김 구현
+    if (LayerIdx == LAYER_STATIC)
     {
-        m_bHasTickCol = true;
-        Vec3 Normal = Hit.Normal;
-        m_MoveDir = m_MoveDir + 2.f * Normal * (-m_MoveDir.Dot(Normal));
-        m_MoveDir.Normalize();
+        if (m_bHasTickCol)
+            return;
 
-        // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
-        Vec3 up = Vec3(0.f, 1.f, 0.f);
-        if (m_MoveDir == Vec3(0.f, 0.f, -1.f))
+        Vec3 ColRadius = SphereCollider()->GetRadius() * Transform()->GetWorldScale();
+        Vec3 RayStart = Transform()->GetWorldPos() + m_MoveDir * ColRadius;
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayStart, m_MoveDir, ColRadius.Length() + 10.f, {L"World Static"});
+
+        if (Hit.pCollisionObj)
         {
-            up = Vec3(0.f, -1.f, 0.f);
-        }
+            m_bHasTickCol = true;
+            Vec3 Normal = Hit.Normal;
+            m_MoveDir = m_MoveDir + 2.f * Normal * (-m_MoveDir.Dot(Normal));
+            m_MoveDir.Normalize();
 
-        Quat ToWardQuaternion = Quat::LookRotation(-m_MoveDir, up);
-        Transform()->SetWorldRotation(ToWardQuaternion);
+            // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
+            Vec3 up = Vec3(0.f, 1.f, 0.f);
+            if (m_MoveDir == Vec3(0.f, 0.f, -1.f))
+            {
+                up = Vec3(0.f, -1.f, 0.f);
+            }
+
+            Quat ToWardQuaternion = Quat::LookRotation(-m_MoveDir, up);
+            Transform()->SetWorldRotation(ToWardQuaternion);
+        }
+    }
+
+    // monster : 데미지 가함
+    else if (LayerIdx == LAYER_MONSTER)
+    {
+        CUnitScript* pMonster = _OtherCollider->GetOwner()->GetScript<CUnitScript>();
+        if (!pMonster)
+            return;
+
+        Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
+
+        pMonster->GetDamage(HitInfo);
+        ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
  }
