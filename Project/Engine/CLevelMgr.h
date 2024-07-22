@@ -19,6 +19,7 @@ public:
 
 public:
     CLevel* CreateDefaultKirbyLevel();
+    CLevel* CreateDefaultUILevel();
 
 public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState);
