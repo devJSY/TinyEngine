@@ -111,8 +111,12 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
+    <ClInclude Include="CKirbyAttackFailed.h" />
+    <ClInclude Include="CKirbyAttackFailedEnd.h" />
+    <ClInclude Include="CKirbyObject_VendingMachine.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
@@ -255,8 +259,12 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
+    <ClCompile Include="CKirbyAttackFailed.cpp" />
+    <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
+    <ClCompile Include="CKirbyObject_VendingMachine.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />

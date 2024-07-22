@@ -129,6 +129,16 @@ void CKirbyObject::DropObjectEnter()
     Vec3 Force = Vec3(0.f, 1.f, 0.f) + BackDir;
     Force = Force.Normalize() * 3.f;
 
+    Vec3 FrontDir = -BackDir;
+    Vec3 up = Vec3(0.f, 1.f, 0.f);
+    if (FrontDir == Vec3(0.f, 0.f, -1.f))
+    {
+        up = Vec3(0.f, -1.f, 0.f);
+    }
+
+    pObj->Transform()->SetDirection(-FrontDir, up);
+
+
     pObj->Transform()->SetWorldPos(InitPos);
     pObj->Rigidbody()->AddForce(Force, ForceMode::Impulse);
 

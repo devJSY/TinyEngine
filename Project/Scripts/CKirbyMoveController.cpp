@@ -212,7 +212,14 @@ void CKirbyMoveController::SetDir()
 
     if (m_TowardDir.Dot(m_CurDir) < cosf(0.f) - 0.0000001f)
     {
-        Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
+        // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
+        Vec3 up = Vec3(0.f, 1.f, 0.f);
+        if (m_CurDir == Vec3(0.f, 0.f, -1.f))
+        {
+            up = Vec3(0.f, -1.f, 0.f);
+        }
+
+        Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, up);
         Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * m_RotSpeed);
         Transform()->SetWorldRotation(SlerpQuat);
     }

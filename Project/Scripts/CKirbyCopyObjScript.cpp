@@ -13,6 +13,7 @@ CKirbyCopyObjScript::CKirbyCopyObjScript(const CKirbyCopyObjScript& _Origin)
     : CScript(KIRBYCOPYOBJSCRIPT)
     , m_ObjectType(_Origin.m_ObjectType)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_ObjectType, "ObjectType UINT");
 }
 
 CKirbyCopyObjScript::~CKirbyCopyObjScript()

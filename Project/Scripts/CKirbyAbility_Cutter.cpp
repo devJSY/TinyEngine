@@ -216,7 +216,6 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
 
     // FSM에 무기 등록
     PLAYERFSM->SetCurWeapon(pInstObj);
-    pInstObj->SetName(L"Why");
 
     // 무기가 안보이도록 설정
     pInstObj->MeshRender()->SetMaterial(nullptr, 0);

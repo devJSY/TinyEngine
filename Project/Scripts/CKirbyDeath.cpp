@@ -13,7 +13,7 @@ void CKirbyDeath::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        ChangeState(L"DeatWait");
+        ChangeState(L"DEATH_WAIT");
     }
 }
 

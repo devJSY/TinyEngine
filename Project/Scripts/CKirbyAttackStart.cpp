@@ -25,7 +25,7 @@ void CKirbyAttackStart::tick()
             }
         }
         break;
-        case ObjectCopyType::STAIR:
+        case ObjectCopyType::VENDING_MACHINE:
         case ObjectCopyType::LIGHT:
             break;
         }

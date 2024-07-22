@@ -25,7 +25,7 @@ void CKirbyAttack::tick()
             }
         }
             break;
-        case ObjectCopyType::STAIR:
+        case ObjectCopyType::VENDING_MACHINE:
             break;
         case ObjectCopyType::LIGHT:
             if (PLAYER->Animator()->IsFinish())

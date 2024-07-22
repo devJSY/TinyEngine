@@ -64,9 +64,6 @@ private:
     float                   m_EmissiveDuration;
     bool                    m_bEmissive;
 
-
-
-
     bool                    m_bCanBladeAttack;
 
     // Fire Gliding Timer
@@ -76,6 +73,9 @@ private:
     float                   m_YPressedTime;
     float                   m_DropCopyTime;
     bool                    m_bDroppable;
+
+    // Vending Machine
+    UINT                    m_LeftCanCount;
 
 public:
     void begin() override;
@@ -108,6 +108,8 @@ public:
     void ClearStuff();
     void ClearGlidingTime() { m_GlidingAcc = 0.f; }
     void ClearYPressedTime() { m_YPressedTime = 0.f; }
+    void SubCanCount();
+    void ResetCanCount() { m_LeftCanCount = 100; }
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
@@ -138,6 +140,7 @@ public:
     bool IsInvincible() const { return m_bInvincible; }
     bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
+    UINT GetCanCount() const { return m_LeftCanCount; }
 
 
 public:

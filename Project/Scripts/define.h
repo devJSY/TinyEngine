@@ -55,7 +55,7 @@ enum class ObjectCopyType
 {
     NONE,
     CONE,
-    STAIR,
+    VENDING_MACHINE,
     LIGHT,
 
     END,
