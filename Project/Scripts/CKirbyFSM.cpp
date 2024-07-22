@@ -20,7 +20,7 @@ CKirbyFSM::CKirbyFSM()
     , m_CurObject(ObjectCopyType::NONE)
     , m_CurHat(nullptr)
     , m_CurWeapon(nullptr)
-    , m_StuffedCopyObj(nullptr)
+    , m_StuffedObj(nullptr)
     , m_VacuumCollider(nullptr)
     , m_ComboLevel(0)
     , m_SlideComboLevel(0)
@@ -59,7 +59,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrObject{}
     , m_CurAbility(_Origin.m_CurAbility)
     , m_CurObject(_Origin.m_CurObject)
-    , m_StuffedCopyObj(nullptr)
+    , m_StuffedObj(nullptr)
     , m_VacuumCollider(nullptr)
     , m_ComboLevel(0)
     , m_ComboAccTime(0.f)
@@ -118,11 +118,6 @@ CKirbyFSM::~CKirbyFSM()
             delete m_arrObject[i];
             m_arrObject[i] = nullptr;
         }
-    }
-
-    if (m_StuffedCopyObj)
-    {
-        delete m_StuffedCopyObj;
     }
 }
 
@@ -445,7 +440,7 @@ void CKirbyFSM::StartStuffed(CGameObject* _Target)
 {
     ClearStuff();
 
-    m_StuffedCopyObj = _Target;
+    m_StuffedObj = _Target;
     m_bStuffed = true;
 }
 
@@ -570,10 +565,10 @@ void CKirbyFSM::ClearStuff()
 {
     m_bStuffed = false;
 
-    if (m_StuffedCopyObj)
+    if (m_StuffedObj)
     {
-        delete m_StuffedCopyObj;
-        m_StuffedCopyObj = nullptr;
+        GamePlayStatic::DestroyGameObject(m_StuffedObj);
+        m_StuffedObj = nullptr;
     }
 }
 

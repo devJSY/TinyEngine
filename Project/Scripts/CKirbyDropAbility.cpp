@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CKirbyDropAbility.h"
-#include "CKirbyBulletScript.h"
+#include "CMomentaryObjScript.h"
 
 CKirbyDropAbility::CKirbyDropAbility()
     : m_FrmEnter(true)
@@ -28,7 +28,7 @@ void CKirbyDropAbility::tick()
             pBubble->Transform()->SetLocalPos(InitPos);
             pBubble->Transform()->SetLocalScale(Vec3(80.f));
 
-            CKirbyBulletScript* bulletScript = pBubble->GetScript<CKirbyBulletScript>();
+            CMomentaryObjScript* bulletScript = pBubble->GetScript<CMomentaryObjScript>();
             if (nullptr != bulletScript)
             {
                 bulletScript->SetInitVelocity(Vec3(0.f, 10.f, 0.f));

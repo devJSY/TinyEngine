@@ -138,12 +138,13 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
         break;
     case EatType::Etc:
     case EatType::Monster:
-        PLAYERFSM->StartStuffed(m_FindTarget->Clone());
+        PLAYERFSM->StartStuffed(m_FindTarget);
         break;
     }
 
     // 충돌 오브젝트 삭제
-    GamePlayStatic::DestroyGameObject(m_FindTarget);
+    //GamePlayStatic::DestroyGameObject(m_FindTarget);
+    m_FindTarget->SetActive(false);
     m_FindTarget = nullptr;
 }
 

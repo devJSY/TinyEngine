@@ -4,19 +4,23 @@
 class CKirbyBulletScript : public CScript
 {
 private:
-    Vec3    m_InitVelocity;
+    Vec3    m_MoveDir;
+    Vec3    m_ChildOffest;
+    float   m_Speed;
     float   m_PlayTime;
-    wstring m_EndAnim;
-    double m_EndAnimPlayTime;
+    bool    m_bHasTickCol;
+    bool    m_bInit;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 public:
-    void SetInitVelocity(Vec3 _Vel) { m_InitVelocity = _Vel; }
+    void SetInitVelocity(Vec3 _Vel);
     void SetPlayTime(float _Time) { m_PlayTime = _Time; }
-    void SetEndAnim(wstring _Key);
+
+private:
+    virtual void OnCollisionEnter(CCollider* _OtherCollider);
 
 public:
     virtual void SaveToLevelFile(FILE* _File) override{};

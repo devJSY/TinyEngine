@@ -33,7 +33,7 @@ private:
     CGameObject*            m_CurHat;
     CGameObject*            m_CurHatBlade;
     CGameObject*            m_CurWeapon;
-    CGameObject*            m_StuffedCopyObj;
+    CGameObject*            m_StuffedObj;
     CKirbyVacuumCollider*   m_VacuumCollider;
 
     // 상태 관리를 위한 값들
@@ -115,7 +115,7 @@ public:
     CGameObject* GetCurHat() { return m_CurHat; }
     CGameObject* GetCurHatBlade() { return m_CurHatBlade; }
     CGameObject* GetCurWeapon() { return m_CurWeapon; }
-    CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
+    CGameObject* GetStuffedObj() { return m_StuffedObj; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
     float GetComboAccTime() const { return m_ComboAccTime; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }

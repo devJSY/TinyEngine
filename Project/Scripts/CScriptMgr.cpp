@@ -44,6 +44,7 @@
 #include "CKirbyHatBlade.h"
 #include "CKirbyCutterBullet.h"
 #include "CMonsterTest.h"
+#include "CMomentaryObjScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -90,6 +91,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyHatBlade");
 	_vec.push_back(L"CKirbyCutterBullet");
 	_vec.push_back(L"CMonsterTest");
+	_vec.push_back(L"CMomentaryObjScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -180,6 +182,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyCutterBullet;
 	if (L"CMonsterTest" == _strScriptName)
 		return new CMonsterTest;
+	if (L"CMomentaryObjScript" == _strScriptName)
+		return new CMomentaryObjScript;
 	return nullptr;
 }
 
@@ -273,6 +277,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyCutterBullet;
 	case (UINT)SCRIPT_TYPE::MONSTERTEST:
 		return new CMonsterTest;
+	case (UINT)SCRIPT_TYPE::MOMENTARYOBJSCRIPT:
+		return new CMomentaryObjScript;
 	}
 	return nullptr;
 }
@@ -367,6 +373,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyCutterBullet";
 	case SCRIPT_TYPE::MONSTERTEST:
 		return L"CMonsterTest";
+	case SCRIPT_TYPE::MOMENTARYOBJSCRIPT:
+		return L"CMomentaryObjScript";
 	}
 	return nullptr;
 }

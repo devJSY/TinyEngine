@@ -430,6 +430,9 @@
     <ClInclude Include="CMonsterTest.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CMomentaryObjScript.h">
+      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -872,6 +875,9 @@
     </ClCompile>
     <ClCompile Include="CMonsterTest.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CMomentaryObjScript.cpp">
+      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1336,6 +1342,9 @@
     </Filter>
     <Filter Include="State\KirbyState\FinalCutterAttack\FinalCutterEndAfter">
       <UniqueIdentifier>{3e4ed452-b1ce-4c22-bfd5-c82a20720342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\MomentaryObj">
+      <UniqueIdentifier>{8462be62-b53e-4e84-9b27-1b6d41dd925a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
