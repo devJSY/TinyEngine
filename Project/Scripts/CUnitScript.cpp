@@ -33,6 +33,10 @@ void CUnitScript::tick()
 
     // 현재 프레임에 받는 데미지들을 업데이트
     float NewDamage = DamageProc();
+    if (NewDamage > 0.f)
+    {
+        m_CurInfo.HP -= NewDamage;
+    }
 
     if (m_CurInfo.HP < 0.f)
     {

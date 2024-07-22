@@ -401,7 +401,8 @@ void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
     if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
     {
         Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
-        Force = Force.Normalize();
+        Force.y = 0.f;
+        Force.Normalize();
         Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
     }
 }
