@@ -92,10 +92,14 @@ float CKirbyWeaponHitbox::LoadDamage()
     return damage;
 }
 
-void CKirbyWeaponHitbox::SaveToLevelFile(FILE* _File)
+UINT CKirbyWeaponHitbox::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+    return MemoryByte;
 }
 
-void CKirbyWeaponHitbox::LoadFromLevelFile(FILE* _File)
+UINT CKirbyWeaponHitbox::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+    return MemoryByte;
 }

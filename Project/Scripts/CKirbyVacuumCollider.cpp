@@ -134,18 +134,19 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
     case EatType::Copy_Ability:
     case EatType::Copy_Monster:
         PLAYERFSM->ChangeAbilityCopy(m_FindAbilityType);
+        GamePlayStatic::DestroyGameObject(m_FindTarget);
         break;
     case EatType::Copy_Object:
         PLAYERFSM->ChangeObjectCopy(m_FindObjType);
+        GamePlayStatic::DestroyGameObject(m_FindTarget);
         break;
     case EatType::Etc:
     case EatType::Monster:
         PLAYERFSM->StartStuffed(m_FindTarget);
+        m_FindTarget->SetActive(false);
         break;
     }
 
-    // 충돌 오브젝트 삭제
-    m_FindTarget->SetActive(false);
     m_FindTarget = nullptr;
 }
 

@@ -53,3 +53,15 @@ void CMomentaryObjScript::SetEndAnim(wstring _Key)
         }
     }
 }
+
+UINT CMomentaryObjScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+    return MemoryByte;
+}
+
+UINT CMomentaryObjScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+    return MemoryByte;
+}

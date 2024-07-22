@@ -126,7 +126,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pDirLight->AddComponent(new CLight);
 
     pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
-    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-45.f), 0.f, 0.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
     pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     pDirLight->Light()->SetRadius(10.f);
 
@@ -228,7 +228,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pPointLight->AddComponent(new CLight);
 
     pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
-    pPointLight->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(-90.f), 0.f));
+    pPointLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
     pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
     pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
     pPointLight->Light()->SetRadius(80.f);
