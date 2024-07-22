@@ -1088,9 +1088,6 @@
     <Filter Include="ShaderCode\Kirby\Characters\WaddleDee">
       <UniqueIdentifier>{6722e1ac-3997-4a66-a35e-d0ffd8c157a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Render\UIShader">
-      <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Module\SimpleMath">
       <UniqueIdentifier>{5f743d3c-a978-4db5-9aa2-75e1bbf57044}</UniqueIdentifier>
     </Filter>
@@ -1103,8 +1100,14 @@
     <Filter Include="ShaderCode\Kirby\Characters\Monster\Noddy">
       <UniqueIdentifier>{82de1825-ebd5-48d8-8dd1-cbb92e02b601}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\_Common">
+    <Filter Include="ShaderCode\Kirby\Common">
       <UniqueIdentifier>{ef6049ec-7326-40b8-966e-7e749defabdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\Map">
+      <UniqueIdentifier>{31e4498a-f58c-45e8-ac2e-f789d062bdf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader">
+      <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1357,10 +1360,10 @@
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
     </FxCompile>
     <FxCompile Include="UIHPShaderVS.hlsl">
-      <Filter>ShaderCode\Render\UIShader</Filter>
+      <Filter>ShaderCode\Kirby\UIShader</Filter>
     </FxCompile>
     <FxCompile Include="UIHPShaderPS.hlsl">
-      <Filter>ShaderCode\Render\UIShader</Filter>
+      <Filter>ShaderCode\Kirby\UIShader</Filter>
     </FxCompile>
     <FxCompile Include="KirbySkySpherePS.hlsl">
       <Filter>ShaderCode\Kirby\SkySphere</Filter>
@@ -1378,7 +1381,7 @@
       <Filter>ShaderCode\Kirby\Characters\Monster\Noddy</Filter>
     </FxCompile>
     <FxCompile Include="GlassPS.hlsl">
-      <Filter>ShaderCode\Kirby\_Common</Filter>
+      <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
     <FxCompile Include="KirbyLightbulbBodyPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
