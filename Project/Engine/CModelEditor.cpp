@@ -390,10 +390,8 @@ void CModelEditor::DrawViewport()
         CTexture::Clear(i);
     }
 
-    // SkyBox Clear
-    CTexture::Clear(17);
-    CTexture::Clear(18);
-    CTexture::Clear(19);
+    // Skybox Clear
+    m_SkyBoxObj->SkyBox()->ClearData();
 
     // Light Depth Map Clear
     CTexture::Clear(23);
