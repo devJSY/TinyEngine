@@ -1109,6 +1109,9 @@
     <Filter Include="ShaderCode\Kirby\UIShader">
       <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Monster\GhostGordo">
+      <UniqueIdentifier>{3988d0d2-545a-4515-ac9f-cff1997c5dc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">

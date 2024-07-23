@@ -445,8 +445,8 @@ void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
             m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
             return;
         }
-
-        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
+        UnitHit hitInfo = {};
+        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
     }
 
     // 둘 중 하나라도 피격 되었다면 체력 확인
