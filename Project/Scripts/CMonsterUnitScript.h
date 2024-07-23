@@ -19,7 +19,7 @@ enum class PATROLDIR
 class CMonsterUnitScript : public CUnitScript
 {
 private:
-    CGameObject* m_pTargetObj;
+    CGameObject* m_pTargetObj;  
     float m_RaycastDist;
     UnitHit m_HitInfo;
 

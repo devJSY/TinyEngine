@@ -40,8 +40,8 @@ PS_OUT main(PS_IN input)
         
         float3 N = normalize(input.vNormalWorld);
         float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = normalize(cross(N, T));
-        
+        float3 B = normalize(cross(T, N));
+
         float3x3 TBN = float3x3(T, B, N);
         output.vNormal.xyz = normalize(mul(normal, TBN));
     }
@@ -59,7 +59,7 @@ PS_OUT main(PS_IN input)
 
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
-    output.vTangent = float4(input.vTangentWorld, 1.f);
+    output.vTangent = float4(input.vTangentWorld * -1.f, 1.f);
     output.vBitangent = float4(normalize(cross(output.vNormal.xyz, input.vTangentWorld.xyz)), 1.f);
     output.vEmissive = MtrlEmission;
     output.vMRA = float4(metallic, roughness, ao, 1.f);
