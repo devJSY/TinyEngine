@@ -1386,5 +1386,8 @@
     <FxCompile Include="KirbyLightbulbBodyPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
     </FxCompile>
+    <FxCompile Include="KirbyMapPS.hlsl">
+      <Filter>ShaderCode\Kirby\Map</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
