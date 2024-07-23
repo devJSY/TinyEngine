@@ -4,6 +4,7 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CKirbyHatBlade.h"
+#include "CMonsterUnitScript.h"
 
 CKirbyCutterBullet::CKirbyCutterBullet()
     : CScript(KIRBYCUTTERBULLET)
@@ -370,11 +371,8 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
     // WorldStatic
-    if (LayerIdx == 2)
+    if (LayerIdx == LAYER_STATIC)
     {
-        Vec3 CurVel = Rigidbody()->GetVelocity();
-        Rigidbody()->SetVelocity({0.f, 0.f, 0.f});
-
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
         RayDir.Normalize();
@@ -389,7 +387,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         SetState(BulletState::HOLD_WALL);
     }
     // Player
-    else if (LayerIdx == 4)
+    else if (LayerIdx == LAYER_PLAYER)
     {
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
@@ -405,6 +403,19 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
                     BladeScript->Reset();
                 }
             }
+        }
+    }
+    // Monster
+    else if (LayerIdx == LAYER_MONSTER)
+    {
+        CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetScript<CMonsterUnitScript>();
+        if (nullptr != Monster)
+        {
+            Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+            HitDir.Normalize();
+            UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
+
+            Monster->GetDamage(HitInfo);
         }
     }
 }

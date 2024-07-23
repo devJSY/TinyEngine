@@ -40,7 +40,31 @@ void CKirbyJumpStart::tick()
             }
         }
         break;
-        case ObjectCopyType::STAIR:
+        case ObjectCopyType::VENDING_MACHINE: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                UINT LeftCanCount = PLAYERFSM->GetCanCount();
+
+                if (LeftCanCount > 0)
+                {
+                    ChangeState(L"ATTACK_START");
+                }
+                else
+                {
+                    ChangeState(L"ATTACK_FAILED");
+                }
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT_START");
+            }
+            else if (m_JumpAccTime > m_MaxJumpTime)
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+        }
+        break;
+
             break;
         case ObjectCopyType::LIGHT: {
             if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())

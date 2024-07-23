@@ -204,7 +204,7 @@ void CTackleEnemyScript::Find()
 
 void CTackleEnemyScript::AttackPrev()
 {
-    TransformRotate();
+    RotatingToTarget();
     Animator()->IsFinish() ? ChangeState(TACKLEENEMY_STATE::Attack) : void();
 }
 

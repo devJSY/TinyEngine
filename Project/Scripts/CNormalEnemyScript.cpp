@@ -242,7 +242,7 @@ void CNormalEnemyScript::Find()
 {
     m_pTargetObject = GetTarget();
 
-    TransformRotate();
+    Rotating();
 
     if (Animator()->IsFinish())
     {

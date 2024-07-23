@@ -12,19 +12,24 @@
 #define KEY_RELEASED_ARROW (KEY_RELEASED(KEY::UP) || KEY_RELEASED(KEY::DOWN) || KEY_RELEASED(KEY::LEFT) || KEY_RELEASED(KEY::RIGHT))
 #define KEY_NONE_ARROW (KEY_NONE(KEY::UP) && KEY_NONE(KEY::DOWN) && KEY_NONE(KEY::LEFT) && KEY_NONE(KEY::RIGHT))
 
-#define KEY_JUMP KEY::C
+#define KEY_JUMP KEY::Z
 #define KEY_ATK KEY::X
-#define KEY_GUARD KEY::Z
+#define KEY_GUARD KEY::C
 
-#define LAYER_MANAGER       1
-#define LAYER_STATIC        2
-#define LAYER_DYNAMIC       3
-#define LAYER_PLAYER        4
-#define LAYER_MONSTER       5
-#define LAYER_PLAYERATK     6
-#define LAYER_MONSTERATK    7
-#define LAYER_EFFECT        14
-#define LAYER_UI            15
+#define LAYER_DEFAULT                   0
+#define LAYER_MANAGER                   1
+#define LAYER_STATIC                    2
+#define LAYER_DYNAMIC                   3
+#define LAYER_PLAYER                    4
+#define LAYER_PLAYER_TRIGGER            5
+#define LAYER_PLAYERATK                6
+#define LAYER_PLAYERATK_TRIGGER        7
+#define LAYER_MONSTER                   8
+#define LAYER_MONSTER_TRIGGER           9
+#define LAYER_MONSTERATK               10
+#define LAYER_MONSTERATK_TRIGGER       11
+#define LAYER_EFFECT                    14
+#define LAYER_UI                        15
 
 #define PLAY_CURSTATE(STATE)                                                                                                                         \
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();                                                                                                \
@@ -55,7 +60,7 @@ enum class ObjectCopyType
 {
     NONE,
     CONE,
-    STAIR,
+    VENDING_MACHINE,
     LIGHT,
 
     END,

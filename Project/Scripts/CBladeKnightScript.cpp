@@ -47,8 +47,35 @@ void CBladeKnightScript::begin()
 
 void CBladeKnightScript::tick()
 {
-    CMonsterUnitScript::tick();
+    // Damage Proc
+    ClearHitDir();
+    m_PrevInfo = m_CurInfo;
 
+    float DamageAmount = DamageProc();
+    if (DamageAmount > 0.f)
+    {
+        m_CurInfo.HP -= DamageAmount;
+
+        // 공격 상태가 아닌 경우에만 Damage상태로 변경
+        switch (m_State)
+        {
+        case BLADEKNIGHT_STATE::Fall:
+        case BLADEKNIGHT_STATE::Find:
+        case BLADEKNIGHT_STATE::FindWait:
+        case BLADEKNIGHT_STATE::FindWaitSub:
+        case BLADEKNIGHT_STATE::Landing:
+        case BLADEKNIGHT_STATE::Move:
+        case BLADEKNIGHT_STATE::Retreat:
+        case BLADEKNIGHT_STATE::Wait: {
+            ChangeState(BLADEKNIGHT_STATE::Damage);
+        }
+        break;
+        default:
+            break;
+        }
+    }
+
+    // Sword
     if (nullptr == m_Sword)
     {
         SetSword();
@@ -161,6 +188,15 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
+        // 피격 방향으로 회전
+        Transform()->Slerp(GetHitDir(), 1.f); 
+
+        // 피격 방향으로 Impulse
+        Vec3 Impulse = GetHitDir();
+        Impulse.Normalize();
+        Impulse *= 5.f;
+        Rigidbody()->AddForce(Impulse, ForceMode::Impulse);
+        
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
@@ -281,6 +317,12 @@ void CBladeKnightScript::ExitState()
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
+        if (m_CurInfo.HP <= 0.f)
+        {
+            GamePlayStatic::DestroyGameObject(GetOwner());
+        }
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
@@ -386,6 +428,17 @@ void CBladeKnightScript::AttackStart()
 
 void CBladeKnightScript::Damage()
 {
+    if (Animator()->IsFinish())
+    {
+        if (nullptr == GetTarget())
+        {
+            ChangeState(BLADEKNIGHT_STATE::Wait);
+        }
+        else
+        {
+            ChangeState(BLADEKNIGHT_STATE::FindWait);
+        }
+    }
 }
 
 void CBladeKnightScript::DoubleAttack()
@@ -417,7 +470,7 @@ void CBladeKnightScript::Fall()
 
 void CBladeKnightScript::Find()
 {
-    TransformRotate();
+    RotatingToTarget();
 
     if (Animator()->IsFinish())
     {
@@ -427,7 +480,7 @@ void CBladeKnightScript::Find()
 
 void CBladeKnightScript::FindWait()
 {
-    TransformRotate();
+    RotatingToTarget();
 
     m_PassedTime += DT;
 
@@ -476,7 +529,7 @@ void CBladeKnightScript::FindWait()
 void CBladeKnightScript::FindWaitSub()
 {
     RigidbodyMove();
-    TransformRotate();
+    RotatingToTarget();
 
     if (nullptr == GetTarget())
     {
@@ -607,7 +660,7 @@ void CBladeKnightScript::ThrustStart()
 
 void CBladeKnightScript::ThrustStartWait()
 {
-    TransformRotate();
+    RotatingToTarget();
 
     m_PassedTime += DT;
 

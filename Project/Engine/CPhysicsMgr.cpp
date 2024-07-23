@@ -15,17 +15,23 @@ static physx::PxFilterFlags contactReportFilterShader(PxFilterObjectAttributes a
                                                       PxFilterObjectAttributes attributes1, PxFilterData filterData1, PxPairFlags& pairFlags,
                                                       const void* constantBlock, PxU32 constantBlockSize)
 {
-    // 트리거 플래그 등록
-    if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
-    {
-        pairFlags = PxPairFlag::eTRIGGER_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_CCD;
-        return PxFilterFlag::eDEFAULT;
-    }
-
-    // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
+    // 필터링 적용
     if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-        pairFlags = PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS |
-                    PxPairFlag::eNOTIFY_TOUCH_LOST | PxPairFlag::eNOTIFY_TOUCH_CCD;
+    {
+        // 트리거 플래그 등록
+        if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+        {
+            pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+        }
+        else
+        {
+            // 충돌 시작, 충돌 중, 충돌 끝 플래그 등록
+            pairFlags =
+                PxPairFlag::eCONTACT_DEFAULT | PxPairFlag::eNOTIFY_TOUCH_FOUND | PxPairFlag::eNOTIFY_TOUCH_PERSISTS | PxPairFlag::eNOTIFY_TOUCH_LOST;
+        }
+
+        pairFlags |= PxPairFlag::eDETECT_CCD_CONTACT | PxPairFlag::eNOTIFY_TOUCH_CCD;
+    }
 
     return PxFilterFlag::eDEFAULT;
 }
@@ -41,17 +47,17 @@ void CCollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader,
         pColliderB->OnCollisionEnter(pColliderA);
     }
 
+    if (pairs->events.isSet(PxPairFlag::eNOTIFY_TOUCH_PERSISTS))
+    {
+        pColliderA->OnCollisionStay(pColliderB);
+        pColliderB->OnCollisionStay(pColliderA);
+    }
+
     if (pairs->events.isSet(PxPairFlag::eNOTIFY_TOUCH_LOST))
     {
         pColliderA->OnCollisionExit(pColliderB);
         pColliderB->OnCollisionExit(pColliderA);
     }
-
-    // 충돌 카운트가 남아있는 경우 Stay 상태
-    if (pColliderA->m_CollisionCount > 0)
-        pColliderA->OnCollisionStay(pColliderB);
-    if (pColliderB->m_CollisionCount > 0)
-        pColliderB->OnCollisionStay(pColliderA);
 }
 
 void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
@@ -106,7 +112,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_CCTCallbackInst()
     , m_Matrix{}
     , m_Accumulator(0.f)
-    , m_StepSize(1.f / 60.f)
+    , m_StepSize(0.02f) // 1.f / 50.f
     , m_Gravity(Vec3(0.f, -9.81f, 0.f))
     , m_PPM(1.f)
     , m_listTrigger{}
@@ -126,82 +132,82 @@ void CPhysicsMgr::tick()
 
     // 시뮬레이션 안정성을 위해 StepSize 단위로 시뮬레이션
     m_Accumulator += DT;
-    if (m_Accumulator < m_StepSize)
-        return;
-
-    m_Accumulator -= m_StepSize;
-
-    // 시뮬레이션
-    m_Scene->simulate(m_StepSize);
-    m_Scene->fetchResults(true);
-
-    // TriggerStay Event
-    std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
-    while (iter != m_listTrigger.end())
+    while (m_Accumulator >= m_StepSize)
     {
-        if (0 >= iter->first->m_TriggerCount || 0 >= iter->second->m_TriggerCount)
+        m_Accumulator -= m_StepSize;
+
+        // 시뮬레이션
+        m_Scene->simulate(m_StepSize);
+        m_Scene->fetchResults(true);
+
+        // TriggerStay Event
+        std::list<std::pair<CCollider*, CCollider*>>::iterator iter = m_listTrigger.begin();
+        while (iter != m_listTrigger.end())
         {
-            iter = m_listTrigger.erase(iter);
-            continue;
+            if (0 >= iter->first->m_TriggerCount || 0 >= iter->second->m_TriggerCount)
+            {
+                iter = m_listTrigger.erase(iter);
+                continue;
+            }
+
+            iter->first->OnTriggerStay(iter->second);
+            iter->second->OnTriggerStay(iter->first);
+            ++iter;
         }
 
-        iter->first->OnTriggerStay(iter->second);
-        iter->second->OnTriggerStay(iter->first);
-        ++iter;
-    }
+        // 시뮬레이션 결과로 트랜스폼 업데이트
+        PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
+        std::vector<PxRigidActor*> actors(nbActors);
+        m_Scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
 
-    // 시뮬레이션 결과로 트랜스폼 업데이트
-    PxU32 nbActors = m_Scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
-    std::vector<PxRigidActor*> actors(nbActors);
-    m_Scene->getActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC, reinterpret_cast<PxActor**>(&actors[0]), nbActors);
+        for (PxU32 i = 0; i < nbActors; i++)
+        {
+            if (!actors[i]->is<PxRigidDynamic>())
+                continue;
 
-    for (PxU32 i = 0; i < nbActors; i++)
-    {
-        if (!actors[i]->is<PxRigidDynamic>())
-            continue;
+            // RigidDynamic이 캐릭터 컨트롤러인 경우
+            if (nullptr == actors[i]->userData)
+                continue;
 
-        // RigidDynamic이 캐릭터 컨트롤러인 경우
-        if (nullptr == actors[i]->userData)
-            continue;
+            CGameObject* obj = (CGameObject*)actors[i]->userData;
+            CTransform* pTr = obj->Transform();
 
-        CGameObject* obj = (CGameObject*)actors[i]->userData;
-        CTransform* pTr = obj->Transform();
+            const PxMat44 ActorPose(actors[i]->getGlobalPose());
+            Matrix SimulatedMat = Matrix(ActorPose.front());
 
-        const PxMat44 ActorPose(actors[i]->getGlobalPose());
-        Matrix SimulatedMat = Matrix(ActorPose.front());
+            // 시뮬레이션 Matrix SRT 분해
+            Vec3 Translation, Rotation, Scale;
+            ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
-        // 시뮬레이션 Matrix SRT 분해
-        Vec3 Translation, Rotation, Scale;
-        ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
+            // PPM 적용
+            Translation *= m_PPM;
+            Rotation.ToRadian();
 
-        // PPM 적용
-        Translation *= m_PPM;
-        Rotation.ToRadian();
+            // 변화량 추출
+            Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
+            Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
 
-        // 변화량 추출
-        Vec3 vPosOffset = pTr->GetWorldPos() - Translation;
-        Vec3 vRotOffset = pTr->GetWorldRotation() - Rotation;
+            // 변화량만큼 Relative 에 적용
+            pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+            pTr->SetLocalRotation(pTr->GetLocalRotation() - vRotOffset);
+        }
 
-        // 변화량만큼 Relative 에 적용
-        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
-        pTr->SetLocalRotation(pTr->GetLocalRotation() - vRotOffset);
-    }
+        // Character Controller
+        PxU32 nbControllers = m_ControllerMgr->getNbControllers();
+        for (PxU32 i = 0; i < nbControllers; i++)
+        {
+            PxController* pPxController = m_ControllerMgr->getController(i);
+            CCharacterController* pCharacterController = (CCharacterController*)pPxController->getUserData();
+            CTransform* pTr = pCharacterController->Transform();
 
-    // Character Controller
-    PxU32 nbControllers = m_ControllerMgr->getNbControllers();
-    for (PxU32 i = 0; i < nbControllers; i++)
-    {
-        PxController* pPxController = m_ControllerMgr->getController(i);
-        CCharacterController* pCharacterController = (CCharacterController*)pPxController->getUserData();
-        CTransform* pTr = pCharacterController->Transform();
+            PxVec3d PxPos = pPxController->getPosition();
+            Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
+            vPosOffset -= pCharacterController->m_Center / m_PPM;
+            vPosOffset *= m_PPM;
+            vPosOffset = pTr->GetWorldPos() - vPosOffset;
 
-        PxVec3d PxPos = pPxController->getPosition();
-        Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
-        vPosOffset -= pCharacterController->m_Center / m_PPM;
-        vPosOffset *= m_PPM;
-        vPosOffset = pTr->GetWorldPos() - vPosOffset;
-
-        pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+            pTr->SetLocalPos(pTr->GetLocalPos() - vPosOffset);
+        }
     }
 }
 
@@ -703,6 +709,11 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
 
     if (desc.isValid())
     {
+        int LayerIdx = _GameObject->GetLayerIdx();
+        PxFilterData filterData;
+        filterData.word0 = (1 << LayerIdx);    // 해당 오브젝트의 레이어 번호
+        filterData.word1 = m_Matrix[LayerIdx]; // 필터링을 적용할 테이블
+
         PxController* PxCharacterController = m_ControllerMgr->createController(desc);
         pCharacterController->m_RuntimeShape = PxCharacterController;
 
@@ -715,6 +726,10 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
         for (UINT i = 0; i < vecShapes.size(); i++)
         {
             vecShapes[i]->userData = (void*)pCharacterController;
+
+            // 필터링 데이터 적용
+            vecShapes[i]->setSimulationFilterData(filterData);
+            vecShapes[i]->setQueryFilterData(filterData);
         }
     }
 }

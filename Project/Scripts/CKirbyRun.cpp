@@ -39,8 +39,34 @@ void CKirbyRun::tick()
             }
         }
         break;
-        case ObjectCopyType::STAIR:
-            break;
+        case ObjectCopyType::VENDING_MACHINE: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                UINT LeftCanCount = PLAYERFSM->GetCanCount();
+
+                if (LeftCanCount > 0)
+                {
+                    ChangeState(L"ATTACK_START");
+                }
+                else
+                {
+                    ChangeState(L"ATTACK_FAILED");
+                }
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT_START");
+            }
+            else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"RUN_END");
+            }
+        }
+        break;
         case ObjectCopyType::LIGHT: {
             if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
             {
@@ -94,8 +120,7 @@ void CKirbyRun::tick()
             }
         }
         break;
-        case AbilityCopyType::CUTTER: 
-        {
+        case AbilityCopyType::CUTTER: {
             if (KEY_TAP(KEY_ATK))
             {
                 if (PLAYERFSM->CanBladeAttack())

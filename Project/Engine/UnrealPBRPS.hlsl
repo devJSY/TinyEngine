@@ -1,4 +1,5 @@
 #include "struct.hlsli"
+#include "func.hlsli"
 #include "global.hlsli"
 #include "Light.hlsli"
 #include "UnrealPBRCommon.hlsli"
@@ -16,8 +17,11 @@
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
 
+#define InvertNormalMapY g_int_0
+
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
+
 
 // PBR 원칙
 // 1. microfacet 표면 모델을 기반으로 한다
@@ -26,7 +30,7 @@
 float4 main(PS_IN input) : SV_TARGET
 {
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
-    float3 normalWorld = GetNormal(input);
+    float3 normalWorld = g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, InvertNormalMapY) : input.vNormalWorld;
   
     float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
     float4 albedo1 = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;

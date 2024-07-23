@@ -22,8 +22,10 @@ CModelEditor::CModelEditor()
     , m_SelectedBoneSocket(nullptr)
     , m_SelectedPreviewObj(nullptr)
     , m_bDrawWireFrame(false)
+    , m_bRenderFloor(true)
     , m_bMeshSaved(true)
     , m_bMeshDataSaved(true)
+    , m_RecentPath(L"fbx\\")
     , m_MeshDataPath()
     , m_vecDeferred{}
     , m_vecForward{}
@@ -364,7 +366,10 @@ void CModelEditor::DrawViewport()
 
     // Skybox, Floor
     m_SkyBoxObj->render();
-    m_FloorObj->render();
+    if (m_bRenderFloor)
+    {
+        m_FloorObj->render();
+    }
 
     // Transparent
     render(m_vecTransparent);
@@ -390,10 +395,8 @@ void CModelEditor::DrawViewport()
         CTexture::Clear(i);
     }
 
-    // SkyBox Clear
-    CTexture::Clear(17);
-    CTexture::Clear(18);
-    CTexture::Clear(19);
+    // Skybox Clear
+    m_SkyBoxObj->SkyBox()->ClearData();
 
     // Light Depth Map Clear
     CTexture::Clear(23);
@@ -615,7 +618,7 @@ void CModelEditor::DrawDetails()
 
         if (ImGui_AlignButton("Load Model", 0.f))
         {
-            std::filesystem::path filePath = OpenFileDialog(L"fbx\\", TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
+            std::filesystem::path filePath = OpenFileDialog(m_RecentPath, TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
 
             // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
             if (!filePath.empty())
@@ -628,10 +631,12 @@ void CModelEditor::DrawDetails()
                 // 경로에 Content 폴더가 포함되지 않은 경우
                 else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
                 {
+                    m_RecentPath = L"fbx\\";
                     MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
                 }
                 else
                 {
+                    m_RecentPath = filePath.lexically_relative(CPathMgr::GetContentPath()).parent_path();
                     CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
                 }
             }
@@ -766,7 +771,7 @@ void CModelEditor::DrawDetails()
                 ImGui::SameLine();
                 if (ImGui_AlignButton("Import Animation##ModelEditorDetails", 1.f))
                 {
-                    std::filesystem::path filePath = OpenFileDialog(L"fbx\\", TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
+                    std::filesystem::path filePath = OpenFileDialog(m_RecentPath, TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
 
                     // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
                     if (!filePath.empty())
@@ -779,10 +784,12 @@ void CModelEditor::DrawDetails()
                         // 경로에 Content 폴더가 포함되지 않은 경우
                         else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
                         {
+                            m_RecentPath = L"fbx\\";
                             MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
                         }
                         else
                         {
+                            m_RecentPath = filePath.lexically_relative(CPathMgr::GetContentPath()).parent_path();
                             CAssetMgr::GetInst()->AsyncLoadAnimationFBX(m_ModelObj->Animator()->GetSkeletalMesh(),
                                                                         filePath.lexically_relative(CPathMgr::GetContentPath()));
                         }
@@ -935,6 +942,7 @@ void CModelEditor::DrawDetails()
     if (ImGui::TreeNodeEx("Options##ModelEditorDetails", DefaultTreeNodeFlag))
     {
         ImGui::Checkbox(ImGui_LabelPrefix("Draw WireFrame").c_str(), &m_bDrawWireFrame);
+        ImGui::Checkbox(ImGui_LabelPrefix("Render Floor").c_str(), &m_bRenderFloor);
 
         ImGui::TreePop();
     }
