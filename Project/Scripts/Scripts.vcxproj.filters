@@ -442,6 +442,12 @@
     <ClInclude Include="CMonsterTest.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CkirbyAbility_Sleep.h">
+      <Filter>State\KirbyAbility\Sleep</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyIdleStart.h">
+      <Filter>State\KirbyState\Idle\Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -896,6 +902,12 @@
     </ClCompile>
     <ClCompile Include="CMonsterTest.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CkirbyAbility_Sleep.cpp">
+      <Filter>State\KirbyAbility\Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyIdleStart.cpp">
+      <Filter>State\KirbyState\Idle\Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1372,6 +1384,12 @@
     </Filter>
     <Filter Include="State\KirbyState\AttackFailed\AttackFailed">
       <UniqueIdentifier>{56cfc668-12dd-46ab-bc39-152b82aba376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Sleep">
+      <UniqueIdentifier>{dfcc0874-e248-4c9f-a5ce-8738879bcc21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Idle\Start">
+      <UniqueIdentifier>{ec2178dc-500a-4f4e-adba-637cd22ad071}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

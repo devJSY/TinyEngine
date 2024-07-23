@@ -2,6 +2,7 @@
 #include "CKirbyAttack.h"
 
 CKirbyAttack::CKirbyAttack()
+    : m_AccTime(0.f)
 {
 }
 
@@ -11,6 +12,7 @@ CKirbyAttack::~CKirbyAttack()
 
 void CKirbyAttack::tick()
 {
+    m_AccTime += DT;
     PLAY_CURSTATE(Attack)
 
     // State Change
@@ -95,6 +97,13 @@ void CKirbyAttack::tick()
             }
         }
         break;
+        case AbilityCopyType::SLEEP: {
+            if (m_AccTime >= 2.f)
+            {
+                ChangeState(L"ATTACK_END");
+            }
+        }
+        break;
         }
     }
 }
@@ -102,6 +111,7 @@ void CKirbyAttack::tick()
 void CKirbyAttack::Enter()
 {
     PLAY_CURSTATE(AttackEnter)
+    m_AccTime = 0.f;
 }
 
 void CKirbyAttack::Exit()

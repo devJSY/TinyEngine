@@ -29,6 +29,10 @@ public:
     virtual void IdleEnter();
     virtual void IdleExit();
 
+    virtual void IdleStart(){};
+    virtual void IdleStartEnter(){};
+    virtual void IdleStartExit(){};
+
     virtual void Run(){};
     virtual void RunEnter();
     virtual void RunExit(){};

@@ -8,6 +8,7 @@
 #include "CKirbyAbility_Fire.h"
 #include "CKirbyAbility_Cutter.h"
 #include "CKirbyAbility_Sword.h"
+#include "CKirbyAbility_Sleep.h"
 #include "CKirbyObject_Cone.h"
 #include "CKirbyObject_Lightbulb.h"
 #include "CKirbyObject_VendingMachine.h"
@@ -50,6 +51,7 @@ CKirbyFSM::CKirbyFSM()
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
+    //m_arrAbility[(UINT)AbilityCopyType::SLEEP] = new CKirbyAbility_Sleep();
 
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
     m_arrObject[(UINT)ObjectCopyType::VENDING_MACHINE] = new CKirbyObject_VendingMachine();
@@ -131,6 +133,7 @@ CKirbyFSM::~CKirbyFSM()
 }
 
 #include "CKirbyIdle.h"
+#include "CKirbyIdleStart.h"
 #include "CKirbyDeath.h"
 #include "CKirbyDeathEnd.h"
 #include "CKirbyRun.h"
@@ -224,6 +227,7 @@ void CKirbyFSM::begin()
 
     // State Ãß°¡
     AddState(L"IDLE", new CKirbyIdle);
+    AddState(L"IDLE_START", new CKirbyIdleStart);
     AddState(L"DEATH", new CKirbyDeath);
     AddState(L"DEATH_END", new CKirbyDeathEnd);
     AddState(L"RUN", new CKirbyRun);

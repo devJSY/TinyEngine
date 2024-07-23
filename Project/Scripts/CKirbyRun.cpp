@@ -173,6 +173,25 @@ void CKirbyRun::tick()
             }
         }
         break;
+        case AbilityCopyType::SLEEP: {
+            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_START");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (!PLAYER->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
+            }
+        }
+        break;
         }
     }
 }

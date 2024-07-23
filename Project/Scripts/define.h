@@ -51,7 +51,7 @@ enum class AbilityCopyType
     FIRE,
     CUTTER,
     SWORD,
-    SLIP,
+    SLEEP,
 
     END,
 };
