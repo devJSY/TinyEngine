@@ -53,7 +53,7 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     Vec3 Offset = Vec3(0.f, 50.f, 0.f);
 
     // 프리팹 생성
-    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CanJuiceTest.pref");
+    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CanJuice.pref");
     CGameObject* CanJuiceInst = CanJuice->Instantiate();
 
     // 초기값 세팅

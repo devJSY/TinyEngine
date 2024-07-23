@@ -65,7 +65,7 @@ void CKirbyAbility_Cutter::AttackExit()
 
 void CKirbyAbility_Cutter::AttackCombo1()
 {
-    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+    if (KEY_TAP(KEY_ATK))
     {
         m_IsNextCombo = true;
     }
@@ -99,6 +99,7 @@ void CKirbyAbility_Cutter::AttackCombo1Enter()
     // Material 등록
     Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
 
+    PLAYERFSM->GetCurWeapon()->SetActive(true);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
 
     // 머리의 Blade는 안보이게 한다
@@ -115,6 +116,7 @@ void CKirbyAbility_Cutter::AttackCombo1Exit()
     PLAYERCTRL->SetGuard(false);
 
     // Material 해제
+    PLAYERFSM->GetCurWeapon()->SetActive(false);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(nullptr, 0);
 
     // 머리의 Blade를 보이게 한다
@@ -123,7 +125,7 @@ void CKirbyAbility_Cutter::AttackCombo1Exit()
 
 void CKirbyAbility_Cutter::AttackCombo2()
 {
-    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+    if (KEY_TAP(KEY_ATK))
     {
         m_IsNextCombo = true;
     }
@@ -154,6 +156,7 @@ void CKirbyAbility_Cutter::AttackCombo2Enter()
     PLAYERCTRL->SetGuard(true);
 
     // Material 등록
+    PLAYERFSM->GetCurWeapon()->SetActive(true);
     Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
 
@@ -174,6 +177,7 @@ void CKirbyAbility_Cutter::AttackCombo2Exit()
     PLAYERCTRL->SetGuard(false);
 
     // Material 해제
+    PLAYERFSM->GetCurWeapon()->SetActive(false);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(nullptr, 0);
 
     // 머리의 Blade를 보이게 한다

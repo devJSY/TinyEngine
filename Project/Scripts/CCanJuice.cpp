@@ -102,8 +102,27 @@ void CCanJuice::OnCollisionEnter(CCollider* _OtherCollider)
 
     if (LayerIdx == LAYER_MONSTER)
     {
-        UnitHit JuiceHit = {DAMAGE_TYPE::NORMAL, m_Damage, 0.f, 0.f};
+        Vec3 CanPos = GetOwner()->Transform()->GetWorldPos();
+        Vec3 MonsterPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
+        Vec3 HitDir = MonsterPos - CanPos;
+        HitDir.Normalize();
+
+        UnitHit JuiceHit = {DAMAGE_TYPE::NORMAL, HitDir, m_Damage, 0.f, 0.f};
         
         _OtherCollider->GetOwner()->GetScript<CUnitScript>()->GetDamage(JuiceHit);
     }
+}
+
+UINT CCanJuice::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
+}
+
+UINT CCanJuice::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }

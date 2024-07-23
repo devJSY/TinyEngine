@@ -64,6 +64,8 @@ void CKirbyFinalCutterEnd::Enter()
     InstObj->Transform()->SetDirection(-KirbyFront);
 
     GamePlayStatic::SpawnGameObject(InstObj, InstObj->GetLayerIdx());
+
+    PLAYERFSM->GetCurWeapon()->SetActive(true);
 }
 
 void CKirbyFinalCutterEnd::Exit()
@@ -78,4 +80,6 @@ void CKirbyFinalCutterEnd::Exit()
 
     // 무적 상태
     PLAYERFSM->SetInvincible(false);
+
+    PLAYERFSM->GetCurWeapon()->SetActive(false);
 }
