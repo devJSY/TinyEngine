@@ -3,6 +3,7 @@
 #include "CKirbyBulletScript.h"
 #include "CKirbyMoveController.h"
 #include "CKirbyVacuumCollider.h"
+#include "CUnitScript.h"
 
 CKirbyAbility_Normal::CKirbyAbility_Normal()
     : m_bFrmEnter(true)
@@ -38,10 +39,6 @@ void CKirbyAbility_Normal::Attack()
             InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f * PLAYER->Transform()->GetLocalScale();
             InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP) * 2.f * PLAYER->Transform()->GetLocalScale();
 
-            if (PLAYERFSM->GetStuffedCopyObj()->MeshRender())
-            {
-                BulletInst->AddComponent(PLAYERFSM->GetStuffedCopyObj()->MeshRender()->Clone());
-            }
             BulletInst->Transform()->SetLocalPos(InitPos);
             GamePlayStatic::SpawnGameObject(BulletInst, LAYER_PLAYERATK);
 
@@ -50,7 +47,7 @@ void CKirbyAbility_Normal::Attack()
             {
                 Vec3 InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 InitDir.y = 0.f;
-                bulletScript->SetInitVelocity(InitDir * 120.f);
+                bulletScript->SetInitVelocity(InitDir * 60.f);
             }
         }
     }

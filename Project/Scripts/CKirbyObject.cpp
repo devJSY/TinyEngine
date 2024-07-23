@@ -15,6 +15,9 @@ CKirbyObject::~CKirbyObject()
 
 void CKirbyObject::ParseDemoMesh(Ptr<CMeshData> _pMesh)
 {
+    if (_pMesh == nullptr)
+        return;
+
     for (UINT i = 0; i < 3; ++i)
     {
         wstring MtrlName = m_DemoMesh->GetMesh()->GetIBName(i);
