@@ -4,6 +4,7 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CKirbyHatBlade.h"
+#include "CMonsterUnitScript.h"
 
 CKirbyCutterBullet::CKirbyCutterBullet()
     : CScript(KIRBYCUTTERBULLET)
@@ -402,6 +403,19 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
                     BladeScript->Reset();
                 }
             }
+        }
+    }
+    // Monster
+    else if (LayerIdx == LAYER_MONSTER)
+    {
+        CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetScript<CMonsterUnitScript>();
+        if (nullptr != Monster)
+        {
+            Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+            HitDir.Normalize();
+            UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
+
+            Monster->GetDamage(HitInfo);
         }
     }
 }

@@ -88,13 +88,7 @@ CAnimator::~CAnimator()
     // 자식 오브젝트가 참조하고 있던 본 소켓 해제
     if (IsValid())
     {
-        for (CGameObject* pChild : GetOwner()->GetChildObject())
-        {
-            if (nullptr != pChild->GetBoneSocket())
-            {
-                pChild->SetBoneSocket(nullptr);
-            }
-        }
+        GetOwner()->DetachBoneSockets();
     }
 }
 

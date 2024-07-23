@@ -379,6 +379,12 @@ void CCamera::render_Forward()
         CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
     }
 
+    // SkyBox Bind
+    for (size_t i = 0; i < m_vecSkybox.size(); ++i)
+    {
+        m_vecSkybox[i]->SkyBox()->UpdateData();
+    }
+
 #ifndef DISTRIBUTE
     // OutLine Pass
     render_OutLine();
@@ -426,6 +432,12 @@ void CCamera::render_Forward()
     }
 
     render_Postprocess();
+
+    // SkyBox Clear
+    for (size_t i = 0; i < m_vecSkybox.size(); ++i)
+    {
+        m_vecSkybox[i]->SkyBox()->ClearData();
+    }
 
     // Clear
     render_Clear();

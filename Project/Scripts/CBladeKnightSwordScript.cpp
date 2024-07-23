@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CBladeKnightSwordScript.h"
+#include "CPlayerMgr.h"
+#include "CKirbyUnitScript.h"
 
 CBladeKnightSwordScript::CBladeKnightSwordScript()
     : CScript(BLADEKNIGHTSWORDSCRIPT)
@@ -135,14 +137,16 @@ void CBladeKnightSwordScript::ThrustWait()
 
 void CBladeKnightSwordScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-}
+    int Layeridx = _OtherCollider->GetOwner()->GetLayerIdx();
 
-void CBladeKnightSwordScript::OnTriggerStay(CCollider* _OtherCollider)
-{
-}
+    if (Layeridx == LAYER_PLAYER)
+    {
+        Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        HitDir.Normalize();
+        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
 
-void CBladeKnightSwordScript::OnTriggerExit(CCollider* _OtherCollider)
-{
+        PLAYERUNIT->GetDamage(HitInfo);
+    }
 }
 
 UINT CBladeKnightSwordScript::SaveToLevelFile(FILE* _File)

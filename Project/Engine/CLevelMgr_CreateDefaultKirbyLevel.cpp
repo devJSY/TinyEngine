@@ -125,7 +125,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     // =============
     // create Env
     // =============
-    //  SkyBox
+    // SkyBox
     CGameObject* pSkyBoxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Skybox\\Day\\Day.fbx")->Instantiate();
     pSkyBoxObj->SetName(L"SkyBox");
 
@@ -142,6 +142,20 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     NewLevel->AddObject(pSkyBoxObj, 0);
 
+    // IBL
+    CGameObject* pIBLObj = new CGameObject;
+    pIBLObj->SetName(L"IBL");
+    pIBLObj->AddComponent(new CTransform);
+    pIBLObj->AddComponent(new CSkyBox);
+
+    pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
+    pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
+
+    pIBLObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Diffuse.dds"));
+    pIBLObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Specular.dds"));
+
+    NewLevel->AddObject(pIBLObj, 0);
+
     // Light
     CGameObject* pDirLight = new CGameObject;
     pDirLight->SetName(L"Directional Light");
@@ -149,7 +163,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pDirLight->AddComponent(new CLight);
 
     pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
-    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
     pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     pDirLight->Light()->SetRadius(10.f);
 
@@ -164,8 +178,18 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pFloor->Transform()->SetLocalScale(Vec3(10000.f, 1.f, 10000.f));
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    pFloor->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredMtrl"), 0);
-    pFloor->MeshRender()->GetMaterial(0)->SetAlbedo(Vec4(1.f, 1.f, 1.f, 1.f));
+    Ptr<CMaterial> pFloorMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\DefaultFloorMtrl.mtrl");
+    if (nullptr == pFloorMtrl)
+    {
+        pFloorMtrl = new CMaterial(false);
+        pFloorMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"UnrealPBRDeferredShader"));
+        wstring name = L"material\\DefaultFloorMtrl.mtrl";
+        pFloorMtrl->SetName(name);
+        pFloorMtrl->SetAlbedo(Vec4(1.f, 1.f, 1.f, 1.f));
+        CAssetMgr::GetInst()->AddAsset(name, pFloorMtrl);
+        pFloorMtrl->Save(name);
+    }
+    pFloor->MeshRender()->SetMaterial(pFloorMtrl, 0);
     pFloor->MeshRender()->SetFrustumCheck(false);
 
     NewLevel->AddObject(pFloor, 2);

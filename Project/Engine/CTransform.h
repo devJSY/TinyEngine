@@ -26,6 +26,10 @@ public:
     virtual void UpdateData() override;
 
 public:
+    void SetDirection(Vec3 _Forward, Vec3 _Up = Vec3(0.f, 1.f, 0.f));
+    void Slerp(Vec3 _TowardDir, float _t);
+
+public:
     Vec3 GetLocalPos() const { return m_LocalPos; }
     void SetLocalPos(Vec3 _Pos) { m_LocalPos = _Pos; }
     Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
@@ -41,7 +45,6 @@ public:
 
     Quat GetLocalQuaternion() const { return m_LocalQuaternion; }
     Quat GetWorldQuaternion() const;
-    void SetDirection(Vec3 _Forward, Vec3 _Up = Vec3(0.f, 1.f, 0.f));
 
     Vec3 GetLocalScale() const { return m_LocalScale; }
     void SetLocalScale(Vec3 _Scale) { m_LocalScale = _Scale; }

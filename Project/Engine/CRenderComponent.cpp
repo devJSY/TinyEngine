@@ -72,9 +72,14 @@ void CRenderComponent::SetMesh(Ptr<CMesh> _Mesh)
         m_vecMtrls.resize(m_Mesh->GetSubsetCount());
     }
 
-    if (nullptr != GetOwner() && nullptr != Animator())
+    if (nullptr != GetOwner())
     {
-        Animator()->SetSkeletalMesh(m_Mesh);
+        GetOwner()->DetachBoneSockets();
+
+        if (nullptr != Animator())
+        {
+            Animator()->SetSkeletalMesh(m_Mesh);
+        }
     }
 }
 
@@ -183,11 +188,6 @@ void CRenderComponent::SetMeshData(Ptr<CMeshData> _MeshData)
     for (UINT i = 0; i < vecMtrl.size(); ++i)
     {
         SetMaterial(vecMtrl[i], i);
-    }
-
-    if (nullptr != GetOwner() && nullptr != Animator())
-    {
-        Animator()->SetSkeletalMesh(_MeshData->GetMesh());
     }
 }
 
