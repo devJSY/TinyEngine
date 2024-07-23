@@ -5,13 +5,9 @@
 #include "global.hlsli"
 #include "disksample.hlsli"
 
-#define NormalTex g_tex_5
-
 #define BRDFTex g_BRDFTex // SpecularIBL Look-up Table
 #define SpecularIBLTex g_SpecularCube
 #define IrradianceIBLTex g_DiffuseCube 
-
-#define InvertNormalMapY g_int_0
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
 static float LightRadiusScale = 1e-2f;
@@ -21,37 +17,6 @@ float3 SchlickFresnel(float3 F0, float NdotH)
 {
     return F0 + (1.0 - F0) * pow(2.0, (-5.55473 * NdotH - 6.98316) * NdotH);
     //return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0); 
-}
-
-float3 GetNormal(PS_IN input)
-{
-    float3 normalWorld = normalize(input.vNormalWorld);
-    
-    if (g_btex_5) // NormalWorld를 교체
-    {
-        float3 normal = NormalTex.Sample(g_LinearWrapSampler, input.vUV0).rgb;
-
-        // 압축되어있는 Normal Map인 경우
-        if (0.f >= normal.b)
-        {
-            normal.b = 1.f;
-        }
-
-        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
-        
-        // OpenGL 용 노멀맵일 경우에는 y 방향 반전
-        normal.y = InvertNormalMapY ? -normal.y : normal.y;
-        
-        float3 N = normalWorld;
-        float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = normalize(cross(N, T));
-        
-        // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
-        float3x3 TBN = float3x3(T, B, N);
-        normalWorld = normalize(mul(normal, TBN));
-    }
-    
-    return normalWorld;
 }
 
 float3 DiffuseIBL(float3 albedo, float3 normalWorld, float3 pixelToEye,

@@ -20,9 +20,12 @@ private:
     CGameObject* m_SelectedPreviewObj;
 
     bool m_bDrawWireFrame;
+    bool m_bRenderFloor;
     bool m_bMeshSaved;
     wstring m_MeshDataPath;
     bool m_bMeshDataSaved;
+
+    wstring m_RecentPath;
 
     // Viewport
     vector<tInstObj> m_vecDeferred;

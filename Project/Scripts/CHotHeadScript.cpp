@@ -322,7 +322,7 @@ void CHotHeadScript::Aiming()
 {
     if (nullptr != GetTarget())
     {
-        TransformRotate();
+        RotatingToTarget();
         m_fAccTime += DT;
         if (m_fAccTime >= m_fAimingTime)
         {

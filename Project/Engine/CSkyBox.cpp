@@ -18,21 +18,11 @@ CSkyBox::CSkyBox()
 
 CSkyBox::~CSkyBox()
 {
-    CTexture::Clear(17);
-    CTexture::Clear(18);
-    CTexture::Clear(19);
+    ClearData();
 }
 
 void CSkyBox::finaltick()
 {
-    if (GetOwner()->IsDead())
-    {
-        CTexture::Clear(17);
-        CTexture::Clear(18);
-        CTexture::Clear(19);
-        return;
-    }
-
     CRenderComponent::finaltick();
 }
 
@@ -47,14 +37,6 @@ void CSkyBox::render()
 {
     if (nullptr == GetMesh() || nullptr == GetMaterial(0))
         return;
-
-    if (GetOwner()->IsDead())
-    {
-        CTexture::Clear(17);
-        CTexture::Clear(18);
-        CTexture::Clear(19);
-        return;
-    }
 
     UpdateData();
 
@@ -102,6 +84,13 @@ void CSkyBox::render(Ptr<CMaterial> _mtrl)
 void CSkyBox::render(UINT _Subset)
 {
     render();
+}
+
+void CSkyBox::ClearData()
+{
+    CTexture::Clear(17);
+    CTexture::Clear(18);
+    CTexture::Clear(19);
 }
 
 void CSkyBox::SetShape(SKYBOX_SHAPE _Shape)

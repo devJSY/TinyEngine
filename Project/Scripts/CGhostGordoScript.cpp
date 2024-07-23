@@ -152,7 +152,7 @@ void CGhostGordoScript::Find()
 
 void CGhostGordoScript::Track()
 {
-    TransformRotate();
+    RotatingToTarget();
     nullptr != GetTarget() ? RigidbodyMove(GetTarget()) : ChangeState(GHOSTGORDO_STATE::TrackAfter);
 }
 

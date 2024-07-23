@@ -99,8 +99,13 @@ void CCharacterController::Move(Vec3 _Motion)
     if (nullptr == m_RuntimeShape || _Motion == Vector3::Zero)
         return;
 
+    int LayerIdx = GetOwner()->GetLayerIdx();
+    physx::PxFilterData filterData;
+    filterData.word0 = (1 << LayerIdx);                                     // 해당 오브젝트의 레이어 번호
+    filterData.word1 = CPhysicsMgr::GetInst()->GetCollisionLayer(LayerIdx); // 필터링을 적용할 테이블
+
     physx::PxControllerCollisionFlags MoveFlags =
-        ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters());
+        ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters(&filterData));
     m_MoveElapsedTime = 0.f;
 
     m_bGrounded = physx::PxControllerCollisionFlag::eCOLLISION_DOWN & MoveFlags;

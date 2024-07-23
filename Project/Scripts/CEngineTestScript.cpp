@@ -287,14 +287,17 @@ void CEngineTestScript::DetachObject()
 
 void CEngineTestScript::OnCollisionEnter(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnCollisionEnter : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnCollisionStay(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnCollisionStay : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnCollisionExit(CCollider* _OtherCollider)
 {
+    LOG(Log, "OnCollisionExit : %s", ToString(_OtherCollider->GetOwner()->GetName()).c_str());
 }
 
 void CEngineTestScript::OnTriggerEnter(CCollider* _OtherCollider)
