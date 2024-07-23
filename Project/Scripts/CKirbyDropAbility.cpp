@@ -18,7 +18,7 @@ void CKirbyDropAbility::tick()
     if (m_FrmEnter && GetOwner()->Animator()->GetClipFrameIndex() >= 11)
     {
         // spawn ability bubble
-        if (nullptr != m_Bubble)
+        if (nullptr != m_Bubble && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::SLEEP)
         {
             CGameObject* pBubble = m_Bubble->Instantiate();
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
