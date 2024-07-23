@@ -300,7 +300,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
         Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
         Vec3 test = Transform()->GetWorldPos();
 
-        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f, 50.f, 0.f);
+        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f, 100.f, 0.f);
         Dir.Normalize();
 
         m_MoveDir = Dir;
@@ -366,7 +366,7 @@ bool CKirbyCutterBullet::StepUp()
     return true;
 }
 
-void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
+void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
 {
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
@@ -377,17 +377,31 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         RayDir.y = 0.f;
         RayDir.Normalize();
 
-        Vec3 RayStart = Transform()->GetWorldPos() - m_MoveDir * 100.f;
+        Vec3 RayStart = Transform()->GetWorldPos() - m_MoveDir * 10.f;
 
-        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), RayDir, 200.f, {L"World Static"});
-        Vec3 Normal = Hit.Normal;
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayStart, RayDir, 1000.f, {L"World Static"});
 
-        m_MoveDir = RayDir + 2.f * Normal * (-RayDir.Dot(Normal));
+        if (Hit.pCollisionObj != nullptr)
+        {
+            Vec3 Normal = Hit.Normal;
+            m_MoveDir = RayDir + 2.f * Normal * (-RayDir.Dot(Normal));
+        }
+        else
+        {
+            m_MoveDir *= -1.f;
+        }
 
         SetState(BulletState::HOLD_WALL);
     }
-    // Player
-    else if (LayerIdx == LAYER_PLAYER)
+
+}
+
+void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    // WorldStatic
+    if (LayerIdx == LAYER_PLAYER_TRIGGER)
     {
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
@@ -406,7 +420,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         }
     }
     // Monster
-    else if (LayerIdx == LAYER_MONSTER)
+    else if (LayerIdx == LAYER_MONSTER_TRIGGER)
     {
         CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetScript<CMonsterUnitScript>();
         if (nullptr != Monster)

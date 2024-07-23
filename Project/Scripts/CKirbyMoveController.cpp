@@ -88,6 +88,10 @@ void CKirbyMoveController::begin()
 
 void CKirbyMoveController::tick()
 {
+    Vec3 RayPos = CharacterController()->GetFootPos();
+
+    GamePlayStatic::DrawDebugLine(RayPos, Transform()->GetWorldDir(DIR_TYPE::FRONT), 30.f, Vec3(1.f, 0.f, 0.f), true);
+
     // Key 입력 확인
     Input();
 
@@ -101,8 +105,8 @@ void CKirbyMoveController::tick()
     // SurfaceAlignment();
 
     // Debug : 방향 표시
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 30.f, Vec3(0.f, 1.f, 0.f), true);
-    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 30.f, Vec3(1.f, 0.f, 0.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 30.f, Vec3(0.f, 1.f, 0.f), true);
+     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 30.f, Vec3(0.f, 0.f, 1.f), true);
     // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 30.f, Vec3(0.f, 0.f, 1.f), true);
 }
 
