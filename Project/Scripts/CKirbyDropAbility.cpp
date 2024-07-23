@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "CKirbyDropAbility.h"
-#include "CKirbyBulletScript.h"
+#include "CMomentaryObjScript.h"
 
 CKirbyDropAbility::CKirbyDropAbility()
     : m_FrmEnter(true)
 {
-    m_Bullet = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBullet.pref", L"prefab\\KirbyBullet.pref");
+    m_Bubble = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBubble.pref", L"prefab\\KirbyBubble.pref");
 }
 
 CKirbyDropAbility::~CKirbyDropAbility()
@@ -16,23 +16,27 @@ void CKirbyDropAbility::tick()
 {
     if (m_FrmEnter && GetOwner()->Animator()->GetClipFrameIndex() >= 11)
     {
-        // spawn ability buble
-        if (nullptr != m_Bullet)
+        // spawn ability bubble
+        if (nullptr != m_Bubble)
         {
-            CGameObject* pBubble = m_Bullet->Instantiate();
+            CGameObject* pBubble = m_Bubble->Instantiate();
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
             InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * 100.f;
             InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * 100.f;
+            Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
+            InitRot.x += XMConvertToRadians(-90.f);
+            InitRot.y += XMConvertToRadians(180.f);
 
             pBubble->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
             pBubble->Transform()->SetLocalPos(InitPos);
             pBubble->Transform()->SetLocalScale(Vec3(80.f));
+            pBubble->Transform()->SetLocalRotation(InitRot);
 
-            CKirbyBulletScript* bulletScript = pBubble->GetScript<CKirbyBulletScript>();
-            if (nullptr != bulletScript)
+            CMomentaryObjScript* pMomentaryObj = pBubble->GetScript<CMomentaryObjScript>();
+            if (nullptr != pMomentaryObj)
             {
-                bulletScript->SetInitVelocity(Vec3(0.f, 10.f, 0.f));
-                bulletScript->SetPlayTime(10.f);
+                pMomentaryObj->SetInitVelocity(Vec3(0.f, 10.f, 0.f));
+                pMomentaryObj->SetPlayTime(10.f);
             }
 
             GamePlayStatic::SpawnGameObject(pBubble, LAYER_DYNAMIC);
