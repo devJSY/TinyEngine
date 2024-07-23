@@ -112,16 +112,30 @@ void CLandScape::render(UINT _Subset)
     render();
 }
 
-void CLandScape::SaveToLevelFile(FILE* _File)
+UINT CLandScape::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_BrushStrength, 1, sizeof(float), _File);
     fwrite(&m_BrushScale, 1, sizeof(Vec2), _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec2);
+
+    return MemoryByte;
 }
 
-void CLandScape::LoadFromLevelFile(FILE* _File)
+UINT CLandScape::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_BrushStrength, 1, sizeof(float), _File);
     fread(&m_BrushScale, 1, sizeof(Vec2), _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec2);
+
+    return MemoryByte;
 }
 
 void CLandScape::UpdateData()

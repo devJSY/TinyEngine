@@ -59,7 +59,6 @@ void CGhostGordoScript::tick()
     }
 }
 
-
 void CGhostGordoScript::ChangeState(GHOSTGORDO_STATE _state)
 {
     ExitState(m_eState);
@@ -135,7 +134,7 @@ void CGhostGordoScript::OpenEyeIdle()
         if (nullptr != GetTarget())
         {
             ChangeState(GHOSTGORDO_STATE::Find);
-        }    
+        }
     }
 
     Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX("EyeOpenWait")) : void();
@@ -162,14 +161,22 @@ void CGhostGordoScript::TrackAfter()
     Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::OpenEyeIdle) : void();
 }
 
-void CGhostGordoScript::SaveToLevelFile(FILE* _File)
+UINT CGhostGordoScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CGhostGordoScript::LoadFromLevelFile(FILE* _File)
+UINT CGhostGordoScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }
 
 void CGhostGordoScript::OnTriggerEnter(CCollider* _OtherCollider)

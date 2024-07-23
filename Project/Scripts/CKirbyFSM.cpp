@@ -597,10 +597,20 @@ bool CKirbyFSM::IsDrawing() const
     return m_VacuumCollider->IsDrawing();
 }
 
-void CKirbyFSM::SaveToLevelFile(FILE* _File)
+UINT CKirbyFSM::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    MemoryByte += CFSMScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CKirbyFSM::LoadFromLevelFile(FILE* _File)
+UINT CKirbyFSM::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    MemoryByte += CFSMScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }

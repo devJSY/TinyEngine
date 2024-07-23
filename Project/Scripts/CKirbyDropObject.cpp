@@ -21,6 +21,7 @@ void CKirbyDropObject::tick()
     case ObjectCopyType::LIGHT: {
         if (PLAYER->Animator()->IsFinish())
         {
+            PLAYERFSM->SetGlobalState(false);
             if (GetOwner()->CharacterController()->IsGrounded())
             {
                 ChangeState(L"IDLE");
@@ -37,6 +38,7 @@ void CKirbyDropObject::tick()
 
 void CKirbyDropObject::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetCurObject()->DropObjectEnter();
 }
 

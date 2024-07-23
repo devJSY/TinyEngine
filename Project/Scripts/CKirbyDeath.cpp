@@ -13,12 +13,14 @@ void CKirbyDeath::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"DEATH_WAIT");
     }
 }
 
 void CKirbyDeath::Enter()
 {
+    PLAYERFSM->SetGlobalState(true);
     GetOwner()->Animator()->Play(L"Death", false);
 
     PLAYERCTRL->LockDirection();

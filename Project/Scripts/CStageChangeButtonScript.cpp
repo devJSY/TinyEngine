@@ -10,12 +10,12 @@ CStageChangeButtonScript::CStageChangeButtonScript()
     , m_iStageCount(7)
 {
     m_vStageName.resize(m_iStageCount);
-    for (UINT i = 0;i < m_iStageCount;i++)
+    for (UINT i = 0; i < m_iStageCount; i++)
     {
         AddScriptParam(SCRIPT_PARAM::STRING, &m_vStageName[i], "Stage" + std::to_string(i + 1));
     }
 }
- 
+
 CStageChangeButtonScript::~CStageChangeButtonScript()
 {
 }
@@ -36,28 +36,40 @@ void CStageChangeButtonScript::Func()
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(ToWstring(m_vStageName[m_iCurStage])), LEVEL_STATE::PLAY);
 }
 
-void CStageChangeButtonScript::SaveToLevelFile(FILE* _File)
+UINT CStageChangeButtonScript::SaveToLevelFile(FILE* _File)
 {
-    CButtonScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CButtonScript::SaveToLevelFile(_File);
 
     fwrite(&m_iStageCount, sizeof(UINT), 1, _File);
 
-    for (UINT i = 0;i < m_iStageCount;i++)
+    for (UINT i = 0; i < m_iStageCount; i++)
     {
-        SaveWStringToFile(ToWstring(m_vStageName[i]), _File);
+        MemoryByte += SaveWStringToFile(ToWstring(m_vStageName[i]), _File);
     }
+
+    MemoryByte += sizeof(UINT);
+
+    return MemoryByte;
 }
-    
-void CStageChangeButtonScript::LoadFromLevelFile(FILE* _File)
+
+UINT CStageChangeButtonScript::LoadFromLevelFile(FILE* _File)
 {
-    CButtonScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CButtonScript::LoadFromLevelFile(_File);
 
     fread(&m_iStageCount, sizeof(UINT), 1, _File);
 
     for (UINT i = 0; i < m_iStageCount; i++)
     {
         wstring _StageName = L"";
-        LoadWStringFromFile(_StageName, _File);
+        MemoryByte += LoadWStringFromFile(_StageName, _File);
         m_vStageName[i] = ToString(_StageName);
     }
+
+    MemoryByte += sizeof(UINT);
+
+    return MemoryByte;
 }

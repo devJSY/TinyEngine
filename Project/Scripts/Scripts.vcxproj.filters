@@ -439,6 +439,9 @@
     <ClInclude Include="CCanJuice.h">
       <Filter>Scripts\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="CMonsterTest.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -890,6 +893,9 @@
     </ClCompile>
     <ClCompile Include="CCanJuice.cpp">
       <Filter>Scripts\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterTest.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

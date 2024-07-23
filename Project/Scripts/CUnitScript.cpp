@@ -28,16 +28,17 @@ void CUnitScript::begin()
 
 void CUnitScript::tick()
 {
+    ClearHitDir();
     m_PrevInfo = m_CurInfo;
 
     // 현재 프레임에 받는 데미지들을 업데이트
-    DamageProc();
+    float NewDamage = DamageProc();
 
     if (m_CurInfo.HP < 0.f)
     {
         m_CurInfo.HP = 0.f;
     }
-    
+
     if (m_CurInfo.HP > m_CurInfo.MAXHP)
     {
         m_CurInfo.HP = m_CurInfo.MAXHP;
@@ -49,7 +50,7 @@ void CUnitScript::GetDamage(UnitHit _Damage)
     m_HitHistory.push_back(_Damage);
 }
 
-void CUnitScript::DamageProc()
+float CUnitScript::DamageProc()
 {
     float CurDamage = 0.f;
 
@@ -60,8 +61,11 @@ void CUnitScript::DamageProc()
         switch (iter->Type)
         {
         case DAMAGE_TYPE::NORMAL:
+        {
             CurDamage += iter->Damage;
+            m_HitDir += iter->HitDir;
             iter = m_HitHistory.erase(iter);
+        }
             break;
 
         case DAMAGE_TYPE::DOT: {
@@ -78,22 +82,36 @@ void CUnitScript::DamageProc()
             }
         }
         break;
-
-        default:
-            break;
         }
     }
 
-    m_CurInfo.HP -= CurDamage;
+    return CurDamage;
 }
 
-void CUnitScript::SaveToLevelFile(FILE* _File)
+void CUnitScript::SetHitDirHorizen()
 {
+    m_HitDir.y = 0.f;
+    m_HitDir.Normalize();
+}
+
+UINT CUnitScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
     fwrite(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    MemoryByte += sizeof(UnitInfo);
+
+    return MemoryByte;
 }
 
-void CUnitScript::LoadFromLevelFile(FILE* _File)
+UINT CUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    UINT MemoryByte = 0;
+
     m_CurInfo = m_InitInfo;
+    fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+
+    MemoryByte += sizeof(UnitInfo);
+
+    return MemoryByte;
 }

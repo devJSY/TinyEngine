@@ -529,21 +529,39 @@ void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
     }
 }
 
-void CNormalEnemyScript::SaveToLevelFile(FILE* _File)
+UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
 
     fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fRushLerp, sizeof(float), 1, _File);
     fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }
 
-void CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
+UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
     fread(&m_fMaxSpeed, sizeof(float), 1, _File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fRushLerp, sizeof(float), 1, _File);
     fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    return MemoryByte;
 }

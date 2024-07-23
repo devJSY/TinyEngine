@@ -12,6 +12,7 @@
 #include "CScript.h"
 
 wstring CLevelSaveLoad::Level_extension = L".tLevel";
+const UINT CLevelSaveLoad::MemoryBlockSize = 256;
 
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 {
@@ -152,7 +153,18 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     for (size_t i = 0; i < ScriptCount; ++i)
     {
         SaveWStringToFile(CScriptMgr::GetScriptName(vecScripts[i]), _File);
-        vecScripts[i]->SaveToLevelFile(_File);
+        UINT MemoryByte = vecScripts[i]->SaveToLevelFile(_File);
+
+        // 해당 스크립트의 메모리가 지정된 메모리 블록보다 큰 경우
+        if (MemoryByte > MemoryBlockSize)
+        {
+            assert(nullptr);
+        }
+
+        // 0값으로 패딩
+        UINT PaddingByte = MemoryBlockSize - MemoryByte;
+        vector<char> padding(PaddingByte, 0);
+        fwrite(padding.data(), padding.size(), 1, _File);
     }
 
     // BoneSocket 저장
@@ -430,7 +442,18 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
 
         CScript* pScript = CScriptMgr::GetScript(strScriptName);
         pObject->AddComponent(pScript);
-        pScript->LoadFromLevelFile(_File);
+        UINT MemoryByte = pScript->LoadFromLevelFile(_File);
+
+        // 해당 스크립트의 메모리가 지정된 메모리 블록보다 큰 경우
+        if (MemoryByte > MemoryBlockSize)
+        {
+            assert(nullptr);
+        }
+
+        // 0값으로 패딩
+        UINT PaddingByte = MemoryBlockSize - MemoryByte;
+        vector<char> padding(PaddingByte, 0);
+        fread(padding.data(), padding.size(), 1, _File);
     }
 
     // BoneSocket 로드

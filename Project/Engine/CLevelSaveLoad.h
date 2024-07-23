@@ -20,4 +20,5 @@ public:
 
 private:
     static wstring Level_extension;
+    const static UINT MemoryBlockSize;
 };

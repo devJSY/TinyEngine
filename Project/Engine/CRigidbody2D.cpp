@@ -187,8 +187,10 @@ void CRigidbody2D::SetFreezeRotation(bool _bFreeze)
     body->SetFixedRotation(m_bFreezeRotation);
 }
 
-void CRigidbody2D::SaveToLevelFile(FILE* _File)
+UINT CRigidbody2D::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_BodyType, sizeof(BODY_TYPE), 1, _File);
     fwrite(&m_bSimulated, sizeof(bool), 1, _File);
     fwrite(&m_bAutoMass, sizeof(bool), 1, _File);
@@ -197,10 +199,23 @@ void CRigidbody2D::SaveToLevelFile(FILE* _File)
     fwrite(&m_AngularDrag, sizeof(float), 1, _File);
     fwrite(&m_GravityScale, sizeof(float), 1, _File);
     fwrite(&m_bFreezeRotation, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(BODY_TYPE);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
-void CRigidbody2D::LoadFromLevelFile(FILE* _File)
+UINT CRigidbody2D::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_BodyType, sizeof(BODY_TYPE), 1, _File);
     fread(&m_bSimulated, sizeof(bool), 1, _File);
     fread(&m_bAutoMass, sizeof(bool), 1, _File);
@@ -209,4 +224,15 @@ void CRigidbody2D::LoadFromLevelFile(FILE* _File)
     fread(&m_AngularDrag, sizeof(float), 1, _File);
     fread(&m_GravityScale, sizeof(float), 1, _File);
     fread(&m_bFreezeRotation, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(BODY_TYPE);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

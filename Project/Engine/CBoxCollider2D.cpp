@@ -44,14 +44,26 @@ void CBoxCollider2D::SetSize(Vec2 _size)
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
-void CBoxCollider2D::SaveToLevelFile(FILE* _File)
+UINT CBoxCollider2D::SaveToLevelFile(FILE* _File)
 {
-    CCollider2D::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::SaveToLevelFile(_File);
     fwrite(&m_Size, sizeof(Vec2), 1, _File);
+
+    MemoryByte += sizeof(Vec2);
+
+    return MemoryByte;
 }
 
-void CBoxCollider2D::LoadFromLevelFile(FILE* _File)
+UINT CBoxCollider2D::LoadFromLevelFile(FILE* _File)
 {
-    CCollider2D::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CCollider2D::LoadFromLevelFile(_File);
     fread(&m_Size, sizeof(Vec2), 1, _File);
+
+    MemoryByte += sizeof(Vec2);
+
+    return MemoryByte;
 }

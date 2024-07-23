@@ -326,8 +326,10 @@ void CRigidbody::SetFreezeRotation(AXIS_TYPE _Axis, bool _Freeze)
     body->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, m_FreezeRotation[2]);
 }
 
-void CRigidbody::SaveToLevelFile(FILE* _File)
+UINT CRigidbody::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_Mass, sizeof(float), 1, _File);
     fwrite(&m_Drag, sizeof(float), 1, _File);
     fwrite(&m_AngularDrag, sizeof(float), 1, _File);
@@ -336,10 +338,23 @@ void CRigidbody::SaveToLevelFile(FILE* _File)
     fwrite(&m_CollisionDetectionType, sizeof(CollisionDetection_TYPE), 1, _File);
     fwrite(&m_FreezePosition, sizeof(bool), 3, _File);
     fwrite(&m_FreezeRotation, sizeof(bool), 3, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(CollisionDetection_TYPE);
+    MemoryByte += sizeof(bool) * 3;
+    MemoryByte += sizeof(bool) * 3;
+
+    return MemoryByte;
 }
 
-void CRigidbody::LoadFromLevelFile(FILE* _File)
+UINT CRigidbody::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_Mass, sizeof(float), 1, _File);
     fread(&m_Drag, sizeof(float), 1, _File);
     fread(&m_AngularDrag, sizeof(float), 1, _File);
@@ -348,4 +363,15 @@ void CRigidbody::LoadFromLevelFile(FILE* _File)
     fread(&m_CollisionDetectionType, sizeof(CollisionDetection_TYPE), 1, _File);
     fread(&m_FreezePosition, sizeof(bool), 3, _File);
     fread(&m_FreezeRotation, sizeof(bool), 3, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(CollisionDetection_TYPE);
+    MemoryByte += sizeof(bool) * 3;
+    MemoryByte += sizeof(bool) * 3;
+
+    return MemoryByte;
 }

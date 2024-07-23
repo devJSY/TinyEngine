@@ -21,12 +21,24 @@ CKirbyCopyObjScript::~CKirbyCopyObjScript()
 }
 
 
-void CKirbyCopyObjScript::SaveToLevelFile(FILE* _File)
+UINT CKirbyCopyObjScript::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fwrite(&m_ObjectType, sizeof(ObjectCopyType), 1, _File);
+
+    MemoryByte += sizeof(ObjectCopyType);
+
+    return MemoryByte;
 }
 
-void CKirbyCopyObjScript::LoadFromLevelFile(FILE* _File)
+UINT CKirbyCopyObjScript::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
     fread(&m_ObjectType, sizeof(ObjectCopyType), 1, _File);
+
+    MemoryByte += sizeof(ObjectCopyType);
+
+    return MemoryByte;
 }

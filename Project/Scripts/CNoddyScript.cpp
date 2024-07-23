@@ -310,12 +310,20 @@ void CNoddyScript::OnCollisionExit(CCollider* _OtherCollider)
 {
 }
 
-void CNoddyScript::SaveToLevelFile(FILE* _File)
+UINT CNoddyScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CNoddyScript::LoadFromLevelFile(FILE* _File)
+UINT CNoddyScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }

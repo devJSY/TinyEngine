@@ -52,6 +52,9 @@ private:
     bool                    m_bStuffed;
 
     Vec3                    m_KnockbackDir;
+    float                   m_YPressedTime;
+    float                   m_DropCopyTime;
+    bool                    m_bDroppable;
 
     // 무적 상태
     float                   m_InvincibleAcc;
@@ -69,10 +72,6 @@ private:
     // Fire Gliding Timer
     float                   m_GlidingDuration;
     float                   m_GlidingAcc;
-
-    float                   m_YPressedTime;
-    float                   m_DropCopyTime;
-    bool                    m_bDroppable;
 
     // Vending Machine
     UINT                    m_LeftCanCount;
@@ -142,10 +141,9 @@ public:
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
     UINT GetCanCount() const { return m_LeftCanCount; }
 
-
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
     CLONE(CKirbyFSM)

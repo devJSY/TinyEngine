@@ -52,8 +52,8 @@ public:
     GET_OTHER_COMPONENT(TextRender);
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) = 0;
-    virtual void LoadFromLevelFile(FILE* _File) = 0;
+    virtual UINT SaveToLevelFile(FILE* _File) = 0;
+    virtual UINT LoadFromLevelFile(FILE* _File) = 0;
 
     virtual CComponent* Clone() = 0;
 

@@ -2,6 +2,7 @@
 #include "CKirbyUnitScript.h"
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
+#include "CState.h"
 
 CKirbyUnitScript::CKirbyUnitScript()
     : CUnitScript(KIRBYUNITSCRIPT)
@@ -59,7 +60,41 @@ CKirbyUnitScript::~CKirbyUnitScript()
 
 void CKirbyUnitScript::tick()
 {
-    CUnitScript::tick();
+    ClearHitDir();
+    m_PrevInfo = m_CurInfo;
+
+    // update damage
+    float NewDamage = DamageProc();
+    if (NewDamage > 0.f)
+    {
+        if (PLAYERFSM->IsInvincible())
+        {
+            m_HitHistory.clear();
+        }
+        else if (PLAYERFSM->GetCurState()->GetName() == L"GUARD")
+        {
+            m_CurInfo.HP -= NewDamage * 0.25f;
+        }
+        else
+        {
+            m_CurInfo.HP -= NewDamage;
+            SetHitDirHorizen();
+            PLAYERFSM->ChangeState(L"DAMAGE");
+        }
+    }
+
+    // HP Ã³¸®
+    if (m_CurInfo.HP <= 0.f)
+    {
+        m_CurInfo.HP = 0.f;
+        //PLAYERFSM->ChangeState(L"DEATH");
+    }
+
+    if (m_CurInfo.HP > m_CurInfo.MAXHP)
+    {
+        m_CurInfo.HP = m_CurInfo.MAXHP;
+    }
+
 }
 
 void CKirbyUnitScript::AttackReward()
@@ -75,24 +110,32 @@ void CKirbyUnitScript::AttackReward()
     }
 }
 
-void CKirbyUnitScript::SaveToLevelFile(FILE* _File)
+UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
 {
-    CUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CKirbyUnitScript::LoadFromLevelFile(FILE* _File)
+UINT CKirbyUnitScript::LoadFromLevelFile(FILE* _File)
 {
-    CUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
 
-    //if (m_CurInfo.MAXHP == 0.f)
+    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
+
+    // if (m_CurInfo.MAXHP == 0.f)
     //{
-    //UnitInfo KirbyInfo = {
-    //    100.f, // HP
-    //    100.f, // MaxHP
-    //    10.f,  // Speed
-    //    10.f,  // Rotation Speed
-    //    10.f,  // JumpPower
-    //};
-    //    SetInitInfo(KirbyInfo);
-    //}
+    // UnitInfo KirbyInfo = {
+    //     100.f, // HP
+    //     100.f, // MaxHP
+    //     10.f,  // Speed
+    //     10.f,  // Rotation Speed
+    //     10.f,  // JumpPower
+    // };
+    //     SetInitInfo(KirbyInfo);
+    // }
+
+    return MemoryByte;
 }

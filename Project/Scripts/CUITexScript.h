@@ -23,8 +23,8 @@ public:
     void SetCurTexCount(UINT _iCount) { m_iCurTex = _iCount; }
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override;
-    virtual void LoadFromLevelFile(FILE* _File) override;
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CUITexScript)
 public:

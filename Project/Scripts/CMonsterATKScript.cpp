@@ -20,12 +20,24 @@ CMonsterATKScript::~CMonsterATKScript()
 {
 }
 
-void CMonsterATKScript::SaveToLevelFile(FILE* _File)
+UINT CMonsterATKScript::SaveToLevelFile(FILE* _File)
 {
-    fwrite(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
+    UINT MemoryByte = 0;
+
+    fwrite(&m_HitInfo, sizeof(UnitHit), 1, _File);
+
+    MemoryByte += sizeof(UnitHit);
+
+    return MemoryByte;
 }
 
-void CMonsterATKScript::LoadFromLevelFile(FILE* _File)
+UINT CMonsterATKScript::LoadFromLevelFile(FILE* _File)
 {
-    fread(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
+    UINT MemoryByte = 0;
+
+    fread(&m_HitInfo, sizeof(UnitHit), 1, _File);
+
+    MemoryByte += sizeof(UnitHit);
+
+    return MemoryByte;
 }

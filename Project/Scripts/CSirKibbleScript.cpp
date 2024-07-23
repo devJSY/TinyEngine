@@ -392,14 +392,22 @@ void CSirKibbleScript::ProjectileAttack()
     }
 }
 
-void CSirKibbleScript::SaveToLevelFile(FILE* _File)
+UINT CSirKibbleScript::SaveToLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::SaveToLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
-void CSirKibbleScript::LoadFromLevelFile(FILE* _File)
+UINT CSirKibbleScript::LoadFromLevelFile(FILE* _File)
 {
-    CMonsterUnitScript::LoadFromLevelFile(_File);
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }
 
 void CSirKibbleScript::OnTriggerEnter(CCollider* _OtherCollider)

@@ -413,10 +413,16 @@ void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
     }
 }
 
-void CKirbyMoveController::SaveToLevelFile(FILE* _File)
+UINT CKirbyMoveController::SaveToLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
 
-void CKirbyMoveController::LoadFromLevelFile(FILE* _File)
+UINT CKirbyMoveController::LoadFromLevelFile(FILE* _File)
 {
+    UINT MemoryByte = 0;
+
+    return MemoryByte;
 }
