@@ -309,20 +309,6 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
             pSrcObj->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
             pSrcObj->Transform()->SetAbsolute(false);
         }
-        else
-        {
-            // 부모가 적용된 트랜스폼으로 재계산
-            pSrcObj->Transform()->finaltick();
-
-            // Local SRT를 World SRT로 설정
-            Vec3 pos = pSrcObj->Transform()->GetLocalPos();
-            Vec3 rot = pSrcObj->Transform()->GetLocalRotation();
-            Vec3 scale = pSrcObj->Transform()->GetLocalScale();
-
-            pSrcObj->Transform()->SetWorldPos(pos);
-            pSrcObj->Transform()->SetWorldRotation(rot);
-            pSrcObj->Transform()->SetWorldScale(scale);
-        }
     }
 }
 
