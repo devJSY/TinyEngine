@@ -60,7 +60,6 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     // Player Attack Trigger
     CPhysicsMgr::GetInst()->LayerCheck(7, 8, true);
 
-
     for (int i = 0; i < LAYER_MAX; ++i)
     {
         CPhysicsMgr::GetInst()->LayerCheck(0, i, false);
@@ -251,8 +250,8 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pVacuumCol->Transform()->SetLocalScale(Vec3(1.5f, 1.5f, 1.5f));
     pVacuumCol->SphereCollider()->SetTrigger(true);
 
-    // pVacuumCol->SetLayer(5);
-    pPlayer->AddChild(pVacuumCol);
+    GamePlayStatic::AddChildObject(pPlayer, pVacuumCol);
+    GamePlayStatic::LayerChange(pVacuumCol, 5);
 
     // Player Body Collider
     CGameObject* pBodyCollider = new CGameObject;
@@ -267,8 +266,8 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pBodyCollider->CapsuleCollider()->SetCenter(Vec3(0.f, 50.f, 0.f));
     pBodyCollider->CapsuleCollider()->SetHeight(1.6f);
 
-    // pBodyCollider->SetLayer(5);
-    pPlayer->AddChild(pBodyCollider);
+    GamePlayStatic::AddChildObject(pPlayer, pBodyCollider);
+    GamePlayStatic::LayerChange(pBodyCollider, 5);
 
     // DeformLight PointLight
     CGameObject* pPointLight = new CGameObject;
@@ -285,7 +284,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pPointLight->Light()->SetHaloRadius(160.f);
     pPointLight->Light()->SetHaloStrength(0.125f);
 
-    pPlayer->AddChild(pPointLight);
+    GamePlayStatic::AddChildObject(pPlayer, pPointLight);
     pPointLight->SetActive(false);
 
     // ==================
@@ -318,7 +317,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
     pMonsterAbility->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
-    NewLevel->AddObject(pMonsterAbility, 5);
+    NewLevel->AddObject(pMonsterAbility, 8);
 
     return NewLevel;
 }
