@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CKirbyDropAbility.h"
 #include "CMomentaryObjScript.h"
+#include "CKirbyCopyAbilityScript.h"
 
 CKirbyDropAbility::CKirbyDropAbility()
     : m_FrmEnter(true)
@@ -21,16 +22,19 @@ void CKirbyDropAbility::tick()
         {
             CGameObject* pBubble = m_Bubble->Instantiate();
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
+            Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
             InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * 100.f;
             InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * 100.f;
-            Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
             InitRot.x += XMConvertToRadians(-90.f);
             InitRot.y += XMConvertToRadians(180.f);
 
+            CKirbyCopyAbilityScript* pAbility = (CKirbyCopyAbilityScript*)CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT);
             pBubble->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
+            pBubble->AddComponent(pAbility);
             pBubble->Transform()->SetLocalPos(InitPos);
             pBubble->Transform()->SetLocalScale(Vec3(80.f));
             pBubble->Transform()->SetLocalRotation(InitRot);
+            pAbility->SetAbilityType(PLAYERFSM->GetCurAbilityIdx());
 
             CMomentaryObjScript* pMomentaryObj = pBubble->GetScript<CMomentaryObjScript>();
             if (nullptr != pMomentaryObj)

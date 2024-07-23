@@ -182,13 +182,13 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"DROP_ABILITY");
             }
-            else if (!PLAYER->CharacterController()->IsGrounded())
-            {
-                ChangeState(L"JUMP_FALL");
-            }
+            //else if (!PLAYER->CharacterController()->IsGrounded())
+            //{
+            //    ChangeState(L"JUMP_FALL");
+            //}
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
-                ChangeState(L"IDLE");
+                ChangeState(L"IDLE_START");
             }
         }
         break;

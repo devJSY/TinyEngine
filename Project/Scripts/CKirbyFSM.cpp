@@ -51,7 +51,7 @@ CKirbyFSM::CKirbyFSM()
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
-    //m_arrAbility[(UINT)AbilityCopyType::SLEEP] = new CKirbyAbility_Sleep();
+    m_arrAbility[(UINT)AbilityCopyType::SLEEP] = new CkirbyAbility_Sleep();
 
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
     m_arrObject[(UINT)ObjectCopyType::VENDING_MACHINE] = new CKirbyObject_VendingMachine();

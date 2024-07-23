@@ -98,7 +98,7 @@ void CKirbyAttack::tick()
         }
         break;
         case AbilityCopyType::SLEEP: {
-            if (m_AccTime >= 2.f)
+            if (m_AccTime >= 4.f)
             {
                 ChangeState(L"ATTACK_END");
             }
