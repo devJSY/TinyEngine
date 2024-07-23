@@ -6,7 +6,6 @@ class CKirbyBodyCollider : public CScript
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
     virtual void OnTriggerStay(CCollider* _OtherCollider);
-    virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

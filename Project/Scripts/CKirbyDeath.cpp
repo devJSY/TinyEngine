@@ -14,7 +14,7 @@ void CKirbyDeath::tick()
     if (GetOwner()->Animator()->IsFinish())
     {
         PLAYERFSM->SetGlobalState(false);
-        ChangeState(L"DeatWait");
+        ChangeState(L"DEATH_WAIT");
     }
 }
 

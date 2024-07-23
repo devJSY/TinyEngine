@@ -427,8 +427,26 @@
     <ClInclude Include="CKirbyFinalCutterEndAfter.h">
       <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEndAfter</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyObject_VendingMachine.h">
+      <Filter>State\KirbyObject\VendingMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackFailed.h">
+      <Filter>State\KirbyState\AttackFailed\AttackFailed</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyAttackFailedEnd.h">
+      <Filter>State\KirbyState\AttackFailed\AttackFailedEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CCanJuice.h">
+      <Filter>Scripts\Projectile</Filter>
+    </ClInclude>
     <ClInclude Include="CMonsterTest.h">
       <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CMomentaryObjScript.h">
+      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyWeaponHitbox.h">
+      <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -870,8 +888,26 @@
     <ClCompile Include="CKirbyFinalCutterEndAfter.cpp">
       <Filter>State\KirbyState\FinalCutterAttack\FinalCutterEndAfter</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyObject_VendingMachine.cpp">
+      <Filter>State\KirbyObject\VendingMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackFailed.cpp">
+      <Filter>State\KirbyState\AttackFailed\AttackFailed</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyAttackFailedEnd.cpp">
+      <Filter>State\KirbyState\AttackFailed\AttackFailedEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CCanJuice.cpp">
+      <Filter>Scripts\Projectile</Filter>
+    </ClCompile>
     <ClCompile Include="CMonsterTest.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CMomentaryObjScript.cpp">
+      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyWeaponHitbox.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1336,6 +1372,24 @@
     </Filter>
     <Filter Include="State\KirbyState\FinalCutterAttack\FinalCutterEndAfter">
       <UniqueIdentifier>{3e4ed452-b1ce-4c22-bfd5-c82a20720342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyObject\VendingMachine">
+      <UniqueIdentifier>{51107f0f-426f-49bf-8081-8809f8480b2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackFailed">
+      <UniqueIdentifier>{4e1dda45-a054-4ef9-b9a7-3753cb24c083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackFailed\AttackFailedEnd">
+      <UniqueIdentifier>{de8c4499-20d9-4965-a989-dcd2d10fd806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\AttackFailed\AttackFailed">
+      <UniqueIdentifier>{56cfc668-12dd-46ab-bc39-152b82aba376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\MomentaryObj">
+      <UniqueIdentifier>{8462be62-b53e-4e84-9b27-1b6d41dd925a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
+      <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

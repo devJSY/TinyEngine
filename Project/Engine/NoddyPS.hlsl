@@ -1,4 +1,5 @@
 #include "struct.hlsli"
+#include "func.hlsli"
 #include "global.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
@@ -31,20 +32,7 @@ PS_OUT main(PS_IN input)
    
     albedo = EyeColor.a >= 0.1f ? EyeColor.rgb : SkinColor.rgb;
     
-    output.vNormal.xyz = normalize(input.vNormalWorld);
-    if (g_btex_3)
-    {
-        float3 normal = g_tex_3.Sample(g_LinearClampSampler, input.vUV1).rgb;
-        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
-        normal.b = 1.f;
-        
-        float3 N = normalize(input.vNormalWorld);
-        float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = normalize(cross(T, N));
-
-        float3x3 TBN = float3x3(T, B, N);
-        output.vNormal.xyz = normalize(mul(normal, TBN));
-    }
+    output.vNormal.xyz = g_btex_3 ? NormalMapping(input, g_tex_3, input.vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld);
     output.vNormal.a = 1.f;
     
     float4 MRAColor = g_btex_2 ? g_tex_2.Sample(g_LinearWrapSampler, input.vUV1) : (float4) 0.f;
@@ -59,7 +47,7 @@ PS_OUT main(PS_IN input)
 
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
-    output.vTangent = float4(input.vTangentWorld * -1.f, 1.f);
+    output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(output.vNormal.xyz, input.vTangentWorld.xyz)), 1.f);
     output.vEmissive = MtrlEmission;
     output.vMRA = float4(metallic, roughness, ao, 1.f);

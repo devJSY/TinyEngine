@@ -33,7 +33,7 @@ private:
     CGameObject*            m_CurHat;
     CGameObject*            m_CurHatBlade;
     CGameObject*            m_CurWeapon;
-    CGameObject*            m_StuffedCopyObj;
+    CGameObject*            m_StuffedObj;
     CKirbyVacuumCollider*   m_VacuumCollider;
 
     // 상태 관리를 위한 값들
@@ -73,6 +73,9 @@ private:
     float                   m_GlidingDuration;
     float                   m_GlidingAcc;
 
+    // Vending Machine
+    UINT                    m_LeftCanCount;
+
 public:
     void begin() override;
     void tick() override;
@@ -104,6 +107,8 @@ public:
     void ClearStuff();
     void ClearGlidingTime() { m_GlidingAcc = 0.f; }
     void ClearYPressedTime() { m_YPressedTime = 0.f; }
+    void SubCanCount();
+    void ResetCanCount() { m_LeftCanCount = 100; }
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
@@ -115,7 +120,7 @@ public:
     CGameObject* GetCurHat() { return m_CurHat; }
     CGameObject* GetCurHatBlade() { return m_CurHatBlade; }
     CGameObject* GetCurWeapon() { return m_CurWeapon; }
-    CGameObject* GetStuffedCopyObj() { return m_StuffedCopyObj; }
+    CGameObject* GetStuffedObj() { return m_StuffedObj; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
     float GetComboAccTime() const { return m_ComboAccTime; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }
@@ -134,6 +139,7 @@ public:
     bool IsInvincible() const { return m_bInvincible; }
     bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
+    UINT GetCanCount() const { return m_LeftCanCount; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -26,6 +26,17 @@ void CNoddyScript::begin()
 
 void CNoddyScript::tick()
 {
+    // Damage Proc
+    ClearHitDir();
+    m_PrevInfo = m_CurInfo;
+
+    float DamageAmount = DamageProc();
+    if (DamageAmount > 0.f)
+    {
+        m_CurInfo.HP -= DamageAmount;
+        ChangeState(NODDY_STATE::Damage);
+    }
+
     // FSM
     switch (m_State)
     {
@@ -79,7 +90,17 @@ void CNoddyScript::EnterState()
     switch (m_State)
     {
     case NODDY_STATE::Damage: {
+        // 피격 방향으로 회전
+        Transform()->Slerp(GetHitDir(), 1.f);
+
+        // 피격 방향으로 Impulse
+        Vec3 Impulse = GetHitDir();
+        Impulse.Normalize();
+        Impulse *= 5.f;
+        Rigidbody()->AddForce(Impulse, ForceMode::Impulse);
+
         Animator()->Play(ANIMPREFIX("Damage"), false);
+
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
     }
@@ -139,6 +160,12 @@ void CNoddyScript::ExitState()
     switch (m_State)
     {
     case NODDY_STATE::Damage: {
+        if (m_CurInfo.HP <= 0.f)
+        {
+            GamePlayStatic::DestroyGameObject(GetOwner());
+        }
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case NODDY_STATE::Fall: {
@@ -177,6 +204,10 @@ void CNoddyScript::ExitState()
 
 void CNoddyScript::Damage()
 {
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NODDY_STATE::LookAround);
+    }
 }
 
 void CNoddyScript::Fall()

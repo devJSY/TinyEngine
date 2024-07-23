@@ -344,3 +344,14 @@ CGameObject* CGameObject::GetChildObject(const wstring& _Name) const
 
     return nullptr;
 }
+
+void CGameObject::DetachBoneSockets()
+{
+    for (CGameObject* pChild : m_vecChild)
+    {
+        if (nullptr != pChild->GetBoneSocket())
+        {
+            pChild->SetBoneSocket(nullptr);
+        }
+    }
+}

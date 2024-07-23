@@ -72,7 +72,7 @@ CPhysics2DMgr::CPhysics2DMgr()
     , m_vecPhysicsObj{}
     , m_Matrix{}
     , m_Accumulator(0.f)
-    , m_StepSize(1.f / 60.f)
+    , m_StepSize(0.02f) // 1.f / 50.f
     , m_Gravity(Vec2(0.f, -9.8f))
     , m_PPM(1.f)
 {
@@ -95,63 +95,63 @@ void CPhysics2DMgr::tick()
 
     // 시뮬레이션 안정성을 위해 StepSize 단위로 시뮬레이션
     m_Accumulator += DT;
-    if (m_Accumulator < m_StepSize)
-        return;
-
-    m_Accumulator -= m_StepSize;
-
-    const int32_t velocityIterations = 6; // 속도를 얼마나 강하게 수정해야하는지
-    const int32_t positionIterations = 2; // 위치를 얼마나 강하게 수정해야 하는지
-
-    // 시뮬레이션
-    m_PhysicsWorld->Step(m_StepSize, velocityIterations, positionIterations);
-
-    // 시뮬레이션 이후 충돌 카운트가 남아있다면 충돌 Stay 상태
-    b2Contact* contact = m_PhysicsWorld->GetContactList();
-    while (contact)
+    while (m_Accumulator < m_StepSize)
     {
-        CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
-        CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+        m_Accumulator -= m_StepSize;
 
-        if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
+        const int32_t velocityIterations = 6; // 속도를 얼마나 강하게 수정해야하는지
+        const int32_t positionIterations = 2; // 위치를 얼마나 강하게 수정해야 하는지
+
+        // 시뮬레이션
+        m_PhysicsWorld->Step(m_StepSize, velocityIterations, positionIterations);
+
+        // 시뮬레이션 이후 충돌 카운트가 남아있다면 충돌 Stay 상태
+        b2Contact* contact = m_PhysicsWorld->GetContactList();
+        while (contact)
         {
-            if (pColliderA->m_TriggerCount > 0)
-                pColliderA->OnTriggerStay(pColliderB);
-            if (pColliderB->m_TriggerCount > 0)
-                pColliderB->OnTriggerStay(pColliderA);
+            CCollider2D* pColliderA = (CCollider2D*)contact->GetFixtureA()->GetUserData().pointer;
+            CCollider2D* pColliderB = (CCollider2D*)contact->GetFixtureB()->GetUserData().pointer;
+
+            if (pColliderA->IsTrigger() || pColliderB->IsTrigger())
+            {
+                if (pColliderA->m_TriggerCount > 0)
+                    pColliderA->OnTriggerStay(pColliderB);
+                if (pColliderB->m_TriggerCount > 0)
+                    pColliderB->OnTriggerStay(pColliderA);
+            }
+            else
+            {
+                if (pColliderA->m_CollisionCount > 0)
+                    pColliderA->OnCollisionStay(pColliderB);
+                if (pColliderB->m_CollisionCount > 0)
+                    pColliderB->OnCollisionStay(pColliderA);
+            }
+
+            contact = contact->GetNext();
         }
-        else
+
+        // 시뮬레이션 결과값으로 트랜스폼 업데이트
+        for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
         {
-            if (pColliderA->m_CollisionCount > 0)
-                pColliderA->OnCollisionStay(pColliderB);
-            if (pColliderB->m_CollisionCount > 0)
-                pColliderB->OnCollisionStay(pColliderA);
+            CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
+            if (nullptr == rb2d)
+                continue;
+
+            CTransform* pTr = m_vecPhysicsObj[i]->Transform();
+
+            b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
+            const auto& position = body->GetPosition();
+            Vec3 pos = pTr->GetLocalPos();
+            Vec3 rot = pTr->GetLocalRotation();
+
+            pos.x += (position.x * m_PPM) - pTr->GetWorldPos().x;
+            pos.y += (position.y * m_PPM) - pTr->GetWorldPos().y;
+
+            rot.z += body->GetAngle() - pTr->GetWorldRotation().z;
+
+            pTr->SetLocalPos(pos);
+            pTr->SetLocalRotation(rot);
         }
-
-        contact = contact->GetNext();
-    }
-
-    // 시뮬레이션 결과값으로 트랜스폼 업데이트
-    for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
-    {
-        CRigidbody2D* rb2d = m_vecPhysicsObj[i]->Rigidbody2D();
-        if (nullptr == rb2d)
-            continue;
-
-        CTransform* pTr = m_vecPhysicsObj[i]->Transform();
-
-        b2Body* body = (b2Body*)rb2d->m_RuntimeBody;
-        const auto& position = body->GetPosition();
-        Vec3 pos = pTr->GetLocalPos();
-        Vec3 rot = pTr->GetLocalRotation();
-
-        pos.x += (position.x * m_PPM) - pTr->GetWorldPos().x;
-        pos.y += (position.y * m_PPM) - pTr->GetWorldPos().y;
-
-        rot.z += body->GetAngle() - pTr->GetWorldRotation().z;
-
-        pTr->SetLocalPos(pos);
-        pTr->SetLocalRotation(rot);
     }
 }
 

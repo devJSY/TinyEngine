@@ -19,9 +19,14 @@ enum class PATROLDIR
 class CMonsterUnitScript : public CUnitScript
 {
 private:
-    CGameObject* m_pTargetObj;  
-    float m_RaycastDist;
+    CGameObject* m_pTargetObj;
     UnitHit m_HitInfo;
+    float m_RaycastDist;
+    bool m_bEatable;
+
+public:
+    void SetEatable(bool _bEatable) { m_bEatable = _bEatable; }
+    bool IsEatable() const { return m_bEatable; }
 
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
@@ -31,12 +36,9 @@ protected:
     void SetHitInfo(const UnitHit& _hitInfo) { m_HitInfo = _hitInfo; }
 
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
-    void TransformRotate();
-    bool IsGround();
-
-    
-    // ÀÚÀü
     void Rotating();
+    void RotatingToTarget();
+    bool IsGround();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

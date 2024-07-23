@@ -115,6 +115,7 @@ public:
 public:
     const tBoneSocket* GetBoneSocket() const { return m_BoneSocket; }
     void SetBoneSocket(tBoneSocket* _BoneSocket) { m_BoneSocket = _BoneSocket; }
+    void DetachBoneSockets();
 
     CLONE(CGameObject);
 

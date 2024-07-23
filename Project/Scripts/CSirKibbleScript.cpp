@@ -254,7 +254,7 @@ void CSirKibbleScript::Idle()
 
 void CSirKibbleScript::Find()
 {
-    TransformRotate();
+    RotatingToTarget();
     if (Animator()->IsFinish())
     {
         if (nullptr != GetTarget())
@@ -297,7 +297,7 @@ void CSirKibbleScript::CutterThrowStart()
 
 void CSirKibbleScript::CutterThrowStartWait()
 {
-    TransformRotate();
+    RotatingToTarget();
     if (nullptr != GetTarget())
     {
         Quat vDir = Transform()->GetWorldQuaternion();
