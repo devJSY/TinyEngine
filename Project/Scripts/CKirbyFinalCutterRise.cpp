@@ -49,6 +49,9 @@ void CKirbyFinalCutterRise::Enter()
     // 公利 惑怕
     PLAYERFSM->SetInvincible(true);
 
+    // 公扁 Active
+    PLAYERFSM->GetCurWeapon()->SetActive(true);
+
 }
 
 void CKirbyFinalCutterRise::Exit()
@@ -71,4 +74,6 @@ void CKirbyFinalCutterRise::Exit()
 
     // 公利 惑怕
     PLAYERFSM->SetInvincible(false);
+
+    PLAYERFSM->GetCurWeapon()->SetActive(false);
 }

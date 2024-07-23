@@ -22,21 +22,44 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     NewLevel->GetLayer(1)->SetName(L"Manager");
     NewLevel->GetLayer(2)->SetName(L"World Static");
     NewLevel->GetLayer(3)->SetName(L"World Dynamic");
-    NewLevel->GetLayer(4)->SetName(L"Player");
-    NewLevel->GetLayer(5)->SetName(L"Monster");
-    NewLevel->GetLayer(6)->SetName(L"Player Attack");
-    NewLevel->GetLayer(7)->SetName(L"Monster Attack");
-    NewLevel->GetLayer(8)->SetName(L"Layer 8");
-    NewLevel->GetLayer(9)->SetName(L"Layer 9");
-    NewLevel->GetLayer(10)->SetName(L"Layer 10");
-    NewLevel->GetLayer(11)->SetName(L"Layer 11");
+    NewLevel->GetLayer(4)->SetName(L"Player");    
+    NewLevel->GetLayer(5)->SetName(L"Player Trigger");   
+    NewLevel->GetLayer(6)->SetName(L"Player Attack");      
+    NewLevel->GetLayer(7)->SetName(L"Player Attack Trigger");     
+    NewLevel->GetLayer(8)->SetName(L"Monster");   
+    NewLevel->GetLayer(9)->SetName(L"Monster Trigger");   
+    NewLevel->GetLayer(10)->SetName(L"Monster Attack"); 
+    NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");   
     NewLevel->GetLayer(12)->SetName(L"Layer 12");
     NewLevel->GetLayer(13)->SetName(L"Layer 13");
     NewLevel->GetLayer(14)->SetName(L"Effect");
     NewLevel->GetLayer(15)->SetName(L"UI");
 
     // layer collision check
-    CPhysicsMgr::GetInst()->LayerCheck(4, 4, false);
+    CPhysicsMgr::GetInst()->DisableAllLayer();
+
+    // World Static
+    for (int i = 2; i <= 11; ++i)
+    {
+        CPhysicsMgr::GetInst()->LayerCheck(2, i, true);
+        CPhysicsMgr::GetInst()->LayerCheck(3, i, true);
+    }
+
+    // Player Layer
+    CPhysicsMgr::GetInst()->LayerCheck(4, 8, true);
+    CPhysicsMgr::GetInst()->LayerCheck(4, 9, true);
+    CPhysicsMgr::GetInst()->LayerCheck(4, 11, true);
+
+    // Player Trigger
+    CPhysicsMgr::GetInst()->LayerCheck(5, 6, true);
+    CPhysicsMgr::GetInst()->LayerCheck(5, 10, true);
+
+    // Player Attack
+    CPhysicsMgr::GetInst()->LayerCheck(6, 9, true);
+
+    // Player Attack Trigger
+    CPhysicsMgr::GetInst()->LayerCheck(7, 8, true);
+
 
     for (int i = 0; i < LAYER_MAX; ++i)
     {
@@ -228,6 +251,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pVacuumCol->Transform()->SetLocalScale(Vec3(1.5f, 1.5f, 1.5f));
     pVacuumCol->SphereCollider()->SetTrigger(true);
 
+    // pVacuumCol->SetLayer(5);
     pPlayer->AddChild(pVacuumCol);
 
     // Player Body Collider
@@ -243,6 +267,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pBodyCollider->CapsuleCollider()->SetCenter(Vec3(0.f, 50.f, 0.f));
     pBodyCollider->CapsuleCollider()->SetHeight(1.6f);
 
+    // pBodyCollider->SetLayer(5);
     pPlayer->AddChild(pBodyCollider);
 
     // DeformLight PointLight

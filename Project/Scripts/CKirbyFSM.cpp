@@ -10,6 +10,7 @@
 #include "CKirbyAbility_Sword.h"
 #include "CKirbyObject_Cone.h"
 #include "CKirbyObject_Lightbulb.h"
+#include "CKirbyObject_VendingMachine.h"
 
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
@@ -42,6 +43,7 @@ CKirbyFSM::CKirbyFSM()
     , m_YPressedTime(0.f)
     , m_DropCopyTime(1.f)
     , m_bDroppable(false)
+    , m_LeftCanCount(0)
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
@@ -50,6 +52,7 @@ CKirbyFSM::CKirbyFSM()
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
 
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
+    m_arrObject[(UINT)ObjectCopyType::VENDING_MACHINE] = new CKirbyObject_VendingMachine();
     m_arrObject[(UINT)ObjectCopyType::LIGHT] = new CKirbyObject_Lightbulb();
 }
 
@@ -76,6 +79,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_EmissiveCoef(_Origin.m_EmissiveCoef)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
+    , m_LeftCanCount(_Origin.m_LeftCanCount)
 {
     // Ability Copy 복사
     for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
@@ -147,6 +151,8 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyHoveringLanding.h"
 #include "CKirbyHoveringSpit.h"
 #include "CKirbyAttack.h"
+#include "CKirbyAttackFailed.h"
+#include "CKirbyAttackFailedEnd.h"
 #include "CKirbyAttackStart.h"
 #include "CKirbyAttackEnd.h"
 #include "CKirbyAttackCombo1.h"
@@ -238,6 +244,8 @@ void CKirbyFSM::begin()
     AddState(L"HOVERING_LANDING", new CKirbyHoveringLanding);
     AddState(L"HOVERING_SPIT", new CKirbyHoveringSpit);
     AddState(L"ATTACK", new CKirbyAttack);
+    AddState(L"ATTACK_FAILED", new CKirbyAttackFailed);
+    AddState(L"ATTACK_FAILEDEND", new CKirbyAttackFailedEnd);
     AddState(L"ATTACK_START", new CKirbyAttackStart);
     AddState(L"ATTACK_END", new CKirbyAttackEnd);
     AddState(L"ATTACK_COMBO1", new CKirbyAttackCombo1);
@@ -575,6 +583,13 @@ void CKirbyFSM::ClearStuff()
         delete m_StuffedCopyObj;
         m_StuffedCopyObj = nullptr;
     }
+}
+
+void CKirbyFSM::SubCanCount()
+{
+    --m_LeftCanCount;
+    if (m_LeftCanCount < 0)
+        m_LeftCanCount = 0;
 }
 
 bool CKirbyFSM::IsDrawing() const

@@ -19,7 +19,7 @@ void CKirbyLandingEnd::tick()
         switch (PLAYERFSM->GetCurObjectIdx())
         {
         case ObjectCopyType::CONE:
-        case ObjectCopyType::STAIR:
+        case ObjectCopyType::VENDING_MACHINE:
         case ObjectCopyType::LIGHT: {
             if (GetOwner()->Animator()->IsFinish())
             {
