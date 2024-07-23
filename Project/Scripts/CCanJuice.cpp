@@ -91,7 +91,6 @@ void CCanJuice::tick()
     // 시간이 지나면 삭제
     if (m_Acc > m_Duration)
     {
-        GamePlayStatic::DestroyGameObject(GetOwner()->GetChildObject()[0]);
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
@@ -110,6 +109,8 @@ void CCanJuice::OnCollisionEnter(CCollider* _OtherCollider)
         UnitHit JuiceHit = {DAMAGE_TYPE::NORMAL, HitDir, m_Damage, 0.f, 0.f};
         
         _OtherCollider->GetOwner()->GetScript<CUnitScript>()->GetDamage(JuiceHit);
+
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
 
