@@ -22,12 +22,12 @@
 #define LAYER_DYNAMIC                   3
 #define LAYER_PLAYER                    4
 #define LAYER_PLAYER_TRIGGER            5
-#define LAYER_PLAYERATK                6
-#define LAYER_PLAYERATK_TRIGGER        7
+#define LAYER_PLAYERATK                 6
+#define LAYER_PLAYERATK_TRIGGER         7
 #define LAYER_MONSTER                   8
 #define LAYER_MONSTER_TRIGGER           9
-#define LAYER_MONSTERATK               10
-#define LAYER_MONSTERATK_TRIGGER       11
+#define LAYER_MONSTERATK                10
+#define LAYER_MONSTERATK_TRIGGER        11
 #define LAYER_EFFECT                    14
 #define LAYER_UI                        15
 

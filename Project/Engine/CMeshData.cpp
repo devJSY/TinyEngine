@@ -116,7 +116,11 @@ int CMeshData::Load(const wstring& _strFilePath)
     FILE* pFile = NULL;
     _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
 
-    assert(pFile);
+    if (nullptr == pFile)
+    {
+        MessageBox(nullptr, L"MeshData 로딩 실패", L"MeshData 로딩 실패", MB_OK);
+        return E_FAIL;
+    }
 
     // Mesh Load
     LoadAssetRef<CMesh>(m_pMesh, pFile);

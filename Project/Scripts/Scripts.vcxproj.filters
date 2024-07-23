@@ -442,6 +442,12 @@
     <ClInclude Include="CMonsterTest.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CMomentaryObjScript.h">
+      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyWeaponHitbox.h">
+      <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
+    </ClInclude>
     <ClInclude Include="CkirbyAbility_Sleep.h">
       <Filter>State\KirbyAbility\Sleep</Filter>
     </ClInclude>
@@ -902,6 +908,12 @@
     </ClCompile>
     <ClCompile Include="CMonsterTest.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CMomentaryObjScript.cpp">
+      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyWeaponHitbox.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
     </ClCompile>
     <ClCompile Include="CkirbyAbility_Sleep.cpp">
       <Filter>State\KirbyAbility\Sleep</Filter>
@@ -1384,6 +1396,12 @@
     </Filter>
     <Filter Include="State\KirbyState\AttackFailed\AttackFailed">
       <UniqueIdentifier>{56cfc668-12dd-46ab-bc39-152b82aba376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\MomentaryObj">
+      <UniqueIdentifier>{8462be62-b53e-4e84-9b27-1b6d41dd925a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
+      <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyAbility\Sleep">
       <UniqueIdentifier>{dfcc0874-e248-4c9f-a5ce-8738879bcc21}</UniqueIdentifier>

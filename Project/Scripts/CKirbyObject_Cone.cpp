@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CKirbyObject_Cone.h"
 #include "CKirbyUnitScript.h"
+#include "CMomentaryObjScript.h"
 
 CKirbyObject_Cone::CKirbyObject_Cone()
     : m_bFrmEnter(true)
@@ -94,8 +95,6 @@ void CKirbyObject_Cone::AttackCombo1()
 {
 }
 
-#include "CKirbyBulletScript.h"
-
 void CKirbyObject_Cone::AttackCombo1Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("TurnLanding"), false, false, 1.5f);
@@ -104,7 +103,7 @@ void CKirbyObject_Cone::AttackCombo1Enter()
     // Crater ¼ÒÈ¯
     {
         CGameObject* pCrater = m_Crater->Instantiate();
-        CKirbyBulletScript* pBulletScript = pCrater->GetScript<CKirbyBulletScript>();
+        CMomentaryObjScript* pBulletScript = pCrater->GetScript<CMomentaryObjScript>();
         Vec3 InitPos = PLAYER->CharacterController()->GetFootPos();
         
         pCrater->Transform()->SetLocalPos(InitPos);

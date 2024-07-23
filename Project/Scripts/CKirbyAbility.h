@@ -14,6 +14,7 @@ class CKirbyAbility
 protected:
     Ptr<CPrefab>    m_Hat;
     Ptr<CPrefab>    m_Weapon;
+    vector<wstring> m_vecWaitingAnim;
     float           m_Charge1Time;
     float           m_Charge2Time;
     float           m_ComboSuccessTime;
