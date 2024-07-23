@@ -116,11 +116,14 @@ int CMeshData::Load(const wstring& _strFilePath)
     FILE* pFile = NULL;
     _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");
 
-    assert(pFile);
+    if (nullptr == pFile)
+        return E_FAIL;
 
     // Mesh Load
     LoadAssetRef<CMesh>(m_pMesh, pFile);
-    assert(m_pMesh.Get());
+
+    if (nullptr == m_pMesh)
+        return E_FAIL;
 
     // material 정보 읽기
     UINT iMtrlCount = 0;
@@ -179,7 +182,8 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
         {
             // 예외처리 (material 이름이 입력 안되어있을 수도 있다.)
             Ptr<CMaterial> pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(loader.GetContainer(i).vecMtrl[j].strMtrlName);
-            assert(pMtrl.Get());
+            if (nullptr == pMtrl)
+                continue;
 
             vecMtrl.push_back(pMtrl);
             pMtrl->Save(pMtrl->GetKey());
