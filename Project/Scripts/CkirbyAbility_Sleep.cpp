@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CkirbyAbility_Sleep.h"
 #include "CKirbyMoveController.h"
+#include "CKirbyUnitScript.h"
 #include "CState.h"
 
 CkirbyAbility_Sleep::CkirbyAbility_Sleep()
@@ -170,6 +171,8 @@ void CkirbyAbility_Sleep::AttackEndEnter()
     {
         m_SnotBubble->Animator()->Play(ANIMPREFIX("BubbleStart"), false, true);
     }
+
+    PLAYERUNIT->BuffHP(30.f);
 }
 
 void CkirbyAbility_Sleep::AttackEndExit()
