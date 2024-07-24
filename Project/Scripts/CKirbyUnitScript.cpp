@@ -13,6 +13,7 @@ CKirbyUnitScript::CKirbyUnitScript()
         10.f,  // Speed
         10.f,  // Rotation Speed
         10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(KirbyInfo);
 
@@ -38,6 +39,7 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
         10.f,  // Speed
         10.f,  // Rotation Speed
         10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(KirbyInfo);
 
@@ -87,14 +89,13 @@ void CKirbyUnitScript::tick()
     if (m_CurInfo.HP <= 0.f)
     {
         m_CurInfo.HP = 0.f;
-        //PLAYERFSM->ChangeState(L"DEATH");
+        // PLAYERFSM->ChangeState(L"DEATH");
     }
 
     if (m_CurInfo.HP > m_CurInfo.MAXHP)
     {
         m_CurInfo.HP = m_CurInfo.MAXHP;
     }
-
 }
 
 void CKirbyUnitScript::AttackReward()

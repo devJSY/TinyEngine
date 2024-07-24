@@ -18,9 +18,9 @@ float3 NormalMapping(PS_IN input, Texture2D NormalTex, float2 vUV, SamplerState 
     // OpenGL 용 노멀맵일 경우에는 y 방향 반전
     normal.y = InvertNoramlMapY ? -normal.y : normal.y;
         
+    float3 T = normalize(input.vTangentWorld);
+    float3 B = normalize(input.vBitangentWorld);
     float3 N = normalize(input.vNormalWorld);
-    float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-    float3 B = normalize(cross(N, T));
         
     // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
     float3x3 TBN = float3x3(T, B, N);
