@@ -124,7 +124,6 @@ UINT CMonsterUnitScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_bEatable, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(UnitHit);
     MemoryByte += sizeof(bool);
 
     return MemoryByte;
@@ -139,7 +138,6 @@ UINT CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
     fread(&m_bEatable, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(UnitHit);
     MemoryByte += sizeof(bool);
 
     return MemoryByte;
