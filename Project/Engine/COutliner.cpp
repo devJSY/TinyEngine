@@ -429,23 +429,54 @@ void COutliner::DrawNode(CGameObject* obj)
         {
             DWORD_PTR data = *((DWORD_PTR*)payload->Data);
             CGameObject* pChild = (CGameObject*)data;
-            GamePlayStatic::AddChildObject(obj, pChild);
+
+            obj->AddChild(pChild);
+
+            // 부모가 적용된 트랜스폼으로 재계산
+            pChild->Transform()->finaltick();
+
+            // Local SRT를 World SRT로 설정
+            Vec3 pos = pChild->Transform()->GetLocalPos();
+            Vec3 rot = pChild->Transform()->GetLocalRotation();
+            Vec3 scale = pChild->Transform()->GetLocalScale();
+
+            pChild->Transform()->SetWorldPos(pos);
+            pChild->Transform()->SetWorldRotation(rot);
+            pChild->Transform()->SetWorldScale(scale);
         }
 
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
         {
             string AssetStr = (char*)payload->Data;
             AssetStr.resize(payload->DataSize);
+            CGameObject* pChild = nullptr;
             std::filesystem::path AssetPath = AssetStr;
             if (L".pref" == AssetPath.extension())
             {
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
-                GamePlayStatic::AddChildObject(obj, pPrefab->Instantiate());
+                pChild = pPrefab->Instantiate();
             }
             else if (L".mdat" == AssetPath.extension())
             {
                 Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath);
-                GamePlayStatic::AddChildObject(obj, pMeshData->Instantiate());
+                pChild = pMeshData->Instantiate();
+            }
+
+            if (nullptr != pChild)
+            {
+                obj->AddChild(pChild);
+
+                // 부모가 적용된 트랜스폼으로 재계산
+                pChild->Transform()->finaltick();
+
+                // Local SRT를 World SRT로 설정
+                Vec3 pos = pChild->Transform()->GetLocalPos();
+                Vec3 rot = pChild->Transform()->GetLocalRotation();
+                Vec3 scale = pChild->Transform()->GetLocalScale();
+
+                pChild->Transform()->SetWorldPos(pos);
+                pChild->Transform()->SetWorldRotation(rot);
+                pChild->Transform()->SetWorldScale(scale);
             }
         }
 

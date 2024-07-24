@@ -32,7 +32,7 @@ PS_OUT main(PS_IN input)
    
     albedo = EyeColor.a >= 0.1f ? EyeColor.rgb : SkinColor.rgb;
     
-    output.vNormal.xyz = g_btex_3 ? NormalMapping(input, g_tex_3, input.vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld);
+    output.vNormal.xyz = g_btex_3 ? NormalMapping(input, g_tex_3, input.vUV1, g_LinearWrapSampler) : normalize(input.vNormalWorld);
     output.vNormal.a = 1.f;
     
     float4 MRAColor = g_btex_2 ? g_tex_2.Sample(g_LinearWrapSampler, input.vUV1) : (float4) 0.f;
