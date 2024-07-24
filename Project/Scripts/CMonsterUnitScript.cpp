@@ -13,7 +13,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
         1.f,   // Speed
         3.f,   // Rotation Speed
         1.f,   // JumpPower
-        10.f   // ATK
+        10.f,   // ATK
     };
     SetInitInfo(MonsterInfo);
 
@@ -47,7 +47,7 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
         1.f,   // Speed
         3.f,   // Rotation Speed
         1.f,   // JumpPower
-        10.f,  // ATK
+        10.f,   // ATK
     };
     SetInitInfo(MonsterInfo);
 
