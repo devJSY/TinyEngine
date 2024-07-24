@@ -219,6 +219,7 @@ void CTaskMgr::DETACH_OBJECT(const tTask& _Task)
     {
         if (pCurLevel->GetLayer(i)->DetachGameObject(pObj))
         {
+            pObj->DisconnectWithParent();
             break;
         }
     }
