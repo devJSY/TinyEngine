@@ -25,6 +25,13 @@ void CKirbyAbility::IdleEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("Wait"));
 }
 
+void CKirbyAbility::IdleExit()
+{
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+}
+
 void CKirbyAbility::RunEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Run"));

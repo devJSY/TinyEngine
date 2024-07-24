@@ -25,7 +25,7 @@ protected:
 public:
     virtual void Idle(){};
     virtual void IdleEnter();
-    virtual void IdleExit(){};
+    virtual void IdleExit();
 
     virtual void IdleStart(){};
     virtual void IdleStartEnter(){};
