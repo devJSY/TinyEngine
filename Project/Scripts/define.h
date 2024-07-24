@@ -42,7 +42,8 @@
         KirbyFSM->GetCurAbility()->STATE();                                                                                                          \
     }
 
-#define ANIMPREFIX(NAME) L"Armature|" L##NAME
+#define ANIMPREFIX_STR L"Armature|"
+#define ANIMPREFIX(NAME) ANIMPREFIX_STR L##NAME
 
 enum class AbilityCopyType
 {

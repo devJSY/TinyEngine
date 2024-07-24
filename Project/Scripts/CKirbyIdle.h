@@ -4,13 +4,17 @@
 class CKirbyIdle : public CState
 {
 private:
-    float m_WaitingAccTime;
-    bool m_bPlayWaiting;
+    vector<wstring> m_WaitingAnim;
+    wstring m_PrevAnim;
+    float m_WaitingTime;
+    bool m_bPlayAddMotion;
 
 public:
     virtual void tick();
     virtual void Enter();
     virtual void Exit();
+
+    void PlayWaitingAnim();
 
 public:
     CLONE(CKirbyIdle)

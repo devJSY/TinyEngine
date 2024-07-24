@@ -18,6 +18,8 @@ protected:
     UINT m_DemoMeshIdx_BodyA;
     UINT m_DemoMeshIdx_BodyB;
     int m_MeshChangeIdx;
+    vector<wstring> m_WaitingAnim;
+
     bool m_bFrmEnter;
 
 protected:
@@ -142,6 +144,7 @@ public:
     virtual void ChangeObjectEndExit();
 
 public:
+    const vector<wstring>& const GetWaitingAnim() { return m_WaitingAnim; }
     virtual CKirbyObject* Clone() = 0;
 
 public:

@@ -439,9 +439,9 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
             return;
         }
 
-        //m_NextObject = _Type;
-        //ChangeState(L"CHANGE_OBJECT");
-        //m_CurObject = _Type;
+        // m_NextObject = _Type;
+        // ChangeState(L"CHANGE_OBJECT");
+        // m_CurObject = _Type;
 
         m_CurObject = _Type;
         ChangeState(L"CHANGE_OBJECT");
@@ -519,7 +519,6 @@ void CKirbyFSM::SetInvincible(bool _Invincible, float _Duration)
             }
         }
     }
-
 }
 
 void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
@@ -590,7 +589,6 @@ void CKirbyFSM::SubCanCount()
     if (m_LeftCanCount < 0)
         m_LeftCanCount = 0;
 }
-
 bool CKirbyFSM::IsDrawing() const
 {
     return m_VacuumCollider->IsDrawing();
