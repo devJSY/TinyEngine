@@ -31,8 +31,8 @@ PS_OUT main(PS_IN input)
 {
     PS_OUT output = (PS_OUT) 0.f;
 
-    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
-    float4 albedo1 = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;
+    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
+    float4 albedo1 = g_btex_1 ? Albedo1Tex.Sample(g_LinearWrapSampler, input.vUV1) : (float4) 0.f;
     
     albedo0.rgb *= albedo0.a;
     albedo1.rgb *= albedo1.a;

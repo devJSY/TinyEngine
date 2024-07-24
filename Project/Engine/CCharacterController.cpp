@@ -18,7 +18,6 @@ CCharacterController::CCharacterController()
     , m_MinMoveDistance(0.f)
     , m_Radius(0.5f)
     , m_Height(2.f)
-    , m_MoveElapsedTime(0.f)
     , m_bGrounded(false)
 {
 }
@@ -53,8 +52,6 @@ void CCharacterController::finaltick()
         physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
         PxCharacterController->setPosition(physx::PxVec3d(WorldPos.x, WorldPos.y, WorldPos.z));
     }
-
-    m_MoveElapsedTime += DT;
 
     // 콜라이더 비활성화 상태에서는 렌더링 X
     if (!m_bEnabled)
@@ -101,12 +98,10 @@ void CCharacterController::Move(Vec3 _Motion)
 
     int LayerIdx = GetOwner()->GetLayerIdx();
     physx::PxFilterData filterData;
-    filterData.word0 = (1 << LayerIdx);                                     // 해당 오브젝트의 레이어 번호
-    filterData.word1 = CPhysicsMgr::GetInst()->GetCollisionLayer(LayerIdx); // 필터링을 적용할 테이블
+    filterData.word0 = CPhysicsMgr::GetInst()->GetCollisionLayer(LayerIdx); // 필터링을 적용할 테이블
 
     physx::PxControllerCollisionFlags MoveFlags =
-        ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, m_MoveElapsedTime, physx::PxControllerFilters(&filterData));
-    m_MoveElapsedTime = 0.f;
+        ((physx::PxController*)m_RuntimeShape)->move(_Motion, m_MinMoveDistance, DT, physx::PxControllerFilters(&filterData));
 
     m_bGrounded = physx::PxControllerCollisionFlag::eCOLLISION_DOWN & MoveFlags;
 

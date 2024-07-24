@@ -13,7 +13,6 @@ private:
     float m_Height;
 
 private:
-    float m_MoveElapsedTime;
     bool m_bGrounded; 
 
 public:
