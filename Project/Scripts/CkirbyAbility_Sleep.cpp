@@ -110,7 +110,7 @@ void CkirbyAbility_Sleep::JumpFallExit()
 
 void CkirbyAbility_Sleep::Attack()
 {
-    // chagne animation
+    // change animation
     if (m_SnotBubble && m_SnotBubble->Animator()->IsFinish())
     {
         m_SnotBubble->Animator()->Play(ANIMPREFIX("Main"));
@@ -144,10 +144,11 @@ void CkirbyAbility_Sleep::AttackStartEnter()
     PLAYERCTRL->LockJump();
 
     // attach snotBubble to scene
-    m_SnotBubble = PLAYER->GetChildObject(L"SleepSnotbubble");
+    m_SnotBubble = PLAYER->GetChildObject(L"SleepSnotBubble");
     if (m_SnotBubble)
     {
-        GamePlayStatic::AddChildObject(PLAYER, m_SnotBubble, L"Mouth");
+        //GamePlayStatic::AddChildObject(PLAYER, m_SnotBubble, L"Mouth");
+        m_SnotBubble->SetActive(true);
         m_SnotBubble->Animator()->Play(ANIMPREFIX("BubbleStart"), false);
     }
 }
@@ -183,10 +184,10 @@ void CkirbyAbility_Sleep::AttackEndExit()
     PLAYERCTRL->UnlockJump();
 
     // detach snotBubble from scene
-    if (m_SnotBubble)
-    {
-        GamePlayStatic::DetachObject(m_SnotBubble);
-    }
+    //if (m_SnotBubble)
+    //{
+    //    GamePlayStatic::DetachObject(m_SnotBubble);
+    //}
 }
 
 // ===============

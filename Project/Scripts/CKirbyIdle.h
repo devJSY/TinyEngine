@@ -3,6 +3,10 @@
 
 class CKirbyIdle : public CState
 {
+private:
+    float m_WaitingAccTime;
+    bool m_bPlayWaiting;
+
 public:
     virtual void tick();
     virtual void Enter();
