@@ -45,6 +45,9 @@ void CKirbySlideStart::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    // 커비 표정 바꾸기 
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 }
 
 void CKirbySlideStart::Exit()
@@ -55,4 +58,7 @@ void CKirbySlideStart::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    // 커비 표정 바꾸기
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 }

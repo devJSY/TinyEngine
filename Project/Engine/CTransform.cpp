@@ -136,9 +136,21 @@ void CTransform::UpdateData()
 void CTransform::SetDirection(Vec3 _Forward, Vec3 _Up)
 {
     _Forward.Normalize();
-    _Up.Normalize();
+    Vec3 Up = Vec3(0.f, 1.f, 0.f);
 
-    Transform()->SetWorldRotation(Quat::LookRotation(_Forward, _Up));
+    Vec3 Right = Up.Cross(_Forward);
+    Right.Normalize();
+
+    Up = _Forward.Cross(Right);
+    Up.Normalize();
+
+    Matrix rotationMatrix = Matrix();
+    rotationMatrix.Forward(-_Forward);
+    rotationMatrix.Up(Up);
+    rotationMatrix.Right(Right);
+
+    Quat Rot = Quat::CreateFromRotationMatrix(rotationMatrix);
+    Transform()->SetLocalRotation(Rot);
 }
 
 void CTransform::Slerp(Vec3 _TowardDir, float _t)
