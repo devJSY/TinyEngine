@@ -618,26 +618,32 @@ void CModelEditor::DrawDetails()
 
         if (ImGui_AlignButton("Load Model", 0.f))
         {
-            std::filesystem::path filePath = OpenFileDialog(m_RecentPath, TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
+            vector<wstring> vec;
+            OpenFileDialog(vec, m_RecentPath, {{L"FBX Files", L"*.fbx"}});
 
-            // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
-            if (!filePath.empty())
+            for (wstring& strPath : vec)
             {
-                // .fbx 포맷이 아닌 경우
-                if (L".fbx" != filePath.extension())
+                std::filesystem::path filePath = strPath;
+
+                // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
+                if (!filePath.empty())
                 {
-                    MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
-                }
-                // 경로에 Content 폴더가 포함되지 않은 경우
-                else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
-                {
-                    m_RecentPath = L"fbx\\";
-                    MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
-                }
-                else
-                {
-                    m_RecentPath = filePath.lexically_relative(CPathMgr::GetContentPath()).parent_path();
-                    CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
+                    // .fbx 포맷이 아닌 경우
+                    if (L".fbx" != filePath.extension())
+                    {
+                        MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
+                    }
+                    // 경로에 Content 폴더가 포함되지 않은 경우
+                    else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
+                    {
+                        m_RecentPath = L"fbx\\";
+                        MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
+                    }
+                    else
+                    {
+                        m_RecentPath = filePath.lexically_relative(CPathMgr::GetContentPath()).parent_path();
+                        CAssetMgr::GetInst()->AsyncLoadFBX(filePath.lexically_relative(CPathMgr::GetContentPath()));
+                    }
                 }
             }
         }
@@ -771,27 +777,33 @@ void CModelEditor::DrawDetails()
                 ImGui::SameLine();
                 if (ImGui_AlignButton("Import Animation##ModelEditorDetails", 1.f))
                 {
-                    std::filesystem::path filePath = OpenFileDialog(m_RecentPath, TEXT("FBX Files\0*.fbx\0모든 파일(*.*)\0*.*\0"));
+                    vector<wstring> vec;
+                    OpenFileDialog(vec, m_RecentPath, {{L"FBX Files", L"*.fbx"}});
 
-                    // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
-                    if (!filePath.empty())
+                    for (wstring& strPath : vec)
                     {
-                        // .fbx 포맷이 아닌 경우
-                        if (L".fbx" != filePath.extension())
+                        std::filesystem::path filePath = strPath;
+
+                        // 취소, 닫기 버튼 체크를 클릭하지 않은 경우
+                        if (!filePath.empty())
                         {
-                            MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
-                        }
-                        // 경로에 Content 폴더가 포함되지 않은 경우
-                        else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
-                        {
-                            m_RecentPath = L"fbx\\";
-                            MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
-                        }
-                        else
-                        {
-                            m_RecentPath = filePath.lexically_relative(CPathMgr::GetContentPath()).parent_path();
-                            CAssetMgr::GetInst()->AsyncLoadAnimationFBX(m_ModelObj->Animator()->GetSkeletalMesh(),
-                                                                        filePath.lexically_relative(CPathMgr::GetContentPath()));
+                            // .fbx 포맷이 아닌 경우
+                            if (L".fbx" != filePath.extension())
+                            {
+                                MessageBox(nullptr, L"fbx 포맷 파일이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
+                            }
+                            // 경로에 Content 폴더가 포함되지 않은 경우
+                            else if (string::npos == wstring(filePath).find(CPathMgr::GetContentPath()))
+                            {
+                                m_RecentPath = L"fbx\\";
+                                MessageBox(nullptr, L"Content 폴더에 존재하는 모델이 아닙니다.", L"모델 로딩 실패", MB_ICONHAND);
+                            }
+                            else
+                            {
+                                m_RecentPath = filePath.lexically_relative(CPathMgr::GetContentPath()).parent_path();
+                                CAssetMgr::GetInst()->AsyncLoadAnimationFBX(m_ModelObj->Animator()->GetSkeletalMesh(),
+                                                                            filePath.lexically_relative(CPathMgr::GetContentPath()));
+                            }
                         }
                     }
                 }

@@ -1174,7 +1174,7 @@ wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter)
     return wstring();
 }
 
-void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath)
+void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath, const vector<std::pair<wstring, wstring>>& filter)
 {
     IFileOpenDialog* pFileDialog;
     HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileDialog));
@@ -1217,8 +1217,13 @@ void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath)
     }
 
     // 파일 필터 설정
-    COMDLG_FILTERSPEC fileTypes[] = {{L"All Files", L"*.*"}, {L"Text Files", L"*.txt"}, {L"FBX Files", L"*.fbx"}};
-    hr = pFileDialog->SetFileTypes(ARRAYSIZE(fileTypes), fileTypes);
+    // 파일 필터 설정
+    vector<COMDLG_FILTERSPEC> fileTypes;
+    for (const auto& f : filter)
+    {
+        fileTypes.push_back({f.first.c_str(), f.second.c_str()});
+    }
+    hr = pFileDialog->SetFileTypes((UINT)fileTypes.size(), fileTypes.data());
     if (FAILED(hr))
     {
         LOG(Error, "Failed to set file types");
@@ -1230,7 +1235,11 @@ void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath)
     hr = pFileDialog->Show(NULL);
     if (FAILED(hr))
     {
-        LOG(Error, "Failed to open FileOpenDialog");
+        // 취소, 닫기 버튼 클릭 이회의 경우 로그
+        if (hr != HRESULT_FROM_WIN32(ERROR_CANCELLED))
+        {
+            LOG(Error, "Failed to open FileOpenDialog");
+        }
         pFileDialog->Release();
         return;
     }

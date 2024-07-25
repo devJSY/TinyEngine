@@ -18,7 +18,6 @@ CSkyBox::CSkyBox()
 
 CSkyBox::~CSkyBox()
 {
-    ClearData();
 }
 
 void CSkyBox::finaltick()
