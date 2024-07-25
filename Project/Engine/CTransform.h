@@ -26,7 +26,7 @@ public:
     virtual void UpdateData() override;
 
 public:
-    void SetDirection(Vec3 _Forward, Vec3 _Up = Vec3(0.f, 1.f, 0.f));
+    void SetDirection(Vec3 _Forward);
     void Slerp(Vec3 _TowardDir, float _t);
 
 public:
