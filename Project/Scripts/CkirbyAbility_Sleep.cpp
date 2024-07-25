@@ -184,10 +184,11 @@ void CkirbyAbility_Sleep::AttackEndExit()
     PLAYERCTRL->UnlockJump();
 
     // detach snotBubble from scene
-    //if (m_SnotBubble)
-    //{
-    //    GamePlayStatic::DetachObject(m_SnotBubble);
-    //}
+    if (m_SnotBubble)
+    {
+        //GamePlayStatic::DetachObject(m_SnotBubble);
+        m_SnotBubble->SetActive(false);
+    }
 }
 
 // ===============
