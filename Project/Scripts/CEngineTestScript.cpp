@@ -41,10 +41,16 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
+    // CharacterControllerTest();
 
-    CharacterControllerTest();
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
+
+    SetDirection();
+
     // AnimatorTest();
-    //  QuaternionExample();
+    // QuaternionExample();
 
     //// Bullet Test
     // if (KEY_TAP(KEY::N))
@@ -266,6 +272,21 @@ void CEngineTestScript::QuaternionExample()
 void CEngineTestScript::DetachObject()
 {
     GamePlayStatic::DetachObject(CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"TestObj"));
+}
+
+void CEngineTestScript::SetDirection()
+{
+    CGameObject* pTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Target");
+    if (pTarget)
+    {
+        Vec3 Dir = pTarget->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        // Transform()->SetDirection(Dir);
+        Transform()->Slerp(Dir, DT * 5.f);
+    }
+
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
 }
 
 void CEngineTestScript::OnCollisionEnter(CCollider* _OtherCollider)
