@@ -41,13 +41,13 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    CharacterControllerTest();
+    // CharacterControllerTest();
 
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
- 
-    // SetDirection();
+
+    SetDirection();
 
     // AnimatorTest();
     // QuaternionExample();
@@ -280,7 +280,8 @@ void CEngineTestScript::SetDirection()
     if (pTarget)
     {
         Vec3 Dir = pTarget->Transform()->GetWorldPos() - Transform()->GetWorldPos();
-        Transform()->SetDirection(Dir);
+        // Transform()->SetDirection(Dir);
+        Transform()->Slerp(Dir, DT);
     }
 
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
