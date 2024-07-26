@@ -20,10 +20,6 @@ public:
 public:
     CLevel* CreateDefaultKirbyLevel();
 
-    // DefaultUILevel
-    void CreateDefaultUILevel();
-
-    // DefaultUISubLevel
     CLevel* CreateDefaultStartUILevel();
     CLevel* CreateDefaultRobbyUILevel();
     CLevel* CreateDefaultPlayUILevel();

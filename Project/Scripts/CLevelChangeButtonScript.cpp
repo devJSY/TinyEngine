@@ -16,7 +16,10 @@ CLevelChangeButtonScript::~CLevelChangeButtonScript()
 
 void CLevelChangeButtonScript::Func()
 {
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(ToWstring(m_LevelName)), LEVEL_STATE::PLAY);
+    CLevel* NewLevel = CLevelSaveLoad::LoadLevel(ToWstring(m_LevelName)) != nullptr ? CLevelSaveLoad::LoadLevel(ToWstring(m_LevelName))
+                                                                                    : CLevelMgr::GetInst()->CreateDefaultRobbyUILevel();
+
+    GamePlayStatic::ChangeLevel(NewLevel, LEVEL_STATE::PLAY);
 }
 
 UINT CLevelChangeButtonScript::SaveToLevelFile(FILE* _File)

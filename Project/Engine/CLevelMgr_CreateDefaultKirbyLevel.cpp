@@ -339,28 +339,10 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 |   3. PlayLevel
 *********************/
 
-void CLevelMgr::CreateDefaultUILevel()
-{
-    if (nullptr == CreateDefaultStartUILevel())
-    {
-        MessageBox(nullptr, L"DefaultStartUILevel Create Failed", L"DefaultUILevel Create Failed", MB_OK);
-    }
-
-    if (nullptr == CreateDefaultRobbyUILevel())
-    {
-        MessageBox(nullptr, L"DefaultRobbyUILevel Create Failed", L"DefaultUILevel Create Failed", MB_OK);
-    }
-
-    if (nullptr == CreateDefaultPlayUILevel())
-    {
-        MessageBox(nullptr, L"DefaultPlayUILevel Create Failed", L"DefaultUILevel Create Failed", MB_OK);
-    }
-}
-
 CLevel* CLevelMgr::CreateDefaultStartUILevel()
 {
     CLevel* NewLevel = new CLevel;
-    NewLevel->SetName(L"Default Kirby UI Level");
+    NewLevel->SetName(L"Default Kirby Start UI Level");
 
     // =============
     // create layer
@@ -535,38 +517,28 @@ CLevel* CLevelMgr::CreateDefaultStartUILevel()
         NewLevel->AddObject(pUIObject, 15);
     }
 
+    // TODO : Prefab
     // UI_StartBtn
     {
-        CGameObject* pUIObject = new CGameObject;
+        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"UI_StartBtn.pref")->Instantiate();
         pUIObject->SetName(L"UI_StartBtn");
-        pUIObject->AddComponent(new CTransform);
-        pUIObject->AddComponent(new CMeshRender);
-        pUIObject->AddComponent(CScriptMgr::GetScript(LEVELCHANGEBUTTONSCRIPT));
 
         pUIObject->Transform()->SetLocalPos(Vec3(10529.f, 35.f, 850.f));
         pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(5.f), 0.f));
         pUIObject->Transform()->SetLocalScale(Vec3(600.f, 150.f, 1.f));
 
-        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StartButton.mtrl"), 0);
-
         NewLevel->AddObject(pUIObject, 15);
     }
 
+    // TODO : Prefab
     // UI_ExitBtn
     {
-        CGameObject* pUIObject = new CGameObject;
-        pUIObject->SetName(L"UI_ExitBtn");
-        pUIObject->AddComponent(new CTransform);
-        pUIObject->AddComponent(new CMeshRender);
-        pUIObject->AddComponent(CScriptMgr::GetScript(EXITBUTTON));
+        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"UI_ExitBtn.pref")->Instantiate();
+        pUIObject->SetName(L"UI_StartBtn");
 
-        pUIObject->Transform()->SetLocalPos(Vec3(10529.f, -183.f, 850.f));
+        pUIObject->Transform()->SetLocalPos(Vec3(10529.f, 35.f, 850.f));
         pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(5.f), 0.f));
         pUIObject->Transform()->SetLocalScale(Vec3(600.f, 150.f, 1.f));
-
-        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StartButton.mtrl"), 0);
 
         NewLevel->AddObject(pUIObject, 15);
     }
@@ -577,7 +549,7 @@ CLevel* CLevelMgr::CreateDefaultStartUILevel()
 CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
 {
     CLevel* NewLevel = new CLevel;
-    NewLevel->SetName(L"Default Kirby UI Level");
+    NewLevel->SetName(L"Default Kirby Robby UI Level");
 
     // =============
     // create layer
@@ -670,6 +642,7 @@ CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
 
     NewLevel->AddObject(pDirLight, 0);
 
+    // TODO : Prefab
     // UI_RobbyBG1
     {
         CGameObject* pUIObject = new CGameObject;
@@ -688,6 +661,7 @@ CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
         NewLevel->AddObject(pUIObject, 15);
     }
 
+    // TODO : Prefab
     // UI_StageNameBG
     {
         CGameObject* pUIObject = new CGameObject;
@@ -706,6 +680,7 @@ CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
         NewLevel->AddObject(pUIObject, 15);
     }
 
+    // TODO : Prefab
     // UI_StageNameBG1
     {
         CGameObject* pUIObject = new CGameObject;
@@ -724,6 +699,7 @@ CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
         NewLevel->AddObject(pUIObject, 15);
     }
 
+    // TODO : Prefab
     // UI_StageNameStartBtn
     {
         CGameObject* pUIObject = new CGameObject;
@@ -747,100 +723,51 @@ CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
 
 CLevel* CLevelMgr::CreateDefaultPlayUILevel()
 {
-    CLevel* NewLevel = new CLevel;
-    NewLevel->SetName(L"Default Kirby UI Level");
+    CLevel* NewLevel = CreateDefaultKirbyLevel();
 
-    // =============
-    // create layer
-    // =============
-    NewLevel->GetLayer(0)->SetName(L"Default");
-    NewLevel->GetLayer(1)->SetName(L"Manager");
-    NewLevel->GetLayer(2)->SetName(L"World Static");
-    NewLevel->GetLayer(3)->SetName(L"World Dynamic");
-    NewLevel->GetLayer(4)->SetName(L"Player");
-    NewLevel->GetLayer(5)->SetName(L"Player Trigger");
-    NewLevel->GetLayer(6)->SetName(L"Player Attack");
-    NewLevel->GetLayer(7)->SetName(L"Player Attack Trigger");
-    NewLevel->GetLayer(8)->SetName(L"Monster");
-    NewLevel->GetLayer(9)->SetName(L"Monster Trigger");
-    NewLevel->GetLayer(10)->SetName(L"Monster Attack");
-    NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");
-    NewLevel->GetLayer(12)->SetName(L"Layer 12");
-    NewLevel->GetLayer(13)->SetName(L"Layer 13");
-    NewLevel->GetLayer(14)->SetName(L"Effect");
-    NewLevel->GetLayer(15)->SetName(L"UI");
+    NewLevel->SetName(L"Create Default Play UI Level");
 
-    // =============
-    // world setting
-    // =============
-    CPhysicsMgr::GetInst()->SetPPM(100.f);
+    // Monster
+    CGameObject* pMonsterAbility = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemy.fbx")->Instantiate();
+    pMonsterAbility->SetName(L"Monster (Track)");
+    pMonsterAbility->AddComponent(new CRigidbody);
+    pMonsterAbility->AddComponent(new CCapsuleCollider);
+    pMonsterAbility->AddComponent(CScriptMgr::GetScript(NORMALENEMYSCRIPT));
+    
+    pMonsterAbility->Transform()->SetLocalPos(Vec3(280.f, 100.f, 280.f));
+    pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+    pMonsterAbility->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
-    // Manager
-    CGameObject* pManager = new CGameObject;
-    pManager->SetName(L"Manager");
-    pManager->AddComponent(new CTransform);
-    pManager->AddComponent(CScriptMgr::GetScript(PLAYERMGR));
-    pManager->AddComponent(CScriptMgr::GetScript(UIMANAGERSCRIPT));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalEnemyBodyShader"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_BaseColor._919281726.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_Normal.1361449125.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
 
-    NewLevel->AddObject(pManager, 1);
+    NewLevel->AddObject(pMonsterAbility, 8);
 
-    // =============
-    // create camera
-    // =============
-    CGameObject* pCamObj = new CGameObject;
-    pCamObj->SetName(L"Main Camera");
-    pCamObj->AddComponent(new CTransform);
-    pCamObj->AddComponent(new CMeshRender);
-    pCamObj->AddComponent(new CCamera);
+    // TODO : Prefab
+    // UI_PlayerHP
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_PlayerHP");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+        pUIObject->AddComponent(CScriptMgr::GetScript(STAGECHANGEBUTTONSCRIPT));
 
-    pCamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
-    pCamObj->MeshRender()->SetFrustumCheck(false);
-    pCamObj->MeshRender()->SetCastShadow(false);
+        pUIObject->Transform()->SetLocalPos(Vec3(10690.f, -429.f, 605.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(2.12f), 0.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(530.f, 174.f, 1.f));
 
-    pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    pCamObj->Camera()->SetCameraPriority(0);
-    pCamObj->Camera()->LayerMaskAll();
-    pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
-    pCamObj->Camera()->SetHDRI(true);
-    pCamObj->Camera()->SetFOV(XMConvertToRadians(60.f));
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StageNameStartBtn.mtrl"), 0);
 
-    NewLevel->AddObject(pCamObj, 0);
-
-    // UI Camera
-    CGameObject* pUICamObj = new CGameObject;
-    pUICamObj->SetName(L"UI Camera");
-    pUICamObj->AddComponent(new CTransform);
-    pUICamObj->AddComponent(new CMeshRender);
-    pUICamObj->AddComponent(new CCamera);
-
-    pUICamObj->Transform()->SetLocalPos(Vec3(10000.f, 0.f, -5.f));
-
-    pUICamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-    pUICamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
-    pUICamObj->MeshRender()->SetFrustumCheck(false);
-    pUICamObj->MeshRender()->SetCastShadow(false);
-
-    pUICamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-    pUICamObj->Camera()->SetCameraPriority(1);
-    pUICamObj->Camera()->LayerMask(NewLevel, L"UI", true);
-    pUICamObj->Camera()->SetHDRI(true);
-    pUICamObj->Camera()->SetFOV(XMConvertToRadians(90.f));
-
-    NewLevel->AddObject(pUICamObj, 0);
-
-    // Light
-    CGameObject* pDirLight = new CGameObject;
-    pDirLight->SetName(L"Directional Light");
-    pDirLight->AddComponent(new CTransform);
-    pDirLight->AddComponent(new CLight);
-
-    pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
-    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
-    pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-    pDirLight->Light()->SetRadius(10.f);
-
-    NewLevel->AddObject(pDirLight, 0);
+        NewLevel->AddObject(pUIObject, 15);
+    }
 
     return NewLevel;
 }
