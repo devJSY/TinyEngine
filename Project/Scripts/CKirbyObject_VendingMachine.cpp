@@ -31,8 +31,6 @@ void CKirbyObject_VendingMachine::AttackStart()
             ChangeState(L"ATTACK_END");
         }
     }
-
-
 }
 
 void CKirbyObject_VendingMachine::AttackStartEnter()
@@ -59,12 +57,14 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     // 초기값 세팅
     // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
     Vec3 up = Vec3(0.f, 1.f, 0.f);
-    if (KirbyWorldDir == Vec3(0.f, 0.f, -1.f))
-    {
-        up = Vec3(0.f, -1.f, 0.f);
-    }
+    // if (KirbyWorldDir == Vec3(0.f, 0.f, -1.f))
+    //{
+    //     up = Vec3(0.f, -1.f, 0.f);
+    // }
 
-    CanJuiceInst->Transform()->SetDirection(-KirbyWorldDir, up);
+    // CanJuiceInst->Transform()->SetDirection(-KirbyWorldDir, up);
+
+    CanJuiceInst->Transform()->SetDirection(-KirbyWorldDir);
     CanJuiceInst->Transform()->SetWorldPos(KirbyPos + Offset);
 
     GamePlayStatic::SpawnGameObject(CanJuiceInst, CanJuiceInst->GetLayerIdx());
@@ -75,7 +75,6 @@ void CKirbyObject_VendingMachine::AttackStartExit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
-
 }
 
 void CKirbyObject_VendingMachine::AttackEnd()
@@ -135,7 +134,7 @@ void CKirbyObject_VendingMachine::ChangeObjectEnter()
 
     PLAYERCTRL->SetSpeed(5.f);
     m_SaveJumpPower = PLAYERCTRL->GetJumpPower();
-    PLAYERCTRL->SetJumpPower(m_SaveJumpPower/2.f);
+    PLAYERCTRL->SetJumpPower(m_SaveJumpPower / 2.f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     PLAYER->CharacterController()->SetCenter(Vec3(0.f, 200.f, 0.f));

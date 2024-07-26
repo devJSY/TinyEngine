@@ -41,7 +41,10 @@ void CLevelMgr::tick()
     // 이전 프레임에 등록된 오브젝트들 clear
     m_CurLevel->clear();
 
-    if (m_CurLevel->GetState() != LEVEL_STATE::STOP)
+    // Play, Simulate 상태 이거나
+    // Pause 상태에선 Step중인 경우에만 재생
+    LEVEL_STATE State = m_CurLevel->GetState();
+    if (State == LEVEL_STATE::PLAY || State == LEVEL_STATE::SIMULATE || (State == LEVEL_STATE::PAUSE && m_CurLevel->m_StepFrames > 0))
     {
         m_CurLevel->tick();
     }
