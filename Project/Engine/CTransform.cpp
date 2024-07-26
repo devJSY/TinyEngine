@@ -133,35 +133,62 @@ void CTransform::UpdateData()
     pCB->UpdateData();
 }
 
-void CTransform::SetDirection(Vec3 _Forward, Vec3 _Up)
+void CTransform::SetDirection(Vec3 _Forward)
 {
-    _Forward.Normalize();
-    _Up.Normalize();
+    if (_Forward == Vec3::Zero)
+        return;
 
-    Transform()->SetWorldRotation(Quat::LookRotation(_Forward, _Up));
+    _Forward.Normalize();
+    Vec3 Up = Vec3(0.f, 1.f, 0.f);
+
+    Vec3 Right = Up.Cross(_Forward);
+    Right.Normalize();
+
+    Up = _Forward.Cross(Right);
+    Up.Normalize();
+
+    Matrix rotationMatrix = Matrix();
+    rotationMatrix.Forward(-_Forward);
+    rotationMatrix.Up(Up);
+    rotationMatrix.Right(Right);
+
+    Quat Rot = Quat::CreateFromRotationMatrix(rotationMatrix);
+    Transform()->SetWorldRotation(Rot);
 }
 
 void CTransform::Slerp(Vec3 _TowardDir, float _t)
 {
-    Vec3 FrontDir = GetWorldDir(DIR_TYPE::FRONT);
-    _TowardDir.y = 0.f; // Y축 고정
     _TowardDir.Normalize();
-
     // FrontDir 와 TowardDir 가 비슷한 방향이면 보간 X
-    if (_TowardDir.Dot(FrontDir) >= cosf(0.f) - 1e-5f)
+    if (_TowardDir == Vec3::Zero || _TowardDir.Dot(GetWorldDir(DIR_TYPE::FRONT)) >= 1.f - 1e-5f)
         return;
 
-    // UpVector Y축 기준
-    Vec3 up = Vec3(0.f, 1.f, 0.f);
-    // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
-    if (FrontDir == Vec3(0.f, 0.f, -1.f))
-    {
-        up = Vec3(0.f, -1.f, 0.f);
-    }
+    // 회전 축 정렬
+    Vec3 Up = Vec3(0.f, 1.f, 0.f);
 
-    Quat TowardQuaternion = Quat::LookRotation(_TowardDir, up);
-    Quat SlerpQuat = Quat::Slerp(GetWorldQuaternion(), TowardQuaternion, _t);
-    SetWorldRotation(SlerpQuat);
+    Vec3 Right = Up.Cross(_TowardDir);
+    Right.Normalize();
+
+    Up = _TowardDir.Cross(Right);
+    Up.Normalize();
+
+    // 회전 행렬 생성
+    Matrix RotationMatrix = Matrix();
+    RotationMatrix.Forward(-_TowardDir);
+    RotationMatrix.Up(Up);
+    RotationMatrix.Right(Right);
+
+    // Slerp
+    Quat SlerpQuat = Quat::Slerp(GetWorldQuaternion(), Quat::CreateFromRotationMatrix(RotationMatrix), _t);
+
+    // Slerp 계산된 쿼터니언 으로부터 회전 행렬 생성
+    RotationMatrix = Matrix::CreateFromQuaternion(SlerpQuat);
+
+    // 회전 행렬의 Forward Vector 추출
+    Vec3 LookDir = -RotationMatrix.Forward();
+
+    // 방향 설정
+    SetDirection(LookDir);
 }
 
 Quat CTransform::GetWorldQuaternion() const
