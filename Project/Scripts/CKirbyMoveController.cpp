@@ -204,7 +204,7 @@ void CKirbyMoveController::SetDir()
     }
 
     // 보간을 통해 현재 방향 설정
-    Transform()->Slerp(-m_TowardDir, DT * m_RotSpeed);
+    Transform()->Slerp(m_TowardDir, DT * m_RotSpeed);
 }
 
 void CKirbyMoveController::Move()
