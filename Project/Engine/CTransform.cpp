@@ -153,32 +153,29 @@ void CTransform::SetDirection(Vec3 _Forward)
     rotationMatrix.Right(Right);
 
     Quat Rot = Quat::CreateFromRotationMatrix(rotationMatrix);
-    Transform()->SetLocalRotation(Rot);
+    Transform()->SetWorldRotation(Rot);
 }
 
 void CTransform::Slerp(Vec3 _TowardDir, float _t)
 {
+    Vec3 FrontDir = GetWorldDir(DIR_TYPE::FRONT);
+    _TowardDir.y = 0.f; // Y축 고정
+    _TowardDir.Normalize();
+
     // FrontDir 와 TowardDir 가 비슷한 방향이면 보간 X
-    if (_TowardDir == Vec3::Zero || _TowardDir.Dot(GetWorldDir(DIR_TYPE::FRONT)) >= cosf(0.f) - 1e-5f)
+    if (_TowardDir.Dot(FrontDir) >= cosf(0.f) - 1e-5f)
         return;
 
-    _TowardDir.Normalize();
-    Vec3 Up = Vec3(0.f, 1.f, 0.f);
+    // UpVector Y축 기준
+    Vec3 up = Vec3(0.f, 1.f, 0.f);
+    // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
+    if (FrontDir == Vec3(0.f, 0.f, -1.f))
+    {
+        up = Vec3(0.f, -1.f, 0.f);
+    }
 
-    Vec3 Right = Up.Cross(_TowardDir);
-    Right.Normalize();
-
-    Up = _TowardDir.Cross(Right);
-    Up.Normalize();
-
-    Matrix rotationMatrix = Matrix();
-    rotationMatrix.Forward(-_TowardDir);
-    rotationMatrix.Up(Up);
-    rotationMatrix.Right(Right);
-
-    Quat TowardQuat = Quat::CreateFromRotationMatrix(rotationMatrix);
-
-    Quat SlerpQuat = Quat::Slerp(GetWorldQuaternion(), TowardQuat, _t);
+    Quat TowardQuaternion = Quat::LookRotation(_TowardDir, up);
+    Quat SlerpQuat = Quat::Slerp(GetWorldQuaternion(), TowardQuaternion, _t);
     SetWorldRotation(SlerpQuat);
 }
 
