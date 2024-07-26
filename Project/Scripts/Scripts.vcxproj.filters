@@ -448,6 +448,9 @@
     <ClInclude Include="CKirbyWeaponHitbox.h">
       <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
     </ClInclude>
+    <ClInclude Include="CCameraController.h">
+      <Filter>Scripts\CameraMove</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -908,6 +911,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyWeaponHitbox.cpp">
       <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraController.cpp">
+      <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

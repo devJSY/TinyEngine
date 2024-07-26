@@ -65,6 +65,9 @@ void CKirbySlide::Enter()
     Vec3 PlayerFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT).Normalize();
     PLAYERCTRL->SetVelocity(PlayerFront * m_Speed);
 
+    // 커비 표정 바꾸기
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
+
     m_Acc = 0.f;
 }
 
@@ -78,4 +81,7 @@ void CKirbySlide::Exit()
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetGuard(false);
     PLAYERCTRL->SetFriction(0.f);
+
+    // 커비 표정 바꾸기
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 }
