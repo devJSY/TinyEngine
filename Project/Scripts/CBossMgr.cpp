@@ -9,7 +9,7 @@ CFSMScript* CBossMgr::m_BossFSM = nullptr;
 
 CBossMgr::CBossMgr()
     : CScript(BOSSMGR)
-    , m_BossName(L"")
+    , m_BossName("")
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_BossName, "Boss Object Name");
 }
@@ -22,7 +22,7 @@ void CBossMgr::begin()
 {
     if (!m_BossName.empty())
     {
-        CGameObject* pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(m_BossName, LAYER_MONSTER);
+        CGameObject* pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_BossName), LAYER_MONSTER);
         SetBoss(pBoss);
     }
 }
@@ -53,14 +53,16 @@ UINT CBossMgr::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    MemoryByte += SaveWStringToFile(m_BossName, _File);
+    MemoryByte += SaveWStringToFile(ToWstring(m_BossName), _File);
     return MemoryByte;
 }
 
 UINT CBossMgr::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+    wstring BossName = L"";
+    MemoryByte += LoadWStringFromFile(BossName, _File);
+    m_BossName = ToString(BossName);
 
-    MemoryByte += LoadWStringFromFile(m_BossName, _File);
     return MemoryByte;
 }

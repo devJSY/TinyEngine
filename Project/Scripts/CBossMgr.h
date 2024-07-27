@@ -7,7 +7,7 @@ class CFSMScript;
 class CBossMgr : public CScript
 {
 public:
-    wstring m_BossName;
+    string m_BossName;
 
 private:
     static CGameObject* m_Boss;

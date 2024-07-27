@@ -50,6 +50,7 @@
 #include "CCameraController.h"
 #include "CElfilisFSM.h"
 #include "CBossMgr.h"
+#include "CElfilisUnit.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -102,6 +103,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCameraController");
 	_vec.push_back(L"CElfilisFSM");
 	_vec.push_back(L"CBossMgr");
+	_vec.push_back(L"CElfilisUnit");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -204,6 +206,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisFSM;
 	if (L"CBossMgr" == _strScriptName)
 		return new CBossMgr;
+	if (L"CElfilisUnit" == _strScriptName)
+		return new CElfilisUnit;
 	return nullptr;
 }
 
@@ -309,6 +313,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisFSM;
 	case (UINT)SCRIPT_TYPE::BOSSMGR:
 		return new CBossMgr;
+	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
+		return new CElfilisUnit;
 	}
 	return nullptr;
 }
@@ -415,6 +421,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisFSM";
 	case SCRIPT_TYPE::BOSSMGR:
 		return L"CBossMgr";
+	case SCRIPT_TYPE::ELFILISUNIT:
+		return L"CElfilisUnit";
 	}
 	return nullptr;
 }

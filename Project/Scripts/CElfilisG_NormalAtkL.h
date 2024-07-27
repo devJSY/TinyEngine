@@ -1,27 +1,22 @@
 #pragma once
-#include "CState.h"
+#include "CBossState.h"
 
-class CElfilisG_NormalAtkL : public CState
+class CElfilisG_NormalAtkL : public CBossState
 {
-private:
-    StateStep m_Step;
-
 public:
-    virtual void tick();
-    virtual void Enter();
-    virtual void Exit();
+    virtual void tick() override;
 
 private:
-    void ChangeStep(StateStep _Step);
-    void Enter_Step();
-    void Exit_Step();
-    
+    virtual void Enter_Step() override;
+    virtual void Exit_Step() override;
+
     // tick
     void Start();
     void Progress();
     void End();
 
 public:
-    CLONE(CElfilisG_NormalAtkL) CElfilisG_NormalAtkL();
+    CLONE(CElfilisG_NormalAtkL)
+    CElfilisG_NormalAtkL();
     virtual ~CElfilisG_NormalAtkL();
 };

@@ -460,7 +460,16 @@
     <ClInclude Include="CElfilisG_Idle.h">
       <Filter>State\ElfilisState\Ground_Idle</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisG_NormalAtkL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkL.h">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisUnit.h">
+      <Filter>Scripts\Unit\Elfilis</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_BackStep.h" />
+    <ClInclude Include="CBossState.h">
+      <Filter>Module\FSM\State\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -934,7 +943,16 @@
     <ClCompile Include="CElfilisG_Idle.cpp">
       <Filter>State\ElfilisState\Ground_Idle</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkL.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisUnit.cpp">
+      <Filter>Scripts\Unit\Elfilis</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_BackStep.cpp" />
+    <ClCompile Include="CBossState.cpp">
+      <Filter>Module\FSM\State\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1440,6 +1458,30 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_Idle">
       <UniqueIdentifier>{0c33e58f-bc3c-4cfa-ac38-fb7c56fe6416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack">
+      <UniqueIdentifier>{c9a34604-c846-428d-88ad-5679ad99f3d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk">
+      <UniqueIdentifier>{e8e42a90-8567-4ced-9eb5-428616182fc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\L">
+      <UniqueIdentifier>{1c4d366a-598f-4f21-8999-a4185b6d8e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Unit\Elfilis">
+      <UniqueIdentifier>{4e9f1b14-3c6a-4f82-a2e4-e8821f68d867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Move">
+      <UniqueIdentifier>{e6d86f0c-0839-4737-b103-44bad510dc64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_MoveAttack">
+      <UniqueIdentifier>{dc2ed7ad-9ccd-4b77-985d-9c5eca49842c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Move\BackStep">
+      <UniqueIdentifier>{16a8c6fe-0b35-437b-8f55-7bab2cd45966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FSM\State\Boss">
+      <UniqueIdentifier>{fef97aad-bf4f-4fd0-8591-f36ebbe95f1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

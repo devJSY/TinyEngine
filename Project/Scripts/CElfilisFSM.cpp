@@ -4,7 +4,9 @@
 
 CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
-    , m_CurStateGroup(ElfilisStateGroup::GrondIdle)
+    , m_CurStateGroup(ElfilisStateGroup::END)
+    , m_GroundAttackCount(0)
+    , m_bAttackRepeat(false)
 {
     // 에피리스FSM은 GroundMove, GroundAtk, GroundToAir, / AirMove, AirSmallATK, AirBigATK, AirToGround State를 가짐
     // 각 State는 유사한 State를 묶은 Group State
@@ -23,8 +25,21 @@ CElfilisFSM::CElfilisFSM()
 
 CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     : CFSMScript(_Origin)
-    , m_CurStateGroup(_Origin.m_CurStateGroup)
+    , m_CurStateGroup(ElfilisStateGroup::END)
+    , m_GroundAttackCount(0)
+    , m_bAttackRepeat(false)
 {
+    for (auto it : m_StateGroup)
+    {
+        for (auto state : it.second[0])
+        {
+            m_StateGroup[it.first][0].push_back(state);
+        }
+        for (auto state : it.second[1])
+        {
+            m_StateGroup[it.first][1].push_back(state);
+        }
+    }
 }
 
 CElfilisFSM::~CElfilisFSM()
@@ -142,11 +157,16 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 }
 
 #include "CElfilisG_Idle.h"
+#include "CElfilisG_NormalAtkL.h"
 void CElfilisFSM::begin()
 {
     // State 추가
     AddGroupPublicState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisG_Idle);
+    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_L", new CElfilisG_NormalAtkL);
     // AddGroupPrivateState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisGroundIdle);
+
+    //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
+    ChangeState(L"GROUND_IDLE");
 }
 
 void CElfilisFSM::tick()
@@ -165,6 +185,7 @@ const vector<wstring>& CElfilisFSM::GetCurPublicStates() const
     {
         return it->second[0];
     }
+    return vector<wstring>();
 }
 
 void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)

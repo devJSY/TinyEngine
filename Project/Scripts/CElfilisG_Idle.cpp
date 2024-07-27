@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CElfilisG_Idle.h"
-#include "CBossMgr.h"
 #include "CElfilisFSM.h"
 
 CElfilisG_Idle::CElfilisG_Idle()
@@ -16,18 +15,19 @@ void CElfilisG_Idle::tick()
 {
     m_AccTime += DT;
 
-    if (m_AccTime >= 1.f)
+    if (m_AccTime >= 3.f)
     {
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
+        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundAtk);
+        //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
     }
 }
 
-void CElfilisG_Idle::Enter()
+void CElfilisG_Idle::Enter_Step()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("Wait"));
+    BOSS->Animator()->Play(ANIMPREFIX("Wait"));
     m_AccTime = 0.f;
 }
 
-void CElfilisG_Idle::Exit()
+void CElfilisG_Idle::Exit_Step()
 {
 }

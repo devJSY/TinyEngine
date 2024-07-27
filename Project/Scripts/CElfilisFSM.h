@@ -10,7 +10,6 @@ enum class ElfilisG_Idle
 enum class ElfilisG_Move
 {
     Teleport,
-    PortalSlash,
     BackStep,
     PUBLIC,
 };
@@ -18,6 +17,7 @@ enum class ElfilisG_Move
 enum class ElfilisG_MoveAtk
 {
     TeleportNormalATK,
+    PortalSlash,
     PUBLIC,
 
     // 부모상태 입장 후 random에 포함되지 않는 State들 (이미 결정됐을 때만 진입 가능)

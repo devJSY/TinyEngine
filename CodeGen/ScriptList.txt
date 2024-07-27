@@ -47,3 +47,4 @@ CKirbyWeaponHitbox
 CCameraController
 CElfilisFSM
 CBossMgr
+CElfilisUnit

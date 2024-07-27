@@ -1,15 +1,17 @@
 #pragma once
-#include "CState.h"
+#include "CBossState.h"
 
-class CElfilisG_Idle : public CState
+class CElfilisG_Idle : public CBossState
 {
 private:
     float m_AccTime;
 
 public:
-    virtual void tick();
-    virtual void Enter();
-    virtual void Exit();
+    virtual void tick() override;
+
+private:
+    virtual void Enter_Step() override;
+    virtual void Exit_Step() override;
 
 public:
     CLONE(CElfilisG_Idle)
