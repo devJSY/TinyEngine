@@ -99,8 +99,9 @@ PS_OUT main(PS_IN input)
     // 바인딩되어있는 텍스춰가 존재하는 경우
     if (bDirty)
     {
-        // G 채널값을 알파블랜딩 가중치로 사용
-        float MaskAlpha = input.vColor.g;
+        // 버텍스 컬러값을 가중치로 사용
+        float MaskAlpha = 3.f - dot(input.vColor.rgb, float3(1.f, 1.f, 1.f));
+        MaskAlpha = 1.f - MaskAlpha;
         
         output.vColor = (output0.vColor * MaskAlpha) + (output1.vColor * (1.f - MaskAlpha));
         output.vPosition = float4(input.vPosWorld, 1.f);
