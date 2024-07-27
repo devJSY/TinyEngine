@@ -5,7 +5,7 @@
 
 CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
-    , m_CurSetup(CameraSetup::NORMAL)
+    , m_Setup(CameraSetup::NORMAL)
     , m_Target(nullptr)
     , m_TargetPos(Vec3(0.f,0.f,0.f))
     , m_LookDir(0.f, 0.f, 0.f)
@@ -16,7 +16,7 @@ CCameraController::CCameraController()
     , m_EditMode(false)
 {
 
-    AddScriptParam(SCRIPT_PARAM::VEC3, &m_LookDir, "Offset");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_Offset, "Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_LookDir, "Look Dir", 0.05f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LookDist, "Look Distance", 1.f);
 
@@ -39,6 +39,12 @@ CCameraController::~CCameraController()
 
 Quat VectorToQuaternion(Vec3 _v);
 Vec3 QuaternionToVector(const Quat& quaternion);
+
+void CCameraController::SetMainTarget(wstring _TargetName)
+{
+    CLevel* CurrentLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    m_Target = CurrentLevel->FindObjectByName(_TargetName);
+}
 
 void CCameraController::begin()
 {
@@ -84,7 +90,7 @@ void CCameraController::begin()
     m_ProgressEndDir = Vec3(-1.f, -1.f, 0.f);
     m_ProgressEndDist = 2000.f;
 
-    m_CurSetup = CameraSetup::PROGRESS;
+    m_Setup = CameraSetup::PROGRESS;
 }
 
 void CCameraController::tick()
@@ -127,7 +133,7 @@ void CCameraController::tick()
 
 void CCameraController::SetUpProc()
 {
-    switch (m_CurSetup)
+    switch (m_Setup)
     {
     case CameraSetup::NORMAL:
         break;
@@ -306,6 +312,69 @@ void CCameraController::Progress()
    m_LookDist = Lerp(m_ProgressStartDist, m_ProgressEndDist, t);
 }
 
+void CCameraController::ResetCamera()
+{
+    if (m_TargetPos == nullptr)
+        return;
+
+    m_TargetPos = m_Target->Transform()->GetWorldPos();
+    m_TargetPos += m_Offset;
+
+    m_PrevLookDir = m_LookDir;
+    m_CurLookDir = m_LookDir;
+    m_PrevLookAtPos = m_TargetPos;
+    m_CurLookAtPos = m_TargetPos;
+    m_PrevDistance = m_LookDist;
+    m_CurDistance = m_LookDist;
+
+    Vec3 ResetPos = CalCamPos(m_TargetPos, m_LookDir, m_LookDist);
+
+    m_LookEyePos = ResetPos;
+
+    Transform()->SetWorldPos(ResetPos);
+    Transform()->SetDirection(m_LookDir);
+
+}
+
+void CCameraController::ChangeMainTarget(CGameObject* _Target)
+{
+    m_Target = _Target;
+
+    ResetCamera();
+}
+
+void CCameraController::ChangeMainTarget(wstring _TargetName)
+{
+    SetMainTarget(_TargetName);
+
+    ResetCamera();
+}
+
+void CCameraController::ChangeLookSetting(Vec3 _LookDir, float _LookDist)
+{
+    m_LookDir = _LookDir;
+    m_LookDist = _LookDist;
+}
+
+void CCameraController::ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed, float _Threshold)
+{
+    m_MinSpeed = _MinSpeed;
+    m_MaxSpeed = _MaxSpeed;
+    m_ThresholdDistance = _Threshold;
+}
+
+void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist)
+{   
+    SetCameraSetup(CameraSetup::PROGRESS);
+
+    m_ProgressStartPos = _StartPos;
+    m_ProgressStartDir =_StartDir;
+    m_ProgressStartDist = _StartDist;
+    m_ProgressEndPos = _EndPos;
+    m_ProgressEndDir =_EndDir;
+    m_ProgressEndDist = _EndDist;
+}
+
 Vec3 CCameraController::CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist)
 {
     _LookDir.Normalize();
@@ -319,6 +388,7 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fwrite(&m_Offset, sizeof(Vec3), 1, _File);
     fwrite(&m_LookDir, sizeof(Vec3), 1, _File);
     fwrite(&m_LookDist, sizeof(float), 1, _File);
 
@@ -330,6 +400,7 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
     fwrite(&m_EditRotSpeed, sizeof(float), 1, _File);
     fwrite(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(float);
 
@@ -347,6 +418,7 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fread(&m_Offset, sizeof(Vec3), 1, _File);
     fread(&m_LookDir, sizeof(Vec3), 1, _File);
     fread(&m_LookDist, sizeof(float), 1, _File);
 
@@ -358,6 +430,7 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     fread(&m_EditRotSpeed, sizeof(float), 1, _File);
     fread(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(float);
 

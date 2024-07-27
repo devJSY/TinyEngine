@@ -11,7 +11,7 @@ enum class CameraSetup
 class CCameraController : public CScript
 {
 private:
-    CameraSetup                 m_CurSetup;             // 현재 카메라의 Setup
+    CameraSetup                 m_Setup;             // 현재 카메라의 Setup
 
     // Target
     CGameObject*                m_Target;               // 카메라가 바라봐야하는 타겟
@@ -53,10 +53,33 @@ private:
     float                       m_EditRotSpeed;         // EditMode에서의 카메라 회전 조절 속도
     float                       m_EditZoomSpeed;        // EditMode에서의 카메라 거리 조절 속도
 
+ public:
+    CameraSetup GetCameraSetup() const { return m_Setup; }
+    CGameObject* GetMainTarget() const { return m_Target; }
+    Vec3 GetOffset() const { return m_Offset; }
+    Vec3 GetLookDir() const { return m_LookDir; }
+    float GetLookDist() const { return m_LookDist; }
+    float GetMinSpeed() const { return m_MinSpeed; }
+    float GetMaxSpeed() const { return m_MaxSpeed; }
+    float GetThresholdDistance() const { return m_ThresholdDistance; }
+    float GetRotationSpeed() const { return m_RotationSpeed; }
+    float GetZoomSpeed() const { return m_ZoomSpeed; }
+
+    void SetCameraSetup(CameraSetup _Setup) { m_Setup = _Setup; }
+    void SetMainTarget(CGameObject* _Target) { m_Target = _Target; } 
+    void SetMainTarget(wstring _TargetName);
+    void SetOffset(Vec3 _Offset) { m_Offset = _Offset; }
+    void SetLookDir(Vec3 _LookDir) { m_LookDir = _LookDir; }
+    void SetLookDist(float _LookDist) { m_LookDist = _LookDist; }
+    void SetMinSpeed(float _MinSpeed) { m_MinSpeed = _MinSpeed; }
+    void SetMaxSpeed(float _MaxSpeed) { m_MaxSpeed = _MaxSpeed; }
+    void SetThresholdDistance(float _Threshold) { m_ThresholdDistance = _Threshold; }
+    void SetRotationSpeed(float _RotationSpeed) { m_RotationSpeed = _RotationSpeed; }
+    void SetZoomSpeed(float _ZoomSpeed) { m_ZoomSpeed = _ZoomSpeed; }
+
 public:
     virtual void begin() override;
     virtual void tick() override;
-
 
 private:
     void SetUpProc();
@@ -72,9 +95,12 @@ private:
     void Progress();
 
 public:
-    //void ChangeTarget();
-    //void ChangeSetting(Vec3 _LookDir, float CamDist, );
-    //void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist);
+    void ResetCamera(); // 현재의 설정값들로 카메라를 바로 이동한다.
+    void ChangeMainTarget(CGameObject* _Target); // Target 변경 후 카메라 강제 이동
+    void ChangeMainTarget(wstring _TargetName); // Target 변경 후 카메라 강제 이동 
+    void ChangeLookSetting(Vec3 _LookDir, float _LookDist); // Look Setting 변경
+    void ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed, float _Threshold); // Follow Setting 변경
+    void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
 
 
 public:
