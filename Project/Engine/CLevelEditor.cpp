@@ -105,7 +105,7 @@ void CLevelEditor::finaltick()
     if (nullptr != pSelectedObj && !prevUsingGuizmo && ImGuizmo::IsUsing() && (ImGuizmo::OPERATION::TRANSLATE & m_GizmoType) &&
         (KEY_TAP(KEY::LALT) || KEY_PRESSED(KEY::LALT)))
     {
-        GamePlayStatic::CloneGameObject(pSelectedObj);
+        GamePlayStatic::CloneGameObject(pSelectedObj, pSelectedObj->GetParent());
     }
 
     prevUsingGuizmo = ImGuizmo::IsUsing();

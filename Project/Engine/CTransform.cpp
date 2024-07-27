@@ -212,7 +212,16 @@ Vec3 CTransform::GetWorldScale() const
 
 void CTransform::SetWorldScale(Vec3 _Scale)
 {
-    m_bAbsolute = true;
+    if (!m_bAbsolute)
+    {
+        CGameObject* pParent = GetOwner()->GetParent();
+        if (nullptr != pParent)
+        {
+            Vec3 ParentWorldScale = pParent->Transform()->GetWorldScale();
+            _Scale = _Scale / ParentWorldScale;
+        }
+    }
+
     SetLocalScale(_Scale);
 }
 

@@ -787,17 +787,28 @@ void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
 void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
 {
     CGameObject* OriginObject = (CGameObject*)_Task.Param_1;
+    CGameObject* OriginParentObject = (CGameObject*)_Task.Param_2;
 
     // 레이어에 속해있지않은 오브젝트는 복사하지 않음
     if (-1 == OriginObject->m_iLayerIdx)
         return;
 
     CGameObject* CloneObj = OriginObject->Clone();
-    CloneObj->Transform()->SetLocalPos(OriginObject->Transform()->GetWorldPos());
-    CloneObj->Transform()->SetLocalRotation(OriginObject->Transform()->GetWorldRotation());
-    CloneObj->Transform()->SetLocalScale(OriginObject->Transform()->GetWorldScale());
 
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
+    if (nullptr == OriginParentObject)
+    {
+        CloneObj->Transform()->SetLocalPos(OriginObject->Transform()->GetWorldPos());
+        CloneObj->Transform()->SetLocalRotation(OriginObject->Transform()->GetWorldRotation());
+        CloneObj->Transform()->SetLocalScale(OriginObject->Transform()->GetWorldScale());
+        CloneObj->Transform()->SetAbsolute(true);
+
+        CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
+    }
+    else
+    {
+        GamePlayStatic::AddChildObject(OriginParentObject, CloneObj);
+    }
+
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);
 }
 

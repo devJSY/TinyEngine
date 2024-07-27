@@ -258,6 +258,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
+        pShader->AddScalarParam(FLOAT_0, "UV Scale", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Mask UV Scale", 0.1f);
+
         pShader->AddTexParam(TEX_0, "Albedo0 Texture");
         pShader->AddTexParam(TEX_1, "MRA0 Texture");
         pShader->AddTexParam(TEX_2, "Normal0 Texture");
@@ -265,8 +268,36 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_3, "Albedo1 Texture");
         pShader->AddTexParam(TEX_4, "MRA1 Texture");
         pShader->AddTexParam(TEX_5, "Normal1 Texture");
+        
+        pShader->AddTexParam(TEX_6, "Mask Texture");
 
         pShader->SetName(L"KirbyMapShader");
         AddAsset(L"KirbyMapShader", pShader);
+    }
+
+    // =================================
+    // Transparent Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\TransparentPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(FLOAT_0, "UV Scale", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Albedo Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Height Texture");
+        pShader->AddTexParam(TEX_7, "Emissive Texture");
+
+        pShader->SetName(L"TransparentShader");
+        AddAsset(L"TransparentShader", pShader);
     }
 }
