@@ -44,5 +44,6 @@ CCanJuice
 CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
+CCameraController
 CElfilisFSM
 CBossMgr

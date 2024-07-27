@@ -50,7 +50,7 @@ void CKirbyAbility_Cutter::AttackEnter()
     KirbyFront.y = 0.f;
     KirbyFront.Normalize();
 
-    Vec3 Offset = Vec3(0.f, 50.f, 0.f);
+    Vec3 Offset = Vec3(0.f, 100.f, 0.f);
 
     // Transform
     InstObj->Transform()->SetWorldPos(KirbyPos + Offset);

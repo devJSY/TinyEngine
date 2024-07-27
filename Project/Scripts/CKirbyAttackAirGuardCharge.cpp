@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "CKirbyAttackAirGuardCharge.h"
-#define PLAYTIME 0.5f
 
 CKirbyAttackAirGuardCharge::CKirbyAttackAirGuardCharge()
     : m_PrevGravity(0.f)
     , m_AccTime(0.f)
+    , m_PlayTime(0.5f)
     , m_bEnter(false)
 {
 }
@@ -16,7 +16,7 @@ CKirbyAttackAirGuardCharge::~CKirbyAttackAirGuardCharge()
 void CKirbyAttackAirGuardCharge::tick()
 {
     m_AccTime += DT;
-    if (m_bEnter && m_AccTime >= PLAYTIME)
+    if (m_bEnter && m_AccTime >= m_PlayTime)
     {
         //@Effect Â÷Â¡¿Ï·á ÀÌÆåÆ®
         PLAYERCTRL->SetGravity(-0.5f);
@@ -24,7 +24,7 @@ void CKirbyAttackAirGuardCharge::tick()
 
     if (KEY_RELEASED(KEY_GUARD) || KEY_NONE(KEY_GUARD) || KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
     {
-        if (m_AccTime < PLAYTIME)
+        if (m_AccTime < m_PlayTime)
         {
             ChangeState(L"JUMP_FALL");
         }
