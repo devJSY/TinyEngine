@@ -54,11 +54,16 @@ void CCameraController::begin()
     }
 
     // 카메라 세팅
-    Vec3 InitPos = CalCamPos(m_Target->Transform()->GetWorldPos(), m_LookDir, m_LookDist);
+    m_TargetPos = m_Target->Transform()->GetWorldPos();
 
-    m_LookEyePos = InitPos;
     m_PrevLookDir = m_LookDir;
     m_CurLookDir = m_LookDir;
+    m_PrevLookAtPos = m_TargetPos;
+    m_CurLookAtPos = m_TargetPos;
+
+    Vec3 InitPos = CalCamPos(m_TargetPos, m_LookDir, m_LookDist);
+    
+    m_LookEyePos = InitPos;
 
     Transform()->SetWorldPos(InitPos);
     Transform()->SetDirection(m_LookDir);
@@ -174,7 +179,7 @@ void CCameraController::EditMode()
         // Right
         if (KEY_PRESSED(KEY::D))
         {
-            Quaternion rotation = Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::UP), RotSpeed);
+            Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Up, RotSpeed);
             m_LookDir = Vector3::Transform(m_LookDir, rotation);
             m_LookDir.Normalize();
         }
@@ -182,7 +187,7 @@ void CCameraController::EditMode()
         // Left
         if (KEY_PRESSED(KEY::A))
         {
-            Quaternion rotation = Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::UP), -RotSpeed);
+            Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Up, -RotSpeed);
             m_LookDir = Vector3::Transform(m_LookDir, rotation);
             m_LookDir.Normalize();
         }
