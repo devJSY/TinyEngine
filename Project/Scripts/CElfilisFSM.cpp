@@ -82,6 +82,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
     {
     case ElfilisStateGroup::GroundMove:
     case ElfilisStateGroup::GroundMoveAtk: {
+        //@TODO 전이확인시 복구
+        return ElfilisStateGroup::GroundIdle;
+
         float Rand = GetRandomfloat(1, 100);
         if (Rand <= 90.f)
         {
@@ -89,7 +92,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
         }
         else
         {
-            return ElfilisStateGroup::GroundToAir;
+            return ElfilisStateGroup::GroundAtk;
         }
     }
     break;
@@ -157,11 +160,13 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 }
 
 #include "CElfilisG_Idle.h"
+#include "CElfilisG_BackStep.h"
 #include "CElfilisG_NormalAtkL.h"
 void CElfilisFSM::begin()
 {
     // State 추가
-    AddGroupPublicState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisG_Idle);
+    AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
+    AddGroupPublicState(ElfilisStateGroup::GroundMove, L"BACKSTEP", new CElfilisG_BackStep);
     AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_L", new CElfilisG_NormalAtkL);
     // AddGroupPrivateState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisGroundIdle);
 
@@ -193,7 +198,7 @@ void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)
     // check count
     switch (_Group)
     {
-    case ElfilisStateGroup::GrondIdle:
+    case ElfilisStateGroup::GroundIdle:
         break;
     case ElfilisStateGroup::GroundMove:
     case ElfilisStateGroup::GroundMoveAtk:

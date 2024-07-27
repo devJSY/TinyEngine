@@ -126,6 +126,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CElfilisG_Idle.h" />
     <ClInclude Include="CElfilisG_NormalAtkL.h" />
+    <ClInclude Include="CElfilisG_Teleport.h" />
     <ClInclude Include="CElfilisUnit.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
@@ -285,6 +286,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CElfilisG_Idle.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
+    <ClCompile Include="CElfilisG_Teleport.cpp" />
     <ClCompile Include="CElfilisUnit.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />

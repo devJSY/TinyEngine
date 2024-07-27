@@ -52,9 +52,7 @@ void CElfilisG_NormalAtkL::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start: {
-        // »∏¿¸ ∏ÿ√„
-    }
+    case StateStep::Start:
     break;
     case StateStep::Progress:
     break;

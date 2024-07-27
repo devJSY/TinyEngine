@@ -4,7 +4,7 @@
 class CElfilisG_BackStep : public CBossState
 {
 private:
-    StateStep m_Step;
+    float m_PrevDrag;
 
 public:
     virtual void tick();

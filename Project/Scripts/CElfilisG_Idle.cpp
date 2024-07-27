@@ -13,13 +13,19 @@ CElfilisG_Idle::~CElfilisG_Idle()
 
 void CElfilisG_Idle::tick()
 {
-    m_AccTime += DT;
-
-    if (m_AccTime >= 3.f)
+    if (KEY_TAP(KEY::SPACE))
     {
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundAtk);
-        //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
+        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
     }
+
+    //@TODO 텔레포트 후 복구
+    /*
+    m_AccTime += DT;
+    
+    if (m_AccTime >= 1.f)
+    {
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"Teleport");
+    }*/
 }
 
 void CElfilisG_Idle::Enter_Step()

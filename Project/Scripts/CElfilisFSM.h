@@ -83,7 +83,7 @@ enum class ElfilisA_ToGround
 
 enum class ElfilisStateGroup
 {
-    GrondIdle,
+    GroundIdle,
     GroundMove,
     GroundMoveAtk,
     GroundAtk,
@@ -124,8 +124,6 @@ public:
 
 private:
     void ChangStateGroup(ElfilisStateGroup _Group);
-
-private:
     void AddGroupPublicState(ElfilisStateGroup _Group, const wstring& _StateName, CState* _State);
     void AddGroupPrivateState(ElfilisStateGroup _Group, const wstring& _StateName, CState* _State);
 

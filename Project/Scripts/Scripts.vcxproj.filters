@@ -466,10 +466,13 @@
     <ClInclude Include="CElfilisUnit.h">
       <Filter>Scripts\Unit\Elfilis</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CBossState.h">
       <Filter>Module\FSM\State\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_BackStep.h">
+      <Filter>State\ElfilisState\Ground_Move\BackStep</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_Teleport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -949,10 +952,13 @@
     <ClCompile Include="CElfilisUnit.cpp">
       <Filter>Scripts\Unit\Elfilis</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CBossState.cpp">
       <Filter>Module\FSM\State\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="CElfilisG_BackStep.cpp">
+      <Filter>State\ElfilisState\Ground_Move\BackStep</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_Teleport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1482,6 +1488,9 @@
     </Filter>
     <Filter Include="Module\FSM\State\Boss">
       <UniqueIdentifier>{fef97aad-bf4f-4fd0-8591-f36ebbe95f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Move\Teleport">
+      <UniqueIdentifier>{9b82a117-0c37-402c-8d22-1265f5c282fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
