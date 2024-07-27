@@ -322,9 +322,6 @@
     <ClInclude Include="CBladeKnightScript.h">
       <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClInclude>
-    <ClInclude Include="CMonsterUnitScript.h">
-      <Filter>Module\Unit</Filter>
-    </ClInclude>
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClInclude>
@@ -363,9 +360,6 @@
     </ClInclude>
     <ClInclude Include="CAttackAreaScript.h">
       <Filter>Scripts\Character\Monster\Utill\AttackArea</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonsterATKScript.h">
-      <Filter>Module\Unit</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyObject_Cone.h">
       <Filter>State\KirbyObject\Cone</Filter>
@@ -448,6 +442,22 @@
     <ClInclude Include="CKirbyWeaponHitbox.h">
       <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisFSM.h">
+      <Filter>Scripts\FSM\ElfilisFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossMgr.h">
+      <Filter>Scripts\Manager\BossManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterUnitScript.h">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterATKScript.h">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_Idle.h">
+      <Filter>State\ElfilisState\Ground_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkL.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -783,9 +793,6 @@
     <ClCompile Include="CBladeKnightScript.cpp">
       <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClCompile>
-    <ClCompile Include="CMonsterUnitScript.cpp">
-      <Filter>Module\Unit</Filter>
-    </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClCompile>
@@ -824,9 +831,6 @@
     </ClCompile>
     <ClCompile Include="CFireProjectileScript.cpp">
       <Filter>Scripts\Character\Monster\Utill\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterATKScript.cpp">
-      <Filter>Module\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyObject_Cone.cpp">
       <Filter>State\KirbyObject\Cone</Filter>
@@ -909,6 +913,22 @@
     <ClCompile Include="CKirbyWeaponHitbox.cpp">
       <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
     </ClCompile>
+    <ClCompile Include="CElfilisFSM.cpp">
+      <Filter>Scripts\FSM\ElfilisFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossMgr.cpp">
+      <Filter>Scripts\Manager\BossManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterUnitScript.cpp">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterATKScript.cpp">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_Idle.cpp">
+      <Filter>State\ElfilisState\Ground_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1390,6 +1410,30 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss">
+      <UniqueIdentifier>{ca2bb89e-0c43-470c-937a-2b2eb14d0e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis">
+      <UniqueIdentifier>{ea04c97a-2555-48e5-b309-f7875da86715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\ElfilisFSM">
+      <UniqueIdentifier>{2dfb00e1-42cb-48e7-bb90-fa6be32b5d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState">
+      <UniqueIdentifier>{ee60a5d2-ec49-49c7-893f-fbd738e40552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\BossManager">
+      <UniqueIdentifier>{57d0ba7e-f2f0-47c5-a66c-0dba39c17443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\Unit\Boss">
+      <UniqueIdentifier>{ccdcd1c4-2a95-41f1-a0da-204da4ef02a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\Unit\Monster">
+      <UniqueIdentifier>{0ef09774-61f4-4d77-a6ac-a65504d16c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Idle">
+      <UniqueIdentifier>{0c33e58f-bc3c-4cfa-ac38-fb7c56fe6416}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

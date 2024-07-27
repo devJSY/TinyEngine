@@ -47,6 +47,8 @@
 #include "CMonsterTest.h"
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
+#include "CElfilisFSM.h"
+#include "CBossMgr.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -96,6 +98,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterTest");
 	_vec.push_back(L"CMomentaryObjScript");
 	_vec.push_back(L"CKirbyWeaponHitbox");
+	_vec.push_back(L"CElfilisFSM");
+	_vec.push_back(L"CBossMgr");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -192,6 +196,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMomentaryObjScript;
 	if (L"CKirbyWeaponHitbox" == _strScriptName)
 		return new CKirbyWeaponHitbox;
+	if (L"CElfilisFSM" == _strScriptName)
+		return new CElfilisFSM;
+	if (L"CBossMgr" == _strScriptName)
+		return new CBossMgr;
 	return nullptr;
 }
 
@@ -291,6 +299,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CMomentaryObjScript;
 	case (UINT)SCRIPT_TYPE::KIRBYWEAPONHITBOX:
 		return new CKirbyWeaponHitbox;
+	case (UINT)SCRIPT_TYPE::ELFILISFSM:
+		return new CElfilisFSM;
+	case (UINT)SCRIPT_TYPE::BOSSMGR:
+		return new CBossMgr;
 	}
 	return nullptr;
 }
@@ -391,6 +403,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CMomentaryObjScript";
 	case SCRIPT_TYPE::KIRBYWEAPONHITBOX:
 		return L"CKirbyWeaponHitbox";
+	case SCRIPT_TYPE::ELFILISFSM:
+		return L"CElfilisFSM";
+	case SCRIPT_TYPE::BOSSMGR:
+		return L"CBossMgr";
 	}
 	return nullptr;
 }

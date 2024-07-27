@@ -117,8 +117,12 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CBossMgr.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CElfilisFSM.h" />
+    <ClInclude Include="CElfilisG_Idle.h" />
+    <ClInclude Include="CElfilisG_NormalAtkL.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
@@ -268,8 +272,12 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CBossMgr.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CElfilisFSM.cpp" />
+    <ClCompile Include="CElfilisG_Idle.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />

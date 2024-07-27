@@ -309,8 +309,6 @@ void CKirbyFSM::begin()
 
 void CKirbyFSM::tick()
 {
-    Vec3 BackDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP).Cross(PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT)).Normalize();
-
     if (m_ComboLevel != 0)
     {
         m_ComboAccTime += DT;
