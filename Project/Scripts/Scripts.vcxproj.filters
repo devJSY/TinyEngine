@@ -1397,5 +1397,8 @@
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\CameraMove\Trigger Script">
+      <UniqueIdentifier>{d4512d6d-bf9a-4d23-9fd1-16dc78b66641}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
