@@ -258,8 +258,8 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-        pShader->AddScalarParam(FLOAT_0, "UV Scale", 0.1f);
-        pShader->AddScalarParam(FLOAT_1, "Mask UV Scale", 0.1f);
+        pShader->AddScalarParam(FLOAT_0, "Albedo0 UV Scale", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Albedo1 UV Scale", 0.1f);
 
         pShader->AddTexParam(TEX_0, "Albedo0 Texture");
         pShader->AddTexParam(TEX_1, "MRA0 Texture");
@@ -268,8 +268,6 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_3, "Albedo1 Texture");
         pShader->AddTexParam(TEX_4, "MRA1 Texture");
         pShader->AddTexParam(TEX_5, "Normal1 Texture");
-        
-        pShader->AddTexParam(TEX_6, "Mask Texture");
 
         pShader->SetName(L"KirbyMapShader");
         AddAsset(L"KirbyMapShader", pShader);

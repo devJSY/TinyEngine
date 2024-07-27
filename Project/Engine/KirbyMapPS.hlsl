@@ -13,15 +13,13 @@
 #define MRA1Tex g_tex_4
 #define Noraml1Tex g_tex_5
 
-#define MaskTex g_tex_6
-
 #define MtrlAlbedo g_vAlbedo
 #define MtrlMetallic g_vMetallic
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
 
-#define UVScale g_float_0
-#define MaskUVScale g_float_1
+#define Albedo0UVScale g_float_0
+#define Albedo1UVScale g_float_1
 
 struct PS_OUT
 {
@@ -40,22 +38,8 @@ PS_OUT main(PS_IN input)
     PS_OUT output0 = (PS_OUT) 0.f;
     PS_OUT output1 = (PS_OUT) 0.f;
     
-    float2 vUV = input.vUV0;
-    
-    if (MaskUVScale > 0.f)
-    {
-        input.vUV0 = vUV * (1.f / MaskUVScale);
-    }
-    
-    float MaskAlpha = g_btex_6 ? MaskTex.Sample(g_LinearWrapSampler, input.vUV0).x : 1.f;
-    
-    if (UVScale > 0.f)
-    {
-        input.vUV0 = vUV * (1.f / UVScale);
-    }
-
-    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
-    float4 albedo1 = g_btex_3 ? Albedo1Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
+    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, Albedo0UVScale > 0.f ? input.vUV0 * (1.f / Albedo0UVScale) : input.vUV0) : (float4) 0.f;
+    float4 albedo1 = g_btex_3 ? Albedo1Tex.Sample(g_LinearWrapSampler, Albedo1UVScale > 0.f ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0) : (float4) 0.f;
     
     albedo0.rgb *= albedo0.a;
     albedo1.rgb *= albedo1.a;
@@ -112,8 +96,12 @@ PS_OUT main(PS_IN input)
         output1.vMRA = float4(metallic, roughness, ao, 1.f);
     }
     
+    // 바인딩되어있는 텍스춰가 존재하는 경우
     if (bDirty)
     {
+        // G 채널값을 알파블랜딩 가중치로 사용
+        float MaskAlpha = input.vColor.g;
+        
         output.vColor = (output0.vColor * MaskAlpha) + (output1.vColor * (1.f - MaskAlpha));
         output.vPosition = float4(input.vPosWorld, 1.f);
         output.vNormal = (output0.vNormal * MaskAlpha) + (output1.vNormal * (1.f - MaskAlpha));

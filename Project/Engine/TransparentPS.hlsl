@@ -15,7 +15,6 @@
 #define MtrlEmission g_vEmission
 
 #define UVScale g_float_0
-#define ALPHA g_float_1
 
 float4 main(PS_IN input) : SV_TARGET
 {
