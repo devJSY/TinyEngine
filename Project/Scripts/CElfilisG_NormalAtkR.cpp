@@ -74,10 +74,7 @@ void CElfilisG_NormalAtkR::Exit_Step()
 void CElfilisG_NormalAtkR::Start()
 {
     // rotate
-    Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-    Dir.y = 0.f;
-    Dir.Normalize();
-    GetOwner()->Transform()->Slerp(Dir, 1.f);
+    RotateToPlayer();
 
     if (GetOwner()->Animator()->IsFinish())
     {

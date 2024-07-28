@@ -16,7 +16,8 @@ void CElfilisG_Idle::tick()
     if (KEY_TAP(KEY::SPACE))
     {
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_RAYARROW");
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP");
+        //ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_RAYARROW");
     }
 
     //@TODO 테스트 후 복구

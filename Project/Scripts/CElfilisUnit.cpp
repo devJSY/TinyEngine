@@ -4,7 +4,7 @@
 CElfilisUnit::CElfilisUnit()
     : CUnitScript(ELFILISUNIT)
 {
-    UnitInfo KirbyInfo = {
+    UnitInfo ElfilisInfo = {
         2000.f, // HP
         2000.f, // MaxHP
         10.f,  // Speed
@@ -12,7 +12,7 @@ CElfilisUnit::CElfilisUnit()
         10.f,  // JumpPower
         0.f,   // ATK
     };
-    SetInitInfo(KirbyInfo);
+    SetInitInfo(ElfilisInfo);
 
     //AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
     //AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
@@ -39,7 +39,15 @@ CElfilisUnit::~CElfilisUnit()
 UINT CElfilisUnit::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-
+    UnitInfo ElfilisInfo = {
+        2000.f, // HP
+        2000.f, // MaxHP
+        10.f,   // Speed
+        10.f,   // Rotation Speed
+        10.f,   // JumpPower
+        0.f,    // ATK
+    };
+    SetInitInfo(ElfilisInfo);
     MemoryByte += CUnitScript::SaveToLevelFile(_File);
 
     return MemoryByte;
@@ -50,6 +58,14 @@ UINT CElfilisUnit::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CUnitScript::LoadFromLevelFile(_File);
-
+    UnitInfo ElfilisInfo = {
+        2000.f, // HP
+        2000.f, // MaxHP
+        10.f,   // Speed
+        10.f,   // Rotation Speed
+        10.f,   // JumpPower
+        0.f,    // ATK
+    };
+    SetInitInfo(ElfilisInfo);
     return MemoryByte;
 }

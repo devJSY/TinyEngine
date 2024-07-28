@@ -73,10 +73,7 @@ void CElfilisG_BackStep::Exit_Step()
 void CElfilisG_BackStep::Start()
 {
     // look player
-    Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-    Dir.y = 0.f;
-    Dir.Normalize();
-    GetOwner()->Transform()->Slerp(Dir, 1.f);
+    RotateToPlayer(DT * 20.f);
 
     if (GetOwner()->Animator()->IsFinish())
     {

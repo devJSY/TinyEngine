@@ -2,6 +2,7 @@
 #include "CState.h"
 #include "CBossMgr.h"
 #include "CPlayerMgr.h"
+#include "CUnitScript.h"
 
 class CBossState : public CState
 {
@@ -14,9 +15,11 @@ public:
     virtual void Exit() override;
 
 protected:
-    void ChangeStep(StateStep _Step);
     virtual void Enter_Step() = 0;
     virtual void Exit_Step() = 0;
+
+    void ChangeStep(StateStep _Step);
+    void RotateToPlayer(float _delta = 0.f);
 
 public:
     CBossState* Clone() = 0;

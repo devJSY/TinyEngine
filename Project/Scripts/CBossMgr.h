@@ -21,7 +21,7 @@ public:
     void SetBoss(CGameObject* _BossObj);
 
     static CGameObject* GetBoss() { return m_Boss; }
-    static CUnitScript* GetBossScript() { return m_BossUnit; }
+    static CUnitScript* GetBossUnit() { return m_BossUnit; }
     static CFSMScript* GetBossFSM() { return m_BossFSM; }
 
 public:
