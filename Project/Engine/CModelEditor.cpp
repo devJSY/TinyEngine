@@ -113,6 +113,7 @@ void CModelEditor::init()
     m_ViewportCam->SetFOV(XM_PIDIV4);
     m_ViewportCam->SetFar(10000.f);
     m_ViewportCam->SetHDRI(true);
+    m_ViewportCam->SetCameraPriority(-100);
 
     // Light
     m_LightObj = new CGameObjectEx;
@@ -126,6 +127,7 @@ void CModelEditor::init()
     m_LightObj->Light()->SetLightRadiance(Vec3(0.5f, 0.5f, 0.5f));
     m_LightObj->Light()->SetRadius(5.f);
     m_LightObj->Light()->SetShadowIdx(1);
+    m_LightObj->Light()->GetLightCam()->Camera()->SetCameraPriority(-100);
 
     // SkyBox
     m_SkyBoxObj = new CGameObjectEx;

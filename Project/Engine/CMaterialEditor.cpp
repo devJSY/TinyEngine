@@ -70,6 +70,7 @@ void CMaterialEditor::init()
     m_ViewportCam->SetFOV(XM_PI / 2.f);
     m_ViewportCam->SetFar(10000.f);
     m_ViewportCam->SetHDRI(true);
+    m_ViewportCam->SetCameraPriority(-100);
 
     // Object
     m_ViewportObj = new CGameObjectEx;
@@ -94,6 +95,7 @@ void CMaterialEditor::init()
     m_LightObj->Light()->SetLightType(LIGHT_TYPE::POINT);
     m_LightObj->Light()->SetLightRadiance(Vec3(2.f, 2.f, 2.f));
     m_LightObj->Light()->SetRadius(10.f);
+    m_LightObj->Light()->GetLightCam()->Camera()->SetCameraPriority(-100);
 
     m_LightBuffer = new CStructuredBuffer;
     m_LightBuffer->Create(sizeof(tLightInfo), 1, SB_TYPE::READ_ONLY, true);
