@@ -90,11 +90,12 @@ void GamePlayStatic::WindowResize(int width, int height)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
-void GamePlayStatic::CloneGameObject(CGameObject* _OriginObj)
+void GamePlayStatic::CloneGameObject(CGameObject* _OriginObj, CGameObject* _OriginParentObj)
 {
     tTask task;
     task.Type = TASK_TYPE::CLONE_OBJECT;
     task.Param_1 = (DWORD_PTR)_OriginObj;
+    task.Param_2 = (DWORD_PTR)_OriginParentObj;
 
     CTaskMgr::GetInst()->AddTask(task);
 }
