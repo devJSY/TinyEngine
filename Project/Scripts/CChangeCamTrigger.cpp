@@ -1,20 +1,22 @@
 #include "pch.h"
 #include "CChangeCamTrigger.h"
 
-#include <Engine/CRenderMgr.h>
 #include "CCameraController.h"
 
 CChangeCamTrigger::CChangeCamTrigger()
     : CScript(CHANGECAMTRIGGER)
     , m_bIsReturn(false)
+    , m_bChangeOffset(false)
     , m_bChangedir(false)
     , m_bChangeDist(false)
     , m_bChangeRotationSpeed(false)
     , m_bChangeZoomspeed(false)
+    , m_ChangeOffset(Vec3(0.f,0.f,0.f))
     , m_ChangeLookDir(Vec3(0.f, 0.f, 0.f))
     , m_ChangeLookDist(1500.f)
     , m_RotationSpeed(50.f)
     , m_ZoomSpeed(500.f)
+    , m_UndoOffset(Vec3(0.f,0.f,0.f))
     , m_UndoDir(Vec3(0.f, 0.f, 0.f))
     , m_UndoDist(1500.f)
     , m_UndoRotataionSpeed(50.f)
@@ -22,6 +24,9 @@ CChangeCamTrigger::CChangeCamTrigger()
 
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bIsReturn, "Setting Return");
+
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bChangeOffset, "Change Offset");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_ChangeOffset, "Offset");
 
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bChangedir, "Change Direction");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_ChangeLookDir, "Direction");
@@ -39,20 +44,26 @@ CChangeCamTrigger::CChangeCamTrigger()
 CChangeCamTrigger::CChangeCamTrigger(const CChangeCamTrigger& _Origin)
     : CScript(CHANGECAMTRIGGER)
     , m_bIsReturn(_Origin.m_bIsReturn)
+    , m_bChangeOffset(_Origin.m_bChangeOffset)
     , m_bChangedir(_Origin.m_bChangedir)
     , m_bChangeDist(_Origin.m_bChangeDist)
     , m_bChangeRotationSpeed(_Origin.m_bChangeRotationSpeed)
     , m_bChangeZoomspeed(_Origin.m_bChangeZoomspeed)
+    , m_ChangeOffset(_Origin.m_ChangeOffset)
     , m_ChangeLookDir(_Origin.m_ChangeLookDir)
     , m_ChangeLookDist(_Origin.m_ChangeLookDist)
     , m_RotationSpeed(_Origin.m_RotationSpeed)
     , m_ZoomSpeed(_Origin.m_ZoomSpeed)
+    , m_UndoOffset(_Origin.m_UndoOffset)
     , m_UndoDir(_Origin.m_UndoDir)
     , m_UndoDist(_Origin.m_UndoDist)
     , m_UndoRotataionSpeed(_Origin.m_UndoRotataionSpeed)
     , m_UndoZoomSpeed(_Origin.m_UndoZoomSpeed)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bIsReturn, "Setting Return");
+
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bChangeOffset, "Change Offset");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_ChangeOffset, "Offset");
 
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bChangedir, "Change Direction");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_ChangeLookDir, "Direction");
@@ -73,7 +84,8 @@ CChangeCamTrigger::~CChangeCamTrigger()
 
 void CChangeCamTrigger::begin()
 {
-    m_MainCamController = CRenderMgr::GetInst()->GetMainCamera()->GetOwner()->GetScript<CCameraController>();
+    m_MainCamController = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera")->GetScript<CCameraController>();
+
 
     if (m_MainCamController == nullptr)
         return;
@@ -93,6 +105,11 @@ void CChangeCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (m_bIsReturn)
     {
+        if (m_bChangeOffset)
+        {
+            m_UndoOffset = m_MainCamController->GetOffset();
+        }
+
         if (m_bChangedir)
         {
             m_UndoDir = m_MainCamController->GetLookDir();
@@ -111,6 +128,11 @@ void CChangeCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
         }
     }
 
+    if (m_bChangeOffset)
+    {
+        m_MainCamController->SetOffset(m_ChangeOffset);
+    }
+
     if (m_bChangedir)
     {
         m_MainCamController->SetLookDir(m_ChangeLookDir);
@@ -120,13 +142,14 @@ void CChangeCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
     {
         m_MainCamController->SetLookDist(m_ChangeLookDist);
     }
+
     if (m_bChangeRotationSpeed)
     {
-        m_MainCamController->SetRotationSpeed(m_bChangeRotationSpeed);
+        m_MainCamController->SetRotationSpeed(m_RotationSpeed);
     }
     if (m_bChangeZoomspeed)
     {
-        m_MainCamController->SetZoomSpeed(m_bChangeZoomspeed);
+        m_MainCamController->SetZoomSpeed(m_ZoomSpeed);
     }
 }
 
@@ -137,6 +160,11 @@ void CChangeCamTrigger::OnTriggerExit(CCollider* _OtherCollider)
 
     if (false == m_bIsReturn)
         return;
+
+    if (m_bChangeOffset)
+    {
+        m_MainCamController->SetOffset(m_UndoOffset);
+    }
 
     if (m_bChangedir)
     {
@@ -163,6 +191,9 @@ UINT CChangeCamTrigger::SaveToLevelFile(FILE* _File)
 
     fwrite(&m_bIsReturn, sizeof(bool), 1, _File);
 
+    fwrite(&m_bChangeOffset, sizeof(bool), 1, _File);
+    fwrite(&m_ChangeOffset, sizeof(Vec3), 1, _File);
+
     fwrite(&m_bChangedir, sizeof(bool), 1, _File);
     fwrite(&m_ChangeLookDir, sizeof(Vec3), 1, _File);
 
@@ -176,6 +207,10 @@ UINT CChangeCamTrigger::SaveToLevelFile(FILE* _File)
     fwrite(&m_ZoomSpeed, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(bool);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(Vec3);
 
@@ -197,6 +232,9 @@ UINT CChangeCamTrigger::LoadFromLevelFile(FILE* _File)
 
     fread(&m_bIsReturn, sizeof(bool), 1, _File);
 
+    fread(&m_bChangeOffset, sizeof(bool), 1, _File);
+    fread(&m_ChangeOffset, sizeof(Vec3), 1, _File);
+
     fread(&m_bChangedir, sizeof(bool), 1, _File);
     fread(&m_ChangeLookDir, sizeof(Vec3), 1, _File);
 
@@ -210,6 +248,10 @@ UINT CChangeCamTrigger::LoadFromLevelFile(FILE* _File)
     fread(&m_ZoomSpeed, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(bool);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(Vec3);
 

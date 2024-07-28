@@ -454,6 +454,9 @@
     <ClInclude Include="CChangeCamTrigger.h">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClInclude>
+    <ClInclude Include="CProgressCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -919,6 +922,9 @@
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
     <ClCompile Include="CChangeCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CProgressCamTrigger.cpp">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClCompile>
   </ItemGroup>

@@ -308,6 +308,7 @@ void CCameraController::Progress()
    Quat StartQuat = VectorToQuaternion(m_ProgressStartDir);
    Quat EndQuat = VectorToQuaternion(m_ProgressEndDir);
    Quat SlerpQuat = Quat::Slerp(StartQuat, EndQuat, t);
+   m_Offset = Vector3::Lerp(m_ProgressStartOffset, m_ProgressEndOffset, t);
    m_LookDir = QuaternionToVector(SlerpQuat);
    m_LookDist = Lerp(m_ProgressStartDist, m_ProgressEndDist, t);
 }
@@ -363,9 +364,13 @@ void CCameraController::ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed
     m_ThresholdDistance = _Threshold;
 }
 
-void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist)
+void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir,
+                                      float _StartDist, float _EndDist)
 {   
     SetCameraSetup(CameraSetup::PROGRESS);
+
+    m_ProgressStartOffset = _StartOffset;
+    m_ProgressEndOffset = _EndOffset;
 
     m_ProgressStartPos = _StartPos;
     m_ProgressStartDir =_StartDir;
@@ -396,6 +401,9 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
     fwrite(&m_MaxSpeed, sizeof(float), 1, _File);
     fwrite(&m_ThresholdDistance, sizeof(float), 1, _File);
 
+    fwrite(&m_RotationSpeed, sizeof(float), 1, _File);
+    fwrite(&m_ZoomSpeed, sizeof(float), 1, _File);
+
     fwrite(&m_EditRotSpeed, sizeof(float), 1, _File);
     fwrite(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
@@ -404,6 +412,9 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
@@ -425,6 +436,9 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     fread(&m_MaxSpeed, sizeof(float), 1, _File);
     fread(&m_ThresholdDistance, sizeof(float), 1, _File);
 
+    fread(&m_RotationSpeed, sizeof(float), 1, _File);
+    fread(&m_ZoomSpeed, sizeof(float), 1, _File);
+
     fread(&m_EditRotSpeed, sizeof(float), 1, _File);
     fread(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
@@ -433,6 +447,9 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 

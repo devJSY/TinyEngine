@@ -11,16 +11,19 @@ private:
 
     bool m_bIsReturn;
 
+    bool m_bChangeOffset;
     bool m_bChangedir;
     bool m_bChangeDist;
     bool m_bChangeRotationSpeed;
     bool m_bChangeZoomspeed;
 
+    Vec3 m_ChangeOffset;
     Vec3 m_ChangeLookDir;
     float m_ChangeLookDist;
     float m_RotationSpeed;
     float m_ZoomSpeed;
 
+    Vec3 m_UndoOffset;
     Vec3 m_UndoDir;
     float m_UndoDist;
     float m_UndoRotataionSpeed;

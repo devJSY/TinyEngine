@@ -41,6 +41,8 @@ private:
     float                       m_PrevDistance;         // 이전 프레임에서 카메라와 LookAt의 거리
 
     // Progress Setup
+    Vec3                        m_ProgressStartOffset;
+    Vec3                        m_ProgressEndOffset;
     Vec3                        m_ProgressStartPos;
     Vec3                        m_ProgressStartDir;
     float                       m_ProgressStartDist;
@@ -90,9 +92,9 @@ private:
     
     Vec3 CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist);
     
+    void Progress();
     // EditMode
     void EditMode();
-    void Progress();
 
 public:
     void ResetCamera(); // 현재의 설정값들로 카메라를 바로 이동한다.
@@ -100,7 +102,7 @@ public:
     void ChangeMainTarget(wstring _TargetName); // Target 변경 후 카메라 강제 이동 
     void ChangeLookSetting(Vec3 _LookDir, float _LookDist); // Look Setting 변경
     void ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed, float _Threshold); // Follow Setting 변경
-    void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
+    void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
 
 
 public:
