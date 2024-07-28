@@ -1,16 +1,17 @@
 #include "pch.h"
-#include "CElfilisG_NormalAtkL.h"
+#include "CElfilisG_NormalAtkR.h"
 #include "CElfilisFSM.h"
 
-CElfilisG_NormalAtkL::CElfilisG_NormalAtkL()
+CElfilisG_NormalAtkR::CElfilisG_NormalAtkR()
+    : m_bComboSuccess(false)
 {
 }
 
-CElfilisG_NormalAtkL::~CElfilisG_NormalAtkL()
+CElfilisG_NormalAtkR::~CElfilisG_NormalAtkR()
 {
 }
 
-void CElfilisG_NormalAtkL::tick()
+void CElfilisG_NormalAtkR::tick()
 {
     switch (m_Step)
     {
@@ -29,26 +30,26 @@ void CElfilisG_NormalAtkL::tick()
     }
 }
 
-void CElfilisG_NormalAtkL::Enter_Step()
+void CElfilisG_NormalAtkR::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeftStart"), false, false, 2.5f, 0.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightStart"), false, false, 2.5f, 0.5f);
     }
     break;
     case StateStep::Progress: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeft"), false);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRight"), false);
     }
     break;
     case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeftEnd"), false, false, 1.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightEnd"), false, false, 1.5f);
     }
     break;
     }
 }
 
-void CElfilisG_NormalAtkL::Exit_Step()
+void CElfilisG_NormalAtkR::Exit_Step()
 {
     switch (m_Step)
     {
@@ -70,7 +71,7 @@ void CElfilisG_NormalAtkL::Exit_Step()
     }
 }
 
-void CElfilisG_NormalAtkL::Start()
+void CElfilisG_NormalAtkR::Start()
 {
     // rotate
     Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
@@ -84,7 +85,7 @@ void CElfilisG_NormalAtkL::Start()
     }
 }
 
-void CElfilisG_NormalAtkL::Progress()
+void CElfilisG_NormalAtkR::Progress()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -98,7 +99,15 @@ void CElfilisG_NormalAtkL::Progress()
         if (Rand <= 90)
         {
             m_bComboSuccess = true;
-            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R");
+
+            if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2) && ELFFSM->GetComboLevel() == 2)
+            {
+                ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_FINISHL");
+            }
+            else
+            {
+                ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L");
+            }
         }
         else
         {
@@ -107,7 +116,7 @@ void CElfilisG_NormalAtkL::Progress()
     }
 }
 
-void CElfilisG_NormalAtkL::End()
+void CElfilisG_NormalAtkR::End()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -115,7 +124,14 @@ void CElfilisG_NormalAtkL::End()
 
         if (NextState == ELFFSM->GetCurStateGroup())
         {
-            ELFFSM->RepeatState();
+            if (ELFFSM->GetPhase() == 1)
+            {
+                ELFFSM->RepeatState(L"GROUND_ATK_NORMAL_L");
+            }
+            else
+            {
+                ELFFSM->RepeatState(L"GROUND_ATK_NORMAL_R");
+            }
         }
         else
         {

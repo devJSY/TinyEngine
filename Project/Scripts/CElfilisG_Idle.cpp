@@ -16,17 +16,17 @@ void CElfilisG_Idle::tick()
     if (KEY_TAP(KEY::SPACE))
     {
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"TELEPORT");
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L");
     }
 
-    //@TODO 텔레포트 후 복구
-    /*
+    //@TODO 테스트 후 복구
+    return;
     m_AccTime += DT;
     
     if (m_AccTime >= 1.f)
     {
         ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"Teleport");
-    }*/
+    }
 }
 
 void CElfilisG_Idle::Enter_Step()

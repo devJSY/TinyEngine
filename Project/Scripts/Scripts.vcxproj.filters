@@ -475,6 +475,12 @@
     <ClInclude Include="CElfilisG_Teleport.h">
       <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkFinishL.h">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\FinishL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkR.h">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\R</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -962,6 +968,12 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_Teleport.cpp">
       <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkR.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\R</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1495,6 +1507,12 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_Move\Teleport">
       <UniqueIdentifier>{9b82a117-0c37-402c-8d22-1265f5c282fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\R">
+      <UniqueIdentifier>{1fae7785-993c-4291-9ba5-f139ef888757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\FinishL">
+      <UniqueIdentifier>{efa67b98-79be-466b-aaea-92fb8d696c3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

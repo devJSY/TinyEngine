@@ -1,19 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
 
-enum class ElfilisG_Idle
-{
-    Idle,
-    PUBLIC,
-};
-
-enum class ElfilisG_Move
-{
-    Teleport,
-    BackStep,
-    PUBLIC,
-};
-
 enum class ElfilisG_MoveAtk
 {
     TeleportNormalATK,
@@ -105,13 +92,15 @@ class CElfilisFSM : public CFSMScript
 private:
     map<ElfilisStateGroup, vector<wstring>[2]> m_StateGroup; // ( StateGroup, {{PublicStates}, {PrivateStates}} )
     ElfilisStateGroup m_CurStateGroup;
+    UINT m_Phase;
     UINT m_GroundAttackCount;
+    UINT m_ComboLevel;
     bool m_bAttackRepeat;
 
 public:
     void ChangeStateGroup_RandState(ElfilisStateGroup _Group);
     void ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstring& _State);
-    void RepeatState();
+    void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup();
 
 public:
@@ -119,8 +108,13 @@ public:
     virtual void tick() override;
 
 public:
+    void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
+    void AddComboLevel() { m_ComboLevel++; }
+
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;
+    UINT GetPhase() const { return m_Phase; }
+    UINT GetComboLevel() const { return m_ComboLevel; }
 
 private:
     void ChangStateGroup(ElfilisStateGroup _Group);

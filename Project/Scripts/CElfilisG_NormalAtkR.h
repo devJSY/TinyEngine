@@ -1,7 +1,7 @@
 #pragma once
 #include "CBossState.h"
 
-class CElfilisG_NormalAtkL : public CBossState
+class CElfilisG_NormalAtkR : public CBossState
 {
 private:
     bool m_bComboSuccess;
@@ -19,7 +19,7 @@ private:
     void End();
 
 public:
-    CLONE(CElfilisG_NormalAtkL)
-    CElfilisG_NormalAtkL();
-    virtual ~CElfilisG_NormalAtkL();
+    CLONE(CElfilisG_NormalAtkR)
+    CElfilisG_NormalAtkR();
+    virtual ~CElfilisG_NormalAtkR();
 };

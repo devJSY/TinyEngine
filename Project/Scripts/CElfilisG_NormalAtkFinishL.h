@@ -1,11 +1,8 @@
 #pragma once
 #include "CBossState.h"
 
-class CElfilisG_NormalAtkL : public CBossState
+class CElfilisG_NormalAtkFinishL : public CBossState
 {
-private:
-    bool m_bComboSuccess;
-
 public:
     virtual void tick() override;
 
@@ -19,7 +16,7 @@ private:
     void End();
 
 public:
-    CLONE(CElfilisG_NormalAtkL)
-    CElfilisG_NormalAtkL();
-    virtual ~CElfilisG_NormalAtkL();
+    CLONE(CElfilisG_NormalAtkFinishL)
+    CElfilisG_NormalAtkFinishL();
+    virtual ~CElfilisG_NormalAtkFinishL();
 };

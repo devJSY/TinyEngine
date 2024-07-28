@@ -5,7 +5,9 @@
 CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
     , m_CurStateGroup(ElfilisStateGroup::END)
+    , m_Phase(1)
     , m_GroundAttackCount(0)
+    , m_ComboLevel(0)
     , m_bAttackRepeat(false)
 {
     // 에피리스FSM은 GroundMove, GroundAtk, GroundToAir, / AirMove, AirSmallATK, AirBigATK, AirToGround State를 가짐
@@ -60,17 +62,31 @@ void CElfilisFSM::ChangeStateGroup_RandState(ElfilisStateGroup _Group)
 
 void CElfilisFSM::ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstring& _State)
 {
-    if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
+    //if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
+    if (m_StateGroup.find(_Group) == m_StateGroup.cend())
+        return;
+
+    vector<wstring>::iterator iter1 = find(m_StateGroup[_Group][0].begin(), m_StateGroup[_Group][0].end(), _State);
+    vector<wstring>::iterator iter2 = find(m_StateGroup[_Group][1].begin(), m_StateGroup[_Group][1].end(), _State);
+    if (iter1 == m_StateGroup[_Group][0].end() && iter2 == m_StateGroup[_Group][1].end())
         return;
 
     ChangStateGroup(_Group);
     ChangeState(_State);
 }
 
-void CElfilisFSM::RepeatState()
+void CElfilisFSM::RepeatState(wstring _State)
 {
     m_bAttackRepeat = true;
-    ChangeState(GetCurState()->GetName());
+
+    if (_State != L"")
+    {
+        ChangeState(_State);
+    }
+    else
+    {
+        ChangeState(GetCurState()->GetName());
+    }
 }
 
 ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
@@ -100,6 +116,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
         // case : 이미 같은 공격을 2번 반복한 이후
         if (m_bAttackRepeat)
         {
+            //@TODO 전이확인시 복구
+            return ElfilisStateGroup::GroundIdle;
+
             if (m_GroundAttackCount >= 2)
             {
                 return ElfilisStateGroup::GroundToAir;
@@ -125,6 +144,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
         // case : 최초 공격의 경우
         else
         {
+            //@TODO 전이확인시 복구
+            return ElfilisStateGroup::GroundAtk;
+
             float Rand = GetRandomfloat(1, 100);
             if (Rand <= 50.f)
             {
@@ -163,13 +185,17 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 #include "CElfilisG_BackStep.h"
 #include "CElfilisG_Teleport.h"
 #include "CElfilisG_NormalAtkL.h"
+#include "CElfilisG_NormalAtkR.h"
+#include "CElfilisG_NormalAtkFinishL.h"
 void CElfilisFSM::begin()
 {
     // State 추가
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"BACKSTEP", new CElfilisG_BackStep);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"TELEPORT", new CElfilisG_Teleport);
-    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_L", new CElfilisG_NormalAtkL);
+    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
+    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
     // AddGroupPrivateState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisGroundIdle);
 
     //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
