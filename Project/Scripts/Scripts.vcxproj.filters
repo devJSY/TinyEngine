@@ -451,6 +451,9 @@
     <ClInclude Include="CCameraController.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
+    <ClInclude Include="CChangeCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -914,6 +917,9 @@
     </ClCompile>
     <ClCompile Include="CCameraController.cpp">
       <Filter>Scripts\CameraMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CChangeCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

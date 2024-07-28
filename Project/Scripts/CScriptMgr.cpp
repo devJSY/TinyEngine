@@ -48,6 +48,7 @@
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
 #include "CCameraController.h"
+#include "CChangeCamTrigger.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -98,6 +99,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMomentaryObjScript");
 	_vec.push_back(L"CKirbyWeaponHitbox");
 	_vec.push_back(L"CCameraController");
+	_vec.push_back(L"CChangeCamTrigger");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -196,6 +198,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyWeaponHitbox;
 	if (L"CCameraController" == _strScriptName)
 		return new CCameraController;
+	if (L"CChangeCamTrigger" == _strScriptName)
+		return new CChangeCamTrigger;
 	return nullptr;
 }
 
@@ -297,6 +301,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyWeaponHitbox;
 	case (UINT)SCRIPT_TYPE::CAMERACONTROLLER:
 		return new CCameraController;
+	case (UINT)SCRIPT_TYPE::CHANGECAMTRIGGER:
+		return new CChangeCamTrigger;
 	}
 	return nullptr;
 }
@@ -399,6 +405,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyWeaponHitbox";
 	case SCRIPT_TYPE::CAMERACONTROLLER:
 		return L"CCameraController";
+	case SCRIPT_TYPE::CHANGECAMTRIGGER:
+		return L"CChangeCamTrigger";
 	}
 	return nullptr;
 }

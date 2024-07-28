@@ -314,7 +314,7 @@ void CCameraController::Progress()
 
 void CCameraController::ResetCamera()
 {
-    if (m_TargetPos == nullptr)
+    if (m_Target == nullptr)
         return;
 
     m_TargetPos = m_Target->Transform()->GetWorldPos();
@@ -396,7 +396,6 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
     fwrite(&m_MaxSpeed, sizeof(float), 1, _File);
     fwrite(&m_ThresholdDistance, sizeof(float), 1, _File);
 
-    // Edit Mode
     fwrite(&m_EditRotSpeed, sizeof(float), 1, _File);
     fwrite(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
@@ -426,7 +425,6 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     fread(&m_MaxSpeed, sizeof(float), 1, _File);
     fread(&m_ThresholdDistance, sizeof(float), 1, _File);
 
-    // Edit Mode
     fread(&m_EditRotSpeed, sizeof(float), 1, _File);
     fread(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
