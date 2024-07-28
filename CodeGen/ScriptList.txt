@@ -48,3 +48,5 @@ CCameraController
 CElfilisFSM
 CBossMgr
 CElfilisUnit
+CElfilisArrowSetScript
+CElfilisArrowScript

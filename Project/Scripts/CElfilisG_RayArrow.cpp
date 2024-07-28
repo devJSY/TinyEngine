@@ -1,14 +1,16 @@
 #include "pch.h"
 #include "CElfilisG_RayArrow.h"
 #include "CElfilisFSM.h"
+#include "CElfilisArrowSetScript.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
 CElfilisG_RayArrow::CElfilisG_RayArrow()
     : m_ArrowsPref(nullptr)
     , m_Arrows(nullptr)
+    , m_ArrowSet(nullptr)
 {
-    m_ArrowsPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisArrowSet.prefab");
+    m_ArrowsPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisArrowSet.pref");
 }
 
 CElfilisG_RayArrow::~CElfilisG_RayArrow()
@@ -52,8 +54,14 @@ void CElfilisG_RayArrow::Enter_Step()
         if (m_ArrowsPref != nullptr)
         {
             m_Arrows = m_ArrowsPref->Instantiate();
+            //m_Arrows->Transform()->SetWorldPos(PLAYER->Transform()->GetWorldPos());
+            m_ArrowSet = m_Arrows->GetScript<CElfilisArrowSetScript>();
+            if (m_ArrowSet)
+            {
+                m_ArrowSet->SetTarget(PLAYER);
+            }
+
             GamePlayStatic::SpawnGameObject(m_Arrows, LAYER_MONSTERATK_TRIGGER);
-            //@TODO 생성 알림
         }
     }
     break;
@@ -93,12 +101,6 @@ void CElfilisG_RayArrow::Start()
 
 void CElfilisG_RayArrow::Progress()
 {
-    if (m_Arrows)
-    {
-        //@TODO 커비추적
-        //@TODO 돌아가게
-    }
-
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Wait);
@@ -107,25 +109,12 @@ void CElfilisG_RayArrow::Progress()
 
 void CElfilisG_RayArrow::Wait()
 {
-    if (m_Arrows)
+    if (m_Arrows && m_ArrowSet)
     {
-        //@TODO 커비추적
-        //@TODO 돌아가게
-
-        //@TODO 만약 생성이 끝났다면 값 바꿈
-        //if (생성끝)
-        //{
-        //    // 공격알림
-        //    ChangeStep(StateStep::End);
-        //}
-    }
-
-    static float test = 0.f;
-    test += DT;
-
-    if (test > 2.f)
-    {
-        ChangeStep(StateStep::End);
+        if (m_ArrowSet->IsSpawnFinish())
+        {
+            ChangeStep(StateStep::End);
+        }
     }
 }
 

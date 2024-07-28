@@ -487,6 +487,12 @@
     <ClInclude Include="CElfilisG_NormalAtk.h">
       <Filter>State\ElfilisState\Ground_Attack\NormalAtk</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisArrowSetScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\ArrowSet</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisArrowScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -986,6 +992,12 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtk.cpp">
       <Filter>State\ElfilisState\Ground_Attack\NormalAtk</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisArrowSetScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\ArrowSet</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisArrowScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1528,6 +1540,12 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_Attack\RotSpear">
       <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\Arrow">
+      <UniqueIdentifier>{e962bc60-1d74-407d-a834-e8c632f406c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\ArrowSet">
+      <UniqueIdentifier>{649a8366-a2aa-43c9-9e47-c5a6e1c616ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,11 +1,14 @@
 #pragma once
 #include "CBossState.h"
 
+class CElfilisArrowSetScript;
+
 class CElfilisG_RayArrow : public CBossState
 {
 private:
     Ptr<CPrefab> m_ArrowsPref;
     CGameObject* m_Arrows;
+    CElfilisArrowSetScript* m_ArrowSet;
 
 public:
     virtual void tick() override;
