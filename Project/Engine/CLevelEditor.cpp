@@ -264,7 +264,7 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("New Default Kirby UI Level"))
             {
-                GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateDefaultPlayUILevel(), LEVEL_STATE::STOP);
+                GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateDefaultStartUILevel(), LEVEL_STATE::STOP);
             }
 
             ImGui::Separator();

@@ -10,6 +10,13 @@ CLevelChangeButtonScript::CLevelChangeButtonScript()
     AddScriptParam(SCRIPT_PARAM::STRING, &m_LevelName, "Level Name");
 }
 
+CLevelChangeButtonScript::CLevelChangeButtonScript(const CLevelChangeButtonScript& Origin)
+    : CButtonScript(Origin)
+    , m_LevelName(Origin.m_LevelName)
+{
+    AddScriptParam(SCRIPT_PARAM::STRING, &m_LevelName, "Level Name");
+}
+
 CLevelChangeButtonScript::~CLevelChangeButtonScript()
 {
 }

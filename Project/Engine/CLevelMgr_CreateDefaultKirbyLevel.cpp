@@ -386,6 +386,8 @@ CLevel* CLevelMgr::CreateDefaultStartUILevel()
     pCamObj->AddComponent(new CMeshRender);
     pCamObj->AddComponent(new CCamera);
 
+    pCamObj->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-68.5f), XMConvertToRadians(-62.f), 0.f));
+
     pCamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
     pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
     pCamObj->MeshRender()->SetFrustumCheck(false);
@@ -520,7 +522,7 @@ CLevel* CLevelMgr::CreateDefaultStartUILevel()
     // TODO : Prefab
     // UI_StartBtn
     {
-        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"UI_StartBtn.pref")->Instantiate();
+        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\UI_StartBtn.pref")->Instantiate();
         pUIObject->SetName(L"UI_StartBtn");
 
         pUIObject->Transform()->SetLocalPos(Vec3(10529.f, 35.f, 850.f));
@@ -533,11 +535,11 @@ CLevel* CLevelMgr::CreateDefaultStartUILevel()
     // TODO : Prefab
     // UI_ExitBtn
     {
-        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"UI_ExitBtn.pref")->Instantiate();
-        pUIObject->SetName(L"UI_StartBtn");
+        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\UI_ExitBtn.pref")->Instantiate();
+        pUIObject->SetName(L"UI_ExitBtn");
 
-        pUIObject->Transform()->SetLocalPos(Vec3(10529.f, 35.f, 850.f));
-        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(5.f), 0.f));
+        pUIObject->Transform()->SetLocalPos(Vec3(10529.f, -183.f, 850.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(2.12f), 0.f));
         pUIObject->Transform()->SetLocalScale(Vec3(600.f, 150.f, 1.f));
 
         NewLevel->AddObject(pUIObject, 15);
