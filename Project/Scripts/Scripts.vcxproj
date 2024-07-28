@@ -256,6 +256,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTestIdle.h" />
     <ClInclude Include="CTestLeft.h" />
     <ClInclude Include="CTestRight.h" />
+    <ClInclude Include="CTwoTargetCamTrigger.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
     <ClInclude Include="CUIHPScript.h" />
     <ClInclude Include="CUIManagerScript.h" />
@@ -410,6 +411,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CTestIdle.cpp" />
     <ClCompile Include="CTestLeft.cpp" />
     <ClCompile Include="CTestRight.cpp" />
+    <ClCompile Include="CTwoTargetCamTrigger.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
     <ClCompile Include="CUIManagerScript.cpp" />

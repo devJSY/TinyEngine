@@ -91,9 +91,6 @@ void CChangeCamTrigger::begin()
         return;
 }
 
-void CChangeCamTrigger::tick()
-{
-}
 
 void CChangeCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
 {

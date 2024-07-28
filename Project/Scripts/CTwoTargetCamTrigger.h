@@ -4,30 +4,28 @@
 
 class CCameraController;
 
-class CChangeCamTrigger : public CScript
+class CTwoTargetCamTrigger : public CScript
 {
 private:
     CCameraController* m_MainCamController;
 
-    bool m_bIsReturn;
+    string m_SubTargetName;
 
-    bool m_bChangeOffset;
-    bool m_bChangedir;
-    bool m_bChangeDist;
+    bool m_bChangeDir;
+    Vec3 m_LookDir;
+
     bool m_bChangeRotationSpeed;
-    bool m_bChangeZoomspeed;
-
-    Vec3 m_ChangeOffset;
-    Vec3 m_ChangeLookDir;
-    float m_ChangeLookDist;
     float m_RotationSpeed;
-    float m_ZoomSpeed;
-
-    Vec3 m_UndoOffset;
-    Vec3 m_UndoDir;
-    float m_UndoDist;
     float m_UndoRotataionSpeed;
+
+    bool m_bChangeZoomspeed;
+    float m_ZoomSpeed;
     float m_UndoZoomSpeed;
+
+    float m_DistanceOffset;
+
+    Vec3 m_ExitDir;
+    float m_ExitDistance;
 
 public:
     virtual void begin() override;
@@ -39,10 +37,11 @@ private:
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
-    CLONE(CChangeCamTrigger);
+    CLONE(CTwoTargetCamTrigger);
 
 public:
-    CChangeCamTrigger();
-    CChangeCamTrigger(const CChangeCamTrigger& _Origin);
-    virtual ~CChangeCamTrigger();
+    CTwoTargetCamTrigger();
+    CTwoTargetCamTrigger(const CTwoTargetCamTrigger& _Origin);
+    virtual ~CTwoTargetCamTrigger();
+
 };

@@ -448,13 +448,14 @@ void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartO
     m_ProgressEndDist = _EndDist;
 }
 
-void CCameraController::TwoTarget(CGameObject* _SubTarget, Vec3 _LookDir, float _DistanceOffset)
+void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset)
 {
     m_Setup = CameraSetup::TWOTARGET;
 
     m_SubTarget = _SubTarget;
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
-    m_LookDir = _LookDir.Normalize();
+    if (_bChangeLookDir)
+        m_LookDir = _LookDir.Normalize();
     m_DistanceOffset = _DistanceOffset;
 
     m_Offset = Vec3(0.f, 0.f, 0.f);

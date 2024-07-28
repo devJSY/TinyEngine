@@ -89,6 +89,7 @@ private:
     void SetThresholdDistance(float _Threshold) { m_ThresholdDistance = _Threshold; }
     void SetRotationSpeed(float _RotationSpeed) { m_RotationSpeed = _RotationSpeed; }
     void SetZoomSpeed(float _ZoomSpeed) { m_ZoomSpeed = _ZoomSpeed; }
+    void SetDistanceOffset(float _DistOffset) { m_DistanceOffset = _DistOffset; } 
 
 public:
     virtual void begin() override;
@@ -117,7 +118,7 @@ public:
     void ChangeLookSetting(Vec3 _LookDir, float _LookDist); // Look Setting 변경
     void ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed, float _Threshold); // Follow Setting 변경
     void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
-    void TwoTarget(CGameObject* _SubTarget, Vec3 _LookDir, float _DistanceOffset);
+    void TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset);
     void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset);
 
 public:
