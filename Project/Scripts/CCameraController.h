@@ -54,6 +54,9 @@ private:
     Vec3                        m_ProgressEndPos;
     Vec3                        m_ProgressEndDir;
     float                       m_ProgressEndDist;
+
+    // TwoTarget
+    float                       m_DistanceOffset;       // 두 물체의 Pos를 기준으로 잡기 때문에 두 물체의 매쉬가 온전히 보이려면 Offset 만큼 Distance에 더 해줘야 한다.
     
     //Edit
     bool                        m_EditMode;             // EditMode 스위치
@@ -114,7 +117,8 @@ public:
     void ChangeLookSetting(Vec3 _LookDir, float _LookDist); // Look Setting 변경
     void ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed, float _Threshold); // Follow Setting 변경
     void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
-
+    void TwoTarget(CGameObject* _SubTarget, Vec3 _LookDir, float _DistanceOffset);
+    void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

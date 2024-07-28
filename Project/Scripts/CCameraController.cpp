@@ -95,6 +95,12 @@ void CCameraController::begin()
 
 void CCameraController::tick()
 {
+    // @DEBUG
+    if (KEY_TAP(KEY::T))
+    {
+        TwoTarget(L"TestTarget", Vec3(0.f,-1.f,1.f), 700.f);
+    }
+
     EditMode();
 
     // Target이 없다면 return
@@ -127,7 +133,7 @@ void CCameraController::tick()
     Transform()->SetDirection(m_CurLookDir);
     Transform()->SetWorldPos(m_LookEyePos);
 
-    // ==================== debug ========================
+    // @DEBUG
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 200.f, Vec3(1.f, 0.f, 0.f), true);
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 200.f, Vec3(0.f, 1.f, 0.f), true);
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 200.f, Vec3(0.f, 0.f, 1.f), true);
@@ -347,8 +353,28 @@ void CCameraController::TwoTarget()
     if (m_Target == nullptr || m_SubTarget == nullptr)
         return;
 
+    Vec3 Center = (m_TargetPos + m_SubTargetPos) * 0.5f;
 
+    // 두 물체 사이의 가로 및 세로 거리 계산
+    float HorizontalDistance = fabs(m_TargetPos.x - m_SubTargetPos.x);
+    float VerticalDistance = fabs(m_TargetPos.y - m_SubTargetPos.y);
+    float DepthDistance = fabs(m_TargetPos.z - m_SubTargetPos.z);
 
+    // FOV와 Aspect Ratio를 기반으로 Distance Scale Factor 계산
+    float AspectRatio = Camera()->GetAspectRatio();
+    float VerticalFOV = Camera()->GetFOV();
+    float HorizontalFOV = 2 * atan(tan(VerticalFOV / 2) * AspectRatio);
+
+    // 필요한 최소 거리 계산
+    float RequiredHorizontalDistance = (HorizontalDistance / 2.0f) / tan(HorizontalFOV / 2.0f);
+    float RequiredVerticalDistance = (VerticalDistance / 2.0f) / tan(VerticalFOV / 2.0f);
+    
+    // 카메라의 거리 중 더 큰 값을 선택
+    float RequiredDistance = max(RequiredHorizontalDistance, RequiredVerticalDistance);
+    RequiredDistance = max(RequiredDistance, DepthDistance);
+
+    m_LookDist = RequiredDistance + m_DistanceOffset;
+    m_LookAtPos = Center;
 }
 
 void CCameraController::ResetCamera()
@@ -420,6 +446,30 @@ void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartO
     m_ProgressEndPos = _EndPos;
     m_ProgressEndDir =_EndDir;
     m_ProgressEndDist = _EndDist;
+}
+
+void CCameraController::TwoTarget(CGameObject* _SubTarget, Vec3 _LookDir, float _DistanceOffset)
+{
+    m_Setup = CameraSetup::TWOTARGET;
+
+    m_SubTarget = _SubTarget;
+    m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
+    m_LookDir = _LookDir.Normalize();
+    m_DistanceOffset = _DistanceOffset;
+
+    m_Offset = Vec3(0.f, 0.f, 0.f);
+}
+
+void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset)
+{
+    m_Setup = CameraSetup::TWOTARGET;
+
+    m_SubTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_SubTargetName);
+    m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
+    m_LookDir = _LookDir.Normalize();
+    m_DistanceOffset = _DistanceOffset;
+
+    m_Offset = Vec3(0.f, 0.f, 0.f);
 }
 
 Vec3 CCameraController::CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist)
