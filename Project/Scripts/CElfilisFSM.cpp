@@ -51,7 +51,7 @@ void CElfilisFSM::ChangeStateGroup_RandState(ElfilisStateGroup _Group)
     if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
         return;
 
-    int Random = GetRandomInt(0, m_StateGroup[_Group][0].size() - 1);
+    int Random = GetRandomInt(0, (int)m_StateGroup[_Group][0].size() - 1);
     wstring RandState = m_StateGroup[_Group][0][Random];
 
     ChangStateGroup(_Group);
@@ -161,12 +161,14 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 
 #include "CElfilisG_Idle.h"
 #include "CElfilisG_BackStep.h"
+#include "CElfilisG_Teleport.h"
 #include "CElfilisG_NormalAtkL.h"
 void CElfilisFSM::begin()
 {
     // State Ãß°¡
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"BACKSTEP", new CElfilisG_BackStep);
+    AddGroupPublicState(ElfilisStateGroup::GroundMove, L"TELEPORT", new CElfilisG_Teleport);
     AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_L", new CElfilisG_NormalAtkL);
     // AddGroupPrivateState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisGroundIdle);
 

@@ -3,6 +3,16 @@
 
 class CElfilisG_Teleport : public CBossState
 {
+private:
+    Ptr<CPrefab>    m_Effect;
+    CGameObject*    m_BeforeObj;
+    CGameObject*    m_BeforeEffect;
+    CGameObject*    m_AfterEffect;
+    Vec3            m_AfterPos;
+    Vec3            m_MapFloorOffset;
+    float           m_MapSizeRadius;
+    float           m_EffectSpeed;
+
 public:
     virtual void tick();
 
@@ -12,7 +22,6 @@ private:
 
     // tick
     void Start();
-    void Progress();
     void End();
 
 public:

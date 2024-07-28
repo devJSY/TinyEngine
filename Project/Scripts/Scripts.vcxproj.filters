@@ -472,7 +472,9 @@
     <ClInclude Include="CElfilisG_BackStep.h">
       <Filter>State\ElfilisState\Ground_Move\BackStep</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisG_Teleport.h" />
+    <ClInclude Include="CElfilisG_Teleport.h">
+      <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -958,7 +960,9 @@
     <ClCompile Include="CElfilisG_BackStep.cpp">
       <Filter>State\ElfilisState\Ground_Move\BackStep</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisG_Teleport.cpp" />
+    <ClCompile Include="CElfilisG_Teleport.cpp">
+      <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

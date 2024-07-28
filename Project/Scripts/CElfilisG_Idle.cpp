@@ -15,7 +15,8 @@ void CElfilisG_Idle::tick()
 {
     if (KEY_TAP(KEY::SPACE))
     {
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
+        //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"TELEPORT");
     }
 
     //@TODO 텔레포트 후 복구
