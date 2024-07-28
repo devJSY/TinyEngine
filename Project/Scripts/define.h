@@ -76,5 +76,6 @@ enum class StateStep
 {
     Start,
     Progress,
+    Wait,
     End,
 };

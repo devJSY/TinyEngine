@@ -481,6 +481,12 @@
     <ClInclude Include="CElfilisG_NormalAtkR.h">
       <Filter>State\ElfilisState\Ground_Attack\NormalAtk\R</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_RayArrow.h">
+      <Filter>State\ElfilisState\Ground_Attack\RotSpear</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtk.h">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -974,6 +980,12 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkR.cpp">
       <Filter>State\ElfilisState\Ground_Attack\NormalAtk\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_RayArrow.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\RotSpear</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtk.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\NormalAtk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1513,6 +1525,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\FinishL">
       <UniqueIdentifier>{efa67b98-79be-466b-aaea-92fb8d696c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\RotSpear">
+      <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

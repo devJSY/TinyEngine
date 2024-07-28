@@ -184,19 +184,23 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 #include "CElfilisG_Idle.h"
 #include "CElfilisG_BackStep.h"
 #include "CElfilisG_Teleport.h"
+#include "CElfilisG_NormalAtk.h"
 #include "CElfilisG_NormalAtkL.h"
 #include "CElfilisG_NormalAtkR.h"
 #include "CElfilisG_NormalAtkFinishL.h"
+#include "CElfilisG_RayArrow.h"
 void CElfilisFSM::begin()
 {
     // State Ãß°¡
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
-    AddGroupPublicState(ElfilisStateGroup::GroundMove, L"BACKSTEP", new CElfilisG_BackStep);
-    AddGroupPublicState(ElfilisStateGroup::GroundMove, L"TELEPORT", new CElfilisG_Teleport);
-    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
-    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
+    AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);
+    AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT", new CElfilisG_Teleport);
+    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL", new CElfilisG_NormalAtk);
+    AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_RAYARROW", new CElfilisG_RayArrow);
+
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
-    // AddGroupPrivateState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE", new CElfilisGroundIdle);
 
     //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
     ChangeState(L"GROUND_IDLE");

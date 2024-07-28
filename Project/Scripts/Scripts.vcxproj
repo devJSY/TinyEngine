@@ -125,9 +125,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CElfilisG_Idle.h" />
+    <ClInclude Include="CElfilisG_NormalAtk.h" />
     <ClInclude Include="CElfilisG_NormalAtkFinishL.h" />
     <ClInclude Include="CElfilisG_NormalAtkL.h" />
     <ClInclude Include="CElfilisG_NormalAtkR.h" />
+    <ClInclude Include="CElfilisG_RayArrow.h" />
     <ClInclude Include="CElfilisG_Teleport.h" />
     <ClInclude Include="CElfilisUnit.h" />
     <ClInclude Include="CFireProjectileScript.h" />
@@ -287,9 +289,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CElfilisG_Idle.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtk.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkR.cpp" />
+    <ClCompile Include="CElfilisG_RayArrow.cpp" />
     <ClCompile Include="CElfilisG_Teleport.cpp" />
     <ClCompile Include="CElfilisUnit.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
