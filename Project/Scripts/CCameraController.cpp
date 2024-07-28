@@ -7,7 +7,9 @@ CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
     , m_Setup(CameraSetup::NORMAL)
     , m_Target(nullptr)
+    , m_Offset(Vec3(0.f,0.f,0.f))
     , m_TargetPos(Vec3(0.f,0.f,0.f))
+    , m_SubTarget(nullptr)
     , m_LookDir(0.f, 0.f, 0.f)
     , m_LookDist(0.f)
     , m_RotationSpeed(50.f)
@@ -46,6 +48,12 @@ void CCameraController::SetMainTarget(wstring _TargetName)
     m_Target = CurrentLevel->FindObjectByName(_TargetName);
 }
 
+void CCameraController::SetSubTarget(wstring _TargetName)
+{
+    CLevel* CurrentLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    m_SubTarget = CurrentLevel->FindObjectByName(_TargetName);
+}
+
 void CCameraController::begin()
 {
     // Level Begin시 플레이어를 타겟으로 지정한다.
@@ -65,32 +73,24 @@ void CCameraController::begin()
     }
 
     // 카메라 세팅
+    m_Setup = CameraSetup::NORMAL;
+
     m_TargetPos = m_Target->Transform()->GetWorldPos();
-    m_TargetPos += m_Offset;
+    m_LookAtPos = m_TargetPos + m_Offset;
 
     m_PrevLookDir = m_LookDir;
     m_CurLookDir = m_LookDir;
-    m_PrevLookAtPos = m_TargetPos;
-    m_CurLookAtPos = m_TargetPos;
+    m_PrevLookAtPos = m_LookAtPos;
+    m_CurLookAtPos = m_LookAtPos;
     m_PrevDistance = m_LookDist;
     m_CurDistance = m_LookDist;
 
-    Vec3 InitPos = CalCamPos(m_TargetPos, m_LookDir, m_LookDist);
+    Vec3 InitPos = CalCamPos(m_LookAtPos, m_LookDir, m_LookDist);
     
     m_LookEyePos = InitPos;
 
     Transform()->SetWorldPos(InitPos);
     Transform()->SetDirection(m_LookDir);
-
-    // Test
-    m_ProgressStartPos = Vec3(0.f, 0.f, 0.f);
-    m_ProgressStartDir = Vec3(0.f, -1.f, 1.f);
-    m_ProgressStartDist = 1000.f;
-    m_ProgressEndPos = Vec3(0.f, 0.f, 3000.f);
-    m_ProgressEndDir = Vec3(-1.f, -1.f, 0.f);
-    m_ProgressEndDist = 2000.f;
-
-    m_Setup = CameraSetup::PROGRESS;
 }
 
 void CCameraController::tick()
@@ -109,10 +109,13 @@ void CCameraController::tick()
     // ========================= Target Update ==========================
     UpdateTargetPos();
 
-    // 현재 Setup에 맞게 카메라의 LookDir, LookDist를 수정한다.
+    // 현재 Setup에 맞게 카메라의 LookDir, LookDist, LookAtPos를 수정한다.
     SetUpProc();
 
-    // LookDir, LookDist에 맞게 LookAtPos, LookDir을 업데이트한다.
+    // Offset 적용
+    ApplyOffset();
+
+    // LookAtPos, LookDir, LookDist에 맞게 현재 프레임의 위치, 각도, 거리를 업데이트 한다.
     UpdateLookAtPos();
     UpdateLookDir();
     UpdateLookDistance();
@@ -136,9 +139,13 @@ void CCameraController::SetUpProc()
     switch (m_Setup)
     {
     case CameraSetup::NORMAL:
+        Normal();
         break;
     case CameraSetup::PROGRESS:
         Progress();
+        break;
+    case CameraSetup::TWOTARGET:
+        TwoTarget();
         break;
     default:
         break;
@@ -148,14 +155,27 @@ void CCameraController::SetUpProc()
 void CCameraController::UpdateTargetPos()
 {
     // 타겟의 현재 위치 업데이트
-    m_TargetPos = m_Target->Transform()->GetWorldPos();
-    m_TargetPos += m_Offset;
+    if (nullptr != m_Target)
+    {
+        m_TargetPos = m_Target->Transform()->GetWorldPos();
+    }
+
+    if (nullptr != m_SubTarget)
+    {
+        m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
+    }
+
+}
+
+void CCameraController::ApplyOffset()
+{
+    m_LookAtPos += m_Offset;
 }
 
 void CCameraController::UpdateLookAtPos()
 {
     // =========================== Pos Update ===========================
-    Vec3 Diff = m_TargetPos - m_PrevLookAtPos;
+    Vec3 Diff = m_LookAtPos - m_PrevLookAtPos;
     float MoveLength = Diff.Length();
     Vec3 MoveDir = Diff.Normalize();
 
@@ -166,16 +186,16 @@ void CCameraController::UpdateLookAtPos()
 
     // =========================== 예외 처리 =============================
     // 보간 값이 목표값과 비슷하다면 그대로 세팅해준다.
-    if ((m_TargetPos - m_CurLookAtPos).Length() <= 1e-6f)
+    if ((m_LookAtPos - m_CurLookAtPos).Length() <= 1e-6f)
     {
-        m_CurLookAtPos = m_TargetPos;
+        m_CurLookAtPos = m_LookAtPos;
     }
 
     // 카메라가 LookEyePos를 넘어서까지 이동했다면 CurPos를 LookEyePos로 세팅해준다.
-    Vec3 LeftMoveDir = (m_TargetPos - m_CurLookAtPos).Normalize();
+    Vec3 LeftMoveDir = (m_LookAtPos - m_CurLookAtPos).Normalize();
     if (MoveDir.Dot(LeftMoveDir) <= 0.f)
     {
-        m_CurLookAtPos = m_TargetPos;
+        m_CurLookAtPos = m_LookAtPos;
     }
 }
 
@@ -284,8 +304,15 @@ void CCameraController::EditMode()
     }
 }
 
+void CCameraController::Normal()
+{
+    m_LookAtPos = m_TargetPos;
+}
+
 void CCameraController::Progress()
 {    
+    m_LookAtPos = m_TargetPos;
+
     // Start와 End 사이에서 LookAtPos에 수직인 점을 찾기
     Vec3 ProgressRoad = m_ProgressEndPos - m_ProgressStartPos;
     Vec3 ToPrevLookAt = m_PrevLookAtPos - m_ProgressStartPos;
@@ -311,6 +338,17 @@ void CCameraController::Progress()
    m_Offset = Vector3::Lerp(m_ProgressStartOffset, m_ProgressEndOffset, t);
    m_LookDir = QuaternionToVector(SlerpQuat);
    m_LookDist = Lerp(m_ProgressStartDist, m_ProgressEndDist, t);
+
+   
+}
+
+void CCameraController::TwoTarget()
+{
+    if (m_Target == nullptr || m_SubTarget == nullptr)
+        return;
+
+
+
 }
 
 void CCameraController::ResetCamera()
@@ -318,17 +356,21 @@ void CCameraController::ResetCamera()
     if (m_Target == nullptr)
         return;
 
+    UpdateTargetPos();
+    SetUpProc();
+    ApplyOffset();
+
     m_TargetPos = m_Target->Transform()->GetWorldPos();
-    m_TargetPos += m_Offset;
+    m_LookAtPos = m_TargetPos + m_Offset;
 
     m_PrevLookDir = m_LookDir;
     m_CurLookDir = m_LookDir;
-    m_PrevLookAtPos = m_TargetPos;
-    m_CurLookAtPos = m_TargetPos;
+    m_PrevLookAtPos = m_LookAtPos;
+    m_CurLookAtPos = m_LookAtPos;
     m_PrevDistance = m_LookDist;
     m_CurDistance = m_LookDist;
 
-    Vec3 ResetPos = CalCamPos(m_TargetPos, m_LookDir, m_LookDist);
+    Vec3 ResetPos = CalCamPos(m_LookAtPos, m_LookDir, m_LookDist);
 
     m_LookEyePos = ResetPos;
 

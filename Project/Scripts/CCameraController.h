@@ -6,6 +6,7 @@ enum class CameraSetup
 {
     NORMAL,
     PROGRESS,
+    TWOTARGET,
 };
 
 class CCameraController : public CScript
@@ -18,8 +19,12 @@ private:
     Vec3                        m_TargetPos;            // 현재 프레임에서 타겟의 위치
     Vec3                        m_Offset;               // 타겟으로부터의 오프셋
 
+    CGameObject*                m_SubTarget;
+    Vec3                        m_SubTargetPos;
+
     // 설정 값
     Vec3                        m_LookEyePos;           // 카메라가 있어야 하는 위치
+    Vec3                        m_LookAtPos;            // 카메라가 바라봐야하는 위치
     Vec3                        m_LookDir;              // 카메라가 바라보는 각도
     float                       m_LookDist;             // 카메라와 타겟 사이의 거리
 
@@ -58,6 +63,7 @@ private:
  public:
     CameraSetup GetCameraSetup() const { return m_Setup; }
     CGameObject* GetMainTarget() const { return m_Target; }
+    CGameObject* GetSubTarget() const { return m_SubTarget; }
     Vec3 GetOffset() const { return m_Offset; }
     Vec3 GetLookDir() const { return m_LookDir; }
     float GetLookDist() const { return m_LookDist; }
@@ -70,6 +76,8 @@ private:
     void SetCameraSetup(CameraSetup _Setup) { m_Setup = _Setup; }
     void SetMainTarget(CGameObject* _Target) { m_Target = _Target; } 
     void SetMainTarget(wstring _TargetName);
+    void SetSubTarget(CGameObject* _SubTarget) { m_SubTarget = _SubTarget; }
+    void SetSubTarget(wstring _TargetName);
     void SetOffset(Vec3 _Offset) { m_Offset = _Offset; }
     void SetLookDir(Vec3 _LookDir) { m_LookDir = _LookDir; }
     void SetLookDist(float _LookDist) { m_LookDist = _LookDist; }
@@ -84,15 +92,18 @@ public:
     virtual void tick() override;
 
 private:
-    void SetUpProc();
     void UpdateTargetPos(); 
+    void SetUpProc();
+    void ApplyOffset();
     void UpdateLookAtPos();
     void UpdateLookDir();
     void UpdateLookDistance();
     
     Vec3 CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist);
     
+    void Normal();
     void Progress();
+    void TwoTarget();
     // EditMode
     void EditMode();
 
