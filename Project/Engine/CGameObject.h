@@ -99,7 +99,7 @@ public:
 
     void AddChild(CGameObject* _Child);
 
-    bool IsActive() const { return m_bActive; }
+    bool IsActive() const;
     void SetActive(bool _bActive);
 
     bool IsDead() const { return m_bDead; }

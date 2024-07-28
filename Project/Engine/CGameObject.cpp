@@ -310,11 +310,53 @@ void CGameObject::AddChild(CGameObject* _Child)
     m_vecChild.push_back(_Child);
 }
 
+bool CGameObject::IsActive() const
+{
+    bool bActive = m_bActive;
+
+    // 부모가 비활성화 상태인경우 자식도 비활성화 처리
+    if (bActive)
+    {
+        CGameObject* pParent = GetParent();
+
+        while (pParent)
+        {
+            bActive = pParent->IsActive();
+
+            // 비활성화 감지
+            if (!bActive)
+                break;
+
+            pParent = pParent->GetParent();
+        }
+    }
+
+    return bActive;
+}
+
 void CGameObject::SetActive(bool _bActive)
 {
     m_bActive = _bActive;
-    GamePlayStatic::Physics2D_Event(this, Physics2D_EVENT_TYPE::RESPAWN);
-    GamePlayStatic::Physics_Event(this, Physics_EVENT_TYPE::RESPAWN);
+
+    // 본인 포함 자식오브젝트들 Physics 리셋
+    list<CGameObject*> queue;
+    queue.push_back(this);
+
+    while (!queue.empty())
+    {
+        CGameObject* pObject = queue.front();
+        queue.pop_front();
+
+        const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
+
+        for (size_t i = 0; i < vecChildObj.size(); ++i)
+        {
+            queue.push_back(vecChildObj[i]);
+        }
+
+        GamePlayStatic::Physics2D_Event(pObject, Physics2D_EVENT_TYPE::RESPAWN);
+        GamePlayStatic::Physics_Event(pObject, Physics_EVENT_TYPE::RESPAWN);
+    }
 }
 
 bool CGameObject::IsAncestor(CGameObject* _Other)
