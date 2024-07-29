@@ -66,7 +66,7 @@ PS_OUT main(PS_IN input)
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vNormal = float4(g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, InvertNormalMapY) : input.vNormalWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
-    output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
+    output.vBitangent = float4(input.vBitangentWorld, 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
     

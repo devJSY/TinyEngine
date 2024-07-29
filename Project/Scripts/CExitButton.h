@@ -6,7 +6,9 @@ class CExitButton
 public:
     virtual void Func() override;
 
+    CLONE(CExitButton)
 public:
     CExitButton();
+    CExitButton(const CExitButton& origin);
     virtual ~CExitButton();
 };

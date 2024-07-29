@@ -47,6 +47,10 @@
 #include "CMonsterTest.h"
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
+#include "CCameraController.h"
+#include "CChangeCamTrigger.h"
+#include "CProgressCamTrigger.h"
+#include "CTwoTargetCamTrigger.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -96,6 +100,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterTest");
 	_vec.push_back(L"CMomentaryObjScript");
 	_vec.push_back(L"CKirbyWeaponHitbox");
+	_vec.push_back(L"CCameraController");
+	_vec.push_back(L"CChangeCamTrigger");
+	_vec.push_back(L"CProgressCamTrigger");
+	_vec.push_back(L"CTwoTargetCamTrigger");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -192,6 +200,14 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMomentaryObjScript;
 	if (L"CKirbyWeaponHitbox" == _strScriptName)
 		return new CKirbyWeaponHitbox;
+	if (L"CCameraController" == _strScriptName)
+		return new CCameraController;
+	if (L"CChangeCamTrigger" == _strScriptName)
+		return new CChangeCamTrigger;
+	if (L"CProgressCamTrigger" == _strScriptName)
+		return new CProgressCamTrigger;
+	if (L"CTwoTargetCamTrigger" == _strScriptName)
+		return new CTwoTargetCamTrigger;
 	return nullptr;
 }
 
@@ -291,6 +307,14 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CMomentaryObjScript;
 	case (UINT)SCRIPT_TYPE::KIRBYWEAPONHITBOX:
 		return new CKirbyWeaponHitbox;
+	case (UINT)SCRIPT_TYPE::CAMERACONTROLLER:
+		return new CCameraController;
+	case (UINT)SCRIPT_TYPE::CHANGECAMTRIGGER:
+		return new CChangeCamTrigger;
+	case (UINT)SCRIPT_TYPE::PROGRESSCAMTRIGGER:
+		return new CProgressCamTrigger;
+	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
+		return new CTwoTargetCamTrigger;
 	}
 	return nullptr;
 }
@@ -391,6 +415,14 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CMomentaryObjScript";
 	case SCRIPT_TYPE::KIRBYWEAPONHITBOX:
 		return L"CKirbyWeaponHitbox";
+	case SCRIPT_TYPE::CAMERACONTROLLER:
+		return L"CCameraController";
+	case SCRIPT_TYPE::CHANGECAMTRIGGER:
+		return L"CChangeCamTrigger";
+	case SCRIPT_TYPE::PROGRESSCAMTRIGGER:
+		return L"CProgressCamTrigger";
+	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
+		return L"CTwoTargetCamTrigger";
 	}
 	return nullptr;
 }

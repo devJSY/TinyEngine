@@ -505,7 +505,8 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
         if (NORMALENEMY_STATE::AttackFailed == m_eState || NORMALENEMY_STATE::Attack == m_eState)
         {
-            L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
+            UnitHit hitInfo = {};
+            L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
             ChangeState(NORMALENEMY_STATE::AttackSuccessed);
         }
         else

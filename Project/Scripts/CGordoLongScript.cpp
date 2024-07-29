@@ -4,10 +4,12 @@
 CGordoLongScript::CGordoLongScript()
     : CMonsterUnitScript(GORDOLONGSCRIPT)
 {
+    SetEatable(false);
 }
 
 CGordoLongScript::~CGordoLongScript()
 {
+    SetEatable(false);
 }
 
 void CGordoLongScript::begin()
@@ -42,7 +44,8 @@ void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
 
-    (LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName()) ? pObj->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), m_CurInfo.ATK, 0.f, 0.f};
+    (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName()) ? pObj->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CGordoLongScript::OnTriggerExit(CCollider* _OtherCollider)

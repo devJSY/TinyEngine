@@ -17,7 +17,7 @@ namespace GamePlayStatic
     void AddChildObject(CGameObject* _ParentObject, CGameObject* _ChildObject, const std::wstring& _BoneSocketName);
     void DestroyGameObject(CGameObject* _Target);
     void WindowResize(int width, int height);
-    void CloneGameObject(CGameObject* _OriginObj);
+    void CloneGameObject(CGameObject* _OriginObj, CGameObject* _OriginParentObj);
 
     void DrawDebugLine(const Matrix& _WorldMat, Vec3 _p1, Vec3 _p2, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
     void DrawDebugLine(Vec3 _vWorldPos, Vec3 _vDir, float _fLength, Vec3 _Color, bool _bDepthTest, float _Duration = 0.f);
@@ -139,7 +139,9 @@ UINT LoadAssetRef(Ptr<T>& _Asset, FILE* _File)
 
 wstring OpenFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
 wstring SaveFileDialog(const wstring& strRelativePath, const wchar_t* filter = L"All\0*.*\0"); // 전체 경로 반환
-void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath = L"");
+void OpenFileDialog(vector<wstring>& _FilesName, const wstring& _RelativePath = L"",
+                    const vector<std::pair<wstring, wstring>>& filter = {
+                        {L"All Files", L"*.*"}, {L"Text Files", L"*.txt"}, {L"FBX Files", L"*.fbx"}});
 Vec2 LoadMeta(const wstring& _strMetaRelativePath);
 
 // =====================================
