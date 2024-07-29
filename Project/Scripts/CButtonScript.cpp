@@ -14,6 +14,7 @@ CButtonScript::CButtonScript()
     , m_eTransition(ButtonTransition::TEXTURE)
     , m_pButtonTex{}
     , m_vButtonColor{}
+    , m_vButtonScale{}
     , m_IsInteraction(true)
     , m_IsHovered(true)
     , m_IsIsolated(false)
@@ -40,10 +41,45 @@ CButtonScript::CButtonScript(UINT _ScriptType)
     , m_eTransition(ButtonTransition::TEXTURE)
     , m_pButtonTex{}
     , m_vButtonColor{}
+    , m_vButtonScale{}
     , m_IsInteraction(true)
     , m_IsHovered(true)
     , m_IsIsolated(false)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_eTransition, "Transition");
+
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[0], "Normal Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[1], "Highlighted Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[2], "Pressed Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[3], "Selected Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[4], "Disabled Color");
+
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[0], "Normal Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[1], "Highlighted Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[2], "Pressed Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[3], "Selected Scale");
+    AddScriptParam(SCRIPT_PARAM::VEC2, &m_vButtonScale[4], "Disabled Scale");
+}
+
+CButtonScript::CButtonScript(const CButtonScript& Origin)
+    : CScript(Origin)
+    , m_ePrevState(ButtonState::NORMAL)
+    , m_eCurState(ButtonState::NORMAL)
+    , m_eTransition(Origin.m_eTransition)
+    , m_pButtonTex{}
+    , m_vButtonColor{}
+    , m_vButtonScale{}
+    , m_IsInteraction(Origin.m_IsInteraction)
+    , m_IsHovered(false)
+    , m_IsIsolated(Origin.m_IsIsolated)
+{
+    for (UINT i = 0; i < (UINT)ButtonState::END; i++)
+    {
+        m_pButtonTex[i] = Origin.m_pButtonTex[i];
+        m_vButtonColor[i] = Origin.m_vButtonColor[i];
+        m_vButtonScale[i] = Origin.m_vButtonScale[i];
+    }
+
     AddScriptParam(SCRIPT_PARAM::INT, &m_eTransition, "Transition");
 
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vButtonColor[0], "Normal Color");
