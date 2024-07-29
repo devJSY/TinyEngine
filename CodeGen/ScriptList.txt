@@ -47,3 +47,4 @@ CKirbyWeaponHitbox
 CCameraController
 CChangeCamTrigger
 CProgressCamTrigger
+CTwoTargetCamTrigger

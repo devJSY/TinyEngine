@@ -144,7 +144,7 @@ public:
     virtual void ChangeObjectEndExit();
 
 public:
-    const vector<wstring>& const GetWaitingAnim() { return m_WaitingAnim; }
+    const vector<wstring>& GetWaitingAnim() const { return m_WaitingAnim; }
     virtual CKirbyObject* Clone() = 0;
 
 public:
