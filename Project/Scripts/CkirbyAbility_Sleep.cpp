@@ -10,21 +10,10 @@ CkirbyAbility_Sleep::CkirbyAbility_Sleep()
     , m_Speed(2.f)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySleepHat.pref", L"prefab\\KirbySleepHat.pref");
-
-    // create snotBubble
-    // Ptr<CPrefab> SnotBubblePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SleepSnotBubble.pref", L"prefab\\SleepSnotBubble.pref");
-    // if (SnotBubblePref != nullptr)
-    //{
-    //    m_SnotBubble = SnotBubblePref->Instantiate();
-    //}
 }
 
 CkirbyAbility_Sleep::~CkirbyAbility_Sleep()
 {
-    // if (m_SnotBubble && m_SnotBubble->GetLayerIdx() == -1)
-    //{
-    //     delete m_SnotBubble;
-    // }
 }
 
 // ===============
@@ -142,11 +131,10 @@ void CkirbyAbility_Sleep::AttackStartEnter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
-    // attach snotBubble to scene
+    // attach snotBubble
     m_SnotBubble = PLAYER->GetChildObject(L"SleepSnotBubble");
     if (m_SnotBubble)
     {
-        // GamePlayStatic::AddChildObject(PLAYER, m_SnotBubble, L"Mouth");
         m_SnotBubble->SetActive(true);
         m_SnotBubble->Animator()->Play(ANIMPREFIX("BubbleStart"), false);
     }
@@ -182,10 +170,9 @@ void CkirbyAbility_Sleep::AttackEndExit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
 
-    // detach snotBubble from scene
+    // off snotBubble
     if (m_SnotBubble)
     {
-        // GamePlayStatic::DetachObject(m_SnotBubble);
         m_SnotBubble->SetActive(false);
     }
 }
