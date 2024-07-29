@@ -54,7 +54,7 @@ void CKirbyAbility_Cutter::AttackEnter()
 
     // Transform
     InstObj->Transform()->SetWorldPos(KirbyPos + Offset);
-    InstObj->Transform()->SetDirection(-KirbyFront);
+    InstObj->Transform()->SetDirection(KirbyFront);
 
     GamePlayStatic::SpawnGameObject(InstObj, InstObj->GetLayerIdx());
 }
