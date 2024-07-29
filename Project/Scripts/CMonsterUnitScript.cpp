@@ -4,7 +4,6 @@
 CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     : CUnitScript(_Type)
     , m_pTargetObj(nullptr)
-    , m_HitInfo{}
     , m_RaycastDist(100.f)
     , m_bEatable(true)
 {
@@ -14,6 +13,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
         1.f,   // Speed
         3.f,   // Rotation Speed
         1.f,   // JumpPower
+        10.f,   // ATK
     };
     SetInitInfo(MonsterInfo);
 
@@ -22,6 +22,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.RotationSpeed, "[Init] Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.JumpPower, "[Init] Jump Power");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.ATK, "[Init] Attack Points");
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "[Current] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "[Current] HP max");
@@ -30,17 +31,13 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "[Current] Jump Power");
 
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
-    AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bEatable, "Is Eatable");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
 }
 
 CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     : CUnitScript(_Origin)
     , m_pTargetObj(_Origin.m_pTargetObj)
-    , m_HitInfo(_Origin.m_HitInfo)
     , m_RaycastDist(_Origin.m_RaycastDist)
     , m_bEatable(_Origin.m_bEatable)
 {
@@ -50,14 +47,16 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
         1.f,   // Speed
         3.f,   // Rotation Speed
         1.f,   // JumpPower
+        10.f,   // ATK
     };
     SetInitInfo(MonsterInfo);
 
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
+     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.RotationSpeed, "[Init] Rotation Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.JumpPower, "[Init] Jump Power");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.ATK, "[Init] Attack Points");
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "[Current] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "[Current] HP max");
@@ -66,11 +65,8 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.JumpPower, "[Current] Jump Power");
 
     AddScriptParam(SCRIPT_PARAM::OBJECT, m_pTargetObj, "Target Object");
-    AddScriptParam(SCRIPT_PARAM::INT, &m_HitInfo.Type, "DamageType");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RaycastDist, "Raycast Distance");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bEatable, "Is Eatable");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Damage, "Damage");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HitInfo.Duration, "DamageDuration");
 }
 
 CMonsterUnitScript::~CMonsterUnitScript()
@@ -124,12 +120,10 @@ UINT CMonsterUnitScript::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CUnitScript::SaveToLevelFile(_File);
-    fwrite(&m_HitInfo, sizeof(UnitHit), 1, _File);
     fwrite(&m_RaycastDist, 1, sizeof(float), _File);
     fwrite(&m_bEatable, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(UnitHit);
     MemoryByte += sizeof(bool);
 
     return MemoryByte;
@@ -140,12 +134,10 @@ UINT CMonsterUnitScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CUnitScript::LoadFromLevelFile(_File);
-    fread(&m_HitInfo, sizeof(m_HitInfo), 1, _File);
     fread(&m_RaycastDist, 1, sizeof(float), _File);
     fread(&m_bEatable, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(UnitHit);
     MemoryByte += sizeof(bool);
 
     return MemoryByte;

@@ -105,7 +105,7 @@ void CLevelEditor::finaltick()
     if (nullptr != pSelectedObj && !prevUsingGuizmo && ImGuizmo::IsUsing() && (ImGuizmo::OPERATION::TRANSLATE & m_GizmoType) &&
         (KEY_TAP(KEY::LALT) || KEY_PRESSED(KEY::LALT)))
     {
-        GamePlayStatic::CloneGameObject(pSelectedObj);
+        GamePlayStatic::CloneGameObject(pSelectedObj, pSelectedObj->GetParent());
     }
 
     prevUsingGuizmo = ImGuizmo::IsUsing();
@@ -260,6 +260,11 @@ void CLevelEditor::render_MenuBar()
             if (ImGui::MenuItem("New Default Kirby Level"))
             {
                 GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateDefaultKirbyLevel(), LEVEL_STATE::STOP);
+            }
+
+            if (ImGui::MenuItem("New Default Kirby UI Level"))
+            {
+                GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateDefaultStartUILevel(), LEVEL_STATE::STOP);
             }
 
             ImGui::Separator();
@@ -772,7 +777,7 @@ void CLevelEditor::render_Viewport()
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();
                 Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                pos += dir.Normalize() * 5.f;
+                pos += dir.Normalize() * 5.f * CPhysicsMgr::GetInst()->GetPPM();
                 pObj->Transform()->SetLocalPos(pos);
 
                 GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());

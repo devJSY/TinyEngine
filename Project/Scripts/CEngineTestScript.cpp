@@ -41,14 +41,16 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    if (KEY_TAP(KEY::L))
-    {
-        GetOwner()->SetActive(!GetOwner()->IsActive());
-    }
-
     // CharacterControllerTest();
+
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
+
+    SetDirection();
+
     // AnimatorTest();
-    //  QuaternionExample();
+    // QuaternionExample();
 
     //// Bullet Test
     // if (KEY_TAP(KEY::N))
@@ -79,16 +81,16 @@ void CEngineTestScript::CharacterControllerTest()
     bool bGrounded = CharacterController()->IsGrounded();
     float GravityVelue = CPhysicsMgr::GetInst()->GetGravity().y;
 
-    // CharacterController의 Grounded 는 마지막 Move()를 기준으로 저장되기 때문에 정확도가 낮음
-    // Raycast로 한번 더 땅에 닿은 상태인지 확인한다.
-    if (!bGrounded)
-    {
-        Vec3 RayPos = CharacterController()->GetFootPos();
+    //// CharacterController의 Grounded 는 마지막 Move()를 기준으로 저장되기 때문에 정확도가 낮음
+    //// Raycast로 한번 더 땅에 닿은 상태인지 확인한다.
+    // if (!bGrounded)
+    //{
+    //     Vec3 RayPos = CharacterController()->GetFootPos();
 
-        GamePlayStatic::DrawDebugLine(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist, Vec3(1.f, 0.f, 1.f), false);
-        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist);
-        bGrounded = nullptr != Hit.pCollisionObj;
-    }
+    //    GamePlayStatic::DrawDebugLine(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist, Vec3(1.f, 0.f, 1.f), false);
+    //    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(RayPos, Vec3(0.f, -1.f, 0.f), RayCastDist);
+    //    bGrounded = nullptr != Hit.pCollisionObj;
+    //}
 
     // 땅에 닿은 상태면 Velocity Y값 초기화
     if (bGrounded && MoveVelocity.y < 0)
@@ -124,20 +126,7 @@ void CEngineTestScript::CharacterControllerTest()
     CharacterController()->Move(Dir * Speed * DT);
 
     // 방향 전환
-    if (Dir.Length() > 0.f)
-    {
-        // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
-        Vec3 up = Vec3(0.f, 1.f, 0.f);
-        if (Dir == Vec3(0.f, 0.f, -1.f))
-        {
-            up = Vec3(0.f, -1.f, 0.f);
-        }
-
-        Quat ToWardQuaternion = Quat::LookRotation(-Dir, up);
-        Quat SlerpQuat = Quat::Slerp(Transform()->GetWorldQuaternion(), ToWardQuaternion, DT * RotSpeed);
-
-        Transform()->SetWorldRotation(SlerpQuat);
-    }
+    Transform()->Slerp(Dir, DT * RotSpeed);
 
     // 점프
     if (KEY_TAP(KEY::SPACE) && bGrounded)
@@ -283,6 +272,21 @@ void CEngineTestScript::QuaternionExample()
 void CEngineTestScript::DetachObject()
 {
     GamePlayStatic::DetachObject(CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"TestObj"));
+}
+
+void CEngineTestScript::SetDirection()
+{
+    CGameObject* pTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Target");
+    if (pTarget)
+    {
+        Vec3 Dir = pTarget->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        // Transform()->SetDirection(Dir);
+        Transform()->Slerp(Dir, DT * 5.f);
+    }
+
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
 }
 
 void CEngineTestScript::OnCollisionEnter(CCollider* _OtherCollider)

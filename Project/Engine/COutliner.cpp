@@ -307,7 +307,7 @@ void COutliner::render()
             CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
             Vec3 pos = pCam->Transform()->GetWorldPos();
             Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            pos += dir.Normalize() * 5.f;
+            pos += dir.Normalize() * 5.f * CPhysicsMgr::GetInst()->GetPPM();
             pObj->Transform()->SetLocalPos(pos);
 
             GamePlayStatic::SpawnGameObject(pObj, 0);
@@ -353,7 +353,7 @@ void COutliner::render()
                 CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
                 Vec3 pos = pCam->Transform()->GetWorldPos();
                 Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                pos += dir.Normalize() * 5.f;
+                pos += dir.Normalize() * 5.f * CPhysicsMgr::GetInst()->GetPPM();
                 pObj->Transform()->SetLocalPos(pos);
 
                 GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
@@ -429,23 +429,54 @@ void COutliner::DrawNode(CGameObject* obj)
         {
             DWORD_PTR data = *((DWORD_PTR*)payload->Data);
             CGameObject* pChild = (CGameObject*)data;
-            GamePlayStatic::AddChildObject(obj, pChild);
+
+            Vec3 pos = pChild->Transform()->GetWorldPos();
+            Vec3 rot = pChild->Transform()->GetWorldRotation();
+            Vec3 scale = pChild->Transform()->GetWorldScale();
+
+            obj->AddChild(pChild);
+
+            // 부모가 적용된 트랜스폼으로 재계산
+            pChild->Transform()->finaltick();
+
+            // 원본 World SRT로 설정
+            pChild->Transform()->SetWorldPos(pos);
+            pChild->Transform()->SetWorldRotation(rot);
+            pChild->Transform()->SetWorldScale(scale);
         }
 
         if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
         {
             string AssetStr = (char*)payload->Data;
             AssetStr.resize(payload->DataSize);
+            CGameObject* pChild = nullptr;
             std::filesystem::path AssetPath = AssetStr;
             if (L".pref" == AssetPath.extension())
             {
                 Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(AssetPath, AssetPath);
-                GamePlayStatic::AddChildObject(obj, pPrefab->Instantiate());
+                pChild = pPrefab->Instantiate();
             }
             else if (L".mdat" == AssetPath.extension())
             {
                 Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(AssetPath, AssetPath);
-                GamePlayStatic::AddChildObject(obj, pMeshData->Instantiate());
+                pChild = pMeshData->Instantiate();
+            }
+
+            if (nullptr != pChild)
+            {
+                Vec3 pos = pChild->Transform()->GetWorldPos();
+                Vec3 rot = pChild->Transform()->GetWorldRotation();
+                Vec3 scale = pChild->Transform()->GetWorldScale();
+
+                obj->AddChild(pChild);
+
+                // 부모가 적용된 트랜스폼으로 재계산
+                pChild->Transform()->finaltick();
+
+                // 원본 World SRT로 설정
+                pChild->Transform()->SetWorldPos(pos);
+                pChild->Transform()->SetWorldRotation(rot);
+                pChild->Transform()->SetWorldScale(scale);
             }
         }
 

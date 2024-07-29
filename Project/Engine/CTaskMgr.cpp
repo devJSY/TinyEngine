@@ -219,6 +219,7 @@ void CTaskMgr::DETACH_OBJECT(const tTask& _Task)
     {
         if (pCurLevel->GetLayer(i)->DetachGameObject(pObj))
         {
+            pObj->DisconnectWithParent();
             break;
         }
     }
@@ -308,20 +309,6 @@ void CTaskMgr::ADD_CHILD(const tTask& _Task)
             pSrcObj->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
             pSrcObj->Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
             pSrcObj->Transform()->SetAbsolute(false);
-        }
-        else
-        {
-            // 부모가 적용된 트랜스폼으로 재계산
-            pSrcObj->Transform()->finaltick();
-
-            // Local SRT를 World SRT로 설정
-            Vec3 pos = pSrcObj->Transform()->GetLocalPos();
-            Vec3 rot = pSrcObj->Transform()->GetLocalRotation();
-            Vec3 scale = pSrcObj->Transform()->GetLocalScale();
-
-            pSrcObj->Transform()->SetWorldPos(pos);
-            pSrcObj->Transform()->SetWorldRotation(rot);
-            pSrcObj->Transform()->SetWorldScale(scale);
         }
     }
 }
@@ -800,17 +787,28 @@ void CTaskMgr::CHANGE_LAYER(const tTask& _Task)
 void CTaskMgr::CLONE_OBJECT(const tTask& _Task)
 {
     CGameObject* OriginObject = (CGameObject*)_Task.Param_1;
+    CGameObject* OriginParentObject = (CGameObject*)_Task.Param_2;
 
     // 레이어에 속해있지않은 오브젝트는 복사하지 않음
     if (-1 == OriginObject->m_iLayerIdx)
         return;
 
     CGameObject* CloneObj = OriginObject->Clone();
-    CloneObj->Transform()->SetLocalPos(OriginObject->Transform()->GetWorldPos());
-    CloneObj->Transform()->SetLocalRotation(OriginObject->Transform()->GetWorldRotation());
-    CloneObj->Transform()->SetLocalScale(OriginObject->Transform()->GetWorldScale());
 
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
+    if (nullptr == OriginParentObject)
+    {
+        CloneObj->Transform()->SetLocalPos(OriginObject->Transform()->GetWorldPos());
+        CloneObj->Transform()->SetLocalRotation(OriginObject->Transform()->GetWorldRotation());
+        CloneObj->Transform()->SetLocalScale(OriginObject->Transform()->GetWorldScale());
+        CloneObj->Transform()->SetAbsolute(true);
+
+        CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(CloneObj, CloneObj->m_iLayerIdx, false);
+    }
+    else
+    {
+        GamePlayStatic::AddChildObject(OriginParentObject, CloneObj);
+    }
+
     CEditorMgr::GetInst()->SetSelectedObject(CloneObj);
 }
 

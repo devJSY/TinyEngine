@@ -19,6 +19,7 @@ private:
     void AnimatorTest();
     void QuaternionExample();
     void DetachObject();
+    void SetDirection();
 
 private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);

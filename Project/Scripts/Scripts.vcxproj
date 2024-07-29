@@ -117,9 +117,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CCameraController.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
+    <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CkirbyAbility_Sleep.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
@@ -129,6 +131,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
+    <ClInclude Include="CProgressCamTrigger.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -255,6 +258,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTestIdle.h" />
     <ClInclude Include="CTestLeft.h" />
     <ClInclude Include="CTestRight.h" />
+    <ClInclude Include="CTwoTargetCamTrigger.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
     <ClInclude Include="CUIHPScript.h" />
     <ClInclude Include="CUIManagerScript.h" />
@@ -270,9 +274,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CCameraController.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
+    <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CkirbyAbility_Sleep.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
@@ -282,6 +288,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
+    <ClCompile Include="CProgressCamTrigger.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
@@ -408,6 +415,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CTestIdle.cpp" />
     <ClCompile Include="CTestLeft.cpp" />
     <ClCompile Include="CTestRight.cpp" />
+    <ClCompile Include="CTwoTargetCamTrigger.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
     <ClCompile Include="CUIManagerScript.cpp" />

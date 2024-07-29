@@ -16,7 +16,10 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
+    CLONE(CLevelChangeButtonScript)
+
 public:
     CLevelChangeButtonScript();
+    CLevelChangeButtonScript(const CLevelChangeButtonScript& Origin);
     virtual ~CLevelChangeButtonScript();
 };

@@ -8,7 +8,7 @@ CUITexScript::CUITexScript()
     , m_vTexName{}
     , m_iPrevTex(0)
     , m_iCurTex(0)
-    , m_iCurTexCount(7)
+    , m_iCurTexCount(5)
 {
     m_vTexName.resize(m_iCurTexCount);
     for (UINT i = 0; i < m_iCurTexCount; i++)
@@ -33,7 +33,7 @@ void CUITexScript::tick()
 {
     if (m_iPrevTex != m_iCurTex)
     {
-        m_pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(m_vTexName[m_iCurTex])));
+        m_pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\UILogo\\RobbyLevel\\" + ToWstring(m_vTexName[m_iCurTex])));
         m_iPrevTex = m_iCurTex;
     }
 }

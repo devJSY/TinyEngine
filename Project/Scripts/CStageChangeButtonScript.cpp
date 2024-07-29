@@ -7,7 +7,7 @@ CStageChangeButtonScript::CStageChangeButtonScript()
     : CButtonScript(STAGECHANGEBUTTONSCRIPT)
     , m_vStageName{}
     , m_iCurStage(0)
-    , m_iStageCount(7)
+    , m_iStageCount(5)
 {
     m_vStageName.resize(m_iStageCount);
     for (UINT i = 0; i < m_iStageCount; i++)
