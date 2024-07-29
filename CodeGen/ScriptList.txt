@@ -50,3 +50,4 @@ CBossMgr
 CElfilisUnit
 CElfilisArrowSetScript
 CElfilisArrowScript
+CElfilisSwordSlashScript

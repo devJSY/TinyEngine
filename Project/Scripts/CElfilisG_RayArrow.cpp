@@ -54,7 +54,6 @@ void CElfilisG_RayArrow::Enter_Step()
         if (m_ArrowsPref != nullptr)
         {
             m_Arrows = m_ArrowsPref->Instantiate();
-            //m_Arrows->Transform()->SetWorldPos(PLAYER->Transform()->GetWorldPos());
             m_ArrowSet = m_Arrows->GetScript<CElfilisArrowSetScript>();
             if (m_ArrowSet)
             {

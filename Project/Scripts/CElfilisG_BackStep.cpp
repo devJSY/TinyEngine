@@ -98,6 +98,14 @@ void CElfilisG_BackStep::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup_RandState(NextState);
+
+        if (NextState == ElfilisStateGroup::GroundAtk)
+        {
+            ELFFSM->ChangeStateGroup_SetState(NextState, L"GROUND_ATK_SWORDWAVE_RL");
+        }
+        else
+        {
+            ELFFSM->ChangeStateGroup_RandState(NextState);
+        }
     }
 }

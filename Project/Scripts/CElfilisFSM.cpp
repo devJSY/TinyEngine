@@ -189,6 +189,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 #include "CElfilisG_NormalAtkR.h"
 #include "CElfilisG_NormalAtkFinishL.h"
 #include "CElfilisG_RayArrow.h"
+#include "CElfilisG_SwordWaveRL.h"
+#include "CElfilisG_SwordWaveLR.h"
+#include "CElfilisG_SwordWaveFinishRL.h"
 void CElfilisFSM::begin()
 {
     // State Ãß°¡
@@ -201,6 +204,9 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_RL", new CElfilisG_SwordWaveRL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_LR", new CElfilisG_SwordWaveLR);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_FINISHLR", new CElfilisG_SwordWaveFinishRL);
 
     //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
     ChangeState(L"GROUND_IDLE");

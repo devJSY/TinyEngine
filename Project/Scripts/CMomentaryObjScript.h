@@ -5,7 +5,9 @@ class CMomentaryObjScript : public CScript
 {
 private:
     Vec3 m_InitVelocity;
-    float m_PlayTime;
+    float m_AccTime;
+    float m_LifeTime;
+
     double m_EndAnimPlayTime;
     wstring m_EndAnim;
 
@@ -15,7 +17,7 @@ public:
 
 public:
     void SetInitVelocity(Vec3 _Vel) { m_InitVelocity = _Vel; }
-    void SetPlayTime(float _Time) { m_PlayTime = _Time; }
+    void SetPlayTime(float _Time) { m_LifeTime = _Time; }
     void SetEndAnim(wstring _Key);
 
 public:

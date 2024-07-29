@@ -132,7 +132,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisG_NormalAtkL.h" />
     <ClInclude Include="CElfilisG_NormalAtkR.h" />
     <ClInclude Include="CElfilisG_RayArrow.h" />
+    <ClInclude Include="CElfilisG_SwordWaveFinishRL.h" />
+    <ClInclude Include="CElfilisG_SwordWaveLR.h" />
+    <ClInclude Include="CElfilisG_SwordWaveRL.h" />
     <ClInclude Include="CElfilisG_Teleport.h" />
+    <ClInclude Include="CElfilisSwordSlashScript.h" />
     <ClInclude Include="CElfilisUnit.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
@@ -298,7 +302,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkR.cpp" />
     <ClCompile Include="CElfilisG_RayArrow.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveFinishRL.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveLR.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveRL.cpp" />
     <ClCompile Include="CElfilisG_Teleport.cpp" />
+    <ClCompile Include="CElfilisSwordSlashScript.cpp" />
     <ClCompile Include="CElfilisUnit.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />

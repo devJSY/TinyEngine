@@ -493,6 +493,18 @@
     <ClInclude Include="CElfilisArrowScript.h">
       <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveFinishRL.h">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\FinishRL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveLR.h">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\LR</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveRL.h">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\RL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisSwordSlashScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -998,6 +1010,18 @@
     </ClCompile>
     <ClCompile Include="CElfilisArrowScript.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveFinishRL.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\FinishRL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveLR.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\LR</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveRL.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\RL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisSwordSlashScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1546,6 +1570,24 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\ArrowSet">
       <UniqueIdentifier>{649a8366-a2aa-43c9-9e47-c5a6e1c616ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave">
+      <UniqueIdentifier>{4656b1f2-9eb7-4dd6-b251-099267f4baf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\Tornado">
+      <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\LR">
+      <UniqueIdentifier>{24f9f33d-b65a-49ad-b283-135be76f5595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\FinishRL">
+      <UniqueIdentifier>{dc4af2d8-e0d3-4f53-a795-48bd90f73440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\RL">
+      <UniqueIdentifier>{c3040a0c-a9c6-4278-9508-cd0a915adc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\SwordSlash">
+      <UniqueIdentifier>{8048275d-ab92-4912-967e-d85f103ac32a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
