@@ -24,7 +24,7 @@ CEditorMgr::CEditorMgr()
     , m_hObserver(nullptr)
 {
 #ifdef DISTRIBUTE
-    m_bEnable = false;
+    m_bEnabled = false;
 #endif // DISTRIBUTE
 }
 

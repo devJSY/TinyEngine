@@ -47,9 +47,9 @@ void CTimeMgr::tick()
     m_fAccTime += m_EngineDeltaTime;
     if (1.f <= m_fAccTime)
     {
-        /*  wchar_t szText[50] = {};
-          swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
-          SetWindowText(CEngine::GetInst()->GetMainWind(), szText);*/
+        // wchar_t szText[50] = {};
+        // swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
+        // SetWindowText(CEngine::GetInst()->GetMainWind(), szText);
         m_iFPS = m_iCall;
         m_iCall = 0;
         m_fAccTime = 0.f;
