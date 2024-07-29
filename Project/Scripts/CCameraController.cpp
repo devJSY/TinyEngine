@@ -7,14 +7,18 @@ CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
     , m_Setup(CameraSetup::NORMAL)
     , m_Target(nullptr)
-    , m_Offset(Vec3(0.f,0.f,0.f))
+    , m_Offset(Vec3(0.f,50.f,0.f))
     , m_TargetPos(Vec3(0.f,0.f,0.f))
     , m_SubTarget(nullptr)
-    , m_LookDir(0.f, 0.f, 0.f)
-    , m_LookDist(0.f)
+    , m_LookDir(0.f, -1.f, 1.f)
+    , m_LookDist(200.f)
+    , m_MinSpeed(10.f)
+    , m_MaxSpeed(250.f)
+    , m_ThresholdDistance(60.f)
     , m_RotationSpeed(50.f)
-    , m_EditRotSpeed(45.f)
-    , m_EditZoomSpeed(300.f)
+    , m_ZoomSpeed(200.f)
+    , m_EditRotSpeed(50.f)
+    , m_EditZoomSpeed(200.f)
     , m_EditMode(false)
 {
 
@@ -238,15 +242,17 @@ void CCameraController::UpdateLookDir()
 void CCameraController::UpdateLookDistance()
 {
     // 이전 프레임의 거리가 목표하는 거리보다 크다면
+    float CurZoomSpeed = m_EditMode ? m_EditZoomSpeed : m_ZoomSpeed;
+
     if (m_PrevDistance > m_LookDist)
     {
-        m_CurDistance = m_PrevDistance - m_ZoomSpeed * DT;
+        m_CurDistance = m_PrevDistance - CurZoomSpeed * DT;
     }
 
     // 이전 프레임의 거리가 목표하는 거리보다 작다면
     else if (m_PrevDistance < m_LookDist)
     {
-        m_CurDistance = m_PrevDistance + m_ZoomSpeed * DT;
+        m_CurDistance = m_PrevDistance + CurZoomSpeed * DT;
     }
 }
 
