@@ -8,8 +8,8 @@ CElfilisG_Teleport::CElfilisG_Teleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_MapFloorOffset(Vec3(0.f, 0.f, 500.f))
-    , m_MapSizeRadius(1250.f)
+    , m_MapFloorOffset(Vec3(0.f, 0.f, 100.f))
+    , m_MapSizeRadius(500.f)
     , m_EffectSpeed(700.f)
 {
     m_Effect = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref");

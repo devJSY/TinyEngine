@@ -14,7 +14,7 @@ CKirbyDropAbility::~CKirbyDropAbility()
 
 void CKirbyDropAbility::tick()
 {
-    if (m_FrmEnter && GetOwner()->Animator()->GetClipFrameIndex() >= 11)
+    if (m_FrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {
         // spawn ability bubble
         if (nullptr != m_Bubble)

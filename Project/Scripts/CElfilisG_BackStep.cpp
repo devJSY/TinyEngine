@@ -4,6 +4,7 @@
 
 CElfilisG_BackStep::CElfilisG_BackStep()
     : m_PrevDrag(0.f)
+    , m_NewDrag(0.f)
 {
 }
 
@@ -36,6 +37,8 @@ void CElfilisG_BackStep::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
+        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
+        m_NewDrag = 0.f;
     }
     break;
     case StateStep::Progress: {
@@ -48,7 +51,6 @@ void CElfilisG_BackStep::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastEnd"), false);
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
     }
     break;
     }
@@ -73,7 +75,7 @@ void CElfilisG_BackStep::Exit_Step()
 void CElfilisG_BackStep::Start()
 {
     // look player
-    RotateToPlayer(DT * 20.f);
+    RotateToPlayer(DT * 10.f);
 
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -83,6 +85,9 @@ void CElfilisG_BackStep::Start()
 
 void CElfilisG_BackStep::Progress()
 {
+    m_NewDrag += DT * 10.f;
+    GetOwner()->Rigidbody()->SetDrag(m_NewDrag);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::End);
@@ -91,9 +96,8 @@ void CElfilisG_BackStep::Progress()
 
 void CElfilisG_BackStep::End()
 {
-    // Jump
-    float NewDrag = GetOwner()->Rigidbody()->GetDrag() + DT;
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    m_NewDrag += DT * 10.f;
+    GetOwner()->Rigidbody()->SetDrag(m_NewDrag);
 
     if (GetOwner()->Animator()->IsFinish())
     {

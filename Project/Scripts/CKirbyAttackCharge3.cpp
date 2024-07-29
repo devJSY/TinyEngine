@@ -29,7 +29,7 @@ void CKirbyAttackCharge3::tick()
             break;
         case AbilityCopyType::SWORD:
         {
-            if (PLAYER->Animator()->GetClipFrameIndex() >= 20)
+            if (CHECK_ANIMFRM(PLAYER, 20))
             {
                 if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
                 {

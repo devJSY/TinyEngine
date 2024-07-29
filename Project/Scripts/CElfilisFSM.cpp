@@ -28,20 +28,22 @@ CElfilisFSM::CElfilisFSM()
 CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     : CFSMScript(_Origin)
     , m_CurStateGroup(ElfilisStateGroup::END)
+    , m_Phase(_Origin.m_Phase)
     , m_GroundAttackCount(0)
+    , m_ComboLevel(0)
     , m_bAttackRepeat(false)
 {
-    for (auto it : m_StateGroup)
-    {
-        for (auto state : it.second[0])
-        {
-            m_StateGroup[it.first][0].push_back(state);
-        }
-        for (auto state : it.second[1])
-        {
-            m_StateGroup[it.first][1].push_back(state);
-        }
-    }
+    //for (auto it : m_StateGroup)
+    //{
+    //    for (auto state : it.second[0])
+    //    {
+    //        m_StateGroup[it.first][0].push_back(state);
+    //    }
+    //    for (auto state : it.second[1])
+    //    {
+    //        m_StateGroup[it.first][1].push_back(state);
+    //    }
+    //}
 }
 
 CElfilisFSM::~CElfilisFSM()

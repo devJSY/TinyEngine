@@ -18,7 +18,7 @@ void CElfilisSwordSlashScript::begin()
 
     if (Rigidbody())
     {
-        Rigidbody()->AddForce(m_InitDir * 800.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(m_InitDir * 50.f, ForceMode::VelocityChange);
     }
 }
 

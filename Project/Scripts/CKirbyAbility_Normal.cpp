@@ -24,7 +24,7 @@ CKirbyAbility_Normal::~CKirbyAbility_Normal()
 
 void CKirbyAbility_Normal::Attack()
 {
-    if (PLAYER->Animator()->GetClipFrameIndex() >= 3 && m_bFrmEnter)
+    if (CHECK_ANIMFRM(PLAYER, 3) && m_bFrmEnter)
     {
         CPlayerMgr::ClearBodyMtrl();
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));

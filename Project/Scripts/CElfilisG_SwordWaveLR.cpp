@@ -121,7 +121,7 @@ void CElfilisG_SwordWaveLR::Wait()
 void CElfilisG_SwordWaveLR::Progress()
 { 
     // Spawn SwordSlash
-    if (m_bFrmEnter && GetOwner()->Animator()->GetClipFrameIndex() >= 12)
+    if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {
         if (m_SwordSlash != nullptr)
         {

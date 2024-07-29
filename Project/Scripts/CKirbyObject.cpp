@@ -174,7 +174,7 @@ void CKirbyObject::DropObjectStartExit()
 
 void CKirbyObject::ChangeObject()
 {
-    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() >= m_MeshChangeIdx)
+    if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, m_MeshChangeIdx))
     {
         PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyA);
         PLAYER->GetRenderComponent()->SetMaterial(CPlayerMgr::GetPlayerBodyDemoMtrl(), m_DemoMeshIdx_BodyB);
