@@ -48,11 +48,11 @@ void CTransform::finaltick()
 
     Matrix matScale = XMMatrixScaling(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
 
-    m_LocalQuaternion = Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_LocalRotation.x) *
-                        Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_LocalRotation.y) *
-                        Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_LocalRotation.z);
+    Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_LocalRotation.x) *
+                    Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_LocalRotation.y) *
+                    Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_LocalRotation.z);
 
-    Matrix matRot = Matrix::CreateFromQuaternion(m_LocalQuaternion);
+    m_LocalQuaternion = Quat::CreateFromRotationMatrix(matRot);
 
     Matrix matTranslation = XMMatrixTranslation(m_LocalPos.x, m_LocalPos.y, m_LocalPos.z);
 
@@ -197,8 +197,10 @@ Quat CTransform::GetWorldQuaternion() const
     ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
     Rotation.ToRadian();
 
-    return Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), Rotation.x) * Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Rotation.y) *
-           Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), Rotation.z);
+    Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), Rotation.x) * Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Rotation.y) *
+                    Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), Rotation.z);
+
+    return Quat::CreateFromRotationMatrix(matRot);
 }
 
 Vec3 CTransform::GetWorldScale() const
@@ -210,7 +212,16 @@ Vec3 CTransform::GetWorldScale() const
 
 void CTransform::SetWorldScale(Vec3 _Scale)
 {
-    m_bAbsolute = true;
+    if (!m_bAbsolute)
+    {
+        CGameObject* pParent = GetOwner()->GetParent();
+        if (nullptr != pParent)
+        {
+            Vec3 ParentWorldScale = pParent->Transform()->GetWorldScale();
+            _Scale = _Scale / ParentWorldScale;
+        }
+    }
+
     SetLocalScale(_Scale);
 }
 

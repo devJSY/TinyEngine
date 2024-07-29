@@ -117,6 +117,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CCameraController.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
@@ -268,6 +269,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CCameraController.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />

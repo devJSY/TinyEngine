@@ -62,11 +62,11 @@ private:
 
 
 private:
-    virtual void OnCollisionEnter(CCollider* _OtherCollider){}
+    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
     virtual void OnCollisionStay(CCollider* _OtherCollider){}
     virtual void OnCollisionExit(CCollider* _OtherCollider){}
 
-    virtual void OnTriggerEnter(CCollider* _OtherCollider);
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
     virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 

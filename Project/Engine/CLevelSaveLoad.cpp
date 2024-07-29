@@ -115,7 +115,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     fwrite(&layerIdx, sizeof(int), 1, _File);
 
     // Active ÀúÀå
-    bool Active = _Obj->IsActive();
+    bool Active = _Obj->m_bActive;
     fwrite(&Active, sizeof(bool), 1, _File);
 
     vector<pair<UINT, CComponent*>> vecComps;

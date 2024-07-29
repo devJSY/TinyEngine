@@ -430,16 +430,16 @@ void COutliner::DrawNode(CGameObject* obj)
             DWORD_PTR data = *((DWORD_PTR*)payload->Data);
             CGameObject* pChild = (CGameObject*)data;
 
+            Vec3 pos = pChild->Transform()->GetWorldPos();
+            Vec3 rot = pChild->Transform()->GetWorldRotation();
+            Vec3 scale = pChild->Transform()->GetWorldScale();
+
             obj->AddChild(pChild);
 
             // 부모가 적용된 트랜스폼으로 재계산
             pChild->Transform()->finaltick();
 
-            // Local SRT를 World SRT로 설정
-            Vec3 pos = pChild->Transform()->GetLocalPos();
-            Vec3 rot = pChild->Transform()->GetLocalRotation();
-            Vec3 scale = pChild->Transform()->GetLocalScale();
-
+            // 원본 World SRT로 설정
             pChild->Transform()->SetWorldPos(pos);
             pChild->Transform()->SetWorldRotation(rot);
             pChild->Transform()->SetWorldScale(scale);
@@ -464,16 +464,16 @@ void COutliner::DrawNode(CGameObject* obj)
 
             if (nullptr != pChild)
             {
+                Vec3 pos = pChild->Transform()->GetWorldPos();
+                Vec3 rot = pChild->Transform()->GetWorldRotation();
+                Vec3 scale = pChild->Transform()->GetWorldScale();
+
                 obj->AddChild(pChild);
 
                 // 부모가 적용된 트랜스폼으로 재계산
                 pChild->Transform()->finaltick();
 
-                // Local SRT를 World SRT로 설정
-                Vec3 pos = pChild->Transform()->GetLocalPos();
-                Vec3 rot = pChild->Transform()->GetLocalRotation();
-                Vec3 scale = pChild->Transform()->GetLocalScale();
-
+                // 원본 World SRT로 설정
                 pChild->Transform()->SetWorldPos(pos);
                 pChild->Transform()->SetWorldRotation(rot);
                 pChild->Transform()->SetWorldScale(scale);

@@ -1401,6 +1401,9 @@
     <FxCompile Include="KirbyMapPS.hlsl">
       <Filter>ShaderCode\Kirby\Map</Filter>
     </FxCompile>
+    <FxCompile Include="TransparentPS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
     <FxCompile Include="MapTestPS.hlsl">
       <Filter>ShaderCode\Kirby\Map\3. Invasion at the House of Horror</Filter>
     </FxCompile>

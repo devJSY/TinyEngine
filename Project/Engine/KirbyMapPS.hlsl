@@ -38,11 +38,8 @@ PS_OUT main(PS_IN input)
     PS_OUT output0 = (PS_OUT) 0.f;
     PS_OUT output1 = (PS_OUT) 0.f;
     
-    float2 vUV1 = Albedo0UVScale > 0.f ? input.vUV0 * (1.f / Albedo0UVScale) : input.vUV0;
-    float2 vUV2 = Albedo1UVScale > 0.f ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0;
-    
-    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, vUV1) : (float4) 0.f;
-    float4 albedo1 = g_btex_3 ? Albedo1Tex.Sample(g_LinearWrapSampler, vUV2) : (float4) 0.f;
+    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, Albedo0UVScale > 0.f ? input.vUV0 * (1.f / Albedo0UVScale) : input.vUV0) : (float4) 0.f;
+    float4 albedo1 = g_btex_3 ? Albedo1Tex.Sample(g_LinearWrapSampler, Albedo1UVScale > 0.f ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0) : (float4) 0.f;
     
     albedo0.rgb *= albedo0.a;
     albedo1.rgb *= albedo1.a;
@@ -56,12 +53,12 @@ PS_OUT main(PS_IN input)
         
         output0.vColor = albedo0;
         output0.vPosition = float4(input.vPosWorld, 1.f);
-        output0.vNormal = float4(g_btex_1 ? NormalMapping(input, Noraml0Tex, vUV1, g_LinearWrapSampler) : normalize(input.vNormalWorld), 1.f);
+        output0.vNormal = float4(g_btex_1 ? NormalMapping(input, Noraml0Tex, input.vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld), 1.f);
         output0.vTangent = float4(input.vTangentWorld, 1.f);
         output0.vBitangent = float4(input.vBitangentWorld, 1.f);
         output0.vEmissive = MtrlEmission;
         
-        float4 MRAColor = g_btex_1 ? MRA0Tex.Sample(g_LinearWrapSampler, vUV1) : (float4) 0.f;
+        float4 MRAColor = g_btex_1 ? MRA0Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
     
         float metallic = g_btex_1 ? MRAColor.x : MtrlMetallic;
         float roughness = g_btex_1 ? MRAColor.y : MtrlRoughness;
@@ -81,12 +78,12 @@ PS_OUT main(PS_IN input)
         
         output1.vColor = albedo1;
         output1.vPosition = float4(input.vPosWorld, 1.f);
-        output1.vNormal = float4(g_btex_5 ? NormalMapping(input, Noraml1Tex, vUV2, g_LinearWrapSampler) : normalize(input.vNormalWorld), 1.f);
+        output1.vNormal = float4(g_btex_5 ? NormalMapping(input, Noraml1Tex, input.vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld), 1.f);
         output1.vTangent = float4(input.vTangentWorld, 1.f);
         output1.vBitangent = float4(input.vBitangentWorld, 1.f);
         output1.vEmissive = MtrlEmission;
         
-        float4 MRAColor = g_btex_4 ? MRA0Tex.Sample(g_LinearWrapSampler, vUV2) : (float4) 0.f;
+        float4 MRAColor = g_btex_4 ? MRA0Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
     
         float metallic = g_btex_4 ? MRAColor.x : MtrlMetallic;
         float roughness = g_btex_4 ? MRAColor.y : MtrlRoughness;
