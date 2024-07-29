@@ -1,18 +1,25 @@
 #include "pch.h"
 #include "CGhostGordoScript.h"
 
+#include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
+
 CGhostGordoScript::CGhostGordoScript()
     : CMonsterUnitScript(GHOSTGORDOSCRIPT)
-    , m_eState(GHOSTGORDO_STATE::CloseEyeIdle)
+    , m_eState(GHOSTGORDO_STATE::EyeCloseWait)
+    , m_vBasePos{}
     , m_fAccTime(0.f)
 {
+    SetEatable(false);
 }
 
 CGhostGordoScript::CGhostGordoScript(const CGhostGordoScript& _Origin)
     : CMonsterUnitScript(_Origin)
-    , m_eState(GHOSTGORDO_STATE::CloseEyeIdle)
+    , m_eState(GHOSTGORDO_STATE::EyeCloseWait)
+    , m_vBasePos{}
     , m_fAccTime(0.f)
 {
+    SetEatable(false);
 }
 
 CGhostGordoScript::~CGhostGordoScript()
@@ -21,19 +28,19 @@ CGhostGordoScript::~CGhostGordoScript()
 
 void CGhostGordoScript::begin()
 {
-    ChangeState(GHOSTGORDO_STATE::CloseEyeIdle);
+    ChangeState(GHOSTGORDO_STATE::EyeCloseWait);
 }
 
 void CGhostGordoScript::tick()
 {
     switch (m_eState)
     {
-    case GHOSTGORDO_STATE::CloseEyeIdle: {
-        CloseEyeIdle();
+    case GHOSTGORDO_STATE::EyeCloseWait: {
+        EyeCloseWait();
     }
     break;
-    case GHOSTGORDO_STATE::OpenEyeIdle: {
-        OpenEyeIdle();
+    case GHOSTGORDO_STATE::EyeOpenWait: {
+        EyeOpenWait();
     }
     break;
     case GHOSTGORDO_STATE::OpenEye: {
@@ -48,8 +55,19 @@ void CGhostGordoScript::tick()
         Track();
     }
     break;
-    case GHOSTGORDO_STATE::TrackAfter: {
-        TrackAfter();
+    case GHOSTGORDO_STATE::TrackAfter1: {
+        TrackAfter1();
+    }
+    break;
+    case GHOSTGORDO_STATE::Return: {
+        Return();
+    }
+    break;
+    case GHOSTGORDO_STATE::EyeCloseStart: {
+        EyeCloseStart();
+    }
+    break;
+    case GHOSTGORDO_STATE::TrackWait: {
     }
     break;
     case GHOSTGORDO_STATE::End:
@@ -70,12 +88,12 @@ void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
 {
     switch (_state)
     {
-    case GHOSTGORDO_STATE::CloseEyeIdle: {
+    case GHOSTGORDO_STATE::EyeCloseWait: {
         Animator()->Play(ANIMPREFIX("EyeCloseWait"), false);
     }
     break;
-    case GHOSTGORDO_STATE::OpenEyeIdle: {
-        Animator()->Play(ANIMPREFIX("Look"));
+    case GHOSTGORDO_STATE::EyeOpenWait: {
+        Animator()->Play(ANIMPREFIX("EyeOpenWait"), false);
     }
     break;
     case GHOSTGORDO_STATE::Find: {
@@ -90,9 +108,18 @@ void CGhostGordoScript::EnterState(GHOSTGORDO_STATE _state)
         Animator()->Play(ANIMPREFIX("EyeOpenStart"), false);
     }
     break;
-    case GHOSTGORDO_STATE::TrackAfter: {
+    case GHOSTGORDO_STATE::TrackAfter1: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Animator()->Play(ANIMPREFIX("Look"), false);
+    }
+    break;
+    case GHOSTGORDO_STATE::TrackAfter2: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Animator()->Play(ANIMPREFIX("Look"), false);
+    }
+    break;
+    case GHOSTGORDO_STATE::EyeCloseStart: {
+        Animator()->Play(ANIMPREFIX("EyeCloseStart"), false, false, 2.5f, 0.5f);
     }
     break;
     case GHOSTGORDO_STATE::End:
@@ -106,38 +133,25 @@ void CGhostGordoScript::ExitState(GHOSTGORDO_STATE _state)
 {
     switch (_state)
     {
-    case GHOSTGORDO_STATE::OpenEyeIdle:
-        break;
-    case GHOSTGORDO_STATE::Track:
-        break;
-    case GHOSTGORDO_STATE::TrackAfter:
-        break;
-    case GHOSTGORDO_STATE::End:
-        break;
+    case GHOSTGORDO_STATE::TrackWait: {
+        m_fAccTime = 0.f;
+    }
+    break;
     default:
         break;
     }
 }
 
-void CGhostGordoScript::CloseEyeIdle()
+void CGhostGordoScript::EyeCloseWait()
 {
-    // TODO : ºû °¨Áö ±îÁö
-    nullptr != GetTarget() ? ChangeState(GHOSTGORDO_STATE::OpenEye) : void();
+    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? ChangeState(GHOSTGORDO_STATE::OpenEye) : void();
 }
 
-void CGhostGordoScript::OpenEyeIdle()
+void CGhostGordoScript::EyeOpenWait()
 {
-    m_fAccTime += DT;
-    if (m_fAccTime >= 2.f)
-    {
-        // TODO : ºû °¨Áö ±îÁö
-        if (nullptr != GetTarget())
-        {
-            ChangeState(GHOSTGORDO_STATE::Find);
-        }
-    }
+    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? ChangeState(GHOSTGORDO_STATE::Find) : void();
 
-    Animator()->IsFinish() ? Animator()->Play(ANIMPREFIX("EyeOpenWait")) : void();
+    Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::Return) : void();
 }
 
 void CGhostGordoScript::OpenEye()
@@ -153,12 +167,42 @@ void CGhostGordoScript::Find()
 void CGhostGordoScript::Track()
 {
     RotatingToTarget();
-    nullptr != GetTarget() ? RigidbodyMove(GetTarget()) : ChangeState(GHOSTGORDO_STATE::TrackAfter);
+    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? RigidbodyMove(GetTarget()) : ChangeState(GHOSTGORDO_STATE::TrackAfter1);
 }
 
-void CGhostGordoScript::TrackAfter()
+void CGhostGordoScript::TrackAfter1()
 {
-    Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::OpenEyeIdle) : void();
+    Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::Return) : void();
+}
+
+void CGhostGordoScript::TrackAfter2()
+{
+    Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::TrackWait) : void();
+}
+
+void CGhostGordoScript::Return()
+{
+    Vec3 ToTargetDir = m_vBasePos - Transform()->GetWorldPos();
+    Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
+
+    Vec3 vPos = Transform()->GetWorldPos();
+    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? ChangeState(GHOSTGORDO_STATE::Find)
+                                                           : Rigidbody()->SetVelocity(ToTargetDir * (m_CurInfo.Speed * 1.5f));
+
+    (m_vBasePos.x - 1.f <= vPos.x && vPos.x <= m_vBasePos.x + 1.f) && (m_vBasePos.x - 1.f <= vPos.x && vPos.x <= m_vBasePos.x + 1.f)
+        ? ChangeState(GHOSTGORDO_STATE::EyeCloseStart)
+        : void();
+}
+
+void CGhostGordoScript::EyeCloseStart()
+{
+    Animator()->IsFinish() ? ChangeState(GHOSTGORDO_STATE::EyeCloseWait) : void();
+}
+
+void CGhostGordoScript::TrackWait()
+{
+    m_fAccTime += DT;
+    m_fAccTime >= 2.f ? ChangeState(GHOSTGORDO_STATE::EyeOpenWait) : void();
 }
 
 UINT CGhostGordoScript::SaveToLevelFile(FILE* _File)
@@ -183,10 +227,11 @@ void CGhostGordoScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
 
-    if (LAYER_PLAYER == pObj->GetLayerIdx() && L"BodyCollider" == pObj->GetName())
+    if (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName())
     {
-        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo());
-        ChangeState(GHOSTGORDO_STATE::TrackAfter);
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), m_CurInfo.ATK, 0.f, 0.f};
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        ChangeState(GHOSTGORDO_STATE::TrackAfter2);
     }
 }
 

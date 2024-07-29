@@ -20,7 +20,6 @@ class CMonsterUnitScript : public CUnitScript
 {
 private:
     CGameObject* m_pTargetObj;
-    UnitHit m_HitInfo;
     float m_RaycastDist;
     bool m_bEatable;
 
@@ -31,9 +30,6 @@ public:
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
     CGameObject* GetTarget() const { return m_pTargetObj; }
-
-    const UnitHit& GetHitInfo() { return m_HitInfo; }
-    void SetHitInfo(const UnitHit& _hitInfo) { m_HitInfo = _hitInfo; }
 
     void RigidbodyMove(CGameObject* _pTargetObj = nullptr);
     void Rotating();

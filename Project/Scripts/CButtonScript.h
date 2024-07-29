@@ -90,5 +90,6 @@ public:
 public:
     CButtonScript();
     CButtonScript(UINT _iScriptType);
+    CButtonScript(const CButtonScript& Origin);
     virtual ~CButtonScript();
 };

@@ -22,14 +22,14 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     NewLevel->GetLayer(1)->SetName(L"Manager");
     NewLevel->GetLayer(2)->SetName(L"World Static");
     NewLevel->GetLayer(3)->SetName(L"World Dynamic");
-    NewLevel->GetLayer(4)->SetName(L"Player");    
-    NewLevel->GetLayer(5)->SetName(L"Player Trigger");   
-    NewLevel->GetLayer(6)->SetName(L"Player Attack");      
-    NewLevel->GetLayer(7)->SetName(L"Player Attack Trigger");     
-    NewLevel->GetLayer(8)->SetName(L"Monster");   
-    NewLevel->GetLayer(9)->SetName(L"Monster Trigger");   
-    NewLevel->GetLayer(10)->SetName(L"Monster Attack"); 
-    NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");   
+    NewLevel->GetLayer(4)->SetName(L"Player");
+    NewLevel->GetLayer(5)->SetName(L"Player Trigger");
+    NewLevel->GetLayer(6)->SetName(L"Player Attack");
+    NewLevel->GetLayer(7)->SetName(L"Player Attack Trigger");
+    NewLevel->GetLayer(8)->SetName(L"Monster");
+    NewLevel->GetLayer(9)->SetName(L"Monster Trigger");
+    NewLevel->GetLayer(10)->SetName(L"Monster Attack");
+    NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");
     NewLevel->GetLayer(12)->SetName(L"Layer 12");
     NewLevel->GetLayer(13)->SetName(L"Layer 13");
     NewLevel->GetLayer(14)->SetName(L"Effect");
@@ -317,7 +317,459 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
     pMonsterAbility->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalEnemyBodyShader"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_BaseColor._919281726.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_Normal.1361449125.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
+
     NewLevel->AddObject(pMonsterAbility, 8);
+
+    return NewLevel;
+}
+
+/*********************
+|   DefaultUILevel
+|   1. StartLevel
+|   2. RobbyLevel
+|   3. PlayLevel
+*********************/
+
+CLevel* CLevelMgr::CreateDefaultStartUILevel()
+{
+    CLevel* NewLevel = new CLevel;
+    NewLevel->SetName(L"Default Kirby Start UI Level");
+
+    // =============
+    // create layer
+    // =============
+    NewLevel->GetLayer(0)->SetName(L"Default");
+    NewLevel->GetLayer(1)->SetName(L"Manager");
+    NewLevel->GetLayer(2)->SetName(L"World Static");
+    NewLevel->GetLayer(3)->SetName(L"World Dynamic");
+    NewLevel->GetLayer(4)->SetName(L"Player");
+    NewLevel->GetLayer(5)->SetName(L"Player Trigger");
+    NewLevel->GetLayer(6)->SetName(L"Player Attack");
+    NewLevel->GetLayer(7)->SetName(L"Player Attack Trigger");
+    NewLevel->GetLayer(8)->SetName(L"Monster");
+    NewLevel->GetLayer(9)->SetName(L"Monster Trigger");
+    NewLevel->GetLayer(10)->SetName(L"Monster Attack");
+    NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");
+    NewLevel->GetLayer(12)->SetName(L"Layer 12");
+    NewLevel->GetLayer(13)->SetName(L"Layer 13");
+    NewLevel->GetLayer(14)->SetName(L"Effect");
+    NewLevel->GetLayer(15)->SetName(L"UI");
+
+    // =============
+    // world setting
+    // =============
+    CPhysicsMgr::GetInst()->SetPPM(100.f);
+
+    // Manager
+    CGameObject* pManager = new CGameObject;
+    pManager->SetName(L"Manager");
+    pManager->AddComponent(new CTransform);
+    pManager->AddComponent(CScriptMgr::GetScript(UIMANAGERSCRIPT));
+
+    NewLevel->AddObject(pManager, 1);
+
+    // =============
+    // create camera
+    // =============
+    CGameObject* pCamObj = new CGameObject;
+    pCamObj->SetName(L"Main Camera");
+    pCamObj->AddComponent(new CTransform);
+    pCamObj->AddComponent(new CMeshRender);
+    pCamObj->AddComponent(new CCamera);
+
+    pCamObj->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-68.5f), XMConvertToRadians(-62.f), 0.f));
+
+    pCamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
+    pCamObj->MeshRender()->SetFrustumCheck(false);
+    pCamObj->MeshRender()->SetCastShadow(false);
+
+    pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    pCamObj->Camera()->SetCameraPriority(0);
+    pCamObj->Camera()->LayerMaskAll();
+    pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
+    pCamObj->Camera()->SetHDRI(true);
+    pCamObj->Camera()->SetFOV(XMConvertToRadians(60.f));
+
+    NewLevel->AddObject(pCamObj, 0);
+
+    // UI Camera
+    CGameObject* pUICamObj = new CGameObject;
+    pUICamObj->SetName(L"UI Camera");
+    pUICamObj->AddComponent(new CTransform);
+    pUICamObj->AddComponent(new CMeshRender);
+    pUICamObj->AddComponent(new CCamera);
+
+    pUICamObj->Transform()->SetLocalPos(Vec3(10000.f, 0.f, -5.f));
+
+    pUICamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pUICamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
+    pUICamObj->MeshRender()->SetFrustumCheck(false);
+    pUICamObj->MeshRender()->SetCastShadow(false);
+
+    pUICamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    pUICamObj->Camera()->SetCameraPriority(1);
+    pUICamObj->Camera()->LayerMask(NewLevel, L"UI", true);
+    pUICamObj->Camera()->SetHDRI(true);
+    pUICamObj->Camera()->SetFOV(XMConvertToRadians(90.f));
+
+    NewLevel->AddObject(pUICamObj, 0);
+
+    // =============
+    // create Env
+    // =============
+    // SkyBox
+    CGameObject* pSkyBoxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Skybox\\Day\\Day.fbx")->Instantiate();
+    pSkyBoxObj->SetName(L"SkyBox");
+
+    pSkyBoxObj->Transform()->SetLocalRotation(Vec3(-XM_PIDIV2, XM_PI, 0.f));
+    pSkyBoxObj->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+
+    pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
+    pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
+
+    Ptr<CMaterial> SkyBoxMtrl = pSkyBoxObj->GetRenderComponent()->GetMaterial(0);
+    SkyBoxMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"KirbySkySphereShader"));
+    SkyBoxMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Skybox\\Day\\SkySphere_DayTest.1151417570.png"));
+    SkyBoxMtrl->Save(SkyBoxMtrl->GetKey());
+
+    NewLevel->AddObject(pSkyBoxObj, 0);
+
+    // IBL
+    CGameObject* pIBLObj = new CGameObject;
+    pIBLObj->SetName(L"IBL");
+    pIBLObj->AddComponent(new CTransform);
+    pIBLObj->AddComponent(new CSkyBox);
+
+    pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
+    pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
+
+    pIBLObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Diffuse.dds"));
+    pIBLObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Specular.dds"));
+
+    NewLevel->AddObject(pIBLObj, 0);
+
+    // Light
+    CGameObject* pDirLight = new CGameObject;
+    pDirLight->SetName(L"Directional Light");
+    pDirLight->AddComponent(new CTransform);
+    pDirLight->AddComponent(new CLight);
+
+    pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
+    pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+    pDirLight->Light()->SetRadius(10.f);
+
+    NewLevel->AddObject(pDirLight, 0);
+
+    // UI_TitleLogo
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_TitleLogo");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+
+        pUIObject->Transform()->SetLocalPos(Vec3(9582.f, 44.f, 514.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(992.f, 634.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_TitleLogoMtrl.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // UI_NintendoCompanyLogo
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_NintendoCompanyLogo");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+
+        pUIObject->Transform()->SetLocalPos(Vec3(9331.f, 402.f, 445.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(174.f, 44.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_CompanyLogoMtrl_Nin.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // UI_HalCompanyLogo
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_HalCompanyLogo");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+
+        pUIObject->Transform()->SetLocalPos(Vec3(10606.f, 341.f, 394.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(122.f, 102.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_CompanyLogoMtrl.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // TODO : Prefab
+    // UI_StartBtn
+    {
+        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\UI_StartBtn.pref")->Instantiate();
+        pUIObject->SetName(L"UI_StartBtn");
+
+        pUIObject->Transform()->SetLocalPos(Vec3(10529.f, 35.f, 850.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(5.f), 0.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(600.f, 150.f, 1.f));
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // TODO : Prefab
+    // UI_ExitBtn
+    {
+        CGameObject* pUIObject = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\UI_ExitBtn.pref")->Instantiate();
+        pUIObject->SetName(L"UI_ExitBtn");
+
+        pUIObject->Transform()->SetLocalPos(Vec3(10529.f, -183.f, 850.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(2.12f), 0.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(600.f, 150.f, 1.f));
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    return NewLevel;
+}
+
+CLevel* CLevelMgr::CreateDefaultRobbyUILevel()
+{
+    CLevel* NewLevel = new CLevel;
+    NewLevel->SetName(L"Default Kirby Robby UI Level");
+
+    // =============
+    // create layer
+    // =============
+    NewLevel->GetLayer(0)->SetName(L"Default");
+    NewLevel->GetLayer(1)->SetName(L"Manager");
+    NewLevel->GetLayer(2)->SetName(L"World Static");
+    NewLevel->GetLayer(3)->SetName(L"World Dynamic");
+    NewLevel->GetLayer(4)->SetName(L"Player");
+    NewLevel->GetLayer(5)->SetName(L"Player Trigger");
+    NewLevel->GetLayer(6)->SetName(L"Player Attack");
+    NewLevel->GetLayer(7)->SetName(L"Player Attack Trigger");
+    NewLevel->GetLayer(8)->SetName(L"Monster");
+    NewLevel->GetLayer(9)->SetName(L"Monster Trigger");
+    NewLevel->GetLayer(10)->SetName(L"Monster Attack");
+    NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");
+    NewLevel->GetLayer(12)->SetName(L"Layer 12");
+    NewLevel->GetLayer(13)->SetName(L"Layer 13");
+    NewLevel->GetLayer(14)->SetName(L"Effect");
+    NewLevel->GetLayer(15)->SetName(L"UI");
+
+    // =============
+    // world setting
+    // =============
+    CPhysicsMgr::GetInst()->SetPPM(100.f);
+
+    // Manager
+    CGameObject* pManager = new CGameObject;
+    pManager->SetName(L"Manager");
+    pManager->AddComponent(new CTransform);
+    pManager->AddComponent(CScriptMgr::GetScript(UIMANAGERSCRIPT));
+
+    NewLevel->AddObject(pManager, 1);
+
+    // =============
+    // create camera
+    // =============
+    CGameObject* pCamObj = new CGameObject;
+    pCamObj->SetName(L"Main Camera");
+    pCamObj->AddComponent(new CTransform);
+    pCamObj->AddComponent(new CMeshRender);
+    pCamObj->AddComponent(new CCamera);
+
+    pCamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pCamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
+    pCamObj->MeshRender()->SetFrustumCheck(false);
+    pCamObj->MeshRender()->SetCastShadow(false);
+
+    pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    pCamObj->Camera()->SetCameraPriority(0);
+    pCamObj->Camera()->LayerMaskAll();
+    pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
+    pCamObj->Camera()->SetHDRI(true);
+    pCamObj->Camera()->SetFOV(XMConvertToRadians(60.f));
+
+    NewLevel->AddObject(pCamObj, 0);
+
+    // UI Camera
+    CGameObject* pUICamObj = new CGameObject;
+    pUICamObj->SetName(L"UI Camera");
+    pUICamObj->AddComponent(new CTransform);
+    pUICamObj->AddComponent(new CMeshRender);
+    pUICamObj->AddComponent(new CCamera);
+
+    pUICamObj->Transform()->SetLocalPos(Vec3(10000.f, 0.f, -5.f));
+
+    pUICamObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
+    pUICamObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"CameraIconMtrl"), 0);
+    pUICamObj->MeshRender()->SetFrustumCheck(false);
+    pUICamObj->MeshRender()->SetCastShadow(false);
+
+    pUICamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+    pUICamObj->Camera()->SetCameraPriority(1);
+    pUICamObj->Camera()->LayerMask(NewLevel, L"UI", true);
+    pUICamObj->Camera()->SetHDRI(true);
+    pUICamObj->Camera()->SetFOV(XMConvertToRadians(90.f));
+
+    NewLevel->AddObject(pUICamObj, 0);
+
+    // Light
+    CGameObject* pDirLight = new CGameObject;
+    pDirLight->SetName(L"Directional Light");
+    pDirLight->AddComponent(new CTransform);
+    pDirLight->AddComponent(new CLight);
+
+    pDirLight->Transform()->SetLocalPos(Vec3(0.f, 2000.f, -2000.f));
+    pDirLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(45.f), 0.f, 0.f));
+    pDirLight->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+    pDirLight->Light()->SetRadius(10.f);
+
+    NewLevel->AddObject(pDirLight, 0);
+
+    // TODO : Prefab
+    // UI_RobbyBG1
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_RobbyBG1");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+        pUIObject->AddComponent(CScriptMgr::GetScript(UITEXSCRIPT));
+
+        pUIObject->Transform()->SetLocalPos(Vec3(10000.f, 0.f, 1005.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(3840.f, 2160.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_RobbyBGMtrl1.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // TODO : Prefab
+    // UI_StageNameBG
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_StageNameBG");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+        pUIObject->AddComponent(CScriptMgr::GetScript(UITEXSCRIPT));
+
+        pUIObject->Transform()->SetLocalPos(Vec3(9806.f, 279.f, 520.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(2.62f), XMConvertToRadians(-8.14f), XMConvertToRadians(2.09f)));
+        pUIObject->Transform()->SetLocalScale(Vec3(1424.f, 396.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StageNameBgMtrl.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // TODO : Prefab
+    // UI_StageNameBG1
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_StageNameBG1");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+        pUIObject->AddComponent(CScriptMgr::GetScript(UITEXSCRIPT));
+
+        pUIObject->Transform()->SetLocalPos(Vec3(9382.f, 252.f, 449.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(2.62f), XMConvertToRadians(-8.14f), XMConvertToRadians(2.09f)));
+        pUIObject->Transform()->SetLocalScale(Vec3(396.f, 396.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StageNameBgMtrl1.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    // TODO : Prefab
+    // UI_StageNameStartBtn
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_StageNameStartBtn");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+        pUIObject->AddComponent(CScriptMgr::GetScript(STAGECHANGEBUTTONSCRIPT));
+
+        pUIObject->Transform()->SetLocalPos(Vec3(10690.f, -429.f, 605.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(2.12f), 0.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(530.f, 174.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StageNameStartBtn.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
+
+    return NewLevel;
+}
+
+CLevel* CLevelMgr::CreateDefaultPlayUILevel()
+{
+    CLevel* NewLevel = CreateDefaultKirbyLevel();
+
+    NewLevel->SetName(L"Create Default Play UI Level");
+
+    // Monster
+    CGameObject* pMonsterAbility = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemy.fbx")->Instantiate();
+    pMonsterAbility->SetName(L"Monster (Track)");
+    pMonsterAbility->AddComponent(new CRigidbody);
+    pMonsterAbility->AddComponent(new CCapsuleCollider);
+    pMonsterAbility->AddComponent(CScriptMgr::GetScript(NORMALENEMYSCRIPT));
+    
+    pMonsterAbility->Transform()->SetLocalPos(Vec3(280.f, 100.f, 280.f));
+    pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+    pMonsterAbility->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalEnemyBodyShader"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_BaseColor._919281726.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_Normal.1361449125.png"));
+    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+        TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
+
+    NewLevel->AddObject(pMonsterAbility, 8);
+
+    // TODO : Prefab
+    // UI_PlayerHP
+    {
+        CGameObject* pUIObject = new CGameObject;
+        pUIObject->SetName(L"UI_PlayerHP");
+        pUIObject->AddComponent(new CTransform);
+        pUIObject->AddComponent(new CMeshRender);
+        pUIObject->AddComponent(CScriptMgr::GetScript(STAGECHANGEBUTTONSCRIPT));
+
+        pUIObject->Transform()->SetLocalPos(Vec3(10690.f, -429.f, 605.f));
+        pUIObject->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(2.12f), 0.f));
+        pUIObject->Transform()->SetLocalScale(Vec3(530.f, 174.f, 1.f));
+
+        pUIObject->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+        pUIObject->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\UI_StageNameStartBtn.mtrl"), 0);
+
+        NewLevel->AddObject(pUIObject, 15);
+    }
 
     return NewLevel;
 }

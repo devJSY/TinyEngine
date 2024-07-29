@@ -528,8 +528,9 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
             m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
             return;
         }
+        UnitHit hitInfo = {};
 
-        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(GetHitInfo()) : void();
+        L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 
         flag = true;
     }
