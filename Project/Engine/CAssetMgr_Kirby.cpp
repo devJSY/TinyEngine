@@ -278,6 +278,8 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
+        pShader->AddScalarParam(INT_0, "Normal MRA Apply UV Scale");
+
         pShader->AddScalarParam(FLOAT_0, "Albedo0 UV Scale", 0.1f);
         pShader->AddScalarParam(FLOAT_1, "Albedo1 UV Scale", 0.1f);
 
