@@ -10,6 +10,11 @@ private:
     Quat m_LocalQuaternion;
     Vec3 m_LocalScale;
 
+    Vec3 m_WorldPos;
+    Vec3 m_WorldRotation;
+    Quat m_WorldQuaternion;
+    Vec3 m_WorldScale;
+
     Vec3 m_arrLocalDir[3]; // Right, Up, Front
     Vec3 m_arrWorldDir[3]; // Right, Up, Front
 
@@ -32,27 +37,27 @@ public:
 public:
     Vec3 GetLocalPos() const { return m_LocalPos; }
     void SetLocalPos(Vec3 _Pos) { m_LocalPos = _Pos; }
-    Vec3 GetWorldPos() const { return m_matWorld.Translation(); }
+    Vec3 GetWorldPos() const { return m_WorldPos; }
     void SetWorldPos(Vec3 _Pos);
 
     Vec3 GetLocalRotation() const { return m_LocalRotation; }
     void SetLocalRotation(Vec3 _Radian);
     void SetLocalRotation(Quat _Quaternion) { SetLocalRotation(_Quaternion.ToEuler()); };
 
-    Vec3 GetWorldRotation() const;
+    Vec3 GetWorldRotation() const { return m_WorldRotation; }
     void SetWorldRotation(Vec3 _Radian);
     void SetWorldRotation(Quat _Quaternion) { SetWorldRotation(_Quaternion.ToEuler()); };
 
     Quat GetLocalQuaternion() const { return m_LocalQuaternion; }
-    Quat GetWorldQuaternion() const;
+    Quat GetWorldQuaternion() const { return m_WorldQuaternion; }
 
     Vec3 GetLocalScale() const { return m_LocalScale; }
     void SetLocalScale(Vec3 _Scale) { m_LocalScale = _Scale; }
-    Vec3 GetWorldScale() const;
+    Vec3 GetWorldScale() const { return m_WorldScale; }
     void SetWorldScale(Vec3 _Scale);
     Vec3 GetTransformWorldScale() const;
 
-    float GetWorldRatio() const;
+    float GetWorldRatio() const { return (m_WorldScale.x + m_WorldScale.y + m_WorldScale.z) / 3.f; };
 
     Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
