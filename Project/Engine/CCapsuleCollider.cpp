@@ -28,6 +28,7 @@ void CCapsuleCollider::finaltick()
         return;
 
     Vec3 scale = Transform()->GetWorldScale();
+    const float WorldRatio = Transform()->GetWorldRatio();
 
     float HalfHeight = m_Height / 2.f - m_Radius;
 
@@ -60,7 +61,7 @@ void CCapsuleCollider::finaltick()
     break;
     }
 
-    Matrix matCenterTrans = XMMatrixTranslation(m_Center.x, m_Center.y, m_Center.z);
+    Matrix matCenterTrans = XMMatrixTranslation(WorldRatio * m_Center.x, WorldRatio * m_Center.y, WorldRatio * m_Center.z);
     Matrix matWorldScaleInv = XMMatrixScaling(1.f / scale.x, 1.f / scale.y, 1.f / scale.z);
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 

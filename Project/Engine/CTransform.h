@@ -52,6 +52,8 @@ public:
     void SetWorldScale(Vec3 _Scale);
     Vec3 GetTransformWorldScale() const;
 
+    float GetWorldRatio() const;
+
     Vec3 GetLocalDir(DIR_TYPE _type) const { return m_arrLocalDir[(UINT)_type]; }
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
 

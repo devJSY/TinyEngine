@@ -205,10 +205,7 @@ void CRenderComponent::finaltick()
 {
     if (m_bFrustumCheck && GetOwner() == CEditorMgr::GetInst()->GetSelectedObject())
     {
-        Vec3 WorldScale = Transform()->GetWorldScale();
-        float fRatio = (WorldScale.x + WorldScale.y + WorldScale.z) / 3.f;
-
-        GamePlayStatic::DrawDebugSphere(Transform()->GetWorldPos(), fRatio * m_BoundingRadius, Vec3(1.f, 1.f, 0.f), true);
+        GamePlayStatic::DrawDebugSphere(Transform()->GetWorldPos(), Transform()->GetWorldRatio() * m_BoundingRadius, Vec3(1.f, 1.f, 0.f), true);
     }
 }
 

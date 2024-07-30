@@ -57,7 +57,7 @@ void CCollider::finaltick()
         return;
 
     // 트랜스폼 위치 정보 업데이트
-    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    const float PPM = CPhysicsMgr::GetInst()->GetPPM();
 
     Vec3 WorldPos = Transform()->GetWorldPos();
     Quat WorldQuat = Transform()->GetWorldQuaternion();
@@ -71,7 +71,7 @@ void CCollider::finaltick()
     body->setGlobalPose(PxTr);
 
     physx::PxTransform LocalPos = shape->getLocalPose();
-    LocalPos.p = m_Center;
+    LocalPos.p = Transform()->GetWorldRatio() * m_Center;
     LocalPos.p /= PPM;
     shape->setLocalPose(LocalPos);
 }

@@ -246,6 +246,12 @@ Vec3 CTransform::GetTransformWorldScale() const
     return vWorldScale;
 }
 
+float CTransform::GetWorldRatio() const
+{
+    Vec3 WorldScale = GetWorldScale();
+    return (WorldScale.x + WorldScale.y + WorldScale.z) / 3.f;
+}
+
 void CTransform::SetWorldPos(Vec3 _Pos)
 {
     SetLocalPos(_Pos - GetWorldPos() + m_LocalPos);
