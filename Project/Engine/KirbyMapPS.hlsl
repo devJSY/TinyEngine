@@ -58,7 +58,7 @@ PS_OUT main(PS_IN input)
         
         output0.vColor = albedo0;
         output0.vPosition = float4(input.vPosWorld, 1.f);
-        output0.vNormal = float4(g_btex_1 ? NormalMapping(input, Noraml0Tex, vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld), 1.f);
+        output0.vNormal = float4(g_btex_1 ? NormalMapping(input, Noraml0Tex, vUV0, g_LinearWrapSampler, true) : normalize(input.vNormalWorld), 1.f);
         output0.vTangent = float4(input.vTangentWorld, 1.f);
         output0.vBitangent = float4(input.vBitangentWorld, 1.f);
         output0.vEmissive = MtrlEmission;
@@ -83,7 +83,7 @@ PS_OUT main(PS_IN input)
         
         output1.vColor = albedo1;
         output1.vPosition = float4(input.vPosWorld, 1.f);
-        output1.vNormal = float4(g_btex_5 ? NormalMapping(input, Noraml1Tex, vUV1, g_LinearWrapSampler) : normalize(input.vNormalWorld), 1.f);
+        output1.vNormal = float4(g_btex_5 ? NormalMapping(input, Noraml1Tex, vUV1, g_LinearWrapSampler, true) : normalize(input.vNormalWorld), 1.f);
         output1.vTangent = float4(input.vTangentWorld, 1.f);
         output1.vBitangent = float4(input.vBitangentWorld, 1.f);
         output1.vEmissive = MtrlEmission;
