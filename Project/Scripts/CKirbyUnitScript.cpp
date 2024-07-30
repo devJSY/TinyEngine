@@ -99,6 +99,16 @@ void CKirbyUnitScript::AttackReward()
     }
 }
 
+void CKirbyUnitScript::BuffHP(float _HP)
+{
+    m_CurInfo.HP += _HP;
+
+    if (m_CurInfo.HP > m_CurInfo.MAXHP)
+    {
+        m_CurInfo.HP = m_CurInfo.MAXHP;
+    }
+}
+
 UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

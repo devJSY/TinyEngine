@@ -3,6 +3,9 @@
 
 class CKirbyAttack : public CState
 {
+private:
+    float m_AccTime;
+
 public:
     virtual void tick();
     virtual void Enter();
