@@ -77,6 +77,13 @@ void CKirbyAttackEnd::tick()
             }
         }
         break;
+        case AbilityCopyType::SLEEP: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+        }
+        break;
         }
     }
 }

@@ -122,8 +122,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
+    <ClInclude Include="CkirbyAbility_Sleep.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
+    <ClInclude Include="CKirbyIdleStart.h" />
     <ClInclude Include="CKirbyObject_VendingMachine.h" />
     <ClInclude Include="CKirbyWeaponHitbox.h" />
     <ClInclude Include="CMomentaryObjScript.h" />
@@ -277,8 +279,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
+    <ClCompile Include="CkirbyAbility_Sleep.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
+    <ClCompile Include="CKirbyIdleStart.cpp" />
     <ClCompile Include="CKirbyObject_VendingMachine.cpp" />
     <ClCompile Include="CKirbyWeaponHitbox.cpp" />
     <ClCompile Include="CMomentaryObjScript.cpp" />
