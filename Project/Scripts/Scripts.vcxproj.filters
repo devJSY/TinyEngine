@@ -505,6 +505,13 @@
     <ClInclude Include="CElfilisSwordSlashScript.h">
       <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveStorm.h">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\Storm</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_DimensionSpike.h" />
+    <ClInclude Include="CElfilisStormScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1022,6 +1029,13 @@
     </ClCompile>
     <ClCompile Include="CElfilisSwordSlashScript.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveStorm.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\SwordWave\Storm</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_DimensionSpike.cpp" />
+    <ClCompile Include="CElfilisStormScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1574,9 +1588,6 @@
     <Filter Include="State\ElfilisState\Ground_Attack\SwordWave">
       <UniqueIdentifier>{4656b1f2-9eb7-4dd6-b251-099267f4baf0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\Tornado">
-      <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\LR">
       <UniqueIdentifier>{24f9f33d-b65a-49ad-b283-135be76f5595}</UniqueIdentifier>
     </Filter>
@@ -1588,6 +1599,15 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\SwordSlash">
       <UniqueIdentifier>{8048275d-ab92-4912-967e-d85f103ac32a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\Storm">
+      <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Attack\DimensionSpike">
+      <UniqueIdentifier>{bb64d07e-ddc4-417f-9fee-b7f78bb6e180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\Storm">
+      <UniqueIdentifier>{bcc6e707-bbdb-42b4-9c4b-455ca7930a26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

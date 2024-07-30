@@ -51,3 +51,4 @@ CElfilisUnit
 CElfilisArrowSetScript
 CElfilisArrowScript
 CElfilisSwordSlashScript
+CElfilisStormScript

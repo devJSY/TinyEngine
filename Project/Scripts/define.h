@@ -76,6 +76,8 @@ enum class ObjectCopyType
 
 enum class StateStep
 {
+    Ready,
+    ReadyWait,
     Start,
     Progress,
     Wait,
