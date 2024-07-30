@@ -451,6 +451,21 @@
     <ClInclude Include="CCameraController.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
+    <ClInclude Include="CChangeCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CProgressCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CTwoTargetCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CkirbyAbility_Sleep.h">
+      <Filter>State\KirbyAbility\Sleep</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyIdleStart.h">
+      <Filter>State\KirbyState\Idle\Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -914,6 +929,21 @@
     </ClCompile>
     <ClCompile Include="CCameraController.cpp">
       <Filter>Scripts\CameraMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CChangeCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CProgressCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CTwoTargetCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CkirbyAbility_Sleep.cpp">
+      <Filter>State\KirbyAbility\Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyIdleStart.cpp">
+      <Filter>State\KirbyState\Idle\Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1396,6 +1426,15 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\CameraMove\Trigger Script">
+      <UniqueIdentifier>{d4512d6d-bf9a-4d23-9fd1-16dc78b66641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyAbility\Sleep">
+      <UniqueIdentifier>{dfcc0874-e248-4c9f-a5ce-8738879bcc21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Idle\Start">
+      <UniqueIdentifier>{ec2178dc-500a-4f4e-adba-637cd22ad071}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -45,3 +45,6 @@ CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
 CCameraController
+CChangeCamTrigger
+CProgressCamTrigger
+CTwoTargetCamTrigger

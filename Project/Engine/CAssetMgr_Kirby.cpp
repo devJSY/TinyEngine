@@ -149,6 +149,26 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // UIDefaultShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIDefaultPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"KirbyUIDefaulthader");
+        AddAsset(L"KirbyUIDefaultShader", pShader);
+    }
+
+    // =================================
     // UIHPShader
     // =================================
     {
@@ -257,6 +277,8 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddScalarParam(INT_0, "Normal MRA Apply UV Scale");
 
         pShader->AddScalarParam(FLOAT_0, "Albedo0 UV Scale", 0.1f);
         pShader->AddScalarParam(FLOAT_1, "Albedo1 UV Scale", 0.1f);

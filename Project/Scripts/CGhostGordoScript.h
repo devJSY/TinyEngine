@@ -3,12 +3,16 @@
 
 enum class GHOSTGORDO_STATE
 {
-    CloseEyeIdle,
-    OpenEyeIdle,
+    EyeCloseWait,
+    EyeOpenWait,
     OpenEye,
     Find,
     Track,
-    TrackAfter,
+    TrackAfter1,
+    TrackAfter2,
+    TrackWait,
+    Return,
+    EyeCloseStart,
     End,
 };
 
@@ -16,6 +20,7 @@ class CGhostGordoScript : public CMonsterUnitScript
 {
 private:
     GHOSTGORDO_STATE m_eState;
+    Vec3 m_vBasePos;
     float m_fAccTime;
 
 public:
@@ -36,12 +41,16 @@ private:
     void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
-    void CloseEyeIdle();
-    void OpenEyeIdle();
+    void EyeCloseWait();
+    void EyeOpenWait();
     void OpenEye();
     void Find();
     void Track();
-    void TrackAfter();
+    void TrackAfter1();
+    void TrackAfter2();
+    void EyeCloseStart();
+    void TrackWait();
+    void Return();
 
 public:
     CLONE(CGhostGordoScript)

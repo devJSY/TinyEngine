@@ -27,6 +27,10 @@ public:
     virtual void IdleEnter();
     virtual void IdleExit();
 
+    virtual void IdleStart(){};
+    virtual void IdleStartEnter(){};
+    virtual void IdleStartExit(){};
+
     virtual void Run(){};
     virtual void RunEnter();
     virtual void RunExit(){};
@@ -74,7 +78,6 @@ public:
     virtual void SlideAttack(){};
     virtual void SlideAttackEnter(){};
     virtual void SlideAttackExit(){};
-
 
     virtual void Attack(){};
     virtual void AttackEnter(){};
