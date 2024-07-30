@@ -176,6 +176,17 @@ void CKirbyJumpFall::tick()
             }
         }
         break;
+        case AbilityCopyType::SLEEP: {
+            if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (GetOwner()->CharacterController()->IsGrounded())
+            {
+                ChangeState(L"IDLE_START");
+            }
+        }
+        break;
         }
     }
 }

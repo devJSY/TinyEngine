@@ -1,30 +1,24 @@
 #include "pch.h"
-#include "CKirbyAttackStart.h"
+#include "CKirbyIdleStart.h"
 
-CKirbyAttackStart::CKirbyAttackStart()
+CKirbyIdleStart::CKirbyIdleStart()
 {
 }
 
-CKirbyAttackStart::~CKirbyAttackStart()
+CKirbyIdleStart::~CKirbyIdleStart()
 {
 }
 
-void CKirbyAttackStart::tick()
+void CKirbyIdleStart::tick()
 {
-    PLAY_CURSTATE(AttackStart)
+    PLAY_CURSTATE(IdleStart)
 
     // State Change
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
         switch (PLAYERFSM->GetCurObjectIdx())
         {
-        case ObjectCopyType::CONE: {
-            if (PLAYER->Animator()->IsFinish())
-            {
-                ChangeState(L"ATTACK");
-            }
-        }
-        break;
+        case ObjectCopyType::CONE:
         case ObjectCopyType::VENDING_MACHINE:
         case ObjectCopyType::LIGHT:
             break;
@@ -34,15 +28,15 @@ void CKirbyAttackStart::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL:
         case AbilityCopyType::FIRE:
+        case AbilityCopyType::NORMAL:
         case AbilityCopyType::CUTTER:
         case AbilityCopyType::SWORD:
             break;
         case AbilityCopyType::SLEEP: {
             if (PLAYER->Animator()->IsFinish())
             {
-                ChangeState(L"ATTACK");
+                ChangeState(L"IDLE");
             }
         }
         break;
@@ -50,12 +44,12 @@ void CKirbyAttackStart::tick()
     }
 }
 
-void CKirbyAttackStart::Enter()
+void CKirbyIdleStart::Enter()
 {
-    PLAY_CURSTATE(AttackStartEnter)
+    PLAY_CURSTATE(IdleStartEnter)
 }
 
-void CKirbyAttackStart::Exit()
+void CKirbyIdleStart::Exit()
 {
-    PLAY_CURSTATE(AttackStartExit)
+    PLAY_CURSTATE(IdleStartExit)
 }

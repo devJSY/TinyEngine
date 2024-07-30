@@ -4,9 +4,11 @@
 class CKirbyCopyAbilityScript : public CScript
 {
 private:
-    UINT                        m_AbilityType;
+    UINT m_AbilityType;
 
 public:
+    void SetAbilityType(UINT _Type) { m_AbilityType = _Type; }
+    void SetAbilityType(AbilityCopyType _Type) { m_AbilityType = (UINT)_Type; }
     AbilityCopyType GetAbilityType() const { return (AbilityCopyType)m_AbilityType; }
 
 public:

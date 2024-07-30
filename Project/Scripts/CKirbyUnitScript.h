@@ -7,6 +7,7 @@ public:
     virtual void tick();
 
     virtual void AttackReward();
+    void BuffHP(float _HP);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

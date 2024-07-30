@@ -114,7 +114,7 @@ void CFSMScript::ChangeState_proc(CState* _pNextState)
     m_CurState = _pNextState;
     m_CurState->Enter();
 
-    //LOG(LOG_LEVEL::Log, (string("[State Change] : ") + ToString(m_CurState->GetName())).c_str());
+    LOG(LOG_LEVEL::Log, (string("[State Change] : ") + ToString(m_CurState->GetName())).c_str());
 }
 
 UINT CFSMScript::SaveToLevelFile(FILE* _File)

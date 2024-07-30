@@ -204,7 +204,7 @@ void CPhysicsMgr::tick()
 
             PxVec3d PxPos = pPxController->getPosition();
             Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
-            vPosOffset -= pCharacterController->m_Center / m_PPM;
+            vPosOffset -= (pTr->GetWorldRatio() * pCharacterController->m_Center) / m_PPM;
             vPosOffset *= m_PPM;
             vPosOffset = pTr->GetWorldPos() - vPosOffset;
 
@@ -390,6 +390,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     Quat WorldQuat = pTr->GetWorldQuaternion();
     Vec3 WorldScale = pTr->GetWorldScale();
 
+    const float WorldRatio = pTr->GetWorldRatio();
+
     WorldPos /= m_PPM;
     WorldScale /= m_PPM;
 
@@ -480,7 +482,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p = pBoxCol->GetCenter();
+        LocalPos.p = WorldRatio * pBoxCol->GetCenter();
         LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
@@ -519,7 +521,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p = pSphereCol->GetCenter();
+        LocalPos.p = WorldRatio * pSphereCol->GetCenter();
         LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
@@ -587,7 +589,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p = pCapsuleCol->GetCenter();
+        LocalPos.p = WorldRatio * pCapsuleCol->GetCenter();
         LocalPos.p /= m_PPM;
         LocalPos.q = LocalPos.q * PxRelativeQuat;
         shape->setLocalPose(LocalPos);
@@ -678,7 +680,6 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     CTransform* pTr = _GameObject->Transform();
 
     Vec3 WorldScale = pTr->GetWorldScale();
-
     WorldScale /= m_PPM;
 
     Ptr<CPhysicMaterial> pDefaultMtrl = CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(L"Default Material");
@@ -698,7 +699,7 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     desc.material = DefaultPxMtrl;
 
     Vec3 WorldPos = pTr->GetWorldPos();
-    WorldPos += pCharacterController->m_Center;
+    WorldPos += pTr->GetWorldRatio() * pCharacterController->m_Center;
     WorldPos /= m_PPM;
     desc.position = PxVec3d(WorldPos.x, WorldPos.y, WorldPos.z);
 

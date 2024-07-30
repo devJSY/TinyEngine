@@ -41,12 +41,13 @@ void CCharacterController::finaltick()
     }
 
     m_PrevScale = TransformWorldScale;
+    const float WorldRatio = Transform()->GetWorldRatio();
 
     if (nullptr != m_RuntimeShape)
     {
-        float PPM = CPhysicsMgr::GetInst()->GetPPM();
+        const float PPM = CPhysicsMgr::GetInst()->GetPPM();
         Vec3 WorldPos = Transform()->GetWorldPos();
-        WorldPos += m_Center;
+        WorldPos += WorldRatio * m_Center;
         WorldPos /= PPM;
 
         physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
@@ -79,7 +80,7 @@ void CCharacterController::finaltick()
     HeightScale = scale.y;
     Matrix matPhysXScale = XMMatrixScaling(RadiusScale * m_Radius, HeightScale * HalfHeight, RadiusScale * m_Radius);
 
-    Matrix matCenterTrans = XMMatrixTranslation(m_Center.x, m_Center.y, m_Center.z);
+    Matrix matCenterTrans = XMMatrixTranslation(WorldRatio * m_Center.x, WorldRatio * m_Center.y, WorldRatio * m_Center.z);
     Matrix matWorldScaleInv = XMMatrixScaling(1.f / scale.x, 1.f / scale.y, 1.f / scale.z);
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
@@ -106,12 +107,15 @@ void CCharacterController::Move(Vec3 _Motion)
     m_bGrounded = physx::PxControllerCollisionFlag::eCOLLISION_DOWN & MoveFlags;
 
     // 트랜스폼 업데이트
-    float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    const float PPM = CPhysicsMgr::GetInst()->GetPPM();
+    const float WorldRatio = Transform()->GetWorldRatio();
+
     physx::PxController* PxCharacterController = (physx::PxController*)m_RuntimeShape;
     physx::PxVec3d PxPos = PxCharacterController->getPosition();
     Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
-    vPosOffset -= m_Center / PPM;
+    vPosOffset -= (Transform()->GetWorldRatio() * m_Center) / PPM;
     vPosOffset *= PPM;
+
     vPosOffset = Transform()->GetWorldPos() - vPosOffset;
 
     Transform()->SetLocalPos(Transform()->GetLocalPos() - vPosOffset);

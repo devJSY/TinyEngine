@@ -142,10 +142,10 @@ TextureCube g_SpecularCube : register(t19);
 
 StructuredBuffer<tTileInfo> g_TileInfo : register(t22);
 
-Texture2D g_LightDepthMapTex1 : register(t23);
-Texture2D g_LightDepthMapTex2 : register(t24);
-Texture2D g_LightDepthMapTex3 : register(t25);
-Texture2D g_StaticLightDepthMapTex : register(t26);
+Texture2D g_DynamicLightDepthMapTex1 : register(t23);
+Texture2D g_StaticLightDepthMapTex1 : register(t24);
+Texture2D g_StaticLightDepthMapTex2 : register(t25);
+Texture2D g_StaticLightDepthMapTex3 : register(t26);
 
 Texture2D SSAOTex : register(t30);
 
