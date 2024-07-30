@@ -10,7 +10,7 @@
 #define IrradianceIBLTex g_DiffuseCube 
 
 static const float3 Fdielectric = 0.04; // 비금속(Dielectric) 재질의 F0
-static float LightRadiusScale = 1e-2f;
+static float LightRadiusScale = 0.01f;
 
 // 보는 각도에 따라서 색이나 밝기가 달라 짐
 float3 SchlickFresnel(float3 F0, float NdotH)
