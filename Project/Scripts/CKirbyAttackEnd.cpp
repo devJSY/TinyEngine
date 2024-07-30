@@ -24,7 +24,7 @@ void CKirbyAttackEnd::tick()
             switch (PLAYERFSM->GetCurObjectIdx())
             {
             case ObjectCopyType::CONE: {
-                if (PLAYER->CharacterController()->IsGrounded())
+                if (PLAYERCTRL->IsGround())
                 {
                     ChangeState(L"ATTACK_COMBO1");
                 }
@@ -35,7 +35,7 @@ void CKirbyAttackEnd::tick()
             case ObjectCopyType::LIGHT: {
                 if (PLAYER->Animator()->IsFinish())
                 {
-                    if (PLAYER->CharacterController()->IsGrounded())
+                    if (PLAYERCTRL->IsGround())
                     {
                         ChangeState(L"IDLE");
                     }

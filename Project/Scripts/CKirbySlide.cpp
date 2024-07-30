@@ -58,7 +58,7 @@ void CKirbySlide::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
     PLAYERCTRL->SetFriction(1.5f);
 
     // Slide 방향 설정
@@ -79,7 +79,7 @@ void CKirbySlide::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
     PLAYERCTRL->SetFriction(0.f);
 
     // 커비 표정 바꾸기

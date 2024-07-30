@@ -29,7 +29,7 @@
       <Filter>Scripts\FSM\KirbyFSM</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyMoveController.h">
-      <Filter>Scripts\Character\Kirby\MoveController</Filter>
+      <Filter>Scripts\Character\Kirby\KirbyMoveController</Filter>
     </ClInclude>
     <ClInclude Include="CModelEditorCameraMoveScript.h">
       <Filter>Scripts\CameraMove</Filter>
@@ -478,7 +478,7 @@
       <Filter>Scripts\FSM\KirbyFSM</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyMoveController.cpp">
-      <Filter>Scripts\Character\Kirby\MoveController</Filter>
+      <Filter>Scripts\Character\Kirby\KirbyMoveController</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyObject.cpp">
       <Filter>Module\StateGroup\KirbyObject</Filter>
@@ -1109,9 +1109,6 @@
     <Filter Include="Scripts\Character\Kirby\KirbyVacuumCollider">
       <UniqueIdentifier>{88980f24-80ac-4f01-9230-451df6066d00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Kirby\MoveController">
-      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Gimmik">
       <UniqueIdentifier>{977bb9b5-06d8-4fce-9807-97e387e1f75f}</UniqueIdentifier>
     </Filter>
@@ -1387,6 +1384,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
       <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
+      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

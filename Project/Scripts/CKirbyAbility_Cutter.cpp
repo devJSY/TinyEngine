@@ -94,7 +94,7 @@ void CKirbyAbility_Cutter::AttackCombo1Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->SetFriction(5.f);
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
 
     // Material 등록
     Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
@@ -113,7 +113,7 @@ void CKirbyAbility_Cutter::AttackCombo1Exit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetFriction(0.f);
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
 
     // Material 해제
     PLAYERFSM->GetCurWeapon()->SetActive(false);
@@ -153,7 +153,7 @@ void CKirbyAbility_Cutter::AttackCombo2Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->SetFriction(5.f);
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
 
     // Material 등록
     PLAYERFSM->GetCurWeapon()->SetActive(true);
@@ -174,7 +174,7 @@ void CKirbyAbility_Cutter::AttackCombo2Exit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetFriction(0.f);
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
 
     // Material 해제
     PLAYERFSM->GetCurWeapon()->SetActive(false);
