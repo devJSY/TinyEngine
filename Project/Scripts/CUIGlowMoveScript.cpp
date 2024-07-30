@@ -67,8 +67,8 @@ UINT CUIGlowMoveScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
 
     MemoryByte += CUIAnimScript::SaveToLevelFile(_File);
-    MemoryByte += m_fDist;
-    MemoryByte += m_fSpeed;
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
 
     return MemoryByte;
 }
@@ -81,8 +81,8 @@ UINT CUIGlowMoveScript::LoadFromLevelFile(FILE* _File)
     fread(&m_fSpeed, sizeof(float), 1, _File);
 
     MemoryByte += CUIAnimScript::LoadFromLevelFile(_File);
-    MemoryByte += m_fDist;
-    MemoryByte += m_fSpeed;
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
 
     return MemoryByte;
 }
