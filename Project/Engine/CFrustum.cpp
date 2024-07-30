@@ -54,8 +54,8 @@ void CFrustum::finaltick()
     m_arrFace[FT_TOP] = XMPlaneFromPoints(vWorldPos[4], vWorldPos[5], vWorldPos[1]);
     m_arrFace[FT_BOT] = XMPlaneFromPoints(vWorldPos[2], vWorldPos[6], vWorldPos[7]);
 
-    if (0 > m_pOwnerCam->GetOwner()->Camera()->GetCameraPriority() || CRenderMgr::GetInst()->GetEditorCamera() == m_pOwnerCam ||
-        CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+    // CameraPriority == -100 : 에디터 전용 카메라
+    if (CRenderMgr::GetInst()->GetMainCamera() == m_pOwnerCam || -100 == m_pOwnerCam->GetOwner()->Camera()->GetCameraPriority())
     {
         return;
     }

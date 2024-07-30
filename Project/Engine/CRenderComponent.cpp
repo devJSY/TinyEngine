@@ -2,6 +2,7 @@
 #include "CRenderComponent.h"
 
 #include "CLevelMgr.h"
+#include "CEditorMgr.h"
 
 #include "CLevel.h"
 #include "CTransform.h"
@@ -202,9 +203,9 @@ ULONG64 CRenderComponent::GetInstID(UINT _iMtrlIdx)
 
 void CRenderComponent::finaltick()
 {
-    if (m_bFrustumCheck)
+    if (m_bFrustumCheck && GetOwner() == CEditorMgr::GetInst()->GetSelectedObject())
     {
-        GamePlayStatic::DrawDebugSphere(Transform()->GetWorldPos(), m_BoundingRadius, Vec3(1.f, 1.f, 0.f), true);
+        GamePlayStatic::DrawDebugSphere(Transform()->GetWorldPos(), Transform()->GetWorldRatio() * m_BoundingRadius, Vec3(1.f, 1.f, 0.f), true);
     }
 }
 
