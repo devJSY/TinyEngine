@@ -80,8 +80,8 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
     return SchlickG1(NdotI, k) * SchlickG1(NdotO, k);
 }
 
-#define LIGHT_NEAR_PLANE 1.f
-#define LIGHT_FRUSTUM_WIDTH 3.4614f // Near 1.f Far 100000.f 기준 
+#define LIGHT_NEAR_PLANE 0.1f
+#define LIGHT_FRUSTUM_WIDTH 0.2f // Near 0.1f Far 10000.f FOV 90° 기준 
 #define LIGHT_TEXTURE_WIDTH 4096.f
 
 // NdcDepthToViewDepth
