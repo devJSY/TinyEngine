@@ -2,7 +2,7 @@
 #include "CKirbySlide.h"
 
 CKirbySlide::CKirbySlide()
-    : m_Speed(100.f)
+    : m_Speed(150.f)
     , m_Duration(0.5f)
     , m_Acc(0.f)
 {
@@ -59,7 +59,7 @@ void CKirbySlide::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->SetGuard(true);
-    PLAYERCTRL->SetFriction(3.f);
+    PLAYERCTRL->SetFriction(1.5f);
 
     // Slide 방향 설정
     Vec3 PlayerFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT).Normalize();

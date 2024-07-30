@@ -5,9 +5,9 @@
 #include <Engine/CCamera.h>
 
 CKirbyDodge2::CKirbyDodge2()
-    : m_InitSpeed(15.f)
+    : m_InitSpeed(10.f)
     , m_JumpPower(18.f)
-    , m_DodgeSpeed(0.5f)
+    , m_DodgeSpeed(0.05f)
 {
 }
 
@@ -82,7 +82,7 @@ void CKirbyDodge2::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
-    PLAYERCTRL->SetFriction(2.f);
+    PLAYERCTRL->SetFriction(2.5f);
     PLAYERCTRL->SetGuard(true);
     PLAYERCTRL->SetGravity(-100.f);
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
