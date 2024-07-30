@@ -162,6 +162,11 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
+        pShader->AddScalarParam(FLOAT_0, "AlphaDiscard Threshold", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Glow Point", 0.1f);
+
+        pShader->AddScalarParam(INT_0, "UIANIM1", 0.1f);
+
         pShader->AddTexParam(TEX_0, "Texture");
 
         pShader->SetName(L"KirbyUIDefaulthader");

@@ -48,6 +48,11 @@
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
 #include "CCameraController.h"
+#include "CUIMoveUpDownScript.h"
+#include "CUIAnimScript.h"
+#include "CUIFlowScript.h"
+#include "CUIStartSceneFlowScript.h"
+#include "CUIGlowMoveScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -98,6 +103,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMomentaryObjScript");
 	_vec.push_back(L"CKirbyWeaponHitbox");
 	_vec.push_back(L"CCameraController");
+	_vec.push_back(L"CUIMoveUpDownScript");
+	_vec.push_back(L"CUIAnimScript");
+	_vec.push_back(L"CUIFlowScript");
+	_vec.push_back(L"CUIStartSceneFlowScript");
+	_vec.push_back(L"CUIGlowMoveScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -196,6 +206,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyWeaponHitbox;
 	if (L"CCameraController" == _strScriptName)
 		return new CCameraController;
+	if (L"CUIMoveUpDownScript" == _strScriptName)
+		return new CUIMoveUpDownScript;
+	if (L"CUIAnimScript" == _strScriptName)
+		return new CUIAnimScript;
+	if (L"CUIFlowScript" == _strScriptName)
+		return new CUIFlowScript;
+	if (L"CUIStartSceneFlowScript" == _strScriptName)
+		return new CUIStartSceneFlowScript;
+	if (L"CUIGlowMoveScript" == _strScriptName)
+		return new CUIGlowMoveScript;
 	return nullptr;
 }
 
@@ -297,6 +317,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyWeaponHitbox;
 	case (UINT)SCRIPT_TYPE::CAMERACONTROLLER:
 		return new CCameraController;
+	case (UINT)SCRIPT_TYPE::UIMOVEUPDOWNSCRIPT:
+		return new CUIMoveUpDownScript;
+	case (UINT)SCRIPT_TYPE::UIANIMSCRIPT:
+		return new CUIAnimScript;
+	case (UINT)SCRIPT_TYPE::UIFLOWSCRIPT:
+		return new CUIFlowScript;
+	case (UINT)SCRIPT_TYPE::UISTARTSCENEFLOWSCRIPT:
+		return new CUIStartSceneFlowScript;
+	case (UINT)SCRIPT_TYPE::UIGLOWMOVESCRIPT:
+		return new CUIGlowMoveScript;
 	}
 	return nullptr;
 }
@@ -399,6 +429,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyWeaponHitbox";
 	case SCRIPT_TYPE::CAMERACONTROLLER:
 		return L"CCameraController";
+	case SCRIPT_TYPE::UIMOVEUPDOWNSCRIPT:
+		return L"CUIMoveUpDownScript";
+	case SCRIPT_TYPE::UIANIMSCRIPT:
+		return L"CUIAnimScript";
+	case SCRIPT_TYPE::UIFLOWSCRIPT:
+		return L"CUIFlowScript";
+	case SCRIPT_TYPE::UISTARTSCENEFLOWSCRIPT:
+		return L"CUIStartSceneFlowScript";
+	case SCRIPT_TYPE::UIGLOWMOVESCRIPT:
+		return L"CUIGlowMoveScript";
 	}
 	return nullptr;
 }

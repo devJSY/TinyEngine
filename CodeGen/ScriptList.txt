@@ -45,3 +45,8 @@ CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
 CCameraController
+CUIMoveUpDownScript
+CUIAnimScript
+CUIFlowScript
+CUIStartSceneFlowScript
+CUIGlowMoveScript

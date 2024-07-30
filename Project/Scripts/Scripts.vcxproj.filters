@@ -451,6 +451,21 @@
     <ClInclude Include="CCameraController.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
+    <ClInclude Include="CUIMoveUpDownScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIMoveUpDownScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIAnimScript.h">
+      <Filter>Scripts\UI\UIAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIFlowScript.h">
+      <Filter>Scripts\UI\UIFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIStartSceneFlowScript.h">
+      <Filter>Scripts\UI\UIFlow\UIStartScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIGlowMoveScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIGlowMoveScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -914,6 +929,21 @@
     </ClCompile>
     <ClCompile Include="CCameraController.cpp">
       <Filter>Scripts\CameraMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMoveUpDownScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIMoveUpDownScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIAnimScript.cpp">
+      <Filter>Scripts\UI\UIAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIFlowScript.cpp">
+      <Filter>Scripts\UI\UIFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIStartSceneFlowScript.cpp">
+      <Filter>Scripts\UI\UIFlow\UIStartScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIGlowMoveScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIGlowMoveScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1396,6 +1426,27 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation">
+      <UniqueIdentifier>{222c9eca-2bb1-4811-8683-4fadb6c69c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIMoveUpDownScript">
+      <UniqueIdentifier>{59e99d2e-e84a-4547-80ef-ad7a67f22c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow">
+      <UniqueIdentifier>{1f142fb8-2860-4995-aa17-8f612bc14380}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIStartScene">
+      <UniqueIdentifier>{9f981acd-c3a9-4eae-af69-1c49fcf47cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIRobbyScene">
+      <UniqueIdentifier>{9400790b-8eee-4038-8ef7-4e7210ccbbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIPlayScene">
+      <UniqueIdentifier>{f52d938c-68db-4176-baa6-0ce2e2770d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIGlowMoveScript">
+      <UniqueIdentifier>{063306f1-86da-4240-9857-0e9f1bd0eb7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

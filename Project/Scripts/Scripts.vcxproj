@@ -255,8 +255,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTestLeft.h" />
     <ClInclude Include="CTestRight.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
+    <ClInclude Include="CUIAnimScript.h" />
+    <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
     <ClInclude Include="CUIManagerScript.h" />
+    <ClInclude Include="CUIStartSceneFlowScript.h" />
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
     <ClInclude Include="CUIUnitManagerScript.h" />
@@ -264,6 +267,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CUIMoveUpDownScript.h" />
+    <ClInclude Include="CUIFlowScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAttackAreaScript.cpp" />
@@ -407,8 +412,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CTestLeft.cpp" />
     <ClCompile Include="CTestRight.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
+    <ClCompile Include="CUIAnimScript.cpp" />
+    <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
     <ClCompile Include="CUIManagerScript.cpp" />
+    <ClCompile Include="CUIStartSceneFlowScript.cpp" />
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />
     <ClCompile Include="CUIUnitManagerScript.cpp" />
@@ -418,6 +426,8 @@ call CodeGen.exe</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scripts.cpp" />
+    <ClCompile Include="CUIMoveUpDownScript.cpp" />
+    <ClCompile Include="CUIFlowScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
