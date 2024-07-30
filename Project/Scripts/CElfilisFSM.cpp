@@ -232,7 +232,12 @@ const vector<wstring>& CElfilisFSM::GetCurPublicStates() const
     {
         return it->second[0];
     }
-    return vector<wstring>();
+    else
+    {
+        MessageBox(nullptr, L"현재 State Group을 찾을 수 없습니다!", L"Failed to CElfilisFSM::GetCurPublicStates()", MB_OK);
+        static vector<wstring> ret = vector<wstring>();
+        return ret;
+    }
 }
 
 void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)

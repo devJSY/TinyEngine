@@ -35,7 +35,7 @@ void CElfilisG_Idle::tick()
 
 void CElfilisG_Idle::Enter_Step()
 {
-    BOSS->Animator()->Play(ANIMPREFIX("Wait"));
+    GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
     m_AccTime = 0.f;
 }
 

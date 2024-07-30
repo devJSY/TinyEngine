@@ -52,8 +52,6 @@
 #define ANIMPREFIX(NAME) ANIMPREFIX_STR L##NAME
 #define CHECK_ANIMFRM(OBJ, IDX) (!OBJ->Animator()->IsChainging() && OBJ->Animator()->GetClipFrameIndex() >= IDX)
 
-#define ANIMPREFIX(NAME) L"Armature|" L##NAME
-
 enum class AbilityCopyType
 {
     NONE,
