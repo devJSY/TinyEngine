@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "CRenderMgr.h"
 #include "CLevelMgr.h"
 #include <Scripts\CScriptMgr.h>
 #include "CScript.h"
@@ -6,6 +8,8 @@
 #include "CLevel.h"
 #include "CEditorMgr.h"
 #include "CEditor.h"
+
+
 
 #include "CLevelSaveLoad.h"
 #include "components.h"
@@ -52,6 +56,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     // Player Trigger
     CPhysicsMgr::GetInst()->LayerCheck(5, 6, true);
+    CPhysicsMgr::GetInst()->LayerCheck(5, 8, true);
     CPhysicsMgr::GetInst()->LayerCheck(5, 10, true);
 
     // Player Attack
@@ -71,7 +76,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     // =============
     // world setting
     // =============
-    CPhysicsMgr::GetInst()->SetPPM(100.f);
+    CPhysicsMgr::GetInst()->SetPPM(20.f);
 
     // Manager
     CGameObject* pManager = new CGameObject;
@@ -100,7 +105,9 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pCamObj->Camera()->LayerMaskAll();
     pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
     pCamObj->Camera()->SetHDRI(true);
-    pCamObj->Camera()->SetFOV(XMConvertToRadians(60.f));
+    pCamObj->Camera()->SetFOV(XM_PI/4.f);
+
+    pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERACONTROLLER));
 
     NewLevel->AddObject(pCamObj, 0);
 
@@ -200,15 +207,17 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     CGameObject* pPlayer = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Base\\Kirby.fbx")->Instantiate();
     pPlayer->SetName(L"Main Player");
     pPlayer->AddComponent(new CCharacterController);
-    pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYMOVECONTROLLER));
     pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYUNITSCRIPT));
+    pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYMOVECONTROLLER));
     pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYFSM));
 
-    pPlayer->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-    pPlayer->Transform()->SetLocalPos(Vec3(0.f, 10.f, 0.f));
+    pPlayer->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
+    pPlayer->Transform()->SetLocalPos(Vec3(0.f, 10.f, 10.f));
     pPlayer->MeshRender()->SetFrustumCheck(false);
-    pPlayer->CharacterController()->SetCenter(Vec3(0.f, 50.f, 0.f));
-    pPlayer->CharacterController()->SetHeight(1.6f);
+    pPlayer->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
+    pPlayer->CharacterController()->SetHeight(1.51f);
+    pPlayer->CharacterController()->SetRadius(0.51f);
+    pPlayer->CharacterController()->SetSkinWidth(0.015f);
     pPlayer->CharacterController()->SetMinMoveDistance(0.f);
 
     Ptr<CMaterial> pPlayerMtrl = pPlayer->GetRenderComponent()->GetMaterial(0);
@@ -246,7 +255,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pVacuumCol->AddComponent(CScriptMgr::GetScript(KIRBYVACUUMCOLLIDER));
 
     pVacuumCol->Transform()->SetAbsolute(false);
-    pVacuumCol->Transform()->SetLocalPos(Vec3(0.f, 1.7f, 1.7f));
+    pVacuumCol->Transform()->SetLocalPos(Vec3(0.f, 2.f, 2.f));
     pVacuumCol->Transform()->SetLocalScale(Vec3(1.5f, 1.5f, 1.5f));
     pVacuumCol->SphereCollider()->SetTrigger(true);
 
@@ -261,10 +270,11 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pBodyCollider->AddComponent(CScriptMgr::GetScript(KIRBYBODYCOLLIDER));
 
     pBodyCollider->Transform()->SetAbsolute(false);
-    pBodyCollider->Transform()->SetLocalScale(Vec3(1.1f, 1.1f, 1.1f));
+    pBodyCollider->Transform()->SetLocalScale(Vec3(1.2f, 1.2f, 1.2f));
     pBodyCollider->CapsuleCollider()->SetTrigger(true);
-    pBodyCollider->CapsuleCollider()->SetCenter(Vec3(0.f, 50.f, 0.f));
-    pBodyCollider->CapsuleCollider()->SetHeight(1.6f);
+    pBodyCollider->CapsuleCollider()->SetCenter(Vec3(0.f, 0.65f, 0.f));
+    pBodyCollider->CapsuleCollider()->SetHeight(1.51f);
+    pBodyCollider->CapsuleCollider()->SetRadius(0.51f);
 
     GamePlayStatic::AddChildObject(pPlayer, pBodyCollider);
     GamePlayStatic::LayerChange(pBodyCollider, 5);
@@ -296,13 +306,10 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pBox->AddComponent(new CRigidbody);
     pBox->AddComponent(new CBoxCollider);
 
-    pBox->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-    pBox->Transform()->SetLocalPos(Vec3(-500.f, 150.f, 500.f));
-    pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f));
-
-    pBox->BoxCollider()->SetCenter(Vec3(0.f, 100.f, 0.f));
-
-    pBox->GetRenderComponent()->SetBoundingRadius(300.f);
+    pBox->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
+    pBox->Transform()->SetLocalPos(Vec3(-100.f, 30.f, 100.f));
+    pBox->BoxCollider()->SetCenter(Vec3(0.f, 1.f, 0.f));
+    pBox->GetRenderComponent()->SetBoundingRadius(60.f);
 
     NewLevel->AddObject(pBox, 3);
 
@@ -313,9 +320,9 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pMonsterAbility->AddComponent(new CCapsuleCollider);
     pMonsterAbility->AddComponent(CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT));
 
-    pMonsterAbility->Transform()->SetLocalPos(Vec3(280.f, 100.f, 280.f));
+    pMonsterAbility->Transform()->SetLocalPos(Vec3(60.f, 20.f, 60.f));
     pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
-    pMonsterAbility->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+    pMonsterAbility->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
 
     pMonsterAbility->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalEnemyBodyShader"));
     pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
@@ -328,6 +335,11 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
         TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
 
     NewLevel->AddObject(pMonsterAbility, 8);
+
+    // EditCamera
+    CGameObject* EditCam = CRenderMgr::GetInst()->GetEditorCamera()->GetOwner();
+    EditCam->Transform()->SetLocalPos(Vec3(0.f, 160.f, -100.f));
+    EditCam->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(40.f), 0.f, 0.f));
 
     return NewLevel;
 }
