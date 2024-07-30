@@ -12,6 +12,10 @@ CTransform::CTransform()
     , m_LocalRotation(Vec3())
     , m_LocalQuaternion()
     , m_LocalScale(Vec3(1.f, 1.f, 1.f))
+    , m_WorldPos(m_LocalPos)
+    , m_WorldRotation(m_LocalRotation)
+    , m_WorldQuaternion(m_LocalQuaternion)
+    , m_WorldScale(m_LocalScale)
     , m_arrLocalDir{}
     , m_arrWorldDir{}
     , m_matWorld()
@@ -28,6 +32,10 @@ CTransform::CTransform(const CTransform& origin)
     , m_LocalRotation(origin.m_LocalRotation)
     , m_LocalQuaternion(origin.m_LocalQuaternion)
     , m_LocalScale(origin.m_LocalScale)
+    , m_WorldPos(origin.m_WorldPos)
+    , m_WorldRotation(origin.m_WorldRotation)
+    , m_WorldQuaternion(origin.m_WorldQuaternion)
+    , m_WorldScale(origin.m_WorldScale)
     , m_arrLocalDir{origin.m_arrLocalDir[0], origin.m_arrLocalDir[1], origin.m_arrLocalDir[2]}
     , m_arrWorldDir{origin.m_arrWorldDir[0], origin.m_arrWorldDir[1], origin.m_arrWorldDir[2]}
     , m_matWorld()
@@ -113,6 +121,14 @@ void CTransform::finaltick()
     }
 
     m_matWorldInv = m_matWorld.Invert();
+
+    // World SRT
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, m_WorldPos, m_WorldRotation, m_WorldScale);
+    m_WorldRotation.ToRadian();
+
+    m_WorldQuaternion = Quat::CreateFromRotationMatrix(Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_WorldRotation.x) *
+                                                       Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_WorldRotation.y) *
+                                                       Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), m_WorldRotation.z));
 }
 
 void CTransform::UpdateData()
@@ -191,25 +207,6 @@ void CTransform::Slerp(Vec3 _TowardDir, float _t)
     SetDirection(LookDir);
 }
 
-Quat CTransform::GetWorldQuaternion() const
-{
-    Vec3 Translation, Rotation, Scale;
-    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
-    Rotation.ToRadian();
-
-    Matrix matRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), Rotation.x) * Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Rotation.y) *
-                    Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), Rotation.z);
-
-    return Quat::CreateFromRotationMatrix(matRot);
-}
-
-Vec3 CTransform::GetWorldScale() const
-{
-    Vec3 Translation, Rotation, Scale;
-    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
-    return Scale;
-}
-
 void CTransform::SetWorldScale(Vec3 _Scale)
 {
     if (!m_bAbsolute)
@@ -255,14 +252,6 @@ void CTransform::SetLocalRotation(Vec3 _Radian)
 {
     m_LocalRotation = _Radian;
     finaltick(); // Dir Àç°è»ê
-}
-
-Vec3 CTransform::GetWorldRotation() const
-{
-    Vec3 Translation, Rotation, Scale;
-    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, Translation, Rotation, Scale);
-    Rotation.ToRadian();
-    return Rotation;
 }
 
 void CTransform::SetWorldRotation(Vec3 _Radian)
