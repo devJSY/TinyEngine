@@ -48,6 +48,12 @@ CKirbyUnitScript::~CKirbyUnitScript()
 {
 }
 
+void CKirbyUnitScript::begin()
+{
+    // Level에 진입시 InitInfo를 현재의 정보로 저장
+    SetInfo(GetInitInfo());
+}
+
 void CKirbyUnitScript::tick()
 {
     ClearHitDir();
@@ -106,6 +112,25 @@ void CKirbyUnitScript::BuffHP(float _HP)
     if (m_CurInfo.HP > m_CurInfo.MAXHP)
     {
         m_CurInfo.HP = m_CurInfo.MAXHP;
+    }
+}
+
+
+void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
+{
+    // Dynamic Layer인 경우: 상대 오브젝트에게 힘 가함
+    if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
+    {
+        // 질량이 100 이상인 물체는 밀지 않는다.
+        if (Hit.Collider->GetOwner()->Rigidbody() && Hit.Collider->GetOwner()->Rigidbody()->GetMass() > 100.f)
+        {
+            return;
+        }
+
+        Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Force.y = 0.f;
+        Force.Normalize();
+        Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
     }
 }
 

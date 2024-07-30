@@ -69,7 +69,6 @@ private:
     void Move();
     void SurfaceAlignment();
 
-    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
 
 public:
     void LockMove() { m_bMoveLock = true; }

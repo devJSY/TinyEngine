@@ -22,18 +22,6 @@
     <ClInclude Include="CState.h">
       <Filter>Module\FSM\State</Filter>
     </ClInclude>
-    <ClInclude Include="CTestForward.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
-    <ClInclude Include="CTestLeft.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
-    <ClInclude Include="CTestRight.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
-    <ClInclude Include="CTestIdle.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyAbility.h">
       <Filter>Module\StateGroup\KirbyAbility</Filter>
     </ClInclude>
@@ -70,12 +58,6 @@
     <ClInclude Include="CUnitScript.h">
       <Filter>Module\Unit</Filter>
     </ClInclude>
-    <ClInclude Include="CTestFSM.h">
-      <Filter>Scripts\FSM\TestFSM</Filter>
-    </ClInclude>
-    <ClInclude Include="CKirbyUnitScript.h">
-      <Filter>Scripts\Unit\Kirby</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyChangeAbility.h">
       <Filter>State\KirbyState\ChangeAbility</Filter>
     </ClInclude>
@@ -84,9 +66,6 @@
     </ClInclude>
     <ClInclude Include="CKirbyRunStart.h">
       <Filter>State\KirbyState\Run\Start</Filter>
-    </ClInclude>
-    <ClInclude Include="CSpringArmCameraScript.h">
-      <Filter>Scripts\SpringArm</Filter>
     </ClInclude>
     <ClInclude Include="CButtonScript.h">
       <Filter>Scripts\UI\Button</Filter>
@@ -466,6 +445,9 @@
     <ClInclude Include="CKirbyIdleStart.h">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyUnitScript.h">
+      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -485,18 +467,6 @@
     </ClCompile>
     <ClCompile Include="CState.cpp">
       <Filter>Module\FSM\State</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestForward.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestLeft.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestRight.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestIdle.cpp">
-      <Filter>State\FSMTest</Filter>
     </ClCompile>
     <ClCompile Include="CUnitScript.cpp">
       <Filter>Module\Unit</Filter>
@@ -531,12 +501,6 @@
     <ClCompile Include="CKirbyBulletScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbyBullet</Filter>
     </ClCompile>
-    <ClCompile Include="CTestFSM.cpp">
-      <Filter>Scripts\FSM\TestFSM</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyUnitScript.cpp">
-      <Filter>Scripts\Unit\Kirby</Filter>
-    </ClCompile>
     <ClCompile Include="CKirbyChangeAbility.cpp">
       <Filter>State\KirbyState\ChangeAbility</Filter>
     </ClCompile>
@@ -548,9 +512,6 @@
     </ClCompile>
     <ClCompile Include="CUIManagerScript.cpp">
       <Filter>Scripts\UI\UIManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
     </ClCompile>
     <ClCompile Include="CButtonScript.cpp">
       <Filter>Scripts\UI\Button</Filter>
@@ -945,6 +906,9 @@
     <ClCompile Include="CKirbyIdleStart.cpp">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyUnitScript.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -955,9 +919,6 @@
     </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{1310388c-732a-4e84-a34c-61ad55000c4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\FSMTest">
-      <UniqueIdentifier>{47e22545-89ca-424c-9f3c-34d22adcbb7b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Module">
       <UniqueIdentifier>{635d33ed-e298-45b4-b149-3157f7ddd657}</UniqueIdentifier>
@@ -1112,12 +1073,6 @@
     <Filter Include="Scripts\FSM\KirbyFSM">
       <UniqueIdentifier>{7f2e3799-33fb-41ed-800b-ea950d353744}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\FSM\TestFSM">
-      <UniqueIdentifier>{59566cef-a444-4bd8-84b6-385db5b09b4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\SpringArm">
-      <UniqueIdentifier>{ed0fe73b-a25f-4112-ab6a-c74dab2df3bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI">
       <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
     </Filter>
@@ -1135,12 +1090,6 @@
     </Filter>
     <Filter Include="State\KirbyState\Dodge\Dodge2">
       <UniqueIdentifier>{47262bb4-1c29-4f14-adda-78a65bed6a17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Unit">
-      <UniqueIdentifier>{55d90257-9969-45b7-be38-1fdbfc3b1fcd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Unit\Kirby">
-      <UniqueIdentifier>{cba6baff-ce74-4825-8cfd-92a0752da116}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Manager">
       <UniqueIdentifier>{a92f0c7a-f56f-4f5e-8703-554e8059f0af}</UniqueIdentifier>
@@ -1435,6 +1384,9 @@
     </Filter>
     <Filter Include="State\KirbyState\Idle\Start">
       <UniqueIdentifier>{ec2178dc-500a-4f4e-adba-637cd22ad071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
+      <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

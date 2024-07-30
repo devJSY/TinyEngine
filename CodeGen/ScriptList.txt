@@ -4,9 +4,6 @@ CKirbyMoveController
 CModelEditorCameraMoveScript
 CPlayerMgr
 CKirbyBulletScript
-CTestFSM
-CKirbyUnitScript
-CSpringArmCameraScript
 CButtonScript
 CUIManagerScript
 CButtonManagerScript
@@ -48,3 +45,4 @@ CCameraController
 CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
+CKirbyUnitScript

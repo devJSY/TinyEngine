@@ -300,7 +300,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
         Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
         Vec3 test = Transform()->GetWorldPos();
 
-        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f, 100.f, 0.f);
+        Vec3 Dir = KirbyPos - Transform()->GetWorldPos() + Vec3(0.f, 20.f, 0.f);
         Dir.Normalize();
 
         m_MoveDir = Dir;

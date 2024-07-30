@@ -384,17 +384,7 @@ void CKirbyMoveController::SurfaceAlignment()
     }
 }
 
-void CKirbyMoveController::OnControllerColliderHit(ControllerColliderHit Hit)
-{
-    // Dynamic Layer인 경우: 상대 오브젝트에게 힘 가함
-    if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
-    {
-        Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
-        Force.y = 0.f;
-        Force.Normalize();
-        Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
-    }
-}
+
 
 UINT CKirbyMoveController::SaveToLevelFile(FILE* _File)
 {
