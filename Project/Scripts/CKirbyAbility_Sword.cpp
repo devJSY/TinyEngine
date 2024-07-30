@@ -643,7 +643,7 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
     // create sword
     pInstObj = m_Weapon->Instantiate();
     PLAYERFSM->SetCurWeapon(pInstObj);
-    GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"WeaponSword");
+    GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Weapon");
 }
 
 void CKirbyAbility_Sword::ChangeAbilityExit()

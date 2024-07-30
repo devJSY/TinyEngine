@@ -253,8 +253,6 @@ void CRenderMgr::render_CameraPreview()
 
     // Light DepthMap Clear
     CTexture::Clear(23);
-    CTexture::Clear(24);
-    CTexture::Clear(25);
 }
 
 void CRenderMgr::render_debug()
@@ -394,7 +392,7 @@ void CRenderMgr::render_postprocess_HDRI()
 
 void CRenderMgr::render_StaticShadowDepth()
 {
-    CLight* StaticLight = nullptr;
+    vector<CLight*> vecStaticLight;
 
     // 레벨을 순회하며 정적 광원 탐색
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -412,10 +410,12 @@ void CRenderMgr::render_StaticShadowDepth()
                 CGameObject* pObject = queue.front();
                 queue.pop_front();
 
-                if (pObject->Light() && MOBILITY_TYPE::STATIC == pObject->Transform()->GetMobilityType())
+                if (!pObject->IsActive())
+                    continue;
+
+                if (nullptr != pObject->Light() && MOBILITY_TYPE::STATIC == pObject->Transform()->GetMobilityType())
                 {
-                    StaticLight = pObject->Light();
-                    break;
+                    vecStaticLight.push_back(pObject->Light());
                 }
 
                 const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
@@ -424,51 +424,38 @@ void CRenderMgr::render_StaticShadowDepth()
                     queue.push_back(vecChildObj[i]);
                 }
             }
-
-            if (nullptr != StaticLight)
-                break;
         }
-
-        if (nullptr != StaticLight)
-            break;
     }
 
     // 레벨에 정적 광원이 존재하지않는다.
-    if (nullptr == StaticLight)
+    if (vecStaticLight.empty())
         return;
 
-    StaticLight->SetShadowIdx(0);
+    for (UINT i = 0; i < vecStaticLight.size(); ++i)
+    {
+        vecStaticLight[i]->SetShadowIdx(1 + i);
 
-    // Rendering
-    StaticLight->render_ShadowDepth(MOBILITY_TYPE::STATIC);
+        // Rendering
+        vecStaticLight[i]->render_ShadowDepth(MOBILITY_TYPE::STATIC);
 
-    // Bind
-    StaticLight->GetDepthMapTex()->UpdateData(26);
+        // 24,25,26 Bind
+        vecStaticLight[i]->GetDepthMapTex()->UpdateData(i + 24);
+    }
 }
 
 void CRenderMgr::render_DynamicShadowDepth()
 {
     for (int i = 0; i < m_vecLight.size(); i++)
     {
-        int ShadowIndex = m_vecLight[i]->GetShadowIdx();
-        if (0 >= ShadowIndex)
-            continue;
-
-        // Rendering
-        m_vecLight[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
-
-        // Bind
-        if (1 == ShadowIndex)
+        if (0 == m_vecLight[i]->GetShadowIdx())
         {
+            // Rendering
+            m_vecLight[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
+
+            // Bind
             m_vecLight[i]->GetDepthMapTex()->UpdateData(23);
-        }
-        else if (2 == ShadowIndex)
-        {
-            m_vecLight[i]->GetDepthMapTex()->UpdateData(24);
-        }
-        else if (3 == ShadowIndex)
-        {
-            m_vecLight[i]->GetDepthMapTex()->UpdateData(25);
+
+            break;
         }
     }
 }
@@ -512,22 +499,20 @@ void CRenderMgr::UpdateData()
     // Light
     static vector<tLightInfo> vecLightInfo;
 
-    // 그림자 적용 광원 최대갯수
-    const static int dynamicShadowMaxCount = 3;
-    int ShadowIdx = 1;
-
+    bool bRegisteredDynamicShadow = false;
+    // Dynamic Shadow Setup
     for (UINT i = 0; i < m_vecLight.size(); ++i)
     {
-        // 정적 라이트 이외의 라이트 인덱스 초기화
-        if (0 != m_vecLight[i]->GetShadowIdx())
+        // 정적 광원 이외의 그림자 인덱스 초기화
+        if (0 >= m_vecLight[i]->GetShadowIdx())
         {
             m_vecLight[i]->SetShadowIdx(-1);
         }
 
-        if (ShadowIdx <= dynamicShadowMaxCount && MOBILITY_TYPE::MOVABLE == m_vecLight[i]->Transform()->GetMobilityType())
+        if (!bRegisteredDynamicShadow && MOBILITY_TYPE::MOVABLE == m_vecLight[i]->Transform()->GetMobilityType())
         {
-            m_vecLight[i]->SetShadowIdx(ShadowIdx);
-            ++ShadowIdx;
+            m_vecLight[i]->SetShadowIdx(0);
+            bRegisteredDynamicShadow = true; // 제일 처음 등록된 동적 광원만 등록
         }
 
         const tLightInfo& info = m_vecLight[i]->GetLightInfo();
@@ -547,8 +532,6 @@ void CRenderMgr::Clear()
 
     // Light DepthMap Clear
     CTexture::Clear(23);
-    CTexture::Clear(24);
-    CTexture::Clear(25);
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)

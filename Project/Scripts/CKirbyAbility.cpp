@@ -27,7 +27,9 @@ void CKirbyAbility::IdleEnter()
 
 void CKirbyAbility::IdleExit()
 {
-    PLAYERFSM->SetDroppable(false);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 }
 
 void CKirbyAbility::RunEnter()

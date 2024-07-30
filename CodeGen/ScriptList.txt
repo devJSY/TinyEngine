@@ -45,6 +45,9 @@ CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
 CCameraController
+CChangeCamTrigger
+CProgressCamTrigger
+CTwoTargetCamTrigger
 CElfilisFSM
 CBossMgr
 CElfilisUnit

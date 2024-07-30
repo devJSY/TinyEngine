@@ -12,6 +12,9 @@ CKirbyObject_Cone::CKirbyObject_Cone()
     m_Crater = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Crater.pref", L"prefab\\Crater.pref");
 
     ParseDemoMesh(m_DemoMesh);
+
+    // add waiting animation
+    m_WaitingAnim.push_back(L"WaitVariation1");
 }
 
 CKirbyObject_Cone::~CKirbyObject_Cone()

@@ -85,7 +85,7 @@ float CKirbyWeaponHitbox::LoadDamage()
         }
     }
         break;
-    case AbilityCopyType::SLIP:
+    case AbilityCopyType::SLEEP:
         break;
     }
 

@@ -204,7 +204,8 @@ void CCamera::SortObject()
             if (pRenderCom->IsFrustumCheck())
             {
                 if (!m_Frustum.FrustumCheckBySphere(vecObjects[j]->Transform()->GetWorldPos(),
-                                                    vecObjects[j]->GetRenderComponent()->GetBoundingRadius()))
+                                                    vecObjects[j]->Transform()->GetWorldRatio() *
+                                                        vecObjects[j]->GetRenderComponent()->GetBoundingRadius()))
                     continue;
             }
 

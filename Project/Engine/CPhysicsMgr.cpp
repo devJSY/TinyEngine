@@ -204,7 +204,7 @@ void CPhysicsMgr::tick()
 
             PxVec3d PxPos = pPxController->getPosition();
             Vec3 vPosOffset = Vec3((float)PxPos.x, (float)PxPos.y, (float)PxPos.z);
-            vPosOffset -= pCharacterController->m_Center / m_PPM;
+            vPosOffset -= (pTr->GetWorldRatio() * pCharacterController->m_Center) / m_PPM;
             vPosOffset *= m_PPM;
             vPosOffset = pTr->GetWorldPos() - vPosOffset;
 
@@ -370,11 +370,7 @@ RaycastHit CPhysicsMgr::RayCast(Vec3 _Origin, Vec3 _Direction, float _Distance, 
 
 void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
-    if (nullptr == m_Scene || nullptr == _GameObject)
-        return;
-
-    // 활성화 여부 체크
-    if (!_GameObject->IsActive())
+    if (nullptr == m_Scene || nullptr == _GameObject || !_GameObject->IsActive())
         return;
 
     AddCharacterControllerObject(_GameObject);
@@ -393,6 +389,8 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     Vec3 WorldPos = pTr->GetWorldPos();
     Quat WorldQuat = pTr->GetWorldQuaternion();
     Vec3 WorldScale = pTr->GetWorldScale();
+
+    const float WorldRatio = pTr->GetWorldRatio();
 
     WorldPos /= m_PPM;
     WorldScale /= m_PPM;
@@ -484,7 +482,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p = pBoxCol->GetCenter();
+        LocalPos.p = WorldRatio * pBoxCol->GetCenter();
         LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
@@ -523,7 +521,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p = pSphereCol->GetCenter();
+        LocalPos.p = WorldRatio * pSphereCol->GetCenter();
         LocalPos.p /= m_PPM;
         shape->setLocalPose(LocalPos);
 
@@ -591,7 +589,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         // 콜라이더의 상대 위치 적용
         PxTransform LocalPos = shape->getLocalPose();
-        LocalPos.p = pCapsuleCol->GetCenter();
+        LocalPos.p = WorldRatio * pCapsuleCol->GetCenter();
         LocalPos.p /= m_PPM;
         LocalPos.q = LocalPos.q * PxRelativeQuat;
         shape->setLocalPose(LocalPos);
@@ -682,7 +680,6 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     CTransform* pTr = _GameObject->Transform();
 
     Vec3 WorldScale = pTr->GetWorldScale();
-
     WorldScale /= m_PPM;
 
     Ptr<CPhysicMaterial> pDefaultMtrl = CAssetMgr::GetInst()->FindAsset<CPhysicMaterial>(L"Default Material");
@@ -702,7 +699,7 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
     desc.material = DefaultPxMtrl;
 
     Vec3 WorldPos = pTr->GetWorldPos();
-    WorldPos += pCharacterController->m_Center;
+    WorldPos += pTr->GetWorldRatio() * pCharacterController->m_Center;
     WorldPos /= m_PPM;
     desc.position = PxVec3d(WorldPos.x, WorldPos.y, WorldPos.z);
 
@@ -711,6 +708,11 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
 
     if (desc.isValid())
     {
+        int LayerIdx = _GameObject->GetLayerIdx();
+        PxFilterData filterData;
+        filterData.word0 = (1 << LayerIdx);    // 해당 오브젝트의 레이어 번호
+        filterData.word1 = m_Matrix[LayerIdx]; // 필터링을 적용할 테이블
+
         PxController* PxCharacterController = m_ControllerMgr->createController(desc);
         pCharacterController->m_RuntimeShape = PxCharacterController;
 
@@ -723,6 +725,10 @@ void CPhysicsMgr::AddCharacterControllerObject(CGameObject* _GameObject)
         for (UINT i = 0; i < vecShapes.size(); i++)
         {
             vecShapes[i]->userData = (void*)pCharacterController;
+
+            // 필터링 데이터 적용
+            vecShapes[i]->setSimulationFilterData(filterData);
+            vecShapes[i]->setQueryFilterData(filterData);
         }
     }
 }

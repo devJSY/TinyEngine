@@ -62,6 +62,8 @@ public:
     float GetFOV() const { return m_FOV; }
     void SetFOV(float _FOV) { m_FOV = _FOV; }
 
+    float GetAspectRatio() const { return m_AspectRatio; }
+
     float GetNear() const { return m_Near; }
     void SetNear(float _near) { m_Near = _near; }
 

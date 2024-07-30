@@ -38,6 +38,13 @@ void CKirbyAttackStart::tick()
         case AbilityCopyType::FIRE:
         case AbilityCopyType::CUTTER:
         case AbilityCopyType::SWORD:
+            break;
+        case AbilityCopyType::SLEEP: {
+            if (PLAYER->Animator()->IsFinish())
+            {
+                ChangeState(L"ATTACK");
+            }
+        }
         break;
         }
     }

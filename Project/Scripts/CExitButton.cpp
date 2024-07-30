@@ -7,6 +7,11 @@ CExitButton::CExitButton()
 {
 }
 
+CExitButton::CExitButton(const CExitButton& origin)
+    : CButtonScript(origin)
+{
+}
+
 CExitButton::~CExitButton()
 {
 }

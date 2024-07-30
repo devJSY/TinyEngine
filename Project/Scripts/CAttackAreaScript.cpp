@@ -42,7 +42,8 @@ void CAttackAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (nullptr == pObj)
         return;
 
-    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(m_HitInfo)
+    UnitHit hitInfo = {};
+    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo)
                                                                                : void();
 }
 

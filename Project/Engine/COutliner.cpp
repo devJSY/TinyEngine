@@ -430,16 +430,16 @@ void COutliner::DrawNode(CGameObject* obj)
             DWORD_PTR data = *((DWORD_PTR*)payload->Data);
             CGameObject* pChild = (CGameObject*)data;
 
+            Vec3 pos = pChild->Transform()->GetWorldPos();
+            Vec3 rot = pChild->Transform()->GetWorldRotation();
+            Vec3 scale = pChild->Transform()->GetWorldScale();
+
             obj->AddChild(pChild);
 
             // 부모가 적용된 트랜스폼으로 재계산
             pChild->Transform()->finaltick();
 
-            // Local SRT를 World SRT로 설정
-            Vec3 pos = pChild->Transform()->GetLocalPos();
-            Vec3 rot = pChild->Transform()->GetLocalRotation();
-            Vec3 scale = pChild->Transform()->GetLocalScale();
-
+            // 원본 World SRT로 설정
             pChild->Transform()->SetWorldPos(pos);
             pChild->Transform()->SetWorldRotation(rot);
             pChild->Transform()->SetWorldScale(scale);
@@ -464,16 +464,16 @@ void COutliner::DrawNode(CGameObject* obj)
 
             if (nullptr != pChild)
             {
+                Vec3 pos = pChild->Transform()->GetWorldPos();
+                Vec3 rot = pChild->Transform()->GetWorldRotation();
+                Vec3 scale = pChild->Transform()->GetWorldScale();
+
                 obj->AddChild(pChild);
 
                 // 부모가 적용된 트랜스폼으로 재계산
                 pChild->Transform()->finaltick();
 
-                // Local SRT를 World SRT로 설정
-                Vec3 pos = pChild->Transform()->GetLocalPos();
-                Vec3 rot = pChild->Transform()->GetLocalRotation();
-                Vec3 scale = pChild->Transform()->GetLocalScale();
-
+                // 원본 World SRT로 설정
                 pChild->Transform()->SetWorldPos(pos);
                 pChild->Transform()->SetWorldRotation(rot);
                 pChild->Transform()->SetWorldScale(scale);
@@ -1195,18 +1195,18 @@ void COutliner::DrawLight(CGameObject* obj)
             pLight->SetLightRadiance(radiance);
 
         float fRadius = pLight->GetRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Radius").c_str(), &fRadius, 0.f, 10.f))
             pLight->SetRadius(fRadius);
 
         float fangle = pLight->GetAngle();
-        if (ImGui::SliderFloat(ImGui_LabelPrefix("Angle").c_str(), &fangle, 0.0f, XM_PI))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("Angle").c_str(), &fangle, 0.f, XM_PI))
             pLight->SetAngle(fangle);
 
         float FallOffStart = pLight->GetFallOffStart();
         float FallOffEnd = pLight->GetFallOffEnd();
         float offset = 1e-3f;
 
-        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
         if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
@@ -1217,7 +1217,7 @@ void COutliner::DrawLight(CGameObject* obj)
             pLight->SetSpotPower(spotPower);
 
         float HaloRadius = pLight->GetHaloRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.0f, D3D11_FLOAT32_MAX))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.f, 10000.f))
             pLight->SetHaloRadius(HaloRadius);
 
         float HaloStrength = pLight->GetHaloStrength();
