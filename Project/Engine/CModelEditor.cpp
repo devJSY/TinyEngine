@@ -126,7 +126,7 @@ void CModelEditor::init()
     m_LightObj->Light()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
     m_LightObj->Light()->SetLightRadiance(Vec3(0.5f, 0.5f, 0.5f));
     m_LightObj->Light()->SetRadius(5.f);
-    m_LightObj->Light()->SetShadowIdx(1);
+    m_LightObj->Light()->SetShadowIdx(0);
     m_LightObj->Light()->GetLightCam()->Camera()->SetCameraPriority(-100);
 
     // SkyBox

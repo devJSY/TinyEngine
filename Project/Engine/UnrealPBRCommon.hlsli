@@ -204,33 +204,34 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
         // PCSS
         float bias = 0.001f;
         
-        if (0 == light.ShadowIndex) // Static Shadow
+        if (0 == light.ShadowIndex) // Dynamic Shadow
         {
             if (light.LightType == LIGHT_DIRECTIONAL)
-                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_StaticLightDepthMapTex);
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_DynamicLightDepthMapTex1);
             else
-                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_StaticLightDepthMapTex, light.invProj, light.fRadius * LightRadiusScale);
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_DynamicLightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
         }
+        // Static Shadow
         else if (1 == light.ShadowIndex)
         {
             if (light.LightType == LIGHT_DIRECTIONAL)
-                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_LightDepthMapTex1);
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_StaticLightDepthMapTex1);
             else
-                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_StaticLightDepthMapTex1, light.invProj, light.fRadius * LightRadiusScale);
         }
         else if (2 == light.ShadowIndex)
         {
             if (light.LightType == LIGHT_DIRECTIONAL)
-                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_LightDepthMapTex2);
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_StaticLightDepthMapTex2);
             else
-                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex2, light.invProj, light.fRadius * LightRadiusScale);
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_StaticLightDepthMapTex2, light.invProj, light.fRadius * LightRadiusScale);
         }
         else if (3 == light.ShadowIndex)
         {
             if (light.LightType == LIGHT_DIRECTIONAL)
-                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_LightDepthMapTex3);
+                shadowFactor = PCF_Filter(lightTexcoord, lightScreen.z - bias, light.fRadius / LIGHT_TEXTURE_WIDTH, g_StaticLightDepthMapTex3);
             else
-                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_LightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
+                shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_StaticLightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
         }
     }
 
