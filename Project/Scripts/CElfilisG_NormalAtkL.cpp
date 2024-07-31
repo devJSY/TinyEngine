@@ -62,7 +62,7 @@ void CElfilisG_NormalAtkL::Exit_Step()
         }
         else
         {
-            ELFFSM->SetComboLevel(0);
+            ELFFSM->ClearComboLevel();
         }
     }
     break;

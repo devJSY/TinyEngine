@@ -14,14 +14,6 @@ CElfilisFSM::CElfilisFSM()
     , m_MapFloorOffset(Vec3(0.f, 0.f, 5.f))
     , m_MapSizeRadius(25.f)
 {
-    // 에피리스FSM은 GroundMove, GroundAtk, GroundToAir, / AirMove, AirSmallATK, AirBigATK, AirToGround State를 가짐
-    // 각 State는 유사한 State를 묶은 Group State
-    // 마치 FSM처럼 State를 담고 있는 State
-    // ex, GourndMove는 {순간이동, 포탈찌르기, 백스텝} 등의 State를 들고 있음
-    // ex, GroundMove
-    //? 아닌데? Hierarchy State는 일련의 State 흐름을 묶은거아닌가? (ex GroundMove -> GroundAttack 반복구조)
-    //? 아닌데? 즉 GroundMove만으로는 Hierachy State가 될 수 없고, Ground 상태를 통틀어야지 Hierachy State가 될 수 있음
-
     for (UINT i = 0; i < (UINT)ElfilisStateGroup::END; ++i)
     {
         m_StateGroup[(ElfilisStateGroup)i][0] = vector<wstring>();
@@ -43,17 +35,17 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
         m_StateGroup[(ElfilisStateGroup)it.first][1] = vector<wstring>();
     }
 
-    //for (auto it : m_StateGroup)
+    // for (auto it : m_StateGroup)
     //{
-    //    for (auto state : it.second[0])
-    //    {
-    //        m_StateGroup[it.first][0].push_back(state);
-    //    }
-    //    for (auto state : it.second[1])
-    //    {
-    //        m_StateGroup[it.first][1].push_back(state);
-    //    }
-    //}
+    //     for (auto state : it.second[0])
+    //     {
+    //         m_StateGroup[it.first][0].push_back(state);
+    //     }
+    //     for (auto state : it.second[1])
+    //     {
+    //         m_StateGroup[it.first][1].push_back(state);
+    //     }
+    // }
 }
 
 CElfilisFSM::~CElfilisFSM()
@@ -82,10 +74,7 @@ void CElfilisFSM::ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstr
     if (iter1 == m_StateGroup[_Group][0].end() && iter2 == m_StateGroup[_Group][1].end())
         return;
 
-    if (m_CurStateGroup != _Group)
-    {
-        ChangStateGroup(_Group);
-    }
+    ChangStateGroup(_Group);
     ChangeState(_State);
 }
 
@@ -103,8 +92,7 @@ void CElfilisFSM::RepeatState(wstring _State)
     }
 }
 
-// Usage : GroundMove -> GroundAttack -> ? 에서 "?"가 먼지 찾으려고
-// 즉, Attack 반복인지, Air인지, Move로 돌아가는지
+// Usage : GroundAttackCount, Repeat 등의 값을 체크해 필요한 다음 Group State를 찾음
 ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 {
     switch (m_CurStateGroup)
@@ -133,7 +121,6 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
             {
                 return ElfilisStateGroup::GroundAtkNear;
             }
-
         }
         else
         {
@@ -227,7 +214,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisG_SwordWaveLR.h"
 #include "CElfilisG_SwordWaveFinishRL.h"
 #include "CElfilisG_SwordWaveStorm.h"
-//#include "CElfilisG_DimensionSpike.h"
+// #include "CElfilisG_DimensionSpike.h"
 #include "CElfilisG_NormalAtkTeleport.h"
 #include "CElfilisG_NormalAtkTeleportL.h"
 #include "CElfilisG_NormalAtkTeleportR.h"
@@ -254,21 +241,17 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_LR", new CElfilisG_SwordWaveLR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_FINISHLR", new CElfilisG_SwordWaveFinishRL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_STORM", new CElfilisG_SwordWaveStorm);
-    //AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_DIMENSIONSPIKE", new CElfilisG_DimensionSpike);
+    // AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_DIMENSIONSPIKE", new CElfilisG_DimensionSpike);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
 
-    //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
+    // ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
     ChangeState(L"GROUND_IDLE");
 }
 
 void CElfilisFSM::tick()
 {
-    // ex Ground상태일 때
-    //? GroundMove Group이 끝나면 -> GroundAttack의 랜덤상태로 던지고싶음
-    //? 이걸 Ground 한 세트로 보고,
-
     CFSMScript::tick();
 }
 
@@ -296,26 +279,37 @@ float CElfilisFSM::GetPlayerDist() const
 
 void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)
 {
+    if (m_CurStateGroup == _Group)
+        return;
+
     // check count
     switch (_Group)
     {
-    case ElfilisStateGroup::GroundIdle:
-        break;
+    case ElfilisStateGroup::GroundIdle: {
+        ClearComboLevel();
+        m_bAttackRepeat = false;
+        m_GroundAttackCount = 0;
+    }
+    break;
     case ElfilisStateGroup::GroundMove:
-    case ElfilisStateGroup::GroundMoveAtk:
-    {
+    case ElfilisStateGroup::GroundMoveAtk: {
+        ClearComboLevel();
         m_bAttackRepeat = false;
     }
-        break;
+    break;
     case ElfilisStateGroup::GroundAtkNear:
     case ElfilisStateGroup::GroundAtkFar: {
+        ClearComboLevel();
+        m_bAttackRepeat = false;
         m_GroundAttackCount++;
     }
     break;
     case ElfilisStateGroup::GroundToAir: {
+        ClearComboLevel();
         m_bAttackRepeat = false;
+        m_GroundAttackCount = 0;
     }
-        break;
+    break;
     case ElfilisStateGroup::AirIdle:
         break;
     case ElfilisStateGroup::AirMove:
@@ -324,12 +318,12 @@ void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)
         break;
     case ElfilisStateGroup::AirBigAtk:
         break;
-    case ElfilisStateGroup::AirToGround:
-    {
-        m_GroundAttackCount = 0;
+    case ElfilisStateGroup::AirToGround: {
+        ClearComboLevel();
         m_bAttackRepeat = false;
+        m_GroundAttackCount = 0;
     }
-        break;
+    break;
     }
 
     m_CurStateGroup = _Group;

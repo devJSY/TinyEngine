@@ -57,7 +57,7 @@ void CElfilisG_NormalAtkTeleportFinishL::Exit_Step()
     case StateStep::Progress:
         break;
     case StateStep::End: {
-        ELFFSM->SetComboLevel(0);
+        ELFFSM->ClearComboLevel();
     }
     break;
     }

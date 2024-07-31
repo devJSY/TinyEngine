@@ -92,7 +92,7 @@ void CElfilisG_SwordWaveRL::Exit_Step()
         }
         else
         {
-            ELFFSM->SetComboLevel(0);
+            ELFFSM->ClearComboLevel();
         }
     }
     break;

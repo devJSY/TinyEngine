@@ -32,7 +32,7 @@ void CElfilisG_SwordWaveFinishRL::Enter()
     m_Step = StateStep::Wait;
     Enter_Step();
 
-    ELFFSM->SetComboLevel(0);
+    ELFFSM->ClearComboLevel();
 }
 
 void CElfilisG_SwordWaveFinishRL::Enter_Step()

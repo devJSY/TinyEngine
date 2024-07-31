@@ -116,7 +116,7 @@ void CElfilisG_NormalAtkTeleportR::Exit_Step()
         }
         else
         {
-            ELFFSM->SetComboLevel(0);
+            ELFFSM->ClearComboLevel();
         }
     }
     break;

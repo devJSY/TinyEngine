@@ -74,11 +74,11 @@ private:
     ElfilisStateGroup m_CurStateGroup;
     UINT m_Phase;
     UINT m_ComboLevel;
-    float m_NearDist;
     bool m_bAttackRepeat;
 
     // ground
     UINT m_GroundAttackCount;
+    float m_NearDist;
 
     // map
     Vec3 m_MapFloorOffset;
@@ -95,7 +95,7 @@ public:
     virtual void tick() override;
 
 public:
-    void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
+    void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
 
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
