@@ -103,8 +103,8 @@ void CTwoTargetCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (m_bChangeZoomspeed)
     {
-        m_UndoZoomSpeed = m_MainCamController->GetZoomSpeed();
-        m_MainCamController->SetZoomSpeed(m_ZoomSpeed);
+        m_UndoZoomSpeed = m_MainCamController->GetZoomMaxSpeed();
+        m_MainCamController->SetZoomMaxSpeed(m_ZoomSpeed);
     }
 
 }
@@ -134,7 +134,7 @@ void CTwoTargetCamTrigger::OnTriggerExit(CCollider* _OtherCollider)
 
     if (m_bChangeZoomspeed)
     {
-        m_MainCamController->SetZoomSpeed(m_UndoZoomSpeed);
+        m_MainCamController->SetZoomMaxSpeed(m_UndoZoomSpeed);
     }
 }
 

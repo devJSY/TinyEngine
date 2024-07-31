@@ -16,9 +16,11 @@ CCameraController::CCameraController()
     , m_MaxSpeed(250.f)
     , m_ThresholdDistance(60.f)
     , m_RotationSpeed(50.f)
-    , m_ZoomSpeed(200.f)
+    , m_ZoomMinSpeed(0.f)
+    , m_ZoomMaxSpeed(500.f)
+    , m_ZoomThreshold(300.f)
     , m_EditRotSpeed(50.f)
-    , m_EditZoomSpeed(200.f)
+    , m_EditZoomSpeed(500.f)
     , m_EditMode(false)
 {
 
@@ -31,7 +33,10 @@ CCameraController::CCameraController()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ThresholdDistance, "Threshold Distance");
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotationSpeed, "Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomSpeed, "Zoom Speed");
+
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomMinSpeed, "Zoom Min Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomMaxSpeed, "Zoom Max Speed");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomThreshold, "Zoom Threshold");
 
     // Edit Mode
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_EditMode, "Edit Mode");
@@ -241,18 +246,30 @@ void CCameraController::UpdateLookDir()
 
 void CCameraController::UpdateLookDistance()
 {
-    // 이전 프레임의 거리가 목표하는 거리보다 크다면
-    float CurZoomSpeed = m_EditMode ? m_EditZoomSpeed : m_ZoomSpeed;
+    // 현재 프레임에서의 ZoomSpeed 구하기
+    float DiffDist = fabs(m_LookDist - m_PrevDistance);
+    float Ratio = clamp((DiffDist / m_ZoomThreshold), 0.f, 1.f) * XM_PI * 0.5f;
+    float ZoomSpeed = m_ZoomMinSpeed + (m_ZoomMaxSpeed - m_ZoomMinSpeed) * sinf(Ratio);
 
+
+    // Zoom In인 경우 ZoomSpeed를 반대로 한다.
     if (m_PrevDistance > m_LookDist)
+        ZoomSpeed *= -1.f;
+
+    // Dist 조절
+    m_CurDistance = m_PrevDistance + ZoomSpeed * DT;
+
+    // 예외처리
+    // 보정해야하는 거리가 너무 가깝다면 CurDist를 고정
+    if (fabs(m_LookDist - m_CurDistance) < 0.1f)
     {
-        m_CurDistance = m_PrevDistance - CurZoomSpeed * DT;
+        m_CurDistance = m_LookDist;
     }
 
-    // 이전 프레임의 거리가 목표하는 거리보다 작다면
-    else if (m_PrevDistance < m_LookDist)
+    // Dist가 원했던 경우보다 더 멀리간 경우 CurDist를 고정
+    if (ZoomSpeed * (m_CurDistance - m_LookDist) > 0.f)
     {
-        m_CurDistance = m_PrevDistance + CurZoomSpeed * DT;
+        m_CurDistance = m_LookDist;
     }
 }
 
@@ -501,10 +518,12 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
     fwrite(&m_ThresholdDistance, sizeof(float), 1, _File);
 
     fwrite(&m_RotationSpeed, sizeof(float), 1, _File);
-    fwrite(&m_ZoomSpeed, sizeof(float), 1, _File);
+
+    fwrite(&m_ZoomMinSpeed, sizeof(float), 1, _File);
+    fwrite(&m_ZoomMaxSpeed, sizeof(float), 1, _File);
+    fwrite(&m_ZoomThreshold, sizeof(float), 1, _File);
 
     fwrite(&m_EditRotSpeed, sizeof(float), 1, _File);
-    fwrite(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
@@ -515,9 +534,11 @@ UINT CCameraController::SaveToLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
     MemoryByte += sizeof(float);
 
     return MemoryByte;
@@ -536,10 +557,12 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     fread(&m_ThresholdDistance, sizeof(float), 1, _File);
 
     fread(&m_RotationSpeed, sizeof(float), 1, _File);
-    fread(&m_ZoomSpeed, sizeof(float), 1, _File);
+
+    fread(&m_ZoomMinSpeed, sizeof(float), 1, _File);
+    fread(&m_ZoomMaxSpeed, sizeof(float), 1, _File);
+    fread(&m_ZoomThreshold, sizeof(float), 1, _File);
 
     fread(&m_EditRotSpeed, sizeof(float), 1, _File);
-    fread(&m_EditZoomSpeed, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
@@ -550,9 +573,11 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(float);
+    
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
-    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
     return MemoryByte;

@@ -33,7 +33,11 @@ private:
     float                       m_ThresholdDistance;    // 카메라가 최대 스피드로 이동하기 위한 임계 거리
 
     float                       m_RotationSpeed;        // 회전 속도
-    float                       m_ZoomSpeed;            // Zoom 속도
+
+
+    float                       m_ZoomMinSpeed;         // Zoom 최소 속도
+    float                       m_ZoomMaxSpeed;         // Zoom 최대 속도
+    float                       m_ZoomThreshold;        // Zoom 임계 거리
 
     // 현재 프레임
     Vec3                        m_CurLookDir;           // 현재 프레임에서 카메라의 각도
@@ -61,7 +65,7 @@ private:
     //Edit
     bool                        m_EditMode;             // EditMode 스위치
     float                       m_EditRotSpeed;         // EditMode에서의 카메라 회전 조절 속도
-    float                       m_EditZoomSpeed;        // EditMode에서의 카메라 거리 조절 속도
+    float                       m_EditZoomSpeed;        // EditMode에서의 LookDist 수정 속도(실제 Zoom속도가 달라지진 않음)
 
  public:
     CameraSetup GetCameraSetup() const { return m_Setup; }
@@ -74,7 +78,9 @@ private:
     float GetMaxSpeed() const { return m_MaxSpeed; }
     float GetThresholdDistance() const { return m_ThresholdDistance; }
     float GetRotationSpeed() const { return m_RotationSpeed; }
-    float GetZoomSpeed() const { return m_ZoomSpeed; }
+    float GetZoomMinSpeed() const { return m_ZoomMinSpeed; }
+    float GetZoomMaxSpeed() const { return m_ZoomMaxSpeed; }
+    float GetZoomThreshold() const { return m_ZoomThreshold; }
 
     void SetCameraSetup(CameraSetup _Setup) { m_Setup = _Setup; }
     void SetMainTarget(CGameObject* _Target) { m_Target = _Target; } 
@@ -88,7 +94,9 @@ private:
     void SetMaxSpeed(float _MaxSpeed) { m_MaxSpeed = _MaxSpeed; }
     void SetThresholdDistance(float _Threshold) { m_ThresholdDistance = _Threshold; }
     void SetRotationSpeed(float _RotationSpeed) { m_RotationSpeed = _RotationSpeed; }
-    void SetZoomSpeed(float _ZoomSpeed) { m_ZoomSpeed = _ZoomSpeed; }
+    void SetZoomMinSpeed(float _MinSpeed) { m_ZoomMinSpeed = _MinSpeed; }
+    void SetZoomMaxSpeed(float _MaxSpeed) { m_ZoomMaxSpeed = _MaxSpeed; }
+    void SetZoomThreshold(float _Threshold) { m_ZoomThreshold = _Threshold; } 
     void SetDistanceOffset(float _DistOffset) { m_DistanceOffset = _DistOffset; } 
 
 public:
