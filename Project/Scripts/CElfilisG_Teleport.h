@@ -9,8 +9,6 @@ private:
     CGameObject*    m_BeforeEffect;
     CGameObject*    m_AfterEffect;
     Vec3            m_AfterPos;
-    Vec3            m_MapFloorOffset;
-    float           m_MapSizeRadius;
     float           m_EffectSpeed;
 
 public:

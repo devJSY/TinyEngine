@@ -8,8 +8,6 @@ CElfilisG_Teleport::CElfilisG_Teleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_MapFloorOffset(Vec3(0.f, 0.f, 100.f))
-    , m_MapSizeRadius(500.f)
     , m_EffectSpeed(700.f)
 {
     m_Effect = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref");
@@ -41,6 +39,7 @@ void CElfilisG_Teleport::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
+        GetOwner()->Rigidbody()->SetKinematic(true);
 
         //@Effect 일부분만 그리는 셰이더 작성 필요
 
@@ -53,37 +52,39 @@ void CElfilisG_Teleport::Enter_Step()
         GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
 
         // teleport
+        float MapSizeRadius = ELFFSM->GetMapSizeRadius();
+        Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
         m_AfterPos = GetOwner()->Transform()->GetWorldPos();
-        m_AfterPos.x += GetRandomfloat(-m_MapSizeRadius * 2.f, m_MapSizeRadius * 2.f);
-        m_AfterPos.z += GetRandomfloat(-m_MapSizeRadius * 2.f, m_MapSizeRadius * 2.f);
+        m_AfterPos.x += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
+        m_AfterPos.z += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
 
         if (m_AfterPos.x < 0)
         {
-            if (m_AfterPos.x < m_MapSizeRadius * -1.f + m_MapFloorOffset.x)
+            if (m_AfterPos.x < MapSizeRadius * -1.f + MapFloorOffset.x)
             {
-                m_AfterPos.x = m_MapSizeRadius * -1.f;
+                m_AfterPos.x = MapSizeRadius * -1.f;
             }
         }
         else
         {
-            if (m_AfterPos.x > m_MapSizeRadius + m_MapFloorOffset.x)
+            if (m_AfterPos.x > MapSizeRadius + MapFloorOffset.x)
             {
-                m_AfterPos.x = m_MapSizeRadius;
+                m_AfterPos.x = MapSizeRadius;
             }
         }
 
         if (m_AfterPos.z < 0)
         {
-            if (m_AfterPos.z < m_MapSizeRadius * -1.f + m_MapFloorOffset.z)
+            if (m_AfterPos.z < MapSizeRadius * -1.f + MapFloorOffset.z)
             {
-                m_AfterPos.z = m_MapSizeRadius * -1.f;
+                m_AfterPos.z = MapSizeRadius * -1.f;
             }
         }
         else
         {
-            if (m_AfterPos.z > m_MapSizeRadius + m_MapFloorOffset.z)
+            if (m_AfterPos.z > MapSizeRadius + MapFloorOffset.z)
             {
-                m_AfterPos.z = m_MapSizeRadius;
+                m_AfterPos.z = MapSizeRadius;
             }
         }
 

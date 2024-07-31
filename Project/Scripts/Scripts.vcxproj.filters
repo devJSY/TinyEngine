@@ -535,6 +535,18 @@
     <ClInclude Include="ElfilisDimensionSpear.h">
       <Filter>State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSpike</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleport.h">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleportFinishL.h">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\FinishL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleportL.h">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleportR.h">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1082,6 +1094,18 @@
     </ClCompile>
     <ClCompile Include="ElfilisDimensionSpear.cpp">
       <Filter>State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSpike</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleport.cpp">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleportFinishL.cpp">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleportL.cpp">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleportR.cpp">
+      <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1669,6 +1693,18 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSet">
       <UniqueIdentifier>{a3cb04e8-35ef-456b-9b41-d079148699cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport">
+      <UniqueIdentifier>{73f37a56-dfa0-4e35-bdb1-1c3340cd3a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\L">
+      <UniqueIdentifier>{10dd4d9e-e953-44ec-86ea-ba11866eac54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R">
+      <UniqueIdentifier>{f3891422-f358-40cf-96ea-67091118ec08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\FinishL">
+      <UniqueIdentifier>{d14f8aad-024b-4a67-a40f-86fcd6892028}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ void CElfilisG_Idle::tick()
     if (KEY_TAP(KEY::SPACE))
     {
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
-         ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_STORM");
+         ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT");
     }
     if (KEY_TAP(KEY::ENTER))
     {

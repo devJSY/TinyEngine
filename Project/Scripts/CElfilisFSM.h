@@ -1,27 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
 
-enum class ElfilisG_MoveAtk
-{
-    TeleportNormalATK,
-    PortalSlash,
-    PUBLIC,
-
-    // 부모상태 입장 후 random에 포함되지 않는 State들 (이미 결정됐을 때만 진입 가능)
-    TeleportRotSpear,
-};
-
-enum class ElfilisG_Atk
-{
-    NormalATK,
-    RotSpear,
-    PUBLIC,
-
-    SwordWave,
-    SwordWaveTornado,
-    PortalSpear,
-};
-
 enum class ElfilisG_ToAir
 {
     ToAir,
@@ -93,9 +72,15 @@ private:
     map<ElfilisStateGroup, vector<wstring>[2]> m_StateGroup; // ( StateGroup, {{PublicStates}, {PrivateStates}} )
     ElfilisStateGroup m_CurStateGroup;
     UINT m_Phase;
-    UINT m_GroundAttackCount;
     UINT m_ComboLevel;
     bool m_bAttackRepeat;
+
+    // ground
+    UINT m_GroundAttackCount;
+
+    // map
+    Vec3 m_MapFloorOffset;
+    float m_MapSizeRadius;
 
 public:
     void ChangeStateGroup_RandState(ElfilisStateGroup _Group);
@@ -115,6 +100,8 @@ public:
     const vector<wstring>& GetCurPublicStates() const;
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
+    float GetMapSizeRadius() const { return m_MapSizeRadius; }
+    Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
 
 private:
     void ChangStateGroup(ElfilisStateGroup _Group);

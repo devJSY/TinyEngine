@@ -79,6 +79,7 @@ enum class StateStep
     Ready,
     ReadyWait,
     Start,
+    StartEnd,
     Progress,
     Wait,
     End,

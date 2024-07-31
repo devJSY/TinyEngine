@@ -135,6 +135,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisG_NormalAtkFinishL.h" />
     <ClInclude Include="CElfilisG_NormalAtkL.h" />
     <ClInclude Include="CElfilisG_NormalAtkR.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleport.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleportFinishL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleportL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleportR.h" />
     <ClInclude Include="CElfilisG_RayArrow.h" />
     <ClInclude Include="CElfilisG_SwordWaveStorm.h" />
     <ClInclude Include="CElfilisG_SwordWaveFinishRL.h" />
@@ -324,6 +328,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkR.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleport.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleportFinishL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleportL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleportR.cpp" />
     <ClCompile Include="CElfilisG_RayArrow.cpp" />
     <ClCompile Include="CElfilisG_SwordWaveStorm.cpp" />
     <ClCompile Include="CElfilisG_SwordWaveFinishRL.cpp" />

@@ -3,6 +3,7 @@
 #include "CElfilisFSM.h"
 
 CElfilisG_NormalAtkL::CElfilisG_NormalAtkL()
+    : m_bComboSuccess(false)
 {
 }
 

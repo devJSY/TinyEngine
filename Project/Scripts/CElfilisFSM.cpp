@@ -6,9 +6,11 @@ CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
     , m_CurStateGroup(ElfilisStateGroup::END)
     , m_Phase(1)
-    , m_GroundAttackCount(0)
     , m_ComboLevel(0)
     , m_bAttackRepeat(false)
+    , m_GroundAttackCount(0)
+    , m_MapFloorOffset(Vec3(0.f, 0.f, 100.f))
+    , m_MapSizeRadius(500.f)
 {
     // 에피리스FSM은 GroundMove, GroundAtk, GroundToAir, / AirMove, AirSmallATK, AirBigATK, AirToGround State를 가짐
     // 각 State는 유사한 State를 묶은 Group State
@@ -196,6 +198,10 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 #include "CElfilisG_SwordWaveFinishRL.h"
 #include "CElfilisG_SwordWaveStorm.h"
 //#include "CElfilisG_DimensionSpike.h"
+#include "CElfilisG_NormalAtkTeleport.h"
+#include "CElfilisG_NormalAtkTeleportL.h"
+#include "CElfilisG_NormalAtkTeleportR.h"
+#include "CElfilisG_NormalAtkTeleportFinishL.h"
 void CElfilisFSM::begin()
 {
     // State 추가
@@ -204,6 +210,7 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT", new CElfilisG_Teleport);
     AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL", new CElfilisG_NormalAtk);
     AddGroupPublicState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_RAYARROW", new CElfilisG_RayArrow);
+    AddGroupPublicState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT", new CElfilisG_NormalAtkTeleport);
 
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
@@ -213,6 +220,9 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_FINISHLR", new CElfilisG_SwordWaveFinishRL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_STORM", new CElfilisG_SwordWaveStorm);
     //AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_DIMENSIONSPIKE", new CElfilisG_DimensionSpike);
+    AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
+    AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
 
     //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
     ChangeState(L"GROUND_IDLE");
