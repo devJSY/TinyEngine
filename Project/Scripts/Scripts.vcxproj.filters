@@ -523,9 +523,17 @@
     <ClInclude Include="CElfilisG_SwordWaveStorm.h">
       <Filter>State\ElfilisState\Ground_Attack\SwordWave\Storm</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisG_DimensionSpike.h" />
     <ClInclude Include="CElfilisStormScript.h">
       <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_DimensionSpike.h">
+      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike</Filter>
+    </ClInclude>
+    <ClInclude Include="ElfilisDimensionSet.h">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionSet</Filter>
+    </ClInclude>
+    <ClInclude Include="ElfilisDimensionSpear.h">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionSpike</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1063,9 +1071,17 @@
     <ClCompile Include="CElfilisG_SwordWaveStorm.cpp">
       <Filter>State\ElfilisState\Ground_Attack\SwordWave\Storm</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisG_DimensionSpike.cpp" />
     <ClCompile Include="CElfilisStormScript.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_DimensionSpike.cpp">
+      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike</Filter>
+    </ClCompile>
+    <ClCompile Include="ElfilisDimensionSet.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionSet</Filter>
+    </ClCompile>
+    <ClCompile Include="ElfilisDimensionSpear.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionSpike</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1647,6 +1663,12 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\Storm">
       <UniqueIdentifier>{bcc6e707-bbdb-42b4-9c4b-455ca7930a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\DimensionSet">
+      <UniqueIdentifier>{a3cb04e8-35ef-456b-9b41-d079148699cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\DimensionSpike">
+      <UniqueIdentifier>{e8f21d24-be6b-4488-adb2-71049addca28}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

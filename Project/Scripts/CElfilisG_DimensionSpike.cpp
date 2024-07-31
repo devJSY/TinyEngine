@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "CElfilisG_DimensionSpike.h"
 #include "CElfilisFSM.h"
+#include <Engine\CAssetMgr.h>
+#include <Engine\CPrefab.h>
 
 CElfilisG_DimensionSpike::CElfilisG_DimensionSpike()
     : m_AccTime(0.f)
     , m_bFrmEnter(true)
 {
+    m_DimensionSetPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisDimensionSet.pref");
 }
 
 CElfilisG_DimensionSpike::~CElfilisG_DimensionSpike()
@@ -123,7 +126,7 @@ void CElfilisG_DimensionSpike::Progress()
 {
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 70))
     {
-        if (m_SummonPref != nullptr)
+        if (m_DimensionSetPref != nullptr)
         {
             // strom º“»Ø
         }

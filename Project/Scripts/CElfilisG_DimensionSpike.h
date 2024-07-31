@@ -4,7 +4,7 @@
 class CElfilisG_DimensionSpike : public CBossState
 {
 private:
-    Ptr<CPrefab> m_SummonPref;
+    Ptr<CPrefab> m_DimensionSetPref;
     float m_AccTime;
     bool m_bFrmEnter;
 
