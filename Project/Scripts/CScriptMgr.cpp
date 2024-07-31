@@ -48,14 +48,17 @@
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
 #include "CCameraController.h"
-#include "CChangeCamTrigger.h"
-#include "CProgressCamTrigger.h"
-#include "CTwoTargetCamTrigger.h"
 #include "CUIMoveUpDownScript.h"
 #include "CUIAnimScript.h"
 #include "CUIFlowScript.h"
 #include "CUIStartSceneFlowScript.h"
 #include "CUIGlowMoveScript.h"
+#include "CChangeCamTrigger.h"
+#include "CProgressCamTrigger.h"
+#include "CTwoTargetCamTrigger.h"
+#include "CMovingObjScript.h"
+#include "CDisappearObjScript.h"
+#include "CMovingObjTriggerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -114,6 +117,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CChangeCamTrigger");
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
+	_vec.push_back(L"CMovingObjScript");
+	_vec.push_back(L"CDisappearObjScript");
+	_vec.push_back(L"CMovingObjTriggerScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -228,6 +234,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressCamTrigger;
 	if (L"CTwoTargetCamTrigger" == _strScriptName)
 		return new CTwoTargetCamTrigger;
+	if (L"CMovingObjScript" == _strScriptName)
+		return new CMovingObjScript;
+	if (L"CDisappearObjScript" == _strScriptName)
+		return new CDisappearObjScript;
+	if (L"CMovingObjTriggerScript" == _strScriptName)
+		return new CMovingObjTriggerScript;
 	return nullptr;
 }
 
@@ -345,6 +357,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CProgressCamTrigger;
 	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return new CTwoTargetCamTrigger;
+	case (UINT)SCRIPT_TYPE::MOVINGOBJSCRIPT:
+		return new CMovingObjScript;
+	case (UINT)SCRIPT_TYPE::DISAPPEAROBJSCRIPT:
+		return new CDisappearObjScript;
+	case (UINT)SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
+		return new CMovingObjTriggerScript;
 	}
 	return nullptr;
 }
@@ -463,6 +481,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CProgressCamTrigger";
 	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return L"CTwoTargetCamTrigger";
+	case SCRIPT_TYPE::MOVINGOBJSCRIPT:
+		return L"CMovingObjScript";
+	case SCRIPT_TYPE::DISAPPEAROBJSCRIPT:
+		return L"CDisappearObjScript";
+	case SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
+		return L"CMovingObjTriggerScript";
 	}
 	return nullptr;
 }

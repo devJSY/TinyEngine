@@ -45,11 +45,14 @@ CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
 CCameraController
-CChangeCamTrigger
-CProgressCamTrigger
-CTwoTargetCamTrigger
 CUIMoveUpDownScript
 CUIAnimScript
 CUIFlowScript
 CUIStartSceneFlowScript
 CUIGlowMoveScript
+CChangeCamTrigger
+CProgressCamTrigger
+CTwoTargetCamTrigger
+CMovingObjScript
+CDisappearObjScript
+CMovingObjTriggerScript
