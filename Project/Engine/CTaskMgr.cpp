@@ -1025,6 +1025,9 @@ void CTaskMgr::CHANGE_LEVEL(const tTask& _Task)
     CLevel* pNexLevel = (CLevel*)_Task.Param_1;
     LEVEL_STATE NextState = (LEVEL_STATE)_Task.Param_2;
 
+    if (nullptr == pNexLevel)
+        return;
+
     CGrabageCollector::GetInst()->Clear();
     CRenderMgr::GetInst()->ClearCamera();
     CPhysics2DMgr::GetInst()->OnPhysics2DStop();

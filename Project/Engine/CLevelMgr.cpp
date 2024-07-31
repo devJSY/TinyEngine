@@ -143,6 +143,9 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState)
 
     m_CurLevel = _NextLevel;
 
+    // Physics World 초기화를 위한 트랜스폼 정보 게산
+    m_CurLevel->finaltick();
+
     if (nullptr != m_CurLevel)
         m_CurLevel->ChangeState(_StartState);
 }
