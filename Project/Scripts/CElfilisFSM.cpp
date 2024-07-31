@@ -11,6 +11,7 @@ CElfilisFSM::CElfilisFSM()
     , m_bAttackRepeat(false)
     , m_GroundAttackCount(0)
     , m_NearDist(5.f)
+    , m_AirPosition(Vec3(0.f, 600.f, 1000.f))
     , m_MapFloorOffset(Vec3(0.f, 0.f, 5.f))
     , m_MapSizeRadius(25.f)
 {
@@ -25,9 +26,13 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     : CFSMScript(_Origin)
     , m_CurStateGroup(ElfilisStateGroup::END)
     , m_Phase(_Origin.m_Phase)
-    , m_GroundAttackCount(0)
     , m_ComboLevel(0)
     , m_bAttackRepeat(false)
+    , m_GroundAttackCount(0)
+    , m_NearDist(_Origin.m_NearDist)
+    , m_AirPosition(_Origin.m_NearDist)
+    , m_MapFloorOffset(_Origin.m_MapFloorOffset)
+    , m_MapSizeRadius(_Origin.m_MapSizeRadius)
 {
     for (auto it : m_StateGroup)
     {
@@ -219,6 +224,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisG_NormalAtkTeleportL.h"
 #include "CElfilisG_NormalAtkTeleportR.h"
 #include "CElfilisG_NormalAtkTeleportFinishL.h"
+#include "CElfilisG_GroundToAir.h"
 void CElfilisFSM::begin()
 {
     float ScaleFactor = Transform()->GetLocalScale().x;
@@ -233,6 +239,7 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL", new CElfilisG_NormalAtk);
     AddGroupPublicState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW", new CElfilisG_RayArrow);
     AddGroupPublicState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT", new CElfilisG_NormalAtkTeleport);
+    AddGroupPublicState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR", new CElfilisG_GroundToAir);
 
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);

@@ -1,12 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
 
-enum class ElfilisG_ToAir
-{
-    ToAir,
-    PUBLIC,
-};
-
 enum class ElfilisA_Idle
 {
     Idle,
@@ -80,6 +74,9 @@ private:
     UINT m_GroundAttackCount;
     float m_NearDist;
 
+    // air
+    Vec3 m_AirPosition;
+
     // map
     Vec3 m_MapFloorOffset;
     float m_MapSizeRadius;
@@ -103,6 +100,7 @@ public:
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
     float GetNearDist() const { return m_NearDist; }
+    Vec3 GetAirPos() const { return m_AirPosition; }
     float GetMapSizeRadius() const { return m_MapSizeRadius; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
     float GetPlayerDist() const;

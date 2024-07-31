@@ -130,6 +130,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="CElfilisG_GroundToAir.h" />
     <ClInclude Include="CElfilisG_Idle.h" />
     <ClInclude Include="CElfilisG_NormalAtk.h" />
     <ClInclude Include="CElfilisG_NormalAtkFinishL.h" />
@@ -323,6 +324,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="CElfilisG_GroundToAir.cpp" />
     <ClCompile Include="CElfilisG_Idle.cpp" />
     <ClCompile Include="CElfilisG_NormalAtk.cpp" />
     <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp" />

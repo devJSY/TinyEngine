@@ -547,6 +547,9 @@
     <ClInclude Include="CElfilisG_NormalAtkTeleportR.h">
       <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisG_GroundToAir.h">
+      <Filter>State\ElfilisState\Ground_ToAir</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1106,6 +1109,9 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkTeleportR.cpp">
       <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_GroundToAir.cpp">
+      <Filter>State\ElfilisState\Ground_ToAir</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1708,6 +1714,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet">
       <UniqueIdentifier>{a3cb04e8-35ef-456b-9b41-d079148699cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_ToAir">
+      <UniqueIdentifier>{c767fa72-2740-4220-8b98-c11d4c4dd945}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
