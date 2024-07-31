@@ -7,6 +7,9 @@ enum class CameraSetup
     NORMAL,
     PROGRESS,
     TWOTARGET,
+
+    ELFILIS_AIR,
+
 };
 
 class CCameraController : public CScript
@@ -124,6 +127,7 @@ private:
     void Normal();
     void Progress();
     void TwoTarget();
+    void Elfilis_Air();
     // EditMode
     void EditMode();
 

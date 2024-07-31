@@ -107,7 +107,7 @@ void CCameraController::tick()
     // @DEBUG
     if (KEY_TAP(KEY::T))
     {
-        TwoTarget(L"TestTarget", Vec3(0.f,-1.f,1.f), 700.f);
+        TwoTarget(L"TestTarget", Vec3(0.f,-1.f,1.f), 0.f);
     }
 
     EditMode();
@@ -162,6 +162,9 @@ void CCameraController::SetUpProc()
         break;
     case CameraSetup::TWOTARGET:
         TwoTarget();
+        break;
+    case CameraSetup::ELFILIS_AIR:
+        Elfilis_Air();
         break;
     default:
         break;
@@ -391,7 +394,63 @@ void CCameraController::TwoTarget()
     if (m_Target == nullptr || m_SubTarget == nullptr)
         return;
 
+    // 두 물체의 중심점 계산
     Vec3 Center = (m_TargetPos + m_SubTargetPos) * 0.5f;
+
+    // 두 물체의 상대 위치 벡터 계산
+    Vec3 ToTarget1 = m_TargetPos - Center;
+    Vec3 ToTarget2 = m_SubTargetPos - Center;
+
+    // Camera의 Front, UP, Right 를 가져온다.
+    Vec3 LookDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 RightDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Vec3 UpDir = Transform()->GetWorldDir(DIR_TYPE::UP);
+
+    // 두 물체 사이의 가로 및 세로 거리 계산
+    float HorizontalDistance = fabs(ToTarget1.Dot(RightDir)) + fabs(ToTarget2.Dot(RightDir));
+    float VerticalDistance = fabs(ToTarget1.Dot(UpDir)) + fabs(ToTarget2.Dot(UpDir));
+    float DepthDistance = fabs(ToTarget1.Dot(LookDir)) + fabs(ToTarget2.Dot(LookDir));
+
+    // FOV와 Aspect Ratio를 기반으로 Distance Scale Factor 계산
+    float AspectRatio = Camera()->GetAspectRatio();
+    float VerticalFOV = Camera()->GetFOV();
+    float HorizontalFOV = 2 * atan(tan(VerticalFOV / 2) * AspectRatio);
+
+    // 필요한 최소 거리 계산
+    float RequiredHorizontalDistance = (HorizontalDistance / 2.0f) / tan(HorizontalFOV / 2.0f);
+    float RequiredVerticalDistance = (VerticalDistance / 2.0f) / tan(VerticalFOV / 2.0f);
+
+    // 카메라의 거리 중 더 큰 값을 선택
+    float RequiredDistance = max(RequiredHorizontalDistance, RequiredVerticalDistance);
+
+    m_LookDist = RequiredDistance + DepthDistance / 2.f + m_DistanceOffset; 
+    m_LookAtPos = Center;
+}
+
+void CCameraController::Elfilis_Air()
+{
+    if (m_Target == nullptr || m_SubTarget == nullptr)
+        return;
+
+    // 두 물체의 중심점 계산
+    Vec3 Center = (m_TargetPos + m_SubTargetPos) * 0.5f;
+
+
+    // 두 물체의 상대 위치 벡터 계산
+    Vec3 ToTarget1 = m_TargetPos - Center;
+    Vec3 ToTarget2 = m_SubTargetPos - Center;
+
+    //// 카메라의 현재 바라보는 방향
+    //Vec3 LookDir = m_LookDir.Normalize();
+
+    //// 카메라의 오른쪽 방향 벡터와 위쪽 방향 벡터 계산
+    //Vec3 rightDir = lookDir.Cross(Vec3(0, 1, 0)).Normalize();
+    //Vec3 upDir = rightDir.Cross(lookDir).Normalize();
+
+    Vec3 LookDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Vec3 Up = Transform()->GetWorldDir(DIR_TYPE::UP);
+
 
     // 두 물체 사이의 가로 및 세로 거리 계산
     float HorizontalDistance = fabs(m_TargetPos.x - m_SubTargetPos.x);
@@ -406,7 +465,7 @@ void CCameraController::TwoTarget()
     // 필요한 최소 거리 계산
     float RequiredHorizontalDistance = (HorizontalDistance / 2.0f) / tan(HorizontalFOV / 2.0f);
     float RequiredVerticalDistance = (VerticalDistance / 2.0f) / tan(VerticalFOV / 2.0f);
-    
+
     // 카메라의 거리 중 더 큰 값을 선택
     float RequiredDistance = max(RequiredHorizontalDistance, RequiredVerticalDistance);
     RequiredDistance = max(RequiredDistance, DepthDistance);
@@ -488,6 +547,9 @@ void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartO
 
 void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset)
 {
+    if (_SubTarget == nullptr)
+        return;
+
     m_Setup = CameraSetup::TWOTARGET;
 
     m_SubTarget = _SubTarget;
@@ -506,11 +568,21 @@ void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _
     m_Setup = CameraSetup::TWOTARGET;
 
     m_SubTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_SubTargetName);
+
+    // 해당 이름을 가진 타겟이 없다면
+    if (m_SubTarget == nullptr)
+    {
+        m_Setup = CameraSetup::NORMAL;
+        return;
+    }
+
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
     m_LookDir = _LookDir.Normalize();
     m_DistanceOffset = _DistanceOffset;
 
     m_Offset = Vec3(0.f, 0.f, 0.f);
+    m_TargetOffset = Vec3(0.f, 0.f, 0.f);
+    m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
 }
 
 Vec3 CCameraController::CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist)
