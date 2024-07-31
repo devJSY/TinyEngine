@@ -195,7 +195,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup()
 #include "CElfilisG_SwordWaveLR.h"
 #include "CElfilisG_SwordWaveFinishRL.h"
 #include "CElfilisG_SwordWaveStorm.h"
-#include "CElfilisG_DimensionSpike.h"
+//#include "CElfilisG_DimensionSpike.h"
 void CElfilisFSM::begin()
 {
     // State Ãß°¡
@@ -212,7 +212,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_LR", new CElfilisG_SwordWaveLR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_FINISHLR", new CElfilisG_SwordWaveFinishRL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_STORM", new CElfilisG_SwordWaveStorm);
-    AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_DIMENSIONSPIKE", new CElfilisG_DimensionSpike);
+    //AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_DIMENSIONSPIKE", new CElfilisG_DimensionSpike);
 
     //ChangeStateGroup_SetState(ElfilisStateGroup::GrondIdle, L"GROUND_IDLE");
     ChangeState(L"GROUND_IDLE");
