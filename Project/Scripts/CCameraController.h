@@ -17,10 +17,13 @@ private:
     // Target
     CGameObject*                m_Target;               // 카메라가 바라봐야하는 타겟
     Vec3                        m_TargetPos;            // 현재 프레임에서 타겟의 위치
-    Vec3                        m_Offset;               // 타겟으로부터의 오프셋
+    Vec3                        m_TargetOffset;     // 타겟으로부터의 오프셋
 
-    CGameObject*                m_SubTarget;
-    Vec3                        m_SubTargetPos;
+    CGameObject*                m_SubTarget;            // SubTarget
+    Vec3                        m_SubTargetPos;         // SubTarget의 위치
+    Vec3                        m_SubTargetOffset;      // SubTarget Offset
+
+    Vec3                        m_Offset;               // LookAtPos에 대한 Offset
 
     // 설정 값
     Vec3                        m_LookEyePos;           // 카메라가 있어야 하는 위치
@@ -72,6 +75,8 @@ private:
     CGameObject* GetMainTarget() const { return m_Target; }
     CGameObject* GetSubTarget() const { return m_SubTarget; }
     Vec3 GetOffset() const { return m_Offset; }
+    Vec3 GetMainTargetOffset() const { return m_TargetOffset; }
+    Vec3 GetSubTargetOffset() const { return m_SubTargetOffset; }
     Vec3 GetLookDir() const { return m_LookDir; }
     float GetLookDist() const { return m_LookDist; }
     float GetMinSpeed() const { return m_MinSpeed; }
@@ -88,6 +93,8 @@ private:
     void SetSubTarget(CGameObject* _SubTarget) { m_SubTarget = _SubTarget; }
     void SetSubTarget(wstring _TargetName);
     void SetOffset(Vec3 _Offset) { m_Offset = _Offset; }
+    void SetTargetOffset(Vec3 _TargetOffset) { m_TargetOffset = _TargetOffset; }
+    void SetSubTargetOffset(Vec3 _TargetOffSet) { m_SubTargetOffset = _TargetOffSet; }
     void SetLookDir(Vec3 _LookDir) { m_LookDir = _LookDir; }
     void SetLookDist(float _LookDist) { m_LookDist = _LookDist; }
     void SetMinSpeed(float _MinSpeed) { m_MinSpeed = _MinSpeed; }
@@ -105,6 +112,7 @@ public:
 
 private:
     void UpdateTargetPos(); 
+    void ApplyTargetOffset();
     void SetUpProc();
     void ApplyOffset();
     void UpdateLookAtPos();

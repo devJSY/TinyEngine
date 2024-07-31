@@ -123,11 +123,12 @@ void CCameraController::tick()
 
     // ========================= Target Update ==========================
     UpdateTargetPos();
+    ApplyTargetOffset();
 
     // 현재 Setup에 맞게 카메라의 LookDir, LookDist, LookAtPos를 수정한다.
     SetUpProc();
 
-    // Offset 적용
+    // LookAtPos에 대한Offset 적용
     ApplyOffset();
 
     // LookAtPos, LookDir, LookDist에 맞게 현재 프레임의 위치, 각도, 거리를 업데이트 한다.
@@ -180,6 +181,20 @@ void CCameraController::UpdateTargetPos()
         m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
     }
 
+}
+
+void CCameraController::ApplyTargetOffset()
+{
+    // 각 타겟에 대한 Offset을 적용한다.
+    if (nullptr != m_Target)
+    {
+        m_TargetPos += m_TargetOffset;
+    }
+
+    if (nullptr != m_SubTarget)
+    {
+        m_SubTargetPos += m_SubTargetOffset;
+    }
 }
 
 void CCameraController::ApplyOffset()
@@ -482,6 +497,8 @@ void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir,
     m_DistanceOffset = _DistanceOffset;
 
     m_Offset = Vec3(0.f, 0.f, 0.f);
+    m_TargetOffset = Vec3(0.f, 0.f, 0.f);
+    m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
 }
 
 void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset)
