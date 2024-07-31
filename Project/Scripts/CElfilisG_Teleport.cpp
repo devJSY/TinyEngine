@@ -90,13 +90,13 @@ void CElfilisG_Teleport::Enter_Step()
 
         //@Effect 텔레포드 이펙트
         Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-        Pos.y += 300.f;
+        Pos.y += 100.f;
         m_BeforeEffect = m_Effect->Instantiate();
         m_BeforeEffect->Transform()->SetWorldPos(Pos);
         GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
 
         Pos = m_AfterPos;
-        Pos.y += 300.f;
+        Pos.y += 100.f;
         m_AfterEffect = m_Effect->Instantiate();
         m_AfterEffect->Transform()->SetWorldPos(Pos);
         GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);

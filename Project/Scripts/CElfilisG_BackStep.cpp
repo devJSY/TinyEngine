@@ -103,9 +103,9 @@ void CElfilisG_BackStep::End()
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
 
-        if (NextState == ElfilisStateGroup::GroundAtk)
+        if (NextState == ElfilisStateGroup::GroundAtkFar || NextState == ElfilisStateGroup::GroundAtkNear)
         {
-            ELFFSM->ChangeStateGroup_SetState(NextState, L"GROUND_ATK_SWORDWAVE_RL");
+            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
             //float Rand = GetRandomfloat(1.f, 100.f);
 
             //if (Rand <= 45.f)

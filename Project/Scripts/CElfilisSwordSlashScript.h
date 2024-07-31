@@ -13,7 +13,7 @@ public:
     virtual void tick() override;
 
     public:
-    void SetInitDir(Vec3 _Dir) { m_InitDir = _Dir.Normalize(); }
+    void SetInitDir(Vec3 _Dir) { m_InitDir.y = 0.f; m_InitDir = _Dir.Normalize(); }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

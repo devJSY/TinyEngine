@@ -476,7 +476,7 @@
       <Filter>State\ElfilisState\Ground_Idle</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_NormalAtkL.h">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\L</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisUnit.h">
       <Filter>Scripts\Unit\Elfilis</Filter>
@@ -491,16 +491,16 @@
       <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_NormalAtkFinishL.h">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\FinishL</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\FinishL</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_NormalAtkR.h">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\R</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\R</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_RayArrow.h">
-      <Filter>State\ElfilisState\Ground_Attack\RotSpear</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\RotSpear</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_NormalAtk.h">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisArrowSetScript.h">
       <Filter>Scripts\Character\Boss\Elfilis\ArrowSet</Filter>
@@ -509,31 +509,31 @@
       <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_SwordWaveFinishRL.h">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\FinishRL</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\FinishRL</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_SwordWaveLR.h">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\LR</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\LR</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_SwordWaveRL.h">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\RL</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\RL</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisSwordSlashScript.h">
       <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_SwordWaveStorm.h">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\Storm</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\Storm</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisStormScript.h">
       <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_DimensionSpike.h">
-      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike</Filter>
     </ClInclude>
     <ClInclude Include="ElfilisDimensionSet.h">
-      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSet</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet</Filter>
     </ClInclude>
     <ClInclude Include="ElfilisDimensionSpear.h">
-      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSpike</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSpike</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_NormalAtkTeleport.h">
       <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport</Filter>
@@ -1036,7 +1036,7 @@
       <Filter>State\ElfilisState\Ground_Idle</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkL.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\L</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisUnit.cpp">
       <Filter>Scripts\Unit\Elfilis</Filter>
@@ -1051,16 +1051,16 @@
       <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\FinishL</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\FinishL</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkR.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk\R</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\R</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_RayArrow.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\RotSpear</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\RotSpear</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtk.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\NormalAtk</Filter>
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisArrowSetScript.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\ArrowSet</Filter>
@@ -1069,31 +1069,31 @@
       <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_SwordWaveFinishRL.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\FinishRL</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\FinishRL</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_SwordWaveLR.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\LR</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\LR</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_SwordWaveRL.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\RL</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\RL</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisSwordSlashScript.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_SwordWaveStorm.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\SwordWave\Storm</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\Storm</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisStormScript.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_DimensionSpike.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike</Filter>
     </ClCompile>
     <ClCompile Include="ElfilisDimensionSet.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSet</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet</Filter>
     </ClCompile>
     <ClCompile Include="ElfilisDimensionSpear.cpp">
-      <Filter>State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSpike</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSpike</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkTeleport.cpp">
       <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport</Filter>
@@ -1622,15 +1622,6 @@
     <Filter Include="State\ElfilisState\Ground_Idle">
       <UniqueIdentifier>{0c33e58f-bc3c-4cfa-ac38-fb7c56fe6416}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack">
-      <UniqueIdentifier>{c9a34604-c846-428d-88ad-5679ad99f3d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk">
-      <UniqueIdentifier>{e8e42a90-8567-4ced-9eb5-428616182fc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\L">
-      <UniqueIdentifier>{1c4d366a-598f-4f21-8999-a4185b6d8e16}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Unit\Elfilis">
       <UniqueIdentifier>{4e9f1b14-3c6a-4f82-a2e4-e8821f68d867}</UniqueIdentifier>
     </Filter>
@@ -1649,50 +1640,17 @@
     <Filter Include="State\ElfilisState\Ground_Move\Teleport">
       <UniqueIdentifier>{9b82a117-0c37-402c-8d22-1265f5c282fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\R">
-      <UniqueIdentifier>{1fae7785-993c-4291-9ba5-f139ef888757}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\NormalAtk\FinishL">
-      <UniqueIdentifier>{efa67b98-79be-466b-aaea-92fb8d696c3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\RotSpear">
-      <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\Arrow">
       <UniqueIdentifier>{e962bc60-1d74-407d-a834-e8c632f406c6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\ArrowSet">
       <UniqueIdentifier>{649a8366-a2aa-43c9-9e47-c5a6e1c616ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave">
-      <UniqueIdentifier>{4656b1f2-9eb7-4dd6-b251-099267f4baf0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\LR">
-      <UniqueIdentifier>{24f9f33d-b65a-49ad-b283-135be76f5595}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\FinishRL">
-      <UniqueIdentifier>{dc4af2d8-e0d3-4f53-a795-48bd90f73440}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\RL">
-      <UniqueIdentifier>{c3040a0c-a9c6-4278-9508-cd0a915adc50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\SwordSlash">
       <UniqueIdentifier>{8048275d-ab92-4912-967e-d85f103ac32a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\SwordWave\Storm">
-      <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\DimensionSpike">
-      <UniqueIdentifier>{bb64d07e-ddc4-417f-9fee-b7f78bb6e180}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\Storm">
       <UniqueIdentifier>{bcc6e707-bbdb-42b4-9c4b-455ca7930a26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSpike">
-      <UniqueIdentifier>{e8f21d24-be6b-4488-adb2-71049addca28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Ground_Attack\DimensionSpike\DimensionSet">
-      <UniqueIdentifier>{a3cb04e8-35ef-456b-9b41-d079148699cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport">
       <UniqueIdentifier>{73f37a56-dfa0-4e35-bdb1-1c3340cd3a6c}</UniqueIdentifier>
@@ -1705,6 +1663,51 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\FinishL">
       <UniqueIdentifier>{d14f8aad-024b-4a67-a40f-86fcd6892028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear">
+      <UniqueIdentifier>{c9a34604-c846-428d-88ad-5679ad99f3d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk">
+      <UniqueIdentifier>{e8e42a90-8567-4ced-9eb5-428616182fc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk\L">
+      <UniqueIdentifier>{1c4d366a-598f-4f21-8999-a4185b6d8e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk\R">
+      <UniqueIdentifier>{1fae7785-993c-4291-9ba5-f139ef888757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk\FinishL">
+      <UniqueIdentifier>{efa67b98-79be-466b-aaea-92fb8d696c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar">
+      <UniqueIdentifier>{54d870b2-bbe9-4b9e-b27e-439e5ad9e1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave">
+      <UniqueIdentifier>{4656b1f2-9eb7-4dd6-b251-099267f4baf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\LR">
+      <UniqueIdentifier>{24f9f33d-b65a-49ad-b283-135be76f5595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\FinishRL">
+      <UniqueIdentifier>{dc4af2d8-e0d3-4f53-a795-48bd90f73440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\RL">
+      <UniqueIdentifier>{c3040a0c-a9c6-4278-9508-cd0a915adc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\Storm">
+      <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\RotSpear">
+      <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike">
+      <UniqueIdentifier>{bb64d07e-ddc4-417f-9fee-b7f78bb6e180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSpike">
+      <UniqueIdentifier>{e8f21d24-be6b-4488-adb2-71049addca28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet">
+      <UniqueIdentifier>{a3cb04e8-35ef-456b-9b41-d079148699cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

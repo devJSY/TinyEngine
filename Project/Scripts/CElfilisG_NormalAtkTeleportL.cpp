@@ -223,16 +223,16 @@ void CElfilisG_NormalAtkTeleportL::SpawnTeleport()
     m_BeforeObj->SetName(L"Effect_ElfilisTelport Body");
     GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
 
-    // teleport
+    // get teleport pos
+    Vec3 Dist = GetOwner()->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+    Dist.y = 0.f;
+    Dist.Normalize();
+    Dist *= ELFFSM->GetNearDist() * (GetRandomfloat(30.f, 100.f) / 100.f);
+    m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
+
+    // limit in map
     float MapSizeRadius = ELFFSM->GetMapSizeRadius();
     Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
-    Vec3 PlayerDist = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-    PlayerDist.y = 0.f;
-    float PlayerDistLen = PlayerDist.Length();
-
-    PlayerDist.Normalize();
-    PlayerDist *= (GetRandomfloat(10.f, 80.f) / 100.f) * PlayerDistLen;
-    m_AfterPos = GetOwner()->Transform()->GetWorldPos() + PlayerDist;
 
     if (m_AfterPos.x < 0)
     {

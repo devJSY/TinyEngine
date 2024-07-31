@@ -96,7 +96,7 @@ void CElfilisG_NormalAtkL::Progress()
         if (Rand <= 90)
         {
             m_bComboSuccess = true;
-            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_NORMAL_R");
+            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
         }
         else
         {

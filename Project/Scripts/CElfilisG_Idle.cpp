@@ -16,20 +16,18 @@ void CElfilisG_Idle::tick()
     if (KEY_TAP(KEY::SPACE))
     {
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
-         ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT");
+         ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
     }
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundAtk);
+        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundAtkFar);
     }
 
-    //@TODO 테스트 후 복구
-    return;
     m_AccTime += DT;
 
     if (m_AccTime >= 1.f)
     {
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"Teleport");
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
     }
 }
 

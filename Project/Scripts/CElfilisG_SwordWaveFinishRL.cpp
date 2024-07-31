@@ -97,6 +97,6 @@ void CElfilisG_SwordWaveFinishRL::Progress()
 
     if (GetOwner()->Animator()->IsFinish())
     {
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_SWORDWAVE_STORM");
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_STORM");
     }
 }

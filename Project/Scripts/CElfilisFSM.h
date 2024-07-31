@@ -52,7 +52,8 @@ enum class ElfilisStateGroup
     GroundIdle,
     GroundMove,
     GroundMoveAtk,
-    GroundAtk,
+    GroundAtkNear,
+    GroundAtkFar,
     GroundToAir,
 
     AirIdle,
@@ -73,6 +74,7 @@ private:
     ElfilisStateGroup m_CurStateGroup;
     UINT m_Phase;
     UINT m_ComboLevel;
+    float m_NearDist;
     bool m_bAttackRepeat;
 
     // ground
@@ -86,7 +88,7 @@ public:
     void ChangeStateGroup_RandState(ElfilisStateGroup _Group);
     void ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstring& _State);
     void RepeatState(wstring _State = L"");
-    ElfilisStateGroup FindNextStateGroup();
+    ElfilisStateGroup FindNextStateGroup() const;
 
 public:
     virtual void begin() override;
@@ -100,8 +102,10 @@ public:
     const vector<wstring>& GetCurPublicStates() const;
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
+    float GetNearDist() const { return m_NearDist; }
     float GetMapSizeRadius() const { return m_MapSizeRadius; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
+    float GetPlayerDist() const;
 
 private:
     void ChangStateGroup(ElfilisStateGroup _Group);
