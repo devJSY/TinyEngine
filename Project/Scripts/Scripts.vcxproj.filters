@@ -497,7 +497,7 @@
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\R</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_RayArrow.h">
-      <Filter>State\ElfilisState\Ground_AttackFar\RotSpear</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\RayArrow</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisG_NormalAtk.h">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk</Filter>
@@ -558,6 +558,15 @@
     </ClInclude>
     <ClInclude Include="CElfilisA_MoveR.h">
       <Filter>State\ElfilisState\Air_Move\R</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_RayArrowUp.h">
+      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_RayArrowDown.h">
+      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisAirArrow.h">
+      <Filter>Scripts\Character\Boss\Elfilis\AirArrow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1069,7 +1078,7 @@
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\R</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_RayArrow.cpp">
-      <Filter>State\ElfilisState\Ground_AttackFar\RotSpear</Filter>
+      <Filter>State\ElfilisState\Ground_AttackFar\RayArrow</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtk.cpp">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk</Filter>
@@ -1130,6 +1139,15 @@
     </ClCompile>
     <ClCompile Include="CElfilisA_MoveR.cpp">
       <Filter>State\ElfilisState\Air_Move\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_RayArrowDown.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_RayArrowUp.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisAirArrow.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\AirArrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1721,9 +1739,6 @@
     <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\Storm">
       <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Ground_AttackFar\RotSpear">
-      <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike">
       <UniqueIdentifier>{bb64d07e-ddc4-417f-9fee-b7f78bb6e180}</UniqueIdentifier>
     </Filter>
@@ -1753,6 +1768,21 @@
     </Filter>
     <Filter Include="State\ElfilisState\Air_Move\R">
       <UniqueIdentifier>{aa6c85ba-2559-4b2d-bce2-226a6a25752a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\RayArrow">
+      <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack\RayArrow">
+      <UniqueIdentifier>{8dfe9f41-871c-4f9e-8eb1-48323dd26b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack\RayArrow\Up">
+      <UniqueIdentifier>{e31abe4f-d7a0-4b05-a7af-625b5e4f6e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack\RayArrow\Down">
+      <UniqueIdentifier>{a513a114-fbe1-4bc2-936e-d11cc49dfd98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\AirArrow">
+      <UniqueIdentifier>{b0ba3eee-e242-44d3-998e-7be790c86795}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

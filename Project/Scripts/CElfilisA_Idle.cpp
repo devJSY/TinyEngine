@@ -15,8 +15,8 @@ void CElfilisA_Idle::tick()
 {
     if (KEY_TAP(KEY::ENTER))
     {
-        //ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::AirMove, L"AIR_MOVE_L");
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
+        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_UP");
+        //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
 
     //@TODO 전이 확인 후 복구

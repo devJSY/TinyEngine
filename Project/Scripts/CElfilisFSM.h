@@ -1,13 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
 
-
-enum class ElfilisA_Move
-{
-    MoveSide,
-    PUBLIC,
-};
-
 enum class ElfilisA_SmallAtk
 {
     ThrowSpear,
