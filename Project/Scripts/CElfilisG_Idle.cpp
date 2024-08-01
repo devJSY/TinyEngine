@@ -18,10 +18,6 @@ void CElfilisG_Idle::tick()
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundMove);
          ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
     }
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::GroundAtkFar);
-    }
 
     m_AccTime += DT;
 

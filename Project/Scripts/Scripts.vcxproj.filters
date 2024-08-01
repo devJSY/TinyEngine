@@ -550,6 +550,15 @@
     <ClInclude Include="CElfilisG_GroundToAir.h">
       <Filter>State\ElfilisState\Ground_ToAir</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisA_Idle.h">
+      <Filter>State\ElfilisState\Air_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_MoveL.h">
+      <Filter>State\ElfilisState\Air_Move\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_MoveR.h">
+      <Filter>State\ElfilisState\Air_Move\R</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1112,6 +1121,15 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_GroundToAir.cpp">
       <Filter>State\ElfilisState\Ground_ToAir</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_Idle.cpp">
+      <Filter>State\ElfilisState\Air_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_MoveL.cpp">
+      <Filter>State\ElfilisState\Air_Move\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_MoveR.cpp">
+      <Filter>State\ElfilisState\Air_Move\R</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1717,6 +1735,24 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_ToAir">
       <UniqueIdentifier>{c767fa72-2740-4220-8b98-c11d4c4dd945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Move">
+      <UniqueIdentifier>{3dd4c845-b8b1-4e2d-8c23-b6eecf38b5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack">
+      <UniqueIdentifier>{0f491f6a-6085-4753-a7b4-be4ac8f4eb39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_BigAttack">
+      <UniqueIdentifier>{eb9a40b3-27a2-42ce-81d8-036baed8eeeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Idle">
+      <UniqueIdentifier>{a6102277-d7e6-48ae-b682-3f8e06d60abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Move\L">
+      <UniqueIdentifier>{ce094d48-3c79-40c9-a6b3-5a9823a82794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Move\R">
+      <UniqueIdentifier>{aa6c85ba-2559-4b2d-bce2-226a6a25752a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

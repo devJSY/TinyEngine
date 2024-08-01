@@ -1,11 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
 
-enum class ElfilisA_Idle
-{
-    Idle,
-    PUBLIC,
-};
 
 enum class ElfilisA_Move
 {
@@ -66,6 +61,7 @@ class CElfilisFSM : public CFSMScript
 private:
     map<ElfilisStateGroup, vector<wstring>[2]> m_StateGroup; // ( StateGroup, {{PublicStates}, {PrivateStates}} )
     ElfilisStateGroup m_CurStateGroup;
+    pair<ElfilisStateGroup, wstring> m_ReserveState;
     UINT m_Phase;
     UINT m_ComboLevel;
     bool m_bAttackRepeat;
@@ -84,6 +80,7 @@ private:
 public:
     void ChangeStateGroup_RandState(ElfilisStateGroup _Group);
     void ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstring& _State);
+    void ReserveState(ElfilisStateGroup _Group, const wstring& _State);
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
 
@@ -97,6 +94,8 @@ public:
 
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;
+    const pair<ElfilisStateGroup, wstring>& GetReserveState() const { return m_ReserveState; }
+    bool IsReservedState() const { return !m_ReserveState.second.empty(); }
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
     float GetNearDist() const { return m_NearDist; }

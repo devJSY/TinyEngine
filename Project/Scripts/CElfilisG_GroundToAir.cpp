@@ -4,7 +4,6 @@
 
 CElfilisG_GroundToAir::CElfilisG_GroundToAir()
     : m_PrevDrag(0.f)
-    , m_NewDrag(0.f)
 {
 }
 
@@ -38,17 +37,19 @@ void CElfilisG_GroundToAir::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        m_NewDrag = 0.f;
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastStart"), false);
 
         // Jump
-        m_JumpDir = (Vec3(0.f, 1.f, 0.f) - GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT)).Normalize();
-        m_JumpDir = m_JumpDir * ELFFSM->GetAirPos() - GetOwner()->Transform()->GetWorldPos();
-        m_JumpDir.Normalize();
-        GetOwner()->Rigidbody()->AddForce(m_JumpDir * 3500.f, ForceMode::Impulse);
+        Vec3 JumpDir = (Vec3(0.f, 1.f, 0.f) - GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT)).Normalize();
+        m_StartPos = GetOwner()->Transform()->GetWorldPos();
+        m_TargetPos = JumpDir * ELFFSM->GetAirPos();
+        JumpDir = m_TargetPos - m_StartPos;
+        JumpDir.Normalize();
+
+        GetOwner()->Rigidbody()->AddForce(JumpDir * 3000.f, ForceMode::Impulse);
     }
     break;
     case StateStep::End: {
@@ -87,14 +88,15 @@ void CElfilisG_GroundToAir::Start()
 
 void CElfilisG_GroundToAir::Progress()
 {
-    m_NewDrag += DT * 4.f;
-    if (m_NewDrag > 3.f)
-    {
-        m_NewDrag = 3.f;
-    }
-    GetOwner()->Rigidbody()->SetDrag(m_NewDrag);
+    // Add drag
+    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+    float CurDist = (NewPos - m_StartPos).Length();
+    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
+    float NewDrag = 5.f - 5.f * sinf(Ratio);
+    GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
-    if (GetOwner()->Transform()->GetWorldPos().y >= ELFFSM->GetAirPos().y)
+    // Change Step
+    if ((NewPos - m_StartPos).Length() >= (m_TargetPos - m_StartPos).Length())
     {
         ChangeStep(StateStep::End);
     }
@@ -105,14 +107,6 @@ void CElfilisG_GroundToAir::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-
-        if (NextState == ElfilisStateGroup::GroundAtkFar || NextState == ElfilisStateGroup::GroundAtkNear)
-        {
-            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
-        }
-        else
-        {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
-        }
+        ELFFSM->ChangeStateGroup_RandState(NextState);
     }
 }

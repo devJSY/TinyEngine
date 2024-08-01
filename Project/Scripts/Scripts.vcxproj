@@ -124,6 +124,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
+    <ClInclude Include="CElfilisA_MoveL.h" />
+    <ClInclude Include="CElfilisA_MoveR.h" />
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CElfilisG_DimensionSpike.h">
@@ -296,6 +298,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIUnitManagerScript.h" />
     <ClInclude Include="CUnitScript.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="CElfilisA_Idle.h" />
     <ClInclude Include="ElfilisDimensionSet.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -318,6 +321,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />
+    <ClCompile Include="CElfilisA_MoveL.cpp" />
+    <ClCompile Include="CElfilisA_MoveR.cpp" />
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CElfilisG_DimensionSpike.cpp">
@@ -489,6 +494,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUITexScript.cpp" />
     <ClCompile Include="CUIUnitManagerScript.cpp" />
     <ClCompile Include="CUnitScript.cpp" />
+    <ClCompile Include="CElfilisA_Idle.cpp" />
     <ClCompile Include="ElfilisDimensionSet.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
