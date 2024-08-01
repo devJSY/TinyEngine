@@ -3,6 +3,9 @@
 
 #include <Engine/CLevelMgr.h>
 
+#include "CPlayerMgr.h"
+#include "CKirbyMoveController.h"
+
 CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
     , m_Setup(CameraSetup::NORMAL)
@@ -22,9 +25,11 @@ CCameraController::CCameraController()
     , m_EditRotSpeed(50.f)
     , m_EditZoomSpeed(500.f)
     , m_EditMode(false)
+    , m_Weight(0.3f)
 {
 
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_Offset, "Offset");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_SubTargetOffset, "SubTargetOffset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_LookDir, "Look Dir", 0.05f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LookDist, "Look Distance", 1.f);
 
@@ -37,6 +42,16 @@ CCameraController::CCameraController()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomMinSpeed, "Zoom Min Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomMaxSpeed, "Zoom Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomThreshold, "Zoom Threshold");
+
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Weight, "Weight", 0.01f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DistanceOffset, "DistanceOffset");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MinDegreeX, "MinDirX");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxDegreeX, "MaxDirX");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MinDegreeY, "MinDirY");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxDegreeY, "MaxDirY");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxBetweenTargetDist, "MaxBetweenTargetDist");
+
+
 
     // Edit Mode
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_EditMode, "Edit Mode");
@@ -107,7 +122,7 @@ void CCameraController::tick()
     // @DEBUG
     if (KEY_TAP(KEY::T))
     {
-        TwoTarget(L"TestTarget", Vec3(0.f,-1.f,1.f), 0.f);
+        Boss(L"TestTarget", 200.f, 0.f,0.f,0.f);
     }
 
     EditMode();
@@ -140,8 +155,25 @@ void CCameraController::tick()
     m_LookEyePos = CalCamPos(m_CurLookAtPos, m_CurLookDir, m_CurDistance);
 
     // ==================== Camera Transform Update ====================
-    Transform()->SetDirection(m_CurLookDir);
+    //Transform()->SetDirection(m_CurLookDir);
+    
+    Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Right, XM_PI * DT);
+
+    Quat CurLookDirQuat = VectorToQuaternion(m_CurLookDir);
+    Transform()->SetLocalRotation(CurLookDirQuat * rotation);
     Transform()->SetWorldPos(m_LookEyePos);
+
+    if (KEY_PRESSED(KEY::D))
+    {
+        Quat CurQuat = Transform()->GetWorldQuaternion();
+        Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+        Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Right, XM_PI/2.f);
+        Transform()->SetWorldRotation(CurQuat * rotation);
+        //m_LookDir = Vector3::Transform(m_LookDir, rotation);
+        //m_LookDir.Normalize();
+    }
+
 
     // @DEBUG
     //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 200.f, Vec3(1.f, 0.f, 0.f), true);
@@ -163,8 +195,8 @@ void CCameraController::SetUpProc()
     case CameraSetup::TWOTARGET:
         TwoTarget();
         break;
-    case CameraSetup::ELFILIS_AIR:
-        Elfilis_Air();
+    case CameraSetup::BOSS:
+        Boss();
         break;
     default:
         break;
@@ -176,7 +208,20 @@ void CCameraController::UpdateTargetPos()
     // 타겟의 현재 위치 업데이트
     if (nullptr != m_Target)
     {
-        m_TargetPos = m_Target->Transform()->GetWorldPos();
+        // 커비일 경우에는 점프할 때 따라가지 않음
+        if (m_Target->GetName() == L"Main Player")
+        {
+
+            m_TargetPos = m_Target->Transform()->GetWorldPos();
+            RaycastHit Hit = PLAYERCTRL->GetRay();
+
+            // 커비가 땅에 닿아있지 않고 레이에 충돌한 땅이 있을 경우 땅을 타겟으로 정한다.
+            if (!PLAYERCTRL->IsGround() && Hit.pCollisionObj != nullptr)
+            {
+                m_TargetPos = m_Target->Transform()->GetWorldPos();
+                m_TargetPos.y = Hit.Point.y;
+            }
+        }
     }
 
     if (nullptr != m_SubTarget)
@@ -250,13 +295,14 @@ void CCameraController::UpdateLookDir()
         }
         else
         {
-            float MaxRotationStep = m_RotationSpeed * DT;
-            float t = min(MaxRotationStep / degrees, 1.0f);
+            
+            float MaxRotationStep = m_RotationSpeed * XM_PI / 180.f * DT;
+            //float t = min(MaxRotationStep / degrees, 1.0f); // 등속 운동
 
             Quat PrevQuat = VectorToQuaternion(m_PrevLookDir);
             Quat LookQuat = VectorToQuaternion(m_LookDir);
 
-            Quat SlerpQuat = Quat::Slerp(PrevQuat, LookQuat, t);
+            Quat SlerpQuat = Quat::Slerp(PrevQuat, LookQuat, MaxRotationStep);
             m_CurLookDir = QuaternionToVector(SlerpQuat);
         }
     }
@@ -427,35 +473,36 @@ void CCameraController::TwoTarget()
     m_LookAtPos = Center;
 }
 
-void CCameraController::Elfilis_Air()
+
+void CCameraController::Boss()
 {
     if (m_Target == nullptr || m_SubTarget == nullptr)
         return;
 
-    // 두 물체의 중심점 계산
-    Vec3 Center = (m_TargetPos + m_SubTargetPos) * 0.5f;
-
+    // 가중치를 적용한 중심점 계산
+    Vec3 Center = m_TargetPos * (1.0f - m_Weight) + m_SubTargetPos * m_Weight;
 
     // 두 물체의 상대 위치 벡터 계산
     Vec3 ToTarget1 = m_TargetPos - Center;
     Vec3 ToTarget2 = m_SubTargetPos - Center;
 
-    //// 카메라의 현재 바라보는 방향
-    //Vec3 LookDir = m_LookDir.Normalize();
-
-    //// 카메라의 오른쪽 방향 벡터와 위쪽 방향 벡터 계산
-    //Vec3 rightDir = lookDir.Cross(Vec3(0, 1, 0)).Normalize();
-    //Vec3 upDir = rightDir.Cross(lookDir).Normalize();
-
+    // Camera의 Front, Right, Up 벡터를 구한다.
     Vec3 LookDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-    Vec3 Up = Transform()->GetWorldDir(DIR_TYPE::UP);
+    Vec3 RightDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Vec3 UpDir = Transform()->GetWorldDir(DIR_TYPE::UP);
 
+    //Vec3 LookDir = m_LookDir;
+    //Vec3 RightDir = Vec3(0.f, 1.f, 0.f).Cross(LookDir).Normalize();
+    //Vec3 UpDir = LookDir.Cross(RightDir).Normalize();
 
-    // 두 물체 사이의 가로 및 세로 거리 계산
-    float HorizontalDistance = fabs(m_TargetPos.x - m_SubTargetPos.x);
-    float VerticalDistance = fabs(m_TargetPos.y - m_SubTargetPos.y);
-    float DepthDistance = fabs(m_TargetPos.z - m_SubTargetPos.z);
+    // 두 물체 사이의 가로, 세로, 깊이 거리 계산
+    float HorizontalDistanceToTarget1 = fabs(ToTarget1.Dot(RightDir));
+    float VerticalDistanceToTarget1 = fabs(ToTarget1.Dot(UpDir));
+    float DepthDistanceToTarget1 = -ToTarget1.Dot(LookDir);
+
+    float HorizontalDistanceToTarget2 = fabs(ToTarget2.Dot(RightDir));
+    float VerticalDistanceToTarget2 = fabs(ToTarget2.Dot(UpDir));
+    float DepthDistanceToTarget2 = -ToTarget2.Dot(LookDir);
 
     // FOV와 Aspect Ratio를 기반으로 Distance Scale Factor 계산
     float AspectRatio = Camera()->GetAspectRatio();
@@ -463,16 +510,65 @@ void CCameraController::Elfilis_Air()
     float HorizontalFOV = 2 * atan(tan(VerticalFOV / 2) * AspectRatio);
 
     // 필요한 최소 거리 계산
-    float RequiredHorizontalDistance = (HorizontalDistance / 2.0f) / tan(HorizontalFOV / 2.0f);
-    float RequiredVerticalDistance = (VerticalDistance / 2.0f) / tan(VerticalFOV / 2.0f);
+    float RequiredHorizontalDistanceToTarget1 = (HorizontalDistanceToTarget1) / tan(HorizontalFOV / 2.f);
+    float RequiredHorizontalDistanceToTarget2 = (HorizontalDistanceToTarget2) / tan(HorizontalFOV / 2.f);
+    float RequiredVerticalDistanceToTarget1 = (VerticalDistanceToTarget1) / tan(VerticalFOV / 2.f);
+    float RequiredVerticalDistanceToTarget2 = (VerticalDistanceToTarget2) / tan(VerticalFOV / 2.f);
 
-    // 카메라의 거리 중 더 큰 값을 선택
-    float RequiredDistance = max(RequiredHorizontalDistance, RequiredVerticalDistance);
-    RequiredDistance = max(RequiredDistance, DepthDistance);
+    // 각 타겟이 보이기위해 필요한 최소거리
+    float RequiredDistanceTarget1 = RequiredHorizontalDistanceToTarget1 > RequiredVerticalDistanceToTarget1 ? RequiredHorizontalDistanceToTarget1
+                                                                                                            : RequiredVerticalDistanceToTarget1;
+    float RequiredDistanceTarget2 = RequiredHorizontalDistanceToTarget2 > RequiredVerticalDistanceToTarget2 ? RequiredHorizontalDistanceToTarget2
+                                                                                                            : RequiredVerticalDistanceToTarget2;
+
+    // 깊이에 대한 거리를 각각 더해준다.
+    RequiredDistanceTarget1 += DepthDistanceToTarget1;
+    RequiredDistanceTarget2 += DepthDistanceToTarget2;
+
+    // 필요한 거리가 더 먼경우를 현재의 거리로 정해준다.
+    float RequiredDistance = RequiredDistanceTarget1 > RequiredDistanceTarget2 ? RequiredDistanceTarget1 : RequiredDistanceTarget2;
+
+    // ================== Direction =================
+
+    // 수평 각도 계산
+    Vec3 Dir = m_SubTargetPos - m_TargetPos;
+    Dir.y = 0.f;
+    Dir.Normalize();
+
+    float CurBetweenTargetDist = (m_SubTargetPos - m_TargetPos).Length();
+
+    // 타겟과의 거리에 따라 x축으로 카메라를 회전시킨다.
+    float Ratio = clamp((CurBetweenTargetDist / m_MaxBetweenTargetDist), 0.f, 1.f) * XM_PI * 0.5f;
+    float Degree = m_MinDegreeX + (m_MaxDegreeX - m_MinDegreeX) * sinf(Ratio);
+
+    if (Degree != 0.f)
+    {
+        Quaternion rotation = Quaternion::CreateFromAxisAngle(RightDir, Degree * XM_PI / 180.f);
+        Dir = Vector3::Transform(Dir, rotation);
+    }
+
+    // 타겟과의 거리에 따라 Y축으로 카메라를 회전시킨다.
+    Ratio = clamp((CurBetweenTargetDist / m_MaxBetweenTargetDist), 0.f, 1.f) * XM_PI * 0.5f;
+    Degree = m_MinDegreeY + (m_MaxDegreeY - m_MinDegreeY) * sinf(Ratio);
+
+    if (Degree != 0.f)
+    {
+        Quaternion rotation = Quaternion::CreateFromAxisAngle(UpDir, Degree * XM_PI / 180.f);
+        Dir = Vector3::Transform(Dir, rotation);
+    }
+
+
+    Dir.Normalize();
+    m_LookDir = Dir;
 
     m_LookDist = RequiredDistance + m_DistanceOffset;
     m_LookAtPos = Center;
 }
+
+void CCameraController::ProcessEffet()
+{
+}
+
 
 void CCameraController::ResetCamera()
 {
@@ -584,6 +680,48 @@ void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
 }
+
+void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, float _MinDegree, float _MaxDegree,
+                                     float _m_MaxBetweenTargetDist, float _Weight)
+{
+    if (_SubTarget == nullptr)
+        return;
+
+    m_Setup = CameraSetup::BOSS;
+
+    m_SubTarget = _SubTarget;
+    m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
+    m_DistanceOffset = _DistanceOffset;
+
+    m_Offset = Vec3(0.f, 0.f, 0.f);
+    m_TargetOffset = Vec3(0.f, 0.f, 0.f);
+    m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
+}
+
+void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
+                                     float _Weight)
+{
+    m_Setup = CameraSetup::BOSS;
+
+    m_SubTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_SubTargetName);
+
+    // 해당 이름을 가진 타겟이 없다면
+    if (m_SubTarget == nullptr)
+    {
+        m_Setup = CameraSetup::NORMAL;
+        return;
+    }
+
+    m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
+    m_DistanceOffset = _DistanceOffset;
+
+    m_Offset = Vec3(0.f, 0.f, 0.f);
+    m_TargetOffset = Vec3(0.f, 0.f, 0.f);
+    m_SubTargetOffset = Vec3(0.f, 80.f, 0.f);
+    m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
+}
+
+
 
 Vec3 CCameraController::CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist)
 {

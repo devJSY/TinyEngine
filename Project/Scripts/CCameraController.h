@@ -2,20 +2,34 @@
 
 #include <Engine/CScript.h>
 
+enum class EFFECT_TYPE
+{
+    SHAKE,
+    TILT_ANGLE,
+};
+
+struct CamEffect
+{
+    EFFECT_TYPE EffetType;
+
+    float m_Acc;
+    float m_Duration;
+};
+
 enum class CameraSetup
 {
     NORMAL,
     PROGRESS,
     TWOTARGET,
-
-    ELFILIS_AIR,
-
+    BOSS,
 };
 
 class CCameraController : public CScript
 {
 private:
     CameraSetup                 m_Setup;             // 현재 카메라의 Setup
+
+    vector<CamEffect>           m_Effet;
 
     // Target
     CGameObject*                m_Target;               // 카메라가 바라봐야하는 타겟
@@ -67,7 +81,13 @@ private:
 
     // TwoTarget
     float                       m_DistanceOffset;       // 두 물체의 Pos를 기준으로 잡기 때문에 두 물체의 매쉬가 온전히 보이려면 Offset 만큼 Distance에 더 해줘야 한다.
-    
+    float                       m_Weight;               // 두 타겟중 어디를 볼지에 대한 가중치 0(Main Target) ~ 1(SubTarget)
+    float                       m_MinDegreeX;            // Weight가 0일 때(Kirby를 볼 때)의 X축 회전 각도
+    float                       m_MaxDegreeX;            // Weight가 1일 때(SubTarget을 볼 때)의 X축 회전 각도
+    float                       m_MinDegreeY;            // Weight가 0일 때(Kirby를 볼 때)의 X축 회전 각도
+    float                       m_MaxDegreeY;            // Weight가 1일 때(SubTarget을 볼 때)의 X축 회전 각도
+    float                       m_MaxBetweenTargetDist;    
+
     //Edit
     bool                        m_EditMode;             // EditMode 스위치
     float                       m_EditRotSpeed;         // EditMode에서의 카메라 회전 조절 속도
@@ -124,10 +144,14 @@ private:
     
     Vec3 CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist);
     
+    // Proc
     void Normal();
     void Progress();
     void TwoTarget();
-    void Elfilis_Air();
+    void Boss();
+
+    void ProcessEffet();
+
     // EditMode
     void EditMode();
 
@@ -140,6 +164,11 @@ public:
     void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
     void TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset);
     void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset);
+    void Boss(CGameObject* _SubTarget, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
+                      float _Weight = 0.5f);
+    void Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
+                      float _Weight = 0.5f);
+
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

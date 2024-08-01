@@ -100,6 +100,7 @@ public:
     float GetGuard() const { return m_bActiveFriction; }
     float GetJumpPower() const { return m_JumpPower; }
     bool IsGround() const { return m_bGround; }
+    RaycastHit GetRay() const { return m_RayHit; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
