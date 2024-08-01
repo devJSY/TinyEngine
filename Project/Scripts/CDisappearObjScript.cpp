@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "CDisappearObjScript.h"
 
+#include "CPlayerMgr.h"
+
 CDisappearObjScript::CDisappearObjScript()
     : CScript(DISAPPEAROBJSCRIPT)
+    , m_pPlayer(nullptr)
+    , m_eState(DisappearObjectState::Wait)
     , m_fAccTime(0.f)
     , m_fBreakTime(0.f)
     , m_fCreateTime(0.f)
-    , m_bExist(true)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fBreakTime, "Break Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fCreateTime, "Create Time");
@@ -14,10 +17,11 @@ CDisappearObjScript::CDisappearObjScript()
 
 CDisappearObjScript::CDisappearObjScript(const CDisappearObjScript& Origin)
     : CScript(Origin)
+    , m_pPlayer(nullptr)
+    , m_eState(DisappearObjectState::Wait)
     , m_fAccTime(0.f)
-    , m_fBreakTime(0.f)
-    , m_fCreateTime(0.f)
-    , m_bExist(true)
+    , m_fBreakTime(Origin.m_fBreakTime)
+    , m_fCreateTime(Origin.m_fCreateTime)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fBreakTime, "Break Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fCreateTime, "Create Time");
@@ -27,41 +31,119 @@ CDisappearObjScript::~CDisappearObjScript()
 {
 }
 
+void CDisappearObjScript::begin()
+{
+    m_pPlayer = PLAYER;
+    MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, 1.f);
+}
+
 void CDisappearObjScript::tick()
 {
-    if (!m_bExist)
+    switch (m_eState)
     {
-        m_fAccTime += DT;
-        if (m_fAccTime >= m_fCreateTime)
-        {
-            BoxCollider()->SetEnabled(true);
-            m_fAccTime = 0.f;
-            m_bExist = true;
-        }
+    case DisappearObjectState::Wait: {
+    }
+    break;
+    case DisappearObjectState::PreDisappear: {
+        PreDisappear();
+    }
+    break;
+    case DisappearObjectState::Disapper: {
+        Disappear();
+    }
+    break;
+    case DisappearObjectState::Appear: {
+        Appear();
+    }
+    break;
+    case DisappearObjectState::End:
+        break;
+    default:
+        break;
     }
 }
 
-void CDisappearObjScript::OnTriggerStay(CCollider* _OtherCollider)
+void CDisappearObjScript::PreDisappear()
 {
-    CGameObject* Obj = _OtherCollider->GetOwner();
-    if (L"Body Collider" == Obj->GetName())
+    m_fAccTime += DT;
+    MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, 1.f - (m_fAccTime / m_fBreakTime));
+    if (m_fBreakTime <= m_fAccTime)
     {
-        m_fAccTime += DT;
-
-        if (m_fAccTime >= m_fBreakTime)
-        {
-            // TODO Kerby 상태 변경 해주기
-            BoxCollider()->SetEnabled(false);
-        }
+        BoxCollider()->SetEnabled(false);
+        ChangeState(DisappearObjectState::Disapper);
     }
 }
 
-void CDisappearObjScript::OnTriggerExit(CCollider* _OtherCollider)
+void CDisappearObjScript::Disappear()
 {
-    CGameObject* Obj = _OtherCollider->GetOwner();
-    if (L"Body Collider" == Obj->GetName())
+    m_pPlayer->CharacterController()->SetGrounded(false);
+    ChangeState(DisappearObjectState::Appear);
+}
+
+void CDisappearObjScript::Appear()
+{
+    m_fAccTime += DT;
+    MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, (m_fAccTime / m_fBreakTime));
+    if (m_fCreateTime <= m_fAccTime)
     {
+        BoxCollider()->SetEnabled(true);
+        ChangeState(DisappearObjectState::Wait);
+    }
+}
+
+void CDisappearObjScript::ChangeState(DisappearObjectState _state)
+{
+    ExitState(m_eState);
+    m_eState = _state;
+    EnterState(m_eState);
+}
+
+void CDisappearObjScript::EnterState(DisappearObjectState _state)
+{
+    switch (_state)
+    {
+    case DisappearObjectState::Wait:
+        break;
+    case DisappearObjectState::PreDisappear:
+        break;
+    case DisappearObjectState::Disapper:
+        break;
+    case DisappearObjectState::Appear: {
         m_fAccTime = 0.f;
+    }
+        break;
+    case DisappearObjectState::End:
+        break;
+    default:
+        break;
+    }
+}
+
+void CDisappearObjScript::ExitState(DisappearObjectState _state)
+{
+    switch (_state)
+    {
+    case DisappearObjectState::Wait: {
+        m_fAccTime = 0.f;
+    }
+    break;
+    case DisappearObjectState::Appear: {
+        m_fAccTime = 0.f;
+    }
+    break;
+    case DisappearObjectState::End:
+        break;
+    default:
+        break;
+    }
+}
+
+void CDisappearObjScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    CGameObject* Obj = _OtherCollider->GetOwner();
+    if (L"Body Collider" == Obj->GetName())
+    {
+        ChangeState(DisappearObjectState::PreDisappear);
     }
 }
 

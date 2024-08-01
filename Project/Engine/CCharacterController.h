@@ -23,6 +23,8 @@ public:
     void Move(Vec3 _Motion);
     bool IsGrounded() const { return m_bGrounded; }
 
+    void SetGrounded(const bool flag) { m_bGrounded = flag; }
+
 public:
     float GetSlopeLimit() const { return m_SlopeLimit; }
     void SetSlopeLimit(float _Limit);
