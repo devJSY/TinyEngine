@@ -58,6 +58,7 @@
 #include "CElfilisArrowScript.h"
 #include "CElfilisSwordSlashScript.h"
 #include "CElfilisStormScript.h"
+#include "CElfilisAirArrow.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -118,6 +119,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisArrowScript");
 	_vec.push_back(L"CElfilisSwordSlashScript");
 	_vec.push_back(L"CElfilisStormScript");
+	_vec.push_back(L"CElfilisAirArrow");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -236,6 +238,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisSwordSlashScript;
 	if (L"CElfilisStormScript" == _strScriptName)
 		return new CElfilisStormScript;
+	if (L"CElfilisAirArrow" == _strScriptName)
+		return new CElfilisAirArrow;
 	return nullptr;
 }
 
@@ -357,6 +361,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisSwordSlashScript;
 	case (UINT)SCRIPT_TYPE::ELFILISSTORMSCRIPT:
 		return new CElfilisStormScript;
+	case (UINT)SCRIPT_TYPE::ELFILISAIRARROW:
+		return new CElfilisAirArrow;
 	}
 	return nullptr;
 }
@@ -479,6 +485,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisSwordSlashScript";
 	case SCRIPT_TYPE::ELFILISSTORMSCRIPT:
 		return L"CElfilisStormScript";
+	case SCRIPT_TYPE::ELFILISAIRARROW:
+		return L"CElfilisAirArrow";
 	}
 	return nullptr;
 }

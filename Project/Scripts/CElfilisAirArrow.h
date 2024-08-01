@@ -11,6 +11,8 @@ class CElfilisAirArrow : public CScript
 {
 private:
     Vec3 m_InitPos;
+    Vec3 m_InitFront;
+    Vec3 m_ReadyRot;
     Vec3 m_OriginScale;
     ArrowType m_Type;
     UINT m_Step;
@@ -27,6 +29,7 @@ public:
 
 public:
     void SetInitPos(Vec3 _Pos) { m_InitPos = _Pos; }
+    void SetInitFrot(Vec3 _Front) { m_InitFront = _Front; }
     void SetType(ArrowType _Type) { m_Type = _Type; }
     void SetArrowIdx(int _Idx) { m_ArrowIdx = _Idx; }
 

@@ -55,3 +55,4 @@ CElfilisArrowSetScript
 CElfilisArrowScript
 CElfilisSwordSlashScript
 CElfilisStormScript
+CElfilisAirArrow
