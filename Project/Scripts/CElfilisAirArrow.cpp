@@ -3,10 +3,12 @@
 
 CElfilisAirArrow::CElfilisAirArrow()
     : CScript(ELFILISAIRARROW)
+    , m_Target(nullptr)
     , m_Type(ArrowType::UP)
     , m_ArrowIdx(0)
     , m_Step(0)
     , m_AccTime(0.f)
+    , m_bGround(false)
 {
 }
 
@@ -21,6 +23,8 @@ void CElfilisAirArrow::begin()
 
 void CElfilisAirArrow::tick()
 {
+    m_AccTime += DT;
+
     switch (m_Step)
     {
     case 0:
@@ -32,9 +36,12 @@ void CElfilisAirArrow::tick()
         Ready();
         break;
     case 3:
-        Aim();
+        Wait();
         break;
     case 4:
+        Aim();
+        break;
+    case 5:
         Attack();
         break;
     }
@@ -70,11 +77,47 @@ void CElfilisAirArrow::StartReady()
     GetOwner()->GetChildObject()[0]->Transform()->SetLocalScale(Vec3(1.f));
 }
 
-void CElfilisAirArrow::StartAim()
+void CElfilisAirArrow::StartWait()
 {
     m_Step = 3;
+    m_AccTime = 0.f;
+}
+
+void CElfilisAirArrow::StartAim()
+{
+    m_Step = 4;
+    m_AccTime = 0.f;
 
     Rigidbody()->SetKinematic(false);
+}
+
+void CElfilisAirArrow::StartAttack()
+{
+    m_Step = 5;
+    m_AccTime = 0.f;
+    m_bGround = false;
+
+    // Move
+    Rigidbody()->SetUseGravity(true);
+    Rigidbody()->AddForce(m_ReadyDir * 800.f, ForceMode::Impulse);
+
+    // ==============
+    AttackStartPos = Transform()->GetWorldPos();
+    TargetPos = m_Target->Transform()->GetWorldPos();
+    AttackDir = (TargetPos - AttackStartPos).Normalize();
+    AttackFrontDir = (TargetPos - AttackStartPos);
+    AttackFrontDir.y = 0.f;
+    AttackFrontDir.Normalize();
+    DirLock = false;
+}
+
+void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
+{
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5)
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        m_bGround = true;
+    }
 }
 
 void CElfilisAirArrow::SetInitDir(Vec3 _Front, Vec3 _Up, Vec3 _Right)
@@ -84,10 +127,43 @@ void CElfilisAirArrow::SetInitDir(Vec3 _Front, Vec3 _Up, Vec3 _Right)
     m_InitDir[(UINT)DIR_TYPE::RIGHT] = _Right;
 }
 
+void CElfilisAirArrow::SetArrowIdx(int _Idx)
+{
+    // arrow idx
+    m_ArrowIdx = _Idx;
+
+    // wait Time
+    switch (m_ArrowIdx)
+    {
+    case 0:
+        m_WaitTime = 2.f;
+        break;
+    case 1:
+        m_WaitTime = 4.f;
+        break;
+    case 2:
+        m_WaitTime = 6.f;
+        break;
+    case 3:
+        m_WaitTime = 7.f;
+        break;
+    case 4:
+        m_WaitTime = 5.f;
+        break;
+    case 5:
+        m_WaitTime = 3.f;
+        break;
+    case 6:
+        m_WaitTime = 1.f;
+        break;
+    }
+
+    m_WaitTime *= 0.3f;
+}
+
 void CElfilisAirArrow::Spawn()
 {
     static float SpawnTime = 0.5f;
-    m_AccTime += DT;
 
     // scaling
     if (m_AccTime <= SpawnTime)
@@ -105,17 +181,16 @@ void CElfilisAirArrow::Spawn()
 void CElfilisAirArrow::Ready()
 {
     static float ReadyTime = 1.f;
-    m_AccTime += DT;
 
     if (m_AccTime <= ReadyTime)
     {
         static float RotSpeed = 1.f / ReadyTime;
 
-        // roatate (Upvector & X) 
+        // rotate (Z & X)
         float t = m_AccTime / ReadyTime;
-        float Angle = (105.f / 7) * (-3 + m_ArrowIdx) * RotSpeed * DT;
+        float Angle = (-105.f / 7) * (-3 + m_ArrowIdx);
         Vec3 NewRot = Transform()->GetLocalRotation();
-        NewRot += m_InitDir[(UINT)DIR_TYPE::FRONT] * XMConvertToRadians(Angle);
+        NewRot.z = XMConvertToRadians(Angle) * t;
         NewRot.x = XMConvertToRadians(360.f) * t;
         Transform()->SetLocalRotation(NewRot);
 
@@ -125,68 +200,90 @@ void CElfilisAirArrow::Ready()
     }
     else
     {
+        float Angle = (-105.f / 7) * (-3 + m_ArrowIdx);
+        Vec3 NewRot = Transform()->GetLocalRotation();
+        NewRot.z = XMConvertToRadians(Angle);
+        NewRot.x = 0.f;
+        Transform()->SetLocalRotation(NewRot);
+
+        StartWait();
+    }
+}
+
+void CElfilisAirArrow::Wait()
+{
+    if (m_AccTime > m_WaitTime)
+    {
+        StartAim();
     }
 }
 
 void CElfilisAirArrow::Aim()
 {
-    static float RotSpeed = 20.f;
-    m_AccTime += DT;
+    static float RotTime = 0.3f;
 
-    if (m_AccTime >= 0.5f)
+    if (m_AccTime <= RotTime)
     {
-        // finish rotation
+        // rotate
         Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
+        float t = m_AccTime / RotTime;
 
-        if (Rotation.z > 0.1f)
-        {
-            // Slerp
-            float _t = DT * RotSpeed;
-            Vec3 _TowardDir = Vec3();
+        Rotation.y += XMConvertToRadians(360.f) * t;
 
-            Vec3 Up = Vec3(0.f, 0.f, 1.f);
-            Vec3 Right = Up.Cross(_TowardDir);
-            Right.Normalize();
-            Up = _TowardDir.Cross(Right);
-            Up.Normalize();
-
-            Matrix RotationMatrix = Matrix();
-            RotationMatrix.Forward(-_TowardDir);
-            RotationMatrix.Up(Up);
-            RotationMatrix.Right(Right);
-
-            Quat SlerpQuat = Quat::Slerp(GetOwner()->Transform()->GetWorldQuaternion(), Quat::CreateFromRotationMatrix(RotationMatrix), _t);
-            RotationMatrix = Matrix::CreateFromQuaternion(SlerpQuat);
-            Vec3 LookDir = -RotationMatrix.Forward();
-            GetOwner()->Transform()->SetDirection(LookDir);
-        }
-        else
-        {
-            GetOwner()->Transform()->SetLocalRotation(Vec3());
-            m_Step = 3;
-        }
+        GetOwner()->Transform()->SetLocalRotation(Rotation);
     }
     else
     {
-        // rotate & backstep
-        Vec3 Position = GetOwner()->Transform()->GetLocalPos();
-        Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
-        Position.z -= DT;
-        Rotation.z += DT * RotSpeed;
-
-        GetOwner()->Transform()->SetLocalRotation(Rotation);
-        GetOwner()->Transform()->SetLocalPos(Position);
+        StartAttack();
     }
 }
 
 void CElfilisAirArrow::Attack()
 {
-    // move
-    static float Speed = 70.f;
-    Vec3 Position = GetOwner()->Transform()->GetLocalPos();
-    Position.z += DT * Speed;
+    if (!m_bGround)
+    {
+        // Vec3 directionToTarget = (m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        // Vec3 currentDirection = Rigidbody()->GetVelocity().Normalize();
 
-    GetOwner()->Transform()->SetLocalPos(Position);
+        // static float MaxDiff = 25.f;
+        // float Diff = (directionToTarget - currentDirection).Length();
+        // float t = min(Diff, MaxDiff) / MaxDiff;
+        // Vec3 NewDir = directionToTarget * (1.f - t) + currentDirection * t;
+        // Rigidbody()->SetVelocity(NewDir.Normalize() * 60.f);
+
+        //// velocity alignment
+        // Vec3 Right = m_InitDir[(UINT)DIR_TYPE::RIGHT];
+        // Vec3 Down = NewDir;
+        // Vec3 Front = Down.Cross(Right);
+        // Front.Normalize();
+
+        // Transform()->Slerp(Front, DT);
+
+        // =================
+        if (!DirLock)
+        {
+            Vec3 UpLookAt = (m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+            Vec3 FrontLookAt = m_InitDir[(UINT)DIR_TYPE::RIGHT].Cross(UpLookAt);
+            Transform()->Slerp(FrontLookAt, DT);
+
+            Vec3 CurLookAt = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            if (CurLookAt.Dot(FrontLookAt) >= 0.9f)
+            {
+                DirLock = true;
+                Rigidbody()->AddForce(UpLookAt * 60.f, ForceMode::VelocityChange);
+            }
+        }
+        else
+        {
+            int a = 0;
+        }
+    }
+    else if (m_bGround)
+    {
+        GamePlayStatic::DetachObject(GetOwner());
+
+        //@Effect : 터지는 이펙트
+    }
 }
 
 UINT CElfilisAirArrow::SaveToLevelFile(FILE* _File)

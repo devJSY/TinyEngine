@@ -8,8 +8,8 @@ private:
     CGameObject* m_Arrow[7];
     CElfilisAirArrow* m_ArrowScript[7];
     float m_AccTime;
-    bool m_bSpawnFinished[7];
-    bool m_bReadyFinished;
+    bool m_bSpawn[7];
+    bool m_bReady;
 
 public:
     virtual void tick() override;

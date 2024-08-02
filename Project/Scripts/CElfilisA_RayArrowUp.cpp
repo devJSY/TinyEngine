@@ -9,8 +9,8 @@ CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
     : m_Arrow{}
     , m_ArrowScript{}
     , m_AccTime(0.f)
-    , m_bSpawnFinished{false,}
-    , m_bReadyFinished(false)
+    , m_bSpawn{false,}
+    , m_bReady(false)
 {
     Ptr<CPrefab> ArrowPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisAirArrow.pref", L"prefab\\ElfilisAirArrow.pref");
 
@@ -95,10 +95,10 @@ void CElfilisA_RayArrowUp::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("RayArrowStartAir"), false);
 
         m_AccTime = 0.f;
-        m_bReadyFinished = false;
+        m_bReady = false;
         for (int i = 0; i < 7; ++i)
         {
-            m_bSpawnFinished[i] = false;
+            m_bSpawn[i] = false;
         }
     }
     break;
@@ -141,29 +141,34 @@ void CElfilisA_RayArrowUp::Progress()
     static float SpawnTime = 0.2f;
     m_AccTime += DT;
 
-    // Arrow Spawn
-    for (int i = 0; i < 7; ++i)
+    if (!m_bSpawn[0])
     {
-        int idx = (i <= 3) ? i + 3 : 6 - i;
-
-        if (!m_bSpawnFinished[idx] && m_ArrowScript[idx])
+        // Arrow Spawn
+        for (int i = 0; i < 7; ++i)
         {
-            if (m_AccTime >= SpawnTime * i)
+            int idx = (i <= 3) ? i + 3 : 6 - i;
+
+            if (!m_bSpawn[idx] && m_ArrowScript[idx])
             {
-                m_ArrowScript[idx]->StartSpawn();
-                m_bSpawnFinished[idx] = true;
+                if (m_AccTime >= SpawnTime * i)
+                {
+                    m_ArrowScript[idx]->StartSpawn();
+                    m_bSpawn[idx] = true;
+                }
             }
         }
     }
-
-    // Arrow Ready
-    if (!m_bReadyFinished && m_bSpawnFinished[0] && m_ArrowScript[0]->IsSpawnFinished())
+    else
     {
-        for (int i = 0; i < 7; ++i)
+        // Arrow Ready
+        if (m_ArrowScript[0]->IsSpawnFinished() && !m_bReady)
         {
-            m_ArrowScript[i]->StartReady();
+            for (int i = 0; i < 7; ++i)
+            {
+                m_ArrowScript[i]->StartReady();
+            }
+            m_bReady = true;
         }
-        m_bReadyFinished = true;
     }
 
     if (GetOwner()->Animator()->IsFinish())
@@ -177,32 +182,37 @@ void CElfilisA_RayArrowUp::Wait()
     static float SpawnTime = 0.2f;
     m_AccTime += DT;
 
-    // Arrow Spawn
-    for (int i = 0; i < 7; ++i)
+    if (!m_bSpawn[0])
     {
-        int idx = (i <= 3) ? i + 3 : i - 4;
-
-        if (!m_bSpawnFinished[idx] && m_ArrowScript[idx] != nullptr)
+        // Arrow Spawn
+        for (int i = 0; i < 7; ++i)
         {
-            if (m_AccTime >= SpawnTime * i)
+            int idx = (i <= 3) ? i + 3 : 6 - i;
+
+            if (!m_bSpawn[idx] && m_ArrowScript[idx])
             {
-                m_ArrowScript[idx]->StartSpawn();
-                m_bSpawnFinished[idx] = true;
+                if (m_AccTime >= SpawnTime * i)
+                {
+                    m_ArrowScript[idx]->StartSpawn();
+                    m_bSpawn[idx] = true;
+                }
             }
         }
     }
-
-    // Arrow Ready
-    if (!m_bReadyFinished && m_bSpawnFinished[0])
+    else
     {
-        for (int i = 0; i < 7; ++i)
+        // Arrow Ready
+        if (m_ArrowScript[0]->IsSpawnFinished() && !m_bReady)
         {
-            m_ArrowScript[i]->StartReady();
+            for (int i = 0; i < 7; ++i)
+            {
+                m_ArrowScript[i]->StartReady();
+            }
+            m_bReady = true;
         }
-        m_bReadyFinished = true;
     }
 
-    if (m_bReadyFinished)
+    if (m_bReady)
     {
         ChangeStep(StateStep::End);
     }
