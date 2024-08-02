@@ -10,23 +10,27 @@ enum class ArrowType
 class CElfilisAirArrow : public CScript
 {
 private:
+    Ptr<CPrefab> m_CollisionEffect;
     CGameObject* m_Target;
-    Vec3 m_InitPos;
-    Vec3 m_InitDir[3];
-    Vec3 m_ReadyDir;
     ArrowType m_Type;
     UINT m_Step;
     int m_ArrowIdx;
-    float m_WaitTime;
     float m_AccTime;
-    bool m_bGround;
 
-    // ===============
-    Vec3 AttackStartPos;
-    Vec3 TargetPos;
-    Vec3 AttackDir;
-    Vec3 AttackFrontDir;
-    bool DirLock;
+    // Init
+    Vec3 m_InitPos;
+    Vec3 m_InitDir[3];
+
+    // Ready
+    Vec3 m_ReadyDir;
+
+    // Wait
+    float m_WaitTime;
+
+    // Attack
+    float m_AttackSpeed;
+    float m_TargetDist;
+    bool m_bGround;
 
 public:
     virtual void begin() override;
@@ -56,6 +60,7 @@ private:
     void StartAttack();
 
     virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+    virtual void OnCollisionStay(CCollider* _OtherCollider) override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -26,15 +26,40 @@ void CMomentaryObjScript::tick()
 {
     m_AccTime += DT;
 
-    if (Animator() && !m_EndAnim.empty() && (m_LifeTime - m_AccTime) <= m_EndAnimPlayTime)
+    // Effect
+    for (MomentaryEffectType Type : m_EffectVec)
     {
-        GetOwner()->Animator()->Play(m_EndAnim, false);
-        m_EndAnim = L"";
+        switch (Type)
+        {
+        case MomentaryEffectType::AppearScaling: {
+            float t = m_AccTime / m_LifeTime;
+            Transform()->SetLocalScale(m_OriginScale * t);
+        }
+        break;
+        case MomentaryEffectType::DisappearAnim: {
+            if (Animator() && !m_EndAnim.empty() && (m_LifeTime - m_AccTime) <= m_EndAnimPlayTime)
+            {
+                GetOwner()->Animator()->Play(m_EndAnim, false);
+                m_EndAnim = L"";
+            }
+        }
+        break;
+        }
     }
 
     if (m_AccTime > m_LifeTime)
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
+    }
+}
+
+void CMomentaryObjScript::AddEffect(MomentaryEffectType _EffectType)
+{
+    m_EffectVec.push_back(_EffectType);
+
+    if (_EffectType == MomentaryEffectType::AppearScaling)
+    {
+        m_OriginScale = Transform()->GetLocalScale();
     }
 }
 
@@ -51,6 +76,7 @@ void CMomentaryObjScript::SetEndAnim(wstring _Key)
         {
             m_EndAnimPlayTime = Time;
             m_EndAnim = _Key;
+            AddEffect(MomentaryEffectType::DisappearAnim);
         }
     }
 }

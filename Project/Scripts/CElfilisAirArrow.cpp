@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "CElfilisAirArrow.h"
+#include "CMomentaryObjScript.h"
+#include <Engine\CAssetMgr.h>
+#include <Engine\CPrefab.h>
 
 CElfilisAirArrow::CElfilisAirArrow()
     : CScript(ELFILISAIRARROW)
@@ -8,8 +11,11 @@ CElfilisAirArrow::CElfilisAirArrow()
     , m_ArrowIdx(0)
     , m_Step(0)
     , m_AccTime(0.f)
+    , m_AttackSpeed(0.f)
+    , m_TargetDist(0.f)
     , m_bGround(false)
 {
+    m_CollisionEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisArrowCol.pref", L"prefab\\Effect_ElfilisArrowCol.pref");
 }
 
 CElfilisAirArrow::~CElfilisAirArrow()
@@ -52,7 +58,10 @@ void CElfilisAirArrow::StartSpawn()
     m_Step = 1;
     m_AccTime = 0.f;
 
+    // reset
     GetOwner()->SetActive(true);
+    Transform()->SetLocalRotation(Vec3());
+    Rigidbody()->SetVelocity(Vec3());
     Rigidbody()->SetKinematic(true);
 
     // Position
@@ -87,36 +96,68 @@ void CElfilisAirArrow::StartAim()
 {
     m_Step = 4;
     m_AccTime = 0.f;
-
-    Rigidbody()->SetKinematic(false);
 }
 
 void CElfilisAirArrow::StartAttack()
 {
     m_Step = 5;
     m_AccTime = 0.f;
+
     m_bGround = false;
-
-    // Move
-    Rigidbody()->SetUseGravity(true);
-    Rigidbody()->AddForce(m_ReadyDir * 800.f, ForceMode::Impulse);
-
-    // ==============
-    AttackStartPos = Transform()->GetWorldPos();
-    TargetPos = m_Target->Transform()->GetWorldPos();
-    AttackDir = (TargetPos - AttackStartPos).Normalize();
-    AttackFrontDir = (TargetPos - AttackStartPos);
-    AttackFrontDir.y = 0.f;
-    AttackFrontDir.Normalize();
-    DirLock = false;
+    m_TargetDist = (m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Length();
 }
 
 void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5)
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5 && !m_bGround)
     {
-        Rigidbody()->SetVelocity(Vec3());
         m_bGround = true;
+        m_AccTime = 0.f;
+
+        // spawn effect
+        if (m_CollisionEffect != nullptr)
+        {
+            CGameObject* Effect = m_CollisionEffect->Instantiate();
+            Vec3 InitPos = Transform()->GetWorldPos();
+            InitPos.y -= 40.f;
+            Effect->Transform()->SetWorldPos(InitPos);
+
+            CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();
+            if (Script)
+            {
+                Script->SetPlayTime(0.5f);
+                Script->AddEffect(MomentaryEffectType::AppearScaling);
+            }
+
+            GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
+        }
+    }
+}
+
+void CElfilisAirArrow::OnCollisionStay(CCollider* _OtherCollider)
+{
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5 && !m_bGround)
+    {
+        m_bGround = true;
+        m_AccTime = 0.f;
+
+        // spawn effect
+        if (m_CollisionEffect != nullptr)
+        {
+            CGameObject* Effect = m_CollisionEffect->Instantiate();
+            Vec3 InitPos = Transform()->GetWorldPos();
+            InitPos.y -= 40.f;
+            Effect->Transform()->SetWorldPos(InitPos);
+
+            CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();
+            if (Script)
+            {
+                Script->SetPlayTime(0.5f);
+                Script->AddEffect(MomentaryEffectType::AppearScaling);
+            }
+
+            GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
+        }
     }
 }
 
@@ -180,7 +221,7 @@ void CElfilisAirArrow::Spawn()
 
 void CElfilisAirArrow::Ready()
 {
-    static float ReadyTime = 1.f;
+    static float ReadyTime = 0.5f;
 
     if (m_AccTime <= ReadyTime)
     {
@@ -228,7 +269,7 @@ void CElfilisAirArrow::Aim()
         Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
         float t = m_AccTime / RotTime;
 
-        Rotation.y += XMConvertToRadians(360.f) * t;
+        Rotation.y += XMConvertToRadians(180.f) * t;
 
         GetOwner()->Transform()->SetLocalRotation(Rotation);
     }
@@ -242,47 +283,67 @@ void CElfilisAirArrow::Attack()
 {
     if (!m_bGround)
     {
-        // Vec3 directionToTarget = (m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
-        // Vec3 currentDirection = Rigidbody()->GetVelocity().Normalize();
+        static float DetectRange = 200.f;
+        Vec3 CurTargetDiff = m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        float Diff = CurTargetDiff.Length();
 
-        // static float MaxDiff = 25.f;
-        // float Diff = (directionToTarget - currentDirection).Length();
-        // float t = min(Diff, MaxDiff) / MaxDiff;
-        // Vec3 NewDir = directionToTarget * (1.f - t) + currentDirection * t;
-        // Rigidbody()->SetVelocity(NewDir.Normalize() * 60.f);
-
-        //// velocity alignment
-        // Vec3 Right = m_InitDir[(UINT)DIR_TYPE::RIGHT];
-        // Vec3 Down = NewDir;
-        // Vec3 Front = Down.Cross(Right);
-        // Front.Normalize();
-
-        // Transform()->Slerp(Front, DT);
-
-        // =================
-        if (!DirLock)
+        // 추적 : 일정 거리 이상 떨어져있다면 추적
+        if (Diff >= DetectRange)
         {
-            Vec3 UpLookAt = (m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
-            Vec3 FrontLookAt = m_InitDir[(UINT)DIR_TYPE::RIGHT].Cross(UpLookAt);
-            Transform()->Slerp(FrontLookAt, DT);
+            static float StartTime = 0.5f;
+            Vec3 PrevPos = Transform()->GetWorldPos();
 
-            Vec3 CurLookAt = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            if (CurLookAt.Dot(FrontLookAt) >= 0.9f)
+            // ~1.f : 현재 UpVector 방향으로 진행
+            if (m_AccTime <= StartTime)
             {
-                DirLock = true;
-                Rigidbody()->AddForce(UpLookAt * 60.f, ForceMode::VelocityChange);
+                float Ratio = m_AccTime / StartTime;
+                m_AttackSpeed = 30.f * sinf(Ratio * XM_PI / 2.f);
+
+                Vec3 MoveDir = m_ReadyDir * m_AttackSpeed;
+                Transform()->SetWorldPos(Transform()->GetWorldPos() + MoveDir);
             }
-        }
-        else
-        {
-            int a = 0;
+
+            // 1.f ~ : 타겟방향으로 위치 lerp
+            else
+            {
+                m_AttackSpeed += 500.f * DT;
+                float t = m_AttackSpeed / m_TargetDist;
+
+                Vec3 CurPos = Transform()->GetWorldPos();
+                Vec3 TargetPos = m_Target->Transform()->GetWorldPos();
+                Vec3 NewPos = Vec3::Lerp(CurPos, TargetPos, t);
+                Transform()->SetWorldPos(NewPos);
+
+                // 방향회전 : 현재 타겟방향
+                Vec3 CurTargetDir = CurTargetDiff.Normalize();
+                Quaternion qua = Quaternion::LookRotation(CurTargetDir, Transform()->GetWorldDir(DIR_TYPE::FRONT));
+                Quaternion rot = Quaternion::Slerp(Transform()->GetWorldQuaternion(), qua, DT);
+                Transform()->SetWorldRotation(rot);
+            }
+
+            // 추적 범위 검사 : 일정 거리 이상 가까워졌다면 추적 종료, 현재 방향으로 계속 진행
+            Vec3 CurPos = Transform()->GetWorldPos();
+            float NewDiff = (m_Target->Transform()->GetWorldPos() - CurPos).Length();
+
+            if (NewDiff < DetectRange)
+            {
+                Vec3 CurDir = (CurPos - PrevPos).Normalize();
+                float Speed = (CurDir).Length() / DT;
+
+                Rigidbody()->SetKinematic(false);
+                Rigidbody()->SetVelocity(CurDir * Speed);
+            }
         }
     }
     else if (m_bGround)
     {
-        GamePlayStatic::DetachObject(GetOwner());
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
 
-        //@Effect : 터지는 이펙트
+        if (m_AccTime > 1.f)
+        {
+            GamePlayStatic::DetachObject(GetOwner());
+        }
     }
 }
 
