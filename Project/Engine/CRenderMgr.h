@@ -159,6 +159,7 @@ private:
     // 리소스 바인딩
     void UpdateData();
 
+public:
     // 리소스 클리어
     void Clear();
 };

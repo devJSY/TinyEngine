@@ -145,6 +145,7 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState)
 
     // Physics World 초기화를 위한 트랜스폼 정보 게산
     m_CurLevel->finaltick();
+    CRenderMgr::GetInst()->Clear(); // finaltick으로 등록된 광원 삭제
 
     if (nullptr != m_CurLevel)
         m_CurLevel->ChangeState(_StartState);
