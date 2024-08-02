@@ -4,8 +4,8 @@
 
 enum class EFFECT_TYPE
 {
-    SHAKE,
     TILT_ANGLE,
+    SHAKE,
     END,
 };
 
@@ -35,6 +35,7 @@ private:
     CamEffect                   m_Effect[(UINT)EFFECT_TYPE::END];
     float                       m_ShakeIntencity;
     Vec3                        m_ShakeFrequency;
+    float                       m_TiltFrequency;
 
     // Target
     CGameObject*                m_Target;               // 카메라가 바라봐야하는 타겟
@@ -174,6 +175,7 @@ public:
     void Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
                       float _Weight = 0.5f);
     void Shake(float _Duration, float _Frequency, float _Intencity);
+    void Tilt(float _Duration, float _Frequency);
 
 
 public:

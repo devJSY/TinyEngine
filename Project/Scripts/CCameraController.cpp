@@ -97,8 +97,8 @@ void CCameraController::begin()
     }
 
     // Effect 초기화
-    m_Effect[(UINT)EFFECT_TYPE::SHAKE] = {EFFECT_TYPE::SHAKE,false, 0.f, 0.f};
     m_Effect[(UINT)EFFECT_TYPE::TILT_ANGLE] = {EFFECT_TYPE::TILT_ANGLE,false, 0.f, 0.f};
+    m_Effect[(UINT)EFFECT_TYPE::SHAKE] = {EFFECT_TYPE::SHAKE,false, 0.f, 0.f};
 
     // 카메라 세팅
     m_Setup = CameraSetup::NORMAL;
@@ -135,6 +135,11 @@ void CCameraController::tick()
         Shake(3.f, 50.f,50.f);
     }
 
+    if (KEY_TAP(KEY::U))
+    {
+        Tilt(10.f, 1.f);
+    }
+
     EditMode();
 
     // Target이 없다면 return
@@ -166,20 +171,20 @@ void CCameraController::tick()
     // Effect 처리
     ProcessEffet();
 
-    // ========================= Eye Pos Update =========================
-    m_LookEyePos = CalCamPos(m_CurLookAtPos, m_CurLookDir, m_CurDistance);
 
+    // ========================= Eye Pos Update =========================
     // ==================== Camera Transform Update ====================
-    //Transform()->SetDirection(m_CurLookDir);
-    Transform()->SetLocalRotation(m_LookDirQuat);
+    Transform()->SetWorldRotation(m_LookDirQuat);
+    m_LookEyePos = CalCamPos(m_CurLookAtPos, m_CurLookDir, m_CurDistance);
     Transform()->SetWorldPos(m_LookEyePos);
+    //Transform()->SetDirection(m_CurLookDir);
 
 
     // @DEBUG
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 200.f, Vec3(1.f, 0.f, 0.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 200.f, Vec3(0.f, 1.f, 0.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 200.f, Vec3(0.f, 0.f, 1.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_CurLookDir, m_LookDist, Vec3(0.f, 0.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 200.f, Vec3(1.f, 0.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 200.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 200.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_CurLookDir, m_LookDist, Vec3(0.f, 0.f, 0.f), true);
 }
 
 void CCameraController::SetUpProc()
@@ -570,6 +575,7 @@ float simpleNoise(float t)
     return sin(t) * (rand() / float(RAND_MAX));
 }
 
+
 void CCameraController::ProcessEffet()
 {
     for (int i = 0; i < (UINT)EFFECT_TYPE::END; ++i)
@@ -583,6 +589,56 @@ void CCameraController::ProcessEffet()
 
         switch (CurEffet.EffetType)
         {
+        case EFFECT_TYPE::TILT_ANGLE: 
+        {
+            Transform()->SetDirection(m_CurLookDir);
+
+            float tiltDuration = 0.5f;        // 초기 회전 시간
+            float oscillationDuration = 3.0f; // 흔들림 시간
+            float returnDuration = 0.5f;      // 복귀 시간
+
+            float totalDuration = tiltDuration + oscillationDuration + returnDuration;
+
+            if (CurEffet.Acc < tiltDuration)
+            {
+                // 초기 회전 (90도)
+                float Alpha = CurEffet.Acc / tiltDuration;
+
+                m_LookDirQuat = m_LookDirQuat * Quaternion::CreateFromAxisAngle(Transform()->GetLocalDir(DIR_TYPE::FRONT).Normalize(),
+                                                                                Alpha * XMConvertToRadians(-90.0f));
+            }
+            else if (CurEffet.Acc < tiltDuration + oscillationDuration)
+            {
+
+                // 흔들림
+                float minAngle = XMConvertToRadians(-80.0f);
+                float maxAngle = XMConvertToRadians(-100.0f);
+                float centerAngle = XMConvertToRadians(-90.0f);
+                float frequency = 1.0f;
+
+                float t = (CurEffet.Acc - tiltDuration) / frequency;
+
+                // 사인파를 사용하여 각도 계산
+                float oscillationAngle = minAngle + (maxAngle - minAngle) * 0.5f * (1.0f + sinf(2.0f * XM_PI * t));
+
+                // 카메라를 회전시키는 쿼터니언 생성
+                m_LookDirQuat =
+                    m_LookDirQuat * Quaternion::CreateFromAxisAngle(Transform()->GetLocalDir(DIR_TYPE::FRONT).Normalize(), oscillationAngle);
+            }
+            else if (CurEffet.Acc < totalDuration)
+            {
+                // 원래 상태로 복귀
+                float alpha = (CurEffet.Acc - tiltDuration - oscillationDuration) / returnDuration;
+                m_LookDirQuat = m_LookDirQuat * Quaternion::CreateFromAxisAngle(Transform()->GetLocalDir(DIR_TYPE::FRONT).Normalize(),
+                                                                                (1.0f - alpha) * XMConvertToRadians(-90.0f));
+            }
+
+            Transform()->SetWorldRotation(m_LookDirQuat);
+            /*m_LookDir = QuaternionToVector(m_LookDirQuat);*/
+            //m_LookEyePos = CalCamPos(m_CurLookAtPos, Transform()->GetLocalDir(DIR_TYPE::FRONT), m_CurDistance);
+        }
+        break;
+
         case EFFECT_TYPE::SHAKE: 
         {
             m_LookDirQuat = m_LookDirQuat *
@@ -594,12 +650,7 @@ void CCameraController::ProcessEffet()
                                                 XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.z) * m_ShakeIntencity * DT));
         }
             break;
-        case EFFECT_TYPE::TILT_ANGLE:
-        {
-                // Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                // Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Right, XM_PI * DT);
-        }
-            break;
+
         default:
             break;
         }
@@ -779,6 +830,20 @@ void CCameraController::Shake(float _Duration, float _Frequency, float _Intencit
 
     m_ShakeIntencity = _Intencity;
     m_ShakeFrequency = {GetRandomfloat(10.f, _Frequency), GetRandomfloat(10.f, _Frequency), GetRandomfloat(10.f, _Frequency)};
+}
+
+void CCameraController::Tilt(float _Duration, float _Frequency)
+{
+    CamEffect& TiltEffet = m_Effect[(UINT)EFFECT_TYPE::TILT_ANGLE];
+
+    if (TiltEffet.Running && _Duration < (TiltEffet.Duration - TiltEffet.Acc))
+        return;
+
+    TiltEffet.Running = true;
+    TiltEffet.Duration = _Duration;
+    TiltEffet.Acc = 0.f;
+
+    m_TiltFrequency = _Frequency;
 }
 
 
