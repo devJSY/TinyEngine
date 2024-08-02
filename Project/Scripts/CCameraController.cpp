@@ -96,6 +96,10 @@ void CCameraController::begin()
         Camera()->SetFOV(XM_PI / 4.f);
     }
 
+    // Effect 초기화
+    m_Effect[(UINT)EFFECT_TYPE::SHAKE] = {EFFECT_TYPE::SHAKE,false, 0.f, 0.f};
+    m_Effect[(UINT)EFFECT_TYPE::TILT_ANGLE] = {EFFECT_TYPE::TILT_ANGLE,false, 0.f, 0.f};
+
     // 카메라 세팅
     m_Setup = CameraSetup::NORMAL;
 
@@ -125,6 +129,12 @@ void CCameraController::tick()
         Boss(L"TestTarget", 200.f, 0.f,0.f,0.f);
     }
 
+    // @DEBUG
+    if (KEY_TAP(KEY::Y))
+    {
+        Shake(3.f, 50.f,50.f);
+    }
+
     EditMode();
 
     // Target이 없다면 return
@@ -151,28 +161,18 @@ void CCameraController::tick()
     UpdateLookDir();
     UpdateLookDistance();
 
+    m_LookDirQuat = VectorToQuaternion(m_CurLookDir);
+
+    // Effect 처리
+    ProcessEffet();
+
     // ========================= Eye Pos Update =========================
     m_LookEyePos = CalCamPos(m_CurLookAtPos, m_CurLookDir, m_CurDistance);
 
     // ==================== Camera Transform Update ====================
     //Transform()->SetDirection(m_CurLookDir);
-    
-    Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Right, XM_PI * DT);
-
-    Quat CurLookDirQuat = VectorToQuaternion(m_CurLookDir);
-    Transform()->SetLocalRotation(CurLookDirQuat * rotation);
+    Transform()->SetLocalRotation(m_LookDirQuat);
     Transform()->SetWorldPos(m_LookEyePos);
-
-    if (KEY_PRESSED(KEY::D))
-    {
-        Quat CurQuat = Transform()->GetWorldQuaternion();
-        Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-        Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Right, XM_PI/2.f);
-        Transform()->SetWorldRotation(CurQuat * rotation);
-        //m_LookDir = Vector3::Transform(m_LookDir, rotation);
-        //m_LookDir.Normalize();
-    }
 
 
     // @DEBUG
@@ -565,8 +565,53 @@ void CCameraController::Boss()
     m_LookAtPos = Center;
 }
 
+float simpleNoise(float t)
+{
+    return sin(t) * (rand() / float(RAND_MAX));
+}
+
 void CCameraController::ProcessEffet()
 {
+    for (int i = 0; i < (UINT)EFFECT_TYPE::END; ++i)
+    {
+        CamEffect& CurEffet = m_Effect[i];
+
+        if (!CurEffet.Running)
+            continue;
+
+        CurEffet.Acc += DT;
+
+        switch (CurEffet.EffetType)
+        {
+        case EFFECT_TYPE::SHAKE: 
+        {
+            m_LookDirQuat = m_LookDirQuat *
+                            Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::RIGHT),
+                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.x) * m_ShakeIntencity * DT)) *
+                            Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::UP),
+                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.y) * m_ShakeIntencity * DT)) *
+                            Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT),
+                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.z) * m_ShakeIntencity * DT));
+        }
+            break;
+        case EFFECT_TYPE::TILT_ANGLE:
+        {
+                // Vec3 Right = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+                // Quaternion rotation = Quaternion::CreateFromAxisAngle(Vector3::Right, XM_PI * DT);
+        }
+            break;
+        default:
+            break;
+        }
+
+        if (CurEffet.Acc > CurEffet.Duration)
+        {
+            CurEffet.Running = false;
+            CurEffet.Acc = 0.f;
+            CurEffet.Duration = 0.f;
+        }
+    }
+
 }
 
 
@@ -719,6 +764,21 @@ void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, floa
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 80.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
+}
+
+void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)
+{
+    CamEffect& ShakeEffet = m_Effect[(UINT)EFFECT_TYPE::SHAKE];
+
+    if (ShakeEffet.Running && _Duration < (ShakeEffet.Duration - ShakeEffet.Acc))
+        return;
+
+    ShakeEffet.Running = true;
+    ShakeEffet.Duration = _Duration;
+    ShakeEffet.Acc = 0.f;
+
+    m_ShakeIntencity = _Intencity;
+    m_ShakeFrequency = {GetRandomfloat(10.f, _Frequency), GetRandomfloat(10.f, _Frequency), GetRandomfloat(10.f, _Frequency)};
 }
 
 

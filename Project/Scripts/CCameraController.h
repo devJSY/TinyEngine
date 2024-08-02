@@ -6,14 +6,16 @@ enum class EFFECT_TYPE
 {
     SHAKE,
     TILT_ANGLE,
+    END,
 };
 
 struct CamEffect
 {
     EFFECT_TYPE EffetType;
 
-    float m_Acc;
-    float m_Duration;
+    bool Running;
+    float Acc;
+    float Duration;
 };
 
 enum class CameraSetup
@@ -29,12 +31,15 @@ class CCameraController : public CScript
 private:
     CameraSetup                 m_Setup;             // 현재 카메라의 Setup
 
-    vector<CamEffect>           m_Effet;
+    // Effect
+    CamEffect                   m_Effect[(UINT)EFFECT_TYPE::END];
+    float                       m_ShakeIntencity;
+    Vec3                        m_ShakeFrequency;
 
     // Target
     CGameObject*                m_Target;               // 카메라가 바라봐야하는 타겟
     Vec3                        m_TargetPos;            // 현재 프레임에서 타겟의 위치
-    Vec3                        m_TargetOffset;     // 타겟으로부터의 오프셋
+    Vec3                        m_TargetOffset;         // 타겟으로부터의 오프셋
 
     CGameObject*                m_SubTarget;            // SubTarget
     Vec3                        m_SubTargetPos;         // SubTarget의 위치
@@ -46,6 +51,7 @@ private:
     Vec3                        m_LookEyePos;           // 카메라가 있어야 하는 위치
     Vec3                        m_LookAtPos;            // 카메라가 바라봐야하는 위치
     Vec3                        m_LookDir;              // 카메라가 바라보는 각도
+    Quat                        m_LookDirQuat;
     float                       m_LookDist;             // 카메라와 타겟 사이의 거리
 
     float                       m_MinSpeed;             // 카메라의 최소 스피드
@@ -53,7 +59,6 @@ private:
     float                       m_ThresholdDistance;    // 카메라가 최대 스피드로 이동하기 위한 임계 거리
 
     float                       m_RotationSpeed;        // 회전 속도
-
 
     float                       m_ZoomMinSpeed;         // Zoom 최소 속도
     float                       m_ZoomMaxSpeed;         // Zoom 최대 속도
@@ -168,6 +173,7 @@ public:
                       float _Weight = 0.5f);
     void Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
                       float _Weight = 0.5f);
+    void Shake(float _Duration, float _Frequency, float _Intencity);
 
 
 public:
