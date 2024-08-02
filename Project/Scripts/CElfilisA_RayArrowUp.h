@@ -1,12 +1,15 @@
 #pragma once
 #include "CBossState.h"
-class CElfilisArrowSetScript;
+class CElfilisAirArrow;
 
 class CElfilisA_RayArrowUp : public CBossState
 {
 private:
     CGameObject* m_Arrow[7];
-    CElfilisArrowSetScript* m_ArrowScript[7];
+    CElfilisAirArrow* m_ArrowScript[7];
+    float m_AccTime;
+    bool m_bSpawnFinished[7];
+    bool m_bReadyFinished;
 
 public:
     virtual void tick() override;

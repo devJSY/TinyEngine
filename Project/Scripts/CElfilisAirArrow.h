@@ -10,10 +10,10 @@ enum class ArrowType
 class CElfilisAirArrow : public CScript
 {
 private:
+    CGameObject* m_Target;
     Vec3 m_InitPos;
-    Vec3 m_InitFront;
-    Vec3 m_ReadyRot;
-    Vec3 m_OriginScale;
+    Vec3 m_InitDir[3];
+    Vec3 m_ReadyDir;
     ArrowType m_Type;
     UINT m_Step;
     int m_ArrowIdx;
@@ -28,8 +28,11 @@ public:
     void StartAim();
 
 public:
+    bool IsSpawnFinished() { return m_Step != 1; }
+
+    void SetTarget(CGameObject* _Target) { m_Target = _Target; }
     void SetInitPos(Vec3 _Pos) { m_InitPos = _Pos; }
-    void SetInitFrot(Vec3 _Front) { m_InitFront = _Front; }
+    void SetInitDir(Vec3 _Front, Vec3 _Up, Vec3 _Right);
     void SetType(ArrowType _Type) { m_Type = _Type; }
     void SetArrowIdx(int _Idx) { m_ArrowIdx = _Idx; }
 

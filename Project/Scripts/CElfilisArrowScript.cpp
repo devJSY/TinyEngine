@@ -70,7 +70,7 @@ void CElfilisArrowScript::Ready()
 
         if (Rotation.z > 0.1f)
         {
-            // Slerp
+            // Slerp (Z-axis)
             float _t = DT * RotSpeed;
             Vec3 _TowardDir = Vec3();
 
