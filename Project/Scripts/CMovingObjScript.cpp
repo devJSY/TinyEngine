@@ -89,6 +89,7 @@ void CMovingObjScript::Move()
 
 void CMovingObjScript::Stop()
 {
+    Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 }
 
 void CMovingObjScript::OnTriggerEnter(CCollider* _OtherCollider)
@@ -104,8 +105,8 @@ void CMovingObjScript::OnTriggerEnter(CCollider* _OtherCollider)
 void CMovingObjScript::OnTriggerExit(CCollider* _OtherCollider)
 {
     CGameObject* Obj = _OtherCollider->GetOwner();
-    //if (L"Body Collider" == Obj->GetName())
-        //GetOwner()->GetChildObject(L"Main Player")->DisconnectWithParent();
+    // if (L"Body Collider" == Obj->GetName())
+    // GetOwner()->GetChildObject(L"Main Player")->DisconnectWithParent();
 }
 
 UINT CMovingObjScript::SaveToLevelFile(FILE* _File)

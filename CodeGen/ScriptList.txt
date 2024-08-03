@@ -54,5 +54,5 @@ CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
 CMovingObjScript
-CDisappearObjScript
+CCrumbleScript
 CMovingObjTriggerScript

@@ -1,23 +1,24 @@
 #pragma once
 #include <Engine\CScript.h>
 
-enum class DisappearObjectState
+enum class CrumbleState
 {
     Wait,
+    DisppearWaitTime,
     PreDisappear,
     Disapper,
     Appear,
     End,
 };
 
-class CDisappearObjScript : public CScript
+class CCrumbleScript : public CScript
 {
 private:
     CGameObject* m_pPlayer;
-    DisappearObjectState m_eState;
+    CrumbleState m_eState;
+
+    float m_fWaitTime;
     float m_fAccTime;
-    float m_fBreakTime;
-    float m_fCreateTime;
 
 public:
     virtual void begin() override;
@@ -27,11 +28,11 @@ private:
     void PreDisappear();
     void Disappear();
     void Appear();
-
+    
 private:
-    void ChangeState(DisappearObjectState _state);
-    void EnterState(DisappearObjectState _state);
-    void ExitState(DisappearObjectState _state);
+    void ChangeState(CrumbleState _state);
+    void EnterState(CrumbleState _state);
+    void ExitState(CrumbleState _state);
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
@@ -40,10 +41,10 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CDisappearObjScript);
+    CLONE(CCrumbleScript);
 
 public:
-    CDisappearObjScript();
-    CDisappearObjScript(const CDisappearObjScript& Origin);
-    virtual ~CDisappearObjScript();
+    CCrumbleScript();
+    CCrumbleScript(const CCrumbleScript& Origin);
+    virtual ~CCrumbleScript();
 };

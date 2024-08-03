@@ -57,7 +57,7 @@
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
 #include "CMovingObjScript.h"
-#include "CDisappearObjScript.h"
+#include "CCrumbleScript.h"
 #include "CMovingObjTriggerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -118,7 +118,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
 	_vec.push_back(L"CMovingObjScript");
-	_vec.push_back(L"CDisappearObjScript");
+	_vec.push_back(L"CCrumbleScript");
 	_vec.push_back(L"CMovingObjTriggerScript");
 }
 
@@ -236,8 +236,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTwoTargetCamTrigger;
 	if (L"CMovingObjScript" == _strScriptName)
 		return new CMovingObjScript;
-	if (L"CDisappearObjScript" == _strScriptName)
-		return new CDisappearObjScript;
+	if (L"CCrumbleScript" == _strScriptName)
+		return new CCrumbleScript;
 	if (L"CMovingObjTriggerScript" == _strScriptName)
 		return new CMovingObjTriggerScript;
 	return nullptr;
@@ -359,8 +359,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CTwoTargetCamTrigger;
 	case (UINT)SCRIPT_TYPE::MOVINGOBJSCRIPT:
 		return new CMovingObjScript;
-	case (UINT)SCRIPT_TYPE::DISAPPEAROBJSCRIPT:
-		return new CDisappearObjScript;
+	case (UINT)SCRIPT_TYPE::CRUMBLESCRIPT:
+		return new CCrumbleScript;
 	case (UINT)SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
 		return new CMovingObjTriggerScript;
 	}
@@ -483,8 +483,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CTwoTargetCamTrigger";
 	case SCRIPT_TYPE::MOVINGOBJSCRIPT:
 		return L"CMovingObjScript";
-	case SCRIPT_TYPE::DISAPPEAROBJSCRIPT:
-		return L"CDisappearObjScript";
+	case SCRIPT_TYPE::CRUMBLESCRIPT:
+		return L"CCrumbleScript";
 	case SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
 		return L"CMovingObjTriggerScript";
 	}
