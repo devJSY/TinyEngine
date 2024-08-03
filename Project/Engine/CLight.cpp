@@ -134,10 +134,10 @@ void CLight::SetLightType(LIGHT_TYPE _type)
 
     m_pLightCam->Camera()->LayerMaskAll();
     m_pLightCam->Camera()->LayerMask(CLevelMgr::GetInst()->GetCurrentLevel(), L"UI", false);
-    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(90.f));
+    m_pLightCam->Camera()->SetFOV(XMConvertToRadians(120.f));
     m_pLightCam->Camera()->SetScale(1.f);
-    m_pLightCam->Camera()->SetNear(0.1f);
-    m_pLightCam->Camera()->SetFar(10000.f);
+    m_pLightCam->Camera()->SetNear(1.f);
+    m_pLightCam->Camera()->SetFar(3000.f);
     m_pLightCam->Camera()->Resize(Vec2(m_DepthMapTex->GetWidth(), m_DepthMapTex->GetHeight()));
 
     // Mesh Render ¼³Á¤

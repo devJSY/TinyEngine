@@ -80,8 +80,8 @@ float SchlickGGX(float NdotI, float NdotO, float roughness)
     return SchlickG1(NdotI, k) * SchlickG1(NdotO, k);
 }
 
-#define LIGHT_NEAR_PLANE 0.1f
-#define LIGHT_FRUSTUM_WIDTH 0.2f // Near 0.1f Far 10000.f FOV 90° 기준 
+#define LIGHT_NEAR_PLANE 1.f
+#define LIGHT_FRUSTUM_WIDTH 3.4641f // Near 0.1f Far 3000.f FOV 120° 기준 
 #define LIGHT_TEXTURE_WIDTH 4096.f
 
 // NdcDepthToViewDepth
@@ -201,9 +201,10 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
         lightTexcoord += 1.0;
         lightTexcoord *= 0.5;
         
-        // PCSS
-        float bias = 0.001f;
+        // Shadow Acne 방지 bias 설정
+        float bias = max(1e-3f * (1.f - dot(normalWorld, light.vWorldDir)), 1e-4f);
         
+        // PCSS
         if (0 == light.ShadowIndex) // Dynamic Shadow
         {
             if (light.LightType == LIGHT_DIRECTIONAL)
