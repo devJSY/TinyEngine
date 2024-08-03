@@ -349,29 +349,46 @@ void CRenderMgr::render_postprocess_HDRI()
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
 
+        // Bloom Down
+        Ptr<CMaterial> pBloomDownMtrl = m_BloomDownObj->MeshRender()->GetMaterial(0);
         for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             if (i == 0)
-                m_BloomDownObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
+            {
+                pBloomDownMtrl->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
+                pBloomDownMtrl->SetScalarParam(FLOAT_0, 1.f / m_PostProcessTex_HDRI->GetWidth());
+                pBloomDownMtrl->SetScalarParam(FLOAT_1, 1.f / m_PostProcessTex_HDRI->GetHeight());
+            }
             else
-                m_BloomDownObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
+            {
+                pBloomDownMtrl->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
+                pBloomDownMtrl->SetScalarParam(FLOAT_0, 1.f / m_BloomTextures_HDRI[i - 1]->GetWidth());
+                pBloomDownMtrl->SetScalarParam(FLOAT_1, 1.f / m_BloomTextures_HDRI[i - 1]->GetHeight());
+            }
 
             CDevice::GetInst()->SetViewport((float)m_BloomTextures_HDRI[i]->GetWidth(), (float)m_BloomTextures_HDRI[i]->GetHeight());
             CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[i]->GetRTV().GetAddressOf(), NULL);
             m_BloomDownObj->render();
             CTexture::Clear(0);
         }
+
+        // Bloom Up
+        Ptr<CMaterial> pBloomUpMtrl = m_BloomUpObj->MeshRender()->GetMaterial(0);
         for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             int level = m_bloomLevels - 2 - i;
-            m_BloomUpObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
+            pBloomUpMtrl->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
             if (i == m_bloomLevels - 2)
             {
+                pBloomUpMtrl->SetScalarParam(FLOAT_0, 1.f / m_PostProcessTex_HDRI->GetWidth());
+                pBloomUpMtrl->SetScalarParam(FLOAT_1, 1.f / m_PostProcessTex_HDRI->GetHeight());
                 CDevice::GetInst()->SetViewport((float)m_PostProcessTex_HDRI->GetWidth(), (float)m_PostProcessTex_HDRI->GetHeight());
                 CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
             }
             else
             {
+                pBloomUpMtrl->SetScalarParam(FLOAT_0, 1.f / m_BloomTextures_HDRI[level]->GetWidth());
+                pBloomUpMtrl->SetScalarParam(FLOAT_1, 1.f / m_BloomTextures_HDRI[level]->GetHeight());
                 CDevice::GetInst()->SetViewport((float)m_BloomTextures_HDRI[level - 1]->GetWidth(),
                                                 (float)m_BloomTextures_HDRI[level - 1]->GetHeight());
                 CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[level - 1]->GetRTV().GetAddressOf(), NULL);
@@ -583,7 +600,7 @@ void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel)
         _BlurLevel = m_bloomLevels;
 
     // 첫 샘플링만 Threshold 적용
-    Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
+    static Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
     float Threshold = pSamplingMtrl->GetMtrlConst().arrFloat[0];
 
     // Down Sampling

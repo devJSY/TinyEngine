@@ -1,11 +1,11 @@
 #include "global.hlsli"
 #include "struct.hlsli"
 
+#define dx g_float_0 
+#define dy g_float_1 
+
 float4 main(PS_IN input) : SV_TARGET
-{    
-    float dx = 1.f / g_RenderResolution.x;
-    float dy = 1.f / g_RenderResolution.y;
-    
+{
     float x = input.vUV0.x;
     float y = input.vUV0.y;
 
@@ -16,22 +16,22 @@ float4 main(PS_IN input) : SV_TARGET
     // - l - m -
     // g - h - i
     // === ('e' is the current texel) ===
-    float3 a = g_tex_0.Sample(g_LinearWrapSampler, float2(x - 2 * dx, y + 2 * dy)).rgb;
-    float3 b = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y + 2 * dy)).rgb;
-    float3 c = g_tex_0.Sample(g_LinearWrapSampler, float2(x + 2 * dx, y + 2 * dy)).rgb;
+    float3 a = g_tex_0.Sample(g_LinearClampSampler, float2(x - 2 * dx, y + 2 * dy)).rgb;
+    float3 b = g_tex_0.Sample(g_LinearClampSampler, float2(x, y + 2 * dy)).rgb;
+    float3 c = g_tex_0.Sample(g_LinearClampSampler, float2(x + 2 * dx, y + 2 * dy)).rgb;
     
-    float3 d = g_tex_0.Sample(g_LinearWrapSampler, float2(x - 2 * dx, y)).rgb;
-    float3 e = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y)).rgb;
-    float3 f = g_tex_0.Sample(g_LinearWrapSampler, float2(x + 2 * dx, y)).rgb;
+    float3 d = g_tex_0.Sample(g_LinearClampSampler, float2(x - 2 * dx, y)).rgb;
+    float3 e = g_tex_0.Sample(g_LinearClampSampler, float2(x, y)).rgb;
+    float3 f = g_tex_0.Sample(g_LinearClampSampler, float2(x + 2 * dx, y)).rgb;
     
-    float3 g = g_tex_0.Sample(g_LinearWrapSampler, float2(x - 2 * dx, y - 2 * dy)).rgb;
-    float3 h = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y - 2 * dy)).rgb;
-    float3 i = g_tex_0.Sample(g_LinearWrapSampler, float2(x + 2 * dx, y - 2 * dy)).rgb;
+    float3 g = g_tex_0.Sample(g_LinearClampSampler, float2(x - 2 * dx, y - 2 * dy)).rgb;
+    float3 h = g_tex_0.Sample(g_LinearClampSampler, float2(x, y - 2 * dy)).rgb;
+    float3 i = g_tex_0.Sample(g_LinearClampSampler, float2(x + 2 * dx, y - 2 * dy)).rgb;
     
-    float3 j = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y + dy)).rgb;
-    float3 k = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y + dy)).rgb;
-    float3 l = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y - dy)).rgb;
-    float3 m = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y - dy)).rgb;
+    float3 j = g_tex_0.Sample(g_LinearClampSampler, float2(x - dx, y + dy)).rgb;
+    float3 k = g_tex_0.Sample(g_LinearClampSampler, float2(x - dx, y + dy)).rgb;
+    float3 l = g_tex_0.Sample(g_LinearClampSampler, float2(x - dx, y - dy)).rgb;
+    float3 m = g_tex_0.Sample(g_LinearClampSampler, float2(x + dx, y - dy)).rgb;
 
     // Apply weighted distribution:
     // 0.5 + 0.125 + 0.125 + 0.125 + 0.125 = 1
@@ -50,6 +50,6 @@ float4 main(PS_IN input) : SV_TARGET
     downsample += (a + c + g + i) * 0.03125;
     downsample += (b + d + f + h) * 0.0625;
     downsample += (j + k + l + m) * 0.125;
-    
-    return float4(downsample, 1.0f);
+        
+    return float4(downsample, 1.f);
 }

@@ -58,12 +58,12 @@ float4 main(PS_IN input) : SV_TARGET
     
     if (g_btex_0)
     {
-        color0 = g_tex_0.Sample(g_LinearWrapSampler, input.vUV0).rgb;
+        color0 = g_tex_0.Sample(g_LinearClampSampler, input.vUV0).rgb;
     }
   
     if (g_btex_1)
     {
-        color1 = g_tex_1.Sample(g_LinearWrapSampler, input.vUV0).rgb;
+        color1 = g_tex_1.Sample(g_LinearClampSampler, input.vUV0).rgb;
     }
     
     float3 combined = (1.0 - Strength) * color0 + Strength * color1;
