@@ -33,7 +33,8 @@ CElfilisA_RayArrowUp::~CElfilisA_RayArrowUp()
 {
     for (int i = 0; i < 7; ++i)
     {
-        if (m_Arrow[i] && m_Arrow[i]->GetLayerIdx() == -1)
+        //if (m_Arrow[i] && m_Arrow[i]->GetLayerIdx() == -1)
+        if (m_Arrow[i])
         {
             delete m_Arrow[i];
         }
@@ -226,7 +227,7 @@ void CElfilisA_RayArrowUp::End()
 
         if (NextState == ELFFSM->GetCurStateGroup())
         {
-            // ELFFSM->RepeatState(L"AIR_ATKS_RAYARROW_DOWN");
+            ELFFSM->RepeatState();
         }
         else
         {

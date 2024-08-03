@@ -224,10 +224,27 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     case ElfilisStateGroup::AirMove: {
         //@TODO 전이 확인 후 복구
         return ElfilisStateGroup::AirIdle;
-        return ElfilisStateGroup::AirSmallAtk;
+
+        if (m_Phase == 1)
+        {
+            return ElfilisStateGroup::AirSmallAtk1;
+        }
+        else
+        {
+            float Rand = GetRandomfloat(1, 100);
+
+            if (Rand <= 50.f)
+            {
+                return ElfilisStateGroup::AirSmallAtk1;
+            }
+            else
+            {
+                return ElfilisStateGroup::AirSmallAtk2;
+            }
+        }
     }
     break;
-    case ElfilisStateGroup::AirSmallAtk: {
+    case ElfilisStateGroup::AirSmallAtk1: {
         // case : 이미 같은 공격을 2번 반복한 이후
         if (m_bAttackRepeat)
         {
@@ -255,6 +272,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
         }
     }
     break;
+    case ElfilisStateGroup::AirSmallAtk2:
     case ElfilisStateGroup::AirBigAtk: {
         //@TODO 전이 확인 후 복구
         return ElfilisStateGroup::AirIdle;
@@ -302,6 +320,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_MoveR.h"
 #include "CElfilisA_RayArrowUp.h"
 //#include "CElfilisA_RayArrowDown.h"
+#include "CElfilisA_DimensionLaser.h"
 void CElfilisFSM::begin()
 {
     float ScaleFactor = Transform()->GetLocalScale().x;
@@ -320,8 +339,9 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::AirIdle, L"AIR_IDLE", new CElfilisA_Idle);
     AddGroupPublicState(ElfilisStateGroup::AirMove, L"AIR_MOVE_L", new CElfilisA_MoveL);
     AddGroupPublicState(ElfilisStateGroup::AirMove, L"AIR_MOVE_R", new CElfilisA_MoveR);
-    AddGroupPublicState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_UP", new CElfilisA_RayArrowUp);
+    AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP", new CElfilisA_RayArrowUp);
     //AddGroupPublicState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_DOWN", new CElfilisA_RayArrowDown);
+    AddGroupPublicState(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER", new CElfilisA_DimensionLaser);
 
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
@@ -400,7 +420,8 @@ void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)
     break;
     case ElfilisStateGroup::AirIdle:
     case ElfilisStateGroup::AirMove:
-    case ElfilisStateGroup::AirSmallAtk:
+    case ElfilisStateGroup::AirSmallAtk1:
+    case ElfilisStateGroup::AirSmallAtk2:
     case ElfilisStateGroup::AirBigAtk:
         ClearComboLevel();
         m_bAttackRepeat = false;

@@ -78,6 +78,7 @@ enum class StateStep
 {
     Ready,
     ReadyWait,
+    Charge,
     Start,
     StartEnd,
     Progress,

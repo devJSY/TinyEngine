@@ -56,3 +56,5 @@ CElfilisArrowScript
 CElfilisSwordSlashScript
 CElfilisStormScript
 CElfilisAirArrow
+CElfilisDimensionLaser
+CElfilisLaser

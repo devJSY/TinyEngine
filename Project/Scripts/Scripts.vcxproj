@@ -125,6 +125,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisAirArrow.h" />
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
+    <ClInclude Include="CElfilisA_DimensionLaser.h" />
     <ClInclude Include="CElfilisA_MoveL.h" />
     <ClInclude Include="CElfilisA_MoveR.h" />
     <ClInclude Include="CElfilisA_RayArrowDown.h">
@@ -132,6 +133,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="CElfilisA_RayArrowUp.h" />
+    <ClInclude Include="CElfilisDimensionLaser.h" />
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CElfilisG_DimensionSpike.h">
@@ -154,6 +156,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisG_SwordWaveLR.h" />
     <ClInclude Include="CElfilisG_SwordWaveRL.h" />
     <ClInclude Include="CElfilisG_Teleport.h" />
+    <ClInclude Include="CElfilisLaser.h" />
     <ClInclude Include="CElfilisStormScript.h" />
     <ClInclude Include="CElfilisSwordSlashScript.h" />
     <ClInclude Include="CElfilisUnit.h" />
@@ -328,6 +331,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisAirArrow.cpp" />
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />
+    <ClCompile Include="CElfilisA_DimensionLaser.cpp" />
     <ClCompile Include="CElfilisA_MoveL.cpp" />
     <ClCompile Include="CElfilisA_MoveR.cpp" />
     <ClCompile Include="CElfilisA_RayArrowDown.cpp">
@@ -335,6 +339,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="CElfilisA_RayArrowUp.cpp" />
+    <ClCompile Include="CElfilisDimensionLaser.cpp" />
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CElfilisG_DimensionSpike.cpp">
@@ -357,6 +362,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisG_SwordWaveLR.cpp" />
     <ClCompile Include="CElfilisG_SwordWaveRL.cpp" />
     <ClCompile Include="CElfilisG_Teleport.cpp" />
+    <ClCompile Include="CElfilisLaser.cpp" />
     <ClCompile Include="CElfilisStormScript.cpp" />
     <ClCompile Include="CElfilisSwordSlashScript.cpp" />
     <ClCompile Include="CElfilisUnit.cpp" />

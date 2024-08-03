@@ -59,6 +59,8 @@
 #include "CElfilisSwordSlashScript.h"
 #include "CElfilisStormScript.h"
 #include "CElfilisAirArrow.h"
+#include "CElfilisDimensionLaser.h"
+#include "CElfilisLaser.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -120,6 +122,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisSwordSlashScript");
 	_vec.push_back(L"CElfilisStormScript");
 	_vec.push_back(L"CElfilisAirArrow");
+	_vec.push_back(L"CElfilisDimensionLaser");
+	_vec.push_back(L"CElfilisLaser");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -240,6 +244,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisStormScript;
 	if (L"CElfilisAirArrow" == _strScriptName)
 		return new CElfilisAirArrow;
+	if (L"CElfilisDimensionLaser" == _strScriptName)
+		return new CElfilisDimensionLaser;
+	if (L"CElfilisLaser" == _strScriptName)
+		return new CElfilisLaser;
 	return nullptr;
 }
 
@@ -363,6 +371,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisStormScript;
 	case (UINT)SCRIPT_TYPE::ELFILISAIRARROW:
 		return new CElfilisAirArrow;
+	case (UINT)SCRIPT_TYPE::ELFILISDIMENSIONLASER:
+		return new CElfilisDimensionLaser;
+	case (UINT)SCRIPT_TYPE::ELFILISLASER:
+		return new CElfilisLaser;
 	}
 	return nullptr;
 }
@@ -487,6 +499,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisStormScript";
 	case SCRIPT_TYPE::ELFILISAIRARROW:
 		return L"CElfilisAirArrow";
+	case SCRIPT_TYPE::ELFILISDIMENSIONLASER:
+		return L"CElfilisDimensionLaser";
+	case SCRIPT_TYPE::ELFILISLASER:
+		return L"CElfilisLaser";
 	}
 	return nullptr;
 }

@@ -40,7 +40,8 @@ enum class ElfilisStateGroup
 
     AirIdle,
     AirMove,
-    AirSmallAtk,
+    AirSmallAtk1,
+    AirSmallAtk2,
     AirBigAtk,
     AirToGround,
 
