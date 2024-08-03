@@ -1,14 +1,17 @@
 #include "global.hlsli"
 #include "struct.hlsli"
 
-#define dx g_float_0 
-#define dy g_float_1 
+#define TextureWidth g_float_0 
+#define TextureHeight g_float_1 
 
 float4 main(PS_IN input) : SV_TARGET
 {
     float x = input.vUV0.x;
     float y = input.vUV0.y;
-
+    
+    float dx = 1.f / TextureWidth;
+    float dy = 1.f / TextureHeight;
+    
     // Take 13 samples around current texel:
     // a - b - c
     // - j - k -
