@@ -519,15 +519,18 @@ void CRenderMgr::UpdateData()
     static vector<tLightInfo> vecLightInfo;
 
     bool bRegisteredDynamicShadow = false;
+    LEVEL_STATE LevelState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+
     // Dynamic Shadow Setup
     for (UINT i = 0; i < m_vecLight.size(); ++i)
     {
-        // 정적 광원 이외의 그림자 인덱스 초기화
-        if (0 >= m_vecLight[i]->GetShadowIdx())
+        // 정지 상태인 경우 모든 광원 Shadow Index 초기화
+        if (LevelState == LEVEL_STATE::STOP)
         {
             m_vecLight[i]->SetShadowIdx(-1);
         }
 
+        // 동적 광원 Shadow Index 설정
         if (!bRegisteredDynamicShadow && MOBILITY_TYPE::MOVABLE == m_vecLight[i]->Transform()->GetMobilityType())
         {
             m_vecLight[i]->SetShadowIdx(0);
