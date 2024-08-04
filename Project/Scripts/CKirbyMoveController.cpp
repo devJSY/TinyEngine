@@ -170,10 +170,12 @@ void CKirbyMoveController::Input()
         m_Input = Vector3::Zero;
     }
 
+    m_InputWorld = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
+    m_InputWorld.Normalize();
+
     if (!m_bMoveLock)
     {
-        m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
-        m_MoveDir.Normalize();
+        m_MoveDir = m_InputWorld;
     }
 }
 

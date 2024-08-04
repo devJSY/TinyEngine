@@ -210,6 +210,11 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyDropObject.h"
 #include "CKirbyStageClear.h"
 
+#include "CKirbyLongDiveStart.h"
+#include "CKirbyLongDive.h"
+#include "CKirbyLongDiveLanding.h"
+#include "CKirbyLongDiveBound.h"
+
 void CKirbyFSM::begin()
 {
     // State Init
@@ -311,7 +316,10 @@ void CKirbyFSM::begin()
 
     AddState(L"STAGE_CLEAR", new CKirbyStageClear);
 
-
+    AddState(L"LONGDIVE_START", new CKirbyLongDiveStart);
+    AddState(L"LONGDIVE", new CKirbyLongDive);
+    AddState(L"LONGDIVE_LANDING", new CKirbyLongDiveLanding);
+    AddState(L"LONGDIVE_BOUND", new CKirbyLongDiveBound);
 
 
     ChangeState(L"IDLE");

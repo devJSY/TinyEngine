@@ -26,6 +26,7 @@ class CKirbyMoveController : public CScript
 private:
     // ют╥б
     Vec3                        m_Input;
+    Vec3                        m_InputWorld;
     bool                        m_bGround;
     bool                        m_bJump;
     bool                        m_bActiveFriction;
@@ -97,6 +98,7 @@ public:
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
 
     Vec3 GetInput() const { return m_Input; }
+    Vec3 GetInputWorld() const { return m_InputWorld; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     Vec3 GetVelocity() const { return m_MoveVelocity; }
     float GetSpeed() const { return m_Speed; }

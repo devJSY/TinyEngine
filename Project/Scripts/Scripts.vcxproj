@@ -126,6 +126,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
     <ClInclude Include="CKirbyIdleStart.h" />
+    <ClInclude Include="CKirbyLongDive.h" />
+    <ClInclude Include="CKirbyLongDiveBound.h" />
+    <ClInclude Include="CKirbyLongDiveLanding.h" />
+    <ClInclude Include="CKirbyLongDiveStart.h" />
     <ClInclude Include="CKirbyObject_VendingMachine.h" />
     <ClInclude Include="CKirbyStageClear.h" />
     <ClInclude Include="CKirbyWeaponHitbox.h" />
@@ -278,6 +282,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
     <ClCompile Include="CKirbyIdleStart.cpp" />
+    <ClCompile Include="CKirbyLongDive.cpp" />
+    <ClCompile Include="CKirbyLongDiveBound.cpp" />
+    <ClCompile Include="CKirbyLongDiveLanding.cpp" />
+    <ClCompile Include="CKirbyLongDiveStart.cpp" />
     <ClCompile Include="CKirbyObject_VendingMachine.cpp" />
     <ClCompile Include="CKirbyStageClear.cpp" />
     <ClCompile Include="CKirbyWeaponHitbox.cpp" />
