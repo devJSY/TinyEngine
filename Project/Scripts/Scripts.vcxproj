@@ -126,6 +126,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
     <ClInclude Include="CElfilisA_DimensionLaser.h" />
+    <ClInclude Include="CElfilisA_DrawLaser.h" />
     <ClInclude Include="CElfilisA_MoveL.h" />
     <ClInclude Include="CElfilisA_MoveR.h" />
     <ClInclude Include="CElfilisA_RayArrowDown.h">
@@ -332,6 +333,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />
     <ClCompile Include="CElfilisA_DimensionLaser.cpp" />
+    <ClCompile Include="CElfilisA_DrawLaser.cpp" />
     <ClCompile Include="CElfilisA_MoveL.cpp" />
     <ClCompile Include="CElfilisA_MoveR.cpp" />
     <ClCompile Include="CElfilisA_RayArrowDown.cpp">

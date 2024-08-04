@@ -321,6 +321,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_RayArrowUp.h"
 //#include "CElfilisA_RayArrowDown.h"
 #include "CElfilisA_DimensionLaser.h"
+#include "CElfilisA_DrawLaser.h"
 void CElfilisFSM::begin()
 {
     float ScaleFactor = Transform()->GetLocalScale().x;
@@ -354,6 +355,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
+    AddGroupPrivateState(ElfilisStateGroup::AirBigAtk, L"AIR_ATKS_DRAWLASER", new CElfilisA_DrawLaser);
 
     ChangeState(L"GROUND_IDLE");
 }

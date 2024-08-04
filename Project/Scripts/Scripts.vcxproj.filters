@@ -577,6 +577,9 @@
     <ClInclude Include="CElfilisLaser.h">
       <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser\Laser</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisA_DrawLaser.h">
+      <Filter>State\ElfilisState\Air_BigAttack\DrawLaser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1166,6 +1169,9 @@
     </ClCompile>
     <ClCompile Include="CElfilisLaser.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_DrawLaser.cpp">
+      <Filter>State\ElfilisState\Air_BigAttack\DrawLaser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1813,6 +1819,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\DimensionLaser\Laser">
       <UniqueIdentifier>{cb43daf7-a736-410b-b27a-a674f9a0995a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_BigAttack\DrawLaser">
+      <UniqueIdentifier>{74df8dae-58db-4e72-b658-c440d3c0a0b3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -66,7 +66,7 @@ void CElfilisAirArrow::StartSpawn()
 
     // Position
     Vec3 NewPos = m_InitPos;
-    int ReflectIdx = fabs(m_ArrowIdx - 3);
+    int ReflectIdx = abs(m_ArrowIdx - 3);
     NewPos += 40.f * (-3 + m_ArrowIdx) * -m_InitDir[(UINT)DIR_TYPE::RIGHT];
     NewPos += -35.f * ReflectIdx * m_InitDir[(UINT)DIR_TYPE::UP];
     GetOwner()->Transform()->SetWorldPos(NewPos);
@@ -297,7 +297,7 @@ void CElfilisAirArrow::Attack()
             if (m_AccTime <= StartTime)
             {
                 float Ratio = m_AccTime / StartTime;
-                m_AttackSpeed = 30.f * sinf(Ratio * XM_PI / 2.f);
+                m_AttackSpeed = 20.f * sinf(Ratio * XM_PI / 2.f);
 
                 Vec3 MoveDir = m_ReadyDir * m_AttackSpeed;
                 Transform()->SetWorldPos(Transform()->GetWorldPos() + MoveDir);
@@ -306,7 +306,7 @@ void CElfilisAirArrow::Attack()
             // 1.f ~ : 타겟방향으로 위치 lerp
             else
             {
-                m_AttackSpeed += 500.f * DT;
+                m_AttackSpeed += 300.f * DT;
                 float t = m_AttackSpeed / m_TargetDist;
 
                 Vec3 CurPos = Transform()->GetWorldPos();
