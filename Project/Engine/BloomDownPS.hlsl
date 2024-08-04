@@ -3,6 +3,7 @@
 
 #define TextureWidth g_float_0 
 #define TextureHeight g_float_1 
+#define Threshold g_float_2
 
 float4 main(PS_IN input) : SV_TARGET
 {
@@ -54,5 +55,14 @@ float4 main(PS_IN input) : SV_TARGET
     downsample += (b + d + f + h) * 0.0625;
     downsample += (j + k + l + m) * 0.125;
         
+    // Relative Luminance : 픽셀의 색이 밝은지 어두운지의 기준값
+    float RelativeLuminance = dot(downsample, float3(0.2126f, 0.7152f, 0.0722f));
+    
+    // 해당 픽셀의 색상이 설정한 Threshold보다 작다면(어두운 색이라면) 검정색으로 처리
+    if (RelativeLuminance < Threshold)
+    {
+        return float4(0.f, 0.f, 0.f, 1.f);
+    }
+    
     return float4(downsample, 1.f);
 }
