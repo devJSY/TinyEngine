@@ -613,6 +613,9 @@
     <ClInclude Include="CElfilisG_ToAirTeleport.h">
       <Filter>State\ElfilisState\Ground_ToAir\Teleport</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisA_StabCombo.h">
+      <Filter>State\ElfilisState\Air_SmallAttack1\StabCombo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1238,6 +1241,9 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_ToAirTeleport.cpp">
       <Filter>State\ElfilisState\Ground_ToAir\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_StabCombo.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack1\StabCombo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1936,6 +1942,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_ToAir\Teleport">
       <UniqueIdentifier>{89f43c10-4032-4fee-af38-558259d9f231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\StabCombo">
+      <UniqueIdentifier>{68d0929c-88e9-45d3-aa81-42aadab0b0d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

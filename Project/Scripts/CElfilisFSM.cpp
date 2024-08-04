@@ -339,6 +339,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_MoveL.h"
 #include "CElfilisA_MoveR.h"
 #include "CElfilisA_RayArrowUp.h"
+#include "CElfilisA_StabCombo.h"
 // #include "CElfilisA_RayArrowDown.h"
 #include "CElfilisA_DimensionLaser.h"
 #include "CElfilisA_DrawLaser.h"
@@ -366,6 +367,7 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::AirMove, L"AIR_MOVE_R", new CElfilisA_MoveR);
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP", new CElfilisA_RayArrowUp);
     // AddGroupPublicState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_DOWN", new CElfilisA_RayArrowDown);
+    AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_STABCOMBO", new CElfilisA_StabCombo);
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER", new CElfilisA_DimensionLaser);
     AddGroupPublicState(ElfilisStateGroup::AirLargeAtk, L"AIR_ATKL_DRAWLASER", new CElfilisA_DrawLaser);
     AddGroupPublicState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT", new CElfilisA_Teleport);
@@ -415,8 +417,8 @@ void CElfilisFSM::tick()
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    //static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
-    //RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f, vecCollision);
+    // static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
+    // RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f, vecCollision);
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
     if (m_CurStateGroup == ElfilisStateGroup::AirToGround)
@@ -452,7 +454,7 @@ void CElfilisFSM::ProcPatternStep()
         {
             ChangeStateGroup_Random(ElfilisStateGroup::GroundIdle);
         }
-        else if (m_PatternStep == 1)    // 진입 : 외부호출
+        else if (m_PatternStep == 1) // 진입 : 외부호출
         {
             ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
         }
@@ -460,7 +462,7 @@ void CElfilisFSM::ProcPatternStep()
         {
             ChangeStateGroup_Set(ElfilisStateGroup::AirIdle, L"AIR_IDLE");
         }
-        else if (m_PatternStep == 3)    // 진입 : 외부호출
+        else if (m_PatternStep == 3) // 진입 : 외부호출
         {
             ChangeStateGroup_Random(ElfilisStateGroup::AirSmallAtk1);
         }
@@ -472,7 +474,23 @@ void CElfilisFSM::ProcPatternStep()
         {
             ChangeStateGroup_Random(ElfilisStateGroup::AirIdle);
         }
-        else if (m_PatternStep == 6)    // 진입 : 외부호출
+        else if (m_PatternStep == 6) // 진입 : 외부호출
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB");
+            bFinish = true;
+        }
+    }
+    break;
+    case ElfilisPatternType::StabCombo: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB");
+        }
+        else if (m_PatternStep == 1)
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT");
+        }
+        else if (m_PatternStep == 2)
         {
             ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB");
             bFinish = true;

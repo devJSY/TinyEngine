@@ -36,6 +36,7 @@ enum class ElfilisPatternType
 {
     NONE,
     BigCombo,
+    StabCombo,
 };
 
 // ==============================================

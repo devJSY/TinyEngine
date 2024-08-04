@@ -135,6 +135,7 @@ call CodeGen.exe</Command>
     </ClInclude>
     <ClInclude Include="CElfilisA_RayArrowUp.h" />
     <ClInclude Include="CElfilisA_Stab.h" />
+    <ClInclude Include="CElfilisA_StabCombo.h" />
     <ClInclude Include="CElfilisA_Teleport.h" />
     <ClInclude Include="CElfilisA_TeleportCombo.h" />
     <ClInclude Include="CElfilisBigFSM.h" />
@@ -353,6 +354,7 @@ call CodeGen.exe</Command>
     </ClCompile>
     <ClCompile Include="CElfilisA_RayArrowUp.cpp" />
     <ClCompile Include="CElfilisA_Stab.cpp" />
+    <ClCompile Include="CElfilisA_StabCombo.cpp" />
     <ClCompile Include="CElfilisA_Teleport.cpp" />
     <ClCompile Include="CElfilisA_TeleportCombo.cpp" />
     <ClCompile Include="CElfilisBigFSM.cpp" />
