@@ -153,15 +153,18 @@ void CPlayerMgr::ClearMouthMtrl()
 
 void CPlayerMgr::ResetBodyColliderSetting()
 {
-    m_PlayerObj->CharacterController()->SetCenter(Vec3(0.f, 50.f, 0.f));
-    m_PlayerObj->CharacterController()->SetRadius(0.5f);
-    m_PlayerObj->CharacterController()->SetHeight(1.6f);
+    m_PlayerObj->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
+    m_PlayerObj->CharacterController()->SetHeight(1.51f);
+    m_PlayerObj->CharacterController()->SetRadius(0.51f);
+    m_PlayerObj->CharacterController()->SetSkinWidth(0.015f);
     m_PlayerObj->CharacterController()->SetMinMoveDistance(0.f);
-
+    
     static CCapsuleCollider* BodyCol = m_PlayerObj->GetChildObject(L"Body Collider")->CapsuleCollider();
-    BodyCol->SetCenter(Vec3(0.f, 50.f, 0.f));
-    BodyCol->SetRadius(0.5f);
-    BodyCol->SetHeight(1.6f);
+
+    BodyCol->CapsuleCollider()->SetTrigger(true);
+    BodyCol->CapsuleCollider()->SetCenter(Vec3(0.f, 0.65f, 0.f));
+    BodyCol->CapsuleCollider()->SetHeight(1.51f);
+    BodyCol->CapsuleCollider()->SetRadius(0.51f);
 }
 
 UINT CPlayerMgr::SaveToLevelFile(FILE* _File)
