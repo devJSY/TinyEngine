@@ -13,7 +13,7 @@ void CKirbyHoveringSpit::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        if (GetOwner()->CharacterController()->IsGrounded())
+        if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LANDING");
         }
@@ -27,7 +27,7 @@ void CKirbyHoveringSpit::Enter()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
 
-    if (!GetOwner()->CharacterController()->IsGrounded())
+    if (!PLAYERCTRL->IsGround())
     {
         PLAYERCTRL->AddVelocity(Vec3(0.f, 1.f, 0.f));
     }

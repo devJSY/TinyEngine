@@ -22,7 +22,7 @@ void CKirbyHoveringLimit::tick()
     {
         ChangeState(L"HOVERING_SPIT");
     }
-    else if (GetOwner()->CharacterController()->IsGrounded())
+    else if (PLAYERCTRL->IsGround())
     {
         ChangeState(L"HOVERING_LANDING");
     }

@@ -117,7 +117,7 @@ void CKirbyGuard::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->SetFriction(5.f);
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
 
     // DodgeType reset
     PLAYERFSM->SetDodgeType(DodgeType::NONE);
@@ -134,5 +134,5 @@ void CKirbyGuard::Exit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetFriction(0.f);
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
 }

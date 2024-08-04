@@ -21,7 +21,7 @@ void CKirbyStuffedJump::tick()
     {
         ChangeState(L"ATTACK");
     }
-    else if (GetOwner()->CharacterController()->IsGrounded())
+    else if (PLAYERCTRL->IsGround())
     {
         ChangeState(L"STUFFED_LANDING");
     }

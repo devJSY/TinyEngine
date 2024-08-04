@@ -4,9 +4,6 @@ CKirbyMoveController
 CModelEditorCameraMoveScript
 CPlayerMgr
 CKirbyBulletScript
-CTestFSM
-CKirbyUnitScript
-CSpringArmCameraScript
 CButtonScript
 CUIManagerScript
 CButtonManagerScript
@@ -60,3 +57,4 @@ CSurpriseBoardScript
 CSurpriseBoardAttackScript
 CUIWipeScript
 CWipeTriggerScript
+CKirbyUnitScript

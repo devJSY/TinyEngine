@@ -48,23 +48,13 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     // Bullet
     Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
     Vec3 KirbyWorldDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Vec3 Offset = Vec3(0.f, 50.f, 0.f);
+    Vec3 Offset = Vec3(0.f, 10.f, 0.f);
 
     // 프리팹 생성
     Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CanJuice.pref");
     CGameObject* CanJuiceInst = CanJuice->Instantiate();
 
-    // 초기값 세팅
-    // 예외처리 Dir 이 Vec3(0.f, 0.f, -1.f)인경우 Up벡터가 반전됨
-    Vec3 up = Vec3(0.f, 1.f, 0.f);
-    // if (KirbyWorldDir == Vec3(0.f, 0.f, -1.f))
-    //{
-    //     up = Vec3(0.f, -1.f, 0.f);
-    // }
-
-    // CanJuiceInst->Transform()->SetDirection(-KirbyWorldDir, up);
-
-    CanJuiceInst->Transform()->SetDirection(-KirbyWorldDir);
+    CanJuiceInst->Transform()->SetDirection(KirbyWorldDir);
     CanJuiceInst->Transform()->SetWorldPos(KirbyPos + Offset);
 
     GamePlayStatic::SpawnGameObject(CanJuiceInst, CanJuiceInst->GetLayerIdx());
@@ -137,12 +127,12 @@ void CKirbyObject_VendingMachine::ChangeObjectEnter()
     PLAYERCTRL->SetJumpPower(m_SaveJumpPower / 2.f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
-    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 200.f, 0.f));
+    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 2.f, 0.f));
     PLAYER->CharacterController()->SetRadius(1.2f);
     PLAYER->CharacterController()->SetHeight(4.5f);
 
     CCapsuleCollider* BodyCol = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider();
-    BodyCol->SetCenter(Vec3(0.f, 200.f, 0.f));
+    BodyCol->SetCenter(Vec3(0.f, 2.f, 0.f));
     BodyCol->SetRadius(1.2f);
     BodyCol->SetHeight(4.5f);
 
