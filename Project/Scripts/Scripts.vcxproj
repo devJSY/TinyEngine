@@ -166,6 +166,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisG_SwordWaveLR.h" />
     <ClInclude Include="CElfilisG_SwordWaveRL.h" />
     <ClInclude Include="CElfilisG_Teleport.h" />
+    <ClInclude Include="CElfilisG_ToAirTeleport.h" />
     <ClInclude Include="CElfilisLaser.h" />
     <ClInclude Include="CElfilisStormScript.h" />
     <ClInclude Include="CElfilisSwordSlashScript.h" />
@@ -383,6 +384,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisG_SwordWaveLR.cpp" />
     <ClCompile Include="CElfilisG_SwordWaveRL.cpp" />
     <ClCompile Include="CElfilisG_Teleport.cpp" />
+    <ClCompile Include="CElfilisG_ToAirTeleport.cpp" />
     <ClCompile Include="CElfilisLaser.cpp" />
     <ClCompile Include="CElfilisStormScript.cpp" />
     <ClCompile Include="CElfilisSwordSlashScript.cpp" />

@@ -547,9 +547,6 @@
     <ClInclude Include="CElfilisG_NormalAtkTeleportR.h">
       <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisG_GroundToAir.h">
-      <Filter>State\ElfilisState\Ground_ToAir</Filter>
-    </ClInclude>
     <ClInclude Include="CElfilisA_Idle.h">
       <Filter>State\ElfilisState\Air_Idle</Filter>
     </ClInclude>
@@ -607,7 +604,15 @@
     <ClInclude Include="CElfilisA_Teleport.h">
       <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisA_TeleportCombo.h" />
+    <ClInclude Include="CElfilisA_TeleportCombo.h">
+      <Filter>State\ElfilisState\Air_ToGround\TeleportCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_GroundToAir.h">
+      <Filter>State\ElfilisState\Ground_ToAir\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_ToAirTeleport.h">
+      <Filter>State\ElfilisState\Ground_ToAir\Teleport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1168,9 +1173,6 @@
     <ClCompile Include="CElfilisG_NormalAtkTeleportR.cpp">
       <Filter>State\ElfilisState\Ground_MoveAttack\NormalAtkTeleport\R</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisG_GroundToAir.cpp">
-      <Filter>State\ElfilisState\Ground_ToAir</Filter>
-    </ClCompile>
     <ClCompile Include="CElfilisA_Idle.cpp">
       <Filter>State\ElfilisState\Air_Idle</Filter>
     </ClCompile>
@@ -1228,7 +1230,15 @@
     <ClCompile Include="CElfilisA_Teleport.cpp">
       <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisA_TeleportCombo.cpp" />
+    <ClCompile Include="CElfilisA_TeleportCombo.cpp">
+      <Filter>State\ElfilisState\Air_ToGround\TeleportCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_GroundToAir.cpp">
+      <Filter>State\ElfilisState\Ground_ToAir\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_ToAirTeleport.cpp">
+      <Filter>State\ElfilisState\Ground_ToAir\Teleport</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1920,6 +1930,12 @@
     </Filter>
     <Filter Include="State\ElfilisState\Air_ToGround\TeleportCombo">
       <UniqueIdentifier>{4b6b7370-fd7f-4b5c-b9c8-8c7f35335fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_ToAir\Jump">
+      <UniqueIdentifier>{6607477a-aae3-4df6-8634-3f460000d927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_ToAir\Teleport">
+      <UniqueIdentifier>{89f43c10-4032-4fee-af38-558259d9f231}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -43,10 +43,9 @@ void CElfilisG_GroundToAir::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastStart"), false);
 
         // Jump
-        Vec3 JumpDir = (Vec3(0.f, 1.f, 0.f) - GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT)).Normalize();
         m_StartPos = GetOwner()->Transform()->GetWorldPos();
-        m_TargetPos = JumpDir * ELFFSM->GetAirPos();
-        JumpDir = m_TargetPos - m_StartPos;
+        m_TargetPos = -GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
+        Vec3 JumpDir = m_TargetPos - m_StartPos;
         JumpDir.Normalize();
 
         GetOwner()->Rigidbody()->AddForce(JumpDir * 3000.f, ForceMode::Impulse);
@@ -92,7 +91,7 @@ void CElfilisG_GroundToAir::Progress()
     Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
     float CurDist = (NewPos - m_StartPos).Length();
     float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
-    float NewDrag = 5.f - 5.f * sinf(Ratio);
+    float NewDrag = 4.f - 4.f * sinf(Ratio);
     GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
     // Change Step

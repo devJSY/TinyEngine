@@ -333,6 +333,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisG_NormalAtkTeleportR.h"
 #include "CElfilisG_NormalAtkTeleportFinishL.h"
 #include "CElfilisG_GroundToAir.h"
+#include "CElfilisG_ToAirTeleport.h"
 
 #include "CElfilisA_Idle.h"
 #include "CElfilisA_MoveL.h"
@@ -381,6 +382,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT", new CElfilisG_ToAirTeleport);
     AddGroupPrivateState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB", new CElfilisA_Stab);
 
     ChangeState(L"GROUND_IDLE");
