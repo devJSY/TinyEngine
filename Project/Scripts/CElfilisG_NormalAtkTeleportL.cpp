@@ -192,7 +192,7 @@ void CElfilisG_NormalAtkTeleportL::Progress()
         if (Rand <= 90)
         {
             m_bComboSuccess = true;
-            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R");
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R");
         }
         else
         {
@@ -206,7 +206,7 @@ void CElfilisG_NormalAtkTeleportL::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup_RandState(NextState);
+        ELFFSM->ChangeStateGroup(NextState);
     }
 }
 

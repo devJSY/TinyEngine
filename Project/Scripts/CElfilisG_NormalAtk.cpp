@@ -19,11 +19,11 @@ void CElfilisG_NormalAtk::Enter()
 {
     if (ELFFSM->GetPhase() == 1)
     {
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
     }
     else
     {
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
     }
 }
 

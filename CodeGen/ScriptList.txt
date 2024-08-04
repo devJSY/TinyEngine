@@ -58,3 +58,4 @@ CElfilisStormScript
 CElfilisAirArrow
 CElfilisDimensionLaser
 CElfilisLaser
+CElfilisBigFSM

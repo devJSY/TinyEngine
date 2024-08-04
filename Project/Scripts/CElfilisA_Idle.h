@@ -3,9 +3,6 @@
 
 class CElfilisA_Idle : public CBossState
 {
-private:
-    float m_AccTime;
-
 public:
     virtual void tick() override;
 

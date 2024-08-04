@@ -217,8 +217,8 @@ void CElfilisA_DimensionLaser::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         // @TODO 전이확인 후 복구
-        ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirIdle);
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirIdle);
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
     }
 }
 
@@ -229,7 +229,7 @@ void CElfilisA_DimensionLaser::SpawnDimension(int _Idx)
     InitDir.Normalize();
 
     Vec3 InitPos = Vec3();
-    InitPos += InitDir * -150.f * (2 - _Idx);
+    InitPos += InitDir * -150.f * (2.f - _Idx);
 
     m_DimensionScript[_Idx]->PlaySpawn();
     m_DimensionScript[_Idx]->Transform()->Slerp(InitDir, 1.f);

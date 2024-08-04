@@ -163,6 +163,6 @@ void CElfilisG_Teleport::End()
     if (ChangeHeight <= 0.f)
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup_RandState(NextState);
+        ELFFSM->ChangeStateGroup(NextState);
     }
 }

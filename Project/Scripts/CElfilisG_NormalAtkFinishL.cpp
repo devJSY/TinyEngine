@@ -102,7 +102,7 @@ void CElfilisG_NormalAtkFinishL::End()
         }
         else
         {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
+            ELFFSM->ChangeStateGroup(NextState);
         }
     }
 }

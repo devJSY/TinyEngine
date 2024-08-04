@@ -19,11 +19,11 @@ void CElfilisG_NormalAtkTeleport::Enter()
 {
     if (ELFFSM->GetPhase() == 1)
     {
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L");
     }
     else
     {
-        ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R");
     }
 }
 

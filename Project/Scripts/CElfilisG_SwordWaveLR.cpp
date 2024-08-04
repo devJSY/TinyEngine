@@ -152,7 +152,7 @@ void CElfilisG_SwordWaveLR::Progress()
         if (Rand <= 70.f)
         {
             m_bComboSuccess = true;
-            ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_FINISHLR");
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_FINISHLR");
         }
         else
         {
@@ -173,7 +173,7 @@ void CElfilisG_SwordWaveLR::End()
         }
         else
         {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
+            ELFFSM->ChangeStateGroup(NextState);
         }
     }
 }

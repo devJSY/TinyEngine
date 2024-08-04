@@ -204,11 +204,11 @@ void CElfilisG_NormalAtkTeleportR::Progress()
 
             if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2) && ELFFSM->GetComboLevel() == 2)
             {
-                ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL");
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL");
             }
             else
             {
-                ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L");
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L");
             }
         }
         else
@@ -223,7 +223,7 @@ void CElfilisG_NormalAtkTeleportR::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup_RandState(NextState);
+        ELFFSM->ChangeStateGroup(NextState);
     }
 }
 

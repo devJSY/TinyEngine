@@ -18,7 +18,7 @@ public:
     virtual void begin() override;
 
 public:
-    void SetBoss(CGameObject* _BossObj);
+    void SetBoss();
 
     static CGameObject* GetBoss() { return m_Boss; }
     static CUnitScript* GetBossUnit() { return m_BossUnit; }

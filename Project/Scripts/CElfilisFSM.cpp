@@ -1,18 +1,22 @@
 #include "pch.h"
 #include "CElfilisFSM.h"
+#include "CElfilisBigFSM.h"
 #include "CState.h"
 #include "CPlayerMgr.h"
 
 CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
     , m_CurStateGroup(ElfilisStateGroup::END)
-    , m_ReserveState{ElfilisStateGroup::END, L""}
-    , m_Phase(1)
+    , m_Pattern(ElfilisPatternType::NONE)
+    , m_Phase(2)
     , m_ComboLevel(0)
+    , m_PatternStep(0)
     , m_bAttackRepeat(false)
     , m_GroundAttackCount(0)
     , m_NearDist(5.f)
     , m_AirPosition(Vec3(0.f, 600.f, 1000.f))
+    , m_BigElfilis(nullptr)
+    , m_BigElfilisFSM(nullptr)
     , m_MapFloorOffset(Vec3(0.f, 0.f, 5.f))
     , m_MapSizeRadius(25.f)
 {
@@ -26,9 +30,10 @@ CElfilisFSM::CElfilisFSM()
 CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     : CFSMScript(_Origin)
     , m_CurStateGroup(ElfilisStateGroup::END)
-    , m_ReserveState{ElfilisStateGroup::END, L""}
+    , m_Pattern(ElfilisPatternType::NONE)
     , m_Phase(_Origin.m_Phase)
     , m_ComboLevel(0)
+    , m_PatternStep(0)
     , m_bAttackRepeat(false)
     , m_GroundAttackCount(0)
     , m_NearDist(_Origin.m_NearDist)
@@ -59,7 +64,26 @@ CElfilisFSM::~CElfilisFSM()
 {
 }
 
-void CElfilisFSM::ChangeStateGroup_RandState(ElfilisStateGroup _Group)
+// USAGE : 안전하게 State Group을 변경
+void CElfilisFSM::ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State)
+{
+    if (m_Pattern != ElfilisPatternType::NONE)
+    {
+        ProcPatternStep();
+        return;
+    }
+
+    if (_State.empty())
+    {
+        ChangeStateGroup_Random(_Group);
+    }
+    else
+    {
+        ChangeStateGroup_Set(_Group, _State);
+    }
+}
+
+void CElfilisFSM::ChangeStateGroup_Random(ElfilisStateGroup _Group)
 {
     if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
         return;
@@ -67,11 +91,11 @@ void CElfilisFSM::ChangeStateGroup_RandState(ElfilisStateGroup _Group)
     int Random = GetRandomInt(0, (int)m_StateGroup[_Group][0].size() - 1);
     wstring RandState = m_StateGroup[_Group][0][Random];
 
-    ChangStateGroup(_Group);
+    SetStateGroup(_Group);
     ChangeState(RandState);
 }
 
-void CElfilisFSM::ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstring& _State)
+void CElfilisFSM::ChangeStateGroup_Set(ElfilisStateGroup _Group, const wstring& _State)
 {
     if (m_StateGroup.find(_Group) == m_StateGroup.cend())
         return;
@@ -81,21 +105,8 @@ void CElfilisFSM::ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstr
     if (iter1 == m_StateGroup[_Group][0].end() && iter2 == m_StateGroup[_Group][1].end())
         return;
 
-    ChangStateGroup(_Group);
+    SetStateGroup(_Group);
     ChangeState(_State);
-}
-
-void CElfilisFSM::ReserveState(ElfilisStateGroup _Group, const wstring& _State)
-{
-    if (m_StateGroup.find(_Group) == m_StateGroup.cend())
-        return;
-
-    vector<wstring>::iterator iter1 = find(m_StateGroup[_Group][0].begin(), m_StateGroup[_Group][0].end(), _State);
-    vector<wstring>::iterator iter2 = find(m_StateGroup[_Group][1].begin(), m_StateGroup[_Group][1].end(), _State);
-    if (iter1 == m_StateGroup[_Group][0].end() && iter2 == m_StateGroup[_Group][1].end())
-        return;
-
-    m_ReserveState = {_Group, _State};
 }
 
 void CElfilisFSM::RepeatState(wstring _State)
@@ -208,7 +219,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
         }
         else if (Rand <= 75.f)
         {
-            return ElfilisStateGroup::AirBigAtk;
+            return ElfilisStateGroup::AirLargeAtk;
         }
         else
         {
@@ -273,7 +284,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     }
     break;
     case ElfilisStateGroup::AirSmallAtk2:
-    case ElfilisStateGroup::AirBigAtk: {
+    case ElfilisStateGroup::AirLargeAtk: {
         //@TODO 전이 확인 후 복구
         return ElfilisStateGroup::AirIdle;
 
@@ -319,17 +330,18 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_MoveL.h"
 #include "CElfilisA_MoveR.h"
 #include "CElfilisA_RayArrowUp.h"
-//#include "CElfilisA_RayArrowDown.h"
+// #include "CElfilisA_RayArrowDown.h"
 #include "CElfilisA_DimensionLaser.h"
 #include "CElfilisA_DrawLaser.h"
 void CElfilisFSM::begin()
 {
+    // set map size
     float ScaleFactor = Transform()->GetLocalScale().x;
     m_NearDist *= ScaleFactor;
     m_MapFloorOffset *= ScaleFactor;
     m_MapSizeRadius *= ScaleFactor;
 
-    // State 추가
+    // add state
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT", new CElfilisG_Teleport);
@@ -341,8 +353,9 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::AirMove, L"AIR_MOVE_L", new CElfilisA_MoveL);
     AddGroupPublicState(ElfilisStateGroup::AirMove, L"AIR_MOVE_R", new CElfilisA_MoveR);
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP", new CElfilisA_RayArrowUp);
-    //AddGroupPublicState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_DOWN", new CElfilisA_RayArrowDown);
+    // AddGroupPublicState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_DOWN", new CElfilisA_RayArrowDown);
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER", new CElfilisA_DimensionLaser);
+    AddGroupPublicState(ElfilisStateGroup::AirLargeAtk, L"AIR_ATKL_DRAWLASER", new CElfilisA_DrawLaser);
 
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
@@ -355,14 +368,92 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
-    AddGroupPrivateState(ElfilisStateGroup::AirBigAtk, L"AIR_ATKS_DRAWLASER", new CElfilisA_DrawLaser);
 
     ChangeState(L"GROUND_IDLE");
+
+    // find Big Elfilis
+    wstring strName = GetOwner()->GetName() + L"Big";
+    CGameObject* pBossBig = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(strName, LAYER_MONSTER);
+    CElfilisBigFSM* pBossBigFSM = nullptr;
+
+    if (pBossBig)
+    {
+        pBossBigFSM = pBossBig->GetScript<CElfilisBigFSM>();
+    }
+
+    if (pBossBig && pBossBigFSM)
+    {
+        m_BigElfilis = pBossBig;
+        m_BigElfilisFSM = pBossBigFSM;
+    }
+    else
+    {
+        MessageBox(nullptr, L"Big Elfilis를 찾을 수 없습니다", L"Big Elfilis 등록 실패", MB_OK);
+    }
 }
 
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
+}
+
+void CElfilisFSM::SetPattern(ElfilisPatternType _Pattern)
+{
+    m_PatternStep = 0;
+    m_Pattern = _Pattern;
+}
+
+void CElfilisFSM::ProcPatternStep()
+{
+    if (m_Pattern == ElfilisPatternType::NONE)
+        return;
+
+    bool bFinish = false;
+
+    switch (m_Pattern)
+    {
+    case ElfilisPatternType::BigCombo: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Random(ElfilisStateGroup::GroundIdle);
+        }
+        else if (m_PatternStep == 1)    // 진입 : 외부호출
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+        }
+        else if (m_PatternStep == 2)
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::AirIdle, L"AIR_IDLE");
+        }
+        else if (m_PatternStep == 3)    // 진입 : 외부호출
+        {
+            ChangeStateGroup_Random(ElfilisStateGroup::AirSmallAtk1);
+        }
+        else if (m_PatternStep == 4)
+        {
+            ChangeStateGroup_Random(ElfilisStateGroup::AirSmallAtk1);
+        }
+        else if (m_PatternStep == 5)
+        {
+            ChangeStateGroup_Random(ElfilisStateGroup::AirIdle);
+        }
+        else if (m_PatternStep == 6)    // 진입 : 외부호출
+        {
+            //ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_SLASH");
+            bFinish = true;
+        }
+    }
+    break;
+    }
+
+    if (bFinish)
+    {
+        SetPattern(ElfilisPatternType::NONE);
+    }
+    else
+    {
+        m_PatternStep++;
+    }
 }
 
 const vector<wstring>& CElfilisFSM::GetCurPublicStates() const
@@ -387,7 +478,7 @@ float CElfilisFSM::GetPlayerDist() const
     return Dist.Length();
 }
 
-void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)
+void CElfilisFSM::SetStateGroup(ElfilisStateGroup _Group)
 {
     if (m_CurStateGroup == _Group)
         return;
@@ -424,7 +515,7 @@ void CElfilisFSM::ChangStateGroup(ElfilisStateGroup _Group)
     case ElfilisStateGroup::AirMove:
     case ElfilisStateGroup::AirSmallAtk1:
     case ElfilisStateGroup::AirSmallAtk2:
-    case ElfilisStateGroup::AirBigAtk:
+    case ElfilisStateGroup::AirLargeAtk:
         ClearComboLevel();
         m_bAttackRepeat = false;
         break;

@@ -22,21 +22,22 @@ void CBossMgr::begin()
 {
     if (!m_BossName.empty())
     {
-        CGameObject* pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_BossName), LAYER_MONSTER);
-        SetBoss(pBoss);
+        SetBoss();
     }
 }
 
-void CBossMgr::SetBoss(CGameObject* _BossObj)
+void CBossMgr::SetBoss()
 {
-    if (!_BossObj)
+    CGameObject* pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_BossName), LAYER_MONSTER);
+
+    if (!pBoss)
     {
         MessageBox(nullptr, L"존재하지 않는 게임 오브젝트입니다", L"BossMgr 등록 실패", MB_OK);
         return;
     }
 
-    CUnitScript* pBossUnit = _BossObj->GetScript<CUnitScript>();
-    CFSMScript* pBossFSM = _BossObj->GetScript<CFSMScript>();
+    CUnitScript* pBossUnit = pBoss->GetScript<CUnitScript>();
+    CFSMScript* pBossFSM = pBoss->GetScript<CFSMScript>();
 
     if (!pBossUnit || !pBossFSM)
     {
@@ -44,7 +45,7 @@ void CBossMgr::SetBoss(CGameObject* _BossObj)
         return;
     }
 
-    m_Boss = _BossObj;
+    m_Boss = pBoss;
     m_BossUnit = pBossUnit;
     m_BossFSM = pBossFSM;
 }

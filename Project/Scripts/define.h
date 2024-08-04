@@ -12,6 +12,7 @@
 #define BOSSFSM CBossMgr::GetBossFSM()
 
 #define ELFFSM ((CElfilisFSM*)CBossMgr::GetBossFSM())
+#define ELFBIGFSM ((CElfilisBigFSM*)ELFFSM->GetBigBossFSM())
 
 #define KEY_TAP_ARROW (KEY_TAP(KEY::UP) || KEY_TAP(KEY::DOWN) || KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT))
 #define KEY_PRESSED_ARROW (KEY_PRESSED(KEY::UP) || KEY_PRESSED(KEY::DOWN) || KEY_PRESSED(KEY::LEFT) || KEY_PRESSED(KEY::RIGHT))
@@ -84,4 +85,5 @@ enum class StateStep
     Progress,
     Wait,
     End,
+    EndWait,
 };

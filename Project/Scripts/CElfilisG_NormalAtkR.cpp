@@ -99,11 +99,11 @@ void CElfilisG_NormalAtkR::Progress()
 
             if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2) && ELFFSM->GetComboLevel() == 2)
             {
-                ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL");
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL");
             }
             else
             {
-                ELFFSM->ChangeStateGroup_SetState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
             }
         }
         else
@@ -132,7 +132,7 @@ void CElfilisG_NormalAtkR::End()
         }
         else
         {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
+            ELFFSM->ChangeStateGroup(NextState);
         }
     }
 }

@@ -87,6 +87,6 @@ void CElfilisG_NormalAtkTeleportFinishL::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup_RandState(NextState);
+        ELFFSM->ChangeStateGroup(NextState);
     }
 }

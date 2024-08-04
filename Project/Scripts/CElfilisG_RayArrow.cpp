@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CElfilisG_RayArrow.h"
 #include "CElfilisFSM.h"
+#include "CElfilisBigFSM.h"
 #include "CElfilisArrowSetScript.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
@@ -46,6 +47,12 @@ void CElfilisG_RayArrow::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("RayArrowReady"), false);
+
+        if (ELFFSM->GetPhase() != 1)
+        {
+            ELFBIGFSM->Activate();
+            ELFBIGFSM->ChangeState(L"APPEAR");
+        }
     }
     break;
     case StateStep::Progress: {
@@ -121,15 +128,34 @@ void CElfilisG_RayArrow::End()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-
-        if (NextState == ELFFSM->GetCurStateGroup())
+        if (ELFFSM->GetPhase() == 1)
         {
-            ELFFSM->RepeatState();
+            ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
+
+            if (NextState == ELFFSM->GetCurStateGroup())
+            {
+                ELFFSM->RepeatState();
+            }
+            else
+            {
+                ELFFSM->ChangeStateGroup(NextState);
+            }
         }
+
+        // Phase2 : RayArrow 후 Big Elfilis와 콤보공격
         else
         {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
+            if (ELFBIGFSM->GetCurState()->GetName() == L"IDLE")
+            {
+                ELFBIGFSM->ChangeState(L"SWING_R");
+            }
+            else
+            {
+                ELFBIGFSM->ReverseState(L"SWING_R");
+            }
+
+            ELFFSM->SetPattern(ElfilisPatternType::BigCombo);
+            ELFFSM->ProcPatternStep();
         }
     }
 }

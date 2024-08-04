@@ -149,7 +149,7 @@ void CElfilisG_SwordWaveStorm::End()
         }
         else
         {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
+            ELFFSM->ChangeStateGroup(NextState);
         }
     }
 }

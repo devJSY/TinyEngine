@@ -160,7 +160,7 @@ void CElfilisG_DimensionSpike::End()
         }
         else
         {
-            ELFFSM->ChangeStateGroup_RandState(NextState);
+            ELFFSM->ChangeStateGroup(NextState);
         }
     }
 }

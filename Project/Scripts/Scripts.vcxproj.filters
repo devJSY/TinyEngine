@@ -563,10 +563,10 @@
       <Filter>Scripts\Character\Boss\Elfilis\AirArrow</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisA_RayArrowUp.h">
-      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow\Up</Filter>
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Up</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisA_RayArrowDown.h">
-      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow\Down</Filter>
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Down</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisA_DimensionLaser.h">
       <Filter>State\ElfilisState\Air_SmallAtack2\DimensionLaser</Filter>
@@ -578,7 +578,28 @@
       <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser\Laser</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisA_DrawLaser.h">
-      <Filter>State\ElfilisState\Air_BigAttack\DrawLaser</Filter>
+      <Filter>State\ElfilisState\Air_LargeAttack\DrawLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBigFSM.h">
+      <Filter>Scripts\FSM\ElfilisBigFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_Idle.h">
+      <Filter>State\ElfilisBig State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_Appear.h">
+      <Filter>State\ElfilisBig State\Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_Roar.h">
+      <Filter>State\ElfilisBig State\Roar</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_SwingL.h">
+      <Filter>State\ElfilisBig State\Swing\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_SwingFinishL.h">
+      <Filter>State\ElfilisBig State\Swing\FinishL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_SwingR.h">
+      <Filter>State\ElfilisBig State\Swing\R</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1156,10 +1177,10 @@
       <Filter>Scripts\Character\Boss\Elfilis\AirArrow</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisA_RayArrowUp.cpp">
-      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow\Up</Filter>
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Up</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisA_RayArrowDown.cpp">
-      <Filter>State\ElfilisState\Air_SmallAttack\RayArrow\Down</Filter>
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Down</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisA_DimensionLaser.cpp">
       <Filter>State\ElfilisState\Air_SmallAtack2\DimensionLaser</Filter>
@@ -1171,7 +1192,28 @@
       <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser\Laser</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisA_DrawLaser.cpp">
-      <Filter>State\ElfilisState\Air_BigAttack\DrawLaser</Filter>
+      <Filter>State\ElfilisState\Air_LargeAttack\DrawLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBigFSM.cpp">
+      <Filter>Scripts\FSM\ElfilisBigFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_Idle.cpp">
+      <Filter>State\ElfilisBig State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_Appear.cpp">
+      <Filter>State\ElfilisBig State\Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_Roar.cpp">
+      <Filter>State\ElfilisBig State\Roar</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_SwingL.cpp">
+      <Filter>State\ElfilisBig State\Swing\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_SwingFinishL.cpp">
+      <Filter>State\ElfilisBig State\Swing\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_SwingR.cpp">
+      <Filter>State\ElfilisBig State\Swing\R</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1778,12 +1820,6 @@
     <Filter Include="State\ElfilisState\Air_Move">
       <UniqueIdentifier>{3dd4c845-b8b1-4e2d-8c23-b6eecf38b5c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Air_SmallAttack">
-      <UniqueIdentifier>{0f491f6a-6085-4753-a7b4-be4ac8f4eb39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Air_BigAttack">
-      <UniqueIdentifier>{eb9a40b3-27a2-42ce-81d8-036baed8eeeb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\ElfilisState\Air_Idle">
       <UniqueIdentifier>{a6102277-d7e6-48ae-b682-3f8e06d60abb}</UniqueIdentifier>
     </Filter>
@@ -1795,15 +1831,6 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_AttackFar\RayArrow">
       <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Air_SmallAttack\RayArrow">
-      <UniqueIdentifier>{8dfe9f41-871c-4f9e-8eb1-48323dd26b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Air_SmallAttack\RayArrow\Up">
-      <UniqueIdentifier>{e31abe4f-d7a0-4b05-a7af-625b5e4f6e9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Air_SmallAttack\RayArrow\Down">
-      <UniqueIdentifier>{a513a114-fbe1-4bc2-936e-d11cc49dfd98}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\AirArrow">
       <UniqueIdentifier>{b0ba3eee-e242-44d3-998e-7be790c86795}</UniqueIdentifier>
@@ -1820,8 +1847,50 @@
     <Filter Include="Scripts\Character\Boss\Elfilis\DimensionLaser\Laser">
       <UniqueIdentifier>{cb43daf7-a736-410b-b27a-a674f9a0995a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Air_BigAttack\DrawLaser">
+    <Filter Include="State\ElfilisState\Air_LargeAttack">
+      <UniqueIdentifier>{eb9a40b3-27a2-42ce-81d8-036baed8eeeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_LargeAttack\DrawLaser">
       <UniqueIdentifier>{74df8dae-58db-4e72-b658-c440d3c0a0b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1">
+      <UniqueIdentifier>{0f491f6a-6085-4753-a7b4-be4ac8f4eb39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\RayArrow">
+      <UniqueIdentifier>{8dfe9f41-871c-4f9e-8eb1-48323dd26b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\RayArrow\Up">
+      <UniqueIdentifier>{e31abe4f-d7a0-4b05-a7af-625b5e4f6e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\RayArrow\Down">
+      <UniqueIdentifier>{a513a114-fbe1-4bc2-936e-d11cc49dfd98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State">
+      <UniqueIdentifier>{99918da7-439e-430e-a1be-c2c36077da83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Idle">
+      <UniqueIdentifier>{12eb7979-da2a-4eb1-9804-615788827c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing">
+      <UniqueIdentifier>{431a9589-287e-4d31-9d27-5dfcc08abb75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Appear">
+      <UniqueIdentifier>{d219355e-a95d-4fde-b0a9-ce002556e535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Roar">
+      <UniqueIdentifier>{1d897557-de12-4bdd-ac11-77476fe9e970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\ElfilisBigFSM">
+      <UniqueIdentifier>{84741247-056b-4d61-a5fa-354f2c2afec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing\L">
+      <UniqueIdentifier>{e12a49a6-2f57-4ec6-8557-45a6fc5d3dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing\R">
+      <UniqueIdentifier>{81f35cec-34c7-4d9c-a524-49d1154e97bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing\FinishL">
+      <UniqueIdentifier>{ea514888-8c17-4a62-a5ca-f3d50fa8db87}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

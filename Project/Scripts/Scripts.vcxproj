@@ -134,6 +134,12 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="CElfilisA_RayArrowUp.h" />
+    <ClInclude Include="CElfilisBigFSM.h" />
+    <ClInclude Include="CElfilisBig_Appear.h" />
+    <ClInclude Include="CElfilisBig_Roar.h" />
+    <ClInclude Include="CElfilisBig_SwingFinishL.h" />
+    <ClInclude Include="CElfilisBig_SwingL.h" />
+    <ClInclude Include="CElfilisBig_SwingR.h" />
     <ClInclude Include="CElfilisDimensionLaser.h" />
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
@@ -161,6 +167,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisStormScript.h" />
     <ClInclude Include="CElfilisSwordSlashScript.h" />
     <ClInclude Include="CElfilisUnit.h" />
+    <ClInclude Include="CElfilisBig_Idle.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CkirbyAbility_Sleep.h" />
@@ -341,6 +348,12 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="CElfilisA_RayArrowUp.cpp" />
+    <ClCompile Include="CElfilisBigFSM.cpp" />
+    <ClCompile Include="CElfilisBig_Appear.cpp" />
+    <ClCompile Include="CElfilisBig_Roar.cpp" />
+    <ClCompile Include="CElfilisBig_SwingFinishL.cpp" />
+    <ClCompile Include="CElfilisBig_SwingL.cpp" />
+    <ClCompile Include="CElfilisBig_SwingR.cpp" />
     <ClCompile Include="CElfilisDimensionLaser.cpp" />
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
@@ -368,6 +381,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisStormScript.cpp" />
     <ClCompile Include="CElfilisSwordSlashScript.cpp" />
     <ClCompile Include="CElfilisUnit.cpp" />
+    <ClCompile Include="CElfilisBig_Idle.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CkirbyAbility_Sleep.cpp" />

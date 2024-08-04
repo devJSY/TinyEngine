@@ -1,12 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
-
-enum class ElfilisA_SmallAtk
-{
-    ThrowSpear,
-    PortalLazer,
-    PUBLIC,
-};
+class CElfilisBigFSM;
 
 enum class ElfilisA_BigAtk
 {
@@ -42,10 +36,16 @@ enum class ElfilisStateGroup
     AirMove,
     AirSmallAtk1,
     AirSmallAtk2,
-    AirBigAtk,
+    AirLargeAtk,
     AirToGround,
 
     END,
+};
+
+enum class ElfilisPatternType
+{
+    NONE,
+    BigCombo,
 };
 
 // ==============================================
@@ -53,11 +53,13 @@ enum class ElfilisStateGroup
 class CElfilisFSM : public CFSMScript
 {
 private:
+    // FSM
     map<ElfilisStateGroup, vector<wstring>[2]> m_StateGroup; // ( StateGroup, {{PublicStates}, {PrivateStates}} )
     ElfilisStateGroup m_CurStateGroup;
-    pair<ElfilisStateGroup, wstring> m_ReserveState;
+    ElfilisPatternType m_Pattern;
     UINT m_Phase;
     UINT m_ComboLevel;
+    UINT m_PatternStep;
     bool m_bAttackRepeat;
 
     // ground
@@ -67,14 +69,16 @@ private:
     // air
     Vec3 m_AirPosition;
 
+    // big Elfilis
+    CGameObject* m_BigElfilis;
+    CElfilisBigFSM* m_BigElfilisFSM;
+
     // map
     Vec3 m_MapFloorOffset;
     float m_MapSizeRadius;
 
 public:
-    void ChangeStateGroup_RandState(ElfilisStateGroup _Group);
-    void ChangeStateGroup_SetState(ElfilisStateGroup _Group, const wstring& _State);
-    void ReserveState(ElfilisStateGroup _Group, const wstring& _State);
+    void ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
 
@@ -85,21 +89,28 @@ public:
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
+    void SetPattern(ElfilisPatternType _Pattern);
+    void ProcPatternStep();
 
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;
-    const pair<ElfilisStateGroup, wstring>& GetReserveState() const { return m_ReserveState; }
-    bool IsReservedState() const { return !m_ReserveState.second.empty(); }
+    bool IsPattern() const { return m_Pattern != ElfilisPatternType::NONE; }
+    bool IsPattern(ElfilisPatternType _Pattern, UINT _Step) const { return m_Pattern == _Pattern && m_PatternStep == _Step; }
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
+    UINT GetPatternStep() const { return m_PatternStep; }
     float GetNearDist() const { return m_NearDist; }
     Vec3 GetAirPos() const { return m_AirPosition; }
+    CGameObject* GetBigBoss() const { return m_BigElfilis; }
+    CElfilisBigFSM* GetBigBossFSM() const { return m_BigElfilisFSM; }
     float GetMapSizeRadius() const { return m_MapSizeRadius; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
     float GetPlayerDist() const;
 
 private:
-    void ChangStateGroup(ElfilisStateGroup _Group);
+    void ChangeStateGroup_Random(ElfilisStateGroup _Group);
+    void ChangeStateGroup_Set(ElfilisStateGroup _Group, const wstring& _State);
+    void SetStateGroup(ElfilisStateGroup _Group);
     void AddGroupPublicState(ElfilisStateGroup _Group, const wstring& _StateName, CState* _State);
     void AddGroupPrivateState(ElfilisStateGroup _Group, const wstring& _StateName, CState* _State);
 
