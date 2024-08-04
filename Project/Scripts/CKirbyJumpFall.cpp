@@ -27,7 +27,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"DROP_OBJECT_START");
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -51,7 +51,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"DROP_OBJECT_START");
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -70,7 +70,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"DROP_OBJECT");
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -91,7 +91,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"DROP_ABILITY");
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -114,7 +114,7 @@ void CKirbyJumpFall::tick()
                     ChangeState(L"ATTACK_CHARGE1_START");
                 }
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -133,7 +133,7 @@ void CKirbyJumpFall::tick()
                     ChangeState(L"ATTACK");
                 }
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -146,7 +146,7 @@ void CKirbyJumpFall::tick()
         case AbilityCopyType::SWORD: {
             if (PLAYERFSM->GetSlideComboLevel())
             {
-                if (GetOwner()->CharacterController()->IsGrounded())
+                if (PLAYERCTRL->IsGround())
                 {
                     ChangeState(L"LANDING");
                 }
@@ -155,7 +155,7 @@ void CKirbyJumpFall::tick()
                     ChangeState(L"JUMP_ATTACK_START");
                 }
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -181,7 +181,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"DROP_ABILITY");
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"IDLE_START");
             }

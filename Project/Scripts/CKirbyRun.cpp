@@ -182,7 +182,7 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"DROP_ABILITY");
             }
-            //else if (!PLAYER->CharacterController()->IsGrounded())
+            //else if (!PLAYERCTRL->IsGround())
             //{
             //    ChangeState(L"JUMP_FALL");
             //}

@@ -55,7 +55,7 @@ void CKirbyAbility_Normal::Attack()
 
 void CKirbyAbility_Normal::AttackEnter()
 {
-    if (PLAYER->CharacterController()->IsGrounded())
+    if (PLAYERCTRL->IsGround())
     {
         PLAYER->Animator()->Play(ANIMPREFIX("Spit"), false);
     }

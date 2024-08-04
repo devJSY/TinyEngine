@@ -34,7 +34,7 @@ void CKirbyJumpAttack::tick()
                 {
                     PLAYERFSM->SetSlideComboLevel(2);
 
-                    if (GetOwner()->CharacterController()->IsGrounded())
+                    if (PLAYERCTRL->IsGround())
                     {
                         ChangeState(L"LANDING");
                     }
@@ -43,7 +43,7 @@ void CKirbyJumpAttack::tick()
                         ChangeState(L"JUMP_FALL");
                     }
                 }
-                else if (GetOwner()->CharacterController()->IsGrounded())
+                else if (PLAYERCTRL->IsGround())
                 {
                     ChangeState(L"LANDING");
                 }

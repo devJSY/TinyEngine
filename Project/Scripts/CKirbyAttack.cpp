@@ -32,7 +32,7 @@ void CKirbyAttack::tick()
         case ObjectCopyType::LIGHT:
             if (PLAYER->Animator()->IsFinish())
             {
-                if (PLAYER->CharacterController()->IsGrounded())
+                if (PLAYERCTRL->IsGround())
                 {
                     ChangeState(L"IDLE");
                 }

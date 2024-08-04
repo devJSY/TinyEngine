@@ -22,7 +22,7 @@ void CKirbyDropObject::tick()
         if (PLAYER->Animator()->IsFinish())
         {
             PLAYERFSM->SetGlobalState(false);
-            if (GetOwner()->CharacterController()->IsGrounded())
+            if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"IDLE");
             }
