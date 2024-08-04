@@ -25,7 +25,7 @@ void CKirbyBackJump::tick()
         //    Rot.x = XMConvertToRadians(360.f);
         //}
 
-        if (PLAYER->CharacterController()->IsGrounded())
+        if (PLAYERCTRL->IsGround())
         {
             if (m_StateEnter)
             {
@@ -42,7 +42,7 @@ void CKirbyBackJump::tick()
     }
     else
     {
-        if (PLAYER->Animator()->IsFinish() && PLAYER->CharacterController()->IsGrounded())
+        if (PLAYER->Animator()->IsFinish() && PLAYERCTRL->IsGround())
         {
             ChangeState(L"IDLE");
         }
@@ -64,7 +64,7 @@ void CKirbyBackJump::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERCTRL->SetFriction(0.f);
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
 
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
     PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
@@ -88,7 +88,7 @@ void CKirbyBackJump::Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERCTRL->SetFriction(1.f);
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
 
     PLAYERCTRL->SetGravity(-20.f);
 }

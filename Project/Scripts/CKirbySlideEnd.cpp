@@ -26,7 +26,7 @@ void CKirbySlideEnd::tick()
             {
                 ChangeState(L"RUN_START");
             }
-            else if (false == PLAYER->CharacterController()->IsGrounded())
+            else if (false == PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
             }
@@ -44,7 +44,7 @@ void CKirbySlideEnd::tick()
             {
                 ChangeState(L"RUN_START");
             }
-            else if (false == PLAYER->CharacterController()->IsGrounded())
+            else if (false == PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
             }
@@ -64,7 +64,7 @@ void CKirbySlideEnd::Enter()
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->SlideEndEnter();
 
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
     PLAYERCTRL->SetFriction(50.f);
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -77,7 +77,7 @@ void CKirbySlideEnd::Exit()
     KirbyFSM->GetCurAbility()->SlideEndExit();
 
     PLAYERCTRL->SetVelocity(Vec3());
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
     PLAYERCTRL->SetFriction(0.f);
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();

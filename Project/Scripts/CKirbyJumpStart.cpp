@@ -99,7 +99,7 @@ void CKirbyJumpStart::tick()
         {
         case AbilityCopyType::NORMAL:
         case AbilityCopyType::SWORD: {
-            /*if (GetOwner()->CharacterController()->IsGrounded())
+            /*if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -127,7 +127,7 @@ void CKirbyJumpStart::tick()
         }
         break;
         case AbilityCopyType::FIRE: {
-            /*if (GetOwner()->CharacterController()->IsGrounded())
+            /*if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -169,7 +169,7 @@ void CKirbyJumpStart::tick()
             break;
         case AbilityCopyType::CUTTER: 
             {
-                /*if (GetOwner()->CharacterController()->IsGrounded())
+                /*if (PLAYERCTRL->IsGround())
                 {
                     ChangeState(L"LANDING");
                 }

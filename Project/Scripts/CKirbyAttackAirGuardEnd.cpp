@@ -14,7 +14,7 @@ void CKirbyAttackAirGuardEnd::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        if (GetOwner()->CharacterController()->IsGrounded())
+        if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"IDLE");
         }

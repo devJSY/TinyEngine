@@ -7,9 +7,6 @@
 #include "CModelEditorCameraMoveScript.h"
 #include "CPlayerMgr.h"
 #include "CKirbyBulletScript.h"
-#include "CTestFSM.h"
-#include "CKirbyUnitScript.h"
-#include "CSpringArmCameraScript.h"
 #include "CButtonScript.h"
 #include "CUIManagerScript.h"
 #include "CButtonManagerScript.h"
@@ -51,6 +48,7 @@
 #include "CChangeCamTrigger.h"
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
+#include "CKirbyUnitScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -60,9 +58,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CModelEditorCameraMoveScript");
 	_vec.push_back(L"CPlayerMgr");
 	_vec.push_back(L"CKirbyBulletScript");
-	_vec.push_back(L"CTestFSM");
-	_vec.push_back(L"CKirbyUnitScript");
-	_vec.push_back(L"CSpringArmCameraScript");
 	_vec.push_back(L"CButtonScript");
 	_vec.push_back(L"CUIManagerScript");
 	_vec.push_back(L"CButtonManagerScript");
@@ -104,6 +99,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CChangeCamTrigger");
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
+	_vec.push_back(L"CKirbyUnitScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -120,12 +116,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerMgr;
 	if (L"CKirbyBulletScript" == _strScriptName)
 		return new CKirbyBulletScript;
-	if (L"CTestFSM" == _strScriptName)
-		return new CTestFSM;
-	if (L"CKirbyUnitScript" == _strScriptName)
-		return new CKirbyUnitScript;
-	if (L"CSpringArmCameraScript" == _strScriptName)
-		return new CSpringArmCameraScript;
 	if (L"CButtonScript" == _strScriptName)
 		return new CButtonScript;
 	if (L"CUIManagerScript" == _strScriptName)
@@ -208,6 +198,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressCamTrigger;
 	if (L"CTwoTargetCamTrigger" == _strScriptName)
 		return new CTwoTargetCamTrigger;
+	if (L"CKirbyUnitScript" == _strScriptName)
+		return new CKirbyUnitScript;
 	return nullptr;
 }
 
@@ -227,12 +219,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayerMgr;
 	case (UINT)SCRIPT_TYPE::KIRBYBULLETSCRIPT:
 		return new CKirbyBulletScript;
-	case (UINT)SCRIPT_TYPE::TESTFSM:
-		return new CTestFSM;
-	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
-		return new CKirbyUnitScript;
-	case (UINT)SCRIPT_TYPE::SPRINGARMCAMERASCRIPT:
-		return new CSpringArmCameraScript;
 	case (UINT)SCRIPT_TYPE::BUTTONSCRIPT:
 		return new CButtonScript;
 	case (UINT)SCRIPT_TYPE::UIMANAGERSCRIPT:
@@ -315,6 +301,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CProgressCamTrigger;
 	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return new CTwoTargetCamTrigger;
+	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
+		return new CKirbyUnitScript;
 	}
 	return nullptr;
 }
@@ -335,12 +323,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerMgr";
 	case SCRIPT_TYPE::KIRBYBULLETSCRIPT:
 		return L"CKirbyBulletScript";
-	case SCRIPT_TYPE::TESTFSM:
-		return L"CTestFSM";
-	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
-		return L"CKirbyUnitScript";
-	case SCRIPT_TYPE::SPRINGARMCAMERASCRIPT:
-		return L"CSpringArmCameraScript";
 	case SCRIPT_TYPE::BUTTONSCRIPT:
 		return L"CButtonScript";
 	case SCRIPT_TYPE::UIMANAGERSCRIPT:
@@ -423,6 +405,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CProgressCamTrigger";
 	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return L"CTwoTargetCamTrigger";
+	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
+		return L"CKirbyUnitScript";
 	}
 	return nullptr;
 }
