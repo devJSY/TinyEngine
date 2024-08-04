@@ -111,6 +111,12 @@ void CElfilisFSM::ChangeStateGroup_Set(ElfilisStateGroup _Group, const wstring& 
 
 void CElfilisFSM::RepeatState(wstring _State)
 {
+    if (m_Pattern != ElfilisPatternType::NONE)
+    {
+        ProcPatternStep();
+        return;
+    }
+
     m_bAttackRepeat = true;
 
     if (_State != L"")
