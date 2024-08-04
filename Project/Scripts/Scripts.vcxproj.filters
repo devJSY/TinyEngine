@@ -448,6 +448,9 @@
     <ClInclude Include="CKirbyUnitScript.h">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyStageClear.h">
+      <Filter>State\StageClear</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -518,9 +521,6 @@
     </ClCompile>
     <ClCompile Include="CButtonManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
     </ClCompile>
     <ClCompile Include="CModelEditorCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
@@ -908,6 +908,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStageClear.cpp">
+      <Filter>State\StageClear</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1387,6 +1390,15 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\StageClear">
+      <UniqueIdentifier>{d9a440ed-3118-490d-8812-7bf7b0ad2988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\Ladder">
+      <UniqueIdentifier>{3d9bddc6-fd66-4b19-9fce-74a5f36c9458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\LongDive">
+      <UniqueIdentifier>{34a4a276-6d43-4307-8a63-776356fded45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

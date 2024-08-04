@@ -7,6 +7,7 @@
 // 방향 변경 타입 (enum 순서가 우선순위)
 enum class ForceDirType
 {
+    STAGECLEAR,
     DEFORM,
     HIT,
     END,
@@ -30,6 +31,7 @@ private:
     bool                        m_bForwardMode;
 
     // Lock
+    bool                        m_bInputLock;
     bool                        m_bMoveLock;
     bool                        m_bJumpLock;
     bool                        m_bDirLock;
@@ -69,6 +71,8 @@ private:
     void Move();
 
 public:
+    void LockInput() { m_bInputLock = true; }
+    void UnlockInput() { m_bInputLock = false; }
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
     void LockJump() { m_bJumpLock = true; }

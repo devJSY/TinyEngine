@@ -88,6 +88,12 @@ void CKirbyMoveController::begin()
 
 void CKirbyMoveController::tick()
 { 
+    // @Test
+    if (KEY_TAP(KEY::H))
+    {
+        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    }
+
     // Key 입력 확인
     Input();
 
@@ -150,6 +156,11 @@ void CKirbyMoveController::Input()
     Front.y = 0.f;
     Right.y = 0.f;
 
+    if (m_bInputLock)
+    {
+        m_Input = Vector3::Zero;
+    }
+
     if (!m_bMoveLock)
     {
         m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
@@ -202,8 +213,7 @@ void CKirbyMoveController::SetDir()
 
         // 가장 우선순위가 높은 방향을 적용
         m_TowardDir = ForceDir;
-        Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
-        Transform()->SetWorldRotation(ToWardQuaternion);
+        Transform()->SetDirection(m_TowardDir);
 
         m_ForceDirInfos.clear();
         return;

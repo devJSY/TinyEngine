@@ -208,6 +208,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyChangeObjectEnd.h"
 #include "CKirbyDropObjectStart.h"
 #include "CKirbyDropObject.h"
+#include "CKirbyStageClear.h"
 
 void CKirbyFSM::begin()
 {
@@ -307,6 +308,11 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
     AddState(L"DROP_OBJECT", new CKirbyDropObject);
     AddState(L"DROP_OBJECT_START", new CKirbyDropObjectStart);
+
+    AddState(L"STAGE_CLEAR", new CKirbyStageClear);
+
+
+
 
     ChangeState(L"IDLE");
 }
