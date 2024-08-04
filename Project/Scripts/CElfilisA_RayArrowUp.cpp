@@ -85,7 +85,7 @@ void CElfilisA_RayArrowUp::Enter_Step()
         {
             bool ret = false;
 
-            if (m_Arrow[0][i]->IsActive())
+            if (m_ArrowScript[0][i]->IsPlaying())
             {
                 ret = true;
             }
