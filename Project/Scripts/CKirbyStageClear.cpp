@@ -226,7 +226,7 @@ void CKirbyStageClear::Enter()
     Dir.y = 0.f;
     Dir.Normalize();
 
-    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir};
+    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir, true};
     PLAYERCTRL->ForceDir(DirInfo);
 
     // 커비 표정 세팅

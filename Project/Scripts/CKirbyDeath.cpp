@@ -26,7 +26,7 @@ void CKirbyDeath::tick()
         // 애니메이션 재생
         PLAYER->Animator()->SetPlay(true);
 
-        // @TODO 커비와 UI를 제외한 배경은 검은색으로 Fade Out
+        // @TODO 커비와 UI를 제외한 배경은 검은색으로 Fade Out (마스킹된 커비의 위치를 제외한 모든곳을 점점 검은색으로 바꿔주는 Post Process 쉐이더 적용하면 될 듯)
 
 
         
@@ -76,7 +76,7 @@ void CKirbyDeath::Enter()
     Dir.y = 0.f;
     Dir.Normalize();
 
-    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir};
+    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir,true};
     PLAYERCTRL->ForceDir(DirInfo);
     PLAYERFSM->SetGlobalState(true);
     GetOwner()->Animator()->Play(ANIMPREFIX("Death"), false);

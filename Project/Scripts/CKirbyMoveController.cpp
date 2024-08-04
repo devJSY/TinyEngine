@@ -91,10 +91,17 @@ void CKirbyMoveController::begin()
 void CKirbyMoveController::tick()
 { 
     // @Test
+    if (KEY_TAP(KEY::G))
+    {
+        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    }
+
     if (KEY_TAP(KEY::H))
     {
         PLAYERFSM->ChangeState(L"DEATH");
     }
+
+
 
     // Key 입력 확인
     Input();
@@ -199,6 +206,7 @@ void CKirbyMoveController::SetDir()
     {
         UINT Priority = (UINT)ForceDirType::END;
         Vec3 ForceDir = m_TowardDir;
+        bool Immediate;
 
         for (size_t i = 0; i < m_ForceDirInfos.size(); ++i)
         {
@@ -207,6 +215,7 @@ void CKirbyMoveController::SetDir()
 
                 Priority = (UINT)m_ForceDirInfos[i].Type;
                 ForceDir = m_ForceDirInfos[i].Dir;
+                Immediate = m_ForceDirInfos[i].Immediate;
             }
         }
 
@@ -215,7 +224,10 @@ void CKirbyMoveController::SetDir()
 
         // 가장 우선순위가 높은 방향을 적용
         m_TowardDir = ForceDir;
-        Transform()->SetDirection(m_TowardDir);
+
+        // 방향을 즉시 변경해야 한다면
+        if (Immediate)
+            Transform()->SetDirection(m_TowardDir);
 
         m_ForceDirInfos.clear();
         return;

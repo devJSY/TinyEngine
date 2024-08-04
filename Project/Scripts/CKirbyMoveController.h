@@ -18,6 +18,7 @@ struct ForceDirInfo
 {
     ForceDirType Type;
     Vec3 Dir; // 바라봐야할 방향(World 좌표계)
+    bool Immediate;
 };
 
 class CKirbyMoveController : public CScript

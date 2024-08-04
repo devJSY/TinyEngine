@@ -26,9 +26,30 @@ enum class CameraSetup
     BOSS,
 };
 
+struct CameraSetting
+{
+    Vec3 Offset; // LookAtPos에 대한 Offset
+
+    Vec3 LookDir;    // 카메라가 바라보는 각도
+    float LookDist; // 카메라와 타겟 사이의 거리
+
+    float MinSpeed;          // 카메라의 최소 스피드
+    float MaxSpeed;          // 카메라의 최대 스피드
+    float ThresholdDistance; // 카메라가 최대 스피드로 이동하기 위한 임계 거리
+
+    float RotationSpeed; // 회전 속도
+
+    float ZoomMinSpeed;  // Zoom 최소 속도
+    float ZoomMaxSpeed;  // Zoom 최대 속도
+    float ZoomThreshold; // Zoom 임계 거리
+};
+
 class CCameraController : public CScript
 {
 private:
+    CameraSetting               m_InitSetting;
+    CameraSetting               m_SaveSetting;
+
     CameraSetup                 m_Setup;             // 현재 카메라의 Setup
 
     // Effect
@@ -134,6 +155,11 @@ private:
     void SetZoomMaxSpeed(float _MaxSpeed) { m_ZoomMaxSpeed = _MaxSpeed; }
     void SetZoomThreshold(float _Threshold) { m_ZoomThreshold = _Threshold; } 
     void SetDistanceOffset(float _DistOffset) { m_DistanceOffset = _DistOffset; } 
+
+    void SaveSetting();
+    void SaveInitSetting();
+    void LoadSetting();
+    void LoadInitSetting();
 
 public:
     virtual void begin() override;

@@ -101,6 +101,9 @@ void CCameraController::begin()
     m_Effect[(UINT)EFFECT_TYPE::SHAKE] = {EFFECT_TYPE::SHAKE,false, 0.f, 0.f};
 
     // 카메라 세팅
+    SaveSetting();
+    SaveInitSetting();
+
     m_Setup = CameraSetup::NORMAL;
 
     m_TargetPos = m_Target->Transform()->GetWorldPos();
@@ -123,23 +126,6 @@ void CCameraController::begin()
 
 void CCameraController::tick()
 {
-    // @DEBUG
-    if (KEY_TAP(KEY::T))
-    {
-        Boss(L"TestTarget", 200.f, 0.f,0.f,0.f);
-    }
-
-    // @DEBUG
-    if (KEY_TAP(KEY::Y))
-    {
-        Shake(3.f, 50.f,50.f);
-    }
-
-    if (KEY_TAP(KEY::U))
-    {
-        Tilt(10.f, 1.f);
-    }
-
     EditMode();
 
     // Target이 없다면 return
@@ -340,6 +326,62 @@ void CCameraController::UpdateLookDistance()
     {
         m_CurDistance = m_LookDist;
     }
+}
+
+void CCameraController::SaveSetting()
+{
+    m_SaveSetting.LookDir = m_LookDir;
+    m_SaveSetting.LookDist = m_LookDist;
+    m_SaveSetting.MaxSpeed = m_MaxSpeed;
+    m_SaveSetting.MinSpeed = m_MinSpeed;
+    m_SaveSetting.Offset = m_Offset;
+    m_SaveSetting.RotationSpeed = m_RotationSpeed;
+    m_SaveSetting.ThresholdDistance = m_ThresholdDistance;
+    m_SaveSetting.ZoomMaxSpeed = m_ZoomMaxSpeed;
+    m_SaveSetting.ZoomMinSpeed = m_ZoomMinSpeed;
+    m_SaveSetting.ZoomThreshold = m_ZoomThreshold;
+}
+
+void CCameraController::SaveInitSetting()
+{
+    m_InitSetting.LookDir = m_LookDir;
+    m_InitSetting.LookDist = m_LookDist;
+    m_InitSetting.MaxSpeed = m_MaxSpeed;
+    m_InitSetting.MinSpeed = m_MinSpeed;
+    m_InitSetting.Offset = m_Offset;
+    m_InitSetting.RotationSpeed = m_RotationSpeed;
+    m_InitSetting.ThresholdDistance = m_ThresholdDistance;
+    m_InitSetting.ZoomMaxSpeed = m_ZoomMaxSpeed;
+    m_InitSetting.ZoomMinSpeed = m_ZoomMinSpeed;
+    m_InitSetting.ZoomThreshold = m_ZoomThreshold;
+}
+
+void CCameraController::LoadSetting()
+{
+    m_LookDir = m_SaveSetting.LookDir;
+    m_LookDist = m_SaveSetting.LookDist;
+    m_MaxSpeed = m_SaveSetting.MaxSpeed;
+    m_MinSpeed = m_SaveSetting.MinSpeed;
+    m_Offset = m_SaveSetting.Offset;
+    m_RotationSpeed = m_SaveSetting.RotationSpeed;
+    m_ThresholdDistance = m_SaveSetting.ThresholdDistance;
+    m_ZoomMaxSpeed = m_SaveSetting.ZoomMaxSpeed;
+    m_ZoomMinSpeed = m_SaveSetting.ZoomMinSpeed;
+    m_ZoomThreshold = m_SaveSetting.ZoomThreshold;  
+}
+
+void CCameraController::LoadInitSetting()
+{
+    m_LookDir = m_InitSetting.LookDir;
+    m_LookDist = m_InitSetting.LookDist;
+    m_MaxSpeed = m_InitSetting.MaxSpeed;
+    m_MinSpeed = m_InitSetting.MinSpeed;
+    m_Offset = m_InitSetting.Offset;
+    m_RotationSpeed = m_InitSetting.RotationSpeed;
+    m_ThresholdDistance = m_InitSetting.ThresholdDistance;
+    m_ZoomMaxSpeed = m_InitSetting.ZoomMaxSpeed;
+    m_ZoomMinSpeed = m_InitSetting.ZoomMinSpeed;
+    m_ZoomThreshold = m_InitSetting.ZoomThreshold;  
 }
 
 void CCameraController::EditMode()
