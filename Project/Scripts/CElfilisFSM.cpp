@@ -15,6 +15,7 @@ CElfilisFSM::CElfilisFSM()
     , m_GroundAttackCount(0)
     , m_NearDist(5.f)
     , m_AirPosition(Vec3(0.f, 600.f, 1000.f))
+    , m_bGroundCollision(false)
     , m_BigElfilis(nullptr)
     , m_BigElfilisFSM(nullptr)
     , m_MapFloorOffset(Vec3(0.f, 0.f, 5.f))
@@ -38,6 +39,7 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     , m_GroundAttackCount(0)
     , m_NearDist(_Origin.m_NearDist)
     , m_AirPosition(_Origin.m_NearDist)
+    , m_bGroundCollision(false)
     , m_MapFloorOffset(_Origin.m_MapFloorOffset)
     , m_MapSizeRadius(_Origin.m_MapSizeRadius)
 {
@@ -339,6 +341,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 // #include "CElfilisA_RayArrowDown.h"
 #include "CElfilisA_DimensionLaser.h"
 #include "CElfilisA_DrawLaser.h"
+#include "CElfilisA_Stab.h"
 void CElfilisFSM::begin()
 {
     // set map size
@@ -374,6 +377,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
     AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
+    AddGroupPrivateState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB", new CElfilisA_Stab);
 
     ChangeState(L"GROUND_IDLE");
 
@@ -401,6 +405,25 @@ void CElfilisFSM::begin()
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
+}
+
+void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
+{
+    //static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
+    //RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f, vecCollision);
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (m_CurStateGroup == ElfilisStateGroup::AirToGround)
+    {
+        if (LayerIdx == LAYER_STATIC && _OtherCollider->GetOwner()->GetName() == L"Floor")
+        {
+            m_bGroundCollision = true;
+        }
+        else if (LayerIdx == LAYER_PLAYER)
+        {
+            m_bGroundCollision = true;
+        }
+    }
 }
 
 void CElfilisFSM::SetPattern(ElfilisPatternType _Pattern)
@@ -445,7 +468,7 @@ void CElfilisFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 6)    // 진입 : 외부호출
         {
-            //ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_SLASH");
+            ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB");
             bFinish = true;
         }
     }
@@ -529,6 +552,7 @@ void CElfilisFSM::SetStateGroup(ElfilisStateGroup _Group)
         ClearComboLevel();
         m_bAttackRepeat = false;
         m_GroundAttackCount = 0;
+        m_bGroundCollision = false;
     }
     break;
     }

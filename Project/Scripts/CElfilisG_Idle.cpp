@@ -15,8 +15,8 @@ void CElfilisG_Idle::tick()
 {
     if (KEY_TAP(KEY::SPACE))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
-        // ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+        //ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
     }
 
     m_AccTime += DT;

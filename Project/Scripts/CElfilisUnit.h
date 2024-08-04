@@ -4,9 +4,9 @@
 class CElfilisUnit : public CUnitScript
 {
 public:
-    //virtual void tick();
+    // virtual void tick();
 
-    //virtual void AttackReward();
+    // virtual void AttackReward();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

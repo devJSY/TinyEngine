@@ -2,16 +2,6 @@
 #include "CFSMScript.h"
 class CElfilisBigFSM;
 
-enum class ElfilisA_BigAtk
-{
-    PUBLIC,
-
-    DrawLazer,
-    PortalStar,
-    RotSpear,
-    BigElfilisCombo, //? 이거 BigAtk이 아니라 BigElfilisAtkState를 따로 파야하남
-};
-
 enum class ElfilisA_ToGround
 {
     Teleport,
@@ -68,6 +58,7 @@ private:
 
     // air
     Vec3 m_AirPosition;
+    bool m_bGroundCollision;
 
     // big Elfilis
     CGameObject* m_BigElfilis;
@@ -86,6 +77,8 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
@@ -101,6 +94,7 @@ public:
     UINT GetPatternStep() const { return m_PatternStep; }
     float GetNearDist() const { return m_NearDist; }
     Vec3 GetAirPos() const { return m_AirPosition; }
+    bool IsGround() const { return m_bGroundCollision; }
     CGameObject* GetBigBoss() const { return m_BigElfilis; }
     CElfilisBigFSM* GetBigBossFSM() const { return m_BigElfilisFSM; }
     float GetMapSizeRadius() const { return m_MapSizeRadius; }

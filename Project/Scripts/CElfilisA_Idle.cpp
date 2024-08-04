@@ -14,7 +14,7 @@ void CElfilisA_Idle::tick()
 {
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirLargeAtk, L"AIR_ATKS_DRAWLASER");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB");
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
 }

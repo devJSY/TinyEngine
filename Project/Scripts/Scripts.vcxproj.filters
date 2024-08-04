@@ -601,6 +601,7 @@
     <ClInclude Include="CElfilisBig_SwingR.h">
       <Filter>State\ElfilisBig State\Swing\R</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisA_Stab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1215,6 +1216,7 @@
     <ClCompile Include="CElfilisBig_SwingR.cpp">
       <Filter>State\ElfilisBig State\Swing\R</Filter>
     </ClCompile>
+    <ClCompile Include="CElfilisA_Stab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1891,6 +1893,15 @@
     </Filter>
     <Filter Include="State\ElfilisBig State\Swing\FinishL">
       <UniqueIdentifier>{ea514888-8c17-4a62-a5ca-f3d50fa8db87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround">
+      <UniqueIdentifier>{8579883f-f706-48b3-a5fa-26a5bf91aed8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\Slash">
+      <UniqueIdentifier>{687b23ba-6b82-4eb9-bbdb-c54b1971bcf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\Stab">
+      <UniqueIdentifier>{18037b9a-9ab9-4960-acc5-f7dac8dae8b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
