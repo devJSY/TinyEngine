@@ -484,6 +484,12 @@
     <ClInclude Include="CKirbyUnitScript.h">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
     </ClInclude>
+    <ClInclude Include="CSolarChargeScript.h">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
+    </ClInclude>
+    <ClInclude Include="CSolarOnceScript.h">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -554,9 +560,6 @@
     </ClCompile>
     <ClCompile Include="CButtonManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
     </ClCompile>
     <ClCompile Include="CModelEditorCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
@@ -980,6 +983,12 @@
     </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CSolarChargeScript.cpp">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
+    </ClCompile>
+    <ClCompile Include="CSolarOnceScript.cpp">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1507,6 +1516,12 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj\Once">
+      <UniqueIdentifier>{0e6edbfb-8080-4dfc-a310-c2c56be01e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj\Charge">
+      <UniqueIdentifier>{396035f9-7c3d-4e98-9197-65f734dd337e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

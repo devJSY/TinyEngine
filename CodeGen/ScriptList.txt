@@ -58,3 +58,5 @@ CSurpriseBoardAttackScript
 CUIWipeScript
 CWipeTriggerScript
 CKirbyUnitScript
+CSolarChargeScript
+CSolarOnceScript

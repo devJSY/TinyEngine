@@ -61,6 +61,8 @@
 #include "CUIWipeScript.h"
 #include "CWipeTriggerScript.h"
 #include "CKirbyUnitScript.h"
+#include "CSolarChargeScript.h"
+#include "CSolarOnceScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -124,6 +126,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIWipeScript");
 	_vec.push_back(L"CWipeTriggerScript");
 	_vec.push_back(L"CKirbyUnitScript");
+	_vec.push_back(L"CSolarChargeScript");
+	_vec.push_back(L"CSolarOnceScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -248,6 +252,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CWipeTriggerScript;
 	if (L"CKirbyUnitScript" == _strScriptName)
 		return new CKirbyUnitScript;
+	if (L"CSolarChargeScript" == _strScriptName)
+		return new CSolarChargeScript;
+	if (L"CSolarOnceScript" == _strScriptName)
+		return new CSolarOnceScript;
 	return nullptr;
 }
 
@@ -375,6 +383,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CWipeTriggerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return new CKirbyUnitScript;
+	case (UINT)SCRIPT_TYPE::SOLARCHARGESCRIPT:
+		return new CSolarChargeScript;
+	case (UINT)SCRIPT_TYPE::SOLARONCESCRIPT:
+		return new CSolarOnceScript;
 	}
 	return nullptr;
 }
@@ -503,6 +515,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CWipeTriggerScript";
 	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return L"CKirbyUnitScript";
+	case SCRIPT_TYPE::SOLARCHARGESCRIPT:
+		return L"CSolarChargeScript";
+	case SCRIPT_TYPE::SOLARONCESCRIPT:
+		return L"CSolarOnceScript";
 	}
 	return nullptr;
 }
