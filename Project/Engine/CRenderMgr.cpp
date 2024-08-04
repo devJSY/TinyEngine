@@ -344,12 +344,15 @@ void CRenderMgr::render_postprocess_HDRI()
     // =================
     // Bloom
     // =================
+    Ptr<CMaterial> pToneMappingMtrl = m_ToneMappingObj->MeshRender()->GetMaterial(0);
+    pToneMappingMtrl->SetScalarParam(INT_0, m_bBloomEnable);
+
     if (m_bBloomEnable)
     {
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
 
-        Vec2 FilterRadiusThreshold = *(Vec2*)m_ToneMappingObj->MeshRender()->GetMaterial(0)->GetScalarParam(VEC2_0);
+        Vec2 FilterRadiusThreshold = *(Vec2*)pToneMappingMtrl->GetScalarParam(VEC2_0);
 
         // Bloom Down
         Ptr<CMaterial> pBloomDownMtrl = m_BloomDownObj->MeshRender()->GetMaterial(0);

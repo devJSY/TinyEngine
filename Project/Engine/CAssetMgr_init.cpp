@@ -1131,7 +1131,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddScalarParam(FLOAT_0, "Exposure", 1e-3f);                 // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
+        pShader->AddScalarParam(INT_0, "Bloom Enable");
+        pShader->AddScalarParam(INT_1, "Blend Mode");
+        pShader->AddScalarParam(FLOAT_0, "Exposure", 1e-3f); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
         pShader->AddScalarParam(FLOAT_1, "Gamma", 1e-3f);                    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
         pShader->AddScalarParam(FLOAT_2, "Bloom Strength", 1e-3f);           // Bloom Strength
         pShader->AddScalarParam(VEC2_0, "Filter Radius / Threshold", 1e-3f); // Filter Radius, Threshold

@@ -1,6 +1,9 @@
 #include "struct.hlsli"
 #include "global.hlsli"
 
+#define BloomEnable g_int_0 
+#define BlendMode g_int_1 // 0 : Strength Blend, 1 : Strength Add
+
 #define Exposure g_float_0 // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
 #define Gamma g_float_1    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
 
@@ -66,7 +69,21 @@ float4 main(PS_IN input) : SV_TARGET
         color1 = g_tex_1.Sample(g_LinearClampSampler, input.vUV0).rgb;
     }
     
-    float3 combined = (1.0 - Strength) * color0 + Strength * color1;
+    float3 combined = color0;
+    
+    if (BloomEnable)
+    {
+        // Add
+        if (BlendMode)
+        {
+            combined = color0 + Strength * color1;
+        }
+        // Blend
+        else
+        {
+            combined = (1.0 - Strength) * color0 + Strength * color1;
+        }
+    }
 
     // ToneMapping
     combined = LinearToneMapping(combined);
