@@ -63,7 +63,7 @@ void CElfilisA_TeleportCombo::Enter_Step()
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
         Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
 
-        if (m_ComboLevel == 0)
+        if (m_ComboLevel == 0 || m_ComboLevel == 5)
         {
             // air to ground
             m_AfterPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f;
