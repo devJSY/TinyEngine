@@ -59,6 +59,10 @@
 #include "CMovingObjScript.h"
 #include "CCrumbleScript.h"
 #include "CMovingObjTriggerScript.h"
+#include "CSurpriseBoardScript.h"
+#include "CSurpriseBoardAttackScript.h"
+#include "CUIWipeScript.h"
+#include "CWipeTriggerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -120,6 +124,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMovingObjScript");
 	_vec.push_back(L"CCrumbleScript");
 	_vec.push_back(L"CMovingObjTriggerScript");
+	_vec.push_back(L"CSurpriseBoardScript");
+	_vec.push_back(L"CSurpriseBoardAttackScript");
+	_vec.push_back(L"CUIWipeScript");
+	_vec.push_back(L"CWipeTriggerScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -240,6 +248,14 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CCrumbleScript;
 	if (L"CMovingObjTriggerScript" == _strScriptName)
 		return new CMovingObjTriggerScript;
+	if (L"CSurpriseBoardScript" == _strScriptName)
+		return new CSurpriseBoardScript;
+	if (L"CSurpriseBoardAttackScript" == _strScriptName)
+		return new CSurpriseBoardAttackScript;
+	if (L"CUIWipeScript" == _strScriptName)
+		return new CUIWipeScript;
+	if (L"CWipeTriggerScript" == _strScriptName)
+		return new CWipeTriggerScript;
 	return nullptr;
 }
 
@@ -363,6 +379,14 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CCrumbleScript;
 	case (UINT)SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
 		return new CMovingObjTriggerScript;
+	case (UINT)SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
+		return new CSurpriseBoardScript;
+	case (UINT)SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
+		return new CSurpriseBoardAttackScript;
+	case (UINT)SCRIPT_TYPE::UIWIPESCRIPT:
+		return new CUIWipeScript;
+	case (UINT)SCRIPT_TYPE::WIPETRIGGERSCRIPT:
+		return new CWipeTriggerScript;
 	}
 	return nullptr;
 }
@@ -487,6 +511,14 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CCrumbleScript";
 	case SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
 		return L"CMovingObjTriggerScript";
+	case SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
+		return L"CSurpriseBoardScript";
+	case SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
+		return L"CSurpriseBoardAttackScript";
+	case SCRIPT_TYPE::UIWIPESCRIPT:
+		return L"CUIWipeScript";
+	case SCRIPT_TYPE::WIPETRIGGERSCRIPT:
+		return L"CWipeTriggerScript";
 	}
 	return nullptr;
 }

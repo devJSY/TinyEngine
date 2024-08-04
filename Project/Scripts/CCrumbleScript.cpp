@@ -8,7 +8,7 @@ CCrumbleScript::CCrumbleScript()
     , m_pPlayer(nullptr)
     , m_eState(CrumbleState::Wait)
     , m_fAccTime(0.f)
-    , m_fWaitTime(1.f)
+    , m_fWaitTime(2.f)
 {
 }
 
@@ -17,7 +17,7 @@ CCrumbleScript::CCrumbleScript(const CCrumbleScript& Origin)
     , m_pPlayer(nullptr)
     , m_eState(CrumbleState::Wait)
     , m_fAccTime(0.f)
-    , m_fWaitTime(1.f)
+    , m_fWaitTime(2.f)
 {
 }
 
@@ -59,7 +59,8 @@ void CCrumbleScript::tick()
 
 void CCrumbleScript::PreDisappear()
 {
-    if (Animator()->IsFinish())
+    m_fAccTime += DT;
+    if (m_fAccTime>=m_fWaitTime)
     {
         ChangeState(CrumbleState::Disapper);
     }
@@ -72,11 +73,6 @@ void CCrumbleScript::Disappear()
         BoxCollider()->SetEnabled(false);
 
         m_fAccTime += DT;
-
-        if (BoxCollider()->IsEnabled() == true)
-        {
-           
-        }
 
         if (m_fAccTime >= m_fWaitTime)
             ChangeState(CrumbleState::Appear);
@@ -108,7 +104,7 @@ void CCrumbleScript::EnterState(CrumbleState _state)
     }
     break;
     case CrumbleState::PreDisappear: {
-        Animator()->Play(ANIMPREFIX("PreDisappear"), false, false, 3.5f);
+        Animator()->Play(ANIMPREFIX("PreDisappear"), true, false, 2.5f);
     }
     break;
     case CrumbleState::Disapper: {
@@ -130,6 +126,11 @@ void CCrumbleScript::ExitState(CrumbleState _state)
 {
     switch (_state)
     {
+    case CrumbleState::PreDisappear:
+    {
+        m_fAccTime = 0.f;
+    }
+    break;
     case CrumbleState::Disapper: {
         m_fAccTime = 0.f;
     }

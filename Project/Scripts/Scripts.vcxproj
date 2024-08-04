@@ -255,6 +255,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CSpringArmCameraScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CSurpriseBoardAttackScript.h" />
+    <ClInclude Include="CSurpriseBoardScript.h" />
     <ClInclude Include="CTackleEnemyScript.h" />
     <ClInclude Include="CTestForward.h" />
     <ClInclude Include="CTestFSM.h" />
@@ -271,7 +273,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
     <ClInclude Include="CUIUnitManagerScript.h" />
+    <ClInclude Include="CUIWipeScript.h" />
     <ClInclude Include="CUnitScript.h" />
+    <ClInclude Include="CWipeTriggerScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
@@ -420,6 +424,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CSpringArmCameraScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CSurpriseBoardAttackScript.cpp" />
+    <ClCompile Include="CSurpriseBoardScript.cpp" />
     <ClCompile Include="CTackleEnemyScript.cpp" />
     <ClCompile Include="CTestForward.cpp" />
     <ClCompile Include="CTestFSM.cpp" />
@@ -436,7 +442,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />
     <ClCompile Include="CUIUnitManagerScript.cpp" />
+    <ClCompile Include="CUIWipeScript.cpp" />
     <ClCompile Include="CUnitScript.cpp" />
+    <ClCompile Include="CWipeTriggerScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

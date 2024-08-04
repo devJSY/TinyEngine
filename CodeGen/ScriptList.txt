@@ -56,3 +56,7 @@ CTwoTargetCamTrigger
 CMovingObjScript
 CCrumbleScript
 CMovingObjTriggerScript
+CSurpriseBoardScript
+CSurpriseBoardAttackScript
+CUIWipeScript
+CWipeTriggerScript

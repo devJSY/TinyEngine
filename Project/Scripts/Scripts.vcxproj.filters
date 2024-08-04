@@ -490,6 +490,18 @@
     <ClInclude Include="CMovingObjTriggerScript.h">
       <Filter>Scripts\Gimmik\ObstacleObj\SolarPanel\MovingObjTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="CSurpriseBoardScript.h">
+      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurpriseBoardAttackScript.h">
+      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard\SurpriseAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIWipeScript.h">
+      <Filter>Scripts\UI\UIWipe</Filter>
+    </ClInclude>
+    <ClInclude Include="CWipeTriggerScript.h">
+      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -992,6 +1004,18 @@
     </ClCompile>
     <ClCompile Include="CMovingObjTriggerScript.cpp">
       <Filter>Scripts\Gimmik\ObstacleObj\SolarPanel\MovingObjTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurpriseBoardScript.cpp">
+      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurpriseBoardAttackScript.cpp">
+      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard\SurpriseAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIWipeScript.cpp">
+      <Filter>Scripts\UI\UIWipe</Filter>
+    </ClCompile>
+    <ClCompile Include="CWipeTriggerScript.cpp">
+      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1519,6 +1543,18 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\ObstacleObj\SolarPanel\MovingObjTrigger">
       <UniqueIdentifier>{8f894e3f-d821-476b-bba8-64c69704389d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ObstacleObj\SupriseBoard">
+      <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ObstacleObj\SupriseBoard\SurpriseAttack">
+      <UniqueIdentifier>{1718f35d-8e28-4d42-8733-0e6f507cc84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIWipe">
+      <UniqueIdentifier>{0444a1b1-24aa-4fd3-8e58-68300ea21f5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIWipe\UIWipeTrigger">
+      <UniqueIdentifier>{1154ae36-6ac7-49e2-9f7a-c42af591649d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
