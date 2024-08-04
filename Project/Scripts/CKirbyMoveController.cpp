@@ -21,6 +21,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_JumpPower(10.f)
     , m_Gravity(-20.f)
     , m_bMoveLock(false)
+    , m_bInputLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
     , m_bJump(false)
@@ -50,6 +51,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_RotSpeed(_Origin.m_RotSpeed)
     , m_JumpPower(_Origin.m_JumpPower)
     , m_Gravity(_Origin.m_Gravity)
+    , m_bInputLock(false)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -91,7 +93,7 @@ void CKirbyMoveController::tick()
     // @Test
     if (KEY_TAP(KEY::H))
     {
-        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+        PLAYERFSM->ChangeState(L"DEATH");
     }
 
     // Key 입력 확인

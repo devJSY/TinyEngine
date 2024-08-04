@@ -7,7 +7,7 @@
 // 방향 변경 타입 (enum 순서가 우선순위)
 enum class ForceDirType
 {
-    STAGECLEAR,
+    STAGEEVENT,
     DEFORM,
     HIT,
     END,
