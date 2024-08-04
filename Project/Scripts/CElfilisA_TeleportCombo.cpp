@@ -1,23 +1,24 @@
 #include "pch.h"
-#include "CElfilisA_Teleport.h"
+#include "CElfilisA_TeleportCombo.h"
 #include "CElfilisFSM.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
-CElfilisA_Teleport::CElfilisA_Teleport()
+CElfilisA_TeleportCombo::CElfilisA_TeleportCombo()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
     , m_EffectSpeed(500.f)
+    , m_ComboLevel(0)
 {
     m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
 
-CElfilisA_Teleport::~CElfilisA_Teleport()
+CElfilisA_TeleportCombo::~CElfilisA_TeleportCombo()
 {
 }
 
-void CElfilisA_Teleport::tick()
+void CElfilisA_TeleportCombo::tick()
 {
     switch (m_Step)
     {
@@ -32,7 +33,14 @@ void CElfilisA_Teleport::tick()
     }
 }
 
-void CElfilisA_Teleport::Enter_Step()
+void CElfilisA_TeleportCombo::Enter()
+{
+    m_ComboLevel = 0;
+    m_Step = StateStep::Start;
+    Enter_Step();
+}
+
+void CElfilisA_TeleportCombo::Enter_Step()
 {
     switch (m_Step)
     {
@@ -54,7 +62,19 @@ void CElfilisA_Teleport::Enter_Step()
         // teleport
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
         Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
-        m_AfterPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f;
+
+        if (m_ComboLevel == 0)
+        {
+            // air to ground
+            m_AfterPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f;
+        }
+        else
+        {
+            // ground teleport combo
+            m_AfterPos = GetOwner()->Transform()->GetWorldPos();
+            m_AfterPos.x += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
+            m_AfterPos.z += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
+        }
 
         if (m_AfterPos.x < 0)
         {
@@ -105,7 +125,7 @@ void CElfilisA_Teleport::Enter_Step()
     }
 }
 
-void CElfilisA_Teleport::Exit_Step()
+void CElfilisA_TeleportCombo::Exit_Step()
 {
     switch (m_Step)
     {
@@ -133,7 +153,7 @@ void CElfilisA_Teleport::Exit_Step()
     }
 }
 
-void CElfilisA_Teleport::Start()
+void CElfilisA_TeleportCombo::Start()
 {
     // Teleport (After 1 tick : Spawn 생성 기다림)
     Vec3 Dir = PLAYER->Transform()->GetWorldPos() - m_AfterPos;
@@ -146,7 +166,7 @@ void CElfilisA_Teleport::Start()
     ChangeStep(StateStep::End);
 }
 
-void CElfilisA_Teleport::End()
+void CElfilisA_TeleportCombo::End()
 {
     // move effect
     Vec3 Pos = m_BeforeEffect->Transform()->GetWorldPos();
@@ -159,7 +179,15 @@ void CElfilisA_Teleport::End()
 
     if (Pos.y <= 0.f)
     {
-        ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup(NextState);
+        if (m_ComboLevel < 5)
+        {
+            m_ComboLevel++;
+            ChangeStep(StateStep::Start);
+        }
+        else
+        {
+            ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
+            ELFFSM->ChangeStateGroup(NextState);
+        }
     }
 }

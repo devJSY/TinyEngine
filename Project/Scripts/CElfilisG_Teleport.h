@@ -12,7 +12,7 @@ private:
     float           m_EffectSpeed;
 
 public:
-    virtual void tick();
+    virtual void tick() override;
 
 private:
     void Enter_Step();

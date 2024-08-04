@@ -607,6 +607,7 @@
     <ClInclude Include="CElfilisA_Teleport.h">
       <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisA_TeleportCombo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1227,6 +1228,7 @@
     <ClCompile Include="CElfilisA_Teleport.cpp">
       <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
     </ClCompile>
+    <ClCompile Include="CElfilisA_TeleportCombo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1915,6 +1917,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Air_ToGround\Teleport">
       <UniqueIdentifier>{d2104c54-e5f0-45c0-aea9-9a33d80322f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\TeleportCombo">
+      <UniqueIdentifier>{4b6b7370-fd7f-4b5c-b9c8-8c7f35335fd0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

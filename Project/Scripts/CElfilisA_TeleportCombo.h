@@ -1,7 +1,7 @@
 #pragma once
 #include "CBossState.h"
 
-class CElfilisA_Teleport : public CBossState
+class CElfilisA_TeleportCombo : public CBossState
 {
 private:
     Ptr<CPrefab> m_Effect;
@@ -10,9 +10,11 @@ private:
     CGameObject* m_AfterEffect;
     Vec3 m_AfterPos;
     float m_EffectSpeed;
+    int m_ComboLevel;
 
 public:
     virtual void tick() override;
+    virtual void Enter() override;
 
 private:
     void Enter_Step();
@@ -23,7 +25,7 @@ private:
     void End();
 
 public:
-    CLONE(CElfilisA_Teleport)
-    CElfilisA_Teleport();
-    virtual ~CElfilisA_Teleport();
+    CLONE(CElfilisA_TeleportCombo)
+    CElfilisA_TeleportCombo();
+    virtual ~CElfilisA_TeleportCombo();
 };

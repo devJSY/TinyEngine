@@ -14,7 +14,7 @@ void CElfilisA_Idle::tick()
 {
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORTCOMBO");
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
 }
