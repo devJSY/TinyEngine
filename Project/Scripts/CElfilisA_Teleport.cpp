@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "CElfilisG_Teleport.h"
+#include "CElfilisA_Teleport.h"
 #include "CElfilisFSM.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
-CElfilisG_Teleport::CElfilisG_Teleport()
+CElfilisA_Teleport::CElfilisA_Teleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
@@ -13,11 +13,11 @@ CElfilisG_Teleport::CElfilisG_Teleport()
     m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
 
-CElfilisG_Teleport::~CElfilisG_Teleport()
+CElfilisA_Teleport::~CElfilisA_Teleport()
 {
 }
 
-void CElfilisG_Teleport::tick()
+void CElfilisA_Teleport::tick()
 {
     switch (m_Step)
     {
@@ -32,7 +32,7 @@ void CElfilisG_Teleport::tick()
     }
 }
 
-void CElfilisG_Teleport::Enter_Step()
+void CElfilisA_Teleport::Enter_Step()
 {
     switch (m_Step)
     {
@@ -54,9 +54,7 @@ void CElfilisG_Teleport::Enter_Step()
         // teleport
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
         Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
-        m_AfterPos = GetOwner()->Transform()->GetWorldPos();
-        m_AfterPos.x += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
-        m_AfterPos.z += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
+        m_AfterPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f;
 
         if (m_AfterPos.x < 0)
         {
@@ -107,7 +105,7 @@ void CElfilisG_Teleport::Enter_Step()
     }
 }
 
-void CElfilisG_Teleport::Exit_Step()
+void CElfilisA_Teleport::Exit_Step()
 {
     switch (m_Step)
     {
@@ -135,7 +133,7 @@ void CElfilisG_Teleport::Exit_Step()
     }
 }
 
-void CElfilisG_Teleport::Start()
+void CElfilisA_Teleport::Start()
 {
     // Teleport (After 1 tick : Spawn 생성 기다림)
     Vec3 Dir = PLAYER->Transform()->GetWorldPos() - m_AfterPos;
@@ -148,19 +146,18 @@ void CElfilisG_Teleport::Start()
     ChangeStep(StateStep::End);
 }
 
-void CElfilisG_Teleport::End()
+void CElfilisA_Teleport::End()
 {
     // move effect
     Vec3 Pos = m_BeforeEffect->Transform()->GetWorldPos();
-    float ChangeHeight = Pos.y - m_EffectSpeed * DT;
-    Pos.y = ChangeHeight;
+    Pos.y -= m_EffectSpeed * DT;
     m_BeforeEffect->Transform()->SetWorldPos(Pos);
 
     Pos = m_AfterEffect->Transform()->GetWorldPos();
-    Pos.y = ChangeHeight;
+    Pos.y -= m_EffectSpeed * DT;
     m_AfterEffect->Transform()->SetWorldPos(Pos);
 
-    if (ChangeHeight <= 0.f)
+    if (Pos.y <= 0.f)
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
         ELFFSM->ChangeStateGroup(NextState);

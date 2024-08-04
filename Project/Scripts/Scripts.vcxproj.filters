@@ -601,7 +601,12 @@
     <ClInclude Include="CElfilisBig_SwingR.h">
       <Filter>State\ElfilisBig State\Swing\R</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisA_Stab.h" />
+    <ClInclude Include="CElfilisA_Stab.h">
+      <Filter>State\ElfilisState\Air_ToGround\Stab</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_Teleport.h">
+      <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1216,7 +1221,12 @@
     <ClCompile Include="CElfilisBig_SwingR.cpp">
       <Filter>State\ElfilisBig State\Swing\R</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisA_Stab.cpp" />
+    <ClCompile Include="CElfilisA_Stab.cpp">
+      <Filter>State\ElfilisState\Air_ToGround\Stab</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_Teleport.cpp">
+      <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1902,6 +1912,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Air_ToGround\Stab">
       <UniqueIdentifier>{18037b9a-9ab9-4960-acc5-f7dac8dae8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\Teleport">
+      <UniqueIdentifier>{d2104c54-e5f0-45c0-aea9-9a33d80322f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

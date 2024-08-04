@@ -216,8 +216,6 @@ void CElfilisA_DimensionLaser::End()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        // @TODO 전이확인 후 복구
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirIdle);
         ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
     }
 }
