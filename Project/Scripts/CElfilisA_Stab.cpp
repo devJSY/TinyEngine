@@ -42,7 +42,16 @@ void CElfilisA_Stab::tick()
 
 void CElfilisA_Stab::Enter()
 {
-    m_Step = StateStep::Ready;
+    if (ELFFSM->GetComboLevel() == 0)
+    {
+        m_Step = StateStep::Ready;
+        ELFFSM->ClearComboLevel();
+    }
+    else
+    {
+        m_Step = StateStep::Start;
+    }
+
     Enter_Step();
 }
 
@@ -63,8 +72,8 @@ void CElfilisA_Stab::Enter_Step()
         // Slash
         CGameObject* Halberd = GetOwner()->GetChildObject(L"Halberd");
         Vec3 HalberdTop = Halberd->Transform()->GetWorldPos();
-        HalberdTop +=
-            Halberd->Transform()->GetWorldDir(DIR_TYPE::UP) * (Halberd->BoxCollider()->GetCenter().y + Halberd->BoxCollider()->GetSize().y * Halberd->Transform()->GetWorldScale().y / 2.f);
+        HalberdTop += Halberd->Transform()->GetWorldDir(DIR_TYPE::UP) *
+                      (Halberd->BoxCollider()->GetCenter().y + Halberd->BoxCollider()->GetSize().y * Halberd->Transform()->GetWorldScale().y / 2.f);
         Vec3 Dir = (PLAYER->Transform()->GetWorldPos() - HalberdTop).Normalize();
         GetOwner()->Rigidbody()->AddForce(Dir * 1800.f, ForceMode::Impulse);
     }

@@ -134,6 +134,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="CElfilisA_RayArrowUp.h" />
+    <ClInclude Include="CElfilisA_SlashCombo.h" />
     <ClInclude Include="CElfilisA_Stab.h" />
     <ClInclude Include="CElfilisA_StabCombo.h" />
     <ClInclude Include="CElfilisA_Teleport.h" />
@@ -353,6 +354,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="CElfilisA_RayArrowUp.cpp" />
+    <ClCompile Include="CElfilisA_SlashCombo.cpp" />
     <ClCompile Include="CElfilisA_Stab.cpp" />
     <ClCompile Include="CElfilisA_StabCombo.cpp" />
     <ClCompile Include="CElfilisA_Teleport.cpp" />

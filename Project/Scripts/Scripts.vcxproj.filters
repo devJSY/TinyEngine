@@ -616,6 +616,9 @@
     <ClInclude Include="CElfilisA_StabCombo.h">
       <Filter>State\ElfilisState\Air_SmallAttack1\StabCombo</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisA_SlashCombo.h">
+      <Filter>State\ElfilisState\Air_SmallAttack1\SlashCombo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1244,6 +1247,9 @@
     </ClCompile>
     <ClCompile Include="CElfilisA_StabCombo.cpp">
       <Filter>State\ElfilisState\Air_SmallAttack1\StabCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_SlashCombo.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack1\SlashCombo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1925,9 +1931,6 @@
     <Filter Include="State\ElfilisState\Air_ToGround">
       <UniqueIdentifier>{8579883f-f706-48b3-a5fa-26a5bf91aed8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Air_ToGround\Slash">
-      <UniqueIdentifier>{687b23ba-6b82-4eb9-bbdb-c54b1971bcf1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\ElfilisState\Air_ToGround\Stab">
       <UniqueIdentifier>{18037b9a-9ab9-4960-acc5-f7dac8dae8b9}</UniqueIdentifier>
     </Filter>
@@ -1945,6 +1948,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Air_SmallAttack1\StabCombo">
       <UniqueIdentifier>{68d0929c-88e9-45d3-aa81-42aadab0b0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\SlashCombo">
+      <UniqueIdentifier>{687b23ba-6b82-4eb9-bbdb-c54b1971bcf1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ void CElfilisA_Idle::tick()
 {
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_STABCOMBO");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
         //ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
 }

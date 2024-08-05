@@ -339,8 +339,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_MoveL.h"
 #include "CElfilisA_MoveR.h"
 #include "CElfilisA_RayArrowUp.h"
-#include "CElfilisA_StabCombo.h"
 // #include "CElfilisA_RayArrowDown.h"
+#include "CElfilisA_StabCombo.h"
+#include "CElfilisA_SlashCombo.h"
 #include "CElfilisA_DimensionLaser.h"
 #include "CElfilisA_DrawLaser.h"
 #include "CElfilisA_Stab.h"
@@ -368,6 +369,7 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP", new CElfilisA_RayArrowUp);
     // AddGroupPublicState(ElfilisStateGroup::AirSmallAtk, L"AIR_ATKS_RAYARROW_DOWN", new CElfilisA_RayArrowDown);
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_STABCOMBO", new CElfilisA_StabCombo);
+    AddGroupPublicState(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO", new CElfilisA_SlashCombo);
     AddGroupPublicState(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER", new CElfilisA_DimensionLaser);
     AddGroupPublicState(ElfilisStateGroup::AirLargeAtk, L"AIR_ATKL_DRAWLASER", new CElfilisA_DrawLaser);
     AddGroupPublicState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT", new CElfilisA_Teleport);
