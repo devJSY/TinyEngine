@@ -126,6 +126,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
     <ClInclude Include="CKirbyIdleStart.h" />
+    <ClInclude Include="CKirbyLadderDown.h" />
+    <ClInclude Include="CKirbyLadderExit.h" />
+    <ClInclude Include="CKirbyLadderUp.h" />
+    <ClInclude Include="CKirbyLadderWait.h" />
+    <ClInclude Include="CKirbyLadderWaitStart.h" />
     <ClInclude Include="CKirbyLongDive.h" />
     <ClInclude Include="CKirbyLongDiveBound.h" />
     <ClInclude Include="CKirbyLongDiveLanding.h" />
@@ -133,6 +138,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyObject_VendingMachine.h" />
     <ClInclude Include="CKirbyStageClear.h" />
     <ClInclude Include="CKirbyWeaponHitbox.h" />
+    <ClInclude Include="CLadderScript.h" />
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
@@ -282,6 +288,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
     <ClCompile Include="CKirbyIdleStart.cpp" />
+    <ClCompile Include="CKirbyLadderDown.cpp" />
+    <ClCompile Include="CKirbyLadderExit.cpp" />
+    <ClCompile Include="CKirbyLadderUp.cpp" />
+    <ClCompile Include="CKirbyLadderWait.cpp" />
+    <ClCompile Include="CKirbyLadderWaitStart.cpp" />
     <ClCompile Include="CKirbyLongDive.cpp" />
     <ClCompile Include="CKirbyLongDiveBound.cpp" />
     <ClCompile Include="CKirbyLongDiveLanding.cpp" />
@@ -289,6 +300,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyObject_VendingMachine.cpp" />
     <ClCompile Include="CKirbyStageClear.cpp" />
     <ClCompile Include="CKirbyWeaponHitbox.cpp" />
+    <ClCompile Include="CLadderScript.cpp" />
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />

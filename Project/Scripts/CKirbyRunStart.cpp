@@ -45,6 +45,10 @@ void CKirbyRunStart::tick()
             {
                 ChangeState(L"IDLE");
             }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
             // 상태변경 시그널 발생 않을 시
             else
             {
@@ -76,6 +80,10 @@ void CKirbyRunStart::tick()
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
                 ChangeState(L"IDLE");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
             }
             // 상태변경 시그널 발생 않을 시
             else
@@ -114,6 +122,10 @@ void CKirbyRunStart::tick()
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
                 ChangeState(L"IDLE");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
             }
             // 상태변경 시그널 발생 않을 시
             else

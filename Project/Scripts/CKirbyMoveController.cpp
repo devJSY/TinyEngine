@@ -125,6 +125,8 @@ void CKirbyMoveController::Input()
 {
     // 키 입력 정보
     m_Input = {0.f, 0.f, 0.f};
+
+    m_InputWorld = {0.f, 0.f, 0.f};
     // 움직임 방향 정보(World좌표계)
     m_MoveDir = {0.f, 0.f, 0.f};
     // 커비 방향 정보

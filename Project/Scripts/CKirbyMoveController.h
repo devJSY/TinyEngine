@@ -8,6 +8,7 @@
 enum class ForceDirType
 {
     STAGEEVENT,
+    STATE,
     DEFORM,
     HIT,
     END,

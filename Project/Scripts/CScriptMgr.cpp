@@ -49,6 +49,7 @@
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
 #include "CKirbyUnitScript.h"
+#include "CLadderScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -100,6 +101,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
 	_vec.push_back(L"CKirbyUnitScript");
+	_vec.push_back(L"CLadderScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -200,6 +202,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CTwoTargetCamTrigger;
 	if (L"CKirbyUnitScript" == _strScriptName)
 		return new CKirbyUnitScript;
+	if (L"CLadderScript" == _strScriptName)
+		return new CLadderScript;
 	return nullptr;
 }
 
@@ -303,6 +307,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CTwoTargetCamTrigger;
 	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return new CKirbyUnitScript;
+	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
+		return new CLadderScript;
 	}
 	return nullptr;
 }
@@ -407,6 +413,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CTwoTargetCamTrigger";
 	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return L"CKirbyUnitScript";
+	case SCRIPT_TYPE::LADDERSCRIPT:
+		return L"CLadderScript";
 	}
 	return nullptr;
 }

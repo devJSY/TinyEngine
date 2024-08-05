@@ -210,10 +210,18 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyDropObject.h"
 #include "CKirbyStageClear.h"
 
+// LongDive
 #include "CKirbyLongDiveStart.h"
 #include "CKirbyLongDive.h"
 #include "CKirbyLongDiveLanding.h"
 #include "CKirbyLongDiveBound.h"
+
+//Ladder
+#include "CKirbyLadderDown.h"
+#include "CKirbyLadderUp.h"
+#include "CKirbyLadderWait.h"
+#include "CKirbyLadderWaitStart.h"
+#include "CKirbyLadderExit.h"
 
 void CKirbyFSM::begin()
 {
@@ -314,21 +322,28 @@ void CKirbyFSM::begin()
     AddState(L"DROP_OBJECT", new CKirbyDropObject);
     AddState(L"DROP_OBJECT_START", new CKirbyDropObjectStart);
 
+    // Stage Clear
     AddState(L"STAGE_CLEAR", new CKirbyStageClear);
 
+    // Long Dive
     AddState(L"LONGDIVE_START", new CKirbyLongDiveStart);
     AddState(L"LONGDIVE", new CKirbyLongDive);
     AddState(L"LONGDIVE_LANDING", new CKirbyLongDiveLanding);
     AddState(L"LONGDIVE_BOUND", new CKirbyLongDiveBound);
 
+    // Ladder
+    AddState(L"LADDER_UP", new CKirbyLadderUp);
+    AddState(L"LADDER_DOWN", new CKirbyLadderDown);
+    AddState(L"LADDER_WAIT", new CKirbyLadderWait);
+    AddState(L"LADDER_WAITSTART", new CKirbyLadderWaitStart);
+    AddState(L"LADDER_EXIT", new CKirbyLadderExit);
+    
 
     ChangeState(L"IDLE");
 }
 
 void CKirbyFSM::tick()
 {
-    Vec3 BackDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP).Cross(PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT)).Normalize();
-
     if (m_ComboLevel != 0)
     {
         m_ComboAccTime += DT;
