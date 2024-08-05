@@ -96,7 +96,15 @@ void CElfilisG_NormalAtkL::Progress()
         if (Rand <= 90)
         {
             m_bComboSuccess = true;
-            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
+
+            if (ELFFSM->IsNearPlayer())
+            {
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
+            }
+            else
+            {
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_R");
+            }
         }
         else
         {
@@ -113,7 +121,7 @@ void CElfilisG_NormalAtkL::End()
 
         if (NextState == ELFFSM->GetCurStateGroup())
         {
-            ELFFSM->RepeatState();
+            ELFFSM->RepeatState(L"GROUND_ATK_NORMAL");
         }
         else
         {

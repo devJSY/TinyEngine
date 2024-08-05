@@ -111,7 +111,7 @@ void CElfilisG_NormalAtkTeleportL::Exit_Step()
             GamePlayStatic::DestroyGameObject(m_AfterEffect);
         }
     }
-        break;
+    break;
     case StateStep::Progress: {
         if (m_bComboSuccess)
         {
@@ -194,7 +194,15 @@ void CElfilisG_NormalAtkTeleportL::Progress()
         if (Rand <= 90)
         {
             m_bComboSuccess = true;
-            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R");
+
+            if (ELFFSM->IsNearPlayer())
+            {
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
+            }
+            else
+            {
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_R");
+            }
         }
         else
         {
@@ -208,7 +216,15 @@ void CElfilisG_NormalAtkTeleportL::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup(NextState);
+
+        if (NextState == ELFFSM->GetCurStateGroup())
+        {
+            ELFFSM->RepeatState(L"GROUND_ATK_NORMAL");
+        }
+        else
+        {
+            ELFFSM->ChangeStateGroup(NextState);
+        }
     }
 }
 
@@ -230,6 +246,7 @@ void CElfilisG_NormalAtkTeleportL::SpawnTeleport()
     Dist.Normalize();
     Dist *= ELFFSM->GetNearDist() * (GetRandomfloat(30.f, 100.f) / 100.f);
     m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
+    m_AfterPos.y = 0.f;
 
     // limit in map
     float MapSizeRadius = ELFFSM->GetMapSizeRadius();

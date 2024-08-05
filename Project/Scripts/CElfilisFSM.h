@@ -2,17 +2,6 @@
 #include "CFSMScript.h"
 class CElfilisBigFSM;
 
-enum class ElfilisA_ToGround
-{
-    Teleport,
-    TeleportCombo,
-    PUBLIC,
-
-    FlyDown,
-    FlyDownCombo,
-    FlyScratch,
-};
-
 enum class ElfilisStateGroup
 {
     GroundIdle,
@@ -94,6 +83,7 @@ public:
     UINT GetComboLevel() const { return m_ComboLevel; }
     UINT GetPatternStep() const { return m_PatternStep; }
     float GetNearDist() const { return m_NearDist; }
+    bool IsNearPlayer() const { return GetPlayerDist() <= m_NearDist; }
     Vec3 GetAirPos() const { return m_AirPosition; }
     bool IsGround() const { return m_bGroundCollision; }
     CGameObject* GetBigBoss() const { return m_BigElfilis; }

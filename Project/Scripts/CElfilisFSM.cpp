@@ -146,13 +146,13 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 
         if (Rand <= 90.f)
         {
-            if (GetPlayerDist() > 100.f)
+            if (IsNearPlayer())
             {
-                return ElfilisStateGroup::GroundAtkFar;
+                return ElfilisStateGroup::GroundAtkNear;
             }
             else
             {
-                return ElfilisStateGroup::GroundAtkNear;
+                return ElfilisStateGroup::GroundAtkFar;
             }
         }
         else
@@ -175,14 +175,14 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
             {
                 float Rand = GetRandomfloat(1, 100);
 
-                if (Rand <= 40.f)
+                if (Rand <= 80.f)
                 {
                     return ElfilisStateGroup::GroundMove;
                 }
-                else if (Rand <= 80.f)
-                {
-                    return ElfilisStateGroup::GroundMoveAtk;
-                }
+                //else if (Rand <= 80.f)
+                //{
+                //    return ElfilisStateGroup::GroundMoveAtk;
+                //}
                 else
                 {
                     return ElfilisStateGroup::GroundToAir;
@@ -200,14 +200,14 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
                 // 같은 Group State가 retrun되는 경우, 반복의 의미 (함수 호출한 쪽에서 직접 값 확인 후 처리)
                 return m_CurStateGroup;
             }
-            else if (Rand <= 65.f)
+            else if (Rand <= 80.f)
             {
                 return ElfilisStateGroup::GroundMove;
             }
-            else if (Rand <= 80.f)
-            {
-                return ElfilisStateGroup::GroundMoveAtk;
-            }
+            //else if (Rand <= 80.f)
+            //{
+            //    return ElfilisStateGroup::GroundMoveAtk;
+            //}
             else
             {
                 return ElfilisStateGroup::GroundToAir;
@@ -302,16 +302,15 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisG_NormalAtkL.h"
 #include "CElfilisG_NormalAtkR.h"
 #include "CElfilisG_NormalAtkFinishL.h"
+#include "CElfilisG_NormalAtkTeleportL.h"
+#include "CElfilisG_NormalAtkTeleportR.h"
+#include "CElfilisG_NormalAtkTeleportFinishL.h"
 #include "CElfilisG_RayArrow.h"
 #include "CElfilisG_SwordWaveRL.h"
 #include "CElfilisG_SwordWaveLR.h"
 #include "CElfilisG_SwordWaveFinishRL.h"
 #include "CElfilisG_SwordWaveStorm.h"
 // #include "CElfilisG_DimensionSpike.h"
-#include "CElfilisG_NormalAtkTeleport.h"
-#include "CElfilisG_NormalAtkTeleportL.h"
-#include "CElfilisG_NormalAtkTeleportR.h"
-#include "CElfilisG_NormalAtkTeleportFinishL.h"
 #include "CElfilisG_GroundToAir.h"
 #include "CElfilisG_ToAirTeleport.h"
 
@@ -340,8 +339,8 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT", new CElfilisG_Teleport);
     AddGroupPublicState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL", new CElfilisG_NormalAtk);
+    AddGroupPublicState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_NORMALTELEPORT", new CElfilisG_NormalAtk);
     AddGroupPublicState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW", new CElfilisG_RayArrow);
-    AddGroupPublicState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT", new CElfilisG_NormalAtkTeleport);
     AddGroupPublicState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR", new CElfilisG_GroundToAir);
     AddGroupPublicState(ElfilisStateGroup::AirIdle, L"AIR_IDLE", new CElfilisA_Idle);
     AddGroupPublicState(ElfilisStateGroup::AirMove, L"AIR_MOVE_L", new CElfilisA_MoveL);
@@ -358,14 +357,14 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
+    AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL", new CElfilisG_SwordWaveRL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_LR", new CElfilisG_SwordWaveLR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_FINISHLR", new CElfilisG_SwordWaveFinishRL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_STORM", new CElfilisG_SwordWaveStorm);
     // AddGroupPrivateState(ElfilisStateGroup::GroundAtk, L"GROUND_ATK_DIMENSIONSPIKE", new CElfilisG_DimensionSpike);
-    AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L", new CElfilisG_NormalAtkTeleportL);
-    AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_R", new CElfilisG_NormalAtkTeleportR);
-    AddGroupPrivateState(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL", new CElfilisG_NormalAtkTeleportFinishL);
     AddGroupPrivateState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT", new CElfilisG_ToAirTeleport);
     AddGroupPrivateState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB", new CElfilisA_Stab);
 

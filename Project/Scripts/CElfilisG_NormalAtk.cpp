@@ -19,11 +19,25 @@ void CElfilisG_NormalAtk::Enter()
 {
     if (ELFFSM->GetPhase() == 1)
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+        if (ELFFSM->IsNearPlayer())
+        {
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+        }
+        else
+        {
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_L");
+        }
     }
     else
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
+        if (ELFFSM->IsNearPlayer())
+        {
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R");
+        }
+        else
+        {
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_R");
+        }
     }
 }
 

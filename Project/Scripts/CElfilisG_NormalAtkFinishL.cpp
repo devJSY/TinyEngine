@@ -56,11 +56,10 @@ void CElfilisG_NormalAtkFinishL::Exit_Step()
         break;
     case StateStep::Progress:
         break;
-    case StateStep::End:
-    {
+    case StateStep::End: {
         ELFFSM->ClearComboLevel();
     }
-        break;
+    break;
     }
 }
 
@@ -91,14 +90,7 @@ void CElfilisG_NormalAtkFinishL::End()
 
         if (NextState == ELFFSM->GetCurStateGroup())
         {
-            if (ELFFSM->GetPhase() == 1)
-            {
-                ELFFSM->RepeatState(L"GROUND_ATK_NORMAL_L");
-            }
-            else
-            {
-                ELFFSM->RepeatState(L"GROUND_ATK_NORMAL_R");
-            }
+            ELFFSM->RepeatState(L"GROUND_ATK_NORMAL");
         }
         else
         {

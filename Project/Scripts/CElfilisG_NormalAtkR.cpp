@@ -97,13 +97,27 @@ void CElfilisG_NormalAtkR::Progress()
         {
             m_bComboSuccess = true;
 
-            if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2) && ELFFSM->GetComboLevel() == 2)
+            if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2 && ELFFSM->GetComboLevel() == 2))
             {
-                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL");
+                if (ELFFSM->IsNearPlayer())
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL");
+                }
+                else
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_FINISHL");
+                }
             }
             else
             {
-                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+                if (ELFFSM->IsNearPlayer())
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+                }
+                else
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_L");
+                }
             }
         }
         else
@@ -121,14 +135,7 @@ void CElfilisG_NormalAtkR::End()
 
         if (NextState == ELFFSM->GetCurStateGroup())
         {
-            if (ELFFSM->GetPhase() == 1)
-            {
-                ELFFSM->RepeatState(L"GROUND_ATK_NORMAL_L");
-            }
-            else
-            {
-                ELFFSM->RepeatState(L"GROUND_ATK_NORMAL_R");
-            }
+            ELFFSM->RepeatState(L"GROUND_ATK_NORMAL");
         }
         else
         {

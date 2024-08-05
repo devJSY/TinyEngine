@@ -144,7 +144,7 @@ void CElfilisG_NormalAtkTeleportR::StartWait()
     if (GetOwner()->Animator()->IsFinish())
     {
         float Rand = GetRandomfloat(1.f, 100.f);
-        
+
         if (Rand <= 80.f)
         {
             ChangeStep(StateStep::Progress);
@@ -204,13 +204,27 @@ void CElfilisG_NormalAtkTeleportR::Progress()
         {
             m_bComboSuccess = true;
 
-            if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2) && ELFFSM->GetComboLevel() == 2)
+            if (ELFFSM->GetPhase() == 1 || (ELFFSM->GetPhase() == 2 && ELFFSM->GetComboLevel() == 2))
             {
-                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_FINISHL");
+                if (ELFFSM->IsNearPlayer())
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL");
+                }
+                else
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_FINISHL");
+                }
             }
             else
             {
-                ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMoveAtk, L"GROUND_MOVEATK_NORMALTELEPORT_L");
+                if (ELFFSM->IsNearPlayer())
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L");
+                }
+                else
+                {
+                    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_L");
+                }
             }
         }
         else
@@ -225,7 +239,15 @@ void CElfilisG_NormalAtkTeleportR::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup(NextState);
+
+        if (NextState == ELFFSM->GetCurStateGroup())
+        {
+            ELFFSM->RepeatState(L"GROUND_ATK_NORMAL");
+        }
+        else
+        {
+            ELFFSM->ChangeStateGroup(NextState);
+        }
     }
 }
 
@@ -246,7 +268,8 @@ void CElfilisG_NormalAtkTeleportR::SpawnTeleport()
     Dist.y = 0.f;
     Dist.Normalize();
     Dist *= ELFFSM->GetNearDist() * (GetRandomfloat(30.f, 100.f) / 100.f);
-    m_AfterPos = GetOwner()->Transform()->GetWorldPos() + Dist;
+    m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
+    m_AfterPos.y = 0.f;
 
     // limit in map
     float MapSizeRadius = ELFFSM->GetMapSizeRadius();

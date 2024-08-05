@@ -36,9 +36,7 @@ CElfilisA_DimensionLaser::~CElfilisA_DimensionLaser()
 {
     for (int i = 0; i < 5; ++i)
     {
-        //if (m_Dimension[i] && m_Dimension[i]->GetLayerIdx() == -1)
-        if (m_Dimension[i])
-
+        if (m_Dimension[i] && m_Dimension[i]->GetLayerIdx() == -1)
         {
             delete m_Dimension[i];
         }
