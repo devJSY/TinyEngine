@@ -45,10 +45,10 @@ void CElfilisA_Stab::Enter()
     if (ELFFSM->GetComboLevel() == 0)
     {
         m_Step = StateStep::Ready;
-        ELFFSM->ClearComboLevel();
     }
     else
     {
+        ELFFSM->ClearComboLevel();
         m_Step = StateStep::Start;
     }
 

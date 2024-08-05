@@ -216,34 +216,21 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     }
     break;
     case ElfilisStateGroup::GroundToAir: {
-        //@TODO 전이 확인 후 복구
-        return ElfilisStateGroup::AirIdle;
-
         float Rand = GetRandomfloat(1, 100);
 
-        if (Rand <= 50.f)
+        if (Rand <= 75.f)
         {
             return ElfilisStateGroup::AirMove;
         }
-        else if (Rand <= 75.f)
+        else
         {
             return ElfilisStateGroup::AirLargeAtk;
         }
-        else
-        {
-            return ElfilisStateGroup::AirToGround;
-        }
     }
     break;
-    case ElfilisStateGroup::AirIdle: {
-        //@TODO 전이 확인 후 다시생각
-        return ElfilisStateGroup::AirIdle;
-    }
-    break;
+    case ElfilisStateGroup::AirIdle:
+        break;
     case ElfilisStateGroup::AirMove: {
-        //@TODO 전이 확인 후 복구
-        return ElfilisStateGroup::AirIdle;
-
         if (m_Phase == 1)
         {
             return ElfilisStateGroup::AirSmallAtk1;
@@ -263,12 +250,11 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
         }
     }
     break;
-    case ElfilisStateGroup::AirSmallAtk1: {
+    case ElfilisStateGroup::AirSmallAtk1:
+    case ElfilisStateGroup::AirSmallAtk2: {
         // case : 이미 같은 공격을 2번 반복한 이후
         if (m_bAttackRepeat)
         {
-            //@TODO 전이 확인 후 복구
-            return ElfilisStateGroup::AirIdle;
             return ElfilisStateGroup::AirToGround;
         }
 
@@ -284,18 +270,12 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
             }
             else
             {
-                //@TODO 전이 확인 후 복구
-                return ElfilisStateGroup::AirIdle;
                 return ElfilisStateGroup::AirToGround;
             }
         }
     }
     break;
-    case ElfilisStateGroup::AirSmallAtk2:
     case ElfilisStateGroup::AirLargeAtk: {
-        //@TODO 전이 확인 후 복구
-        return ElfilisStateGroup::AirIdle;
-
         return ElfilisStateGroup::AirToGround;
     }
     break;
@@ -415,6 +395,17 @@ void CElfilisFSM::begin()
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
+
+    if (KEY_TAP(KEY::ENTER))
+    {
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
+        // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
+    }
+    if (KEY_TAP(KEY::SPACE))
+    {
+        // ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)

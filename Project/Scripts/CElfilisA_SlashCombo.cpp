@@ -34,10 +34,6 @@ void CElfilisA_SlashCombo::tick()
         Wait();
     }
     break;
-    case StateStep::End: {
-        End();
-    }
-    break;
     }
 }
 
@@ -96,8 +92,6 @@ void CElfilisA_SlashCombo::Enter_Step()
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 1000.f, 1.f), ForceMode::Impulse);
     }
     break;
-    case StateStep::End:
-        break;
     }
 }
 
@@ -118,13 +112,13 @@ void CElfilisA_SlashCombo::Exit_Step()
         break;
     case StateStep::Wait:
         break;
-    case StateStep::End:
-        break;
     }
 }
 
 void CElfilisA_SlashCombo::Ready()
 {
+    RotateToPlayer();
+
     if (GetOwner()->Animator()->IsFinish())
     {
         if (m_ComboLevel < 2)
@@ -140,6 +134,7 @@ void CElfilisA_SlashCombo::Ready()
 
 void CElfilisA_SlashCombo::Start()
 {
+    RotateToPlayer();
     GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -1500.f, 1.f), ForceMode::Force);
 
     if (GetOwner()->Transform()->GetWorldPos().y <= 100.f)
@@ -206,14 +201,5 @@ void CElfilisA_SlashCombo::Wait()
         m_ComboLevel++;
 
         ChangeStep(StateStep::Ready);
-    }
-}
-
-void CElfilisA_SlashCombo::End()
-{
-    if (GetOwner()->Animator()->IsFinish())
-    {
-        ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-        ELFFSM->ChangeStateGroup(NextState);
     }
 }

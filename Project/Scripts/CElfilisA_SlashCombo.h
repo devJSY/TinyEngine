@@ -22,7 +22,6 @@ private:
     void Start();
     void Progress();
     void Wait();
-    void End();
 
 public:
     CLONE(CElfilisA_SlashCombo)
