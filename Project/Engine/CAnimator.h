@@ -12,6 +12,8 @@ class CStructuredBuffer;
 class CAnimator : public CComponent
 {
 private:
+    AnimatorUpdateMode m_UpdateMode;
+
     Ptr<CMesh> m_SkeletalMesh;
 
     map<wstring, int> m_mapClip; // Key, Clip Index
@@ -49,7 +51,6 @@ private:
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
-    void finaltick_ModelEditor();
 
     void ClearData();
 
@@ -61,6 +62,9 @@ public:
     bool IsValid() const { return nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh(); };
 
 public:
+    AnimatorUpdateMode GetAnimatorUpdateMode() const { return m_UpdateMode; }
+    void SetAnimatorUpdateMode(AnimatorUpdateMode _Mode) { m_UpdateMode = _Mode; }
+
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
     void SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh);
 

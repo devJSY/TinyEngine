@@ -114,7 +114,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_CCTCallbackInst()
     , m_Matrix{}
     , m_Accumulator(0.f)
-    , m_StepSize(0.02f) // 1.f / 50.f
+    , m_StepSize(0.01666f) // 1.f / 60.f
     , m_Gravity(Vec3(0.f, -9.81f, 0.f))
     , m_PPM(1.f)
     , m_listTrigger{}

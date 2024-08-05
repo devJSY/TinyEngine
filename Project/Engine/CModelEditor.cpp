@@ -1166,6 +1166,12 @@ void CModelEditor::DrawBoneSocket(tMTBone& _Bone)
 
                         PreviewAssetObj->MeshRender()->SetFrustumCheck(false);
 
+                        if (nullptr != PreviewAssetObj->Animator())
+                        {
+                            PreviewAssetObj->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
+                            PreviewAssetObj->Animator()->SetPlay(false);
+                        }
+
                         PreviewAssetObj->SetBoneSocket(pBoneSocket);
                         m_ModelObj->AddChild(PreviewAssetObj);
                     }
@@ -1423,13 +1429,10 @@ void CModelEditor::finaltick_ModelEditor(CGameObject* _Obj)
         if (nullptr == pComp)
             continue;
 
+        pComp->finaltick();
         if (i == (UINT)COMPONENT_TYPE::ANIMATOR)
         {
-            _Obj->Animator()->finaltick_ModelEditor(); // Animator finaltick 예외처리
-        }
-        else
-        {
-            pComp->finaltick();
+            _Obj->Animator()->UpdateData();
         }
 
         vector<CGameObject*>::const_iterator iter = _Obj->GetChildObject().begin();
@@ -1510,6 +1513,7 @@ void CModelEditor::SetModel(Ptr<CMeshData> _MeshData)
 
     if (nullptr != m_ModelObj->Animator())
     {
+        m_ModelObj->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
         m_ModelObj->Animator()->SetPlay(false);
     }
 

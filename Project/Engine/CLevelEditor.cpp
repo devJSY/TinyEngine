@@ -409,6 +409,10 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Checkbox("Enable SSAO", (bool*)&g_Global.g_EnableSSAO);
     ImGui::Checkbox("Collision Picking Mode", (bool*)&g_Global.g_CollisionPicking);
 
+    float TimeSclae = CTimeMgr::GetInst()->GetTimeScale();
+    if (ImGui::DragFloat("Time Scale", &TimeSclae, 1e-3f))
+        CTimeMgr::GetInst()->SetTimeScale(TimeSclae);
+
     ImGui::End();
 }
 

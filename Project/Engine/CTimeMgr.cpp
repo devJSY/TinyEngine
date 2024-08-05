@@ -13,6 +13,7 @@ CTimeMgr::CTimeMgr()
     , m_iFPS(0)
     , m_fAccTime(0.f)
     , m_bLock(true)
+    , m_TimeScale(1.f)
 {
 }
 
@@ -43,15 +44,18 @@ void CTimeMgr::tick()
     m_fAccTime += m_EngineDeltaTime;
     if (1.f <= m_fAccTime)
     {
-        //wchar_t szText[50] = {};
-        //swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
-        //SetWindowText(CEngine::GetInst()->GetMainWind(), szText);
+        // wchar_t szText[50] = {};
+        // swprintf_s(szText, 50, L"DeltaTime : %f, FPS : %d", m_DeltaTime, m_iCall);
+        // SetWindowText(CEngine::GetInst()->GetMainWind(), szText);
         m_iFPS = m_iCall;
         m_iCall = 0;
         m_fAccTime = 0.f;
     }
 
     ++m_iCall;
+
+    // TimeScale 적용
+    m_DeltaTime *= m_TimeScale;
 
     g_Global.g_DT = m_DeltaTime;
     g_Global.g_Time += m_DeltaTime;
