@@ -45,46 +45,43 @@ CTaskMgr::~CTaskMgr()
 
 void CTaskMgr::tick()
 {
+    // Editor feature
+    if (CEditorMgr::GetInst()->IsEnabled())
     {
         // Mouse Picking
         if (KEY_TAP(KEY::LBTN))
         {
             Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
 
-            // Editor 모드
-            if (CEditorMgr::GetInst()->IsEnabled())
+            // Viewport 에서만 마우스 피킹 적용
+            // Viewport 기준 마우스위치로 설정
+            if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
             {
-                // Viewport 에서만 마우스 피킹 적용
-                // Viewport 기준 마우스위치로 설정
-                if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
-                {
-                    MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+                MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-                    GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
-                    // GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
+                if (g_Global.g_CollisionPicking)
+                {
+                    GamePlayStatic::MouseCollisionPicking(MousePos);
+                    // GamePlayStatic::MouseCollision2DPicking(MousePos);
                 }
-            }
-            else
-            {
-                GamePlayStatic::MouseColorPicking(MousePos); // Color Picking
-                // GamePlayStatic::MouseCollision2DPicking(MousePos); // Collision Picking
+                else
+                {
+                    GamePlayStatic::MouseColorPicking(MousePos);
+                }
             }
         }
 
-        if (CEditorMgr::GetInst()->IsEnabled())
+        // 스크린샷
+        if (KEY_TAP(KEY::PRINT))
         {
-            // 스크린샷
-            if (KEY_TAP(KEY::PRINT))
-            {
-                GamePlayStatic::ScreenShot();
-            }
+            GamePlayStatic::ScreenShot();
+        }
 
-            // 에셋 저장
-            if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
-            {
-                CAssetMgr::GetInst()->SaveAssetsToFile();
-                LOG(Log, "Assets Saved to file Successfully!");
-            }
+        // 에셋 저장
+        if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
+        {
+            CAssetMgr::GetInst()->SaveAssetsToFile();
+            LOG(Log, "Assets Saved to file Successfully!");
         }
     }
 
@@ -124,6 +121,9 @@ void CTaskMgr::tick()
             break;
         case TASK_TYPE::MOUSE_COLLISION2D_PICKING:
             MOUSE_COLLISION2D_PICKING(Task);
+            break;
+        case TASK_TYPE::MOUSE_COLLISION_PICKING:
+            MOUSE_COLLISION_PICKING(Task);
             break;
         case TASK_TYPE::ADD_COMPONENT:
             ADD_COMPONENT(Task);
@@ -500,93 +500,6 @@ void CTaskMgr::MOUSE_COLOR_PICKING(const tTask& _Task)
 
     CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
 }
-//
-// void CTaskMgr::MOUSE_RAY_PICKING(const tTask& _Task)
-//{
-//    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
-//        return;
-//
-//    int MouseX = (int)_Task.Param_1;
-//    int MouseY = (int)_Task.Param_2;
-//
-//    float NdcMouseX = 0.0f;
-//    float NdcMouseY = 0.0f;
-//
-//    // 마우스 커서의 위치를 NDC로 변환
-//    // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
-//    // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
-//    if (CEditorMgr::GetInst()->IsEnabled())
-//    {
-//        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
-//        if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
-//            return;
-//
-//        NdcMouseX = MouseX * 2.0f / ViewportSize.x - 1.0f;
-//        NdcMouseY = -MouseY * 2.0f / ViewportSize.y + 1.0f;
-//    }
-//    else
-//    {
-//        Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
-//        NdcMouseX = MouseX * 2.0f / WindowSize.x - 1.0f;
-//        NdcMouseY = -MouseY * 2.0f / WindowSize.y + 1.0f;
-//    }
-//
-//    if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
-//        return;
-//
-//    Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
-//    Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
-//
-//    // 메인 카메라
-//    CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
-//
-//    Matrix inverseProjView = (pCam->GetViewMat() * pCam->GetProjMat()).Invert();
-//
-//    // ViewFrustum 안에서 PickingRay의 방향 구하기
-//    Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
-//    Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
-//
-//    Vector3 dir = FarWorld - NearWorld;
-//    dir.Normalize();
-//
-//    CGameObject* pSelectedObj = nullptr;
-//
-//    // 광선을 만들고 충돌 감지
-//    SimpleMath::Ray curRay = SimpleMath::Ray(NearWorld, dir);
-//    float dist = 0.0f;
-//
-//    CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-//    for (int i = 0; i < LAYER_MAX; ++i)
-//    {
-//        CLayer* pLayer = pCurLevel->GetLayer(i);
-//        const vector<CGameObject*>& vecObjects = pLayer->GetLayerObjects();
-//        for (size_t j = 0; j < vecObjects.size(); ++j)
-//        {
-//            float dist = 0.0f;
-//            CCollider2D* col = vecObjects[j]->Collider2D();
-//            if (nullptr == col)
-//                continue;
-//
-//            bool bSelected = false;
-//            if (COLLIDER2D_TYPE::RECT == col->GetColliderType())
-//                bSelected = curRay.Intersects(col->GetBoundingBox(), dist);
-//            else
-//                bSelected = curRay.Intersects(col->GetBoundingSphere(), dist);
-//
-//            if (bSelected)
-//            {
-//                pSelectedObj = vecObjects[j];
-//                break;
-//            }
-//        }
-//
-//        // 선택된 오브젝트가 있다면 탈출
-//        if (nullptr != pSelectedObj)
-//            break;
-//    }
-//
-//    CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
-//}
 
 void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
 {
@@ -633,6 +546,56 @@ void CTaskMgr::MOUSE_COLLISION2D_PICKING(const tTask& _Task)
     pSelectedObj = CPhysics2DMgr::GetInst()->CollisionCheck(Vec2(NearWorld.x, NearWorld.y));
 
     CEditorMgr::GetInst()->SetSelectedObject(pSelectedObj);
+}
+
+void CTaskMgr::MOUSE_COLLISION_PICKING(const tTask& _Task)
+{
+    if (CEditorMgr::GetInst()->IsEnabled() && (ImGuizmo::IsOver() || ImGuizmo::IsUsing()))
+        return;
+
+    int MouseX = (int)_Task.Param_1;
+    int MouseY = (int)_Task.Param_2;
+
+    float NdcMouseX = 0.0f;
+    float NdcMouseY = 0.0f;
+
+    // 마우스 커서의 위치를 NDC로 변환
+    // 마우스 커서는 좌측 상단 (0, 0), 우측 하단(width-1, height-1)
+    // NDC는 좌측 하단이 (-1, -1), 우측 상단(1, 1)
+    if (CEditorMgr::GetInst()->IsEnabled())
+    {
+        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+        if (ViewportSize.x <= 0 || ViewportSize.y <= 0)
+            return;
+
+        NdcMouseX = MouseX * 2.0f / ViewportSize.x - 1.0f;
+        NdcMouseY = -MouseY * 2.0f / ViewportSize.y + 1.0f;
+    }
+    else
+    {
+        Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+        NdcMouseX = MouseX * 2.0f / WindowSize.x - 1.0f;
+        NdcMouseY = -MouseY * 2.0f / WindowSize.y + 1.0f;
+    }
+
+    if (NdcMouseX < -1.0 || NdcMouseY < -1.0 || NdcMouseX > 1.0 || NdcMouseY > 1.0)
+        return;
+
+    CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
+
+    // Mouse Pos - NDC Near → World
+    Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
+    Vector3 cursorNdcFar = Vector3(NdcMouseX, NdcMouseY, 1);
+    Matrix inverseProjView = pCam->GetProjInvMat() * pCam->GetViewInvMat();
+    Vector3 NearWorld = Vector3::Transform(cursorNdcNear, inverseProjView);
+    Vector3 FarWorld = Vector3::Transform(cursorNdcFar, inverseProjView);
+
+    Vec3 Dir = FarWorld - NearWorld;
+    float Length = Dir.Length();
+    Dir.Normalize();
+
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(NearWorld, Dir, Length);
+    CEditorMgr::GetInst()->SetSelectedObject(Hit.pCollisionObj);
 }
 
 void CTaskMgr::ADD_COMPONENT(const tTask& _Task)

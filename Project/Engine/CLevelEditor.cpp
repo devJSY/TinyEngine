@@ -407,6 +407,7 @@ void CLevelEditor::render_WorldSettings()
         CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);
 
     ImGui::Checkbox("Enable SSAO", (bool*)&g_Global.g_EnableSSAO);
+    ImGui::Checkbox("Collision Picking Mode", (bool*)&g_Global.g_CollisionPicking);
 
     ImGui::End();
 }
