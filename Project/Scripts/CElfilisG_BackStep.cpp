@@ -4,7 +4,6 @@
 
 CElfilisG_BackStep::CElfilisG_BackStep()
     : m_PrevDrag(0.f)
-    , m_NewDrag(0.f)
 {
 }
 
@@ -38,7 +37,6 @@ void CElfilisG_BackStep::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        m_NewDrag = 0.f;
     }
     break;
     case StateStep::Progress: {
@@ -47,6 +45,9 @@ void CElfilisG_BackStep::Enter_Step()
         // Jump
         Vec3 JumpDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
         GetOwner()->Rigidbody()->AddForce(JumpDir * 1000.f, ForceMode::Impulse);
+
+        m_StartPos = GetOwner()->Transform()->GetWorldPos();
+        m_TargetPos = m_StartPos + JumpDir * 400.f;
     }
     break;
     case StateStep::End: {
@@ -85,8 +86,12 @@ void CElfilisG_BackStep::Start()
 
 void CElfilisG_BackStep::Progress()
 {
-    m_NewDrag += DT * 10.f;
-    GetOwner()->Rigidbody()->SetDrag(m_NewDrag);
+    // Add drag
+    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+    float CurDist = (NewPos - m_StartPos).Length();
+    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
+    float NewDrag = 4.f - 4.f * sinf(Ratio);
+    GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -96,8 +101,12 @@ void CElfilisG_BackStep::Progress()
 
 void CElfilisG_BackStep::End()
 {
-    m_NewDrag += DT * 10.f;
-    GetOwner()->Rigidbody()->SetDrag(m_NewDrag);
+    // Add drag
+    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+    float CurDist = (NewPos - m_StartPos).Length();
+    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
+    float NewDrag = 4.f - 4.f * sinf(Ratio);
+    GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
     if (GetOwner()->Animator()->IsFinish())
     {

@@ -4,8 +4,9 @@
 class CElfilisG_BackStep : public CBossState
 {
 private:
+    Vec3 m_StartPos;
+    Vec3 m_TargetPos;
     float m_PrevDrag;
-    float m_NewDrag;
 
 public:
     virtual void tick();
