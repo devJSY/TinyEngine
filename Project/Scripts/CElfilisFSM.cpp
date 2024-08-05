@@ -457,11 +457,11 @@ void CElfilisFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 3) // 진입 : 외부호출
         {
-            ChangeStateGroup_Random(ElfilisStateGroup::AirSmallAtk1);
+            ChangeStateGroup_Set(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
         }
         else if (m_PatternStep == 4)
         {
-            ChangeStateGroup_Random(ElfilisStateGroup::AirSmallAtk1);
+            ChangeStateGroup_Set(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
         }
         else if (m_PatternStep == 5)
         {
