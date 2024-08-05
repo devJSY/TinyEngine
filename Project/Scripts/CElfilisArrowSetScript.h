@@ -6,7 +6,8 @@ class CElfilisArrowSetScript : public CScript
 private:
     CGameObject* m_Target;
     UINT m_Step;
-    float m_Speed;
+    float m_RotSpeed;
+    float m_CurSpeed;
     float m_AccTime;
     bool m_bArrowStart[7];
 

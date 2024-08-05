@@ -63,11 +63,11 @@ void CElfilisG_NormalAtkTeleportR::Enter_Step()
     switch (m_Step)
     {
     case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightStart"), false, false, 2.5f, 0.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightStart"), false, false, 1.f, 0.5f);
     }
     break;
     case StateStep::Wait: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("ChainRL"), false, false, 1.5f, 0.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("ChainRL"), false, false, 1.f, 0.5f);
     }
     break;
     case StateStep::StartEnd: {
@@ -77,11 +77,11 @@ void CElfilisG_NormalAtkTeleportR::Enter_Step()
     }
     break;
     case StateStep::Progress: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRight"), false);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRight"), false, false, 1.f);
     }
     break;
     case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightEnd"), false, false, 1.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightEnd"), false, false, 1.f);
     }
     break;
     }

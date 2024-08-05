@@ -63,9 +63,21 @@ void CElfilisArrowScript::Ready()
     static float RotSpeed = 20.f;
     m_AccTime += DT;
 
-    if (m_AccTime >= 0.5f)
+    // rotate & backstep
+    if (m_AccTime <= 0.5f)
     {
-        // finish rotation
+        Vec3 Position = GetOwner()->Transform()->GetLocalPos();
+        Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
+        Position.z -= DT * 5.f;
+        Rotation.z += DT * RotSpeed;
+
+        GetOwner()->Transform()->SetLocalRotation(Rotation);
+        GetOwner()->Transform()->SetLocalPos(Position);
+    }
+
+    // finish rotation
+    else
+    {
         Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
 
         if (Rotation.z > 0.1f)
@@ -96,23 +108,12 @@ void CElfilisArrowScript::Ready()
             m_Step = 3;
         }
     }
-    else
-    {
-        // rotate & backstep
-        Vec3 Position = GetOwner()->Transform()->GetLocalPos();
-        Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
-        Position.z -= DT;
-        Rotation.z += DT * RotSpeed;
-
-        GetOwner()->Transform()->SetLocalRotation(Rotation);
-        GetOwner()->Transform()->SetLocalPos(Position);
-    }
 }
 
 void CElfilisArrowScript::Attack()
 {
     // move
-    static float Speed = 70.f;
+    static float Speed = 30.f;
     Vec3 Position = GetOwner()->Transform()->GetLocalPos();
     Position.z += DT * Speed;
 

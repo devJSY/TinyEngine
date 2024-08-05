@@ -34,15 +34,15 @@ void CElfilisG_NormalAtkFinishL::Enter_Step()
     switch (m_Step)
     {
     case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeftStart"), false, false, 2.5f, 0.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeftStart"), false, false, 1.f, 0.5f);
     }
     break;
     case StateStep::Progress: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false, false, 1.f);
     }
     break;
     case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeftEnd"), false, false, 1.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeftEnd"), false, false, 1.f);
     }
     break;
     }

@@ -398,7 +398,8 @@ void CElfilisFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
+        //ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
         // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
     if (KEY_TAP(KEY::SPACE))

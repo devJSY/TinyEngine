@@ -6,7 +6,8 @@ CElfilisArrowSetScript::CElfilisArrowSetScript()
     : CScript(ELFILISARROWSETSCRIPT)
     , m_Step(0)
     , m_Target(nullptr)
-    , m_Speed(5.f)
+    , m_RotSpeed(3.5f)
+    , m_CurSpeed(5.f)
     , m_AccTime(0.f)
     , m_bArrowStart{false,}
 {
@@ -49,7 +50,7 @@ void CElfilisArrowSetScript::Spawn()
 
     // Rotate & chase
     Vec3 Rot = Transform()->GetLocalRotation();
-    Rot.y += DT * 5.f;
+    Rot.y += DT * m_RotSpeed;
     Transform()->SetLocalRotation(Rot);
     Transform()->SetWorldPos(m_Target->Transform()->GetWorldPos());
 
@@ -67,19 +68,28 @@ void CElfilisArrowSetScript::Spawn()
 
     if (m_bArrowStart[6])
     {
-        m_Speed = 5.f;
+        m_CurSpeed = m_RotSpeed;
         m_Step++;
     }
 }
 
 void CElfilisArrowSetScript::Ready()
 {
-    m_Speed -= DT * 5.f;
+    m_CurSpeed -= DT * m_RotSpeed;
 
-    if (m_Speed <= 0.f)
+    // Rotate & chase
+    if (m_CurSpeed >= 0.f)
+    {
+        Vec3 Rot = Transform()->GetLocalRotation();
+        Rot.y += DT * m_CurSpeed;
+        Transform()->SetLocalRotation(Rot);
+        Transform()->SetWorldPos(m_Target->Transform()->GetWorldPos());
+    }
+
+    // change step
+    else
     {
         const vector<CGameObject*>& ArrowParents = GetOwner()->GetChildObject();
-
         for (int i = 0; i < 7; ++i)
         {
             ArrowParents[i]->GetChildObject()[0]->GetScript<CElfilisArrowScript>()->StartAttack();
@@ -87,14 +97,6 @@ void CElfilisArrowSetScript::Ready()
 
         m_AccTime = 0.f;
         m_Step++;
-    }
-    else
-    {
-        // Rotate & chase
-        Vec3 Rot = Transform()->GetLocalRotation();
-        Rot.y += DT * m_Speed;
-        Transform()->SetLocalRotation(Rot);
-        Transform()->SetWorldPos(m_Target->Transform()->GetWorldPos());
     }
 }
 
