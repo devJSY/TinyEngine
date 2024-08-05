@@ -47,7 +47,7 @@ void CElfilisG_GroundToAir::Enter_Step()
         m_TargetPos = -GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
         Vec3 JumpDir = m_TargetPos - m_StartPos;
         JumpDir.Normalize();
-
+        t
         GetOwner()->Rigidbody()->AddForce(JumpDir * 3000.f, ForceMode::Impulse);
     }
     break;

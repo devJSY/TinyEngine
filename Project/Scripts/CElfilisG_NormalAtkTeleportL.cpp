@@ -71,8 +71,9 @@ void CElfilisG_NormalAtkTeleportL::Enter_Step()
     }
     break;
     case StateStep::StartEnd: {
-        SpawnTeleport();
+        GetOwner()->Rigidbody()->SetKinematic(true);
         m_bFrmEnter = true;
+        SpawnTeleport();
     }
     break;
     case StateStep::Progress: {
@@ -95,6 +96,8 @@ void CElfilisG_NormalAtkTeleportL::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::StartEnd: {
+        GetOwner()->Rigidbody()->SetKinematic(false);
+
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
@@ -155,7 +158,6 @@ void CElfilisG_NormalAtkTeleportL::StartEnd()
 
         GetOwner()->Transform()->Slerp(Dir, 1.f);
         GetOwner()->Transform()->SetWorldPos(m_AfterPos);
-        GetOwner()->Rigidbody()->SetKinematic(true);
 
         m_bFrmEnter = false;
     }
@@ -212,7 +214,6 @@ void CElfilisG_NormalAtkTeleportL::End()
 
 void CElfilisG_NormalAtkTeleportL::SpawnTeleport()
 {
-    GetOwner()->Rigidbody()->SetKinematic(true);
     //@Effect 일부분만 그리는 셰이더 작성 필요
 
     // copy object
