@@ -10,7 +10,6 @@ CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
     , m_ArrowScript{}
     , m_AccTime(0.f)
     , m_ArrowGroup(0)
-    , m_bSpawn{false,}
     , m_bReady(false)
 {
     Ptr<CPrefab> ArrowPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisAirArrow.pref", L"prefab\\ElfilisAirArrow.pref");
@@ -21,6 +20,7 @@ CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
         {
             for (int i = 0; i < 7; i++)
             {
+                m_bSpawn[j][i] = -1;
                 m_Arrow[j][i] = ArrowPref->Instantiate();
                 CElfilisAirArrow* Script = m_Arrow[j][i]->GetScript<CElfilisAirArrow>();
 
@@ -40,7 +40,7 @@ CElfilisA_RayArrowUp::~CElfilisA_RayArrowUp()
         for (int i = 0; i < 7; ++i)
         {
             // if (m_Arrow[i] && m_Arrow[i]->GetLayerIdx() == -1)
-            if (m_Arrow[j][i])
+            if (m_Arrow[j][i] && (m_bSpawn[j][i] == -1 || m_Arrow[j][i]->GetLayerIdx() == -1))
             {
                 delete m_Arrow[j][i];
             }

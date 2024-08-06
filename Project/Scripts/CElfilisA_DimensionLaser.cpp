@@ -11,7 +11,6 @@ CElfilisA_DimensionLaser::CElfilisA_DimensionLaser()
     , m_DimensionScript{nullptr,}
     , m_ProgressStep(0)
     , m_AccTime(0.f)
-    , m_bDimensionSpawn{false,}
 {
     m_DimensionStartPref =
         CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisDimensionLaserStart.pref", L"prefab\\ElfilisDimensionLaserStart.pref");
@@ -21,6 +20,7 @@ CElfilisA_DimensionLaser::CElfilisA_DimensionLaser()
     {
         for (int i = 0; i < 5; i++)
         {
+            m_bDimensionSpawn[i] = -1;
             m_Dimension[i] = DimensionPref->Instantiate();
             CElfilisDimensionLaser* Script = m_Dimension[i]->GetScript<CElfilisDimensionLaser>();
 
@@ -36,7 +36,7 @@ CElfilisA_DimensionLaser::~CElfilisA_DimensionLaser()
 {
     for (int i = 0; i < 5; ++i)
     {
-        if (m_Dimension[i] && m_Dimension[i]->GetLayerIdx() == -1)
+        if (m_Dimension[i] && (m_bDimensionSpawn[i] == -1 || m_Dimension[i]->GetLayerIdx() == -1))
         {
             delete m_Dimension[i];
         }

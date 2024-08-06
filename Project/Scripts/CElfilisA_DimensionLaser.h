@@ -11,7 +11,7 @@ private:
     CElfilisDimensionLaser* m_DimensionScript[5];
     int m_ProgressStep;
     float m_AccTime;
-    bool m_bDimensionSpawn[5];
+    int m_bDimensionSpawn[5];
 
 public:
     virtual void tick() override;
