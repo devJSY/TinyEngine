@@ -42,6 +42,7 @@ CModelEditor::CModelEditor()
     , m_ViewportFocused(false)
     , m_ViewportHovered(false)
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
+    , m_GizmoMode(ImGuizmo::MODE::WORLD)
 {
 }
 
@@ -556,6 +557,11 @@ void CModelEditor::render_ImGizmo()
     else if (m_GizmoType == ImGuizmo::OPERATION::SCALE)
         snapValue = 1.f;
 
+    if (KEY_TAP(KEY::T))
+    {
+        m_GizmoMode == ImGuizmo::MODE::LOCAL ? m_GizmoMode = ImGuizmo::MODE::WORLD : m_GizmoMode = ImGuizmo::MODE::LOCAL;
+    }
+
     float snapValues[3] = {snapValue, snapValue, snapValue};
 
     Matrix SocketMat = m_SelectedBoneSocket->matSocket;
@@ -564,7 +570,7 @@ void CModelEditor::render_ImGizmo()
 
     Matrix mat = SocketMat * BoneTransformMat * WorldMat;
 
-    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *mat.m, nullptr, snap ? snapValues : nullptr);
+    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, m_GizmoMode, *mat.m, nullptr, snap ? snapValues : nullptr);
 
     if (ImGuizmo::IsUsing())
     {

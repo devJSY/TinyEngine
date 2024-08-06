@@ -33,7 +33,7 @@ CLevelEditor::CLevelEditor()
     , m_Outliner()
     , m_ContentBrowser()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
-    , m_GizmoMode(ImGuizmo::MODE::LOCAL)
+    , m_GizmoMode(ImGuizmo::MODE::WORLD)
     , m_bEnableGizmo(true)
     , m_bShowEditor{}
     , m_PlayButtonTex(nullptr)
