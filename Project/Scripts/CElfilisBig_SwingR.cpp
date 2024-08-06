@@ -57,7 +57,8 @@ void CElfilisBig_SwingR::Enter_Step()
         m_bFrmEnter = true;
 
         // Elfilis ÇÏ´Ã·Î ÀÌµ¿
-        if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 1))
+        if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 1)
+            || ELFFSM->IsPattern(ElfilisPatternType::Appear2, 1))
         {
             ELFFSM->ProcPatternStep();
         }

@@ -26,6 +26,11 @@ enum class ElfilisStateGroup
 enum class ElfilisPatternType
 {
     NONE,
+
+    // demo
+    Appear2,
+
+    // combo
     BigCombo,
     StabCombo,
 };

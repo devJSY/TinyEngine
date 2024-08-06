@@ -3,6 +3,7 @@
 #include "CKirbyUnitScript.h"
 #include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
+#include "CCameraController.h"
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 

@@ -4,6 +4,9 @@
 #include "CState.h"
 #include "CPlayerMgr.h"
 
+//
+#include "CCameraController.h"
+
 CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
     , m_CurStateGroup(ElfilisStateGroup::END)
@@ -179,10 +182,10 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
                 {
                     return ElfilisStateGroup::GroundMove;
                 }
-                //else if (Rand <= 80.f)
+                // else if (Rand <= 80.f)
                 //{
-                //    return ElfilisStateGroup::GroundMoveAtk;
-                //}
+                //     return ElfilisStateGroup::GroundMoveAtk;
+                // }
                 else
                 {
                     return ElfilisStateGroup::GroundToAir;
@@ -204,10 +207,10 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
             {
                 return ElfilisStateGroup::GroundMove;
             }
-            //else if (Rand <= 80.f)
+            // else if (Rand <= 80.f)
             //{
-            //    return ElfilisStateGroup::GroundMoveAtk;
-            //}
+            //     return ElfilisStateGroup::GroundMoveAtk;
+            // }
             else
             {
                 return ElfilisStateGroup::GroundToAir;
@@ -296,6 +299,10 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 }
 
 #include "CElfilisD_Appear.h"
+#include "CElfilisD_Damage.h"
+#include "CElfilisD_Jump.h"
+#include "CElfilisD_Roar.h"
+
 #include "CElfilisG_Idle.h"
 #include "CElfilisG_BackStep.h"
 #include "CElfilisG_Teleport.h"
@@ -355,7 +362,10 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT", new CElfilisA_Teleport);
     AddGroupPublicState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORTCOMBO", new CElfilisA_TeleportCombo);
 
-    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR", new CElfilisD_Appear);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1", new CElfilisD_Appear);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE", new CElfilisD_Damage);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_JUMP", new CElfilisD_Jump);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_ROAR", new CElfilisD_Roar);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
@@ -397,10 +407,16 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
+    //@TEST
+    if (KEY_TAP(KEY::T))
+    {
+        CAMERACTRL->ChangeMainTarget(BOSS->GetName());
+        CAMERACTRL->ResetCamera();
+    }
+
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR");
-        //ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE");
         // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
     if (KEY_TAP(KEY::SPACE))
@@ -431,6 +447,9 @@ void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
 
 void CElfilisFSM::SetPattern(ElfilisPatternType _Pattern)
 {
+    if (m_Pattern != ElfilisPatternType::NONE && _Pattern != ElfilisPatternType::NONE)
+        return;
+
     m_PatternStep = 0;
     m_Pattern = _Pattern;
 }
@@ -444,6 +463,26 @@ void CElfilisFSM::ProcPatternStep()
 
     switch (m_Pattern)
     {
+    case ElfilisPatternType::Appear2: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Random(ElfilisStateGroup::AirIdle);
+        }
+        else if (m_PatternStep == 1) // 진입 : 외부호출
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
+        }
+        else if (m_PatternStep == 2)
+        {
+            ChangeStateGroup_Random(ElfilisStateGroup::AirIdle);
+        }
+        else if (m_PatternStep == 3) // 진입 : 외부호출
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB");
+            bFinish = true;
+        }
+    }
+    break;
     case ElfilisPatternType::BigCombo: {
         if (m_PatternStep == 0)
         {

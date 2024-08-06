@@ -119,7 +119,8 @@ void CElfilisBig_SwingFinishL::Progress()
     }
 
     // Elfilis ¶¥À¸·Î µ¹¾Æ¿È
-    if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 6))
+    if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 6)
+        || ELFFSM->IsPattern(ElfilisPatternType::Appear2, 3))
     {
         if (CHECK_ANIMFRM(GetOwner(), 600))
         {

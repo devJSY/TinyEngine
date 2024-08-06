@@ -53,14 +53,8 @@
 #include "CChangeCamTrigger.h"
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
-#include "CCrumbleScript.h"
-#include "CSurpriseBoardScript.h"
-#include "CSurpriseBoardAttackScript.h"
-#include "CUIWipeScript.h"
-#include "CWipeTriggerScript.h"
 #include "CElfilisFSM.h"
 #include "CBossMgr.h"
-#include "CElfilisUnit.h"
 #include "CElfilisArrowSetScript.h"
 #include "CElfilisArrowScript.h"
 #include "CElfilisSwordSlashScript.h"
@@ -70,14 +64,20 @@
 #include "CElfilisLaser.h"
 #include "CElfilisBigFSM.h"
 #include "CChangeAlphaScript.h"
+#include "CCrumbleScript.h"
+#include "CSurpriseBoardScript.h"
+#include "CSurpriseBoardAttackScript.h"
+#include "CUIWipeScript.h"
+#include "CWipeTriggerScript.h"
 #include "CKirbyUnitScript.h"
-#include "CLadderScript.h"
 #include "CSolarChargeScript.h"
 #include "CSolarOnceScript.h"
 #include "CElevatorScript.h"
 #include "CPushOutScript.h"
 #include "CPushOutTriggerScript.h"
 #include "CPushOutColliderScript.h"
+#include "CLadderScript.h"
+#include "CElfilisUnit.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -133,14 +133,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CChangeCamTrigger");
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
-	_vec.push_back(L"CCrumbleScript");
-	_vec.push_back(L"CSurpriseBoardScript");
-	_vec.push_back(L"CSurpriseBoardAttackScript");
-	_vec.push_back(L"CUIWipeScript");
-	_vec.push_back(L"CWipeTriggerScript");
 	_vec.push_back(L"CElfilisFSM");
 	_vec.push_back(L"CBossMgr");
-	_vec.push_back(L"CElfilisUnit");
 	_vec.push_back(L"CElfilisArrowSetScript");
 	_vec.push_back(L"CElfilisArrowScript");
 	_vec.push_back(L"CElfilisSwordSlashScript");
@@ -150,6 +144,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisLaser");
 	_vec.push_back(L"CElfilisBigFSM");
 	_vec.push_back(L"CChangeAlphaScript");
+	_vec.push_back(L"CCrumbleScript");
+	_vec.push_back(L"CSurpriseBoardScript");
+	_vec.push_back(L"CSurpriseBoardAttackScript");
+	_vec.push_back(L"CUIWipeScript");
+	_vec.push_back(L"CWipeTriggerScript");
 	_vec.push_back(L"CKirbyUnitScript");
 	_vec.push_back(L"CSolarChargeScript");
 	_vec.push_back(L"CSolarOnceScript");
@@ -158,6 +157,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPushOutTriggerScript");
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLadderScript");
+	_vec.push_back(L"CElfilisUnit");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -266,22 +266,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressCamTrigger;
 	if (L"CTwoTargetCamTrigger" == _strScriptName)
 		return new CTwoTargetCamTrigger;
-	if (L"CCrumbleScript" == _strScriptName)
-		return new CCrumbleScript;
-	if (L"CSurpriseBoardScript" == _strScriptName)
-		return new CSurpriseBoardScript;
-	if (L"CSurpriseBoardAttackScript" == _strScriptName)
-		return new CSurpriseBoardAttackScript;
-	if (L"CUIWipeScript" == _strScriptName)
-		return new CUIWipeScript;
-	if (L"CWipeTriggerScript" == _strScriptName)
-		return new CWipeTriggerScript;
 	if (L"CElfilisFSM" == _strScriptName)
 		return new CElfilisFSM;
 	if (L"CBossMgr" == _strScriptName)
 		return new CBossMgr;
-	if (L"CElfilisUnit" == _strScriptName)
-		return new CElfilisUnit;
 	if (L"CElfilisArrowSetScript" == _strScriptName)
 		return new CElfilisArrowSetScript;
 	if (L"CElfilisArrowScript" == _strScriptName)
@@ -300,6 +288,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisBigFSM;
 	if (L"CChangeAlphaScript" == _strScriptName)
 		return new CChangeAlphaScript;
+	if (L"CCrumbleScript" == _strScriptName)
+		return new CCrumbleScript;
+	if (L"CSurpriseBoardScript" == _strScriptName)
+		return new CSurpriseBoardScript;
+	if (L"CSurpriseBoardAttackScript" == _strScriptName)
+		return new CSurpriseBoardAttackScript;
+	if (L"CUIWipeScript" == _strScriptName)
+		return new CUIWipeScript;
+	if (L"CWipeTriggerScript" == _strScriptName)
+		return new CWipeTriggerScript;
 	if (L"CKirbyUnitScript" == _strScriptName)
 		return new CKirbyUnitScript;
 	if (L"CSolarChargeScript" == _strScriptName)
@@ -316,6 +314,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPushOutColliderScript;
 	if (L"CLadderScript" == _strScriptName)
 		return new CLadderScript;
+	if (L"CElfilisUnit" == _strScriptName)
+		return new CElfilisUnit;
 	return nullptr;
 }
 
@@ -427,22 +427,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CProgressCamTrigger;
 	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return new CTwoTargetCamTrigger;
-	case (UINT)SCRIPT_TYPE::CRUMBLESCRIPT:
-		return new CCrumbleScript;
-	case (UINT)SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
-		return new CSurpriseBoardScript;
-	case (UINT)SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
-		return new CSurpriseBoardAttackScript;
-	case (UINT)SCRIPT_TYPE::UIWIPESCRIPT:
-		return new CUIWipeScript;
-	case (UINT)SCRIPT_TYPE::WIPETRIGGERSCRIPT:
-		return new CWipeTriggerScript;
 	case (UINT)SCRIPT_TYPE::ELFILISFSM:
 		return new CElfilisFSM;
 	case (UINT)SCRIPT_TYPE::BOSSMGR:
 		return new CBossMgr;
-	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
-		return new CElfilisUnit;
 	case (UINT)SCRIPT_TYPE::ELFILISARROWSETSCRIPT:
 		return new CElfilisArrowSetScript;
 	case (UINT)SCRIPT_TYPE::ELFILISARROWSCRIPT:
@@ -461,6 +449,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisBigFSM;
 	case (UINT)SCRIPT_TYPE::CHANGEALPHASCRIPT:
 		return new CChangeAlphaScript;
+	case (UINT)SCRIPT_TYPE::CRUMBLESCRIPT:
+		return new CCrumbleScript;
+	case (UINT)SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
+		return new CSurpriseBoardScript;
+	case (UINT)SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
+		return new CSurpriseBoardAttackScript;
+	case (UINT)SCRIPT_TYPE::UIWIPESCRIPT:
+		return new CUIWipeScript;
+	case (UINT)SCRIPT_TYPE::WIPETRIGGERSCRIPT:
+		return new CWipeTriggerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return new CKirbyUnitScript;
 	case (UINT)SCRIPT_TYPE::SOLARCHARGESCRIPT:
@@ -477,6 +475,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
 		return new CLadderScript;
+	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
+		return new CElfilisUnit;
 	}
 	return nullptr;
 }
@@ -589,22 +589,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CProgressCamTrigger";
 	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return L"CTwoTargetCamTrigger";
-	case SCRIPT_TYPE::CRUMBLESCRIPT:
-		return L"CCrumbleScript";
-	case SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
-		return L"CSurpriseBoardScript";
-	case SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
-		return L"CSurpriseBoardAttackScript";
-	case SCRIPT_TYPE::UIWIPESCRIPT:
-		return L"CUIWipeScript";
-	case SCRIPT_TYPE::WIPETRIGGERSCRIPT:
-		return L"CWipeTriggerScript";
 	case SCRIPT_TYPE::ELFILISFSM:
 		return L"CElfilisFSM";
 	case SCRIPT_TYPE::BOSSMGR:
 		return L"CBossMgr";
-	case SCRIPT_TYPE::ELFILISUNIT:
-		return L"CElfilisUnit";
 	case SCRIPT_TYPE::ELFILISARROWSETSCRIPT:
 		return L"CElfilisArrowSetScript";
 	case SCRIPT_TYPE::ELFILISARROWSCRIPT:
@@ -623,6 +611,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisBigFSM";
 	case SCRIPT_TYPE::CHANGEALPHASCRIPT:
 		return L"CChangeAlphaScript";
+	case SCRIPT_TYPE::CRUMBLESCRIPT:
+		return L"CCrumbleScript";
+	case SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
+		return L"CSurpriseBoardScript";
+	case SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
+		return L"CSurpriseBoardAttackScript";
+	case SCRIPT_TYPE::UIWIPESCRIPT:
+		return L"CUIWipeScript";
+	case SCRIPT_TYPE::WIPETRIGGERSCRIPT:
+		return L"CWipeTriggerScript";
 	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return L"CKirbyUnitScript";
 	case SCRIPT_TYPE::SOLARCHARGESCRIPT:
@@ -639,6 +637,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LADDERSCRIPT:
 		return L"CLadderScript";
+	case SCRIPT_TYPE::ELFILISUNIT:
+		return L"CElfilisUnit";
 	}
 	return nullptr;
 }
