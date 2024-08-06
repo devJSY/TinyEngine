@@ -55,6 +55,18 @@ CSurpriseBoardScript
 CSurpriseBoardAttackScript
 CUIWipeScript
 CWipeTriggerScript
+CElfilisFSM
+CBossMgr
+CElfilisUnit
+CElfilisArrowSetScript
+CElfilisArrowScript
+CElfilisSwordSlashScript
+CElfilisStormScript
+CElfilisAirArrow
+CElfilisDimensionLaser
+CElfilisLaser
+CElfilisBigFSM
+CChangeAlphaScript
 CKirbyUnitScript
 CSolarChargeScript
 CSolarOnceScript
@@ -62,3 +74,4 @@ CElevatorScript
 CPushOutScript
 CPushOutTriggerScript
 CPushOutColliderScript
+CLadderScript

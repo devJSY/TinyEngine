@@ -58,6 +58,18 @@
 #include "CSurpriseBoardAttackScript.h"
 #include "CUIWipeScript.h"
 #include "CWipeTriggerScript.h"
+#include "CElfilisFSM.h"
+#include "CBossMgr.h"
+#include "CElfilisUnit.h"
+#include "CElfilisArrowSetScript.h"
+#include "CElfilisArrowScript.h"
+#include "CElfilisSwordSlashScript.h"
+#include "CElfilisStormScript.h"
+#include "CElfilisAirArrow.h"
+#include "CElfilisDimensionLaser.h"
+#include "CElfilisLaser.h"
+#include "CElfilisBigFSM.h"
+#include "CChangeAlphaScript.h"
 #include "CKirbyUnitScript.h"
 #include "CLadderScript.h"
 #include "CSolarChargeScript.h"
@@ -126,6 +138,18 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSurpriseBoardAttackScript");
 	_vec.push_back(L"CUIWipeScript");
 	_vec.push_back(L"CWipeTriggerScript");
+	_vec.push_back(L"CElfilisFSM");
+	_vec.push_back(L"CBossMgr");
+	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CElfilisArrowSetScript");
+	_vec.push_back(L"CElfilisArrowScript");
+	_vec.push_back(L"CElfilisSwordSlashScript");
+	_vec.push_back(L"CElfilisStormScript");
+	_vec.push_back(L"CElfilisAirArrow");
+	_vec.push_back(L"CElfilisDimensionLaser");
+	_vec.push_back(L"CElfilisLaser");
+	_vec.push_back(L"CElfilisBigFSM");
+	_vec.push_back(L"CChangeAlphaScript");
 	_vec.push_back(L"CKirbyUnitScript");
 	_vec.push_back(L"CSolarChargeScript");
 	_vec.push_back(L"CSolarOnceScript");
@@ -252,6 +276,30 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIWipeScript;
 	if (L"CWipeTriggerScript" == _strScriptName)
 		return new CWipeTriggerScript;
+	if (L"CElfilisFSM" == _strScriptName)
+		return new CElfilisFSM;
+	if (L"CBossMgr" == _strScriptName)
+		return new CBossMgr;
+	if (L"CElfilisUnit" == _strScriptName)
+		return new CElfilisUnit;
+	if (L"CElfilisArrowSetScript" == _strScriptName)
+		return new CElfilisArrowSetScript;
+	if (L"CElfilisArrowScript" == _strScriptName)
+		return new CElfilisArrowScript;
+	if (L"CElfilisSwordSlashScript" == _strScriptName)
+		return new CElfilisSwordSlashScript;
+	if (L"CElfilisStormScript" == _strScriptName)
+		return new CElfilisStormScript;
+	if (L"CElfilisAirArrow" == _strScriptName)
+		return new CElfilisAirArrow;
+	if (L"CElfilisDimensionLaser" == _strScriptName)
+		return new CElfilisDimensionLaser;
+	if (L"CElfilisLaser" == _strScriptName)
+		return new CElfilisLaser;
+	if (L"CElfilisBigFSM" == _strScriptName)
+		return new CElfilisBigFSM;
+	if (L"CChangeAlphaScript" == _strScriptName)
+		return new CChangeAlphaScript;
 	if (L"CKirbyUnitScript" == _strScriptName)
 		return new CKirbyUnitScript;
 	if (L"CSolarChargeScript" == _strScriptName)
@@ -389,6 +437,30 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIWipeScript;
 	case (UINT)SCRIPT_TYPE::WIPETRIGGERSCRIPT:
 		return new CWipeTriggerScript;
+	case (UINT)SCRIPT_TYPE::ELFILISFSM:
+		return new CElfilisFSM;
+	case (UINT)SCRIPT_TYPE::BOSSMGR:
+		return new CBossMgr;
+	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
+		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::ELFILISARROWSETSCRIPT:
+		return new CElfilisArrowSetScript;
+	case (UINT)SCRIPT_TYPE::ELFILISARROWSCRIPT:
+		return new CElfilisArrowScript;
+	case (UINT)SCRIPT_TYPE::ELFILISSWORDSLASHSCRIPT:
+		return new CElfilisSwordSlashScript;
+	case (UINT)SCRIPT_TYPE::ELFILISSTORMSCRIPT:
+		return new CElfilisStormScript;
+	case (UINT)SCRIPT_TYPE::ELFILISAIRARROW:
+		return new CElfilisAirArrow;
+	case (UINT)SCRIPT_TYPE::ELFILISDIMENSIONLASER:
+		return new CElfilisDimensionLaser;
+	case (UINT)SCRIPT_TYPE::ELFILISLASER:
+		return new CElfilisLaser;
+	case (UINT)SCRIPT_TYPE::ELFILISBIGFSM:
+		return new CElfilisBigFSM;
+	case (UINT)SCRIPT_TYPE::CHANGEALPHASCRIPT:
+		return new CChangeAlphaScript;
 	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return new CKirbyUnitScript;
 	case (UINT)SCRIPT_TYPE::SOLARCHARGESCRIPT:
@@ -527,6 +599,30 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIWipeScript";
 	case SCRIPT_TYPE::WIPETRIGGERSCRIPT:
 		return L"CWipeTriggerScript";
+	case SCRIPT_TYPE::ELFILISFSM:
+		return L"CElfilisFSM";
+	case SCRIPT_TYPE::BOSSMGR:
+		return L"CBossMgr";
+	case SCRIPT_TYPE::ELFILISUNIT:
+		return L"CElfilisUnit";
+	case SCRIPT_TYPE::ELFILISARROWSETSCRIPT:
+		return L"CElfilisArrowSetScript";
+	case SCRIPT_TYPE::ELFILISARROWSCRIPT:
+		return L"CElfilisArrowScript";
+	case SCRIPT_TYPE::ELFILISSWORDSLASHSCRIPT:
+		return L"CElfilisSwordSlashScript";
+	case SCRIPT_TYPE::ELFILISSTORMSCRIPT:
+		return L"CElfilisStormScript";
+	case SCRIPT_TYPE::ELFILISAIRARROW:
+		return L"CElfilisAirArrow";
+	case SCRIPT_TYPE::ELFILISDIMENSIONLASER:
+		return L"CElfilisDimensionLaser";
+	case SCRIPT_TYPE::ELFILISLASER:
+		return L"CElfilisLaser";
+	case SCRIPT_TYPE::ELFILISBIGFSM:
+		return L"CElfilisBigFSM";
+	case SCRIPT_TYPE::CHANGEALPHASCRIPT:
+		return L"CChangeAlphaScript";
 	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return L"CKirbyUnitScript";
 	case SCRIPT_TYPE::SOLARCHARGESCRIPT:

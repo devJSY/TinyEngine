@@ -51,10 +51,6 @@ void CPlayerMgr::begin()
     }
 }
 
-void CPlayerMgr::tick()
-{
-}
-
 void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
 {
     if (!_PlayerObj)

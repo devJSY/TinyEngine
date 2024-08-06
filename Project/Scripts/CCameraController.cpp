@@ -186,7 +186,7 @@ void CCameraController::SetUpProc()
     case CameraSetup::TWOTARGET:
         TwoTarget();
         break;
-    case CameraSetup::BOSS:
+    case CameraSetup::BOSSSETUP:
         Boss();
         break;
     default:
@@ -825,7 +825,7 @@ void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, flo
     if (_SubTarget == nullptr)
         return;
 
-    m_Setup = CameraSetup::BOSS;
+    m_Setup = CameraSetup::BOSSSETUP;
 
     m_SubTarget = _SubTarget;
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
@@ -839,7 +839,7 @@ void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, flo
 void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
                                      float _Weight)
 {
-    m_Setup = CameraSetup::BOSS;
+    m_Setup = CameraSetup::BOSSSETUP;
 
     m_SubTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_SubTargetName);
 
