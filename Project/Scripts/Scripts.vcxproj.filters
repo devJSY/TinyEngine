@@ -493,9 +493,6 @@
     <ClInclude Include="CPushOutTriggerScript.h">
       <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
     </ClInclude>
-    <ClInclude Include="CPushOutColliderScript.h">
-      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyStageClear.h">
       <Filter>State\KirbyState\StageClear</Filter>
     </ClInclude>
@@ -528,6 +525,9 @@
     </ClInclude>
     <ClInclude Include="CKirbyLadderExit.h">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutColliderScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1032,9 +1032,6 @@
     <ClCompile Include="CPushOutTriggerScript.cpp">
       <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
     </ClCompile>
-    <ClCompile Include="CPushOutColliderScript.cpp">
-      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
-    </ClCompile>
     <ClCompile Include="CKirbyStageClear.cpp">
       <Filter>State\KirbyState\StageClear</Filter>
     </ClCompile>
@@ -1067,6 +1064,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyLadderExit.cpp">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutColliderScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1595,9 +1595,6 @@
     <Filter Include="Scripts\Gimmik\PushOut\PushOutTrigger">
       <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
-      <UniqueIdentifier>{352131f1-ba6a-456c-8e34-b2a6ddcbfa48}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Gimmik\SupriseBoard">
       <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
     </Filter>
@@ -1642,6 +1639,9 @@
     </Filter>
     <Filter Include="State\KirbyState\Ladder\LadderExit">
       <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
+      <UniqueIdentifier>{a94a5e21-fc32-4dee-8995-622c322c9275}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

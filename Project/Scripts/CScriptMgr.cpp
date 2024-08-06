@@ -59,12 +59,12 @@
 #include "CUIWipeScript.h"
 #include "CWipeTriggerScript.h"
 #include "CKirbyUnitScript.h"
-#include "CLadderScript.h"
 #include "CSolarChargeScript.h"
 #include "CSolarOnceScript.h"
 #include "CElevatorScript.h"
 #include "CPushOutScript.h"
 #include "CPushOutTriggerScript.h"
+#include "CLadderScript.h"
 #include "CPushOutColliderScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -132,8 +132,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElevatorScript");
 	_vec.push_back(L"CPushOutScript");
 	_vec.push_back(L"CPushOutTriggerScript");
-	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLadderScript");
+	_vec.push_back(L"CPushOutColliderScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -264,10 +264,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPushOutScript;
 	if (L"CPushOutTriggerScript" == _strScriptName)
 		return new CPushOutTriggerScript;
-	if (L"CPushOutColliderScript" == _strScriptName)
-		return new CPushOutColliderScript;
 	if (L"CLadderScript" == _strScriptName)
 		return new CLadderScript;
+	if (L"CPushOutColliderScript" == _strScriptName)
+		return new CPushOutColliderScript;
 	return nullptr;
 }
 
@@ -401,10 +401,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPushOutScript;
 	case (UINT)SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
 		return new CPushOutTriggerScript;
-	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
-		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
 		return new CLadderScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return new CPushOutColliderScript;
 	}
 	return nullptr;
 }
@@ -539,10 +539,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPushOutScript";
 	case SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
 		return L"CPushOutTriggerScript";
-	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
-		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LADDERSCRIPT:
 		return L"CLadderScript";
+	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return L"CPushOutColliderScript";
 	}
 	return nullptr;
 }

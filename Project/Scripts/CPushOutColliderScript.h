@@ -1,15 +1,50 @@
 #pragma once
 #include <Engine\CScript.h>
+
+enum class PushOutColliderState
+{
+    MoveDest,
+    MoveBase,
+    Stop,
+    End,
+};
+
 class CPushOutColliderScript : public CScript
 {
-private:
+public:
     CGameObject* m_pParent;
+    Vec3 m_vBase;
+    Vec3 m_vDest;
+    Vec3 m_vDir;
+    PushOutColliderState m_eState;
+    float m_fSpeed;
+    float m_fReturnSpeed;
+    float m_fOffset;
+    bool m_bFlag;
+
+public:
+    virtual void begin() override;
+    virtual void tick() override;
 
 public:
     void SetParent(CGameObject* _pObj) { m_pParent = _pObj; }
+    void SetDestSpeed(const float _value) { m_fSpeed = _value; }
+    void SetBaseSpeed(const float _value) { m_fReturnSpeed = _value; }
+    void SetDir(const Vec3 _value) { m_vDir = _value; }
+    void SetOffset(const float _value) { m_fOffset = _value; }
+
+    PushOutColliderState GetState() { return m_eState; }
+    void SetState(const PushOutColliderState _state) { m_eState = _state; }
 
 private:
-    virtual void OnTriggerStay(CCollider* _OtherCollider) override;
+    void MoveBase();
+    void MoveDest();
+
+private:
+    void Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+
+private:
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
     virtual void OnTriggerExit(CCollider* _OtherCollider) override;
 
 public:

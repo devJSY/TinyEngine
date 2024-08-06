@@ -7,6 +7,7 @@ CElevatorScript::CElevatorScript()
     , m_vDest{}
     , m_eState(ElevatorState::Stop)
     , m_fSpeed(0.f)
+    , m_fOffset(0.f)
     , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDest, "Destination");
@@ -19,6 +20,7 @@ CElevatorScript::CElevatorScript(const CElevatorScript& Origin)
     , m_vDest{}
     , m_eState(ElevatorState::Stop)
     , m_fSpeed(Origin.m_fSpeed)
+    , m_fOffset(Origin.m_fOffset)
     , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDest, "Destination");
@@ -38,7 +40,6 @@ void CElevatorScript::tick()
     }
     break;
     case ElevatorState::Stop: {
-        Stop();
     }
     break;
     case ElevatorState::End:
@@ -55,28 +56,23 @@ void CElevatorScript::Move()
         (m_vDest.z - 1.f <= vPos.z && vPos.z <= m_vDest.z + 1.f))
     {
         m_eState = ElevatorState::Stop;
+        Transform()->SetLocalPos(m_vDest);
     }
     else
     {
-        Rigidbody()->SetVelocity(Vec3(0.f, 1.f, 0.f) * m_fSpeed * DT);
+        Transform()->SetWorldPos(Transform()->GetWorldPos() + Vec3(0.f, 1.f, 0.f) * m_fSpeed * DT);
     }
 
     if (m_bFlag)
     {
         m_bFlag = false;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.f, 0.001f, 0.f)) : void();
+        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.001f, 0.f, 0.f)) : void();
     }
     else
     {
         m_bFlag = true;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.f, -0.001f, 0.f)) : void();
+        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(-0.001f, 0.f, 0.f)) : void();
     }
-}
-
-void CElevatorScript::Stop()
-{
-    Transform()->SetLocalPos(m_vDest);
-    Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 }
 
 void CElevatorScript::OnTriggerEnter(CCollider* _OtherCollider)

@@ -61,4 +61,5 @@ CSolarOnceScript
 CElevatorScript
 CPushOutScript
 CPushOutTriggerScript
+CLadderScript
 CPushOutColliderScript
