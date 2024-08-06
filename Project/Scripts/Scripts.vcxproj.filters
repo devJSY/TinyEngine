@@ -430,6 +430,21 @@
     <ClInclude Include="CCameraController.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
+    <ClInclude Include="CUIMoveUpDownScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIMoveUpDownScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIAnimScript.h">
+      <Filter>Scripts\UI\UIAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIFlowScript.h">
+      <Filter>Scripts\UI\UIFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIStartSceneFlowScript.h">
+      <Filter>Scripts\UI\UIFlow\UIStartScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIGlowMoveScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIGlowMoveScript</Filter>
+    </ClInclude>
     <ClInclude Include="CChangeCamTrigger.h">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClInclude>
@@ -445,8 +460,41 @@
     <ClInclude Include="CKirbyIdleStart.h">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClInclude>
+    <ClInclude Include="CCrumbleScript.h">
+      <Filter>Scripts\Gimmik\Crumble</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurpriseBoardScript.h">
+      <Filter>Scripts\Gimmik\SupriseBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurpriseBoardAttackScript.h">
+      <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIWipeScript.h">
+      <Filter>Scripts\UI\UIWipe</Filter>
+    </ClInclude>
+    <ClInclude Include="CWipeTriggerScript.h">
+      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyUnitScript.h">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CSolarChargeScript.h">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
+    </ClInclude>
+    <ClInclude Include="CSolarOnceScript.h">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClInclude>
+    <ClInclude Include="CElevatorScript.h">
+      <Filter>Scripts\Gimmik\Elevator</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutScript.h">
+      <Filter>Scripts\Gimmik\PushOut</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutTriggerScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutColliderScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyStageClear.h">
       <Filter>State\KirbyState\StageClear</Filter>
@@ -921,6 +969,21 @@
     <ClCompile Include="CCameraController.cpp">
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
+    <ClCompile Include="CUIMoveUpDownScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIMoveUpDownScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIAnimScript.cpp">
+      <Filter>Scripts\UI\UIAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIFlowScript.cpp">
+      <Filter>Scripts\UI\UIFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIStartSceneFlowScript.cpp">
+      <Filter>Scripts\UI\UIFlow\UIStartScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIGlowMoveScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIGlowMoveScript</Filter>
+    </ClCompile>
     <ClCompile Include="CChangeCamTrigger.cpp">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClCompile>
@@ -936,8 +999,41 @@
     <ClCompile Include="CKirbyIdleStart.cpp">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClCompile>
+    <ClCompile Include="CCrumbleScript.cpp">
+      <Filter>Scripts\Gimmik\Crumble</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurpriseBoardScript.cpp">
+      <Filter>Scripts\Gimmik\SupriseBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurpriseBoardAttackScript.cpp">
+      <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIWipeScript.cpp">
+      <Filter>Scripts\UI\UIWipe</Filter>
+    </ClCompile>
+    <ClCompile Include="CWipeTriggerScript.cpp">
+      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
+    </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CSolarChargeScript.cpp">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
+    </ClCompile>
+    <ClCompile Include="CSolarOnceScript.cpp">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClCompile>
+    <ClCompile Include="CElevatorScript.cpp">
+      <Filter>Scripts\Gimmik\Elevator</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutColliderScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyStageClear.cpp">
       <Filter>State\KirbyState\StageClear</Filter>
@@ -1436,6 +1532,27 @@
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\UI\UIAnimation">
+      <UniqueIdentifier>{222c9eca-2bb1-4811-8683-4fadb6c69c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIMoveUpDownScript">
+      <UniqueIdentifier>{59e99d2e-e84a-4547-80ef-ad7a67f22c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow">
+      <UniqueIdentifier>{1f142fb8-2860-4995-aa17-8f612bc14380}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIStartScene">
+      <UniqueIdentifier>{9f981acd-c3a9-4eae-af69-1c49fcf47cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIRobbyScene">
+      <UniqueIdentifier>{9400790b-8eee-4038-8ef7-4e7210ccbbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIPlayScene">
+      <UniqueIdentifier>{f52d938c-68db-4176-baa6-0ce2e2770d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIGlowMoveScript">
+      <UniqueIdentifier>{063306f1-86da-4240-9857-0e9f1bd0eb7c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\CameraMove\Trigger Script">
       <UniqueIdentifier>{d4512d6d-bf9a-4d23-9fd1-16dc78b66641}</UniqueIdentifier>
     </Filter>
@@ -1445,11 +1562,47 @@
     <Filter Include="State\KirbyState\Idle\Start">
       <UniqueIdentifier>{ec2178dc-500a-4f4e-adba-637cd22ad071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj">
+      <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIWipe">
+      <UniqueIdentifier>{0444a1b1-24aa-4fd3-8e58-68300ea21f5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIWipe\UIWipeTrigger">
+      <UniqueIdentifier>{1154ae36-6ac7-49e2-9f7a-c42af591649d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
       <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj\Once">
+      <UniqueIdentifier>{0e6edbfb-8080-4dfc-a310-c2c56be01e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj\Charge">
+      <UniqueIdentifier>{396035f9-7c3d-4e98-9197-65f734dd337e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Elevator">
+      <UniqueIdentifier>{8f894e3f-d821-476b-bba8-64c69704389d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Crumble">
+      <UniqueIdentifier>{95a61cf4-25d1-485d-a57c-065fe8a3a3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut">
+      <UniqueIdentifier>{cc94f586-b5bc-4b3c-b8b8-ee95f549e97b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutTrigger">
+      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
+      <UniqueIdentifier>{352131f1-ba6a-456c-8e34-b2a6ddcbfa48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SupriseBoard">
+      <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SupriseBoard\SurpriseAttack">
+      <UniqueIdentifier>{1718f35d-8e28-4d42-8733-0e6f507cc84e}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\StageClear">
       <UniqueIdentifier>{d9a440ed-3118-490d-8812-7bf7b0ad2988}</UniqueIdentifier>

@@ -156,6 +156,7 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
 
     // 폴리곤을 구성하는 정점 개수
     int iPolySize = _pFbxMesh->GetPolygonSize(0);
+
     if (3 != iPolySize)
         assert(NULL); // Polygon 구성 정점이 3개가 아닌 경우
 
