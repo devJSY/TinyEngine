@@ -9,7 +9,9 @@
 CUIManagerScript::CUIManagerScript()
     : CScript(UIMANAGERSCRIPT)
     , m_vUIManagerScript{}
+    , m_eSceneState(SceneType::StartScene)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_eSceneState, "SceneState");
 }
 
 CUIManagerScript::~CUIManagerScript()
@@ -19,9 +21,12 @@ CUIManagerScript::~CUIManagerScript()
 
 void CUIManagerScript::UIManagerScriptInit()
 {
+    CUIAnimManagerScript* manager = new CUIAnimManagerScript;
+    manager->SetSceneType(m_eSceneState);
+
     m_vUIManagerScript.insert(std::make_pair(L"ButtonManagerScript", new CButtonManagerScript));
     m_vUIManagerScript.insert(std::make_pair(L"TexManagerScript", new CUITexManagerScript));
-    m_vUIManagerScript.insert(std::make_pair(L"AnimManagerScript", new CUIAnimManagerScript));
+    m_vUIManagerScript.insert(std::make_pair(L"AnimManagerScript", manager));
 
     map<wstring, CScript*>::iterator iter = m_vUIManagerScript.begin();
 
@@ -35,12 +40,26 @@ UINT CUIManagerScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+   /* UINT SceneType = (UINT)m_eSceneState;
+
+    fwrite(&SceneType, sizeof(UINT), 1, _File);
+
+    MemoryByte += sizeof(UINT);*/
+
     return MemoryByte;
 }
 
 UINT CUIManagerScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+
+ /*   UINT SceneType1 = 0;
+
+    fread(&SceneType1, sizeof(UINT), 1, _File);
+
+    m_eSceneState = SceneType(SceneType1);
+
+    MemoryByte += SceneType1;*/
 
     return MemoryByte;
 }

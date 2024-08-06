@@ -120,6 +120,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCameraController.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CCrumbleScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CkirbyAbility_Sleep.h" />
@@ -142,7 +143,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
+    <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CPushOutColliderScript.h" />
+    <ClInclude Include="CPushOutTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
+    <ClInclude Include="CPushOutScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -260,20 +265,31 @@ call CodeGen.exe</Command>
     <ClInclude Include="CNormalEnemyScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSolarChargeScript.h" />
+    <ClInclude Include="CSolarOnceScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CSurpriseBoardAttackScript.h" />
+    <ClInclude Include="CSurpriseBoardScript.h" />
     <ClInclude Include="CTackleEnemyScript.h" />
     <ClInclude Include="CTwoTargetCamTrigger.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
+    <ClInclude Include="CUIAnimScript.h" />
+    <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
     <ClInclude Include="CUIManagerScript.h" />
+    <ClInclude Include="CUIStartSceneFlowScript.h" />
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
     <ClInclude Include="CUIUnitManagerScript.h" />
+    <ClInclude Include="CUIWipeScript.h" />
     <ClInclude Include="CUnitScript.h" />
+    <ClInclude Include="CWipeTriggerScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CUIMoveUpDownScript.h" />
+    <ClInclude Include="CUIFlowScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAttackAreaScript.cpp" />
@@ -282,6 +298,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCameraController.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CCrumbleScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CkirbyAbility_Sleep.cpp" />
@@ -304,7 +321,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
+    <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CPushOutColliderScript.cpp" />
+    <ClCompile Include="CPushOutTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
+    <ClCompile Include="CPushOutScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
@@ -422,22 +443,33 @@ call CodeGen.exe</Command>
     <ClCompile Include="CNormalEnemyScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSolarChargeScript.cpp" />
+    <ClCompile Include="CSolarOnceScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CSurpriseBoardAttackScript.cpp" />
+    <ClCompile Include="CSurpriseBoardScript.cpp" />
     <ClCompile Include="CTackleEnemyScript.cpp" />
     <ClCompile Include="CTwoTargetCamTrigger.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
+    <ClCompile Include="CUIAnimScript.cpp" />
+    <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
     <ClCompile Include="CUIManagerScript.cpp" />
+    <ClCompile Include="CUIStartSceneFlowScript.cpp" />
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />
     <ClCompile Include="CUIUnitManagerScript.cpp" />
+    <ClCompile Include="CUIWipeScript.cpp" />
     <ClCompile Include="CUnitScript.cpp" />
+    <ClCompile Include="CWipeTriggerScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scripts.cpp" />
+    <ClCompile Include="CUIMoveUpDownScript.cpp" />
+    <ClCompile Include="CUIFlowScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
