@@ -481,7 +481,7 @@ UINT CAnimator::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    // fwrite(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
+    fwrite(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
     MemoryByte += SaveAssetRef(m_SkeletalMesh, _File);
 
     fwrite(&m_bPlay, 1, sizeof(bool), _File);
@@ -489,7 +489,7 @@ UINT CAnimator::SaveToLevelFile(FILE* _File)
     fwrite(&m_bReverse, 1, sizeof(bool), _File);
     fwrite(&m_PlaySpeed, 1, sizeof(float), _File);
 
-    // MemoryByte += sizeof(AnimatorUpdateMode);
+    MemoryByte += sizeof(AnimatorUpdateMode);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
@@ -502,7 +502,7 @@ UINT CAnimator::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    // fread(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
+    fread(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
     MemoryByte += LoadAssetRef(m_SkeletalMesh, _File);
     SetSkeletalMesh(m_SkeletalMesh);
 
@@ -511,7 +511,7 @@ UINT CAnimator::LoadFromLevelFile(FILE* _File)
     fread(&m_bReverse, 1, sizeof(bool), _File);
     fread(&m_PlaySpeed, 1, sizeof(float), _File);
 
-    // MemoryByte += sizeof(AnimatorUpdateMode);
+    MemoryByte += sizeof(AnimatorUpdateMode);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);

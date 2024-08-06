@@ -128,7 +128,7 @@ UINT CAnimator2D::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    // fwrite(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
+    fwrite(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
 
     size_t AnimCount = m_mapAnim.size();
     fwrite(&AnimCount, sizeof(size_t), 1, _File);
@@ -147,7 +147,7 @@ UINT CAnimator2D::SaveToLevelFile(FILE* _File)
 
     fwrite(&m_bRepeat, sizeof(bool), 1, _File);
 
-    // MemoryByte += sizeof(AnimatorUpdateMode);
+    MemoryByte += sizeof(AnimatorUpdateMode);
     MemoryByte += sizeof(size_t);
     MemoryByte += sizeof(bool);
 
@@ -158,7 +158,7 @@ UINT CAnimator2D::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    // fread(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
+    fread(&m_UpdateMode, sizeof(AnimatorUpdateMode), 1, _File);
 
     size_t AnimCount = 0;
     fread(&AnimCount, sizeof(size_t), 1, _File);
@@ -179,7 +179,7 @@ UINT CAnimator2D::LoadFromLevelFile(FILE* _File)
 
     fread(&m_bRepeat, sizeof(bool), 1, _File);
 
-    // MemoryByte += sizeof(AnimatorUpdateMode);
+    MemoryByte += sizeof(AnimatorUpdateMode);
     MemoryByte += sizeof(size_t);
     MemoryByte += sizeof(bool);
 

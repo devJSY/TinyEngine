@@ -13,6 +13,8 @@ class CAnimator : public CComponent
 {
 private:
     AnimatorUpdateMode m_UpdateMode;
+    UINT test1;
+    char test2;
 
     Ptr<CMesh> m_SkeletalMesh;
 

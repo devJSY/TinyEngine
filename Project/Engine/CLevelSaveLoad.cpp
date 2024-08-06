@@ -12,7 +12,7 @@
 #include "CScript.h"
 
 wstring CLevelSaveLoad::Level_extension = L".tLevel";
-const UINT CLevelSaveLoad::MemoryBlockSize = 256; // 8192
+const UINT CLevelSaveLoad::MemoryBlockSize = 8192;
 
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 {
@@ -141,7 +141,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
 
         // 해당 컴포넌트가 저장할 데이터 저장
         UINT MemoryByte = vecComps[i].second->SaveToLevelFile(_File);
-        // PaddingMemoryBlock(MemoryByte, _File, false);
+        PaddingMemoryBlock(MemoryByte, _File, false);
     }
 
     // 스크립트 정보 저장
@@ -407,7 +407,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
         pObject->AddComponent(pComponent);
 
         UINT MemoryByte = pComponent->LoadFromLevelFile(_File);
-        // PaddingMemoryBlock(MemoryByte, _File, true);
+        PaddingMemoryBlock(MemoryByte, _File, true);
     }
 
     // 컴포넌트 매쉬 설정
