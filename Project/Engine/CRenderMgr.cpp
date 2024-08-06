@@ -141,6 +141,7 @@ void CRenderMgr::render()
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
 
+    // Depth Masking Pass
     render_DepthMasking();
 
     // Dynamic Shadow Depth Map
@@ -491,8 +492,6 @@ void CRenderMgr::render_DynamicShadowDepth()
 
 void CRenderMgr::render_DepthMasking()
 {
-    CCamera* pDepthMaskCam = nullptr;
-
     for (UINT i = 0; i < (UINT)m_vecCam.size(); i++)
     {
         if (nullptr == m_vecCam[i])
@@ -500,16 +499,11 @@ void CRenderMgr::render_DepthMasking()
 
         if (L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
         {
-            pDepthMaskCam = m_vecCam[i];
-            break;
+            m_vecCam[i]->SortShadowMapObject();
+            m_vecCam[i]->render_DepthOnly(m_DepthMaskingTex);
+            return;
         }
     }
-
-    if (nullptr == pDepthMaskCam)
-        return;
-
-    pDepthMaskCam->SortObject();
-    pDepthMaskCam->render_DepthOnly(m_DepthMaskingTex);
 }
 
 void CRenderMgr::UpdateData()

@@ -1736,7 +1736,7 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PostEffectShader"));
         pMtrl->SetName(L"PostEffectMtrl");
-        pMtrl->SetScalarParam(FLOAT_1, 1.f);
+        pMtrl->SetScalarParam(FLOAT_1, 20.f);
         pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
     }

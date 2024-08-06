@@ -1133,6 +1133,9 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIWipeShader">
       <UniqueIdentifier>{dd483ebd-d730-4e07-8e7f-6107bc17f32a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\Postprocess">
+      <UniqueIdentifier>{3da31022-2699-4482-8b2c-1563432e7934}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1433,6 +1436,9 @@
     </FxCompile>
     <FxCompile Include="UIWipePS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbyMaskingPS.hlsl">
+      <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
