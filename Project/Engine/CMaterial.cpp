@@ -140,6 +140,18 @@ int CMaterial::Save(const wstring& _strRelativePath)
     if (nullptr == pFile)
         return E_FAIL;
 
+    //// 임시 코드
+    //if (nullptr != m_pShader)
+    //{
+    //    if (L"UnrealPBRDeferredShader" == m_pShader->GetKey())
+    //    {
+    //        if (0 == m_Const.arrInt[0])
+    //        {
+    //            m_Const.arrInt[0] = 1;
+    //        }
+    //    }
+    //}
+
     // 재질 상수값 저장
     fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
