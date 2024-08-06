@@ -28,6 +28,7 @@ enum class ElfilisPatternType
     NONE,
 
     // demo
+    Appear1,
     Appear2,
 
     // combo

@@ -4,9 +4,6 @@
 #include "CState.h"
 #include "CPlayerMgr.h"
 
-//
-#include "CCameraController.h"
-
 CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
     , m_CurStateGroup(ElfilisStateGroup::END)
@@ -407,16 +404,9 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
-    //@TEST
-    if (KEY_TAP(KEY::T))
-    {
-        CAMERACTRL->ChangeMainTarget(BOSS->GetName());
-        CAMERACTRL->ResetCamera();
-    }
-
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
         // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
     if (KEY_TAP(KEY::SPACE))
@@ -463,6 +453,22 @@ void CElfilisFSM::ProcPatternStep()
 
     switch (m_Pattern)
     {
+    case ElfilisPatternType::Appear1: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
+        }
+        else if (m_PatternStep == 1)
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
+        }
+        else if (m_PatternStep == 2)
+        {
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_NORMAL");
+            bFinish = true;
+        }
+    }
+    break;
     case ElfilisPatternType::Appear2: {
         if (m_PatternStep == 0)
         {

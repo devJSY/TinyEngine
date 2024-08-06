@@ -8,7 +8,7 @@
 
 CElfilisD_Appear::CElfilisD_Appear()
     : m_StartPos(Vec3(0.f, 200.f, 0.f))
-    , m_DownSpeed(80.f)
+    , m_DownSpeed(200.f)
     , m_AccTime(0.f)
     , m_BossName(nullptr)
 {
@@ -135,6 +135,7 @@ void CElfilisD_Appear::Progress()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE");
+        ELFFSM->SetPattern(ElfilisPatternType::Appear1);
+        ELFFSM->ProcPatternStep();
     }
 }
