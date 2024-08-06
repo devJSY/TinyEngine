@@ -91,6 +91,7 @@ void CKirbyMoveController::begin()
     m_Gravity = -20.f;
     m_bGround = false;
     m_bLimitFallSpeed = false;
+    m_CheckPointPos = Transform()->GetWorldPos();
 }
 
 void CKirbyMoveController::tick()

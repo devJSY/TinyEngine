@@ -36,16 +36,6 @@ void CLadderScript::begin()
     m_Pivot = 5.f;
 }
 
-UINT CLadderScript::SaveToLevelFile(FILE* _File)
-{
-    return 0;
-}
-
-UINT CLadderScript::LoadFromLevelFile(FILE* _File)
-{
-    return 0;
-}
-
 void CLadderScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
@@ -145,4 +135,14 @@ void CLadderScript::OnTriggerExit(CCollider* _OtherCollider)
         PLAYERFSM->SetCollisionLadder(false);
     }
 
+}
+
+UINT CLadderScript::SaveToLevelFile(FILE* _File)
+{
+    return 0;
+}
+
+UINT CLadderScript::LoadFromLevelFile(FILE* _File)
+{
+    return 0;
 }

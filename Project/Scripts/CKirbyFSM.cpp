@@ -223,6 +223,9 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyLadderWaitStart.h"
 #include "CKirbyLadderExit.h"
 
+// Fall
+#include "CKirbyFall.h"
+
 void CKirbyFSM::begin()
 {
     // State Init
@@ -338,6 +341,7 @@ void CKirbyFSM::begin()
     AddState(L"LADDER_WAITSTART", new CKirbyLadderWaitStart);
     AddState(L"LADDER_EXIT", new CKirbyLadderExit);
     
+    AddState(L"FALL", new CKirbyFall);
 
     ChangeState(L"IDLE");
 }

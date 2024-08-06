@@ -47,3 +47,5 @@ CProgressCamTrigger
 CTwoTargetCamTrigger
 CKirbyUnitScript
 CLadderScript
+CKirbyCheckPointTrigger
+CKirbyFallDetectTrigger

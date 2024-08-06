@@ -473,13 +473,22 @@
       <Filter>State\KirbyState\Ladder\LadderWait</Filter>
     </ClInclude>
     <ClInclude Include="CLadderScript.h">
-      <Filter>Scripts\Gimmik\Ladder</Filter>
+      <Filter>Scripts\Trigger\Ladder</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyLadderWaitStart.h">
       <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyLadderExit.h">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFall.h">
+      <Filter>State\KirbyState\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyCheckPointTrigger.h">
+      <Filter>Scripts\Trigger\CheckPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFallDetectTrigger.h">
+      <Filter>Scripts\Trigger\FallDetect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -964,13 +973,22 @@
       <Filter>State\KirbyState\Ladder\LadderWait</Filter>
     </ClCompile>
     <ClCompile Include="CLadderScript.cpp">
-      <Filter>Scripts\Gimmik\Ladder</Filter>
+      <Filter>Scripts\Trigger\Ladder</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyLadderWaitStart.cpp">
       <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyLadderExit.cpp">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFall.cpp">
+      <Filter>State\KirbyState\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyCheckPointTrigger.cpp">
+      <Filter>Scripts\Trigger\CheckPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFallDetectTrigger.cpp">
+      <Filter>Scripts\Trigger\FallDetect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1469,9 +1487,6 @@
     <Filter Include="State\KirbyState\LongDive\LongDiveLanding">
       <UniqueIdentifier>{75840cd7-acff-4d9d-a644-08c64e1f1d9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\Ladder">
-      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\Ladder">
       <UniqueIdentifier>{3d9bddc6-fd66-4b19-9fce-74a5f36c9458}</UniqueIdentifier>
     </Filter>
@@ -1489,6 +1504,21 @@
     </Filter>
     <Filter Include="State\KirbyState\Ladder\LadderExit">
       <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Fall">
+      <UniqueIdentifier>{bb73440d-3931-423c-8cb6-5f943e566875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger">
+      <UniqueIdentifier>{10304296-ce8f-4756-9e57-af26a0bb2166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\Ladder">
+      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\FallDetect">
+      <UniqueIdentifier>{3e191346-16a0-4716-872c-2894b6df4063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\CheckPoint">
+      <UniqueIdentifier>{7a613646-21ea-40cd-a2c5-e60cd3f19649}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

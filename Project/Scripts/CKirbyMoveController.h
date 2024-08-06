@@ -66,6 +66,7 @@ private:
     float                       m_HoveringHeight;
 
     // Respawn Á¤º¸
+    Vec3                        m_CheckPointPos;
 
 
 public:
@@ -103,11 +104,13 @@ public:
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
+    void SetCheckPoint(Vec3 _CheckPoint) { m_CheckPointPos = _CheckPoint; }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetInputWorld() const { return m_InputWorld; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     Vec3 GetVelocity() const { return m_MoveVelocity; }
+    Vec3 GetCheckPoint() const { return m_CheckPointPos; }
     float GetSpeed() const { return m_Speed; }
     float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
