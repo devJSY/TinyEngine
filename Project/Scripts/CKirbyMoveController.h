@@ -38,6 +38,7 @@ private:
     bool                        m_bMoveLock;
     bool                        m_bJumpLock;
     bool                        m_bDirLock;
+    bool                        m_bLimitFallSpeed;
 
     // 방향
     Vec3                        m_CurDir;
@@ -51,6 +52,7 @@ private:
     Vec3                        m_Accel;
     float                       m_Speed;
     float                       m_MaxSpeed;
+    float                       m_MaxFallSpeed;
     float                       m_RotSpeed;
     float                       m_Friction; // 마찰력 계수
     float                       m_JumpPower;
@@ -62,6 +64,9 @@ private:
     float                       m_HoveringLimitHeight;
     float                       m_HoveringMinSpeed;
     float                       m_HoveringHeight;
+
+    // Respawn 정보
+
 
 public:
     virtual void begin() override;
@@ -83,6 +88,7 @@ public:
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
     void SetForwardMode(bool _Mode) { m_bForwardMode = _Mode; }
+    void SetLimitFallSpeed(bool _b) { m_bLimitFallSpeed = _b; }
 
     void Jump() { m_bJump = true; }
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }

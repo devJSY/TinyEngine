@@ -46,3 +46,4 @@ CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
 CKirbyUnitScript
+CLadderScript

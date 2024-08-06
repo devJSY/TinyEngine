@@ -27,12 +27,14 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bJump(false)
     , m_bActiveFriction(false)
     , m_bForwardMode(false)
+    , m_bLimitFallSpeed(false)
     , m_HoveringLimitHeight(500.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)
     , m_HoveringMinSpeed(-5.f)
     , m_RayHit{}
+    , m_MaxFallSpeed(-15.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -58,10 +60,12 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_bJump(false)
     , m_bActiveFriction(false)
     , m_bForwardMode(false)
+    , m_bLimitFallSpeed(false)
     , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
     , m_HoveringMinSpeed(_Origin.m_HoveringMinSpeed)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(_Origin.m_Friction)
+    , m_MaxFallSpeed(-15.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -86,6 +90,7 @@ void CKirbyMoveController::begin()
     m_JumpPower = PLAYERUNIT->GetInitInfo().JumpPower;
     m_Gravity = -20.f;
     m_bGround = false;
+    m_bLimitFallSpeed = false;
 }
 
 void CKirbyMoveController::tick()
@@ -349,6 +354,12 @@ void CKirbyMoveController::Move()
         HorizontalVel = HorizontalVel.Normalize() * m_MaxSpeed;
         m_MoveVelocity.x = HorizontalVel.x;
         m_MoveVelocity.z = HorizontalVel.z;
+    }
+
+    // MaxFallSpeed มฆวั
+    if (m_MoveVelocity.y < m_MaxFallSpeed  && m_bLimitFallSpeed) 
+    {
+        m_MoveVelocity.y = m_MaxFallSpeed;
     }
 
     // =========================
