@@ -126,21 +126,12 @@ void CKirbyObject::DropObjectEnter()
     // spawn object
     CGameObject* pObj = m_OriginObject->Instantiate();
     Vec3 BackDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
-    Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + (BackDir * 300.f);
+    Vec3 InitPos = PLAYER->Transform()->GetWorldPos() + (BackDir * 60.f);
     Vec3 Force = Vec3(0.f, 1.f, 0.f) + BackDir;
     Force = Force.Normalize() * 3.f;
 
-    // Vec3 FrontDir = -BackDir;
-    //  Vec3 up = Vec3(0.f, 1.f, 0.f);
-    //  if (FrontDir == Vec3(0.f, 0.f, -1.f))
-    //{
-    //      up = Vec3(0.f, -1.f, 0.f);
-    //  }
-
-    // pObj->Transform()->SetDirection(-FrontDir, up);
-
     Vec3 FrontDir = -BackDir;
-    pObj->Transform()->SetDirection(-FrontDir);
+    pObj->Transform()->SetDirection(FrontDir);
 
     pObj->Transform()->SetWorldPos(InitPos);
     pObj->Rigidbody()->AddForce(Force, ForceMode::Impulse);

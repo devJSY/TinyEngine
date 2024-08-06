@@ -7,7 +7,7 @@
 CKirbyDodge1::CKirbyDodge1()
     : m_InitSpeed(12.f)
     , m_JumpPower(18.f)
-    , m_DodgeSpeed(0.05f)
+    , m_DodgeSpeed(0.1f)
 {
 }
 
@@ -79,7 +79,7 @@ void CKirbyDodge1::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERCTRL->SetFriction(2.5f);
-    PLAYERCTRL->SetGuard(true);
+    PLAYERCTRL->SetFrictionMode(true);
     PLAYERCTRL->SetGravity(-100.f);
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
 }
@@ -91,5 +91,5 @@ void CKirbyDodge1::Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERCTRL->SetFriction(1.f);
-    PLAYERCTRL->SetGuard(false);
+    PLAYERCTRL->SetFrictionMode(false);
 }

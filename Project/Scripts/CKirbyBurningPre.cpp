@@ -42,7 +42,7 @@ void CKirbyBurningPre::Enter()
     
     // Movement
     Vec3 Input = PLAYERCTRL->GetMoveDir();
-    ForceDirInfo Info = {ForceDirType::DEFORM, Input};
+    ForceDirInfo Info = {ForceDirType::DEFORM, Input, true};
 
     // 방향 강제 조정
     PLAYERCTRL->ForceDir(Info);

@@ -30,7 +30,7 @@ void CKirbyJump::tick()
             {
                 ChangeState(L"DROP_ABILITY");
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -57,7 +57,7 @@ void CKirbyJump::tick()
                     ChangeState(L"ATTACK_CHARGE1_START");
                 }
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -81,7 +81,7 @@ void CKirbyJump::tick()
                     ChangeState(L"ATTACK");
                 }
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }
@@ -108,7 +108,7 @@ void CKirbyJump::tick()
                     ChangeState(L"JUMP_ATTACK_START");
                 }
             }
-            else if (GetOwner()->CharacterController()->IsGrounded())
+            else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }

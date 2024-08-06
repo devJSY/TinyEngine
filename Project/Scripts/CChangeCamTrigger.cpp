@@ -121,7 +121,7 @@ void CChangeCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
         }
         if (m_bChangeZoomspeed)
         {
-            m_UndoZoomSpeed = m_MainCamController->GetZoomSpeed();
+            m_UndoZoomSpeed = m_MainCamController->GetZoomMaxSpeed();
         }
     }
 
@@ -146,7 +146,7 @@ void CChangeCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
     }
     if (m_bChangeZoomspeed)
     {
-        m_MainCamController->SetZoomSpeed(m_ZoomSpeed);
+        m_MainCamController->SetZoomMaxSpeed(m_ZoomSpeed);
     }
 }
 
@@ -178,7 +178,7 @@ void CChangeCamTrigger::OnTriggerExit(CCollider* _OtherCollider)
     }
     if (m_bChangeZoomspeed)
     {
-        m_MainCamController->SetZoomSpeed(m_UndoZoomSpeed);
+        m_MainCamController->SetZoomMaxSpeed(m_UndoZoomSpeed);
     }
 }
 

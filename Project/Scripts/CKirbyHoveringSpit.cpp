@@ -13,7 +13,7 @@ void CKirbyHoveringSpit::tick()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        if (GetOwner()->CharacterController()->IsGrounded())
+        if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LANDING");
         }
@@ -27,13 +27,19 @@ void CKirbyHoveringSpit::Enter()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
 
-    if (!GetOwner()->CharacterController()->IsGrounded())
+    if (!PLAYERCTRL->IsGround())
     {
         PLAYERCTRL->AddVelocity(Vec3(0.f, 1.f, 0.f));
     }
+    Vec3 InputWorld = PLAYERCTRL->GetInputWorld();
+    if (InputWorld.Length())
+        PLAYERCTRL->ForceDir({ForceDirType::DEFORM, InputWorld, false});
+
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockDirection();
-    PLAYERCTRL->LockMove();
+
+    m_SaveSpeed = PLAYERCTRL->GetSpeed();
+    PLAYERCTRL->SetSpeed(m_SaveSpeed / 3.f);
 
     PLAYERFSM->SetDroppable(true);
 }
@@ -47,7 +53,7 @@ void CKirbyHoveringSpit::Exit()
     PLAYERFSM->SetHovering(false);
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
-    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->SetSpeed(m_SaveSpeed);
 
     PLAYERFSM->SetDroppable(false);
 }
