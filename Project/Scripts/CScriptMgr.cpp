@@ -52,6 +52,7 @@
 #include "CLadderScript.h"
 #include "CKirbyCheckPointTrigger.h"
 #include "CKirbyFallDetectTrigger.h"
+#include "CFixedViewCamTrigger.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -106,6 +107,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLadderScript");
 	_vec.push_back(L"CKirbyCheckPointTrigger");
 	_vec.push_back(L"CKirbyFallDetectTrigger");
+	_vec.push_back(L"CFixedViewCamTrigger");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -212,6 +214,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyCheckPointTrigger;
 	if (L"CKirbyFallDetectTrigger" == _strScriptName)
 		return new CKirbyFallDetectTrigger;
+	if (L"CFixedViewCamTrigger" == _strScriptName)
+		return new CFixedViewCamTrigger;
 	return nullptr;
 }
 
@@ -321,6 +325,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyCheckPointTrigger;
 	case (UINT)SCRIPT_TYPE::KIRBYFALLDETECTTRIGGER:
 		return new CKirbyFallDetectTrigger;
+	case (UINT)SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
+		return new CFixedViewCamTrigger;
 	}
 	return nullptr;
 }
@@ -431,6 +437,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyCheckPointTrigger";
 	case SCRIPT_TYPE::KIRBYFALLDETECTTRIGGER:
 		return L"CKirbyFallDetectTrigger";
+	case SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
+		return L"CFixedViewCamTrigger";
 	}
 	return nullptr;
 }

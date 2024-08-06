@@ -7,6 +7,8 @@
 #include <Engine/CRenderMgr.h>
 #include <Engine/CPhysicsMgr.h>
 
+#include "CCameraController.h"
+
 CKirbyMoveController::CKirbyMoveController()
     : CScript(KIRBYMOVECONTROLLER)
     , m_Input{0.f, 0.f, 0.f}
@@ -99,13 +101,9 @@ void CKirbyMoveController::tick()
     // @Test
     if (KEY_TAP(KEY::G))
     {
-        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+        CAMERACTRL->FixedView(false);
     }
 
-    if (KEY_TAP(KEY::H))
-    {
-        PLAYERFSM->ChangeState(L"DEATH");
-    }
 
 
 

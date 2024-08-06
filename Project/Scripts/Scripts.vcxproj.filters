@@ -490,6 +490,9 @@
     <ClInclude Include="CKirbyFallDetectTrigger.h">
       <Filter>Scripts\Trigger\FallDetect</Filter>
     </ClInclude>
+    <ClInclude Include="CFixedViewCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -989,6 +992,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyFallDetectTrigger.cpp">
       <Filter>Scripts\Trigger\FallDetect</Filter>
+    </ClCompile>
+    <ClCompile Include="CFixedViewCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

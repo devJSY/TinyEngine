@@ -189,6 +189,8 @@ void CCameraController::SetUpProc()
     case CameraSetup::BOSS:
         Boss();
         break;
+    case CameraSetup::FIXEDVIEW:
+        FixedView();
     default:
         break;
     }
@@ -199,19 +201,35 @@ void CCameraController::UpdateTargetPos()
     // 타겟의 현재 위치 업데이트
     if (nullptr != m_Target)
     {
-        // 커비일 경우에는 점프할 때 따라가지 않음
         if (m_Target->GetName() == L"Main Player")
         {
+            // 커비일 경우에는 점프할 때 따라가지 않음
+            Vec3 TargetPos = m_Target->Transform()->GetWorldPos();
 
-            m_TargetPos = m_Target->Transform()->GetWorldPos();
+            m_TargetPos.x = TargetPos.x;
+            m_TargetPos.z = TargetPos.z;
+
             RaycastHit Hit = PLAYERCTRL->GetRay();
 
-            // 커비가 땅에 닿아있지 않고 레이에 충돌한 땅이 있을 경우 땅을 타겟으로 정한다.
-            if (!PLAYERCTRL->IsGround() && Hit.pCollisionObj != nullptr)
+            if (PLAYERCTRL->IsGround())
             {
-                m_TargetPos = m_Target->Transform()->GetWorldPos();
-                m_TargetPos.y = Hit.Point.y;
+                m_TargetPos.y = TargetPos.y;
             }
+            else
+            {
+                if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
+                {
+                    m_TargetPos.y = Hit.Point.y;
+                }
+                else
+                {
+                    m_TargetPos.y = TargetPos.y;
+                }
+            }
+        }
+        else
+        {
+            m_TargetPos = m_Target->Transform()->GetWorldPos();
         }
     }
 
@@ -612,6 +630,16 @@ void CCameraController::Boss()
     m_LookAtPos = Center;
 }
 
+void CCameraController::FixedView()
+{
+    // 카메라의 위치는 고정되고 
+    Vec3 ToTargetFronCamera = m_TargetPos - m_FixedViewPos;
+
+    m_LookAtPos = m_TargetPos;
+    m_LookDist = ToTargetFronCamera.Length();
+    m_LookDir = ToTargetFronCamera.Normalize();
+}
+
 float simpleNoise(float t)
 {
     return sin(t) * (rand() / float(RAND_MAX));
@@ -717,9 +745,6 @@ void CCameraController::ResetCamera()
     SetUpProc();
     ApplyOffset();
 
-    m_TargetPos = m_Target->Transform()->GetWorldPos();
-    m_LookAtPos = m_TargetPos + m_Offset;
-
     m_PrevLookDir = m_LookDir;
     m_CurLookDir = m_LookDir;
     m_PrevLookAtPos = m_LookAtPos;
@@ -761,6 +786,16 @@ void CCameraController::ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed
     m_MinSpeed = _MinSpeed;
     m_MaxSpeed = _MaxSpeed;
     m_ThresholdDistance = _Threshold;
+}
+
+void CCameraController::Normal(bool _IsImmediate)
+{
+   SetCameraSetup(CameraSetup::NORMAL);
+
+   if (_IsImmediate)
+   {
+       ResetCamera();
+   }
 }
 
 void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir,
@@ -857,6 +892,25 @@ void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, floa
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 80.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
+}
+
+void CCameraController::FixedView(bool _IsImmediate, Vec3 _FixedViewPos)
+{
+    SetCameraSetup(CameraSetup::FIXEDVIEW);
+
+    if (_FixedViewPos == Vec3(0.f, 0.f, 0.f))
+    {
+        m_FixedViewPos = m_LookEyePos;
+    }
+    else
+    {
+        m_FixedViewPos = _FixedViewPos;
+    }
+
+    if (_IsImmediate)
+    {
+        ResetCamera();
+    }
 }
 
 void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)
