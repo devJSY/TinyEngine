@@ -117,21 +117,92 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CBossState.h" />
     <ClInclude Include="CCameraController.h" />
+    <ClInclude Include="CBossMgr.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CElfilisAirArrow.h" />
+    <ClInclude Include="CElfilisArrowScript.h" />
+    <ClInclude Include="CElfilisArrowSetScript.h" />
+    <ClInclude Include="CElfilisA_DimensionLaser.h" />
+    <ClInclude Include="CElfilisA_DrawLaser.h" />
+    <ClInclude Include="CElfilisA_MoveL.h" />
+    <ClInclude Include="CElfilisA_MoveR.h" />
+    <ClInclude Include="CElfilisA_RayArrowDown.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_RayArrowUp.h" />
+    <ClInclude Include="CElfilisA_SlashCombo.h" />
+    <ClInclude Include="CElfilisA_Stab.h" />
+    <ClInclude Include="CElfilisA_StabCombo.h" />
+    <ClInclude Include="CElfilisA_Teleport.h" />
+    <ClInclude Include="CElfilisA_TeleportCombo.h" />
+    <ClInclude Include="CElfilisBigFSM.h" />
+    <ClInclude Include="CElfilisBig_Appear.h" />
+    <ClInclude Include="CElfilisBig_Roar.h" />
+    <ClInclude Include="CElfilisBig_SwingFinishL.h" />
+    <ClInclude Include="CElfilisBig_SwingL.h" />
+    <ClInclude Include="CElfilisBig_SwingR.h" />
+    <ClInclude Include="CElfilisDimensionLaser.h" />
+    <ClInclude Include="CElfilisD_Appear.h" />
+    <ClInclude Include="CElfilisFSM.h" />
+    <ClInclude Include="CElfilisG_BackStep.h" />
+    <ClInclude Include="CElfilisG_DimensionSpike.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_GroundToAir.h" />
+    <ClInclude Include="CElfilisG_Idle.h" />
+    <ClInclude Include="CElfilisG_NormalAtk.h" />
+    <ClInclude Include="CElfilisG_NormalAtkFinishL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkR.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleportFinishL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleportL.h" />
+    <ClInclude Include="CElfilisG_NormalAtkTeleportR.h" />
+    <ClInclude Include="CElfilisG_RayArrow.h" />
+    <ClInclude Include="CElfilisG_SwordWaveStorm.h" />
+    <ClInclude Include="CElfilisG_SwordWaveFinishRL.h" />
+    <ClInclude Include="CElfilisG_SwordWaveLR.h" />
+    <ClInclude Include="CElfilisG_SwordWaveRL.h" />
+    <ClInclude Include="CElfilisG_Teleport.h" />
+    <ClInclude Include="CElfilisG_ToAirTeleport.h" />
+    <ClInclude Include="CElfilisLaser.h" />
+    <ClInclude Include="CElfilisStormScript.h" />
+    <ClInclude Include="CElfilisSwordSlashScript.h" />
+    <ClInclude Include="CElfilisUnit.h" />
+    <ClInclude Include="CElfilisBig_Idle.h" />
+    <ClInclude Include="CCrumbleScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
+    <ClInclude Include="CChangeAlphaScript.h" />
     <ClInclude Include="CkirbyAbility_Sleep.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
     <ClInclude Include="CKirbyIdleStart.h" />
+    <ClInclude Include="CKirbyLadderDown.h" />
+    <ClInclude Include="CKirbyLadderExit.h" />
+    <ClInclude Include="CKirbyLadderUp.h" />
+    <ClInclude Include="CKirbyLadderWait.h" />
+    <ClInclude Include="CKirbyLadderWaitStart.h" />
+    <ClInclude Include="CKirbyLongDive.h" />
+    <ClInclude Include="CKirbyLongDiveBound.h" />
+    <ClInclude Include="CKirbyLongDiveLanding.h" />
+    <ClInclude Include="CKirbyLongDiveStart.h" />
     <ClInclude Include="CKirbyObject_VendingMachine.h" />
+    <ClInclude Include="CKirbyStageClear.h" />
     <ClInclude Include="CKirbyWeaponHitbox.h" />
+    <ClInclude Include="CLadderScript.h" />
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
+    <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CPushOutColliderScript.h" />
+    <ClInclude Include="CPushOutTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
+    <ClInclude Include="CPushOutScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -249,40 +320,131 @@ call CodeGen.exe</Command>
     <ClInclude Include="CNormalEnemyScript.h" />
     <ClInclude Include="CPlayerMgr.h" />
     <ClInclude Include="CScriptMgr.h" />
+    <ClInclude Include="CSolarChargeScript.h" />
+    <ClInclude Include="CSolarOnceScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CSurpriseBoardAttackScript.h" />
+    <ClInclude Include="CSurpriseBoardScript.h" />
     <ClInclude Include="CTackleEnemyScript.h" />
     <ClInclude Include="CTwoTargetCamTrigger.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
+    <ClInclude Include="CUIAnimScript.h" />
+    <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
     <ClInclude Include="CUIManagerScript.h" />
+    <ClInclude Include="CUIStartSceneFlowScript.h" />
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
     <ClInclude Include="CUIUnitManagerScript.h" />
+    <ClInclude Include="CUIWipeScript.h" />
     <ClInclude Include="CUnitScript.h" />
+    <ClInclude Include="CWipeTriggerScript.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="CElfilisA_Idle.h" />
+    <ClInclude Include="ElfilisDimensionSet.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ElfilisDimensionSpear.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="CUIMoveUpDownScript.h" />
+    <ClInclude Include="CUIFlowScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CBossState.cpp" />
     <ClCompile Include="CCameraController.cpp" />
+    <ClCompile Include="CBossMgr.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CElfilisAirArrow.cpp" />
+    <ClCompile Include="CElfilisArrowScript.cpp" />
+    <ClCompile Include="CElfilisArrowSetScript.cpp" />
+    <ClCompile Include="CElfilisA_DimensionLaser.cpp" />
+    <ClCompile Include="CElfilisA_DrawLaser.cpp" />
+    <ClCompile Include="CElfilisA_MoveL.cpp" />
+    <ClCompile Include="CElfilisA_MoveR.cpp" />
+    <ClCompile Include="CElfilisA_RayArrowDown.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_RayArrowUp.cpp" />
+    <ClCompile Include="CElfilisA_SlashCombo.cpp" />
+    <ClCompile Include="CElfilisA_Stab.cpp" />
+    <ClCompile Include="CElfilisA_StabCombo.cpp" />
+    <ClCompile Include="CElfilisA_Teleport.cpp" />
+    <ClCompile Include="CElfilisA_TeleportCombo.cpp" />
+    <ClCompile Include="CElfilisBigFSM.cpp" />
+    <ClCompile Include="CElfilisBig_Appear.cpp" />
+    <ClCompile Include="CElfilisBig_Roar.cpp" />
+    <ClCompile Include="CElfilisBig_SwingFinishL.cpp" />
+    <ClCompile Include="CElfilisBig_SwingL.cpp" />
+    <ClCompile Include="CElfilisBig_SwingR.cpp" />
+    <ClCompile Include="CElfilisDimensionLaser.cpp" />
+    <ClCompile Include="CElfilisD_Appear.cpp" />
+    <ClCompile Include="CElfilisFSM.cpp" />
+    <ClCompile Include="CElfilisG_BackStep.cpp" />
+    <ClCompile Include="CElfilisG_DimensionSpike.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_GroundToAir.cpp" />
+    <ClCompile Include="CElfilisG_Idle.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtk.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkR.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleportFinishL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleportL.cpp" />
+    <ClCompile Include="CElfilisG_NormalAtkTeleportR.cpp" />
+    <ClCompile Include="CElfilisG_RayArrow.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveStorm.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveFinishRL.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveLR.cpp" />
+    <ClCompile Include="CElfilisG_SwordWaveRL.cpp" />
+    <ClCompile Include="CElfilisG_Teleport.cpp" />
+    <ClCompile Include="CElfilisG_ToAirTeleport.cpp" />
+    <ClCompile Include="CElfilisLaser.cpp" />
+    <ClCompile Include="CElfilisStormScript.cpp" />
+    <ClCompile Include="CElfilisSwordSlashScript.cpp" />
+    <ClCompile Include="CElfilisUnit.cpp" />
+    <ClCompile Include="CElfilisBig_Idle.cpp" />
+    <ClCompile Include="CCrumbleScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
+    <ClCompile Include="CChangeAlphaScript.cpp" />
     <ClCompile Include="CkirbyAbility_Sleep.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
     <ClCompile Include="CKirbyIdleStart.cpp" />
+    <ClCompile Include="CKirbyLadderDown.cpp" />
+    <ClCompile Include="CKirbyLadderExit.cpp" />
+    <ClCompile Include="CKirbyLadderUp.cpp" />
+    <ClCompile Include="CKirbyLadderWait.cpp" />
+    <ClCompile Include="CKirbyLadderWaitStart.cpp" />
+    <ClCompile Include="CKirbyLongDive.cpp" />
+    <ClCompile Include="CKirbyLongDiveBound.cpp" />
+    <ClCompile Include="CKirbyLongDiveLanding.cpp" />
+    <ClCompile Include="CKirbyLongDiveStart.cpp" />
     <ClCompile Include="CKirbyObject_VendingMachine.cpp" />
+    <ClCompile Include="CKirbyStageClear.cpp" />
     <ClCompile Include="CKirbyWeaponHitbox.cpp" />
+    <ClCompile Include="CLadderScript.cpp" />
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
+    <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CPushOutColliderScript.cpp" />
+    <ClCompile Include="CPushOutTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
+    <ClCompile Include="CPushOutScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
@@ -400,22 +562,42 @@ call CodeGen.exe</Command>
     <ClCompile Include="CNormalEnemyScript.cpp" />
     <ClCompile Include="CPlayerMgr.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
+    <ClCompile Include="CSolarChargeScript.cpp" />
+    <ClCompile Include="CSolarOnceScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CSurpriseBoardAttackScript.cpp" />
+    <ClCompile Include="CSurpriseBoardScript.cpp" />
     <ClCompile Include="CTackleEnemyScript.cpp" />
     <ClCompile Include="CTwoTargetCamTrigger.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
+    <ClCompile Include="CUIAnimScript.cpp" />
+    <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
     <ClCompile Include="CUIManagerScript.cpp" />
+    <ClCompile Include="CUIStartSceneFlowScript.cpp" />
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />
     <ClCompile Include="CUIUnitManagerScript.cpp" />
+    <ClCompile Include="CUIWipeScript.cpp" />
     <ClCompile Include="CUnitScript.cpp" />
+    <ClCompile Include="CElfilisA_Idle.cpp" />
+    <ClCompile Include="ElfilisDimensionSet.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ElfilisDimensionSpear.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CWipeTriggerScript.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Scripts.cpp" />
+    <ClCompile Include="CUIMoveUpDownScript.cpp" />
+    <ClCompile Include="CUIFlowScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

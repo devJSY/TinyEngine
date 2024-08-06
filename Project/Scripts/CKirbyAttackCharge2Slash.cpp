@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "CKirbyAttackCharge2Slash.h"
-#define PLAYTIME 1.5f
 
 CKirbyAttackCharge2Slash::CKirbyAttackCharge2Slash()
     : m_PrevSpeed(0.f)
-    , m_PlayTime(PLAYTIME)
+    , m_PlayTime(1.5f)
 {
 }
 
@@ -32,7 +31,7 @@ void CKirbyAttackCharge2Slash::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
-    m_PlayTime = PLAYTIME;
+    m_PlayTime = 1.5f;
 }
 
 void CKirbyAttackCharge2Slash::Exit()

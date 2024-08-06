@@ -45,6 +45,7 @@ CRenderMgr::CRenderMgr()
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
     , m_CameraPreviewTex(nullptr)
+    , m_MaskingTex(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
 
@@ -129,6 +130,9 @@ void CRenderMgr::render()
     // Camera Preview
     render_CameraPreview();
 
+    // MASKING
+    render_masking();
+
     render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
 
     UpdateData();
@@ -198,7 +202,8 @@ void CRenderMgr::render_play()
 
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
-        if (nullptr == m_vecCam[i])
+        // MASKING
+        if (nullptr == m_vecCam[i] || L"Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
             continue;
 
         m_vecCam[i]->SortObject();
@@ -999,6 +1004,9 @@ void CRenderMgr::Resize_Release()
     }
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"CameraPreviewTex");
 
+    // MASKING
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"MaskingTex");
+
     Delete_Array(m_arrMRT);
     m_RTCopyTex = nullptr;
     m_DepthOnlyTex = nullptr;
@@ -1006,6 +1014,9 @@ void CRenderMgr::Resize_Release()
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
     m_CameraPreviewTex = nullptr;
+
+    // Masking
+    m_MaskingTex = nullptr;
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
@@ -1017,6 +1028,9 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateBloomTextures(Resolution);
     CreateCameraPreviewTex(Resolution);
     CreateMRT(Resolution);
+
+    // MASKING
+    Create_MaskingTexture(Resolution);
 
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 

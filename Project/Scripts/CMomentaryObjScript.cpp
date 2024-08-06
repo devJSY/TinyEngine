@@ -3,7 +3,8 @@
 
 CMomentaryObjScript::CMomentaryObjScript()
     : CScript(MOMENTARYOBJSCRIPT)
-    , m_PlayTime(5.f)
+    , m_AccTime(0.f)
+    , m_LifeTime(5.f)
     , m_EndAnimPlayTime(0)
     , m_EndAnim(L"")
 {
@@ -23,17 +24,42 @@ void CMomentaryObjScript::begin()
 
 void CMomentaryObjScript::tick()
 {
-    m_PlayTime -= DT;
+    m_AccTime += DT;
 
-    if (Animator() && m_EndAnim != L"" && m_PlayTime <= m_EndAnimPlayTime)
+    // Effect
+    for (MomentaryEffectType Type : m_EffectVec)
     {
-        GetOwner()->Animator()->Play(m_EndAnim, false);
-        m_EndAnim = L"";
+        switch (Type)
+        {
+        case MomentaryEffectType::AppearScaling: {
+            float t = m_AccTime / m_LifeTime;
+            Transform()->SetLocalScale(m_OriginScale * t);
+        }
+        break;
+        case MomentaryEffectType::DisappearAnim: {
+            if (Animator() && !m_EndAnim.empty() && (m_LifeTime - m_AccTime) <= m_EndAnimPlayTime)
+            {
+                GetOwner()->Animator()->Play(m_EndAnim, false);
+                m_EndAnim = L"";
+            }
+        }
+        break;
+        }
     }
 
-    if (m_PlayTime <= 0.f)
+    if (m_AccTime > m_LifeTime)
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
+    }
+}
+
+void CMomentaryObjScript::AddEffect(MomentaryEffectType _EffectType)
+{
+    m_EffectVec.push_back(_EffectType);
+
+    if (_EffectType == MomentaryEffectType::AppearScaling)
+    {
+        m_OriginScale = Transform()->GetLocalScale();
     }
 }
 
@@ -46,10 +72,11 @@ void CMomentaryObjScript::SetEndAnim(wstring _Key)
     if (idx != -1)
     {
         double Time = GetOwner()->GetRenderComponent()->GetMesh()->GetAnimClip()->at(idx).dTimeLength;
-        if (m_PlayTime > Time)
+        if (m_LifeTime > Time)
         {
             m_EndAnimPlayTime = Time;
             m_EndAnim = _Key;
+            AddEffect(MomentaryEffectType::DisappearAnim);
         }
     }
 }

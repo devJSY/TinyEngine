@@ -60,6 +60,7 @@ public:
     bool IsFinish() const;
 
     bool IsValid() const { return nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh(); };
+    bool IsChainging() const { return m_bChanging; }
 
 public:
     AnimatorUpdateMode GetAnimatorUpdateMode() const { return m_UpdateMode; }

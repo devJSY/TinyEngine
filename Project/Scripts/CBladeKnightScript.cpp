@@ -397,7 +397,7 @@ void CBladeKnightScript::ExitState()
 
 void CBladeKnightScript::Attack()
 {
-    if (Animator()->GetClipFrameIndex() == 10)
+    if (CHECK_ANIMFRM(GetOwner(), 10))
     {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
@@ -443,11 +443,11 @@ void CBladeKnightScript::Damage()
 
 void CBladeKnightScript::DoubleAttack()
 {
-    if (Animator()->GetClipFrameIndex() == 10 || Animator()->GetClipFrameIndex() == 40)
+    if (CHECK_ANIMFRM(GetOwner(), 10) || CHECK_ANIMFRM(GetOwner(), 40))
     {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
-    else if (Animator()->GetClipFrameIndex() == 20 && !m_bStepFlag)
+    else if (CHECK_ANIMFRM(GetOwner(), 20) && !m_bStepFlag)
     {
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         m_bStepFlag = true;
@@ -601,17 +601,17 @@ void CBladeKnightScript::Move()
 
 void CBladeKnightScript::Retreat()
 {
-    if (Animator()->GetClipFrameIndex() == 8 && !m_bStepFlag)
+    if (CHECK_ANIMFRM(GetOwner(), 8) && !m_bStepFlag)
     {
         Rigidbody()->AddForce(-Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 0.8f, ForceMode::Impulse);
         m_bStepFlag = true;
     }
-    else if (Animator()->GetClipFrameIndex() == 24)
+    else if (CHECK_ANIMFRM(GetOwner(), 24))
     {
         m_bStepFlag = false;
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
-    else if (Animator()->GetClipFrameIndex() == 25 && !m_bStepFlag)
+    else if (CHECK_ANIMFRM(GetOwner(), 25) && !m_bStepFlag)
     {
         Rigidbody()->AddForce(-Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 0.8f, ForceMode::Impulse);
         m_bStepFlag = true;

@@ -5,12 +5,13 @@ class CState;
 
 class CFSMScript : public CScript
 {
+protected:
+    bool m_bGlobalState;
+
 private:
     map<wstring, CState*> m_mapState;
     CState* m_CurState;
     CState* m_PrevState;
-
-    bool m_bGlobalState;
 
 public:
     virtual void begin() override = 0;
@@ -18,11 +19,11 @@ public:
 
     void AddState(const wstring& _StateName, CState* _State);
     CState* FindState(const wstring& _StateName);
-    void ChangeState(const wstring& _strStateName);
+    virtual void ChangeState(const wstring& _strStateName);
     void DeleteState(const wstring& _StateKey);
     void SetGlobalState(bool _GlobalState) { m_bGlobalState = _GlobalState; }
 
-private:
+protected:
     void ChangeState_proc(CState* _pNextState);
 
 public:

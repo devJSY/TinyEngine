@@ -301,9 +301,6 @@
     <ClInclude Include="CBladeKnightScript.h">
       <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClInclude>
-    <ClInclude Include="CMonsterUnitScript.h">
-      <Filter>Module\Unit</Filter>
-    </ClInclude>
     <ClInclude Include="CDetectAreaScript.h">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClInclude>
@@ -342,9 +339,6 @@
     </ClInclude>
     <ClInclude Include="CAttackAreaScript.h">
       <Filter>Scripts\Character\Monster\Utill\AttackArea</Filter>
-    </ClInclude>
-    <ClInclude Include="CMonsterATKScript.h">
-      <Filter>Module\Unit</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyObject_Cone.h">
       <Filter>State\KirbyObject\Cone</Filter>
@@ -430,6 +424,21 @@
     <ClInclude Include="CCameraController.h">
       <Filter>Scripts\CameraMove</Filter>
     </ClInclude>
+    <ClInclude Include="CUIMoveUpDownScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIMoveUpDownScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIAnimScript.h">
+      <Filter>Scripts\UI\UIAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIFlowScript.h">
+      <Filter>Scripts\UI\UIFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIStartSceneFlowScript.h">
+      <Filter>Scripts\UI\UIFlow\UIStartScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIGlowMoveScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIGlowMoveScript</Filter>
+    </ClInclude>
     <ClInclude Include="CChangeCamTrigger.h">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClInclude>
@@ -445,8 +454,236 @@
     <ClInclude Include="CKirbyIdleStart.h">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisFSM.h">
+      <Filter>Scripts\FSM\ElfilisFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossMgr.h">
+      <Filter>Scripts\Manager\BossManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterUnitScript.h">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterATKScript.h">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_Idle.h">
+      <Filter>State\ElfilisState\Ground_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkL.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossState.h">
+      <Filter>Module\FSM\State\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_BackStep.h">
+      <Filter>State\ElfilisState\Ground_Move\BackStep</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_Teleport.h">
+      <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkFinishL.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\FinishL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkR.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\R</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_RayArrow.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\RayArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtk.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisArrowSetScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\ArrowSet</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisArrowScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveFinishRL.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\FinishRL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveLR.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\LR</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveRL.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\RL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisSwordSlashScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_SwordWaveStorm.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\Storm</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisStormScript.h">
+      <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_DimensionSpike.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike</Filter>
+    </ClInclude>
+    <ClInclude Include="ElfilisDimensionSet.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet</Filter>
+    </ClInclude>
+    <ClInclude Include="ElfilisDimensionSpear.h">
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSpike</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleportL.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleportR.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\R</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_Idle.h">
+      <Filter>State\ElfilisState\Air_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_MoveL.h">
+      <Filter>State\ElfilisState\Air_Move\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_MoveR.h">
+      <Filter>State\ElfilisState\Air_Move\R</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisAirArrow.h">
+      <Filter>Scripts\Character\Boss\Elfilis\AirArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_RayArrowUp.h">
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Up</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_RayArrowDown.h">
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Down</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_DimensionLaser.h">
+      <Filter>State\ElfilisState\Air_SmallAtack2\DimensionLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisDimensionLaser.h">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisLaser.h">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser\Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_DrawLaser.h">
+      <Filter>State\ElfilisState\Air_LargeAttack\DrawLaser</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBigFSM.h">
+      <Filter>Scripts\FSM\ElfilisBigFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_Idle.h">
+      <Filter>State\ElfilisBig State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_Appear.h">
+      <Filter>State\ElfilisBig State\Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_Roar.h">
+      <Filter>State\ElfilisBig State\Roar</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_SwingL.h">
+      <Filter>State\ElfilisBig State\Swing\L</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_SwingFinishL.h">
+      <Filter>State\ElfilisBig State\Swing\FinishL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisBig_SwingR.h">
+      <Filter>State\ElfilisBig State\Swing\R</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_Stab.h">
+      <Filter>State\ElfilisState\Air_ToGround\Stab</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_Teleport.h">
+      <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_TeleportCombo.h">
+      <Filter>State\ElfilisState\Air_ToGround\TeleportCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_GroundToAir.h">
+      <Filter>State\ElfilisState\Ground_ToAir\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_ToAirTeleport.h">
+      <Filter>State\ElfilisState\Ground_ToAir\Teleport</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_StabCombo.h">
+      <Filter>State\ElfilisState\Air_SmallAttack1\StabCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisA_SlashCombo.h">
+      <Filter>State\ElfilisState\Air_SmallAttack1\SlashCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisG_NormalAtkTeleportFinishL.h">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Appear.h">
+      <Filter>State\ElfilisState\Demo_Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="CChangeAlphaScript.h">
+      <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
+    </ClInclude>
+    <ClInclude Include="CCrumbleScript.h">
+      <Filter>Scripts\Gimmik\Crumble</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurpriseBoardScript.h">
+      <Filter>Scripts\Gimmik\SupriseBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurpriseBoardAttackScript.h">
+      <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIWipeScript.h">
+      <Filter>Scripts\UI\UIWipe</Filter>
+    </ClInclude>
+    <ClInclude Include="CWipeTriggerScript.h">
+      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyUnitScript.h">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CSolarChargeScript.h">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
+    </ClInclude>
+    <ClInclude Include="CSolarOnceScript.h">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClInclude>
+    <ClInclude Include="CElevatorScript.h">
+      <Filter>Scripts\Gimmik\Elevator</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutScript.h">
+      <Filter>Scripts\Gimmik\PushOut</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutTriggerScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutColliderScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStageClear.h">
+      <Filter>State\KirbyState\StageClear</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveStart.h">
+      <Filter>State\KirbyState\LongDive\LongDiveStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDive.h">
+      <Filter>State\KirbyState\LongDive\LongDive</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveBound.h">
+      <Filter>State\KirbyState\LongDive\LongDiveBound</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveLanding.h">
+      <Filter>State\KirbyState\LongDive\LongDiveLanding</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderUp.h">
+      <Filter>State\KirbyState\Ladder\LadderUp</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderDown.h">
+      <Filter>State\KirbyState\Ladder\LadderDown</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderWait.h">
+      <Filter>State\KirbyState\Ladder\LadderWait</Filter>
+    </ClInclude>
+    <ClInclude Include="CLadderScript.h">
+      <Filter>Scripts\Gimmik\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderWaitStart.h">
+      <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderExit.h">
+      <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisUnit.h">
+      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -518,9 +755,6 @@
     </ClCompile>
     <ClCompile Include="CButtonManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
     </ClCompile>
     <ClCompile Include="CModelEditorCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
@@ -762,9 +996,6 @@
     <ClCompile Include="CBladeKnightScript.cpp">
       <Filter>Scripts\Character\Monster\MonsterScript\BladeKnight</Filter>
     </ClCompile>
-    <ClCompile Include="CMonsterUnitScript.cpp">
-      <Filter>Module\Unit</Filter>
-    </ClCompile>
     <ClCompile Include="CDetectAreaScript.cpp">
       <Filter>Scripts\Character\Monster\Utill\Detect</Filter>
     </ClCompile>
@@ -803,9 +1034,6 @@
     </ClCompile>
     <ClCompile Include="CFireProjectileScript.cpp">
       <Filter>Scripts\Character\Monster\Utill\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterATKScript.cpp">
-      <Filter>Module\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyObject_Cone.cpp">
       <Filter>State\KirbyObject\Cone</Filter>
@@ -891,6 +1119,21 @@
     <ClCompile Include="CCameraController.cpp">
       <Filter>Scripts\CameraMove</Filter>
     </ClCompile>
+    <ClCompile Include="CUIMoveUpDownScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIMoveUpDownScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIAnimScript.cpp">
+      <Filter>Scripts\UI\UIAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIFlowScript.cpp">
+      <Filter>Scripts\UI\UIFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIStartSceneFlowScript.cpp">
+      <Filter>Scripts\UI\UIFlow\UIStartScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIGlowMoveScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIGlowMoveScript</Filter>
+    </ClCompile>
     <ClCompile Include="CChangeCamTrigger.cpp">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClCompile>
@@ -906,8 +1149,236 @@
     <ClCompile Include="CKirbyIdleStart.cpp">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClCompile>
+    <ClCompile Include="CElfilisFSM.cpp">
+      <Filter>Scripts\FSM\ElfilisFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossMgr.cpp">
+      <Filter>Scripts\Manager\BossManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterUnitScript.cpp">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterATKScript.cpp">
+      <Filter>Module\Unit\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_Idle.cpp">
+      <Filter>State\ElfilisState\Ground_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkL.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossState.cpp">
+      <Filter>Module\FSM\State\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_BackStep.cpp">
+      <Filter>State\ElfilisState\Ground_Move\BackStep</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_Teleport.cpp">
+      <Filter>State\ElfilisState\Ground_Move\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkFinishL.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkR.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_RayArrow.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\RayArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtk.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisArrowSetScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\ArrowSet</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisArrowScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveFinishRL.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\FinishRL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveLR.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\LR</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveRL.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\RL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisSwordSlashScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\SwordSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_SwordWaveStorm.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\SwordWave\Storm</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisStormScript.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\Storm</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_DimensionSpike.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike</Filter>
+    </ClCompile>
+    <ClCompile Include="ElfilisDimensionSet.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet</Filter>
+    </ClCompile>
+    <ClCompile Include="ElfilisDimensionSpear.cpp">
+      <Filter>State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSpike</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleportL.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleportR.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_Idle.cpp">
+      <Filter>State\ElfilisState\Air_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_MoveL.cpp">
+      <Filter>State\ElfilisState\Air_Move\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_MoveR.cpp">
+      <Filter>State\ElfilisState\Air_Move\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisAirArrow.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\AirArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_RayArrowUp.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Up</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_RayArrowDown.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack1\RayArrow\Down</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_DimensionLaser.cpp">
+      <Filter>State\ElfilisState\Air_SmallAtack2\DimensionLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisDimensionLaser.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisLaser.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\DimensionLaser\Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_DrawLaser.cpp">
+      <Filter>State\ElfilisState\Air_LargeAttack\DrawLaser</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBigFSM.cpp">
+      <Filter>Scripts\FSM\ElfilisBigFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_Idle.cpp">
+      <Filter>State\ElfilisBig State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_Appear.cpp">
+      <Filter>State\ElfilisBig State\Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_Roar.cpp">
+      <Filter>State\ElfilisBig State\Roar</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_SwingL.cpp">
+      <Filter>State\ElfilisBig State\Swing\L</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_SwingFinishL.cpp">
+      <Filter>State\ElfilisBig State\Swing\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisBig_SwingR.cpp">
+      <Filter>State\ElfilisBig State\Swing\R</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_Stab.cpp">
+      <Filter>State\ElfilisState\Air_ToGround\Stab</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_Teleport.cpp">
+      <Filter>State\ElfilisState\Air_ToGround\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_TeleportCombo.cpp">
+      <Filter>State\ElfilisState\Air_ToGround\TeleportCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_GroundToAir.cpp">
+      <Filter>State\ElfilisState\Ground_ToAir\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_ToAirTeleport.cpp">
+      <Filter>State\ElfilisState\Ground_ToAir\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_StabCombo.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack1\StabCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisA_SlashCombo.cpp">
+      <Filter>State\ElfilisState\Air_SmallAttack1\SlashCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisG_NormalAtkTeleportFinishL.cpp">
+      <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Appear.cpp">
+      <Filter>State\ElfilisState\Demo_Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="CChangeAlphaScript.cpp">
+      <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
+    </ClCompile>
+    <ClCompile Include="CCrumbleScript.cpp">
+      <Filter>Scripts\Gimmik\Crumble</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurpriseBoardScript.cpp">
+      <Filter>Scripts\Gimmik\SupriseBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurpriseBoardAttackScript.cpp">
+      <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIWipeScript.cpp">
+      <Filter>Scripts\UI\UIWipe</Filter>
+    </ClCompile>
+    <ClCompile Include="CWipeTriggerScript.cpp">
+      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
+    </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CSolarChargeScript.cpp">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
+    </ClCompile>
+    <ClCompile Include="CSolarOnceScript.cpp">
+      <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClCompile>
+    <ClCompile Include="CElevatorScript.cpp">
+      <Filter>Scripts\Gimmik\Elevator</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutColliderScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStageClear.cpp">
+      <Filter>State\KirbyState\StageClear</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveStart.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDive.cpp">
+      <Filter>State\KirbyState\LongDive\LongDive</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveBound.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveBound</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveLanding.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveLanding</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderUp.cpp">
+      <Filter>State\KirbyState\Ladder\LadderUp</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderDown.cpp">
+      <Filter>State\KirbyState\Ladder\LadderDown</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderWait.cpp">
+      <Filter>State\KirbyState\Ladder\LadderWait</Filter>
+    </ClCompile>
+    <ClCompile Include="CLadderScript.cpp">
+      <Filter>Scripts\Gimmik\Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderWaitStart.cpp">
+      <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderExit.cpp">
+      <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisUnit.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1373,6 +1844,27 @@
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\UI\UIAnimation">
+      <UniqueIdentifier>{222c9eca-2bb1-4811-8683-4fadb6c69c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIMoveUpDownScript">
+      <UniqueIdentifier>{59e99d2e-e84a-4547-80ef-ad7a67f22c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow">
+      <UniqueIdentifier>{1f142fb8-2860-4995-aa17-8f612bc14380}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIStartScene">
+      <UniqueIdentifier>{9f981acd-c3a9-4eae-af69-1c49fcf47cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIRobbyScene">
+      <UniqueIdentifier>{9400790b-8eee-4038-8ef7-4e7210ccbbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIFlow\UIPlayScene">
+      <UniqueIdentifier>{f52d938c-68db-4176-baa6-0ce2e2770d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIGlowMoveScript">
+      <UniqueIdentifier>{063306f1-86da-4240-9857-0e9f1bd0eb7c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\CameraMove\Trigger Script">
       <UniqueIdentifier>{d4512d6d-bf9a-4d23-9fd1-16dc78b66641}</UniqueIdentifier>
     </Filter>
@@ -1382,11 +1874,314 @@
     <Filter Include="State\KirbyState\Idle\Start">
       <UniqueIdentifier>{ec2178dc-500a-4f4e-adba-637cd22ad071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Character\Boss">
+      <UniqueIdentifier>{ca2bb89e-0c43-470c-937a-2b2eb14d0e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis">
+      <UniqueIdentifier>{ea04c97a-2555-48e5-b309-f7875da86715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\ElfilisFSM">
+      <UniqueIdentifier>{2dfb00e1-42cb-48e7-bb90-fa6be32b5d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState">
+      <UniqueIdentifier>{ee60a5d2-ec49-49c7-893f-fbd738e40552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\BossManager">
+      <UniqueIdentifier>{57d0ba7e-f2f0-47c5-a66c-0dba39c17443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\Unit\Boss">
+      <UniqueIdentifier>{ccdcd1c4-2a95-41f1-a0da-204da4ef02a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\Unit\Monster">
+      <UniqueIdentifier>{0ef09774-61f4-4d77-a6ac-a65504d16c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Idle">
+      <UniqueIdentifier>{0c33e58f-bc3c-4cfa-ac38-fb7c56fe6416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Move">
+      <UniqueIdentifier>{e6d86f0c-0839-4737-b103-44bad510dc64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_MoveAttack">
+      <UniqueIdentifier>{dc2ed7ad-9ccd-4b77-985d-9c5eca49842c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Move\BackStep">
+      <UniqueIdentifier>{16a8c6fe-0b35-437b-8f55-7bab2cd45966}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FSM\State\Boss">
+      <UniqueIdentifier>{fef97aad-bf4f-4fd0-8591-f36ebbe95f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_Move\Teleport">
+      <UniqueIdentifier>{9b82a117-0c37-402c-8d22-1265f5c282fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\Arrow">
+      <UniqueIdentifier>{e962bc60-1d74-407d-a834-e8c632f406c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\ArrowSet">
+      <UniqueIdentifier>{649a8366-a2aa-43c9-9e47-c5a6e1c616ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\SwordSlash">
+      <UniqueIdentifier>{8048275d-ab92-4912-967e-d85f103ac32a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\Storm">
+      <UniqueIdentifier>{bcc6e707-bbdb-42b4-9c4b-455ca7930a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear">
+      <UniqueIdentifier>{c9a34604-c846-428d-88ad-5679ad99f3d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk">
+      <UniqueIdentifier>{e8e42a90-8567-4ced-9eb5-428616182fc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk\L">
+      <UniqueIdentifier>{1c4d366a-598f-4f21-8999-a4185b6d8e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk\R">
+      <UniqueIdentifier>{1fae7785-993c-4291-9ba5-f139ef888757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtk\FinishL">
+      <UniqueIdentifier>{efa67b98-79be-466b-aaea-92fb8d696c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar">
+      <UniqueIdentifier>{54d870b2-bbe9-4b9e-b27e-439e5ad9e1a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave">
+      <UniqueIdentifier>{4656b1f2-9eb7-4dd6-b251-099267f4baf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\LR">
+      <UniqueIdentifier>{24f9f33d-b65a-49ad-b283-135be76f5595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\FinishRL">
+      <UniqueIdentifier>{dc4af2d8-e0d3-4f53-a795-48bd90f73440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\RL">
+      <UniqueIdentifier>{c3040a0c-a9c6-4278-9508-cd0a915adc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\SwordWave\Storm">
+      <UniqueIdentifier>{f49f18b9-1301-4634-9b72-65c79d34c323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike">
+      <UniqueIdentifier>{bb64d07e-ddc4-417f-9fee-b7f78bb6e180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSpike">
+      <UniqueIdentifier>{e8f21d24-be6b-4488-adb2-71049addca28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\DimensionSpike\DimensionSet">
+      <UniqueIdentifier>{a3cb04e8-35ef-456b-9b41-d079148699cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_ToAir">
+      <UniqueIdentifier>{c767fa72-2740-4220-8b98-c11d4c4dd945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Move">
+      <UniqueIdentifier>{3dd4c845-b8b1-4e2d-8c23-b6eecf38b5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Idle">
+      <UniqueIdentifier>{a6102277-d7e6-48ae-b682-3f8e06d60abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Move\L">
+      <UniqueIdentifier>{ce094d48-3c79-40c9-a6b3-5a9823a82794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_Move\R">
+      <UniqueIdentifier>{aa6c85ba-2559-4b2d-bce2-226a6a25752a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackFar\RayArrow">
+      <UniqueIdentifier>{7160f774-e585-43f8-9087-764e727e99fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\AirArrow">
+      <UniqueIdentifier>{b0ba3eee-e242-44d3-998e-7be790c86795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAtack2">
+      <UniqueIdentifier>{a467f6e6-9592-4d96-ace2-6741c084fe2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAtack2\DimensionLaser">
+      <UniqueIdentifier>{9028021b-7cd6-4b3d-ab97-818a81c9ced7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\DimensionLaser">
+      <UniqueIdentifier>{485b578a-7286-4483-9aac-215d98e40264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\DimensionLaser\Laser">
+      <UniqueIdentifier>{cb43daf7-a736-410b-b27a-a674f9a0995a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_LargeAttack">
+      <UniqueIdentifier>{eb9a40b3-27a2-42ce-81d8-036baed8eeeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_LargeAttack\DrawLaser">
+      <UniqueIdentifier>{74df8dae-58db-4e72-b658-c440d3c0a0b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1">
+      <UniqueIdentifier>{0f491f6a-6085-4753-a7b4-be4ac8f4eb39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\RayArrow">
+      <UniqueIdentifier>{8dfe9f41-871c-4f9e-8eb1-48323dd26b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\RayArrow\Up">
+      <UniqueIdentifier>{e31abe4f-d7a0-4b05-a7af-625b5e4f6e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\RayArrow\Down">
+      <UniqueIdentifier>{a513a114-fbe1-4bc2-936e-d11cc49dfd98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State">
+      <UniqueIdentifier>{99918da7-439e-430e-a1be-c2c36077da83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Idle">
+      <UniqueIdentifier>{12eb7979-da2a-4eb1-9804-615788827c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing">
+      <UniqueIdentifier>{431a9589-287e-4d31-9d27-5dfcc08abb75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Appear">
+      <UniqueIdentifier>{d219355e-a95d-4fde-b0a9-ce002556e535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Roar">
+      <UniqueIdentifier>{1d897557-de12-4bdd-ac11-77476fe9e970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\ElfilisBigFSM">
+      <UniqueIdentifier>{84741247-056b-4d61-a5fa-354f2c2afec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing\L">
+      <UniqueIdentifier>{e12a49a6-2f57-4ec6-8557-45a6fc5d3dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing\R">
+      <UniqueIdentifier>{81f35cec-34c7-4d9c-a524-49d1154e97bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisBig State\Swing\FinishL">
+      <UniqueIdentifier>{ea514888-8c17-4a62-a5ca-f3d50fa8db87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround">
+      <UniqueIdentifier>{8579883f-f706-48b3-a5fa-26a5bf91aed8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\Stab">
+      <UniqueIdentifier>{18037b9a-9ab9-4960-acc5-f7dac8dae8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\Teleport">
+      <UniqueIdentifier>{d2104c54-e5f0-45c0-aea9-9a33d80322f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_ToGround\TeleportCombo">
+      <UniqueIdentifier>{4b6b7370-fd7f-4b5c-b9c8-8c7f35335fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_ToAir\Jump">
+      <UniqueIdentifier>{6607477a-aae3-4df6-8634-3f460000d927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_ToAir\Teleport">
+      <UniqueIdentifier>{89f43c10-4032-4fee-af38-558259d9f231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\StabCombo">
+      <UniqueIdentifier>{68d0929c-88e9-45d3-aa81-42aadab0b0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Air_SmallAttack1\SlashCombo">
+      <UniqueIdentifier>{687b23ba-6b82-4eb9-bbdb-c54b1971bcf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport">
+      <UniqueIdentifier>{73f37a56-dfa0-4e35-bdb1-1c3340cd3a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\L">
+      <UniqueIdentifier>{10dd4d9e-e953-44ec-86ea-ba11866eac54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\R">
+      <UniqueIdentifier>{f3891422-f358-40cf-96ea-67091118ec08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL">
+      <UniqueIdentifier>{cd51cbfe-3bb6-40d5-a82c-ea49c1cb4df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear">
+      <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ChangeAlpha">
+      <UniqueIdentifier>{6dbe3d5e-397d-4803-ba27-43858b57d0fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear">
+      <UniqueIdentifier>{057373cc-35db-49f2-8484-29622e6b0355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear\0. Damage">
+      <UniqueIdentifier>{7c75dd0a-8803-433e-b773-64a6b24ceb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear\1. Jump">
+      <UniqueIdentifier>{6bfae776-72f6-47a4-849b-902ba6123c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear\2. Roar">
+      <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj">
+      <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIWipe">
+      <UniqueIdentifier>{0444a1b1-24aa-4fd3-8e58-68300ea21f5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIWipe\UIWipeTrigger">
+      <UniqueIdentifier>{1154ae36-6ac7-49e2-9f7a-c42af591649d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
       <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj\Once">
+      <UniqueIdentifier>{0e6edbfb-8080-4dfc-a310-c2c56be01e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SolarPanelObj\Charge">
+      <UniqueIdentifier>{396035f9-7c3d-4e98-9197-65f734dd337e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Elevator">
+      <UniqueIdentifier>{8f894e3f-d821-476b-bba8-64c69704389d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Crumble">
+      <UniqueIdentifier>{95a61cf4-25d1-485d-a57c-065fe8a3a3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut">
+      <UniqueIdentifier>{cc94f586-b5bc-4b3c-b8b8-ee95f549e97b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutTrigger">
+      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
+      <UniqueIdentifier>{352131f1-ba6a-456c-8e34-b2a6ddcbfa48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SupriseBoard">
+      <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SupriseBoard\SurpriseAttack">
+      <UniqueIdentifier>{1718f35d-8e28-4d42-8733-0e6f507cc84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\StageClear">
+      <UniqueIdentifier>{d9a440ed-3118-490d-8812-7bf7b0ad2988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive">
+      <UniqueIdentifier>{34a4a276-6d43-4307-8a63-776356fded45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveStart">
+      <UniqueIdentifier>{1dc5357f-9ccb-43e3-924d-00b415068d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDive">
+      <UniqueIdentifier>{30a397b6-4bfb-44cd-8773-342b982270b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveBound">
+      <UniqueIdentifier>{7ea4c124-8a97-4eb7-bf3a-87b26cf460bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveLanding">
+      <UniqueIdentifier>{75840cd7-acff-4d9d-a644-08c64e1f1d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Ladder">
+      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder">
+      <UniqueIdentifier>{3d9bddc6-fd66-4b19-9fce-74a5f36c9458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderUp">
+      <UniqueIdentifier>{26184b20-ea4e-48da-8431-9f3398303faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderDown">
+      <UniqueIdentifier>{94e030a7-7dd7-4b2e-b86f-d3cd3692bbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderWait">
+      <UniqueIdentifier>{66eb9946-1805-4913-afc1-3fcb691c3dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderWaitStart">
+      <UniqueIdentifier>{576d408b-d467-494d-b91a-75224c1d88cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderExit">
+      <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
+      <UniqueIdentifier>{96517348-fcf7-40fa-8849-72dece0bff91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

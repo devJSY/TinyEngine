@@ -37,6 +37,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"RUN_END");
             }
+            /*else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }*/
         }
         break;
         case ObjectCopyType::VENDING_MACHINE: {
@@ -65,6 +69,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"RUN_END");
             }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
         }
         break;
         case ObjectCopyType::LIGHT: {
@@ -87,6 +95,10 @@ void CKirbyRun::tick()
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
                 ChangeState(L"RUN_END");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
             }
         }
         break;
@@ -118,6 +130,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"IDLE");
             }
+            /*else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }*/
         }
         break;
         case AbilityCopyType::CUTTER: {
@@ -139,6 +155,10 @@ void CKirbyRun::tick()
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
                 ChangeState(L"IDLE");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
             }
         }
 
@@ -170,6 +190,10 @@ void CKirbyRun::tick()
             else if (PLAYERCTRL->GetInput().Length() == 0.f)
             {
                 ChangeState(L"IDLE");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
             }
         }
         break;

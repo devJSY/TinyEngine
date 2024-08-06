@@ -130,17 +130,8 @@ void CKirbyObject::DropObjectEnter()
     Vec3 Force = Vec3(0.f, 1.f, 0.f) + BackDir;
     Force = Force.Normalize() * 3.f;
 
-    // Vec3 FrontDir = -BackDir;
-    //  Vec3 up = Vec3(0.f, 1.f, 0.f);
-    //  if (FrontDir == Vec3(0.f, 0.f, -1.f))
-    //{
-    //      up = Vec3(0.f, -1.f, 0.f);
-    //  }
-
-    // pObj->Transform()->SetDirection(-FrontDir, up);
-
     Vec3 FrontDir = -BackDir;
-    pObj->Transform()->SetDirection(-FrontDir);
+    pObj->Transform()->SetDirection(FrontDir);
 
     pObj->Transform()->SetWorldPos(InitPos);
     pObj->Rigidbody()->AddForce(Force, ForceMode::Impulse);
@@ -174,7 +165,7 @@ void CKirbyObject::DropObjectStartExit()
 
 void CKirbyObject::ChangeObject()
 {
-    if (m_bFrmEnter && PLAYER->Animator()->GetClipFrameIndex() >= m_MeshChangeIdx)
+    if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, m_MeshChangeIdx))
     {
         PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyA);
         PLAYER->GetRenderComponent()->SetMaterial(CPlayerMgr::GetPlayerBodyDemoMtrl(), m_DemoMeshIdx_BodyB);
