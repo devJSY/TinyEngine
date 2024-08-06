@@ -55,15 +55,13 @@ void CKirbyAbility_Cutter::AttackEnter()
     // 초기값 설정
     CGameObject* InstObj = m_CutterBulletPrefab->Instantiate();
     Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
-    Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    KirbyFront.y = 0.f;
-    KirbyFront.Normalize();
+    Vec3 CurInputWorld = PLAYERCTRL->GetInputWorld();
 
     Vec3 Offset = Vec3(0.f, 20.f, 0.f);
 
     // Transform
     InstObj->Transform()->SetWorldPos(KirbyPos + Offset);
-    InstObj->Transform()->SetDirection(KirbyFront);
+    InstObj->Transform()->SetDirection(CurInputWorld);
 
     GamePlayStatic::SpawnGameObject(InstObj, InstObj->GetLayerIdx());
 }

@@ -7,7 +7,6 @@
 #include <Engine/CRenderMgr.h>
 #include <Engine/CPhysicsMgr.h>
 
-#include "CCameraController.h"
 
 CKirbyMoveController::CKirbyMoveController()
     : CScript(KIRBYMOVECONTROLLER)
@@ -67,14 +66,6 @@ void CKirbyMoveController::begin()
 
 void CKirbyMoveController::tick()
 { 
-    // @Test
-    if (KEY_TAP(KEY::G))
-    {
-        CAMERACTRL->FixedView(false);
-    }
-
-
-
 
     // Key 입력 확인
     Input();
@@ -169,11 +160,24 @@ void CKirbyMoveController::RayGround()
         {
             m_bGround = false;
         }
-        else if (m_RayHit.Distance > 5.f)
+        else if (m_RayHit.Distance > 2.f)
         {
             m_bGround = false;
         }
     }
+    else
+    {
+        if (m_RayHit.pCollisionObj == nullptr)
+        {
+            m_bGround = false;
+        }
+        else if (m_RayHit.Distance < 2.f && m_MoveVelocity.y <= 0.f)
+        {
+            m_bGround = true;
+        }
+    }
+
+
 }
 
 void CKirbyMoveController::SetDir()

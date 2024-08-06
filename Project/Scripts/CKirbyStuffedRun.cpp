@@ -24,6 +24,7 @@ void CKirbyStuffedRun::tick()
     {
         ChangeState(L"STUFFED_IDLE");
     }
+
 }
 
 void CKirbyStuffedRun::Enter()
