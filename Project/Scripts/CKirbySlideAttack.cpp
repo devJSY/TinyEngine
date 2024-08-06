@@ -27,7 +27,7 @@ void CKirbySlideAttack::tick()
     case AbilityCopyType::SWORD:
         if (m_PlayTime < 0.f && GetOwner()->Animator()->IsFinish())
         {
-            if (GetOwner()->CharacterController()->IsGrounded())
+            if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
             }

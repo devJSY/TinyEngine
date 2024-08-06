@@ -11,7 +11,7 @@ CKirbyFinalCutterDrop::~CKirbyFinalCutterDrop()
 
 void CKirbyFinalCutterDrop::tick()
 {
-    if (PLAYERCTRL->CharacterController()->IsGrounded())
+    if (PLAYERCTRL->IsGround())
     {
         ChangeState(L"FINALCUTTEREND");
     }

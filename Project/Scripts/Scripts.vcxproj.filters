@@ -22,18 +22,6 @@
     <ClInclude Include="CState.h">
       <Filter>Module\FSM\State</Filter>
     </ClInclude>
-    <ClInclude Include="CTestForward.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
-    <ClInclude Include="CTestLeft.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
-    <ClInclude Include="CTestRight.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
-    <ClInclude Include="CTestIdle.h">
-      <Filter>State\FSMTest</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyAbility.h">
       <Filter>Module\StateGroup\KirbyAbility</Filter>
     </ClInclude>
@@ -41,7 +29,7 @@
       <Filter>Scripts\FSM\KirbyFSM</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyMoveController.h">
-      <Filter>Scripts\Character\Kirby\MoveController</Filter>
+      <Filter>Scripts\Character\Kirby\KirbyMoveController</Filter>
     </ClInclude>
     <ClInclude Include="CModelEditorCameraMoveScript.h">
       <Filter>Scripts\CameraMove</Filter>
@@ -70,12 +58,6 @@
     <ClInclude Include="CUnitScript.h">
       <Filter>Module\Unit</Filter>
     </ClInclude>
-    <ClInclude Include="CTestFSM.h">
-      <Filter>Scripts\FSM\TestFSM</Filter>
-    </ClInclude>
-    <ClInclude Include="CKirbyUnitScript.h">
-      <Filter>Scripts\Unit\Kirby</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyChangeAbility.h">
       <Filter>State\KirbyState\ChangeAbility</Filter>
     </ClInclude>
@@ -84,9 +66,6 @@
     </ClInclude>
     <ClInclude Include="CKirbyRunStart.h">
       <Filter>State\KirbyState\Run\Start</Filter>
-    </ClInclude>
-    <ClInclude Include="CSpringArmCameraScript.h">
-      <Filter>Scripts\SpringArm</Filter>
     </ClInclude>
     <ClInclude Include="CButtonScript.h">
       <Filter>Scripts\UI\Button</Filter>
@@ -622,6 +601,42 @@
     <ClInclude Include="CChangeAlphaScript.h">
       <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyUnitScript.h">
+      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStageClear.h">
+      <Filter>State\KirbyState\StageClear</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveStart.h">
+      <Filter>State\KirbyState\LongDive\LongDiveStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDive.h">
+      <Filter>State\KirbyState\LongDive\LongDive</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveBound.h">
+      <Filter>State\KirbyState\LongDive\LongDiveBound</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveLanding.h">
+      <Filter>State\KirbyState\LongDive\LongDiveLanding</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderUp.h">
+      <Filter>State\KirbyState\Ladder\LadderUp</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderDown.h">
+      <Filter>State\KirbyState\Ladder\LadderDown</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderWait.h">
+      <Filter>State\KirbyState\Ladder\LadderWait</Filter>
+    </ClInclude>
+    <ClInclude Include="CLadderScript.h">
+      <Filter>Scripts\Gimmik\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderWaitStart.h">
+      <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderExit.h">
+      <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -642,18 +657,6 @@
     <ClCompile Include="CState.cpp">
       <Filter>Module\FSM\State</Filter>
     </ClCompile>
-    <ClCompile Include="CTestForward.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestLeft.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestRight.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
-    <ClCompile Include="CTestIdle.cpp">
-      <Filter>State\FSMTest</Filter>
-    </ClCompile>
     <ClCompile Include="CUnitScript.cpp">
       <Filter>Module\Unit</Filter>
     </ClCompile>
@@ -664,7 +667,7 @@
       <Filter>Scripts\FSM\KirbyFSM</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyMoveController.cpp">
-      <Filter>Scripts\Character\Kirby\MoveController</Filter>
+      <Filter>Scripts\Character\Kirby\KirbyMoveController</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyObject.cpp">
       <Filter>Module\StateGroup\KirbyObject</Filter>
@@ -687,12 +690,6 @@
     <ClCompile Include="CKirbyBulletScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbyBullet</Filter>
     </ClCompile>
-    <ClCompile Include="CTestFSM.cpp">
-      <Filter>Scripts\FSM\TestFSM</Filter>
-    </ClCompile>
-    <ClCompile Include="CKirbyUnitScript.cpp">
-      <Filter>Scripts\Unit\Kirby</Filter>
-    </ClCompile>
     <ClCompile Include="CKirbyChangeAbility.cpp">
       <Filter>State\KirbyState\ChangeAbility</Filter>
     </ClCompile>
@@ -705,17 +702,11 @@
     <ClCompile Include="CUIManagerScript.cpp">
       <Filter>Scripts\UI\UIManager</Filter>
     </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
-    </ClCompile>
     <ClCompile Include="CButtonScript.cpp">
       <Filter>Scripts\UI\Button</Filter>
     </ClCompile>
     <ClCompile Include="CButtonManagerScript.cpp">
       <Filter>Scripts\UI\UIManager\ButtonManager</Filter>
-    </ClCompile>
-    <ClCompile Include="CSpringArmCameraScript.cpp">
-      <Filter>Scripts\SpringArm</Filter>
     </ClCompile>
     <ClCompile Include="CModelEditorCameraMoveScript.cpp">
       <Filter>Scripts\CameraMove</Filter>
@@ -1257,6 +1248,42 @@
     <ClCompile Include="CChangeAlphaScript.cpp">
       <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyUnitScript.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStageClear.cpp">
+      <Filter>State\KirbyState\StageClear</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveStart.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDive.cpp">
+      <Filter>State\KirbyState\LongDive\LongDive</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveBound.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveBound</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveLanding.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveLanding</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderUp.cpp">
+      <Filter>State\KirbyState\Ladder\LadderUp</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderDown.cpp">
+      <Filter>State\KirbyState\Ladder\LadderDown</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderWait.cpp">
+      <Filter>State\KirbyState\Ladder\LadderWait</Filter>
+    </ClCompile>
+    <ClCompile Include="CLadderScript.cpp">
+      <Filter>Scripts\Gimmik\Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderWaitStart.cpp">
+      <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderExit.cpp">
+      <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -1267,9 +1294,6 @@
     </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{1310388c-732a-4e84-a34c-61ad55000c4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\FSMTest">
-      <UniqueIdentifier>{47e22545-89ca-424c-9f3c-34d22adcbb7b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Module">
       <UniqueIdentifier>{635d33ed-e298-45b4-b149-3157f7ddd657}</UniqueIdentifier>
@@ -1424,12 +1448,6 @@
     <Filter Include="Scripts\FSM\KirbyFSM">
       <UniqueIdentifier>{7f2e3799-33fb-41ed-800b-ea950d353744}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\FSM\TestFSM">
-      <UniqueIdentifier>{59566cef-a444-4bd8-84b6-385db5b09b4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\SpringArm">
-      <UniqueIdentifier>{ed0fe73b-a25f-4112-ab6a-c74dab2df3bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI">
       <UniqueIdentifier>{5bda8db1-e356-4978-91e4-9f56bcf299ab}</UniqueIdentifier>
     </Filter>
@@ -1448,12 +1466,6 @@
     <Filter Include="State\KirbyState\Dodge\Dodge2">
       <UniqueIdentifier>{47262bb4-1c29-4f14-adda-78a65bed6a17}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Unit">
-      <UniqueIdentifier>{55d90257-9969-45b7-be38-1fdbfc3b1fcd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Unit\Kirby">
-      <UniqueIdentifier>{cba6baff-ce74-4825-8cfd-92a0752da116}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Manager">
       <UniqueIdentifier>{a92f0c7a-f56f-4f5e-8703-554e8059f0af}</UniqueIdentifier>
     </Filter>
@@ -1471,9 +1483,6 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyVacuumCollider">
       <UniqueIdentifier>{88980f24-80ac-4f01-9230-451df6066d00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Character\Kirby\MoveController">
-      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik">
       <UniqueIdentifier>{977bb9b5-06d8-4fce-9807-97e387e1f75f}</UniqueIdentifier>
@@ -1975,6 +1984,51 @@
     </Filter>
     <Filter Include="State\ElfilisState\Demo_BigAppear\2. Roar">
       <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
+      <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
+      <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\StageClear">
+      <UniqueIdentifier>{d9a440ed-3118-490d-8812-7bf7b0ad2988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive">
+      <UniqueIdentifier>{34a4a276-6d43-4307-8a63-776356fded45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveStart">
+      <UniqueIdentifier>{1dc5357f-9ccb-43e3-924d-00b415068d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDive">
+      <UniqueIdentifier>{30a397b6-4bfb-44cd-8773-342b982270b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveBound">
+      <UniqueIdentifier>{7ea4c124-8a97-4eb7-bf3a-87b26cf460bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveLanding">
+      <UniqueIdentifier>{75840cd7-acff-4d9d-a644-08c64e1f1d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Ladder">
+      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder">
+      <UniqueIdentifier>{3d9bddc6-fd66-4b19-9fce-74a5f36c9458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderUp">
+      <UniqueIdentifier>{26184b20-ea4e-48da-8431-9f3398303faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderDown">
+      <UniqueIdentifier>{94e030a7-7dd7-4b2e-b86f-d3cd3692bbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderWait">
+      <UniqueIdentifier>{66eb9946-1805-4913-afc1-3fcb691c3dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderWaitStart">
+      <UniqueIdentifier>{576d408b-d467-494d-b91a-75224c1d88cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderExit">
+      <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

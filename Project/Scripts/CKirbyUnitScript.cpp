@@ -12,16 +12,10 @@ CKirbyUnitScript::CKirbyUnitScript()
         100.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
-        10.f,  // JumpPower
+        11.f,  // JumpPower
         0.f,   // ATK
     };
     SetInitInfo(KirbyInfo);
-
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.RotationSpeed, "[Init] Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.JumpPower, "[Init] Jump Power");
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "[Current] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "[Current] HP max");
@@ -38,16 +32,10 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
         100.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
-        10.f,  // JumpPower
+        11.f,  // JumpPower
         0.f,   // ATK
     };
     SetInitInfo(KirbyInfo);
-
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.RotationSpeed, "[Init] Rotation Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.JumpPower, "[Init] Jump Power");
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.HP, "[Current] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CurInfo.MAXHP, "[Current] HP max");
@@ -58,6 +46,12 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
 
 CKirbyUnitScript::~CKirbyUnitScript()
 {
+}
+
+void CKirbyUnitScript::begin()
+{
+    // Level에 진입시 InitInfo를 현재의 정보로 저장
+    SetInfo(GetInitInfo());
 }
 
 void CKirbyUnitScript::tick()
@@ -121,11 +115,28 @@ void CKirbyUnitScript::BuffHP(float _HP)
     }
 }
 
+
+void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
+{
+    // Dynamic Layer인 경우: 상대 오브젝트에게 힘 가함
+    if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
+    {
+        // 질량이 100 이상인 물체는 밀지 않는다.
+        if (Hit.Collider->GetOwner()->Rigidbody() && Hit.Collider->GetOwner()->Rigidbody()->GetMass() > 100.f)
+        {
+            return;
+        }
+
+        Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Force.y = 0.f;
+        Force.Normalize();
+        Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
+    }
+}
+
 UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-
-    MemoryByte += CUnitScript::SaveToLevelFile(_File);
 
     return MemoryByte;
 }
@@ -133,20 +144,6 @@ UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
 UINT CKirbyUnitScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-
-    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
-
-    // if (m_CurInfo.MAXHP == 0.f)
-    //{
-    // UnitInfo KirbyInfo = {
-    //     100.f, // HP
-    //     100.f, // MaxHP
-    //     10.f,  // Speed
-    //     10.f,  // Rotation Speed
-    //     10.f,  // JumpPower
-    // };
-    //     SetInitInfo(KirbyInfo);
-    // }
 
     return MemoryByte;
 }

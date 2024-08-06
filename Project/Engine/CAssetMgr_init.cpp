@@ -917,7 +917,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_SKYBOX);
-        
+
         pShader->SetName(L"SkyBoxShader");
         AddAsset(L"SkyBoxShader", pShader);
     }

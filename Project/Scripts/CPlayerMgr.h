@@ -5,6 +5,7 @@
 class CKirbyUnitScript;
 class CKirbyFSM;
 class CKirbyMoveController;
+class CCameraController;
 
 enum class FaceType
 {
@@ -43,6 +44,8 @@ private:
     static Ptr<CMaterial>           m_PlayerBodyDemoMtrl;
     static KirbyMeshIdx             m_PlayerMeshIdx;
 
+    static CCameraController*       m_CameraController;
+
 public:
     virtual void begin() override;
 
@@ -64,6 +67,8 @@ public:
     static Ptr<CMaterial> GetPlayerBodyMtrl() { return m_PlayerBodyMtrl; }
     static Ptr<CMaterial> GetPlayerBodyDemoMtrl() { return m_PlayerBodyDemoMtrl; }
     static KirbyMeshIdx GetPlayerMeshIdx() { return m_PlayerMeshIdx; }
+    
+    static CCameraController* GetCameraController() { return m_CameraController; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

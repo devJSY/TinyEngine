@@ -24,7 +24,7 @@ float4 main(PS_IN input) : SV_TARGET
     }
 
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
-    float3 normalWorld = g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld);
+    float3 normalWorld = g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, true) : normalize(input.vNormalWorld);
   
     float4 albedo = g_btex_0 ? AlbedoTex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
    
