@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CSolarChargeScript.h"
 
-#include "CMovingObjScript.h"
+#include "CElevatorScript.h"
 
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
@@ -41,28 +41,24 @@ void CSolarChargeScript::tick()
         OffWait();
     }
     break;
-    case SolarChargeState::ChargeOn:
-    {
+    case SolarChargeState::ChargeOn: {
         ChargeOn();
     }
-        break;
-    case SolarChargeState::ChargeOff:
-    {
+    break;
+    case SolarChargeState::ChargeOff: {
         ChargeOff();
     }
-        break;
-    case SolarChargeState::ChargedStart:
-    {
+    break;
+    case SolarChargeState::ChargedStart: {
         ChargedStart();
     }
-        break;
+    break;
     case SolarChargeState::ChargedWait:
         break;
-    case SolarChargeState::Decreases:
-    {
+    case SolarChargeState::Decreases: {
         Decrease();
     }
-        break;
+    break;
     case SolarChargeState::OffWaitStart: {
         OffWaitStart();
     }
@@ -107,8 +103,8 @@ void CSolarChargeScript::EnterState()
         CLevelMgr::GetInst()
             ->GetCurrentLevel()
             ->FindObjectByName(ToWstring(m_MovingObjName), 2)
-            ->GetScript<CMovingObjScript>()
-            ->SetState(MovingObjState::Move);
+            ->GetScript<CElevatorScript>()
+            ->SetState(ElevatorState::Move);
         Animator()->Play(ANIMPREFIX("Decreases"), false);
     }
     break;
@@ -207,9 +203,7 @@ UINT CSolarChargeScript::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     wstring wStr = ToWstring(m_MovingObjName);
-    SaveWStringToFile(wStr, _File);
-
-    MemoryByte += sizeof(wStr);
+    MemoryByte += SaveWStringToFile(wStr, _File);
 
     return MemoryByte;
 }
@@ -219,11 +213,9 @@ UINT CSolarChargeScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     wstring wStr = {};
-    LoadWStringFromFile(wStr, _File);
+    MemoryByte += LoadWStringFromFile(wStr, _File);
 
     m_MovingObjName = ToString(wStr);
-
-    MemoryByte += sizeof(wStr);
 
     return MemoryByte;
 }

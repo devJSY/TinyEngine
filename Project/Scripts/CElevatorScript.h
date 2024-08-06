@@ -1,30 +1,28 @@
 #pragma once
 #include <Engine\CScript.h>
 
-enum class MovingObjState
+enum class ElevatorState
 {
     Move,
     Stop,
     End,
 };
 
-class CMovingObjScript : public CScript
+class CElevatorScript : public CScript
 {
 private:
+    CGameObject* m_pPlayer;
     Vec3 m_vDest;
-    Vec3 m_vDir;
-    Vec3 m_vOriginPos;
-    MovingObjState m_eState;
+    ElevatorState m_eState;
     float m_fSpeed;
-    bool m_bLoop;
+    bool m_bFlag;
 
 public:
-    virtual void begin() override;
     virtual void tick() override;
 
 public:
-    MovingObjState GetState() { return m_eState; }
-    void SetState(const MovingObjState _state) { m_eState = _state; }
+    ElevatorState GetState() { return m_eState; }
+    void SetState(const ElevatorState _state) { m_eState = _state; }
 
 private:
     void Move();
@@ -38,10 +36,10 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CMovingObjScript);
+    CLONE(CElevatorScript);
 
 public:
-    CMovingObjScript();
-    CMovingObjScript(const CMovingObjScript& Origin);
-    virtual ~CMovingObjScript();
+    CElevatorScript();
+    CElevatorScript(const CElevatorScript& Origin);
+    virtual ~CElevatorScript();
 };

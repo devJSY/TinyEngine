@@ -18,7 +18,11 @@ void CRenderMgr::render_masking()
  
     for (; iter != m_vecCam.end(); iter++)
     {
-        m_mainCam = L"Masking Camera" == (*iter)->GetOwner()->GetName() ? (*iter) : m_mainCam; 
+        if (L"Masking Camera" == (*iter)->GetOwner()->GetName())
+        {
+            m_mainCam = (*iter);
+            break;
+        }
     }
 
     if (m_mainCam == originMainCam)
@@ -28,22 +32,10 @@ void CRenderMgr::render_masking()
 
     UpdateData();
 
-    // Depth Only Pass
-    m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
-    m_mainCam->render_DepthOnly(m_DepthOnlyTex);
-
-    // Dynamic Shadow Depth Map
-    render_DynamicShadowDepth();
-
     m_mainCam->SortObject();
-    if (0 == m_mainCam->GetCameraPriority())
-        m_mainCam->render_Deferred();
     m_mainCam->render_Forward();
 
     Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
     CONTEXT->CopyResource(m_MaskingTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
     m_mainCam = originMainCam;
-
-    // Light DepthMap Clear
-    CTexture::Clear(23);
 }

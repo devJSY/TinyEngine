@@ -132,7 +132,7 @@ void CUIWipeScript::Minimize()
 
 void CUIWipeScript::Tracking()
 {
-    Vec3 playerPos = m_pPlayer->Transform()->GetLocalPos();
+    Vec3 playerPos = m_pPlayer->Transform()->GetWorldPos();
 
     // MainCam
     CCamera* _pCam = CRenderMgr::GetInst()->GetCamera(0);
@@ -148,9 +148,9 @@ void CUIWipeScript::Tracking()
     // NDC -> WorldPos
     Matrix _VPInverseMatrix = _pCam->GetProjInvMat() * _pCam->GetViewInvMat();
 
-    Vec3 LocalPos = Vector3::Transform(_vPlayerNDCPos, _VPInverseMatrix);
+    Vec3 WorldPos = Vector3::Transform(_vPlayerNDCPos, _VPInverseMatrix);
 
-    GetOwner()->Transform()->SetLocalPos(LocalPos);
+    GetOwner()->Transform()->SetWorldPos(WorldPos);
 }
 
 void CUIWipeScript::Rotate()

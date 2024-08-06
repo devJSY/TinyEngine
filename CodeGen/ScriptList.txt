@@ -50,9 +50,7 @@ CUIGlowMoveScript
 CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
-CMovingObjScript
 CCrumbleScript
-CMovingObjTriggerScript
 CSurpriseBoardScript
 CSurpriseBoardAttackScript
 CUIWipeScript
@@ -60,3 +58,7 @@ CWipeTriggerScript
 CKirbyUnitScript
 CSolarChargeScript
 CSolarOnceScript
+CElevatorScript
+CPushOutScript
+CPushOutTriggerScript
+CPushOutColliderScript

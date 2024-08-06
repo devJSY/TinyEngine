@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CSolarOnceScript.h"
 
-#include "CMovingObjScript.h"
+#include "CElevatorScript.h"
 
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
@@ -90,8 +90,8 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
         CLevelMgr::GetInst()
             ->GetCurrentLevel()
             ->FindObjectByName(ToWstring(m_MovingObjName), 2)
-            ->GetScript<CMovingObjScript>()
-            ->SetState(MovingObjState::Move);
+            ->GetScript<CElevatorScript>()
+            ->SetState(ElevatorState::Move);
         Animator()->Play(ANIMPREFIX("OnWaitStart"), false);
     }
     break;
@@ -170,9 +170,8 @@ UINT CSolarOnceScript::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     wstring wStr = ToWstring(m_MovingObjName);
-    SaveWStringToFile(wStr, _File);
 
-    MemoryByte += sizeof(wStr);
+    MemoryByte += SaveWStringToFile(wStr, _File);
 
     return MemoryByte;
 }
@@ -182,11 +181,9 @@ UINT CSolarOnceScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     wstring wStr = {};
-    LoadWStringFromFile(wStr, _File);
+    MemoryByte += LoadWStringFromFile(wStr, _File);
 
     m_MovingObjName = ToString(wStr);
-
-    MemoryByte += sizeof(wStr);
 
     return MemoryByte;
 }

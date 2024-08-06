@@ -131,9 +131,6 @@ void CRenderMgr::render()
     render_CameraPreview();
 
     // MASKING
-    render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
-
-    // MASKING
     render_masking();
 
     render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));

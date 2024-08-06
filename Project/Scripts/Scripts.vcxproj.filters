@@ -460,20 +460,14 @@
     <ClInclude Include="CKirbyIdleStart.h">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClInclude>
-    <ClInclude Include="CMovingObjScript.h">
-      <Filter>Scripts\Gimmik\ObstacleObj\SolarPanel</Filter>
-    </ClInclude>
     <ClInclude Include="CCrumbleScript.h">
-      <Filter>Scripts\Gimmik\ObstacleObj\Crumble</Filter>
-    </ClInclude>
-    <ClInclude Include="CMovingObjTriggerScript.h">
-      <Filter>Scripts\Gimmik\ObstacleObj\SolarPanel\MovingObjTrigger</Filter>
+      <Filter>Scripts\Gimmik\Crumble</Filter>
     </ClInclude>
     <ClInclude Include="CSurpriseBoardScript.h">
-      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard</Filter>
+      <Filter>Scripts\Gimmik\SupriseBoard</Filter>
     </ClInclude>
     <ClInclude Include="CSurpriseBoardAttackScript.h">
-      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard\SurpriseAttack</Filter>
+      <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
     </ClInclude>
     <ClInclude Include="CUIWipeScript.h">
       <Filter>Scripts\UI\UIWipe</Filter>
@@ -489,6 +483,18 @@
     </ClInclude>
     <ClInclude Include="CSolarOnceScript.h">
       <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClInclude>
+    <ClInclude Include="CElevatorScript.h">
+      <Filter>Scripts\Gimmik\Elevator</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutScript.h">
+      <Filter>Scripts\Gimmik\PushOut</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutTriggerScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutColliderScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -960,20 +966,14 @@
     <ClCompile Include="CKirbyIdleStart.cpp">
       <Filter>State\KirbyState\Idle\Start</Filter>
     </ClCompile>
-    <ClCompile Include="CMovingObjScript.cpp">
-      <Filter>Scripts\Gimmik\ObstacleObj\SolarPanel</Filter>
-    </ClCompile>
     <ClCompile Include="CCrumbleScript.cpp">
-      <Filter>Scripts\Gimmik\ObstacleObj\Crumble</Filter>
-    </ClCompile>
-    <ClCompile Include="CMovingObjTriggerScript.cpp">
-      <Filter>Scripts\Gimmik\ObstacleObj\SolarPanel\MovingObjTrigger</Filter>
+      <Filter>Scripts\Gimmik\Crumble</Filter>
     </ClCompile>
     <ClCompile Include="CSurpriseBoardScript.cpp">
-      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard</Filter>
+      <Filter>Scripts\Gimmik\SupriseBoard</Filter>
     </ClCompile>
     <ClCompile Include="CSurpriseBoardAttackScript.cpp">
-      <Filter>Scripts\Gimmik\ObstacleObj\SupriseBoard\SurpriseAttack</Filter>
+      <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
     </ClCompile>
     <ClCompile Include="CUIWipeScript.cpp">
       <Filter>Scripts\UI\UIWipe</Filter>
@@ -989,6 +989,18 @@
     </ClCompile>
     <ClCompile Include="CSolarOnceScript.cpp">
       <Filter>Scripts\Gimmik\SolarPanelObj\Once</Filter>
+    </ClCompile>
+    <ClCompile Include="CElevatorScript.cpp">
+      <Filter>Scripts\Gimmik\Elevator</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutColliderScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1484,26 +1496,8 @@
     <Filter Include="State\KirbyState\Idle\Start">
       <UniqueIdentifier>{ec2178dc-500a-4f4e-adba-637cd22ad071}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\ObstacleObj">
-      <UniqueIdentifier>{ac2b8835-b0df-49e1-99bf-fcdc81d06503}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Gimmik\SolarPanelObj">
       <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\ObstacleObj\Crumble">
-      <UniqueIdentifier>{95a61cf4-25d1-485d-a57c-065fe8a3a3ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\ObstacleObj\SolarPanel">
-      <UniqueIdentifier>{0cdaae26-571f-4a26-9b62-03c7410be411}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\ObstacleObj\SolarPanel\MovingObjTrigger">
-      <UniqueIdentifier>{8f894e3f-d821-476b-bba8-64c69704389d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\ObstacleObj\SupriseBoard">
-      <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\ObstacleObj\SupriseBoard\SurpriseAttack">
-      <UniqueIdentifier>{1718f35d-8e28-4d42-8733-0e6f507cc84e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\UIWipe">
       <UniqueIdentifier>{0444a1b1-24aa-4fd3-8e58-68300ea21f5b}</UniqueIdentifier>
@@ -1522,6 +1516,27 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\SolarPanelObj\Charge">
       <UniqueIdentifier>{396035f9-7c3d-4e98-9197-65f734dd337e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Elevator">
+      <UniqueIdentifier>{8f894e3f-d821-476b-bba8-64c69704389d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Crumble">
+      <UniqueIdentifier>{95a61cf4-25d1-485d-a57c-065fe8a3a3ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut">
+      <UniqueIdentifier>{cc94f586-b5bc-4b3c-b8b8-ee95f549e97b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutTrigger">
+      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
+      <UniqueIdentifier>{352131f1-ba6a-456c-8e34-b2a6ddcbfa48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SupriseBoard">
+      <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SupriseBoard\SurpriseAttack">
+      <UniqueIdentifier>{1718f35d-8e28-4d42-8733-0e6f507cc84e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -132,9 +132,11 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
-    <ClInclude Include="CMovingObjScript.h" />
-    <ClInclude Include="CMovingObjTriggerScript.h" />
+    <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CPushOutColliderScript.h" />
+    <ClInclude Include="CPushOutTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
+    <ClInclude Include="CPushOutScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -297,9 +299,11 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
-    <ClCompile Include="CMovingObjScript.cpp" />
-    <ClCompile Include="CMovingObjTriggerScript.cpp" />
+    <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CPushOutColliderScript.cpp" />
+    <ClCompile Include="CPushOutTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
+    <ClCompile Include="CPushOutScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />

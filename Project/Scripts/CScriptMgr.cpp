@@ -53,9 +53,7 @@
 #include "CChangeCamTrigger.h"
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
-#include "CMovingObjScript.h"
 #include "CCrumbleScript.h"
-#include "CMovingObjTriggerScript.h"
 #include "CSurpriseBoardScript.h"
 #include "CSurpriseBoardAttackScript.h"
 #include "CUIWipeScript.h"
@@ -63,6 +61,10 @@
 #include "CKirbyUnitScript.h"
 #include "CSolarChargeScript.h"
 #include "CSolarOnceScript.h"
+#include "CElevatorScript.h"
+#include "CPushOutScript.h"
+#include "CPushOutTriggerScript.h"
+#include "CPushOutColliderScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -118,9 +120,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CChangeCamTrigger");
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
-	_vec.push_back(L"CMovingObjScript");
 	_vec.push_back(L"CCrumbleScript");
-	_vec.push_back(L"CMovingObjTriggerScript");
 	_vec.push_back(L"CSurpriseBoardScript");
 	_vec.push_back(L"CSurpriseBoardAttackScript");
 	_vec.push_back(L"CUIWipeScript");
@@ -128,6 +128,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyUnitScript");
 	_vec.push_back(L"CSolarChargeScript");
 	_vec.push_back(L"CSolarOnceScript");
+	_vec.push_back(L"CElevatorScript");
+	_vec.push_back(L"CPushOutScript");
+	_vec.push_back(L"CPushOutTriggerScript");
+	_vec.push_back(L"CPushOutColliderScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -236,12 +240,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressCamTrigger;
 	if (L"CTwoTargetCamTrigger" == _strScriptName)
 		return new CTwoTargetCamTrigger;
-	if (L"CMovingObjScript" == _strScriptName)
-		return new CMovingObjScript;
 	if (L"CCrumbleScript" == _strScriptName)
 		return new CCrumbleScript;
-	if (L"CMovingObjTriggerScript" == _strScriptName)
-		return new CMovingObjTriggerScript;
 	if (L"CSurpriseBoardScript" == _strScriptName)
 		return new CSurpriseBoardScript;
 	if (L"CSurpriseBoardAttackScript" == _strScriptName)
@@ -256,6 +256,14 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSolarChargeScript;
 	if (L"CSolarOnceScript" == _strScriptName)
 		return new CSolarOnceScript;
+	if (L"CElevatorScript" == _strScriptName)
+		return new CElevatorScript;
+	if (L"CPushOutScript" == _strScriptName)
+		return new CPushOutScript;
+	if (L"CPushOutTriggerScript" == _strScriptName)
+		return new CPushOutTriggerScript;
+	if (L"CPushOutColliderScript" == _strScriptName)
+		return new CPushOutColliderScript;
 	return nullptr;
 }
 
@@ -367,12 +375,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CProgressCamTrigger;
 	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return new CTwoTargetCamTrigger;
-	case (UINT)SCRIPT_TYPE::MOVINGOBJSCRIPT:
-		return new CMovingObjScript;
 	case (UINT)SCRIPT_TYPE::CRUMBLESCRIPT:
 		return new CCrumbleScript;
-	case (UINT)SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
-		return new CMovingObjTriggerScript;
 	case (UINT)SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
 		return new CSurpriseBoardScript;
 	case (UINT)SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
@@ -387,6 +391,14 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CSolarChargeScript;
 	case (UINT)SCRIPT_TYPE::SOLARONCESCRIPT:
 		return new CSolarOnceScript;
+	case (UINT)SCRIPT_TYPE::ELEVATORSCRIPT:
+		return new CElevatorScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTSCRIPT:
+		return new CPushOutScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
+		return new CPushOutTriggerScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return new CPushOutColliderScript;
 	}
 	return nullptr;
 }
@@ -499,12 +511,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CProgressCamTrigger";
 	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return L"CTwoTargetCamTrigger";
-	case SCRIPT_TYPE::MOVINGOBJSCRIPT:
-		return L"CMovingObjScript";
 	case SCRIPT_TYPE::CRUMBLESCRIPT:
 		return L"CCrumbleScript";
-	case SCRIPT_TYPE::MOVINGOBJTRIGGERSCRIPT:
-		return L"CMovingObjTriggerScript";
 	case SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
 		return L"CSurpriseBoardScript";
 	case SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
@@ -519,6 +527,14 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CSolarChargeScript";
 	case SCRIPT_TYPE::SOLARONCESCRIPT:
 		return L"CSolarOnceScript";
+	case SCRIPT_TYPE::ELEVATORSCRIPT:
+		return L"CElevatorScript";
+	case SCRIPT_TYPE::PUSHOUTSCRIPT:
+		return L"CPushOutScript";
+	case SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
+		return L"CPushOutTriggerScript";
+	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return L"CPushOutColliderScript";
 	}
 	return nullptr;
 }
