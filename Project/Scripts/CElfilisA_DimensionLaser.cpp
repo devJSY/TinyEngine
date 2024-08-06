@@ -79,6 +79,7 @@ void CElfilisA_DimensionLaser::Enter_Step()
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaserReady"), false);
         //@Effect Â÷Â¡ ÆÄÆ¼Å¬
+        //@CAMERA ÇÏ´Ãºä
     }
     break;
     case StateStep::Start: {
@@ -131,8 +132,10 @@ void CElfilisA_DimensionLaser::Exit_Step()
         break;
     case StateStep::Progress:
         break;
-    case StateStep::End:
-        break;
+    case StateStep::End: {
+        //@CAMERA º¹±¸
+    }
+    break;
     }
 }
 

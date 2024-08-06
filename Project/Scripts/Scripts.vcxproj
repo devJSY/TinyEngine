@@ -146,6 +146,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisBig_SwingL.h" />
     <ClInclude Include="CElfilisBig_SwingR.h" />
     <ClInclude Include="CElfilisDimensionLaser.h" />
+    <ClInclude Include="CElfilisD_Appear.h" />
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CElfilisG_DimensionSpike.h">
@@ -175,6 +176,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisBig_Idle.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
+    <ClInclude Include="CChangeAlphaScript.h" />
     <ClInclude Include="CkirbyAbility_Sleep.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
@@ -365,6 +367,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisBig_SwingL.cpp" />
     <ClCompile Include="CElfilisBig_SwingR.cpp" />
     <ClCompile Include="CElfilisDimensionLaser.cpp" />
+    <ClCompile Include="CElfilisD_Appear.cpp" />
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CElfilisG_DimensionSpike.cpp">
@@ -394,6 +397,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisBig_Idle.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
+    <ClCompile Include="CChangeAlphaScript.cpp" />
     <ClCompile Include="CkirbyAbility_Sleep.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />

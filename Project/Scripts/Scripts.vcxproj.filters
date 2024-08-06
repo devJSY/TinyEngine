@@ -616,6 +616,12 @@
     <ClInclude Include="CElfilisG_NormalAtkTeleportFinishL.h">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisD_Appear.h">
+      <Filter>State\ElfilisState\Demo_Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="CChangeAlphaScript.h">
+      <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1244,6 +1250,12 @@
     </ClCompile>
     <ClCompile Include="CElfilisG_NormalAtkTeleportFinishL.cpp">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Appear.cpp">
+      <Filter>State\ElfilisState\Demo_Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="CChangeAlphaScript.cpp">
+      <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1945,6 +1957,24 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL">
       <UniqueIdentifier>{cd51cbfe-3bb6-40d5-a82c-ea49c1cb4df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear">
+      <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ChangeAlpha">
+      <UniqueIdentifier>{6dbe3d5e-397d-4803-ba27-43858b57d0fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear">
+      <UniqueIdentifier>{057373cc-35db-49f2-8484-29622e6b0355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear\0. Damage">
+      <UniqueIdentifier>{7c75dd0a-8803-433e-b773-64a6b24ceb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear\1. Jump">
+      <UniqueIdentifier>{6bfae776-72f6-47a4-849b-902ba6123c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_BigAppear\2. Roar">
+      <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

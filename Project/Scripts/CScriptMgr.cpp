@@ -62,6 +62,7 @@
 #include "CElfilisDimensionLaser.h"
 #include "CElfilisLaser.h"
 #include "CElfilisBigFSM.h"
+#include "CChangeAlphaScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -126,6 +127,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisDimensionLaser");
 	_vec.push_back(L"CElfilisLaser");
 	_vec.push_back(L"CElfilisBigFSM");
+	_vec.push_back(L"CChangeAlphaScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -252,6 +254,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisLaser;
 	if (L"CElfilisBigFSM" == _strScriptName)
 		return new CElfilisBigFSM;
+	if (L"CChangeAlphaScript" == _strScriptName)
+		return new CChangeAlphaScript;
 	return nullptr;
 }
 
@@ -381,6 +385,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisLaser;
 	case (UINT)SCRIPT_TYPE::ELFILISBIGFSM:
 		return new CElfilisBigFSM;
+	case (UINT)SCRIPT_TYPE::CHANGEALPHASCRIPT:
+		return new CChangeAlphaScript;
 	}
 	return nullptr;
 }
@@ -511,6 +517,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisLaser";
 	case SCRIPT_TYPE::ELFILISBIGFSM:
 		return L"CElfilisBigFSM";
+	case SCRIPT_TYPE::CHANGEALPHASCRIPT:
+		return L"CChangeAlphaScript";
 	}
 	return nullptr;
 }

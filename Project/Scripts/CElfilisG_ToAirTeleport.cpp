@@ -41,37 +41,9 @@ void CElfilisG_ToAirTeleport::Enter_Step()
         GetOwner()->Animator()->SetPlay(false);
         GetOwner()->Rigidbody()->SetKinematic(true);
 
-        //@Effect 일부분만 그리는 셰이더 작성 필요
+        SpawnTeleport();
 
-        // copy object
-        m_BeforeObj = new CGameObject;
-        m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
-        m_BeforeObj->AddComponent(GetOwner()->MeshRender()->Clone());
-        m_BeforeObj->AddComponent(GetOwner()->Animator()->Clone());
-        m_BeforeObj->SetName(L"Effect_ElfilisTelport Body");
-        GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
-
-        // teleport
-        Vec3 RandDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
-        if (RandDir.Length() <= 0.f)
-        {
-            RandDir = Vec3(1.f, 0.f, 1.f);
-        }
-        Vec3 RandAirPos = RandDir * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
-        m_AfterPos = RandAirPos;
-
-        //@Effect 텔레포드 이펙트
-        Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-        Pos.y += 100.f;
-        m_BeforeEffect = m_Effect->Instantiate();
-        m_BeforeEffect->Transform()->SetWorldPos(Pos);
-        GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
-
-        Pos = m_AfterPos;
-        Pos.y += 100.f;
-        m_AfterEffect = m_Effect->Instantiate();
-        m_AfterEffect->Transform()->SetWorldPos(Pos);
-        GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
+        //@CAMERA 하늘
     }
     break;
     case StateStep::End:
@@ -136,4 +108,39 @@ void CElfilisG_ToAirTeleport::End()
         ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
         ELFFSM->ChangeStateGroup(NextState);
     }
+}
+
+void CElfilisG_ToAirTeleport::SpawnTeleport()
+{
+    //@Effect 일부분만 그리는 셰이더 작성 필요
+    
+    // copy object
+    m_BeforeObj = new CGameObject;
+    m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
+    m_BeforeObj->AddComponent(GetOwner()->MeshRender()->Clone());
+    m_BeforeObj->AddComponent(GetOwner()->Animator()->Clone());
+    m_BeforeObj->SetName(L"Effect_ElfilisTelport Body");
+    GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
+
+    // teleport
+    Vec3 RandDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
+    if (RandDir.Length() <= 0.f)
+    {
+        RandDir = Vec3(1.f, 0.f, 1.f);
+    }
+    Vec3 RandAirPos = RandDir * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
+    m_AfterPos = RandAirPos;
+
+    //@Effect 텔레포드 이펙트
+    Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
+    Pos.y += 100.f;
+    m_BeforeEffect = m_Effect->Instantiate();
+    m_BeforeEffect->Transform()->SetWorldPos(Pos);
+    GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
+
+    Pos = m_AfterPos;
+    Pos.y += 100.f;
+    m_AfterEffect = m_Effect->Instantiate();
+    m_AfterEffect->Transform()->SetWorldPos(Pos);
+    GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
 }

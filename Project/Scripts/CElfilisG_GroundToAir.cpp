@@ -37,6 +37,8 @@ void CElfilisG_GroundToAir::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
+
+        //@CAMERA го╢ц
     }
     break;
     case StateStep::Progress: {

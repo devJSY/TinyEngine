@@ -4,6 +4,8 @@ class CElfilisBigFSM;
 
 enum class ElfilisStateGroup
 {
+    DEMO,
+
     GroundIdle,
     GroundMove,
     GroundMoveAtk,

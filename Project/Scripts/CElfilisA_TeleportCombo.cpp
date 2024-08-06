@@ -188,6 +188,8 @@ void CElfilisA_TeleportCombo::End()
         {
             ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
             ELFFSM->ChangeStateGroup(NextState);
+
+            //@CAMERA ¶¥
         }
     }
 }

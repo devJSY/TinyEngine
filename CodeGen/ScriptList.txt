@@ -59,3 +59,4 @@ CElfilisAirArrow
 CElfilisDimensionLaser
 CElfilisLaser
 CElfilisBigFSM
+CChangeAlphaScript

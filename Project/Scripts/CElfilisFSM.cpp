@@ -295,6 +295,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     return ElfilisStateGroup::END;
 }
 
+#include "CElfilisD_Appear.h"
 #include "CElfilisG_Idle.h"
 #include "CElfilisG_BackStep.h"
 #include "CElfilisG_Teleport.h"
@@ -354,6 +355,7 @@ void CElfilisFSM::begin()
     AddGroupPublicState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT", new CElfilisA_Teleport);
     AddGroupPublicState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORTCOMBO", new CElfilisA_TeleportCombo);
 
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR", new CElfilisD_Appear);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
@@ -397,7 +399,7 @@ void CElfilisFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP");
+        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR");
         //ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
         // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }

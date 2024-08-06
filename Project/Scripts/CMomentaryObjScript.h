@@ -22,7 +22,6 @@ private:
     double m_EndAnimPlayTime;
     wstring m_EndAnim;
 
-
 public:
     virtual void begin() override;
     virtual void tick() override;

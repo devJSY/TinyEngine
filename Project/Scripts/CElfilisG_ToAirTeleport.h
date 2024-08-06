@@ -22,6 +22,8 @@ private:
     void Start();
     void End();
 
+    void SpawnTeleport();
+
 public:
     CLONE(CElfilisG_ToAirTeleport)
     CElfilisG_ToAirTeleport();

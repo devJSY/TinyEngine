@@ -112,6 +112,8 @@ void CElfilisA_Stab::Enter_Step()
                 GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
             }
         }
+
+        //@CAMERA ¶¥
     }
     break;
     case StateStep::End: {
