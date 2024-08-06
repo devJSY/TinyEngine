@@ -21,30 +21,42 @@ CKirbyFSM::CKirbyFSM()
     , m_NextAbility(AbilityCopyType::NONE)
     , m_CurObject(ObjectCopyType::NONE)
     , m_CurHat(nullptr)
+    , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
     , m_StuffedObj(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_HoveringLimitTime(7.f)
+    , m_HoveringAccTime(0.f)
+    , m_bHovering(false)
     , m_ComboLevel(0)
-    , m_SlideComboLevel(0)
     , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
-    , m_HoveringAccTime(0.f)
-    , m_HoveringLimitTime(7.f)
+    , m_SlideComboLevel(0)
+    , m_bAttackEvent(false)
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
-    , m_bAttackEvent(false)
     , m_bStuffed(false)
-    , m_bHovering(false)
-    , m_bInvincible(false)
-    , m_InvincibleAcc(0.f)
-    , m_InvincibleDuration(0.f)
-    , m_EmissiveCoef(0.f)
-    , m_GlidingDuration(1.7f)
-    , m_GlidingAcc(0.f)
+    , m_KnockbackDir{}
     , m_YPressedTime(0.f)
     , m_DropCopyTime(1.f)
     , m_bDroppable(false)
+    , m_InvincibleAcc(0.f)
+    , m_InvincibleDuration(0.f)
+    , m_bInvincible(false)
+    , m_EmissiveCoef(0.f)
+    , m_EmissiveAcc(0.f)
+    , m_EmissiveDuration(0.f)
+    , m_bEmissive(false)
+    , m_bCanBladeAttack(false)
+    , m_GlidingDuration(1.7f)
+    , m_GlidingAcc(0.f)
     , m_LeftCanCount(0)
+    , m_bEscapeLadder(false)
+    , m_bInCollisionLadder(false)
+    , m_LadderUpSightDir{}
+    , m_LadderDownSightDir{}
+    , m_LadderTop{}
+    , m_LadderBottom{}
 {
     // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
@@ -62,26 +74,46 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     : CFSMScript(_Origin)
     , m_arrAbility{}
     , m_arrObject{}
-    , m_CurAbility(_Origin.m_CurAbility)
-    , m_CurObject(_Origin.m_CurObject)
+    , m_CurAbility(AbilityCopyType::NORMAL)
+    , m_NextAbility(AbilityCopyType::NONE)
+    , m_CurObject(ObjectCopyType::NONE)
+    , m_CurHat(nullptr)
+    , m_CurHatBlade(nullptr)
+    , m_CurWeapon(nullptr)
     , m_StuffedObj(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_HoveringLimitTime(7.f)
+    , m_HoveringAccTime(0.f)
+    , m_bHovering(false)
     , m_ComboLevel(0)
     , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
-    , m_HoveringAccTime(0.f)
-    , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
-    , m_LastJump(LastJumpType::HIGH)
+    , m_SlideComboLevel(0)
     , m_bAttackEvent(false)
+    , m_LastJump(LastJumpType::HIGH)
+    , m_DodgeType(DodgeType::NONE)
     , m_bStuffed(false)
-    , m_bHovering(false)
+    , m_KnockbackDir{}
+    , m_YPressedTime(0.f)
+    , m_DropCopyTime(1.f)
+    , m_bDroppable(false)
+    , m_InvincibleAcc(0.f)
+    , m_InvincibleDuration(0.f)
     , m_bInvincible(false)
-    , m_InvincibleAcc(_Origin.m_InvincibleAcc)
-    , m_InvincibleDuration(_Origin.m_InvincibleDuration)
-    , m_EmissiveCoef(_Origin.m_EmissiveCoef)
+    , m_EmissiveCoef(0.f)
+    , m_EmissiveAcc(0.f)
+    , m_EmissiveDuration(0.f)
+    , m_bEmissive(false)
+    , m_bCanBladeAttack(false)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
-    , m_LeftCanCount(_Origin.m_LeftCanCount)
+    , m_LeftCanCount(0)
+    , m_bEscapeLadder(false)
+    , m_bInCollisionLadder(false)
+    , m_LadderUpSightDir{}
+    , m_LadderDownSightDir{}
+    , m_LadderTop{}
+    , m_LadderBottom{}
 {
     // Ability Copy 복사
     for (UINT i = 0; i < (UINT)AbilityCopyType::END; ++i)
@@ -602,6 +634,12 @@ void CKirbyFSM::ClearCurHatWeapon()
     {
         GamePlayStatic::DestroyGameObject(m_CurWeapon);
         m_CurWeapon = nullptr;
+    }
+
+    if (m_CurHatBlade)
+    {
+        GamePlayStatic::DestroyGameObject(m_CurHatBlade);
+        m_CurHatBlade = nullptr;
     }
 }
 

@@ -102,7 +102,7 @@ void CNoddyScript::EnterState()
         Animator()->Play(ANIMPREFIX("Damage"), false);
 
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
-        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
     }
     break;
     case NODDY_STATE::Fall: {
@@ -136,19 +136,19 @@ void CNoddyScript::EnterState()
     case NODDY_STATE::SleepStart: {
         Animator()->Play(ANIMPREFIX("SleepStart"), false);
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
-        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.00.png"));
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.00.png"));
     }
     break;
     case NODDY_STATE::Wait: {
         Animator()->Play(ANIMPREFIX("Wait"));
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
-        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
     break;
     case NODDY_STATE::Wakeup: {
         Animator()->Play(ANIMPREFIX("Wakeup"), false, false, 1.f);
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
-        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
     break;
     }

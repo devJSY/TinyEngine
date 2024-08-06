@@ -9,6 +9,18 @@ CKirbyObject::CKirbyObject()
 {
 }
 
+CKirbyObject::CKirbyObject(const CKirbyObject& _Origin)
+    : m_DemoMeshIdx_BodyA(_Origin.m_DemoMeshIdx_BodyA)
+    , m_DemoMeshIdx_BodyB(_Origin.m_DemoMeshIdx_BodyB)
+    , m_MeshChangeIdx(_Origin.m_MeshChangeIdx)
+    , m_WaitingAnim(_Origin.m_WaitingAnim)
+    , m_bFrmEnter(_Origin.m_bFrmEnter)
+{
+    m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(_Origin.m_Mesh->GetKey());
+    m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(_Origin.m_DemoMesh->GetKey());
+    m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_OriginObject->GetKey());
+}
+
 CKirbyObject::~CKirbyObject()
 {
 }

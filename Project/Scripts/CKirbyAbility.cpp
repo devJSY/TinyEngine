@@ -8,6 +8,23 @@ CKirbyAbility::CKirbyAbility()
 {
 }
 
+CKirbyAbility::CKirbyAbility(const CKirbyAbility& _Origin)
+    : m_Charge1Time(_Origin.m_Charge1Time)
+    , m_Charge2Time(_Origin.m_Charge1Time)
+    , m_ComboSuccessTime(_Origin.m_ComboSuccessTime)
+    , m_vecWaitingAnim(_Origin.m_vecWaitingAnim)
+{
+    if (m_Hat.Get())
+    {
+        m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Hat->GetKey());
+    }
+    
+    if (m_Weapon.Get())
+    {
+        m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Weapon->GetKey());
+    }
+}
+
 CKirbyAbility::~CKirbyAbility()
 {
 }

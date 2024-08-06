@@ -51,7 +51,7 @@ public:
     virtual void ChangeAbilityExit();
 
 public:
-    CLONE_DISABLE(CKirbyAbility_Normal)
+    CLONE(CKirbyAbility_Normal)
     CKirbyAbility_Normal();
     virtual ~CKirbyAbility_Normal();
 };

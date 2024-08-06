@@ -14,6 +14,18 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
     ParseDemoMesh(m_DemoMesh);
 }
 
+CKirbyObject_Lightbulb::CKirbyObject_Lightbulb(const CKirbyObject_Lightbulb& _Origin)
+    : m_Speed(8.f)
+    , m_BrightSpeed(5.f)
+    , m_PointLight(nullptr)
+{
+    m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
+    m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulb.mdat", L"meshdata\\KirbyLightbulb.mdat");
+    m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulbDemo.mdat", L"meshdata\\KirbyLightbulbDemo.mdat");
+
+    ParseDemoMesh(m_DemoMesh);
+}
+
 CKirbyObject_Lightbulb::~CKirbyObject_Lightbulb()
 {
 }

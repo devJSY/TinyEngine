@@ -34,7 +34,7 @@ void CKirbyHatBlade::tick()
         // ÄðÅ¸ÀÓÀÌ Áö³µÀ» °æ¿ì
         if (m_Acc > m_AttackCoolTime)
         {
-            MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+            MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
             Transform()->SetLocalScale(Vec3(0.f, 0.f, 0.f));
 
             m_bCanAttack = true;
@@ -101,7 +101,7 @@ void CKirbyHatBlade::Reset()
 
     PLAYERFSM->GetCurHat()->Animator()->Play(ANIMPREFIX("MetalCutterCatch"), false, false, 1.5f);
     //
-    MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+    MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
     Transform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 
     m_bCanAttack = true;

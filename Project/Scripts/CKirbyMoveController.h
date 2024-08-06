@@ -126,6 +126,5 @@ public:
 public:
     CLONE(CKirbyMoveController);
     CKirbyMoveController();
-    CKirbyMoveController(const CKirbyMoveController& _Origin);
     virtual ~CKirbyMoveController();
 };

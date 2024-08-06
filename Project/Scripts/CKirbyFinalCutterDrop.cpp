@@ -34,7 +34,7 @@ void CKirbyFinalCutterDrop::Enter()
 
 
     // Material 등록
-    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
+    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
 
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
 
@@ -61,7 +61,7 @@ void CKirbyFinalCutterDrop::Exit()
     PLAYERCTRL->SetGravity(m_SaveGravity);
 
     // 머리의 Blade를 보이게 한다
-    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
 
     // 무적 상태
     PLAYERFSM->SetInvincible(false);

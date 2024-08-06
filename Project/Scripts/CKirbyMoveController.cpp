@@ -42,37 +42,6 @@ CKirbyMoveController::CKirbyMoveController()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
 }
 
-CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
-    : CScript(_Origin)
-    , m_CurDir{}
-    , m_TowardDir{}
-    , m_Input{0.f, 0.f, 0.f}
-    , m_ForceDirInfos{}
-    , m_MoveDir{0.f, 0.f, 0.f}
-    , m_MoveVelocity{}
-    , m_Speed(_Origin.m_Speed)
-    , m_MaxSpeed(_Origin.m_MaxSpeed)
-    , m_RotSpeed(_Origin.m_RotSpeed)
-    , m_JumpPower(_Origin.m_JumpPower)
-    , m_Gravity(_Origin.m_Gravity)
-    , m_bInputLock(false)
-    , m_bMoveLock(false)
-    , m_bDirLock(false)
-    , m_bJumpLock(false)
-    , m_bJump(false)
-    , m_bActiveFriction(false)
-    , m_bForwardMode(false)
-    , m_bLimitFallSpeed(false)
-    , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
-    , m_HoveringMinSpeed(_Origin.m_HoveringMinSpeed)
-    , m_AddVelocity{0.f, 0.f, 0.f}
-    , m_Friction(_Origin.m_Friction)
-    , m_MaxFallSpeed(-15.f)
-{
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
-}
-
 CKirbyMoveController::~CKirbyMoveController()
 {
 }

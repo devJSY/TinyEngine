@@ -6,9 +6,18 @@
 #include "CKirbyHatBlade.h"
 
 CKirbyAbility_Cutter::CKirbyAbility_Cutter()
-    : m_CutterBulletPrefab(nullptr)
-    , m_IsNextCombo(false)
+    : m_IsNextCombo(false)
 {
+    m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalHat.pref", L"prefab\\MetalHat.pref");
+    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyMetalCutterWeapon.pref", L"prefab\\KirbyMetalCutterWeapon.pref");
+
+}
+
+CKirbyAbility_Cutter::CKirbyAbility_Cutter(const CKirbyAbility_Cutter& _Origin)
+    : m_IsNextCombo(_Origin.m_IsNextCombo)
+{
+    m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
 }
 
 CKirbyAbility_Cutter::~CKirbyAbility_Cutter()
@@ -40,7 +49,7 @@ void CKirbyAbility_Cutter::AttackEnter()
     // Prefab 가져오기
     if (m_CutterBulletPrefab == nullptr)
     {
-        m_CutterBulletPrefab = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\MetalCutter.pref");
+        m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
     }
 
     // 초기값 설정
@@ -97,7 +106,7 @@ void CKirbyAbility_Cutter::AttackCombo1Enter()
     PLAYERCTRL->SetFrictionMode(true);
 
     // Material 등록
-    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
+    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
 
     PLAYERFSM->GetCurWeapon()->SetActive(true);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
@@ -120,7 +129,7 @@ void CKirbyAbility_Cutter::AttackCombo1Exit()
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(nullptr, 0);
 
     // 머리의 Blade를 보이게 한다
-    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
 }
 
 void CKirbyAbility_Cutter::AttackCombo2()
@@ -157,7 +166,7 @@ void CKirbyAbility_Cutter::AttackCombo2Enter()
 
     // Material 등록
     PLAYERFSM->GetCurWeapon()->SetActive(true);
-    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
+    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
 
     // 머리의 Blade는 안보이게 한다
@@ -181,7 +190,7 @@ void CKirbyAbility_Cutter::AttackCombo2Exit()
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(nullptr, 0);
 
     // 머리의 Blade를 보이게 한다
-    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
 }
 
 void CKirbyAbility_Cutter::ChangeAbility()
@@ -193,11 +202,11 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
     // Prefab 가져오기
     if (m_CutterBulletPrefab == nullptr)
     {
-        m_CutterBulletPrefab = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\MetalCutter.pref");
+        m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
     }
 
     // 소켓에 모자 끼워주기
-    CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalHat.pref", L"prefab\\MetalHat.pref")->Instantiate();
+    CGameObject* pInstObj = m_Hat->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
     // FSM에 모자 등록
@@ -212,7 +221,7 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
     PLAYERFSM->SetBladeAttack(true);
 
     // 무기 장착
-    pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyMetalCutterWeapon.pref", L"prefab\\KirbyMetalCutterWeapon.pref")->Instantiate();
+    pInstObj = m_Weapon->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Weapon");
 
     // 애니메이션 재생
@@ -222,6 +231,7 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
     PLAYERFSM->SetCurWeapon(pInstObj);
 
     // 무기가 안보이도록 설정
+    pInstObj->SetActive(false);
     pInstObj->MeshRender()->SetMaterial(nullptr, 0);
 
     // 애니메이션 재생

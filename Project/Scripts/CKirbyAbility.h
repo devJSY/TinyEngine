@@ -182,5 +182,6 @@ public:
 
 public:
     CKirbyAbility();
+    CKirbyAbility(const CKirbyAbility& _Origin);
     virtual ~CKirbyAbility();
 };

@@ -40,27 +40,27 @@ void CCanJuice::begin()
     case JuiceType::Green:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Green.png"));
+            CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Green.png"));
         break;
     case JuiceType::Yellow:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Yellow.png"));
+            CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Yellow.png"));
         break;
     case JuiceType::Red:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Red.png"));
+            CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Red.png"));
         break;
     case JuiceType::Purple:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Purple.png"));
+            CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Purple.png"));
         break;
     case JuiceType::Orange:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Orange.png"));
+            CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Orange.png"));
         break;
     }
 

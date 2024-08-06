@@ -24,8 +24,9 @@ public:
     virtual void ChangeAbilityExit() override;
 
 public:
-    CLONE_DISABLE(CKirbyAbility_Cutter)
+    CLONE(CKirbyAbility_Cutter)
     CKirbyAbility_Cutter();
+    CKirbyAbility_Cutter(const CKirbyAbility_Cutter& _Origin);
     virtual ~CKirbyAbility_Cutter();
 
 };

@@ -110,6 +110,9 @@ public:
     template <typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
 
+    template <typename T>
+    Ptr<T> Load(const wstring& _strRelativePath);
+
 private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
 
@@ -206,6 +209,34 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
     }
 
     AddAsset<T>(_strKey, (T*)pAsset.Get());
+
+    // CAsset 타입을 요청한 타입으로 캐스팅해서 반환
+    return (T*)pAsset.Get();
+}
+
+template <typename T>
+Ptr<T> CAssetMgr::Load(const wstring& _strRelativePath)
+{
+    Ptr<CAsset> pAsset = FindAsset<T>(_strRelativePath).Get();
+
+    // 로딩할 때 사용할 키로 이미 다른 에셋이 있다면
+    if (nullptr != pAsset)
+    {
+        return (T*)pAsset.Get();
+    }
+
+    wstring strFilePath = CPathMgr::GetContentPath();
+    strFilePath += _strRelativePath;
+
+    pAsset = new T;
+    if (FAILED(pAsset->Load(strFilePath)))
+    {
+        MessageBox(nullptr, L"에셋 로딩 실패", L"에셋 로딩 실패", MB_OK);
+        pAsset = nullptr;
+        return nullptr;
+    }
+
+    AddAsset<T>(strFilePath, (T*)pAsset.Get());
 
     // CAsset 타입을 요청한 타입으로 캐스팅해서 반환
     return (T*)pAsset.Get();
