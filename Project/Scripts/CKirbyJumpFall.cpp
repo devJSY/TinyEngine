@@ -11,6 +11,8 @@ CKirbyJumpFall::~CKirbyJumpFall()
 
 void CKirbyJumpFall::tick()
 {
+    m_Acc += DT;
+
     PLAY_CURSTATE(JumpFall)
 
     // State Change
@@ -93,7 +95,14 @@ void CKirbyJumpFall::tick()
             }
             else if (PLAYERCTRL->IsGround())
             {
-                ChangeState(L"LANDING");
+                if (m_Acc > m_Duration)
+                {
+                    ChangeState(L"LONGDIVE_START");
+                }
+                else
+                {
+                    ChangeState(L"LANDING");
+                }
             }
             else if (KEY_TAP(KEY_JUMP))
             {
@@ -116,12 +125,20 @@ void CKirbyJumpFall::tick()
             }
             else if (PLAYERCTRL->IsGround())
             {
-                ChangeState(L"LANDING");
+                if (m_Acc > m_Duration)
+                {
+                    ChangeState(L"LONGDIVE_START");
+                }
+                else
+                {
+                    ChangeState(L"LANDING");
+                }
             }
             else if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
             }
+
         }
             break;
         case AbilityCopyType::CUTTER: 
@@ -135,11 +152,22 @@ void CKirbyJumpFall::tick()
             }
             else if (PLAYERCTRL->IsGround())
             {
-                ChangeState(L"LANDING");
+                if (m_Acc > m_Duration)
+                {
+                    ChangeState(L"LONGDIVE_START");
+                }
+                else
+                {
+                    ChangeState(L"LANDING");
+                }
             }
             else if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
+            }
+            else if (m_Acc > m_Duration)
+            {
+                ChangeState(L"LONGDIVE_START");
             }
         }
             break;
@@ -148,7 +176,14 @@ void CKirbyJumpFall::tick()
             {
                 if (PLAYERCTRL->IsGround())
                 {
-                    ChangeState(L"LANDING");
+                    if (m_Acc > m_Duration)
+                    {
+                        ChangeState(L"LONGDIVE_START");
+                    }
+                    else
+                    {
+                        ChangeState(L"LANDING");
+                    }
                 }
                 else if ((KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK)) && PLAYERFSM->GetSlideComboLevel() == 1)
                 {
@@ -157,7 +192,14 @@ void CKirbyJumpFall::tick()
             }
             else if (PLAYERCTRL->IsGround())
             {
-                ChangeState(L"LANDING");
+                if (m_Acc > m_Duration)
+                {
+                    ChangeState(L"LONGDIVE_START");
+                }
+                else
+                {
+                    ChangeState(L"LANDING");
+                }
             }
             else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
@@ -185,6 +227,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"IDLE_START");
             }
+
         }
         break;
         }
@@ -193,6 +236,9 @@ void CKirbyJumpFall::tick()
 
 void CKirbyJumpFall::Enter()
 {
+    m_Acc = 0.f;
+    m_Duration = 0.6f;
+
     PLAY_CURSTATE(JumpFallEnter)
     PLAYERFSM->SetDroppable(true);
 }

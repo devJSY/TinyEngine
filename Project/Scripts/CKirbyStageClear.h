@@ -1,9 +1,12 @@
 #pragma once
 #include "CState.h"
 
-class CKirbyJumpFall : public CState
+
+class CKirbyStageClear : public CState
 {
 private:
+    UINT m_Step;
+    
     float m_Acc;
     float m_Duration;
 
@@ -13,7 +16,8 @@ public:
     virtual void Exit();
 
 public:
-    CLONE(CKirbyJumpFall)
-    CKirbyJumpFall();
-    virtual ~CKirbyJumpFall();
+    CLONE(CKirbyStageClear)
+    CKirbyStageClear();
+    virtual ~CKirbyStageClear();
+
 };

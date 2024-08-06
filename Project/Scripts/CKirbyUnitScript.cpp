@@ -12,7 +12,7 @@ CKirbyUnitScript::CKirbyUnitScript()
         100.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
-        12.f,  // JumpPower
+        11.f,  // JumpPower
         0.f,   // ATK
     };
     SetInitInfo(KirbyInfo);
@@ -32,7 +32,7 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
         100.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
-        12.f,  // JumpPower
+        11.f,  // JumpPower
         0.f,   // ATK
     };
     SetInitInfo(KirbyInfo);

@@ -59,6 +59,7 @@
 #include "CUIWipeScript.h"
 #include "CWipeTriggerScript.h"
 #include "CKirbyUnitScript.h"
+#include "CLadderScript.h"
 #include "CSolarChargeScript.h"
 #include "CSolarOnceScript.h"
 #include "CElevatorScript.h"
@@ -132,6 +133,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPushOutScript");
 	_vec.push_back(L"CPushOutTriggerScript");
 	_vec.push_back(L"CPushOutColliderScript");
+	_vec.push_back(L"CLadderScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -264,6 +266,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPushOutTriggerScript;
 	if (L"CPushOutColliderScript" == _strScriptName)
 		return new CPushOutColliderScript;
+	if (L"CLadderScript" == _strScriptName)
+		return new CLadderScript;
 	return nullptr;
 }
 
@@ -399,6 +403,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPushOutTriggerScript;
 	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return new CPushOutColliderScript;
+	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
+		return new CLadderScript;
 	}
 	return nullptr;
 }
@@ -535,6 +541,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPushOutTriggerScript";
 	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return L"CPushOutColliderScript";
+	case SCRIPT_TYPE::LADDERSCRIPT:
+		return L"CLadderScript";
 	}
 	return nullptr;
 }

@@ -496,6 +496,39 @@
     <ClInclude Include="CPushOutColliderScript.h">
       <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyStageClear.h">
+      <Filter>State\KirbyState\StageClear</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveStart.h">
+      <Filter>State\KirbyState\LongDive\LongDiveStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDive.h">
+      <Filter>State\KirbyState\LongDive\LongDive</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveBound.h">
+      <Filter>State\KirbyState\LongDive\LongDiveBound</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLongDiveLanding.h">
+      <Filter>State\KirbyState\LongDive\LongDiveLanding</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderUp.h">
+      <Filter>State\KirbyState\Ladder\LadderUp</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderDown.h">
+      <Filter>State\KirbyState\Ladder\LadderDown</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderWait.h">
+      <Filter>State\KirbyState\Ladder\LadderWait</Filter>
+    </ClInclude>
+    <ClInclude Include="CLadderScript.h">
+      <Filter>Scripts\Gimmik\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderWaitStart.h">
+      <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyLadderExit.h">
+      <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1001,6 +1034,39 @@
     </ClCompile>
     <ClCompile Include="CPushOutColliderScript.cpp">
       <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStageClear.cpp">
+      <Filter>State\KirbyState\StageClear</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveStart.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDive.cpp">
+      <Filter>State\KirbyState\LongDive\LongDive</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveBound.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveBound</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLongDiveLanding.cpp">
+      <Filter>State\KirbyState\LongDive\LongDiveLanding</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderUp.cpp">
+      <Filter>State\KirbyState\Ladder\LadderUp</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderDown.cpp">
+      <Filter>State\KirbyState\Ladder\LadderDown</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderWait.cpp">
+      <Filter>State\KirbyState\Ladder\LadderWait</Filter>
+    </ClCompile>
+    <ClCompile Include="CLadderScript.cpp">
+      <Filter>Scripts\Gimmik\Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderWaitStart.cpp">
+      <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLadderExit.cpp">
+      <Filter>State\KirbyState\Ladder\LadderExit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1537,6 +1603,45 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\SupriseBoard\SurpriseAttack">
       <UniqueIdentifier>{1718f35d-8e28-4d42-8733-0e6f507cc84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\StageClear">
+      <UniqueIdentifier>{d9a440ed-3118-490d-8812-7bf7b0ad2988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive">
+      <UniqueIdentifier>{34a4a276-6d43-4307-8a63-776356fded45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveStart">
+      <UniqueIdentifier>{1dc5357f-9ccb-43e3-924d-00b415068d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDive">
+      <UniqueIdentifier>{30a397b6-4bfb-44cd-8773-342b982270b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveBound">
+      <UniqueIdentifier>{7ea4c124-8a97-4eb7-bf3a-87b26cf460bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\LongDive\LongDiveLanding">
+      <UniqueIdentifier>{75840cd7-acff-4d9d-a644-08c64e1f1d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Ladder">
+      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder">
+      <UniqueIdentifier>{3d9bddc6-fd66-4b19-9fce-74a5f36c9458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderUp">
+      <UniqueIdentifier>{26184b20-ea4e-48da-8431-9f3398303faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderDown">
+      <UniqueIdentifier>{94e030a7-7dd7-4b2e-b86f-d3cd3692bbea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderWait">
+      <UniqueIdentifier>{66eb9946-1805-4913-afc1-3fcb691c3dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderWaitStart">
+      <UniqueIdentifier>{576d408b-d467-494d-b91a-75224c1d88cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Ladder\LadderExit">
+      <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
