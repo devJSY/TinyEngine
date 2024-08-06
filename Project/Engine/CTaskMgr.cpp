@@ -59,14 +59,17 @@ void CTaskMgr::tick()
             {
                 MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
 
-                if (g_Global.g_CollisionPicking)
+                switch (g_Global.g_MousePickingMode)
                 {
-                    GamePlayStatic::MouseCollisionPicking(MousePos);
-                    // GamePlayStatic::MouseCollision2DPicking(MousePos);
-                }
-                else
-                {
+                case 0:
                     GamePlayStatic::MouseColorPicking(MousePos);
+                    break;
+                case 1:
+                    GamePlayStatic::MouseCollisionPicking(MousePos);
+                    break;
+                case 2:
+                    GamePlayStatic::MouseCollision2DPicking(MousePos);
+                    break;
                 }
             }
         }

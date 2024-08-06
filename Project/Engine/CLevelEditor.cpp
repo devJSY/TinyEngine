@@ -399,6 +399,16 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
     ImGui::Text("Delta Time : %.5f", DT_ENGINE);
 
+    ImGui::Text("Mouse Picking Mode");
+    ImGui::SameLine();
+    ImGui::Dummy(ImVec2(70.f, 0.f));
+    ImGui::SameLine();
+    ImGui::RadioButton("Color", (int*)&g_Global.g_MousePickingMode, 0);
+    ImGui::SameLine();
+    ImGui::RadioButton("Physcis", (int*)&g_Global.g_MousePickingMode, 1);
+    ImGui::SameLine();
+    ImGui::RadioButton("Physcis2D", (int*)&g_Global.g_MousePickingMode, 2);
+
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
         CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
@@ -412,7 +422,6 @@ void CLevelEditor::render_WorldSettings()
         CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);
 
     ImGui::Checkbox("Enable SSAO", (bool*)&g_Global.g_EnableSSAO);
-    ImGui::Checkbox("Collision Picking Mode", (bool*)&g_Global.g_CollisionPicking);
 
     ImGui::End();
 }
