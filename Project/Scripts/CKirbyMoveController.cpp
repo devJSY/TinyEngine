@@ -21,6 +21,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_JumpPower(10.f)
     , m_Gravity(-20.f)
     , m_bMoveLock(false)
+    , m_bInputLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
     , m_bJump(false)
@@ -50,6 +51,7 @@ CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
     , m_RotSpeed(_Origin.m_RotSpeed)
     , m_JumpPower(_Origin.m_JumpPower)
     , m_Gravity(_Origin.m_Gravity)
+    , m_bInputLock(false)
     , m_bMoveLock(false)
     , m_bDirLock(false)
     , m_bJumpLock(false)
@@ -88,6 +90,19 @@ void CKirbyMoveController::begin()
 
 void CKirbyMoveController::tick()
 { 
+    // @Test
+    if (KEY_TAP(KEY::G))
+    {
+        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    }
+
+    if (KEY_TAP(KEY::H))
+    {
+        PLAYERFSM->ChangeState(L"DEATH");
+    }
+
+
+
     // Key 입력 확인
     Input();
 
@@ -110,6 +125,8 @@ void CKirbyMoveController::Input()
 {
     // 키 입력 정보
     m_Input = {0.f, 0.f, 0.f};
+
+    m_InputWorld = {0.f, 0.f, 0.f};
     // 움직임 방향 정보(World좌표계)
     m_MoveDir = {0.f, 0.f, 0.f};
     // 커비 방향 정보
@@ -150,10 +167,17 @@ void CKirbyMoveController::Input()
     Front.y = 0.f;
     Right.y = 0.f;
 
+    if (m_bInputLock)
+    {
+        m_Input = Vector3::Zero;
+    }
+
+    m_InputWorld = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
+    m_InputWorld.Normalize();
+
     if (!m_bMoveLock)
     {
-        m_MoveDir = XMVectorAdd(XMVectorScale(Front, m_Input.z), XMVectorScale(Right, m_Input.x));
-        m_MoveDir.Normalize();
+        m_MoveDir = m_InputWorld;
     }
 }
 
@@ -186,6 +210,7 @@ void CKirbyMoveController::SetDir()
     {
         UINT Priority = (UINT)ForceDirType::END;
         Vec3 ForceDir = m_TowardDir;
+        bool Immediate;
 
         for (size_t i = 0; i < m_ForceDirInfos.size(); ++i)
         {
@@ -194,6 +219,7 @@ void CKirbyMoveController::SetDir()
 
                 Priority = (UINT)m_ForceDirInfos[i].Type;
                 ForceDir = m_ForceDirInfos[i].Dir;
+                Immediate = m_ForceDirInfos[i].Immediate;
             }
         }
 
@@ -202,8 +228,10 @@ void CKirbyMoveController::SetDir()
 
         // 가장 우선순위가 높은 방향을 적용
         m_TowardDir = ForceDir;
-        Quat ToWardQuaternion = Quat::LookRotation(-m_TowardDir, Vec3(0.f, 1.f, 0.f));
-        Transform()->SetWorldRotation(ToWardQuaternion);
+
+        // 방향을 즉시 변경해야 한다면
+        if (Immediate)
+            Transform()->SetDirection(m_TowardDir);
 
         m_ForceDirInfos.clear();
         return;

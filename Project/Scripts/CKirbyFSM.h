@@ -76,6 +76,14 @@ private:
     // Vending Machine
     UINT                    m_LeftCanCount;
 
+    // Ladder
+    bool                    m_bEscapeLadder;
+    bool                    m_bInCollisionLadder;
+    Vec3                    m_LadderUpSightDir;
+    Vec3                    m_LadderDownSightDir;
+    Vec3                    m_LadderTop;
+    Vec3                    m_LadderBottom;
+
 public:
     void begin() override;
     void tick() override;
@@ -101,6 +109,13 @@ public:
     void SetEmissive(bool _Emissive, float _Duration);
     void SetBladeAttack(bool _CanAttack) { m_bCanBladeAttack = _CanAttack; }
     void SetDroppable(bool _bDroppable) { m_bDroppable = _bDroppable; }
+    void SetCollisionLadder(bool _bLadder) { m_bInCollisionLadder = _bLadder; }
+    void SetLadderUpSightDir(Vec3 _v) { m_LadderUpSightDir = _v; }
+    void SetLadderDownSightDir(Vec3 _v) { m_LadderDownSightDir = _v; }
+    void SetLadderTop(Vec3 _Top) { m_LadderTop = _Top; }
+    void SetLadderBottom(Vec3 _Bottom) { m_LadderBottom = _Bottom; }
+    void SetEscapeLadder(bool _b) { m_bEscapeLadder = _b; }
+
     void ClearCurHatWeapon();
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
@@ -140,6 +155,14 @@ public:
     bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
     UINT GetCanCount() const { return m_LeftCanCount; }
+
+    bool GetCollisionLadder() const { return m_bInCollisionLadder; }
+    Vec3 GetLadderUpSightDir() const { return m_LadderUpSightDir; }
+    Vec3 GetLadderDownSightDir() const { return m_LadderDownSightDir; }
+    Vec3 GetLadderTop() const { return m_LadderTop; }
+    Vec3 GetLadderBottom() const { return m_LadderBottom; }
+    bool GetEscapeLadder() const { return m_bEscapeLadder; }
+
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -7,6 +7,8 @@
 // 방향 변경 타입 (enum 순서가 우선순위)
 enum class ForceDirType
 {
+    STAGEEVENT,
+    STATE,
     DEFORM,
     HIT,
     END,
@@ -17,6 +19,7 @@ struct ForceDirInfo
 {
     ForceDirType Type;
     Vec3 Dir; // 바라봐야할 방향(World 좌표계)
+    bool Immediate;
 };
 
 class CKirbyMoveController : public CScript
@@ -24,12 +27,14 @@ class CKirbyMoveController : public CScript
 private:
     // 입력
     Vec3                        m_Input;
+    Vec3                        m_InputWorld;
     bool                        m_bGround;
     bool                        m_bJump;
     bool                        m_bActiveFriction;
     bool                        m_bForwardMode;
 
     // Lock
+    bool                        m_bInputLock;
     bool                        m_bMoveLock;
     bool                        m_bJumpLock;
     bool                        m_bDirLock;
@@ -69,6 +74,8 @@ private:
     void Move();
 
 public:
+    void LockInput() { m_bInputLock = true; }
+    void UnlockInput() { m_bInputLock = false; }
     void LockMove() { m_bMoveLock = true; }
     void UnlockMove() { m_bMoveLock = false; }
     void LockJump() { m_bJumpLock = true; }
@@ -92,6 +99,7 @@ public:
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
 
     Vec3 GetInput() const { return m_Input; }
+    Vec3 GetInputWorld() const { return m_InputWorld; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     Vec3 GetVelocity() const { return m_MoveVelocity; }
     float GetSpeed() const { return m_Speed; }
