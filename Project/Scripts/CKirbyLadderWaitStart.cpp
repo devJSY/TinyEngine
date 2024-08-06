@@ -22,8 +22,13 @@ void CKirbyLadderWaitStart::tick()
     // 입력이 있는 경우
     if (InputWorld.Length() != 0.f)
     {
+        if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+        {
+            ChangeState(L"JUMP_START");
+        }
+
         // 입력 방향이 Up방향 쪽인 경우 State를 사다리를 올라가는 상태로 바꾼다.
-        if (InputWorld.Dot(UpDir) > 0.f)
+        else if (InputWorld.Dot(UpDir) > 0.f)
         {
             ChangeState(L"LADDER_UP");
         }
@@ -36,6 +41,7 @@ void CKirbyLadderWaitStart::tick()
     {
         ChangeState(L"LADDER_WAIT");
     }
+
 }
 
 void CKirbyLadderWaitStart::Enter()
@@ -52,6 +58,11 @@ void CKirbyLadderWaitStart::Enter()
     // Lock
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockMove();
+
+    /*Vec3 LadderPos = PLAYERFSM->GetLadderBottom();
+    LadderPos.y = PLAYER->Transform()->GetWorldPos().y;
+
+    PLAYER->Transform()->SetWorldPos(LadderPos);*/
 }
 
 void CKirbyLadderWaitStart::Exit()

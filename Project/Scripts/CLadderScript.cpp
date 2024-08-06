@@ -78,16 +78,19 @@ void CLadderScript::OnTriggerStay(CCollider* _OtherCollider)
             // 플레이어의 입력이 벽쪽(올라가는 쪽)이라면 플레이어를 사다리를 타게 한다(현재 플레이어의 위치에서).
             if (!PLAYERFSM->GetCollisionLadder() && InputDir.Dot(m_UpDir) > cosf(60.f * XM_PI / 180.f))
             {
-                // 플레이어의 상태 변경
-                PLAYERFSM->ChangeState(L"LADDER_WAIT");
-
                 // 플레이어의 방향 설정 (사다리의 Up방향(Back)을 바라보도록 한다).
                 PLAYERCTRL->ForceDir(ForceDirInfo{ForceDirType::STATE, m_UpDir, true});
 
                 // 플레이어의 위치 설정(사다리의 중앙에서 Down방향(Front) 피벗만큼 떨어진거리
                 Vec3 NewPlayerPos = m_BottomPos + m_DownDir * m_Pivot;
                 NewPlayerPos.y = PlayerPos.y;
+
                 PLAYER->Transform()->SetWorldPos(NewPlayerPos);
+
+                PLAYERCTRL->ClearVelocityY();
+
+                // 플레이어의 상태 변경
+                PLAYERFSM->ChangeState(L"LADDER_WAIT");
             }
 
         }
@@ -97,9 +100,6 @@ void CLadderScript::OnTriggerStay(CCollider* _OtherCollider)
             // 플레이어의 입력이 공중 쪽(내려가는 쪽)이라면 플레이어를 사다리를 타게 한다.
             if (!PLAYERFSM->GetCollisionLadder() && InputDir.Dot(m_DownDir) > cosf(60.f * XM_PI / 180.f))
             {
-                // 플레이어의 상태 변경
-                PLAYERFSM->ChangeState(L"LADDER_WAIT");
-
                 // 플레이어의 방향 설정 (사다리의 Up방향(Back)을 바라보도록 한다).
                 PLAYERCTRL->ForceDir(ForceDirInfo{ForceDirType::STATE, m_UpDir, true});
 
@@ -107,18 +107,25 @@ void CLadderScript::OnTriggerStay(CCollider* _OtherCollider)
                 Vec3 NewPlayerPos = m_TopPos + m_DownDir * m_Pivot;
                 NewPlayerPos.y -= m_PlayerCapsuleScale;
                 PLAYER->Transform()->SetWorldPos(NewPlayerPos);
+
+                PLAYERCTRL->ClearVelocityY();
+
+                // 플레이어의 상태 변경
+                PLAYERFSM->ChangeState(L"LADDER_WAIT");
             }
 
             // 플레이어의 입력이 벽쪽(올라가는 쪽)이라면 플레이어를 사다리에서 벗어나게 한다.
             if (PLAYERFSM->GetCollisionLadder() && InputDir.Dot(m_UpDir) > 0.f && PLAYERFSM->GetEscapeLadder() == false)
             {
-                // 플레이어의 상태 변경
-                PLAYERFSM->ChangeState(L"LADDER_EXIT");
-
                 // 플레이어의 위치 설정
                 Vec3 NewPlayerPos = m_TopPos;
                 NewPlayerPos.y -= 10.f;
                 PLAYER->Transform()->SetWorldPos(NewPlayerPos);
+
+                PLAYERCTRL->ClearVelocityY();
+
+                // 플레이어의 상태 변경
+                PLAYERFSM->ChangeState(L"LADDER_EXIT");
 
                 // 다시 충돌하지 않도록 Player를 사다리에서 탈출 중인 상태로 변경
                 PLAYERFSM->SetEscapeLadder(true);

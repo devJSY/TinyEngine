@@ -37,10 +37,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"RUN_END");
             }
-            else if (!PLAYERCTRL->IsGround())
+            /*else if (!PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
-            }
+            }*/
         }
         break;
         case ObjectCopyType::VENDING_MACHINE: {
@@ -130,10 +130,10 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"IDLE");
             }
-            else if (!PLAYERCTRL->IsGround())
+            /*else if (!PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
-            }
+            }*/
         }
         break;
         case AbilityCopyType::CUTTER: {

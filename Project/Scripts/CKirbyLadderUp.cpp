@@ -24,17 +24,23 @@ void CKirbyLadderUp::tick()
     // 입력이 있는 경우
     if (InputWorld.Length() != 0.f)
     {
+        if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+        {
+            ChangeState(L"JUMP_START");
+        }
         // 입력 방향이 Up방향 쪽인 아닌 경우 State를 Down상태로 바꾼다.
-        if (InputWorld.Dot(UpDir) < 0.f)
+        else if(InputWorld.Dot(UpDir) < 0.f)
         {
             ChangeState(L"LADDER_DOWN");
         }
     }
+     
     // 입력이 없는 경우 WAIT 상태로 바꾼다.
     else
     {
         ChangeState(L"LADDER_WAIT");
     }
+
 }
 
 void CKirbyLadderUp::Enter()
@@ -51,6 +57,11 @@ void CKirbyLadderUp::Enter()
     // Lock
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockMove();
+
+    /*Vec3 LadderPos = PLAYERFSM->GetLadderBottom();
+    LadderPos.y = PLAYER->Transform()->GetWorldPos().y;
+
+    PLAYER->Transform()->SetWorldPos(LadderPos);*/
 }
 
 void CKirbyLadderUp::Exit()

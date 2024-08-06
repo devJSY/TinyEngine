@@ -25,10 +25,10 @@ void CKirbyRunEnd::tick()
             {
                 ChangeState(L"IDLE");
             }
-            else if (!PLAYERCTRL->IsGround())
+            /*else if (!PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
-            }
+            }*/
         }
         break;
         }
