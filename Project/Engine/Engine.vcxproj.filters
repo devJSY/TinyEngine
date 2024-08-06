@@ -726,6 +726,9 @@
     <ClCompile Include="CLevelMgr_CreateDefaultKirbyLevel.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CRenderMgr_Kirby.cpp">
+      <Filter>04. Manager\RenderMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">
@@ -1127,6 +1130,12 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultUIShader">
       <UniqueIdentifier>{cde1195e-dd34-41d4-85be-f9d448d8c211}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\Gimmick">
+      <UniqueIdentifier>{b0690027-d22d-4d07-b2a3-08b63f1c2096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIWipeShader">
+      <UniqueIdentifier>{dd483ebd-d730-4e07-8e7f-6107bc17f32a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1418,6 +1427,15 @@
     </FxCompile>
     <FxCompile Include="UIDefaultVS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
+    </FxCompile>
+    <FxCompile Include="CrumblePS.hlsl">
+      <Filter>ShaderCode\Kirby\Gimmick</Filter>
+    </FxCompile>
+    <FxCompile Include="UIWipeVS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIWipePS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

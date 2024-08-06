@@ -2,12 +2,22 @@
 
 #include <Engine/CScript.h>
 
+enum class SceneType
+{
+    StartScene,
+    RobbySccene,
+    PlayScene,
+    End,
+};
+
 class CButtonScript;
-class CUIManagerScript 
-	: public CScript
+class CUIManagerScript : public CScript
 {
 private:
     map<wstring, CScript*> m_vUIManagerScript;
+
+protected:
+    SceneType m_eSceneState;
 
 public:
     virtual void begin() override;

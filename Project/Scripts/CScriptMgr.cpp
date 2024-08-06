@@ -45,9 +45,19 @@
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
 #include "CCameraController.h"
+#include "CUIMoveUpDownScript.h"
+#include "CUIAnimScript.h"
+#include "CUIFlowScript.h"
+#include "CUIStartSceneFlowScript.h"
+#include "CUIGlowMoveScript.h"
 #include "CChangeCamTrigger.h"
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
+#include "CCrumbleScript.h"
+#include "CSurpriseBoardScript.h"
+#include "CSurpriseBoardAttackScript.h"
+#include "CUIWipeScript.h"
+#include "CWipeTriggerScript.h"
 #include "CElfilisFSM.h"
 #include "CBossMgr.h"
 #include "CElfilisUnit.h"
@@ -62,6 +72,12 @@
 #include "CChangeAlphaScript.h"
 #include "CKirbyUnitScript.h"
 #include "CLadderScript.h"
+#include "CSolarChargeScript.h"
+#include "CSolarOnceScript.h"
+#include "CElevatorScript.h"
+#include "CPushOutScript.h"
+#include "CPushOutTriggerScript.h"
+#include "CPushOutColliderScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -109,9 +125,19 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMomentaryObjScript");
 	_vec.push_back(L"CKirbyWeaponHitbox");
 	_vec.push_back(L"CCameraController");
+	_vec.push_back(L"CUIMoveUpDownScript");
+	_vec.push_back(L"CUIAnimScript");
+	_vec.push_back(L"CUIFlowScript");
+	_vec.push_back(L"CUIStartSceneFlowScript");
+	_vec.push_back(L"CUIGlowMoveScript");
 	_vec.push_back(L"CChangeCamTrigger");
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
+	_vec.push_back(L"CCrumbleScript");
+	_vec.push_back(L"CSurpriseBoardScript");
+	_vec.push_back(L"CSurpriseBoardAttackScript");
+	_vec.push_back(L"CUIWipeScript");
+	_vec.push_back(L"CWipeTriggerScript");
 	_vec.push_back(L"CElfilisFSM");
 	_vec.push_back(L"CBossMgr");
 	_vec.push_back(L"CElfilisUnit");
@@ -125,6 +151,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisBigFSM");
 	_vec.push_back(L"CChangeAlphaScript");
 	_vec.push_back(L"CKirbyUnitScript");
+	_vec.push_back(L"CSolarChargeScript");
+	_vec.push_back(L"CSolarOnceScript");
+	_vec.push_back(L"CElevatorScript");
+	_vec.push_back(L"CPushOutScript");
+	_vec.push_back(L"CPushOutTriggerScript");
+	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLadderScript");
 }
 
@@ -218,12 +250,32 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyWeaponHitbox;
 	if (L"CCameraController" == _strScriptName)
 		return new CCameraController;
+	if (L"CUIMoveUpDownScript" == _strScriptName)
+		return new CUIMoveUpDownScript;
+	if (L"CUIAnimScript" == _strScriptName)
+		return new CUIAnimScript;
+	if (L"CUIFlowScript" == _strScriptName)
+		return new CUIFlowScript;
+	if (L"CUIStartSceneFlowScript" == _strScriptName)
+		return new CUIStartSceneFlowScript;
+	if (L"CUIGlowMoveScript" == _strScriptName)
+		return new CUIGlowMoveScript;
 	if (L"CChangeCamTrigger" == _strScriptName)
 		return new CChangeCamTrigger;
 	if (L"CProgressCamTrigger" == _strScriptName)
 		return new CProgressCamTrigger;
 	if (L"CTwoTargetCamTrigger" == _strScriptName)
 		return new CTwoTargetCamTrigger;
+	if (L"CCrumbleScript" == _strScriptName)
+		return new CCrumbleScript;
+	if (L"CSurpriseBoardScript" == _strScriptName)
+		return new CSurpriseBoardScript;
+	if (L"CSurpriseBoardAttackScript" == _strScriptName)
+		return new CSurpriseBoardAttackScript;
+	if (L"CUIWipeScript" == _strScriptName)
+		return new CUIWipeScript;
+	if (L"CWipeTriggerScript" == _strScriptName)
+		return new CWipeTriggerScript;
 	if (L"CElfilisFSM" == _strScriptName)
 		return new CElfilisFSM;
 	if (L"CBossMgr" == _strScriptName)
@@ -250,6 +302,18 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CChangeAlphaScript;
 	if (L"CKirbyUnitScript" == _strScriptName)
 		return new CKirbyUnitScript;
+	if (L"CSolarChargeScript" == _strScriptName)
+		return new CSolarChargeScript;
+	if (L"CSolarOnceScript" == _strScriptName)
+		return new CSolarOnceScript;
+	if (L"CElevatorScript" == _strScriptName)
+		return new CElevatorScript;
+	if (L"CPushOutScript" == _strScriptName)
+		return new CPushOutScript;
+	if (L"CPushOutTriggerScript" == _strScriptName)
+		return new CPushOutTriggerScript;
+	if (L"CPushOutColliderScript" == _strScriptName)
+		return new CPushOutColliderScript;
 	if (L"CLadderScript" == _strScriptName)
 		return new CLadderScript;
 	return nullptr;
@@ -347,12 +411,32 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyWeaponHitbox;
 	case (UINT)SCRIPT_TYPE::CAMERACONTROLLER:
 		return new CCameraController;
+	case (UINT)SCRIPT_TYPE::UIMOVEUPDOWNSCRIPT:
+		return new CUIMoveUpDownScript;
+	case (UINT)SCRIPT_TYPE::UIANIMSCRIPT:
+		return new CUIAnimScript;
+	case (UINT)SCRIPT_TYPE::UIFLOWSCRIPT:
+		return new CUIFlowScript;
+	case (UINT)SCRIPT_TYPE::UISTARTSCENEFLOWSCRIPT:
+		return new CUIStartSceneFlowScript;
+	case (UINT)SCRIPT_TYPE::UIGLOWMOVESCRIPT:
+		return new CUIGlowMoveScript;
 	case (UINT)SCRIPT_TYPE::CHANGECAMTRIGGER:
 		return new CChangeCamTrigger;
 	case (UINT)SCRIPT_TYPE::PROGRESSCAMTRIGGER:
 		return new CProgressCamTrigger;
 	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return new CTwoTargetCamTrigger;
+	case (UINT)SCRIPT_TYPE::CRUMBLESCRIPT:
+		return new CCrumbleScript;
+	case (UINT)SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
+		return new CSurpriseBoardScript;
+	case (UINT)SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
+		return new CSurpriseBoardAttackScript;
+	case (UINT)SCRIPT_TYPE::UIWIPESCRIPT:
+		return new CUIWipeScript;
+	case (UINT)SCRIPT_TYPE::WIPETRIGGERSCRIPT:
+		return new CWipeTriggerScript;
 	case (UINT)SCRIPT_TYPE::ELFILISFSM:
 		return new CElfilisFSM;
 	case (UINT)SCRIPT_TYPE::BOSSMGR:
@@ -379,6 +463,18 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CChangeAlphaScript;
 	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return new CKirbyUnitScript;
+	case (UINT)SCRIPT_TYPE::SOLARCHARGESCRIPT:
+		return new CSolarChargeScript;
+	case (UINT)SCRIPT_TYPE::SOLARONCESCRIPT:
+		return new CSolarOnceScript;
+	case (UINT)SCRIPT_TYPE::ELEVATORSCRIPT:
+		return new CElevatorScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTSCRIPT:
+		return new CPushOutScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
+		return new CPushOutTriggerScript;
+	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
 		return new CLadderScript;
 	}
@@ -477,12 +573,32 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyWeaponHitbox";
 	case SCRIPT_TYPE::CAMERACONTROLLER:
 		return L"CCameraController";
+	case SCRIPT_TYPE::UIMOVEUPDOWNSCRIPT:
+		return L"CUIMoveUpDownScript";
+	case SCRIPT_TYPE::UIANIMSCRIPT:
+		return L"CUIAnimScript";
+	case SCRIPT_TYPE::UIFLOWSCRIPT:
+		return L"CUIFlowScript";
+	case SCRIPT_TYPE::UISTARTSCENEFLOWSCRIPT:
+		return L"CUIStartSceneFlowScript";
+	case SCRIPT_TYPE::UIGLOWMOVESCRIPT:
+		return L"CUIGlowMoveScript";
 	case SCRIPT_TYPE::CHANGECAMTRIGGER:
 		return L"CChangeCamTrigger";
 	case SCRIPT_TYPE::PROGRESSCAMTRIGGER:
 		return L"CProgressCamTrigger";
 	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return L"CTwoTargetCamTrigger";
+	case SCRIPT_TYPE::CRUMBLESCRIPT:
+		return L"CCrumbleScript";
+	case SCRIPT_TYPE::SURPRISEBOARDSCRIPT:
+		return L"CSurpriseBoardScript";
+	case SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
+		return L"CSurpriseBoardAttackScript";
+	case SCRIPT_TYPE::UIWIPESCRIPT:
+		return L"CUIWipeScript";
+	case SCRIPT_TYPE::WIPETRIGGERSCRIPT:
+		return L"CWipeTriggerScript";
 	case SCRIPT_TYPE::ELFILISFSM:
 		return L"CElfilisFSM";
 	case SCRIPT_TYPE::BOSSMGR:
@@ -509,6 +625,18 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CChangeAlphaScript";
 	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return L"CKirbyUnitScript";
+	case SCRIPT_TYPE::SOLARCHARGESCRIPT:
+		return L"CSolarChargeScript";
+	case SCRIPT_TYPE::SOLARONCESCRIPT:
+		return L"CSolarOnceScript";
+	case SCRIPT_TYPE::ELEVATORSCRIPT:
+		return L"CElevatorScript";
+	case SCRIPT_TYPE::PUSHOUTSCRIPT:
+		return L"CPushOutScript";
+	case SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
+		return L"CPushOutTriggerScript";
+	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LADDERSCRIPT:
 		return L"CLadderScript";
 	}
