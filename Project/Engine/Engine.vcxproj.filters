@@ -726,9 +726,6 @@
     <ClCompile Include="CLevelMgr_CreateDefaultKirbyLevel.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CRenderMgr_Kirby.cpp">
-      <Filter>04. Manager\RenderMgr</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="01. Header">

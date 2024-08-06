@@ -32,6 +32,7 @@ CRenderMgr::CRenderMgr()
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
+    , m_DepthMaskingTex(nullptr)
     , m_bBloomEnable(false)
     , m_bloomLevels(5)
     , m_BloomRTTex_LDRI(nullptr)
@@ -45,7 +46,6 @@ CRenderMgr::CRenderMgr()
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
     , m_CameraPreviewTex(nullptr)
-    , m_MaskingTex(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
 
@@ -130,19 +130,18 @@ void CRenderMgr::render()
     // Camera Preview
     render_CameraPreview();
 
-    // MASKING
-    render_masking();
-
     render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
 
     UpdateData();
 
+    // Depth Only Pass
     if (nullptr != m_mainCam)
     {
-        // Depth Only Pass
         m_mainCam->SortShadowMapObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
+
+    render_DepthMasking();
 
     // Dynamic Shadow Depth Map
     render_DynamicShadowDepth();
@@ -174,6 +173,7 @@ void CRenderMgr::render_Clear(const Vec4& Color)
     CONTEXT->ClearRenderTargetView(m_PostProcessTex_HDRI->GetRTV().Get(), Color);
 
     CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+    CONTEXT->ClearDepthStencilView(m_DepthMaskingTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
     CONTEXT->ClearRenderTargetView(m_BloomRTTex_LDRI->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
 
@@ -202,8 +202,7 @@ void CRenderMgr::render_play()
 
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
-        // MASKING
-        if (nullptr == m_vecCam[i] || L"Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
+        if (nullptr == m_vecCam[i] || L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
             continue;
 
         m_vecCam[i]->SortObject();
@@ -488,6 +487,29 @@ void CRenderMgr::render_DynamicShadowDepth()
             break;
         }
     }
+}
+
+void CRenderMgr::render_DepthMasking()
+{
+    CCamera* pDepthMaskCam = nullptr;
+
+    for (UINT i = 0; i < (UINT)m_vecCam.size(); i++)
+    {
+        if (nullptr == m_vecCam[i])
+            continue;
+
+        if (L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
+        {
+            pDepthMaskCam = m_vecCam[i];
+            break;
+        }
+    }
+
+    if (nullptr == pDepthMaskCam)
+        return;
+
+    pDepthMaskCam->SortObject();
+    pDepthMaskCam->render_DepthOnly(m_DepthMaskingTex);
 }
 
 void CRenderMgr::UpdateData()
@@ -969,6 +991,9 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
     m_DepthOnlyTex =
         CAssetMgr::GetInst()->CreateTexture(L"DepthOnlyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
                                             D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
+    m_DepthMaskingTex =
+        CAssetMgr::GetInst()->CreateTexture(L"DepthMaskingTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
+                                            D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
 void CRenderMgr::Resize_Release()
@@ -992,6 +1017,7 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthOnlyTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthMaskingTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_LDRI");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
 
@@ -1004,19 +1030,14 @@ void CRenderMgr::Resize_Release()
     }
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"CameraPreviewTex");
 
-    // MASKING
-    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"MaskingTex");
-
     Delete_Array(m_arrMRT);
     m_RTCopyTex = nullptr;
     m_DepthOnlyTex = nullptr;
+    m_DepthMaskingTex = nullptr;
     m_PostProcessTex_LDRI = nullptr;
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
     m_CameraPreviewTex = nullptr;
-
-    // Masking
-    m_MaskingTex = nullptr;
 }
 
 void CRenderMgr::Resize(Vec2 Resolution)
@@ -1029,13 +1050,13 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateCameraPreviewTex(Resolution);
     CreateMRT(Resolution);
 
-    // MASKING
-    Create_MaskingTexture(Resolution);
-
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
 
     for (size_t i = 0; i < m_vecCam.size(); i++)
     {
+        if (nullptr == m_vecCam[i])
+            continue;
+
         m_vecCam[i]->Resize(Resolution);
     }
 
