@@ -493,6 +493,9 @@
     <ClInclude Include="CFixedViewCamTrigger.h">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
     </ClInclude>
+    <ClInclude Include="CLevelFlowMgr.h">
+      <Filter>Module\FlowMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -995,6 +998,9 @@
     </ClCompile>
     <ClCompile Include="CFixedViewCamTrigger.cpp">
       <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelFlowMgr.cpp">
+      <Filter>Module\FlowMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1525,6 +1531,12 @@
     </Filter>
     <Filter Include="Scripts\Trigger\CheckPoint">
       <UniqueIdentifier>{7a613646-21ea-40cd-a2c5-e60cd3f19649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\FlowManager">
+      <UniqueIdentifier>{8880c56c-641f-44f7-a74b-4cda974787dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FlowMgr">
+      <UniqueIdentifier>{cef72559-570c-4556-bfeb-51009fbc0928}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -123,6 +123,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CFixedViewCamTrigger.h" />
+    <ClInclude Include="CLevelFlowMgr.h" />
     <ClInclude Include="CkirbyAbility_Sleep.h" />
     <ClInclude Include="CKirbyAttackFailed.h" />
     <ClInclude Include="CKirbyAttackFailedEnd.h" />
@@ -289,6 +290,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CFixedViewCamTrigger.cpp" />
+    <ClCompile Include="CLevelFlowMgr.cpp" />
     <ClCompile Include="CkirbyAbility_Sleep.cpp" />
     <ClCompile Include="CKirbyAttackFailed.cpp" />
     <ClCompile Include="CKirbyAttackFailedEnd.cpp" />
