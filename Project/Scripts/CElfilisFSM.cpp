@@ -464,7 +464,7 @@ void CElfilisFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 2)
         {
-            ChangeStateGroup_Set(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_NORMAL");
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMALTELEPORT_L");
             bFinish = true;
         }
     }
