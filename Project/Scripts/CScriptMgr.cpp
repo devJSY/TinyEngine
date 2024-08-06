@@ -48,8 +48,6 @@
 #include "CChangeCamTrigger.h"
 #include "CProgressCamTrigger.h"
 #include "CTwoTargetCamTrigger.h"
-#include "CKirbyUnitScript.h"
-#include "CLadderScript.h"
 #include "CElfilisFSM.h"
 #include "CBossMgr.h"
 #include "CElfilisUnit.h"
@@ -62,6 +60,8 @@
 #include "CElfilisLaser.h"
 #include "CElfilisBigFSM.h"
 #include "CChangeAlphaScript.h"
+#include "CKirbyUnitScript.h"
+#include "CLadderScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -112,8 +112,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CChangeCamTrigger");
 	_vec.push_back(L"CProgressCamTrigger");
 	_vec.push_back(L"CTwoTargetCamTrigger");
-	_vec.push_back(L"CKirbyUnitScript");
-	_vec.push_back(L"CLadderScript");
 	_vec.push_back(L"CElfilisFSM");
 	_vec.push_back(L"CBossMgr");
 	_vec.push_back(L"CElfilisUnit");
@@ -126,6 +124,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisLaser");
 	_vec.push_back(L"CElfilisBigFSM");
 	_vec.push_back(L"CChangeAlphaScript");
+	_vec.push_back(L"CKirbyUnitScript");
+	_vec.push_back(L"CLadderScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -224,10 +224,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CProgressCamTrigger;
 	if (L"CTwoTargetCamTrigger" == _strScriptName)
 		return new CTwoTargetCamTrigger;
-	if (L"CKirbyUnitScript" == _strScriptName)
-		return new CKirbyUnitScript;
-	if (L"CLadderScript" == _strScriptName)
-		return new CLadderScript;
 	if (L"CElfilisFSM" == _strScriptName)
 		return new CElfilisFSM;
 	if (L"CBossMgr" == _strScriptName)
@@ -252,6 +248,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisBigFSM;
 	if (L"CChangeAlphaScript" == _strScriptName)
 		return new CChangeAlphaScript;
+	if (L"CKirbyUnitScript" == _strScriptName)
+		return new CKirbyUnitScript;
+	if (L"CLadderScript" == _strScriptName)
+		return new CLadderScript;
 	return nullptr;
 }
 
@@ -353,10 +353,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CProgressCamTrigger;
 	case (UINT)SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return new CTwoTargetCamTrigger;
-	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
-		return new CKirbyUnitScript;
-	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
-		return new CLadderScript;
 	case (UINT)SCRIPT_TYPE::ELFILISFSM:
 		return new CElfilisFSM;
 	case (UINT)SCRIPT_TYPE::BOSSMGR:
@@ -381,6 +377,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisBigFSM;
 	case (UINT)SCRIPT_TYPE::CHANGEALPHASCRIPT:
 		return new CChangeAlphaScript;
+	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
+		return new CKirbyUnitScript;
+	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
+		return new CLadderScript;
 	}
 	return nullptr;
 }
@@ -483,10 +483,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CProgressCamTrigger";
 	case SCRIPT_TYPE::TWOTARGETCAMTRIGGER:
 		return L"CTwoTargetCamTrigger";
-	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
-		return L"CKirbyUnitScript";
-	case SCRIPT_TYPE::LADDERSCRIPT:
-		return L"CLadderScript";
 	case SCRIPT_TYPE::ELFILISFSM:
 		return L"CElfilisFSM";
 	case SCRIPT_TYPE::BOSSMGR:
@@ -511,6 +507,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisBigFSM";
 	case SCRIPT_TYPE::CHANGEALPHASCRIPT:
 		return L"CChangeAlphaScript";
+	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
+		return L"CKirbyUnitScript";
+	case SCRIPT_TYPE::LADDERSCRIPT:
+		return L"CLadderScript";
 	}
 	return nullptr;
 }

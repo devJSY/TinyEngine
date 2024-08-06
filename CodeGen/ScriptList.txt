@@ -45,7 +45,6 @@ CCameraController
 CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
-CKirbyUnitScript
 CElfilisFSM
 CBossMgr
 CElfilisUnit
@@ -58,3 +57,5 @@ CElfilisDimensionLaser
 CElfilisLaser
 CElfilisBigFSM
 CChangeAlphaScript
+CKirbyUnitScript
+CLadderScript

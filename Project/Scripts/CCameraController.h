@@ -23,7 +23,7 @@ enum class CameraSetup
     NORMAL,
     PROGRESS,
     TWOTARGET,
-    BOSS,
+    BOSSSETUP,
 };
 
 struct CameraSetting
