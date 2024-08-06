@@ -8,7 +8,7 @@ CElfilisFSM::CElfilisFSM()
     : CFSMScript(ELFILISFSM)
     , m_CurStateGroup(ElfilisStateGroup::END)
     , m_Pattern(ElfilisPatternType::NONE)
-    , m_Phase(2)
+    , m_Phase(1)
     , m_ComboLevel(0)
     , m_PatternStep(0)
     , m_bAttackRepeat(false)
@@ -377,7 +377,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT", new CElfilisG_ToAirTeleport);
     AddGroupPrivateState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB", new CElfilisA_Stab);
 
-    ChangeState(L"GROUND_IDLE");
+    ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
 
     // find Big Elfilis
     wstring strName = GetOwner()->GetName() + L"Big";
@@ -406,13 +406,13 @@ void CElfilisFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
+        ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
         // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
     }
     if (KEY_TAP(KEY::SPACE))
     {
         // ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+        //ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
     }
 }
 

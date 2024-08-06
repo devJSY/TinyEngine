@@ -8,6 +8,7 @@ private:
     CGameObject* m_BossName;
     Vec3 m_StartPos;
     float m_DownSpeed;
+    float m_PrevDrag;
     float m_AccTime;
 
 public:
