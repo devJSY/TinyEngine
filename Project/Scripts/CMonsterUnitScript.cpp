@@ -13,7 +13,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
         1.f,   // Speed
         3.f,   // Rotation Speed
         1.f,   // JumpPower
-        10.f,   // ATK
+        10.f,  // ATK
     };
     SetInitInfo(MonsterInfo);
 
@@ -47,11 +47,11 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
         1.f,   // Speed
         3.f,   // Rotation Speed
         1.f,   // JumpPower
-        10.f,   // ATK
+        10.f,  // ATK
     };
     SetInitInfo(MonsterInfo);
 
-     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.RotationSpeed, "[Init] Rotation Speed");
@@ -104,7 +104,7 @@ void CMonsterUnitScript::RotatingToTarget()
     if (nullptr == m_pTargetObj)
         return;
 
-    Vec3 ToTargetDir = Transform()->GetWorldPos() - m_pTargetObj->Transform()->GetWorldPos();
+    Vec3 ToTargetDir = m_pTargetObj->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
 }
 
