@@ -28,6 +28,11 @@ float4 main(PS_IN input) : SV_TARGET
   
     float4 albedo = g_btex_0 ? AlbedoTex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
    
+    if (albedo.a < 0.1f)
+    {
+        discard;
+    }
+    
     if (0.f >= length(albedo))
     {
         albedo.rgb = MtrlAlbedo.rgb;

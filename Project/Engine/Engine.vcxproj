@@ -316,7 +316,6 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CRaycastShader.cpp" />
     <ClCompile Include="CRenderComponent.cpp" />
     <ClCompile Include="CRenderMgr.cpp" />
-    <ClCompile Include="CRenderMgr_Kirby.cpp" />
     <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="CRigidbody2D.cpp" />
     <ClCompile Include="CScript.cpp" />
@@ -427,6 +426,10 @@ call EngineCopy.bat</Command>
     <FxCompile Include="GlassPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="KirbyMaskingPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="MapTestPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

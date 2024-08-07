@@ -272,6 +272,11 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
                 CRenderMgr::GetInst()->ActiveEditorMode(true);
                 CPhysics2DMgr::GetInst()->OnPhysics2DStop();
                 CPhysicsMgr::GetInst()->OnPhysicsStop();
+
+                // Static Light Depth Map Clear
+                CTexture::Clear(24);
+                CTexture::Clear(25);
+                CTexture::Clear(26);
             }
         }
         break;

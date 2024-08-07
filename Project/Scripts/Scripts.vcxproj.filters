@@ -472,9 +472,6 @@
     <ClInclude Include="CElfilisG_NormalAtkL.h">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisUnit.h">
-      <Filter>Scripts\Unit\Elfilis</Filter>
-    </ClInclude>
     <ClInclude Include="CBossState.h">
       <Filter>Module\FSM\State\Boss</Filter>
     </ClInclude>
@@ -684,6 +681,9 @@
     </ClInclude>
     <ClInclude Include="CKirbyLadderExit.h">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisUnit.h">
+      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1167,9 +1167,6 @@
     <ClCompile Include="CElfilisG_NormalAtkL.cpp">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisUnit.cpp">
-      <Filter>Scripts\Unit\Elfilis</Filter>
-    </ClCompile>
     <ClCompile Include="CBossState.cpp">
       <Filter>Module\FSM\State\Boss</Filter>
     </ClCompile>
@@ -1379,6 +1376,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyLadderExit.cpp">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisUnit.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1898,9 +1898,6 @@
     <Filter Include="State\ElfilisState\Ground_Idle">
       <UniqueIdentifier>{0c33e58f-bc3c-4cfa-ac38-fb7c56fe6416}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Unit\Elfilis">
-      <UniqueIdentifier>{4e9f1b14-3c6a-4f82-a2e4-e8821f68d867}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\ElfilisState\Ground_Move">
       <UniqueIdentifier>{e6d86f0c-0839-4737-b103-44bad510dc64}</UniqueIdentifier>
     </Filter>
@@ -2182,6 +2179,9 @@
     </Filter>
     <Filter Include="State\KirbyState\Ladder\LadderExit">
       <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
+      <UniqueIdentifier>{96517348-fcf7-40fa-8849-72dece0bff91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

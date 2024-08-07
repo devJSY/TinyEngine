@@ -1,13 +1,17 @@
 #include "global.hlsli"
 #include "struct.hlsli"
 
+#define TextureWidth g_float_0 
+#define TextureHeight g_float_1 
+#define FilterRadius g_float_2 
+
 float4 main(PS_IN input) : SV_TARGET
 {
-    float dx = 1.f / g_RenderResolution.x;
-    float dy = 1.f / g_RenderResolution.y;
-        
     float x = input.vUV0.x;
     float y = input.vUV0.y;
+    
+    float dx = FilterRadius / TextureWidth;
+    float dy = FilterRadius / TextureHeight;
     
     // Take 13 samples around current texel:
     // a - b - c
@@ -16,17 +20,17 @@ float4 main(PS_IN input) : SV_TARGET
     // - l - m -
     // g - h - i
     // === ('e' is the current texel) ===
-    float3 a = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y + dy)).rgb;
-    float3 b = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y + dy)).rgb;
-    float3 c = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y + dy)).rgb;
+    float3 a = g_tex_0.Sample(g_LinearClampSampler, float2(x - dx, y + dy)).rgb;
+    float3 b = g_tex_0.Sample(g_LinearClampSampler, float2(x, y + dy)).rgb;
+    float3 c = g_tex_0.Sample(g_LinearClampSampler, float2(x + dx, y + dy)).rgb;
     
-    float3 d = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y)).rgb;
-    float3 e = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y)).rgb;
-    float3 f = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y)).rgb;
+    float3 d = g_tex_0.Sample(g_LinearClampSampler, float2(x - dx, y)).rgb;
+    float3 e = g_tex_0.Sample(g_LinearClampSampler, float2(x, y)).rgb;
+    float3 f = g_tex_0.Sample(g_LinearClampSampler, float2(x + dx, y)).rgb;
     
-    float3 g = g_tex_0.Sample(g_LinearWrapSampler, float2(x - dx, y - dy)).rgb;
-    float3 h = g_tex_0.Sample(g_LinearWrapSampler, float2(x, y - dy)).rgb;
-    float3 i = g_tex_0.Sample(g_LinearWrapSampler, float2(x + dx, y - dy)).rgb;
+    float3 g = g_tex_0.Sample(g_LinearClampSampler, float2(x - dx, y - dy)).rgb;
+    float3 h = g_tex_0.Sample(g_LinearClampSampler, float2(x, y - dy)).rgb;
+    float3 i = g_tex_0.Sample(g_LinearClampSampler, float2(x + dx, y - dy)).rgb;
 
     // Apply weighted distribution:
     // 0.5 + 0.125 + 0.125 + 0.125 + 0.125 = 1
@@ -46,5 +50,5 @@ float4 main(PS_IN input) : SV_TARGET
     upsample += (a + c + g + i);
     upsample *= 1.0 / 16.0;
     
-    return float4(upsample, 1.0f);
+    return float4(upsample, 1.f);
 }
