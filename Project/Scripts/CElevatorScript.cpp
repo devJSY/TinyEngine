@@ -52,8 +52,7 @@ void CElevatorScript::tick()
 void CElevatorScript::Move()
 {
     Vec3 vPos = Transform()->GetLocalPos();
-    if ((m_vDest.x - 1.f <= vPos.x && vPos.x <= m_vDest.x + 1.f) && (m_vDest.y - 1.f <= vPos.y && vPos.y <= m_vDest.y + 1.f) &&
-        (m_vDest.z - 1.f <= vPos.z && vPos.z <= m_vDest.z + 1.f))
+    if (vPos.y >= m_vDest.y)
     {
         m_eState = ElevatorState::Stop;
         Transform()->SetLocalPos(m_vDest);

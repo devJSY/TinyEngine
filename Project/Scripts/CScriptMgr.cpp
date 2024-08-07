@@ -76,12 +76,11 @@
 #include "CPushOutScript.h"
 #include "CObstacleTriggerScript.h"
 #include "CLadderScript.h"
-#include "CPushOutColliderScript.h"
-#include "CLadderScript.h"
 #include "CKirbyCheckPointTrigger.h"
 #include "CKirbyFallDetectTrigger.h"
 #include "CFixedViewCamTrigger.h"
 #include "CElfilisUnit.h"
+#include "CPushOutColliderScript.h"
 #include "CLightBulbGimmickScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -161,12 +160,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPushOutScript");
 	_vec.push_back(L"CObstacleTriggerScript");
 	_vec.push_back(L"CLadderScript");
-	_vec.push_back(L"CPushOutColliderScript");
-	_vec.push_back(L"CLightBulbGimmickScript");
 	_vec.push_back(L"CKirbyCheckPointTrigger");
 	_vec.push_back(L"CKirbyFallDetectTrigger");
 	_vec.push_back(L"CFixedViewCamTrigger");
 	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CPushOutColliderScript");
+	_vec.push_back(L"CLightBulbGimmickScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -321,10 +320,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CObstacleTriggerScript;
 	if (L"CLadderScript" == _strScriptName)
 		return new CLadderScript;
-	if (L"CPushOutColliderScript" == _strScriptName)
-		return new CPushOutColliderScript;
-	if (L"CLightBulbGimmickScript" == _strScriptName)
-		return new CLightBulbGimmickScript;
 	if (L"CKirbyCheckPointTrigger" == _strScriptName)
 		return new CKirbyCheckPointTrigger;
 	if (L"CKirbyFallDetectTrigger" == _strScriptName)
@@ -333,6 +328,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFixedViewCamTrigger;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
+	if (L"CPushOutColliderScript" == _strScriptName)
+		return new CPushOutColliderScript;
+	if (L"CLightBulbGimmickScript" == _strScriptName)
+		return new CLightBulbGimmickScript;
 	return nullptr;
 }
 
@@ -490,12 +489,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CObstacleTriggerScript;
 	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
 		return new CLadderScript;
-	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
-		return new CPushOutColliderScript;
-	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
-		return new CLightBulbGimmickScript;
-	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
-		return new CLadderScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCHECKPOINTTRIGGER:
 		return new CKirbyCheckPointTrigger;
 	case (UINT)SCRIPT_TYPE::KIRBYFALLDETECTTRIGGER:
@@ -504,6 +497,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFixedViewCamTrigger;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return new CPushOutColliderScript;
+	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return new CLightBulbGimmickScript;
 	}
 	return nullptr;
 }
@@ -662,12 +659,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CObstacleTriggerScript";
 	case SCRIPT_TYPE::LADDERSCRIPT:
 		return L"CLadderScript";
-	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
-		return L"CPushOutColliderScript";
-	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
-		return L"CLightBulbGimmickScript";
-	case SCRIPT_TYPE::LADDERSCRIPT:
-		return L"CLadderScript";
 	case SCRIPT_TYPE::KIRBYCHECKPOINTTRIGGER:
 		return L"CKirbyCheckPointTrigger";
 	case SCRIPT_TYPE::KIRBYFALLDETECTTRIGGER:
@@ -676,6 +667,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFixedViewCamTrigger";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return L"CPushOutColliderScript";
+	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return L"CLightBulbGimmickScript";
 	}
 	return nullptr;
 }
