@@ -73,9 +73,6 @@ void CTwoTargetCamTrigger::begin()
 {
     m_MainCamController = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera")->GetScript<CCameraController>();
 
-    if (m_MainCamController == nullptr)
-        return;
-
 }
 
 void CTwoTargetCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)

@@ -189,6 +189,8 @@ void CCameraController::SetUpProc()
     case CameraSetup::BOSSSETUP:
         Boss();
         break;
+    case CameraSetup::FIXEDVIEW:
+        FixedView();
     default:
         break;
     }
@@ -199,19 +201,35 @@ void CCameraController::UpdateTargetPos()
     // 타겟의 현재 위치 업데이트
     if (nullptr != m_Target)
     {
-        // 커비일 경우에는 점프할 때 따라가지 않음
         if (m_Target->GetName() == L"Main Player")
         {
+            // 커비일 경우에는 점프할 때 따라가지 않음
+            Vec3 TargetPos = m_Target->Transform()->GetWorldPos();
 
-            m_TargetPos = m_Target->Transform()->GetWorldPos();
+            m_TargetPos.x = TargetPos.x;
+            m_TargetPos.z = TargetPos.z;
+
             RaycastHit Hit = PLAYERCTRL->GetRay();
 
-            // 커비가 땅에 닿아있지 않고 레이에 충돌한 땅이 있을 경우 땅을 타겟으로 정한다.
-            if (!PLAYERCTRL->IsGround() && Hit.pCollisionObj != nullptr)
+            if (PLAYERCTRL->IsGround())
             {
-                m_TargetPos = m_Target->Transform()->GetWorldPos();
-                m_TargetPos.y = Hit.Point.y;
+                m_TargetPos.y = TargetPos.y;
             }
+            else
+            {
+                if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
+                {
+                    m_TargetPos.y = Hit.Point.y;
+                }
+                else
+                {
+                    m_TargetPos.y = TargetPos.y;
+                }
+            }
+        }
+        else
+        {
+            m_TargetPos = m_Target->Transform()->GetWorldPos();
         }
     }
 
@@ -251,7 +269,7 @@ void CCameraController::UpdateLookAtPos()
     float Ratio = clamp((MoveLength / m_ThresholdDistance), 0.f, 1.f) * XM_PI / 2.f;
     float CamSpeed = m_MinSpeed + (m_MaxSpeed - m_MinSpeed) * sinf(Ratio);
 
-    m_CurLookAtPos = m_PrevLookAtPos + MoveDir * CamSpeed * DT;
+    m_CurLookAtPos = m_PrevLookAtPos + MoveDir * CamSpeed * DT_ENGINE;
 
     // =========================== 예외 처리 =============================
     // 보간 값이 목표값과 비슷하다면 그대로 세팅해준다.
@@ -287,7 +305,7 @@ void CCameraController::UpdateLookDir()
         else
         {
             
-            float MaxRotationStep = m_RotationSpeed * XM_PI / 180.f * DT;
+            float MaxRotationStep = m_RotationSpeed * XM_PI / 180.f * DT_ENGINE;
             //float t = min(MaxRotationStep / degrees, 1.0f); // 등속 운동
 
             Quat PrevQuat = VectorToQuaternion(m_PrevLookDir);
@@ -312,7 +330,7 @@ void CCameraController::UpdateLookDistance()
         ZoomSpeed *= -1.f;
 
     // Dist 조절
-    m_CurDistance = m_PrevDistance + ZoomSpeed * DT;
+    m_CurDistance = m_PrevDistance + ZoomSpeed * DT_ENGINE;
 
     // 예외처리
     // 보정해야하는 거리가 너무 가깝다면 CurDist를 고정
@@ -395,7 +413,7 @@ void CCameraController::EditMode()
     if (m_EditMode)
     {
         // 회전
-        float RotSpeed = m_EditRotSpeed * XM_PI / 180.f * DT;
+        float RotSpeed = m_EditRotSpeed * XM_PI / 180.f * DT_ENGINE;
 
         // Right
         if (KEY_PRESSED(KEY::D))
@@ -433,13 +451,13 @@ void CCameraController::EditMode()
         // Zoom Out
         if (KEY_PRESSED(KEY::E))
         {
-            m_LookDist += m_EditZoomSpeed * DT;
+            m_LookDist += m_EditZoomSpeed * DT_ENGINE;
         }
 
         // Zoom In
         if (KEY_PRESSED(KEY::Q))
         {
-            m_LookDist -= m_EditZoomSpeed * DT;
+            m_LookDist -= m_EditZoomSpeed * DT_ENGINE;
         }
     }
 }
@@ -612,6 +630,16 @@ void CCameraController::Boss()
     m_LookAtPos = Center;
 }
 
+void CCameraController::FixedView()
+{
+    // 카메라의 위치는 고정되고 
+    Vec3 ToTargetFronCamera = m_TargetPos - m_FixedViewPos;
+
+    m_LookAtPos = m_TargetPos;
+    m_LookDist = ToTargetFronCamera.Length();
+    m_LookDir = ToTargetFronCamera.Normalize();
+}
+
 float simpleNoise(float t)
 {
     return sin(t) * (rand() / float(RAND_MAX));
@@ -627,7 +655,7 @@ void CCameraController::ProcessEffet()
         if (!CurEffet.Running)
             continue;
 
-        CurEffet.Acc += DT;
+        CurEffet.Acc += DT_ENGINE;
 
         switch (CurEffet.EffetType)
         {
@@ -685,11 +713,11 @@ void CCameraController::ProcessEffet()
         {
             m_LookDirQuat = m_LookDirQuat *
                             Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::RIGHT),
-                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.x) * m_ShakeIntencity * DT)) *
+                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.x) * m_ShakeIntencity * DT_ENGINE)) *
                             Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::UP),
-                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.y) * m_ShakeIntencity * DT)) *
+                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.y) * m_ShakeIntencity * DT_ENGINE)) *
                             Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT),
-                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.z) * m_ShakeIntencity * DT));
+                                                XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.z) * m_ShakeIntencity * DT_ENGINE));
         }
             break;
 
@@ -716,9 +744,6 @@ void CCameraController::ResetCamera()
     UpdateTargetPos();
     SetUpProc();
     ApplyOffset();
-
-    m_TargetPos = m_Target->Transform()->GetWorldPos();
-    m_LookAtPos = m_TargetPos + m_Offset;
 
     m_PrevLookDir = m_LookDir;
     m_CurLookDir = m_LookDir;
@@ -761,6 +786,16 @@ void CCameraController::ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed
     m_MinSpeed = _MinSpeed;
     m_MaxSpeed = _MaxSpeed;
     m_ThresholdDistance = _Threshold;
+}
+
+void CCameraController::Normal(bool _IsImmediate)
+{
+   SetCameraSetup(CameraSetup::NORMAL);
+
+   if (_IsImmediate)
+   {
+       ResetCamera();
+   }
 }
 
 void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir,
@@ -857,6 +892,25 @@ void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, floa
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 80.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
+}
+
+void CCameraController::FixedView(bool _IsImmediate, Vec3 _FixedViewPos)
+{
+    SetCameraSetup(CameraSetup::FIXEDVIEW);
+
+    if (_FixedViewPos == Vec3(0.f, 0.f, 0.f))
+    {
+        m_FixedViewPos = m_LookEyePos;
+    }
+    else
+    {
+        m_FixedViewPos = _FixedViewPos;
+    }
+
+    if (_IsImmediate)
+    {
+        ResetCamera();
+    }
 }
 
 void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)

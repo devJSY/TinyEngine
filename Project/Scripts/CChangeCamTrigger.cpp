@@ -85,10 +85,6 @@ CChangeCamTrigger::~CChangeCamTrigger()
 void CChangeCamTrigger::begin()
 {
     m_MainCamController = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera")->GetScript<CCameraController>();
-
-
-    if (m_MainCamController == nullptr)
-        return;
 }
 
 

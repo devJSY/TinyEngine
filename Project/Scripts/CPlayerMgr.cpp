@@ -29,9 +29,9 @@ void CPlayerMgr::begin()
 {
     m_CameraController = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera")->GetScript<CCameraController>();
 
-    m_PlayerMeshData = CAssetMgr::GetInst()->FindAsset<CMeshData>(L"meshdata\\Kirby.mdat");
-    m_PlayerBodyMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_BodyC.mtrl");
-    m_PlayerBodyDemoMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\Kirby_DeformBodyC.mtrl");
+    m_PlayerMeshData = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Kirby.mdat", L"meshdata\\Kirby.mdat");
+    m_PlayerBodyMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Kirby_BodyC.mtrl", L"material\\Kirby_BodyC.mtrl");
+    m_PlayerBodyDemoMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Kirby_DeformBodyC.mtrl", L"material\\Kirby_DeformBodyC.mtrl");
 
 
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
@@ -120,9 +120,9 @@ void CPlayerMgr::SetPlayerFace(FaceType _Type)
     wstring albedo = filepath + L"KirbyEye.0" + to_wstring((UINT)_Type) + L".png";
     wstring mask = filepath + L"KirbyEyeMask.0" + to_wstring((UINT)_Type) + L".png";
     wstring normal = filepath + L"KirbyEyeNormal.0" + to_wstring((UINT)_Type) + L".png";
-    m_PlayerBodyMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(albedo));
-    m_PlayerBodyMtrl->SetTexParam(TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(mask));
-    m_PlayerBodyMtrl->SetTexParam(TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(normal));
+    m_PlayerBodyMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(albedo, albedo));
+    m_PlayerBodyMtrl->SetTexParam(TEX_1, CAssetMgr::GetInst()->Load<CTexture>(mask, mask));
+    m_PlayerBodyMtrl->SetTexParam(TEX_2, CAssetMgr::GetInst()->Load<CTexture>(normal, normal));
 }
 
 void CPlayerMgr::ClearBodyMtrl()

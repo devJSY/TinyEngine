@@ -110,7 +110,7 @@ public:
     virtual void ChangeAbilityExit();
 
 public:
-    CLONE_DISABLE(CKirbyAbility_Sword)
+    CLONE(CKirbyAbility_Sword)
     CKirbyAbility_Sword();
     virtual ~CKirbyAbility_Sword();
 };

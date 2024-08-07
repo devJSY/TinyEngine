@@ -84,6 +84,10 @@ void CKirbyGuard::tick()
         {
             ChangeState(L"IDLE");
         }
+        else if (!PLAYERCTRL->IsGround())
+        {
+            ChangeState(L"JUMP_FALL");
+        }
     }
     break;
     case AbilityCopyType::SWORD:
@@ -99,6 +103,10 @@ void CKirbyGuard::tick()
         else if (KEY_RELEASED(KEY_GUARD) || KEY_NONE(KEY_GUARD))
         {
             ChangeState(L"IDLE");
+        }
+        else if (!PLAYERCTRL->IsGround())
+        {
+            ChangeState(L"JUMP_FALL");
         }
     }
         break;
