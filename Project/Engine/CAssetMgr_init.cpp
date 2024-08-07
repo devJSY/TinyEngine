@@ -1244,6 +1244,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"SSAOShader");
         AddAsset(L"SSAOShader", pShader);
     }
+
+    // =================================
+    // Depth Masking Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\DepthMaskingPS.hlsl", "main");
+
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Render Texture");
+        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
+        pShader->AddTexParam(TEX_2, "DepthMasking Texture");
+
+        pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
+
+        pShader->SetName(L"DepthMaskingShader");
+        AddAsset(L"DepthMaskingShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1767,6 +1788,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_0, 10.f); // Radius
         pMtrl->SetScalarParam(FLOAT_1, 1.f);  // Pow Power
         AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
+    }
+
+    // Depth Masking Mtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DepthMaskingShader"));
+        pMtrl->SetName(L"DepthMaskingMtrl");
+        AddAsset<CMaterial>(L"DepthMaskingMtrl", pMtrl);
     }
 }
 

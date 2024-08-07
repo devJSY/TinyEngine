@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAssetMgr.h"
+
 #include "CGraphicsShader.h"
 
 void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
@@ -376,25 +377,5 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"TransparentShader");
         AddAsset(L"TransparentShader", pShader);
-    }
-
-    // =================================
-    // Kirby Masking Shader
-    // =================================
-    {
-        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\KirbyMaskingPS.hlsl", "main");
-
-        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
-
-        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
-        pShader->AddTexParam(TEX_2, "DepthMasking Texture");
-
-        pShader->AddScalarParam(VEC4_0, "Masking Color", 1e-3f);
-
-        pShader->SetName(L"KirbyMaskingShader");
-        AddAsset(L"KirbyMaskingShader", pShader);
     }
 }

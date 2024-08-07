@@ -49,7 +49,6 @@ private:
     // Post Effect
     Ptr<CTexture> m_DepthOnlyTex;
     CGameObject* m_PostEffectObj;
-    Ptr<CTexture> m_DepthMaskingTex;
 
     // Post Process
     bool m_bBloomEnable;
@@ -69,6 +68,11 @@ private:
     CGameObject* m_BloomDownObj;
     CGameObject* m_BloomUpObj;
     CGameObject* m_ToneMappingObj;
+
+    // Depth Masking
+    Ptr<CTexture> m_DepthMaskingTex;
+    CGameObject* m_DepthMaskingObj;
+    UINT m_DepthMaskingLayerMask;
 
     // Camera Preview
     Ptr<CTexture> m_CameraPreviewTex;
@@ -94,6 +98,9 @@ public:
     void RegisterLight(CLight* _Light) { m_vecLight.push_back(_Light); }
 
     void ActiveEditorMode(bool _bActive);
+
+    UINT GetDepthMaskingLayerMask() const { return m_DepthMaskingLayerMask; }
+    void DepthMaskingLayerMask(UINT _LayerIdx, bool _bMask);
 
 public:
     CCamera* GetMainCamera() const { return m_mainCam; };
@@ -126,6 +133,7 @@ public:
     Ptr<CTexture> GetPostProcessTex_HDRI() const { return m_PostProcessTex_HDRI; }
     Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
     Ptr<CTexture> GetBloomRTTex_LDRI() const { return m_BloomRTTex_LDRI; }
+    Ptr<CTexture> GetDepthMaskingTex() const { return m_DepthMaskingTex; }
     Ptr<CTexture> GetCameraPreviewTex() const { return m_CameraPreviewTex; }
 
     const vector<CLight2D*>& GetvecLight2D() const { return m_vecLight2D; }
@@ -156,7 +164,6 @@ private:
 
     void render_debug();
     void render_DynamicShadowDepth();
-    void render_DepthMasking();
 
     // 리소스 바인딩
     void UpdateData();
