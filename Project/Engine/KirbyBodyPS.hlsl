@@ -61,10 +61,11 @@ PS_OUT main(PS_IN input)
         float3 normal = eyeNormal.rgb;
         normal.b = 1.f;
         normal = 2.0 * normal - 1.0;
+        normal.y = -normal.y;
         
-        float3 N = normalWorld;
-        float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = normalize(cross(N, T));
+        float3 T = normalize(input.vTangentWorld);
+        float3 B = normalize(input.vBitangentWorld);
+        float3 N = normalize(input.vNormalWorld);
         
         float3x3 TBN = float3x3(T, B, N);
         output.vNormal = float4(normalize(mul(normal, TBN)), 1.f);
