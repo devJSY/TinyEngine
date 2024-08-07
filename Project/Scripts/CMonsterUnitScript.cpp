@@ -105,6 +105,8 @@ void CMonsterUnitScript::RotatingToTarget()
         return;
 
     Vec3 ToTargetDir = m_pTargetObj->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    ToTargetDir.y = 0.f; // YÃà °íÁ¤
+    ToTargetDir.Normalize();
     Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
 }
 
