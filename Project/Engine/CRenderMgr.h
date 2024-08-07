@@ -51,7 +51,7 @@ private:
     CGameObject* m_PostEffectObj;
 
     // Post Process
-    bool m_bBloomEnable;
+    bool m_bEnableBloom;
     const UINT m_bloomLevels;
 
     // LDRI Bloom
@@ -70,6 +70,7 @@ private:
     CGameObject* m_ToneMappingObj;
 
     // Depth Masking
+    bool m_bEnableDepthMasking;
     Ptr<CTexture> m_DepthMaskingTex;
     CGameObject* m_DepthMaskingObj;
     UINT m_DepthMaskingLayerMask;
@@ -91,13 +92,16 @@ public:
     bool IsShowDebugRender() const { return m_bShowDebugRender; }
     void SetShowDebugRender(bool _OnOff) { m_bShowDebugRender = _OnOff; }
 
-    bool IsEnableBloom() const { return m_bBloomEnable; }
-    void SetEnableBloom(bool _bEnable) { m_bBloomEnable = _bEnable; }
+    bool IsEnableBloom() const { return m_bEnableBloom; }
+    void SetEnableBloom(bool _bEnable) { m_bEnableBloom = _bEnable; }
 
     void RegisterLight2D(CLight2D* _Light2D) { m_vecLight2D.push_back(_Light2D); }
     void RegisterLight(CLight* _Light) { m_vecLight.push_back(_Light); }
 
     void ActiveEditorMode(bool _bActive);
+
+    bool IsEnableDepthMasking() const { return m_bEnableDepthMasking; }
+    void SetEnableDepthMasking(bool _bEnable) { m_bEnableDepthMasking = _bEnable; }
 
     UINT GetDepthMaskingLayerMask() const { return m_DepthMaskingLayerMask; }
     void DepthMaskingLayerMask(UINT _LayerIdx, bool _bMask);

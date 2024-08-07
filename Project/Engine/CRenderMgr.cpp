@@ -32,7 +32,7 @@ CRenderMgr::CRenderMgr()
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
-    , m_bBloomEnable(false)
+    , m_bEnableBloom(false)
     , m_bloomLevels(5)
     , m_BloomRTTex_LDRI(nullptr)
     , m_BloomTextures_LDRI{}
@@ -44,6 +44,7 @@ CRenderMgr::CRenderMgr()
     , m_BloomDownObj(nullptr)
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
+    , m_bEnableDepthMasking(false)
     , m_DepthMaskingTex(nullptr)
     , m_DepthMaskingObj(nullptr)
     , m_DepthMaskingLayerMask(0)
@@ -152,14 +153,17 @@ void CRenderMgr::render()
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
 
         // Depth Masking Pass
-        UINT LasyerMask = m_mainCam->GetLayerMask();
-        m_mainCam->LayerMask(m_DepthMaskingLayerMask);
+        if (m_bEnableDepthMasking)
+        {
+            UINT LasyerMask = m_mainCam->GetLayerMask();
+            m_mainCam->LayerMask(m_DepthMaskingLayerMask);
 
-        m_mainCam->SortShadowMapObject();
-        m_mainCam->render_DepthOnly(m_DepthMaskingTex);
-        m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_mainCam->GetFar());
+            m_mainCam->SortShadowMapObject();
+            m_mainCam->render_DepthOnly(m_DepthMaskingTex);
+            m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_mainCam->GetFar());
 
-        m_mainCam->LayerMask(LasyerMask);
+            m_mainCam->LayerMask(LasyerMask);
+        }
     }
 
     // Dynamic Shadow Depth Map
@@ -340,7 +344,7 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_postprocess_LDRI()
 {
-    if (m_bBloomEnable)
+    if (m_bEnableBloom)
     {
         BlurTexture(m_BloomRTTex_LDRI, m_bloomLevels);
 
@@ -367,19 +371,22 @@ void CRenderMgr::render_postprocess_HDRI()
     // =================
     // Depth Masking
     // =================
-    CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
-    m_DepthMaskingObj->render();
-    CTexture::Clear(0);
-    CTexture::Clear(1);
-    CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex_HDRI->GetTex2D().Get());
+    if (m_bEnableDepthMasking)
+    {
+        CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
+        m_DepthMaskingObj->render();
+        CTexture::Clear(0);
+        CTexture::Clear(1);
+        CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex_HDRI->GetTex2D().Get());
+    }
 
     // =================
     // Bloom
     // =================
     Ptr<CMaterial> pToneMappingMtrl = m_ToneMappingObj->MeshRender()->GetMaterial(0);
-    pToneMappingMtrl->SetScalarParam(INT_0, m_bBloomEnable);
+    pToneMappingMtrl->SetScalarParam(INT_0, m_bEnableBloom);
 
-    if (m_bBloomEnable)
+    if (m_bEnableBloom)
     {
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
