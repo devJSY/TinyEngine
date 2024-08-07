@@ -108,6 +108,7 @@ private:
     float                       m_ProgressEndDist;
 
     // TwoTarget
+    float                       m_MinDist;
     float                       m_DistanceOffset;       // 두 물체의 Pos를 기준으로 잡기 때문에 두 물체의 매쉬가 온전히 보이려면 Offset 만큼 Distance에 더 해줘야 한다.
     float                       m_Weight;               // 두 타겟중 어디를 볼지에 대한 가중치 0(Main Target) ~ 1(SubTarget)
     float                       m_MinDegreeX;            // Weight가 0일 때(Kirby를 볼 때)의 X축 회전 각도
@@ -207,8 +208,8 @@ public:
     // Setup Func
     void Normal(bool _IsImmediate);
     void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
-    void TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset);
-    void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset);
+    void TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset, float _MinDist);
+    void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset, float _MinDist);
     void Boss(CGameObject* _SubTarget, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
                       float _Weight = 0.5f);
     void Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,

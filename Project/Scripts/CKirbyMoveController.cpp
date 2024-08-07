@@ -160,7 +160,7 @@ void CKirbyMoveController::RayGround()
         {
             m_bGround = false;
         }
-        else if (m_RayHit.Distance > 2.f)
+        else if (m_RayHit.Distance > 10.f)
         {
             m_bGround = false;
         }
@@ -171,7 +171,7 @@ void CKirbyMoveController::RayGround()
         {
             m_bGround = false;
         }
-        else if (m_RayHit.Distance < 2.f && m_MoveVelocity.y <= 0.f)
+        else if (m_RayHit.Distance < 10.f && m_MoveVelocity.y <= 0.f)
         {
             m_bGround = true;
         }
@@ -278,7 +278,7 @@ void CKirbyMoveController::Move()
     m_MoveVelocity.y += m_Accel.y * DT;
 
     // 땅에 닿은 상태면 Velocity Y값 초기화
-    if (m_bGround && m_MoveVelocity.y < 0)
+    if (CharacterController()->IsGrounded() && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
     }
@@ -298,11 +298,6 @@ void CKirbyMoveController::Move()
     // =========================
     // Velocity Min / Max 확인
     // =========================
-    // 땅에 닿은 상태면 Velocity Y값 초기화
-    if (m_bGround && m_MoveVelocity.y < 0)
-    {
-        m_MoveVelocity.y = 0.f;
-    }
 
     if (PLAYERFSM->IsHovering())
     {

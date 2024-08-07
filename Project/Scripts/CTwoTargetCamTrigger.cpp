@@ -14,6 +14,7 @@ CTwoTargetCamTrigger::CTwoTargetCamTrigger()
     , m_ZoomSpeed(500.f)
     , m_UndoRotataionSpeed(50.f)
     , m_UndoZoomSpeed(500.f)
+    , m_MinDist(300.f)
     , m_DistanceOffset(500.f)
     , m_ExitDir(Vec3(0.f,-1.f,1.f))
     , m_ExitDistance(1500.f)
@@ -29,6 +30,7 @@ CTwoTargetCamTrigger::CTwoTargetCamTrigger()
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bChangeZoomspeed, "Change Zoom Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomSpeed, "Zoom Speed");
 
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MinDist, "MinDistance");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DistanceOffset, "Distance Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_ExitDir, "Exit Dir");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ExitDistance, "Exit Distance");
@@ -45,6 +47,7 @@ CTwoTargetCamTrigger::CTwoTargetCamTrigger(const CTwoTargetCamTrigger& _Origin)
     , m_ZoomSpeed(_Origin.m_ZoomSpeed)
     , m_UndoRotataionSpeed(_Origin.m_UndoRotataionSpeed)
     , m_UndoZoomSpeed(_Origin.m_UndoZoomSpeed)
+    , m_MinDist(_Origin.m_MinDist)
     , m_DistanceOffset(_Origin.m_DistanceOffset)
     , m_ExitDir(_Origin.m_ExitDir)
     , m_ExitDistance(_Origin.m_ExitDistance)
@@ -59,6 +62,7 @@ CTwoTargetCamTrigger::CTwoTargetCamTrigger(const CTwoTargetCamTrigger& _Origin)
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bChangeZoomspeed, "Change Zoom Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ZoomSpeed, "Zoom Speed");
 
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MinDist, "MinDistance");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_DistanceOffset, "Distance Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_ExitDir, "Exit Dir");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_ExitDistance, "Exit Distance");
@@ -90,7 +94,7 @@ void CTwoTargetCamTrigger::OnTriggerEnter(CCollider* _OtherCollider)
     if (SubTarget == nullptr)
         return;
 
-    m_MainCamController->TwoTarget(SubTarget, m_bChangeDir, m_LookDir, m_DistanceOffset);
+    m_MainCamController->TwoTarget(SubTarget, m_bChangeDir, m_LookDir, m_DistanceOffset, m_MinDist);
 
     if (m_bChangeRotationSpeed)
     {
@@ -152,6 +156,7 @@ UINT CTwoTargetCamTrigger::SaveToLevelFile(FILE* _File)
     fwrite(&m_ZoomSpeed, sizeof(float), 1, _File);
     fwrite(&m_UndoZoomSpeed, sizeof(float), 1, _File);
 
+    fwrite(&m_MinDist, sizeof(float), 1, _File);
     fwrite(&m_DistanceOffset, sizeof(float), 1, _File);
 
     fwrite(&m_ExitDir, sizeof(Vec3), 1, _File);
@@ -169,6 +174,7 @@ UINT CTwoTargetCamTrigger::SaveToLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(Vec3);
@@ -196,6 +202,7 @@ UINT CTwoTargetCamTrigger::LoadFromLevelFile(FILE* _File)
     fread(&m_ZoomSpeed, sizeof(float), 1, _File);
     fread(&m_UndoZoomSpeed, sizeof(float), 1, _File);
 
+    fread(&m_MinDist, sizeof(float), 1, _File);
     fread(&m_DistanceOffset, sizeof(float), 1, _File);
 
     fread(&m_ExitDir, sizeof(Vec3), 1, _File);
@@ -212,6 +219,7 @@ UINT CTwoTargetCamTrigger::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(Vec3);
