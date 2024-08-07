@@ -6,6 +6,7 @@ class CKirbyAttackAirGuardCharge : public CState
 private:
     float   m_PrevGravity;
     float   m_AccTime;
+    float   m_PlayTime;
     bool    m_bEnter;
 
 public:

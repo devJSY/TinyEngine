@@ -8,6 +8,8 @@ class CAnim2D;
 class CAnimator2D : public CComponent
 {
 private:
+    AnimatorUpdateMode m_UpdateMode;
+
     map<wstring, CAnim2D*> m_mapAnim;
     CAnim2D* m_CurAnim;
     bool m_bRepeat;
@@ -30,6 +32,9 @@ private:
     bool DeleteAnim(const wstring& _strAnimName);
 
 public:
+    AnimatorUpdateMode GetAnimatorUpdateMode() const { return m_UpdateMode; }
+    void SetAnimatorUpdateMode(AnimatorUpdateMode _Mode) { m_UpdateMode = _Mode; }
+
     const map<wstring, CAnim2D*>& GetmapAnim() const { return m_mapAnim; }
     CAnim2D* GetCurAnim() const { return m_CurAnim; }
 

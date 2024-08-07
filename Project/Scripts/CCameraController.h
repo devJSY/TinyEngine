@@ -23,7 +23,7 @@ enum class CameraSetup
     NORMAL,
     PROGRESS,
     TWOTARGET,
-    BOSS,
+    BOSSSETUP,
     FIXEDVIEW, // 카메라의 위치가 고정된채로 타겟을 바라본다.
 };
 

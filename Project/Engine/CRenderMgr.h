@@ -49,6 +49,7 @@ private:
     // Post Effect
     Ptr<CTexture> m_DepthOnlyTex;
     CGameObject* m_PostEffectObj;
+    Ptr<CTexture> m_DepthMaskingTex;
 
     // Post Process
     bool m_bBloomEnable;
@@ -155,10 +156,12 @@ private:
 
     void render_debug();
     void render_DynamicShadowDepth();
+    void render_DepthMasking();
 
     // 리소스 바인딩
     void UpdateData();
 
+public:
     // 리소스 클리어
     void Clear();
 };

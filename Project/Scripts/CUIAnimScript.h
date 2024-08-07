@@ -1,18 +1,46 @@
 #pragma once
-#include <Engine/CScript.h>
+#include <Engine\CScript.h>
 
-class CUIAnimScript 
-	: public CScript
+enum class UIAnimState
 {
+    PrePared,
+    Start,
+    Tick,
+    End,
+};
+
+class CUIAnimScript : public CScript
+{
+private:
+    UIAnimState m_eState;
+    float m_fWaitTime;
+    float m_fAccTime;
+    bool m_bIsFinsih;
+
 public:
+    UIAnimState GetUIAnimState() const { return m_eState; }
+    void SetUIAnimState(const UIAnimState _state) { m_eState = _state; }
+
+    void SetFinish(const bool _flag) { m_bIsFinsih = _flag; }
+    bool GetFinish() { return m_bIsFinsih; }
+
+    float GetWaitTime() const { return m_fWaitTime; }
+    void SetAccTime(const float _fTime) { m_fAccTime = _fTime; }
+
+    float GetAccTime() const { return m_fAccTime; }
+
+public:
+    virtual void begin() override;
     virtual void tick() override;
 
 public:
-    virtual void SaveToLevelFile(FILE* _File) override{};
-    virtual void LoadFromLevelFile(FILE* _File) override{};
+    virtual UINT SaveToLevelFile(FILE* _File) override;
+    virtual UINT LoadFromLevelFile(FILE* _File) override;
 
     CLONE(CUIAnimScript)
 public:
     CUIAnimScript();
+    CUIAnimScript(UINT _ScriptType);
+    CUIAnimScript(const CUIAnimScript& Origin);
     virtual ~CUIAnimScript();
 };

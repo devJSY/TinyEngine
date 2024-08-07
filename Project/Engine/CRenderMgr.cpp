@@ -32,6 +32,7 @@ CRenderMgr::CRenderMgr()
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
+    , m_DepthMaskingTex(nullptr)
     , m_bBloomEnable(false)
     , m_bloomLevels(5)
     , m_BloomRTTex_LDRI(nullptr)
@@ -133,12 +134,15 @@ void CRenderMgr::render()
 
     UpdateData();
 
+    // Depth Only Pass
     if (nullptr != m_mainCam)
     {
-        // Depth Only Pass
         m_mainCam->SortShadowMapObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
     }
+
+    // Depth Masking Pass
+    render_DepthMasking();
 
     // Dynamic Shadow Depth Map
     render_DynamicShadowDepth();
@@ -170,6 +174,7 @@ void CRenderMgr::render_Clear(const Vec4& Color)
     CONTEXT->ClearRenderTargetView(m_PostProcessTex_HDRI->GetRTV().Get(), Color);
 
     CONTEXT->ClearDepthStencilView(m_DepthOnlyTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+    CONTEXT->ClearDepthStencilView(m_DepthMaskingTex->GetDSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
     CONTEXT->ClearRenderTargetView(m_BloomRTTex_LDRI->GetRTV().Get(), Vec4(0.f, 0.f, 0.f, 1.f));
 
@@ -198,7 +203,7 @@ void CRenderMgr::render_play()
 
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
-        if (nullptr == m_vecCam[i])
+        if (nullptr == m_vecCam[i] || L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
             continue;
 
         m_vecCam[i]->SortObject();
@@ -344,27 +349,51 @@ void CRenderMgr::render_postprocess_HDRI()
     // =================
     // Bloom
     // =================
+    Ptr<CMaterial> pToneMappingMtrl = m_ToneMappingObj->MeshRender()->GetMaterial(0);
+    pToneMappingMtrl->SetScalarParam(INT_0, m_bBloomEnable);
+
     if (m_bBloomEnable)
     {
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
 
+        Vec2 FilterRadiusThreshold = *(Vec2*)pToneMappingMtrl->GetScalarParam(VEC2_0);
+
+        // Bloom Down
+        Ptr<CMaterial> pBloomDownMtrl = m_BloomDownObj->MeshRender()->GetMaterial(0);
         for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             if (i == 0)
-                m_BloomDownObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
+            {
+                pBloomDownMtrl->SetTexParam(TEX_0, m_PostProcessTex_HDRI);
+                pBloomDownMtrl->SetScalarParam(FLOAT_0, (float)m_PostProcessTex_HDRI->GetWidth());
+                pBloomDownMtrl->SetScalarParam(FLOAT_1, (float)m_PostProcessTex_HDRI->GetHeight());
+                pBloomDownMtrl->SetScalarParam(FLOAT_2, FilterRadiusThreshold.y); // 첫번째 다운샘플링 시에만 Threshold 적용
+            }
             else
-                m_BloomDownObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
+            {
+                pBloomDownMtrl->SetTexParam(TEX_0, m_BloomTextures_HDRI[i - 1]);
+                pBloomDownMtrl->SetScalarParam(FLOAT_0, (float)m_BloomTextures_HDRI[i - 1]->GetWidth());
+                pBloomDownMtrl->SetScalarParam(FLOAT_1, (float)m_BloomTextures_HDRI[i - 1]->GetHeight());
+                pBloomDownMtrl->SetScalarParam(FLOAT_2, 0.f);
+            }
 
             CDevice::GetInst()->SetViewport((float)m_BloomTextures_HDRI[i]->GetWidth(), (float)m_BloomTextures_HDRI[i]->GetHeight());
             CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[i]->GetRTV().GetAddressOf(), NULL);
             m_BloomDownObj->render();
             CTexture::Clear(0);
         }
+
+        // Bloom Up
+        Ptr<CMaterial> pBloomUpMtrl = m_BloomUpObj->MeshRender()->GetMaterial(0);
         for (UINT i = 0; i < m_bloomLevels - 1; i++)
         {
             int level = m_bloomLevels - 2 - i;
-            m_BloomUpObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
+            pBloomUpMtrl->SetTexParam(TEX_0, m_BloomTextures_HDRI[level]);
+            pBloomUpMtrl->SetScalarParam(FLOAT_0, (float)m_BloomTextures_HDRI[level]->GetWidth());
+            pBloomUpMtrl->SetScalarParam(FLOAT_1, (float)m_BloomTextures_HDRI[level]->GetHeight());
+            pBloomUpMtrl->SetScalarParam(FLOAT_2, FilterRadiusThreshold.x);
+
             if (i == m_bloomLevels - 2)
             {
                 CDevice::GetInst()->SetViewport((float)m_PostProcessTex_HDRI->GetWidth(), (float)m_PostProcessTex_HDRI->GetHeight());
@@ -376,6 +405,7 @@ void CRenderMgr::render_postprocess_HDRI()
                                                 (float)m_BloomTextures_HDRI[level - 1]->GetHeight());
                 CONTEXT->OMSetRenderTargets(1, m_BloomTextures_HDRI[level - 1]->GetRTV().GetAddressOf(), NULL);
             }
+
             m_BloomUpObj->render();
             CTexture::Clear(0);
         }
@@ -460,6 +490,22 @@ void CRenderMgr::render_DynamicShadowDepth()
     }
 }
 
+void CRenderMgr::render_DepthMasking()
+{
+    for (UINT i = 0; i < (UINT)m_vecCam.size(); i++)
+    {
+        if (nullptr == m_vecCam[i])
+            continue;
+
+        if (L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
+        {
+            m_vecCam[i]->SortShadowMapObject();
+            m_vecCam[i]->render_DepthOnly(m_DepthMaskingTex);
+            return;
+        }
+    }
+}
+
 void CRenderMgr::UpdateData()
 {
     // GlobalData 에 광원 개수정보 세팅
@@ -500,15 +546,18 @@ void CRenderMgr::UpdateData()
     static vector<tLightInfo> vecLightInfo;
 
     bool bRegisteredDynamicShadow = false;
+    LEVEL_STATE LevelState = CLevelMgr::GetInst()->GetCurrentLevel()->GetState();
+
     // Dynamic Shadow Setup
     for (UINT i = 0; i < m_vecLight.size(); ++i)
     {
-        // 정적 광원 이외의 그림자 인덱스 초기화
-        if (0 >= m_vecLight[i]->GetShadowIdx())
+        // 정지 상태인 경우 모든 광원 Shadow Index 초기화
+        if (LevelState == LEVEL_STATE::STOP)
         {
             m_vecLight[i]->SetShadowIdx(-1);
         }
 
+        // 동적 광원 Shadow Index 설정
         if (!bRegisteredDynamicShadow && MOBILITY_TYPE::MOVABLE == m_vecLight[i]->Transform()->GetMobilityType())
         {
             m_vecLight[i]->SetShadowIdx(0);
@@ -583,7 +632,7 @@ void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel)
         _BlurLevel = m_bloomLevels;
 
     // 첫 샘플링만 Threshold 적용
-    Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
+    static Ptr<CMaterial> pSamplingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SamplingMtrl");
     float Threshold = pSamplingMtrl->GetMtrlConst().arrFloat[0];
 
     // Down Sampling
@@ -936,6 +985,9 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
     m_DepthOnlyTex =
         CAssetMgr::GetInst()->CreateTexture(L"DepthOnlyTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
                                             D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
+    m_DepthMaskingTex =
+        CAssetMgr::GetInst()->CreateTexture(L"DepthMaskingTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32_TYPELESS,
+                                            D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
 void CRenderMgr::Resize_Release()
@@ -959,6 +1011,7 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthOnlyTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthMaskingTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_LDRI");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
 
@@ -974,6 +1027,7 @@ void CRenderMgr::Resize_Release()
     Delete_Array(m_arrMRT);
     m_RTCopyTex = nullptr;
     m_DepthOnlyTex = nullptr;
+    m_DepthMaskingTex = nullptr;
     m_PostProcessTex_LDRI = nullptr;
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
@@ -994,6 +1048,9 @@ void CRenderMgr::Resize(Vec2 Resolution)
 
     for (size_t i = 0; i < m_vecCam.size(); i++)
     {
+        if (nullptr == m_vecCam[i])
+            continue;
+
         m_vecCam[i]->Resize(Resolution);
     }
 

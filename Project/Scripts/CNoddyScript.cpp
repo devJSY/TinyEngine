@@ -5,6 +5,7 @@ CNoddyScript::CNoddyScript()
     : CMonsterUnitScript(NODDYSCRIPT)
     , m_State(NODDY_STATE::Sleep)
     , m_PassedTime(0.f)
+    , m_SnotBubble(nullptr)
 {
 }
 
@@ -12,6 +13,7 @@ CNoddyScript::CNoddyScript(const CNoddyScript& origin)
     : CMonsterUnitScript(origin)
     , m_State(origin.m_State)
     , m_PassedTime(0.f)
+    , m_SnotBubble(nullptr)
 {
 }
 
@@ -21,6 +23,8 @@ CNoddyScript::~CNoddyScript()
 
 void CNoddyScript::begin()
 {
+    SetSnotBubble();
+
     ChangeState(m_State);
 }
 
@@ -35,6 +39,23 @@ void CNoddyScript::tick()
     {
         m_CurInfo.HP -= DamageAmount;
         ChangeState(NODDY_STATE::Damage);
+    }
+
+    // SnotBubble
+    if (nullptr != m_SnotBubble)
+    {
+        if (m_State == NODDY_STATE::SleepStart || m_State == NODDY_STATE::Sleep)
+        {
+            m_SnotBubble->SetActive(true);
+        }
+        else
+        {
+            m_SnotBubble->SetActive(false);
+        }
+    }
+    else
+    {
+        SetSnotBubble();
     }
 
     // FSM
@@ -84,6 +105,18 @@ void CNoddyScript::ChangeState(NODDY_STATE _NextState)
     EnterState();
 }
 
+void CNoddyScript::SetSnotBubble()
+{
+    for (CGameObject* pChild : GetOwner()->GetChildObject())
+    {
+        if (L"SleepSnotBubble" == pChild->GetName())
+        {
+            m_SnotBubble = pChild;
+            break;
+        }
+    }
+}
+
 void CNoddyScript::EnterState()
 {
     // FSM
@@ -131,12 +164,20 @@ void CNoddyScript::EnterState()
     break;
     case NODDY_STATE::Sleep: {
         Animator()->Play(ANIMPREFIX("Sleep"), true, false, 2.5f, 0.5);
+        if (nullptr != m_SnotBubble)
+        {
+            m_SnotBubble->Animator()->Play(ANIMPREFIX("Main"));
+        }
     }
     break;
     case NODDY_STATE::SleepStart: {
         Animator()->Play(ANIMPREFIX("SleepStart"), false);
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.00.png"));
+        if (nullptr != m_SnotBubble)
+        {
+            m_SnotBubble->Animator()->Play(ANIMPREFIX("BubbleStart"), false);
+        }
     }
     break;
     case NODDY_STATE::Wait: {

@@ -7,6 +7,13 @@
 #define PLAYERMTRL CPlayerMgr::GetPlayerBodyMtrl()
 #define PLAYERMESH(part) CPlayerMgr::GetPlayerMeshIdx().part
 
+#define BOSS CBossMgr::GetBoss()
+#define BOSSUNIT CBossMgr::GetBossUnit()
+#define BOSSFSM CBossMgr::GetBossFSM()
+
+#define ELFFSM ((CElfilisFSM*)CBossMgr::GetBossFSM())
+#define ELFBIGFSM ((CElfilisBigFSM*)ELFFSM->GetBigBossFSM())
+
 #define CAMERACTRL CPlayerMgr::GetCameraController()
 
 #define KEY_TAP_ARROW (KEY_TAP(KEY::UP) || KEY_TAP(KEY::DOWN) || KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT))
@@ -68,4 +75,17 @@ enum class ObjectCopyType
     LIGHT,
 
     END,
+};
+
+enum class StateStep
+{
+    Ready,
+    ReadyWait,
+    Charge,
+    Start,
+    StartEnd,
+    Progress,
+    Wait,
+    End,
+    EndWait,
 };

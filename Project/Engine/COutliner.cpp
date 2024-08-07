@@ -470,6 +470,8 @@ void COutliner::DrawNode(CGameObject* obj)
 
                 obj->AddChild(pChild);
 
+                CEditorMgr::GetInst()->SetSelectedObject(pChild);
+
                 // 부모가 적용된 트랜스폼으로 재계산
                 pChild->Transform()->finaltick();
 
