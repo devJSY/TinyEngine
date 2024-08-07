@@ -38,6 +38,9 @@ void CKirbyHoveringFall::tick()
 void CKirbyHoveringFall::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("FlightFall"));
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
     
     if (PLAYERCTRL->GetVelocity().y > 0.f)
     {
@@ -53,6 +56,10 @@ void CKirbyHoveringFall::Enter()
 
 void CKirbyHoveringFall::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+
     PLAYERCTRL->SetGravity(m_SavedGravity);
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
     PLAYERFSM->SetDroppable(false);

@@ -34,6 +34,9 @@ void CKirbyHoveringFallLimit::tick()
 void CKirbyHoveringFallLimit::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("FlightLimitFall"), true, false, 1.5f);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
     
     if (PLAYERCTRL->GetVelocity().y > 0.f)
@@ -50,7 +53,11 @@ void CKirbyHoveringFallLimit::Enter()
 
 void CKirbyHoveringFallLimit::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->SetGravity(m_SavedGravity);
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
     PLAYERFSM->SetDroppable(false);

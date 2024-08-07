@@ -43,6 +43,10 @@ void CKirbyHoveringStart::Enter()
 
 void CKirbyHoveringStart::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+
     PLAYERCTRL->SetGravity(m_SavedGravity);
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
 

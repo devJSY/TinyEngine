@@ -25,6 +25,7 @@ void CKirbyHoveringSpit::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("SpitAir"), false);
     CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
 
     if (!PLAYERCTRL->IsGround())

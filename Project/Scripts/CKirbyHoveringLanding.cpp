@@ -24,6 +24,9 @@ void CKirbyHoveringLanding::tick()
 void CKirbyHoveringLanding::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("FlightLanding"), false);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
     PLAYERFSM->SetDroppable(true);
@@ -31,6 +34,10 @@ void CKirbyHoveringLanding::Enter()
 
 void CKirbyHoveringLanding::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+
     PLAYERCTRL->UnlockJump();
     PLAYERFSM->SetDroppable(false);
 }
