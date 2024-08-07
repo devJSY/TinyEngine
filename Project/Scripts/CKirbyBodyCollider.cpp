@@ -28,7 +28,7 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
     // monster : 데미지 가함
     if (LayerIdx == LAYER_MONSTER)
     {
-        Vec3 HitDir = (Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos()).Normalize();
+        Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 5.f, 0.f, 0.f};
         CUnitScript* pMonster = _OtherCollider->GetOwner()->GetScript<CUnitScript>();
 
