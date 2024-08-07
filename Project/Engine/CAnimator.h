@@ -12,6 +12,10 @@ class CStructuredBuffer;
 class CAnimator : public CComponent
 {
 private:
+    AnimatorUpdateMode m_UpdateMode;
+    UINT test1;
+    char test2;
+
     Ptr<CMesh> m_SkeletalMesh;
 
     map<wstring, int> m_mapClip; // Key, Clip Index
@@ -49,7 +53,6 @@ private:
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
-    void finaltick_ModelEditor();
 
     void ClearData();
 
@@ -62,6 +65,9 @@ public:
     bool IsChainging() const { return m_bChanging; }
 
 public:
+    AnimatorUpdateMode GetAnimatorUpdateMode() const { return m_UpdateMode; }
+    void SetAnimatorUpdateMode(AnimatorUpdateMode _Mode) { m_UpdateMode = _Mode; }
+
     Ptr<CMesh> GetSkeletalMesh() const { return m_SkeletalMesh; }
     void SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh);
 

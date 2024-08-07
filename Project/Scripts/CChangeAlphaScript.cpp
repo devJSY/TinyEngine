@@ -16,7 +16,7 @@ CChangeAlphaScript::~CChangeAlphaScript()
 
 void CChangeAlphaScript::begin()
 {
-    for (int i = 0; i < MeshRender()->GetMtrlCount(); ++i)
+    for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
     {
         m_listMtrl.push_back(MeshRender()->GetMaterial(i));
     }

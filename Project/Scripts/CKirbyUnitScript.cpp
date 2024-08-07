@@ -71,6 +71,10 @@ void CKirbyUnitScript::tick()
         {
             m_CurInfo.HP -= NewDamage * 0.25f;
         }
+        else if (PLAYERFSM->GetCurState()->GetName() == L"FALL")
+        {
+            m_CurInfo.HP -= NewDamage;
+        }
         else
         {
             m_CurInfo.HP -= NewDamage;
@@ -83,7 +87,12 @@ void CKirbyUnitScript::tick()
     if (m_CurInfo.HP <= 0.f)
     {
         m_CurInfo.HP = 0.f;
-        // PLAYERFSM->ChangeState(L"DEATH");
+
+        // FALL State의 경우 Death로 넘어가지 않고 직접 처리
+        if (PLAYERFSM->GetCurState()->GetName() != L"FALL")
+        {
+            PLAYERFSM->ChangeState(L"DEATH");
+        }
     }
 
     if (m_CurInfo.HP > m_CurInfo.MAXHP)

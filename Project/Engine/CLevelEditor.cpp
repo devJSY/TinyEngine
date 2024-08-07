@@ -33,6 +33,7 @@ CLevelEditor::CLevelEditor()
     , m_Outliner()
     , m_ContentBrowser()
     , m_GizmoType(ImGuizmo::OPERATION::TRANSLATE)
+    , m_GizmoMode(ImGuizmo::MODE::WORLD)
     , m_bEnableGizmo(true)
     , m_bShowEditor{}
     , m_PlayButtonTex(nullptr)
@@ -43,6 +44,8 @@ CLevelEditor::CLevelEditor()
     , m_TranslateButtonTex(nullptr)
     , m_RotateButtonTex(nullptr)
     , m_ScaleButtonTex(nullptr)
+    , m_LocalButtonTex(nullptr)
+    , m_WorldButtonTex(nullptr)
     , m_ModalAssetType(ASSET_TYPE::END)
     , m_bShowWorldSettings(true)
     , m_bShowViewport(true)
@@ -77,6 +80,8 @@ void CLevelEditor::init()
     m_TranslateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\translate.png", L"Icons\\translate.png");
     m_RotateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\rotate.png", L"Icons\\rotate.png");
     m_ScaleButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\scale.png", L"Icons\\scale.png");
+    m_LocalButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\local.png", L"Icons\\local.png");
+    m_WorldButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\global.png", L"Icons\\global.png");
 
     COutputLog::GetInst()->init();
 }
@@ -394,6 +399,16 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
     ImGui::Text("Delta Time : %.5f", DT_ENGINE);
 
+    ImGui::Text("Mouse Picking Mode");
+    ImGui::SameLine();
+    ImGui::Dummy(ImVec2(70.f, 0.f));
+    ImGui::SameLine();
+    ImGui::RadioButton("Color", (int*)&g_Global.g_MousePickingMode, 0);
+    ImGui::SameLine();
+    ImGui::RadioButton("Physcis", (int*)&g_Global.g_MousePickingMode, 1);
+    ImGui::SameLine();
+    ImGui::RadioButton("Physcis2D", (int*)&g_Global.g_MousePickingMode, 2);
+
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
         CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);
@@ -448,6 +463,24 @@ void CLevelEditor::render_Toolbar()
     {
         m_GizmoType = ImGuizmo::OPERATION::SCALE;
     }
+    ImGui::SameLine();
+
+    // Gizmo Mode
+    if (ImGuizmo::MODE::LOCAL == m_GizmoMode)
+    {
+        if (ImGui::ImageButton((void*)m_LocalButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
+        {
+            m_GizmoMode = ImGuizmo::MODE::WORLD;
+        }
+    }
+    else
+    {
+        if (ImGui::ImageButton((void*)m_WorldButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
+        {
+            m_GizmoMode = ImGuizmo::MODE::LOCAL;
+        }
+    }
+
     ImGui::SameLine();
 
     // Play, Simulate, Stop
@@ -812,6 +845,11 @@ void CLevelEditor::render_ImGuizmo()
             m_GizmoType = ImGuizmo::OPERATION::ROTATE;
         else if (KEY_TAP(KEY::R))
             m_GizmoType = ImGuizmo::OPERATION::SCALE;
+
+        if (KEY_TAP(KEY::T))
+        {
+            m_GizmoMode == ImGuizmo::MODE::LOCAL ? m_GizmoMode = ImGuizmo::MODE::WORLD : m_GizmoMode = ImGuizmo::MODE::LOCAL;
+        }
     }
 
     ImGuizmo::SetOrthographic(pCam->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC ? true : false);
@@ -841,7 +879,7 @@ void CLevelEditor::render_ImGuizmo()
 
     float snapValues[3] = {snapValue, snapValue, snapValue};
 
-    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, ImGuizmo::LOCAL, *WorldMat.m, nullptr, snap ? snapValues : nullptr);
+    ImGuizmo::Manipulate(*CamView.m, *CamProj.m, m_GizmoType, m_GizmoMode, *WorldMat.m, nullptr, snap ? snapValues : nullptr);
 
     if (ImGuizmo::IsUsing())
     {

@@ -7,6 +7,12 @@ CState::CState()
 {
 }
 
+CState::CState(const CState& _Origin)
+    : m_OwnerFSM(nullptr)
+{
+}
+
+
 CState::~CState()
 {
 }

@@ -17,6 +17,19 @@ CKirbyObject_Cone::CKirbyObject_Cone()
     m_WaitingAnim.push_back(L"WaitVariation1");
 }
 
+CKirbyObject_Cone::CKirbyObject_Cone(const CKirbyObject_Cone& _Origin)
+{
+    m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Cone.pref", L"prefab\\Cone.pref");
+    m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyCone.mdat", L"meshdata\\KirbyCone.mdat");
+    m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyConeDemo.mdat", L"meshdata\\KirbyConeDemo.mdat");
+    m_Crater = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Crater.pref", L"prefab\\Crater.pref");
+
+    ParseDemoMesh(m_DemoMesh);
+
+    // add waiting animation
+    m_WaitingAnim.push_back(L"WaitVariation1");
+}
+
 CKirbyObject_Cone::~CKirbyObject_Cone()
 {
 }

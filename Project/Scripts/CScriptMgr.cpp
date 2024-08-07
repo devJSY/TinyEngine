@@ -77,6 +77,9 @@
 #include "CPushOutTriggerScript.h"
 #include "CPushOutColliderScript.h"
 #include "CLadderScript.h"
+#include "CKirbyCheckPointTrigger.h"
+#include "CKirbyFallDetectTrigger.h"
+#include "CFixedViewCamTrigger.h"
 #include "CElfilisUnit.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -157,6 +160,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPushOutTriggerScript");
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLadderScript");
+	_vec.push_back(L"CKirbyCheckPointTrigger");
+	_vec.push_back(L"CKirbyFallDetectTrigger");
+	_vec.push_back(L"CFixedViewCamTrigger");
 	_vec.push_back(L"CElfilisUnit");
 }
 
@@ -314,6 +320,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPushOutColliderScript;
 	if (L"CLadderScript" == _strScriptName)
 		return new CLadderScript;
+	if (L"CKirbyCheckPointTrigger" == _strScriptName)
+		return new CKirbyCheckPointTrigger;
+	if (L"CKirbyFallDetectTrigger" == _strScriptName)
+		return new CKirbyFallDetectTrigger;
+	if (L"CFixedViewCamTrigger" == _strScriptName)
+		return new CFixedViewCamTrigger;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
 	return nullptr;
@@ -475,6 +487,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
 		return new CLadderScript;
+	case (UINT)SCRIPT_TYPE::KIRBYCHECKPOINTTRIGGER:
+		return new CKirbyCheckPointTrigger;
+	case (UINT)SCRIPT_TYPE::KIRBYFALLDETECTTRIGGER:
+		return new CKirbyFallDetectTrigger;
+	case (UINT)SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
+		return new CFixedViewCamTrigger;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
 	}
@@ -637,6 +655,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LADDERSCRIPT:
 		return L"CLadderScript";
+	case SCRIPT_TYPE::KIRBYCHECKPOINTTRIGGER:
+		return L"CKirbyCheckPointTrigger";
+	case SCRIPT_TYPE::KIRBYFALLDETECTTRIGGER:
+		return L"CKirbyFallDetectTrigger";
+	case SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
+		return L"CFixedViewCamTrigger";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
 	}

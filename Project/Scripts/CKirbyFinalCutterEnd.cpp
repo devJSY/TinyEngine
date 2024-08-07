@@ -30,7 +30,7 @@ void CKirbyFinalCutterEnd::Enter()
     PLAYERCTRL->LockJump();
 
     // Material 등록
-    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
+    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl", L"material\\MetalCutter_BladeC.mtrl");
 
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
 
@@ -48,7 +48,7 @@ void CKirbyFinalCutterEnd::Enter()
 
     // Bullet 발사
     // Prefab 가져오기
-    Ptr<CPrefab> CutterBulletPrefab = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\MetalCutter.pref");
+    Ptr<CPrefab> CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
 
     // 초기값 설정
     CGameObject* InstObj = CutterBulletPrefab->Instantiate();

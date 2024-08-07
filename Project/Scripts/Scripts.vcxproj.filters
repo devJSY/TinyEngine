@@ -674,7 +674,7 @@
       <Filter>State\KirbyState\Ladder\LadderWait</Filter>
     </ClInclude>
     <ClInclude Include="CLadderScript.h">
-      <Filter>Scripts\Gimmik\Ladder</Filter>
+      <Filter>Scripts\Trigger\Ladder</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyLadderWaitStart.h">
       <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
@@ -682,11 +682,26 @@
     <ClInclude Include="CKirbyLadderExit.h">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisD_Damage.h">
-      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
+    <ClInclude Include="CKirbyFall.h">
+      <Filter>State\KirbyState\Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyCheckPointTrigger.h">
+      <Filter>Scripts\Trigger\CheckPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyFallDetectTrigger.h">
+      <Filter>Scripts\Trigger\FallDetect</Filter>
+    </ClInclude>
+    <ClInclude Include="CFixedViewCamTrigger.h">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelFlowMgr.h">
+      <Filter>Module\FlowMgr</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisUnit.h">
       <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Damage.h">
+      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisD_Jump.h">
       <Filter>State\ElfilisState\Demo_Appear2\1. Jump</Filter>
@@ -1378,7 +1393,7 @@
       <Filter>State\KirbyState\Ladder\LadderWait</Filter>
     </ClCompile>
     <ClCompile Include="CLadderScript.cpp">
-      <Filter>Scripts\Gimmik\Ladder</Filter>
+      <Filter>Scripts\Trigger\Ladder</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyLadderWaitStart.cpp">
       <Filter>State\KirbyState\Ladder\LadderWaitStart</Filter>
@@ -1386,11 +1401,26 @@
     <ClCompile Include="CKirbyLadderExit.cpp">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisD_Damage.cpp">
-      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
+    <ClCompile Include="CKirbyFall.cpp">
+      <Filter>State\KirbyState\Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyCheckPointTrigger.cpp">
+      <Filter>Scripts\Trigger\CheckPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFallDetectTrigger.cpp">
+      <Filter>Scripts\Trigger\FallDetect</Filter>
+    </ClCompile>
+    <ClCompile Include="CFixedViewCamTrigger.cpp">
+      <Filter>Scripts\CameraMove\Trigger Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelFlowMgr.cpp">
+      <Filter>Module\FlowMgr</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisUnit.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Damage.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisD_Jump.cpp">
       <Filter>State\ElfilisState\Demo_Appear2\1. Jump</Filter>
@@ -2162,9 +2192,6 @@
     <Filter Include="State\KirbyState\LongDive\LongDiveLanding">
       <UniqueIdentifier>{75840cd7-acff-4d9d-a644-08c64e1f1d9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\Ladder">
-      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyState\Ladder">
       <UniqueIdentifier>{3d9bddc6-fd66-4b19-9fce-74a5f36c9458}</UniqueIdentifier>
     </Filter>
@@ -2183,6 +2210,30 @@
     <Filter Include="State\KirbyState\Ladder\LadderExit">
       <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State\KirbyState\Fall">
+      <UniqueIdentifier>{bb73440d-3931-423c-8cb6-5f943e566875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger">
+      <UniqueIdentifier>{10304296-ce8f-4756-9e57-af26a0bb2166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\Ladder">
+      <UniqueIdentifier>{ef5a1143-540c-41d4-ae8d-2419c6fa0820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\FallDetect">
+      <UniqueIdentifier>{3e191346-16a0-4716-872c-2894b6df4063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\CheckPoint">
+      <UniqueIdentifier>{7a613646-21ea-40cd-a2c5-e60cd3f19649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\FlowManager">
+      <UniqueIdentifier>{8880c56c-641f-44f7-a74b-4cda974787dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module\FlowMgr">
+      <UniqueIdentifier>{cef72559-570c-4556-bfeb-51009fbc0928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
+      <UniqueIdentifier>{96517348-fcf7-40fa-8849-72dece0bff91}</UniqueIdentifier>
+    </Filter>
     <Filter Include="State\ElfilisState\Demo_Appear1">
       <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
     </Filter>
@@ -2197,9 +2248,6 @@
     </Filter>
     <Filter Include="State\ElfilisState\Demo_Appear2\2. Roar">
       <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
-      <UniqueIdentifier>{af00b483-6d15-4aec-a83b-9ac188c1b5cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

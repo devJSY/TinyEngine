@@ -4,14 +4,7 @@ class CKirbyObject_VendingMachine : public CKirbyObject
 {
 private:
     Ptr<CPrefab> m_Can;
-
-    UINT m_LeftCanCount;
-    UINT GetCanCount() const { return m_LeftCanCount; }
-
     float m_SaveJumpPower;
-
-public:
-    void ResetCanCount() { m_LeftCanCount = 100; }
 
 public:
     virtual void AttackStart();
@@ -27,7 +20,8 @@ public:
     virtual void ChangeObjectEnter() override;
 
 public:
-    CLONE_DISABLE(CKirbyObject_VendingMachine)
+    CLONE(CKirbyObject_VendingMachine)
     CKirbyObject_VendingMachine();
+    CKirbyObject_VendingMachine(const CKirbyObject_VendingMachine& _Origin);
     virtual ~CKirbyObject_VendingMachine();
 };

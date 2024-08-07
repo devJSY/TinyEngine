@@ -149,5 +149,6 @@ public:
 
 public:
     CKirbyObject();
+    CKirbyObject(const CKirbyObject& _Origin);
     virtual ~CKirbyObject();
 };

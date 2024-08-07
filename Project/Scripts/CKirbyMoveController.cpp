@@ -7,6 +7,7 @@
 #include <Engine/CRenderMgr.h>
 #include <Engine/CPhysicsMgr.h>
 
+
 CKirbyMoveController::CKirbyMoveController()
     : CScript(KIRBYMOVECONTROLLER)
     , m_Input{0.f, 0.f, 0.f}
@@ -27,41 +28,14 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bJump(false)
     , m_bActiveFriction(false)
     , m_bForwardMode(false)
+    , m_bLimitFallSpeed(false)
     , m_HoveringLimitHeight(500.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)
     , m_HoveringMinSpeed(-5.f)
     , m_RayHit{}
-{
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
-}
-
-CKirbyMoveController::CKirbyMoveController(const CKirbyMoveController& _Origin)
-    : CScript(_Origin)
-    , m_CurDir{}
-    , m_TowardDir{}
-    , m_Input{0.f, 0.f, 0.f}
-    , m_ForceDirInfos{}
-    , m_MoveDir{0.f, 0.f, 0.f}
-    , m_MoveVelocity{}
-    , m_Speed(_Origin.m_Speed)
-    , m_MaxSpeed(_Origin.m_MaxSpeed)
-    , m_RotSpeed(_Origin.m_RotSpeed)
-    , m_JumpPower(_Origin.m_JumpPower)
-    , m_Gravity(_Origin.m_Gravity)
-    , m_bInputLock(false)
-    , m_bMoveLock(false)
-    , m_bDirLock(false)
-    , m_bJumpLock(false)
-    , m_bJump(false)
-    , m_bActiveFriction(false)
-    , m_bForwardMode(false)
-    , m_HoveringLimitHeight(_Origin.m_HoveringLimitHeight)
-    , m_HoveringMinSpeed(_Origin.m_HoveringMinSpeed)
-    , m_AddVelocity{0.f, 0.f, 0.f}
-    , m_Friction(_Origin.m_Friction)
+    , m_MaxFallSpeed(-15.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -86,22 +60,12 @@ void CKirbyMoveController::begin()
     m_JumpPower = PLAYERUNIT->GetInitInfo().JumpPower;
     m_Gravity = -20.f;
     m_bGround = false;
+    m_bLimitFallSpeed = false;
+    m_CheckPointPos = Transform()->GetWorldPos();
 }
 
 void CKirbyMoveController::tick()
 { 
-    // @Test
-    if (KEY_TAP(KEY::G))
-    {
-        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
-    }
-
-    if (KEY_TAP(KEY::H))
-    {
-        PLAYERFSM->ChangeState(L"DEATH");
-    }
-
-
 
     // Key 입력 확인
     Input();
@@ -196,11 +160,24 @@ void CKirbyMoveController::RayGround()
         {
             m_bGround = false;
         }
-        else if (m_RayHit.Distance > 5.f)
+        else if (m_RayHit.Distance > 2.f)
         {
             m_bGround = false;
         }
     }
+    else
+    {
+        if (m_RayHit.pCollisionObj == nullptr)
+        {
+            m_bGround = false;
+        }
+        else if (m_RayHit.Distance < 2.f && m_MoveVelocity.y <= 0.f)
+        {
+            m_bGround = true;
+        }
+    }
+
+
 }
 
 void CKirbyMoveController::SetDir()
@@ -349,6 +326,12 @@ void CKirbyMoveController::Move()
         HorizontalVel = HorizontalVel.Normalize() * m_MaxSpeed;
         m_MoveVelocity.x = HorizontalVel.x;
         m_MoveVelocity.z = HorizontalVel.z;
+    }
+
+    // MaxFallSpeed 제한
+    if (m_MoveVelocity.y < m_MaxFallSpeed  && m_bLimitFallSpeed) 
+    {
+        m_MoveVelocity.y = m_MaxFallSpeed;
     }
 
     // =========================

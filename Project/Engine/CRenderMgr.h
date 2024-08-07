@@ -49,6 +49,7 @@ private:
     // Post Effect
     Ptr<CTexture> m_DepthOnlyTex;
     CGameObject* m_PostEffectObj;
+    Ptr<CTexture> m_DepthMaskingTex;
 
     // Post Process
     bool m_bBloomEnable;
@@ -71,9 +72,6 @@ private:
 
     // Camera Preview
     Ptr<CTexture> m_CameraPreviewTex;
-
-    // MASKING : Masking Texture
-    Ptr<CTexture> m_MaskingTex;
 
     // Render function pointer
     void (CRenderMgr::*RENDER_FUNC)(void);
@@ -142,9 +140,6 @@ private:
     void CreateCameraPreviewTex(Vec2 Resolution);
     void CreateMRT(Vec2 Resolution);
 
-    // MASKING
-    void Create_MaskingTexture(Vec2 Resolution);
-
 public:
     void render_postprocess_LDRI();
     void render_postprocess_HDRI();
@@ -161,13 +156,12 @@ private:
 
     void render_debug();
     void render_DynamicShadowDepth();
+    void render_DepthMasking();
 
     // 리소스 바인딩
     void UpdateData();
 
+public:
     // 리소스 클리어
     void Clear();
-
-    // Masking
-    void render_masking();
 };

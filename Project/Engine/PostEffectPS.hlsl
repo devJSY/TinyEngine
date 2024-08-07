@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 
 #define MODE g_int_0 // 0: Rendered image, 1: DepthOnly 
 
@@ -11,23 +12,6 @@
 #define DepthOnlyTex g_tex_1
 
 #define FogColor g_vec4_0
-
-float4 TexcoordToView(float2 texcoord)
-{
-    float4 posProj;
-
-    // [0, 1]x[0, 1] -> [-1, 1]x[-1, 1]
-    posProj.xy = texcoord * 2.0 - 1.0;
-    posProj.y *= -1; // 주의: y 방향을 뒤집어줘야 합니다.
-    posProj.z = DepthOnlyTex.Sample(g_LinearClampSampler, texcoord).r;
-    posProj.w = 1.0;
-
-    // ProjectSpace -> ViewSpace
-    float4 posView = mul(posProj, g_matProjInv);
-    posView.xyz /= posView.w;
-    
-    return posView;
-}
 
 int RaySphereIntersection(in float3 start, in float3 dir, in float3 center, in float radius,
                             out float t1, out float t2)
@@ -92,7 +76,7 @@ float4 main(PS_IN input) : SV_TARGET
     if (0 == MODE)  // 0: Rendered image
     {
         float3 color = RenderTex.Sample(g_LinearClampSampler, input.vUV0).rgb;
-        float4 posView = TexcoordToView(input.vUV0);
+        float4 posView = TexcoordToView(DepthOnlyTex, input.vUV0);
         
         // Halo
         float3 HaloColor = float3(0.96, 0.94, 0.82);
@@ -118,7 +102,7 @@ float4 main(PS_IN input) : SV_TARGET
     }
     else // DepthOnly Mode
     {
-        float z = TexcoordToView(input.vUV0).z * DepthScale;
+        float z = TexcoordToView(DepthOnlyTex, input.vUV0).z * DepthScale;
         float FarZ = 10000.f;
         z /= FarZ;
         return float4(z, z, z, 1);
