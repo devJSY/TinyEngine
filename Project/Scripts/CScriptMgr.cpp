@@ -66,6 +66,7 @@
 #include "CPushOutTriggerScript.h"
 #include "CLadderScript.h"
 #include "CPushOutColliderScript.h"
+#include "CLightBulbGimmickScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -134,6 +135,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPushOutTriggerScript");
 	_vec.push_back(L"CLadderScript");
 	_vec.push_back(L"CPushOutColliderScript");
+	_vec.push_back(L"CLightBulbGimmickScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -268,6 +270,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CLadderScript;
 	if (L"CPushOutColliderScript" == _strScriptName)
 		return new CPushOutColliderScript;
+	if (L"CLightBulbGimmickScript" == _strScriptName)
+		return new CLightBulbGimmickScript;
 	return nullptr;
 }
 
@@ -405,6 +409,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CLadderScript;
 	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return new CPushOutColliderScript;
+	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return new CLightBulbGimmickScript;
 	}
 	return nullptr;
 }
@@ -543,6 +549,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CLadderScript";
 	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return L"CPushOutColliderScript";
+	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return L"CLightBulbGimmickScript";
 	}
 	return nullptr;
 }

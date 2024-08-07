@@ -529,6 +529,9 @@
     <ClInclude Include="CPushOutColliderScript.h">
       <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CLightBulbGimmickScript.h">
+      <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1067,6 +1070,9 @@
     </ClCompile>
     <ClCompile Include="CPushOutColliderScript.cpp">
       <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightBulbGimmickScript.cpp">
+      <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1642,6 +1648,9 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
       <UniqueIdentifier>{a94a5e21-fc32-4dee-8995-622c322c9275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\LightBulbGimmick">
+      <UniqueIdentifier>{62803287-ca96-469f-ab93-54914f5d5460}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

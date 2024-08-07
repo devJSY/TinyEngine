@@ -22,10 +22,13 @@ private:
     PushOutState m_eState;
     float m_fSpeed;
     float m_fReturnSpeed;
-    float m_fOffset;
     float m_fMoveBaseOffset;
     float m_fMoveDestOffset;
-    bool m_bFlag;
+
+    bool m_bXMove;
+    bool m_bZMove;
+    bool m_bBasePlus;
+    bool m_bDestPlus;
 
 public:
     virtual void begin() override;
@@ -41,9 +44,15 @@ public:
 private:
     void MoveBase();
     void MoveDest();
-    
+
+    void Stop();
+
 private:
-    void Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+    void MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+    void MovePlusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+
+    void MoveMinusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+    void MoveMinusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -55,6 +55,10 @@ void CPushOutColliderScript::tick()
         MoveDest();
     }
     break;
+    case PushOutColliderState::Stop: {
+        Stop();
+    }
+    break;
     case PushOutColliderState::End:
         break;
     default:
@@ -64,12 +68,17 @@ void CPushOutColliderScript::tick()
 
 void CPushOutColliderScript::MoveBase()
 {
-    Move(m_vDir * -1.f, m_vBase, m_fReturnSpeed, false);
+    Move(m_vDir * -1.f, m_vBase, m_fReturnSpeed);
 }
 
 void CPushOutColliderScript::MoveDest()
 {
-    Move(m_vDir, m_vDest, m_fSpeed, true);
+    Move(m_vDir, m_vDest, m_fSpeed);
+}
+
+void CPushOutColliderScript::Stop()
+{
+    Transform()->SetWorldPos(m_vBase);
 }
 
 void CPushOutColliderScript::OnTriggerEnter(CCollider* _OtherCollider)
@@ -90,20 +99,9 @@ void CPushOutColliderScript::OnTriggerExit(CCollider* _OtherCollider)
     }
 }
 
-void CPushOutColliderScript::Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)
+void CPushOutColliderScript::Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed)
 {
-    Vec3 vPos = Transform()->GetWorldPos();
-
-    if ((_vDest.x - m_fOffset <= vPos.x && vPos.x <= _vDest.x + m_fOffset) && (_vDest.y - m_fOffset <= vPos.y && vPos.y <= _vDest.y + m_fOffset) &&
-        (_vDest.z - m_fOffset <= vPos.z && vPos.z <= _vDest.z + m_fOffset))
-    {
-        m_eState = true == _flag ? PushOutColliderState::MoveBase : PushOutColliderState::Stop;
-        Transform()->SetWorldPos(_vDest);
-    }
-    else
-    {
-        Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
-    }
+    Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
 }
 
 UINT CPushOutColliderScript::SaveToLevelFile(FILE* _File)

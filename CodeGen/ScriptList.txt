@@ -63,3 +63,4 @@ CPushOutScript
 CPushOutTriggerScript
 CLadderScript
 CPushOutColliderScript
+CLightBulbGimmickScript

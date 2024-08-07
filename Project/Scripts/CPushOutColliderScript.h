@@ -40,8 +40,10 @@ private:
     void MoveBase();
     void MoveDest();
 
+    void Stop();
+
 private:
-    void Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+    void Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed);
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
