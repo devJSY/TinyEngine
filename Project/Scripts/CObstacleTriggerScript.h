@@ -1,29 +1,29 @@
 #pragma once
 #include <Engine\CScript.h>
 
-enum class CPushOutTriggerState
+enum class CObstacleTriggerState
 {
     Wait,
     Stop,
     End,
 };
 
-class CPushOutTriggerScript : public CScript
+class CObstacleTriggerScript : public CScript
 {
 private:
-    CGameObject* m_pPushOutObj;
-    CPushOutTriggerState m_eState;
-    int m_iPushOutNum;
-    bool m_bEnabled;
+    CGameObject* m_pSurPrisedObj[2];
+    CObstacleTriggerState m_eState;
+    int m_iSurPrisedNum[2];
     float m_fWaitTime;
     float m_fAccTime;
+    bool m_bChainAction;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 private:
-    void ChangeState(CPushOutTriggerState _state);
+    void ChangeState(CObstacleTriggerState _state);
     void EnterState();
     void ExitState();
 
@@ -37,10 +37,10 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CPushOutTriggerScript)
+    CLONE(CObstacleTriggerScript)
 
 public:
-    CPushOutTriggerScript();
-    CPushOutTriggerScript(const CPushOutTriggerScript& Origin);
-    virtual ~CPushOutTriggerScript();
+    CObstacleTriggerScript();
+    CObstacleTriggerScript(const CObstacleTriggerScript& Origin);
+    virtual ~CObstacleTriggerScript();
 };

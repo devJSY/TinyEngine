@@ -30,7 +30,6 @@ CPushOutScript::CPushOutScript()
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Direction");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fReturnSpeed, "Return Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOffset, "Offset");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveBaseOffset, "MoveBaseOffset");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveDestOffset, "MoveDestOffset");
 
@@ -68,7 +67,6 @@ CPushOutScript::CPushOutScript(const CPushOutScript& Origin)
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Direction");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fReturnSpeed, "Return Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOffset, "Offset");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveBaseOffset, "MoveBaseOffset");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveDestOffset, "MoveDestOffset");
 
@@ -94,7 +92,6 @@ void CPushOutScript::begin()
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetDestSpeed(m_fSpeed);
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetBaseSpeed(m_fReturnSpeed);
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetDir(m_vDir);
-            m_pChild[i]->GetScript<CPushOutColliderScript>()->SetOffset(m_fOffset);
         }
     }
     m_vBase = Transform()->GetWorldPos();
@@ -255,12 +252,12 @@ void CPushOutScript::MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fla
 
     if (nullptr != m_pPlayer)
     {
-        float Offset = true == _flag ? m_fMoveBaseOffset : m_fMoveDestOffset;
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move(_vDir * (_fSpeed / Offset) * DT);
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
     }
 }
 
@@ -279,12 +276,12 @@ void CPushOutScript::MovePlusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fla
 
     if (nullptr != m_pPlayer)
     {
-        float Offset = true == _flag ? m_fMoveBaseOffset : m_fMoveDestOffset;
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move(_vDir * (_fSpeed / Offset) * DT);
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
     }
 }
 
@@ -303,12 +300,12 @@ void CPushOutScript::MoveMinusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fl
 
     if (nullptr != m_pPlayer)
     {
-        float Offset = true == _flag ? m_fMoveBaseOffset : m_fMoveDestOffset;
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move(_vDir * (_fSpeed / Offset) * DT);
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
     }
 }
 
@@ -327,12 +324,12 @@ void CPushOutScript::MoveMinusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fl
 
     if (nullptr != m_pPlayer)
     {
-        float Offset = true == _flag ? m_fMoveBaseOffset : m_fMoveDestOffset;
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move(_vDir * (_fSpeed / Offset) * DT);
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
     }
 }
 
@@ -354,7 +351,7 @@ UINT CPushOutScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fMoveDestOffset, sizeof(float), 1, _File);
 
     fwrite(&m_bXMove, sizeof(bool), 1, _File);
-    fwrite(&m_bXMove, sizeof(bool), 1, _File);
+    fwrite(&m_bZMove, sizeof(bool), 1, _File);
 
     fwrite(&m_bBasePlus, sizeof(bool), 1, _File);
     fwrite(&m_bDestPlus, sizeof(bool), 1, _File);
@@ -393,7 +390,7 @@ UINT CPushOutScript::LoadFromLevelFile(FILE* _File)
     fread(&m_fMoveDestOffset, sizeof(float), 1, _File);
 
     fread(&m_bXMove, sizeof(bool), 1, _File);
-    fread(&m_bXMove, sizeof(bool), 1, _File);
+    fread(&m_bZMove, sizeof(bool), 1, _File);
 
     fread(&m_bBasePlus, sizeof(bool), 1, _File);
     fread(&m_bDestPlus, sizeof(bool), 1, _File);

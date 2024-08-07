@@ -490,8 +490,8 @@
     <ClInclude Include="CPushOutScript.h">
       <Filter>Scripts\Gimmik\PushOut</Filter>
     </ClInclude>
-    <ClInclude Include="CPushOutTriggerScript.h">
-      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    <ClInclude Include="CObstacleTriggerScript.h">
+      <Filter>Scripts\Gimmik\ObstacleTrigger</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyStageClear.h">
       <Filter>State\KirbyState\StageClear</Filter>
@@ -1032,8 +1032,8 @@
     <ClCompile Include="CPushOutScript.cpp">
       <Filter>Scripts\Gimmik\PushOut</Filter>
     </ClCompile>
-    <ClCompile Include="CPushOutTriggerScript.cpp">
-      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
+    <ClCompile Include="CObstacleTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\ObstacleTrigger</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyStageClear.cpp">
       <Filter>State\KirbyState\StageClear</Filter>
@@ -1598,9 +1598,6 @@
     <Filter Include="Scripts\Gimmik\PushOut">
       <UniqueIdentifier>{cc94f586-b5bc-4b3c-b8b8-ee95f549e97b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\PushOut\PushOutTrigger">
-      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Gimmik\SupriseBoard">
       <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
     </Filter>
@@ -1651,6 +1648,9 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\LightBulbGimmick">
       <UniqueIdentifier>{62803287-ca96-469f-ab93-54914f5d5460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ObstacleTrigger">
+      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

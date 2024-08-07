@@ -146,7 +146,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
     <ClInclude Include="CPushOutColliderScript.h" />
-    <ClInclude Include="CPushOutTriggerScript.h" />
+    <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
     <ClInclude Include="CPushOutScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
@@ -325,7 +325,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />
-    <ClCompile Include="CPushOutTriggerScript.cpp" />
+    <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
     <ClCompile Include="CPushOutScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />

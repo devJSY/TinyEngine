@@ -14,12 +14,10 @@ class CPushOutColliderScript : public CScript
 public:
     CGameObject* m_pParent;
     Vec3 m_vBase;
-    Vec3 m_vDest;
     Vec3 m_vDir;
     PushOutColliderState m_eState;
     float m_fSpeed;
     float m_fReturnSpeed;
-    float m_fOffset;
     bool m_bFlag;
 
 public:
@@ -31,8 +29,7 @@ public:
     void SetDestSpeed(const float _value) { m_fSpeed = _value; }
     void SetBaseSpeed(const float _value) { m_fReturnSpeed = _value; }
     void SetDir(const Vec3 _value) { m_vDir = _value; }
-    void SetOffset(const float _value) { m_fOffset = _value; }
-
+ 
     PushOutColliderState GetState() { return m_eState; }
     void SetState(const PushOutColliderState _state) { m_eState = _state; }
 
@@ -43,7 +40,7 @@ private:
     void Stop();
 
 private:
-    void Move(Vec3 _vDir, Vec3 _vDest, float _fSpeed);
+    void Move(Vec3 _vDir, float _fSpeed);
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider) override;

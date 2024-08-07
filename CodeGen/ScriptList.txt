@@ -60,7 +60,7 @@ CSolarChargeScript
 CSolarOnceScript
 CElevatorScript
 CPushOutScript
-CPushOutTriggerScript
+CObstacleTriggerScript
 CLadderScript
 CPushOutColliderScript
 CLightBulbGimmickScript
