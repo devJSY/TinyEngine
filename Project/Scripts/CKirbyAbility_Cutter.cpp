@@ -59,6 +59,12 @@ void CKirbyAbility_Cutter::AttackEnter()
 
     Vec3 Offset = Vec3(0.f, 20.f, 0.f);
 
+    if (CurInputWorld == Vec3(0.f, 0.f, 0.f))
+    {
+        CurInputWorld = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    }
+
+
     // Transform
     InstObj->Transform()->SetWorldPos(KirbyPos + Offset);
     InstObj->Transform()->SetDirection(CurInputWorld);
