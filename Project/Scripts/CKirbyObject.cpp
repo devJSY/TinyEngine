@@ -16,9 +16,9 @@ CKirbyObject::CKirbyObject(const CKirbyObject& _Origin)
     , m_WaitingAnim(_Origin.m_WaitingAnim)
     , m_bFrmEnter(_Origin.m_bFrmEnter)
 {
-    m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(_Origin.m_Mesh->GetKey());
-    m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(_Origin.m_DemoMesh->GetKey());
-    m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_OriginObject->GetKey());
+    m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(_Origin.m_Mesh->GetKey(), _Origin.m_Mesh->GetRelativePath());
+    m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(_Origin.m_DemoMesh->GetKey(), _Origin.m_DemoMesh->GetRelativePath());
+    m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_OriginObject->GetKey(), _Origin.m_OriginObject->GetRelativePath());
 }
 
 CKirbyObject::~CKirbyObject()

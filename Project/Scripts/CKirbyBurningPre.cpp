@@ -27,15 +27,15 @@ void CKirbyBurningPre::Enter()
     PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KiryDragon.mdat", L"meshdata\\KiryDragon.mdat"));
 
     // Kirby 표정 바꿔주기
-    Ptr<CMaterial> KirbyBody = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KiryDragon_BurningBodyC.mtrl");
+    Ptr<CMaterial> KirbyBody = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KiryDragon_BurningBodyC.mtrl", L"material\\KiryDragon_BurningBodyC.mtrl");
 
     wstring filepath = L"fbx\\Characters\\Kirby\\Base\\";
     wstring albedo = filepath + L"KirbyEye.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
     wstring mask = filepath + L"KirbyEyeMask.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
     wstring normal = filepath + L"KirbyEyeNormal.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    KirbyBody->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(albedo));
-    KirbyBody->SetTexParam(TEX_1, CAssetMgr::GetInst()->Load<CTexture>(mask));
-    KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->Load<CTexture>(normal));
+    KirbyBody->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(albedo, albedo));
+    KirbyBody->SetTexParam(TEX_1, CAssetMgr::GetInst()->Load<CTexture>(mask, mask));
+    KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->Load<CTexture>(normal, normal));
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);

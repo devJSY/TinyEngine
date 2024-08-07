@@ -8,7 +8,7 @@
 CKirbyAbility_Cutter::CKirbyAbility_Cutter()
     : m_IsNextCombo(false)
 {
-    m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
+    m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalHat.pref", L"prefab\\MetalHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyMetalCutterWeapon.pref", L"prefab\\KirbyMetalCutterWeapon.pref");
 
@@ -17,7 +17,7 @@ CKirbyAbility_Cutter::CKirbyAbility_Cutter()
 CKirbyAbility_Cutter::CKirbyAbility_Cutter(const CKirbyAbility_Cutter& _Origin)
     : m_IsNextCombo(_Origin.m_IsNextCombo)
 {
-    m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
+    m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
 }
 
 CKirbyAbility_Cutter::~CKirbyAbility_Cutter()
@@ -49,7 +49,7 @@ void CKirbyAbility_Cutter::AttackEnter()
     // Prefab 가져오기
     if (m_CutterBulletPrefab == nullptr)
     {
-        m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
+        m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
     }
 
     // 초기값 설정
@@ -104,7 +104,7 @@ void CKirbyAbility_Cutter::AttackCombo1Enter()
     PLAYERCTRL->SetFrictionMode(true);
 
     // Material 등록
-    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
+    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl", L"material\\MetalCutter_BladeC.mtrl");
 
     PLAYERFSM->GetCurWeapon()->SetActive(true);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
@@ -127,7 +127,8 @@ void CKirbyAbility_Cutter::AttackCombo1Exit()
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(nullptr, 0);
 
     // 머리의 Blade를 보이게 한다
-    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(
+        CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl", L"material\\MetalHat_BladeC.mtrl"), 0);
 }
 
 void CKirbyAbility_Cutter::AttackCombo2()
@@ -164,7 +165,7 @@ void CKirbyAbility_Cutter::AttackCombo2Enter()
 
     // Material 등록
     PLAYERFSM->GetCurWeapon()->SetActive(true);
-    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl");
+    Ptr<CMaterial> CutterMaterial = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalCutter_BladeC.mtrl", L"material\\MetalCutter_BladeC.mtrl");
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(CutterMaterial, 0);
 
     // 머리의 Blade는 안보이게 한다
@@ -188,7 +189,8 @@ void CKirbyAbility_Cutter::AttackCombo2Exit()
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetMaterial(nullptr, 0);
 
     // 머리의 Blade를 보이게 한다
-    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+    PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(
+        CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl", L"material\\MetalHat_BladeC.mtrl"), 0);
 }
 
 void CKirbyAbility_Cutter::ChangeAbility()
@@ -200,7 +202,7 @@ void CKirbyAbility_Cutter::ChangeAbilityEnter()
     // Prefab 가져오기
     if (m_CutterBulletPrefab == nullptr)
     {
-        m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref");
+        m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
     }
 
     // 소켓에 모자 끼워주기

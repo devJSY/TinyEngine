@@ -60,7 +60,7 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     Vec3 Offset = Vec3(0.f, 10.f, 0.f);
         
     // ÇÁ¸®ÆÕ »ý¼º
-    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref");
+    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
     CGameObject* CanJuiceInst = CanJuice->Instantiate();
 
     CanJuiceInst->Transform()->SetDirection(KirbyWorldDir);

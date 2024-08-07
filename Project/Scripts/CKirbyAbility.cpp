@@ -16,12 +16,12 @@ CKirbyAbility::CKirbyAbility(const CKirbyAbility& _Origin)
 {
     if (m_Hat.Get())
     {
-        m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Hat->GetKey());
+        m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Hat->GetKey(), _Origin.m_Hat->GetRelativePath());
     }
     
     if (m_Weapon.Get())
     {
-        m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Weapon->GetKey());
+        m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Weapon->GetKey(), _Origin.m_Weapon->GetRelativePath());
     }
 }
 

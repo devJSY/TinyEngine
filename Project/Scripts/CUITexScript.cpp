@@ -33,7 +33,8 @@ void CUITexScript::tick()
 {
     if (m_iPrevTex != m_iCurTex)
     {
-        m_pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UILogo\\RobbyLevel\\" + ToWstring(m_vTexName[m_iCurTex])));
+        m_pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\UILogo\\RobbyLevel\\" + ToWstring(m_vTexName[m_iCurTex]),
+                                                                         L"Texture\\UILogo\\RobbyLevel\\" + ToWstring(m_vTexName[m_iCurTex])));
         m_iPrevTex = m_iCurTex;
     }
 }
