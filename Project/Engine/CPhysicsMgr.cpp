@@ -114,7 +114,7 @@ CPhysicsMgr::CPhysicsMgr()
     , m_CCTCallbackInst()
     , m_Matrix{}
     , m_Accumulator(0.f)
-    , m_StepSize(0.02f) // 1.f / 50.f
+    , m_StepSize(0.01666f) // 1.f / 60.f
     , m_Gravity(Vec3(0.f, -9.81f, 0.f))
     , m_PPM(1.f)
     , m_listTrigger{}
@@ -290,10 +290,15 @@ void CPhysicsMgr::OnPhysicsStop()
     // Physics Object가 보유하고있던 데이터 초기화
     for (UINT i = 0; i < m_vecPhysicsObj.size(); i++)
     {
+        CCharacterController* pCharacterController = m_vecPhysicsObj[i]->CharacterController();
+        if (nullptr != pCharacterController)
+            pCharacterController->m_RuntimeShape = nullptr;
+
         CRigidbody* pRigidbody = m_vecPhysicsObj[i]->Rigidbody();
         CBoxCollider* pBoxCol = m_vecPhysicsObj[i]->BoxCollider();
         CSphereCollider* pSphereCol = m_vecPhysicsObj[i]->SphereCollider();
         CCapsuleCollider* pCapsuleCol = m_vecPhysicsObj[i]->CapsuleCollider();
+        CMeshCollider* pMeshCol = m_vecPhysicsObj[i]->MeshCollider();
 
         if (nullptr != pRigidbody)
             pRigidbody->m_RuntimeBody = nullptr;
@@ -303,6 +308,8 @@ void CPhysicsMgr::OnPhysicsStop()
             pSphereCol->m_RuntimeShape = nullptr;
         if (nullptr != pCapsuleCol)
             pCapsuleCol->m_RuntimeShape = nullptr;
+        if (nullptr != pMeshCol)
+            pMeshCol->m_RuntimeShape = nullptr;
     }
 
     m_vecPhysicsObj.clear();
@@ -384,7 +391,16 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
     // Physics 관련 컴포넌트가 존재하지않는 경우
     if (nullptr == pRigidbody && nullptr == pBoxCol && nullptr == pSphereCol && nullptr == pCapsuleCol && nullptr == pMeshCol)
+    {
+        // 캐릭터 컨트롤러만 존재하는 경우
+        CCharacterController* pCharacterController = _GameObject->CharacterController();
+        if (nullptr != pCharacterController)
+        {
+            m_vecPhysicsObj.push_back(_GameObject);
+        }
+
         return;
+    }
 
     Vec3 WorldPos = pTr->GetWorldPos();
     Quat WorldQuat = pTr->GetWorldQuaternion();

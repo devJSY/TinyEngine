@@ -44,7 +44,8 @@ void CKirbyBurning::tick()
             PLAYER->MeshRender()->SetMaterial(nullptr, 8);
 
             // 모자 다시 보이게하기
-            Ptr<CMaterial> HatMat = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\KiryDragonHat_DragonFireC.mtrl");
+            Ptr<CMaterial> HatMat =
+                CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KiryDragonHat_DragonFireC.mtrl", L"material\\KiryDragonHat_DragonFireC.mtrl");
             PLAYERFSM->GetCurHat()->MeshRender()->SetMaterial(HatMat, 0);
             ChangeState(L"JUMP_FALL");
         }

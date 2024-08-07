@@ -269,7 +269,7 @@ int CTexture::UpdateData_CS_UAV(int _RegisterNum)
 
 void CTexture::Clear(int _iRegisterNum)
 {
-    Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png");
+    static Ptr<CTexture> pMissingTex = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png");
     ID3D11ShaderResourceView* pSRV = nullptr;
 
     if (TEX_0 <= _iRegisterNum && TEX_5 >= _iRegisterNum)

@@ -1131,9 +1131,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddScalarParam(FLOAT_0, "Exposure", 0.01f); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
-        pShader->AddScalarParam(FLOAT_1, "Gamma", 0.01f);          // 어떤 영역의 색을 더 넓게 보여줄지 의미함
-        pShader->AddScalarParam(FLOAT_2, "Bloom Strength", 0.01f); // Bloom Strength
+        pShader->AddScalarParam(INT_0, "Bloom Enable");
+        pShader->AddScalarParam(INT_1, "Blend Mode");
+        pShader->AddScalarParam(FLOAT_0, "Exposure", 1e-3f); // 렌즈를 오래 열어두면 빛을 많이 받아 들이는 것을 수치적으로 따라한 것
+        pShader->AddScalarParam(FLOAT_1, "Gamma", 1e-3f);                    // 어떤 영역의 색을 더 넓게 보여줄지 의미함
+        pShader->AddScalarParam(FLOAT_2, "Bloom Strength", 1e-3f);           // Bloom Strength
+        pShader->AddScalarParam(VEC2_0, "Filter Radius / Threshold", 1e-3f); // Filter Radius, Threshold
 
         pShader->AddTexParam(TEX_0, "Render Texture");
         pShader->AddTexParam(TEX_1, "Bloom Texture");
@@ -1712,9 +1715,10 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ToneMappingShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 1.f);  // Exposure
-        pMtrl->SetScalarParam(FLOAT_1, 2.2f); // Gamma
-        pMtrl->SetScalarParam(FLOAT_2, 0.5f); //  Bloom Strength
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);           // Exposure
+        pMtrl->SetScalarParam(FLOAT_1, 2.2f);          // Gamma
+        pMtrl->SetScalarParam(FLOAT_2, 0.5f);          // Bloom Strength
+        pMtrl->SetScalarParam(VEC2_0, Vec2(1.f, 0.f)); // Filter Radius / Threshold
         pMtrl->SetName(L"ToneMappingMtrl");
         AddAsset<CMaterial>(L"ToneMappingMtrl", pMtrl);
     }
@@ -1732,7 +1736,7 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PostEffectShader"));
         pMtrl->SetName(L"PostEffectMtrl");
-        pMtrl->SetScalarParam(FLOAT_1, 1.f);
+        pMtrl->SetScalarParam(FLOAT_1, 20.f);
         pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
     }
@@ -1760,7 +1764,7 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"SSAOShader"));
         pMtrl->SetName(L"SSAOMtrl");
-        pMtrl->SetScalarParam(FLOAT_0, 0.5f); // Radius
+        pMtrl->SetScalarParam(FLOAT_0, 10.f); // Radius
         pMtrl->SetScalarParam(FLOAT_1, 1.f);  // Pow Power
         AddAsset<CMaterial>(L"SSAOMtrl", pMtrl);
     }

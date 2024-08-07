@@ -45,10 +45,10 @@ void CKirbyRunStart::tick()
             {
                 ChangeState(L"IDLE");
             }
-            /*else if (!PLAYERCTRL->IsGround())
+            else if (!PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
-            }*/
+            }
             // 상태변경 시그널 발생 않을 시
             else
             {

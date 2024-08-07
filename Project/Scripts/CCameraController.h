@@ -23,7 +23,8 @@ enum class CameraSetup
     NORMAL,
     PROGRESS,
     TWOTARGET,
-    BOSS,
+    BOSSSETUP,
+    FIXEDVIEW, // 카메라의 위치가 고정된채로 타겟을 바라본다.
 };
 
 struct CameraSetting
@@ -115,6 +116,10 @@ private:
     float                       m_MaxDegreeY;            // Weight가 1일 때(SubTarget을 볼 때)의 X축 회전 각도
     float                       m_MaxBetweenTargetDist;    
 
+    // Fixed
+    Vec3                        m_FixedViewPos;         // 고정된 카메라의 위치
+
+
     //Edit
     bool                        m_EditMode;             // EditMode 스위치
     float                       m_EditRotSpeed;         // EditMode에서의 카메라 회전 조절 속도
@@ -160,6 +165,8 @@ private:
     void SaveInitSetting();
     void LoadSetting();
     void LoadInitSetting();
+    CameraSetting GetSaveSetting() const { return m_SaveSetting; }
+
 
 public:
     virtual void begin() override;
@@ -181,6 +188,7 @@ private:
     void Progress();
     void TwoTarget();
     void Boss();
+    void FixedView();
 
     void ProcessEffet();
 
@@ -188,11 +196,16 @@ private:
     void EditMode();
 
 public:
+
+    // Interface Func
     void ResetCamera(); // 현재의 설정값들로 카메라를 바로 이동한다.
     void ChangeMainTarget(CGameObject* _Target); // Target 변경 후 카메라 강제 이동
     void ChangeMainTarget(wstring _TargetName); // Target 변경 후 카메라 강제 이동 
     void ChangeLookSetting(Vec3 _LookDir, float _LookDist); // Look Setting 변경
     void ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed, float _Threshold); // Follow Setting 변경
+
+    // Setup Func
+    void Normal(bool _IsImmediate);
     void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
     void TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset);
     void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset);
@@ -200,6 +213,9 @@ public:
                       float _Weight = 0.5f);
     void Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
                       float _Weight = 0.5f);
+    void FixedView(bool _IsImmediate, Vec3 _FixedViewPos = Vec3(0.f,0.f,0.f));
+
+    // Effect
     void Shake(float _Duration, float _Frequency, float _Intencity);
     void Tilt(float _Duration, float _Frequency);
 

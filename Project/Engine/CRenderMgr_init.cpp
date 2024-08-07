@@ -30,8 +30,7 @@ void CRenderMgr::init()
     CreateDepthOnlyTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
     CreateCameraPreviewTex(vRenderResolution);
-    // MASKING
-    Create_MaskingTexture(vRenderResolution);
+
     m_FloatRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture");
     CreateMRT(vRenderResolution);
 

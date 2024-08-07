@@ -12,7 +12,7 @@
 #include "CScript.h"
 
 wstring CLevelSaveLoad::Level_extension = L".tLevel";
-const UINT CLevelSaveLoad::MemoryBlockSize = 256;
+const UINT CLevelSaveLoad::MemoryBlockSize = 8192;
 
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 {
@@ -140,7 +140,8 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
         SaveWStringToFile(ToWstring(COMPONENT_TYPE_STRING[vecComps[i].first]), _File);
 
         // 해당 컴포넌트가 저장할 데이터 저장
-        vecComps[i].second->SaveToLevelFile(_File);
+        UINT MemoryByte = vecComps[i].second->SaveToLevelFile(_File);
+        PaddingMemoryBlock(MemoryByte, _File, false);
     }
 
     // 스크립트 정보 저장
@@ -154,17 +155,7 @@ void CLevelSaveLoad::SaveGameObject(CGameObject* _Obj, FILE* _File)
     {
         SaveWStringToFile(CScriptMgr::GetScriptName(vecScripts[i]), _File);
         UINT MemoryByte = vecScripts[i]->SaveToLevelFile(_File);
-
-        // 해당 스크립트의 메모리가 지정된 메모리 블록보다 큰 경우
-        if (MemoryByte > MemoryBlockSize)
-        {
-            assert(nullptr);
-        }
-
-        // 0값으로 패딩
-        UINT PaddingByte = MemoryBlockSize - MemoryByte;
-        vector<char> padding(PaddingByte, 0);
-        fwrite(padding.data(), padding.size(), 1, _File);
+        PaddingMemoryBlock(MemoryByte, _File, false);
     }
 
     // BoneSocket 저장
@@ -414,7 +405,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
 
         // 해당 컴포넌트가 저장한 데이터를 로드
         pObject->AddComponent(pComponent);
-        pComponent->LoadFromLevelFile(_File);
+
+        UINT MemoryByte = pComponent->LoadFromLevelFile(_File);
+        PaddingMemoryBlock(MemoryByte, _File, true);
     }
 
     // 컴포넌트 매쉬 설정
@@ -443,17 +436,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
         CScript* pScript = CScriptMgr::GetScript(strScriptName);
         pObject->AddComponent(pScript);
         UINT MemoryByte = pScript->LoadFromLevelFile(_File);
-
-        // 해당 스크립트의 메모리가 지정된 메모리 블록보다 큰 경우
-        if (MemoryByte > MemoryBlockSize)
-        {
-            assert(nullptr);
-        }
-
-        // 0값으로 패딩
-        UINT PaddingByte = MemoryBlockSize - MemoryByte;
-        vector<char> padding(PaddingByte, 0);
-        fread(padding.data(), padding.size(), 1, _File);
+        PaddingMemoryBlock(MemoryByte, _File, true);
     }
 
     // BoneSocket 로드
@@ -485,4 +468,31 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
     }
 
     return pObject;
+}
+
+void CLevelSaveLoad::PaddingMemoryBlock(UINT MemoryByte, FILE* _File, bool _bRead)
+{
+    // 컴포넌트/스크립트의 메모리가 지정된 메모리 블록보다 큰 경우
+    if (MemoryByte > MemoryBlockSize)
+    {
+        MessageBox(nullptr, L"Memory Overflow!!", L"MemoryBlock Padding 실패", MB_ICONHAND);
+        return;
+    }
+
+    // 사이즈가 동일한경우 Padding X
+    if (MemoryByte == MemoryBlockSize)
+        return;
+
+    // 0값으로 패딩
+    UINT PaddingByte = MemoryBlockSize - MemoryByte;
+    vector<char> padding(PaddingByte, 0);
+
+    if (_bRead)
+    {
+        fread(padding.data(), padding.size(), 1, _File);
+    }
+    else
+    {
+        fwrite(padding.data(), padding.size(), 1, _File);
+    }
 }

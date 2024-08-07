@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CAnim2D.h"
 
+#include "CAnimator2D.h"
 #include "CTimeMgr.h"
 
 #include "CDevice.h"
@@ -38,7 +39,9 @@ void CAnim2D::finaltick()
     if (m_bFinish)
         return;
 
-    m_fAccTime += DT;
+    float DeltaTime = m_Animator->GetAnimatorUpdateMode() == AnimatorUpdateMode::Normal ? DT : DT_ENGINE;
+
+    m_fAccTime += DeltaTime;
 
     if (m_vecFrm[m_CurFrmIdx].Duration < m_fAccTime)
     {

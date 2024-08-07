@@ -16,6 +16,7 @@ private:
     CContentBrowser m_ContentBrowser;
 
     ImGuizmo::OPERATION m_GizmoType;
+    ImGuizmo::MODE m_GizmoMode;
     bool m_bEnableGizmo;
 
     bool m_bShowEditor[(UINT)EDITOR_TYPE::END];
@@ -28,6 +29,8 @@ private:
     Ptr<CTexture> m_TranslateButtonTex;
     Ptr<CTexture> m_RotateButtonTex;
     Ptr<CTexture> m_ScaleButtonTex;
+    Ptr<CTexture> m_LocalButtonTex;
+    Ptr<CTexture> m_WorldButtonTex;
 
     ASSET_TYPE m_ModalAssetType;
 

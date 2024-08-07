@@ -217,10 +217,10 @@ void CKirbyStageClear::Enter()
 
     CamCtrl->ResetCamera();
 
-    // @TODO 카메라 방향 설정
+    // 카메라 방향 설정
     Vec3 CamPos = CamCtrl->GetOwner()->Transform()->GetWorldPos();
 
-    // @TODO 커비 방향 설정
+    // 커비 방향 설정
     Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
     Vec3 Dir = CamPos - PlayerPos;
     Dir.y = 0.f;
