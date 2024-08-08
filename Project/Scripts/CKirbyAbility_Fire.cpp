@@ -11,6 +11,7 @@ CKirbyAbility_Fire::CKirbyAbility_Fire()
     : m_bFrmEnter(true)
     , m_SavedSpeed(0.f)
 {
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref");
 }
 
 CKirbyAbility_Fire::~CKirbyAbility_Fire()
@@ -185,7 +186,7 @@ void CKirbyAbility_Fire::ChangeAbility()
 void CKirbyAbility_Fire::ChangeAbilityEnter()
 {
     // 소켓에 모자 끼워주기
-    CGameObject* pInstObj = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref")->Instantiate();
+    CGameObject* pInstObj = m_Hat->Instantiate();
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
     PLAYERFSM->SetCurHat(pInstObj);

@@ -35,7 +35,8 @@ public:
     virtual void ChangeObjectEnter();
 
 public:
-    CLONE_DISABLE(CKirbyObject_Lightbulb)
+    CLONE(CKirbyObject_Lightbulb)
     CKirbyObject_Lightbulb();
+    CKirbyObject_Lightbulb(const CKirbyObject_Lightbulb& _Origin);
     virtual ~CKirbyObject_Lightbulb();
 };

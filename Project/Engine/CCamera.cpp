@@ -311,7 +311,7 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
                 continue;
             }
 
-            // _MobilityType 가 0 인경우 무조건 추가
+            // _MobilityType이 0 인경우 무조건 추가
             // 그 외의 경우에는 RenderComponent의 옵션 확인
             if (0 == _MobilityType || (UINT)vecObjects[j]->Transform()->GetMobilityType() & _MobilityType)
             {

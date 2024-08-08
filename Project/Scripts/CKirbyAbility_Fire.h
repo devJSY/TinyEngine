@@ -32,7 +32,7 @@ public:
     virtual void ChangeAbilityExit() override;
 
 public:
-    CLONE_DISABLE(CKirbyAbility_Fire)
+    CLONE(CKirbyAbility_Fire)
     CKirbyAbility_Fire();
     virtual ~CKirbyAbility_Fire();
 };

@@ -354,3 +354,9 @@ enum MOBILITY_TYPE
     STATIC = 0x0001,
     MOVABLE = 0x0002,
 };
+
+enum class AnimatorUpdateMode
+{
+    Normal,
+    UnscaledTime,
+};

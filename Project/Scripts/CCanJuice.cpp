@@ -39,28 +39,28 @@ void CCanJuice::begin()
     {
     case JuiceType::Green:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
-            TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Green.png"));
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Green.png",
+                                                        L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Green.png"));
         break;
     case JuiceType::Yellow:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
-            TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Yellow.png"));
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Yellow.png",
+                                                        L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Yellow.png"));
         break;
     case JuiceType::Red:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
-            TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Red.png"));
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Red.png",
+                                                        L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Red.png"));
         break;
     case JuiceType::Purple:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
-            TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Purple.png"));
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Purple.png",
+                                                        L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Purple.png"));
         break;
     case JuiceType::Orange:
         JuiceMesh->MeshRender()->GetMaterial(0)->SetTexParam(
-            TEX_0,
-            CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Orange.png"));
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Orange.png",
+                                                        L"fbx\\Characters\\Kirby\\OriginObj\\DeformVendingMachine\\CanJuice\\CanJuice_Orange.png"));
         break;
     }
 
@@ -69,12 +69,11 @@ void CCanJuice::begin()
     Front.y = 0.f;
     Front.Normalize();
 
-    
     // 좌우로 약간씩 흔들기
     float diff = float(int(Type) - 2) / 2.f;
     Vec3 Right = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
     Right.Normalize();
-    Front += Right * diff * sinf(10.f /XM_PI);
+    Front += Right * diff * sinf(10.f / XM_PI);
     Front.Normalize();
 
     // 날아가야 하는 방향 세팅
@@ -107,7 +106,7 @@ void CCanJuice::OnCollisionEnter(CCollider* _OtherCollider)
         HitDir.Normalize();
 
         UnitHit JuiceHit = {DAMAGE_TYPE::NORMAL, HitDir, m_Damage, 0.f, 0.f};
-        
+
         _OtherCollider->GetOwner()->GetScript<CUnitScript>()->GetDamage(JuiceHit);
 
         GamePlayStatic::DestroyGameObject(GetOwner());

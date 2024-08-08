@@ -6,6 +6,7 @@
 // Sclae Absolute 사용(Transform)
 // Front - Down, Back - Up
 // Box Collider
+// Collider의 center, scale 건들지 x
 
 class CLadderScript : public CScript
 {

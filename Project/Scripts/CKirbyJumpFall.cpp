@@ -241,10 +241,14 @@ void CKirbyJumpFall::Enter()
 
     PLAY_CURSTATE(JumpFallEnter)
     PLAYERFSM->SetDroppable(true);
+
+    PLAYERCTRL->SetLimitFallSpeed(true);
 }
 
 void CKirbyJumpFall::Exit()
 {
     PLAY_CURSTATE(JumpFallExit)
     PLAYERFSM->SetDroppable(false);
+
+    PLAYERCTRL->SetLimitFallSpeed(false);
 }

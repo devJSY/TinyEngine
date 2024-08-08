@@ -336,6 +336,9 @@ bool CGameObject::IsActive() const
 
 void CGameObject::SetActive(bool _bActive)
 {
+    if (m_bActive == _bActive)
+        return;
+
     m_bActive = _bActive;
 
     // 본인 포함 자식오브젝트들 Physics 리셋

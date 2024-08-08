@@ -13,6 +13,7 @@ CTimeMgr::CTimeMgr()
     , m_iFPS(0)
     , m_fAccTime(0.f)
     , m_bLock(true)
+    , m_TimeScale(1.f)
 {
 }
 
@@ -39,10 +40,6 @@ void CTimeMgr::tick()
 
     m_PrevCount = m_CurCount;
 
-    // DT 보정
-    //if ((1.f / 60.f) < m_DeltaTime)
-    //    m_DeltaTime = (1.f / 60.f);
-
     // 시간 누적 ==> 1초마다 if 구문 실행
     m_fAccTime += m_EngineDeltaTime;
     if (1.f <= m_fAccTime)
@@ -56,6 +53,9 @@ void CTimeMgr::tick()
     }
 
     ++m_iCall;
+
+    // TimeScale 적용
+    m_DeltaTime *= m_TimeScale;
 
     g_Global.g_DT = m_DeltaTime;
     g_Global.g_Time += m_DeltaTime;

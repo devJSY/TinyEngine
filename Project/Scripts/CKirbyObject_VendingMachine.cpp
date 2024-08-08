@@ -14,6 +14,15 @@ CKirbyObject_VendingMachine::CKirbyObject_VendingMachine()
     ParseDemoMesh(m_DemoMesh);
 }
 
+CKirbyObject_VendingMachine::CKirbyObject_VendingMachine(const CKirbyObject_VendingMachine& _Origin)
+{
+    m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\VendingMachine.pref", L"prefab\\VendingMachine.pref");
+    m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyVendingMachine.mdat", L"meshdata\\KirbyVendingMachine.mdat");
+    m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyVendingMachineDemo.mdat", L"meshdata\\KirbyVendingMachineDemo.mdat");
+
+    ParseDemoMesh(m_DemoMesh);
+}
+
 CKirbyObject_VendingMachine::~CKirbyObject_VendingMachine()
 {
 }
@@ -49,9 +58,9 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
     Vec3 KirbyWorldDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 Offset = Vec3(0.f, 10.f, 0.f);
-
+        
     // ÇÁ¸®ÆÕ »ý¼º
-    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\CanJuice.pref");
+    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
     CGameObject* CanJuiceInst = CanJuice->Instantiate();
 
     CanJuiceInst->Transform()->SetDirection(KirbyWorldDir);
