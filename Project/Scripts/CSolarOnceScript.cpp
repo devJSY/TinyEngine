@@ -87,11 +87,15 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
     }
     break;
     case SolarOnceState::OnWaitStart: {
-        CLevelMgr::GetInst()
-            ->GetCurrentLevel()
-            ->FindObjectByName(ToWstring(m_MovingObjName), 2)
-            ->GetScript<CElevatorScript>()
-            ->SetState(ElevatorState::Move);
+        CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_MovingObjName));
+        if (nullptr != pObj)
+            pObj->GetScript<CElevatorScript>()->SetState(ElevatorState::Move);
+        else
+        {
+            string tmp = string("Not Exist Elevator");
+            LOG(LOG_LEVEL::Log, tmp.c_str());
+        }
+
         Animator()->Play(ANIMPREFIX("OnWaitStart"), false);
     }
     break;

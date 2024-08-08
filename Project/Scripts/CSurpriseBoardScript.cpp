@@ -1,14 +1,20 @@
 #include "pch.h"
 #include "CSurpriseBoardScript.h"
 
+#include "CPushOutScript.h"
+
 CSurpriseBoardScript::CSurpriseBoardScript()
     : CScript(SURPRISEBOARDSCRIPT)
     , m_pWallColObject(nullptr)
     , m_pAtkObject1(nullptr)
     , m_pAtkObject2(nullptr)
+    , m_pPushOutObj(nullptr)
     , m_eState(SurpriseBoardState::Wait)
+    , m_iPushOutNum(-1)
     , m_bIsRight(false)
+    , m_bChainAction(false)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_iPushOutNum, "PushOutObject" + std::to_string(0));
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bIsRight, "IsRight");
 }
 
@@ -17,9 +23,13 @@ CSurpriseBoardScript::CSurpriseBoardScript(const CSurpriseBoardScript& Origin)
     , m_pWallColObject(nullptr)
     , m_pAtkObject1(nullptr)
     , m_pAtkObject2(nullptr)
+    , m_pPushOutObj(nullptr)
     , m_eState(SurpriseBoardState::Wait)
+    , m_iPushOutNum(-1)
     , m_bIsRight(Origin.m_bIsRight)
+    , m_bChainAction(false)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_iPushOutNum, "PushOutObject" + std::to_string(0));
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bIsRight, "IsRight");
 }
 
@@ -38,32 +48,37 @@ void CSurpriseBoardScript::begin()
     nullptr != m_pWallColObject ? m_pWallColObject->BoxCollider()->SetEnabled(false) : void();
     nullptr != m_pAtkObject1 ? m_pAtkObject1->BoxCollider()->SetEnabled(false) : void();
     nullptr != m_pAtkObject2 ? m_pAtkObject2->BoxCollider()->SetEnabled(false) : void();
+
+    m_pPushOutObj =
+        -1 != m_iPushOutNum ? CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PushOutObject" + std::to_wstring(m_iPushOutNum)) : nullptr;
+
+    if (nullptr != m_pPushOutObj)
+    {
+        if (nullptr == m_pPushOutObj->GetScript<CPushOutScript>())
+            m_pPushOutObj = nullptr;
+    }
 }
 
 void CSurpriseBoardScript::tick()
 {
     switch (m_eState)
     {
-    case SurpriseBoardState::ArmMove:
-    {
+    case SurpriseBoardState::ArmMove: {
         ArmMove();
     }
-        break;
-    case SurpriseBoardState::PopOut:
-    {
+    break;
+    case SurpriseBoardState::PopOut: {
         PopOut();
     }
-        break;
-    case SurpriseBoardState::PrePopOut:
-    {
+    break;
+    case SurpriseBoardState::PrePopOut: {
         PrePopOut();
     }
-        break;
-    case SurpriseBoardState::Return:
-    {
+    break;
+    case SurpriseBoardState::Return: {
         Return();
     }
-        break;
+    break;
     case SurpriseBoardState::End:
         break;
     default:
@@ -123,6 +138,10 @@ void CSurpriseBoardScript::ExitState(SurpriseBoardState _state)
     case SurpriseBoardState::Break:
         break;
     case SurpriseBoardState::PopOut: {
+        if (m_bChainAction)
+        {
+            nullptr != m_pPushOutObj ? m_pPushOutObj->GetScript<CPushOutScript>()->ChangeState(PushOutState::MoveDest) : void();
+        }
         true == m_bIsRight ? m_pAtkObject2->BoxCollider()->SetEnabled(false) : m_pAtkObject1->BoxCollider()->SetEnabled(false);
     }
     break;
@@ -173,21 +192,14 @@ void CSurpriseBoardScript::Return()
     }
 }
 
-void CSurpriseBoardScript::OnTriggerEnter(CCollider* _OtherCollider)
-{
-    CGameObject* Obj = _OtherCollider->GetOwner();
-    if (L"Main Player" == Obj->GetName())
-    {
-        SurpriseBoardState::Wait == m_eState ? ChangeState(SurpriseBoardState::PrePopOut) : void();
-    }
-}
-
 UINT CSurpriseBoardScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fwrite(&m_iPushOutNum, sizeof(int), 1, _File);
     fwrite(&m_bIsRight, sizeof(bool), 1, _File);
 
+    MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
 
     return MemoryByte;
@@ -197,8 +209,10 @@ UINT CSurpriseBoardScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fread(&m_iPushOutNum, sizeof(int), 1, _File);
     fread(&m_bIsRight, sizeof(bool), 1, _File);
 
+    MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
 
     return MemoryByte;
