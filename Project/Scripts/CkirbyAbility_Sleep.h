@@ -38,7 +38,7 @@ public:
     virtual void ChangeAbilityExit();
 
 public:
-    CLONE_DISABLE(CkirbyAbility_Sleep)
+    CLONE(CkirbyAbility_Sleep)
     CkirbyAbility_Sleep();
     virtual ~CkirbyAbility_Sleep();
 };

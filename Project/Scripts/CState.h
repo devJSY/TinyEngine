@@ -34,6 +34,7 @@ public:
     CState* Clone() = 0;
 public:
     CState();
+    CState(const CState& _Origin);
     virtual ~CState();
 
     friend class CFSMScript;

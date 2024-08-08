@@ -10,17 +10,34 @@ CPushOutScript::CPushOutScript()
     , m_vBase{}
     , m_vDest{}
     , m_vDir{}
+    , m_iChildNum{-1, -1, -1}
     , m_eState(PushOutState::Stop)
     , m_fSpeed(0.f)
+    , m_fMoveBaseOffset(0.f)
+    , m_fMoveDestOffset(0.f)
     , m_fReturnSpeed(0.f)
-    , m_fOffset(1.f)
-    , m_bFlag(false)
+    , m_bXMove(false)
+    , m_bZMove(false)
+    , m_bBasePlus(false)
+    , m_bDestPlus(false)
 {
+    for (int i = 0; i < 3; i++)
+    {
+        AddScriptParam(SCRIPT_PARAM::INT, &m_iChildNum[i], "PushOutColliderNum" + std::to_string(i));
+    }
+
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDest, "Destination");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Direction");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fReturnSpeed, "Return Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOffset, "Offset");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveBaseOffset, "MoveBaseOffset");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveDestOffset, "MoveDestOffset");
+
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bXMove, "MoveX");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bZMove, "MoveZ");
+
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bBasePlus, "BasePlus");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bDestPlus, "DestPlus");
 }
 
 CPushOutScript::CPushOutScript(const CPushOutScript& Origin)
@@ -30,17 +47,34 @@ CPushOutScript::CPushOutScript(const CPushOutScript& Origin)
     , m_vBase{}
     , m_vDest{}
     , m_vDir{}
+    , m_iChildNum{-1, -1, -1}
     , m_eState(PushOutState::Stop)
     , m_fSpeed(Origin.m_fSpeed)
+    , m_fMoveBaseOffset(Origin.m_fMoveBaseOffset)
+    , m_fMoveDestOffset(Origin.m_fMoveDestOffset)
     , m_fReturnSpeed(Origin.m_fReturnSpeed)
-    , m_fOffset(Origin.m_fOffset)
-    , m_bFlag(false)
+    , m_bXMove(false)
+    , m_bZMove(false)
+    , m_bBasePlus(false)
+    , m_bDestPlus(false)
 {
+    for (int i = 0; i < 3; i++)
+    {
+        AddScriptParam(SCRIPT_PARAM::INT, &m_iChildNum[i], "PushOutColliderNum" + std::to_string(i));
+    }
+
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDest, "Destination");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Direction");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fReturnSpeed, "Return Speed");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOffset, "Offset");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveBaseOffset, "MoveBaseOffset");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMoveDestOffset, "MoveDestOffset");
+
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bXMove, "MoveX");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bZMove, "MoveZ");
+
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bBasePlus, "BasePlus");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bDestPlus, "DestPlus");
 }
 
 CPushOutScript::~CPushOutScript()
@@ -49,14 +83,18 @@ CPushOutScript::~CPushOutScript()
 
 void CPushOutScript::begin()
 {
-    m_vBase = Transform()->GetWorldPos();
-
     for (int i = 0; i < 3; i++)
     {
-        m_pChild[i] = GetOwner()->GetParent()->GetChildObject(L"POC" + std::to_wstring(i));
-        if (nullptr != m_pChild[i])
+        if (-1 != m_iChildNum[i])
+        {
+            m_pChild[i] = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PushOutColliderObj" + std::to_wstring(m_iChildNum[i]));
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetParent(GetOwner());
+            m_pChild[i]->GetScript<CPushOutColliderScript>()->SetDestSpeed(m_fSpeed);
+            m_pChild[i]->GetScript<CPushOutColliderScript>()->SetBaseSpeed(m_fReturnSpeed);
+            m_pChild[i]->GetScript<CPushOutColliderScript>()->SetDir(m_vDir);
+        }
     }
+    m_vBase = Transform()->GetWorldPos();
 }
 
 void CPushOutScript::tick()
@@ -82,68 +120,216 @@ void CPushOutScript::tick()
     }
 }
 
-void CPushOutScript::MoveBase()
+void CPushOutScript::ChangeState(PushOutState _state)
 {
-    MoveWithChild(-1.f * m_vDir, m_vBase, m_fReturnSpeed, false);
-
-    if (m_bFlag)
-    {
-        m_bFlag = false;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.f, 0.001f, 0.f)) : void();
-    }
-    else
-    {
-        m_bFlag = true;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.f, -0.001f, 0.f)) : void();
-    }
-
-    nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(-1.f * m_vDir * m_fReturnSpeed * DT) : void();
+    ExitState();
+    m_eState = _state;
+    EnterState();
 }
 
-void CPushOutScript::MoveDest()
+void CPushOutScript::EnterState()
 {
-    MoveWithChild(m_vDir, m_vBase, m_fSpeed, true);
-
-    if (m_bFlag)
+    switch (m_eState)
     {
-        m_bFlag = false;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.f, 0.001f, 0.f)) : void();
-    }
-    else
-    {
-        m_bFlag = true;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.f, -0.001f, 0.f)) : void();
-    }
-
-    nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(m_vDir * m_fSpeed * DT) : void();
-}
-
-void CPushOutScript::Stop()
-{
-    MoveWithChild(Vec3(0.f, 0.f, 0.f), Vec3(0.f, 0.f, 0.f), 0.f, false);
-}
-
-void CPushOutScript::MoveWithChild(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)
-{
-    Vec3 vPos = Transform()->GetWorldPos();
-
-    if ((m_vDest.x - m_fOffset <= vPos.x && vPos.x <= m_vDest.x + m_fOffset) &&
-        (m_vDest.y - m_fOffset <= vPos.y && vPos.y <= m_vDest.y + m_fOffset) && (m_vDest.z - m_fOffset <= vPos.z && vPos.z <= m_vDest.z + m_fOffset))
-    {
-        m_eState = true == _flag ? PushOutState::MoveBase : PushOutState::Stop;
-        Transform()->SetWorldPos(_vDest);
-    }
-    else
-    {
-        Rigidbody()->SetVelocity(m_vDir * _fSpeed * DT);
-
+    case PushOutState::MoveDest: {
         for (int i = 0; i < 3; i++)
         {
             if (nullptr != m_pChild[i])
             {
-                m_pChild[i]->Rigidbody()->SetVelocity(m_vDir * _fSpeed * DT);
+                m_pChild[i]->GetScript<CPushOutColliderScript>()->SetState(PushOutColliderState::MoveDest);
             }
         }
+    }
+    break;
+    case PushOutState::MoveBase: {
+        for (int i = 0; i < 3; i++)
+        {
+            if (nullptr != m_pChild[i])
+            {
+                m_pChild[i]->GetScript<CPushOutColliderScript>()->SetState(PushOutColliderState::MoveBase);
+            }
+        }
+    }
+    break;
+    case PushOutState::Stop: {
+        for (int i = 0; i < 3; i++)
+        {
+            if (nullptr != m_pChild[i])
+            {
+                m_pChild[i]->GetScript<CPushOutColliderScript>()->SetState(PushOutColliderState::Stop);
+            }
+        }
+    }
+    break;
+    }
+}
+
+void CPushOutScript::MoveBase()
+{
+    if (m_bBasePlus)
+    {
+        if (m_bXMove)
+        {
+            MovePlusX(-1.f * m_vDir, m_vBase, m_fReturnSpeed, false);
+        }
+        else if (m_bZMove)
+        {
+            MovePlusZ(-1.f * m_vDir, m_vBase, m_fReturnSpeed, false);
+        }
+        else
+        {
+            ChangeState(PushOutState::Stop);
+        }
+    }
+    else
+    {
+        if (m_bXMove)
+        {
+            MoveMinusX(-1.f * m_vDir, m_vBase, m_fReturnSpeed, false);
+        }
+        else if (m_bZMove)
+        {
+            MoveMinusZ(-1.f * m_vDir, m_vBase, m_fReturnSpeed, false);
+        }
+        else
+        {
+            ChangeState(PushOutState::Stop);
+        }
+    }
+}
+
+void CPushOutScript::MoveDest()
+{
+    if (m_bDestPlus)
+    {
+        if (m_bXMove)
+        {
+            MovePlusX(m_vDir, m_vDest, m_fSpeed, true);
+        }
+        else if (m_bZMove)
+        {
+            MovePlusZ(m_vDir, m_vDest, m_fSpeed, true);
+        }
+        else
+        {
+            ChangeState(PushOutState::Stop);
+        }
+    }
+    else
+    {
+        if (m_bXMove)
+        {
+            MoveMinusX(m_vDir, m_vDest, m_fSpeed, true);
+        }
+        else if (m_bZMove)
+        {
+            MoveMinusZ(m_vDir, m_vDest, m_fSpeed, true);
+        }
+        else
+        {
+            ChangeState(PushOutState::Stop);
+        }
+    }
+}
+
+void CPushOutScript::Stop()
+{
+    Transform()->SetWorldPos(m_vBase);
+}
+
+void CPushOutScript::MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)
+{
+    Vec3 vPos = Transform()->GetWorldPos();
+
+    if (_vDest.x <= vPos.x)
+    {
+        true == _flag ? ChangeState(PushOutState::MoveBase) : ChangeState(PushOutState::Stop);
+    }
+    else
+    {
+        Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
+    }
+
+    if (nullptr != m_pPlayer)
+    {
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        if (Offset == 0)
+        {
+            Offset = 30;
+        }
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+    }
+}
+
+void CPushOutScript::MovePlusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)
+{
+    Vec3 vPos = Transform()->GetWorldPos();
+
+    if (_vDest.z <= vPos.z)
+    {
+        true == _flag ? ChangeState(PushOutState::MoveBase) : ChangeState(PushOutState::Stop);
+    }
+    else
+    {
+        Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
+    }
+
+    if (nullptr != m_pPlayer)
+    {
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        if (Offset == 0)
+        {
+            Offset = 30;
+        }
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+    }
+}
+
+void CPushOutScript::MoveMinusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)
+{
+    Vec3 vPos = Transform()->GetWorldPos();
+
+    if (_vDest.x >= vPos.x)
+    {
+        true == _flag ? ChangeState(PushOutState::MoveBase) : ChangeState(PushOutState::Stop);
+    }
+    else
+    {
+        Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
+    }
+
+    if (nullptr != m_pPlayer)
+    {
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        if (Offset == 0)
+        {
+            Offset = 30;
+        }
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+    }
+}
+
+void CPushOutScript::MoveMinusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)
+{
+    Vec3 vPos = Transform()->GetWorldPos();
+
+    if (_vDest.z >= vPos.z)
+    {
+        true == _flag ? ChangeState(PushOutState::MoveBase) : ChangeState(PushOutState::Stop);
+    }
+    else
+    {
+        Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
+    }
+
+    if (nullptr != m_pPlayer)
+    {
+        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        if (Offset == 0)
+        {
+            Offset = 30;
+        }
+        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
     }
 }
 
@@ -151,17 +337,37 @@ UINT CPushOutScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    for (int i = 0; i < 3; i++)
+    {
+        fwrite(&m_iChildNum[i], sizeof(int), 1, _File);
+        MemoryByte += sizeof(int);
+    }
+
     fwrite(&m_vDest, sizeof(Vec3), 1, _File);
     fwrite(&m_vDir, sizeof(Vec3), 1, _File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fReturnSpeed, sizeof(float), 1, _File);
-    fwrite(&m_fOffset, sizeof(float), 1, _File);
+    fwrite(&m_fMoveBaseOffset, sizeof(float), 1, _File);
+    fwrite(&m_fMoveDestOffset, sizeof(float), 1, _File);
+
+    fwrite(&m_bXMove, sizeof(bool), 1, _File);
+    fwrite(&m_bZMove, sizeof(bool), 1, _File);
+
+    fwrite(&m_bBasePlus, sizeof(bool), 1, _File);
+    fwrite(&m_bDestPlus, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }
@@ -170,17 +376,37 @@ UINT CPushOutScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    for (int i = 0; i < 3; i++)
+    {
+        fread(&m_iChildNum[i], sizeof(int), 1, _File);
+        MemoryByte += sizeof(int);
+    }
+
     fread(&m_vDest, sizeof(Vec3), 1, _File);
     fread(&m_vDir, sizeof(Vec3), 1, _File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fReturnSpeed, sizeof(float), 1, _File);
-    fread(&m_fOffset, sizeof(float), 1, _File);
+    fread(&m_fMoveBaseOffset, sizeof(float), 1, _File);
+    fread(&m_fMoveDestOffset, sizeof(float), 1, _File);
+
+    fread(&m_bXMove, sizeof(bool), 1, _File);
+    fread(&m_bZMove, sizeof(bool), 1, _File);
+
+    fread(&m_bBasePlus, sizeof(bool), 1, _File);
+    fread(&m_bDestPlus, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }

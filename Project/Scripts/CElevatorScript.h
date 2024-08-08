@@ -14,6 +14,7 @@ private:
     CGameObject* m_pPlayer;
     Vec3 m_vDest;
     ElevatorState m_eState;
+    float m_fOffset;
     float m_fSpeed;
     bool m_bFlag;
 
@@ -26,8 +27,7 @@ public:
 
 private:
     void Move();
-    void Stop();
-
+    
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
     virtual void OnTriggerExit(CCollider* _OtherCollider) override;

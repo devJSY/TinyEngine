@@ -71,8 +71,12 @@ CSolarChargeScript
 CSolarOnceScript
 CElevatorScript
 CPushOutScript
-CPushOutTriggerScript
-CPushOutColliderScript
+CObstacleTriggerScript
 CLadderScript
+CKirbyCheckPointTrigger
+CKirbyFallDetectTrigger
+CFixedViewCamTrigger
 CElfilisUnit
 CFadeOutScript
+CPushOutColliderScript
+CLightBulbGimmickScript

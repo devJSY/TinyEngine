@@ -35,7 +35,8 @@ public:
     virtual void ChangeObjectEnter();
 
 public:
-    CLONE_DISABLE(CKirbyObject_Cone)
+    CLONE(CKirbyObject_Cone)
     CKirbyObject_Cone();
+    CKirbyObject_Cone(const CKirbyObject_Cone& _Origin);
     virtual ~CKirbyObject_Cone();
 };

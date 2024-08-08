@@ -38,6 +38,7 @@ private:
     bool                        m_bMoveLock;
     bool                        m_bJumpLock;
     bool                        m_bDirLock;
+    bool                        m_bLimitFallSpeed;
 
     // 방향
     Vec3                        m_CurDir;
@@ -51,6 +52,7 @@ private:
     Vec3                        m_Accel;
     float                       m_Speed;
     float                       m_MaxSpeed;
+    float                       m_MaxFallSpeed;
     float                       m_RotSpeed;
     float                       m_Friction; // 마찰력 계수
     float                       m_JumpPower;
@@ -62,6 +64,10 @@ private:
     float                       m_HoveringLimitHeight;
     float                       m_HoveringMinSpeed;
     float                       m_HoveringHeight;
+
+    // Respawn 정보
+    Vec3                        m_CheckPointPos;
+
 
 public:
     virtual void begin() override;
@@ -83,6 +89,7 @@ public:
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
     void SetForwardMode(bool _Mode) { m_bForwardMode = _Mode; }
+    void SetLimitFallSpeed(bool _b) { m_bLimitFallSpeed = _b; }
 
     void Jump() { m_bJump = true; }
     void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
@@ -97,11 +104,13 @@ public:
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
+    void SetCheckPoint(Vec3 _CheckPoint) { m_CheckPointPos = _CheckPoint; }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetInputWorld() const { return m_InputWorld; }
     Vec3 GetMoveDir() const { return m_MoveDir; }
     Vec3 GetVelocity() const { return m_MoveVelocity; }
+    Vec3 GetCheckPoint() const { return m_CheckPointPos; }
     float GetSpeed() const { return m_Speed; }
     float GetRotSpeed() const { return m_RotSpeed; }
     float GetGravity() const { return m_Gravity; }
@@ -117,6 +126,5 @@ public:
 public:
     CLONE(CKirbyMoveController);
     CKirbyMoveController();
-    CKirbyMoveController(const CKirbyMoveController& _Origin);
     virtual ~CKirbyMoveController();
 };
