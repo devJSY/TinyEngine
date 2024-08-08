@@ -72,7 +72,7 @@ CPhysics2DMgr::CPhysics2DMgr()
     , m_vecPhysicsObj{}
     , m_Matrix{}
     , m_Accumulator(0.f)
-    , m_StepSize(0.02f) // 1.f / 50.f
+    , m_StepSize(0.01666f) // 1.f / 60.f
     , m_Gravity(Vec2(0.f, -9.8f))
     , m_PPM(1.f)
 {

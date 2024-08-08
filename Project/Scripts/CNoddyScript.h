@@ -21,6 +21,7 @@ class CNoddyScript : public CMonsterUnitScript
 private:
     NODDY_STATE m_State;
     float m_PassedTime;
+    CGameObject* m_SnotBubble;
 
 private:
     virtual void begin() override;
@@ -28,6 +29,9 @@ private:
 
 public:
     void ChangeState(NODDY_STATE _NextState);
+
+private:
+    void SetSnotBubble();
 
 private:
     void EnterState();

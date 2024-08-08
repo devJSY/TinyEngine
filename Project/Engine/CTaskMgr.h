@@ -33,6 +33,9 @@ enum class TASK_TYPE
     // Param1 : MouseX , Param2 : MouseY
     MOUSE_COLLISION2D_PICKING,
 
+    // Param1 : MouseX , Param2 : MouseY
+    MOUSE_COLLISION_PICKING,
+
     // Param1 : Object, Param2 : COMPONENT_TYPE
     ADD_COMPONENT,
 
@@ -97,6 +100,7 @@ private:
     void SCREENSHOT(const tTask& _Task);
     void MOUSE_COLOR_PICKING(const tTask& _Task);
     void MOUSE_COLLISION2D_PICKING(const tTask& _Task);
+    void MOUSE_COLLISION_PICKING(const tTask& _Task);
     void ADD_COMPONENT(const tTask& _Task);
     void REMOVE_COMPONENT(const tTask& _Task);
     void REMOVE_SCRIPT(const tTask& _Task);

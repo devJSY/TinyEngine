@@ -64,6 +64,8 @@ void CProgressCamTrigger::begin()
 
 void CProgressCamTrigger::tick()
 {
+#ifndef DISTRIBUTE
+
     // Debug
     // Start (Blue)
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), -Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldScale().z,
@@ -72,6 +74,8 @@ void CProgressCamTrigger::tick()
     // End (Red)
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldScale().z,
                                   Vec3(1.f, 0.f, 0.f), true);
+#endif
+
 
 }
 

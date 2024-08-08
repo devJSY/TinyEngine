@@ -196,6 +196,7 @@ __declspec(align(16)) struct tGlobalData
 
     int g_DrawAsWireFrame = false;
     int g_RenderOutline = true;
+    int g_MousePickingMode = 0; // 0 : Color, 1 : Physcis, 2 : Physcis2D
 };
 
 __declspec(align(16)) struct tAnimData2D

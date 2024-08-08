@@ -42,11 +42,6 @@ CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
 CCameraController
-CUIMoveUpDownScript
-CUIAnimScript
-CUIFlowScript
-CUIStartSceneFlowScript
-CUIGlowMoveScript
 CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
@@ -67,13 +62,9 @@ CSurpriseBoardAttackScript
 CUIWipeScript
 CWipeTriggerScript
 CKirbyUnitScript
-CSolarChargeScript
-CSolarOnceScript
-CElevatorScript
-CPushOutScript
-CPushOutTriggerScript
-CPushOutColliderScript
 CLadderScript
+CKirbyCheckPointTrigger
+CKirbyFallDetectTrigger
 CMorphoFSM
 CElfilisUnit
 CMorphoUnit

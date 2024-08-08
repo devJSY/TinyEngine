@@ -19,6 +19,9 @@ public:
     static const wstring& GetLevelExtension() { return Level_extension; }
 
 private:
+    static void PaddingMemoryBlock(UINT MemoryByte, FILE* _File, bool _bRead);
+
+private:
     static wstring Level_extension;
     const static UINT MemoryBlockSize;
 };

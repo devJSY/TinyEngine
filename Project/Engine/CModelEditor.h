@@ -46,6 +46,7 @@ private:
     bool m_ViewportFocused;
     bool m_ViewportHovered;
     ImGuizmo::OPERATION m_GizmoType;
+    ImGuizmo::MODE m_GizmoMode;
 
 public:
     virtual void init() override;

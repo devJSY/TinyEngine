@@ -637,6 +637,15 @@ void GamePlayStatic::MouseCollision2DPicking(Vec2 MousePos)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
+void GamePlayStatic::MouseCollisionPicking(Vec2 MousePos)
+{
+    tTask task = {};
+    task.Type = TASK_TYPE::MOUSE_COLLISION_PICKING;
+    task.Param_1 = (INT_PTR)MousePos.x;
+    task.Param_2 = (INT_PTR)MousePos.y;
+    CTaskMgr::GetInst()->AddTask(task);
+}
+
 void GamePlayStatic::AddComponent(CGameObject* _pObj, COMPONENT_TYPE _type)
 {
     tTask task = {};
