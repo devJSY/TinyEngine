@@ -74,13 +74,14 @@
 #include "CSolarOnceScript.h"
 #include "CElevatorScript.h"
 #include "CPushOutScript.h"
-#include "CPushOutTriggerScript.h"
-#include "CPushOutColliderScript.h"
+#include "CObstacleTriggerScript.h"
 #include "CLadderScript.h"
 #include "CKirbyCheckPointTrigger.h"
 #include "CKirbyFallDetectTrigger.h"
 #include "CFixedViewCamTrigger.h"
 #include "CElfilisUnit.h"
+#include "CPushOutColliderScript.h"
+#include "CLightBulbGimmickScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -157,13 +158,14 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSolarOnceScript");
 	_vec.push_back(L"CElevatorScript");
 	_vec.push_back(L"CPushOutScript");
-	_vec.push_back(L"CPushOutTriggerScript");
-	_vec.push_back(L"CPushOutColliderScript");
+	_vec.push_back(L"CObstacleTriggerScript");
 	_vec.push_back(L"CLadderScript");
 	_vec.push_back(L"CKirbyCheckPointTrigger");
 	_vec.push_back(L"CKirbyFallDetectTrigger");
 	_vec.push_back(L"CFixedViewCamTrigger");
 	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CPushOutColliderScript");
+	_vec.push_back(L"CLightBulbGimmickScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -314,10 +316,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElevatorScript;
 	if (L"CPushOutScript" == _strScriptName)
 		return new CPushOutScript;
-	if (L"CPushOutTriggerScript" == _strScriptName)
-		return new CPushOutTriggerScript;
-	if (L"CPushOutColliderScript" == _strScriptName)
-		return new CPushOutColliderScript;
+	if (L"CObstacleTriggerScript" == _strScriptName)
+		return new CObstacleTriggerScript;
 	if (L"CLadderScript" == _strScriptName)
 		return new CLadderScript;
 	if (L"CKirbyCheckPointTrigger" == _strScriptName)
@@ -328,6 +328,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFixedViewCamTrigger;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
+	if (L"CPushOutColliderScript" == _strScriptName)
+		return new CPushOutColliderScript;
+	if (L"CLightBulbGimmickScript" == _strScriptName)
+		return new CLightBulbGimmickScript;
 	return nullptr;
 }
 
@@ -481,10 +485,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElevatorScript;
 	case (UINT)SCRIPT_TYPE::PUSHOUTSCRIPT:
 		return new CPushOutScript;
-	case (UINT)SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
-		return new CPushOutTriggerScript;
-	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
-		return new CPushOutColliderScript;
+	case (UINT)SCRIPT_TYPE::OBSTACLETRIGGERSCRIPT:
+		return new CObstacleTriggerScript;
 	case (UINT)SCRIPT_TYPE::LADDERSCRIPT:
 		return new CLadderScript;
 	case (UINT)SCRIPT_TYPE::KIRBYCHECKPOINTTRIGGER:
@@ -495,6 +497,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFixedViewCamTrigger;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return new CPushOutColliderScript;
+	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return new CLightBulbGimmickScript;
 	}
 	return nullptr;
 }
@@ -649,10 +655,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElevatorScript";
 	case SCRIPT_TYPE::PUSHOUTSCRIPT:
 		return L"CPushOutScript";
-	case SCRIPT_TYPE::PUSHOUTTRIGGERSCRIPT:
-		return L"CPushOutTriggerScript";
-	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
-		return L"CPushOutColliderScript";
+	case SCRIPT_TYPE::OBSTACLETRIGGERSCRIPT:
+		return L"CObstacleTriggerScript";
 	case SCRIPT_TYPE::LADDERSCRIPT:
 		return L"CLadderScript";
 	case SCRIPT_TYPE::KIRBYCHECKPOINTTRIGGER:
@@ -663,6 +667,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFixedViewCamTrigger";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return L"CPushOutColliderScript";
+	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return L"CLightBulbGimmickScript";
 	}
 	return nullptr;
 }
