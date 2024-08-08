@@ -29,7 +29,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bActiveFriction(false)
     , m_bForwardMode(false)
     , m_bLimitFallSpeed(false)
-    , m_HoveringLimitHeight(500.f)
+    , m_HoveringLimitHeight(100.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)

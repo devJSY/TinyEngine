@@ -3,9 +3,6 @@
 
 class CKirbyHoveringSpit : public CState
 {
-private:
-    float m_SaveSpeed;
-
 public:
     virtual void tick();    
     virtual void Enter();

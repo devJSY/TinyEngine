@@ -30,6 +30,7 @@ void CKirbyHoveringLanding::Enter()
 
     PLAYERCTRL->LockJump();
     PLAYERFSM->SetDroppable(true);
+    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed/3.f);
 }
 
 void CKirbyHoveringLanding::Exit()
@@ -40,4 +41,5 @@ void CKirbyHoveringLanding::Exit()
 
     PLAYERCTRL->UnlockJump();
     PLAYERFSM->SetDroppable(false);
+    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
 }
