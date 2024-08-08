@@ -378,4 +378,26 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"TransparentShader");
         AddAsset(L"TransparentShader", pShader);
     }
+
+    // =================================
+    // Kirby Fade Out Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyFadeOutPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Mask Texture");
+        pShader->AddScalarParam(FLOAT_0, "Weight", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Rotate Angle", 1e-3f);
+        pShader->AddScalarParam(VEC4_0, "BackGroundColor");
+        pShader->AddScalarParam(VEC4_1, "Target NDC Pos");
+
+        pShader->SetName(L"KirbyFadeOutShader");
+        AddAsset(L"KirbyFadeOutShader", pShader);
+    }
 }

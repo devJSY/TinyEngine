@@ -78,6 +78,7 @@
 #include "CPushOutColliderScript.h"
 #include "CLadderScript.h"
 #include "CElfilisUnit.h"
+#include "CFadeOutScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -158,6 +159,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLadderScript");
 	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CFadeOutScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -316,6 +318,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CLadderScript;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
+	if (L"CFadeOutScript" == _strScriptName)
+		return new CFadeOutScript;
 	return nullptr;
 }
 
@@ -477,6 +481,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CLadderScript;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::FADEOUTSCRIPT:
+		return new CFadeOutScript;
 	}
 	return nullptr;
 }
@@ -639,6 +645,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CLadderScript";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::FADEOUTSCRIPT:
+		return L"CFadeOutScript";
 	}
 	return nullptr;
 }

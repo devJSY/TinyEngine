@@ -1133,6 +1133,9 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIWipeShader">
       <UniqueIdentifier>{dd483ebd-d730-4e07-8e7f-6107bc17f32a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\Postprocess">
+      <UniqueIdentifier>{31eba271-b6d2-4a23-98b1-ed3fdf799bda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1436,6 +1439,9 @@
     </FxCompile>
     <FxCompile Include="DepthMaskingPS.hlsl">
       <Filter>ShaderCode\Render\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbyFadeOutPS.hlsl">
+      <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

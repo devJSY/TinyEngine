@@ -685,6 +685,9 @@
     <ClInclude Include="CElfilisUnit.h">
       <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
     </ClInclude>
+    <ClInclude Include="CFadeOutScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1379,6 +1382,9 @@
     </ClCompile>
     <ClCompile Include="CElfilisUnit.cpp">
       <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="CFadeOutScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

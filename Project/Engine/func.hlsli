@@ -45,6 +45,27 @@ float4 TexcoordToView(Texture2D tex, float2 texcoord)
     return posView;
 }
 
+// Z축 회전을 적용하는 함수
+float2 RotateUV(float2 uv, float angle)
+{
+    // UV 좌표를 텍스처의 중심으로 이동 (0.5, 0.5)
+    uv -= 0.5;
+
+    // 회전 각도 계산
+    float cosTheta = cos(angle);
+    float sinTheta = sin(angle);
+
+    // 회전 행렬 적용
+    float2 rotatedUV;
+    rotatedUV.x = uv.x * cosTheta - uv.y * sinTheta;
+    rotatedUV.y = uv.x * sinTheta + uv.y * cosTheta;
+
+    // 다시 원래 위치로 이동
+    rotatedUV += 0.5;
+
+    return rotatedUV;
+}
+
 // ======
 // Random
 // ======

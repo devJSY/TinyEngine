@@ -75,3 +75,4 @@ CPushOutTriggerScript
 CPushOutColliderScript
 CLadderScript
 CElfilisUnit
+CFadeOutScript
