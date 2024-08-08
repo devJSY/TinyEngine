@@ -112,5 +112,5 @@ void CRenderMgr::init()
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_2, m_DepthMaskingTex);
-    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.3f);
+    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.25f);
 }

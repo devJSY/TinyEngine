@@ -33,8 +33,7 @@ float4 main(PS_IN input) : SV_TARGET
     }
     
     // 시점과의 거리가 가까울수록 진하게 표시
-    float weight = DepthMaskingViewZ;
-    color *= pow(abs(weight), PowPower);
+    color *= pow(abs(DepthMaskingViewZ), PowPower);
     
     return float4(color, 1.f);
 }
