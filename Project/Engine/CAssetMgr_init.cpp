@@ -544,7 +544,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
         pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_GrayFilter");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
@@ -560,7 +560,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
         pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_BlendFilter");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
@@ -597,7 +597,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
         pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_CinematicFilter");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
@@ -617,7 +617,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocess.fx", "VS_Postprocess");
         pShader->CreatePixelShader(L"shader\\postprocess.fx", "PS_AnimationFilter");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
@@ -992,9 +992,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\SamplingPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(FLOAT_0, "Threshold", 0.01f);
@@ -1013,9 +1012,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\CombinePS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(FLOAT_0, "Strength", 0.01f);
@@ -1035,9 +1033,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BloomDownPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "Bloom Texture");
@@ -1054,9 +1051,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BloomUpPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "Bloom Texture");
@@ -1073,9 +1069,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BlurXPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->SetName(L"BlurXShader");
@@ -1090,9 +1085,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\BlurYPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->SetName(L"BlurYShader");
@@ -1107,9 +1101,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\ShockWaveVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\ShockWavePS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(FLOAT_0, "Circle Size", 0.1f);
@@ -1126,9 +1119,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\ToneMappingPS.hlsl", "main");
 
-        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(INT_0, "Bloom Enable");
@@ -1167,6 +1159,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\PostEffectPS.hlsl", "main");
 
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddScalarParam(INT_0, "Render Mode");
@@ -1216,6 +1210,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\ColorGradingPS.hlsl", "main");
 
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
@@ -1253,6 +1248,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\DepthMaskingPS.hlsl", "main");
 
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
