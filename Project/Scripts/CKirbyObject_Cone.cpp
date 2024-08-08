@@ -176,12 +176,13 @@ void CKirbyObject_Cone::AttackCombo1EndExit()
 void CKirbyObject_Cone::DropObjectEnter()
 {
     CKirbyObject::DropObjectEnter();
-    UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
-    PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
+
+    UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
+    PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
+    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
 }
 
 // ===============
@@ -196,12 +197,12 @@ void CKirbyObject_Cone::ChangeObjectEnter()
     PLAYERCTRL->SetSpeed(5.f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
-    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 140.f, 0.f));
-    PLAYER->CharacterController()->SetRadius(1.5f);
-    PLAYER->CharacterController()->SetHeight(4.5f);
+    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 1.8f, 0.f));
+    PLAYER->CharacterController()->SetRadius(1.23f);
+    PLAYER->CharacterController()->SetHeight(3.6f);
 
     CCapsuleCollider* BodyCol = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider();
-    BodyCol->SetCenter(Vec3(0.f, 140.f, 0.f));
-    BodyCol->SetRadius(1.5f);
-    BodyCol->SetHeight(4.5f);
+    BodyCol->SetCenter(Vec3(0.f, 1.3f, 0.f));
+    BodyCol->SetRadius(1.23f);
+    BodyCol->SetHeight(3.85f);
 }
