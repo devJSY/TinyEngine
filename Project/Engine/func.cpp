@@ -385,7 +385,6 @@ void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, f
     switch (_Axis)
     {
     case AXIS_TYPE::X: {
-
         RotationMatrix = XMMatrixRotationZ(XM_PIDIV2);
     }
     break;
@@ -393,7 +392,6 @@ void GamePlayStatic::DrawDebugCapsule(const Matrix& _WorldMat, float _fRadius, f
     }
     break;
     case AXIS_TYPE::Z: {
-
         RotationMatrix = XMMatrixRotationX(XM_PIDIV2);
     }
     break;
