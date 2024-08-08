@@ -472,9 +472,6 @@
     <ClInclude Include="CElfilisG_NormalAtkL.h">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisUnit.h">
-      <Filter>Scripts\Unit\Elfilis</Filter>
-    </ClInclude>
     <ClInclude Include="CBossState.h">
       <Filter>Module\FSM\State\Boss</Filter>
     </ClInclude>
@@ -684,6 +681,18 @@
     </ClInclude>
     <ClInclude Include="CKirbyLadderExit.h">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoFSM.h">
+      <Filter>Scripts\FSM\MorphoFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorpho_Idle.h">
+      <Filter>State\MorphoState\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisUnit.h">
+      <Filter>Scripts\Character\Boss\Elfilis</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoUnit.h">
+      <Filter>Scripts\Character\Boss\Morpho\Unit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1167,9 +1176,6 @@
     <ClCompile Include="CElfilisG_NormalAtkL.cpp">
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtk\L</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisUnit.cpp">
-      <Filter>Scripts\Unit\Elfilis</Filter>
-    </ClCompile>
     <ClCompile Include="CBossState.cpp">
       <Filter>Module\FSM\State\Boss</Filter>
     </ClCompile>
@@ -1379,6 +1385,18 @@
     </ClCompile>
     <ClCompile Include="CKirbyLadderExit.cpp">
       <Filter>State\KirbyState\Ladder\LadderExit</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoFSM.cpp">
+      <Filter>Scripts\FSM\MorphoFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorpho_Idle.cpp">
+      <Filter>State\MorphoState\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisUnit.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoUnit.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\Unit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1898,9 +1916,6 @@
     <Filter Include="State\ElfilisState\Ground_Idle">
       <UniqueIdentifier>{0c33e58f-bc3c-4cfa-ac38-fb7c56fe6416}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Unit\Elfilis">
-      <UniqueIdentifier>{4e9f1b14-3c6a-4f82-a2e4-e8821f68d867}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\ElfilisState\Ground_Move">
       <UniqueIdentifier>{e6d86f0c-0839-4737-b103-44bad510dc64}</UniqueIdentifier>
     </Filter>
@@ -2182,6 +2197,21 @@
     </Filter>
     <Filter Include="State\KirbyState\Ladder\LadderExit">
       <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\FSM\MorphoFSM">
+      <UniqueIdentifier>{d054f48a-850b-4fec-9b12-bfbfa9e06b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState">
+      <UniqueIdentifier>{544e579c-30f8-4e19-995b-02567d4b49fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Idle">
+      <UniqueIdentifier>{360d9124-0cfc-41bd-9b71-2a991980be4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho">
+      <UniqueIdentifier>{47e1c89c-4514-4f16-aaff-1e06e98db7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho\Unit">
+      <UniqueIdentifier>{20725c2d-664c-4dca-af82-ba858944985b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

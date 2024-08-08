@@ -50,14 +50,8 @@ CUIGlowMoveScript
 CChangeCamTrigger
 CProgressCamTrigger
 CTwoTargetCamTrigger
-CCrumbleScript
-CSurpriseBoardScript
-CSurpriseBoardAttackScript
-CUIWipeScript
-CWipeTriggerScript
 CElfilisFSM
 CBossMgr
-CElfilisUnit
 CElfilisArrowSetScript
 CElfilisArrowScript
 CElfilisSwordSlashScript
@@ -67,6 +61,11 @@ CElfilisDimensionLaser
 CElfilisLaser
 CElfilisBigFSM
 CChangeAlphaScript
+CCrumbleScript
+CSurpriseBoardScript
+CSurpriseBoardAttackScript
+CUIWipeScript
+CWipeTriggerScript
 CKirbyUnitScript
 CSolarChargeScript
 CSolarOnceScript
@@ -75,3 +74,6 @@ CPushOutScript
 CPushOutTriggerScript
 CPushOutColliderScript
 CLadderScript
+CMorphoFSM
+CElfilisUnit
+CMorphoUnit

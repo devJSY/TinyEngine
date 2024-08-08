@@ -199,6 +199,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CMorphoFSM.h" />
+    <ClInclude Include="CMorphoUnit.h" />
+    <ClInclude Include="CMorpho_Idle.h" />
     <ClInclude Include="CPushOutColliderScript.h" />
     <ClInclude Include="CPushOutTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
@@ -441,6 +444,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CMorphoFSM.cpp" />
+    <ClCompile Include="CMorphoUnit.cpp" />
+    <ClCompile Include="CMorpho_Idle.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />
     <ClCompile Include="CPushOutTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />

@@ -396,18 +396,6 @@ void CElfilisFSM::begin()
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
-
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR");
-        //ELFFSM->ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
-        // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
-    }
-    if (KEY_TAP(KEY::SPACE))
-    {
-        // ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
-    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
@@ -521,7 +509,7 @@ const vector<wstring>& CElfilisFSM::GetCurPublicStates() const
 
 float CElfilisFSM::GetPlayerDist() const
 {
-    Vec3 Dist = PLAYER->Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
+    Vec3 Dist = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
     Dist.y = 0.f;
     return Dist.Length();
 }
