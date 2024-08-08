@@ -4,33 +4,37 @@
 CKabuScript::CKabuScript()
     : CMonsterUnitScript(KABUSCRIPT)
     , m_eState(KABU_STATE::Patrol)
-    , m_fLerpValue(0.f)
+    , m_vCenterPos{}
     , m_vDamageDir{}
     , m_bFlag(false)
-    , m_vPatrolDir{}
+    , m_bCurved(false)
+    , m_bInverse(false)
     , m_vOriginPos{}
     , m_vDestPos{}
 {
-    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vPatrolDir, "PatrolDir");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPos, "CenterPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOriginPos, "OriginPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fLerpValue, "LerpValue");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
 }
 
 CKabuScript::CKabuScript(const CKabuScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_eState(KABU_STATE::Patrol)
-    , m_fLerpValue(_Origin.m_fLerpValue)
+    , m_vCenterPos{}
     , m_vDamageDir{}
     , m_bFlag(false)
-    , m_vPatrolDir{}
+    , m_bCurved(false)
+    , m_bInverse(false)
     , m_vOriginPos{}
     , m_vDestPos{}
 {
-    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vPatrolDir, "PatrolDir");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPos, "CenterPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOriginPos, "OriginPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fLerpValue, "LerpValue");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
 }
 
 CKabuScript::~CKabuScript()
@@ -41,7 +45,7 @@ void CKabuScript::begin()
 {
     ChangeState(KABU_STATE::Patrol);
 
-    m_vOriginPos = Transform()->GetLocalPos();
+    m_vOriginPos = Transform()->GetWorldPos();
 }
 
 void CKabuScript::tick()
@@ -168,41 +172,51 @@ void CKabuScript::Death()
 
 void CKabuScript::PatrolMove()
 {
-    Vec3 vPos = Transform()->GetLocalPos();
-    float fSpeed = GetCurInfo().Speed;
-
-    // 목적지까지 Patrol이 끝났는데 반복 정찰이라면 다시 원래 자리로 돌아간다.
-    if ((m_vDestPos.x - 5.f <= vPos.x && m_vDestPos.x + 5.f >= vPos.x) && (m_vDestPos.z - 5.f <= vPos.z && m_vDestPos.z + 5.f >= vPos.z))
+    Vec3 vPos = Transform()->GetWorldPos();
+    Vec3 vUP = Transform()->GetWorldDir(DIR_TYPE::UP);
+    if (m_bCurved)
     {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-        Vec3 _vTemp = m_vDestPos;
-        m_vDestPos = m_vOriginPos;
-        m_vOriginPos = _vTemp;
-        m_vPatrolDir *= -1.f;
+        Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 vPos = Transform()->GetWorldPos();
+        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == vFront ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+        Vec3 vTemp = (m_vCenterPos - vPos).Normalize();
+
+        Vec3 vPatrolDir = vTemp.Cross(vUp);
+
+        vPatrolDir = vPatrolDir.Normalize();
+
+        if (m_bInverse)
+            vPatrolDir *= -1.f;
+
+        Rigidbody()->SetVelocity(vPatrolDir * GetInitInfo().Speed * DT);
+
+        if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.y - 5.f <= vPos.y && vPos.y <= m_vDestPos.y + 5.f) &&
+            (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+        {
+            Transform()->SetWorldPos(m_vDestPos);
+            Vec3 vTemp = m_vDestPos;
+            m_vDestPos = m_vOriginPos;
+            m_vOriginPos = vTemp;
+            m_bInverse = !m_bInverse;
+        }
     }
+    else
+    {
+        Vec3 vDir = m_vDestPos - vPos;
+        vDir.Normalize();
+        vDir.y = 0;
+        Rigidbody()->SetVelocity(vDir * GetInitInfo().Speed * DT);
 
-    Vec3 vUP = Vec3(0.f, 0.f, -1.f) == m_vPatrolDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-
-    // Rotating시에는 WorldRotation
-    Quat _vOriginQuat = Quat::LookRotation(-m_vPatrolDir, vUP);
-
-    Quat _vTargetQuat = Quat::LookRotation(-1.f * (m_vDestPos - vPos), vUP);
-
-    _vTargetQuat = Quat::Slerp(_vOriginQuat, _vTargetQuat, m_fLerpValue * DT);
-
-    m_vPatrolDir = m_vPatrolDir.Normalize();
-    Rigidbody()->SetVelocity(m_vPatrolDir * fSpeed * DT);
-
-    m_vPatrolDir = CaculateDir(_vTargetQuat.ToEuler()).Normalize();
-}
-
-Vec3 CKabuScript::CaculateDir(Vec3 _vRadian)
-{
-    Quat _LocalQuat = Quat::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), _vRadian.x) * Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), _vRadian.y) *
-                      Quat::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), _vRadian.z);
-
-    Matrix matRot = Matrix::CreateFromQuaternion(_LocalQuat);
-    return XMVector3TransformNormal(Vec3(0.f, 0.f, 1.f), matRot);
+        if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.y - 5.f <= vPos.y && vPos.y <= m_vDestPos.y + 5.f) &&
+            (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+        {
+            Transform()->SetWorldPos(m_vDestPos);
+            Vec3 vTemp = m_vDestPos;
+            m_vDestPos = m_vOriginPos;
+            m_vOriginPos = vTemp;
+        }
+    }
 }
 
 void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
@@ -215,18 +229,6 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     UnitHit hit;
     ZeroMemory(&hit, sizeof(hit));
-    /**********************
-    | 1. Player ATK Hit
-    ***********************/
-
-    // 충돌한 오브젝트가 플레이어 공격인지 확인
-    if (LAYER_PLAYERATK == pObj->GetLayerIdx())
-    {
-        flag = true;
-        ChangeState(KABU_STATE::Damage);
-        m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-    }
-
     /**********************
     | 2. Player Body Hit
     ***********************/
@@ -244,15 +246,6 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
 
         UnitHit hitInfo = {};
         L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
-    }
-
-    // 둘 중 하나라도 피격 되었다면 체력 확인
-    if (flag)
-    {
-        if (GetCurInfo().HP - hit.Damage <= 0.f)
-        {
-            ChangeState(KABU_STATE::Death);
-        }
     }
 }
 
@@ -274,11 +267,15 @@ UINT CKabuScript::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_vCenterPos, sizeof(Vec3), 1, _File);
     fwrite(&m_vDestPos, sizeof(Vec3), 1, _File);
-    fwrite(&m_fLerpValue, sizeof(float), 1, _File);
+    fwrite(&m_bCurved, sizeof(bool), 1, _File);
+    fwrite(&m_bInverse, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec3);
-    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }
@@ -288,11 +285,15 @@ UINT CKabuScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+    fread(&m_vCenterPos, sizeof(Vec3), 1, _File);
     fread(&m_vDestPos, sizeof(Vec3), 1, _File);
-    fread(&m_fLerpValue, sizeof(float), 1, _File);
+    fread(&m_bCurved, sizeof(bool), 1, _File);
+    fread(&m_bInverse, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec3);
-    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }

@@ -15,6 +15,7 @@ enum class NORMALENEMY_STATE
     AttackFailed,
     AfterAttack,
     Damage,
+    Fall,
     Land,
     Eaten,
     Dead,
@@ -24,20 +25,22 @@ enum class NORMALENEMY_STATE
 class CNormalEnemyScript : public CMonsterUnitScript
 {
 private:
-    CGameObject* m_pTargetObject;
-    NORMALENEMY_STATE m_eState;
-    float m_fPatrolTime;
-    float m_fPatrolAccTime;
 
-    Vec3 m_fPatrolDir;
+    Vec3 m_vPatrolDir;
     Vec3 m_vDamageDir;
+    Vec3 m_vCenterPoint;
+    
+    NORMALENEMY_STATE m_eState;
 
     float m_fMaxSpeed;
     float m_fSpeed;
     float m_fRushLerp;
     float m_fRushSpeedLerp;
+    float m_fThreshHoldRushSpeedLerp;
 
+    bool m_bEnter;
     bool m_bFirst;
+    bool m_bCirclePatrol;
 
 public:
     virtual void begin() override;
@@ -60,6 +63,7 @@ private:
     void Grooming();
     void SuccessedAttack();
     void FailedAttack();
+    void Fall();
     void Land();
     void AfterAttack();
     void Damage();
@@ -67,7 +71,6 @@ private:
 
 private:
     NORMALENEMY_STATE RandomIdleState();
-    Vec3 RandomPatrolDir();
     Vec3 TrackDir(Vec3 _vPos);
     void ApplyDir(Vec3 _vFront, bool _flag);
     void PatrolMove();
@@ -79,6 +82,6 @@ private:
 public:
     CLONE(CNormalEnemyScript)
     CNormalEnemyScript();
-    CNormalEnemyScript(const CNormalEnemyScript& _Origin);
+    CNormalEnemyScript(const CNormalEnemyScript& Origin);
     virtual ~CNormalEnemyScript();
 };

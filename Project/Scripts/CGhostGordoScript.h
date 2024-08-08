@@ -12,6 +12,7 @@ enum class GHOSTGORDO_STATE
     TrackAfter2,
     TrackWait,
     Return,
+    ReturnRotating,
     EyeCloseStart,
     End,
 };
@@ -20,6 +21,7 @@ class CGhostGordoScript : public CMonsterUnitScript
 {
 private:
     GHOSTGORDO_STATE m_eState;
+    Quat m_qBaseQuat;
     Vec3 m_vBasePos;
     float m_fAccTime;
 
@@ -51,6 +53,10 @@ private:
     void EyeCloseStart();
     void TrackWait();
     void Return();
+    void ReturnRotating();
+
+private:
+    void Move(Vec3 _vTarget);
 
 public:
     CLONE(CGhostGordoScript)

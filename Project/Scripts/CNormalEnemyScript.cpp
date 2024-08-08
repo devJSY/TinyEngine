@@ -1,42 +1,54 @@
 #include "pch.h"
 #include "CNormalEnemyScript.h"
 
+#include "CPlayerMgr.h"
+
 CNormalEnemyScript::CNormalEnemyScript()
     : CMonsterUnitScript(NORMALENEMYSCRIPT)
-    , m_pTargetObject(nullptr)
     , m_eState(NORMALENEMY_STATE::Idle)
-    , m_fPatrolTime(4.f)
-    , m_fPatrolAccTime(0.f)
-    , m_fPatrolDir{}
+    , m_vPatrolDir{}
+    , m_vDamageDir{}
+    , m_vCenterPoint{}
     , m_fMaxSpeed(0.f)
     , m_fSpeed(0.f)
     , m_fRushLerp(0.f)
     , m_fRushSpeedLerp(0.f)
+    , m_fThreshHoldRushSpeedLerp(0.f)
+    , m_bEnter(true)
     , m_bFirst(false)
+    , m_bCirclePatrol(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fThreshHoldRushSpeedLerp, "ThreshHold Rush Speed Lerp");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCirclePatrol, "Circle Patrol");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPoint, "Center Point");
 }
 
-CNormalEnemyScript::CNormalEnemyScript(const CNormalEnemyScript& _Origin)
-    : CMonsterUnitScript(_Origin)
-    , m_pTargetObject(nullptr)
+CNormalEnemyScript::CNormalEnemyScript(const CNormalEnemyScript& Origin)
+    : CMonsterUnitScript(Origin)
     , m_eState(NORMALENEMY_STATE::Idle)
-    , m_fPatrolTime(_Origin.m_fPatrolTime)
-    , m_fPatrolAccTime(0.f)
-    , m_fPatrolDir{}
-    , m_fMaxSpeed(_Origin.m_fMaxSpeed)
-    , m_fSpeed(_Origin.m_fSpeed)
-    , m_fRushLerp(m_fRushLerp)
-    , m_fRushSpeedLerp(m_fRushSpeedLerp)
+    , m_vPatrolDir{}
+    , m_vDamageDir{}
+    , m_vCenterPoint{}
+    , m_fMaxSpeed(Origin.m_fMaxSpeed)
+    , m_fSpeed(Origin.m_fSpeed)
+    , m_fRushLerp(Origin.m_fRushLerp)
+    , m_fRushSpeedLerp(Origin.m_fRushSpeedLerp)
+    , m_fThreshHoldRushSpeedLerp(Origin.m_fThreshHoldRushSpeedLerp)
+    , m_bEnter(true)
     , m_bFirst(false)
+    , m_bCirclePatrol(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fThreshHoldRushSpeedLerp, "ThreshHold Rush Speed Lerp");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCirclePatrol, "Circle Patrol");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPoint, "Center Point");
 }
 
 CNormalEnemyScript::~CNormalEnemyScript()
@@ -45,7 +57,7 @@ CNormalEnemyScript::~CNormalEnemyScript()
 
 void CNormalEnemyScript::begin()
 {
-    ChangeState(NORMALENEMY_STATE::Idle);
+    m_bCirclePatrol == true ? ChangeState(NORMALENEMY_STATE::Patrol) : ChangeState(NORMALENEMY_STATE::Idle);
 }
 
 void CNormalEnemyScript::tick()
@@ -97,6 +109,10 @@ void CNormalEnemyScript::tick()
         Land();
     }
     break;
+    case NORMALENEMY_STATE::Fall: {
+        Fall();
+    }
+    break;
     case NORMALENEMY_STATE::End:
         break;
     default:
@@ -108,7 +124,7 @@ void CNormalEnemyScript::ChangeState(NORMALENEMY_STATE _state)
 {
     ExitState(m_eState);
     m_eState = _state;
-    EnterState(_state);
+    EnterState(m_eState);
 
     string tmp = string("[State Change] : ") + to_string((int)_state);
     LOG(LOG_LEVEL::Log, tmp.c_str());
@@ -139,12 +155,11 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
     }
     break;
     case NORMALENEMY_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX("Run"));
+        Animator()->Play(ANIMPREFIX("Run"),true,false,1.5f);
     }
     break;
     case NORMALENEMY_STATE::AttackSuccessed: {
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
-        m_pTargetObject = nullptr;
     }
     break;
     case NORMALENEMY_STATE::AttackFailed: {
@@ -157,6 +172,10 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
     break;
     case NORMALENEMY_STATE::Damage: {
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
+    }
+    break;
+    case NORMALENEMY_STATE::Fall: {
+        Animator()->Play(ANIMPREFIX("Fall"));
     }
     break;
     case NORMALENEMY_STATE::Land: {
@@ -183,13 +202,12 @@ void CNormalEnemyScript::ExitState(NORMALENEMY_STATE _state)
     switch (_state)
     {
     case NORMALENEMY_STATE::AttackSuccessed: {
-        m_pTargetObject = nullptr;
         m_fSpeed = m_fMaxSpeed;
         m_bFirst = false;
     }
     break;
     case NORMALENEMY_STATE::AttackFailed: {
-        m_pTargetObject = nullptr;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         m_fSpeed = m_fMaxSpeed;
     }
     break;
@@ -202,16 +220,23 @@ void CNormalEnemyScript::ExitState(NORMALENEMY_STATE _state)
 
 void CNormalEnemyScript::Idle()
 {
-    if (nullptr != GetTarget())
+    if (IsGround())
     {
-        ChangeState(NORMALENEMY_STATE::Find);
+        if (nullptr != GetTarget())
+        {
+            ChangeState(NORMALENEMY_STATE::Find);
+        }
+        else
+        {
+            if (Animator()->IsFinish())
+            {
+                ChangeState(RandomIdleState());
+            }
+        }
     }
     else
     {
-        if (Animator()->IsFinish())
-        {
-            ChangeState(RandomIdleState());
-        }
+        ChangeState(NORMALENEMY_STATE::Fall);
     }
 }
 
@@ -232,17 +257,24 @@ void CNormalEnemyScript::Grooming()
 
 void CNormalEnemyScript::Patrol()
 {
-    PatrolMove();
+    if (IsGround())
+    {
+        PatrolMove();
 
-    // 발견 시
-    nullptr != GetTarget() ? ChangeState(NORMALENEMY_STATE::Find) : void();
+        if (nullptr != GetTarget())
+        {
+            ChangeState(NORMALENEMY_STATE::Find);
+        }
+    }
+    else
+    {
+        ChangeState(NORMALENEMY_STATE::Fall);
+    }
 }
 
 void CNormalEnemyScript::Find()
 {
-    m_pTargetObject = GetTarget();
-
-    Rotating();
+    RotatingToTarget();
 
     if (Animator()->IsFinish())
     {
@@ -254,6 +286,7 @@ void CNormalEnemyScript::Attack()
 {
     Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     vDir.y = 0.f;
+
     ApplyDir(vDir, true);
 
     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
@@ -267,22 +300,17 @@ void CNormalEnemyScript::Attack()
 
 void CNormalEnemyScript::SuccessedAttack()
 {
-    if (!m_bFirst)
-    {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-        Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        vDir *= -1.f;
-        vDir.y = 1.f;
-        vDir = vDir.Normalize();
-        vDir.y = 1.f;
-
-        Rigidbody()->AddForce(vDir * 100.f, ForceMode::Impulse);
-        m_bFirst = true;
-    }
-
     if (Animator()->IsFinish())
     {
         m_bFirst = false;
+        ChangeState(NORMALENEMY_STATE::Land);
+    }
+}
+
+void CNormalEnemyScript::Fall()
+{
+    if (IsGround())
+    {
         ChangeState(NORMALENEMY_STATE::Land);
     }
 }
@@ -303,7 +331,9 @@ void CNormalEnemyScript::FailedAttack()
     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 
-    if (m_fSpeed <= 0.3f)
+    Animator()->GetCurFrameIdx();
+
+    if (m_fSpeed <= 2.2f)
     {
         ChangeState(NORMALENEMY_STATE::AfterAttack);
     }
@@ -321,7 +351,15 @@ void CNormalEnemyScript::AfterAttack()
         {
             if (Animator()->IsFinish())
             {
-                ChangeState(RandomIdleState());
+                if (m_bEnter && m_bCirclePatrol)
+                {
+                    ChangeState(NORMALENEMY_STATE::Patrol);
+                    m_bEnter=false;
+                }
+                else
+                {
+                    ChangeState(RandomIdleState());
+                }
             }
         }
     }
@@ -364,55 +402,7 @@ void CNormalEnemyScript::Dead()
 
 NORMALENEMY_STATE CNormalEnemyScript::RandomIdleState()
 {
-    return NORMALENEMY_STATE(GetRandomInt(0, 2));
-}
-
-Vec3 CNormalEnemyScript::RandomPatrolDir()
-{
-    PATROLDIR dirCount = PATROLDIR(GetRandomInt(0, 7));
-    Vec3 dir = {};
-
-    switch (dirCount)
-    {
-    case PATROLDIR::Up: {
-        dir = Vec3(0.f, 0.f, 1.f);
-    }
-    break;
-    case PATROLDIR::Down: {
-        dir = Vec3(0.f, 0.f, -1.f);
-    }
-    break;
-    case PATROLDIR::Right: {
-        dir = Vec3(1.f, 0.f, 0.f);
-    }
-    break;
-    case PATROLDIR::Left: {
-        dir = Vec3(-1.f, 0.f, 0.f);
-    }
-    break;
-    case PATROLDIR::UpLeft: {
-        dir = Vec3(-1.f, 0.f, 1.f);
-    }
-    break;
-    case PATROLDIR::UpRight: {
-        dir = Vec3(1.f, 0.f, 1.f);
-    }
-    break;
-    case PATROLDIR::DownLeft: {
-        dir = Vec3(-1.f, 0.f, -1.f);
-    }
-    break;
-    case PATROLDIR::DownRight: {
-        dir = Vec3(1.f, 0.f, -1.f);
-    }
-    break;
-    case PATROLDIR::END:
-        break;
-    default:
-        break;
-    }
-
-    return dir.Normalize();
+    return NORMALENEMY_STATE(GetRandomInt(0, 1));
 }
 
 void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
@@ -429,6 +419,20 @@ void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
     Quat _vTrackQuat = Quat::LookRotation(-_vTrackingDir, _vUp);
 
+    float _vRadian = Quat::Angle(_vOriginQuat, _vTrackQuat);
+
+    // 90도 이상 틀어질 경우 lerp가 확도는걸 감안함
+    if (_vRadian >= 1.5)
+    {
+        if (_flag)
+        {
+            _vTrackQuat = Quat::Slerp(_vOriginQuat, _vTrackQuat, m_fThreshHoldRushSpeedLerp * DT);
+        }
+
+       Transform()->SetWorldRotation(_vTrackQuat);
+        return;
+    }
+
     if (_flag)
         _vTrackQuat = Quat::Slerp(_vOriginQuat, _vTrackQuat, m_fRushLerp * DT);
 
@@ -437,37 +441,28 @@ void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
 void CNormalEnemyScript::PatrolMove()
 {
-    // Patrol 방향은 매 패트롤 시간마다 바뀜
-    Vec3 vUp = {};
-    Vec3 vPos = Transform()->GetLocalPos();
-    float fSpeed = GetCurInfo().Speed;
-    CTransform* pTr = Transform();
+    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 vPos = Transform()->GetWorldPos();
+    Vec3 vUp = Vec3(0.f, 0.f, -1.f) == vFront ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-    m_fPatrolAccTime += DT;
+    Vec3 vTemp = (m_vCenterPoint - vPos).Normalize();
 
-    Vec3 _vPatrolDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    if (m_fPatrolTime <= m_fPatrolAccTime)
-    {
-        Vec3 vDir = RandomPatrolDir();
-        Vec3 vUP = Vec3(0.f, 1.f, 0.f);
+    Vec3 vPatrolDir = vTemp.Cross(vUp);
 
-        if (Vec3(0.f, 0.f, -1.f) == vDir)
-        {
-            vUP = Vec3(0.f, -1.f, 0.f);
-        }
+    vPatrolDir = vPatrolDir.Normalize();
 
-        Quat qPatrolQuat = Quat::LookRotation(-vDir, vUP);
-        pTr->SetWorldRotation(qPatrolQuat);
-        m_fPatrolAccTime = 0.f;
-    }
+    vUp = vPatrolDir == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Rigidbody()->SetVelocity(vDir * fSpeed);
+    Quat vPatrlQuat = Quat::LookRotation(vPatrolDir, vUp);
+
+    Transform()->SetWorldRotation(vPatrlQuat);
+
+    Rigidbody()->SetVelocity(vFront * GetInitInfo().Speed * DT);
 }
 
 Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
 {
-    return (m_pTargetObject->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
+    return (PLAYER->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
 }
 
 void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
@@ -477,22 +472,6 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     CGameObject* pObj = _OtherCollider->GetOwner();
     bool flag = false;
-    /**********************
-    | 1. Player ATK Hit
-    ***********************/
-
-    // 충돌한 오브젝트가 플레이어 공격인지 확인
-    if (LAYER_PLAYERATK == pObj->GetLayerIdx())
-    {
-        ChangeState(NORMALENEMY_STATE::Damage);
-        m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-    }
-
-    /**********************
-    | 2. Player Body Hit
-    ***********************/
-    // 충돌한 오브젝트가 PlayerBody인지 확인
-
     if (LAYER_PLAYER == pObj->GetLayerIdx())
     {
         // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
@@ -540,11 +519,17 @@ UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fRushLerp, sizeof(float), 1, _File);
     fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+    fwrite(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1,_File);
+    fwrite(&m_bCirclePatrol, sizeof(bool), 1, _File);
+    fwrite(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
@@ -554,15 +539,22 @@ UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+
     fread(&m_fMaxSpeed, sizeof(float), 1, _File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fRushLerp, sizeof(float), 1, _File);
     fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+    fread(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1, _File);
+    fread(&m_bCirclePatrol, sizeof(bool), 1, _File);
+    fread(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }

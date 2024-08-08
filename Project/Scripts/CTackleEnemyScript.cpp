@@ -10,6 +10,7 @@ CTackleEnemyScript::CTackleEnemyScript()
     , m_fRushSpeedLerp(0.5f)
     , m_fPatrolTime(4.f)
     , m_fPatrolAccTime(0.f)
+    , m_fThreshHoldRushLerp(0.f)
     , m_pTargetObject(nullptr)
     , m_vDamageDir{}
     , m_bFlag(false)
@@ -20,14 +21,15 @@ CTackleEnemyScript::CTackleEnemyScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
 }
 
-CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& _Origin)
-    : CMonsterUnitScript(_Origin)
+CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& Origin)
+    : CMonsterUnitScript(Origin)
     , m_eState(TACKLEENEMY_STATE::Idle)
-    , m_fSpeed(_Origin.m_fSpeed)
-    , m_fMaxSpeed(_Origin.m_fMaxSpeed)
-    , m_fRushLerp(_Origin.m_fRushLerp)
-    , m_fRushSpeedLerp(_Origin.m_fRushSpeedLerp)
-    , m_fPatrolTime(_Origin.m_fPatrolTime)
+    , m_fSpeed(Origin.m_fSpeed)
+    , m_fMaxSpeed(Origin.m_fMaxSpeed)
+    , m_fRushLerp(Origin.m_fRushLerp)
+    , m_fRushSpeedLerp(Origin.m_fRushSpeedLerp)
+    , m_fThreshHoldRushLerp(Origin.m_fThreshHoldRushLerp)
+    , m_fPatrolTime(Origin.m_fPatrolTime)
     , m_fPatrolAccTime(0.f)
     , m_pTargetObject(nullptr)
     , m_vDamageDir{}
@@ -56,10 +58,7 @@ void CTackleEnemyScript::tick()
         Idle();
     }
     break;
-    case TACKLEENEMY_STATE::Patrol: {
-        Patrol();
-    }
-    break;
+
     case TACKLEENEMY_STATE::Find: {
         Find();
     }
@@ -188,14 +187,6 @@ void CTackleEnemyScript::Idle()
     nullptr != GetTarget() ? ChangeState(TACKLEENEMY_STATE::Find) : void();
 }
 
-void CTackleEnemyScript::Patrol()
-{
-    PatrolMove();
-
-    // 발견 시
-    nullptr != GetTarget() ? ChangeState(TACKLEENEMY_STATE::Find) : void();
-}
-
 void CTackleEnemyScript::Find()
 {
     m_pTargetObject = GetTarget();
@@ -267,54 +258,6 @@ TACKLEENEMY_STATE CTackleEnemyScript::RandomIdleState()
     return TACKLEENEMY_STATE(GetRandomInt(0, 1));
 }
 
-Vec3 CTackleEnemyScript::RandomPatrolDir()
-{
-    PATROLDIR dirCount = PATROLDIR(GetRandomInt(0, 7));
-    Vec3 dir = {};
-
-    switch (dirCount)
-    {
-    case PATROLDIR::Up: {
-        dir = Vec3(0.f, 0.f, 1.f);
-    }
-    break;
-    case PATROLDIR::Down: {
-        dir = Vec3(0.f, 0.f, -1.f);
-    }
-    break;
-    case PATROLDIR::Right: {
-        dir = Vec3(1.f, 0.f, 0.f);
-    }
-    break;
-    case PATROLDIR::Left: {
-        dir = Vec3(-1.f, 0.f, 0.f);
-    }
-    break;
-    case PATROLDIR::UpLeft: {
-        dir = Vec3(-1.f, 0.f, 1.f);
-    }
-    break;
-    case PATROLDIR::UpRight: {
-        dir = Vec3(1.f, 0.f, 1.f);
-    }
-    break;
-    case PATROLDIR::DownLeft: {
-        dir = Vec3(-1.f, 0.f, -1.f);
-    }
-    break;
-    case PATROLDIR::DownRight: {
-        dir = Vec3(1.f, 0.f, -1.f);
-    }
-    break;
-    case PATROLDIR::END:
-        break;
-    default:
-        break;
-    }
-
-    return dir.Normalize();
-}
-
 void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 {
     Vec3 _vPos = Transform()->GetLocalPos();
@@ -329,40 +272,24 @@ void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
     Quat _vTrackQuat = Quat::LookRotation(-_vTrackingDir, _vUp);
 
+    float _vRadian = Quat::Angle(_vOriginQuat, _vTrackQuat);
+
+    // 90도 이상 틀어질 경우 lerp가 확도는걸 감안함
+    if (_vRadian >= 1.5)
+    {
+        if (_flag)
+        {
+            _vTrackQuat = Quat::Slerp(_vOriginQuat, _vTrackQuat, m_fThreshHoldRushLerp * DT);
+        }
+
+        Transform()->SetWorldRotation(_vTrackQuat);
+        return;
+    }
+
     if (_flag)
         _vTrackQuat = Quat::Slerp(_vOriginQuat, _vTrackQuat, m_fRushLerp * DT);
 
     Transform()->SetWorldRotation(_vTrackQuat);
-}
-
-void CTackleEnemyScript::PatrolMove()
-{
-    // Patrol 방향은 매 패트롤 시간마다 바뀜
-    Vec3 vUp = {};
-    Vec3 vPos = Transform()->GetLocalPos();
-    float fSpeed = GetCurInfo().Speed;
-    CTransform* pTr = Transform();
-
-    m_fPatrolAccTime += DT;
-
-    Vec3 _vPatrolDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    if (m_fPatrolTime <= m_fPatrolAccTime)
-    {
-        Vec3 vDir = RandomPatrolDir();
-        Vec3 vUP = Vec3(0.f, 1.f, 0.f);
-
-        if (Vec3(0.f, 0.f, -1.f) == vDir)
-        {
-            vUP = Vec3(0.f, -1.f, 0.f);
-        }
-
-        Quat qPatrolQuat = Quat::LookRotation(-vDir, vUP);
-        pTr->SetWorldRotation(qPatrolQuat);
-        m_fPatrolAccTime = 0.f;
-    }
-
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Rigidbody()->SetVelocity(vDir * fSpeed);
 }
 
 Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)

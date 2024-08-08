@@ -25,6 +25,7 @@ private:
     float m_fSpeed;
     float m_fMaxSpeed;
 
+    float m_fThreshHoldRushLerp;
     float m_fPatrolTime;
     float m_fPatrolAccTime;
 
@@ -50,7 +51,6 @@ private:
 
 private:
     void Idle();
-    void Patrol();
     void Find();
     void AttackPrev();
     void Attack();
@@ -62,13 +62,11 @@ private:
 private:
     Vec3 TrackDir(Vec3 _vPos);
     TACKLEENEMY_STATE RandomIdleState();
-    Vec3 RandomPatrolDir();
     void ApplyDir(Vec3 _vFront, bool _flag);
-    void PatrolMove();
 
 public:
     CLONE(CTackleEnemyScript)
     CTackleEnemyScript();
-    CTackleEnemyScript(const CTackleEnemyScript& _Origin);
+    CTackleEnemyScript(const CTackleEnemyScript& Origin);
     virtual ~CTackleEnemyScript();
 };

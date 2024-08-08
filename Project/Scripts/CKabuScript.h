@@ -15,14 +15,15 @@ class CKabuScript : public CMonsterUnitScript
 private:
     KABU_STATE m_eState;
 
-    Vec3 m_vPatrolDir;
+    Vec3 m_vCenterPos;
+
     Vec3 m_vOriginPos;
     Vec3 m_vDestPos;
 
     Vec3 m_vDamageDir;
+    bool m_bInverse;
     bool m_bFlag;
-
-    float m_fLerpValue;
+    bool m_bCurved;
 
 public:
     virtual void begin() override;

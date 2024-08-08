@@ -7,6 +7,7 @@
 CGhostGordoScript::CGhostGordoScript()
     : CMonsterUnitScript(GHOSTGORDOSCRIPT)
     , m_eState(GHOSTGORDO_STATE::EyeCloseWait)
+    , m_qBaseQuat{}
     , m_vBasePos{}
     , m_fAccTime(0.f)
 {
@@ -16,6 +17,7 @@ CGhostGordoScript::CGhostGordoScript()
 CGhostGordoScript::CGhostGordoScript(const CGhostGordoScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_eState(GHOSTGORDO_STATE::EyeCloseWait)
+    , m_qBaseQuat{}
     , m_vBasePos{}
     , m_fAccTime(0.f)
 {
@@ -28,6 +30,8 @@ CGhostGordoScript::~CGhostGordoScript()
 
 void CGhostGordoScript::begin()
 {
+    m_vBasePos = Transform()->GetWorldPos();
+    m_qBaseQuat = Transform()->GetWorldQuaternion();
     ChangeState(GHOSTGORDO_STATE::EyeCloseWait);
 }
 
@@ -61,6 +65,10 @@ void CGhostGordoScript::tick()
     break;
     case GHOSTGORDO_STATE::Return: {
         Return();
+    }
+    break;
+    case GHOSTGORDO_STATE::ReturnRotating: {
+        ReturnRotating();
     }
     break;
     case GHOSTGORDO_STATE::EyeCloseStart: {
@@ -133,6 +141,14 @@ void CGhostGordoScript::ExitState(GHOSTGORDO_STATE _state)
 {
     switch (_state)
     {
+    case GHOSTGORDO_STATE::Track: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
+    break;
+    case GHOSTGORDO_STATE::Return: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
+    break;
     case GHOSTGORDO_STATE::TrackWait: {
         m_fAccTime = 0.f;
     }
@@ -144,7 +160,11 @@ void CGhostGordoScript::ExitState(GHOSTGORDO_STATE _state)
 
 void CGhostGordoScript::EyeCloseWait()
 {
-    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? ChangeState(GHOSTGORDO_STATE::OpenEye) : void();
+    CGameObject* pObj = GetTarget();
+    if (pObj && PLAYERFSM->IsAttackEvent())
+    {
+        ChangeState(GHOSTGORDO_STATE::OpenEye);
+    }
 }
 
 void CGhostGordoScript::EyeOpenWait()
@@ -166,8 +186,7 @@ void CGhostGordoScript::Find()
 
 void CGhostGordoScript::Track()
 {
-    RotatingToTarget();
-    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? RigidbodyMove(GetTarget()) : ChangeState(GHOSTGORDO_STATE::TrackAfter1);
+    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? Move(PLAYER->Transform()->GetWorldPos()) : ChangeState(GHOSTGORDO_STATE::TrackAfter1);
 }
 
 void CGhostGordoScript::TrackAfter1()
@@ -182,16 +201,28 @@ void CGhostGordoScript::TrackAfter2()
 
 void CGhostGordoScript::Return()
 {
-    Vec3 ToTargetDir = m_vBasePos - Transform()->GetWorldPos();
-    Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
-
     Vec3 vPos = Transform()->GetWorldPos();
-    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? ChangeState(GHOSTGORDO_STATE::Find)
-                                                           : Rigidbody()->SetVelocity(ToTargetDir * (m_CurInfo.Speed * 1.5f));
+    (nullptr != GetTarget() && PLAYERFSM->IsAttackEvent()) ? ChangeState(GHOSTGORDO_STATE::Find) : Move(m_vBasePos);
 
-    (m_vBasePos.x - 1.f <= vPos.x && vPos.x <= m_vBasePos.x + 1.f) && (m_vBasePos.x - 1.f <= vPos.x && vPos.x <= m_vBasePos.x + 1.f)
-        ? ChangeState(GHOSTGORDO_STATE::EyeCloseStart)
-        : void();
+    if ((m_vBasePos.x - 5.f <= vPos.x && vPos.x <= m_vBasePos.x + 5.f) && (m_vBasePos.y - 5.f <= vPos.y && vPos.x <= m_vBasePos.y + 5.f) &&
+        (m_vBasePos.z - 5.f <= vPos.z && vPos.z <= m_vBasePos.z + 5.f))
+    {
+        ChangeState(GHOSTGORDO_STATE::ReturnRotating);
+    }
+}
+
+void CGhostGordoScript::ReturnRotating()
+{
+    Quat qWorldQuat = Transform()->GetWorldQuaternion();
+
+    Quat qChangeQuat = Quat::Slerp(m_qBaseQuat, qWorldQuat, GetInitInfo().RotationSpeed * DT);
+
+    Transform()->SetWorldRotation(qChangeQuat);
+
+    if ((qChangeQuat.x <= 0.001f && qChangeQuat.x >= -0.001f) || (qChangeQuat.z <= 0.001f && qChangeQuat.z >= -0.001f))
+    {
+        ChangeState(GHOSTGORDO_STATE::EyeCloseStart);
+    }
 }
 
 void CGhostGordoScript::EyeCloseStart()
@@ -203,6 +234,29 @@ void CGhostGordoScript::TrackWait()
 {
     m_fAccTime += DT;
     m_fAccTime >= 2.f ? ChangeState(GHOSTGORDO_STATE::EyeOpenWait) : void();
+}
+
+void CGhostGordoScript::Move(Vec3 _vTraget)
+{
+    // 1. GhostGordo는 Y 축으로만 방향으로만 바라봄
+    Quat qWolrdQuat = Transform()->GetWorldQuaternion();
+
+    Vec3 vDir = _vTraget - Transform()->GetWorldPos();
+    Vec3 vMoveDir = vDir.Normalize();
+
+    vDir.y = 0.f;
+
+    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 vUP = vFront == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+    Quat qQuat = Quat::LookRotation(-vDir, vUP);
+
+    Quat qLerp = Quat::Slerp(qWolrdQuat, qQuat, GetInitInfo().RotationSpeed * DT);
+
+    Transform()->SetWorldRotation(qLerp);
+
+    // 2. GhostGordo는 Y 축으로도 이동함
+    Rigidbody()->SetVelocity(vMoveDir * GetInitInfo().Speed * DT);
 }
 
 UINT CGhostGordoScript::SaveToLevelFile(FILE* _File)
