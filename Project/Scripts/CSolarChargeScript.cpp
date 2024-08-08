@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "CSolarChargeScript.h"
 
-#include "CElevatorScript.h"
+#include "CPushOutScript.h"
 
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 
 CSolarChargeScript::CSolarChargeScript()
     : CScript(SOLARCHARGESCRIPT)
+    , m_pObj(nullptr)
     , m_MovingObjName{}
     , m_eState(SolarChargeState::OffWaitStart)
     , m_IsArea(false)
@@ -17,6 +18,7 @@ CSolarChargeScript::CSolarChargeScript()
 
 CSolarChargeScript::CSolarChargeScript(const CSolarChargeScript& Origin)
     : CScript(Origin)
+    , m_pObj(nullptr)
     , m_MovingObjName{}
     , m_eState(SolarChargeState::OffWaitStart)
     , m_IsArea(false)
@@ -30,6 +32,7 @@ CSolarChargeScript::~CSolarChargeScript()
 
 void CSolarChargeScript::begin()
 {
+    m_pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_MovingObjName));
     ChangeState(SolarChargeState::OffWaitStart);
 }
 
@@ -100,11 +103,6 @@ void CSolarChargeScript::EnterState()
     case SolarChargeState::ChargedWait:
         break;
     case SolarChargeState::Decreases: {
-        CLevelMgr::GetInst()
-            ->GetCurrentLevel()
-            ->FindObjectByName(ToWstring(m_MovingObjName), 2)
-            ->GetScript<CElevatorScript>()
-            ->SetState(ElevatorState::Move);
         Animator()->Play(ANIMPREFIX("Decreases"), false);
     }
     break;
@@ -121,6 +119,37 @@ void CSolarChargeScript::EnterState()
 
 void CSolarChargeScript::ExitState()
 {
+    switch (m_eState)
+    {
+    case SolarChargeState::OffWait:
+        break;
+    case SolarChargeState::ChargeOn:
+        break;
+    case SolarChargeState::ChargeOff:
+        break;
+    case SolarChargeState::ChargedStart:
+    {
+        if (nullptr != m_pObj)
+        {
+            CPushOutScript* Script = m_pObj->GetScript<CPushOutScript>();
+            if (nullptr != Script)
+            {
+                Script->ChangeState(PushOutState::MoveDest);
+            }
+        }
+    }
+        break;
+    case SolarChargeState::ChargedWait:
+        break;
+    case SolarChargeState::Decreases:
+        break;
+    case SolarChargeState::OffWaitStart:
+        break;
+    case SolarChargeState::End:
+        break;
+    default:
+        break;
+    }
 }
 
 void CSolarChargeScript::OffWait()
