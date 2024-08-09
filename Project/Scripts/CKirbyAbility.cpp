@@ -78,11 +78,11 @@ void CKirbyAbility::LandingEnter()
 {
     if (PLAYERFSM->GetLastJump() == LastJumpType::LOW)
     {
-        PLAYER->Animator()->Play(ANIMPREFIX("LandingSmall"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX("LandingSmall"), false, false, 1.5f);
     }
     else
     {
-        PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
     }
 
     PLAYERCTRL->LockJump();
