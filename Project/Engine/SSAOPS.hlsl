@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 
 // reference https://learnopengl.com/Advanced-Lighting/SSAO
 // reference https://nellfamily.tistory.com/48
@@ -36,23 +37,6 @@ static const float3 g_kernel[MAX_KERNEL_SIZE] =
     float3(-0.6657394f, 0.6298575f, 0.6342437f),
     float3(-0.0001783f, 0.2834622f, 0.8343929f),
 };
-
-float4 TexcoordToView(float2 texcoord)
-{
-    float4 posProj;
-
-    // [0, 1]x[0, 1] -> [-1, 1]x[-1, 1]
-    posProj.xy = texcoord * 2.f - 1.f;
-    posProj.y *= -1; // 주의: y 방향을 뒤집어줘야 합니다.
-    posProj.z = DepthOnlyTex.Sample(g_LinearClampSampler, texcoord).r;
-    posProj.w = 1.f;
-
-    // ProjectSpace -> ViewSpace
-    float4 posView = mul(posProj, g_matProjInv);
-    posView.xyz /= posView.w;
-    
-    return posView;
-}
 
 float4 main(PS_IN input) : SV_TARGET
 {
@@ -95,7 +79,7 @@ float4 main(PS_IN input) : SV_TARGET
         offset.xy = offset.xy * float2(0.5f, 0.5f) + float2(0.5f, 0.5f);
 
         // 랜덤 위치의 깊이값 추출
-        float geometryDepth = TexcoordToView(offset.xy).z;
+        float geometryDepth = TexcoordToView(DepthOnlyTex, offset.xy).z;
   
         float rangeCheck = smoothstep(0.f, 1.f, SampleRadius / abs(viewPos.z - geometryDepth));
             

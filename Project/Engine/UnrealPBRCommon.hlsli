@@ -235,7 +235,7 @@ float3 LightRadiance(tLightInfo light, float3 representativePoint, float3 posWor
                 shadowFactor = PCSS(lightTexcoord, lightScreen.z - bias, g_StaticLightDepthMapTex3, light.invProj, light.fRadius * LightRadiusScale);
         }
     }
-
+    
     float3 radiance = light.vRadiance.rgb * spotFator * att * shadowFactor;
 
     return radiance;

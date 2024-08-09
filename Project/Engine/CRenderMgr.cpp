@@ -32,8 +32,7 @@ CRenderMgr::CRenderMgr()
     , m_vecNoiseTex{}
     , m_DepthOnlyTex{}
     , m_PostEffectObj(nullptr)
-    , m_DepthMaskingTex(nullptr)
-    , m_bBloomEnable(false)
+    , m_bEnableBloom(false)
     , m_bloomLevels(5)
     , m_BloomRTTex_LDRI(nullptr)
     , m_BloomTextures_LDRI{}
@@ -45,9 +44,16 @@ CRenderMgr::CRenderMgr()
     , m_BloomDownObj(nullptr)
     , m_BloomUpObj(nullptr)
     , m_ToneMappingObj(nullptr)
+    , m_bEnableDepthMasking(false)
+    , m_DepthMaskingTex(nullptr)
+    , m_DepthMaskingObj(nullptr)
+    , m_DepthMaskingLayerMask(0)
     , m_CameraPreviewTex(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
+
+    DepthMaskingLayerMask(4, true);
+    DepthMaskingLayerMask(6, true);
 
 #ifdef DISTRIBUTE
     m_bShowDebugRender = false;
@@ -123,6 +129,12 @@ CRenderMgr::~CRenderMgr()
         delete m_PostEffectObj;
         m_PostEffectObj = nullptr;
     }
+
+    if (nullptr != m_DepthMaskingObj)
+    {
+        delete m_DepthMaskingObj;
+        m_DepthMaskingObj = nullptr;
+    }
 }
 
 void CRenderMgr::render()
@@ -134,15 +146,25 @@ void CRenderMgr::render()
 
     UpdateData();
 
-    // Depth Only Pass
     if (nullptr != m_mainCam)
     {
+        // Depth Only Pass
         m_mainCam->SortShadowMapObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
-    }
 
-    // Depth Masking Pass
-    render_DepthMasking();
+        // Depth Masking Pass
+        if (m_bEnableDepthMasking)
+        {
+            UINT LasyerMask = m_mainCam->GetLayerMask();
+            m_mainCam->LayerMask(m_DepthMaskingLayerMask);
+
+            m_mainCam->SortShadowMapObject();
+            m_mainCam->render_DepthOnly(m_DepthMaskingTex);
+            m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_mainCam->GetFar());
+
+            m_mainCam->LayerMask(LasyerMask);
+        }
+    }
 
     // Dynamic Shadow Depth Map
     render_DynamicShadowDepth();
@@ -203,7 +225,7 @@ void CRenderMgr::render_play()
 
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
-        if (nullptr == m_vecCam[i] || L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
+        if (nullptr == m_vecCam[i])
             continue;
 
         m_vecCam[i]->SortObject();
@@ -322,7 +344,7 @@ void CRenderMgr::render_debug()
 
 void CRenderMgr::render_postprocess_LDRI()
 {
-    if (m_bBloomEnable)
+    if (m_bEnableBloom)
     {
         BlurTexture(m_BloomRTTex_LDRI, m_bloomLevels);
 
@@ -347,12 +369,24 @@ void CRenderMgr::render_postprocess_HDRI()
     CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex_HDRI->GetTex2D().Get());
 
     // =================
+    // Depth Masking
+    // =================
+    if (m_bEnableDepthMasking)
+    {
+        CONTEXT->OMSetRenderTargets(1, m_PostProcessTex_HDRI->GetRTV().GetAddressOf(), NULL);
+        m_DepthMaskingObj->render();
+        CTexture::Clear(0);
+        CTexture::Clear(1);
+        CONTEXT->CopyResource(m_FloatRTTex->GetTex2D().Get(), m_PostProcessTex_HDRI->GetTex2D().Get());
+    }
+
+    // =================
     // Bloom
     // =================
     Ptr<CMaterial> pToneMappingMtrl = m_ToneMappingObj->MeshRender()->GetMaterial(0);
-    pToneMappingMtrl->SetScalarParam(INT_0, m_bBloomEnable);
+    pToneMappingMtrl->SetScalarParam(INT_0, m_bEnableBloom);
 
-    if (m_bBloomEnable)
+    if (m_bEnableBloom)
     {
         m_arrMRT[(UINT)MRT_TYPE::HDRI]->OMSet();
         CopyToPostProcessTex_HDRI();
@@ -490,22 +524,6 @@ void CRenderMgr::render_DynamicShadowDepth()
     }
 }
 
-void CRenderMgr::render_DepthMasking()
-{
-    for (UINT i = 0; i < (UINT)m_vecCam.size(); i++)
-    {
-        if (nullptr == m_vecCam[i])
-            continue;
-
-        if (L"Depth Masking Camera" == m_vecCam[i]->GetOwner()->GetName())
-        {
-            m_vecCam[i]->SortShadowMapObject();
-            m_vecCam[i]->render_DepthOnly(m_DepthMaskingTex);
-            return;
-        }
-    }
-}
-
 void CRenderMgr::UpdateData()
 {
     // GlobalData 에 광원 개수정보 세팅
@@ -599,6 +617,18 @@ void CRenderMgr::ActiveEditorMode(bool _bActive)
         RENDER_FUNC = &CRenderMgr::render_editor;
     else
         RENDER_FUNC = &CRenderMgr::render_play;
+}
+
+void CRenderMgr::DepthMaskingLayerMask(UINT _LayerIdx, bool _bMask)
+{
+    if (_bMask)
+    {
+        m_DepthMaskingLayerMask |= (1 << _LayerIdx);
+    }
+    else
+    {
+        m_DepthMaskingLayerMask &= ~(1 << _LayerIdx);
+    }
 }
 
 CCamera* CRenderMgr::GetCamera(int _Idx) const
@@ -1062,4 +1092,8 @@ void CRenderMgr::Resize(Vec2 Resolution)
 
     m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
     m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
+
+    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
+    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
+    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_2, m_DepthMaskingTex);
 }

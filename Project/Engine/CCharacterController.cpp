@@ -78,7 +78,7 @@ void CCharacterController::finaltick()
 
     RadiusScale = scale.x > scale.z ? scale.x : scale.z;
     HeightScale = scale.y;
-    Matrix matPhysXScale = XMMatrixScaling(RadiusScale * m_Radius, HeightScale * HalfHeight, RadiusScale * m_Radius);
+    Matrix matPhysXScale = XMMatrixScaling(RadiusScale, HeightScale, RadiusScale);
 
     Matrix matCenterTrans = XMMatrixTranslation(WorldRatio * m_Center.x, WorldRatio * m_Center.y, WorldRatio * m_Center.z);
     Matrix matWorldScaleInv = XMMatrixScaling(1.f / scale.x, 1.f / scale.y, 1.f / scale.z);
@@ -88,8 +88,8 @@ void CCharacterController::finaltick()
     Matrix matWorldScale = XMMatrixScaling(scale.x, scale.y, scale.z);
 
     // PhysX SRT * Transform ST
-    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * matWorldScale * matWorldTrans, 1.f, 1.f, AXIS_TYPE::Y, color,
-                                     true);
+    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * matWorldScale * matWorldTrans, m_Radius, HalfHeight,
+                                     AXIS_TYPE::Y, color, true);
 }
 
 void CCharacterController::Move(Vec3 _Motion)

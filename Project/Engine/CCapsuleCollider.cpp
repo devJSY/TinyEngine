@@ -42,21 +42,21 @@ void CCapsuleCollider::finaltick()
         RadiusScale = scale.y > scale.z ? scale.y : scale.z;
         HeightScale = scale.x;
 
-        matPhysXScale = XMMatrixScaling(HeightScale * HalfHeight, RadiusScale * m_Radius, RadiusScale * m_Radius);
+        matPhysXScale = XMMatrixScaling(HeightScale, RadiusScale, RadiusScale);
     }
     break;
     case AXIS_TYPE::Y: {
         RadiusScale = scale.x > scale.z ? scale.x : scale.z;
         HeightScale = scale.y;
 
-        matPhysXScale = XMMatrixScaling(RadiusScale * m_Radius, HeightScale * HalfHeight, RadiusScale * m_Radius);
+        matPhysXScale = XMMatrixScaling(RadiusScale, HeightScale, RadiusScale);
     }
     break;
     case AXIS_TYPE::Z: {
         RadiusScale = scale.x > scale.y ? scale.x : scale.y;
         HeightScale = scale.z;
 
-        matPhysXScale = XMMatrixScaling(RadiusScale * m_Radius, RadiusScale * m_Radius, HeightScale * HalfHeight);
+        matPhysXScale = XMMatrixScaling(RadiusScale, RadiusScale, HeightScale);
     }
     break;
     }
@@ -66,8 +66,8 @@ void CCapsuleCollider::finaltick()
     Vec3 color = m_CollisionCount > 0 || m_TriggerCount > 0 ? Vec3(1.f, 0.f, 0.f) : Vec3(0.f, 1.f, 0.f);
 
     // PhysX SRT * Transform SRT
-    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), 1.f, 1.f, m_Direction, color,
-                                     true);
+    GamePlayStatic::DrawDebugCapsule(matPhysXScale * matCenterTrans * matWorldScaleInv * Transform()->GetWorldMat(), m_Radius, HalfHeight,
+                                     m_Direction, color, true);
 }
 
 void CCapsuleCollider::SetRadius(float _Radius)
