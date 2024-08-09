@@ -4,6 +4,7 @@
 class CElfilisBig_Roar : public CState
 {
 private:
+    float m_PrevAlpha;
     float m_AccTime;
 
 public:
