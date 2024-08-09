@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
 #define Albedo0Tex g_tex_0
@@ -33,7 +34,6 @@ PS_OUT main(PS_IN input)
     float3 albedo = float3(1.f, 0.18f, 0.37f);
     float4 eyeBase = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
     float4 eyeMask = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
-    float4 eyeNormal = g_btex_2 ? Albedo2Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
     float4 skin = g_btex_3 ? Albedo3Tex.Sample(g_LinearClampSampler, input.vUV2) : (float4) 0.f;
     float4 mouth = g_btex_4 ? Albedo4Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;
     
@@ -57,17 +57,7 @@ PS_OUT main(PS_IN input)
     // normal
     if (dot(eyeBase.rgb, float3(1.0, 1.0, 1.0)) / 3.f > 0.99f)
     {
-        float3 normalWorld = normalize(input.vNormalWorld);
-        float3 normal = eyeNormal.rgb;
-        normal.b = 1.f;
-        normal = 2.0 * normal - 1.0;
-        
-        float3 N = normalWorld;
-        float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = normalize(cross(N, T));
-        
-        float3x3 TBN = float3x3(T, B, N);
-        output.vNormal = float4(normalize(mul(normal, TBN)), 1.f);
+        output.vNormal = float4(g_btex_2 ? NormalMapping(input, Albedo2Tex, input.vUV0, g_LinearClampSampler) : normalize(input.vNormalWorld), 1.f);
     }
     else
     {
