@@ -6,9 +6,10 @@
 float3 NormalMapping(PS_IN input, Texture2D NormalTex, float2 vUV, SamplerState Sampler, bool InvertNoramlMapY = false)
 {
     float3 normal = NormalTex.Sample(Sampler, vUV).rgb;
-
-    // 압축되어있는 Normal Map인 경우
-    if (0.f >= normal.b)
+    
+    // DXT5 Normal Map 예외처리
+    bool bDXT5Normal = 0.f >= normal.b ? true : false;
+    if (bDXT5Normal)
     {
         normal.b = 1.f;
     }
@@ -22,8 +23,8 @@ float3 NormalMapping(PS_IN input, Texture2D NormalTex, float2 vUV, SamplerState 
     float3 B = normalize(input.vBitangentWorld);
     float3 N = normalize(input.vNormalWorld);
         
-    // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
-    float3x3 TBN = float3x3(T, B, N);
+    // 압축되어있는 노말은 Bitangent 사용 X
+    float3x3 TBN = bDXT5Normal ? float3x3(T, T, N) : float3x3(T, B, N);
     
     return normalize(mul(normal, TBN));
 }

@@ -80,6 +80,8 @@
 #include "CKirbyFallDetectTrigger.h"
 #include "CFixedViewCamTrigger.h"
 #include "CElfilisUnit.h"
+#include "CPushOutColliderScript.h"
+#include "CLightBulbGimmickScript.h"
 #include "CFadeOutScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -163,6 +165,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyFallDetectTrigger");
 	_vec.push_back(L"CFixedViewCamTrigger");
 	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CPushOutColliderScript");
+	_vec.push_back(L"CLightBulbGimmickScript");
+	_vec.push_back(L"CFadeOutScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -325,6 +330,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFixedViewCamTrigger;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
+	if (L"CPushOutColliderScript" == _strScriptName)
+		return new CPushOutColliderScript;
+	if (L"CLightBulbGimmickScript" == _strScriptName)
+		return new CLightBulbGimmickScript;
+	if (L"CFadeOutScript" == _strScriptName)
+		return new CFadeOutScript;
 	return nullptr;
 }
 
@@ -490,6 +501,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFixedViewCamTrigger;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return new CPushOutColliderScript;
+	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return new CLightBulbGimmickScript;
+	case (UINT)SCRIPT_TYPE::FADEOUTSCRIPT:
+		return new CFadeOutScript;
 	}
 	return nullptr;
 }
@@ -656,6 +673,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFixedViewCamTrigger";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
+		return L"CPushOutColliderScript";
+	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
+		return L"CLightBulbGimmickScript";
+	case SCRIPT_TYPE::FADEOUTSCRIPT:
+		return L"CFadeOutScript";
 	}
 	return nullptr;
 }

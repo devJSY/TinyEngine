@@ -77,6 +77,6 @@ CKirbyCheckPointTrigger
 CKirbyFallDetectTrigger
 CFixedViewCamTrigger
 CElfilisUnit
-CFadeOutScript
 CPushOutColliderScript
 CLightBulbGimmickScript
+CFadeOutScript
