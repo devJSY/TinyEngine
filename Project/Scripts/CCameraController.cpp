@@ -5,6 +5,8 @@
 
 #include "CPlayerMgr.h"
 #include "CKirbyMoveController.h"
+#include "CKirbyFSM.h"
+#include "CState.h"
 
 CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
@@ -217,7 +219,12 @@ void CCameraController::UpdateTargetPos()
             }
             else
             {
-                if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
+                if (PLAYERFSM->GetCurState()->GetName() == L"LADDER_UP" || PLAYERFSM->GetCurState()->GetName() == L"LADDER_WAIT" ||
+                    PLAYERFSM->GetCurState()->GetName() == L"LADDER_WAITSTART")
+                {
+                    m_TargetPos.y = TargetPos.y;
+                }
+                else if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
                 {
                     m_TargetPos.y = Hit.Point.y;
                 }
