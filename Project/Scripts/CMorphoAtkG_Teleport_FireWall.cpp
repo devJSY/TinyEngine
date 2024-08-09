@@ -55,7 +55,7 @@ void CMorphoAtkG_Teleport_FireWall::Enter_Step()
     }
     break;
     case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotCombWait"), false, false, 1.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotCombWait"), true, false, 1.5f);
     }
     break;
     }

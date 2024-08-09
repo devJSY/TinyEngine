@@ -83,6 +83,7 @@ enum class StateStep
     Ready,
     ReadyWait,
     Charge,
+    ChargeWait,
     Start,
     StartEnd,
     Progress,

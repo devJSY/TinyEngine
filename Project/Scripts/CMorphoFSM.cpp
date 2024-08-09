@@ -31,6 +31,7 @@ CMorphoFSM::~CMorphoFSM()
 //#include "CMorphoAtkG_NormalNear_AtkFlight.h"
 #include "CMorphoAtkG_NormalFar_SwordSlash.h"
 #include "CMorphoAtkG_Teleport_FireWall.h"
+#include "CMorphoAtkG_Teleport_Tornado.h"
 void CMorphoFSM::begin()
 {
     // set map size
@@ -45,6 +46,7 @@ void CMorphoFSM::begin()
     //AddGroupPublicState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATKFLIGHT", new CMorphoAtkG_NormalNear_AtkFlight);
     AddGroupPublicState(MorphoStateGroup::AtkGroundNormalFar, L"ATKG_NORMALFAR_SWORDSLASH", new CMorphoAtkG_NormalFar_SwordSlash);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_FIREWALL", new CMorphoAtkG_Teleport_FireWall);
+    AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TORNADO", new CMorphoAtkG_Teleport_Tornado);
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
@@ -58,7 +60,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_FIREWALL");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TORNADO");
     }
 }
 

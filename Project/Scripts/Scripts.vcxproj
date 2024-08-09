@@ -212,6 +212,7 @@ call CodeGen.exe</Command>
     </ClInclude>
     <ClInclude Include="CMorphoAtkG_NormalFar_SwordSlash.h" />
     <ClInclude Include="CMorphoAtkG_Teleport_FireWall.h" />
+    <ClInclude Include="CMorphoAtkG_Teleport_Tornado.h" />
     <ClInclude Include="CMorphoFSM.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h" />
     <ClInclude Include="CMorphoUnit.h" />
@@ -471,6 +472,7 @@ call CodeGen.exe</Command>
     </ClCompile>
     <ClCompile Include="CMorphoAtkG_NormalFar_SwordSlash.cpp" />
     <ClCompile Include="CMorphoAtkG_Teleport_FireWall.cpp" />
+    <ClCompile Include="CMorphoAtkG_Teleport_Tornado.cpp" />
     <ClCompile Include="CMorphoFSM.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />

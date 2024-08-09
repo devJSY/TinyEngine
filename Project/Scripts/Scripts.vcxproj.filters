@@ -727,6 +727,9 @@
     <ClInclude Include="CMorphoAtkG_Teleport_FireWall.h">
       <Filter>State\MorphoState\AtkG Teleport\FireWall</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_Tornado.h">
+      <Filter>State\MorphoState\AtkG Teleport\Tornado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1463,6 +1466,9 @@
     </ClCompile>
     <ClCompile Include="CMorphoAtkG_Teleport_FireWall.cpp">
       <Filter>State\MorphoState\AtkG Teleport\FireWall</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_Tornado.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\Tornado</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2330,11 +2336,11 @@
     <Filter Include="State\MorphoState\AtkG Teleport\FireWall">
       <UniqueIdentifier>{031a4f12-8f1e-4533-9ea1-9ff330be84c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MorphoState\AtkG Teleport\FireStorm">
-      <UniqueIdentifier>{e6ca8307-4d3d-41b8-be00-e729d4fe3600}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\MorphoState\AtkG Teleport\ProjSoul">
       <UniqueIdentifier>{ed74b148-ecb4-44b6-be10-1706bd205e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\Tornado">
+      <UniqueIdentifier>{e6ca8307-4d3d-41b8-be00-e729d4fe3600}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
