@@ -13,6 +13,7 @@
 
 #define ELFFSM ((CElfilisFSM*)CBossMgr::GetBossFSM())
 #define ELFBIGFSM ((CElfilisBigFSM*)ELFFSM->GetBigBossFSM())
+#define MRPFSM ((CMorphoFSM*)CBossMgr::GetBossFSM())
 
 #define CAMERACTRL CPlayerMgr::GetCameraController()
 

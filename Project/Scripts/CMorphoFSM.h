@@ -5,8 +5,16 @@ enum class MorphoStateGroup
 {
     DEMO,
 
-    Move,
-    Attack,
+    Idle,
+
+    MoveToGround,
+    MoveToAir,
+
+    AtkGroundWait,
+    AtkGroundNormalNear,
+    AtkGroundNormalFar,
+    AtkGroundTeleport,
+    AtkAir,
 
     END,
 };
@@ -15,6 +23,8 @@ class CMorphoFSM : public CFSMScript
 {
 private:
     // FSM
+    map<MorphoStateGroup, vector<wstring>[2]> m_StateGroup;  // ( StateGroup, States )
+    MorphoStateGroup m_CurStateGroup;
     UINT m_Phase;
     UINT m_ComboLevel;
     float m_NearDist;
@@ -32,10 +42,19 @@ public:
     void Attack();
     void RepeatState(wstring _State = L"");
 
+private:
+    void ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State = L"");
+    void ChangeStateGroup_Random(MorphoStateGroup _Group);
+    void ChangeStateGroup_Set(MorphoStateGroup _Group, const wstring& _State);
+    void AddGroupPublicState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State);
+    void AddGroupPrivateState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State);
+
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
+    void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
 
+    MorphoStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
     float GetNearDist() const { return m_NearDist; }

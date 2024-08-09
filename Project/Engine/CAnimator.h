@@ -97,6 +97,7 @@ public:
     // Clip에서의 프레임 인덱스
     int GetClipFrameIndex();
     void SetClipFrameIndex(int _FrameIdx);
+    float GetClipPlayRatio();
 
     const vector<Matrix>& GetBoneTransformMat() const { return m_BoneTransformMat; }
     const Matrix& GetBoneTransformMat(UINT _Idx) const { return m_BoneTransformMat[_Idx]; }

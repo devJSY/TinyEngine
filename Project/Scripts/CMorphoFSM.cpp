@@ -12,6 +12,11 @@ CMorphoFSM::CMorphoFSM()
     , m_MapFloorOffset(Vec3())
     , m_MapSize(Vec3())
 {
+    for (UINT i = 0; i < (UINT)MorphoStateGroup::END; ++i)
+    {
+        m_StateGroup[(MorphoStateGroup)i][0] = vector<wstring>();
+        m_StateGroup[(MorphoStateGroup)i][1] = vector<wstring>();
+    }
 }
 
 CMorphoFSM::~CMorphoFSM()
@@ -19,6 +24,9 @@ CMorphoFSM::~CMorphoFSM()
 }
 
 #include "CMorpho_Idle.h"
+#include "CMorphoAtkG_NormalNear_Atk1.h"
+#include "CMorphoAtkG_NormalNear_Atk2.h"
+#include "CMorphoAtkG_NormalNear_Atk3.h"
 void CMorphoFSM::begin()
 {
     // set map size
@@ -28,29 +36,92 @@ void CMorphoFSM::begin()
     m_MapSize *= ScaleFactor;
 
     // add state
-    //AddState(L"MOVE_TOGROUND", new CMorpho_ToGround())
-    AddState(L"IDLE", new CMorpho_Idle());
+    AddGroupPublicState(MorphoStateGroup::Idle, L"IDLE", new CMorpho_Idle);
+    AddGroupPublicState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK1", new CMorphoAtkG_NormalNear_Atk1);
 
-    ChangeState(L"IDLE");
+    AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
+    AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
+
+    ChangeStateGroup(MorphoStateGroup::Idle);
 }
 
 void CMorphoFSM::tick()
 {
     CFSMScript::tick();
+
+    if (KEY_TAP(KEY::ENTER))
+    {
+        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
+    }
 }
 
 void CMorphoFSM::Move()
 {
     m_bAttackRepeat = false;
     m_ComboLevel = 0;
-    ChangeState(L"MOVE");
+
+    //@TODO 구현후 복구
+    ChangeStateGroup(MorphoStateGroup::Idle);
+    return;
+
+    float Rand = GetRandomfloat(1.f, 100.f);
+
+    if (Rand <= 70.f)
+    {
+        ChangeStateGroup(MorphoStateGroup::MoveToGround);
+    }
+    else
+    {
+        ChangeStateGroup(MorphoStateGroup::MoveToAir);
+    }
 }
+
 
 void CMorphoFSM::Attack()
 {
     m_bAttackRepeat = false;
     m_ComboLevel = 0;
-    ChangeState(L"ATTACK");
+
+    // Move (To Ground)
+    if (m_CurStateGroup == MorphoStateGroup::MoveToGround)
+    {
+        float Rand = GetRandomfloat(1.f, 100.f);
+
+        // wait
+        if (Rand <= 10.f)
+        {
+            ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
+        }
+
+        // attack
+        else
+        {
+            // attack normal
+            if (Rand <= 55.f)
+            {
+                if (IsNearPlayer())
+                {
+                    ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
+                }
+                else
+                {
+                    ChangeStateGroup(MorphoStateGroup::AtkGroundNormalFar);
+                }
+            }
+
+            // attack teleport
+            else
+            {
+                ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport);
+            }
+        }
+    }
+
+    // Move (To Air)
+    else if (m_CurStateGroup == MorphoStateGroup::MoveToAir)
+    {
+        ChangeStateGroup(MorphoStateGroup::AtkAir);
+    }
 }
 
 void CMorphoFSM::RepeatState(wstring _State)
@@ -66,6 +137,66 @@ void CMorphoFSM::RepeatState(wstring _State)
         ChangeState(GetCurState()->GetName());
     }
 }
+
+void CMorphoFSM::ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State)
+{
+    if (_State.empty())
+    {
+        ChangeStateGroup_Random(_Group);
+    }
+    else
+    {
+        ChangeStateGroup_Set(_Group, _State);
+    }
+}
+
+
+void CMorphoFSM::ChangeStateGroup_Random(MorphoStateGroup _Group)
+{
+    if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
+        return;
+
+    int Random = GetRandomInt(0, (int)m_StateGroup[_Group][0].size() - 1);
+    wstring RandState = m_StateGroup[_Group][0][Random];
+
+    m_CurStateGroup = _Group;
+    ChangeState(RandState);
+}
+
+void CMorphoFSM::ChangeStateGroup_Set(MorphoStateGroup _Group, const wstring& _State)
+{
+    if (m_StateGroup.find(_Group) == m_StateGroup.cend())
+        return;
+
+    vector<wstring>::iterator iter1 = find(m_StateGroup[_Group][0].begin(), m_StateGroup[_Group][0].end(), _State);
+    vector<wstring>::iterator iter2 = find(m_StateGroup[_Group][1].begin(), m_StateGroup[_Group][1].end(), _State);
+    if (iter1 == m_StateGroup[_Group][0].end() && iter2 == m_StateGroup[_Group][1].end())
+        return;
+
+    m_CurStateGroup = _Group;
+    ChangeState(_State);
+}
+
+void CMorphoFSM::AddGroupPublicState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State)
+{
+    // 이미 존재하는 Group에만 추가
+    if (m_StateGroup.find(_Group) == m_StateGroup.cend())
+        return;
+
+    CFSMScript::AddState(_StateName, _State);
+    m_StateGroup[_Group][0].push_back(_StateName);
+}
+
+void CMorphoFSM::AddGroupPrivateState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State)
+{
+    // 이미 존재하는 Group에만 추가
+    if (m_StateGroup.find(_Group) == m_StateGroup.cend())
+        return;
+
+    CFSMScript::AddState(_StateName, _State);
+    m_StateGroup[_Group][1].push_back(_StateName);
+}
+
 
 float CMorphoFSM::GetPlayerDist() const
 {

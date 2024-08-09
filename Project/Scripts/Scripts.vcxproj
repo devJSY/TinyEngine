@@ -204,7 +204,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk1.h" />
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h" />
     <ClInclude Include="CMorphoFSM.h" />
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h" />
     <ClInclude Include="CMorphoUnit.h" />
     <ClInclude Include="CMorpho_Idle.h" />
     <ClInclude Include="CPushOutColliderScript.h" />
@@ -454,7 +457,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp" />
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp" />
     <ClCompile Include="CMorphoFSM.cpp" />
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />
     <ClCompile Include="CMorpho_Idle.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />

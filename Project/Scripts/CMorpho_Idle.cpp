@@ -15,7 +15,7 @@ void CMorpho_Idle::tick()
 
 void CMorpho_Idle::Enter_Step()
 {
-    GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
+    GetOwner()->Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
 }
 
 void CMorpho_Idle::Exit_Step()
