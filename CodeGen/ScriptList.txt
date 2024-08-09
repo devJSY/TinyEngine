@@ -72,6 +72,12 @@ CSolarOnceScript
 CElevatorScript
 CPushOutScript
 CObstacleTriggerScript
+CSolarChargeScript
+CSolarOnceScript
+CElevatorScript
+CPushOutScript
+CPushOutTriggerScript
+CPushOutColliderScript
 CLadderScript
 CKirbyCheckPointTrigger
 CKirbyFallDetectTrigger

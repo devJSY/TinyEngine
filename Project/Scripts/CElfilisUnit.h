@@ -4,7 +4,7 @@
 class CElfilisUnit : public CUnitScript
 {
 public:
-    // virtual void tick();
+     virtual void tick();
 
     // virtual void AttackReward();
 

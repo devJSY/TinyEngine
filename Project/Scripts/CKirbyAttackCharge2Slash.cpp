@@ -31,6 +31,8 @@ void CKirbyAttackCharge2Slash::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+
     m_PlayTime = 1.5f;
 }
 
@@ -41,4 +43,5 @@ void CKirbyAttackCharge2Slash::Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }

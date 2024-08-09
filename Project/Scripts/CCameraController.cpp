@@ -5,6 +5,8 @@
 
 #include "CPlayerMgr.h"
 #include "CKirbyMoveController.h"
+#include "CKirbyFSM.h"
+#include "CState.h"
 
 CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
@@ -217,7 +219,12 @@ void CCameraController::UpdateTargetPos()
             }
             else
             {
-                if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
+                if (PLAYERFSM->GetCurState()->GetName() == L"LADDER_UP" || PLAYERFSM->GetCurState()->GetName() == L"LADDER_WAIT" ||
+                    PLAYERFSM->GetCurState()->GetName() == L"LADDER_WAITSTART")
+                {
+                    m_TargetPos.y = TargetPos.y;
+                }
+                else if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
                 {
                     m_TargetPos.y = Hit.Point.y;
                 }
@@ -473,7 +480,7 @@ void CCameraController::Progress()
 
     // Start와 End 사이에서 LookAtPos에 수직인 점을 찾기
     Vec3 ProgressRoad = m_ProgressEndPos - m_ProgressStartPos;
-    Vec3 ToPrevLookAt = m_PrevLookAtPos - m_ProgressStartPos;
+    Vec3 ToPrevLookAt = m_LookAtPos - m_ProgressStartPos;
 
     float DotRes = ToPrevLookAt.Dot(ProgressRoad);
     float LengthSquared = ProgressRoad.Dot(ProgressRoad);
@@ -535,6 +542,12 @@ void CCameraController::TwoTarget()
     float RequiredDistance = max(RequiredHorizontalDistance, RequiredVerticalDistance);
 
     m_LookDist = RequiredDistance + DepthDistance / 2.f + m_DistanceOffset; 
+
+    if (m_LookDist < m_MinDist)
+    {
+        m_LookDist = m_MinDist;
+    }
+
     m_LookAtPos = Center;
 }
 
@@ -814,7 +827,7 @@ void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartO
     m_ProgressEndDist = _EndDist;
 }
 
-void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset)
+void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset, float _MinDist)
 {
     if (_SubTarget == nullptr)
         return;
@@ -826,13 +839,14 @@ void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir,
     if (_bChangeLookDir)
         m_LookDir = _LookDir.Normalize();
     m_DistanceOffset = _DistanceOffset;
+    m_MinDist = _MinDist;
 
     m_Offset = Vec3(0.f, 0.f, 0.f);
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
 }
 
-void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset)
+void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset, float _MinDist)
 {
     m_Setup = CameraSetup::TWOTARGET;
 
@@ -848,6 +862,7 @@ void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
     m_LookDir = _LookDir.Normalize();
     m_DistanceOffset = _DistanceOffset;
+    m_MinDist = _MinDist;
 
     m_Offset = Vec3(0.f, 0.f, 0.f);
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);

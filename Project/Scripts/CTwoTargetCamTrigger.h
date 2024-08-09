@@ -22,6 +22,7 @@ private:
     float m_ZoomSpeed;
     float m_UndoZoomSpeed;
 
+    float m_MinDist;
     float m_DistanceOffset;
 
     Vec3 m_ExitDir;

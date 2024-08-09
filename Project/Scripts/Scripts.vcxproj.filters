@@ -608,7 +608,7 @@
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisD_Appear.h">
-      <Filter>State\ElfilisState\Demo_Appear</Filter>
+      <Filter>State\ElfilisState\Demo_Appear1</Filter>
     </ClInclude>
     <ClInclude Include="CChangeAlphaScript.h">
       <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
@@ -702,6 +702,15 @@
     </ClInclude>
     <ClInclude Include="CLightBulbGimmickScript.h">
       <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Damage.h">
+      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Jump.h">
+      <Filter>State\ElfilisState\Demo_Appear2\1. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Roar.h">
+      <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClInclude>
     <ClInclude Include="CFadeOutScript.h">
       <Filter>Scripts</Filter>
@@ -1327,7 +1336,7 @@
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisD_Appear.cpp">
-      <Filter>State\ElfilisState\Demo_Appear</Filter>
+      <Filter>State\ElfilisState\Demo_Appear1</Filter>
     </ClCompile>
     <ClCompile Include="CChangeAlphaScript.cpp">
       <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
@@ -1421,6 +1430,15 @@
     </ClCompile>
     <ClCompile Include="CLightBulbGimmickScript.cpp">
       <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Damage.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Jump.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\1. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Roar.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClCompile>
     <ClCompile Include="CFadeOutScript.cpp">
       <Filter>Scripts</Filter>
@@ -2129,23 +2147,8 @@
     <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL">
       <UniqueIdentifier>{cd51cbfe-3bb6-40d5-a82c-ea49c1cb4df3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Demo_Appear">
-      <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Gimmik\ChangeAlpha">
       <UniqueIdentifier>{6dbe3d5e-397d-4803-ba27-43858b57d0fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear">
-      <UniqueIdentifier>{057373cc-35db-49f2-8484-29622e6b0355}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear\0. Damage">
-      <UniqueIdentifier>{7c75dd0a-8803-433e-b773-64a6b24ceb98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear\1. Jump">
-      <UniqueIdentifier>{6bfae776-72f6-47a4-849b-902ba6123c74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear\2. Roar">
-      <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik\SolarPanelObj">
       <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
@@ -2251,6 +2254,21 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
       <UniqueIdentifier>{96517348-fcf7-40fa-8849-72dece0bff91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear1">
+      <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2">
+      <UniqueIdentifier>{057373cc-35db-49f2-8484-29622e6b0355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2\0. Damage">
+      <UniqueIdentifier>{7c75dd0a-8803-433e-b773-64a6b24ceb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2\1. Jump">
+      <UniqueIdentifier>{6bfae776-72f6-47a4-849b-902ba6123c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2\2. Roar">
+      <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

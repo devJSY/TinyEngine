@@ -147,6 +147,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisBig_SwingR.h" />
     <ClInclude Include="CElfilisDimensionLaser.h" />
     <ClInclude Include="CElfilisD_Appear.h" />
+    <ClInclude Include="CElfilisD_Damage.h" />
+    <ClInclude Include="CElfilisD_Jump.h" />
+    <ClInclude Include="CElfilisD_Roar.h" />
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
     <ClInclude Include="CElfilisG_DimensionSpike.h">
@@ -397,6 +400,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisBig_SwingR.cpp" />
     <ClCompile Include="CElfilisDimensionLaser.cpp" />
     <ClCompile Include="CElfilisD_Appear.cpp" />
+    <ClCompile Include="CElfilisD_Damage.cpp" />
+    <ClCompile Include="CElfilisD_Jump.cpp" />
+    <ClCompile Include="CElfilisD_Roar.cpp" />
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
     <ClCompile Include="CElfilisG_DimensionSpike.cpp">

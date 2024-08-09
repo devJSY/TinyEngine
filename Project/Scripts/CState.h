@@ -5,6 +5,7 @@
 #include <Engine\\CKeyMgr.h>
 #include <Engine\\components.h>
 #include "CKirbyFSM.h"
+#include "CKirbyUnitScript.h"
 #include "CPlayerMgr.h"
 #include "CKirbyObject.h"
 #include "CKirbyAbility.h"

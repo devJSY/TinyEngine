@@ -4,10 +4,12 @@
 #include "CState.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
-    : m_bFrmEnter(true)
+    : m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
     , m_PrevGravity(0.f)
+    , m_AccTime(0.f)
+    , m_bFrmEnter(true)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
@@ -66,6 +68,8 @@ void CKirbyAbility_Sword::AttackEnter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+
     m_bFrmEnter = true;
 
     //@Effect Effect 재생
@@ -78,6 +82,7 @@ void CKirbyAbility_Sword::AttackExit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetComboLevel(1);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -110,6 +115,8 @@ void CKirbyAbility_Sword::AttackCombo1Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+
     m_bFrmEnter = true;
 }
 
@@ -120,6 +127,8 @@ void CKirbyAbility_Sword::AttackCombo1Exit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -153,6 +162,8 @@ void CKirbyAbility_Sword::AttackCombo2Enter()
 
     //@Effect Effect 재생
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+
     m_bFrmEnter = true;
 }
 
@@ -165,6 +176,7 @@ void CKirbyAbility_Sword::AttackCombo2Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -187,6 +199,7 @@ void CKirbyAbility_Sword::AttackCharge1Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 }
 
 void CKirbyAbility_Sword::AttackCharge1Exit()
@@ -195,6 +208,7 @@ void CKirbyAbility_Sword::AttackCharge1Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // Start (charge)
@@ -234,6 +248,7 @@ void CKirbyAbility_Sword::AttackCharge1EndEnter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 }
 
 void CKirbyAbility_Sword::AttackCharge1EndExit()
@@ -242,6 +257,7 @@ void CKirbyAbility_Sword::AttackCharge1EndExit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -327,6 +343,8 @@ void CKirbyAbility_Sword::AttackCharge3Enter()
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->SetRotSpeed(5.f);
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
 }
 
 void CKirbyAbility_Sword::AttackCharge3Exit()
@@ -335,11 +353,18 @@ void CKirbyAbility_Sword::AttackCharge3Exit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->SetRotSpeed(m_PrevRotSpeed);
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
 }
 
 // Start (charge start)
 void CKirbyAbility_Sword::AttackCharge3Start()
 {
+    m_AccTime += DT;
+
+    float t = max(m_AccTime / PLAYER->Animator()->GetClipPlayTime(), 1.f);
+    Vec3 NewScale = m_PrevWeaponScale + (m_BigWeaponScale - m_PrevWeaponScale) * t;
+    PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(NewScale);
 }
 
 void CKirbyAbility_Sword::AttackCharge3StartEnter()
@@ -348,11 +373,14 @@ void CKirbyAbility_Sword::AttackCharge3StartEnter()
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
     //@Effect 충전완료
 
+    m_AccTime = 0.f;
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     m_PrevRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->SetRotSpeed(5.f);
     PLAYERCTRL->LockJump();
+
+    m_PrevWeaponScale = PLAYERFSM->GetCurWeapon()->Transform()->GetLocalScale();
 }
 
 void CKirbyAbility_Sword::AttackCharge3StartExit()
@@ -360,11 +388,21 @@ void CKirbyAbility_Sword::AttackCharge3StartExit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->SetRotSpeed(m_PrevRotSpeed);
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
 }
 
 // End (attack)
 void CKirbyAbility_Sword::AttackCharge3End()
 {
+    float SizeChangeFrm = 50.f;
+
+    if (CHECK_ANIMFRM(PLAYER, (int)SizeChangeFrm))
+    {
+        float t = 1.f - max((PLAYER->Animator()->GetClipFrameIndex() - SizeChangeFrm) / (72.f - SizeChangeFrm), 0.f);
+        Vec3 NewScale = m_PrevWeaponScale + (m_BigWeaponScale - m_PrevWeaponScale) * t;
+        PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(NewScale);
+    }
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndEnter()
@@ -378,6 +416,8 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndExit()
@@ -389,6 +429,8 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
 }
 
 // ===============
@@ -432,6 +474,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     PLAYERCTRL->LockDirection();
 
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     m_bFrmEnter = true;
 }
 
@@ -441,6 +484,7 @@ void CKirbyAbility_Sword::JumpAttackExit()
     PLAYERCTRL->UnlockDirection();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // Start
@@ -454,11 +498,15 @@ void CKirbyAbility_Sword::JumpAttackStartEnter()
     //@Effect 칼 끝 따라가는 이펙트
 
     PLAYERCTRL->LockDirection();
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 }
 
 void CKirbyAbility_Sword::JumpAttackStartExit()
 {
     PLAYERCTRL->UnlockDirection();
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -549,10 +597,13 @@ void CKirbyAbility_Sword::Slide()
 void CKirbyAbility_Sword::SlideEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSlide"));
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 }
 
 void CKirbyAbility_Sword::SlideExit()
 {
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // Start
@@ -563,10 +614,13 @@ void CKirbyAbility_Sword::SlideStart()
 void CKirbyAbility_Sword::SlideStartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSlideStart"), false);
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 }
 
 void CKirbyAbility_Sword::SlideStartExit()
 {
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // End
@@ -577,10 +631,13 @@ void CKirbyAbility_Sword::SlideEnd()
 void CKirbyAbility_Sword::SlideEndEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSlideEnd"), false);
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 }
 
 void CKirbyAbility_Sword::SlideEndExit()
 {
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -611,6 +668,8 @@ void CKirbyAbility_Sword::SlideAttackEnter()
     m_PrevGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-100.f);
 
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+
     m_bFrmEnter = true;
 }
 
@@ -623,6 +682,8 @@ void CKirbyAbility_Sword::SlideAttackExit()
     {
         PLAYERCTRL->ClearVelocityY();
     }
+
+    PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
 }
 
 // ===============
@@ -642,6 +703,7 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
 
     // create sword
     pInstObj = m_Weapon->Instantiate();
+    pInstObj->BoxCollider()->SetEnabled(false);
     PLAYERFSM->SetCurWeapon(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Weapon");
 }
