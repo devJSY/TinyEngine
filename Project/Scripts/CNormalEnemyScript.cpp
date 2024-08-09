@@ -457,7 +457,7 @@ void CNormalEnemyScript::PatrolMove()
 
     Transform()->SetWorldRotation(vPatrlQuat);
 
-    Rigidbody()->SetVelocity(vFront * GetInitInfo().Speed * DT);
+    Rigidbody()->SetVelocity(vFront * GetCurInfo().Speed * DT);
 }
 
 Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)

@@ -16,6 +16,7 @@ CKabuScript::CKabuScript()
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOriginPos, "OriginPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHalfCurved, "Half Curved");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
 }
 
@@ -34,6 +35,7 @@ CKabuScript::CKabuScript(const CKabuScript& _Origin)
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOriginPos, "OriginPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHalfCurved, "Half Curved");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
 }
 
@@ -172,50 +174,13 @@ void CKabuScript::Death()
 
 void CKabuScript::PatrolMove()
 {
-    Vec3 vPos = Transform()->GetWorldPos();
-    Vec3 vUP = Transform()->GetWorldDir(DIR_TYPE::UP);
     if (m_bCurved)
     {
-        Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        Vec3 vPos = Transform()->GetWorldPos();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == vFront ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-
-        Vec3 vTemp = (m_vCenterPos - vPos).Normalize();
-
-        Vec3 vPatrolDir = vTemp.Cross(vUp);
-
-        vPatrolDir = vPatrolDir.Normalize();
-
-        if (m_bInverse)
-            vPatrolDir *= -1.f;
-
-        Rigidbody()->SetVelocity(vPatrolDir * GetInitInfo().Speed * DT);
-
-        if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.y - 5.f <= vPos.y && vPos.y <= m_vDestPos.y + 5.f) &&
-            (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
-        {
-            Transform()->SetWorldPos(m_vDestPos);
-            Vec3 vTemp = m_vDestPos;
-            m_vDestPos = m_vOriginPos;
-            m_vOriginPos = vTemp;
-            m_bInverse = !m_bInverse;
-        }
+        CircleMove();
     }
     else
     {
-        Vec3 vDir = m_vDestPos - vPos;
-        vDir.Normalize();
-        vDir.y = 0;
-        Rigidbody()->SetVelocity(vDir * GetInitInfo().Speed * DT);
-
-        if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.y - 5.f <= vPos.y && vPos.y <= m_vDestPos.y + 5.f) &&
-            (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
-        {
-            Transform()->SetWorldPos(m_vDestPos);
-            Vec3 vTemp = m_vDestPos;
-            m_vDestPos = m_vOriginPos;
-            m_vOriginPos = vTemp;
-        }
+        LinearMove();
     }
 }
 
@@ -270,10 +235,12 @@ UINT CKabuScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_vCenterPos, sizeof(Vec3), 1, _File);
     fwrite(&m_vDestPos, sizeof(Vec3), 1, _File);
     fwrite(&m_bCurved, sizeof(bool), 1, _File);
+    fwrite(&m_bHalfCurved, sizeof(bool), 1, _File);
     fwrite(&m_bInverse, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
 
@@ -288,12 +255,101 @@ UINT CKabuScript::LoadFromLevelFile(FILE* _File)
     fread(&m_vCenterPos, sizeof(Vec3), 1, _File);
     fread(&m_vDestPos, sizeof(Vec3), 1, _File);
     fread(&m_bCurved, sizeof(bool), 1, _File);
+    fread(&m_bHalfCurved, sizeof(bool), 1, _File);
     fread(&m_bInverse, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////// Func ////////////////////////////
+
+void CKabuScript::CircleMove()
+{
+    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 vPos = Transform()->GetWorldPos();
+    Vec3 vUp = Vec3(0.f, 0.f, -1.f) == vFront ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+    Vec3 vTemp = (m_vCenterPos - vPos).Normalize();
+
+    Vec3 vPatrolDir = vTemp.Cross(vUp);
+
+    vPatrolDir = vPatrolDir.Normalize();
+
+    if (m_bInverse)
+        vPatrolDir *= -1.f;
+
+    Rigidbody()->SetVelocity(vPatrolDir * GetCurInfo().Speed * DT);
+
+    // 현재 위치와 도착 위치 각도 체크
+    if (m_bHalfCurved)
+    {
+        Vec3 vBaseVec = m_vOriginPos - m_vCenterPos;
+        Vec3 vDestVec = vPos - m_vCenterPos;
+
+        vBaseVec.y = 0.f;
+        vDestVec.y = 0.f;
+
+        Vec3 vBaseUp = vBaseVec == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+        Vec3 vDestUp = vDestVec == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+        Quat vBaseQuat = Quat::LookRotation(-vBaseVec, vBaseUp);
+        Quat vDestQuat = Quat::LookRotation(-vDestVec, vDestUp);
+
+        float fBaseToDestRadian = Quat::Angle(vBaseQuat, vDestQuat);
+
+        if (!m_bHalfFlag)
+        {
+            m_fAccTime += DT;
+            if (m_fAccTime >= 2.f)
+            {
+                m_bHalfFlag = true;
+            }
+        }
+
+        if (fBaseToDestRadian >= XM_PI && m_bHalfFlag)
+        {
+            m_vDestPos = m_vOriginPos;
+            m_vOriginPos = vPos;
+            m_bInverse = !m_bInverse;
+            m_bHalfFlag = false;
+            m_fAccTime = 0.f;
+        }
+    }
+}
+
+void CKabuScript::LinearMove()
+{
+    Vec3 vPos = Transform()->GetWorldPos();
+    Vec3 vUP = Transform()->GetWorldDir(DIR_TYPE::UP);
+
+    Vec3 vDir = m_vDestPos - vPos;
+    vDir.Normalize();
+    vDir.y = 0;
+    Rigidbody()->SetVelocity(vDir * GetCurInfo().Speed * DT);
+
+    if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.y - 5.f <= vPos.y && vPos.y <= m_vDestPos.y + 5.f) &&
+        (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    {
+        Transform()->SetWorldPos(m_vDestPos);
+        Vec3 vTemp = m_vDestPos;
+        m_vDestPos = m_vOriginPos;
+        m_vOriginPos = vTemp;
+    }
 }

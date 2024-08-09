@@ -24,6 +24,11 @@ private:
     bool m_bInverse;
     bool m_bFlag;
     bool m_bCurved;
+    bool m_bHalfCurved;
+
+    bool m_bHalfFlag;
+
+    float m_fAccTime;
 
 public:
     virtual void begin() override;
@@ -35,6 +40,9 @@ public:
 
 private:
     void PatrolMove();
+
+    void CircleMove();
+    void LinearMove();
 
 private:
     void ChangeState(KABU_STATE _state);
@@ -50,8 +58,6 @@ private:
     void Damage();
     void Eaten();
     void Death();
-
-    Vec3 CaculateDir(Vec3 _vRadian);
 
 public:
     CLONE(CKabuScript)

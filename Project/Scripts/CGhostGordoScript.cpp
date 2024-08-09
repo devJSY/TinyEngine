@@ -215,7 +215,7 @@ void CGhostGordoScript::ReturnRotating()
 {
     Quat qWorldQuat = Transform()->GetWorldQuaternion();
 
-    Quat qChangeQuat = Quat::Slerp(m_qBaseQuat, qWorldQuat, GetInitInfo().RotationSpeed * DT);
+    Quat qChangeQuat = Quat::Slerp(m_qBaseQuat, qWorldQuat, GetCurInfo().RotationSpeed * DT);
 
     Transform()->SetWorldRotation(qChangeQuat);
 
@@ -251,12 +251,12 @@ void CGhostGordoScript::Move(Vec3 _vTraget)
 
     Quat qQuat = Quat::LookRotation(-vDir, vUP);
 
-    Quat qLerp = Quat::Slerp(qWolrdQuat, qQuat, GetInitInfo().RotationSpeed * DT);
+    Quat qLerp = Quat::Slerp(qWolrdQuat, qQuat, GetCurInfo().RotationSpeed * DT);
 
     Transform()->SetWorldRotation(qLerp);
 
     // 2. GhostGordo는 Y 축으로도 이동함
-    Rigidbody()->SetVelocity(vMoveDir * GetInitInfo().Speed * DT);
+    Rigidbody()->SetVelocity(vMoveDir * GetCurInfo().Speed * DT);
 }
 
 UINT CGhostGordoScript::SaveToLevelFile(FILE* _File)
