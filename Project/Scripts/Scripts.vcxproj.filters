@@ -724,6 +724,7 @@
     <ClInclude Include="CMorphoAtkG_NormalFar_SwordSlash.h">
       <Filter>State\MorphoState\AtkG Normal Far\SwordSlash</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_FireWall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1458,6 +1459,7 @@
     <ClCompile Include="CMorphoAtkG_NormalFar_SwordSlash.cpp">
       <Filter>State\MorphoState\AtkG Normal Far\SwordSlash</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_FireWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2321,5 +2323,17 @@
     <Filter Include="State\MorphoState\AtkG Normal Far\SwordSlash">
       <UniqueIdentifier>{fe516468-cb16-4400-9297-820a68f75a06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\FireWall">
+      <UniqueIdentifier>{031a4f12-8f1e-4533-9ea1-9ff330be84c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\FireStorm">
+      <UniqueIdentifier>{e6ca8307-4d3d-41b8-be00-e729d4fe3600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\ProjSoul">
+      <UniqueIdentifier>{ed74b148-ecb4-44b6-be10-1706bd205e38}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

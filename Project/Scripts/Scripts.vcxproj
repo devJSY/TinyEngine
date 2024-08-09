@@ -211,6 +211,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="CMorphoAtkG_NormalFar_SwordSlash.h" />
+    <ClInclude Include="CMorphoAtkG_Teleport_FireWall.h" />
     <ClInclude Include="CMorphoFSM.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h" />
     <ClInclude Include="CMorphoUnit.h" />
@@ -469,6 +470,7 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="CMorphoAtkG_NormalFar_SwordSlash.cpp" />
+    <ClCompile Include="CMorphoAtkG_Teleport_FireWall.cpp" />
     <ClCompile Include="CMorphoFSM.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />
@@ -630,6 +632,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="Scripts.cpp" />
     <ClCompile Include="CUIMoveUpDownScript.cpp" />
     <ClCompile Include="CUIFlowScript.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
