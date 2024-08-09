@@ -28,8 +28,9 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
     // monster : 데미지 가함
     if (LayerIdx == LAYER_MONSTER)
     {
-        Vec3 HitDir = (Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos()).Normalize();
-        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 5.f, 0.f, 0.f};
+        Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        float HitDamage = FindDamage();
+        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, HitDamage, 0.f, 0.f};
         CUnitScript* pMonster = _OtherCollider->GetOwner()->GetScript<CUnitScript>();
 
         if (!pMonster)
@@ -46,6 +47,23 @@ void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
         PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
         return;
     }
+}
+
+float CKirbyBodyCollider::FindDamage()
+{
+    float Damage = 5.f;
+
+    if (PLAYERFSM->GetCurObject())
+    {
+        switch (PLAYERFSM->GetCurObjectIdx())
+        {
+        case ObjectCopyType::CONE:
+            Damage = 100.f;
+            break;
+        }
+    }
+
+    return Damage;
 }
 
 UINT CKirbyBodyCollider::SaveToLevelFile(FILE* _File)

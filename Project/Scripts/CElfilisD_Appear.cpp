@@ -4,9 +4,11 @@
 #include "CElfilisFSM.h"
 #include "CChangeAlphaScript.h"
 
+#include "CCameraController.h"
+
 CElfilisD_Appear::CElfilisD_Appear()
-    : m_StartPos(Vec3(0.f, 200.f, 0.f))
-    , m_DownSpeed(80.f)
+    : m_StartPos(Vec3(0.f, 800.f, 0.f))
+    , m_DownSpeed(200.f)
     , m_AccTime(0.f)
     , m_BossName(nullptr)
 {
@@ -40,14 +42,26 @@ void CElfilisD_Appear::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("BallWait"), true, false, 1.f, 0.f);
         GetOwner()->Rigidbody()->SetKinematic(true);
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
+        GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
 
+        // down
+        GetOwner()->Rigidbody()->SetKinematic(false);
+        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -3000.f, 0.f), ForceMode::Impulse);
+
+        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
         m_AccTime = 0.f;
 
         //@CAMERA : 에피리스 가까이, 등장 바라보며 고정
+        CAMERACTRL->SetMainTarget(BOSS);
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
+        CAMERACTRL->SetLookDist(130.f);
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.058f, 0.998f));
+
+        // 설정으로 카메라 즉시이동
+        CAMERACTRL->ResetCamera();
     }
     break;
-    case StateStep::Progress:
-    {
+    case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Appear"), false, false, 1.f, 0.f);
 
         // spawn BossName
@@ -56,7 +70,7 @@ void CElfilisD_Appear::Enter_Step()
             m_BossName = m_BossNamePref->Instantiate();
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
 
-            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 700.f, 1000.f));
+            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 905.f, 1570.f));
             m_BossName->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
             Script->FadeIn(0.5f);
 
@@ -64,8 +78,11 @@ void CElfilisD_Appear::Enter_Step()
         }
 
         //@CAMERA : 뒤로 이동
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
+        CAMERACTRL->SetLookDist(280.f);
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.024f, 0.971f));
     }
-        break;
+    break;
     }
 }
 
@@ -73,12 +90,12 @@ void CElfilisD_Appear::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start:
-        break;
-    case StateStep::Progress:
-    {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-
+    case StateStep::Start: {
+        GetOwner()->Rigidbody()->SetVelocity(Vec3());
+        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
+    }
+    break;
+    case StateStep::Progress: {
         if (m_BossName)
         {
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
@@ -88,31 +105,22 @@ void CElfilisD_Appear::Exit_Step()
 
         //@CAMERA : 투타겟
     }
-        break;
+    break;
     }
 }
 
 void CElfilisD_Appear::Start()
 {
-    bool bFinish = false;
     m_AccTime += DT;
 
-    // move down
-    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
-    float CurDist = (NewPos - m_StartPos).Length();
-    float Ratio = clamp((CurDist / m_StartPos.Length()), 0.f, 1.f) * XM_PI / 2.f;
-    float NewSpeed = 5.f + (m_DownSpeed - 5.f) * cosf(Ratio);
+    // Add drag
+    float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
+    float t = (CurDist + GetOwner()->CapsuleCollider()->GetHeight() / 2.f) / m_StartPos.Length();
+    float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
+    float NewDrag = 4.f - 4.f * sinf(Ratio);
+    GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
-    NewPos.y -= DT * m_DownSpeed;
-    if (NewPos.y <= 0.f)
-    {
-        NewPos.y = 0.f;
-        bFinish = true;
-    }
-    
-    GetOwner()->Transform()->SetWorldPos(NewPos);
-
-    if (bFinish)
+    if (t >= 1.f)
     {
         ChangeStep(StateStep::Progress);
     }
@@ -122,6 +130,7 @@ void CElfilisD_Appear::Progress()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE");
+        ELFFSM->SetPattern(ElfilisPatternType::Appear1);
+        ELFFSM->ProcPatternStep();
     }
 }

@@ -71,7 +71,7 @@ void CMomentaryObjScript::SetEndAnim(wstring _Key)
     int idx = GetOwner()->Animator()->FindClipIndex(_Key);
     if (idx != -1)
     {
-        double Time = GetOwner()->GetRenderComponent()->GetMesh()->GetAnimClip()->at(idx).dTimeLength;
+        double Time = GetOwner()->Animator()->GetClipPlayTime();
         if (m_LifeTime > Time)
         {
             m_EndAnimPlayTime = Time;

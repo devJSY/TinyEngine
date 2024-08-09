@@ -9,8 +9,6 @@
 #include "CEditorMgr.h"
 #include "CEditor.h"
 
-
-
 #include "CLevelSaveLoad.h"
 #include "components.h"
 
@@ -34,7 +32,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     NewLevel->GetLayer(9)->SetName(L"Monster Trigger");
     NewLevel->GetLayer(10)->SetName(L"Monster Attack");
     NewLevel->GetLayer(11)->SetName(L"Monster Attack Trigger");
-    NewLevel->GetLayer(12)->SetName(L"Layer 12");
+    NewLevel->GetLayer(12)->SetName(L"World Static Trigger");
     NewLevel->GetLayer(13)->SetName(L"Layer 13");
     NewLevel->GetLayer(14)->SetName(L"Effect");
     NewLevel->GetLayer(15)->SetName(L"UI");
@@ -53,6 +51,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     CPhysicsMgr::GetInst()->LayerCheck(4, 8, true);
     CPhysicsMgr::GetInst()->LayerCheck(4, 9, true);
     CPhysicsMgr::GetInst()->LayerCheck(4, 11, true);
+    CPhysicsMgr::GetInst()->LayerCheck(4, 12, true);
 
     // Player Trigger
     CPhysicsMgr::GetInst()->LayerCheck(5, 6, true);
@@ -105,7 +104,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pCamObj->Camera()->LayerMaskAll();
     pCamObj->Camera()->LayerMask(NewLevel, L"UI", false);
     pCamObj->Camera()->SetHDRI(true);
-    pCamObj->Camera()->SetFOV(XM_PI/4.f);
+    pCamObj->Camera()->SetFOV(XM_PI / 4.f);
 
     pCamObj->AddComponent(CScriptMgr::GetScript(SCRIPT_TYPE::CAMERACONTROLLER));
 
@@ -127,6 +126,11 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pUICamObj->Camera()->LayerMask(NewLevel, L"UI", true);
 
     NewLevel->AddObject(pUICamObj, 0);
+
+    // Editor Camera
+    CGameObject* EditCam = CRenderMgr::GetInst()->GetEditorCamera()->GetOwner();
+    EditCam->Transform()->SetLocalPos(Vec3(0.f, 160.f, -100.f));
+    EditCam->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(40.f), 0.f, 0.f));
 
     // =============
     // create Env
@@ -280,22 +284,53 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     GamePlayStatic::LayerChange(pBodyCollider, 5);
 
     // DeformLight PointLight
-    CGameObject* pPointLight = new CGameObject;
-    pPointLight->SetName(L"DeformLight PointLight");
-    pPointLight->AddComponent(new CTransform);
-    pPointLight->AddComponent(new CLight);
+    Ptr<CPrefab> pPointLightpref =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DeformLight PointLight.pref", L"prefab\\DeformLight PointLight.pref");
+    CGameObject* pPointLight;
 
-    pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
-    pPointLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-    pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
-    pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
-    pPointLight->Light()->SetRadius(80.f);
-    pPointLight->Light()->SetFallOffEnd(750.f);
-    pPointLight->Light()->SetHaloRadius(160.f);
-    pPointLight->Light()->SetHaloStrength(0.125f);
+    if (pPointLightpref != nullptr)
+    {
+        pPointLight = pPointLightpref->Instantiate();
+    }
+    else
+    {
+        pPointLight = new CGameObject;
+        pPointLight->SetName(L"DeformLight PointLight");
+        pPointLight->AddComponent(new CTransform);
+        pPointLight->AddComponent(new CLight);
 
+        pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
+        pPointLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+        pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
+        pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
+        pPointLight->Light()->SetRadius(80.f);
+        pPointLight->Light()->SetFallOffEnd(135.f);
+        pPointLight->Light()->SetHaloRadius(160.f);
+        pPointLight->Light()->SetHaloStrength(0.125f);
+    }
     GamePlayStatic::AddChildObject(pPlayer, pPointLight);
     pPointLight->SetActive(false);
+
+    // Snot Bubble
+    Ptr<CPrefab> pSnotBubblePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SleepSnotBubble.pref", L"prefab\\SleepSnotBubble.pref");
+    CGameObject* pSnotBubble = nullptr;
+
+    if (pSnotBubblePref != nullptr)
+    {
+        pSnotBubble = pSnotBubblePref->Instantiate();
+    }
+    else
+    {
+        pSnotBubble = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Sleep\\SleepSnotBubble\\SleepSnotBubble.fbx")->Instantiate();
+        pSnotBubble->SetName(L"SleepSnotBubble");
+        
+        pSnotBubble->MeshRender()->SetBoundingRadius(0.1f);
+        pSnotBubble->MeshRender()->SetCastShadow(false);
+
+        GamePlayStatic::SpawnGameObject(pSnotBubble, 4);
+    }
+    GamePlayStatic::AddChildObject(pPlayer, pSnotBubble, L"Mouth");
+    pSnotBubble->SetActive(false);
 
     // ==================
     // create default object
@@ -335,11 +370,6 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
         TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
 
     NewLevel->AddObject(pMonsterAbility, 8);
-
-    // EditCamera
-    CGameObject* EditCam = CRenderMgr::GetInst()->GetEditorCamera()->GetOwner();
-    EditCam->Transform()->SetLocalPos(Vec3(0.f, 160.f, -100.f));
-    EditCam->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(40.f), 0.f, 0.f));
 
     return NewLevel;
 }
@@ -747,7 +777,7 @@ CLevel* CLevelMgr::CreateDefaultPlayUILevel()
     pMonsterAbility->AddComponent(new CRigidbody);
     pMonsterAbility->AddComponent(new CCapsuleCollider);
     pMonsterAbility->AddComponent(CScriptMgr::GetScript(NORMALENEMYSCRIPT));
-    
+
     pMonsterAbility->Transform()->SetLocalPos(Vec3(280.f, 100.f, 280.f));
     pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
     pMonsterAbility->Transform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));

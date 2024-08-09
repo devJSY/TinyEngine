@@ -26,6 +26,12 @@ enum class ElfilisStateGroup
 enum class ElfilisPatternType
 {
     NONE,
+
+    // demo
+    Appear1,
+    Appear2,
+
+    // combo
     BigCombo,
     StabCombo,
 };
@@ -76,6 +82,7 @@ public:
     void AddComboLevel() { m_ComboLevel++; }
     void SetPattern(ElfilisPatternType _Pattern);
     void ProcPatternStep();
+    void SetPhase(int _Phase) { m_Phase = _Phase; }
 
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;

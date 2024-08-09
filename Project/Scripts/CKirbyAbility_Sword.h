@@ -4,9 +4,12 @@
 class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
+    Vec3    m_PrevWeaponScale;
+    Vec3    m_BigWeaponScale;
     float   m_PrevSpeed;
     float   m_PrevRotSpeed;
     float   m_PrevGravity;
+    float   m_AccTime;
     bool    m_bFrmEnter;
 
 public:
