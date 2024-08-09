@@ -14,6 +14,7 @@ CKirbyCopyAbilityScript::CKirbyCopyAbilityScript(const CKirbyCopyAbilityScript& 
     : CScript(KIRBYCOPYABILITYSCRIPT)
     , m_AbilityType(_Origin.m_AbilityType)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_AbilityType, "AbilityType UINT");
 }
 
 CKirbyCopyAbilityScript::~CKirbyCopyAbilityScript()
