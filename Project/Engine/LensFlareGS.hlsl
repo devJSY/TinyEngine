@@ -17,9 +17,9 @@ struct PS_Input
 };
 
 // NDC 좌표 기준 크기
-static const float HalfWidth[8] = { 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f };
+static const float HalfWidth[8] = { 0.5f, 0.35f, 0.25f, 0.3f, 0.2f, 0.3f, 0.5f, 0.7f };
 
-[maxvertexcount(32)]
+[maxvertexcount(48)]
 void main(point GS_Input input[1], uint primID : SV_PrimitiveID,
                               inout TriangleStream<PS_Input> outputStream)
 {
@@ -29,42 +29,62 @@ void main(point GS_Input input[1], uint primID : SV_PrimitiveID,
     PS_Input output;
     
     float2 SunToCenter = -SunNDCPos;
+    float Len = length(SunToCenter) / Spacing;
     SunToCenter = normalize(SunToCenter);
-    SunToCenter *= 1.f / Spacing;
     
     [unroll]
     for (int i = 0; i < 8; ++i)
     {
-        float4 CenterPos = float4(SunNDCPos + SunToCenter * i, 0.f, 1.f);
-        float brightness = 1.f - length(CenterPos); // 화면 중앙으로 갈수록 옅어지게 처리
+        float4 CenterPos = float4(SunNDCPos + SunToCenter * i * Len, 0.f, 1.f);
+        float brightness = 1.f - (length(SunToCenter * i * Len) / 0.6f); // 화면 중앙에서 멀어지면 옅어짐
         
-        // LB
-        output.pos = CenterPos - HalfWidth[i] * right - HalfWidth[i] * up;
-        output.vUV = float2(0.0, 1.0);
-        output.TexIndex = i;
-        output.Brightness = brightness;
-        outputStream.Append(output);
+        if (brightness > 0.f)
+        {
+            // LB
+            output.pos = CenterPos - HalfWidth[i] * right - HalfWidth[i] * up;
+            output.vUV = float2(0.f, 1.f);
+            output.TexIndex = i;
+            output.Brightness = brightness;
+            outputStream.Append(output);
 
-        // LT
-        output.pos = CenterPos - HalfWidth[i] * right + HalfWidth[i] * up;
-        output.vUV = float2(0.0, 0.0);
-        output.TexIndex = i;
-        output.Brightness = brightness;
-        outputStream.Append(output);
+            // LT
+            output.pos = CenterPos - HalfWidth[i] * right + HalfWidth[i] * up;
+            output.vUV = float2(0.f, 0.f);
+            output.TexIndex = i;
+            output.Brightness = brightness;
+            outputStream.Append(output);
     
-        // RB
-        output.pos = CenterPos + HalfWidth[i] * right - HalfWidth[i] * up;
-        output.vUV = float2(1.0, 1.0);
-        output.TexIndex = i;
-        output.Brightness = brightness;
-        outputStream.Append(output);
-    
-        // RT
-        output.pos = CenterPos + HalfWidth[i] * right + HalfWidth[i] * up;
-        output.vUV = float2(1.0, 0.0);
-        output.TexIndex = i;
-        output.Brightness = brightness;
-        outputStream.Append(output);
+            // RB
+            output.pos = CenterPos + HalfWidth[i] * right - HalfWidth[i] * up;
+            output.vUV = float2(1.f, 1.f);
+            output.TexIndex = i;
+            output.Brightness = brightness;
+            outputStream.Append(output);
         
+            outputStream.RestartStrip();
+    
+            // LT
+            output.pos = CenterPos - HalfWidth[i] * right + HalfWidth[i] * up;
+            output.vUV = float2(0.f, 0.f);
+            output.TexIndex = i;
+            output.Brightness = brightness;
+            outputStream.Append(output);
+    
+            // RT
+            output.pos = CenterPos + HalfWidth[i] * right + HalfWidth[i] * up;
+            output.vUV = float2(1.f, 0.f);
+            output.TexIndex = i;
+            output.Brightness = brightness;
+            outputStream.Append(output);
+        
+            // RB
+            output.pos = CenterPos + HalfWidth[i] * right - HalfWidth[i] * up;
+            output.vUV = float2(1.f, 1.f);
+            output.TexIndex = i;
+            output.Brightness = brightness;
+            outputStream.Append(output);
+        
+            outputStream.RestartStrip();
+        }
     }
 }

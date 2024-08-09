@@ -5,10 +5,10 @@
 CLensFlareScript::CLensFlareScript()
     : CScript(LENSFLARESCRIPT)
     , m_SunWorldPos()
-    , m_Spacing(1.f)
+    , m_Spacing(3.f)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_SunWorldPos, "Sun World Position");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Spacing, "Spacing", 1e-3f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Spacing, "Spacing", 1e-2f);
 }
 
 CLensFlareScript::CLensFlareScript(const CLensFlareScript& origin)
@@ -17,7 +17,7 @@ CLensFlareScript::CLensFlareScript(const CLensFlareScript& origin)
     , m_Spacing(origin.m_Spacing)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_SunWorldPos, "Sun World Position");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Spacing, "Spacing", 1e-3f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Spacing, "Spacing", 1e-2f);
 }
 
 CLensFlareScript::~CLensFlareScript()
@@ -65,8 +65,10 @@ UINT CLensFlareScript::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     fwrite(&m_SunWorldPos, sizeof(Vec3), 1, _File);
+    fwrite(&m_Spacing, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
     return MemoryByte;
 }
 
@@ -75,7 +77,9 @@ UINT CLensFlareScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     fread(&m_SunWorldPos, sizeof(Vec3), 1, _File);
+    fread(&m_Spacing, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
     return MemoryByte;
 }

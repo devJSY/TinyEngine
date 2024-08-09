@@ -1824,13 +1824,14 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LensFlareShader"));
-        for (UINT i = 0; i <= TEX_7; ++i)
-        {
-            wstring Path = L"Texture\\LensFlare\\lensFlare_Tex";
-            Path += std::to_wstring(i);
-            Path += L".png";
-            pMtrl->SetTexParam((TEX_PARAM)i, Load<CTexture>(Path, Path));
-        }
+        pMtrl->SetTexParam(TEX_0, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex3.png", L"Texture\\LensFlare\\lensFlare_Tex3.png"));
+        pMtrl->SetTexParam(TEX_1, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex1.png", L"Texture\\LensFlare\\lensFlare_Tex1.png"));
+        pMtrl->SetTexParam(TEX_2, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex8.png", L"Texture\\LensFlare\\lensFlare_Tex8.png"));
+        pMtrl->SetTexParam(TEX_3, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex6.png", L"Texture\\LensFlare\\lensFlare_Tex6.png"));
+        pMtrl->SetTexParam(TEX_4, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex8.png", L"Texture\\LensFlare\\lensFlare_Tex8.png"));
+        pMtrl->SetTexParam(TEX_5, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex4.png", L"Texture\\LensFlare\\lensFlare_Tex4.png"));
+        pMtrl->SetTexParam(TEX_6, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex3.png", L"Texture\\LensFlare\\lensFlare_Tex3.png"));
+        pMtrl->SetTexParam(TEX_7, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex7.png", L"Texture\\LensFlare\\lensFlare_Tex7.png"));
         pMtrl->SetName(L"LensFlareMtrl");
         AddAsset<CMaterial>(L"LensFlareMtrl", pMtrl);
     }

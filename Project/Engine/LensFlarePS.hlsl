@@ -48,10 +48,10 @@ float4 main(PS_Input input) : SV_TARGET
         color = g_tex_7.Sample(g_LinearClampSampler, input.vUV);
     }
     
-    if (color.a < 0.1)
+    if (color.a < 0.1f)
         discard;
     
-    //color *= input.Brightness;
+    color *= input.Brightness;
     
-    return color;
+    return float4(color.rgb, color.a);
 }
