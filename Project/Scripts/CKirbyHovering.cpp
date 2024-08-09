@@ -3,7 +3,6 @@
 
 CKirbyHovering::CKirbyHovering()
     : m_SavedGravity(0.f)
-    , m_SavedSpeed(0.f)
     , m_bFrmEnter(true)
 {
 }
@@ -53,11 +52,13 @@ void CKirbyHovering::tick()
 void CKirbyHovering::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("Flight"), true, false, 2.f);
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
-    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-10.f);
-    PLAYERCTRL->SetSpeed(7.f);
+    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
 
@@ -67,6 +68,11 @@ void CKirbyHovering::Enter()
 
 void CKirbyHovering::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+
     PLAYERCTRL->SetGravity(m_SavedGravity);
+    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
     PLAYERFSM->SetDroppable(false);
 }

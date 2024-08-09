@@ -1,15 +1,12 @@
 #pragma once
 #include "CBossState.h"
 
-class CElfilisD_Appear : public CBossState
+class CElfilisD_Jump : public CBossState
 {
 private:
-    Ptr<CPrefab> m_BossNamePref;
-    CGameObject* m_BossName;
     Vec3 m_StartPos;
-    float m_DownSpeed;
+    Vec3 m_TargetPos;
     float m_PrevDrag;
-    float m_AccTime;
 
 public:
     virtual void tick();
@@ -21,9 +18,10 @@ private:
     // tick
     void Start();
     void Progress();
+    void End();
 
 public:
-    CLONE(CElfilisD_Appear);
-    CElfilisD_Appear();
-    virtual ~CElfilisD_Appear();
+    CLONE(CElfilisD_Jump);
+    CElfilisD_Jump();
+    virtual ~CElfilisD_Jump();
 };

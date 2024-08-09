@@ -13,12 +13,6 @@ CElfilisG_Idle::~CElfilisG_Idle()
 
 void CElfilisG_Idle::tick()
 {
-    m_AccTime += DT;
-
-    if (m_AccTime >= 1.f)
-    {
-        ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
-    }
 }
 
 void CElfilisG_Idle::Enter_Step()

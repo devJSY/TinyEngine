@@ -23,8 +23,9 @@ void CKirbyDropAbility::tick()
             CGameObject* pBubble = m_Bubble->Instantiate();
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
             Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
-            InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * 100.f;
-            InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * 100.f;
+            float ScaleFactor = PLAYER->Transform()->GetLocalScale().x;
+            InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * ScaleFactor;
+            InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * ScaleFactor;
             InitRot.x += XMConvertToRadians(-90.f);
             InitRot.y += XMConvertToRadians(180.f);
 
@@ -32,8 +33,9 @@ void CKirbyDropAbility::tick()
             pBubble->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
             pBubble->AddComponent(pAbility);
             pBubble->Transform()->SetLocalPos(InitPos);
-            pBubble->Transform()->SetLocalScale(Vec3(80.f));
+            pBubble->Transform()->SetLocalScale(Vec3(ScaleFactor * 0.8f));
             pBubble->Transform()->SetLocalRotation(InitRot);
+            pBubble->MeshRender()->SetCastShadow(false);
             pAbility->SetAbilityType(PLAYERFSM->GetCurAbilityIdx());
 
             CMomentaryObjScript* pMomentaryObj = pBubble->GetScript<CMomentaryObjScript>();

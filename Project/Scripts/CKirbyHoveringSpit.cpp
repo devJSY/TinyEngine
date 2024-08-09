@@ -25,6 +25,7 @@ void CKirbyHoveringSpit::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("SpitAir"), false);
     CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyVacuum));
 
     if (!PLAYERCTRL->IsGround())
@@ -37,9 +38,7 @@ void CKirbyHoveringSpit::Enter()
 
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockDirection();
-
-    m_SaveSpeed = PLAYERCTRL->GetSpeed();
-    PLAYERCTRL->SetSpeed(m_SaveSpeed / 3.f);
+    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
 
     PLAYERFSM->SetDroppable(true);
 }
@@ -53,7 +52,7 @@ void CKirbyHoveringSpit::Exit()
     PLAYERFSM->SetHovering(false);
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
-    PLAYERCTRL->SetSpeed(m_SaveSpeed);
+    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
 
     PLAYERFSM->SetDroppable(false);
 }

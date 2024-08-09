@@ -8,7 +8,7 @@ CElfilisG_Teleport::CElfilisG_Teleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_EffectSpeed(500.f)
+    , m_EffectSpeed(300.f)
 {
     m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
@@ -121,14 +121,17 @@ void CElfilisG_Teleport::Exit_Step()
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
+            m_BeforeObj = nullptr;
         }
         if (m_BeforeEffect)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeEffect);
+            m_BeforeEffect = nullptr;
         }
         if (m_AfterEffect)
         {
             GamePlayStatic::DestroyGameObject(m_AfterEffect);
+            m_AfterEffect = nullptr;
         }
     }
     break;

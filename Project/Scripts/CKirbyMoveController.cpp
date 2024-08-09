@@ -29,7 +29,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bActiveFriction(false)
     , m_bForwardMode(false)
     , m_bLimitFallSpeed(false)
-    , m_HoveringLimitHeight(500.f)
+    , m_HoveringLimitHeight(100.f)
     , m_HoveringHeight(0.f)
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)
@@ -154,30 +154,28 @@ void CKirbyMoveController::RayGround()
     // Grund ÆÇÁ¤
     m_bGround = CharacterController()->IsGrounded();
 
-    if (m_bGround)
-    {
-        if (m_RayHit.pCollisionObj == nullptr)
-        {
-            m_bGround = false;
-        }
-        else if (m_RayHit.Distance > 2.f)
-        {
-            m_bGround = false;
-        }
-    }
-    else
-    {
-        if (m_RayHit.pCollisionObj == nullptr)
-        {
-            m_bGround = false;
-        }
-        else if (m_RayHit.Distance < 2.f && m_MoveVelocity.y <= 0.f)
-        {
-            m_bGround = true;
-        }
-    }
-
-
+    //if (m_bGround)
+    //{
+    //    if (m_RayHit.pCollisionObj == nullptr)
+    //    {
+    //        m_bGround = false;
+    //    }
+    //    else if (m_RayHit.Distance > 2.f)
+    //    {
+    //        m_bGround = false;
+    //    }
+    //}
+    //else
+    //{
+    //    if (m_RayHit.pCollisionObj == nullptr)
+    //    {
+    //        m_bGround = false;
+    //    }
+    //    else if (m_RayHit.Distance < 2.f && m_MoveVelocity.y <= 0.f)
+    //    {
+    //        m_bGround = true;
+    //    }
+    //}
 }
 
 void CKirbyMoveController::SetDir()
