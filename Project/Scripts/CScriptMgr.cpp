@@ -80,9 +80,10 @@
 #include "CKirbyCheckPointTrigger.h"
 #include "CKirbyFallDetectTrigger.h"
 #include "CFixedViewCamTrigger.h"
+#include "CElfilisUnit.h"
+#include "CLadderScript.h"
 #include "CMorphoFSM.h"
 #include "CMorphoUnit.h"
-#include "CElfilisUnit.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -165,9 +166,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyCheckPointTrigger");
 	_vec.push_back(L"CKirbyFallDetectTrigger");
 	_vec.push_back(L"CFixedViewCamTrigger");
+	_vec.push_back(L"CElfilisUnit");
 	_vec.push_back(L"CMorphoFSM");
 	_vec.push_back(L"CMorphoUnit");
-	_vec.push_back(L"CElfilisUnit");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -330,12 +331,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyFallDetectTrigger;
 	if (L"CFixedViewCamTrigger" == _strScriptName)
 		return new CFixedViewCamTrigger;
+	if (L"CElfilisUnit" == _strScriptName)
+		return new CElfilisUnit;
 	if (L"CMorphoFSM" == _strScriptName)
 		return new CMorphoFSM;
 	if (L"CMorphoUnit" == _strScriptName)
 		return new CMorphoUnit;
-	if (L"CElfilisUnit" == _strScriptName)
-		return new CElfilisUnit;
 	return nullptr;
 }
 
@@ -501,12 +502,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyFallDetectTrigger;
 	case (UINT)SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
 		return new CFixedViewCamTrigger;
+	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
+		return new CElfilisUnit;
 	case (UINT)SCRIPT_TYPE::MORPHOFSM:
 		return new CMorphoFSM;
 	case (UINT)SCRIPT_TYPE::MORPHOUNIT:
 		return new CMorphoUnit;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::MORPHOUNIT:
+		return new CMorphoUnit;
 	}
 	return nullptr;
 }
@@ -673,12 +678,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyFallDetectTrigger";
 	case SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
 		return L"CFixedViewCamTrigger";
+	case SCRIPT_TYPE::ELFILISUNIT:
+		return L"CElfilisUnit";
 	case SCRIPT_TYPE::MORPHOFSM:
 		return L"CMorphoFSM";
 	case SCRIPT_TYPE::MORPHOUNIT:
 		return L"CMorphoUnit";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::MORPHOUNIT:
+		return L"CMorphoUnit";
 	}
 	return nullptr;
 }

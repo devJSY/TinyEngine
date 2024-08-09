@@ -697,6 +697,9 @@
     <ClInclude Include="CLevelFlowMgr.h">
       <Filter>Module\FlowMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisUnit.h">
+      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+    </ClInclude>
     <ClInclude Include="CMorphoFSM.h">
       <Filter>Scripts\FSM\MorphoFSM</Filter>
     </ClInclude>
@@ -1420,6 +1423,9 @@
     </ClCompile>
     <ClCompile Include="CLevelFlowMgr.cpp">
       <Filter>Module\FlowMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisUnit.cpp">
+      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
     </ClCompile>
     <ClCompile Include="CMorphoFSM.cpp">
       <Filter>Scripts\FSM\MorphoFSM</Filter>
@@ -2270,42 +2276,6 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Morpho\Unit">
       <UniqueIdentifier>{20725c2d-664c-4dca-af82-ba858944985b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
-      <UniqueIdentifier>{7fd29104-cf8e-4dc3-9e3f-187f0ba28ce9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_Wait">
-      <UniqueIdentifier>{47db55fa-c3ee-4491-a097-0500917f3454}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkA">
-      <UniqueIdentifier>{d46f1103-c893-480b-bc8b-65b6e6fa928f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\MoveG">
-      <UniqueIdentifier>{809adda3-9d2b-4139-9258-db05179376c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\MoveA">
-      <UniqueIdentifier>{0e063ec8-cc0b-47bc-9fc5-71b7d09a4da3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_NormalNear">
-      <UniqueIdentifier>{50ef0411-aea4-4f2e-ad5b-981dd54e443f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_NormalFar">
-      <UniqueIdentifier>{0d947959-6532-44c7-8942-249f3f34999b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_Teleport">
-      <UniqueIdentifier>{bb5a9266-10f7-48b6-b7bc-a4bd6ba1d792}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_NormalNear\Attack1">
-      <UniqueIdentifier>{65891e52-8e81-424f-bf07-4b2b6d2917c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_NormalNear\Attack2">
-      <UniqueIdentifier>{0af50273-69ec-4b6d-9c6b-788185c221f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_NormalNear\Attack3">
-      <UniqueIdentifier>{cd51bb54-afd9-4b77-862d-8574f3df117d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\AtkG_NormalNear\AirCombo">
-      <UniqueIdentifier>{7e2b9705-451a-4229-84e7-39e977a31f47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
