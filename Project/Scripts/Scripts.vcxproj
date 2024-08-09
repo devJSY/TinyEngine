@@ -206,6 +206,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElevatorScript.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk1.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h" />
+    <ClInclude Include="CMorphoAtkG_NormalNear_AtkFlight.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CMorphoFSM.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h" />
     <ClInclude Include="CMorphoUnit.h" />
@@ -459,6 +463,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElevatorScript.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp" />
+    <ClCompile Include="CMorphoAtkG_NormalNear_AtkFlight.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CMorphoFSM.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />

@@ -76,7 +76,7 @@ CPushOutColliderScript
 CLadderScript
 CKirbyCheckPointTrigger
 CKirbyFallDetectTrigger
+CFixedViewCamTrigger
 CMorphoFSM
 CMorphoUnit
 CElfilisUnit
-CMorphoUnit

@@ -697,9 +697,6 @@
     <ClInclude Include="CLevelFlowMgr.h">
       <Filter>Module\FlowMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisUnit.h">
-      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
-    </ClInclude>
     <ClInclude Include="CMorphoFSM.h">
       <Filter>Scripts\FSM\MorphoFSM</Filter>
     </ClInclude>
@@ -709,14 +706,21 @@
     <ClInclude Include="CMorphoUnit.h">
       <Filter>Scripts\Character\Boss\Morpho\Unit</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisUnit.h">
-      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
-    </ClInclude>
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk1.h">
-      <Filter>State\MorphoState\AtkG_NormalNear\Attack1</Filter>
+      <Filter>State\MorphoState\AtkG Normal Near\Attack1</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h" />
-    <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h" />
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack2</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack3</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisUnit.h">
+      <Filter>Scripts\Character\Boss\Elfilis\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalNear_AtkFlight.h">
+      <Filter>State\MorphoState\AtkG Normal Near\AttackFlight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1424,26 +1428,30 @@
     <ClCompile Include="CLevelFlowMgr.cpp">
       <Filter>Module\FlowMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisUnit.cpp">
-      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
-    </ClCompile>
     <ClCompile Include="CMorphoFSM.cpp">
       <Filter>Scripts\FSM\MorphoFSM</Filter>
     </ClCompile>
     <ClCompile Include="CMorpho_Idle.cpp">
       <Filter>State\MorphoState\Idle</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack1</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack2</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack3</Filter>
+    </ClCompile>
     <ClCompile Include="CMorphoUnit.cpp">
       <Filter>Scripts\Character\Boss\Morpho\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisUnit.cpp">
-      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+      <Filter>Scripts\Character\Boss\Elfilis\Unit</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp">
-      <Filter>State\MorphoState\AtkG_NormalNear\Attack1</Filter>
+    <ClCompile Include="CMorphoAtkG_NormalNear_AtkFlight.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\AttackFlight</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp" />
-    <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2276,6 +2284,33 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Morpho\Unit">
       <UniqueIdentifier>{20725c2d-664c-4dca-af82-ba858944985b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Attack Air">
+      <UniqueIdentifier>{bf1b3362-70fa-4baf-ad8a-6fed6ced54f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport">
+      <UniqueIdentifier>{a745ab10-84db-4357-a6fe-514cd519040d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near">
+      <UniqueIdentifier>{b7b1f6ea-93f9-4c08-a689-523f2de9822c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Far">
+      <UniqueIdentifier>{61758a2a-786c-4899-a408-ab69d4a12f9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\Unit">
+      <UniqueIdentifier>{5f515b1c-feec-4ae4-b2d1-246de9125596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\AttackFlight">
+      <UniqueIdentifier>{394961bd-abe8-47cb-a96f-1634a19ea6e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\Attack3">
+      <UniqueIdentifier>{31524672-eb68-4627-83a8-6e0b15bfd705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\Attack1">
+      <UniqueIdentifier>{4815abc3-f9ac-4bd5-83a6-ec53d9018aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\Attack2">
+      <UniqueIdentifier>{538a3c8a-9511-4ccb-a279-cb5122cfefe0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
