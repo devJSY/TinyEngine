@@ -1136,6 +1136,9 @@
     <Filter Include="ShaderCode\Kirby\Postprocess">
       <UniqueIdentifier>{31eba271-b6d2-4a23-98b1-ed3fdf799bda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Render\Postprocess\LensFlare">
+      <UniqueIdentifier>{a2edad5a-4026-44a0-aaa5-3320c3140b42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1442,6 +1445,15 @@
     </FxCompile>
     <FxCompile Include="KirbyFadeOutPS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="LensFlareVS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
+    </FxCompile>
+    <FxCompile Include="LensFlareGS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
+    </FxCompile>
+    <FxCompile Include="LensFlarePS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

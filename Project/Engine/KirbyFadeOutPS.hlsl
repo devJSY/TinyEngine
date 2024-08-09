@@ -43,9 +43,7 @@ float4 main(PS_IN _in) : SV_Target
     _in.vUV0 *= 0.5f;
     
     // AspectRatio 보정
-    float AspectRatio = g_RenderResolution.x / g_RenderResolution.y;
-    _in.vUV0.x *= AspectRatio;
-    _in.vUV0.x -= abs((1.f - AspectRatio) / 2.f); // 중앙으로 오도록 설정
+    _in.vUV0 = AspectRatioCorrection(_in.vUV0);
     
     // Rotation
     _in.vUV0 = RotateUV(_in.vUV0, RotateAngle);

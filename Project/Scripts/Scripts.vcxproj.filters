@@ -706,6 +706,9 @@
     <ClInclude Include="CFadeOutScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CLensFlareScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1420,6 +1423,9 @@
       <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
     </ClCompile>
     <ClCompile Include="CFadeOutScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CLensFlareScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

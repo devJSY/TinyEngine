@@ -80,3 +80,4 @@ CElfilisUnit
 CPushOutColliderScript
 CLightBulbGimmickScript
 CFadeOutScript
+CLensFlareScript

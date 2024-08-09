@@ -67,6 +67,15 @@ float2 RotateUV(float2 uv, float angle)
     return rotatedUV;
 }
 
+float2 AspectRatioCorrection(float2 uv)
+{
+    float AspectRatio = g_RenderResolution.x / g_RenderResolution.y;
+    uv.x *= AspectRatio;
+    uv.x -= abs((1.f - AspectRatio) / 2.f); // 줄어든 비율만큼 이동하여 중앙에 맞춤
+    
+    return uv;
+}
+
 // ======
 // Random
 // ======

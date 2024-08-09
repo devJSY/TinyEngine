@@ -19,6 +19,8 @@ private:
     bool m_bLock;
 
     float m_TimeScale;
+    float m_TimeScaleDuration;
+    bool m_TimeScaling;
 
 public:
     float GetDeltaTime() const { return m_DeltaTime; }
@@ -28,6 +30,7 @@ public:
 
     float GetTimeScale() const { return m_TimeScale; }
     void SetTimeScale(float _TimeScale) { m_TimeScale = _TimeScale; }
+    void SetTimeScale(float _Duration, float _TimeScale);
 
 public:
     void init();

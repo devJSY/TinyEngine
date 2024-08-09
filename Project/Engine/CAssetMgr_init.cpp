@@ -1261,6 +1261,32 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"DepthMaskingShader");
         AddAsset(L"DepthMaskingShader", pShader);
     }
+
+    // =================================
+    // LensFlare Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\LensFlareVS.hlsl", "main");
+        pShader->CreateGeometryShader(L"shader\\LensFlareGS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\LensFlarePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        for (UINT i = 0; i <= TEX_7; ++i)
+        {
+            pShader->AddTexParam((TEX_PARAM)i, "Texture " + std::to_string(i));
+        }
+
+        pShader->SetName(L"LensFlareShader");
+        AddAsset(L"LensFlareShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1792,6 +1818,21 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DepthMaskingShader"));
         pMtrl->SetName(L"DepthMaskingMtrl");
         AddAsset<CMaterial>(L"DepthMaskingMtrl", pMtrl);
+    }
+
+    // LensFlare Mtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"LensFlareShader"));
+        for (UINT i = 0; i <= TEX_7; ++i)
+        {
+            wstring Path = L"Texture\\LensFlare\\lensFlare_Tex";
+            Path += std::to_wstring(i);
+            Path += L".png";
+            pMtrl->SetTexParam((TEX_PARAM)i, Load<CTexture>(Path, Path));
+        }
+        pMtrl->SetName(L"LensFlareMtrl");
+        AddAsset<CMaterial>(L"LensFlareMtrl", pMtrl);
     }
 }
 
