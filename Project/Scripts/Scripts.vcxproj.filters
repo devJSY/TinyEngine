@@ -721,6 +721,9 @@
     <ClInclude Include="CMorphoAtkG_NormalNear_AtkFlight.h">
       <Filter>State\MorphoState\AtkG Normal Near\AttackFlight</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalFar_SwordSlash.h">
+      <Filter>State\MorphoState\AtkG Normal Far\SwordSlash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1451,6 +1454,9 @@
     </ClCompile>
     <ClCompile Include="CMorphoAtkG_NormalNear_AtkFlight.cpp">
       <Filter>State\MorphoState\AtkG Normal Near\AttackFlight</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalFar_SwordSlash.cpp">
+      <Filter>State\MorphoState\AtkG Normal Far\SwordSlash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2311,6 +2317,9 @@
     </Filter>
     <Filter Include="State\MorphoState\AtkG Normal Near\Attack2">
       <UniqueIdentifier>{538a3c8a-9511-4ccb-a279-cb5122cfefe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Far\SwordSlash">
+      <UniqueIdentifier>{fe516468-cb16-4400-9297-820a68f75a06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
