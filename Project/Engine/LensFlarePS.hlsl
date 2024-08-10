@@ -51,7 +51,7 @@ float4 main(PS_Input input) : SV_TARGET
     if (color.a < 0.1f)
         discard;
     
-    color *= input.Brightness;
+    color += color * 3.f;
     
-    return float4(color.rgb, color.a);
+    return float4(color.rgb, color.a * input.Brightness * 0.02f);
 }

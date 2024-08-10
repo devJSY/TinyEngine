@@ -34,7 +34,6 @@ void CPlayerMgr::begin()
     m_PlayerBodyMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Kirby_BodyC.mtrl", L"material\\Kirby_BodyC.mtrl");
     m_PlayerBodyDemoMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Kirby_DeformBodyC.mtrl", L"material\\Kirby_DeformBodyC.mtrl");
 
-
     CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
     SetPlayer(pPlayer);
 
@@ -155,8 +154,8 @@ void CPlayerMgr::ResetBodyColliderSetting()
     m_PlayerObj->CharacterController()->SetRadius(0.51f);
     m_PlayerObj->CharacterController()->SetSkinWidth(0.015f);
     m_PlayerObj->CharacterController()->SetMinMoveDistance(0.f);
-    
-    static CCapsuleCollider* BodyCol = m_PlayerObj->GetChildObject(L"Body Collider")->CapsuleCollider();
+
+    CCapsuleCollider* BodyCol = m_PlayerObj->GetChildObject(L"Body Collider")->CapsuleCollider();
 
     BodyCol->CapsuleCollider()->SetTrigger(true);
     BodyCol->CapsuleCollider()->SetCenter(Vec3(0.f, 0.65f, 0.f));
