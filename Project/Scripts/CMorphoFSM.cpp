@@ -40,6 +40,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoMoveG_Teleport.h"
 #include "CMorphoMoveG_Jump.h"
 #include "CMorphoMoveG_HoverDash.h"
+#include "CMorphoMoveA_Teleport.h"
 void CMorphoFSM::begin()
 {
     // add state
@@ -54,6 +55,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_HOVERDASH", new CMorphoMoveG_HoverDash);
+    AddGroupPublicState(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT", new CMorphoMoveA_Teleport);
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);

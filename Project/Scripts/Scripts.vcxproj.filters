@@ -751,6 +751,7 @@
     <ClInclude Include="CMorphoMoveG_HoverDash.h">
       <Filter>State\MorphoState\MoveGround\HoverDash\HoverDash</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoMoveA_Teleport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1512,6 +1513,7 @@
     <ClCompile Include="CMorphoMoveG_HoverDash.cpp">
       <Filter>State\MorphoState\MoveGround\HoverDash\HoverDash</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoMoveA_Teleport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

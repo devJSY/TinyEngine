@@ -5,6 +5,7 @@
 CMorphoMoveG_HoverDash::CMorphoMoveG_HoverDash()
     : m_PrevDrag(0.f)
     , m_Speed(130.f)
+    , m_NewDrag(0.f)
 {
 }
 
@@ -120,7 +121,7 @@ void CMorphoMoveG_HoverDash::FlyToPlayer()
     // move
     Vec3 Veloc = GetOwner()->Rigidbody()->GetVelocity();
     Vec3 Force = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-    Force.y *= 0.1f;
+    Force.y = 0.f;
     Force = Force.Normalize() * m_Speed;
 
     if (Veloc.Length() <= m_Speed)

@@ -56,6 +56,8 @@ void CMorphoAtkA_ShockWave::Exit()
         //@EFFECT 충격파 이펙트
     }
 
+    GetOwner()->Rigidbody()->SetUseGravity(true);
+
     Exit_Step();
 }
 
@@ -65,6 +67,7 @@ void CMorphoAtkA_ShockWave::Enter_Step()
     {
     case StateStep::Charge: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ButterflyScalesChargeStart"), false, false, 1.5f);
+        GetOwner()->Rigidbody()->SetUseGravity(false);
     }
     break;
     case StateStep::ChargeWait: {
