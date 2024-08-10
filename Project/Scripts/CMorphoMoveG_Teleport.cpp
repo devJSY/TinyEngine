@@ -32,7 +32,6 @@ void CMorphoMoveG_Teleport::Enter_Step()
     switch (m_Step)
     {
     case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
         m_AccTime = 0.f;
 

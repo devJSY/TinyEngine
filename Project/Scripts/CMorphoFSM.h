@@ -75,6 +75,7 @@ public:
     float GetNearDist() const { return m_NearDist; }
     bool IsNearPlayer() const { return GetPlayerDist() <= m_NearDist; }
     float GetPlayerDist() const;
+    bool IsGround() const;
     CGameObject* GetWeaponL() const { return m_WeaponL; }
     CGameObject* GetWeaponR() const { return m_WeaponR; }
     const vector<CGameObject*>& GetShockWave() const { return m_vecShockWave; }

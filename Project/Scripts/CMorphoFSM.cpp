@@ -7,10 +7,10 @@ CMorphoFSM::CMorphoFSM()
     : CFSMScript(MORPHOFSM)
     , m_Phase(1)
     , m_ComboLevel(0)
-    , m_NearDist(100.f)
+    , m_NearDist(120.f)
     , m_bAttackRepeat(false)
     , m_MapFloorOffset(Vec3())
-    , m_MapSize(Vec3(25.f, 0.f, 25.f))
+    , m_MapSize(Vec3(500.f, 0.f, 500.f))
     , m_TeleportAppearTime(0.f)
     , m_EmissiveTime(0.3f)
 {
@@ -38,6 +38,8 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkA_ShockWave.h"
 
 #include "CMorphoMoveG_Teleport.h"
+#include "CMorphoMoveG_Jump.h"
+#include "CMorphoMoveG_HoverDash.h"
 void CMorphoFSM::begin()
 {
     // add state
@@ -50,6 +52,8 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_HOVERDASH", new CMorphoMoveG_HoverDash);
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
@@ -85,12 +89,6 @@ void CMorphoFSM::begin()
     m_WeaponR = GetOwner()->GetChildObject(L"BossMorphoSwordR");
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveR"));
-
-    // set map size
-    float ScaleFactor = Transform()->GetLocalScale().x;
-    m_NearDist *= ScaleFactor;
-    m_MapFloorOffset *= ScaleFactor;
-    m_MapSize *= ScaleFactor;
 }
 
 void CMorphoFSM::tick()
@@ -99,7 +97,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
     }
 
     // Emissive
@@ -316,6 +314,21 @@ float CMorphoFSM::GetPlayerDist() const
     Vec3 Dist = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
     Dist.y = 0.f;
     return Dist.Length();
+}
+
+bool CMorphoFSM::IsGround() const
+{
+    bool bGround = false;
+    Vec3 CurPos = GetOwner()->Transform()->GetWorldPos();
+    float GroundHeight = GetOwner()->CapsuleCollider()->GetHeight() + GetOwner()->CapsuleCollider()->GetCenter().y;
+    GroundHeight *= GetOwner()->Transform()->GetWorldScale().y;
+
+    if (CurPos.y <= GroundHeight / 2.f && CurPos.y >= 0.f)
+    {
+        bGround = true;
+    }
+
+    return bGround;
 }
 
 UINT CMorphoFSM::SaveToLevelFile(FILE* _File)
