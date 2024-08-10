@@ -730,6 +730,12 @@
     <ClInclude Include="CMorphoAtkG_Teleport_Tornado.h">
       <Filter>State\MorphoState\AtkG Teleport\Tornado</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoul.h">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoul</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoTrackingSoul.h">
+      <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1469,6 +1475,12 @@
     </ClCompile>
     <ClCompile Include="CMorphoAtkG_Teleport_Tornado.cpp">
       <Filter>State\MorphoState\AtkG Teleport\Tornado</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoul.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoul</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoTrackingSoul.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2336,11 +2348,14 @@
     <Filter Include="State\MorphoState\AtkG Teleport\FireWall">
       <UniqueIdentifier>{031a4f12-8f1e-4533-9ea1-9ff330be84c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MorphoState\AtkG Teleport\ProjSoul">
-      <UniqueIdentifier>{ed74b148-ecb4-44b6-be10-1706bd205e38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\MorphoState\AtkG Teleport\Tornado">
       <UniqueIdentifier>{e6ca8307-4d3d-41b8-be00-e729d4fe3600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\TrackingSoul">
+      <UniqueIdentifier>{ed74b148-ecb4-44b6-be10-1706bd205e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho\TrackingSoul">
+      <UniqueIdentifier>{e68047e7-e76f-477c-87c7-0c1b280f9c19}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

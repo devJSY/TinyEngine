@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CMorphoAtkG_Teleport_Tornado.h"
 #include "CMorphoFSM.h"
+#include "CMomentaryObjScript.h"
 
 CMorphoAtkG_Teleport_Tornado::CMorphoAtkG_Teleport_Tornado()
     : m_AccTime(0.f)

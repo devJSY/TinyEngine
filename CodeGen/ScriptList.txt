@@ -80,3 +80,4 @@ CFixedViewCamTrigger
 CMorphoFSM
 CMorphoUnit
 CElfilisUnit
+CMorphoTrackingSoul
