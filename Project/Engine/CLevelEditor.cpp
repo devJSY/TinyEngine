@@ -421,6 +421,10 @@ void CLevelEditor::render_WorldSettings()
     if (ImGui::Checkbox("Enable Bloom", &bEnableBloom))
         CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);
 
+    bool bEnableDepthMasking = CRenderMgr::GetInst()->IsEnableDepthMasking();
+    if (ImGui::Checkbox("Enable Depth Masking", &bEnableDepthMasking))
+        CRenderMgr::GetInst()->SetEnableDepthMasking(bEnableDepthMasking);
+
     ImGui::Checkbox("Enable SSAO", (bool*)&g_Global.g_EnableSSAO);
 
     ImGui::End();

@@ -79,3 +79,5 @@ CFixedViewCamTrigger
 CElfilisUnit
 CPushOutColliderScript
 CLightBulbGimmickScript
+CFadeOutScript
+CLensFlareScript

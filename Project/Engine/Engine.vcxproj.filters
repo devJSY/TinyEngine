@@ -1125,7 +1125,10 @@
       <UniqueIdentifier>{dd483ebd-d730-4e07-8e7f-6107bc17f32a}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Kirby\Postprocess">
-      <UniqueIdentifier>{3da31022-2699-4482-8b2c-1563432e7934}</UniqueIdentifier>
+      <UniqueIdentifier>{31eba271-b6d2-4a23-98b1-ed3fdf799bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Render\Postprocess\LensFlare">
+      <UniqueIdentifier>{a2edad5a-4026-44a0-aaa5-3320c3140b42}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Kirby\Characters\Monster\HotHead">
       <UniqueIdentifier>{be943b25-37cf-4771-a5e1-955ebf6963de}</UniqueIdentifier>
@@ -1434,8 +1437,20 @@
     <FxCompile Include="UIWipePS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
     </FxCompile>
-    <FxCompile Include="KirbyMaskingPS.hlsl">
+    <FxCompile Include="DepthMaskingPS.hlsl">
+      <Filter>ShaderCode\Render\PostEffect</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbyFadeOutPS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="LensFlareVS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
+    </FxCompile>
+    <FxCompile Include="LensFlareGS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
+    </FxCompile>
+    <FxCompile Include="LensFlarePS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
     </FxCompile>
     <FxCompile Include="HotHeadPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Monster\HotHead</Filter>

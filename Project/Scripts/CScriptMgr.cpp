@@ -82,6 +82,8 @@
 #include "CElfilisUnit.h"
 #include "CPushOutColliderScript.h"
 #include "CLightBulbGimmickScript.h"
+#include "CFadeOutScript.h"
+#include "CLensFlareScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -166,6 +168,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CElfilisUnit");
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLightBulbGimmickScript");
+	_vec.push_back(L"CFadeOutScript");
+	_vec.push_back(L"CLensFlareScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -332,6 +336,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPushOutColliderScript;
 	if (L"CLightBulbGimmickScript" == _strScriptName)
 		return new CLightBulbGimmickScript;
+	if (L"CFadeOutScript" == _strScriptName)
+		return new CFadeOutScript;
+	if (L"CLensFlareScript" == _strScriptName)
+		return new CLensFlareScript;
 	return nullptr;
 }
 
@@ -501,6 +509,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
 		return new CLightBulbGimmickScript;
+	case (UINT)SCRIPT_TYPE::FADEOUTSCRIPT:
+		return new CFadeOutScript;
+	case (UINT)SCRIPT_TYPE::LENSFLARESCRIPT:
+		return new CLensFlareScript;
 	}
 	return nullptr;
 }
@@ -671,6 +683,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
 		return L"CLightBulbGimmickScript";
+	case SCRIPT_TYPE::FADEOUTSCRIPT:
+		return L"CFadeOutScript";
+	case SCRIPT_TYPE::LENSFLARESCRIPT:
+		return L"CLensFlareScript";
 	}
 	return nullptr;
 }

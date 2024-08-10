@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAssetMgr.h"
+
 #include "CGraphicsShader.h"
 
 void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
@@ -394,22 +395,24 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Kirby Masking Shader
+    // Kirby Fade Out Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\KirbyMaskingPS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyFadeOutPS.hlsl", "main");
 
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
-        pShader->AddTexParam(TEX_2, "DepthMasking Texture");
+        pShader->AddTexParam(TEX_0, "Mask Texture");
+        pShader->AddScalarParam(FLOAT_0, "Weight", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Rotate Angle", 1e-3f);
+        pShader->AddScalarParam(VEC4_0, "BackGroundColor");
+        pShader->AddScalarParam(VEC4_1, "Target NDC Pos");
 
-        pShader->AddScalarParam(VEC4_0, "Masking Color", 1e-3f);
-
-        pShader->SetName(L"KirbyMaskingShader");
-        AddAsset(L"KirbyMaskingShader", pShader);
+        pShader->SetName(L"KirbyFadeOutShader");
+        AddAsset(L"KirbyFadeOutShader", pShader);
     }
 }
