@@ -4,11 +4,12 @@
 enum class TACKLEENEMY_STATE
 {
     Idle,
-    Patrol,
     Find,
     AttackPrev,
     Attack,
     AttackAfter,
+    AttackAfter2,
+    Wait,
     Damage,
     Eaten,
     Death,
@@ -19,17 +20,18 @@ class CTackleEnemyScript : public CMonsterUnitScript
 private:
     TACKLEENEMY_STATE m_eState;
 
-    CGameObject* m_pTargetObject;
+    Vec3 m_vDamageDir;
+    
+    float m_fAccTime;
+    float m_fWaitTime;
+
     float m_fRushSpeedLerp;
     float m_fRushLerp;
     float m_fSpeed;
     float m_fMaxSpeed;
 
     float m_fThreshHoldRushLerp;
-    float m_fPatrolTime;
-    float m_fPatrolAccTime;
 
-    Vec3 m_vDamageDir;
     bool m_bFlag;
 
 public:
@@ -55,13 +57,14 @@ private:
     void AttackPrev();
     void Attack();
     void AttackAfter();
+    void AttackAfter2();
     void Damage();
     void Eaten();
+    void Wait();
     void Death();
 
 private:
     Vec3 TrackDir(Vec3 _vPos);
-    TACKLEENEMY_STATE RandomIdleState();
     void ApplyDir(Vec3 _vFront, bool _flag);
 
 public:

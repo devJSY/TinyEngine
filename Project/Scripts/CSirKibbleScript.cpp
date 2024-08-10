@@ -2,14 +2,15 @@
 #include "CSirKibbleScript.h"
 
 #include "CCutterProjectileScript.h"
+#include "CPlayerMgr.h"
 
 CSirKibbleScript::CSirKibbleScript()
     : CMonsterUnitScript(SIRKIBBLESCRIPT)
     , m_eState(SIRKIBBLE_STATE::Idle)
-    , m_pTargetObj(nullptr)
     , m_pAttackPoint(nullptr)
     , m_vDamageDir{}
     , m_bFlag(false)
+    , m_bJump(false)
     , m_fAccTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -18,10 +19,10 @@ CSirKibbleScript::CSirKibbleScript()
 CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_eState(SIRKIBBLE_STATE::Idle)
-    , m_pTargetObj(nullptr)
     , m_pAttackPoint(nullptr)
     , m_vDamageDir{}
     , m_bFlag(false)
+    , m_bJump(false)
     , m_fAccTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -150,7 +151,6 @@ void CSirKibbleScript::EnterState(SIRKIBBLE_STATE _state)
     break;
     case SIRKIBBLE_STATE::CutterThrowStartWait: {
         Animator()->Play(ANIMPREFIX("CutterThrowStartWait"));
-        m_pTargetObj = GetTarget();
     }
     break;
     case SIRKIBBLE_STATE::CutterThrow: {
@@ -211,15 +211,15 @@ void CSirKibbleScript::ExitState(SIRKIBBLE_STATE _state)
         break;
     case SIRKIBBLE_STATE::AirCutterThrow: {
         Rigidbody()->SetUseGravity(true);
-        m_pTargetObj = nullptr;
     }
     break;
     case SIRKIBBLE_STATE::CutterThrowStart:
         break;
-    case SIRKIBBLE_STATE::CutterThrowStartWait:
-        break;
+    case SIRKIBBLE_STATE::CutterThrowStartWait: {
+        m_bJump = false;
+    }
+    break;
     case SIRKIBBLE_STATE::CutterThrow: {
-        m_pTargetObj = nullptr;
     }
     break;
     case SIRKIBBLE_STATE::CutterCatch:
@@ -254,24 +254,18 @@ void CSirKibbleScript::Idle()
 
 void CSirKibbleScript::Find()
 {
-    RotatingToTarget();
+    Vec3 ToTargetDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    ToTargetDir.y = 0.f;
+    Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
+
     if (Animator()->IsFinish())
     {
-        if (nullptr != GetTarget())
+        float fDiff = PLAYER->Transform()->GetWorldPos().y - Transform()->GetWorldPos().y;
+        if (fDiff >= 70.f)
         {
-            if (GetTarget()->Transform()->GetLocalPos().y - Transform()->GetLocalPos().y >= 100.f)
-            {
-                ChangeState(SIRKIBBLE_STATE::AirCutterJumpStart);
-            }
-            else
-            {
-                ChangeState(SIRKIBBLE_STATE::CutterThrowStart);
-            }
+            m_bJump = true;
         }
-        else
-        {
-            ChangeState(SIRKIBBLE_STATE::Idle);
-        }
+        ChangeState(SIRKIBBLE_STATE::CutterThrowStartWait);
     }
 }
 
@@ -297,16 +291,34 @@ void CSirKibbleScript::CutterThrowStart()
 
 void CSirKibbleScript::CutterThrowStartWait()
 {
-    RotatingToTarget();
-    if (nullptr != GetTarget())
+    Vec3 ToTargetDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    ToTargetDir.y = 0.f;
+    Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
+
+    Vec3 vPlayerPos = PLAYER->Transform()->GetWorldPos();
+    Vec3 vPos = Transform()->GetWorldPos();
+
+    vPlayerPos.y = 0.f;
+    vPos.y = 0.f;
+
+    Vec3 vTargetDir = vPlayerPos - vPos;
+    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+    vTargetDir.Normalize();
+    vFront.y = 0.f;
+
+    float vDot = vTargetDir.Dot(vFront);
+
+    if (m_bJump)
     {
-        Quat vDir = Transform()->GetWorldQuaternion();
-        Vec3 vTargetDir = m_pTargetObj->Transform()->GetLocalPos() - Transform()->GetLocalPos();
-
-        Vec3 vUP = vTargetDir == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vTargetQuat = Quat::LookRotation(-vTargetDir, vUP);
-
-        if (vTargetQuat.Dot(vDir) < cosf(0.f) - 0.0000001f)
+        if (vDot >= 0.8f)
+        {
+            ChangeState(SIRKIBBLE_STATE::AirCutterJumpStart);
+        }
+    }
+    else
+    {
+        if (vDot >= cosf(0.f) - 0.001f)
         {
             ChangeState(SIRKIBBLE_STATE::CutterThrow);
         }
@@ -359,7 +371,7 @@ void CSirKibbleScript::Eaten()
 
 void CSirKibbleScript::Land()
 {
-    Animator()->IsFinish() ? ChangeState(SIRKIBBLE_STATE::Idle) : void();
+    Animator()->IsFinish() ? ChangeState(SIRKIBBLE_STATE::FindWait) : void();
 }
 
 void CSirKibbleScript::Fall()
@@ -434,8 +446,6 @@ void CSirKibbleScript::OnTriggerEnter(CCollider* _OtherCollider)
 
         L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
     }
-
-    // TODO : 돌아온 부메랑이 나에게 맞았다면 ChangeState(CutterCatch)
 }
 
 void CSirKibbleScript::OnTriggerExit(CCollider* _OtherCollider)

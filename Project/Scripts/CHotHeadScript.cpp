@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CHotHeadScript.h"
 
+#include "CPlayerMgr.h"
 #include "CFireProjectileScript.h"
 
 CHotHeadScript::CHotHeadScript()
@@ -307,49 +308,40 @@ void CHotHeadScript::Find()
 {
     if (Animator()->IsFinish())
     {
-        if (nullptr != GetTarget())
-        {
-            ChangeState(HOTHEAD_STATE::Aiming);
-        }
-        else
-        {
-            ChangeState(HOTHEAD_STATE::Idle);
-        }
+        ChangeState(HOTHEAD_STATE::Aiming);
     }
 }
 
 void CHotHeadScript::Aiming()
 {
-    if (nullptr != GetTarget())
+    RotatingToTarget();
+
+    Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 vTargetDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+
+    float fDot = vFront.Dot(vTargetDir.Normalize());
+
+    if (fDot >= 0.999f)
     {
-        RotatingToTarget();
-        m_fAccTime += DT;
-        if (m_fAccTime >= m_fAimingTime)
+        float fDistance = (PLAYER->GetComponent<CTransform>()->GetLocalPos() - Transform()->GetLocalPos()).Length();
+        HOTHEAD_STATE state = {};
+
+        if (fDistance <= m_fShotLength)
         {
-            float fDistance = (GetTarget()->GetComponent<CTransform>()->GetLocalPos() - Transform()->GetLocalPos()).Length();
-            HOTHEAD_STATE state = {};
-
-            if (fDistance <= m_fShotLength)
-            {
-                state = HOTHEAD_STATE::AttackShootStart;
-            }
-
-            if (fDistance <= m_fFlameLength)
-            {
-                state = HOTHEAD_STATE::AttackFlameStart;
-            }
-
-            if (fDistance <= m_fFlameRotLength)
-            {
-                state = HOTHEAD_STATE::AttackFlameRotStart;
-            }
-
-            ChangeState(state);
+            state = HOTHEAD_STATE::AttackShootStart;
         }
-    }
-    else
-    {
-        ChangeState(HOTHEAD_STATE::Idle);
+
+        if (fDistance <= m_fFlameLength)
+        {
+            state = HOTHEAD_STATE::AttackFlameStart;
+        }
+
+        if (fDistance <= m_fFlameRotLength)
+        {
+            state = HOTHEAD_STATE::AttackFlameRotStart;
+        }
+
+        ChangeState(state);
     }
 }
 
@@ -396,9 +388,11 @@ void CHotHeadScript::AttackFlameRotStart()
 
 void CHotHeadScript::AttackFlameRot()
 {
-    m_fRotRadian += DT * 5.f;
-    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), m_fRotRadian);
-    m_pFlameRotObject->Transform()->SetWorldRotation(Quaternion);
+    Vec3 vRadian = m_pFlameRotObject->Transform()->GetLocalRotation();
+
+    vRadian.y += GetCurInfo().RotationSpeed * DT;
+
+    m_pFlameRotObject->Transform()->SetLocalRotation(vRadian);
 
     if (Animator()->IsFinish())
     {
@@ -423,7 +417,6 @@ void CHotHeadScript::Damage()
         m_bFlag = true;
     }
 
-    // 아마 Damage 받을 때 사망 띠~
     if (GetCurInfo().HP <= 0.f)
     {
         ChangeState(HOTHEAD_STATE::Death);
@@ -448,10 +441,9 @@ void CHotHeadScript::ProjectileAttack()
     if (nullptr != bulletPref)
     {
         CGameObject* pBullet = bulletPref->Instantiate();
-        pBullet->Transform()->SetLocalPos(Transform()->GetLocalPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 150.f + Vec3(0.f, 84.f, 0.f));
+        pBullet->Transform()->SetLocalPos(Transform()->GetLocalPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f + Vec3(0.f, 10.f, 0.f));
         pBullet->Transform()->SetWorldRotation(Transform()->GetWorldQuaternion());
-        // TODO : LAYER_MONSTER -> LAYER_MOSTERATK 변경
-        GamePlayStatic::SpawnGameObject(pBullet, LAYER_MONSTER);
+        GamePlayStatic::SpawnGameObject(pBullet, LAYER_MONSTERATK);
     }
 }
 
@@ -501,19 +493,6 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     UnitHit hit;
     ZeroMemory(&hit, sizeof(hit));
-    /**********************
-    | 1. Player ATK Hit
-    ***********************/
-
-    // 충돌한 오브젝트가 플레이어 공격인지 확인
-    if (LAYER_PLAYERATK == pObj->GetLayerIdx())
-    {
-        flag = true;
-        // TODO : 플레이어 공격 데미지 가지고 오기
-        ChangeState(HOTHEAD_STATE::Damage);
-        m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-    }
-
     /**********************
     | 2. Player Body Hit
     ***********************/

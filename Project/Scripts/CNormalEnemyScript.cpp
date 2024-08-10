@@ -155,7 +155,7 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
     }
     break;
     case NORMALENEMY_STATE::Attack: {
-        Animator()->Play(ANIMPREFIX("Run"),true,false,1.5f);
+        Animator()->Play(ANIMPREFIX("Run"), true, false, 1.5f);
     }
     break;
     case NORMALENEMY_STATE::AttackSuccessed: {
@@ -354,7 +354,7 @@ void CNormalEnemyScript::AfterAttack()
                 if (m_bEnter && m_bCirclePatrol)
                 {
                     ChangeState(NORMALENEMY_STATE::Patrol);
-                    m_bEnter=false;
+                    m_bEnter = false;
                 }
                 else
                 {
@@ -421,6 +421,15 @@ void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
     float _vRadian = Quat::Angle(_vOriginQuat, _vTrackQuat);
 
+    if (_vRadian >= (XM_2PI / 4.f) * 3.f)
+    {
+        _vRadian = XM_2PI - _vRadian;
+    }
+    else if (_vRadian >= XM_PI)
+    {
+        _vRadian = _vRadian - XM_PI;
+    }
+
     // 90도 이상 틀어질 경우 lerp가 확도는걸 감안함
     if (_vRadian >= 1.5)
     {
@@ -429,7 +438,7 @@ void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
             _vTrackQuat = Quat::Slerp(_vOriginQuat, _vTrackQuat, m_fThreshHoldRushSpeedLerp * DT);
         }
 
-       Transform()->SetWorldRotation(_vTrackQuat);
+        Transform()->SetWorldRotation(_vTrackQuat);
         return;
     }
 
@@ -519,7 +528,7 @@ UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fRushLerp, sizeof(float), 1, _File);
     fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
-    fwrite(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1,_File);
+    fwrite(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1, _File);
     fwrite(&m_bCirclePatrol, sizeof(bool), 1, _File);
     fwrite(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 

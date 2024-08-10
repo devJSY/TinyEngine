@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CTackleEnemyScript.h"
 
+#include "CPlayerMgr.h"
+
 CTackleEnemyScript::CTackleEnemyScript()
     : CMonsterUnitScript(TACKLEENEMYSCRIPT)
     , m_eState(TACKLEENEMY_STATE::Idle)
@@ -8,10 +10,9 @@ CTackleEnemyScript::CTackleEnemyScript()
     , m_fMaxSpeed(10.f)
     , m_fRushLerp(0.9f)
     , m_fRushSpeedLerp(0.5f)
-    , m_fPatrolTime(4.f)
-    , m_fPatrolAccTime(0.f)
+    , m_fAccTime(0.f)
+    , m_fWaitTime(1.f)
     , m_fThreshHoldRushLerp(0.f)
-    , m_pTargetObject(nullptr)
     , m_vDamageDir{}
     , m_bFlag(false)
 {
@@ -19,6 +20,7 @@ CTackleEnemyScript::CTackleEnemyScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fThreshHoldRushLerp, "Threshold Rush Lerp");
 }
 
 CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& Origin)
@@ -29,9 +31,8 @@ CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& Origin)
     , m_fRushLerp(Origin.m_fRushLerp)
     , m_fRushSpeedLerp(Origin.m_fRushSpeedLerp)
     , m_fThreshHoldRushLerp(Origin.m_fThreshHoldRushLerp)
-    , m_fPatrolTime(Origin.m_fPatrolTime)
-    , m_fPatrolAccTime(0.f)
-    , m_pTargetObject(nullptr)
+    , m_fAccTime(0.f)
+    , m_fWaitTime(1.f)
     , m_vDamageDir{}
     , m_bFlag(false)
 {
@@ -39,6 +40,7 @@ CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& Origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushSpeedLerp, "Rush Speed Lerp");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fThreshHoldRushLerp, "Threshold Rush Lerp");
 }
 
 CTackleEnemyScript::~CTackleEnemyScript()
@@ -75,6 +77,14 @@ void CTackleEnemyScript::tick()
         AttackAfter();
     }
     break;
+    case TACKLEENEMY_STATE::AttackAfter2: {
+        AttackAfter2();
+    }
+    break;
+    case TACKLEENEMY_STATE::Wait: {
+        Wait();
+    }
+    break;
     case TACKLEENEMY_STATE::Damage: {
         Damage();
     }
@@ -107,10 +117,6 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
-    case TACKLEENEMY_STATE::Patrol: {
-        Animator()->Play(ANIMPREFIX("Walk"));
-    }
-    break;
     case TACKLEENEMY_STATE::Find: {
         Animator()->Play(ANIMPREFIX("Find"), false);
     }
@@ -125,6 +131,15 @@ void CTackleEnemyScript::EnterState(TACKLEENEMY_STATE _state)
     break;
     case TACKLEENEMY_STATE::AttackAfter: {
         Animator()->Play(ANIMPREFIX("Brake"), false);
+    }
+    break;
+    case TACKLEENEMY_STATE::AttackAfter2: {
+        Animator()->Play(ANIMPREFIX("Brake"), false);
+    }
+    break;
+    case TACKLEENEMY_STATE::Wait:
+    {
+        Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
     case TACKLEENEMY_STATE::Damage: {
@@ -153,9 +168,6 @@ void CTackleEnemyScript::ExitState(TACKLEENEMY_STATE _state)
     case TACKLEENEMY_STATE::Idle: {
     }
     break;
-    case TACKLEENEMY_STATE::Patrol: {
-    }
-    break;
     case TACKLEENEMY_STATE::Find: {
     }
     break;
@@ -163,10 +175,14 @@ void CTackleEnemyScript::ExitState(TACKLEENEMY_STATE _state)
     }
     break;
     case TACKLEENEMY_STATE::Attack: {
-        m_pTargetObject = nullptr;
     }
     break;
     case TACKLEENEMY_STATE::AttackAfter: {
+        m_fSpeed = m_fMaxSpeed;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
+    break;
+    case TACKLEENEMY_STATE::AttackAfter2: {
         m_fSpeed = m_fMaxSpeed;
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
@@ -176,6 +192,11 @@ void CTackleEnemyScript::ExitState(TACKLEENEMY_STATE _state)
     }
     break;
     case TACKLEENEMY_STATE::Death:
+        break;
+    case TACKLEENEMY_STATE::Wait:
+    {
+        m_fAccTime = 0.f;
+    }
         break;
     default:
         break;
@@ -189,7 +210,6 @@ void CTackleEnemyScript::Idle()
 
 void CTackleEnemyScript::Find()
 {
-    m_pTargetObject = GetTarget();
     Animator()->IsFinish() ? ChangeState(TACKLEENEMY_STATE::AttackPrev) : void();
 }
 
@@ -222,9 +242,23 @@ void CTackleEnemyScript::AttackAfter()
     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 
-    if (m_fSpeed <= 0.3f)
+    if (m_fSpeed <= 2.f)
     {
-        ChangeState(RandomIdleState());
+        ChangeState(TACKLEENEMY_STATE::Wait);
+    }
+}
+
+void CTackleEnemyScript::AttackAfter2()
+{
+    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    vDir.y = 0.f;
+
+    m_fSpeed = Lerp(m_fSpeed, 0.f, 6.f * DT);
+    Rigidbody()->SetVelocity(vDir * m_fSpeed);
+
+    if (m_fSpeed <= 2.f)
+    {
+        ChangeState(TACKLEENEMY_STATE::Wait);
     }
 }
 
@@ -243,6 +277,15 @@ void CTackleEnemyScript::Damage()
     Animator()->IsFinish() ? ChangeState(TACKLEENEMY_STATE::Idle) : void();
 }
 
+void CTackleEnemyScript::Wait()
+{
+    m_fAccTime += DT;
+    if (m_fAccTime >= m_fWaitTime)
+    {
+        ChangeState(TACKLEENEMY_STATE::Idle);
+    }
+}
+
 void CTackleEnemyScript::Eaten()
 {
     Rigidbody()->AddForce(m_vDamageDir * 40.f, ForceMode::Force);
@@ -251,11 +294,6 @@ void CTackleEnemyScript::Eaten()
 void CTackleEnemyScript::Death()
 {
     Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
-}
-
-TACKLEENEMY_STATE CTackleEnemyScript::RandomIdleState()
-{
-    return TACKLEENEMY_STATE(GetRandomInt(0, 1));
 }
 
 void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
@@ -274,15 +312,19 @@ void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
     float _vRadian = Quat::Angle(_vOriginQuat, _vTrackQuat);
 
+    if (_vRadian >= (XM_2PI/4.f) * 3.f)
+    {
+        _vRadian = XM_2PI - _vRadian;
+    }
+    else if (_vRadian >= XM_PI)
+    {
+        _vRadian = _vRadian - XM_PI;
+    }
+
     // 90도 이상 틀어질 경우 lerp가 확도는걸 감안함
     if (_vRadian >= 1.5)
     {
-        if (_flag)
-        {
-            _vTrackQuat = Quat::Slerp(_vOriginQuat, _vTrackQuat, m_fThreshHoldRushLerp * DT);
-        }
-
-        Transform()->SetWorldRotation(_vTrackQuat);
+        ChangeState(TACKLEENEMY_STATE::AttackAfter2);
         return;
     }
 
@@ -294,7 +336,7 @@ void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
 Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)
 {
-    return (m_pTargetObject->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
+    return (PLAYER->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
 }
 
 UINT CTackleEnemyScript::SaveToLevelFile(FILE* _File)
@@ -306,7 +348,9 @@ UINT CTackleEnemyScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fRushLerp, sizeof(float), 1, _File);
     fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+    fwrite(&m_fThreshHoldRushLerp, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -324,7 +368,9 @@ UINT CTackleEnemyScript::LoadFromLevelFile(FILE* _File)
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fRushLerp, sizeof(float), 1, _File);
     fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+    fread(&m_fThreshHoldRushLerp, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -343,21 +389,6 @@ void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     UnitHit hit;
     ZeroMemory(&hit, sizeof(hit));
-    /**********************
-    | 1. Player ATK Hit
-    ***********************/
-
-    // 충돌한 오브젝트가 플레이어 공격인지 확인
-    if (LAYER_PLAYERATK == pObj->GetLayerIdx())
-    {
-        flag = true;
-        // TODO : 플레이어 공격 데미지 가지고 오기
-
-        GetDamage(hit);
-        ChangeState(TACKLEENEMY_STATE::Damage);
-        m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-    }
-
     /**********************
     | 2. Player Body Hit
     ***********************/

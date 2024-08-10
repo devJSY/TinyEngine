@@ -25,6 +25,7 @@ CCutterProjectileScript::CCutterProjectileScript(const CCutterProjectileScript& 
     , m_fAccTime(0.f)
     , m_vOriginPos{}
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Bullet Speed");
 }
 
 CCutterProjectileScript::~CCutterProjectileScript()
@@ -78,12 +79,6 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     }
     break;
     case CUTTERPROJECTILE_STATE::AttackBack: {
-        Vec3 vDir = m_pAttackPoint->Transform()->GetWorldPos() - Transform()->GetLocalPos();
-        Vec3 vUP = vDir == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-
-        Quat quat = Quat::LookRotation(-vDir, vUP);
-
-        Transform()->SetWorldRotation(quat);
     }
     break;
     case CUTTERPROJECTILE_STATE::End:
@@ -127,7 +122,7 @@ void CCutterProjectileScript::Attack()
     vDir.y = 0.f;
     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 
-    if ((Transform()->GetLocalPos() - m_vOriginPos).Length() >= 1000.f)
+    if ((Transform()->GetLocalPos() - m_vOriginPos).Length() >= 300.f)
     {
         ChangeState(CUTTERPROJECTILE_STATE::AttackStop);
     }
@@ -145,6 +140,15 @@ void CCutterProjectileScript::AttackStop()
 
 void CCutterProjectileScript::AttackBack()
 {
+    Vec3 vDir = m_pAttackPoint->Transform()->GetWorldPos() - Transform()
+                                                                 ->GetWorldPos();
+    
+    Vec3 vUP = vDir == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
+
+    Quat vQuat = Quat::LookRotation(-vDir.Normalize(), vUP);
+
+    Transform()->SetWorldRotation(vQuat);
+
     Rigidbody()->SetVelocity(Transform()->GetWorldDir(DIR_TYPE::FRONT) * (m_fSpeed * 1.5f));
 }
 

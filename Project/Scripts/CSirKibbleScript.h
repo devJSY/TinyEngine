@@ -23,13 +23,13 @@ enum class SIRKIBBLE_STATE
 class CSirKibbleScript : public CMonsterUnitScript
 {
 private:
-    CGameObject* m_pTargetObj;
     CGameObject* m_pAttackPoint;
     SIRKIBBLE_STATE m_eState;
     Vec3 m_vDamageDir;
 
     float m_fAccTime;
     bool m_bFlag;
+    bool m_bJump;
 
 public:
     virtual void begin() override;

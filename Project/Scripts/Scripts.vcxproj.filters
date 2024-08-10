@@ -2258,5 +2258,11 @@
     <Filter Include="State\ElfilisState\Demo_Appear2\2. Roar">
       <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\SpookStep">
+      <UniqueIdentifier>{4d83eee2-89f5-4f00-bfae-93eab82499e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Phanto">
+      <UniqueIdentifier>{3b041919-a9b4-4d0b-8723-3d8f0595ad5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
