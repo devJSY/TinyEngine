@@ -16,9 +16,28 @@ CChangeAlphaScript::~CChangeAlphaScript()
 
 void CChangeAlphaScript::begin()
 {
-    for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
+    // get mtrl
+    deque<CGameObject*> Queue;
+    Queue.push_back(GetOwner());
+
+    while (!Queue.empty())
     {
-        m_listMtrl.push_back(MeshRender()->GetMaterial(i));
+        CGameObject* iter = Queue.front();
+        Queue.pop_front();
+
+        vector<CGameObject*> vecChild = iter->GetChildObject();
+        for (CGameObject* iter2 : vecChild)
+        {
+            Queue.push_back(iter2);
+        }
+
+        if (iter->MeshRender())
+        {
+            for (int i = 0; i < (int)iter->MeshRender()->GetMtrlCount(); ++i)
+            {
+                m_listMtrl.push_back(MeshRender()->GetMaterial(i));
+            }
+        }
     }
 }
 

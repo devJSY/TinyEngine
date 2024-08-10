@@ -737,10 +737,13 @@
       <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
     </ClInclude>
     <ClInclude Include="CMorphoAtkA_ShockWave.h">
-      <Filter>State\MorphoState\Attack Air\ShockWave</Filter>
+      <Filter>State\MorphoState\AtkA\ShockWave</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoSockWave.h">
+    <ClInclude Include="CMorphoShockWave.h">
       <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_Teleport.h">
+      <Filter>State\MorphoState\MoveGround\Teleport</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1489,10 +1492,13 @@
       <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
     </ClCompile>
     <ClCompile Include="CMorphoAtkA_ShockWave.cpp">
-      <Filter>State\MorphoState\Attack Air\ShockWave</Filter>
+      <Filter>State\MorphoState\AtkA\ShockWave</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoSockWave.cpp">
+    <ClCompile Include="CMorphoShockWave.cpp">
       <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_Teleport.cpp">
+      <Filter>State\MorphoState\MoveGround\Teleport</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2327,9 +2333,6 @@
     <Filter Include="Scripts\Character\Boss\Morpho\Unit">
       <UniqueIdentifier>{20725c2d-664c-4dca-af82-ba858944985b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MorphoState\Attack Air">
-      <UniqueIdentifier>{bf1b3362-70fa-4baf-ad8a-6fed6ced54f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\MorphoState\AtkG Teleport">
       <UniqueIdentifier>{a745ab10-84db-4357-a6fe-514cd519040d}</UniqueIdentifier>
     </Filter>
@@ -2369,14 +2372,35 @@
     <Filter Include="Scripts\Character\Boss\Morpho\TrackingSoul">
       <UniqueIdentifier>{e68047e7-e76f-477c-87c7-0c1b280f9c19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\MorphoState\Attack Air\ShockWave">
-      <UniqueIdentifier>{d0c8d3de-55ca-4c98-b982-3186307434fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\MorphoState\Attack Air\DoubleSword">
-      <UniqueIdentifier>{62d3e150-97b1-4a00-9a06-60b22533bbd0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Boss\Morpho\ShockWave">
       <UniqueIdentifier>{95906a59-313e-4a4e-b221-f422ed17ae81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA">
+      <UniqueIdentifier>{bf1b3362-70fa-4baf-ad8a-6fed6ced54f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\ShockWave">
+      <UniqueIdentifier>{d0c8d3de-55ca-4c98-b982-3186307434fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword">
+      <UniqueIdentifier>{62d3e150-97b1-4a00-9a06-60b22533bbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround">
+      <UniqueIdentifier>{b465a157-e687-4df1-9be1-9b93d7e7d2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveAir">
+      <UniqueIdentifier>{04154609-f434-4f3d-be69-5edad0da663a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Teleport">
+      <UniqueIdentifier>{8ff1337f-3b81-4377-b6a8-9f74d9561c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Fly">
+      <UniqueIdentifier>{229d883b-9ea1-456f-93a9-3fb35bb1f9d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\JumpFall">
+      <UniqueIdentifier>{b34be92a-7fab-42b0-853e-b7ee89711a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveAir\Teleport">
+      <UniqueIdentifier>{a79d89ee-8deb-40d8-b49e-84b43c2afca7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

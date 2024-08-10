@@ -81,4 +81,4 @@ CMorphoFSM
 CMorphoUnit
 CElfilisUnit
 CMorphoTrackingSoul
-CMorphoSockWave
+CMorphoShockWave

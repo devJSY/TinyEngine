@@ -84,7 +84,7 @@
 #include "CMorphoUnit.h"
 #include "CElfilisUnit.h"
 #include "CMorphoTrackingSoul.h"
-#include "CMorphoSockWave.h"
+#include "CMorphoShockWave.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -171,7 +171,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMorphoUnit");
 	_vec.push_back(L"CElfilisUnit");
 	_vec.push_back(L"CMorphoTrackingSoul");
-	_vec.push_back(L"CMorphoSockWave");
+	_vec.push_back(L"CMorphoShockWave");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -342,8 +342,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CElfilisUnit;
 	if (L"CMorphoTrackingSoul" == _strScriptName)
 		return new CMorphoTrackingSoul;
-	if (L"CMorphoSockWave" == _strScriptName)
-		return new CMorphoSockWave;
+	if (L"CMorphoShockWave" == _strScriptName)
+		return new CMorphoShockWave;
 	return nullptr;
 }
 
@@ -517,8 +517,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CElfilisUnit;
 	case (UINT)SCRIPT_TYPE::MORPHOTRACKINGSOUL:
 		return new CMorphoTrackingSoul;
-	case (UINT)SCRIPT_TYPE::MORPHOSOCKWAVE:
-		return new CMorphoSockWave;
+	case (UINT)SCRIPT_TYPE::MORPHOSHOCKWAVE:
+		return new CMorphoShockWave;
 	}
 	return nullptr;
 }
@@ -693,8 +693,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CElfilisUnit";
 	case SCRIPT_TYPE::MORPHOTRACKINGSOUL:
 		return L"CMorphoTrackingSoul";
-	case SCRIPT_TYPE::MORPHOSOCKWAVE:
-		return L"CMorphoSockWave";
+	case SCRIPT_TYPE::MORPHOSHOCKWAVE:
+		return L"CMorphoShockWave";
 	}
 	return nullptr;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine\\CScript.h>
 
-class CMorphoSockWave : public CScript
+class CMorphoShockWave : public CScript
 {
 public:
     virtual void tick() override;
@@ -14,7 +14,7 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
-    CLONE(CMorphoSockWave);
-    CMorphoSockWave();
-    virtual ~CMorphoSockWave();
+    CLONE(CMorphoShockWave);
+    CMorphoShockWave();
+    virtual ~CMorphoShockWave();
 };

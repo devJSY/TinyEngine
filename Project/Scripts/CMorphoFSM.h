@@ -30,12 +30,19 @@ private:
     float m_NearDist;
     bool m_bAttackRepeat;
 
+    // Child
+    CGameObject* m_WeaponL;
+    CGameObject* m_WeaponR;
+    vector<CGameObject*> m_vecShockWave;
+
+    // materials
+    list<Ptr<CMaterial>> m_listMtrl;
+    float m_TeleportAppearTime;
+    float m_EmissiveTime;
+
     // map
     Vec3 m_MapFloorOffset;
     Vec3 m_MapSize;
-
-    // shockwave
-    vector<CGameObject*> m_vecShockWave;
 
 public:
     virtual void begin() override;
@@ -56,16 +63,24 @@ public:
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
     void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
+    void EnableRender();
+    void DisableRender();
+    void SetTeleportTime(bool _Emissive);
+    void ClearEmissive();
+    void SetEmissive(Vec3 _Color);
 
     MorphoStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     UINT GetPhase() const { return m_Phase; }
     UINT GetComboLevel() const { return m_ComboLevel; }
     float GetNearDist() const { return m_NearDist; }
     bool IsNearPlayer() const { return GetPlayerDist() <= m_NearDist; }
+    float GetPlayerDist() const;
+    CGameObject* GetWeaponL() const { return m_WeaponL; }
+    CGameObject* GetWeaponR() const { return m_WeaponR; }
+    const vector<CGameObject*>& GetShockWave() const { return m_vecShockWave; }
+    float GetEmissiveTime() { return m_EmissiveTime; }
     Vec3 GetMapSize() const { return m_MapSize; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
-    float GetPlayerDist() const;
-    const vector<CGameObject*>& GetShockWave() const { return m_vecShockWave; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
