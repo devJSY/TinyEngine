@@ -712,6 +712,12 @@
     <ClInclude Include="CElfilisD_Roar.h">
       <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClInclude>
+    <ClInclude Include="CFadeOutScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="CLensFlareScript.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1433,6 +1439,12 @@
     </ClCompile>
     <ClCompile Include="CElfilisD_Roar.cpp">
       <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
+    </ClCompile>
+    <ClCompile Include="CFadeOutScript.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CLensFlareScript.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

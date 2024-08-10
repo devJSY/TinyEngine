@@ -124,7 +124,10 @@ void CNoddyScript::EnterState()
     {
     case NODDY_STATE::Damage: {
         // 피격 방향으로 회전
-        Transform()->Slerp(GetHitDir(), 1.f);
+        Vec3 ToTargetDir = -GetHitDir();
+        ToTargetDir.y = 0.f; // Y축 고정
+        ToTargetDir.Normalize();
+        Transform()->Slerp(ToTargetDir, 1.f);
 
         // 피격 방향으로 Impulse
         Vec3 Impulse = GetHitDir();

@@ -71,6 +71,7 @@ public:
     void SetFar(float _far) { m_Far = _far; }
 
     UINT GetLayerMask() const { return m_LayerMask; }
+    void LayerMask(UINT _LayerMask) { m_LayerMask = _LayerMask; }
     void LayerMask(UINT _LayerIdx, bool _bMask);
     void LayerMask(CLevel* _CurLevel, const wstring& _strLayerName, bool _bMask);
     void LayerMaskAll() { m_LayerMask = 0xffffffff; }
