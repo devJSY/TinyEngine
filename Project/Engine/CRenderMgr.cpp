@@ -514,7 +514,7 @@ void CRenderMgr::render_DynamicShadowDepth()
         if (0 == m_vecLight[i]->GetShadowIdx())
         {
             // Rendering
-            m_vecLight[i]->render_ShadowDepth(MOBILITY_TYPE::MOVABLE);
+            m_vecLight[i]->render_ShadowDepth(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
 
             // Bind
             m_vecLight[i]->GetDepthMapTex()->UpdateData(23);
