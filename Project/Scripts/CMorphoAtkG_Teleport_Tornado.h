@@ -1,15 +1,24 @@
 #pragma once
 #include "CBossState.h"
+#include "CMomentaryObjScript.h"
 
 class CMorphoAtkG_Teleport_Tornado : public CBossState
 {
 private:
-    //CGameObject* m_FireWall;
+    float m_AccTime;
+    float m_ChargeTime;
+    float m_TornadoTime;
+
+    // tornado
+    Ptr<CPrefab> m_ChargeEffect;
+    Ptr<CPrefab> m_TornadoPref;
+    CGameObject* m_Tornado[6];
     float m_TornadoSpeed;
 
 public:
     virtual void tick() override;
     virtual void Enter() override;
+    virtual void Exit() override;
 
 private:
     virtual void Enter_Step() override;
@@ -20,6 +29,7 @@ private:
     void ChargeWait();
     void Start();
     void Progress();
+    void Wait();
     void End();
 
 public:
