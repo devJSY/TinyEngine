@@ -56,9 +56,6 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
-    m_Duration = 0.5f;
-    m_Acc = 0.f;
-
     m_bFrameEnter = false;
 
     PLAYERFSM->SetGlobalState(true);
@@ -87,6 +84,8 @@ void CKirbyChangeAbility::Enter()
     CamCtrl->SetOffset(Vec3(0.f, 15.f, 0));
     CamCtrl->SetLookDir(Vec3(0.f, -0.35f, 0.937f));
     CamCtrl->SetLookDist(170.f);
+
+    // @TODO 타임 스케일 조정 
 
     // @TODO 카메라 방향 설정
     Vec3 CamPos = CamCtrl->GetOwner()->Transform()->GetWorldPos();
