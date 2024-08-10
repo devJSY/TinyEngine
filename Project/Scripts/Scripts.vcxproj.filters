@@ -736,6 +736,12 @@
     <ClInclude Include="CMorphoTrackingSoul.h">
       <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkA_ShockWave.h">
+      <Filter>State\MorphoState\Attack Air\ShockWave</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoSockWave.h">
+      <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1481,6 +1487,12 @@
     </ClCompile>
     <ClCompile Include="CMorphoTrackingSoul.cpp">
       <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_ShockWave.cpp">
+      <Filter>State\MorphoState\Attack Air\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoSockWave.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2356,6 +2368,15 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Morpho\TrackingSoul">
       <UniqueIdentifier>{e68047e7-e76f-477c-87c7-0c1b280f9c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Attack Air\ShockWave">
+      <UniqueIdentifier>{d0c8d3de-55ca-4c98-b982-3186307434fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Attack Air\DoubleSword">
+      <UniqueIdentifier>{62d3e150-97b1-4a00-9a06-60b22533bbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho\ShockWave">
+      <UniqueIdentifier>{95906a59-313e-4a4e-b221-f422ed17ae81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

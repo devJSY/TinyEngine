@@ -34,16 +34,19 @@ private:
     Vec3 m_MapFloorOffset;
     Vec3 m_MapSize;
 
+    // shockwave
+    vector<CGameObject*> m_vecShockWave;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
 
     void Move();
     void Attack();
+    void ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
 
 private:
-    void ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State = L"");
     void ChangeStateGroup_Random(MorphoStateGroup _Group);
     void ChangeStateGroup_Set(MorphoStateGroup _Group, const wstring& _State);
     void AddGroupPublicState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State);
@@ -62,6 +65,7 @@ public:
     Vec3 GetMapSize() const { return m_MapSize; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
     float GetPlayerDist() const;
+    const vector<CGameObject*>& GetShockWave() const { return m_vecShockWave; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

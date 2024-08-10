@@ -33,6 +33,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_FireWall.h"
 #include "CMorphoAtkG_Teleport_Tornado.h"
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
+#include "CMorphoAtkA_ShockWave.h"
 void CMorphoFSM::begin()
 {
     // set map size
@@ -40,6 +41,10 @@ void CMorphoFSM::begin()
     m_NearDist *= ScaleFactor;
     m_MapFloorOffset *= ScaleFactor;
     m_MapSize *= ScaleFactor;
+
+    // shockwave
+    m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
+    m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveR"));
 
     // add state
     AddGroupPublicState(MorphoStateGroup::Idle, L"IDLE", new CMorpho_Idle);
@@ -49,6 +54,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_FIREWALL", new CMorphoAtkG_Teleport_FireWall);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TORNADO", new CMorphoAtkG_Teleport_Tornado);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
+    AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
@@ -62,7 +68,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL");
+        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE");
     }
 }
 
