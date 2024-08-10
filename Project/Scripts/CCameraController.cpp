@@ -224,7 +224,7 @@ void CCameraController::UpdateTargetPos()
                 {
                     m_TargetPos.y = TargetPos.y;
                 }
-                else if (Hit.pCollisionObj != nullptr && Hit.Distance < 100.f)
+                else if (Hit.pCollisionObj != nullptr && Hit.Distance < 120.f)
                 {
                     m_TargetPos.y = Hit.Point.y;
                 }
