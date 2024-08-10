@@ -6,8 +6,8 @@ class CGameObject;
 class CLensFlareScript : public CScript
 {
 private:
-    Vec3 m_SunWorldPos;
     float m_Spacing;
+    Vec2 m_CenterOffset;
 
 public:
     virtual void begin() override;

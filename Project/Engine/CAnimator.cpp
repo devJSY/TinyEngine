@@ -460,7 +460,7 @@ void CAnimator::SetClipFrameIndex(int _FrameIdx)
 
 float CAnimator::GetClipPlayTime()
 {
-    return m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+    return (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
 }
 
 void CAnimator::CheckBoneMatBuffer()
