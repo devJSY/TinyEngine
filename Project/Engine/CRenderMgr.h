@@ -75,6 +75,10 @@ private:
     CGameObject* m_DepthMaskingObj;
     UINT m_DepthMaskingLayerMask;
 
+    // Depth of Field
+    bool m_bEnableDOF;
+    CGameObject* m_DOFObj;
+
     // Camera Preview
     Ptr<CTexture> m_CameraPreviewTex;
 
@@ -106,6 +110,9 @@ public:
     UINT GetDepthMaskingLayerMask() const { return m_DepthMaskingLayerMask; }
     void DepthMaskingLayerMask(UINT _LayerIdx, bool _bMask);
 
+    bool IsEnableDOF() const { return m_bEnableDOF; }
+    void SetEnableDOF(bool _bEnable) { m_bEnableDOF = _bEnable; }
+
 public:
     CCamera* GetMainCamera() const { return m_mainCam; };
     CCamera* GetCamera(int _Idx) const;
@@ -125,7 +132,7 @@ public:
     void CopyToPostProcessTex_LDRI();
     void CopyToPostProcessTex_HDRI();
 
-    void BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel);
+    void BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel, bool ApplyThreshold = false);
 
     void Resize_Release();
     void Resize(Vec2 Resolution);

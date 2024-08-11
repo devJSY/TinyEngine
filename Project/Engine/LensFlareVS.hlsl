@@ -11,6 +11,6 @@ GS_Input main(VS_IN input)
 {
     GS_Input output;
     output.pos = float4(input.vPos, 1.f);
-    output.PosView = mul(output.pos, g_matWV).xyz;
+    output.PosView = mul(float4(0.f, 0.f, 0.f, 1.f), g_matWV).xyz; // 화면 중점의 View
     return output;
 }

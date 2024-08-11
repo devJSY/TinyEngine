@@ -110,4 +110,12 @@ void CRenderMgr::init()
     m_DepthMaskingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthMaskingMtrl"), 0);
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.25f);
+
+    // Depth of Field
+    m_DOFObj = new CGameObject;
+    m_DOFObj->AddComponent(new CTransform);
+    m_DOFObj->AddComponent(new CMeshRender);
+    m_DOFObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_DOFObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DOFMtrl"), 0);
+    m_DOFObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_RTCopyTex);
 }

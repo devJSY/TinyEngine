@@ -105,6 +105,24 @@ static float GaussianFilter[5][5] =
     0.003f, 0.0133f, 0.0219f, 0.0133f, 0.003f,
 };
 
+float4 GaussianBlur(Texture2D Tex, float2 vUV, SamplerState Sampler, float2 TexSize)
+{
+    float4 color = float4(0.f, 0.f, 0.f, 0.f);
+    
+    for (int y = -2; y <= 2; ++y)
+    {
+        for (int x = -2; x <= 2; ++x)
+        {
+            float2 offset = float2(x, y) / TexSize;
+            float weight = GaussianFilter[y + 2][x + 2];
+
+            color += Tex.Sample(Sampler, vUV + offset) * weight;
+        }
+    }
+    
+    return color;
+}
+
 void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _NomalizedThreadID, out float3 _vOut)
 {
     float2 vUV = float2(_NomalizedThreadID, 0.5f);
