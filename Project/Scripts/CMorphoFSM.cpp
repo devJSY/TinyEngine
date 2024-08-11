@@ -28,6 +28,8 @@ CMorphoFSM::~CMorphoFSM()
 {
 }
 
+#include "CMorphoDemo_Phase2.h"
+
 #include "CMorpho_Idle.h"
 #include "CMorphoAtkG_NormalNear_Atk1.h"
 #include "CMorphoAtkG_NormalNear_Atk2.h"
@@ -74,6 +76,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
     AddGroupPublicState(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT", new CMorphoMoveA_Teleport);
 
+    AddGroupPrivateState(MorphoStateGroup::DEMO, L"DEMO_PHASE2", new CMorphoDemo_Phase2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
     AddGroupPrivateState(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD_DIVISION", new CMorphoAtkA_DoubleSwordDivision);
@@ -120,7 +123,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkAir2, L"ATKA_SHOCKWAVECOMBO");
+        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_PHASE2");
     }
 
     // Emissive
@@ -348,6 +351,37 @@ void CMorphoFSM::ProcPatternStep()
     switch (m_Pattern)
     {
     case MorphoPatternType::DoubleSword: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD_DIVISION");
+        }
+        else if (m_PatternStep == 1) // 외부호출
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
+        }
+        else if (m_PatternStep == 2)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD_ATKR");
+        }
+        else if (m_PatternStep == 3) // 외부호출
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
+        }
+        else if (m_PatternStep == 4)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD_ATKL");
+        }
+        else if (m_PatternStep == 5) // 외부호출
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
+        }
+        else if (m_PatternStep == 6)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD_ATKLR");
+            bFinish = true;
+        }
+    }
+    case MorphoPatternType::Demo_TeleportDoubleSword: {
         if (m_PatternStep == 0)
         {
             ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");

@@ -24,6 +24,8 @@ enum class MorphoStateGroup
 enum class MorphoPatternType
 {
     NONE,
+    Demo_TeleportDoubleSword,
+
     DoubleSword,
     TeleportCombo,
     TrackingSoulCombo,
