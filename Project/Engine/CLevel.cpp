@@ -8,6 +8,8 @@
 
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "CTransform.h"
+#include "CCamera.h"
 
 CLevel::CLevel()
     : m_arrLayer{}
@@ -222,6 +224,16 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             {
                 CRenderMgr::GetInst()->ActiveEditorMode(true);
                 CTimeMgr::GetInst()->LockDeltaTime(true);
+
+                CCamera* MainCam = CRenderMgr::GetInst()->GetMainCamera();
+                CCamera* EditorCam = CRenderMgr::GetInst()->GetEditorCamera();
+
+                // Editor 카메라 위치 Main 카메라 위치로 업데이트
+                if (nullptr != MainCam)
+                {
+                    EditorCam->Transform()->SetLocalPos(MainCam->Transform()->GetWorldPos());
+                    EditorCam->Transform()->SetLocalRotation(MainCam->Transform()->GetWorldQuaternion().ToEuler());
+                }
             }
             else if (LEVEL_STATE::STOP == _NextState)
             {

@@ -6,6 +6,7 @@ class CGameObject;
 class CLensFlareScript : public CScript
 {
 private:
+    bool m_bDepthCheck;
     float m_Spacing;
     Vec2 m_CenterOffset;
 
@@ -14,7 +15,7 @@ public:
     virtual void tick() override;
 
 private:
-    Vec2 GetSunNDCPos();
+    Vec4 GetSunNDCPos();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
