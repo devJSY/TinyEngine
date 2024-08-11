@@ -751,7 +751,21 @@
     <ClInclude Include="CMorphoMoveG_HoverDash.h">
       <Filter>State\MorphoState\MoveGround\HoverDash\HoverDash</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoMoveA_Teleport.h" />
+    <ClInclude Include="CMorphoMoveA_Teleport.h">
+      <Filter>State\MorphoState\MoveAir\Teleport</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordDivision.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Division</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack L</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkR.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack R</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1513,7 +1527,21 @@
     <ClCompile Include="CMorphoMoveG_HoverDash.cpp">
       <Filter>State\MorphoState\MoveGround\HoverDash\HoverDash</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoMoveA_Teleport.cpp" />
+    <ClCompile Include="CMorphoMoveA_Teleport.cpp">
+      <Filter>State\MorphoState\MoveAir\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordDivision.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Division</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack L</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkR.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack R</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2421,6 +2449,21 @@
     </Filter>
     <Filter Include="State\MorphoState\MoveGround\HoverDash\HoverDash">
       <UniqueIdentifier>{393b69c8-5b74-4f14-917d-1d57a2ba3512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Attack L">
+      <UniqueIdentifier>{b87c89df-f10e-4cb6-906c-885532301c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Attack R">
+      <UniqueIdentifier>{7ee2fb8b-716c-44fd-a4a5-6790417e86bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Attack LR">
+      <UniqueIdentifier>{362d5e9b-29f3-41f3-b148-e4ab4d2d8c96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Division">
+      <UniqueIdentifier>{89aa4661-afd1-45f3-872c-be3b05de335c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ChangeAlpha2">
+      <UniqueIdentifier>{56ce7cc3-a157-4199-82db-2e555903c3f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

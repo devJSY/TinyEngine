@@ -36,6 +36,10 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_Tornado.h"
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
 #include "CMorphoAtkA_ShockWave.h"
+#include "CMorphoAtkA_DoubleSwordDivision.h"
+#include "CMorphoAtkA_DoubleSwordAtkR.h"
+#include "CMorphoAtkA_DoubleSwordAtkL.h"
+#include "CMorphoAtkA_DoubleSwordAtkLR.h"
 
 #include "CMorphoMoveG_Teleport.h"
 #include "CMorphoMoveG_Jump.h"
@@ -59,38 +63,40 @@ void CMorphoFSM::begin()
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
+    AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_DIVISION", new CMorphoAtkA_DoubleSwordDivision);
+    AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKR", new CMorphoAtkA_DoubleSwordAtkR);
+    AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKL", new CMorphoAtkA_DoubleSwordAtkL);
+    AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKLR", new CMorphoAtkA_DoubleSwordAtkLR);
 
     ChangeStateGroup(MorphoStateGroup::Idle);
-
-    // get mtrl
-    deque<CGameObject*> Queue;
-    Queue.push_back(GetOwner());
-
-    while (!Queue.empty())
-    {
-        CGameObject* iter = Queue.front();
-        Queue.pop_front();
-
-        vector<CGameObject*> vecChild = iter->GetChildObject();
-        for (CGameObject* iter2 : vecChild)
-        {
-            Queue.push_back(iter2);
-        }
-
-        if (iter->MeshRender())
-        {
-            for (int i = 0; i < (int)iter->MeshRender()->GetMtrlCount(); ++i)
-            {
-                m_listMtrl.push_back(iter->MeshRender()->GetMaterial(i));
-            }
-        }
-    }
 
     // childs
     m_WeaponL = GetOwner()->GetChildObject(L"BossMorphoSwordL");
     m_WeaponR = GetOwner()->GetChildObject(L"BossMorphoSwordR");
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveR"));
+
+    // get mtrl
+    for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
+    {
+        m_listBodyMtrl.push_back(MeshRender()->GetMaterial(i));
+    }
+    
+    if (m_WeaponL)
+    {
+        for (int i = 0; i < (int)m_WeaponL->MeshRender()->GetMtrlCount(); ++i)
+        {
+            m_listWeaponMtrl.push_back(m_WeaponL->MeshRender()->GetMaterial(i));
+        }
+    }
+
+    if (m_WeaponR)
+    {
+        for (int i = 0; i < (int)m_WeaponR->MeshRender()->GetMtrlCount(); ++i)
+        {
+            m_listWeaponMtrl.push_back(m_WeaponR->MeshRender()->GetMaterial(i));
+        }
+    }
 }
 
 void CMorphoFSM::tick()
@@ -99,7 +105,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
+        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKLR");
     }
 
     // Emissive
@@ -271,7 +277,11 @@ void CMorphoFSM::AddGroupPrivateState(MorphoStateGroup _Group, const wstring& _S
 
 void CMorphoFSM::ClearEmissive()
 {
-    for (Ptr<CMaterial> iter : m_listMtrl)
+    for (Ptr<CMaterial> iter : m_listBodyMtrl)
+    {
+        iter->SetEmission(Vec4());
+    }
+    for (Ptr<CMaterial> iter : m_listWeaponMtrl)
     {
         iter->SetEmission(Vec4());
     }
@@ -279,7 +289,19 @@ void CMorphoFSM::ClearEmissive()
 
 void CMorphoFSM::SetEmissive(Vec3 _Color)
 {
-    for (Ptr<CMaterial> iter : m_listMtrl)
+    for (Ptr<CMaterial> iter : m_listBodyMtrl)
+    {
+        iter->SetEmission(Vec4(_Color.x, _Color.y, _Color.z, 0.f));
+    }
+    for (Ptr<CMaterial> iter : m_listWeaponMtrl)
+    {
+        iter->SetEmission(Vec4(_Color.x, _Color.y, _Color.z, 0.f));
+    }
+}
+
+void CMorphoFSM::SetWeaponEmissive(Vec3 _Color)
+{
+    for (Ptr<CMaterial> iter : m_listWeaponMtrl)
     {
         iter->SetEmission(Vec4(_Color.x, _Color.y, _Color.z, 0.f));
     }

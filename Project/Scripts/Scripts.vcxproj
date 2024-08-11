@@ -204,6 +204,10 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h" />
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h" />
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkR.h" />
+    <ClInclude Include="CMorphoAtkA_DoubleSwordDivision.h" />
     <ClInclude Include="CMorphoAtkA_ShockWave.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk1.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h" />
@@ -472,6 +476,10 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp" />
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp" />
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkR.cpp" />
+    <ClCompile Include="CMorphoAtkA_DoubleSwordDivision.cpp" />
     <ClCompile Include="CMorphoAtkA_ShockWave.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp" />

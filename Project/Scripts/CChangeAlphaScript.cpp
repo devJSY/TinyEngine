@@ -3,6 +3,7 @@
 
 CChangeAlphaScript::CChangeAlphaScript()
     : CScript(CHANGEALPHASCRIPT)
+    , m_AlphaParamIdx(SCALAR_PARAM::FLOAT_2)
     , m_Event(ChangeAlphaEvent::NONE)
     , m_PlayTime(0.f)
     , m_AccTime(0.f)
@@ -35,7 +36,7 @@ void CChangeAlphaScript::begin()
         {
             for (int i = 0; i < (int)iter->MeshRender()->GetMtrlCount(); ++i)
             {
-                m_listMtrl.push_back(MeshRender()->GetMaterial(i));
+                m_listMtrl.push_back(iter->MeshRender()->GetMaterial(i));
             }
         }
     }
@@ -74,7 +75,7 @@ void CChangeAlphaScript::SetAlpha(float _Alpha)
 {
     for (Ptr<CMaterial> iter : m_listMtrl)
     {
-        iter->SetScalarParam(SCALAR_PARAM::FLOAT_2, _Alpha);
+        iter->SetScalarParam(m_AlphaParamIdx, _Alpha);
     }
 }
 

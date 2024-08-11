@@ -112,8 +112,8 @@ UINT CUnitScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    m_CurInfo = m_InitInfo;
     fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo = m_InitInfo;
 
     MemoryByte += sizeof(UnitInfo);
 

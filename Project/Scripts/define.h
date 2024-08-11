@@ -93,4 +93,5 @@ enum class StateStep
     Wait,
     End,
     EndWait,
+    EndEnd,
 };
