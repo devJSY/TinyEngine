@@ -222,6 +222,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoAtkG_Teleport_Tornado.h" />
     <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoul.h" />
     <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoulCombo.h" />
+    <ClInclude Include="CMorphoDemo_Appear.h" />
     <ClInclude Include="CMorphoDemo_Phase2.h" />
     <ClInclude Include="CMorphoFSM.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h" />
@@ -501,6 +502,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoAtkG_Teleport_Tornado.cpp" />
     <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoul.cpp" />
     <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoulCombo.cpp" />
+    <ClCompile Include="CMorphoDemo_Appear.cpp" />
     <ClCompile Include="CMorphoDemo_Phase2.cpp" />
     <ClCompile Include="CMorphoFSM.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp" />

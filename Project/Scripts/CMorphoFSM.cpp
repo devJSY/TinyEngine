@@ -28,6 +28,7 @@ CMorphoFSM::~CMorphoFSM()
 {
 }
 
+#include "CMorphoDemo_Appear.h"
 #include "CMorphoDemo_Phase2.h"
 
 #include "CMorpho_Idle.h"
@@ -76,6 +77,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
     AddGroupPublicState(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT", new CMorphoMoveA_Teleport);
 
+    AddGroupPrivateState(MorphoStateGroup::DEMO, L"DEMO_APPEAR", new CMorphoDemo_Appear);
     AddGroupPrivateState(MorphoStateGroup::DEMO, L"DEMO_PHASE2", new CMorphoDemo_Phase2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
@@ -123,7 +125,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_PHASE2");
+        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
     }
 
     // Emissive

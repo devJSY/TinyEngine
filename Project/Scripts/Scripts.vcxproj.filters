@@ -787,6 +787,7 @@
     <ClInclude Include="CMorphoDemo_Phase2.h">
       <Filter>State\MorphoState\Demo_Phase2</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoDemo_Appear.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1584,6 +1585,7 @@
     <ClCompile Include="CMorphoDemo_Phase2.cpp">
       <Filter>State\MorphoState\Demo_Phase2</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoDemo_Appear.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2524,6 +2526,9 @@
     </Filter>
     <Filter Include="State\MorphoState\Demo_Phase2">
       <UniqueIdentifier>{8df68d02-0197-4486-8fc2-a80dd0c29a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Demo_Appear">
+      <UniqueIdentifier>{518c30d4-f274-47a3-b13a-9bfac34641aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
