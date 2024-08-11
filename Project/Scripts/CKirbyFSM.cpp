@@ -267,6 +267,13 @@ void CKirbyFSM::begin()
         return;
     }
 
+    // NONE老 版快 抗寇贸府
+    if (m_CurAbility == AbilityCopyType::NONE)
+    {
+        m_CurAbility = AbilityCopyType::NORMAL;
+    }
+
+
     m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
 
     vector<CGameObject*> KirbyChildObject = GetOwner()->GetChildObject();

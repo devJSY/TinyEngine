@@ -40,6 +40,7 @@ void CLevelFlowMgr::LevelStart()
     {
         StartingPos = StartingPoint->Transform()->GetWorldPos();
         StartingRot = StartingPoint->Transform()->GetWorldRotation();
+        GamePlayStatic::DestroyGameObject(StartingPoint);
     }
 
     // MainPlayer
@@ -136,7 +137,7 @@ void CLevelFlowMgr::tick()
         LevelExit();
     }
 
-    if (KEY_TAP(KEY::R))
+    if (KEY_TAP(KEY::J))
     {
         LevelRestart();
     }
