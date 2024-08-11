@@ -59,6 +59,7 @@ namespace GamePlayStatic
     void LayerChange(CGameObject* _pObj, int LayerIdx);
 
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState);
+    void ChangeLevelAsync(const wstring& _LevelPath, LEVEL_STATE _NextState);
     void ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState);
 
     void DeleteAsset(ASSET_TYPE _type, Ptr<CAsset> _Asset);

@@ -68,19 +68,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     // CCreatePBRLevel::CreatePBRLevel();
 
 #ifdef DISTRIBUTE // Engine\\global.h
-    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::PLAY);
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Tutorial Level.tLevel"), LEVEL_STATE::PLAY);
-    // GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Level1-1-1.tLevel"), LEVEL_STATE::PLAY);
+    // GamePlayStatic::ChangeLevelAsync(L"Default Level.tLevel", LEVEL_STATE::PLAY);
+    GamePlayStatic::ChangeLevelAsync(L"Tutorial Level.tLevel", LEVEL_STATE::PLAY);
+    // GamePlayStatic::ChangeLevelAsync(L"Level1-1-1.tLevel.tLevel", LEVEL_STATE::PLAY);
 #else
-    CLevel* pLevel = CLevelSaveLoad::LoadLevel(L"Default Level.tLevel");
-
-    if (nullptr == pLevel)
-    {
-        pLevel = CLevelMgr::GetInst()->CreateNewLevel();
-        pLevel->SetName(L"Default Level");
-    }
-
-    GamePlayStatic::ChangeLevel(pLevel, LEVEL_STATE::STOP);
+    GamePlayStatic::ChangeLevelAsync(L"Default Level.tLevel", LEVEL_STATE::STOP);
 #endif // DISTRIBUTE
 
     while (true)
@@ -103,6 +95,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     }
 
     CAssetMgr::GetInst()->ThreadRelease();
+    CLevelMgr::GetInst()->ThreadRelease();
+
     return (int)msg.wParam;
 }
 

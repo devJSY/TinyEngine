@@ -257,9 +257,9 @@ void CLevelEditor::render_MenuBar()
 
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("New Level"))
+            if (ImGui::MenuItem("New Default Level"))
             {
-                GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateNewLevel(), LEVEL_STATE::STOP);
+                GamePlayStatic::ChangeLevel(CLevelMgr::GetInst()->CreateDefaultLevel(), LEVEL_STATE::STOP);
             }
 
             if (ImGui::MenuItem("New Default Kirby Level"))
@@ -293,11 +293,7 @@ void CLevelEditor::render_MenuBar()
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
                 {
-                    // Level 불러오기
-                    CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(FileName);
-
-                    if (nullptr != pLoadedLevel)
-                        GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
+                    GamePlayStatic::ChangeLevelAsync(FileName, LEVEL_STATE::STOP);
                 }
             }
 

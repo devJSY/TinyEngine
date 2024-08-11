@@ -323,7 +323,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     {
         pSnotBubble = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Sleep\\SleepSnotBubble\\SleepSnotBubble.fbx")->Instantiate();
         pSnotBubble->SetName(L"SleepSnotBubble");
-        
+
         pSnotBubble->MeshRender()->SetBoundingRadius(0.1f);
         pSnotBubble->MeshRender()->SetCastShadow(false);
 
@@ -814,4 +814,21 @@ CLevel* CLevelMgr::CreateDefaultPlayUILevel()
     }
 
     return NewLevel;
+}
+
+void CLevelMgr::ThreadRelease()
+{
+    if (m_listLoadThread.empty())
+        return;
+
+    // 각 Thread가 종료될때 까지 대기
+    for (std::thread& Thread : m_listLoadThread)
+    {
+        if (Thread.joinable())
+        {
+            Thread.join();
+        }
+    }
+
+    m_listLoadThread.clear();
 }
