@@ -413,8 +413,6 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
-        pShader->AddTexParam(TEX_0, "Mask Texture");
-
         pShader->SetName(L"KirbyDimensionalFadeShader");
         AddAsset(L"KirbyDimensionalFadeShader", pShader);
     }

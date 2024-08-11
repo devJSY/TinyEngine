@@ -2,6 +2,7 @@
 #include "CKirbyChangeObject.h"
 
 #include "CCameraController.h"
+#include "CLevelFlowMgr.h"
 
 CKirbyChangeObject::CKirbyChangeObject()
 {
@@ -40,14 +41,9 @@ void CKirbyChangeObject::Enter()
     CCameraController* CamCtrl = CAMERACTRL;
     CamCtrl->SaveSetting();
 
-    CamCtrl->SetOffset(Vec3(0.f, 15.f, 0));
-    CamCtrl->SetLookDir(Vec3(0.f, -0.35f, 0.937f));
-    CamCtrl->SetLookDist(170.f);
-
-    // @TODO 카메라 방향 설정
     Vec3 CamPos = CamCtrl->GetOwner()->Transform()->GetWorldPos();
 
-    // @TODO 커비 방향 설정
+    // 커비 방향 설정
     Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
     Vec3 Dir = CamPos - PlayerPos;
     Dir.y = 0.f;
@@ -56,12 +52,31 @@ void CKirbyChangeObject::Enter()
     ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir, false};
     PLAYERCTRL->ForceDir(DirInfo);
 
-    // @TODO 타임 스케일 조정 
+    // CameraSetting
+    Vec3 DirToKirby = -Dir;
+    DirToKirby.y = -0.577f;
+    DirToKirby.Normalize();
 
+    CamCtrl->SetOffset(Vec3(0.f, 15.f, 0));
+    CamCtrl->SetLookDir(DirToKirby);
+    CamCtrl->SetLookDist(250.f);
 
-    // @TODO
+    // Normal Setup으로 변경
+    m_SaveSetup = (UINT)CamCtrl->GetCameraSetup();
+    CamCtrl->SetCameraSetup(CameraSetup::NORMAL);
+
     // 배경 블러 효과
-    // 커비를 제외한 모든 오브젝트가 멈추어야 함
+    CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    CLevelFlowMgr* FLowMgrScript = Manager->GetScript<CLevelFlowMgr>();
+
+    if (FLowMgrScript != nullptr)
+    {
+        FLowMgrScript->OnDimensionFade();
+    }
+
+    // @TODO 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
+    // CTimeMgr::GetInst()->SetTimeScale(0.f);
+
 }
 
 void CKirbyChangeObject::Exit()
@@ -72,7 +87,17 @@ void CKirbyChangeObject::Exit()
     CCameraController* CamCtrl = CAMERACTRL;
     CamCtrl->LoadSetting();
 
-    //@TODO
+    CamCtrl->SetCameraSetup((CameraSetup)m_SaveSetup);
+
     // 배경 블러 효과 복구
-    // 커비를 의외의 오브젝트 다시 DT받도록 수정
+    CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    CLevelFlowMgr* FLowMgrScript = Manager->GetScript<CLevelFlowMgr>();
+
+    if (FLowMgrScript != nullptr)
+    {
+        FLowMgrScript->OffDimensionFade();
+    }
+
+    // 타임 스케일 조정
+    CTimeMgr::GetInst()->SetTimeScale(1.f);
 }

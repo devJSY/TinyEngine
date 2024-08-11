@@ -148,10 +148,6 @@ void CLevelFlowMgr::tick()
 
 void CLevelFlowMgr::MtrlParamUpdate()
 {
-    // Param Update
-
-    if (m_DimensionFadeEffect != nullptr)
-        m_DimensionFadeEffect->MeshRender()->GetMaterial(0)->SetTexParam(TEX_PARAM::TEX_0, CRenderMgr::GetInst()->GetDepthMaskingTex());
 }
 
 void CLevelFlowMgr::OnDimensionFade()

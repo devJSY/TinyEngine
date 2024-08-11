@@ -3,6 +3,9 @@
 
 class CKirbyChangeObject : public CState
 {
+private:
+    UINT m_SaveSetup;
+
 public:
     virtual void tick();
     virtual void Enter();

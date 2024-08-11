@@ -68,13 +68,7 @@ void CKirbyUnitScript::tick()
         if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
             PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
         {
-            // @TODO 타임 스케일 조정
-
-            //if (CTimeMgr::GetInst()->GetTimeScale() == 1.f)
-            //{
-            //    CTimeMgr::GetInst()->SetTimeScale(0.5f);
-            //    m_bSlowMotion = true;
-            //}
+            CTimeMgr::GetInst()->SetTimeScale(1.f, 0.5f);
         }
         else if (PLAYERFSM->IsInvincible())
         {

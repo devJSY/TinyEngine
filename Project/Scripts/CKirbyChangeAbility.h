@@ -5,6 +5,7 @@ class CKirbyChangeAbility : public CState
 {
 private:
     bool m_bFrameEnter;
+    UINT m_SaveSetup;
 
 public:
     virtual void tick();
