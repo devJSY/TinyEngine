@@ -23,6 +23,12 @@ CMorphoUnit::~CMorphoUnit()
 
 void CMorphoUnit::tick()
 {
+    if (m_CurInfo.HP <= 0.f)
+    {
+        MRPFSM->ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
+        MRPFSM->SetGlobalState(true);
+    }
+
     if (MRPFSM->GetPhase() == 1)
     {
         if (m_CurInfo.HP <= m_InitInfo.HP * 0.5f)

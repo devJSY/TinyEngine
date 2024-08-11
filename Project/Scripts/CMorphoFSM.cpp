@@ -30,6 +30,7 @@ CMorphoFSM::~CMorphoFSM()
 
 #include "CMorphoDemo_Appear.h"
 #include "CMorphoDemo_Phase2.h"
+#include "CMorphoDemo_Death.h"
 
 #include "CMorpho_Idle.h"
 #include "CMorphoAtkG_NormalNear_Atk1.h"
@@ -79,6 +80,7 @@ void CMorphoFSM::begin()
 
     AddGroupPrivateState(MorphoStateGroup::DEMO, L"DEMO_APPEAR", new CMorphoDemo_Appear);
     AddGroupPrivateState(MorphoStateGroup::DEMO, L"DEMO_PHASE2", new CMorphoDemo_Phase2);
+    AddGroupPrivateState(MorphoStateGroup::DEMO, L"DEMO_DEATH", new CMorphoDemo_Death);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK3", new CMorphoAtkG_NormalNear_Atk3);
     AddGroupPrivateState(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD_DIVISION", new CMorphoAtkA_DoubleSwordDivision);
@@ -125,7 +127,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
+        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
     }
 
     // Emissive

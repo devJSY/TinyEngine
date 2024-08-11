@@ -787,7 +787,12 @@
     <ClInclude Include="CMorphoDemo_Phase2.h">
       <Filter>State\MorphoState\Demo_Phase2</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoDemo_Appear.h" />
+    <ClInclude Include="CMorphoDemo_Appear.h">
+      <Filter>State\MorphoState\Demo_Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoDemo_Death.h">
+      <Filter>State\MorphoState\Demo_Death</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1585,7 +1590,12 @@
     <ClCompile Include="CMorphoDemo_Phase2.cpp">
       <Filter>State\MorphoState\Demo_Phase2</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoDemo_Appear.cpp" />
+    <ClCompile Include="CMorphoDemo_Appear.cpp">
+      <Filter>State\MorphoState\Demo_Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoDemo_Death.cpp">
+      <Filter>State\MorphoState\Demo_Death</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2529,6 +2539,9 @@
     </Filter>
     <Filter Include="State\MorphoState\Demo_Appear">
       <UniqueIdentifier>{518c30d4-f274-47a3-b13a-9bfac34641aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Demo_Death">
+      <UniqueIdentifier>{0a65f40b-d023-4e06-9ee0-2000f8ae27a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
