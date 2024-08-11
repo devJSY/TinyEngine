@@ -1,7 +1,7 @@
 #pragma once
 #include "CBossState.h"
 
-class CMorphoMoveG_Teleport : public CBossState
+class CMorphoMoveG_TeleportFar : public CBossState
 {
 private:
     Vec3 m_AfterPos;
@@ -20,7 +20,7 @@ private:
     void End();
 
 public:
-    CLONE(CMorphoMoveG_Teleport)
-    CMorphoMoveG_Teleport();
-    virtual ~CMorphoMoveG_Teleport();
+    CLONE(CMorphoMoveG_TeleportFar)
+    CMorphoMoveG_TeleportFar();
+    virtual ~CMorphoMoveG_TeleportFar();
 };

@@ -46,7 +46,8 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkA_DoubleSwordAtkL.h"
 #include "CMorphoAtkA_DoubleSwordAtkLR.h"
 
-#include "CMorphoMoveG_Teleport.h"
+#include "CMorphoMoveG_TeleportNear.h"
+#include "CMorphoMoveG_TeleportFar.h"
 #include "CMorphoMoveG_TeleportCombo.h"
 #include "CMorphoMoveG_Jump.h"
 #include "CMorphoMoveG_HoverDash.h"
@@ -65,7 +66,8 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOULCOMBO", new CMorphoAtkG_Teleport_TrackingSoulCombo);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
-    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR", new CMorphoMoveG_TeleportNear);
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR", new CMorphoMoveG_TeleportFar);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORTCOMBO", new CMorphoMoveG_TeleportCombo);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
     AddGroupPublicState(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT", new CMorphoMoveA_Teleport);
@@ -328,7 +330,7 @@ void CMorphoFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 2) // 외부호출
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
         }
         else if (m_PatternStep == 3)
         {
@@ -336,7 +338,7 @@ void CMorphoFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 4) // 외부호출
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
         }
         else if (m_PatternStep == 5)
         {
@@ -344,7 +346,7 @@ void CMorphoFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 6) // 외부호출
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
         }
         else if (m_PatternStep == 7)
         {
@@ -357,16 +359,16 @@ void CMorphoFSM::ProcPatternStep()
     {
         if (m_PatternStep == 0)
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
         }
         else if (m_PatternStep == 1)
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
         }
         else if (m_PatternStep == 2)
         {
             //@CAMERA
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
             bFinish = true;
         }
     }
@@ -378,7 +380,7 @@ void CMorphoFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 1)
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
         }
         else if (m_PatternStep == 2)
         {

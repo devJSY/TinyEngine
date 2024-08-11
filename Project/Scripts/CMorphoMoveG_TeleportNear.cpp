@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "CMorphoMoveG_Teleport.h"
+#include "CMorphoMoveG_TeleportNear.h"
 #include "CMorphoFSM.h"
 
-CMorphoMoveG_Teleport::CMorphoMoveG_Teleport()
+CMorphoMoveG_TeleportNear::CMorphoMoveG_TeleportNear()
     : m_AccTime(0.f)
     , m_WaitTime(0.5f)
 {
 }
 
-CMorphoMoveG_Teleport::~CMorphoMoveG_Teleport()
+CMorphoMoveG_TeleportNear::~CMorphoMoveG_TeleportNear()
 {
 }
 
-void CMorphoMoveG_Teleport::tick()
+void CMorphoMoveG_TeleportNear::tick()
 {
     switch (m_Step)
     {
@@ -27,7 +27,7 @@ void CMorphoMoveG_Teleport::tick()
     }
 }
 
-void CMorphoMoveG_Teleport::Enter_Step()
+void CMorphoMoveG_TeleportNear::Enter_Step()
 {
     switch (m_Step)
     {
@@ -37,9 +37,31 @@ void CMorphoMoveG_Teleport::Enter_Step()
 
         // teleport pos
         Vec3 MapSize = MRPFSM->GetMapSize();
-        m_AfterPos.x = GetRandomfloat(-MapSize.x, MapSize.x);
-        m_AfterPos.z = GetRandomfloat(-MapSize.z, MapSize.z);
-        m_AfterPos += MRPFSM->GetMapFloorOffset();
+        Vec3 MapOffset = MRPFSM->GetMapFloorOffset();
+        Vec3 Dist = GetOwner()->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Dist.y = 0.f;
+        Dist.Normalize();
+        Dist *= MRPFSM->GetNearDist() * (GetRandomfloat(20.f, 100.f) / 100.f);
+        m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
+        m_AfterPos.y = 0.f;
+
+        if (m_AfterPos.x < 0 && m_AfterPos.x < -MapSize.x + MapOffset.x)
+        {
+            m_AfterPos.x = -MapSize.x + MapOffset.x;
+        }
+        else if (m_AfterPos.x > 0 && m_AfterPos.x > MapSize.x + MapOffset.x)
+        {
+            m_AfterPos.x = MapSize.x + MapOffset.x;
+        }
+
+        if (m_AfterPos.z < 0 && m_AfterPos.z < -MapSize.z + MapOffset.z)
+        {
+            m_AfterPos.z = -MapSize.z + MapOffset.z;
+        }
+        else if (m_AfterPos.z > 0 && m_AfterPos.z > MapSize.z)
+        {
+            m_AfterPos.z = MapSize.z + MapOffset.z;
+        }
     }
     break;
     case StateStep::End: {
@@ -51,11 +73,11 @@ void CMorphoMoveG_Teleport::Enter_Step()
         GetOwner()->Transform()->Slerp(Dir, 1.f);
         m_AccTime = 0.f;
     }
-        break;
+    break;
     }
 }
 
-void CMorphoMoveG_Teleport::Exit_Step()
+void CMorphoMoveG_TeleportNear::Exit_Step()
 {
     switch (m_Step)
     {
@@ -63,7 +85,7 @@ void CMorphoMoveG_Teleport::Exit_Step()
         MRPFSM->DisableRender();
         MRPFSM->ClearEmissive();
     }
-        break;
+    break;
     case StateStep::End: {
         MRPFSM->EnableRender();
         GetOwner()->Animator()->SetPlay(true);
@@ -72,7 +94,7 @@ void CMorphoMoveG_Teleport::Exit_Step()
     }
 }
 
-void CMorphoMoveG_Teleport::Start()
+void CMorphoMoveG_TeleportNear::Start()
 {
     m_AccTime += DT;
 
@@ -91,7 +113,7 @@ void CMorphoMoveG_Teleport::Start()
     }
 }
 
-void CMorphoMoveG_Teleport::End()
+void CMorphoMoveG_TeleportNear::End()
 {
     m_AccTime += DT;
 

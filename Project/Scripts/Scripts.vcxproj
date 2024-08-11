@@ -227,8 +227,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoMoveG_HoverDash.h" />
     <ClInclude Include="CMorphoMoveG_Jump.h" />
     <ClInclude Include="CMorphoMoveG_JumpFall.h" />
-    <ClInclude Include="CMorphoMoveG_Teleport.h" />
+    <ClInclude Include="CMorphoMoveG_TeleportFar.h" />
     <ClInclude Include="CMorphoMoveG_TeleportCombo.h" />
+    <ClInclude Include="CMorphoMoveG_TeleportNear.h" />
     <ClInclude Include="CMorphoShockWave.h" />
     <ClInclude Include="CMorphoTrackingSoul.h" />
     <ClInclude Include="CMorphoUnit.h" />
@@ -503,8 +504,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoMoveG_HoverDash.cpp" />
     <ClCompile Include="CMorphoMoveG_Jump.cpp" />
     <ClCompile Include="CMorphoMoveG_JumpFall.cpp" />
-    <ClCompile Include="CMorphoMoveG_Teleport.cpp" />
+    <ClCompile Include="CMorphoMoveG_TeleportFar.cpp" />
     <ClCompile Include="CMorphoMoveG_TeleportCombo.cpp" />
+    <ClCompile Include="CMorphoMoveG_TeleportNear.cpp" />
     <ClCompile Include="CMorphoShockWave.cpp" />
     <ClCompile Include="CMorphoTrackingSoul.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />

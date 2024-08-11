@@ -742,9 +742,6 @@
     <ClInclude Include="CMorphoShockWave.h">
       <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoMoveG_Teleport.h">
-      <Filter>State\MorphoState\MoveGround\Teleport</Filter>
-    </ClInclude>
     <ClInclude Include="CMorphoMoveG_Jump.h">
       <Filter>State\MorphoState\MoveGround\HoverDash\Jump</Filter>
     </ClInclude>
@@ -777,6 +774,12 @@
     </ClInclude>
     <ClInclude Include="CMorphoMoveG_JumpFall.h">
       <Filter>State\MorphoState\MoveGround\JumpFall</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_TeleportNear.h">
+      <Filter>State\MorphoState\MoveGround\Teleport\Near</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_TeleportFar.h">
+      <Filter>State\MorphoState\MoveGround\Teleport\Far</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1530,9 +1533,6 @@
     <ClCompile Include="CMorphoShockWave.cpp">
       <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoMoveG_Teleport.cpp">
-      <Filter>State\MorphoState\MoveGround\Teleport</Filter>
-    </ClCompile>
     <ClCompile Include="CMorphoMoveG_Jump.cpp">
       <Filter>State\MorphoState\MoveGround\HoverDash\Jump</Filter>
     </ClCompile>
@@ -1565,6 +1565,12 @@
     </ClCompile>
     <ClCompile Include="CMorphoMoveG_JumpFall.cpp">
       <Filter>State\MorphoState\MoveGround\JumpFall</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_TeleportNear.cpp">
+      <Filter>State\MorphoState\MoveGround\Teleport\Near</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_TeleportFar.cpp">
+      <Filter>State\MorphoState\MoveGround\Teleport\Far</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2494,6 +2500,12 @@
     </Filter>
     <Filter Include="State\MorphoState\AtkG Teleport\TrackingSoulCombo">
       <UniqueIdentifier>{80ba441a-51f3-4d7d-a785-320e246b22de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Teleport\Near">
+      <UniqueIdentifier>{819f6f5b-cb8b-4226-a696-3e34055991d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Teleport\Far">
+      <UniqueIdentifier>{da499315-c00c-4849-b866-3e03bfbfbe55}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
