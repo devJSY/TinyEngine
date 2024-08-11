@@ -1172,7 +1172,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(VEC4_0, "Fog Color");
 
         pShader->AddTexParam(TEX_0, "Render Texture");
-        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
 
         pShader->SetName(L"PostEffectShader");
         AddAsset(L"PostEffectShader", pShader);
@@ -1232,7 +1231,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->AddTexParam(TEX_0, "DepthOnly Texture");
         pShader->AddScalarParam(FLOAT_0, "Sample Radius", 1e-3f);
         pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
 
@@ -1253,8 +1251,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "Render Texture");
-        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
-        pShader->AddTexParam(TEX_2, "DepthMasking Texture");
 
         pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
 
@@ -1286,6 +1282,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->SetName(L"LensFlareShader");
         AddAsset(L"LensFlareShader", pShader);
+    }
+
+    // =================================
+    // Depth of Field Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\DepthofFieldPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Blur Texture");
+        pShader->AddScalarParam(FLOAT_0, "Min Distance");
+        pShader->AddScalarParam(FLOAT_1, "Max Distance");
+        pShader->AddScalarParam(VEC2_0, "Focus UV", 1e-3f);
+
+        pShader->SetName(L"DOFShader");
+        AddAsset(L"DOFShader", pShader);
     }
 }
 
@@ -1834,6 +1851,17 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetTexParam(TEX_7, Load<CTexture>(L"Texture\\LensFlare\\lensFlare_Tex7.png", L"Texture\\LensFlare\\lensFlare_Tex7.png"));
         pMtrl->SetName(L"LensFlareMtrl");
         AddAsset<CMaterial>(L"LensFlareMtrl", pMtrl);
+    }
+
+    // Depth of Field Mtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"DOFShader"));
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);             // Min Distance
+        pMtrl->SetScalarParam(FLOAT_1, 3000.f);          // Max Distance
+        pMtrl->SetScalarParam(VEC2_0, Vec2(0.5f, 0.5f)); // Focus UV
+        pMtrl->SetName(L"DOFMtrl");
+        AddAsset<CMaterial>(L"DOFMtrl", pMtrl);
     }
 }
 

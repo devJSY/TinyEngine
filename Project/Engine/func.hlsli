@@ -46,6 +46,23 @@ float4 TexcoordToView(Texture2D tex, float2 texcoord)
     return posView;
 }
 
+float4 TexcoordToView(Texture2D tex, float2 texcoord, float lod)
+{
+    float4 posProj;
+
+    // [0, 1]x[0, 1] -> [-1, 1]x[-1, 1]
+    posProj.xy = texcoord * 2.0 - 1.0;
+    posProj.y *= -1; // 주의: y 방향을 뒤집어줘야 합니다.
+    posProj.z = tex.SampleLevel(g_LinearClampSampler, texcoord, lod).r;
+    posProj.w = 1.0;
+
+    // ProjectSpace -> ViewSpace
+    float4 posView = mul(posProj, g_matProjInv);
+    posView.xyz /= posView.w;
+    
+    return posView;
+}
+
 // Z축 회전을 적용하는 함수
 float2 RotateUV(float2 uv, float angle)
 {
@@ -87,6 +104,24 @@ static float GaussianFilter[5][5] =
     0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f,
     0.003f, 0.0133f, 0.0219f, 0.0133f, 0.003f,
 };
+
+float4 GaussianBlur(Texture2D Tex, float2 vUV, SamplerState Sampler, float2 TexSize)
+{
+    float4 color = float4(0.f, 0.f, 0.f, 0.f);
+    
+    for (int y = -2; y <= 2; ++y)
+    {
+        for (int x = -2; x <= 2; ++x)
+        {
+            float2 offset = float2(x, y) / TexSize;
+            float weight = GaussianFilter[y + 2][x + 2];
+
+            color += Tex.Sample(Sampler, vUV + offset) * weight;
+        }
+    }
+    
+    return color;
+}
 
 void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _NomalizedThreadID, out float3 _vOut)
 {

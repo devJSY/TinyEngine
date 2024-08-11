@@ -713,10 +713,10 @@
       <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClInclude>
     <ClInclude Include="CFadeOutScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Postprocess</Filter>
     </ClInclude>
     <ClInclude Include="CLensFlareScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Postprocess</Filter>
     </ClInclude>
     <ClInclude Include="CFlowMgr_Lv0.h">
       <Filter>Scripts\Manager\FlowManager\0. Tutorial Level Flow Manager</Filter>
@@ -1456,10 +1456,10 @@
       <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClCompile>
     <ClCompile Include="CFadeOutScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
     <ClCompile Include="CLensFlareScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
     <ClCompile Include="CFlowMgr_Lv0.cpp">
       <Filter>Scripts\Manager\FlowManager\0. Tutorial Level Flow Manager</Filter>
@@ -2299,6 +2299,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Demo_Appear2\2. Roar">
       <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Postprocess">
+      <UniqueIdentifier>{7cd8d5b0-174c-4f37-8883-a20493177767}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Elfilis Level Flow Manager">
       <UniqueIdentifier>{dc577414-555c-4965-aec1-5df008469f1e}</UniqueIdentifier>
