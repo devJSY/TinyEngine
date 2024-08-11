@@ -458,6 +458,11 @@ void CAnimator::SetClipFrameIndex(int _FrameIdx)
     SetFrameIdx(m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iStartFrame + _FrameIdx);
 }
 
+float CAnimator::GetClipPlayTime()
+{
+    return (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
+}
+
 float CAnimator::GetClipPlayRatio()
 {
     int Len = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iFrameLength;

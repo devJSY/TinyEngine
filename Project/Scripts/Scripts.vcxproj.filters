@@ -608,7 +608,7 @@
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
     </ClInclude>
     <ClInclude Include="CElfilisD_Appear.h">
-      <Filter>State\ElfilisState\Demo_Appear</Filter>
+      <Filter>State\ElfilisState\Demo_Appear1</Filter>
     </ClInclude>
     <ClInclude Include="CChangeAlphaScript.h">
       <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
@@ -643,11 +643,8 @@
     <ClInclude Include="CPushOutScript.h">
       <Filter>Scripts\Gimmik\PushOut</Filter>
     </ClInclude>
-    <ClInclude Include="CPushOutTriggerScript.h">
-      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
-    </ClInclude>
-    <ClInclude Include="CPushOutColliderScript.h">
-      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    <ClInclude Include="CObstacleTriggerScript.h">
+      <Filter>Scripts\Gimmik\ObstacleTrigger</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyStageClear.h">
       <Filter>State\KirbyState\StageClear</Filter>
@@ -801,6 +798,27 @@
     </ClInclude>
     <ClInclude Include="CMorphoAtkG_Wait_FrontMove.h">
       <Filter>State\MorphoState\AtkG Wait\FrontMove</Filter>
+    </ClInclude>
+    <ClInclude Include="CPushOutColliderScript.h">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightBulbGimmickScript.h">
+      <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Damage.h">
+      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Jump.h">
+      <Filter>State\ElfilisState\Demo_Appear2\1. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_Roar.h">
+      <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
+    </ClInclude>
+    <ClInclude Include="CFadeOutScript.h">
+      <Filter>Scripts\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="CLensFlareScript.h">
+      <Filter>Scripts\Postprocess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1420,7 +1438,7 @@
       <Filter>State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL</Filter>
     </ClCompile>
     <ClCompile Include="CElfilisD_Appear.cpp">
-      <Filter>State\ElfilisState\Demo_Appear</Filter>
+      <Filter>State\ElfilisState\Demo_Appear1</Filter>
     </ClCompile>
     <ClCompile Include="CChangeAlphaScript.cpp">
       <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
@@ -1455,11 +1473,8 @@
     <ClCompile Include="CPushOutScript.cpp">
       <Filter>Scripts\Gimmik\PushOut</Filter>
     </ClCompile>
-    <ClCompile Include="CPushOutTriggerScript.cpp">
-      <Filter>Scripts\Gimmik\PushOut\PushOutTrigger</Filter>
-    </ClCompile>
-    <ClCompile Include="CPushOutColliderScript.cpp">
-      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    <ClCompile Include="CObstacleTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\ObstacleTrigger</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyStageClear.cpp">
       <Filter>State\KirbyState\StageClear</Filter>
@@ -1613,6 +1628,27 @@
     </ClCompile>
     <ClCompile Include="CMorphoAtkG_Wait_FrontMove.cpp">
       <Filter>State\MorphoState\AtkG Wait\FrontMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CPushOutColliderScript.cpp">
+      <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightBulbGimmickScript.cpp">
+      <Filter>Scripts\Gimmik\LightBulbGimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Damage.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\0. Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Jump.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\1. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Roar.cpp">
+      <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
+    </ClCompile>
+    <ClCompile Include="CFadeOutScript.cpp">
+      <Filter>Scripts\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="CLensFlareScript.cpp">
+      <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2315,23 +2351,8 @@
     <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL">
       <UniqueIdentifier>{cd51cbfe-3bb6-40d5-a82c-ea49c1cb4df3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="State\ElfilisState\Demo_Appear">
-      <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Gimmik\ChangeAlpha">
       <UniqueIdentifier>{6dbe3d5e-397d-4803-ba27-43858b57d0fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear">
-      <UniqueIdentifier>{057373cc-35db-49f2-8484-29622e6b0355}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear\0. Damage">
-      <UniqueIdentifier>{7c75dd0a-8803-433e-b773-64a6b24ceb98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear\1. Jump">
-      <UniqueIdentifier>{6bfae776-72f6-47a4-849b-902ba6123c74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="State\ElfilisState\Demo_BigAppear\2. Roar">
-      <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik\SolarPanelObj">
       <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
@@ -2362,12 +2383,6 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\PushOut">
       <UniqueIdentifier>{cc94f586-b5bc-4b3c-b8b8-ee95f549e97b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\PushOut\PushOutTrigger">
-      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
-      <UniqueIdentifier>{352131f1-ba6a-456c-8e34-b2a6ddcbfa48}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik\SupriseBoard">
       <UniqueIdentifier>{1d357822-94ff-4755-9404-5d9b0964b606}</UniqueIdentifier>
@@ -2410,6 +2425,15 @@
     </Filter>
     <Filter Include="State\KirbyState\Ladder\LadderExit">
       <UniqueIdentifier>{5fca3980-452b-44a2-9b49-45fbca496d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\PushOut\PushOutCollider">
+      <UniqueIdentifier>{a94a5e21-fc32-4dee-8995-622c322c9275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\LightBulbGimmick">
+      <UniqueIdentifier>{62803287-ca96-469f-ab93-54914f5d5460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ObstacleTrigger">
+      <UniqueIdentifier>{adb2a9f4-ac04-4a1b-9daa-31020b8b7ef3}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\Fall">
       <UniqueIdentifier>{bb73440d-3931-423c-8cb6-5f943e566875}</UniqueIdentifier>
@@ -2572,6 +2596,24 @@
     </Filter>
     <Filter Include="State\MorphoState\AtkG Wait\FrontMove">
       <UniqueIdentifier>{bb6457e1-a68c-43f3-9104-fc732e83bf89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear1">
+      <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2">
+      <UniqueIdentifier>{057373cc-35db-49f2-8484-29622e6b0355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2\0. Damage">
+      <UniqueIdentifier>{7c75dd0a-8803-433e-b773-64a6b24ceb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2\1. Jump">
+      <UniqueIdentifier>{6bfae776-72f6-47a4-849b-902ba6123c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Appear2\2. Roar">
+      <UniqueIdentifier>{68063540-5bac-4cae-b5d5-ee6547882bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Postprocess">
+      <UniqueIdentifier>{7cd8d5b0-174c-4f37-8883-a20493177767}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

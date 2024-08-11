@@ -13,7 +13,7 @@ CMorphoFSM::CMorphoFSM()
     , m_NearDist(150.f)
     , m_bAttackRepeat(false)
     , m_MapFloorOffset(Vec3())
-    , m_MapSize(Vec3(500.f, 0.f, 500.f))
+    , m_MapSize(Vec3(300.f, 0.f, 300.f))
     , m_TeleportAppearTime(0.f)
     , m_EmissiveTime(0.3f)
 {

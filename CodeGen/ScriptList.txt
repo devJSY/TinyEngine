@@ -71,8 +71,7 @@ CSolarChargeScript
 CSolarOnceScript
 CElevatorScript
 CPushOutScript
-CPushOutTriggerScript
-CPushOutColliderScript
+CObstacleTriggerScript
 CLadderScript
 CKirbyCheckPointTrigger
 CKirbyFallDetectTrigger
@@ -82,3 +81,7 @@ CMorphoUnit
 CElfilisUnit
 CMorphoTrackingSoul
 CMorphoShockWave
+CPushOutColliderScript
+CLightBulbGimmickScript
+CFadeOutScript
+CLensFlareScript

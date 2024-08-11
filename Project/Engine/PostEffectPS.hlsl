@@ -9,7 +9,6 @@
 #define DepthScale g_float_2
 
 #define RenderTex g_tex_0
-#define DepthOnlyTex g_tex_1
 
 #define FogColor g_vec4_0
 

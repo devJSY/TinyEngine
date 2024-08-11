@@ -18,29 +18,41 @@ private:
     Vec3 m_vBase;
     Vec3 m_vDest;
     Vec3 m_vDir;
+    int m_iChildNum[3];
     PushOutState m_eState;
     float m_fSpeed;
     float m_fReturnSpeed;
-    float m_fOffset;
-    bool m_bFlag;
+    float m_fMoveBaseOffset;
+    float m_fMoveDestOffset;
+
+    bool m_bXMove;
+    bool m_bZMove;
+    bool m_bBasePlus;
+    bool m_bDestPlus;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
+    
+    void ChangeState(PushOutState _state);
+    void EnterState();
+    void ExitState(){};
 
 public:
     void SetPlayer(CGameObject* _pObj) { m_pPlayer = _pObj; }
 
-    PushOutState GetState() { return m_eState; }
-    void SetState(const PushOutState _state) { m_eState = _state; }
-
 private:
     void MoveBase();
     void MoveDest();
+
     void Stop();
 
 private:
-    void MoveWithChild(Vec3 _vDir, Vec3 _vDest,float _fSpeed,bool _flag);
+    void MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+    void MovePlusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+
+    void MoveMinusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
+    void MoveMinusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

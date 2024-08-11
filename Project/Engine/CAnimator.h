@@ -99,6 +99,8 @@ public:
     void SetClipFrameIndex(int _FrameIdx);
     float GetClipPlayRatio();
 
+    float GetClipPlayTime();
+
     const vector<Matrix>& GetBoneTransformMat() const { return m_BoneTransformMat; }
     const Matrix& GetBoneTransformMat(UINT _Idx) const { return m_BoneTransformMat[_Idx]; }
 

@@ -418,8 +418,11 @@ void CCamera::render_Forward()
 
 #ifndef DISTRIBUTE
     // IDMap Pass
-    CRenderMgr::GetInst()->GetMRT(MRT_TYPE::IDMAP)->OMSet();
-    render_IDMap();
+    if (0 == g_Global.g_MousePickingMode)
+    {
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::IDMAP)->OMSet();
+        render_IDMap();
+    }
 #endif // DISTRIBUTE
 
     // ÈÄÃ³¸®

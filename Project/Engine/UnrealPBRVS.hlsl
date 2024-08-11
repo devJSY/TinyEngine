@@ -15,12 +15,12 @@ PS_IN main(VS_IN input)
               , input.vWeights, input.vIndices, 0);
     }
     
-    float3 tangentWorld = normalize(mul(float4(input.vTangent, 0.0f), g_matWorldInvTranspose).xyz);
+    float3 tangentWorld = normalize(mul(float4(input.vTangent, 0.f), g_matWorldInvTranspose).xyz);
 
-    float3 BitangentWorld = normalize(mul(float4(input.vBitangent, 0.0f), g_matWorldInvTranspose).xyz);
+    float3 BitangentWorld = normalize(mul(float4(input.vBitangent, 0.f), g_matWorldInvTranspose).xyz);
 
     // Normal 벡터 먼저 변환 (Height Mapping)
-    float3 normalWorld = normalize(mul(float4(input.vNormal, 0.0f), g_matWorldInvTranspose).xyz);
+    float3 normalWorld = normalize(mul(float4(input.vNormal, 0.f), g_matWorldInvTranspose).xyz);
 
     float4 posWorld = mul(float4(input.vPos, 1.0f), g_matWorld);
     

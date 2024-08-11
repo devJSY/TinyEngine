@@ -16,6 +16,7 @@ enum class SolarChargeState
 class CSolarChargeScript : public CScript
 {
 private:
+    CGameObject* m_pObj;
     string m_MovingObjName;
     SolarChargeState m_eState;
     bool m_IsArea;

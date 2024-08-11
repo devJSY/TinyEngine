@@ -19,6 +19,7 @@ public:
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
+    void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
     void SetMtrlTransparent(float _Alpha);
 
     UINT GetComboLevel() { return m_ComboLevel; }

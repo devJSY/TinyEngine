@@ -6,9 +6,10 @@
 float3 NormalMapping(PS_IN input, Texture2D NormalTex, float2 vUV, SamplerState Sampler, bool InvertNoramlMapY = false)
 {
     float3 normal = NormalTex.Sample(Sampler, vUV).rgb;
-
-    // 압축되어있는 Normal Map인 경우
-    if (0.f >= normal.b)
+    
+    // DXT5 Normal Map 예외처리
+    bool bDXT5Normal = 0.f >= normal.b ? true : false;
+    if (bDXT5Normal)
     {
         normal.b = 1.f;
     }
@@ -22,8 +23,8 @@ float3 NormalMapping(PS_IN input, Texture2D NormalTex, float2 vUV, SamplerState 
     float3 B = normalize(input.vBitangentWorld);
     float3 N = normalize(input.vNormalWorld);
         
-    // matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
-    float3x3 TBN = float3x3(T, B, N);
+    // 압축되어있는 노말은 Bitangent 사용 X
+    float3x3 TBN = bDXT5Normal ? float3x3(T, T, N) : float3x3(T, B, N);
     
     return normalize(mul(normal, TBN));
 }
@@ -45,6 +46,53 @@ float4 TexcoordToView(Texture2D tex, float2 texcoord)
     return posView;
 }
 
+float4 TexcoordToView(Texture2D tex, float2 texcoord, float lod)
+{
+    float4 posProj;
+
+    // [0, 1]x[0, 1] -> [-1, 1]x[-1, 1]
+    posProj.xy = texcoord * 2.0 - 1.0;
+    posProj.y *= -1; // 주의: y 방향을 뒤집어줘야 합니다.
+    posProj.z = tex.SampleLevel(g_LinearClampSampler, texcoord, lod).r;
+    posProj.w = 1.0;
+
+    // ProjectSpace -> ViewSpace
+    float4 posView = mul(posProj, g_matProjInv);
+    posView.xyz /= posView.w;
+    
+    return posView;
+}
+
+// Z축 회전을 적용하는 함수
+float2 RotateUV(float2 uv, float angle)
+{
+    // UV 좌표를 텍스처의 중심으로 이동 (0.5, 0.5)
+    uv -= 0.5;
+
+    // 회전 각도 계산
+    float cosTheta = cos(angle);
+    float sinTheta = sin(angle);
+
+    // 회전 행렬 적용
+    float2 rotatedUV;
+    rotatedUV.x = uv.x * cosTheta - uv.y * sinTheta;
+    rotatedUV.y = uv.x * sinTheta + uv.y * cosTheta;
+
+    // 다시 원래 위치로 이동
+    rotatedUV += 0.5;
+
+    return rotatedUV;
+}
+
+float2 AspectRatioCorrection(float2 uv)
+{
+    float AspectRatio = g_RenderResolution.x / g_RenderResolution.y;
+    uv.x *= AspectRatio;
+    uv.x -= abs((1.f - AspectRatio) / 2.f); // 줄어든 비율만큼 이동하여 중앙에 맞춤
+    
+    return uv;
+}
+
 // ======
 // Random
 // ======
@@ -56,6 +104,24 @@ static float GaussianFilter[5][5] =
     0.0133f, 0.0596f, 0.0983f, 0.0596f, 0.0133f,
     0.003f, 0.0133f, 0.0219f, 0.0133f, 0.003f,
 };
+
+float4 GaussianBlur(Texture2D Tex, float2 vUV, SamplerState Sampler, float2 TexSize)
+{
+    float4 color = float4(0.f, 0.f, 0.f, 0.f);
+    
+    for (int y = -2; y <= 2; ++y)
+    {
+        for (int x = -2; x <= 2; ++x)
+        {
+            float2 offset = float2(x, y) / TexSize;
+            float weight = GaussianFilter[y + 2][x + 2];
+
+            color += Tex.Sample(Sampler, vUV + offset) * weight;
+        }
+    }
+    
+    return color;
+}
 
 void GaussianSample(in Texture2D _NoiseTex, float2 _vResolution, float _NomalizedThreadID, out float3 _vOut)
 {
