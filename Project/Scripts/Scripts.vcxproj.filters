@@ -766,8 +766,13 @@
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h">
       <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
-    <ClInclude Include="CMorphoMoveG_TeleportCombo.h" />
+    <ClInclude Include="CMorphoMoveG_TeleportCombo.h">
+      <Filter>State\MorphoState\MoveGround\TeleportCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSword.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoulCombo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1544,8 +1549,13 @@
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp">
       <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
-    <ClCompile Include="CMorphoMoveG_TeleportCombo.cpp" />
+    <ClCompile Include="CMorphoMoveG_TeleportCombo.cpp">
+      <Filter>State\MorphoState\MoveGround\TeleportCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSword.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoulCombo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2471,6 +2481,9 @@
     </Filter>
     <Filter Include="State\MorphoState\MoveGround\TeleportCombo">
       <UniqueIdentifier>{a74d43f7-3ea5-4560-b1af-fe178405585c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\TrackingSoulCombo">
+      <UniqueIdentifier>{80ba441a-51f3-4d7d-a785-320e246b22de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -38,6 +38,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_FireWall.h"
 #include "CMorphoAtkG_Teleport_Tornado.h"
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
+#include "CMorphoAtkG_Teleport_TrackingSoulCombo.h"
 #include "CMorphoAtkA_ShockWave.h"
 #include "CMorphoAtkA_DoubleSword.h"
 #include "CMorphoAtkA_DoubleSwordDivision.h"
@@ -60,6 +61,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_FIREWALL", new CMorphoAtkG_Teleport_FireWall);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TORNADO", new CMorphoAtkG_Teleport_Tornado);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
+    AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOULCOMBO", new CMorphoAtkG_Teleport_TrackingSoulCombo);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
@@ -112,7 +114,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORTCOMBO");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOULCOMBO");
     }
 
     // Emissive
@@ -358,6 +360,21 @@ void CMorphoFSM::ProcPatternStep()
         }
     }
     break;
+    case MorphoPatternType::TrackingSoulCombo: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL");
+        }
+        else if (m_PatternStep == 1)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        }
+        else if (m_PatternStep == 2)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL");
+            bFinish = true;
+        }
+    }
     }
 
     if (bFinish)

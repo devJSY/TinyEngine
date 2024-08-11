@@ -24,6 +24,7 @@ enum class MorphoPatternType
     NONE,
     DoubleSword,
     TeleportCombo,
+    TrackingSoulCombo,
 };
 
 class CMorphoFSM : public CFSMScript
