@@ -44,6 +44,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
 #include "CMorphoAtkG_Teleport_TrackingSoulCombo.h"
 #include "CMorphoAtkG_Wait_LeftSideMove.h"
+#include "CMorphoAtkG_Wait_RightSideMove.h"
 #include "CMorphoAtkA_ShockWave.h"
 #include "CMorphoAtkA_ShockWaveCombo.h"
 #include "CMorphoAtkA_DoubleSword.h"
@@ -71,6 +72,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport2, L"ATKG_TELEPORT_TRACKINGSOULCOMBO", new CMorphoAtkG_Teleport_TrackingSoulCombo);
     AddGroupPublicState(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_LEFTSIDEMOVE", new CMorphoAtkG_Wait_LeftSideMove);
+    AddGroupPublicState(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_RIGHTSIDEMOVE", new CMorphoAtkG_Wait_RightSideMove);
     AddGroupPublicState(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
     AddGroupPublicState(MorphoStateGroup::AtkAir2, L"ATKA_SHOCKWAVECOMBO", new CMorphoAtkA_ShockWaveCombo);
     AddGroupPublicState(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
@@ -129,7 +131,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_LEFTSIDEMOVE");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_RIGHTSIDEMOVE");
     }
 
     // Emissive

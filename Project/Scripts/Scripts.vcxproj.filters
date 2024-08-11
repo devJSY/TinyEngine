@@ -796,6 +796,7 @@
     <ClInclude Include="CMorphoAtkG_Wait_LeftSideMove.h">
       <Filter>State\MorphoState\AtkG Wait\LeftSideMove</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Wait_RightSideMove.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1602,6 +1603,7 @@
     <ClCompile Include="CMorphoAtkG_Wait_LeftSideMove.cpp">
       <Filter>State\MorphoState\AtkG Wait\LeftSideMove</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Wait_RightSideMove.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

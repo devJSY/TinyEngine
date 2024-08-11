@@ -223,6 +223,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoul.h" />
     <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoulCombo.h" />
     <ClInclude Include="CMorphoAtkG_Wait_LeftSideMove.h" />
+    <ClInclude Include="CMorphoAtkG_Wait_RightSideMove.h" />
     <ClInclude Include="CMorphoDemo_Appear.h" />
     <ClInclude Include="CMorphoDemo_Death.h" />
     <ClInclude Include="CMorphoDemo_Phase2.h" />
@@ -505,6 +506,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoul.cpp" />
     <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoulCombo.cpp" />
     <ClCompile Include="CMorphoAtkG_Wait_LeftSideMove.cpp" />
+    <ClCompile Include="CMorphoAtkG_Wait_RightSideMove.cpp" />
     <ClCompile Include="CMorphoDemo_Appear.cpp" />
     <ClCompile Include="CMorphoDemo_Death.cpp" />
     <ClCompile Include="CMorphoDemo_Phase2.cpp" />
