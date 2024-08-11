@@ -5,6 +5,9 @@
 
 CMorphoFSM::CMorphoFSM()
     : CFSMScript(MORPHOFSM)
+    , m_CurStateGroup(MorphoStateGroup::END)
+    , m_Pattern(MorphoPatternType::NONE)
+    , m_PatternStep(0)
     , m_Phase(1)
     , m_ComboLevel(0)
     , m_NearDist(120.f)
@@ -36,6 +39,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_Tornado.h"
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
 #include "CMorphoAtkA_ShockWave.h"
+#include "CMorphoAtkA_DoubleSword.h"
 #include "CMorphoAtkA_DoubleSwordDivision.h"
 #include "CMorphoAtkA_DoubleSwordAtkR.h"
 #include "CMorphoAtkA_DoubleSwordAtkL.h"
@@ -56,6 +60,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TORNADO", new CMorphoAtkG_Teleport_Tornado);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
+    AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_HOVERDASH", new CMorphoMoveG_HoverDash);
@@ -105,7 +110,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKLR");
+        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD");
     }
 
     // Emissive
@@ -219,6 +224,12 @@ void CMorphoFSM::RepeatState(wstring _State)
 
 void CMorphoFSM::ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State)
 {
+    if (m_Pattern != MorphoPatternType::NONE)
+    {
+        ProcPatternStep();
+        return;
+    }
+
     if (_State.empty())
     {
         ChangeStateGroup_Random(_Group);
@@ -273,6 +284,70 @@ void CMorphoFSM::AddGroupPrivateState(MorphoStateGroup _Group, const wstring& _S
 
     CFSMScript::AddState(_StateName, _State);
     m_StateGroup[_Group][1].push_back(_StateName);
+}
+
+void CMorphoFSM::SetPattern(MorphoPatternType _Pattern)
+{
+    m_PatternStep = 0;
+    m_Pattern = _Pattern;
+}
+
+void CMorphoFSM::ProcPatternStep()
+{
+    if (m_Pattern == MorphoPatternType::NONE)
+        return;
+
+    bool bFinish = false;
+
+    switch (m_Pattern)
+    {
+    case MorphoPatternType::DoubleSword:
+    {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
+        }
+        else if (m_PatternStep == 1)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_DIVISION");
+        }
+        else if (m_PatternStep == 2) // 외부호출
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        }
+        else if (m_PatternStep == 3)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKR");
+        }
+        else if (m_PatternStep == 4) // 외부호출
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        }
+        else if (m_PatternStep == 5)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKL");
+        }
+        else if (m_PatternStep == 6) // 외부호출
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        }
+        else if (m_PatternStep == 7)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKLR");
+            bFinish = true;
+        }
+    }
+        break;
+    }
+
+    if (bFinish)
+    {
+        SetPattern(MorphoPatternType::NONE);
+    }
+    else
+    {
+        m_PatternStep++;
+    }
 }
 
 void CMorphoFSM::ClearEmissive()

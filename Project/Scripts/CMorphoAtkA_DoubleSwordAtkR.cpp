@@ -124,6 +124,6 @@ void CMorphoAtkA_DoubleSwordAtkR::End()
 
     if (GetOwner()->Animator()->IsFinish())
     {
-        MRPFSM->ProcPattern();
+        MRPFSM->ProcPatternStep();
     }
 }

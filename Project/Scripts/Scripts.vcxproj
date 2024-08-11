@@ -204,6 +204,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkR.h" />
@@ -476,6 +477,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkR.cpp" />

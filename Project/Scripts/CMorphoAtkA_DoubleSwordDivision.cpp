@@ -144,6 +144,6 @@ void CMorphoAtkA_DoubleSwordDivision::End()
 
     if (m_AccTime > m_WaitTime)
     {
-        MRPFSM->ProcPattern();
+        MRPFSM->ProcPatternStep();
     }
 }

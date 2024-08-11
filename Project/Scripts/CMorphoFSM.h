@@ -19,13 +19,21 @@ enum class MorphoStateGroup
     END,
 };
 
+enum class MorphoPatternType
+{
+    NONE,
+    DoubleSword,
+};
+
 class CMorphoFSM : public CFSMScript
 {
 private:
     // FSM
     map<MorphoStateGroup, vector<wstring>[2]> m_StateGroup;  // ( StateGroup, States )
     MorphoStateGroup m_CurStateGroup;
+    MorphoPatternType m_Pattern;
     UINT m_Phase;
+    UINT m_PatternStep;
     UINT m_ComboLevel;
     float m_NearDist;
     bool m_bAttackRepeat;
@@ -53,7 +61,7 @@ public:
     void Attack();
     void ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
-    void ProcPattern(){};
+    void ProcPatternStep();
 
 private:
     void ChangeStateGroup_Random(MorphoStateGroup _Group);
@@ -62,6 +70,7 @@ private:
     void AddGroupPrivateState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State);
 
 public:
+    void SetPattern(MorphoPatternType _Pattern);
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
     void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
@@ -74,6 +83,9 @@ public:
 
     MorphoStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     UINT GetPhase() const { return m_Phase; }
+    bool IsPattern() const { return m_Pattern != MorphoPatternType::NONE; }
+    bool IsPattern(MorphoPatternType _Pattern, UINT _Step) const { return m_Pattern == _Pattern && m_PatternStep == _Step; }
+    UINT GetPatternStep() const { return m_PatternStep; }
     UINT GetComboLevel() const { return m_ComboLevel; }
     float GetNearDist() const { return m_NearDist; }
     bool IsNearPlayer() const { return GetPlayerDist() <= m_NearDist; }

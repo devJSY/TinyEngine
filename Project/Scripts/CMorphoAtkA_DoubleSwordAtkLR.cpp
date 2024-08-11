@@ -324,6 +324,6 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndEnd()
     // end
     else
     {
-        MRPFSM->Move();
+        MRPFSM->ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
     }
 }

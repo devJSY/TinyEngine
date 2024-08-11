@@ -766,6 +766,7 @@
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h">
       <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1542,6 +1543,7 @@
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp">
       <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
