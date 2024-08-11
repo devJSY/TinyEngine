@@ -47,7 +47,7 @@ CKirbyFSM::CKirbyFSM()
     , m_EmissiveAcc(0.f)
     , m_EmissiveDuration(0.f)
     , m_bEmissive(false)
-    , m_bCanBladeAttack(false)
+    , m_bCanBladeAttack(true)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
     , m_LeftCanCount(0)
@@ -63,7 +63,7 @@ CKirbyFSM::CKirbyFSM()
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
     m_arrAbility[(UINT)AbilityCopyType::SWORD] = new CKirbyAbility_Sword();
-    m_arrAbility[(UINT)AbilityCopyType::SLEEP] = new CkirbyAbility_Sleep();
+    m_arrAbility[(UINT)AbilityCopyType::SLEEP] = new CKirbyAbility_Sleep();
 
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
     m_arrObject[(UINT)ObjectCopyType::VENDING_MACHINE] = new CKirbyObject_VendingMachine();
@@ -74,9 +74,9 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     : CFSMScript(_Origin)
     , m_arrAbility{}
     , m_arrObject{}
-    , m_CurAbility(AbilityCopyType::NORMAL)
-    , m_NextAbility(AbilityCopyType::NONE)
-    , m_CurObject(ObjectCopyType::NONE)
+    , m_CurAbility(_Origin.m_CurAbility)
+    , m_NextAbility(_Origin.m_NextAbility)
+    , m_CurObject(_Origin.m_CurObject)
     , m_CurHat(nullptr)
     , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
@@ -104,7 +104,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_EmissiveAcc(0.f)
     , m_EmissiveDuration(0.f)
     , m_bEmissive(false)
-    , m_bCanBladeAttack(false)
+    , m_bCanBladeAttack(true)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
     , m_LeftCanCount(0)
@@ -268,6 +268,67 @@ void CKirbyFSM::begin()
     }
 
     m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
+
+    vector<CGameObject*> KirbyChildObject = GetOwner()->GetChildObject();
+
+    for (size_t i = 0; i < KirbyChildObject.size(); ++i)
+    {
+        wstring ObjName = KirbyChildObject[i]->GetName();
+
+        if (ObjName.find(L"Hat") != wstring::npos)
+        {
+            if (ObjName.find(L"Blade") != wstring::npos)
+            {
+                m_CurHatBlade = KirbyChildObject[i]->Clone();
+                GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
+            }
+            else
+            {
+                m_CurHat = KirbyChildObject[i]->Clone();
+                GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
+            }
+        }
+
+        if (ObjName.find(L"Weapon") != wstring::npos)
+        {
+            m_CurWeapon = KirbyChildObject[i]->Clone();
+            GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
+        }
+    }
+
+    // begin시에 ObjectCopy상태는 항상 None으로 바꿔준다.
+    PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    m_CurObject = ObjectCopyType::NONE;
+
+    // 복사해 놓은 Hat, Weapon을 다시 끼워준다.
+    if (m_CurHat)
+    {
+        GamePlayStatic::AddChildObject(GetOwner(), m_CurHat, L"Hat");
+    }
+
+    if (m_CurHatBlade)
+    {
+        GamePlayStatic::AddChildObject(GetOwner(), m_CurHatBlade, L"Hat");
+    }
+    
+    if (m_CurWeapon)
+    {
+        GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
+    }
+
+
+    // 캐릭터 컨트롤러 캡슐 사이즈 세팅
+    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
+    PLAYER->CharacterController()->SetHeight(1.51f);
+    PLAYER->CharacterController()->SetRadius(0.51f);
+    PLAYER->CharacterController()->SetSkinWidth(0.015f);
+    PLAYER->CharacterController()->SetMinMoveDistance(0.f);
 
     // State 추가
     AddState(L"IDLE", new CKirbyIdle);
@@ -671,6 +732,13 @@ UINT CKirbyFSM::SaveToLevelFile(FILE* _File)
 
     MemoryByte += CFSMScript::SaveToLevelFile(_File);
 
+    fwrite(&m_CurAbility, sizeof(UINT), 1, _File);
+    fwrite(&m_CurObject, sizeof(UINT), 1, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(UINT);
+
+
     return MemoryByte;
 }
 
@@ -679,6 +747,12 @@ UINT CKirbyFSM::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CFSMScript::SaveToLevelFile(_File);
+
+    fread(&m_CurAbility, sizeof(UINT), 1, _File);
+    fread(&m_CurObject, sizeof(UINT), 1, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(UINT);
 
     return MemoryByte;
 }

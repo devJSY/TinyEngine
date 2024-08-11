@@ -1,7 +1,7 @@
 #pragma once
 #include "CKirbyAbility.h"
 
-class CkirbyAbility_Sleep : public CKirbyAbility
+class CKirbyAbility_Sleep : public CKirbyAbility
 {
 private:
     CGameObject* m_SnotBubble;
@@ -38,7 +38,8 @@ public:
     virtual void ChangeAbilityExit();
 
 public:
-    CLONE(CkirbyAbility_Sleep)
-    CkirbyAbility_Sleep();
-    virtual ~CkirbyAbility_Sleep();
+    CLONE(CKirbyAbility_Sleep)
+    CKirbyAbility_Sleep();
+    CKirbyAbility_Sleep(const CKirbyAbility_Sleep& _Origin);
+    virtual ~CKirbyAbility_Sleep();
 };

@@ -5,6 +5,8 @@ CKirbyAbility::CKirbyAbility()
     : m_Charge1Time(0.f)
     , m_Charge2Time(0.f)
     , m_ComboSuccessTime(1.f)
+    , m_Hat(nullptr)
+    , m_Weapon(nullptr)
 {
 }
 
@@ -13,16 +15,10 @@ CKirbyAbility::CKirbyAbility(const CKirbyAbility& _Origin)
     , m_Charge2Time(_Origin.m_Charge1Time)
     , m_ComboSuccessTime(_Origin.m_ComboSuccessTime)
     , m_vecWaitingAnim(_Origin.m_vecWaitingAnim)
+    , m_Hat(nullptr)
+    , m_Weapon(nullptr)
 {
-    if (m_Hat.Get())
-    {
-        m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Hat->GetKey(), _Origin.m_Hat->GetRelativePath());
-    }
-    
-    if (m_Weapon.Get())
-    {
-        m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(_Origin.m_Weapon->GetKey(), _Origin.m_Weapon->GetRelativePath());
-    }
+
 }
 
 CKirbyAbility::~CKirbyAbility()

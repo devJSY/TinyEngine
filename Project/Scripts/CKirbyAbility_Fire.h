@@ -34,5 +34,6 @@ public:
 public:
     CLONE(CKirbyAbility_Fire)
     CKirbyAbility_Fire();
+    CKirbyAbility_Fire(const CKirbyAbility_Fire& _Origin);
     virtual ~CKirbyAbility_Fire();
 };

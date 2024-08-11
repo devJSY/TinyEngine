@@ -82,16 +82,6 @@ void CCameraController::SetSubTarget(wstring _TargetName)
 
 void CCameraController::begin()
 {
-    // Level Begin시 플레이어를 타겟으로 지정한다.
-    if (m_Target == nullptr)
-    {
-        CLevel* CurrentLevel = CLevelMgr::GetInst()->GetCurrentLevel();
-        m_Target = CurrentLevel->FindObjectByName(L"Main Player", LAYER_PLAYER);
-
-        // Player가 없는 경우 Assert
-        assert(m_Target);
-    }
-
     // FOV 설정
     if (nullptr != Camera())
     {
@@ -108,22 +98,6 @@ void CCameraController::begin()
 
     m_Setup = CameraSetup::NORMAL;
 
-    m_TargetPos = m_Target->Transform()->GetWorldPos();
-    m_LookAtPos = m_TargetPos + m_Offset;
-
-    m_PrevLookDir = m_LookDir;
-    m_CurLookDir = m_LookDir;
-    m_PrevLookAtPos = m_LookAtPos;
-    m_CurLookAtPos = m_LookAtPos;
-    m_PrevDistance = m_LookDist;
-    m_CurDistance = m_LookDist;
-
-    Vec3 InitPos = CalCamPos(m_LookAtPos, m_LookDir, m_LookDist);
-    
-    m_LookEyePos = InitPos;
-
-    Transform()->SetWorldPos(InitPos);
-    Transform()->SetDirection(m_LookDir);
 }
 
 void CCameraController::tick()
@@ -351,6 +325,28 @@ void CCameraController::UpdateLookDistance()
     {
         m_CurDistance = m_LookDist;
     }
+}
+
+void CCameraController::SetPlayer(CGameObject* _Kirby)
+{
+    m_Target = _Kirby;
+
+    m_TargetPos = m_Target->Transform()->GetWorldPos();
+    m_LookAtPos = m_TargetPos + m_Offset;
+
+    m_PrevLookDir = m_LookDir;
+    m_CurLookDir = m_LookDir;
+    m_PrevLookAtPos = m_LookAtPos;
+    m_CurLookAtPos = m_LookAtPos;
+    m_PrevDistance = m_LookDist;
+    m_CurDistance = m_LookDist;
+
+    Vec3 InitPos = CalCamPos(m_LookAtPos, m_LookDir, m_LookDist);
+
+    m_LookEyePos = InitPos;
+
+    Transform()->SetWorldPos(InitPos);
+    Transform()->SetDirection(m_LookDir);
 }
 
 void CCameraController::SaveSetting()

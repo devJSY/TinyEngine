@@ -12,6 +12,14 @@ CKirbyAbility_Normal::CKirbyAbility_Normal()
     m_Charge1Time = 2.f;
 }
 
+CKirbyAbility_Normal::CKirbyAbility_Normal(const CKirbyAbility_Normal& _Origin)
+    : CKirbyAbility(_Origin)
+    , m_bFrmEnter(true)
+    , m_SavedSpeed(0.f)
+{
+    m_Charge1Time = 2.f;
+}
+
 CKirbyAbility_Normal::~CKirbyAbility_Normal()
 {
 }

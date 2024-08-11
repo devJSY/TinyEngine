@@ -52,7 +52,7 @@ public:
     // void SavePlayerInfo();
 
 public:
-    void SetPlayer(CGameObject* _PlayerObj);
+    static void SetPlayer(CGameObject* _PlayerObj);
     static void SetPlayerMtrl(UINT _Idx, bool _On = true);
     static void SetPlayerFace(FaceType _Type);
     static void ClearBodyMtrl();
