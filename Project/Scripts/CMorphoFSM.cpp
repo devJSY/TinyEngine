@@ -67,7 +67,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORTCOMBO", new CMorphoMoveG_TeleportCombo);
-    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);  //@TODO check
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
     AddGroupPublicState(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT", new CMorphoMoveA_Teleport);
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
@@ -116,7 +116,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalFar);
     }
 
     // Emissive
@@ -147,19 +147,30 @@ void CMorphoFSM::Move()
     m_bAttackRepeat = false;
     m_ComboLevel = 0;
 
-    //@TODO 구현후 복구
-    ChangeStateGroup(MorphoStateGroup::Idle);
-    return;
-
-    float Rand = GetRandomfloat(1.f, 100.f);
-
-    if (Rand <= 70.f)
+    // case : In Air
+    if (m_CurStateGroup == MorphoStateGroup::AtkAir)
     {
         ChangeStateGroup(MorphoStateGroup::MoveToGround);
+
+        if (GetCurState()->GetName() == L"MOVEG_JUMP")
+        {
+            ChangeState(L"MOVEG_HOVERDASH");
+        }
     }
+
+    // case : On Ground
     else
     {
-        ChangeStateGroup(MorphoStateGroup::MoveToAir);
+        float Rand = GetRandomfloat(1.f, 100.f);
+
+        if (Rand <= 70.f)
+        {
+            ChangeStateGroup(MorphoStateGroup::MoveToGround);
+        }
+        else
+        {
+            ChangeStateGroup(MorphoStateGroup::MoveToAir);
+        }
     }
 }
 
@@ -168,11 +179,7 @@ void CMorphoFSM::Attack()
     m_bAttackRepeat = false;
     m_ComboLevel = 0;
 
-    //@TODO 구현후 복구
-    ChangeStateGroup(MorphoStateGroup::Idle);
-    return;
-
-    // Move (To Ground)
+    // case : On Ground
     if (m_CurStateGroup == MorphoStateGroup::MoveToGround)
     {
         float Rand = GetRandomfloat(1.f, 100.f);
@@ -180,7 +187,9 @@ void CMorphoFSM::Attack()
         // wait
         if (Rand <= 10.f)
         {
-            ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
+            //@TODO 체크후 복구
+            ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
+            //ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
         }
 
         // attack
@@ -207,7 +216,7 @@ void CMorphoFSM::Attack()
         }
     }
 
-    // Move (To Air)
+    // case : In Air
     else if (m_CurStateGroup == MorphoStateGroup::MoveToAir)
     {
         ChangeStateGroup(MorphoStateGroup::AtkAir);
