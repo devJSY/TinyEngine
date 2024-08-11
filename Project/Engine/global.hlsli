@@ -148,6 +148,8 @@ Texture2D g_StaticLightDepthMapTex1 : register(t24);
 Texture2D g_StaticLightDepthMapTex2 : register(t25);
 Texture2D g_StaticLightDepthMapTex3 : register(t26);
 
+Texture2D DepthOnlyTex : register(t28);
+Texture2D DepthMaskingTex : register(t29);
 Texture2D SSAOTex : register(t30);
 
 // Animator Bone Matrix Buffer

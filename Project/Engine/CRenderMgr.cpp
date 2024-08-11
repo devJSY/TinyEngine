@@ -151,6 +151,7 @@ void CRenderMgr::render()
         // Depth Only Pass
         m_mainCam->SortShadowMapObject();
         m_mainCam->render_DepthOnly(m_DepthOnlyTex);
+        m_DepthOnlyTex->UpdateData(28);
 
         // Depth Masking Pass
         if (m_bEnableDepthMasking)
@@ -160,6 +161,7 @@ void CRenderMgr::render()
 
             m_mainCam->SortShadowMapObject();
             m_mainCam->render_DepthOnly(m_DepthMaskingTex);
+            m_DepthMaskingTex->UpdateData(29);
             m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_mainCam->GetFar());
 
             m_mainCam->LayerMask(LasyerMask);
@@ -599,6 +601,10 @@ void CRenderMgr::Clear()
 
     // Light DepthMap Clear
     CTexture::Clear(23);
+    // Depth Only
+    CTexture::Clear(28);
+    // Depth Masking
+    CTexture::Clear(29);
 }
 
 void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
@@ -987,7 +993,6 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
         m_arrMRT[(UINT)MRT_TYPE::SSAO]->Create(arrRTTex, arrClearColor, 1, nullptr);
 
         Ptr<CMaterial> pSSAOMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"SSAOMtrl");
-        pSSAOMtrl->SetTexParam(TEX_PARAM::TEX_0, m_DepthOnlyTex);
         pSSAOMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"PositionTargetTex"));
         pSSAOMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"NormalTargetTex"));
     }
@@ -1094,9 +1099,6 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_ToneMappingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_PostProcessTex_HDRI);
 
     m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
-    m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
 
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
-    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
-    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_2, m_DepthMaskingTex);
 }

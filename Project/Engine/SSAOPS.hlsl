@@ -6,7 +6,6 @@
 // reference https://nellfamily.tistory.com/48
 // reference https://betterprogramming.pub/depth-only-ssao-for-forward-renderers-1a3dcfa1873a
 
-#define DepthOnlyTex g_tex_0
 #define PositionTex g_tex_1
 #define NormalTex g_tex_2
 

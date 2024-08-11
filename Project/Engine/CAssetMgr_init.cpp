@@ -1172,7 +1172,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->AddScalarParam(VEC4_0, "Fog Color");
 
         pShader->AddTexParam(TEX_0, "Render Texture");
-        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
 
         pShader->SetName(L"PostEffectShader");
         AddAsset(L"PostEffectShader", pShader);
@@ -1232,7 +1231,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->AddTexParam(TEX_0, "DepthOnly Texture");
         pShader->AddScalarParam(FLOAT_0, "Sample Radius", 1e-3f);
         pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
 
@@ -1253,8 +1251,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "Render Texture");
-        pShader->AddTexParam(TEX_1, "DepthOnly Texture");
-        pShader->AddTexParam(TEX_2, "DepthMasking Texture");
 
         pShader->AddScalarParam(FLOAT_1, "Pow Power", 1e-3f);
 

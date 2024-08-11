@@ -101,7 +101,6 @@ void CRenderMgr::init()
     m_PostEffectObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     m_PostEffectObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl"), 0);
     m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
-    m_PostEffectObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
 
     // DepthMasking
     m_DepthMaskingObj = new CGameObject;
@@ -110,7 +109,5 @@ void CRenderMgr::init()
     m_DepthMaskingObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     m_DepthMaskingObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DepthMaskingMtrl"), 0);
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
-    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, m_DepthOnlyTex);
-    m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_2, m_DepthMaskingTex);
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.25f);
 }

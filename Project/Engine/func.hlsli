@@ -46,6 +46,23 @@ float4 TexcoordToView(Texture2D tex, float2 texcoord)
     return posView;
 }
 
+float4 TexcoordToView(Texture2D tex, float2 texcoord, float lod)
+{
+    float4 posProj;
+
+    // [0, 1]x[0, 1] -> [-1, 1]x[-1, 1]
+    posProj.xy = texcoord * 2.0 - 1.0;
+    posProj.y *= -1; // 주의: y 방향을 뒤집어줘야 합니다.
+    posProj.z = tex.SampleLevel(g_LinearClampSampler, texcoord, lod).r;
+    posProj.w = 1.0;
+
+    // ProjectSpace -> ViewSpace
+    float4 posView = mul(posProj, g_matProjInv);
+    posView.xyz /= posView.w;
+    
+    return posView;
+}
+
 // Z축 회전을 적용하는 함수
 float2 RotateUV(float2 uv, float angle)
 {
