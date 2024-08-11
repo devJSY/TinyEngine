@@ -40,6 +40,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
 #include "CMorphoAtkG_Teleport_TrackingSoulCombo.h"
 #include "CMorphoAtkA_ShockWave.h"
+#include "CMorphoAtkA_ShockWaveCombo.h"
 #include "CMorphoAtkA_DoubleSword.h"
 #include "CMorphoAtkA_DoubleSwordDivision.h"
 #include "CMorphoAtkA_DoubleSwordAtkR.h"
@@ -65,6 +66,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport2, L"ATKG_TELEPORT_TRACKINGSOULCOMBO", new CMorphoAtkG_Teleport_TrackingSoulCombo);
     AddGroupPublicState(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
+    AddGroupPublicState(MorphoStateGroup::AtkAir2, L"ATKA_SHOCKWAVECOMBO", new CMorphoAtkA_ShockWaveCombo);
     AddGroupPublicState(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR", new CMorphoMoveG_TeleportNear);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR", new CMorphoMoveG_TeleportFar);
@@ -118,7 +120,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalFar);
+        ChangeStateGroup(MorphoStateGroup::AtkAir2, L"ATKA_SHOCKWAVECOMBO");
     }
 
     // Emissive
@@ -413,6 +415,55 @@ void CMorphoFSM::ProcPatternStep()
             bFinish = true;
         }
     }
+    break;
+    case MorphoPatternType::ShockWaveCombo: {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
+        }
+        else if (m_PatternStep == 1)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
+        }
+        else if (m_PatternStep == 2)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
+        }
+        else if (m_PatternStep == 3)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
+        }
+        else if (m_PatternStep == 4)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
+        }
+        else if (m_PatternStep == 5)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
+            float Rand = GetRandomfloat(1.f, 10.f);
+            bFinish = (Rand > 5.f) ? true : false;
+        }
+        else if (m_PatternStep == 6)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
+        }
+        else if (m_PatternStep == 7)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
+            float Rand = GetRandomfloat(1.f, 10.f);
+            bFinish = (Rand > 5.f) ? true : false;
+        }
+        else if (m_PatternStep == 8)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
+        }
+        else if (m_PatternStep == 9)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
+            bFinish = true;
+        }
+    }
+    break;
     }
 
     if (bFinish)

@@ -210,6 +210,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkR.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordDivision.h" />
     <ClInclude Include="CMorphoAtkA_ShockWave.h" />
+    <ClInclude Include="CMorphoAtkA_ShockWaveCombo.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk1.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h" />
     <ClInclude Include="CMorphoAtkG_NormalNear_AtkFlight.h">
@@ -487,6 +488,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkR.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordDivision.cpp" />
     <ClCompile Include="CMorphoAtkA_ShockWave.cpp" />
+    <ClCompile Include="CMorphoAtkA_ShockWaveCombo.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp" />
     <ClCompile Include="CMorphoAtkG_NormalNear_AtkFlight.cpp">

@@ -781,6 +781,7 @@
     <ClInclude Include="CMorphoMoveG_TeleportFar.h">
       <Filter>State\MorphoState\MoveGround\Teleport\Far</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkA_ShockWaveCombo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1572,6 +1573,7 @@
     <ClCompile Include="CMorphoMoveG_TeleportFar.cpp">
       <Filter>State\MorphoState\MoveGround\Teleport\Far</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoAtkA_ShockWaveCombo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2506,6 +2508,9 @@
     </Filter>
     <Filter Include="State\MorphoState\MoveGround\Teleport\Far">
       <UniqueIdentifier>{da499315-c00c-4849-b866-3e03bfbfbe55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\ShockWaveCombo">
+      <UniqueIdentifier>{954798d9-ab3d-493e-ae83-fde7a20ef38f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
