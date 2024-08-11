@@ -126,6 +126,6 @@ void CMorphoDemo_Appear::End()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
-        MRPFSM->Move();
+        MRPFSM->ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
     }
 }

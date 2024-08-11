@@ -43,6 +43,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkG_Teleport_Tornado.h"
 #include "CMorphoAtkG_Teleport_TrackingSoul.h"
 #include "CMorphoAtkG_Teleport_TrackingSoulCombo.h"
+#include "CMorphoAtkG_Wait_LeftSideMove.h"
 #include "CMorphoAtkA_ShockWave.h"
 #include "CMorphoAtkA_ShockWaveCombo.h"
 #include "CMorphoAtkA_DoubleSword.h"
@@ -69,6 +70,7 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TORNADO", new CMorphoAtkG_Teleport_Tornado);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TRACKINGSOUL", new CMorphoAtkG_Teleport_TrackingSoul);
     AddGroupPublicState(MorphoStateGroup::AtkGroundTeleport2, L"ATKG_TELEPORT_TRACKINGSOULCOMBO", new CMorphoAtkG_Teleport_TrackingSoulCombo);
+    AddGroupPublicState(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_LEFTSIDEMOVE", new CMorphoAtkG_Wait_LeftSideMove);
     AddGroupPublicState(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
     AddGroupPublicState(MorphoStateGroup::AtkAir2, L"ATKA_SHOCKWAVECOMBO", new CMorphoAtkA_ShockWaveCombo);
     AddGroupPublicState(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
@@ -127,7 +129,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_LEFTSIDEMOVE");
     }
 
     // Emissive
@@ -191,16 +193,14 @@ void CMorphoFSM::Attack()
     m_ComboLevel = 0;
 
     // case : On Ground
-    if (m_CurStateGroup == MorphoStateGroup::MoveToGround)
+    if (m_CurStateGroup == MorphoStateGroup::MoveToGround || m_CurStateGroup == MorphoStateGroup::AtkGroundWait)
     {
         float Rand = GetRandomfloat(1.f, 100.f);
 
         // wait
-        if (Rand <= 10.f)
+        if (Rand <= 10.f && m_CurStateGroup == MorphoStateGroup::MoveToGround)
         {
-            //@TODO 체크후 복구
-            ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
-            // ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
+             ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
         }
 
         // attack
@@ -385,6 +385,7 @@ void CMorphoFSM::ProcPatternStep()
             bFinish = true;
         }
     }
+    break;
     case MorphoPatternType::Demo_TeleportDoubleSword: {
         if (m_PatternStep == 0)
         {

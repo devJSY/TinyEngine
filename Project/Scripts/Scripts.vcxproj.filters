@@ -793,6 +793,9 @@
     <ClInclude Include="CMorphoDemo_Death.h">
       <Filter>State\MorphoState\Demo_Death</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Wait_LeftSideMove.h">
+      <Filter>State\MorphoState\AtkG Wait\LeftSideMove</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1595,6 +1598,9 @@
     </ClCompile>
     <ClCompile Include="CMorphoDemo_Death.cpp">
       <Filter>State\MorphoState\Demo_Death</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Wait_LeftSideMove.cpp">
+      <Filter>State\MorphoState\AtkG Wait\LeftSideMove</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2542,6 +2548,18 @@
     </Filter>
     <Filter Include="State\MorphoState\Demo_Death">
       <UniqueIdentifier>{0a65f40b-d023-4e06-9ee0-2000f8ae27a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait">
+      <UniqueIdentifier>{cff8c890-1b76-4a23-a39f-48f80a45d010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait\LeftSideMove">
+      <UniqueIdentifier>{d7bc8874-8ed4-40c6-b546-5f79f3162160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait\RightSideMove">
+      <UniqueIdentifier>{42cbd397-6ff2-44cf-9edc-a2c057584d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait\FrontMove">
+      <UniqueIdentifier>{bb6457e1-a68c-43f3-9104-fc732e83bf89}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
