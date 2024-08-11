@@ -9,12 +9,17 @@ CSirKibbleScript::CSirKibbleScript()
     : CMonsterUnitScript(SIRKIBBLESCRIPT)
     , m_eState(SirKibbleState::Idle)
     , m_pAttackPoint(nullptr)
+    , m_vOriginPos{}
     , m_vDamageDir{}
+    , m_vDestPos{}
     , m_bFlag(false)
     , m_bJump(false)
     , m_fAccTime(0.f)
+    , m_bPatrol(false)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "Destination");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bPatrol, "Patrol");
 }
 
 CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& Origin)
@@ -22,11 +27,16 @@ CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& Origin)
     , m_eState(SirKibbleState::Idle)
     , m_pAttackPoint(nullptr)
     , m_vDamageDir{}
+    , m_vOriginPos{}
+    , m_vDestPos{}
     , m_bFlag(false)
     , m_bJump(false)
     , m_fAccTime(0.f)
+    , m_bPatrol(false)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "Destination");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bPatrol, "Patrol");
 }
 
 CSirKibbleScript::~CSirKibbleScript()
@@ -45,12 +55,21 @@ void CSirKibbleScript::begin()
     }
 
     m_pAttackPoint->BoxCollider()->SetEnabled(false);
-    ChangeState(SirKibbleState::Idle);
+
+    if (m_bPatrol)
+    {
+        m_vOriginPos = Transform()->GetWorldPos();
+        ChangeState(SirKibbleState::Patrol);
+    }
+    else
+    {
+        ChangeState(SirKibbleState::Idle);
+    }
 }
 
 void CSirKibbleScript::tick()
 {
-    CUnitScript::tick();
+    CMonsterUnitScript::tick();
     CheckDamage();
     FSM();
 }
@@ -60,6 +79,11 @@ UINT CSirKibbleScript::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_bPatrol, sizeof(bool), 1, _File);
+    fwrite(&m_vDestPos, sizeof(Vec3), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
@@ -69,6 +93,11 @@ UINT CSirKibbleScript::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+    fread(&m_bPatrol, sizeof(bool), 1, _File);
+    fread(&m_vDestPos, sizeof(Vec3), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
@@ -112,6 +141,7 @@ void CSirKibbleScript::OnTriggerExit(CCollider* _OtherCollider)
 // 4. CheckDamage
 // 5. Projectile Attack
 // 6. ChangeState
+// 7. LinearMove
 
 void CSirKibbleScript::EnterState(SirKibbleState _state)
 {
@@ -119,6 +149,14 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     {
     case SirKibbleState::Idle: {
         Animator()->Play(ANIMPREFIX("Wait"));
+    }
+    break;
+    case SirKibbleState::Patrol: {
+        Animator()->Play(ANIMPREFIX("Walk"));
+    }
+    break;
+    case SirKibbleState::PatrolRotating: {
+        Animator()->Play(ANIMPREFIX("Walk"));
     }
     break;
     case SirKibbleState::Find: {
@@ -163,6 +201,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Damage: {
+        SetSparkle(true);
+
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
@@ -202,6 +242,15 @@ void CSirKibbleScript::FSM()
     {
     case SirKibbleState::Idle: {
         Idle();
+    }
+    break;
+        break;
+    case SirKibbleState::Patrol: {
+        Patrol();
+    }
+    break;
+    case SirKibbleState::PatrolRotating: {
+        PatrolRotating();
     }
     break;
         break;
@@ -352,22 +401,44 @@ void CSirKibbleScript::ChangeState(SirKibbleState _state)
     EnterState(m_eState);
 }
 
+void CSirKibbleScript::LinearMove()
+{
+    Vec3 vPos = Transform()->GetWorldPos();
+    Vec3 vUP = Transform()->GetWorldDir(DIR_TYPE::UP);
+
+    Vec3 vDir = m_vDestPos - vPos;
+    vDir.Normalize();
+    vDir.y = 0;
+    Transform()->SetDirection(vDir);
+
+    Rigidbody()->SetVelocity(Transform()->GetWorldDir(DIR_TYPE::FRONT) * GetCurInfo().Speed * DT);
+
+    if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    {
+        Vec3 vTemp = m_vDestPos;
+        m_vDestPos = m_vOriginPos;
+        m_vOriginPos = vTemp;
+        ChangeState(SirKibbleState::PatrolRotating);
+    }
+}
+
 ///////////////////////////// FIND FSM ///////////////////////////////////////
 // -> FSM STATES ->
 // 1. Idle
-// 2. Find
-// 3. AirCutterJumpStart
-// 4. AirCutterJump
-// 5. AirCutterThrow
-// 6. CutterThrowStart
-// 7. CutterThrowStartWait
-// 8. CutterThrow
-// 9. CutterCatch
-// 10. Damage
-// 11. Eaten
-// 12. Fall
-// 13. Land
-// 14. Death
+// 2. Patrol
+// 3. Find
+// 4. AirCutterJumpStart
+// 5. AirCutterJump
+// 6. AirCutterThrow
+// 7. CutterThrowStart
+// 8. CutterThrowStartWait
+// 9. CutterThrow
+// 10. CutterCatch
+// 11. Damage
+// 12. Eaten
+// 13. Fall
+// 14. Land
+// 15. Death
 
 #pragma region IDLE
 void CSirKibbleScript::Idle()
@@ -377,6 +448,35 @@ void CSirKibbleScript::Idle()
     if (nullptr != GetTarget() && PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP > 0.01f && m_fAccTime >= 2.f)
     {
         ChangeState(SirKibbleState::Find);
+    }
+}
+
+#pragma endregion
+
+#pragma region PATROL
+void CSirKibbleScript::Patrol()
+{
+    LinearMove();
+
+    if (nullptr != GetTarget())
+    {
+        ChangeState(SirKibbleState::Find);
+    }
+}
+#pragma endregion
+
+#pragma region PATROLROTATING
+void CSirKibbleScript::PatrolRotating()
+{
+    Vec3 ToTargetDir = m_vDestPos - Transform()->GetWorldPos();
+    ToTargetDir.y = 0.f; // YÃà °íÁ¤
+    ToTargetDir.Normalize();
+    Transform()->Slerp(ToTargetDir, DT * m_CurInfo.RotationSpeed);
+
+    float fRadian = Transform()->GetWorldDir(DIR_TYPE::FRONT).Dot(ToTargetDir);
+    if (fRadian >= cosf(0) - 0.01f)
+    {
+        ChangeState(SirKibbleState::Patrol);
     }
 }
 #pragma endregion
@@ -403,7 +503,10 @@ void CSirKibbleScript::Find()
 #pragma region FINDWAIT
 void CSirKibbleScript::FindWait()
 {
-    Animator()->IsFinish() ? ChangeState(SirKibbleState::Idle) : void();
+    if (Animator()->IsFinish())
+    {
+        m_bPatrol ? ChangeState(SirKibbleState::Patrol) : ChangeState(SirKibbleState::Idle);
+    }
 }
 #pragma endregion
 
@@ -483,7 +586,10 @@ void CSirKibbleScript::CutterThrow()
 #pragma region CUTTERCATCH
 void CSirKibbleScript::CutterCatch()
 {
-    Animator()->IsFinish() ? ChangeState(SirKibbleState::Idle) : void();
+    if (Animator()->IsFinish())
+    {
+        m_bPatrol ? ChangeState(SirKibbleState::Patrol) : ChangeState(SirKibbleState::Idle);
+    }
 }
 #pragma endregion
 

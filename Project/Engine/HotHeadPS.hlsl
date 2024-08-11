@@ -87,6 +87,7 @@ PS_OUT main(PS_IN input)
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
+    output.vEmissive = MtrlEmission;
     output.vMRA = float4(metallic, roughness, ao, 1.f);
    
     return output;

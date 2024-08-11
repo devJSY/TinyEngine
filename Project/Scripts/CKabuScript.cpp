@@ -62,7 +62,7 @@ void CKabuScript::begin()
 
 void CKabuScript::tick()
 {
-    CUnitScript::tick();
+    CMonsterUnitScript::tick();
 
     CheckDamage();
 
@@ -188,6 +188,8 @@ void CKabuScript::EnterState(KabuState _state)
     }
     break;
     case KabuState::Damage: {
+        SetSparkle(true);
+
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));

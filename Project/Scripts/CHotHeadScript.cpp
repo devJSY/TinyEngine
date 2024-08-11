@@ -63,7 +63,7 @@ void CHotHeadScript::begin()
 
 void CHotHeadScript::tick()
 {
-    CUnitScript::tick();
+    CMonsterUnitScript::tick();
 
     CheckDamage();
 
@@ -257,6 +257,8 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Damage: {
+        SetSparkle(true);
+
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));

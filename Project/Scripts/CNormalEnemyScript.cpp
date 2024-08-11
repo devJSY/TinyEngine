@@ -64,7 +64,7 @@ void CNormalEnemyScript::begin()
 
 void CNormalEnemyScript::tick()
 {
-    CUnitScript::tick();
+    CMonsterUnitScript::tick();
 
     CheckDamage();
 
@@ -201,6 +201,8 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Damage: {
+        SetSparkle(true);
+
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
@@ -306,6 +308,7 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Damage: {
+        m_fSpeed = m_fMaxSpeed;
         m_bFirst = false;
     }
     break;

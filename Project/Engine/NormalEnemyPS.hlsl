@@ -72,25 +72,6 @@ PS_OUT main(PS_IN input)
         output.vNormal.rgb = normalize(mul(normal, TBN));
     }
     
-    //if(g_btex_2)
-    //{
-    //    float4 packednormal = Albedo2Tex.Sample(g_LinearWrapSampler, input.vUV1);
-    //    float3 normal;
-    //    normal.xy = packednormal.wy * 2 - 1;
-    //    normal.z = sqrt(1 - normal.x * normal.x - normal.y * normal.y);
-    //    output.vNormal.rgb = normal;
-    //}
-    
-    //if (g_btex_2)
-    //{    
-    //    float3 N = output.vNormal.rgb;
-    //    float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-    //    float3 B = normalize(cross(N, T));
-      
-    //    float3x3 TBN = float3x3(T, B, N);
-    //    output.vNormal.rgb = normalize(mul(output.vNormal.rgb, TBN));
-    //}
-    
     output.vNormal.a = 1.f;
     
     float4 SkinMRA = g_btex_3 ? Albedo3Tex.Sample(g_LinearWrapSampler, input.vUV1) : (float4) 0.f;
@@ -102,11 +83,12 @@ PS_OUT main(PS_IN input)
     {
         ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
     }
-
+    
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
+    output.vEmissive = MtrlEmission;
     output.vMRA = float4(metallic, roughness, ao, 1.f);
    
     return output;

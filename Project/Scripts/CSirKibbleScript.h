@@ -3,6 +3,8 @@
 enum class SirKibbleState
 {
     Idle,
+    Patrol,
+    PatrolRotating,
     Find,
     FindWait,
     AirCutterJumpStart,
@@ -24,12 +26,15 @@ class CSirKibbleScript : public CMonsterUnitScript
 {
 private:
     CGameObject* m_pAttackPoint;
-    SirKibbleState m_eState;
     Vec3 m_vDamageDir;
+    Vec3 m_vOriginPos;
+    Vec3 m_vDestPos;
 
+    SirKibbleState m_eState;
     float m_fAccTime;
     bool m_bFlag;
     bool m_bJump;
+    bool m_bPatrol;
 
 public:
     virtual void begin() override;
@@ -39,6 +44,7 @@ private:
     void EnterState(SirKibbleState _state);
     void ChangeState(SirKibbleState _state);
     void ExitState(SirKibbleState _state);
+    void LinearMove();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
@@ -53,6 +59,8 @@ private:
     void CheckDamage();
 
     void Idle();
+    void Patrol();
+    void PatrolRotating();
     void FindWait();
     void Find();
     void AirCutterJumpStart();

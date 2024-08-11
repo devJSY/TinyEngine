@@ -56,7 +56,7 @@ void CTackleEnemyScript::begin()
 
 void CTackleEnemyScript::tick()
 {
-    CUnitScript::tick();
+    CMonsterUnitScript::tick();
 
     CheckDamage();
 
@@ -187,6 +187,8 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Damage: {
+        SetSparkle(true);
+
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
