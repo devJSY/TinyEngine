@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CMorphoUnit.h"
+#include "CBossMgr.h"
+#include "CMorphoFSM.h"
 
 CMorphoUnit::CMorphoUnit()
     : CUnitScript(MORPHOUNIT)
@@ -17,6 +19,17 @@ CMorphoUnit::CMorphoUnit()
 
 CMorphoUnit::~CMorphoUnit()
 {
+}
+
+void CMorphoUnit::tick()
+{
+    if (MRPFSM->GetPhase() == 1)
+    {
+        if (m_CurInfo.HP <= m_InitInfo.HP * 0.5f)
+        {
+            MRPFSM->SetPhase(2);
+        }
+    }
 }
 
 UINT CMorphoUnit::SaveToLevelFile(FILE* _File)

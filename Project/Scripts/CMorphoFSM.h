@@ -13,8 +13,10 @@ enum class MorphoStateGroup
     AtkGroundWait,
     AtkGroundNormalNear,
     AtkGroundNormalFar,
-    AtkGroundTeleport,
-    AtkAir,
+    AtkGroundTeleport1,
+    AtkGroundTeleport2,
+    AtkAir1,
+    AtkAir2,
 
     END,
 };
@@ -73,6 +75,7 @@ private:
 
 public:
     void SetPattern(MorphoPatternType _Pattern);
+    void SetPhase(UINT _Phase) { m_Phase = _Phase; }
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
     void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
