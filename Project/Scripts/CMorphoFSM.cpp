@@ -94,7 +94,7 @@ void CMorphoFSM::begin()
     {
         m_listBodyMtrl.push_back(MeshRender()->GetMaterial(i));
     }
-    
+
     if (m_WeaponL)
     {
         for (int i = 0; i < (int)m_WeaponL->MeshRender()->GetMtrlCount(); ++i)
@@ -191,29 +191,26 @@ void CMorphoFSM::Attack()
         {
             //@TODO 체크후 복구
             ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
-            //ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
+            // ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
         }
 
         // attack
         else
         {
-            // attack normal
-            if (Rand <= 55.f)
+            if (IsNearPlayer())
             {
-                if (IsNearPlayer())
-                {
-                    ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
-                }
-                else
+                ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear);
+            }
+            else
+            {
+                if (Rand <= 55.f)
                 {
                     ChangeStateGroup(MorphoStateGroup::AtkGroundNormalFar);
                 }
-            }
-
-            // attack teleport
-            else
-            {
-                ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport);
+                else
+                {
+                    ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport);
+                }
             }
         }
     }
@@ -318,8 +315,7 @@ void CMorphoFSM::ProcPatternStep()
 
     switch (m_Pattern)
     {
-    case MorphoPatternType::DoubleSword:
-    {
+    case MorphoPatternType::DoubleSword: {
         if (m_PatternStep == 0)
         {
             ChangeStateGroup_Set(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT");
@@ -330,7 +326,7 @@ void CMorphoFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 2) // 외부호출
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
         }
         else if (m_PatternStep == 3)
         {
@@ -338,7 +334,7 @@ void CMorphoFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 4) // 외부호출
         {
-            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
         }
         else if (m_PatternStep == 5)
         {
@@ -354,9 +350,8 @@ void CMorphoFSM::ProcPatternStep()
             bFinish = true;
         }
     }
-        break;
-    case MorphoPatternType::TeleportCombo :
-    {
+    break;
+    case MorphoPatternType::TeleportCombo: {
         if (m_PatternStep == 0)
         {
             ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
