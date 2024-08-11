@@ -1455,5 +1455,8 @@
     <FxCompile Include="LensFlarePS.hlsl">
       <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
     </FxCompile>
+    <FxCompile Include="DepthofFieldPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -3,8 +3,6 @@
 #include "func.hlsli"
 
 #define RenderTex g_tex_0
-#define DepthOnlyTex g_tex_1
-#define DepthMaskingTex g_tex_2
 
 #define FarZ g_float_0
 #define PowPower g_float_1
@@ -12,7 +10,7 @@
 float4 main(PS_IN input) : SV_TARGET
 {
     float3 color = g_btex_0 ? RenderTex.Sample(g_LinearClampSampler, input.vUV0).rgb : (float3) 0.f;
-    float DepthMaskingViewZ = g_btex_2 ? TexcoordToView(DepthMaskingTex, input.vUV0).z : 0.f;
+    float DepthMaskingViewZ = TexcoordToView(DepthMaskingTex, input.vUV0).z;
     DepthMaskingViewZ /= FarZ;
     
     float bias = 0.1f;
@@ -23,7 +21,7 @@ float4 main(PS_IN input) : SV_TARGET
         return float4(color, 1.f);
     }
     
-    float DepthOnlyViewZ = g_btex_1 ? TexcoordToView(DepthOnlyTex, input.vUV0).z : 0.f;
+    float DepthOnlyViewZ = TexcoordToView(DepthOnlyTex, input.vUV0).z;
     DepthOnlyViewZ /= FarZ;
     
     // 가려지지 않은 부분은 원본 색상으로 렌더링
