@@ -26,7 +26,7 @@ void CMorphoAtkG_Wait_RightSideMove::tick()
     }
 
     // change state
-    if (m_AccTime > 1.3f)
+    if (m_AccTime > 1.5f)
     {
         MRPFSM->Attack();
     }
