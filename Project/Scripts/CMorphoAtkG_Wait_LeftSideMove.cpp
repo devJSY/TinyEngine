@@ -28,7 +28,16 @@ void CMorphoAtkG_Wait_LeftSideMove::tick()
     // change state
     if (m_AccTime > 1.5f)
     {
-        MRPFSM->Attack();
+        float Rand = GetRandomfloat(1.f, 10.f);
+
+        if (Rand <= 5.f)
+        {
+            MRPFSM->Attack();
+        }
+        else
+        {
+            MRPFSM->Move();
+        }
     }
 }
 
