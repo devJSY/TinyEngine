@@ -772,7 +772,12 @@
     <ClInclude Include="CMorphoAtkA_DoubleSword.h">
       <Filter>State\MorphoState\AtkA\DoubleSword</Filter>
     </ClInclude>
-    <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoulCombo.h" />
+    <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoulCombo.h">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoulCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_JumpFall.h">
+      <Filter>State\MorphoState\MoveGround\JumpFall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1555,7 +1560,12 @@
     <ClCompile Include="CMorphoAtkA_DoubleSword.cpp">
       <Filter>State\MorphoState\AtkA\DoubleSword</Filter>
     </ClCompile>
-    <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoulCombo.cpp" />
+    <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoulCombo.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoulCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_JumpFall.cpp">
+      <Filter>State\MorphoState\MoveGround\JumpFall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

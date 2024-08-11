@@ -50,6 +50,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoMoveG_TeleportCombo.h"
 #include "CMorphoMoveG_Jump.h"
 #include "CMorphoMoveG_HoverDash.h"
+#include "CMorphoMoveG_JumpFall.h"
 #include "CMorphoMoveA_Teleport.h"
 void CMorphoFSM::begin()
 {
@@ -76,6 +77,7 @@ void CMorphoFSM::begin()
     AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKL", new CMorphoAtkA_DoubleSwordAtkL);
     AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKLR", new CMorphoAtkA_DoubleSwordAtkLR);
     AddGroupPrivateState(MorphoStateGroup::MoveToGround, L"MOVEG_HOVERDASH", new CMorphoMoveG_HoverDash);
+    AddGroupPrivateState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMPFALL", new CMorphoMoveG_JumpFall);
 
     ChangeStateGroup(MorphoStateGroup::Idle);
 
@@ -114,7 +116,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport, L"ATKG_TELEPORT_TRACKINGSOULCOMBO");
+        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE");
     }
 
     // Emissive
