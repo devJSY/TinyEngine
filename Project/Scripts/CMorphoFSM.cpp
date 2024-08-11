@@ -46,6 +46,7 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoAtkA_DoubleSwordAtkLR.h"
 
 #include "CMorphoMoveG_Teleport.h"
+#include "CMorphoMoveG_TeleportCombo.h"
 #include "CMorphoMoveG_Jump.h"
 #include "CMorphoMoveG_HoverDash.h"
 #include "CMorphoMoveA_Teleport.h"
@@ -62,8 +63,8 @@ void CMorphoFSM::begin()
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_SHOCKWAVE", new CMorphoAtkA_ShockWave);
     AddGroupPublicState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD", new CMorphoAtkA_DoubleSword);
     AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT", new CMorphoMoveG_Teleport);
-    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);
-    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_HOVERDASH", new CMorphoMoveG_HoverDash);
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORTCOMBO", new CMorphoMoveG_TeleportCombo);
+    AddGroupPublicState(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP", new CMorphoMoveG_Jump);  //@TODO check
     AddGroupPublicState(MorphoStateGroup::MoveToAir, L"MOVEA_TELEPORT", new CMorphoMoveA_Teleport);
 
     AddGroupPrivateState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK2", new CMorphoAtkG_NormalNear_Atk2);
@@ -72,6 +73,7 @@ void CMorphoFSM::begin()
     AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKR", new CMorphoAtkA_DoubleSwordAtkR);
     AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKL", new CMorphoAtkA_DoubleSwordAtkL);
     AddGroupPrivateState(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD_ATKLR", new CMorphoAtkA_DoubleSwordAtkLR);
+    AddGroupPrivateState(MorphoStateGroup::MoveToGround, L"MOVEG_HOVERDASH", new CMorphoMoveG_HoverDash);
 
     ChangeStateGroup(MorphoStateGroup::Idle);
 
@@ -110,7 +112,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkAir, L"ATKA_DOUBLESWORD");
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORTCOMBO");
     }
 
     // Emissive
@@ -338,6 +340,24 @@ void CMorphoFSM::ProcPatternStep()
         }
     }
         break;
+    case MorphoPatternType::TeleportCombo :
+    {
+        if (m_PatternStep == 0)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        }
+        else if (m_PatternStep == 1)
+        {
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+        }
+        else if (m_PatternStep == 2)
+        {
+            //@CAMERA
+            ChangeStateGroup_Set(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT");
+            bFinish = true;
+        }
+    }
+    break;
     }
 
     if (bFinish)

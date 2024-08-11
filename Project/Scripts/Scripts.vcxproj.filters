@@ -767,6 +767,7 @@
       <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
     </ClInclude>
     <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
+    <ClInclude Include="CMorphoMoveG_TeleportCombo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1544,6 +1545,7 @@
       <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
     </ClCompile>
     <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
+    <ClCompile Include="CMorphoMoveG_TeleportCombo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -2466,6 +2468,9 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\ChangeAlpha2">
       <UniqueIdentifier>{56ce7cc3-a157-4199-82db-2e555903c3f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\TeleportCombo">
+      <UniqueIdentifier>{a74d43f7-3ea5-4560-b1af-fe178405585c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
