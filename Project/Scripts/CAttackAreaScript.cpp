@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CAttackAreaScript.h"
 
+#include "CPlayerMgr.h"
+
 #include "CUnitScript.h"
 
 CAttackAreaScript::CAttackAreaScript()
@@ -42,9 +44,9 @@ void CAttackAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (nullptr == pObj)
         return;
 
-    UnitHit hitInfo = {};
-    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo)
-                                                                               : void();
+    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), 6.f, 0.f, 0.f};
+    L"Main Player" == pObj->GetName() ? pObj->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CAttackAreaScript::OnTriggerExit(CCollider* _OtherCollider)

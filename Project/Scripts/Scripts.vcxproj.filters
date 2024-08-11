@@ -718,6 +718,12 @@
     <ClInclude Include="CLensFlareScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CPhantaScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpookStepScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1445,6 +1451,12 @@
     </ClCompile>
     <ClCompile Include="CLensFlareScript.cpp">
       <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhantaScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpookStepScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2273,7 +2285,7 @@
     <Filter Include="Scripts\Character\Monster\MonsterScript\SpookStep">
       <UniqueIdentifier>{4d83eee2-89f5-4f00-bfae-93eab82499e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Monster\MonsterScript\Phanto">
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Phanta">
       <UniqueIdentifier>{3b041919-a9b4-4d0b-8723-3d8f0595ad5a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

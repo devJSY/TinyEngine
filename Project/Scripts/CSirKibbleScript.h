@@ -1,6 +1,6 @@
 #pragma once
 #include "CMonsterUnitScript.h"
-enum class SIRKIBBLE_STATE
+enum class SirKibbleState
 {
     Idle,
     Find,
@@ -24,7 +24,7 @@ class CSirKibbleScript : public CMonsterUnitScript
 {
 private:
     CGameObject* m_pAttackPoint;
-    SIRKIBBLE_STATE m_eState;
+    SirKibbleState m_eState;
     Vec3 m_vDamageDir;
 
     float m_fAccTime;
@@ -36,9 +36,9 @@ public:
     virtual void tick() override;
 
 private:
-    void EnterState(SIRKIBBLE_STATE _state);
-    void ChangeState(SIRKIBBLE_STATE _state);
-    void ExitState(SIRKIBBLE_STATE _state);
+    void EnterState(SirKibbleState _state);
+    void ChangeState(SirKibbleState _state);
+    void ExitState(SirKibbleState _state);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
@@ -49,7 +49,11 @@ private:
     void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
+    void FSM();
+    void CheckDamage();
+
     void Idle();
+    void FindWait();
     void Find();
     void AirCutterJumpStart();
     void AirCutterJump();
@@ -65,12 +69,12 @@ private:
     void Death();
 
 private:
-    void ProjectileAttack();
+    void ProjectileAttack(bool _bFlag);
 
 public:
     CLONE(CSirKibbleScript)
     CSirKibbleScript();
-    CSirKibbleScript(const CSirKibbleScript& _Origin);
+    CSirKibbleScript(const CSirKibbleScript& Origin);
     virtual ~CSirKibbleScript();
 
     friend class CCutterProjectileScript;

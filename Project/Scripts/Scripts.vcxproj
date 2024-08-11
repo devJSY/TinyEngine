@@ -210,6 +210,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CPhantaScript.h" />
     <ClInclude Include="CPushOutColliderScript.h" />
     <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
@@ -333,6 +334,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSolarChargeScript.h" />
     <ClInclude Include="CSolarOnceScript.h" />
+    <ClInclude Include="CSpookStepScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CSurpriseBoardAttackScript.h" />
@@ -463,6 +465,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CPhantaScript.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
@@ -586,6 +589,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSolarChargeScript.cpp" />
     <ClCompile Include="CSolarOnceScript.cpp" />
+    <ClCompile Include="CSpookStepScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CSurpriseBoardAttackScript.cpp" />

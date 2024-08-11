@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CFireProjectileScript.h"
 
+#include "CPlayerMgr.h"
+
 #include "CUnitScript.h"
 
 CFireProjectileScript::CFireProjectileScript()
@@ -92,7 +94,7 @@ void CFireProjectileScript::Attack()
 {
     m_fAccRadian += DT * m_fFallSpeed;
     Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    vDir.y = -3.f * cosf(m_fAccRadian) * DT;
+    vDir.y = -2.f * cosf(m_fAccRadian) * DT;
     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 }
 
@@ -110,9 +112,8 @@ void CFireProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (nullptr == pObj)
         return;
 
-    UnitHit hitInfo = {};
-    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo)
-                                                                               : void();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), 6.f, 0.f, 0.f};
+    LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName() ? pObj->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 
     // 2. Static Object Hit
     LAYER_STATIC == pObj->GetLayerIdx() ? ChangeState(FIREPROJECTILE_STATE::Destroy) : void();

@@ -7,6 +7,12 @@ CGordoLongScript::CGordoLongScript()
     SetEatable(false);
 }
 
+CGordoLongScript::CGordoLongScript(const CGordoLongScript& Origin)
+    : CMonsterUnitScript(Origin)
+{
+    SetEatable(false);
+}
+
 CGordoLongScript::~CGordoLongScript()
 {
     SetEatable(false);
@@ -14,6 +20,7 @@ CGordoLongScript::~CGordoLongScript()
 
 void CGordoLongScript::begin()
 {
+    CUnitScript::begin();
     Animator()->Play(ANIMPREFIX("Wait"));
 }
 
@@ -46,8 +53,4 @@ void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), m_CurInfo.ATK, 0.f, 0.f};
     (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName()) ? pObj->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
-}
-
-void CGordoLongScript::OnTriggerExit(CCollider* _OtherCollider)
-{
 }

@@ -3,7 +3,7 @@
 
 #include "CMonsterUnitScript.h"
 
-enum class NORMALENEMY_STATE
+enum class NormalEnemyState
 {
     Idle,
     Grooming,
@@ -18,19 +18,18 @@ enum class NORMALENEMY_STATE
     Fall,
     Land,
     Eaten,
-    Dead,
+    Death,
     End,
 };
 
 class CNormalEnemyScript : public CMonsterUnitScript
 {
 private:
-
     Vec3 m_vPatrolDir;
     Vec3 m_vDamageDir;
     Vec3 m_vCenterPoint;
-    
-    NORMALENEMY_STATE m_eState;
+
+    NormalEnemyState m_eState;
 
     float m_fMaxSpeed;
     float m_fSpeed;
@@ -51,9 +50,15 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    void ChangeState(NORMALENEMY_STATE _state);
-    void EnterState(NORMALENEMY_STATE _state);
-    void ExitState(NORMALENEMY_STATE _state);
+    void EnterState(NormalEnemyState _state);
+    void FSM();
+    void ExitState(NormalEnemyState _state);
+    void ChangeState(NormalEnemyState _state);
+    void CheckDamage();
+    NormalEnemyState RandomIdleState();
+    Vec3 TrackDir(Vec3 _vPos);
+    void ApplyDir(Vec3 _vFront, bool _flag);
+    void PatrolMove();
 
 private:
     void Idle();
@@ -61,19 +66,12 @@ private:
     void Find();
     void Attack();
     void Grooming();
-    void SuccessedAttack();
     void FailedAttack();
     void Fall();
     void Land();
     void AfterAttack();
     void Damage();
-    void Dead();
-
-private:
-    NORMALENEMY_STATE RandomIdleState();
-    Vec3 TrackDir(Vec3 _vPos);
-    void ApplyDir(Vec3 _vFront, bool _flag);
-    void PatrolMove();
+    void Death();
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);

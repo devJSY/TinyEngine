@@ -5,7 +5,7 @@
 
 CNormalEnemyScript::CNormalEnemyScript()
     : CMonsterUnitScript(NORMALENEMYSCRIPT)
-    , m_eState(NORMALENEMY_STATE::Idle)
+    , m_eState(NormalEnemyState::Idle)
     , m_vPatrolDir{}
     , m_vDamageDir{}
     , m_vCenterPoint{}
@@ -29,7 +29,7 @@ CNormalEnemyScript::CNormalEnemyScript()
 
 CNormalEnemyScript::CNormalEnemyScript(const CNormalEnemyScript& Origin)
     : CMonsterUnitScript(Origin)
-    , m_eState(NORMALENEMY_STATE::Idle)
+    , m_eState(NormalEnemyState::Idle)
     , m_vPatrolDir{}
     , m_vDamageDir{}
     , m_vCenterPoint{}
@@ -57,132 +57,171 @@ CNormalEnemyScript::~CNormalEnemyScript()
 
 void CNormalEnemyScript::begin()
 {
-    m_bCirclePatrol == true ? ChangeState(NORMALENEMY_STATE::Patrol) : ChangeState(NORMALENEMY_STATE::Idle);
+    CUnitScript::begin();
+
+    m_bCirclePatrol == true ? ChangeState(NormalEnemyState::Patrol) : ChangeState(NormalEnemyState::Idle);
 }
 
 void CNormalEnemyScript::tick()
 {
     CUnitScript::tick();
-    switch (m_eState)
-    {
-    case NORMALENEMY_STATE::Idle: {
-        Idle();
-    }
-    break;
-    case NORMALENEMY_STATE::Grooming: {
-        Grooming();
-    }
-    break;
-    case NORMALENEMY_STATE::Patrol: {
-        Patrol();
-    }
-    break;
-    case NORMALENEMY_STATE::Find: {
-        Find();
-    }
-    break;
-    case NORMALENEMY_STATE::Attack: {
-        Attack();
-    }
-    break;
-    case NORMALENEMY_STATE::AttackSuccessed: {
-        SuccessedAttack();
-    }
-    break;
-    case NORMALENEMY_STATE::AttackFailed: {
-        FailedAttack();
-    }
-    break;
-    case NORMALENEMY_STATE::Damage: {
-        Damage();
-    }
-    break;
-    case NORMALENEMY_STATE::AfterAttack: {
-        AfterAttack();
-    }
-    break;
-    case NORMALENEMY_STATE::Dead: {
-        Dead();
-    }
-    break;
-    case NORMALENEMY_STATE::Land: {
-        Land();
-    }
-    break;
-    case NORMALENEMY_STATE::Fall: {
-        Fall();
-    }
-    break;
-    case NORMALENEMY_STATE::End:
-        break;
-    default:
-        break;
-    }
+
+    CheckDamage();
+
+    FSM();
 }
 
-void CNormalEnemyScript::ChangeState(NORMALENEMY_STATE _state)
+void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    ExitState(m_eState);
-    m_eState = _state;
-    EnterState(m_eState);
+    if (NormalEnemyState::Eaten == m_eState)
+        return;
 
-    string tmp = string("[State Change] : ") + to_string((int)_state);
-    LOG(LOG_LEVEL::Log, tmp.c_str());
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    bool flag = false;
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
+        if (L"Vacuum Collider" == pObj->GetName())
+        {
+            ChangeState(NormalEnemyState::Eaten);
+            m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+            return;
+        }
+    }
 }
 
-void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
+void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
+{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    {
+        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이는게 끝난 상태
+        if (L"Vacuum Collider" == pObj->GetName())
+        {
+            ChangeState(NormalEnemyState::Idle);
+        }
+    }
+}
+
+UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
+
+    fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fRushLerp, sizeof(float), 1, _File);
+    fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+    fwrite(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1, _File);
+    fwrite(&m_bCirclePatrol, sizeof(bool), 1, _File);
+    fwrite(&m_vCenterPoint, sizeof(Vec3), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+
+    return MemoryByte;
+}
+
+UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+
+    fread(&m_fMaxSpeed, sizeof(float), 1, _File);
+    fread(&m_fSpeed, sizeof(float), 1, _File);
+    fread(&m_fRushLerp, sizeof(float), 1, _File);
+    fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
+    fread(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1, _File);
+    fread(&m_bCirclePatrol, sizeof(bool), 1, _File);
+    fread(&m_vCenterPoint, sizeof(Vec3), 1, _File);
+
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+
+    return MemoryByte;
+}
+
+/////////////////////////// FUNC //////////////////////////////////
+// 1. EnterState
+// 2. FSM
+// 3. ExitState
+// 4. ChangeState
+// 5. CheckDamage
+// 6. RandomIdleState
+// 7. TrackDir
+// 8. ApplyDir
+// 9. PatrolMove
+
+void CNormalEnemyScript::EnterState(NormalEnemyState _state)
 {
     switch (_state)
     {
-    case NORMALENEMY_STATE::Idle: {
+    case NormalEnemyState::Idle: {
         Animator()->Play(ANIMPREFIX("Wait"), false);
     }
     break;
-    case NORMALENEMY_STATE::Grooming: {
+    case NormalEnemyState::Grooming: {
         Animator()->Play(ANIMPREFIX("Grooming"));
     }
     break;
-    case NORMALENEMY_STATE::Patrol: {
+    case NormalEnemyState::Patrol: {
         Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
-    case NORMALENEMY_STATE::Sleep: {
+    case NormalEnemyState::Sleep: {
         Animator()->Play(ANIMPREFIX("Sleep"));
     }
     break;
-    case NORMALENEMY_STATE::Find: {
+    case NormalEnemyState::Find: {
         Animator()->Play(ANIMPREFIX("Find"), false);
     }
     break;
-    case NORMALENEMY_STATE::Attack: {
+    case NormalEnemyState::Attack: {
         Animator()->Play(ANIMPREFIX("Run"), true, false, 1.5f);
     }
     break;
-    case NORMALENEMY_STATE::AttackSuccessed: {
-        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
-    }
-    break;
-    case NORMALENEMY_STATE::AttackFailed: {
+    case NormalEnemyState::AttackFailed: {
         Animator()->Play(ANIMPREFIX("Brake"), false, false, 1.5f);
     }
     break;
-    case NORMALENEMY_STATE::AfterAttack: {
+    case NormalEnemyState::AfterAttack: {
         Animator()->Play(ANIMPREFIX("LookAround"), false);
     }
     break;
-    case NORMALENEMY_STATE::Damage: {
+    case NormalEnemyState::Damage: {
+        Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
+
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+
+        Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
+        vHitDir.y = 1.5f;
+
+        Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
+
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
     break;
-    case NORMALENEMY_STATE::Fall: {
+    case NormalEnemyState::Fall: {
         Animator()->Play(ANIMPREFIX("Fall"));
     }
     break;
-    case NORMALENEMY_STATE::Land: {
+    case NormalEnemyState::Land: {
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
-    case NORMALENEMY_STATE::Eaten: {
+    case NormalEnemyState::Eaten: {
         m_vDamageDir.Normalize();
         Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
         Quat vQuat = Quat::LookRotation(m_vDamageDir, vUp);
@@ -190,219 +229,112 @@ void CNormalEnemyScript::EnterState(NORMALENEMY_STATE _state)
         Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
-    case NORMALENEMY_STATE::End:
+    case NormalEnemyState::End:
         break;
     default:
         break;
     }
 }
 
-void CNormalEnemyScript::ExitState(NORMALENEMY_STATE _state)
+void CNormalEnemyScript::FSM()
+{
+    switch (m_eState)
+    {
+    case NormalEnemyState::Idle: {
+        Idle();
+    }
+    break;
+    case NormalEnemyState::Grooming: {
+        Grooming();
+    }
+    break;
+    case NormalEnemyState::Patrol: {
+        Patrol();
+    }
+    break;
+    case NormalEnemyState::Find: {
+        Find();
+    }
+    break;
+    case NormalEnemyState::Attack: {
+        Attack();
+    }
+    break;
+    case NormalEnemyState::AttackFailed: {
+        FailedAttack();
+    }
+    break;
+    case NormalEnemyState::Damage: {
+        Damage();
+    }
+    break;
+    case NormalEnemyState::AfterAttack: {
+        AfterAttack();
+    }
+    break;
+    case NormalEnemyState::Death: {
+        Death();
+    }
+    break;
+    case NormalEnemyState::Land: {
+        Land();
+    }
+    break;
+    case NormalEnemyState::Fall: {
+        Fall();
+    }
+    break;
+    case NormalEnemyState::End:
+        break;
+    default:
+        break;
+    }
+}
+
+void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 {
     switch (_state)
     {
-    case NORMALENEMY_STATE::AttackSuccessed: {
+    case NormalEnemyState::AttackSuccessed: {
         m_fSpeed = m_fMaxSpeed;
         m_bFirst = false;
     }
     break;
-    case NORMALENEMY_STATE::AttackFailed: {
+    case NormalEnemyState::AttackFailed: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         m_fSpeed = m_fMaxSpeed;
     }
     break;
-    case NORMALENEMY_STATE::Damage: {
+    case NormalEnemyState::Damage: {
         m_bFirst = false;
     }
     break;
     }
 }
 
-void CNormalEnemyScript::Idle()
+void CNormalEnemyScript::ChangeState(NormalEnemyState _state)
 {
-    if (IsGround())
+    ExitState(m_eState);
+    m_eState = _state;
+    EnterState(m_eState);
+}
+
+void CNormalEnemyScript::CheckDamage()
+{
+    if (IsGetDamage())
     {
-        if (nullptr != GetTarget())
-        {
-            ChangeState(NORMALENEMY_STATE::Find);
-        }
-        else
-        {
-            if (Animator()->IsFinish())
-            {
-                ChangeState(RandomIdleState());
-            }
-        }
-    }
-    else
-    {
-        ChangeState(NORMALENEMY_STATE::Fall);
+        ChangeState(NormalEnemyState::Damage);
     }
 }
 
-void CNormalEnemyScript::Grooming()
+NormalEnemyState CNormalEnemyScript::RandomIdleState()
 {
-    if (nullptr != GetTarget())
-    {
-        ChangeState(NORMALENEMY_STATE::Find);
-    }
-    else
-    {
-        if (Animator()->IsFinish())
-        {
-            ChangeState(RandomIdleState());
-        }
-    }
+    return NormalEnemyState(GetRandomInt(0, 1));
 }
 
-void CNormalEnemyScript::Patrol()
+Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
 {
-    if (IsGround())
-    {
-        PatrolMove();
-
-        if (nullptr != GetTarget())
-        {
-            ChangeState(NORMALENEMY_STATE::Find);
-        }
-    }
-    else
-    {
-        ChangeState(NORMALENEMY_STATE::Fall);
-    }
-}
-
-void CNormalEnemyScript::Find()
-{
-    RotatingToTarget();
-
-    if (Animator()->IsFinish())
-    {
-        ChangeState(NORMALENEMY_STATE::Attack);
-    }
-}
-
-void CNormalEnemyScript::Attack()
-{
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    vDir.y = 0.f;
-
-    ApplyDir(vDir, true);
-
-    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
-
-    if (m_fSpeed <= 3.f)
-    {
-        ChangeState(NORMALENEMY_STATE::AttackFailed);
-    }
-}
-
-void CNormalEnemyScript::SuccessedAttack()
-{
-    if (Animator()->IsFinish())
-    {
-        m_bFirst = false;
-        ChangeState(NORMALENEMY_STATE::Land);
-    }
-}
-
-void CNormalEnemyScript::Fall()
-{
-    if (IsGround())
-    {
-        ChangeState(NORMALENEMY_STATE::Land);
-    }
-}
-
-void CNormalEnemyScript::Land()
-{
-    if (Animator()->IsFinish() && Rigidbody()->GetVelocity().y >= -0.01f)
-    {
-        ChangeState(NORMALENEMY_STATE::AfterAttack);
-    }
-}
-
-void CNormalEnemyScript::FailedAttack()
-{
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    vDir.y = 0.f;
-
-    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
-
-    Animator()->GetCurFrameIdx();
-
-    if (m_fSpeed <= 2.2f)
-    {
-        ChangeState(NORMALENEMY_STATE::AfterAttack);
-    }
-}
-
-void CNormalEnemyScript::AfterAttack()
-{
-    if (Animator()->IsFinish())
-    {
-        if (nullptr != GetTarget())
-        {
-            ChangeState(NORMALENEMY_STATE::Find);
-        }
-        else
-        {
-            if (Animator()->IsFinish())
-            {
-                if (m_bEnter && m_bCirclePatrol)
-                {
-                    ChangeState(NORMALENEMY_STATE::Patrol);
-                    m_bEnter = false;
-                }
-                else
-                {
-                    ChangeState(RandomIdleState());
-                }
-            }
-        }
-    }
-}
-
-void CNormalEnemyScript::Damage()
-{
-    if (!m_bFirst)
-    {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-
-        m_vDamageDir.Normalize();
-        m_vDamageDir.y = 1.5f;
-        Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
-        m_bFirst = true;
-    }
-
-    if (Animator()->IsFinish())
-    {
-        if (nullptr != GetTarget())
-        {
-            ChangeState(NORMALENEMY_STATE::Find);
-        }
-        else
-        {
-            if (Animator()->IsFinish())
-            {
-                ChangeState(RandomIdleState());
-            }
-        }
-        m_bFirst = false;
-    }
-}
-
-void CNormalEnemyScript::Dead()
-{
-    if (Animator()->IsFinish())
-        GamePlayStatic::DestroyGameObject(GetOwner());
-}
-
-NORMALENEMY_STATE CNormalEnemyScript::RandomIdleState()
-{
-    return NORMALENEMY_STATE(GetRandomInt(0, 1));
+    return (PLAYER->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
 }
 
 void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
@@ -469,101 +401,170 @@ void CNormalEnemyScript::PatrolMove()
     Rigidbody()->SetVelocity(vFront * GetCurInfo().Speed * DT);
 }
 
-Vec3 CNormalEnemyScript::TrackDir(Vec3 _vPos)
-{
-    return (PLAYER->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
-}
+///////////////////////////// FIND FSM ///////////////////////////////////////
+// -> FSM STATES ->
+// 1. Idle
+// 2. Patrol
+// 3. Find
+// 4. Attack
+// 5. Grooming
+// 6. SuccessedAttack
+// 7. FailedAttack
+// 8. Fall
+// 9. Land
+// 10. AfterAttack
+// 11. Damage
+// 12. Death
 
-void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
+void CNormalEnemyScript::Idle()
 {
-    if (NORMALENEMY_STATE::Eaten == m_eState)
-        return;
-
-    CGameObject* pObj = _OtherCollider->GetOwner();
-    bool flag = false;
-    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    if (IsGround())
     {
-        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
-        if (L"Vacuum Collider" == pObj->GetName())
+        if (nullptr != GetTarget())
         {
-            ChangeState(NORMALENEMY_STATE::Eaten);
-            m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-            return;
-        }
-
-        if (NORMALENEMY_STATE::AttackFailed == m_eState || NORMALENEMY_STATE::Attack == m_eState)
-        {
-            UnitHit hitInfo = {};
-            L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
-            ChangeState(NORMALENEMY_STATE::AttackSuccessed);
+            ChangeState(NormalEnemyState::Find);
         }
         else
         {
-            ChangeState(NORMALENEMY_STATE::Damage);
-            m_vDamageDir = pObj->GetParent()->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
+            if (Animator()->IsFinish())
+            {
+                ChangeState(RandomIdleState());
+            }
         }
     }
-}
-
-void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
-{
-    CGameObject* pObj = _OtherCollider->GetOwner();
-    if (LAYER_PLAYER == pObj->GetLayerIdx())
+    else
     {
-        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이는게 끝난 상태
-        if (L"Vacuum Collider" == pObj->GetName())
+        ChangeState(NormalEnemyState::Fall);
+    }
+}
+
+void CNormalEnemyScript::Grooming()
+{
+    if (nullptr != GetTarget())
+    {
+        ChangeState(NormalEnemyState::Find);
+    }
+    else
+    {
+        if (Animator()->IsFinish())
         {
-            ChangeState(NORMALENEMY_STATE::Idle);
+            ChangeState(RandomIdleState());
         }
     }
 }
 
-UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
+void CNormalEnemyScript::Patrol()
 {
-    UINT MemoryByte = 0;
+    if (IsGround())
+    {
+        PatrolMove();
 
-    MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
-
-    fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
-    fwrite(&m_fSpeed, sizeof(float), 1, _File);
-    fwrite(&m_fRushLerp, sizeof(float), 1, _File);
-    fwrite(&m_fRushSpeedLerp, sizeof(float), 1, _File);
-    fwrite(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1, _File);
-    fwrite(&m_bCirclePatrol, sizeof(bool), 1, _File);
-    fwrite(&m_vCenterPoint, sizeof(Vec3), 1, _File);
-
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(bool);
-    MemoryByte += sizeof(Vec3);
-
-    return MemoryByte;
+        if (nullptr != GetTarget())
+        {
+            ChangeState(NormalEnemyState::Find);
+        }
+    }
+    else
+    {
+        ChangeState(NormalEnemyState::Fall);
+    }
 }
 
-UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
+void CNormalEnemyScript::Find()
 {
-    UINT MemoryByte = 0;
+    RotatingToTarget();
 
-    MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NormalEnemyState::Attack);
+    }
+}
 
-    fread(&m_fMaxSpeed, sizeof(float), 1, _File);
-    fread(&m_fSpeed, sizeof(float), 1, _File);
-    fread(&m_fRushLerp, sizeof(float), 1, _File);
-    fread(&m_fRushSpeedLerp, sizeof(float), 1, _File);
-    fread(&m_fThreshHoldRushSpeedLerp, sizeof(float), 1, _File);
-    fread(&m_bCirclePatrol, sizeof(bool), 1, _File);
-    fread(&m_vCenterPoint, sizeof(Vec3), 1, _File);
+void CNormalEnemyScript::Attack()
+{
+    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    vDir.y = 0.f;
 
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
-    MemoryByte += sizeof(bool);
-    MemoryByte += sizeof(Vec3);
+    ApplyDir(vDir, true);
 
-    return MemoryByte;
+    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
+    Rigidbody()->SetVelocity(vDir * m_fSpeed);
+
+    if (m_fSpeed <= 3.f)
+    {
+        ChangeState(NormalEnemyState::AttackFailed);
+    }
+}
+
+void CNormalEnemyScript::Fall()
+{
+    if (IsGround())
+    {
+        ChangeState(NormalEnemyState::Land);
+    }
+}
+
+void CNormalEnemyScript::Land()
+{
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NormalEnemyState::AfterAttack);
+    }
+}
+
+void CNormalEnemyScript::FailedAttack()
+{
+    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    vDir.y = 0.f;
+
+    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
+    Rigidbody()->SetVelocity(vDir * m_fSpeed);
+
+    Animator()->GetCurFrameIdx();
+
+    if (m_fSpeed <= 2.2f)
+    {
+        ChangeState(NormalEnemyState::AfterAttack);
+    }
+}
+
+void CNormalEnemyScript::AfterAttack()
+{
+    if (Animator()->IsFinish())
+    {
+        if (nullptr != GetTarget())
+        {
+            ChangeState(NormalEnemyState::Find);
+        }
+        else
+        {
+            if (Animator()->IsFinish())
+            {
+                if (m_bEnter && m_bCirclePatrol)
+                {
+                    ChangeState(NormalEnemyState::Patrol);
+                    m_bEnter = false;
+                }
+                else
+                {
+                    ChangeState(RandomIdleState());
+                }
+            }
+        }
+    }
+}
+
+void CNormalEnemyScript::Damage()
+{
+    if (Animator()->IsFinish())
+    {
+        ChangeState(NormalEnemyState::Fall);
+        m_bFirst = false;
+    }
+}
+
+void CNormalEnemyScript::Death()
+{
+    if (Animator()->IsFinish())
+        GamePlayStatic::DestroyGameObject(GetOwner());
 }

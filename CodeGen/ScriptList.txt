@@ -81,3 +81,5 @@ CPushOutColliderScript
 CLightBulbGimmickScript
 CFadeOutScript
 CLensFlareScript
+CPhantaScript
+CSpookStepScript

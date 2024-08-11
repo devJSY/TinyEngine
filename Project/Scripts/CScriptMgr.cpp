@@ -84,6 +84,8 @@
 #include "CLightBulbGimmickScript.h"
 #include "CFadeOutScript.h"
 #include "CLensFlareScript.h"
+#include "CPhantaScript.h"
+#include "CSpookStepScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -170,6 +172,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLightBulbGimmickScript");
 	_vec.push_back(L"CFadeOutScript");
 	_vec.push_back(L"CLensFlareScript");
+	_vec.push_back(L"CPhantaScript");
+	_vec.push_back(L"CSpookStepScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -340,6 +344,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFadeOutScript;
 	if (L"CLensFlareScript" == _strScriptName)
 		return new CLensFlareScript;
+	if (L"CPhantaScript" == _strScriptName)
+		return new CPhantaScript;
+	if (L"CSpookStepScript" == _strScriptName)
+		return new CSpookStepScript;
 	return nullptr;
 }
 
@@ -513,6 +521,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFadeOutScript;
 	case (UINT)SCRIPT_TYPE::LENSFLARESCRIPT:
 		return new CLensFlareScript;
+	case (UINT)SCRIPT_TYPE::PHANTASCRIPT:
+		return new CPhantaScript;
+	case (UINT)SCRIPT_TYPE::SPOOKSTEPSCRIPT:
+		return new CSpookStepScript;
 	}
 	return nullptr;
 }
@@ -687,6 +699,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFadeOutScript";
 	case SCRIPT_TYPE::LENSFLARESCRIPT:
 		return L"CLensFlareScript";
+	case SCRIPT_TYPE::PHANTASCRIPT:
+		return L"CPhantaScript";
+	case SCRIPT_TYPE::SPOOKSTEPSCRIPT:
+		return L"CSpookStepScript";
 	}
 	return nullptr;
 }
