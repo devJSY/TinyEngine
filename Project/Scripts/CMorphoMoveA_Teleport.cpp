@@ -27,12 +27,20 @@ void CMorphoMoveA_Teleport::tick()
     }
 }
 
+void CMorphoMoveA_Teleport::Exit()
+{
+    Exit_Step();
+
+    GetOwner()->Rigidbody()->SetUseGravity(true);
+}
+
 void CMorphoMoveA_Teleport::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Start: {
         GetOwner()->Animator()->SetPlay(false);
+        GetOwner()->Rigidbody()->SetUseGravity(false);
         m_AccTime = 0.f;
 
         // teleport pos
@@ -48,7 +56,6 @@ void CMorphoMoveA_Teleport::Enter_Step()
         Dir.y = 0.f;
         Dir.Normalize();
 
-        GetOwner()->Rigidbody()->SetUseGravity(false);
         GetOwner()->Transform()->SetWorldPos(m_AfterPos);
         GetOwner()->Transform()->Slerp(Dir, 1.f);
         m_AccTime = 0.f;

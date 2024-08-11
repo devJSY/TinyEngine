@@ -138,6 +138,8 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit_Step()
 
 void CMorphoAtkA_DoubleSwordAtkLR::Start()
 {
+    RotateToPlayer(DT);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);

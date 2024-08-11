@@ -74,6 +74,8 @@ void CMorphoAtkA_DoubleSwordAtkL::Exit_Step()
 
 void CMorphoAtkA_DoubleSwordAtkL::Start()
 {
+    RotateToPlayer(DT);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
