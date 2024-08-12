@@ -91,6 +91,7 @@
 #include "CFlowMgr_Lv4.h"
 #include "CPhantaScript.h"
 #include "CSpookStepScript.h"
+#include "CSpawnTriggerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -184,6 +185,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_Lv4");
 	_vec.push_back(L"CPhantaScript");
 	_vec.push_back(L"CSpookStepScript");
+	_vec.push_back(L"CSpawnTriggerScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -354,10 +356,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFadeOutScript;
 	if (L"CLensFlareScript" == _strScriptName)
 		return new CLensFlareScript;
-	if (L"CPhantaScript" == _strScriptName)
-		return new CPhantaScript;
-	if (L"CSpookStepScript" == _strScriptName)
-		return new CSpookStepScript;
 	if (L"CFlowMgr_Lv0" == _strScriptName)
 		return new CFlowMgr_Lv0;
 	if (L"CFlowMgr_Lv1" == _strScriptName)
@@ -368,6 +366,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_Lv3;
 	if (L"CFlowMgr_Lv4" == _strScriptName)
 		return new CFlowMgr_Lv4;
+	if (L"CPhantaScript" == _strScriptName)
+		return new CPhantaScript;
+	if (L"CSpookStepScript" == _strScriptName)
+		return new CSpookStepScript;
+	if (L"CSpawnTriggerScript" == _strScriptName)
+		return new CSpawnTriggerScript;
 	return nullptr;
 }
 
@@ -541,10 +545,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFadeOutScript;
 	case (UINT)SCRIPT_TYPE::LENSFLARESCRIPT:
 		return new CLensFlareScript;
-	case (UINT)SCRIPT_TYPE::PHANTASCRIPT:
-		return new CPhantaScript;
-	case (UINT)SCRIPT_TYPE::SPOOKSTEPSCRIPT:
-		return new CSpookStepScript;
 	case (UINT)SCRIPT_TYPE::FLOWMGR_LV0:
 		return new CFlowMgr_Lv0;
 	case (UINT)SCRIPT_TYPE::FLOWMGR_LV1:
@@ -555,6 +555,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_Lv3;
 	case (UINT)SCRIPT_TYPE::FLOWMGR_LV4:
 		return new CFlowMgr_Lv4;
+	case (UINT)SCRIPT_TYPE::PHANTASCRIPT:
+		return new CPhantaScript;
+	case (UINT)SCRIPT_TYPE::SPOOKSTEPSCRIPT:
+		return new CSpookStepScript;
+	case (UINT)SCRIPT_TYPE::SPAWNTRIGGERSCRIPT:
+		return new CSpawnTriggerScript;
 	}
 	return nullptr;
 }
@@ -743,6 +749,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPhantaScript";
 	case SCRIPT_TYPE::SPOOKSTEPSCRIPT:
 		return L"CSpookStepScript";
+	case SCRIPT_TYPE::SPAWNTRIGGERSCRIPT:
+		return L"CSpawnTriggerScript";
 	}
 	return nullptr;
 }

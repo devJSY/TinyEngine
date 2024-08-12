@@ -119,6 +119,10 @@ void CSirKibbleScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
+
+    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CSirKibbleScript::OnTriggerExit(CCollider* _OtherCollider)
@@ -228,6 +232,9 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Death:
+    {
+        Animator()->Play(ANIMPREFIX("Damage"),false);
+    }
         break;
     case SirKibbleState::End:
         break;
@@ -596,7 +603,7 @@ void CSirKibbleScript::CutterCatch()
 #pragma region DAMAGE
 void CSirKibbleScript::Damage()
 {
-    if (GetCurInfo().HP <= 0.f)
+    if (GetCurInfo().HP <= 0.1f)
     {
         ChangeState(SirKibbleState::Death);
     }

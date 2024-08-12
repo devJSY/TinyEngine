@@ -131,6 +131,10 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
+    
+    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CHotHeadScript::OnTriggerExit(CCollider* _OtherCollider)

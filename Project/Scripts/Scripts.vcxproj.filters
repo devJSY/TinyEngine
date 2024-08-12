@@ -739,6 +739,9 @@
     <ClInclude Include="CSpookStepScript.h">
       <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
     </ClInclude>
+    <ClInclude Include="CSpawnTriggerScript.h">
+      <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1487,6 +1490,9 @@
     </ClCompile>
     <ClCompile Include="CFlowMgr_Lv4.cpp">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2341,6 +2347,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SpawnTrigger">
+      <UniqueIdentifier>{853c8a9c-6323-4f6e-819d-cd4b03875654}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

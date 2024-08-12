@@ -39,14 +39,6 @@ UINT CAttackAreaScript::LoadFromLevelFile(FILE* _File)
 // Body Collider
 void CAttackAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    CGameObject* pObj = _OtherCollider->GetOwner();
-
-    if (nullptr == pObj)
-        return;
-
-    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
-    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), 6.f, 0.f, 0.f};
-    L"Main Player" == pObj->GetName() ? pObj->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CAttackAreaScript::OnTriggerExit(CCollider* _OtherCollider)

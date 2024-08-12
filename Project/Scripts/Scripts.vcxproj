@@ -338,6 +338,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSolarChargeScript.h" />
     <ClInclude Include="CSolarOnceScript.h" />
+    <ClInclude Include="CSpawnTriggerScript.h" />
     <ClInclude Include="CSpookStepScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
@@ -598,6 +599,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSolarChargeScript.cpp" />
     <ClCompile Include="CSolarOnceScript.cpp" />
+    <ClCompile Include="CSpawnTriggerScript.cpp" />
     <ClCompile Include="CSpookStepScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />

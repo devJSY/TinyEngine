@@ -55,6 +55,11 @@ UINT CPhantaScript::LoadFromLevelFile(FILE* _File)
 
 void CPhantaScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), 6.f, 0.f, 0.f};
+    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CPhantaScript::OnTriggerExit(CCollider* _OtherCollider)

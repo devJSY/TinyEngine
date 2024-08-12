@@ -88,6 +88,13 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
+
+    if (nullptr == pObj)
+        return;
+
+    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }
 
 void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
