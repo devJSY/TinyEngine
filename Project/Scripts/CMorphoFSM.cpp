@@ -2,13 +2,14 @@
 #include "CMorphoFSM.h"
 #include "CState.h"
 #include "CPlayerMgr.h"
+#include <Engine\CMaterial.h>
 
 CMorphoFSM::CMorphoFSM()
     : CFSMScript(MORPHOFSM)
     , m_CurStateGroup(MorphoStateGroup::END)
     , m_Pattern(MorphoPatternType::NONE)
     , m_PatternStep(0)
-    , m_Phase(1)
+    , m_Phase(2)
     , m_ComboLevel(0)
     , m_NearDist(150.f)
     , m_WeaponL(nullptr)
@@ -135,7 +136,11 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_FRONTMOVE");
+        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
+    }
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeStateGroup(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD");
     }
 
     // Emissive

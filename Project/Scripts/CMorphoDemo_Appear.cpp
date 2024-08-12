@@ -4,7 +4,7 @@
 #include "CChangeAlphaScript.h"
 
 CMorphoDemo_Appear::CMorphoDemo_Appear()
-    : m_StartPos(Vec3())
+    : m_StartPos(Vec3(0.f, 0.f, -300.f))
     , m_DownSpeed(80.f)
     , m_AccTime(0.f)
     , m_BossName(nullptr)
@@ -53,6 +53,7 @@ void CMorphoDemo_Appear::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("DemoMorphoKnightAppearCut4"), false, false, 1.5f, 0.f);
         GetOwner()->Animator()->SetClipFrameIndex(400);
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
+        GetOwner()->Transform()->SetWorldRotation(Vec3());
         m_AccTime = 0.f;
 
         //@CAMERA : 점점 몰포 가까이
@@ -67,8 +68,9 @@ void CMorphoDemo_Appear::Enter_Step()
             m_BossName = m_BossNamePref->Instantiate();
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
 
-            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 700.f, 1000.f));
-            m_BossName->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 155.f, -430.f));
+            m_BossName->Transform()->SetWorldRotation(Vec3());
+            m_BossName->Transform()->SetWorldScale(Vec3(5.f));
             Script->FadeIn(0.5f);
 
             GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);

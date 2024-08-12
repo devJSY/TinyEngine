@@ -47,9 +47,7 @@ void CMorphoDemo_Phase2::Enter_Step()
     }
     break;
     case StateStep::Progress: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Appeal"), false, false, 1.5f, 0.);
-        GetOwner()->Transform()->SetWorldPos(Vec3());
-        GetOwner()->Transform()->SetWorldRotation(Vec3());
+        GetOwner()->Animator()->Play(ANIMPREFIX("Appeal"), false, false, 1.5f, 0.3f);
 
         //@CAMERA
     }

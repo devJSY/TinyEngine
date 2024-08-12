@@ -16,7 +16,7 @@ void CMorphoDemo_Death::tick()
     switch (m_Step)
     {
     case StateStep::Ready: {
-        Start();
+        Ready();
     }
     break;
     case StateStep::Start: {
@@ -53,7 +53,7 @@ void CMorphoDemo_Death::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->SetPlay(true);
-        GetOwner()->Transform()->SetWorldPos(Vec3());
+        GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, -300.f));
         GetOwner()->Transform()->SetWorldRotation(Vec3());
         //@CAMERA lengthº¯ÇÔ
     }
