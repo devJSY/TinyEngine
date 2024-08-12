@@ -81,3 +81,8 @@ CPushOutColliderScript
 CLightBulbGimmickScript
 CFadeOutScript
 CLensFlareScript
+CFlowMgr_Lv0
+CFlowMgr_Lv1
+CFlowMgr_Lv2
+CFlowMgr_Lv3
+CFlowMgr_Lv4
