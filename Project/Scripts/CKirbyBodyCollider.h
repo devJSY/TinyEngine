@@ -3,6 +3,9 @@
 
 class CKirbyBodyCollider : public CScript
 {
+public:
+    virtual void begin() override;
+
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
     virtual void OnTriggerStay(CCollider* _OtherCollider);

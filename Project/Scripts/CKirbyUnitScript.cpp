@@ -4,6 +4,8 @@
 #include "CKirbyFSM.h"
 #include "CState.h"
 
+#include <Engine/CTimeMgr.h>
+
 CKirbyUnitScript::CKirbyUnitScript()
     : CUnitScript(KIRBYUNITSCRIPT)
 {
@@ -63,7 +65,12 @@ void CKirbyUnitScript::tick()
     float NewDamage = DamageProc();
     if (NewDamage > 0.f)
     {
-        if (PLAYERFSM->IsInvincible())
+        if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
+            PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
+        {
+            CTimeMgr::GetInst()->SetTimeScale(1.f, 0.5f);
+        }
+        else if (PLAYERFSM->IsInvincible())
         {
             m_HitHistory.clear();
         }

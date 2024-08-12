@@ -18,6 +18,8 @@ CKirbyObject_Cone::CKirbyObject_Cone()
 }
 
 CKirbyObject_Cone::CKirbyObject_Cone(const CKirbyObject_Cone& _Origin)
+    : CKirbyObject(_Origin)
+    , m_bFrmEnter(true)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Cone.pref", L"prefab\\Cone.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyCone.mdat", L"meshdata\\KirbyCone.mdat");

@@ -47,6 +47,9 @@ void CKirbyFall::tick()
 
             // State Change
             ChangeState(L"IDLE");
+
+            PLAYER->CharacterController()->Move(Vec3(0.f, 0.1f, 0.f));
+
         }
     }
 
@@ -81,7 +84,7 @@ void CKirbyFall::Enter()
 
 void CKirbyFall::Exit()
 {
-    PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetLimitFallSpeed(false);

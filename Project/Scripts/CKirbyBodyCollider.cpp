@@ -14,6 +14,18 @@ CKirbyBodyCollider::~CKirbyBodyCollider()
 {
 }
 
+void CKirbyBodyCollider::begin()
+{
+    // Level이 시작되면 BodyCollider의 크기를 세팅한다.
+
+    Transform()->SetAbsolute(false);
+    Transform()->SetLocalScale(Vec3(1.2f, 1.2f, 1.2f));
+    CapsuleCollider()->SetTrigger(true);
+    CapsuleCollider()->SetCenter(Vec3(0.f, 0.65f, 0.f));
+    CapsuleCollider()->SetHeight(1.51f);
+    CapsuleCollider()->SetRadius(0.51f);
+}
+
 void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();

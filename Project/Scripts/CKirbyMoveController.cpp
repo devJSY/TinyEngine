@@ -149,7 +149,7 @@ void CKirbyMoveController::RayGround()
 {
     Vec3 RayStart = Transform()->GetWorldPos() + Vec3(0.f, 1.f, 0.f);
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
-    m_RayHit = CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 0.f), m_HoveringLimitHeight, vecCollision);
+    m_RayHit = CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 0.f), 200.f, vecCollision);
 
     // Grund ÆÇÁ¤
     m_bGround = CharacterController()->IsGrounded();

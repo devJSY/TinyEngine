@@ -84,6 +84,11 @@
 #include "CLightBulbGimmickScript.h"
 #include "CFadeOutScript.h"
 #include "CLensFlareScript.h"
+#include "CFlowMgr_Lv0.h"
+#include "CFlowMgr_Lv1.h"
+#include "CFlowMgr_Lv2.h"
+#include "CFlowMgr_Lv3.h"
+#include "CFlowMgr_Lv4.h"
 #include "CPhantaScript.h"
 #include "CSpookStepScript.h"
 
@@ -172,6 +177,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CLightBulbGimmickScript");
 	_vec.push_back(L"CFadeOutScript");
 	_vec.push_back(L"CLensFlareScript");
+	_vec.push_back(L"CFlowMgr_Lv0");
+	_vec.push_back(L"CFlowMgr_Lv1");
+	_vec.push_back(L"CFlowMgr_Lv2");
+	_vec.push_back(L"CFlowMgr_Lv3");
+	_vec.push_back(L"CFlowMgr_Lv4");
 	_vec.push_back(L"CPhantaScript");
 	_vec.push_back(L"CSpookStepScript");
 }
@@ -348,6 +358,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPhantaScript;
 	if (L"CSpookStepScript" == _strScriptName)
 		return new CSpookStepScript;
+	if (L"CFlowMgr_Lv0" == _strScriptName)
+		return new CFlowMgr_Lv0;
+	if (L"CFlowMgr_Lv1" == _strScriptName)
+		return new CFlowMgr_Lv1;
+	if (L"CFlowMgr_Lv2" == _strScriptName)
+		return new CFlowMgr_Lv2;
+	if (L"CFlowMgr_Lv3" == _strScriptName)
+		return new CFlowMgr_Lv3;
+	if (L"CFlowMgr_Lv4" == _strScriptName)
+		return new CFlowMgr_Lv4;
 	return nullptr;
 }
 
@@ -525,6 +545,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPhantaScript;
 	case (UINT)SCRIPT_TYPE::SPOOKSTEPSCRIPT:
 		return new CSpookStepScript;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_LV0:
+		return new CFlowMgr_Lv0;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_LV1:
+		return new CFlowMgr_Lv1;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_LV2:
+		return new CFlowMgr_Lv2;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_LV3:
+		return new CFlowMgr_Lv3;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_LV4:
+		return new CFlowMgr_Lv4;
 	}
 	return nullptr;
 }
@@ -699,6 +729,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFadeOutScript";
 	case SCRIPT_TYPE::LENSFLARESCRIPT:
 		return L"CLensFlareScript";
+	case SCRIPT_TYPE::FLOWMGR_LV0:
+		return L"CFlowMgr_Lv0";
+	case SCRIPT_TYPE::FLOWMGR_LV1:
+		return L"CFlowMgr_Lv1";
+	case SCRIPT_TYPE::FLOWMGR_LV2:
+		return L"CFlowMgr_Lv2";
+	case SCRIPT_TYPE::FLOWMGR_LV3:
+		return L"CFlowMgr_Lv3";
+	case SCRIPT_TYPE::FLOWMGR_LV4:
+		return L"CFlowMgr_Lv4";
 	case SCRIPT_TYPE::PHANTASCRIPT:
 		return L"CPhantaScript";
 	case SCRIPT_TYPE::SPOOKSTEPSCRIPT:

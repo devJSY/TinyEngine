@@ -26,7 +26,6 @@ void CKirbyCheckPointTrigger::tick()
 #ifndef DISTRIBUTE
 
     Vec3 Pos = Transform()->GetWorldPos();
-    Pos.y = Transform()->GetWorldScale().y;
     Pos += m_Offset;
 
     GamePlayStatic::DrawDebugLine(Pos, Vec3(0.f, -1.f, 0.f), Transform()->GetWorldScale().y * 2.f, Vec3(1.f, 0.f, 0.f), true);
@@ -38,7 +37,6 @@ void CKirbyCheckPointTrigger::OnTriggerEnter(CCollider* _OtherCollider)
     if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
     {
         Vec3 Pos = Transform()->GetWorldPos();
-        Pos.y = Transform()->GetWorldScale().y;
         Pos += m_Offset;
 
         // Collider의 중앙으로 부터 바닥으로 레이를 쏘아 그 지점을 리스폰 Pos로 한다.

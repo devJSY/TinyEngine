@@ -415,4 +415,20 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"KirbyFadeOutShader");
         AddAsset(L"KirbyFadeOutShader", pShader);
     }
+
+    // =================================
+    // Kirby DimensionalFade Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyDimensionalFadePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetName(L"KirbyDimensionalFadeShader");
+        AddAsset(L"KirbyDimensionalFadeShader", pShader);
+    }
 }

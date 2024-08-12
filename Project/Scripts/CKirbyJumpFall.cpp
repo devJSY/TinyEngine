@@ -108,6 +108,10 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"HOVERING_START");
             }
+            else if (m_Acc > m_Duration)
+            {
+                ChangeState(L"LONGDIVE_START");
+            }
         }
         break;
         case AbilityCopyType::FIRE: 
@@ -137,6 +141,10 @@ void CKirbyJumpFall::tick()
             else if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
+            }
+            else if (m_Acc > m_Duration)
+            {
+                ChangeState(L"LONGDIVE_START");
             }
 
         }
@@ -169,6 +177,7 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"LONGDIVE_START");
             }
+
         }
             break;
         case AbilityCopyType::SWORD: {
@@ -216,6 +225,10 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"HOVERING_START");
             }
+            else if (m_Acc > m_Duration)
+            {
+                ChangeState(L"LONGDIVE_START");
+            }
         }
         break;
         case AbilityCopyType::SLEEP: {
@@ -226,6 +239,10 @@ void CKirbyJumpFall::tick()
             else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"IDLE_START");
+            }
+            else if (m_Acc > m_Duration)
+            {
+                ChangeState(L"LONGDIVE_START");
             }
 
         }

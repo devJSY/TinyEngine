@@ -1455,6 +1455,9 @@
     <FxCompile Include="DepthofFieldPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="KirbyDimensionalFadePS.hlsl">
+      <Filter>ShaderCode\Kirby\Postprocess</Filter>
+    </FxCompile>
     <FxCompile Include="HotHeadPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Monster\HotHead</Filter>
     </FxCompile>

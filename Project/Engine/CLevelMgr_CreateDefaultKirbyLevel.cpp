@@ -81,6 +81,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     CGameObject* pManager = new CGameObject;
     pManager->SetName(L"Manager");
     pManager->AddComponent(new CTransform);
+    pManager->AddComponent(CScriptMgr::GetScript(FLOWMGR_LV0));
     pManager->AddComponent(CScriptMgr::GetScript(PLAYERMGR));
 
     NewLevel->AddObject(pManager, 1);

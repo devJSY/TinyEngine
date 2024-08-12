@@ -14,6 +14,14 @@ CKirbyAbility_Fire::CKirbyAbility_Fire()
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref");
 }
 
+CKirbyAbility_Fire::CKirbyAbility_Fire(const CKirbyAbility_Fire& _Origin)
+    : CKirbyAbility(_Origin)
+    , m_bFrmEnter(true)
+    , m_SavedSpeed(0.f)
+{
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref");
+}
+
 CKirbyAbility_Fire::~CKirbyAbility_Fire()
 {
 }
