@@ -1674,9 +1674,6 @@
     <ClCompile Include="CLensFlareScript.cpp">
       <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
-    <ClCompile Include="CPhantaScript.cpp">
-      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
-    </ClCompile>
     <ClCompile Include="CSpookStepScript.cpp">
       <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
     </ClCompile>
@@ -1697,6 +1694,9 @@
     </ClCompile>
     <ClCompile Include="CSpawnTriggerScript.cpp">
       <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhantaScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -549,6 +549,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoTrackingSoul.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />
     <ClCompile Include="CMorpho_Idle.cpp" />
+    <ClCompile Include="CPhantaScript.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
