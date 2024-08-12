@@ -18,20 +18,9 @@
 
 #define InvertNormalMapY g_int_0
 
-struct PS_OUT
+PS_OUT_DEFERRED main(PS_IN input)
 {
-    float4 vColor : SV_Target0;
-    float4 vPosition : SV_Target1;
-    float4 vNormal : SV_Target2;
-    float4 vTangent : SV_Target3;
-    float4 vBitangent : SV_Target4;
-    float4 vEmissive : SV_Target5;
-    float4 vMRA : SV_Target6;
-};
-
-PS_OUT main(PS_IN input)
-{
-    PS_OUT output = (PS_OUT) 0.f;
+    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
 
     float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
     float4 albedo1 = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;

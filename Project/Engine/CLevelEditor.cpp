@@ -425,6 +425,10 @@ void CLevelEditor::render_WorldSettings()
     if (ImGui::Checkbox("Enable Depth of Field", &bEnableDOF))
         CRenderMgr::GetInst()->SetEnableDOF(bEnableDOF);
 
+    bool bEnableMotionBlur = CRenderMgr::GetInst()->IsEnableMotionBlur();
+    if (ImGui::Checkbox("Enable Motion Blur", &bEnableMotionBlur))
+        CRenderMgr::GetInst()->SetEnableMotionBlur(bEnableMotionBlur);
+
     ImGui::Checkbox("Enable SSAO", (bool*)&g_Global.g_EnableSSAO);
 
     ImGui::End();

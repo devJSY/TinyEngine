@@ -1304,6 +1304,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"DOFShader");
         AddAsset(L"DOFShader", pShader);
     }
+
+    // =================================
+    // Motion Blur Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MotionBlurPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Motion Vector Texture");
+
+        pShader->SetName(L"MotionBlurShader");
+        AddAsset(L"MotionBlurShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1862,6 +1880,14 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(VEC2_0, Vec2(0.5f, 0.5f)); // Focus UV
         pMtrl->SetName(L"DOFMtrl");
         AddAsset<CMaterial>(L"DOFMtrl", pMtrl);
+    }
+
+    // MotionBlurShader Mtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MotionBlurShader"));
+        pMtrl->SetName(L"MotionBlurMtrl");
+        AddAsset<CMaterial>(L"MotionBlurMtrl", pMtrl);
     }
 }
 

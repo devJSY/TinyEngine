@@ -44,6 +44,24 @@ struct PS_IN
     float2 vUV3 : TEXCOORD3;
 };
 
+struct PS_OUT_DEFERRED
+{
+    float4 vColor : SV_Target0;
+    float4 vPosition : SV_Target1;
+    float4 vNormal : SV_Target2;
+    float4 vTangent : SV_Target3;
+    float4 vBitangent : SV_Target4;
+    float4 vEmissive : SV_Target5;
+    float4 vMRA : SV_Target6;
+    float4 vMotionVector : SV_Target7;
+};
+
+struct PS_OUT_FORWARD
+{
+    float4 vColor : SV_Target0;
+    float4 vMotionVector : SV_Target1;
+};
+
 struct tLightInfo
 {
     float4 vRadiance; // 빛이 나가는 강도 

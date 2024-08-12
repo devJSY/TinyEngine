@@ -51,6 +51,9 @@ CRenderMgr::CRenderMgr()
     , m_CameraPreviewTex(nullptr)
     , m_bEnableDOF(false)
     , m_DOFObj(nullptr)
+    , m_bEnableMotionBlur(false)
+    , m_MotionVectorTex(nullptr)
+    , m_MotionBlurObj(nullptr)
 {
     RENDER_FUNC = &CRenderMgr::render_play;
 
@@ -142,6 +145,12 @@ CRenderMgr::~CRenderMgr()
     {
         delete m_DOFObj;
         m_DOFObj = nullptr;
+    }
+
+    if (nullptr != m_MotionBlurObj)
+    {
+        delete m_MotionBlurObj;
+        m_MotionBlurObj = nullptr;
     }
 }
 
@@ -365,6 +374,8 @@ void CRenderMgr::render_postprocess_LDRI()
         CTexture::Clear(0);
         CTexture::Clear(1);
     }
+
+    render_postprocess();
 }
 
 void CRenderMgr::render_postprocess_HDRI()
@@ -463,6 +474,11 @@ void CRenderMgr::render_postprocess_HDRI()
     CTexture::Clear(0);
     CTexture::Clear(1);
 
+    render_postprocess();
+}
+
+void CRenderMgr::render_postprocess()
+{
     // ===============
     // Depth of Field
     // ===============
@@ -475,8 +491,19 @@ void CRenderMgr::render_postprocess_HDRI()
         // Blur Texture »ý¼º
         BlurTexture(m_RTCopyTex, 3);
 
-        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
         m_DOFObj->render();
+        CTexture::Clear(15);
+    }
+
+    // ===============
+    // Motion Blur
+    // ===============
+    if (m_bEnableMotionBlur)
+    {
+        CopyToPostProcessTex_LDRI();
+        m_PostProcessTex_LDRI->UpdateData(15);
+
+        m_MotionBlurObj->render();
         CTexture::Clear(15);
     }
 }
@@ -767,6 +794,9 @@ void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel, bool
 
     // ¿øº» Threshold ¼³Á¤
     pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Threshold);
+
+    // ·»´õ Å¸°Ù ¿ø»óº¹±Í
+    m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 }
 
 void CRenderMgr::CreateRTCopyTex(Vec2 Resolution)
@@ -830,31 +860,31 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
     // SwapChain MRT
     // =============
     {
-        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex")};
+        Ptr<CTexture> arrRTTex[2] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex"), m_MotionVectorTex};
         Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
         m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(arrRTTex, arrClear, 1, DSTex);
+        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(arrRTTex, arrClear, 2, DSTex);
     }
 
     // =============
     // HDRI MRT
     // =============
     {
-        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture")};
+        Ptr<CTexture> arrRTTex[2] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture"), m_MotionVectorTex};
         Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
         m_arrMRT[(UINT)MRT_TYPE::HDRI] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::HDRI]->Create(arrRTTex, arrClear, 1, DSTex);
+        m_arrMRT[(UINT)MRT_TYPE::HDRI]->Create(arrRTTex, arrClear, 2, DSTex);
     }
 
     // ============
     // Deferred MRT
     // ============
     {
-        Ptr<CTexture> arrRTTex[7] = {
+        Ptr<CTexture> arrRTTex[8] = {
             CAssetMgr::GetInst()->CreateTexture(L"AlbedoTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"PositionTargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R32G32B32A32_FLOAT,
@@ -869,17 +899,15 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
             CAssetMgr::GetInst()->CreateTexture(L"MRATargetTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
                                                 D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT),
-        };
+            m_MotionVectorTex};
 
-        Vec4 arrClearColor[7] = {
-            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
-            Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 1.f, 1.f),
-        };
+        Vec4 arrClearColor[8] = {Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
+                                 Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 1.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f)};
 
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
         m_arrMRT[(UINT)MRT_TYPE::DEFERRED] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 7, DSTex);
+        m_arrMRT[(UINT)MRT_TYPE::DEFERRED]->Create(arrRTTex, arrClearColor, 8, DSTex);
 
         Ptr<CMaterial> pPBRDirLightMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"UnrealPBRDeferredDirLightingMtrl");
         pPBRDirLightMtrl->SetTexParam(TEX_PARAM::TEX_0, arrRTTex[0]);
@@ -1036,7 +1064,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
 void CRenderMgr::CreateIDMapTex(Vec2 Resolution)
 {
     m_IDMapTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
-                                                     D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET, D3D11_USAGE_DEFAULT);
+                                                     D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 
     m_IDMapDSTex = CAssetMgr::GetInst()->CreateTexture(L"IDMapDSTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_D24_UNORM_S8_UINT,
                                                        D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT);
@@ -1063,6 +1091,12 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
                                             D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL, D3D11_USAGE_DEFAULT, &dsvDesc, nullptr, &srvDesc);
 }
 
+void CRenderMgr::CreateMotionVectorTex(Vec2 Resolution)
+{
+    m_MotionVectorTex = CAssetMgr::GetInst()->CreateTexture(L"MotionVectorTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+                                                            D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
+}
+
 void CRenderMgr::Resize_Release()
 {
     // MRT Texture
@@ -1085,6 +1119,7 @@ void CRenderMgr::Resize_Release()
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"IDMapDSTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthOnlyTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"DepthMaskingTex");
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"MotionVectorTex");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_LDRI");
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::TEXTURE, L"PostProessTex_HDRI");
 
@@ -1101,6 +1136,7 @@ void CRenderMgr::Resize_Release()
     m_RTCopyTex = nullptr;
     m_DepthOnlyTex = nullptr;
     m_DepthMaskingTex = nullptr;
+    m_MotionVectorTex = nullptr;
     m_PostProcessTex_LDRI = nullptr;
     m_PostProcessTex_HDRI = nullptr;
     m_FloatRTTex = nullptr;
@@ -1112,6 +1148,7 @@ void CRenderMgr::Resize(Vec2 Resolution)
     CreateRTCopyTex(Resolution);
     CreateIDMapTex(Resolution);
     CreateDepthOnlyTex(Resolution);
+    CreateMotionVectorTex(Resolution);
     CreatePostProcessTex(Resolution);
     CreateBloomTextures(Resolution);
     CreateCameraPreviewTex(Resolution);
@@ -1138,4 +1175,6 @@ void CRenderMgr::Resize(Vec2 Resolution)
     m_DepthMaskingObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_FloatRTTex);
 
     m_DOFObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_RTCopyTex);
+
+    m_MotionBlurObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_MotionVectorTex);
 }

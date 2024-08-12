@@ -1461,5 +1461,8 @@
     <FxCompile Include="KirbyDimensionalFadePS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="MotionBlurPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
