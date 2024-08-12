@@ -11,6 +11,7 @@ enum class ChangeAlphaEvent
 class CChangeAlphaScript : public CScript
 {
 private:
+    SCALAR_PARAM m_AlphaParamIdx;
     list<Ptr<CMaterial>> m_listMtrl;
     ChangeAlphaEvent m_Event;
     float m_PlayTime;
@@ -24,6 +25,7 @@ public:
     void FadeOutDestroy(float _PlayTime) { SetEvent(ChangeAlphaEvent::FADE_OUT, _PlayTime); }
 
 public:
+    void SetAlphaParamIdx(SCALAR_PARAM _Idx) { m_AlphaParamIdx = _Idx; }
     void SetAlpha(float _Alpha);
     void SetEvent(ChangeAlphaEvent _Type, float _PlayTime);
 

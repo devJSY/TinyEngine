@@ -463,6 +463,12 @@ float CAnimator::GetClipPlayTime()
     return (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
 }
 
+float CAnimator::GetClipPlayRatio()
+{
+    int Len = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iFrameLength;
+    return GetClipFrameIndex()/(float)Len;
+}
+
 void CAnimator::CheckBoneMatBuffer()
 {
     if (!IsValid())

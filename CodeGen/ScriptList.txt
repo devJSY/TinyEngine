@@ -76,7 +76,11 @@ CLadderScript
 CKirbyCheckPointTrigger
 CKirbyFallDetectTrigger
 CFixedViewCamTrigger
+CMorphoFSM
+CMorphoUnit
 CElfilisUnit
+CMorphoTrackingSoul
+CMorphoShockWave
 CPushOutColliderScript
 CLightBulbGimmickScript
 CFadeOutScript

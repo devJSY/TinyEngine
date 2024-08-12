@@ -36,8 +36,6 @@ enum class ElfilisPatternType
     StabCombo,
 };
 
-// ==============================================
-
 class CElfilisFSM : public CFSMScript
 {
 private:

@@ -5,6 +5,8 @@ CMomentaryObjScript::CMomentaryObjScript()
     : CScript(MOMENTARYOBJSCRIPT)
     , m_AccTime(0.f)
     , m_LifeTime(5.f)
+    , m_ScaleFactor(Vec3(1.f))
+    , m_ScaleTime(0.f)
     , m_EndAnimPlayTime(0)
     , m_EndAnim(L"")
 {
@@ -27,13 +29,30 @@ void CMomentaryObjScript::tick()
     m_AccTime += DT;
 
     // Effect
-    for (MomentaryEffectType Type : m_EffectVec)
+    deque<MomentaryEffectType>::iterator iter = m_EffectVec.begin();
+    for (; iter != m_EffectVec.end();)
     {
-        switch (Type)
+        switch (*iter)
         {
-        case MomentaryEffectType::AppearScaling: {
-            float t = m_AccTime / m_LifeTime;
-            Transform()->SetLocalScale(m_OriginScale * t);
+        case MomentaryEffectType::Scaling: {
+            float t = 0.f;
+
+            if (m_ScaleTime > 0.f)
+            {
+                t = m_AccTime / m_ScaleTime;
+            }
+            else
+            {
+                t = m_AccTime / m_LifeTime;
+            }
+
+            Transform()->SetLocalScale(m_OriginScale * m_ScaleFactor * t);
+
+            if (t >= 1.f)
+            {
+                iter = m_EffectVec.erase(iter);
+                continue;
+            }
         }
         break;
         case MomentaryEffectType::DisappearAnim: {
@@ -45,6 +64,8 @@ void CMomentaryObjScript::tick()
         }
         break;
         }
+
+        iter++;
     }
 
     if (m_AccTime > m_LifeTime)
@@ -57,9 +78,11 @@ void CMomentaryObjScript::AddEffect(MomentaryEffectType _EffectType)
 {
     m_EffectVec.push_back(_EffectType);
 
-    if (_EffectType == MomentaryEffectType::AppearScaling)
+    if (_EffectType == MomentaryEffectType::Scaling)
     {
         m_OriginScale = Transform()->GetLocalScale();
+        m_ScaleFactor = Vec3(1.f);
+        m_ScaleTime = 0.f;
     }
 }
 
@@ -79,6 +102,13 @@ void CMomentaryObjScript::SetEndAnim(wstring _Key)
             AddEffect(MomentaryEffectType::DisappearAnim);
         }
     }
+}
+
+void CMomentaryObjScript::SetScaling(Vec3 _ScaleFactor, float _ScaleTime)
+{
+    AddEffect(MomentaryEffectType::Scaling);
+    m_ScaleFactor = _ScaleFactor;
+    m_ScaleTime = _ScaleTime;
 }
 
 UINT CMomentaryObjScript::SaveToLevelFile(FILE* _File)
