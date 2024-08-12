@@ -13,6 +13,7 @@
 
 #define ELFFSM ((CElfilisFSM*)CBossMgr::GetBossFSM())
 #define ELFBIGFSM ((CElfilisBigFSM*)ELFFSM->GetBigBossFSM())
+#define MRPFSM ((CMorphoFSM*)CBossMgr::GetBossFSM())
 
 #define CAMERACTRL CPlayerMgr::GetCameraController()
 
@@ -82,10 +83,15 @@ enum class StateStep
     Ready,
     ReadyWait,
     Charge,
+    ChargeWait,
     Start,
     StartEnd,
     Progress,
+    Combo1,
+    Combo2,
+    Combo3,
     Wait,
     End,
     EndWait,
+    EndEnd,
 };

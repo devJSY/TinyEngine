@@ -2,6 +2,7 @@
 #include "CBossState.h"
 
 CBossState::CBossState()
+    : m_Step(StateStep::Start)
 {
 }
 

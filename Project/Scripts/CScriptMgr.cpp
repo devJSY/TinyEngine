@@ -79,7 +79,11 @@
 #include "CKirbyCheckPointTrigger.h"
 #include "CKirbyFallDetectTrigger.h"
 #include "CFixedViewCamTrigger.h"
+#include "CMorphoFSM.h"
+#include "CMorphoUnit.h"
 #include "CElfilisUnit.h"
+#include "CMorphoTrackingSoul.h"
+#include "CMorphoShockWave.h"
 #include "CPushOutColliderScript.h"
 #include "CLightBulbGimmickScript.h"
 #include "CFadeOutScript.h"
@@ -170,7 +174,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyCheckPointTrigger");
 	_vec.push_back(L"CKirbyFallDetectTrigger");
 	_vec.push_back(L"CFixedViewCamTrigger");
+	_vec.push_back(L"CMorphoFSM");
+	_vec.push_back(L"CMorphoUnit");
 	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CMorphoTrackingSoul");
+	_vec.push_back(L"CMorphoShockWave");
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLightBulbGimmickScript");
 	_vec.push_back(L"CFadeOutScript");
@@ -340,8 +348,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyFallDetectTrigger;
 	if (L"CFixedViewCamTrigger" == _strScriptName)
 		return new CFixedViewCamTrigger;
+	if (L"CMorphoFSM" == _strScriptName)
+		return new CMorphoFSM;
+	if (L"CMorphoUnit" == _strScriptName)
+		return new CMorphoUnit;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
+	if (L"CMorphoTrackingSoul" == _strScriptName)
+		return new CMorphoTrackingSoul;
+	if (L"CMorphoShockWave" == _strScriptName)
+		return new CMorphoShockWave;
 	if (L"CPushOutColliderScript" == _strScriptName)
 		return new CPushOutColliderScript;
 	if (L"CLightBulbGimmickScript" == _strScriptName)
@@ -523,8 +539,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyFallDetectTrigger;
 	case (UINT)SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
 		return new CFixedViewCamTrigger;
+	case (UINT)SCRIPT_TYPE::MORPHOFSM:
+		return new CMorphoFSM;
+	case (UINT)SCRIPT_TYPE::MORPHOUNIT:
+		return new CMorphoUnit;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::MORPHOTRACKINGSOUL:
+		return new CMorphoTrackingSoul;
+	case (UINT)SCRIPT_TYPE::MORPHOSHOCKWAVE:
+		return new CMorphoShockWave;
 	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
@@ -707,8 +731,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyFallDetectTrigger";
 	case SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
 		return L"CFixedViewCamTrigger";
+	case SCRIPT_TYPE::MORPHOFSM:
+		return L"CMorphoFSM";
+	case SCRIPT_TYPE::MORPHOUNIT:
+		return L"CMorphoUnit";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::MORPHOTRACKINGSOUL:
+		return L"CMorphoTrackingSoul";
+	case SCRIPT_TYPE::MORPHOSHOCKWAVE:
+		return L"CMorphoShockWave";
 	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:

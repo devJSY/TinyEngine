@@ -3,7 +3,7 @@
 
 enum class MomentaryEffectType
 {
-    AppearScaling,
+    Scaling,
     DisappearAnim,
 };
 
@@ -15,8 +15,10 @@ private:
     float m_AccTime;
     float m_LifeTime;
 
-    // Effect : Appear Scalling
+    // Effect : Scalling
     Vec3 m_OriginScale;
+    Vec3 m_ScaleFactor;
+    float m_ScaleTime;
 
     // Effect : Disappear Anim
     double m_EndAnimPlayTime;
@@ -31,6 +33,7 @@ public:
     void SetPlayTime(float _Time) { m_LifeTime = _Time; }
     void AddEffect(MomentaryEffectType _EffectType);
     void SetEndAnim(wstring _Key);
+    void SetScaling(Vec3 _ScaleFactor = Vec3(1.f), float _ScaleTime = 0.f);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

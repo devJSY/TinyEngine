@@ -96,6 +96,7 @@ public:
     // Clip에서의 프레임 인덱스
     int GetClipFrameIndex();
     void SetClipFrameIndex(int _FrameIdx);
+    float GetClipPlayRatio();
 
     float GetClipPlayTime();
 

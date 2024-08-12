@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CUIStartSceneFlowScript.h"
+#include "CUIAnimScript.h"
 
 #include "CUIAnimScript.h"
 
