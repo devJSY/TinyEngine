@@ -90,3 +90,5 @@ CFlowMgr_Lv1
 CFlowMgr_Lv2
 CFlowMgr_Lv3
 CFlowMgr_Lv4
+CFlowMgr_BossElfilis
+CFlowTriggerScript

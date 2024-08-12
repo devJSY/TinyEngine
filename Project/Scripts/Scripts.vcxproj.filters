@@ -835,6 +835,12 @@
     <ClInclude Include="CFlowMgr_Lv4.h">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CFlowMgr_BossElfilis.h">
+      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowTriggerScript.h">
+      <Filter>Scripts\Trigger\FlowTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1679,6 +1685,12 @@
     </ClCompile>
     <ClCompile Include="CFlowMgr_Lv4.cpp">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowMgr_BossElfilis.cpp">
+      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowTriggerScript.cpp">
+      <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2665,6 +2677,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\FlowTrigger">
+      <UniqueIdentifier>{1ac2a4d3-39f3-4b20-ab85-a853cac49dfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
