@@ -39,7 +39,15 @@ void CKirbyLanding::tick()
         case AbilityCopyType::CUTTER: {
             if (GetOwner()->Animator()->IsFinish())
             {
-                ChangeState(L"LANDING_END");
+                if (PLAYERCTRL->GetInputWorld().Length() != 0.f)
+                {
+                    ChangeState(L"RUN_START");  
+                }
+                else
+                {
+                    ChangeState(L"LANDING_END");
+                }
+
             }
         }
         break;

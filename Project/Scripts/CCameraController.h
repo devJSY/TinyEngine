@@ -161,6 +161,7 @@ private:
     void SetZoomMaxSpeed(float _MaxSpeed) { m_ZoomMaxSpeed = _MaxSpeed; }
     void SetZoomThreshold(float _Threshold) { m_ZoomThreshold = _Threshold; } 
     void SetDistanceOffset(float _DistOffset) { m_DistanceOffset = _DistOffset; } 
+    void SetPlayer(CGameObject* _Kirby);
 
     void SaveSetting();
     void SaveInitSetting();

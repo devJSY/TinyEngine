@@ -15,9 +15,12 @@ CKirbyAbility_Cutter::CKirbyAbility_Cutter()
 }
 
 CKirbyAbility_Cutter::CKirbyAbility_Cutter(const CKirbyAbility_Cutter& _Origin)
-    : m_IsNextCombo(_Origin.m_IsNextCombo)
+    : CKirbyAbility(_Origin)
+    , m_IsNextCombo(_Origin.m_IsNextCombo)
 {
     m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalHat.pref", L"prefab\\MetalHat.pref");
+    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyMetalCutterWeapon.pref", L"prefab\\KirbyMetalCutterWeapon.pref");
 }
 
 CKirbyAbility_Cutter::~CKirbyAbility_Cutter()

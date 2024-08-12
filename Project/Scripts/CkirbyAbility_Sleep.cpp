@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "CkirbyAbility_Sleep.h"
+#include "CKirbyAbility_Sleep.h"
 #include "CKirbyMoveController.h"
 #include "CKirbyUnitScript.h"
 #include "CState.h"
 
-CkirbyAbility_Sleep::CkirbyAbility_Sleep()
+CKirbyAbility_Sleep::CKirbyAbility_Sleep()
     : m_SnotBubble(nullptr)
     , m_PrevSpeed(0.f)
     , m_Speed(2.f)
@@ -12,7 +12,16 @@ CkirbyAbility_Sleep::CkirbyAbility_Sleep()
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySleepHat.pref", L"prefab\\KirbySleepHat.pref");
 }
 
-CkirbyAbility_Sleep::~CkirbyAbility_Sleep()
+CKirbyAbility_Sleep::CKirbyAbility_Sleep(const CKirbyAbility_Sleep& _Origin)
+    : CKirbyAbility(_Origin)
+    , m_SnotBubble(nullptr)
+    , m_PrevSpeed(0.f)
+    , m_Speed(2.f)
+{
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySleepHat.pref", L"prefab\\KirbySleepHat.pref");
+}
+
+CKirbyAbility_Sleep::~CKirbyAbility_Sleep()
 {
 }
 
@@ -20,14 +29,14 @@ CkirbyAbility_Sleep::~CkirbyAbility_Sleep()
 // Idle
 // ===============
 
-void CkirbyAbility_Sleep::IdleEnter()
+void CKirbyAbility_Sleep::IdleEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepWait"));
     CPlayerMgr::SetPlayerFace(FaceType::Half);
 }
 
 // Start
-void CkirbyAbility_Sleep::IdleStartEnter()
+void CKirbyAbility_Sleep::IdleStartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepWaitStart"), false, false, 2.5f, 0.3f);
     CPlayerMgr::SetPlayerFace(FaceType::Half);
@@ -37,7 +46,7 @@ void CkirbyAbility_Sleep::IdleStartEnter()
     PLAYERCTRL->LockJump();
 }
 
-void CkirbyAbility_Sleep::IdleStartExit()
+void CKirbyAbility_Sleep::IdleStartExit()
 {
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
@@ -48,7 +57,7 @@ void CkirbyAbility_Sleep::IdleStartExit()
 // Run
 // ===============
 
-void CkirbyAbility_Sleep::RunEnter()
+void CKirbyAbility_Sleep::RunEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepWalk"), true, false, 2.5f, 0.3);
     CPlayerMgr::ClearMouthMtrl();
@@ -60,7 +69,7 @@ void CkirbyAbility_Sleep::RunEnter()
     PLAYERCTRL->LockJump();
 }
 
-void CkirbyAbility_Sleep::RunExit()
+void CKirbyAbility_Sleep::RunExit()
 {
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
@@ -74,7 +83,7 @@ void CkirbyAbility_Sleep::RunExit()
 // Jump Fall
 // ===============
 
-void CkirbyAbility_Sleep::JumpFallEnter()
+void CKirbyAbility_Sleep::JumpFallEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepFall"));
     CPlayerMgr::ClearMouthMtrl();
@@ -84,7 +93,7 @@ void CkirbyAbility_Sleep::JumpFallEnter()
     PLAYERCTRL->SetSpeed(m_Speed);
 }
 
-void CkirbyAbility_Sleep::JumpFallExit()
+void CKirbyAbility_Sleep::JumpFallExit()
 {
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
@@ -96,7 +105,7 @@ void CkirbyAbility_Sleep::JumpFallExit()
 // Attack
 // ===============
 
-void CkirbyAbility_Sleep::Attack()
+void CKirbyAbility_Sleep::Attack()
 {
     // change animation
     if (m_SnotBubble && m_SnotBubble->Animator()->IsFinish())
@@ -105,7 +114,7 @@ void CkirbyAbility_Sleep::Attack()
     }
 }
 
-void CkirbyAbility_Sleep::AttackEnter()
+void CKirbyAbility_Sleep::AttackEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Sleep"), true);
 
@@ -114,7 +123,7 @@ void CkirbyAbility_Sleep::AttackEnter()
     PLAYERCTRL->LockJump();
 }
 
-void CkirbyAbility_Sleep::AttackExit()
+void CKirbyAbility_Sleep::AttackExit()
 {
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
@@ -122,7 +131,7 @@ void CkirbyAbility_Sleep::AttackExit()
 }
 
 // Start
-void CkirbyAbility_Sleep::AttackStartEnter()
+void CKirbyAbility_Sleep::AttackStartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepStart"), false);
     CPlayerMgr::SetPlayerFace(FaceType::Close);
@@ -140,7 +149,7 @@ void CkirbyAbility_Sleep::AttackStartEnter()
     }
 }
 
-void CkirbyAbility_Sleep::AttackStartExit()
+void CKirbyAbility_Sleep::AttackStartExit()
 {
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
@@ -148,7 +157,7 @@ void CkirbyAbility_Sleep::AttackStartExit()
 }
 
 // End
-void CkirbyAbility_Sleep::AttackEndEnter()
+void CKirbyAbility_Sleep::AttackEndEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepEnd"), false);
 
@@ -164,7 +173,7 @@ void CkirbyAbility_Sleep::AttackEndEnter()
     PLAYERUNIT->BuffHP(30.f);
 }
 
-void CkirbyAbility_Sleep::AttackEndExit()
+void CKirbyAbility_Sleep::AttackEndExit()
 {
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
@@ -181,11 +190,11 @@ void CkirbyAbility_Sleep::AttackEndExit()
 // Change Ability
 // ===============
 
-void CkirbyAbility_Sleep::ChangeAbility()
+void CKirbyAbility_Sleep::ChangeAbility()
 {
 }
 
-void CkirbyAbility_Sleep::ChangeAbilityEnter()
+void CKirbyAbility_Sleep::ChangeAbilityEnter()
 {
     // create hat
     CGameObject* pInstObj = m_Hat->Instantiate();
@@ -195,6 +204,6 @@ void CkirbyAbility_Sleep::ChangeAbilityEnter()
     pInstObj->Animator()->Play(ANIMPREFIX("Deform"));
 }
 
-void CkirbyAbility_Sleep::ChangeAbilityExit()
+void CKirbyAbility_Sleep::ChangeAbilityExit()
 {
 }

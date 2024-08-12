@@ -2,22 +2,32 @@
 
 #include <Engine/CScript.h>
 
+class CGameObject;
+
 class CLevelFlowMgr : public CScript
 {
 private:
+    wstring m_CurLevelPath;
     string m_NextLevelPath;
 
-    CLevel* m_CurLevel;
-    CLevel* m_NextLevel;
+    CGameObject* m_DimensionFadeEffect;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 public:
-    virtual void LevelInit();
+    void OnDimensionFade();
+    void OffDimensionFade();
+
+public:
+    virtual void LevelStart();
+    virtual void LevelEnd();
     virtual void LevelExit();
     virtual void LevelRestart();
+    
+private:
+    virtual void MtrlParamUpdate();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
