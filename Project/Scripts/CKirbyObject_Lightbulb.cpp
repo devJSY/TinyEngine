@@ -15,7 +15,8 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
 }
 
 CKirbyObject_Lightbulb::CKirbyObject_Lightbulb(const CKirbyObject_Lightbulb& _Origin)
-    : m_Speed(8.f)
+    : CKirbyObject(_Origin)
+    , m_Speed(8.f)
     , m_BrightSpeed(5.f)
     , m_PointLight(nullptr)
 {

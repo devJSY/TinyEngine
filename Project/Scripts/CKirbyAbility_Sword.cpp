@@ -18,6 +18,22 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
     m_Charge2Time = 1.f;
 }
 
+CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
+    : CKirbyAbility(_Origin)
+    , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
+    , m_PrevSpeed(0.f)
+    , m_PrevRotSpeed(0.f)
+    , m_PrevGravity(0.f)
+    , m_AccTime(0.f)
+    , m_bFrmEnter(true)
+{
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
+    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
+    m_ComboSuccessTime = 0.5f;
+    m_Charge1Time = 1.f;
+    m_Charge2Time = 1.f;
+}
+
 CKirbyAbility_Sword::~CKirbyAbility_Sword()
 {
 }
@@ -28,7 +44,14 @@ CKirbyAbility_Sword::~CKirbyAbility_Sword()
 
 void CKirbyAbility_Sword::IdleEnter()
 {
-    wstring prev = PLAYERFSM->GetPrevState()->GetName();
+    CState* PrevState = PLAYERFSM->GetPrevState();
+
+    wstring prev = L"";
+
+    if (PrevState != nullptr)
+    {
+        prev = PLAYERFSM->GetPrevState()->GetName();
+    }
 
     if (prev == L"ATTACK" || prev == L"ATTACK_COMBO1" || prev == L"ATTACK_COMBO2")
     {

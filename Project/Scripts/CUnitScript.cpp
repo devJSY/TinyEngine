@@ -11,7 +11,7 @@ CUnitScript::CUnitScript(UINT _Type)
 
 CUnitScript::CUnitScript(const CUnitScript& _Origin)
     : CScript(_Origin)
-    , m_InitInfo{}
+    , m_InitInfo{_Origin.m_InitInfo}
     , m_PrevInfo{}
     , m_CurInfo(_Origin.m_CurInfo)
 {
@@ -112,8 +112,8 @@ UINT CUnitScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    m_CurInfo = m_InitInfo;
     fread(&m_InitInfo, sizeof(UnitInfo), 1, _File);
+    m_CurInfo = m_InitInfo;
 
     MemoryByte += sizeof(UnitInfo);
 

@@ -6,7 +6,11 @@
 #include "CKirbyUnitScript.h"
 
 CKirbyObject_VendingMachine::CKirbyObject_VendingMachine()
+    : m_SaveJumpPower(10.f)
+    , m_Can(nullptr)
 {
+    m_Can = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
+
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\VendingMachine.pref", L"prefab\\VendingMachine.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyVendingMachine.mdat", L"meshdata\\KirbyVendingMachine.mdat");
     m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyVendingMachineDemo.mdat", L"meshdata\\KirbyVendingMachineDemo.mdat");
@@ -15,7 +19,12 @@ CKirbyObject_VendingMachine::CKirbyObject_VendingMachine()
 }
 
 CKirbyObject_VendingMachine::CKirbyObject_VendingMachine(const CKirbyObject_VendingMachine& _Origin)
+    : CKirbyObject(_Origin)
+    , m_SaveJumpPower(10.f)
+    , m_Can(nullptr)
 {
+    m_Can = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
+
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\VendingMachine.pref", L"prefab\\VendingMachine.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyVendingMachine.mdat", L"meshdata\\KirbyVendingMachine.mdat");
     m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyVendingMachineDemo.mdat", L"meshdata\\KirbyVendingMachineDemo.mdat");
@@ -60,8 +69,12 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     Vec3 Offset = Vec3(0.f, 10.f, 0.f);
         
     // ÇÁ¸®ÆÕ »ý¼º
-    Ptr<CPrefab> CanJuice = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
-    CGameObject* CanJuiceInst = CanJuice->Instantiate();
+    if (nullptr == m_Can.Get())
+    {
+        m_Can = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
+    }
+
+    CGameObject* CanJuiceInst = m_Can->Instantiate();
 
     CanJuiceInst->Transform()->SetDirection(KirbyWorldDir);
     CanJuiceInst->Transform()->SetWorldPos(KirbyPos + Offset);

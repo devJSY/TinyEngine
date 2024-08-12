@@ -53,5 +53,6 @@ public:
 public:
     CLONE(CKirbyAbility_Normal)
     CKirbyAbility_Normal();
+    CKirbyAbility_Normal(const CKirbyAbility_Normal& _Origin);
     virtual ~CKirbyAbility_Normal();
 };

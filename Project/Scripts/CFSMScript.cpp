@@ -51,7 +51,8 @@ void CFSMScript::tick()
 
 void CFSMScript::AddState(const wstring& _StateName, CState* _State)
 {
-    assert(!(FindState(_StateName)));
+    if (FindState(_StateName))
+        return;
 
     _State->m_OwnerFSM = this;
 

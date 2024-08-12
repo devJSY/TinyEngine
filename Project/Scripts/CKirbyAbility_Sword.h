@@ -115,5 +115,6 @@ public:
 public:
     CLONE(CKirbyAbility_Sword)
     CKirbyAbility_Sword();
+    CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin);
     virtual ~CKirbyAbility_Sword();
 };
