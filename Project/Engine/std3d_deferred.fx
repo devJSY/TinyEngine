@@ -65,7 +65,7 @@ PS_IN VS_Std3D_Deferred_Inst(VS_IN _in)
     // Motion Blur
     if (_in.iMotionBlur)
     {
-        PrevPos = mul(PrevPos, _in.matPrevTranslate);
+        PrevPos = mul(PrevPos, _in.matPrevTransform);
 
         float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
         output.vMotionVector.xy = velocity * 0.5f;

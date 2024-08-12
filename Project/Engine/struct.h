@@ -127,7 +127,7 @@ struct tInstancingData
     Matrix matWorld;
     Matrix matWorldInvTranspose;
     Matrix matViewProj;
-    Matrix matPrevTranslate;  // Prev W * Prev V * Cur P 
+    Matrix matPrevTransform;  // Prev W * Prev V * Cur P 
     int iRowIdx;
     int iMotionBlur;
 };

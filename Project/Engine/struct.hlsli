@@ -23,7 +23,7 @@ struct VS_IN
     row_major matrix matWorld : WORLD;
     row_major matrix matWorldInvTranspose : WORLDINVTRANSPOSE;
     row_major matrix matViewProj : VIEWPROJ;
-    row_major matrix matPrevTranslate : PREVMAT; // Prev W * Prev V * Cur P 
+    row_major matrix matPrevTransform : PREVMAT; // Prev W * Prev V * Cur P 
     uint iRowIndex : ROWINDEX;
     uint iMotionBlur : MOTIONBLUR;
 };

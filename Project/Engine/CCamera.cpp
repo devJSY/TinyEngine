@@ -505,7 +505,7 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
             tInstData.matWorldInvTranspose.Translation(Vec3(0.0f));
             tInstData.matWorldInvTranspose = tInstData.matWorldInvTranspose.Transpose().Invert();
             tInstData.matViewProj = m_matView * m_matProj;
-            tInstData.matPrevTranslate = pair.second[i].pObj->Transform()->GetPrevWorldMat() * m_matPrevView * m_matProj;
+            tInstData.matPrevTransform = pair.second[i].pObj->Transform()->GetPrevWorldMat() * m_matPrevView * m_matProj;
 
             if (pair.second[i].pObj->Animator() && pair.second[i].pObj->Animator()->IsValid())
             {

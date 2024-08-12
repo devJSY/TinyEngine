@@ -104,7 +104,7 @@ PS_IN main_Inst(VS_IN input)
     // Motion Blur
     if (input.iMotionBlur)
     {
-        PrevPos = mul(PrevPos, input.matPrevTranslate);
+        PrevPos = mul(PrevPos, input.matPrevTransform);
 
         float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
         output.vMotionVector.xy = velocity * 0.5f;
