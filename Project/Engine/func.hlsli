@@ -233,7 +233,12 @@ matrix GetBoneMat(int _iBoneIdx, int _iRowIdx)
     return g_arrBoneMat[(g_iBoneCount * _iRowIdx) + _iBoneIdx];
 }
 
-void Skinning(inout float3 _vPos, inout float3 _vTangent, inout float3 _vBinormal, inout float3 _vNormal
+matrix GetPrevBoneMat(int _iBoneIdx, int _iRowIdx)
+{
+    return g_arrPrevBoneMat[(g_iBoneCount * _iRowIdx) + _iBoneIdx];
+}
+
+void Skinning(inout float3 _vPos, inout float3 _vPrevPos, inout float3 _vTangent, inout float3 _vBinormal, inout float3 _vNormal
     , inout float4 _vWeight, inout float4 _vIndices
     , int _iRowIdx)
 {
@@ -248,14 +253,17 @@ void Skinning(inout float3 _vPos, inout float3 _vTangent, inout float3 _vBinorma
             continue;
 
         matrix matBone = GetBoneMat((int) _vIndices[i], _iRowIdx);
+        matrix matPrevBone = GetPrevBoneMat((int) _vIndices[i], _iRowIdx);
 
         info.vPos += (mul(float4(_vPos, 1.f), matBone) * _vWeight[i]).xyz;
+        info.vPrevPos += (mul(float4(_vPrevPos, 1.f), matPrevBone) * _vWeight[i]).xyz;
         info.vTangent += (mul(float4(_vTangent, 0.f), matBone) * _vWeight[i]).xyz;
         info.vBinormal += (mul(float4(_vBinormal, 0.f), matBone) * _vWeight[i]).xyz;
         info.vNormal += (mul(float4(_vNormal, 0.f), matBone) * _vWeight[i]).xyz;
     }
 
     _vPos = info.vPos;
+    _vPrevPos = info.vPrevPos;
     _vTangent = normalize(info.vTangent);
     _vBinormal = normalize(info.vBinormal);
     _vNormal = normalize(info.vNormal);

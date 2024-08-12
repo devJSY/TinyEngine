@@ -58,6 +58,10 @@ PS_OUT_DEFERRED main(PS_IN input)
     output.vBitangent = float4(input.vBitangentWorld, 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
+
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
     
     return output;
 }

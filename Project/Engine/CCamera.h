@@ -35,6 +35,7 @@ private:
     bool m_bHDRI;
 
     // 변환 행렬
+    Matrix m_matPrevView;
     Matrix m_matView;
     Matrix m_matViewInv;
     Matrix m_matProj;

@@ -479,6 +479,8 @@ void CRenderMgr::render_postprocess_HDRI()
 
 void CRenderMgr::render_postprocess()
 {
+    m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
+
     // ===============
     // Depth of Field
     // ===============
@@ -504,6 +506,7 @@ void CRenderMgr::render_postprocess()
         m_PostProcessTex_LDRI->UpdateData(15);
 
         m_MotionBlurObj->render();
+        CTexture::Clear(0);
         CTexture::Clear(15);
     }
 }
@@ -795,7 +798,7 @@ void CRenderMgr::BlurTexture(Ptr<CTexture> _BlurTargetTex, UINT _BlurLevel, bool
     // ¿øº» Threshold ¼³Á¤
     pSamplingMtrl->SetScalarParam(SCALAR_PARAM::FLOAT_0, Threshold);
 
-    // ·»´õ Å¸°Ù ¿ø»óº¹±Í
+    // ·»´õ Å¸°Ù ¼³Á¤
     m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 }
 
@@ -860,12 +863,24 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
     // SwapChain MRT
     // =============
     {
-        Ptr<CTexture> arrRTTex[2] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex"), m_MotionVectorTex};
+        Ptr<CTexture> arrRTTex[1] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex")};
         Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
         m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN] = new CMRT;
-        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(arrRTTex, arrClear, 2, DSTex);
+        m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->Create(arrRTTex, arrClear, 1, DSTex);
+    }
+
+    // =============
+    // LDRI MRT
+    // =============
+    {
+        Ptr<CTexture> arrRTTex[2] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex"), m_MotionVectorTex};
+        Vec4 arrClear[2] = {Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 0.f)};
+        Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
+
+        m_arrMRT[(UINT)MRT_TYPE::LDRI] = new CMRT;
+        m_arrMRT[(UINT)MRT_TYPE::LDRI]->Create(arrRTTex, arrClear, 2, DSTex);
     }
 
     // =============
@@ -873,7 +888,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
     // =============
     {
         Ptr<CTexture> arrRTTex[2] = {CAssetMgr::GetInst()->FindAsset<CTexture>(L"FloatRenderTargetTexture"), m_MotionVectorTex};
-        Vec4 arrClear[1] = {Vec4(0.f, 0.f, 0.f, 1.f)};
+        Vec4 arrClear[2] = {Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 0.f)};
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
         m_arrMRT[(UINT)MRT_TYPE::HDRI] = new CMRT;
@@ -902,7 +917,7 @@ void CRenderMgr::CreateMRT(Vec2 Resolution)
             m_MotionVectorTex};
 
         Vec4 arrClearColor[8] = {Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f),
-                                 Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 1.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f)};
+                                 Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 0.f, 1.f), Vec4(0.f, 0.f, 1.f, 1.f), Vec4(0.f, 0.f, 0.f, 0.f)};
 
         Ptr<CTexture> DSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 
@@ -1093,7 +1108,7 @@ void CRenderMgr::CreateDepthOnlyTex(Vec2 Resolution)
 
 void CRenderMgr::CreateMotionVectorTex(Vec2 Resolution)
 {
-    m_MotionVectorTex = CAssetMgr::GetInst()->CreateTexture(L"MotionVectorTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_UNORM,
+    m_MotionVectorTex = CAssetMgr::GetInst()->CreateTexture(L"MotionVectorTex", (UINT)Resolution.x, (UINT)Resolution.y, DXGI_FORMAT_R8G8B8A8_SNORM,
                                                             D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE, D3D11_USAGE_DEFAULT);
 }
 

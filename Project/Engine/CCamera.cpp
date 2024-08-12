@@ -38,6 +38,7 @@ CCamera::CCamera()
     , m_LayerMask(0)
     , m_iCamPriority(-1)
     , m_bHDRI(false)
+    , m_matPrevView()
     , m_matView()
     , m_matViewInv()
     , m_matProj()
@@ -69,6 +70,7 @@ CCamera::CCamera(const CCamera& origin)
     , m_LayerMask(origin.m_LayerMask)
     , m_iCamPriority(-1)
     , m_bHDRI(origin.m_bHDRI)
+    , m_matPrevView()
     , m_matView()
     , m_matViewInv()
     , m_matProj()
@@ -108,6 +110,7 @@ void CCamera::finaltick()
     matRotate = matRotate.Transpose(); // 직교행렬의 역행렬은 전치행렬
 
     // 이동 x 회전 = view 행렬
+    m_matPrevView = m_matView;
     m_matView = matTrans * matRotate;
     m_matViewInv = m_matView.Invert();
 
@@ -324,6 +327,7 @@ void CCamera::SortShadowMapObject(UINT _MobilityType)
 void CCamera::render_Deferred()
 {
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
+    g_Transform.matPrevView = m_matPrevView;
     g_Transform.matView = m_matView;
     g_Transform.matViewInv = m_matViewInv;
     g_Transform.matProj = m_matProj;
@@ -355,7 +359,7 @@ void CCamera::render_Deferred()
     }
     else
     {
-        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LDRI)->OMSet();
     }
 
     // Merge Pass
@@ -365,6 +369,7 @@ void CCamera::render_Deferred()
 void CCamera::render_Forward()
 {
     // 계산한 view 행렬과 proj 행렬을 전역변수에 담아둔다.
+    g_Transform.matPrevView = m_matPrevView;
     g_Transform.matView = m_matView;
     g_Transform.matViewInv = m_matViewInv;
     g_Transform.matProj = m_matProj;
@@ -377,7 +382,7 @@ void CCamera::render_Forward()
     }
     else
     {
-        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+        CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LDRI)->OMSet();
     }
 
     // SkyBox Bind
@@ -463,7 +468,7 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
         // instancing 개수 조건 미만이거나
         // Animation2D 오브젝트거나(스프라이트 애니메이션 오브젝트)
         // Shader 가 Instancing 을 지원하지 않는경우
-        constexpr UINT InstanceCount = 10;
+        constexpr UINT InstanceCount = 5;
         if (pair.second.size() <= InstanceCount || pair.second[0].pObj->Animator2D() ||
             nullptr == pair.second[0].pObj->GetRenderComponent()->GetMaterial(pair.second[0].iMtrlIdx)->GetShader()->GetVSInst())
         {
@@ -499,19 +504,29 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
             tInstData.matWorldInvTranspose = tInstData.matWorld;
             tInstData.matWorldInvTranspose.Translation(Vec3(0.0f));
             tInstData.matWorldInvTranspose = tInstData.matWorldInvTranspose.Transpose().Invert();
-            tInstData.matView = m_matView;
-            tInstData.matProj = m_matProj;
+            tInstData.matViewProj = m_matView * m_matProj;
+            tInstData.matPrevTranslate = pair.second[i].pObj->Transform()->GetPrevWorldMat() * m_matPrevView * m_matProj;
 
             if (pair.second[i].pObj->Animator() && pair.second[i].pObj->Animator()->IsValid())
             {
                 pair.second[i].pObj->Animator()->UpdateData();
                 tInstData.iRowIdx = iRowIdx++;
-                CInstancingBuffer::GetInst()->AddInstancingBoneMat(pair.second[i].pObj->Animator()->GetFinalBoneMatBuffer());
+                CInstancingBuffer::GetInst()->AddInstancingBoneMat(pair.second[i].pObj->Animator()->GetFinalBoneMatBuffer(),
+                                                                   pair.second[i].pObj->Animator()->GetPrevFinalBoneMatBuffer());
                 bHasAnim3D = true;
             }
             else
             {
                 tInstData.iRowIdx = -1;
+            }
+
+            if (pair.second[i].pObj->MeshRender() && pair.second[i].pObj->MeshRender()->IsUseMotionBlur())
+            {
+                tInstData.iMotionBlur = true;
+            }
+            else
+            {
+                tInstData.iMotionBlur = false;
             }
 
             CInstancingBuffer::GetInst()->AddInstancingData(tInstData);

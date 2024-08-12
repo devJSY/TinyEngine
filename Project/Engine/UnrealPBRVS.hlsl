@@ -9,9 +9,10 @@ PS_IN main(VS_IN input)
 {
     PS_IN output = (PS_IN) 0.f;
     
+    float4 PrevPos = float4(input.vPos, 1.f);
     if (g_iAnim)
     {
-        Skinning(input.vPos, input.vTangent, input.vBitangent, input.vNormal
+        Skinning(input.vPos, PrevPos.xyz, input.vTangent, input.vBitangent, input.vNormal
               , input.vWeights, input.vIndices, 0);
     }
     
@@ -35,7 +36,24 @@ PS_IN main(VS_IN input)
 
     output.vPosProj = mul(posWorld, g_matView);
     output.vPosProj = mul(output.vPosProj, g_matProj);
-
+    
+    // Motion Blur
+    if (g_bMotionBlur)
+    {
+        PrevPos = mul(PrevPos, g_matPrevWV);
+        PrevPos = mul(PrevPos, g_matProj);
+        
+        float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
+        output.vMotionVector.xy = velocity * 0.5f;
+        output.vMotionVector.y *= -1.f;
+        output.vMotionVector.z = output.vPosProj.z;
+        output.vMotionVector.w = output.vPosProj.w;
+    }
+    else
+    {
+        output.vMotionVector = float4(0.f, 0.f, 0.f, 0.f);
+    }
+    
     output.vPosWorld = posWorld.xyz; // 월드 위치 따로 저장
     
     output.vNormalWorld = normalWorld;
@@ -56,9 +74,10 @@ PS_IN main_Inst(VS_IN input)
 {
     PS_IN output = (PS_IN) 0.f;
     
+    float4 PrevPos = float4(input.vPos, 1.f);
     if (g_iAnim)
     {
-        Skinning(input.vPos, input.vTangent, input.vBitangent, input.vNormal
+        Skinning(input.vPos, PrevPos.xyz, input.vTangent, input.vBitangent, input.vNormal
               , input.vWeights, input.vIndices, input.iRowIndex);
     }
      
@@ -80,9 +99,24 @@ PS_IN main_Inst(VS_IN input)
         posWorld += float4(normalWorld * height * HeightScale, 0.0);
     }
     
-    output.vPosProj = mul(posWorld, input.matView);
-    output.vPosProj = mul(output.vPosProj, input.matProj);
+    output.vPosProj = mul(posWorld, input.matViewProj);
+    
+    // Motion Blur
+    if (input.iMotionBlur)
+    {
+        PrevPos = mul(PrevPos, input.matPrevTranslate);
 
+        float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
+        output.vMotionVector.xy = velocity * 0.5f;
+        output.vMotionVector.y *= -1.f;
+        output.vMotionVector.z = output.vPosProj.z;
+        output.vMotionVector.w = output.vPosProj.w;
+    }
+    else
+    {
+        output.vMotionVector = float4(0.f, 0.f, 0.f, 0.f);
+    }
+    
     output.vPosWorld = posWorld.xyz; // 월드 위치 따로 저장
     
     output.vNormalWorld = normalWorld;

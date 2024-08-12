@@ -76,7 +76,10 @@ PS_OUT_FORWARD main(PS_IN input)
     PS_OUT_FORWARD output;
     output.vColor = float4(ambientLighting + directLighting + emission + RimColor, 1.0);
     output.vColor = clamp(output.vColor, 0.0, 1000.0);
-    output.vMotionVector = float4(0.f, 0.f, 0.f, 0.f);
+
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
     
     return output;
 }

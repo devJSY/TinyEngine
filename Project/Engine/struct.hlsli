@@ -22,9 +22,10 @@ struct VS_IN
     // Per Instance Data    
     row_major matrix matWorld : WORLD;
     row_major matrix matWorldInvTranspose : WORLDINVTRANSPOSE;
-    row_major matrix matView : VIEW;
-    row_major matrix matProj : PROJ;
+    row_major matrix matViewProj : VIEWPROJ;
+    row_major matrix matPrevTranslate : PREVMAT; // Prev W * Prev V * Cur P 
     uint iRowIndex : ROWINDEX;
+    uint iMotionBlur : MOTIONBLUR;
 };
 
 struct PS_IN
@@ -42,6 +43,8 @@ struct PS_IN
     float2 vUV1 : TEXCOORD1;
     float2 vUV2 : TEXCOORD2;
     float2 vUV3 : TEXCOORD3;
+ 
+    float4 vMotionVector : TEXCOORD4;
 };
 
 struct PS_OUT_DEFERRED
@@ -173,6 +176,7 @@ struct tRaycastOut
 struct tSkinningInfo
 {
     float3 vPos;
+    float3 vPrevPos;
     float3 vTangent;
     float3 vBinormal;
     float3 vNormal;

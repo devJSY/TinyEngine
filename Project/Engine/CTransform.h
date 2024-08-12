@@ -18,6 +18,7 @@ private:
     Vec3 m_arrLocalDir[3]; // Right, Up, Front
     Vec3 m_arrWorldDir[3]; // Right, Up, Front
 
+    Matrix m_matPrevWorld;
     Matrix m_matWorld;
     Matrix m_matWorldInv;
 
@@ -63,6 +64,7 @@ public:
     Vec3 GetWorldDir(DIR_TYPE _type) const { return m_arrWorldDir[(UINT)_type]; }
 
     const Matrix& GetWorldMat() const { return m_matWorld; }
+    const Matrix& GetPrevWorldMat() const { return m_matPrevWorld; }
     const Matrix& GetWorldInvMat() const { return m_matWorldInv; }
     void SetWorldMat(const Matrix _matWorld) { m_matWorld = _matWorld; }
 

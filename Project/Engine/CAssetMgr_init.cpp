@@ -233,15 +233,16 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 1);
     AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 2);
     AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 3);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 0);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 1);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 2);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 3);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 0);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 1);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 2);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 3);
     AddInputLayout(DXGI_FORMAT_R32_UINT, "ROWINDEX", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32_UINT, "MOTIONBLUR", 1, 0);
 
     // =================================
     // Std2DShader
@@ -1318,6 +1319,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "Motion Vector Texture");
+        pShader->AddScalarParam(FLOAT_0, "Thresholud");
 
         pShader->SetName(L"MotionBlurShader");
         AddAsset(L"MotionBlurShader", pShader);
