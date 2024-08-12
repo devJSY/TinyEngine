@@ -22,7 +22,6 @@
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
 
-
 // PBR 원칙
 // 1. microfacet 표면 모델을 기반으로 한다
 // 2. 에너지를 보존한다.
