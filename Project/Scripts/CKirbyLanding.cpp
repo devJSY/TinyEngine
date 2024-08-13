@@ -28,7 +28,15 @@ void CKirbyLanding::tick()
         }
         break;
         case ObjectCopyType::LIGHT: {
-            if (GetOwner()->Animator()->IsFinish())
+            if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if ((KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)) && PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK_END");
+            }
+            else if (GetOwner()->Animator()->IsFinish())
             {
                 if (PLAYERCTRL->GetInputWorld().Length() != 0.f)
                 {

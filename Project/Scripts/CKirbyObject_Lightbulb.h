@@ -15,6 +15,7 @@ public:
     virtual void IdleExit();
 
     virtual void RunEnter();
+    virtual void RunExit();
 
     virtual void RunEndEnter();
     virtual void RunEndExit();

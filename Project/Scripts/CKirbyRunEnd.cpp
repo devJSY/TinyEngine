@@ -19,8 +19,7 @@ void CKirbyRunEnd::tick()
         switch (PLAYERFSM->GetCurObjectIdx())
         {
         case ObjectCopyType::CONE:
-        case ObjectCopyType::VENDING_MACHINE:
-        case ObjectCopyType::LIGHT: {
+        case ObjectCopyType::VENDING_MACHINE: {
             if (GetOwner()->Animator()->IsFinish())
             {
                 ChangeState(L"IDLE");
@@ -28,6 +27,37 @@ void CKirbyRunEnd::tick()
             else if (!PLAYERCTRL->IsGround())
             {
                 ChangeState(L"JUMP_FALL");
+            }
+        }
+        break;
+        case ObjectCopyType::LIGHT: {
+            if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_OBJECT");
+            }
+            else if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if ((KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)) && PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK_END");
+            }
+            else if ((KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP))) && (KEY_NONE(KEY_GUARD) || KEY_RELEASED(KEY_GUARD)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+            else if (PLAYERCTRL->GetInput().Length() != 0.f)
+            {
+                ChangeState(L"RUN");
+            }
+            else if (GetOwner()->Animator()->IsFinish())
+            {
+                ChangeState(L"IDLE");
             }
         }
         break;

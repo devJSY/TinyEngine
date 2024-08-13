@@ -5,7 +5,7 @@
 
 CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
     : m_Speed(8.f)
-    , m_BrightSpeed(5.f)
+    , m_BrightSpeed(3.f)
     , m_PointLight(nullptr)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
@@ -18,7 +18,7 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
 CKirbyObject_Lightbulb::CKirbyObject_Lightbulb(const CKirbyObject_Lightbulb& _Origin)
     : CKirbyObject(_Origin)
     , m_Speed(8.f)
-    , m_BrightSpeed(5.f)
+    , m_BrightSpeed(3.f)
     , m_PointLight(nullptr)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
@@ -63,11 +63,18 @@ void CKirbyObject_Lightbulb::RunEnter()
     {
         PLAYER->Animator()->Play(ANIMPREFIX("MoveBright"), true, false, 1.5f, 0.3f);
         CPlayerMgr::SetPlayerFace(FaceType::Frown);
+        PLAYERCTRL->SetSpeed(m_BrightSpeed);
     }
     else
     {
         PLAYER->Animator()->Play(ANIMPREFIX("Move"), true, false, 1.5f, 0.3f);
+        PLAYERCTRL->SetSpeed(m_Speed);
     }
+}
+
+void CKirbyObject_Lightbulb::RunExit()
+{
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 }
 
 void CKirbyObject_Lightbulb::RunEndEnter()
@@ -98,7 +105,6 @@ void CKirbyObject_Lightbulb::RunEndExit()
 void CKirbyObject_Lightbulb::JumpStartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Jump"), false);
-    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 }
 
 void CKirbyObject_Lightbulb::LandingEnter()
@@ -107,19 +113,29 @@ void CKirbyObject_Lightbulb::LandingEnter()
     {
         CPlayerMgr::SetPlayerFace(FaceType::Frown);
         PLAYER->Animator()->Play(ANIMPREFIX("LandingBright"), false);
+        PLAYERCTRL->SetSpeed(m_BrightSpeed / 2.f);
     }
     else
     {
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
+        PLAYERCTRL->SetSpeed(m_Speed / 2.f);
     }
 
-    PLAYERCTRL->SetSpeed(m_Speed / 2.f);
     PLAYERCTRL->LockJump();
 }
 
 void CKirbyObject_Lightbulb::LandingExit()
 {
+    if (KEY_PRESSED(KEY_ATK) && PLAYERFSM->IsAttackEvent())
+    {
+    PLAYERCTRL->SetSpeed(m_BrightSpeed);
+    }
+    else
+    {
     PLAYERCTRL->SetSpeed(m_Speed);
+    }
+
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
     PLAYERCTRL->UnlockJump();
 }
 
@@ -128,19 +144,27 @@ void CKirbyObject_Lightbulb::LandingEndEnter()
     if (KEY_PRESSED(KEY_ATK) && PLAYERFSM->IsAttackEvent())
     {
         PLAYER->Animator()->Play(ANIMPREFIX("LandingEndBright"), false);
+    PLAYERCTRL->SetSpeed(m_BrightSpeed / 2.f);
     }
     else
     {
         PLAYER->Animator()->Play(ANIMPREFIX("LandingEnd"), false);
+    PLAYERCTRL->SetSpeed(m_Speed / 2.f);
     }
 
-    PLAYERCTRL->SetSpeed(m_Speed / 2.f);
     PLAYERCTRL->LockJump();
 }
 
 void CKirbyObject_Lightbulb::LandingEndExit()
 {
+    if (KEY_PRESSED(KEY_ATK) && PLAYERFSM->IsAttackEvent())
+    {
+    PLAYERCTRL->SetSpeed(m_BrightSpeed);
+    }
+    else
+    {
     PLAYERCTRL->SetSpeed(m_Speed);
+    }
     PLAYERCTRL->UnlockJump();
 }
 
@@ -156,7 +180,7 @@ void CKirbyObject_Lightbulb::Attack()
 void CKirbyObject_Lightbulb::AttackEnter()
 {
     // LightÄÑ±â
-    PLAYER->Animator()->Play(ANIMPREFIX("LightOn"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("LightOn"), false, false, 2.5f, 0.2);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
     //@Effect ±Û·Î¿ì ÀÌÆåÆ®
 
@@ -188,10 +212,6 @@ void CKirbyObject_Lightbulb::AttackEndEnter()
     // Light²ô±â
     PLAYER->Animator()->Play(ANIMPREFIX("LightOff"), false);
 
-    PLAYERCTRL->LockMove();
-    PLAYERCTRL->SetSpeed(m_Speed);
-    PLAYERCTRL->SetRotSpeed(m_Speed);
-
     if (m_PointLight)
     {
         m_PointLight->TurnOff();
@@ -200,8 +220,8 @@ void CKirbyObject_Lightbulb::AttackEndEnter()
 
 void CKirbyObject_Lightbulb::AttackEndExit()
 {
-    PLAYERCTRL->UnlockMove();
-
+    PLAYERCTRL->SetSpeed(m_Speed);
+    PLAYERCTRL->SetRotSpeed(m_Speed);
     PLAYERFSM->ClearChargeAccTime();
     PLAYERFSM->SetAttackEvent(false);
 }
