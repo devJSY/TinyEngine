@@ -9,10 +9,11 @@
 CKirbyVacuumCollider::CKirbyVacuumCollider()
     : CScript(KIRBYVACUUMCOLLIDER)
     , m_FindTarget(nullptr)
-    , m_FindDistance(FBXSDK_FLOAT_MAX)
     , m_FindType(EatType::NONE)
     , m_FindAbilityType(AbilityCopyType::NONE)
     , m_FindObjType(ObjectCopyType::NONE)
+    , m_FindDistance(FBXSDK_FLOAT_MAX)
+    , m_FindHoldTime(0.f)
     , m_bDrawing(false)
 {
 }
@@ -20,10 +21,11 @@ CKirbyVacuumCollider::CKirbyVacuumCollider()
 CKirbyVacuumCollider::CKirbyVacuumCollider(const CKirbyVacuumCollider& _Origin)
     : CScript(KIRBYVACUUMCOLLIDER)
     , m_FindTarget(nullptr)
-    , m_FindDistance(FBXSDK_FLOAT_MAX)
     , m_FindType(EatType::NONE)
     , m_FindAbilityType(AbilityCopyType::NONE)
     , m_FindObjType(ObjectCopyType::NONE)
+    , m_FindDistance(FBXSDK_FLOAT_MAX)
+    , m_FindHoldTime(0.f)
     , m_bDrawing(false)
 {
 }
@@ -51,10 +53,10 @@ void CKirbyVacuumCollider::tick()
     // 이전 충돌 판정 시 찾은 대상이 있다면
     if (!m_bDrawing && m_FindTarget)
     {
-        //@TODO target object가 monster라면 Vacuum Drawed로 상태 변경
+        // target object가 monster라면 버티는 상태로 변경시켜줌
         if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
         {
-            // m_FindTarget->GetScript<CFSMScript>()->ChangeState(L"VACUUM_DRAWED");
+            //m_pFindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
         }
 
         // collider clear
@@ -68,7 +70,18 @@ void CKirbyVacuumCollider::tick()
     if (m_bDrawing)
     {
         Vec3 Force = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-        Force = (Force).Normalize() * 60.f;
+        Force.Normalize();
+
+        if (m_FindHoldTime > 0.f)
+        {
+            m_FindHoldTime -= DT;
+            Force = (Force).Normalize() * 5.f;
+        }
+        else
+        {
+            Force = (Force).Normalize() * 60.f;
+        }
+
         m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
     }
 }
@@ -83,8 +96,9 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
     bool bChanged = false;
     AbilityCopyType newAbility = AbilityCopyType::NONE;
     ObjectCopyType newObject = ObjectCopyType::NONE;
-    EatType newType = GetEatType(_OtherCollider->GetOwner(), newAbility, newObject);
+    float newHoldTime = 0.f;
     float newDist = (PLAYER->Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos()).Length();
+    EatType newType = GetEatType(_OtherCollider->GetOwner(), newAbility, newObject, newHoldTime);
 
     if (newType == EatType::NONE)
         return;
@@ -114,6 +128,7 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
         m_FindDistance = newDist;
         m_FindAbilityType = newAbility;
         m_FindObjType = newObject;
+        m_FindHoldTime = newHoldTime;
     }
 }
 
@@ -157,15 +172,16 @@ void CKirbyVacuumCollider::EnableCollider(bool _bEnable)
     if (_bEnable)
     {
         m_FindTarget = nullptr;
-        m_FindDistance = FBXSDK_FLOAT_MAX;
         m_FindType = EatType::NONE;
         m_FindAbilityType = AbilityCopyType::NONE;
         m_FindObjType = ObjectCopyType::NONE;
         m_bDrawing = false;
+        m_FindDistance = FBXSDK_FLOAT_MAX;
+        m_FindHoldTime = 0.f;
     }
 }
 
-EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj)
+EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj, float& _outHoldTime)
 {
     if (_pObj->GetLayerIdx() == LAYER_DYNAMIC)
     {
@@ -196,10 +212,14 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
         {
             CMonsterUnitScript* pMonster = _pObj->GetScript<CMonsterUnitScript>();
             
-            if (!pMonster) // || !pMonster->IsEatable()) @TODO 머지 후 변경
+            if (!pMonster || !pMonster->IsEatable())
             {
                 return EatType::NONE;
             }
+
+            //@PR:Monster
+            //_outHoldTime = pMonster->GetResistTime();
+            _outHoldTime = 5.f;
             return EatType::Monster;
         }
     }
