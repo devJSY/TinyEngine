@@ -788,6 +788,33 @@ float Lerp(float A, float B, float Alpha)
     return A * (1 - Alpha) + B * Alpha;
 }
 
+Vec4 PositionToNDC(Vec3 _Position)
+{
+    CCamera* _pCam = CRenderMgr::GetInst()->GetMainCamera();
+    if (nullptr == _pCam)
+    {
+        return Vec4(-100, -100, -100, -100);
+    }
+
+    Matrix VPMatrix = _pCam->GetViewMat() * _pCam->GetProjMat();
+    Vec4 NDCPos = Vector4::Transform(Vec4(_Position.x, _Position.y, _Position.z, 1.f), VPMatrix);
+
+    // Perspective Division
+    NDCPos.x /= NDCPos.w;
+    NDCPos.y /= NDCPos.w;
+    NDCPos.z /= NDCPos.w;
+
+    return NDCPos;
+}
+
+Vec2 NDCToUV(Vec3 _NDC)
+{
+    Vec2 UV = Vec2(_NDC.x, -_NDC.y); // 텍스춰 좌표와 NDC는 y가 반대
+    UV += 1.f;
+    UV *= 0.5f;
+    return UV;
+}
+
 string ToString(const wstring& wstr)
 {
     string str(wstr.length(), 0);

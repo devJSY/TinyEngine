@@ -93,6 +93,23 @@ float2 AspectRatioCorrection(float2 uv)
     return uv;
 }
 
+float4 PositionToNDC(float3 _Position)
+{
+    float4 NDCPos = mul(float4(_Position, 1.f), g_matView);
+    NDCPos = mul(NDCPos, g_matProj);
+    NDCPos.xyz /= NDCPos.w;
+    
+    return NDCPos;
+}
+
+float2 NDCToUV(float3 _NDC)
+{
+    float2 UV = float2(_NDC.x, -_NDC.y); // 텍스춰 좌표와 NDC는 y가 반대
+    UV += 1.f;
+    UV *= 0.5f;
+    return UV;
+}
+
 // ======
 // Random
 // ======

@@ -6,7 +6,7 @@ class CGameObject;
 class CFadeOutScript : public CScript
 {
 private:
-    CGameObject* pTarget;
+    CGameObject* m_Target;
     bool m_bComplete;
     bool m_bReverse;
     float m_Duration;
@@ -33,9 +33,6 @@ public:
 
     float GetRotateSpeed() const { return m_RotateSpeed; }
     void SetRotateSpeed(float _Speed) { m_RotateSpeed = _Speed; }
-
-private:
-    Vec2 GetTargetNDCPos();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
