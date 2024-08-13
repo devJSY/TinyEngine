@@ -271,22 +271,17 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = m_JumpPower;
     }
 
+    if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
+    {
+        m_MoveVelocity.y = 0.f;
+    }
+
     // 중력 적용
     m_Accel.y += m_Gravity;
 
     // 수직 방향 이동속도 계산
     m_MoveVelocity.y += m_Accel.y * DT;
 
-    // 땅에 닿은 상태면 Velocity Y값 초기화
-    if (CharacterController()->IsGrounded() && m_MoveVelocity.y < 0)
-    {
-        m_MoveVelocity.y = 0.f;
-    }
-
-    if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
-    {
-        m_MoveVelocity.y = 0.f;
-    }
 
     // AddVelocity 적용
     if (m_AddVelocity.Length() != 0.f)
@@ -333,6 +328,13 @@ void CKirbyMoveController::Move()
     // 움직임 적용
     // =========================
     CharacterController()->Move(m_MoveVelocity * DT);
+
+
+    // 땅에 닿은 상태면 Velocity Y값 초기화
+    if (CharacterController()->IsGrounded() && m_MoveVelocity.y < 0)
+    {
+        m_MoveVelocity.y = 0.f;
+    }
 }
 
 

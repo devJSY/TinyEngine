@@ -7,6 +7,10 @@ class CGameObject;
 class CLevelFlowMgr : public CScript
 {
 private:
+    bool m_bFadeOut;
+    float m_FadeOutAcc;
+    float m_FadeOutDuration;
+
     wstring m_CurLevelPath;
     string m_NextLevelPath;
 
@@ -23,10 +27,10 @@ public:
 public:
     virtual void LevelStart();
     virtual void LevelEnd();
-    virtual void LevelExit();
     virtual void LevelRestart();
     
 private:
+    virtual void LevelExit();
     virtual void MtrlParamUpdate();
 
 public:
