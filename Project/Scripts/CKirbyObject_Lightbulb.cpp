@@ -73,19 +73,25 @@ void CKirbyObject_Lightbulb::RunEndEnter()
 {
     if (KEY_PRESSED(KEY_ATK) && PLAYERFSM->IsAttackEvent())
     {
-        PLAYER->Animator()->Play(ANIMPREFIX("StopBright"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX("StopBright"), false, false, 3.f);
         CPlayerMgr::SetPlayerFace(FaceType::Frown);
     }
     else
     {
-        PLAYER->Animator()->Play(ANIMPREFIX("Stop"), false);
+        PLAYER->Animator()->Play(ANIMPREFIX("Stop"), false, false, 3.f);
         CPlayerMgr::SetPlayerFace(FaceType::Close);
     }
+
+    PLAYERCTRL->LockMove();
+    PLAYERCTRL->LockDirection();
 }
 
 void CKirbyObject_Lightbulb::RunEndExit()
 {
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->UnlockDirection();
 }
 
 void CKirbyObject_Lightbulb::JumpStartEnter()
@@ -106,7 +112,14 @@ void CKirbyObject_Lightbulb::LandingEnter()
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
     }
 
+    PLAYERCTRL->SetSpeed(m_Speed/2.f);
     PLAYERCTRL->LockJump();
+}
+
+void CKirbyObject_Lightbulb::LandingExit()
+{
+    PLAYERCTRL->SetSpeed(m_Speed);
+    PLAYERCTRL->UnlockJump();
 }
 
 void CKirbyObject_Lightbulb::LandingEndEnter()
@@ -120,7 +133,14 @@ void CKirbyObject_Lightbulb::LandingEndEnter()
         PLAYER->Animator()->Play(ANIMPREFIX("LandingEnd"), false);
     }
 
+    PLAYERCTRL->SetSpeed(m_Speed / 2.f);
     PLAYERCTRL->LockJump();
+}
+
+void CKirbyObject_Lightbulb::LandingEndExit()
+{
+    PLAYERCTRL->SetSpeed(m_Speed);
+    PLAYERCTRL->UnlockJump();
 }
 
 // ===============

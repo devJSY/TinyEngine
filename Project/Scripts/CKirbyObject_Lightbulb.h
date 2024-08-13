@@ -14,12 +14,17 @@ public:
     virtual void IdleExit();
 
     virtual void RunEnter();
+
     virtual void RunEndEnter();
     virtual void RunEndExit();
 
     virtual void JumpStartEnter();
+
     virtual void LandingEnter();
+    virtual void LandingExit();
+
     virtual void LandingEndEnter();
+    virtual void LandingEndExit();
 
     // ºÒÄÑ±â
     virtual void Attack();
