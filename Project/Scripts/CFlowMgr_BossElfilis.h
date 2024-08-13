@@ -1,8 +1,20 @@
 #pragma once
 #include "CLevelFlowMgr.h"
 
+enum class BossLevelFlow
+{
+    LevelStart,
+    WaitBoss,
+    SpawnBoss,
+    Fight,
+};
+
 class CFlowMgr_BossElfilis : public CLevelFlowMgr
 {
+private:
+    BossLevelFlow m_FlowState;
+    CGameObject* m_LevelEnterWall;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

@@ -60,6 +60,9 @@ private:
     CGameObject* m_BigElfilis;
     CElfilisBigFSM* m_BigElfilisFSM;
 
+    // childs
+    CGameObject* m_Weapon;
+
     // map
     Vec3 m_MapFloorOffset;
     float m_MapSizeRadius;
@@ -95,6 +98,7 @@ public:
     bool IsGround() const { return m_bGroundCollision; }
     CGameObject* GetBigBoss() const { return m_BigElfilis; }
     CElfilisBigFSM* GetBigBossFSM() const { return m_BigElfilisFSM; }
+    CGameObject* GetWeapon() const { return m_Weapon; }
     float GetMapSizeRadius() const { return m_MapSizeRadius; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
     float GetPlayerDist() const;

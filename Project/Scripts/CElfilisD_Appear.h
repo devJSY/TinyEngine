@@ -10,6 +10,7 @@ private:
     float m_DownSpeed;
     float m_PrevDrag;
     float m_AccTime;
+    bool m_bFrmEnter;
 
 public:
     virtual void tick();

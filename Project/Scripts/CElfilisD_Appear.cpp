@@ -7,10 +7,12 @@
 #include "CCameraController.h"
 
 CElfilisD_Appear::CElfilisD_Appear()
-    : m_StartPos(Vec3(0.f, 800.f, 0.f))
+    : m_BossName(nullptr)
+    , m_StartPos(Vec3(0.f, 800.f, 0.f))
+    , m_PrevDrag(0.f)
     , m_DownSpeed(200.f)
     , m_AccTime(0.f)
-    , m_BossName(nullptr)
+    , m_bFrmEnter(false)
 {
     m_BossNamePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossName_Elfilis.pref", L"prefab\\BossName_Elfilis.pref");
 }
@@ -42,11 +44,7 @@ void CElfilisD_Appear::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("BallWait"), true, false, 1.f, 0.f);
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
         GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
-
-        // down
-        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -2000.f, 0.f), ForceMode::Impulse);
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        m_AccTime = 0.f;
+        m_bFrmEnter = true;
 
         //@CAMERA : 에피리스 가까이, 등장 바라보며 고정
         CAMERACTRL->SetMainTarget(BOSS);
@@ -115,12 +113,25 @@ void CElfilisD_Appear::Start()
     m_AccTime += DT;
     float AppearTime = 4.f;
 
+    // down
+    if (m_bFrmEnter)
+    {
+        m_bFrmEnter = false;
+
+        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -2000.f, 0.f), ForceMode::Impulse);
+        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
+        m_AccTime = 0.f;
+    }
+
     // Add drag
-    float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
-    float t = CurDist / m_StartPos.Length();
-    float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    else
+    {
+        float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
+        float t = CurDist / m_StartPos.Length();
+        float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
+        float NewDrag = 4.f - 4.f * sinf(Ratio);
+        GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    }
 
     if (m_AccTime > AppearTime)
     {
