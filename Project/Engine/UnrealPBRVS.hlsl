@@ -42,7 +42,7 @@ PS_IN main(VS_IN input)
     {
         PrevPos = mul(PrevPos, g_matPrevWV);
         PrevPos = mul(PrevPos, g_matProj);
-        
+   
         float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
         output.vMotionVector.xy = velocity * 0.5f;
         output.vMotionVector.y *= -1.f;
@@ -105,7 +105,7 @@ PS_IN main_Inst(VS_IN input)
     if (input.iMotionBlur)
     {
         PrevPos = mul(PrevPos, input.matPrevTransform);
-
+        
         float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
         output.vMotionVector.xy = velocity * 0.5f;
         output.vMotionVector.y *= -1.f;
