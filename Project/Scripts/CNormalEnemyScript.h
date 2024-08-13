@@ -3,7 +3,7 @@
 
 #include "CMonsterUnitScript.h"
 
-enum class NORMALENEMY_STATE
+enum class NormalEnemyState
 {
     Idle,
     Grooming,
@@ -15,29 +15,31 @@ enum class NORMALENEMY_STATE
     AttackFailed,
     AfterAttack,
     Damage,
+    Fall,
     Land,
     Eaten,
-    Dead,
+    Death,
     End,
 };
 
 class CNormalEnemyScript : public CMonsterUnitScript
 {
 private:
-    CGameObject* m_pTargetObject;
-    NORMALENEMY_STATE m_eState;
-    float m_fPatrolTime;
-    float m_fPatrolAccTime;
-
-    Vec3 m_fPatrolDir;
+    Vec3 m_vPatrolDir;
     Vec3 m_vDamageDir;
+    Vec3 m_vCenterPoint;
+
+    NormalEnemyState m_eState;
 
     float m_fMaxSpeed;
     float m_fSpeed;
     float m_fRushLerp;
     float m_fRushSpeedLerp;
+    float m_fThreshHoldRushSpeedLerp;
 
+    bool m_bEnter;
     bool m_bFirst;
+    bool m_bCirclePatrol;
 
 public:
     virtual void begin() override;
@@ -48,9 +50,15 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    void ChangeState(NORMALENEMY_STATE _state);
-    void EnterState(NORMALENEMY_STATE _state);
-    void ExitState(NORMALENEMY_STATE _state);
+    void EnterState(NormalEnemyState _state);
+    void FSM();
+    void ExitState(NormalEnemyState _state);
+    void ChangeState(NormalEnemyState _state);
+    void CheckDamage();
+    NormalEnemyState RandomIdleState();
+    Vec3 TrackDir(Vec3 _vPos);
+    void ApplyDir(Vec3 _vFront, bool _flag);
+    void PatrolMove();
 
 private:
     void Idle();
@@ -58,19 +66,12 @@ private:
     void Find();
     void Attack();
     void Grooming();
-    void SuccessedAttack();
     void FailedAttack();
+    void Fall();
     void Land();
     void AfterAttack();
     void Damage();
-    void Dead();
-
-private:
-    NORMALENEMY_STATE RandomIdleState();
-    Vec3 RandomPatrolDir();
-    Vec3 TrackDir(Vec3 _vPos);
-    void ApplyDir(Vec3 _vFront, bool _flag);
-    void PatrolMove();
+    void Death();
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
@@ -79,6 +80,6 @@ private:
 public:
     CLONE(CNormalEnemyScript)
     CNormalEnemyScript();
-    CNormalEnemyScript(const CNormalEnemyScript& _Origin);
+    CNormalEnemyScript(const CNormalEnemyScript& Origin);
     virtual ~CNormalEnemyScript();
 };

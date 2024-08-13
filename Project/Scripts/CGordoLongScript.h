@@ -13,10 +13,10 @@ public:
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
-    void OnTriggerExit(CCollider* _OtherCollider);
 
 public:
     CLONE(CGordoLongScript)
     CGordoLongScript();
+    CGordoLongScript(const CGordoLongScript& Origin);
     virtual ~CGordoLongScript();
 };

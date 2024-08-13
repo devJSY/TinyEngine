@@ -1319,7 +1319,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
 
         pShader->AddTexParam(TEX_0, "Motion Vector Texture");
-        pShader->AddScalarParam(FLOAT_0, "Thresholud");
+        pShader->AddScalarParam(FLOAT_0, "Thresholud", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Velocity Intensity", 1e-3f);
+        pShader->AddScalarParam(FLOAT_2, "Velocity MaxLength", 1e-3f);
 
         pShader->SetName(L"MotionBlurShader");
         AddAsset(L"MotionBlurShader", pShader);
@@ -1888,6 +1890,8 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MotionBlurShader"));
+        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Max Distance
+        pMtrl->SetScalarParam(FLOAT_2, 1.f); // Max Distance
         pMtrl->SetName(L"MotionBlurMtrl");
         AddAsset<CMaterial>(L"MotionBlurMtrl", pMtrl);
     }

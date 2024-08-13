@@ -183,10 +183,12 @@ call CodeGen.exe</Command>
     <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CChangeAlphaScript.h" />
     <ClInclude Include="CFixedViewCamTrigger.h" />
+    <ClInclude Include="CFlowMgr_BossElfilis.h" />
     <ClInclude Include="CFlowMgr_Lv1.h" />
     <ClInclude Include="CFlowMgr_Lv2.h" />
     <ClInclude Include="CFlowMgr_Lv3.h" />
     <ClInclude Include="CFlowMgr_Lv4.h" />
+    <ClInclude Include="CFlowTriggerScript.h" />
     <ClInclude Include="CLensFlareScript.h" />
     <ClInclude Include="CLevelFlowMgr.h" />
     <ClInclude Include="CKirbyAbility_Sleep.h" />
@@ -251,6 +253,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoTrackingSoul.h" />
     <ClInclude Include="CMorphoUnit.h" />
     <ClInclude Include="CMorpho_Idle.h" />
+    <ClInclude Include="CPhantaScript.h" />
     <ClInclude Include="CPushOutColliderScript.h" />
     <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
@@ -374,6 +377,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CSolarChargeScript.h" />
     <ClInclude Include="CSolarOnceScript.h" />
+    <ClInclude Include="CSpawnTriggerScript.h" />
+    <ClInclude Include="CSpookStepScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CSurpriseBoardAttackScript.h" />
@@ -478,10 +483,12 @@ call CodeGen.exe</Command>
     <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CChangeAlphaScript.cpp" />
     <ClCompile Include="CFixedViewCamTrigger.cpp" />
+    <ClCompile Include="CFlowMgr_BossElfilis.cpp" />
     <ClCompile Include="CFlowMgr_Lv1.cpp" />
     <ClCompile Include="CFlowMgr_Lv2.cpp" />
     <ClCompile Include="CFlowMgr_Lv3.cpp" />
     <ClCompile Include="CFlowMgr_Lv4.cpp" />
+    <ClCompile Include="CFlowTriggerScript.cpp" />
     <ClCompile Include="CLensFlareScript.cpp" />
     <ClCompile Include="CLevelFlowMgr.cpp" />
     <ClCompile Include="CKirbyAbility_Sleep.cpp" />
@@ -546,6 +553,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoTrackingSoul.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />
     <ClCompile Include="CMorpho_Idle.cpp" />
+    <ClCompile Include="CPhantaScript.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
@@ -669,6 +677,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CSolarChargeScript.cpp" />
     <ClCompile Include="CSolarOnceScript.cpp" />
+    <ClCompile Include="CSpawnTriggerScript.cpp" />
+    <ClCompile Include="CSpookStepScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CSurpriseBoardAttackScript.cpp" />

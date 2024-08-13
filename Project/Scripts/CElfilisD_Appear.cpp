@@ -7,10 +7,12 @@
 #include "CCameraController.h"
 
 CElfilisD_Appear::CElfilisD_Appear()
-    : m_StartPos(Vec3(0.f, 800.f, 0.f))
+    : m_BossName(nullptr)
+    , m_StartPos(Vec3(0.f, 800.f, 0.f))
+    , m_PrevDrag(0.f)
     , m_DownSpeed(200.f)
     , m_AccTime(0.f)
-    , m_BossName(nullptr)
+    , m_bFrmEnter(false)
 {
     m_BossNamePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossName_Elfilis.pref", L"prefab\\BossName_Elfilis.pref");
 }
@@ -40,25 +42,22 @@ void CElfilisD_Appear::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("BallWait"), true, false, 1.f, 0.f);
-        GetOwner()->Rigidbody()->SetKinematic(true);
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
         GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
-
-        // down
-        GetOwner()->Rigidbody()->SetKinematic(false);
-        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -3000.f, 0.f), ForceMode::Impulse);
-
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        m_AccTime = 0.f;
+        m_bFrmEnter = true;
 
         //@CAMERA : 에피리스 가까이, 등장 바라보며 고정
         CAMERACTRL->SetMainTarget(BOSS);
+
+        CAMERACTRL->FixedView(true, Vec3(0.f, 151.3f, -279.88f));
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
-        CAMERACTRL->SetLookDist(130.f);
-        CAMERACTRL->SetLookDir(Vec3(0.f, 0.058f, 0.998f));
+        CAMERACTRL->SetRotationSpeed(150.f);
+
+        // CAMERACTRL->SetLookDist(130.f);
+        // CAMERACTRL->SetLookDir(Vec3(0.f, 0.058f, 0.998f));
 
         // 설정으로 카메라 즉시이동
-        CAMERACTRL->ResetCamera();
+        // CAMERACTRL->ResetCamera();
     }
     break;
     case StateStep::Progress: {
@@ -78,9 +77,9 @@ void CElfilisD_Appear::Enter_Step()
         }
 
         //@CAMERA : 뒤로 이동
-        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
-        CAMERACTRL->SetLookDist(280.f);
-        CAMERACTRL->SetLookDir(Vec3(0.f, 0.024f, 0.971f));
+        // CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
+        // CAMERACTRL->SetLookDist(280.f);
+        // CAMERACTRL->SetLookDir(Vec3(0.f, 0.024f, 0.971f));
     }
     break;
     }
@@ -112,15 +111,29 @@ void CElfilisD_Appear::Exit_Step()
 void CElfilisD_Appear::Start()
 {
     m_AccTime += DT;
+    float AppearTime = 4.f;
+
+    // down
+    if (m_bFrmEnter)
+    {
+        m_bFrmEnter = false;
+
+        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -2000.f, 0.f), ForceMode::Impulse);
+        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
+        m_AccTime = 0.f;
+    }
 
     // Add drag
-    float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
-    float t = (CurDist + GetOwner()->CapsuleCollider()->GetHeight() / 2.f) / m_StartPos.Length();
-    float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    else
+    {
+        float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
+        float t = CurDist / m_StartPos.Length();
+        float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
+        float NewDrag = 4.f - 4.f * sinf(Ratio);
+        GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    }
 
-    if (t >= 1.f)
+    if (m_AccTime > AppearTime)
     {
         ChangeStep(StateStep::Progress);
     }

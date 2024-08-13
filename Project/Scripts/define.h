@@ -95,3 +95,10 @@ enum class StateStep
     EndWait,
     EndEnd,
 };
+
+enum class BossLevelFlow
+{
+    LevelStart,
+    WaitBoss,
+    Fight,
+};

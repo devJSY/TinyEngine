@@ -7,11 +7,13 @@
 #define Albedo0Tex g_tex_0
 #define MRA0Tex g_tex_1
 #define Noraml0Tex g_tex_2
+#define Emissive0Tex g_tex_3
 
 // Texture 1 Set
-#define Albedo1Tex g_tex_3
-#define MRA1Tex g_tex_4
-#define Noraml1Tex g_tex_5
+#define Albedo1Tex g_tex_4
+#define MRA1Tex g_tex_5
+#define Noraml1Tex g_tex_6
+#define Emissive1Tex g_tex_7
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlMetallic g_vMetallic
@@ -23,17 +25,28 @@
 
 #define UVApply g_int_0
 
-PS_OUT_DEFERRED main(PS_IN input)
+struct PS_OUT
 {
-    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
-    PS_OUT_DEFERRED output0 = (PS_OUT_DEFERRED) 0.f;
-    PS_OUT_DEFERRED output1 = (PS_OUT_DEFERRED) 0.f;
+    float4 vColor : SV_Target0;
+    float4 vPosition : SV_Target1;
+    float4 vNormal : SV_Target2;
+    float4 vTangent : SV_Target3;
+    float4 vBitangent : SV_Target4;
+    float4 vEmissive : SV_Target5;
+    float4 vMRA : SV_Target6;
+};
+
+PS_OUT main(PS_IN input)
+{
+    PS_OUT output = (PS_OUT) 0.f;
+    PS_OUT output0 = (PS_OUT) 0.f;
+    PS_OUT output1 = (PS_OUT) 0.f;
     
     float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, Albedo0UVScale > 0.f ? input.vUV0 * (1.f / Albedo0UVScale) : input.vUV0) : (float4) 0.f;
-    float4 albedo1 = g_btex_3 ? Albedo1Tex.Sample(g_LinearWrapSampler, Albedo1UVScale > 0.f ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0) : (float4) 0.f;
+    float4 albedo1 = g_btex_4 ? Albedo1Tex.Sample(g_LinearWrapSampler, Albedo1UVScale > 0.f ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0) : (float4) 0.f;
     
     float2 vUV0 = (UVApply && Albedo0UVScale > 0.f) ? input.vUV0 * (1.f / Albedo0UVScale) : input.vUV0;
-    float2 vUV1 = (UVApply && Albedo0UVScale > 0.f) ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0;
+    float2 vUV1 = (UVApply && Albedo1UVScale > 0.f) ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0;
     
     albedo0.rgb *= albedo0.a;
     albedo1.rgb *= albedo1.a;
@@ -47,10 +60,10 @@ PS_OUT_DEFERRED main(PS_IN input)
         
         output0.vColor = albedo0;
         output0.vPosition = float4(input.vPosWorld, 1.f);
-        output0.vNormal = float4(g_btex_1 ? NormalMapping(input, Noraml0Tex, vUV0, g_LinearWrapSampler, true) : normalize(input.vNormalWorld), 1.f);
+        output0.vNormal = float4(g_btex_2 ? NormalMapping(input, Noraml0Tex, vUV0, g_LinearWrapSampler, true) : normalize(input.vNormalWorld), 1.f);
         output0.vTangent = float4(input.vTangentWorld, 1.f);
         output0.vBitangent = float4(input.vBitangentWorld, 1.f);
-        output0.vEmissive = MtrlEmission;
+        output0.vEmissive = g_btex_3 ? Emissive0Tex.Sample(g_LinearWrapSampler, vUV0) : MtrlEmission;
         
         float4 MRAColor = g_btex_1 ? MRA0Tex.Sample(g_LinearWrapSampler, vUV0) : (float4) 0.f;
     
@@ -72,16 +85,16 @@ PS_OUT_DEFERRED main(PS_IN input)
         
         output1.vColor = albedo1;
         output1.vPosition = float4(input.vPosWorld, 1.f);
-        output1.vNormal = float4(g_btex_5 ? NormalMapping(input, Noraml1Tex, vUV1, g_LinearWrapSampler, true) : normalize(input.vNormalWorld), 1.f);
+        output1.vNormal = float4(g_btex_6 ? NormalMapping(input, Noraml1Tex, vUV1, g_LinearWrapSampler, true) : normalize(input.vNormalWorld), 1.f);
         output1.vTangent = float4(input.vTangentWorld, 1.f);
         output1.vBitangent = float4(input.vBitangentWorld, 1.f);
-        output1.vEmissive = MtrlEmission;
+        output1.vEmissive = g_btex_7 ? Emissive1Tex.Sample(g_LinearWrapSampler, vUV1) : MtrlEmission;
         
-        float4 MRAColor = g_btex_4 ? MRA1Tex.Sample(g_LinearWrapSampler, vUV1) : (float4) 0.f;
+        float4 MRAColor = g_btex_5 ? MRA1Tex.Sample(g_LinearWrapSampler, vUV1) : (float4) 0.f;
     
-        float metallic = g_btex_4 ? MRAColor.x : MtrlMetallic;
-        float roughness = g_btex_4 ? MRAColor.y : MtrlRoughness;
-        float ao = g_btex_4 ? MRAColor.z : 1.f;
+        float metallic = g_btex_5 ? MRAColor.x : MtrlMetallic;
+        float roughness = g_btex_5 ? MRAColor.y : MtrlRoughness;
+        float ao = g_btex_5 ? MRAColor.z : 1.f;
         if (ao >= 1.f)
         {
             ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
@@ -115,10 +128,6 @@ PS_OUT_DEFERRED main(PS_IN input)
         output.vEmissive = MtrlEmission;
         output.vMRA = float4(MtrlMetallic, MtrlRoughness, SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r, 1.f);
     }
-    
-    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
-    output.vMotionVector.z = 1.f;
-    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
     
     return output;
 }

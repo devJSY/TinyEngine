@@ -4,6 +4,8 @@
 
 #define MotionVectorTex g_tex_0
 #define Thresholud g_float_0
+#define VelocityIntensity g_float_1 // Velocity 강도
+#define VelocityMaxLength g_float_2 // Velocity 최대 길이
 
 #define NumBlurSample 10
 
@@ -13,7 +15,16 @@ float4 main(PS_IN input) : SV_TARGET
 
     // Thresholud
     float4 Velocity = MotionVectorTex.Sample(g_LinearClampSampler, input.vUV0);
-    Velocity.xy *= 1.f - g_DT;
+
+    // s = (t0 / dt) * m
+    float t0 = 1.f / 60.f; // Desired frame time (assuming 60fps)
+    float m = VelocityIntensity;
+    float s = (t0 / g_DT) * m;
+
+    // V' = (s / Rmax) * V
+    float Rmax = VelocityMaxLength;
+    Velocity.xy = (s / Rmax) * Velocity.xy;
+    
     if (dot(Velocity.xy, Velocity.xy) / 2.f < Thresholud)
     {
         return float4(Color.rgb, 1.f);

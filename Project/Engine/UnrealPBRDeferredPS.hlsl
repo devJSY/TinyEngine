@@ -31,7 +31,7 @@ PS_OUT_DEFERRED main(PS_IN input)
     albedo1.rgb *= albedo1.a;
     albedo2.rgb *= albedo2.a;
     albedo3.rgb *= albedo3.a;
-    
+
     float3 albedo = albedo0.rgb + albedo1.rgb + albedo2.rgb + albedo3.rgb;
     
     if (0.f >= length(albedo))
