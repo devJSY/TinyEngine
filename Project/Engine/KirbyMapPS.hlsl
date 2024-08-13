@@ -23,22 +23,11 @@
 
 #define UVApply g_int_0
 
-struct PS_OUT
+PS_OUT_DEFERRED main(PS_IN input)
 {
-    float4 vColor : SV_Target0;
-    float4 vPosition : SV_Target1;
-    float4 vNormal : SV_Target2;
-    float4 vTangent : SV_Target3;
-    float4 vBitangent : SV_Target4;
-    float4 vEmissive : SV_Target5;
-    float4 vMRA : SV_Target6;
-};
-
-PS_OUT main(PS_IN input)
-{
-    PS_OUT output = (PS_OUT) 0.f;
-    PS_OUT output0 = (PS_OUT) 0.f;
-    PS_OUT output1 = (PS_OUT) 0.f;
+    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
+    PS_OUT_DEFERRED output0 = (PS_OUT_DEFERRED) 0.f;
+    PS_OUT_DEFERRED output1 = (PS_OUT_DEFERRED) 0.f;
     
     float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, Albedo0UVScale > 0.f ? input.vUV0 * (1.f / Albedo0UVScale) : input.vUV0) : (float4) 0.f;
     float4 albedo1 = g_btex_3 ? Albedo1Tex.Sample(g_LinearWrapSampler, Albedo1UVScale > 0.f ? input.vUV0 * (1.f / Albedo1UVScale) : input.vUV0) : (float4) 0.f;
@@ -126,6 +115,10 @@ PS_OUT main(PS_IN input)
         output.vEmissive = MtrlEmission;
         output.vMRA = float4(MtrlMetallic, MtrlRoughness, SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r, 1.f);
     }
+    
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
     
     return output;
 }

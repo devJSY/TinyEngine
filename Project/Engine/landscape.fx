@@ -216,20 +216,9 @@ DS_Output DS_LandScape(PatchLevel _pathlevel // 각 제어점 별 분할 레벨
     return output;
 }
 
-struct PS_Output
+PS_OUT_DEFERRED PS_LandScape(DS_Output _in)
 {
-    float4 vColor : SV_Target0;
-    float4 vPosition : SV_Target1;
-    float4 vNormal : SV_Target2;
-    float4 vTangent : SV_Target3;
-    float4 vBitangent : SV_Target4;
-    float4 vEmissive : SV_Target5;
-    float4 vMRA : SV_Target6;
-};
-
-PS_Output PS_LandScape(DS_Output _in)
-{
-    PS_Output output = (PS_Output) 0.f;
+    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
     
     float3 albedo = g_btex_0 ? AmbientTex.Sample(g_LinearWrapSampler, _in.vUV).rgb 
                                  : MtrlAlbedo.rgb;
@@ -293,6 +282,7 @@ PS_Output PS_LandScape(DS_Output _in)
     output.vNormal = float4(normal, 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
+    output.vMotionVector = float4(0.f, 0.f, 0.f, 0.f);
     
     return output;
 }
