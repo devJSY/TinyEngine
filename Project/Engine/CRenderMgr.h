@@ -79,6 +79,11 @@ private:
     bool m_bEnableDOF;
     CGameObject* m_DOFObj;
 
+    // Motion Blur
+    bool m_bEnableMotionBlur;
+    Ptr<CTexture> m_MotionVectorTex;
+    CGameObject* m_MotionBlurObj;
+
     // Camera Preview
     Ptr<CTexture> m_CameraPreviewTex;
 
@@ -113,6 +118,9 @@ public:
     bool IsEnableDOF() const { return m_bEnableDOF; }
     void SetEnableDOF(bool _bEnable) { m_bEnableDOF = _bEnable; }
 
+    bool IsEnableMotionBlur() const { return m_bEnableMotionBlur; }
+    void SetEnableMotionBlur(bool _bEnable) { m_bEnableMotionBlur = _bEnable; }
+
 public:
     CCamera* GetMainCamera() const { return m_mainCam; };
     CCamera* GetCamera(int _Idx) const;
@@ -145,6 +153,7 @@ public:
     Ptr<CTexture> GetDepthOnlyTex() const { return m_DepthOnlyTex; }
     Ptr<CTexture> GetBloomRTTex_LDRI() const { return m_BloomRTTex_LDRI; }
     Ptr<CTexture> GetDepthMaskingTex() const { return m_DepthMaskingTex; }
+    Ptr<CTexture> GetMotionVectorTex() const { return m_MotionVectorTex; }
     Ptr<CTexture> GetCameraPreviewTex() const { return m_CameraPreviewTex; }
 
     const vector<CLight2D*>& GetvecLight2D() const { return m_vecLight2D; }
@@ -154,6 +163,7 @@ private:
     void CreateRTCopyTex(Vec2 Resolution);
     void CreateIDMapTex(Vec2 Resolution);
     void CreateDepthOnlyTex(Vec2 Resolution);
+    void CreateMotionVectorTex(Vec2 Resolution);
     void CreatePostProcessTex(Vec2 Resolution);
     void CreateBloomTextures(Vec2 Resolution);
     void CreateCameraPreviewTex(Vec2 Resolution);
@@ -162,6 +172,10 @@ private:
 public:
     void render_postprocess_LDRI();
     void render_postprocess_HDRI();
+
+private:
+    // LDR, HDR 공통으로 수행되는 후처리
+    void render_postprocess();
 
 public:
     void render_StaticShadowDepth();

@@ -28,6 +28,7 @@ void CRenderMgr::init()
     CreateRTCopyTex(vRenderResolution);
     CreateIDMapTex(vRenderResolution);
     CreateDepthOnlyTex(vRenderResolution);
+    CreateMotionVectorTex(vRenderResolution);
     CreatePostProcessTex(vRenderResolution);
     CreateCameraPreviewTex(vRenderResolution);
 
@@ -118,4 +119,12 @@ void CRenderMgr::init()
     m_DOFObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
     m_DOFObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DOFMtrl"), 0);
     m_DOFObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_RTCopyTex);
+
+    // Motion Blur
+    m_MotionBlurObj = new CGameObject;
+    m_MotionBlurObj->AddComponent(new CTransform);
+    m_MotionBlurObj->AddComponent(new CMeshRender);
+    m_MotionBlurObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    m_MotionBlurObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"MotionBlurMtrl"), 0);
+    m_MotionBlurObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, m_MotionVectorTex);
 }

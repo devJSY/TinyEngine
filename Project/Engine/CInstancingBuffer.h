@@ -13,8 +13,10 @@ private:
 
     // Anim3D ¿ëµµ
     vector<CStructuredBuffer*> m_vecBoneMat;
+    vector<CStructuredBuffer*> m_vecPrevBoneMat;
     int m_AnimInstCount;
     CStructuredBuffer* m_BoneBuffer;
+    CStructuredBuffer* m_PrevBoneBuffer;
 
     Ptr<CCopyBoneShader> m_CopyShader;
 
@@ -24,6 +26,7 @@ public:
     {
         m_vecData.clear();
         m_vecBoneMat.clear();
+        m_vecPrevBoneMat.clear();
         m_AnimInstCount = 0;
     }
     void AddInstancingData(tInstancingData& _tData) { m_vecData.push_back(_tData); }
@@ -32,9 +35,10 @@ public:
     ComPtr<ID3D11Buffer> GetBuffer() const { return m_InstancingBuffer; }
     void SetData();
 
-    void AddInstancingBoneMat(CStructuredBuffer* _pBuffer);
+    void AddInstancingBoneMat(CStructuredBuffer* _pBuffer, CStructuredBuffer* _pPrevBuffer);
     int GetAnimInstancingCount() const { return m_AnimInstCount; };
     CStructuredBuffer* GetBoneBuffer() const { return m_BoneBuffer; }
+    CStructuredBuffer* GetPrevBoneBuffer() const { return m_PrevBoneBuffer; }
 
 private:
     void Resize(UINT _iCount);

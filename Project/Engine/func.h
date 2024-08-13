@@ -59,6 +59,7 @@ namespace GamePlayStatic
     void LayerChange(CGameObject* _pObj, int LayerIdx);
 
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState);
+    void ChangeLevelAsync(const wstring& _LevelPath, LEVEL_STATE _NextState);
     void ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState);
 
     void DeleteAsset(ASSET_TYPE _type, Ptr<CAsset> _Asset);
@@ -73,6 +74,10 @@ namespace GamePlayStatic
 int GetRandomInt(int _Min, int _Max);
 float GetRandomfloat(float _Min, float _Max);
 float Lerp(float A, float B, float Alpha);
+
+// Coordinate Transformation
+Vec4 PositionToNDC(Vec3 _Position);
+Vec2 NDCToUV(Vec3 _NDC);
 
 string ToString(const wstring& wstr);
 wstring ToWstring(const string& str);

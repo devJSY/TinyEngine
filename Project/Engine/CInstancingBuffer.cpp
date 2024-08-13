@@ -10,11 +10,14 @@ CInstancingBuffer::CInstancingBuffer()
     , m_MaxCount(10)
     , m_vecData{}
     , m_vecBoneMat{}
+    , m_vecPrevBoneMat{}
     , m_AnimInstCount(0)
     , m_BoneBuffer(nullptr)
+    , m_PrevBoneBuffer(nullptr)
     , m_CopyShader(nullptr)
 {
     m_BoneBuffer = new CStructuredBuffer;
+    m_PrevBoneBuffer = new CStructuredBuffer;
 }
 
 CInstancingBuffer::~CInstancingBuffer()
@@ -23,6 +26,12 @@ CInstancingBuffer::~CInstancingBuffer()
     {
         delete m_BoneBuffer;
         m_BoneBuffer = nullptr;
+    }
+
+    if (nullptr != m_PrevBoneBuffer)
+    {
+        delete m_PrevBoneBuffer;
+        m_PrevBoneBuffer = nullptr;
     }
 }
 
@@ -63,6 +72,8 @@ void CInstancingBuffer::SetData()
     {
         m_BoneBuffer->Create(m_vecBoneMat[0]->GetElementSize(), m_vecBoneMat[0]->GetElementCount() * (UINT)m_vecBoneMat.size(), SB_TYPE::READ_WRITE,
                              false, nullptr);
+        m_PrevBoneBuffer->Create(m_vecPrevBoneMat[0]->GetElementSize(), m_vecPrevBoneMat[0]->GetElementCount() * (UINT)m_vecPrevBoneMat.size(),
+                                 SB_TYPE::READ_WRITE, false, nullptr);
     }
 
     // 복사용 컴퓨트 쉐이더 실행
@@ -75,16 +86,23 @@ void CInstancingBuffer::SetData()
         m_CopyShader->SetSourceBuffer(m_vecBoneMat[i]);
         m_CopyShader->SetDestBuffer(m_BoneBuffer);
         m_CopyShader->Execute();
+
+        // Prev Bone
+        m_CopyShader->SetSourceBuffer(m_vecPrevBoneMat[i]);
+        m_CopyShader->SetDestBuffer(m_PrevBoneBuffer);
+        m_CopyShader->Execute();
     }
 
     // Bone 정보 전달 레지스터
     m_BoneBuffer->UpdateData(31);
+    m_PrevBoneBuffer->UpdateData(35);
 }
 
-void CInstancingBuffer::AddInstancingBoneMat(CStructuredBuffer* _pBuffer)
+void CInstancingBuffer::AddInstancingBoneMat(CStructuredBuffer* _pBuffer, CStructuredBuffer* _pPrevBuffer)
 {
     ++m_AnimInstCount;
     m_vecBoneMat.push_back(_pBuffer);
+    m_vecPrevBoneMat.push_back(_pPrevBuffer);
 }
 
 void CInstancingBuffer::Resize(UINT _iCount)

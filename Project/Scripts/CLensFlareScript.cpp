@@ -38,34 +38,9 @@ void CLensFlareScript::tick()
     {
         MeshRender()->GetMaterial(0)->SetScalarParam(INT_0, m_bDepthCheck);
         MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_Spacing);
-        MeshRender()->GetMaterial(0)->SetScalarParam(VEC4_0, GetSunNDCPos());
+        MeshRender()->GetMaterial(0)->SetScalarParam(VEC4_0, PositionToNDC(Transform()->GetWorldPos()));
         MeshRender()->GetMaterial(0)->SetScalarParam(VEC2_1, m_CenterOffset);
     }
-}
-
-Vec4 CLensFlareScript::GetSunNDCPos()
-{
-    // MainCam
-    CCamera* _pCam = CRenderMgr::GetInst()->GetMainCamera();
-
-    if (nullptr == _pCam)
-    {
-        return Vec4(-100, -100, -100, -100);
-    }
-
-    Matrix VPMatrix = _pCam->GetViewMat() * _pCam->GetProjMat();
-
-    Vec3 SunWorldPos = Transform()->GetWorldPos();
-
-    // WolrdPos -> NDC
-    Vec4 SunNDCPos = Vector4::Transform(Vec4(SunWorldPos.x, SunWorldPos.y, SunWorldPos.z, 1.f), VPMatrix);
-
-    // Perspective Division
-    SunNDCPos.x /= SunNDCPos.w;
-    SunNDCPos.y /= SunNDCPos.w;
-    SunNDCPos.z /= SunNDCPos.w;
-
-    return SunNDCPos;
 }
 
 UINT CLensFlareScript::SaveToLevelFile(FILE* _File)

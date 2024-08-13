@@ -73,7 +73,6 @@ void CLevelFlowMgr::LevelStart()
     MainPlayer->Transform()->SetWorldPos(StartingPos);
     MainPlayer->Transform()->SetWorldRotation(StartingRot);
 
-
     // Player 등록이 필요한 Manager들에게 Player를 등록한다.
     CPlayerMgr::SetPlayer(MainPlayer);
     CGameObject* MainCam = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
@@ -88,7 +87,6 @@ void CLevelFlowMgr::LevelStart()
 
     // @TODO BGM 재생
     // @TODO UI (Fade In)
-
 }
 
 void CLevelFlowMgr::LevelEnd()
@@ -137,6 +135,14 @@ void CLevelFlowMgr::tick()
 
 void CLevelFlowMgr::MtrlParamUpdate()
 {
+    // // DOF Focus Player 위치 설정
+    if (nullptr != PLAYER)
+    {
+        static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DOFMtrl");
+        Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
+        Vec2 UVPos = NDCToUV(NDCPos);
+        pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
+    }
 }
 
 void CLevelFlowMgr::OnDimensionFade()

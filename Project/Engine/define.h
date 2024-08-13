@@ -338,6 +338,7 @@ enum class Physics_EVENT_TYPE
 enum class MRT_TYPE
 {
     SWAPCHAIN,
+    LDRI,
     HDRI,
     DEFERRED,
     DEFERRED_PHONG,
