@@ -1890,8 +1890,8 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MotionBlurShader"));
-        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Max Distance
-        pMtrl->SetScalarParam(FLOAT_2, 1.f); // Max Distance
+        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Velocity Intensity
+        pMtrl->SetScalarParam(FLOAT_2, 1.f); // Velocity MaxLength
         pMtrl->SetName(L"MotionBlurMtrl");
         AddAsset<CMaterial>(L"MotionBlurMtrl", pMtrl);
     }
