@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CKirbyObject_Lightbulb.h"
 #include "CKirbyUnitScript.h"
+#include "CKirbyLightScript.h"
 
 CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
     : m_Speed(8.f)
@@ -10,7 +11,7 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulb.mdat", L"meshdata\\KirbyLightbulb.mdat");
     m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulbDemo.mdat", L"meshdata\\KirbyLightbulbDemo.mdat");
-    
+
     ParseDemoMesh(m_DemoMesh);
 }
 
@@ -112,7 +113,7 @@ void CKirbyObject_Lightbulb::LandingEnter()
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
     }
 
-    PLAYERCTRL->SetSpeed(m_Speed/2.f);
+    PLAYERCTRL->SetSpeed(m_Speed / 2.f);
     PLAYERCTRL->LockJump();
 }
 
@@ -165,7 +166,10 @@ void CKirbyObject_Lightbulb::AttackEnter()
 
     PLAYERFSM->SetAttackEvent(true);
 
-    m_PointLight->SetActive(true);
+    if (m_PointLight)
+    {
+        m_PointLight->TurnOn();
+    }
 }
 
 void CKirbyObject_Lightbulb::AttackExit()
@@ -188,7 +192,10 @@ void CKirbyObject_Lightbulb::AttackEndEnter()
     PLAYERCTRL->SetSpeed(m_Speed);
     PLAYERCTRL->SetRotSpeed(m_Speed);
 
-    m_PointLight->SetActive(false);
+    if (m_PointLight)
+    {
+        m_PointLight->TurnOff();
+    }
 }
 
 void CKirbyObject_Lightbulb::AttackEndExit()
@@ -215,7 +222,10 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
     PLAYERCTRL->AddVelocity(Vec3(0.f, 3.5f, 0.f));
 
     // 포인트라이트
-    m_PointLight->SetActive(false);
+    if (m_PointLight)
+    {
+        m_PointLight->TurnOff();
+    }
 }
 
 // ===============
@@ -239,5 +249,9 @@ void CKirbyObject_Lightbulb::ChangeObjectEnter()
     PLAYERCTRL->SetRotSpeed(m_Speed);
 
     // PointLight
-    m_PointLight = PLAYER->GetChildObject(L"DeformLight PointLight");
+    CGameObject* PointLight = PLAYER->GetChildObject(L"DeformLight PointLight");
+    if (PointLight)
+    {
+        m_PointLight = PointLight->GetScript<CKirbyLightScript>();
+    }
 }

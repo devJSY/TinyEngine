@@ -67,20 +67,7 @@ void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
     m_PlayerFSM = pPlayerFSM;
     m_PlayerController = pPlayerController;
 
-    if (m_PlayerObj)
-    {
-        CGameObject* pLight = m_PlayerObj->GetChildObject(L"DeformLight PointLight");
-        if (!pLight)
-        {
-            MessageBox(nullptr, L"Player에 DeformLight PointLight 자식이 존재하지 않습니다", L"[경고] 플레이어 세팅 오류", MB_OK);
-        }
-        else
-        {
-            pLight->SetActive(false);
-        }
-    }
-
-    
+    // set mesh & material
     m_PlayerObj->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Kirby.mdat", L"meshdata\\Kirby.mdat"));
 
     for (UINT i = 0; i < m_PlayerObj->GetRenderComponent()->GetMtrlCount(); ++i)

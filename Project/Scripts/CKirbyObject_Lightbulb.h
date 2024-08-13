@@ -1,10 +1,11 @@
 #pragma once
 #include "CKirbyObject.h"
+class CKirbyLightScript;
 
 class CKirbyObject_Lightbulb : public CKirbyObject
 {
 private:
-    CGameObject* m_PointLight;
+    CKirbyLightScript* m_PointLight;
     float m_Speed;
     float m_BrightSpeed;
 
