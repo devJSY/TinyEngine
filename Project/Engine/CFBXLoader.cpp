@@ -193,9 +193,6 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
 
             GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j), iVtxOrder);
             
-            GetTest(_pFbxMesh, &Container, iIdx, iVtxOrder);
-
-
             ++iVtxOrder;
         }
         UINT iSubsetIdx = pMtrl->GetIndexArray().GetAt(i);
@@ -428,19 +425,6 @@ void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int 
         break;
         }
     }
-}
-
-void CFBXLoader::GetTest(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder)
-{
-    FbxGeometryElementUserData* leVtxc = _pMesh->GetElementUserData(0);
-    FbxGeometryElementCrease* leVtxc2 = _pMesh->GetElementEdgeCrease(0);
-    FbxGeometryElementHole* leVtxc3 = _pMesh->GetElementHole(0);
-    FbxGeometryElementSmoothing* leVtxc4 = _pMesh->GetElementSmoothing(0);
-    FbxGeometryElementCrease* leVtxc5 = _pMesh->GetElementVertexCrease(0);
-    FbxGeometryElementVisibility* leVtxc6 = _pMesh->GetElementVisibility(0);
-
-    if (!leVtxc)
-        return;
 }
 
 Vec4 CFBXLoader::GetMtrlData(FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName)

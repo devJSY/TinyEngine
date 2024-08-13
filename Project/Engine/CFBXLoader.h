@@ -126,9 +126,6 @@ private:
     void GetColor(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
     void GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iUVIndex, int _iVtxOrder);
 
-    //GetTest
-    void GetTest(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int _iVtxOrder);
-
     Vec4 GetMtrlData(FbxSurfaceMaterial* _pSurface, const char* _pMtrlName, const char* _pMtrlFactorName);
     wstring GetMtrlTextureName(FbxSurfaceMaterial* _pSurface, const char* _pMtrlProperty);
 
