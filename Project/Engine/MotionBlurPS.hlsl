@@ -19,7 +19,7 @@ float4 main(PS_IN input) : SV_TARGET
     // s = (t0 / dt) * m
     float t0 = 1.f / 60.f; // Desired frame time (assuming 60fps)
     float m = VelocityIntensity;
-    float s = (t0 / g_DT) * m;
+    float s = (t0 / g_EngineDT) * m;
 
     // V' = (s / Rmax) * V
     float Rmax = VelocityMaxLength;
