@@ -6,6 +6,10 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     , m_pTargetObj(nullptr)
     , m_RaycastDist(100.f)
     , m_bEatable(true)
+    , m_bSparkleOnOff(false)
+    , m_bSparkle(false)
+    , m_fAccTime(0.f)
+    , m_fTermTime(0.f)
 {
     UnitInfo MonsterInfo = {
         100.f, // HP
@@ -40,6 +44,10 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     , m_pTargetObj(_Origin.m_pTargetObj)
     , m_RaycastDist(_Origin.m_RaycastDist)
     , m_bEatable(_Origin.m_bEatable)
+    , m_bSparkleOnOff(false)
+    , m_bSparkle(false)
+    , m_fAccTime(0.f)
+    , m_fTermTime(0.f)
 {
     UnitInfo MonsterInfo = {
         100.f, // HP
@@ -71,6 +79,12 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
 
 CMonsterUnitScript::~CMonsterUnitScript()
 {
+}
+
+void CMonsterUnitScript::tick()
+{
+    CUnitScript::tick();
+    SparkleEffect();
 }
 
 void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
@@ -115,6 +129,45 @@ bool CMonsterUnitScript::IsGround()
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), m_RaycastDist, vecCollision);
     return nullptr != Hit.pCollisionObj;
+}
+
+void CMonsterUnitScript::SparkleEffect()
+{
+    if (m_bSparkle)
+    {
+        m_fAccTime += DT;
+        m_fTermTime += DT;
+
+        if (m_fTermTime >= 0.08f)
+        {
+            CMeshRender* pMeshRender = MeshRender();
+            for (UINT i = 0; i < pMeshRender->GetMtrlCount(); ++i)
+            {
+                if (m_bSparkleOnOff)
+                {
+                    pMeshRender->GetMaterial(i)->SetEmission(Vec4(100.f, 100.f, 100.f, 255.f));
+                }
+                else
+                {
+                    pMeshRender->GetMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
+                }
+            }
+            m_bSparkleOnOff = !m_bSparkleOnOff;
+            m_fTermTime = 0.f;
+        }
+    }
+
+    if (m_fAccTime >= 2.5f)
+    {
+        CMeshRender* pMeshRender = MeshRender();
+        m_bSparkle = false;
+        m_fAccTime = 0.f;
+        m_fTermTime = 0.f;
+        for (UINT i = 0; i < pMeshRender->GetMtrlCount(); ++i)
+        {
+            pMeshRender->GetMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
+        }
+    }
 }
 
 UINT CMonsterUnitScript::SaveToLevelFile(FILE* _File)

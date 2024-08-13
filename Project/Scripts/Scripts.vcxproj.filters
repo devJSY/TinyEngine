@@ -835,6 +835,15 @@
     <ClInclude Include="CFlowMgr_Lv4.h">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CPhantaScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpookStepScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawnTriggerScript.h">
+      <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
+    </ClInclude>
     <ClInclude Include="CFlowMgr_BossElfilis.h">
       <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
     </ClInclude>
@@ -1671,6 +1680,9 @@
     <ClCompile Include="CLensFlareScript.cpp">
       <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
+    <ClCompile Include="CSpookStepScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
+    </ClCompile>
     <ClCompile Include="CFlowMgr_Lv0.cpp">
       <Filter>Scripts\Manager\FlowManager\0. Tutorial Level Flow Manager</Filter>
     </ClCompile>
@@ -1685,6 +1697,12 @@
     </ClCompile>
     <ClCompile Include="CFlowMgr_Lv4.cpp">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhantaScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
     </ClCompile>
     <ClCompile Include="CFlowMgr_BossElfilis.cpp">
       <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
@@ -2657,6 +2675,12 @@
     <Filter Include="Scripts\Postprocess">
       <UniqueIdentifier>{7cd8d5b0-174c-4f37-8883-a20493177767}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\SpookStep">
+      <UniqueIdentifier>{4d83eee2-89f5-4f00-bfae-93eab82499e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Phanta">
+      <UniqueIdentifier>{3b041919-a9b4-4d0b-8723-3d8f0595ad5a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Elfilis Level Flow Manager">
       <UniqueIdentifier>{dc577414-555c-4965-aec1-5df008469f1e}</UniqueIdentifier>
     </Filter>
@@ -2677,6 +2701,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SpawnTrigger">
+      <UniqueIdentifier>{853c8a9c-6323-4f6e-819d-cd4b03875654}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Trigger\FlowTrigger">
       <UniqueIdentifier>{1ac2a4d3-39f3-4b20-ab85-a853cac49dfd}</UniqueIdentifier>

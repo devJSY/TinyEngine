@@ -1,6 +1,6 @@
 #pragma once
 #include "CMonsterUnitScript.h"
-enum class HOTHEAD_STATE
+enum class HotHeadState
 {
     Idle,
     Find,
@@ -14,6 +14,8 @@ enum class HOTHEAD_STATE
     AttackFlameRotStart,
     AttackFlameRot,
     AttackFlameRotEnd,
+    Fall,
+    Landing,
     Damage,
     Eaten,
     Death,
@@ -27,7 +29,7 @@ private:
     CCollider* m_pFlameCol;
     CCollider* m_pFlameRotCol;
 
-    HOTHEAD_STATE m_eState;
+    HotHeadState m_eState;
     Vec3 m_vDamageDir;
 
     float m_fAimingTime;
@@ -46,9 +48,13 @@ public:
     virtual void tick() override;
 
 private:
-    void EnterState(HOTHEAD_STATE _state);
-    void ChangeState(HOTHEAD_STATE _state);
-    void ExitState(HOTHEAD_STATE _state);
+    void InitSetting();
+    void EnterState(HotHeadState _state);
+    void FSM();
+    void ExitState(HotHeadState _state);
+    void ChangeState(HotHeadState _state);
+    void CheckDamage();
+    void ProjectileAttack();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
@@ -69,13 +75,18 @@ private:
     void AttackFlameRotStart();
     void AttackFlameRot();
     void AttackEnd();
+    void Fall();
+    void Landing();
     void Damage();
     void Eaten();
     void Death();
 
 private:
+
+
+private:
     // Test Func 이후 PreFab으로 대체
-    void ProjectileAttack();
+
 
 public:
     CLONE(CHotHeadScript)

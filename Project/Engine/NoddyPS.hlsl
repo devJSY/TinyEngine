@@ -1,6 +1,6 @@
 #include "struct.hlsli"
-#include "func.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
