@@ -1,14 +1,6 @@
 #pragma once
 #include "CLevelFlowMgr.h"
 
-enum class BossLevelFlow
-{
-    LevelStart,
-    WaitBoss,
-    SpawnBoss,
-    Fight,
-};
-
 class CFlowMgr_BossElfilis : public CLevelFlowMgr
 {
 private:

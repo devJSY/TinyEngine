@@ -12,6 +12,8 @@ CFlowMgr_BossElfilis::CFlowMgr_BossElfilis()
 
 CFlowMgr_BossElfilis::CFlowMgr_BossElfilis(const CFlowMgr_BossElfilis& _Origin)
     : CLevelFlowMgr(_Origin)
+    , m_FlowState(BossLevelFlow::LevelStart)
+    , m_LevelEnterWall(nullptr)
 {
 }
 
@@ -45,11 +47,6 @@ void CFlowMgr_BossElfilis::tick()
 
     case BossLevelFlow::WaitBoss:
         break;
-    case BossLevelFlow::SpawnBoss: {
-        SpawnElfilis();
-        m_FlowState = BossLevelFlow::Fight;
-    }
-    break;
     case BossLevelFlow::Fight:
         break;
     }
@@ -59,7 +56,8 @@ void CFlowMgr_BossElfilis::TriggerEvent(UINT _Idx)
 {
     if (_Idx == 0)
     {
-        m_FlowState = BossLevelFlow::SpawnBoss;
+        SpawnElfilis();
+        m_FlowState = BossLevelFlow::Fight;
     }
 }
 
