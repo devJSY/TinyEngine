@@ -181,7 +181,8 @@ CGameObject* CLevel::FindObjectByName(const wstring& _strName, int _LayerIdx)
         }
     }
 
-    return nullptr;
+    // 레이어에서 찾지 못한 경우 레벨오브젝트 전체 순회
+    return FindObjectByName(_strName);
 }
 
 void CLevel::ChangeState(LEVEL_STATE _NextState)
