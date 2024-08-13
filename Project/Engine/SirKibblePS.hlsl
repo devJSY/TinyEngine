@@ -11,8 +11,7 @@
 **********************/
 
 /*********************
-|   UV0 : EyeUV
-|   UV1 : BodyUV
+|   UV0 : BodyUV
 **********************/
 
 #define Albedo0Tex g_tex_0
@@ -44,27 +43,25 @@ PS_OUT main(PS_IN input)
     PS_OUT output = (PS_OUT) 0.f;
     
     float3 albedo = (float3) 0.f;
-    float4 EyeBase = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
-    float4 SkinBase = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;
+    float4 SkinBase = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
     
-    EyeBase *= EyeBase.a;
-    SkinBase *= SkinBase.a;
-   
-    albedo = EyeBase.a >= 0.1f ? EyeBase.rgb : SkinBase.rgb;
+    albedo = (SkinBase.r >= 0.50 && SkinBase.r <= 0.53) ? float3(0.f, 0.f, 0.f) : SkinBase.rgb;
     
-    output.vNormal.xyz = g_btex_2 ? NormalMapping(input, g_tex_2, input.vUV1, g_LinearWrapSampler, true) : normalize(input.vNormalWorld);
+    albedo *= SkinBase.a;
+
+    output.vNormal.xyz = g_btex_1 ? NormalMapping(input, g_tex_1, input.vUV0, g_LinearWrapSampler, true) : normalize(input.vNormalWorld);
     output.vNormal.a = 1.f;
     
-    float4 SkinMRA = g_btex_3 ? Albedo3Tex.Sample(g_LinearWrapSampler, input.vUV1) : (float4) 0.f;
+    float4 SkinMRA = g_btex_2 ? Albedo2Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
     
-    float metallic = g_btex_3 ? SkinMRA.r : MtrlMetallic;
-    float roughness = g_btex_3 ? SkinMRA.g : MtrlRoughness;
-    float ao = g_btex_3 ? SkinMRA.b : 1.f;
+    float metallic = g_btex_2 ? SkinMRA.r : MtrlMetallic;
+    float roughness = g_btex_2 ? SkinMRA.g : MtrlRoughness;
+    float ao = g_btex_2 ? SkinMRA.b : 1.f;
     if (ao >= 1.f)
     {
-        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV1).r;
+        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
     }
-    
+
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);

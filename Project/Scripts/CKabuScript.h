@@ -1,9 +1,11 @@
 #pragma once
 #include "CMonsterUnitScript.h"
 
-enum class KABU_STATE
+enum class KabuState
 {
     Patrol,
+    Fall,
+    Landing,
     Damage,
     Eaten,
     Death,
@@ -13,16 +15,22 @@ enum class KABU_STATE
 class CKabuScript : public CMonsterUnitScript
 {
 private:
-    KABU_STATE m_eState;
+    KabuState m_eState;
 
-    Vec3 m_vPatrolDir;
+    Vec3 m_vCenterPos;
+
     Vec3 m_vOriginPos;
     Vec3 m_vDestPos;
 
     Vec3 m_vDamageDir;
+    bool m_bInverse;
     bool m_bFlag;
+    bool m_bCurved;
+    bool m_bHalfCurved;
 
-    float m_fLerpValue;
+    bool m_bHalfFlag;
+
+    float m_fAccTime;
 
 public:
     virtual void begin() override;
@@ -33,12 +41,15 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    void PatrolMove();
+    void EnterState(KabuState _state);
+    void FSM();
+    void ExitState(KabuState _state);
+    void ChangeState(KabuState _state);
+    void CheckDamage();
 
-private:
-    void ChangeState(KABU_STATE _state);
-    void EnterState(KABU_STATE _state);
-    void ExitState(KABU_STATE _state);
+    void PatrolMove();
+    void CircleMove();
+    void LinearMove();
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
@@ -46,15 +57,15 @@ private:
 
 private:
     void Patrol();
+    void Fall();
+    void Landing();
     void Damage();
     void Eaten();
     void Death();
 
-    Vec3 CaculateDir(Vec3 _vRadian);
-
 public:
     CLONE(CKabuScript)
     CKabuScript();
-    CKabuScript(const CKabuScript& _Origin);
+    CKabuScript(const CKabuScript& Origin);
     virtual ~CKabuScript();
 };

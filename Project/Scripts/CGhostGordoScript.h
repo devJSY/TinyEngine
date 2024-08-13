@@ -1,7 +1,7 @@
 #pragma once
 #include "CMonsterUnitScript.h"
 
-enum class GHOSTGORDO_STATE
+enum class GhostGordoState
 {
     EyeCloseWait,
     EyeOpenWait,
@@ -12,6 +12,7 @@ enum class GHOSTGORDO_STATE
     TrackAfter2,
     TrackWait,
     Return,
+    ReturnRotating,
     EyeCloseStart,
     End,
 };
@@ -19,7 +20,8 @@ enum class GHOSTGORDO_STATE
 class CGhostGordoScript : public CMonsterUnitScript
 {
 private:
-    GHOSTGORDO_STATE m_eState;
+    GhostGordoState m_eState;
+    Quat m_qBaseQuat;
     Vec3 m_vBasePos;
     float m_fAccTime;
 
@@ -32,14 +34,16 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    void ChangeState(GHOSTGORDO_STATE _state);
-    void EnterState(GHOSTGORDO_STATE _state);
-    void ExitState(GHOSTGORDO_STATE _state);
+    void InitSetting();
+    void EnterState(GhostGordoState _state);
+    void FSM();
+    void ExitState(GhostGordoState _state);
+    void ChangeState(GhostGordoState _state);
+    void Move(Vec3 _vTarget);
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
-    void OnTriggerExit(CCollider* _OtherCollider);
-
+ 
 private:
     void EyeCloseWait();
     void EyeOpenWait();
@@ -51,10 +55,11 @@ private:
     void EyeCloseStart();
     void TrackWait();
     void Return();
+    void ReturnRotating();
 
 public:
     CLONE(CGhostGordoScript)
     CGhostGordoScript();
-    CGhostGordoScript(const CGhostGordoScript& _Origin);
+    CGhostGordoScript(const CGhostGordoScript& Origin);
     virtual ~CGhostGordoScript();
 };

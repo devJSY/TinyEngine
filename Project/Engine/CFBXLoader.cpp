@@ -192,7 +192,7 @@ void CFBXLoader::LoadMesh(FbxMesh* _pFbxMesh)
             GetColor(_pFbxMesh, &Container, iIdx, iVtxOrder);
 
             GetUV(_pFbxMesh, &Container, iIdx, _pFbxMesh->GetTextureUVIndex(i, j), iVtxOrder);
-
+            
             ++iVtxOrder;
         }
         UINT iSubsetIdx = pMtrl->GetIndexArray().GetAt(i);
@@ -375,7 +375,7 @@ void CFBXLoader::GetUV(FbxMesh* _pMesh, tContainer* _pContainer, int _iIdx, int 
     for (int ElementCount = 0; ElementCount < 4; ElementCount++)
     {
         const FbxGeometryElementUV* lUVElement = _pMesh->GetElementUV(ElementCount);
-
+        
         if (!lUVElement)
             continue;
 

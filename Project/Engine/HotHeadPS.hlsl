@@ -48,10 +48,9 @@ PS_OUT main(PS_IN input)
     float4 SkinBase = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV1) : (float4) 0.f;
     
     EyeBase *= EyeBase.a;
-    SkinBase *= SkinBase.a;
-   
-    albedo = EyeBase.a >= 0.1f ? EyeBase.rgb : SkinBase.rgb;
     
+    albedo = EyeBase.a >= 0.1f ? EyeBase.rgb : SkinBase.rgb;
+  
     output.vNormal.xyz = g_btex_2 ? NormalMapping(input, g_tex_2, input.vUV1, g_LinearWrapSampler, true) : normalize(input.vNormalWorld);
     output.vNormal.a = 1.f;
     
@@ -62,9 +61,9 @@ PS_OUT main(PS_IN input)
     float ao = g_btex_3 ? SkinMRA.b : 1.f;
     if (ao >= 1.f)
     {
-        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV1).r;
+        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
     }
-    
+
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CAttackAreaScript.h"
 
+#include "CPlayerMgr.h"
+
 #include "CUnitScript.h"
 
 CAttackAreaScript::CAttackAreaScript()
@@ -37,14 +39,6 @@ UINT CAttackAreaScript::LoadFromLevelFile(FILE* _File)
 // Body Collider
 void CAttackAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    CGameObject* pObj = _OtherCollider->GetOwner();
-
-    if (nullptr == pObj)
-        return;
-
-    UnitHit hitInfo = {};
-    LAYER_PLAYER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo)
-                                                                               : void();
 }
 
 void CAttackAreaScript::OnTriggerExit(CCollider* _OtherCollider)

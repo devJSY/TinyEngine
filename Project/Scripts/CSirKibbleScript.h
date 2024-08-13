@@ -1,8 +1,10 @@
 #pragma once
 #include "CMonsterUnitScript.h"
-enum class SIRKIBBLE_STATE
+enum class SirKibbleState
 {
     Idle,
+    Patrol,
+    PatrolRotating,
     Find,
     FindWait,
     AirCutterJumpStart,
@@ -23,22 +25,26 @@ enum class SIRKIBBLE_STATE
 class CSirKibbleScript : public CMonsterUnitScript
 {
 private:
-    CGameObject* m_pTargetObj;
     CGameObject* m_pAttackPoint;
-    SIRKIBBLE_STATE m_eState;
     Vec3 m_vDamageDir;
+    Vec3 m_vOriginPos;
+    Vec3 m_vDestPos;
 
+    SirKibbleState m_eState;
     float m_fAccTime;
     bool m_bFlag;
+    bool m_bJump;
+    bool m_bPatrol;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 private:
-    void EnterState(SIRKIBBLE_STATE _state);
-    void ChangeState(SIRKIBBLE_STATE _state);
-    void ExitState(SIRKIBBLE_STATE _state);
+    void EnterState(SirKibbleState _state);
+    void ChangeState(SirKibbleState _state);
+    void ExitState(SirKibbleState _state);
+    void LinearMove();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
@@ -49,7 +55,13 @@ private:
     void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
+    void FSM();
+    void CheckDamage();
+
     void Idle();
+    void Patrol();
+    void PatrolRotating();
+    void FindWait();
     void Find();
     void AirCutterJumpStart();
     void AirCutterJump();
@@ -65,12 +77,12 @@ private:
     void Death();
 
 private:
-    void ProjectileAttack();
+    void ProjectileAttack(bool _bFlag);
 
 public:
     CLONE(CSirKibbleScript)
     CSirKibbleScript();
-    CSirKibbleScript(const CSirKibbleScript& _Origin);
+    CSirKibbleScript(const CSirKibbleScript& Origin);
     virtual ~CSirKibbleScript();
 
     friend class CCutterProjectileScript;
