@@ -56,6 +56,7 @@ void CKirbyVacuumCollider::tick()
         // target object가 monster라면 버티는 상태로 변경시켜줌
         if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
         {
+            //@PR:Monster
             //m_pFindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
         }
 
@@ -75,7 +76,7 @@ void CKirbyVacuumCollider::tick()
         if (m_FindHoldTime > 0.f)
         {
             m_FindHoldTime -= DT;
-            Force = (Force).Normalize() * 5.f;
+            Force = (Force).Normalize() * 7.5f;
         }
         else
         {
@@ -219,7 +220,6 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
 
             //@PR:Monster
             //_outHoldTime = pMonster->GetResistTime();
-            _outHoldTime = 5.f;
             return EatType::Monster;
         }
     }

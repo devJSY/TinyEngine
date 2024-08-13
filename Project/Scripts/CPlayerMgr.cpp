@@ -4,6 +4,7 @@
 #include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
 #include "CCameraController.h"
+#include "CLevelFlowMgr.h"
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include <Engine\CAssetMgr.h>
@@ -35,8 +36,8 @@ void CPlayerMgr::begin()
     m_PlayerBodyMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Kirby_BodyC.mtrl", L"material\\Kirby_BodyC.mtrl");
     m_PlayerBodyDemoMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Kirby_DeformBodyC.mtrl", L"material\\Kirby_DeformBodyC.mtrl");
 
-    // PlayerObj가 없다면 찾는다.
-    if (m_PlayerObj == nullptr)
+    // Find Player (if not)
+    if (m_PlayerObj == nullptr || !GetOwner()->GetScript<CLevelFlowMgr>())
     {
         CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
         SetPlayer(pPlayer);
