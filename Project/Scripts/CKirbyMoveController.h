@@ -63,7 +63,7 @@ private:
 
     float                       m_HoveringLimitHeight;
     float                       m_HoveringMinSpeed;
-    float                       m_HoveringHeight;
+    Vec3                        m_JumpPos;
 
     // Respawn Á¤º¸
     Vec3                        m_CheckPointPos;
@@ -92,7 +92,6 @@ public:
     void SetLimitFallSpeed(bool _b) { m_bLimitFallSpeed = _b; }
 
     void Jump() { m_bJump = true; }
-    void ClearHoveringHeight() { m_HoveringHeight = 0.f; }
     void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
     void SetFrictionMode(bool _Friction) { m_bActiveFriction = _Friction; }
     void SetSpeed(float _Speed) { m_Speed = _Speed; }
