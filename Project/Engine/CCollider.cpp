@@ -17,6 +17,7 @@ CCollider::CCollider(COMPONENT_TYPE _Type)
     , m_TriggerCount(0)
     , m_bEnabled(true)
     , m_PrevScale(Vec3())
+    , m_NextCenter(Vec3())
 {
 }
 
@@ -30,6 +31,7 @@ CCollider::CCollider(const CCollider& origin)
     , m_TriggerCount(0)
     , m_bEnabled(origin.m_bEnabled)
     , m_PrevScale(Vec3())
+    , m_NextCenter(origin.m_NextCenter)
 {
 }
 
@@ -44,6 +46,8 @@ void CCollider::begin()
 
 void CCollider::finaltick()
 {
+    m_Center = m_NextCenter;
+
     // 트랜스폼의 스케일이 변경되었다면 재생성
     Vec3 TransformWorldScale = Transform()->GetTransformWorldScale();
     if ((m_PrevScale - TransformWorldScale).Length() > 1e-3f)
@@ -85,6 +89,12 @@ void CCollider::SetTrigger(bool _Trigger)
 void CCollider::SetMaterial(Ptr<CPhysicMaterial> _Mtrl)
 {
     m_Mtrl = _Mtrl;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+void CCollider::SetCenter(Vec3 _Center)
+{
+    m_NextCenter = _Center;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
@@ -186,6 +196,8 @@ UINT CCollider::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(bool);
+
+    m_NextCenter = m_Center;
 
     return MemoryByte;
 }

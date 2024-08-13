@@ -16,6 +16,7 @@ protected:
 protected:
     Vec3 m_PrevScale;
     bool m_bEnabled;
+    Vec3 m_NextCenter; // Physics 시뮬레이션 이후 Center에 적용
 
 public:
     virtual void begin() override;
@@ -29,7 +30,7 @@ public:
     void SetMaterial(Ptr<CPhysicMaterial> _Mtrl);
 
     Vec3 GetCenter() const { return m_Center; }
-    void SetCenter(Vec3 _Center) { m_Center = _Center; };
+    void SetCenter(Vec3 _Center);
 
 public:
     bool IsEnabled() const { return m_bEnabled; };
