@@ -13,8 +13,6 @@ class CAnimator : public CComponent
 {
 private:
     AnimatorUpdateMode m_UpdateMode;
-    UINT test1;
-    char test2;
 
     Ptr<CMesh> m_SkeletalMesh;
 
@@ -38,8 +36,9 @@ private:
     vector<Matrix> m_BoneTransformMat;           // 본 변환 행렬 데이터
     CStructuredBuffer* m_BoneTransformMatBuffer; // 특정 프레임의 최종 행렬
 
-    CStructuredBuffer* m_BoneFinalMatBuffer; // 특정 프레임의 최종 행렬
-    bool m_bFinalMatUpdate;                  // 최종행렬 연산 수행여부
+    CStructuredBuffer* m_BoneFinalMatBuffer;     // 특정 프레임의 최종 행렬
+    CStructuredBuffer* m_PrevBoneFinalMatBuffer; // 이전 프레임의 최종 행렬
+    bool m_bFinalMatUpdate;                      // 최종행렬 연산 수행여부
 
     // Next Animation Parameter
     bool m_bChanging;
@@ -97,6 +96,7 @@ public:
     // Clip에서의 프레임 인덱스
     int GetClipFrameIndex();
     void SetClipFrameIndex(int _FrameIdx);
+    float GetClipPlayRatio();
 
     float GetClipPlayTime();
 
@@ -104,6 +104,7 @@ public:
     const Matrix& GetBoneTransformMat(UINT _Idx) const { return m_BoneTransformMat[_Idx]; }
 
     CStructuredBuffer* GetFinalBoneMatBuffer() const { return m_BoneFinalMatBuffer; }
+    CStructuredBuffer* GetPrevFinalBoneMatBuffer() const { return m_PrevBoneFinalMatBuffer; }
     UINT GetBoneCount() const;
 
 private:

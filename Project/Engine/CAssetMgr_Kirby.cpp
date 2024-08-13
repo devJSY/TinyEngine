@@ -120,12 +120,12 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Crumble Shader
+    // HotHead Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\CrumblePS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\HotHeadPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::LESS);
@@ -133,20 +133,58 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
 
-        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
-        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
+        pShader->AddTexParam(TEX_0, "Eye Base Texture");
+        pShader->AddTexParam(TEX_1, "Skin Base Texture");
+        pShader->AddTexParam(TEX_2, "Skin Normal Texture");
+        pShader->AddTexParam(TEX_3, "Skin MRA Texture");
 
-        pShader->AddTexParam(TEX_0, "Albedo0 Texture");
-        pShader->AddTexParam(TEX_1, "Albedo1 Texture");
-        pShader->AddTexParam(TEX_2, "Albedo2 Texture");
-        pShader->AddTexParam(TEX_3, "Albedo3 Texture");
-        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
-        pShader->AddTexParam(TEX_5, "Normal Texture");
-        pShader->AddTexParam(TEX_6, "Height Texture");
-        pShader->AddTexParam(TEX_7, "Emissive Texture");
+        pShader->SetName(L"HotHeadShader");
+        AddAsset(L"HotHeadShader", pShader);
+    }
 
-        pShader->SetName(L"CrumbleShader");
-        AddAsset(L"CrumbleShader", pShader);
+    // =================================
+    // SirKibble Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\SirKibblePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddTexParam(TEX_0, "Skin Base Texture");
+        pShader->AddTexParam(TEX_1, "Skin Normal Texture");
+        pShader->AddTexParam(TEX_2, "Skin MRA Texture");
+
+        pShader->SetName(L"SirKibbleShader");
+        AddAsset(L"SirKibbleShader", pShader);
+    }
+
+    // =================================
+    // GhostGordo Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\GhostGordoPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddTexParam(TEX_0, "Skin Base Texture");
+        pShader->AddTexParam(TEX_1, "Skin Normal Texture");
+        pShader->AddTexParam(TEX_2, "Skin MRA Texture");
+        pShader->AddTexParam(TEX_3, "Skin Emissive Texture");
+
+        pShader->SetName(L"GhostGordoShader");
+        AddAsset(L"GhostGordoShader", pShader);
     }
 
     // =================================
@@ -351,6 +389,39 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyMapShader");
         AddAsset(L"KirbyMapShader", pShader);
+    }
+
+    // =================================
+    // FunHouse Map Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\FunHouseMapPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddScalarParam(INT_0, "Normal MRA Apply UV Scale");
+
+        pShader->AddScalarParam(FLOAT_0, "Albedo0 UV Scale", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Albedo1 UV Scale", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Albedo0 Texture");
+        pShader->AddTexParam(TEX_1, "MRA0 Texture");
+        pShader->AddTexParam(TEX_2, "Normal0 Texture");
+        pShader->AddTexParam(TEX_3, "Emissive0 Texture");
+
+        pShader->AddTexParam(TEX_4, "Albedo1 Texture");
+        pShader->AddTexParam(TEX_5, "MRA1 Texture");
+        pShader->AddTexParam(TEX_6, "Normal1 Texture");
+        pShader->AddTexParam(TEX_7, "Emissive1 Texture");
+
+        pShader->SetName(L"FunHouseMapShader");
+        AddAsset(L"FunHouseMapShader", pShader);
     }
 
     // =================================

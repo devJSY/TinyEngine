@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
 /*********************
@@ -27,20 +28,9 @@
 
 #define sparklyEffect g_float_0
 
-struct PS_OUT
+PS_OUT_DEFERRED main(PS_IN input)
 {
-    float4 vColor : SV_Target0;
-    float4 vPosition : SV_Target1;
-    float4 vNormal : SV_Target2;
-    float4 vTangent : SV_Target3;
-    float4 vBitangent : SV_Target4;
-    float4 vEmissive : SV_Target5;
-    float4 vMRA : SV_Target6;
-};
-
-PS_OUT main(PS_IN input)
-{
-    PS_OUT output = (PS_OUT) 0.f;
+    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
     
     float3 albedo = (float3) 0.f;
     float4 EyeBase = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
@@ -51,63 +41,29 @@ PS_OUT main(PS_IN input)
    
     albedo = EyeBase.a >= 0.1f ? EyeBase.rgb : SkinBase.rgb;
     
-    output.vNormal.rgb = normalize(input.vNormalWorld);
-    
-    if (g_btex_2)
-    {
-        float3 normal = Albedo2Tex.Sample(g_LinearWrapSampler, input.vUV1).xyz;
-        normal.b = 1.f;
-        
-        normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
-        
-        //// OpenGL 용 노멀맵일 경우에는 y 방향 반전
-        //normal.y = InvertNormalMapY ? -normal.y : normal.y;
-        
-        float3 N = normalize(input.vNormalWorld);
-        float3 T = normalize(input.vTangentWorld);
-        float3 B = normalize(input.vBitangentWorld);
-   
-        //// matrix는 float4x4, 여기서는 벡터 변환용이라서 3x3 사용
-        float3x3 TBN = float3x3(T, B, N);
-        output.vNormal.rgb = normalize(mul(normal, TBN));
-    }
-    
-    //if(g_btex_2)
-    //{
-    //    float4 packednormal = Albedo2Tex.Sample(g_LinearWrapSampler, input.vUV1);
-    //    float3 normal;
-    //    normal.xy = packednormal.wy * 2 - 1;
-    //    normal.z = sqrt(1 - normal.x * normal.x - normal.y * normal.y);
-    //    output.vNormal.rgb = normal;
-    //}
-    
-    //if (g_btex_2)
-    //{    
-    //    float3 N = output.vNormal.rgb;
-    //    float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-    //    float3 B = normalize(cross(N, T));
-      
-    //    float3x3 TBN = float3x3(T, B, N);
-    //    output.vNormal.rgb = normalize(mul(output.vNormal.rgb, TBN));
-    //}
-    
+    output.vNormal.xyz = g_btex_2 ? NormalMapping(input, g_tex_2, input.vUV1, g_LinearWrapSampler, true) : normalize(input.vNormalWorld);
     output.vNormal.a = 1.f;
     
     float4 SkinMRA = g_btex_3 ? Albedo3Tex.Sample(g_LinearWrapSampler, input.vUV1) : (float4) 0.f;
     
-    float metallic = SkinMRA.r;
-    float roughness = SkinMRA.g;
+    float metallic = g_btex_3 ? SkinMRA.r : MtrlMetallic;
+    float roughness = g_btex_3 ? SkinMRA.g : MtrlRoughness;
     float ao = g_btex_3 ? SkinMRA.b : 1.f;
     if (ao >= 1.f)
     {
-        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
+        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV1).r;
     }
-
+    
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
+    output.vEmissive = MtrlEmission;
     output.vMRA = float4(metallic, roughness, ao, 1.f);
    
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
+    
     return output;
 }

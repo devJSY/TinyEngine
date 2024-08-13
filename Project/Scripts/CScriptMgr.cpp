@@ -79,7 +79,11 @@
 #include "CKirbyCheckPointTrigger.h"
 #include "CKirbyFallDetectTrigger.h"
 #include "CFixedViewCamTrigger.h"
+#include "CMorphoFSM.h"
+#include "CMorphoUnit.h"
 #include "CElfilisUnit.h"
+#include "CMorphoTrackingSoul.h"
+#include "CMorphoShockWave.h"
 #include "CPushOutColliderScript.h"
 #include "CLightBulbGimmickScript.h"
 #include "CFadeOutScript.h"
@@ -89,6 +93,11 @@
 #include "CFlowMgr_Lv2.h"
 #include "CFlowMgr_Lv3.h"
 #include "CFlowMgr_Lv4.h"
+#include "CPhantaScript.h"
+#include "CSpookStepScript.h"
+#include "CSpawnTriggerScript.h"
+#include "CFlowMgr_BossElfilis.h"
+#include "CFlowTriggerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -170,7 +179,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyCheckPointTrigger");
 	_vec.push_back(L"CKirbyFallDetectTrigger");
 	_vec.push_back(L"CFixedViewCamTrigger");
+	_vec.push_back(L"CMorphoFSM");
+	_vec.push_back(L"CMorphoUnit");
 	_vec.push_back(L"CElfilisUnit");
+	_vec.push_back(L"CMorphoTrackingSoul");
+	_vec.push_back(L"CMorphoShockWave");
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLightBulbGimmickScript");
 	_vec.push_back(L"CFadeOutScript");
@@ -180,6 +193,11 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_Lv2");
 	_vec.push_back(L"CFlowMgr_Lv3");
 	_vec.push_back(L"CFlowMgr_Lv4");
+	_vec.push_back(L"CPhantaScript");
+	_vec.push_back(L"CSpookStepScript");
+	_vec.push_back(L"CSpawnTriggerScript");
+	_vec.push_back(L"CFlowMgr_BossElfilis");
+	_vec.push_back(L"CFlowTriggerScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -340,8 +358,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyFallDetectTrigger;
 	if (L"CFixedViewCamTrigger" == _strScriptName)
 		return new CFixedViewCamTrigger;
+	if (L"CMorphoFSM" == _strScriptName)
+		return new CMorphoFSM;
+	if (L"CMorphoUnit" == _strScriptName)
+		return new CMorphoUnit;
 	if (L"CElfilisUnit" == _strScriptName)
 		return new CElfilisUnit;
+	if (L"CMorphoTrackingSoul" == _strScriptName)
+		return new CMorphoTrackingSoul;
+	if (L"CMorphoShockWave" == _strScriptName)
+		return new CMorphoShockWave;
 	if (L"CPushOutColliderScript" == _strScriptName)
 		return new CPushOutColliderScript;
 	if (L"CLightBulbGimmickScript" == _strScriptName)
@@ -360,6 +386,16 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_Lv3;
 	if (L"CFlowMgr_Lv4" == _strScriptName)
 		return new CFlowMgr_Lv4;
+	if (L"CPhantaScript" == _strScriptName)
+		return new CPhantaScript;
+	if (L"CSpookStepScript" == _strScriptName)
+		return new CSpookStepScript;
+	if (L"CSpawnTriggerScript" == _strScriptName)
+		return new CSpawnTriggerScript;
+	if (L"CFlowMgr_BossElfilis" == _strScriptName)
+		return new CFlowMgr_BossElfilis;
+	if (L"CFlowTriggerScript" == _strScriptName)
+		return new CFlowTriggerScript;
 	return nullptr;
 }
 
@@ -523,8 +559,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyFallDetectTrigger;
 	case (UINT)SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
 		return new CFixedViewCamTrigger;
+	case (UINT)SCRIPT_TYPE::MORPHOFSM:
+		return new CMorphoFSM;
+	case (UINT)SCRIPT_TYPE::MORPHOUNIT:
+		return new CMorphoUnit;
 	case (UINT)SCRIPT_TYPE::ELFILISUNIT:
 		return new CElfilisUnit;
+	case (UINT)SCRIPT_TYPE::MORPHOTRACKINGSOUL:
+		return new CMorphoTrackingSoul;
+	case (UINT)SCRIPT_TYPE::MORPHOSHOCKWAVE:
+		return new CMorphoShockWave;
 	case (UINT)SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
@@ -543,6 +587,16 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_Lv3;
 	case (UINT)SCRIPT_TYPE::FLOWMGR_LV4:
 		return new CFlowMgr_Lv4;
+	case (UINT)SCRIPT_TYPE::PHANTASCRIPT:
+		return new CPhantaScript;
+	case (UINT)SCRIPT_TYPE::SPOOKSTEPSCRIPT:
+		return new CSpookStepScript;
+	case (UINT)SCRIPT_TYPE::SPAWNTRIGGERSCRIPT:
+		return new CSpawnTriggerScript;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_BOSSELFILIS:
+		return new CFlowMgr_BossElfilis;
+	case (UINT)SCRIPT_TYPE::FLOWTRIGGERSCRIPT:
+		return new CFlowTriggerScript;
 	}
 	return nullptr;
 }
@@ -707,8 +761,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyFallDetectTrigger";
 	case SCRIPT_TYPE::FIXEDVIEWCAMTRIGGER:
 		return L"CFixedViewCamTrigger";
+	case SCRIPT_TYPE::MORPHOFSM:
+		return L"CMorphoFSM";
+	case SCRIPT_TYPE::MORPHOUNIT:
+		return L"CMorphoUnit";
 	case SCRIPT_TYPE::ELFILISUNIT:
 		return L"CElfilisUnit";
+	case SCRIPT_TYPE::MORPHOTRACKINGSOUL:
+		return L"CMorphoTrackingSoul";
+	case SCRIPT_TYPE::MORPHOSHOCKWAVE:
+		return L"CMorphoShockWave";
 	case SCRIPT_TYPE::PUSHOUTCOLLIDERSCRIPT:
 		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
@@ -727,6 +789,16 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowMgr_Lv3";
 	case SCRIPT_TYPE::FLOWMGR_LV4:
 		return L"CFlowMgr_Lv4";
+	case SCRIPT_TYPE::PHANTASCRIPT:
+		return L"CPhantaScript";
+	case SCRIPT_TYPE::SPOOKSTEPSCRIPT:
+		return L"CSpookStepScript";
+	case SCRIPT_TYPE::SPAWNTRIGGERSCRIPT:
+		return L"CSpawnTriggerScript";
+	case SCRIPT_TYPE::FLOWMGR_BOSSELFILIS:
+		return L"CFlowMgr_BossElfilis";
+	case SCRIPT_TYPE::FLOWTRIGGERSCRIPT:
+		return L"CFlowTriggerScript";
 	}
 	return nullptr;
 }

@@ -126,7 +126,7 @@ void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
             if (Script)
             {
                 Script->SetPlayTime(0.5f);
-                Script->AddEffect(MomentaryEffectType::AppearScaling);
+                Script->AddEffect(MomentaryEffectType::Scaling);
             }
 
             GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
@@ -153,7 +153,7 @@ void CElfilisAirArrow::OnCollisionStay(CCollider* _OtherCollider)
             if (Script)
             {
                 Script->SetPlayTime(0.5f);
-                Script->AddEffect(MomentaryEffectType::AppearScaling);
+                Script->AddEffect(MomentaryEffectType::Scaling);
             }
 
             GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);

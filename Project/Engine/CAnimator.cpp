@@ -28,6 +28,7 @@ CAnimator::CAnimator()
     , m_BoneTransformMat{}
     , m_BoneTransformMatBuffer(nullptr)
     , m_BoneFinalMatBuffer(nullptr)
+    , m_PrevBoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
     , m_bChanging(false)
     , m_CurChangeTime(0.)
@@ -39,6 +40,7 @@ CAnimator::CAnimator()
 {
     m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
+    m_PrevBoneFinalMatBuffer = new CStructuredBuffer;
 }
 
 CAnimator::CAnimator(const CAnimator& _origin)
@@ -60,6 +62,7 @@ CAnimator::CAnimator(const CAnimator& _origin)
     , m_BoneTransformMat(_origin.m_BoneTransformMat)
     , m_BoneTransformMatBuffer(nullptr)
     , m_BoneFinalMatBuffer(nullptr)
+    , m_PrevBoneFinalMatBuffer(nullptr)
     , m_bFinalMatUpdate(false)
     , m_bChanging(_origin.m_bChanging)
     , m_CurChangeTime(_origin.m_CurChangeTime)
@@ -71,6 +74,7 @@ CAnimator::CAnimator(const CAnimator& _origin)
 {
     m_BoneTransformMatBuffer = new CStructuredBuffer;
     m_BoneFinalMatBuffer = new CStructuredBuffer;
+    m_PrevBoneFinalMatBuffer = new CStructuredBuffer;
 }
 
 CAnimator::~CAnimator()
@@ -85,6 +89,12 @@ CAnimator::~CAnimator()
     {
         delete m_BoneFinalMatBuffer;
         m_BoneFinalMatBuffer = nullptr;
+    }
+
+    if (nullptr != m_PrevBoneFinalMatBuffer)
+    {
+        delete m_PrevBoneFinalMatBuffer;
+        m_PrevBoneFinalMatBuffer = nullptr;
     }
 
     // 자식 오브젝트가 참조하고 있던 본 소켓 해제
@@ -251,6 +261,7 @@ void CAnimator::UpdateData()
         pUpdateShader->SetOffsetMatBuffer(m_SkeletalMesh->GetBoneOffsetBuffer());
         pUpdateShader->SetBoneTransformMatBuffer(m_BoneTransformMatBuffer);
         pUpdateShader->SetFinalMatBuffer(m_BoneFinalMatBuffer);
+        pUpdateShader->SetPrevFinalMatBuffer(m_PrevBoneFinalMatBuffer);
 
         // 업데이트 쉐이더 실행
         pUpdateShader->Execute();
@@ -277,8 +288,9 @@ void CAnimator::UpdateData()
         m_bFinalMatUpdate = true;
     }
 
-    // t31 레지스터에 최종행렬 데이터(구조버퍼) 바인딩
+    // 레지스터에 최종행렬 데이터(구조버퍼) 바인딩
     m_BoneFinalMatBuffer->UpdateData(31);
+    m_PrevBoneFinalMatBuffer->UpdateData(35);
 }
 
 void CAnimator::SetSkeletalMesh(Ptr<CMesh> _SkeletalMesh)
@@ -345,6 +357,7 @@ UINT CAnimator::GetBoneCount() const
 void CAnimator::ClearData()
 {
     m_BoneFinalMatBuffer->Clear(31);
+    m_PrevBoneFinalMatBuffer->Clear(35);
 
     UINT iMtrlCount = MeshRender()->GetMtrlCount();
     Ptr<CMaterial> pMtrl = nullptr;
@@ -463,6 +476,12 @@ float CAnimator::GetClipPlayTime()
     return (float)m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).dTimeLength;
 }
 
+float CAnimator::GetClipPlayRatio()
+{
+    int Len = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iFrameLength;
+    return GetClipFrameIndex()/(float)Len;
+}
+
 void CAnimator::CheckBoneMatBuffer()
 {
     if (!IsValid())
@@ -479,6 +498,7 @@ void CAnimator::CheckBoneMatBuffer()
     if (m_BoneFinalMatBuffer->GetElementCount() != iBoneCount)
     {
         m_BoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
+        m_PrevBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
     }
 }
 

@@ -1,6 +1,6 @@
 #include "struct.hlsli"
-#include "func.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
@@ -8,20 +8,9 @@
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
 
-struct PS_OUT
+PS_OUT_DEFERRED main(PS_IN input)
 {
-    float4 vColor : SV_Target0;
-    float4 vPosition : SV_Target1;
-    float4 vNormal : SV_Target2;
-    float4 vTangent : SV_Target3;
-    float4 vBitangent : SV_Target4;
-    float4 vEmissive : SV_Target5;
-    float4 vMRA : SV_Target6;
-};
-
-PS_OUT main(PS_IN input)
-{
-    PS_OUT output = (PS_OUT) 0.f;
+    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
     
     float3 albedo = (float3) 0.f;
     float4 EyeColor = g_btex_0 ? g_tex_0.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
@@ -52,5 +41,9 @@ PS_OUT main(PS_IN input)
     output.vEmissive = MtrlEmission;
     output.vMRA = float4(metallic, roughness, ao, 1.f);
    
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
+    
     return output;
 }

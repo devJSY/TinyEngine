@@ -12,13 +12,32 @@ PS_IN VS_Std3D_Deferred(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
     
+    float4 PrevPos = float4(_in.vPos, 1.f);
     if (g_iAnim)
     {
-        Skinning(_in.vPos, _in.vTangent, _in.vBitangent, _in.vNormal
+        Skinning(_in.vPos, PrevPos.xyz, _in.vTangent, _in.vBitangent, _in.vNormal
               , _in.vWeights, _in.vIndices, 0);
     }
     
     output.vPosProj = mul(float4(_in.vPos, 1.f), g_matWVP);
+    
+    // Motion Blur
+    if (g_bMotionBlur)
+    {
+        PrevPos = mul(PrevPos, g_matPrevWV);
+        PrevPos = mul(PrevPos, g_matProj);
+
+        float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
+        output.vMotionVector.xy = velocity * 0.5f;
+        output.vMotionVector.y *= -1.f;
+        output.vMotionVector.z = output.vPosProj.z;
+        output.vMotionVector.w = output.vPosProj.w;
+    }
+    else
+    {
+        output.vMotionVector = float4(0.f, 0.f, 0.f, 0.f);
+    }
+    
     output.vUV0 = _in.vUV0;
     
     output.vPosWorld = mul(float4(_in.vPos, 1.f), g_matWorld).xyz;
@@ -33,15 +52,32 @@ PS_IN VS_Std3D_Deferred_Inst(VS_IN _in)
 {
     PS_IN output = (PS_IN) 0.f;
 
+    float4 PrevPos = float4(_in.vPos, 1.f);
     if (g_iAnim)
     {
-        Skinning(_in.vPos, _in.vTangent, _in.vBitangent, _in.vNormal
+        Skinning(_in.vPos, PrevPos.xyz, _in.vTangent, _in.vBitangent, _in.vNormal
               , _in.vWeights, _in.vIndices, _in.iRowIndex);
     }
         
     output.vPosProj = mul(float4(_in.vPos, 1.f), _in.matWorld);
-    output.vPosProj = mul(output.vPosProj, _in.matView);
-    output.vPosProj = mul(output.vPosProj, _in.matProj);
+    output.vPosProj = mul(output.vPosProj, _in.matViewProj);
+    
+    // Motion Blur
+    if (_in.iMotionBlur)
+    {
+        PrevPos = mul(PrevPos, _in.matPrevTransform);
+
+        float2 velocity = (output.vPosProj.xy / output.vPosProj.w) - (PrevPos.xy / PrevPos.w);
+        output.vMotionVector.xy = velocity * 0.5f;
+        output.vMotionVector.y *= -1.f;
+        output.vMotionVector.z = output.vPosProj.z;
+        output.vMotionVector.w = output.vPosProj.w;
+    }
+    else
+    {
+        output.vMotionVector = float4(0.f, 0.f, 0.f, 0.f);
+    }
+    
     output.vUV0 = _in.vUV0;
     
     output.vPosWorld = mul(float4(_in.vPos, 1.f), _in.matWorld).xyz;

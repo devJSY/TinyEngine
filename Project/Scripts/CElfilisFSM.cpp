@@ -333,12 +333,6 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_TeleportCombo.h"
 void CElfilisFSM::begin()
 {
-    // set map size
-    float ScaleFactor = Transform()->GetLocalScale().x;
-    m_NearDist *= ScaleFactor;
-    m_MapFloorOffset *= ScaleFactor;
-    m_MapSizeRadius *= ScaleFactor;
-
     // add state
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);
@@ -377,7 +371,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT", new CElfilisG_ToAirTeleport);
     AddGroupPrivateState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB", new CElfilisA_Stab);
 
-    ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
+    ChangeStateGroup(ElfilisStateGroup::GroundIdle);
 
     // find Big Elfilis
     wstring strName = GetOwner()->GetName() + L"Big";
@@ -398,22 +392,20 @@ void CElfilisFSM::begin()
     {
         MessageBox(nullptr, L"Big Elfilis를 찾을 수 없습니다", L"Big Elfilis 등록 실패", MB_OK);
     }
+
+    // get childs
+    m_Weapon = GetOwner()->GetChildObject(L"Halberd");
+
+    // set map size
+    float ScaleFactor = Transform()->GetLocalScale().x;
+    m_NearDist *= ScaleFactor;
+    m_MapFloorOffset *= ScaleFactor;
+    m_MapSizeRadius *= ScaleFactor;
 }
 
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
-
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
-        // ELFFSM->ChangeStateGroup_RandState(ElfilisStateGroup::AirMove);
-    }
-    if (KEY_TAP(KEY::SPACE))
-    {
-        // ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
-        //ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
-    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
@@ -566,7 +558,7 @@ const vector<wstring>& CElfilisFSM::GetCurPublicStates() const
 
 float CElfilisFSM::GetPlayerDist() const
 {
-    Vec3 Dist = PLAYER->Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
+    Vec3 Dist = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
     Dist.y = 0.f;
     return Dist.Length();
 }

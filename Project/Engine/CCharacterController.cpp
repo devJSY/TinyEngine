@@ -33,6 +33,8 @@ void CCharacterController::begin()
 
 void CCharacterController::finaltick()
 {
+    m_Center = m_NextCenter;
+
     // 트랜스폼의 스케일이 변경되었다면 재생성
     Vec3 TransformWorldScale = Transform()->GetTransformWorldScale();
     if ((m_PrevScale - TransformWorldScale).Length() > 1e-3f)

@@ -694,8 +694,110 @@
     <ClInclude Include="CLevelFlowMgr.h">
       <Filter>Module\FlowMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CMorphoFSM.h">
+      <Filter>Scripts\FSM\MorphoFSM</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorpho_Idle.h">
+      <Filter>State\MorphoState\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoUnit.h">
+      <Filter>Scripts\Character\Boss\Morpho\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk1.h">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack1</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk2.h">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack2</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalNear_Atk3.h">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack3</Filter>
+    </ClInclude>
     <ClInclude Include="CElfilisUnit.h">
-      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+      <Filter>Scripts\Character\Boss\Elfilis\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalNear_AtkFlight.h">
+      <Filter>State\MorphoState\AtkG Normal Near\AttackFlight</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_NormalFar_SwordSlash.h">
+      <Filter>State\MorphoState\AtkG Normal Far\SwordSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_FireWall.h">
+      <Filter>State\MorphoState\AtkG Teleport\FireWall</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_Tornado.h">
+      <Filter>State\MorphoState\AtkG Teleport\Tornado</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoul.h">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoul</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoTrackingSoul.h">
+      <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_ShockWave.h">
+      <Filter>State\MorphoState\AtkA\ShockWave</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoShockWave.h">
+      <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_Jump.h">
+      <Filter>State\MorphoState\MoveGround\HoverDash\Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_HoverDash.h">
+      <Filter>State\MorphoState\MoveGround\HoverDash\HoverDash</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveA_Teleport.h">
+      <Filter>State\MorphoState\MoveAir\Teleport</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordDivision.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Division</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack L</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkR.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack R</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_TeleportCombo.h">
+      <Filter>State\MorphoState\MoveGround\TeleportCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_DoubleSword.h">
+      <Filter>State\MorphoState\AtkA\DoubleSword</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Teleport_TrackingSoulCombo.h">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoulCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_JumpFall.h">
+      <Filter>State\MorphoState\MoveGround\JumpFall</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_TeleportNear.h">
+      <Filter>State\MorphoState\MoveGround\Teleport\Near</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoMoveG_TeleportFar.h">
+      <Filter>State\MorphoState\MoveGround\Teleport\Far</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkA_ShockWaveCombo.h">
+      <Filter>State\MorphoState\AtkA\ShockWaveCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoDemo_Phase2.h">
+      <Filter>State\MorphoState\Demo_Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoDemo_Appear.h">
+      <Filter>State\MorphoState\Demo_Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoDemo_Death.h">
+      <Filter>State\MorphoState\Demo_Death</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Wait_LeftSideMove.h">
+      <Filter>State\MorphoState\AtkG Wait\LeftSideMove</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Wait_RightSideMove.h">
+      <Filter>State\MorphoState\AtkG Wait\RightSideMove</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoAtkG_Wait_FrontMove.h">
+      <Filter>State\MorphoState\AtkG Wait\FrontMove</Filter>
     </ClInclude>
     <ClInclude Include="CPushOutColliderScript.h">
       <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
@@ -732,6 +834,21 @@
     </ClInclude>
     <ClInclude Include="CFlowMgr_Lv4.h">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhantaScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpookStepScript.h">
+      <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpawnTriggerScript.h">
+      <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowMgr_BossElfilis.h">
+      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowTriggerScript.h">
+      <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1437,8 +1554,110 @@
     <ClCompile Include="CLevelFlowMgr.cpp">
       <Filter>Module\FlowMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CMorphoFSM.cpp">
+      <Filter>Scripts\FSM\MorphoFSM</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorpho_Idle.cpp">
+      <Filter>State\MorphoState\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk1.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack1</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk2.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack2</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_Atk3.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\Attack3</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoUnit.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\Unit</Filter>
+    </ClCompile>
     <ClCompile Include="CElfilisUnit.cpp">
-      <Filter>Scripts\Character\Boss\Elfilis\ElfilisUnit</Filter>
+      <Filter>Scripts\Character\Boss\Elfilis\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalNear_AtkFlight.cpp">
+      <Filter>State\MorphoState\AtkG Normal Near\AttackFlight</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_NormalFar_SwordSlash.cpp">
+      <Filter>State\MorphoState\AtkG Normal Far\SwordSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_FireWall.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\FireWall</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_Tornado.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\Tornado</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoul.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoul</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoTrackingSoul.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\TrackingSoul</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_ShockWave.cpp">
+      <Filter>State\MorphoState\AtkA\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoShockWave.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_Jump.cpp">
+      <Filter>State\MorphoState\MoveGround\HoverDash\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_HoverDash.cpp">
+      <Filter>State\MorphoState\MoveGround\HoverDash\HoverDash</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveA_Teleport.cpp">
+      <Filter>State\MorphoState\MoveAir\Teleport</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordDivision.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Division</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack L</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkR.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack R</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword\Attack LR</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_TeleportCombo.cpp">
+      <Filter>State\MorphoState\MoveGround\TeleportCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_DoubleSword.cpp">
+      <Filter>State\MorphoState\AtkA\DoubleSword</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Teleport_TrackingSoulCombo.cpp">
+      <Filter>State\MorphoState\AtkG Teleport\TrackingSoulCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_JumpFall.cpp">
+      <Filter>State\MorphoState\MoveGround\JumpFall</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_TeleportNear.cpp">
+      <Filter>State\MorphoState\MoveGround\Teleport\Near</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoMoveG_TeleportFar.cpp">
+      <Filter>State\MorphoState\MoveGround\Teleport\Far</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkA_ShockWaveCombo.cpp">
+      <Filter>State\MorphoState\AtkA\ShockWaveCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoDemo_Phase2.cpp">
+      <Filter>State\MorphoState\Demo_Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoDemo_Appear.cpp">
+      <Filter>State\MorphoState\Demo_Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoDemo_Death.cpp">
+      <Filter>State\MorphoState\Demo_Death</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Wait_LeftSideMove.cpp">
+      <Filter>State\MorphoState\AtkG Wait\LeftSideMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Wait_RightSideMove.cpp">
+      <Filter>State\MorphoState\AtkG Wait\RightSideMove</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoAtkG_Wait_FrontMove.cpp">
+      <Filter>State\MorphoState\AtkG Wait\FrontMove</Filter>
     </ClCompile>
     <ClCompile Include="CPushOutColliderScript.cpp">
       <Filter>Scripts\Gimmik\PushOut\PushOutCollider</Filter>
@@ -1461,6 +1680,9 @@
     <ClCompile Include="CLensFlareScript.cpp">
       <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
+    <ClCompile Include="CSpookStepScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\SpookStep</Filter>
+    </ClCompile>
     <ClCompile Include="CFlowMgr_Lv0.cpp">
       <Filter>Scripts\Manager\FlowManager\0. Tutorial Level Flow Manager</Filter>
     </ClCompile>
@@ -1475,6 +1697,18 @@
     </ClCompile>
     <ClCompile Include="CFlowMgr_Lv4.cpp">
       <Filter>Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnTriggerScript.cpp">
+      <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhantaScript.cpp">
+      <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowMgr_BossElfilis.cpp">
+      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowTriggerScript.cpp">
+      <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2282,8 +2516,146 @@
     <Filter Include="Module\FlowMgr">
       <UniqueIdentifier>{cef72559-570c-4556-bfeb-51009fbc0928}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Boss\Elfilis\ElfilisUnit">
-      <UniqueIdentifier>{96517348-fcf7-40fa-8849-72dece0bff91}</UniqueIdentifier>
+    <Filter Include="Scripts\FSM\MorphoFSM">
+      <UniqueIdentifier>{d054f48a-850b-4fec-9b12-bfbfa9e06b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState">
+      <UniqueIdentifier>{544e579c-30f8-4e19-995b-02567d4b49fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Idle">
+      <UniqueIdentifier>{360d9124-0cfc-41bd-9b71-2a991980be4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho">
+      <UniqueIdentifier>{47e1c89c-4514-4f16-aaff-1e06e98db7b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho\Unit">
+      <UniqueIdentifier>{20725c2d-664c-4dca-af82-ba858944985b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport">
+      <UniqueIdentifier>{a745ab10-84db-4357-a6fe-514cd519040d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near">
+      <UniqueIdentifier>{b7b1f6ea-93f9-4c08-a689-523f2de9822c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Far">
+      <UniqueIdentifier>{61758a2a-786c-4899-a408-ab69d4a12f9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Elfilis\Unit">
+      <UniqueIdentifier>{5f515b1c-feec-4ae4-b2d1-246de9125596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\AttackFlight">
+      <UniqueIdentifier>{394961bd-abe8-47cb-a96f-1634a19ea6e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\Attack3">
+      <UniqueIdentifier>{31524672-eb68-4627-83a8-6e0b15bfd705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\Attack1">
+      <UniqueIdentifier>{4815abc3-f9ac-4bd5-83a6-ec53d9018aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Near\Attack2">
+      <UniqueIdentifier>{538a3c8a-9511-4ccb-a279-cb5122cfefe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Normal Far\SwordSlash">
+      <UniqueIdentifier>{fe516468-cb16-4400-9297-820a68f75a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\FireWall">
+      <UniqueIdentifier>{031a4f12-8f1e-4533-9ea1-9ff330be84c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\Tornado">
+      <UniqueIdentifier>{e6ca8307-4d3d-41b8-be00-e729d4fe3600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\TrackingSoul">
+      <UniqueIdentifier>{ed74b148-ecb4-44b6-be10-1706bd205e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho\TrackingSoul">
+      <UniqueIdentifier>{e68047e7-e76f-477c-87c7-0c1b280f9c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Morpho\ShockWave">
+      <UniqueIdentifier>{95906a59-313e-4a4e-b221-f422ed17ae81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA">
+      <UniqueIdentifier>{bf1b3362-70fa-4baf-ad8a-6fed6ced54f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\ShockWave">
+      <UniqueIdentifier>{d0c8d3de-55ca-4c98-b982-3186307434fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword">
+      <UniqueIdentifier>{62d3e150-97b1-4a00-9a06-60b22533bbd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround">
+      <UniqueIdentifier>{b465a157-e687-4df1-9be1-9b93d7e7d2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveAir">
+      <UniqueIdentifier>{04154609-f434-4f3d-be69-5edad0da663a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Teleport">
+      <UniqueIdentifier>{8ff1337f-3b81-4377-b6a8-9f74d9561c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\JumpFall">
+      <UniqueIdentifier>{b34be92a-7fab-42b0-853e-b7ee89711a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveAir\Teleport">
+      <UniqueIdentifier>{a79d89ee-8deb-40d8-b49e-84b43c2afca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\HoverDash">
+      <UniqueIdentifier>{229d883b-9ea1-456f-93a9-3fb35bb1f9d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\HoverDash\Jump">
+      <UniqueIdentifier>{9d2f3315-7a33-4c1d-9a5b-df66b0b96a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\HoverDash\HoverDash">
+      <UniqueIdentifier>{393b69c8-5b74-4f14-917d-1d57a2ba3512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Attack L">
+      <UniqueIdentifier>{b87c89df-f10e-4cb6-906c-885532301c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Attack R">
+      <UniqueIdentifier>{7ee2fb8b-716c-44fd-a4a5-6790417e86bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Attack LR">
+      <UniqueIdentifier>{362d5e9b-29f3-41f3-b148-e4ab4d2d8c96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\DoubleSword\Division">
+      <UniqueIdentifier>{89aa4661-afd1-45f3-872c-be3b05de335c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\ChangeAlpha2">
+      <UniqueIdentifier>{56ce7cc3-a157-4199-82db-2e555903c3f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\TeleportCombo">
+      <UniqueIdentifier>{a74d43f7-3ea5-4560-b1af-fe178405585c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Teleport\TrackingSoulCombo">
+      <UniqueIdentifier>{80ba441a-51f3-4d7d-a785-320e246b22de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Teleport\Near">
+      <UniqueIdentifier>{819f6f5b-cb8b-4226-a696-3e34055991d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\MoveGround\Teleport\Far">
+      <UniqueIdentifier>{da499315-c00c-4849-b866-3e03bfbfbe55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkA\ShockWaveCombo">
+      <UniqueIdentifier>{954798d9-ab3d-493e-ae83-fde7a20ef38f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Demo_Phase2">
+      <UniqueIdentifier>{8df68d02-0197-4486-8fc2-a80dd0c29a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Demo_Appear">
+      <UniqueIdentifier>{518c30d4-f274-47a3-b13a-9bfac34641aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\Demo_Death">
+      <UniqueIdentifier>{0a65f40b-d023-4e06-9ee0-2000f8ae27a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait">
+      <UniqueIdentifier>{cff8c890-1b76-4a23-a39f-48f80a45d010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait\LeftSideMove">
+      <UniqueIdentifier>{d7bc8874-8ed4-40c6-b546-5f79f3162160}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait\RightSideMove">
+      <UniqueIdentifier>{42cbd397-6ff2-44cf-9edc-a2c057584d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\MorphoState\AtkG Wait\FrontMove">
+      <UniqueIdentifier>{bb6457e1-a68c-43f3-9104-fc732e83bf89}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\ElfilisState\Demo_Appear1">
       <UniqueIdentifier>{7161bf29-33e0-4a2f-9363-7e6a052942cf}</UniqueIdentifier>
@@ -2302,6 +2674,12 @@
     </Filter>
     <Filter Include="Scripts\Postprocess">
       <UniqueIdentifier>{7cd8d5b0-174c-4f37-8883-a20493177767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\SpookStep">
+      <UniqueIdentifier>{4d83eee2-89f5-4f00-bfae-93eab82499e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\MonsterScript\Phanta">
+      <UniqueIdentifier>{3b041919-a9b4-4d0b-8723-3d8f0595ad5a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Elfilis Level Flow Manager">
       <UniqueIdentifier>{dc577414-555c-4965-aec1-5df008469f1e}</UniqueIdentifier>
@@ -2323,6 +2701,12 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\SpawnTrigger">
+      <UniqueIdentifier>{853c8a9c-6323-4f6e-819d-cd4b03875654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\FlowTrigger">
+      <UniqueIdentifier>{1ac2a4d3-39f3-4b20-ab85-a853cac49dfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

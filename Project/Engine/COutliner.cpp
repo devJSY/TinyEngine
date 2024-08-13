@@ -2185,6 +2185,11 @@ void COutliner::DrawMeshRender(CGameObject* obj)
         ImGui::Checkbox(ImGui_LabelPrefix("Cast Shadows").c_str(), &bCastShadow);
         pMeshRender->SetCastShadow(bCastShadow);
 
+        // Motion Blur
+        bool bMotionBlur = pMeshRender->IsUseMotionBlur();
+        ImGui::Checkbox(ImGui_LabelPrefix("Motion Blur").c_str(), &bMotionBlur);
+        pMeshRender->SetUseMotionBlur(bMotionBlur);
+
         Ptr<CMesh> pMesh = pMeshRender->GetMesh();
 
         // Mesh

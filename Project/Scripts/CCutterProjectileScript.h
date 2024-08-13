@@ -20,9 +20,12 @@ private:
     float m_fSpeed;
     float m_fAccTime;
 
+    bool m_bJump;
+
 public:
     void SetOwenr(CGameObject* _pObj) { m_pOwner = _pObj; }
     void SetAttackPoint(CGameObject* _pObj) { m_pAttackPoint = _pObj; }
+    void SetJumpBack(const bool _bFlag) { m_bJump = _bFlag; }
 
 public:
     virtual void begin() override;

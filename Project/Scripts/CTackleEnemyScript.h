@@ -1,14 +1,17 @@
 #pragma once
 #include "CMonsterUnitScript.h"
 
-enum class TACKLEENEMY_STATE
+enum class TackleEnemyState
 {
     Idle,
-    Patrol,
     Find,
     AttackPrev,
     Attack,
     AttackAfter,
+    AttackAfter2,
+    Wait,
+    Fall,
+    Landing,
     Damage,
     Eaten,
     Death,
@@ -17,18 +20,20 @@ enum class TACKLEENEMY_STATE
 class CTackleEnemyScript : public CMonsterUnitScript
 {
 private:
-    TACKLEENEMY_STATE m_eState;
+    TackleEnemyState m_eState;
 
-    CGameObject* m_pTargetObject;
+    Vec3 m_vDamageDir;
+    
+    float m_fAccTime;
+    float m_fWaitTime;
+
     float m_fRushSpeedLerp;
     float m_fRushLerp;
     float m_fSpeed;
     float m_fMaxSpeed;
 
-    float m_fPatrolTime;
-    float m_fPatrolAccTime;
+    float m_fThreshHoldRushLerp;
 
-    Vec3 m_vDamageDir;
     bool m_bFlag;
 
 public:
@@ -40,9 +45,13 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    void ChangeState(TACKLEENEMY_STATE _state);
-    void EnterState(TACKLEENEMY_STATE _state);
-    void ExitState(TACKLEENEMY_STATE _state);
+    void EnterState(TackleEnemyState _state);
+    void FSM();
+    void ExitState(TackleEnemyState _state);
+    void ChangeState(TackleEnemyState _state);
+    void CheckDamage();
+    Vec3 TrackDir(Vec3 _vPos);
+    void ApplyDir(Vec3 _vFront, bool _flag);
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
@@ -50,25 +59,24 @@ private:
 
 private:
     void Idle();
-    void Patrol();
     void Find();
     void AttackPrev();
     void Attack();
     void AttackAfter();
+    void AttackAfter2();
+    void Fall();
+    void Landing();
     void Damage();
     void Eaten();
+    void Wait();
     void Death();
 
 private:
-    Vec3 TrackDir(Vec3 _vPos);
-    TACKLEENEMY_STATE RandomIdleState();
-    Vec3 RandomPatrolDir();
-    void ApplyDir(Vec3 _vFront, bool _flag);
-    void PatrolMove();
+
 
 public:
     CLONE(CTackleEnemyScript)
     CTackleEnemyScript();
-    CTackleEnemyScript(const CTackleEnemyScript& _Origin);
+    CTackleEnemyScript(const CTackleEnemyScript& Origin);
     virtual ~CTackleEnemyScript();
 };

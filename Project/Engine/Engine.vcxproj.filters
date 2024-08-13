@@ -1094,9 +1094,6 @@
     <Filter Include="ShaderCode\Kirby\SkySphere">
       <UniqueIdentifier>{b293636d-b337-4d38-b074-1775de15c827}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\NormalEnemy">
-      <UniqueIdentifier>{b1ce7628-f5b2-4fc2-b2d9-37e6cb80410c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Kirby\Characters\Monster\Noddy">
       <UniqueIdentifier>{82de1825-ebd5-48d8-8dd1-cbb92e02b601}</UniqueIdentifier>
     </Filter>
@@ -1108,9 +1105,6 @@
     </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader">
       <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\GhostGordo">
-      <UniqueIdentifier>{3988d0d2-545a-4515-ac9f-cff1997c5dc3}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Kirby\Map\1. Natural Plains">
       <UniqueIdentifier>{e42ab017-37f0-4515-b1cf-456932d4675e}</UniqueIdentifier>
@@ -1127,9 +1121,6 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultUIShader">
       <UniqueIdentifier>{cde1195e-dd34-41d4-85be-f9d448d8c211}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\Gimmick">
-      <UniqueIdentifier>{b0690027-d22d-4d07-b2a3-08b63f1c2096}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader\UIWipeShader">
       <UniqueIdentifier>{dd483ebd-d730-4e07-8e7f-6107bc17f32a}</UniqueIdentifier>
     </Filter>
@@ -1138,6 +1129,18 @@
     </Filter>
     <Filter Include="ShaderCode\Render\Postprocess\LensFlare">
       <UniqueIdentifier>{a2edad5a-4026-44a0-aaa5-3320c3140b42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Monster\HotHead">
+      <UniqueIdentifier>{be943b25-37cf-4771-a5e1-955ebf6963de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Monster\DefaultEnemy">
+      <UniqueIdentifier>{b1ce7628-f5b2-4fc2-b2d9-37e6cb80410c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Monster\SirKibble">
+      <UniqueIdentifier>{52aa8560-1bea-47b8-b19e-b7b5a3e1aa74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Monster\GhostGordo">
+      <UniqueIdentifier>{e5682491-197f-4e22-b39a-d878c384b677}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1393,7 +1396,7 @@
       <Filter>ShaderCode\Kirby\SkySphere</Filter>
     </FxCompile>
     <FxCompile Include="NormalEnemyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Monster\NormalEnemy</Filter>
+      <Filter>ShaderCode\Kirby\Characters\Monster\DefaultEnemy</Filter>
     </FxCompile>
     <FxCompile Include="KirbyButterflyPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
@@ -1416,7 +1419,7 @@
     <FxCompile Include="TransparentPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
-    <FxCompile Include="MapTestPS.hlsl">
+    <FxCompile Include="FunHouseMapPS.hlsl">
       <Filter>ShaderCode\Kirby\Map\3. Invasion at the House of Horror</Filter>
     </FxCompile>
     <FxCompile Include="UIHPShaderVS.hlsl">
@@ -1430,9 +1433,6 @@
     </FxCompile>
     <FxCompile Include="UIDefaultVS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
-    </FxCompile>
-    <FxCompile Include="CrumblePS.hlsl">
-      <Filter>ShaderCode\Kirby\Gimmick</Filter>
     </FxCompile>
     <FxCompile Include="UIWipeVS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
@@ -1460,6 +1460,18 @@
     </FxCompile>
     <FxCompile Include="KirbyDimensionalFadePS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="HotHeadPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Monster\HotHead</Filter>
+    </FxCompile>
+    <FxCompile Include="SirKibblePS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Monster\SirKibble</Filter>
+    </FxCompile>
+    <FxCompile Include="GhostGordoPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Monster\GhostGordo</Filter>
+    </FxCompile>
+    <FxCompile Include="MotionBlurPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
