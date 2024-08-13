@@ -333,12 +333,6 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisA_TeleportCombo.h"
 void CElfilisFSM::begin()
 {
-    // set map size
-    float ScaleFactor = Transform()->GetLocalScale().x;
-    m_NearDist *= ScaleFactor;
-    m_MapFloorOffset *= ScaleFactor;
-    m_MapSizeRadius *= ScaleFactor;
-
     // add state
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);
@@ -377,7 +371,7 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT", new CElfilisG_ToAirTeleport);
     AddGroupPrivateState(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_STAB", new CElfilisA_Stab);
 
-    ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
+    ChangeStateGroup(ElfilisStateGroup::GroundIdle);
 
     // find Big Elfilis
     wstring strName = GetOwner()->GetName() + L"Big";
@@ -398,6 +392,15 @@ void CElfilisFSM::begin()
     {
         MessageBox(nullptr, L"Big Elfilis를 찾을 수 없습니다", L"Big Elfilis 등록 실패", MB_OK);
     }
+
+    // get childs
+    m_Weapon = GetOwner()->GetChildObject(L"Halberd");
+
+    // set map size
+    float ScaleFactor = Transform()->GetLocalScale().x;
+    m_NearDist *= ScaleFactor;
+    m_MapFloorOffset *= ScaleFactor;
+    m_MapSizeRadius *= ScaleFactor;
 }
 
 void CElfilisFSM::tick()
