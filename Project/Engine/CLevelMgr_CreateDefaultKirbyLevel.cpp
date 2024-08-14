@@ -137,20 +137,53 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     // create Env
     // =============
     // SkyBox
-    CGameObject* pSkyBoxObj = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Skybox\\Day\\Day.fbx")->Instantiate();
+    CGameObject* pSkyBoxObj = nullptr;
+    Ptr<CPrefab> SkyboxPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Level0_SkySphere.pref");
+
+    if (SkyboxPref != nullptr)
+    {
+        pSkyBoxObj = SkyboxPref->Instantiate();
+    }
+    else
+    {
+        Ptr<CMeshData> SkyboxFbx = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Skybox\\Day\\Day.fbx");
+
+        if (SkyboxFbx != nullptr)
+        {
+            pSkyBoxObj = SkyboxFbx->Instantiate();
+        }
+        else
+        {
+            pSkyBoxObj = new CGameObject;
+            pSkyBoxObj->AddComponent(new CTransform);
+            pSkyBoxObj->AddComponent(new CMeshRender);
+
+            pSkyBoxObj->Transform()->SetWorldScale(Vec3(2000.f));
+            pSkyBoxObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"SphereMesh"));
+        }
+
+        pSkyBoxObj->Transform()->SetLocalRotation(Vec3(-XM_PIDIV2, XM_PI, 0.f));
+        pSkyBoxObj->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+
+        pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
+        pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
+
+        Ptr<CMaterial> SkyBoxMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\Day_SkySphereDayC.mtrl");
+        if (SkyBoxMtrl == nullptr)
+        {
+            SkyBoxMtrl = new CMaterial(false);
+            SkyBoxMtrl->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"KirbySkySphereShader"));
+            wstring name = L"material\\Day_SkySphereDayC.mtrl";
+            SkyBoxMtrl->SetName(name);
+            SkyBoxMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\LevelObject\\Skybox\\Day\\SkySphere_DayTest.1151417570.png"));
+            CAssetMgr::GetInst()->AddAsset(name, SkyBoxMtrl);
+            // SkyBoxMtrl->Save(SkyBoxMtrl->GetKey());
+        }
+
+        pSkyBoxObj->GetRenderComponent()->SetMaterial(SkyBoxMtrl, 0);
+    }
+
     pSkyBoxObj->SetName(L"SkyBox");
-
-    pSkyBoxObj->Transform()->SetLocalRotation(Vec3(-XM_PIDIV2, XM_PI, 0.f));
-    pSkyBoxObj->Transform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-
-    pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
-    pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
-
-    Ptr<CMaterial> SkyBoxMtrl = pSkyBoxObj->GetRenderComponent()->GetMaterial(0);
-    SkyBoxMtrl->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"KirbySkySphereShader"));
-    SkyBoxMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Skybox\\Day\\SkySphere_DayTest.1151417570.png"));
-    SkyBoxMtrl->Save(SkyBoxMtrl->GetKey());
-
     NewLevel->AddObject(pSkyBoxObj, 0);
 
     // IBL
@@ -159,11 +192,11 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     pIBLObj->AddComponent(new CTransform);
     pIBLObj->AddComponent(new CSkyBox);
 
-    pSkyBoxObj->GetRenderComponent()->SetFrustumCheck(false);
-    pSkyBoxObj->GetRenderComponent()->SetCastShadow(false);
+    pIBLObj->GetRenderComponent()->SetFrustumCheck(false);
+    pIBLObj->GetRenderComponent()->SetCastShadow(false);
 
-    pIBLObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Diffuse.dds"));
-    pIBLObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Specular.dds"));
+    pIBLObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Diffuse.dds"));
+    pIBLObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\LevelObject\\Map\\Light\\Default\\Specular.dds"));
 
     NewLevel->AddObject(pIBLObj, 0);
 
@@ -189,7 +222,7 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
 
     pFloor->Transform()->SetLocalScale(Vec3(10000.f, 1.f, 10000.f));
     pFloor->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
-    Ptr<CMaterial> pFloorMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"material\\DefaultFloorMtrl.mtrl");
+    Ptr<CMaterial> pFloorMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\DefaultFloorMtrl.mtrl");
     if (nullptr == pFloorMtrl)
     {
         pFloorMtrl = new CMaterial(false);
@@ -209,168 +242,220 @@ CLevel* CLevelMgr::CreateDefaultKirbyLevel()
     // create main Player
     // ==================
     // Main Player
-    CGameObject* pPlayer = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Base\\Kirby.fbx")->Instantiate();
-    pPlayer->SetName(L"Main Player");
-    pPlayer->AddComponent(new CCharacterController);
-    pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYUNITSCRIPT));
-    pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYMOVECONTROLLER));
-    pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYFSM));
+    Ptr<CPrefab> PlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
+    CGameObject* pPlayer = nullptr;
 
-    pPlayer->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
-    pPlayer->Transform()->SetLocalPos(Vec3(0.f, 10.f, 10.f));
-    pPlayer->MeshRender()->SetFrustumCheck(false);
-    pPlayer->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
-    pPlayer->CharacterController()->SetHeight(1.51f);
-    pPlayer->CharacterController()->SetRadius(0.51f);
-    pPlayer->CharacterController()->SetSkinWidth(0.015f);
-    pPlayer->CharacterController()->SetMinMoveDistance(0.f);
-
-    Ptr<CMaterial> pPlayerMtrl = pPlayer->GetRenderComponent()->GetMaterial(0);
-    Ptr<CGraphicsShader> pPlayerShader = CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"KirbyBodyShader");
-
-    for (UINT i = 0; i < pPlayer->GetRenderComponent()->GetMtrlCount(); ++i)
+    if (PlayerPref != nullptr)
     {
-        wstring MtrlName = pPlayer->GetRenderComponent()->GetMesh()->GetIBName(i);
+        pPlayer = PlayerPref->Instantiate();
+    }
+    else
+    {
+        Ptr<CMeshData> PlayerFbx = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Base\\Kirby.fbx");
 
-        if (MtrlName != L"BodyM__BodyC" && MtrlName != L"limbsM__BodyC" && MtrlName != L"MouthNormalM__BodyC")
+        if (PlayerFbx != nullptr)
         {
-            pPlayer->GetRenderComponent()->SetMaterial(nullptr, i);
+            pPlayer = PlayerFbx->Instantiate();
+
+            if (pPlayer)
+            {
+                pPlayer->AddComponent(new CCharacterController);
+                pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYUNITSCRIPT));
+                pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYMOVECONTROLLER));
+                pPlayer->AddComponent(CScriptMgr::GetScript(KIRBYFSM));
+
+                pPlayer->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
+                pPlayer->Transform()->SetLocalPos(Vec3(0.f, 10.f, 10.f));
+                pPlayer->MeshRender()->SetFrustumCheck(false);
+                pPlayer->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
+                pPlayer->CharacterController()->SetHeight(1.51f);
+                pPlayer->CharacterController()->SetRadius(0.51f);
+                pPlayer->CharacterController()->SetSkinWidth(0.015f);
+                pPlayer->CharacterController()->SetMinMoveDistance(0.f);
+
+                Ptr<CMaterial> pPlayerMtrl = pPlayer->GetRenderComponent()->GetMaterial(0);
+                Ptr<CGraphicsShader> pPlayerShader = CAssetMgr::GetInst()->Load<CGraphicsShader>(L"KirbyBodyShader");
+
+                for (UINT i = 0; i < pPlayer->GetRenderComponent()->GetMtrlCount(); ++i)
+                {
+                    wstring MtrlName = pPlayer->GetRenderComponent()->GetMesh()->GetIBName(i);
+
+                    if (MtrlName != L"BodyM__BodyC" && MtrlName != L"limbsM__BodyC" && MtrlName != L"MouthNormalM__BodyC")
+                    {
+                        pPlayer->GetRenderComponent()->SetMaterial(nullptr, i);
+                    }
+                }
+
+                if (pPlayerMtrl != nullptr && pPlayerShader != nullptr)
+                {
+                    pPlayerMtrl->SetShader(pPlayerShader);
+                    pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_0,
+                                             CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyEye.00.png"));
+                    pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_1,
+                                             CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyEyeMask.00.png"));
+                    pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_2,
+                                             CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyEyeNormal.00.png"));
+                    pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_3,
+                                             CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbySkin.856436594.png"));
+                    pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_4,
+                                             CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyMouth.1209505089.png"));
+                }
+
+                // Player Vacuum Collider
+                CGameObject* pVacuumCol = new CGameObject;
+                pVacuumCol->SetName(L"Vacuum Collider");
+                pVacuumCol->AddComponent(new CTransform);
+                pVacuumCol->AddComponent(new CSphereCollider);
+                pVacuumCol->AddComponent(CScriptMgr::GetScript(KIRBYVACUUMCOLLIDER));
+
+                pVacuumCol->Transform()->SetAbsolute(false);
+                pVacuumCol->Transform()->SetLocalPos(Vec3(0.f, 2.f, 2.f));
+                pVacuumCol->Transform()->SetLocalScale(Vec3(1.5f, 1.5f, 1.5f));
+                pVacuumCol->SphereCollider()->SetTrigger(true);
+
+                GamePlayStatic::AddChildObject(pPlayer, pVacuumCol);
+                GamePlayStatic::LayerChange(pVacuumCol, 5);
+
+                // Player Body Collider
+                CGameObject* pBodyCollider = new CGameObject;
+                pBodyCollider->SetName(L"Body Collider");
+                pBodyCollider->AddComponent(new CTransform);
+                pBodyCollider->AddComponent(new CCapsuleCollider);
+                pBodyCollider->AddComponent(CScriptMgr::GetScript(KIRBYBODYCOLLIDER));
+
+                pBodyCollider->Transform()->SetAbsolute(false);
+                pBodyCollider->Transform()->SetLocalScale(Vec3(1.2f, 1.2f, 1.2f));
+                pBodyCollider->CapsuleCollider()->SetTrigger(true);
+                pBodyCollider->CapsuleCollider()->SetCenter(Vec3(0.f, 0.65f, 0.f));
+                pBodyCollider->CapsuleCollider()->SetHeight(1.51f);
+                pBodyCollider->CapsuleCollider()->SetRadius(0.51f);
+
+                GamePlayStatic::AddChildObject(pPlayer, pBodyCollider);
+                GamePlayStatic::LayerChange(pBodyCollider, 5);
+
+                // DeformLight PointLight
+                Ptr<CPrefab> pPointLightpref =
+                    CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DeformLight PointLight.pref", L"prefab\\DeformLight PointLight.pref");
+                CGameObject* pPointLight;
+
+                if (pPointLightpref != nullptr)
+                {
+                    pPointLight = pPointLightpref->Instantiate();
+                }
+                else
+                {
+                    pPointLight = new CGameObject;
+                    pPointLight->SetName(L"DeformLight PointLight");
+                    pPointLight->AddComponent(new CTransform);
+                    pPointLight->AddComponent(new CLight);
+
+                    pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
+                    pPointLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
+                    pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
+                    pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
+                    pPointLight->Light()->SetRadius(80.f);
+                    pPointLight->Light()->SetFallOffEnd(135.f);
+                    pPointLight->Light()->SetHaloRadius(160.f);
+                    pPointLight->Light()->SetHaloStrength(0.125f);
+                }
+                GamePlayStatic::AddChildObject(pPlayer, pPointLight);
+                pPointLight->SetActive(false);
+
+                // Snot Bubble
+                Ptr<CPrefab> pSnotBubblePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SleepSnotBubble.pref", L"prefab\\SleepSnotBubble.pref");
+                CGameObject* pSnotBubble = nullptr;
+
+                if (pSnotBubblePref != nullptr)
+                {
+                    pSnotBubble = pSnotBubblePref->Instantiate();
+                }
+                else
+                {
+                    pSnotBubble =
+                        CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Sleep\\SleepSnotBubble\\SleepSnotBubble.fbx")->Instantiate();
+                    pSnotBubble->SetName(L"SleepSnotBubble");
+
+                    pSnotBubble->MeshRender()->SetBoundingRadius(0.1f);
+                    pSnotBubble->MeshRender()->SetCastShadow(false);
+
+                    GamePlayStatic::SpawnGameObject(pSnotBubble, 4);
+                }
+                GamePlayStatic::AddChildObject(pPlayer, pSnotBubble, L"Mouth");
+                pSnotBubble->SetActive(false);
+            }
+        }
+        else
+        {
+            pPlayer = new CGameObject;
         }
     }
 
-    if (pPlayerMtrl != nullptr && pPlayerShader != nullptr)
-    {
-        pPlayerMtrl->SetShader(pPlayerShader);
-        pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyEye.00.png"));
-        pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyEyeMask.00.png"));
-        pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyEyeNormal.00.png"));
-        pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_3,
-                                 CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbySkin.856436594.png"));
-        pPlayerMtrl->SetTexParam(TEX_PARAM::TEX_4,
-                                 CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Kirby\\Base\\KirbyMouth.1209505089.png"));
-    }
-
+    pPlayer->SetName(L"Main Player");
     NewLevel->AddObject(pPlayer, 4);
-
-    // Player Vacuum Collider
-    CGameObject* pVacuumCol = new CGameObject;
-    pVacuumCol->SetName(L"Vacuum Collider");
-    pVacuumCol->AddComponent(new CTransform);
-    pVacuumCol->AddComponent(new CSphereCollider);
-    pVacuumCol->AddComponent(CScriptMgr::GetScript(KIRBYVACUUMCOLLIDER));
-
-    pVacuumCol->Transform()->SetAbsolute(false);
-    pVacuumCol->Transform()->SetLocalPos(Vec3(0.f, 2.f, 2.f));
-    pVacuumCol->Transform()->SetLocalScale(Vec3(1.5f, 1.5f, 1.5f));
-    pVacuumCol->SphereCollider()->SetTrigger(true);
-
-    GamePlayStatic::AddChildObject(pPlayer, pVacuumCol);
-    GamePlayStatic::LayerChange(pVacuumCol, 5);
-
-    // Player Body Collider
-    CGameObject* pBodyCollider = new CGameObject;
-    pBodyCollider->SetName(L"Body Collider");
-    pBodyCollider->AddComponent(new CTransform);
-    pBodyCollider->AddComponent(new CCapsuleCollider);
-    pBodyCollider->AddComponent(CScriptMgr::GetScript(KIRBYBODYCOLLIDER));
-
-    pBodyCollider->Transform()->SetAbsolute(false);
-    pBodyCollider->Transform()->SetLocalScale(Vec3(1.2f, 1.2f, 1.2f));
-    pBodyCollider->CapsuleCollider()->SetTrigger(true);
-    pBodyCollider->CapsuleCollider()->SetCenter(Vec3(0.f, 0.65f, 0.f));
-    pBodyCollider->CapsuleCollider()->SetHeight(1.51f);
-    pBodyCollider->CapsuleCollider()->SetRadius(0.51f);
-
-    GamePlayStatic::AddChildObject(pPlayer, pBodyCollider);
-    GamePlayStatic::LayerChange(pBodyCollider, 5);
-
-    // DeformLight PointLight
-    Ptr<CPrefab> pPointLightpref =
-        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DeformLight PointLight.pref", L"prefab\\DeformLight PointLight.pref");
-    CGameObject* pPointLight;
-
-    if (pPointLightpref != nullptr)
-    {
-        pPointLight = pPointLightpref->Instantiate();
-    }
-    else
-    {
-        pPointLight = new CGameObject;
-        pPointLight->SetName(L"DeformLight PointLight");
-        pPointLight->AddComponent(new CTransform);
-        pPointLight->AddComponent(new CLight);
-
-        pPointLight->Transform()->SetLocalPos(Vec3(0.f, 150.f, 0.f));
-        pPointLight->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), 0.f, 0.f));
-        pPointLight->Light()->SetLightType(LIGHT_TYPE::POINT);
-        pPointLight->Light()->SetLightRadiance(Vec3(255.f, 226.f, 217.f) / 255.f);
-        pPointLight->Light()->SetRadius(80.f);
-        pPointLight->Light()->SetFallOffEnd(135.f);
-        pPointLight->Light()->SetHaloRadius(160.f);
-        pPointLight->Light()->SetHaloStrength(0.125f);
-    }
-    GamePlayStatic::AddChildObject(pPlayer, pPointLight);
-    pPointLight->SetActive(false);
-
-    // Snot Bubble
-    Ptr<CPrefab> pSnotBubblePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SleepSnotBubble.pref", L"prefab\\SleepSnotBubble.pref");
-    CGameObject* pSnotBubble = nullptr;
-
-    if (pSnotBubblePref != nullptr)
-    {
-        pSnotBubble = pSnotBubblePref->Instantiate();
-    }
-    else
-    {
-        pSnotBubble = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Kirby\\Sleep\\SleepSnotBubble\\SleepSnotBubble.fbx")->Instantiate();
-        pSnotBubble->SetName(L"SleepSnotBubble");
-
-        pSnotBubble->MeshRender()->SetBoundingRadius(0.1f);
-        pSnotBubble->MeshRender()->SetCastShadow(false);
-
-        GamePlayStatic::SpawnGameObject(pSnotBubble, 4);
-    }
-    GamePlayStatic::AddChildObject(pPlayer, pSnotBubble, L"Mouth");
-    pSnotBubble->SetActive(false);
 
     // ==================
     // create default object
     // ==================
     // Box
-    CGameObject* pBox = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Gimmick\\Block\\StarBlock\\H2W2\\StarBlock_H2W2.fbx")->Instantiate();
-    pBox->SetName(L"Star Block");
-    pBox->AddComponent(new CRigidbody);
-    pBox->AddComponent(new CBoxCollider);
+    Ptr<CMeshData> BoxFbx = CAssetMgr::GetInst()->LoadFBX(L"fbx\\LevelObject\\Gimmick\\Block\\StarBlock\\H2W2\\StarBlock_H2W2.fbx");
+    CGameObject* pBox = nullptr;
+    
+    if (BoxFbx != nullptr)
+    {
+        pBox = BoxFbx->Instantiate();
+        pBox->SetName(L"Star Block");
+        pBox->AddComponent(new CRigidbody);
+        pBox->AddComponent(new CBoxCollider);
 
-    pBox->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
-    pBox->Transform()->SetLocalPos(Vec3(-100.f, 30.f, 100.f));
-    pBox->BoxCollider()->SetCenter(Vec3(0.f, 1.f, 0.f));
-    pBox->GetRenderComponent()->SetBoundingRadius(60.f);
+        pBox->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
+        pBox->Transform()->SetLocalPos(Vec3(-100.f, 30.f, 100.f));
+        pBox->BoxCollider()->SetCenter(Vec3(0.f, 1.f, 0.f));
+        pBox->GetRenderComponent()->SetBoundingRadius(60.f);
 
-    NewLevel->AddObject(pBox, 3);
+        NewLevel->AddObject(pBox, 3);
+    }
 
     // Monster
-    CGameObject* pMonsterAbility = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemy.fbx")->Instantiate();
-    pMonsterAbility->SetName(L"Monster (Ability)");
-    pMonsterAbility->AddComponent(new CRigidbody);
-    pMonsterAbility->AddComponent(new CCapsuleCollider);
-    pMonsterAbility->AddComponent(CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT));
+    Ptr<CPrefab> MonsterPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\NormalEnemy.pref");
+    CGameObject* pMonsterAbility = nullptr;
 
-    pMonsterAbility->Transform()->SetLocalPos(Vec3(60.f, 20.f, 60.f));
-    pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
-    pMonsterAbility->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
+    if (MonsterPref != nullptr)
+    {
+        pMonsterAbility = MonsterPref->Instantiate();
+    }
+    else
+    {
+        Ptr<CMeshData> MonsterFbx = CAssetMgr::GetInst()->LoadFBX(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemy.fbx");
+        
+        if (MonsterFbx != nullptr)
+        {
+            pMonsterAbility = MonsterPref->Instantiate();
+            pMonsterAbility->AddComponent(new CRigidbody);
+            pMonsterAbility->AddComponent(new CCapsuleCollider);
 
-    pMonsterAbility->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->FindAsset<CGraphicsShader>(L"NormalEnemyBodyShader"));
-    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
-        TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
-    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
-        TEX_1, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_BaseColor._919281726.png"));
-    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
-        TEX_2, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_Normal.1361449125.png"));
-    pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
-        TEX_3, CAssetMgr::GetInst()->FindAsset<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
+            pMonsterAbility->MeshRender()->GetMaterial(0)->SetShader(CAssetMgr::GetInst()->Load<CGraphicsShader>(L"NormalEnemyBodyShader"));
+            pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+                TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
+            pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+                TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_BaseColor._919281726.png"));
+            pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+                TEX_2, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_Normal.1361449125.png"));
+            pMonsterAbility->MeshRender()->GetMaterial(0)->SetTexParam(
+                TEX_3, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\BodyC_MRA.711223188.png"));
+        }
+    }
 
-    NewLevel->AddObject(pMonsterAbility, 8);
+    if (pMonsterAbility)
+    {
+        pMonsterAbility->AddComponent(CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT));
+
+        pMonsterAbility->Transform()->SetLocalPos(Vec3(60.f, 20.f, 60.f));
+        pMonsterAbility->Transform()->SetLocalRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+        pMonsterAbility->Transform()->SetLocalScale(Vec3(20.f, 20.f, 20.f));
+
+        pMonsterAbility->SetName(L"Monster (Ability)");
+        NewLevel->AddObject(pMonsterAbility, 8);
+    }
 
     return NewLevel;
 }

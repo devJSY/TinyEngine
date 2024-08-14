@@ -9,7 +9,7 @@ ElfilisDimensionSet::ElfilisDimensionSet()
     , m_Step(0)
     , m_AccTime(0.f)
 {
-    Ptr<CPrefab> DimensionSpear = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisDimensionSpear.pref");
+    Ptr<CPrefab> DimensionSpear = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisDimensionSpear.pref");
 
     if (DimensionSpear != nullptr)
     {

@@ -39,6 +39,10 @@ void CKirbyStuffed::Enter()
 
 void CKirbyStuffed::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockMove();

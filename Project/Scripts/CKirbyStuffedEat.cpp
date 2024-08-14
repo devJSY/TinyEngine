@@ -21,6 +21,9 @@ void CKirbyStuffedEat::tick()
 void CKirbyStuffedEat::Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedLanding"), false);
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();

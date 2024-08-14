@@ -11,7 +11,7 @@ CElfilisG_SwordWaveStorm::CElfilisG_SwordWaveStorm()
     , m_bFrmEnter(true)
     , m_Storm(nullptr)
 {
-    m_StormPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisStorm.pref");
+    m_StormPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisStorm.pref");
 }
 
 CElfilisG_SwordWaveStorm::~CElfilisG_SwordWaveStorm()
