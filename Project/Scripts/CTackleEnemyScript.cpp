@@ -138,6 +138,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     switch (_state)
     {
     case TackleEnemyState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
@@ -154,10 +155,12 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::AttackAfter: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Brake"), false);
     }
     break;
     case TackleEnemyState::AttackAfter2: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Animator()->Play(ANIMPREFIX("Brake"), false);
     }
@@ -167,6 +170,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Landing: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
@@ -175,6 +179,8 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Damage: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
         SetSparkle(true);
 
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
@@ -365,7 +371,11 @@ Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)
 #pragma region IDLE
 void CTackleEnemyScript::Idle()
 {
-    nullptr != GetTarget() ? ChangeState(TackleEnemyState::Find) : void();
+    if (nullptr != GetTarget())
+    {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+        ChangeState(TackleEnemyState::Find);
+    }
 }
 #pragma endregion
 

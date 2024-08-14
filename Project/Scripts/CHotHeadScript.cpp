@@ -197,6 +197,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     switch (m_eState)
     {
     case HotHeadState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
@@ -260,6 +261,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Landing: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
@@ -375,6 +377,7 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     switch (m_eState)
     {
     case HotHeadState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
         m_fAccTime = 0.f;
     }
     break;

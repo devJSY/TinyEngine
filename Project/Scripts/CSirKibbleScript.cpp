@@ -154,6 +154,7 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     switch (m_eState)
     {
     case SirKibbleState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
@@ -202,11 +203,14 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::CutterCatch: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         m_pAttackPoint->BoxCollider()->SetEnabled(false);
         Animator()->Play(ANIMPREFIX("CutterCatch"), false);
     }
     break;
     case SirKibbleState::Damage: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
         SetSparkle(true);
 
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
@@ -230,6 +234,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Land: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
@@ -331,6 +337,7 @@ void CSirKibbleScript::ExitState(SirKibbleState _state)
     switch (m_eState)
     {
     case SirKibbleState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
         m_fAccTime = 0.f;
     }
     break;
@@ -453,7 +460,6 @@ void CSirKibbleScript::LinearMove()
 void CSirKibbleScript::Idle()
 {
     m_fAccTime += DT;
-
     if (nullptr != GetTarget() && PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP > 0.01f && m_fAccTime >= 2.f)
     {
         ChangeState(SirKibbleState::Find);

@@ -89,20 +89,6 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
         return;
 
     CGameObject* pObj = _OtherCollider->GetOwner();
-    bool flag = false;
-    if (LAYER_PLAYER == pObj->GetLayerIdx())
-    {
-        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
-        if (L"Vacuum Collider" == pObj->GetName())
-        {
-            ChangeState(NormalEnemyState::Eaten);
-            m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-            return;
-        }
-    }
-
-    if (nullptr == pObj)
-        return;
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
@@ -188,10 +174,12 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     switch (_state)
     {
     case NormalEnemyState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"), false);
     }
     break;
     case NormalEnemyState::Grooming: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Grooming"));
     }
     break;
@@ -200,6 +188,7 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Sleep: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Sleep"));
     }
     break;
@@ -212,14 +201,18 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Brake: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Brake"), false);
     }
     break;
     case NormalEnemyState::AfterAttack: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("LookAround"), false);
     }
     break;
     case NormalEnemyState::Damage: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
         SetSparkle(true);
 
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
@@ -239,6 +232,8 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Land: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
@@ -316,6 +311,11 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 {
     switch (_state)
     {
+    case NormalEnemyState::Idle:
+    {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+    }
+    break;
     case NormalEnemyState::Brake: {
         m_fSpeed = m_fMaxSpeed;
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));

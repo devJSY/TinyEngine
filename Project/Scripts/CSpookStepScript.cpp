@@ -82,6 +82,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Wait: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
@@ -98,10 +99,12 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Landing: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case SpookStepState::Damage: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
@@ -249,6 +252,8 @@ void CSpookStepScript::Wait()
 {
     if (nullptr != GetTarget())
     {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
         ChangeState(SpookStepState::Find);
     }
 }
