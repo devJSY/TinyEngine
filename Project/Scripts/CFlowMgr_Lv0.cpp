@@ -81,23 +81,6 @@ void CFlowMgr_Lv0::tick()
             m_LightCastMode = 0;
         }
     }
-
-    if (KEY_TAP(KEY::NUM1))
-    {
-        TriggerEvent(1);
-    }
-    else if (KEY_TAP(KEY::NUM2))
-    {
-        TriggerEvent(2);
-    }
-    else if (KEY_TAP(KEY::NUM3))
-    {
-        TriggerEvent(3);
-    }
-    else if (KEY_TAP(KEY::NUM4))
-    {
-        TriggerEvent(4);
-    }
 }
 
 void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)

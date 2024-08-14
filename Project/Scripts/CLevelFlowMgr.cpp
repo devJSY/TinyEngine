@@ -61,15 +61,6 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
-    if (KEY_TAP(KEY::K))
-    {
-        LevelEnd();
-    }
-    if (KEY_TAP(KEY::L))
-    {
-        LevelExit();
-    }
-
     // tick마다 넣어줘야 하는 Param setting
     MtrlParamUpdate();
 }
