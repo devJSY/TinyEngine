@@ -124,6 +124,14 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
     }
 }
 
+void CFlowMgr_Lv0::LevelExit()
+{
+    CLevelFlowMgr::LevelExit();
+
+    m_PostEffectMtrl->SetScalarParam(FLOAT_2, 0.f); // Fog Strength
+    SetToneMappingParam(false);                     // Bloom Off
+}
+
 UINT CFlowMgr_Lv0::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

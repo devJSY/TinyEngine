@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CNoddyScript.h"
 
+#include "CPlayerMgr.h"
+
 CNoddyScript::CNoddyScript()
     : CMonsterUnitScript(NODDYSCRIPT)
     , m_State(NODDY_STATE::Sleep)
@@ -30,14 +32,11 @@ void CNoddyScript::begin()
 
 void CNoddyScript::tick()
 {
-    // Damage Proc
-    ClearHitDir();
-    m_PrevInfo = m_CurInfo;
+    CMonsterUnitScript::tick();
 
-    float DamageAmount = DamageProc();
-    if (DamageAmount > 0.f)
+    // Damage Proc
+    if (IsGetDamage())
     {
-        m_CurInfo.HP -= DamageAmount;
         ChangeState(NODDY_STATE::Damage);
     }
 
@@ -123,6 +122,8 @@ void CNoddyScript::EnterState()
     switch (m_State)
     {
     case NODDY_STATE::Damage: {
+        SetSparkle(true);
+
         // 피격 방향으로 회전
         Vec3 ToTargetDir = -GetHitDir();
         ToTargetDir.y = 0.f; // Y축 고정
@@ -377,16 +378,15 @@ void CNoddyScript::Wakeup()
     }
 }
 
-void CNoddyScript::OnCollisionEnter(CCollider* _OtherCollider)
+void CNoddyScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-}
-
-void CNoddyScript::OnCollisionStay(CCollider* _OtherCollider)
-{
-}
-
-void CNoddyScript::OnCollisionExit(CCollider* _OtherCollider)
-{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    if (L"Body Collider" == pObj->GetName())
+    {
+        Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 UINT CNoddyScript::SaveToLevelFile(FILE* _File)

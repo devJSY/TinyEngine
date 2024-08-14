@@ -2,6 +2,8 @@
 #include "CBladeKnightScript.h"
 #include "CBladeKnightSwordScript.h"
 
+#include "CPlayerMgr.h"
+
 CBladeKnightScript::CBladeKnightScript()
     : CMonsterUnitScript(BLADEKNIGHTSCRIPT)
     , m_State(BLADEKNIGHT_STATE::Wait)
@@ -47,15 +49,10 @@ void CBladeKnightScript::begin()
 
 void CBladeKnightScript::tick()
 {
-    // Damage Proc
-    ClearHitDir();
-    m_PrevInfo = m_CurInfo;
+    CMonsterUnitScript::tick();
 
-    float DamageAmount = DamageProc();
-    if (DamageAmount > 0.f)
+    if (IsGetDamage())
     {
-        m_CurInfo.HP -= DamageAmount;
-
         // 공격 상태가 아닌 경우에만 Damage상태로 변경
         switch (m_State)
         {
@@ -188,6 +185,8 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
+        SetSparkle(true);
+
         // 피격 방향으로 회전
         Vec3 ToTargetDir = -GetHitDir();
         ToTargetDir.y = 0.f; // Y축 고정
@@ -720,16 +719,15 @@ void CBladeKnightScript::Wait()
     }
 }
 
-void CBladeKnightScript::OnCollisionEnter(CCollider* _OtherCollider)
+void CBladeKnightScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-}
-
-void CBladeKnightScript::OnCollisionStay(CCollider* _OtherCollider)
-{
-}
-
-void CBladeKnightScript::OnCollisionExit(CCollider* _OtherCollider)
-{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    if (L"Body Collider" == pObj->GetName())
+    {
+        Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 UINT CBladeKnightScript::SaveToLevelFile(FILE* _File)

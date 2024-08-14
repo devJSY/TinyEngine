@@ -70,7 +70,7 @@ void CLevelFlowMgr::LevelStart()
     // Post Process Enable
     CRenderMgr::GetInst()->SetEnableDOF(true);
     CRenderMgr::GetInst()->SetEnableDepthMasking(true);
-    g_Global.g_EnableSSAO = true;
+    // g_Global.g_EnableSSAO = true; // Option
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
