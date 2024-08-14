@@ -11,10 +11,8 @@ CTackleEnemyScript::CTackleEnemyScript()
     , m_fRushLerp(0.9f)
     , m_fRushSpeedLerp(0.5f)
     , m_fAccTime(0.f)
-    , m_fWaitTime(1.f)
+    , m_fWaitTime(2.5f)
     , m_fThreshHoldRushLerp(0.f)
-    , m_vDamageDir{}
-    , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
@@ -33,8 +31,6 @@ CTackleEnemyScript::CTackleEnemyScript(const CTackleEnemyScript& Origin)
     , m_fThreshHoldRushLerp(Origin.m_fThreshHoldRushLerp)
     , m_fAccTime(0.f)
     , m_fWaitTime(1.f)
-    , m_vDamageDir{}
-    , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
@@ -52,6 +48,14 @@ void CTackleEnemyScript::begin()
     CUnitScript::begin();
 
     ChangeState(TackleEnemyState::Idle);
+
+    SetInfo(UnitInfo{14.f, 14.f, 70.f, 7.f, 1.f, 5.f});
+    m_fMaxSpeed = m_fSpeed = 16.f;
+    m_fRushLerp = 0.8f;
+    m_fRushSpeedLerp = 0.2f;
+    m_fThreshHoldRushLerp = 0.1f;
+
+    SetResistTime(3.f);
 }
 
 void CTackleEnemyScript::tick()
@@ -61,6 +65,11 @@ void CTackleEnemyScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (GetResistState())
+    {
+        ChangeState(TackleEnemyState::Eaten);
+    }
 }
 
 UINT CTackleEnemyScript::SaveToLevelFile(FILE* _File)
@@ -105,40 +114,14 @@ UINT CTackleEnemyScript::LoadFromLevelFile(FILE* _File)
 
 void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    if (TackleEnemyState::Eaten == m_eState)
-        return;
+    // if (TackleEnemyState::Eaten == m_eState)
+    //     return;
 
     CGameObject* pObj = _OtherCollider->GetOwner();
-    bool flag = false;
-
-    if (LAYER_PLAYER == pObj->GetLayerIdx())
-    {
-        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
-        if (L"Vacuum Collider" == pObj->GetName())
-        {
-            ChangeState(TackleEnemyState::Eaten);
-            m_vDamageDir = -pObj->GetComponent<CTransform>()->GetWorldDir(DIR_TYPE::FRONT);
-            return;
-        }
-    }
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
     L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
-}
-
-void CTackleEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
-{
-    CGameObject* pObj = _OtherCollider->GetOwner();
-
-    if (LAYER_PLAYER == pObj->GetLayerIdx())
-    {
-        // 충돌한 오브젝트 Vaccum 이라면 Collider가 켜진 상태임 즉, 빨아들이고 있는 상태
-        if (L"Vacuum Collider" == pObj->GetName())
-        {
-            ChangeState(TackleEnemyState::Idle);
-        }
-    }
 }
 
 /////////////////////////// FUNC //////////////////////////////////
@@ -175,6 +158,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::AttackAfter2: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Animator()->Play(ANIMPREFIX("Brake"), false);
     }
     break;
@@ -205,10 +189,6 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Eaten: {
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
         Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
@@ -304,7 +284,7 @@ void CTackleEnemyScript::ExitState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Damage: {
-        m_bFlag = false;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case TackleEnemyState::Death:
@@ -347,19 +327,10 @@ void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
     Quat _vTrackQuat = Quat::LookRotation(-_vTrackingDir, _vUp);
 
-    float _vRadian = Quat::Angle(_vOriginQuat, _vTrackQuat);
-
-    if (_vRadian >= (XM_2PI / 4.f) * 3.f)
-    {
-        _vRadian = XM_2PI - _vRadian;
-    }
-    else if (_vRadian >= XM_PI)
-    {
-        _vRadian = _vRadian - XM_PI;
-    }
+    float vRadian = Transform()->GetWorldDir(DIR_TYPE::FRONT).Dot((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
     // 90도 이상 틀어질 경우 lerp가 확도는걸 감안함
-    if (_vRadian >= 1.5)
+    if (vRadian <= 0.2f)
     {
         ChangeState(TackleEnemyState::AttackAfter2);
         return;
@@ -421,7 +392,7 @@ void CTackleEnemyScript::Attack()
     ApplyDir(vDir, true);
 
     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
+    Rigidbody()->SetVelocity(vDir * m_fSpeed + Vec3(0.f, -9.8f, 0.f));
 
     if (m_fSpeed <= 3.f)
     {
@@ -433,13 +404,7 @@ void CTackleEnemyScript::Attack()
 #pragma region ATTACKAFTER
 void CTackleEnemyScript::AttackAfter()
 {
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    vDir.y = 0.f;
-
-    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
-
-    if (m_fSpeed <= 2.f)
+    if (Animator()->IsFinish())
     {
         ChangeState(TackleEnemyState::Wait);
     }
@@ -453,9 +418,10 @@ void CTackleEnemyScript::AttackAfter2()
     vDir.y = 0.f;
 
     m_fSpeed = Lerp(m_fSpeed, 0.f, 6.f * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
 
-    if (m_fSpeed <= 2.f)
+    Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_fSpeed * DT);
+
+    if (m_fSpeed <= 0.3f)
     {
         ChangeState(TackleEnemyState::Wait);
     }
@@ -485,16 +451,6 @@ void CTackleEnemyScript::Landing()
 #pragma region DAMAGE
 void CTackleEnemyScript::Damage()
 {
-    if (!m_bFlag)
-    {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-
-        m_vDamageDir.Normalize();
-        m_vDamageDir.y = 1.5f;
-        Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
-        m_bFlag = true;
-    }
-
     if (GetCurInfo().HP <= 0.f)
     {
         ChangeState(TackleEnemyState::Death);
@@ -507,7 +463,10 @@ void CTackleEnemyScript::Damage()
 #pragma region EATEN
 void CTackleEnemyScript::Eaten()
 {
-    Rigidbody()->AddForce(m_vDamageDir * 40.f, ForceMode::Force);
+    if (!GetResistState())
+    {
+        ChangeState(TackleEnemyState::Fall);
+    }
 }
 #pragma endregion
 

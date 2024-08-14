@@ -8,6 +8,7 @@ CKabuScript::CKabuScript()
     , m_eState(KabuState::Patrol)
     , m_vCenterPos{}
     , m_vDamageDir{}
+    , m_vDir{}
     , m_bFlag(false)
     , m_bCurved(false)
     , m_bInverse(false)
@@ -30,6 +31,7 @@ CKabuScript::CKabuScript(const CKabuScript& Origin)
     , m_eState(KabuState::Patrol)
     , m_vCenterPos{}
     , m_vDamageDir{}
+    , m_vDir{}
     , m_bFlag(false)
     , m_bCurved(Origin.m_bCurved)
     , m_bInverse(Origin.m_bInverse)
@@ -58,6 +60,15 @@ void CKabuScript::begin()
     ChangeState(KabuState::Patrol);
 
     m_vOriginPos = Transform()->GetWorldPos();
+
+    if (m_bInverse)
+    {
+        m_vPrevDir = m_vDir = Vec3(0.f, 0.f, 1.f);
+    }
+    else
+    {
+        m_vPrevDir = m_vDir = Vec3(1.f, 0.f, 0.f);
+    }
 }
 
 void CKabuScript::tick()
@@ -67,6 +78,11 @@ void CKabuScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (GetResistState())
+    {
+        ChangeState(KabuState::Eaten);
+    }
 }
 
 void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
@@ -92,7 +108,6 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
         }
     }
 
-    
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
     L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
@@ -181,6 +196,12 @@ void CKabuScript::EnterState(KabuState _state)
     switch (_state)
     {
     case KabuState::Patrol: {
+        m_vDir = m_vPrevDir;
+        Animator()->Play(ANIMPREFIX("Wait"), false);
+    }
+    break;
+    case KabuState::Return: {
+        m_vDir = (m_vDestPos - Transform()->GetWorldPos()).Normalize();
         Animator()->Play(ANIMPREFIX("Wait"), false);
     }
     break;
@@ -209,15 +230,12 @@ void CKabuScript::EnterState(KabuState _state)
     break;
     case KabuState::Eaten: {
         Animator()->Play(ANIMPREFIX("Damage"));
-
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
     }
     break;
-    case KabuState::Death:
-        break;
+    case KabuState::Death: {
+        Animator()->Play(ANIMPREFIX("Damage"), false);
+    }
+    break;
     case KabuState::End:
         break;
     default:
@@ -231,6 +249,10 @@ void CKabuScript::FSM()
     {
     case KabuState::Patrol: {
         Patrol();
+    }
+    break;
+    case KabuState::Return: {
+        Return();
     }
     break;
     case KabuState::Fall: {
@@ -265,10 +287,15 @@ void CKabuScript::ExitState(KabuState _state)
     switch (_state)
     {
     case KabuState::Patrol: {
+        m_vPrevDir = m_vDir;
     }
     break;
     case KabuState::Damage: {
         m_bFlag = false;
+    }
+    break;
+    case KabuState::Eaten: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case KabuState::Death:
@@ -348,19 +375,21 @@ void CKabuScript::CircleMove()
 
 void CKabuScript::LinearMove()
 {
-    Vec3 vPos = Transform()->GetWorldPos();
-    Vec3 vUP = Transform()->GetWorldDir(DIR_TYPE::UP);
+    Vec3 vPos = Transform()->GetLocalPos();
 
-    Vec3 vDir = m_vDestPos - vPos;
-    vDir.Normalize();
-    vDir.y = 0;
-    Rigidbody()->SetVelocity(vDir * GetCurInfo().Speed * DT);
+    m_vDir.y = 0.f;
 
-    if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    Rigidbody()->AddForce(m_vDir * GetCurInfo().Speed, ForceMode::Acceleration);
+
+    if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 10.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
     {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Vec3 vTemp = m_vDestPos;
         m_vDestPos = m_vOriginPos;
         m_vOriginPos = vTemp;
+        m_vDestPos.y = 0.f;
+        m_vOriginPos.y = 0.f;
+        m_vDir = m_vDir * -1.f;
     }
 }
 
@@ -423,7 +452,7 @@ void CKabuScript::Damage()
 
         if (Animator()->IsFinish())
         {
-            ChangeState(KabuState::Patrol);
+            ChangeState(KabuState::Return);
         }
     }
 }
@@ -432,7 +461,10 @@ void CKabuScript::Damage()
 #pragma region EATEN
 void CKabuScript::Eaten()
 {
-    Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f, ForceMode::Force);
+    if (!GetResistState())
+    {
+        ChangeState(KabuState::Return);
+    }
 }
 #pragma endregion
 
@@ -445,3 +477,21 @@ void CKabuScript::Death()
     }
 }
 #pragma endregion
+
+void CKabuScript::Return()
+{
+    Vec3 vPos = Transform()->GetLocalPos();
+
+    Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT);
+
+    if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Vec3 vTemp = m_vDestPos;
+        m_vDestPos = m_vOriginPos;
+        m_vOriginPos = vTemp;
+        m_vDestPos.y = 0.f;
+        m_vOriginPos.y = 0.f;
+        ChangeState(KabuState::Patrol);
+    }
+}

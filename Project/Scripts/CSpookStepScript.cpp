@@ -114,6 +114,10 @@ void CSpookStepScript::EnterState()
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
+    case SpookStepState::Eaten: {
+        Animator()->Play(ANIMPREFIX("Damage"));
+    }
+    break;
     case SpookStepState::Disappear: {
         Animator()->Play(ANIMPREFIX("Disappear"), false);
     }
@@ -161,6 +165,10 @@ void CSpookStepScript::FSM()
         Disappear();
     }
     break;
+    case SpookStepState::Eaten: {
+        Eaten();
+    }
+    break;
     case SpookStepState::End:
         break;
     default:
@@ -187,6 +195,11 @@ void CSpookStepScript::ExitState()
     case SpookStepState::Damage:
         break;
     case SpookStepState::Disappear:
+        break;
+    case SpookStepState::Eaten:
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
         break;
     case SpookStepState::End:
         break;
@@ -304,3 +317,11 @@ void CSpookStepScript::Disappear()
     Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
 }
 #pragma endregion
+
+void CSpookStepScript::Eaten() 
+{
+    if (!GetResistState())
+    {
+        ChangeState(SpookStepState::Fall);
+    }
+}

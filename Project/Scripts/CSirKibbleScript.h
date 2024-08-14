@@ -32,7 +32,6 @@ private:
 
     SirKibbleState m_eState;
     float m_fAccTime;
-    bool m_bFlag;
     bool m_bJump;
     bool m_bPatrol;
 

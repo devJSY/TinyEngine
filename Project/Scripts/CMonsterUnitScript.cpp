@@ -10,6 +10,7 @@ CMonsterUnitScript::CMonsterUnitScript(UINT _Type)
     , m_bSparkle(false)
     , m_fAccTime(0.f)
     , m_fTermTime(0.f)
+    , m_fResistTime(0.f)
 {
     UnitInfo MonsterInfo = {
         100.f, // HP
@@ -48,6 +49,7 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     , m_bSparkle(false)
     , m_fAccTime(0.f)
     , m_fTermTime(0.f)
+    , m_fResistTime(0.f)
 {
     UnitInfo MonsterInfo = {
         100.f, // HP

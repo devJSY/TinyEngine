@@ -12,7 +12,6 @@ CSirKibbleScript::CSirKibbleScript()
     , m_vOriginPos{}
     , m_vDamageDir{}
     , m_vDestPos{}
-    , m_bFlag(false)
     , m_bJump(false)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
@@ -29,7 +28,6 @@ CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& Origin)
     , m_vDamageDir{}
     , m_vOriginPos{}
     , m_vDestPos{}
-    , m_bFlag(false)
     , m_bJump(false)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
@@ -72,6 +70,10 @@ void CSirKibbleScript::tick()
     CMonsterUnitScript::tick();
     CheckDamage();
     FSM();
+    if (GetResistState())
+    {
+        ChangeState(SirKibbleState::Eaten);
+    }
 }
 
 UINT CSirKibbleScript::SaveToLevelFile(FILE* _File)
@@ -357,7 +359,7 @@ void CSirKibbleScript::ExitState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Eaten: {
-        m_bFlag = false;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case SirKibbleState::Death:
@@ -615,14 +617,9 @@ void CSirKibbleScript::Damage()
 #pragma region EATEN
 void CSirKibbleScript::Eaten()
 {
-    // TODO : 저항 값 넣기
-    if (!m_bFlag)
+    if (!GetResistState())
     {
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
-        m_bFlag = true;
+        ChangeState(SirKibbleState::Idle);
     }
 }
 #pragma endregion

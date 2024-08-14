@@ -7,6 +7,7 @@ enum class KabuState
     Fall,
     Landing,
     Damage,
+    Return,
     Eaten,
     Death,
     End,
@@ -23,6 +24,9 @@ private:
     Vec3 m_vDestPos;
 
     Vec3 m_vDamageDir;
+    Vec3 m_vDir;
+    Vec3 m_vPrevDir;
+
     bool m_bInverse;
     bool m_bFlag;
     bool m_bCurved;
@@ -61,6 +65,7 @@ private:
     void Landing();
     void Damage();
     void Eaten();
+    void Return();
     void Death();
 
 public:

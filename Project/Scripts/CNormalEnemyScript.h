@@ -11,8 +11,7 @@ enum class NormalEnemyState
     Sleep,
     Find,
     Attack,
-    AttackSuccessed,
-    AttackFailed,
+    Brake,
     AfterAttack,
     Damage,
     Fall,
@@ -29,6 +28,7 @@ private:
     Vec3 m_vDamageDir;
     Vec3 m_vCenterPoint;
 
+    NormalEnemyState m_ePrevState;
     NormalEnemyState m_eState;
 
     float m_fMaxSpeed;
@@ -66,10 +66,11 @@ private:
     void Find();
     void Attack();
     void Grooming();
-    void FailedAttack();
+    void Brake();
     void Fall();
     void Land();
     void AfterAttack();
+    void Eaten();
     void Damage();
     void Death();
 

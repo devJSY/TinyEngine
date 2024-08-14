@@ -2693,5 +2693,8 @@
     <Filter Include="Scripts\Gimmik\SpawnTrigger">
       <UniqueIdentifier>{853c8a9c-6323-4f6e-819d-cd4b03875654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Character\Monster\Utill\WallDetect">
+      <UniqueIdentifier>{ca3a2ce0-3750-46ee-a984-ea20f499d1f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

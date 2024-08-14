@@ -17,7 +17,6 @@ CHotHeadScript::CHotHeadScript()
     , m_fFlameLength(0.f)
     , m_fFlameRotLength(0.f)
     , m_fRotRadian(0.f)
-    , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAimingTime, "Aiming Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -39,7 +38,6 @@ CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     , m_fFlameLength(_Origin.m_fFlameLength)
     , m_fFlameRotLength(_Origin.m_fFlameRotLength)
     , m_fRotRadian(_Origin.m_fRotRadian)
-    , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAimingTime, "Aiming Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "Aiming Time");
@@ -68,6 +66,11 @@ void CHotHeadScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (GetResistState())
+    {
+        ChangeState(HotHeadState::Eaten);
+    }
 }
 
 UINT CHotHeadScript::SaveToLevelFile(FILE* _File)
@@ -277,15 +280,10 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     break;
     case HotHeadState::Eaten: {
         Animator()->Play(ANIMPREFIX("Damage"));
-
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
     }
     break;
     case HotHeadState::Death: {
-        Animator()->Play(ANIMPREFIX("Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"),false);
     }
     break;
     case HotHeadState::End:
@@ -415,7 +413,7 @@ void CHotHeadScript::ExitState(HotHeadState _state)
         break;
     case HotHeadState::Damage:
     case HotHeadState::Eaten: {
-        m_bFlag = false;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case HotHeadState::Death:
@@ -634,7 +632,10 @@ void CHotHeadScript::Damage()
 #pragma region EATEN
 void CHotHeadScript::Eaten()
 {
-    Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f, ForceMode::Force);
+    if (!GetResistState())
+    {
+        ChangeState(HotHeadState::Idle);
+    }
 }
 #pragma endregion
 

@@ -6,6 +6,7 @@
 CNormalEnemyScript::CNormalEnemyScript()
     : CMonsterUnitScript(NORMALENEMYSCRIPT)
     , m_eState(NormalEnemyState::Idle)
+    , m_ePrevState(NormalEnemyState::Idle)
     , m_vPatrolDir{}
     , m_vDamageDir{}
     , m_vCenterPoint{}
@@ -60,6 +61,12 @@ void CNormalEnemyScript::begin()
     CUnitScript::begin();
 
     m_bCirclePatrol == true ? ChangeState(NormalEnemyState::Patrol) : ChangeState(NormalEnemyState::Idle);
+
+    SetInfo(UnitInfo{14.f, 14.f, 70.f, 7.f, 1.f, 5.f});
+    m_fMaxSpeed = m_fSpeed = 12.f;
+    m_fRushLerp = 0.8f;
+    m_fRushSpeedLerp = 0.2f;
+    m_fThreshHoldRushSpeedLerp = 0.1f;
 }
 
 void CNormalEnemyScript::tick()
@@ -69,6 +76,11 @@ void CNormalEnemyScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (GetResistState())
+    {
+        ChangeState(NormalEnemyState::Eaten);
+    }
 }
 
 void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
@@ -199,8 +211,8 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
         Animator()->Play(ANIMPREFIX("Run"), true, false, 1.5f);
     }
     break;
-    case NormalEnemyState::AttackFailed: {
-        Animator()->Play(ANIMPREFIX("Brake"), false, false, 1.5f);
+    case NormalEnemyState::Brake: {
+        Animator()->Play(ANIMPREFIX("Brake"), false);
     }
     break;
     case NormalEnemyState::AfterAttack: {
@@ -231,10 +243,6 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Eaten: {
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
         Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
@@ -269,8 +277,8 @@ void CNormalEnemyScript::FSM()
         Attack();
     }
     break;
-    case NormalEnemyState::AttackFailed: {
-        FailedAttack();
+    case NormalEnemyState::Brake: {
+        Brake();
     }
     break;
     case NormalEnemyState::Damage: {
@@ -279,6 +287,10 @@ void CNormalEnemyScript::FSM()
     break;
     case NormalEnemyState::AfterAttack: {
         AfterAttack();
+    }
+    break;
+    case NormalEnemyState::Eaten: {
+        Eaten();
     }
     break;
     case NormalEnemyState::Death: {
@@ -304,19 +316,18 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 {
     switch (_state)
     {
-    case NormalEnemyState::AttackSuccessed: {
+    case NormalEnemyState::Brake: {
         m_fSpeed = m_fMaxSpeed;
-        m_bFirst = false;
-    }
-    break;
-    case NormalEnemyState::AttackFailed: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-        m_fSpeed = m_fMaxSpeed;
     }
     break;
     case NormalEnemyState::Damage: {
         m_fSpeed = m_fMaxSpeed;
         m_bFirst = false;
+    }
+    break;
+    case NormalEnemyState::Eaten: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     }
@@ -325,6 +336,7 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 void CNormalEnemyScript::ChangeState(NormalEnemyState _state)
 {
     ExitState(m_eState);
+    m_ePrevState = m_eState;
     m_eState = _state;
     EnterState(m_eState);
 }
@@ -361,19 +373,10 @@ void CNormalEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
     Quat _vTrackQuat = Quat::LookRotation(-_vTrackingDir, _vUp);
 
-    float _vRadian = Quat::Angle(_vOriginQuat, _vTrackQuat);
-
-    if (_vRadian >= (XM_2PI / 4.f) * 3.f)
-    {
-        _vRadian = XM_2PI - _vRadian;
-    }
-    else if (_vRadian >= XM_PI)
-    {
-        _vRadian = _vRadian - XM_PI;
-    }
+    float _vRadian = Transform()->GetWorldDir(DIR_TYPE::FRONT).Dot((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
     // 90도 이상 틀어질 경우 lerp가 확도는걸 감안함
-    if (_vRadian >= 1.5)
+    if (_vRadian <= 0.2f)
     {
         if (_flag)
         {
@@ -398,6 +401,8 @@ void CNormalEnemyScript::PatrolMove()
 
     Vec3 vTemp = (m_vCenterPoint - vPos).Normalize();
 
+    vTemp.y = 0.f;
+
     Vec3 vPatrolDir = vTemp.Cross(vUp);
 
     vPatrolDir = vPatrolDir.Normalize();
@@ -408,7 +413,7 @@ void CNormalEnemyScript::PatrolMove()
 
     Transform()->SetWorldRotation(vPatrlQuat);
 
-    Rigidbody()->SetVelocity(vFront * GetCurInfo().Speed * DT);
+    Rigidbody()->SetVelocity(vFront * GetCurInfo().Speed * DT + vTemp * 3.5f * DT);
 }
 
 ///////////////////////////// FIND FSM ///////////////////////////////////////
@@ -484,9 +489,15 @@ void CNormalEnemyScript::Find()
 {
     RotatingToTarget();
 
-    if (Animator()->IsFinish())
+    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 vTargetDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+
+    if (vDir.Dot(vTargetDir.Normalize()) >= cosf(0.f) - 0.1f)
     {
-        ChangeState(NormalEnemyState::Attack);
+        if (Animator()->IsFinish())
+        {
+            ChangeState(NormalEnemyState::Attack);
+        }
     }
 }
 
@@ -498,11 +509,13 @@ void CNormalEnemyScript::Attack()
     ApplyDir(vDir, true);
 
     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
+    Rigidbody()->SetVelocity(vDir * m_fSpeed + Vec3(0.f, -9.8f, 0.f));
+
+    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
 
     if (m_fSpeed <= 3.f)
     {
-        ChangeState(NormalEnemyState::AttackFailed);
+        ChangeState(NormalEnemyState::Brake);
     }
 }
 
@@ -522,19 +535,22 @@ void CNormalEnemyScript::Land()
     }
 }
 
-void CNormalEnemyScript::FailedAttack()
+void CNormalEnemyScript::Brake()
 {
-    Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    vDir.y = 0.f;
-
-    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
-
-    Animator()->GetCurFrameIdx();
-
-    if (m_fSpeed <= 2.2f)
+    if (CHECK_ANIMFRM(GetOwner(), 30))
     {
-        ChangeState(NormalEnemyState::AfterAttack);
+        if (Animator()->IsFinish())
+        {
+            ChangeState(NormalEnemyState::AfterAttack);
+        }
+    }
+}
+
+void CNormalEnemyScript::Eaten()
+{
+    if (GetResistState())
+    {
+        ChangeState(NormalEnemyState::Idle);
     }
 }
 
@@ -548,17 +564,14 @@ void CNormalEnemyScript::AfterAttack()
         }
         else
         {
-            if (Animator()->IsFinish())
+            if (Animator()->IsFinish() && m_bEnter)
             {
-                if (m_bEnter && m_bCirclePatrol)
-                {
-                    ChangeState(NormalEnemyState::Patrol);
-                    m_bEnter = false;
-                }
-                else
-                {
-                    ChangeState(RandomIdleState());
-                }
+                m_bCirclePatrol ? ChangeState(NormalEnemyState::Patrol) : ChangeState(RandomIdleState());
+                m_bEnter = false;
+            }
+            else if (Animator()->IsFinish())
+            {
+                ChangeState(RandomIdleState());
             }
         }
     }
