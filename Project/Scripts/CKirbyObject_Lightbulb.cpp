@@ -256,14 +256,14 @@ void CKirbyObject_Lightbulb::ChangeObjectEnter()
     CKirbyObject::ChangeObjectEnter();
 
     // 콜라이더 & 바디콜라이더 크기 세팅
-    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 1.81f, 0.f));
-    PLAYER->CharacterController()->SetRadius(1.25f);
-    PLAYER->CharacterController()->SetHeight(3.59f);
+    PLAYER->CharacterController()->SetCenter(Vec3(0.f, 1.44f, 0.f));
+    PLAYER->CharacterController()->SetRadius(1.2f);
+    PLAYER->CharacterController()->SetHeight(2.94f);
 
     CCapsuleCollider* BodyCol = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider();
-    BodyCol->SetCenter(Vec3(0.f, 1.2f, 0.f));
-    BodyCol->SetRadius(1.25f);
-    BodyCol->SetHeight(3.9f);
+    BodyCol->SetCenter(Vec3(0.f, 1.1f, 0.f));
+    BodyCol->SetRadius(1.1f);
+    BodyCol->SetHeight(2.9f);
 
     PLAYERCTRL->SetSpeed(m_Speed);
     PLAYERCTRL->SetRotSpeed(m_Speed);
