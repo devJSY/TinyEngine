@@ -45,7 +45,7 @@ CTackleEnemyScript::~CTackleEnemyScript()
 
 void CTackleEnemyScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     ChangeState(TackleEnemyState::Idle);
 

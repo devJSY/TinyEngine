@@ -33,6 +33,7 @@ public:
     void SetResistState(const bool _bResist) { m_bResistState = _bResist; }
 
 public:
+    virtual void begin() override;
     virtual void tick() override;
 
 protected:
@@ -45,6 +46,7 @@ protected:
     bool IsGround();
 
     void SparkleEffect();
+    void SparkleReset();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

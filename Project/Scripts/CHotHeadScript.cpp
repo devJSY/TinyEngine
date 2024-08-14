@@ -52,7 +52,7 @@ CHotHeadScript::~CHotHeadScript()
 
 void CHotHeadScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     InitSetting();
 

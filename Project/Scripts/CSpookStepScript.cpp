@@ -21,7 +21,7 @@ CSpookStepScript::~CSpookStepScript()
 
 void CSpookStepScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     ChangeState(SpookStepState::Appear);
 }

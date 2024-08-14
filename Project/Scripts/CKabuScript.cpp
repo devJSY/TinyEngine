@@ -55,7 +55,7 @@ CKabuScript::~CKabuScript()
 
 void CKabuScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     ChangeState(KabuState::Patrol);
 

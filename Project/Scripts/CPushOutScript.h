@@ -46,6 +46,7 @@ private:
     void MoveDest();
 
     void Stop();
+    void CheckPlayer();
 
 private:
     void MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag);

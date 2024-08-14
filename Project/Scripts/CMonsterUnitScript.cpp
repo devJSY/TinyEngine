@@ -83,6 +83,12 @@ CMonsterUnitScript::~CMonsterUnitScript()
 {
 }
 
+void CMonsterUnitScript::begin()
+{
+    CUnitScript::begin();
+    SparkleReset();
+}
+
 void CMonsterUnitScript::tick()
 {
     CUnitScript::tick();
@@ -147,7 +153,7 @@ void CMonsterUnitScript::SparkleEffect()
             {
                 if (m_bSparkleOnOff)
                 {
-                    pMeshRender->GetMaterial(i)->SetEmission(Vec4(100.f, 100.f, 100.f, 255.f));
+                    pMeshRender->GetMaterial(i)->SetEmission(Vec4(60.f / 255.f, 60.f / 255.f, 60.f / 255.f, 1.f));
                 }
                 else
                 {
@@ -161,14 +167,19 @@ void CMonsterUnitScript::SparkleEffect()
 
     if (m_fAccTime >= 2.5f)
     {
-        CMeshRender* pMeshRender = MeshRender();
-        m_bSparkle = false;
-        m_fAccTime = 0.f;
-        m_fTermTime = 0.f;
-        for (UINT i = 0; i < pMeshRender->GetMtrlCount(); ++i)
-        {
-            pMeshRender->GetMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
-        }
+        SparkleReset();
+    }
+}
+
+void CMonsterUnitScript::SparkleReset()
+{
+    CMeshRender* pMeshRender = MeshRender();
+    m_bSparkle = false;
+    m_fAccTime = 0.f;
+    m_fTermTime = 0.f;
+    for (UINT i = 0; i < pMeshRender->GetMtrlCount(); ++i)
+    {
+        pMeshRender->GetMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
     }
 }
 

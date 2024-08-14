@@ -58,7 +58,7 @@ CNormalEnemyScript::~CNormalEnemyScript()
 
 void CNormalEnemyScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     m_bCirclePatrol == true ? ChangeState(NormalEnemyState::Patrol) : ChangeState(NormalEnemyState::Idle);
 

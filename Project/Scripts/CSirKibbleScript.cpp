@@ -43,7 +43,7 @@ CSirKibbleScript::~CSirKibbleScript()
 
 void CSirKibbleScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     m_pAttackPoint = GetOwner()->GetChildObject(L"Attack Point");
 

@@ -6,7 +6,7 @@
 
 CPushOutColliderScript::CPushOutColliderScript()
     : CScript(PUSHOUTCOLLIDERSCRIPT)
-    , m_pParent(nullptr)
+    , m_pPlayer(nullptr)
     , m_vBase{}
     , m_vDir{}
     , m_eState(PushOutColliderState::Stop)
@@ -18,7 +18,7 @@ CPushOutColliderScript::CPushOutColliderScript()
 
 CPushOutColliderScript::CPushOutColliderScript(const CPushOutColliderScript& Origin)
     : CScript(Origin)
-    , m_pParent(nullptr)
+    , m_pPlayer(nullptr)
     , m_vBase{}
     , m_vDir{}
     , m_eState(PushOutColliderState::Stop)
@@ -34,6 +34,7 @@ CPushOutColliderScript::~CPushOutColliderScript()
 
 void CPushOutColliderScript::begin()
 {
+    BoxCollider()->SetEnabled(false);
     m_vBase = Transform()->GetWorldPos();
 }
 
@@ -80,16 +81,17 @@ void CPushOutColliderScript::OnTriggerEnter(CCollider* _OtherCollider)
     CGameObject* pObj = _OtherCollider->GetOwner();
     if (L"Body Collider" == pObj->GetName())
     {
-        m_pParent->GetScript<CPushOutScript>()->SetPlayer(PLAYER);
+        m_pPlayer= PLAYER;
     }
 }
+
 
 void CPushOutColliderScript::OnTriggerExit(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
     if (L"Body Collider" == pObj->GetName())
     {
-        m_pParent->GetScript<CPushOutScript>()->SetPlayer(nullptr);
+        m_pPlayer = nullptr;
     }
 }
 
