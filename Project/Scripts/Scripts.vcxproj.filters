@@ -850,6 +850,9 @@
     <ClInclude Include="CFlowTriggerScript.h">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="CBossWeaponHitbox.h">
+      <Filter>Scripts\Character\Boss\BossWeaponHitbox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1709,6 +1712,9 @@
     </ClCompile>
     <ClCompile Include="CFlowTriggerScript.cpp">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossWeaponHitbox.cpp">
+      <Filter>Scripts\Character\Boss\BossWeaponHitbox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2707,6 +2713,9 @@
     </Filter>
     <Filter Include="Scripts\Trigger\FlowTrigger">
       <UniqueIdentifier>{1ac2a4d3-39f3-4b20-ab85-a853cac49dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\BossWeaponHitbox">
+      <UniqueIdentifier>{02399b6d-20ae-4eca-a3ce-69a4ae02b80c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

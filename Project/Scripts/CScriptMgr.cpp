@@ -98,6 +98,7 @@
 #include "CSpawnTriggerScript.h"
 #include "CFlowMgr_BossElfilis.h"
 #include "CFlowTriggerScript.h"
+#include "CBossWeaponHitbox.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -198,6 +199,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CSpawnTriggerScript");
 	_vec.push_back(L"CFlowMgr_BossElfilis");
 	_vec.push_back(L"CFlowTriggerScript");
+	_vec.push_back(L"CBossWeaponHitbox");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -396,6 +398,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_BossElfilis;
 	if (L"CFlowTriggerScript" == _strScriptName)
 		return new CFlowTriggerScript;
+	if (L"CBossWeaponHitbox" == _strScriptName)
+		return new CBossWeaponHitbox;
 	return nullptr;
 }
 
@@ -597,6 +601,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_BossElfilis;
 	case (UINT)SCRIPT_TYPE::FLOWTRIGGERSCRIPT:
 		return new CFlowTriggerScript;
+	case (UINT)SCRIPT_TYPE::BOSSWEAPONHITBOX:
+		return new CBossWeaponHitbox;
 	}
 	return nullptr;
 }
@@ -799,6 +805,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowMgr_BossElfilis";
 	case SCRIPT_TYPE::FLOWTRIGGERSCRIPT:
 		return L"CFlowTriggerScript";
+	case SCRIPT_TYPE::BOSSWEAPONHITBOX:
+		return L"CBossWeaponHitbox";
 	}
 	return nullptr;
 }
