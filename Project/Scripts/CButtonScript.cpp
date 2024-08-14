@@ -206,6 +206,33 @@ void CButtonScript::ButtonUpdate()
     case ButtonTransition::ANIMATION: {
     }
     break;
+    case ButtonTransition::CUSTOM: {
+        if (ButtonState::NORMAL == m_eCurState)
+        {
+            vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
+
+            for (size_t i = 0; i < pChildObj.size();i++)
+            {
+                if (nullptr != pChildObj[i])
+                    pChildObj[i]->SetActive(false);
+            }
+        }
+        else if (ButtonState::SELECTED == m_eCurState)
+        {
+            vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
+
+            for (size_t i = 0; i < pChildObj.size(); i++)
+            {
+                if (nullptr != pChildObj[i])
+                    pChildObj[i]->SetActive(true);
+            }
+        }
+        else if (ButtonState::PRESSED == m_eCurState)
+        {
+            //
+        }
+    }
+    break;
     case ButtonTransition::END:
         break;
     default:

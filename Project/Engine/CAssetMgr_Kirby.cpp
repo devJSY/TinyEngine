@@ -213,6 +213,32 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Kirby UI StartScene Button Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIStartSceneButtonPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(FLOAT_0, "AlphaDiscard Threshold", 0.1f);
+        pShader->AddScalarParam(INT_0, "USE Tex Color", 1.f);
+
+        pShader->AddScalarParam(VEC4_0, "Static Color", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Shaping Texture");
+        pShader->AddTexParam(TEX_1, "Color Texture");
+
+        pShader->SetName(L"KirbyUIStartSceneButtonShader");
+        AddAsset(L"KirbyUIStartSceneButtonShader", pShader);
+    }
+
+    // =================================
     // UIKirbyHPShader
     // =================================
     {

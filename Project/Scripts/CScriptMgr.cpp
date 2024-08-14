@@ -99,6 +99,7 @@
 #include "CFlowMgr_BossElfilis.h"
 #include "CFlowTriggerScript.h"
 #include "CKirbyLightScript.h"
+#include "CUIRotateScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -200,6 +201,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_BossElfilis");
 	_vec.push_back(L"CFlowTriggerScript");
 	_vec.push_back(L"CKirbyLightScript");
+	_vec.push_back(L"CUIRotateScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -400,6 +402,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowTriggerScript;
 	if (L"CKirbyLightScript" == _strScriptName)
 		return new CKirbyLightScript;
+	if (L"CUIRotateScript" == _strScriptName)
+		return new CUIRotateScript;
 	return nullptr;
 }
 
@@ -603,6 +607,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowTriggerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYLIGHTSCRIPT:
 		return new CKirbyLightScript;
+	case (UINT)SCRIPT_TYPE::UIROTATESCRIPT:
+		return new CUIRotateScript;
 	}
 	return nullptr;
 }
@@ -807,6 +813,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowTriggerScript";
 	case SCRIPT_TYPE::KIRBYLIGHTSCRIPT:
 		return L"CKirbyLightScript";
+	case SCRIPT_TYPE::UIROTATESCRIPT:
+		return L"CUIRotateScript";
 	}
 	return nullptr;
 }

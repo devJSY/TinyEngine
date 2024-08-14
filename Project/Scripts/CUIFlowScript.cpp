@@ -33,21 +33,18 @@ void CUIFlowScript::tick()
 {
     switch (m_eState)
     {
-    case FlowState::Start: 
-    {
+    case FlowState::Start: {
         EnterFlow();
     }
-        break;
-    case FlowState::Tick:
-    {
+    break;
+    case FlowState::Tick: {
         TickFlow();
     }
     break;
-    case FlowState::End:
-    {
+    case FlowState::End: {
         EndFlow();
     }
-        break;
+    break;
     default:
         break;
     }
@@ -84,14 +81,11 @@ void CUIFlowScript::EnterFlow()
 {
     for (size_t i = 0; i < m_vAnimScript.size(); i++)
     {
-        if (UIAnimState::Start == m_vAnimScript[i]->GetUIAnimState() || UIAnimState::PrePared == m_vAnimScript[i]->GetUIAnimState())
-        {
-            ChangeState(FlowState::Tick);
-            break;
-        }
-
-        m_vAnimScript[i]->SetUIAnimState(UIAnimState::PrePared);
+        if (!m_vAnimScript[i]->GetLoopUI())
+            m_vAnimScript[i]->SetUIAnimState(UIAnimState::PrePared);
     }
+
+    ChangeState(FlowState::Tick);
 }
 
 void CUIFlowScript::TickFlow()

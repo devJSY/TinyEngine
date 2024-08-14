@@ -96,3 +96,4 @@ CSpawnTriggerScript
 CFlowMgr_BossElfilis
 CFlowTriggerScript
 CKirbyLightScript
+CUIRotateScript

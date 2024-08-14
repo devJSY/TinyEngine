@@ -38,8 +38,6 @@ void CButtonManagerScript::begin()
 
         if (nullptr != _script)
         {
-            // Test
-            _script->SetTransition(ButtonTransition::SCALE);
             m_vBtn.push_back(_script);
         }
     }

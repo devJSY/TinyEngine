@@ -16,6 +16,7 @@ private:
     float m_fWaitTime;
     float m_fAccTime;
     bool m_bIsFinsih;
+    bool m_bLoopUI;
 
 public:
     UIAnimState GetUIAnimState() const { return m_eState; }
@@ -28,6 +29,9 @@ public:
     void SetAccTime(const float _fTime) { m_fAccTime = _fTime; }
 
     float GetAccTime() const { return m_fAccTime; }
+
+    void SetLoopUI(const bool _flag) { m_bLoopUI = m_bLoopUI; }
+    bool GetLoopUI() const { return m_bLoopUI; }
 
 public:
     virtual void begin() override;

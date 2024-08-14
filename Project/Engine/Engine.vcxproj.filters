@@ -1142,6 +1142,9 @@
     <Filter Include="ShaderCode\Kirby\Characters\Monster\GhostGordo">
       <UniqueIdentifier>{e5682491-197f-4e22-b39a-d878c384b677}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIButtonShader">
+      <UniqueIdentifier>{dd3364ed-67cd-46bd-98b3-b1c81137b47c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1472,6 +1475,9 @@
     </FxCompile>
     <FxCompile Include="MotionBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="UIStartSceneButtonPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIButtonShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

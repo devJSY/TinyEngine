@@ -853,6 +853,9 @@
     <ClInclude Include="CKirbyLightScript.h">
       <Filter>Scripts\Character\Kirby\Deform Light</Filter>
     </ClInclude>
+    <ClInclude Include="CUIRotateScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1715,6 +1718,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyLightScript.cpp">
       <Filter>Scripts\Character\Kirby\Deform Light</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIRotateScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2719,6 +2725,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Monster\Utill\WallDetect">
       <UniqueIdentifier>{ca3a2ce0-3750-46ee-a984-ea20f499d1f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIRotateScript">
+      <UniqueIdentifier>{d526ad6e-bb2b-483e-808e-2c0a65f471ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

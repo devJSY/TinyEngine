@@ -17,6 +17,7 @@ enum class ButtonTransition
     TEXTURE,
     SCALE,
     ANIMATION,
+    CUSTOM,
     END,
 };
 
