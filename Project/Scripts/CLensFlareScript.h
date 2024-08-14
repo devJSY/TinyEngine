@@ -14,9 +14,6 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
-private:
-    Vec4 GetSunNDCPos();
-
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;

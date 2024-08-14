@@ -844,6 +844,12 @@
     <ClInclude Include="CSpawnTriggerScript.h">
       <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="CFlowMgr_BossElfilis.h">
+      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowTriggerScript.h">
+      <Filter>Scripts\Trigger\FlowTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1697,6 +1703,12 @@
     </ClCompile>
     <ClCompile Include="CPhantaScript.cpp">
       <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowMgr_BossElfilis.cpp">
+      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowTriggerScript.cpp">
+      <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2692,6 +2704,9 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\SpawnTrigger">
       <UniqueIdentifier>{853c8a9c-6323-4f6e-819d-cd4b03875654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\FlowTrigger">
+      <UniqueIdentifier>{1ac2a4d3-39f3-4b20-ab85-a853cac49dfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Monster\Utill\WallDetect">
       <UniqueIdentifier>{ca3a2ce0-3750-46ee-a984-ea20f499d1f1}</UniqueIdentifier>

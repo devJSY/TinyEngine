@@ -111,6 +111,6 @@ private:
     void APPEND_ANIMATION(const tTask& _Task);
     void SET_MODEL(const tTask& _Task);
 
-    // 제일 마지막에 실행되야하는 이벤트
+    // 제일 마지막에 실행 되어야하는 이벤트
     void CHANGE_LEVEL(const tTask& _Task);
 };

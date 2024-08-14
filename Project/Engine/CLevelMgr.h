@@ -8,6 +8,8 @@ class CLevelMgr : public CSingleton<CLevelMgr>
 
 private:
     CLevel* m_CurLevel;
+    std::list<std::thread> m_listLoadThread;
+    std::mutex m_Mutex;
 
 public:
     void init();
@@ -15,7 +17,15 @@ public:
 
 public:
     CLevel* GetCurrentLevel() const { return m_CurLevel; }
-    CLevel* CreateNewLevel();
+    CLevel* CreateDefaultLevel();
+
+public:
+    void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState);
+    void ChangeLevelAsync(const wstring& _strPath, LEVEL_STATE _StartState);
+    void ThreadRelease();
+
+private:
+    void ChangeLevelAsyncFunc(const wstring& _strPath, LEVEL_STATE _StartState);
 
 public:
     CLevel* CreateDefaultKirbyLevel();
@@ -23,7 +33,4 @@ public:
     CLevel* CreateDefaultStartUILevel();
     CLevel* CreateDefaultRobbyUILevel();
     CLevel* CreateDefaultPlayUILevel();
-
-public:
-    void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState);
 };

@@ -233,15 +233,16 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 1);
     AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 2);
     AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "WORLDINVTRANSPOSE", 1, 3);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 0);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 1);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 2);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEW", 1, 3);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 0);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 1);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 2);
-    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PROJ", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "VIEWPROJ", 1, 3);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 1);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 2);
+    AddInputLayout(DXGI_FORMAT_R32G32B32A32_FLOAT, "PREVMAT", 1, 3);
     AddInputLayout(DXGI_FORMAT_R32_UINT, "ROWINDEX", 1, 0);
+    AddInputLayout(DXGI_FORMAT_R32_UINT, "MOTIONBLUR", 1, 0);
 
     // =================================
     // Std2DShader
@@ -1304,6 +1305,27 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"DOFShader");
         AddAsset(L"DOFShader", pShader);
     }
+
+    // =================================
+    // Motion Blur Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MotionBlurPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Motion Vector Texture");
+        pShader->AddScalarParam(FLOAT_0, "Thresholud", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Velocity Intensity", 1e-3f);
+        pShader->AddScalarParam(FLOAT_2, "Velocity MaxLength", 1e-3f);
+
+        pShader->SetName(L"MotionBlurShader");
+        AddAsset(L"MotionBlurShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1862,6 +1884,16 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(VEC2_0, Vec2(0.5f, 0.5f)); // Focus UV
         pMtrl->SetName(L"DOFMtrl");
         AddAsset<CMaterial>(L"DOFMtrl", pMtrl);
+    }
+
+    // MotionBlurShader Mtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MotionBlurShader"));
+        pMtrl->SetScalarParam(FLOAT_1, 1.f); // Velocity Intensity
+        pMtrl->SetScalarParam(FLOAT_2, 1.f); // Velocity MaxLength
+        pMtrl->SetName(L"MotionBlurMtrl");
+        AddAsset<CMaterial>(L"MotionBlurMtrl", pMtrl);
     }
 }
 

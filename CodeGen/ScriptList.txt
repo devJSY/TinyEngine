@@ -93,3 +93,5 @@ CFlowMgr_Lv4
 CPhantaScript
 CSpookStepScript
 CSpawnTriggerScript
+CFlowMgr_BossElfilis
+CFlowTriggerScript

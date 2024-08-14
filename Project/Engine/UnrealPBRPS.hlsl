@@ -22,12 +22,11 @@
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
 
-
 // PBR 원칙
 // 1. microfacet 표면 모델을 기반으로 한다
 // 2. 에너지를 보존한다.
 // 3. 물리적 기반 BRDF를 사용한다. // BRDF - Bidirectional reflectance distribution function
-float4 main(PS_IN input) : SV_TARGET
+PS_OUT_FORWARD main(PS_IN input)
 {
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
     float3 normalWorld = g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, InvertNormalMapY) : input.vNormalWorld;
@@ -74,9 +73,13 @@ float4 main(PS_IN input) : SV_TARGET
     float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
     float3 RimColor = RimLight(input.vNormalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
     
-    float4 output = float4(0.f, 0.f, 0.f, 1.f);
-    output = float4(ambientLighting + directLighting + emission + RimColor, 1.0);
-    output = clamp(output, 0.0, 1000.0);
+    PS_OUT_FORWARD output;
+    output.vColor = float4(ambientLighting + directLighting + emission + RimColor, 1.0);
+    output.vColor = clamp(output.vColor, 0.0, 1000.0);
 
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
+    
     return output;
 }

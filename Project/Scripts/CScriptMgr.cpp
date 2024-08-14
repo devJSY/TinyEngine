@@ -96,6 +96,8 @@
 #include "CPhantaScript.h"
 #include "CSpookStepScript.h"
 #include "CSpawnTriggerScript.h"
+#include "CFlowMgr_BossElfilis.h"
+#include "CFlowTriggerScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -194,6 +196,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CPhantaScript");
 	_vec.push_back(L"CSpookStepScript");
 	_vec.push_back(L"CSpawnTriggerScript");
+	_vec.push_back(L"CFlowMgr_BossElfilis");
+	_vec.push_back(L"CFlowTriggerScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -388,6 +392,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSpookStepScript;
 	if (L"CSpawnTriggerScript" == _strScriptName)
 		return new CSpawnTriggerScript;
+	if (L"CFlowMgr_BossElfilis" == _strScriptName)
+		return new CFlowMgr_BossElfilis;
+	if (L"CFlowTriggerScript" == _strScriptName)
+		return new CFlowTriggerScript;
 	return nullptr;
 }
 
@@ -585,6 +593,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CSpookStepScript;
 	case (UINT)SCRIPT_TYPE::SPAWNTRIGGERSCRIPT:
 		return new CSpawnTriggerScript;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_BOSSELFILIS:
+		return new CFlowMgr_BossElfilis;
+	case (UINT)SCRIPT_TYPE::FLOWTRIGGERSCRIPT:
+		return new CFlowTriggerScript;
 	}
 	return nullptr;
 }
@@ -783,6 +795,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CSpookStepScript";
 	case SCRIPT_TYPE::SPAWNTRIGGERSCRIPT:
 		return L"CSpawnTriggerScript";
+	case SCRIPT_TYPE::FLOWMGR_BOSSELFILIS:
+		return L"CFlowMgr_BossElfilis";
+	case SCRIPT_TYPE::FLOWTRIGGERSCRIPT:
+		return L"CFlowTriggerScript";
 	}
 	return nullptr;
 }

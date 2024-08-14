@@ -6,7 +6,9 @@ class CGameObject;
 class CFadeOutScript : public CScript
 {
 private:
-    CGameObject* pTarget;
+    CGameObject* m_Target;
+    bool m_bComplete;
+    bool m_bReverse;
     float m_Duration;
     float m_ElapsedTime;
     float m_RotateSpeed;
@@ -15,8 +17,22 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
-private:
-    Vec2 GetTargetNDCPos();
+public:
+    bool IsComplete() const { return m_bComplete; }
+    void ResetComplete() { m_bComplete = false; }
+
+    bool IsReverse() const { return m_bReverse; }
+    void SetReverse(bool _bReverse)
+    {
+        m_bReverse = _bReverse;
+        ResetComplete();
+    }
+
+    float GetDuration() const { return m_Duration; }
+    void SetDuration(float _Duration) { m_Duration = _Duration; }
+
+    float GetRotateSpeed() const { return m_RotateSpeed; }
+    void SetRotateSpeed(float _Speed) { m_RotateSpeed = _Speed; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

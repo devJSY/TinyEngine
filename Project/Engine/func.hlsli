@@ -93,6 +93,23 @@ float2 AspectRatioCorrection(float2 uv)
     return uv;
 }
 
+float4 PositionToNDC(float3 _Position)
+{
+    float4 NDCPos = mul(float4(_Position, 1.f), g_matView);
+    NDCPos = mul(NDCPos, g_matProj);
+    NDCPos.xyz /= NDCPos.w;
+    
+    return NDCPos;
+}
+
+float2 NDCToUV(float3 _NDC)
+{
+    float2 UV = float2(_NDC.x, -_NDC.y); // ÅØ½ºÃç ÁÂÇ¥¿Í NDC´Â y°¡ ¹Ý´ë
+    UV += 1.f;
+    UV *= 0.5f;
+    return UV;
+}
+
 // ======
 // Random
 // ======
@@ -233,7 +250,12 @@ matrix GetBoneMat(int _iBoneIdx, int _iRowIdx)
     return g_arrBoneMat[(g_iBoneCount * _iRowIdx) + _iBoneIdx];
 }
 
-void Skinning(inout float3 _vPos, inout float3 _vTangent, inout float3 _vBinormal, inout float3 _vNormal
+matrix GetPrevBoneMat(int _iBoneIdx, int _iRowIdx)
+{
+    return g_arrPrevBoneMat[(g_iBoneCount * _iRowIdx) + _iBoneIdx];
+}
+
+void Skinning(inout float3 _vPos, inout float3 _vPrevPos, inout float3 _vTangent, inout float3 _vBinormal, inout float3 _vNormal
     , inout float4 _vWeight, inout float4 _vIndices
     , int _iRowIdx)
 {
@@ -248,14 +270,17 @@ void Skinning(inout float3 _vPos, inout float3 _vTangent, inout float3 _vBinorma
             continue;
 
         matrix matBone = GetBoneMat((int) _vIndices[i], _iRowIdx);
+        matrix matPrevBone = GetPrevBoneMat((int) _vIndices[i], _iRowIdx);
 
         info.vPos += (mul(float4(_vPos, 1.f), matBone) * _vWeight[i]).xyz;
+        info.vPrevPos += (mul(float4(_vPrevPos, 1.f), matPrevBone) * _vWeight[i]).xyz;
         info.vTangent += (mul(float4(_vTangent, 0.f), matBone) * _vWeight[i]).xyz;
         info.vBinormal += (mul(float4(_vBinormal, 0.f), matBone) * _vWeight[i]).xyz;
         info.vNormal += (mul(float4(_vNormal, 0.f), matBone) * _vWeight[i]).xyz;
     }
 
     _vPos = info.vPos;
+    _vPrevPos = info.vPrevPos;
     _vTangent = normalize(info.vTangent);
     _vBinormal = normalize(info.vBinormal);
     _vNormal = normalize(info.vNormal);

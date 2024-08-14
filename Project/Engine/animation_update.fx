@@ -209,6 +209,7 @@ StructuredBuffer<matrix> g_arrOffset : register(t33);
 
 RWStructuredBuffer<matrix> g_arrBoneTransformMat : register(u0);
 RWStructuredBuffer<matrix> g_arrFinelMat : register(u1);
+RWStructuredBuffer<matrix> g_arrPrevFinelMat : register(u2);
 
 // ===========================
 // Animation Update Compute Shader
@@ -242,6 +243,7 @@ void AnimationUpdateCS(int3 _iThreadIdx : SV_DispatchThreadID)
     
     // 구조화버퍼에 결과값 저장
     g_arrBoneTransformMat[_iThreadIdx.x] = transpose(matBone);
+    g_arrPrevFinelMat[_iThreadIdx.x] = g_arrFinelMat[_iThreadIdx.x];
     g_arrFinelMat[_iThreadIdx.x] = mul(matOffset, matBone);
 }
 
