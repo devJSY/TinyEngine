@@ -30,8 +30,14 @@ void CKirbyStuffedRun::tick()
 void CKirbyStuffedRun::Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedRun"));
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 }
 
 void CKirbyStuffedRun::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
 }

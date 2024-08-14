@@ -11,7 +11,7 @@ CElfilisG_RayArrow::CElfilisG_RayArrow()
     , m_Arrows(nullptr)
     , m_ArrowSet(nullptr)
 {
-    m_ArrowsPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisArrowSet.pref");
+    m_ArrowsPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisArrowSet.pref");
 }
 
 CElfilisG_RayArrow::~CElfilisG_RayArrow()

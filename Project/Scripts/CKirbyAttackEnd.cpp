@@ -33,7 +33,11 @@ void CKirbyAttackEnd::tick()
             case ObjectCopyType::VENDING_MACHINE:
                 break;
             case ObjectCopyType::LIGHT: {
-                if (PLAYER->Animator()->IsFinish())
+                if (PLAYERCTRL->IsGround() && PLAYERCTRL->GetInput().Length() != 0.f)
+                {
+                    ChangeState(L"RUN");
+                }
+                else if (PLAYER->Animator()->IsFinish())
                 {
                     if (PLAYERCTRL->IsGround())
                     {
