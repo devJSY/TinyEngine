@@ -32,6 +32,7 @@ private:
     bool                        m_bJump;
     bool                        m_bActiveFriction;
     bool                        m_bForwardMode;
+    bool                        m_bTeleportGround;
 
     // Lock
     bool                        m_bInputLock;
@@ -105,6 +106,7 @@ public:
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
     void SetCheckPoint(Vec3 _CheckPoint) { m_CheckPointPos = _CheckPoint; }
+    void TeleportGround() { m_bTeleportGround = true; }
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetInputWorld() const { return m_InputWorld; }

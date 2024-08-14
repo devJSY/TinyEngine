@@ -380,6 +380,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CSpawnTriggerScript.h" />
     <ClInclude Include="CSpookStepScript.h" />
     <ClInclude Include="CStageChangeButtonScript.h" />
+    <ClInclude Include="CStageClear.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CSurpriseBoardAttackScript.h" />
     <ClInclude Include="CSurpriseBoardScript.h" />
@@ -680,6 +681,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CSpawnTriggerScript.cpp" />
     <ClCompile Include="CSpookStepScript.cpp" />
     <ClCompile Include="CStageChangeButtonScript.cpp" />
+    <ClCompile Include="CStageClear.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CSurpriseBoardAttackScript.cpp" />
     <ClCompile Include="CSurpriseBoardScript.cpp" />

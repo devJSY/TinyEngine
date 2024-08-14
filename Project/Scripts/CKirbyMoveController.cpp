@@ -324,6 +324,13 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = m_MaxFallSpeed;
     }
 
+    if (m_bTeleportGround)
+    {
+        Transform()->SetWorldPos(m_RayHit.Point);
+        m_MoveVelocity = Vec3(0.f, -1.f, 0.f);
+        m_bTeleportGround = false;
+    }
+
     // =========================
     // 움직임 적용
     // =========================
