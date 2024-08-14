@@ -55,7 +55,7 @@ void CKirbyAbility_Normal::Attack()
             {
                 Vec3 InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 InitDir.y = 0.f;
-                bulletScript->SetInitVelocity(InitDir * 45.f);
+                bulletScript->SetInitVelocity(InitDir * 30.f);
             }
         }
     }
