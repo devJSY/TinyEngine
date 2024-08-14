@@ -67,6 +67,8 @@ void CElfilisG_SwordWaveRL::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeft"), false);
+        ELFFSM->OnWeaponTrigger();
+        m_pHitbox = ELFFSM->GetHitbox();
         m_bFrmEnter = true;
     }
     break;
@@ -94,6 +96,9 @@ void CElfilisG_SwordWaveRL::Exit_Step()
         {
             ELFFSM->ClearComboLevel();
         }
+
+        ELFFSM->OffWeaponTrigger();
+        ELFFSM->GetHitbox()->SetEnabled(true);
     }
     break;
     case StateStep::End:
@@ -123,7 +128,6 @@ void CElfilisG_SwordWaveRL::Wait()
 void CElfilisG_SwordWaveRL::Progress()
 {
     // Spawn SwordSlash
-
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 10))
     {
         if (m_SwordSlash != nullptr)
@@ -144,6 +148,22 @@ void CElfilisG_SwordWaveRL::Progress()
         }
 
         m_bFrmEnter = false;
+    }
+
+    // resize Hitbox
+    if (m_pHitbox && !GetOwner()->Animator()->IsChainging())
+    {
+        if (GetOwner()->Animator()->GetClipFrameIndex() < 13)
+        {
+            m_pHitbox->GetOwner()->SetActive(true);
+            m_pHitbox->Transform()->SetLocalPos(Vec3(0.71f, 1.f, 2.64f));
+            m_pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+            m_pHitbox->Transform()->SetLocalScale(Vec3(5.96f, 1.f, 4.81f));
+        }
+        else
+        {
+            m_pHitbox->GetOwner()->SetActive(false);
+        }
     }
 
     if (GetOwner()->Animator()->IsFinish())

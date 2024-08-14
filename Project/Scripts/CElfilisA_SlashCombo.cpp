@@ -44,6 +44,12 @@ void CElfilisA_SlashCombo::Enter()
     Enter_Step();
 }
 
+void CElfilisA_SlashCombo::Exit()
+{
+    Exit_Step();
+    ELFFSM->OffWeaponTrigger();
+}
+
 void CElfilisA_SlashCombo::Enter_Step()
 {
     switch (m_Step)
@@ -61,6 +67,8 @@ void CElfilisA_SlashCombo::Enter_Step()
         {
             GetOwner()->Animator()->Play(ANIMPREFIX("SlashChainStabReady"), false);
         }
+
+        ELFFSM->OnWeaponTrigger();
     }
     break;
     case StateStep::Start: {

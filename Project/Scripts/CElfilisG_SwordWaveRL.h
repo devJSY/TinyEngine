@@ -5,6 +5,7 @@ class CElfilisG_SwordWaveRL : public CBossState
 {
 private:
     Ptr<CPrefab> m_SwordSlash;
+    CBoxCollider* m_pHitbox;
     bool m_bComboSuccess;
     bool m_bFrmEnter;
 

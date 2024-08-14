@@ -51,9 +51,10 @@ void CElfilisG_SwordWaveStorm::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionSpike"), false);
+        ELFFSM->OnWeaponTrigger();
     }
     break;
-    case StateStep::Wait: { 
+    case StateStep::Wait: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionSpikeWait"));
         m_AccTime = 0.f;
         m_bFrmEnter = true;
@@ -77,8 +78,10 @@ void CElfilisG_SwordWaveStorm::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::Progress:
-        break;
+    case StateStep::Progress: {
+        ELFFSM->OffWeaponTrigger();
+    }
+    break;
     case StateStep::Wait:
         break;
     case StateStep::End:
@@ -104,8 +107,10 @@ void CElfilisG_SwordWaveStorm::Progress()
             for (int i = 0; i < 7; ++i)
             {
                 CGameObject* pStorm = m_StormPref->Instantiate();
-                RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f, vector<wstring>{L"World Static"});
-                Vec3 m_InitPos = (Hit.pCollisionObj) ? Hit.Point : Vec3(GetOwner()->Transform()->GetWorldPos().x, 0.f, GetOwner()->Transform()->GetWorldPos().z);
+                RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f,
+                                                                 vector<wstring>{L"World Static"});
+                Vec3 m_InitPos =
+                    (Hit.pCollisionObj) ? Hit.Point : Vec3(GetOwner()->Transform()->GetWorldPos().x, 0.f, GetOwner()->Transform()->GetWorldPos().z);
 
                 m_Storm = pStorm->GetScript<CElfilisStormScript>();
                 if (m_Storm)
