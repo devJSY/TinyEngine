@@ -152,37 +152,17 @@ CGameObject* CLevel::FindObjectByName(const wstring& _strName, int _LayerIdx)
     if (_LayerIdx < 0 || _LayerIdx >= LAYER_MAX)
         return nullptr;
 
-    const vector<CGameObject*>& vecParent = m_arrLayer[_LayerIdx]->GetParentObjects();
+    const vector<CGameObject*>& vecLayerObj = m_arrLayer[_LayerIdx]->GetLayerObjects();
 
-    for (size_t j = 0; j < vecParent.size(); ++j)
+    for (size_t j = 0; j < vecLayerObj.size(); ++j)
     {
-        list<CGameObject*> queue;
-        queue.push_back(vecParent[j]);
-
-        // 레이어에 입력되는 오브젝트 포함, 그 밑에 달린 자식들까지 모두 확인
-        while (!queue.empty())
+        if (_strName == vecLayerObj[j]->GetName())
         {
-            CGameObject* pObject = queue.front();
-            queue.pop_front();
-
-            if (nullptr == pObject)
-                continue;
-
-            const vector<CGameObject*>& vecChild = pObject->GetChildObject();
-            for (size_t k = 0; k < vecChild.size(); ++k)
-            {
-                queue.push_back(vecChild[k]);
-            }
-
-            if (_strName == pObject->GetName())
-            {
-                return pObject;
-            }
+            return vecLayerObj[j];
         }
     }
 
-    // 레이어에서 찾지 못한 경우 레벨오브젝트 전체 순회
-    return FindObjectByName(_strName);
+    return nullptr;
 }
 
 void CLevel::ChangeState(LEVEL_STATE _NextState)
