@@ -44,6 +44,9 @@ void CKirbyStuffedJump::tick()
 void CKirbyStuffedJump::Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedJump"), false);
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->Jump();
     PLAYERFSM->SetLastJump(LastJumpType::LOW);
@@ -54,4 +57,7 @@ void CKirbyStuffedJump::Enter()
 
 void CKirbyStuffedJump::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
 }

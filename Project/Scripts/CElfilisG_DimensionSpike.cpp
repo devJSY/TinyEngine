@@ -8,7 +8,7 @@ CElfilisG_DimensionSpike::CElfilisG_DimensionSpike()
     : m_AccTime(0.f)
     , m_bFrmEnter(true)
 {
-    m_DimensionSetPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\ElfilisDimensionSet.pref");
+    m_DimensionSetPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisDimensionSet.pref");
 }
 
 CElfilisG_DimensionSpike::~CElfilisG_DimensionSpike()

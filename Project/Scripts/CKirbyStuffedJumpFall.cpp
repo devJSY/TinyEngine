@@ -25,11 +25,17 @@ void CKirbyStuffedJumpFall::tick()
 void CKirbyStuffedJumpFall::Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedFall"));
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
 }
 
 void CKirbyStuffedJumpFall::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
     PLAYERCTRL->UnlockJump();
 }

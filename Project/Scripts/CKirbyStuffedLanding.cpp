@@ -21,6 +21,9 @@ void CKirbyStuffedLanding::tick()
 void CKirbyStuffedLanding::Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedLanding"), false);
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
 }
@@ -28,4 +31,7 @@ void CKirbyStuffedLanding::Enter()
 void CKirbyStuffedLanding::Exit()
 {
     PLAYERCTRL->UnlockJump();
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
 }

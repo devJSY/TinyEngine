@@ -185,7 +185,7 @@ void CLevelFlowMgr::MtrlParamUpdate()
     // // DOF Focus Player 위치 설정
     if (nullptr != PLAYER)
     {
-        static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DOFMtrl");
+        static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
         Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
         Vec2 UVPos = NDCToUV(NDCPos);
         pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
