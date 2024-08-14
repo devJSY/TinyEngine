@@ -108,6 +108,13 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
+    // 레벨 종료시 멀티 쓰레드로 동작해야하는 함수
+    
+    // Kirby 프리팹 저장
+    CPrefab* MainPlayerPref = new CPrefab(PLAYER);
+    MainPlayerPref->Save(L"prefab\\Main Player.pref");
+    delete MainPlayerPref;
+
     // Loading UI
     
     // Level Change
