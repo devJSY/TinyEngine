@@ -7,6 +7,7 @@ class CFadeOutScript : public CScript
 {
 private:
     CGameObject* m_Target;
+    Vec4 m_BackGroundColor;
     bool m_bComplete;
     bool m_bReverse;
     float m_Duration;
@@ -18,6 +19,9 @@ public:
     virtual void tick() override;
 
 public:
+    Vec4 GetBackGroundColor() const { return m_BackGroundColor; }
+    void SetBackGroundColor(Vec4 _Color) { m_BackGroundColor = _Color; }
+
     bool IsComplete() const { return m_bComplete; }
     void ResetComplete() { m_bComplete = false; }
 

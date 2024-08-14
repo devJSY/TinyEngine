@@ -4,9 +4,10 @@
 
 #define MODE g_int_0 // 0: Rendered image, 1: DepthOnly 
 
-#define FogStrength g_float_0
-#define FogScale g_float_1
-#define DepthScale g_float_2
+#define FogMin g_float_0
+#define FogMax g_float_1
+#define FogStrength g_float_2
+#define DepthScale g_float_3
 
 #define RenderTex g_tex_0
 
@@ -88,10 +89,8 @@ float4 main(PS_IN input) : SV_TARGET
         }
 
         // Fog
-        float fogMin = 1.f * FogScale;
-        float fogMax = 100.f * FogScale;
         float dist = length(posView.xyz);
-        float distFog = saturate((dist - fogMin) / (fogMax - fogMin));
+        float distFog = saturate((dist - FogMin) / (FogMax - FogMin));
         float fogFactor = exp(-distFog * FogStrength);
         
         color = lerp(FogColor.rgb, color, fogFactor);
