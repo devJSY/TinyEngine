@@ -2,6 +2,7 @@
 #include "CFlowMgr_BossElfilis.h"
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
+#include "CCameraController.h"
 
 CFlowMgr_BossElfilis::CFlowMgr_BossElfilis()
     : CLevelFlowMgr(FLOWMGR_BOSSELFILIS)
@@ -24,8 +25,20 @@ CFlowMgr_BossElfilis::~CFlowMgr_BossElfilis()
 void CFlowMgr_BossElfilis::begin()
 {
     CLevelFlowMgr::begin();
+    SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f, 0.3f, 0.5f);
+    SetFadeOutColor(Vec3(180.f, 140.f, 200.f));
 
-    m_LevelEnterWall = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LevelEnterWall", LAYER_MONSTER);
+    CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera", LAYER_DEFAULT);
+    CCameraController* CameraController = Camera ? Camera->GetScript<CCameraController>() : nullptr;
+
+    if (CameraController)
+    {
+        Vec3 Dir = Vec3(-0.57f, -0.49f, -0.66f).Normalize();
+        CameraController->SetLookDir(Dir);
+        CameraController->SetLookDist(400.f);
+    }
+
+    m_LevelEnterWall = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LevelEnterWall", LAYER_STATIC_TRIGGER);
 }
 
 void CFlowMgr_BossElfilis::tick()

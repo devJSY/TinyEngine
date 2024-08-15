@@ -189,6 +189,10 @@ void CElfilisA_SlashCombo::Progress()
 
                 GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
             }
+            else
+            {
+                delete pRock;
+            }
         }
     }
 

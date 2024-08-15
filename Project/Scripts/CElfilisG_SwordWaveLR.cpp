@@ -102,7 +102,7 @@ void CElfilisG_SwordWaveLR::Exit_Step()
 }
 
 void CElfilisG_SwordWaveLR::Start()
-{    
+{
     // rotate
     RotateToPlayer();
 
@@ -121,7 +121,7 @@ void CElfilisG_SwordWaveLR::Wait()
 }
 
 void CElfilisG_SwordWaveLR::Progress()
-{ 
+{
     // Spawn SwordSlash
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {
@@ -137,9 +137,13 @@ void CElfilisG_SwordWaveLR::Progress()
 
                 pSlash->Transform()->SetWorldPos(InitPos);
                 pScript->SetInitDir(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT));
-            }
 
-            GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
+                GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
+            }
+            else
+            {
+                delete pSlash;
+            }
         }
 
         m_bFrmEnter = false;

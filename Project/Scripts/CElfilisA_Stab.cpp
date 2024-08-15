@@ -127,6 +127,10 @@ void CElfilisA_Stab::Enter_Step()
 
                 GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
             }
+            else
+            {
+                delete pRock;
+            }
         }
 
         //@CAMERA ¶¥

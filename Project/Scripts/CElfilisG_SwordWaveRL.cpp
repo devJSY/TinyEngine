@@ -142,9 +142,13 @@ void CElfilisG_SwordWaveRL::Progress()
 
                 pSlash->Transform()->SetWorldPos(InitPos);
                 pScript->SetInitDir(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT));
-            }
 
-            GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
+                GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
+            }
+            else
+            {
+                delete pSlash;
+            }
         }
 
         m_bFrmEnter = false;
