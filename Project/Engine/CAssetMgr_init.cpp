@@ -1166,9 +1166,10 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 
         pShader->AddScalarParam(INT_0, "Render Mode");
 
-        pShader->AddScalarParam(FLOAT_0, "FogStrength", 0.01f);
-        pShader->AddScalarParam(FLOAT_1, "FogScale", 0.01f);
-        pShader->AddScalarParam(FLOAT_2, "DepthScale", 0.01f);
+        pShader->AddScalarParam(FLOAT_0, "Fog Min");
+        pShader->AddScalarParam(FLOAT_1, "Fog Max");
+        pShader->AddScalarParam(FLOAT_2, "Fog Strength", 0.01f);
+        pShader->AddScalarParam(FLOAT_3, "Depth Scale", 0.01f);
 
         pShader->AddScalarParam(VEC4_0, "Fog Color");
 
@@ -1818,8 +1819,10 @@ void CAssetMgr::CreateDefaultMaterial()
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"PostEffectShader"));
         pMtrl->SetName(L"PostEffectMtrl");
-        pMtrl->SetScalarParam(FLOAT_1, 20.f);
+        pMtrl->SetScalarParam(FLOAT_0, 0.f);  // FogMin
+        pMtrl->SetScalarParam(FLOAT_1, 20.f); // FogMax
         pMtrl->SetScalarParam(VEC4_0, Vec4(1.f, 1.f, 1.f, 1.f));
+
         AddAsset<CMaterial>(L"PostEffectMtrl", pMtrl);
     }
 

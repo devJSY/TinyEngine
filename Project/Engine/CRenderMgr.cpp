@@ -491,7 +491,7 @@ void CRenderMgr::render_postprocess()
         m_PostProcessTex_LDRI->UpdateData(15);
 
         // Blur Texture »ý¼º
-        BlurTexture(m_RTCopyTex, 3);
+        BlurTexture(m_RTCopyTex, 2);
 
         m_DOFObj->render();
         CTexture::Clear(15);
