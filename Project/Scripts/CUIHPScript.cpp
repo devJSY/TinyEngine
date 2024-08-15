@@ -117,7 +117,6 @@ bool CUIHPScript::IsCombo()
 {
     bool _IsCombo = m_pUnitScript->IsGetDamage();
 
-    // Test¿ë
     if (_IsCombo)
     {
         if (!m_bIsCombo)

@@ -856,6 +856,9 @@
     <ClInclude Include="CUIRotateScript.h">
       <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
     </ClInclude>
+    <ClInclude Include="CUIMtrlScript.h">
+      <Filter>Scripts\UI\UIUtil\UIMtrlScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1721,6 +1724,9 @@
     </ClCompile>
     <ClCompile Include="CUIRotateScript.cpp">
       <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMtrlScript.cpp">
+      <Filter>Scripts\UI\UIUtil\UIMtrlScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2728,6 +2734,12 @@
     </Filter>
     <Filter Include="Scripts\UI\UIAnimation\CUIRotateScript">
       <UniqueIdentifier>{d526ad6e-bb2b-483e-808e-2c0a65f471ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUtil">
+      <UniqueIdentifier>{6b646881-d31c-4c91-b612-8ca25318bc96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUtil\UIMtrlScript">
+      <UniqueIdentifier>{cb44d5d5-e290-4933-91c2-135160b266d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

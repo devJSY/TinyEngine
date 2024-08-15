@@ -579,6 +579,11 @@ void CNormalEnemyScript::AfterAttack()
 
 void CNormalEnemyScript::Damage()
 {
+    if (GetCurInfo().HP <= 0.1f)
+    {
+        ChangeState(NormalEnemyState::Death);
+    }
+
     if (Animator()->IsFinish())
     {
         ChangeState(NormalEnemyState::Fall);

@@ -25,7 +25,7 @@ void CStageChangeButtonScript::tick()
     CButtonScript::tick();
 
     // 정해진 stage가 없을 경우에는 해당 버튼 상태를 Disabled로 만든다.
-    "" == m_vStageName[m_iCurStage] ? ChangeState(ButtonState::DISABLED) : ChangeState(ButtonState::NORMAL);
+    "" == m_vStageName[m_iCurStage] ? ChangeState(ButtonState::DISABLED) : ChangeState(ButtonState::SELECTED);
 }
 
 void CStageChangeButtonScript::Func()

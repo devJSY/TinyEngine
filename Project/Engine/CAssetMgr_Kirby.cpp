@@ -239,15 +239,60 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Kirby UI Lobby Scene BackGround Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIRobbyBackGroundPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(FLOAT_0, "AlphaDiscard Threshold", 0.1f);
+
+        pShader->AddScalarParam(VEC4_0, "BackGround Color", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Pattern Texture1");
+        pShader->AddTexParam(TEX_1, "Pattern Texture2");
+
+        pShader->SetName(L"KirbyUIRobbySceneBGShader");
+        AddAsset(L"KirbyUIRobbySceneBGShader", pShader);
+    }
+
+    // =================================
+    // Kirby UI Masking Anim 2D Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIMaskingAnimPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Masking Texture");
+
+        pShader->SetName(L"KirbyUIMaskingAnim2DShader");
+        AddAsset(L"KirbyUIMaskingAnim2DShader", pShader);
+    }
+
+    // =================================
     // UIKirbyHPShader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\UIHPShaderVS.hlsl", "main");
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
         pShader->CreatePixelShader(L"shader\\UIHPShaderPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
@@ -259,24 +304,24 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // UIKirbyWipeShader
+    // UIKirbyHPOutLineShader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
-        pShader->CreateVertexShader(L"shader\\UIWipeVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\UIWipePS.hlsl", "main");
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIHPOutLinePS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-        pShader->AddTexParam(TEX_0, "PostProcessTexture");
-        pShader->AddScalarParam(VEC4_0, "BackGroundColor");
+        pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(FLOAT_0, "ALPHATHRESHHOLD");
 
-        pShader->SetName(L"KirbyUIWipeShader");
-        AddAsset(L"KirbyUIWipeShader", pShader);
+        pShader->SetName(L"KirbyUIHPOutLineShader");
+        AddAsset(L"KirbyUIHPOutLineShader", pShader);
     }
 
     // =================================
