@@ -33,6 +33,7 @@ CCameraController::CCameraController()
 {
 
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_Offset, "Offset");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_TargetOffset, "MainTargetOffset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_SubTargetOffset, "SubTargetOffset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_LookDir, "Look Dir", 0.05f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LookDist, "Look Distance", 1.f);
@@ -995,6 +996,10 @@ void CCameraController::SetElfilisSky()
     SetMaxDegreeX(0.f);
     SetMinDegreeY(0.f);
     SetMaxDegreeY(0.f);
+
+    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetOffset(Vec3(0.f, 30.f, 0.f));
 }
 
 void CCameraController::SetElfilisGround()
@@ -1003,8 +1008,29 @@ void CCameraController::SetElfilisGround()
     Normal(false);
     
     SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetOffset(Vec3(0.f, 0.f, 0.f));
     SetLookDir(Vec3(0.f, -0.707f, 0.707f));
     SetLookDist(700.f);
+}
+
+void CCameraController::SetMorphoTwoTarget()
+{
+    LoadInitSetting();
+
+    SetMainTarget(PLAYER);
+    Boss(BOSS, 200.f, 0.5f);
+
+    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetOffset(Vec3(0.f, 30.f, 0.f));
+
+    SetMinDegreeX(5.f);
+    SetMaxDegreeX(45.f);
+    SetMinDegreeY(5.f);
+    SetMaxDegreeY(15.f);
+    SetMaxDistBetweenTarget(600.f);
+
+    SetMinDist(200.f);
 }
 
 void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)

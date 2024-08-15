@@ -45,7 +45,7 @@ void CElfilisG_ToAirTeleport::Enter_Step()
 
         SpawnTeleport();
 
-        //@CAMERA ÇÏ´Ã
+        //Ä«¸Þ¶ó ÇÏ´Ã
         CAMERACTRL->SetElfilisSky();
     }
     break;

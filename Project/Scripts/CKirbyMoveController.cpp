@@ -272,10 +272,10 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = m_JumpPower;
     }
 
-    if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
-    {
-        m_MoveVelocity.y = 0.f;
-    }
+    //if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
+    //{
+    //    m_MoveVelocity.y = 0.f;
+    //}
 
     // 중력 적용
     m_Accel.y += m_Gravity;

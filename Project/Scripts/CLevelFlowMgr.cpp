@@ -61,6 +61,19 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
+    if (m_bFadeOut)
+    {
+        m_FadeOutAcc += DT;
+
+        // UI가 끝나면
+        if (m_FadeOutAcc > m_FadeOutDuration)
+        {
+            // Level 전환
+            m_bFadeOut = false;
+            LevelExit();
+        }
+    }
+
     // tick마다 넣어줘야 하는 Param setting
     MtrlParamUpdate();
 }
@@ -196,26 +209,10 @@ void CLevelFlowMgr::LevelRestart()
 
     // BGM 종료
 
-void CLevelFlowMgr::tick()
-{
-    // tick마다 넣어줘야 하는 Param setting
-    MtrlParamUpdate();
-
-    if (m_bFadeOut)
-    {
-        m_FadeOutAcc += DT;
-        
-        // UI가 끝나면
-        if (m_FadeOutAcc > m_FadeOutDuration)
-        {
-            // Level 전환
-            m_bFadeOut = false;
-            LevelExit();
-        }
-    }
     // Level Restart
     GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
 }
+
 
 void CLevelFlowMgr::MtrlParamUpdate()
 {

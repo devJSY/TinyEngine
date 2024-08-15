@@ -120,7 +120,7 @@ void CElfilisD_Appear::Exit_Step()
             m_BossName = nullptr;
         }
 
-        //@CAMERA : ÅõÅ¸°Ù
+        // ÅõÅ¸°Ù
         CAMERACTRL->LoadInitSetting();
 
         CAMERACTRL->SetElfilisTwoTarget();

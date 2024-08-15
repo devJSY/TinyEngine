@@ -3,11 +3,14 @@
 #include "CMorphoFSM.h"
 #include "CChangeAlphaScript.h"
 
+#include "CCameraController.h"
+
 CMorphoDemo_Appear::CMorphoDemo_Appear()
     : m_StartPos(Vec3(0.f, 0.f, -300.f))
     , m_DownSpeed(80.f)
     , m_AccTime(0.f)
     , m_BossName(nullptr)
+    , m_bFrmEnter(false)
 {
     m_BossNamePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossName_Morpho.pref", L"prefab\\BossName_Morpho.pref");
 }
@@ -56,33 +59,21 @@ void CMorphoDemo_Appear::Enter_Step()
         GetOwner()->Transform()->SetWorldRotation(Vec3());
         m_AccTime = 0.f;
 
-        //@CAMERA : 점점 몰포 가까이
+        m_bFrmEnter = false;
+        m_bFrmEnter2 = false;
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DemoMorphoKnightAppearCut5"), false, false, 1.5f);
-
-        // spawn BossName
-        if (m_BossNamePref != nullptr)
-        {
-            m_BossName = m_BossNamePref->Instantiate();
-            CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
-
-            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 155.f, -430.f));
-            m_BossName->Transform()->SetWorldRotation(Vec3());
-            m_BossName->Transform()->SetWorldScale(Vec3(5.f));
-            Script->FadeIn(0.5f);
-
-            GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);
-        }
-
-        //@CAMERA : 뒤로 이동(고정)
     }
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DemoBirthEnd"), false, false, 1.5f);
 
-        //@CAMERA : 투타겟
+        // 투타겟
+        CAMERACTRL->SetMorphoTwoTarget();
+        CAMERACTRL->LoadInitSetting();
+
     }
     break;
     }
@@ -110,6 +101,54 @@ void CMorphoDemo_Appear::Exit_Step()
 
 void CMorphoDemo_Appear::Start()
 {
+    if (m_bFrmEnter == false && CHECK_ANIMFRM(GetOwner(), 412))
+    {
+        // 점점 몰포 가까이
+
+        CGameObject* Target = BOSS->GetChildObject(L"CameraTarget");
+
+        CAMERACTRL->SetMainTarget(Target);
+
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
+        CAMERACTRL->SetLookDist(60.f);
+
+        CAMERACTRL->ResetCamera();
+
+        m_bFrmEnter = true;
+    }
+
+    if (m_bFrmEnter2 == false && CHECK_ANIMFRM(GetOwner(), 603))
+    {
+        // spawn BossName
+        if (m_BossNamePref != nullptr)
+        {
+            m_BossName = m_BossNamePref->Instantiate();
+            CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
+
+            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 155.f, -430.f));
+            m_BossName->Transform()->SetWorldRotation(Vec3());
+            m_BossName->Transform()->SetWorldScale(Vec3(5.f));
+            Script->FadeIn(0.5f);
+
+            GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);
+        }
+
+        // 뒤로 이동(고정)
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.35f, -0.937f));
+        CAMERACTRL->SetLookDist(100.f);
+
+        CAMERACTRL->SetZoomMinSpeed(300.f);
+        CAMERACTRL->SetZoomMaxSpeed(500.f);
+        CAMERACTRL->SetZoomThreshold(500.f);
+        CAMERACTRL->SetRotationSpeed(150.f);
+
+
+        m_bFrmEnter2 = true;
+    }
+    
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);

@@ -40,7 +40,7 @@ void CElfilisD_Jump::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("JumpReady"), false, false, 2.5f, 0.3f);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
-        //@CAMERA 뒤로
+        // 뒤로
         CAMERACTRL->FixedView(false, Vec3(-78.53f, 131.92f, -91.44f));
 
     }
@@ -58,7 +58,7 @@ void CElfilisD_Jump::Enter_Step()
 
 
 
-        //@CAMERA 잠깐고정
+        // 카메라 잠깐고정
         CAMERACTRL->Normal(false);
 
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));

@@ -24,7 +24,7 @@ void CElfilisD_Roar::tick()
         ELFBIGFSM->Activate();
         ELFBIGFSM->ChangeState(L"ROAR");
 
-        //@CAMERA 축소, 셰이크
+        // 카메라 축소, 셰이크
         CAMERACTRL->SetLookDist(1000.f);
 
         CAMERACTRL->SetZoomMinSpeed(0.f);
@@ -46,7 +46,7 @@ void CElfilisD_Roar::Enter()
     GetOwner()->Animator()->Play(ANIMPREFIX("Roar"), false);
     m_bFrmEnter = true;
 
-    //@CAMERA 확대, 셰이크
+    //카메라 확대, 셰이크
     CAMERACTRL->SetLock(false);
 
     CAMERACTRL->SetLookDist(150.f);

@@ -176,6 +176,7 @@ private:
     void SetMaxDistBetweenTarget(float _Max) { m_MaxBetweenTargetDist = _Max; }
     void SetMinDist(float _Min) { m_MinDist = _Min; }
     void SetLock(bool _Lock) { m_bLock = _Lock; }
+    void SetImmediate(bool _b) { m_bImmediate = _b; }
     void SetLock(bool _Lock, float _Duration)
     {
         m_bLock = _Lock;
@@ -240,6 +241,8 @@ public:
     void SetElfilisSky();
     void SetElfilisGround();
 
+    // Morpho Func
+    void SetMorphoTwoTarget();
 
 
     // Effect
