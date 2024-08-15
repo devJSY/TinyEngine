@@ -149,6 +149,10 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
     }
 }
 
+// ==================================================
+// Render
+// ==================================================
+
 float4 PS_ParticleRender(GS_Output _in) : SV_Target
 {
     tParticle particle = g_ParticleBuffer[_in.iInstID];
@@ -278,6 +282,47 @@ PS_Std2D_Glow_Output PS_ParticleRender_Glow(GS_Output _in)
     output.RenderTargetColor = vOutColor;
     
     return output;
+}
+
+#define FireTex g_tex_1
+#define LerpRatio g_float_1
+
+#define InitFireColor g_vec4_1
+#define EndFireColor g_vec4_2
+
+float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
+{
+    tParticle particle = g_ParticleBuffer[_in.iInstID];
+    tParticleModule module = g_ParticleModule[0];
+    
+    // Age 에 따라 두 색을 보간하여 색상 결정
+    float4 vOutColor = (float4) 0.f;
+    vOutColor.rgb = lerp(InitFireColor.rgb, EndFireColor.rgb, pow(particle.NormalizeAge, 1.f / LerpRatio));
+    vOutColor.a = 1.f;
+    
+    // Texture 적용
+    if (g_btex_1)
+    {
+        float4 vSampleColor = FireTex.Sample(g_LinearWrapSampler, _in.vUV);
+        vOutColor.rgb *= vSampleColor.rgb;
+        vOutColor.a = vSampleColor.a;
+    }
+
+    // 렌더모듈이 켜져 있으면
+    if (module.arrModuleCheck[6])
+    {
+        if (1 == module.AlphaBasedLife) // Normalize Age
+        {
+            vOutColor.a *= saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
+        }
+        else if (2 == module.AlphaBasedLife) // Max Age
+        {
+            float fRatio = particle.Age / module.AlphaMaxAge;
+            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
+        }
+    }
+    
+    return vOutColor;
 }
 
 #endif
