@@ -9,7 +9,7 @@ CMorphoFSM::CMorphoFSM()
     , m_CurStateGroup(MorphoStateGroup::END)
     , m_Pattern(MorphoPatternType::NONE)
     , m_PatternStep(0)
-    , m_Phase(2)
+    , m_Phase(1)
     , m_ComboLevel(0)
     , m_NearDist(150.f)
     , m_WeaponL(nullptr)
@@ -146,11 +146,8 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
-    }
-    if (KEY_TAP(KEY::SPACE))
-    {
-        ChangeStateGroup(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK1");
+        //ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
     }
 
     // Emissive

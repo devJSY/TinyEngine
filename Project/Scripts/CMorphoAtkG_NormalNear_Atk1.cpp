@@ -73,7 +73,7 @@ void CMorphoAtkG_NormalNear_Atk1::Enter_Step()
         Dir.Normalize();
 
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        GetOwner()->Rigidbody()->AddForce(Dir * 30.f, ForceMode::Impulse);
+        GetOwner()->Rigidbody()->AddForce(Dir * 15.f, ForceMode::Impulse);
     }
     break;
     case StateStep::End: {
@@ -93,6 +93,8 @@ void CMorphoAtkG_NormalNear_Atk1::Exit_Step()
         break;
     case StateStep::Progress: {
         GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
+        GetOwner()->Rigidbody()->SetVelocity(Vec3());
+        GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
 
         if (m_ComboLevel == 0)
         {
@@ -144,7 +146,7 @@ void CMorphoAtkG_NormalNear_Atk1::Progress()
     // Add drag
     float t = GetOwner()->Animator()->GetClipPlayRatio();
     float Ratio = t * XM_PI / 2.f;
-    float NewDrag = 4.f * sinf(Ratio);
+    float NewDrag = 5.f * sinf(Ratio);
     GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
     // Change Step

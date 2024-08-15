@@ -103,6 +103,10 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
 
                 GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
             }
+            else
+            {
+                delete Effect;
+            }
         }
     }
     break;
