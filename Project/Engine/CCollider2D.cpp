@@ -64,6 +64,9 @@ void CCollider2D::finaltick()
 
 void CCollider2D::SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl)
 {
+    if (m_Mtrl == _Mtrl)
+        return;
+
     m_Mtrl = _Mtrl;
 
     if (nullptr != m_RuntimeFixture)
@@ -75,6 +78,9 @@ void CCollider2D::SetMaterial(Ptr<CPhysics2DMaterial> _Mtrl)
 
 void CCollider2D::SetOffset(Vec2 _offset)
 {
+    if (m_Offset == _offset)
+        return;
+
     m_Offset = _offset;
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
@@ -89,6 +95,9 @@ bool CCollider2D::IsEnabled()
 
 void CCollider2D::SetEnabled(bool _bEnabled)
 {
+    if (m_bEnabled == _bEnabled)
+        return;
+
     m_bEnabled = _bEnabled;
 
     if (nullptr != Rigidbody2D())
@@ -143,6 +152,9 @@ bool CCollider2D::RayCast(Vec2 _Origin, Vec2 _Dirction, float _Distance, Raycast
 
 void CCollider2D::SetTrigger(bool _trigger)
 {
+    if (m_bTrigger == _trigger)
+        return;
+
     m_bTrigger = _trigger;
 
     if (nullptr != m_RuntimeFixture)

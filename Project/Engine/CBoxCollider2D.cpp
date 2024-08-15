@@ -40,6 +40,9 @@ void CBoxCollider2D::finaltick()
 
 void CBoxCollider2D::SetSize(Vec2 _size)
 {
+    if (m_Size == _size)
+        return;
+
     m_Size = _size;
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }

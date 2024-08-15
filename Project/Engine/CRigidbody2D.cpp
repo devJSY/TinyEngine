@@ -113,12 +113,18 @@ void CRigidbody2D::SetVelocity(Vec2 _Velocity)
 
 void CRigidbody2D::SetSimulated(bool _bSimulated)
 {
+    if (m_bSimulated == _bSimulated)
+        return;
+
     m_bSimulated = _bSimulated;
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
 void CRigidbody2D::SetAutoMass(bool _Use)
 {
+    if (m_bAutoMass == _Use)
+        return;
+
     m_bAutoMass = _Use;
 
     if (nullptr == m_RuntimeBody)
@@ -127,11 +133,16 @@ void CRigidbody2D::SetAutoMass(bool _Use)
     b2Body* body = (b2Body*)m_RuntimeBody;
     body->ResetMassData();
     if (!m_bAutoMass)
+    {
         SetMass(m_Mass);
+    }
 }
 
 void CRigidbody2D::SetMass(float _Mass)
 {
+    if (m_Mass == _Mass)
+        return;
+
     m_Mass = _Mass;
 
     if (nullptr == m_RuntimeBody)
@@ -145,6 +156,9 @@ void CRigidbody2D::SetMass(float _Mass)
 
 void CRigidbody2D::SetLinearDrag(float _Drag)
 {
+    if (m_LinearDrag == _Drag)
+        return;
+
     m_LinearDrag = _Drag;
 
     if (nullptr == m_RuntimeBody)
@@ -156,6 +170,9 @@ void CRigidbody2D::SetLinearDrag(float _Drag)
 
 void CRigidbody2D::SetAngularDrag(float _Drag)
 {
+    if (m_AngularDrag == _Drag)
+        return;
+
     m_AngularDrag = _Drag;
 
     if (nullptr == m_RuntimeBody)
@@ -167,6 +184,9 @@ void CRigidbody2D::SetAngularDrag(float _Drag)
 
 void CRigidbody2D::SetGravityScale(float _Scale)
 {
+    if (m_GravityScale == _Scale)
+        return;
+
     m_GravityScale = _Scale;
 
     if (nullptr == m_RuntimeBody)
@@ -178,6 +198,9 @@ void CRigidbody2D::SetGravityScale(float _Scale)
 
 void CRigidbody2D::SetFreezeRotation(bool _bFreeze)
 {
+    if (m_bFreezeRotation == _bFreeze)
+        return;
+
     m_bFreezeRotation = _bFreeze;
 
     if (nullptr == m_RuntimeBody)

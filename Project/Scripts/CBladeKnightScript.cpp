@@ -166,8 +166,17 @@ void CBladeKnightScript::SetSword()
         if (nullptr != Sword)
         {
             m_Sword = Sword;
+            SetSwordEnable(false);
             break;
         }
+    }
+}
+
+void CBladeKnightScript::SetSwordEnable(bool _bEnable)
+{
+    if (nullptr != m_Sword && nullptr != m_Sword->BoxCollider())
+    {
+        m_Sword->BoxCollider()->SetEnabled(_bEnable);
     }
 }
 
@@ -178,10 +187,12 @@ void CBladeKnightScript::EnterState()
     case BLADEKNIGHT_STATE::Attack: {
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("Attack"), false, false, 1.5f);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
         Animator()->Play(ANIMPREFIX("AttackStart"), false);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
@@ -205,6 +216,7 @@ void CBladeKnightScript::EnterState()
     case BLADEKNIGHT_STATE::DoubleAttack: {
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("DoubleAttack"), false, false, 1.5f);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
@@ -241,6 +253,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::Thrust);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -249,6 +262,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustEnd);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -257,6 +271,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustLoop);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -265,6 +280,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustStart);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -273,6 +289,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustStartWait);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -286,14 +303,17 @@ void CBladeKnightScript::EnterState()
     // break;
     case BLADEKNIGHT_STATE::TornadoAttack: {
         Animator()->Play(ANIMPREFIX("TornadoAttack"), false, false, 1.5f);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge: {
         Animator()->Play(ANIMPREFIX("TornadoAttackCharge"), false);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge2: {
         Animator()->Play(ANIMPREFIX("TornadoAttackCharge2"), false);
+        SetSwordEnable(true);
     }
     break;
     // case BLADEKNIGHT_STATE::TornadoAttackChargeMax: {
@@ -313,9 +333,11 @@ void CBladeKnightScript::ExitState()
     {
     case BLADEKNIGHT_STATE::Attack: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
@@ -329,6 +351,7 @@ void CBladeKnightScript::ExitState()
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
@@ -357,35 +380,44 @@ void CBladeKnightScript::ExitState()
     break;
     case BLADEKNIGHT_STATE::Retreat: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::Thrust: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustEnd: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustLoop: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStart: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStartWait: {
         Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     // case BLADEKNIGHT_STATE::ThrustWait: {
     // }
     // break;
     case BLADEKNIGHT_STATE::TornadoAttack: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge2: {
+        SetSwordEnable(false);
     }
     break;
     // case BLADEKNIGHT_STATE::TornadoAttackChargeMax: {

@@ -13,10 +13,10 @@ public:
 
 public:
     bool IsConvex() const { return m_bConvex; }
-    void SetConvex(bool _bEnable) { m_bConvex = _bEnable; }
+    void SetConvex(bool _bEnable);
 
     Ptr<CMesh> GetMesh() const { return m_Mesh; }
-    void SetMesh(Ptr<CMesh> _pMesh) { m_Mesh = _pMesh; }
+    void SetMesh(Ptr<CMesh> _pMesh);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

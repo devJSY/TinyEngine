@@ -19,48 +19,6 @@ CEdgeCollider2D::~CEdgeCollider2D()
 {
 }
 
-void CEdgeCollider2D::SetEdgeRadius(float _Radius)
-{
-    m_EdgeRadius = _Radius;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
-void CEdgeCollider2D::SetStartPoint(Vec2 _Point)
-{
-    m_StartPoint = _Point;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
-void CEdgeCollider2D::SetEndPoint(Vec2 _Point)
-{
-    m_EndPoint = _Point;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
-void CEdgeCollider2D::SetUseAdjacentStartPoint(bool _Use)
-{
-    m_bUseAdjacentStartPoint = _Use;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
-void CEdgeCollider2D::SetUseAdjacentEndPoint(bool _Use)
-{
-    m_bUseAdjacentEndPoint = _Use;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
-void CEdgeCollider2D::SetAdjacentStartPoint(Vec2 _Point)
-{
-    m_AdjacentStartPoint = _Point;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
-void CEdgeCollider2D::SetAdjacentEndPoint(Vec2 _Point)
-{
-    m_AdjacentEndPoint = _Point;
-    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
-}
-
 void CEdgeCollider2D::begin()
 {
     CCollider2D::begin();
@@ -100,6 +58,69 @@ void CEdgeCollider2D::finaltick()
         AdjacentEndPoint *= WorldScale;
         GamePlayStatic::DrawDebugLine(matInvScale * matWorld, EndPoint, AdjacentEndPoint, Vec3(0.f, 0.63f, 0.909f), false);
     }
+}
+
+void CEdgeCollider2D::SetEdgeRadius(float _Radius)
+{
+    if (m_EdgeRadius == _Radius)
+        return;
+
+    m_EdgeRadius = _Radius;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CEdgeCollider2D::SetStartPoint(Vec2 _Point)
+{
+    if (m_StartPoint == _Point)
+        return;
+
+    m_StartPoint = _Point;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CEdgeCollider2D::SetEndPoint(Vec2 _Point)
+{
+    if (m_EndPoint == _Point)
+        return;
+
+    m_EndPoint = _Point;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CEdgeCollider2D::SetUseAdjacentStartPoint(bool _Use)
+{
+    if (m_bUseAdjacentStartPoint == _Use)
+        return;
+
+    m_bUseAdjacentStartPoint = _Use;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CEdgeCollider2D::SetUseAdjacentEndPoint(bool _Use)
+{
+    if (m_bUseAdjacentEndPoint == _Use)
+        return;
+
+    m_bUseAdjacentEndPoint = _Use;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CEdgeCollider2D::SetAdjacentStartPoint(Vec2 _Point)
+{
+    if (m_AdjacentStartPoint == _Point)
+        return;
+
+    m_AdjacentStartPoint = _Point;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
+}
+
+void CEdgeCollider2D::SetAdjacentEndPoint(Vec2 _Point)
+{
+    if (m_AdjacentEndPoint == _Point)
+        return;
+
+    m_AdjacentEndPoint = _Point;
+    GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }
 
 UINT CEdgeCollider2D::SaveToLevelFile(FILE* _File)

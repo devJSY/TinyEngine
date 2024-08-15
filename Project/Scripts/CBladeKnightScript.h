@@ -51,6 +51,7 @@ public:
 
 private:
     void SetSword();
+    void SetSwordEnable(bool _bEnable);
 
 private:
     void EnterState();
