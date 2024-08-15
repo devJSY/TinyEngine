@@ -10,7 +10,7 @@ CElfilisG_NormalAtkTeleportR::CElfilisG_NormalAtkTeleportR()
     , m_bComboSuccess(false)
     , m_bFrmEnter(true)
 {
-    m_Effect = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref");
+    m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref");
 }
 
 CElfilisG_NormalAtkTeleportR::~CElfilisG_NormalAtkTeleportR()

@@ -1470,5 +1470,8 @@
     <FxCompile Include="GhostGordoPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Monster\GhostGordo</Filter>
     </FxCompile>
+    <FxCompile Include="MotionBlurPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

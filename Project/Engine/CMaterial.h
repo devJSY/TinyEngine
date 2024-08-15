@@ -44,6 +44,8 @@ public:
     void SetAnim3D(bool _bUseAnim) { m_Const.arrAnimData[0] = (int)_bUseAnim; }
     void SetBoneCount(int _iBoneCount) { m_Const.arrAnimData[1] = _iBoneCount; }
 
+    void SetMotionBlur(bool _bUse) { m_Const.bMotionBlur = (int)_bUse; }
+
     template <typename T>
     void SetScalarParam(SCALAR_PARAM _ParamType, const T& _Value);
     void* GetScalarParam(SCALAR_PARAM _ParamType);

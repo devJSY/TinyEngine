@@ -22,6 +22,13 @@
 
 CMeshRender::CMeshRender()
     : CRenderComponent(COMPONENT_TYPE::MESHRENDER)
+    , m_bMotionBlur(false)
+{
+}
+
+CMeshRender::CMeshRender(const CMeshRender& origin)
+    : CRenderComponent(origin)
+    , m_bMotionBlur(origin.m_bMotionBlur)
 {
 }
 
@@ -69,8 +76,10 @@ void CMeshRender::render()
         if (nullptr == GetMaterial(i))
             continue;
 
+        GetMaterial(i)->SetMotionBlur(m_bMotionBlur);
         GetMaterial(i)->UpdateData();
         GetMesh()->render(i);
+        GetMaterial(i)->SetMotionBlur(false);
     }
 
     // Animation 관련 정보 제거
@@ -106,6 +115,7 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
     }
 
     Transform()->UpdateData();
+    _mtrl->SetMotionBlur(m_bMotionBlur);
     _mtrl->UpdateData();
 
     for (UINT i = 0; i < GetMesh()->GetSubsetCount(); ++i)
@@ -129,6 +139,8 @@ void CMeshRender::render(Ptr<CMaterial> _mtrl)
         _mtrl->SetAnim3D(false);
         _mtrl->SetBoneCount(0);
     }
+
+    _mtrl->SetMotionBlur(false);
 }
 
 void CMeshRender::render(UINT _Subset)
@@ -154,6 +166,7 @@ void CMeshRender::render(UINT _Subset)
     Transform()->UpdateData();
 
     // 사용할 재질 업데이트
+    GetMaterial(_Subset)->SetMotionBlur(m_bMotionBlur);
     GetMaterial(_Subset)->UpdateData();
 
     // 사용할 메쉬 업데이트 및 렌더링
@@ -172,4 +185,32 @@ void CMeshRender::render(UINT _Subset)
         GetMaterial(_Subset)->SetAnim3D(false);
         GetMaterial(_Subset)->SetBoneCount(0);
     }
+
+    GetMaterial(_Subset)->SetMotionBlur(false);
+}
+
+UINT CMeshRender::SaveToLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::SaveToLevelFile(_File);
+
+    fwrite(&m_bMotionBlur, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
+}
+
+UINT CMeshRender::LoadFromLevelFile(FILE* _File)
+{
+    UINT MemoryByte = 0;
+
+    MemoryByte += CRenderComponent::LoadFromLevelFile(_File);
+
+    fread(&m_bMotionBlur, sizeof(bool), 1, _File);
+
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }

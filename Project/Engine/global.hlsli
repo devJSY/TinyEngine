@@ -7,16 +7,19 @@
 
 cbuffer TRANSFORM : register(b0)
 {
+    row_major Matrix g_matPrevWorld;
     row_major Matrix g_matWorld;
     row_major Matrix g_matWorldInv;
     row_major Matrix g_matWorldInvTranspose;
 
+    row_major Matrix g_matPrevView;
     row_major Matrix g_matView;
     row_major Matrix g_matViewInv;
 
     row_major Matrix g_matProj;
     row_major Matrix g_matProjInv;
 
+    row_major Matrix g_matPrevWV; 
     row_major Matrix g_matWV;
     row_major Matrix g_matWVP;
 }
@@ -74,6 +77,8 @@ cbuffer MATERIAL_CONST : register(b1)
     // 3D Animation 정보
     int g_iAnim;
     int g_iBoneCount;
+    
+    int g_bMotionBlur;
 }
 
 #define LIGHT_DIRECTIONAL   0  
@@ -154,6 +159,7 @@ Texture2D SSAOTex : register(t30);
 
 // Animator Bone Matrix Buffer
 StructuredBuffer<Matrix> g_arrBoneMat : register(t31);
+StructuredBuffer<Matrix> g_arrPrevBoneMat : register(t35);
 
 // Animator 32,33 사용
 // CopyBone 34 사용

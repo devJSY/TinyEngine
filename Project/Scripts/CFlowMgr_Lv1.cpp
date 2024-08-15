@@ -19,6 +19,7 @@ CFlowMgr_Lv1::~CFlowMgr_Lv1()
 void CFlowMgr_Lv1::begin()
 {
     CLevelFlowMgr::begin();
+    SetToneMappingParam(true, true, 1.2f, 0.8f);
 }
 
 void CFlowMgr_Lv1::tick()

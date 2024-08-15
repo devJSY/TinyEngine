@@ -1,10 +1,11 @@
 #pragma once
 #include "CKirbyObject.h"
+class CKirbyLightScript;
 
 class CKirbyObject_Lightbulb : public CKirbyObject
 {
 private:
-    CGameObject* m_PointLight;
+    CKirbyLightScript* m_PointLight;
     float m_Speed;
     float m_BrightSpeed;
 
@@ -14,12 +15,18 @@ public:
     virtual void IdleExit();
 
     virtual void RunEnter();
+    virtual void RunExit();
+
     virtual void RunEndEnter();
     virtual void RunEndExit();
 
     virtual void JumpStartEnter();
+
     virtual void LandingEnter();
+    virtual void LandingExit();
+
     virtual void LandingEndEnter();
+    virtual void LandingEndExit();
 
     // ºÒÄÑ±â
     virtual void Attack();

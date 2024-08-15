@@ -20,6 +20,7 @@ private:
     AbilityCopyType m_FindAbilityType;
     ObjectCopyType  m_FindObjType;
     float           m_FindDistance;
+    float           m_FindHoldTime;
     bool            m_bDrawing;
 
 public:
@@ -35,7 +36,7 @@ public:
     bool IsDrawing() { return m_bDrawing; }
 
 private:
-    EatType GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj);
+    EatType GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj, float& _outHoldTime);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

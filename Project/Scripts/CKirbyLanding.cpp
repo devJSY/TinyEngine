@@ -20,11 +20,32 @@ void CKirbyLanding::tick()
         switch (PLAYERFSM->GetCurObjectIdx())
         {
         case ObjectCopyType::CONE:
-        case ObjectCopyType::VENDING_MACHINE:
-        case ObjectCopyType::LIGHT: {
+        case ObjectCopyType::VENDING_MACHINE: {
             if (GetOwner()->Animator()->IsFinish())
             {
                 ChangeState(L"LANDING_END");
+            }
+        }
+        break;
+        case ObjectCopyType::LIGHT: {
+            if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK");
+            }
+            else if ((KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)) && PLAYERFSM->IsAttackEvent())
+            {
+                ChangeState(L"ATTACK_END");
+            }
+            else if (GetOwner()->Animator()->IsFinish())
+            {
+                if (PLAYERCTRL->GetInputWorld().Length() != 0.f)
+                {
+                    ChangeState(L"RUN");
+                }
+                else
+                {
+                    ChangeState(L"LANDING_END");
+                }
             }
         }
         break;
@@ -41,13 +62,12 @@ void CKirbyLanding::tick()
             {
                 if (PLAYERCTRL->GetInputWorld().Length() != 0.f)
                 {
-                    ChangeState(L"RUN_START");  
+                    ChangeState(L"RUN_START");
                 }
                 else
                 {
                     ChangeState(L"LANDING_END");
                 }
-
             }
         }
         break;
@@ -64,7 +84,7 @@ void CKirbyLanding::tick()
                 }
             }
         }
-            break;
+        break;
         }
     }
 }

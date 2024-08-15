@@ -6,9 +6,10 @@
 PS_IN main(VS_IN input)
 {
     PS_IN output = (PS_IN) 0;
+    float3 PrevPos = input.vPos;
     if (g_iAnim)
     {
-        Skinning(input.vPos, input.vTangent, input.vBitangent, input.vNormal
+        Skinning(input.vPos, PrevPos, input.vTangent, input.vBitangent, input.vNormal
               , input.vWeights, input.vIndices, 0);
     }
     

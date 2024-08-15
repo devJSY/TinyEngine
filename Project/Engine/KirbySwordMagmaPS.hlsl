@@ -14,20 +14,9 @@
 
 #define sparklyEffect g_float_0
 
-struct PS_OUT
+PS_OUT_DEFERRED main(PS_IN input)
 {
-    float4 vColor : SV_Target0;
-    float4 vPosition : SV_Target1;
-    float4 vNormal : SV_Target2;
-    float4 vTangent : SV_Target3;
-    float4 vBitangent : SV_Target4;
-    float4 vEmissive : SV_Target5;
-    float4 vMRA : SV_Target6;
-};
-
-PS_OUT main(PS_IN input)
-{
-    PS_OUT output = (PS_OUT)0.f;
+    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
 
     float2 moveUV = input.vUV0 + g_EngineTime * 0.2f;
 	float4 albedo = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
@@ -42,11 +31,15 @@ PS_OUT main(PS_IN input)
 
     output.vColor = float4(albedo.rgb, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
-    output.vNormal = float4(g_btex_5 ? NormalMapping(input, g_tex_5, input.vUV0, g_LinearWrapSampler) : normalize(input.vNormalWorld),1.f);
+    output.vNormal = float4(g_btex_5 ? NormalMapping(input, g_tex_5, input.vUV0, g_LinearWrapSampler, true) : normalize(input.vNormalWorld),1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
     output.vEmissive = float4(emission, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
-
+    
+    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
+    output.vMotionVector.z = 1.f;
+    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
+    
     return output;
 }

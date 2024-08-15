@@ -7,6 +7,7 @@ CAnimationUpdateShader::CAnimationUpdateShader()
     , m_pOffsetMatBuffer(nullptr)
     , m_pBoneTransformMatBuffer(nullptr)
     , m_pFinalMatBuffer(nullptr)
+    , m_pPrevFinalMatBuffer(nullptr)
 {
     Create(L"shader\\animation_update.fx", "AnimationUpdateCS");
 }
@@ -22,6 +23,7 @@ int CAnimationUpdateShader::UpdateData()
     m_pOffsetMatBuffer->UpdateData_CS_SRV(33);       // t33
     m_pBoneTransformMatBuffer->UpdateData_CS_UAV(0); // u0
     m_pFinalMatBuffer->UpdateData_CS_UAV(1);         // u1
+    m_pPrevFinalMatBuffer->UpdateData_CS_UAV(2);     // u2
 
     return S_OK;
 }
@@ -41,9 +43,11 @@ void CAnimationUpdateShader::Clear()
     m_pOffsetMatBuffer->Clear_CS_SRV();
     m_pBoneTransformMatBuffer->Clear_CS_UAV();
     m_pFinalMatBuffer->Clear_CS_UAV();
+    m_pPrevFinalMatBuffer->Clear_CS_UAV();
 
     m_pFrameDataBuffer = nullptr;
     m_pOffsetMatBuffer = nullptr;
     m_pBoneTransformMatBuffer = nullptr;
     m_pFinalMatBuffer = nullptr;
+    m_pPrevFinalMatBuffer = nullptr;
 }

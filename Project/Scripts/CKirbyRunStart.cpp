@@ -41,7 +41,7 @@ void CKirbyRunStart::tick()
             {
                 ChangeState(L"GUARD");
             }
-            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            else if (PLAYERCTRL->GetInput().Length() == 0.f && KEY_NONE_ARROW)
             {
                 ChangeState(L"IDLE");
             }

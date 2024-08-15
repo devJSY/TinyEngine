@@ -18,6 +18,7 @@ CTransform::CTransform()
     , m_WorldScale(m_LocalScale)
     , m_arrLocalDir{}
     , m_arrWorldDir{}
+    , m_matPrevWorld()
     , m_matWorld()
     , m_matWorldInv()
     , m_Mobility(MOBILITY_TYPE::MOVABLE)
@@ -38,6 +39,7 @@ CTransform::CTransform(const CTransform& origin)
     , m_WorldScale(origin.m_WorldScale)
     , m_arrLocalDir{origin.m_arrLocalDir[0], origin.m_arrLocalDir[1], origin.m_arrLocalDir[2]}
     , m_arrWorldDir{origin.m_arrWorldDir[0], origin.m_arrWorldDir[1], origin.m_arrWorldDir[2]}
+    , m_matPrevWorld()
     , m_matWorld()
     , m_matWorldInv()
     , m_Mobility(origin.m_Mobility)
@@ -52,7 +54,7 @@ CTransform::~CTransform()
 
 void CTransform::finaltick()
 {
-    m_matWorld = XMMatrixIdentity();
+    m_matPrevWorld = m_matWorld;
 
     Matrix matScale = XMMatrixScaling(m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
 
@@ -133,6 +135,7 @@ void CTransform::finaltick()
 
 void CTransform::UpdateData()
 {
+    g_Transform.matPrevWorld = m_matPrevWorld;
     g_Transform.matWorld = m_matWorld;
     g_Transform.matWorldInv = m_matWorldInv;
 
@@ -140,6 +143,7 @@ void CTransform::UpdateData()
     g_Transform.matWorldInvTranspose.Translation(Vec3(0.0f));
     g_Transform.matWorldInvTranspose = g_Transform.matWorldInvTranspose.Transpose().Invert();
 
+    g_Transform.matPrevWV = g_Transform.matPrevWorld * g_Transform.matPrevView;
     g_Transform.matWV = g_Transform.matWorld * g_Transform.matView;
     g_Transform.matWVP = g_Transform.matWV * g_Transform.matProj;
 
