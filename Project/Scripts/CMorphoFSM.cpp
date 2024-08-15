@@ -119,6 +119,11 @@ void CMorphoFSM::begin()
         {
             m_listWeaponMtrl.push_back(m_WeaponL->MeshRender()->GetMaterial(i));
         }
+
+        if (m_WeaponL->BoxCollider())
+        {
+            m_WeaponL->BoxCollider()->SetEnabled(false);
+        }
     }
 
     if (m_WeaponR)
@@ -126,6 +131,11 @@ void CMorphoFSM::begin()
         for (int i = 0; i < (int)m_WeaponR->MeshRender()->GetMtrlCount(); ++i)
         {
             m_listWeaponMtrl.push_back(m_WeaponR->MeshRender()->GetMaterial(i));
+        }
+
+        if (m_WeaponR->BoxCollider())
+        {
+            m_WeaponR->BoxCollider()->SetEnabled(false);
         }
     }
 }
@@ -211,7 +221,7 @@ void CMorphoFSM::Attack()
         // wait
         if (Rand <= 10.f && m_CurStateGroup == MorphoStateGroup::MoveToGround)
         {
-             ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
+            ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
         }
 
         // attack
@@ -524,6 +534,38 @@ void CMorphoFSM::ProcPatternStep()
     {
         m_PatternStep++;
     }
+}
+
+void CMorphoFSM::OnWeaponLTrigger()
+{
+    if (!m_WeaponL)
+        return;
+
+    m_WeaponL->BoxCollider()->SetEnabled(true);
+}
+
+void CMorphoFSM::OnWeaponRTrigger()
+{
+    if (!m_WeaponR)
+        return;
+
+    m_WeaponR->BoxCollider()->SetEnabled(true);
+}
+
+void CMorphoFSM::OffWeaponLTrigger()
+{
+    if (!m_WeaponL)
+        return;
+
+    m_WeaponL->BoxCollider()->SetEnabled(false);
+}
+
+void CMorphoFSM::OffWeaponRTrigger()
+{
+    if (!m_WeaponR)
+        return;
+
+    m_WeaponR->BoxCollider()->SetEnabled(false);
 }
 
 void CMorphoFSM::ClearEmissive()

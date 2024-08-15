@@ -38,6 +38,7 @@ void CMorphoAtkG_NormalNear_Atk3::Enter_Step()
     {
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack3"), false, false, 1.5f);
+        MRPFSM->OnWeaponRTrigger();
 
         // move
         Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
@@ -49,7 +50,7 @@ void CMorphoAtkG_NormalNear_Atk3::Enter_Step()
     }
     break;
     case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack2End"), false, false, 1.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("Attack3End"), false, false, 1.5f);
     }
     break;
     }
@@ -64,6 +65,7 @@ void CMorphoAtkG_NormalNear_Atk3::Exit_Step()
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
         GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
         MRPFSM->ClearComboLevel();
+        MRPFSM->OffWeaponRTrigger();
     }
     break;
     case StateStep::End:

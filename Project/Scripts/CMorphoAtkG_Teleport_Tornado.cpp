@@ -108,6 +108,7 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("TornadoAttackStart"), false, false, 1.5f);
+        MRPFSM->OnWeaponRTrigger();
     }
     break;
     case StateStep::Progress: {
@@ -164,7 +165,9 @@ void CMorphoAtkG_Teleport_Tornado::Exit_Step()
         break;
     case StateStep::ChargeWait:
         break;
-    case StateStep::Start:
+    case StateStep::Start: {
+        MRPFSM->OffWeaponRTrigger();
+    }
         break;
     case StateStep::Progress:
         break;

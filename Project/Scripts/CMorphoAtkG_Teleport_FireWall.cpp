@@ -52,6 +52,7 @@ void CMorphoAtkG_Teleport_FireWall::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotComb1"), false, false, 2.f);
+        MRPFSM->OnWeaponRTrigger();
     }
     break;
     case StateStep::End: {
@@ -67,7 +68,9 @@ void CMorphoAtkG_Teleport_FireWall::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::Progress:
+    case StateStep::Progress: {
+        MRPFSM->OffWeaponRTrigger();
+    }
         break;
     case StateStep::End: {
         m_bWallSpawn = false;

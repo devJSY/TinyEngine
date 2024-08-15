@@ -44,12 +44,14 @@ void CMorphoAtkG_NormalFar_SwordSlash::tick()
 
 void CMorphoAtkG_NormalFar_SwordSlash::Exit()
 {
+    Exit_Step();
+
+    MRPFSM->OffWeaponRTrigger();
+
     for (int i = 0; i < 3; ++i)
     {
         m_SwordSlash[0] = nullptr;
     }
-
-    Exit_Step();
 }
 
 void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
@@ -62,6 +64,7 @@ void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
     break;
     case StateStep::Combo1: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack1"), false, false, 1.5f);
+        MRPFSM->OnWeaponRTrigger();
         m_bFrmEnter = true;
 
         // spawn sword slash
@@ -113,26 +116,16 @@ void CMorphoAtkG_NormalFar_SwordSlash::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack1Start"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::Combo1: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack1"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::Combo2: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack2"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::Combo3: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack3"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack3End"), false, false, 1.5f);
-    }
-    break;
+    case StateStep::Start:
+        break;
+    case StateStep::Combo1:
+        break;
+    case StateStep::Combo2:
+        break;
+    case StateStep::Combo3:
+        break;
+    case StateStep::End:
+        break;
     }
 }
 
