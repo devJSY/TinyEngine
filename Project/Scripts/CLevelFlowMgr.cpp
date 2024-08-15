@@ -7,11 +7,15 @@
 
 #include "CPlayerMgr.h"
 #include "CCameraController.h"
+#include "CFadeOutScript.h"
 
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
     , m_CurLevelPath{}
     , m_NextLevelPath{}
+    , m_DimensionFadeEffect(nullptr)
+    , m_FadeOutObj(nullptr)
+    , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -20,6 +24,9 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     : CScript(_Origin)
     , m_CurLevelPath{}
     , m_NextLevelPath(_Origin.m_NextLevelPath)
+    , m_DimensionFadeEffect(nullptr)
+    , m_FadeOutObj(nullptr)
+    , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -28,8 +35,43 @@ CLevelFlowMgr::~CLevelFlowMgr()
 {
 }
 
+void CLevelFlowMgr::begin()
+{
+    m_CurLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetName();
+
+    // Effect 만들기
+    m_DimensionFadeEffect =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref", L"prefab\\DimensionFadeEffect.pref")->Instantiate();
+
+    m_DimensionFadeEffect->SetActive(false);
+    GamePlayStatic::AddChildObject(GetOwner(), m_DimensionFadeEffect);
+
+    Ptr<CPrefab> pFadeOutPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FadeOut.pref", L"prefab\\FadeOut.pref");
+    if (nullptr != pFadeOutPref)
+    {
+        m_FadeOutObj = pFadeOutPref->Instantiate();
+        GamePlayStatic::AddChildObject(GetOwner(), m_FadeOutObj);
+    }
+
+    m_ToneMappingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl");
+
+    // Level Start
+    LevelStart();
+}
+
+void CLevelFlowMgr::tick()
+{
+    // tick마다 넣어줘야 하는 Param setting
+    MtrlParamUpdate();
+}
+
 void CLevelFlowMgr::LevelStart()
 {
+    // Post Process Enable
+    CRenderMgr::GetInst()->SetEnableDOF(true);
+    CRenderMgr::GetInst()->SetEnableDepthMasking(true);
+    g_Global.g_EnableSSAO = true;
+
     m_bFadeOut = false;
     m_FadeOutAcc = 0.f;
     m_FadeOutDuration = 2.f;
@@ -89,12 +131,31 @@ void CLevelFlowMgr::LevelStart()
         }
     }
 
+    // UI (Fade In)
+    if (nullptr != m_FadeOutObj)
+    {
+        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
+        pFadeOutScript->SetBackGroundColor(Vec4(255.f, 0.f, 255.f, 255.f));
+        pFadeOutScript->SetReverse(true);
+        pFadeOutScript->SetDuration(0.25f);
+        pFadeOutScript->SetRotateSpeed(1.25f);
+    }
+
     // @TODO BGM 재생
-    // @TODO UI (Fade In)
 }
 
 void CLevelFlowMgr::LevelEnd()
 {
+    // UI (Fade Out)
+    if (nullptr != m_FadeOutObj)
+    {
+        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
+        pFadeOutScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
+        pFadeOutScript->SetReverse(false);
+        pFadeOutScript->SetDuration(1.f);
+        pFadeOutScript->SetRotateSpeed(1.25f);
+    }
+
     // BGM 종료
      
     
@@ -118,33 +179,22 @@ void CLevelFlowMgr::LevelExit()
     // Loading UI
     
     // Level Change
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(ToWstring(m_NextLevelPath)), LEVEL_STATE::PLAY);
+    GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
 
 void CLevelFlowMgr::LevelRestart()
 {
-    // BGM 종료
     // UI (Fade Out)
+    if (nullptr != m_FadeOutObj)
+    {
+        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
+        pFadeOutScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
+        pFadeOutScript->SetReverse(false);
+        pFadeOutScript->SetDuration(1.f);
+        pFadeOutScript->SetRotateSpeed(1.25f);
+    }
 
-    // Level Restart
-
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(m_CurLevelPath), LEVEL_STATE::PLAY);
-}
-
-void CLevelFlowMgr::begin()
-{
-    m_CurLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetName();
-
-    // Effect 만들기
-    m_DimensionFadeEffect =
-        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref", L"prefab\\DimensionFadeEffect.pref")->Instantiate();
-
-    m_DimensionFadeEffect->SetActive(false);
-    GamePlayStatic::AddChildObject(GetOwner(), m_DimensionFadeEffect);
-
-    // Level Start
-    LevelStart();
-}
+    // BGM 종료
 
 void CLevelFlowMgr::tick()
 {
@@ -163,6 +213,8 @@ void CLevelFlowMgr::tick()
             LevelExit();
         }
     }
+    // Level Restart
+    GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
 }
 
 void CLevelFlowMgr::MtrlParamUpdate()
@@ -170,7 +222,7 @@ void CLevelFlowMgr::MtrlParamUpdate()
     // // DOF Focus Player 위치 설정
     if (nullptr != PLAYER)
     {
-        static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"DOFMtrl");
+        static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
         Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
         Vec2 UVPos = NDCToUV(NDCPos);
         pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
@@ -191,6 +243,17 @@ void CLevelFlowMgr::OffDimensionFade()
     {
         m_DimensionFadeEffect->SetActive(false);
     }
+}
+
+void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,
+                                        float _Exposure, float _Gamma)
+{
+    CRenderMgr::GetInst()->SetEnableBloom(_bBloomEnable);
+    m_ToneMappingMtrl->SetScalarParam(INT_1, (int)_bBlendMode);
+    m_ToneMappingMtrl->SetScalarParam(FLOAT_0, _Exposure);
+    m_ToneMappingMtrl->SetScalarParam(FLOAT_1, _Gamma);
+    m_ToneMappingMtrl->SetScalarParam(FLOAT_2, _BloomStrength);
+    m_ToneMappingMtrl->SetScalarParam(VEC2_0, Vec2(_FilterRadius, _Threshold));
 }
 
 UINT CLevelFlowMgr::SaveToLevelFile(FILE* _File)

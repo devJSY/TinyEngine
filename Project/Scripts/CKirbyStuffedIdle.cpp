@@ -33,8 +33,14 @@ void CKirbyStuffedIdle::tick()
 void CKirbyStuffedIdle::Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedWait"));
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 }
 
 void CKirbyStuffedIdle::Exit()
 {
+    CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
 }

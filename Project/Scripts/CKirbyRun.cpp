@@ -92,7 +92,7 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"JUMP_START");
             }
-            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            else if (PLAYERCTRL->GetInput().Length() == 0.f && KEY_NONE_ARROW)
             {
                 ChangeState(L"RUN_END");
             }

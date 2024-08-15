@@ -850,6 +850,9 @@
     <ClInclude Include="CFlowTriggerScript.h">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyLightScript.h">
+      <Filter>Scripts\Character\Kirby\Deform Light</Filter>
+    </ClInclude>
     <ClInclude Include="CStageClear.h">
       <Filter>Scripts\Trigger\StageClear</Filter>
     </ClInclude>
@@ -1712,6 +1715,9 @@
     </ClCompile>
     <ClCompile Include="CFlowTriggerScript.cpp">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyLightScript.cpp">
+      <Filter>Scripts\Character\Kirby\Deform Light</Filter>
     </ClCompile>
     <ClCompile Include="CStageClear.cpp">
       <Filter>Scripts\Trigger\StageClear</Filter>
@@ -2713,6 +2719,9 @@
     </Filter>
     <Filter Include="Scripts\Trigger\FlowTrigger">
       <UniqueIdentifier>{1ac2a4d3-39f3-4b20-ab85-a853cac49dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\Deform Light">
+      <UniqueIdentifier>{601ac786-9c24-41bd-80eb-aa572216232b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Trigger\StageClear">
       <UniqueIdentifier>{b8bf8ba3-2f5f-44dc-a5c2-404de1531e2c}</UniqueIdentifier>

@@ -30,7 +30,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_bForwardMode(false)
     , m_bLimitFallSpeed(false)
     , m_HoveringLimitHeight(100.f)
-    , m_HoveringHeight(0.f)
+    , m_JumpPos(Vec3())
     , m_AddVelocity{0.f, 0.f, 0.f}
     , m_Friction(0.f)
     , m_HoveringMinSpeed(-5.f)
@@ -187,7 +187,7 @@ void CKirbyMoveController::SetDir()
     {
         UINT Priority = (UINT)ForceDirType::END;
         Vec3 ForceDir = m_TowardDir;
-        bool Immediate;
+        bool Immediate = false;
 
         for (size_t i = 0; i < m_ForceDirInfos.size(); ++i)
         {
@@ -268,6 +268,7 @@ void CKirbyMoveController::Move()
     if (m_bJump && !m_bJumpLock)
     {
         m_bJump = false;
+        m_JumpPos = Transform()->GetWorldPos();
         m_MoveVelocity.y = m_JumpPower;
     }
 
@@ -303,7 +304,9 @@ void CKirbyMoveController::Move()
         }
 
         // check limit height
-        if (m_RayHit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
+        //if (m_RayHit.pCollisionObj == nullptr && m_MoveVelocity.y > 0.f)
+        if ((m_RayHit.Distance > m_HoveringLimitHeight || Transform()->GetWorldPos().y - m_JumpPos.y > m_HoveringLimitHeight)
+            && m_MoveVelocity.y > 0.f)
         {
             m_MoveVelocity.y = 0.f;
         }

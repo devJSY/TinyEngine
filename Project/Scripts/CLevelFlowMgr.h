@@ -15,6 +15,8 @@ private:
     string m_NextLevelPath;
 
     CGameObject* m_DimensionFadeEffect;
+    CGameObject* m_FadeOutObj;
+    Ptr<CMaterial> m_ToneMappingMtrl;
 
 public:
     virtual void begin() override;
@@ -24,12 +26,14 @@ public:
 public:
     void OnDimensionFade();
     void OffDimensionFade();
+    void SetToneMappingParam(bool _bBloomEnable = false, bool _bBlendMode = false, float _BloomStrength = 0.5f, float _Threshold = 0.f,
+                             float _FilterRadius = 1.f, float _Exposure = 1.f, float _Gamma = 2.2f);
 
 public:
     virtual void LevelStart();
     virtual void LevelEnd();
     virtual void LevelRestart();
-    
+
 private:
     virtual void LevelExit();
     virtual void MtrlParamUpdate();
@@ -43,5 +47,4 @@ public:
     CLevelFlowMgr(UINT _Type);
     CLevelFlowMgr(const CLevelFlowMgr& _Origin);
     virtual ~CLevelFlowMgr();
-
 };

@@ -110,6 +110,9 @@ public:
     template <typename T>
     Ptr<T> Load(const wstring& _strKey, const wstring& _strRelativePath);
 
+    template <typename T>
+    Ptr<T> Load(const wstring& _strRelativePath);
+
 private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
 
@@ -209,4 +212,10 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
 
     // CAsset 타입을 요청한 타입으로 캐스팅해서 반환
     return (T*)pAsset.Get();
+}
+
+template <typename T>
+Ptr<T> CAssetMgr::Load(const wstring& _strRelativePath)
+{
+    return Load<T>(_strRelativePath, _strRelativePath);
 }
