@@ -146,7 +146,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalFar, L"ATKG_NORMALFAR_SWORDSLASH");
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
         //ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
     }
 
