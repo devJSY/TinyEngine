@@ -6,8 +6,10 @@
 
 CBossHitbox::CBossHitbox()
     : CScript(BOSSHITBOX)
-    , m_Owner(nullptr)
+    , m_Instigator(nullptr)
     , m_Target(nullptr)
+    , m_bSummon(false)
+    , m_bCallReward(true)
     , m_RandMin(5.f)
     , m_RandMax(5.f)
     , m_DamageTypeIdx(0)
@@ -19,15 +21,18 @@ CBossHitbox::CBossHitbox()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
-
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RepeatTime, "Repeat Time");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCallReward, "Call Reward");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
 }
 
 CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     : CScript(_Origin)
-    , m_Owner(nullptr)
+    , m_Instigator(nullptr)
     , m_Target(nullptr)
+    , m_bSummon(_Origin.m_bSummon)
+    , m_bCallReward(_Origin.m_bCallReward)
     , m_RandMin(_Origin.m_RandMin)
     , m_RandMax(_Origin.m_RandMax)
     , m_DamageTypeIdx(_Origin.m_DamageTypeIdx)
@@ -39,9 +44,10 @@ CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
-
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RepeatTime, "Repeat Time");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCallReward, "Call Reward");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
 }
 
 CBossHitbox::~CBossHitbox()
@@ -51,12 +57,12 @@ CBossHitbox::~CBossHitbox()
 void CBossHitbox::begin()
 {
     m_Target = PLAYER;
-    m_Owner = BOSS;
+    m_Instigator = BOSS;
 }
 
 void CBossHitbox::tick()
 {
-    if (!m_Owner || !m_Target || !m_bRepeatDamage || !m_bOnTrigger)
+    if (!m_Instigator || !m_Target || !m_bRepeatDamage || !m_bOnTrigger)
         return;
 
     m_AccTime += DT;
@@ -90,14 +96,27 @@ float CBossHitbox::GetRandDamage()
 
 void CBossHitbox::AddDamage()
 {
-    if (!m_Owner || !m_Target)
+    if (!m_Instigator || !m_Target)
         return;
 
-    Vec3 HitDir = (m_Target->Transform()->GetWorldPos() - m_Owner->Transform()->GetWorldPos()).Normalize();
+    Vec3 HitDir = m_Target->Transform()->GetWorldPos();
+    if (!m_bSummon)
+    {
+        HitDir -= m_Instigator->Transform()->GetWorldPos();
+    }
+    else
+    {
+        HitDir -= Transform()->GetWorldPos();
+    }
+    HitDir.Normalize();
+
     UnitHit HitInfo = {(DAMAGE_TYPE)m_DamageTypeIdx, HitDir, GetRandDamage(), 0.f, 0.f};
 
     PLAYERUNIT->GetDamage(HitInfo);
-    BOSSUNIT->AttackReward();
+    if (m_bCallReward)
+    {
+        BOSSUNIT->AttackReward();
+    }
 }
 
 UINT CBossHitbox::SaveToLevelFile(FILE* _File)
@@ -109,12 +128,16 @@ UINT CBossHitbox::SaveToLevelFile(FILE* _File)
     fwrite(&m_DamageTypeIdx, 1, sizeof(int), _File);
     fwrite(&m_bRepeatDamage, 1, sizeof(bool), _File);
     fwrite(&m_RepeatTime, 1, sizeof(float), _File);
+    fwrite(&m_bSummon, 1, sizeof(bool), _File);
+    fwrite(&m_bCallReward, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }
@@ -128,12 +151,16 @@ UINT CBossHitbox::LoadFromLevelFile(FILE* _File)
     fread(&m_DamageTypeIdx, 1, sizeof(int), _File);
     fread(&m_bRepeatDamage, 1, sizeof(bool), _File);
     fread(&m_RepeatTime, 1, sizeof(float), _File);
+    fread(&m_bSummon, 1, sizeof(bool), _File);
+    fread(&m_bCallReward, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }

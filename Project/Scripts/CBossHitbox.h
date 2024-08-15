@@ -4,8 +4,10 @@
 class CBossHitbox : public CScript
 {
 private:
-    CGameObject* m_Owner;
+    CGameObject* m_Instigator;
     CGameObject* m_Target;
+    bool m_bSummon;
+    bool m_bCallReward;
 
     // damage
     float m_RandMin;
