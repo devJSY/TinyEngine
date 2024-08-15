@@ -1473,5 +1473,8 @@
     <FxCompile Include="MotionBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="FirePS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

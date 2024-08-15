@@ -297,7 +297,7 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
     
     // Age 에 따라 두 색을 보간하여 색상 결정
     float4 vOutColor = (float4) 0.f;
-    vOutColor.rgb = lerp(InitFireColor.rgb, EndFireColor.rgb, pow(particle.NormalizeAge, 1.f / LerpRatio));
+    vOutColor.rgb = lerp(InitFireColor.rgb, EndFireColor.rgb, pow(abs(particle.NormalizeAge), 1.f / LerpRatio));
     vOutColor.a = 1.f;
     
     // Texture 적용
