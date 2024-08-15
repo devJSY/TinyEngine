@@ -107,6 +107,12 @@ void CMorphoFSM::begin()
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveR"));
 
+    for (CGameObject* iter : m_vecShockWave)
+    {
+        iter->begin();
+        iter->SetActive(false);
+    }
+
     // get mtrl
     for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
     {
@@ -146,7 +152,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
+        ChangeStateGroup(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
         //ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
     }
 
