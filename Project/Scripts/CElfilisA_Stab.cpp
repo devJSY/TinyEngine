@@ -4,6 +4,8 @@
 #include "CElfilisUnit.h"
 #include "CMomentaryObjScript.h"
 
+#include "CCameraController.h"
+
 CElfilisA_Stab::CElfilisA_Stab()
 {
     m_StabRockPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisStabStone.pref", L"prefab\\ElfilisStabStone.pref");
@@ -113,7 +115,10 @@ void CElfilisA_Stab::Enter_Step()
             }
         }
 
-        //@CAMERA ¶¥
+        // Åõ Å¸°Ù
+        CAMERACTRL->SetElfilisTwoTarget();
+       
+       
     }
     break;
     case StateStep::End: {

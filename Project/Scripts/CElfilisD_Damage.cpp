@@ -2,6 +2,8 @@
 #include "CElfilisD_Damage.h"
 #include "CElfilisFSM.h"
 
+#include "CCameraController.h"
+
 CElfilisD_Damage::CElfilisD_Damage()
     : m_PrevDrag(0.f)
 {
@@ -42,7 +44,21 @@ void CElfilisD_Damage::Enter_Step()
 
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
-        //@CAMERA ¼¼ÆÃ
+        // Fixed View
+        CAMERACTRL->SetMainTarget(BOSS);
+
+        CAMERACTRL->FixedView(true, Vec3(-132.45f, 83.80f, -140.07f));
+
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetMinSpeed(200.f);
+        CAMERACTRL->SetMaxSpeed(500.f);
+        CAMERACTRL->SetThresholdDistance(500.f);
+        CAMERACTRL->SetRotationSpeed(150.f);
+        CAMERACTRL->SetZoomMinSpeed(100.f);
+        CAMERACTRL->SetZoomMaxSpeed(500.f);
+        CAMERACTRL->SetZoomThreshold(500.f);
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
+
     }
     break;
     case StateStep::Progress: {

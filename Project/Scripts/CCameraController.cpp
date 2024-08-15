@@ -8,6 +8,8 @@
 #include "CKirbyFSM.h"
 #include "CState.h"
 
+#include "CBossMgr.h"
+
 CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
     , m_Setup(CameraSetup::NORMAL)
@@ -102,6 +104,17 @@ void CCameraController::begin()
 
 void CCameraController::tick()
 {
+    if (m_bLock)
+    {
+        m_LockAcc += DT;
+        if (m_LockAcc > m_LockDuration)
+        {
+            m_LockAcc = 0.f;
+            m_LockDuration = 0.f;
+            m_bLock = false;
+        }
+    }
+
     EditMode();
 
     // Target이 없다면 return
@@ -242,6 +255,16 @@ void CCameraController::ApplyOffset()
 
 void CCameraController::UpdateLookAtPos()
 {
+    if (m_bLock)
+        return;
+
+    if (m_bImmediate)
+    {
+        // 카메라가 봐야하는 곳을 보간하지 않고 바로 바라보도록 한다.
+        m_CurLookAtPos = m_LookAtPos;
+        return;
+    }
+
     // =========================== Pos Update ===========================
     Vec3 Diff = m_LookAtPos - m_PrevLookAtPos;
     float MoveLength = Diff.Length();
@@ -269,6 +292,16 @@ void CCameraController::UpdateLookAtPos()
 
 void CCameraController::UpdateLookDir()
 {
+    if (m_bLock)
+        return;
+
+    if (m_bImmediate)
+    {
+        // 카메라가 바라봐야하는 각도를 보간하지 않고 바로 넣어준다.
+        m_CurLookDir = m_LookDir;
+        return;
+    }
+
     // =========================== Dir Update ===========================
     // PrevLookDir과 LookDir사이의 각도 구하기
     m_PrevLookDir.Normalize();
@@ -300,6 +333,16 @@ void CCameraController::UpdateLookDir()
 
 void CCameraController::UpdateLookDistance()
 {
+    if (m_bLock)
+        return;
+
+    if (m_bImmediate)
+    {
+        // 카메라가 바라봐야하는 거리를 보간하지 않고 바로 넣어준다.
+        m_CurDistance = m_LookDist;
+        return;
+    }
+
     // 현재 프레임에서의 ZoomSpeed 구하기
     float DiffDist = fabs(m_LookDist - m_PrevDistance);
     float Ratio = clamp((DiffDist / m_ZoomThreshold), 0.f, 1.f) * XM_PI * 0.5f;
@@ -636,17 +679,23 @@ void CCameraController::Boss()
     m_LookDir = Dir;
 
     m_LookDist = RequiredDistance + m_DistanceOffset;
+
+    // 계산된 거리가 최소 거리보다 더 작을 경우 MinDist를 현재의 거리로 한다.
+    if (m_MinDist > m_LookDist)
+    {
+        m_LookDist = m_MinDist;
+    }
     m_LookAtPos = Center;
 }
 
 void CCameraController::FixedView()
 {
     // 카메라의 위치는 고정되고 
-    Vec3 ToTargetFronCamera = m_TargetPos - m_FixedViewPos;
+    Vec3 ToTargetFromCamera = m_TargetPos - m_FixedViewPos;
 
     m_LookAtPos = m_TargetPos;
-    m_LookDist = ToTargetFronCamera.Length();
-    m_LookDir = ToTargetFronCamera.Normalize();
+    m_LookDist = ToTargetFromCamera.Length();
+    m_LookDir = ToTargetFromCamera.Normalize();
 }
 
 float simpleNoise(float t)
@@ -859,14 +908,9 @@ void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _
     m_LookDir = _LookDir.Normalize();
     m_DistanceOffset = _DistanceOffset;
     m_MinDist = _MinDist;
-
-    m_Offset = Vec3(0.f, 0.f, 0.f);
-    m_TargetOffset = Vec3(0.f, 0.f, 0.f);
-    m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
 }
 
-void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, float _MinDegree, float _MaxDegree,
-                                     float _m_MaxBetweenTargetDist, float _Weight)
+void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, float _Weight)
 {
     if (_SubTarget == nullptr)
         return;
@@ -877,13 +921,10 @@ void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, flo
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
     m_DistanceOffset = _DistanceOffset;
 
-    m_Offset = Vec3(0.f, 0.f, 0.f);
-    m_TargetOffset = Vec3(0.f, 0.f, 0.f);
-    m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
+    m_Weight = _Weight;
 }
 
-void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
-                                     float _Weight)
+void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, float _Weight)
 {
     m_Setup = CameraSetup::BOSSSETUP;
 
@@ -899,9 +940,10 @@ void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, floa
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
     m_DistanceOffset = _DistanceOffset;
 
+    m_Weight = _Weight;
+
     m_Offset = Vec3(0.f, 0.f, 0.f);
     m_TargetOffset = Vec3(0.f, 0.f, 0.f);
-    m_SubTargetOffset = Vec3(0.f, 80.f, 0.f);
     m_SubTargetOffset = Vec3(0.f, 0.f, 0.f);
 }
 
@@ -922,6 +964,47 @@ void CCameraController::FixedView(bool _IsImmediate, Vec3 _FixedViewPos)
     {
         ResetCamera();
     }
+}
+
+void CCameraController::SetElfilisTwoTarget()
+{
+    LoadInitSetting();
+
+    SetMainTarget(PLAYER);
+    Boss(BOSS, 100.f, 0.5f);
+
+    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetSubTargetOffset(Vec3(0.f, 75.f, 0.f));
+    SetOffset(Vec3(0.f, 30.f, 0.f));
+
+    SetMinDegreeX(0.f);
+    SetMaxDegreeX(0.f);
+    SetMinDegreeY(0.f);
+    SetMaxDegreeY(0.f);
+    SetMaxDistBetweenTarget(150.f);
+
+    SetMinDist(300.f);
+}
+
+void CCameraController::SetElfilisSky()
+{
+    SetMainTarget(PLAYER);
+    Boss(BOSS, 200.f, 0.3f);
+
+    SetMinDegreeX(0.f);
+    SetMaxDegreeX(0.f);
+    SetMinDegreeY(0.f);
+    SetMaxDegreeY(0.f);
+}
+
+void CCameraController::SetElfilisGround()
+{
+    SetMainTarget(PLAYER);
+    Normal(false);
+    
+    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetLookDir(Vec3(0.f, -0.707f, 0.707f));
+    SetLookDist(700.f);
 }
 
 void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)

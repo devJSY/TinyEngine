@@ -4,6 +4,8 @@
 #include "CElfilisFSM.h"
 #include "CElfilisBigFSM.h"
 
+#include "CCameraController.h"
+
 CElfilisD_Roar::CElfilisD_Roar()
     : m_AccTime(0.f)
     , m_bFrmEnter(true)
@@ -23,6 +25,11 @@ void CElfilisD_Roar::tick()
         ELFBIGFSM->ChangeState(L"ROAR");
 
         //@CAMERA Ãà¼Ò, ¼ÎÀÌÅ©
+        CAMERACTRL->SetLookDist(1000.f);
+
+        CAMERACTRL->SetZoomMinSpeed(0.f);
+        CAMERACTRL->SetZoomMaxSpeed(700.f);
+        CAMERACTRL->SetZoomThreshold(1000.f);
 
         m_bFrmEnter = false;
     }
@@ -40,9 +47,19 @@ void CElfilisD_Roar::Enter()
     m_bFrmEnter = true;
 
     //@CAMERA È®´ë, ¼ÎÀÌÅ©
+    CAMERACTRL->SetLock(false);
+
+    CAMERACTRL->SetLookDist(150.f);
+
+    CAMERACTRL->SetZoomMinSpeed(0.f);
+    CAMERACTRL->SetZoomMaxSpeed(500.f);
+    CAMERACTRL->SetZoomThreshold(100.f);
+
+    CAMERACTRL->Shake(4.5f, 60.f, 60.f);
 }
 
 void CElfilisD_Roar::Exit()
 {
-    //@CAMERA ÅõÅ¸°Ù
+    // ÇÏ´Ã ºä
+    CAMERACTRL->SetElfilisSky();
 }

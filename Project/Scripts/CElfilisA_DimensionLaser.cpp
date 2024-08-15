@@ -5,6 +5,8 @@
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
+#include "CCameraController.h"
+
 CElfilisA_DimensionLaser::CElfilisA_DimensionLaser()
     : m_Dimension{nullptr,}
     , m_DimensionStart(nullptr)
@@ -79,7 +81,9 @@ void CElfilisA_DimensionLaser::Enter_Step()
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaserReady"), false);
         //@Effect Â÷Â¡ ÆÄÆ¼Å¬
-        //@CAMERA ÇÏ´Ãºä
+        
+        // ¶¥ ºä
+        CAMERACTRL->SetElfilisGround();
     }
     break;
     case StateStep::Start: {
@@ -133,7 +137,8 @@ void CElfilisA_DimensionLaser::Exit_Step()
     case StateStep::Progress:
         break;
     case StateStep::End: {
-        //@CAMERA º¹±¸
+        // Åõ Å¸°Ù
+        CAMERACTRL->SetElfilisTwoTarget();
     }
     break;
     }

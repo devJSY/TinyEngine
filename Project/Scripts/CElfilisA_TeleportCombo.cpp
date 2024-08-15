@@ -4,6 +4,8 @@
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
+#include "CCameraController.h"
+
 CElfilisA_TeleportCombo::CElfilisA_TeleportCombo()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
@@ -189,7 +191,9 @@ void CElfilisA_TeleportCombo::End()
             ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
             ELFFSM->ChangeStateGroup(NextState);
 
-            //@CAMERA ¶¥
+            // Åõ Å¸°Ù
+            CAMERACTRL->SetElfilisTwoTarget();
+
         }
     }
 }
