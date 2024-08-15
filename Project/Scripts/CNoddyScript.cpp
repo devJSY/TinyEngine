@@ -27,7 +27,7 @@ void CNoddyScript::begin()
 {
     SetSnotBubble();
 
-    ChangeState(m_State);
+    ChangeState(NODDY_STATE::Sleep);
 }
 
 void CNoddyScript::tick()
