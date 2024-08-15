@@ -20,6 +20,7 @@ CMorphoAtkG_Teleport_FireWall::~CMorphoAtkG_Teleport_FireWall()
     if (m_FireWall && (!m_bWallSpawn || m_FireWall->GetLayerIdx() == -1))
     {
         delete m_FireWall;
+        m_FireWall = nullptr;
     }
 }
 

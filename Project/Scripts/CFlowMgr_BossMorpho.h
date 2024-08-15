@@ -5,13 +5,18 @@ class CFlowMgr_BossMorpho : public CLevelFlowMgr
 {
 private:
     BossLevelFlow m_FlowState;
+    CGameObject* m_SpawnButterfly;
     CGameObject* m_Barricade;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+    virtual void LevelStart() override;
+
     virtual void TriggerEvent(UINT _Idx);
 
+private:
     void SpawnMorpho();
 
 public:
