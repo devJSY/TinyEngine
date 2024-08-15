@@ -100,6 +100,7 @@
 #include "CFlowTriggerScript.h"
 #include "CKirbyLightScript.h"
 #include "CBossHitbox.h"
+#include "CFlowMgr_BossMorpho.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -202,6 +203,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowTriggerScript");
 	_vec.push_back(L"CKirbyLightScript");
 	_vec.push_back(L"CBossHitbox");
+	_vec.push_back(L"CFlowMgr_BossMorpho");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -404,6 +406,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyLightScript;
 	if (L"CBossHitbox" == _strScriptName)
 		return new CBossHitbox;
+	if (L"CFlowMgr_BossMorpho" == _strScriptName)
+		return new CFlowMgr_BossMorpho;
 	return nullptr;
 }
 
@@ -609,6 +613,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyLightScript;
 	case (UINT)SCRIPT_TYPE::BOSSHITBOX:
 		return new CBossHitbox;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_BOSSMORPHO:
+		return new CFlowMgr_BossMorpho;
 	}
 	return nullptr;
 }
@@ -815,6 +821,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyLightScript";
 	case SCRIPT_TYPE::BOSSHITBOX:
 		return L"CBossHitbox";
+	case SCRIPT_TYPE::FLOWMGR_BOSSMORPHO:
+		return L"CFlowMgr_BossMorpho";
 	}
 	return nullptr;
 }
