@@ -7,7 +7,7 @@ public:
     virtual void tick() override;
 
 private:
-    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

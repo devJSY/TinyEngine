@@ -148,8 +148,15 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo1()
 
         if (m_SwordSlash[0])
         {
-            Vec3 Force = m_SwordSlash[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_SlashSpeed;
+            Vec3 Dir = m_SwordSlash[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
+            Vec3 Force = Dir * m_SlashSpeed;
+
             m_SwordSlash[0]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+            m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
+            m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+            m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
     }
 
@@ -171,8 +178,15 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo2()
 
         if (m_SwordSlash[1])
         {
-            Vec3 Force = m_SwordSlash[1]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_SlashSpeed;
+            Vec3 Dir = m_SwordSlash[1]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
+            Vec3 Force = Dir * m_SlashSpeed;
+
             m_SwordSlash[1]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+            m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
+            m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+            m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
     }
 
@@ -194,8 +208,15 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo3()
 
         if (m_SwordSlash[2])
         {
-            Vec3 Force = m_SwordSlash[2]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_SlashSpeed * 1.8f;
+            Vec3 Dir = m_SwordSlash[2]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
+            Vec3 Force = Dir * m_SlashSpeed * 1.6f;
+
             m_SwordSlash[2]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+            m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
+            m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+            m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
     }
 
@@ -238,6 +259,11 @@ CGameObject* CMorphoAtkG_NormalFar_SwordSlash::CreateSwordSlash(Vec3 _PosOffset,
 
             pScript->SetPlayTime(3.f);
             pScript->SetScaling(Vec3(1.f), 0.2f);
+        }
+        else
+        {
+            delete pSlash;
+            pSlash = nullptr;
         }
     }
 
