@@ -95,4 +95,4 @@ CSpookStepScript
 CSpawnTriggerScript
 CFlowMgr_BossElfilis
 CFlowTriggerScript
-CBossWeaponHitbox
+CBossHitbox

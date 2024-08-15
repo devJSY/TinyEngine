@@ -118,7 +118,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
     <ClInclude Include="CBossState.h" />
-    <ClInclude Include="CBossWeaponHitbox.h" />
+    <ClInclude Include="CBossHitbox.h" />
     <ClInclude Include="CCameraController.h" />
     <ClInclude Include="CBossMgr.h" />
     <ClInclude Include="CCanJuice.h" />
@@ -419,7 +419,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
     <ClCompile Include="CBossState.cpp" />
-    <ClCompile Include="CBossWeaponHitbox.cpp" />
+    <ClCompile Include="CBossHitbox.cpp" />
     <ClCompile Include="CCameraController.cpp" />
     <ClCompile Include="CBossMgr.cpp" />
     <ClCompile Include="CCanJuice.cpp" />

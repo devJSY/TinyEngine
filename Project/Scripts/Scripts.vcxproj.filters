@@ -850,7 +850,7 @@
     <ClInclude Include="CFlowTriggerScript.h">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClInclude>
-    <ClInclude Include="CBossWeaponHitbox.h">
+    <ClInclude Include="CBossHitbox.h">
       <Filter>Scripts\Character\Boss\BossWeaponHitbox</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1713,7 +1713,7 @@
     <ClCompile Include="CFlowTriggerScript.cpp">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
     </ClCompile>
-    <ClCompile Include="CBossWeaponHitbox.cpp">
+    <ClCompile Include="CBossHitbox.cpp">
       <Filter>Scripts\Character\Boss\BossWeaponHitbox</Filter>
     </ClCompile>
   </ItemGroup>

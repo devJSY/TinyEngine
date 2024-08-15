@@ -1,7 +1,7 @@
 #pragma once
 #include "CUnitScript.h"
 
-class CBossWeaponHitbox : public CScript
+class CBossHitbox : public CScript
 {
 private:
     CGameObject* m_Owner;
@@ -34,8 +34,8 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
-    CLONE(CBossWeaponHitbox)
-    CBossWeaponHitbox();
-    CBossWeaponHitbox(const CBossWeaponHitbox& _Origin);
-    virtual ~CBossWeaponHitbox();
+    CLONE(CBossHitbox)
+    CBossHitbox();
+    CBossHitbox(const CBossHitbox& _Origin);
+    virtual ~CBossHitbox();
 };

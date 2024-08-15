@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "CBossWeaponHitbox.h"
+#include "CBossHitbox.h"
 #include "CPlayerMgr.h"
 #include "CBossMgr.h"
 #include "CKirbyUnitScript.h"
 
-CBossWeaponHitbox::CBossWeaponHitbox()
-    : CScript(BOSSWEAPONHITBOX)
+CBossHitbox::CBossHitbox()
+    : CScript(BOSSHITBOX)
     , m_Owner(nullptr)
     , m_Target(nullptr)
     , m_RandMin(5.f)
@@ -13,18 +13,18 @@ CBossWeaponHitbox::CBossWeaponHitbox()
     , m_DamageTypeIdx(0)
     , m_AccTime(0.f)
     , m_RepeatTime(2.f)
-    , m_bRepeatDamage(false)
+    , m_bRepeatDamage(true)
     , m_bOnTrigger(false)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (random min)");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (random max)");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
 
-    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RepeatTime, "Repeat Time");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
 }
 
-CBossWeaponHitbox::CBossWeaponHitbox(const CBossWeaponHitbox& _Origin)
+CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     : CScript(_Origin)
     , m_Owner(nullptr)
     , m_Target(nullptr)
@@ -36,25 +36,25 @@ CBossWeaponHitbox::CBossWeaponHitbox(const CBossWeaponHitbox& _Origin)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
     , m_bOnTrigger(false)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (random min)");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (random max)");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
 
-    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RepeatTime, "Repeat Time");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
 }
 
-CBossWeaponHitbox::~CBossWeaponHitbox()
+CBossHitbox::~CBossHitbox()
 {
 }
 
-void CBossWeaponHitbox::begin()
+void CBossHitbox::begin()
 {
     m_Target = PLAYER;
     m_Owner = BOSS;
 }
 
-void CBossWeaponHitbox::tick()
+void CBossHitbox::tick()
 {
     if (!m_Owner || !m_Target || !m_bRepeatDamage || !m_bOnTrigger)
         return;
@@ -68,19 +68,19 @@ void CBossWeaponHitbox::tick()
     }
 }
 
-void CBossWeaponHitbox::OnTriggerEnter(CCollider* _OtherCollider)
+void CBossHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
     m_bOnTrigger = true;
     m_AccTime = 0.f;
     AddDamage();
 }
 
-void CBossWeaponHitbox::OnTriggerExit(CCollider* _OtherCollider)
+void CBossHitbox::OnTriggerExit(CCollider* _OtherCollider)
 {
     m_bOnTrigger = false;
 }
 
-float CBossWeaponHitbox::GetRandDamage()
+float CBossHitbox::GetRandDamage()
 {
     float Damage = 5.f;
     Damage = GetRandomfloat(m_RandMin, m_RandMax);
@@ -88,7 +88,7 @@ float CBossWeaponHitbox::GetRandDamage()
     return Damage;
 }
 
-void CBossWeaponHitbox::AddDamage()
+void CBossHitbox::AddDamage()
 {
     if (!m_Owner || !m_Target)
         return;
@@ -100,7 +100,7 @@ void CBossWeaponHitbox::AddDamage()
     BOSSUNIT->AttackReward();
 }
 
-UINT CBossWeaponHitbox::SaveToLevelFile(FILE* _File)
+UINT CBossHitbox::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
@@ -119,7 +119,7 @@ UINT CBossWeaponHitbox::SaveToLevelFile(FILE* _File)
     return MemoryByte;
 }
 
-UINT CBossWeaponHitbox::LoadFromLevelFile(FILE* _File)
+UINT CBossHitbox::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
