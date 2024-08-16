@@ -67,6 +67,19 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
+    if (m_bFadeOut)
+    {
+        m_FadeOutAcc += DT;
+
+        // UI가 끝나면
+        if (m_FadeOutAcc > m_FadeOutDuration)
+        {
+            // Level 전환
+            m_bFadeOut = false;
+            LevelExit();
+        }
+    }
+
     // tick마다 넣어줘야 하는 Param setting
     MtrlParamUpdate();
 }
@@ -77,6 +90,11 @@ void CLevelFlowMgr::LevelStart()
     CRenderMgr::GetInst()->SetEnableDOF(true);
     CRenderMgr::GetInst()->SetEnableDepthMasking(true);
     g_Global.g_EnableSSAO = true;
+
+    // FadeOut Timer 초기화
+    m_bFadeOut = false;
+    m_FadeOutAcc = 0.f;
+    m_FadeOutDuration = 2.f;
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
@@ -141,7 +159,11 @@ void CLevelFlowMgr::LevelEnd()
     // UI (Fade Out)
     SetFadeOut(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
-    // BGM 종료
+
+    m_bFadeOut = true;
+    m_FadeOutAcc = 0.f;
+
+    // @TODO BGM 종료
 }
 
 void CLevelFlowMgr::LevelExit()
@@ -155,11 +177,12 @@ void CLevelFlowMgr::LevelRestart()
     // UI (Fade Out)
     SetFadeOut(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
-    // BGM 종료
-
     // Level Restart
     GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
+
+    // @TODO BGM 종료
 }
+
 
 void CLevelFlowMgr::MtrlParamUpdate()
 {

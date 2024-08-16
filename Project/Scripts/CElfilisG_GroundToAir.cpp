@@ -2,6 +2,8 @@
 #include "CElfilisG_GroundToAir.h"
 #include "CElfilisFSM.h"
 
+#include "CCameraController.h"
+
 CElfilisG_GroundToAir::CElfilisG_GroundToAir()
     : m_PrevDrag(0.f)
 {
@@ -38,7 +40,8 @@ void CElfilisG_GroundToAir::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
-        //@CAMERA ÇÏ´Ã
+        // ÇÏ´Ã ºä
+        CAMERACTRL->SetElfilisSky();
     }
     break;
     case StateStep::Progress: {

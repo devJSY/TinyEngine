@@ -119,7 +119,7 @@ void CFlowMgr_LvRobby::LevelEnd()
 
 void CFlowMgr_LvRobby::LevelExit()
 {
-    CLevelFlowMgr::LevelExit();
+    CLevelFlowMgr::LevelEnd();
 }
 
 void CFlowMgr_LvRobby::EnterZoomState()

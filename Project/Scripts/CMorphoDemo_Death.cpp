@@ -2,6 +2,8 @@
 #include "CMorphoDemo_Death.h"
 #include "CMorphoFSM.h"
 
+#include "CCameraController.h"
+
 CMorphoDemo_Death::CMorphoDemo_Death()
     : m_AccTime(0.f)
 {
@@ -49,6 +51,8 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Animator()->SetPlay(false);
         m_AccTime = 0.f;
         //@CAMERA Àá±ñ¸ØÃã
+        CAMERACTRL->SetLock(true, 0.5f);
+
     }
     break;
     case StateStep::Start: {
@@ -56,6 +60,12 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, -300.f));
         GetOwner()->Transform()->SetWorldRotation(Vec3());
         //@CAMERA lengthº¯ÇÔ
+
+        CAMERACTRL->FixedView(true, Vec3(1.33f, 31.13f, -201.47f));
+        CAMERACTRL->SetImmediate(true);
+        CAMERACTRL->SetMainTarget(BOSS->GetChildObject(L"CameraTarget"));
+        CAMERACTRL->SetRotationSpeed(30.f);
+
     }
     break;
     case StateStep::Wait: {
@@ -80,6 +90,13 @@ void CMorphoDemo_Death::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::End:
+    {
+        CAMERACTRL->SetMainTarget(PLAYER);
+        CAMERACTRL->Normal(true);
+        CAMERACTRL->SetImmediate(false);
+        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    }
+
         break;
     }
 }

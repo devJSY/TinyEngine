@@ -37,7 +37,7 @@ void CFlowMgr_LvStart::LevelEnd()
 
 void CFlowMgr_LvStart::LevelExit()
 {
-    CLevelFlowMgr::LevelExit();
+    CLevelFlowMgr::LevelEnd();
 }
 
 UINT CFlowMgr_LvStart::SaveToLevelFile(FILE* _File)

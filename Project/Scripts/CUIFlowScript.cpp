@@ -135,7 +135,7 @@ void CUIFlowScript::LoadingFlow()
     {
         m_pLoadingObj->SetActive(false);
         // TODO : 레벨 로딩 스레드 완료 같은거 얻어올 수 있으면 얻어오기
-        m_pFlowMgr->LevelExit();
+        m_pFlowMgr->LevelEnd();
     }
 }
 

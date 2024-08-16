@@ -4,6 +4,8 @@
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
+#include "CCameraController.h"
+
 CElfilisG_ToAirTeleport::CElfilisG_ToAirTeleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
@@ -43,7 +45,8 @@ void CElfilisG_ToAirTeleport::Enter_Step()
 
         SpawnTeleport();
 
-        //@CAMERA ÇÏ´Ã
+        //Ä«¸Þ¶ó ÇÏ´Ã
+        CAMERACTRL->SetElfilisSky();
     }
     break;
     case StateStep::End:
