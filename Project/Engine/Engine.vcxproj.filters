@@ -1476,5 +1476,8 @@
     <FxCompile Include="FirePS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
+    <FxCompile Include="CircleDistortionPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

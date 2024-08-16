@@ -1140,6 +1140,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Circle Distortion Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\CircleDistortionPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Distortion Force", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Circle Size", 1e-3f);
+        pShader->AddScalarParam(FLOAT_2, "Thickness", 1e-3f);
+
+        pShader->SetName(L"CircleDistortionShader");
+        AddAsset(L"CircleDistortionShader", pShader);
+    }
+
+    // =================================
     // Tone Mapping Shader
     // =================================
     {
@@ -1827,6 +1847,17 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShockWaveShader"));
         pMtrl->SetName(L"ShockWaveMtrl");
         AddAsset<CMaterial>(L"ShockWaveMtrl", pMtrl);
+    }
+
+    // Circle Distortion
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CircleDistortionShader"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.125f); // Distortion Force
+        pMtrl->SetScalarParam(FLOAT_1, 0.f);    // CircleSize
+        pMtrl->SetScalarParam(FLOAT_2, 0.01f);  // Thickness
+        pMtrl->SetName(L"CircleDistortionMtrl");
+        AddAsset<CMaterial>(L"CircleDistortionMtrl", pMtrl);
     }
 
     // ToneMapping
