@@ -862,6 +862,12 @@
     <ClInclude Include="CFollowPlayerScript.h">
       <Filter>Scripts\Gimmik\FollowPlayer</Filter>
     </ClInclude>
+    <ClInclude Include="CStageClear.h">
+      <Filter>Scripts\Trigger\StageClear</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbySmoke.h">
+      <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1733,6 +1739,12 @@
     </ClCompile>
     <ClCompile Include="CFollowPlayerScript.cpp">
       <Filter>Scripts\Gimmik\FollowPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CStageClear.cpp">
+      <Filter>Scripts\Trigger\StageClear</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySmoke.cpp">
+      <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2740,6 +2752,12 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\FollowPlayer">
       <UniqueIdentifier>{583a05de-dbe3-4485-a0d8-9de3ff6048bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Trigger\StageClear">
+      <UniqueIdentifier>{b8bf8ba3-2f5f-44dc-a5c2-404de1531e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbySmoke">
+      <UniqueIdentifier>{f2bbb26f-2be5-41dc-8d00-163e567b2d63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

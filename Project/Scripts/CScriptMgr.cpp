@@ -102,6 +102,8 @@
 #include "CBossHitbox.h"
 #include "CFlowMgr_BossMorpho.h"
 #include "CFollowPlayerScript.h"
+#include "CStageClear.h"
+#include "CKirbySmoke.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -206,6 +208,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CBossHitbox");
 	_vec.push_back(L"CFlowMgr_BossMorpho");
 	_vec.push_back(L"CFollowPlayerScript");
+	_vec.push_back(L"CStageClear");
+	_vec.push_back(L"CKirbySmoke");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -412,6 +416,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_BossMorpho;
 	if (L"CFollowPlayerScript" == _strScriptName)
 		return new CFollowPlayerScript;
+	if (L"CStageClear" == _strScriptName)
+		return new CStageClear;
+	if (L"CKirbySmoke" == _strScriptName)
+		return new CKirbySmoke;
 	return nullptr;
 }
 
@@ -621,6 +629,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_BossMorpho;
 	case (UINT)SCRIPT_TYPE::FOLLOWPLAYERSCRIPT:
 		return new CFollowPlayerScript;
+	case (UINT)SCRIPT_TYPE::STAGECLEAR:
+		return new CStageClear;
+	case (UINT)SCRIPT_TYPE::KIRBYSMOKE:
+		return new CKirbySmoke;
 	}
 	return nullptr;
 }
@@ -831,6 +843,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowMgr_BossMorpho";
 	case SCRIPT_TYPE::FOLLOWPLAYERSCRIPT:
 		return L"CFollowPlayerScript";
+	case SCRIPT_TYPE::STAGECLEAR:
+		return L"CStageClear";
+	case SCRIPT_TYPE::KIRBYSMOKE:
+		return L"CKirbySmoke";
 	}
 	return nullptr;
 }

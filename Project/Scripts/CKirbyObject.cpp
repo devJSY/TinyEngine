@@ -204,18 +204,18 @@ void CKirbyObject::ChangeObjectEnter()
     }
     PLAYER->Animator()->Play(ANIMPREFIX("DeformFirst"), false);
 
+    PLAYERCTRL->LockInput();
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockJump();
-    PLAYERCTRL->LockDirection();
 
     m_bFrmEnter = true;
 }
 
 void CKirbyObject::ChangeObjectExit()
 {
+    PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
-    PLAYERCTRL->UnlockDirection();
 }
 
 void CKirbyObject::ChangeObjectEndEnter()

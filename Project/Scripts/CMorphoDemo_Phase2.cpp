@@ -2,6 +2,8 @@
 #include "CMorphoDemo_Phase2.h"
 #include "CMorphoFSM.h"
 
+#include "CCameraController.h"
+
 CMorphoDemo_Phase2::CMorphoDemo_Phase2()
 {
 }
@@ -49,7 +51,27 @@ void CMorphoDemo_Phase2::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Appeal"), false, false, 1.5f, 0.3f);
 
-        //@CAMERA
+        // 카메라 몰포 타겟 Distortion
+        CAMERACTRL->SetMainTarget(BOSS);
+        CAMERACTRL->Normal(false);
+
+        Vec3 Dir = BOSS->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        CAMERACTRL->SetLookDist(100.f);
+        CAMERACTRL->SetLookDir(-Dir);
+        CAMERACTRL->SetOffset(Vec3(0.f,10.f,0.f));
+
+        CAMERACTRL->SetMinSpeed(500.f);
+        CAMERACTRL->SetMaxSpeed(1000.f);
+        CAMERACTRL->SetThresholdDistance(500.f);
+
+        CAMERACTRL->SetRotationSpeed(180.f);
+        CAMERACTRL->SetZoomMinSpeed(500.f);
+        CAMERACTRL->SetZoomMaxSpeed(1000.f);
+        CAMERACTRL->SetZoomThreshold(500.f);
+
     }
     break;
     }
@@ -64,6 +86,10 @@ void CMorphoDemo_Phase2::Exit_Step()
     case StateStep::StartEnd:
         break;
     case StateStep::Progress:
+        // 카메라 복구
+        CAMERACTRL->SetMorphoTwoTarget();
+        CAMERACTRL->LoadInitSetting();
+
         break;
     }
 }
