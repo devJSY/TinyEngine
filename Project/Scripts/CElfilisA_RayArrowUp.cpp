@@ -28,6 +28,12 @@ CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
                 {
                     m_ArrowScript[j][i] = Script;
                 }
+                else
+                {
+                    delete m_Arrow[j][i];
+                    m_Arrow[j][i] = nullptr;
+                    m_ArrowScript[j][i] = nullptr;
+                }
             }
         }
     }
@@ -43,6 +49,7 @@ CElfilisA_RayArrowUp::~CElfilisA_RayArrowUp()
             if (m_Arrow[j][i] && (m_bSpawn[j][i] == -1 || m_Arrow[j][i]->GetLayerIdx() == -1))
             {
                 delete m_Arrow[j][i];
+                m_Arrow[j][i] = nullptr;
             }
         }
     }

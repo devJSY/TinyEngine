@@ -35,12 +35,19 @@ void CMorphoAtkA_DoubleSwordAtkL::tick()
     }
 }
 
+void CMorphoAtkA_DoubleSwordAtkL::Exit()
+{
+    Exit_Step();
+    MRPFSM->OffWeaponLTrigger();
+}
+
 void CMorphoAtkA_DoubleSwordAtkL::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack2Start"), false, false, 1.5f);
+        MRPFSM->OnWeaponLTrigger();
         //@EFFECT Â÷Â¡ÀÌÆåÆ®
     }
     break;

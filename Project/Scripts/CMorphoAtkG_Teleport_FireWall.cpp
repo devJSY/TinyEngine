@@ -20,6 +20,7 @@ CMorphoAtkG_Teleport_FireWall::~CMorphoAtkG_Teleport_FireWall()
     if (m_FireWall && (!m_bWallSpawn || m_FireWall->GetLayerIdx() == -1))
     {
         delete m_FireWall;
+        m_FireWall = nullptr;
     }
 }
 
@@ -52,6 +53,7 @@ void CMorphoAtkG_Teleport_FireWall::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotComb1"), false, false, 2.f);
+        MRPFSM->OnWeaponRTrigger();
     }
     break;
     case StateStep::End: {
@@ -67,7 +69,9 @@ void CMorphoAtkG_Teleport_FireWall::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::Progress:
+    case StateStep::Progress: {
+        MRPFSM->OffWeaponRTrigger();
+    }
         break;
     case StateStep::End: {
         m_bWallSpawn = false;

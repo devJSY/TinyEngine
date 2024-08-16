@@ -28,6 +28,12 @@ CElfilisA_DimensionLaser::CElfilisA_DimensionLaser()
             {
                 m_DimensionScript[i] = Script;
             }
+            else
+            {
+                delete m_Dimension[i];
+                m_Dimension[i] = nullptr;
+                m_DimensionScript[i] = nullptr;
+            }
         }
     }
 }
@@ -39,6 +45,7 @@ CElfilisA_DimensionLaser::~CElfilisA_DimensionLaser()
         if (m_Dimension[i] && (m_bDimensionSpawn[i] == -1 || m_Dimension[i]->GetLayerIdx() == -1))
         {
             delete m_Dimension[i];
+            m_Dimension[i] = nullptr;
         }
     }
 }
@@ -111,6 +118,10 @@ void CElfilisA_DimensionLaser::Enter_Step()
                 m_DimensionStart->SetLaserStartLcok(true);
                 m_DimensionStart->PlaySpawn();
                 GamePlayStatic::SpawnGameObject(DimensionStart, LAYER_MONSTERATK_TRIGGER);
+            }
+            else
+            {
+                delete DimensionStart;
             }
         }
     }

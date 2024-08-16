@@ -118,6 +118,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
     <ClInclude Include="CBossState.h" />
+    <ClInclude Include="CBossHitbox.h" />
     <ClInclude Include="CCameraController.h" />
     <ClInclude Include="CBossMgr.h" />
     <ClInclude Include="CCanJuice.h" />
@@ -184,6 +185,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CChangeAlphaScript.h" />
     <ClInclude Include="CFixedViewCamTrigger.h" />
     <ClInclude Include="CFlowMgr_BossElfilis.h" />
+    <ClInclude Include="CFlowMgr_BossMorpho.h" />
     <ClInclude Include="CFlowMgr_Lv1.h" />
     <ClInclude Include="CFlowMgr_Lv2.h" />
     <ClInclude Include="CFlowMgr_Lv3.h" />
@@ -191,6 +193,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFlowMgr_LvRobby.h" />
     <ClInclude Include="CFlowMgr_LvStart.h" />
     <ClInclude Include="CFlowTriggerScript.h" />
+    <ClInclude Include="CFollowPlayerScript.h" />
     <ClInclude Include="CKirbyLightScript.h" />
     <ClInclude Include="CLensFlareScript.h" />
     <ClInclude Include="CLevelFlowMgr.h" />
@@ -424,6 +427,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
     <ClCompile Include="CBossState.cpp" />
+    <ClCompile Include="CBossHitbox.cpp" />
     <ClCompile Include="CCameraController.cpp" />
     <ClCompile Include="CBossMgr.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
@@ -490,6 +494,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CChangeAlphaScript.cpp" />
     <ClCompile Include="CFixedViewCamTrigger.cpp" />
     <ClCompile Include="CFlowMgr_BossElfilis.cpp" />
+    <ClCompile Include="CFlowMgr_BossMorpho.cpp" />
     <ClCompile Include="CFlowMgr_Lv1.cpp" />
     <ClCompile Include="CFlowMgr_Lv2.cpp" />
     <ClCompile Include="CFlowMgr_Lv3.cpp" />
@@ -497,6 +502,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFlowMgr_LvRobby.cpp" />
     <ClCompile Include="CFlowMgr_LvStart.cpp" />
     <ClCompile Include="CFlowTriggerScript.cpp" />
+    <ClCompile Include="CFollowPlayerScript.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />
     <ClCompile Include="CLensFlareScript.cpp" />
     <ClCompile Include="CLevelFlowMgr.cpp" />

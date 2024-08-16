@@ -45,6 +45,7 @@ void CElfilisG_SwordWaveFinishRL::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false);
+        ELFFSM->OnWeaponTrigger();
         m_bFrmEnter = true;
     }
     break;
@@ -57,8 +58,10 @@ void CElfilisG_SwordWaveFinishRL::Exit_Step()
     {
     case StateStep::Wait:
         break;
-    case StateStep::Progress:
-        break;
+    case StateStep::Progress: {
+        ELFFSM->OffWeaponTrigger();
+    }
+    break;
     }
 }
 
@@ -87,12 +90,32 @@ void CElfilisG_SwordWaveFinishRL::Progress()
 
                 pSlash->Transform()->SetWorldPos(InitPos);
                 pScript->SetInitDir(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+                GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
             }
-
-            GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
+            else
+            {
+                delete pSlash;
+            }
         }
 
         m_bFrmEnter = false;
+    }
+
+    // resize Hitbox
+    CBoxCollider* pHitbox = ELFFSM->GetHitbox();
+    if (pHitbox && !GetOwner()->Animator()->IsChainging())
+    {
+        if (GetOwner()->Animator()->GetClipFrameIndex() > 32 && GetOwner()->Animator()->GetClipFrameIndex() < 42)
+        {
+            pHitbox->GetOwner()->SetActive(true);
+            pHitbox->Transform()->SetLocalPos(Vec3(0.f, 1.f, 0.f));
+            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+            pHitbox->Transform()->SetLocalScale(Vec3(7.5f, 1.f, 7.5f));
+        }
+        else
+        {
+            pHitbox->GetOwner()->SetActive(false);
+        }
     }
 
     if (GetOwner()->Animator()->IsFinish())

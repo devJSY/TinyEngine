@@ -5,6 +5,7 @@
 CMorphoMoveA_Teleport::CMorphoMoveA_Teleport()
     : m_AccTime(0.f)
     , m_WaitTime(0.5f)
+    , m_Height(60.f)
 {
 }
 
@@ -46,7 +47,7 @@ void CMorphoMoveA_Teleport::Enter_Step()
         // teleport pos
         Vec3 MapSize = MRPFSM->GetMapSize();
         m_AfterPos.x = GetRandomfloat(-MapSize.x, MapSize.x);
-        m_AfterPos.y = 80.f;
+        m_AfterPos.y = m_Height;
         m_AfterPos.z = GetRandomfloat(-MapSize.z, MapSize.z);
         m_AfterPos += MRPFSM->GetMapFloorOffset();
     }

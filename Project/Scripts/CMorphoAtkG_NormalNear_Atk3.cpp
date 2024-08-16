@@ -38,6 +38,7 @@ void CMorphoAtkG_NormalNear_Atk3::Enter_Step()
     {
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack3"), false, false, 1.5f);
+        MRPFSM->OnWeaponRTrigger();
 
         // move
         Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
@@ -45,11 +46,11 @@ void CMorphoAtkG_NormalNear_Atk3::Enter_Step()
         Dir.Normalize();
 
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        GetOwner()->Rigidbody()->AddForce(Dir * 30.f, ForceMode::Impulse);
+        GetOwner()->Rigidbody()->AddForce(Dir * 15.f, ForceMode::Impulse);
     }
     break;
     case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack2End"), false, false, 1.5f);
+        GetOwner()->Animator()->Play(ANIMPREFIX("Attack3End"), false, false, 1.5f);
     }
     break;
     }
@@ -64,6 +65,7 @@ void CMorphoAtkG_NormalNear_Atk3::Exit_Step()
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
         GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
         MRPFSM->ClearComboLevel();
+        MRPFSM->OffWeaponRTrigger();
     }
     break;
     case StateStep::End:
@@ -78,7 +80,7 @@ void CMorphoAtkG_NormalNear_Atk3::Progress()
     // Add drag
     float t = GetOwner()->Animator()->GetClipPlayRatio();
     float Ratio = t * XM_PI / 2.f;
-    float NewDrag = 4.f * sinf(Ratio);
+    float NewDrag = 5.f * sinf(Ratio);
     GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
     // Change Step

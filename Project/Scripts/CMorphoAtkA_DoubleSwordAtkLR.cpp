@@ -66,6 +66,9 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit()
         m_Step = StateStep::EndEnd;
         Exit_Step();
     }
+
+    MRPFSM->OffWeaponLTrigger();
+    MRPFSM->OffWeaponRTrigger();
 }
 
 void CMorphoAtkA_DoubleSwordAtkLR::Enter_Step()
@@ -74,6 +77,8 @@ void CMorphoAtkA_DoubleSwordAtkLR::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack3Start"), false, false, 1.5f);
+        MRPFSM->OnWeaponLTrigger();
+        MRPFSM->OnWeaponRTrigger();
         //@EFFECT Â÷Â¡ÀÌÆåÆ®
     }
     break;
