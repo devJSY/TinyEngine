@@ -14,10 +14,6 @@ CAttackAreaScript::~CAttackAreaScript()
 {
 }
 
-void CAttackAreaScript::begin()
-{
-}
-
 UINT CAttackAreaScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

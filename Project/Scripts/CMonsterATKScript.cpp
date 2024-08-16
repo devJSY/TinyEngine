@@ -6,11 +6,6 @@ CMonsterATKScript::CMonsterATKScript(UINT _Type)
 {
 }
 
-CMonsterATKScript::CMonsterATKScript(const CMonsterATKScript& _Origin)
-    : CScript(_Origin)
-{
-}
-
 CMonsterATKScript::~CMonsterATKScript()
 {
 }
