@@ -11,7 +11,6 @@ CInstancingBuffer::CInstancingBuffer()
     , m_vecData{}
     , m_vecBoneMat{}
     , m_vecPrevBoneMat{}
-    , m_AnimInstCount(0)
     , m_BoneBuffer(nullptr)
     , m_PrevBoneBuffer(nullptr)
     , m_CopyShader(nullptr)
@@ -100,7 +99,6 @@ void CInstancingBuffer::SetData()
 
 void CInstancingBuffer::AddInstancingBoneMat(CStructuredBuffer* _pBuffer, CStructuredBuffer* _pPrevBuffer)
 {
-    ++m_AnimInstCount;
     m_vecBoneMat.push_back(_pBuffer);
     m_vecPrevBoneMat.push_back(_pPrevBuffer);
 }
