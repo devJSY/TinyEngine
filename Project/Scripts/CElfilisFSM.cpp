@@ -18,6 +18,8 @@ CElfilisFSM::CElfilisFSM()
     , m_bGroundCollision(false)
     , m_BigElfilis(nullptr)
     , m_BigElfilisFSM(nullptr)
+    , m_Weapon(nullptr)
+    , m_Hitbox(nullptr)
     , m_MapFloorOffset(Vec3(0.f, 0.f, 5.f))
     , m_MapSizeRadius(25.f)
 {
@@ -40,6 +42,10 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     , m_NearDist(_Origin.m_NearDist)
     , m_AirPosition(_Origin.m_NearDist)
     , m_bGroundCollision(false)
+    , m_BigElfilis(nullptr)
+    , m_BigElfilisFSM(nullptr)
+    , m_Weapon(nullptr)
+    , m_Hitbox(nullptr)
     , m_MapFloorOffset(_Origin.m_MapFloorOffset)
     , m_MapSizeRadius(_Origin.m_MapSizeRadius)
 {
@@ -395,6 +401,12 @@ void CElfilisFSM::begin()
 
     // get childs
     m_Weapon = GetOwner()->GetChildObject(L"Halberd");
+    m_Weapon->BoxCollider()->SetEnabled(false);
+    CGameObject* Hitbox = GetOwner()->GetChildObject(L"Hitbox");
+    if (Hitbox)
+    {
+        m_Hitbox = Hitbox->BoxCollider();
+    }
 
     // set map size
     float ScaleFactor = Transform()->GetLocalScale().x;
@@ -406,6 +418,13 @@ void CElfilisFSM::begin()
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
+
+    if (KEY_TAP(KEY::ENTER))
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
+        ChangeState(L"GROUND_ATK_NORMALTELEPORT_FINISHL");
+    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
@@ -539,6 +558,22 @@ void CElfilisFSM::ProcPatternStep()
     {
         m_PatternStep++;
     }
+}
+
+void CElfilisFSM::OnWeaponTrigger()
+{
+    if (!m_Weapon)
+        return;
+
+    m_Weapon->BoxCollider()->SetEnabled(true);
+}
+
+void CElfilisFSM::OffWeaponTrigger()
+{
+    if (!m_Weapon)
+        return;
+
+    m_Weapon->BoxCollider()->SetEnabled(false);
 }
 
 const vector<wstring>& CElfilisFSM::GetCurPublicStates() const

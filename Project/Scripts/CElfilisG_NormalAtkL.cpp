@@ -40,6 +40,7 @@ void CElfilisG_NormalAtkL::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeft"), false, false, 1.f);
+        ELFFSM->OnWeaponTrigger();
     }
     break;
     case StateStep::End: {
@@ -64,6 +65,7 @@ void CElfilisG_NormalAtkL::Exit_Step()
         {
             ELFFSM->ClearComboLevel();
         }
+        ELFFSM->OffWeaponTrigger();
     }
     break;
     case StateStep::End:
@@ -84,6 +86,23 @@ void CElfilisG_NormalAtkL::Start()
 
 void CElfilisG_NormalAtkL::Progress()
 {
+    // resize Hitbox
+    CBoxCollider* pHitbox = ELFFSM->GetHitbox();
+    if (pHitbox && !GetOwner()->Animator()->IsChainging())
+    {
+        if (GetOwner()->Animator()->GetClipFrameIndex() < 13)
+        {
+            pHitbox->GetOwner()->SetActive(true);
+            pHitbox->Transform()->SetLocalPos(Vec3(0.71f, 1.f, 2.64f));
+            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+            pHitbox->Transform()->SetLocalScale(Vec3(5.96f, 1.f, 4.81f));
+        }
+        else
+        {
+            pHitbox->GetOwner()->SetActive(false);
+        }
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         // Check Combo

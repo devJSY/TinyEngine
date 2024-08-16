@@ -46,7 +46,7 @@ void CElfilisBig_SwingL::Enter_Step()
         }
         else
         {
-            //GetOwner()->Animator()->Play(ANIMPREFIX("BigChainRL"), false, false, 4.f);
+            // GetOwner()->Animator()->Play(ANIMPREFIX("BigChainRL"), false, false, 4.f);
             m_ProgressChangeDuration = 1.f;
             ChangeStep(StateStep::Progress);
         }
@@ -112,11 +112,14 @@ void CElfilisBig_SwingL::Progress()
 
             if (pScript)
             {
-                //pScript->AddEffect(MomentaryEffectType::AppearScaling);
+                // pScript->AddEffect(MomentaryEffectType::AppearScaling);
                 pScript->SetPlayTime(3.5f);
+                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
             }
-
-            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+            else
+            {
+                delete pRock;
+            }
         }
 
         m_bFrmEnter = false;

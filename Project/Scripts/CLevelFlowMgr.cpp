@@ -50,6 +50,8 @@ void CLevelFlowMgr::begin()
     if (nullptr != pFadeOutPref)
     {
         m_FadeOutObj = pFadeOutPref->Instantiate();
+        m_FadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
+        SetFadeOut(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f);
         GamePlayStatic::AddChildObject(GetOwner(), m_FadeOutObj);
     }
 
@@ -145,30 +147,13 @@ void CLevelFlowMgr::LevelStart()
         }
     }
 
-    // UI (Fade In)
-    if (nullptr != m_FadeOutObj)
-    {
-        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
-        pFadeOutScript->SetBackGroundColor(Vec4(255.f, 0.f, 255.f, 255.f));
-        pFadeOutScript->SetReverse(true);
-        pFadeOutScript->SetDuration(0.25f);
-        pFadeOutScript->SetRotateSpeed(1.25f);
-    }
-
     // @TODO BGM Àç»ý
 }
 
 void CLevelFlowMgr::LevelEnd()
 {
     // UI (Fade Out)
-    if (nullptr != m_FadeOutObj)
-    {
-        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
-        pFadeOutScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
-        pFadeOutScript->SetReverse(false);
-        pFadeOutScript->SetDuration(1.f);
-        pFadeOutScript->SetRotateSpeed(1.25f);
-    }
+    SetFadeOut(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
 
     m_bFadeOut = true;
@@ -194,14 +179,7 @@ void CLevelFlowMgr::LevelExit()
 void CLevelFlowMgr::LevelRestart()
 {
     // UI (Fade Out)
-    if (nullptr != m_FadeOutObj)
-    {
-        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
-        pFadeOutScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
-        pFadeOutScript->SetReverse(false);
-        pFadeOutScript->SetDuration(1.f);
-        pFadeOutScript->SetRotateSpeed(1.25f);
-    }
+    SetFadeOut(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
     // Level Restart
     GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
@@ -236,6 +214,27 @@ void CLevelFlowMgr::OffDimensionFade()
     {
         m_DimensionFadeEffect->SetActive(false);
     }
+}
+
+void CLevelFlowMgr::SetFadeOutColor(Vec3 _Color)
+{
+    if (!m_FadeOutScript)
+        return;
+
+    Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
+    m_FadeOutScript->SetBackGroundColor(Color);
+}
+
+void CLevelFlowMgr::SetFadeOut(Vec3 _Color, bool _bReverse, float _Duration, float _Speed)
+{
+    if (!m_FadeOutScript)
+        return;
+
+    Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
+    m_FadeOutScript->SetBackGroundColor(Color);
+    m_FadeOutScript->SetReverse(_bReverse);
+    m_FadeOutScript->SetDuration(_Duration);
+    m_FadeOutScript->SetRotateSpeed(_Speed);
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,

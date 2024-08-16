@@ -65,9 +65,13 @@ void CElfilisG_RayArrow::Enter_Step()
             if (m_ArrowSet)
             {
                 m_ArrowSet->SetTarget(PLAYER);
+                GamePlayStatic::SpawnGameObject(m_Arrows, LAYER_MONSTERATK_TRIGGER);
             }
-
-            GamePlayStatic::SpawnGameObject(m_Arrows, LAYER_MONSTERATK_TRIGGER);
+            else
+            {
+                delete m_Arrows;
+                m_Arrows = nullptr;
+            }
         }
     }
     break;

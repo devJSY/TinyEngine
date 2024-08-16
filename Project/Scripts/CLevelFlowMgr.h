@@ -3,6 +3,7 @@
 #include <Engine/CScript.h>
 
 class CGameObject;
+class CFadeOutScript;
 
 class CLevelFlowMgr : public CScript
 {
@@ -16,6 +17,7 @@ private:
 
     CGameObject* m_DimensionFadeEffect;
     CGameObject* m_FadeOutObj;
+    CFadeOutScript* m_FadeOutScript;
     Ptr<CMaterial> m_ToneMappingMtrl;
 
 public:
@@ -26,6 +28,8 @@ public:
 public:
     void OnDimensionFade();
     void OffDimensionFade();
+    void SetFadeOutColor(Vec3 _Color);
+    void SetFadeOut(Vec3 _Color, bool _bReverse, float _Duration, float _Speed);
     void SetToneMappingParam(bool _bBloomEnable = false, bool _bBlendMode = false, float _BloomStrength = 0.5f, float _Threshold = 0.f,
                              float _FilterRadius = 1.f, float _Exposure = 1.f, float _Gamma = 2.2f);
 

@@ -99,6 +99,9 @@
 #include "CFlowMgr_BossElfilis.h"
 #include "CFlowTriggerScript.h"
 #include "CKirbyLightScript.h"
+#include "CBossHitbox.h"
+#include "CFlowMgr_BossMorpho.h"
+#include "CFollowPlayerScript.h"
 #include "CStageClear.h"
 #include "CKirbySmoke.h"
 
@@ -202,6 +205,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_BossElfilis");
 	_vec.push_back(L"CFlowTriggerScript");
 	_vec.push_back(L"CKirbyLightScript");
+	_vec.push_back(L"CBossHitbox");
+	_vec.push_back(L"CFlowMgr_BossMorpho");
+	_vec.push_back(L"CFollowPlayerScript");
 	_vec.push_back(L"CStageClear");
 	_vec.push_back(L"CKirbySmoke");
 }
@@ -404,6 +410,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowTriggerScript;
 	if (L"CKirbyLightScript" == _strScriptName)
 		return new CKirbyLightScript;
+	if (L"CBossHitbox" == _strScriptName)
+		return new CBossHitbox;
+	if (L"CFlowMgr_BossMorpho" == _strScriptName)
+		return new CFlowMgr_BossMorpho;
+	if (L"CFollowPlayerScript" == _strScriptName)
+		return new CFollowPlayerScript;
 	if (L"CStageClear" == _strScriptName)
 		return new CStageClear;
 	if (L"CKirbySmoke" == _strScriptName)
@@ -611,6 +623,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowTriggerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYLIGHTSCRIPT:
 		return new CKirbyLightScript;
+	case (UINT)SCRIPT_TYPE::BOSSHITBOX:
+		return new CBossHitbox;
+	case (UINT)SCRIPT_TYPE::FLOWMGR_BOSSMORPHO:
+		return new CFlowMgr_BossMorpho;
+	case (UINT)SCRIPT_TYPE::FOLLOWPLAYERSCRIPT:
+		return new CFollowPlayerScript;
 	case (UINT)SCRIPT_TYPE::STAGECLEAR:
 		return new CStageClear;
 	case (UINT)SCRIPT_TYPE::KIRBYSMOKE:
@@ -819,6 +837,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowTriggerScript";
 	case SCRIPT_TYPE::KIRBYLIGHTSCRIPT:
 		return L"CKirbyLightScript";
+	case SCRIPT_TYPE::BOSSHITBOX:
+		return L"CBossHitbox";
+	case SCRIPT_TYPE::FLOWMGR_BOSSMORPHO:
+		return L"CFlowMgr_BossMorpho";
+	case SCRIPT_TYPE::FOLLOWPLAYERSCRIPT:
+		return L"CFollowPlayerScript";
 	case SCRIPT_TYPE::STAGECLEAR:
 		return L"CStageClear";
 	case SCRIPT_TYPE::KIRBYSMOKE:

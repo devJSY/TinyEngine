@@ -853,6 +853,15 @@
     <ClInclude Include="CKirbyLightScript.h">
       <Filter>Scripts\Character\Kirby\Deform Light</Filter>
     </ClInclude>
+    <ClInclude Include="CBossHitbox.h">
+      <Filter>Scripts\Character\Boss\Hitbox</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowMgr_BossMorpho.h">
+      <Filter>Scripts\Manager\FlowManager\Morpho Level Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CFollowPlayerScript.h">
+      <Filter>Scripts\Gimmik\FollowPlayer</Filter>
+    </ClInclude>
     <ClInclude Include="CStageClear.h">
       <Filter>Scripts\Trigger\StageClear</Filter>
     </ClInclude>
@@ -1721,6 +1730,15 @@
     </ClCompile>
     <ClCompile Include="CKirbyLightScript.cpp">
       <Filter>Scripts\Character\Kirby\Deform Light</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHitbox.cpp">
+      <Filter>Scripts\Character\Boss\Hitbox</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowMgr_BossMorpho.cpp">
+      <Filter>Scripts\Manager\FlowManager\Morpho Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFollowPlayerScript.cpp">
+      <Filter>Scripts\Gimmik\FollowPlayer</Filter>
     </ClCompile>
     <ClCompile Include="CStageClear.cpp">
       <Filter>Scripts\Trigger\StageClear</Filter>
@@ -2728,6 +2746,12 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\Deform Light">
       <UniqueIdentifier>{601ac786-9c24-41bd-80eb-aa572216232b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Boss\Hitbox">
+      <UniqueIdentifier>{02399b6d-20ae-4eca-a3ce-69a4ae02b80c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\FollowPlayer">
+      <UniqueIdentifier>{583a05de-dbe3-4485-a0d8-9de3ff6048bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Trigger\StageClear">
       <UniqueIdentifier>{b8bf8ba3-2f5f-44dc-a5c2-404de1531e2c}</UniqueIdentifier>

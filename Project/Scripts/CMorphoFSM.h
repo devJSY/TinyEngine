@@ -69,6 +69,10 @@ public:
     void ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     void ProcPatternStep();
+    void OnWeaponLTrigger();
+    void OnWeaponRTrigger();
+    void OffWeaponLTrigger();
+    void OffWeaponRTrigger();
 
 private:
     void ChangeStateGroup_Random(MorphoStateGroup _Group);
