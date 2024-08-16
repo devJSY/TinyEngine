@@ -859,6 +859,9 @@
     <ClInclude Include="CFlowMgr_BossMorpho.h">
       <Filter>Scripts\Manager\FlowManager\Morpho Level Flow Manager</Filter>
     </ClInclude>
+    <ClInclude Include="CFollowPlayerScript.h">
+      <Filter>Scripts\Gimmik\FollowPlayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1727,6 +1730,9 @@
     </ClCompile>
     <ClCompile Include="CFlowMgr_BossMorpho.cpp">
       <Filter>Scripts\Manager\FlowManager\Morpho Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFollowPlayerScript.cpp">
+      <Filter>Scripts\Gimmik\FollowPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2731,6 +2737,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Boss\Hitbox">
       <UniqueIdentifier>{02399b6d-20ae-4eca-a3ce-69a4ae02b80c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\FollowPlayer">
+      <UniqueIdentifier>{583a05de-dbe3-4485-a0d8-9de3ff6048bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
