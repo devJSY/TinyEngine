@@ -29,7 +29,7 @@ void CFlowMgr_BossMorpho::begin()
 {
     CLevelFlowMgr::begin();
     SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
-    SetFadeOutColor(Vec3(255.f, 150.f, 100.f));
+    SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
 
     m_SpawnButterfly = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Morpho_SpawnButterfly", LAYER_EFFECT);
     m_Barricade = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Barricade", LAYER_MONSTER);

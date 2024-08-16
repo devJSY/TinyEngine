@@ -179,7 +179,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisUnit.h" />
     <ClInclude Include="CElfilisBig_Idle.h" />
     <ClInclude Include="CCrumbleScript.h" />
-    <ClInclude Include="CFadeOutScript.h" />
+    <ClInclude Include="CFadeEffectScript.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CChangeAlphaScript.h" />
@@ -490,7 +490,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisUnit.cpp" />
     <ClCompile Include="CElfilisBig_Idle.cpp" />
     <ClCompile Include="CCrumbleScript.cpp" />
-    <ClCompile Include="CFadeOutScript.cpp" />
+    <ClCompile Include="CFadeEffectScript.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CChangeAlphaScript.cpp" />

@@ -5,12 +5,10 @@
 class CFlowMgr_LvStart : public CLevelFlowMgr
 {
 private:
-    CGameObject* m_FadeOutObj;
-
 public:
     virtual void begin() override;
 
-public : 
+public: 
     virtual void LevelEnd() override;
     virtual void LevelExit() override;
 

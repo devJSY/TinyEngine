@@ -538,6 +538,33 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // ParticleRender Fire
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\particle_render.fx", "VS_ParticleRender");
+        pShader->CreateGeometryShader(L"shader\\particle_render.fx", "GS_ParticleRender");
+        pShader->CreatePixelShader(L"shader\\particle_render.fx", "PS_ParticleRender_Fire");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(FLOAT_1, "Lerp Ratio");
+        pShader->AddScalarParam(VEC4_1, "Init Fire Color");
+        pShader->AddScalarParam(VEC4_2, "End Fire Color");
+
+        pShader->SetName(L"ParticleRenderFireShader");
+        AddAsset(L"ParticleRenderFireShader", pShader);
+    }
+
+    // =================================
     // GrayFilter Shader
     // =================================
     {
@@ -1113,6 +1140,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // Circle Distortion Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\CircleDistortionPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Distortion Force", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Circle Size", 1e-3f);
+        pShader->AddScalarParam(FLOAT_2, "Thickness", 1e-3f);
+
+        pShader->SetName(L"CircleDistortionShader");
+        AddAsset(L"CircleDistortionShader", pShader);
+    }
+
+    // =================================
     // Tone Mapping Shader
     // =================================
     {
@@ -1510,6 +1557,14 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"ParticleRenderGlowMtrl", pMtrl);
     }
 
+    // ParticleRenderFireMtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ParticleRenderFireShader"));
+        pMtrl->SetName(L"ParticleRenderFireMtrl");
+        AddAsset<CMaterial>(L"ParticleRenderFireMtrl", pMtrl);
+    }
+
     // GrayFilterMtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
@@ -1792,6 +1847,17 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"ShockWaveShader"));
         pMtrl->SetName(L"ShockWaveMtrl");
         AddAsset<CMaterial>(L"ShockWaveMtrl", pMtrl);
+    }
+
+    // Circle Distortion
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"CircleDistortionShader"));
+        pMtrl->SetScalarParam(FLOAT_0, 0.125f); // Distortion Force
+        pMtrl->SetScalarParam(FLOAT_1, 0.f);    // CircleSize
+        pMtrl->SetScalarParam(FLOAT_2, 0.01f);  // Thickness
+        pMtrl->SetName(L"CircleDistortionMtrl");
+        AddAsset<CMaterial>(L"CircleDistortionMtrl", pMtrl);
     }
 
     // ToneMapping

@@ -125,36 +125,54 @@ void CCharacterController::Move(Vec3 _Motion)
 
 void CCharacterController::SetSlopeLimit(float _Limit)
 {
+    if (m_SlopeLimit == _Limit)
+        return;
+
     m_SlopeLimit = _Limit;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCharacterController::SetStepOffset(float _Offset)
 {
+    if (m_StepOffset == _Offset)
+        return;
+
     m_StepOffset = _Offset;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCharacterController::SetSkinWidth(float _Width)
 {
+    if (m_SkinWidth == _Width)
+        return;
+
     m_SkinWidth = _Width;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCharacterController::SetMinMoveDistance(float _Dist)
 {
+    if (m_MinMoveDistance == _Dist)
+        return;
+
     m_MinMoveDistance = _Dist;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCharacterController::SetRadius(float _Radius)
 {
+    if (m_Radius == _Radius)
+        return;
+
     m_Radius = _Radius;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCharacterController::SetHeight(float _Height)
 {
+    if (m_Height == _Height)
+        return;
+
     m_Height = _Height;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }

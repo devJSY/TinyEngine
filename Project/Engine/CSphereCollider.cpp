@@ -39,6 +39,9 @@ void CSphereCollider::finaltick()
 
 void CSphereCollider::SetRadius(float _Radius)
 {
+    if (m_Radius == _Radius)
+        return;
+
     m_Radius = _Radius;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }

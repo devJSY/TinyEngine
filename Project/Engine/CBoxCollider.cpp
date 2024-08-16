@@ -39,6 +39,9 @@ void CBoxCollider::finaltick()
 
 void CBoxCollider::SetSize(Vec3 _size)
 {
+    if (m_Size == _size)
+        return;
+
     m_Size = _size;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }

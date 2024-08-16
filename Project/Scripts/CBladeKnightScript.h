@@ -51,6 +51,7 @@ public:
 
 private:
     void SetSword();
+    void SetSwordEnable(bool _bEnable);
 
 private:
     void EnterState();
@@ -80,9 +81,7 @@ private:
     void Wait();
 
 private:
-    virtual void OnCollisionEnter(CCollider* _OtherCollider);
-    virtual void OnCollisionStay(CCollider* _OtherCollider);
-    virtual void OnCollisionExit(CCollider* _OtherCollider);
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
