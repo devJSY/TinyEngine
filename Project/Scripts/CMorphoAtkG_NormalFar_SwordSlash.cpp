@@ -44,12 +44,14 @@ void CMorphoAtkG_NormalFar_SwordSlash::tick()
 
 void CMorphoAtkG_NormalFar_SwordSlash::Exit()
 {
+    Exit_Step();
+
+    MRPFSM->OffWeaponRTrigger();
+
     for (int i = 0; i < 3; ++i)
     {
         m_SwordSlash[0] = nullptr;
     }
-
-    Exit_Step();
 }
 
 void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
@@ -62,6 +64,7 @@ void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
     break;
     case StateStep::Combo1: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack1"), false, false, 1.5f);
+        MRPFSM->OnWeaponRTrigger();
         m_bFrmEnter = true;
 
         // spawn sword slash
@@ -113,26 +116,16 @@ void CMorphoAtkG_NormalFar_SwordSlash::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack1Start"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::Combo1: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack1"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::Combo2: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack2"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::Combo3: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack3"), false, false, 1.5f);
-    }
-    break;
-    case StateStep::End: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("Attack3End"), false, false, 1.5f);
-    }
-    break;
+    case StateStep::Start:
+        break;
+    case StateStep::Combo1:
+        break;
+    case StateStep::Combo2:
+        break;
+    case StateStep::Combo3:
+        break;
+    case StateStep::End:
+        break;
     }
 }
 
@@ -155,8 +148,15 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo1()
 
         if (m_SwordSlash[0])
         {
-            Vec3 Force = m_SwordSlash[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_SlashSpeed;
+            Vec3 Dir = m_SwordSlash[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
+            Vec3 Force = Dir * m_SlashSpeed;
+
             m_SwordSlash[0]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+            m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
+            m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+            m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
     }
 
@@ -178,8 +178,15 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo2()
 
         if (m_SwordSlash[1])
         {
-            Vec3 Force = m_SwordSlash[1]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_SlashSpeed;
+            Vec3 Dir = m_SwordSlash[1]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
+            Vec3 Force = Dir * m_SlashSpeed;
+
             m_SwordSlash[1]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+            m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
+            m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+            m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
     }
 
@@ -201,8 +208,15 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo3()
 
         if (m_SwordSlash[2])
         {
-            Vec3 Force = m_SwordSlash[2]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_SlashSpeed * 1.8f;
+            Vec3 Dir = m_SwordSlash[2]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
+            Vec3 Force = Dir * m_SlashSpeed * 1.6f;
+
             m_SwordSlash[2]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
+            m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
+            m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+            m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
     }
 
@@ -245,6 +259,11 @@ CGameObject* CMorphoAtkG_NormalFar_SwordSlash::CreateSwordSlash(Vec3 _PosOffset,
 
             pScript->SetPlayTime(3.f);
             pScript->SetScaling(Vec3(1.f), 0.2f);
+        }
+        else
+        {
+            delete pSlash;
+            pSlash = nullptr;
         }
     }
 

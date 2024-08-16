@@ -96,3 +96,6 @@ CSpawnTriggerScript
 CFlowMgr_BossElfilis
 CFlowTriggerScript
 CKirbyLightScript
+CBossHitbox
+CFlowMgr_BossMorpho
+CFollowPlayerScript

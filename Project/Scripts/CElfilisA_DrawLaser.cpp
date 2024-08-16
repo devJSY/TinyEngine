@@ -84,6 +84,10 @@ void CElfilisA_DrawLaser::Enter_Step()
                 m_LaserScript->SetAutoPlay(true);
                 GamePlayStatic::SpawnGameObject(Laser, LAYER_MONSTERATK_TRIGGER);
             }
+            else
+            {
+                delete Laser;
+            }
         }
     }
     break;

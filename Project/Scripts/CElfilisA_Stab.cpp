@@ -55,12 +55,28 @@ void CElfilisA_Stab::Enter()
     Enter_Step();
 }
 
+void CElfilisA_Stab::Exit()
+{
+    Exit_Step();
+    ELFFSM->OffWeaponTrigger();
+
+    if (m_Step < StateStep::Wait)
+    {
+        GetOwner()->Rigidbody()->SetVelocity(Vec3());
+        GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
+        GetOwner()->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, false);
+        GetOwner()->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+        GetOwner()->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, false);
+    }
+}
+
 void CElfilisA_Stab::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("StabReady"), false);
+        ELFFSM->OnWeaponTrigger();
     }
     break;
     case StateStep::Start: {
@@ -110,6 +126,10 @@ void CElfilisA_Stab::Enter_Step()
                 pScript->SetPlayTime(5.f);
 
                 GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+            }
+            else
+            {
+                delete pRock;
             }
         }
 

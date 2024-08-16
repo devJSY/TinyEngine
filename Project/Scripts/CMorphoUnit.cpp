@@ -34,6 +34,7 @@ void CMorphoUnit::tick()
         if (m_CurInfo.HP <= m_InitInfo.HP * 0.5f)
         {
             MRPFSM->SetPhase(2);
+            MRPFSM->ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_PHASE2");
         }
     }
 }

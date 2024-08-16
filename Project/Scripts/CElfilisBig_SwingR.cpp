@@ -46,7 +46,7 @@ void CElfilisBig_SwingR::Enter_Step()
         }
         else
         {
-            //GetOwner()->Animator()->Play(ANIMPREFIX("BigChainLR"), false, false, 4.f);
+            // GetOwner()->Animator()->Play(ANIMPREFIX("BigChainLR"), false, false, 4.f);
             m_ProgressChangeDuration = 1.f;
             ChangeStep(StateStep::Progress);
         }
@@ -57,8 +57,7 @@ void CElfilisBig_SwingR::Enter_Step()
         m_bFrmEnter = true;
 
         // Elfilis ÇÏ´Ã·Î ÀÌµ¿
-        if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 1)
-            || ELFFSM->IsPattern(ElfilisPatternType::Appear2, 1))
+        if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 1) || ELFFSM->IsPattern(ElfilisPatternType::Appear2, 1))
         {
             ELFFSM->ProcPatternStep();
         }
@@ -115,9 +114,12 @@ void CElfilisBig_SwingR::Progress()
             {
                 // pScript->AddEffect(MomentaryEffectType::AppearScaling);
                 pScript->SetPlayTime(3.5f);
+                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
             }
-
-            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+            else
+            {
+                delete pRock;
+            }
         }
 
         m_bFrmEnter = false;
