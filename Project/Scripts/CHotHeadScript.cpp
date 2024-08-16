@@ -17,7 +17,6 @@ CHotHeadScript::CHotHeadScript()
     , m_fFlameLength(0.f)
     , m_fFlameRotLength(0.f)
     , m_fRotRadian(0.f)
-    , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAimingTime, "Aiming Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -39,7 +38,6 @@ CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     , m_fFlameLength(_Origin.m_fFlameLength)
     , m_fFlameRotLength(_Origin.m_fFlameRotLength)
     , m_fRotRadian(_Origin.m_fRotRadian)
-    , m_bFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAimingTime, "Aiming Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "Aiming Time");
@@ -54,7 +52,7 @@ CHotHeadScript::~CHotHeadScript()
 
 void CHotHeadScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     InitSetting();
 
@@ -68,6 +66,11 @@ void CHotHeadScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (GetResistState())
+    {
+        ChangeState(HotHeadState::Eaten);
+    }
 }
 
 UINT CHotHeadScript::SaveToLevelFile(FILE* _File)
@@ -131,7 +134,7 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
-    
+
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
     L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
@@ -194,11 +197,12 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     switch (m_eState)
     {
     case HotHeadState::Idle: {
-        Animator()->Play(ANIMPREFIX("Wait"));
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case HotHeadState::Find: {
-        Animator()->Play(ANIMPREFIX("Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case HotHeadState::Aiming: {
@@ -206,36 +210,36 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::AttackShootStart: {
-        Animator()->Play(ANIMPREFIX("AttackShootStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackShootStart"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackShoot: {
         ProjectileAttack();
-        Animator()->Play(ANIMPREFIX("AttackShoot"), false);
+        Animator()->Play(ANIMPREFIX("AttackShoot"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackShootEnd: {
-        Animator()->Play(ANIMPREFIX("AttackShootEnd"), false);
+        Animator()->Play(ANIMPREFIX("AttackShootEnd"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameStart: {
-        Animator()->Play(ANIMPREFIX("AttackFlameStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameStart"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlame: {
         // TODO : 앞에 Attack Area 키기
         m_pFlameCol->SetEnabled(true);
-        Animator()->Play(ANIMPREFIX("AttackFlame"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlame"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameEnd: {
         // TODO : 앞에 Attack Area 끄기
         m_pFlameCol->SetEnabled(false);
-        Animator()->Play(ANIMPREFIX("AttackFlameEnd"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameEnd"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameRotStart: {
-        Animator()->Play(ANIMPREFIX("AttackFlameRotStart"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameRotStart"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameRot: {
@@ -243,7 +247,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
         m_fRotRadian = m_pFlameRotObject->Transform()->GetLocalRotation().y;
         // TODO : 앞에 Attack Area 키기
         m_pFlameRotCol->SetEnabled(true);
-        Animator()->Play(ANIMPREFIX("AttackFlameRot"), false);
+        Animator()->Play(ANIMPREFIX("AttackFlameRot"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameRotEnd: {
@@ -257,6 +261,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Landing: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
@@ -277,15 +282,10 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     break;
     case HotHeadState::Eaten: {
         Animator()->Play(ANIMPREFIX("Damage"));
-
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
     }
     break;
     case HotHeadState::Death: {
-        Animator()->Play(ANIMPREFIX("Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
     case HotHeadState::End:
@@ -377,6 +377,7 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     switch (m_eState)
     {
     case HotHeadState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
         m_fAccTime = 0.f;
     }
     break;
@@ -400,11 +401,9 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     break;
     case HotHeadState::AttackFlameEnd:
         break;
-    case HotHeadState::AttackFlameRotStart:
-    {
-
+    case HotHeadState::AttackFlameRotStart: {
     }
-        break;
+    break;
     case HotHeadState::AttackFlameRot: {
         // 원래 Rotation으로 초기화
         m_fRotRadian = 0.f;
@@ -415,7 +414,7 @@ void CHotHeadScript::ExitState(HotHeadState _state)
         break;
     case HotHeadState::Damage:
     case HotHeadState::Eaten: {
-        m_bFlag = false;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case HotHeadState::Death:
@@ -634,7 +633,10 @@ void CHotHeadScript::Damage()
 #pragma region EATEN
 void CHotHeadScript::Eaten()
 {
-    Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f, ForceMode::Force);
+    if (!GetResistState())
+    {
+        ChangeState(HotHeadState::Idle);
+    }
 }
 #pragma endregion
 

@@ -4,11 +4,13 @@
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
+#include "CCameraController.h"
+
 CElfilisG_ToAirTeleport::CElfilisG_ToAirTeleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_EffectSpeed(500.f)
+    , m_EffectSpeed(400.f)
 {
     m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
@@ -43,7 +45,8 @@ void CElfilisG_ToAirTeleport::Enter_Step()
 
         SpawnTeleport();
 
-        //@CAMERA ÇÏ´Ã
+        //Ä«¸Þ¶ó ÇÏ´Ã
+        CAMERACTRL->SetElfilisSky();
     }
     break;
     case StateStep::End:

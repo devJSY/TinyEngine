@@ -39,11 +39,11 @@ void CMomentaryObjScript::tick()
 
             if (m_ScaleTime > 0.f)
             {
-                t = m_AccTime / m_ScaleTime;
+                t = clamp(m_AccTime / m_ScaleTime, 0.f, 1.f);
             }
             else
             {
-                t = m_AccTime / m_LifeTime;
+                t = clamp(m_AccTime / m_LifeTime, 0.f, 1.f);
             }
 
             Transform()->SetLocalScale(m_OriginScale * m_ScaleFactor * t);

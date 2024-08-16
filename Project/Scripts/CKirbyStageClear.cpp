@@ -3,6 +3,8 @@
 
 #include "CCameraController.h"
 
+#include "CLevelFlowMgr.h"
+
 CKirbyStageClear::CKirbyStageClear()
 {
 }
@@ -195,8 +197,17 @@ void CKirbyStageClear::tick()
 
     if (m_Step == 22 && KEY_TAP(KEY_ATK))
     {
-        // @TODO Level Change
-        ChangeState(L"IDLE");
+        // Level Change
+        CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+        if (Manager != nullptr)
+        {
+            CLevelFlowMgr* FlowMgr = Manager->GetScript<CLevelFlowMgr>();
+            if (FlowMgr != nullptr)
+            {
+                FlowMgr->LevelEnd();
+            }
+        }
     }
 }
 

@@ -62,6 +62,7 @@ private:
 
     // childs
     CGameObject* m_Weapon;
+    CBoxCollider* m_Hitbox;
 
     // map
     Vec3 m_MapFloorOffset;
@@ -84,6 +85,8 @@ public:
     void SetPattern(ElfilisPatternType _Pattern);
     void ProcPatternStep();
     void SetPhase(int _Phase) { m_Phase = _Phase; }
+    void OnWeaponTrigger();
+    void OffWeaponTrigger();
 
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;
@@ -99,6 +102,7 @@ public:
     CGameObject* GetBigBoss() const { return m_BigElfilis; }
     CElfilisBigFSM* GetBigBossFSM() const { return m_BigElfilisFSM; }
     CGameObject* GetWeapon() const { return m_Weapon; }
+    CBoxCollider* GetHitbox() const { return m_Hitbox; }
     float GetMapSizeRadius() const { return m_MapSizeRadius; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
     float GetPlayerDist() const;

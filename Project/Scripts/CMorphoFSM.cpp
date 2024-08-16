@@ -9,7 +9,7 @@ CMorphoFSM::CMorphoFSM()
     , m_CurStateGroup(MorphoStateGroup::END)
     , m_Pattern(MorphoPatternType::NONE)
     , m_PatternStep(0)
-    , m_Phase(2)
+    , m_Phase(1)
     , m_ComboLevel(0)
     , m_NearDist(150.f)
     , m_WeaponL(nullptr)
@@ -107,6 +107,12 @@ void CMorphoFSM::begin()
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveR"));
 
+    for (CGameObject* iter : m_vecShockWave)
+    {
+        iter->begin();
+        iter->SetActive(false);
+    }
+
     // get mtrl
     for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
     {
@@ -119,6 +125,11 @@ void CMorphoFSM::begin()
         {
             m_listWeaponMtrl.push_back(m_WeaponL->MeshRender()->GetMaterial(i));
         }
+
+        if (m_WeaponL->BoxCollider())
+        {
+            m_WeaponL->BoxCollider()->SetEnabled(false);
+        }
     }
 
     if (m_WeaponR)
@@ -127,21 +138,17 @@ void CMorphoFSM::begin()
         {
             m_listWeaponMtrl.push_back(m_WeaponR->MeshRender()->GetMaterial(i));
         }
+
+        if (m_WeaponR->BoxCollider())
+        {
+            m_WeaponR->BoxCollider()->SetEnabled(false);
+        }
     }
 }
 
 void CMorphoFSM::tick()
 {
     CFSMScript::tick();
-
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
-    }
-    if (KEY_TAP(KEY::SPACE))
-    {
-        ChangeStateGroup(MorphoStateGroup::AtkAir2, L"ATKA_DOUBLESWORD");
-    }
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)
@@ -211,7 +218,7 @@ void CMorphoFSM::Attack()
         // wait
         if (Rand <= 10.f && m_CurStateGroup == MorphoStateGroup::MoveToGround)
         {
-             ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
+            ChangeStateGroup(MorphoStateGroup::AtkGroundWait);
         }
 
         // attack
@@ -524,6 +531,38 @@ void CMorphoFSM::ProcPatternStep()
     {
         m_PatternStep++;
     }
+}
+
+void CMorphoFSM::OnWeaponLTrigger()
+{
+    if (!m_WeaponL)
+        return;
+
+    m_WeaponL->BoxCollider()->SetEnabled(true);
+}
+
+void CMorphoFSM::OnWeaponRTrigger()
+{
+    if (!m_WeaponR)
+        return;
+
+    m_WeaponR->BoxCollider()->SetEnabled(true);
+}
+
+void CMorphoFSM::OffWeaponLTrigger()
+{
+    if (!m_WeaponL)
+        return;
+
+    m_WeaponL->BoxCollider()->SetEnabled(false);
+}
+
+void CMorphoFSM::OffWeaponRTrigger()
+{
+    if (!m_WeaponR)
+        return;
+
+    m_WeaponR->BoxCollider()->SetEnabled(false);
 }
 
 void CMorphoFSM::ClearEmissive()

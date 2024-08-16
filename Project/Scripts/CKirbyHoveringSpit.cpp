@@ -41,6 +41,23 @@ void CKirbyHoveringSpit::Enter()
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
 
     PLAYERFSM->SetDroppable(true);
+
+    Ptr<CPrefab> SpitSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SpitSmoke.pref");
+    if (SpitSmoke.Get())
+    {
+        CGameObject* SpitSmokeObj = SpitSmoke->Instantiate();
+
+        Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
+        Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+        Vec3 SmokePos = PlayerPos + PlayerDir * 15.f;
+        SmokePos.y += 15.f;
+
+        SpitSmokeObj->Transform()->SetWorldPos(SmokePos);
+        SpitSmokeObj->Transform()->SetDirection(PlayerDir);
+
+        GamePlayStatic::SpawnGameObject(SpitSmokeObj, LAYER_EFFECT);
+    }
 }
 
 void CKirbyHoveringSpit::Exit()

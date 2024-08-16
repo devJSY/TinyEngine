@@ -64,6 +64,7 @@ void CMorphoAtkG_Teleport_TrackingSoul::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AttackHiStart"), false, false, 1.5f);
+        MRPFSM->OnWeaponRTrigger();
         //@EFFECT Â÷Â¡¿Ï·áÀÌÆåÆ®
     }
     break;
@@ -106,7 +107,9 @@ void CMorphoAtkG_Teleport_TrackingSoul::Exit_Step()
         break;
     case StateStep::ChargeWait:
         break;
-    case StateStep::Start:
+    case StateStep::Start: {
+        MRPFSM->OffWeaponRTrigger();
+    }
         break;
     case StateStep::Wait:
         break;

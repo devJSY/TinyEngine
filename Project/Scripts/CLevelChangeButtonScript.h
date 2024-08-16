@@ -2,12 +2,13 @@
 
 #include "CButtonScript.h"
 
-
-class CLevelChangeButtonScript 
-	: public CButtonScript
+class CLevelChangeButtonScript : public CButtonScript
 {
 private:
-    string m_LevelName;
+    CGameObject* m_pManager;
+
+public:
+    virtual void begin() override;
 
 public:
     virtual void Func() override;

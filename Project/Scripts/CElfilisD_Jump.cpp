@@ -2,6 +2,8 @@
 #include "CElfilisD_Jump.h"
 #include "CElfilisFSM.h"
 
+#include "CCameraController.h"
+
 CElfilisD_Jump::CElfilisD_Jump()
     : m_PrevDrag(0.f)
 {
@@ -38,7 +40,9 @@ void CElfilisD_Jump::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("JumpReady"), false, false, 2.5f, 0.3f);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
-        //@CAMERA 뒤로
+        // 뒤로
+        CAMERACTRL->FixedView(false, Vec3(-78.53f, 131.92f, -91.44f));
+
     }
     break;
     case StateStep::Progress: {
@@ -52,7 +56,26 @@ void CElfilisD_Jump::Enter_Step()
 
         GetOwner()->Rigidbody()->AddForce(JumpDir * 3000.f, ForceMode::Impulse);
 
-        //@CAMERA 잠깐고정
+
+
+        // 카메라 잠깐고정
+        CAMERACTRL->Normal(false);
+
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
+        CAMERACTRL->SetLookDist(300.f);
+
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetMinSpeed(200.f);
+        CAMERACTRL->SetMaxSpeed(1500.f);
+        CAMERACTRL->SetThresholdDistance(500.f);
+        CAMERACTRL->SetRotationSpeed(100.f);
+        CAMERACTRL->SetZoomMinSpeed(100.f);
+        CAMERACTRL->SetZoomMaxSpeed(1000.f);
+        CAMERACTRL->SetZoomThreshold(500.f);
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
+
+        CAMERACTRL->SetLock(true,0.5f);
+
     }
     break;
     case StateStep::End: {

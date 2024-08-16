@@ -1121,9 +1121,6 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultUIShader">
       <UniqueIdentifier>{cde1195e-dd34-41d4-85be-f9d448d8c211}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIWipeShader">
-      <UniqueIdentifier>{dd483ebd-d730-4e07-8e7f-6107bc17f32a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Kirby\Postprocess">
       <UniqueIdentifier>{31eba271-b6d2-4a23-98b1-ed3fdf799bda}</UniqueIdentifier>
     </Filter>
@@ -1141,6 +1138,18 @@
     </Filter>
     <Filter Include="ShaderCode\Kirby\Characters\Monster\GhostGordo">
       <UniqueIdentifier>{e5682491-197f-4e22-b39a-d878c384b677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIButtonShader">
+      <UniqueIdentifier>{dd3364ed-67cd-46bd-98b3-b1c81137b47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIRobbyShader">
+      <UniqueIdentifier>{ff54bde6-3ce4-4fd2-b6e2-b7d313b4aaa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIRobbyShader\UIRobbyBackGroundShader">
+      <UniqueIdentifier>{cab8ac02-1ade-4ece-965e-1892f664e477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIAnimShader">
+      <UniqueIdentifier>{31081bb5-a26c-4286-993c-6b11ced3a8a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1434,12 +1443,6 @@
     <FxCompile Include="UIDefaultVS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
     </FxCompile>
-    <FxCompile Include="UIWipeVS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIWipePS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIWipeShader</Filter>
-    </FxCompile>
     <FxCompile Include="DepthMaskingPS.hlsl">
       <Filter>ShaderCode\Render\PostEffect</Filter>
     </FxCompile>
@@ -1478,6 +1481,18 @@
     </FxCompile>
     <FxCompile Include="CircleDistortionPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="UIStartSceneButtonPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIButtonShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIRobbyBackGroundPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIRobbyShader\UIRobbyBackGroundShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIHPOutLinePS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIHPShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIMaskingAnimPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIAnimShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

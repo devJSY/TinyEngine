@@ -15,7 +15,7 @@ void CMorphoShockWave::tick()
 {
 }
 
-void CMorphoShockWave::OnCollisionEnter(CCollider* _OtherCollider)
+void CMorphoShockWave::OnTriggerEnter(CCollider* _OtherCollider)
 {
     if (_OtherCollider->GetOwner() != PLAYER)
         return;

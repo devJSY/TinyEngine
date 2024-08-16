@@ -52,7 +52,7 @@ void CElfilisBig_SwingFinishL::Enter_Step()
     switch (m_Step)
     {
     case StateStep::Wait: {
-        //GetOwner()->Animator()->Play(ANIMPREFIX("BigChainRL"), false, false, 4.f);
+        // GetOwner()->Animator()->Play(ANIMPREFIX("BigChainRL"), false, false, 4.f);
         ChangeStep(StateStep::Progress);
     }
     break;
@@ -110,17 +110,19 @@ void CElfilisBig_SwingFinishL::Progress()
             {
                 // pScript->AddEffect(MomentaryEffectType::AppearScaling);
                 pScript->SetPlayTime(3.5f);
+                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
             }
-
-            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+            else
+            {
+                delete pRock;
+            }
         }
 
         m_bFrmEnter = false;
     }
 
     // Elfilis ¶¥À¸·Î µ¹¾Æ¿È
-    if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 6)
-        || ELFFSM->IsPattern(ElfilisPatternType::Appear2, 3))
+    if (ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 6) || ELFFSM->IsPattern(ElfilisPatternType::Appear2, 3))
     {
         if (CHECK_ANIMFRM(GetOwner(), 600))
         {

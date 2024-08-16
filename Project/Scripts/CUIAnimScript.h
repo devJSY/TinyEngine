@@ -16,6 +16,12 @@ private:
     float m_fWaitTime;
     float m_fAccTime;
     bool m_bIsFinsih;
+    bool m_bLoopUI;
+
+public:
+    virtual void Enter(){};
+    virtual void Idle(){};
+    virtual void Exit(){};
 
 public:
     UIAnimState GetUIAnimState() const { return m_eState; }
@@ -29,9 +35,17 @@ public:
 
     float GetAccTime() const { return m_fAccTime; }
 
+    void SetLoopUI(const bool _flag) { m_bLoopUI = m_bLoopUI; }
+    bool GetLoopUI() const { return m_bLoopUI; }
+
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+
+protected:
+    void CommonUIEnter();
+    void CommonUIExit();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

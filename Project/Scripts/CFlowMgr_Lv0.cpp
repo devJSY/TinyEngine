@@ -124,9 +124,9 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
     }
 }
 
-void CFlowMgr_Lv0::LevelExit()
+void CFlowMgr_Lv0::LevelEnd()
 {
-    CLevelFlowMgr::LevelExit();
+    CLevelFlowMgr::LevelEnd();
 
     m_PostEffectMtrl->SetScalarParam(FLOAT_2, 0.f); // Fog Strength
     SetToneMappingParam(false);                     // Bloom Off

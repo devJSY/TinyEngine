@@ -1,20 +1,19 @@
 #pragma once
 #include <Engine/CScript.h>
-#include "CUIManagerScript.h"
 
-class CUIFlowScript;
+class CUIAnimScript;
 class CUIAnimManagerScript : public CScript
 {
 private:
-    vector<CUIFlowScript*> m_vFlowScript;
-    SceneType m_eType;
-
-public:
-    void SetSceneType(const SceneType _type) { m_eType = _type; }
+    vector<CUIAnimScript*> m_vAnimScript;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+public:
+    void EndAnimUI();
+    bool AllFinishEndUI();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

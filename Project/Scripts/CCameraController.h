@@ -87,6 +87,8 @@ private:
     float                       m_ZoomMaxSpeed;         // Zoom 최대 속도
     float                       m_ZoomThreshold;        // Zoom 임계 거리
 
+    bool                        m_bImmediate;           // 카메라의 위치를 설정값에 맞게 바로 이동
+
     // 현재 프레임
     Vec3                        m_CurLookDir;           // 현재 프레임에서 카메라의 각도
     Vec3                        m_CurLookAtPos;         // 현재 프레임에서 카메라가 바라봐야하는 위치
@@ -119,6 +121,11 @@ private:
 
     // Fixed
     Vec3                        m_FixedViewPos;         // 고정된 카메라의 위치
+
+    // Lock
+    bool                        m_bLock;
+    float                       m_LockAcc;
+    float                       m_LockDuration;
 
 
     //Edit
@@ -162,6 +169,20 @@ private:
     void SetZoomThreshold(float _Threshold) { m_ZoomThreshold = _Threshold; } 
     void SetDistanceOffset(float _DistOffset) { m_DistanceOffset = _DistOffset; } 
     void SetPlayer(CGameObject* _Kirby);
+    void SetMinDegreeX(float _Min) { m_MinDegreeX = _Min; }
+    void SetMaxDegreeX(float _Max) { m_MaxDegreeX = _Max; }
+    void SetMinDegreeY(float _Min) { m_MinDegreeY = _Min; }
+    void SetMaxDegreeY(float _Max) { m_MaxDegreeY = _Max; }
+    void SetMaxDistBetweenTarget(float _Max) { m_MaxBetweenTargetDist = _Max; }
+    void SetMinDist(float _Min) { m_MinDist = _Min; }
+    void SetLock(bool _Lock) { m_bLock = _Lock; }
+    void SetImmediate(bool _b) { m_bImmediate = _b; }
+    void SetLock(bool _Lock, float _Duration)
+    {
+        m_bLock = _Lock;
+        m_LockAcc = 0.f;
+        m_LockDuration = _Duration;
+    }
 
     void SaveSetting();
     void SaveInitSetting();
@@ -211,11 +232,18 @@ public:
     void ProgressSetup(Vec3 _StartPos, Vec3 _EndPos,Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir, float _StartDist, float _EndDist); // Progress로 Camera Setup 상태 변경
     void TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset, float _MinDist);
     void TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset, float _MinDist);
-    void Boss(CGameObject* _SubTarget, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
-                      float _Weight = 0.5f);
-    void Boss(wstring _SubTargetName, float _DistanceOffset, float _MinDegree, float _MaxDegree, float _m_MaxBetweenTargetDist,
-                      float _Weight = 0.5f);
+    void Boss(CGameObject* _SubTarget, float _DistanceOffset, float _Weight = 0.5f);
+    void Boss(wstring _SubTargetName, float _DistanceOffset, float _Weight = 0.5f);
     void FixedView(bool _IsImmediate, Vec3 _FixedViewPos = Vec3(0.f,0.f,0.f));
+
+    // Elfilis Func
+    void SetElfilisTwoTarget();
+    void SetElfilisSky();
+    void SetElfilisGround();
+
+    // Morpho Func
+    void SetMorphoTwoTarget();
+
 
     // Effect
     void Shake(float _Duration, float _Frequency, float _Intencity);

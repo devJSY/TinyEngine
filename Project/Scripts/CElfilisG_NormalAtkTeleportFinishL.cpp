@@ -6,7 +6,7 @@ CElfilisG_NormalAtkTeleportFinishL::CElfilisG_NormalAtkTeleportFinishL()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_EffectSpeed(700.f)
+    , m_EffectSpeed(400.f)
     , m_bFrmEnter(true)
 {
     m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref");
@@ -55,6 +55,7 @@ void CElfilisG_NormalAtkTeleportFinishL::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false, false, 1.f);
+        ELFFSM->OnWeaponTrigger();
     }
     break;
     case StateStep::End: {
@@ -87,7 +88,9 @@ void CElfilisG_NormalAtkTeleportFinishL::Exit_Step()
         }
     }
     break;
-    case StateStep::Progress:
+    case StateStep::Progress: {
+        ELFFSM->OffWeaponTrigger();
+    }
         break;
     case StateStep::End: {
         ELFFSM->ClearComboLevel();
@@ -142,6 +145,23 @@ void CElfilisG_NormalAtkTeleportFinishL::StartEnd()
 
 void CElfilisG_NormalAtkTeleportFinishL::Progress()
 {
+    // resize Hitbox
+    CBoxCollider* pHitbox = ELFFSM->GetHitbox();
+    if (pHitbox && !GetOwner()->Animator()->IsChainging())
+    {
+        if (GetOwner()->Animator()->GetClipFrameIndex() > 32 && GetOwner()->Animator()->GetClipFrameIndex() < 42)
+        {
+            pHitbox->GetOwner()->SetActive(true);
+            pHitbox->Transform()->SetLocalPos(Vec3(0.f, 1.f, 0.f));
+            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+            pHitbox->Transform()->SetLocalScale(Vec3(7.5f, 1.f, 7.5f));
+        }
+        else
+        {
+            pHitbox->GetOwner()->SetActive(false);
+        }
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::End);

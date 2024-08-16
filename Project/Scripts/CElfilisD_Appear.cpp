@@ -43,21 +43,26 @@ void CElfilisD_Appear::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("BallWait"), true, false, 1.f, 0.f);
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
-        GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+        GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, 0.f, 0.f));
         m_bFrmEnter = true;
 
-        //@CAMERA : 에피리스 가까이, 등장 바라보며 고정
+        // 에피리스 가까이, 등장 바라보며 고정
         CAMERACTRL->SetMainTarget(BOSS);
 
-        CAMERACTRL->FixedView(true, Vec3(0.f, 151.3f, -279.88f));
-        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
-        CAMERACTRL->SetRotationSpeed(150.f);
+        CAMERACTRL->FixedView(true, Vec3(0.f, 83.65f, 147.6f));
 
-        // CAMERACTRL->SetLookDist(130.f);
-        // CAMERACTRL->SetLookDir(Vec3(0.f, 0.058f, 0.998f));
+        CAMERACTRL->SetOffset(Vec3(0.f,0.f,0.f));
+        CAMERACTRL->SetMinSpeed(200.f);
+        CAMERACTRL->SetMaxSpeed(500.f);
+        CAMERACTRL->SetThresholdDistance(50.f);
+        CAMERACTRL->SetRotationSpeed(150.f);
+        CAMERACTRL->SetZoomMinSpeed(50.f);
+        CAMERACTRL->SetZoomMaxSpeed(360.f);
+        CAMERACTRL->SetZoomThreshold(50.f);    
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
 
         // 설정으로 카메라 즉시이동
-        // CAMERACTRL->ResetCamera();
+        CAMERACTRL->ResetCamera();
     }
     break;
     case StateStep::Progress: {
@@ -69,17 +74,30 @@ void CElfilisD_Appear::Enter_Step()
             m_BossName = m_BossNamePref->Instantiate();
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
 
-            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 905.f, 1570.f));
-            m_BossName->Transform()->SetWorldRotation(Vec3(0.f, XMConvertToRadians(180.f), 0.f));
+            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 905.f, -2200.f));
+            m_BossName->Transform()->SetWorldRotation(Vec3(0.f, 0.f, 0.f));
             Script->FadeIn(0.5f);
 
             GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);
         }
 
-        //@CAMERA : 뒤로 이동
-        // CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
-        // CAMERACTRL->SetLookDist(280.f);
-        // CAMERACTRL->SetLookDir(Vec3(0.f, 0.024f, 0.971f));
+        // 뒤로 이동
+        CAMERACTRL->Normal(false);
+        CAMERACTRL->SetLookDist(300.f);
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.024f, -0.971f));
+
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetMinSpeed(0.f);
+        CAMERACTRL->SetMaxSpeed(100.f);
+        CAMERACTRL->SetThresholdDistance(10.f);
+        CAMERACTRL->SetRotationSpeed(30.f);
+        CAMERACTRL->SetZoomMinSpeed(0.f);
+        CAMERACTRL->SetZoomMaxSpeed(50.f);
+        CAMERACTRL->SetZoomThreshold(50.f);
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
+
+        
+
     }
     break;
     }
@@ -102,7 +120,10 @@ void CElfilisD_Appear::Exit_Step()
             m_BossName = nullptr;
         }
 
-        //@CAMERA : 투타겟
+        // 투타겟
+        CAMERACTRL->LoadInitSetting();
+
+        CAMERACTRL->SetElfilisTwoTarget();
     }
     break;
     }

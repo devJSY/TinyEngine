@@ -9,12 +9,15 @@
 #include "CCameraController.h"
 #include "CFadeEffectScript.h"
 
+#include "CUIFlowScript.h"
+
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
     , m_CurLevelPath{}
     , m_NextLevelPath{}
     , m_DimensionFadeEffect(nullptr)
-    , m_FadeEffectObj(nullptr)
+    , m_FadeEffectScript(nullptr)
+    , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -25,7 +28,8 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_CurLevelPath{}
     , m_NextLevelPath(_Origin.m_NextLevelPath)
     , m_DimensionFadeEffect(nullptr)
-    , m_FadeEffectObj(nullptr)
+    , m_FadeEffectScript(nullptr)
+    , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -49,8 +53,9 @@ void CLevelFlowMgr::begin()
     Ptr<CPrefab> pFadeEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FadeEffect.pref", L"prefab\\FadeEffect.pref");
     if (nullptr != pFadeEffectPref)
     {
-        m_FadeEffectObj = pFadeEffectPref->Instantiate();
-        GamePlayStatic::AddChildObject(GetOwner(), m_FadeEffectObj);
+        CGameObject* pFadeEffectObj = pFadeEffectPref->Instantiate();
+        m_FadeEffectScript = pFadeEffectObj->GetScript<CFadeEffectScript>();
+        GamePlayStatic::AddChildObject(GetOwner(), pFadeEffectObj);
     }
 
     m_ToneMappingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl");
@@ -61,6 +66,19 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
+    if (m_bFadeEffect)
+    {
+        m_FadeEffectAcc += DT;
+
+        // UI가 끝나면
+        if (m_FadeEffectAcc > m_FadeEffectDuration)
+        {
+            // Level 전환
+            m_bFadeEffect = false;
+            LevelExit();
+        }
+    }
+
     // tick마다 넣어줘야 하는 Param setting
     MtrlParamUpdate();
 }
@@ -71,6 +89,11 @@ void CLevelFlowMgr::LevelStart()
     CRenderMgr::GetInst()->SetEnableDOF(true);
     CRenderMgr::GetInst()->SetEnableDepthMasking(true);
     // g_Global.g_EnableSSAO = true; // Option
+
+    // FadeEffect Timer 초기화
+    m_bFadeEffect = false;
+    m_FadeEffectAcc = 0.f;
+    m_FadeEffectDuration = 2.f;
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
@@ -128,14 +151,7 @@ void CLevelFlowMgr::LevelStart()
     }
 
     // UI (Fade In)
-    if (nullptr != m_FadeEffectObj)
-    {
-        CFadeEffectScript* pFadeEffectScript = m_FadeEffectObj->GetScript<CFadeEffectScript>();
-        pFadeEffectScript->SetBackGroundColor(Vec4(255.f, 0.f, 255.f, 255.f));
-        pFadeEffectScript->SetReverse(true);
-        pFadeEffectScript->SetDuration(0.25f);
-        pFadeEffectScript->SetRotateSpeed(1.25f);
-    }
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f);
 
     // @TODO BGM 재생
 }
@@ -143,21 +159,16 @@ void CLevelFlowMgr::LevelStart()
 void CLevelFlowMgr::LevelEnd()
 {
     // UI (Fade Out)
-    if (nullptr != m_FadeEffectObj)
-    {
-        CFadeEffectScript* pFadeEffectScript = m_FadeEffectObj->GetScript<CFadeEffectScript>();
-        pFadeEffectScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
-        pFadeEffectScript->SetReverse(false);
-        pFadeEffectScript->SetDuration(1.f);
-        pFadeEffectScript->SetRotateSpeed(1.25f);
-    }
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
-    // BGM 종료
+    m_bFadeEffect = true;
+    m_FadeEffectAcc = 0.f;
+
+    // @TODO BGM 종료
 }
 
 void CLevelFlowMgr::LevelExit()
 {
-
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
@@ -165,19 +176,12 @@ void CLevelFlowMgr::LevelExit()
 void CLevelFlowMgr::LevelRestart()
 {
     // UI (Fade Out)
-    if (nullptr != m_FadeEffectObj)
-    {
-        CFadeEffectScript* pFadeEffectScript = m_FadeEffectObj->GetScript<CFadeEffectScript>();
-        pFadeEffectScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
-        pFadeEffectScript->SetReverse(false);
-        pFadeEffectScript->SetDuration(1.f);
-        pFadeEffectScript->SetRotateSpeed(1.25f);
-    }
-
-    // BGM 종료
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
     // Level Restart
     GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
+
+    // @TODO BGM 종료
 }
 
 void CLevelFlowMgr::MtrlParamUpdate()
@@ -206,6 +210,27 @@ void CLevelFlowMgr::OffDimensionFade()
     {
         m_DimensionFadeEffect->SetActive(false);
     }
+}
+
+void CLevelFlowMgr::SetFadeEffectColor(Vec3 _Color)
+{
+    if (!m_FadeEffectScript)
+        return;
+
+    Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
+    m_FadeEffectScript->SetBackGroundColor(Color);
+}
+
+void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed)
+{
+    if (!m_FadeEffectScript)
+        return;
+
+    Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
+    m_FadeEffectScript->SetBackGroundColor(Color);
+    m_FadeEffectScript->SetReverse(_bReverse);
+    m_FadeEffectScript->SetDuration(_Duration);
+    m_FadeEffectScript->SetRotateSpeed(_Speed);
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,
