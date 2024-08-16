@@ -814,7 +814,7 @@
     <ClInclude Include="CElfilisD_Roar.h">
       <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClInclude>
-    <ClInclude Include="CFadeOutScript.h">
+    <ClInclude Include="CFadeEffectScript.h">
       <Filter>Scripts\Postprocess</Filter>
     </ClInclude>
     <ClInclude Include="CLensFlareScript.h">
@@ -1677,7 +1677,7 @@
     <ClCompile Include="CElfilisD_Roar.cpp">
       <Filter>State\ElfilisState\Demo_Appear2\2. Roar</Filter>
     </ClCompile>
-    <ClCompile Include="CFadeOutScript.cpp">
+    <ClCompile Include="CFadeEffectScript.cpp">
       <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
     <ClCompile Include="CLensFlareScript.cpp">

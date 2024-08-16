@@ -7,14 +7,14 @@
 
 #include "CPlayerMgr.h"
 #include "CCameraController.h"
-#include "CFadeOutScript.h"
+#include "CFadeEffectScript.h"
 
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
     , m_CurLevelPath{}
     , m_NextLevelPath{}
     , m_DimensionFadeEffect(nullptr)
-    , m_FadeOutObj(nullptr)
+    , m_FadeEffectObj(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -25,7 +25,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_CurLevelPath{}
     , m_NextLevelPath(_Origin.m_NextLevelPath)
     , m_DimensionFadeEffect(nullptr)
-    , m_FadeOutObj(nullptr)
+    , m_FadeEffectObj(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -46,11 +46,11 @@ void CLevelFlowMgr::begin()
     m_DimensionFadeEffect->SetActive(false);
     GamePlayStatic::AddChildObject(GetOwner(), m_DimensionFadeEffect);
 
-    Ptr<CPrefab> pFadeOutPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FadeOut.pref", L"prefab\\FadeOut.pref");
-    if (nullptr != pFadeOutPref)
+    Ptr<CPrefab> pFadeEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FadeEffect.pref", L"prefab\\FadeEffect.pref");
+    if (nullptr != pFadeEffectPref)
     {
-        m_FadeOutObj = pFadeOutPref->Instantiate();
-        GamePlayStatic::AddChildObject(GetOwner(), m_FadeOutObj);
+        m_FadeEffectObj = pFadeEffectPref->Instantiate();
+        GamePlayStatic::AddChildObject(GetOwner(), m_FadeEffectObj);
     }
 
     m_ToneMappingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl");
@@ -128,13 +128,13 @@ void CLevelFlowMgr::LevelStart()
     }
 
     // UI (Fade In)
-    if (nullptr != m_FadeOutObj)
+    if (nullptr != m_FadeEffectObj)
     {
-        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
-        pFadeOutScript->SetBackGroundColor(Vec4(255.f, 0.f, 255.f, 255.f));
-        pFadeOutScript->SetReverse(true);
-        pFadeOutScript->SetDuration(0.25f);
-        pFadeOutScript->SetRotateSpeed(1.25f);
+        CFadeEffectScript* pFadeEffectScript = m_FadeEffectObj->GetScript<CFadeEffectScript>();
+        pFadeEffectScript->SetBackGroundColor(Vec4(255.f, 0.f, 255.f, 255.f));
+        pFadeEffectScript->SetReverse(true);
+        pFadeEffectScript->SetDuration(0.25f);
+        pFadeEffectScript->SetRotateSpeed(1.25f);
     }
 
     // @TODO BGM 재생
@@ -143,13 +143,13 @@ void CLevelFlowMgr::LevelStart()
 void CLevelFlowMgr::LevelEnd()
 {
     // UI (Fade Out)
-    if (nullptr != m_FadeOutObj)
+    if (nullptr != m_FadeEffectObj)
     {
-        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
-        pFadeOutScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
-        pFadeOutScript->SetReverse(false);
-        pFadeOutScript->SetDuration(1.f);
-        pFadeOutScript->SetRotateSpeed(1.25f);
+        CFadeEffectScript* pFadeEffectScript = m_FadeEffectObj->GetScript<CFadeEffectScript>();
+        pFadeEffectScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
+        pFadeEffectScript->SetReverse(false);
+        pFadeEffectScript->SetDuration(1.f);
+        pFadeEffectScript->SetRotateSpeed(1.25f);
     }
 
     // BGM 종료
@@ -165,13 +165,13 @@ void CLevelFlowMgr::LevelExit()
 void CLevelFlowMgr::LevelRestart()
 {
     // UI (Fade Out)
-    if (nullptr != m_FadeOutObj)
+    if (nullptr != m_FadeEffectObj)
     {
-        CFadeOutScript* pFadeOutScript = m_FadeOutObj->GetScript<CFadeOutScript>();
-        pFadeOutScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
-        pFadeOutScript->SetReverse(false);
-        pFadeOutScript->SetDuration(1.f);
-        pFadeOutScript->SetRotateSpeed(1.25f);
+        CFadeEffectScript* pFadeEffectScript = m_FadeEffectObj->GetScript<CFadeEffectScript>();
+        pFadeEffectScript->SetBackGroundColor(Vec4(0.f, 255.f, 0.f, 255.f));
+        pFadeEffectScript->SetReverse(false);
+        pFadeEffectScript->SetDuration(1.f);
+        pFadeEffectScript->SetRotateSpeed(1.25f);
     }
 
     // BGM 종료

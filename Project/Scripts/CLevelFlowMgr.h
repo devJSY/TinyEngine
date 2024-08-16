@@ -11,7 +11,7 @@ private:
     string m_NextLevelPath;
 
     CGameObject* m_DimensionFadeEffect;
-    CGameObject* m_FadeOutObj;
+    CGameObject* m_FadeEffectObj;
     Ptr<CMaterial> m_ToneMappingMtrl;
 
 public:

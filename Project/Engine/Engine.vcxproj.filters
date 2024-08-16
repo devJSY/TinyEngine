@@ -1443,7 +1443,7 @@
     <FxCompile Include="DepthMaskingPS.hlsl">
       <Filter>ShaderCode\Render\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="KirbyFadeOutPS.hlsl">
+    <FxCompile Include="KirbyFadeEffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="LensFlareVS.hlsl">

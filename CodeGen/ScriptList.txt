@@ -83,7 +83,7 @@ CMorphoTrackingSoul
 CMorphoShockWave
 CPushOutColliderScript
 CLightBulbGimmickScript
-CFadeOutScript
+CFadeEffectScript
 CLensFlareScript
 CFlowMgr_Lv0
 CFlowMgr_Lv1

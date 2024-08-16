@@ -3,7 +3,7 @@
 
 class CGameObject;
 
-class CFadeOutScript : public CScript
+class CFadeEffectScript : public CScript
 {
 private:
     CGameObject* m_Target;
@@ -42,10 +42,10 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CFadeOutScript);
+    CLONE(CFadeEffectScript);
 
 public:
-    CFadeOutScript();
-    CFadeOutScript(const CFadeOutScript& origin);
-    virtual ~CFadeOutScript();
+    CFadeEffectScript();
+    CFadeEffectScript(const CFadeEffectScript& origin);
+    virtual ~CFadeEffectScript();
 };
