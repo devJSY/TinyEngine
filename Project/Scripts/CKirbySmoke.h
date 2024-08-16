@@ -2,12 +2,24 @@
 
 #include <Engine/CScript.h>
 
+enum class SmokeType
+{
+    Run,
+    Spit
+};
+
 class CKirbySmoke : public CScript
 {
 private:
+    UINT                        m_SmokeType;
+
     CGameObject*                m_SmokeOriginal;
     CGameObject*                m_SmokeSplit;
     CGameObject*                m_SmokeTail;
+
+    float                       m_OriginalSize;
+    float                       m_SplitSize;
+    float                       m_TailSize;
 
     Vec3                        m_Dir;
     float                       m_Speed;

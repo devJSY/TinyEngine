@@ -8,7 +8,9 @@ CKirbySmoke::CKirbySmoke()
     , m_SmokeTail(nullptr)
     , m_Acc(0.f)
     , m_Speed(30.f)
+    , m_SmokeType(0)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_SmokeType, "SmokeType 0: Run, 1: Spit");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
 }
 
@@ -19,7 +21,9 @@ CKirbySmoke::CKirbySmoke(const CKirbySmoke& _Origin)
     , m_SmokeTail(nullptr)
     , m_Acc(0.f)
     , m_Speed(_Origin.m_Speed)
+    , m_SmokeType(_Origin.m_SmokeType)
 {
+    AddScriptParam(SCRIPT_PARAM::INT, &m_SmokeType, "SmokeType 0: Run, 1: Spit");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
 }
 
@@ -42,6 +46,30 @@ void CKirbySmoke::begin()
     m_Acc = 0.f;
     m_MoveDuration = 0.4f;
     m_FadeDuration = 1.f;
+
+    switch (m_SmokeType)
+    {
+    case (UINT)SmokeType::Run:
+    {
+        m_OriginalSize = 0.65f; 
+        m_SplitSize = 0.15f;
+        m_TailSize = 0.5f;
+    }
+
+        break;
+
+    case (UINT)SmokeType::Spit:
+    {
+        m_OriginalSize = 0.9f;
+        m_SplitSize = 0.2f;
+        m_TailSize = 0.4f;
+    }
+        break;
+
+    default:
+        break;
+    }
+
 }
 
 void CKirbySmoke::tick()
@@ -59,15 +87,15 @@ void CKirbySmoke::tick()
         Transform()->SetWorldPos(CurPos);
 
         // Tail은 점점 작아진다.
-        float TailSize = cosf(Ratio * XM_PI * 0.5f) * 0.5f; 
+        float TailSize = cosf(Ratio * XM_PI * 0.5f) * m_TailSize; 
         m_SmokeTail->Transform()->SetLocalScale(Vec3(TailSize, TailSize, TailSize));
 
         // Original은 점점 커진다.
-        float OriginalSize = sinf(Ratio * XM_PI * 0.5f) * 0.65f;
+        float OriginalSize = sinf(Ratio * XM_PI * 0.5f) * m_OriginalSize;
         m_SmokeOriginal->Transform()->SetLocalScale(Vec3(OriginalSize, OriginalSize, OriginalSize));
 
         // Spit은 점점 커진다.
-        float SpitSize = sinf(Ratio * XM_PI * 0.5f) * 0.15f;
+        float SpitSize = sinf(Ratio * XM_PI * 0.5f) * m_SplitSize;
         m_SmokeSplit->Transform()->SetLocalScale(Vec3(SpitSize, SpitSize, SpitSize));
     }
     else if (m_Acc < m_FadeDuration)
@@ -77,11 +105,11 @@ void CKirbySmoke::tick()
         float Ratio = clamp(((m_Acc - m_MoveDuration) / m_FadeDuration), 0.f, 1.f);
 
         // Original은 점점 작아진다.
-        float OriginalSize = cosf(Ratio * XM_PI * 0.5f) * 0.65f;
+        float OriginalSize = cosf(Ratio * XM_PI * 0.5f) * m_OriginalSize;
         m_SmokeOriginal->Transform()->SetLocalScale(Vec3(OriginalSize, OriginalSize, OriginalSize));
 
         // Spit은 점점 작아진다.
-        float SpitSize = cosf(Ratio * XM_PI * 0.5f) * 0.15f;
+        float SpitSize = cosf(Ratio * XM_PI * 0.5f) * m_SplitSize;
         m_SmokeSplit->Transform()->SetLocalScale(Vec3(SpitSize, SpitSize, SpitSize));
 
         // 오브젝트는 점점 위로 올라간다.
@@ -103,8 +131,10 @@ UINT CKirbySmoke::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     fwrite(&m_Speed, sizeof(float), 1, _File);
+    fwrite(&m_SmokeType, sizeof(UINT), 1, _File);
 
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UINT);
 
     return MemoryByte;
 }
@@ -114,8 +144,10 @@ UINT CKirbySmoke::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     fread(&m_Speed, sizeof(float), 1, _File);
+    fread(&m_SmokeType, sizeof(UINT), 1, _File);
 
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(UINT);
 
     return MemoryByte;
 }
