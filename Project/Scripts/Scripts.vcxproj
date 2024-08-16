@@ -190,6 +190,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFlowMgr_Lv4.h" />
     <ClInclude Include="CFlowTriggerScript.h" />
     <ClInclude Include="CKirbyLightScript.h" />
+    <ClInclude Include="CKirbySmoke.h" />
     <ClInclude Include="CLensFlareScript.h" />
     <ClInclude Include="CLevelFlowMgr.h" />
     <ClInclude Include="CKirbyAbility_Sleep.h" />
@@ -492,6 +493,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFlowMgr_Lv4.cpp" />
     <ClCompile Include="CFlowTriggerScript.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />
+    <ClCompile Include="CKirbySmoke.cpp" />
     <ClCompile Include="CLensFlareScript.cpp" />
     <ClCompile Include="CLevelFlowMgr.cpp" />
     <ClCompile Include="CKirbyAbility_Sleep.cpp" />

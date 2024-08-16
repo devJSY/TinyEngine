@@ -85,6 +85,7 @@ void CLevelFlowMgr::LevelStart()
     CRenderMgr::GetInst()->SetEnableDepthMasking(true);
     g_Global.g_EnableSSAO = true;
 
+    // FadeOut Timer 초기화
     m_bFadeOut = false;
     m_FadeOutAcc = 0.f;
     m_FadeOutDuration = 2.f;
@@ -169,15 +170,11 @@ void CLevelFlowMgr::LevelEnd()
         pFadeOutScript->SetRotateSpeed(1.25f);
     }
 
-    // BGM 종료
-     
-    
-    // UI (Fade Out)
-
-
 
     m_bFadeOut = true;
     m_FadeOutAcc = 0.f;
+
+    // @TODO BGM 종료
 }
 
 void CLevelFlowMgr::LevelExit()
@@ -185,9 +182,8 @@ void CLevelFlowMgr::LevelExit()
     // 레벨 종료시 멀티 쓰레드로 동작해야하는 함수
     
     // Kirby 프리팹 저장
-    CPrefab* MainPlayerPref = new CPrefab(PLAYER);
+    Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER);
     MainPlayerPref->Save(L"prefab\\Main Player.pref");
-    delete MainPlayerPref;
 
     // Loading UI
     
@@ -207,10 +203,10 @@ void CLevelFlowMgr::LevelRestart()
         pFadeOutScript->SetRotateSpeed(1.25f);
     }
 
-    // BGM 종료
-
     // Level Restart
     GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
+
+    // @TODO BGM 종료
 }
 
 

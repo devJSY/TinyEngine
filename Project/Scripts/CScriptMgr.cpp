@@ -100,6 +100,7 @@
 #include "CFlowTriggerScript.h"
 #include "CKirbyLightScript.h"
 #include "CStageClear.h"
+#include "CKirbySmoke.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -202,6 +203,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowTriggerScript");
 	_vec.push_back(L"CKirbyLightScript");
 	_vec.push_back(L"CStageClear");
+	_vec.push_back(L"CKirbySmoke");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -404,6 +406,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyLightScript;
 	if (L"CStageClear" == _strScriptName)
 		return new CStageClear;
+	if (L"CKirbySmoke" == _strScriptName)
+		return new CKirbySmoke;
 	return nullptr;
 }
 
@@ -609,6 +613,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyLightScript;
 	case (UINT)SCRIPT_TYPE::STAGECLEAR:
 		return new CStageClear;
+	case (UINT)SCRIPT_TYPE::KIRBYSMOKE:
+		return new CKirbySmoke;
 	}
 	return nullptr;
 }
@@ -815,6 +821,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyLightScript";
 	case SCRIPT_TYPE::STAGECLEAR:
 		return L"CStageClear";
+	case SCRIPT_TYPE::KIRBYSMOKE:
+		return L"CKirbySmoke";
 	}
 	return nullptr;
 }
