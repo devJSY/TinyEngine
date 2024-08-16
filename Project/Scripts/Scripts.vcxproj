@@ -190,6 +190,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFlowMgr_Lv2.h" />
     <ClInclude Include="CFlowMgr_Lv3.h" />
     <ClInclude Include="CFlowMgr_Lv4.h" />
+    <ClInclude Include="CFlowMgr_LvRobby.h" />
+    <ClInclude Include="CFlowMgr_LvStart.h" />
     <ClInclude Include="CFlowTriggerScript.h" />
     <ClInclude Include="CFollowPlayerScript.h" />
     <ClInclude Include="CKirbyLightScript.h" />
@@ -393,9 +395,12 @@ call CodeGen.exe</Command>
     <ClInclude Include="CTwoTargetCamTrigger.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
     <ClInclude Include="CUIAnimScript.h" />
+    <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
     <ClInclude Include="CUIManagerScript.h" />
+    <ClInclude Include="CUIMtrlScript.h" />
+    <ClInclude Include="CUIRotateScript.h" />
     <ClInclude Include="CUIStartSceneFlowScript.h" />
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
@@ -496,6 +501,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFlowMgr_Lv2.cpp" />
     <ClCompile Include="CFlowMgr_Lv3.cpp" />
     <ClCompile Include="CFlowMgr_Lv4.cpp" />
+    <ClCompile Include="CFlowMgr_LvRobby.cpp" />
+    <ClCompile Include="CFlowMgr_LvStart.cpp" />
     <ClCompile Include="CFlowTriggerScript.cpp" />
     <ClCompile Include="CFollowPlayerScript.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />
@@ -699,9 +706,12 @@ call CodeGen.exe</Command>
     <ClCompile Include="CTwoTargetCamTrigger.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
     <ClCompile Include="CUIAnimScript.cpp" />
+    <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
     <ClCompile Include="CUIManagerScript.cpp" />
+    <ClCompile Include="CUIMtrlScript.cpp" />
+    <ClCompile Include="CUIRotateScript.cpp" />
     <ClCompile Include="CUIStartSceneFlowScript.cpp" />
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />

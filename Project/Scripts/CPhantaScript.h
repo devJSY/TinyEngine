@@ -10,6 +10,7 @@ enum class PhantaState
     Brake,
     Damage,
     Disappear,
+    Eaten,
     End,
 };
 
@@ -37,6 +38,7 @@ private:
     void Attack();
     void Brake();
     void Damage();
+    void Eaten();
     void Disappear();
 
 public:

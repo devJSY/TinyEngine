@@ -24,6 +24,10 @@ void CFlowMgr_Lv2::begin()
 void CFlowMgr_Lv2::tick()
 {
     CLevelFlowMgr::tick();
+
+    // Ω√¿€
+
+    // ≥°
 }
 
 UINT CFlowMgr_Lv2::SaveToLevelFile(FILE* _File)

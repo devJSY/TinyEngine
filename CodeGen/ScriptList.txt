@@ -99,3 +99,10 @@ CKirbyLightScript
 CBossHitbox
 CFlowMgr_BossMorpho
 CFollowPlayerScript
+CStageClear
+CKirbySmoke
+CUIRotateScript
+CUIMtrlScript
+CFlowMgr_LvRobby
+CFlowMgr_LvStart
+CUIFlowMgr

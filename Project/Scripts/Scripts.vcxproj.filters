@@ -868,6 +868,21 @@
     <ClInclude Include="CKirbySmoke.h">
       <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
     </ClInclude>
+    <ClInclude Include="CUIRotateScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIMtrlScript.h">
+      <Filter>Scripts\UI\UIUtil\UIMtrlScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowMgr_LvRobby.h">
+      <Filter>Scripts\Manager\FlowManager\Robby Level Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CFlowMgr_LvStart.h">
+      <Filter>Scripts\Manager\FlowManager\Start Level Flow Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIFlowMgr.h">
+      <Filter>Scripts\UI\UIManager\UIFlowManger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1739,6 +1754,21 @@
     </ClCompile>
     <ClCompile Include="CFollowPlayerScript.cpp">
       <Filter>Scripts\Gimmik\FollowPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIRotateScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMtrlScript.cpp">
+      <Filter>Scripts\UI\UIUtil\UIMtrlScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowMgr_LvRobby.cpp">
+      <Filter>Scripts\Manager\FlowManager\Robby Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CFlowMgr_LvStart.cpp">
+      <Filter>Scripts\Manager\FlowManager\Start Level Flow Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIFlowMgr.cpp">
+      <Filter>Scripts\UI\UIManager\UIFlowManger</Filter>
     </ClCompile>
     <ClCompile Include="CStageClear.cpp">
       <Filter>Scripts\Trigger\StageClear</Filter>
@@ -2746,6 +2776,27 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\Deform Light">
       <UniqueIdentifier>{601ac786-9c24-41bd-80eb-aa572216232b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Monster\Utill\WallDetect">
+      <UniqueIdentifier>{ca3a2ce0-3750-46ee-a984-ea20f499d1f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIRotateScript">
+      <UniqueIdentifier>{d526ad6e-bb2b-483e-808e-2c0a65f471ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUtil">
+      <UniqueIdentifier>{6b646881-d31c-4c91-b612-8ca25318bc96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUtil\UIMtrlScript">
+      <UniqueIdentifier>{cb44d5d5-e290-4933-91c2-135160b266d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\FlowManager\Start Level Flow Manager">
+      <UniqueIdentifier>{d036ae7f-34ed-409f-b6bd-22ea1845a14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\FlowManager\Robby Level Flow Manager">
+      <UniqueIdentifier>{706b8ef4-05b6-48a2-aa23-6c527b46ff61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIManager\UIFlowManger">
+      <UniqueIdentifier>{d34ab0b5-d067-4159-8b10-344ec7499580}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Boss\Hitbox">
       <UniqueIdentifier>{02399b6d-20ae-4eca-a3ce-69a4ae02b80c}</UniqueIdentifier>

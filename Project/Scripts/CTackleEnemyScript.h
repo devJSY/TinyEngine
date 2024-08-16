@@ -21,8 +21,6 @@ class CTackleEnemyScript : public CMonsterUnitScript
 {
 private:
     TackleEnemyState m_eState;
-
-    Vec3 m_vDamageDir;
     
     float m_fAccTime;
     float m_fWaitTime;
@@ -33,8 +31,6 @@ private:
     float m_fMaxSpeed;
 
     float m_fThreshHoldRushLerp;
-
-    bool m_bFlag;
 
 public:
     virtual void begin() override;
@@ -55,7 +51,6 @@ private:
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
-    void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
     void Idle();

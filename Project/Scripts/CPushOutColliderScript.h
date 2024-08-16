@@ -12,7 +12,7 @@ enum class PushOutColliderState
 class CPushOutColliderScript : public CScript
 {
 public:
-    CGameObject* m_pParent;
+    CGameObject* m_pPlayer;
     Vec3 m_vBase;
     Vec3 m_vDir;
     PushOutColliderState m_eState;
@@ -25,11 +25,12 @@ public:
     virtual void tick() override;
 
 public:
-    void SetParent(CGameObject* _pObj) { m_pParent = _pObj; }
     void SetDestSpeed(const float _value) { m_fSpeed = _value; }
     void SetBaseSpeed(const float _value) { m_fReturnSpeed = _value; }
     void SetDir(const Vec3 _value) { m_vDir = _value; }
  
+    CGameObject* CheckPlayer() { return m_pPlayer; }
+
     PushOutColliderState GetState() { return m_eState; }
     void SetState(const PushOutColliderState _state) { m_eState = _state; }
 

@@ -9,12 +9,15 @@
 #include "CCameraController.h"
 #include "CFadeOutScript.h"
 
+#include "CUIFlowScript.h"
+
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
     , m_CurLevelPath{}
     , m_NextLevelPath{}
     , m_DimensionFadeEffect(nullptr)
     , m_FadeOutObj(nullptr)
+    , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -26,6 +29,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_NextLevelPath(_Origin.m_NextLevelPath)
     , m_DimensionFadeEffect(nullptr)
     , m_FadeOutObj(nullptr)
+    , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -164,14 +168,6 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
-    // 레벨 종료시 멀티 쓰레드로 동작해야하는 함수
-    
-    // Kirby 프리팹 저장
-    Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
-    MainPlayerPref->Save(L"prefab\\Main Player.pref");
-
-    // Loading UI
-    
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }

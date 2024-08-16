@@ -2,6 +2,7 @@
 #include "CPushOutScript.h"
 
 #include "CPushOutColliderScript.h"
+#include "CPlayerMgr.h"
 
 CPushOutScript::CPushOutScript()
     : CScript(PUSHOUTSCRIPT)
@@ -88,7 +89,6 @@ void CPushOutScript::begin()
         if (-1 != m_iChildNum[i])
         {
             m_pChild[i] = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"PushOutColliderObj" + std::to_wstring(m_iChildNum[i]));
-            m_pChild[i]->GetScript<CPushOutColliderScript>()->SetParent(GetOwner());
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetDestSpeed(m_fSpeed);
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetBaseSpeed(m_fReturnSpeed);
             m_pChild[i]->GetScript<CPushOutColliderScript>()->SetDir(m_vDir);
@@ -99,6 +99,8 @@ void CPushOutScript::begin()
 
 void CPushOutScript::tick()
 {
+    CheckPlayer();
+
     switch (m_eState)
     {
     case PushOutState::MoveBase: {
@@ -136,6 +138,7 @@ void CPushOutScript::EnterState()
         {
             if (nullptr != m_pChild[i])
             {
+                m_pChild[i]->BoxCollider()->SetEnabled(true);
                 m_pChild[i]->GetScript<CPushOutColliderScript>()->SetState(PushOutColliderState::MoveDest);
             }
         }
@@ -156,6 +159,7 @@ void CPushOutScript::EnterState()
         {
             if (nullptr != m_pChild[i])
             {
+                m_pChild[i]->BoxCollider()->SetEnabled(false);
                 m_pChild[i]->GetScript<CPushOutColliderScript>()->SetState(PushOutColliderState::Stop);
             }
         }
@@ -235,6 +239,30 @@ void CPushOutScript::MoveDest()
 void CPushOutScript::Stop()
 {
     Transform()->SetWorldPos(m_vBase);
+}
+
+void CPushOutScript::CheckPlayer()
+{
+    bool bFlag = false;
+    for (int i = 0;i < 3;i++)
+    {
+        if (nullptr != m_pChild[i])
+        {
+            if (nullptr != m_pChild[i]->GetScript<CPushOutColliderScript>()->CheckPlayer())
+            {
+                bFlag=true;
+            }
+        }
+    }
+
+    if (bFlag)
+    {
+        m_pPlayer = PLAYER;
+    }
+    else
+    {
+        m_pPlayer = nullptr;
+    }
 }
 
 void CPushOutScript::MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _flag)

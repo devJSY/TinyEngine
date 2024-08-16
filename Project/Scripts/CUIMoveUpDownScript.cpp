@@ -36,10 +36,30 @@ void CUIMoveUpDownScript::tick()
 {
     CUIAnimScript::tick();
 
-    if (GetUIAnimState() == UIAnimState::Start && m_eState == DirState::Stop)
+    switch (GetUIAnimState())
+    {
+    case UIAnimState::PrePared:
+        break;
+    case UIAnimState::Start:
+        break;
+    case UIAnimState::Tick: {
+        Idle();
+    }
+    break;
+    case UIAnimState::End: {
+        CommonUIExit();
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+void CUIMoveUpDownScript::Idle()
+{
+    if (GetUIAnimState() == UIAnimState::Tick && m_eState == DirState::Stop)
     {
         m_eState = DirState::Up;
-        SetFinish(false);
     }
 
     switch (m_eState)
@@ -77,9 +97,8 @@ void CUIMoveUpDownScript::MoveDown()
     if (vPos.y > MoveTransform().y)
     {
         TransformApply(vPos);
-        SetUIAnimState(UIAnimState::Tick);
+        SetUIAnimState(UIAnimState::PrePared);
         m_eState = DirState::Stop;
-        SetFinish(true);
     }
 }
 
@@ -126,7 +145,7 @@ UINT CUIMoveUpDownScript::SaveToLevelFile(FILE* _File)
 
     fwrite(&m_fUpDistance, sizeof(float), 1, _File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
-    
+
     MemoryByte += CUIAnimScript::SaveToLevelFile(_File);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);

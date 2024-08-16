@@ -3,27 +3,29 @@
 
 CUIAnimScript::CUIAnimScript()
     : CScript(UIANIMSCRIPT)
-    , m_eState(UIAnimState::End)
+    , m_eState(UIAnimState::PrePared)
     , m_bIsFinsih(false)
     , m_fWaitTime(0.f)
     , m_fAccTime(0.f)
+    , m_bLoopUI(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fWaitTime, "WaitTime");
 }
 
 CUIAnimScript::CUIAnimScript(UINT _ScriptType)
     : CScript(_ScriptType)
-    , m_eState(UIAnimState::End)
+    , m_eState(UIAnimState::PrePared)
     , m_bIsFinsih(false)
     , m_fWaitTime(0.f)
     , m_fAccTime(0.f)
+    , m_bLoopUI(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fWaitTime, "WaitTime");
 }
 
 CUIAnimScript::CUIAnimScript(const CUIAnimScript& Origin)
     : CScript(Origin)
-    , m_eState(UIAnimState::End)
+    , m_eState(UIAnimState::PrePared)
     , m_bIsFinsih(false)
     , m_fWaitTime(Origin.m_fWaitTime)
     , m_fAccTime(0.f)
@@ -46,10 +48,19 @@ void CUIAnimScript::tick()
         m_fAccTime += DT;
         if (m_fAccTime >= m_fWaitTime)
         {
-            m_eState = UIAnimState::Start;
+            m_eState = UIAnimState::Tick;
             m_fAccTime = 0.f;
         }
     }
+}
+
+void CUIAnimScript::CommonUIEnter()
+{
+}
+
+void CUIAnimScript::CommonUIExit()
+{
+    SetFinish(true);
 }
 
 UINT CUIAnimScript::SaveToLevelFile(FILE* _File)

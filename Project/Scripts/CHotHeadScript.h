@@ -41,8 +41,6 @@ private:
 
     float m_fRotRadian;
 
-    bool m_bFlag;
-
 public:
     virtual void begin() override;
     virtual void tick() override;

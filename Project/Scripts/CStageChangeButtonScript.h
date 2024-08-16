@@ -6,6 +6,8 @@ class CStageChangeButtonScript
     : public CButtonScript
 {
 private:
+    CGameObject* m_pManager;
+
     UINT m_iCurStage;
     UINT m_iStageCount;
     vector<string> m_vStageName;
@@ -15,6 +17,7 @@ public:
     virtual void Func() override;
 
 public:
+    virtual void begin() override;
     virtual void tick() override;
 
 public:

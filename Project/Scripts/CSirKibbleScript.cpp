@@ -12,7 +12,6 @@ CSirKibbleScript::CSirKibbleScript()
     , m_vOriginPos{}
     , m_vDamageDir{}
     , m_vDestPos{}
-    , m_bFlag(false)
     , m_bJump(false)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
@@ -29,7 +28,6 @@ CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& Origin)
     , m_vDamageDir{}
     , m_vOriginPos{}
     , m_vDestPos{}
-    , m_bFlag(false)
     , m_bJump(false)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
@@ -45,7 +43,7 @@ CSirKibbleScript::~CSirKibbleScript()
 
 void CSirKibbleScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     m_pAttackPoint = GetOwner()->GetChildObject(L"Attack Point");
 
@@ -72,6 +70,10 @@ void CSirKibbleScript::tick()
     CMonsterUnitScript::tick();
     CheckDamage();
     FSM();
+    if (GetResistState())
+    {
+        ChangeState(SirKibbleState::Eaten);
+    }
 }
 
 UINT CSirKibbleScript::SaveToLevelFile(FILE* _File)
@@ -152,6 +154,7 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     switch (m_eState)
     {
     case SirKibbleState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
@@ -200,11 +203,14 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::CutterCatch: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         m_pAttackPoint->BoxCollider()->SetEnabled(false);
         Animator()->Play(ANIMPREFIX("CutterCatch"), false);
     }
     break;
     case SirKibbleState::Damage: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
         SetSparkle(true);
 
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
@@ -228,6 +234,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Land: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
@@ -329,6 +337,7 @@ void CSirKibbleScript::ExitState(SirKibbleState _state)
     switch (m_eState)
     {
     case SirKibbleState::Idle: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
         m_fAccTime = 0.f;
     }
     break;
@@ -357,7 +366,7 @@ void CSirKibbleScript::ExitState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Eaten: {
-        m_bFlag = false;
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case SirKibbleState::Death:
@@ -451,7 +460,6 @@ void CSirKibbleScript::LinearMove()
 void CSirKibbleScript::Idle()
 {
     m_fAccTime += DT;
-
     if (nullptr != GetTarget() && PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP > 0.01f && m_fAccTime >= 2.f)
     {
         ChangeState(SirKibbleState::Find);
@@ -615,14 +623,9 @@ void CSirKibbleScript::Damage()
 #pragma region EATEN
 void CSirKibbleScript::Eaten()
 {
-    // TODO : 저항 값 넣기
-    if (!m_bFlag)
+    if (!GetResistState())
     {
-        m_vDamageDir.Normalize();
-        Vec3 vUp = Vec3(0.f, 0.f, -1.f) == m_vDamageDir ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
-        Quat vQuat = Quat::LookRotation(-m_vDamageDir, vUp);
-        Transform()->SetWorldRotation(vQuat);
-        m_bFlag = true;
+        ChangeState(SirKibbleState::Idle);
     }
 }
 #pragma endregion

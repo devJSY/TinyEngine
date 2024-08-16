@@ -11,6 +11,7 @@ enum class SpookStepState
     Landing,
     Damage,
     Disappear,
+    Eaten,
     End,
 };
 
@@ -38,6 +39,7 @@ private:
     void Fall();
     void Landing();
     void Damage();
+    void Eaten();
     void Disappear();
 
 public:

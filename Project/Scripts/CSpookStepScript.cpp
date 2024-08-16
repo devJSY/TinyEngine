@@ -21,7 +21,7 @@ CSpookStepScript::~CSpookStepScript()
 
 void CSpookStepScript::begin()
 {
-    CUnitScript::begin();
+    CMonsterUnitScript::begin();
 
     ChangeState(SpookStepState::Appear);
 }
@@ -82,6 +82,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Wait: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"));
     }
     break;
@@ -98,10 +99,12 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Landing: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case SpookStepState::Damage: {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
@@ -112,6 +115,10 @@ void CSpookStepScript::EnterState()
         Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
 
         Animator()->Play(ANIMPREFIX("Damage"), false);
+    }
+    break;
+    case SpookStepState::Eaten: {
+        Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
     case SpookStepState::Disappear: {
@@ -161,10 +168,19 @@ void CSpookStepScript::FSM()
         Disappear();
     }
     break;
+    case SpookStepState::Eaten: {
+        Eaten();
+    }
+    break;
     case SpookStepState::End:
         break;
     default:
         break;
+    }
+
+    if (!IsGround())
+    {
+        ChangeState(SpookStepState::Fall);
     }
 }
 
@@ -187,6 +203,11 @@ void CSpookStepScript::ExitState()
     case SpookStepState::Damage:
         break;
     case SpookStepState::Disappear:
+        break;
+    case SpookStepState::Eaten:
+    {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+    }
         break;
     case SpookStepState::End:
         break;
@@ -234,9 +255,23 @@ void CSpookStepScript::Appear()
 #pragma region WAIT
 void CSpookStepScript::Wait()
 {
-    if (nullptr != GetTarget())
+    if (IsGround())
     {
-        ChangeState(SpookStepState::Find);
+        if (nullptr != GetTarget())
+        {
+            Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
+            ChangeState(SpookStepState::Find);
+        }
+    }
+    else
+    {
+        if (nullptr != GetTarget())
+        {
+            Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
+            ChangeState(SpookStepState::Find);
+        }
     }
 }
 #pragma endregion
@@ -304,3 +339,11 @@ void CSpookStepScript::Disappear()
     Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
 }
 #pragma endregion
+
+void CSpookStepScript::Eaten() 
+{
+    if (!GetResistState())
+    {
+        ChangeState(SpookStepState::Fall);
+    }
+}

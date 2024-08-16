@@ -3,51 +3,49 @@
 
 #include <Engine/CLevelSaveLoad.h>
 
+#include "CLevelFlowMgr.h"
+
 CLevelChangeButtonScript::CLevelChangeButtonScript()
     : CButtonScript(LEVELCHANGEBUTTONSCRIPT)
-    , m_LevelName{}
+    , m_pManager(nullptr)
 {
-    AddScriptParam(SCRIPT_PARAM::STRING, &m_LevelName, "Level Name");
 }
 
 CLevelChangeButtonScript::CLevelChangeButtonScript(const CLevelChangeButtonScript& Origin)
     : CButtonScript(Origin)
-    , m_LevelName(Origin.m_LevelName)
+    , m_pManager(nullptr)
 {
-    AddScriptParam(SCRIPT_PARAM::STRING, &m_LevelName, "Level Name");
 }
 
 CLevelChangeButtonScript::~CLevelChangeButtonScript()
 {
 }
 
+void CLevelChangeButtonScript::begin()
+{
+    CButtonScript::begin();
+
+    m_pManager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+}
+
 void CLevelChangeButtonScript::Func()
 {
-    CLevel* NewLevel = CLevelSaveLoad::LoadLevel(ToWstring(m_LevelName)) != nullptr ? CLevelSaveLoad::LoadLevel(ToWstring(m_LevelName))
-                                                                                    : CLevelMgr::GetInst()->CreateDefaultRobbyUILevel();
-
-    GamePlayStatic::ChangeLevel(NewLevel, LEVEL_STATE::PLAY);
+    if (nullptr != m_pManager)
+    {
+        m_pManager->GetScript<CLevelFlowMgr>()->LevelEnd();
+    }
 }
 
 UINT CLevelChangeButtonScript::SaveToLevelFile(FILE* _File)
 {
-    UINT MemoryByte = 0;
-
-    MemoryByte += CButtonScript::SaveToLevelFile(_File);
-    MemoryByte += SaveWStringToFile(ToWstring(m_LevelName), _File);
+    UINT MemoryByte = CButtonScript::SaveToLevelFile(_File);
 
     return MemoryByte;
 }
 
 UINT CLevelChangeButtonScript::LoadFromLevelFile(FILE* _File)
 {
-    UINT MemoryByte = 0;
-
-    MemoryByte += CButtonScript::LoadFromLevelFile(_File);
-
-    wstring _SaveLevel = {};
-    MemoryByte += LoadWStringFromFile(_SaveLevel, _File);
-    m_LevelName = ToString(_SaveLevel);
+    UINT MemoryByte = CButtonScript::LoadFromLevelFile(_File);
 
     return MemoryByte;
 }

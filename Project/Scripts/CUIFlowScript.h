@@ -7,13 +7,19 @@ enum class FlowState
     Start,
     Tick,
     End,
+    Loading,
 };
 
-class CUIAnimScript;
+class CLevelFlowMgr;
+class CUIAnimManagerScript;
+
 class CUIFlowScript : public CScript
 {
 private:
-    vector<CUIAnimScript*> m_vAnimScript;
+    CLevelFlowMgr* m_pFlowMgr;
+    CUIAnimManagerScript* m_pUIAnimManager;
+    CGameObject* m_pLoadingObj;
+
     FlowState m_eState;
 
     float m_fWaitTime;
@@ -23,19 +29,19 @@ private:
     bool m_bIsLoop;
 
 public:
+    void SetUIAnimManager(CUIAnimManagerScript* _pScript) { m_pUIAnimManager = _pScript; }
+
     void SetLoop(const bool _flag) { m_bIsLoop = _flag; }
     bool GetFinish() const { return m_bIsFinish; }
 
     void SetWaitTime(const float _time) { m_fWaitTime = _time; }
-
-protected:
-    void AddFlowScript(CUIAnimScript* _script);
+    void ChangeState(FlowState _state);
 
 public:
+    virtual void begin() override;
     virtual void tick() override;
 
 private:
-    void ChangeState(FlowState _state);
     void EnterState(FlowState _state);
     void ExitState(FlowState _state);
 
@@ -43,6 +49,7 @@ private:
     void EnterFlow();
     void TickFlow();
     void EndFlow();
+    void LoadingFlow();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

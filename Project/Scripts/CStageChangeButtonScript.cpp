@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "CStageChangeButtonScript.h"
 
-#include <Engine/CLevelSaveLoad.h>
+#include "CLevelFlowMgr.h"
 
 CStageChangeButtonScript::CStageChangeButtonScript()
     : CButtonScript(STAGECHANGEBUTTONSCRIPT)
     , m_vStageName{}
     , m_iCurStage(0)
     , m_iStageCount(5)
+    , m_pManager(nullptr)
 {
     m_vStageName.resize(m_iStageCount);
     for (UINT i = 0; i < m_iStageCount; i++)
@@ -20,20 +21,26 @@ CStageChangeButtonScript::~CStageChangeButtonScript()
 {
 }
 
+void CStageChangeButtonScript::begin()
+{
+    CButtonScript::begin();
+    m_pManager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+}
+
 void CStageChangeButtonScript::tick()
 {
     CButtonScript::tick();
 
     // 정해진 stage가 없을 경우에는 해당 버튼 상태를 Disabled로 만든다.
-    "" == m_vStageName[m_iCurStage] ? ChangeState(ButtonState::DISABLED) : ChangeState(ButtonState::NORMAL);
+    "" == m_vStageName[m_iCurStage] ? ChangeState(ButtonState::DISABLED) : ChangeState(ButtonState::SELECTED);
 }
 
 void CStageChangeButtonScript::Func()
 {
-    if ("" == m_vStageName[m_iCurStage])
-        return;
-
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(ToWstring(m_vStageName[m_iCurStage])), LEVEL_STATE::PLAY);
+    if (nullptr != m_pManager)
+    {
+        m_pManager->GetScript<CLevelFlowMgr>()->LevelEnd();
+    }
 }
 
 UINT CStageChangeButtonScript::SaveToLevelFile(FILE* _File)
