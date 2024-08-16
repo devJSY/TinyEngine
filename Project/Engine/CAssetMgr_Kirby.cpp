@@ -356,6 +356,39 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Masking Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MaskingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMap Y");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(VEC4_1, "Additional Color");
+        pShader->AddScalarParam(INT_1, "Invert Masking Alpha 0");
+        pShader->AddScalarParam(INT_2, "Invert Masking Alpha 1");
+
+        pShader->AddTexParam(TEX_0, "Masking Alpha0 Texture");
+        pShader->AddTexParam(TEX_1, "Masking Alpha1 Texture");
+        pShader->AddTexParam(TEX_2, "Masking Color Texture");
+        pShader->AddTexParam(TEX_3, "Color Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Emissive Texture");
+
+        pShader->SetName(L"MaskingShader");
+        AddAsset(L"MaskingShader", pShader);
+    }
+
+    // =================================
     // Kirby Sword Magma Shader
     // =================================
     {
