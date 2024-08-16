@@ -182,7 +182,7 @@ void CLevelFlowMgr::LevelRestart()
 
 void CLevelFlowMgr::MtrlParamUpdate()
 {
-    // // DOF Focus Player 위치 설정
+    // DOF Focus Player 위치 설정
     if (nullptr != PLAYER)
     {
         static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");

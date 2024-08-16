@@ -284,9 +284,7 @@ PS_Std2D_Glow_Output PS_ParticleRender_Glow(GS_Output _in)
     return output;
 }
 
-#define FireTex g_tex_1
 #define LerpRatio g_float_1
-
 #define InitFireColor g_vec4_1
 #define EndFireColor g_vec4_2
 
@@ -301,9 +299,15 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
     vOutColor.a = 1.f;
     
     // Texture 적용
-    if (g_btex_1)
+    if (g_btex_0)
     {
-        float4 vSampleColor = FireTex.Sample(g_LinearWrapSampler, _in.vUV);
+        // 좌우 반전
+        if (0 == _in.iInstID % 2)
+        {
+            _in.vUV.x = 1.f - _in.vUV.x;
+        }
+        
+        float4 vSampleColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
         vOutColor.rgb *= vSampleColor.rgb;
         vOutColor.a = vSampleColor.a;
     }
