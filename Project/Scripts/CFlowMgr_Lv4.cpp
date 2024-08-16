@@ -5,7 +5,7 @@ CFlowMgr_Lv4::CFlowMgr_Lv4()
     : CLevelFlowMgr(FLOWMGR_LV4)
     , m_pLight{}
     , m_eState(Lv4State::Idle)
-    , m_fLightOutTime(7.f)
+    , m_fLightOutTime(14.f)
     , m_fAccTime(0.f)
     , m_fRatio(1.f)
 {
@@ -15,7 +15,7 @@ CFlowMgr_Lv4::CFlowMgr_Lv4(const CFlowMgr_Lv4& _Origin)
     : CLevelFlowMgr(_Origin)
     , m_pLight{}
     , m_eState(Lv4State::Idle)
-    , m_fLightOutTime(7.f)
+    , m_fLightOutTime(14.f)
     , m_fAccTime(0.f)
     , m_fRatio(1.f)
 {
@@ -28,7 +28,7 @@ CFlowMgr_Lv4::~CFlowMgr_Lv4()
 void CFlowMgr_Lv4::begin()
 {
     CLevelFlowMgr::begin();
-
+    SetToneMappingParam(true, true, 0.1f, 0.5f);
     for (int i = 0;i < 2;i++)
     {
         CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Trigger Light" + std::to_wstring(i + 1));

@@ -153,11 +153,11 @@ void CMonsterUnitScript::SparkleEffect()
             {
                 if (m_bSparkleOnOff)
                 {
-                    pMeshRender->GetMaterial(i)->SetEmission(Vec4(60.f / 255.f, 60.f / 255.f, 60.f / 255.f, 1.f));
+                    pMeshRender->GetDynamicMaterial(i)->SetEmission(Vec4(60.f / 255.f, 60.f / 255.f, 60.f / 255.f, 1.f));
                 }
                 else
                 {
-                    pMeshRender->GetMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
+                    pMeshRender->GetDynamicMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
                 }
             }
             m_bSparkleOnOff = !m_bSparkleOnOff;
@@ -177,9 +177,11 @@ void CMonsterUnitScript::SparkleReset()
     m_bSparkle = false;
     m_fAccTime = 0.f;
     m_fTermTime = 0.f;
+
     for (UINT i = 0; i < pMeshRender->GetMtrlCount(); ++i)
     {
         pMeshRender->GetMaterial(i)->SetEmission(Vec4(0.f, 0.f, 0.f, 0.f));
+        pMeshRender->GetSharedMaterial(i);
     }
 }
 

@@ -101,7 +101,7 @@ CButtonScript::~CButtonScript()
 
 void CButtonScript::begin()
 {
-    m_vNormalScale = GetOwner()->GetComponent<CTransform>()->GetLocalScale();
+    m_vNormalScale = GetOwner()->GetComponent<CTransform>()->GetWorldScale();
 }
 
 void CButtonScript::tick()
@@ -206,12 +206,12 @@ void CButtonScript::ButtonUpdate()
     case ButtonTransition::ANIMATION: {
     }
     break;
-    case ButtonTransition::CUSTOM: {
+    case ButtonTransition::CUSTOM1: {
         if (ButtonState::NORMAL == m_eCurState)
         {
             vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
 
-            for (size_t i = 0; i < pChildObj.size();i++)
+            for (size_t i = 0; i < pChildObj.size(); i++)
             {
                 if (nullptr != pChildObj[i])
                     pChildObj[i]->SetActive(false);
@@ -231,6 +231,37 @@ void CButtonScript::ButtonUpdate()
         {
             //
         }
+    }
+    break;
+    case ButtonTransition::CUSTOM2: {
+        if (ButtonState::NORMAL == m_eCurState)
+        {
+            vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
+
+            for (size_t i = 0; i < pChildObj.size(); i++)
+            {
+                if (nullptr != pChildObj[i])
+                    pChildObj[i]->SetActive(false);
+            }
+        }
+        else if (ButtonState::SELECTED == m_eCurState)
+        {
+            vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
+
+            for (size_t i = 0; i < pChildObj.size(); i++)
+            {
+                if (nullptr != pChildObj[i])
+                    pChildObj[i]->SetActive(true);
+            }
+        }
+        else if (ButtonState::PRESSED == m_eCurState)
+        {
+            //
+        }
+        CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
+
+        if (_pTr)
+            _pTr->SetWorldScale(m_vNormalScale * m_vButtonScale[(UINT)m_eCurState]);
     }
     break;
     case ButtonTransition::END:

@@ -177,6 +177,11 @@ void CSpookStepScript::FSM()
     default:
         break;
     }
+
+    if (!IsGround())
+    {
+        ChangeState(SpookStepState::Fall);
+    }
 }
 
 void CSpookStepScript::ExitState()
@@ -250,11 +255,23 @@ void CSpookStepScript::Appear()
 #pragma region WAIT
 void CSpookStepScript::Wait()
 {
-    if (nullptr != GetTarget())
+    if (IsGround())
     {
-        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+        if (nullptr != GetTarget())
+        {
+            Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
 
-        ChangeState(SpookStepState::Find);
+            ChangeState(SpookStepState::Find);
+        }
+    }
+    else
+    {
+        if (nullptr != GetTarget())
+        {
+            Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
+            ChangeState(SpookStepState::Find);
+        }
     }
 }
 #pragma endregion

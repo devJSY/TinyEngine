@@ -1,40 +1,68 @@
 #include "pch.h"
 #include "CUIAnimManagerScript.h"
 
-#include "CUIFlowScript.h"
-
-#include "CUIStartSceneFlowScript.h"
+#include "CUIAnimScript.h"
 
 CUIAnimManagerScript::CUIAnimManagerScript()
     : CScript(UIANIMMANAGERSCRIPT)
-    , m_vFlowScript{}
+    , m_vAnimScript{}
 {
 }
 
 CUIAnimManagerScript::~CUIAnimManagerScript()
 {
-    Delete_Vec(m_vFlowScript);
 }
 
 void CUIAnimManagerScript::begin()
 {
-    m_vFlowScript.resize(static_cast<size_t>(SceneType::End));
+    vector<CGameObject*> vObj = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_UI)->GetLayerObjects();
 
-    // TODO : Scene Flow √ ±‚»≠
+    for (size_t i = 0; i < vObj.size(); i++)
     {
-        CUIStartSceneFlowScript* script = new CUIStartSceneFlowScript;
-        script->SetLoop(true);
-        script->SetWaitTime(2.f);
-
-        script->begin();
-        m_vFlowScript[(UINT)SceneType::StartScene] = script;
+        CUIAnimScript* pScript = vObj[i]->GetScript<CUIAnimScript>();
+        if (nullptr != pScript)
+        {
+            m_vAnimScript.push_back(pScript);
+            pScript->SetUIAnimState(UIAnimState::PrePared);
+        }
     }
-
 }
 
 void CUIAnimManagerScript::tick()
 {
-    nullptr != m_vFlowScript[(UINT)m_eType] ? m_vFlowScript[(UINT)m_eType]->tick() : void();
+    for (size_t i = 0; i < m_vAnimScript.size(); i++)
+    {
+        if (nullptr != m_vAnimScript[i])
+        {
+            m_vAnimScript[i]->tick();
+        }
+    }
+}
+
+void CUIAnimManagerScript::EndAnimUI()
+{
+    for (size_t i = 0; i < m_vAnimScript.size(); i++)
+    {
+        if (nullptr != m_vAnimScript[i])
+        {
+            m_vAnimScript[i]->SetUIAnimState(UIAnimState::End);
+        }
+    }
+}
+
+bool CUIAnimManagerScript::AllFinishEndUI()
+{
+    bool bFlag = true;
+    for (size_t i = 0; i < m_vAnimScript.size(); i++)
+    {
+        if (nullptr != m_vAnimScript[i])
+        {
+            if (!m_vAnimScript[i]->GetFinish())
+                bFlag = false;
+        }
+    }
+
+    return bFlag;
 }
 
 UINT CUIAnimManagerScript::SaveToLevelFile(FILE* _File)

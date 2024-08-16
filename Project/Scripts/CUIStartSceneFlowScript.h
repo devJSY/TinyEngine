@@ -3,9 +3,6 @@
 class CUIStartSceneFlowScript : public CUIFlowScript
 {
 public:
-    virtual void begin() override;
-
-public:
     CUIStartSceneFlowScript();
     virtual ~CUIStartSceneFlowScript();
 };

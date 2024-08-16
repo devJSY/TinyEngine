@@ -9,12 +9,15 @@
 #include "CCameraController.h"
 #include "CFadeOutScript.h"
 
+#include "CUIFlowScript.h"
+
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
     , m_CurLevelPath{}
     , m_NextLevelPath{}
     , m_DimensionFadeEffect(nullptr)
     , m_FadeOutObj(nullptr)
+    , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -26,6 +29,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_NextLevelPath(_Origin.m_NextLevelPath)
     , m_DimensionFadeEffect(nullptr)
     , m_FadeOutObj(nullptr)
+    , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -157,7 +161,6 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
-
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }

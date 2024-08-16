@@ -2,10 +2,15 @@
 #include "CUIFlowScript.h"
 
 #include "CUIAnimScript.h"
+#include "CLevelFlowMgr.h"
+
+#include "CUIAnimManagerScript.h"
 
 CUIFlowScript::CUIFlowScript()
     : CScript(UIFLOWSCRIPT)
-    , m_vAnimScript{}
+    , m_pFlowMgr(nullptr)
+    , m_pUIAnimManager(nullptr)
+    , m_pLoadingObj(nullptr)
     , m_eState(FlowState::Start)
     , m_fWaitTime(0.f)
     , m_fAccTime(0.f)
@@ -16,7 +21,9 @@ CUIFlowScript::CUIFlowScript()
 
 CUIFlowScript::CUIFlowScript(UINT _iScriptType)
     : CScript(_iScriptType)
-    , m_vAnimScript{}
+    , m_pFlowMgr(nullptr)
+    , m_pUIAnimManager(nullptr)
+    , m_pLoadingObj(nullptr)
     , m_eState(FlowState::Start)
     , m_fWaitTime(0.f)
     , m_fAccTime(0.f)
@@ -27,6 +34,25 @@ CUIFlowScript::CUIFlowScript(UINT _iScriptType)
 
 CUIFlowScript::~CUIFlowScript()
 {
+}
+
+void CUIFlowScript::begin()
+{
+    // TODO : Enter로 바꾸기
+    m_pLoadingObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_Loading");
+
+    if (nullptr != m_pLoadingObj)
+    {
+        m_pLoadingObj->SetActive(false);
+    }
+
+    m_pFlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+    if (nullptr != m_pFlowMgr)
+    {
+        m_pFlowMgr->SetFlowScript(this);
+    }
+
+    ChangeState(FlowState::Start);
 }
 
 void CUIFlowScript::tick()
@@ -45,6 +71,10 @@ void CUIFlowScript::tick()
         EndFlow();
     }
     break;
+    case FlowState::Loading: {
+        LoadingFlow();
+    }
+    break;
     default:
         break;
     }
@@ -59,15 +89,18 @@ void CUIFlowScript::ChangeState(FlowState _state)
 
 void CUIFlowScript::EnterState(FlowState _state)
 {
-    switch (m_eState)
+    switch (_state)
     {
+    case FlowState::Start:
+        break;
+    case FlowState::Tick:
+        break;
     case FlowState::End: {
-        for (size_t i = 0; i < m_vAnimScript.size(); i++)
-        {
-            m_vAnimScript[i]->SetUIAnimState(UIAnimState::End);
-        }
+        m_pUIAnimManager->EndAnimUI();
     }
     break;
+    case FlowState::Loading:
+        break;
     default:
         break;
     }
@@ -79,47 +112,31 @@ void CUIFlowScript::ExitState(FlowState _state)
 
 void CUIFlowScript::EnterFlow()
 {
-    for (size_t i = 0; i < m_vAnimScript.size(); i++)
-    {
-        if (!m_vAnimScript[i]->GetLoopUI())
-            m_vAnimScript[i]->SetUIAnimState(UIAnimState::PrePared);
-    }
-
-    ChangeState(FlowState::Tick);
 }
 
 void CUIFlowScript::TickFlow()
 {
-    bool flag = true;
-    for (size_t i = 0; i < m_vAnimScript.size(); i++)
-    {
-        if (false == m_vAnimScript[i]->GetFinish())
-        {
-            flag = false;
-        }
-    }
-
-    if (flag)
-        ChangeState(FlowState::End);
 }
 
 void CUIFlowScript::EndFlow()
 {
-    if (m_bIsLoop)
+    if (m_pUIAnimManager->AllFinishEndUI())
     {
-        m_fAccTime += DT;
-
-        if (m_fAccTime >= m_fWaitTime)
-        {
-            m_eState = FlowState::Start;
-            m_fAccTime = 0.f;
-        }
+        ChangeState(FlowState::Loading);
     }
 }
 
-void CUIFlowScript::AddFlowScript(CUIAnimScript* _script)
+void CUIFlowScript::LoadingFlow()
 {
-    m_vAnimScript.push_back(_script);
+    m_pLoadingObj->SetActive(true);
+    m_fAccTime += DT;
+
+    if (m_fWaitTime <= m_fAccTime)
+    {
+        m_pLoadingObj->SetActive(false);
+        // TODO : 레벨 로딩 스레드 완료 같은거 얻어올 수 있으면 얻어오기
+        m_pFlowMgr->LevelExit();
+    }
 }
 
 UINT CUIFlowScript::SaveToLevelFile(FILE* _File)

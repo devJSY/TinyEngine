@@ -17,7 +17,8 @@ enum class ButtonTransition
     TEXTURE,
     SCALE,
     ANIMATION,
-    CUSTOM,
+    CUSTOM1,
+    CUSTOM2,
     END,
 };
 
@@ -37,6 +38,9 @@ private:
 
     // protected:
     //     std::function<void>* m_pFuncPtr;
+
+public:
+    bool IsHovered() { return m_IsHovered; }
 
 private:
     Ptr<CTexture> m_pButtonTex[(UINT)ButtonState::END];

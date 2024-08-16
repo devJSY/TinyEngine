@@ -29,33 +29,40 @@ void CUIGlowMoveScript::tick()
 {
     CUIAnimScript::tick();
 
-    if (UIAnimState::Start == GetUIAnimState())
+    switch (GetUIAnimState())
     {
-        SetFinish(false);
-        SetUIAnimState(UIAnimState::Tick);
+    case UIAnimState::PrePared:
+        break;
+    case UIAnimState::Start:
+        break;
+    case UIAnimState::Tick: {
+        MoveGlowRatio();
     }
-
-    MoveGlowRatio();
+    break;
+    case UIAnimState::End:
+    {
+        CommonUIExit();
+    }
+        break;
+    default:
+        break;
+    }
 }
 
 void CUIGlowMoveScript::MoveGlowRatio()
 {
-    if (UIAnimState::Tick == GetUIAnimState())
+    m_fStartOff += DT * m_fSpeed;
+
+    GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, m_fStartOff);
+    GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_3, m_fStartOff + m_fDist);
+
+    if (m_fStartOff >= 1.f)
     {
-        m_fStartOff += DT * m_fSpeed;
+        GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, 0.f);
+        GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_3, 0.f);
 
-        GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, m_fStartOff);
-        GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_3, m_fStartOff + m_fDist);
-
-        if (m_fStartOff >= 1.f)
-        {
-            GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, 0.f);
-            GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_3, 0.f);
-
-            m_fStartOff = 0.f;
-            SetUIAnimState(UIAnimState::End);
-            SetFinish(true);
-        }
+        m_fStartOff = 0.f;
+        SetUIAnimState(UIAnimState::PrePared);
     }
 }
 

@@ -21,7 +21,7 @@ CGordoLongScript::~CGordoLongScript()
 void CGordoLongScript::begin()
 {
     CUnitScript::begin();
-    Animator()->Play(ANIMPREFIX("Wait"));
+    Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
 }
 
 void CGordoLongScript::tick()

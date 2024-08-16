@@ -3,6 +3,7 @@
 #include <Engine/CScript.h>
 
 class CGameObject;
+class CUIFlowScript;
 
 class CLevelFlowMgr : public CScript
 {
@@ -12,12 +13,21 @@ private:
 
     CGameObject* m_DimensionFadeEffect;
     CGameObject* m_FadeOutObj;
+
+    CUIFlowScript* m_UIFlowScript;
+
     Ptr<CMaterial> m_ToneMappingMtrl;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
     virtual void TriggerEvent(UINT _Idx){};
+
+public:
+    CUIFlowScript* GetFlowScript() { return m_UIFlowScript; }
+    void SetFlowScript(CUIFlowScript* _pScript) { m_UIFlowScript = _pScript; }
+
+    void SetNextLevel(const string _string) { m_NextLevelPath = _string; }
 
 public:
     void OnDimensionFade();

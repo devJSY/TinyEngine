@@ -197,20 +197,20 @@ void CKabuScript::EnterState(KabuState _state)
     {
     case KabuState::Patrol: {
         m_vDir = m_vPrevDir;
-        Animator()->Play(ANIMPREFIX("Wait"), false);
+        Animator()->Play(ANIMPREFIX("Wait"), false, false, 1.5f);
     }
     break;
     case KabuState::Return: {
         m_vDir = (m_vDestPos - Transform()->GetWorldPos()).Normalize();
-        Animator()->Play(ANIMPREFIX("Wait"), false);
+        Animator()->Play(ANIMPREFIX("Wait"), false, false, 1.5f);
     }
     break;
     case KabuState::Fall: {
-        Animator()->Play(ANIMPREFIX("Fall"));
+        Animator()->Play(ANIMPREFIX("Fall"), true, false, 1.5f);
     }
     break;
     case KabuState::Landing: {
-        Animator()->Play(ANIMPREFIX("Landing"), false);
+        Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
     }
     break;
     case KabuState::Damage: {
@@ -225,15 +225,15 @@ void CKabuScript::EnterState(KabuState _state)
 
         Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
 
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
     break;
     case KabuState::Eaten: {
-        Animator()->Play(ANIMPREFIX("Damage"));
+        Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
     case KabuState::Death: {
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
     break;
     case KabuState::End:
@@ -379,7 +379,7 @@ void CKabuScript::LinearMove()
 
     m_vDir.y = 0.f;
 
-    Rigidbody()->AddForce(m_vDir * GetCurInfo().Speed, ForceMode::Acceleration);
+    Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT);
 
     if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 10.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
     {
@@ -452,7 +452,7 @@ void CKabuScript::Damage()
 
         if (Animator()->IsFinish())
         {
-            ChangeState(KabuState::Return);
+            ChangeState(KabuState::Patrol);
         }
     }
 }

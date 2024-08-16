@@ -19,6 +19,11 @@ private:
     bool m_bLoopUI;
 
 public:
+    virtual void Enter(){};
+    virtual void Idle(){};
+    virtual void Exit(){};
+
+public:
     UIAnimState GetUIAnimState() const { return m_eState; }
     void SetUIAnimState(const UIAnimState _state) { m_eState = _state; }
 
@@ -36,6 +41,11 @@ public:
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+
+protected:
+    void CommonUIEnter();
+    void CommonUIExit();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

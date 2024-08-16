@@ -21,12 +21,30 @@ CUIRotateScript::~CUIRotateScript()
 
 void CUIRotateScript::begin()
 {
-    SetLoopUI(true);
 }
 
 void CUIRotateScript::tick()
 {
-    Rotate();
+    CUIAnimScript::tick();
+
+    switch (GetUIAnimState())
+    {
+    case UIAnimState::PrePared:
+        break;
+    case UIAnimState::Start:
+        break;
+    case UIAnimState::Tick: {
+        Rotate();
+    }
+        break;
+    case UIAnimState::End:
+    {
+        CommonUIExit();
+    }
+        break;
+    default:
+        break;
+    }
 }
 
 void CUIRotateScript::Rotate()

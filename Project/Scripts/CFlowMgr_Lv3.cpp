@@ -18,7 +18,7 @@ CFlowMgr_Lv3::~CFlowMgr_Lv3()
 void CFlowMgr_Lv3::begin()
 {
     CLevelFlowMgr::begin();
-    // Tone Mapping
+    SetToneMappingParam(true, true, 0.6f, 0.23f);
 }
 
 void CFlowMgr_Lv3::tick()

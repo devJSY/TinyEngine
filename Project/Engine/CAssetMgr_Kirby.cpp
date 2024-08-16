@@ -292,7 +292,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->CreatePixelShader(L"shader\\UIHPShaderPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
