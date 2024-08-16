@@ -15,6 +15,9 @@ public:
     virtual void TriggerEvent(UINT _Idx) override;
 
 public:
+    virtual void LevelEnd() override;
+
+public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
@@ -23,5 +26,4 @@ public:
     CFlowMgr_Lv0();
     CFlowMgr_Lv0(const CFlowMgr_Lv0& _Origin);
     virtual ~CFlowMgr_Lv0();
-
 };

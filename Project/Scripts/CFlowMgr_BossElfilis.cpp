@@ -26,7 +26,7 @@ void CFlowMgr_BossElfilis::begin()
 {
     CLevelFlowMgr::begin();
     SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f, 0.3f, 0.5f);
-    SetFadeOutColor(Vec3(180.f, 140.f, 200.f));
+    SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 
     CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera", LAYER_DEFAULT);
     CCameraController* CameraController = Camera ? Camera->GetScript<CCameraController>() : nullptr;

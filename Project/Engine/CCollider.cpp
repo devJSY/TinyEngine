@@ -82,24 +82,36 @@ void CCollider::finaltick()
 
 void CCollider::SetTrigger(bool _Trigger)
 {
+    if (m_bTrigger == _Trigger)
+        return;
+
     m_bTrigger = _Trigger;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCollider::SetMaterial(Ptr<CPhysicMaterial> _Mtrl)
 {
+    if (m_Mtrl == _Mtrl)
+        return;
+
     m_Mtrl = _Mtrl;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCollider::SetCenter(Vec3 _Center)
 {
+    if (m_NextCenter == _Center)
+        return;
+
     m_NextCenter = _Center;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCollider::SetEnabled(bool _bEnabled)
 {
+    if (m_bEnabled == _bEnabled)
+        return;
+
     m_bEnabled = _bEnabled;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }

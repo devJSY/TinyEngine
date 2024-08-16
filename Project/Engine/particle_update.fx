@@ -74,7 +74,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 {
                     Particle.vLocalPos.x = vRand0.r * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
                     Particle.vLocalPos.y = vRand0.g * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
-                    Particle.vLocalPos.z = 0.f;
+                    Particle.vLocalPos.z = vRand0.b * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f);
                 }
                 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;

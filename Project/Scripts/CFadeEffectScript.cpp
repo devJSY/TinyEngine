@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "CFadeOutScript.h"
+#include "CFadeEffectScript.h"
 #include "define.h"
 #include <Engine\\CRenderMgr.h>
 #include "CPlayerMgr.h"
 
-CFadeOutScript::CFadeOutScript()
-    : CScript(FADEOUTSCRIPT)
+CFadeEffectScript::CFadeEffectScript()
+    : CScript(FADEEFFECTSCRIPT)
     , m_Target(nullptr)
     , m_BackGroundColor()
     , m_bReverse(false)
@@ -20,7 +20,7 @@ CFadeOutScript::CFadeOutScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotateSpeed, "Rotate Speed");
 }
 
-CFadeOutScript::CFadeOutScript(const CFadeOutScript& origin)
+CFadeEffectScript::CFadeEffectScript(const CFadeEffectScript& origin)
     : CScript(origin)
     , m_Target(nullptr)
     , m_BackGroundColor(origin.m_BackGroundColor)
@@ -35,11 +35,11 @@ CFadeOutScript::CFadeOutScript(const CFadeOutScript& origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RotateSpeed, "Rotate Speed");
 }
 
-CFadeOutScript::~CFadeOutScript()
+CFadeEffectScript::~CFadeEffectScript()
 {
 }
 
-void CFadeOutScript::begin()
+void CFadeEffectScript::begin()
 {
     m_Target = PLAYER;
 
@@ -47,7 +47,7 @@ void CFadeOutScript::begin()
     m_bReverse ? m_ElapsedTime = m_Duration : m_ElapsedTime = 0.f;
 }
 
-void CFadeOutScript::tick()
+void CFadeEffectScript::tick()
 {
     if (m_bComplete)
         return;
@@ -86,7 +86,7 @@ void CFadeOutScript::tick()
     }
 }
 
-UINT CFadeOutScript::SaveToLevelFile(FILE* _File)
+UINT CFadeEffectScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
@@ -102,7 +102,7 @@ UINT CFadeOutScript::SaveToLevelFile(FILE* _File)
     return MemoryByte;
 }
 
-UINT CFadeOutScript::LoadFromLevelFile(FILE* _File)
+UINT CFadeEffectScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 

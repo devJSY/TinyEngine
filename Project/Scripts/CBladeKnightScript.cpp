@@ -2,6 +2,8 @@
 #include "CBladeKnightScript.h"
 #include "CBladeKnightSwordScript.h"
 
+#include "CPlayerMgr.h"
+
 CBladeKnightScript::CBladeKnightScript()
     : CMonsterUnitScript(BLADEKNIGHTSCRIPT)
     , m_State(BLADEKNIGHT_STATE::Wait)
@@ -47,15 +49,10 @@ void CBladeKnightScript::begin()
 
 void CBladeKnightScript::tick()
 {
-    // Damage Proc
-    ClearHitDir();
-    m_PrevInfo = m_CurInfo;
+    CMonsterUnitScript::tick();
 
-    float DamageAmount = DamageProc();
-    if (DamageAmount > 0.f)
+    if (IsGetDamage())
     {
-        m_CurInfo.HP -= DamageAmount;
-
         // 공격 상태가 아닌 경우에만 Damage상태로 변경
         switch (m_State)
         {
@@ -169,8 +166,17 @@ void CBladeKnightScript::SetSword()
         if (nullptr != Sword)
         {
             m_Sword = Sword;
+            SetSwordEnable(false);
             break;
         }
+    }
+}
+
+void CBladeKnightScript::SetSwordEnable(bool _bEnable)
+{
+    if (nullptr != m_Sword && nullptr != m_Sword->BoxCollider())
+    {
+        m_Sword->BoxCollider()->SetEnabled(_bEnable);
     }
 }
 
@@ -181,13 +187,17 @@ void CBladeKnightScript::EnterState()
     case BLADEKNIGHT_STATE::Attack: {
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("Attack"), false, false, 1.5f);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
         Animator()->Play(ANIMPREFIX("AttackStart"), false);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
+        SetSparkle(true);
+
         // 피격 방향으로 회전
         Vec3 ToTargetDir = -GetHitDir();
         ToTargetDir.y = 0.f; // Y축 고정
@@ -206,6 +216,7 @@ void CBladeKnightScript::EnterState()
     case BLADEKNIGHT_STATE::DoubleAttack: {
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("DoubleAttack"), false, false, 1.5f);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
@@ -242,6 +253,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::Thrust);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -250,6 +262,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustEnd);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -258,6 +271,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustLoop);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -266,6 +280,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustStart);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -274,6 +289,7 @@ void CBladeKnightScript::EnterState()
         if (nullptr != m_Sword)
         {
             m_Sword->ChangeState(BLADEKNIGHTSWORD_STATE::ThrustStartWait);
+            SetSwordEnable(true);
         }
     }
     break;
@@ -287,14 +303,17 @@ void CBladeKnightScript::EnterState()
     // break;
     case BLADEKNIGHT_STATE::TornadoAttack: {
         Animator()->Play(ANIMPREFIX("TornadoAttack"), false, false, 1.5f);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge: {
         Animator()->Play(ANIMPREFIX("TornadoAttackCharge"), false);
+        SetSwordEnable(true);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge2: {
         Animator()->Play(ANIMPREFIX("TornadoAttackCharge2"), false);
+        SetSwordEnable(true);
     }
     break;
     // case BLADEKNIGHT_STATE::TornadoAttackChargeMax: {
@@ -314,9 +333,11 @@ void CBladeKnightScript::ExitState()
     {
     case BLADEKNIGHT_STATE::Attack: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::AttackStart: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
@@ -330,6 +351,7 @@ void CBladeKnightScript::ExitState()
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::Fall: {
@@ -358,35 +380,44 @@ void CBladeKnightScript::ExitState()
     break;
     case BLADEKNIGHT_STATE::Retreat: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::Thrust: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustEnd: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustLoop: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStart: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::ThrustStartWait: {
         Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
+        SetSwordEnable(false);
     }
     break;
     // case BLADEKNIGHT_STATE::ThrustWait: {
     // }
     // break;
     case BLADEKNIGHT_STATE::TornadoAttack: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge: {
+        SetSwordEnable(false);
     }
     break;
     case BLADEKNIGHT_STATE::TornadoAttackCharge2: {
+        SetSwordEnable(false);
     }
     break;
     // case BLADEKNIGHT_STATE::TornadoAttackChargeMax: {
@@ -720,16 +751,15 @@ void CBladeKnightScript::Wait()
     }
 }
 
-void CBladeKnightScript::OnCollisionEnter(CCollider* _OtherCollider)
+void CBladeKnightScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-}
-
-void CBladeKnightScript::OnCollisionStay(CCollider* _OtherCollider)
-{
-}
-
-void CBladeKnightScript::OnCollisionExit(CCollider* _OtherCollider)
-{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+    if (L"Body Collider" == pObj->GetName())
+    {
+        Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 UINT CBladeKnightScript::SaveToLevelFile(FILE* _File)

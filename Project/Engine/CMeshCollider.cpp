@@ -34,6 +34,24 @@ void CMeshCollider::finaltick()
     }
 }
 
+void CMeshCollider::SetConvex(bool _bEnable)
+{
+    if (m_bConvex == _bEnable)
+        return;
+
+    m_bConvex = _bEnable;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
+void CMeshCollider::SetMesh(Ptr<CMesh> _pMesh)
+{
+    if (m_Mesh == _pMesh)
+        return;
+
+    m_Mesh = _pMesh;
+    GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
+}
+
 UINT CMeshCollider::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

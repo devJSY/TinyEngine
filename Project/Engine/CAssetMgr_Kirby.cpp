@@ -522,12 +522,12 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Kirby Fade Out Shader
+    // Kirby Fade Effect Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\KirbyFadeOutPS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyFadeEffectPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
@@ -539,8 +539,8 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddScalarParam(VEC4_0, "BackGroundColor");
         pShader->AddScalarParam(VEC4_1, "Target NDC Pos");
 
-        pShader->SetName(L"KirbyFadeOutShader");
-        AddAsset(L"KirbyFadeOutShader", pShader);
+        pShader->SetName(L"KirbyFadeEffectShader");
+        AddAsset(L"KirbyFadeEffectShader", pShader);
     }
 
     // =================================
@@ -557,5 +557,28 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyDimensionalFadeShader");
         AddAsset(L"KirbyDimensionalFadeShader", pShader);
+    }
+
+    // =================================
+    // Fire Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\FirePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddTexParam(TEX_0, "Masking Texture");
+        pShader->AddScalarParam(FLOAT_0, "Lerp Ratio", 0.1f);
+        pShader->AddScalarParam(VEC4_0, "Init Fire Color", 0.1f);
+        pShader->AddScalarParam(VEC4_1, "End Fire Color", 0.1f);
+
+        pShader->SetName(L"FireShader");
+        AddAsset(L"FireShader", pShader);
     }
 }

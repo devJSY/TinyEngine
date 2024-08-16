@@ -41,6 +41,9 @@ void CCircleCollider2D::finaltick()
 
 void CCircleCollider2D::SetRadius(float _Radius)
 {
+    if (m_Radius == _Radius)
+        return;
+
     m_Radius = _Radius;
     GamePlayStatic::Physics2D_Event(GetOwner(), Physics2D_EVENT_TYPE::RESPAWN);
 }

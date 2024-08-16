@@ -72,18 +72,27 @@ void CCapsuleCollider::finaltick()
 
 void CCapsuleCollider::SetRadius(float _Radius)
 {
+    if (m_Radius == _Radius)
+        return;
+
     m_Radius = _Radius;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCapsuleCollider::SetHeight(float _Height)
 {
+    if (m_Height == _Height)
+        return;
+
     m_Height = _Height;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }
 
 void CCapsuleCollider::SetAxisDirection(AXIS_TYPE _Dir)
 {
+    if (m_Direction == _Dir)
+        return;
+
     m_Direction = _Dir;
     GamePlayStatic::Physics_Event(GetOwner(), Physics_EVENT_TYPE::RESPAWN);
 }

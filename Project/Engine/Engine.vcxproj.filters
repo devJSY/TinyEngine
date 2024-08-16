@@ -1446,7 +1446,7 @@
     <FxCompile Include="DepthMaskingPS.hlsl">
       <Filter>ShaderCode\Render\PostEffect</Filter>
     </FxCompile>
-    <FxCompile Include="KirbyFadeOutPS.hlsl">
+    <FxCompile Include="KirbyFadeEffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="LensFlareVS.hlsl">
@@ -1474,6 +1474,12 @@
       <Filter>ShaderCode\Kirby\Characters\Monster\GhostGordo</Filter>
     </FxCompile>
     <FxCompile Include="MotionBlurPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
+    <FxCompile Include="FirePS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CircleDistortionPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="UIStartSceneButtonPS.hlsl">

@@ -395,6 +395,10 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Text("FPS : %d", CTimeMgr::GetInst()->GetFPS());
     ImGui::Text("Delta Time : %.5f", DT_ENGINE);
 
+    float TimeScale = CTimeMgr::GetInst()->GetTimeScale();
+    if (ImGui::DragFloat(ImGui_LabelPrefix("Time Scale").c_str(), &TimeScale, 0.01f, 0.f, 10.f))
+        CTimeMgr::GetInst()->SetTimeScale(TimeScale);
+
     ImGui::Text("Mouse Picking Mode");
     ImGui::SameLine();
     ImGui::Dummy(ImVec2(70.f, 0.f));

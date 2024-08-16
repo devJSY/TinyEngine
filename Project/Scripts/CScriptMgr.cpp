@@ -86,7 +86,7 @@
 #include "CMorphoShockWave.h"
 #include "CPushOutColliderScript.h"
 #include "CLightBulbGimmickScript.h"
-#include "CFadeOutScript.h"
+#include "CFadeEffectScript.h"
 #include "CLensFlareScript.h"
 #include "CFlowMgr_Lv0.h"
 #include "CFlowMgr_Lv1.h"
@@ -197,7 +197,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMorphoShockWave");
 	_vec.push_back(L"CPushOutColliderScript");
 	_vec.push_back(L"CLightBulbGimmickScript");
-	_vec.push_back(L"CFadeOutScript");
+	_vec.push_back(L"CFadeEffectScript");
 	_vec.push_back(L"CLensFlareScript");
 	_vec.push_back(L"CFlowMgr_Lv0");
 	_vec.push_back(L"CFlowMgr_Lv1");
@@ -394,8 +394,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPushOutColliderScript;
 	if (L"CLightBulbGimmickScript" == _strScriptName)
 		return new CLightBulbGimmickScript;
-	if (L"CFadeOutScript" == _strScriptName)
-		return new CFadeOutScript;
+	if (L"CFadeEffectScript" == _strScriptName)
+		return new CFadeEffectScript;
 	if (L"CLensFlareScript" == _strScriptName)
 		return new CLensFlareScript;
 	if (L"CFlowMgr_Lv0" == _strScriptName)
@@ -617,8 +617,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPushOutColliderScript;
 	case (UINT)SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
 		return new CLightBulbGimmickScript;
-	case (UINT)SCRIPT_TYPE::FADEOUTSCRIPT:
-		return new CFadeOutScript;
+	case (UINT)SCRIPT_TYPE::FADEEFFECTSCRIPT:
+		return new CFadeEffectScript;
 	case (UINT)SCRIPT_TYPE::LENSFLARESCRIPT:
 		return new CLensFlareScript;
 	case (UINT)SCRIPT_TYPE::FLOWMGR_LV0:
@@ -841,8 +841,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPushOutColliderScript";
 	case SCRIPT_TYPE::LIGHTBULBGIMMICKSCRIPT:
 		return L"CLightBulbGimmickScript";
-	case SCRIPT_TYPE::FADEOUTSCRIPT:
-		return L"CFadeOutScript";
+	case SCRIPT_TYPE::FADEEFFECTSCRIPT:
+		return L"CFadeEffectScript";
 	case SCRIPT_TYPE::LENSFLARESCRIPT:
 		return L"CLensFlareScript";
 	case SCRIPT_TYPE::FLOWMGR_LV0:

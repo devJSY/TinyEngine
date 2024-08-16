@@ -19,13 +19,7 @@ CFlowMgr_LvStart::~CFlowMgr_LvStart()
 
 void CFlowMgr_LvStart::begin()
 {
-    // TODO : UI 페이드 인 페이드 아웃 + Moving Script
-    Ptr<CPrefab> pFadeOutPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FadeOut.pref", L"prefab\\FadeOut.pref");
-    if (nullptr != pFadeOutPref)
-    {
-        m_FadeOutObj = pFadeOutPref->Instantiate();
-        GamePlayStatic::AddChildObject(GetOwner(), m_FadeOutObj);
-    }
+    CLevelFlowMgr::begin();
 }
 
 void CFlowMgr_LvStart::LevelEnd()
