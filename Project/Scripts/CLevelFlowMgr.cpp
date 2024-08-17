@@ -40,7 +40,7 @@ CLevelFlowMgr::~CLevelFlowMgr()
 }
 
 void CLevelFlowMgr::begin()
-{        
+{
 
     m_bIsChangedLevel = false;
 
@@ -118,7 +118,7 @@ void CLevelFlowMgr::LevelStart()
 
     // MainPlayer
     CGameObject* MainPlayer = nullptr;
-    MainPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
+    MainPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player");
 
     // Level에 Main Player가 없다면 직접 생성
     if (MainPlayer == nullptr)
@@ -159,7 +159,7 @@ void CLevelFlowMgr::LevelStart()
     }
 
     // UI (Fade In)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f);
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f, false);
 
     // @TODO BGM 재생
 }
@@ -171,7 +171,7 @@ void CLevelFlowMgr::LevelEnd()
         return;
 
     // UI (Fade Out)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -184,7 +184,6 @@ void CLevelFlowMgr::LevelExit()
 {
     // Loding UI 시작
 
-
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
@@ -196,7 +195,7 @@ void CLevelFlowMgr::LevelRestart()
         return;
 
     // UI (Fade Out)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -214,8 +213,16 @@ void CLevelFlowMgr::MtrlParamUpdate()
     {
         static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
         Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
-        Vec2 UVPos = NDCToUV(NDCPos);
-        pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
+
+        // PLAYER가 화면 밖인경우
+        if (NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.z < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f || NDCPos.z > 1.f)
+        {
+            pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-100.f, -100.f));
+        }
+        else
+        {
+            pDOFMtrl->SetScalarParam(VEC2_0, NDCToUV(NDCPos)); // Focus UV
+        }
     }
 }
 
@@ -244,7 +251,7 @@ void CLevelFlowMgr::SetFadeEffectColor(Vec3 _Color)
     m_FadeEffectScript->SetBackGroundColor(Color);
 }
 
-void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed)
+void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode)
 {
     if (!m_FadeEffectScript)
         return;
@@ -254,6 +261,7 @@ void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, 
     m_FadeEffectScript->SetReverse(_bReverse);
     m_FadeEffectScript->SetDuration(_Duration);
     m_FadeEffectScript->SetRotateSpeed(_Speed);
+    m_FadeEffectScript->SetCenterMode(_CenterMode);
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,

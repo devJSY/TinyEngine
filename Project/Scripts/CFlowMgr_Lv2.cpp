@@ -30,6 +30,15 @@ void CFlowMgr_Lv2::tick()
     // ³¡
 }
 
+void CFlowMgr_Lv2::LevelStart()
+{
+    CLevelFlowMgr::LevelStart();
+    
+    // UI (Fade In)
+    // Center Mode ¼³Á¤
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f, true);
+}
+
 UINT CFlowMgr_Lv2::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
