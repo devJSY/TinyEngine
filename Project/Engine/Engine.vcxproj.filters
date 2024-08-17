@@ -1503,5 +1503,11 @@
     <FxCompile Include="TransparentElfilisPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
+    <FxCompile Include="ElfilisLaserOuterPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
+    <FxCompile Include="ElfilisLaserInnerPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
