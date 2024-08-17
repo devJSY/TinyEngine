@@ -9,6 +9,8 @@ class CUIFlowScript;
 class CLevelFlowMgr : public CScript
 {
 private:
+    bool m_bIsChangedLevel;
+
     bool m_bFadeEffect;
     float m_FadeEffectAcc;
     float m_FadeEffectDuration;
