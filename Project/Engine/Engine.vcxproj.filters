@@ -1509,5 +1509,8 @@
     <FxCompile Include="ElfilisLaserInnerPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
+    <FxCompile Include="RadialBlurPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

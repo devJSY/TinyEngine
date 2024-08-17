@@ -67,7 +67,7 @@ void CHotHeadScript::tick()
 
     FSM();
 
-    if (GetResistState())
+    if (HotHeadState::Eaten != m_eState && GetResistState())
     {
         ChangeState(HotHeadState::Eaten);
     }

@@ -108,7 +108,7 @@ void CCameraController::tick()
     if (m_bLock)
     {
         m_LockAcc += DT;
-        if (m_LockAcc > m_LockDuration)
+        if (m_LockDuration != 0.f && m_LockAcc > m_LockDuration)
         {
             m_LockAcc = 0.f;
             m_LockDuration = 0.f;

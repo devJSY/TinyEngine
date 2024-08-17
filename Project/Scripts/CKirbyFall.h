@@ -4,10 +4,7 @@ class CKirbyFall : public CState
 {
 private:
     float m_Acc;
-    float m_TimeStopDuration;
     float m_Duration;
-
-    bool m_TimeStopExit;
 
 public:
     virtual void tick();

@@ -1374,6 +1374,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetName(L"MotionBlurShader");
         AddAsset(L"MotionBlurShader", pShader);
     }
+
+    // =================================
+    // Radial Blur Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\RadialBlurPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Radius", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Blur Power", 1e-3f);
+        pShader->AddScalarParam(VEC2_0, "Focus UV", 1e-3f);
+
+        pShader->SetName(L"RadialBlurShader");
+        AddAsset(L"RadialBlurShader", pShader);
+    }
 }
 
 void CAssetMgr::CreateDefaultComputeShader()
@@ -1955,7 +1975,7 @@ void CAssetMgr::CreateDefaultMaterial()
         AddAsset<CMaterial>(L"DOFMtrl", pMtrl);
     }
 
-    // MotionBlurShader Mtrl
+    // Motion Blur Mtrl
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"MotionBlurShader"));
@@ -1963,6 +1983,17 @@ void CAssetMgr::CreateDefaultMaterial()
         pMtrl->SetScalarParam(FLOAT_2, 1.f); // Velocity MaxLength
         pMtrl->SetName(L"MotionBlurMtrl");
         AddAsset<CMaterial>(L"MotionBlurMtrl", pMtrl);
+    }
+
+    // Radial Blur Mtrl
+    {
+        Ptr<CMaterial> pMtrl = new CMaterial(true);
+        pMtrl->SetShader(FindAsset<CGraphicsShader>(L"RadialBlurShader"));
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);             // Radius
+        pMtrl->SetScalarParam(FLOAT_1, 1.1f);            // Blur Power
+        pMtrl->SetScalarParam(VEC2_0, Vec2(0.5f, 0.5f)); // Focus UV
+        pMtrl->SetName(L"RadialBlurMtrl");
+        AddAsset<CMaterial>(L"RadialBlurMtrl", pMtrl);
     }
 }
 

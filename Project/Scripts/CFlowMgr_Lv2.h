@@ -10,6 +10,9 @@ public:
     virtual void tick() override;
 
 public:
+    virtual void LevelStart() override;
+
+public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 

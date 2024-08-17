@@ -31,8 +31,7 @@ public:
 
 public:
     CGameObject* FindObjectByName(const wstring& _strName);
-    CGameObject* FindObjectByName(const wstring& _strName, int _LayerIdx);
-
+    
     template <typename T>
     CGameObject* FindObjectOfType();
 
@@ -41,6 +40,8 @@ public:
 
     int FindLayerIndexByName(const wstring& _strName);
     wstring FindLayerNameByIndex(int _Index);
+
+    bool IsExistLevel(CGameObject* _Object); 
 
 private:
     void clear();

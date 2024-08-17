@@ -2777,9 +2777,6 @@
     <Filter Include="Scripts\Character\Kirby\Deform Light">
       <UniqueIdentifier>{601ac786-9c24-41bd-80eb-aa572216232b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Monster\Utill\WallDetect">
-      <UniqueIdentifier>{ca3a2ce0-3750-46ee-a984-ea20f499d1f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI\UIAnimation\CUIRotateScript">
       <UniqueIdentifier>{d526ad6e-bb2b-483e-808e-2c0a65f471ba}</UniqueIdentifier>
     </Filter>

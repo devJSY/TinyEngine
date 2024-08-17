@@ -33,6 +33,11 @@ void CSpookStepScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (SpookStepState::Eaten != m_eState && GetResistState())
+    {
+        ChangeState(SpookStepState::Eaten);
+    }
 }
 
 UINT CSpookStepScript::SaveToLevelFile(FILE* _File)
@@ -55,6 +60,9 @@ UINT CSpookStepScript::LoadFromLevelFile(FILE* _File)
 
 void CSpookStepScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (SpookStepState::Eaten == m_eState)
+        return;
+
     CGameObject* pObj = _OtherCollider->GetOwner();
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
@@ -204,11 +212,10 @@ void CSpookStepScript::ExitState()
         break;
     case SpookStepState::Disappear:
         break;
-    case SpookStepState::Eaten:
-    {
+    case SpookStepState::Eaten: {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
-        break;
+    break;
     case SpookStepState::End:
         break;
     default:
@@ -340,7 +347,7 @@ void CSpookStepScript::Disappear()
 }
 #pragma endregion
 
-void CSpookStepScript::Eaten() 
+void CSpookStepScript::Eaten()
 {
     if (!GetResistState())
     {

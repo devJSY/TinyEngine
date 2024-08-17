@@ -28,7 +28,7 @@ void CFlowMgr_BossElfilis::begin()
     SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f);
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 
-    CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera", LAYER_DEFAULT);
+    CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
     CCameraController* CameraController = Camera ? Camera->GetScript<CCameraController>() : nullptr;
 
     if (CameraController)
@@ -38,7 +38,7 @@ void CFlowMgr_BossElfilis::begin()
         CameraController->SetLookDist(400.f);
     }
 
-    m_LevelEnterWall = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LevelEnterWall", LAYER_STATIC_TRIGGER);
+    m_LevelEnterWall = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LevelEnterWall");
 }
 
 void CFlowMgr_BossElfilis::tick()
