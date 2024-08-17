@@ -212,6 +212,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyStuffedJump.h"
 #include "CKirbyStuffedJumpFall.h"
 #include "CKirbyStuffedLanding.h"
+#include "CKirbyStuffedDamage.h"
 #include "CKirbyStuffedEat.h"
 #include "CKirbyGuard.h"
 #include "CKirbyGuardRun.h"
@@ -392,6 +393,7 @@ void CKirbyFSM::begin()
     AddState(L"STUFFED_JUMP_FALL", new CKirbyStuffedJumpFall);
     AddState(L"STUFFED_LANDING", new CKirbyStuffedLanding);
     AddState(L"STUFFED_EAT", new CKirbyStuffedEat);
+    AddState(L"STUFFED_DAMAGE", new CKirbyStuffedDamage);
     AddState(L"GUARD", new CKirbyGuard);
     AddState(L"GUARD_RUN", new CKirbyGuardRun);
     AddState(L"SLIDE_START", new CKirbySlideStart);

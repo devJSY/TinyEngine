@@ -886,6 +886,9 @@
     <ClInclude Include="CKirbyBulletSize.h">
       <Filter>Scripts\Character\Kirby\KirbyBulletSize</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyStuffedDamage.h">
+      <Filter>State\KirbyState\Stuffed\Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1781,6 +1784,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyBulletSize.cpp">
       <Filter>Scripts\Character\Kirby\KirbyBulletSize</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedDamage.cpp">
+      <Filter>State\KirbyState\Stuffed\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2815,6 +2821,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\Unit">
       <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Damage">
+      <UniqueIdentifier>{fa5d1ece-d75c-44f9-b6b6-a0e805d03928}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

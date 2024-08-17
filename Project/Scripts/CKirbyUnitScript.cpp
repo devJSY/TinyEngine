@@ -63,10 +63,11 @@ void CKirbyUnitScript::tick()
 
     // update damage
     float NewDamage = DamageProc();
+    wstring State = PLAYERFSM->GetCurState()->GetName();
+
     if (NewDamage > 0.f)
     {
-        if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
-            PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
+        if (State == L"DODGE_START" || State == L"DODGE1" || State == L"DODGE2")
         {
             CTimeMgr::GetInst()->SetTimeScale(1.f, 0.5f);
         }
@@ -74,13 +75,19 @@ void CKirbyUnitScript::tick()
         {
             m_HitHistory.clear();
         }
-        else if (PLAYERFSM->GetCurState()->GetName() == L"GUARD")
+        else if (State == L"GUARD")
         {
             m_CurInfo.HP -= NewDamage * 0.25f;
         }
-        else if (PLAYERFSM->GetCurState()->GetName() == L"FALL" || PLAYERFSM->IsDrawing())
+        else if (State == L"FALL" || PLAYERFSM->IsDrawing())
         {
             m_CurInfo.HP -= NewDamage;
+        }
+        else if (State.find(L"STUFFED") != wstring::npos)
+        {
+            m_CurInfo.HP -= NewDamage;
+            SetHitDirHorizen();
+            PLAYERFSM->ChangeState(L"STUFFED_DAMAGE");
         }
         else
         {
@@ -130,7 +137,6 @@ void CKirbyUnitScript::BuffHP(float _HP)
         m_CurInfo.HP = m_CurInfo.MAXHP;
     }
 }
-
 
 void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
 {

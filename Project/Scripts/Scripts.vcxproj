@@ -197,6 +197,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyBulletSize.h" />
     <ClInclude Include="CKirbyLightScript.h" />
     <ClInclude Include="CKirbySmoke.h" />
+    <ClInclude Include="CKirbyStuffedDamage.h" />
     <ClInclude Include="CLensFlareScript.h" />
     <ClInclude Include="CLevelFlowMgr.h" />
     <ClInclude Include="CKirbyAbility_Sleep.h" />
@@ -509,6 +510,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyBulletSize.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />
     <ClCompile Include="CKirbySmoke.cpp" />
+    <ClCompile Include="CKirbyStuffedDamage.cpp" />
     <ClCompile Include="CLensFlareScript.cpp" />
     <ClCompile Include="CLevelFlowMgr.cpp" />
     <ClCompile Include="CKirbyAbility_Sleep.cpp" />

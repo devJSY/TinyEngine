@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "CKirbyDamage.h"
-#include "CPlayerMgr.h"
-#include "CKirbyUnitScript.h"
 
 CKirbyDamage::CKirbyDamage()
     : m_Acc(0.f)
@@ -61,4 +59,3 @@ void CKirbyDamage::Exit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
 }
-
