@@ -19,7 +19,7 @@ CSmokeSpawner::CSmokeSpawner()
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_SpawnCoolTime, "SpawnCoolTime");
     AddScriptParam(SCRIPT_PARAM::INT, &m_SpawnMesh, "SpawnMesh (0 : Sphere, 1: Box)");
-    AddScriptParam(SCRIPT_PARAM::INT, &m_MinSpawnCount, "MaxSpawnCount");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MinSpawnCount, "MinSpawnCount");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxSpawnCount, "MaxSpawnCount");
 }
 
@@ -41,7 +41,7 @@ CSmokeSpawner::CSmokeSpawner(const CSmokeSpawner& _Origin)
 
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_SpawnCoolTime, "SpawnCoolTime");
     AddScriptParam(SCRIPT_PARAM::INT, &m_SpawnMesh, "SpawnMesh (0 : Sphere, 1: Box)");
-    AddScriptParam(SCRIPT_PARAM::INT, &m_MinSpawnCount, "MaxSpawnCount");
+    AddScriptParam(SCRIPT_PARAM::INT, &m_MinSpawnCount, "MinSpawnCount");
     AddScriptParam(SCRIPT_PARAM::INT, &m_MaxSpawnCount, "MaxSpawnCount");
 }
 

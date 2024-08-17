@@ -106,3 +106,5 @@ CUIMtrlScript
 CFlowMgr_LvRobby
 CFlowMgr_LvStart
 CUIFlowMgr
+CSmokeScript
+CSmokeSpawner
