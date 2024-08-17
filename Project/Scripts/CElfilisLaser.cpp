@@ -20,7 +20,13 @@ void CElfilisLaser::begin()
         SetStart();
     }
 
-    if ()
+    CGameObject* Outer = GetOwner()->GetChildObject()[0];
+    UINT Layer = GetOwner()->GetLayerIdx();
+
+    if (Outer && Outer->GetLayerIdx() != Layer)
+    {
+        GamePlayStatic::LayerChange(Outer, Layer);
+    }
 }
 
 void CElfilisLaser::tick()

@@ -3,6 +3,7 @@
 #include "func.hlsli"
 
 #define EmissiveNosieTex g_tex_0
+#define AlphaNosieTex g_tex_1
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlEmission g_vEmission
