@@ -33,7 +33,7 @@ void CKirbyFall::tick()
         if (PLAYERUNIT->GetCurInfo().HP <= 0.f)
         {
             // FLOW 매니저의 레벨 리셋 함수를 호출
-            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager", LAYER_MANAGER);
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
             
             if (nullptr != ManagerObj)
             {

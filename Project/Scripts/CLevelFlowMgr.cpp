@@ -110,7 +110,7 @@ void CLevelFlowMgr::LevelStart()
 
     // MainPlayer
     CGameObject* MainPlayer = nullptr;
-    MainPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
+    MainPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player");
 
     // Level에 Main Player가 없다면 직접 생성
     if (MainPlayer == nullptr)

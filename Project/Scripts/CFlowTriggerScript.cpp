@@ -35,7 +35,7 @@ CFlowTriggerScript::~CFlowTriggerScript()
 
 void CFlowTriggerScript::begin()
 {
-    CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager", LAYER_MANAGER);
+    CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
 
     if (Manager)
     {
