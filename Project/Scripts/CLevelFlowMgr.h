@@ -23,6 +23,7 @@ private:
     CGameObject* m_pLoadingUI;
     CGameObject* m_pPlayerHP;
     CGameObject* m_pBossHP;
+    //CEnterUIScript* m_pEnterUIScript;
 
     CFadeEffectScript* m_FadeEffectScript;
 
@@ -58,6 +59,7 @@ private:
     virtual void MtrlParamUpdate();
 
 public:
+    //void FadeIn(bool _bFlag, int _iEnter);
     void TurnOnBossHP();
     void TurnOffBossHP();
     void TurnOffPlayerHP();

@@ -886,6 +886,9 @@
     <ClInclude Include="CUIBossHPScript.h">
       <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
     </ClInclude>
+    <ClInclude Include="CEnterUIScript.h">
+      <Filter>Scripts\UI\UIAnimation\CEnterUIScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1781,6 +1784,9 @@
     </ClCompile>
     <ClCompile Include="CUIBossHPScript.cpp">
       <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnterUIScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CEnterUIScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2815,6 +2821,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIUnit\UIBossHPScript">
       <UniqueIdentifier>{5a0ead60-c6e5-493c-8a3c-82cc0959f4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CEnterUIScript">
+      <UniqueIdentifier>{9306d8e9-8144-4929-9e66-c0090df4a852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

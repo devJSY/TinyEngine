@@ -110,6 +110,7 @@
 #include "CFlowMgr_LvStart.h"
 #include "CUIFlowMgr.h"
 #include "CUIBossHPScript.h"
+#include "CEnterUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -222,6 +223,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_LvStart");
 	_vec.push_back(L"CUIFlowMgr");
 	_vec.push_back(L"CUIBossHPScript");
+	_vec.push_back(L"CEnterUIScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -444,6 +446,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIFlowMgr;
 	if (L"CUIBossHPScript" == _strScriptName)
 		return new CUIBossHPScript;
+	if (L"CEnterUIScript" == _strScriptName)
+		return new CEnterUIScript;
 	return nullptr;
 }
 
@@ -669,6 +673,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIFlowMgr;
 	case (UINT)SCRIPT_TYPE::UIBOSSHPSCRIPT:
 		return new CUIBossHPScript;
+	case (UINT)SCRIPT_TYPE::ENTERUISCRIPT:
+		return new CEnterUIScript;
 	}
 	return nullptr;
 }
@@ -895,6 +901,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIFlowMgr";
 	case SCRIPT_TYPE::UIBOSSHPSCRIPT:
 		return L"CUIBossHPScript";
+	case SCRIPT_TYPE::ENTERUISCRIPT:
+		return L"CEnterUIScript";
 	}
 	return nullptr;
 }

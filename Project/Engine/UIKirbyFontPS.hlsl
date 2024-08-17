@@ -7,6 +7,8 @@
 
 #define FLOAT_VALUE1 g_float_1
 
+#define FADEINOUT g_int_3
+
 float4 main(PS_IN _in) : SV_Target
 {
     float4 output = (float4) 0.f;
@@ -21,7 +23,14 @@ float4 main(PS_IN _in) : SV_Target
     
     output = STATICCOLOR;
     
-    output.a = 1.f;
+    if (FADEINOUT)
+    {
+        output.a = FLOAT_VALUE1;
+    }
+    else
+    {
+        output.a = 1.f;
+    }
     
     return output;
 }

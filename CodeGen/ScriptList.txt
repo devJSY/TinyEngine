@@ -107,3 +107,4 @@ CFlowMgr_LvRobby
 CFlowMgr_LvStart
 CUIFlowMgr
 CUIBossHPScript
+CEnterUIScript

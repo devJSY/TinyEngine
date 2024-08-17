@@ -49,7 +49,7 @@ CLevelFlowMgr::~CLevelFlowMgr()
 }
 
 void CLevelFlowMgr::begin()
-{        
+{
 
     m_bIsChangedLevel = false;
 
@@ -75,7 +75,8 @@ void CLevelFlowMgr::begin()
     // UI 초기화
     {
         m_pLoadingUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_Loading");
-        m_pLoadingUI->SetActive(false);
+        if (nullptr != m_pLoadingUI)
+            m_pLoadingUI->SetActive(false);
 
         m_pPlayerHP = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_PlayerHP");
 
@@ -206,11 +207,8 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
-    // UI Loading
-    m_pLoadingUI->SetActive(true);
-
     // Loding UI 시작
-
+    m_pLoadingUI->SetActive(true);
 
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
@@ -245,6 +243,13 @@ void CLevelFlowMgr::MtrlParamUpdate()
         pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
     }
 }
+
+//void CLevelFlowMgr::FadeIn(bool _bFlag, int _iEnter)
+//{
+//    SetFadeEffectColor(Vec3(255.f, 0.f, 255.f));
+//
+//    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f);
+//}
 
 void CLevelFlowMgr::TurnOnBossHP()
 {

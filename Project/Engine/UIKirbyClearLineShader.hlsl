@@ -7,6 +7,8 @@
 #define STATICCOLOR g_vec4_0
 #define STATICCOLOR2 g_vec4_1
 
+#define FADEINOUT g_int_3
+
 
 float4 main(PS_IN _in) : SV_Target
 {
@@ -22,7 +24,14 @@ float4 main(PS_IN _in) : SV_Target
     
     output = output.r <= ALPHADISCARD ? STATICCOLOR : STATICCOLOR2;
    
-    output.a = 1.f;
-    
+    if (FADEINOUT)
+    {
+        output.a = g_float_1;
+    }
+    else
+    {
+        output.a = 1.f;
+    }
+   
     return output;
 }

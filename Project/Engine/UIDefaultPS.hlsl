@@ -4,10 +4,12 @@
 
 #define ALPHADISCARD g_float_0
 #define UIANIM1 g_int_0
+#define FADEINOUT g_int_3
 
 #define FLOAT_VALUE1 g_float_1
 #define FLOAT_VALUE2 g_float_2
 #define FLOAT_VALUE3 g_float_3
+
 
 float4 main(PS_IN _in) : SV_Target
 {
@@ -28,7 +30,14 @@ float4 main(PS_IN _in) : SV_Target
             output *= FLOAT_VALUE1;
     }
     
-    output.a = 1.f;
-    
+    if (FADEINOUT)
+    {
+        output.a = g_float_1;
+    }
+    else
+    {
+        output.a = 1.f;
+    }
+   
     return output;
 }
