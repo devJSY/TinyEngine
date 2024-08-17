@@ -217,8 +217,7 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
                 return EatType::NONE;
             }
 
-            //@PR:Monster
-            //_outHoldTime = pMonster->GetResistTime();
+            _outHoldTime = pMonster->GetResistTime();
             return EatType::Monster;
         }
     }

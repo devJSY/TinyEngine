@@ -1494,5 +1494,8 @@
     <FxCompile Include="UIMaskingAnimPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIAnimShader</Filter>
     </FxCompile>
+    <FxCompile Include="RadialBlurPS.hlsl">
+      <Filter>ShaderCode\Render\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
