@@ -13,6 +13,7 @@ CFadeEffectScript::CFadeEffectScript()
     , m_Duration(1.f)
     , m_ElapsedTime(0.f)
     , m_RotateSpeed(1.25f)
+    , m_bCenterMode(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_BackGroundColor, "BackGroundColor");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bReverse, "Reverse");
@@ -43,9 +44,7 @@ void CFadeEffectScript::begin()
 {
     m_Target = PLAYER;
 
-    m_bComplete = false;
-
-    m_bReverse ? m_ElapsedTime = m_Duration : m_ElapsedTime = 0.f;
+    SetReverse(m_bReverse);
 }
 
 void CFadeEffectScript::tick()
@@ -79,8 +78,9 @@ void CFadeEffectScript::tick()
         {
             NDCPos = PositionToNDC(m_Target->Transform()->GetWorldPos());
 
+            // CenterMode 인 경우거나
             // Target이 화면 밖인경우 중심으로 설정
-            if (NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f)
+            if (m_bCenterMode || NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f)
             {
                 NDCPos.x = 0.f;
                 NDCPos.y = 0.f;
@@ -102,11 +102,13 @@ UINT CFadeEffectScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_bReverse, sizeof(bool), 1, _File);
     fwrite(&m_Duration, sizeof(float), 1, _File);
     fwrite(&m_RotateSpeed, sizeof(float), 1, _File);
+    fwrite(&m_bCenterMode, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec4);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
     return MemoryByte;
 }
 
@@ -118,10 +120,12 @@ UINT CFadeEffectScript::LoadFromLevelFile(FILE* _File)
     fread(&m_bReverse, sizeof(bool), 1, _File);
     fread(&m_Duration, sizeof(float), 1, _File);
     fread(&m_RotateSpeed, sizeof(float), 1, _File);
+    fread(&m_bCenterMode, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(Vec4);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
     return MemoryByte;
 }
