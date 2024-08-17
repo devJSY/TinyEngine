@@ -393,6 +393,15 @@ void CCameraController::SetPlayer(CGameObject* _Kirby)
     Transform()->SetDirection(m_LookDir);
 }
 
+void CCameraController::RotationLookDirRightAxis(float _Degree)
+{
+    float Radian = _Degree * XM_PI / 180.f;
+
+    Quaternion rotation = Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::RIGHT), Radian);
+    m_LookDir = Vector3::Transform(m_LookDir, rotation);
+    m_LookDir.Normalize();
+}
+
 void CCameraController::SaveSetting()
 {
     m_SaveSetting.LookDir = m_LookDir;

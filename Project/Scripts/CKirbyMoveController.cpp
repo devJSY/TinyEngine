@@ -36,6 +36,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_HoveringMinSpeed(-5.f)
     , m_RayHit{}
     , m_MaxFallSpeed(-15.f)
+    , m_ForcePos(Vec3(0.f,0.f,0.f))
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -325,6 +326,13 @@ void CKirbyMoveController::Move()
     if (m_MoveVelocity.y < m_MaxFallSpeed  && m_bLimitFallSpeed) 
     {
         m_MoveVelocity.y = m_MaxFallSpeed;
+    }
+
+    // ForcePos
+    if (m_ForcePos != Vec3(0.f, 0.f, 0.f))
+    {
+        Transform()->SetWorldPos(m_ForcePos);
+        m_ForcePos = Vec3(0.f, 0.f, 0.f);
     }
 
     if (m_bTeleportGround)

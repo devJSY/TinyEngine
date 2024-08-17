@@ -183,6 +183,8 @@ private:
         m_LockAcc = 0.f;
         m_LockDuration = _Duration;
     }
+    void RotationLookDirRightAxis(float _Degree);
+
 
     void SaveSetting();
     void SaveInitSetting();
