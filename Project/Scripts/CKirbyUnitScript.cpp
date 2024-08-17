@@ -3,6 +3,8 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CState.h"
+#include "CKirbyCopyAbilityScript.h"
+#include "CMomentaryObjScript.h"
 
 #include <Engine/CTimeMgr.h>
 
@@ -54,6 +56,8 @@ void CKirbyUnitScript::begin()
 {
     // Level에 진입시 InitInfo를 현재의 정보로 저장
     SetInfo(GetInitInfo());
+
+    m_AbilityBubble = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBubble.pref", L"prefab\\KirbyBubble.pref");
 }
 
 void CKirbyUnitScript::tick()
@@ -91,9 +95,15 @@ void CKirbyUnitScript::tick()
         }
         else
         {
+            if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::NORMAL)
+            {
+                DropAbility();
+            }
+            
             m_CurInfo.HP -= NewDamage;
             SetHitDirHorizen();
             PLAYERFSM->ChangeState(L"DAMAGE");
+
         }
     }
 
@@ -154,6 +164,45 @@ void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
         Force.Normalize();
         Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
     }
+}
+
+void CKirbyUnitScript::DropAbility()
+{
+    // spawn ability bubble
+    if (nullptr != m_AbilityBubble && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::SLEEP)
+    {
+        CGameObject* pBubble = m_AbilityBubble->Instantiate();
+        Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
+        Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
+        float ScaleFactor = PLAYER->Transform()->GetLocalScale().x;
+        InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * ScaleFactor;
+        InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * ScaleFactor;
+        InitRot.x += XMConvertToRadians(-90.f);
+        InitRot.y += XMConvertToRadians(180.f);
+
+        CKirbyCopyAbilityScript* pAbility = (CKirbyCopyAbilityScript*)CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT);
+        pBubble->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
+        pBubble->AddComponent(pAbility);
+        pBubble->Transform()->SetLocalPos(InitPos);
+        pBubble->Transform()->SetLocalScale(Vec3(ScaleFactor * 0.8f));
+        pBubble->Transform()->SetLocalRotation(InitRot);
+        pBubble->MeshRender()->SetCastShadow(false);
+        pAbility->SetAbilityType(PLAYERFSM->GetCurAbilityIdx());
+
+        CMomentaryObjScript* pMomentaryObj = pBubble->GetScript<CMomentaryObjScript>();
+        if (nullptr != pMomentaryObj)
+        {
+            pMomentaryObj->SetInitVelocity(Vec3(0.f, 10.f, 0.f));
+            pMomentaryObj->SetPlayTime(10.f);
+        }
+
+        GamePlayStatic::SpawnGameObject(pBubble, LAYER_DYNAMIC);
+    }
+
+    // clear current ability
+    PLAYERFSM->ClearYPressedTime();
+    PLAYERFSM->ClearCurHatWeapon();
+    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 }
 
 UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
