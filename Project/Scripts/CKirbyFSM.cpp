@@ -337,6 +337,11 @@ void CKirbyFSM::begin()
     PLAYER->CharacterController()->SetSkinWidth(0.015f);
     PLAYER->CharacterController()->SetMinMoveDistance(0.f);
 
+    // Emissive 세팅
+    PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+    m_bEmissive = false;
+
+
     // State 추가
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"IDLE_START", new CKirbyIdleStart);

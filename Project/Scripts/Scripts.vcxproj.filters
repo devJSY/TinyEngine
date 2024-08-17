@@ -2807,5 +2807,8 @@
     <Filter Include="Scripts\Character\Kirby\KirbySmoke">
       <UniqueIdentifier>{f2bbb26f-2be5-41dc-8d00-163e567b2d63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Gimmik\Smoke">
+      <UniqueIdentifier>{f3f2a186-aa97-409b-9cb3-ed1a2b33c170}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
