@@ -175,12 +175,12 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     {
     case NormalEnemyState::Idle: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Wait"), false);
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Grooming: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Grooming"));
+        Animator()->Play(ANIMPREFIX("Grooming"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Patrol: {
@@ -189,11 +189,11 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     break;
     case NormalEnemyState::Sleep: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Sleep"));
+        Animator()->Play(ANIMPREFIX("Sleep"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Find: {
-        Animator()->Play(ANIMPREFIX("Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case NormalEnemyState::Attack: {
