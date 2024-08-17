@@ -1500,5 +1500,8 @@
     <FxCompile Include="MaskingPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
+    <FxCompile Include="TransparentElfilisPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
