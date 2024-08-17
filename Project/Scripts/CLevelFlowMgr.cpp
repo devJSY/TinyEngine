@@ -191,8 +191,16 @@ void CLevelFlowMgr::MtrlParamUpdate()
     {
         static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
         Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
-        Vec2 UVPos = NDCToUV(NDCPos);
-        pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
+
+        // PLAYER가 화면 밖인경우
+        if (NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.z < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f || NDCPos.z > 1.f)
+        {
+            pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-100.f, -100.f));
+        }
+        else
+        {
+            pDOFMtrl->SetScalarParam(VEC2_0, NDCToUV(NDCPos)); // Focus UV
+        }
     }
 }
 

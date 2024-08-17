@@ -1989,8 +1989,8 @@ void CAssetMgr::CreateDefaultMaterial()
     {
         Ptr<CMaterial> pMtrl = new CMaterial(true);
         pMtrl->SetShader(FindAsset<CGraphicsShader>(L"RadialBlurShader"));
-        pMtrl->SetScalarParam(FLOAT_0, 0.1f);            // Radius
-        pMtrl->SetScalarParam(FLOAT_1, 0.01f);           // Blur Power
+        pMtrl->SetScalarParam(FLOAT_0, 1.f);             // Radius
+        pMtrl->SetScalarParam(FLOAT_1, 1.1f);            // Blur Power
         pMtrl->SetScalarParam(VEC2_0, Vec2(0.5f, 0.5f)); // Focus UV
         pMtrl->SetName(L"RadialBlurMtrl");
         AddAsset<CMaterial>(L"RadialBlurMtrl", pMtrl);

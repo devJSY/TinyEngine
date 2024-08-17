@@ -25,7 +25,7 @@ CFlowMgr_BossElfilis::~CFlowMgr_BossElfilis()
 void CFlowMgr_BossElfilis::begin()
 {
     CLevelFlowMgr::begin();
-    SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f, 0.3f, 0.5f);
+    SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f);
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 
     CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera", LAYER_DEFAULT);
