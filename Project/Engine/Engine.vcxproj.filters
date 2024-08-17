@@ -1151,6 +1151,12 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIAnimShader">
       <UniqueIdentifier>{31081bb5-a26c-4286-993c-6b11ced3a8a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIFontShader">
+      <UniqueIdentifier>{a5381272-779e-47c5-82bd-a5ae480e1e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIClearLineShader">
+      <UniqueIdentifier>{28ba29fb-fb00-432c-b8bf-e47bbd158f01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1493,6 +1499,12 @@
     </FxCompile>
     <FxCompile Include="UIMaskingAnimPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIAnimShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIKirbyFontPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIFontShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIKirbyClearLineShader.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIClearLineShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

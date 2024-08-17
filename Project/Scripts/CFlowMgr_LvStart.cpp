@@ -24,8 +24,6 @@ void CFlowMgr_LvStart::begin()
 
 void CFlowMgr_LvStart::LevelEnd()
 {
-
-
     GetFlowScript()->ChangeState(FlowState::End);
 }
 

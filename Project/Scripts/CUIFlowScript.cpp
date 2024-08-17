@@ -128,15 +128,6 @@ void CUIFlowScript::EndFlow()
 
 void CUIFlowScript::LoadingFlow()
 {
-    m_pLoadingObj->SetActive(true);
-    m_fAccTime += DT;
-
-    if (m_fWaitTime <= m_fAccTime)
-    {
-        m_pLoadingObj->SetActive(false);
-        // TODO : 레벨 로딩 스레드 완료 같은거 얻어올 수 있으면 얻어오기
-        m_pFlowMgr->LevelEnd();
-    }
 }
 
 UINT CUIFlowScript::SaveToLevelFile(FILE* _File)

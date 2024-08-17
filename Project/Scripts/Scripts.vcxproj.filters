@@ -883,6 +883,9 @@
     <ClInclude Include="CUIFlowMgr.h">
       <Filter>Scripts\UI\UIManager\UIFlowManger</Filter>
     </ClInclude>
+    <ClInclude Include="CUIBossHPScript.h">
+      <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1775,6 +1778,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySmoke.cpp">
       <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIBossHPScript.cpp">
+      <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2806,6 +2812,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbySmoke">
       <UniqueIdentifier>{f2bbb26f-2be5-41dc-8d00-163e567b2d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUnit\UIBossHPScript">
+      <UniqueIdentifier>{5a0ead60-c6e5-493c-8a3c-82cc0959f4a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

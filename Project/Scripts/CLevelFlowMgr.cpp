@@ -70,6 +70,14 @@ void CLevelFlowMgr::tick()
     {
         m_FadeEffectAcc += DT;
 
+        if (m_FadeEffectAcc >= 1.f)
+        {
+            if (nullptr != m_UIFlowScript)
+            {
+                m_UIFlowScript->ChangeState(FlowState::End);
+            }
+        }
+
         // UI가 끝나면
         if (m_FadeEffectAcc > m_FadeEffectDuration)
         {
