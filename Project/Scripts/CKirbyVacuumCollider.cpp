@@ -56,8 +56,7 @@ void CKirbyVacuumCollider::tick()
         // target object가 monster라면 버티는 상태로 변경시켜줌
         if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
         {
-            //@PR:Monster
-            //m_pFindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
+            m_FindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
         }
 
         // collider clear

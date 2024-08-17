@@ -467,9 +467,11 @@ void CCamera::render_Inst(const map<ULONG64, vector<tInstObj>>& _Group)
 
         // instancing 개수 조건 미만이거나
         // Animation2D 오브젝트거나(스프라이트 애니메이션 오브젝트)
+        // Mesh Render 만 인스턴싱 적용
         // Shader 가 Instancing 을 지원하지 않는경우
         constexpr UINT InstanceCount = 5;
         if (pair.second.size() <= InstanceCount || pair.second[0].pObj->Animator2D() ||
+            pair.second[0].pObj->GetRenderComponent() != pair.second[0].pObj->MeshRender() ||
             nullptr == pair.second[0].pObj->GetRenderComponent()->GetMaterial(pair.second[0].iMtrlIdx)->GetShader()->GetVSInst())
         {
             // 해당 물체들은 단일 랜더링으로 전환
