@@ -47,6 +47,8 @@ float simpleNoise(float min, float max)
 
 void CSmokeScript::begin()
 {
+    m_Acc = 0.f;
+
     if (m_bRandom)
     {
         // Random으로 Scale, LifeTime, 방향을 정해준다.
