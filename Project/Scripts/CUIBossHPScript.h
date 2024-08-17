@@ -46,8 +46,9 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
-private:
     void ChangeState(HPState _state);
+
+private:
     void EnterState();
 
 private:

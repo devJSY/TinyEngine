@@ -120,14 +120,12 @@ void CUIFlowScript::TickFlow()
 
 void CUIFlowScript::EndFlow()
 {
-    if (m_pUIAnimManager->AllFinishEndUI())
-    {
-        ChangeState(FlowState::Loading);
-    }
+    m_pLoadingObj->SetActive(true);
 }
 
 void CUIFlowScript::LoadingFlow()
 {
+
 }
 
 UINT CUIFlowScript::SaveToLevelFile(FILE* _File)

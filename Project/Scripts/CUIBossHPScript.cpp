@@ -67,12 +67,8 @@ CUIBossHPScript::~CUIBossHPScript()
 {
 }
 
-// UI_BossName1
-// UI_BossName2
-
 void CUIBossHPScript::begin()
 {
-    ChangeState(HPState::Enter);
 }
 
 void CUIBossHPScript::tick()

@@ -9,6 +9,9 @@
 #include "CCameraController.h"
 #include "CFadeEffectScript.h"
 
+#include "CUIBossHPScript.h"
+#include "CUIHPScript.h"
+
 #include "CUIFlowScript.h"
 
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
@@ -19,6 +22,9 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_FadeEffectScript(nullptr)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
+    , m_pLoadingUI(nullptr)
+    , m_pPlayerHP(nullptr)
+    , m_pBossHP(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -31,6 +37,9 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_FadeEffectScript(nullptr)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
+    , m_pLoadingUI(nullptr)
+    , m_pPlayerHP(nullptr)
+    , m_pBossHP(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -60,6 +69,18 @@ void CLevelFlowMgr::begin()
 
     m_ToneMappingMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ToneMappingMtrl");
 
+    // UI 초기화
+    {
+        m_pLoadingUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_Loading");
+        m_pLoadingUI->SetActive(false);
+
+        m_pPlayerHP = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_PlayerHP");
+
+        m_pBossHP = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_BossHP");
+        if (nullptr != m_pBossHP)
+            m_pBossHP->SetActive(false);
+    }
+
     // Level Start
     LevelStart();
 }
@@ -69,14 +90,6 @@ void CLevelFlowMgr::tick()
     if (m_bFadeEffect)
     {
         m_FadeEffectAcc += DT;
-
-        if (m_FadeEffectAcc >= 1.f)
-        {
-            if (nullptr != m_UIFlowScript)
-            {
-                m_UIFlowScript->ChangeState(FlowState::End);
-            }
-        }
 
         // UI가 끝나면
         if (m_FadeEffectAcc > m_FadeEffectDuration)
@@ -169,6 +182,9 @@ void CLevelFlowMgr::LevelEnd()
     // UI (Fade Out)
     SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
+    // Player UI
+    TurnOffPlayerHP();
+
     m_bFadeEffect = true;
     m_FadeEffectAcc = 0.f;
 
@@ -177,6 +193,9 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
+    // UI Loading
+    m_pLoadingUI->SetActive(true);
+
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
@@ -201,6 +220,32 @@ void CLevelFlowMgr::MtrlParamUpdate()
         Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
         Vec2 UVPos = NDCToUV(NDCPos);
         pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
+    }
+}
+
+void CLevelFlowMgr::TurnOnBossHP()
+{
+    if (nullptr != m_pBossHP)
+    {
+        CUIBossHPScript* pScript = m_pBossHP->GetScript<CUIBossHPScript>();
+        if (nullptr != pScript)
+            pScript->ChangeState(HPState::Enter);
+    }
+}
+
+void CLevelFlowMgr::TurnOffBossHP()
+{
+    if (nullptr != m_pBossHP)
+    {
+        m_pBossHP->SetActive(false);
+    }
+}
+
+void CLevelFlowMgr::TurnOffPlayerHP()
+{
+    if (nullptr != m_pPlayerHP)
+    {
+        m_pPlayerHP->SetActive(false);
     }
 }
 

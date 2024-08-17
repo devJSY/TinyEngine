@@ -16,7 +16,11 @@ private:
     wstring m_CurLevelPath;
     string m_NextLevelPath;
 
+    // UI
     CGameObject* m_DimensionFadeEffect;
+    CGameObject* m_pLoadingUI;
+    CGameObject* m_pPlayerHP;
+    CGameObject* m_pBossHP;
 
     CFadeEffectScript* m_FadeEffectScript;
 
@@ -50,6 +54,11 @@ public:
 private:
     virtual void LevelExit();
     virtual void MtrlParamUpdate();
+
+protected:
+    void TurnOnBossHP();
+    void TurnOffBossHP();
+    void TurnOffPlayerHP();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
