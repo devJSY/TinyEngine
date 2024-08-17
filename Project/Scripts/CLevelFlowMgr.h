@@ -45,7 +45,7 @@ public:
     void OnDimensionFade();
     void OffDimensionFade();
     void SetFadeEffectColor(Vec3 _Color);
-    void SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed);
+    void SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode);
     void SetToneMappingParam(bool _bBloomEnable = false, bool _bBlendMode = false, float _BloomStrength = 0.5f, float _Threshold = 0.f,
                              float _FilterRadius = 1.f, float _Exposure = 1.f, float _Gamma = 2.2f);
 

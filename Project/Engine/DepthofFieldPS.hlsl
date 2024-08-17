@@ -11,6 +11,13 @@
 float4 main(PS_IN input) : SV_TARGET
 {
     float3 color = g_postprocess_Tex.Sample(g_LinearClampSampler, input.vUV0).rgb;
+    
+    // Target이 화면 밖인경우
+    if (FocusUV.x < 0.f || FocusUV.y < 0.f || FocusUV.x > 1.f || FocusUV.y > 1.f)
+    {
+        return float4(color, 1.f);
+    }
+    
     float3 outOfFocusColor = BlurTex.Sample(g_LinearClampSampler, input.vUV0).rgb;
     
     float PosZ = TexcoordToView(DepthOnlyTex, input.vUV0).z;

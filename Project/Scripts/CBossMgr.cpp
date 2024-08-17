@@ -28,7 +28,7 @@ void CBossMgr::begin()
 
 void CBossMgr::SetBoss()
 {
-    CGameObject* pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_BossName), LAYER_MONSTER);
+    CGameObject* pBoss = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_BossName));
 
     if (!pBoss)
     {

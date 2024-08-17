@@ -39,7 +39,7 @@ void CPlayerMgr::begin()
     // Find Player (if not)
     if (m_PlayerObj == nullptr || !GetOwner()->GetScript<CLevelFlowMgr>())
     {
-        CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
+        CGameObject* pPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player");
         SetPlayer(pPlayer);
     }
 }
