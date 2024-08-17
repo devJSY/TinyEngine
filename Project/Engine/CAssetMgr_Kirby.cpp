@@ -196,7 +196,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->CreatePixelShader(L"shader\\UIDefaultPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
@@ -210,6 +210,31 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyUIDefaulthader");
         AddAsset(L"KirbyUIDefaultShader", pShader);
+    }
+
+    // =================================
+    // UICircleProgressShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UICircleProgressPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(FLOAT_0, "AlphaDiscard Threshold", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Test Radian", 0.1f);
+
+        pShader->AddScalarParam(VEC4_0, "Static Color", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"UICircleProgressShader");
+        AddAsset(L"UICircleProgressShader", pShader);
     }
 
     // =================================

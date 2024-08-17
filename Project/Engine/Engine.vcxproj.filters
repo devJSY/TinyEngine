@@ -1157,6 +1157,9 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIClearLineShader">
       <UniqueIdentifier>{28ba29fb-fb00-432c-b8bf-e47bbd158f01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UICircleProgressShader">
+      <UniqueIdentifier>{6ddc372f-4b5e-424a-a1e4-45a921dec957}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1505,6 +1508,9 @@
     </FxCompile>
     <FxCompile Include="UIKirbyClearLineShader.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIClearLineShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UICircleProgressPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UICircleProgressShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

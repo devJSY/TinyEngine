@@ -108,3 +108,4 @@ CFlowMgr_LvStart
 CUIFlowMgr
 CUIBossHPScript
 CEnterUIScript
+CKirbyDropOutUIScript
