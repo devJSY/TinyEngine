@@ -93,6 +93,15 @@ void CNoddyScript::tick()
     case NODDY_STATE::Wakeup:
         Wakeup();
         break;
+    case NODDY_STATE::Eaten:
+        Eaten();
+        break;
+    }
+
+    // Eaten
+    if (NODDY_STATE::Eaten != m_State && GetResistState())
+    {
+        ChangeState(NODDY_STATE::Eaten);
     }
 }
 
@@ -200,6 +209,10 @@ void CNoddyScript::EnterState()
                                                                        L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
     break;
+    case NODDY_STATE::Eaten: {
+        Animator()->Play(ANIMPREFIX("Damage"));
+    }
+    break;
     }
 }
 
@@ -246,6 +259,10 @@ void CNoddyScript::ExitState()
     }
     break;
     case NODDY_STATE::Wakeup: {
+    }
+    break;
+    case NODDY_STATE::Eaten: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     }
@@ -378,8 +395,19 @@ void CNoddyScript::Wakeup()
     }
 }
 
+void CNoddyScript::Eaten()
+{
+    if (!GetResistState())
+    {
+        ChangeState(NODDY_STATE::Wait);
+    }
+}
+
 void CNoddyScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (NODDY_STATE::Eaten == m_State)
+        return;
+
     CGameObject* pObj = _OtherCollider->GetOwner();
     if (L"Body Collider" == pObj->GetName())
     {

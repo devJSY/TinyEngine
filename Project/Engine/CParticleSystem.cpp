@@ -176,8 +176,8 @@ void CParticleSystem::UpdateData()
 
     // 모든 파티클 렌더링
     // 파티클 개별 랜더링 -> 인스턴싱
-    GetMaterial(0)->UpdateData();
     GetMaterial(0)->SetTexParam(TEX_0, m_ParticleTex);
+    GetMaterial(0)->UpdateData();
 
     // Animatio2D 보유한 경우
     if (Animator2D())
@@ -210,8 +210,8 @@ void CParticleSystem::render(Ptr<CMaterial> _mtrl)
 
     // 모든 파티클 렌더링
     // 파티클 개별 랜더링 -> 인스턴싱
-    _mtrl->UpdateData();
     _mtrl->SetTexParam(TEX_0, m_ParticleTex);
+    _mtrl->UpdateData();
 
     GetMesh()->render_IndexedInstanced(m_MaxParticleCount);
 

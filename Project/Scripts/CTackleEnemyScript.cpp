@@ -66,7 +66,7 @@ void CTackleEnemyScript::tick()
 
     FSM();
 
-    if (GetResistState())
+    if (TackleEnemyState::Eaten != m_eState && GetResistState())
     {
         ChangeState(TackleEnemyState::Eaten);
     }
@@ -114,8 +114,8 @@ UINT CTackleEnemyScript::LoadFromLevelFile(FILE* _File)
 
 void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    // if (TackleEnemyState::Eaten == m_eState)
-    //     return;
+    if (TackleEnemyState::Eaten == m_eState)
+        return;
 
     CGameObject* pObj = _OtherCollider->GetOwner();
 

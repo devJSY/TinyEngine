@@ -68,9 +68,12 @@ void CSirKibbleScript::begin()
 void CSirKibbleScript::tick()
 {
     CMonsterUnitScript::tick();
+
     CheckDamage();
+
     FSM();
-    if (GetResistState())
+
+    if (SirKibbleState::Eaten != m_eState && GetResistState())
     {
         ChangeState(SirKibbleState::Eaten);
     }
@@ -239,11 +242,10 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
-    case SirKibbleState::Death:
-    {
-        Animator()->Play(ANIMPREFIX("Damage"),false);
+    case SirKibbleState::Death: {
+        Animator()->Play(ANIMPREFIX("Damage"), false);
     }
-        break;
+    break;
     case SirKibbleState::End:
         break;
     default:

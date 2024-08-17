@@ -77,7 +77,7 @@ void CNormalEnemyScript::tick()
 
     FSM();
 
-    if (GetResistState())
+    if (NormalEnemyState::Eaten != m_eState && GetResistState())
     {
         ChangeState(NormalEnemyState::Eaten);
     }
@@ -311,8 +311,7 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 {
     switch (_state)
     {
-    case NormalEnemyState::Idle:
-    {
+    case NormalEnemyState::Idle: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
     }
     break;
@@ -548,7 +547,7 @@ void CNormalEnemyScript::Brake()
 
 void CNormalEnemyScript::Eaten()
 {
-    if (GetResistState())
+    if (!GetResistState())
     {
         ChangeState(NormalEnemyState::Idle);
     }

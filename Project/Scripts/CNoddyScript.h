@@ -13,7 +13,8 @@ enum class NODDY_STATE
     Sleep,
     SleepStart,
     Wait,
-    Wakeup
+    Wakeup,
+    Eaten,
 };
 
 class CNoddyScript : public CMonsterUnitScript
@@ -48,6 +49,7 @@ private:
     void SleepStart();
     void Wait();
     void Wakeup();
+    void Eaten();
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
