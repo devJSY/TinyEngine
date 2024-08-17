@@ -79,7 +79,7 @@ void CKabuScript::tick()
 
     FSM();
 
-    if (GetResistState())
+    if (KabuState::Eaten != m_eState && GetResistState())
     {
         ChangeState(KabuState::Eaten);
     }

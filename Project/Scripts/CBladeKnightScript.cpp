@@ -147,6 +147,14 @@ void CBladeKnightScript::tick()
     case BLADEKNIGHT_STATE::Wait:
         Wait();
         break;
+    case BLADEKNIGHT_STATE::Eaten:
+        Eaten();
+        break;
+    }
+
+    if (BLADEKNIGHT_STATE::Eaten != m_State && GetResistState())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Eaten);
     }
 }
 
@@ -324,6 +332,10 @@ void CBladeKnightScript::EnterState()
         Animator()->Play(ANIMPREFIX("Wait"), true, false, 2.5f, 0.5);
     }
     break;
+    case BLADEKNIGHT_STATE::Eaten: {
+        Animator()->Play(ANIMPREFIX("Damage"));
+    }
+    break;
     }
 }
 
@@ -424,6 +436,10 @@ void CBladeKnightScript::ExitState()
     // }
     // break;
     case BLADEKNIGHT_STATE::Wait: {
+    }
+    break;
+    case BLADEKNIGHT_STATE::Eaten: {
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     }
@@ -751,8 +767,19 @@ void CBladeKnightScript::Wait()
     }
 }
 
+void CBladeKnightScript::Eaten()
+{
+    if (!GetResistState())
+    {
+        ChangeState(BLADEKNIGHT_STATE::Wait);
+    }
+}
+
 void CBladeKnightScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (BLADEKNIGHT_STATE::Eaten == m_State)
+        return;
+
     CGameObject* pObj = _OtherCollider->GetOwner();
     if (L"Body Collider" == pObj->GetName())
     {

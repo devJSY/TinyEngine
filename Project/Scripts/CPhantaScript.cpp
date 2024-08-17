@@ -6,12 +6,14 @@
 CPhantaScript::CPhantaScript()
     : CMonsterUnitScript(SPOOKSTEPSCRIPT)
     , m_eState(PhantaState::Appear)
+    , m_fRushSpeedLerp(0.f)
 {
 }
 
 CPhantaScript::CPhantaScript(const CPhantaScript& Origin)
     : CMonsterUnitScript(Origin)
     , m_eState(PhantaState::Appear)
+    , m_fRushSpeedLerp(0.f)
 {
 }
 
@@ -33,6 +35,11 @@ void CPhantaScript::tick()
     CheckDamage();
 
     FSM();
+
+    if (PhantaState::Eaten != m_eState && GetResistState())
+    {
+        ChangeState(PhantaState::Eaten);
+    }
 }
 
 UINT CPhantaScript::SaveToLevelFile(FILE* _File)
@@ -55,6 +62,9 @@ UINT CPhantaScript::LoadFromLevelFile(FILE* _File)
 
 void CPhantaScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (PhantaState::Eaten == m_eState)
+        return;
+
     CGameObject* pObj = _OtherCollider->GetOwner();
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
@@ -116,6 +126,10 @@ void CPhantaScript::EnterState()
         Animator()->Play(ANIMPREFIX("Disappear"), false);
     }
     break;
+    case PhantaState::Eaten: {
+        Animator()->Play(ANIMPREFIX("Damage"));
+    }
+    break;
     case PhantaState::End:
         break;
     default:
@@ -155,6 +169,10 @@ void CPhantaScript::FSM()
         Disappear();
     }
     break;
+    case PhantaState::Eaten: {
+        Eaten();
+    }
+    break;
     case PhantaState::End:
         break;
     default:
@@ -175,6 +193,9 @@ void CPhantaScript::ExitState()
     case PhantaState::Damage:
         break;
     case PhantaState::Disappear:
+        break;
+    case PhantaState::Eaten:
+        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         break;
     case PhantaState::End:
         break;
@@ -239,15 +260,15 @@ void CPhantaScript::Attack()
 {
     Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     vDir.y = 0.f;
-   /* ApplyDir(vDir, true);
+    /* ApplyDir(vDir, true);
 
-    m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
-    Rigidbody()->SetVelocity(vDir * m_fSpeed);
+     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
+     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 
-    if (m_fSpeed <= 3.f)
-    {
-        ChangeState(TackleEnemyState::AttackAfter);
-    }*/
+     if (m_fSpeed <= 3.f)
+     {
+         ChangeState(TackleEnemyState::AttackAfter);
+     }*/
 }
 
 void CPhantaScript::Brake()
@@ -272,6 +293,14 @@ void CPhantaScript::Damage()
     }
 
     Animator()->IsFinish() ? ChangeState(PhantaState::Wait) : void();
+}
+
+void CPhantaScript::Eaten()
+{
+    if (!GetResistState())
+    {
+        ChangeState(PhantaState::Wait);
+    }
 }
 
 void CPhantaScript::Disappear()
