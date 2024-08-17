@@ -109,10 +109,18 @@ void CFlowMgr_BossMorpho::SpawnMorpho()
 
 UINT CFlowMgr_BossMorpho::SaveToLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    MemoryByte += CLevelFlowMgr::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
 UINT CFlowMgr_BossMorpho::LoadFromLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    MemoryByte += CLevelFlowMgr::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }

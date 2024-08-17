@@ -65,9 +65,9 @@ void CFadeEffectScript::tick()
         m_ElapsedTime = m_Duration;
         m_bComplete = true;
     }
-    else if (m_ElapsedTime < -(m_Duration * 5.f))
+    else if (m_ElapsedTime < -(m_Duration * 10.f))
     {
-        m_ElapsedTime = -(m_Duration * 5.f);
+        m_ElapsedTime = -(m_Duration * 10.f);
         m_bComplete = true;
     }
 
@@ -77,6 +77,13 @@ void CFadeEffectScript::tick()
         if (nullptr != m_Target)
         {
             NDCPos = PositionToNDC(m_Target->Transform()->GetWorldPos());
+
+            // Target이 화면 밖인경우 중심으로 설정
+            if (NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f)
+            {
+                NDCPos.x = 0.f;
+                NDCPos.y = 0.f;
+            }
         }
 
         MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_ElapsedTime / m_Duration);
