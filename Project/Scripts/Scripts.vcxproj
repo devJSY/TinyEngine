@@ -423,6 +423,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIMoveUpDownScript.h" />
     <ClInclude Include="CUIFlowScript.h" />
     <ClInclude Include="CFlowMgr_Lv0.h" />
+    <ClInclude Include="CSmokeScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAttackAreaScript.cpp" />
@@ -736,6 +737,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIMoveUpDownScript.cpp" />
     <ClCompile Include="CUIFlowScript.cpp" />
     <ClCompile Include="CFlowMgr_Lv0.cpp" />
+    <ClCompile Include="CSmokeScript.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

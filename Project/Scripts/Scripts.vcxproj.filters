@@ -883,6 +883,9 @@
     <ClInclude Include="CUIFlowMgr.h">
       <Filter>Scripts\UI\UIManager\UIFlowManger</Filter>
     </ClInclude>
+    <ClInclude Include="CSmokeScript.h">
+      <Filter>Scripts\Gimmik\Smoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1775,6 +1778,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySmoke.cpp">
       <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeScript.cpp">
+      <Filter>Scripts\Gimmik\Smoke</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
