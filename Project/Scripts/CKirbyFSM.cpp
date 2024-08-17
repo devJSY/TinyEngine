@@ -523,6 +523,11 @@ void CKirbyFSM::tick()
             m_EmissiveCoef = 0.f;
             PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
         }
+
+        if (m_bIsSkrr)
+        {
+            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+        }
     }
 
     CFSMScript::tick();
