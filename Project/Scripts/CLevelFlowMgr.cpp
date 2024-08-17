@@ -40,7 +40,10 @@ CLevelFlowMgr::~CLevelFlowMgr()
 }
 
 void CLevelFlowMgr::begin()
-{
+{        
+
+    m_bIsChangedLevel = false;
+
     m_CurLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetName();
 
     // Effect 만들기
@@ -66,6 +69,11 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
+    if (KEY_TAP(KEY::N))
+    {
+        LevelEnd();
+    }
+
     if (m_bFadeEffect)
     {
         m_FadeEffectAcc += DT;
@@ -93,7 +101,7 @@ void CLevelFlowMgr::LevelStart()
     // FadeEffect Timer 초기화
     m_bFadeEffect = false;
     m_FadeEffectAcc = 0.f;
-    m_FadeEffectDuration = 2.f;
+    m_FadeEffectDuration = 2.5f;
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
@@ -158,9 +166,14 @@ void CLevelFlowMgr::LevelStart()
 
 void CLevelFlowMgr::LevelEnd()
 {
+    // 이미 레벨 전환중일 경우 처리하지 않는다.
+    if (m_bIsChangedLevel == true)
+        return;
+
     // UI (Fade Out)
     SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
+    m_bIsChangedLevel = true;
     m_bFadeEffect = true;
     m_FadeEffectAcc = 0.f;
 
@@ -169,18 +182,28 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
+    // Loding UI 시작
+
+
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
 
 void CLevelFlowMgr::LevelRestart()
 {
+    // 이미 레벨 전환중일 경우 처리하지 않는다.
+    if (m_bIsChangedLevel == true)
+        return;
+
     // UI (Fade Out)
     SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
 
-    // Level Restart
-    GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
+    m_bIsChangedLevel = true;
+    m_bFadeEffect = true;
+    m_FadeEffectAcc = 0.f;
 
+    // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
+    m_NextLevelPath = ToString(m_CurLevelPath);
     // @TODO BGM 종료
 }
 

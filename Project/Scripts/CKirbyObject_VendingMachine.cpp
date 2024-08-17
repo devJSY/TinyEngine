@@ -146,7 +146,7 @@ void CKirbyObject_VendingMachine::ChangeObjectEnter()
 
     PLAYERCTRL->SetSpeed(5.f);
     m_SaveJumpPower = PLAYERCTRL->GetJumpPower();
-    PLAYERCTRL->SetJumpPower(m_SaveJumpPower / 2.f);
+    PLAYERCTRL->SetJumpPower(m_SaveJumpPower * 0.8f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     PLAYER->CharacterController()->SetCenter(Vec3(0.f, 2.f, 0.f));
