@@ -6,6 +6,7 @@ class CKirbyBulletScript : public CScript
 private:
     Vec3    m_MoveDir;
     Vec3    m_ChildOffest;
+    float   m_ScaleFactor;
     float   m_Speed;
     float   m_PlayTime;
     bool    m_bHasTickCol;
@@ -21,6 +22,7 @@ public:
 
 private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);
+    virtual void OnTriggerEnter(CCollider* _OtherCollider);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
