@@ -25,6 +25,7 @@ enum class BLADEKNIGHT_STATE
     TornadoAttackCharge2,
     // TornadoAttackChargeMax,
     Wait,
+    Eaten,
 };
 
 class CBladeKnightSwordScript;
@@ -79,6 +80,7 @@ private:
     void TornadoAttackCharge2();
     void TornadoAttackChargeMax();
     void Wait();
+    void Eaten();
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
