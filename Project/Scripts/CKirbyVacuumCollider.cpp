@@ -56,6 +56,12 @@ void CKirbyVacuumCollider::tick()
         // target object가 monster라면 버티는 상태로 변경시켜줌
         if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
         {
+            if (m_FindTarget->Rigidbody())
+            {
+                m_FindTarget->Rigidbody()->SetVelocity(Vec3());
+                m_FindTarget->Rigidbody()->SetAngularVelocity(Vec3());
+            }
+
             m_FindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
         }
 
@@ -69,17 +75,30 @@ void CKirbyVacuumCollider::tick()
     // 타겟 오브젝트 빨아들임
     if (m_bDrawing)
     {
-        Vec3 Force = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-        Force.Normalize();
+        // safety check
+        Vec3 Dist = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
+        float Radius = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider()->GetRadius();
+        Radius *= PLAYER->Transform()->GetWorldScale().x;
+
+        if (Dist.Length() <= Radius + 1e-3)
+        {
+            DrawingCollisionEnter(m_FindTarget);
+            return;
+        }
+
+        // force
+        Vec3 Force = Dist.Normalize();
+        float PrevSpeed = m_FindTarget->Rigidbody()->GetVelocity().Length();
+        m_FindTarget->Rigidbody()->SetVelocity(Force * PrevSpeed);
 
         if (m_FindHoldTime > 0.f)
         {
             m_FindHoldTime -= DT;
-            Force = (Force).Normalize() * 7.5f;
+            Force = Force.Normalize() * 7.5f;
         }
         else
         {
-            Force = (Force).Normalize() * 60.f;
+            Force = Force.Normalize() * 60.f;
         }
 
         m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
