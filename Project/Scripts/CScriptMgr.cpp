@@ -109,6 +109,7 @@
 #include "CFlowMgr_LvRobby.h"
 #include "CFlowMgr_LvStart.h"
 #include "CUIFlowMgr.h"
+#include "CKirbyBulletSize.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -220,6 +221,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_LvRobby");
 	_vec.push_back(L"CFlowMgr_LvStart");
 	_vec.push_back(L"CUIFlowMgr");
+	_vec.push_back(L"CKirbyBulletSize");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -440,6 +442,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_LvStart;
 	if (L"CUIFlowMgr" == _strScriptName)
 		return new CUIFlowMgr;
+	if (L"CKirbyBulletSize" == _strScriptName)
+		return new CKirbyBulletSize;
 	return nullptr;
 }
 
@@ -663,6 +667,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_LvStart;
 	case (UINT)SCRIPT_TYPE::UIFLOWMGR:
 		return new CUIFlowMgr;
+	case (UINT)SCRIPT_TYPE::KIRBYBULLETSIZE:
+		return new CKirbyBulletSize;
 	}
 	return nullptr;
 }
@@ -887,6 +893,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowMgr_LvStart";
 	case SCRIPT_TYPE::UIFLOWMGR:
 		return L"CUIFlowMgr";
+	case SCRIPT_TYPE::KIRBYBULLETSIZE:
+		return L"CKirbyBulletSize";
 	}
 	return nullptr;
 }

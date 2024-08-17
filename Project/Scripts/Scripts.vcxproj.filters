@@ -883,6 +883,9 @@
     <ClInclude Include="CUIFlowMgr.h">
       <Filter>Scripts\UI\UIManager\UIFlowManger</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyBulletSize.h">
+      <Filter>Scripts\Character\Kirby\KirbyBulletSize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1775,6 +1778,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySmoke.cpp">
       <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBulletSize.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyBulletSize</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2806,6 +2812,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbySmoke">
       <UniqueIdentifier>{f2bbb26f-2be5-41dc-8d00-163e567b2d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyBulletSize">
+      <UniqueIdentifier>{860a1904-3e54-4954-9e1f-12a518449f4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

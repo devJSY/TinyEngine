@@ -3,10 +3,11 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CUnitScript.h"
+#include "CKirbyBulletSize.h"
 
 CKirbyBulletScript::CKirbyBulletScript()
     : CScript(KIRBYBULLETSCRIPT)
-    , m_ScaleFactor(0.5f)
+    , m_ScaleFactor(1.f)
     , m_Speed(1.f)
     , m_PlayTime(5.f)
     , m_bHasTickCol(false)
@@ -35,6 +36,23 @@ void CKirbyBulletScript::begin()
 
     CGameObject* pStuffedObj = new CGameObject();
     CTransform* pTransform = PLAYERFSM->GetStuffedObj()->Transform()->Clone();
+
+    // set SclaeFactor
+    CKirbyBulletSize* pSizeScript = PLAYERFSM->GetStuffedObj()->GetScript<CKirbyBulletSize>();
+    
+    if (pSizeScript)
+    {
+        int Size = pSizeScript->GetSizeType(); // SizeType : 1~3
+
+        if (Size == 2)
+        {
+            m_ScaleFactor = 0.5f;
+        }
+        else if (Size == 3)
+        {
+            m_ScaleFactor = 0.25f;
+        }
+    }
 
     // set offset
     if (PLAYERFSM->GetStuffedObj()->SphereCollider())
