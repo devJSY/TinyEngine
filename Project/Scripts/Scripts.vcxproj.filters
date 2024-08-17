@@ -629,7 +629,7 @@
       <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyUnitScript.h">
-      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+      <Filter>Scripts\Character\Kirby\Unit</Filter>
     </ClInclude>
     <ClInclude Include="CSolarChargeScript.h">
       <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
@@ -1525,7 +1525,7 @@
       <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
-      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+      <Filter>Scripts\Character\Kirby\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CSolarChargeScript.cpp">
       <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
@@ -2495,9 +2495,6 @@
     <Filter Include="Scripts\UI\UIWipe\UIWipeTrigger">
       <UniqueIdentifier>{1154ae36-6ac7-49e2-9f7a-c42af591649d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
-      <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
     </Filter>
@@ -2815,6 +2812,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyBulletSize">
       <UniqueIdentifier>{860a1904-3e54-4954-9e1f-12a518449f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\Unit">
+      <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -78,7 +78,7 @@ void CKirbyUnitScript::tick()
         {
             m_CurInfo.HP -= NewDamage * 0.25f;
         }
-        else if (PLAYERFSM->GetCurState()->GetName() == L"FALL")
+        else if (PLAYERFSM->GetCurState()->GetName() == L"FALL" || PLAYERFSM->IsDrawing())
         {
             m_CurInfo.HP -= NewDamage;
         }
