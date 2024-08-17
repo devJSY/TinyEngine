@@ -6,6 +6,13 @@ CSmokeScript::CSmokeScript()
     , m_bRandom(false)
     , m_Acc(0.f)
     , m_LifeTime(1.f)
+    , m_MaxLifeTime(1.f)
+    , m_MaxSpeed(10.f)
+    , m_MaxScale(20.f)
+    , m_Speed(10.f)
+    , m_Scale(20.f)
+    , m_Dir{}
+    , m_FadeOutAlpha(0.5f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LifeTime, "Life Time", 0.1f);
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_Dir, "Direction");
@@ -23,7 +30,15 @@ CSmokeScript::CSmokeScript(const CSmokeScript& _Origin)
     , m_bRandom(_Origin.m_bRandom)
     , m_Acc(0.f)
     , m_LifeTime(_Origin.m_LifeTime)
+    , m_MaxLifeTime(_Origin.m_MaxLifeTime)
+    , m_MaxSpeed(_Origin.m_MaxSpeed)
+    , m_MaxScale(_Origin.m_MaxScale)
+    , m_Speed(_Origin.m_Speed)
+    , m_Scale(_Origin.m_Scale)
+    , m_Dir(_Origin.m_Dir)
+    , m_FadeOutAlpha(_Origin.m_FadeOutAlpha)
 {
+
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LifeTime, "Life Time", 0.1f);
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_Dir, "Direction");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
@@ -101,7 +116,6 @@ void CSmokeScript::tick()
 
         // Scale
         Transform()->SetLocalScale(Vec3(CurScale, CurScale, CurScale));
-
     }
     // Life Time이 지나면 삭제
     else
