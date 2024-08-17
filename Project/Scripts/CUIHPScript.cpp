@@ -136,29 +136,29 @@ void CUIHPScript::SwitchKirbyName()
     AbilityCopyType eAbility = m_pFSMScript->GetCurAbilityIdx();
     ObjectCopyType eObject = m_pFSMScript->GetCurObjectIdx();
 
-    wstring AbilityTextureName = L"";
-    wstring ObjectTextureName = L"";
+    int AbilityIdx = -1;
+    int ObjectIdx = -1;
 
     switch (eAbility)
     {
     case AbilityCopyType::NORMAL: {
-        AbilityTextureName = L"NormalKirby.png";
+        AbilityIdx = 3;
     }
     break;
     case AbilityCopyType::FIRE: {
-        AbilityTextureName = L"DragonicFireKirby.png";
+        AbilityIdx = 6;
     }
     break;
     case AbilityCopyType::CUTTER: {
-        AbilityTextureName = L"FullMetalKirby.png";
+        AbilityIdx = 5;
     }
     break;
     case AbilityCopyType::SWORD: {
-        AbilityTextureName = L"MorphoKirby.png";
+        AbilityIdx = 4;
     }
     break;
     case AbilityCopyType::SLEEP: {
-        AbilityTextureName = L"SleepKirby.png";
+        AbilityIdx = 7;
     }
     break;
     case AbilityCopyType::END:
@@ -173,15 +173,15 @@ void CUIHPScript::SwitchKirbyName()
     }
     break;
     case ObjectCopyType::CONE: {
-        ObjectTextureName = L"TriangleKirby.png";
+        ObjectIdx = 0;
     }
     break;
     case ObjectCopyType::VENDING_MACHINE: {
-        ObjectTextureName = L"VendingMachineKirby.png";
+        ObjectIdx = 1;
     }
     break;
     case ObjectCopyType::LIGHT: {
-        ObjectTextureName = L"BulbKirby.png";
+        ObjectIdx = 2;
     }
     break;
     case ObjectCopyType::END:
@@ -190,15 +190,35 @@ void CUIHPScript::SwitchKirbyName()
         break;
     }
 
-    if (eObject == ObjectCopyType::NONE)
+    if (-1 == ObjectIdx)
     {
-        AbilityTextureName = L"fbx\\UI\\Images\\FontTexture\\" + AbilityTextureName;
-        m_pNameObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(AbilityTextureName));
+        for (int i = 3; i < 8; i++)
+        {
+            if (i == AbilityIdx)
+                GetOwner()->GetChildObject(L"UI_PlayerName"+std::to_wstring(i))->SetActive(true);
+            else
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
     }
     else
     {
-        ObjectTextureName = L"fbx\\UI\\Images\\FontTexture\\" + ObjectTextureName;
-        m_pNameObj->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(ObjectTextureName));
+        for (int i = 3; i < 8; i++)
+        {
+            GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i == ObjectIdx)
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            else
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
     }
 }
 

@@ -55,7 +55,7 @@ private:
     virtual void LevelExit();
     virtual void MtrlParamUpdate();
 
-protected:
+public:
     void TurnOnBossHP();
     void TurnOffBossHP();
     void TurnOffPlayerHP();
