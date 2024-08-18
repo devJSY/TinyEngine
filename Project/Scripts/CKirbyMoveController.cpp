@@ -152,19 +152,16 @@ void CKirbyMoveController::RayGround()
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     m_RayHit = CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 0.f), 200.f, vecCollision);
 
+    RayStart.y -= 1.f;
     RayStart.y += CharacterController()->GetRadius() * Transform()->GetWorldScale().y;
-    float RayLength = CharacterController()->GetRadius() * Transform()->GetWorldScale().y * acosf(XM_PI / 6.f) + 7.f;
 
-    RaycastHit arrRay[5] = {m_RayHit, CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(1.f, -1.f, 0.f), RayLength, vecCollision),
-                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(-1.f, -1.f, 0.f), RayLength, vecCollision),
-                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 1.f), RayLength, vecCollision),
-                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, -1.f), RayLength, vecCollision)};
+    float RayLength = CharacterController()->GetRadius() * Transform()->GetWorldScale().y * acosf(XM_PI / 6.f) +5.f;
 
-    // @DEBUG
-    GamePlayStatic::DrawDebugLine(RayStart, Vec3(0.577f, -1.f, 0.f), RayLength, Vec3(1.f, 0.f, 0.f), true);
-    GamePlayStatic::DrawDebugLine(RayStart, Vec3(-0.577f, -1.f, 0.f), RayLength, Vec3(1.f, 0.f, 0.f), true);
-    GamePlayStatic::DrawDebugLine(RayStart, Vec3(0.f, -1.f, 0.577f), RayLength, Vec3(1.f, 0.f, 0.f), true);
-    GamePlayStatic::DrawDebugLine(RayStart, Vec3(0.f, -1.f, -0.577f), RayLength, Vec3(1.f, 0.f, 0.f), true);
+    RaycastHit arrRay[5] = {m_RayHit, CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(1.f * tanf(XM_PI / 6.f), -1.f, 0.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(-1.f * tanf(XM_PI / 6.f), -1.f, 0.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 1.f * tanf(XM_PI / 6.f)), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, -1.f * tanf(XM_PI / 6.f)), RayLength, vecCollision)};
+
 
     // Grund 판정
     m_bGround = CharacterController()->IsGrounded();
@@ -216,7 +213,6 @@ void CKirbyMoveController::RayGround()
                 if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
                 {
                     IsColision = false;
-                    break;
                 }
             }
         }
@@ -291,6 +287,7 @@ void CKirbyMoveController::Move()
     // 수평 방향 이동속도 계산
     // Guard시에는 이전프레임의 이동속도를 남겨 감속시킴
 
+
     if (m_bActiveFriction)
     {
         m_Accel.x = -m_MoveVelocity.x * m_Friction;
@@ -321,10 +318,6 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = m_JumpPower;
     }
 
-    //if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
-    //{
-    //    m_MoveVelocity.y = 0.f;
-    //}
 
     // 중력 적용
     m_Accel.y += m_Gravity;
@@ -395,12 +388,12 @@ void CKirbyMoveController::Move()
     // =========================
     CharacterController()->Move(m_MoveVelocity * DT);
 
-
     // 땅에 닿은 상태면 Velocity Y값 초기화
     if (CharacterController()->IsGrounded() && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
     }
+
 }
 
 
