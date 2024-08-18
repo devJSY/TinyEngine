@@ -401,25 +401,7 @@ void CCamera::render_Forward()
     render_Inst(m_mapInstGroup_F);
 
     // Transparent
-    for (tInstObj& instObj : m_vecTransparent)
-    {
-#ifdef DISTRIBUTE
-        instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
-#else
-        if (g_Global.g_DrawAsWireFrame)
-        {
-            Ptr<CGraphicsShader> pSingleObjShader = instObj.pObj->GetRenderComponent()->GetMaterial(instObj.iMtrlIdx)->GetShader();
-            RS_TYPE originRSType = pSingleObjShader->GetRSType();
-            pSingleObjShader->SetRSType(RS_TYPE::WIRE_FRAME);
-            instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
-            pSingleObjShader->SetRSType(originRSType);
-        }
-        else
-        {
-            instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
-        }
-#endif
-    }
+    render_Transparent();
 
 #ifndef DISTRIBUTE
     // IDMap Pass
@@ -660,6 +642,45 @@ void CCamera::render_Merge()
 
     pMtrl->UpdateData();
     pMesh->render(0);
+}
+
+bool AlphaSortingComp(const tInstObj& _ObjA, const tInstObj& _ObjB)
+{
+    Vec4 ObjAViewPos = Vec4(0.f, 0.f, 0.f, 1.f);
+    Vec4 ObjBViewPos = Vec4(0.f, 0.f, 0.f, 1.f);
+
+    ObjAViewPos = Vec4::Transform(ObjAViewPos, _ObjA.pObj->Transform()->GetWorldMat() * g_Transform.matView);
+    ObjBViewPos = Vec4::Transform(ObjBViewPos, _ObjB.pObj->Transform()->GetWorldMat() * g_Transform.matView);
+
+    // 내림차순
+    return ObjAViewPos.z > ObjBViewPos.z;
+}
+
+void CCamera::render_Transparent()
+{
+    // Alpha Sorting
+    sort(m_vecTransparent.begin(), m_vecTransparent.end(), AlphaSortingComp);
+
+    // Render
+    for (tInstObj& instObj : m_vecTransparent)
+    {
+#ifdef DISTRIBUTE
+        instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+#else
+        if (g_Global.g_DrawAsWireFrame)
+        {
+            Ptr<CGraphicsShader> pSingleObjShader = instObj.pObj->GetRenderComponent()->GetMaterial(instObj.iMtrlIdx)->GetShader();
+            RS_TYPE originRSType = pSingleObjShader->GetRSType();
+            pSingleObjShader->SetRSType(RS_TYPE::WIRE_FRAME);
+            instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+            pSingleObjShader->SetRSType(originRSType);
+        }
+        else
+        {
+            instObj.pObj->GetRenderComponent()->render(instObj.iMtrlIdx);
+        }
+#endif
+    }
 }
 
 void CCamera::render_DepthOnly(Ptr<CTexture> _DepthMapTex)

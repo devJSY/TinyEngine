@@ -111,6 +111,7 @@ private:
     void render_SSAO();
     void render_Light();
     void render_Merge();
+    void render_Transparent();
 
     void render_Clear();
 
