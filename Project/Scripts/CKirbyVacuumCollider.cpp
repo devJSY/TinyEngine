@@ -123,13 +123,23 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
         return;
 
     // 현재 흡수예정인 오브젝트와 비교해 우선순위 판단
-    if ((UINT)newType < (UINT)m_FindType)
+    if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::NORMAL)
     {
-        bChanged = true;
+        if ((UINT)newType < (UINT)m_FindType)
+        {
+            bChanged = true;
+        }
+        else if ((UINT)newType == (UINT)m_FindType)
+        {
+            if (newDist < m_FindDistance)
+            {
+                bChanged = true;
+            }
+        }
     }
-    else if ((UINT)newType == (UINT)m_FindType)
+    else
     {
-        if (newDist < m_FindDistance)
+        if (newType == EatType::Copy_Object && newDist < m_FindDistance)
         {
             bChanged = true;
         }

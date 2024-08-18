@@ -70,13 +70,11 @@ void CKirbyRunStart::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::FIRE:
-        case AbilityCopyType::NORMAL:
-        {
+        case AbilityCopyType::NORMAL: {
             // 상태변경 시그널 발생시
             if (KEY_TAP(KEY_ATK))
             {
-                ChangeState(L"ATTACK_CHARGE1_START");
+                ChangeState(L"VACUUM1_START");
             }
             else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
             {
@@ -106,12 +104,50 @@ void CKirbyRunStart::tick()
             }
         }
         break;
+        case AbilityCopyType::FIRE: {
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK))
+            {
+                ChangeState(L"ATTACK_CHARGE1_START");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+            {
+                ChangeState(L"GUARD");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f && KEY_NONE_ARROW)
+            {
+                ChangeState(L"IDLE");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+            else
+            {
+                if (GetOwner()->Animator()->IsFinish())
+                    ChangeState(L"RUN");
+            }
+        }
+        break;
 
-
-        case AbilityCopyType::CUTTER: 
-        {
+        case AbilityCopyType::CUTTER: {
             // 상태변경 시그널 발생시
-            if (KEY_TAP(KEY_ATK))
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK))
             {
                 if (PLAYERFSM->CanBladeAttack())
                 {
@@ -145,7 +181,11 @@ void CKirbyRunStart::tick()
 
             break;
         case AbilityCopyType::SWORD: {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 UINT Combo = PLAYERFSM->GetComboLevel();
 
@@ -183,7 +223,7 @@ void CKirbyRunStart::tick()
                     ChangeState(L"RUN");
             }
         }
-            break;
+        break;
         }
     }
 }

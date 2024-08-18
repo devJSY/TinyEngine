@@ -38,11 +38,13 @@ CKirbyFSM::CKirbyFSM()
     , m_bStuffed(false)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
+    , m_Vacuum1MaxTime(2.f)
     , m_DropCopyTime(1.f)
     , m_bDroppable(false)
     , m_InvincibleAcc(0.f)
     , m_InvincibleDuration(0.f)
     , m_bInvincible(false)
+    , m_bNearDeformObject(false)
     , m_EmissiveCoef(0.f)
     , m_EmissiveAcc(0.f)
     , m_EmissiveDuration(0.f)
@@ -82,7 +84,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_CurWeapon(nullptr)
     , m_StuffedObj(nullptr)
     , m_VacuumCollider(nullptr)
-    , m_HoveringLimitTime(7.f)
+    , m_HoveringLimitTime(_Origin.m_HoveringLimitTime)
     , m_HoveringAccTime(0.f)
     , m_bHovering(false)
     , m_ComboLevel(0)
@@ -95,17 +97,19 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_bStuffed(false)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
-    , m_DropCopyTime(1.f)
+    , m_Vacuum1MaxTime(_Origin.m_Vacuum1MaxTime)
+    , m_DropCopyTime(_Origin.m_DropCopyTime)
     , m_bDroppable(false)
     , m_InvincibleAcc(0.f)
     , m_InvincibleDuration(0.f)
     , m_bInvincible(false)
+    , m_bNearDeformObject(false)
     , m_EmissiveCoef(0.f)
     , m_EmissiveAcc(0.f)
     , m_EmissiveDuration(0.f)
     , m_bEmissive(false)
     , m_bCanBladeAttack(true)
-    , m_GlidingDuration(1.7f)
+    , m_GlidingDuration(_Origin.m_GlidingDuration)
     , m_GlidingAcc(0.f)
     , m_LeftCanCount(0)
     , m_bEscapeLadder(false)
@@ -206,6 +210,13 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyAttackAirGuardEnd.h"
 #include "CKirbyAttackAirGuardCharge.h"
 #include "CKirbyAttackAirGuardChargeStart.h"
+#include "CKirbyVacuum1.h"
+#include "CKirbyVacuum1Start.h"
+#include "CKirbyVacuum1End.h"
+#include "CKirbyVacuum1Run.h"
+#include "CKirbyVacuum2.h"
+#include "CKirbyVacuum2Start.h"
+#include "CKirbyVacuum2Run.h"
 #include "CKirbyStuffed.h"
 #include "CKirbyStuffedIdle.h"
 #include "CKirbyStuffedRun.h"
@@ -330,7 +341,6 @@ void CKirbyFSM::begin()
         GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
     }
 
-
     // 캐릭터 컨트롤러 캡슐 사이즈 세팅
     PLAYER->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
     PLAYER->CharacterController()->SetHeight(1.51f);
@@ -386,6 +396,13 @@ void CKirbyFSM::begin()
     AddState(L"ATTACK_AIRGUARD_END", new CKirbyAttackAirGuardEnd);
     AddState(L"ATTACK_AIRGUARD_CHARGE", new CKirbyAttackAirGuardCharge);
     AddState(L"ATTACK_AIRGUARD_CHARGE_START", new CKirbyAttackAirGuardChargeStart);
+    AddState(L"VACUUM1", new CKirbyVacuum1);
+    AddState(L"VACUUM1_START", new CKirbyVacuum1Start);
+    AddState(L"VACUUM1_END", new CKirbyVacuum1End);
+    AddState(L"VACUUM1_RUN", new CKirbyVacuum1Run);
+    AddState(L"VACUUM2", new CKirbyVacuum2);
+    AddState(L"VACUUM2_START", new CKirbyVacuum2Start);
+    AddState(L"VACUUM2_RUN", new CKirbyVacuum2Run);
     AddState(L"STUFFED", new CKirbyStuffed);
     AddState(L"STUFFED_IDLE", new CKirbyStuffedIdle);
     AddState(L"STUFFED_RUN", new CKirbyStuffedRun);

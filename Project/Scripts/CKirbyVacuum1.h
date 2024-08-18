@@ -1,10 +1,10 @@
 #pragma once
 #include "CState.h"
 
-class CKirbyRun : public CState
+class CKirbyVacuum1 : public CState
 {
 private:
-    bool m_LastSmokeIsRight;
+    float m_SavedSpeed;
 
 public:
     virtual void tick();
@@ -12,7 +12,7 @@ public:
     virtual void Exit();
 
 public:
-    CLONE(CKirbyRun)
-    CKirbyRun();
-    virtual ~CKirbyRun();
+    CLONE(CKirbyVacuum1)
+    CKirbyVacuum1();
+    virtual ~CKirbyVacuum1();
 };
