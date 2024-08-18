@@ -102,6 +102,7 @@ public:
 public:
     void render_Deferred();
     void render_Forward();
+    void render_Postprocess();
     void render_DepthOnly(Ptr<CTexture> _DepthMapTex);
 
 private:
@@ -119,7 +120,6 @@ private:
     void render(vector<CGameObject*>& _vecObj);
     void render_OutLine();
     void render_IDMap();
-    void render_Postprocess();
     void render_DepthOnly(vector<CGameObject*>& _vecObj);
 
 public:

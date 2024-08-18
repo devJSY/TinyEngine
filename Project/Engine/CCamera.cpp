@@ -412,18 +412,6 @@ void CCamera::render_Forward()
     }
 #endif // DISTRIBUTE
 
-    // 饶贸府
-    if (m_bHDRI)
-    {
-        CRenderMgr::GetInst()->render_postprocess_HDRI();
-    }
-    else
-    {
-        CRenderMgr::GetInst()->render_postprocess_LDRI();
-    }
-
-    render_Postprocess();
-
     // SkyBox Clear
     for (size_t i = 0; i < m_vecSkybox.size(); ++i)
     {
@@ -710,7 +698,6 @@ void CCamera::render_Clear()
     m_vecSkybox.clear();
     m_vecDecal.clear();
     m_vecTransparent.clear();
-    m_vecPostProcess.clear();
 }
 
 void CCamera::render(vector<CGameObject*>& _vecObj)
@@ -818,6 +805,16 @@ void CCamera::render_IDMap()
 
 void CCamera::render_Postprocess()
 {
+    // 饶贸府
+    if (m_bHDRI)
+    {
+        CRenderMgr::GetInst()->render_postprocess_HDRI();
+    }
+    else
+    {
+        CRenderMgr::GetInst()->render_postprocess_LDRI();
+    }
+
     CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
 
     for (int i = 0; i < m_vecPostProcess.size(); ++i)
@@ -833,6 +830,8 @@ void CCamera::render_Postprocess()
     }
 
     CTexture::Clear(15);
+
+    m_vecPostProcess.clear();
 }
 
 void CCamera::Resize(Vec2 Resolution)

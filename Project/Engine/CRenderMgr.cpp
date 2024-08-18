@@ -248,9 +248,18 @@ void CRenderMgr::render_play()
             continue;
 
         m_vecCam[i]->SortObject();
+
+        // Main Camera
         if (0 == i)
+        {
             m_vecCam[i]->render_Deferred();
-        m_vecCam[i]->render_Forward();
+            m_vecCam[i]->render_Forward();
+            m_vecCam[i]->render_Postprocess();
+        }
+        else
+        {
+            m_vecCam[i]->render_Forward();
+        }
     }
 }
 
