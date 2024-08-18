@@ -169,6 +169,10 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
+    // Kirby 프리팹 저장
+    Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
+    MainPlayerPref->Save(L"prefab\\Main Player.pref");
+
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
