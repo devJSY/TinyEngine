@@ -4,6 +4,7 @@
 #include "CKirbyFSM.h"
 #include "CKirbyVacuumCollider.h"
 #include "CKirbyUnitScript.h"
+#include "CState.h"
 
 CKirbyBodyCollider::CKirbyBodyCollider()
     : CScript(KIRBYBODYCOLLIDER)
@@ -64,13 +65,17 @@ void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
 float CKirbyBodyCollider::FindDamage()
 {
     float Damage = 5.f;
+    wstring StateName = PLAYERFSM->GetCurState()->GetName();
 
     if (PLAYERFSM->GetCurObject())
     {
         switch (PLAYERFSM->GetCurObjectIdx())
         {
         case ObjectCopyType::CONE:
-            Damage = 100.f;
+            if (StateName == L"ATTACK" || StateName == L"ATTACK_END" || L"ATTACK_COMBO1")
+            {
+                Damage = 100.f;
+            }
             break;
         }
     }
