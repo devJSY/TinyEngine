@@ -190,6 +190,7 @@ private:
     void SaveInitSetting();
     void LoadSetting();
     void LoadInitSetting();
+    void LoadDefaultSetting();
     CameraSetting GetSaveSetting() const { return m_SaveSetting; }
 
 
