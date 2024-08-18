@@ -269,6 +269,8 @@ void CKirbyAbility_Sword::AttackCharge1EndEnter()
 
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+    PLAYERCTRL->SetFriction(5.f);
+    PLAYERCTRL->SetFrictionMode(true);
 
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
@@ -278,6 +280,8 @@ void CKirbyAbility_Sword::AttackCharge1EndExit()
 {
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetFriction(0.f);
+    PLAYERCTRL->SetFrictionMode(false);
 
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
