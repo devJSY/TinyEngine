@@ -31,7 +31,7 @@ public:
     {
         m_bReverse = _bReverse;
         ResetComplete();
-        m_bReverse ? m_ElapsedTime = m_Duration : m_ElapsedTime = -m_Duration;
+        m_bReverse ? m_ElapsedTime = m_Duration : m_ElapsedTime = 0.f;
     }
 
     float GetDuration() const { return m_Duration; }
