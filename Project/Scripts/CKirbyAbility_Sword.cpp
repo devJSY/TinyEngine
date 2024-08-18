@@ -347,11 +347,17 @@ void CKirbyAbility_Sword::AttackCharge2StartExit()
 // (charge)
 void CKirbyAbility_Sword::AttackCharge3()
 {
-    if (CHECK_ANIMFRM(PLAYER, 25) && !PLAYER->Animator()->IsReverse())
+    if (CHECK_ANIMFRM(PLAYER, 23) && !PLAYER->Animator()->IsReverse())
     {
+        if (m_bFrmEnter)
+        {
+            PLAYER->Animator()->SetPlaySpeed(1.f);
+            m_bFrmEnter = false;
+        }
+
         PLAYER->Animator()->SetReverse(true);
     }
-    else if (CHECK_ANIMFRM(PLAYER, 19) && PLAYER->Animator()->IsReverse())
+    else if (!PLAYER->Animator()->IsChainging() && PLAYER->Animator()->GetClipFrameIndex() < 21 && PLAYER->Animator()->IsReverse())
     {
         PLAYER->Animator()->SetReverse(false);
     }
@@ -368,6 +374,8 @@ void CKirbyAbility_Sword::AttackCharge3Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
+
+    m_bFrmEnter = true;
 }
 
 void CKirbyAbility_Sword::AttackCharge3Exit()
