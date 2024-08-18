@@ -3,6 +3,8 @@
 
 #include <Engine/CTimeMgr.h>
 #include "CUnitScript.h"
+
+#include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 
 CUIHPScript::CUIHPScript()
@@ -20,6 +22,8 @@ CUIHPScript::CUIHPScript()
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_pFSMScript(nullptr)
+    , m_bIsEnter(true)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -43,7 +47,14 @@ CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_pFSMScript(nullptr)
+    , m_bIsEnter(true)
 {
+    AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vDecreaseColor, "Decrease Color");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fComboTime, "ComboTime");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fDescSpeed, "DecreaseSpeed");
 }
 
 CUIHPScript::~CUIHPScript()
@@ -52,38 +63,25 @@ CUIHPScript::~CUIHPScript()
 
 void CUIHPScript::begin()
 {
-    CGameObject* _pTargetObj = nullptr;
-    if (!m_pUnitScript && m_TargetName != "")
-        _pTargetObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_TargetName));
-
-    if (_pTargetObj)
-    {
-        m_pUnitScript = _pTargetObj->GetScript<CUnitScript>();
-        m_pFSMScript = _pTargetObj->GetScript<CKirbyFSM>();
-    }
-
-    m_pNameObj = GetOwner()->GetChildObject(L"UI_PlayerName");
-
-    if (!m_pUnitScript)
-        return;
-
-    m_fMaxHP = m_pUnitScript->GetCurInfo().MAXHP;
-    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-    m_fPrevHP = m_pUnitScript->GetCurInfo().HP;
-
-    m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
-
     // m_fMaxHP = m_fCurHP = m_fPrevH = TargetObjectÀÇ MaxHP!
+}
+
+void CUIHPScript::SetPlayer()
+{
+    if (PLAYER)
+    {
+        m_pUnitScript = PLAYER->GetScript<CUnitScript>();
+        m_pFSMScript = PLAYER->GetScript<CKirbyFSM>();
+        m_bIsEnter = true;
+    }
 }
 
 void CUIHPScript::tick()
 {
     if (!m_pUnitScript)
         return;
+
+    SetInitInfo();
 
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
@@ -103,6 +101,28 @@ void CUIHPScript::tick()
         Scaling();
 
     SwitchKirbyName();
+}
+
+void CUIHPScript::SetInitInfo()
+{
+    if (!m_bIsEnter)
+        return;
+
+    m_pNameObj = GetOwner()->GetChildObject(L"UI_PlayerName");
+
+    if (!m_pUnitScript)
+        return;
+
+    m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
+
+    m_fMaxHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().MAXHP;
+    m_fPrevHP = m_fCurHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP;
+
+    m_bIsEnter = false;
 }
 
 void CUIHPScript::CaculateShading()
@@ -195,7 +215,7 @@ void CUIHPScript::SwitchKirbyName()
         for (int i = 3; i < 8; i++)
         {
             if (i == AbilityIdx)
-                GetOwner()->GetChildObject(L"UI_PlayerName"+std::to_wstring(i))->SetActive(true);
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
             else
                 GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
         }

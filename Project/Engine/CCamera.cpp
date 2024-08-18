@@ -431,6 +431,7 @@ void CCamera::render_Forward()
 #endif // DISTRIBUTE
 
     // ÈÄÃ³¸®
+
     if (m_bHDRI)
     {
         CRenderMgr::GetInst()->render_postprocess_HDRI();

@@ -29,9 +29,15 @@ private:
 
     float m_fDescSpeed;
 
+    bool m_bIsEnter;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+public:
+    void SetPlayer();
+    void SetInitInfo();
 
 private:
     void CaculateShading();

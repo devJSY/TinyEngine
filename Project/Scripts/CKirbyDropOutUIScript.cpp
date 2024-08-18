@@ -48,7 +48,6 @@ void CKirbyDropOutUIScript::begin()
     m_pProgressUI = GetOwner()->GetChildObject();
     m_pCircleProgressUI = GetOwner()->GetChildObject(L"UI_CircleProgress");
 
-
     GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, 0.f));
 
     for (size_t i = 0; i < m_pProgressUI.size(); i++)
@@ -120,6 +119,18 @@ void CKirbyDropOutUIScript::Appear()
 void CKirbyDropOutUIScript::Disappear()
 {
     FadeFunc(false);
+
+    float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
+
+    if (PLAYERFSM->GetYPressedTime() >= 0.1f)
+    {
+        ChangeState(DropOutUIState::Appear);
+    }
+
+    if (nullptr != m_pCircleProgressUI)
+    {
+        m_pCircleProgressUI->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, 360.f * fRatio);
+    }
 }
 
 void CKirbyDropOutUIScript::ChangeState(DropOutUIState _eState)
@@ -230,7 +241,10 @@ void CKirbyDropOutUIScript::TrackPlayer()
     Vec3 _vPlayerNDCPos = Vector3::Transform(playerPos, _VPMatrix);
 
     // UICam
-    _pCam = CRenderMgr::GetInst()->GetCamera(1);
+    _pCam = CRenderMgr::GetInst()->GetCamera(2);
+
+    if (nullptr == _pCam)
+        return;
 
     // NDC -> WorldPos
     Matrix _VPInverseMatrix = _pCam->GetProjInvMat() * _pCam->GetViewInvMat();

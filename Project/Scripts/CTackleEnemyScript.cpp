@@ -55,7 +55,7 @@ void CTackleEnemyScript::begin()
     m_fRushSpeedLerp = 0.2f;
     m_fThreshHoldRushLerp = 0.1f;
 
-    SetResistTime(3.f);
+    SetResistTime(2.f);
 }
 
 void CTackleEnemyScript::tick()
