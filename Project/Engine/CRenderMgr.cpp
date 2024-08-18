@@ -319,6 +319,8 @@ void CRenderMgr::render_debug()
         return;
     }
 
+    m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
+
     g_Transform.matView = m_mainCam->GetViewMat();
     g_Transform.matViewInv = m_mainCam->GetViewInvMat();
     g_Transform.matProj = m_mainCam->GetProjMat();
