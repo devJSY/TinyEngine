@@ -172,22 +172,39 @@ void CKirbyUnitScript::DropAbility()
     if (nullptr != m_AbilityBubble && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::SLEEP)
     {
         CGameObject* pBubble = m_AbilityBubble->Instantiate();
+
         Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
         Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
         float ScaleFactor = PLAYER->Transform()->GetLocalScale().x;
         InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * ScaleFactor;
         InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * ScaleFactor;
-        InitRot.x += XMConvertToRadians(-90.f);
-        InitRot.y += XMConvertToRadians(180.f);
+        pBubble->Transform()->SetLocalPos(InitPos);
+        pBubble->Transform()->SetLocalRotation(InitRot);
 
         CKirbyCopyAbilityScript* pAbility = (CKirbyCopyAbilityScript*)CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT);
-        pBubble->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
-        pBubble->AddComponent(pAbility);
-        pBubble->Transform()->SetLocalPos(InitPos);
-        pBubble->Transform()->SetLocalScale(Vec3(ScaleFactor * 0.8f));
-        pBubble->Transform()->SetLocalRotation(InitRot);
-        pBubble->MeshRender()->SetCastShadow(false);
         pAbility->SetAbilityType(PLAYERFSM->GetCurAbilityIdx());
+        pBubble->AddComponent(pAbility);
+
+        CGameObject* pMesh = new CGameObject;
+        pMesh->SetName(L"Mesh");
+        pMesh->AddComponent(new CTransform);
+        pMesh->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
+        if (PLAYERFSM->GetCurHat()->Animator())
+        {
+            pMesh->AddComponent(PLAYERFSM->GetCurHat()->Animator()->Clone());
+            pMesh->Animator()->Play(ANIMPREFIX("Deform"));
+        }
+        else
+        {
+            pMesh->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), XMConvertToRadians(180.f), 0.f));
+        }
+
+        pMesh->Transform()->SetAbsolute(false);
+        pMesh->Transform()->SetLocalPos(Vec3(0.f, -0.4f, 0.f));
+        pMesh->Transform()->SetLocalScale(Vec3(0.9f));
+        pMesh->MeshRender()->SetCastShadow(false);
+
+        GamePlayStatic::AddChildObject(pBubble, pMesh);
 
         CMomentaryObjScript* pMomentaryObj = pBubble->GetScript<CMomentaryObjScript>();
         if (nullptr != pMomentaryObj)
