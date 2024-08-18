@@ -59,6 +59,7 @@ CRenderMgr::CRenderMgr()
 
     DepthMaskingLayerMask(4, true);
     DepthMaskingLayerMask(6, true);
+    DepthMaskingLayerMask(7, true);
 
 #ifdef DISTRIBUTE
     m_bShowDebugRender = false;
