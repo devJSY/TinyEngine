@@ -6,10 +6,15 @@ class CSmokeScript : public CScript
 {
 private:
     bool            m_bRandom;
+    bool            m_bDirRandom;
+    bool            m_bRotRandom;
 
     // 랜덤으로 생성할 경우 최대 Max값을 가진다.
+    float           m_MinLifeTime;
     float           m_MaxLifeTime;
+    float           m_MinSpeed;
     float           m_MaxSpeed;
+    float           m_MinScale;
     float           m_MaxScale;
 
     float           m_Acc;
