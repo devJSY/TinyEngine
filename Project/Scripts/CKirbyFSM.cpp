@@ -497,9 +497,14 @@ void CKirbyFSM::tick()
             m_YPressedTime += DT;
         }
     }
-    else if (m_YPressedTime >= 0.f && KEY_RELEASED(KEY::Y))
+    else if (m_YPressedTime > 0.f && (KEY_RELEASED(KEY::Y) || KEY_NONE(KEY::Y)))
     {
-        m_YPressedTime = 0.f;
+        m_YPressedTime -= DT;
+
+        if (m_YPressedTime < 0.f)
+        {
+            m_YPressedTime = 0.f;
+        }
     }
 
     // 公利 惑怕 包府
