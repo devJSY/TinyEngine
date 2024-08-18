@@ -152,33 +152,81 @@ void CKirbyMoveController::RayGround()
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     m_RayHit = CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 0.f), 200.f, vecCollision);
 
+    RayStart.y += CharacterController()->GetRadius() * Transform()->GetWorldScale().y;
+    float RayLength = CharacterController()->GetRadius() * Transform()->GetWorldScale().y * acosf(XM_PI / 6.f) + 7.f;
+
+    RaycastHit arrRay[5] = {m_RayHit, CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(1.f, -1.f, 0.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(-1.f, -1.f, 0.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 1.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, -1.f), RayLength, vecCollision)};
+
+    // @DEBUG
+    GamePlayStatic::DrawDebugLine(RayStart, Vec3(0.577f, -1.f, 0.f), RayLength, Vec3(1.f, 0.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(RayStart, Vec3(-0.577f, -1.f, 0.f), RayLength, Vec3(1.f, 0.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(RayStart, Vec3(0.f, -1.f, 0.577f), RayLength, Vec3(1.f, 0.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(RayStart, Vec3(0.f, -1.f, -0.577f), RayLength, Vec3(1.f, 0.f, 0.f), true);
+
     // Grund 판정
     m_bGround = CharacterController()->IsGrounded();
 
     if (m_bGround)
     {
-        if (m_RayHit.pCollisionObj == nullptr)
+        bool IsColision = false;
+
+        for (int i = 0; i < 5; ++i)
         {
-            m_bGround = false;
+            if (arrRay[i].pCollisionObj != nullptr)
+            {
+                if (i != 0)
+                {
+                    IsColision = true;
+                    break;
+                }
+
+                // 중앙 레이
+                if (i == 0 && arrRay[i].Distance < 10.f)
+                {
+                    IsColision = true;
+                    break;
+                }
+            }
         }
-        else if (m_RayHit.Distance > 10.f)
+
+        // 아무것도 충돌하지 않았다면 땅이라고 생각하지 않는다.
+        if (!IsColision)
         {
             m_bGround = false;
         }
     }
     else
     {
-        if (m_RayHit.pCollisionObj == nullptr)
+        bool IsColision = false;
+
+        for (int i = 0; i < 5; ++i)
         {
-            m_bGround = false;
+            if (arrRay[i].pCollisionObj != nullptr)
+            {
+                if (i != 0 && m_MoveVelocity.y <= 0.f)
+                {
+                    IsColision = true;
+                    break;
+                }
+
+                // 중앙 레이
+                if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
+                {
+                    IsColision = false;
+                    break;
+                }
+            }
         }
-        else if (m_RayHit.Distance < 10.f && m_MoveVelocity.y <= 0.f)
+
+        // 한개라도 충돌했다면 땅이라고 판단한다.
+        if (IsColision)
         {
             m_bGround = true;
         }
     }
-
-
 }
 
 void CKirbyMoveController::SetDir()
