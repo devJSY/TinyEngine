@@ -7,7 +7,7 @@
 
 CKirbyBulletScript::CKirbyBulletScript()
     : CScript(KIRBYBULLETSCRIPT)
-    , m_ScaleFactor(1.f)
+    , m_ScaleFactor(2.f/3.f)
     , m_Speed(1.f)
     , m_PlayTime(5.f)
     , m_bHasTickCol(false)
@@ -46,11 +46,11 @@ void CKirbyBulletScript::begin()
 
         if (Size == 2)
         {
-            m_ScaleFactor = 0.5f;
+            m_ScaleFactor = 0.4f;
         }
         else if (Size == 3)
         {
-            m_ScaleFactor = 0.25f;
+            m_ScaleFactor = 0.2f;
         }
     }
 
