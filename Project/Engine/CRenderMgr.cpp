@@ -273,6 +273,7 @@ void CRenderMgr::render_editor()
     m_EditorCam->SortObject();
     m_EditorCam->render_Deferred();
     m_EditorCam->render_Forward();
+    m_EditorCam->render_Postprocess();
 }
 
 void CRenderMgr::render_CameraPreview()
