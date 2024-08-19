@@ -24,7 +24,7 @@ void CWipeTriggerScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (L"Main Player" == pObj->GetName())
     {
-        CGameObject* pStar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Star", 13);
+        CGameObject* pStar = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Star");
         nullptr != pStar ? pStar->GetScript<CUIWipeScript>()->ChangeState(WipeState::Minimize) : void();
     }
 }

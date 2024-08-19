@@ -381,7 +381,7 @@ void CElfilisFSM::begin()
 
     // find Big Elfilis
     wstring strName = GetOwner()->GetName() + L"Big";
-    CGameObject* pBossBig = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(strName, LAYER_MONSTER);
+    CGameObject* pBossBig = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(strName);
     CElfilisBigFSM* pBossBigFSM = nullptr;
 
     if (pBossBig)
