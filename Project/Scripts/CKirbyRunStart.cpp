@@ -11,54 +11,7 @@ CKirbyRunStart::~CKirbyRunStart()
 
 void CKirbyRunStart::tick()
 {
-    // 6프레임 -> 오른발, 26프레임 ->왼발
-    if (m_LastSmokeIsRight == false && CHECK_ANIMFRM(GetOwner(), 6) && CHECK_ANIMFRM_UNDER(GetOwner(), 25))
-    {
-        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
-        if (Smoke.Get())
-        {
-            CGameObject* SmokeObj = Smoke->Instantiate();
-
-            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
-            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-
-            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
-            SmokePos.y += 5.f;
-            SmokePos += PlayerDirRight * 4.f;
-
-            SmokeObj->Transform()->SetWorldPos(SmokePos);
-            SmokeObj->Transform()->SetDirection(-PlayerDir);
-
-            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
-        }
-
-        m_LastSmokeIsRight = true;
-    }
-
-    if (m_LastSmokeIsRight == true && CHECK_ANIMFRM(GetOwner(), 26))
-    {
-        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
-        if (Smoke.Get())
-        {
-            CGameObject* SmokeObj = Smoke->Instantiate();
-
-            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
-            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-
-            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
-            SmokePos.y += 5.f;
-            SmokePos -= PlayerDirRight * 4.f;
-
-            SmokeObj->Transform()->SetWorldPos(SmokePos);
-            SmokeObj->Transform()->SetDirection(-PlayerDir);
-
-            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
-        }
-
-        m_LastSmokeIsRight = false;
-    }
+    SpawnSmoke();
 
     PLAY_CURSTATE(RunStart)
 
@@ -240,4 +193,62 @@ void CKirbyRunStart::Exit()
 {
     PLAY_CURSTATE(RunStartExit)
     PLAYERFSM->SetDroppable(false);
+}
+
+void CKirbyRunStart::SpawnSmoke()
+{
+    AbilityCopyType CurType = PLAYERFSM->GetCurAbilityIdx();
+
+    if (CurType == AbilityCopyType::SLEEP)
+        return;
+
+    // 6프레임 -> 오른발, 26프레임 ->왼발
+    if (m_LastSmokeIsRight == false && CHECK_ANIMFRM(GetOwner(), 6) && CHECK_ANIMFRM_UNDER(GetOwner(), 25))
+    {
+        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
+        if (Smoke.Get())
+        {
+            CGameObject* SmokeObj = Smoke->Instantiate();
+
+            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
+            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
+            SmokePos.y += 5.f;
+            SmokePos += PlayerDirRight * 4.f;
+
+            SmokeObj->Transform()->SetWorldPos(SmokePos);
+            SmokeObj->Transform()->SetDirection(-PlayerDir);
+
+            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
+        }
+
+        m_LastSmokeIsRight = true;
+    }
+
+    if (m_LastSmokeIsRight == true && CHECK_ANIMFRM(GetOwner(), 26))
+    {
+        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
+        if (Smoke.Get())
+        {
+            CGameObject* SmokeObj = Smoke->Instantiate();
+
+            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
+            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
+            SmokePos.y += 5.f;
+            SmokePos -= PlayerDirRight * 4.f;
+
+            SmokeObj->Transform()->SetWorldPos(SmokePos);
+            SmokeObj->Transform()->SetDirection(-PlayerDir);
+
+            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
+        }
+
+        m_LastSmokeIsRight = false;
+    }
+
 }
