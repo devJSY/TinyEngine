@@ -5,7 +5,7 @@
 CElfilisBigFSM::CElfilisBigFSM()
     : CFSMScript(ELFILISBIGFSM)
     , m_ComboLevel(0)
-    , m_PositionOffset(1000.f)
+    , m_PositionOffset(1500.f)
     , m_ReverseState(L"")
 {
 }
