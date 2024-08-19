@@ -419,12 +419,12 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
-    if (KEY_TAP(KEY::ENTER))
-    {
-        Rigidbody()->SetVelocity(Vec3());
-        Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeState(L"GROUND_ATK_SWORDWAVE_STORM");
-    }
+    //if (KEY_TAP(KEY::ENTER))
+    //{
+    //    Rigidbody()->SetVelocity(Vec3());
+    //    Rigidbody()->SetAngularVelocity(Vec3());
+    //    ChangeState(L"GROUND_ATK_SWORDWAVE_STORM");
+    //}
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
