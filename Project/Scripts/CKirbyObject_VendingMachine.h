@@ -7,13 +7,17 @@ private:
     float m_SaveJumpPower;
 
 public:
-    virtual void AttackStart();
-    virtual void AttackStartEnter();
-    virtual void AttackStartExit();
+    virtual void AttackStart() override;
+    virtual void AttackStartEnter() override;
+    virtual void AttackStartExit() override;
 
-    virtual void AttackEnd();
-    virtual void AttackEndEnter();
-    virtual void AttackEndExit();
+    virtual void AttackCharge1() override;
+    virtual void AttackCharge1Enter() override;
+    virtual void AttackCharge1Exit() override;
+
+    virtual void AttackEnd() override;
+    virtual void AttackEndEnter() override;
+    virtual void AttackEndExit() override;
 
     // Change/Drop Object
     virtual void DropObjectEnter() override;

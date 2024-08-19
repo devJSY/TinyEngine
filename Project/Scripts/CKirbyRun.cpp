@@ -52,7 +52,14 @@ void CKirbyRun::tick()
 
                 if (LeftCanCount > 0)
                 {
-                    ChangeState(L"ATTACK_START");
+                    if (KEY_NONE_ARROW)
+                    {
+                        ChangeState(L"ATTACK_START");
+                    }
+                    else
+                    {
+                        ChangeState(L"ATTACK_CHARGE1");
+                    }
                 }
                 else
                 {

@@ -20,7 +20,11 @@ void CKirbyLandingEnd::tick()
         {
         case ObjectCopyType::CONE:
         case ObjectCopyType::VENDING_MACHINE: {
-            if (GetOwner()->Animator()->IsFinish())
+            if (PLAYERCTRL->GetInputWorld().Length() != 0.f)
+            {
+                ChangeState(L"RUN");
+            }
+            else if (GetOwner()->Animator()->IsFinish())
             {
                 ChangeState(L"IDLE");
             }
