@@ -153,6 +153,9 @@ void CUIHPScript::Scaling()
 
 void CUIHPScript::SwitchKirbyName()
 {
+    if (nullptr == m_pFSMScript)
+        return;
+
     AbilityCopyType eAbility = m_pFSMScript->GetCurAbilityIdx();
     ObjectCopyType eObject = m_pFSMScript->GetCurObjectIdx();
 
