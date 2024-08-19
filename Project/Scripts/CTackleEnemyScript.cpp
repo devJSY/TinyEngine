@@ -55,7 +55,7 @@ void CTackleEnemyScript::begin()
     m_fRushSpeedLerp = 0.2f;
     m_fThreshHoldRushLerp = 0.1f;
 
-    SetResistTime(3.f);
+    SetResistTime(2.f);
 }
 
 void CTackleEnemyScript::tick()
@@ -139,24 +139,24 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     {
     case TackleEnemyState::Idle: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case TackleEnemyState::Find: {
-        Animator()->Play(ANIMPREFIX("Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case TackleEnemyState::AttackPrev: {
-        Animator()->Play(ANIMPREFIX("RunStart"), false);
+        Animator()->Play(ANIMPREFIX("RunStart"), false, false, 1.5f);
     }
     break;
     case TackleEnemyState::Attack: {
-        Animator()->Play(ANIMPREFIX("Run"));
+        Animator()->Play(ANIMPREFIX("Run"), true, false, 1.5f);
     }
     break;
     case TackleEnemyState::AttackAfter: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Brake"), false);
+        Animator()->Play(ANIMPREFIX("Brake"), false, false, 1.5f);
     }
     break;
     case TackleEnemyState::AttackAfter2: {
@@ -175,7 +175,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Wait: {
-        Animator()->Play(ANIMPREFIX("Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case TackleEnemyState::Damage: {

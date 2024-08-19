@@ -61,17 +61,6 @@ void CElevatorScript::Move()
     {
         Transform()->SetWorldPos(Transform()->GetWorldPos() + Vec3(0.f, 1.f, 0.f) * m_fSpeed * DT);
     }
-
-    if (m_bFlag)
-    {
-        m_bFlag = false;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(0.001f, 0.f, 0.f)) : void();
-    }
-    else
-    {
-        m_bFlag = true;
-        nullptr != m_pPlayer ? m_pPlayer->CharacterController()->Move(Vec3(-0.001f, 0.f, 0.f)) : void();
-    }
 }
 
 void CElevatorScript::OnTriggerEnter(CCollider* _OtherCollider)

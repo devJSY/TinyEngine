@@ -6,6 +6,10 @@ class CStageClear : public CScript
 {
 private:
     bool m_bKirbyDance;
+    
+    Vec3 m_KirbyPos;
+    Vec3 m_KirbyDir;
+
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

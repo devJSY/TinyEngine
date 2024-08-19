@@ -4,12 +4,8 @@
 class CFollowPlayerScript : public CScript
 {
 private:
-    Vec3 m_PosOffset;
-    Vec3 m_RotOffset;
-    bool m_bPosOffset;
-    bool m_bRotOffset;
-    bool m_bFollowPos[3];
-    bool m_bFollowRot[3];
+    Vec3 m_LightDir;
+    float m_Dist;
 
 public:
     virtual void begin() override;

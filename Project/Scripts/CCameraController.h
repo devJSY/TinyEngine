@@ -183,11 +183,14 @@ private:
         m_LockAcc = 0.f;
         m_LockDuration = _Duration;
     }
+    void RotationLookDirRightAxis(float _Degree);
+
 
     void SaveSetting();
     void SaveInitSetting();
     void LoadSetting();
     void LoadInitSetting();
+    void LoadDefaultSetting();
     CameraSetting GetSaveSetting() const { return m_SaveSetting; }
 
 

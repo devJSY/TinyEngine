@@ -4,6 +4,7 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
+#include "CState.h"
 
 CLadderScript::CLadderScript()
     : CScript(LADDERSCRIPT)
@@ -53,7 +54,8 @@ void CLadderScript::OnTriggerEnter(CCollider* _OtherCollider)
 void CLadderScript::OnTriggerStay(CCollider* _OtherCollider)
 {
     // PLAYER랑 충돌한 경우
-    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER && PLAYERFSM->GetCurState()->GetName() != L"JUMP_START" &&
+        PLAYERFSM->GetCurState()->GetName() != L"JUMP")
     {
         Vec3 InputDir = PLAYERCTRL->GetInputWorld().Normalize();
         Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();

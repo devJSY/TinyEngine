@@ -27,6 +27,12 @@ void CFlowMgr_Lv0::begin()
 {
     CLevelFlowMgr::begin();
 
+    SetStartLevel(true);
+
+    LevelStart();
+    
+    SetEnterTime(6.8f);
+
     // Fog Setting
     m_PostEffectMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl");
     m_PostEffectMtrl->SetScalarParam(FLOAT_0, 250.f);                    // Fog Min

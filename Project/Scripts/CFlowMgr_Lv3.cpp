@@ -18,6 +18,10 @@ CFlowMgr_Lv3::~CFlowMgr_Lv3()
 void CFlowMgr_Lv3::begin()
 {
     CLevelFlowMgr::begin();
+
+    SetStartLevel(false);
+
+    LevelStart();
     SetToneMappingParam(true, true, 0.6f, 0.23f);
 }
 

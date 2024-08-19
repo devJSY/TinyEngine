@@ -913,6 +913,21 @@
     <ClInclude Include="CKirbyObjDetectCollider.h">
       <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CSmokeScript.h">
+      <Filter>Scripts\Gimmik\Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="CSmokeSpawner.h">
+      <Filter>Scripts\Gimmik\Smoke\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIBossHPScript.h">
+      <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnterUIScript.h">
+      <Filter>Scripts\UI\UIAnimation\CEnterUIScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyDropOutUIScript.h">
+      <Filter>Scripts\UI\UIAnimation\CKirbyDropOutUIScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1835,6 +1850,21 @@
     </ClCompile>
     <ClCompile Include="CKirbyObjDetectCollider.cpp">
       <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeScript.cpp">
+      <Filter>Scripts\Gimmik\Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeSpawner.cpp">
+      <Filter>Scripts\Gimmik\Smoke\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIBossHPScript.cpp">
+      <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnterUIScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CEnterUIScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyDropOutUIScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CKirbyDropOutUIScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2899,6 +2929,21 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyObjDetectCollider">
       <UniqueIdentifier>{f8c285e2-7d2a-41d5-89f3-09d733cb85e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Smoke">
+      <UniqueIdentifier>{f3f2a186-aa97-409b-9cb3-ed1a2b33c170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Smoke\Spawner">
+      <UniqueIdentifier>{45fc46b8-2998-496c-b145-69c7a48d8386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIUnit\UIBossHPScript">
+      <UniqueIdentifier>{5a0ead60-c6e5-493c-8a3c-82cc0959f4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CEnterUIScript">
+      <UniqueIdentifier>{9306d8e9-8144-4929-9e66-c0090df4a852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CKirbyDropOutUIScript">
+      <UniqueIdentifier>{fa9dd630-beb2-412f-8582-47a08084d4e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
