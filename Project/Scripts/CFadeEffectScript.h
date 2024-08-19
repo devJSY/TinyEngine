@@ -24,13 +24,13 @@ public:
     void SetBackGroundColor(Vec4 _Color) { m_BackGroundColor = _Color; }
 
     bool IsComplete() const { return m_bComplete; }
-    void ResetComplete() { m_bComplete = false; }
+    void SetComplete(bool _bComplete) { m_bComplete = _bComplete; }
 
     bool IsReverse() const { return m_bReverse; }
     void SetReverse(bool _bReverse)
     {
         m_bReverse = _bReverse;
-        ResetComplete();
+        SetComplete(false);
         m_bReverse ? m_ElapsedTime = m_Duration : m_ElapsedTime = 0.f;
     }
 

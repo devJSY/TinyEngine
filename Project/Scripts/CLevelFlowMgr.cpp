@@ -137,10 +137,12 @@ void CLevelFlowMgr::tick()
         {
             if (!m_pEnterUIScript->IsFinish())
             {
-                SetReverseFadeEffect();
+                PauseFadeEffect(true);
             }
             else
             {
+                PauseFadeEffect(false);
+
                 m_bStartLevel = false;
             }
         }
@@ -430,6 +432,22 @@ void CLevelFlowMgr::SetFadeEffectColor(Vec3 _Color)
     m_FadeEffectScript->SetBackGroundColor(Color);
 }
 
+void CLevelFlowMgr::ActiveFadeEffect(bool _bEnable)
+{
+    if (nullptr == m_FadeEffectScript)
+        return;
+
+    m_FadeEffectScript->GetOwner()->SetActive(_bEnable);
+}
+
+void CLevelFlowMgr::PauseFadeEffect(bool _bPause)
+{
+    if (nullptr == m_FadeEffectScript)
+        return;
+
+    m_FadeEffectScript->SetComplete(_bPause);
+}
+
 void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode)
 {
     if (!m_FadeEffectScript)
@@ -452,14 +470,6 @@ void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, fl
     m_ToneMappingMtrl->SetScalarParam(FLOAT_1, _Gamma);
     m_ToneMappingMtrl->SetScalarParam(FLOAT_2, _BloomStrength);
     m_ToneMappingMtrl->SetScalarParam(VEC2_0, Vec2(_FilterRadius, _Threshold));
-}
-
-void CLevelFlowMgr::SetReverseFadeEffect(bool _bReverse)
-{
-    if (!m_FadeEffectScript)
-        return;
-
-    m_FadeEffectScript->SetReverse(_bReverse);
 }
 
 void CLevelFlowMgr::ResetFadeEffectTimer()
