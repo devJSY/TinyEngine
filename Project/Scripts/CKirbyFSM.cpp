@@ -769,8 +769,6 @@ void CKirbyFSM::SubCanCount()
 
 void CKirbyFSM::OffCollider()
 {
-    CharacterController()->SetEnabled(false);
-
     if (m_BodyCollider)
     {
         m_BodyCollider->SetEnabled(false);
@@ -779,8 +777,6 @@ void CKirbyFSM::OffCollider()
 
 void CKirbyFSM::OnCollider()
 {
-    CharacterController()->SetEnabled(false);
-
     if (m_BodyCollider)
     {
         m_BodyCollider->SetEnabled(true);
