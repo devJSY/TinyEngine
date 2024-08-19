@@ -6,6 +6,7 @@ class CBossHitbox : public CScript
 private:
     CGameObject* m_Instigator;
     CGameObject* m_Target;
+    CCollider* m_Collider;
     bool m_bSummon;
     bool m_bCallReward;
 
@@ -18,7 +19,8 @@ private:
     float m_AccTime;
     float m_RepeatTime;
     bool m_bRepeatDamage;
-    bool m_bOnTrigger;
+    bool m_bRepeatEnter;
+    bool m_bRepeat;
 
 public:
     virtual void begin() override;
@@ -26,7 +28,6 @@ public:
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
-    virtual void OnTriggerExit(CCollider* _OtherCollider);
 
     float GetRandDamage();
     void AddDamage();

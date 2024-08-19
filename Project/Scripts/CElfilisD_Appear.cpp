@@ -116,7 +116,7 @@ void CElfilisD_Appear::Exit_Step()
         if (m_BossName)
         {
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
-            Script->FadeOutDestroy(1.f);
+            Script->FadeOutDestroy(0.5f);
             m_BossName = nullptr;
         }
 

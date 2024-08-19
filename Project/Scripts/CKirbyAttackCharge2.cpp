@@ -21,23 +21,9 @@ void CKirbyAttackCharge2::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::NORMAL: 
-        {
-            if (PLAYERFSM->IsStuffed())
-            {
-                ChangeState(L"STUFFED");
-            }
-            else if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
-            {
-                ChangeState(L"ATTACK_CHARGE1_END");
-            }
-            else if (PLAYERCTRL->GetInput().Length() != 0.f)
-            {
-                ChangeState(L"ATTACK_CHARGE2_RUN");
-            }
-        }
-        break;
-        case AbilityCopyType::FIRE: // 상태 없음
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
             break;
         case AbilityCopyType::CUTTER:
             break;
@@ -54,7 +40,7 @@ void CKirbyAttackCharge2::tick()
                 }
             }
         }
-            break;
+        break;
         }
     }
 }

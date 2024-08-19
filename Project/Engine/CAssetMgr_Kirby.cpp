@@ -188,6 +188,78 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Transparent Elfilis Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\TransparentElfilisPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMap Y");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_2, "Mtrl Alpha");
+        pShader->AddScalarParam(FLOAT_3, "Alpha Threshold");
+
+        pShader->AddTexParam(TEX_0, "Albedo Texture");
+        pShader->AddTexParam(TEX_1, "Noise Alpha Texture");
+        pShader->AddTexParam(TEX_4, "Noise Color Texture");
+        pShader->AddTexParam(TEX_2, "Normal Texture");
+        pShader->AddTexParam(TEX_3, "Emissive Texture");
+
+        pShader->SetName(L"TransparentElfilisShader");
+        AddAsset(L"TransparentElfilisShader", pShader);
+    }
+
+    // =================================
+    // Elfilis Laser Outer Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ElfilisLaserOuterPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddTexParam(TEX_0, "Nosie Black Texture");
+        pShader->AddTexParam(TEX_1, "Noise Alpha Texture");
+        pShader->AddTexParam(TEX_2, "Emissive Texture");
+
+        pShader->SetName(L"ElfilisLaserOuterShader");
+        AddAsset(L"ElfilisLaserOuterShader", pShader);
+    }
+
+    // =================================
+    // Elfilis Laser Outer Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ElfilisLaserInnerPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddTexParam(TEX_0, "Emissive Noise Texture");
+
+        pShader->SetName(L"ElfilisLaserInnerShader");
+        AddAsset(L"ElfilisLaserInnerShader", pShader);
+    }
+
+    // =================================
     // UIDefaultShader
     // =================================
     {
@@ -322,6 +394,39 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyUIHPOutLineShader");
         AddAsset(L"KirbyUIHPOutLineShader", pShader);
+    }
+
+    // =================================
+    // Masking Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MaskingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMap Y");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(VEC4_1, "Additional Color");
+        pShader->AddScalarParam(INT_1, "Invert Masking Alpha 0");
+        pShader->AddScalarParam(INT_2, "Invert Masking Alpha 1");
+
+        pShader->AddTexParam(TEX_0, "Masking Alpha0 Texture");
+        pShader->AddTexParam(TEX_1, "Masking Alpha1 Texture");
+        pShader->AddTexParam(TEX_2, "Masking Color Texture");
+        pShader->AddTexParam(TEX_3, "Color Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Emissive Texture");
+
+        pShader->SetName(L"MaskingShader");
+        AddAsset(L"MaskingShader", pShader);
     }
 
     // =================================

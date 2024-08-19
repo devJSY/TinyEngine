@@ -53,8 +53,10 @@ private:
 
     Vec3                    m_KnockbackDir;
     float                   m_YPressedTime;
+    float                   m_Vacuum1MaxTime;
     float                   m_DropCopyTime;
     bool                    m_bDroppable;
+    bool                    m_bNearDeformObject;
 
     // 무적 상태
     float                   m_InvincibleAcc;
@@ -106,6 +108,7 @@ public:
     void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
     void SetInvincible(bool _Invincible, float _Duration = -1.f);
+    void SetNearDeformObj(bool _bNearObj) { m_bNearDeformObject = _bNearObj; }
     void SetEmissive(bool _Emissive, float _Duration);
     void SetBladeAttack(bool _CanAttack) { m_bCanBladeAttack = _CanAttack; }
     void SetDroppable(bool _bDroppable) { m_bDroppable = _bDroppable; }
@@ -146,12 +149,14 @@ public:
     float GetGlidingDuration() const { return m_GlidingDuration; }
     float GetCurGlidingTime() const { return m_GlidingAcc; }
     float GetYPressedTime() const { return m_YPressedTime; }
+    float GetVacuum1MaxTime() const { return m_Vacuum1MaxTime; }
     float GetDropCopyTime() const { return m_DropCopyTime; }
     bool IsAttackEvent() const { return m_bAttackEvent; }
     bool IsStuffed() const { return m_bStuffed; }
     bool IsHovering() const { return m_bHovering; }
     bool IsDrawing() const;
     bool IsInvincible() const { return m_bInvincible; }
+    bool IsNearDeformObject() const { return m_bNearDeformObject; }
     bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
     UINT GetCanCount() const { return m_LeftCanCount; }

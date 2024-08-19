@@ -3,6 +3,9 @@
 
 class CKirbyUnitScript : public CUnitScript
 {
+private:
+    Ptr<CPrefab> m_AbilityBubble;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
@@ -16,6 +19,7 @@ public:
 
 private:
     virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
+    void DropAbility();
 
 public:
     CLONE(CKirbyUnitScript)

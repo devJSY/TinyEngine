@@ -24,6 +24,8 @@ void CKirbyAttackCharge2SlashEnd::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+    PLAYERCTRL->SetFriction(4.f);
+    PLAYERCTRL->SetFrictionMode(true);
 
     PLAYERFSM->SetInvincible(true);
 }
@@ -33,6 +35,8 @@ void CKirbyAttackCharge2SlashEnd::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->SetFriction(0.f);
+    PLAYERCTRL->SetFrictionMode(false);
 
     PLAYERFSM->SetInvincible(false);
 }

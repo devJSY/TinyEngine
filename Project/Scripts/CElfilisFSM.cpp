@@ -423,7 +423,7 @@ void CElfilisFSM::tick()
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeState(L"GROUND_ATK_NORMALTELEPORT_FINISHL");
+        ChangeState(L"AIR_ATKL_DRAWLASER");
     }
 }
 

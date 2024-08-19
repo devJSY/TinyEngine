@@ -24,6 +24,8 @@ private:
     void Progress();
     void End();
 
+    void PlayOuter(const wstring _Anim, bool _bRepeat = true);
+
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
