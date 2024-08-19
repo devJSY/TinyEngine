@@ -87,6 +87,7 @@ void CFlowMgr_BossElfilis::SetFight()
     if (m_FlowState != BossLevelFlow::WaitBoss)
         return;
 
+    TurnOnBossHP();
     PLAYERCTRL->UnlockInput();
     m_FlowState = BossLevelFlow::Fight;
 }

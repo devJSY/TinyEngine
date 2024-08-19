@@ -95,8 +95,9 @@ void CFlowMgr_BossMorpho::SetFight()
     if (m_FlowState != BossLevelFlow::WaitBoss)
         return;
 
-    m_FlowState = BossLevelFlow::Fight;
+    TurnOnBossHP();
     PLAYERCTRL->UnlockInput();
+    m_FlowState = BossLevelFlow::Fight;
 }
 
 void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)
