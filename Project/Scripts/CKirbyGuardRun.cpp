@@ -38,6 +38,7 @@ void CKirbyGuardRun::Enter()
 {
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->GuardRunEnter();
+    KirbyFSM->OffCollider();
 
     m_PlayTime = 1.f;
 }
@@ -46,4 +47,5 @@ void CKirbyGuardRun::Exit()
 {
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->GuardRunExit();
+    KirbyFSM->OnCollider();
 }
