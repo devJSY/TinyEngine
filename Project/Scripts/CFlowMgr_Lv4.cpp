@@ -28,8 +28,12 @@ CFlowMgr_Lv4::~CFlowMgr_Lv4()
 void CFlowMgr_Lv4::begin()
 {
     CLevelFlowMgr::begin();
+
+    SetStartLevel(false);
+
+    LevelStart();
     SetToneMappingParam(true, true, 0.1f, 0.5f);
-    for (int i = 0;i < 2;i++)
+    for (int i = 0; i < 2; i++)
     {
         CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Trigger Light" + std::to_wstring(i + 1));
         if (nullptr != pObj)
@@ -47,16 +51,14 @@ void CFlowMgr_Lv4::tick()
 
     switch (m_eState)
     {
-    case Lv4State::Idle:
-    {
+    case Lv4State::Idle: {
         Idle();
     }
-        break;
-    case Lv4State::LightOut:
-    {
+    break;
+    case Lv4State::LightOut: {
         LightOut();
     }
-        break;
+    break;
     case Lv4State::End:
         break;
     default:
@@ -95,7 +97,7 @@ void CFlowMgr_Lv4::LightOut()
     }
 
     m_fAccTime += DT;
-    for (int i = 0;i < 2;i++)
+    for (int i = 0; i < 2; i++)
     {
         if (m_pLight[i])
         {

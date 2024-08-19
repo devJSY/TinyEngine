@@ -20,18 +20,27 @@ CFlowMgr_LvStart::~CFlowMgr_LvStart()
 void CFlowMgr_LvStart::begin()
 {
     CLevelFlowMgr::begin();
+
+    SetUILevel(true);
+
+    LevelStart();
+
+    SetStartLevel(false);
+
+    OffDimensionFade();
+    SetToneMappingParam(false);
+}
+
+void CFlowMgr_LvStart::LevelStart()
+{
+    ResetFadeEffectTimer();
 }
 
 void CFlowMgr_LvStart::LevelEnd()
 {
-
-
-    GetFlowScript()->ChangeState(FlowState::End);
-}
-
-void CFlowMgr_LvStart::LevelExit()
-{
     CLevelFlowMgr::LevelEnd();
+
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, true);
 }
 
 UINT CFlowMgr_LvStart::SaveToLevelFile(FILE* _File)

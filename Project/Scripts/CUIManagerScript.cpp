@@ -40,6 +40,8 @@ void CUIManagerScript::UIManagerScriptInit()
     {
         (*iter).second->begin();
     }
+
+
 }
 
 UINT CUIManagerScript::SaveToLevelFile(FILE* _File)

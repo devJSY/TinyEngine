@@ -412,6 +412,18 @@ void CCamera::render_Forward()
     }
 #endif // DISTRIBUTE
 
+    // ÈÄÃ³¸®
+    if (m_bHDRI)
+    {
+        CRenderMgr::GetInst()->render_postprocess_HDRI();
+    }
+    else
+    {
+        CRenderMgr::GetInst()->render_postprocess_LDRI();
+    }
+
+    render_Postprocess();
+
     // SkyBox Clear
     for (size_t i = 0; i < m_vecSkybox.size(); ++i)
     {

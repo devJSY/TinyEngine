@@ -158,57 +158,57 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     {
     case SirKibbleState::Idle: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case SirKibbleState::Patrol: {
-        Animator()->Play(ANIMPREFIX("Walk"));
+        Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
     case SirKibbleState::PatrolRotating: {
-        Animator()->Play(ANIMPREFIX("Walk"));
+        Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
     case SirKibbleState::Find: {
-        Animator()->Play(ANIMPREFIX("Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::FindWait: {
-        Animator()->Play(ANIMPREFIX("FindWait"));
+        Animator()->Play(ANIMPREFIX("FindWait"), true, false, 1.5f);
     }
     break;
     case SirKibbleState::AirCutterJumpStart: {
-        Animator()->Play(ANIMPREFIX("AirCutterJumpStart"), false);
+        Animator()->Play(ANIMPREFIX("AirCutterJumpStart"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::AirCutterJump: {
         Rigidbody()->AddForce(Vec3(0.f, 1.f, 0.f) * GetCurInfo().JumpPower, ForceMode::Impulse);
-        Animator()->Play(ANIMPREFIX("AirCutterJump"), false);
+        Animator()->Play(ANIMPREFIX("AirCutterJump"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::AirCutterThrow: {
         Rigidbody()->SetUseGravity(false);
-        Animator()->Play(ANIMPREFIX("AirCutterThrow"), false);
+        Animator()->Play(ANIMPREFIX("AirCutterThrow"), false, false, 1.5f);
         ProjectileAttack(true);
     }
     break;
     case SirKibbleState::CutterThrowStart: {
-        Animator()->Play(ANIMPREFIX("CutterThrowStart"), false);
+        Animator()->Play(ANIMPREFIX("CutterThrowStart"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::CutterThrowStartWait: {
-        Animator()->Play(ANIMPREFIX("CutterThrowStartWait"));
+        Animator()->Play(ANIMPREFIX("CutterThrowStartWait"), true, false, 1.5f);
     }
     break;
     case SirKibbleState::CutterThrow: {
-        Animator()->Play(ANIMPREFIX("CutterThrow"), false);
+        Animator()->Play(ANIMPREFIX("CutterThrow"), false, false, 1.5f);
         ProjectileAttack(false);
     }
     break;
     case SirKibbleState::CutterCatch: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         m_pAttackPoint->BoxCollider()->SetEnabled(false);
-        Animator()->Play(ANIMPREFIX("CutterCatch"), false);
+        Animator()->Play(ANIMPREFIX("CutterCatch"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::Damage: {

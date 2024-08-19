@@ -15,10 +15,15 @@ CFlowMgr_Lv2::~CFlowMgr_Lv2()
 {
 }
 
-
 void CFlowMgr_Lv2::begin()
 {
     CLevelFlowMgr::begin();
+
+    SetStartLevel(true);
+
+    LevelStart();
+
+    SetEnterTime(6.5f);
 }
 
 void CFlowMgr_Lv2::tick()
@@ -33,7 +38,7 @@ void CFlowMgr_Lv2::tick()
 void CFlowMgr_Lv2::LevelStart()
 {
     CLevelFlowMgr::LevelStart();
-    
+
     // UI (Fade In)
     // Center Mode ¼³Á¤
     SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);

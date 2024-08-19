@@ -55,7 +55,6 @@ void CFadeEffectScript::tick()
     if (nullptr == m_Target)
     {
         m_Target = PLAYER;
-        return;
     }
 
     if (m_bReverse)
@@ -80,14 +79,19 @@ void CFadeEffectScript::tick()
 
     if (nullptr != GetOwner()->MeshRender() && nullptr != MeshRender()->GetMaterial(0))
     {
-        Vec4 NDCPos = Vec4(-100, -100, -100, -100);
-        if (nullptr != m_Target)
+        Vec4 NDCPos = Vec4(-100.f, -100.f, -100.f, -100.f);
+        // CenterMode 인 경우거나
+        if (m_bCenterMode)
+        {
+            NDCPos.x = 0.f;
+            NDCPos.y = 0.f;
+        }
+        else if (nullptr != m_Target)
         {
             NDCPos = PositionToNDC(m_Target->Transform()->GetWorldPos());
 
-            // CenterMode 인 경우거나
             // Target이 화면 밖인경우 중심으로 설정
-            if (m_bCenterMode || NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f)
+            if (NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f)
             {
                 NDCPos.x = 0.f;
                 NDCPos.y = 0.f;

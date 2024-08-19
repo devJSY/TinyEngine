@@ -91,15 +91,15 @@ void CSpookStepScript::EnterState()
     break;
     case SpookStepState::Wait: {
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
-        Animator()->Play(ANIMPREFIX("Wait"));
+        Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case SpookStepState::Find: {
-        Animator()->Play(ANIMPREFIX("Find"), false);
+        Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case SpookStepState::Move: {
-        Animator()->Play(ANIMPREFIX("Move"));
+        Animator()->Play(ANIMPREFIX("Move"), true, false, 1.5f);
     }
     break;
     case SpookStepState::Fall: {

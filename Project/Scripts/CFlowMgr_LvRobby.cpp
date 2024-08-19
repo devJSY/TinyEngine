@@ -44,6 +44,17 @@ CFlowMgr_LvRobby::~CFlowMgr_LvRobby()
 
 void CFlowMgr_LvRobby::begin()
 {
+    CLevelFlowMgr::begin();
+
+    SetUILevel(true);
+
+    LevelStart();
+
+    SetStartLevel(false);
+
+    OffDimensionFade();
+    SetToneMappingParam(false);
+
     m_StageName[0] = "Tutorial Level";
     m_StageName[1] = "Level1-1-1";
     m_StageName[2] = "Pk3-3-1";
@@ -77,8 +88,17 @@ void CFlowMgr_LvRobby::begin()
     SetNextLevel(m_StageName[m_iCurStage]);
 }
 
+void CFlowMgr_LvRobby::LevelStart()
+{
+    ResetFadeEffectTimer();
+
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
+}
+
 void CFlowMgr_LvRobby::tick()
 {
+    CLevelFlowMgr::tick();
+
     if (m_pStartBtn->GetScript<CButtonScript>()->IsHovered() && m_eZoomState == ZoomState::Stop && m_eDragState == DragState::Stop)
     {
         return;
@@ -114,12 +134,9 @@ void CFlowMgr_LvRobby::tick()
 
 void CFlowMgr_LvRobby::LevelEnd()
 {
-    GetFlowScript()->ChangeState(FlowState::End);
-}
-
-void CFlowMgr_LvRobby::LevelExit()
-{
     CLevelFlowMgr::LevelEnd();
+
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, true);
 }
 
 void CFlowMgr_LvRobby::EnterZoomState()

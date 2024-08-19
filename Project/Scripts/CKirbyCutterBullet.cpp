@@ -422,7 +422,8 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
     // Monster
     else if (LayerIdx == LAYER_MONSTER_TRIGGER)
     {
-        CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetScript<CMonsterUnitScript>();
+        //CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetScript<CMonsterUnitScript>();
+        CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
         if (nullptr != Monster)
         {
             Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();

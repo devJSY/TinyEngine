@@ -244,13 +244,13 @@ void CPushOutScript::Stop()
 void CPushOutScript::CheckPlayer()
 {
     bool bFlag = false;
-    for (int i = 0;i < 3;i++)
+    for (int i = 0; i < 3; i++)
     {
         if (nullptr != m_pChild[i])
         {
             if (nullptr != m_pChild[i]->GetScript<CPushOutColliderScript>()->CheckPlayer())
             {
-                bFlag=true;
+                bFlag = true;
             }
         }
     }
@@ -278,9 +278,9 @@ void CPushOutScript::MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fla
         Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
     }
 
-    if (nullptr != m_pPlayer)
+    if (nullptr != m_pPlayer && false == _flag)
     {
-        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
@@ -302,9 +302,9 @@ void CPushOutScript::MovePlusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fla
         Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
     }
 
-    if (nullptr != m_pPlayer)
+    if (nullptr != m_pPlayer && false == _flag)
     {
-        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
@@ -326,9 +326,9 @@ void CPushOutScript::MoveMinusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fl
         Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
     }
 
-    if (nullptr != m_pPlayer)
+    if (nullptr != m_pPlayer && false == _flag)
     {
-        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
@@ -352,7 +352,7 @@ void CPushOutScript::MoveMinusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fl
 
     if (nullptr != m_pPlayer)
     {
-        float Offset = true == _flag ? m_fMoveDestOffset : m_fMoveBaseOffset;
+        float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
