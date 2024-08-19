@@ -254,7 +254,7 @@ void CLevelFlowMgr::LevelStart()
     // UI (Fade In)
     if (m_bStartLevel)
     {
-        SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f, false);
+        SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, false);
         if (nullptr != m_pEnterUIScript)
         {
             m_pEnterUIScript->ChangeState(EnterUIState::Enter);
@@ -263,7 +263,7 @@ void CLevelFlowMgr::LevelStart()
     else
     {
         if (!m_bUILevel)
-            SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f, false);
+            SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, false);
     }
 
     // @TODO BGM 재생
@@ -297,7 +297,7 @@ void CLevelFlowMgr::LevelExit()
     if (nullptr != m_pLoadingUI)
         m_pLoadingUI->SetActive(true);
 
-    //// Kirby 프리팹 저장
+    // Kirby 프리팹 저장
     if (!m_bUILevel)
     {
         Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());

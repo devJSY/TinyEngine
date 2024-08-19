@@ -91,6 +91,8 @@ void CFlowMgr_LvRobby::begin()
 void CFlowMgr_LvRobby::LevelStart()
 {
     ResetFadeEffectTimer();
+
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
 }
 
 void CFlowMgr_LvRobby::tick()

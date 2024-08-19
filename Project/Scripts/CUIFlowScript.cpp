@@ -46,12 +46,6 @@ void CUIFlowScript::begin()
         m_pLoadingObj->SetActive(false);
     }
 
-    m_pFlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
-    if (nullptr != m_pFlowMgr)
-    {
-        m_pFlowMgr->SetFlowScript(this);
-    }
-
     ChangeState(FlowState::Start);
 }
 
