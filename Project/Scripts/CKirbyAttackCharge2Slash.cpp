@@ -2,7 +2,8 @@
 #include "CKirbyAttackCharge2Slash.h"
 
 CKirbyAttackCharge2Slash::CKirbyAttackCharge2Slash()
-    : m_PrevSpeed(0.f)
+    : m_Speed(13.f)
+    , m_PrevSpeed(0.f)
     , m_PlayTime(1.5f)
 {
 }
@@ -26,7 +27,7 @@ void CKirbyAttackCharge2Slash::Enter()
     PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashLoop"), true, false, 1.5f);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
-    PLAYERCTRL->SetSpeed(13.f);
+    PLAYERCTRL->SetSpeed(m_Speed);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
