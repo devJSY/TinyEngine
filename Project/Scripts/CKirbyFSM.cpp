@@ -349,7 +349,14 @@ void CKirbyFSM::begin()
     PLAYER->CharacterController()->SetMinMoveDistance(0.f);
 
     // Emissive 세팅
-    PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+    for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+    {
+        Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+        if (pMaterial != nullptr)
+        {
+            pMaterial->SetEmission(Vec4(0.f, 0.f, 0.f, 1.f));
+        }
+    }
     m_bEmissive = false;
 
 
@@ -538,11 +545,25 @@ void CKirbyFSM::tick()
 
         if (m_EmissiveCoef > 0.3f)
         {
-            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.6f - m_EmissiveCoef);
+            for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+            {
+                Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+                if (pMaterial != nullptr)
+                {
+                    pMaterial->SetEmission(Vec4(0.6f - m_EmissiveCoef, 0.6f - m_EmissiveCoef, 0.6f - m_EmissiveCoef, 1.f));
+                }
+            }
         }
         else
         {
-            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_EmissiveCoef);
+            for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+            {
+                Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+                if (pMaterial != nullptr)
+                {
+                    pMaterial->SetEmission(Vec4(m_EmissiveCoef, m_EmissiveCoef, m_EmissiveCoef, 1.f));
+                }
+            }
         }
 
         if (m_EmissiveAcc > m_EmissiveDuration)
@@ -550,12 +571,27 @@ void CKirbyFSM::tick()
             // Emissive 상태 해제
             m_bEmissive = false;
             m_EmissiveCoef = 0.f;
-            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+
+            for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+            {
+                Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+                if (pMaterial != nullptr)
+                {
+                    pMaterial->SetEmission(Vec4(m_EmissiveCoef, m_EmissiveCoef, m_EmissiveCoef, 1.f));
+                }
+            }
         }
 
         if (m_bIsSkrr)
         {
-            PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+            for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+            {
+                Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+                if (pMaterial != nullptr)
+                {
+                    pMaterial->SetEmission(Vec4(0.f, 0.f, 0.f, 1.f));
+                }
+            }
         }
     }
 
@@ -694,7 +730,16 @@ void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
     {
         m_bEmissive = false;
         m_EmissiveCoef = 0.f;
-        PLAYERMTRL->SetScalarParam(SCALAR_PARAM::FLOAT_0, 0.f);
+
+        for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+        {
+            Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+            if (pMaterial != nullptr)
+            {
+                pMaterial->SetEmission(Vec4(m_EmissiveCoef, m_EmissiveCoef, m_EmissiveCoef, 1.f));
+            }
+        }
+
 
         m_EmissiveAcc = 0.f;
         m_EmissiveDuration = 0.f;
