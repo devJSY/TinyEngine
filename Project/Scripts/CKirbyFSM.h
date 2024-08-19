@@ -68,6 +68,7 @@ private:
     float                   m_EmissiveAcc;
     float                   m_EmissiveDuration;
     bool                    m_bEmissive;
+    bool                    m_bIsSkrr;
 
     bool                    m_bCanBladeAttack;
 
@@ -118,6 +119,7 @@ public:
     void SetLadderTop(Vec3 _Top) { m_LadderTop = _Top; }
     void SetLadderBottom(Vec3 _Bottom) { m_LadderBottom = _Bottom; }
     void SetEscapeLadder(bool _b) { m_bEscapeLadder = _b; }
+    void SetSkrr(bool _Skrr) { m_bIsSkrr = _Skrr; }    
 
     void ClearCurHatWeapon();
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }

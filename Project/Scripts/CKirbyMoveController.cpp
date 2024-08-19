@@ -36,6 +36,7 @@ CKirbyMoveController::CKirbyMoveController()
     , m_HoveringMinSpeed(-5.f)
     , m_RayHit{}
     , m_MaxFallSpeed(-15.f)
+    , m_ForcePos(Vec3(0.f,0.f,0.f))
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Gravity, "Gravity");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_HoveringLimitHeight, "HoveringLimit");
@@ -151,33 +152,77 @@ void CKirbyMoveController::RayGround()
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     m_RayHit = CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 0.f), 200.f, vecCollision);
 
+    RayStart.y -= 1.f;
+    RayStart.y += CharacterController()->GetRadius() * Transform()->GetWorldScale().y;
+
+    float RayLength = CharacterController()->GetRadius() * Transform()->GetWorldScale().y * acosf(XM_PI / 6.f) +5.f;
+
+    RaycastHit arrRay[5] = {m_RayHit, CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(1.f * tanf(XM_PI / 6.f), -1.f, 0.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(-1.f * tanf(XM_PI / 6.f), -1.f, 0.f), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 1.f * tanf(XM_PI / 6.f)), RayLength, vecCollision),
+                            CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, -1.f * tanf(XM_PI / 6.f)), RayLength, vecCollision)};
+
+
     // Grund 판정
     m_bGround = CharacterController()->IsGrounded();
 
     if (m_bGround)
     {
-        if (m_RayHit.pCollisionObj == nullptr)
+        bool IsColision = false;
+
+        for (int i = 0; i < 5; ++i)
         {
-            m_bGround = false;
+            if (arrRay[i].pCollisionObj != nullptr)
+            {
+                if (i != 0)
+                {
+                    IsColision = true;
+                    break;
+                }
+
+                // 중앙 레이
+                if (i == 0 && arrRay[i].Distance < 10.f)
+                {
+                    IsColision = true;
+                    break;
+                }
+            }
         }
-        else if (m_RayHit.Distance > 10.f)
+
+        // 아무것도 충돌하지 않았다면 땅이라고 생각하지 않는다.
+        if (!IsColision)
         {
             m_bGround = false;
         }
     }
     else
     {
-        if (m_RayHit.pCollisionObj == nullptr)
+        bool IsColision = false;
+
+        for (int i = 0; i < 5; ++i)
         {
-            m_bGround = false;
+            if (arrRay[i].pCollisionObj != nullptr)
+            {
+                if (i != 0 && m_MoveVelocity.y <= 0.f)
+                {
+                    IsColision = true;
+                    break;
+                }
+
+                // 중앙 레이
+                if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
+                {
+                    IsColision = false;
+                }
+            }
         }
-        else if (m_RayHit.Distance < 10.f && m_MoveVelocity.y <= 0.f)
+
+        // 한개라도 충돌했다면 땅이라고 판단한다.
+        if (IsColision)
         {
             m_bGround = true;
         }
     }
-
-
 }
 
 void CKirbyMoveController::SetDir()
@@ -227,7 +272,7 @@ void CKirbyMoveController::SetDir()
     }
 
     // 보간을 통해 현재 방향 설정
-    Transform()->Slerp(m_TowardDir, DT * m_RotSpeed);
+    Transform()->Slerp(m_TowardDir, DT_ENGINE * m_RotSpeed);
 }
 
 void CKirbyMoveController::Move()
@@ -242,6 +287,7 @@ void CKirbyMoveController::Move()
     // 수평 방향 이동속도 계산
     // Guard시에는 이전프레임의 이동속도를 남겨 감속시킴
 
+    
     if (m_bActiveFriction)
     {
         m_Accel.x = -m_MoveVelocity.x * m_Friction;
@@ -272,10 +318,6 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = m_JumpPower;
     }
 
-    //if (PLAYERFSM->IsHovering() && m_HoveringHeight > m_HoveringLimitHeight && m_MoveVelocity.y > 0.f)
-    //{
-    //    m_MoveVelocity.y = 0.f;
-    //}
 
     // 중력 적용
     m_Accel.y += m_Gravity;
@@ -327,6 +369,13 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.y = m_MaxFallSpeed;
     }
 
+    // ForcePos
+    if (m_ForcePos != Vec3(0.f, 0.f, 0.f))
+    {
+        Transform()->SetWorldPos(m_ForcePos);
+        m_ForcePos = Vec3(0.f, 0.f, 0.f);
+    }
+
     if (m_bTeleportGround)
     {
         Transform()->SetWorldPos(m_RayHit.Point);
@@ -339,12 +388,12 @@ void CKirbyMoveController::Move()
     // =========================
     CharacterController()->Move(m_MoveVelocity * DT);
 
-
     // 땅에 닿은 상태면 Velocity Y값 초기화
     if (CharacterController()->IsGrounded() && m_MoveVelocity.y < 0)
     {
         m_MoveVelocity.y = 0.f;
     }
+
 }
 
 

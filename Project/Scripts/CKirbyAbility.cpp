@@ -67,7 +67,7 @@ void CKirbyAbility::JumpStartEnter()
 
 void CKirbyAbility::JumpFallEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"));
+    PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), true, false, 2.5f, 0.2);
 }
 
 void CKirbyAbility::LandingEnter()
@@ -79,6 +79,24 @@ void CKirbyAbility::LandingEnter()
     else
     {
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
+
+        // Smoke Spawn
+        Ptr<CPrefab> LandingSmoke =  CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyLandingSmoke.pref");
+        CGameObject* LeftSmokeObj = LandingSmoke->Instantiate();
+        CGameObject* RightSmokeObj = LandingSmoke->Instantiate();
+
+        Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 KirbyRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+        Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+
+        LeftSmokeObj->Transform()->SetDirection(-KirbyFront);
+        RightSmokeObj->Transform()->SetDirection(-KirbyFront);
+
+        LeftSmokeObj->Transform()->SetWorldPos(KirbyPos - KirbyRight * 4.f);
+        RightSmokeObj->Transform()->SetWorldPos(KirbyPos + KirbyRight * 4.f);
+
+        GamePlayStatic::SpawnGameObject(LeftSmokeObj, LAYER_EFFECT);
+        GamePlayStatic::SpawnGameObject(RightSmokeObj, LAYER_EFFECT);
     }
 
     PLAYERCTRL->LockJump();
