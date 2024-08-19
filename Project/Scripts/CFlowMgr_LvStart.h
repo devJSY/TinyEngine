@@ -7,10 +7,10 @@ class CFlowMgr_LvStart : public CLevelFlowMgr
 private:
 public:
     virtual void begin() override;
-
-public: 
+    
+public:
+    virtual void LevelStart() override;
     virtual void LevelEnd() override;
-    virtual void LevelExit() override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

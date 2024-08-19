@@ -15,10 +15,16 @@ CFlowMgr_Lv1::~CFlowMgr_Lv1()
 {
 }
 
-
 void CFlowMgr_Lv1::begin()
 {
     CLevelFlowMgr::begin();
+
+    SetStartLevel(true);
+
+    LevelStart();
+
+    SetEnterTime(6.8f);
+
     SetToneMappingParam(true, true, 1.2f, 0.8f);
 }
 

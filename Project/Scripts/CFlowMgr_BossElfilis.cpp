@@ -25,6 +25,13 @@ CFlowMgr_BossElfilis::~CFlowMgr_BossElfilis()
 void CFlowMgr_BossElfilis::begin()
 {
     CLevelFlowMgr::begin();
+
+    SetStartLevel(true);
+
+    LevelStart();
+
+    SetEnterTime(6.8f);
+
     SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f);
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 

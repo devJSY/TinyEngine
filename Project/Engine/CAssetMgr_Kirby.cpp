@@ -269,7 +269,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
@@ -282,6 +282,31 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyUIDefaulthader");
         AddAsset(L"KirbyUIDefaultShader", pShader);
+    }
+
+    // =================================
+    // UICircleProgressShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UICircleProgressPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(FLOAT_0, "AlphaDiscard Threshold", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Test Radian", 0.1f);
+
+        pShader->AddScalarParam(VEC4_0, "Static Color", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"UICircleProgressShader");
+        AddAsset(L"UICircleProgressShader", pShader);
     }
 
     // =================================
@@ -344,7 +369,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->CreatePixelShader(L"shader\\UIMaskingAnimPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
@@ -364,7 +389,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->CreatePixelShader(L"shader\\UIHPShaderPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
@@ -373,6 +398,72 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"KirbyUIHPShader");
         AddAsset(L"KirbyUIHPShader", pShader);
+    }
+
+    // =================================
+    // KirbyStandardUIShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\std2d.fx", "PS_Std2D");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"KirbyStandardUIShader");
+        AddAsset(L"KirbyStandardUIShader", pShader);
+    }
+
+    // =================================
+    // KirbyFontUIShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\UIKirbyFontPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(FLOAT_0, "RedThreshHold");
+        pShader->AddScalarParam(VEC4_0, "Static Color");
+
+        pShader->SetName(L"KirbyUIFontShader");
+        AddAsset(L"KirbyUIFontShader", pShader);
+    }
+
+    // =================================
+    // KirbyClearLineUIShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\std2d.fx", "VS_Std2D");
+        pShader->CreatePixelShader(L"shader\\UIKirbyClearLineShader.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(FLOAT_0, "RedThreshHold");
+
+        pShader->AddScalarParam(VEC4_0, "Static Color");
+        pShader->AddScalarParam(VEC4_1, "Static Color2");
+
+        pShader->SetName(L"KirbyClearLineUIShader");
+        AddAsset(L"KirbyClearLineUIShader", pShader);
     }
 
     // =================================

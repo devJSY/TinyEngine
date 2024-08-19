@@ -38,15 +38,6 @@ void CUIFlowMgr::begin()
     default:
         break;
     }
-
-    CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
-
-    if (nullptr != pObj)
-    {
-        CLevelFlowMgr* pLevelScript = pObj->GetScript<CLevelFlowMgr>();
-        if (nullptr != pLevelScript)
-            pLevelScript->SetFlowScript(m_pFlowScript);
-    }
 }
 
 void CUIFlowMgr::tick()

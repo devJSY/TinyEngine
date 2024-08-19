@@ -4,15 +4,14 @@
 #include <Engine/CTimeMgr.h>
 #include "CUnitScript.h"
 
+#include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
+
 CUIHPScript::CUIHPScript()
     : CScript(UIHPSCRIPT)
-    , m_pSlicingObjects{}
     , m_TargetName{}
-    , m_pTr(nullptr)
     , m_pRenderer(nullptr)
     , m_pUnitScript(nullptr)
-    , m_vNormalScale{}
-    , m_vNormalPos{}
     , m_fAccTime(0.f)
     , m_fComboTime(2.f)
     , m_bIsCombo(false)
@@ -23,6 +22,33 @@ CUIHPScript::CUIHPScript()
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_pFSMScript(nullptr)
+    , m_bIsEnter(true)
+{
+    AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
+    AddScriptParam(SCRIPT_PARAM::VEC4, &m_vDecreaseColor, "Decrease Color");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fComboTime, "ComboTime");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fDescSpeed, "DecreaseSpeed");
+}
+
+CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
+    : CScript(Origin)
+    , m_TargetName{}
+    , m_pRenderer(nullptr)
+    , m_pUnitScript(nullptr)
+    , m_fAccTime(0.f)
+    , m_fComboTime(Origin.m_fComboTime)
+    , m_bIsCombo(false)
+    , m_bIsScaling(false)
+    , m_fDescSpeed(Origin.m_fDescSpeed)
+    , m_vDecreaseColor(Origin.m_vDecreaseColor)
+    , m_vBasicColor(Origin.m_vBasicColor)
+    , m_fMaxHP(0.f)
+    , m_fCurHP(0.f)
+    , m_fPrevHP(0.f)
+    , m_pFSMScript(nullptr)
+    , m_bIsEnter(true)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -37,37 +63,25 @@ CUIHPScript::~CUIHPScript()
 
 void CUIHPScript::begin()
 {
-    CGameObject* _pTargetObj = nullptr;
-    if (!m_pUnitScript && m_TargetName != "")
-        _pTargetObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_TargetName));
-
-    if (_pTargetObj)
-        m_pUnitScript = _pTargetObj->GetScript<CUnitScript>();
-
-    if (!m_pUnitScript)
-        return;
-
-    m_fMaxHP = m_pUnitScript->GetCurInfo().MAXHP;
-    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-    m_fPrevHP = m_pUnitScript->GetCurInfo().HP;
-
-    m_pTr = GetOwner()->GetComponent<CTransform>();
-    m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
-    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
-
-    m_vNormalScale = m_pTr->GetLocalScale();
-    m_vNormalPos = m_pTr->GetLocalPos();
-
     // m_fMaxHP = m_fCurHP = m_fPrevH = TargetObjectÀÇ MaxHP!
+}
+
+void CUIHPScript::SetPlayer()
+{
+    if (PLAYER)
+    {
+        m_pUnitScript = PLAYER->GetScript<CUnitScript>();
+        m_pFSMScript = PLAYER->GetScript<CKirbyFSM>();
+        m_bIsEnter = true;
+    }
 }
 
 void CUIHPScript::tick()
 {
     if (!m_pUnitScript)
         return;
+
+    SetInitInfo();
 
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
@@ -85,6 +99,30 @@ void CUIHPScript::tick()
 
     if (m_bIsScaling)
         Scaling();
+
+    SwitchKirbyName();
+}
+
+void CUIHPScript::SetInitInfo()
+{
+    if (!m_bIsEnter)
+        return;
+
+    m_pNameObj = GetOwner()->GetChildObject(L"UI_PlayerName");
+
+    if (!m_pUnitScript)
+        return;
+
+    m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
+
+    m_fMaxHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().MAXHP;
+    m_fPrevHP = m_fCurHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP;
+
+    m_bIsEnter = false;
 }
 
 void CUIHPScript::CaculateShading()
@@ -113,6 +151,97 @@ void CUIHPScript::Scaling()
     }
 }
 
+void CUIHPScript::SwitchKirbyName()
+{
+    AbilityCopyType eAbility = m_pFSMScript->GetCurAbilityIdx();
+    ObjectCopyType eObject = m_pFSMScript->GetCurObjectIdx();
+
+    int AbilityIdx = -1;
+    int ObjectIdx = -1;
+
+    switch (eAbility)
+    {
+    case AbilityCopyType::NORMAL: {
+        AbilityIdx = 3;
+    }
+    break;
+    case AbilityCopyType::FIRE: {
+        AbilityIdx = 6;
+    }
+    break;
+    case AbilityCopyType::CUTTER: {
+        AbilityIdx = 5;
+    }
+    break;
+    case AbilityCopyType::SWORD: {
+        AbilityIdx = 4;
+    }
+    break;
+    case AbilityCopyType::SLEEP: {
+        AbilityIdx = 7;
+    }
+    break;
+    case AbilityCopyType::END:
+        break;
+    default:
+        break;
+    }
+
+    switch (eObject)
+    {
+    case ObjectCopyType::NONE: {
+    }
+    break;
+    case ObjectCopyType::CONE: {
+        ObjectIdx = 0;
+    }
+    break;
+    case ObjectCopyType::VENDING_MACHINE: {
+        ObjectIdx = 1;
+    }
+    break;
+    case ObjectCopyType::LIGHT: {
+        ObjectIdx = 2;
+    }
+    break;
+    case ObjectCopyType::END:
+        break;
+    default:
+        break;
+    }
+
+    if (-1 == ObjectIdx)
+    {
+        for (int i = 3; i < 8; i++)
+        {
+            if (i == AbilityIdx)
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            else
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+    }
+    else
+    {
+        for (int i = 3; i < 8; i++)
+        {
+            GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i == ObjectIdx)
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            else
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+    }
+}
+
 bool CUIHPScript::IsCombo()
 {
     bool _IsCombo = m_pUnitScript->IsGetDamage();
@@ -138,10 +267,6 @@ bool CUIHPScript::IsCombo()
     }
 
     return _IsCombo;
-}
-
-void CUIHPScript::SlicingUI(UINT _iSlicingNum)
-{
 }
 
 UINT CUIHPScript::SaveToLevelFile(FILE* _File)
