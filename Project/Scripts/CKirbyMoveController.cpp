@@ -287,7 +287,7 @@ void CKirbyMoveController::Move()
     // 수평 방향 이동속도 계산
     // Guard시에는 이전프레임의 이동속도를 남겨 감속시킴
 
-
+    
     if (m_bActiveFriction)
     {
         m_Accel.x = -m_MoveVelocity.x * m_Friction;

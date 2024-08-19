@@ -80,6 +80,7 @@ void CKirbyDodge2::Enter()
 
     PLAYERCTRL->SetFriction(2.5f);
     PLAYERCTRL->SetFrictionMode(true);
+    m_SaveGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-100.f);
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
 }
@@ -90,8 +91,7 @@ void CKirbyDodge2::Exit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
 
+    PLAYERCTRL->SetGravity(m_SaveGravity);
     PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetFrictionMode(false);
-
-    PLAYERCTRL->SetGravity(-20.f);
 }

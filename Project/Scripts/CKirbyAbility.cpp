@@ -67,7 +67,7 @@ void CKirbyAbility::JumpStartEnter()
 
 void CKirbyAbility::JumpFallEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"));
+    PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), true, false, 2.5f, 0.2);
 }
 
 void CKirbyAbility::LandingEnter()
