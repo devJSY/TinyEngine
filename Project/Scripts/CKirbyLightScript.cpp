@@ -4,13 +4,12 @@
 CKirbyLightScript::CKirbyLightScript()
     : CScript(KIRBYLIGHTSCRIPT)
     , m_MinFallOfEnd(60.f)
-    , m_MaxFallOfEnd(0.f)
-    , m_FallRatio(0.f)
+    , m_MaxFallOfEnd(155.f)
+    , m_FallRatio(0.774f)
     , m_TurnOnTime(0.1f)
     , m_TurnOffTime(0.6f)
     , m_AccTime(0.f)
     , m_State(KirbyLightState::NONE)
-
 {
 }
 
@@ -25,16 +24,6 @@ void CKirbyLightScript::begin()
         MessageBox(nullptr, L"Light 컴포넌트 없음, 직접 추가 권장", L"Failed To Find Light (KirbyLightScript)", MB_OK);
         GetOwner()->AddComponent(new CLight);
     }
-
-    m_MaxFallOfEnd = GetOwner()->Light()->GetFallOffEnd();
-    if (m_MaxFallOfEnd <= 0.f)
-    {
-        m_MaxFallOfEnd = m_MinFallOfEnd;
-    }
-
-    m_FallRatio = GetOwner()->Light()->GetFallOffStart() / m_MaxFallOfEnd;
-
-    GetOwner()->SetActive(false);
 }
 
 void CKirbyLightScript::tick()

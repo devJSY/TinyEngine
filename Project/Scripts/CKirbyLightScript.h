@@ -19,6 +19,7 @@ private:
     float m_TurnOffTime;
     float m_AccTime;
     KirbyLightState m_State;
+    bool m_bPassBegin;
 
 public:
     virtual void begin() override;
