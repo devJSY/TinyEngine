@@ -152,7 +152,7 @@ void CEditorMgr::init()
     pEditorCam->Camera()->SetFar(50000.f);
 
     m_vecEditorObj.push_back(pEditorCam);
-
+    
     // Editor 용 카메라로서 렌더매니저에 등록
     CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
 
