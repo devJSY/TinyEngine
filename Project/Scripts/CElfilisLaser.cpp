@@ -19,6 +19,14 @@ void CElfilisLaser::begin()
     {
         SetStart();
     }
+
+    CGameObject* Outer = GetOwner()->GetChildObject()[0];
+    UINT Layer = GetOwner()->GetLayerIdx();
+
+    if (Outer && Outer->GetLayerIdx() != Layer)
+    {
+        GamePlayStatic::LayerChange(Outer, Layer);
+    }
 }
 
 void CElfilisLaser::tick()
@@ -44,6 +52,7 @@ void CElfilisLaser::SetStart()
 {
     m_Step = StateStep::Start;
     Animator()->Play(ANIMPREFIX("Start"), false);
+    PlayOuter(ANIMPREFIX("Start"), false);
     GetOwner()->SetActive(true);
 }
 
@@ -51,12 +60,14 @@ void CElfilisLaser::SetWait()
 {
     m_Step = StateStep::Progress;
     Animator()->Play(ANIMPREFIX("Loop"));
+    PlayOuter(ANIMPREFIX("Loop"));
 }
 
 void CElfilisLaser::SetEnd()
 {
     m_Step = StateStep::End;
     Animator()->Play(ANIMPREFIX("End"), false);
+    PlayOuter(ANIMPREFIX("End"), false);
 }
 
 void CElfilisLaser::Start()
@@ -77,6 +88,16 @@ void CElfilisLaser::End()
     {
         GetOwner()->SetActive(false);
     }
+}
+
+void CElfilisLaser::PlayOuter(const wstring _Anim, bool _bRepeat)
+{
+    CGameObject* Outer = GetOwner()->GetChildObject()[0];
+
+    if (!Outer)
+        return;
+
+    Outer->Animator()->Play(_Anim, _bRepeat);
 }
 
 UINT CElfilisLaser::SaveToLevelFile(FILE* _File)

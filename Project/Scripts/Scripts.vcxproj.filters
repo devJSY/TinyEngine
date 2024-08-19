@@ -629,7 +629,7 @@
       <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyUnitScript.h">
-      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+      <Filter>Scripts\Character\Kirby\Unit</Filter>
     </ClInclude>
     <ClInclude Include="CSolarChargeScript.h">
       <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
@@ -882,6 +882,36 @@
     </ClInclude>
     <ClInclude Include="CUIFlowMgr.h">
       <Filter>Scripts\UI\UIManager\UIFlowManger</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyBulletSize.h">
+      <Filter>Scripts\Character\Kirby\KirbyBulletSize</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyStuffedDamage.h">
+      <Filter>State\KirbyState\Stuffed\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum1.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum1</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum1End.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum1\End</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum1Run.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum1\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum1Start.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum1\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum2.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum2</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum2Run.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum2\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyVacuum2Start.h">
+      <Filter>State\KirbyState\Vacuum\Vacuum2\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyObjDetectCollider.h">
+      <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
     </ClInclude>
     <ClInclude Include="CSmokeScript.h">
       <Filter>Scripts\Gimmik\Smoke</Filter>
@@ -1528,7 +1558,7 @@
       <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
-      <Filter>Scripts\Character\Kirby\KirbyUnitScript</Filter>
+      <Filter>Scripts\Character\Kirby\Unit</Filter>
     </ClCompile>
     <ClCompile Include="CSolarChargeScript.cpp">
       <Filter>Scripts\Gimmik\SolarPanelObj\Charge</Filter>
@@ -1781,6 +1811,36 @@
     </ClCompile>
     <ClCompile Include="CKirbySmoke.cpp">
       <Filter>Scripts\Character\Kirby\KirbySmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBulletSize.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyBulletSize</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyStuffedDamage.cpp">
+      <Filter>State\KirbyState\Stuffed\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum1.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum1</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum1End.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum1\End</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum1Run.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum1\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum1Start.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum1\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum2.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum2</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum2Run.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum2\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuum2Start.cpp">
+      <Filter>State\KirbyState\Vacuum\Vacuum2\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyObjDetectCollider.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
     </ClCompile>
     <ClCompile Include="CSmokeScript.cpp">
       <Filter>Scripts\Gimmik\Smoke</Filter>
@@ -2501,9 +2561,6 @@
     <Filter Include="Scripts\UI\UIWipe\UIWipeTrigger">
       <UniqueIdentifier>{1154ae36-6ac7-49e2-9f7a-c42af591649d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Character\Kirby\KirbyUnitScript">
-      <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
     </Filter>
@@ -2818,6 +2875,42 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbySmoke">
       <UniqueIdentifier>{f2bbb26f-2be5-41dc-8d00-163e567b2d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyBulletSize">
+      <UniqueIdentifier>{860a1904-3e54-4954-9e1f-12a518449f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\Unit">
+      <UniqueIdentifier>{cd8e4186-fa51-4556-8afa-8ce1c2b906ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Stuffed\Damage">
+      <UniqueIdentifier>{fa5d1ece-d75c-44f9-b6b6-a0e805d03928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum">
+      <UniqueIdentifier>{b88196a2-5a04-4085-ae87-3f57b1d9f998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum1">
+      <UniqueIdentifier>{3a0af9f5-a9d1-471a-ab4a-da39cd1481a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum2">
+      <UniqueIdentifier>{8a50c3ba-e030-4567-8d90-0549c4543cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum1\Start">
+      <UniqueIdentifier>{ff7294c8-c358-47ea-b388-770e15203a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum1\End">
+      <UniqueIdentifier>{c073dc02-ad14-4316-8429-57d1e7aed1b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum1\Run">
+      <UniqueIdentifier>{a9e40fdd-be53-4e54-ba54-332b1c3b102b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum2\Start">
+      <UniqueIdentifier>{42b7956a-38f2-468f-81d1-199fa6c9cfd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Vacuum\Vacuum2\Run">
+      <UniqueIdentifier>{63c76fc0-c59a-4268-93ab-3c3b5275d68b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyObjDetectCollider">
+      <UniqueIdentifier>{f8c285e2-7d2a-41d5-89f3-09d733cb85e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik\Smoke">
       <UniqueIdentifier>{f3f2a186-aa97-409b-9cb3-ed1a2b33c170}</UniqueIdentifier>

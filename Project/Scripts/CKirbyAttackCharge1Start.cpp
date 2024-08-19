@@ -21,8 +21,9 @@ void CKirbyAttackCharge1Start::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
+        case AbilityCopyType::NORMAL:
+            break;
         case AbilityCopyType::FIRE:
-        case AbilityCopyType::NORMAL: 
         {
             if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
             {

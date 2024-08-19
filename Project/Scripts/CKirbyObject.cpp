@@ -129,6 +129,10 @@ void CKirbyObject::DropObjectEnter()
     if (PLAYERFSM->GetCurHat())
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
+    }
+    if (PLAYERFSM->GetCurWeapon())
+    {
+        PLAYERFSM->GetCurWeapon()->SetActive(true);
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurWeapon(), L"Weapon");
     }
 
@@ -197,12 +201,16 @@ void CKirbyObject::ChangeObject()
 void CKirbyObject::ChangeObjectEnter()
 {
     PLAYER->MeshRender()->SetMeshData(m_DemoMesh);
+    PLAYER->Animator()->Play(ANIMPREFIX("DeformFirst"), false);
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyB);
     if (PLAYERFSM->GetCurHat())
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
     }
-    PLAYER->Animator()->Play(ANIMPREFIX("DeformFirst"), false);
+    if (PLAYERFSM->GetCurWeapon())
+    {
+        PLAYERFSM->GetCurWeapon()->SetActive(false);
+    }
 
     PLAYERCTRL->LockInput();
     PLAYERCTRL->LockMove();

@@ -17,28 +17,9 @@ void CKirbyAttackCharge1Run::tick()
     // State Change
     switch (PLAYERFSM->GetCurAbilityIdx())
     {
-    case AbilityCopyType::NORMAL: 
-    {
-        if (PLAYERFSM->IsStuffed())
-        {
-            ChangeState(L"STUFFED");
-        }
-        else if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
-        {
-            ChangeState(L"ATTACK_CHARGE1_END");
-        }
-        else if (PLAYERCTRL->GetInput().Length() == 0.f)
-        {
-            ChangeState(L"ATTACK_CHARGE1");
-        }
-        else if (PLAYERFSM->GetChargeAccTime() >= PLAYERFSM->GetCurAbility()->GetCharge1Time())
-        {
-            ChangeState(L"ATTACK_CHARGE2_RUN");
-        }
-    }
-    break;
-    case AbilityCopyType::FIRE:
-    {
+    case AbilityCopyType::NORMAL:
+        break;
+    case AbilityCopyType::FIRE: {
         if (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK))
         {
             ChangeState(L"ATTACK_CHARGE1_END");
@@ -48,7 +29,7 @@ void CKirbyAttackCharge1Run::tick()
             ChangeState(L"ATTACK_CHARGE1");
         }
     }
-        break;
+    break;
     case AbilityCopyType::CUTTER:
         break;
     case AbilityCopyType::SWORD:

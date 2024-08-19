@@ -4,8 +4,9 @@
 class CKirbyAttackCharge2Slash : public CState
 {
 private:
-    float m_PlayTime;
+    float m_Speed;
     float m_PrevSpeed;
+    float m_PlayTime;
 
 public:
     virtual void tick();

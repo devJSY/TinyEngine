@@ -1151,6 +1151,9 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIAnimShader">
       <UniqueIdentifier>{31081bb5-a26c-4286-993c-6b11ced3a8a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\Characters\Boss\Elfilis">
+      <UniqueIdentifier>{77c706d5-7561-4ae6-882b-cc2e98d22851}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1493,6 +1496,18 @@
     </FxCompile>
     <FxCompile Include="UIMaskingAnimPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIAnimShader</Filter>
+    </FxCompile>
+    <FxCompile Include="MaskingPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
+    <FxCompile Include="TransparentElfilisPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
+    <FxCompile Include="ElfilisLaserOuterPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
+    <FxCompile Include="ElfilisLaserInnerPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
     <FxCompile Include="RadialBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>

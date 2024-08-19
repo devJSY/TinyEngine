@@ -8,6 +8,7 @@ CBossHitbox::CBossHitbox()
     : CScript(BOSSHITBOX)
     , m_Instigator(nullptr)
     , m_Target(nullptr)
+    , m_Collider(nullptr)
     , m_bSummon(false)
     , m_bCallReward(true)
     , m_RandMin(5.f)
@@ -16,7 +17,8 @@ CBossHitbox::CBossHitbox()
     , m_AccTime(0.f)
     , m_RepeatTime(2.f)
     , m_bRepeatDamage(true)
-    , m_bOnTrigger(false)
+    , m_bRepeatEnter(false)
+    , m_bRepeat(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
@@ -31,6 +33,7 @@ CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     : CScript(_Origin)
     , m_Instigator(nullptr)
     , m_Target(nullptr)
+    , m_Collider(nullptr)
     , m_bSummon(_Origin.m_bSummon)
     , m_bCallReward(_Origin.m_bCallReward)
     , m_RandMin(_Origin.m_RandMin)
@@ -39,7 +42,8 @@ CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     , m_AccTime(0.f)
     , m_RepeatTime(_Origin.m_RepeatTime)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
-    , m_bOnTrigger(false)
+    , m_bRepeatEnter(false)
+    , m_bRepeat(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
@@ -58,32 +62,41 @@ void CBossHitbox::begin()
 {
     m_Target = PLAYER;
     m_Instigator = BOSS;
+    m_Collider = GetOwner()->GetComponent<CCollider>();
 }
 
 void CBossHitbox::tick()
 {
-    if (!m_Instigator || !m_Target || !m_bRepeatDamage || !m_bOnTrigger)
+    if (m_bRepeat)
+    {
+        m_bRepeat = false;
+        m_bRepeatEnter = false;
+        m_Collider->SetEnabled(true);
+    }
+
+    if (!m_Instigator || !m_Target || !m_bRepeatDamage || !m_bRepeatEnter)
         return;
 
     m_AccTime += DT;
 
-    if (m_AccTime >= m_RepeatTime)
+    if (m_AccTime > m_RepeatTime)
     {
-        m_AccTime -= m_RepeatTime;
-        AddDamage();
+        m_AccTime = 0.f;
+        m_bRepeat = true;
+        m_Collider->SetEnabled(false);
     }
 }
 
 void CBossHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    m_bOnTrigger = true;
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+    wstring Name = _OtherCollider->GetOwner()->GetName();
+    if (!(Layer == LAYER_PLAYER && Name == L"Main Player") && !(Layer == LAYER_PLAYER_TRIGGER && Name == L"Body Collider"))
+        return;
+
+    m_bRepeatEnter = true;
     m_AccTime = 0.f;
     AddDamage();
-}
-
-void CBossHitbox::OnTriggerExit(CCollider* _OtherCollider)
-{
-    m_bOnTrigger = false;
 }
 
 float CBossHitbox::GetRandDamage()

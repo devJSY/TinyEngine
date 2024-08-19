@@ -10,7 +10,6 @@ private:
     int m_SecondStepSmokeFrm;
     float m_SmokeOffset;
 
-
 public:
     virtual void tick();
     virtual void Enter();

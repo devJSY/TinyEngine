@@ -109,6 +109,8 @@
 #include "CFlowMgr_LvRobby.h"
 #include "CFlowMgr_LvStart.h"
 #include "CUIFlowMgr.h"
+#include "CKirbyBulletSize.h"
+#include "CKirbyObjDetectCollider.h"
 #include "CSmokeScript.h"
 #include "CSmokeSpawner.h"
 
@@ -222,6 +224,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFlowMgr_LvRobby");
 	_vec.push_back(L"CFlowMgr_LvStart");
 	_vec.push_back(L"CUIFlowMgr");
+	_vec.push_back(L"CKirbyBulletSize");
+	_vec.push_back(L"CKirbyObjDetectCollider");
 	_vec.push_back(L"CSmokeScript");
 	_vec.push_back(L"CSmokeSpawner");
 }
@@ -444,6 +448,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_LvStart;
 	if (L"CUIFlowMgr" == _strScriptName)
 		return new CUIFlowMgr;
+	if (L"CKirbyBulletSize" == _strScriptName)
+		return new CKirbyBulletSize;
+	if (L"CKirbyObjDetectCollider" == _strScriptName)
+		return new CKirbyObjDetectCollider;
 	if (L"CSmokeScript" == _strScriptName)
 		return new CSmokeScript;
 	if (L"CSmokeSpawner" == _strScriptName)
@@ -671,6 +679,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_LvStart;
 	case (UINT)SCRIPT_TYPE::UIFLOWMGR:
 		return new CUIFlowMgr;
+	case (UINT)SCRIPT_TYPE::KIRBYBULLETSIZE:
+		return new CKirbyBulletSize;
+	case (UINT)SCRIPT_TYPE::KIRBYOBJDETECTCOLLIDER:
+		return new CKirbyObjDetectCollider;
 	case (UINT)SCRIPT_TYPE::SMOKESCRIPT:
 		return new CSmokeScript;
 	case (UINT)SCRIPT_TYPE::SMOKESPAWNER:
@@ -899,6 +911,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowMgr_LvStart";
 	case SCRIPT_TYPE::UIFLOWMGR:
 		return L"CUIFlowMgr";
+	case SCRIPT_TYPE::KIRBYBULLETSIZE:
+		return L"CKirbyBulletSize";
+	case SCRIPT_TYPE::KIRBYOBJDETECTCOLLIDER:
+		return L"CKirbyObjDetectCollider";
 	case SCRIPT_TYPE::SMOKESCRIPT:
 		return L"CSmokeScript";
 	case SCRIPT_TYPE::SMOKESPAWNER:
