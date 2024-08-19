@@ -4,6 +4,8 @@
 #include "CUIManagerScript.h"
 
 class CUIFlowScript;
+class CUIAnimManagerScript;
+
 class CUIFlowMgr : public CScript
 {
 private:

@@ -34,12 +34,14 @@ void CFlowMgr_LvStart::begin()
 void CFlowMgr_LvStart::LevelStart()
 {
     ResetFadeEffectTimer();
+    ActiveFadeEffect(false);
 }
 
 void CFlowMgr_LvStart::LevelEnd()
 {
     CLevelFlowMgr::LevelEnd();
 
+    ActiveFadeEffect(true);
     SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, true);
 }
 
