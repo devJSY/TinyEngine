@@ -23,7 +23,7 @@ void CFlowMgr_Lv1::begin()
 
     LevelStart();
 
-    SetEnterTime(6.5f);
+    SetEnterTime(6.8f);
 
     SetToneMappingParam(true, true, 1.2f, 0.8f);
 }

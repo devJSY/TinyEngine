@@ -23,7 +23,7 @@ void CFlowMgr_Lv2::begin()
 
     LevelStart();
 
-    SetEnterTime(6.5f);
+    SetEnterTime(6.8f);
 }
 
 void CFlowMgr_Lv2::tick()

@@ -31,7 +31,7 @@ void CFlowMgr_Lv0::begin()
 
     LevelStart();
     
-    SetEnterTime(6.5f);
+    SetEnterTime(6.8f);
 
     // Fog Setting
     m_PostEffectMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl");

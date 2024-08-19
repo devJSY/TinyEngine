@@ -34,7 +34,8 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_bStartLevelDurationValue(true)
     , m_bEnterLevel(true)
     , m_fFadeInAccTime(0.f)
-    , m_fFadeInWaitTime(2.f)
+    , m_fLoadingAccTime(0.f)
+    , m_fFadeInWaitTime(2.3f)
     , m_bUILevel(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
@@ -56,6 +57,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_bStartLevel(false)
     , m_bStartLevelDurationValue(true)
     , m_bEnterLevel(true)
+    , m_fLoadingAccTime(0.f)
     , m_fFadeInAccTime(0.f)
     , m_fFadeInWaitTime(2.f)
     , m_bUILevel(false)
@@ -153,12 +155,27 @@ void CLevelFlowMgr::tick()
     {
         m_fFadeInAccTime += DT;
 
+        if (m_CurLevelPath == L"Level1-1-2.tLevel")
+        {
+            m_fFadeInWaitTime = 1.f;
+        }
+
         // UI가 끝나면
         if (m_fFadeInAccTime > m_fFadeInWaitTime)
         {
             m_bEnterLevel = false;
             if (nullptr != m_pPlayerHP)
                 m_pPlayerHP->SetActive(true);
+        }
+    }
+
+    if (m_bLoadingUIWait)
+    {
+        m_fLoadingAccTime += DT;
+        if (2.f <= m_fLoadingAccTime)
+        {
+            m_bLoadingUIWait = false;
+            LevelExit();
         }
     }
 
@@ -171,7 +188,7 @@ void CLevelFlowMgr::tick()
         {
             // Level 전환
             m_bFadeEffect = false;
-            LevelExit();
+            LevelLoading();
         }
     }
 
@@ -191,8 +208,10 @@ void CLevelFlowMgr::LevelStart()
 
     // FadeIn 초기화
     m_bEnterLevel = true;
+    m_bLoadingUIWait = false;
     m_fFadeInAccTime = 0.f;
-    m_fFadeInWaitTime = 2.f;
+    m_fLoadingAccTime = 0.f;
+    m_fFadeInWaitTime = 1.f;
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
@@ -286,7 +305,7 @@ void CLevelFlowMgr::LevelEnd()
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
-    m_FadeEffectAcc = 0.f;
+    m_fFadeInWaitTime = 1.f;
 
     // FadeIn 초기화
 
@@ -295,19 +314,12 @@ void CLevelFlowMgr::LevelEnd()
 
 void CLevelFlowMgr::LevelExit()
 {
-    // Loding UI 시작
-    if (nullptr != m_pLoadingUI)
-        m_pLoadingUI->SetActive(true);
-
     // Kirby 프리팹 저장
     if (!m_bUILevel)
     {
         Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
         MainPlayerPref->Save(L"prefab\\Main Player.pref");
     }
-
-    if (nullptr != m_pPlayerHP)
-        m_pPlayerHP->SetActive(false);
 
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
@@ -322,14 +334,17 @@ void CLevelFlowMgr::LevelRestart()
     // UI (Fade Out)
     SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
+    TurnOffPlayerHP();
+
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
     m_FadeEffectAcc = 0.f;
 
     // Fade In UI 초기화
     m_bEnterLevel = true;
+    m_bLoadingUIWait = false;
     m_fFadeInAccTime = 0.f;
-    m_fFadeInWaitTime = 2.f;
+    m_fFadeInWaitTime = 0.7f;
 
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
@@ -470,6 +485,15 @@ void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, fl
     m_ToneMappingMtrl->SetScalarParam(FLOAT_1, _Gamma);
     m_ToneMappingMtrl->SetScalarParam(FLOAT_2, _BloomStrength);
     m_ToneMappingMtrl->SetScalarParam(VEC2_0, Vec2(_FilterRadius, _Threshold));
+}
+
+void CLevelFlowMgr::LevelLoading()
+{
+    if (nullptr != m_pLoadingUI)
+    {
+        m_bLoadingUIWait = true;
+        m_pLoadingUI->SetActive(true);
+    }
 }
 
 void CLevelFlowMgr::ResetFadeEffectTimer()

@@ -29,11 +29,13 @@ private:
 
     bool m_bEnterLevel;
     float m_fFadeInAccTime;
+    float m_fLoadingAccTime;
     float m_fFadeInWaitTime;
 
     bool m_bStartLevel;
     bool m_bStartLevelDurationValue;
     bool m_bUILevel;
+    bool m_bLoadingUIWait;
     // UI
 
     CFadeEffectScript* m_FadeEffectScript;
@@ -83,6 +85,8 @@ public:
     void TurnOnStageclearUI();
 
     void SetEnterTime(const float _fTime) { m_fFadeInWaitTime = _fTime; }
+
+    void LevelLoading();
 
 public:
     void ResetFadeEffectTimer();

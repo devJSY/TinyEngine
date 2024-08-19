@@ -73,7 +73,7 @@ void CFlowMgr_LvRobby::begin()
     m_StageNameBaseName[3] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel7^u.png";
     m_StageNameBaseName[4] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel7^u.png";
 
-    m_pUICam = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI Camera");
+    m_pUICam = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
 
     m_pLevelTex = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelTex");
 

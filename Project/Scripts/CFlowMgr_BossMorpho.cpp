@@ -33,7 +33,7 @@ void CFlowMgr_BossMorpho::begin()
 
     LevelStart();
 
-    SetEnterTime(6.5f);
+    SetEnterTime(6.8f);
 
     SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
     SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
