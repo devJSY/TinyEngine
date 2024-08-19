@@ -19,6 +19,7 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_FadeEffectScript(nullptr)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
+    , m_RadialBlurEffect(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -31,6 +32,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_FadeEffectScript(nullptr)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
+    , m_RadialBlurEffect(nullptr)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -41,17 +43,23 @@ CLevelFlowMgr::~CLevelFlowMgr()
 
 void CLevelFlowMgr::begin()
 {
-
     m_bIsChangedLevel = false;
 
     m_CurLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetName();
 
-    // Effect 만들기
+    // ==================
+    //    Effect Init
+    // ==================
     m_DimensionFadeEffect =
         CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref", L"prefab\\DimensionFadeEffect.pref")->Instantiate();
 
     m_DimensionFadeEffect->SetActive(false);
     GamePlayStatic::AddChildObject(GetOwner(), m_DimensionFadeEffect);
+
+    m_RadialBlurEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\RadialBlurEffect.pref")->Instantiate();
+
+    m_RadialBlurEffect->SetActive(false);
+    GamePlayStatic::AddChildObject(GetOwner(), m_RadialBlurEffect);
 
     Ptr<CPrefab> pFadeEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FadeEffect.pref", L"prefab\\FadeEffect.pref");
     if (nullptr != pFadeEffectPref)
@@ -87,6 +95,16 @@ void CLevelFlowMgr::tick()
         }
     }
 
+    if (m_bRadialBlurEffect)
+    {
+        m_RadialBlurAcc += DT_ENGINE;
+
+        if (m_RadialBlurAcc > m_RadialBlurDuration)
+        {
+            OffRadialBlurEffect();
+        }
+    }
+
     // tick마다 넣어줘야 하는 Param setting
     MtrlParamUpdate();
 }
@@ -102,6 +120,11 @@ void CLevelFlowMgr::LevelStart()
     m_bFadeEffect = false;
     m_FadeEffectAcc = 0.f;
     m_FadeEffectDuration = 2.5f;
+
+    // Radial Blur Effect Timer 초기화
+    m_bRadialBlurEffect = false;
+    m_RadialBlurAcc = 0.f;
+    m_RadialBlurDuration = 0.f;
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
@@ -228,6 +251,15 @@ void CLevelFlowMgr::MtrlParamUpdate()
             pDOFMtrl->SetScalarParam(VEC2_0, NDCToUV(NDCPos)); // Focus UV
         }
     }
+
+    if (m_RadialBlurEffect->IsActive())
+    {
+        static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
+        Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
+        Vec2 UV = NDCToUV(NDCPos);
+
+        pRadialBlurMtrl->SetScalarParam(VEC2_0, UV);
+    }
 }
 
 void CLevelFlowMgr::OnDimensionFade()
@@ -243,6 +275,34 @@ void CLevelFlowMgr::OffDimensionFade()
     if (nullptr != m_DimensionFadeEffect)
     {
         m_DimensionFadeEffect->SetActive(false);
+    }
+}
+
+void CLevelFlowMgr::OnRadialBlurEffect(float _Duration, float _Radius, float _BlurPower)
+{
+    if (nullptr != m_RadialBlurEffect)
+    {
+        m_RadialBlurAcc = 0.f;
+        m_RadialBlurDuration = _Duration;
+        m_bRadialBlurEffect = true;
+
+        static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
+        pRadialBlurMtrl->SetScalarParam(FLOAT_0, _Radius);
+        pRadialBlurMtrl->SetScalarParam(FLOAT_1, _BlurPower);
+
+        m_RadialBlurEffect->SetActive(true);
+    }
+}
+
+void CLevelFlowMgr::OffRadialBlurEffect()
+{
+    if (nullptr != m_RadialBlurEffect)
+    {
+        m_RadialBlurAcc = 0.f;
+        m_RadialBlurDuration = 0.f;
+        m_bRadialBlurEffect = false;
+
+        m_RadialBlurEffect->SetActive(false);
     }
 }
 

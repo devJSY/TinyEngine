@@ -5,6 +5,8 @@
 #include "CState.h"
 
 #include <Engine/CTimeMgr.h>
+#include "CLevelFlowMgr.h"
+
 
 CKirbyUnitScript::CKirbyUnitScript()
     : CUnitScript(KIRBYUNITSCRIPT)
@@ -69,6 +71,19 @@ void CKirbyUnitScript::tick()
             PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
         {
             CTimeMgr::GetInst()->SetTimeScale(1.f, 0.5f);
+            
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+            if (ManagerObj)
+            {
+                CLevelFlowMgr* FlowMgr = ManagerObj->GetScript<CLevelFlowMgr>();
+                if (FlowMgr)
+                {
+                    FlowMgr->OnRadialBlurEffect(1.f);
+                }
+            }
+
+            
         }
         else if (PLAYERFSM->IsInvincible())
         {

@@ -15,10 +15,16 @@ private:
     float m_FadeEffectAcc;
     float m_FadeEffectDuration;
 
+
+    bool m_bRadialBlurEffect;
+    float m_RadialBlurAcc;
+    float m_RadialBlurDuration;
+
     wstring m_CurLevelPath;
     string m_NextLevelPath;
 
     CGameObject* m_DimensionFadeEffect;
+    CGameObject* m_RadialBlurEffect;
 
     CFadeEffectScript* m_FadeEffectScript;
 
@@ -39,6 +45,8 @@ public:
 public:
     void OnDimensionFade();
     void OffDimensionFade();
+    void OnRadialBlurEffect(float _Duration, float _Radius = 1.f, float _BlurPower = 1.1f);
+    void OffRadialBlurEffect();
     void SetFadeEffectColor(Vec3 _Color);
     void SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode);
     void SetToneMappingParam(bool _bBloomEnable = false, bool _bBlendMode = false, float _BloomStrength = 0.5f, float _Threshold = 0.f,
