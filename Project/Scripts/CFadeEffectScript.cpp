@@ -58,17 +58,24 @@ void CFadeEffectScript::tick()
         return;
     }
 
-    m_bReverse ? m_ElapsedTime -= DT : m_ElapsedTime += DT;
+    if (m_bReverse)
+    {
+        m_ElapsedTime -= DT;
 
-    if (m_ElapsedTime > m_Duration)
-    {
-        m_ElapsedTime = m_Duration;
-        m_bComplete = true;
+        if (m_ElapsedTime < 0.f)
+        {
+            m_ElapsedTime = 0.f;
+            m_bComplete = true;
+        }
     }
-    else if (m_ElapsedTime < -(m_Duration * 10.f))
+    else
     {
-        m_ElapsedTime = -(m_Duration * 10.f);
-        m_bComplete = true;
+        m_ElapsedTime += DT;
+        if (m_ElapsedTime > m_Duration)
+        {
+            m_ElapsedTime = m_Duration;
+            m_bComplete = true;
+        }
     }
 
     if (nullptr != GetOwner()->MeshRender() && nullptr != MeshRender()->GetMaterial(0))
@@ -87,6 +94,7 @@ void CFadeEffectScript::tick()
             }
         }
 
+        MeshRender()->GetMaterial(0)->SetScalarParam(INT_0, m_bReverse);
         MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_0, m_ElapsedTime / m_Duration);
         MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, XM_PI * m_ElapsedTime * m_RotateSpeed);
         MeshRender()->GetMaterial(0)->SetScalarParam(VEC2_0, Vec2(NDCPos.x, NDCPos.y));

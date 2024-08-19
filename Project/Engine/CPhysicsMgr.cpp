@@ -64,22 +64,25 @@ void CCollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader,
 
 void CCollisionCallback::onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)
 {
-    CCollider* pColliderA = (CCollider*)pairs->triggerShape->userData;
-    CCollider* pColliderB = (CCollider*)pairs->otherShape->userData;
-
-    if (PxPairFlag::eNOTIFY_TOUCH_FOUND & pairs->status)
+    for (PxU32 i = 0; i < count; i++)
     {
-        pColliderA->OnTriggerEnter(pColliderB);
-        pColliderB->OnTriggerEnter(pColliderA);
+        CCollider* pColliderA = (CCollider*)(pairs + i)->triggerShape->userData;
+        CCollider* pColliderB = (CCollider*)(pairs + i)->otherShape->userData;
 
-        // Trigger List 에 추가
-        CPhysicsMgr::GetInst()->m_listTrigger.push_back(make_pair(pColliderA, pColliderB));
-    }
+        if (PxPairFlag::eNOTIFY_TOUCH_FOUND & (pairs + i)->status)
+        {
+            pColliderA->OnTriggerEnter(pColliderB);
+            pColliderB->OnTriggerEnter(pColliderA);
 
-    if (PxPairFlag::eNOTIFY_TOUCH_LOST & pairs->status)
-    {
-        pColliderA->OnTriggerExit(pColliderB);
-        pColliderB->OnTriggerExit(pColliderA);
+            // Trigger List 에 추가
+            CPhysicsMgr::GetInst()->m_listTrigger.push_back(make_pair(pColliderA, pColliderB));
+        }
+
+        if (PxPairFlag::eNOTIFY_TOUCH_LOST & (pairs + i)->status)
+        {
+            pColliderA->OnTriggerExit(pColliderB);
+            pColliderB->OnTriggerExit(pColliderA);
+        }
     }
 }
 

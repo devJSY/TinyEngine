@@ -1497,5 +1497,8 @@
     <FxCompile Include="RadialBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="TornadoEffectPS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
