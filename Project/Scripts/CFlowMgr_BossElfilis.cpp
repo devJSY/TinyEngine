@@ -3,6 +3,8 @@
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
+#include "CPlayerMgr.h"
+#include "CKirbyMoveController.h"
 
 CFlowMgr_BossElfilis::CFlowMgr_BossElfilis()
     : CLevelFlowMgr(FLOWMGR_BOSSELFILIS)
@@ -70,14 +72,23 @@ void CFlowMgr_BossElfilis::TriggerEvent(UINT _Idx)
     if (_Idx == 0)
     {
         SpawnElfilis();
-        m_FlowState = BossLevelFlow::Fight;
     }
+}
+
+void CFlowMgr_BossElfilis::SetFight()
+{
+    if (m_FlowState != BossLevelFlow::WaitBoss)
+        return;
+
+    m_FlowState = BossLevelFlow::Fight;
+    PLAYERCTRL->UnlockInput();
 }
 
 void CFlowMgr_BossElfilis::SpawnElfilis()
 {
     BOSS->SetActive(true);
     ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
+    PLAYERCTRL->LockInput();
 
     if (m_LevelEnterWall)
     {

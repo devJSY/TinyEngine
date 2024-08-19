@@ -9,7 +9,6 @@ private:
     Vec3 m_StartPos;
     float m_DownSpeed;
     float m_AccTime;
-
     bool m_bFrmEnter;
     bool m_bFrmEnter2;
 

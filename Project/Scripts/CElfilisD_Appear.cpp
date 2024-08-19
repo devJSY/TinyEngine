@@ -3,6 +3,7 @@
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
 #include "CChangeAlphaScript.h"
+#include "CFlowMgr_BossElfilis.h"
 
 #include "CCameraController.h"
 
@@ -33,6 +34,16 @@ void CElfilisD_Appear::tick()
         Progress();
     }
     break;
+    }
+}
+
+void CElfilisD_Appear::Exit()
+{
+    Exit_Step();
+
+    if (CBossMgr::GetElfilisFlowMgr())
+    {
+        CBossMgr::GetElfilisFlowMgr()->SetFight();
     }
 }
 
@@ -95,9 +106,6 @@ void CElfilisD_Appear::Enter_Step()
         CAMERACTRL->SetZoomMaxSpeed(50.f);
         CAMERACTRL->SetZoomThreshold(50.f);
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
-
-        
-
     }
     break;
     }

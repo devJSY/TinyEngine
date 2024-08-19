@@ -3,6 +3,7 @@
 #include "CBossMgr.h"
 #include "CMorphoFSM.h"
 #include "CPlayerMgr.h"
+#include "CKirbyMoveController.h"
 #include "CCameraController.h"
 
 CFlowMgr_BossMorpho::CFlowMgr_BossMorpho()
@@ -82,12 +83,20 @@ void CFlowMgr_BossMorpho::LevelStart()
     }
 }
 
+void CFlowMgr_BossMorpho::SetFight()
+{
+    if (m_FlowState != BossLevelFlow::WaitBoss)
+        return;
+
+    m_FlowState = BossLevelFlow::Fight;
+    PLAYERCTRL->UnlockInput();
+}
+
 void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)
 {
     if (_Idx == 0)
     {
         SpawnMorpho();
-        m_FlowState = BossLevelFlow::Fight;
     }
 }
 
@@ -95,6 +104,7 @@ void CFlowMgr_BossMorpho::SpawnMorpho()
 {
     BOSS->SetActive(true);
     MRPFSM->ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_APPEAR");
+    PLAYERCTRL->LockInput();
 
     if (m_SpawnButterfly)
     {

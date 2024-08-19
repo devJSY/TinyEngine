@@ -2,7 +2,7 @@
 #include "CMorphoDemo_Appear.h"
 #include "CMorphoFSM.h"
 #include "CChangeAlphaScript.h"
-
+#include "CFlowMgr_BossMorpho.h"
 #include "CCameraController.h"
 
 CMorphoDemo_Appear::CMorphoDemo_Appear()
@@ -11,6 +11,7 @@ CMorphoDemo_Appear::CMorphoDemo_Appear()
     , m_AccTime(0.f)
     , m_BossName(nullptr)
     , m_bFrmEnter(false)
+    , m_bFrmEnter2(false)
 {
     m_BossNamePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossName_Morpho.pref", L"prefab\\BossName_Morpho.pref");
 }
@@ -45,6 +46,11 @@ void CMorphoDemo_Appear::Exit()
     if (m_BossName)
     {
         GamePlayStatic::DestroyGameObject(m_BossName);
+    }
+
+    if (CBossMgr::GetMorphoFlowMgr())
+    {
+        CBossMgr::GetMorphoFlowMgr()->SetFight();
     }
 }
 
