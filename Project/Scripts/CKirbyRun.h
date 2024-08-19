@@ -6,7 +6,6 @@ class CKirbyRun : public CState
 private:
     bool m_LastSmokeIsRight;
 
-
 public:
     virtual void tick();
     virtual void Enter();

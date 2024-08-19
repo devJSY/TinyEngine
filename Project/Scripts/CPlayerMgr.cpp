@@ -97,6 +97,9 @@ void CPlayerMgr::SetPlayer(CGameObject* _PlayerObj)
 
 void CPlayerMgr::SetPlayerMtrl(UINT _Idx, bool _On)
 {
+    if (!m_PlayerObj)
+        return;
+
     if (_On)
     {
         m_PlayerObj->GetRenderComponent()->SetMaterial(m_PlayerBodyMtrl, _Idx);
