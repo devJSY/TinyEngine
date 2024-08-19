@@ -33,6 +33,7 @@ private:
 
     bool m_bStartLevel;
     bool m_bStartLevelDurationValue;
+    bool m_bUILevel;
     // UI
 
     CFadeEffectScript* m_FadeEffectScript;
@@ -52,6 +53,7 @@ public:
     void SetNextLevel(const string _string) { m_NextLevelPath = _string; }
 
     void SetStartLevel(bool _bFlag) { m_bStartLevel = _bFlag; }
+    void SetUILevel(bool _bFlag) { m_bUILevel = _bFlag; }
 
 public:
     void OnDimensionFade();
@@ -80,6 +82,9 @@ public:
     void TurnOnStageclearUI();
 
     void SetEnterTime(const float _fTime) { m_fFadeInWaitTime = _fTime; }
+
+public:
+    void ResetFadeEffectTimer();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

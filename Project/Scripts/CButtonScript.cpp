@@ -160,7 +160,7 @@ bool CButtonScript::IsRectInPoint(Vec2 _vNDCSMousePos)
     bool _isHovered = false;
     // Not Rotate Rect
     // UI Cam
-    CCamera* _pCam = CRenderMgr::GetInst()->GetCamera(1);
+    CCamera* _pCam = CRenderMgr::GetInst()->GetCamera(0);
 
     // WorldSpcae -> NDCSpace(Button Object)
     Vec3 _vButtonLT = _vButtonPos + Vec2(-_vButtonScale.x, _vButtonScale.y) / 2.f;
@@ -214,7 +214,12 @@ void CButtonScript::ButtonUpdate()
             for (size_t i = 0; i < pChildObj.size(); i++)
             {
                 if (nullptr != pChildObj[i])
+                {
+                    if (pChildObj[i]->GetName() == L"UI_FontTexture")
+                        continue;
+
                     pChildObj[i]->SetActive(false);
+                }
             }
         }
         else if (ButtonState::SELECTED == m_eCurState)

@@ -35,6 +35,7 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_bEnterLevel(true)
     , m_fFadeInAccTime(0.f)
     , m_fFadeInWaitTime(2.f)
+    , m_bUILevel(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -57,6 +58,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_bEnterLevel(true)
     , m_fFadeInAccTime(0.f)
     , m_fFadeInWaitTime(2.f)
+    , m_bUILevel(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -183,9 +185,7 @@ void CLevelFlowMgr::LevelStart()
     // g_Global.g_EnableSSAO = true; // Option
 
     // FadeEffect Timer 초기화
-    m_bFadeEffect = false;
-    m_FadeEffectAcc = 0.f;
-    m_FadeEffectDuration = 2.5f;
+    ResetFadeEffectTimer();
 
     // FadeIn 초기화
     m_bEnterLevel = true;
@@ -262,7 +262,8 @@ void CLevelFlowMgr::LevelStart()
     }
     else
     {
-        SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f, false);
+        if (!m_bUILevel)
+            SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f, false);
     }
 
     // @TODO BGM 재생
@@ -275,7 +276,8 @@ void CLevelFlowMgr::LevelEnd()
         return;
 
     // UI (Fade Out)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
+    if (!m_bUILevel)
+        SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
     // Player UI
     TurnOffPlayerHP();
@@ -296,10 +298,14 @@ void CLevelFlowMgr::LevelExit()
         m_pLoadingUI->SetActive(true);
 
     //// Kirby 프리팹 저장
-    Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
-    MainPlayerPref->Save(L"prefab\\Main Player.pref");
+    if (!m_bUILevel)
+    {
+        Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
+        MainPlayerPref->Save(L"prefab\\Main Player.pref");
+    }
 
-    m_pPlayerHP->SetActive(false);
+    if (nullptr != m_pPlayerHP)
+        m_pPlayerHP->SetActive(false);
 
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
@@ -445,6 +451,13 @@ void CLevelFlowMgr::SetReverseFadeEffect(bool _bReverse)
         return;
 
     m_FadeEffectScript->SetReverse(_bReverse);
+}
+
+void CLevelFlowMgr::ResetFadeEffectTimer()
+{
+    m_bFadeEffect = false;
+    m_FadeEffectAcc = 0.f;
+    m_FadeEffectDuration = 2.5f;
 }
 
 UINT CLevelFlowMgr::SaveToLevelFile(FILE* _File)
