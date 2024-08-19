@@ -47,13 +47,12 @@ public:
     virtual void TriggerEvent(UINT _Idx){};
 
 public:
-    CUIFlowScript* GetFlowScript() { return m_UIFlowScript; }
-    void SetFlowScript(CUIFlowScript* _pScript) { m_UIFlowScript = _pScript; }
-
     void SetNextLevel(const string _string) { m_NextLevelPath = _string; }
 
     void SetStartLevel(bool _bFlag) { m_bStartLevel = _bFlag; }
     void SetUILevel(bool _bFlag) { m_bUILevel = _bFlag; }
+
+    void SetLoadingUIColor(Vec3 _Color);
 
 public:
     void OnDimensionFade();

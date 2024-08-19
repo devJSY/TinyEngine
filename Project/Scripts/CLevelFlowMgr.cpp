@@ -396,6 +396,15 @@ void CLevelFlowMgr::TurnOnStageclearUI()
     }
 }
 
+void CLevelFlowMgr::SetLoadingUIColor(Vec3 _Color)
+{
+    if (!m_pLoadingUI)
+        return;
+
+    Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
+    m_pLoadingUI->MeshRender()->GetMaterial(0)->SetAlbedo(Color);
+}
+
 void CLevelFlowMgr::OnDimensionFade()
 {
     if (nullptr != m_DimensionFadeEffect)
