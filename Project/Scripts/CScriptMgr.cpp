@@ -454,6 +454,20 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CFlowMgr_LvStart;
 	if (L"CUIFlowMgr" == _strScriptName)
 		return new CUIFlowMgr;
+	if (L"CKirbyBulletSize" == _strScriptName)
+		return new CKirbyBulletSize;
+	if (L"CKirbyObjDetectCollider" == _strScriptName)
+		return new CKirbyObjDetectCollider;
+	if (L"CSmokeScript" == _strScriptName)
+		return new CSmokeScript;
+	if (L"CSmokeSpawner" == _strScriptName)
+		return new CSmokeSpawner;
+	if (L"CUIBossHPScript" == _strScriptName)
+		return new CUIBossHPScript;
+	if (L"CEnterUIScript" == _strScriptName)
+		return new CEnterUIScript;
+	if (L"CKirbyDropOutUIScript" == _strScriptName)
+		return new CKirbyDropOutUIScript;
 	return nullptr;
 }
 
@@ -677,6 +691,20 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CFlowMgr_LvStart;
 	case (UINT)SCRIPT_TYPE::UIFLOWMGR:
 		return new CUIFlowMgr;
+	case (UINT)SCRIPT_TYPE::KIRBYBULLETSIZE:
+		return new CKirbyBulletSize;
+	case (UINT)SCRIPT_TYPE::KIRBYOBJDETECTCOLLIDER:
+		return new CKirbyObjDetectCollider;
+	case (UINT)SCRIPT_TYPE::SMOKESCRIPT:
+		return new CSmokeScript;
+	case (UINT)SCRIPT_TYPE::SMOKESPAWNER:
+		return new CSmokeSpawner;
+	case (UINT)SCRIPT_TYPE::UIBOSSHPSCRIPT:
+		return new CUIBossHPScript;
+	case (UINT)SCRIPT_TYPE::ENTERUISCRIPT:
+		return new CEnterUIScript;
+	case (UINT)SCRIPT_TYPE::KIRBYDROPOUTUISCRIPT:
+		return new CKirbyDropOutUIScript;
 	}
 	return nullptr;
 }
@@ -901,6 +929,20 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CFlowMgr_LvStart";
 	case SCRIPT_TYPE::UIFLOWMGR:
 		return L"CUIFlowMgr";
+	case SCRIPT_TYPE::KIRBYBULLETSIZE:
+		return L"CKirbyBulletSize";
+	case SCRIPT_TYPE::KIRBYOBJDETECTCOLLIDER:
+		return L"CKirbyObjDetectCollider";
+	case SCRIPT_TYPE::SMOKESCRIPT:
+		return L"CSmokeScript";
+	case SCRIPT_TYPE::SMOKESPAWNER:
+		return L"CSmokeSpawner";
+	case SCRIPT_TYPE::UIBOSSHPSCRIPT:
+		return L"CUIBossHPScript";
+	case SCRIPT_TYPE::ENTERUISCRIPT:
+		return L"CEnterUIScript";
+	case SCRIPT_TYPE::KIRBYDROPOUTUISCRIPT:
+		return L"CKirbyDropOutUIScript";
 	}
 	return nullptr;
 }
