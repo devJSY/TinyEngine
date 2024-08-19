@@ -70,7 +70,7 @@ public:
     bool IsHovered() const { return m_IsHovered; }
     bool IsInteraction() const { return m_IsInteraction; }
 
-    virtual void Func(){};
+    virtual void Func();
 
     ButtonState GetState() const { return m_eCurState; }
 

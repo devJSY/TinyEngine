@@ -11,6 +11,8 @@ private:
     UINT m_iCurStage;
     UINT m_iStageCount;
     vector<string> m_vStageName;
+    
+    bool m_bClickedButton;
 
 public:
     void SetStage(const UINT _iCount) { m_iCurStage = _iCount; }

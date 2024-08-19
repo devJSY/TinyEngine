@@ -18,5 +18,6 @@ CExitButton::~CExitButton()
 
 void CExitButton::Func()
 {
+    CButtonScript::Func();
     GamePlayStatic::ChangeLevelState(CLevelMgr::GetInst()->GetCurrentLevel(), LEVEL_STATE::STOP);
 }

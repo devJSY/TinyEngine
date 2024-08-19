@@ -15,6 +15,8 @@ CFlowMgr_LvRobby::CFlowMgr_LvRobby()
     , m_pStartBtn(nullptr)
     , m_pUICam(nullptr)
     , m_pLevelTex(nullptr)
+    , m_pLevelFont(nullptr)
+    , m_pLevelLine(nullptr)
     , m_vPrevMousePos{}
     , m_vCurMousePos{}
     , m_StageName{}
@@ -31,6 +33,8 @@ CFlowMgr_LvRobby::CFlowMgr_LvRobby(const CFlowMgr_LvRobby& _Origin)
     , m_pStartBtn(nullptr)
     , m_pUICam(nullptr)
     , m_pLevelTex(nullptr)
+    , m_pLevelFont(nullptr)
+    , m_pLevelLine(nullptr)
     , m_vPrevMousePos{}
     , m_vCurMousePos{}
     , m_StageName{}
@@ -55,37 +59,75 @@ void CFlowMgr_LvRobby::begin()
     OffDimensionFade();
     SetToneMappingParam(false);
 
+    m_pUICam = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
+
+    m_pLevelTex = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelTex");
+
+    m_pLevelIcon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelIcon");
+
+    m_pLevelNameBase = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelNameBase");
+
+    m_pStartBtn = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_StartBtn");
+
+    m_pLevelLine = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelLine");
+
+    m_pLevelFont = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelNameFont");
+
+    // Stage 초기화
     m_StageName[0] = "Tutorial Level";
     m_StageName[1] = "Level1-1-1";
     m_StageName[2] = "Pk3-3-1";
     m_StageName[3] = "Morpho";
     m_StageName[4] = "Elfilis";
 
-    m_StageIconName[0] = L"fbx\\UI\\Images\\Resident\\WipeBg\\IconNormalLv1\\WipeBgIconLv1^u.png";
-    m_StageIconName[1] = L"fbx\\UI\\Images\\Resident\\WipeBg\\IconNormalLv1\\WipeBgIconLv1^u.png";
-    m_StageIconName[2] = L"fbx\\UI\\Images\\Resident\\WipeBg\\IconBossLv3\\WipeBgIconLv3^u.png";
-    m_StageIconName[3] = L"fbx\\UI\\Images\\Wmap\\StageStartBoss\\BossWorldIconLevel7^u.png";
-    m_StageIconName[4] = L"fbx\\UI\\Images\\Wmap\\StageStartBoss\\BossWorldIconLevel7^u.png";
-
-    m_StageNameBaseName[0] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel1^u.png";
-    m_StageNameBaseName[1] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel1^u.png";
-    m_StageNameBaseName[2] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel3^u.png";
-    m_StageNameBaseName[3] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel7^u.png";
-    m_StageNameBaseName[4] = L"fbx\\UI\\Images\\Wmap\\StageStart\\StageNameBaseLevel7^u.png";
-
-    m_pUICam = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
-
-    m_pLevelTex = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelTex");
-
-    m_pLevelIcon = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelICon");
-
-    m_pLevelNameBase = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_RobbyLevelNameBase");
-
-    m_pStartBtn = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_StartBtn");
-
-    m_pLevelIcon->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(m_StageIconName[m_iCurStage]));
-    m_pLevelNameBase->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(m_StageNameBaseName[m_iCurStage]));
     SetNextLevel(m_StageName[m_iCurStage]);
+
+    if (!m_pLevelIcon || !m_pStartBtn || !m_pLevelNameBase || !m_pLevelFont || !m_pLevelLine)
+        return;
+
+    // Icon
+    vector<CGameObject*> pIconObjs = m_pLevelIcon->GetChildObject();
+    for (size_t i = 0; i < pIconObjs.size(); i++)
+    {
+        if (nullptr != pIconObjs[m_iCurStage])
+        {
+            if (m_iCurStage == i)
+                pIconObjs[i]->SetActive(true);
+            else
+                pIconObjs[i]->SetActive(false);
+        }
+    }
+
+    // NameBase
+    vector<CGameObject*> pNameBaseObjs = m_pLevelNameBase->GetChildObject();
+    for (size_t i = 0; i < pNameBaseObjs.size(); i++)
+    {
+        if (nullptr != pNameBaseObjs[m_iCurStage])
+        {
+            if (m_iCurStage == i)
+                pNameBaseObjs[i]->SetActive(true);
+            else
+                pNameBaseObjs[i]->SetActive(false);
+        }
+    }
+
+    // Font
+    vector<CGameObject*> pFontObjs = m_pLevelFont->GetChildObject();
+    for (size_t i = 0; i < pFontObjs.size(); i++)
+    {
+        if (nullptr != pFontObjs[m_iCurStage])
+        {
+            if (m_iCurStage == i)
+                pFontObjs[i]->SetActive(true);
+            else
+                pFontObjs[i]->SetActive(false);
+        }
+    }
+
+    m_pStartBtn->SetActive(true);
+    m_pLevelLine->SetActive(true);
+
+    m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::NORMAL);
 }
 
 void CFlowMgr_LvRobby::LevelStart()
@@ -141,25 +183,88 @@ void CFlowMgr_LvRobby::LevelEnd()
 
 void CFlowMgr_LvRobby::EnterZoomState()
 {
+    if (!m_pLevelIcon || !m_pStartBtn || !m_pLevelNameBase || !m_pLevelFont || !m_pLevelLine)
+        return;
+
     switch (m_eZoomState)
     {
     case ZoomState::ZoomIn: {
-        /// TODO : 텍스쳐 바꾸기
-        m_pLevelIcon->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CAssetMgr::GetInst()->FindAsset<CTexture>(m_StageIconName[m_iCurStage]));
-        m_pLevelNameBase->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0,
-                                                                    CAssetMgr::GetInst()->FindAsset<CTexture>(m_StageNameBaseName[m_iCurStage]));
+        // Icon
+        vector<CGameObject*> pIconObjs = m_pLevelIcon->GetChildObject();
+        for (size_t i = 0; i < pIconObjs.size(); i++)
+        {
+            if (nullptr != pIconObjs[m_iCurStage])
+            {
+                if (m_iCurStage == i)
+                    pIconObjs[i]->SetActive(true);
+                else
+                    pIconObjs[i]->SetActive(false);
+            }
+        }
 
-        // TODO : SetActive(true)
-        m_pLevelIcon->SetActive(true);
-        m_pLevelNameBase->SetActive(true);
+        // NameBase
+        vector<CGameObject*> pNameBaseObjs = m_pLevelNameBase->GetChildObject();
+        for (size_t i = 0; i < pNameBaseObjs.size(); i++)
+        {
+            if (nullptr != pNameBaseObjs[m_iCurStage])
+            {
+                if (m_iCurStage == i)
+                    pNameBaseObjs[i]->SetActive(true);
+                else
+                    pNameBaseObjs[i]->SetActive(false);
+            }
+        }
+
+        // Font
+        vector<CGameObject*> pFontObjs = m_pLevelFont->GetChildObject();
+        for (size_t i = 0; i < pFontObjs.size(); i++)
+        {
+            if (nullptr != pFontObjs[m_iCurStage])
+            {
+                if (m_iCurStage == i)
+                    pFontObjs[i]->SetActive(true);
+                else
+                    pFontObjs[i]->SetActive(false);
+            }
+        }
+
         m_pStartBtn->SetActive(true);
+        m_pLevelLine->SetActive(true);
     }
     break;
     case ZoomState::ZoomOut: {
-        // TODO : SetActive(false)
-        m_pLevelIcon->SetActive(false);
-        m_pLevelNameBase->SetActive(false);
+        // Icon
+        vector<CGameObject*> pIconObjs = m_pLevelIcon->GetChildObject();
+        for (size_t i = 0; i < pIconObjs.size(); i++)
+        {
+            if (nullptr != pIconObjs[m_iCurStage])
+            {
+                pIconObjs[i]->SetActive(false);
+            }
+        }
+
+        // NameBase
+        vector<CGameObject*> pNameBaseObjs = m_pLevelNameBase->GetChildObject();
+        for (size_t i = 0; i < pNameBaseObjs.size(); i++)
+        {
+            if (nullptr != pNameBaseObjs[m_iCurStage])
+            {
+                pNameBaseObjs[i]->SetActive(false);
+            }
+        }
+
+        // Font
+        vector<CGameObject*> pFontObjs = m_pLevelFont->GetChildObject();
+        for (size_t i = 0; i < pFontObjs.size(); i++)
+        {
+            if (nullptr != pFontObjs[m_iCurStage])
+            {
+                pFontObjs[i]->SetActive(false);
+            }
+        }
+
         m_pStartBtn->SetActive(false);
+        m_pLevelLine->SetActive(false);
     }
     break;
     case ZoomState::Stop:
@@ -258,7 +363,7 @@ void CFlowMgr_LvRobby::DragMinusMove()
         }
         else
         {
-            vWolrdPos.x -= 3000.f * DT;
+            vWolrdPos.x -= 8000.f * DT;
             m_pLevelTex->Transform()->SetWorldPos(vWolrdPos);
         }
     }
@@ -281,7 +386,7 @@ void CFlowMgr_LvRobby::DragPlusMove()
         }
         else
         {
-            vWolrdPos.x += 3000.f * DT;
+            vWolrdPos.x += 8000.f * DT;
             m_pLevelTex->Transform()->SetWorldPos(vWolrdPos);
         }
     }
