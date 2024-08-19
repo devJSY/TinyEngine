@@ -33,9 +33,15 @@ void CKirbyChangeObjectEnd::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetCurObject()->ChangeObjectEndEnter();
+
+    // 변신 중일 땐 커비가 이미시브 효과를 받지않도록 한다.
+    PLAYERFSM->SetSkrr(true);
 }
 
 void CKirbyChangeObjectEnd::Exit()
 {
     PLAYERFSM->GetCurObject()->ChangeObjectEndExit();
+
+    // Emissive를 다시 받도록 수정
+    PLAYERFSM->SetSkrr(false);
 }

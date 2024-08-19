@@ -6,18 +6,28 @@
 #include "CKirbyMoveController.h"
 #include "CLevelFlowMgr.h"
 
+#include "CCameraController.h"
+
 CStageClear::CStageClear()
     : CScript(STAGECLEAR)
     , m_bKirbyDance(false)
+    , m_KirbyPos(Vec3())
+    , m_KirbyDir(Vec3())
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bKirbyDance, "Kirby Dance");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_KirbyPos, "Kirby Dance Pos");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_KirbyDir, "Kirby Dance Rot");
 }
 
 CStageClear::CStageClear(const CStageClear& _Origin)
     : CScript(_Origin)
     , m_bKirbyDance(_Origin.m_bKirbyDance)
+    , m_KirbyPos(_Origin.m_KirbyPos)
+    , m_KirbyDir(_Origin.m_KirbyDir)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bKirbyDance, "Kirby Dance");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_KirbyPos, "Kirby Dance Pos");
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_KirbyDir, "Kirby Dance Rot");
 }
 
 CStageClear::~CStageClear()
@@ -29,7 +39,12 @@ UINT CStageClear::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     fwrite(&m_bKirbyDance, sizeof(bool), 1, _File);
+    fwrite(&m_KirbyPos, sizeof(Vec3), 1, _File);
+    fwrite(&m_KirbyDir, sizeof(Vec3), 1, _File);
+
     MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
@@ -39,7 +54,12 @@ UINT CStageClear::LoadFromLevelFile(FILE* _File)
     UINT MemoryByte = 0;
 
     fread(&m_bKirbyDance, sizeof(bool), 1, _File);
+    fread(&m_KirbyPos, sizeof(Vec3), 1, _File);
+    fread(&m_KirbyDir, sizeof(Vec3), 1, _File);
+
     MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
@@ -51,6 +71,18 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
     {
         if (m_bKirbyDance)
         {
+            m_KirbyDir.Normalize();
+
+            // CameraSetting
+            CCameraController* CamCtrl = CAMERACTRL;
+            CamCtrl->SetOffset(Vec3(0.f, 50.f, 0));
+            CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+            CamCtrl->SetLookDir(-m_KirbyDir);
+            CamCtrl->SetLookDist(300.f);
+
+
+            PLAYERCTRL->ForcePos(m_KirbyPos);
+            PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, m_KirbyDir, true});
             PLAYERCTRL->TeleportGround();
             PLAYERFSM->ChangeState(L"STAGE_CLEAR");
         }
@@ -67,7 +99,6 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
                 }
             }
         }
-
     }
 
 

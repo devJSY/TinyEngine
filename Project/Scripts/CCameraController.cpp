@@ -393,6 +393,15 @@ void CCameraController::SetPlayer(CGameObject* _Kirby)
     Transform()->SetDirection(m_LookDir);
 }
 
+void CCameraController::RotationLookDirRightAxis(float _Degree)
+{
+    float Radian = _Degree * XM_PI / 180.f;
+
+    Quaternion rotation = Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::RIGHT), Radian);
+    m_LookDir = Vector3::Transform(m_LookDir, rotation);
+    m_LookDir.Normalize();
+}
+
 void CCameraController::SaveSetting()
 {
     m_SaveSetting.LookDir = m_LookDir;
@@ -447,6 +456,19 @@ void CCameraController::LoadInitSetting()
     m_ZoomMaxSpeed = m_InitSetting.ZoomMaxSpeed;
     m_ZoomMinSpeed = m_InitSetting.ZoomMinSpeed;
     m_ZoomThreshold = m_InitSetting.ZoomThreshold;  
+}
+
+void CCameraController::LoadDefaultSetting()
+{
+    SetMinSpeed(10.f);
+    SetMaxSpeed(250.f);
+    SetThresholdDistance(150.f);
+
+    SetRotationSpeed(50.f);
+
+    SetZoomMinSpeed(0.f);
+    SetZoomMaxSpeed(500.f);
+    SetZoomThreshold(300.f);
 }
 
 void CCameraController::EditMode()
@@ -976,15 +998,28 @@ void CCameraController::SetElfilisTwoTarget()
 
     SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     SetSubTargetOffset(Vec3(0.f, 75.f, 0.f));
-    SetOffset(Vec3(0.f, 30.f, 0.f));
+    SetOffset(Vec3(0.f, 0.f, 0.f));
 
-    SetMinDegreeX(0.f);
-    SetMaxDegreeX(0.f);
+    SetMinDegreeX(10.f);
+    SetMaxDegreeX(15.f);
     SetMinDegreeY(0.f);
-    SetMaxDegreeY(0.f);
-    SetMaxDistBetweenTarget(150.f);
+    SetMaxDegreeY(10.f);
+    SetMaxDistBetweenTarget(400.f);
 
-    SetMinDist(300.f);
+    SetMinDist(250.f);
+
+    // Setting
+    SetMinSpeed(50.f);
+    SetMaxSpeed(300.f);
+    SetThresholdDistance(100.f);
+
+    SetRotationSpeed(60.f);
+
+    SetZoomMinSpeed(0.f);
+    SetZoomMaxSpeed(1000.f);
+    SetZoomThreshold(300.f);
+
+
 }
 
 void CCameraController::SetElfilisSky()
@@ -992,14 +1027,25 @@ void CCameraController::SetElfilisSky()
     SetMainTarget(PLAYER);
     Boss(BOSS, 200.f, 0.3f);
 
+    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
+    SetOffset(Vec3(0.f, 0.f, 0.f));
+
     SetMinDegreeX(0.f);
     SetMaxDegreeX(0.f);
     SetMinDegreeY(0.f);
     SetMaxDegreeY(0.f);
 
-    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
-    SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
-    SetOffset(Vec3(0.f, 30.f, 0.f));
+    // Setting
+    SetMinSpeed(50.f);
+    SetMaxSpeed(300.f);
+    SetThresholdDistance(100.f);
+
+    SetRotationSpeed(60.f);
+
+    SetZoomMinSpeed(0.f);
+    SetZoomMaxSpeed(1000.f);
+    SetZoomThreshold(300.f);
 }
 
 void CCameraController::SetElfilisGround()
@@ -1011,6 +1057,18 @@ void CCameraController::SetElfilisGround()
     SetOffset(Vec3(0.f, 0.f, 0.f));
     SetLookDir(Vec3(0.f, -0.707f, 0.707f));
     SetLookDist(700.f);
+
+    // Setting
+    SetMinSpeed(50.f);
+    SetMaxSpeed(300.f);
+    SetThresholdDistance(100.f);
+
+    SetRotationSpeed(60.f);
+
+    SetZoomMinSpeed(0.f);
+    SetZoomMaxSpeed(1000.f);
+    SetZoomThreshold(300.f);
+
 }
 
 void CCameraController::SetMorphoTwoTarget()
@@ -1018,19 +1076,29 @@ void CCameraController::SetMorphoTwoTarget()
     LoadInitSetting();
 
     SetMainTarget(PLAYER);
-    Boss(BOSS, 200.f, 0.5f);
+    Boss(BOSS, 100.f, 0.5f);
 
-    SetTargetOffset(Vec3(0.f, 0.f, 0.f));
-    SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
-    SetOffset(Vec3(0.f, 30.f, 0.f));
+    SetTargetOffset(Vec3(0.f, -50.f, 0.f));
+    SetSubTargetOffset(Vec3(0.f, 100.f, 0.f));
+    SetOffset(Vec3(0.f, 0.f, 0.f));
 
-    SetMinDegreeX(5.f);
-    SetMaxDegreeX(45.f);
+    SetMinSpeed(100.f);
+    SetMaxSpeed(300.f);
+    SetThresholdDistance(300.f);
+
+    SetRotationSpeed(60.f);
+    SetZoomMinSpeed(200.f);
+    SetZoomMaxSpeed(300.f);
+    SetZoomThreshold(300.f);
+
+    SetMinDegreeX(10.f);
+    SetMaxDegreeX(30.f);
     SetMinDegreeY(5.f);
-    SetMaxDegreeY(15.f);
-    SetMaxDistBetweenTarget(600.f);
+    SetMaxDegreeY(10.f);
+    SetMaxDistBetweenTarget(400.f);
 
     SetMinDist(200.f);
+
 }
 
 void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)

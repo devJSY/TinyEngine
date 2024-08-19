@@ -913,6 +913,12 @@
     <ClInclude Include="CKirbyObjDetectCollider.h">
       <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
     </ClInclude>
+    <ClInclude Include="CSmokeScript.h">
+      <Filter>Scripts\Gimmik\Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="CSmokeSpawner.h">
+      <Filter>Scripts\Gimmik\Smoke\Spawner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1835,6 +1841,12 @@
     </ClCompile>
     <ClCompile Include="CKirbyObjDetectCollider.cpp">
       <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeScript.cpp">
+      <Filter>Scripts\Gimmik\Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmokeSpawner.cpp">
+      <Filter>Scripts\Gimmik\Smoke\Spawner</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2899,6 +2911,12 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyObjDetectCollider">
       <UniqueIdentifier>{f8c285e2-7d2a-41d5-89f3-09d733cb85e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Smoke">
+      <UniqueIdentifier>{f3f2a186-aa97-409b-9cb3-ed1a2b33c170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\Smoke\Spawner">
+      <UniqueIdentifier>{45fc46b8-2998-496c-b145-69c7a48d8386}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

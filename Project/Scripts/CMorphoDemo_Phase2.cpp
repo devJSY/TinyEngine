@@ -87,8 +87,8 @@ void CMorphoDemo_Phase2::Exit_Step()
         break;
     case StateStep::Progress:
         // 카메라 복구
-        CAMERACTRL->SetMorphoTwoTarget();
         CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->SetMorphoTwoTarget();
 
         break;
     }

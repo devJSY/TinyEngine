@@ -6,6 +6,7 @@ private:
     float m_InitSpeed;
     float m_JumpPower;
     float m_DodgeSpeed;
+    float m_SaveGravity;
 
 public:
     virtual void tick();

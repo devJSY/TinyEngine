@@ -37,6 +37,9 @@ void CKirbyChangeObject::Enter()
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetCurObject()->ChangeObjectEnter();
 
+    // 변신 중일 땐 커비가 이미시브 효과를 받지않도록 한다.
+    PLAYERFSM->SetSkrr(true);
+
     // CameraSetting
     CCameraController* CamCtrl = CAMERACTRL;
     CamCtrl->SaveSetting();
@@ -74,8 +77,9 @@ void CKirbyChangeObject::Enter()
         FLowMgrScript->OnDimensionFade();
     }
 
-    // @TODO 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
-    // CTimeMgr::GetInst()->SetTimeScale(0.f);
+    // 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
+    CTimeMgr::GetInst()->SetTimeScale(0.f);
+    PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
 
 }
 
@@ -100,4 +104,8 @@ void CKirbyChangeObject::Exit()
 
     // 타임 스케일 조정
     CTimeMgr::GetInst()->SetTimeScale(1.f);
+    PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::Normal);
+
+    // Emissive를 다시 받도록 수정
+    PLAYERFSM->SetSkrr(false);
 }

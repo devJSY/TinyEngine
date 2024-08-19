@@ -91,7 +91,7 @@ void CKirbyFall::Enter()
     PLAYERUNIT->GetDamage({DAMAGE_TYPE::NORMAL, Vec3(0.f, 0.f, 0.f), 10.f, 0.f, 0.f});
 
     m_Acc = 0.f;
-    m_Duration = 2.f;
+    m_Duration = 0.5f;
 }
 
 void CKirbyFall::Exit()

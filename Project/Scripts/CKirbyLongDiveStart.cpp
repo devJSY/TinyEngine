@@ -131,7 +131,7 @@ void CKirbyLongDiveStart::tick()
 void CKirbyLongDiveStart::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackStart"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackStart"), false, false, 0.2f);
 }
 
 void CKirbyLongDiveStart::Exit()

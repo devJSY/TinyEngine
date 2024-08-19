@@ -108,3 +108,5 @@ CFlowMgr_LvStart
 CUIFlowMgr
 CKirbyBulletSize
 CKirbyObjDetectCollider
+CSmokeScript
+CSmokeSpawner
