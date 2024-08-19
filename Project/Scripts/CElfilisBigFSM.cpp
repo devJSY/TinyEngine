@@ -45,7 +45,17 @@ void CElfilisBigFSM::begin()
     {
         m_vecMtrls.push_back(MeshRender()->GetMaterial(i));
     }
-
+    
+    CGameObject* Weapon = GetOwner()->GetChildObject(L"Halberd");
+    if (Weapon)
+    {
+        MtrlCount = Weapon->MeshRender()->GetMtrlCount();
+        for (int i = 0; i < MtrlCount; ++i)
+        {
+            m_vecMtrls.push_back(Weapon->MeshRender()->GetMaterial(i));
+        }
+    }
+    
     GetOwner()->SetActive(false);
 }
 
