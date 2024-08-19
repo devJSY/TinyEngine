@@ -45,7 +45,7 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
     {
         // Player가 Dodge 중이라면 몬스터에게 데미지를 주지 않는다.
         if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
-            PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
+            PLAYERFSM->GetCurState()->GetName() == L"DODGE2" || PLAYERFSM->GetCurState()->GetName() == L"BACKJUMP")
             return;
 
         Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
