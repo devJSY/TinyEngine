@@ -13,6 +13,7 @@ private:
     float m_Duration;
     float m_ElapsedTime;
     float m_RotateSpeed;
+    bool m_bCenterMode;
 
 public:
     virtual void begin() override;
@@ -30,6 +31,7 @@ public:
     {
         m_bReverse = _bReverse;
         ResetComplete();
+        m_bReverse ? m_ElapsedTime = m_Duration : m_ElapsedTime = 0.f;
     }
 
     float GetDuration() const { return m_Duration; }
@@ -37,6 +39,9 @@ public:
 
     float GetRotateSpeed() const { return m_RotateSpeed; }
     void SetRotateSpeed(float _Speed) { m_RotateSpeed = _Speed; }
+
+    float IsCenterMode() const { return m_bCenterMode; }
+    void SetCenterMode(bool _bMode) { m_bCenterMode = _bMode; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

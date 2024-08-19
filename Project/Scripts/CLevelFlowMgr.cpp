@@ -41,6 +41,9 @@ CLevelFlowMgr::~CLevelFlowMgr()
 
 void CLevelFlowMgr::begin()
 {
+
+    m_bIsChangedLevel = false;
+
     m_CurLevelPath = CLevelMgr::GetInst()->GetCurrentLevel()->GetName();
 
     // Effect 만들기
@@ -66,6 +69,11 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
+    if (KEY_TAP(KEY::N))
+    {
+        LevelEnd();
+    }
+
     if (m_bFadeEffect)
     {
         m_FadeEffectAcc += DT;
@@ -93,7 +101,7 @@ void CLevelFlowMgr::LevelStart()
     // FadeEffect Timer 초기화
     m_bFadeEffect = false;
     m_FadeEffectAcc = 0.f;
-    m_FadeEffectDuration = 2.f;
+    m_FadeEffectDuration = 2.5f;
 
     // Stating Point 가져오기
     CGameObject* StartingPoint = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Starting Point");
@@ -110,7 +118,7 @@ void CLevelFlowMgr::LevelStart()
 
     // MainPlayer
     CGameObject* MainPlayer = nullptr;
-    MainPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player", LAYER_PLAYER);
+    MainPlayer = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Player");
 
     // Level에 Main Player가 없다면 직접 생성
     if (MainPlayer == nullptr)
@@ -151,16 +159,21 @@ void CLevelFlowMgr::LevelStart()
     }
 
     // UI (Fade In)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 0.25f, 1.25f);
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, false);
 
     // @TODO BGM 재생
 }
 
 void CLevelFlowMgr::LevelEnd()
 {
-    // UI (Fade Out)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
+    // 이미 레벨 전환중일 경우 처리하지 않는다.
+    if (m_bIsChangedLevel == true)
+        return;
 
+    // UI (Fade Out)
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
+
+    m_bIsChangedLevel = true;
     m_bFadeEffect = true;
     m_FadeEffectAcc = 0.f;
 
@@ -173,18 +186,27 @@ void CLevelFlowMgr::LevelExit()
     Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
     MainPlayerPref->Save(L"prefab\\Main Player.pref");
 
+    // Loding UI 시작
+
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
 
 void CLevelFlowMgr::LevelRestart()
 {
+    // 이미 레벨 전환중일 경우 처리하지 않는다.
+    if (m_bIsChangedLevel == true)
+        return;
+
     // UI (Fade Out)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f);
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
-    // Level Restart
-    GamePlayStatic::ChangeLevelAsync(m_CurLevelPath, LEVEL_STATE::PLAY);
+    m_bIsChangedLevel = true;
+    m_bFadeEffect = true;
+    m_FadeEffectAcc = 0.f;
 
+    // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
+    m_NextLevelPath = ToString(m_CurLevelPath);
     // @TODO BGM 종료
 }
 
@@ -195,8 +217,16 @@ void CLevelFlowMgr::MtrlParamUpdate()
     {
         static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
         Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
-        Vec2 UVPos = NDCToUV(NDCPos);
-        pDOFMtrl->SetScalarParam(VEC2_0, UVPos); // Focus UV
+
+        // PLAYER가 화면 밖인경우
+        if (NDCPos.x < -1.f || NDCPos.y < -1.f || NDCPos.z < -1.f || NDCPos.x > 1.f || NDCPos.y > 1.f || NDCPos.z > 1.f)
+        {
+            pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-100.f, -100.f));
+        }
+        else
+        {
+            pDOFMtrl->SetScalarParam(VEC2_0, NDCToUV(NDCPos)); // Focus UV
+        }
     }
 }
 
@@ -225,7 +255,7 @@ void CLevelFlowMgr::SetFadeEffectColor(Vec3 _Color)
     m_FadeEffectScript->SetBackGroundColor(Color);
 }
 
-void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed)
+void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode)
 {
     if (!m_FadeEffectScript)
         return;
@@ -235,6 +265,7 @@ void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, 
     m_FadeEffectScript->SetReverse(_bReverse);
     m_FadeEffectScript->SetDuration(_Duration);
     m_FadeEffectScript->SetRotateSpeed(_Speed);
+    m_FadeEffectScript->SetCenterMode(_CenterMode);
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,

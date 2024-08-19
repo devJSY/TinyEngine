@@ -31,8 +31,8 @@ void CFlowMgr_BossMorpho::begin()
     SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
     SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
 
-    m_SpawnButterfly = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Morpho_SpawnButterfly", LAYER_EFFECT);
-    m_Barricade = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Barricade", LAYER_MONSTER);
+    m_SpawnButterfly = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Morpho_SpawnButterfly");
+    m_Barricade = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Barricade");
 }
 
 void CFlowMgr_BossMorpho::tick()
@@ -70,7 +70,7 @@ void CFlowMgr_BossMorpho::LevelStart()
 {
     CLevelFlowMgr::LevelStart();
 
-    CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera", LAYER_DEFAULT);
+    CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
     CCameraController* CameraController = Camera ? Camera->GetScript<CCameraController>() : nullptr;
 
     if (CameraController)
@@ -109,10 +109,18 @@ void CFlowMgr_BossMorpho::SpawnMorpho()
 
 UINT CFlowMgr_BossMorpho::SaveToLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    MemoryByte += CLevelFlowMgr::SaveToLevelFile(_File);
+
+    return MemoryByte;
 }
 
 UINT CFlowMgr_BossMorpho::LoadFromLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    MemoryByte += CLevelFlowMgr::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }

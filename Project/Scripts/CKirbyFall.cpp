@@ -16,15 +16,7 @@ CKirbyFall::~CKirbyFall()
 
 void CKirbyFall::tick()
 {
-    m_Acc += DT_ENGINE;
-
-    if (!m_TimeStopExit && m_Acc > m_TimeStopDuration)
-    {
-        // TimeScale 정상화
-        CTimeMgr::GetInst()->SetTimeScale(1.f);
-
-        m_TimeStopExit = true;
-    }
+    m_Acc += DT;
 
     // State의 시간이 모두 지나면
     if (m_Acc > m_Duration)
@@ -33,7 +25,7 @@ void CKirbyFall::tick()
         if (PLAYERUNIT->GetCurInfo().HP <= 0.f)
         {
             // FLOW 매니저의 레벨 리셋 함수를 호출
-            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager", LAYER_MANAGER);
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
             
             if (nullptr != ManagerObj)
             {
@@ -41,6 +33,8 @@ void CKirbyFall::tick()
 
                 if (nullptr != FlowMgrScript)
                 {
+                    // 한번만 호출되도록 State를 변경한다
+                    ChangeState(L"IDLE");
                     FlowMgrScript->LevelRestart();
                 }
             }
@@ -65,7 +59,9 @@ void CKirbyFall::tick()
 
             // 카메라 Lock을 풀어준 뒤 플레이어위치로 바로 전환
             CAMERACTRL->SetLock(false);
-            CAMERACTRL->ResetCamera();
+            CAMERACTRL->SetLock(true, 0.05f);
+
+            //CAMERACTRL->ResetCamera();
 
         }
     }
@@ -75,7 +71,7 @@ void CKirbyFall::tick()
 void CKirbyFall::Enter()
 {
     // TimeScale 0으로 바꿔 일시정지
-    CTimeMgr::GetInst()->SetTimeScale(0.f);
+    CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);
 
     // CameraSetting
     CCameraController* CamCtrl = CAMERACTRL;
@@ -95,9 +91,7 @@ void CKirbyFall::Enter()
     PLAYERUNIT->GetDamage({DAMAGE_TYPE::NORMAL, Vec3(0.f, 0.f, 0.f), 10.f, 0.f, 0.f});
 
     m_Acc = 0.f;
-    m_TimeStopDuration = 0.5f;
     m_Duration = 2.f;
-    m_TimeStopExit = false;
 }
 
 void CKirbyFall::Exit()
