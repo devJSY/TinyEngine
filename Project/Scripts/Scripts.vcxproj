@@ -273,6 +273,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoUnit.h" />
     <ClInclude Include="CMorpho_Idle.h" />
     <ClInclude Include="CPhantaScript.h" />
+    <ClInclude Include="CPlayerHitbox.h" />
     <ClInclude Include="CPushOutColliderScript.h" />
     <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
@@ -599,6 +600,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoUnit.cpp" />
     <ClCompile Include="CMorpho_Idle.cpp" />
     <ClCompile Include="CPhantaScript.cpp" />
+    <ClCompile Include="CPlayerHitbox.cpp" />
     <ClCompile Include="CPushOutColliderScript.cpp" />
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />

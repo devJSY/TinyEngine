@@ -928,6 +928,9 @@
     <ClInclude Include="CKirbyDropOutUIScript.h">
       <Filter>Scripts\UI\UIAnimation\CKirbyDropOutUIScript</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerHitbox.h">
+      <Filter>Scripts\Character\Kirby\PlayerHitbox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1865,6 +1868,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyDropOutUIScript.cpp">
       <Filter>Scripts\UI\UIAnimation\CKirbyDropOutUIScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerHitbox.cpp">
+      <Filter>Scripts\Character\Kirby\PlayerHitbox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2944,6 +2950,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIAnimation\CKirbyDropOutUIScript">
       <UniqueIdentifier>{fa9dd630-beb2-412f-8582-47a08084d4e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\PlayerHitbox">
+      <UniqueIdentifier>{dd70b4ef-cf21-4374-a6bf-1dfcc5c11930}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
