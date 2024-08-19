@@ -41,14 +41,16 @@ void CKirbyChangeAbilityEnd::tick()
 
 void CKirbyChangeAbilityEnd::Enter()
 {
+    // 애니메이션 재생
+    PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyEnd"), false, false, 1.5f);
+
     // MoveController Lock
     PLAYERCTRL->LockInput();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();
 
     PLAYERFSM->SetGlobalState(true);
-    // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyEnd"), false, false, 1.5f);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyChangeAbilityEnd::Exit()
@@ -65,6 +67,8 @@ void CKirbyChangeAbilityEnd::Exit()
     PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockMove();
+
+    PLAYERFSM->SetInvincible(false);
 
     //@TODO
     // 배경 블러 효과 복구

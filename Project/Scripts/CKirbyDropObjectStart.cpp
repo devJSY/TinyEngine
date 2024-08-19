@@ -32,10 +32,12 @@ void CKirbyDropObjectStart::tick()
 void CKirbyDropObjectStart::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
+    PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurObject()->DropObjectStartEnter();
 }
 
 void CKirbyDropObjectStart::Exit()
 {
+    PLAYERFSM->SetInvincible(false);
     PLAYERFSM->GetCurObject()->DropObjectStartExit();
 }
