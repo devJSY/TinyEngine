@@ -4,6 +4,8 @@
 
 #define MaskTexture g_tex_0
 
+#define Reverse g_int_0
+
 #define Weight g_float_0
 #define RotateAngle g_float_1
 
@@ -35,7 +37,9 @@ float4 main(PS_IN _in) : SV_Target
     _in.vUV0 -= LerpValue;
     
     // Scale
-    _in.vUV0 *= 1.f / (1.f - Weight);
+    _in.vUV0 *= 0.3f; // 초기 크기 확장
+    float ScaleRatio = 1.f / (1.f - Weight);
+    _in.vUV0 *= ScaleRatio;
     
      // NDC → UV 
     _in.vUV0 = float2(_in.vUV0.x, -_in.vUV0.y);

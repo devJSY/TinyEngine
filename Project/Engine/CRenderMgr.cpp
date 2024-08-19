@@ -249,9 +249,18 @@ void CRenderMgr::render_play()
             continue;
 
         m_vecCam[i]->SortObject();
+
+        // Main Camera
         if (0 == i)
+        {
             m_vecCam[i]->render_Deferred();
-        m_vecCam[i]->render_Forward();
+            m_vecCam[i]->render_Forward();
+            m_vecCam[i]->render_Postprocess();
+        }
+        else
+        {
+            m_vecCam[i]->render_Forward();
+        }
     }
 }
 
@@ -265,6 +274,7 @@ void CRenderMgr::render_editor()
     m_EditorCam->SortObject();
     m_EditorCam->render_Deferred();
     m_EditorCam->render_Forward();
+    m_EditorCam->render_Postprocess();
 }
 
 void CRenderMgr::render_CameraPreview()
@@ -309,6 +319,8 @@ void CRenderMgr::render_debug()
         m_DbgShapeInfo.clear();
         return;
     }
+
+    m_arrMRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 
     g_Transform.matView = m_mainCam->GetViewMat();
     g_Transform.matViewInv = m_mainCam->GetViewInvMat();

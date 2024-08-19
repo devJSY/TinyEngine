@@ -6,30 +6,16 @@
 
 CEngineTestScript::CEngineTestScript()
     : CScript(ENGINETESTSCRIPT)
-    , m_Power(1.f)
-    , TestParam1(Vec2(7.f, 2.f))
-    , TestParam2(Vec4(2.f, 7.f, 4.f, 1.f))
-    , TestParam3(wstring(L"Test String"))
-    , TestParam4(Vec3(6.f, 9.f, 1.f))
+    , TestParam1(1.f)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Power, "Power");
-    AddScriptParam(SCRIPT_PARAM::VEC2, &TestParam1, "TestParam1");
-    AddScriptParam(SCRIPT_PARAM::VEC4, &TestParam2, "TestParam2");
-    AddScriptParam(SCRIPT_PARAM::VEC3, &TestParam4, "TestParam4");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &TestParam1, "TestParam1");
 }
 
 CEngineTestScript::CEngineTestScript(const CEngineTestScript& origin)
     : CScript(origin)
-    , m_Power(origin.m_Power)
     , TestParam1(origin.TestParam1)
-    , TestParam2(origin.TestParam2)
-    , TestParam3(origin.TestParam3)
-    , TestParam4(origin.TestParam4)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Power, "Power");
-    AddScriptParam(SCRIPT_PARAM::VEC2, &TestParam1, "TestParam1");
-    AddScriptParam(SCRIPT_PARAM::VEC4, &TestParam2, "TestParam2");
-    AddScriptParam(SCRIPT_PARAM::VEC3, &TestParam4, "TestParam4");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &TestParam1, "TestParam1");
 }
 
 CEngineTestScript::~CEngineTestScript()
@@ -42,6 +28,9 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
+    Vec3 rot = Transform()->GetWorldRotation();
+    rot.z += TestParam1 * g_Global.g_DT;
+    Transform()->SetWorldRotation(rot);
     // CharacterControllerTest();
 
     //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
@@ -322,16 +311,9 @@ void CEngineTestScript::OnTriggerExit(CCollider* _OtherCollider)
 UINT CEngineTestScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-    fwrite(&m_Power, sizeof(float), 1, _File);
-    fwrite(&TestParam1, sizeof(Vec2), 1, _File);
-    fwrite(&TestParam2, sizeof(Vec4), 1, _File);
-    MemoryByte += SaveWStringToFile(TestParam3, _File);
-    fwrite(&TestParam4, sizeof(Vec3), 1, _File);
+    fwrite(&TestParam1, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(Vec2);
-    MemoryByte += sizeof(Vec4);
-    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
@@ -339,16 +321,9 @@ UINT CEngineTestScript::SaveToLevelFile(FILE* _File)
 UINT CEngineTestScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-    fread(&m_Power, sizeof(float), 1, _File);
-    fread(&TestParam1, sizeof(Vec2), 1, _File);
-    fread(&TestParam2, sizeof(Vec4), 1, _File);
-    MemoryByte += LoadWStringFromFile(TestParam3, _File);
-    fread(&TestParam4, sizeof(Vec3), 1, _File);
+    fread(&TestParam1, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(Vec2);
-    MemoryByte += sizeof(Vec4);
-    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }
