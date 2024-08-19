@@ -40,7 +40,7 @@ void CKirbyLightScript::tick()
 
         GetOwner()->Light()->SetFallOffEnd(NewRadius);
         GetOwner()->Light()->SetFallOffStart(NewRadius * m_FallRatio);
-        GetOwner()->Light()->SetLightRadiance(Vec3(2500.f, 1500.f, 1000.f) / 255.f);
+        GetOwner()->Light()->SetLightRadiance(Vec3(1000.f, 1000.f, 1000.f) / 255.f);
 
         if (m_AccTime > m_TurnOnTime)
         {
