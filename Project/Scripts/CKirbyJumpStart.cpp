@@ -84,7 +84,7 @@ void CKirbyJumpStart::tick()
                 ChangeState(L"JUMP_FALL");
             }
         }
-            break;
+        break;
         }
 
         if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
@@ -103,7 +103,8 @@ void CKirbyJumpStart::tick()
             {
                 ChangeState(L"LANDING");
             }
-            else */if (KEY_TAP(KEY_JUMP))
+            else */
+            if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
             }
@@ -120,7 +121,7 @@ void CKirbyJumpStart::tick()
             }
             if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
             {
-                //PLAYERCTRL->SetGravity(m_OriginGravity / 2.f);
+                // PLAYERCTRL->SetGravity(m_OriginGravity / 2.f);
                 PLAYERCTRL->VelocityCut(2.f);
                 m_bVelocityCut = true;
             }
@@ -135,6 +136,10 @@ void CKirbyJumpStart::tick()
             if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
+            }
+            else if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
             }
             else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
@@ -166,46 +171,49 @@ void CKirbyJumpStart::tick()
                 m_bVelocityCut = true;
             }
         }
-            break;
-        case AbilityCopyType::CUTTER: 
+        break;
+        case AbilityCopyType::CUTTER: {
+            /*if (PLAYERCTRL->IsGround())
             {
-                /*if (PLAYERCTRL->IsGround())
+                ChangeState(L"LANDING");
+            }
+            else */
+            if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+            else if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK))
+            {
+                if (PLAYERFSM->CanBladeAttack())
                 {
-                    ChangeState(L"LANDING");
+                    ChangeState(L"ATTACK");
                 }
-                else */
-                if (KEY_TAP(KEY_JUMP))
+            }
+            else if (m_JumpAccTime > m_MaxJumpTime)
+            {
+                if (KEY_PRESSED(KEY_JUMP))
                 {
-                    ChangeState(L"HOVERING_START");
+                    ChangeState(L"JUMP");
                 }
-                else if (KEY_TAP(KEY_ATK))
+                else if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
                 {
-                    if (PLAYERFSM->CanBladeAttack())
-                    {
-                        ChangeState(L"ATTACK");
-                    }
-                }
-                else if (m_JumpAccTime > m_MaxJumpTime)
-                {
-                    if (KEY_PRESSED(KEY_JUMP))
-                    {
-                        ChangeState(L"JUMP");
-                    }
-                    else if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
-                    {
-                        ChangeState(L"JUMP_FALL");
-                    }
-                }
-
-                if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
-                {
-                    // PLAYERCTRL->SetGravity(m_OriginGravity / 2.f);
-                    PLAYERCTRL->VelocityCut(2.f);
-                    m_bVelocityCut = true;
+                    ChangeState(L"JUMP_FALL");
                 }
             }
 
-            break;
+            if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))
+            {
+                // PLAYERCTRL->SetGravity(m_OriginGravity / 2.f);
+                PLAYERCTRL->VelocityCut(2.f);
+                m_bVelocityCut = true;
+            }
+        }
+
+        break;
         }
     }
 }

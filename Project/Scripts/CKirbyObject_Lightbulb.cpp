@@ -244,7 +244,8 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
     // 포인트라이트
     if (m_PointLight)
     {
-        m_PointLight->TurnOff();
+        m_PointLight->Drop();
+        m_PointLight = nullptr;
     }
 }
 
@@ -273,5 +274,6 @@ void CKirbyObject_Lightbulb::ChangeObjectEnter()
     if (PointLight)
     {
         m_PointLight = PointLight->GetScript<CKirbyLightScript>();
+        m_PointLight->Init();
     }
 }

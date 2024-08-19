@@ -16,11 +16,17 @@ private:
     float m_FadeEffectAcc;
     float m_FadeEffectDuration;
 
+
+    bool m_bRadialBlurEffect;
+    float m_RadialBlurAcc;
+    float m_RadialBlurDuration;
+
     wstring m_CurLevelPath;
     string m_NextLevelPath;
 
     // UI
     CGameObject* m_DimensionFadeEffect;
+    CGameObject* m_RadialBlurEffect;
     CGameObject* m_pLoadingUI;
     CGameObject* m_pPlayerHP;
     CGameObject* m_pBossHP;
@@ -59,6 +65,8 @@ public:
 public:
     void OnDimensionFade();
     void OffDimensionFade();
+    void OnRadialBlurEffect(float _Duration, float _Radius = 1.f, float _BlurPower = 1.1f);
+    void OffRadialBlurEffect();
     void SetFadeEffectColor(Vec3 _Color);
     void SetToneMappingParam(bool _bBloomEnable = false, bool _bBlendMode = false, float _BloomStrength = 0.5f, float _Threshold = 0.f,
                              float _FilterRadius = 1.f, float _Exposure = 1.f, float _Gamma = 2.2f);

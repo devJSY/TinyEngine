@@ -17,7 +17,7 @@ void CKirbyLongDiveLanding::tick()
     case AbilityCopyType::NORMAL: {
         if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
         {
-            ChangeState(L"ATTACK_CHARGE1_START");
+            ChangeState(L"VACUUM1_START");
         }
         else if (PLAYER->Animator()->IsFinish())
         {
@@ -26,7 +26,11 @@ void CKirbyLongDiveLanding::tick()
     }
     break;
     case AbilityCopyType::FIRE: {
-        if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+        if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+        {
+            ChangeState(L"VACUUM1_START");
+        }
+        else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
         {
             if (KEY_PRESSED_ARROW && KEY_TAP(KEY_ATK))
             {
@@ -44,7 +48,11 @@ void CKirbyLongDiveLanding::tick()
     }
     break;
     case AbilityCopyType::CUTTER: {
-        if (KEY_TAP(KEY_ATK))
+        if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+        {
+            ChangeState(L"VACUUM1_START");
+        }
+        else if (KEY_TAP(KEY_ATK))
         {
             if (PLAYERFSM->CanBladeAttack())
             {
@@ -58,7 +66,11 @@ void CKirbyLongDiveLanding::tick()
     }
     break;
     case AbilityCopyType::SWORD: {
-        if (PLAYERFSM->GetSlideComboLevel())
+        if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+        {
+            ChangeState(L"VACUUM1_START");
+        }
+        else if (PLAYERFSM->GetSlideComboLevel())
         {
             if (PLAYERCTRL->IsGround())
             {
@@ -102,6 +114,24 @@ void CKirbyLongDiveLanding::Enter()
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackLanding"), false, false, 2.f);
     
+    // Smoke Spawn
+    Ptr<CPrefab> LandingSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyLandingSmoke.pref");
+    CGameObject* LeftSmokeObj = LandingSmoke->Instantiate();
+    CGameObject* RightSmokeObj = LandingSmoke->Instantiate();
+
+    Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 KirbyRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+
+    LeftSmokeObj->Transform()->SetDirection(-KirbyFront);
+    RightSmokeObj->Transform()->SetDirection(-KirbyFront);
+
+    LeftSmokeObj->Transform()->SetWorldPos(KirbyPos - KirbyRight * 4.f + -KirbyFront * 10.f);
+    RightSmokeObj->Transform()->SetWorldPos(KirbyPos + KirbyRight * 4.f + -KirbyFront * 10.f);
+
+    GamePlayStatic::SpawnGameObject(LeftSmokeObj, LAYER_EFFECT);
+    GamePlayStatic::SpawnGameObject(RightSmokeObj, LAYER_EFFECT);
+
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
 

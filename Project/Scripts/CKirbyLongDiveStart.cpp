@@ -16,7 +16,7 @@ void CKirbyLongDiveStart::tick()
     case AbilityCopyType::NORMAL: {
         if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
         {
-            ChangeState(L"ATTACK_CHARGE1_START");
+            ChangeState(L"VACUUM1_START");
         }
         else if (PLAYERCTRL->IsGround())
         {
@@ -29,7 +29,11 @@ void CKirbyLongDiveStart::tick()
     }
     break;
     case AbilityCopyType::FIRE: {
-        if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+        if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+        {
+            ChangeState(L"VACUUM1_START");
+        }
+        else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
         {
             if (KEY_PRESSED_ARROW && KEY_TAP(KEY_ATK))
             {
@@ -51,7 +55,11 @@ void CKirbyLongDiveStart::tick()
     }
     break;
     case AbilityCopyType::CUTTER: {
-        if (KEY_TAP(KEY_ATK))
+        if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+        {
+            ChangeState(L"VACUUM1_START");
+        }
+        else if (KEY_TAP(KEY_ATK))
         {
             if (PLAYERFSM->CanBladeAttack())
             {
@@ -69,7 +77,11 @@ void CKirbyLongDiveStart::tick()
     }
     break;
     case AbilityCopyType::SWORD: {
-        if (PLAYERFSM->GetSlideComboLevel())
+        if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+        {
+            ChangeState(L"VACUUM1_START");
+        }
+        else if (PLAYERFSM->GetSlideComboLevel())
         {
             if (PLAYERCTRL->IsGround())
             {
@@ -119,7 +131,7 @@ void CKirbyLongDiveStart::tick()
 void CKirbyLongDiveStart::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackStart"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackStart"), false, false, 0.2f);
 }
 
 void CKirbyLongDiveStart::Exit()

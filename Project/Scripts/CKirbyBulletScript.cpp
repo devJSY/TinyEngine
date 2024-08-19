@@ -3,11 +3,13 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CUnitScript.h"
+#include "CKirbyBulletSize.h"
 
 CKirbyBulletScript::CKirbyBulletScript()
     : CScript(KIRBYBULLETSCRIPT)
-    , m_PlayTime(5.f)
+    , m_ScaleFactor(2.f/3.f)
     , m_Speed(1.f)
+    , m_PlayTime(5.f)
     , m_bHasTickCol(false)
     , m_bInit(true)
 {
@@ -35,6 +37,23 @@ void CKirbyBulletScript::begin()
     CGameObject* pStuffedObj = new CGameObject();
     CTransform* pTransform = PLAYERFSM->GetStuffedObj()->Transform()->Clone();
 
+    // set SclaeFactor
+    CKirbyBulletSize* pSizeScript = PLAYERFSM->GetStuffedObj()->GetScript<CKirbyBulletSize>();
+    
+    if (pSizeScript)
+    {
+        int Size = pSizeScript->GetSizeType(); // SizeType : 1~3
+
+        if (Size == 2)
+        {
+            m_ScaleFactor = 0.4f;
+        }
+        else if (Size == 3)
+        {
+            m_ScaleFactor = 0.2f;
+        }
+    }
+
     // set offset
     if (PLAYERFSM->GetStuffedObj()->SphereCollider())
     {
@@ -55,19 +74,19 @@ void CKirbyBulletScript::begin()
 
     // add component
     pStuffedObj->AddComponent(pTransform);
-    pTransform->SetAbsolute(true);
-    pTransform->SetLocalPos(-m_ChildOffest);
+    pTransform->SetAbsolute(false);
     pTransform->SetLocalRotation(Vec3());
+    pTransform->SetLocalScale(Vec3(m_ScaleFactor));
 
     if (PLAYERFSM->GetStuffedObj()->MeshRender())
     {
         pStuffedObj->AddComponent(PLAYERFSM->GetStuffedObj()->MeshRender()->Clone());
     }
 
-    if (PLAYERFSM->GetStuffedObj()->Animator() && PLAYERFSM->GetStuffedObj()->Animator()->FindClipIndex(L"Damage") != -1)
+    if (PLAYERFSM->GetStuffedObj()->Animator())
     {
         CAnimator* pAnimator = PLAYERFSM->GetStuffedObj()->Animator()->Clone();
-        pAnimator->Play(L"Damage", true, false, 1.f);
+        pAnimator->Play(ANIMPREFIX("Damage"), true, false, 1.f);
         pStuffedObj->AddComponent(pAnimator);
     }
     else
@@ -75,6 +94,7 @@ void CKirbyBulletScript::begin()
         pTransform->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), XMConvertToRadians(180.f), 0.f));
     }
 
+    pStuffedObj->SetName(L"StuffedObjCopy");
     GamePlayStatic::AddChildObject(GetOwner(), pStuffedObj);
     GamePlayStatic::LayerChange(pStuffedObj, LAYER_PLAYERATK);
 }
@@ -82,9 +102,9 @@ void CKirbyBulletScript::begin()
 void CKirbyBulletScript::tick()
 {
     // init child pos
-    if (m_bInit && !GetOwner()->GetChildObject().empty())
+    if (m_bInit && GetOwner()->GetChildObject(L"StuffedObjCopy"))
     {
-        GetOwner()->GetChildObject()[0]->Transform()->SetLocalPos(-m_ChildOffest);
+        GetOwner()->GetChildObject(L"StuffedObjCopy")->Transform()->SetLocalPos(-m_ChildOffest * m_ScaleFactor);
         m_bInit = false;
     }
 
@@ -150,10 +170,30 @@ void CKirbyBulletScript::OnCollisionEnter(CCollider* _OtherCollider)
             return;
 
         Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
-        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
+        UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 20.f, 0.f, 0.f};
 
         pMonster->GetDamage(HitInfo);
         ((CUnitScript*)PLAYERUNIT)->AttackReward();
+    }
+}
+
+void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (LayerIdx == LAYER_MONSTER_TRIGGER)
+    {
+        if (_OtherCollider->GetOwner()->GetName() == L"AttackArea" || _OtherCollider->GetName() == L"Attack Area")
+        {
+            CUnitScript* pMonster = _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>();
+            if (!pMonster)
+                return;
+
+            Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+            UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 20.f, 0.f, 0.f};
+            pMonster->GetDamage(HitInfo);
+            ((CUnitScript*)PLAYERUNIT)->AttackReward();
+        }
     }
 }
 

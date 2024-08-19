@@ -157,7 +157,7 @@ void CEditorMgr::init()
     CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
 
     // Editor 모드에선 컨텐츠 폴더에 존재하는 모든 에셋 로딩
-  //  CAssetMgr::GetInst()->ReloadContent();
+    // CAssetMgr::GetInst()->ReloadContent();
 
     // Content 폴더 변경사항 확인용 핸들 초기화
     wstring strContentPath = CPathMgr::GetContentPath();
@@ -190,7 +190,7 @@ void CEditorMgr::tick()
     }
 
     // Content 폴더 변경사항 확인
-    //ObserveContent();
+    // ObserveContent();
 }
 
 void CEditorMgr::render()

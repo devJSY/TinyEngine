@@ -4,6 +4,9 @@
 #include "CKirbyFSM.h"
 #include "CKirbyVacuumCollider.h"
 #include "CKirbyUnitScript.h"
+#include "CState.h"
+
+#include "CState.h"
 
 CKirbyBodyCollider::CKirbyBodyCollider()
     : CScript(KIRBYBODYCOLLIDER)
@@ -40,6 +43,11 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
     // monster : 데미지 가함
     if (LayerIdx == LAYER_MONSTER)
     {
+        // Player가 Dodge 중이라면 몬스터에게 데미지를 주지 않는다.
+        if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
+            PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
+            return;
+
         Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
         float HitDamage = FindDamage();
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, HitDamage, 0.f, 0.f};
@@ -64,13 +72,17 @@ void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
 float CKirbyBodyCollider::FindDamage()
 {
     float Damage = 5.f;
+    wstring StateName = PLAYERFSM->GetCurState()->GetName();
 
     if (PLAYERFSM->GetCurObject())
     {
         switch (PLAYERFSM->GetCurObjectIdx())
         {
         case ObjectCopyType::CONE:
-            Damage = 100.f;
+            if (StateName == L"ATTACK" || StateName == L"ATTACK_END" || L"ATTACK_COMBO1")
+            {
+                Damage = 100.f;
+            }
             break;
         }
     }

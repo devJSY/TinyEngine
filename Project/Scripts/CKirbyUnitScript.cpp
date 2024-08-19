@@ -3,8 +3,14 @@
 #include "CPlayerMgr.h"
 #include "CKirbyFSM.h"
 #include "CState.h"
+#include "CKirbyCopyAbilityScript.h"
+#include "CMomentaryObjScript.h"
 
 #include <Engine/CTimeMgr.h>
+#include "CLevelFlowMgr.h"
+
+#include <Engine/CSphereCollider.h>
+#include <Engine/CBoxCollider.h>
 
 CKirbyUnitScript::CKirbyUnitScript()
     : CUnitScript(KIRBYUNITSCRIPT)
@@ -54,6 +60,8 @@ void CKirbyUnitScript::begin()
 {
     // Level에 진입시 InitInfo를 현재의 정보로 저장
     SetInfo(GetInitInfo());
+
+    m_AbilityBubble = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBubble.pref", L"prefab\\KirbyBubble.pref");
 }
 
 void CKirbyUnitScript::tick()
@@ -63,30 +71,56 @@ void CKirbyUnitScript::tick()
 
     // update damage
     float NewDamage = DamageProc();
+    wstring State = PLAYERFSM->GetCurState()->GetName();
+
     if (NewDamage > 0.f)
     {
-        if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
-            PLAYERFSM->GetCurState()->GetName() == L"DODGE2")
+        if (State == L"DODGE_START" || State == L"DODGE1" || State == L"DODGE2")
         {
             CTimeMgr::GetInst()->SetTimeScale(1.f, 0.5f);
+            
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+            if (ManagerObj)
+            {
+                CLevelFlowMgr* FlowMgr = ManagerObj->GetScript<CLevelFlowMgr>();
+                if (FlowMgr)
+                {
+                    FlowMgr->OnRadialBlurEffect(1.f);
+                }
+            }
+
+            
         }
         else if (PLAYERFSM->IsInvincible())
         {
             m_HitHistory.clear();
         }
-        else if (PLAYERFSM->GetCurState()->GetName() == L"GUARD")
+        else if (State == L"GUARD")
         {
             m_CurInfo.HP -= NewDamage * 0.25f;
         }
-        else if (PLAYERFSM->GetCurState()->GetName() == L"FALL")
+        else if (State == L"FALL" || PLAYERFSM->IsDrawing())
         {
             m_CurInfo.HP -= NewDamage;
         }
-        else
+        else if (State.find(L"STUFFED") != wstring::npos)
         {
             m_CurInfo.HP -= NewDamage;
             SetHitDirHorizen();
+            PLAYERFSM->ChangeState(L"STUFFED_DAMAGE");
+        }
+        else
+        {
+            if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::NORMAL)
+            {
+                DropAbility();
+            }
+            
+            m_CurInfo.HP -= NewDamage;
+            SetHitDirHorizen();
             PLAYERFSM->ChangeState(L"DAMAGE");
+
         }
     }
 
@@ -131,23 +165,80 @@ void CKirbyUnitScript::BuffHP(float _HP)
     }
 }
 
-
 void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
 {
     // Dynamic Layer인 경우: 상대 오브젝트에게 힘 가함
     if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
     {
-        // 질량이 100 이상인 물체는 밀지 않는다.
-        if (Hit.Collider->GetOwner()->Rigidbody() && Hit.Collider->GetOwner()->Rigidbody()->GetMass() > 100.f)
+        Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Force.y = 0.f;     
+        Force.Normalize(); 
+
+        Vec3 ForceApplied = Force * 10.f;
+
+        if (Hit.Collider->GetOwner()->GetComponent(COMPONENT_TYPE::BOXCOLLIDER) != nullptr)
         {
-            return;
+            ForceApplied = Vector3::Zero;
         }
 
-        Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
-        Force.y = 0.f;
-        Force.Normalize();
-        Hit.Collider->Rigidbody()->AddForce(Force * 10.f, ForceMode::Acceleration);
+        Hit.Collider->Rigidbody()->AddForce(ForceApplied, ForceMode::Acceleration);
     }
+}
+
+void CKirbyUnitScript::DropAbility()
+{
+    // spawn ability bubble
+    if (nullptr != m_AbilityBubble && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::SLEEP)
+    {
+        CGameObject* pBubble = m_AbilityBubble->Instantiate();
+
+        Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
+        Vec3 InitRot = PLAYER->Transform()->GetLocalRotation();
+        float ScaleFactor = PLAYER->Transform()->GetLocalScale().x;
+        InitPos += PLAYER->Transform()->GetLocalDir(DIR_TYPE::UP) * ScaleFactor;
+        InitPos -= PLAYER->Transform()->GetLocalDir(DIR_TYPE::FRONT) * ScaleFactor;
+        pBubble->Transform()->SetLocalPos(InitPos);
+        pBubble->Transform()->SetLocalRotation(InitRot);
+
+        CKirbyCopyAbilityScript* pAbility = (CKirbyCopyAbilityScript*)CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT);
+        pAbility->SetAbilityType(PLAYERFSM->GetCurAbilityIdx());
+        pBubble->AddComponent(pAbility);
+
+        CGameObject* pMesh = new CGameObject;
+        pMesh->SetName(L"Mesh");
+        pMesh->AddComponent(new CTransform);
+        pMesh->AddComponent(PLAYERFSM->GetCurHat()->MeshRender()->Clone());
+        if (PLAYERFSM->GetCurHat()->Animator())
+        {
+            pMesh->AddComponent(PLAYERFSM->GetCurHat()->Animator()->Clone());
+            pMesh->Animator()->Play(ANIMPREFIX("Deform"));
+        }
+        else
+        {
+            pMesh->Transform()->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), XMConvertToRadians(180.f), 0.f));
+        }
+
+        pMesh->Transform()->SetAbsolute(false);
+        pMesh->Transform()->SetLocalPos(Vec3(0.f, -0.4f, 0.f));
+        pMesh->Transform()->SetLocalScale(Vec3(0.9f));
+        pMesh->MeshRender()->SetCastShadow(false);
+
+        GamePlayStatic::AddChildObject(pBubble, pMesh);
+
+        CMomentaryObjScript* pMomentaryObj = pBubble->GetScript<CMomentaryObjScript>();
+        if (nullptr != pMomentaryObj)
+        {
+            pMomentaryObj->SetInitVelocity(Vec3(0.f, 10.f, 0.f));
+            pMomentaryObj->SetPlayTime(10.f);
+        }
+
+        GamePlayStatic::SpawnGameObject(pBubble, LAYER_DYNAMIC);
+    }
+
+    // clear current ability
+    PLAYERFSM->ClearYPressedTime();
+    PLAYERFSM->ClearCurHatWeapon();
+    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 }
 
 UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)

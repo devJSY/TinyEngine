@@ -23,8 +23,10 @@ void CKirbyStageClear::tick()
         PLAYER->Animator()->SetPlay(false);
 
         CCameraController* CamCtrl = CAMERACTRL;
+        CamCtrl->ResetCamera();
         CamCtrl->SetOffset(Vec3(0.f, -5.f, 0));
-        CamCtrl->SetLookDir(Vec3(0.f, -0.331f, 0.944f));
+        //CamCtrl->SetLookDir(Vec3(0.f, -0.331f, 0.944f));
+        CamCtrl->RotationLookDirRightAxis(15.f);
         CamCtrl->SetLookDist(200.f);
 
         m_Step = 1;
@@ -173,7 +175,8 @@ void CKirbyStageClear::tick()
 
         CCameraController* CamCtrl = CAMERACTRL;
         CamCtrl->SetOffset(Vec3(0.f, 10.f, 0));
-        CamCtrl->SetLookDir(Vec3(0.f, -0.216f, 0.976f));
+        //CamCtrl->SetLookDir(Vec3(0.f, -0.216f, 0.976f));
+        CamCtrl->RotationLookDirRightAxis(7.f);
         CamCtrl->SetLookDist(150.f);
 
         m_Step = 20;
@@ -219,26 +222,6 @@ void CKirbyStageClear::Enter()
     PLAYERCTRL->LockInput();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();
-
-    // CameraSetting
-    CCameraController* CamCtrl = CAMERACTRL;
-    CamCtrl->SetOffset(Vec3(0.f, 50.f, 0));
-    CamCtrl->SetLookDir(Vec3(0.f, 0.f, 0.944f));
-    CamCtrl->SetLookDist(300.f);
-
-    CamCtrl->ResetCamera();
-
-    // 카메라 방향 설정
-    Vec3 CamPos = CamCtrl->GetOwner()->Transform()->GetWorldPos();
-
-    // 커비 방향 설정
-    Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
-    Vec3 Dir = CamPos - PlayerPos;
-    Dir.y = 0.f;
-    Dir.Normalize();
-
-    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir, true};
-    PLAYERCTRL->ForceDir(DirInfo);
 
     // 커비 표정 세팅
     CPlayerMgr::ClearMouthMtrl();

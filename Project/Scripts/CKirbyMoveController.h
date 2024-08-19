@@ -68,6 +68,7 @@ private:
 
     // Respawn Á¤º¸
     Vec3                        m_CheckPointPos;
+    Vec3                        m_ForcePos;
 
 
 public:
@@ -103,6 +104,7 @@ public:
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
+    void ForcePos(Vec3 _ForcePos) { m_ForcePos = _ForcePos; }
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
     void SetCheckPoint(Vec3 _CheckPoint) { m_CheckPointPos = _CheckPoint; }
     void TeleportGround() { m_bTeleportGround = true; }

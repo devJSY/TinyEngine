@@ -13,56 +13,7 @@ CKirbyRun::~CKirbyRun()
 
 void CKirbyRun::tick()
 {
-    // 6프레임 -> 오른발, 26프레임 ->왼발
-    if (m_LastSmokeIsRight == false && CHECK_ANIMFRM(GetOwner(), 6) && CHECK_ANIMFRM_UNDER(GetOwner(), 25))
-    {
-        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
-        if (Smoke.Get())
-        {
-            CGameObject* SmokeObj = Smoke->Instantiate();
-
-            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
-            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-
-            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
-            SmokePos.y += 5.f;
-            SmokePos += PlayerDirRight * 4.f;
-
-            SmokeObj->Transform()->SetWorldPos(SmokePos);
-            SmokeObj->Transform()->SetDirection(-PlayerDir);
-
-            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
-        }
-
-        m_LastSmokeIsRight = true;
-    }
-
-    if (m_LastSmokeIsRight == true && CHECK_ANIMFRM(GetOwner(), 26))
-    {
-        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
-        if (Smoke.Get())
-        {
-            CGameObject* SmokeObj = Smoke->Instantiate();
-
-            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
-            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-
-            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
-            SmokePos.y += 5.f;
-            SmokePos -= PlayerDirRight * 4.f;
-
-            SmokeObj->Transform()->SetWorldPos(SmokePos);
-            SmokeObj->Transform()->SetDirection(-PlayerDir);
-
-            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
-        }
-
-        m_LastSmokeIsRight = false;
-    }
-
-
+    SpawnSmoke();
 
     PLAY_CURSTATE(Run)
 
@@ -159,9 +110,39 @@ void CKirbyRun::tick()
     {
         switch (PLAYERFSM->GetCurAbilityIdx())
         {
-        case AbilityCopyType::FIRE:
         case AbilityCopyType::NORMAL: {
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
+            {
+                ChangeState(L"JUMP_START");
+            }
+            else if (KEY_TAP(KEY_GUARD) || KEY_PRESSED(KEY_GUARD))
+            {
+                ChangeState(L"GUARD");
+            }
+            else if (PLAYERCTRL->GetInput().Length() == 0.f)
+            {
+                ChangeState(L"IDLE");
+            }
+            else if (!PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"JUMP_FALL");
+            }
+        }
+        break;
+        case AbilityCopyType::FIRE: {
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"ATTACK_CHARGE1_START");
             }
@@ -188,7 +169,11 @@ void CKirbyRun::tick()
         }
         break;
         case AbilityCopyType::CUTTER: {
-            if (KEY_TAP(KEY_ATK))
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK))
             {
                 if (PLAYERFSM->CanBladeAttack())
                 {
@@ -215,7 +200,11 @@ void CKirbyRun::tick()
 
         break;
         case AbilityCopyType::SWORD: {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 UINT Combo = PLAYERFSM->GetComboLevel();
 
@@ -249,7 +238,11 @@ void CKirbyRun::tick()
         }
         break;
         case AbilityCopyType::SLEEP: {
-            if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"ATTACK_START");
             }
@@ -273,7 +266,9 @@ void CKirbyRun::tick()
 
 void CKirbyRun::Enter()
 {
-    m_LastSmokeIsRight = false;
+    m_FirstStep = true;
+
+    SettingSmoke();
 
     PLAY_CURSTATE(RunEnter)
     PLAYERFSM->SetDroppable(true);
@@ -283,4 +278,101 @@ void CKirbyRun::Exit()
 {
     PLAY_CURSTATE(RunExit)
     PLAYERFSM->SetDroppable(false);
+}
+
+void CKirbyRun::SettingSmoke()
+{
+    ObjectCopyType CurType = PLAYERFSM->GetCurObjectIdx();
+
+    // 오브젝트 변신을 안했을 경우 Enter시에 세팅해놓은 값대로 스폰한다.
+    if (CurType == ObjectCopyType::NONE)
+    {
+        m_FirstStepSmokeFrm = 6;
+        m_SecondStepSmokeFrm = 26;
+
+        m_SmokeOffset = 4.f;
+
+        return;
+    }
+
+    switch (CurType)
+    {
+    case ObjectCopyType::CONE: {
+        m_FirstStepSmokeFrm = 0;
+        m_SecondStepSmokeFrm = 9;
+
+        m_SmokeOffset= -26.f;
+    }
+    break;
+    case ObjectCopyType::VENDING_MACHINE: {
+        m_FirstStepSmokeFrm = 3;
+        m_SecondStepSmokeFrm = 19;
+
+        m_SmokeOffset = -30.f;
+
+
+    }
+    break;
+    case ObjectCopyType::LIGHT: {
+        m_FirstStepSmokeFrm = 6;
+        m_SecondStepSmokeFrm = 18;
+
+        m_SmokeOffset = -4.f;
+    }
+    break;
+    default:
+        break;
+    }
+
+}
+
+void CKirbyRun::SpawnSmoke()
+{
+    if (m_FirstStep == true && CHECK_ANIMFRM(GetOwner(), m_FirstStepSmokeFrm) && CHECK_ANIMFRM_UNDER(GetOwner(), m_SecondStepSmokeFrm - 1))
+    {
+        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
+        if (Smoke.Get())
+        {
+            CGameObject* SmokeObj = Smoke->Instantiate();
+
+            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
+            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
+            SmokePos.y += 5.f;
+            SmokePos += PlayerDirRight * m_SmokeOffset;
+
+            SmokeObj->Transform()->SetWorldPos(SmokePos);
+            SmokeObj->Transform()->SetDirection(-PlayerDir);
+
+            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
+        }
+
+        m_FirstStep = false;
+    }
+
+    if (m_FirstStep == false && CHECK_ANIMFRM(GetOwner(), m_SecondStepSmokeFrm))
+    {
+        Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
+        if (Smoke.Get())
+        {
+            CGameObject* SmokeObj = Smoke->Instantiate();
+
+            Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
+            Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Vec3 PlayerDirRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+            Vec3 SmokePos = PlayerPos - PlayerDir * 5.f;
+            SmokePos.y += 5.f;
+            SmokePos -= PlayerDirRight * m_SmokeOffset;
+
+            SmokeObj->Transform()->SetWorldPos(SmokePos);
+            SmokeObj->Transform()->SetDirection(-PlayerDir);
+
+            GamePlayStatic::SpawnGameObject(SmokeObj, LAYER_EFFECT);
+        }
+
+        m_FirstStep = true;
+    }
 }
