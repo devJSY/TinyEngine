@@ -63,7 +63,12 @@ void CAssetMgr::tick()
     }
 }
 
-void CAssetMgr::ReloadContent()
+void CAssetMgr::AsyncReloadContent()
+{
+    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncReloadContentFunc, this));
+}
+
+void CAssetMgr::AsyncReloadContentFunc()
 {
     LoadAssetsFromFile(CPathMgr::GetContentPath());
 

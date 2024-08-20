@@ -409,6 +409,10 @@ void CLevelEditor::render_WorldSettings()
     ImGui::SameLine();
     ImGui::RadioButton("Physcis2D", (int*)&g_Global.g_MousePickingMode, 2);
 
+    bool bContentAutoLoad = CEditorMgr::GetInst()->IsContentAutoLoad();
+    if (ImGui::Checkbox("Content Auto Load", &bContentAutoLoad))
+        CEditorMgr::GetInst()->SetContentAutoLoad(bContentAutoLoad);
+
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))
         CRenderMgr::GetInst()->SetShowDebugRender(bDebugRender);

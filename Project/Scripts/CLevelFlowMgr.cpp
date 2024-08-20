@@ -393,15 +393,15 @@ void CLevelFlowMgr::MtrlParamUpdate()
         {
             pDOFMtrl->SetScalarParam(VEC2_0, NDCToUV(NDCPos)); // Focus UV
         }
-    }
 
-    if (m_RadialBlurEffect->IsActive())
-    {
-        static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
-        Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
-        Vec2 UV = NDCToUV(NDCPos);
+        if (m_RadialBlurEffect->IsActive())
+        {
+            static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
+            Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
+            Vec2 UV = NDCToUV(NDCPos);
 
-        pRadialBlurMtrl->SetScalarParam(VEC2_0, UV);
+            pRadialBlurMtrl->SetScalarParam(VEC2_0, UV);
+        }
     }
 }
 
