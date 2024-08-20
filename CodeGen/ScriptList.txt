@@ -114,3 +114,4 @@ CUIBossHPScript
 CEnterUIScript
 CKirbyDropOutUIScript
 CPlayerHitbox
+CKirbyCantEat

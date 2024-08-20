@@ -117,6 +117,7 @@
 #include "CEnterUIScript.h"
 #include "CKirbyDropOutUIScript.h"
 #include "CPlayerHitbox.h"
+#include "CKirbyCantEat.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -236,6 +237,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CEnterUIScript");
 	_vec.push_back(L"CKirbyDropOutUIScript");
 	_vec.push_back(L"CPlayerHitbox");
+	_vec.push_back(L"CKirbyCantEat");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -472,6 +474,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyDropOutUIScript;
 	if (L"CPlayerHitbox" == _strScriptName)
 		return new CPlayerHitbox;
+	if (L"CKirbyCantEat" == _strScriptName)
+		return new CKirbyCantEat;
 	return nullptr;
 }
 
@@ -711,6 +715,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyDropOutUIScript;
 	case (UINT)SCRIPT_TYPE::PLAYERHITBOX:
 		return new CPlayerHitbox;
+	case (UINT)SCRIPT_TYPE::KIRBYCANTEAT:
+		return new CKirbyCantEat;
 	}
 	return nullptr;
 }
@@ -951,6 +957,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyDropOutUIScript";
 	case SCRIPT_TYPE::PLAYERHITBOX:
 		return L"CPlayerHitbox";
+	case SCRIPT_TYPE::KIRBYCANTEAT:
+		return L"CKirbyCantEat";
 	}
 	return nullptr;
 }

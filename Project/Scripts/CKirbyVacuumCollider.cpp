@@ -5,6 +5,7 @@
 #include "CMonsterUnitScript.h"
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
+#include "CKirbyCantEat.h"
 
 CKirbyVacuumCollider::CKirbyVacuumCollider()
     : CScript(KIRBYVACUUMCOLLIDER)
@@ -214,7 +215,11 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
 {
     if (_pObj->GetLayerIdx() == LAYER_DYNAMIC)
     {
-        if (_pObj->GetScript<CKirbyCopyObjScript>())
+        if (_pObj->GetScript<CKirbyCantEat>())
+        {
+            return EatType::NONE;
+        }
+        else if (_pObj->GetScript<CKirbyCopyObjScript>())
         {
             _outObj = _pObj->GetScript<CKirbyCopyObjScript>()->GetObjType();
             return EatType::Copy_Object;
@@ -232,7 +237,11 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
 
     else if (_pObj->GetLayerIdx() == LAYER_MONSTER)
     {
-        if (_pObj->GetScript<CKirbyCopyAbilityScript>())
+        if (_pObj->GetScript<CKirbyCantEat>())
+        {
+            return EatType::NONE;
+        }
+        else if (_pObj->GetScript<CKirbyCopyAbilityScript>())
         {
             _outAbility = _pObj->GetScript<CKirbyCopyAbilityScript>()->GetAbilityType();
             return EatType::Copy_Monster;
