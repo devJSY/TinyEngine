@@ -36,7 +36,7 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
     : CUnitScript(_Origin)
 {
     UnitInfo KirbyInfo = {
-        100.f, // HP
+        _Origin.m_InitInfo.HP, // HP
         100.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
@@ -60,6 +60,11 @@ void CKirbyUnitScript::begin()
 {
     // Level에 진입시 InitInfo를 현재의 정보로 저장
     SetInfo(GetInitInfo());
+
+    if (m_CurInfo.HP <= 0.f)
+    {
+        m_CurInfo.HP = 100.f;
+    }
 
     m_AbilityBubble = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBubble.pref", L"prefab\\KirbyBubble.pref");
 }
@@ -245,12 +250,23 @@ UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    MemoryByte += CUnitScript::SaveToLevelFile(_File);
+    fwrite(&m_CurInfo.HP, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
+
+
     return MemoryByte;
 }
 
 UINT CKirbyUnitScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+
+    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
+    fread(&m_InitInfo.HP, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(float);
 
     return MemoryByte;
 }
