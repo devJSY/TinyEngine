@@ -70,7 +70,6 @@ void CFlowMgr_BossElfilis::tick()
         m_FlowState = BossLevelFlow::WaitBoss;
     }
     break;
-
     case BossLevelFlow::WaitBoss:
         break;
     case BossLevelFlow::Fight:

@@ -3,10 +3,13 @@
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
 #include "CFlowMgr_BossElfilis.h"
+#include "CStageClear.h"
 
 CElfilisD_ResistFail::CElfilisD_ResistFail()
     : m_AccTime(0.f)
+    , m_bFrmEnter(true)
 {
+    m_StageClearPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CStageGoal.pref");
 }
 
 CElfilisD_ResistFail::~CElfilisD_ResistFail()
@@ -44,6 +47,7 @@ void CElfilisD_ResistFail::Enter_Step()
     break;
     case StateStep::Progress: {
         m_AccTime = 0.f;
+        m_bFrmEnter = true;
 
         // Flow Mgr
         CBossMgr::GetElfilisFlowMgr()->ChangeFlowDeath();
@@ -111,7 +115,24 @@ void CElfilisD_ResistFail::Progress()
 
     if (m_AccTime > 3.f)
     {
-        //@EFFECT 터지는 파티클
+        if (m_bFrmEnter)
+        {
+            if (m_StageClearPref != nullptr)
+            {
+                CGameObject* Star = m_StageClearPref->Instantiate();
+                Star->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
+
+                CStageClear* Script = Star->GetScript<CStageClear>();
+                Script->SetKirbyDance(true);
+                Script->SetKirbyPos(Vec3(0.f, 0.f, 100.f));
+                Script->SetKirbyDir(Vec3(0.f, -0.05f, 1.f).Normalize());
+
+                GamePlayStatic::SpawnGameObject(Star, LAYER_DYNAMIC);
+            }
+
+            //@EFFECT 터지는 파티클
+        }
+
         GetOwner()->SetActive(false);
     }
 }

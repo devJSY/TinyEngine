@@ -71,6 +71,7 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
     {
         if (m_bKirbyDance)
         {
+            m_KirbyDir.y = 0.f;
             m_KirbyDir.Normalize();
 
             // CameraSetting
@@ -79,7 +80,7 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
             CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
             CamCtrl->SetLookDir(-m_KirbyDir);
             CamCtrl->SetLookDist(300.f);
-
+            CamCtrl->RotationLookDirRightAxis(5.f);
 
             PLAYERCTRL->ForcePos(m_KirbyPos);
             PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, m_KirbyDir, true});
