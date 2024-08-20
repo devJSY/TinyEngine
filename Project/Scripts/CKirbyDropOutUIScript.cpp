@@ -101,7 +101,6 @@ void CKirbyDropOutUIScript::Wait()
     }
 }
 
-// Radian 6.28319 = 360 Degree Oh my god
 void CKirbyDropOutUIScript::Appear()
 {
     if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT")
