@@ -1,18 +1,15 @@
 #include "pch.h"
-#include "CBossHitbox.h"
+#include "CPlayerHitbox.h"
 #include "CPlayerMgr.h"
-#include "CBossMgr.h"
 #include "CKirbyUnitScript.h"
 
-CBossHitbox::CBossHitbox()
-    : CScript(BOSSHITBOX)
+CPlayerHitbox::CPlayerHitbox()
+    : CScript(PLAYERHITBOX)
     , m_Instigator(nullptr)
-    , m_Target(nullptr)
     , m_Collider(nullptr)
     , m_bSummon(false)
     , m_bCallReward(true)
-    , m_RandMin(5.f)
-    , m_RandMax(5.f)
+    , m_Damage(5.f)
     , m_DamageTypeIdx(0)
     , m_AccTime(0.f)
     , m_RepeatTime(2.f)
@@ -20,8 +17,7 @@ CBossHitbox::CBossHitbox()
     , m_bRepeatEnter(false)
     , m_bRepeat(false)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RepeatTime, "Repeat Time");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
@@ -29,15 +25,13 @@ CBossHitbox::CBossHitbox()
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
 }
 
-CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
+CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     : CScript(_Origin)
     , m_Instigator(nullptr)
-    , m_Target(nullptr)
     , m_Collider(nullptr)
     , m_bSummon(_Origin.m_bSummon)
     , m_bCallReward(_Origin.m_bCallReward)
-    , m_RandMin(_Origin.m_RandMin)
-    , m_RandMax(_Origin.m_RandMax)
+    , m_Damage(_Origin.m_Damage)
     , m_DamageTypeIdx(_Origin.m_DamageTypeIdx)
     , m_AccTime(0.f)
     , m_RepeatTime(_Origin.m_RepeatTime)
@@ -45,8 +39,7 @@ CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     , m_bRepeatEnter(false)
     , m_bRepeat(false)
 {
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
-    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMax, "Damage (max)");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RepeatTime, "Repeat Time");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bRepeatDamage, "Damage Repeat (stay trigger)");
@@ -54,18 +47,17 @@ CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
 }
 
-CBossHitbox::~CBossHitbox()
+CPlayerHitbox::~CPlayerHitbox()
 {
 }
 
-void CBossHitbox::begin()
+void CPlayerHitbox::begin()
 {
-    m_Target = PLAYER;
-    m_Instigator = BOSS;
+    m_Instigator = PLAYER;
     m_Collider = GetOwner()->GetComponent<CCollider>();
 }
 
-void CBossHitbox::tick()
+void CPlayerHitbox::tick()
 {
     if (m_bRepeat)
     {
@@ -74,7 +66,8 @@ void CBossHitbox::tick()
         m_Collider->SetEnabled(true);
     }
 
-    if (!m_Instigator || !m_Target || !m_bRepeatDamage || !m_bRepeatEnter)
+    // case : repeat
+    if (!m_Instigator || !m_bRepeatDamage || !m_bRepeatEnter)
         return;
 
     m_AccTime += DT;
@@ -87,33 +80,47 @@ void CBossHitbox::tick()
     }
 }
 
-void CBossHitbox::OnTriggerEnter(CCollider* _OtherCollider)
+void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     wstring Name = _OtherCollider->GetOwner()->GetName();
-    if (!(Layer == LAYER_PLAYER && Name == L"Main Player") && !(Layer == LAYER_PLAYER_TRIGGER && Name == L"Body Collider"))
+    CGameObject* pMonster = nullptr;
+
+    if (Layer == LAYER_MONSTER)
+    {
+        pMonster = _OtherCollider->GetOwner();
+    }
+    else if (Layer == LAYER_MONSTER_TRIGGER)
+    {
+        if (Name == L"BodyCollider" || Name == L"AttackArea" || Name == L"Attack Area")
+        {
+            pMonster = _OtherCollider->GetOwner()->GetParent();
+        }
+        else
+        {
+            return;
+        }
+    }
+    else
+    {
         return;
+    }
 
     m_bRepeatEnter = true;
     m_AccTime = 0.f;
-    AddDamage();
+    AddDamage(pMonster);
 }
 
-float CBossHitbox::GetRandDamage()
+void CPlayerHitbox::AddDamage(CGameObject* _Monster)
 {
-    float Damage = 5.f;
-    Damage = GetRandomfloat(m_RandMin, m_RandMax);
+    CUnitScript* pUnit = _Monster->GetScript<CUnitScript>();
 
-    return Damage;
-}
-
-void CBossHitbox::AddDamage()
-{
-    if (!m_Instigator || !m_Target)
+    if (!m_Instigator || !pUnit)
         return;
 
     // create HitInfo
-    Vec3 HitDir = m_Target->Transform()->GetWorldPos();
+    Vec3 HitDir = _Monster->Transform()->GetWorldPos();
+
     if (!m_bSummon)
     {
         HitDir -= m_Instigator->Transform()->GetWorldPos();
@@ -122,24 +129,24 @@ void CBossHitbox::AddDamage()
     {
         HitDir -= Transform()->GetWorldPos();
     }
-
     HitDir.Normalize();
-    UnitHit HitInfo = {(DAMAGE_TYPE)m_DamageTypeIdx, HitDir, GetRandDamage(), 0.f, 0.f};
+
+    UnitHit HitInfo = {(DAMAGE_TYPE)m_DamageTypeIdx, HitDir, m_Damage, 0.f, 0.f};
 
     // Damage & Reward
-    PLAYERUNIT->GetDamage(HitInfo);
+    pUnit->GetDamage(HitInfo);
+
     if (m_bCallReward)
     {
-        BOSSUNIT->AttackReward();
+        PLAYERUNIT->AttackReward();
     }
 }
 
-UINT CBossHitbox::SaveToLevelFile(FILE* _File)
+UINT CPlayerHitbox::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    fwrite(&m_RandMin, 1, sizeof(float), _File);
-    fwrite(&m_RandMax, 1, sizeof(float), _File);
+    fwrite(&m_Damage, 1, sizeof(float), _File);
     fwrite(&m_DamageTypeIdx, 1, sizeof(int), _File);
     fwrite(&m_bRepeatDamage, 1, sizeof(bool), _File);
     fwrite(&m_RepeatTime, 1, sizeof(float), _File);
@@ -157,12 +164,11 @@ UINT CBossHitbox::SaveToLevelFile(FILE* _File)
     return MemoryByte;
 }
 
-UINT CBossHitbox::LoadFromLevelFile(FILE* _File)
+UINT CPlayerHitbox::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
-    fread(&m_RandMin, 1, sizeof(float), _File);
-    fread(&m_RandMax, 1, sizeof(float), _File);
+    fread(&m_Damage, 1, sizeof(float), _File);
     fread(&m_DamageTypeIdx, 1, sizeof(int), _File);
     fread(&m_bRepeatDamage, 1, sizeof(bool), _File);
     fread(&m_RepeatTime, 1, sizeof(float), _File);

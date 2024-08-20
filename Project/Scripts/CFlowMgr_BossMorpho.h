@@ -11,10 +11,11 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
+    virtual void TriggerEvent(UINT _Idx);
 
     virtual void LevelStart() override;
 
-    virtual void TriggerEvent(UINT _Idx);
+    void SetFight();
 
 private:
     void SpawnMorpho();

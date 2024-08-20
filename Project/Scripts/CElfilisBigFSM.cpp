@@ -5,7 +5,7 @@
 CElfilisBigFSM::CElfilisBigFSM()
     : CFSMScript(ELFILISBIGFSM)
     , m_ComboLevel(0)
-    , m_PositionOffset(1000.f)
+    , m_PositionOffset(1500.f)
     , m_ReverseState(L"")
 {
 }
@@ -45,7 +45,17 @@ void CElfilisBigFSM::begin()
     {
         m_vecMtrls.push_back(MeshRender()->GetMaterial(i));
     }
-
+    
+    CGameObject* Weapon = GetOwner()->GetChildObject(L"Halberd");
+    if (Weapon)
+    {
+        MtrlCount = Weapon->MeshRender()->GetMtrlCount();
+        for (int i = 0; i < MtrlCount; ++i)
+        {
+            m_vecMtrls.push_back(Weapon->MeshRender()->GetMaterial(i));
+        }
+    }
+    
     GetOwner()->SetActive(false);
 }
 

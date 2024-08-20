@@ -114,6 +114,9 @@ void CElfilisG_SwordWaveLR::Start()
 
 void CElfilisG_SwordWaveLR::Wait()
 {
+    // rotate
+    RotateToPlayer(DT * 3.f);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
@@ -122,6 +125,9 @@ void CElfilisG_SwordWaveLR::Wait()
 
 void CElfilisG_SwordWaveLR::Progress()
 {
+    // rotate
+    RotateToPlayer(DT * 3.f);
+
     // Spawn SwordSlash
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {

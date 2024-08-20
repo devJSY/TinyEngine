@@ -201,7 +201,7 @@ void CKirbyAbility_Sleep::ChangeAbilityEnter()
     PLAYERFSM->SetCurHat(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
-    pInstObj->Animator()->Play(ANIMPREFIX("Deform"));
+    pInstObj->Animator()->Play(ANIMPREFIX("Deform"), false, false, 1.f, 0.f);
 }
 
 void CKirbyAbility_Sleep::ChangeAbilityExit()

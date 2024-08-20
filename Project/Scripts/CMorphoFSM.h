@@ -51,8 +51,10 @@ private:
     vector<CGameObject*> m_vecShockWave;
 
     // materials
-    list<Ptr<CMaterial>> m_listBodyMtrl;
-    list<Ptr<CMaterial>> m_listWeaponMtrl;
+    vector<Ptr<CMaterial>> m_listBodyMtrl;
+    vector<Ptr<CMaterial>> m_listWeaponMtrl;
+    vector<Vec3> m_listBodyEmissive;
+    vector<Vec3> m_listWeaponEmissive;
     float m_TeleportAppearTime;
     float m_EmissiveTime;
 
@@ -89,8 +91,8 @@ public:
     void EnableRender();
     void DisableRender();
     void SetTeleportTime(bool _Emissive);
-    void ClearEmissive();
-    void SetEmissive(Vec3 _Color);
+    void ResetEmissive();
+    void AddEmissive(Vec3 _Color);
     void SetWeaponEmissive(Vec3 _Color);
 
     MorphoStateGroup GetCurStateGroup() const { return m_CurStateGroup; }

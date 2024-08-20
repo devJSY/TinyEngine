@@ -129,7 +129,7 @@ void CMorphoDemo_Death::Wait()
     float t2 = sinf(t1 * XM_PI / 2.f);
     Vec3 Color = Vec3(t2, t1, t1);
 
-    MRPFSM->SetEmissive(Color);
+    MRPFSM->AddEmissive(Color);
 
     if (m_AccTime > ProgressTime)
     {
@@ -142,7 +142,7 @@ void CMorphoDemo_Death::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         //@EFFECT 터지는 파티클
-        MRPFSM->ClearEmissive();
+        MRPFSM->ResetEmissive();
         GetOwner()->SetActive(false);
     }
 }

@@ -24,6 +24,7 @@ CKirbyFSM::CKirbyFSM()
     , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
     , m_StuffedObj(nullptr)
+    , m_BodyCollider(nullptr)
     , m_VacuumCollider(nullptr)
     , m_HoveringLimitTime(7.f)
     , m_HoveringAccTime(0.f)
@@ -49,6 +50,7 @@ CKirbyFSM::CKirbyFSM()
     , m_EmissiveAcc(0.f)
     , m_EmissiveDuration(0.f)
     , m_bEmissive(false)
+    , m_bIsSkrr(false)
     , m_bCanBladeAttack(true)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
@@ -95,6 +97,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
     , m_bStuffed(false)
+    , m_BodyCollider(nullptr)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
     , m_Vacuum1MaxTime(_Origin.m_Vacuum1MaxTime)
@@ -108,6 +111,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_EmissiveAcc(0.f)
     , m_EmissiveDuration(0.f)
     , m_bEmissive(false)
+    , m_bIsSkrr(false)
     , m_bCanBladeAttack(true)
     , m_GlidingDuration(_Origin.m_GlidingDuration)
     , m_GlidingAcc(0.f)
@@ -285,8 +289,8 @@ void CKirbyFSM::begin()
         m_CurAbility = AbilityCopyType::NORMAL;
     }
 
-
     m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
+    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
 
     vector<CGameObject*> KirbyChildObject = GetOwner()->GetChildObject();
 
@@ -325,7 +329,7 @@ void CKirbyFSM::begin()
 
     m_CurObject = ObjectCopyType::NONE;
 
-    // 복사해 놓은 Hat, Weapon을 다시 끼워준다.
+    // 복사해놓은 Hat, Weapon을 다시 끼워준다.
     if (m_CurHat)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurHat, L"Hat");
@@ -762,6 +766,23 @@ void CKirbyFSM::SubCanCount()
     if (m_LeftCanCount < 0)
         m_LeftCanCount = 0;
 }
+
+void CKirbyFSM::OffCollider()
+{
+    if (m_BodyCollider)
+    {
+        m_BodyCollider->SetEnabled(false);
+    }
+}
+
+void CKirbyFSM::OnCollider()
+{
+    if (m_BodyCollider)
+    {
+        m_BodyCollider->SetEnabled(true);
+    }
+}
+
 bool CKirbyFSM::IsDrawing() const
 {
     return m_VacuumCollider->IsDrawing();
