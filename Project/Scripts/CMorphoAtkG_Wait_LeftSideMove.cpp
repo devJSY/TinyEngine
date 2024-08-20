@@ -16,7 +16,7 @@ void CMorphoAtkG_Wait_LeftSideMove::tick()
     m_AccTime += DT;
 
     // move
-    float Speed = 20.f;
+    float Speed = 15.f;
     Vec3 Force = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * -Speed;
     GetOwner()->Rigidbody()->AddForce(Force, ForceMode::Force);
 
@@ -44,6 +44,8 @@ void CMorphoAtkG_Wait_LeftSideMove::tick()
 void CMorphoAtkG_Wait_LeftSideMove::Enter_Step()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("LeftSideMove"), true, false, 1.f);
+    GetOwner()->Rigidbody()->SetVelocity(Vec3());
+    GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
     m_AccTime = 0.f;
 }
 

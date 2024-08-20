@@ -12,6 +12,9 @@ public:
     virtual void tick() override;
     virtual void TriggerEvent(UINT _Idx);
 
+    void SetFight();
+
+private:
     void SpawnElfilis();
 
 public:

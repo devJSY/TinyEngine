@@ -4,10 +4,10 @@
 class CElfilisBigFSM : public CFSMScript
 {
 private:
-    UINT m_ComboLevel;
     vector<Ptr<CMaterial>> m_vecMtrls;
     wstring m_ReverseState;
     float m_PositionOffset;
+    UINT m_ComboLevel;
 
 public:
     virtual void begin() override;

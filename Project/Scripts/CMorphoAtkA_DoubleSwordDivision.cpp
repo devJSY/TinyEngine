@@ -49,7 +49,7 @@ void CMorphoAtkA_DoubleSwordDivision::Exit()
     GetOwner()->Rigidbody()->SetUseGravity(true);
     if (m_Step < StateStep::Progress)
     {
-        MRPFSM->ClearEmissive();
+        MRPFSM->ResetEmissive();
     }
 }
 
@@ -91,7 +91,7 @@ void CMorphoAtkA_DoubleSwordDivision::Exit_Step()
     case StateStep::ChargeWait:
         break;
     case StateStep::Progress: {
-        MRPFSM->ClearEmissive();
+        MRPFSM->ResetEmissive();
     }
         break;
     case StateStep::End:

@@ -36,6 +36,7 @@ void CKirbyChangeObjectEnd::Enter()
 
     // 변신 중일 땐 커비가 이미시브 효과를 받지않도록 한다.
     PLAYERFSM->SetSkrr(true);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyChangeObjectEnd::Exit()
@@ -44,4 +45,5 @@ void CKirbyChangeObjectEnd::Exit()
 
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
+    PLAYERFSM->SetInvincible(false);
 }

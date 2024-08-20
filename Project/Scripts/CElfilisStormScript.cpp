@@ -64,8 +64,8 @@ void CElfilisStormScript::tick()
     float Angle = m_StormIdx * (2.f * XM_PI / 7.f);
     Angle += 0.2f * m_AccTime;
     
-    float Delta0 = cosf(Angle) * (300.f * m_AccTime);
-    float Delta1 = sinf(Angle) * (300.f * m_AccTime);
+    float Delta0 = cosf(Angle) * (150.f * m_AccTime);
+    float Delta1 = sinf(Angle) * (150.f * m_AccTime);
     Transform()->SetWorldPos(m_CenterPosition + Vec3(Delta0, 0.f, Delta1));
 
     // Destroy
