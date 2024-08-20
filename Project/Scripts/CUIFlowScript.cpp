@@ -46,12 +46,6 @@ void CUIFlowScript::begin()
         m_pLoadingObj->SetActive(false);
     }
 
-    m_pFlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
-    if (nullptr != m_pFlowMgr)
-    {
-        m_pFlowMgr->SetFlowScript(this);
-    }
-
     ChangeState(FlowState::Start);
 }
 
@@ -120,23 +114,12 @@ void CUIFlowScript::TickFlow()
 
 void CUIFlowScript::EndFlow()
 {
-    if (m_pUIAnimManager->AllFinishEndUI())
-    {
-        ChangeState(FlowState::Loading);
-    }
+    m_pLoadingObj->SetActive(true);
 }
 
 void CUIFlowScript::LoadingFlow()
 {
-    m_pLoadingObj->SetActive(true);
-    m_fAccTime += DT;
 
-    if (m_fWaitTime <= m_fAccTime)
-    {
-        m_pLoadingObj->SetActive(false);
-        // TODO : 레벨 로딩 스레드 완료 같은거 얻어올 수 있으면 얻어오기
-        m_pFlowMgr->LevelEnd();
-    }
 }
 
 UINT CUIFlowScript::SaveToLevelFile(FILE* _File)

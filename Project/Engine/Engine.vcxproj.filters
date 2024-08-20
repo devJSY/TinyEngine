@@ -1154,6 +1154,15 @@
     <Filter Include="ShaderCode\Kirby\Characters\Boss\Elfilis">
       <UniqueIdentifier>{77c706d5-7561-4ae6-882b-cc2e98d22851}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIFontShader">
+      <UniqueIdentifier>{a5381272-779e-47c5-82bd-a5ae480e1e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIClearLineShader">
+      <UniqueIdentifier>{28ba29fb-fb00-432c-b8bf-e47bbd158f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UICircleProgressShader">
+      <UniqueIdentifier>{6ddc372f-4b5e-424a-a1e4-45a921dec957}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1514,6 +1523,15 @@
     </FxCompile>
     <FxCompile Include="TornadoEffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="UIKirbyFontPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIFontShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UIKirbyClearLineShader.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIClearLineShader</Filter>
+    </FxCompile>
+    <FxCompile Include="UICircleProgressPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UICircleProgressShader</Filter>
     </FxCompile>
     <FxCompile Include="EffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>

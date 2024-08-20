@@ -110,3 +110,6 @@ CKirbyBulletSize
 CKirbyObjDetectCollider
 CSmokeScript
 CSmokeSpawner
+CUIBossHPScript
+CEnterUIScript
+CKirbyDropOutUIScript

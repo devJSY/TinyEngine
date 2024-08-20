@@ -45,8 +45,8 @@ public:
     virtual void tick() override;
 
 public:
+    virtual void LevelStart() override;
     virtual void LevelEnd() override;
-    virtual void LevelExit() override;
 
 private:
     void EnterZoomState();
