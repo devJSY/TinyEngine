@@ -2,6 +2,7 @@
 #include "CElfilisD_ResistFail.h"
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
+#include "CFlowMgr_BossElfilis.h"
 
 CElfilisD_ResistFail::CElfilisD_ResistFail()
     : m_AccTime(0.f)
@@ -44,8 +45,10 @@ void CElfilisD_ResistFail::Enter_Step()
     case StateStep::Progress: {
         m_AccTime = 0.f;
 
-        //@CAMERA ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
+        // Flow Mgr
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDeath();
 
+        //@CAMERA ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
         CAMERACTRL->SetMainTarget(BOSS);
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
@@ -53,7 +56,6 @@ void CElfilisD_ResistFail::Enter_Step()
 
         Vec3 BossDirFront = BOSS->Transform()->GetWorldDir(DIR_TYPE::FRONT);
         Vec3 BossDirRight = BOSS->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-
         Vec3 CamDir = BossDirFront + BossDirRight;
         CamDir.Normalize();
         CamDir.y = tanf(40.f * XM_PI / 180.f);
@@ -61,7 +63,6 @@ void CElfilisD_ResistFail::Enter_Step()
 
         CAMERACTRL->SetLookDir(-CamDir);
         CAMERACTRL->SetLookDist(400.f);
-
         CAMERACTRL->Normal(true);
     }
     break;

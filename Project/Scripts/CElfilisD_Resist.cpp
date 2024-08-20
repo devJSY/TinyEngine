@@ -49,7 +49,7 @@ void CElfilisD_Resist::Enter_Step()
     case StateStep::ReadyStart: {
         GetOwner()->Animator()->Play(ANIMPREFIX("LastDamageStart"), false, false, 1.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(ELFFSM->GetMapFloorOffset());
-        // CBossMgr::GetElfilisFlowMgr()->SetBossResist();
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowResist();
         //@CAMERA 에피리스 타겟 (진입위치, 각도 등 항상 같음)
     }
     break;
@@ -149,7 +149,7 @@ void CElfilisD_Resist::Progress()
     }
     else
     {
-        if (m_AccTime > 3.f)
+        if (m_AccTime > 10.f)
         {
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST_SUCCESS");
         }

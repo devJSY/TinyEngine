@@ -104,4 +104,6 @@ enum class BossLevelFlow
     LevelStart,
     WaitBoss,
     Fight,
+    DeathStart,
+    Death,
 };

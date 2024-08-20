@@ -940,7 +940,9 @@
     <ClInclude Include="CElfilisD_ResistFail.h">
       <Filter>State\ElfilisState\Demo_Death\1. ResistFail</Filter>
     </ClInclude>
-    <ClInclude Include="CElfilisD_ResistSuccess.h" />
+    <ClInclude Include="CElfilisD_ResistSuccess.h">
+      <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1891,7 +1893,9 @@
     <ClCompile Include="CElfilisD_ResistFail.cpp">
       <Filter>State\ElfilisState\Demo_Death\1. ResistFail</Filter>
     </ClCompile>
-    <ClCompile Include="CElfilisD_ResistSuccess.cpp" />
+    <ClCompile Include="CElfilisD_ResistSuccess.cpp">
+      <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
