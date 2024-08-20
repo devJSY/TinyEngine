@@ -114,6 +114,8 @@ public:
     template <typename T>
     Ptr<T> Load(const wstring& _strRelativePath);
 
+    void ReplacePrefab(Ptr<CPrefab> _Prefab, const wstring& _strKey);
+
 private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
 

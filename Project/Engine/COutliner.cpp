@@ -508,9 +508,7 @@ void COutliner::DrawNode(CGameObject* obj)
                 if (value == IDYES)
                 {
                     Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
-                    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, path);
-                    CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
-                    LOG(Log, "Prefab is Replaced!")
+                    CAssetMgr::GetInst()->ReplacePrefab(pPrefab, path);
                     pPrefab->Save(path);
                 }
             }

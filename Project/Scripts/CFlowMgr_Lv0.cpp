@@ -30,7 +30,7 @@ void CFlowMgr_Lv0::begin()
     SetStartLevel(true);
 
     LevelStart();
-    
+
     SetEnterTime(6.8f);
 
     // Fog Setting
@@ -57,6 +57,10 @@ void CFlowMgr_Lv0::begin()
 void CFlowMgr_Lv0::tick()
 {
     CLevelFlowMgr::tick();
+
+    // 레벨 종료 중
+    if (IsChangedLevel())
+        return;
 
     // Fog Cast
     if (0 != m_FogCastMode)
@@ -130,9 +134,9 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
     }
 }
 
-void CFlowMgr_Lv0::LevelEnd()
+void CFlowMgr_Lv0::LevelExit()
 {
-    CLevelFlowMgr::LevelEnd();
+    CLevelFlowMgr::LevelExit();
 
     m_PostEffectMtrl->SetScalarParam(FLOAT_2, 0.f); // Fog Strength
     SetToneMappingParam(false);                     // Bloom Off
