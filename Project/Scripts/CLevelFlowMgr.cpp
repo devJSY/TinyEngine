@@ -81,7 +81,7 @@ void CLevelFlowMgr::begin()
     //    Effect Init
     // ==================
     m_DimensionFadeEffect =
-        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref", L"prefab\\DimensionFadeEffect.pref")->Instantiate();
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref")->Instantiate();
 
     m_DimensionFadeEffect->SetActive(false);
     GamePlayStatic::AddChildObject(GetOwner(), m_DimensionFadeEffect);
@@ -208,6 +208,23 @@ void CLevelFlowMgr::tick()
         if (m_RadialBlurAcc > m_RadialBlurDuration)
         {
             OffRadialBlurEffect();
+        }
+    }
+
+    if (m_bDimensionalFade && m_DimensionFadeEffect->IsActive())
+    {
+        m_DimensionalAcc += DT_ENGINE;
+
+        if (m_CurDimensionalCoef != m_EndDimensionalCoef)
+        {
+            float Alpha = clamp((m_DimensionalAcc / m_DimensionalDuration), 0.f, 1.f);
+
+            m_CurDimensionalCoef = Lerp(m_StartDimensionalCoef, m_EndDimensionalCoef, Alpha);
+
+            if (Alpha == 1.f)
+            {
+                m_bDimensionalFade = false;
+            }
         }
     }
 
@@ -373,6 +390,7 @@ void CLevelFlowMgr::LevelRestart()
 
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
+
     // @TODO BGM 종료
 }
 
@@ -394,14 +412,22 @@ void CLevelFlowMgr::MtrlParamUpdate()
             pDOFMtrl->SetScalarParam(VEC2_0, NDCToUV(NDCPos)); // Focus UV
         }
     }
-
-    if (m_RadialBlurEffect->IsActive())
+    if (nullptr != PLAYER)
     {
-        static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
-        Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
-        Vec2 UV = NDCToUV(NDCPos);
+        if (m_RadialBlurEffect->IsActive())
+        {
+            static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
+            Vec3 NDCPos = PositionToNDC(PLAYER->Transform()->GetWorldPos());
+            Vec2 UV = NDCToUV(NDCPos);
 
-        pRadialBlurMtrl->SetScalarParam(VEC2_0, UV);
+            pRadialBlurMtrl->SetScalarParam(VEC2_0, UV);
+        }
+    }
+
+    if (m_DimensionFadeEffect->IsActive())
+    {
+        static Ptr<CMaterial> pDimensionalFadeMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\DimensionFadeMtrl.mtrl");
+        pDimensionalFadeMtrl->SetScalarParam(FLOAT_0, m_CurDimensionalCoef);
     }
 }
 
@@ -456,11 +482,29 @@ void CLevelFlowMgr::SetLoadingUIColor(Vec3 _Color)
     m_pLoadingUI->MeshRender()->GetMaterial(0)->SetAlbedo(Color);
 }
 
-void CLevelFlowMgr::OnDimensionFade()
+void CLevelFlowMgr::OnDimensionFade(float _Coef)
 {
     if (nullptr != m_DimensionFadeEffect)
     {
         m_DimensionFadeEffect->SetActive(true);
+
+        m_bDimensionalFade = false;
+        m_CurDimensionalCoef = _Coef;
+    }
+}
+
+void CLevelFlowMgr::OnDimensionFade(float _StartCoef, float _EndCoef, float _Duration)
+{
+    if (nullptr != m_DimensionFadeEffect)
+    {
+        m_DimensionFadeEffect->SetActive(true);
+
+        m_bDimensionalFade = true;
+        m_StartDimensionalCoef = _StartCoef;
+        m_EndDimensionalCoef = _EndCoef;
+        m_DimensionalAcc = 0.f;
+        m_DimensionalDuration = _Duration;
+        m_CurDimensionalCoef = m_StartDimensionalCoef;
     }
 }
 
@@ -469,6 +513,13 @@ void CLevelFlowMgr::OffDimensionFade()
     if (nullptr != m_DimensionFadeEffect)
     {
         m_DimensionFadeEffect->SetActive(false);
+
+        m_bDimensionalFade = false;
+        m_StartDimensionalCoef = 1.f;
+        m_EndDimensionalCoef = 1.f;
+        m_DimensionalAcc = 0.f;
+        m_DimensionalDuration = 0.f;
+        m_CurDimensionalCoef = 1.f;
     }
 }
 

@@ -74,7 +74,7 @@ void CKirbyChangeObject::Enter()
 
     if (FLowMgrScript != nullptr)
     {
-        FLowMgrScript->OnDimensionFade();
+        FLowMgrScript->OnDimensionFade(0.3f);
     }
 
     // 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
