@@ -54,9 +54,16 @@ void CLadderScript::OnTriggerEnter(CCollider* _OtherCollider)
 void CLadderScript::OnTriggerStay(CCollider* _OtherCollider)
 {
     // PLAYER랑 충돌한 경우
-    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER && PLAYERFSM->GetCurState()->GetName() != L"JUMP_START" &&
-        PLAYERFSM->GetCurState()->GetName() != L"JUMP")
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
     {
+        // 제외 상태
+        if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
+            PLAYERFSM->GetCurState()->GetName() == L"DODGE2" || PLAYERFSM->GetCurState()->GetName() == L"JUMP_START" ||
+            PLAYERFSM->GetCurState()->GetName() == L"JUMP")
+        {
+            return;
+        }
+
         Vec3 InputDir = PLAYERCTRL->GetInputWorld().Normalize();
         Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
 

@@ -14,8 +14,6 @@
 #define MtrlRoughness 0.95f
 #define MtrlEmission g_vEmission
 
-#define sparklyEffect g_float_0
-
 PS_OUT_DEFERRED main(PS_IN input)
 {
     PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
@@ -56,7 +54,7 @@ PS_OUT_DEFERRED main(PS_IN input)
     float metallic = MtrlMetallic;
     float roughness = MtrlRoughness;
     float ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
-    float3 emission = MtrlEmission.rgb + float3(sparklyEffect, sparklyEffect, sparklyEffect);
+    float3 emission = MtrlEmission.rgb;
 
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);

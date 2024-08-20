@@ -130,6 +130,12 @@ void CKirbyObject::DropObjectEnter()
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
     }
+    if (PLAYERFSM->GetCurHatBlade())
+    {
+        PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+        GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHatBlade(), L"Hat");
+    }
+
     if (PLAYERFSM->GetCurWeapon())
     {
         PLAYERFSM->GetCurWeapon()->SetActive(true);
@@ -207,6 +213,12 @@ void CKirbyObject::ChangeObjectEnter()
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
     }
+    if (PLAYERFSM->GetCurHatBlade())
+    {
+        PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+        GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHatBlade(), L"Hat");
+    }
+
     if (PLAYERFSM->GetCurWeapon())
     {
         PLAYERFSM->GetCurWeapon()->SetActive(false);
@@ -233,6 +245,12 @@ void CKirbyObject::ChangeObjectEndEnter()
     {
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHat(), L"Hat");
     }
+    if (PLAYERFSM->GetCurHatBlade())
+    {
+        PLAYERFSM->GetCurHatBlade()->MeshRender()->SetMaterial(CAssetMgr::GetInst()->Load<CMaterial>(L"material\\MetalHat_BladeC.mtrl"), 0);
+        GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurHatBlade(), L"Hat");
+    }
+
     PLAYER->Animator()->Play(ANIMPREFIX("DemoEndFirst"), false, false, 2.5f);
 
     PLAYERCTRL->LockMove();

@@ -42,7 +42,14 @@ void CKirbyObject_VendingMachine::AttackStart()
     {
         if (KEY_PRESSED(KEY_ATK) && PLAYERFSM->GetCanCount())
         {
-            ChangeState(L"ATTACK_START");
+            if (KEY_NONE_ARROW)
+            {
+                ChangeState(L"ATTACK_START");
+            }
+            else
+            {
+                ChangeState(L"ATTACK_CHARGE1");
+            }
         }
         else
         {
@@ -67,7 +74,7 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
     Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
     Vec3 KirbyWorldDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 Offset = Vec3(0.f, 10.f, 0.f);
-        
+
     // 橇府普 积己
     if (nullptr == m_Can.Get())
     {
@@ -87,6 +94,62 @@ void CKirbyObject_VendingMachine::AttackStartExit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
+}
+
+void CKirbyObject_VendingMachine::AttackCharge1()
+{
+    if (PLAYER->Animator()->IsFinish())
+    {
+        if (KEY_PRESSED(KEY_ATK) && PLAYERFSM->GetCanCount())
+        {
+            if (KEY_NONE_ARROW)
+            {
+                ChangeState(L"ATTACK_START");
+            }
+            else
+            {
+                ChangeState(L"ATTACK_CHARGE1");
+            }
+        }
+        else
+        {
+            ChangeState(L"ATTACK_END");
+        }
+    }
+}
+
+void CKirbyObject_VendingMachine::AttackCharge1Enter()
+{
+    PLAYERCTRL->LockJump();
+
+    // Can Counting
+    PLAYERFSM->SubCanCount();
+
+    // Animation
+    PLAYER->Animator()->Play(ANIMPREFIX("ShootMove"), false, false, 1.f, 0);
+
+    // Bullet
+    Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+    Vec3 KirbyWorldDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 Offset = Vec3(0.f, 10.f, 0.f);
+
+    // 橇府普 积己
+    if (nullptr == m_Can.Get())
+    {
+        m_Can = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
+    }
+
+    CGameObject* CanJuiceInst = m_Can->Instantiate();
+
+    CanJuiceInst->Transform()->SetDirection(KirbyWorldDir);
+    CanJuiceInst->Transform()->SetWorldPos(KirbyPos + Offset);
+
+    GamePlayStatic::SpawnGameObject(CanJuiceInst, CanJuiceInst->GetLayerIdx());
+}
+
+void CKirbyObject_VendingMachine::AttackCharge1Exit()
+{
+    PLAYERCTRL->UnlockJump();
 }
 
 void CKirbyObject_VendingMachine::AttackEnd()
