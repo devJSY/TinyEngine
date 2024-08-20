@@ -22,6 +22,7 @@ CEditorMgr::CEditorMgr()
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
     , m_hObserver(nullptr)
+    , m_bContentAutoLoad(false)
 {
 #ifdef DISTRIBUTE
     m_bEnabled = false;
@@ -156,8 +157,8 @@ void CEditorMgr::init()
     // Editor 용 카메라로서 렌더매니저에 등록
     CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
 
-    // Editor 모드에선 컨텐츠 폴더에 존재하는 모든 에셋 로딩
-   // CAssetMgr::GetInst()->ReloadContent();
+    // Content Auto Loading
+    SetContentAutoLoad(m_bContentAutoLoad);
 
     // Content 폴더 변경사항 확인용 핸들 초기화
     wstring strContentPath = CPathMgr::GetContentPath();
@@ -190,7 +191,10 @@ void CEditorMgr::tick()
     }
 
     // Content 폴더 변경사항 확인
-   // ObserveContent();
+    if (m_bContentAutoLoad)
+    {
+        ObserveContent();
+    }
 }
 
 void CEditorMgr::render()
@@ -228,6 +232,16 @@ void CEditorMgr::render()
     {
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
+    }
+}
+
+void CEditorMgr::SetContentAutoLoad(bool _bEnable)
+{
+    m_bContentAutoLoad = _bEnable;
+    // 컨텐츠 폴더에 존재하는 모든 에셋 로딩
+    if (m_bContentAutoLoad)
+    {
+        CAssetMgr::GetInst()->AsyncReloadContent();
     }
 }
 
@@ -300,7 +314,7 @@ void CEditorMgr::ObserveContent()
     {
         FindNextChangeNotification(m_hObserver);
 
-        CAssetMgr::GetInst()->ReloadContent();
+        CAssetMgr::GetInst()->AsyncReloadContent();
         LOG(Log, "Assets Reloaded!!");
     }
 }

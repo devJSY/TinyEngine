@@ -57,14 +57,21 @@ void CAssetMgr::initSound()
 void CAssetMgr::tick()
 {
     // 모델 로딩이 종료된 후 쓰레드 해제
-    if (!IsModelLoading())
+    if (!IsAssetLoading())
     {
         ThreadRelease();
     }
 }
 
-void CAssetMgr::ReloadContent()
+void CAssetMgr::AsyncReloadContent()
 {
+    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncReloadContentFunc, this));
+}
+
+void CAssetMgr::AsyncReloadContentFunc()
+{
+    std::scoped_lock lock(m_Mutex); // 상호배제
+
     LoadAssetsFromFile(CPathMgr::GetContentPath());
 
     // 원본 파일이 삭제된 에셋은 메모리에서 제거
@@ -84,6 +91,8 @@ void CAssetMgr::ReloadContent()
             }
         }
     }
+
+    ++m_CompletedThread;
 }
 
 void CAssetMgr::ThreadRelease()
@@ -198,11 +207,20 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
     return pTex;
 }
 
+void CAssetMgr::ReplacePrefab(Ptr<CPrefab> _Prefab, const wstring& _strKey)
+{
+    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, _strKey);
+    CAssetMgr::GetInst()->AddAsset<CPrefab>(_strKey, _Prefab);
+    LOG(Log, "Prefab is Replaced!");
+}
+
 void CAssetMgr::DeleteAsset(ASSET_TYPE _type, const wstring& _strKey)
 {
     map<wstring, Ptr<CAsset>>::iterator iter = m_mapAsset[(UINT)_type].find(_strKey);
 
-    assert(!(iter == m_mapAsset[(UINT)_type].end()));
+    // 존재하지 않는 에셋을 삭제하려고 한 경우
+    if (iter == m_mapAsset[(UINT)_type].end())
+        return;
 
     m_mapAsset[(UINT)_type].erase(iter);
 }

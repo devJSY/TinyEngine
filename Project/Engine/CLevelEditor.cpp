@@ -221,9 +221,9 @@ void CLevelEditor::render()
     // static bool b = true;
     // ImGui::ShowDemoWindow(&b);
 
-    if (CAssetMgr::GetInst()->IsModelLoading())
+    if (CAssetMgr::GetInst()->IsAssetLoading())
     {
-        ImGui::Begin("Model Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
+        ImGui::Begin("Asset Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
 
         const ImU32 col = ImGui::GetColorU32(ImVec4{0.2f, 0.45f, 0.811f, 1.0f});
         const ImU32 bg = ImGui::GetColorU32(ImVec4{0.258f, 0.258f, 0.258f, 1.0f});
@@ -408,6 +408,10 @@ void CLevelEditor::render_WorldSettings()
     ImGui::RadioButton("Physcis", (int*)&g_Global.g_MousePickingMode, 1);
     ImGui::SameLine();
     ImGui::RadioButton("Physcis2D", (int*)&g_Global.g_MousePickingMode, 2);
+
+    bool bContentAutoLoad = CEditorMgr::GetInst()->IsContentAutoLoad();
+    if (ImGui::Checkbox("Content Auto Load", &bContentAutoLoad))
+        CEditorMgr::GetInst()->SetContentAutoLoad(bContentAutoLoad);
 
     bool bDebugRender = CRenderMgr::GetInst()->IsShowDebugRender();
     if (ImGui::Checkbox("Show DebugRender", &bDebugRender))

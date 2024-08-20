@@ -508,9 +508,7 @@ void COutliner::DrawNode(CGameObject* obj)
                 if (value == IDYES)
                 {
                     Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
-                    CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, path);
-                    CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
-                    LOG(Log, "Prefab is Replaced!")
+                    CAssetMgr::GetInst()->ReplacePrefab(pPrefab, path);
                     pPrefab->Save(path);
                 }
             }
@@ -2657,13 +2655,13 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             {
                 if (ImGui::TreeNodeEx("Render##Particlesystem", m_DefaultTreeNodeFlag, "Render"))
                 {
-                    if (ImGui::RadioButton(ImGui_LabelPrefix("Velocity Alignment").c_str(), Module.VelocityAlignment))
-                    {
-                        if (0 == Module.VelocityAlignment)
-                            Module.VelocityAlignment = 1;
-                        else if (1 == Module.VelocityAlignment)
-                            Module.VelocityAlignment = 0;
-                    }
+                    ImGui::Text("Velocity Alignment");
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Off", (int*)&Module.VelocityAlignment, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("On", (int*)&Module.VelocityAlignment, 1);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Cross Mesh", (int*)&Module.VelocityAlignment, 2);
 
                     ImGui::Text("Velocity Type");
                     ImGui::SameLine();

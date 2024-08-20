@@ -80,8 +80,7 @@ void CLevelFlowMgr::begin()
     // ==================
     //    Effect Init
     // ==================
-    m_DimensionFadeEffect =
-        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref")->Instantiate();
+    m_DimensionFadeEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\DimensionFadeEffect.pref")->Instantiate();
 
     m_DimensionFadeEffect->SetActive(false);
     GamePlayStatic::AddChildObject(GetOwner(), m_DimensionFadeEffect);
@@ -362,8 +361,12 @@ void CLevelFlowMgr::LevelExit()
     // Kirby 프리팹 저장
     if (!m_bUILevel)
     {
-        Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
-        MainPlayerPref->Save(L"prefab\\Main Player.pref");
+        if (nullptr != PLAYER)
+        {
+            Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
+            CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
+            MainPlayerPref->Save(L"prefab\\Main Player.pref");
+        }
     }
 
     // Level Change
