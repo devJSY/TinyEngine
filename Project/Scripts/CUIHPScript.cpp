@@ -83,6 +83,65 @@ void CUIHPScript::tick()
 
     SetInitInfo();
 
+    switch (m_eState)
+    {
+    case UnitHPState::Damaged: {
+        Damaged();
+    }
+    break;
+    case UnitHPState::Healing: {
+        //Healing();
+    }
+    break;
+    case UnitHPState::Wait: {
+        Wait();
+    }
+    break;
+    case UnitHPState::End:
+        break;
+    default:
+        break;
+    }
+
+    SwitchKirbyName();
+}
+
+void CUIHPScript::ChangeState(UnitHPState _eState)
+{
+    ExitState();
+    m_eState = _eState;
+    EnterState();
+}
+
+void CUIHPScript::EnterState()
+{
+    switch (m_eState)
+    {
+    case UnitHPState::Damaged:
+        break;
+    case UnitHPState::Healing: {
+        if (nullptr != m_pUnitScript)
+            m_fPrevHP = m_pUnitScript->GetCurInfo().HP;
+    }
+    break;
+    case UnitHPState::Wait:
+        break;
+    case UnitHPState::End:
+        break;
+    default:
+        break;
+    }
+}
+
+void CUIHPScript::ExitState()
+{
+}
+
+void CUIHPScript::Damaged()
+{
+    if (!m_pUnitScript)
+        return;
+
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
     if (m_bIsCombo)
@@ -100,7 +159,44 @@ void CUIHPScript::tick()
     if (m_bIsScaling)
         Scaling();
 
-    SwitchKirbyName();
+   /* float fPrevCurhp = m_fCurHP;
+    float m_fCurHP = m_pUnitScript->GetCurInfo().HP;
+    if (fPrevCurhp < m_fCurHP)
+    {
+        ChangeState(UnitHPState::Healing);
+    }*/
+}
+
+void CUIHPScript::Healing()
+{
+    Scaling();
+
+    CaculateHealingShading();
+
+    float fCheckHP = m_fCurHP;
+    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
+
+    if (m_fCurHP < fCheckHP)
+    {
+        ChangeState(UnitHPState::Damaged);
+    }
+}
+
+void CUIHPScript::Wait()
+{
+    if (nullptr == m_pUnitScript)
+        return;
+
+    float fPrevCurhp = m_fCurHP;
+    float m_fCurHP = m_pUnitScript->GetCurInfo().HP;
+    if (fPrevCurhp < m_fCurHP)
+    {
+        ChangeState(UnitHPState::Healing);
+    }
+    else if (m_fCurHP < fPrevCurhp)
+    {
+        ChangeState(UnitHPState::Damaged);
+    }
 }
 
 void CUIHPScript::SetInitInfo()
@@ -128,6 +224,13 @@ void CUIHPScript::SetInitInfo()
 void CUIHPScript::CaculateShading()
 {
     float _fShadingRatio = m_fCurHP / m_fMaxHP;
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
+}
+
+void CUIHPScript::CaculateHealingShading()
+{
+    m_fCurPrevHP += m_fDescSpeed * DT;
+    float _fShadingRatio = m_fCurPrevHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
 }
 

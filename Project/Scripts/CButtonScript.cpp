@@ -285,7 +285,10 @@ void CButtonScript::ButtonUpdate()
         CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
 
         if (_pTr)
-            _pTr->SetWorldScale(m_vNormalScale * m_vButtonScale[(UINT)m_eCurState]);
+        {
+            Vec3 vTransScale = m_vNormalScale * m_vButtonScale[(UINT)m_eCurState];
+            _pTr->SetWorldScale(Vec3(vTransScale.x, vTransScale.y, m_vNormalScale.z));
+        }
     }
     break;
     case ButtonTransition::END:

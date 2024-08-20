@@ -324,6 +324,9 @@ void CLevelFlowMgr::LevelEnd()
     if (!m_bUILevel)
         SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
+    if (!m_pClearUI)
+        TrunOffStageClearUI();
+
     // Player UI
     TurnOffPlayerHP();
 

@@ -87,6 +87,14 @@ void CKirbyDropOutUIScript::tick()
 
 void CKirbyDropOutUIScript::Wait()
 {
+    for (size_t i = 0; i < m_pProgressUI.size(); i++)
+    {
+        if (nullptr != m_pProgressUI[i])
+        {
+            m_pProgressUI[i]->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
+        }
+    }
+
     if (PLAYERFSM->GetYPressedTime() >= 0.1f)
     {
         ChangeState(DropOutUIState::Appear);
@@ -98,16 +106,16 @@ void CKirbyDropOutUIScript::Appear()
 {
     FadeFunc(true);
 
+    if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT")
+    {
+        ChangeState(DropOutUIState::Wait);
+    }
+
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
     if (PLAYERFSM->GetYPressedTime() <= 0.f)
     {
         ChangeState(DropOutUIState::Disappear);
         m_bFailed = true;
-    }
-
-    if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT_START")
-    {
-        ChangeState(DropOutUIState::Disappear);
     }
 
     if (nullptr != m_pCircleProgressUI)
@@ -118,6 +126,11 @@ void CKirbyDropOutUIScript::Appear()
 
 void CKirbyDropOutUIScript::Disappear()
 {
+    if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT")
+    {
+        ChangeState(DropOutUIState::Wait);
+    }
+
     FadeFunc(false);
 
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();

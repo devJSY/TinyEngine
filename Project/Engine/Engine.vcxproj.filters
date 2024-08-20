@@ -1533,5 +1533,8 @@
     <FxCompile Include="UICircleProgressPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UICircleProgressShader</Filter>
     </FxCompile>
+    <FxCompile Include="UIDefaultShaderNoTestPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

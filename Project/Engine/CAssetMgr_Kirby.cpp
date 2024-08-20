@@ -285,6 +285,31 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // UIDefaultNoTestShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\UIDefaultPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+        pShader->AddScalarParam(FLOAT_0, "AlphaDiscard Threshold", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Glow Point", 0.1f);
+
+        pShader->AddScalarParam(INT_0, "UIANIM1", 0.1f);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"UIDefaultNoTestShader");
+        AddAsset(L"UIDefaultNoTestShader", pShader);
+    }
+
+    // =================================
     // UICircleProgressShader
     // =================================
     {
