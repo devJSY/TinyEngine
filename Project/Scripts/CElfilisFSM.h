@@ -64,6 +64,14 @@ private:
     CGameObject* m_Weapon;
     CBoxCollider* m_Hitbox;
 
+    // materials
+    vector<Ptr<CMaterial>> m_listBodyMtrl;
+    vector<Ptr<CMaterial>> m_listWeaponMtrl;
+    vector<Ptr<CTexture>> m_listBodyEmissiveTex;
+    vector<Ptr<CTexture>> m_listWeaponEmissiveTex;
+    vector<Vec3> m_listBodyEmissive;
+    vector<Vec3> m_listWeaponEmissive;
+
     // map
     Vec3 m_MapFloorOffset;
     float m_MapSizeRadius;
@@ -85,6 +93,8 @@ public:
     void SetPattern(ElfilisPatternType _Pattern);
     void ProcPatternStep();
     void SetPhase(int _Phase) { m_Phase = _Phase; }
+    void ResetEmissive();
+    void AddEmissive(Vec3 _Color);
     void OnWeaponTrigger();
     void OffWeaponTrigger();
 

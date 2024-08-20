@@ -305,6 +305,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisD_Damage.h"
 #include "CElfilisD_Jump.h"
 #include "CElfilisD_Roar.h"
+#include "CElfilisD_Resist.h"
+#include "CElfilisD_ResistFail.h"
+#include "CElfilisD_ResistSuccess.h"
 
 #include "CElfilisG_Idle.h"
 #include "CElfilisG_BackStep.h"
@@ -363,6 +366,9 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE", new CElfilisD_Damage);
     AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_JUMP", new CElfilisD_Jump);
     AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_ROAR", new CElfilisD_Roar);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_RESIST", new CElfilisD_Resist);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_RESIST_FAIL", new CElfilisD_ResistFail);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_RESIST_SUCCESS", new CElfilisD_ResistSuccess);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
@@ -401,11 +407,32 @@ void CElfilisFSM::begin()
 
     // get childs
     m_Weapon = GetOwner()->GetChildObject(L"Halberd");
-    m_Weapon->BoxCollider()->SetEnabled(false);
+
     CGameObject* Hitbox = GetOwner()->GetChildObject(L"Hitbox");
     if (Hitbox)
     {
         m_Hitbox = Hitbox->BoxCollider();
+        m_Hitbox->GetOwner()->SetActive(false);
+    }
+    
+    // get mtrl
+    for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
+    {
+        m_listBodyMtrl.push_back(MeshRender()->GetMaterial(i));
+        m_listBodyEmissive.push_back(MeshRender()->GetMaterial(i)->GetEmission());
+        m_listBodyEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
+    }
+
+    if (m_Weapon)
+    {
+        for (int i = 0; i < (int)m_Weapon->MeshRender()->GetMtrlCount(); ++i)
+        {
+            m_listWeaponMtrl.push_back(m_Weapon->MeshRender()->GetMaterial(i));
+            m_listWeaponEmissive.push_back(m_Weapon->MeshRender()->GetMaterial(i)->GetEmission());
+            m_listBodyEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
+        }
+
+        m_Weapon->BoxCollider()->SetEnabled(false);
     }
 
     // set map size
@@ -423,7 +450,7 @@ void CElfilisFSM::tick()
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeState(L"GROUND_ATK_SWORDWAVE_RL");
+        ChangeState(L"DEMO_RESIST");
     }
 }
 
@@ -557,6 +584,38 @@ void CElfilisFSM::ProcPatternStep()
     else
     {
         m_PatternStep++;
+    }
+}
+
+void CElfilisFSM::ResetEmissive()
+{
+    for (int i = 0; i < m_listBodyMtrl.size(); ++i)
+    {
+        m_listBodyMtrl[i]->SetEmission(Vec4(m_listBodyEmissive[i], 0.f));
+        m_listBodyMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, m_listBodyEmissiveTex[i]);
+    }
+
+    for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
+    {
+        m_listWeaponMtrl[i]->SetEmission(Vec4(m_listWeaponEmissive[i], 0.f));
+        m_listWeaponMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, m_listWeaponEmissiveTex[i]);
+    }
+}
+
+void CElfilisFSM::AddEmissive(Vec3 _Color)
+{
+    for (int i = 0; i < m_listBodyMtrl.size(); ++i)
+    {
+        Vec4 Color = Vec4(m_listBodyEmissive[i] + _Color, 0.f);
+        m_listBodyMtrl[i]->SetEmission(Color);
+        m_listBodyMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, nullptr);
+    }
+
+    for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
+    {
+        Vec4 Color = Vec4(m_listWeaponEmissive[i] + _Color, 0.f);
+        m_listWeaponMtrl[i]->SetEmission(Color);
+        m_listWeaponMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, nullptr);
     }
 }
 
