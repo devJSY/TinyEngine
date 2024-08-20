@@ -26,6 +26,7 @@ private:
 
     bool m_bActive;
     bool m_bDead;
+    bool m_bBeginCalled;
 
     // Bone Socket
     tBoneSocket* m_BoneSocket; // 부모 오브젝트가 보유한 Skeletal Mesh의 본 소켓

@@ -87,7 +87,7 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
     if (g_ParticleModule[0].arrModuleCheck[6])
     {
         // 속도에 따른 정렬 기능
-        if (g_ParticleModule[0].VelocityAlignment)
+        if (0 != g_ParticleModule[0].VelocityAlignment)
         {
             float3 vR = normalize(mul(float4(particle.vVelocity.xyz, 0.f), g_matView).xyz);
             float3 vF = normalize(cross(vR, float3(0.f, 1.f, 0.f)));
@@ -133,8 +133,8 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
         
     if (g_ParticleModule[0].arrModuleCheck[6])
     {
-        // 속도에 따른 정렬 기능
-        if (g_ParticleModule[0].VelocityAlignment)
+        // Cross Mesh 
+        if (2 == g_ParticleModule[0].VelocityAlignment)
         {
             _OutStream.Append(output_cross[0]);
             _OutStream.Append(output_cross[2]);

@@ -36,10 +36,9 @@ public:
     void init();
     void initSound();
     void tick();
-    void ReloadContent();
 
     float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
-    bool IsModelLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
+    bool IsAssetLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
     void ThreadRelease();
 
 private:
@@ -62,10 +61,12 @@ public:
     Ptr<CMeshData> LoadFBX(const wstring& _strPath);
     void AsyncLoadFBX(const wstring& _strPath);
     void AsyncLoadAnimationFBX(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
+    void AsyncReloadContent();
 
 private:
     void AsyncLoadFBXFunc(const wstring& _strPath);
     void AsyncLoadAnimationFBXFunc(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
+    void AsyncReloadContentFunc();
 
 public:
     // Geometry Function
@@ -112,6 +113,8 @@ public:
 
     template <typename T>
     Ptr<T> Load(const wstring& _strRelativePath);
+
+    void ReplacePrefab(Ptr<CPrefab> _Prefab, const wstring& _strKey);
 
 private:
     void DeleteAsset(ASSET_TYPE _type, const wstring& _strKey);
