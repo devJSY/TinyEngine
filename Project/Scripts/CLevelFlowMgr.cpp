@@ -136,7 +136,7 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
-    if (KEY_TAP(KEY::N))
+    if (KEY_TAP(KEY::N) && KEY_PRESSED(KEY::LCTRL))
     {
         LevelEnd();
     }

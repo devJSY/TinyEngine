@@ -26,6 +26,15 @@ CPlayerMgr::CPlayerMgr()
 
 CPlayerMgr::~CPlayerMgr()
 {
+    CPlayerMgr::m_PlayerObj = nullptr;
+    CPlayerMgr::m_PlayerUnit = nullptr;
+    m_PlayerFSM = nullptr;
+    CPlayerMgr::m_PlayerController = nullptr;
+    CPlayerMgr::m_CameraController = nullptr;
+    CPlayerMgr::m_PlayerMeshData = nullptr;
+    CPlayerMgr::m_PlayerBodyMtrl = nullptr;
+    CPlayerMgr::m_PlayerBodyDemoMtrl = nullptr;
+    CPlayerMgr::m_PlayerMeshIdx = KirbyMeshIdx();
 }
 
 void CPlayerMgr::begin()
