@@ -77,7 +77,7 @@ void CCanJuice::begin()
     Front.Normalize();
 
     // 날아가야 하는 방향 세팅
-    Vec3 FlyDir = Front + Vec3(0.f, 0.5f, 0.f);
+    Vec3 FlyDir = Front + Vec3(0.f, 0.2f, 0.f);
     FlyDir.Normalize();
 
     Rigidbody()->SetVelocity(FlyDir * m_InitSpeed);
@@ -94,11 +94,11 @@ void CCanJuice::tick()
     }
 }
 
-void CCanJuice::OnCollisionEnter(CCollider* _OtherCollider)
+void CCanJuice::OnTriggerEnter(CCollider* _OtherCollider)
 {
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
-    if (LayerIdx == LAYER_MONSTER)
+    if (LayerIdx == LAYER_MONSTER_TRIGGER && _OtherCollider->GetOwner()->GetName() == L"Body Collider")
     {
         Vec3 CanPos = GetOwner()->Transform()->GetWorldPos();
         Vec3 MonsterPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
@@ -109,9 +109,15 @@ void CCanJuice::OnCollisionEnter(CCollider* _OtherCollider)
 
         _OtherCollider->GetOwner()->GetScript<CUnitScript>()->GetDamage(JuiceHit);
 
+        Ptr<CPrefab> CanAttackSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\(M)ImpactSmokeSpanwer.pref");
+        CGameObject* Spawner = CanAttackSmokeSpawner->Instantiate();
+        Spawner->Transform()->SetWorldPos(MonsterPos);
+        GamePlayStatic::SpawnGameObject(Spawner, Spawner->GetLayerIdx());
+
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
+
 
 UINT CCanJuice::SaveToLevelFile(FILE* _File)
 {

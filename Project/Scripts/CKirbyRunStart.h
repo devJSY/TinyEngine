@@ -12,6 +12,10 @@ public:
     virtual void Enter();
     virtual void Exit();
 
+private:
+    void SpawnSmoke();
+
+
 public:
     CLONE(CKirbyRunStart)
     CKirbyRunStart();

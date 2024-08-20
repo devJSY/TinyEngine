@@ -9,6 +9,8 @@ private:
     float m_FaceDuraion;
     float m_DeathDuraion;
 
+    bool m_bFadeEffect;
+
 public:
     virtual void tick();
     virtual void Enter();

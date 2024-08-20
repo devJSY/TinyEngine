@@ -52,7 +52,14 @@ void CKirbyRun::tick()
 
                 if (LeftCanCount > 0)
                 {
-                    ChangeState(L"ATTACK_START");
+                    if (KEY_NONE_ARROW)
+                    {
+                        ChangeState(L"ATTACK_START");
+                    }
+                    else
+                    {
+                        ChangeState(L"ATTACK_CHARGE1");
+                    }
                 }
                 else
                 {
@@ -328,6 +335,12 @@ void CKirbyRun::SettingSmoke()
 
 void CKirbyRun::SpawnSmoke()
 {
+    AbilityCopyType CurType = PLAYERFSM->GetCurAbilityIdx();
+
+    if (CurType == AbilityCopyType::SLEEP)
+        return;
+
+
     if (m_FirstStep == true && CHECK_ANIMFRM(GetOwner(), m_FirstStepSmokeFrm) && CHECK_ANIMFRM_UNDER(GetOwner(), m_SecondStepSmokeFrm - 1))
     {
         Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
