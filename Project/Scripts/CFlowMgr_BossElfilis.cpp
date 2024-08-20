@@ -87,6 +87,7 @@ void CFlowMgr_BossElfilis::SetFight()
     if (m_FlowState != BossLevelFlow::WaitBoss)
         return;
 
+    TurnOnPlayerHP();
     TurnOnBossHP();
     PLAYERCTRL->UnlockInput();
     m_FlowState = BossLevelFlow::Fight;
@@ -102,6 +103,7 @@ void CFlowMgr_BossElfilis::SpawnElfilis()
     {
         m_LevelEnterWall->SetActive(true);
     }
+    TurnOffPlayerHP();
 }
 
 UINT CFlowMgr_BossElfilis::SaveToLevelFile(FILE* _File)

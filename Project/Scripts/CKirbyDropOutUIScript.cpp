@@ -95,7 +95,7 @@ void CKirbyDropOutUIScript::Wait()
         }
     }
 
-    if (PLAYERFSM->GetYPressedTime() >= 0.1f)
+    if (PLAYERFSM->GetYPressedTime() >= 0.2f)
     {
         ChangeState(DropOutUIState::Appear);
     }
@@ -135,7 +135,7 @@ void CKirbyDropOutUIScript::Disappear()
 
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
 
-    if (PLAYERFSM->GetYPressedTime() >= 0.1f)
+    if (PLAYERFSM->GetYPressedTime() >= 0.2f)
     {
         ChangeState(DropOutUIState::Appear);
     }

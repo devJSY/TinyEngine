@@ -414,7 +414,10 @@ void CLevelFlowMgr::TurnOnBossHP()
     {
         CUIBossHPScript* pScript = m_pBossHP->GetScript<CUIBossHPScript>();
         if (nullptr != pScript)
+        {
+            pScript->GetOwner()->SetActive(true);
             pScript->ChangeState(HPState::Enter);
+        }
     }
 }
 
@@ -423,6 +426,14 @@ void CLevelFlowMgr::TurnOffBossHP()
     if (nullptr != m_pBossHP)
     {
         m_pBossHP->SetActive(false);
+    }
+}
+
+void CLevelFlowMgr::TurnOnPlayerHP()
+{
+    if (nullptr != m_pPlayerHP)
+    {
+        m_pPlayerHP->SetActive(true);
     }
 }
 

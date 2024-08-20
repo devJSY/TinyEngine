@@ -190,7 +190,7 @@ void CEditorMgr::tick()
     }
 
     // Content 폴더 변경사항 확인
-    //ObserveContent();
+   // ObserveContent();
 }
 
 void CEditorMgr::render()
