@@ -11,11 +11,12 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript()
     : CScript(KIRBYDROPOUTUISCRIPT)
     , m_pProgressUI{}
     , m_pCircleProgressUI(nullptr)
-    , m_eState(DropOutUIState::Wait)
+    , m_eState(DropOutUIState::Idle)
     , m_vOffset{}
     , m_bFailed(false)
     , m_fAccTime(0.f)
     , m_fAppearTime(0.f)
+    , m_fWaitTime(1.5f)
     , m_fDisappearTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAppearTime, "Appear Time");
@@ -27,10 +28,11 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript(const CKirbyDropOutUIScript& Origin
     : CScript(Origin)
     , m_pProgressUI{}
     , m_pCircleProgressUI(nullptr)
-    , m_eState(DropOutUIState::Wait)
+    , m_eState(DropOutUIState::Idle)
     , m_vOffset(Origin.m_vOffset)
     , m_bFailed(false)
     , m_fAccTime(0.f)
+    , m_fWaitTime(1.5f)
     , m_fAppearTime(Origin.m_fAppearTime)
     , m_fDisappearTime(Origin.m_fDisappearTime)
 {
@@ -66,6 +68,10 @@ void CKirbyDropOutUIScript::tick()
 
     switch (m_eState)
     {
+    case DropOutUIState::Idle: {
+        Idle();
+    }
+    break;
     case DropOutUIState::Wait: {
         Wait();
     }
@@ -85,19 +91,20 @@ void CKirbyDropOutUIScript::tick()
     }
 }
 
-void CKirbyDropOutUIScript::Wait()
+void CKirbyDropOutUIScript::Idle()
 {
-    for (size_t i = 0; i < m_pProgressUI.size(); i++)
-    {
-        if (nullptr != m_pProgressUI[i])
-        {
-            m_pProgressUI[i]->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
-        }
-    }
-
     if (PLAYERFSM->GetYPressedTime() >= 0.2f)
     {
         ChangeState(DropOutUIState::Appear);
+    }
+}
+
+void CKirbyDropOutUIScript::Wait()
+{
+    m_fAccTime += DT;
+    if (m_fWaitTime <= m_fAccTime)
+    {
+        ChangeState(DropOutUIState::Idle);
     }
 }
 
@@ -126,12 +133,6 @@ void CKirbyDropOutUIScript::Appear()
 
 void CKirbyDropOutUIScript::Disappear()
 {
-    if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT")
-    {
-        ChangeState(DropOutUIState::Wait);
-        return;
-    }
-
     FadeFunc(false);
 
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
@@ -158,8 +159,17 @@ void CKirbyDropOutUIScript::EnterState()
 {
     switch (m_eState)
     {
-    case DropOutUIState::Wait:
-        break;
+    case DropOutUIState::Wait: {
+        m_fAccTime = 0.f;
+        for (size_t i = 0; i < m_pProgressUI.size(); i++)
+        {
+            if (nullptr != m_pProgressUI[i])
+            {
+                m_pProgressUI[i]->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
+            }
+        }
+    }
+    break;
     case DropOutUIState::Appear:
         m_fAccTime = 0.f;
         break;

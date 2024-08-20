@@ -108,10 +108,18 @@ void CFlowMgr_BossElfilis::SpawnElfilis()
 
 UINT CFlowMgr_BossElfilis::SaveToLevelFile(FILE* _File)
 {
-    return 0;
+     UINT MemoryByte = 0;
+
+     MemoryByte += CLevelFlowMgr::SaveToLevelFile(_File);
+
+     return MemoryByte;
 }
 
 UINT CFlowMgr_BossElfilis::LoadFromLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    MemoryByte += CLevelFlowMgr::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }

@@ -4,6 +4,7 @@
 enum class DropOutUIState
 {
     Wait,
+    Idle,
     Appear,
     DropOut,
     Disappear,
@@ -22,6 +23,7 @@ private:
     float m_fAccTime;
     float m_fAppearTime;
     float m_fDisappearTime;
+    float m_fWaitTime;
 
     bool m_bFailed;
 
@@ -30,6 +32,7 @@ public:
     virtual void tick() override;
 
 private:
+    void Idle();
     void Wait();
     void Appear();
     void Disappear();
